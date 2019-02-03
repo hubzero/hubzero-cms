@@ -90,7 +90,7 @@ defined('_HZEXEC_') or die();
 						<?php if (!$this->guestOrTmpAccount) { ?>
 							<input type="hidden" name="reporter[email]" id="trEmail" value="<?php echo $this->escape(User::get('email')); ?>" /><br /><span class="info-block"><?php echo $this->escape(User::get('email')); ?></span>
 						<?php } else { ?>
-							<input type="text" name="reporter[email]" id="trEmail" value="" />
+							<input type="email" name="reporter[email]" id="trEmail" value="" />
 						<?php } ?>
 					</label>
 

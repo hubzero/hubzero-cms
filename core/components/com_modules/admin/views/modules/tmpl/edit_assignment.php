@@ -33,8 +33,8 @@
 defined('_HZEXEC_') or die();
 
 // Initiasile related data.
-require_once PATH_CORE.'/components/com_menus/admin/helpers/menus.php';
-$menuTypes = MenusHelper::getMenuLinks();
+require_once Component::path('com_menus') . '/helpers/menus.php';
+$menuTypes = Components\Menus\Helpers\Menus::getMenuLinks();
 
 $assignment = $this->item->disableCaching()->purgeCache()->menuAssignment();
 ?>

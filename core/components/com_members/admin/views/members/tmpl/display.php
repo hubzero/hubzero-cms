@@ -80,7 +80,7 @@ function submitbutton(pressbutton)
 	var form = document.getElementById('adminForm');
 
 	if (pressbutton == 'clearTerms' || pressbutton == 'remove') {
-		var res = confirm('Are you sure? Make sure you know what you\'re doing, as this action cannot be undone!');
+		var res = confirm("<?php echo Lang::txt('COM_MEMBERS_CONFIRMATION_WARNING'); ?>");
 
 		if (!res) {
 			return;
@@ -270,7 +270,7 @@ function submitbutton(pressbutton)
 						</a>
 					</div>
 					<?php if ($canEdit) : ?>
-						<a class="editlinktip hasTip" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>" title="<?php echo $this->escape(stripslashes($row->get('name')));/* ?>::<img border=&quot;1&quot; src=&quot;<?php echo $base . $picture; ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><span class=&quot;glyph org&quot;><?php echo ($row->organization) ? $this->escape(stripslashes($row->organization)) : Lang::txt('COM_MEMBERS_UNKNOWN'); ?></span><br /><span class=&quot;glyph <?php echo ($row->public) ? 'public' : 'private'; ?>&quot;><?php echo ($row->public) ? 'public profile' : 'private profile'; </span>*/?>">
+						<a class="editlinktip hasTip" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>" title="<?php echo $this->escape(stripslashes($row->get('name')));/* ?>::<img border=&quot;1&quot; src=&quot;<?php echo $base . $picture; ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; /><br /><span class=&quot;glyph <?php echo ($row->public) ? 'public' : 'private'; ?>&quot;><?php echo ($row->public) ? 'public profile' : 'private profile'; </span>*/?>">
 							<?php echo $this->escape($row->get('name')); ?>
 						</a>
 					<?php else : ?>
@@ -317,7 +317,7 @@ function submitbutton(pressbutton)
 				</td>
 				<td class="center">
 					<?php if ($canChange) : ?>
-						<?php echo Html::grid('boolean', $i, $row->get('approved'), 'approve', null); ?>
+						<?php echo Html::grid('boolean', $i, $row->get('approved'), 'approve', 'disapprove'); ?>
 					<?php else : ?>
 						<?php echo Html::grid('boolean', $i, $row->get('approved'), null, null); ?>
 					<?php endif; ?>
@@ -338,7 +338,7 @@ function submitbutton(pressbutton)
 				</td>
 				<td class="priority-6">
 					<?php if (!$row->get('lastvisitDate') || $row->get('lastvisitDate') == '0000-00-00 00:00:00') : ?>
-						<span class="never" style="color:#bbb;"><?php echo Lang::txt('COM_MEMBERS_NEVER'); ?></span>
+						<span class="never"><?php echo Lang::txt('COM_MEMBERS_NEVER'); ?></span>
 					<?php else: ?>
 						<time datetime="<?php echo Date::of($row->get('lastvisitDate'))->format('Y-m-dTh:i:s'); ?>"><?php echo Date::of($row->get('lastvisitDate'))->toLocal('Y-m-d H:i:s'); ?></time>
 					<?php endif; ?>

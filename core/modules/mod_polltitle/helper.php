@@ -48,7 +48,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(Component::path('com_poll') . DS . 'models' . DS . 'poll.php');
+		require_once Component::path('com_poll') . '/models/poll.php';
 
 		// Load the latest poll
 		$this->poll = Poll::current();

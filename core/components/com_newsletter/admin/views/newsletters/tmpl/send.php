@@ -139,16 +139,17 @@ function submitbutton(pressbutton)
 
 									<div id="scheduler-alt">
 										<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_DATE'); ?>
-										<input type="text" name="scheduler_date" id="scheduler_date" style="width:auto;" />
+										<input type="text" name="scheduler_date" id="scheduler_date" class="width-auto" />
+
 										<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_TIME'); ?>
-										<select name="scheduler_date_hour" id="scheduler_date_hour" style="width:auto;">
+										<select name="scheduler_date_hour" id="scheduler_date_hour" class="width-auto">
 											<option value=""><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_NULL'); ?></option>
 											<?php for ($i = 1, $n = 13; $i < $n; $i++) : ?>
 												<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
 											<?php endfor; ?>
 										</select>
 
-										<select name="scheduler_date_minute" id="scheduler_date_minute" style="width:auto;">
+										<select name="scheduler_date_minute" id="scheduler_date_minute" class="width-auto">
 											<option value=""><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_NULL'); ?></option>
 											<?php for ($i = 0, $n = 60; $i < $n; $i+=5) : ?>
 												<?php
@@ -166,7 +167,7 @@ function submitbutton(pressbutton)
 											<?php endfor; ?>
 										</select>
 
-										<select name="scheduler_date_meridian" id="scheduler_date_meridian" style="width:auto;">
+										<select name="scheduler_date_meridian" id="scheduler_date_meridian" class="width-auto">
 											<option value=""><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_NULL'); ?></option>
 											<option value="am"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_AM'); ?></option>
 											<option value="pm"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_PM'); ?></option>

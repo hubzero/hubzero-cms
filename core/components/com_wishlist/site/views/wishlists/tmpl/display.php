@@ -334,8 +334,14 @@ if ($this->wishlist->get('id'))
 													else if ($item->get('ranked'))
 													{
 														//$html .= Lang::txt('WISH_PRIORITY').': <span class="priority">'.$item->ranking.'</span>'."\n";
+														$this->css('
+															.priority-level-' . $item->get('id') . ' {
+																width: '.(($item->get('ranking', 0)/50)*100).'%;
+															}
+														');
+
 														$html .= '<span class="priority-level-base">
-															<span class="priority-level" style="width: '.(($item->get('ranking', 0)/50)*100).'%">
+															<span class="priority-level priority-level-' . $item->get('id') . '" title="'.(($item->get('ranking', 0)/50)*100).'%">
 																<span>'.Lang::txt('COM_WISHLIST_WISH_PRIORITY').': '.$item->get('ranking', 0).'</span>
 															</span>
 														</span>';
@@ -478,4 +484,4 @@ if ($this->wishlist->get('id'))
 	<?php } // end if public ?>
 <?php } else { ?>
 	<p class="error"><?php echo Lang::txt('COM_WISHLIST_ERROR_LIST_NOT_FOUND'); ?></p>
-<?php } // end if wish list ?>
+<?php } // end if wish list 

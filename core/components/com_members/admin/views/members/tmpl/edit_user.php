@@ -76,7 +76,7 @@ if (substr($this->profile->get('email'), -8) == '@invalid')
 
 			<div class="input-wrap">
 				<label id="field_email-lbl" for="field_email" class="required"><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL'); ?> <span class="required star"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<input type="text" name="fields[email]" class="validate-email required" id="field_email" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
+				<input type="email" name="fields[email]" class="validate-email required" id="field_email" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
 			</div>
 
 			<fieldset>
@@ -178,11 +178,11 @@ if (substr($this->profile->get('email'), -8) == '@invalid')
 				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_MEMBERS_FIELD_LASTVISITDATE'); ?></th>
-					<th><?php echo (!$this->profile->get('lastvisitDate') || $this->profile->get('lastvisitDate') == '0000-00-00 00:00:00' ? Lang::txt('COM_MEMBERS_NEVER') : $this->profile->get('lastvisitDate')); ?></th>
+					<th><?php echo !$this->profile->get('lastvisitDate') || $this->profile->get('lastvisitDate') == '0000-00-00 00:00:00' ? Lang::txt('COM_MEMBERS_NEVER') : $this->profile->get('lastvisitDate'); ?></th>
 				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_MEMBERS_FIELD_MODIFIED'); ?></th>
-					<th><?php echo (!$this->profile->get('modifiedDate') || $this->profile->get('modifiedDate') == '0000-00-00 00:00:00' ? Lang::txt('COM_MEMBERS_NEVER') : $this->profile->get('modifiedDate')); ?></th>
+					<th><?php echo !$this->profile->get('modifiedDate') || $this->profile->get('modifiedDate') == '0000-00-00 00:00:00' ? Lang::txt('COM_MEMBERS_NEVER') : $this->profile->get('modifiedDate'); ?></th>
 				</tr>
 				<?php if ($incomplete) : ?>
 					<tr>
@@ -284,7 +284,7 @@ if (substr($this->profile->get('email'), -8) == '@invalid')
 					echo $confirmed;
 					?>
 				<?php else: ?>
-					<span style="color:#c00;"><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_NONE_ON_FILE'); ?></span><br />
+					<span class="error"><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_NONE_ON_FILE'); ?></span><br />
 					<input type="checkbox" name="activation" id="activation" value="1" />
 					<label for="activation"><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRM'); ?></label>
 				<?php endif; ?>

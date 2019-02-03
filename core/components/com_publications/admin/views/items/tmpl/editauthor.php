@@ -82,11 +82,12 @@ function submitbutton(pressbutton)
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 <?php if ($tmpl == 'component') { ?>
 	<fieldset>
-		<div style="float: right">
-			<button type="button" onclick="submitbutton('addusers');"><?php echo Lang::txt( 'JSAVE' );?></button>
-			<button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?php echo Lang::txt( 'Cancel' );?></button>
-		</div>
-		<div class="configuration" >
+		<div class="configuration">
+			<div class="configuration-options">
+				<button type="button" onclick="submitbutton('addusers');"><?php echo Lang::txt( 'JSAVE' );?></button>
+				<button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?php echo Lang::txt( 'Cancel' );?></button>
+			</div>
+
 			<?php echo Lang::txt('COM_PUBLICATIONS_EDIT_AUTHOR') ?>
 		</div>
 	</fieldset>

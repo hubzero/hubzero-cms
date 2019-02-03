@@ -105,8 +105,14 @@ defined('_HZEXEC_') or die();
 		request.send(null);
 	}
 	</script>
+	<style>
+	#div_map {
+		width:100%;
+		height:600px;
+	}
+	</style>
  </head>
  <body onload="load()" onunload="GUnload()">
-	<div id="div_map" style="width:100%; height:600px"></div>
+	<div id="div_map"></div>
  </body>
 </html>

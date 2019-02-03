@@ -92,8 +92,8 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 					$status = 'outstanding';
 				}
 
-				$state  = (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? 'new' : '' ;
-				$state .= ($item->private) ? ' private' : '' ;
+				$state  = (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? 'new' : '';
+				$state .= ($item->private) ? ' private' : '';
 				switch ($item->status)
 				{
 					case 3:
@@ -176,7 +176,7 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 									'layout'    => '_vote'
 								));
 								$view->set('option', 'com_wishlist')
-								     ->set('item',  $item)
+								     ->set('item', $item)
 								     ->set('listid', $this->wishlist->id)
 								     ->set('plugin', 0)
 								     ->set('admin', 0)
@@ -201,8 +201,14 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 											$html .= '<a class="rankit" href="index.php?option=com_wishlist&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'">'.Lang::txt('COM_WISHLIST_WISH_RANK_THIS').'</a>'."\n";
 										} else if (isset($item->ranked) && $item->ranked) {
 											//$html .= Lang::txt('WISH_PRIORITY').': <span class="priority">'.$item->ranking.'</span>'."\n";
+											$this->css('
+												.priority-level-' . $item->id . ' {
+													width: '.(($item->ranking/50)*100).'%;
+												}
+											');
+
 											$html .= '<span class="priority-level-base">
-												<span class="priority-level" style="width: '.(($item->ranking/50)*100).'%">
+												<span class="priority-level" priority-level-' . $item->id . '" title="'.(($item->ranking/50)*100).'%">
 													<span>'.Lang::txt('COM_WISHLIST_WISH_PRIORITY').': '.$item->ranking.'</span>
 												</span>
 											</span>';

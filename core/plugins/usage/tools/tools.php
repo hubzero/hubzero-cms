@@ -132,7 +132,6 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 					{
 						continue;
 					}
-					$count++;
 
 					$html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
 					$html .= "\t\t\t" . '<td>' . $row->rank . '</td>' . "\n";
@@ -145,21 +144,14 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 					$html .= "\t\t\t" . '<td>' . $vl . '%</td>' . "\n";
 					$html .= "\t\t" . '</tr>' . "\n";
 				}
-			}
-
-			if ($count == 0)
-			{
-				$html .= "\t" . '<tbody>' . "\n";
-				$html .= "\t\t" . '<tr class="odd">' . "\n";
-				$html .= "\t\t\t" . '<td colspan="4">No data available to display.</td>' . "\n";
-				$html .= "\t\t" . '</tr>' . "\n";
+				$count++;
 			}
 		}
 		else
 		{
 			$html .= "\t" . '<tbody>' . "\n";
 			$html .= "\t\t" . '<tr class="odd">' . "\n";
-			$html .= "\t\t\t" . '<td colspan="4">Data being generated. Please check back soon.</td>' . "\n";
+			$html .= "\t\t\t" . '<td colspan="4">No data available to display.</td>' . "\n";
 			$html .= "\t\t" . '</tr>' . "\n";
 		}
 		$html .= "\t" . '</tbody>' . "\n";
@@ -361,6 +353,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		$year_data_start = 2000;
 
 		$html = '<select name="dthis">' . "\n";
+		$html .= "<option selected disabled hidden>" . Lang::txt('PLG_USAGE_TOOLS_DEFAULT_DATE_SELECT') . "</option>\n";
 		switch ($period)
 		{
 			case '3':

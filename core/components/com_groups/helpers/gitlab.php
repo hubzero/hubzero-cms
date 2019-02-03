@@ -77,18 +77,16 @@ class Gitlab
 		);
 		$this->client = new \GuzzleHttp\Client;
 
-		// Method removed in Guzzle 6.0
-		//$this->client->setDefaultOption('verify', false);
 	}
 
 	/**
-	 * Get List of groups on Gitlab
+	 * Search List of groups on Gitlab
 	 * 
 	 * @return  array
 	 */
-	public function groups()
+	public function groups($groupName)
 	{
-		return $this->_getRequest('groups');
+		return $this->_getRequest('groups', $groupName);
 	}
 
 	/**
@@ -121,13 +119,13 @@ class Gitlab
 	}
 
 	/**
-	 * Get List of projects on gitlab
+	 * Search list of projects on gitlab
 	 * 
 	 * @return  array
 	 */
-	public function projects()
+	public function projects($projectName)
 	{
-		return $this->_getRequest('projects');
+		return $this->_getRequest('projects', $projectName);
 	}
 
 	/**
@@ -177,17 +175,10 @@ class Gitlab
 	 * @param   string  $url
 	 * @return  string
 	 */
-	private function _getRequest($resource)
+	private function _getRequest($resource, $ResourceName)
 	{
-		// add our auth header
-		$headers = array('PRIVATE-TOKEN' => $this->token);
-
-		// init get request
-		$response = $this->client->request('GET', $this->url . DS . $resource, $this->options);
-
-		// json() method removed in Guzzle 6.0
-		// return $response->json();
-
+		// Get response restricted by current owned, i.e. the current Gitlab users that owns the API key that is configured on this hub
+		$response = $this->client->request('GET', $this->url . DS . $resource . '?owned=true&search=' . $ResourceName, $this->options);
 		return json_decode($response->getBody(), true);
 	}
 
@@ -205,9 +196,6 @@ class Gitlab
 		$requestOptions = array_merge(array('query' => $params), $this->options);
 		$response = $this->client->request('POST', $this->url . DS . $resource, $requestOptions);
 
-		// json() method removed in Guzzle 6.0
-		// return $response->json();
-
 		return json_decode($response->getBody(), true);
 	}
 
@@ -224,9 +212,6 @@ class Gitlab
 
 		// init post request
 		$response = $this->client->request('PUT', $this->url . DS . $resource, $requestOptions);
-
-		// json() method removed in Guzzle 6.0
-		// return $response->json();
 
 		return json_decode($response->getBody(), true);
 	}

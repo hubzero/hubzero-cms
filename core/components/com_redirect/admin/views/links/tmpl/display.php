@@ -51,7 +51,7 @@ if ($canDo->get('core.edit.state'))
 		Toolbar::publish('publish', 'JTOOLBAR_ENABLE', true);
 		Toolbar::unpublish('unpublish', 'JTOOLBAR_DISABLE', true);
 	}
-	if ($this->filters['state'] != -1 )
+	if ($this->filters['state'] != -1)
 	{
 		Toolbar::divider();
 		if ($this->filters['state'] != 2)
@@ -179,7 +179,7 @@ $this->css('.adminlist tr td {
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $item->id);?>" title="<?php echo $this->escape($item->old_url); ?>">
 							<?php
 							$old = str_replace(Request::root(), '', $item->old_url);
-							echo '<span style="color:#ccc">' . Lang::txt('COM_REDIRECT_ROOT') . '</span>/' . $this->escape(ltrim($old, '/')); ?>
+							echo '<span class="smallsub">' . Lang::txt('COM_REDIRECT_ROOT') . '</span>/' . $this->escape(ltrim($old, '/')); ?>
 						</a>
 					<?php else : ?>
 						<?php echo $this->escape(str_replace(Request::root(), '', $item->old_url)); ?>
@@ -190,7 +190,7 @@ $this->css('.adminlist tr td {
 					<?php
 					if (substr($item->new_url, 0, strlen('http')) != 'http')
 					{
-						echo '<span style="color:#ccc">' . Lang::txt('COM_REDIRECT_ROOT') . '</span>/';
+						echo '<span class="smallsub">' . Lang::txt('COM_REDIRECT_ROOT') . '</span>/';
 					}
 					echo $this->escape(ltrim($item->new_url, '/'));
 					?>

@@ -50,6 +50,13 @@ $presentation = $this->manifest->presentation;
 //determine height and width
 $width  = (isset($presentation->width) && $presentation->width != 0) ? $presentation->width . 'px' : 'auto';
 $height = (isset($presentation->height) && $presentation->height != 0) ? $presentation->height . 'px' : 'auto';
+
+$this->css('
+#video-flowplayer {
+	width: ' . $width . ';
+	height: ' . $height . ';
+}
+');
 ?>
 
 <script>
@@ -114,7 +121,6 @@ if (navigator.userAgent.indexOf("Mozilla") > -1)
 
 			<a href="<?php echo $mp4; ?>"
 				id="video-flowplayer"
-				style="<?php echo "width:{$width};height:{$height};"; ?>"
 				data-mediaid="<?php echo $this->resource->id; ?>"></a>
 
 			<?php if (count($presentation->subtitles) > 0) : ?>
@@ -212,7 +218,7 @@ if (navigator.userAgent.indexOf("Mozilla") > -1)
 									<label for="font-color">Font Color:</label>
 								</div>
 								<div class="col span6 omega input">
-									<div id="font-color" data-color="FFF" style="background-color: #FFF;"></div>
+									<div id="font-color" data-color="FFF"></div>
 								</div>
 							</div>
 							<div class="grid">
@@ -220,13 +226,13 @@ if (navigator.userAgent.indexOf("Mozilla") > -1)
 									<label for="background-color">Background:</label>
 								</div>
 								<div class="col span6 omega input">
-									<div id="background-color" data-color="000" style="background-color: #000;"></div>
+									<div id="background-color" data-color="000"></div>
 								</div>
 							</div>
 							<div class="grid">
 								<div class="col span12 omega subtitle-settings-preview-container">
 									<div class="subtitle-settings-preview">
-										<div class="test" style="font-family:arial; background-color: #000; color: #FFF; font-size:18px;">This is an Example</div>
+										<div class="test">This is an Example</div>
 									</div>
 								</div>
 							</div>

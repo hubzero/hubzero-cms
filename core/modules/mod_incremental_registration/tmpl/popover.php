@@ -51,17 +51,17 @@ defined('_HZEXEC_') or die();
 					<?php endif; ?>
 					<select id="orgtype" name="orgtype">
 						<option selected="selected" value="">(select from list)</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'universityundergraduate') echo 'selected="selected" '; ?>value="universityundergraduate">University / College Undergraduate</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'universitygraduate') echo 'selected="selected" '; ?>value="universitygraduate">University / College Graduate Student</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'universityfaculty') echo 'selected="selected" '; ?>value="universityfaculty">University / College Faculty</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'universitystaff') echo 'selected="selected" '; ?>value="universitystaff">University / College Staff</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'precollegestudent') echo 'selected="selected" '; ?>value="precollegestudent">K-12 (Pre-College) Student</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'precollegefacultystaff') echo 'selected="selected" '; ?>value="precollegefacultystaff">K-12 (Pre-College) Faculty/Staff</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'nationallab') echo 'selected="selected" '; ?>value="nationallab">National Laboratory</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'industry') echo 'selected="selected" '; ?>value="industry">Industry / Private Company</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'government') echo 'selected="selected" '; ?>value="government">Government Agency</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'military') echo 'selected="selected" '; ?>value="military">Military</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'unemployed') echo 'selected="selected" '; ?>value="unemployed">Retired / Unemployed</option>
+						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'universityundergraduate') { echo 'selected="selected" ';} ?>value="universityundergraduate">University / College Undergraduate</option>
+						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'universitygraduate') { echo 'selected="selected" ';} ?>value="universitygraduate">University / College Graduate Student</option>
+						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'universityfaculty') { echo 'selected="selected" ';} ?>value="universityfaculty">University / College Faculty</option>
+						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'universitystaff') { echo 'selected="selected" ';} ?>value="universitystaff">University / College Staff</option>
+						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'precollegestudent') { echo 'selected="selected" ';} ?>value="precollegestudent">K-12 (Pre-College) Student</option>
+						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'precollegefacultystaff') { echo 'selected="selected" ';} ?>value="precollegefacultystaff">K-12 (Pre-College) Faculty/Staff</option>
+						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'nationallab') { echo 'selected="selected" ';} ?>value="nationallab">National Laboratory</option>
+						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'industry') { echo 'selected="selected" ';} ?>value="industry">Industry / Private Company</option>
+						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'government') { echo 'selected="selected" ';} ?>value="government">Government Agency</option>
+						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'military') { echo 'selected="selected" ';} ?>value="military">Military</option>
+						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'unemployed') { echo 'selected="selected" ';} ?>value="unemployed">Retired / Unemployed</option>
 					</select>
 					</div>
 				</li>
@@ -99,13 +99,13 @@ defined('_HZEXEC_') or die();
 					<select id="reason" name="reason">
 						<?php $val = isset($_POST['reason']) ? $_POST['reason'] : ''; ?>
 						<option value="">(select from list or enter other)</option>
-						<option <?php if ($val === 'Required for class') echo 'selected="selected" '; ?>value="Required for class">Required for class</option>
-						<option <?php if ($val === 'Developing a new course') echo 'selected="selected" '; ?>value="Developing a new course">Developing a new course</option>
-						<option <?php if ($val === 'Using in an existing course') echo 'selected="selected" '; ?>value="Using in an existing course">Using in an existing course</option>
-						<option <?php if ($val === 'Using simulation tools for research') echo 'selected="selected" '; ?>value="Using simulation tools for research">Using simulation tools for research</option>
-						<option <?php if ($val === 'Using as background for my research') echo 'selected="selected" '; ?>value="Using as background for my research">Using as background for my research</option>
-						<option <?php if ($val === 'Learning about subject matter') echo 'selected="selected" '; ?>value="Learning about subject matter">Learning about subject matter</option>
-						<option <?php if ($val === 'Keeping current in subject matter') echo 'selected="selected" '; ?>value="Keeping current in subject matter">Keeping current in subject matter</option>
+						<option <?php if ($val === 'Required for class') { echo 'selected="selected" ';} ?>value="Required for class">Required for class</option>
+						<option <?php if ($val === 'Developing a new course') { echo 'selected="selected" ';} ?>value="Developing a new course">Developing a new course</option>
+						<option <?php if ($val === 'Using in an existing course') { echo 'selected="selected" ';} ?>value="Using in an existing course">Using in an existing course</option>
+						<option <?php if ($val === 'Using simulation tools for research') { echo 'selected="selected" ';} ?>value="Using simulation tools for research">Using simulation tools for research</option>
+						<option <?php if ($val === 'Using as background for my research') { echo 'selected="selected" ';} ?>value="Using as background for my research">Using as background for my research</option>
+						<option <?php if ($val === 'Learning about subject matter') { echo 'selected="selected" ';} ?>value="Learning about subject matter">Learning about subject matter</option>
+						<option <?php if ($val === 'Keeping current in subject matter') { echo 'selected="selected" ';} ?>value="Keeping current in subject matter">Keeping current in subject matter</option>
 					</select>
 					<br />
 					<label for="reason-other">Have a different reason? </label><br />
@@ -123,19 +123,19 @@ defined('_HZEXEC_') or die();
 						<li>
 							<label>
 								<span>First:</span>
-								<input type="text" value="<?php if (isset($_POST['name']['first'])) echo str_replace('"', '&quot;', $_POST['name']['first']); ?>" name="name[first]">
+								<input type="text" value="<?php if (isset($_POST['name']['first'])) { echo str_replace('"', '&quot;', $_POST['name']['first']);} ?>" name="name[first]">
 							</label>
 						</li>
 						<li>
 							<label>
 								<span>Middle:</span>
-								<input type="text" value="<?php if (isset($_POST['name']['middle'])) echo str_replace('"', '&quot;', $_POST['name']['middle']); ?>" name="name[middle]">
+								<input type="text" value="<?php if (isset($_POST['name']['middle'])) { echo str_replace('"', '&quot;', $_POST['name']['middle']);} ?>" name="name[middle]">
 							</label>
 						</li>
 						<li>
 							<label>
 								<span>Last:</span>
-								<input type="text" value="<?php if (isset($_POST['name']['last'])) echo str_replace('"', '&quot;', $_POST['name']['last']); ?>" name="name[last]">
+								<input type="text" value="<?php if (isset($_POST['name']['last'])) { echo str_replace('"', '&quot;', $_POST['name']['last']);} ?>" name="name[last]">
 							</label>
 					</li>
 					</ol>
@@ -148,9 +148,9 @@ defined('_HZEXEC_') or die();
 							<?php if (isset($errors['gender'])): ?>
 								<p class="warning">Please select your gender, or choose not to reveal it</p>
 							<?php endif; ?>
-							<label><input <?php if (isset($_POST['gender']) && $_POST['gender'] == 'male') echo 'checked="checked" '; ?>type="radio" class="option" value="male" name="gender"> Male</label>
-							<label><input <?php if (isset($_POST['gender']) && $_POST['gender'] == 'female') echo 'checked="checked" '; ?>type="radio" class="option" value="female" name="gender"> Female</label>
-							<label><input <?php if (isset($_POST['gender']) && $_POST['gender'] == 'refused') echo 'checked="checked" '; ?>type="radio" class="option" value="refused" name="gender"> Do not wish to reveal</label>
+							<label><input <?php if (isset($_POST['gender']) && $_POST['gender'] == 'male') { echo 'checked="checked" ';} ?>type="radio" class="option" value="male" name="gender"> Male</label>
+							<label><input <?php if (isset($_POST['gender']) && $_POST['gender'] == 'female') { echo 'checked="checked" ';} ?>type="radio" class="option" value="female" name="gender"> Female</label>
+							<label><input <?php if (isset($_POST['gender']) && $_POST['gender'] == 'refused') { echo 'checked="checked" ';} ?>type="radio" class="option" value="refused" name="gender"> Do not wish to reveal</label>
 						</div>
 					</li>
 				<?php endif; ?>
@@ -161,7 +161,7 @@ defined('_HZEXEC_') or die();
 							<?php if (isset($errors['url'])): ?>
 								<p class="warning">Please enter your web site URL</p>
 							<?php endif; ?>
-							<input type="text" id="url" name="url" value="<?php if (isset($_POST['url'])) echo str_replace('"', '&quot;', $_POST['url']); ?>" />
+							<input type="text" id="url" name="url" value="<?php if (isset($_POST['url'])) { echo str_replace('"', '&quot;', $_POST['url']);} ?>" />
 						</div>
 					</li>
 				<?php endif; ?>
@@ -172,7 +172,7 @@ defined('_HZEXEC_') or die();
 							<?php if (isset($errors['phone'])): ?>
 								<p class="warning">Please enter your phone number</p>
 							<?php endif; ?>
-							<input type="text" id="phone" name="phone" value="<?php if (isset($_POST['phone'])) echo str_replace('"', '&quot;', $_POST['phone']); ?>" />
+							<input type="text" id="phone" name="phone" value="<?php if (isset($_POST['phone'])) { echo str_replace('"', '&quot;', $_POST['phone']);} ?>" />
 						</div>
 					</li>
 				<?php endif; ?>
@@ -184,13 +184,13 @@ defined('_HZEXEC_') or die();
 								<?php if (isset($errors['countryorigin'])): ?>
 									<p class="warning">Please select your country of origin</p>
 								<?php endif; ?>
-								<label><input type="radio" class="option" name="countryorigin_us" id="corigin_usyes" value="yes" <?php if (strtolower($country) == 'us' || (isset($_POST['countryorigin_us']) && $_POST['countryorigin_us'] == 'yes')) echo 'checked="checked"'; ?> />Yes</label>
-								<label><input type="radio" class="option" name="countryorigin_us" id="corigin_usno" value="no" <?php if (!empty($_POST['countryorigin']) && strtolower($country) != 'us' || (isset($_POST['countryorigin_us']) && $_POST['countryorigin_us'] == 'no')) echo 'checked="checked"'; ?> />No</label>
+								<label><input type="radio" class="option" name="countryorigin_us" id="corigin_usyes" value="yes" <?php if (strtolower($country) == 'us' || (isset($_POST['countryorigin_us']) && $_POST['countryorigin_us'] == 'yes')) { echo 'checked="checked"';} ?> />Yes</label>
+								<label><input type="radio" class="option" name="countryorigin_us" id="corigin_usno" value="no" <?php if (!empty($_POST['countryorigin']) && strtolower($country) != 'us' || (isset($_POST['countryorigin_us']) && $_POST['countryorigin_us'] == 'no')) { echo 'checked="checked"';} ?> />No</label>
 							</div>
 
 							<div class="indented">
 								<label for="countryorigin">If not, please select your country of origin</label>
-								<select style="display: block" name="countryorigin" id="countryorigin">
+								<select name="countryorigin" id="countryorigin">
 									<option value="">Select country...</option>
 									<?php
 									$countries = \Hubzero\Geocode\Geocode::countries();
@@ -217,13 +217,13 @@ defined('_HZEXEC_') or die();
 								<?php if (isset($errors['countryresident'])): ?>
 									<p class="warning">Please select your country of residency</p>
 								<?php endif; ?>
-								<label><input type="radio" class="option" name="countryresident_us" id="cores_usyes" value="yes" <?php if (strtolower($country) == 'us' || (isset($_POST['countryresident_us']) && $_POST['countryresident_us'] == 'yes')) echo 'checked="checked"'; ?> />Yes</label>
-								<label><input type="radio" class="option" name="countryresident_us" id="cores_usno" value="no" <?php if (!empty($_POST['countryresident']) && strtolower($country) != 'us' || (isset($_POST['countryresident_us']) && $_POST['countryresident_us'] == 'no')) echo 'checked="checked"'; ?> />No</label>
+								<label><input type="radio" class="option" name="countryresident_us" id="cores_usyes" value="yes" <?php if (strtolower($country) == 'us' || (isset($_POST['countryresident_us']) && $_POST['countryresident_us'] == 'yes')) { echo 'checked="checked"';} ?> />Yes</label>
+								<label><input type="radio" class="option" name="countryresident_us" id="cores_usno" value="no" <?php if (!empty($_POST['countryresident']) && strtolower($country) != 'us' || (isset($_POST['countryresident_us']) && $_POST['countryresident_us'] == 'no')) { echo 'checked="checked"';} ?> />No</label>
 							</div>
 
 							<div class="indented">
 								<label for="countryresident">If not, please select the country where you currently reside</label>
-								<select style="display: block" name="countryresident" id="countryresident">
+								<select name="countryresident" id="countryresident">
 									<option value="">Select country...</option>
 									<?php
 									// Make sure service provider is on
@@ -251,20 +251,20 @@ defined('_HZEXEC_') or die();
 								<p class="warning">Please select your race(s)</p>
 							<?php endif; ?>
 							<div class="indented">
-								<label><input type="checkbox" class="option" name="race[]" id="racenativeamerican" value="nativeamerican" <?php if (in_array('nativeamerican', $race)) echo 'checked="checked" '; ?>/>American Indian or Alaska Native</label>
+								<label><input type="checkbox" class="option" name="race[]" id="racenativeamerican" value="nativeamerican" <?php if (in_array('nativeamerican', $race)) { echo 'checked="checked" ';} ?>/>American Indian or Alaska Native</label>
 								<div class="indented">
 									<label class="indent">
 										Tribal Affiliation(s)
-										<input name="racenativetribe" id="racenativetribe" type="text" value="<?php if (isset($_POST['racenativetribe'])) echo str_replace('"', '&quot;', $_POST['racenativetribe']); ?>" />
+										<input name="racenativetribe" id="racenativetribe" type="text" value="<?php if (isset($_POST['racenativetribe'])) { echo str_replace('"', '&quot;', $_POST['racenativetribe']);} ?>" />
 									</label>
 								</div>
 
-								<label style="display: block"><input type="checkbox" class="option" name="race[]" id="raceasian" value="asian" <?php if (in_array('asian', $race)) echo 'checked="checked" '; ?> />Asian</label>
+								<label><input type="checkbox" class="option" name="race[]" id="raceasian" value="asian" <?php if (in_array('asian', $race)) { echo 'checked="checked" ';} ?> />Asian</label>
 
-								<label style="display: block"><input type="checkbox" class="option" name="race[]" id="raceblack" value="black" <?php if (in_array('black', $race)) echo 'checked="checked" '; ?> />Black or African American</label>
-								<label style="display: block"><input type="checkbox" class="option" name="race[]" id="racehawaiian" value="hawaiian" <?php if (in_array('hawaiian', $race)) echo 'checked="checked" '; ?> />Native Hawaiian or Other Pacific Islander</label>
-								<label style="display: block"><input type="checkbox" class="option" name="race[]" id="racewhite" value="white" <?php if (in_array('white', $race)) echo 'checked="checked" '; ?> />White</label>
-								<label style="display: block"><input type="checkbox" class="option" name="race[]" id="racerefused" value="refused" <?php if (in_array('refused', $race)) echo 'checked="checked" '; ?> />Do not wish to reveal</label>
+								<label><input type="checkbox" class="option" name="race[]" id="raceblack" value="black" <?php if (in_array('black', $race)) { echo 'checked="checked" ';} ?> />Black or African American</label>
+								<label><input type="checkbox" class="option" name="race[]" id="racehawaiian" value="hawaiian" <?php if (in_array('hawaiian', $race)) { echo 'checked="checked" ';} ?> />Native Hawaiian or Other Pacific Islander</label>
+								<label><input type="checkbox" class="option" name="race[]" id="racewhite" value="white" <?php if (in_array('white', $race)) { echo 'checked="checked" ';} ?> />White</label>
+								<label><input type="checkbox" class="option" name="race[]" id="racerefused" value="refused" <?php if (in_array('refused', $race)) { echo 'checked="checked" ';} ?> />Do not wish to reveal</label>
 					</li>
 				<?php endif; ?>
 				<?php if (isset($row['disability'])): ?>
@@ -274,7 +274,7 @@ defined('_HZEXEC_') or die();
 								<p class="warning">Please make a selection, or choose to refuse to answer</p>
 							<?php endif; ?>
 							<div class="indented">
-								<label><input <?php if (isset($_POST['disability']) && $_POST['disability'] == 'yes') echo 'checked="checked" '; ?>type="radio" value="yes" id="disabilityyes" name="disability" class="option"> Yes</label>
+								<label><input <?php if (isset($_POST['disability']) && $_POST['disability'] == 'yes') { echo 'checked="checked" ';} ?>type="radio" value="yes" id="disabilityyes" name="disability" class="option"> Yes</label>
 								<fieldset class="indented">
 									<label><input type="checkbox" id="disabilityblind" name="specificDisability[]" value="visually impaired" class="option"> Blind / Visually Impaired</label><br />
 									<label><input type="checkbox" id="disabilitydeaf" name="specificDisability[]" value="hard of hearing" class="option"> Deaf / Hard of Hearing</label><br />
@@ -283,8 +283,8 @@ defined('_HZEXEC_') or die();
 									<label><input type="checkbox" id="disabilityvocal" name="specificDisability[]" value="speech disability" class="option"> Vocal / Speech Disability</label><br />
 									<label>Other (please specify): <input type="text" value="" id="disabilityother" name="otherDisability"></label>
 								</fieldset>
-								<label><input <?php if (isset($_POST['disability']) && $_POST['disability'] == 'no') echo 'checked="checked" '; ?>type="radio" value="no" id="disabilityno" name="disability" class="option"> No (none)</label><br />
-								<label><input <?php if (isset($_POST['disability']) && $_POST['disability'] == 'refused') echo 'checked="checked" '; ?>type="radio" value="refused" id="disabilityrefused" name="disability" class="option"> Do not wish to reveal</label>
+								<label><input <?php if (isset($_POST['disability']) && $_POST['disability'] == 'no') { echo 'checked="checked" ';} ?>type="radio" value="no" id="disabilityno" name="disability" class="option"> No (none)</label><br />
+								<label><input <?php if (isset($_POST['disability']) && $_POST['disability'] == 'refused') { echo 'checked="checked" ';} ?>type="radio" value="refused" id="disabilityrefused" name="disability" class="option"> Do not wish to reveal</label>
 							</div>
 					</li>
 				<?php endif; ?>

@@ -69,11 +69,11 @@ class Searchable extends AdminController
 		$query = new \Hubzero\Search\Query($config);
 		$multifacet = $query->adapter->getFacetMultiQuery('hubtypes');
 		// Load the subfacets, if applicable
-		$components = SearchComponent::all()->rows();
+		$components = SearchComponent::all()->where('state', '!=', SearchComponent::STATE_TRASHED)->orWhere('state', 'IS', null)->rows();
 		foreach ($components as $component)
 		{
-			$hubType = 'hubtype:' . $component->getSearchNamespace();
-			$multifacet->createQuery($component->getQueryName(), $hubType, array('include' => 'child_type'));
+			$componentQuery = $component->getSearchQuery('hubtype');
+			$multifacet->createQuery($component->getQueryName(), $componentQuery, array('include' => 'child_type'));
 		}
 
 		// Perform the query
@@ -83,7 +83,6 @@ class Searchable extends AdminController
 		}
 		catch (\Solarium\Exception\HttpException $e)
 		{
-			$query->query('')->limit($limit)->start($start)->run();
 			\Notify::warning(Lang::txt('COM_SEARCH_MALFORMED_QUERY'));
 		}
 
@@ -121,10 +120,18 @@ class Searchable extends AdminController
 			->rows();
 		foreach ($components as $component)
 		{
-			$recordsIndexed = $component->indexSearchResults($offset);
+			$componentModel = $component->getSearchableModel();
+			if (class_exists($componentModel))
+			{
+				$recordsIndexed = $component->indexSearchResults($offset);
+			}
+			else
+			{
+				$recordsIndexed = null;
+			}
 			if (!$recordsIndexed)
 			{
-				$component->set('state', 1);
+				$component->set('state', SearchComponent::STATE_INDEXED);
 				$componentLink = Route::url('index.php?option=com_search&controller=' . $this->_controller . '&task=documentListing&facet=hubtype:' . $component->getSearchNamespace());
 				$recordsIndexed['state'] = 1;
 				$recordsIndexed['total'] = '<a href="' . $componentLink . '">' . $component->getSearchCount() . '</a>';
@@ -149,6 +156,12 @@ class Searchable extends AdminController
 		}
 
 		App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=searchable', false));
+	}
+
+	public function addTask()
+	{
+		$searchComponent = SearchComponent::blank();
+		$this->editTask($searchComponent);
 	}
 
 	/**
@@ -204,7 +217,12 @@ class Searchable extends AdminController
 		$fields = Request::getArray('fields', array());
 		$id     = Request::getInt('id', 0);
 		$filters = Request::getArray('filters');
-		$searchComponent = SearchComponent::oneOrFail($id);
+		$searchComponent = SearchComponent::oneOrNew($id);
+		$name = $searchComponent->get('name');
+		if (!$name)
+		{
+			$fields['name'] = !empty($fields['title']) ? $fields['title'] : '';
+		}
 		$searchComponent->set($fields);
 		if (!$searchComponent->save())
 		{
@@ -231,8 +249,12 @@ class Searchable extends AdminController
 				}
 				$filter = Filter::oneOrNew($filterId);
 				$filter->set('field', $field);
-				$optionValues = isset($element['options']) ? $element['options'] : array();
-				unset($element['options']);
+				$optionValues = array();
+				if (isset($element['options']))
+				{
+					$optionValues = $element['options'];
+					unset($element['options']);
+				}
 				$filter->set($element);
 				$filter->set('ordering', $filterCount);
 				$filter->set('component_id', $searchComponent->get('id'));
@@ -290,16 +312,19 @@ class Searchable extends AdminController
 		$ids = Request::getArray('id', array());
 		$components = SearchComponent::all()
 			->whereIn('id', $ids)
-			->whereEquals('state', 1)
+			->whereEquals('state', SearchComponent::STATE_INDEXED)
 			->rows();
 		foreach ($components as $component)
 		{
 			$searchIndex = new \Hubzero\Search\Index($this->config);
 			$componentSearchModel = $component->getSearchableModel();
-			$modelNamespace = $componentSearchModel::searchNamespace();
-			$deleteQuery = array('hubtype' => $modelNamespace);
-			$searchIndex->delete($deleteQuery);
-			$component->set('state', 0);
+			if (class_exists($componentSearchModel))
+			{
+				$modelNamespace = $componentSearchModel::searchNamespace();
+				$deleteQuery = array('hubtype' => $modelNamespace);
+				$searchIndex->delete($deleteQuery);
+			}
+			$component->set('state', SearchComponent::STATE_NOTINDEXED);
 			$date = Date::of()->toSql();
 			$component->set('indexed', null);
 			$component->set('indexed_records', 0);
@@ -309,6 +334,28 @@ class Searchable extends AdminController
 			}
 		}
 
+		App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=searchable', false));
+	}
+
+	/**
+	 * Trash Component
+	 * 
+	 * @return void
+	 */
+	public function trashIndexTask()
+	{
+		$ids = Request::getArray('id', array());
+		$components = SearchComponent::all()
+			->whereIn('id', $ids)
+			->rows();
+		foreach ($components as $component)
+		{
+			$component->set('state', SearchComponent::STATE_TRASHED);
+			if ($component->save())
+			{
+				Notify::success(Lang::txt('COM_SEARCH_TRASH_COMPONENT_SUCCESS', ucfirst($component->name)));
+			}
+		}
 		App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=searchable', false));
 	}
 

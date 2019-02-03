@@ -31,6 +31,7 @@ use Hubzero\Component\AdminController;
 use Components\Installer\Admin\Helpers\Cli;
 use Request;
 use Config;
+use Notify;
 use Route;
 use App;
 
@@ -140,7 +141,7 @@ class Migrations extends AdminController
 		$response = Cli::migration(false, true, $file);
 		$response = json_decode($response);
 
-		Notify::success(Lang::txt('Migration complete!'));
+		Notify::success(Lang::txt('COM_INSTALLER_MSG_MIGRATIONS_COMPLETE'));
 
 		// Set the redirect
 		$this->cancelTask();
@@ -173,7 +174,7 @@ class Migrations extends AdminController
 			$response = json_decode($response);
 		}
 
-		Notify::success(Lang::txt('Migration complete!'));
+		Notify::success(Lang::txt('COM_INSTALLER_MSG_MIGRATIONS_COMPLETE'));
 
 		// Set the redirect
 		$this->cancelTask();
@@ -202,7 +203,7 @@ class Migrations extends AdminController
 			$response = json_decode($response);
 		}
 
-		Notify::success(Lang::txt('Migration complete!'));
+		Notify::success(Lang::txt('COM_INSTALLER_MSG_MIGRATIONS_COMPLETE'));
 
 		// Set the redirect
 		$this->cancelTask();

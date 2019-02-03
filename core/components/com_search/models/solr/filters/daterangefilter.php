@@ -46,7 +46,7 @@ class Daterangefilter extends Filter
 	 * Render form fields on the filter list
 	 *
 	 * @param   array   $counts  counts retrieved from solr search
-	 * @param   array   $selectedOptions  list of options currently selected
+	 * @param   array   $dateValues  list of options currently selected
 	 * @return  string
 	 */
 	public function renderHtml($counts, $dateValues)

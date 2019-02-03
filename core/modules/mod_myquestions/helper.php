@@ -95,9 +95,7 @@ class Helper extends Module
 	 */
 	private function _getInterests($cloud=0)
 	{
-		$database = \App::get('db');
-
-		require_once(Component::path('com_members') . DS . 'models' . DS . 'tags.php');
+		require_once Component::path('com_members') . '/models/tags.php';
 
 		// Get tags of interest
 		$mt = new \Components\Members\Models\Tags(User::get('id'));
@@ -123,8 +121,8 @@ class Helper extends Module
 	private function _getQuestions($kind='open', $interests=array())
 	{
 		// Get some classes we need
-		require_once(Component::path('com_answers') . DS . 'models' . DS . 'question.php');
-		require_once(Component::path('com_answers') . DS . 'helpers' . DS . 'economy.php');
+		require_once Component::path('com_answers') . '/models/question.php';
+		require_once Component::path('com_answers') . '/helpers/economy.php';
 
 		$limit = intval($this->params->get('limit', 10));
 		$tags  = null;
@@ -149,7 +147,7 @@ class Helper extends Module
 
 		if ($kind == 'assigned')
 		{
-			require_once(Component::path('com_tools') . DS . 'tables' . DS . 'author.php');
+			require_once Component::path('com_tools') . '/tables/author.php';
 
 			$database = \App::get('db');
 
@@ -288,4 +286,3 @@ class Helper extends Module
 		require $this->getLayoutPath();
 	}
 }
-

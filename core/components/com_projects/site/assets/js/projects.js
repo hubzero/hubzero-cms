@@ -438,8 +438,6 @@ jQuery(document).ready(function($){
 		li.appendTo(el[0]);
 	}
 
-	$('.entries-filters label').hide();
-
 	$('.entries-filters select').on('change', function(e){
 		$(this).closest('form').submit();
 	});

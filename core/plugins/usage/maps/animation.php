@@ -104,9 +104,15 @@ $html = '<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR
 	}
 	//]]>
 	</script>
+	<style>
+	#div_map {
+		width:1200px;
+		height:600px;
+	}
+	</style>
  </head>
 
  <body onload="load()" onunload="GUnload()">
-	<div id="div_map" style="width:1200px; height:600px"></div>
+	<div id="div_map"></div>
  </body>
 </html>';

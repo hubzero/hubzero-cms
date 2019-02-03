@@ -87,7 +87,7 @@ $base = rtrim(Request::base(true), '/');
 							</blockquote>
 						<?php } else { ?>
 							<?php if ($quote->get('short_quote') != $quote->get('quote')) { ?>
-								<div class="quote-short" id="<?php echo $quote->get('id'); ?>-short" style="display: none">
+								<div class="quote-short" id="<?php echo $quote->get('id'); ?>-short">
 									<blockquote cite="<?php echo $this->escape(stripslashes($quote->get('fullname'))); ?>">
 										<p>
 											<?php
@@ -100,7 +100,7 @@ $base = rtrim(Request::base(true), '/');
 										</p>
 									</blockquote>
 								</div>
-								<div class="quote-long" id="<?php echo $quote->id; ?>-long">
+								<div class="quote-long hide" id="<?php echo $quote->id; ?>-long">
 									<blockquote cite="<?php echo $this->escape(stripslashes($quote->get('fullname'))); ?>">
 										<?php echo stripslashes($quote->get('quote')); ?>
 									</blockquote>

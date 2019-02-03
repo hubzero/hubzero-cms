@@ -36,11 +36,21 @@ defined('_HZEXEC_') or die;
 
 if ($feed != false)
 {
+	if ($rssrtl)
+	{
+		$this->css('
+			.feed-rtl {
+				direction: rtl;
+				text-align: right !important;
+			}
+		');
+	}
+
 	//image handling
 	$iUrl   = isset($feed->image->url)   ? $feed->image->url   : null;
 	$iTitle = isset($feed->image->title) ? $feed->image->title : null;
 	?>
-	<div style="direction: <?php echo $rssrtl ? 'rtl' :'ltr'; ?>; text-align: <?php echo $rssrtl ? 'right' :'left'; ?> ! important"  class="feed<?php echo $moduleclass_sfx; ?>">
+	<div class="feed<?php echo $moduleclass_sfx; ?> feed-<?php echo $rssrtl ? 'rtl' :'ltr'; ?>">
 	<?php
 	// feed description
 	if (!is_null($feed->title) && $params->get('rsstitle', 1)) {

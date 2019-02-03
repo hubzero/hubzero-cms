@@ -36,7 +36,7 @@ use Components\Members\Models\Member;
 
 require_once __DIR__ . DS . 'author' . DS . 'role.php';
 require_once __DIR__ . DS . 'author' . DS . 'role' . DS . 'type.php';
-require_once(dirname(dirname(__DIR__)) . DS . 'com_members' . DS . 'models' . DS . 'member.php');
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Resource license model
@@ -153,7 +153,7 @@ class Author extends Relational
 	 */
 	public function populateFromProfile()
 	{
-		$profile = Member::one($this->profile->get('id'));
+		$profile = Member::oneOrNew($this->profile->get('id'));
 
 		if (!$profile->get('id'))
 		{

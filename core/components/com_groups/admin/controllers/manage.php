@@ -672,19 +672,8 @@ class Manage extends AdminController
 		// instantiate new gitlab client
 		$client = new Gitlab($gitlabUrl, $gitlabKey);
 
-		// get list of groups
-		$groups = $client->groups();
-
-		// attempt to get already existing group
-		$gitLabGroup = null;
-		foreach ($groups as $g)
-		{
-			if ($groupName == $g['name'])
-			{
-				$gitLabGroup = $g;
-				break;
-			}
-		}
+		// Search for group in Gitlab
+		$gitLabGroup = $client->groups($groupName);
 
 		// create group if doesnt exist
 		if ($gitLabGroup == null)
@@ -694,20 +683,24 @@ class Manage extends AdminController
 				'path' => strtolower($groupName)
 			));
 		}
-
-		//get groups projects
-		$projects = $client->projects();
-
-		// attempt to get already existing project
-		$gitLabProject = null;
-		foreach ($projects as $p)
-		{
-			if ($projectName == $p['name'] && $p['namespace']['id'] == $gitLabGroup['id'])
-			{
-				$gitLabProject = $p;
-				break;
-			}
+		elseif (count($gitLabGroup) > 1)
+		{  // If search returns more than one match, return with error.
+			Notify::error(Lang::txt('COM_GROUPS_GITLAB_GET_GROUPS_MORE_THAN_ONE' . $groupName));
+			return;
 		}
+		elseif (count($gitLabGroup) == 1)
+		{
+			// Grab first element of array
+			$gitLabGroup = $gitLabGroup[0];
+		}
+		else
+		{
+			Notify::error(Lang::txt('COM_GROUPS_GITLAB_GET_GROUPS_UNKNOWN_ERROR'));
+			return;
+		}
+
+		//Search for project in Gitlab
+		$gitLabProject = $client->projects($projectName);
 
 		// create project if doesnt exist
 		if ($gitLabProject == null)
@@ -721,6 +714,21 @@ class Manage extends AdminController
 				'wiki_enabled'           => true,
 				'snippets_enabled'       => true,
 			));
+		}
+		elseif (count($gitLabProject) > 1)
+		{  // If search returns more than one match return with error.
+			Notify::error(Lang::txt('COM_GROUPS_GITLAB_PROJECTS_MORE_THAN_ONE' . $projectName));
+			return;
+		}
+		elseif (count($gitLabProject) == 1)
+		{
+			// Grab first element of array
+			$gitLabProject = $gitLabProject[0];
+		}
+		else
+		{
+			Notify::error(Lang::txt('COM_GROUPS_GITLAB_GET_PROJECTS_UNKNOWN_ERROR'));
+			return;
 		}
 
 		// path to group folder

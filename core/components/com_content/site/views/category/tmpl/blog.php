@@ -1,15 +1,38 @@
 <?php
 /**
- * @package		Joomla.Site
- * @subpackage	com_content
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // no direct access
 defined('_HZEXEC_') or die();
 
-Html::addIncludePath(JPATH_COMPONENT.'/helpers');
+Html::addIncludePath(PATH_COMPONENT . '/helpers');
 
 ?>
 <?php if ($this->params->get('show_page_heading') or $this->params->get('show_category_title', 1) or $this->params->get('page_subheading')) : ?>
@@ -32,7 +55,7 @@ Html::addIncludePath(JPATH_COMPONENT.'/helpers');
 <?php endif; ?>
 
 <section class="main section">
-	<div class="blog<?php echo $this->pageclass_sfx;?>">
+	<div class="blog<?php echo $this->pageclass_sfx; ?>">
 
 		<?php if ($this->params->get('show_description', 1) || $this->params->def('show_description_image', 1)) : ?>
 			<div class="category-desc">
@@ -52,47 +75,47 @@ Html::addIncludePath(JPATH_COMPONENT.'/helpers');
 			<?php endif; ?>
 		<?php endif; ?>
 
-		<?php $leadingcount=0 ; ?>
+		<?php $leadingcount = 0; ?>
 		<?php if (!empty($this->lead_items)) : ?>
 			<div class="items-leading">
 				<?php foreach ($this->lead_items as &$item) : ?>
 					<div class="leading-<?php echo $leadingcount; ?><?php echo $item->state == 0 ? ' system-unpublished' : null; ?>">
 						<?php
-							$this->item = &$item;
-							echo $this->loadTemplate('item');
+						$this->item = &$item;
+						echo $this->loadTemplate('item');
 						?>
 					</div>
 					<?php
-						$leadingcount++;
+					$leadingcount++;
 					?>
 				<?php endforeach; ?>
 			</div>
 		<?php endif; ?>
 		<?php
-			$introcount=(count($this->intro_items));
-			$counter=0;
+		$introcount = (count($this->intro_items));
+		$counter = 0;
 		?>
 		<?php if (!empty($this->intro_items)) : ?>
 			<?php foreach ($this->intro_items as $key => &$item) : ?>
-			<?php
-				$key= ($key-$leadingcount)+1;
-				$rowcount=( ((int)$key-1) %	(int) $this->columns) +1;
-				$row = $counter / $this->columns ;
-
-				if ($rowcount==1) : ?>
-			<div class="items-row cols-<?php echo (int) $this->columns;?> <?php echo 'row-'.$row ; ?>">
-			<?php endif; ?>
-			<div class="item column-<?php echo $rowcount;?><?php echo $item->state == 0 ? ' system-unpublished' : null; ?>">
 				<?php
-					$this->item = &$item;
-					echo $this->loadTemplate('item');
-				?>
-			</div>
-			<?php $counter++; ?>
-			<?php if (($rowcount == $this->columns) or ($counter ==$introcount)): ?>
-					<span class="row-separator"></span>
+				$key = ($key-$leadingcount)+1;
+				$rowcount = (((int)$key-1) % (int) $this->columns) +1;
+				$row = $counter / $this->columns;
+
+				if ($rowcount == 1) : ?>
+					<div class="items-row cols-<?php echo (int) $this->columns; ?> <?php echo 'row-' . $row; ?>">
+				<?php endif; ?>
+				<div class="item column-<?php echo $rowcount;?><?php echo $item->state == 0 ? ' system-unpublished' : null; ?>">
+					<?php
+						$this->item = &$item;
+						echo $this->loadTemplate('item');
+					?>
 				</div>
-			<?php endif; ?>
+				<?php $counter++; ?>
+				<?php if (($rowcount == $this->columns) or ($counter == $introcount)): ?>
+						<span class="row-separator"></span>
+					</div>
+				<?php endif; ?>
 			<?php endforeach; ?>
 		<?php endif; ?>
 
@@ -100,7 +123,7 @@ Html::addIncludePath(JPATH_COMPONENT.'/helpers');
 			<?php echo $this->loadTemplate('links'); ?>
 		<?php endif; ?>
 
-		<?php if (!empty($this->children[$this->category->id])&& $this->maxLevel != 0) : ?>
+		<?php if (!empty($this->children[$this->category->id]) && $this->maxLevel != 0) : ?>
 			<div class="cat-children">
 				<?php if ($this->params->get('show_category_heading_title_text', 1) == 1) : ?>
 					<h3>
@@ -111,16 +134,15 @@ Html::addIncludePath(JPATH_COMPONENT.'/helpers');
 			</div>
 		<?php endif; ?>
 
-		<?php if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
+		<?php if (($this->params->def('show_pagination', 1) == 1 || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
 			<div class="pagination">
-				<?php  if ($this->params->def('show_pagination_results', 1)) : ?>
+				<?php /*if ($this->params->def('show_pagination_results', 1)) : ?>
 					<p class="counter">
 						<?php echo $this->pagination->getPagesCounter(); ?>
 					</p>
-				<?php endif; ?>
-				<?php echo $this->pagination->getPagesLinks(); ?>
+				<?php endif;*/ ?>
+				<?php echo $this->pagination->render(); //getPagesLinks(); ?>
 			</div>
 		<?php endif; ?>
-
 	</div>
 </section>

@@ -179,7 +179,7 @@ Toolbar::help('pages');
 							<?php } ?>
 						<?php } ?>
 					</td>
-					<td class="order" style="whitespace:nowrap">
+					<td class="order">
 						<?php echo $page->get('ordering'); ?>
 						<span><?php echo $pageNav->orderUpIcon($i, isset($rows[$i - 1]), 'orderup', 'COM_COURSES_MOVE_UP', true); ?></span>
 						<span><?php echo $pageNav->orderDownIcon($i, $n, isset($rows[$i + 1]), 'orderdown', 'COM_COURSES_MOVE_DOWN', true); ?></span>

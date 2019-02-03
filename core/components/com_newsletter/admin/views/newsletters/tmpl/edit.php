@@ -144,7 +144,7 @@ function submitbutton(pressbutton)
 							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE_NONE'); ?>
 						</option>
 						<?php foreach ($this->templates as $t) : ?>
-							<?php echo $sel = ($t->id == $this->newsletter->template_id) ? 'selected="selected"' : '' ; ?>
+							<?php echo $sel = ($t->id == $this->newsletter->template_id) ? 'selected="selected"' : ''; ?>
 							<option <?php echo $sel; ?> value="<?php echo $t->id; ?>">
 								<?php echo $this->escape($t->name); ?>
 							</option>
@@ -328,13 +328,13 @@ function submitbutton(pressbutton)
 				<fieldset class="adminform">
 					<legend>
 						<?php if ($this->newsletter->autogen == 0): ?>
-						<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_PRIMARY_STORIES'); ?>
-						<a class="fltrt" style="padding-right:15px" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid='.$this->newsletter->id.'&task=add&type=primary'); ?>">
-							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_PRIMARY_STORIES_ADD'); ?>
-						</a>
+							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_PRIMARY_STORIES'); ?>
+							<a class="fltrt add-story" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid='.$this->newsletter->id.'&task=add&type=primary'); ?>">
+								<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_PRIMARY_STORIES_ADD'); ?>
+							</a>
 						<?php else: ?>
 							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_AUTOGEN_STORIES'); ?>
-							<a class="fltrt" style="padding-right:15px" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=add&type=autogen'); ?>">
+							<a class="fltrt add-story" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=add&type=autogen'); ?>">
 								<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_AUTOGEN_STORIES_ADD'); ?>
 							</a>
 						<?php endif; ?>
@@ -363,7 +363,7 @@ function submitbutton(pressbutton)
 										<tr>
 											<td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER'); ?>:</td>
 											<td>
-												<input type="text" readonly="readonly" value="<?php echo $primary->order; ?>" style="width:30px;text-align:center;" />
+												<input type="text" readonly="readonly" value="<?php echo $primary->order; ?>" class="align-center" size="3" />
 
 												<?php if ($primary->order > 1) : ?>
 													<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=reorder&direction=up&type=primary&sid=' . $primary->id); ?>">
@@ -400,7 +400,7 @@ function submitbutton(pressbutton)
 					<fieldset class="adminform">
 						<legend>
 							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SECONDARY_STORIES'); ?>
-							<a class="fltrt" style="padding-right:15px" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid='.$this->newsletter->id.'&task=add&type=secondary'); ?>">
+							<a class="fltrt add-story" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid='.$this->newsletter->id.'&task=add&type=secondary'); ?>">
 								<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SECONDARY_STORIES_ADD'); ?>
 							</a>
 						</legend>
@@ -428,7 +428,7 @@ function submitbutton(pressbutton)
 											<tr>
 												<td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER'); ?>:</td>
 												<td>
-													<input type="text" readonly="readonly" value="<?php echo $secondary->order; ?>" style="width:30px;text-align:center;" />
+													<input type="text" readonly="readonly" value="<?php echo $secondary->order; ?>" class="align-center" size="3" />
 													<?php if ($secondary->order > 1) : ?>
 														<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid='.$this->newsletter->id.'&task=reorder&direction=up&type=secondary&sid='.$secondary->id); ?>">
 															<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_UP'); ?>

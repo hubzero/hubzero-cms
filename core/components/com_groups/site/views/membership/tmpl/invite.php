@@ -62,12 +62,12 @@ $this->css();
 			<div class="explaination">
 				<h3><?php echo Lang::txt('COM_GROUPS_INVITE_SIDEBAR_HELP_TITLE'); ?></h3>
 				<p><?php echo Lang::txt('COM_GROUPS_INVITE_SIDEBAR_HELP_DESC'); ?></p>
-				<p><img src="<?php echo Request::base(true); ?>/core/components/com_groups/site/assets/img/invite_example.jpg" alt="Example Auto-Completer" width="100%" style="border:3px solid #aaa;" />
+				<p><img class="invite-example" src="<?php echo Request::base(true); ?>/core/components/com_groups/site/assets/img/invite_example.jpg" alt="Example Auto-Completer" width="100%" />
 			</div>
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_GROUPS_INVITE_SECTION_TITLE'); ?></legend>
 
-		 		<p><?php echo Lang::txt('COM_GROUPS_INVITE_SECTION_DESC',$this->group->get('description')); ?></p>
+		 		<p><?php echo Lang::txt('COM_GROUPS_INVITE_SECTION_DESC', $this->group->get('description')); ?></p>
 
 				<label>
 					<?php echo Lang::txt('COM_GROUPS_INVITE_LOGINS'); ?> <span class="required"><?php echo Lang::txt('COM_GROUPS_REQUIRED'); ?></span>

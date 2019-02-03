@@ -62,10 +62,10 @@ class Helper extends Module
 							R.rating, R.times_rated, R.alias, R.ranking, rt.type AS typetitle, R.params ";
 		if ($this->sort == 'usage')
 		{
-			$query .= ", (SELECT rs.users FROM #__resource_stats AS rs WHERE rs.resid=R.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1) AS users ";
+			$query .= ", (SELECT rs.users FROM `#__resource_stats` AS rs WHERE rs.resid=R.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1) AS users ";
 		}
-		$query .= "FROM #__author_assoc AS AA, #__resource_types AS rt, #__resources AS R ";
-		//$query .= "LEFT JOIN #__resource_types AS t ON R.logical_type=t.id ";
+		$query .= "FROM `#__author_assoc` AS AA, `#__resource_types` AS rt, `#__resources` AS R ";
+		//$query .= "LEFT JOIN `#__resource_types` AS t ON R.logical_type=t.id ";
 		$query .= "WHERE AA.authorid = ". User::get('id') ." ";
 		$query .= "AND R.id = AA.subid ";
 		$query .= "AND AA.subtable = 'resources' ";
@@ -97,4 +97,3 @@ class Helper extends Module
 		require $this->getLayoutPath();
 	}
 }
-

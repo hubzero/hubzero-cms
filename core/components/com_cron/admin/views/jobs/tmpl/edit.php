@@ -48,6 +48,13 @@ Toolbar::spacer();
 Toolbar::help('job');
 
 Html::behavior('calendar');
+
+$this->css('.none {
+	display: none;
+}
+.block {
+	display: block;
+}');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -300,7 +307,7 @@ jQuery(document).ready(function($){
 							$out = '<div class="input-wrap"><p><i>' . Lang::txt('COM_CRON_NO_PARAMETERS_FOUND') . '</i></p></div>';
 						}
 						?>
-						<fieldset class="adminform paramlist eventparams" style="display: <?php echo $style; ?>;" id="params-<?php echo $plugin->plugin . '--' . $event['name']; ?>">
+						<fieldset class="adminform paramlist eventparams <?php echo $style; ?>" id="params-<?php echo $plugin->plugin . '--' . $event['name']; ?>">
 							<legend><span><?php echo Lang::txt('COM_CRON_FIELDSET_PARAMETERS'); ?></span></legend>
 							<?php echo $out; ?>
 						</fieldset>
@@ -353,7 +360,7 @@ jQuery(document).ready(function($){
 							<th>
 								<label for="field-hour-c"><?php echo Lang::txt('COM_CRON_FIELD_HOUR'); ?></label>:
 							</th>
-							<td style="width: 10%">
+							<td>
 								<input type="text" name="fields[hour][c]" id="field-hour-c" value="<?php echo $this->row->get('hour'); ?>" />
 							</td>
 							<td>

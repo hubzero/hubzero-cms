@@ -96,14 +96,14 @@ class License extends Relational
 	 */
 	public function automaticOrdering($data)
 	{
-		if (!isset($data['ordering']))
+		if (!isset($data['ordering']) || !$data['ordering'])
 		{
 			$last = self::all()
 				->select('ordering')
 				->order('ordering', 'desc')
 				->row();
 
-			$data['ordering'] = $last->ordering + 1;
+			$data['ordering'] = intval($last->get('ordering', 0)) + 1;
 		}
 
 		return $data['ordering'];

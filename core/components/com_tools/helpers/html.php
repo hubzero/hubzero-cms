@@ -113,7 +113,8 @@ class Html
 		// Determine which period we should use, based on the number of seconds lapsed.
 		// If the difference divided by the seconds is more than 1, we use that. Eg 1 year / 1 decade = 0.1, so we move on
 		// Go from decades backwards to seconds
-		for ($val = sizeof($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--);
+		for ($val = count($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1);
+$val--) {}
 
 		// Ensure the script has found a match
 		if ($val < 0)
@@ -220,7 +221,7 @@ class Html
 	public static function primaryButton($class, $href, $msg, $xtra='', $title='', $action='')
 	{
 		//$title = str_replace('"', '&quot;', $title);
-		$html  = '<span id="test-document"><a class="'.$class.'" style="padding:0.1em 1em 0 1em;"  href="'.$href.'" title="'.htmlentities($title).'" '.$action.'>'.$msg.'</a>';
+		$html  = '<span id="test-document"><a class="'.$class.'" href="'.$href.'" title="'.htmlentities($title).'" '.$action.'>'.$msg.'</a>';
 		$html .= $xtra;
 		$html .= '</span>'."\n";
 		return $html;
@@ -313,10 +314,17 @@ class Html
 	{
 		switch ($statusNum)
 		{
-			case 7:  $statusClass = '_closed';    break;
-			case 8:  $statusClass = '_abandoned'; break;
-			case 9:  $statusClass = '_abandoned'; break;
-			default: $statusClass = '';
+			case 7:
+				$statusClass = '_closed';
+				break;
+			case 8:
+				$statusClass = '_abandoned';
+				break;
+			case 9:
+				$statusClass = '_abandoned';
+				break;
+			default:
+				$statusClass = '';
 		}
 
 		return $statusClass;
@@ -333,16 +341,36 @@ class Html
 	{
 		switch ($statusNum)
 		{
-			case 1: $statusName = Lang::txt('COM_TOOLS_REGISTERED'); break;
-			case 2: $statusName = Lang::txt('COM_TOOLS_CREATED');    break;
-			case 3: $statusName = Lang::txt('COM_TOOLS_UPLOADED');   break;
-			case 4: $statusName = Lang::txt('COM_TOOLS_INSTALLED');  break;
-			case 5: $statusName = Lang::txt('COM_TOOLS_UPDATED');    break;
-			case 6: $statusName = Lang::txt('COM_TOOLS_APPROVED');   break;
-			case 7: $statusName = Lang::txt('COM_TOOLS_PUBLISHED');  break;
-			case 8: $statusName = Lang::txt('COM_TOOLS_RETIRED');    break;
-			case 9: $statusName = Lang::txt('COM_TOOLS_ABANDONED');  break;
-			default: $statusName = Lang::txt('COM_TOOLS_UNPUBLISHED'); break;
+			case 1:
+				$statusName = Lang::txt('COM_TOOLS_REGISTERED');
+				break;
+			case 2:
+				$statusName = Lang::txt('COM_TOOLS_CREATED');
+				break;
+			case 3:
+				$statusName = Lang::txt('COM_TOOLS_UPLOADED');
+				break;
+			case 4:
+				$statusName = Lang::txt('COM_TOOLS_INSTALLED');
+				break;
+			case 5:
+				$statusName = Lang::txt('COM_TOOLS_UPDATED');
+				break;
+			case 6:
+				$statusName = Lang::txt('COM_TOOLS_APPROVED');
+				break;
+			case 7:
+				$statusName = Lang::txt('COM_TOOLS_PUBLISHED');
+				break;
+			case 8:
+				$statusName = Lang::txt('COM_TOOLS_RETIRED');
+				break;
+			case 9:
+				$statusName = Lang::txt('COM_TOOLS_ABANDONED');
+				break;
+			default:
+				$statusName = Lang::txt('COM_TOOLS_UNPUBLISHED');
+				break;
 		}
 
 		return $statusName;
@@ -359,15 +387,33 @@ class Html
 	{
 		switch (strtolower($statusName))
 		{
-			case 'registered': $statusNum = 1; break;
-			case 'created':    $statusNum = 2; break;
-			case 'uploaded':   $statusNum = 3; break;
-			case 'installed':  $statusNum = 4; break;
-			case 'updated':    $statusNum = 5; break;
-			case 'approved':   $statusNum = 6; break;
-			case 'published':  $statusNum = 7; break;
-			case 'retired':    $statusNum = 8; break;
-			case 'abandoned':  $statusNum = 9; break;
+			case 'registered':
+				$statusNum = 1;
+				break;
+			case 'created':
+				$statusNum = 2;
+				break;
+			case 'uploaded':
+				$statusNum = 3;
+				break;
+			case 'installed':
+				$statusNum = 4;
+				break;
+			case 'updated':
+				$statusNum = 5;
+				break;
+			case 'approved':
+				$statusNum = 6;
+				break;
+			case 'published':
+				$statusNum = 7;
+				break;
+			case 'retired':
+				$statusNum = 8;
+				break;
+			case 'abandoned':
+				$statusNum = 9;
+				break;
 		}
 		return $statusNum;
 	}
@@ -383,12 +429,24 @@ class Html
 	{
 		switch ($int)
 		{
-			case 1:  $priority = 'critical'; break;
-			case 2:  $priority = 'high';     break;
-			case 3:  $priority = 'normal';   break;
-			case 4:  $priority = 'low';      break;
-			case 5:  $priority = 'lowest';   break;
-			default: $priority = 'normal';   break;
+			case 1:
+				$priority = 'critical';
+				break;
+			case 2:
+				$priority = 'high';
+				break;
+			case 3:
+				$priority = 'normal';
+				break;
+			case 4:
+				$priority = 'low';
+				break;
+			case 5:
+				$priority = 'lowest';
+				break;
+			default:
+				$priority = 'normal';
+				break;
 		}
 		return $priority;
 	}
@@ -465,7 +523,7 @@ class Html
 		switch ($access)
 		{
 			case '@GROUP':
-				if (count($groups)>0)
+				if (count($groups) > 0)
 				{
 					$toolaccess = Lang::txt('COM_TOOLS_RESTRICTED') . ' ' . Lang::txt('COM_TOOLS_TO') . ' ' . Lang::txt('COM_TOOLS_GROUP_OR_GROUPS') . ' ';
 					foreach ($groups as $group)
@@ -479,10 +537,18 @@ class Html
 				}
 			break;
 
-			case '@US': $toolaccess = Lang::txt('COM_TOOLS_TOOLACCESS_US'); break;
-			case '@PU': $toolaccess = Lang::txt('COM_TOOLS_TOOLACCESS_PU'); break;
-			case '@D1': $toolaccess = Lang::txt('COM_TOOLS_TOOLACCESS_D1'); break;
-			default:    $toolaccess = Lang::txt('COM_TOOLS_ACCESS_OPEN');   break;
+			case '@US':
+				$toolaccess = Lang::txt('COM_TOOLS_TOOLACCESS_US');
+				break;
+			case '@PU':
+				$toolaccess = Lang::txt('COM_TOOLS_TOOLACCESS_PU');
+				break;
+			case '@D1':
+				$toolaccess = Lang::txt('COM_TOOLS_TOOLACCESS_D1');
+				break;
+			default:
+				$toolaccess = Lang::txt('COM_TOOLS_ACCESS_OPEN');
+				break;
 		}
 
 		return $toolaccess;
@@ -501,9 +567,15 @@ class Html
 	{
 		switch ($access)
 		{
-			case '@OPEN': $codeaccess = Lang::txt('COM_TOOLS_OPEN_SOURCE');   break;
-			case '@DEV':  $codeaccess = Lang::txt('COM_TOOLS_CLOSED_SOURCE'); break;
-			default:      $codeaccess = Lang::txt('COM_TOOLS_UNSPECIFIED');   break;
+			case '@OPEN':
+				$codeaccess = Lang::txt('COM_TOOLS_OPEN_SOURCE');
+				break;
+			case '@DEV':
+				$codeaccess = Lang::txt('COM_TOOLS_CLOSED_SOURCE');
+				break;
+			default:
+				$codeaccess = Lang::txt('COM_TOOLS_UNSPECIFIED');
+				break;
 		}
 
 		return $codeaccess;
@@ -522,9 +594,15 @@ class Html
 	{
 		switch ($access)
 		{
-			case '@OPEN': $wikiaccess = Lang::txt('COM_TOOLS_ACCESS_OPEN');       break;
-			case '@DEV':  $wikiaccess = Lang::txt('COM_TOOLS_ACCESS_RESTRICTED'); break;
-			default:      $wikiaccess = Lang::txt('COM_TOOLS_UNSPECIFIED');       break;
+			case '@OPEN':
+				$wikiaccess = Lang::txt('COM_TOOLS_ACCESS_OPEN');
+				break;
+			case '@DEV':
+				$wikiaccess = Lang::txt('COM_TOOLS_ACCESS_RESTRICTED');
+				break;
+			default:
+				$wikiaccess = Lang::txt('COM_TOOLS_UNSPECIFIED');
+				break;
 		}
 
 		return $wikiaccess;
@@ -540,8 +618,12 @@ class Html
 	 */
 	public static function writeApproval($active_stage)
 	{
-		//$stages = array(Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_VERSION'),Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_LICENSE'), Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_APPEND_NOTES'), Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_APPROVE'));
-		$stages = array(Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_VERSION'),Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_LICENSE'), Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_APPROVE'));
+		$stages = array(
+			Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_VERSION'),
+			Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_LICENSE'),
+			//Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_APPEND_NOTES'),
+			Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_APPROVE')
+		);
 		$key = array_keys($stages, $active_stage);
 
 		$html = "\t\t".'<div class="clear"></div>'."\n";
@@ -552,11 +634,12 @@ class Html
 		{
 			$html .= "\t\t".' <li';
 
-			if (strtolower($active_stage) == strtolower($stages[$i])) {
+			if (strtolower($active_stage) == strtolower($stages[$i]))
+			{
 				$html .= ' class="active"';
-
 			}
-			else if (count($key) == 0 or $i > $key[0]) {
+			else if (count($key) == 0 or $i > $key[0])
+			{
 				$html .= ' class="future"';
 			}
 
@@ -687,28 +770,6 @@ class Html
 	}
 
 	/**
-	 * Short description for 'parseTag'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $text Parameter description (if any) ...
-	 * @param      string $tag Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	/*public static function parseTag($text, $tag)
-	{
-		preg_match("#<nb:".$tag.">(.*?)</nb:".$tag.">#s", $text, $matches);
-		if (count($matches) > 0) {
-			$match = $matches[0];
-			$match = str_replace('<nb:'.$tag.'>','',$match);
-			$match = str_replace('</nb:'.$tag.'>','',$match);
-		} else {
-			$match = '';
-		}
-		return $match;
-	}*/
-
-	/**
 	 * Short description for 'txt_unpee'
 	 *
 	 * Long description (if any) ...
@@ -726,23 +787,6 @@ class Html
 		$pee = trim($pee);
 		return $pee;
 	}
-
-	/**
-	 * Short description for 'niceidformat'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      integer $someid Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
-	 */
-	/*public static function niceidformat($someid)
-	{
-		while (strlen($someid) < 5)
-		{
-			$someid = 0 . "$someid";
-		}
-		return $someid;
-	}*/
 
 	/**
 	 * Get the file attributes (type, size) of a file
@@ -794,7 +838,8 @@ class Html
 				case 'HTML':
 				case 'PHP':
 				case 'ASF':
-				case 'SWF': $fs = ''; break;
+				case 'SWF': $fs = '';
+break;
 				default:
 					$fs = \Hubzero\Utility\Number::formatBytes($fs);
 				break;

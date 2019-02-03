@@ -15,6 +15,23 @@
 	.icon-status:before {
 		content: "\f056";
 	}
+	.steps-nav {
+		float:left;
+		width:70%;
+		padding:1em 0 1em 0;
+	}
+	.steps-nav:after {
+		content: '';
+		display: table;
+		line-height: 0;
+		clear: both;
+	}
+	.steps-nav .step-prev {
+		float:left;
+	}
+	.steps-nav .step-next {
+		float:right;
+	}
 /* Steps */
 	.steps-section {
 		margin-bottom: 0;

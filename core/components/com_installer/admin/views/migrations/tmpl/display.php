@@ -33,13 +33,17 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+$canDo = Components\Installer\Admin\Helpers\Installer::getActions();
+
 Toolbar::title(Lang::txt('COM_INSTALLER_TITLE_MIGRATIONS'));
 
-Toolbar::custom('runup', 'up', '', 'COM_INSTALLER_TOOLBAR_MIGRATE_UP');
-Toolbar::custom('rundown', 'down', '', 'COM_INSTALLER_TOOLBAR_MIGRATE_DOWN');
-Toolbar::spacer();
-Toolbar::custom('migrate', 'purge', '', 'Run pending migrations', false);
-
+if ($canDo->get('core.edit.state'))
+{
+	Toolbar::custom('runup', 'up', '', 'COM_INSTALLER_TOOLBAR_MIGRATE_UP');
+	Toolbar::custom('rundown', 'down', '', 'COM_INSTALLER_TOOLBAR_MIGRATE_DOWN');
+	Toolbar::spacer();
+	Toolbar::custom('migrate', 'purge', '', 'COM_INSTALLER_TOOLBAR_MIGRATE_PENDING', false);
+}
 Html::behavior('tooltip');
 
 $this->css();
@@ -48,22 +52,24 @@ $this->css();
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="updateRepositoryForm">
 	<?php if (!empty($this->breadcrumb)): ?>
-	<a href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&folder='); ?>" class="breadcrumb">Filter: <?php echo $this->breadcrumb; ?></a>
+		<fieldset id="filter-bar">
+			<a href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&folder='); ?>" class="breadcrumb"><?php echo Lang::txt('JGLOBAL_FILTER_TYPE_LABEL'); ?>: <?php echo $this->breadcrumb; ?></a>
+		</fieldset>
 	<?php endif; ?>
 	<table id="tktlist" class="adminlist">
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
-				<th scope="col">Extension</th>
-				<th scope="col priority-3">Date</th>
-				<th scope="col">Filename</th>
-				<th scope="col">Status</th>
-				<th scope="col priority-4">Description</th>
+				<th scope="col"><?php echo Lang::txt('COM_INSTALLER_HEADING_EXTENSION'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('JDATE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_INSTALLER_HEADING_FILENAME'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_INSTALLER_HEADING_STATUS'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_INSTALLER_HEADING_DESCRIPTION'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="4">
+				<td colspan="6">
 					<?php
 					echo $this->pagination(
 						$this->total,
@@ -100,6 +106,8 @@ $this->css();
 				{
 					$desc = '<span class="warning">' . Lang::txt('COM_INSTALLER_MSG_MIGRATIONS_FILE_NOT_FOUND') . '</span>';
 				}
+
+				$cls = ($row['core'] ? 'dir-core' : 'dir-app');
 				?>
 				<tr>
 					<td>
@@ -107,14 +115,11 @@ $this->css();
 					</td>
 					<td>
 						<?php echo $component; ?><br />
-						<a href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&folder='.urlencode(str_replace('/migrations', '', $row['scope']))); ?>" class="dir-locale <?php echo ($row['core'] ? 'dir-core' : 'dir-app'); ?>"><?php echo str_replace('/migrations', '', $row['scope']); ?></a>
+						<a href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&folder='.urlencode(str_replace('/migrations', '', $row['scope']))); ?>" class="dir-locale <?php echo $cls; ?>"><?php echo str_replace('/migrations', '', $row['scope']); ?></a>
 					</td>
 					<td class="priority-3"><?php echo $date; ?></td>
 					<td>
-						<?php $migrationName = explode('/', $row['entry']);
-									$migrationName = end($migrationName);
-									echo $migrationName;
-						?>
+						<?php echo basename($row['entry']); ?>
 					</td>
 					<td class="status">
 						<?php if ($row['status'] == 'pending') : ?>

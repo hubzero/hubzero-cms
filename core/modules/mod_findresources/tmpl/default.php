@@ -47,9 +47,9 @@ defined('_HZEXEC_') or die();
 <?php if (count($this->tags) > 0) { ?>
 	<ol class="tags">
 		<li><?php echo Lang::txt('MOD_FINDRESOURCES_POPULAR_TAGS'); ?></li>
-	<?php foreach ($this->tags as $tag) { ?>
-		<li><a href="<?php echo Route::url('index.php?option=com_tags&tag=' . $tag->tag); ?>"><?php echo $this->escape(stripslashes($tag->raw_tag)); ?></a></li>
-	<?php } ?>
+		<?php foreach ($this->tags as $tag) { ?>
+			<li><a href="<?php echo Route::url('index.php?option=com_tags&tag=' . $tag->tag); ?>"><?php echo $this->escape(stripslashes($tag->raw_tag)); ?></a></li>
+		<?php } ?>
 		<li><a href="<?php echo Route::url('index.php?option=com_tags'); ?>" class="showmore"><?php echo Lang::txt('MOD_FINDRESOURCES_MORE_TAGS'); ?></a></li>
 	</ol>
 <?php } else { ?>
@@ -58,28 +58,26 @@ defined('_HZEXEC_') or die();
 
 <?php if (count($this->categories) > 0) { ?>
 	<p>
-<?php
-	$i = 0;
-	foreach ($this->categories as $category)
-	{
-		$i++;
-		$normalized = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($category->type));
+		<?php
+		$i = 0;
+		foreach ($this->categories as $category)
+		{
+			$i++;
+			$normalized = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($category->type));
 
-		if (substr($normalized, -3) == 'ies') {
-			$cls = $normalized;
-		} else {
-			$cls = substr($normalized, 0, -1);
+			if (substr($normalized, -3) == 'ies') {
+				$cls = $normalized;
+			} else {
+				$cls = substr($normalized, 0, -1);
+			}
+			?>
+			<a href="<?php echo Route::url('index.php?option=com_resources&type=' . $normalized); ?>"><?php echo $this->escape(stripslashes($category->type)); ?></a><?php echo ($i == count($this->categories)) ? '...' : ', '; ?>
+			<?php
 		}
-?>
-		<a href="<?php echo Route::url('index.php?option=com_resources&type=' . $normalized); ?>"><?php echo $this->escape(stripslashes($category->type)); ?></a><?php echo ($i == count($this->categories)) ? '...' : ', '; ?>
-<?php
-	}
-?>
+		?>
 		<a href="<?php echo Route::url('index.php?option=com_resources'); ?>" class="showmore"><?php echo Lang::txt('MOD_FINDRESOURCES_ALL_CATEGORIES'); ?></a>
 	</p>
-<?php
-}
-?>
+<?php } ?>
 	<div class="uploadcontent">
 		<h4><?php echo Lang::txt('MOD_FINDRESOURCES_UPLOAD_CONTENT'); ?> <span><a href="<?php echo Route::url('index.php?option=com_resources&task=new'); ?>" class="contributelink"><?php echo Lang::txt('MOD_FINDRESOURCES_GET_STARTED'); ?></a></span></h4>
 	</div>

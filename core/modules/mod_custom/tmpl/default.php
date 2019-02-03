@@ -33,7 +33,16 @@
 
 // no direct access
 defined('_HZEXEC_') or die;
+
+if ($params->get('backgroundimage'))
+{
+	$this->css('
+	.custom' . $moduleclass_sfx . ' {
+		background-image: url(' . $params->get('backgroundimage') . ');
+	}
+	');
+}
 ?>
-<div class="custom<?php echo $moduleclass_sfx ?>" <?php if ($params->get('backgroundimage')): ?> style="background-image:url(<?php echo $params->get('backgroundimage');?>)"<?php endif;?> >
+<div class="custom<?php echo $moduleclass_sfx ?>">
 	<?php echo $module->content; ?>
 </div>

@@ -79,7 +79,7 @@ function submitbutton(pressbutton)
 				</div>
 				<div class="input-wrap">
 					<label for="field-email"><?php echo Lang::txt('COM_SUPPORT_TICKET_FIELD_EMAIL'); ?>:</label>
-					<input type="text" name="ticket[email]" id="field-email" value="<?php echo $this->escape($this->row->get('email')); ?>" size="50" />
+					<input type="email" name="ticket[email]" id="field-email" value="<?php echo $this->escape($this->row->get('email')); ?>" size="50" />
 				</div>
 				<div class="input-wrap">
 					<label for="field-report"><?php echo Lang::txt('COM_SUPPORT_TICKET_FIELD_DESCRIPTION'); ?>:</label>
@@ -186,12 +186,12 @@ function submitbutton(pressbutton)
 		</div>
 	</div>
 
-	<input type="hidden" name="ticket[referrer]" value="<?php echo Request::getString('HTTP_REFERER', NULL, 'server'); ?>" />
+	<input type="hidden" name="ticket[referrer]" value="<?php echo Request::getString('HTTP_REFERER', null, 'server'); ?>" />
 	<input type="hidden" name="ticket[os]" value="<?php echo $browser->platform(); ?>" />
 	<input type="hidden" name="osver" value="<?php echo $browser->platformVersion(); ?>" />
 	<input type="hidden" name="ticket[browser]" value="<?php echo $browser->name(); ?>" />
 	<input type="hidden" name="browserver" value="<?php echo $browser->version(); ?>" />
-	<input type="hidden" name="ticket[hostname]" value="<?php echo gethostbyaddr(Request::getString('REMOTE_ADDR','','server')); ?>" />
+	<input type="hidden" name="ticket[hostname]" value="<?php echo gethostbyaddr(Request::getString('REMOTE_ADDR', '', 'server')); ?>" />
 	<input type="hidden" name="ticket[uas]" value="<?php echo Request::getString('HTTP_USER_AGENT', '', 'server'); ?>" />
 	<input type="hidden" name="ticket[open]" value="1" />
 

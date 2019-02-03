@@ -278,19 +278,23 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 
 		$stylesheets = array();
 		$scripts     = array();
-		$document = Document::getHeadData();
-		foreach ($document['styleSheets'] as $strSrc => $strAttr)
+
+		if (!Request::getInt('no_html') && Request::getString('format') != 'raw')
 		{
-			if (strstr($strSrc, $module->module))
+			$document = Document::getHeadData();
+			foreach ($document['styleSheets'] as $strSrc => $strAttr)
 			{
-				$stylesheets[] = $strSrc;
+				if (strstr($strSrc, $module->module))
+				{
+					$stylesheets[] = $strSrc;
+				}
 			}
-		}
-		foreach ($document['scripts'] as $strSrc => $strType)
-		{
-			if (strstr($strSrc, $module->module))
+			foreach ($document['scripts'] as $strSrc => $strType)
 			{
-				$scripts[] = $strSrc;
+				if (strstr($strSrc, $module->module))
+				{
+					$scripts[] = $strSrc;
+				}
 			}
 		}
 

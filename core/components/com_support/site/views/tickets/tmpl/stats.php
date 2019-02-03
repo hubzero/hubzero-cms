@@ -109,18 +109,30 @@ function getMonthName($month)
 	$monthname = '';
 	switch (intval($month))
 	{
-		case 1: $monthname = Lang::txt('January');   break;
-		case 2: $monthname = Lang::txt('February');  break;
-		case 3: $monthname = Lang::txt('March');     break;
-		case 4: $monthname = Lang::txt('April');     break;
-		case 5: $monthname = Lang::txt('May');       break;
-		case 6: $monthname = Lang::txt('June');      break;
-		case 7: $monthname = Lang::txt('July');      break;
-		case 8: $monthname = Lang::txt('August');    break;
-		case 9: $monthname = Lang::txt('September'); break;
-		case 0: $monthname = Lang::txt('October');   break;
-		case 11: $monthname = Lang::txt('November');  break;
-		case 12: $monthname = Lang::txt('December');  break;
+		case 1: $monthname = Lang::txt('January');
+break;
+		case 2: $monthname = Lang::txt('February');
+break;
+		case 3: $monthname = Lang::txt('March');
+break;
+		case 4: $monthname = Lang::txt('April');
+break;
+		case 5: $monthname = Lang::txt('May');
+break;
+		case 6: $monthname = Lang::txt('June');
+break;
+		case 7: $monthname = Lang::txt('July');
+break;
+		case 8: $monthname = Lang::txt('August');
+break;
+		case 9: $monthname = Lang::txt('September');
+break;
+		case 0: $monthname = Lang::txt('October');
+break;
+		case 11: $monthname = Lang::txt('November');
+break;
+		case 12: $monthname = Lang::txt('December');
+break;
 	}
 	return $monthname;
 }
@@ -193,7 +205,7 @@ function getMonthName($month)
 		</div><!-- / .grid -->
 
 		<div class="container">
-			<div id="container" style="min-width: 400px; height: 200px; margin: 0 auto;"></div>
+			<div id="container" class="stats-tickets-chart"></div>
 			<?php
 				$top = 0;
 
@@ -345,7 +357,7 @@ function getMonthName($month)
 		<div class="grid">
 			<div class="col span-half">
 				<h3><?php echo Lang::txt('COM_SUPPORT_TICKETS_BY_SEVERITY'); ?></h3>
-				<div id="severities-container" style="min-width: 270px; height: 270px;">
+				<div id="severities-container" class="stats-pie-chart">
 					<table class="support-stats-resolutions">
 						<thead>
 							<tr>
@@ -425,7 +437,7 @@ function getMonthName($month)
 					var $ = jq, severityPie;
 
 					function labelFormatter(label, series) {
-						return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+						return '<div class="chart-label">' + label + '<br/>' + Math.round(series.percent) + "%</div>";
 					}
 
 					$(document).ready(function() {
@@ -455,7 +467,7 @@ function getMonthName($month)
 			</div><!-- / .col span-half -->
 			<div class="col span-half omega">
 				<h3><?php echo Lang::txt('COM_SUPPORT_TICKETS_BY_RESOLUTION'); ?></h3>
-				<div id="resolutions-container" style="min-width: 270px; height: 270px;">
+				<div id="resolutions-container" class="stats-pie-chart">
 					<table class="support-stats-resolutions">
 						<thead>
 							<tr>
@@ -618,7 +630,7 @@ function getMonthName($month)
 			</p>
 		</div>
 		<div class="entry-content">
-			<div id="user-<?php echo $this->escape($user->username); ?>" style="min-width: 200px; height: 100px;">
+			<div id="user-<?php echo $this->escape($user->username); ?>" class="stats-user-chart">
 				<script type="text/javascript">
 					if (jQuery()) {
 						var $ = jq, chart<?php echo $user->username; ?>;

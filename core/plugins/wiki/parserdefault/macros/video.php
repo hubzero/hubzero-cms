@@ -250,7 +250,7 @@ class VideoMacro extends WikiMacro
 			Document::addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
 			Document::addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
 
-			$html  = '<div class="flowplayer" style="width: ' . $width . 'px; height: ' . $height . 'px;">';
+			$html  = '<div class="flowplayer" data-width="' . $width . '" data-height="' . $height . '">';
 			$html .= '<video id="movie' . rand(0, 1000) . '" width="' . $width . '" height="' . $height . '" preload controls>';
 			switch ($ext)
 			{

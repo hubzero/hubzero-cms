@@ -44,6 +44,8 @@ $downhighest = 0;
 
 $views = array();
 $downloads = array();
+$totalDownloads = $this->totalDownloads;
+$totalViews = $this->totalViews;
 
 $db->setQuery(
 	"SELECT *
@@ -76,6 +78,8 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
      ->js('base64.js')
      ->js('canvas2image.js')
      ->js('jquery.flot.saveAsImage.js');
+
+$heights = array();
 ?>
 <h3 id="plg-usage-header">
 	<?php echo Lang::txt('PLG_PUBLICATIONS_USAGE'); ?>
@@ -88,8 +92,7 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 			<div class="col span3 usage-stat">
 				<h4><?php echo Lang::txt('PLG_PUBLICATIONS_USAGE_VIEWS'); ?></h4>
 				<p class="total">
-					<strong class="usage-value" id="publication-views"><?php echo number_format($current->page_views); ?></strong>
-					<span id="publication-views-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->format('M Y'); ?></time></span></span>
+					<strong class="usage-value" id="publication-views"><?php echo number_format($totalViews); ?></strong>
 				</p>
 			</div>
 			<div class="col span9 omega usage-stat">
@@ -99,8 +102,20 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 						foreach ($results as $result)
 						{
 							$height = ($viewshighest) ? round(($result->page_views / $viewshighest)*100) : 0;
+
+							$nm = 'count' . $height;
+							if (!in_array($nm, $heights))
+							{
+								$this->css('
+									.sparkline .' . $nm . ' {
+										height: ' . $height . '%;
+									}
+								');
+								$heights[] = $nm;
+							}
+
 							$sparkline .= "\t" . '<span class="index">';
-							$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="20' . $result->year . '-' . \Hubzero\Utility\Str::pad($result->month, 2) . ': ' . $result->page_views . '">';
+							$sparkline .= '<span class="count count' . $height . '" title="20' . $result->year . '-' . \Hubzero\Utility\Str::pad($result->month, 2) . ': ' . $result->page_views . '">';
 							$sparkline .= number_format($result->page_views);
 							$sparkline .= '</span> ';
 							$sparkline .= '</span>' . "\n";
@@ -119,8 +134,7 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 			<div class="col span3 usage-stat">
 				<h4><?php echo Lang::txt('PLG_PUBLICATIONS_USAGE_DOWNLOADS'); ?></h4>
 				<p class="total">
-					<strong class="usage-value" id="publication-downloads"><?php echo number_format($current->primary_accesses); ?></strong>
-					<span id="publication-downloads-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->format('M Y'); ?></time></span></span>
+					<strong class="usage-value" id="publication-downloads"><?php echo number_format($totalDownloads); ?></strong>
 				</p>
 			</div>
 			<div class="col span9 omega usage-stat">
@@ -130,8 +144,20 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 						foreach ($results as $result)
 						{
 							$height = ($downhighest) ? round(($result->primary_accesses / $downhighest)*100) : 0;
+
+							$nm = 'count' . $height;
+							if (!in_array($nm, $heights))
+							{
+								$this->css('
+									.sparkline .' . $nm . ' {
+										height: ' . $height . '%;
+									}
+								');
+								$heights[] = $nm;
+							}
+
 							$sparkline .= "\t" . '<span class="index">';
-							$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="20' . $result->year . '-' . \Hubzero\Utility\Str::pad($result->month, 2) . ': ' . $result->primary_accesses . '">';
+							$sparkline .= '<span class="count count' . $height . '" title="20' . $result->year . '-' . \Hubzero\Utility\Str::pad($result->month, 2) . ': ' . $result->primary_accesses . '">';
 							$sparkline .= number_format($result->primary_accesses);
 							$sparkline .= '</span> ';
 							$sparkline .= '</span>' . "\n";
@@ -190,12 +216,6 @@ $this->js('flot/jquery.colorhelpers.min.js', 'system')
 						chart_downloads.unhighlight();
 						chart_downloads.highlight(0, item.dataIndex);
 					}
-
-					$('#publication-views').text(dataset_views[0].data[item.dataIndex][1]);
-					$('#publication-views-date').text(month_short[item.series.data[item.dataIndex][0].getUTCMonth()] + ' ' + yyyy);
-
-					$('#publication-downloads').text(dataset_downloads[0].data[item.dataIndex][1]);
-					$('#publication-downloads-date').text(month_short[item.series.data[item.dataIndex][0].getUTCMonth()] + ' ' + yyyy);
 				};
 
 				var views = $('#chart-views');

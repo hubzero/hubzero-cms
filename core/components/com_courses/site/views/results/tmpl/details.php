@@ -98,15 +98,21 @@ $version = $record['summary']['version'];
 			<?php
 			if (isset($layout[$idx - 1])):
 				$qidx = 0;
-				foreach ($layout[$idx - 1] as $qid=>$group):
-					foreach ($group['answers'] as $aidx=>$ans):
+				foreach ($layout[$idx - 1] as $qid => $group):
+					foreach ($group['answers'] as $aidx => $ans):
+						\Document::addstyleDeclaration('
+							#question-'.$qid.'-marker {
+								top: '.($ans['top'] - 4).'px;
+								left: '.$ans['left'].'px;
+							}
+						');
 						if (!isset($record['detail'][$qid]) || $record['detail'][$qid]['answer_id'] == 0) :
-							echo '<div class="no-answer" style="top: '.($ans['top'] - 4).'px; left: '.$ans['left'].'px">No answer provided</div>';
+							echo '<div class="no-answer" id="question-'.$qid.'-marker">No answer provided</div>';
 							continue 2;
 						elseif ($record['detail'][$qid]['correct_answer_id'] == $ans['id']):
-							echo '<div name="question-'.$qid.'" value="'.$ans['id'].'" class="answer-marker correct" type="radio" style="top: '.($ans['top'] - 4).'px; left: '.$ans['left'].'px">&#10004;</div>';
+							echo '<div name="question-'.$qid.'" id="question-'.$qid.'-marker" value="'.$ans['id'].'" class="answer-marker correct" type="radio">&#10004;</div>';
 						elseif ($record['detail'][$qid]['answer_id'] == $ans['id']):
-							echo '<div name="question-'.$qid.'" value="'.$ans['id'].'" class="answer-marker incorrect" type="radio" style="top: '.($ans['top'] - 4).'px; left: '.$ans['left'].'px">&#10008;</div>';
+							echo '<div name="question-'.$qid.'" id="question-'.$qid.'-marker" value="'.$ans['id'].'" class="answer-marker incorrect" type="radio">&#10008;</div>';
 						endif;
 					endforeach;
 					++$qidx;

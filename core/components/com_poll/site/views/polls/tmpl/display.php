@@ -89,12 +89,18 @@ $this->css();
 								$option->percent = ($poll->voters ? round(100 * $option->hits / $poll->voters, 1) : 0);
 								$option->class   = 'polls_color_' . $i;
 								$i++;
+
+								$this->css('
+									.' . $this->option .' .option' . $option->id . ' {
+										width: ' . $option->percent . '%;
+									}
+								');
 								?>
 								<li>
 									<span class="optn"><?php echo $this->escape(str_replace('&#039;', "'", $option->text)); ?></span>
 									<span class="hits"><?php echo $this->escape($option->percent); ?>%</span>
 									<div class="graph">
-										<strong class="bar <?php echo $option->class; ?>" style="width: <?php echo $this->escape($option->percent); ?>%;"><span><?php echo $this->escape($option->hits); ?>%</span></strong>
+										<strong class="bar <?php echo $option->class; ?> option<?php echo $option->id; ?>"><span><?php echo $this->escape($option->hits); ?>%</span></strong>
 									</div>
 								</li>
 							<?php endforeach; ?>

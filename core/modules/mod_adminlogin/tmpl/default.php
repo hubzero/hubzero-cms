@@ -41,7 +41,7 @@ Html::behavior('keepalive');
 
 <div class="hz_user">
 	<div class="auth">
-		<div class="default" style="display:<?php echo count($authenticators) == 0 ? 'none' : 'block'; ?>;">
+		<div class="default <?php echo count($authenticators) == 0 ? 'none' : 'block'; ?>">
 			<div class="instructions"><?php echo Lang::txt('COM_LOGIN_CHOOSE_METHOD'); ?></div>
 			<div class="options">
 				<?php foreach ($authenticators as $a) : ?>
@@ -59,7 +59,7 @@ Html::behavior('keepalive');
 				</div>
 			<?php endif; ?>
 		</div>
-		<div class="hz" style="display:<?php echo count($authenticators) == 0 ? 'block' : 'none'; ?>;">
+		<div class="hz <?php echo count($authenticators) == 0 ? 'block' : 'none'; ?>">
 			<form action="<?php echo Route::url('index.php', true, true); ?>" method="post" class="login_form">
 				<label id="mod-login-username-lbl" for="mod-login-username">
 					<span><?php echo Lang::txt('JGLOBAL_USERNAME'); ?></span>

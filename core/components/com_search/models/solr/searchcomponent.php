@@ -51,6 +51,13 @@ require_once Component::path('com_search') . '/models/solr/blacklist.php';
 class SearchComponent extends Relational
 {
 	/**
+	 * State constants
+	 */
+
+	const STATE_NOTINDEXED = 0;
+	const STATE_INDEXED = 1;
+	const STATE_TRASHED = 2;
+	/**
 	 * Table namespace
 	 *
 	 * @var  string
@@ -173,19 +180,24 @@ class SearchComponent extends Relational
 	public function getSearchableFields()
 	{
 		$model = $this->getSearchableModel();
-		$modelResults = $model::searchResults(1);
-		$firstResult = $modelResults->first()->searchResult();
-		if (is_array($firstResult))
+		$searchFields = array();
+		if (class_exists($model))
 		{
-			$searchFields = array_keys($firstResult);
-		}
-		elseif (is_object($firstResult))
-		{
-			$searchFields = array_keys(get_object_vars($firstResult));
-		}
-		else
-		{
-			$searchFields = array();
+			$modelResults = $model::searchResults(1);
+			$firstResultModel = $modelResults->first();
+			if (!$firstResultModel)
+			{
+				return $searchFields;
+			}
+			$firstResult = $firstResultModel->searchResult();
+			if (is_array($firstResult))
+			{
+				$searchFields = array_keys($firstResult);
+			}
+			elseif (is_object($firstResult))
+			{
+				$searchFields = array_keys(get_object_vars($firstResult));
+			}
 		}
 		return $searchFields;
 	}
@@ -197,8 +209,12 @@ class SearchComponent extends Relational
 	 */
 	public function getSearchCount()
 	{
+		$total = 0;
 		$model = $this->getSearchableModel();
-		$total = $model::searchTotal();
+		if (class_exists($model))
+		{
+			$total = $model::searchTotal();
+		}
 		return $total;
 	}
 
@@ -247,6 +263,22 @@ class SearchComponent extends Relational
 	{
 		$title = str_replace(' ', '_', $this->title);
 		return $title;
+	}
+
+	/**
+	 * Get search query
+	 *
+	 * @return  string  search query
+	 */
+	public function getSearchQuery($prefix = '')
+	{
+		$query = $this->get('custom', '');
+		if (empty($query))
+		{
+			$query = !empty($prefix) ? $prefix . ':' : '';
+			$query .= $this->getSearchNamespace();
+		}
+		return $query;
 	}
 
 	/**

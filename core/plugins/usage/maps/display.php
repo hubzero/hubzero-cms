@@ -119,8 +119,14 @@ $html = '<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR
 		request.send(null);
 	}
 	</script>
+	<style>
+	#map_canvas {
+		width:'.$xres.'px;
+		height:'.$yres.'px;
+	}
+	</style>
 </head>
 <body onload="initialize()" onunload="GUnload()">
-	<div id="map_canvas" style="width: '.$xres.'px; height: '.$yres.'px"></div>
+	<div id="map_canvas"></div>
 </body>
 </html>';

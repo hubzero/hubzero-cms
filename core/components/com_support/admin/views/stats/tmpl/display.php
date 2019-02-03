@@ -143,7 +143,7 @@ $base = rtrim($base, '/');
 				<span><?php echo Date::of($this->first . '-01-01')->format('M Y'); ?> - <?php echo Date::of($this->filters['year'] . '-' . $this->filters['month'] . '-01')->format('M Y'); ?></span>
 			</legend>
 
-			<div id="container" style="min-width: 400px; height: 200px; margin: 60px 20px 20px 20px;"></div>
+			<div id="container" class="stats-tickets-chart"></div>
 			<?php
 				$top = 0;
 
@@ -281,7 +281,7 @@ $base = rtrim($base, '/');
 		<div class="col span6">
 			<fieldset class="adminform breakdown pies">
 				<legend><span><?php echo Lang::txt('COM_SUPPORT_STATS_FIELDSET_BY_SEVERITY'); ?></span></legend>
-				<div id="severities-container" style="min-width: 300px; height: 300px; margin: 60px 0 20px 0;">
+				<div id="severities-container" class="stats-pie-chart">
 					<table class="support-stats-resolutions">
 						<thead>
 							<tr>
@@ -372,7 +372,7 @@ $base = rtrim($base, '/');
 		<div class="col span6">
 			<fieldset class="adminform breakdown pies">
 				<legend><span><?php echo Lang::txt('COM_SUPPORT_STATS_FIELDSET_BY_RESOLUTION'); ?></span></legend>
-				<div id="resolutions-container" style="min-width: 300px; height: 300px; margin: 60px 0 20px 0;">
+				<div id="resolutions-container" class="stats-pie-chart">
 					<table class="support-stats-resolutions">
 						<thead>
 							<tr>
@@ -518,7 +518,7 @@ $base = rtrim($base, '/');
 				</p>
 			</div>
 			<div class="entry-content">
-				<div id="user-<?php echo $this->escape($user->username); ?>" style="min-width: 200px; height: 100px;">
+				<div id="user-<?php echo $this->escape($user->username); ?>" class="stats-user-chart">
 					<script type="text/javascript">
 						if (jQuery()) {
 							var $ = jq, chart<?php echo $user->username; ?>;

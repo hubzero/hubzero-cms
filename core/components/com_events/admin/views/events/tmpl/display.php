@@ -165,7 +165,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						</a>
 					<?php } ?>
 				</td>
-				<td class="priority-4" style="white-space: nowrap;">
+				<td class="priority-4">
 					<?php echo $times; ?>
 				</td>
 				<td class="priority-5">
@@ -187,7 +187,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						</span>
 					<?php endif; ?>
 				</td>
-				<td style="white-space: nowrap;">
+				<td>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pages&event_id=' . $row->id); ?>">
 						<?php echo Lang::txt('COM_EVENTS_EVENT_NUMBER_OF_PAGES', $pages); ?>
 					</a>
