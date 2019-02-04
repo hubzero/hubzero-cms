@@ -104,7 +104,7 @@ $this->css()
 					</td>
 					<td class="critical">
 						<a href="<?php echo Route::url('index.php?option=com_support&controller=tickets'); ?>" title="<?php echo Lang::txt('MOD_SUPPORTTICKETS_UNASSIGNED_TITLE'); ?>">
-							<?php echo isset($this->topened[2]) ? $this->escape($this->topened[2]->count) : '' ; ?>
+							<?php echo isset($this->topened[2]) ? $this->escape($this->topened[2]->count) : ''; ?>
 							<span><?php echo Lang::txt('MOD_SUPPORTTICKETS_UNASSIGNED'); ?></span>
 						</a>
 					</td>
