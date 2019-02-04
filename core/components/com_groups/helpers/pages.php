@@ -676,6 +676,7 @@ class Pages
 		$view->version    = $version;
 		$view->authorized = $authorized;
 		$view->config     = Component::params('com_groups');
+		$view->option     = 'com_groups';
 
 		// return rendered template
 		return $view->loadTemplate();
