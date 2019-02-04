@@ -74,7 +74,7 @@ abstract class Route
 		$link = 'index.php?option=com_content&view=article&id='. $id;
 		if ((int)$catid > 1)
 		{
-			$categories = new Category; //\JCategories::getInstance('Content');
+			$categories = new Category;
 			$category = $categories->get((int)$catid);
 			if ($category)
 			{

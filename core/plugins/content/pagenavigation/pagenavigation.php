@@ -197,7 +197,7 @@ class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
 
 			if ($row->prev)
 			{
-				$row->prev = Route::url(ContentHelperRoute::getArticleRoute($row->prev->slug, $row->prev->catslug, $row->prev->language));
+				$row->prev = Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($row->prev->slug, $row->prev->catslug, $row->prev->language));
 			}
 			else
 			{
@@ -206,7 +206,7 @@ class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
 
 			if ($row->next)
 			{
-				$row->next = Route::url(ContentHelperRoute::getArticleRoute($row->next->slug, $row->next->catslug, $row->next->language));
+				$row->next = Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($row->next->slug, $row->next->catslug, $row->next->language));
 			}
 			else
 			{
@@ -237,7 +237,7 @@ class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
 				$row->pagination = $html;
 				$row->paginationposition = $this->params->get('position', 1);
 				// This will default to the 1.5 and 1.6-1.7 behavior.
-				$row->paginationrelative = $this->params->get('relative',0);
+				$row->paginationrelative = $this->params->get('relative', 0);
 			}
 		}
 	}
