@@ -32,6 +32,8 @@
 
 defined('_HZEXEC_') or die();
 
+Html::behavior('chart', 'pie');
+
 $this->css();
 
 $this->css('
@@ -55,8 +57,7 @@ $this->css('
 }
 ');
 
-//Html::behavior('chart', 'resize');
-Html::behavior('chart', 'pie');
+$this->js();
 
 $total = $this->granted + $this->accepted + $this->pending + $this->removed + $this->withdrawn + $this->removed + $this->rejected;
 if ($total == 0)
@@ -67,46 +68,43 @@ if ($total == 0)
 ?>
 <div class="<?php echo $this->module->module; ?>">
 	<div class="overview-container">
-		<div id="wishlist-container<?php echo $this->module->id; ?>" class="chrt"></div>
+		<div id="wishlist-container<?php echo $this->module->id; ?>" class="<?php echo $this->module->module; ?>-chart chrt" data-datasets="<?php echo $this->module->module; ?>-data<?php echo $this->module->id; ?>"></div>
 
-		<script type="text/javascript">
-		if (!jq) {
-			var jq = $;
-		}
-		if (jQuery()) {
-			var $ = jq,
-				wishlistPie;
-
-			$(document).ready(function() {
-				wishlistPie = $.plot($("#wishlist-container<?php echo $this->module->id; ?>"), [
-					{label: '<?php echo strtolower(Lang::txt('MOD_WISHLIST_PENDING')); ?>', data: <?php echo round(($this->pending / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_pending", "#656565"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_WISHLIST_GRANTED')); ?>', data: <?php echo round(($this->granted / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_granted", "#999"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_WISHLIST_ACCEPTED')); ?>', data: <?php echo round(($this->accepted / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_accepted", "#f9d180"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_WISHLIST_REMOVED')); ?>', data: <?php echo round(($this->removed / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_removed", "#cccccc"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_WISHLIST_WITHDRAWN')); ?>', data: <?php echo round(($this->withdrawn / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_withdrawn", "#ffffff"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_WISHLIST_REJECTED')); ?>', data: <?php echo round(($this->rejected / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_rejected", "#333333"); ?>'}
-				], {
-					legend: {
-						show: false
+		<script type="application/json" id="<?php echo $this->module->module; ?>-data<?php echo $this->module->id; ?>">
+			{
+				"datasets": [
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_WISHLIST_PENDING')); ?>",
+						"data": <?php echo round(($this->pending / $total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_pending", "#656565"); ?>"
 					},
-					series: {
-						pie: {
-							innerRadius: 0.5,
-							show: true,
-							label: {
-								show: false
-							},
-							stroke: {
-								color: '#efefef'
-							}
-						}
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_WISHLIST_GRANTED')); ?>",
+						"data": <?php echo round(($this->granted / $total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_granted", "#999"); ?>"
 					},
-					grid: {
-						hoverable: false
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_WISHLIST_ACCEPTED')); ?>",
+						"data": <?php echo round(($this->accepted / $total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_accepted", "#f9d180"); ?>"
+					},
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_WISHLIST_REMOVED')); ?>",
+						"data": <?php echo round(($this->removed / $total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_removed", "#cccccc"); ?>"
+					},
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_WISHLIST_WITHDRAWN')); ?>",
+						"data": <?php echo round(($this->withdrawn / $total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_withdrawn", "#ffffff"); ?>"
+					},
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_WISHLIST_REJECTED')); ?>",
+						"data": <?php echo round(($this->rejected / $total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_rejected", "#333333"); ?>"
 					}
-				});
-			});
-		}
+				]
+			}
 		</script>
 
 		<p class="wishlist-total"><?php echo $total; ?></p>
