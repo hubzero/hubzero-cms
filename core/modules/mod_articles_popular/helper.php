@@ -34,7 +34,6 @@ namespace Modules\ArticlesPopular;
 
 use Hubzero\Module\Module;
 use Components\Content\Models\Article;
-use ContentHelperRoute;
 use Component;
 use Route;
 use User;
@@ -118,7 +117,7 @@ class Helper extends Module
 			if ($access || in_array($item->access, $authorised))
 			{
 				// We know that user has the privilege to view the article
-				$item->link = Route::url(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->language));
+				$item->link = Route::url(\Components\Content\Site\Helpers\Route::getArticleRoute($item->slug, $item->catslug, $item->language));
 			}
 			else
 			{
