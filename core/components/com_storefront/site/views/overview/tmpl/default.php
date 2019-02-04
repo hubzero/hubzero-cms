@@ -40,15 +40,9 @@ $loginUrl = Route::url('index.php?option=com_users&view=login&return=' . $return
 
 if ($customLandingPage && is_numeric($customLandingPage))
 {
-	include_once(PATH_CORE . DS . 'components' . DS . 'com_content' . DS . 'site' . DS . 'models' . DS . 'article.php');
-	$content = new ContentModelArticle();
-	$article = $content->getItem($customLandingPage);
+	$article = $this->content;
 
-	if ($article->params->get('show_intro', '1') == '1')
-	{
-		$article->text = $article->introtext . ' ' . $article->fulltext;
-	}
-	elseif ($item->fulltext)
+	if ($article->fulltext)
 	{
 		$article->text = $article->fulltext;
 	}
