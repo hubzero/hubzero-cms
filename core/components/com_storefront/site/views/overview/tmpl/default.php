@@ -63,7 +63,7 @@ if ($customLandingPage && is_numeric($customLandingPage))
 	<section class="section">
 		<div class="section-inner">
 
-			<div class="login-storefront"><a class="btn" href="<?php echo($loginUrl); ?>">Login</a></div>
+			<div class="login-storefront"><a class="btn" href="<?php echo $loginUrl; ?>">Login</a></div>
 
 			<?php
 
@@ -91,11 +91,10 @@ else
 				<p>Welcome to our store! In order to see the items in the store you need to login.</p>
 			</div>
 			<div class="col span3 offset1 omega">
-				<a class="btn" href="<?php echo($loginUrl); ?>">Login</a>
+				<a class="btn" href="<?php echo $loginUrl; ?>">Login</a>
 			</div>
 		</div>
 	</section>
 
 <?php
 }
-?>
