@@ -86,7 +86,7 @@ if ($canDo->get('core.delete'))
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="<?php echo ($this->filters['collection_id'] ? '7' : '8'); ?>">
+				<td colspan="<?php echo ($this->filters['collection_id']) ? '7' : '8'; ?>">
 					<?php
 					echo $this->rows->pagination;
 					?>
