@@ -146,7 +146,7 @@ Toolbar::help('revisions');
 					<?php } ?>
 				</td>
 				<td class="priority-5">
-					<?php echo (trim($row->get('summary')) ? $this->escape(stripslashes($row->get('summary'))) : Lang::txt('COM_WIKI_NONE')); ?>
+					<?php echo (trim($row->get('summary'))) ? $this->escape(stripslashes($row->get('summary'))) : Lang::txt('COM_WIKI_NONE'); ?>
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
@@ -160,7 +160,7 @@ Toolbar::help('revisions');
 					<?php } ?>
 				</td>
 				<td class="priority-4">
-					<span class="state <?php echo ($row->get('minor_edit') ? 'yes' : 'no'); ?>">
+					<span class="state <?php echo ($row->get('minor_edit')) ? 'yes' : 'no'; ?>">
 						<span><?php echo $this->escape($row->get('minor_edit')); ?></span>
 					</span>
 				</td>
