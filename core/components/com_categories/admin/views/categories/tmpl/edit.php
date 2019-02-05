@@ -55,7 +55,7 @@ Toolbar::help('category');
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
 	{
-		if (task == 'category.cancel' || document.formvalidator.isValid($('#item-form'))) {
+		if (task == 'cancel' || document.formvalidator.isValid($('#item-form'))) {
 			<?php echo $this->form->getField('description')->save(); ?>
 			Joomla.submitform(task, document.getElementById('item-form'));
 		} else {

@@ -44,6 +44,7 @@
 		.transition(all 0.1s ease-out);
 		-webkit-background-clip: padding-box;
 		margin-bottom: 1em;
+		background-clip: padding-box;
 
 		&:hover {
 			border-color: #c9c9c9;
@@ -53,12 +54,19 @@
 			border-color: #777;
 		}
 
+		&.invalid,
 		&.error {
-			border-color: #c00;
+			//background-color: #f8d7da;
+			padding-right: 2.25rem;
+			border-color: #dc3545;
+			background-repeat: no-repeat;
+			background-position: center right calc(2.25rem / 4);
+			background-size: calc(2.25rem / 2) calc(2.25rem / 2);
+			background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23dc3545' viewBox='-2 -2 7 7'%3e%3cpath stroke='%23d9534f' d='M0 0l3 3m0-3L0 3'/%3e%3ccircle r='.5'/%3e%3ccircle cx='3' r='.5'/%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E");
 
 			&:hover,
 			&:focus {
-				border-color: #c00;
+				box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
 			}
 		}
 	}
@@ -178,6 +186,16 @@
 		&:active {
 			background-color: #f8f8f8;
 			color: #444;
+		}
+
+		&.invalid,
+		&.error {
+			border-color: #dc3545;
+
+			&:hover,
+			&:focus {
+				box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+			}
 		}
 	}
 	select::-ms-expand { /* for IE 11 */
