@@ -51,7 +51,7 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.delete'))
 {
-	Toolbar::deleteList();
+	Toolbar::deleteList('COM_WISHLIST_CONFIRM_DELETE');
 }
 Toolbar::spacer();
 Toolbar::help('comments');
@@ -60,7 +60,7 @@ Toolbar::help('comments');
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo Lang::txt('COM_WISHLIST_SEARCH'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_WISHLIST_SEARCH_PLACEHOLDER'); ?>" />
+		<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_WISHLIST_SEARCH_PLACEHOLDER'); ?>" />
 
 		<input type="submit" value="<?php echo Lang::txt('COM_WISHLIST_GO'); ?>" />
 	</fieldset>
@@ -79,7 +79,7 @@ Toolbar::help('comments');
 			</tr>
 		<?php } ?>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col" class="priority-5"><?php echo $this->grid('sort', 'COM_WISHLIST_COMMENT_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo $this->grid('sort', 'COM_WISHLIST_COMMENT', 'comment', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo $this->grid('sort', 'COM_WISHLIST_ADDED_BY', 'added_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -153,7 +153,7 @@ Toolbar::help('comments');
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" class="checkbox-toggle" />
 				</td>
 				<td class="priority-5">
 					<?php echo $row->id; ?>
