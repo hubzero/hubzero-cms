@@ -397,7 +397,7 @@ function getSelectedValue(frmName, srcListName) {
  */
 function checkAll(checkbox, stub) {
 	if (!stub) {
-			stub = 'cb';
+		stub = 'cb';
 	}
 	if (checkbox.form) {
 		var c = 0;
@@ -577,3 +577,141 @@ function checkAll_button(n, task) {
 	}
 	submitform(task);
 }
+
+/**
+ * Check if an element has the specified class name
+ *
+ * @param   el         The element to test
+ * @param   className  The class to test for
+ * @return  bool
+ */
+Joomla.hasClass = function(el, className) {
+	return el.classList ? el.classList.contains(className) : new RegExp('\\b'+ className+'\\b').test(el.className);
+}
+
+/**
+ * Add a class to an element
+ *
+ * @param   el         The element to add the class to
+ * @param   className  The class to add
+ * @return  bool
+ */
+Joomla.addClass = function(el, className) {
+	if (el.classList) {
+		el.classList.add(className);
+	} else if (!hasClass(el, className)) {
+		el.className += ' ' + className;
+	}
+}
+
+/**
+ * Remove a class from an element
+ *
+ * @param   el         The element to remove the class from
+ * @param   className  The class to remove
+ * @return  bool
+ */
+Joomla.removeClass = function(el, className) {
+	if (el.classList) {
+		el.classList.remove(className);
+	} else {
+		el.className = el.className.replace(new RegExp('\\b'+ className+'\\b', 'g'), '');
+	}
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+	var i;
+	// Add event listeners to toolbar buttons
+	var toolbarbuttons = document.getElementsByClassName('toolbar');
+	for (i = 0; i < toolbarbuttons.length; i++)
+	{
+		toolbarbuttons[i].addEventListener('click', function(event) {
+			event.preventDefault();
+
+			var el = this;
+
+			if (Joomla.hasClass(el, 'toolbar-submit')) {
+				if (Joomla.hasClass(el, 'toolbar-list') && document.adminForm.boxchecked.value == 0) {
+					alert(el.getAttribute('data-message'));
+				} else {
+					if (el.getAttribute('data-task')) {
+						Joomla.submitbutton(el.getAttribute('data-task'));
+					} else {
+						console.log('Error: no task found.');
+					}
+				}
+			}
+
+			if (Joomla.hasClass(el, 'toolbar-popup')) {
+				var width  = (el.getAttribute('data-width') ? el.getAttribute('data-width') : 700),
+					height = (el.getAttribute('data-height') ? el.getAttribute('data-height') : 500),
+					scroll = 1;
+
+				Joomla.popupWindow(
+					el.getAttribute('href'),
+					el.getAttribute('data-message'),
+					width,
+					height,
+					scroll
+				);
+			}
+
+			if (Joomla.hasClass(el, 'toolbar-confirm')) {
+				if (Joomla.hasClass(el, 'toolbar-list') && document.adminForm.boxchecked.value == 0) {
+					alert(el.getAttribute('data-message'));
+				} else {
+					if (confirm(el.getAttribute('data-confirm'))) {
+						if (el.getAttribute('data-task')) {
+							Joomla.submitbutton(el.getAttribute('data-task'));
+						} else {
+							console.log('Error: no task found.');
+						}
+					}
+				}
+			}
+		});
+	}
+
+	// Add event listener for checkbox toggles
+	var checkboxes = document.getElementsByClassName('checkbox-toggle');
+	for (i = 0; i < checkboxes.length; i++)
+	{
+		checkboxes[i].addEventListener('click', function(event) {
+			if (Joomla.hasClass(this, 'toggle-all')) {
+				Joomla.checkAll(this);
+			} else {
+				Joomla.isChecked(this.checked);
+			}
+		});
+	}
+
+	// Add event listener for filters
+	var filters = document.getElementsByClassName('filter-submit');
+	for (i = 0; i < filters.length; i++)
+	{
+		filters[i].addEventListener('change', function(event) {
+			this.form.submit();
+		});
+	}
+
+	var clearfilters = document.getElementsByClassName('filter-clear');
+	for (i = 0; i < clearfilters.length; i++)
+	{
+		clearfilters[i].addEventListener('click', function(event) {
+			var k,
+				filters = this.form.getElementsByClassName('filter');
+
+			for (k = 0; k < filters.length; k++)
+			{
+				if (filters[k].tagName.toLowerCase() == 'select') {
+					filters[k].selectedIndex = 0;
+				}
+				if (filters[k].tagName.toLowerCase() == 'input') {
+					filters[k].value = '';
+				}
+			}
+
+			this.form.submit();
+		});
+	}
+});
