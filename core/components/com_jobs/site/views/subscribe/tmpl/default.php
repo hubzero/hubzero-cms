@@ -110,11 +110,11 @@ defined('_HZEXEC_') or die();
 					$expires  = $this->subscription->expires > $now && $this->subscription->status==1 ?  '<p class="yes">' : '<p class="no">';
 					$expires .= Lang::txt( 'COM_JOBS_YOUR' ) . ' ' . $length . '-' . $currentService->unitmeasure . ' ' . Lang::txt( 'COM_JOBS_SUBSCRIPTION' ) . ' ';
 					if ($this->subscription->status==1) {
-						$expires .= $this->subscription->expires > $now ? strtolower(Lang::txt( 'COM_JOBS_SUBSCRIPTION_STATUS_EXPIRES' )) : strtolower(Lang::txt( 'COM_JOBS_SUBSCRIPTION_STATUS_EXPIRED' )) ;
+						$expires .= $this->subscription->expires > $now ? strtolower(Lang::txt( 'COM_JOBS_SUBSCRIPTION_STATUS_EXPIRES' )) : strtolower(Lang::txt( 'COM_JOBS_SUBSCRIPTION_STATUS_EXPIRED' ));
 						$expires .= ' ' . Lang::txt( 'COM_JOBS_ON' ) . ' '.Date::of($this->subscription->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '.';
 					}
 					else {
-						$expires .= Lang::txt( 'COM_JOBS_SUBSCRIPTION_IS_PENDING' ) ;
+						$expires .= Lang::txt( 'COM_JOBS_SUBSCRIPTION_IS_PENDING' );
 					}
 
 					$expires .= '</p>' . "\n";
@@ -151,7 +151,7 @@ defined('_HZEXEC_') or die();
 
 					<div class="subdetails" id="plan_<?php echo $currentService->id; ?>">
 						<?php if ($thissub) {
-							echo  $expires;
+							echo $expires;
 						} else {
 							echo '';
 						}
