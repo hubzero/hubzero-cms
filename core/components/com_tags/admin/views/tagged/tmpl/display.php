@@ -82,7 +82,7 @@ Toolbar::help('tagged');
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="<?php echo (!$this->filters['tagid'] ? 7 : 6); ?>"><?php
+				<td colspan="<?php echo (!$this->filters['tagid']) ? 7 : 6; ?>"><?php
 				// Initiate paging
 				echo $this->rows->pagination;
 				?></td>
@@ -148,7 +148,7 @@ Toolbar::help('tagged');
 					<?php } ?>
 				</td>
 				<td class="priority-3">
-					<time datetime="<?php echo $row->get('taggedon'); ?>"><?php echo ($row->get('taggedon') != '0000-00-00 00:00:00' ? $row->get('taggedon') : Lang::txt('COM_TAGS_UNKNOWN')); ?></time>
+					<time datetime="<?php echo $row->get('taggedon'); ?>"><?php echo ($row->get('taggedon') != '0000-00-00 00:00:00') ? $row->get('taggedon') : Lang::txt('COM_TAGS_UNKNOWN'); ?></time>
 				</td>
 				<td class="priority-4">
 					<?php if ($row->get('taggerid')) { ?>

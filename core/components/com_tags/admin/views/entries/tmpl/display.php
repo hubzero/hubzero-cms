@@ -161,7 +161,7 @@ Toolbar::help('entries');
 					<?php echo $row->get('substitutes', 0); ?>
 				</td>
 				<td class="priority-4">
-					<time datetime="<?php echo $row->created(); ?>"><?php echo ($row->created() != '0000-00-00 00:00:00' ? $row->created() : Lang::txt('COM_TAGS_UNKNOWN')); ?></time>
+					<time datetime="<?php echo $row->created(); ?>"><?php echo ($row->created() != '0000-00-00 00:00:00') ? $row->created() : Lang::txt('COM_TAGS_UNKNOWN'); ?></time>
 				</td>
 			</tr>
 			<?php

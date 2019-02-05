@@ -92,7 +92,7 @@ $this->css();
 		<thead>
 			<?php if ($this->wishlist->id) { ?>
 				<tr>
-					<th colspan="<?php echo (!$this->wishlist->id ? 9 : 8); ?>">
+					<th colspan="<?php echo (!$this->wishlist->id) ? 9 : 8; ?>">
 						(<?php echo $this->escape(stripslashes($this->wishlist->category)); ?>) &nbsp; <?php echo $this->escape(stripslashes($this->wishlist->title)); ?>
 					</th>
 				</tr>
@@ -113,7 +113,7 @@ $this->css();
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="<?php echo (!$this->wishlist->id ? 9 : 8); ?>"><?php
+				<td colspan="<?php echo (!$this->wishlist->id) ? 9 : 8; ?>"><?php
 				// Initiate paging
 				echo $this->rows->pagination;
 				?></td>
