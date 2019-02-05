@@ -65,7 +65,7 @@ HUB.Jobs = {
 			if (services.length) {
 				var sel = 0;
 				services.each(function(i, item) {
-					if (item.attr('checked')) {
+					if ($(item).attr('checked')) {
 						$('#plan_'+ $(item).val()).show();
 					}
 					else {
