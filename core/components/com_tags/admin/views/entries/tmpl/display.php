@@ -53,7 +53,7 @@ if ($canDo->get('core.create'))
 }
 if ($canDo->get('core.delete'))
 {
-	Toolbar::deleteList();
+	Toolbar::deleteList('COM_TAGS_CONFIRM_DELETE');
 }
 Toolbar::spacer();
 Toolbar::help('entries');
@@ -64,14 +64,14 @@ Toolbar::help('entries');
 		<div class="grid">
 			<div class="col span6">
 				<label for="filter_search"><?php echo Lang::txt('COM_TAGS_SEARCH'); ?>:</label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_TAGS_SEARCH_PLACEHOLDER'); ?>" />
+				<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_TAGS_SEARCH_PLACEHOLDER'); ?>" />
 
 				<input type="submit" name="filter_submit" value="<?php echo Lang::txt('COM_TAGS_GO'); ?>" />
-				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span6">
 				<label for="filter-filterby"><?php echo Lang::txt('COM_TAGS_FILTER'); ?>:</label>
-				<select name="filterby" id="filter-filterby" onchange="document.adminForm.submit();">
+				<select name="filterby" id="filter-filterby" class="filter filter-submit">
 					<option value="all"<?php if ($this->filters['by'] == 'all') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TAGS_FILTER_ALL_TAGS'); ?></option>
 					<option value="user"<?php if ($this->filters['by'] == 'user') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TAGS_FILTER_USER_TAGS'); ?></option>
 					<option value="admin"<?php if ($this->filters['by'] == 'admin') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TAGS_FILTER_ADMIN_TAGS'); ?></option>
@@ -83,7 +83,7 @@ Toolbar::help('entries');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_TAGS_COL_RAW_TAG', 'raw_tag', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_TAGS_COL_TAG', 'tag', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_TAGS_COL_ADMIN', 'admin', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -122,7 +122,7 @@ Toolbar::help('entries');
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
 					<?php } ?>
 				</td>
 				<td>

@@ -49,7 +49,7 @@ if ($canDo->get('core.edit.state'))
 }
 if ($canDo->get('core.delete'))
 {
-	Toolbar::deleteList();
+	Toolbar::deleteList('COM_POLL_CONFIRM_DELETE');
 	Toolbar::spacer();
 }
 if ($canDo->get('core.edit'))
@@ -69,10 +69,10 @@ Toolbar::help('polls');
 		<div class="grid">
 			<div class="col span6">
 				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_POLL_SEARCH_PLACEHOLDER'); ?>" />
+				<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_POLL_SEARCH_PLACEHOLDER'); ?>" />
 
-				<button onclick="this.form.submit();"><?php echo Lang::txt('COM_POLL_GO'); ?></button>
-				<button onclick="document.getElementById('search').value='';this.form.getElementById('filter_state').value='';this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<input type="submit" value="<?php echo Lang::txt('COM_POLL_GO'); ?>" />
+				<button class="filter filter-submit"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span6">
 				<?php echo $this->filters['states']; ?>
@@ -84,7 +84,7 @@ Toolbar::help('polls');
 		<thead>
 			<tr>
 				<th scope="col">
-					<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
+					<input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" />
 				</th>
 				<th scope="col">
 					<?php echo Lang::txt('COM_POLL_COL_NUM'); ?>
@@ -140,7 +140,7 @@ Toolbar::help('polls');
 					<?php if (($row->get('checked_out') && $row->get('checked_out') != User::get('id')) || !$canDo->get('core.edit')) { ?>
 						<span> </span>
 					<?php } else { ?>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
 					<?php } ?>
 				</td>
 				<td>
