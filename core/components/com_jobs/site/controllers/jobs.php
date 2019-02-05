@@ -611,7 +611,7 @@ class Jobs extends SiteController
 
 		$services = Service::getServices('jobs', 1, $specialgroup);
 
-		if (count($services) <= 0)
+		if ($services->count() <= 0)
 		{
 			// setup with default info
 			$this->_setupServices();
