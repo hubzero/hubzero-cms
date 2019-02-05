@@ -230,7 +230,7 @@ class Courses extends AdminController
 	public function copyTask()
 	{
 		// Incoming
-		$id = Request::getInt('id', 0);
+		$id = Request::getVar('id', 0);
 
 		// Get the single ID we're working with
 		if (is_array($id))
