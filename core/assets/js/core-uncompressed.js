@@ -346,7 +346,7 @@ function radioGetCheckedValue(radioObj) {
 			return '';
 		}
 	}
-	for ( var i = 0; i < n; i++) {
+	for (var i = 0; i < n; i++) {
 		if (radioObj[i].checked) {
 			return radioObj[i].value;
 		}
@@ -448,8 +448,9 @@ function listItemTask(id, task) {
 	if (cb) {
 		for (var i = 0; true; i++) {
 			var cbx = f['cb'+i];
-			if (!cbx)
+			if (!cbx) {
 				break;
+			}
 			cbx.checked = false;
 		} // for
 		cb.checked = true;

@@ -203,10 +203,10 @@ $this->setEscape("htmlentities");
 					<?php endif; ?>
 				</td>
 				<td class="priority-4">
-					<?php echo ($row->scope == '' ? Lang::txt('Hub') : $this->escape($row->scope)); ?>
+					<?php echo ($row->scope == '') ? Lang::txt('Hub') : $this->escape($row->scope); ?>
 				</td>
 				<td class="priority-4">
-					<?php echo ($row->scope_id == 0 ? Lang::txt('N/A') : $this->escape($row->scope_id)); ?>
+					<?php echo ($row->scope_id == 0) ? Lang::txt('N/A') : $this->escape($row->scope_id); ?>
 				</td>
 			</tr>
 			<?php
