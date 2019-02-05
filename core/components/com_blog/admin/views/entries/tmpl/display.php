@@ -48,7 +48,7 @@ if ($canDo->get('core.edit.state'))
 }
 if ($canDo->get('core.delete'))
 {
-	Toolbar::deleteList('', 'delete');
+	Toolbar::deleteList('COM_BLOG_CONFIRM_DELETE', 'delete');
 }
 if ($canDo->get('core.edit'))
 {
@@ -69,17 +69,17 @@ Html::behavior('tooltip');
 		<div class="grid">
 			<div class="col span4">
 				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_BLOG_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+				<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_BLOG_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
 				<input type="submit" value="<?php echo Lang::txt('COM_BLOG_GO'); ?>" />
-				<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span8 align-right">
 				<label for="filter-scope"><?php echo Lang::txt('COM_BLOG_FIELD_SCOPE'); ?>:</label>
-				<?php echo Components\Blog\Admin\Helpers\Html::scopes($this->filters['scope'], 'scope', 'filter-scope', 'onchange="this.form.submit()"'); ?>
+				<?php echo Components\Blog\Admin\Helpers\Html::scopes($this->filters['scope'], 'scope', 'filter-scope', 'class="filter filter-submit"'); ?>
 
 				<label for="filter-state"><?php echo Lang::txt('COM_BLOG_FIELD_STATE'); ?>:</label>
-				<select name="state" id="filter-state" onchange="this.form.submit();">
+				<select name="state" id="filter-state" class="filter filter-submit">
 					<option value="-1"<?php if ($this->filters['state'] == '-1') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_ALL_STATES'); ?></option>
 					<option value="0"<?php if ($this->filters['state'] === 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
 					<option value="1"<?php if ($this->filters['state'] === 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
@@ -87,7 +87,7 @@ Html::behavior('tooltip');
 				</select>
 
 				<label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
-				<select name="access" id="filter-access" onchange="this.form.submit()">
+				<select name="access" id="filter-access" class="filter filter-submit">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
 					<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
 				</select>
@@ -98,7 +98,7 @@ Html::behavior('tooltip');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_BLOG_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_BLOG_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_BLOG_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -211,7 +211,7 @@ Html::behavior('tooltip');
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id') ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id') ?>" class="checkbox-toggle" />
 				</td>
 				<td class="priority-4">
 					<?php echo $row->get('id'); ?>
