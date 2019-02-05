@@ -68,7 +68,7 @@ Toolbar::help('billboards');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onClick="Joomla.checkAll(this);" /></th>
+				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_BILLBOARDS_COL_ID'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_NAME'); ?></th>
 				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_BILLBOARDS_COL_COLLECTION'); ?></th>
@@ -89,11 +89,11 @@ Toolbar::help('billboards');
 		// See if the billboard is being edited by someone else
 		if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
 		{
-			$checked = $this->grid('checkedout', $row, User::getInstance($row->checked_out)->get('name'), $row->checked_out_time);
+			$checked = Html::grid('checkedout', $row, User::getInstance($row->checked_out)->get('name'), $row->checked_out_time);
 		}
 		else
 		{
-			$checked = $this->grid('id', $i, $row->id, false, 'cid');
+			$checked = Html::grid('id', $i, $row->id, false, 'cid');
 		}
 
 		$task  = $row->published ? 'unpublish' : 'publish';
