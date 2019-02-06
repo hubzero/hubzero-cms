@@ -320,8 +320,6 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="webpath" type="text" menu="hide" default="/site/members" label="Upload path" description="File path for pictures" />
 		<field name="homedir" type="text" menu="hide" default="" label="Home directory path" description="Hub users' home directory path (typically '/home/{hubname}')" />
-		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
-		<field name="file_ext" type="text" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif" description="Allowed file types" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="user_messaging" type="list" default="1" label="User-To-User Messaging" description="Allow/Disallow user-to-user messaging">
 			<option value="0">None</option>
