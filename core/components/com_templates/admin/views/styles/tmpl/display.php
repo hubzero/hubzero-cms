@@ -93,22 +93,22 @@ Html::behavior('multiselect');
 					&#160;
 				</th>
 				<th scope="col">
-					<?php echo Html::grid('sort', 'COM_TEMPLATES_HEADING_STYLE', 'a.title', $this->filters['sort_Dir'], $this->filters['sort']); ?>
+					<?php echo Html::grid('sort', 'COM_TEMPLATES_HEADING_STYLE', 'title', $this->filters['sort_Dir'], $this->filters['sort']); ?>
 				</th>
 				<th scope="col" class="priority-2">
-					<?php echo Html::grid('sort', 'JCLIENT', 'a.client_id', $this->filters['sort_Dir'], $this->filters['sort']); ?>
+					<?php echo Html::grid('sort', 'JCLIENT', 'client_id', $this->filters['sort_Dir'], $this->filters['sort']); ?>
 				</th>
 				<th scope="col">
-					<?php echo Html::grid('sort', 'COM_TEMPLATES_HEADING_TEMPLATE', 'a.template', $this->filters['sort_Dir'], $this->filters['sort']); ?>
+					<?php echo Html::grid('sort', 'COM_TEMPLATES_HEADING_TEMPLATE', 'template', $this->filters['sort_Dir'], $this->filters['sort']); ?>
 				</th>
 				<th scope="col" class="priority-3">
-					<?php echo Html::grid('sort', 'COM_TEMPLATES_HEADING_DEFAULT', 'a.home', $this->filters['sort_Dir'], $this->filters['sort']); ?>
+					<?php echo Html::grid('sort', 'COM_TEMPLATES_HEADING_DEFAULT', 'home', $this->filters['sort_Dir'], $this->filters['sort']); ?>
 				</th>
 				<th scope="col" class="priority-4">
 					<?php echo Lang::txt('COM_TEMPLATES_HEADING_ASSIGNED'); ?>
 				</th>
 				<th scope="col" class="priority-5">
-					<?php echo Html::grid('sort', 'JGRID_HEADING_ID', 'a.id', $this->filters['sort_Dir'], $this->filters['sort']); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ID', 'id', $this->filters['sort_Dir'], $this->filters['sort']); ?>
 				</th>
 			</tr>
 		</thead>
