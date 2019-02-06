@@ -407,8 +407,12 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			exit();
 		}
 
-		//max upload size
-		$sizeLimit = $this->params->get('maxAllowed', 40000000);
+		// Get media config
+		$mediaConfig = Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
 
 		// get the file
 		if (isset($_GET['qqfile']))
@@ -461,12 +465,13 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			echo json_encode(array('error' => Lang::txt('File is empty')));
 			exit();
 		}
+
 		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
 			ob_clean();
 			header('Content-type: text/plain');
-			echo json_encode(array('error' => Lang::txt('PLG_COURSES_PAGES_ERROR_FILE_TOO_LARG', $max)));
+			echo json_encode(array('error' => Lang::txt('PLG_COURSES_PAGES_ERROR_FILE_TOO_LARGE', $max)));
 			exit();
 		}
 
@@ -486,6 +491,17 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 
 		$file = $path . DS . $filename . '.' . $ext;
+
+		// Check that the file type is allowed
+		$allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
+
+		if (!empty($allowed) && !in_array(strtolower($ext), $allowed))
+		{
+			ob_clean();
+			header('Content-type: text/plain');
+			echo json_encode(array('error' => Lang::txt('PLG_COURSES_PAGES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed))));
+			exit();
+		}
 
 		if ($stream)
 		{
@@ -556,8 +572,8 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming file
-		$file = Request::getArray('upload', '', 'files');
-		if (!$file['name'])
+		$file = Request::getArray('upload', array(), 'files');
+		if (empty($file) || !$file['name'])
 		{
 			$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED'));
 			return $this->_files();
@@ -575,22 +591,47 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			}
 		}
 
+		// Get media config
+		$mediaConfig = Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
+
+		if ($file['size'] > $sizeLimit)
+		{
+			$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_FILE_TOO_LARGE', Hubzero\Utility\Number::formatBytes($sizeLimit)));
+			return $this->_files();
+		}
+
 		// Make the filename safe
 		$file['name'] = urldecode($file['name']);
 		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
+		$ext = Filesystem::extension($file['name']);
+
+		// Check that the file type is allowed
+		$allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
+
+		if (!empty($allowed) && !in_array(strtolower($ext), $allowed))
+		{
+			$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
+			return $this->_files();
+		}
 
 		// Upload new files
 		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_UNABLE_TO_UPLOAD'));
 		}
-
-		if (!Filesystem::isSafe($path . DS . $file['name']))
+		else
 		{
-			Filesystem::delete($path . DS . $file['name']);
+			if (!Filesystem::isSafe($path . DS . $file['name']))
+			{
+				Filesystem::delete($path . DS . $file['name']);
 
-			$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_UNSAFE_FILE'));
+				$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_UNSAFE_FILE'));
+			}
 		}
 
 		// Push through to the media view

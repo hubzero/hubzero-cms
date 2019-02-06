@@ -98,9 +98,33 @@ class Media extends SiteController
 			}
 		}
 
+		// Get media config
+		$mediaConfig = \Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
+
+		if ($file['size'] > $sizeLimit)
+		{
+			$this->setError(Lang::txt('COM_FEEDBACKI_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
+			return $this->displayTask();
+		}
+
 		// Make the filename safe
+		$file['name'] = urldecode($file['name']);
 		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
+		$ext = Filesystem::extension($file['name']);
+
+		// Check that the file type is allowed
+		$allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
+
+		if (!empty($allowed) && !in_array(strtolower($ext), $allowed))
+		{
+			$this->setError(Lang::txt('COM_FEEDBACK_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
+			return $this->displayTask();
+		}
 
 		// Perform the upload
 		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))

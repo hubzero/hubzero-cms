@@ -39,9 +39,6 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="filepath" type="text" menu="hide" default="/site/wiki" label="COM_WIKI_CONFIG_FILE_UPLOAD_LABEL" description="COM_WIKI_CONFIG_FILE_UPLOAD_DESC" />
 		<field name="mathpath" type="text" menu="hide" default="/site/wiki/math" label="COM_WIKI_CONFIG_MATH_UPLOAD_LABEL" description="COM_WIKI_CONFIG_MATH_UPLOAD_DESC" />
 		<field name="tmppath" type="text" menu="hide" default="/site/wiki/tmp" label="COM_WIKI_CONFIG_TEMP_UPLOAD_LABEL" description="COM_WIKI_CONFIG_TEMP_UPLOAD_DESC" />
-		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="COM_WIKI_CONFIG_FILE_SIZE_LABEL" description="COM_WIKI_CONFIG_FILE_SIZE_DESC" />
-		<field name="img_ext" type="text" menu="hide" label="COM_WIKI_CONFIG_IMG_EXT_LABEL" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif" description="COM_WIKI_CONFIG_IMG_EXT_DESC" />
-		<field name="file_ext" type="text" menu="hide" label="COM_WIKI_CONFIG_FILE_EXT_LABEL" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="COM_WIKI_CONFIG_FILE_EXT_DESC" />
 	</fieldset>
 	<fieldset name="cache">
 		<field name="cache" type="radio" default="0" label="COM_WIKI_CONFIG_CACHE_LABEL" description="COM_WIKI_CONFIG_CACHE_DESC">

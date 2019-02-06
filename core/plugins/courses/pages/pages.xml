@@ -50,9 +50,6 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="members">Only Course Members</option>
 					<option value="nobody">Disabled/Off</option>
 				</field>
-				<field type="spacer" />
-				<field name="uploadpath" type="text" menu="hide" default="/site/courses/{{gid}}/pages" label="Upload path" description="File path for uploads" />
-				<field name="maxAllowed" type="text" menu="hide" default="40000000" label="Max File Size (in bytes)" description="The maximum file size for uploads" />
 			</fieldset>
 		</fields>
 	</config>

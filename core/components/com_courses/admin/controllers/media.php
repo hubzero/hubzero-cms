@@ -84,11 +84,12 @@ class Media extends AdminController
 		// Build the path
 		$path = $this->_buildUploadPath($listdir, $subdir);
 
-		//allowed extensions for uplaod
-		//$allowedExtensions = array("png","jpeg","jpg","gif");
+		// Get media config
+		$mediaConfig = \Component::params('com_media');
 
-		//max upload size
-		$sizeLimit = $this->config->get('maxAllowed', 40000000);
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
 
 		// get the file
 		if (isset($_GET['qqfile']))
@@ -151,8 +152,18 @@ class Media extends AdminController
 		{
 			$filename .= rand(10, 99);
 		}
-
 		$file = $path . DS . $filename . '.' . $ext;
+
+		$ext = Filesystem::extension($file['name']);
+
+		// Check that the file type is allowed
+		$allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
+
+		if (!empty($allowed) && !in_array(strtolower($ext), $allowed))
+		{
+			echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed))));
+			return;
+		}
 
 		if ($stream)
 		{
@@ -259,12 +270,25 @@ class Media extends AdminController
 			}
 
 			// Incoming file
-			$file = Request::getArray('upload', '', 'files');
-			if (!$file['name'])
+			$file = Request::getArray('upload', array(), 'files');
+			if (empty($file) || !$file['name'])
 			{
 				$this->setError(Lang::txt('COM_COURSES_ERROR_NO_FILE'));
 				$this->displayTask();
 				return;
+			}
+
+			// Get media config
+			$mediaConfig = \Component::params('com_media');
+
+			// Size limit is in MB, so we need to turn it into just B
+			$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+			$sizeLimit = $sizeLimit * 1024 * 1024;
+
+			if ($file['size'] > $sizeLimit)
+			{
+				$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
+				return $this->displayTask();
 			}
 
 			// Make the filename safe
@@ -276,6 +300,17 @@ class Media extends AdminController
 			{
 				$file['name'] = substr($file['name'], 0, 230);
 				$file['name'] .= '.' . $ext;
+			}
+
+			$ext = Filesystem::extension($file['name']);
+
+			// Check that the file type is allowed
+			$allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
+
+			if (!empty($allowed) && !in_array(strtolower($ext), $allowed))
+			{
+				$this->setError(Lang::txt('COM_COURSES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
+				return $this->displayTask();
 			}
 
 			// Perform the upload

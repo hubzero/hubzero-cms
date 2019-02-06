@@ -160,13 +160,17 @@ class Media extends AdminController
 		}
 		else
 		{
-			$file = Request::getArray('upload', '', 'files');
+			$file = Request::getArray('upload', array(), 'files');
 
-			// max upload size
-			$sizeLimit = $this->config->get('maxAllowed', '40000000');
+			// Get media config
+			$mediaConfig = Component::params('com_media');
+
+			// Size limit is in MB, so we need to turn it into just B
+			$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+			$sizeLimit = $sizeLimit * 1024 * 1024;
 
 			// make sure we have a file
-			if (!$file['name'])
+			if (empty($file) || !$file['name'])
 			{
 				$this->setError(Lang::txt('COM_GROUPS_NO_FILE'));
 
@@ -199,6 +203,17 @@ class Media extends AdminController
 
 				$this->setError(Lang::txt('FILE_SIZE_TOO_BIG', $max));
 
+				return $this->displayTask();
+			}
+
+			$ext = Filesystem::extension($file['name']);
+
+			// Check that the file type is allowed
+			$allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
+
+			if (!empty($allowed) && !in_array(strtolower($ext), $allowed))
+			{
+				$this->setError(Lang::txt('COM_GROUPS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
 				return $this->displayTask();
 			}
 
