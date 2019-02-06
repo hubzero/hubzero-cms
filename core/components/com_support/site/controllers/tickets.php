@@ -2465,10 +2465,30 @@ class Tickets extends SiteController
 			}
 		}
 
+		$mediaConfig = Component::params('com_media');
+
+		$sizeLimit = $this->config->get('maxAllowed');
+		if (!$sizeLimit)
+		{
+			// Size limit is in MB, so we need to turn it into just B
+			$sizeLimit = $mediaConfig->get('upload_maxsize');
+			$sizeLimit = $sizeLimit * 1024 * 1024;
+		}
+
+		$exts = $this->config->get('file_ext');
+		$exts = $exts ?: $mediaConfig->get('upload_extensions');
+		$allowed = array_values(array_filter(explode(',', $exts)));
+
 		foreach ($file['name'] as $i => $name)
 		{
 			if (!trim($name))
 			{
+				continue;
+			}
+
+			if ($file['size'][$i] > $sizeLimit)
+			{
+				$this->setError(Lang::txt('File is too large. Max file upload size is %s', Number::formatBytes($sizeLimit)));
 				continue;
 			}
 
@@ -2477,10 +2497,11 @@ class Tickets extends SiteController
 			$name = str_replace(' ', '_', $name);
 			$ext = strtolower(Filesystem::extension($name));
 
-			//make sure that file is acceptable type
-			if (!in_array($ext, explode(',', $this->config->get('file_ext'))))
+			// Make sure that file is acceptable type
+			if (!in_array($ext, $allowed))
 			{
 				$this->setError(Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE'));
+				continue;
 				//return Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE');
 			}
 

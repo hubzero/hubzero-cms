@@ -66,8 +66,15 @@ class Media extends AdminController
 			return;
 		}
 
-		//max upload size
-		$sizeLimit = $this->config->get('maxAllowed', 40000000);
+		$mediaConfig = Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $this->config->get('maxAllowed');
+		if (!$sizeLimit)
+		{
+			$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+			$sizeLimit = $sizeLimit * 1024 * 1024;
+		}
 
 		// get the file
 		if (isset($_GET['qqfile']) && isset($_SERVER["CONTENT_LENGTH"])) // make sure we actually have a file
@@ -133,8 +140,12 @@ class Media extends AdminController
 			$filename .= rand(10, 99);
 		}
 
-		//make sure that file is acceptable type
-		if (!in_array(strtolower($ext), explode(',', $this->config->get('file_ext'))))
+		// Make sure that file is acceptable type
+		$exts = $this->config->get('file_ext');
+		$exts = $exts ?: $mediaConfig->get('upload_extensions');
+		$allowed = array_values(array_filter(explode(',', $exts)));
+
+		if (!in_array(strtolower($ext), $allowed))
 		{
 			echo json_encode(array('error' => Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE')));
 			return;
@@ -252,6 +263,22 @@ class Media extends AdminController
 			}
 		}
 
+		$mediaConfig = Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $this->config->get('maxAllowed');
+		if (!$sizeLimit)
+		{
+			$sizeLimit = $mediaConfig->get('upload_maxsize');
+			$sizeLimit = $sizeLimit * 1024 * 1024;
+		}
+
+		if ($file['size'] > $sizeLimit)
+		{
+			$this->setError(Lang::txt('File is too large. Max file upload size is %s', Number::formatBytes($sizeLimit)));
+			return $this->displayTask();
+		}
+
 		// Make the filename safe
 		$file['name'] = urldecode($file['name']);
 		$file['name'] = Filesystem::clean($file['name']);
@@ -264,8 +291,12 @@ class Media extends AdminController
 			$filename .= rand(10, 99);
 		}
 
-		//make sure that file is acceptable type
-		if (!in_array($ext, explode(',', $this->config->get('file_ext'))))
+		// Make sure that file is acceptable type
+		$exts = $this->config->get('file_ext');
+		$exts = $exts ?: $mediaConfig->get('upload_extensions');
+		$allowed = array_values(array_filter(explode(',', $exts)));
+
+		if (!in_array($ext, explode(',', $allowed))
 		{
 			$this->setError(Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE'));
 			echo $this->getError();
