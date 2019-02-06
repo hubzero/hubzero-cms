@@ -115,4 +115,4 @@ defined('_HZEXEC_') or die();
 				</ul>
 			</div>
 		<?php } ?>
-	<?php } ?>
+	<?php }
