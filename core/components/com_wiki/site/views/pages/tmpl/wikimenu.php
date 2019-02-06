@@ -50,7 +50,7 @@ defined('_HZEXEC_') or die();
 
 		<div class="container">
 			<h3><?php echo Lang::txt('COM_WIKI'); ?></h3>
-			<ul id="<?php echo ($this->sub) ? 'page_options' : 'useroptions'; ?>">
+			<ul id="useroptions">
 				<li class="page-main">
 					<a href="<?php echo Route::url($this->page->link('base')); ?>">
 						<?php echo Lang::txt('COM_WIKI_MAIN_PAGE'); ?>
@@ -95,7 +95,7 @@ defined('_HZEXEC_') or die();
 				</li>
 				<?php if (!User::isGuest() && $this->page->access('create')) { ?>
 					<li class="page-new" data-title="<?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>">
-						<a href="<?php echo Route::url($this->page->link('base') . '&' . ($this->sub ? 'action' : 'task') . '=new'); ?>">
+						<a href="<?php echo Route::url($this->page->link('base') . '&' . ($this->page->get('scope') != 'site' ? 'action' : 'task') . '=new'); ?>">
 							<?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>
 						</a>
 					</li>
@@ -108,7 +108,7 @@ defined('_HZEXEC_') or die();
 				<h3><?php echo Lang::txt('COM_WIKI_TOOLS'); ?></h3>
 				<ul>
 					<li class="page-new" data-title="<?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>">
-						<a href="<?php echo Route::url($this->page->link('base') . '&' . ($this->sub ? 'action' : 'task') . '=new'); ?>">
+						<a href="<?php echo Route::url($this->page->link('base') . '&' . ($this->page->get('scope') != 'site' ? 'action' : 'task') . '=new'); ?>">
 							<?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>
 						</a>
 					</li>

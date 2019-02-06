@@ -40,11 +40,11 @@ if (!isset($this->controller))
 }
 
 if ($tmpl != 'component' && $this->sub) { ?>
-	<div id="<?php echo ($this->sub) ? 'sub-content-header-extra' : 'content-header-extra'; ?>">
-		<ul id="<?php echo ($this->sub) ? 'page_options' : 'useroptions'; ?>">
+	<div id="sub-content-header-extra">
+		<ul id="page_options">
 			<?php if (!User::isGuest() && $this->page->access('create')) { ?>
 				<li class="page-new">
-					<a class="icon-add add btn tooltips" title="<?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>" href="<?php echo Route::url($this->page->link('base') . '&' . ($this->sub ? 'action' : 'task') . '=new'); ?>">
+					<a class="icon-add add btn tooltips" title="<?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>" href="<?php echo Route::url($this->page->link('base') . '&action=new'); ?>">
 						<?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>
 					</a>
 				</li>
@@ -102,7 +102,7 @@ if ($tmpl != 'component' && $this->sub) { ?>
 						<span class="icon-clock"><?php echo Lang::txt('COM_WIKI_TAB_HISTORY'); ?></span>
 					</a>
 				</li>
-			<?php if ($this->sub) {  ?>
+			<?php if ($this->page->get('scope') != 'site') { ?>
 				<li class="page-pdf">
 					<a href="<?php echo Route::url($this->page->link('pdf')); ?>" title="<?php echo Lang::txt('COM_WIKI_TAB_PDF'); ?>">
 						<span class="icon-download-alt"><?php echo Lang::txt('COM_WIKI_TAB_PDF'); ?></span>
