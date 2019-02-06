@@ -65,11 +65,15 @@ class Media extends AdminController
 		$dir  = Str::pad($id);
 		$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
 
-		//allowed extensions for uplaod
-		$allowedExtensions = array('png', 'jpe', 'jpeg', 'jpg', 'gif');
+		// Allowed extensions for uplaod
+		$allowedExtensions = array('png', 'jpe', 'jpeg', 'jpg', 'gif', 'jp2', 'jpx');
 
-		//max upload size
-		$sizeLimit = $this->config->get('maxAllowed', '40000000');
+		// Get media config
+		$mediaConfig = \Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
 
 		// make sure we have id
 		if (!$id)

@@ -74,10 +74,14 @@ class Logo extends AdminController
 		}
 
 		// allowed extensions for uplaod
-		$allowedExtensions = array('png','jpeg','jpg','gif');
+		$allowedExtensions = array('png', 'gif', 'jpg', 'jpeg', 'jpe', 'jp2', 'jpx');
 
-		// max upload size
-		$sizeLimit = $this->config->get('maxAllowed', 40000000);
+		// Get media config
+		$mediaConfig = \Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
 
 		// get the file
 		if (isset($_GET['qqfile']))
@@ -119,6 +123,7 @@ class Logo extends AdminController
 			echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_EMPTY_FILE')));
 			return;
 		}
+
 		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
@@ -268,8 +273,8 @@ class Logo extends AdminController
 		}
 
 		// Incoming file
-		$file = Request::getArray('upload', '', 'files');
-		if (!$file['name'])
+		$file = Request::getArray('upload', array(), 'files');
+		if (empty($file) || !$file['name'])
 		{
 			$this->setError(Lang::txt('COM_COURSES_NO_FILE'));
 			$this->displayTask('', $id);
@@ -287,9 +292,32 @@ class Logo extends AdminController
 			}
 		}
 
+		// Get media config
+		$mediaConfig = \Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
+
+		if ($file['size'] > $sizeLimit)
+		{
+			$this->setError(Lang::txt('COM_COURSES_ERROR_UPLOADING_FILE_TOO_BIG', \Hubsero\Utility\Number::formatBytes($sizeLimit)));
+			return $this->displayTask($file['name'], $id);
+		}
+
 		// Make the filename safe
 		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
+		$ext = Filesystem::extension($file['name']);
+
+		// Check that the file type is allowed
+		$allowed = array('png', 'gif', 'jpg', 'jpeg', 'jpe', 'jp2', 'jpx');
+
+		if (!empty($allowed) && !in_array(strtolower($ext), $allowed))
+		{
+			$this->setError(Lang::txt('COM_COURSES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
+			return $this->displayTask();
+		}
 
 		// Perform the upload
 		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))

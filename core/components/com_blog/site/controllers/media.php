@@ -172,7 +172,7 @@ class Media extends SiteController
 		}
 
 		// Size limit is in MB, so we need to turn it into just B
-		$sizeLimit = $mediaConfig->get('upload_maxsize');
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
 		$sizeLimit = $sizeLimit * 1024 * 1024;
 
 		if ($file['size'] > $sizeLimit)
