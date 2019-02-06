@@ -111,7 +111,7 @@ var JFormValidator = function() {
 		// If the field is required make sure it has a value
 		if (el.hasClass('required')) {
 			if (el.prop('tagName')=='fieldset' && (el.hasClass('radio') || el.hasClass('checkboxes'))) {
-				for(var i=0;;i++) {
+				for (var i=0;;i++) {
 					if ($(el.attr('id')+i)) {
 						if ($(el.attr('id')+i).checked) {
 							break;
@@ -156,7 +156,7 @@ var JFormValidator = function() {
 
 		// Validate form fields
 		var elements = form.find('input,textarea,select'); //.concat(Array.from(form.elements));
-		for (var i=0;i < elements.length; i++) {
+		for (var i=0; i < elements.length; i++) {
 			if (this.validate(elements[i]) == false) {
 				valid = false;
 			}
