@@ -194,8 +194,6 @@ class Media extends AdminController
 		}
 		else
 		{
-			$ih = new \Components\Members\Helpers\ImgHandler();
-
 			// Attempt to delete the file
 			if (!Filesystem::delete($path . DS . $file))
 			{
