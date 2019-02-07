@@ -53,7 +53,7 @@ Toolbar::help('sessions');
 			foreach ($this->apps as $record)
 			{
 				$html  = ' <option value="' . $record->path . '"';
-				if (Request::getString('appname','') == $record->path)
+				if (Request::getString('appname', '') == $record->path)
 				{
 					$html .= ' selected="selected"';
 				}

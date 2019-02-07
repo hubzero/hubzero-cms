@@ -99,7 +99,7 @@ Html::behavior('multiselect');
 					<?php echo Html::grid('sort', 'COM_MEMBERS_HEADING_LEVEL_NAME', 'title', $this->filters['sort_Dir'], $this->filters['sort']); ?>
 				</th>
 				<th>
-					<?php echo Html::grid('sort',  'JGRID_HEADING_ORDERING', 'ordering', $this->filters['sort_Dir'], $this->filters['sort']); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'ordering', $this->filters['sort_Dir'], $this->filters['sort']); ?>
 					<?php if ($canOrder && $saveOrder) :?>
 						<?php echo Html::grid('order', $this->rows); ?>
 					<?php endif; ?>

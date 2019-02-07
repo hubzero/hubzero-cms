@@ -139,7 +139,7 @@ Toolbar::cancel();
 			<?php } else { ?>
 				<tr>
 					<td colspan="6">
-						<?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_NO_EMAILS',"javascript:submitbutton('addemail');"); ?>
+						<?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_NO_EMAILS', "javascript:submitbutton('addemail');"); ?>
 					</td>
 				</tr>
 			<?php } ?>

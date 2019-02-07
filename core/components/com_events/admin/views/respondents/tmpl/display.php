@@ -115,8 +115,9 @@ Toolbar::cancel();
 		</tbody>
 	</table>
 
-	<input type="hidden" name="event" value="<?php $id = Request::getArray('id', array()); echo is_array($id) ? implode(',', $id) : $id; ?>" />
-	<input type="hidden" name="id[]" value="<?php $id = Request::getArray('id', array()); echo is_array($id) ? implode(',', $id) : $id; ?>" />
+	<?php $id = Request::getArray('id', array()); ?>
+	<input type="hidden" name="event" value="<?php echo is_array($id) ? implode(',', $id) : $id; ?>" />
+	<input type="hidden" name="id[]" value="<?php echo is_array($id) ? implode(',', $id) : $id; ?>" />
 
 	<input type="hidden" name="task" value="" autocomplete="" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
