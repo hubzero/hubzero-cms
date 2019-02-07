@@ -70,7 +70,7 @@ function checkAllOptions()
 				<th> </th>
 			</tr>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th><?php echo Lang::txt('COM_SUPPORT_COL_ID'); ?></th>
 				<th><?php echo Lang::txt('COM_SUPPORT_COL_OBJECT'); ?></th>
 				<th><?php echo Lang::txt('COM_SUPPORT_COL_MODEL'); ?></th>
@@ -186,7 +186,7 @@ foreach ($this->rows as $row)
 	}
 ?>
 			<tr>
-				<td class="align-center"><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="Joomla.isChecked(this.checked);" /></td>
+				<td class="align-center"><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" class="checkbox-toggle" /></td>
 				<td class="align-center"><?php echo $row->id; ?></td>
 				<td><?php echo $row->alias; ?> (<?php echo $row->foreign_key; ?>)</td>
 				<td><?php echo $row->model; ?></td>

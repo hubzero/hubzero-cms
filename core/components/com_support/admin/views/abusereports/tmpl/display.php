@@ -42,7 +42,7 @@ $this->view('_submenu')->display();
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter-state"><?php echo Lang::txt('COM_SUPPORT_SHOW'); ?>:</label>
-		<select name="state" id="filter-state" onchange="document.adminForm.submit( );">
+		<select name="state" id="filter-state" class="filter filter-submit">
 			<option value="0"<?php if ($this->filters['state'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_OUTSTANDING'); ?></option>
 			<option value="1"<?php if ($this->filters['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_RELEASED'); ?></option>
 			<option value="2"<?php if ($this->filters['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_DELETED'); ?></option>

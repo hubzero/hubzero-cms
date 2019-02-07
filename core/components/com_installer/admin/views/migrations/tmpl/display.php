@@ -59,7 +59,7 @@ $this->css();
 	<table id="tktlist" class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col"><?php echo Lang::txt('COM_INSTALLER_HEADING_EXTENSION'); ?></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('JDATE'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_INSTALLER_HEADING_FILENAME'); ?></th>
@@ -111,7 +111,7 @@ $this->css();
 				?>
 				<tr>
 					<td>
-						<input type="checkbox" name="migration[]" id="cb<?php echo $i; ?>" value="<?php echo $this->escape($row['entry']); ?>" onclick="Joomla.isChecked(this.checked);" />
+						<input type="checkbox" name="migration[]" id="cb<?php echo $i; ?>" value="<?php echo $this->escape($row['entry']); ?>" class="checkbox-toggle" />
 					</td>
 					<td>
 						<?php echo $component; ?><br />

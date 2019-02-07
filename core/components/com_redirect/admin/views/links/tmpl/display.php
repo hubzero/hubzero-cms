@@ -172,7 +172,7 @@ $this->css('.adminlist tr td {
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $item->id ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $item->id ?>" class="checkbox-toggle" />
 				</td>
 				<td>
 					<?php if ($canEdit) : ?>

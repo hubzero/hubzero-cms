@@ -58,7 +58,7 @@ Toolbar::help('categories');
 		<thead>
 			<tr>
 				<th scope="col">
-					<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
+					<input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" />
 				</th>
 				<th scope="col" class="priority-2">
 					<?php echo Html::grid('sort', 'COM_JOBS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
@@ -93,7 +93,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
 				</td>
 				<td class="priority-2">
 					<?php echo $row->id; ?>

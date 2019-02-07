@@ -46,7 +46,7 @@ if ($canDo->get('core.edit'))
 if ($canDo->get('core.delete'))
 {
 	Toolbar::divider();
-	Toolbar::deleteList();
+	Toolbar::deleteList('COM_MENUS_MENU_CONFIRM_DELETE');
 }
 
 Toolbar::custom('rebuild', 'refresh.png', 'refresh_f2.png', 'JTOOLBAR_REBUILD', false);
@@ -73,19 +73,13 @@ $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);
 
 ?>
-<script type="text/javascript">
-	Joomla.submitbutton = function(task) {
-		if (task != 'delete' || confirm('<?php echo Lang::txt('COM_MENUS_MENU_CONFIRM_DELETE', true);?>')) {
-			Joomla.submitform(task);
-		}
-	}
-</script>
+
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th rowspan="2">
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
 				</th>
 				<th rowspan="2">
 					<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'title', $listDirn, $listOrder); ?>

@@ -58,7 +58,7 @@ Toolbar::custom('manage', 'config','config','COM_GROUPS_MANAGE',false);
 	<table class="adminlist">
 		<thead>
 		 	<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_TITLE'); ?></th>
 				<th class="priority-3"><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_COLOR'); ?></th>
 			</tr>
@@ -69,7 +69,7 @@ Toolbar::custom('manage', 'config','config','COM_GROUPS_MANAGE',false);
 					<tr>
 						<td>
 							<?php if ($canDo->get('core.edit')) : ?>
-								<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $category->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
+								<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $category->get('id'); ?>" class="checkbox-toggle" />
 							<?php endif; ?>
 						</td>
 						<td>

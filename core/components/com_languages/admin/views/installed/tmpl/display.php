@@ -118,7 +118,7 @@ $pagination = $this->rows->pagination;
 				<td>
 					<?php
 					if (!$row->missing) :
-						echo '<input type="radio" id="cb' . $i . '" name="cid" value="' . $this->escape($row->language) . '" onclick="Joomla.isChecked(this.checked);" title="' . ($i+1) . '"/>';
+						echo '<input type="radio" id="cb' . $i . '" name="cid" value="' . $this->escape($row->language) . '" class="checkbox-toggle" title="' . ($i+1) . '"/>';
 					endif;
 					?>
 				</td>
