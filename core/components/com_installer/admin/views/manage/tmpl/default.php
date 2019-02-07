@@ -109,8 +109,14 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 			$i = 0;
 			foreach ($this->rows as $item):
 				$item->translate();
+
+				$cls = $i%2;
+				if ($item->get('status') == 2)
+				{
+					$cls .= ' protected';
+				}
 				?>
-				<tr class="row<?php echo $i%2; if ($item->get('status') == 2) echo ' protected'; ?>">
+				<tr class="row<?php echo $cls; ?>">
 					<td>
 						<?php echo Html::grid('id', $i, $item->get('extension_id')); ?>
 					</td>
@@ -133,7 +139,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 						<?php echo Lang::txt('COM_INSTALLER_TYPE_' . $item->get('type')); ?>
 					</td>
 					<td class="priority-4 center">
-						<?php echo ($item->get('version') != '' ? $item->get('version') : '&#160;'); ?>
+						<?php echo ($item->get('version') != '') ? $item->get('version') : '&#160;'; ?>
 						<?php if ($item->get('system_data')) : ?>
 							<?php if ($tooltip = $this->createCompatibilityInfo($item->get('system_data'))) : ?>
 								<?php echo Html::behavior('tooltip', $tooltip, Lang::txt('COM_INSTALLER_COMPATIBILITY_TOOLTIP_TITLE')); ?>
@@ -141,15 +147,15 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 						<?php endif; ?>
 					</td>
 					<td class="priority-5 center">
-						<?php echo ($item->get('creationDate') != '' ? $item->get('creationDate') : '&#160;'); ?>
+						<?php echo ($item->get('creationDate') != '') ? $item->get('creationDate') : '&#160;'; ?>
 					</td>
 					<td class="priority-5 center">
 						<span class="editlinktip hasTip" title="<?php echo addslashes(htmlspecialchars(Lang::txt('COM_INSTALLER_AUTHOR_INFORMATION').'::'.$item->get('author_info'))); ?>">
-							<?php echo ($item->get('author') != '' ? $item->get('author') : '&#160;'); ?>
+							<?php echo ($item->get('author') != '') ? $item->get('author') : '&#160;'; ?>
 						</span>
 					</td>
 					<td class="priority-4 center">
-						<?php echo ($item->get('folder') != '' ? $item->get('folder') : Lang::txt('COM_INSTALLER_TYPE_NONAPPLICABLE')); ?>
+						<?php echo ($item->get('folder') != '') ? $item->get('folder') : Lang::txt('COM_INSTALLER_TYPE_NONAPPLICABLE'); ?>
 					</td>
 					<td class="priority-4">
 						<?php echo $item->get('extension_id'); ?>

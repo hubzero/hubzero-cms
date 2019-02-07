@@ -95,13 +95,13 @@ $this->css();
 					</span>
 				</td>
 				<td class="priority-3 centeralign">
-					<span class="state <?php echo ($row->contributable == 1 ? 'yes' : 'no'); ?>">
-						<span><?php echo ($row->contributable == 1 ? Lang::txt('JYES') : Lang::txt('JNO')); ?></span>
+					<span class="state <?php echo ($row->contributable == 1) ? 'yes' : 'no'; ?>">
+						<span><?php echo ($row->contributable == 1) ? Lang::txt('JYES') : Lang::txt('JNO'); ?></span>
 					</span>
 				</td>
 				<td class="priority-2 centeralign">
-					<span class="state <?php echo ($row->state == 1 ? 'on' : 'off'); ?>">
-						<span><?php echo ($row->state == 1 ? Lang::txt('COM_PUBLICATIONS_ON') : Lang::txt('COM_PUBLICATIONS_OFF')); ?></span>
+					<span class="state <?php echo ($row->state == 1) ? 'on' : 'off'; ?>">
+						<span><?php echo ($row->state == 1) ? Lang::txt('COM_PUBLICATIONS_ON') : Lang::txt('COM_PUBLICATIONS_OFF'); ?></span>
 					</span>
 				</td>
 			</tr>

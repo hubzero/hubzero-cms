@@ -53,12 +53,12 @@ if ($canDo->get('core.delete'))
 	Toolbar::deleteList('COM_GROUPS_MODULES_CONFIRM_DELETE', 'delete');
 }
 Toolbar::spacer();
-Toolbar::custom('manage', 'config','config','COM_GROUPS_MANAGE', false);
+Toolbar::custom('manage', 'config', 'config', 'COM_GROUPS_MANAGE', false);
 
 $this->css();
 
 // include modal for raw version links
-Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fullScreen'=>true));
+Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fullScreen' => true));
 ?>
 
 <?php require_once dirname(dirname(__DIR__)) . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
@@ -177,10 +177,10 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
 						switch ($module->get('state'))
 						{
 							case 0:
-								echo  Lang::txt('COM_GROUPS_MODULES_STATUS_UNPUBLISHED');
+								echo Lang::txt('COM_GROUPS_MODULES_STATUS_UNPUBLISHED');
 							break;
 							case 1:
-								echo  Lang::txt('COM_GROUPS_MODULES_STATUS_PUBLISHED');
+								echo Lang::txt('COM_GROUPS_MODULES_STATUS_PUBLISHED');
 							break;
 							case 2:
 								echo Lang::txt('COM_GROUPS_MODULES_STATUS_DELETED');

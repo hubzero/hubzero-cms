@@ -76,10 +76,13 @@ if ($canDo->get('core.admin'))
 		<tbody>
 			<?php if (count($this->templates) > 0) : ?>
 				<?php foreach ($this->templates as $k => $template) :
-					if ($template->deleted) continue; ?>
+					if ($template->deleted):
+						continue;
+					endif;
+					?>
 					<tr>
 						<td>
-								<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $template->id; ?>" class="checkbox-toggle" />
+							<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $template->id; ?>" class="checkbox-toggle" />
 						</td>
 						<td>
 							<?php if (!$template->editable) : ?>

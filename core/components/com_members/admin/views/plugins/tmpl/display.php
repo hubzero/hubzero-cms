@@ -88,7 +88,7 @@ $saveOrder = $listOrder == 'ordering';
 				<th scope="col" class="priority-2">
 					<?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'ordering', $listDirn, $listOrder); ?>
 					<?php if ($canOrder && $saveOrder) :?>
-						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'plugins.saveorder'); ?>
+						<?php echo Html::grid('order', $this->items, 'filesave.png', 'plugins.saveorder'); ?>
 					<?php endif; ?>
 				</th>
 				<th scope="col" class="priority-3 nowrap">

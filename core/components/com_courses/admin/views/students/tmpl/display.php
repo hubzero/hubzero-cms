@@ -203,8 +203,8 @@ Html::behavior('tooltip');
 					<?php echo ($section->exists()) ? $this->escape(stripslashes($section->get('title'))) : Lang::txt('COM_COURSES_NONE'); ?>
 				</td>
 				<td class="priority-3">
-					<span class="state <?php echo ($row->get('token') ? 'publish' : 'unpublish'); ?>">
-						<span> <?php echo ($row->get('token') ? 'redeemed' : ''); ?></span>
+					<span class="state <?php echo ($row->get('token')) ? 'publish' : 'unpublish'; ?>">
+						<span> <?php echo ($row->get('token')) ? 'redeemed' : ''; ?></span>
 					</span>
 				</td>
 				<td class="priority-4">

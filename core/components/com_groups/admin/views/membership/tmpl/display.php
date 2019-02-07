@@ -50,7 +50,7 @@ switch ($this->filters['status'])
 		//}
 		if ($canDo->get('core.delete'))
 		{
-			Toolbar::custom('uninvite', 'unpublish','COM_GROUPS_MEMBER_UNINVITE', 'COM_GROUPS_MEMBER_UNINVITE', false, false);
+			Toolbar::custom('uninvite', 'unpublish', 'COM_GROUPS_MEMBER_UNINVITE', 'COM_GROUPS_MEMBER_UNINVITE', false, false);
 		}
 	break;
 	case 'applicant':
@@ -67,7 +67,7 @@ switch ($this->filters['status'])
 		if ($canDo->get('core.edit'))
 		{
 			Toolbar::custom('promote', 'promote', 'COM_GROUPS_MEMBER_PROMOTE', 'COM_GROUPS_MEMBER_PROMOTE', false, false);
-			Toolbar::custom('demote', 'demote', 'COM_GROUPS_MEMBER_DEMOTE','COM_GROUPS_MEMBER_DEMOTE', false, false);
+			Toolbar::custom('demote', 'demote', 'COM_GROUPS_MEMBER_DEMOTE', 'COM_GROUPS_MEMBER_DEMOTE', false, false);
 		}
 		if ($canDo->get('core.delete'))
 		{

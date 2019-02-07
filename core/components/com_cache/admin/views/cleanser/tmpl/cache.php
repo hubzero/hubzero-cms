@@ -105,7 +105,10 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						<?php echo \Hubzero\Utility\Number::formatBytes($item->size * 1024); ?>
 					</td>
 				</tr>
-			<?php $i++; endforeach; ?>
+				<?php
+				$i++;
+			endforeach;
+			?>
 		</tbody>
 	</table>
 
