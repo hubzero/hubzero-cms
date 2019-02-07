@@ -47,4 +47,16 @@ jQuery(document).ready(function(jq) {
 				}, 800);
 			});
 	}
+
+	if ($('#questions').length > 0) {
+		if ($('#questions').attr('data-redirect')) {
+			setTimeout(function() {
+				var divs = ['overlay', 'questions'];
+				for (var idx = 0; idx < divs.length; ++idx) {
+					var div = document.getElementById(divs[idx]);
+					div.parentNode.removeChild(div);
+				}
+			}, 4000);
+		}
+	}
 });
