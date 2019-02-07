@@ -95,16 +95,16 @@ $this->view('_submenu')
 		<div class="grid">
 			<div class="col span5">
 				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
+				<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
 			</div>
 			<div class="col span7 align-right">
 				<?php
 				if (!empty($this->filters['skuRequested']))
 				{
 					?>
-					<select name="skuRequested" id="skuRequested" onchange="this.form.submit();">
+					<select name="skuRequested" id="skuRequested" class="filter filter-submit">
 						<option value="0"<?php if ($this->filters['skuRequested'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('All SKUs'); ?></option>
-						<option value="<?php echo $this->filters['skuRequested']; ?>" selected="selected"><?php echo $this->skuRequestedName; ?></option>
+						<option value="<?php echo $this->filters['skuRequested']; ?>"><?php echo $this->skuRequestedName; ?></option>
 					</select>
 					&nbsp;&nbsp;
 					<?php
@@ -164,7 +164,7 @@ $this->view('_submenu')
 			</tr>
 		<?php } ?>
 		<tr>
-			<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+			<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED_BY', 'dName', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			<th scope="col"><?php echo Lang::txt('COM_CART_USER_INFO'); ?></th>
@@ -211,7 +211,7 @@ $this->view('_submenu')
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->dId; ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->dId; ?>" class="checkbox-toggle" />
 				</td>
 				<td>
 					<?php

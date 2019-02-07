@@ -82,13 +82,13 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
 					<td>
 						<ol class="attention-view">
 							<li class="raw">
-								<a class="version" href="<?php echo $base; ?>&amp;task=raw&amp;moduleid=<?php echo $needsAttention->get('id'); ?>" class="btn">
+								<a class="version" href="<?php echo Route::url($base . '&task=raw&moduleid=' . $needsAttention->get('id')); ?>" class="btn">
 									<?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_VIEW_RAW'); ?>
 								</a>
 							</li>
 							<?php if ($needsAttention->get('checked_errors') && $needsAttention->get('scanned')) : ?>
 								<li class="preview">
-									<a class="preview" href="<?php echo $base; ?>&amp;task=preview&amp;moduleid=<?php echo $needsAttention->get('id'); ?>" class="btn">
+									<a class="preview" href="<?php echo Route::url($base . '&task=preview&moduleid=' . $needsAttention->get('id')); ?>" class="btn">
 										<?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_RENDER_PREVIEW'); ?>
 									</a>
 								</li>
@@ -98,7 +98,7 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
 								</li>
 							<?php endif; ?>
 							<li class="edit">
-								<a href="<?php echo $base; ?>&amp;task=edit&amp;id[]=<?php echo $needsAttention->get('id'); ?>" class="btn">
+								<a href="<?php echo Route::url($base . '&task=edit&id[]=' . $needsAttention->get('id')); ?>" class="btn">
 									<?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_EDIT'); ?>
 								</a>
 							</li>
@@ -107,12 +107,12 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
 					<td>
 						<ol class="attention-actions">
 							<li class="<?php if ($needsAttention->get('checked_errors')) { echo 'completed'; } ?>">
-								<a href="<?php echo $base; ?>&amp;task=errors&amp;id=<?php echo $needsAttention->get('id'); ?>" class="btn">
+								<a href="<?php echo Route::url($base . '&task=errors&id=' . $needsAttention->get('id')); ?>" class="btn">
 									<?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_CHECK_FOR_ERRORS'); ?>
 								</a>
 							</li>
 							<li class="<?php if ($needsAttention->get('scanned')) { echo 'completed'; } ?>">
-								<a href="<?php echo $base; ?>&amp;task=scan&amp;id=<?php echo $needsAttention->get('id'); ?>" class="btn">
+								<a href="<?php echo Route::url($base . '&task=scan&id=' . $needsAttention->get('id')); ?>" class="btn">
 									<?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_SCAN_CONTENT'); ?>
 								</a>
 							</li>
@@ -123,7 +123,7 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
 						<ol class="attention-actions">
 							<?php if ($needsAttention->get('checked_errors') && $needsAttention->get('scanned')) : ?>
 								<li class="approve">
-									<a href="<?php echo $base; ?>&amp;task=approve&amp;id=<?php echo $needsAttention->get('id'); ?>" class="btn">
+									<a href="<?php echo Route::url($base . '&task=approve&id=' . $needsAttention->get('id')); ?>" class="btn">
 										<strong><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE'); ?></strong>
 									</a>
 								</li>
@@ -143,7 +143,7 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
 	<table class="adminlist">
 		<thead>
 		 	<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_TITLE'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_STATUS'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_POSITION'); ?></th>
@@ -154,7 +154,7 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
 	<?php foreach ($this->modules as $k => $module) : ?>
 			<tr>
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $module->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $module->get('id'); ?>" class="checkbox-toggle" />
 				</td>
 				<td>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&gid=' . $this->group->cn . '&id=' . $module->get('id')); ?>">

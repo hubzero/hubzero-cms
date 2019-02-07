@@ -91,7 +91,7 @@ else
 				</tr>
 			<?php } ?>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th><?php echo Lang::txt('COM_RESOURCES_COL_ID'); ?></th>
 				<th><?php echo Lang::txt('COM_RESOURCES_COL_TITLE'); ?></th>
 				<th><?php echo Lang::txt('COM_RESOURCES_COL_STATUS'); ?></th>

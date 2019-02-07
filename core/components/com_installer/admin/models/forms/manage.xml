@@ -7,7 +7,7 @@
 			<field type="search"
 				name="search"
 				submit="yes"
-				onchange="this.form.submit();"
+				class="filter"
 				label="JSEARCH_FILTER_LABEL"
 				description="JSEARCH_FILTER"
 			/>
@@ -18,7 +18,7 @@
 			<field type="list"
 				name="client_id"
 				hidden="true"
-				onchange="this.form.submit();"
+				class="filter filter-submit"
 			>
 				<option value="">COM_INSTALLER_VALUE_CLIENT_SELECT</option>
 				<option value="0">JSITE</option>
@@ -28,7 +28,7 @@
 			<field type="list"
 				name="status"
 				hidden="true"
-				onchange="this.form.submit();"
+				class="filter filter-submit"
 			>
 				<option value="">COM_INSTALLER_VALUE_STATE_SELECT</option>
 				<option value="0">JDISABLED</option>
@@ -39,14 +39,14 @@
 			<field type="type"
 				name="type"
 				hidden="true"
-				onchange="this.form.submit();"
+				class="filter filter-submit"
 			>
 				<option value="">COM_INSTALLER_VALUE_TYPE_SELECT</option>
 			</field>
 			<field type="group"
 				name="group"
 				hidden="true"
-				onchange="this.form.submit();"
+				class="filter filter-submit"
 			>
 				<option value="">COM_INSTALLER_VALUE_FOLDER_SELECT</option>
 				<option value="*">COM_INSTALLER_VALUE_FOLDER_NONAPPLICABLE</option>
