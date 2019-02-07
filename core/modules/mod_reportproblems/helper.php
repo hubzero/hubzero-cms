@@ -86,6 +86,14 @@ class Helper extends Module
 
 		$this->supportParams = Component::params('com_support');
 
+		$allowed = Component::params('com_media')->get('upload_extensions');
+		if (!$allowed)
+		{
+			$allowed = $this->supportParams->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif');
+		}
+
+		$this->allowed = $allowed;
+
 		require $this->getLayoutPath();
 	}
 }
