@@ -44,18 +44,6 @@ Toolbar::spacer();
 Toolbar::help('downloads');
 ?>
 <script type="text/javascript">
-	function submitbutton(pressbutton)
-	{
-		var form = document.adminForm;
-		if (pressbutton == 'cancel') {
-			submitform(pressbutton);
-			return;
-		}
-		// do field validation
-		submitform(pressbutton);
-	}
-</script>
-<script>
 	$( function() {
 		var dateFormat = "mm/dd/yy",
 			from = $( "#filter-report-from" )
@@ -99,11 +87,11 @@ $this->view('_submenu')
 		<div class="grid">
 			<div class="col span5">
 				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
+				<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
 			</div>
 			<div class="col span7 align-right">
 				<label for="filter-reportnotes"><?php echo Lang::txt('COM_CART_SHOW_NOTES'); ?>:</label>
-				<select name="report-notes" id="filter-report-notes" onchange="this.form.submit();">
+				<select name="report-notes" id="filter-report-notes" class="filter filter-submit">
 					<option value="0"<?php if ($this->filters['report-notes'] === 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CART_SHOW_NOTES_ALL'); ?></option>
 					<option value="1"<?php if ($this->filters['report-notes'] === 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CART_SHOW_NOTES_ONLY'); ?></option>
 				</select>

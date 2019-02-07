@@ -91,18 +91,18 @@ $this->css('quotas.css');
 		<div class="grid">
 			<div class="col span5">
 				<label for="filter_search_field"><?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?></label>
-				<select name="search_field" id="filter_search_field">
+				<select name="search_field" id="filter_search_field" class="filter">
 					<option value="username"<?php if ($this->filters['search_field'] == 'username') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_QUOTA_USERNAME'); ?></option>
 					<option value="name"<?php if ($this->filters['search_field'] == 'name') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_QUOTA_NAME'); ?></option>
 				</select>
 
 				<label for="filter_search"><?php echo Lang::txt('COM_MEMBERS_SEARCH_FOR'); ?></label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
+				<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
 
 				<input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_GO'); ?>" />
 			</div>
 			<div class="col span7">
-				<select name="class_alias" id="filter_class_alias" onchange="document.adminForm.submit( );">
+				<select name="class_alias" id="filter_class_alias" class="filter filter-submit">
 					<option value=""<?php if ($this->filters['class_alias'] == '') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FILTER_QUOTA_CLASS'); ?></option>
 					<?php foreach ($this->classes as $class) : ?>
 						<option value="<?php echo $class->get('alias'); ?>"<?php if ($this->filters['class_alias'] == $class->get('alias')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($class->get('alias')); ?></option>
@@ -114,7 +114,7 @@ $this->css('quotas.css');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th class="priority-5"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_USER_ID', 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th class="priority-4"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -141,7 +141,7 @@ $this->css('quotas.css');
 			?>
 			<tr class="<?php echo "row$k quota-row"; ?>">
 				<td>
-					<input class="row-id" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input class="row-id" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
 				</td>
 				<td class="priority-5">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">

@@ -48,14 +48,14 @@ Html::behavior('modal');
 		<div class="grid">
 			<div class="col span4">
 				<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-				<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC'); ?>" />
+				<input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC'); ?>" />
 
 				<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span8">
 				<label for="filter_action"><?php echo Lang::txt('COM_PROJECTS_FILTER_ACTION'); ?>:</label>
-				<select name="action" class="inputbox" id="filter_action" onchange="this.form.submit()">
+				<select name="action" class="inputbox filter filter-submit" id="filter_action">
 					<option value=""><?php echo Lang::txt('COM_PROJECTS_FILTER_ACTION'); ?></option>
 					<option value="created"<?php if ($this->filters['action'] == 'created') { echo ' selected="selected"'; } ?>>created</option>
 					<option value="updated"<?php if ($this->filters['action'] == 'updated') { echo ' selected="selected"'; } ?>>updated</option>
@@ -69,13 +69,13 @@ Html::behavior('modal');
 				</select>
 
 				<label for="filter_filter"><?php echo Lang::txt('COM_PROJECTS_FILTER_FILTER'); ?>:</label>
-				<select name="filter" class="inputbox" id="filter_filter" onchange="this.form.submit()">
+				<select name="filter" class="inputbox filter filter-submit" id="filter_filter">
 					<option value=""><?php echo Lang::txt('COM_PROJECTS_FILTER_FILTER'); ?></option>
 					<option value="starred"<?php if ($this->filters['filter'] == 'starred') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_STARRED'); ?></option>
 				</select>
 
 				<label for="filter_state"><?php echo Lang::txt('COM_PROJECTS_FIELD_STATE'); ?>:</label>
-				<select name="state" id="filter_state" onchange="this.form.submit();">
+				<select name="state" id="filter_state" class="inputbox filter filter-submit">
 					<option value="-1"<?php if ($this->filters['state'] == '-1') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_ALL_STATES'); ?></option>
 					<option value="0"<?php if ($this->filters['state'] === 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
 					<option value="1"<?php if ($this->filters['state'] === 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
@@ -88,11 +88,11 @@ Html::behavior('modal');
 		<thead>
 		<?php if ($this->filters['project']) { ?>
 			<tr>
-				<th colspan="8"><a href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_PROJECTS'); ?></a>  > (<?php echo $this->escape(stripslashes($this->project->get('alias'))); ?>) <?php echo $this->escape(stripslashes($this->project->get('title'))); ?></th>
+				<th colspan="8"><a href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_PROJECTS'); ?></a> > (<?php echo $this->escape(stripslashes($this->project->get('alias'))); ?>) <?php echo $this->escape(stripslashes($this->project->get('title'))); ?></th>
 			</tr>
 		<?php } ?>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col" class="priority-6"><?php echo Html::grid('sort', 'COM_PROJECTS_ACTIVITY_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_PROJECTS_ACTIVITY_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_PROJECTS_ACTIVITY_CREATED_BY', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -138,7 +138,7 @@ Html::behavior('modal');
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
 				</td>
 				<td class="priority-6">
 					<?php

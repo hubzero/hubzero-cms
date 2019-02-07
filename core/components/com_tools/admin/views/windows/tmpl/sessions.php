@@ -46,7 +46,7 @@ Toolbar::help('sessions');
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=sessions'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_appname"><?php echo Lang::txt('COM_TOOLS_APPNAME'); ?>:</label>
-		<select name="appname" id="filter_appname" onchange="document.adminForm.submit();">
+		<select name="appname" id="filter_appname" class="filter filter-submit">
 			<option value=""><?php echo Lang::txt('COM_TOOLS_APPNAME_SELECT'); ?></option>
 			<?php
 

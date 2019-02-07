@@ -49,7 +49,7 @@ Html::behavior('tooltip');
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_appname"><?php echo Lang::txt('COM_TOOLS_APPNAME'); ?>:</label>
-		<select name="appname" id="filter_appname" onchange="document.adminForm.submit();">
+		<select name="appname" id="filter_appname" class="filter filter-submit">
 			<option value=""><?php echo Lang::txt('COM_TOOLS_APPNAME_SELECT'); ?></option>
 			<?php
 				foreach ($this->appnames as $record)
@@ -67,7 +67,7 @@ Html::behavior('tooltip');
 		</select>
 
 		<label for="filter_exechost"><?php echo Lang::txt('COM_TOOLS_EXECHOST'); ?>:</label>
-		<select name="exechost" id="filter_exechost" onchange="document.adminForm.submit();">
+		<select name="exechost" id="filter_exechost" class="filter filter-submit">
 			<option value=""><?php echo Lang::txt('COM_TOOLS_EXECHOST_SELECT'); ?></option>
 			<?php
 				foreach ($this->exechosts as $record)
@@ -85,7 +85,7 @@ Html::behavior('tooltip');
 		</select>
 
 		<label for="filter_username"><?php echo Lang::txt('COM_TOOLS_USERNAME'); ?>:</label>
-		<select name="username" id="filter_username" onchange="document.adminForm.submit();">
+		<select name="username" id="filter_username" class="filter filter-submit">
 			<option value=""><?php echo Lang::txt('COM_TOOLS_USERNAME_SELECT'); ?></option>
 			<?php
 				foreach ($this->usernames as $record)
@@ -110,7 +110,7 @@ Html::behavior('tooltip');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_SESSION', 'sessnum', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_TOOLS_COL_OWNER', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_TOOLS_COL_VIEWER', 'viewuser', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -145,7 +145,7 @@ Html::behavior('tooltip');
 				?>
 				<tr>
 					<td>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->sessnum; ?>" onclick="Joomla.isChecked(this.checked);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->sessnum; ?>" class="checkbox-toggle" />
 					</td>
 					<td>
 						<span class="editlinktip hasTip" title="<?php echo $this->escape(stripslashes($row->sessname)); ?>::Host: <?php echo $row->exechost; ?>&lt;br /&gt;IP: <?php echo $row->remoteip; ?>">

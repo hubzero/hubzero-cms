@@ -65,13 +65,13 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_LANGUAGES_VIEW_OVERRIDES_FILTER_SEARCH_DESC'); ?>" />
+			<input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_LANGUAGES_VIEW_OVERRIDES_FILTER_SEARCH_DESC'); ?>" />
 
 			<button type="submit" class="btn"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="filter-select fltrt">
-			<select name="filter_language_client" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_language_client" class="inputbox filter filter-submit">
 				<?php echo Html::select('options', $this->languages, null, 'text', $this->filters['language_client']); ?>
 			</select>
 		</div>
@@ -81,7 +81,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 		<thead>
 			<tr>
 				<th>
-					<input type="checkbox" name="checkall-toggle" value="" onclick="Joomla.checkAll(this);" />
+					<input type="checkbox" name="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
 				</th>
 				<th>
 					<?php echo Html::grid('sort', 'COM_LANGUAGES_VIEW_OVERRIDES_KEY', 'key', $listDirn, $listOrder); ?>

@@ -46,7 +46,7 @@ Toolbar::deleteList();
 		<table class="adminlist">
 			<thead>
 				<tr>
-					<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+					<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 					<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 					<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 					<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_FILE', 'file', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
@@ -65,7 +65,7 @@ Toolbar::deleteList();
 					<?php foreach ($this->hooks as $i => $hook) : ?>
 						<tr>
 							<td>
-								<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $hook->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
+								<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $hook->get('id'); ?>" class="checkbox-toggle" />
 							</td>
 							<td>
 								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $hook->get('id')); ?>">
