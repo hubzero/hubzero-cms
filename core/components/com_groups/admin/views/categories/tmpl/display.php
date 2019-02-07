@@ -49,7 +49,7 @@ if ($canDo->get('core.delete'))
 	Toolbar::deleteList('COM_GROUPS_PAGES_CATEGORIES_CONFIRM_DELETE', 'delete');
 }
 Toolbar::spacer();
-Toolbar::custom('manage', 'config','config','COM_GROUPS_MANAGE',false);
+Toolbar::custom('manage', 'config', 'config', 'COM_GROUPS_MANAGE', false);
 ?>
 
 <?php require_once dirname(dirname(__DIR__)) . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
