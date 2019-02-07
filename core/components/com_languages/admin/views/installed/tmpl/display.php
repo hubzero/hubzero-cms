@@ -110,8 +110,13 @@ $pagination = $this->rows->pagination;
 		$canChange = User::authorise('core.edit.state', $this->option);
 
 		foreach ($this->rows as $i => $row) :
+			$cls = $i % 2;
+			if (isset($row->missing))
+			{
+				echo ' archived';
+			}
 		?>
-			<tr class="row<?php echo $i % 2; if (isset($row->missing)) { echo ' archived'; } ?>">
+			<tr class="row<?php echo $cls; ?>">
 				<td class="priority-6">
 					<?php echo $pagination->getRowOffset($i); ?>
 				</td>

@@ -129,17 +129,17 @@ Html::behavior('tooltip');
 				<th class="priority-2">
 					<?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'lft', $listDirn, $listOrder); ?>
 					<?php if ($saveOrder) :?>
-						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'categories.saveorder'); ?>
+						<?php echo Html::grid('order', $this->items, 'filesave.png', 'categories.saveorder'); ?>
 					<?php endif; ?>
 				</th>
 				<th class="priority-3">
-					<?php echo Html::grid('sort',  'JGRID_HEADING_ACCESS', 'title', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ACCESS', 'title', $listDirn, $listOrder); ?>
 				</th>
 				<th class="priority-4 nowrap">
 					<?php echo Html::grid('sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
 				</th>
 				<th class="priority-4 nowrap">
-					<?php echo Html::grid('sort',  'JGRID_HEADING_ID', 'id', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ID', 'id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>

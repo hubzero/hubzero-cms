@@ -138,9 +138,9 @@ $saveOrder = $listOrder == 'ordering';
 					<?php echo Html::grid('sort', 'JCATEGORY', 'catid', $listDirn, $listOrder); ?>
 				</th>
 				<th class="priority-3">
-					<?php echo Html::grid('sort',  'JGRID_HEADING_ORDERING', 'ordering', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'ordering', $listDirn, $listOrder); ?>
 					<?php if ($saveOrder) :?>
-						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'saveorder'); ?>
+						<?php echo Html::grid('order', $this->items, 'filesave.png', 'saveorder'); ?>
 					<?php endif; ?>
 				</th>
 				<th class="priority-4">

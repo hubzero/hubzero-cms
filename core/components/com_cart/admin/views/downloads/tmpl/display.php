@@ -130,7 +130,7 @@ $this->view('_submenu')
 						echo Lang::txt('COM_CART_ORDERS_FOR') . ': ';
 						$user = User::getInstance($this->filters['uidNumber']);
 
-						echo($user->get('id') ? $user->get('name') . ' (' . $user->get('username') . ')' : Lang::txt('COM_CART_USER_ID') . ': ' . $this->filters['uidNumber']);
+						echo ($user->get('id')) ? $user->get('name') . ' (' . $user->get('username') . ')' : Lang::txt('COM_CART_USER_ID') . ': ' . $this->filters['uidNumber'];
 						?>
 						<button type="button"
 								onclick="$('#filter_uidNumber').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -141,7 +141,7 @@ $this->view('_submenu')
 						echo Lang::txt('COM_CART_ORDERS_OF') . ': ';
 						$product = Product::getInstance($this->filters['pId']);
 
-						echo($product->getName());
+						echo $product->getName();
 						?>
 						<button type="button"
 								onclick="$('#filter_pId').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -152,7 +152,7 @@ $this->view('_submenu')
 						echo Lang::txt('COM_CART_ORDERS_OF') . ': ';
 						$sku = Sku::getInstance($this->filters['sId']);
 
-						echo($sku->getName());
+						echo $sku->getName();
 						?>
 						<button type="button"
 								onclick="$('#filter_sId').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -250,7 +250,7 @@ $this->view('_submenu')
 					<?php if ($row->uidNumber) { ?>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&uidNumber=' . $row->uidNumber); ?>">
 						<?php } ?>
-						<span><?php echo ($row->uidNumber ? $this->escape(stripslashes($row->dName)) . ' (' . $this->escape(stripslashes($row->username)) . ')' : Lang::txt('COM_CART_UNKNOWN')); ?></span>
+						<span><?php echo ($row->uidNumber) ? $this->escape(stripslashes($row->dName)) . ' (' . $this->escape(stripslashes($row->username)) . ')' : Lang::txt('COM_CART_UNKNOWN'); ?></span>
 						<?php if ($row->uidNumber) { ?>
 					</a>
 				<?php } ?>

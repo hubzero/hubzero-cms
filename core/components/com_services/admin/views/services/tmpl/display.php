@@ -107,8 +107,8 @@ Toolbar::help('services');
 					<?php echo $this->escape($row->category); ?>
 				</td>
 				<td>
-					<span class="state <?php echo $row->status==1 ? 'publish' : 'unpublish'; ?>">
-						<span><?php echo $row->status==1 ? Lang::txt('COM_SERVICES_STATE_ACTIVE') : Lang::txt('COM_SERVICES_STATE_INACTIVE') ; ?></span>
+					<span class="state <?php echo $row->status == 1 ? 'publish' : 'unpublish'; ?>">
+						<span><?php echo $row->status == 1 ? Lang::txt('COM_SERVICES_STATE_ACTIVE') : Lang::txt('COM_SERVICES_STATE_INACTIVE'); ?></span>
 					</span>
 				</td>
 			</tr>

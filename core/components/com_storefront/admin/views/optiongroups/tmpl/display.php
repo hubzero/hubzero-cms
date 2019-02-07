@@ -142,7 +142,8 @@ foreach ($this->rows as $row)
 							<span>[ + ]</span>
 						</a>
 					<?php } else { ?>
-						<span><?php $key = $row->ogId; echo $this->options->$key; ?></span>
+						<span><?php $key = $row->ogId;
+						echo $this->options->$key; ?></span>
 					</span>
 					<?php } ?>
 				</td>
