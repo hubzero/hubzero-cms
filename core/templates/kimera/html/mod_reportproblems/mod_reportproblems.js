@@ -87,6 +87,8 @@ HUB.Modules.ReportProblems = {
 								var validExt = false,
 									file = upload.val();
 
+								var _validFileExtensions = upload.attr('data-allowed').split(',');
+
 								for (var j = 0; j < _validFileExtensions.length; j++) {
 									var sCurExtension = _validFileExtensions[j];
 									if (file.substr(file.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {

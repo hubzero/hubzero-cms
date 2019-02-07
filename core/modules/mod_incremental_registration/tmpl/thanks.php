@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 ?>
 <div id="overlay"></div>
-<div id="questions">
+<div id="questions" data-redirect="true">
 	<p>
 		<?php echo Lang::txt('MOD_INCREMENTAL_REGISTRATION_THANK_YOU'); ?>
 		<?php if ($award): ?>
@@ -44,14 +44,4 @@ defined('_HZEXEC_') or die();
 	</p>
 
 	<a href="<?php echo Request::getString('REQUEST_URI', Request::getString('REDIRECT_REQUEST_URI', '', 'server'), 'server'); ?>"><?php echo Lang::txt('MOD_INCREMENTAL_REGISTRATION_CLICK_IF_NOT_REDIRECTED'); ?></a>
-
-	<script type="text/javascript">
-		setTimeout(function() {
-			var divs = ['overlay', 'questions'];
-			for (var idx = 0; idx < divs.length; ++idx) {
-				var div = document.getElementById(divs[idx]);
-				div.parentNode.removeChild(div);
-			}
-		}, 4000);
-	</script>
 </div>
