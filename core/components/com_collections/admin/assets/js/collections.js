@@ -1,17 +1,26 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/members/collections/assets/js/fileupload.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @file        components/com_collections/admin/assets/js/collections.js
+ * @copyright   Copyright 2005-2019 HUBzero Foundation, LLC.
  * @license     http://opensource.org/licenses/MIT MIT
  */
 
-if (!jq) {
-	var jq = $;
+Joomla.submitbutton = function(task) {
+	$(document).trigger('editorSave');
+
+	var frm = document.getElementById('item-form');
+
+	if (frm) {
+		if (task == 'cancel' || document.formvalidator.isValid(frm)) {
+			Joomla.submitform(task, frm);
+		} else {
+			alert(frm.getAttribute('data-invalid-msg'));
+		}
+	}
 }
 
-jQuery(document).ready(function(jq){
-	var $ = jq
-		attach = $("#ajax-uploader");
+jQuery(document).ready(function ($) {
+	var attach = $("#ajax-uploader");
 
 	$("#ajax-uploader-list").sortable({
 		handle: '.asset-handle'

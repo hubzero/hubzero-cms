@@ -36,7 +36,7 @@ $canDo = \Components\Answers\Helpers\Permissions::getActions('question');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_ANSWERS_TITLE') . ': ' . Lang::txt('COM_ANSWERS_QUESTIONS') . ': ' . $text, 'answers.png');
+Toolbar::title(Lang::txt('COM_ANSWERS_TITLE') . ': ' . Lang::txt('COM_ANSWERS_QUESTIONS') . ': ' . $text, 'answers');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -46,31 +46,14 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('question');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-
-	<?php echo $this->editor()->save('text'); ?>
-
-	// do field validation
-	if (document.getElementById('field-subject').value == ''){
-		alert('<?php echo Lang::txt('COM_ANSWERS_ERROR_MISSING_SUBJECT'); ?>');
-	} else if (document.getElementById('field-tags').value == ''){
-		alert('<?php echo Lang::txt('COM_ANSWERS_ERROR_MISSING_TAG'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="form-validate" id="item-form" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -93,7 +76,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-subject"><?php echo Lang::txt('COM_ANSWERS_FIELD_SUBJECT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="question[subject]" id="field-subject" size="30" maxlength="250" value="<?php echo $this->escape($this->row->get('subject')); ?>" />
+					<input type="text" name="question[subject]" id="field-subject" class="required" maxlength="250" value="<?php echo $this->escape($this->row->get('subject')); ?>" />
 				</div>
 
 				<div class="input-wrap">
@@ -103,7 +86,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_ANSWERS_FIELD_TAGS_HINT'); ?>">
 					<label for="field-tags"><?php echo Lang::txt('COM_ANSWERS_FIELD_TAGS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<textarea name="question[tags]" id="field-tags" cols="50" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
+					<textarea name="question[tags]" id="field-tags" class="required" cols="50" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
 					<span class="hint"><?php echo Lang::txt('COM_ANSWERS_FIELD_TAGS_HINT'); ?></span>
 				</div>
 			</fieldset>
@@ -121,7 +104,7 @@ function submitbutton(pressbutton)
 					<?php if ($this->row->get('id')) { ?>
 						<tr>
 							<th><?php echo Lang::txt('COM_ANSWERS_FIELD_CREATED'); ?>:</th>
-							<td><?php echo $this->row->get('created'); ?></td>
+							<td><?php echo Date::of($this->row->get('created'))->toLocal(); ?></td>
 						</tr>
 						<tr>
 							<th><?php echo Lang::txt('COM_ANSWERS_FIELD_CREATOR'); ?>:</th>
