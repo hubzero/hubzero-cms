@@ -36,7 +36,7 @@ $canDo = \Components\Collections\Helpers\Permissions::getActions('post');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_COLLECTIONS') . ': ' . Lang::txt('COM_COLLECTIONS_POSTS') . ': ' . $text, 'collection.png');
+Toolbar::title(Lang::txt('COM_COLLECTIONS') . ': ' . Lang::txt('COM_COLLECTIONS_POSTS') . ': ' . $text, 'collection');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -112,7 +112,7 @@ if (!$this->row->get('id'))
 					<tr>
 						<th><?php echo Lang::txt('COM_COLLECTIONS_FIELD_ORIGINAL'); ?>:</th>
 						<td>
-							<?php echo ($this->row->get('original') ? Lang::txt('JYES') : Lang::txt('JNO')); ?>
+							<?php echo ($this->row->get('original')) ? Lang::txt('JYES') : Lang::txt('JNO'); ?>
 						</td>
 					</tr>
 				</tbody>
