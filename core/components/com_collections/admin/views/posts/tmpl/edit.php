@@ -36,7 +36,7 @@ $canDo = \Components\Collections\Helpers\Permissions::getActions('post');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_COLLECTIONS') . ': ' . Lang::txt('COM_COLLECTIONS_POSTS') . ': ' . $text, 'collection.png');
+Toolbar::title(Lang::txt('COM_COLLECTIONS') . ': ' . Lang::txt('COM_COLLECTIONS_POSTS') . ': ' . $text, 'collection');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -47,36 +47,19 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('collection');
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
+
 if (!$this->row->get('id'))
 {
 	$this->row->set('created_by', User::get('id'));
 	$this->row->set('created', Date::toSql());
 }
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	<?php echo $this->editor()->save('text'); ?>
-
-	// do field validation
-	if ($('#field-item_id').val() == '') {
-		alert('<?php echo Lang::txt('COM_COLLECTIONS_ERROR_MISSING_ITEM_ID'); ?>');
-	} else if ($('#field-collection_id').val() == '') {
-		alert('<?php echo Lang::txt('COM_COLLECTIONS_ERROR_MISSING_COLLECTION_ID'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform form-validate" id="item-form" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 	<?php } ?>
@@ -89,13 +72,13 @@ function submitbutton(pressbutton)
 					<div class="col span6">
 						<div class="input-wrap">
 							<label for="field-item_id"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_ITEM_ID'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-							<input type="text" name="fields[item_id]" id="field-item_id" maxlength="11" value="<?php echo $this->escape(stripslashes($this->row->get('item_id'))); ?>" />
+							<input type="text" name="fields[item_id]" id="field-item_id" class="required" maxlength="11" value="<?php echo $this->escape(stripslashes($this->row->get('item_id'))); ?>" />
 						</div>
 					</div>
 					<div class="col span6">
 						<div class="input-wrap">
 							<label for="field-collection_id"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_COLLECTION_ID'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-							<input type="text" name="fields[collection_id]" id="field-collection_id" maxlength="11" value="<?php echo $this->escape(stripslashes($this->row->get('collection_id'))); ?>" />
+							<input type="text" name="fields[collection_id]" id="field-collection_id" class="required" maxlength="11" value="<?php echo $this->escape(stripslashes($this->row->get('collection_id'))); ?>" />
 						</div>
 					</div>
 				</div>
@@ -122,15 +105,14 @@ function submitbutton(pressbutton)
 					<tr>
 						<th><?php echo Lang::txt('COM_COLLECTIONS_FIELD_CREATED'); ?>:</th>
 						<td>
-							<?php echo $this->row->get('created'); ?>
+							<?php echo Date::of($this->row->get('created'))->toLocal(); ?>
 							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
 						</td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_COLLECTIONS_FIELD_ORIGINAL'); ?>:</th>
 						<td>
-							<?php echo ($this->row->get('original') ? Lang::txt('JYES') : Lang::txt('JNO')); ?>
-							<!-- <input type="hidden" name="fields[original]" id="field-original" value="<?php echo $this->escape($this->row->get('original')); ?>" /> -->
+							<?php echo ($this->row->get('original')) ? Lang::txt('JYES') : Lang::txt('JNO'); ?>
 						</td>
 					</tr>
 				</tbody>

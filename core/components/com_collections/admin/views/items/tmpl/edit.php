@@ -42,7 +42,7 @@ if (!$dir)
 	$dir = 'tmp' . time(); // . rand(0, 100);
 }
 
-Toolbar::title(Lang::txt('COM_COLLECTIONS') . ': ' . Lang::txt('COM_COLLECTIONS_ITEMS') . ': ' . $text, 'collection.png');
+Toolbar::title(Lang::txt('COM_COLLECTIONS') . ': ' . Lang::txt('COM_COLLECTIONS_ITEMS') . ': ' . $text, 'collection');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -54,33 +54,15 @@ Toolbar::spacer();
 Toolbar::help('collection');
 
 Html::behavior('switcher', 'submenu');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
 
 $this->css()
      ->js('jquery.fileuploader.js', 'system')
-     ->js('fileupload.js');
+     ->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	<?php echo $this->editor()->save('text'); ?>
-
-	// do field validation
-	if ($('#field-type').val() == '') {
-		alert('<?php echo Lang::txt('COM_COLLECTIONS_ERROR_MISSING_TYPE'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform form-validate" id="item-form" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 <?php if ($this->row->get('id')) { ?>
 	<nav role="navigation" class="sub-navigation">
 		<ul id="submenu" class="item-nav">
@@ -110,7 +92,7 @@ function submitbutton(pressbutton)
 
 						<div class="input-wrap">
 							<label for="field-description"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_DESCRIPTION'); ?></label><br />
-							<?php echo $this->editor('fields[description]', $this->escape($this->row->get('description')),  35, 10, 'field-description', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
+							<?php echo $this->editor('fields[description]', $this->escape($this->row->get('description')), 35, 10, 'field-description', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 						</div>
 
 						<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COLLECTIONS_FIELD_TAGS_HINT'); ?>">
@@ -185,7 +167,7 @@ function submitbutton(pressbutton)
 								<th><?php echo Lang::txt('COM_COLLECTIONS_FIELD_TYPE'); ?>:</th>
 								<td>
 									<?php echo $this->row->get('type', 'file'); ?>
-									<input type="hidden" name="fields[type]" id="field-type" value="<?php echo $this->escape($this->row->get('type', 'file')); ?>" />
+									<input type="hidden" name="fields[type]" id="field-type" class="required" value="<?php echo $this->escape($this->row->get('type', 'file')); ?>" />
 								</td>
 							</tr>
 							<?php if ($object_id = $this->row->get('object_id')) { ?>
