@@ -38,8 +38,8 @@ $canDo = Components\Members\Helpers\Admin::getActions('component');
 Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_PASSWORD_RULES'), 'user');
 if ($canDo->get('core.manage'))
 {
-	Toolbar::confirm('COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS_CONFIRM', 'refresh', 'COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS', 'restore_default_content');
-	//Toolbar::custom('restore_default_content', 'refresh', 'refresh', 'COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS', false, false);
+	//Toolbar::confirm('COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS_CONFIRM', 'refresh', 'COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS', 'restore_default_content');
+	Toolbar::custom('restore_default_content', 'refresh', 'refresh', 'COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS', false, false);
 	Toolbar::spacer();
 }
 if ($canDo->get('core.create'))

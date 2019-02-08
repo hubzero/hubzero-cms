@@ -50,8 +50,8 @@ if ($canDo->get('core.admin'))
 }
 if ($canDo->get('core.edit.state'))
 {
-	Toolbar::confirm('COM_MEMBERS_CONFIRMATION_WARNING', 'remove', 'COM_MEMBERS_CLEAR_TERMS', 'clearTerms');
-	//Toolbar::custom('clearTerms', 'remove', '', 'COM_MEMBERS_CLEAR_TERMS', false);
+	//Toolbar::confirm('COM_MEMBERS_CONFIRMATION_WARNING', 'remove', 'COM_MEMBERS_CLEAR_TERMS', 'clearTerms');
+	Toolbar::custom('clearTerms', 'remove', '', 'COM_MEMBERS_CLEAR_TERMS', false);
 	Toolbar::publishList('confirm', 'COM_MEMBERS_CONFIRM');
 	Toolbar::unpublishList('unconfirm', 'COM_MEMBERS_UNCONFIRM');
 	Toolbar::spacer();
