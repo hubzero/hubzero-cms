@@ -96,6 +96,8 @@
 		</div>
 	<?php endif; ?>
 	<!-- Result URL -->
+	<?php if (isset($this->result['url'])): ?>
 	<div class="result-url"><a href="<?php echo $this->result['url']; ?>"><?php echo $this->result['url']; ?></a></div>
+	<?php endif; ?>
 </div> <!-- End Result Body -->
 </div> <!-- End Result -->
