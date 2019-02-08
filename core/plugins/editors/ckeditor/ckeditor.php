@@ -66,55 +66,55 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 	 *
 	 * Not applicable in this editor.
 	 *
-	 * @return  void
+	 * @return  string
 	 */
 	public function onSave()
 	{
-		$js = "for (instance in CKEDITOR.instances) {
+		/*$js = "for (instance in CKEDITOR.instances) {
 				CKEDITOR.instances[instance].fire('beforeSave');
 				CKEDITOR.instances[instance].updateElement();
-			}";
-		return $js;
+			}";*/
+		return ''; //$js;
 	}
 
 	/**
 	 * Get the editor content.
 	 *
-	 * @param   string $id The id of the editor field.
+	 * @param   string  $id  The id of the editor field.
 	 * @return  string
 	 */
 	public function onGetContent($id)
 	{
-		$this->js("
+		/*$this->js("
 			function getEditorContent(id) {
 				CKEDITOR.instances['$id'].updateElement();
 				return document.getElementById('$id').value;
 			}
-		");
+		");*/
 		return "getEditorContent('$id');\n";
 	}
 
 	/**
 	 * Set the editor content.
 	 *
-	 * @param   string $id   The id of the editor field.
-	 * @param   string $html The content to set.
+	 * @param   string  $id    The id of the editor field.
+	 * @param   string  $html  The content to set.
 	 * @return  string
 	 */
 	public function onSetContent($id, $html)
 	{
-		return "CKEDITOR.instances['$id'].setData($html);\n"; //" document.getElementById('$id').value = '$html';\n";
+		return "setEditorContent('$id', '$html');\n";
 	}
 
 	/**
 	 * Inserts text
 	 *
-	 * @param	string	$id
-	 * @return	string
+	 * @param   string  $id
+	 * @return  bool
 	 */
 	public function onGetInsertMethod($id)
 	{
-		$js = "
+		/*$js = "
 			function jInsertEditorText( text, editor ) {
 				CKEDITOR.instances[editor].updateElement();
 				var content = document.getElementById(editor).value;
@@ -123,7 +123,7 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 			}
 		";
 
-		Document::addScriptDeclaration($js);
+		Document::addScriptDeclaration($js);*/
 
 		return true;
 	}
@@ -190,18 +190,31 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 
 		// Fix script and php protected source
 		//$config = str_replace('"\\/<group:include([^\\/]*)\\/>\\/g"', '/<group:include([^/]*)/>/g', $config);
-		$config = str_replace('"\\/<script[^>]*>(.|\\\\n)*<\\\\\\/script>\\/ig"', '/<script[^>]*>(.|\n)*<\/script>/ig', $config);
+		/*$config = str_replace('"\\/<script[^>]*>(.|\\\\n)*<\\\\\\/script>\\/ig"', '/<script[^>]*>(.|\n)*<\/script>/ig', $config);
 		$config = str_replace('"\\/<\\\\?[\\\\s\\\\S]*?\\\\?>\\/g"', '/<\?[\s\S]*?\?>/g', $config);
 		$config = str_replace('"\/<group:include([^>]*)\\\\\/>\/g"', '/<group:include([^>]*)\\/>/g', $config);
 		$config = str_replace('"\/{xhub:([^}]*)}\/gi"', '/{xhub:([^}]*)}/gi', $config);
 
 		// Script to actually make ckeditor
-		$script  = '<script type="text/javascript">';
-		$script .= 'if (typeof(jQuery) !== "undefined") {';
-		$script .= 'jQuery(document).ready(function() { jQuery("#'.$id.'").ckeditor(function() {}, '.$config.'); });';
-		$script .= 'jQuery(document).on("ajaxLoad", function() { jQuery("#'.$id.'").ckeditor(function() {}, '.$config.'); });';
-		$script .= '}';
-		$script .= '</script>';
+		$script  = '<script type="text/javascript">
+					if (typeof(jQuery) !== "undefined") {
+						jQuery(document)
+							.ready(function() {
+								jQuery("#'.$id.'").ckeditor(function() {}, '.$config.');
+							})
+							.on("ajaxLoad", function() {
+								jQuery("#'.$id.'").ckeditor(function() {}, '.$config.');
+							})
+							.on("editorSave", function() {
+								for (instance in CKEDITOR.instances) {
+									CKEDITOR.instances[instance].fire("beforeSave");
+									CKEDITOR.instances[instance].updateElement();
+								}
+							});
+					}
+					</script>';*/
+
+		$script  = '<script id="' . $id . '-ckeconfig" type="application/json">' . $config . '</script>';
 
 		$params['class'] = implode(' ', $params['class']);
 

@@ -487,7 +487,7 @@ function isChecked(isitchecked) {
  * @deprecated	12.1 This function will be removed in a future version. Use Joomla.submitbutton() instead.
  */
 function submitbutton(pressbutton) {
-	submitform(pressbutton);
+	return Joomla.submitbutton(pressbutton);
 }
 
 /**
@@ -496,7 +496,7 @@ function submitbutton(pressbutton) {
  * @deprecated	12.1 This function will be removed in a future version. Use Joomla.submitform() instead.
  */
 function submitform(pressbutton) {
-	var event;
+	/*var event;
 	if (document.createEvent) {
 		event = document.createEvent('HTMLEvents');
 		event.initEvent('submit', true, true);
@@ -518,7 +518,8 @@ function submitform(pressbutton) {
 	else if (typeof document.adminForm.fireEvent == "function") {
 		document.adminForm.fireEvent(event);
 	}
-	document.adminForm.submit();
+	document.adminForm.submit();*/
+	return Joomla.submitform(pressbutton);
 }
 
 /**

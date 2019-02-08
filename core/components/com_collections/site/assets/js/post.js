@@ -111,15 +111,8 @@ jQuery(document).ready(function(jq){
 			beforeLoad: function() {
 				$(this).attr('href', $(this).attr('href').nohtml());
 			},
-			afterLoad: function(current, previous) {
-				scrp = current.content.match(/<script type=\"text\/javascript\">(.*)<\/script>/ig);
-				current.content = current.content.replace(/<script(.*)<\/script>/ig, '');
-			},
 			beforeShow: function() {
-				if (scrp && scrp.length) {
-					scrp = scrp[0].replace(/<script type=\"text\/javascript\">/ig, '').replace(/<\/script>/ig, '');
-					eval(scrp);
-				}
+				$(document).trigger('ajaxLoad');
 			},
 			afterShow: function() {
 				var el = this.element;
