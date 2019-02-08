@@ -304,7 +304,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Filters for returning results
 		$view->filters = array(
 			'projects'   => array($this->model->get('id')),
-			'limit'      => Request::getInt('limit', $this->params->get('limit', 50)),
+			'limit'      => Request::getInt('limit', $this->params->get('display_limit', 50)),
 			'start'      => Request::getInt('limitstart', 0),
 			'todolist'   => Request::getWord('list', ''),
 			'state'      => isset($this->_state) ? $this->_state : Request::getInt('state', 0),
