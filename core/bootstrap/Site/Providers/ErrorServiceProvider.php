@@ -34,7 +34,6 @@ namespace Bootstrap\Site\Providers;
 use Hubzero\Error\Handler;
 use Hubzero\Error\Renderer\Page;
 use Hubzero\Error\Renderer\Plain;
-use Hubzero\Error\Renderer\Api;
 use Hubzero\Base\ServiceProvider;
 
 /**
@@ -51,9 +50,19 @@ class ErrorServiceProvider extends ServiceProvider
 	{
 		$this->app['error'] = function($app)
 		{
+			$logger = new \Monolog\Logger('cms');
+
+			// Log to php's `error_log()`
+			$loghandler = new \Monolog\Handler\ErrorLogHandler();
+
+			// Alternatively, if you need to a specified file
+			//$loghandler = new \Monolog\Handler\StreamHandler($app['config']->get('log_path') . '/error.php', 'error', true);
+
+			$logger->pushHandler($loghandler);
+
 			$handler = new Handler(
 				new Plain($app['config']->get('debug')),
-				$app['config']->get('debug')
+				$logger
 			);
 
 			return $handler;
