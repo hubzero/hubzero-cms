@@ -74,7 +74,7 @@ $this->comment->set('category', 'answercomment');
 		</p>
 		<div class="comment-content">
 			<?php
-			if ($this->comment->get('rating'))
+			if ($this->page->config('comment_ratings') && $this->comment->get('rating'))
 			{
 				switch ($this->comment->get('rating'))
 				{

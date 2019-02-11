@@ -34,6 +34,14 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="subpage_separator" type="text" menu="hide" default="/" label="COM_WIKI_CONFIG_SEPARATOR_LABEL" description="COM_WIKI_CONFIG_SEPARATOR_DESC" />
 		<field name="homepage" type="text" menu="hide" default="MainPage" label="COM_WIKI_CONFIG_MAIN_PAGE_LABEL" description="COM_WIKI_CONFIG_MAIN_PAGE_DESC" />
 		<field name="max_pagename_length" type="text" menu="hide" default="100" label="COM_WIKI_CONFIG_PAGENAME_LENGTH_LABEL" description="COM_WIKI_CONFIG_PAGENAME_LENGTH_DESC" />
+		<field name="comments" type="radio" default="1" label="COM_WIKI_CONFIG_COMMENTS_LABEL" description="COM_WIKI_CONFIG_COMMENTS_DESC">
+			<option value="0">JOFF</option>
+			<option value="1">JON</option>
+		</field>
+		<field name="comment_ratings" type="radio" default="0" label="COM_WIKI_CONFIG_RATINGS_LABEL" description="COM_WIKI_CONFIG_RATINGS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 	</fieldset>
 	<fieldset name="files">
 		<field name="filepath" type="text" menu="hide" default="/site/wiki" label="COM_WIKI_CONFIG_FILE_UPLOAD_LABEL" description="COM_WIKI_CONFIG_FILE_UPLOAD_DESC" />
