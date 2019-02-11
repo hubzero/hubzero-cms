@@ -43,13 +43,6 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	submitform(pressbutton);
-}
-</script>
-
 <?php require_once dirname(dirname(__DIR__)) . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" name="adminForm" id="item-form" method="post">
@@ -89,7 +82,7 @@ function submitbutton(pressbutton)
 					<select name="module[ordering]" id="field-ordering">
 						<?php foreach ($this->order as $k => $order) : ?>
 							<?php $sel = ($order->get('title') == $this->module->get('title')) ? 'selected="selected"' : ''; ?>
-							<option <?php echo $sel ;?> value="<?php echo ($k + 1); ?>"><?php echo ($k + 1) . '. ' . $order->get('title'); ?></option>
+							<option <?php echo $sel; ?> value="<?php echo ($k + 1); ?>"><?php echo ($k + 1) . '. ' . $order->get('title'); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>

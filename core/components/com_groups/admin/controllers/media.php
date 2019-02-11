@@ -352,7 +352,7 @@ class Media extends AdminController
 			'genericlist',
 			$folders,
 			'dir',
-			'onchange="goUpDir()" ',
+			'data-path="' . Route::url('index.php?option=' . $this->_option . '&controller=media&gidNumber=' . $this->group->get('gidNumber') . '&task=list&tmpl=component&dir=') . '" ',
 			'value',
 			'text',
 			$dir

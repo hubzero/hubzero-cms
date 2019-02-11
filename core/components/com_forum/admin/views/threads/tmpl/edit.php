@@ -47,27 +47,14 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('post');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-
-	// do field validation
-	if (document.getElementById('field-comment').value == ''){
-		alert( '<?php echo Lang::txt('COM_FORUM_ERROR_MISSING_COMMENT'); ?>' );
-	} else {
-		submitform( pressbutton );
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -145,7 +132,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-comment"><?php echo Lang::txt('COM_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<textarea name="fields[comment]" id="field-comment" cols="35" rows="10"><?php echo $this->escape($this->row->get('comment')); ?></textarea>
+					<textarea name="fields[comment]" id="field-comment" cols="35" rows="10" class="required"><?php echo $this->escape($this->row->get('comment')); ?></textarea>
 				</div>
 
 				<?php if (!$this->row->get('parent')) { ?>

@@ -186,7 +186,7 @@ class Quotas extends AdminController
 			}
 		}
 
-		$classes = Html::select('genericlist', $options, 'fields[class_id]', '', 'value', 'text', $selected, 'class_id', false, false);
+		$classes = Html::select('genericlist', $options, 'fields[class_id]', 'data-href="' . Route::url('index.php?option=' . $this->_option . '&controller=quotas&task=getClassValues&class_id=', false) . '"', 'value', 'text', $selected, 'class_id', false, false);
 
 		$du = $this->getQuotaUsageTask('array', $row->get('id'));
 

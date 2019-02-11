@@ -45,38 +45,14 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('article');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton =='resethits') {
-		if (confirm('<?php echo Lang::txt('COM_KB_RESET_HITS_WARNING'); ?>')) {
-			submitform(pressbutton);
-			return;
-		} else {
-			return;
-		}
-	}
-
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	<?php echo $this->editor()->save('text'); ?>
-
-	// do field validation
-	if (document.getElementById('field-title').value == ''){
-		alert('<?php echo Lang::txt('COM_KB_ERROR_MISSING_TITLE'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -89,7 +65,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-title"><?php echo Lang::txt('COM_KB_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[title]" id="field-title" size="100" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+					<input type="text" name="fields[title]" id="field-title" class="required" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_KB_ALIAS_HINT'); ?>">
@@ -100,7 +76,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-fulltxt"><?php echo Lang::txt('COM_KB_BODY'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<?php echo $this->editor('fields[fulltxt]', $this->escape(stripslashes($this->row->get('fulltxt'))), 60, 30, 'field-fulltxt', array('buttons' => array('pagebreak', 'readmore', 'article'))); ?>
+					<?php echo $this->editor('fields[fulltxt]', $this->escape(stripslashes($this->row->get('fulltxt'))), 60, 30, 'field-fulltxt', array('class' => 'required', 'buttons' => array('pagebreak', 'readmore', 'article'))); ?>
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_KB_FIELD_TAGS_HINT'); ?>">
@@ -147,7 +123,7 @@ function submitbutton(pressbutton)
 						<td>
 							<?php echo $this->row->get('hits', 0); ?>
 							<?php if ($this->row->get('hits', 0)) { ?>
-								<input type="button" name="reset_hits" id="reset_hits" value="<?php echo Lang::txt('COM_KB_RESET_HITS'); ?>" onclick="submitbutton('resethits');" />
+								<input type="button" name="reset_hits" id="reset_hits" value="<?php echo Lang::txt('COM_KB_RESET_HITS'); ?>" data-confirm="<?php echo Lang::txt('COM_KB_RESET_HITS_WARNING'); ?>" />
 							<?php } ?>
 						</td>
 					</tr>
@@ -156,7 +132,7 @@ function submitbutton(pressbutton)
 						<td>
 							+<?php echo $this->row->get('helpful', 0); ?> -<?php echo $this->row->get('nothelpful', 0); ?>
 							<?php if ($this->row->get('helpful', 0) > 0 || $this->row->get('nothelpful', 0) > 0) { ?>
-								<input type="button" name="reset_votes" value="<?php echo Lang::txt('COM_KB_RESET_VOTES'); ?>" onclick="submitbutton('resetvotes');" />
+								<input type="button" name="reset_votes" id="reset_votes" value="<?php echo Lang::txt('COM_KB_RESET_VOTES'); ?>" data-confirm="<?php echo Lang::txt('COM_KB_RESET_VOTES_WARNING'); ?>" />
 							<?php } ?>
 						</td>
 					</tr>

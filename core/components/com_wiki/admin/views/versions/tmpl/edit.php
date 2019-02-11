@@ -46,23 +46,14 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('revision');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -83,49 +74,49 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_PAGE') . ' ' . Lang::txt('COM_WIKI_FIELD_TITLE'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WIKI_PAGE') . ' ' . Lang::txt('COM_WIKI_FIELD_TITLE'); ?>:</th>
 						<td><?php echo $this->escape(stripslashes($this->page->get('title'))); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_PAGE') . ' ' . Lang::txt('COM_WIKI_FIELD_PAGENAME'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WIKI_PAGE') . ' ' . Lang::txt('COM_WIKI_FIELD_PAGENAME'); ?>:</th>
 						<td><?php echo $this->escape(stripslashes($this->page->get('pagename'))); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_PAGE') . ' ' . Lang::txt('COM_WIKI_FIELD_SCOPE'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WIKI_PAGE') . ' ' . Lang::txt('COM_WIKI_FIELD_SCOPE'); ?>:</th>
 						<td><?php echo $this->escape(stripslashes($this->page->get('scope') . ':' . $this->page->get('scope_id'))); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_PAGE') . ' ' . Lang::txt('COM_WIKI_FIELD_ID'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WIKI_PAGE') . ' ' . Lang::txt('COM_WIKI_FIELD_ID'); ?>:</th>
 						<td>
 							<?php echo $this->escape($this->row->get('page_id')); ?>
 							<input type="hidden" name="revision[page_id]" id="revision-page_id" value="<?php echo $this->escape($this->row->get('page_id')); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_FIELD_ID'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WIKI_FIELD_ID'); ?>:</th>
 						<td>
 							<?php echo $this->escape($this->row->get('id')); ?>
 							<input type="hidden" name="revision[id]" id="revision-id" value="<?php echo $this->escape($this->row->get('id')); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_FIELD_REVISION'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WIKI_FIELD_REVISION'); ?>:</th>
 						<td>
 							<?php echo $this->escape($this->row->get('version')); ?>
 							<input type="hidden" name="revision[version]" id="revision-version" value="<?php echo $this->escape($this->row->get('version')); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_FIELD_CREATOR'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WIKI_FIELD_CREATOR'); ?>:</th>
 						<td>
 							<?php echo $this->escape($this->row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'))); ?>
 							<input type="hidden" name="revision[created_by]" id="revision-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_FIELD_CREATED'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WIKI_FIELD_CREATED'); ?>:</th>
 						<td>
-							<?php echo $this->row->get('created'); ?>
+							<time datetime="<?php echo $this->row->get('created'); ?>"><?php echo Date::of($this->row->get('created'))->toLocal(); ?></time>
 							<input type="hidden" name="revision[created]" id="revision-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
 						</td>
 					</tr>
