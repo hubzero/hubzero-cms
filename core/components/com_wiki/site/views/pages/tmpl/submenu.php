@@ -90,7 +90,7 @@ if ($tmpl != 'component' && $this->sub) { ?>
 					</a>
 				</li>
 			<?php } ?>
-			<?php if ($this->page->access('view', 'comment')) { ?>
+			<?php if ($this->page->config('comments', 1) && $this->page->access('view', 'comment')) { ?>
 				<li class="page-comments<?php if ($this->controller == 'comments') { echo ' active'; } ?>">
 					<a href="<?php echo Route::url($this->page->link('comments')); ?>" title="<?php echo Lang::txt('COM_WIKI_TAB_COMMENTS'); ?>">
 						<span class="icon-comments"><?php echo Lang::txt('COM_WIKI_TAB_COMMENTS'); ?></span>
