@@ -41,24 +41,22 @@ if ($canDo->get('core.edit'))
 	Toolbar::save();
 }
 Toolbar::cancel();
-?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	submitform(pressbutton);
-}
-</script>
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
+?>
 
 <?php require_once dirname(dirname(__DIR__)) . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" name="adminForm" id="item-form" method="post">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" name="adminForm" id="item-form" method="post" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<fieldset class="adminform">
 		<legend><span><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORIES_CATEGORY'); ?></span></legend>
 
 		<div class="input-wrap">
 			<label for="field-type"><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-			<input type="text" name="category[title]" id="field-title" value="<?php echo $this->escape($this->category->get('title')); ?>" />
+			<input type="text" name="category[title]" id="field-title" class="required" value="<?php echo $this->escape($this->category->get('title')); ?>" />
 		</div>
 		<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_COLOR_HINT'); ?>">
 			<label for="field-color"><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_COLOR'); ?>:</label>

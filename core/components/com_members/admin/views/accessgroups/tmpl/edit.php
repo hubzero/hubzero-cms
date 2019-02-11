@@ -55,22 +55,13 @@ Toolbar::cancel();
 Toolbar::divider();
 Toolbar::help('group');
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	submitform(pressbutton);
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -83,7 +74,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_GROUP_FIELD_PARENT_DESC'); ?>">
 					<label for="field-parent_id"><?php echo Lang::txt('COM_MEMBERS_GROUP_FIELD_PARENT_LABEL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<select name="fields[parent_id]" id="field-parent_id">
+					<select name="fields[parent_id]" id="field-parent_id" class="required">
 						<?php foreach ($this->options as $option):
 							if (User::authorise('core.admin') || (!Hubzero\Access\Access::checkGroup($option->get('id'), 'core.admin')))
 							{
@@ -104,7 +95,7 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th class="key"><?php echo Lang::txt('COM_MEMBERS_FIELD_ID'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_MEMBERS_FIELD_ID'); ?>:</th>
 						<td>
 							<?php echo $this->row->get('id'); ?>
 							<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />

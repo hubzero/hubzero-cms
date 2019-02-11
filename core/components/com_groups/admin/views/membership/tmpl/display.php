@@ -80,39 +80,11 @@ Toolbar::help('membership');
 
 $database = App::get('db');
 
-$this->css('groups.css');
+$this->css()
+	->js();
 
 Html::behavior('tooltip');
 ?>
-<script type="text/javascript">
-jQuery(document).ready(function($){
-	$("#toolbar-unblock a").on('click', function(e){
-		e.preventDefault();
-
-		if (document.adminForm.boxchecked.value==0){
-			alert('Please first make a selection from the list');
-		}else{
-			var serialized = '';
-			$('input[type=checkbox]').each(function() {
-				if (this.checked) {
-					serialized += '&'+this.name+'='+this.value;
-				}
-			});
-			if (serialized) {
-				$.fancybox({
-					arrows: false,
-					type: 'iframe',
-					autoSize: false,
-					width: 400,
-					height: 400,
-					fitToView: true,
-					href: $(this).attr('href') + serialized
-				});
-			}
-		}
-	});
-});
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">

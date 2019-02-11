@@ -33,15 +33,6 @@ defined('_HZEXEC_') or die();
 
 Html::behavior('framework', true);
 ?>
-	<script type="text/javascript">
-	// Hide/show all rows which are not assigned.
-	jQuery(document).ready(function($){
-		$('#showmods').on('click', function(e) {
-			$('.adminlist tr.nope').toggle();
-		});
-	});
-	</script>
-
 	<label for="showmods"><?php echo Lang::txt('COM_MENUS_ITEM_FIELD_HIDE_UNASSIGNED');?></label>
 	<input type="checkbox" id="showmods" />
 

@@ -75,18 +75,11 @@ Html::addIncludePath(Component::path($this->option) . '/helpers/html');
 // Load the tooltip behavior.
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
+
+$this->js();
 ?>
 
-<script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
-		if (task == 'cancel' || document.formvalidator.isValid($('#item-form'))) {
-			Joomla.submitform(task, document.getElementById('item-form'));
-		}
-	}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&cid=' . (int) $this->item->get('id')); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&cid=' . (int) $this->item->get('id')); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<fieldset class="adminform">
 		<legend><span><?php echo Lang::txt('COM_MENUS_MENU_DETAILS');?></span></legend>
 
