@@ -71,7 +71,7 @@ if (substr($this->profile->get('email'), -8) == '@invalid')
 
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_FIELD_USERNAME_HINT'); ?>">
 				<label id="field_username-lbl" for="field_username" class="required"><?php echo Lang::txt('COM_MEMBERS_FIELD_USERNAME'); ?> <span class="required star"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<input type="text" name="fields[username]" id="field_username" value="<?php echo $this->escape($this->profile->get('username')); ?>" class="required<?php if ($this->profile->get('id')) { echo ' readonly" readonly="readonly'; } ?>" />
+				<input type="text" name="fields[username]" id="field_username" class="required" value="<?php echo $this->escape($this->profile->get('username')); ?>" class="required<?php if ($this->profile->get('id')) { echo ' readonly" readonly="readonly'; } ?>" />
 			</div>
 
 			<div class="input-wrap">

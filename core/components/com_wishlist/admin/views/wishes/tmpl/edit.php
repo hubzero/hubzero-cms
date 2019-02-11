@@ -48,6 +48,10 @@ Toolbar::spacer();
 Toolbar::help('wish');
 
 Html::behavior('tooltip');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
 <script type="text/javascript">
 var ownerassignees = new Array;
@@ -64,26 +68,9 @@ if ($this->ownerassignees)
 	}
 }
 ?>
-
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// do field validation
-	if (document.getElementById('field-subject').value == ''){
-		alert('<?php echo Lang::txt('COM_WISHLIST_ERROR_MISSING_TEXT'); ?>');
-	} else {
-		<?php echo $this->editor()->save('text'); ?>
-
-		submitform(pressbutton);
-	}
-}
 </script>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -91,7 +78,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-wishlist"><?php echo Lang::txt('COM_WISHLIST_CATEGORY'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<select name="fields[wishlist]" id="field-wishlist" onchange="changeDynaList('fieldassigned', ownerassignees, document.getElementById('field-wishlist').options[document.getElementById('field-wishlist').selectedIndex].value, 0, 0);">
+					<select name="fields[wishlist]" id="field-wishlist" class="required">
 						<option value="0"><?php echo Lang::txt('COM_WISHLIST_NONE'); ?></option>
 						<?php if ($this->lists) { ?>
 							<?php foreach ($this->lists as $list) { ?>
@@ -173,21 +160,21 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th class="key"><?php echo Lang::txt('COM_WISHLIST_FIELD_ID'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WISHLIST_FIELD_ID'); ?>:</th>
 						<td>
 							<?php echo $this->row->get('id'); ?>
 							<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->row->get('id'); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th class="key"><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATED'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATED'); ?>:</th>
 						<td>
-							<time datetime="<?php echo $this->row->get('proposed'); ?>"><?php echo $this->row->get('proposed'); ?></time>
+							<time datetime="<?php echo $this->row->get('proposed'); ?>"><?php echo Date::of($this->row->get('proposed'))->toLocal(); ?></time>
 							<input type="hidden" name="fields[proposed]" id="field-proposed" value="<?php echo $this->row->get('proposed'); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th class="key"><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATOR'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATOR'); ?>:</th>
 						<td>
 							<?php
 							$editor = User::getInstance($this->row->get('proposed_by'));
@@ -197,7 +184,7 @@ function submitbutton(pressbutton)
 						</td>
 					</tr>
 					<tr>
-						<th class="key"><?php echo Lang::txt('COM_WISHLIST_FIELD_RANKING'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WISHLIST_FIELD_RANKING'); ?>:</th>
 						<td>
 							<?php echo $this->row->get('ranking'); ?>
 							<input type="hidden" name="fields[ranking]" id="field-ranking" value="<?php echo $this->row->get('ranking'); ?>" />

@@ -44,23 +44,14 @@ if ($canDo->get('core.edit'))
 	Toolbar::spacer();
 }
 Toolbar::cancel();
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-
-	submitform( pressbutton );
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -73,7 +64,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-word"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_WORD'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<input type="text" name="fields[word]" id="field-word" value="<?php echo $this->escape(stripslashes($this->row->get('word'))); ?>" />
+					<input type="text" name="fields[word]" id="field-word" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('word'))); ?>" />
 				</div>
 			</fieldset>
 		</div>
@@ -81,7 +72,7 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_ID'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_ID'); ?></th>
 						<td><?php echo $this->row->get('id'); ?></td>
 					</tr>
 				</tbody>

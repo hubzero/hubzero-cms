@@ -41,28 +41,13 @@ Toolbar::divider();
 Toolbar::help('mail');
 
 // Load the tooltip behavior.
-Html::behavior('tooltip');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script>
-Joomla.submitbutton = function(pressbutton) {
-	var form = document.adminForm;
-	if (pressbutton == 'cancelmail') {
-		Joomla.submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	if (form.fields_subject.value == ""){
-		alert("<?php echo Lang::txt('COM_MEMBERS_MAIL_PLEASE_FILL_IN_THE_SUBJECT'); ?>");
-	} else if (getSelectedValue('adminForm','fields[group]') < 0){
-		alert("<?php echo Lang::txt('COM_MEMBERS_MAIL_PLEASE_SELECT_A_GROUP'); ?>");
-	} else if (form.fields_message.value == ""){
-		alert("<?php echo Lang::txt('COM_MEMBERS_MAIL_PLEASE_FILL_IN_THE_MESSAGE'); ?>");
-	} else {
-		Joomla.submitform(pressbutton);
-	}
-}
-</script>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="adminForm" method="post" id="item-form">
+
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="adminForm" method="post" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<p class="warning"><?php echo Lang::txt('COM_MEMBERS_MAIL_DO_NOT_USE_FOR_COMMERCIAL_USE'); ?></p>
 	<div class="grid">
 		<div class="col span5">

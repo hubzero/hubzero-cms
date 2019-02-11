@@ -44,27 +44,18 @@ if ($canDo->get('core.edit'))
 	Toolbar::spacer();
 }
 Toolbar::cancel('cancelClass');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-
-	submitform( pressbutton );
-}
-</script>
 
 <?php if ($this->getError()) : ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php endif; ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -113,11 +104,11 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_ID'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_MEMBERS_QUOTA_ID'); ?></th>
 						<td><?php echo $this->row->get('id'); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_CLASS_USER_COUNT'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_MEMBERS_QUOTA_CLASS_USER_COUNT'); ?></th>
 						<td><?php echo ($this->row->get('id')) ? $this->user_count : 0; ?></td>
 					</tr>
 				</tbody>
