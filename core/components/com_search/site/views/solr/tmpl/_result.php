@@ -30,7 +30,7 @@
  */
 ?>
 
-<div class="result <?php echo (isset($this->result['access_level']) ? $this->result['access_level'] : 'public'); ?>" id="<?php echo $this->result['id']; ?>">
+<div class="result <?php echo isset($this->result['access_level']) ? $this->result['access_level'] : 'public'; ?>" id="<?php echo $this->result['id']; ?>">
 <div class="result-body">
 	<!-- Title : mandatory -->
 	<h3 class="result-title"><a href="<?php echo $this->result['url']; ?>"><b><!-- highlight portion --></b><?php echo $this->result['title']; ?></a></h3>
@@ -71,7 +71,7 @@
 		<div class="result-tags">
 			<ul class="tags">
 				<?php 
-					$baseTagUrl = Route::url('index.php?option=com_search&terms=' . $this->terms); 
+					$baseTagUrl = Route::url('index.php?option=com_search&terms=' . $this->terms);
 				?>
 				<?php foreach ($this->result['_childDocuments_'] as $tag): ?>
 					<?php if (!empty($tag['title'][0])): ?>
