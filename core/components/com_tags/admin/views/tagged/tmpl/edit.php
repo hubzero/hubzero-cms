@@ -48,23 +48,11 @@ Toolbar::spacer();
 Toolbar::help('edittagged');
 
 Html::behavior('framework');
-?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
 
-	// do field validation
-	if ($('#field-tagid').val() == '') {
-		alert('<?php echo Lang::txt('COM_TAGS_ERROR_EMPTY_TAG'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
+$this->js();
+?>
 
 <?php
 if ($this->getError())
@@ -73,7 +61,7 @@ if ($this->getError())
 }
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -81,7 +69,7 @@ if ($this->getError())
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_TAGS_FIELD_TAGID_HINT'); ?>">
 					<label for="field-tagid"><?php echo Lang::txt('COM_TAGS_FIELD_TAGID'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[tagid]" id="field-tagid" maxlength="11" value="<?php echo $this->escape($this->row->get('tagid')); ?>" />
+					<input type="text" name="fields[tagid]" id="field-tagid" maxlength="11" class="required" value="<?php echo $this->escape($this->row->get('tagid')); ?>" />
 					<span class="hint"><?php echo Lang::txt('COM_TAGS_FIELD_TAGID_HINT'); ?></span>
 				</div>
 
@@ -89,14 +77,14 @@ if ($this->getError())
 					<div class="col span6">
 						<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_TAGS_FIELD_OBJECTID_HINT'); ?>">
 							<label for="field-objectid"><?php echo Lang::txt('COM_TAGS_FIELD_OBJECTID'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-							<input type="text" name="fields[objectid]" id="field-objectid" maxlength="11" value="<?php echo $this->escape($this->row->get('objectid')); ?>" />
+							<input type="text" name="fields[objectid]" id="field-objectid" maxlength="11" class="required" value="<?php echo $this->escape($this->row->get('objectid')); ?>" />
 							<span class="hint"><?php echo Lang::txt('COM_TAGS_FIELD_OBJECTID_HINT'); ?></span>
 						</div>
 					</div>
 					<div class="col span6">
 						<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_TAGS_FIELD_TBL_HINT'); ?>">
 							<label for="field-tbl"><?php echo Lang::txt('COM_TAGS_FIELD_TBL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-							<input type="text" name="fields[tbl]" id="field-tbl" maxlength="250" value="<?php echo $this->escape($this->row->get('tbl')); ?>" />
+							<input type="text" name="fields[tbl]" id="field-tbl" maxlength="250" class="required" value="<?php echo $this->escape($this->row->get('tbl')); ?>" />
 							<span class="hint"><?php echo Lang::txt('COM_TAGS_FIELD_TBL_HINT'); ?></span>
 						</div>
 					</div>
@@ -107,14 +95,14 @@ if ($this->getError())
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_TAGS_FIELD_ID'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_TAGS_FIELD_ID'); ?>:</th>
 						<td>
 							<?php echo $this->row->get('id'); ?>
 							<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_TAGS_FIELD_CREATOR'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_TAGS_FIELD_CREATOR'); ?>:</th>
 						<td>
 							<?php
 							$name = Lang::txt('COM_TAGS_UNKNOWN');
@@ -128,9 +116,9 @@ if ($this->getError())
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_TAGS_FIELD_CREATED'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_TAGS_FIELD_CREATED'); ?>:</th>
 						<td>
-							<?php echo ($this->row->created() != '0000-00-00 00:00:00' ? $this->row->created() : Lang::txt('COM_TAGS_UNKNOWN')); ?>
+							<?php echo ($this->row->created() != '0000-00-00 00:00:00') ? $this->row->created() : Lang::txt('COM_TAGS_UNKNOWN'); ?>
 							<input type="hidden" name="fields[taggedon]" id="field-taggedon" value="<?php echo $this->escape($this->row->get('taggedon')); ?>" />
 						</td>
 					</tr>
