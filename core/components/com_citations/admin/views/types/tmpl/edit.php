@@ -36,7 +36,7 @@ $canDo = \Components\Citations\Helpers\Permissions::getActions('type');
 
 $text = ($this->task == 'edittype' ? Lang::txt('EDIT') : Lang::txt('NEW'));
 
-Toolbar::title(Lang::txt('CITATIONS') . ' ' . Lang::txt('CITATION_TYPES') . ': ' . $text, 'citation.png');
+Toolbar::title(Lang::txt('CITATIONS') . ' ' . Lang::txt('CITATION_TYPES') . ': ' . $text, 'citation');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::save();
@@ -45,19 +45,10 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('type');
 
-$id     = NULL;
-$type   = NULL;
-$title  = NULL;
-$desc   = NULL;
-$fields = NULL;
-if ($this->type)
-{
-	$id     = $this->type->id;
-	$type   = $this->escape(stripslashes($this->type->type));
-	$title  = $this->escape(stripslashes($this->type->type_title));
-	$desc   = $this->escape(stripslashes($this->type->type_desc));
-	$fields = $this->escape(stripslashes($this->type->fields));
-}
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 
 $f = array(
 	"cite"           => 'Cite Key',
@@ -98,14 +89,7 @@ $f = array(
 );
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	return submitform(pressbutton);
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" class="form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -113,22 +97,22 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-type"><?php echo Lang::txt('CITATION_TYPES_ALIAS'); ?></label><br />
-					<input type="text" name="type[type]" id="field-type" value="<?php echo $type; ?>" />
+					<input type="text" name="type[type]" id="field-type" value="<?php echo $this->escape(stripslashes($this->type->type)); ?>" />
 				</div>
 
 				<div class="input-wrap">
 					<label for="field-type_title"><?php echo Lang::txt('CITATION_TYPES_TITLE'); ?></label><br />
-					<input type="text" name="type[type_title]" id="field-type_title" value="<?php echo $title; ?>" />
+					<input type="text" name="type[type_title]" id="field-type_title" value="<?php echo $this->escape(stripslashes($this->type->type_title)); ?>" />
 				</div>
 
 				<div class="input-wrap">
 					<label for="field-type_desc"><?php echo Lang::txt('CITATION_TYPES_DESC'); ?></label><br />
-					<textarea name="type[type_desc]" id="field-type_desc" rows="5" cols="58"><?php echo $desc; ?></textarea>
+					<textarea name="type[type_desc]" id="field-type_desc" rows="5" cols="58"><?php echo $this->escape(stripslashes($this->type->type_desc)); ?></textarea>
 				</div>
 
 				<div class="input-wrap">
 					<label for="field-fields"><?php echo Lang::txt('CITATION_TYPES_FIELDS'); ?></label><br />
-					<textarea name="type[fields]" id="field-fields" rows="20" cols="58"><?php echo $fields; ?></textarea>
+					<textarea name="type[fields]" id="field-fields" rows="20" cols="58"><?php echo $this->escape(stripslashes($this->type->fields)); ?></textarea>
 					<span class="hint"><?php echo Lang::txt('CITATION_TYPES_FIELDS_HINT'); ?></span>
 				</div>
 			</fieldset>
@@ -137,10 +121,10 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th class="key"><?php echo Lang::txt('ID'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('ID'); ?>:</th>
 						<td>
-							<?php echo ($id ? $id : 0); ?>
-							<input type="hidden" name="type[id]" value="<?php echo $id; ?>" />
+							<?php echo ($this->type->id) ? $this->type->id : 0; ?>
+							<input type="hidden" name="type[id]" value="<?php echo $this->type->id; ?>" />
 						</td>
 					</tr>
 				</tbody>

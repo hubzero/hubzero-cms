@@ -47,42 +47,14 @@ if ($canDo->get('core.edit'))
 	Toolbar::spacer();
 }
 Toolbar::cancel();
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
 
-<script type="text/javascript">
-Joomla.submitbutton = function(pressbutton) {
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		Joomla.submitform(pressbutton, document.getElementById('item-form'));
-		return;
-	}
-
-	// Do field validation
-	// We validate on the server-side as well but a little extra client-side
-	// checking doesn't hurt.
-	if ($('#field-name').val() == '')
-	{
-		alert("<?php echo Lang::txt('COM_DEVELOPER_ERROR_MISSING_NAME'); ?>");
-		$('#field-name').focus();
-	} 
-	else if ($('#field-description').val() == '')
-	{
-		alert("<?php echo Lang::txt('COM_DEVELOPER_ERROR_MISSING_DESCRIPTION'); ?>");
-		$('#field-description').focus();
-	}
-	else if ($('#field-redirect_uri').val() == '')
-	{
-		alert("<?php echo Lang::txt('COM_DEVELOPER_ERROR_MISSING_REDIRECT_URI'); ?>");
-		$('#field-redirect_uri').focus();
-	}
-	else
-	{
-		Joomla.submitform(pressbutton, document.getElementById('item-form'));
-	}
-}
-</script>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" class="editform" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<?php if ($this->getErrors()) { ?>
 		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 	<?php } ?>
@@ -93,12 +65,12 @@ Joomla.submitbutton = function(pressbutton) {
 
 				<div class="input-wrap">
 					<label for="field-name"><?php echo Lang::txt('COM_DEVELOPER_FIELD_NAME'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[name]" id="field-name" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('name'))); ?>" />
+					<input type="text" name="fields[name]" id="field-name" maxlength="250" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('name'))); ?>" />
 				</div>
 
 				<div class="input-wrap">
 					<label for="field-description"><?php echo Lang::txt('COM_DEVELOPER_FIELD_DESCRIPTION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<textarea name="fields[description]" id="field-description" rows="10"><?php echo $this->escape($this->row->get('description')); ?></textarea>
+					<textarea name="fields[description]" id="field-description" class="required" rows="10"><?php echo $this->escape($this->row->get('description')); ?></textarea>
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_DEVELOPER_FIELD_REDIRECT_URI_HINT'); ?>">
@@ -107,7 +79,7 @@ Joomla.submitbutton = function(pressbutton) {
 						$uris = explode(' ', $this->row->get('redirect_uri'));
 						$uris = implode(PHP_EOL, $uris);
 					?>
-					<textarea name="fields[redirect_uri]" id="field-redirect_uri" rows="3"><?php echo $this->escape($uris); ?></textarea>
+					<textarea name="fields[redirect_uri]" id="field-redirect_uri" class="required" rows="3"><?php echo $this->escape($uris); ?></textarea>
 				</div>
 			</fieldset>
 		</div>
@@ -116,28 +88,28 @@ Joomla.submitbutton = function(pressbutton) {
 				<table class="meta">
 					<tbody>
 						<tr>
-							<th><?php echo Lang::txt('COM_DEVELOPER_FIELD_CREATED'); ?>:</th>
+							<th scope="row"><?php echo Lang::txt('COM_DEVELOPER_FIELD_CREATED'); ?>:</th>
 							<td>
 								<?php echo $this->escape(stripslashes($this->row->creator->get('name', 'System User'))); ?>
 								<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
 							</td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_DEVELOPER_FIELD_CREATED_BY'); ?>:</th>
+							<th scope="row"><?php echo Lang::txt('COM_DEVELOPER_FIELD_CREATED_BY'); ?>:</th>
 							<td>
-								<?php echo $this->row->get('created'); ?>
+								<?php echo Date::of($this->row->get('created'))->toLocal(); ?>
 								<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
 							</td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_DEVELOPER_FIELD_CLIENT_ID'); ?>:</th>
+							<th scope="row"><?php echo Lang::txt('COM_DEVELOPER_FIELD_CLIENT_ID'); ?>:</th>
 							<td>
 								<?php echo $this->escape(stripslashes($this->row->get('client_id'))); ?>
 								<input type="hidden" name="fields[client_id]" id="field-client_id" value="<?php echo $this->escape($this->row->get('client_id')); ?>" />
 							</td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_DEVELOPER_FIELD_CLIENT_SECRET'); ?>:</th>
+							<th scope="row"><?php echo Lang::txt('COM_DEVELOPER_FIELD_CLIENT_SECRET'); ?>:</th>
 							<td>
 								<?php echo $this->escape(stripslashes($this->row->get('client_secret'))); ?>
 								<input type="hidden" name="fields[client_secret]" id="field-client_secret" value="<?php echo $this->escape($this->row->get('client_secret')); ?>" />
