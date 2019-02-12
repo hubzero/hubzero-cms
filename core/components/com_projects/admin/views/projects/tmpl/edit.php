@@ -95,6 +95,10 @@ $quota    = $quota ? $quota : \Components\Projects\Helpers\Html::convertSize(flo
 $pubQuota = $this->params->get('pubQuota');
 $pubQuota = $pubQuota ? $pubQuota : \Components\Projects\Helpers\Html::convertSize(floatval($this->config->get('pubQuota', '1')), 'GB', 'b');
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 $this->css();
 
 // Get groups project owner belongs to
@@ -105,42 +109,8 @@ if ($this->model->groupOwner())
 }
 
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
 
-	if (pressbutton == 'delete') {
-		form.admin_action.value = 'delete';
-		submitform( 'save' );
-		return;
-	}
-
-	if (pressbutton == 'suspend') {
-		form.admin_action.value = 'suspend';
-		submitform( 'save' );
-		return;
-	}
-
-	if (pressbutton == 'reinstate') {
-		form.admin_action.value = 'reinstate';
-		submitform( 'save' );
-		return;
-	}
-
-	// do field validation
-	if (form.title.value == ''){
-		alert( 'Project must have a title' );
-	} else {
-		submitform( pressbutton );
-	}
-}
-</script>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 
 	<nav role="navigation" class="sub-navigation">
 		<div id="submenu-box">
@@ -167,7 +137,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="title"><?php echo Lang::txt('COM_PROJECTS_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<input type="text" name="title" id="title" size="60" maxlength="250" value="<?php echo $this->escape(stripslashes($this->model->get('title'))); ?>" />
+					<input type="text" name="title" id="title" size="60" maxlength="250" class="required" value="<?php echo $this->escape(stripslashes($this->model->get('title'))); ?>" />
 				</div>
 
 				<div class="input-wrap">
@@ -360,45 +330,45 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_PROJECTS_CREATED'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_PROJECTS_CREATED'); ?>:</th>
 						<td><?php echo $this->model->get('created'); ?> <?php echo Lang::txt('COM_PROJECTS_BY').' ' . $this->model->creator('name') . ' (' . $this->model->creator('username') . ')'; ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_PROJECTS_STATUS'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_PROJECTS_STATUS'); ?></th>
 						<td><?php echo $status; ?></td>
 					</tr>
 				<?php if (isset($this->counts['files'])): ?>
 					<tr>
-						<th><?php echo Lang::txt('COM_PROJECTS_FILES'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_PROJECTS_FILES'); ?>:</th>
 						<td><?php echo $this->counts['files']; ?></td>
 					</tr>
 				<?php endif; ?>
 				<?php if (isset($this->counts['publications'])): ?>
 					<tr>
-						<th><?php echo Lang::txt('COM_PROJECTS_PUBLICATIONS'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_PROJECTS_PUBLICATIONS'); ?>:</th>
 						<td><?php echo $this->counts['publications']; ?></td>
 					</tr>
 				<?php endif; ?>
 				<?php if (isset($this->counts['todo'])): ?>
 					<tr>
-						<th><?php echo Lang::txt('COM_PROJECTS_TODOS'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_PROJECTS_TODOS'); ?>:</th>
 						<td><?php echo $this->counts['todo']; ?> <?php if ($this->counts['todos_completed'] > 0) { ?>( +<?php echo $this->counts['todos_completed']; ?> <?php echo Lang::txt('COM_PROJECTS_TODOS_COMPLETED'); ?>)<?php } ?></td>
 					</tr>
 				<?php endif; ?>
 				<?php if (isset($this->counts['notes'])): ?>
 					<tr>
-						<th><?php echo Lang::txt('COM_PROJECTS_NOTES'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_PROJECTS_NOTES'); ?>:</th>
 						<td><?php echo $this->counts['notes']; ?></td>
 					</tr>
 				<?php endif; ?>
 				<?php if (isset($this->counts['activity'])): ?>
 					<tr>
-						<th><?php echo Lang::txt('COM_PROJECTS_ACTIVITIES_IN_FEED'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_PROJECTS_ACTIVITIES_IN_FEED'); ?>:</th>
 						<td><?php echo $this->counts['activity']; ?></td>
 					</tr>
 				<?php endif; ?>
 					<tr>
-						<th><?php echo Lang::txt('COM_PROJECTS_LAST_ACTIVITY'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_PROJECTS_LAST_ACTIVITY'); ?>:</th>
 						<td><?php if ($this->last_activity) {
 							$activity = preg_replace('/said/', "posted an update", $this->last_activity->description);
 							$activity = preg_replace('/&#58;/', "", $activity);
@@ -424,17 +394,17 @@ function submitbutton(pressbutton)
 						<input type="hidden" name="admin_action" value="" />
 						<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_SEND_MESSAGE'); ?>" class="btn" id="do-message" /> <span class="breaker"> | </span>
 					<?php if ($this->model->isActive()) { ?>
-						<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_SUSPEND'); ?>" class="btn" id="do-suspend" onclick="javascript: submitbutton('suspend')" />
+						<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_SUSPEND'); ?>" class="btn" id="do-suspend" />
 					<?php } else if ($this->model->isInactive() || $this->model->isDeleted()) { ?>
-						<input type="submit" value="<?php echo $this->suspended ? Lang::txt('COM_PROJECTS_OPTION_REINSTATE') : Lang::txt('COM_PROJECTS_OPTION_ACTIVATE'); ?>" class="btn" id="do-reisnate" onclick="javascript: submitbutton('reinstate')" />
+						<input type="submit" value="<?php echo $this->suspended ? Lang::txt('COM_PROJECTS_OPTION_REINSTATE') : Lang::txt('COM_PROJECTS_OPTION_ACTIVATE'); ?>" class="btn" id="do-reisnate" />
 					<?php } ?>
 					<?php if (!$this->model->isDeleted()) { ?>
-						<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_DELETE'); ?>" class="btn" id="do-delete" onclick="javascript: submitbutton('delete')" />
+						<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_DELETE'); ?>" class="btn" id="do-delete" />
 					<?php } ?>
 					<?php if ($this->model->isArchived()) { ?>
-						<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_UNARCHIVE'); ?>" class="btn" id="do-unarchive" onclick="javascript: submitbutton('unarchive')" />
+						<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_UNARCHIVE'); ?>" class="btn" id="do-unarchive" />
 					<?php } else { ?>
-						<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_ARCHIVE'); ?>" class="btn" id="do-unarchive" onclick="javascript: submitbutton('archive')" />
+						<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_ARCHIVE'); ?>" class="btn" id="do-archive" />
 					<?php } ?>
 				</div>
 			</fieldset>
@@ -444,19 +414,19 @@ function submitbutton(pressbutton)
 				<table>
 					<tbody>
 						<tr>
-							<th><?php echo Lang::txt('COM_PROJECTS_MANAGERS'); ?>:</th>
+							<th scope="row"><?php echo Lang::txt('COM_PROJECTS_MANAGERS'); ?>:</th>
 							<td><?php echo $this->managers ? $this->managers : Lang::txt('COM_PROJECTS_NA'); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_PROJECTS_COLLABORATORS'); ?>:</th>
+							<th scope="row"><?php echo Lang::txt('COM_PROJECTS_COLLABORATORS'); ?>:</th>
 							<td><?php echo $this->members ? $this->members : Lang::txt('COM_PROJECTS_NA'); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_PROJECTS_AUTHORS'); ?>:</th>
+							<th scope="row"><?php echo Lang::txt('COM_PROJECTS_AUTHORS'); ?>:</th>
 							<td><?php echo $this->authors ? $this->authors : Lang::txt('COM_PROJECTS_NA'); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_PROJECTS_REVIEWERS'); ?>:</th>
+							<th scope="row"><?php echo Lang::txt('COM_PROJECTS_REVIEWERS'); ?>:</th>
 							<td><?php echo $this->reviewers ? $this->reviewers : Lang::txt('COM_PROJECTS_NA'); ?></td>
 						</tr>
 					</tbody>
@@ -534,15 +504,15 @@ function submitbutton(pressbutton)
 					<table>
 						<tbody>
 							<tr>
-								<th><?php echo Lang::txt('COM_PROJECTS_IMAGE_WIDTH'); ?>:</th>
+								<th scope="row"><?php echo Lang::txt('COM_PROJECTS_IMAGE_WIDTH'); ?>:</th>
 								<td><?php echo $width; ?> px</td>
 							</tr>
 							<tr>
-								<th><?php echo Lang::txt('COM_PROJECTS_IMAGE_HEIGHT'); ?>:</th>
+								<th scope="row"><?php echo Lang::txt('COM_PROJECTS_IMAGE_HEIGHT'); ?>:</th>
 								<td><?php echo $height; ?> px</td>
 							</tr>
 							<tr>
-								<th><?php echo Lang::txt('COM_PROJECTS_IMAGE_SIZE'); ?>:</th>
+								<th scope="row"><?php echo Lang::txt('COM_PROJECTS_IMAGE_SIZE'); ?>:</th>
 								<td><?php echo Hubzero\Utility\Number::formatBytes($size); ?></td>
 							</tr>
 						</tbody>
@@ -565,15 +535,15 @@ function submitbutton(pressbutton)
 					<table>
 						<tbody>
 							<tr>
-								<th><?php echo Lang::txt('COM_PROJECTS_IMAGE_WIDTH'); ?>:</th>
+								<th scope="row"><?php echo Lang::txt('COM_PROJECTS_IMAGE_WIDTH'); ?>:</th>
 								<td><?php echo $width; ?> px</td>
 							</tr>
 							<tr>
-								<th><?php echo Lang::txt('COM_PROJECTS_IMAGE_HEIGHT'); ?>:</th>
+								<th scope="row"><?php echo Lang::txt('COM_PROJECTS_IMAGE_HEIGHT'); ?>:</th>
 								<td><?php echo $height; ?> px</td>
 							</tr>
 							<tr>
-								<th><?php echo Lang::txt('COM_PROJECTS_IMAGE_SIZE'); ?>:</th>
+								<th scope="row"><?php echo Lang::txt('COM_PROJECTS_IMAGE_SIZE'); ?>:</th>
 								<td><?php echo Hubzero\Utility\Number::formatBytes($size); ?></td>
 							</tr>
 						</tbody>

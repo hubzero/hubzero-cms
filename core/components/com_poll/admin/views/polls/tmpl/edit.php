@@ -58,30 +58,14 @@ else
 }
 Toolbar::spacer();
 Toolbar::help('poll');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
 
-<script type="text/javascript">
-	function submitbutton(pressbutton) {
-		var form = document.adminForm;
-
-		if (pressbutton == 'cancel') {
-			submitform( pressbutton );
-			return;
-		}
-
-		// do field validation
-		if (form.title.value == "") {
-			alert( "<?php echo Lang::txt('COM_POLL_ERROR_MISSING_TITLE', true); ?>" );
-		} else if (isNaN(parseInt( document.getElementById('field-lag').value ) ) || parseInt(document.getElementById('field-lag').value) < 1)  {
-			alert( "<?php echo Lang::txt('COM_POLL_ERROR_MISSING_LAG', true); ?>" );
-		//} else if (form.menu.options.value == ""){
-		//	alert( "COM_POLL_ERROR_MISSING_OPTIONS" );
-		} else {
-			submitform( pressbutton );
-		}
-	}
-</script>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span6">
 			<fieldset class="adminform">
@@ -89,7 +73,7 @@ Toolbar::help('poll');
 
 				<div class="input-wrap">
 					<label for="field-title"><?php echo Lang::txt('COM_POLL_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input class="inputbox" type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape($this->poll->get('title')); ?>" />
+					<input class="inputbox" type="text" name="fields[title]" id="field-title" class="required" value="<?php echo $this->escape($this->poll->get('title')); ?>" />
 				</div>
 				<div class="input-wrap">
 					<label for="field-alias"><?php echo Lang::txt('COM_POLL_FIELD_ALIAS'); ?>:</label><br />
@@ -97,7 +81,7 @@ Toolbar::help('poll');
 				</div>
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_POLL_FIELD_LAG_HINT'); ?>">
 					<label for="field-lag"><?php echo Lang::txt('COM_POLL_FIELD_LAG'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input class="inputbox" type="text" name="fields[lag]" id="field-lag" value="<?php echo $this->escape($this->poll->get('lag', 86400)); ?>" />
+					<input class="inputbox" type="text" name="fields[lag]" id="field-lag" class="required" value="<?php echo $this->escape($this->poll->get('lag', 86400)); ?>" />
 					<span class="hint"><?php echo Lang::txt('COM_POLL_FIELD_LAG_HINT'); ?></span>
 				</div>
 				<div class="input-wrap">

@@ -70,34 +70,11 @@ if ($canDo->get('core.create'))
 
 // This line makes sure we're including the javascript framework
 Html::behavior('framework');
+
+$this->js();
 ?>
-<script type="text/javascript">
-Joomla.submitbutton = function(pressbutton) {
-	var form = document.adminForm;
 
-	if (pressbutton == 'resetclientsecret')
-	{
-		if (confirm("<?php echo Lang::txt('COM_DEVELOPER_RESET_CLIENT_SECRET_CONFIRM'); ?>"))
-		{
-			Joomla.submitform(pressbutton, document.getElementById('item-form'));
-		}
-		return;
-	}
-
-	if (pressbutton == 'removetokens')
-	{
-		if (confirm("<?php echo Lang::txt('COM_DEVELOPER_REVOKE_TOKENS_CONFIRM'); ?>"))
-		{
-			Joomla.submitform(pressbutton, document.getElementById('item-form'));
-		}
-		return;
-	}
-
-	Joomla.submitform(pressbutton, document.getElementById('item-form'));
-	return;
-}
-</script>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm" data-confirmreset="<?php echo Lang::txt('COM_DEVELOPER_RESET_CLIENT_SECRET_CONFIRM'); ?>" data-confirmrevoke="<?php echo Lang::txt('COM_DEVELOPER_REVOKE_TOKENS_CONFIRM'); ?>">
 	<?php if ($this->getErrors()) { ?>
 		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 	<?php } ?>
