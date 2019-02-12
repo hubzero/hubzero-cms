@@ -9,18 +9,6 @@
 // --------------------------------------------------
 
 // Inputs
-	/*input[type=text],
-	input[type=password],
-	input[type=email],
-	input[type=date],
-	input[type=url],
-	input[type=color],
-	input[type=search],
-	input[type=tel],
-	input[type=month],
-	input[type=week],
-	input[type=time],
-	input[type=number],*/
 	input,
 	button,
 	textarea {
@@ -72,11 +60,14 @@
 	textarea {
 		width: 100%;
 	}
+	input.datetime-field {
+		background-image: url("/core/assets/icons/calendar.svg");
+		background-repeat: no-repeat;
+		background-position: center right calc(2.25rem / 4);
+		background-size: calc(2.25rem / 2) calc(2.25rem / 2);
+	}
 	button,
 	[type=submit] {
-		//border-color: #e8e8e8;
-		//background-color: #e8e8e8;
-
 		&:hover,
 		&:focus {
 			background-color: #222;
