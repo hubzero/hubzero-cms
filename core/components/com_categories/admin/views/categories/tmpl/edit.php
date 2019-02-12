@@ -50,21 +50,14 @@ if ($this->canDo->get('core.edit'))
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('category');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
 
-<script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
-		if (task == 'cancel' || document.formvalidator.isValid($('#item-form'))) {
-			<?php echo $this->form->getField('description')->save(); ?>
-			Joomla.submitform(task, document.getElementById('item-form'));
-		} else {
-			alert('<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
-		}
-	}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=com_categories&extension='.Request::getCmd('extension', 'com_content').'&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=com_categories&extension='.Request::getCmd('extension', 'com_content').'&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -152,7 +145,7 @@ Toolbar::help('category');
 					<tr>
 						<th scope="row"><?php echo Lang::txt('COM_CATEGORIES_FIELD_CREATED'); ?></th>
 						<td>
-							<?php echo $this->item->get('created_time'); ?>
+							<?php echo Date::of($this->item->get('created_time'))->toLocal(); ?>
 						</td>
 					</tr>
 					<?php if ($this->item->get('modified_time', false)): ?>
@@ -166,7 +159,7 @@ Toolbar::help('category');
 						<tr>
 							<th scope="row"><?php echo Lang::txt('COM_CATEGORIES_FIELD_MODIFIED');?></th>
 							<td>
-								<?php echo $this->item->get('modified_time'); ?>
+								<?php echo Date::of($this->item->get('modified_time'))->toLocal(); ?>
 							</td>
 						</tr>
 					<?php endif; ?>

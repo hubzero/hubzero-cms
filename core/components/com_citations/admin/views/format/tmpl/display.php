@@ -33,56 +33,22 @@
 defined('_HZEXEC_') or die();
 
 //add title and save button to toolbar
-Toolbar::title(Lang::txt('CITATIONS') . ': ' . Lang::txt('CITATION_FORMAT'), 'citation.png');
+Toolbar::title(Lang::txt('CITATIONS') . ': ' . Lang::txt('CITATION_FORMAT'), 'citation');
 Toolbar::save();
 Toolbar::spacer();
 Toolbar::help('format');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 
 // include citations format class
 // new citations format object
 $cf = new \Components\Citations\Helpers\Format();
 ?>
 
-<script type="text/javascript">
-var $jQ = jQuery.noConflict();
-
-function submitbutton(pressbutton)
-{
-	var form = $jQ('adminForm');
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
-
-$jQ(document).ready(function(e) {
-	var formatSelector = $jQ('#format-selector'),
-		formatBox = $jQ('#format-string');
-
-	//when we change format box
-	formatSelector.on('change', function(event) {
-		var value  = $jQ(this).val(),
-			format = $jQ(this).find(':selected').attr('data-format');
-		formatBox.val(format);
-	});
-
-	//when we customize the format
-	formatBox.on('keyup', function(event) {
-		var customOption = formatSelector.find('option[value=custom]');
-		customOption.attr('data-format', formatBox.val());
-	});
-
-	$jQ(function($) {
-		$('tr').click(function() {
-			$('#format-string').val($('#format-string').val() + $(this).attr('id'));
-			$('#format-string').focus();
-		});
-	}); 
-});
-</script>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" class="form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -109,11 +75,11 @@ $jQ(document).ready(function(e) {
 		</div>
 		<div class="col span5">
 			<div class="data-wrap">
-				<table class="admintable">
+				<table class="admintable" id="preformatted">
 					<thead>
 						<tr>
-							<th><?php echo Lang::txt('CITATION_FORMAT_PLACEHOLDER'); ?></th>
-							<th><?php echo Lang::txt('CITATION_FORMAT_VALUE'); ?></th>
+							<th scope="col"><?php echo Lang::txt('CITATION_FORMAT_PLACEHOLDER'); ?></th>
+							<th scope="col"><?php echo Lang::txt('CITATION_FORMAT_VALUE'); ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -123,7 +89,7 @@ $jQ(document).ready(function(e) {
 
 							foreach ($keys as $k => $v)
 							{
-								echo "<tr id='{$v}'><td>{$v}</td><td>{$k}</td></tr>";
+								echo '<tr id="' . $v . '"><td>' . $v . '</td><td>' . $k . '</td></tr>';
 							}
 						?>
 					</tbody>
