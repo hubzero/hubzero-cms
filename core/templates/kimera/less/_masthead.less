@@ -72,6 +72,15 @@
 //
 // Prime Nav
 // --------------------------------------------------
+.icon-login:before {
+	content: "\f007";
+}
+.icon-logout:before {
+	content: "\f011";
+}
+.icon-register:before {
+	content: "\270D";
+}
 
 #account {
 	float: right;
@@ -96,6 +105,9 @@
 		border: 2px solid rgba(0, 0, 0, 0.4);
 		.border-radius(50%);
 	}
+	.admin img {
+		border-color: #f8d201;
+	}
 
 	li {
 		list-style: none;
@@ -116,20 +128,8 @@
 			white-space: nowrap;
 
 			&:before {
-				content: "";
-				font-family: "Fontcons";
 				margin-right: 0.5em;
 				font-size: 1em;
-			}
-
-			&.icon-search:before {
-				content: "\f002";
-			}
-			&.icon-login:before {
-				content: "\f007";
-			}
-			&.icon-register:before {
-				content: "\270D";
 			}
 
 			&:hover,
@@ -138,58 +138,78 @@
 			}
 		}
 
-		ul {
+		.user-account-badge {
+			position: absolute;
+			top: 1.3em;
+			left: 105%;
+			overflow: hidden;
+			width: 1.5em;
+			height: 1.5em;
+			color: #f8d201;
+			line-height: 1;
+			padding: 0.2em 0.3em;
+			border: none;
+
+			&:before {
+				margin-right: 1em;
+			}
+			&:hover {
+				border: none;
+			}
+		}
+
+		.user-account-options {
 			position: absolute;
 			visibility: hidden;
 			width: 200px;
-			right: 0px;
+			right: 0;
 			top: 100%;
 			background: #222;
 			background: rgba(0, 0, 0, 0.9);
 			border-top: 2px solid #ccc;
+			color: #bbb;
 
-			li {
-				float: none;
-				border: none;
+			.user-account-details {
+				padding: 1em;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 
-				a {
+				span {
 					display: block;
-					color: #bbb;
-					color: rgba(255, 255, 255, 0.6);
-					position: relative;
-					font-size: 1em;
-					width: auto;
-					line-height: 1;
+					padding: 0.2em 0;
+				}
+
+				.user-account-email {
+					color: #999;
+					font-size: 0.85em;
+				}
+			}
+
+			ul {
+				list-style: none;
+				margin: 0;
+
+				li {
+					float: none;
 					border: none;
-					padding: 0.8em 1em;
-					.transition(color 0.3s ease);
+					margin: 0;
 
-					&:hover,
-					&:focus {
-						color: #fff;
-					}
-					&:before {
-						content: "";
-						display: inline-block;
-						font-family: 'Fontcons';
-						font-size: 1.2em;
-						width: 1em;
-						height: 1em;
-						margin-right: 0.2em;
-					}
-				}
+					a {
+						display: block;
+						color: #bbb;
+						color: rgba(255, 255, 255, 0.6);
+						position: relative;
+						font-size: 1em;
+						width: auto;
+						line-height: 1;
+						border: none;
+						padding: 0.8em 1em;
+						.transition(color 0.3s ease);
 
-				&#account-dashboard a:before {
-					content: "\f009";
-				}
-				&#account-profile a:before {
-					content: "\f007";
-				}
-				&#account-messages a:before {
-					content: "\2709";
-				}
-				&#account-logout a:before {
-					content: "\f011";
+						&:hover,
+						&:focus {
+							color: #fff;
+						}
+					}
 				}
 			}
 		}
@@ -198,8 +218,8 @@
 			display: none;
 		}
 
-		&:hover > ul,
-		&:focus > ul,
+		&:hover > .user-account-options,
+		&:focus > .user-account-options,
 		&:hover > form,
 		&:focus > form {
 			visibility: visible;
@@ -219,10 +239,6 @@
 				display: none;
 			}
 		}
-	}
-
-	.account-details {
-		display: none;
 	}
 }
 
