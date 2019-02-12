@@ -293,7 +293,7 @@ class Form extends SiteController
 	 */
 	public function createDeploymentTask()
 	{
-		if (!$deployment = Request::getString('deployment'))
+		if (!$deployment = Request::getArray('deployment'))
 		{
 			App::abort(422, Lang::txt('COM_COURSES_ERROR_MISSING_DEPLOYMENT'));
 		}
@@ -339,7 +339,7 @@ class Form extends SiteController
 	 */
 	public function updateDeploymentTask()
 	{
-		if (!$deployment = Request::getString('deployment'))
+		if (!$deployment = Request::getArray('deployment'))
 		{
 			App::abort(422, Lang::txt('COM_COURSES_ERROR_MISSING_DEPLOYMENT'));
 		}
