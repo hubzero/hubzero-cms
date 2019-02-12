@@ -222,8 +222,8 @@
 	padding: 10px;
 	border: 1px solid #CCCCCC;
 	background-color: #FFFFFF;
-	background-repeat: no-repeat;
-	background-position: 7px 9px;
+	/*background-repeat: no-repeat;
+	background-position: 7px 9px;*/
 	width: 100%;
 	outline: none;
 	-webkit-box-sizing: border-box;
