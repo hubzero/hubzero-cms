@@ -9,21 +9,26 @@
 .ipynb pre,
 .ipynb .dp-highlighter {
 	margin: 0;
-	font-family: Monaco, Consolas, "Lucida Console", monospace;
-	padding: 1.61803399em;
-	font-size: 0.85em;
+	font-family: monospace;
+	padding: 0.2em;
+	font-size: 14px;
+	line-height: 1.2;
 	border: 0;
-	color: #666;
-	line-height: 1.9em;
+	color: #000;
 	white-space: pre-wrap;
 	word-wrap: break-word;
-	background: #fff; /*#f9f9f9;*/
+	background: #f9f9f9;
 	border: 1px solid #e7e7e7;
-	-webkit-border-radius: 0.5em;
-	-moz-border-radius: 0.5em;
-	-ms-border-radius: 0.5em;
-	-o-border-radius: 0.5em;
-	border-radius: 0 0 0.5em 0.5em;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	-ms-border-radius: 0;
+	-o-border-radius: 0;
+	border-radius: 0;
+}
+.ipynb pre.output {
+	border: none;
+	padding: 0;
+	background: transparent;
 }
 .ipynb .dp-highlighter .tag {
 	background: transparent !important;
@@ -119,15 +124,6 @@
 .ipynb .inner_cell .dp-highlighter .columns div {
 	list-style: none !important;
 	padding: 0 3px 0 3px !important;
-}
-.ipynb .inner_cell pre,
-.ipynb .inner_cell .dp-highlighter {
-	background-color: #f9f9f9;
-	padding: 0.2em;
-	font-family: monospace;
-	font-size: 14px;
-	line-height: 1.2;
-	color: #000;
 }
 .ipynb .inner_cell .dp-highlighter .nn {
 	color: #0000FF;
@@ -318,6 +314,9 @@
 .ipynb .input_prompt {
 	color: #000080;
 	border-top: 1px solid transparent
+}
+.ipynb .output_prompt {
+	color: #D84315;
 }
 .ipynb .input_area > .highlight {
 	margin: .4em;
