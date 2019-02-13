@@ -13,8 +13,8 @@ $this->js('highlighter/shCore.js')
      ->js('highlighter/shBrushPython.js')
      ->js('ipynb.js');
 ?>
-<div class="file-preview">
-	<div class="file-preview-code ipynb">
+<div class="file-preview ipynb">
+	<div class="file-preview-code">
 		<div class="cells">
 			<?php
 			$contents = json_decode($this->file->read());
