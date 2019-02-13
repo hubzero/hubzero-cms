@@ -252,6 +252,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			$rows = $query
 				->limit($filters['limit'])
 				->start($filters['limitstart'])
+				->order('publish_up', 'desc')
 				->order('created', 'desc')
 				->rows();
 
