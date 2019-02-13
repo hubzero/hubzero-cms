@@ -12,4 +12,4 @@ before_script:
   - echo $files_exist
   - echo $files_removed
 script:
-- vendor/squizlabs/php_codesniffer/scripts/phpcs -np --standard=~/build/standards/Php/ruleset.xml --extensions=php --ignore=*/tests/*,/core/libraries/* $files_exist
+- vendor/squizlabs/php_codesniffer/scripts/phpcs -np --standard=~/build/standards/Php/ruleset.xml --extensions=php --ignore=*.js,*.css,*.ini,*.xml,*/tests/*,/core/libraries/* $files_exist
