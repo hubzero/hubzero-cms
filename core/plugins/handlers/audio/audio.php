@@ -11,9 +11,9 @@ use Hubzero\Plugin\Plugin;
 defined('_HZEXEC_') or die();
 
 /**
- * Plugin class for script files
+ * Plugin class for audio files
  */
-class plgHandlersScript extends Plugin
+class plgHandlersAudio extends Plugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -28,24 +28,8 @@ class plgHandlersScript extends Plugin
 	 * @var  boolean
 	 */
 	public static $extensions = array(
-		'c',
-		'cpp',
-		'css',
-		'delphi',
-		'html',
-		'ini',
-		'java',
-		'js',
-		'less',
-		'php',
-		'py',
-		'ruby',
-		'sass',
-		'scss',
-		'sh',
-		'sql',
-		'vb',
-		'xml'
+		'mp3',
+		'wav'
 	);
 
 	/**
@@ -111,20 +95,8 @@ class plgHandlersScript extends Plugin
 
 		$ext = $file->getExtension();
 
-		switch ($ext)
-		{
-			case 'less':
-			case 'scss':
-			case 'css':
-				$ext = 'css';
-			break;
-
-			default:
-			break;
-		}
-
 		// Create view
-		$view = $this->view('view', 'script');
+		$view = $this->view('view', 'audio');
 		$view->file = $file;
 		$view->ext  = $ext;
 
