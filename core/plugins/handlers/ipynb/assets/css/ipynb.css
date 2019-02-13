@@ -32,6 +32,9 @@
 	display: inline;
 	color: #069 !important;
 }
+.ipynb img {
+	width: auto !important;
+}
 
 /* clear styles */
 .ipynb .dp-highlighter ol,

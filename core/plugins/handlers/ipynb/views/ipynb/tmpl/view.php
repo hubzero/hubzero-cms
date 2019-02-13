@@ -51,31 +51,23 @@ $this->js('highlighter/shCore.js')
 
 			$output = array();
 
-			foreach ($contents->cells as $cell):
-				$source = implode('', $cell->source);
-
-				if ($cell->cell_type == 'markdown'):
-					$output[] = '<div class="cell ' . $cell->cell_type . ' rendered">';
-						$output[] = '<div class="input">';
-							$output[] = '<div class="prompt input_prompt"> </div>';
-							$output[] = '<div class="inner_cell">';
-								$output[] = '<div class="text_cell_render rendered_html">' . ($parser ? $parser->parse($source) : $source) . '</div>';
-							$output[] = '</div>';
-						$output[] = '</div>';
-					$output[] = '</div>';
-				endif;
-
-				if ($cell->cell_type == 'code'):
-					$output[] = '<div class="cell ' . $cell->cell_type . ' rendered">';
-						$output[] = '<div class="input">';
-							$output[] = '<div class="prompt input_prompt">In [ ]:</div>';
-							$output[] = '<div class="inner_cell">';
-								$output[] = '<pre name="code" class="python:nogutter:nocontrols">' . $source . '</pre>';
-							$output[] = '</div>';
-						$output[] = '</div>';
-					$output[] = '</div>';
-				endif;
-			endforeach;
+			if (isset($contents->worksheets)):
+				foreach ($contents->worksheets as $worksheet):
+					foreach ($worksheet->cells as $cell):
+						$output[] = $this->view('cell')
+									->set('cell', $cell)
+									->set('parser', $parser)
+									->loadTemplate();
+					endforeach;
+				endforeach;
+			elseif (isset($contents->cells)):
+				foreach ($contents->cells as $cell):
+					$output[] = $this->view('cell')
+									->set('cell', $cell)
+									->set('parser', $parser)
+									->loadTemplate();
+				endforeach;
+			endif;
 
 			echo implode("\n", $output);
 			?>
