@@ -11,9 +11,9 @@ use Hubzero\Plugin\Plugin;
 defined('_HZEXEC_') or die();
 
 /**
- * Plugin class for script files
+ * Plugin class for video files
  */
-class plgHandlersScript extends Plugin
+class plgHandlersVideo extends Plugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -28,24 +28,10 @@ class plgHandlersScript extends Plugin
 	 * @var  boolean
 	 */
 	public static $extensions = array(
-		'c',
-		'cpp',
-		'css',
-		'delphi',
-		'html',
-		'ini',
-		'java',
-		'js',
-		'less',
-		'php',
-		'py',
-		'ruby',
-		'sass',
-		'scss',
-		'sh',
-		'sql',
-		'vb',
-		'xml'
+		'mp4',
+		'm4v',
+		'webm',
+		'ogg'
 	);
 
 	/**
@@ -58,7 +44,7 @@ class plgHandlersScript extends Plugin
 	{
 		// We can handle 1 file
 		$need = [
-			'script' => function ($ext, $files)
+			'video' => function ($ext, $files)
 			{
 				foreach (self::$extensions as $canHandle)
 				{
@@ -113,10 +99,9 @@ class plgHandlersScript extends Plugin
 
 		switch ($ext)
 		{
-			case 'less':
-			case 'scss':
-			case 'css':
-				$ext = 'css';
+			case 'mp4':
+			case 'm4v':
+				$ext = 'mp4';
 			break;
 
 			default:
@@ -124,7 +109,7 @@ class plgHandlersScript extends Plugin
 		}
 
 		// Create view
-		$view = $this->view('view', 'script');
+		$view = $this->view('view', 'video');
 		$view->file = $file;
 		$view->ext  = $ext;
 

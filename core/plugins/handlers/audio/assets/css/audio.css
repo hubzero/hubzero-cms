@@ -1,0 +1,12 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/handlers/audio/assets/css/audio.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+.file-preview.audio {
+	text-align: center;
+	background: #7c7c7c;
+	padding: 1em;
+}

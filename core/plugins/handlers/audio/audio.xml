@@ -7,16 +7,16 @@
 -->
 
 <extension version="2.2.14" type="plugin" group="handlers">
-	<name>PLG_HANDLERS_SCRIPT</name>
+	<name>PLG_HANDLERS_AUDIO</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
+	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>PLG_HANDLERS_SCRIPT_XML_DESCRIPTION</description>
+	<description>PLG_HANDLERS_AUDIO_XML_DESCRIPTION</description>
 	<files>
-		<filename plugin="script">script.php</filename>
+		<filename plugin="audio">audio.php</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.plg_handlers_script.ini</language>
+		<language tag="en-GB">en-GB.plg_handlers_audio.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
