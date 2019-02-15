@@ -41,33 +41,38 @@ if (file_exists($path . $ext . '.svg'))
 	$icon = $ext . '.svg';
 }
 
-$name = Filesystem::name($this->currentDoc['name']);
-if (strlen($name) > 10)
-{
-	$name = substr($name, 0, 10) . ' ... ';
-}
-$name .= '.' . $ext;
-
 $params = new Hubzero\Config\Registry;
 
 $href = Route::url('index.php?option=' . $this->option . '&task=download&' . Session::getFormToken() . '=1&file=' . urlencode($this->currentDoc['path']));
 
+$this->currentDoc['modified'] = filemtime(COM_MEDIA_BASE . $this->currentDoc['path']);
+$modified = Date::of($this->currentDoc['modified']);
+
 Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_doc, &$params));
 ?>
-		<div class="media-item media-item-thumb">
-			<div class="media-preview">
-				<div class="media-preview-inner">
-					<a href="<?php echo $href; ?>" class="media-thumb doc-item <?php echo Filesystem::extension($this->currentDoc['name']); ?>" title="<?php echo $this->escape($this->currentDoc['name']); ?>" >
-						<span class="media-preview-shim"></span><!--
-						--><img src="<?php echo $this->img($icon); ?>" alt="<?php echo $this->escape(Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->currentDoc['name'], Components\Media\Admin\Helpers\MediaHelper::parseSize($this->currentDoc['size']))); ?>" width="80" />
-					</a>
-					<span class="media-options-btn"></span>
-				</div>
-			</div>
-			<div class="media-info">
-				<div class="media-name">
-					<?php echo $this->escape($name); ?>
-				</div>
+	<tr class="media-item media-item-list doc-item">
+		<td width="50%">
+			<a href="<?php echo $href; ?>" title="<?php echo $this->escape($this->currentDoc['name']); ?>">
+				<span class="media-icon">
+					<img src="<?php echo $this->img($icon); ?>" alt="<?php echo $this->escape(Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->currentDoc['name'], Components\Media\Admin\Helpers\MediaHelper::parseSize($this->currentDoc['size']))); ?>" />
+				</span>
+				<span class="media-name">
+					<?php echo $this->escape($this->currentDoc['name']); ?>
+				</span>
+			</a>
+		</td>
+		<td>
+			<span class="media-size"><?php echo Components\Media\Admin\Helpers\MediaHelper::parseSize($this->currentDoc['size']); ?></span>
+		</td>
+		<td>
+			<span class="media-type"><?php echo strtoupper($ext); ?></span>
+		</td>
+		<td>
+			<time class="media-modified" datetime="<?php echo $modified->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo $modified->toSql(); ?></time>
+		</td>
+		<td>
+			<div class="media-preview-inner">
+				<span class="media-options-btn"></span>
 				<div class="media-options">
 					<ul>
 						<li>
@@ -93,6 +98,7 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_do
 					</ul>
 				</div>
 			</div>
-		</div>
+		</td>
+	</tr>
 <?php
 Event::trigger('onContentAfterDisplay', array('com_media.file', &$this->_tmp_doc, &$params));

@@ -32,36 +32,19 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-if (!isset($this->folderDepth))
-{
-	$this->folderDepth = 1;
-}
-$cls = '';
-if ($this->folderDepth == 1)
-{
-	$cls .= ' class="open"';
-}
 ?>
-<ul <?php echo $this->folders_id; ?> class="<?php echo 'depth' . $this->folderDepth; ?>">
-	<?php foreach ($this->folderTree as $folder) : ?>
-		<li id="<?php echo $this->escape($folder['name']); ?>"<?php echo $cls; ?>>
-			<a href="<?php echo Route::url('index.php?option=com_media&controller=medialist&tmpl=component&folder=' . '/' . $folder['path']); ?>" target="folderframe">
-				<?php echo $this->escape($folder['name']); ?>
-			</a>
-			<?php
-			if (isset($folder['children']) && count($folder['children'])) :
-				$temp = $this->folderTree;
 
-				$this->folderTree = $folder['children'];
-				$this->folders_id = 'id="folder-' . $folder['name'] . '"';
-				$this->folderDepth++;
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&file=' . urlencode($this->file)); ?>" id="component-form" method="post" name="adminForm" autocomplete="off">
+	<fieldset>
+		<h2 class="modal-title">
+			<?php echo Lang::txt('File Link'); ?>
+		</h2>
+	</fieldset>
+	<div class="manager">
+		<input type="text" value="<?php echo $this->escape($this->file); ?>" name="path" />
 
-				echo $this->loadTemplate('folders');
-
-				$this->folderTree = $temp;
-				$this->folderDepth--;
-			endif;
-			?>
-		</li>
-	<?php endforeach; ?>
-</ul>
+		<input type="hidden" name="task" value="" />
+		<?php echo Html::input('token'); ?>
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	</div>
+</form>
