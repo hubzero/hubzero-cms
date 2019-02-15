@@ -199,7 +199,7 @@ class Doi extends Relational
 		}
 
 		// Register the DOI name and URL to complete the DOI registration.
-		$result = $service->register(false, true, $doi);
+		$result = $service->register(false, true, $shoulder . '/' . $doi);
 
 		if ($service->getError())
 		{
