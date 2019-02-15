@@ -32,36 +32,20 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-if (!isset($this->folderDepth))
+if (!Request::getInt('no_html') && Request::getWord('format') != 'raw')
 {
-	$this->folderDepth = 1;
+	$this->css()
+		->js();
 }
-$cls = '';
-if ($this->folderDepth == 1)
-{
-	$cls .= ' class="open"';
-}
-?>
-<ul <?php echo $this->folders_id; ?> class="<?php echo 'depth' . $this->folderDepth; ?>">
-	<?php foreach ($this->folderTree as $folder) : ?>
-		<li id="<?php echo $this->escape($folder['name']); ?>"<?php echo $cls; ?>>
-			<a href="<?php echo Route::url('index.php?option=com_media&controller=medialist&tmpl=component&folder=' . '/' . $folder['path']); ?>" target="folderframe">
-				<?php echo $this->escape($folder['name']); ?>
-			</a>
-			<?php
-			if (isset($folder['children']) && count($folder['children'])) :
-				$temp = $this->folderTree;
 
-				$this->folderTree = $folder['children'];
-				$this->folders_id = 'id="folder-' . $folder['name'] . '"';
-				$this->folderDepth++;
+$this->view('list', 'medialist')
+	->set('folder', $this->folder)
+	->set('children', $this->children)
+	->set('active', ($this->layout == 'list' ? true : false))
+	->display();
 
-				echo $this->loadTemplate('folders');
-
-				$this->folderTree = $temp;
-				$this->folderDepth--;
-			endif;
-			?>
-		</li>
-	<?php endforeach; ?>
-</ul>
+$this->view('thumbs', 'medialist')
+	->set('folder', $this->folder)
+	->set('children', $this->children)
+	->set('active', ($this->layout == 'thumbs' ? true : false))
+	->display();
