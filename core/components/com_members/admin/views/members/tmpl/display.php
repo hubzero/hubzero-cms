@@ -75,30 +75,6 @@ $this->css();
 
 Html::behavior('tooltip');
 ?>
-<<<<<<< HEAD
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('adminForm');
-
-	if (pressbutton == 'clearTerms' || pressbutton == 'remove') {
-		var res = confirm("<?php echo Lang::txt('COM_MEMBERS_CONFIRMATION_WARNING'); ?>");
-
-		if (!res) {
-			return;
-		}
-	}
-
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
-=======
->>>>>>> 34c18ef... [refactor] Removing inline JS
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
