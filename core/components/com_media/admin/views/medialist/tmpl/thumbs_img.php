@@ -32,25 +32,58 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$params = new \Hubzero\Config\Registry;
+$ext = Filesystem::extension($this->currentImg['name']);
+$name = Filesystem::name($this->currentImg['name']);
+if (strlen($name) > 10)
+{
+	$name = substr($name, 0, 10) . ' ... ';
+}
+$name .= '.' . $ext;
+
+$params = new Hubzero\Config\Registry;
+
+$href = Route::url('index.php?option=' . $this->option . '&task=download&' . Session::getFormToken() . '=1&file=' . urlencode($this->currentImg['path']));
 
 Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
 ?>
-		<div class="imgOutline">
-			<div class="imgTotal">
-				<div class="imgBorder center">
-					<a class="img-preview" href="<?php echo COM_MEDIA_BASEURL . $this->currentImg['path']; ?>" title="<?php echo $this->currentImg['name']; ?>">
-						<img src="<?php echo COM_MEDIA_BASEURL . $this->currentImg['path']; ?>" alt="<?php echo Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->currentImg['name'], Components\Media\Admin\Helpers\MediaHelper::parseSize($this->currentImg['size'])); ?>" width="60" height="60" />
+		<div class="media-item media-item-thumb">
+			<div class="media-preview">
+				<div class="media-preview-inner">
+					<a class="media-thumb img-preview" href="<?php echo COM_MEDIA_BASEURL . $this->currentImg['path']; ?>" title="<?php echo $this->currentImg['name']; ?>">
+						<span class="media-preview-shim"></span><!--
+						--><img src="<?php echo COM_MEDIA_BASEURL . $this->currentImg['path']; ?>" alt="<?php echo Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->currentImg['name'], Components\Media\Admin\Helpers\MediaHelper::parseSize($this->currentImg['size'])); ?>" width="160" />
 					</a>
+					<span class="media-options-btn"></span>
 				</div>
 			</div>
-			<div class="imginfoBorder">
-				<?php if (User::authorise('core.delete', 'com_media')):?>
-					<input type="checkbox" name="rm[]" value="<?php echo $this->currentImg['name']; ?>" />
-				<?php endif; ?>
-				<a title="<?php echo $this->currentImg['name']; ?>" class="preview">
-					<?php echo $this->escape(substr($this->currentImg['name'], 0, 10) . (strlen($this->currentImg['name']) > 10 ? '...' : '')); ?>
-				</a>
+			<div class="media-info">
+				<div class="media-name">
+					<?php echo $this->escape($name); ?>
+				</div>
+				<div class="media-options">
+					<ul>
+						<li>
+							<a class="icon-info media-opt-info" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=info&' . Session::getFormToken() . '=1&file=' . urlencode($this->currentImg['path'])); ?>"><?php echo Lang::txt('Info'); ?></a>
+						</li>
+						<li>
+							<span class="separator"></span>
+						</li>
+						<li>
+							<a class="icon-download media-opt-download" href="<?php echo $href; ?>"><?php echo Lang::txt('Download'); ?></a>
+						</li>
+						<li>
+							<a class="icon-link media-opt-path" href="#link"><?php echo Lang::txt('Get link'); ?></a>
+						</li>
+						<?php if (User::authorise('core.delete', 'com_media')): ?>
+							<li>
+								<span class="separator"></span>
+							</li>
+							<li>
+								<a class="icon-trash media-opt-delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete&' . Session::getFormToken() . '=1&rm[]=' . urlencode($this->currentImg['path'])); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
+							</li>
+						<?php endif; ?>
+					</ul>
+				</div>
 			</div>
 		</div>
 <?php

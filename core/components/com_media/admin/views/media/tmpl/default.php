@@ -53,69 +53,95 @@ if (DIRECTORY_SEPARATOR == '\\')
 $style = Request::getState('media.list.layout', 'layout', 'thumbs', 'word');
 
 Html::behavior('framework', true);
-//Html::asset('script', 'system/jquery.treeview.js', true, true, false, false);
-//Html::asset('stylesheet', 'system/jquery.treeview.css', array(), true);
 
 $this->js("
 	var basepath = '" . $base . "';
 	var viewstyle = '" . $style . "';
 ");
-$this->css('jquery.treeview.css', 'system');
-$this->css('mediamanager.css');
+//$this->css('jquery.treeview.css', 'system');
+$this->css();
 $this->js('jquery.treeview.js', 'system');
-$this->js('mediamanager.js');
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	submitform(pressbutton);
-}
-</script>
-<table width="100%">
-	<tr valign="top">
-		<td class="media-tree">
-			<fieldset id="treeview">
-				<legend><?php echo Lang::txt('COM_MEDIA_FOLDERS'); ?></legend>
-				<div id="media-tree_tree">
-					<?php echo $this->loadTemplate('folders'); ?>
+<div class="media-container">
+	<div class="media-panels">
+		<div class="panel panel-tree">
+			<div id="media-tree_tree">
+				<ul>
+					<li>
+						<a href="<?php echo Route::url('index.php?option=com_media&controller=medialist&tmpl=component&folder=' . '/' . $folder['path']); ?>">
+							<?php echo $this->escape($folder['name']); ?>
+						</a>
+						<?php echo $this->loadTemplate('folders'); ?>
+					</li>
+				</ul>
+			</div>
+		</div><!-- / .panel-tree -->
+		<div class="panel panel-files">
+			<div class="media-header">
+				<div class="media-breadcrumbs-block">
+					<a class="media-breadcrumbs has-next-button folder-link" id="path_root">
+						<!-- <span class="icon-folder-close right-arrow-bg">root</span> -->
+						<img src="<?php echo $this->img('folder.svg'); ?>" alt="<?php echo COM_MEDIA_BASEURL; ?>" />
+					</a>
+					<span class="icon-chevron-right dir-separator"><span>/</span></span>
+					<a class="media-breadcrumbs folder has-next-button" id="path_F9pU2QqQ">(2005-) IDW</a>
+					<span class="icon-chevron-right dir-separator"><span>/</span></span>
+					<a class="media-breadcrumbs folder" id="path_toZCjLzJ">Alternative Continuities</a>
 				</div>
-			</fieldset>
-		</td>
-		<td class="media-browser">
-			<?php if ((User::authorise('core.create', 'com_media')) and $this->require_ftp): ?>
-				<form action="<?php echo Route::url('index.php?option=com_media&task=ftpValidate'); ?>" name="ftpForm" id="ftpForm" method="post">
-					<fieldset title="<?php echo Lang::txt('COM_MEDIA_DESCFTPTITLE'); ?>">
-						<legend><?php echo Lang::txt('COM_MEDIA_DESCFTPTITLE'); ?></legend>
-						<?php echo Lang::txt('COM_MEDIA_DESCFTP'); ?>
-						<label for="username"><?php echo Lang::txt('JGLOBAL_USERNAME'); ?></label>
-						<input type="text" id="username" name="username" class="inputbox" size="70" value="" />
+				<div class="media-header-buttons">
+					<a class="icon-th media-files-view thumbs-view <?php if (!$this->layout || $this->layout == 'thumbs') { echo 'active'; } ?>" data-view="thumbs" href="<?php echo Route::url('index.php?option=' . $this->option . '&layout=thumbs'); ?>" title="<?php echo Lang::txt('Thumbnail view'); ?>">
+						<?php echo Lang::txt('Thumbnail view'); ?>
+					</a>
+					<a class="icon-align-justify media-files-view hasTip listing-view <?php if ($this->layout == 'list') { echo 'active'; } ?>" data-view="list" href="<?php echo Route::url('index.php?option=' . $this->option . '&layout=list'); ?>" title="<?php echo Lang::txt('List view'); ?>">
+						<?php echo Lang::txt('List view'); ?>
+					</a>
 
-						<label for="password"><?php echo Lang::txt('JGLOBAL_PASSWORD'); ?></label>
-						<input type="password" id="password" name="password" class="inputbox" size="70" value="" />
-					</fieldset>
-				</form>
-			<?php endif; ?>
+					<div class="button link-button right fm-file-upload hidden">
+						<i class="small-icon file-upload"></i>
+						<span>File Upload</span>
+						<input type="file" title="File Upload" id="fileselect1" multiple="">
+					</div>
 
-			<form action="<?php echo Route::url('index.php?option=com_media&' . Session::getFormToken() . '=1', true, true); ?>" name="adminForm" id="mediamanager-form" method="post" enctype="multipart/form-data">
+					<div class="button link-button right fm-new-folder hidden" title="Create new folder">
+						<i class="small-icon dark-grey-plus"></i>
+						<span>New Folder</span>
+					</div>
+				</div>
+			</div>
+			<div class="media-view">
+				<div class="media-items" id="media-items">
+					<?php
+					$children = Components\Media\Admin\Helpers\MediaHelper::getChildren(COM_MEDIA_BASE, '');
+
+					$this->view('default', 'medialist')
+						->set('folder', $this->folder)
+						->set('children', $children)
+						->set('layout', $this->layout)
+						->display();
+
+					/*$this->view('list', 'medialist')
+						->set('folder', $this->folder)
+						->set('children', $children)
+						->set('active', ($this->layout == 'list' ? true : false))
+						->display();
+
+					$this->view('thumbs', 'medialist')
+						->set('folder', $this->folder)
+						->set('children', $children)
+						->set('active', ($this->layout == 'thumbs' ? true : false))
+						->display();*/
+					?>
+				</div>
+			</div>
+
+			<form action="<?php echo Route::url('index.php?option=com_media&' . Session::getFormToken() . '=1', true, true); ?>" name="adminForm" id="media-form" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="task" value="" />
 				<input type="hidden" name="token" value="<?php echo Session::getFormToken(); ?>" />
-				<input type="hidden" name="folder" id="folder" value="<?php echo $this->folder; ?>" />
+				<input type="hidden" name="folder" id="folder" value="<?php echo $this->escape($this->folder); ?>" />
+				<input type="hidden" name="layout" id="layout" value="<?php echo $this->escape($this->layout); ?>" />
+				<?php echo Html::input('token'); ?>
 			</form>
-
-			<form action="<?php echo Route::url('index.php?option=com_media&task=folder.create&tmpl=' . Request::getCmd('tmpl', 'index'));?>" name="folderForm" id="folderForm" method="post">
-				<fieldset id="folderview">
-					<legend><?php echo Lang::txt('COM_MEDIA_FILES'); ?></legend>
-					<div class="view">
-						<iframe src="<?php echo Route::url('index.php?option=com_media&controller=medialist&view=medialist&tmpl=component&folder=' . $this->folder); ?>" id="folderframe" name="folderframe" width="100%" marginwidth="0" marginheight="0" scrolling="auto"></iframe>
-					</div>
-				</fieldset>
-			</form>
-		</td>
-	</tr>
-</table>
-<?php echo Html::input('token'); ?>
+		</div><!-- / .panel-files -->
+	</div><!-- / .media-panels -->
+</div>

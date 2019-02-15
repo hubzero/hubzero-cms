@@ -77,18 +77,26 @@ class Media extends AdminController
 		$session = App::get('session');
 		$state = User::getState('folder');
 		$folders = Filesystem::directoryTree(COM_MEDIA_BASE);
-		$folderTree = MediaHelper::_buildFolderTree($folders);
+
+		$fold = array(
+			'id' => 0,
+			'parent' => -1,
+			'name' => '', //basename(COM_MEDIA_BASE),
+			'fullname' => COM_MEDIA_BASE,
+			'relname' => substr(COM_MEDIA_BASE, strlen(PATH_ROOT))
+		);
+
+		array_unshift($folders, $fold);
+
+		$folderTree = MediaHelper::_buildFolderTree($folders, -1);
+
+		$folderTree[0]['name'] = basename(COM_MEDIA_BASE);
 
 		MediaHelper::createPath($folders, COM_MEDIA_BASE);
 
-		/*Html::behavior('framework', true);
-		\Hubzero\Document\Assets::addComponentScript('com_media', 'mediamanager.js');
-		\Hubzero\Document\Assets::addComponentStylesheet('com_media', 'mediamanager.css');
-		Html::asset('script', 'system/jquery.treeview.js', true, true, false, false);
-		Html::asset('stylesheet', 'system/jquery.treeview.css', array(), true);*/
+		$layout = Request::getState('media.list.layout', 'layout', 'thumbs', 'word');
 
 		$this->view
-			->set('require_ftp', true)
 			->set('session', App::get('session'))
 			->set('config', Component::params('com_media'))
 			->set('state', $state)
@@ -98,6 +106,7 @@ class Media extends AdminController
 			->set('folders', $folders)
 			->set('folderTree', $folderTree)
 			->set('parent', MediaHelper::getParent($folder))
+			->set('layout', $layout)
 			->setLayout('default')
 			->display();
 	}

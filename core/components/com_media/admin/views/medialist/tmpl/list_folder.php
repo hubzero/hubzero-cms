@@ -32,22 +32,34 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+$this->currentFolder['modified'] = filemtime(COM_MEDIA_BASE . $this->currentFolder['path']);
+$modified = Date::of($this->currentFolder['modified']);
+
 $href = Route::url('index.php?option=' . $this->option . '&task=download&' . Session::getFormToken() . '=1&folder=' . urlencode($this->currentFolder['path']));
 ?>
-		<div class="media-item media-item-thumb">
-			<div class="media-preview">
-				<div class="media-preview-inner">
-					<a class="media-thumb folder-item" href="<?php echo Route::url('index.php?option=com_media&controller=medialist&view=medialist&tmpl=component&folder=' . $this->currentFolder['path']); ?>" target="folderframe">
-						<span class="media-preview-shim"></span><!--
-						--><img src="<?php echo $this->img('folder.svg'); ?>" alt="<?php echo $this->escape($this->currentFolder['name']); ?>" width="80" />
-					</a>
-					<span class="media-options-btn"></span>
-				</div>
-			</div>
-			<div class="media-info">
-				<div class="media-name">
-					<?php echo substr($this->currentFolder['name'], 0, 10) . (strlen($this->currentFolder['name']) > 10 ? '...' : ''); ?>
-				</div>
+	<tr class="media-item media-item-list folder-item">
+		<td width="50%">
+			<a href="<?php echo Route::url('index.php?option=com_media&controller=medialist&view=medialist&tmpl=component&folder=' . $this->currentFolder['path']); ?>">
+				<span class="media-icon">
+					<img src="<?php echo $this->img('folder.svg'); ?>" alt="<?php echo $this->escape($this->currentFolder['name']); ?>" />
+				</span>
+				<span class="media-name">
+					<?php echo $this->escape($this->currentFolder['name']); ?>
+				</span>
+			</a>
+		</td>
+		<td>
+			<!-- Nothing here -->
+		</td>
+		<td>
+			<span class="media-type"><?php echo Lang::txt('Folder'); ?></span>
+		</td>
+		<td>
+			<time class="media-modified" datetime="<?php echo $modified->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo $modified->toSql(); ?></time>
+		</td>
+		<td>
+			<div class="media-preview-inner">
+				<span class="media-options-btn"></span>
 				<div class="media-options">
 					<ul>
 						<li>
@@ -64,4 +76,5 @@ $href = Route::url('index.php?option=' . $this->option . '&task=download&' . Ses
 					</ul>
 				</div>
 			</div>
-		</div>
+		</td>
+	</tr>
