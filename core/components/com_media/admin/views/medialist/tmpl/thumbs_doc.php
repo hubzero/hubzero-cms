@@ -32,7 +32,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$icon = 'txt.svg';
+$icon = 'file.svg';
 
 $path = Component::path('com_media') . '/admin/assets/img/';
 $ext = Filesystem::extension($this->currentDoc['name']);
@@ -77,7 +77,7 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_do
 							<span class="separator"></span>
 						</li>
 						<li>
-							<a class="icon-download media-opt-download" href="<?php echo $href; ?>"><?php echo Lang::txt('Download'); ?></a>
+							<a download class="icon-download media-opt-download" href="<?php echo $href; ?>"><?php echo Lang::txt('Download'); ?></a>
 						</li>
 						<li>
 							<a class="icon-link media-opt-path" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=path&' . Session::getFormToken() . '=1&file=' . urlencode($this->currentDoc['path'])); ?>"><?php echo Lang::txt('Get link'); ?></a>
@@ -87,7 +87,7 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_do
 								<span class="separator"></span>
 							</li>
 							<li>
-								<a class="icon-trash media-opt-delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete&' . Session::getFormToken() . '=1&rm[]=' . urlencode($this->currentDoc['path'])); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
+								<a class="icon-trash media-opt-delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete&' . Session::getFormToken() . '=1&rm=' . urlencode($this->currentDoc['path'])); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
 							</li>
 						<?php endif; ?>
 					</ul>

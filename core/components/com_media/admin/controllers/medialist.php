@@ -101,27 +101,48 @@ class Medialist extends AdminController
 
 		// Get some data from the request
 		$tmpl = Request::getCmd('tmpl');
+
 		$file = urldecode(Request::getString('file', ''));
+		$folder = urldecode(Request::getString('folder', ''));
 
-		$file = \Hubzero\Filesystem\Util::checkPath(COM_MEDIA_BASE . $file);
-
-		if (!is_file($file))
+		if ($file)
 		{
-			App::abort(404);
+			$file = \Hubzero\Filesystem\Util::checkPath(COM_MEDIA_BASE . $file);
+			$path = $file;
+
+			if (!is_file($file))
+			{
+				App::abort(404, Lang::txt('Specified file "%s" does not exist', $file));
+			}
+		}
+		elseif ($folder)
+		{
+			$folder = \Hubzero\Filesystem\Util::checkPath(COM_MEDIA_BASE . $folder);
+			$path = $folder;
+
+			if (!is_dir($folder))
+			{
+				App::abort(404, Lang::txt('Specified folder "%s" does not exist', $folder));
+			}
 		}
 
 		// Compile info
 		$data = array(
-			'type'          => 'file',
-			'path'          => substr($file, strlen(COM_MEDIA_BASE)),
-			'absolute_path' => $file,
-			'full_path'     => substr($file, strlen(PATH_ROOT)),
-			'name'          => basename($file),
-			'modified'      => filemtime($file),
-			'size'          => filesize($file),
+			'type'          => ($file ? 'file' : 'folder'),
+			'path'          => substr($path, strlen(COM_MEDIA_BASE)),
+			'absolute_path' => $path,
+			'full_path'     => substr($path, strlen(PATH_ROOT)),
+			'name'          => basename($path),
+			'modified'      => filemtime($path),
+			'size'          => 0,
 			'width'         => 0,
 			'height'        => 0
 		);
+
+		if ($data['type'] == 'file')
+		{
+			$data['size'] = filesize($file);
+		}
 
 		if (preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $data['name']))
 		{
@@ -140,7 +161,7 @@ class Medialist extends AdminController
 		}
 
 		$this->view
-			->set('file', $data)
+			->set('data', $data)
 			->setErrors($this->getErrors())
 			->display();
 	}

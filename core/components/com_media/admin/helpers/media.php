@@ -81,7 +81,7 @@ class MediaHelper
 			{
 				if (in_array($extensionName, $explodedFileName))
 				{
-					Notify::error(Lang::txt('COM_MEDIA_ERROR_WARNFILETYPE'));
+					$err = 'COM_MEDIA_ERROR_WARNFILETYPE';
 					return false;
 				}
 			}

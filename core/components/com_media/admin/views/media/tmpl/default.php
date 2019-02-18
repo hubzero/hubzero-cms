@@ -69,8 +69,8 @@ $this->js();
 			<div id="media-tree_tree">
 				<ul>
 					<li>
-						<a href="<?php echo Route::url('index.php?option=com_media&controller=medialist&tmpl=component&folder=' . '/' . $folder['path']); ?>">
-							<?php echo $this->escape($folder['name']); ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&tmpl=component&folder=' . '/' . $this->folders[0]['path']); ?>">
+							<?php echo $this->escape($this->folders[0]['name']); ?>
 						</a>
 						<?php echo $this->loadTemplate('folders'); ?>
 					</li>
@@ -81,36 +81,42 @@ $this->js();
 			<div class="media-header">
 				<div class="media-breadcrumbs-block">
 					<a class="media-breadcrumbs has-next-button folder-link" id="path_root">
-						<!-- <span class="icon-folder-close right-arrow-bg">root</span> -->
 						<img src="<?php echo $this->img('folder.svg'); ?>" alt="<?php echo COM_MEDIA_BASEURL; ?>" />
 					</a>
-					<span class="icon-chevron-right dir-separator"><span>/</span></span>
-					<a class="media-breadcrumbs folder has-next-button" id="path_F9pU2QqQ">(2005-) IDW</a>
-					<span class="icon-chevron-right dir-separator"><span>/</span></span>
-					<a class="media-breadcrumbs folder" id="path_toZCjLzJ">Alternative Continuities</a>
+					<span id="media-breadcrumbs">
+						<?php
+						$folder = trim($this->folder, '/');
+						$trail = explode('/', $folder);
+
+						foreach ($trail as $crumb):
+							// Skip the root directory
+							if ($crumb == $this->folders[0]['name']):
+								continue;
+							endif;
+							?>
+							<span class="icon-chevron-right dir-separator">/</span>
+							<a class="media-breadcrumbs folder has-next-button" id="path_<?php echo $crumb; ?>"><?php echo $crumb; ?></a>
+							<?php
+						endforeach;
+						?>
+					</span>
 				</div>
 				<div class="media-header-buttons">
-					<a class="icon-th media-files-view thumbs-view <?php if (!$this->layout || $this->layout == 'thumbs') { echo 'active'; } ?>" data-view="thumbs" href="<?php echo Route::url('index.php?option=' . $this->option . '&layout=thumbs'); ?>" title="<?php echo Lang::txt('Thumbnail view'); ?>">
+					<a class="icon-th media-files-view thumbs-view <?php if (!$this->layout || $this->layout == 'thumbs') { echo 'active'; } ?>" data-view="thumbs" href="<?php echo Route::url('index.php?option=' . $this->option . '&layout=thumbs&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('Thumbnail view'); ?>">
 						<?php echo Lang::txt('Thumbnail view'); ?>
 					</a>
-					<a class="icon-align-justify media-files-view hasTip listing-view <?php if ($this->layout == 'list') { echo 'active'; } ?>" data-view="list" href="<?php echo Route::url('index.php?option=' . $this->option . '&layout=list'); ?>" title="<?php echo Lang::txt('List view'); ?>">
+					<a class="icon-align-justify media-files-view hasTip listing-view <?php if ($this->layout == 'list') { echo 'active'; } ?>" data-view="list" href="<?php echo Route::url('index.php?option=' . $this->option . '&layout=list&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('List view'); ?>">
 						<?php echo Lang::txt('List view'); ?>
 					</a>
-
-					<div class="button link-button right fm-file-upload hidden">
-						<i class="small-icon file-upload"></i>
-						<span>File Upload</span>
-						<input type="file" title="File Upload" id="fileselect1" multiple="">
-					</div>
-
-					<div class="button link-button right fm-new-folder hidden" title="Create new folder">
-						<i class="small-icon dark-grey-plus"></i>
-						<span>New Folder</span>
-					</div>
+					<?php if (User::authorise('core.create', $this->option)): ?>
+						<a class="icon-folder-new media-files-action media-folder-new hasTip <?php if ($this->layout == 'list') { echo 'active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new&' . Session::getFormToken() . '=1'); ?>" data-prompt="<?php echo Lang::txt('Folder name'); ?>" title="<?php echo Lang::txt('New Folder'); ?>">
+							<?php echo Lang::txt('New Folder'); ?>
+						</a>
+					<?php endif; ?>
 				</div>
 			</div>
 			<div class="media-view">
-				<div class="media-items" id="media-items">
+				<div class="media-items" id="media-items" data-list="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=display&' . Session::getFormToken() . '=1'); ?>">
 					<?php
 					$children = Components\Media\Admin\Helpers\MediaHelper::getChildren(COM_MEDIA_BASE, '');
 
@@ -119,28 +125,37 @@ $this->js();
 						->set('children', $children)
 						->set('layout', $this->layout)
 						->display();
-
-					/*$this->view('list', 'medialist')
-						->set('folder', $this->folder)
-						->set('children', $children)
-						->set('active', ($this->layout == 'list' ? true : false))
-						->display();
-
-					$this->view('thumbs', 'medialist')
-						->set('folder', $this->folder)
-						->set('children', $children)
-						->set('active', ($this->layout == 'thumbs' ? true : false))
-						->display();*/
 					?>
 				</div>
 			</div>
 
-			<form action="<?php echo Route::url('index.php?option=com_media&' . Session::getFormToken() . '=1', true, true); ?>" name="adminForm" id="media-form" method="post" enctype="multipart/form-data">
+			<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&' . Session::getFormToken() . '=1', true, true); ?>" name="adminForm" id="upload-form" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="task" value="" />
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="token" value="<?php echo Session::getFormToken(); ?>" />
 				<input type="hidden" name="folder" id="folder" value="<?php echo $this->escape($this->folder); ?>" />
 				<input type="hidden" name="layout" id="layout" value="<?php echo $this->escape($this->layout); ?>" />
 				<?php echo Html::input('token'); ?>
+
+				<?php if (User::authorise('core.create', $this->option)): ?>
+					<?php
+					$this->js('jquery.fileuploader.js', 'system');
+					?>
+					<div id="ajax-uploader"
+						data-action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&task=upload&' . Session::getFormToken() . '=1'); ?>"
+						data-list="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=display&' . Session::getFormToken() . '=1'); ?>"
+						data-instructions="Drop files here to upload">
+						<noscript>
+							<div class="input-wrap">
+								<label for="upload"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_FILE'); ?>:</label>
+								<input type="file" name="upload" id="upload" />
+							</div>
+						</noscript>
+					</div>
+					<div class="field-wrap file-list" id="ajax-uploader-list">
+						<ul></ul>
+					</div>
+				<?php endif; ?>
 			</form>
 		</div><!-- / .panel-files -->
 	</div><!-- / .media-panels -->
