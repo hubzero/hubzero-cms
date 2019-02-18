@@ -37,7 +37,7 @@ $href = Route::url('index.php?option=' . $this->option . '&task=download&' . Ses
 		<div class="media-item media-item-thumb">
 			<div class="media-preview">
 				<div class="media-preview-inner">
-					<a class="media-thumb folder-item" href="<?php echo Route::url('index.php?option=com_media&controller=medialist&view=medialist&tmpl=component&folder=' . $this->currentFolder['path']); ?>" target="folderframe">
+					<a class="media-thumb folder-item" href="<?php echo Route::url('index.php?option=com_media&controller=media&folder=' . $this->currentFolder['path']); ?>" target="folderframe">
 						<span class="media-preview-shim"></span><!--
 						--><img src="<?php echo $this->img('folder.svg'); ?>" alt="<?php echo $this->escape($this->currentFolder['name']); ?>" width="80" />
 					</a>
@@ -51,14 +51,14 @@ $href = Route::url('index.php?option=' . $this->option . '&task=download&' . Ses
 				<div class="media-options">
 					<ul>
 						<li>
-							<a class="icon-info media-opt-info" href="#info"><?php echo Lang::txt('Info'); ?></a>
+							<a class="icon-info media-opt-info" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=info&' . Session::getFormToken() . '=1&folder=' . urlencode($this->currentFolder['path'])); ?>"><?php echo Lang::txt('Info'); ?></a>
 						</li>
 						<?php if (User::authorise('core.delete', 'com_media')): ?>
 							<li>
 								<span class="separator"></span>
 							</li>
 							<li>
-								<a class="icon-trash media-opt-delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete&' . Session::getFormToken() . '=1&rm[]=' . urlencode($this->currentFolder['path'])); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
+								<a class="icon-trash media-opt-delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete&' . Session::getFormToken() . '=1&rm=' . urlencode($this->currentFolder['path'])); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
 							</li>
 						<?php endif; ?>
 					</ul>

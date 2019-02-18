@@ -69,17 +69,17 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_im
 							<span class="separator"></span>
 						</li>
 						<li>
-							<a class="icon-download media-opt-download" href="<?php echo $href; ?>"><?php echo Lang::txt('Download'); ?></a>
+							<a download class="icon-download media-opt-download" href="<?php echo $href; ?>"><?php echo Lang::txt('Download'); ?></a>
 						</li>
 						<li>
-							<a class="icon-link media-opt-path" href="#link"><?php echo Lang::txt('Get link'); ?></a>
+							<a class="icon-link media-opt-path" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=path&' . Session::getFormToken() . '=1&file=' . urlencode($this->currentImg['path'])); ?>"><?php echo Lang::txt('Get link'); ?></a>
 						</li>
 						<?php if (User::authorise('core.delete', 'com_media')): ?>
 							<li>
 								<span class="separator"></span>
 							</li>
 							<li>
-								<a class="icon-trash media-opt-delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete&' . Session::getFormToken() . '=1&rm[]=' . urlencode($this->currentImg['path'])); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
+								<a class="icon-trash media-opt-delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete&' . Session::getFormToken() . '=1&rm=' . urlencode($this->currentImg['path'])); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
 							</li>
 						<?php endif; ?>
 					</ul>
