@@ -38,11 +38,11 @@ if (User::authorise('core.admin', 'com_media'))
 	Toolbar::preferences($this->option);
 	Toolbar::spacer();
 }
-if (User::authorise('core.delete', 'com_media'))
+/*if (User::authorise('core.delete', 'com_media'))
 {
 	Toolbar::deleteList('', 'delete');
 	Toolbar::spacer();
-}
+}*/
 Toolbar::help('media');
 
 $base = COM_MEDIA_BASE;
