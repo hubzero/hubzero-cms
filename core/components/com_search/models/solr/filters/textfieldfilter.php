@@ -51,7 +51,7 @@ class Textfieldfilter extends Filter
 	 */
 	public function renderHtml($counts, $textValue = '')
 	{
-		$textValue = empty($textValue) ? '' : $textValue;
+		$textValue = empty($textValue) ? '' : htmlentities($textValue);
 		$html = '<ul><li><fieldset class="search-filters"><legend>' . $this->label . '</legend>';
 		$html .= '<input type="text" class="" name="filters[' .
 			$this->field . ']" value="' . $textValue . '"/>';
@@ -74,8 +74,14 @@ class Textfieldfilter extends Filter
 		{
 			return false;
 		}
-		$queryName = ucfirst($filterField) . '_' . $this->get('id');
+		if ((strpos($textValue, ' AND ') === false) &&
+			(strpos($textValue, ' OR ') === false) &&
+			(strpos($textValue, '"') === false))
+		{
+			$textValue = str_replace(' ', ' AND ', $textValue);
+		}
 		$facetString = '(' . $filterField . ':(' . $textValue . '))';
+		$queryName = ucfirst($filterField) . '_' . $this->get('id');
 		$query->addFilter($queryName, $facetString, array(strtolower($filterField) . '_type'));
 		return true;
 	}
