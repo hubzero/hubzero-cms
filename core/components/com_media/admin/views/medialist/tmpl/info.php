@@ -32,17 +32,20 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$icon = 'txt.svg';
+if ($this->data['type'] != 'folder'):
+	$icon = 'file.svg';
 
-$path = Component::path('com_media') . '/admin/assets/img/';
-$ext = Filesystem::extension($this->file['name']);
-if (file_exists($path . $ext . '.svg'))
-{
-	$icon = $ext . '.svg';
-}
+	$path = Component::path('com_media') . '/admin/assets/img/';
+	$ext = Filesystem::extension($this->data['name']);
+	if (file_exists($path . $ext . '.svg')):
+		$icon = $ext . '.svg';
+	endif;
+else:
+	$icon = 'folder.svg';
+endif;
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&file=' . urlencode($this->file['path'])); ?>" id="component-form" method="post" name="adminForm" autocomplete="off">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&file=' . urlencode($this->data['path'])); ?>" id="component-form" method="post" name="adminForm" autocomplete="off">
 	<fieldset>
 		<h2 class="modal-title">
 			<?php echo Lang::txt('File Info'); ?>
@@ -52,15 +55,15 @@ if (file_exists($path . $ext . '.svg'))
 		<div class="col span5">
 			<div class="media-preview">
 				<div class="media-preview-inner">
-					<?php if ($this->file['type'] == 'img'): ?>
-						<div class="media-item-thumb img-preview <?php echo Filesystem::extension($this->file['name']); ?>" title="<?php echo $this->escape($this->file['name']); ?>" >
+					<?php if ($this->data['type'] == 'img'): ?>
+						<div class="media-thumb img-preview <?php echo Filesystem::extension($this->data['name']); ?>" title="<?php echo $this->escape($this->data['name']); ?>" >
 							<span class="media-preview-shim"></span><!--
-							--><img src="<?php echo COM_MEDIA_BASEURL . $this->file['path']; ?>" alt="<?php echo $this->escape(Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->file['name'], Components\Media\Admin\Helpers\MediaHelper::parseSize($this->file['size']))); ?>" width="<?php echo ($this->file['width'] < 260) ? $this->file['width'] : '260'; ?>" />
+							--><img src="<?php echo COM_MEDIA_BASEURL . $this->data['path']; ?>" alt="<?php echo $this->escape(Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->data['name'], Components\Media\Admin\Helpers\MediaHelper::parseSize($this->data['size']))); ?>" width="<?php echo ($this->data['width'] < 260) ? $this->data['width'] : '260'; ?>" />
 						</div>
 					<?php else: ?>
-						<div class="doc-item <?php echo Filesystem::extension($this->file['name']); ?>" title="<?php echo $this->escape($this->file['name']); ?>" >
+						<div class="media-thumb doc-item <?php echo Filesystem::extension($this->data['name']); ?>" title="<?php echo $this->escape($this->data['name']); ?>" >
 							<span class="media-preview-shim"></span><!--
-							--><img src="<?php echo $this->img($icon); ?>" alt="<?php echo $this->escape(Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->file['name'], Components\Media\Admin\Helpers\MediaHelper::parseSize($this->file['size']))); ?>" width="80" />
+							--><img src="<?php echo $this->img($icon); ?>" alt="<?php echo $this->escape(Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->data['name'], Components\Media\Admin\Helpers\MediaHelper::parseSize($this->data['size']))); ?>" width="80" />
 						</div>
 					<?php endif; ?>
 				</div>
@@ -69,42 +72,44 @@ if (file_exists($path . $ext . '.svg'))
 		<div class="col span7">
 			<div class="input-wrap">
 				<span class="media-info-label"><?php echo Lang::txt('Name:'); ?></span>
-				<span class="media-info-value"><?php echo $this->escape($this->file['name']); ?></span>
+				<span class="media-info-value"><?php echo $this->escape($this->data['name']); ?></span>
 			</div>
 
 			<div class="input-wrap">
 				<span class="media-info-label"><?php echo Lang::txt('Path:'); ?></span>
-				<span class="media-info-value"><?php echo $this->escape($this->file['path']); ?></span>
+				<span class="media-info-value"><?php echo $this->escape($this->data['path']); ?></span>
 			</div>
 
-			<?php if ($this->file['type'] == 'img'): ?>
-				<div class="grid">
-					<div class="col span4">
-			<?php endif; ?>
-			<div class="input-wrap">
-				<span class="media-info-label"><?php echo Lang::txt('Size:'); ?></span>
-				<span class="media-info-value"><?php echo Hubzero\Utility\Number::formatBytes($this->file['size']); ?></span>
-			</div>
-			<?php if ($this->file['type'] == 'img'): ?>
-					</div>
-					<div class="col span4">
-						<div class="input-wrap">
-							<span class="media-info-label"><?php echo Lang::txt('Width:'); ?></span>
-							<span class="media-info-value"><?php echo $this->file['width']; ?>px</span>
-						</div>
-					</div>
-					<div class="col span4">
-						<div class="input-wrap">
-							<span class="media-info-label"><?php echo Lang::txt('Height:'); ?></span>
-							<span class="media-info-value"><?php echo $this->file['height']; ?>px</span>
-						</div>
-					</div>
+			<?php if ($this->data['type'] != 'folder'): ?>
+				<?php if ($this->data['type'] == 'img'): ?>
+					<div class="grid">
+						<div class="col span4">
+				<?php endif; ?>
+				<div class="input-wrap">
+					<span class="media-info-label"><?php echo Lang::txt('Size:'); ?></span>
+					<span class="media-info-value"><?php echo Hubzero\Utility\Number::formatBytes($this->data['size']); ?></span>
 				</div>
+				<?php if ($this->data['type'] == 'img'): ?>
+						</div>
+						<div class="col span4">
+							<div class="input-wrap">
+								<span class="media-info-label"><?php echo Lang::txt('Width:'); ?></span>
+								<span class="media-info-value"><?php echo $this->data['width']; ?>px</span>
+							</div>
+						</div>
+						<div class="col span4">
+							<div class="input-wrap">
+								<span class="media-info-label"><?php echo Lang::txt('Height:'); ?></span>
+								<span class="media-info-value"><?php echo $this->data['height']; ?>px</span>
+							</div>
+						</div>
+					</div>
+				<?php endif; ?>
 			<?php endif; ?>
 
 			<div class="input-wrap">
 				<span class="media-info-label"><?php echo Lang::txt('Last modified:'); ?></span>
-				<span class="media-info-value"><?php echo Date::of($this->file['modified'])->toSql(); ?></span>
+				<span class="media-info-value"><?php echo Date::of($this->data['modified'])->toSql(); ?></span>
 			</div>
 		</div>
 	</div>
