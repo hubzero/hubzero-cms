@@ -13,6 +13,18 @@ Joomla.submitbutton = function(task) {
 }
 
 jQuery(document).ready(function($){
+	var ownerassignees = new Array,
+		ownerdata = $('#owner-data');
+
+	if (ownerdata.length) {
+		var cdata = jQuery.parseJSON(ownerdata.html());
+
+		for (var i = 0; i < cdata.data.length; i++)
+		{
+			ownerassignees[i] = cdata.data[i];
+		}
+	}
+
 	$('#field-wishlist').on('change', function(e){
 		changeDynaList(
 			'fieldassigned',

@@ -50,40 +50,9 @@ Toolbar::custom('download', 'download.png', '', 'Download CSV', false);
 
 Toolbar::spacer();
 Toolbar::help('downloads');
+
+$this->js();
 ?>
-<script type="text/javascript">
-	$( function() {
-		var dateFormat = "mm/dd/yy",
-			from = $( "#filter-report-from" )
-				.datepicker({
-					defaultDate: "+1w",
-					changeMonth: true,
-					numberOfMonths: 1
-				})
-				.on( "change", function() {
-					to.datepicker( "option", "minDate", getDate( this ) );
-				}),
-			to = $( "#filter-report-to" ).datepicker({
-					defaultDate: "+1w",
-					changeMonth: true,
-					numberOfMonths: 1
-				})
-				.on( "change", function() {
-					from.datepicker( "option", "maxDate", getDate( this ) );
-				});
-
-		function getDate( element ) {
-			var date;
-			try {
-				date = $.datepicker.parseDate( dateFormat, element.value );
-			} catch( error ) {
-				date = null;
-			}
-
-			return date;
-		}
-	} );
-</script>
 
 <?php
 $this->view('_submenu')
@@ -111,10 +80,10 @@ $this->view('_submenu')
 				}
 				?>
 				<label for="filter-report-from"><?php echo Lang::txt('From'); ?>:</label>
-				<input type="text" name="report-from" id="filter-report-from" value="<?php echo $this->escape($this->filters['report-from']); ?>" placeholder="<?php echo Lang::txt('From'); ?>" />
+				<input type="text" name="report-from" id="filter-report-from" class="filter" value="<?php echo $this->escape($this->filters['report-from']); ?>" placeholder="<?php echo Lang::txt('From'); ?>" />
 				&mdash;
 				<label for="filter-report-to"><?php echo Lang::txt('To'); ?>:</label>
-				<input type="text" name="report-to" id="filter-report-to" value="<?php echo $this->escape($this->filters['report-to']); ?>" placeholder="<?php echo Lang::txt('To'); ?>" />
+				<input type="text" name="report-to" id="filter-report-to" class="filter" value="<?php echo $this->escape($this->filters['report-to']); ?>" placeholder="<?php echo Lang::txt('To'); ?>" />
 				<input type="submit" value="<?php echo Lang::txt('Update'); ?>" />
 			</div>
 		</div>
@@ -122,71 +91,68 @@ $this->view('_submenu')
 
 	<table class="adminlist">
 		<thead>
-		<?php if ($this->filters['uidNumber'] || $this->filters['pId'] || $this->filters['sId']) { ?>
+			<?php if ($this->filters['uidNumber'] || $this->filters['pId'] || $this->filters['sId']) { ?>
+				<tr>
+					<th colspan="8"><?php
+						if ($this->filters['uidNumber'])
+						{
+							echo Lang::txt('COM_CART_ORDERS_FOR') . ': ';
+							$user = User::getInstance($this->filters['uidNumber']);
+
+							echo ($user->get('id')) ? $user->get('name') . ' (' . $user->get('username') . ')' : Lang::txt('COM_CART_USER_ID') . ': ' . $this->filters['uidNumber'];
+							?>
+							<button type="button" id="filter_uidNumber-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+							<?php
+						}
+						if ($this->filters['pId'])
+						{
+							echo Lang::txt('COM_CART_ORDERS_OF') . ': ';
+							$product = Product::getInstance($this->filters['pId']);
+
+							echo $product->getName();
+							?>
+							<button type="button" id="filter_pId-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+							<?php
+						}
+						if ($this->filters['sId'])
+						{
+							echo Lang::txt('COM_CART_ORDERS_OF') . ': ';
+							$sku = Sku::getInstance($this->filters['sId']);
+
+							echo $sku->getName();
+							?>
+							<button type="button" id="filter_sId-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+							<?php
+						}
+						?>
+
+					</th>
+				</tr>
+			<?php } ?>
 			<tr>
-				<th colspan="8"><?php
-					if ($this->filters['uidNumber'])
-					{
-						echo Lang::txt('COM_CART_ORDERS_FOR') . ': ';
-						$user = User::getInstance($this->filters['uidNumber']);
-
-						echo ($user->get('id')) ? $user->get('name') . ' (' . $user->get('username') . ')' : Lang::txt('COM_CART_USER_ID') . ': ' . $this->filters['uidNumber'];
-						?>
-						<button type="button"
-								onclick="$('#filter_uidNumber').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-						<?php
-					}
-					if ($this->filters['pId'])
-					{
-						echo Lang::txt('COM_CART_ORDERS_OF') . ': ';
-						$product = Product::getInstance($this->filters['pId']);
-
-						echo $product->getName();
-						?>
-						<button type="button"
-								onclick="$('#filter_pId').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-						<?php
-					}
-					if ($this->filters['sId'])
-					{
-						echo Lang::txt('COM_CART_ORDERS_OF') . ': ';
-						$sku = Sku::getInstance($this->filters['sId']);
-
-						echo $sku->getName();
-						?>
-						<button type="button"
-								onclick="$('#filter_sId').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-						<?php
-					}
-					?>
-
-				</th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED_BY', 'dName', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_CART_USER_INFO'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_CART_EULA'); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED', 'dDownloaded', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col">IP</th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_STATUS', 'dStatus', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
-		<?php } ?>
-		<tr>
-			<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
-			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED_BY', 'dName', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-			<th scope="col"><?php echo Lang::txt('COM_CART_USER_INFO'); ?></th>
-			<th scope="col"><?php echo Lang::txt('COM_CART_EULA'); ?></th>
-			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED', 'dDownloaded', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-			<th scope="col">IP</th>
-			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_STATUS', 'dStatus', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-		</tr>
 		</thead>
 		<tfoot>
-		<tr>
-			<td colspan="8">
-				<?php
-				// Initiate paging
-				echo $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
-				?>
-			</td>
-		</tr>
+			<tr>
+				<td colspan="8">
+					<?php
+					// Initiate paging
+					echo $this->pagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					?>
+				</td>
+			</tr>
 		</tfoot>
 		<tbody>
 		<?php
@@ -243,7 +209,6 @@ $this->view('_submenu')
 						$product .= '<br />SKU: ' . '<a href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&sId=' . $row->sId) . '">' . $this->escape(stripslashes($row->sSku)) . '</a>';
 					}
 					?>
-
 					<span><?php echo $product; ?></span>
 				</td>
 				<td>

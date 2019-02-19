@@ -34,47 +34,15 @@ defined('_HZEXEC_') or die();
 
 Html::behavior('framework');
 
-\Hubzero\Document\Assets::addSystemScript('jquery.datetimepicker');
-\Hubzero\Document\Assets::addSystemStylesheet('jquery.datetimepicker.css');
+$this->js('jquery.datetimepicker.js', 'system');
+$this->js('zones.js');
+$this->css('jquery.datetimepicker.css', 'system');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
 $mwdb  = \Components\Tools\Helpers\Utils::getMWDBO();
 $zones = with(new \Components\Tools\Tables\Zones($mwdb))->find('all');
 ?>
-
-<script>
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// form field validation
-	submitform(pressbutton);
-}
-function saveAndUpdate()
-{
-	submitbutton('saveZone');
-	window.parent.setTimeout(function(){
-		var src = window.parent.document.getElementById('zoneslist').src;
-
-		window.parent.document.getElementById('zoneslist').src = src + '&';
-		window.parent.$.fancybox.close();
-	}, 700);
-}
-jQuery(document).ready(function($){
-	$('.datetime').datetimepicker({
-		step: 15,
-		time24h: true,
-		format: 'Y-m-d H:i:s',
-		defaultTime: '08:00'
-	});
-});
-</script>
 
 <?php if ($this->getError()) : ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
@@ -84,8 +52,8 @@ jQuery(document).ready(function($){
 	<fieldset>
 		<div class="configuration">
 			<div class="configuration-options">
-				<button type="button" onclick="saveAndUpdate();"><?php echo Lang::txt('COM_TOOLS_SAVE'); ?></button>
-				<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo Lang::txt('COM_TOOLS_CANCEL'); ?></button>
+				<button type="button" id="btn-save"><?php echo Lang::txt('COM_TOOLS_SAVE'); ?></button>
+				<button type="button" id="btn-cancel"><?php echo Lang::txt('COM_TOOLS_CANCEL'); ?></button>
 			</div>
 			<?php echo $text; ?>
 		</div>

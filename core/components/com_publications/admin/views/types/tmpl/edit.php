@@ -77,13 +77,6 @@ $panels = array(
 $required = array('content', 'description', 'authors');
 
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	submitform( pressbutton );
-	return;
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
 	<div class="grid">

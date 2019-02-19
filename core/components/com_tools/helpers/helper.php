@@ -41,33 +41,29 @@ defined('_HZEXEC_') or die();
 class ContribtoolHelper
 {
 	/**
-	 * Short description for 'makeArray'
+	 * Turn a string into an array
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $string Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param   string  $string
+	 * @return  array
 	 */
-	public function makeArray($string='')
+	public static function makeArray($string='')
 	{
-		$string = preg_replace('# #',',',$string);
-		$arr = preg_split('#,#',$string);
-		//$arr = $this->cleanArray($arr);
-		$arr = ContribtoolHelper::cleanArray($arr);
+		$string = preg_replace('# #', ',', $string);
+		$arr = preg_split('#,#', $string);
+
+		$arr = self::cleanArray($arr);
 		$arr = array_unique($arr);
 
 		return $arr;
 	}
 
 	/**
-	 * Short description for 'cleanArray'
+	 * Clean array
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $array Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param   array  $array
+	 * @return  array
 	 */
-	public function cleanArray($array)
+	public static function cleanArray($array)
 	{
 		foreach ($array as $key => $value)
 		{
@@ -81,48 +77,42 @@ class ContribtoolHelper
 	}
 
 	/**
-	 * Short description for 'check_validInput'
+	 * Check if an input is valid
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $field Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param   string   $field
+	 * @return  integer
 	 */
-	public function check_validInput($field)
+	public static function check_validInput($field)
 	{
-		if (preg_match("#^[_0-9a-zA-Z.:-]+$#i", $field) or $field=='')
+		if (preg_match("#^[_0-9a-zA-Z.:-]+$#i", $field) or $field == '')
 		{
-			return(0);
+			return 0;
 		}
 		else
 		{
-			return(1);
+			return 1;
 		}
 	}
 
 	/**
-	 * Short description for 'getLicenses'
+	 * Get a list of licenses
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $database Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param   object  $database
+	 * @return  array
 	 */
-	public function getLicenses($database)
+	public static function getLicenses($database)
 	{
-		$database->setQuery("SELECT text, name, title FROM #__tool_licenses ORDER BY ordering ASC");
+		$database->setQuery("SELECT text, name, title FROM `#__tool_licenses` ORDER BY ordering ASC");
 		return $database->loadObjectList();
 	}
 
 	/**
-	 * Short description for 'transform'
+	 * Transform an array
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $array Parameter description (if any) ...
-	 * @param      unknown $label Parameter description (if any) ...
-	 * @param      array $newarray Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param   array   $array
+	 * @param   string  $label
+	 * @param   array   $newarray
+	 * @return  array
 	 */
 	public static function transform($array, $label, $newarray=array())
 	{
@@ -145,22 +135,20 @@ class ContribtoolHelper
 	}
 
 	/**
-	 * Short description for 'getLogins'
+	 * Get usernames for a list of IDs
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $uids Parameter description (if any) ...
-	 * @param      array $logins Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param   array  $uids
+	 * @param   array  $logins
+	 * @return  arra
 	 */
-	public function getLogins($uids, $logins = array())
+	public static function getLogins($uids, $logins = array())
 	{
 		if (is_array($uids))
 		{
 			foreach ($uids as $uid)
 			{
 				$user = \User::getInstance($uid);
-				if ($user)
+				if ($user && $user->get('username'))
 				{
 					$logins[] = $user->get('username');
 				}
@@ -170,39 +158,37 @@ class ContribtoolHelper
 	}
 
 	/**
-	 * Short description for 'record_view'
+	 * Record a tool status view
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      mixed $database Parameter description (if any) ...
-	 * @param      string $ticketid Parameter description (if any) ...
-	 * @return     void
+	 * @param   object   $database
+	 * @param   integer  $ticketid
+	 * @return  mixed
 	 */
-	public function record_view($database, $ticketid)
+	public static function record_view($database, $ticketid)
 	{
 		$when = Date::toSql();
 
-		$sql = "SELECT * FROM #__tool_statusviews WHERE ticketid='" . $ticketid . "' AND uid=" . \User::get('id');
+		$sql = "SELECT * FROM `#__tool_statusviews` WHERE ticketid=" . $database->quote($ticketid) . " AND uid=" . $database->quote(\User::get('id'));
 		$database->setQuery($sql);
 		$found = $database->loadObjectList();
 		if ($found)
 		{
 			$elapsed = strtotime($when) - strtotime($found[0]->viewed);
-			$database->setQuery("UPDATE #__tool_statusviews SET viewed='" . $when . "', elapsed='" . $elapsed . "' WHERE ticketid='" . $ticketid . "' AND uid=" . \User::get('id'));
+			$database->setQuery("UPDATE `#__tool_statusviews` SET viewed=" . $database->quote($when) . ", elapsed=" . $database->quote($elapsed) . " WHERE ticketid=" . $database->quote($ticketid) . " AND uid=" . $database->quote(\User::get('id')));
 			if (!$database->query())
 			{
-				echo "<script type=\"text/javascript\"> alert('" . $database->getErrorMsg() . "');</script>\n";
-				exit;
+				return $database->getErrorMsg();
 			}
 		}
 		else
 		{
-			$database->setQuery("INSERT INTO #__tool_statusviews (uid, ticketid, viewed, elapsed) VALUES (" . \User::get('id') . ", '" . $ticketid . "', '" . $when . "', '500000')");
+			$database->setQuery("INSERT INTO `#__tool_statusviews` (uid, ticketid, viewed, elapsed) VALUES (" . \User::get('id') . ", " . $database->quote($ticketid) . ", " . $database->quote($when) . ", " . $database->quote(500000) . ")");
 			if (!$database->query())
 			{
-				echo "<script type=\"text/javascript\"> alert('" . $database->getErrorMsg()."');</script>\n";
-				exit;
+				return $database->getErrorMsg();
 			}
 		}
+
+		return '';
 	}
 }

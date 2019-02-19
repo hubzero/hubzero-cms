@@ -46,27 +46,14 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('messages');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js('edit.js');
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancelmsg') {
-		submitform( pressbutton );
-		return;
-	}
-
-	// form field validation
-	if ($('#field-message').val() == '') {
-		alert('<?php echo Lang::txt('COM_SUPPORT_MESSAGE_ERROR_NO_TEXT'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -79,7 +66,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-message"><?php echo Lang::txt('COM_SUPPORT_MESSAGE_TEXT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<textarea name="fields[message]" id="field-message" cols="35" rows="10"><?php echo $this->escape(stripslashes($this->row->get('message'))); ?></textarea>
+					<textarea name="fields[message]" id="field-message" class="required" cols="35" rows="10"><?php echo $this->escape(stripslashes($this->row->get('message'))); ?></textarea>
 				</div>
 			</fieldset>
 		</div>

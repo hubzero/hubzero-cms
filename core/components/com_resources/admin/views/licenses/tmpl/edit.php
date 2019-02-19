@@ -43,25 +43,14 @@ if ($canDo->get('core.edit'))
 	Toolbar::spacer();
 }
 Toolbar::cancel();
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
 
-	// form field validation
-	if ($('#field-title').val() == '') {
-		alert('<?php echo Lang::txt('COM_RESOURCES_ERROR_MISSING_TITLE'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span8">
 			<fieldset class="adminform">
@@ -69,7 +58,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-title"><?php echo Lang::txt('COM_RESOURCES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[title]" id="field-title" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+					<input type="text" name="fields[title]" id="field-title" class="required" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS_HINT'); ?>">
@@ -86,7 +75,6 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<label for="field-text"><?php echo Lang::txt('COM_RESOURCES_FIELD_CONTENT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 					<textarea name="fields[text]" id="field-text" cols="45" rows="15"><?php echo $this->escape(stripslashes($this->row->text)); ?></textarea>
-					<?php //echo $this->editor('fields[text]', $this->escape(stripslashes($this->row->text)), 45, 15, 'field-text', array('class' => 'minimal no-footer')); ?>
 				</div>
 
 				<input type="hidden" name="fields[ordering]" value="<?php echo $this->row->ordering; ?>" />
@@ -100,12 +88,12 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_RESOURCES_FIELD_ID'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_RESOURCES_FIELD_ID'); ?></th>
 						<td><?php echo $this->row->id; ?></td>
 					</tr>
 				<?php if ($this->row->id) { ?>
 					<tr>
-						<th><?php echo Lang::txt('COM_RESOURCES_FIELD_ORDERING'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_RESOURCES_FIELD_ORDERING'); ?></th>
 						<td><?php echo $this->row->ordering; ?></td>
 					</tr>
 				<?php } ?>

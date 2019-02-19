@@ -44,4 +44,12 @@ jQuery(document).ready(function($){
 			}
 		}
 	});
+
+	$("#btn-save").on('click', function(e){
+		Joomla.submitbutton('save');
+	});
+
+	$("#btn-cancel").on('click', function(e){
+		Joomla.submitbutton('cancel');
+	});
 });

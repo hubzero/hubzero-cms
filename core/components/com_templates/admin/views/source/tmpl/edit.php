@@ -53,21 +53,12 @@ Html::behavior('tooltip');
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
+$this->js();
+
 $editor = Hubzero\Html\Editor::getInstance();
 ?>
-<script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
-		if (task == 'source.cancel' || document.formvalidator.isValid($('#item-form'))) {
-			<?php echo $editor->save('field-source'); ?>
-			Joomla.submitform(task, document.getElementById('item-form'));
-		} else {
-			alert('<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
-		}
-	}
-</script>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<fieldset class="adminform">
 		<legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_FILENAME', $this->file->get('name'), $this->file->template()->element); ?></legend>
 

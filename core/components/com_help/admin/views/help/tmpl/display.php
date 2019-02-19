@@ -33,10 +33,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+$this->js();
 ?>
 <div class="help-header" id="help-top">
 	<?php if ($this->page != 'index') : ?>
-		<button id="back" class="back" onclick="window.history.back();" title="<?php echo Lang::txt('COM_HELP_GO_BACK'); ?>"><?php echo Lang::txt('COM_HELP_GO_BACK'); ?></button>
+		<button id="back" class="back" title="<?php echo Lang::txt('COM_HELP_GO_BACK'); ?>"><?php echo Lang::txt('COM_HELP_GO_BACK'); ?></button>
 	<?php endif; ?>
 </div>
 
@@ -53,14 +54,3 @@ defined('_HZEXEC_') or die();
 		<?php echo Lang::txt('COM_HELP_LAST_MODIFIED', date('l, F d, Y @ g:ia', $this->modified)); ?>
 	</p>
 </div>
-
-<script type="text/javascript">
-window.onload = function() {
-	var history = window.history,
-		back    = document.getElementById('back');
-
-	if (history.length > 1 && back !== null) {
-		back.style.display = "block";
-	}
-};
-</script>

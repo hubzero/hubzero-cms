@@ -29,21 +29,11 @@
 
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_STOREFRONT') . ': Delete Option Group', 'storefront.png');
+Toolbar::title(Lang::txt('COM_STOREFRONT') . ': Delete Option Group', 'storefront');
 Toolbar::cancel();
 
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-}
-</script>
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $this->task . '&step=2'); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>

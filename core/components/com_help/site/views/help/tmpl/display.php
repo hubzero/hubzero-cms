@@ -34,11 +34,12 @@
 defined('_HZEXEC_') or die();
 
 Document::setTitle(\Lang::txt('COM_HELP'));
+
+$this->js();
 ?>
-<a name="help-top"></a>
-<div class="help-header">
+<div class="help-header" id="help-top">
 	<?php if ($this->page != 'index') : ?>
-		<button class="back" onclick="window.history.back();" title="<?php echo Lang::txt('COM_HELP_GO_BACK'); ?>"><?php echo Lang::txt('COM_HELP_GO_BACK'); ?></button>
+		<button class="back" id="back" title="<?php echo Lang::txt('COM_HELP_GO_BACK'); ?>"><?php echo Lang::txt('COM_HELP_GO_BACK'); ?></button>
 	<?php endif; ?>
 </div>
 
@@ -55,14 +56,3 @@ Document::setTitle(\Lang::txt('COM_HELP'));
 		<?php echo Lang::txt('COM_HELP_LAST_MODIFIED', date('l, F d, Y @ g:ia', $this->modified)); ?>
 	</p>
 </div>
-
-<script>
-var $ = (typeof(jq) !== "undefined" ? jq : jQuery);
-
-$(document).ready(function() {
-	var history = window.history;
-	if (history.length > 1) {
-		$('.back').show();
-	}
-});
-</script>

@@ -49,7 +49,7 @@ defined('_HZEXEC_') or die();
 			</div>
 			<div class="col span4">
 				<div class="input-wrap">
-					<button type="button" onclick="this.form.task.value='activate';this.form.submit();"><?php echo Lang::txt('COM_REDIRECT_BUTTON_UPDATE_LINKS'); ?></button>
+					<button type="button" id="update-links"><?php echo Lang::txt('COM_REDIRECT_BUTTON_UPDATE_LINKS'); ?></button>
 				</div>
 			</div>
 		</div>

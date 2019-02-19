@@ -46,13 +46,7 @@ $blocks    = $manifest->blocks;
 $blockId   = $this->blockId;
 $block     = $blocks->$blockId;
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	submitform( pressbutton );
-	return;
-}
-</script>
+
 <p class="backto"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->row->id); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_BACK') . ' ' . $this->row->type . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE'); ?></a></p>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">

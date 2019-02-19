@@ -51,7 +51,7 @@ $this->js('autogen-story.js');
 ?>
 <?php if (count($this->enabledSources) > 0): ?>
 
-	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="autogen-form" data-formwatcher-message="You are now leaving this page to add stories and your current changes have not been saved. Click &quot;Stay on Page&quot; and then save the newsletter first before proceeding to add stories.">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="autogen-form" data-formwatcher-message="<?php echo Lang::txt('COM_NEWSLETTER_WANRING_UNSAVED_CHANGES'); ?>">
 		<div class="grid">
 			<div class="col span6">
 				<fieldset class="adminform">
@@ -99,7 +99,7 @@ $this->js('autogen-story.js');
 
 			<div class="col span6">
 				<fieldset class="adminform">
-					<legend>Story Preview</legend>
+					<legend><?php echo Lang::txt('COM_NEWSLETTER_STORY_PREVIEW'); ?></legend>
 					<div id="previewArea">
 						<span id="previewStoryTitle"></span>
 						<span id="previewContentArea"></span>
@@ -110,6 +110,6 @@ $this->js('autogen-story.js');
 	</form>
 <?php else: ?>
 	<div class="warning">
-		<?php echo Lang::txt('There are no enabled Newsletter Source Plugins'); ?>
+		<?php echo Lang::txt('COM_NEWSLETTER_WANRING_NO_SOURCE_PLUGINS'); ?>
 	</div>
-<?php endif; ?>
+<?php endif;
