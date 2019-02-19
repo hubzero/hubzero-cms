@@ -52,10 +52,8 @@ Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
 $this->js();
-?>
-<script type="text/javascript">
-var ownerassignees = new Array;
-<?php
+
+$data = array();
 $i = 0;
 if ($this->ownerassignees)
 {
@@ -63,11 +61,15 @@ if ($this->ownerassignees)
 	{
 		foreach ($items as $v)
 		{
-			echo 'ownerassignees[' . $i++ . "] = new Array( '$k','" . addslashes($v->id) . "','" . addslashes($v->name) . "' );\n\t\t";
+			$data[] = array($k, $v->id, $v->name);
 		}
 	}
 }
 ?>
+<script type="application/json" id="owner-data">
+	{
+		"data": <?php echo json_encode($data); ?>
+	}
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">

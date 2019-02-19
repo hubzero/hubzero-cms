@@ -37,42 +37,9 @@ $no_html = Request::getInt('no_html', 0);
 $base = Request::base(true);
 
 if (!$no_html) {
-	$this->css();
+	$this->css()
+		->js('media.js');
 	?>
-<script type="text/javascript">
-	function updateDir()
-	{
-		var allPaths = window.top.document.forms[0].dirPath.options;
-		for (i=0; i<allPaths.length; i++)
-		{
-			allPaths.item(i).selected = false;
-			if ((allPaths.item(i).value)== '<?php if (strlen($this->listdir)>0) { echo $this->listdir ;} else { echo '/';}  ?>') {
-				allPaths.item(i).selected = true;
-			}
-		}
-	}
-	function deleteFile(file)
-	{
-		if (confirm("Delete file \""+file+"\"?")) {
-			return true;
-		}
-
-		return false;
-	}
-	function deleteFolder(folder, numFiles)
-	{
-		if (numFiles > 0) {
-			alert('<?php echo Lang::txt('COM_WIKI_WARNING_FOLDER_NOT_EMPTY'); ?>');
-			return false;
-		}
-
-		if (confirm('<?php echo Lang::txt('COM_WIKI_WARNING_DELETE_FOLDER'); ?> "'+folder+'"')) {
-			return true;
-		}
-
-		return false;
-	}
-</script>
 <?php } ?>
 	<div id="attachments">
 <?php if (!$no_html) { ?>
@@ -95,7 +62,7 @@ if (!$no_html) {
 								<span><?php echo $this->escape(stripslashes($name)); ?></span>
 							</td>
 							<td>
-								<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deletefile&amp;file=<?php echo $name; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;<?php echo (!$no_html) ? 'tmpl=component' : 'no_html=1'; ?>" <?php if (!$no_html) { ?>target="filer" onclick="return deleteFile('<?php echo $this->escape($name); ?>');"<?php } ?> title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+								<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deletefile&amp;file=<?php echo $name; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;<?php echo (!$no_html) ? 'tmpl=component' : 'no_html=1'; ?>" <?php if (!$no_html) { ?>target="filer" data-confirm="<?php echo Lang::txt('Delete file %s?', $name); ?>"<?php } ?> title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 									<?php echo Lang::txt('JACTION_DELETE'); ?>
 								</a>
 							</td>

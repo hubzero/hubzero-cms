@@ -46,6 +46,9 @@ if ($canDo->get('core.edit'))
 }
 Toolbar::cancel();
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
 $this->js()
      ->js('jquery.formwatcher', 'system');
 
@@ -78,26 +81,7 @@ if ($secondaries->count() > 0)
 }
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-
-	// do field validation
-	if (document.getElementById('newsletter-name').value == ''){
-		alert('<?php echo Lang::txt('COM_NEWSLETTER_ERROR_MISSING_NAME'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" data-formwatcher-message="<?php echo Lang::txt('You are now leaving this page to add stories and your current changes have not been saved. Click &quot;Stay on Page&quot; and then save the newsletter first before proceeding to add stories.'); ?>">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-formwatcher-message="<?php echo Lang::txt('COM_NEWSLETTER_WANRING_UNSAVED_CHANGES'); ?>" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span6">
 			<fieldset class="adminform">
@@ -105,7 +89,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="newsletter-name"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_NAME'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<input type="text" name="newsletter[name]" id="newsletter-name" value="<?php echo $this->escape($this->newsletter->name); ?>" />
+					<input type="text" name="newsletter[name]" id="newsletter-name" class="required" value="<?php echo $this->escape($this->newsletter->name); ?>" />
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_ALIAS_HINT'); ?>">
@@ -185,28 +169,27 @@ function submitbutton(pressbutton)
 						<?php echo $hint; ?>
 					</span>
 				</div>
-			<?php
-				$hint = "Auto-generated emails can be sent out on a daily, weekly, or monthly basis. Content for this type of newsletter comes from predefined content sources. If this option is selected, you will only be limited to predefined content.";
-			?>
-			<div class="input-wrap" data-hint="<?php echo $this->escape(strip_tags($hint)); ?>">
-				<label for="newsletter-autogen"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_EMAIL_AUTOGEN'); ?>:</label>
-				<select name="newsletter[autogen]" id="newsletter-autogen">
-					<option value="0" <?php if ($this->newsletter->autogen == 0) : ?>selected="selected"<?php endif; ?>>
-						<?php echo Lang::txt('Disabled'); ?>
-					</option>
-					<option value="1" <?php if ($this->newsletter->autogen == 1) : ?>selected="selected"<?php endif; ?>>
-						<?php echo Lang::txt('DAILY'); ?>
-					</option>
-					<option value="2" <?php if ($this->newsletter->autogen == 2) : ?>selected="selected"<?php endif; ?>>
-						<?php echo Lang::txt('WEEKLY'); ?>
-					</option>
-					<option value="3" <?php if ($this->newsletter->autogen == 3) : ?>selected="selected"<?php endif; ?>>
-						<?php echo Lang::txt('MONTHLY'); ?>
-					</option>
-				</select>
-				<span class="hint">
-					<?php echo $hint; ?>
-				</span>
+
+				<div class="input-wrap" data-hint="<?php echo $this->escape(Lang::txt('COM_NEWSLETTER_NEWSLETTER_EMAIL_AUTOGEN_HINT')); ?>">
+					<label for="newsletter-autogen"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_EMAIL_AUTOGEN'); ?>:</label>
+					<select name="newsletter[autogen]" id="newsletter-autogen">
+						<option value="0" <?php if ($this->newsletter->autogen == 0) : ?>selected="selected"<?php endif; ?>>
+							<?php echo Lang::txt('Disabled'); ?>
+						</option>
+						<option value="1" <?php if ($this->newsletter->autogen == 1) : ?>selected="selected"<?php endif; ?>>
+							<?php echo Lang::txt('DAILY'); ?>
+						</option>
+						<option value="2" <?php if ($this->newsletter->autogen == 2) : ?>selected="selected"<?php endif; ?>>
+							<?php echo Lang::txt('WEEKLY'); ?>
+						</option>
+						<option value="3" <?php if ($this->newsletter->autogen == 3) : ?>selected="selected"<?php endif; ?>>
+							<?php echo Lang::txt('MONTHLY'); ?>
+						</option>
+					</select>
+					<span class="hint">
+						<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_EMAIL_AUTOGEN_HINT'); ?>
+					</span>
+				</div>
 			</fieldset>
 		</div>
 
@@ -215,7 +198,7 @@ function submitbutton(pressbutton)
 				<table class="meta">
 					<tbody>
 						<tr>
-							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_ID'); ?>:</th>
+							<th scope="row"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_ID'); ?>:</th>
 							<td>
 								<?php echo $this->newsletter->id; ?>
 							</td>
@@ -223,7 +206,7 @@ function submitbutton(pressbutton)
 
 						<?php if ($this->newsletter->created) : ?>
 							<tr>
-								<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CREATED_DATE'); ?>:</th>
+								<th scope="row"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CREATED_DATE'); ?>:</th>
 								<td>
 									<?php echo Date::of($this->newsletter->created)->toLocal('F d, Y @ g:ia'); ?>
 									<input type="hidden" name="newsletter[created]" value="<?php echo $this->newsletter->created; ?>" />
@@ -233,7 +216,7 @@ function submitbutton(pressbutton)
 
 						<?php if ($this->newsletter->created_by) : ?>
 							<tr>
-								<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CREATED_BY'); ?>:</th>
+								<th scope="row"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CREATED_BY'); ?>:</th>
 								<td>
 									<?php
 										$user = User::getInstance($this->newsletter->created_by);
@@ -246,7 +229,7 @@ function submitbutton(pressbutton)
 
 						<?php if ($this->newsletter->modified) : ?>
 							<tr>
-								<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_LAST_MODIFIED'); ?>:</th>
+								<th scope="row"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_LAST_MODIFIED'); ?>:</th>
 								<td>
 									<?php echo Date::of($this->newsletter->modified)->toLocal('F d, Y @ g:ia'); ?>
 									<input type="hidden" name="newsletter[modified]" value="<?php echo $this->newsletter->modified; ?>" />
@@ -256,7 +239,7 @@ function submitbutton(pressbutton)
 
 						<?php if ($this->newsletter->modified_by) : ?>
 							<tr>
-								<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_LAST_MODIFIED_BY'); ?>:</th>
+								<th scope="row"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_LAST_MODIFIED_BY'); ?>:</th>
 								<td>
 									<?php
 										$user = User::getInstance($this->newsletter->modified_by);

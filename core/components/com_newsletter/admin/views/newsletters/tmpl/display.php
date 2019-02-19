@@ -73,29 +73,6 @@ Html::behavior('modal');
 $this->js();
 ?>
 
-<script type="text/javascript">
-
-Joomla.submitbutton = function(pressbutton)
-{
-	if (pressbutton == 'preview')
-	{
-		var id = '',
-			ids = document.getElementsByName('id[]');
-		for (var i=0; i< ids.length;i++)
-		{
-			if (id == '' && ids[i].type == 'checkbox' && ids[i].checked)
-			{
-				id = parseInt(ids[i].value);
-			}
-		}
-
-		HUB.Administrator.Newsletter.newsletterPreview( id );
-		return;
-	}
-	submitform( pressbutton );
-}
-</script>
-
 <?php
 
 	if ($this->getError())
@@ -212,7 +189,7 @@ Joomla.submitbutton = function(pressbutton)
 				<tr>
 					<td colspan="7">
 						<?php echo Lang::txt('COM_NEWSLETTER_NO_NEWSLETTER'); ?>
-						<a onclick="javascript:submitbutton('add');" href="#"><?php echo Lang::txt('COM_NEWSLETTER_CREATE_NEWSLETTER'); ?></a>
+						<button id="add-newsletter"><?php echo Lang::txt('COM_NEWSLETTER_CREATE_NEWSLETTER'); ?></button>
 					</td>
 				</tr>
 			<?php } ?>

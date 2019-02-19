@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 if (!$this->tmpl)
 {
-	Toolbar::title(Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_TICKET') . ': ' . Lang::txt('Batch Process'), 'support.png');
+	Toolbar::title(Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_TICKET') . ': ' . Lang::txt('Batch Process'), 'support');
 	Toolbar::save('process');
 	Toolbar::cancel();
 	Toolbar::spacer();
@@ -42,40 +42,19 @@ if (!$this->tmpl)
 }
 
 Html::behavior('tooltip');
-$this->css();
+$this->css()
+	->js('tickets.js');
 
 $cc = array();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
 
-	submitform(pressbutton);
-}
-function saveAndUpdate()
-{
-	$.post('index.php', $("#component-form").serialize(), function(data){
-		var queries = $(data).find('#query-list');
-		var tickets = $(data).find('#tktlist');
-
-		window.parent.document.getElementById('query-list').innerHTML = queries.html();
-		window.parent.document.getElementById('tktlist').innerHTML = tickets.html();
-
-		window.top.setTimeout('window.parent.$.fancybox.close()', 700);
-	});
-}
-</script>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="<?php echo ($this->tmpl == 'component') ? 'component-form' : 'item-form'; ?>" enctype="multipart/form-data">
 	<?php if ($this->tmpl == 'component') { ?>
 		<fieldset>
 			<div class="configuration">
 				<div class="configuration-options">
-					<button type="button" onclick="saveAndUpdate();"><?php echo Lang::txt('Save'); ?></button>
-					<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo Lang::txt('Cancel'); ?></button>
+					<button type="button" id="btn-save" data-action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"><?php echo Lang::txt('Save'); ?></button>
+					<button type="button" id="btn-cancel"><?php echo Lang::txt('Cancel'); ?></button>
 				</div>
 				<?php echo Lang::txt('Batch Process'); ?>
 			</div>

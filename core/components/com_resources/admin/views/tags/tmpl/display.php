@@ -36,18 +36,8 @@ Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_TAGS
 Toolbar::save();
 Toolbar::cancel();
 
+$this->js();
 ?>
-<script type="text/javascript">
-function addtag(tag)
-{
-	var input = document.getElementById('tags-men');
-	if (input.value == '') {
-		input.value = tag;
-	} else {
-		input.value += ', '+tag;
-	}
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm">
 	<fieldset class="adminform">
@@ -84,8 +74,8 @@ function addtag(tag)
 				?>
 				<tr class="<?php echo "row$k"; ?>">
 					<td><input type="checkbox" name="tgs[]" id="cb<?php echo $i; ?>" <?php if (in_array($tag->tag, $this->mytagarray)) { echo 'checked="checked"'; } ?> value="<?php echo $this->escape($tag->tag); ?>" /></td>
-					<td><a href="#" onclick="addtag('<?php echo stripslashes($tag->tag); ?>');"><?php echo $this->escape($tag->raw_tag); ?></a></td>
-					<td><a href="#" onclick="addtag('<?php echo stripslashes($tag->tag); ?>');"><?php echo $this->escape($tag->tag); ?></a></td>
+					<td><a href="#" class="addtag" data-tag="<?php echo stripslashes($tag->tag); ?>"><?php echo $this->escape($tag->raw_tag); ?></a></td>
+					<td><a href="#" class="addtag" data-tag="<?php echo stripslashes($tag->tag); ?>"><?php echo $this->escape($tag->tag); ?></a></td>
 					<td><?php if ($tag->admin == 1) { echo '<span class="check">admin</span>'; } ?></td>
 				</tr>
 				<?php

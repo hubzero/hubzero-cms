@@ -43,23 +43,10 @@ if ($canDo->get('core.edit'))
 }
 Toolbar::cancel();
 
-$this->css();
+$this->css()
+	->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	<?php echo $this->editor()->save('text'); ?>
-
-	submitform(pressbutton);
-}
-</script>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-40 fltlft">
 		<fieldset class="adminform">
@@ -67,59 +54,55 @@ function submitbutton(pressbutton)
 
 			<table class="formed">
 				<tbody>
-				<tr>
-					<th>Order number:</th>
-					<td><span><?php echo $this->tInfo->tId; ?></span></td>
-				</tr>
-				<tr>
-					<th>Order placed:</th>
-					<td><span><?php echo $this->tInfo->tLastUpdated; ?></span></td>
-				</tr>
-				<tr>
-					<th>Ordered by:</th>
-					<td><span><?php echo $this->user->get('id') ? $this->user->get('name') . ' (' . $this->user->get('username') . ')': Lang::txt('COM_CART_UNKNOWN'); ?></span></td>
-				</tr>
-				<tr>
-					<th>Order subtotal:</th>
-					<td><span><?php echo '$' . number_format($this->tInfo->tiSubtotal, 2); ?></span></td>
-				</tr>
-				<?php
-				if (!empty($this->tInfo->tiTax) && $this->tInfo->tiTax)
-				{
-				?>
 					<tr>
-						<th>Tax:</th>
-						<td><span><?php echo '$' . number_format($this->tInfo->tiTax, 2); ?></span></td>
+						<th>Order number:</th>
+						<td><span><?php echo $this->tInfo->tId; ?></span></td>
 					</tr>
-				<?php
-				}
-				?>
-				<?php
-				if (!empty($this->tInfo->tiShipping) && floatval($this->tInfo->tiShipping))
-				{
-				?>
 					<tr>
-						<th>Shipping cost:</th>
-						<td><span><?php echo '$' . number_format($this->tInfo->tiShipping, 2); ?></span></td>
+						<th>Order placed:</th>
+						<td><span><?php echo $this->tInfo->tLastUpdated; ?></span></td>
+					</tr>
+					<tr>
+						<th>Ordered by:</th>
+						<td><span><?php echo $this->user->get('id') ? $this->user->get('name') . ' (' . $this->user->get('username') . ')': Lang::txt('COM_CART_UNKNOWN'); ?></span></td>
+					</tr>
+					<tr>
+						<th>Order subtotal:</th>
+						<td><span><?php echo '$' . number_format($this->tInfo->tiSubtotal, 2); ?></span></td>
 					</tr>
 					<?php
-				}
-				?>
-				<?php
-				if (!empty($this->tInfo->tiDiscounts) && floatval($this->tInfo->tiDiscounts))
-				{
-				?>
-					<tr>
-						<th>Discounts:</th>
-						<td><span><?php echo '$' . number_format($this->tInfo->tiDiscounts, 2); ?></span></td>
-					</tr>
+					if (!empty($this->tInfo->tiTax) && $this->tInfo->tiTax)
+					{
+					?>
+						<tr>
+							<th>Tax:</th>
+							<td><span><?php echo '$' . number_format($this->tInfo->tiTax, 2); ?></span></td>
+						</tr>
 					<?php
-				}
-				?>
-				<tr>
-					<th>Order total:</th>
-					<td><span><?php echo '$' . number_format($this->tInfo->tiTotal, 2); ?></span></td>
-				</tr>
+					}
+					if (!empty($this->tInfo->tiShipping) && floatval($this->tInfo->tiShipping))
+					{
+					?>
+						<tr>
+							<th>Shipping cost:</th>
+							<td><span><?php echo '$' . number_format($this->tInfo->tiShipping, 2); ?></span></td>
+						</tr>
+						<?php
+					}
+					if (!empty($this->tInfo->tiDiscounts) && floatval($this->tInfo->tiDiscounts))
+					{
+					?>
+						<tr>
+							<th>Discounts:</th>
+							<td><span><?php echo '$' . number_format($this->tInfo->tiDiscounts, 2); ?></span></td>
+						</tr>
+						<?php
+					}
+					?>
+					<tr>
+						<th>Order total:</th>
+						<td><span><?php echo '$' . number_format($this->tInfo->tiTotal, 2); ?></span></td>
+					</tr>
 				</tbody>
 			</table>
 
@@ -166,7 +149,6 @@ function submitbutton(pressbutton)
 				<?php
 				}
 				?>
-
 			</fieldset>
 			<?php
 		}
@@ -223,15 +205,15 @@ function submitbutton(pressbutton)
 		foreach ($this->items as $sId => $item)
 		{
 			$meta = $item['transactionInfo']->tiMeta;
-			//print_r($item); die;
+
 			if (!empty($meta->checkoutNotes))
 			{
 				$notes[] = array(
-					//'label' => '<strong>' . $item['info']->pName . ', ' . $item['info']->sSku . '</strong>',
 					'object' => 'transactionItem',
 					'objectId' => $item['info']->sId,
 					'label' => '<strong>' . $this->tInfo->tiItems[$sId]['info']->pName . ', ' . $this->tInfo->tiItems[$sId]['info']->sSku . '</strong>',
-					'notes' => $meta->checkoutNotes);
+					'notes' => $meta->checkoutNotes
+				);
 			}
 		}
 
@@ -247,7 +229,8 @@ function submitbutton(pressbutton)
 				'object' => 'transaction',
 				'objectId' => $this->tInfo->tId,
 				'label' => $genericNotesLabel,
-				'notes' => $this->tInfo->tiNotes);
+				'notes' => $this->tInfo->tiNotes
+			);
 		}
 
 		if (!empty($notes))

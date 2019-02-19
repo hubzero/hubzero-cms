@@ -6,6 +6,15 @@ jQuery(function(jq)
 	    w = $('#graph').innerWidth(),
 	    h = 600;
 
+	var window.resourceTypes = new Array,
+		resourcetypes = $('#resource-types');
+
+	if (resourcetypes.length) {
+		var cdata = jQuery.parseJSON(resourcetypes.html());
+
+		window.resourceTypes = cdata.types;
+	}
+
 	var tag_editors = function(json)
 	{
 		var blur_timeout = null;

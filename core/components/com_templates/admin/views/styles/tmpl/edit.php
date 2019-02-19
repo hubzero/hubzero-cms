@@ -61,17 +61,11 @@ Toolbar::help('style');
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
-?>
-<script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
-		if (task == 'style.cancel' || document.formvalidator.isValid($('#item-form'))) {
-			Joomla.submitform(task, $('#item-form'));
-		}
-	}
-</script>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+$this->js();
+?>
+
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -79,7 +73,7 @@ Html::behavior('keepalive');
 
 				<div class="input-wrap">
 					<label for="field-title"><?php echo Lang::txt('COM_TEMPLATES_FIELD_TITLE_LABEL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[title]" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->item->get('title'))); ?>" />
+					<input type="text" name="fields[title]" id="field-title" class="required" maxlength="250" value="<?php echo $this->escape(stripslashes($this->item->get('title'))); ?>" />
 				</div>
 
 				<?php if ($this->item->client_id == 0): ?>
@@ -128,14 +122,14 @@ Html::behavior('keepalive');
 				<tbody>
 					<?php if ($this->item->id) : ?>
 						<tr>
-							<th><?php echo Lang::txt('JGLOBAL_FIELD_ID_LABEL'); ?></th>
+							<th scope="row"><?php echo Lang::txt('JGLOBAL_FIELD_ID_LABEL'); ?></th>
 							<td><?php echo $this->item->id; ?></td>
 						</tr>
 					<?php endif; ?>
 					<?php if ($this->item->parent->xml) : ?>
 						<?php if ($text = trim($this->item->parent->xml->get('description'))) : ?>
 							<tr>
-								<th><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_DESCRIPTION'); ?></th>
+								<th scope="row"><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_DESCRIPTION'); ?></th>
 								<td><?php echo Lang::txt($text); ?></td>
 							</tr>
 						<?php endif; ?>
@@ -147,14 +141,14 @@ Html::behavior('keepalive');
 						</tr>
 					<?php endif; ?>
 					<tr>
-						<th><?php echo Lang::txt('COM_TEMPLATES_FIELD_TEMPLATE_LABEL'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_TEMPLATES_FIELD_TEMPLATE_LABEL'); ?></th>
 						<td>
 							<?php echo $this->item->template; ?>
 							<input type="hidden" name="fields[template]" id="field-template" value="<?php echo $this->escape($this->item->template); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_TEMPLATES_FIELD_CLIENT_LABEL'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_TEMPLATES_FIELD_CLIENT_LABEL'); ?></th>
 						<td>
 							<?php echo $this->item->client_id == 0 ? Lang::txt('JSITE') : Lang::txt('JADMINISTRATOR'); ?>
 							<input type="hidden" name="fields[client_id]" id="field-client_id" value="<?php echo $this->escape($this->item->client_id); ?>" />

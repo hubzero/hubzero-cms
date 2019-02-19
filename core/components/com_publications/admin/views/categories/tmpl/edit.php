@@ -56,13 +56,6 @@ $params = $this->row->params;
 Html::behavior('framework', true);
 
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	submitform( pressbutton );
-	return;
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="item-form" name="adminForm">
 	<div class="grid">
@@ -152,7 +145,7 @@ function submitbutton(pressbutton)
 						<legend><?php echo $mt; ?></legend>
 						<div class="input-wrap">
 							<input class="option" name="params[type_<?php echo $mt; ?>]" id="field-type_<?php echo $mt; ?>1" type="radio" value="1" <?php echo ($params->get('type_'.$mt, 1) == 1) ? ' checked="checked"':''; ?> />
-							<label for="field-type_<?php echo $mt; ?>1"><?php echo  Lang::txt('COM_PUBLICATIONS_INCLUDE_CHOICE'); ?></label>
+							<label for="field-type_<?php echo $mt; ?>1"><?php echo Lang::txt('COM_PUBLICATIONS_INCLUDE_CHOICE'); ?></label>
 							<br />
 							<input class="option" name="params[type_<?php echo $mt; ?>]" id="field-type_<?php echo $mt; ?>0" type="radio" value="0" <?php echo ($params->get('type_'.$mt, 1) == 0) ? ' checked="checked"':''; ?> />
 							<label for="field-type_<?php echo $mt; ?>0"><?php echo Lang::txt('COM_PUBLICATIONS_NOT_APPLICABLE'); ?></label>
@@ -194,9 +187,9 @@ function submitbutton(pressbutton)
 							}
 							?>
 							<tr>
-								<td><?php echo (strstr($plugin->name, '_') ? Lang::txt(stripslashes($plugin->name)) : stripslashes(ucfirst($plugin->name))); ?></td>
-								<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="0"<?php echo ($params->get('plg_'.$plugin->element, 0) == 0) ? ' checked="checked"':''; ?> /> off</label></td>
-								<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="1"<?php echo ($params->get('plg_'.$plugin->element, 0) == 1) ? ' checked="checked"':''; ?> /> on</label></td>
+								<td><?php echo (strstr($plugin->name, '_')) ? Lang::txt(stripslashes($plugin->name)) : stripslashes(ucfirst($plugin->name)); ?></td>
+								<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="0"<?php echo ($params->get('plg_'.$plugin->element, 0) == 0) ? ' checked="checked"':''; ?> /> <?php echo Lang::txt('JOFF'); ?></label></td>
+								<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="1"<?php echo ($params->get('plg_'.$plugin->element, 0) == 1) ? ' checked="checked"':''; ?> /> <?php echo Lang::txt('JON'); ?></label></td>
 							</tr>
 							<?php
 						}
@@ -212,7 +205,7 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_CUSTOM_FIELDS'); ?></span></legend>
 
-			<table class="admintable" id="fields">
+			<table class="admintable" id="fields" data-href="<?php echo Route::url('index.php?option=com_publications&controller=categories&no_html=1&task=element&ctrl=fields'); ?>">
 				<thead>
 					<tr>
 						<th><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_REORDER'); ?></th>
@@ -233,6 +226,8 @@ function submitbutton(pressbutton)
 				</tfoot>
 				<tbody id="field-items">
 				<?php
+				$this->js('categories.js');
+
 				include_once Component::path('com_publications') . DS . 'models' . DS . 'elements.php';
 				$elements = new \Components\Publications\Models\Elements('', $this->row->customFields);
 				$schema = $elements->getSchema();
@@ -306,175 +301,6 @@ function submitbutton(pressbutton)
 				?>
 				</tbody>
 			</table>
-
-			<script type="text/javascript">
-				if (!jq) {
-					var jq = $;
-				}
-
-				var Fields = {
-					isIE8: function() {
-						var rv = -1,
-							ua = navigator.userAgent,
-							re = new RegExp("Trident\/([0-9]{1,}[\.0-9]{0,})");
-						if (re.exec(ua) != null) {
-							rv = parseFloat(RegExp.$1);
-						}
-						return (rv == 4);
-					},
-
-					addRow: function(id) {
-						var tbody = document.getElementById(id).tBodies[0],
-							counter = tbody.rows.length,
-							newNode = tbody.rows[0].cloneNode(true),
-							replaceme = null;
-
-						var newField = newNode.childNodes;
-						for (var i=0;i<newField.length;i++)
-						{
-							var inputs = newField[i].childNodes;
-							for (var k=0;k<inputs.length;k++)
-							{
-								var theName = inputs[k].name;
-								if (theName) {
-									tokens = theName.split('[');
-									n = tokens[2];
-									inputs[k].name = id + '[' + counter + ']['+ n;
-									inputs[k].id = id + '-' + counter + '-' + n.replace(']', '');
-
-									if (Fields.isIE8() && inputs[k].type == 'select-one') {
-										inputs[k].id = id + '-' + counter + '-' + n.replace(']', '')+'-tmp';
-										replaceme = id + '-' + counter + '-' + n.replace(']', '')+'-tmp';
-									}
-								}
-								var n = id + '[' + counter + '][type]';
-								var z = id + '[' + counter + '][required]';
-								if (inputs[k].value && inputs[k].name != z) {
-									inputs[k].value = '';
-									inputs[k].selectedIndex = 0;
-									inputs[k].selected = false;
-								}
-								if (inputs[k].checked) {
-									inputs[k].checked = false;
-								}
-							}
-							if (newField[i].id) {
-								newField[i].id = 'fields-'+counter+'-options';
-							}
-						}
-
-						tbody.appendChild(newNode);
-
-						// Make a clone of the clone. Why? Because IE 8 is dumb.
-						// IE still retains a reference to the original object for change events
-						// So, when calling onChange, the event gets fired for the clone AND the
-						// original. Cloning the clone seems to fix this.
-						if (replaceme) {
-							var replace = jq(replaceme);
-							var select = jq.clone(replace).appendAfter(replace);
-							jq.remove(replace);
-						}
-
-						Fields.initSelect();
-
-						//jq('#fields tbody').sortable(); //'enable');
-
-						return false;
-					},
-
-					addOption: function(id) {
-						var tbody = document.getElementById(id).tBodies[0];
-						var counter = tbody.rows.length;
-						var newNode = tbody.rows[0].cloneNode(true);
-
-						var newField = newNode.childNodes;
-						for (var i=0;i<newField.length;i++)
-						{
-							var inputs = newField[i].childNodes;
-							for (var k=0;k<inputs.length;k++)
-							{
-								var theName = inputs[k].name;
-								if (theName) {
-									tokens = theName.split('[');
-									n = tokens[2];
-									inputs[k].name = 'fields['+id+'][' +n+ '[' + counter + '][label]';
-								}
-								if (inputs[k].value) {
-									inputs[k].value = '';
-								}
-							}
-						}
-
-						tbody.appendChild(newNode);
-
-						return false;
-					},
-
-					initOptions: function() {
-						jq('.add-custom-option').each(function(i, el){
-							jq(el)
-								.off('click')
-								.on('click', function(e){
-									e.preventDefault();
-
-									Fields.addOption(jq(this).attr('rel'));
-								});
-						});
-					},
-
-					timer: 0,
-
-					clear: function() {
-						Fields.timer = 0;
-					},
-
-					initSelect: function() {
-						jq('#fields select').each(function(i, el){
-							jq(el)
-								.off('change')
-								.on('change', function(){
-									var i = this.name.replace(/^fields\[(\d+)\]\[type\]/g,"$1");
-									jq.get('index.php?option=com_publications&controller=categories&no_html=1&task=element&ctrl=fields&type='+this.value+'&name='+i,{}, function (response){
-										jq('#fields-'+i+'-options').html(response);
-										Fields.initOptions();
-									});
-								})
-						});
-					},
-
-					initialise: function() {
-						jq('#add-custom-field').on('click', function (e){
-							e.preventDefault();
-
-							Fields.addRow('fields');
-						});
-
-						Fields.initSelect();
-						Fields.initOptions();
-
-						jq('#fields tbody').sortable();
-					}
-				}
-
-				jQuery(document).ready(function(jq){
-					var $ = jq;
-
-					Fields.initialise();
-
-					$("#fields tbody").sortable({
-						handle: '.handle',
-						helper: function(e, tr) {
-							var $originals = tr.children();
-							var $helper = tr.clone();
-							$helper.children().each(function(index) {
-								// Set helper cell sizes to match the original sizes
-								$(this).width($originals.eq(index).width())
-							});
-							return $helper;
-						}
-					});  //.disableSelection();
-				});
-			</script>
 		</fieldset>
 	<?php } ?>
 	<?php echo Html::input('token'); ?>

@@ -45,6 +45,11 @@ if ($canDo->get('core.edit'))
 }
 Toolbar::cancel();
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
+
 $profile = User::getInstance($this->row->get('user_id'));
 
 $js = '';
@@ -60,28 +65,11 @@ foreach ($roles as $role)
 	}
 }
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// form field validation
-	if ($('#offering_id').val() == '') {
-		alert('<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_OFFERING'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -97,10 +85,10 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-offering_id"><?php echo Lang::txt('COM_COURSES_OFFERING'); ?>:</label><br />
-					<select name="fields[offering_id]" id="field-offering_id" onchange="changeDynaList('section_id', offeringsections, document.getElementById('offering_id').options[document.getElementById('offering_id').selectedIndex].value, 0, 0);">
+					<select name="fields[offering_id]" id="field-offering_id" class="required" onchange="changeDynaList('section_id', offeringsections, document.getElementById('offering_id').options[document.getElementById('offering_id').selectedIndex].value, 0, 0);">
 						<option value="-1"><?php echo Lang::txt('COM_COURSES_NONE'); ?></option>
 						<?php
-						require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+						require_once Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
 						$model = \Components\Courses\Models\Courses::getInstance();
 						if ($model->courses()->total() > 0)
 						{
@@ -151,24 +139,24 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?></th>
 						<td><?php echo $this->escape($this->row->get('id')); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_COURSES_FIELD_USER_ID'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_USER_ID'); ?></th>
 						<td><?php echo $this->escape($this->row->get('user_id')); ?></td>
 					</tr>
 					<?php if ($profile) { ?>
 						<tr>
-							<th><?php echo Lang::txt('COM_COURSES_FIELD_NAME'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_NAME'); ?></th>
 							<td><?php echo $this->escape(stripslashes($profile->get('name'))); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_COURSES_FIELD_USERNAME'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_USERNAME'); ?></th>
 							<td><?php echo $this->escape(stripslashes($profile->get('username'))); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_COURSES_FIELD_EMAIL'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_EMAIL'); ?></th>
 							<td><?php echo $this->escape(stripslashes($profile->get('email'))); ?></td>
 						</tr>
 					<?php } ?>
