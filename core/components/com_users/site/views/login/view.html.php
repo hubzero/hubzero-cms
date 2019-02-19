@@ -44,14 +44,16 @@ class UsersViewLogin extends JViewLegacy
 		}
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
+		if (count($errors = $this->get('Errors')))
+		{
 			App::abort(500, implode('<br />', $errors));
 			return false;
 		}
 
 		// Check for layout override
 		$active = \App::get('menu')->getActive();
-		if (isset($active->query['layout'])) {
+		if (isset($active->query['layout']))
+		{
 			$this->setLayout($active->query['layout']);
 		}
 
@@ -179,7 +181,7 @@ class UsersViewLogin extends JViewLegacy
 
 			if (class_exists($className))
 			{
-				$myplugin = new $className($this,(array)$plugin);
+				$myplugin = new $className($this, (array)$plugin);
 
 				if (method_exists($className, 'status'))
 				{
