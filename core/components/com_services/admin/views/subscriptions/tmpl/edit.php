@@ -67,20 +67,6 @@ $priceline .= ($this->subscription->pointsprice > 0) ? Lang::txt('COM_SERVICES_O
 
 ?>
 
-<script type="text/javascript">
-	function submitbutton(pressbutton)
-	{
-		var form = document.adminForm;
-
-		if (pressbutton == 'cancel') {
-			submitform(pressbutton);
-			return;
-		}
-
-		submitform(pressbutton);
-	}
-</script>
-
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 
 	<div class="grid">
@@ -118,37 +104,37 @@ $priceline .= ($this->subscription->pointsprice > 0) ? Lang::txt('COM_SERVICES_O
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_SERVICES_COL_STATUS'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_SERVICES_COL_STATUS'); ?>:</th>
 						<td><?php echo $status ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_SERVICES_COL_ADDED'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_SERVICES_COL_ADDED'); ?>:</th>
 						<td><?php echo $added ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_SERVICES_COL_EXPIRES'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_SERVICES_COL_EXPIRES'); ?>:</th>
 						<td><?php echo $expires ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_SERVICES_COL_LAST_UPDATED'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_SERVICES_COL_LAST_UPDATED'); ?>:</th>
 						<td><?php echo $updated ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_SERVICES_COL_TOTAL_PAID'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_SERVICES_COL_TOTAL_PAID'); ?>:</th>
 						<td><?php echo $this->subscription->totalpaid; ?> <?php if ($this->subscription->usepoints) { echo Lang::txt('COM_SERVICES_POINTS');
 } else { echo $this->subscription->currency; } ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_SERVICES_COL_PENDING_PAYMENT'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_SERVICES_COL_PENDING_PAYMENT'); ?>:</th>
 						<td><?php echo $this->subscription->pendingpayment; ?> <?php if ($this->subscription->usepoints) { echo Lang::txt('COM_SERVICES_POINTS');
 } else { echo $this->subscription->currency; } ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_SERVICES_COL_ACTIVE_UNITS'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_SERVICES_COL_ACTIVE_UNITS'); ?>:</th>
 						<td><?php echo $this->subscription->units; ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_SERVICES_COL_PENDING_UNITS'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_SERVICES_COL_PENDING_UNITS'); ?>:</th>
 						<td><?php echo $this->subscription->pendingunits; ?></td>
 					</tr>
 				</tbody>

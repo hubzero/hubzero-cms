@@ -46,13 +46,6 @@ Toolbar::cancel();
 $text = preg_replace("/\r\n/", "\r", trim($this->row->text));
 
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	submitform( pressbutton );
-	return;
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=licenses'); ?>" method="post" id="item-form" name="adminForm">
 	<div class="grid">

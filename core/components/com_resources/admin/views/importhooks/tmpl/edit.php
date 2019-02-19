@@ -36,23 +36,10 @@ defined('_HZEXEC_') or die();
 // set title
 $title  = ($this->hook->get('id')) ? Lang::txt('COM_RESOURCES_IMPORTHOOK_TITLE_EDIT') : Lang::txt('COM_RESOURCES_IMPORTHOOK_TITLE_ADD');
 
-Toolbar::title(Lang::txt($title), 'import.png');
+Toolbar::title(Lang::txt($title), 'import');
 Toolbar::save();
 Toolbar::cancel();
 ?>
-
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
 
 <?php foreach ($this->getErrors() as $error) : ?>
 	<p class="error"><?php echo $error; ?></p>

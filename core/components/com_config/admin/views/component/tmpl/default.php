@@ -36,22 +36,17 @@ defined('_HZEXEC_') or die();
 // Load the tooltip behavior.
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
+
+$this->js();
 ?>
-<script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
-		if (document.formvalidator.isValid($('#component-form'))) {
-			Joomla.submitform(task, document.getElementById('component-form'));
-		}
-	}
-</script>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" id="component-form" method="post" name="adminForm" autocomplete="off" class="form-validate">
+
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" id="component-form" method="post" name="adminForm" autocomplete="off" class="form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<fieldset>
 		<div class="configuration">
 			<div class="configuration-options">
-				<button type="button" onclick="Joomla.submitform('component.apply', this.form);"><?php echo Lang::txt('JAPPLY');?></button>
-				<button type="button" onclick="Joomla.submitform('component.save', this.form);"><?php echo Lang::txt('JSAVE');?></button>
-				<button type="button" onclick="<?php echo Request::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href; ' : ''; ?>window.parent.$.fancybox.close();"><?php echo Lang::txt('JCANCEL');?></button>
+				<button type="button" id="btn-apply"><?php echo Lang::txt('JAPPLY');?></button>
+				<button type="button" id="btn-save"><?php echo Lang::txt('JSAVE');?></button>
+				<button type="button" id="btn-cancel"<?php echo Request::getBool('refresh', 0) ? ' data-refresh="1"' : ''; ?>><?php echo Lang::txt('JCANCEL');?></button>
 			</div>
 
 			<?php echo Lang::txt($this->component->option . '_configuration'); ?>

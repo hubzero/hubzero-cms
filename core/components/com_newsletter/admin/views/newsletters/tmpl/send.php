@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 //set title
-Toolbar::title(Lang::txt('COM_NEWSLETTER_SEND') . ': ' . $this->newsletter->name, 'newsletter.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_SEND') . ': ' . $this->newsletter->name, 'newsletter');
 
 //add buttons to toolbar
 Toolbar::custom('dosendnewsletter', 'send', '', 'COM_NEWSLETTER_TOOLBAR_SEND', false);
@@ -46,30 +46,6 @@ Html::behavior('framework', true);
 // add newsletter js
 $this->js();
 ?>
-
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	//are we trying to send newsletter
-	if (pressbutton == 'dosendnewsletter')
-	{
-		//check to make sure we all set to go
-		if (!HUB.Administrator.Newsletter.sendNewsletterCheck())
-		{
-			return;
-		}
-
-		//double check with user
-		if (!HUB.Administrator.Newsletter.sendNewsletterDoubleCheck())
-		{
-			return;
-		}
-	}
-
-	//submit form
-	submitform( pressbutton );
-}
-</script>
 
 <?php
 	if ($this->getError())
@@ -90,7 +66,7 @@ function submitbutton(pressbutton)
 							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER'); ?>:</th>
 							<td>
 								<?php echo $this->newsletter->name; ?>
-								<input type="hidden" name="newsletter-name" id="newsletter-name" value="<?php echo $this->newsletter->name; ?>" />
+								<input type="hidden" name="newsletter-name" id="newsletter-name" value="<?php echo $this->escape($this->newsletter->name); ?>" />
 							</td>
 						</tr>
 						<tr>

@@ -46,27 +46,14 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('category');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js('edit.js');
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-
-	// form field validation
-	if ($('#field-title').val() == '') {
-		alert('<?php echo Lang::txt('COM_SUPPORT_CATEGORY_ERROR_NO_TEXT'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -74,7 +61,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-title"><?php echo Lang::txt('COM_SUPPORT_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape($this->row->get('title')); ?>" />
+					<input type="text" name="fields[title]" id="field-title" class="required" value="<?php echo $this->escape($this->row->get('title')); ?>" />
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_SUPPORT_FIELD_ALIAS_HINT'); ?>">
@@ -88,7 +75,7 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_ID'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_SUPPORT_FIELD_ID'); ?>:</th>
 						<td>
 							<?php echo $this->row->get('id'); ?>
 							<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->escape($this->row->get('id')); ?>" />
@@ -96,13 +83,13 @@ function submitbutton(pressbutton)
 					</tr>
 				<?php if ($this->row->get('created_by')) { ?>
 					<tr>
-						<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_CREATED'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_SUPPORT_FIELD_CREATED'); ?>:</th>
 						<td>
-							<?php echo Date::of($this->row->get('created'))->toLocal('Y-m-d H:i:s'); ?>
+							<time datetime="<?php echo $this->row->get('created'); ?>"><?php echo Date::of($this->row->get('created'))->toLocal('Y-m-d H:i:s'); ?></time>
 						</td>
 					</tr>
 					<tr>
-						<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_CREATOR'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_SUPPORT_FIELD_CREATOR'); ?>:</th>
 						<td>
 							<?php
 							$user = User::getInstance($this->row->get('created_by'));
@@ -112,13 +99,13 @@ function submitbutton(pressbutton)
 					</tr>
 					<?php if ($this->row->get('modified_by') && $this->row->get('modified_by') != '0000-00-00 00:00:00') { ?>
 						<tr>
-							<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_MODIFIED'); ?>:</th>
+							<th scope="row"><?php echo Lang::txt('COM_SUPPORT_FIELD_MODIFIED'); ?>:</th>
 							<td>
-								<?php echo Date::of($this->row->get('modified'))->toLocal('Y-m-d H:i:s'); ?>
+								<time datetime="<?php echo $this->row->get('modified'); ?>"><?php echo Date::of($this->row->get('modified'))->toLocal('Y-m-d H:i:s'); ?></time>
 							</td>
 						</tr>
 						<tr>
-							<th class="key"><?php echo Lang::txt('COM_SUPPORT_FIELD_MODIFIER'); ?>:</th>
+							<th scope="row"><?php echo Lang::txt('COM_SUPPORT_FIELD_MODIFIER'); ?>:</th>
 							<td>
 								<?php
 								$user = User::getInstance($this->row->get('modified_by'));

@@ -40,7 +40,7 @@ $canDo = \Components\Groups\Helpers\Permissions::getActions('group');
 
 if ($tmpl != 'component')
 {
-	Toolbar::title(Lang::txt('COM_GROUPS').': ' . $text, 'groups');
+	Toolbar::title(Lang::txt('COM_GROUPS') . ': ' . $text, 'groups');
 	if ($canDo->get('core.edit'))
 	{
 		Toolbar::save();
@@ -72,7 +72,7 @@ function submitbutton(pressbutton)
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="<?php echo ($tmpl == 'component' ? 'component' : 'item'); ?>-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="<?php echo ($tmpl == 'component') ? 'component' : 'item'; ?>-form">
 <?php if ($tmpl == 'component') { ?>
 	<fieldset>
 		<div class="configuration">

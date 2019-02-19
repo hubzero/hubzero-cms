@@ -38,6 +38,8 @@ Toolbar::title(Lang::txt( 'COM_NEWSLETTER_NEWSLETTER_TOOLS' ), 'tools');
 
 // add jquery
 Html::behavior('framework');
+
+$this->js();
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
@@ -108,23 +110,6 @@ Html::behavior('framework');
 
 				<h3><?php echo Lang::txt('COM_NEWSLETTER_TOOLS_MOZIFY_CODE'); ?></h3>
 				<textarea id="code"><?php echo str_replace("\n", "", $this->code); ?></textarea>
-
-				<script>
-					jQuery(document).ready(function($){
-						//get iframe and mozified code
-						var previewIframe = $('#preview-iframe'),
-							previewCode = $('#preview-code').find('table').first();
-
-						//set iframe height and width
-						//add preview code to iframe
-						previewIframe
-							.css({
-								width: previewCode.attr('width') + 'px',
-								height: previewCode.attr('height') + 'px'
-							})
-							.contents().find('html').html( previewCode );
-					});
-				</script>
 			<?php endif; ?>
 		</div>
 	</div>

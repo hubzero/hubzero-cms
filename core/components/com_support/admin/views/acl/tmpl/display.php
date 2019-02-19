@@ -36,25 +36,9 @@ Toolbar::title(Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_ACL'), '
 Toolbar::deleteList();
 Toolbar::spacer();
 Toolbar::help('acl');
-?>
-<script type="text/javascript">
-/**
-* Toggles the check state of a group of boxes
-*
-* Checkboxes must have an id attribute in the form cb0, cb1...
-* @param The number of box to 'check'
-* @param An alternative field name
-*/
-function checkAllOptions()
-{
-	var f = document.adminForm;
-	var c = f.toggleOpt.checked;
 
-	$('.chk').each(function(i, el){
-		el.checked = c;
-	});
-}
-</script>
+$this->js('edit.js');
+?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
@@ -71,17 +55,17 @@ function checkAllOptions()
 			</tr>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_ID'); ?></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_OBJECT'); ?></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_MODEL'); ?></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_READ'); ?></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_UPDATE'); ?></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_DELETE'); ?></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_CREATE'); ?></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_READ'); ?></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_CREATE'); ?></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_READ'); ?></th>
-				<th> </th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_ID'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_OBJECT'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_MODEL'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_READ'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_UPDATE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_DELETE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_CREATE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_READ'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_CREATE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_READ'); ?></th>
+				<th scope="col"> </th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -99,7 +83,7 @@ function checkAllOptions()
 						<option value="user"><?php echo Lang::txt('COM_SUPPORT_ACL_USER'); ?></option>
 						<option value="group"><?php echo Lang::txt('COM_SUPPORT_ACL_GROUP'); ?></option>
 					</select>
-					<input type="checkbox" name="toggleOpt" value="" onclick="checkAllOptions();" /> <abbr title="<?php echo Lang::txt('COM_SUPPORT_CHECK_ALL'); ?>"><?php echo Lang::txt('COM_SUPPORT_COL_ALL'); ?></abbr>
+					<input type="checkbox" name="toggleOpt" id="toggleOpt" value="" /> <abbr title="<?php echo Lang::txt('COM_SUPPORT_CHECK_ALL'); ?>"><?php echo Lang::txt('COM_SUPPORT_COL_ALL'); ?></abbr>
 				</td>
 				<td>
 					<input type="hidden" name="map[tickets][id]" value="0" />
@@ -137,7 +121,7 @@ function checkAllOptions()
 					<input type="hidden" name="map[private_comments][action_delete]" value="0" />
 				</td>
 				<td>
-					<input type="submit" name="newacl" value="Add" onclick="submitbutton('save');" />
+					<input type="submit" name="newacl" id="newacl" value="<?php echo Lang::txt('Add'); ?>" />
 				</td>
 			</tr>
 		</tfoot>

@@ -60,18 +60,6 @@ if (is_object($this->reported))
 Html::behavior('modal', 'a.modals');
 
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
 	<div class="grid">
@@ -97,15 +85,15 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_SUPPORT_COL_DATE'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_SUPPORT_COL_DATE'); ?></th>
 						<td><?php echo $this->report->created; ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_SUPPORT_REPORT_REPORTED_BY'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_SUPPORT_REPORT_REPORTED_BY'); ?></th>
 						<td><?php echo (is_object($reporter) && $reporter->get('username')) ? $reporter->get('username') : Lang::txt('COM_SUPPORT_UNKNOWN'); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_SUPPORT_COL_REASON'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_SUPPORT_COL_REASON'); ?></th>
 						<td><?php echo $this->escape(stripslashes($this->report->report ? $this->report->report : $this->report->subject)); ?></td>
 					</tr>
 				</tbody>

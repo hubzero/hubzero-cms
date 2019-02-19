@@ -35,7 +35,8 @@ defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_HELP'), 'help.png');
 
-$this->css();
+$this->css()
+	->js();
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<div class="col-row">

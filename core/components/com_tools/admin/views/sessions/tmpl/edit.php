@@ -34,26 +34,12 @@ defined('_HZEXEC_') or die();
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_TOOLS_SESSION_CLASSES') . ': ' . $text, 'user.png');
+Toolbar::title(Lang::txt('COM_TOOLS_SESSION_CLASSES') . ': ' . $text, 'tools');
 Toolbar::apply();
 Toolbar::save();
 Toolbar::spacer();
 Toolbar::cancel('cancelclass');
 ?>
-
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-
-	submitform( pressbutton );
-}
-</script>
 
 <?php if ($this->getError()) : ?>
 	<p class="error"><?php echo $this->getError(); ?></p>

@@ -33,7 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_CONFIG_GLOBAL_CONFIGURATION'), 'config.png');
+Toolbar::title(Lang::txt('COM_CONFIG_GLOBAL_CONFIGURATION'), 'config');
 Toolbar::apply('application.apply');
 Toolbar::save('application.save');
 Toolbar::divider();
@@ -49,17 +49,13 @@ Html::behavior('tooltip');
 // Load submenu template, using element id 'submenu' as needed by behavior.switcher
 Document::setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
 
-?>
-<script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
-		if (task == 'application.cancel' || document.formvalidator.isValid($('#application-form'))) {
-			Joomla.submitform(task, document.getElementById('application-form'));
-		}
-	}
-</script>
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
 
-<form action="<?php echo Route::url('index.php?option=com_config');?>" id="application-form" method="post" name="adminForm" class="form-validate">
+$this->js();
+?>
+
+<form action="<?php echo Route::url('index.php?option=com_config');?>" id="application-form" method="post" name="adminForm" class="form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<?php /*if ($this->ftp) : ?>
 		<?php echo $this->loadTemplate('ftplogin'); ?>
 	<?php endif;*/ ?>
