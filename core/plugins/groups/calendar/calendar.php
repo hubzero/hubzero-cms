@@ -1241,7 +1241,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$departure  = Request::getArray('departure', null, 'post');
 		$dietary    = Request::getArray('dietary', null, 'post');
 		$dinner     = Request::getString('dinner', null, 'post');
-		$disability = Request::getArray('disability', null, 'post');
+		$disability = Request::getString('disability', 'no', 'post');
 		$race       = Request::getArray('race', null, 'post');
 		$event_id   = Request::getInt('event_id', null, 'post');
 
