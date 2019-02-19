@@ -291,7 +291,7 @@ if (navigator.userAgent.indexOf("Mozilla") > -1)
 						</div>
 					</div>
 				</a>
-				<a id="full-screen" class="tooltips control" href="javascript:void(0);" title="View Video Fullscreen">Fullscreen</a>
+				<!-- <a id="full-screen" class="tooltips control" href="javascript:void(0);" title="View Video Fullscreen">Fullscreen</a> -->
 			</div>
 		</div>
 	</div><!-- /#control-box -->
