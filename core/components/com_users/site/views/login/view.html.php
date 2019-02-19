@@ -115,7 +115,7 @@ class UsersViewLogin extends JViewLegacy
 		}
 
 		// Set return if is isn't already
-		if (is_null($return) && is_object($active))
+		if (!$return && is_object($active))
 		{
 			$return = $defaultReturn;
 		}
@@ -181,16 +181,18 @@ class UsersViewLogin extends JViewLegacy
 			{
 				$myplugin = new $className($this,(array)$plugin);
 
-				if (method_exists($className,'status'))
+				if (method_exists($className, 'status'))
 				{
 					$status[$plugin->name] = $myplugin->status();
 					$this->status = $status;
 				}
 
 				if ($plugin->name != $authenticator)
+				{
 					continue;
+				}
 
-				if (method_exists($className,'display'))
+				if (method_exists($className, 'display'))
 				{
 					$result = $myplugin->display($this, $tpl);
 
