@@ -49,4 +49,4 @@ $link = str_replace('/administrator', '', $this->baseURL);
 
 <?php echo $link; ?>
 
-<?php echo Lang::txt('COM_MEMBERS_EMAIL_CONFIRM_DO_NOT_REPLY'); ?>
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_CONFIRM_DO_NOT_REPLY');
