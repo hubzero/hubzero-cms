@@ -49,11 +49,7 @@ Html::behavior('keepalive');
 
 $this->js();
 ?>
-<script type="text/javascript">
-jQuery(document).ready(function($){
-	document.assetform = $.fancybox;
-});
-</script>
+
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>

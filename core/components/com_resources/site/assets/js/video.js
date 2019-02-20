@@ -1475,6 +1475,20 @@ var $jQ = jQuery.noConflict();
 
 $jQ(document).ready(function() {
 	HUB.Video.loading();
+
+	/* Bug fix for Firefox bug. */
+	/* Firefox fails to update the readyState and does not call the canplay and canplaythrough */
+	/* Some background information: http://stackoverflow.com/questions/10235919/the-canplay-canplaythrough-events-for-an-html5-video-are-not-called-on-firefox */
+	if (navigator.userAgent.indexOf("Mozilla") > -1)
+	{
+		setInterval(function(){ 
+			var vid = document.getElementById('video-player');
+			if (vid.readyState >= 2) {
+				HUB.Video.doneLoading();
+				HUB.Video.locationHash();
+			};
+		}, 2000);
+	}
 });
 
 

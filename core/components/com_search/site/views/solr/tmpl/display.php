@@ -42,33 +42,33 @@ $noResult = count($this->results) > 0 ? false : true;
 $searchParams = Component::params('com_search');
 $tagSearch = ($searchParams->get('solr_tagsearch', 0) == 1) ? true : false;
 
+if ($this->section == 'map'):
+	$this->css('../js/OpenLayers-2.13.1/theme/default/style.css');
+	$this->js('OpenLayers-2.13.1/OpenLayers.js');
+	$this->js('searchmap.js');
+endif;
 ?>
-
-<?php if ($this->section == 'map') { ?>
-	<link rel="stylesheet" type="text/css" href="/core/components/com_search/site/assets/js/OpenLayers-2.13.1/theme/default/style.css"/>
-	<script type="text/javascript" src="/core/components/com_search/site/assets/js/OpenLayers-2.13.1/OpenLayers.js"></script> <!-- (2.0) -->
-	<script type="text/javascript" src="/core/components/com_search/site/assets/js/searchmap.js"></script> <!-- (2.0) -->
-<?php } ?>
 
 <!-- start component output -->
 <header id="content-header">
-	<h2>Search</h2>
+	<h2><?php echo Lang::txt('Search'); ?></h2>
 </header><!-- / #content-header -->
 
 <form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get" class="container data-entry">
 	<section class="options section">
-		<input class="entry-search-submit" type="submit" value="Search" />
+		<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('Search'); ?>" />
 		<fieldset class="entry-search">
-			<legend>Search site</legend>
-			<label for="terms">Search terms</label>
-			<input type="text" name="terms" id="terms" value="<?php echo htmlspecialchars($terms); ?>" placeholder="Enter keyword or phrase" />
+			<legend><?php echo Lang::txt('Search site'); ?></legend>
+			<label for="terms"><?php echo Lang::txt('Search terms'); ?></label>
+			<input type="text" name="terms" id="terms" value="<?php echo htmlspecialchars($terms); ?>" placeholder="<?php echo Lang::txt('Enter keyword or phrase'); ?>" />
 			<input type="hidden" name="section" value="<?php echo $this->escape($this->section); ?>" />
 			<input type="hidden" name="type" value="<?php echo !empty($this->type) ? $this->type : ''; ?>" />
 		</fieldset>
 		<?php
 		if ($tagSearch)
 		{
-			$tags_list = Event::trigger('hubzero.onGetMultiEntry', 
+			$tags_list = Event::trigger(
+				'hubzero.onGetMultiEntry',
 				array(
 					array('tags', 'tags', 'actags', '', $this->tags)
 				)
@@ -116,7 +116,7 @@ $tagSearch = ($searchParams->get('solr_tagsearch', 0) == 1) ? true : false;
 						<?php if ($this->type == ''): ?>
 							<ul>
 								<li>
-									<a <?php echo ($this->type == '') ? 'class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms); ?>">All Categories <span class="item-count">
+									<a <?php echo ($this->type == '') ? 'class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms); ?>"><?php echo Lang::txt('All Categories'); ?> <span class="item-count">
 										<?php echo $this->total; ?></span>
 									</a>
 								</li>
@@ -127,7 +127,7 @@ $tagSearch = ($searchParams->get('solr_tagsearch', 0) == 1) ? true : false;
 						<?php else: ?>
 							<ul>
 								<li>
-									<a <?php echo ($this->type == '') ? 'class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms); ?>"> &lt; Back</a>
+									<a <?php echo ($this->type == '') ? 'class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms); ?>"><?php echo Lang::txt('&lt; Back'); ?></a>
 								</li>
 								<?php echo $this->searchComponent->formatWithCounts($this->facetCounts, $this->type, $this->terms, $this->childTermsString, $this->filters);?>
 							</ul>

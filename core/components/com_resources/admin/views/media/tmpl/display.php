@@ -32,28 +32,13 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-if ($this->getError()) {
+if ($this->getError())
+{
 	echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>';
 }
+$this->js('media.js');
+
 ?>
-<script type="text/javascript">
-function dirup()
-{
-	var urlquery = frames['imgManager'].location.search.substring(1);
-	var curdir = urlquery.substring(urlquery.indexOf('listdir=')+8);
-	var listdir = curdir.substring(0,curdir.lastIndexOf('/'));
-	frames['imgManager'].location.href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&task=list&tmpl=component&listdir=', false);?>" + listdir;
-}
-
-function goUpDir()
-{
-	var listdir = document.getElementById('listdir');
-	var selection = document.forms[0].dirPath;
-	var dir = selection.options[selection.selectedIndex].value;
-	frames['imgManager'].location.href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&task=list&tmpl=component&listdir=', false);?>" + listdir.value + '&subdir=' + dir;
-}
-</script>
-
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
 	<p><?php echo Lang::txt('COM_RESOURCES_MEDIA_PATH', str_replace(PATH_ROOT, 'ROOT', $this->path)); ?></p>
 
@@ -64,7 +49,8 @@ function goUpDir()
 		</label>
 
 		<div id="themanager" class="manager">
-			<iframe src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=list&tmpl=component&listdir=' . $this->listdir . '&subdir=' . $this->subdir); ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
+			<iframe src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=list&tmpl=component&listdir=' . $this->listdir . '&subdir=' . $this->subdir); ?>" name="imgManager" id="imgManager" width="98%" height="180"
+				data-dir="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&task=list&tmpl=component'); ?>"></iframe>
 		</div>
 	</fieldset>
 

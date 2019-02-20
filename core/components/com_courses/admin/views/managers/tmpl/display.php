@@ -32,6 +32,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+$this->js('managers.js');
+
 $roles = $this->course->offering(0)->roles(array('alias' => '!student'));
 $offerings = $this->course->offerings();
 ?>
@@ -137,7 +139,7 @@ $offerings = $this->course->offerings();
 						<a href="mailto:<?php echo $this->escape($u->get('email')); ?>"><?php echo $this->escape($u->get('email')); ?></a>
 					</td>
 					<td>
-						<select name="entries[<?php echo $i; ?>][role_id]" onchange="update();">
+						<select name="entries[<?php echo $i; ?>][role_id]" class="entry-role">
 						<?php foreach ($roles as $role) { ?>
 							<option value="<?php echo $role->id; ?>"<?php if ($manager->get('role_id') == $role->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
 						<?php } ?>
@@ -168,16 +170,5 @@ $offerings = $this->course->offerings();
 		</table>
 
 		<?php echo Html::input('token'); ?>
-
-		<script type="text/javascript">
-			function update()
-			{
-				var task = document.getElementById('task');
-				task.value = 'update';
-
-				var form = document.getElementById('adminForm');
-				form.submit();
-			}
-		</script>
 	</form>
 </div>

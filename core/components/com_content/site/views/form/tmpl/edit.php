@@ -38,6 +38,8 @@ Html::behavior('calendar');
 Html::behavior('formvalidation');
 Html::asset('script', 'system/core.js', false, true);
 
+$this->js();
+
 // Create shortcut to parameters.
 $params = $this->params;
 //$images = json_decode($this->item->images);
@@ -70,23 +72,23 @@ endif;
 
 <section class="main section">
 	<div class="edit item-page<?php echo $this->pageclass_sfx; ?>">
-		<form action="<?php echo Route::url('index.php?option=com_content&a_id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="hubForm" class="full form-validate">
+		<form action="<?php echo Route::url('index.php?option=com_content&a_id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="hubForm" class="full form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 			<fieldset>
 				<legend><?php echo Lang::txt('JEDITOR'); ?></legend>
 
-				<div class="formelm input-wrap">
+				<div class="form-group input-wrap">
 					<?php echo $this->form->getLabel('title'); ?>
 					<?php echo $this->form->getInput('title'); ?>
 				</div>
 
 				<?php if (is_null($this->item->id)): ?>
-					<div class="formelm input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('alias'); ?>
 						<?php echo $this->form->getInput('alias'); ?>
 					</div>
 				<?php endif; ?>
 
-				<div class="formelm input-wrap">
+				<div class="form-group input-wrap">
 					<?php echo $this->form->getInput('articletext'); ?>
 				</div>
 			</fieldset>
@@ -95,61 +97,61 @@ endif;
 				<fieldset>
 					<legend><?php echo Lang::txt('COM_CONTENT_IMAGES_AND_URLS'); ?></legend>
 
-					<div class="formelm input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('image_intro', 'images'); ?>
 						<?php echo $this->form->getInput('image_intro', 'images'); ?>
 					</div>
-					<div class="formelm input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('image_intro_alt', 'images'); ?>
 						<?php echo $this->form->getInput('image_intro_alt', 'images'); ?>
 					</div>
-					<div class="formelm input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('image_intro_caption', 'images'); ?>
 						<?php echo $this->form->getInput('image_intro_caption', 'images'); ?>
 					</div>
-					<div class="formelm input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('float_intro', 'images'); ?>
 						<?php echo $this->form->getInput('float_intro', 'images'); ?>
 					</div>
-					<div class="formelm input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('image_fulltext', 'images'); ?>
 						<?php echo $this->form->getInput('image_fulltext', 'images'); ?>
 					</div>
-					<div class="formelm input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('image_fulltext_alt', 'images'); ?>
 						<?php echo $this->form->getInput('image_fulltext_alt', 'images'); ?>
 					</div>
-					<div class="formelm input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('image_fulltext_caption', 'images'); ?>
 						<?php echo $this->form->getInput('image_fulltext_caption', 'images'); ?>
 					</div>
-					<div class="formelm input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('float_fulltext', 'images'); ?>
 						<?php echo $this->form->getInput('float_fulltext', 'images'); ?>
 					</div>
-					<div class="formelm input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('urla', 'urls'); ?>
 						<?php echo $this->form->getInput('urla', 'urls'); ?>
 					</div>
-					<div class="formelm input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('urlatext', 'urls'); ?>
 						<?php echo $this->form->getInput('urlatext', 'urls'); ?>
 					</div>
 					<?php echo $this->form->getInput('targeta', 'urls'); ?>
-					<div class="formelm input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('urlb', 'urls'); ?>
 						<?php echo $this->form->getInput('urlb', 'urls'); ?>
 					</div>
-					<div class="formelm input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('urlbtext', 'urls'); ?>
 						<?php echo $this->form->getInput('urlbtext', 'urls'); ?>
 					</div>
 					<?php echo $this->form->getInput('targetb', 'urls'); ?>
-					<div class="formelm input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('urlc', 'urls'); ?>
 						<?php echo $this->form->getInput('urlc', 'urls'); ?>
 					</div>
-					<div class="formelm input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('urlctext', 'urls'); ?>
 						<?php echo $this->form->getInput('urlctext', 'urls'); ?>
 					</div>
@@ -160,37 +162,37 @@ endif;
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_CONTENT_PUBLISHING'); ?></legend>
 
-				<div class="formelm input-wrap">
+				<div class="form-group input-wrap">
 					<?php echo $this->form->getLabel('catid'); ?>
 					<span class="category">
 						<?php echo $this->form->getInput('catid'); ?>
 					</span>
 				</div>
-				<div class="formelm input-wrap">
+				<div class="form-group input-wrap">
 					<?php echo $this->form->getLabel('created_by_alias'); ?>
 					<?php echo $this->form->getInput('created_by_alias'); ?>
 				</div>
 
 				<?php if ($this->item->params->get('access-change')): ?>
-					<div class="formelm input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('state'); ?>
 						<?php echo $this->form->getInput('state'); ?>
 					</div>
 
-					<div class="formelm input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('featured'); ?>
 						<?php echo $this->form->getInput('featured'); ?>
 					</div>
 
 					<div class="grid">
 						<div class="col span6">
-							<div class="formelm input-wrap">
+							<div class="form-group input-wrap">
 								<?php echo $this->form->getLabel('publish_up'); ?>
 								<?php echo $this->form->getInput('publish_up'); ?>
 							</div>
 						</div>
 						<div class="col span6 omega">
-							<div class="formelm input-wrap">
+							<div class="form-group input-wrap">
 								<?php echo $this->form->getLabel('publish_down'); ?>
 								<?php echo $this->form->getInput('publish_down'); ?>
 							</div>
@@ -198,7 +200,7 @@ endif;
 					</div>
 				<?php endif; ?>
 
-				<div class="formelm input-wrap">
+				<div class="form-group input-wrap">
 					<?php echo $this->form->getLabel('access'); ?>
 					<?php echo $this->form->getInput('access'); ?>
 				</div>
@@ -213,7 +215,7 @@ endif;
 			<fieldset>
 				<legend><?php echo Lang::txt('JFIELD_LANGUAGE_LABEL'); ?></legend>
 
-				<div class="formelm-area input-wrap">
+				<div class="form-group input-wrap">
 					<?php echo $this->form->getLabel('language'); ?>
 					<?php echo $this->form->getInput('language'); ?>
 				</div>
@@ -222,11 +224,11 @@ endif;
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_CONTENT_METADATA'); ?></legend>
 
-				<div class="formelm-area input-wrap">
+				<div class="form-group input-wrap">
 					<?php echo $this->form->getLabel('metadesc'); ?>
 					<?php echo $this->form->getInput('metadesc'); ?>
 				</div>
-				<div class="formelm-area input-wrap">
+				<div class="form-group input-wrap">
 					<?php echo $this->form->getLabel('metakey'); ?>
 					<?php echo $this->form->getInput('metakey'); ?>
 				</div>
@@ -241,10 +243,8 @@ endif;
 			</fieldset>
 
 			<div class="formelm-buttons submit">
-				<button type="button" class="btn btn-success" onclick="Joomla.submitbutton('article.save')">
-					<?php echo Lang::txt('JSAVE') ?>
-				</button>
-				<button type="button" class="btn btn-secondary" onclick="Joomla.submitbutton('article.cancel')">
+				<input type="submit" class="btn btn-success" id="btn-save" value="<?php echo Lang::txt('JSAVE') ?>" />
+				<button type="button" class="btn btn-secondary" id="btn-cancel">
 					<?php echo Lang::txt('JCANCEL') ?>
 				</button>
 			</div>

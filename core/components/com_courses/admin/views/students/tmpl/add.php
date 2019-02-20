@@ -44,9 +44,12 @@ if ($canDo->get('core.edit'))
 }
 Toolbar::cancel();
 
-$base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
 
-$js = '';
+$this->js();
+
+$base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 
 $role_id = 0;
 $roles = $this->offering->roles();
@@ -59,32 +62,11 @@ foreach ($roles as $role)
 	}
 }
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// form field validation
-	if (document.getElementById('acmembers').value == '') {
-		alert('<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_USER_INFO'); ?>');
-		return false;
-	} else if (document.getElementById('offering_id').value == '-1') {
-		alert('<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_OFFERING'); ?>');
-		return false;
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -100,19 +82,32 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="acmembers"><?php echo Lang::txt('COM_COURSES_FIELD_USER'); ?></label><br />
-					<input type="text" name="fields[user_id]" data-options="members,multi," id="acmembers" class="autocomplete" value="" autocomplete="off" data-css="" data-script="<?php echo $base; ?>/administrator/index.php" />
+					<?php
+					$mc = Event::trigger('hubzero.onGetMultiEntry', array(
+						array(
+							'members',   // The component to call
+							'fields[user_id]',        // Name of the input field
+							'acmembers', // ID of the input field
+							'',          // CSS class(es) for the input field
+							'' // The value of the input field
+						)
+					));
+					if (count($mc) > 0) {
+						echo $mc[0];
+					} else { ?>
+						<input type="text" name="fields[user_id]" id="acmembers" value="" />
+					<?php } ?>
 					<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_USER_HINT'); ?></span>
-
-					<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/assets/js/autocompleter.js"></script>
-					<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/assets/css/autocompleter.css";</script>
 				</div>
 				<div class="input-wrap">
 					<label for="offering_id"><?php echo Lang::txt('COM_COURSES_OFFERING'); ?>:</label><br />
-					<select name="fields[offering_id]" id="offering_id" onchange="changeDynaList('section_id', offeringsections, document.getElementById('offering_id').options[document.getElementById('offering_id').selectedIndex].value, 0, 0);">
+					<select name="fields[offering_id]" id="offering_id">
 						<option value="-1"><?php echo Lang::txt('COM_COURSES_NONE'); ?></option>
 						<?php
-						require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+						require_once Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
 						$model = \Components\Courses\Models\Courses::getInstance();
+
+						$data = array();
 						if ($model->courses()->total() > 0)
 						{
 							$j = 0;
@@ -125,7 +120,7 @@ function submitbutton(pressbutton)
 								{
 									foreach ($offering->sections() as $section)
 									{
-										$js .= 'offeringsections[' . $j++ . "] = new Array( '" . $offering->get('id') . "','" . addslashes($section->get('id')) . "','" . addslashes($section->get('title')) . "' );\n\t\t";
+										$data[$j++] = array($offering->get('id'), $section->get('id'), $section->get('title'));
 									}
 									?>
 									<option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->row->get('offering_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
@@ -165,17 +160,10 @@ function submitbutton(pressbutton)
 			</table>
 		</div>
 	</div>
-	<script type="text/javascript">
-	var offeringsections = new Array;
-	<?php echo $js; ?>
-
-	jQuery(document).ready(function($){
-		if (jQuery.uniform) {
-			$('#offering_id').on('change', function(e){
-				$.uniform.update();
-			});
+	<script type="application/json" id="offering-data">
+		{
+			"data": <?php echo json_encode($data); ?>
 		}
-	});
 	</script>
 
 	<?php echo Html::input('token'); ?>
