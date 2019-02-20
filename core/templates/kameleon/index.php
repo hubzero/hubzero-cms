@@ -66,7 +66,6 @@ $browser = new \Hubzero\Browser\Detector();
 
 		<jdoc:include type="head" />
 
-		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/placeholder.js?v=<?php echo filemtime(__DIR__ . '/js/placeholder.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/index.js?v=<?php echo filemtime(__DIR__ . '/js/index.js'); ?>"></script>
 
 		<!--[if lt IE 9]>
@@ -103,7 +102,7 @@ $browser = new \Hubzero\Browser\Detector();
 								: '<li data-title="' . Lang::txt('TPL_KAMELEON_LOG_OUT') . '"><a class="logout" href="' . $logoutLink . '">') . Lang::txt('TPL_KAMELEON_LOG_OUT') . ($hideLinks ? '</span></li>' : '</a></li>');
 
 				// Reverse rendering order for rtl display.
-				if ($this->direction == "rtl") :
+				if ($this->direction == 'rtl') :
 					$output = array_reverse($output);
 				endif;
 
