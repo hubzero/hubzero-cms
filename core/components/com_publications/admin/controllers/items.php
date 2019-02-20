@@ -765,8 +765,8 @@ class Items extends AdminController
 					{
 						if ($f[0] == $tagname && end($f) == 1)
 						{
-							echo Helpers\Html::alert(Lang::txt('COM_PUBLICATIONS_REQUIRED_FIELD_CHECK', $f[1]));
-							exit();
+							Notify::error(Lang::txt('COM_PUBLICATIONS_REQUIRED_FIELD_CHECK', $f[1]));
+							return $this->cancelTask();
 						}
 					}
 				}

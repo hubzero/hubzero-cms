@@ -32,42 +32,9 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+$this->js('media.js');
 ?>
-	<script type="text/javascript">
-		function updateDir()
-		{
-			var allPaths = window.top.document.forms[0].dirPath.options;
-			for (i=0; i<allPaths.length; i++)
-			{
-				allPaths.item(i).selected = false;
-				if ((allPaths.item(i).value)== '<?php if (strlen($this->listdir)>0) { echo $this->listdir;
-} else { echo '/';}  ?>') {
-					allPaths.item(i).selected = true;
-				}
-			}
-		}
-		function deleteFile(file)
-		{
-			if (confirm("Delete file \""+file+"\"?")) {
-				return true;
-			}
-
-			return false;
-		}
-		function deleteFolder(folder, numFiles)
-		{
-			if (numFiles > 0) {
-				alert('<?php echo Lang::txt('COM_COURSES_CLEAR_FOLDER'); ?> <?php echo Lang::txt('COM_COURSES_FILES'); ?>: "' + numFiles + '"');
-				return false;
-			}
-
-			if (confirm('<?php echo Lang::txt('COM_COURSES_DELETE_FOLDER'); ?> "'+folder+'"')) {
-				return true;
-			}
-
-			return false;
-		}
-	</script>
 	<div id="attachments">
 		<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" id="filelist" name="filelist">
 			<table>
@@ -114,7 +81,7 @@ defined('_HZEXEC_') or die();
 							<?php echo $folderName; ?>
 						</td>
 						<td>
-							<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=deletefolder&delFolder=' . DS . $folders[$folderName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course=' . $this->course_id . '&' . Session::getFormToken() . '=1'); ?>" target="filelist" onclick="return deleteFolder('<?php echo $folderName; ?>', '<?php echo $numFiles; ?>');" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">
+							<a class="delete-folder" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=deletefolder&delFolder=' . DS . $folders[$folderName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course=' . $this->course_id . '&' . Session::getFormToken() . '=1'); ?>" target="filelist" data-files="<?php echo $numFiles; ?>" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the folder "%s"?', $folderName); ?>" data-notempty="<?php echo Lang::txt('COM_COURSES_CLEAR_FOLDER'); ?> <?php echo Lang::txt('COM_COURSES_FILES'); ?>" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">
 								<img src="<?php echo Request::base(true); ?>/core/components/<?php echo $this->option; ?>/admin/assets/img/trash.png" width="15" height="15" alt="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>" />
 							</a>
 						</td>
@@ -137,7 +104,7 @@ defined('_HZEXEC_') or die();
 							<?php echo $docs[$docName]; ?>
 						</td>
 						<td>
-							<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=deletefile&delFile=' . $docs[$docName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course=' . $this->course_id . '&' . Session::getFormToken() . '=1'); ?>" target="filelist" onclick="return deleteFile('<?php echo $docs[$docName]; ?>');" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">
+							<a class="delete-file" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=deletefile&delFile=' . $docs[$docName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course=' . $this->course_id . '&' . Session::getFormToken() . '=1'); ?>" target="filelist" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the file "%s"?', $docs[$docName]); ?>" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">
 								<img src="<?php echo Request::base(true); ?>/core/components/<?php echo $this->option; ?>/admin/assets/img/trash.png" width="15" height="15" alt="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>" />
 							</a>
 						</td>

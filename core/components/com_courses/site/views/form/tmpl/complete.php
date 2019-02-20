@@ -66,9 +66,7 @@ if ($this->resp->getStartTime())
 	else:
 		if ($this->dep->getTimeLimit()):
 	?>
-	<script type="text/javascript">
-		window.timeLeft = <?php echo $timeLeft; ?>;
-	</script>
+	<span id="time-left" data-time="<?php echo $timeLeft; ?>"></span>
 	<?php
 		endif;
 		$layout = $pdf->getPageLayout();

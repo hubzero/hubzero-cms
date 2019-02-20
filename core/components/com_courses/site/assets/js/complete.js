@@ -1,4 +1,7 @@
 jQuery(function($) {
+	if ($('#time-left').length) {
+		window.timeLeft = $('#time-left').attr('data-time')
+	}
 	var timeDiff = function(secs) {
 		var seconds = [1,               'second'];
 		var minutes = [60 * seconds[0], 'minute'];
