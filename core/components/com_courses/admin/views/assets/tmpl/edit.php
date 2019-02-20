@@ -46,6 +46,10 @@ if (!$this->tmpl)
 }
 
 Html::behavior('framework', true);
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 
 if ($this->row->get('id'))
 {
@@ -56,44 +60,16 @@ else
 	$id = 'tmp' . time() . rand(0, 10000);
 }
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// form field validation
-	if ($('#field-title').val() == '') {
-		alert('<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_TITLE'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-function saveAndUpdate()
-{
-	submitbutton('save');
-	window.top.setTimeout(function(){
-		var src = window.parent.document.getElementById('assets').src;
-		window.parent.document.getElementById('assets').src = src;
-
-		window.parent.document.assetform.close();
-	}, 700);
-}
-</script>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="<?php echo ($this->tmpl == 'component') ? 'component-form' : 'item-form'; ?>" enctype="multipart/form-data">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="<?php echo ($this->tmpl == 'component') ? 'component-form' : 'item-form'; ?>" enctype="multipart/form-data" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 <?php if ($this->tmpl == 'component') { ?>
 	<fieldset>
 		<div class="configuration">
 			<div class="configuration-options">
-				<button type="button" onclick="saveAndUpdate();"><?php echo Lang::txt('COM_COURSES_SAVE'); ?></button>
-				<button type="button" onclick="window.parent.document.assetform.close();"><?php echo Lang::txt('COM_COURSES_CANCEL'); ?></button>
+				<button type="button" id="btn-save"><?php echo Lang::txt('COM_COURSES_SAVE'); ?></button>
+				<button type="button" id="btn-cancel"><?php echo Lang::txt('COM_COURSES_CANCEL'); ?></button>
 			</div>
 			<?php echo $text; ?>
 		</div>
@@ -154,8 +130,8 @@ function saveAndUpdate()
 				</select>
 			</div>
 			<div class="input-wrap">
-				<label for="field-title"><?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>:</label>
-				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" />
+				<label for="field-title"><?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>:  <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+				<input type="text" name="fields[title]" id="field-title" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" />
 			</div>
 			<div class="input-wrap">
 				<label for="field-url"><?php echo Lang::txt('COM_COURSES_FIELD_URL'); ?>:</label>

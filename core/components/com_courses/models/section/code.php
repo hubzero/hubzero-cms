@@ -34,11 +34,10 @@ namespace Components\Courses\Models\Section;
 
 use Components\Courses\Models\Base;
 use Components\Courses\Tables;
-use Hubzero\Utility\Date;
 use User;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'section.code.php');
-require_once(dirname(__DIR__) . DS . 'base.php');
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'section.code.php';
+require_once dirname(__DIR__) . DS . 'base.php';
 
 /**
  * Courses model class for a course
@@ -140,7 +139,8 @@ class Code extends Base
 	 * it will return that property value. Otherwise,
 	 * it returns the entire User object
 	 *
-	 * @return     mixed
+	 * @param   string  $property
+	 * @return  mixed
 	 */
 	public function redeemer($property=null)
 	{
@@ -158,7 +158,7 @@ class Code extends Base
 	/**
 	 * Check if a code has expired
 	 *
-	 * @return    string
+	 * @return  bool
 	 */
 	public function isExpired()
 	{
@@ -172,7 +172,7 @@ class Code extends Base
 			return true;
 		}
 
-		$now = (new Date('now'))->toSql();
+		$now = \Date::of('now')->toSql();
 
 		if ($this->get('expires')
 		 && $this->get('expires') != $this->_db->getNullDate()
@@ -187,7 +187,7 @@ class Code extends Base
 	/**
 	 * Check if a code has been redeemed
 	 *
-	 * @return    string
+	 * @return  bool
 	 */
 	public function isRedeemed()
 	{
@@ -205,7 +205,9 @@ class Code extends Base
 	/**
 	 * Generate a coupon code
 	 *
-	 * @return    string
+	 * @param   integer  $redeemed_by
+	 * @param   string   $code
+	 * @return  bool
 	 */
 	public function redeem($redeemed_by=0, $code=null)
 	{
@@ -218,7 +220,7 @@ class Code extends Base
 			$redeemed_by = User::get('id');
 		}
 		$this->set('redeemed_by', $redeemed_by);
-		$this->set('redeemed', (new Date('now'))->toSql());
+		$this->set('redeemed', \Date::of('now')->toSql());
 		return $this->store();
 	}
 }

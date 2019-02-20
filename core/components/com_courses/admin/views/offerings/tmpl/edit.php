@@ -52,7 +52,8 @@ $base = str_replace('/administrator', '', Request::base(true));
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
-$this->js();
+$this->js('jquery.fileuploader.js', 'system')
+	->js();
 $this->css();
 ?>
 <?php if ($this->getError()) { ?>
@@ -151,7 +152,7 @@ $this->css();
 					$logo = $this->row->params('logo');
 					?>
 					<div class="uploader-wrap">
-						<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&task=upload&type=offering&id=' . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1'); ?>">
+						<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&task=upload&type=offering&id=' . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1'); ?>" data-instructions="<?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?>">
 							<noscript>
 								<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&file=' . $logo . '&type=offering&id=' . $this->row->get('id')); ?>"></iframe>
 							</noscript>
@@ -194,7 +195,7 @@ $this->css();
 										<span id="img-name"><?php echo $pic && $pic != 'blank.png' ? $pic : Lang::txt('COM_COURSES_NONE'); ?></span>
 									</td>
 									<td>
-										<a id="img-delete" <?php echo $logo ? '' : 'class="hide"'; ?> href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo . '&type=offering&id=' . $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">[ x ]</a>
+										<a id="img-delete" <?php echo $logo ? '' : 'class="hide"'; ?> href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo . '&type=offering&id=' . $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>" data-defaultimg="'../core/components/com_courses/admin/assets/img/blank.png'">[ x ]</a>
 									</td>
 								</tr>
 								<tr>
@@ -214,57 +215,6 @@ $this->css();
 								</tr>
 							</tbody>
 						</table>
-
-						<script type="text/javascript" src="<?php echo $base; ?>/core/assets/js/jquery.fileuploader.js"></script>
-						<script type="text/javascript">
-						String.prototype.nohtml = function () {
-							if (this.indexOf('?') == -1) {
-								return this + '?no_html=1';
-							} else {
-								return this + '&no_html=1';
-							}
-						};
-						jQuery(document).ready(function($){
-							if ($("#ajax-uploader").length) {
-								var uploader = new qq.FileUploader({
-									element: $("#ajax-uploader")[0],
-									action: $("#ajax-uploader").attr("data-action"),
-									multiple: true,
-									debug: true,
-									template: '<div class="qq-uploader">' +
-												'<div class="qq-upload-button"><span><?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
-												'<div class="qq-upload-drop-area"><span><?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
-												'<ul class="qq-upload-list"></ul>' +
-											   '</div>',
-									onComplete: function(id, file, response) {
-										if (response.success) {
-											$('#img-display').attr('src', '..' + response.directory + '/' + response.file);
-											$('#img-name').text(response.file);
-											$('#img-size').text(response.size);
-											$('#img-width').text(response.width);
-											$('#img-height').text(response.height);
-
-											$('#img-delete').show();
-										}
-									}
-								});
-							}
-							$('#img-delete').on('click', function (e) {
-								e.preventDefault();
-								var el = $(this);
-								$.getJSON(el.attr('href').nohtml(), {}, function(response) {
-									if (response.success) {
-										$('#img-display').attr('src', '../core/components/com_courses/admin/assets/img/blank.png');
-										$('#img-name').text('[ none ]');
-										$('#img-size').text('0');
-										$('#img-width').text('0');
-										$('#img-height').text('0');
-									}
-									el.hide();
-								});
-							});
-						});
-						</script>
 				<?php
 				} else {
 					echo '<p class="warning">'.Lang::txt('COM_COURSES_PICTURE_ADDED_LATER').'</p>';

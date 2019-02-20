@@ -90,6 +90,7 @@ foreach ($roles as $role)
 						<?php
 						require_once Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
 						$model = \Components\Courses\Models\Courses::getInstance();
+						$data = array();
 						if ($model->courses()->total() > 0)
 						{
 							foreach ($model->courses() as $course)
@@ -102,7 +103,7 @@ foreach ($roles as $role)
 								{
 									foreach ($offering->sections() as $section)
 									{
-										$js .= 'offeringsections[' . $j++ . "] = new Array( '" . $offering->get('id') . "','" . addslashes($section->get('id')) . "','" . addslashes($section->get('title')) . "' );\n\t\t";
+										$data[$j++] = array($offering->get('id'), $section->get('id'), $section->get('title'));
 									}
 									?>
 								<option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->row->get('offering_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
@@ -165,9 +166,10 @@ foreach ($roles as $role)
 		</div>
 	</div>
 
-	<script type="text/javascript">
-		var offeringsections = new Array;
-		<?php echo $js; ?>
+	<script type="application/json" id="offering-data">
+		{
+			"data": <?php echo json_encode($data); ?>
+		}
 	</script>
 
 	<?php echo Html::input('token'); ?>
