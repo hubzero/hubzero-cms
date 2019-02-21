@@ -148,7 +148,7 @@ Toolbar::help('tagged');
 					<?php } ?>
 				</td>
 				<td class="priority-3">
-					<time datetime="<?php echo $row->get('taggedon'); ?>"><?php echo ($row->get('taggedon') != '0000-00-00 00:00:00') ? $row->get('taggedon') : Lang::txt('COM_TAGS_UNKNOWN'); ?></time>
+					<time datetime="<?php echo $row->get('taggedon'); ?>"><?php echo ($row->get('taggedon') && $row->get('taggedon') != '0000-00-00 00:00:00') ? $row->get('taggedon') : Lang::txt('COM_TAGS_UNKNOWN'); ?></time>
 				</td>
 				<td class="priority-4">
 					<?php if ($row->get('taggerid')) { ?>

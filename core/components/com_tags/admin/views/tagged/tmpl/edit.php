@@ -118,7 +118,7 @@ if ($this->getError())
 					<tr>
 						<th scope="row"><?php echo Lang::txt('COM_TAGS_FIELD_CREATED'); ?>:</th>
 						<td>
-							<?php echo ($this->row->created() != '0000-00-00 00:00:00') ? $this->row->created() : Lang::txt('COM_TAGS_UNKNOWN'); ?>
+							<?php echo ($this->row->created() && $this->row->created() != '0000-00-00 00:00:00') ? $this->row->created() : Lang::txt('COM_TAGS_UNKNOWN'); ?>
 							<input type="hidden" name="fields[taggedon]" id="field-taggedon" value="<?php echo $this->escape($this->row->get('taggedon')); ?>" />
 						</td>
 					</tr>

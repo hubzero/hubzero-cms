@@ -178,14 +178,14 @@ class Archive extends Obj
 		}
 		else
 		{
-			$results->whereEquals('publish_up', '0000-00-00 00:00:00', 1)
+			$results->where('publish_up', 'IS', null, 'and', 1)
 						->orWhere('publish_up', '<=', Date::toSql(), 1)
 						->resetDepth();
 		}
 
 		if (!isset($filters['authorized']) || !$filters['authorized'])
 		{
-			$results->whereEquals('publish_down', '0000-00-00 00:00:00', 1)
+			$results->where('publish_down', 'IS', null, 'and', 1)
 						->orWhere('publish_down', '>=', Date::toSql(), 1)
 						->resetDepth();
 		}

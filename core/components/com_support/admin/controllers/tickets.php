@@ -399,10 +399,6 @@ class Tickets extends AdminController
 		{
 			$ticket->set('target_date', Date::of($ticket->get('target_date'), Config::get('offset'))->toSql());
 		}
-		else
-		{
-			$ticket->set('target_date', '0000-00-00 00:00:00');
-		}
 
 		$text = Request::getString('comment', '', 'post');
 		$comment = Comment::blank();

@@ -23,7 +23,7 @@ class Migration20170901000000ComCollections extends Base
 			  `alias` varchar(255) NOT NULL,
 			  `object_id` int(11) NOT NULL DEFAULT '0',
 			  `object_type` varchar(150) NOT NULL DEFAULT '',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  `state` tinyint(3) NOT NULL DEFAULT '1',
 			  `access` tinyint(3) NOT NULL DEFAULT '0',
@@ -51,9 +51,9 @@ class Migration20170901000000ComCollections extends Base
 			  `title` varchar(255) NOT NULL DEFAULT '',
 			  `description` mediumtext NOT NULL,
 			  `url` varchar(255) NOT NULL,
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
-			  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `modified` datetime DEFAULT NULL,
 			  `modified_by` int(11) NOT NULL DEFAULT '0',
 			  `state` tinyint(3) NOT NULL DEFAULT '1',
 			  `access` tinyint(2) NOT NULL DEFAULT '0',
@@ -76,7 +76,7 @@ class Migration20170901000000ComCollections extends Base
 		{
 			$query = "CREATE TABLE `#__collections_posts` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  `collection_id` int(11) NOT NULL DEFAULT '0',
 			  `item_id` int(11) NOT NULL DEFAULT '0',
@@ -99,7 +99,7 @@ class Migration20170901000000ComCollections extends Base
 			$query = "CREATE TABLE `#__collections_assets` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `item_id` int(11) NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  `filename` varchar(255) NOT NULL DEFAULT '',
 			  `description` mediumtext NOT NULL,
@@ -122,7 +122,7 @@ class Migration20170901000000ComCollections extends Base
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `user_id` int(11) NOT NULL DEFAULT '0',
 			  `item_id` int(11) NOT NULL DEFAULT '0',
-			  `voted` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `voted` datetime DEFAULT NULL,
 			  PRIMARY KEY (`id`),
 			  KEY `idx_item_id_user_id` (`item_id`,`user_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
@@ -137,7 +137,7 @@ class Migration20170901000000ComCollections extends Base
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `follower_type` varchar(150) NOT NULL,
 			  `follower_id` int(11) NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `following_type` varchar(150) NOT NULL DEFAULT '',
 			  `following_id` int(11) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`id`),
