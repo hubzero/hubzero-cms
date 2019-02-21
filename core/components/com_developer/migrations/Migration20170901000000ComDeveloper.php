@@ -22,7 +22,7 @@ class Migration20170901000000ComDeveloper extends Base
 			  `application_id` int(11) NOT NULL,
 			  `access_token` varchar(40) NOT NULL,
 			  `uidNumber` int(11) DEFAULT NULL,
-			  `expires` datetime NOT NULL,
+			  `expires` datetime DEFAULT NULL,
 			  `created` datetime DEFAULT NULL,
 			  `scope` varchar(2000) DEFAULT NULL,
 			  `state` int(11) DEFAULT '1',

@@ -24,7 +24,7 @@ class Migration20170901000000ComFeedback extends Base
 			  `org` varchar(100) DEFAULT '',
 			  `quote` text,
 			  `picture` varchar(250) DEFAULT '',
-			  `date` datetime DEFAULT '0000-00-00 00:00:00',
+			  `date` datetime DEFAULT NULL,
 			  `publish_ok` tinyint(1) DEFAULT '0',
 			  `contact_ok` tinyint(1) DEFAULT '0',
 			  `notes` text,

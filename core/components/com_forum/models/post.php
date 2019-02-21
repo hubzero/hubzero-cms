@@ -240,7 +240,7 @@ class Post extends Relational
 	 */
 	public function automaticModified($data)
 	{
-		return (isset($data['id']) && $data['id'] ? Date::of('now')->toSql() : '0000-00-00 00:00:00');
+		return (isset($data['id']) && $data['id'] ? Date::of('now')->toSql() : null);
 	}
 
 	/**

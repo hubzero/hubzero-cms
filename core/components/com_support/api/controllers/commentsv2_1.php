@@ -440,7 +440,7 @@ class Commentsv2_1 extends ApiController
 
 						if ($status_model->get('get') == 'open' && $ticket->get('status', null) == 'closed')
 						{
-							$tiket->set('closed', '0000-00-00 00:00:00');
+							$tiket->set('closed', null);
 						}
 
 						if ($status_model->get('get') == 'closed' && $ticket->get('status', null) == 'open')

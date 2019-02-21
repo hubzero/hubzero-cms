@@ -209,7 +209,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	{
 		if (!isset($data['publish_down']) || !$data['publish_down'])
 		{
-			$data['publish_down'] = '0000-00-00 00:00:00';
+			$data['publish_down'] = null; //'0000-00-00 00:00:00';
 		}
 		return $data['publish_down'];
 	}

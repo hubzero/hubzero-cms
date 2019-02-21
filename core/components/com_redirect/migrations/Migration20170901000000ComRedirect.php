@@ -25,8 +25,8 @@ class Migration20170901000000ComRedirect extends Base
 			  `comment` varchar(255) NOT NULL,
 			  `hits` int(10) unsigned NOT NULL DEFAULT '0',
 			  `published` tinyint(4) NOT NULL,
-			  `created_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `modified_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created_date` datetime DEFAULT NULL,
+			  `modified_date` datetime DEFAULT NULL,
 			  PRIMARY KEY (`id`),
 			  UNIQUE KEY `idx_link_old` (`old_url`),
 			  KEY `idx_link_modifed` (`modified_date`)

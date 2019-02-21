@@ -626,7 +626,7 @@ class Wishlists extends SiteController
 
 		// Do we have a due date?
 		$wish->set('urgent', 0);
-		if ($wish->get('due') != '0000-00-00 00:00:00')
+		if ($wish->get('due') && $wish->get('due') != '0000-00-00 00:00:00')
 		{
 			$delivery = $this->convertTime($wish->get('average_effort'));
 			if ($wish->get('due') < $delivery['warning'])
@@ -904,7 +904,7 @@ class Wishlists extends SiteController
 
 		$new_assignee = ($assignedto && $objWish->get('assigned') != $assignedto) ? 1 : 0;
 
-		$objWish->set('due', ($due ? $due : '0000-00-00 00:00:00'));
+		$objWish->set('due', ($due ? $due : null));
 		$objWish->set('assigned', ($assignedto ? $assignedto : 0));
 
 		// store our due date
@@ -1547,7 +1547,7 @@ class Wishlists extends SiteController
 				$wish->set('wishlist', $newlist->get('id'));
 				$wish->set('assigned', 0); // moved wish is not assigned to anyone yet
 				$wish->set('ranking', 0); // zero ranking
-				$wish->set('due', '0000-00-00 00:00:00');
+				$wish->set('due', null);
 
 				// renew state if option chosen
 				if (!$options['keepstatus'])
