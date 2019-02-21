@@ -56,6 +56,41 @@ class Migration20170901000000ComCategories extends Base
 
 			$this->db->setQuery($query);
 			$this->db->query();
+
+			$dt = new \Hubzero\Utility\Date();
+
+			$query = "INSERT INTO `#__categories`
+					VALUES (
+						1,
+						0,
+						0,
+						0,
+						1,
+						0,
+						'',
+						'system',
+						'ROOT',
+						'root',
+						'',
+						'',
+						1,
+						0,
+						null,
+						1,
+						'{}',
+						'',
+						'',
+						'',
+						0,
+						" . $this->db->quote($dt->toSql()) . ",
+						0,
+						null,
+						0,
+						'*'
+					)";
+
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 
