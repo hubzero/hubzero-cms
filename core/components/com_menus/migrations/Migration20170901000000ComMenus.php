@@ -55,6 +55,11 @@ class Migration20170901000000ComMenus extends Base
 
 			$this->db->setQuery($query);
 			$this->db->query();
+
+			$query = "INSERT INTO `#__menu` VALUES (1,'','Menu_Item_Root','root','','','','',1,0,0,0,0,0,'0000-00-00 00:00:00',0,0,'',0,'',0,1,0,'*',0);";
+
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
 		if (!$this->db->tableExists('#__menu_types'))

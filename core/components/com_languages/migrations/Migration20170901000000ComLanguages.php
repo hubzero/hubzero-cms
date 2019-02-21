@@ -41,6 +41,11 @@ class Migration20170901000000ComLanguages extends Base
 
 			$this->db->setQuery($query);
 			$this->db->query();
+
+			$query = "INSERT INTO `#__languages` VALUES (1,'en-GB','English (UK)','English (UK)','en','en','','','','',1,1,1)";
+
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 
 		if (!$this->db->tableExists('#__overrider'))
