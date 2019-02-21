@@ -111,7 +111,7 @@ $this->css();
 				?>
 				<tr>
 					<td>
-						<input type="checkbox" name="migration[]" id="cb<?php echo $i; ?>" value="<?php echo $this->escape($row['entry']); ?>" class="checkbox-toggle" />
+						<input type="checkbox" name="migration[]" id="cb<?php echo $i; ?>" value="<?php echo $this->escape($row['file']); ?>" class="checkbox-toggle" />
 					</td>
 					<td>
 						<?php echo $component; ?><br />
