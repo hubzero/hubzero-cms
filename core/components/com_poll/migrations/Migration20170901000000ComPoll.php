@@ -23,7 +23,7 @@ class Migration20170901000000ComPoll extends Base
 			  `alias` varchar(255) NOT NULL DEFAULT '',
 			  `voters` int(9) NOT NULL DEFAULT '0',
 			  `checked_out` int(11) NOT NULL DEFAULT '0',
-			  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `checked_out_time` datetime DEFAULT NULL,
 			  `state` tinyint(1) DEFAULT '0',
 			  `access` int(11) NOT NULL DEFAULT '0',
 			  `lag` int(11) NOT NULL DEFAULT '0',
@@ -68,7 +68,7 @@ class Migration20170901000000ComPoll extends Base
 		{
 			$query = "CREATE TABLE `#__poll_dates` (
 			  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-			  `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `date` datetime DEFAULT NULL,
 			  `vote_id` int(11) NOT NULL DEFAULT '0',
 			  `poll_id` int(11) NOT NULL DEFAULT '0',
 			  `voter_ip` varchar(50) DEFAULT NULL,

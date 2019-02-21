@@ -98,16 +98,16 @@ $this->js();
 					</tr>
 					<tr>
 						<th class="key"><?php echo Lang::txt('COM_KB_CREATED'); ?>:</th>
-						<td><?php echo $this->row->get('created'); ?></td>
+						<td><time datetime="<?php echo $this->row->get('created'); ?>"><?php echo Date::of($this->row->get('created'))->toSql(); ?></time></td>
 					</tr>
 					<tr>
 						<th class="key"><?php echo Lang::txt('COM_KB_CREATOR'); ?>:</th>
 						<td><?php echo $this->escape($this->row->creator->get('name', Lang::txt('COM_KB_UNKNOWN'))); ?></td>
 					</tr>
-					<?php if (!$this->row->isNew() && $this->row->get('modified') != '0000-00-00 00:00:00') { ?>
+					<?php if (!$this->row->isNew() && $this->row->get('modified') && $this->row->get('modified') != '0000-00-00 00:00:00') { ?>
 						<tr>
 							<th class="key"><?php echo Lang::txt('COM_KB_LAST_MODIFIED'); ?>:</th>
-							<td><?php echo $this->row->get('modified'); ?></td>
+							<td><time datetime="<?php echo $this->row->get('modified'); ?>"><?php echo Date::of($this->row->get('modified'))->toSql(); ?></time></td>
 						</tr>
 						<?php
 						$modifier = User::getInstance($this->row->get('modified_by'));

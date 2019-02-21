@@ -1067,7 +1067,7 @@ class Tickets extends SiteController
 		{
 			if (!$incoming['target_date'])
 			{
-				$row->set('target_date', '0000-00-00 00:00:00');
+				$row->set('target_date', null);
 			}
 			else
 			{
@@ -1715,7 +1715,7 @@ class Tickets extends SiteController
 		{
 			if (!$incoming['target_date'])
 			{
-				$incoming['target_date'] = '0000-00-00 00:00:00';
+				$incoming['target_date'] = null;
 			}
 			else
 			{

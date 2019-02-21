@@ -458,7 +458,7 @@ class Wish extends Relational
 						$state .= $this->plan()->get('id')
 								? '; ' . Lang::txt('COM_WISHLIST_WISH_PLAN_STARTED')
 								: '';
-						$state .= $this->due() != '0000-00-00 00:00:00'
+						$state .= $this->due() && $this->due() != '0000-00-00 00:00:00'
 								? '; ' . Lang::txt('COM_WISHLIST_WISH_DUE_SET') . ' ' . $this->due()
 								: '';
 						break;
@@ -473,7 +473,7 @@ class Wish extends Relational
 						break;
 					case static::WISH_STATE_GRANTED:
 						$user = User::getInstance($this->get('granted_by'));
-						$state = $this->granted() != '0000-00-00 00:00:00'
+						$state = $this->granted() && $this->granted() != '0000-00-00 00:00:00'
 								? Lang::txt('on %s by %s', $this->granted('date'), $user->get('name'))
 								: '';
 					break;

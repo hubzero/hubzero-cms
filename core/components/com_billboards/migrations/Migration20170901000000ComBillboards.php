@@ -34,7 +34,7 @@ class Migration20170901000000ComBillboards extends Base
 			  `published` tinyint(1) DEFAULT '0',
 			  `ordering` int(11) DEFAULT NULL,
 			  `checked_out` int(11) DEFAULT '0',
-			  `checked_out_time` datetime DEFAULT '0000-00-00 00:00:00',
+			  `checked_out_time` datetime DEFAULT NULL,
 			  PRIMARY KEY (`id`),
 			  KEY `idx_collection_id` (`collection_id`),
 			  KEY `idx_published` (`published`),

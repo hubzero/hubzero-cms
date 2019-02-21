@@ -120,12 +120,12 @@ if ($this->ownerassignees)
 					<legend><?php echo Lang::txt('COM_WISHLIST_DUE'); ?>:</legend>
 
 					<div class="input-wrap">
-						<input class="option" type="radio" name="fields[due]" id="field-due-never" value="0" <?php echo ($this->row->get('due') == '' || $this->row->get('due') == '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> />
+						<input class="option" type="radio" name="fields[due]" id="field-due-never" value="0" <?php echo (!$this->row->get('due') || $this->row->get('due') == '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> />
 						<label for="field-due-never"><?php echo Lang::txt('COM_WISHLIST_DUE_NEVER'); ?></label>
 						<br />
 						<strong><?php echo Lang::txt('COM_WISHLIST_OR'); ?></strong>
 						<br />
-						<input class="option" type="radio" name="fields[due]" id="field-due-on" value="0" <?php echo ($this->row->get('due') != '' && $this->row->get('due') != '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> />
+						<input class="option" type="radio" name="fields[due]" id="field-due-on" value="0" <?php echo ($this->row->get('due') && $this->row->get('due') != '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> />
 						<label for="field-due-on"><?php echo Lang::txt('COM_WISHLIST_DUE_ON'); ?></label>
 
 						<input class="option" type="text" name="fields[due]" id="field-due" size="10" maxlength="19" value="<?php echo $this->escape($this->row->get('due')); ?>" />

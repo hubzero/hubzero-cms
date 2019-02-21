@@ -323,14 +323,14 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	 * @param   array   $data  the data being saved
 	 * @return  string
 	 */
-	public function automaticPublishDown($data)
+	/*public function automaticPublishDown($data)
 	{
 		if (!isset($data['publish_down']) || !$data['publish_down'])
 		{
 			$data['publish_down'] = '0000-00-00 00:00:00';
 		}
 		return $data['publish_down'];
-	}
+	}*/
 
 	/**
 	 * Generates automatic modified field value
@@ -747,10 +747,10 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 			->select('a.created')
 			->select('a.created_by')
 			->select('a.created_by_alias')
-			->select('CASE WHEN a.modified = 0 THEN a.created ELSE a.modified END', 'modified')
+			->select('CASE WHEN a.modified IS NULL THEN a.created ELSE a.modified END', 'modified')
 			->select('a.modified_by')
 			->select('uam.name', 'modified_by_name')
-			->select('CASE WHEN a.publish_up = 0 THEN a.created ELSE a.publish_up END', 'publish_up')
+			->select('CASE WHEN a.publish_up IS NULL THEN a.created ELSE a.publish_up END', 'publish_up')
 			->select('a.publish_down')
 			->select('a.images')
 			->select('a.urls')
@@ -1079,16 +1079,16 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 		}
 
 		// Filter by start and end dates.
-		$nullDate = '0000-00-00 00:00:00';
+		$nullDate = null;
 		$nowDate = Date::of('now')->toSql();
 
 		if (!User::authorise('core.edit.state', 'com_content')
 		 && !User::authorise('core.edit', 'com_content'))
 		{
-			$query->whereEquals('a.publish_up', $nullDate, 1)
+			$query->where('a.publish_up', 'IS', $nullDate, 'and', 1)
 				->orWhere('a.publish_up', '<=', $nowDate, 1)
 				->resetDepth();
-			$query->whereEquals('a.publish_down', $nullDate, 1)
+			$query->where('a.publish_down', 'IS', $nullDate, 'and', 1)
 				->orWhere('a.publish_down', '>=', $nowDate, 1)
 				->resetDepth();
 		}
@@ -1210,13 +1210,13 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 			->select('a.title_alias')
 			->select('a.introtext')
 			->select('a.fulltext')
-			->select('CASE WHEN badcats.id is null THEN a.state ELSE 0 END', 'state')
+			->select('CASE WHEN badcats.id IS NULL THEN a.state ELSE 0 END', 'state')
 			->select('a.mask')
 			->select('a.catid')
 			->select('a.created')
 			->select('a.created_by')
 			->select('a.created_by_alias')
-			->select('CASE WHEN a.modified = 0 THEN a.created ELSE a.modified END', 'modified')
+			->select('CASE WHEN a.modified IS NULL THEN a.created ELSE a.modified END', 'modified')
 			->select('a.modified_by')
 			->select('a.checked_out')
 			->select('a.checked_out_time')
@@ -1275,13 +1275,13 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 		 && !User::authorise('core.edit', 'com_content'))
 		{
 			// Filter by start and end dates.
-			$nullDate = '0000-00-00 00:00:00';
+			$nullDate = null;
 			$nowDate = Date::of('now')->toSql();
 
-			$query->whereEquals('a.publish_up', $nullDate, 1)
+			$query->where('a.publish_up', 'IS', $nullDate, 'and', 1)
 				->orWhere('a.publish_up', '<=', $nowDate, 1)
 				->resetDepth();
-			$query->whereEquals('a.publish_down', $nullDate, 1)
+			$query->where('a.publish_down', 'IS', $nullDate, 'and', 1)
 				->orWhere('a.publish_down', '>=', $nowDate, 1)
 				->resetDepth();
 		}
