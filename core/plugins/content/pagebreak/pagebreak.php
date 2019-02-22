@@ -63,6 +63,10 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 		{
 			return true;
 		}
+		if (!property_exists($row, 'text'))
+		{
+			return true;
+		}
 
 		$style = $this->params->get('style', 'pages');
 
