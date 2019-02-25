@@ -120,11 +120,18 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 			$view->cluster_users   = $cluster['users'];
 			$view->cluster_schools = $cluster['schools'];
 
+			$access = array(0, 3);
+
+			if (!User::isGuest())
+			{
+				$access[] = 1;
+			}
+
 			$sql = 'SELECT DISTINCT r.id, r.type AS type_id, r.title, DATE_FORMAT(r.publish_up, "%d %b %Y") AS publish_up, rt.type
 					FROM `#__resources` AS r
 					LEFT JOIN `#__resource_types` AS rt ON r.TYPE=rt.id
 					LEFT JOIN `#__author_assoc` AS aa ON aa.subid=r.id AND aa.subtable="resources"
-					WHERE r.standalone=1 AND r.published=1 AND r.type=7 AND (aa.authorid="'.intval($member->get('id')).'") AND (r.access=0 OR r.access=3)
+					WHERE r.standalone=1 AND r.published=1 AND r.type=7 AND (aa.authorid="'.intval($member->get('id')).'") AND r.access IN (' . implode(',', $access) . ')
 					ORDER BY r.publish_up DESC';
 
 			$database->setQuery($sql);
@@ -136,7 +143,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 					FROM `#__resources` AS r
 					LEFT JOIN `#__resource_types` AS rt ON r.TYPE=rt.id
 					LEFT JOIN `#__author_assoc` AS aa ON aa.subid=r.id AND aa.subtable='resources'
-					WHERE r.standalone=1 AND r.published=1 AND r.type<>7 AND aa.authorid=" . $database->quote(intval($member->get('id'))) . " AND aa.role!='submitter' AND (r.access=0 OR r.access=3)
+					WHERE r.standalone=1 AND r.published=1 AND r.type<>7 AND aa.authorid=" . $database->quote(intval($member->get('id'))) . " AND aa.role!='submitter' AND r.access IN (" . implode(',', $access) . ")
 					ORDER BY r.publish_up DESC";
 
 			$database->setQuery($sql);
