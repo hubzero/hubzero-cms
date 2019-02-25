@@ -32,7 +32,9 @@
 namespace Components\Projects\Models\Orm;
 
 use Hubzero\Database\Relational;
+use Request;
 use Event;
+use Route;
 use User;
 use Lang;
 use stdClass;
