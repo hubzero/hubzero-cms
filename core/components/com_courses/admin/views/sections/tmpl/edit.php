@@ -732,7 +732,7 @@ $course_id = 0;
 									<?php
 										echo $this->editor('badge[criteria]', $this->escape(stripslashes($this->badge->get('criteria_text'))), 35, 5, 'badge-criteria');
 									?>
-									<a target="_blank" href="<?php echo Request::base(true); ?>/courses/badge/<?php echo $this->badge->get('id'); ?>/criteria"><?php echo Lang::txt('COM_COURSES_FIELD_BADGE_CRITERIA'); ?></a>
+									<a rel="noopener" target="_blank" href="<?php echo Request::base(true); ?>/courses/badge/<?php echo $this->badge->get('id'); ?>/criteria"><?php echo Lang::txt('COM_COURSES_FIELD_BADGE_CRITERIA'); ?></a>
 								</td>
 							</tr>
 						</tbody>

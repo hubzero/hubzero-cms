@@ -201,7 +201,7 @@ class Tree extends \Hubzero\Base\Obj
 
 		if ($this->_current->link != null && $this->_current->target != null)
 		{
-			echo '<a' . $linkClass . ' href="' . $this->_current->link . '" target="' . $this->_current->target . '">' . $this->_current->title . '</a>';
+			echo '<a' . $linkClass . ' href="' . $this->_current->link . '" rel="noopener" target="' . $this->_current->target . '">' . $this->_current->title . '</a>';
 		}
 		elseif ($this->_current->link != null && $this->_current->target == null)
 		{
