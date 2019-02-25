@@ -8,7 +8,7 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for adding component entry for com_oauth
  **/
-class Migration20170831000000ComUsage extends Base
+class Migration20170831000000ComOauth extends Base
 {
 	/**
 	 * Up
