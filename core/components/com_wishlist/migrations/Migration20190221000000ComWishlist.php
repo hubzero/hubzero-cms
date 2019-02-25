@@ -6,9 +6,9 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for changing DATETIME fields default to NULL for com_wiki
+ * Migration script for changing DATETIME fields default to NULL for com_wishlist
  **/
-class Migration20190221000000ComWiki extends Base
+class Migration20190221000000ComWishlist extends Base
 {
 	/**
 	 * List of tables and their datetime fields
