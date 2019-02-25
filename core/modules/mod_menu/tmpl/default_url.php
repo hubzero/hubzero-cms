@@ -52,7 +52,7 @@ switch ($item->browserNav) :
 		break;
 	case 1:
 		// _blank
-		?><a <?php echo $class; ?>href="<?php echo $flink; ?>" target="_blank" <?php echo $title; ?>><?php echo $linktype; ?></a><?php
+		?><a <?php echo $class; ?>href="<?php echo $flink; ?>" rel="noopener" target="_blank" <?php echo $title; ?>><?php echo $linktype; ?></a><?php
 		break;
 	case 2:
 		// window.open

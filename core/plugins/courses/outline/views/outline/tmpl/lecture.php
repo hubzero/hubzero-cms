@@ -205,7 +205,7 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
 							if ($a->get('type') == 'exam')
 							{
 								$cls = 'edit';
-								$exams[] = '<a class="' . $cls . ' btn" href="' . $href . '" target="_blank">' . $this->escape(stripslashes($a->get('title'))) . '</a>';
+								$exams[] = '<a class="' . $cls . ' btn" href="' . $href . '" rel="noopener" target="_blank">' . $this->escape(stripslashes($a->get('title'))) . '</a>';
 							}
 							else
 							{
