@@ -87,7 +87,7 @@ class Icons
 		$html[] = '<div class="icon-wrapper"' . (empty($button['id']) ? '' : (' id="' . $button['id'] . '"')) . '>';
 		$html[] = '<div class="icon">';
 		$html[] = '<a href="' . $button['link'] . '"';
-		$html[] = (empty($button['target']) ? '' : (' target="' . $button['target'] . '"'));
+		$html[] = (empty($button['target']) ? '' : (' rel="noopener" target="' . $button['target'] . '"'));
 		$html[] = (empty($button['onclick']) ? '' : (' onclick="' . $button['onclick'] . '"'));
 		$html[] = (empty($button['title']) ? '' : (' title="' . htmlspecialchars($button['title']) . '"'));
 		$html[] = '>';
