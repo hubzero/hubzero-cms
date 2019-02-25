@@ -285,7 +285,7 @@ if ($mode != 'preview')
 							if ($child->standalone == 1) {
 								$html .= '<a href="'.Route::url('index.php?option='.$this->option.'&id='.$child->id).'"';
 								if ($link_action == 1) {
-									$html .= ' target="_blank"';
+									$html .= ' rel="nofollow" target="_blank"';
 								} elseif ($link_action == 2) {
 									$html .= ' onclick="popupWindow(\''.$url.'\', \''.$child->title.'\', 400, 400, \'auto\');"';
 								}

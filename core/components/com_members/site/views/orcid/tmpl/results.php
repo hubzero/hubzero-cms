@@ -56,7 +56,7 @@ defined('_HZEXEC_') or die();
 				?>
 				<tr>
 					<td>
-						<a class="title" target="_blank" rel="external" href="<?php echo $orcid_uri; ?>">
+						<a class="title" rel="nofollow external" href="<?php echo $orcid_uri; ?>">
 							<?php echo $fname . ' ' . $lname; ?>
 						</a>
 					</td>

@@ -69,7 +69,7 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
 <?php
 // Display error
 if ($this->getError()) {
-	echo ('<p class="witherror">' . $this->getError() . '</p>');
+	echo '<p class="witherror">' . $this->getError() . '</p>';
 }
 ?>
 <?php } ?>
@@ -148,7 +148,7 @@ if ($this->getError()) {
 					if ($this->connected && $last == true)
 					{
 						$action  = '<a href="' . $url . '" class="open_file" title="'
-							. Lang::txt('PLG_PROJECTS_FILES_REMOTE_OPEN') . '" target="_blank">&nbsp;</a>';
+							. Lang::txt('PLG_PROJECTS_FILES_REMOTE_OPEN') . '" target="_blank" rel="nofollow external">&nbsp;</a>';
 					}
 					else
 					{
@@ -221,7 +221,10 @@ if ($this->getError()) {
 								<span class="moved"><span class="<?php echo $version['movedTo'] == 'remote' ? 'send_to_remote' : 'send_to_local'; ?>"><span>&nbsp;</span></span></span>
 							<?php } ?>
 						<span class="commitstatus"><?php echo $status; ?></span>
-						<span class="block italic faded"><?php echo $version['name']; echo $version['size'] ? ', ' . $version['size'] : '';  ?></span>
+						<span class="block italic faded">
+							<?php echo $version['name']; ?>
+							<?php echo $version['size'] ? ', ' . $version['size'] : '';  ?>
+						</span>
 						<div class="commitcontent"><?php if ($version['content'] && in_array($version['commitStatus'], array('A', 'M')))
 						{
 							$over = strlen($version['content']) >= $charLimit ? 1 : 0;
