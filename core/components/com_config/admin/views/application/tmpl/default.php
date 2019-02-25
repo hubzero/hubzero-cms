@@ -84,7 +84,7 @@ $this->js();
 				<div class="col span7">
 					<?php echo $this->loadTemplate('server'); ?>
 					<?php echo $this->loadTemplate('locale'); ?>
-					<?php //echo $this->loadTemplate('ftp'); ?>
+					<?php echo $this->loadTemplate('messagequeue'); ?>
 				</div>
 				<div class="col span5">
 					<?php echo $this->loadTemplate('database'); ?>
