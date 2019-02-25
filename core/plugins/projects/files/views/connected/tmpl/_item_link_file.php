@@ -44,7 +44,7 @@ if ($itemMimeType && strpos($itemMimeType, 'application/vnd.google') === 0)
 		{
 			$itemFormat = $formatMappings[$match[1]];
 			$linkUrl = "https://docs.google.com/$itemFormat/d/$urlEncodedItemName/edit";
-			$linkTarget = 'target="_blank"';
+			$linkTarget = 'rel="nofollow external" target="_blank"';
 		}
 		elseif (isset($unlinkable[$match[1]]))
 		{

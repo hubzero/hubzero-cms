@@ -40,7 +40,7 @@ $this->js('jquery.editable.min.js', 'system')
 $base = rtrim(Request::base(true), '/');
 ?>
 <p id="troubleshoot" class="help">
-	If your application fails to appear within a minute, <a target="_blank" rel="external" href="http://www.java.com/en/download/testjava.jsp">troubleshoot this problem</a>.
+	If your application fails to appear within a minute, <a rel="nofollow external" href="http://www.java.com/en/download/testjava.jsp">troubleshoot this problem</a>.
 </p>
 
 <applet id="<?php echo $this->output->id ?>" class="<?php echo $this->output->class; ?>" code="<?php echo $this->output->code; ?>" archive="<?php echo $this->output->archive; ?>" width="<?php echo $this->output->width; ?>" height="<?php echo $this->output->height; ?>" MAYSCRIPT>

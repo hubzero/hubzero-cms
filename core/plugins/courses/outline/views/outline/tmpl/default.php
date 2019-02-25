@@ -89,7 +89,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 				<a href="<?php echo Route::url($this->course->offering()->link('enroll')); ?>">
 					<div class="advertise-action btn">Enroll for <?php echo $price; ?>!</div>
 				</a>
-				<a target="_blank" class="advertise-popup" href="<?php echo Route::url('index.php?option=com_help&component=courses&page=basics#why_enroll'); ?>">
+				<a class="advertise-popup" href="<?php echo Route::url('index.php?option=com_help&component=courses&page=basics#why_enroll'); ?>">
 					<div class="advertise-help btn">Why enroll?</div>
 				</a>
 			</div>
@@ -323,7 +323,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 															}
 															else if ($a->get('type') == 'file' || $a->get('type') == 'url')
 															{
-																$target = ' target="_blank"';
+																$target = ' rel="nofollow" target="_blank"';
 															}
 
 															$link = '<a class="' . $cls . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a>';
@@ -450,7 +450,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 														}
 														else if ($a->get('type') == 'file' || $a->get('type') == 'url')
 														{
-															$target = ' target="_blank"';
+															$target = ' rel="nofollow" target="_blank"';
 														}
 														echo '<li><a class="asset-primary ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 													}
@@ -494,7 +494,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 										}
 										else if ($a->get('type') == 'file' || $a->get('type') == 'url')
 										{
-											$target = ' target="_blank"';
+											$target = ' rel="nofollow" target="_blank"';
 										}
 										echo '<li><a class="asset ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 										$k++;

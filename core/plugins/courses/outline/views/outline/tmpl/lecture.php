@@ -213,7 +213,7 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
 								{
 									$cls = 'link';
 								}
-								echo '<li><a class="' . $cls . '" href="' . $href . '" target="_blank">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+								echo '<li><a class="' . $cls . '" href="' . $href . '" rel="nofollow external" target="_blank">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 							}
 						}
 					}

@@ -123,7 +123,7 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
 		<?php echo $this->item->drawIcon($ext); ?>
 		<?php if ($this->item->get('type') == 'file') { ?>
 			<div class="file-action-dropdown<?php echo ($handlers = Handler::getLaunchUrlsForFile($handlerBase)) ? ' hasMultiple' : ''; ?>">
-				<a href="<?php echo $link; ?>" class="preview file:<?php echo urlencode($name); ?>"<?php echo $this->item->get('converted') ? ' target="_blank"' : ''; ?>>
+				<a href="<?php echo $link; ?>" class="preview file:<?php echo urlencode($name); ?>"<?php echo $this->item->get('converted') ? ' rel="nofollow external" target="_blank"' : ''; ?>>
 					<?php echo \Components\Projects\Helpers\Html::shortenFileName($name, 60); ?>
 				</a>
 				<?php if ($handlers && count($handlers) > 0) : ?>

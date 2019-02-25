@@ -92,7 +92,7 @@ $this->view('_submenu')
 				</td>
 				<td>
 					<?php
-					$product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $itemInfo->pId) . '" target="_blank">' . $this->escape(stripslashes($itemInfo->pName)) . '</a>';
+					$product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $itemInfo->pId) . '">' . $this->escape(stripslashes($itemInfo->pName)) . '</a>';
 					if (!stripslashes($itemInfo->pName))
 					{
 						$product = '<span class="missing">Product n/a</span>';
@@ -102,7 +102,7 @@ $this->view('_submenu')
 						$product .= ', <span class="missing">SKU n/a</span>';
 					}
 					else {
-						$product .= ', ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '" target="_blank">' . $this->escape(stripslashes($itemInfo->sSku)) . '</a>';
+						$product .= ', ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '">' . $this->escape(stripslashes($itemInfo->sSku)) . '</a>';
 					}
 					?>
 					<span><?php echo $product; ?></span>

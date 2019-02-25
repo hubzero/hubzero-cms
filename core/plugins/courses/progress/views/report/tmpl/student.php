@@ -356,7 +356,7 @@ $progress_timeline .= '</div>';
 				Thanks for working hard and claiming your badge. We hope you have the chance to earn another one soon!
 			</p>
 			<p>
-				<a target="_blank" class="claim-item" href="<?php echo $this->course->offering()->section()->badge()->getBadgesUrl() ?>">View your badges!</a>
+				<a class="claim-item" href="<?php echo $this->course->offering()->section()->badge()->getBadgesUrl() ?>">View your badges!</a>
 			</p>
 		<?php elseif ($student->badge()->get('action') == 'deny') : ?>
 			<h3>Congratulations! You earned the badge!</h3>
@@ -364,7 +364,7 @@ $progress_timeline .= '</div>';
 				You chose to deny the badge. That's not a problem. If you change your mind, you can always go back and claim it!
 			</p>
 			<p>
-				<a target="_blank" class="claim-item" href="<?php echo $this->course->offering()->section()->badge()->getDeniedUrl() ?>">View denied badges</a>
+				<a class="claim-item" href="<?php echo $this->course->offering()->section()->badge()->getDeniedUrl() ?>">View denied badges</a>
 			</p>
 		<?php else : ?>
 			<h3>Congratulations! You've earned the badge...and you deserve it!</h3>
@@ -374,7 +374,7 @@ $progress_timeline .= '</div>';
 			</p>
 			<?php if ($this->course->offering()->section()->badge()->getClaimUrl()) : ?>
 				<p>
-					<a target="_blank" class="claim-item" href="<?php echo $this->course->offering()->section()->badge()->getClaimUrl() ?>">Claim your badge!</a>
+					<a class="claim-item" href="<?php echo $this->course->offering()->section()->badge()->getClaimUrl() ?>">Claim your badge!</a>
 				</p>
 			<?php else : ?>
 				<p>
@@ -587,7 +587,7 @@ $progress_timeline .= '</div>';
 				Upon successful completion of this course, you will be awarded a special <?php echo $this->course->get('title') ?> badge.
 				This badge can be saved to your Purdue Passport Badges Backpack, and subsequently, your Mozilla Open Badges Backpack.
 				To learn more about Purdue's Passport initiative, please visit the
-				<a href="https://www.openpassport.org/Login" rel="external" target="_blank">Open Passport website</a>.
+				<a href="https://www.openpassport.org/Login" rel="nofollow external">Open Passport website</a>.
 			</p>
 		</div>
 	<?php endif; ?>
