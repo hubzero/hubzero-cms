@@ -66,7 +66,7 @@ if ($cost = $oparams->get('store_price', false))
 		</ul>
 		<p>
 			For more details, check out our 
-			<a class="advertise-popup" target="_blank" href="<?php echo Route::url('index.php?option=com_help&component=courses&page=basics#why_enroll'); ?>">
+			<a class="advertise-popup" href="<?php echo Route::url('index.php?option=com_help&component=courses&page=basics#why_enroll'); ?>">
 				enrollment benefits
 			</a>.
 		</p>

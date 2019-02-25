@@ -47,7 +47,7 @@ if (!$no_html) { ?>
 			for (i=0; i<allPaths.length; i++)
 			{
 				allPaths.item(i).selected = false;
-				if ((allPaths.item(i).value)== '<?php if (isset($this->listdir)) { echo $this->listdir ;} else { echo '/';}  ?>') {
+				if ((allPaths.item(i).value)== '<?php echo (isset($this->listdir)) ? $this->listdir : '/'; ?>') {
 					allPaths.item(i).selected = true;
 				}
 			}
@@ -100,7 +100,7 @@ if (!$no_html) { ?>
 							<span><?php echo $this->escape(stripslashes($name)); ?></span>
 						</td>
 						<td>
-							<a class="delete" href="<?php echo Route::url($base . '&action=remove&file=' . urlencode(stripslashes($name)) . '&' . (!$no_html ? 'tmpl=component' : 'no_html=1') . '&section_id=' . $section); ?>" <?php if (!$no_html) { ?>target="filer" onclick="return deleteFile('<?php echo $this->escape($name); ?>');"<?php } ?> title="<?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?>">
+							<a class="delete" href="<?php echo Route::url($base . '&action=remove&file=' . urlencode(stripslashes($name)) . '&' . (!$no_html ? 'tmpl=component' : 'no_html=1') . '&section_id=' . $section); ?>" <?php if (!$no_html) { ?>onclick="return deleteFile('<?php echo $this->escape($name); ?>');"<?php } ?> title="<?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?>">
 								<?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?>
 							</a>
 						</td>

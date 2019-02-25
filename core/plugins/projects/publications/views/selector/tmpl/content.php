@@ -85,7 +85,7 @@ $pa = new \Components\Publications\Tables\Author($database);
 			/*$info = $item->info;
 			if ($item->url)
 			{
-				$info .= ' <a href="' . $item->url . '" target="_blank">' . Lang::txt('Read license terms &rsaquo;') . '</a>';
+				$info .= ' <a href="' . $item->url . '" rel="nofollow external">' . Lang::txt('Read license terms &rsaquo;') . '</a>';
 			}
 
 			$icon = $item->icon;

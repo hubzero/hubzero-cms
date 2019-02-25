@@ -57,7 +57,7 @@ if ($feed != false)
 		?>
 
 				<h4>
-					<a href="<?php echo str_replace('&', '&amp', $feed->link); ?>" rel="external">
+					<a href="<?php echo str_replace('&', '&amp', $feed->link); ?>" rel="nofollow external">
 						<?php echo $feed->title; ?>
 					</a>
 				</h4>
@@ -114,7 +114,7 @@ if ($feed != false)
 							echo '<h4 class="feed-link">';
 						}
 						?>
-						<a href="<?php echo $currItem->get_link(); ?>" target="_blank">
+						<a href="<?php echo $currItem->get_link(); ?>" rel="nofollow external">
 							<?php echo $currItem->get_title(); ?>
 						</a>
 						<?php

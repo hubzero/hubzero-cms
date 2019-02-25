@@ -117,7 +117,7 @@ $jQ(document).ready(function(e) {
 			<div class="explaination">
 			<p>
 				<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_WHAT_ARE_COINS'); ?><br />
-			<a href="http://ocoins.info/" target="_blank" alt="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_READ_MORE_COINS'); ?>"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_READ_MORE_COINS'); ?></a>
+			<a href="http://ocoins.info/" rel="nofollow external" alt="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_READ_MORE_COINS'); ?>"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_READ_MORE_COINS'); ?></a>
 			</p>
 			</div>
 

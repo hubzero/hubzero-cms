@@ -81,7 +81,7 @@ $this->js('media.js');
 							<?php echo $folderName; ?>
 						</td>
 						<td>
-							<a class="delete-folder" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=deletefolder&delFolder=' . DS . $folders[$folderName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course=' . $this->course_id . '&' . Session::getFormToken() . '=1'); ?>" target="filelist" data-files="<?php echo $numFiles; ?>" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the folder "%s"?', $folderName); ?>" data-notempty="<?php echo Lang::txt('COM_COURSES_CLEAR_FOLDER'); ?> <?php echo Lang::txt('COM_COURSES_FILES'); ?>" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">
+							<a class="delete-folder" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=deletefolder&delFolder=' . DS . $folders[$folderName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course=' . $this->course_id . '&' . Session::getFormToken() . '=1'); ?>" data-files="<?php echo $numFiles; ?>" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the folder "%s"?', $folderName); ?>" data-notempty="<?php echo Lang::txt('COM_COURSES_CLEAR_FOLDER'); ?> <?php echo Lang::txt('COM_COURSES_FILES'); ?>" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">
 								<img src="<?php echo Request::base(true); ?>/core/components/<?php echo $this->option; ?>/admin/assets/img/trash.png" width="15" height="15" alt="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>" />
 							</a>
 						</td>
@@ -104,7 +104,7 @@ $this->js('media.js');
 							<?php echo $docs[$docName]; ?>
 						</td>
 						<td>
-							<a class="delete-file" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=deletefile&delFile=' . $docs[$docName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course=' . $this->course_id . '&' . Session::getFormToken() . '=1'); ?>" target="filelist" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the file "%s"?', $docs[$docName]); ?>" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">
+							<a class="delete-file" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=deletefile&delFile=' . $docs[$docName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course=' . $this->course_id . '&' . Session::getFormToken() . '=1'); ?>" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the file "%s"?', $docs[$docName]); ?>" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">
 								<img src="<?php echo Request::base(true); ?>/core/components/<?php echo $this->option; ?>/admin/assets/img/trash.png" width="15" height="15" alt="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>" />
 							</a>
 						</td>

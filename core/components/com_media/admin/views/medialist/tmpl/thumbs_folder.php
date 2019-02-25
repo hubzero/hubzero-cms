@@ -37,7 +37,7 @@ $href = Route::url('index.php?option=' . $this->option . '&task=download&' . Ses
 		<div class="media-item media-item-thumb">
 			<div class="media-preview">
 				<div class="media-preview-inner">
-					<a class="media-thumb folder-item" href="<?php echo Route::url('index.php?option=com_media&controller=media&folder=' . $this->currentFolder['path']); ?>" target="folderframe">
+					<a class="media-thumb folder-item" href="<?php echo Route::url('index.php?option=com_media&controller=media&folder=' . $this->currentFolder['path']); ?>">
 						<span class="media-preview-shim"></span><!--
 						--><img src="<?php echo $this->img('folder.svg'); ?>" alt="<?php echo $this->escape($this->currentFolder['name']); ?>" width="80" />
 					</a>
