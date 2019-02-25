@@ -412,8 +412,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function attachCitation($pid = 0, $doi = null, $format = 'apa', $actor = 0, $returnStatus = false)
 	{
 		$componentPath = \Component::path('com_citations');
-		include_once  "$componentPath/models/citation.php";
-		include_once  "$componentPath/helpers/format.php";
+		include_once "$componentPath/models/citation.php";
+		include_once "$componentPath/helpers/format.php";
 
 		$out = ['error' => null, 'success' => null];
 
@@ -435,7 +435,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$citationsTable = Citation::blank()->getTableName();
 
 		$citationAssociation = $query
-			->join($citationsTable , $citationsTable. '.id', $citationAssociationsTable. '.cid', 'inner')
+			->join($citationsTable, $citationsTable. '.id', $citationAssociationsTable. '.cid', 'inner')
 			->whereEquals($citationAssociationsTable . '.tbl', 'publication')
 			->whereEquals($citationsTable . '.doi', $doi)
 			->whereEquals($citationAssociationsTable . '.oid', $pid)
