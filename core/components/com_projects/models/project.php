@@ -48,6 +48,7 @@ use Hubzero\Base\Model;
 use Components\Projects\Tables;
 use Hubzero\Base\ItemList;
 use Component;
+use Route;
 use Date;
 use Lang;
 use User;
