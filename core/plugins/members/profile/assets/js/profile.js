@@ -178,7 +178,7 @@ HUB.Members.Profile = {
 			{
 				console.log(data);
 				//parse the returned json data
-				var returned = jQuery.parseJSON(data);
+				var returned = JSON.parse(data);
 				
 				//remove saving indicator and enable save button
 				//form.find(".section-edit-saving").remove();
@@ -393,7 +393,7 @@ HUB.Members.Profile = {
 			};
 
 			$.post(url, params, function(data){ 
-				var returned = jQuery.parseJSON(data);
+				var returned = JSON.parse(data);
 
 				if (returned.success) {
 					if (pub == 1) {
@@ -506,7 +506,7 @@ HUB.Members.Profile = {
 
 						// save profile picture updates
 						$.post(form.attr("action"), form.serialize(), function(data){
-							var save = jQuery.parseJSON(data);
+							var save = JSON.parse(data);
 							if (save.success)
 							{
 								// load exact page to get results new profile pic sources
@@ -556,7 +556,7 @@ HUB.Members.Profile = {
 				url = url.replace("doajaxupload","getfileatts"); 
 
 				$.post(url, {file:response.file, dir:response.directory}, function(data) {
-					var upload = jQuery.parseJSON( data );
+					var upload = JSON.parse( data );
 					if (upload)
 					{
 						$("#ajax-upload-right").find("p.warning").remove();

@@ -104,7 +104,7 @@ jQuery(document).ready(function(jq){
 				var response = {};
 				try {
 					// Parse the returned json data
-					response = jQuery.parseJSON(data);
+					response = JSON.parse(data);
 				} catch (err) {
 					// Print error
 					$('.response-message').addClass('error').html('Save failed!');

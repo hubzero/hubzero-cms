@@ -52,7 +52,7 @@ jQuery(document).ready(function (jq) {
 			success: function(data, status, xhr)
 			{
 				// Parse the returned json data
-				var returned = jQuery.parseJSON(data);
+				var returned = JSON.parse(data);
 
 				// If we successfully saved
 				if (returned.success)

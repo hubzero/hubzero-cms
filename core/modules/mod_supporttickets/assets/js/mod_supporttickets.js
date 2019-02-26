@@ -5,7 +5,7 @@ jQuery(document).ready(function ($) {
 	$('.mod_supporttickets-chart').each(function(i, el){
 		var data = $('#' + $(el).attr('data-datasets')).html();
 
-		var datasets = jQuery.parseJSON(data);
+		var datasets = JSON.parse(data);
 
 		var mod_supporttickets_chart = $.plot($(el), datasets.datasets, {
 			series: {

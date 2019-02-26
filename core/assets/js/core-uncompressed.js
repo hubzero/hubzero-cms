@@ -767,7 +767,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	/*$("a.move_up, a.move_down, a.grid_true, a.grid_false, a.trash")
 		.on("click", function(){
 			if ($(this).attr("rel")) {
-				args = jQuery.parseJSON($(this).attr("rel").replace(/\'/g, '"'));
+				args = JSON.parse($(this).attr("rel").replace(/\'/g, '"'));
 				Joomla.listItemTask(args.id, args.task);
 			}
 		});*/

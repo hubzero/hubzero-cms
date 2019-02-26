@@ -257,8 +257,8 @@ HUB.Plugins.CoursesForum = {
 						dataType: 'json',
 						success: function(response, status) {
 							if (typeof response === "string" ) {
-								//data = jQuery.parseJSON(response.responseText);
-								var data = jQuery.parseJSON(response);
+								//data = JSON.parse(response.responseText);
+								var data = JSON.parse(response);
 							} else {
 								var data = response;
 							}
@@ -518,8 +518,8 @@ HUB.Plugins.CoursesForum = {
 									}
 
 									if (typeof response === "string" ) {
-										//data = jQuery.parseJSON(response.responseText);
-										var data = jQuery.parseJSON(response);
+										//data = JSON.parse(response.responseText);
+										var data = JSON.parse(response);
 									} else {
 										var data = response;
 									}
