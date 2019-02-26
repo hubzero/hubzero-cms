@@ -431,7 +431,7 @@ HUB.Courses = {
 					url: 'index.php?option=com_courses&task=courseavailability&no_html=1',
 					data: { 'course' : $(this).val() },
 					success: function(data) {
-						var availability = jQuery.parseJSON(data);
+						var availability = JSON.parse(data);
 						if(availability)
 						{
 							if(availability.available)

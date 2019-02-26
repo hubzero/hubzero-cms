@@ -10,7 +10,7 @@ jQuery(function(jq)
 		resourcetypes = $('#resource-types');
 
 	if (resourcetypes.length) {
-		var cdata = jQuery.parseJSON(resourcetypes.html());
+		var cdata = JSON.parse(resourcetypes.html());
 
 		window.resourceTypes = cdata.types;
 	}

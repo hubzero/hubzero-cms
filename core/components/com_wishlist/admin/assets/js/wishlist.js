@@ -17,7 +17,7 @@ jQuery(document).ready(function($){
 		ownerdata = $('#owner-data');
 
 	if (ownerdata.length) {
-		var cdata = jQuery.parseJSON(ownerdata.html());
+		var cdata = JSON.parse(ownerdata.html());
 
 		for (var i = 0; i < cdata.data.length; i++)
 		{
