@@ -53,7 +53,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	 * @param   boolean  $describe  Return plugin description only?
 	 * @return  object
 	 */
-	public function onCourse($course, $offering, $describe=false)
+	public function onCourse($course, $offering, $describe = false)
 	{
 		$response = with(new \Hubzero\Base\Obj)
 			->set('name', $this->_name)
