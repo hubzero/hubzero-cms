@@ -101,6 +101,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 					$this->course,
 					$this->course->offering()
 				));
+
 				// Output results
 				echo implode("\n", $results);
 
