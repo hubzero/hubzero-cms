@@ -252,8 +252,8 @@ HUB.Administrator.Newsletter = {
 			//lets hide the us map for now
 			$('#us-map').hide();
 			
-			var worldData = jQuery.parseJSON( $('#world-map-data').attr('data-src') );
-			var usData = jQuery.parseJSON( $('#us-map-data').attr('data-src') );
+			var worldData = JSON.parse( $('#world-map-data').attr('data-src') );
+			var usData = JSON.parse( $('#us-map-data').attr('data-src') );
 			
 			//add World map
 			$('#world-map').vectorMap({

@@ -115,7 +115,7 @@ jQuery(document).ready(function($){
 			data = $('#offering-data');
 
 		if (data.length) {
-			offeringsections = jQuery.parseJSON(data.html());
+			offeringsections = JSON.parse(data.html());
 		}
 
 		offering_id.on('change', function(e){

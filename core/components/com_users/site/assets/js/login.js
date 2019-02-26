@@ -72,7 +72,7 @@ HUB.User = {
 					var response = {};
 					try {
 						// Parse the returned json data
-						response = jQuery.parseJSON(data);
+						response = JSON.parse(data);
 					} catch (err) {
 						console.log(err);
 						password.val('');

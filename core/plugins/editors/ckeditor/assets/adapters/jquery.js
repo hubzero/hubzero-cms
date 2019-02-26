@@ -31,7 +31,7 @@ if (typeof(jQuery) !== "undefined") {
 			var cfg = $('#' + $(el).attr('id') + '-ckeconfig'),
 				config = null;
 			if (cfg.length) {
-				config = jQuery.parseJSON(cfg.html());
+				config = JSON.parse(cfg.html());
 				if (typeof config.protectedSource != 'undefined') {
 					for (var i = 0; i < config.protectedSource.length; i++) {
 						var rg = regExpFromString(config.protectedSource[i]);
@@ -68,7 +68,6 @@ if (typeof(jQuery) !== "undefined") {
 		});
 	jQuery(document)
 		.on("ajaxLoad", function(e) {
-			console.log('triggered...')
 			jInitEditors();
 		})
 		.on("editorSave", function(e) {

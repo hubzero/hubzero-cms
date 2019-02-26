@@ -327,7 +327,7 @@ jQuery(document).ready(function($){
 	var cdata = $('#conditions-data');
 
 	if (cdata.length) {
-		var data = jQuery.parseJSON(cdata.html());
+		var data = JSON.parse(cdata.html());
 
 		Conditions.option = data.conditions;
 	}

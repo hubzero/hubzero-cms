@@ -31,7 +31,7 @@ jQuery(document).ready(function(jq){
 			.on('submit', '#announcementForm', function(e) {
 				e.preventDefault();
 				$.post($(this).attr('action').nohtml(), $(this).serialize(), function(response){
-					var json = jQuery.parseJSON(response);
+					var json = JSON.parse(response);
 					if (json.code == 0) {
 						/*$('<div class="hubzero_notification"></div>')
 							.text('Announcement posted.')

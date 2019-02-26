@@ -321,7 +321,7 @@ HUB.Groups = {
 					url: 'index.php?option=com_groups&task=groupavailability&no_html=1',
 					data: { 'group' : $(this).val() },
 					success: function(data) {
-						var availability = jQuery.parseJSON(data);
+						var availability = JSON.parse(data);
 						if(availability)
 						{
 							if(availability.available)

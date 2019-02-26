@@ -50,7 +50,7 @@ jQuery(document).ready(function(jq){
 						e.preventDefault();
 
 						$.post($(this).attr('action'), $(this).serialize(), function(data) {
-							var response = jQuery.parseJSON(data);
+							var response = JSON.parse(data);
 							if (!response.success) {
 								$('#sbox-content').html('<p class="error" style="margin-left: 1em; margin-right: 1em;">' + response.message + '</p>')
 							} else {

@@ -54,7 +54,7 @@ HUB.CollectionsFileUpload = {
 					);*/
 					//console.log($('#link-adder').attr('data-action') + $('#field-dir').val());
 					$.get($('#link-adder').attr('data-action') + $('#field-dir').val(), {}, function(data){
-						var response = jQuery.parseJSON(data);
+						var response = JSON.parse(data);
 
 						if (response.id != $('#field-dir').val()) {
 							$('#field-id').val(response.id);

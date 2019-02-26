@@ -55,7 +55,7 @@ jQuery(document).ready(function(jq) {
 							window.console && console.log(data);
 						}
 
-						var response = jQuery.parseJSON(data);
+						var response = JSON.parse(data);
 						if (!response.success) {
 							alert(response.message);
 							return;

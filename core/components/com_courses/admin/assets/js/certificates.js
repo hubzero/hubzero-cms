@@ -13,7 +13,7 @@ function Box() {
 jQuery(window).load(function() {
 
 	if ($('#field-properties').length) {
-		var props = jQuery.parseJSON($('#field-properties').val());
+		var props = JSON.parse($('#field-properties').val());
 
 		for (var i = 0; i < props.elements.length; i++)
 		{

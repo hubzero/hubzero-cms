@@ -62,7 +62,7 @@ jQuery(document).ready(function($){
 		var k = 0;
 		continentcountry[k++] = new Array('', '', countrydata.attr('data-select'));
 
-		var cdata = jQuery.parseJSON($('#country-data').html());
+		var cdata = JSON.parse($('#country-data').html());
 
 		for (var i = 0; i < cdata.data.length; i++)
 		{
