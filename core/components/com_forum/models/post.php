@@ -484,6 +484,14 @@ class Post extends Relational
 			$this->adapter = new $cls($this->get('scope_id'));
 
 			// Set some needed info
+
+			// If no thread ID and no parent ID
+			if (!$this->get('thread') && !$this->get('parent'))
+			{
+				// We have to assume thi is the thread starting post but
+				// the thread ID somehow didn't get set.
+				$this->set('thread', $this->get('id'));
+			}
 			$this->adapter->set('thread', $this->get('thread'));
 			$this->adapter->set('parent', $this->get('parent'));
 			$this->adapter->set('post', $this->get('id'));
