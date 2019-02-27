@@ -100,10 +100,6 @@ jQuery(document).ready(function($){
 		$('#add-custom-field').on('click', function (e){
 			e.preventDefault();
 
-			if ($.uniform) {
-				$.uniform.restore('select');
-			}
-
 			var id = 'fields';
 
 			var tbody     = document.getElementById(id).tBodies[0],
@@ -155,10 +151,6 @@ jQuery(document).ready(function($){
 				var replace = $(replaceme);
 				var select  = $.clone(replace).appendAfter(replace);
 				$.remove(replace);
-			}
-
-			if ($.uniform) {
-				$('select').uniform();
 			}
 
 			return false;

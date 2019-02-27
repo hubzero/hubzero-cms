@@ -191,10 +191,6 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 		$this->js('underscore-min', 'system');
 		$this->js('jquery.hoverIntent', 'system');
 
-		// Add 'uniform' js and css
-		$this->css('uniform.css', 'system');
-		$this->js('jquery.uniform', 'system');
-
 		// Add file uploader JS
 		$this->js('jquery.iframe-transport', 'system');
 		$this->js('jquery.fileupload', 'system');
