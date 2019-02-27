@@ -21,28 +21,34 @@ function goUpDir()
 	frames['imgManager'].location.href = document.getElementById('imgManager').getAttribute('data-dir') + '&listdir=' + listdir.value +'&subdir='+ dir;
 }
 
-jQuery(document).ready(function ($) {
-	$('a.delete-file')
-		.on('click', function (e) {
+window.addEventListener('DOMContentLoaded', function(){
+	var files = document.getElementsByClassName('delete-file');
+
+	Array.prototype.forEach.call(files, function(el, index, array){
+		el.addEventListener('click', function(e){
 			var res = confirm($(this).attr('data-confirm'));
 			if (!res) {
 				e.preventDefault();
 			}
 			return res;
 		});
+	});
 
-	$('a.delete-folder')
-		.on('click', function (e) {
-			var res = confirm($(this).attr('data-confirm'));
+	var folders = document.getElementsByClassName('delete-folder');
+
+	Array.prototype.forEach.call(folders, function(el, index, array){
+		el.addEventListener('click', function(e){
+			var res = confirm(el.getAttribute('data-confirm'));
 			if (!res) {
 				e.preventDefault();
 			}
-			var numFiles = parseInt($(this).attr('data-files'));
+			var numFiles = parseInt(el.getAttribute('data-files'));
 			if (numFiles > 0) {
 				e.preventDefault();
-				alert($(this).attr('data-notempty'));
+				alert(el.getAttribute('data-notempty'));
 				return false;
 			}
 			return res;
 		});
+	});
 });
