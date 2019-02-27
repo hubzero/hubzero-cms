@@ -36,4 +36,17 @@ jQuery(document).ready(function($){
 	$('#showmods').on('click', function(e) {
 		$('.adminlist tr.nope').toggle();
 	});
+
+	$('#btn-batch-submit')
+		.on('click', function (e){
+			Joomla.submitbutton('item.batch');
+		});
+
+	$('#btn-batch-clear')
+		.on('click', function (e){
+			e.preventDefault();
+			$('#batch-menu-id').val('');
+			$('#batch-access').val('');
+			$('#batch-language-id').val('');
+		});
 });

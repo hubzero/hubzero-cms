@@ -238,7 +238,7 @@ $this->css();
 							echo $this->downloaded;
 							if ($this->downloaded == 0 || $this->downloaded > 1)
 							{
-								echo(' times');
+								echo ' times';
 							}
 							else
 							{
@@ -383,7 +383,7 @@ $this->css();
 
 	<?php /*
 		<?php if ($canDo->get('core.admin')): ?>
-			<div class="col width-100 fltlft">
+			<div class="col span12">
 				<fieldset class="panelform">
 					<?php echo $this->form->getLabel('rules'); ?>
 					<?php echo $this->form->getInput('rules'); ?>

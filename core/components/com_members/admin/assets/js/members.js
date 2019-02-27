@@ -13,6 +13,17 @@ Joomla.submitbutton = function(task) {
 }
 
 jQuery(document).ready(function($){
+	$('#btn-batch-submit')
+		.on('click', function (e){
+			Joomla.submitbutton('user.batch');
+		});
+
+	$('#btn-batch-clear')
+		.on('click', function (e){
+			e.preventDefault();
+			$('#batch-group-id').val('');
+		});
+
 	var password = $('#newpass'),
 		passrule = $('#passrules');
 

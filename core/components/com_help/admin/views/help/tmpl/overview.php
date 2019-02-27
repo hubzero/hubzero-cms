@@ -33,14 +33,14 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_HELP'), 'help.png');
+Toolbar::title(Lang::txt('COM_HELP'), 'help');
 
 $this->css()
 	->js();
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
-	<div class="col-row">
-		<div class="col width-25 fltlft">
+	<div class="grid col-row">
+		<div class="col span4">
 			<h3><?php echo Lang::txt('COM_HELP_USERS'); ?></h3>
 			<ul>
 				<li>
@@ -95,9 +95,8 @@ $this->css()
 				<?php } ?>
 			</ul>
 		</div>
-		<div class="col width-75 fltrt">
+		<div class="col span8">
 			<iframe id="help-page" src="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=help&component=com_help&page=index'); ?>"></iframe>
 		</div>
 	</div>
-	<div class="clr"></div>
 </form>

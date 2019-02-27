@@ -33,6 +33,11 @@ HUB.Modules.ReportProblems = {
 			return;
 		}
 
+		pane.on('click', 'button.btn-reset', function (e) {
+			e.preventDefault();
+			HUB.Modules.ReportProblems.resetForm();
+		});
+
 		var frm = $(pane.find('form')[0]);
 
 		trigger.fancybox({

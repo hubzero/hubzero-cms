@@ -72,6 +72,8 @@ Toolbar::help('articles');
 
 Html::behavior('tooltip');
 
+$this->js();
+
 $userId    = User::get('id');
 $listOrder = $this->filters['sort'];
 $listDirn  = $this->filters['sort_Dir'];
@@ -84,7 +86,7 @@ $saveOrder = $listOrder == 'ordering';
 			<input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC'); ?>" />
 
 			<button type="submit" class="btn"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			<button type="button" class="btn filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="filter-select fltrt">
 			<select name="filter_published" class="inputbox" class="filter filter-submit">

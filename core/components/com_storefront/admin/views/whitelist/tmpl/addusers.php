@@ -45,7 +45,7 @@ Html::behavior('framework');
 		</div>
 	</fieldset>
 
-	<div class="col width-100">
+	<div class="col span12">
 		<fieldset class="adminform">
 			<div class="current">
 			<?php

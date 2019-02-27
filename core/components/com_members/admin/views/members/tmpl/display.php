@@ -71,7 +71,8 @@ if ($canDo->get('core.delete'))
 Toolbar::spacer();
 Toolbar::help('users');
 
-$this->css();
+$this->css()
+	->js();
 
 Html::behavior('tooltip');
 ?>

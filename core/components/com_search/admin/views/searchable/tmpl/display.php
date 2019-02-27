@@ -58,6 +58,9 @@ Submenu::addEntry(
 	Lang::txt('Index Blacklist'),
 	'index.php?option='.$option.'&task=manageBlacklist'
 );
+
+$sort_dir = Request::getString('filter_order_Dir', 'asc');
+$sort = Request::getString('filter_order', 'id');
 ?>
 
 <section id="main" class="com_search">
@@ -69,9 +72,9 @@ Submenu::addEntry(
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
-				<th scope="col" class="priority-5"><a href="#" onclick="Joomla.tableOrdering('id','asc','');return false;" title="Click to sort by this column" class="active desc sort">ID</a></th>
-				<th scope="col"><a href="#" onclick="Joomla.tableOrdering('title','asc','');return false;" title="Click to sort by this column" class="sort">Title</a></th>
-				<th scope="col"><a href="#" onclick="Joomla.tableOrdering('state','asc','');return false;" title="Click to sort by this column" class="sort">Active?</a></th>
+				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'ID', 'id', $sort_dir, $sort); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'Title', 'title', $sort_dir, $sort); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'Active?', 'state', $sort_dir, $sort); ?></th>
 				<th scope="col">Records</th>
 				<th></th>
 			</tr>
@@ -140,8 +143,8 @@ Submenu::addEntry(
 	<input type="hidden" name="controller" value="solr" />
 	<input type="hidden" name="task" value="searchIndex" autocomplete="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="id" />
-	<input type="hidden" name="filter_order_Dir" value="DESC" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($sort); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($sort_dir); ?>" />
 	<?php echo Html::input('token'); ?>
 </form>
 </section><!-- / #main -->

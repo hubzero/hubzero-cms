@@ -83,6 +83,8 @@ Toolbar::help('modules');
 Html::behavior('tooltip');
 Html::behavior('multiselect');
 
+$this->js();
+
 $client    = $this->filters['client_id'] ? 'administrator' : 'site';
 $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);

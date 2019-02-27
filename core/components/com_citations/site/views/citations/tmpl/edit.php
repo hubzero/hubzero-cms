@@ -36,8 +36,8 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js();
 
-$allow_tags = $this->config->get("citation_allow_tags","no");
-$allow_badges = $this->config->get("citation_allow_badges","no");
+$allow_tags = $this->config->get("citation_allow_tags", "no");
+$allow_badges = $this->config->get("citation_allow_badges", "no");
 
 $fieldset_label = ($allow_tags == "yes") ? "Tags" : "";
 $fieldset_label = ($allow_badges == "yes") ? "Badges" : $fieldset_label;
@@ -365,11 +365,11 @@ $pid = Request::getInt('publication', 0);
 					<label>
 						<?php echo Lang::txt('COM_CITATIONS_TAGS'); ?>:
 						<?php
-							$tags_list = Event::trigger('hubzero.onGetMultiEntry', 
+							$tags_list = Event::trigger('hubzero.onGetMultiEntry',
 												array(
-													array('tags', 'tags', 'actags', '', 
+													array('tags', 'tags', 'actags', '',
 														implode(",", $this->tags)
-													)	
+													)
 												)
 											);
 
@@ -387,9 +387,9 @@ $pid = Request::getInt('publication', 0);
 					<label class="badges">
 						<?php echo Lang::txt('COM_CITATIONS_BADGES'); ?>:
 						<?php
-							$badges_list = Event::trigger('hubzero.onGetMultiEntry', 
+							$badges_list = Event::trigger('hubzero.onGetMultiEntry',
 												array(
-													array('tags', 'badges', 'actags1', '', 
+													array('tags', 'badges', 'actags1', '',
 														implode(",", $this->badges)
 													)
 												)
@@ -428,7 +428,7 @@ $pid = Request::getInt('publication', 0);
 						</thead>
 						<tfoot>
 							<tr>
-								<td colspan="3"><a href="#" class="btn icon-add" onclick="HUB.Citations.addRow('assocs');return false;"><?php echo Lang::txt('COM_CITATIONS_ADD_A_ROW'); ?></a></td>
+								<td colspan="3"><button class="btn icon-add" id="add_row"><?php echo Lang::txt('COM_CITATIONS_ADD_A_ROW'); ?></button></td>
 							</tr>
 						</tfoot>
 						<tbody>
@@ -503,7 +503,7 @@ $pid = Request::getInt('publication', 0);
 			<input type="hidden" name="fields[created]" value="<?php echo $this->escape($this->row->created); ?>" />
 			<input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->row->scope); ?>" />
 			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->row->scope_id); ?>" />
-			<input type="hidden" name="fields[published]" value="<?php echo ($this->row->id ? $this->escape($this->row->published) : 1); ?>" />
+			<input type="hidden" name="fields[published]" value="<?php echo ($this->row->id) ? $this->escape($this->row->published) : 1; ?>" />
 			<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="task" value="save" />

@@ -29,7 +29,7 @@ JText::script('COM_USERS_GROUPS_CONFIRM_DELETE');
 		{
 			var f = document.adminForm;
 			var cb='';
-<?php foreach ($this->items as $i=>$item):?>
+<?php foreach ($this->items as $i => $item):?>
 <?php if ($item->user_count > 0):?>
 			cb = f['cb'+<?php echo $i;?>];
 			if (cb && cb.checked) {
@@ -48,9 +48,9 @@ JText::script('COM_USERS_GROUPS_CONFIRM_DELETE');
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('COM_USERS_SEARCH_GROUPS_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo Lang::txt('COM_USERS_SEARCH_IN_GROUPS'); ?>" />
+			<input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo Lang::txt('COM_USERS_SEARCH_IN_GROUPS'); ?>" />
 			<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 	</fieldset>
 
@@ -58,7 +58,7 @@ JText::script('COM_USERS_GROUPS_CONFIRM_DELETE');
 		<thead>
 			<tr>
 				<th>
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
 				</th>
 				<th class="priority-4">
 					<?php echo Lang::txt('JGRID_HEADING_ID'); ?>
@@ -81,7 +81,7 @@ JText::script('COM_USERS_GROUPS_CONFIRM_DELETE');
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
 			$canCreate = $user->authorise('core.create', 'com_users');
-			$canEdit   = $user->authorise('core.edit',   'com_users');
+			$canEdit   = $user->authorise('core.edit', 'com_users');
 			// If this group is super admin and this user is not super admin, $canEdit is false
 			if (!$user->authorise('core.admin') && (JAccess::checkGroup($item->id, 'core.admin')))
 			{

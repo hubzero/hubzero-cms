@@ -55,7 +55,7 @@ $this->js();
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm">
-	<div class="col width-100">
+	<div class="col span12">
 		<?php if ($this->newsletter->id != null) : ?>
 			<a name="distribution"></a>
 			<fieldset class="adminform">

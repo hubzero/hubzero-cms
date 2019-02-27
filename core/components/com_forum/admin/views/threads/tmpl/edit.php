@@ -251,7 +251,7 @@ $this->js();
 	</div>
 
 	<?php if ($canDo->get('core.admin')): ?>
-		<div class="col width-100">
+		<div class="col span12">
 			<fieldset class="panelform">
 				<legend><span><?php echo Lang::txt('COM_FORUM_FIELDSET_RULES'); ?></span></legend>
 				<?php echo $this->form->getLabel('rules'); ?>

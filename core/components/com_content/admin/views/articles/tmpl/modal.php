@@ -55,25 +55,25 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 				<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" size="30" placeholder="<?php echo Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC'); ?>" />
 
 				<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span7">
-				<select name="filter_access" class="inputbox" onchange="this.form.submit()">
+				<select name="filter_access" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
 					<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
 				</select>
 
-				<select name="filter_published" class="inputbox" onchange="this.form.submit()">
+				<select name="filter_published" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
 					<?php echo Html::select('options', Html::grid('publishedOptions'), 'value', 'text', $this->filters['published'], true); ?>
 				</select>
 
-				<select name="filter_category_id" class="inputbox" onchange="this.form.submit()">
+				<select name="filter_category_id" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
 					<?php echo Html::select('options', Html::category('options', 'com_content'), 'value', 'text', $this->filters['category_id']); ?>
 				</select>
 
-				<select name="filter_language" class="inputbox" onchange="this.form.submit()">
+				<select name="filter_language" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
 					<?php echo Html::select('options', Html::contentlanguage('existing', true, true), 'value', 'text', $this->filters['language']); ?>
 				</select>

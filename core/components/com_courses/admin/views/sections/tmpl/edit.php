@@ -367,7 +367,7 @@ $course_id = 0;
 
 		<div id="page-datetime" class="tab">
 		<?php if ($this->offering->units()->total() > 0) { ?>
-			<div class="col width-100">
+			<div class="col span12">
 				<?php if (!$this->row->exists() && !$this->row->get('is_default')) { ?>
 				<p class="info"><?php echo Lang::txt('COM_COURSES_SECTION_DATES_HELP'); ?></p>
 				<?php } ?>

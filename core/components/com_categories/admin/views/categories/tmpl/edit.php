@@ -93,19 +93,6 @@ $this->js();
 					</div>
 				</div>
 
-				<?php /*if ($this->canDo->get('core.admin')): ?>
-					<div class="input-wrap">
-						<span class="faux-label"><?php echo Lang::txt('JGLOBAL_ACTION_PERMISSIONS_LABEL'); ?></span>
-						<div class="button2-left">
-							<div class="blank">
-								<button type="button" onclick="document.location.href='#access-rules';">
-									<?php echo Lang::txt('JGLOBAL_PERMISSIONS_ANCHOR'); ?>
-								</button>
-							</div>
-						</div>
-					</div>
-				<?php endif;*/ ?>
-
 				<div class="input-wrap">
 					<?php echo $this->form->getLabel('language'); ?>
 					<?php echo $this->form->getInput('language'); ?>
@@ -167,7 +154,6 @@ $this->js();
 			</table>
 			<?php echo Html::sliders('start', 'categories-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
 				<?php echo $this->loadTemplate('options'); ?>
-				<div class="clr"></div>
 
 				<?php echo Html::sliders('panel', Lang::txt('JGLOBAL_FIELDSET_METADATA_OPTIONS'), 'meta-options'); ?>
 				<fieldset class="panelform">

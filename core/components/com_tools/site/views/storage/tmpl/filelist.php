@@ -33,7 +33,8 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->css('storage.css');
+$this->css('storage.css')
+	->js('media.js');
 ?>
 	<div id="small-page">
 		<div class="databrowser">
@@ -96,7 +97,7 @@ $this->css('storage.css');
 							</td>
 							<td>
 								<?php if ($dir != '/data' && $dir != '/sessions') { ?>
-									<a class="delete icon-delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefolder&amp;delFolder=<?php echo urlencode($dir); ?>&amp;listdir=<?php echo urlencode($this->listdir); ?>&amp;tmpl=component" target="filer" onclick="return deleteFolder('<?php echo $dir; ?>', <?php echo $numFiles; ?>);" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+									<a class="delete icon-delete delete-folder" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefolder&amp;delFolder=<?php echo urlencode($dir); ?>&amp;listdir=<?php echo urlencode($this->listdir); ?>&amp;tmpl=component" target="filer" data-confirm="<?php echo Lang::txt('Are you sure you want to delete folder "%s"?', $dir); ?>" data-files="<?php echo $numFiles; ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 										<?php echo Lang::txt('JACTION_DELETE'); ?>
 									</a>
 								<?php } ?>
@@ -116,7 +117,7 @@ $this->css('storage.css');
 								<?php echo \Hubzero\Utility\Number::formatBytes(filesize($fullpath)); ?>
 							</td>
 							<td>
-								<a class="delete icon-delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefile&amp;file=<?php echo $name; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component" target="filer" onclick="return deleteFile('<?php echo $name; ?>');" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+								<a class="delete icon-delete delete-file" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefile&amp;file=<?php echo $name; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component" target="filer" data-confirm="<?php echo Lang::txt('Are you sure you want to delete file "%s"?', $name); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 									<?php echo Lang::txt('JACTION_DELETE'); ?>
 								</a>
 							</td>

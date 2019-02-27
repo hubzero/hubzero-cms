@@ -34,15 +34,15 @@
 defined('_HZEXEC_') or die();
 
 //set title
-Toolbar::title(Lang::txt('COM_NEWSLETTER_TEST_SENDING') . ': ' . $this->newsletter->name, 'newsletter.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_TEST_SENDING') . ': ' . $this->newsletter->name, 'newsletter');
 
 //add buttons to toolbar
-Toolbar::custom('dosendtest', 'send','', 'COM_NEWSLETTER_TOOLBAR_SEND_TEST', false);
+Toolbar::custom('dosendtest', 'send', '', 'COM_NEWSLETTER_TOOLBAR_SEND_TEST', false);
 Toolbar::cancel();
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm">
-	<div class="col width-100">
+	<div class="col span12">
 		<?php if ($this->newsletter->id != null) : ?>
 			<a name="distribution"></a>
 			<fieldset class="adminform">

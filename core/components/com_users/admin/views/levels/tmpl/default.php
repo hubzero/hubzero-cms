@@ -26,9 +26,9 @@ $saveOrder	= $listOrder == 'a.ordering';
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('COM_USERS_SEARCH_ACCESS_LEVELS'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo Lang::txt('COM_USERS_SEARCH_TITLE_LEVELS'); ?>" />
+			<input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo Lang::txt('COM_USERS_SEARCH_TITLE_LEVELS'); ?>" />
 			<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_RESET'); ?></button>
+			<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_RESET'); ?></button>
 		</div>
 	</fieldset>
 
@@ -36,7 +36,7 @@ $saveOrder	= $listOrder == 'a.ordering';
 		<thead>
 			<tr>
 				<th>
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
 				</th>
 				<th class="priority-3">
 					<?php echo Lang::txt('JGRID_HEADING_ID'); ?>
@@ -45,9 +45,9 @@ $saveOrder	= $listOrder == 'a.ordering';
 					<?php echo Html::grid('sort', 'COM_USERS_HEADING_LEVEL_NAME', 'a.title', $listDirn, $listOrder); ?>
 				</th>
 				<th>
-					<?php echo Html::grid('sort',  'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
 					<?php if ($canOrder && $saveOrder) :?>
-						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'levels.saveorder'); ?>
+						<?php echo Html::grid('order', $this->items, 'filesave.png', 'levels.saveorder'); ?>
 					<?php endif; ?>
 				</th>
 			</tr>
@@ -63,8 +63,8 @@ $saveOrder	= $listOrder == 'a.ordering';
 		<?php $count = count($this->items); ?>
 		<?php foreach ($this->items as $i => $item) :
 			$ordering  = ($listOrder == 'a.ordering');
-			$canCreate = $user->authorise('core.create',     'com_users');
-			$canEdit   = $user->authorise('core.edit',       'com_users');
+			$canCreate = $user->authorise('core.create', 'com_users');
+			$canEdit   = $user->authorise('core.edit', 'com_users');
 			$canChange = $user->authorise('core.edit.state', 'com_users');
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
