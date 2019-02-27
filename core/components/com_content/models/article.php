@@ -323,14 +323,14 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	 * @param   array   $data  the data being saved
 	 * @return  string
 	 */
-	/*public function automaticPublishDown($data)
+	public function automaticPublishDown($data)
 	{
 		if (!isset($data['publish_down']) || !$data['publish_down'])
 		{
-			$data['publish_down'] = '0000-00-00 00:00:00';
+			$data['publish_down'] = null;
 		}
 		return $data['publish_down'];
-	}*/
+	}
 
 	/**
 	 * Generates automatic modified field value
