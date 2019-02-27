@@ -37,6 +37,8 @@ $no_html = Request::getInt('no_html', 0);
 $base = Request::base(true);
 
 if (!$no_html) {
+	Html::behavior('framework', true);
+
 	$this->css()
 		->js('media.js');
 	?>
@@ -62,7 +64,7 @@ if (!$no_html) {
 								<span><?php echo $this->escape(stripslashes($name)); ?></span>
 							</td>
 							<td>
-								<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deletefile&amp;file=<?php echo $name; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;<?php echo (!$no_html) ? 'tmpl=component' : 'no_html=1'; ?>" <?php if (!$no_html) { ?>data-confirm="<?php echo Lang::txt('Delete file %s?', $name); ?>"<?php } ?> title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+								<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deletefile&amp;file=<?php echo $name; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;<?php echo (!$no_html) ? 'tmpl=component' : 'no_html=1'; ?>" <?php if (!$no_html) { ?>target="filer" data-confirm="<?php echo Lang::txt('Delete file %s?', $name); ?>"<?php } ?> title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 									<?php echo Lang::txt('JACTION_DELETE'); ?>
 								</a>
 							</td>

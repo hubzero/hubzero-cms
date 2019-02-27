@@ -32,10 +32,12 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+Html::behavior('framework', true);
+
 $this->css('component.css')
 	->js('media.js');
 ?>
-<form action="index.php" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
 	<fieldset>
 		<label for="upload">
 			<input type="file" class="option" name="upload" id="upload" />
@@ -73,7 +75,7 @@ $this->css('component.css')
 						<?php echo Route::url('index.php?option=com_resources&id=' . ($this->row->alias ? $this->row->alias : $this->resource) . '&task=download&file=' . $docs[$docName]); ?>
 					</td>
 					<td>
-						<a class="icon-delete delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;file=<?php echo $docs[$docName]; ?>&amp;resource=<?php echo $this->resource; ?>&amp;tmpl=component&amp;subdir=<?php echo $this->subdir; ?>&amp;<?php echo Session::getFormToken(); ?>=1" onclick="return deleteFile('<?php echo $docs[$docName]; ?>');" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+						<a class="icon-delete delete delete-file" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;file=<?php echo $docs[$docName]; ?>&amp;resource=<?php echo $this->resource; ?>&amp;tmpl=component&amp;subdir=<?php echo $this->subdir; ?>&amp;<?php echo Session::getFormToken(); ?>=1" target="filer" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the file "%s"?', $docs[$docName]); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 							<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
 						</a>
 					</td>
