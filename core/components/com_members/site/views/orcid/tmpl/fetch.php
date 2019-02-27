@@ -48,7 +48,7 @@ foreach ($this->records as $record)
 		$orcid_html .= "<div class=\"grid\">";
 			$orcid_html .= "<div class=\"col span4\">";
 				$orcid_html .= "<p class=\"title\">";
-					$orcid_html .= "<a target=\"_blank\" href=\"" . $orcid_url . "\">";
+					$orcid_html .= "<a rel=\"nofollow external\" href=\"" . $orcid_url . "\">";
 							$orcid_html .= $fname . " " . $lname;
 					$orcid_html .= "</a>";
 				$orcid_html .= "</p>";

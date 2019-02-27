@@ -405,7 +405,7 @@ class Newsletter extends Relational
 				if ($pStory->readmore_link)
 				{
 					$readmore_title = ($pStory->readmore_title) ? $pStory->readmore_title : 'Read More &rsaquo;';
-					$campaignPrimaryStories .= "<br /><br /><a href=\"{$pStory->readmore_link}\" target=\"\">{$readmore_title}</a>";
+					$campaignPrimaryStories .= "<br /><br /><a href=\"{$pStory->readmore_link}\">{$readmore_title}</a>";
 				}
 
 				$campaignPrimaryStories .= '</span>';
@@ -429,7 +429,7 @@ class Newsletter extends Relational
 				if ($sStory->readmore_link)
 				{
 					$readmore_title = ($sStory->readmore_title) ? $sStory->readmore_title : 'Read More &rsaquo;';
-					$campaignSecondaryStories .= "<br /><br /><a href=\"{$sStory->readmore_link}\" target=\"\">{$readmore_title}</a>";
+					$campaignSecondaryStories .= "<br /><br /><a href=\"{$sStory->readmore_link}\">{$readmore_title}</a>";
 				}
 
 				$campaignSecondaryStories .= '</span>';

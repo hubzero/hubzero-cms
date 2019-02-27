@@ -109,7 +109,7 @@ Html::behavior('multiselect');
 						</a>
 						<p>
 							<?php if ($this->preview && $item->client_id == '0'): ?>
-								<a href="<?php echo Request::root().'index.php?tp=1&template=' . $item->element; ?>" target="_blank">
+								<a href="<?php echo Request::root().'index.php?tp=1&template=' . $item->element; ?>" rel="noopener" target="_blank">
 									<?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_PREVIEW'); ?>
 								</a>
 							<?php elseif ($item->client_id == '1'): ?>

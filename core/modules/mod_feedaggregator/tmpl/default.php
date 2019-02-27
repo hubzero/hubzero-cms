@@ -36,7 +36,6 @@ defined('_HZEXEC_') or die;
 
 if ($posts != false)
 {
-
 	$actualItems = count($posts);
 	$setItems    = $params->get('itemcount', 5);
 
@@ -49,8 +48,7 @@ if ($posts != false)
 		$totalItems = $setItems;
 	}
 	?>
-
-			<ul class="newsfeed<?php echo $params->get('moduleclass_sfx'); ?>">
+		<ul class="newsfeed<?php echo $params->get('moduleclass_sfx'); ?>">
 			<?php
 			$words = $params->def('word_count', 0);
 			foreach ($posts as $currItem)
@@ -58,10 +56,9 @@ if ($posts != false)
 				// item title
 				?>
 				<li class="newsfeed-item">
-					<a href="<?php echo $currItem->url; ?>" target="_blank">
+					<a href="<?php echo $currItem->url; ?>" rel="nofollow external">
 						<h5><?php echo $currItem->title; ?></h5>
 					</a>
-
 					<?php
 					// item description
 					if ($params->get('showdescription', 1))
@@ -86,9 +83,7 @@ if ($posts != false)
 							}
 						}
 						?>
-
-							<p><?php echo $text; ?></p>
-
+						<p><?php echo $text; ?></p>
 						<?php
 					}
 					?>
@@ -96,7 +91,7 @@ if ($posts != false)
 				<?php
 			}
 			?>
-			</ul>
+		</ul>
 	</div>
 	<?php
 }

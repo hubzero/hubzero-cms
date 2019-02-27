@@ -47,7 +47,7 @@ $pubParams = $this->publication->params;
 		$info = $item->info;
 		if ($item->url)
 		{
-			$info .= ' <a href="' . $item->url . '" target="_blank">' . Lang::txt('Read license terms &rsaquo;') . '</a>';
+			$info .= ' <a href="' . $item->url . '" rel="nofollow external">' . Lang::txt('Read license terms &rsaquo;') . '</a>';
 		}
 
 		$icon = $item->icon;
@@ -67,5 +67,5 @@ $pubParams = $this->publication->params;
 </ul>
 
 <?php if ($this->publication->config()->get('suggest_licence')) { ?>
-	<p class="hint"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_DONT_SEE_YOURS') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_YOU_CAN') ; ?> <a href="<?php echo $this->url . '?action=suggest_license&amp;version=' . $this->publication->get('version_number'); ?>" class="showinbox"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGEST'); ?></a></p>
-<?php } ?>
+	<p class="hint"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_DONT_SEE_YOURS') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_YOU_CAN'); ?> <a href="<?php echo $this->url . '?action=suggest_license&amp;version=' . $this->publication->get('version_number'); ?>" class="showinbox"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGEST'); ?></a></p>
+<?php }

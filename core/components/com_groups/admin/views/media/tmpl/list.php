@@ -52,12 +52,12 @@ $this->css('media.css')
 					?>
 					<tr>
 						<td width="100%">
-							<a class="icon-folder folder" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&dir=' . urlencode($k) . '&gidNumber=' . $this->group->get('gidNumber') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" target="media">
+							<a class="icon-folder folder" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&dir=' . urlencode($k) . '&gidNumber=' . $this->group->get('gidNumber') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>">
 								<?php echo trim($k, DS); ?>
 							</a>
 						</td>
 						<td>
-							<a class="icon-delete delete deletefolder" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefolder&dir=' . urlencode($this->dir) . '&folder=' . urlencode($folder) . '&gidNumber=' . $this->group->get('gidNumber') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" target="media" data-folder="<?php echo basename($folder); ?>" data-files="<?php echo $num_files; ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+							<a class="icon-delete delete deletefolder" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefolder&dir=' . urlencode($this->dir) . '&folder=' . urlencode($folder) . '&gidNumber=' . $this->group->get('gidNumber') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" data-folder="<?php echo basename($folder); ?>" data-files="<?php echo $num_files; ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 								<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
 							</a>
 						</td>
@@ -66,14 +66,14 @@ $this->css('media.css')
 				<?php foreach ($this->docs as $k => $doc) { ?>
 					<tr>
 						<td width="100%">
-							<a download target="_blank" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gidNumber=' . $this->group->get('gidNumber') . '&task=download&file=' . urlencode(substr($k, strlen(PATH_ROOT))) . '&' . Session::getFormToken() . '=1'); ?>" class="icon-file file <?php echo Filesystem::extension($doc); ?>">
+							<a download="download" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gidNumber=' . $this->group->get('gidNumber') . '&task=download&file=' . urlencode(substr($k, strlen(PATH_ROOT))) . '&' . Session::getFormToken() . '=1'); ?>" class="icon-file file <?php echo Filesystem::extension($doc); ?>">
 								<?php
 								$k = substr($k, strlen($this->path));
 								echo $this->escape(trim($k, DS)); ?>
 							</a>
 						</td>
 						<td>
-							<a class="icon-delete delete deletefile" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefile&file=' . urlencode($k) . '&gidNumber=' . $this->group->get('gidNumber') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" target="media" data-file="<?php echo basename($doc); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+							<a class="icon-delete delete deletefile" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefile&file=' . urlencode($k) . '&gidNumber=' . $this->group->get('gidNumber') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" data-file="<?php echo basename($doc); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 								<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
 							</a>
 						</td>

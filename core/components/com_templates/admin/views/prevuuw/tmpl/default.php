@@ -45,7 +45,7 @@ Toolbar::custom('edit', 'back.png', 'back_f2.png', 'Back', false, false);
 		</div>
 		<div class="col span6">
 			<h3>
-				<a href="<?php echo $this->url.'index.php?tp='.$this->tp.'&amp;template='.$this->id; ?>" target="_blank"><?php echo Lang::txt('JBROWSERTARGET_NEW'); ?></a>
+				<a href="<?php echo $this->url.'index.php?tp='.$this->tp.'&amp;template='.$this->id; ?>" rel="noopener" target="_blank"><?php echo Lang::txt('JBROWSERTARGET_NEW'); ?></a>
 			</h3>
 		</div>
 	</div>

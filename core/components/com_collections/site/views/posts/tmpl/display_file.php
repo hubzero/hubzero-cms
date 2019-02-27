@@ -89,7 +89,7 @@ if ($assets->total() > 0)
 				</div>
 			<?php else : ?>
 				<div class="holder">
-					<a target="_blank" class="img-link" data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo $imgPath; ?>" data-download="<?php echo $imgPath; ?>" data-downloadtext="<?php echo Lang::txt('COM_COLLECTIONS_DOWNLOAD'); ?>">
+					<a rel="nofollow" download="download" class="img-link" data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo $imgPath; ?>" data-download="<?php echo $imgPath; ?>" data-downloadtext="<?php echo Lang::txt('COM_COLLECTIONS_DOWNLOAD'); ?>">
 						<img src="<?php echo $imgPath; ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : Lang::txt('COM_COLLECTIONS_IMAGE_ALT', ltrim($first->get('filename'), DS)); ?>" class="img" height="<?php echo (!isset($this->actual) || !$this->actual) ? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP) : $originalHeight; ?>" />
 					</a>
 				</div>
