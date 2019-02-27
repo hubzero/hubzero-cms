@@ -51,7 +51,6 @@ $model = new \Components\Publications\Models\Publication();
 $total = $model->entries('count', $filters);
 
 // Run query with limit
-$query = 
 $results = $model->entries('list', $filters);
 
 // Initiate paging
