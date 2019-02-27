@@ -33,6 +33,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+Html::behavior('framework', true);
+
 $this->js('media.js');
 ?>
 	<div id="attachments">
