@@ -122,7 +122,7 @@ class Redirect
 		$html  = '<span>' . Lang::txt($state[3]) . '</span>';
 		if ($canChange)
 		{
-			$html = '<a class="state ' . $state[0] . '" href="#" onclick="return listItemTask(\'cb'.$i.'\',\''.$state[1].'\')" title="'.Lang::txt($state[3]).'">'. $html.'</a>';
+			$html = '<a class="grid-action state ' . $state[0] . '" href="#" data-id="cb'.$i.'" data-task="'.$state[1].'" title="'.Lang::txt($state[3]).'">'. $html.'</a>';
 		}
 
 		return $html;

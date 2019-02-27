@@ -71,7 +71,8 @@ $this->js();
 	<fieldset id="filter-bar" class="filter clearfix">
 	</fieldset>
 <?php } ?>
-	<div class="col width-60 fltlft">
+	<div class="grid">
+	<div class="col span7">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
@@ -102,7 +103,7 @@ $this->js();
 			</fieldset>
 		</fieldset>
 	</div>
-	<div class="col width-40 fltrt">
+	<div class="col span5">
 		<table class="meta">
 			<tbody>
 				<tr>
@@ -116,7 +117,7 @@ $this->js();
 			</tbody>
 		</table>
 	</div>
-	<div class="clr"></div>
+	</div>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

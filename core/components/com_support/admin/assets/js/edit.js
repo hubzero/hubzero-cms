@@ -3,6 +3,10 @@ Joomla.submitbutton = function(task) {
 
 	var frm = document.getElementById('item-form');
 
+	if (!frm) {
+		frm = document.getElementById('component-form');
+	}
+
 	if (frm) {
 		if (task == 'cancel' || document.formvalidator.isValid(frm)) {
 			Joomla.submitform(task, frm);
@@ -50,4 +54,14 @@ jQuery(document).ready(function($){
 			}
 		});
 	}
+
+	$('#btn-apply,#btn-save').on('click', function(e){
+		Joomla.submitbutton($(this).attr('data-task'));
+	});
+	$('#btn-cancel').on('click', function(e){
+		if ($(this).attr('data-refresh') == 'true') {
+			window.parent.location.href = window.parent.location.href;
+		}
+		window.parent.$.fancybox.close();
+	});
 });

@@ -53,12 +53,17 @@ HUB.Modules.ReportProblems = {
 			settings.toggle = trigger;
 		}
 
-		if (!$(settings.pane)) {
+		if (!$(settings.pane).length) {
 			return;
-		} else {
-			$(settings.pane).hide();
-			$(settings.pane).css('height', 'auto');
 		}
+
+		$(settings.pane)
+			.hide()
+			.css('height', 'auto')
+			.on('click', 'button.btn-reset', function (e) {
+				e.preventDefault();
+				ticket.resetForm();
+			});
 
 		$('<a href="#" id="help-btn-close" alt="Close">Close</a>').on('click', function (e) {
 			e.preventDefault();

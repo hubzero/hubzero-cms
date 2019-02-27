@@ -168,7 +168,7 @@ $this->js();
 
 	<?php /*
 		<?php if ($canDo->get('core.admin')): ?>
-			<div class="col width-100 fltlft">
+			<div class="col span12">
 				<fieldset class="panelform">
 					<?php echo $this->form->getLabel('rules'); ?>
 					<?php echo $this->form->getInput('rules'); ?>

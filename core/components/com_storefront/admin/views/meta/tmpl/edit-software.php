@@ -61,8 +61,9 @@ if (empty($this->meta->globalDownloadLimit))
 
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+	<div class="grid">
+	<div class="col span7">
 		<fieldset class="adminform">
 			<legend><span><?php echo 'Software download options'; ?></span></legend>
 
@@ -85,7 +86,7 @@ if (empty($this->meta->globalDownloadLimit))
 			</div>
 		</fieldset>
 	</div>
-	<div class="col width-40 fltrt">
+	<div class="col span5">
 
 		<table class="meta">
 			<tbody>
@@ -107,11 +108,11 @@ if (empty($this->meta->globalDownloadLimit))
 		</table>
 
 	</div>
-	<div class="clr"></div>
+	</div>
 
 	<?php /*
 		<?php if ($canDo->get('core.admin')): ?>
-			<div class="col width-100 fltlft">
+			<div class="col span12">
 				<fieldset class="panelform">
 					<?php echo $this->form->getLabel('rules'); ?>
 					<?php echo $this->form->getInput('rules'); ?>

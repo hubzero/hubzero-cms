@@ -75,7 +75,7 @@ $nextDay   = date("d", mktime(0, 0, 0, $month+1, $day, $year));
 		</div>
 	</fieldset>
 <?php } ?>
-	<div class="col width-100">
+	<div class="col span12">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 

@@ -66,8 +66,8 @@ $this->css()
 <?php if ($this->row->get('id')) { ?>
 	<nav role="navigation" class="sub-navigation">
 		<ul id="submenu" class="item-nav">
-			<li><a href="#" onclick="return false;" id="idetails" class="active"><?php echo Lang::txt('JDETAILS'); ?></a></li>
-			<li><a href="#" onclick="return false;" id="iposts"><?php echo Lang::txt('COM_COLLECTIONS_POSTS'); ?></a></li>
+			<li><a href="#page-idetails" id="idetails" class="active"><?php echo Lang::txt('JDETAILS'); ?></a></li>
+			<li><a href="#page-iposts" id="iposts"><?php echo Lang::txt('COM_COLLECTIONS_POSTS'); ?></a></li>
 		</ul>
 	</nav><!-- / .sub-navigation -->
 

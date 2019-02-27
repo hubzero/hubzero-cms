@@ -45,7 +45,7 @@ if (!$this->no_html)
 		<?php } ?>
 		<div>
 			<p><?php echo Lang::txt('COM_SUPPORT_YOUR_TICKET'); ?> # <span><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket); ?>"><?php echo $this->ticket; ?></a></span></p>
-			<p><button onclick="javascript:HUB.Modules.ReportProblems.resetForm();" title="<?php echo Lang::txt('COM_SUPPORT_NEW_REPORT'); ?>"><?php echo Lang::txt('COM_SUPPORT_NEW_REPORT'); ?></button></p>
+			<p><button class="btn btn-reset" title="<?php echo Lang::txt('COM_SUPPORT_NEW_REPORT'); ?>"><?php echo Lang::txt('COM_SUPPORT_NEW_REPORT'); ?></button></p>
 		</div>
 		<p>
 			<?php echo Lang::txt('COM_SUPPORT_TROUBLE_THANKS'); ?><br /><br />
@@ -85,4 +85,4 @@ if (!$this->no_html)
 			</div><!-- / .col span-half omega -->
 		</div><!-- / .grid -->
 	</section><!-- / .main section -->
-<?php } ?>
+<?php }

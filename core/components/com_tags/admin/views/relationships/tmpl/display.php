@@ -79,7 +79,7 @@ $this->js('d3/d3.min.js')
 </fieldset>
 
 <div id="metadata-cont">
-	<div class="col width-100">
+	<div class="col span12">
 		<form id="metadata" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post">
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_TAGS_RELATIONSHIP_METADATA'); ?></span></legend>

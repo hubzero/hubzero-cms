@@ -82,6 +82,8 @@ Html::addIncludePath(Component::path($this->option) . '/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('multiselect');
 
+$this->js();
+
 $userId    = User::get('id');
 $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);

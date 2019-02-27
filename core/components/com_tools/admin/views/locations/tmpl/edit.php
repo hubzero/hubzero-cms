@@ -317,7 +317,7 @@ $countries = array(
 		</div>
 	</fieldset>
 <?php } ?>
-	<div class="col width-100">
+	<div class="col span12">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
