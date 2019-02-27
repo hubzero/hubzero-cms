@@ -37,11 +37,7 @@ defined('_HZEXEC_') or die();
 \Hubzero\Document\Assets::addComponentStylesheet('com_users', 'login.css');
 \Hubzero\Document\Assets::addComponentStylesheet('com_users', 'providers.css');
 \Hubzero\Document\Assets::addComponentScript('com_users', 'login');
-
-\Hubzero\Document\Assets::addSystemStylesheet('uniform.css');
-\Hubzero\Document\Assets::addSystemScript('jquery.uniform');
 \Hubzero\Document\Assets::addSystemScript('jquery.hoverIntent');
-\Hubzero\Document\Assets::addSystemScript('placeholder');
 
 $hash  = App::hash(App::get('client')->name . ':authenticator');
 

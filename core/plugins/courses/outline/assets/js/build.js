@@ -230,9 +230,6 @@ HUB.CoursesOutline = {
 				// Refresh sortable list to include new items
 				sortableAssets.sortable('refresh');
 			}
-
-			// Uniform checkboxes
-			$(selector + " .next-step-publish .uniform").uniform();
 		},
 
 		/*
@@ -574,8 +571,6 @@ HUB.CoursesOutline = {
 
 										// Reset check box
 										t.attr('checked', false);
-										$.uniform.restore(t);
-										t.uniform();
 									});
 
 									// Listen for deployment create call from iframe
@@ -696,16 +691,13 @@ HUB.CoursesOutline = {
 
 							assetslist.append(html);
 
-							if(assetslist.find('li:first').hasClass('nofiles'))
+							if (assetslist.find('li:first').hasClass('nofiles'))
 							{
 								assetslist.find('li:first').remove();
 							}
 
 							html.find('span.published-label-text').html('Mark as reviewed and publish?');
 							html.removeClass('published').addClass('notpublished');
-							html.find('input.uniform').attr('checked', false);
-							$.uniform.restore(html.find('.uniform'));
-							html.find('.uniform').uniform();
 
 							html.show('slide', 'slow');
 						});
@@ -1227,7 +1219,7 @@ HUB.CoursesOutline = {
 						'<span class="next-step-publish">',
 						'<label class="published-label" for="published">',
 							'<span class="published-label-text">Mark as reviewed and publish?</span>',
-							'<input class="uniform published-checkbox" name="published" type="checkbox" />',
+							'<input class="published-checkbox" name="published" type="checkbox" />',
 							'<input type="hidden" class="asset_id" name="id" value="<%= asset_id %>" />',
 							'<input type="hidden" name="course_id" value="<%= course_id %>" />',
 							'<input type="hidden" name="scope_id" value="<%= scope_id %>" />',

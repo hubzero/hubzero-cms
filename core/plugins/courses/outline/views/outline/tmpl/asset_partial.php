@@ -67,7 +67,7 @@ if ($this->a->get('type') == 'video')
 			<label class="published-label" for="published">
 				<span class="published-label-text"><?php echo ($this->a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published' ?></span>
 				<input
-					class="uniform published-checkbox"
+					class="published-checkbox"
 					name="published"
 					type="checkbox"
 					<?php echo ($this->a->get('state') == 0) ? '' : 'checked="checked"' ?> />
