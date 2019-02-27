@@ -2,7 +2,7 @@
 
 $toolComponentPath = Component::path('com_tools');
 
-require_once  "$toolComponentPath/models/orm/handler.php";
+require_once "$toolComponentPath/models/orm/handler.php";
 
 use \Components\Tools\Models\Orm\Handler;
 use \Components\Projects\Helpers\Html;
