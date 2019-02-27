@@ -25,31 +25,31 @@ $loggeduser = User::getInstance();
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('COM_USERS_SEARCH_USERS'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo Lang::txt('COM_USERS_SEARCH_USERS'); ?>" />
+			<input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo Lang::txt('COM_USERS_SEARCH_USERS'); ?>" />
 			<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_RESET'); ?></button>
+			<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_RESET'); ?></button>
 		</div>
 		<div class="filter-select fltrt">
 			<label for="filter_state">
 				<?php echo Lang::txt('COM_USERS_FILTER_LABEL'); ?>
 			</label>
 
-			<select name="filter_state" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_state" class="inputbox filter filter-submit">
 				<option value="*"><?php echo Lang::txt('COM_USERS_FILTER_STATE');?></option>
 				<?php echo Html::select('options', UsersHelper::getStateOptions(), 'value', 'text', $this->state->get('filter.state'));?>
 			</select>
 
-			<select name="filter_approved" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_approved" class="inputbox filter filter-submit">
 				<option value="*"><?php echo Lang::txt('COM_USERS_FILTER_APPROVED');?></option>
 				<?php echo Html::select('options', UsersHelper::getApprovedOptions(), 'value', 'text', $this->state->get('filter.approved'));?>
 			</select>
 
-			<select name="filter_group_id" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_group_id" class="inputbox filter filter-submit">
 				<option value=""><?php echo Lang::txt('COM_USERS_FILTER_USERGROUP');?></option>
 				<?php echo Html::select('options', UsersHelper::getGroups(), 'value', 'text', $this->state->get('filter.group_id'));?>
 			</select>
 
-			<select name="filter_range" id="filter_range" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_range" id="filter_range" class="inputbox filter filter-submit">
 				<option value=""><?php echo Lang::txt('COM_USERS_OPTION_FILTER_DATE');?></option>
 				<?php echo Html::select('options', Usershelper::getRangeOptions(), 'value', 'text', $this->state->get('filter.range'));?>
 			</select>
@@ -60,7 +60,7 @@ $loggeduser = User::getInstance();
 		<thead>
 			<tr>
 				<th>
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
 				</th>
 				<th class="left">
 					<?php echo Html::grid('sort', 'COM_USERS_HEADING_NAME', 'a.name', $listDirn, $listOrder); ?>
@@ -109,7 +109,8 @@ $loggeduser = User::getInstance();
 				$canChange = false;
 			}
 		?>
-			<tr class="row<?php echo $i % 2; if (!$canChange) { echo ' disabled'; } ?>">
+			<tr class="row<?php echo $i % 2;
+				if (!$canChange) { echo ' disabled'; } ?>">
 				<td class="center">
 					<?php if ($canEdit) : ?>
 						<?php echo Html::grid('id', $i, $item->id); ?>

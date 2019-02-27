@@ -68,18 +68,18 @@ Html::behavior('multiselect');
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_TEMPLATES_STYLES_FILTER_SEARCH_DESC'); ?>" />
+			<input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_TEMPLATES_STYLES_FILTER_SEARCH_DESC'); ?>" />
 
 			<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="filter-select fltrt">
-			<select name="filter_template" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_template" class="inputbox filter filter-submit">
 				<option value="0"><?php echo Lang::txt('COM_TEMPLATES_FILTER_TEMPLATE'); ?></option>
 				<?php echo Html::select('options', \Components\Templates\Helpers\Utilities::getTemplateOptions($this->filters['client_id']), 'value', 'text', $this->filters['template']); ?>
 			</select>
 
-			<select name="filter_client_id" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_client_id" class="inputbox filter filter-submit">
 				<option value="*"><?php echo Lang::txt('JGLOBAL_FILTER_CLIENT'); ?></option>
 				<?php echo Html::select('options', \Components\Templates\Helpers\Utilities::getClientOptions(), 'value', 'text', $this->filters['client_id']); ?>
 			</select>

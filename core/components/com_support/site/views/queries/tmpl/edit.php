@@ -42,7 +42,7 @@ if (!$tmpl && !$no_html) {
 	$this->css('conditions.css');
 ?>
 	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
-		<div class="col width-100">
+		<div class="col span12">
 			<fieldset class="adminform">
 				<legend><?php echo Lang::txt('JDETAILS'); ?></legend>
 

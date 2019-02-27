@@ -78,7 +78,7 @@ defined('_HZEXEC_') or die();
 
 		if ($this->config->get('show_sizes', 0) == 2)
 		{
-			$tll[$tag->get('tag')] = '<li' . $class . '><a href="#" onclick="addtag(\'' . $this->escape($tag->get('tag')) . '\');">' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' <span>' . $tag->get('count') . '</span></a></li>';
+			$tll[$tag->get('tag')] = '<li' . $class . '><a href="' . Route::url($this->base . '&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . $append) . '" data-tag="' . $this->escape($tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' <span>' . $tag->get('count') . '</span></a></li>';
 		}
 		else if (isset($this->filters))
 		{

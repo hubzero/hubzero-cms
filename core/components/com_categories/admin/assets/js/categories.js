@@ -1,3 +1,9 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_categories/admin/assets/js/categories.js
+ * @copyright   Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
 
 Joomla.submitbutton = function(task) {
 	$(document).trigger('editorSave');
@@ -16,7 +22,7 @@ Joomla.submitbutton = function(task) {
 jQuery(document).ready(function ($) {
 	$('#btn-batch-submit')
 		.on('click', function (e){
-			Joomla.submitbutton('article.batch');
+			return Joomla.submitbutton('category.batch');
 		});
 
 	$('#btn-batch-clear')

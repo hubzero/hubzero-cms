@@ -25,7 +25,18 @@ function addtag(tag)
 jQuery(document).ready(function($){
 	$('.addtag').on('click', function(e){
 		e.preventDefault();
-		addtag($(this.attr('data-tag'));
+		addtag($(this).attr('data-tag'));
+	});
+
+	$('#reset_ranking,#reset_rating,#reset_hits').on('click', function(e){
+		e.preventDefault();
+		Joomla.submitbutton($(this).attr('data-task'));
+	});
+
+	$('.btn-ratings').on('click', function(e){
+		e.preventDefault();
+		window.open($(this).attr('href'), 'ratings', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=400,height=480,directories=no,location=no');
+		return false;
 	});
 
 	var Fields = {

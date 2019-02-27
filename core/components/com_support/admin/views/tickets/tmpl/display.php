@@ -170,13 +170,13 @@ $this->css()
 						</ul>
 						<fieldset id="filter-bar">
 							<label for="filter_search"><?php echo Lang::txt('COM_SUPPORT_FIND'); ?>:</label>
-							<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_SUPPORT_FIND_IN_QUERY_PLACEHOLDER'); ?>" />
+							<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_SUPPORT_FIND_IN_QUERY_PLACEHOLDER'); ?>" />
 
 							<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
 							<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sortdir']); ?>" />
 							<input type="hidden" name="show" value="<?php echo $this->escape($this->filters['show']); ?>" />
 
-							<button onclick="this.form.submit();"><?php echo Lang::txt('COM_SUPPORT_GO'); ?></button>
+							<button type="submit"><?php echo Lang::txt('COM_SUPPORT_GO'); ?></button>
 						</fieldset>
 					</div>
 
@@ -239,7 +239,7 @@ $this->css()
 						<li class="<?php echo !$row->isOpen() ? 'closed' : 'open'; ?>" data-id="<?php echo $row->get('id'); ?>" id="ticket-<?php echo $row->get('id'); ?>">
 							<div class="ticket-wrap status-<?php echo $row->status->get('id'); ?>">
 								<p>
-									<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
+									<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
 									<span class="ticket-id">
 										# <?php echo $row->get('id'); ?>
 									</span>

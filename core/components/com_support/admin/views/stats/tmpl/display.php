@@ -600,7 +600,7 @@ $base = rtrim($base, '/');
 				}
 			}
 		?>
-			</div><!-- / .col width-50 fltrt -->
+			</div><!-- / .col span6 -->
 			</div>
 		<?php
 		}

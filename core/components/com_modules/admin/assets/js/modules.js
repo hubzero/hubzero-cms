@@ -22,6 +22,19 @@ jQuery(document).ready(function($){
 			validate();
 		});
 	}
+
+	$('#btn-batch-submit')
+		.on('click', function (e){
+			Joomla.submitbutton('batch');
+		});
+
+	$('#btn-batch-clear')
+		.on('click', function (e){
+			e.preventDefault();
+			$('#batch-position-id').val('');
+			$('#batch-access').val('');
+			$('#batch-language-id').val('');
+		});
 });
 
 function validate(){

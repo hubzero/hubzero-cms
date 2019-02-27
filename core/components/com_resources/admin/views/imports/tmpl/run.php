@@ -94,7 +94,7 @@ $this->css('import');
 							<div class="resource-data">
 								<div class="grid">
 									{{#if record.errors}}
-										<div class="col width-100">
+										<div class="col span12">
 											<div class="errors">
 												<strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_ERRORMESSAGE'); ?></strong>
 												<ol>
@@ -107,7 +107,7 @@ $this->css('import');
 									{{/if}}
 
 									{{#if record.notices}}
-										<div class="col width-100">
+										<div class="col span12">
 											<div class="notices">
 												<strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_NOTICEMESSAGE'); ?></strong>
 												<ol>

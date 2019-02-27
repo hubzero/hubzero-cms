@@ -84,7 +84,7 @@ function submitbutton(pressbutton)
 		</div>
 	</fieldset>
 <?php } ?>
-	<div class="col width-100">
+	<div class="col span12">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_GROUPS_DETAILS'); ?></span></legend>
 

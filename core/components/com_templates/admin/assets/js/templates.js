@@ -11,3 +11,13 @@ Joomla.submitbutton = function(task) {
 		}
 	}
 }
+
+jQuery(document).ready(function($){
+	$('.jform-rightbtn').on('click', function(e){
+		e.preventDefault();
+
+		$('.chk-menulink').each(function(i, el) {
+			el.checked = !el.checked;
+		});
+	});
+});

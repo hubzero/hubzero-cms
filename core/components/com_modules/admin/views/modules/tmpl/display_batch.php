@@ -56,10 +56,10 @@ $published = $this->filters['state'];
 			<?php endif; ?>
 
 			<div class="input-wrap">
-				<button type="submit" onclick="Joomla.submitbutton('batch');">
+				<button type="submit" id="btn-batch-submit">
 					<?php echo Lang::txt('JGLOBAL_BATCH_PROCESS'); ?>
 				</button>
-				<button type="button" onclick="$('#batch-position-id').val('');$('#batch-access').val('');$('#batch-language-id').val('');">
+				<button type="button" id="btn-batch-clear">
 					<?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?>
 				</button>
 			</div>

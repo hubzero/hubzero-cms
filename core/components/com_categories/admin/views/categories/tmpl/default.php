@@ -75,9 +75,11 @@ if ($this->canDo->get('core.admin'))
 Toolbar::spacer();
 Toolbar::help('categories');
 
-Html::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+Html::addIncludePath(PATH_COMPONENT . '/helpers/html');
 Html::behavior('multiselect');
 Html::behavior('tooltip');
+
+$this->js();
 ?>
 <form action="<?php echo Route::url('index.php?option=com_categories&view=categories');?>" method="post" name="adminForm" id="adminForm">
 

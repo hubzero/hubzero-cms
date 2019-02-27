@@ -33,7 +33,8 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->css('storage.css');
+$this->css('storage.css')
+	->js('media.js');
 ?>
 	<div id="small-page">
 		<div class="databrowser">
@@ -97,6 +98,7 @@ $this->css('storage.css');
 							<td>
 								<?php if ($dir != '/data' && $dir != '/sessions') { ?>
 									<a class="delete icon-delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefolder&amp;delFolder=<?php echo urlencode($dir); ?>&amp;listdir=<?php echo urlencode($this->listdir); ?>&amp;tmpl=component" onclick="return deleteFolder('<?php echo $dir; ?>', <?php echo $numFiles; ?>);" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+
 										<?php echo Lang::txt('JACTION_DELETE'); ?>
 									</a>
 								<?php } ?>
@@ -117,6 +119,7 @@ $this->css('storage.css');
 							</td>
 							<td>
 								<a class="delete icon-delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefile&amp;file=<?php echo $name; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;tmpl=component" onclick="return deleteFile('<?php echo $name; ?>');" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+
 									<?php echo Lang::txt('JACTION_DELETE'); ?>
 								</a>
 							</td>

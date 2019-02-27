@@ -32,7 +32,8 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->css('component.css');
+$this->css('component.css')
+	->js('media.js');
 ?>
 <form action="index.php" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
 	<fieldset>

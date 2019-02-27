@@ -288,7 +288,7 @@ if ($secondaries->count() > 0)
 
 	<hr />
 
-	<div class="col width-100">
+	<div class="col span12">
 		<?php if ($this->newsletter->id != null) : ?>
 			<?php if ($this->newsletter->template_id == '-1' || (!$this->newsletter->template_id && $this->newsletter->content != '')) : ?>
 				<fieldset class="adminform">

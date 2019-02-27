@@ -118,9 +118,4 @@ function doFileoptions()
 		}
 	}
 }
-function popratings()
-{
-	window.open("<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ratings&id=' . $this->row->id . '&no_html=1', false); ?>", 'ratings', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=400,height=480,directories=no,location=no');
-	return false;
-}
 </script>

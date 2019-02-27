@@ -48,7 +48,8 @@ $this->css()
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-40 fltlft">
+	<div class="grid">
+	<div class="col span5">
 		<fieldset class="adminform">
 			<legend><span>Order Details</span></legend>
 
@@ -154,7 +155,7 @@ $this->css()
 		}
 		?>
 	</div>
-	<div class="col width-60 fltrt">
+	<div class="col span7">
 		<fieldset class="adminform">
 			<legend><span>Items Ordered</span></legend>
 
@@ -256,7 +257,7 @@ $this->css()
 		};
 		?>
 	</div>
-	<div class="clr"></div>
+	</div>
 
 	<input type="hidden" name="id" value="<?php echo $this->tId; ?>" />
 	<input type="hidden" name="task" value="edit" />
