@@ -123,7 +123,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		// The output array we're returning
 		$arr = array(
 			'html'     => '',
-			'metadata' => ''
+			'metadata' => array()
 		);
 
 		// Get this area details
