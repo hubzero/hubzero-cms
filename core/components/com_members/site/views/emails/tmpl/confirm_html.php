@@ -37,9 +37,9 @@ $this->baseURL = rtrim($this->baseURL, '/');
 
 $link = Config::get('sef') && App::isAdmin()
 	? '/members/confirm?confirm=' . -$this->confirm
-	: Route::url('index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->confirm . '&email=' . urlencode($this->email));
+	: Route::urlForClient('site', 'index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->confirm . '&email=' . urlencode($this->email));
 $link = $this->baseURL . $link;
-$link = str_replace('/administrator', '', $this->baseURL);
+$link = str_replace('/administrator', '', $link);
 ?>
 	<!-- Start Header -->
 	<table class="tbl-header" width="100%" cellpadding="0" cellspacing="0" border="0">

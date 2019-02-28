@@ -37,8 +37,8 @@ $this->baseURL = rtrim($this->baseURL, '/');
 
 $link = $this->baseURL . Route::urlForClient('site', 'index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->xprofile->get('activation') . '&email=' . urlencode($this->xprofile->get('email')));
 
-$link = $this->baseURL . $link;
-$link = str_replace('/administrator', '', $this->baseURL);
+//$link = $this->baseURL . $link;
+$link = str_replace('/administrator', '', $link);
 ?>
 	<!-- Start Header -->
 	<table class="tbl-header" width="100%" cellpadding="0" cellspacing="0" border="0">
