@@ -108,8 +108,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		// The output array we're returning
 		$arr = array(
-			'html'=>'',
-			'metadata'=>''
+			'html' => '',
+			'metadata' => array()
 		);
 
 		//get this area details

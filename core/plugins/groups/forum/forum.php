@@ -115,7 +115,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// The output array we're returning
 		$arr = array(
-			'html'=>'',
+			'html' => '',
+			'metadata' => array(),
 			'name' => $active
 		);
 

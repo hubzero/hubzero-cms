@@ -46,21 +46,24 @@ class plgGroupsSearch extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Trigger onAddIndex to update search index.
-	 * @param	object $before group object before any changes
-	 * @param 	object $group group object including changes made during most recent save.
-	 * @return	void
+	 *
+	 * @param   object  $before  group object before any changes
+	 * @param   object  $group   group object including changes made during most recent save.
+	 * @return  void
 	 */
 	public function onGroupAfterSave($before, $group)
 	{
 		$groupId = $group->gidNumber;
+
 		include_once Component::path('com_groups') . '/models/orm/group.php';
+
 		$ormGroup = Components\Groups\Models\Orm\Group::one($groupId);
 		$attributes = $ormGroup->getAttributes();
+
 		if ($ormGroup)
 		{
 			$table = $ormGroup->getTableName();
 			Event::trigger('search.onAddIndex', array($table, $ormGroup));
 		}
 	}
-
 }

@@ -132,7 +132,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// The output array we're returning
 		$arr = array(
 			'html'     => '',
-			'metadata' => ''
+			'metadata' => array()
 		);
 
 		// get this area details
