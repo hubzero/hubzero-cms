@@ -8,7 +8,7 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for changing DATETIME fields default to NULL for com_modules
  **/
-class Migration20190221000000ComMessages extends Base
+class Migration20190221000000ComModules extends Base
 {
 	/**
 	 * List of tables and their datetime fields
