@@ -657,6 +657,53 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Get first date range with data
+	 *
+	 * @param   string  $period
+	 * @return  string
+	 */
+	public function getDateWithData($period)
+	{
+		$period = intval($period);
+		$dthis  = Request::getString('dthis');
+		if (!preg_match('/[0-9]{4}\-[0-9]{2}/', $dthis))
+		{
+			$dthis = '';
+		}
+
+		if (!$dthis)
+		{
+			$cur_year  = floor(date("Y"));
+			$cur_month = floor(date("n"));
+			$year_data_start = 2000;
+			$months = array(
+				"01" => "Jan", "02" => "Feb", "03" => "Mar", "04" => "Apr", "05" => "May", "06" => "Jun",
+				"07" => "Jul", "08" => "Aug", "09" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec"
+			);
+			$monthsReverse = array_reverse($months, true);
+
+			for ($i = $cur_year; $i >= $year_data_start; $i--)
+			{
+				foreach ($monthsReverse as $key => $month)
+				{
+					$value = $i . '-' . $key;
+					if ($this->check_for_data($value, $period))
+					{
+						$dthis = $value;
+						break;
+					}
+				}
+				if ($dthis)
+				{
+					break;
+				}
+			}
+		}
+
+		return $dthis;
+	}
+
+	/**
 	 * Event call for displaying usage data
 	 *
 	 * @param   string $option         Component name
@@ -683,7 +730,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 
 		// Ensure the database table(s) exist
 		$tables = $database->getTableList();
-		$table = $database->getPrefix() . 'stats_tops';
+		$table  = $database->getPrefix() . 'stats_tops';
 		if (!in_array($table, $tables))
 		{
 			return '<p class="error">' . Lang::txt('Error: Required database table not found . ') . '</p>';
@@ -695,11 +742,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$period = Request::getString('period', '12');
-		$dthis  = Request::getString('dthis', date('Y') . '-' . date('m'));
-		if (!preg_match('/[0-9]{4}\-[0-9]{2}/', $dthis))
-		{
-			$dthis = date('Y') . '-' . date('m');
-		}
+		$dthis  = $this->getDateWithData($period);
 		$s_top  = Request::getInt('top', '2');
 
 		$html = '';
