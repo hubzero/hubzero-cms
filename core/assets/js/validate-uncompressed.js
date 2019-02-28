@@ -180,7 +180,8 @@ var JFormValidator = function() {
 			var labels = $('label');
 			labels.each(function(label){
 				label = $(label);
-				if (label.attr('for') == el.attr('id')) {
+				if (label.attr('for') != undefined
+				 && label.attr('for') == el.attr('id')) {
 					el.labelref = label;
 				}
 			});
@@ -190,16 +191,16 @@ var JFormValidator = function() {
 		if (state == false) {
 			el.addClass('invalid');
 			el.attr('aria-invalid', 'true');
-			if (el.labelref) {
+			if (el.labelref != undefined) {
 				$(el.labelref).addClass('invalid');
 				$(el.labelref).attr('aria-invalid', 'true');
 			}
 		} else {
 			el.removeClass('invalid');
 			el.attr('aria-invalid', 'false');
-			if (el.labelref) {
-				$(el.labelref).removeClass('invalid');
-				$(el.labelref).attr('aria-invalid', 'false');
+			if (el.labelref != undefined) {
+				el.labelref.removeClass('invalid');
+				el.labelref.attr('aria-invalid', 'false');
 			}
 		}
 	};
