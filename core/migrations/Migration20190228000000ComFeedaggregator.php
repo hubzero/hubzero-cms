@@ -6,15 +6,43 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for installing feedaggregator tables
+ * Migration script for un-installing com_feedaggregator and associated extensions
  **/
-class Migration20170901000000ComFeedaggregator extends Base
+class Migration20190228000000ComFeedaggregator extends Base
 {
 	/**
 	 * Up
 	 **/
 	public function up()
 	{
+		$this->deleteComponentEntry('feedaggregator');
+
+		if ($this->db->tableExists('#__feedaggregator_feeds'))
+		{
+			$query = "DROP TABLE IF EXISTS `#__feedaggregator_feeds`;";
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
+
+		if ($this->db->tableExists('#__feedaggregator_posts'))
+		{
+			$query = "DROP TABLE IF EXISTS `#__feedaggregator_posts`;";
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
+
+		$this->deletePluginEntry('newsletter', 'feedaggregator');
+
+		$this->deleteModuleEntry('mod_feedaggregator');
+	}
+
+	/**
+	 * Down
+	 **/
+	public function down()
+	{
+		$this->addComponentEntry('feedaggregator');
+
 		if (!$this->db->tableExists('#__feedaggregator_feeds'))
 		{
 			$query = "CREATE TABLE `#__feedaggregator_feeds` (
@@ -49,25 +77,9 @@ class Migration20170901000000ComFeedaggregator extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-	}
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__feedaggregator_feeds'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__feedaggregator_feeds`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+		$this->addPluginEntry('newsletter', 'feedaggregator');
 
-		if ($this->db->tableExists('#__feedaggregator_posts'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__feedaggregator_posts`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+		$this->addModuleEntry('mod_feedaggregator');
 	}
 }
