@@ -19,21 +19,21 @@ class Migration20190221083400ComDeveloper extends Base
 		{
 			if (!$this->db->tableHasKey('#__developer_access_tokens', 'idx_application_id'))
 			{
-				$query = "ALTER IGNORE TABLE `#__developer_access_tokens` ADD INDEX `idx_application_id` (`application_id`)";
+				$query = "ALTER TABLE `#__developer_access_tokens` ADD INDEX `idx_application_id` (`application_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__developer_access_tokens', 'idx_state'))
 			{
-				$query = "ALTER IGNORE TABLE `#__developer_access_tokens` ADD INDEX `idx_state` (`state`)";
+				$query = "ALTER TABLE `#__developer_access_tokens` ADD INDEX `idx_state` (`state`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__developer_access_tokens', 'idx_uidNumber'))
 			{
-				$query = "ALTER IGNORE TABLE `#__developer_access_tokens` ADD INDEX `idx_uidNumber` (`uidNumber`)";
+				$query = "ALTER TABLE `#__developer_access_tokens` ADD INDEX `idx_uidNumber` (`uidNumber`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -43,14 +43,14 @@ class Migration20190221083400ComDeveloper extends Base
 		{
 			if (!$this->db->tableHasKey('#__developer_application_team_members', 'idx_application_id'))
 			{
-				$query = "ALTER IGNORE TABLE `#__developer_application_team_members` ADD INDEX `idx_application_id` (`application_id`)";
+				$query = "ALTER TABLE `#__developer_application_team_members` ADD INDEX `idx_application_id` (`application_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__developer_application_team_members', 'idx_uidNumber'))
 			{
-				$query = "ALTER IGNORE TABLE `#__developer_application_team_members` ADD INDEX `idx_uidNumber` (`uidNumber`)";
+				$query = "ALTER TABLE `#__developer_application_team_members` ADD INDEX `idx_uidNumber` (`uidNumber`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -60,21 +60,21 @@ class Migration20190221083400ComDeveloper extends Base
 		{
 			if (!$this->db->tableHasKey('#__developer_applications', 'idx_created_by'))
 			{
-				$query = "ALTER IGNORE TABLE `#__developer_applications` ADD INDEX `idx_created_by` (`created_by`)";
+				$query = "ALTER TABLE `#__developer_applications` ADD INDEX `idx_created_by` (`created_by`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__developer_applications', 'idx_state'))
 			{
-				$query = "ALTER IGNORE TABLE `#__developer_applications` ADD INDEX `idx_state` (`state`)";
+				$query = "ALTER TABLE `#__developer_applications` ADD INDEX `idx_state` (`state`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__developer_applications', 'idx_hub_account'))
 			{
-				$query = "ALTER IGNORE TABLE `#__developer_applications` ADD INDEX `idx_hub_account` (`hub_account`)";
+				$query = "ALTER TABLE `#__developer_applications` ADD INDEX `idx_hub_account` (`hub_account`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -84,14 +84,14 @@ class Migration20190221083400ComDeveloper extends Base
 		{
 			if (!$this->db->tableHasKey('#__developer_authorization_codes', 'idx_uidNumber'))
 			{
-				$query = "ALTER IGNORE TABLE `#__developer_authorization_codes` ADD INDEX `idx_uidNumber` (`uidNumber`)";
+				$query = "ALTER TABLE `#__developer_authorization_codes` ADD INDEX `idx_uidNumber` (`uidNumber`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__developer_authorization_codes', 'idx_application_id'))
 			{
-				$query = "ALTER IGNORE TABLE `#__developer_authorization_codes` ADD INDEX `idx_application_id` (`application_id`)";
+				$query = "ALTER TABLE `#__developer_authorization_codes` ADD INDEX `idx_application_id` (`application_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -101,14 +101,14 @@ class Migration20190221083400ComDeveloper extends Base
 		{
 			if (!$this->db->tableHasKey('#__developer_rate_limit', 'idx_uidNumber'))
 			{
-				$query = "ALTER IGNORE TABLE `#__developer_rate_limit` ADD INDEX `idx_uidNumber` (`uidNumber`)";
+				$query = "ALTER TABLE `#__developer_rate_limit` ADD INDEX `idx_uidNumber` (`uidNumber`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__developer_rate_limit', 'idx_application_id'))
 			{
-				$query = "ALTER IGNORE TABLE `#__developer_rate_limit` ADD INDEX `idx_application_id` (`application_id`)";
+				$query = "ALTER TABLE `#__developer_rate_limit` ADD INDEX `idx_application_id` (`application_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -118,21 +118,21 @@ class Migration20190221083400ComDeveloper extends Base
 		{
 			if (!$this->db->tableHasKey('#__developer_refresh_tokens', 'idx_uidNumber'))
 			{
-				$query = "ALTER IGNORE TABLE `#__developer_refresh_tokens` ADD INDEX `idx_uidNumber` (`uidNumber`)";
+				$query = "ALTER TABLE `#__developer_refresh_tokens` ADD INDEX `idx_uidNumber` (`uidNumber`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__developer_refresh_tokens', 'idx_application_id'))
 			{
-				$query = "ALTER IGNORE TABLE `#__developer_refresh_tokens` ADD INDEX `idx_application_id` (`application_id`)";
+				$query = "ALTER TABLE `#__developer_refresh_tokens` ADD INDEX `idx_application_id` (`application_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__developer_refresh_tokens', 'idx_state'))
 			{
-				$query = "ALTER IGNORE TABLE `#__developer_refresh_tokens` ADD INDEX `idx_state` (`state`)";
+				$query = "ALTER TABLE `#__developer_refresh_tokens` ADD INDEX `idx_state` (`state`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
