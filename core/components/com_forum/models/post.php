@@ -840,7 +840,8 @@ class Post extends Relational
 			->select($user->getTableName() . '.name')
 			->join($user->getTableName(), $user->getTableName() . '.id', $this->getTableName() . '.created_by', 'left')
 			->whereEquals('thread', $this->get('thread'))
-			->group('created_by');
+			->group('created_by')
+			->group('anonymous');
 	}
 
 	/**

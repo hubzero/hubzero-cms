@@ -152,7 +152,12 @@ class Pages
 		$group = \Hubzero\User\Group::getInstance($cn);
 
 		// use Route so in case the hub is /members/groups/... instead of top level /groups
-		$base = Route::url('index.php?option=com_groups&cn=' . $group->get('cn'));
+		$root = trim(Request::base(true), '/');
+		$base = trim(Route::url('index.php?option=com_groups&cn=' . $group->get('cn')), '/');
+		if ($root)
+		{
+			$base = substr($base, strlen($root));
+		}
 
 		if (preg_match("/^\/?groups\/(.*?)/i", Request::path()))
 		{

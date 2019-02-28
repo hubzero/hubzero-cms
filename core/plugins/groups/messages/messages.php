@@ -109,7 +109,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 
 		// The output array we're returning
 		$arr = array(
-			'html'=>''
+			'html' => ''
 		);
 
 		//get this area details
