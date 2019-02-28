@@ -38,7 +38,7 @@ $this->baseURL = rtrim($this->baseURL, '/');
 $link = Config::get('sef') && App::isAdmin()
 	? '/members/confirm?confirm=' . -$this->confirm
 	: Route::urlForClient('index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->confirm . '&email=' . urlencode($this->email), false);
-//$link = $this->baseURL . $link;
+$link = $this->baseURL . $link;
 $link = str_replace('/administrator', '', $link);
 ?>
 
