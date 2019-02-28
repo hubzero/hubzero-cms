@@ -25,7 +25,7 @@ class Migration20171115112800ComSupportCriteria extends Base
 				`created` timestamp NULL DEFAULT NULL,
 				`modified` timestamp NULL DEFAULT NULL,
 				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=latin1;";
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 			$this->db->setQuery($createTable);
 			$this->db->query();

@@ -21,7 +21,7 @@ class Migration20160805180813ComSearch extends Base
 			`created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 			`created_by` int(11) DEFAULT NULL,
 			PRIMARY KEY (`id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
 			$this->db->setQuery($query);
 			$this->db->query();
