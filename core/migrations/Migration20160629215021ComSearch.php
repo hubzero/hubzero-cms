@@ -25,7 +25,7 @@ class Migration20160629215021ComSearch extends Base
 			`created_by` int(11) DEFAULT NULL,
 			`modified` timestamp NULL DEFAULT NULL,
 			PRIMARY KEY (`id`)
-			) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;';
+			) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;';
 
 			$this->db->setQuery($createQuery);
 			$this->db->query();

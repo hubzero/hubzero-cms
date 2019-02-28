@@ -39,7 +39,7 @@ class Migration20150218180139PlgOaipmh extends Base
 			  `query` text NOT NULL,
 			  `display` int(1) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=latin1";
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
