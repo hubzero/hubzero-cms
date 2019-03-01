@@ -288,7 +288,8 @@ Joomla.listItemTask = function(id, task) {
 		f.boxchecked.value = 1;
 
 		// Submit the form
-		Joomla.submitbutton(task);
+		var form = document.getElementById('adminForm');
+		Joomla.submitform(task, form);
 	}
 	return false;
 }
@@ -731,9 +732,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	// Add event listener for saving table sorting
-	var clearfilters = document.getElementsByClassName('grid-order-save');
-	for (i = 0; i < clearfilters.length; i++) {
-		clearfilters[i].addEventListener('click', function(event) {
+	var ordering = document.getElementsByClassName('grid-order-save');
+	for (i = 0; i < ordering.length; i++) {
+		ordering[i].addEventListener('click', function(event) {
 			event.preventDefault();
 
 			var rows = this.getAttribute('data-rows'),
@@ -748,16 +749,16 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	// Add event listener for action items
-	var clearfilters = document.getElementsByClassName('grid-action');
-	for (i = 0; i < clearfilters.length; i++) {
-		clearfilters[i].addEventListener('click', function(event) {
+	var actions = document.getElementsByClassName('grid-action');
+	for (i = 0; i < actions.length; i++) {
+		actions[i].addEventListener('click', function(event) {
 			event.preventDefault();
 
 			var id = this.getAttribute('data-id'),
 				task = this.getAttribute('data-task');
 
 			if (id && task) {
-				Joomla.listItemTask(id, task);
+				return Joomla.listItemTask(id, task);
 			}
 
 			return false;
