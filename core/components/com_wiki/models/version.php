@@ -220,7 +220,8 @@ class Version extends Relational
 			'filepath'  => '',
 			'domain'    => $page->get('scope'),
 			'domain_id' => $page->get('scope_id'),
-			'url'       => $page->link()
+			'url'       => $page->link(),
+			'loglinks'  => true
 		);
 
 		$parser = Parser::getInstance();

@@ -33,69 +33,71 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+// Breadcrumbs
 Pathway::append(
 	Lang::txt('COM_WIKI_SPECIAL_LINKS'),
 	$this->page->link()
 );
 
+// Sorting
 $sort = strtolower(Request::getString('sort', 'title'));
-if (!in_array($sort, array('created', 'title', 'summary', 'created_by')))
-{
-	$sort = 'created';
-}
-$dir = strtoupper(Request::getString('dir', 'DESC'));
-if (!in_array($dir, array('ASC', 'DESC')))
-{
-	$dir = 'DESC';
-}
+if (!in_array($sort, array('timestamp', 'title'))):
+	$sort = 'timestamp';
+endif;
 
+$dir = strtoupper(Request::getString('dir', 'DESC'));
+if (!in_array($dir, array('ASC', 'DESC'))):
+	$dir = 'DESC';
+endif;
+
+$altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
+
+// Pagination
 $limit = Request::getInt('limit', Config::get('list_limit'));
 $start = Request::getInt('limitstart', 0);
 
+// The current page
 $page = $this->book->pages()
 	->whereEquals('pagename', Request::getString('page', ''))
 	->whereEquals('path', Request::getString('scope', ''))
 	->row();
 
-if ($v = Request::getInt('version', 0))
-{
+if ($v = Request::getInt('version', 0)):
 	$revision = $page->versions()
 		->whereEquals('id', $v)
 		->row();
-}
-else
-{
+else:
 	$revision = $page->version();
-}
+endif;
 
 $permalink = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($page->link() . '&version=' . $revision->get('version')), '/');
 
-$links = Components\Wiki\Models\Link::all()
-	->whereEquals('scope', 'internal')
-	->whereEquals('scope_id', $page->get('id'))
-	->rows()
-	->fieldsByKey('page_id');
+// Find what links to the current page
+$l = Components\Wiki\Models\Link::blank()->getTableName();
+$p = Components\Wiki\Models\Page::blank()->getTableName();
 
 $rows = Components\Wiki\Models\Page::all()
-	->whereIn('id', $links)
-	->whereEquals('scope', $page->get('scope'))
-	->whereEquals('scope_id', $page->get('scope_id'))
-	->whereEquals('state', Components\Wiki\Models\Page::STATE_PUBLISHED)
-	->order('title', $dir)
+	->select($p . '.*')
+	->select($l . '.timestamp')
+	->join($l, $l . '.scope_id', $p . '.id', 'inner')
+	->whereEquals($p . '.scope', $page->get('scope'))
+	->whereEquals($p . '.scope_id', $page->get('scope_id'))
+	->whereEquals($p . '.state', Components\Wiki\Models\Page::STATE_PUBLISHED)
+	->whereEquals($l . '.scope', 'internal')
+	->whereEquals($l . '.scope_id', $page->get('id'))
+	->order($sort, $dir)
 	->paginated()
 	->rows();
-
-$altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 ?>
 <form method="get" action="<?php echo Route::url($this->page->link()); ?>">
-	<p><?php echo Lang::txt('The following pages link to %s', '<a href="' . Route::url($page->link()) . '">' . $page->get('title') . '</a>'); ?></p>
+	<p><?php echo Lang::txt('The following pages link to %s', '<a href="' . Route::url($page->link()) . '">' . $this->escape($page->get('title')) . '</a>'); ?></p>
 	<div class="container">
 		<table class="file entries">
 			<thead>
 				<tr>
 					<th scope="col">
-						<a<?php if ($sort == 'created') { echo ' class="active"'; } ?> href="<?php echo Route::url($this->page->link() . '&sort=created&dir=' . $altdir); ?>">
-							<?php if ($sort == 'created') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo Lang::txt('COM_WIKI_COL_DATE'); ?>
+						<a<?php if ($sort == 'timestamp') { echo ' class="active"'; } ?> href="<?php echo Route::url($this->page->link() . '&sort=timestamp&dir=' . $altdir); ?>">
+							<?php if ($sort == 'timestamp') { echo ($dir == 'ASC') ? '&uarr;' : '&darr;'; } ?> <?php echo Lang::txt('COM_WIKI_COL_DATE'); ?>
 						</a>
 					</th>
 					<th scope="col">
@@ -107,26 +109,22 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 			</thead>
 			<tbody>
 			<?php
-			if ($rows->count())
-			{
-				foreach ($rows as $row)
-				{
+			if ($rows->count()):
+				foreach ($rows as $row):
 					?>
 					<tr>
 						<td>
-							<time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
+							<time datetime="<?php echo $this->escape($row->get('timestamp')); ?>"><?php echo $this->escape(Date::of($row->get('timestamp'))->toLocal()); ?></time>
 						</td>
 						<td>
 							<a href="<?php echo Route::url($row->link()); ?>">
-								<?php echo $this->escape(stripslashes($row->title)); ?>
+								<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 							</a>
 						</td>
 					</tr>
 					<?php
-				}
-			}
-			else
-			{
+				endforeach;
+			else:
 				?>
 				<tr>
 					<td colspan="4">
@@ -134,7 +132,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 					</td>
 				</tr>
 				<?php
-			}
+			endif;
 			?>
 			</tbody>
 		</table>
