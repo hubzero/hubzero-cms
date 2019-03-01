@@ -65,6 +65,9 @@
         "psr-4": { "Bootstrap\\": "bootstrap/"}
     },
     "config": {
-        "preferred-install": "dist"
+        "preferred-install": "dist",
+        "platform": {
+            "php": "5.6.1"
+        }
     }
 }
