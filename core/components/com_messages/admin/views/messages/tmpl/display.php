@@ -61,7 +61,7 @@ elseif ($canDo->get('core.edit.state'))
 
 //Toolbar::addNew('module.add');
 Toolbar::divider();
-Toolbar::appendButton('Popup', 'options', 'COM_MESSAGES_TOOLBAR_MY_SETTINGS', Route::url('index.php?option=com_messages&amp;controller=configs&amp;tmpl=component'), 850, 400);
+Toolbar::appendButton('Popup', 'options', 'COM_MESSAGES_TOOLBAR_MY_SETTINGS', Route::url('index.php?option=com_messages&controller=configs&tmpl=component'), 850, 400);
 
 if ($canDo->get('core.admin'))
 {
@@ -84,12 +84,12 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 		<div class="grid">
 			<div class="col span6 filter-search">
 				<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-				<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MESSAGES_SEARCH_IN_SUBJECT'); ?>" />
+				<input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MESSAGES_SEARCH_IN_SUBJECT'); ?>" />
 				<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span6 filter-select">
-				<select name="filter_state" class="inputbox" onchange="this.form.submit()">
+				<select name="filter_state" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
 					<?php echo Html::select('options', Components\Messages\Helpers\Utilities::getStateOptions(), 'value', 'text', $this->filters['state']); ?>
 				</select>
@@ -101,10 +101,10 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 		<thead>
 			<tr>
 				<th>
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
 				</th>
 				<th class="title">
-					<?php echo Html::grid('sort',  'COM_MESSAGES_HEADING_SUBJECT', 'a.subject', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_MESSAGES_HEADING_SUBJECT', 'a.subject', $listDirn, $listOrder); ?>
 				</th>
 				<th>
 					<?php echo Html::grid('sort', 'COM_MESSAGES_HEADING_READ', 'a.state', $listDirn, $listOrder); ?>

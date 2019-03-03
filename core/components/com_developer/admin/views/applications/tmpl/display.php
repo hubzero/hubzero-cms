@@ -70,41 +70,18 @@ if ($canDo->get('core.create'))
 
 // This line makes sure we're including the javascript framework
 Html::behavior('framework');
+
+$this->js();
 ?>
-<script type="text/javascript">
-Joomla.submitbutton = function(pressbutton) {
-	var form = document.adminForm;
 
-	if (pressbutton == 'resetclientsecret')
-	{
-		if (confirm("<?php echo Lang::txt('COM_DEVELOPER_RESET_CLIENT_SECRET_CONFIRM'); ?>"))
-		{
-			Joomla.submitform(pressbutton, document.getElementById('item-form'));
-		}
-		return;
-	}
-
-	if (pressbutton == 'removetokens')
-	{
-		if (confirm("<?php echo Lang::txt('COM_DEVELOPER_REVOKE_TOKENS_CONFIRM'); ?>"))
-		{
-			Joomla.submitform(pressbutton, document.getElementById('item-form'));
-		}
-		return;
-	}
-
-	Joomla.submitform(pressbutton, document.getElementById('item-form'));
-	return;
-}
-</script>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm" data-confirmreset="<?php echo Lang::txt('COM_DEVELOPER_RESET_CLIENT_SECRET_CONFIRM'); ?>" data-confirmrevoke="<?php echo Lang::txt('COM_DEVELOPER_REVOKE_TOKENS_CONFIRM'); ?>">
 	<?php if ($this->getErrors()) { ?>
 		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 	<?php } ?>
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_DEVELOPER_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_DEVELOPER_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_DEVELOPER_COL_STATE'); ?></th>
@@ -152,7 +129,7 @@ Joomla.submitbutton = function(pressbutton) {
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id') ?>" onclick="Joomla.isChecked(this.checked);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id') ?>" class="checkbox-toggle" />
 					<?php } ?>
 				</td>
 				<td class="priority-4">

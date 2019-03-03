@@ -73,7 +73,7 @@ Html::behavior('framework');
 	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } else { ?>
-		<div class="col width-100">
+		<div class="col span12">
 			<div class="current">
 				<p><?php echo $this->inserted; ?> user<?php echo $this->inserted == 1 ? '' : 's'; ?> inserted.</p>
 

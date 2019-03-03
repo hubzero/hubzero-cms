@@ -131,6 +131,7 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
 			->whereEquals('created_by', $uidNumber)
 			->whereEquals('approved', 1)
 			->group('page_id')
+			->group('id')
 			->rows();
 
 		$ids = array();

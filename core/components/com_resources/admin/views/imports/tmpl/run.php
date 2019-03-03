@@ -34,25 +34,13 @@
 defined('_HZEXEC_') or die();
 
 // set title
-Toolbar::title(Lang::txt('COM_RESOURCES_IMPORT_TITLE_RUN'), 'script.png');
+Toolbar::title(Lang::txt('COM_RESOURCES_IMPORT_TITLE_RUN'), 'script');
 
 // add import styles and scripts
-$this->js('import');
+$this->js('handlebars.js', 'system')
+	->js('import.js');
 $this->css('import');
 ?>
-<script src="../core/assets/js/handlebars.js"></script>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
 
 <?php foreach ($this->getErrors() as $error) : ?>
 	<p class="error"><?php echo $error; ?></p>
@@ -106,7 +94,7 @@ function submitbutton(pressbutton)
 							<div class="resource-data">
 								<div class="grid">
 									{{#if record.errors}}
-										<div class="col width-100">
+										<div class="col span12">
 											<div class="errors">
 												<strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_ERRORMESSAGE'); ?></strong>
 												<ol>
@@ -119,7 +107,7 @@ function submitbutton(pressbutton)
 									{{/if}}
 
 									{{#if record.notices}}
-										<div class="col width-100">
+										<div class="col span12">
 											<div class="notices">
 												<strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_NOTICEMESSAGE'); ?></strong>
 												<ol>

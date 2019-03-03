@@ -76,14 +76,14 @@ $this->css();
 		<div class="grid">
 			<div class="col span6">
 				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>: </label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_RESOURCES_SEARCH_PLACEHOLDER'); ?>" />
+				<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_RESOURCES_SEARCH_PLACEHOLDER'); ?>" />
 
 				<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_RESOURCES_GO'); ?>" />
-				<button type="button" onclick="$('#filter_search').val('');$('#filter-status').val('all');$('#type').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span6">
 				<label for="filter-status"><?php echo Lang::txt('COM_RESOURCES_FILTER_STATUS'); ?>:</label>
-				<select name="status" id="filter-status" onchange="this.form.submit();">
+				<select name="status" id="filter-status" class="filter filter-submit">
 					<option value="all"<?php echo ($this->filters['status'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_FILTER_STATUS_ALL'); ?></option>
 					<option value="2"<?php echo ($this->filters['status'] == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL'); ?></option>
 					<option value="5"<?php echo ($this->filters['status'] == 5) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_DRAFT_INTERNAL'); ?></option>
@@ -94,7 +94,7 @@ $this->css();
 				</select>
 
 				<label for="filter-license"><?php echo Lang::txt('COM_RESOURCES_FILTER_LICENSE'); ?>:</label>
-				<select name="license" id="filter-license" onchange="this.form.submit();">
+				<select name="license" id="filter-license" class="filter filter-submit">
 					<option value="all"<?php echo ($this->filters['license'] == 'all') ? 'selected="selected"' : '';?>><?php echo Lang::txt('COM_RESOURCES_FILTER_LICENSE_ALL'); ?></option>
 					<?php foreach ($this->licenses as $license) { ?>
 						<option value="<?php echo $license->get('name'); ?>"<?php echo ($this->filters['license'] == $license->get('name')) ? 'selected="selected"' : ''; ?>><?php echo $license->get('title'); ?></option>
@@ -102,7 +102,7 @@ $this->css();
 				</select>
 
 				<label for="filter-type"><?php echo Lang::txt('COM_RESOURCES_FILTER_TYPE'); ?>:</label>
-				<select name="type" id="filter-type" onchange="this.form.submit();">
+				<select name="type" id="filter-type" class="filter filter-submit">
 					<option value=""><?php echo Lang::txt('COM_RESOURCES_FILTER_TYPE_ALL'); ?></option>
 					<?php foreach ($this->types as $type) { ?>
 						<option value="<?php echo $type->id; ?>"<?php echo ($this->filters['type'] == $type->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape($type->type); ?></option>
@@ -115,7 +115,7 @@ $this->css();
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_STATUS', 'published', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>

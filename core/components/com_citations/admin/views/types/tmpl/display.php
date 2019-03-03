@@ -56,7 +56,7 @@ Toolbar::help('types');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('CITATION_TYPES_ID'); ?></th>
 				<th scope="col" class="priority-2"><?php echo Lang::txt('CITATION_TYPES_ALIAS'); ?></th>
 				<th scope="col"><?php echo Lang::txt('CITATION_TYPES_TITLE'); ?></th>
@@ -66,7 +66,7 @@ Toolbar::help('types');
 			<?php foreach ($this->types as $i => $t) : ?>
 				<tr>
 					<td>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $t['id']; ?>" onclick="Joomla.isChecked(this.checked);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $t['id']; ?>" class="checkbox-toggle" />
 					</td>
 					<td class="priority-3">
 						<?php echo $t['id']; ?>

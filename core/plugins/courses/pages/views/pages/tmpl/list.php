@@ -47,7 +47,7 @@ if (!$no_html) { ?>
 			for (i=0; i<allPaths.length; i++)
 			{
 				allPaths.item(i).selected = false;
-				if ((allPaths.item(i).value)== '<?php if (isset($this->listdir)) { echo $this->listdir ;} else { echo '/';}  ?>') {
+				if ((allPaths.item(i).value)== '<?php echo (isset($this->listdir)) ? $this->listdir : '/'; ?>') {
 					allPaths.item(i).selected = true;
 				}
 			}

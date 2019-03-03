@@ -61,26 +61,11 @@ Html::behavior('tooltip');
 Html::behavior('formvalidation');
 Html::behavior('combobox');
 
+$this->js();
+
 $hasContent = empty($this->item->get('module')) || $this->item->module == 'custom' || $this->item->module == 'mod_custom';
-
-$script = "Joomla.submitbutton = function(task)
-	{
-			if (task == 'module.cancel' || document.formvalidator.isValid($('#item-form'))) {";
-if ($hasContent) {
-	$script .= $this->form->getField('content')->save();
-}
-$script .= "	Joomla.submitform(task, document.getElementById('item-form'));
-				if (self != top) {
-					window.top.setTimeout('window.parent.$.fancybox().close()', 1000);
-				}
-			} else {
-				alert('".$this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'))."');
-			}
-	}";
-
-Document::addScriptDeclaration($script);
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -182,17 +167,26 @@ Document::addScriptDeclaration($script);
 				<?php if ($this->item->id) : ?>
 				<?php endif; ?>
 					<tr>
-						<th>
+						<th scope="row">
 							<?php echo Lang::txt('COM_MODULES_HEADING_MODULE'); ?>
 							<?php echo $this->form->getLabel('module'); ?>
 						</th>
 						<td>
 							<?php echo $this->form->getInput('module'); ?>
-							<?php if ($this->item->xml) echo ($text = (string) $this->item->xml->name) ? Lang::txt($text) : $this->item->module;else echo Lang::txt('COM_MODULES_ERR_XML');?>
+							<?php
+							if ($this->item->xml)
+							{
+								echo ($text = (string) $this->item->xml->name) ? Lang::txt($text) : $this->item->module;
+							}
+							else
+							{
+								echo Lang::txt('COM_MODULES_ERR_XML');
+							}
+							?>
 						</td>
 					</tr>
 					<tr>
-						<th>
+						<th scope="row">
 							<?php echo Lang::txt('Client'); ?>
 							<?php echo $this->form->getLabel('client_id'); ?>
 						</th>
@@ -202,7 +196,7 @@ Document::addScriptDeclaration($script);
 						</td>
 					</tr>
 					<tr>
-						<th>
+						<th scope="row">
 							<?php echo Lang::txt('COM_MODULES_MODULE_DESCRIPTION'); ?>
 						</th>
 						<td>

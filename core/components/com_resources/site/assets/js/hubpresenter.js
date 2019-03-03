@@ -819,6 +819,7 @@ HUB.Presenter = {
 				parent.HUB.Resources.popoutInlineHubpresnter(current);
 			});
 
+			/*
 			jQ('.embed-fullscreen').css('display', 'inline-block').on('click', function() {
 				if (jQ(this).text() == 'Fullscreen')
 				{
@@ -837,6 +838,7 @@ HUB.Presenter = {
 					parent.HUB.Resources.exitFullscreenHubpresenter();
 				}
 			});
+			*/
 		}
 	},
 	

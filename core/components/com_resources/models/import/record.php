@@ -282,7 +282,7 @@ class Record extends Obj
 
 				// add a notice with link to resource matched
 				$resourceLink = rtrim(str_replace('administrator', '', \Request::base()), DS) . DS . 'resources' . DS . $resource->id;
-				$link = '<a target="_blank" href="' . $resourceLink . '">' . $resourceLink . '</a>';
+				$link = '<a rel="noopener" target="_blank" href="' . $resourceLink . '">' . $resourceLink . '</a>';
 				array_push($this->record->notices, Lang::txt('COM_RESOURCES_IMPORT_RECORD_MODEL_MATCHEDBYTITLE', $link));
 			}
 		}

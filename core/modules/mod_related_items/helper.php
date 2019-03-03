@@ -35,7 +35,6 @@ namespace Modules\RelatedItems;
 
 use Hubzero\Module\Module;
 use stdClass;
-use ContentHelperRoute;
 use Request;
 use Route;
 use User;
@@ -189,7 +188,7 @@ class Helper extends Module
 						{
 							if ($row->cat_state == 1)
 							{
-								$row->route = Route::url(ContentHelperRoute::getArticleRoute($row->slug, $row->catslug, $row->language));
+								$row->route = Route::url(\Components\Content\Site\Helpers\Route::getArticleRoute($row->slug, $row->catslug, $row->language));
 								$related[] = $row;
 							}
 						}

@@ -35,17 +35,19 @@ defined('_HZEXEC_') or die();
 
 $this->baseURL = rtrim($this->baseURL, '/');
 
-$link = Config::get('sef') && App::isAdmin()
-	? '/members/confirm?confirm=' . -$this->confirm
-	: Route::url('index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->confirm . '&email=' . urlencode($this->email), false);
-$link = $this->baseURL . $link;
-$link = str_replace('/administrator', '', $this->baseURL);
+$confirmationCode = -$this->confirm;
+$userEmail = urlencode($this->email);
+$relativeUrl = "index.php?option=$this->option&task=confirm&confirm=$confirmationCode&email=$userEmail";
+$link = $this->baseURL . Route::urlForClient($relativeUrl, false);
+$link = str_replace('/administrator', '', $link);
 ?>
 
-<?php echo Lang::txt('COM_MEMBERS_EMAIL_CREATED'); ?>: <?php echo $this->registerDate; ?> (UTC)
-<?php echo Lang::txt('COM_MEMBERS_EMAIL_NAME'); ?>: <?php echo $this->name; ?>
-<?php echo Lang::txt('COM_MEMBERS_EMAIL_USERNAME'); ?>: <?php echo $this->login; ?>
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_CREATED') . ": $this->registerDate (UTC)"; ?>
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_NAME') . ": $this->name"; ?>
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_USERNAME') . ": $this->login"; ?>
 
 <?php echo Lang::txt('COM_MEMBERS_EMAIL_CONFIRM_MESSAGE', $this->sitename); ?>
 
-<?php echo $link;
+<?php echo $link; ?>
+
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_CONFIRM_DO_NOT_REPLY');

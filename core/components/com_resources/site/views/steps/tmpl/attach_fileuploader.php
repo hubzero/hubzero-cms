@@ -2,7 +2,7 @@
 	$base = rtrim(Request::base(true), '/');
 ?>
 <div class="col span-half">
-	<div id="ajax-uploader" data-action="index.php?option=com_resources&amp;no_html=1&amp;controller=attachments&amp;task=save&amp;pid=<?php echo $this->id; ?>" data-list="index.php?option=com_resources&amp;no_html=1&amp;controller=attachments&amp;pid=<?php echo $this->id; ?>">
+	<div id="ajax-uploader" data-action="index.php?option=com_resources&amp;no_html=1&amp;controller=attachments&amp;task=save&amp;pid=<?php echo $this->id; ?>" data-list="index.php?option=com_resources&amp;no_html=1&amp;controller=attachments&amp;pid=<?php echo $this->id; ?>" data-instructions="Click or drop file">
 	</div>
 </div><!-- / .col span-half -->
 <div class="col span-half omega">

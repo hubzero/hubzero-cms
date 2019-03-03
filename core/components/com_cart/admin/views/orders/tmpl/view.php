@@ -41,81 +41,71 @@ if (User::authorise('core.edit', $this->option . '.component'))
 	Toolbar::custom('edit', 'edit.png', '', 'Edit', false);
 }
 
-$this->css();
+$this->css()
+	->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	submitform(pressbutton);
-}
-</script>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-40 fltlft">
+	<div class="grid">
+	<div class="col span5">
 		<fieldset class="adminform">
 			<legend><span>Order Details</span></legend>
 
 			<table class="formed">
 				<tbody>
-				<tr>
-					<th>Order number:</th>
-					<td><span><?php echo $this->tInfo->tId; ?></span></td>
-				</tr>
-				<tr>
-					<th>Order placed:</th>
-					<td><span><?php echo $this->tInfo->tLastUpdated; ?></span></td>
-				</tr>
-				<tr>
-					<th>Ordered by:</th>
-					<td><span><?php echo ($this->user->get('id') ? $this->user->get('name') . ' (' . $this->user->get('username') . ')': Lang::txt('COM_CART_UNKNOWN')); ?></span></td>
-				</tr>
-				<tr>
-					<th>Order subtotal:</th>
-					<td><span><?php echo '$' . number_format($this->tInfo->tiSubtotal, 2); ?></span></td>
-				</tr>
-				<?php
-				if (!empty($this->tInfo->tiTax) && $this->tInfo->tiTax)
-				{
-				?>
 					<tr>
-						<th>Tax:</th>
-						<td><span><?php echo '$' . number_format($this->tInfo->tiTax, 2); ?></span></td>
+						<th>Order number:</th>
+						<td><span><?php echo $this->tInfo->tId; ?></span></td>
 					</tr>
-				<?php
-				}
-				?>
-				<?php
-				if (!empty($this->tInfo->tiShipping) && floatval($this->tInfo->tiShipping))
-				{
-				?>
 					<tr>
-						<th>Shipping cost:</th>
-						<td><span><?php echo '$' . number_format($this->tInfo->tiShipping, 2); ?></span></td>
+						<th>Order placed:</th>
+						<td><span><?php echo $this->tInfo->tLastUpdated; ?></span></td>
+					</tr>
+					<tr>
+						<th>Ordered by:</th>
+						<td><span><?php echo ($this->user->get('id')) ? $this->user->get('name') . ' (' . $this->user->get('username') . ')': Lang::txt('COM_CART_UNKNOWN'); ?></span></td>
+					</tr>
+					<tr>
+						<th>Order subtotal:</th>
+						<td><span><?php echo '$' . number_format($this->tInfo->tiSubtotal, 2); ?></span></td>
 					</tr>
 					<?php
-				}
-				?>
-				<?php
-				if (!empty($this->tInfo->tiDiscounts) && floatval($this->tInfo->tiDiscounts))
-				{
-				?>
-					<tr>
-						<th>Discounts:</th>
-						<td><span><?php echo '$' . number_format($this->tInfo->tiDiscounts, 2); ?></span></td>
-					</tr>
+					if (!empty($this->tInfo->tiTax) && $this->tInfo->tiTax)
+					{
+					?>
+						<tr>
+							<th>Tax:</th>
+							<td><span><?php echo '$' . number_format($this->tInfo->tiTax, 2); ?></span></td>
+						</tr>
 					<?php
-				}
-				?>
-				<tr>
-					<th>Order total:</th>
-					<td><span><?php echo '$' . number_format($this->tInfo->tiTotal, 2); ?></span></td>
-				</tr>
+					}
+					?>
+					<?php
+					if (!empty($this->tInfo->tiShipping) && floatval($this->tInfo->tiShipping))
+					{
+					?>
+						<tr>
+							<th>Shipping cost:</th>
+							<td><span><?php echo '$' . number_format($this->tInfo->tiShipping, 2); ?></span></td>
+						</tr>
+						<?php
+					}
+					?>
+					<?php
+					if (!empty($this->tInfo->tiDiscounts) && floatval($this->tInfo->tiDiscounts))
+					{
+					?>
+						<tr>
+							<th>Discounts:</th>
+							<td><span><?php echo '$' . number_format($this->tInfo->tiDiscounts, 2); ?></span></td>
+						</tr>
+						<?php
+					}
+					?>
+					<tr>
+						<th>Order total:</th>
+						<td><span><?php echo '$' . number_format($this->tInfo->tiTotal, 2); ?></span></td>
+					</tr>
 				</tbody>
 			</table>
 
@@ -167,7 +157,7 @@ function submitbutton(pressbutton)
 		}
 		?>
 	</div>
-	<div class="col width-60 fltrt">
+	<div class="col span7">
 		<fieldset class="adminform">
 			<legend><span>Items Ordered</span></legend>
 
@@ -193,8 +183,8 @@ function submitbutton(pressbutton)
 							<?php
 							if ($itemInfo->available)
 							{
-								$product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $itemInfo->pId) . '" target="_blank">' . $this->escape(stripslashes($itemInfo->pName)) . '</a>';
-								$product .= ', ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $itemInfo->sId) . '" target="_blank">' . $this->escape(stripslashes($itemInfo->sSku)) . '</a>';
+								$product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $itemInfo->pId) . '" target="_blank" rel="noopener">' . $this->escape(stripslashes($itemInfo->pName)) . '</a>';
+								$product .= ', ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $itemInfo->sId) . '" target="_blank" rel="noopener">' . $this->escape(stripslashes($itemInfo->sSku)) . '</a>';
 							}
 							else {
 								$product = $this->escape(stripslashes(isset($itemInfo->pName) ? $itemInfo->pName : 'N/A')) .  ', ' . $this->escape(stripslashes(isset($itemInfo->sSku) ? $itemInfo->sSku : 'N/A'));
@@ -263,7 +253,7 @@ function submitbutton(pressbutton)
 		?>
 
 	</div>
-	<div class="clr"></div>
+	</div>
 
 	<?php
 	if (isset($this->log))
@@ -312,8 +302,6 @@ function submitbutton(pressbutton)
 	<?php
 	}
 	?>
-
-	<div class="clr"></div>
 
 	<input type="hidden" name="id" value="<?php echo $this->tId; ?>" />
 	<input type="hidden" name="task" value="view" />

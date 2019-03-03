@@ -141,7 +141,7 @@ if ($mode != 'preview')
 											e.preventDefault();
 
 											$.get(url.nohtml(), function(data){
-												var returned = jQuery.parseJSON(data);
+												var returned = JSON.parse(data);
 
 												if (returned.success) {
 													window.open(returned.message);
@@ -244,4 +244,4 @@ if ($mode != 'preview')
 		</aside><!-- / .aside extracontent -->
 		</div>
 	</section><!-- / .main section -->
-<?php } ?>
+<?php }

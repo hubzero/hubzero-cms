@@ -42,16 +42,16 @@ if (User::authorise('core.admin', $this->option))
 Toolbar::spacer();
 Toolbar::help('entries');
 
-$this->css();
-
 Html::behavior('chart');
+
+$this->css()
+	->js();
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
-	<div id="container1" class="chart"></div>
-	<?php
-	$top = 0;
-
+	<div id="container1" class="<?php echo $this->option; ?>-chart" data-datasets="<?php echo $this->option; ?>-data"></div>
+	<script type="application/json" id="<?php echo $this->option; ?>-data">
+		<?php
 		$c = '';
 		if ($this->data)
 		{
@@ -60,79 +60,22 @@ Html::behavior('chart');
 			foreach ($this->data as $k => $v)
 			{
 				$top = $v > $top ? $v : $top;
-				$c[] = '[new Date(' . $k . '),' . $v . ']';
+				$c[] = '[' . Date::of($k)->toUnix() . ',' . $v . ']';
 			}
 
 			$c = implode(',', $c);
 		}
-	?>
-	<script type="text/javascript">
-		if (!jq) {
-			var jq = $;
-		}
-		if (jQuery()) {
-			var $ = jq,
-				chart,
-				month_short = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-				datasets = [
-					{
-						color: "orange", //#AA4643 #93ACCA
-						label: "<?php echo Lang::txt('COM_ACTIVITY_RECENT'); ?>",
-						data: [<?php echo $c; ?>]
-					}
-				];
-
-			$(document).ready(function() {
-				var chart = $.plot($('#container1'), datasets, {
-					series: {
-						lines: {
-							show: true,
-							fill: false
-						},
-						points: { show: false },
-						shadowSize: 0
-					},
-					//crosshair: { mode: "x" },
-					grid: {
-						color: 'rgba(0, 0, 0, 0.6)',
-						borderWidth: 1,
-						borderColor: 'transparent',
-						hoverable: true,
-						clickable: true
-					},
-					tooltip: true,
-						tooltipOpts: {
-						content: "%y %s in %x",
-						shifts: {
-							x: -60,
-							y: 25
-						},
-						defaultTheme: false
-					},
-					legend: {
-						show: false,
-						noColumns: 2,
-						position: "ne",
-						backgroundColor: 'transparent',
-						margin: [0, -50]
-					},
-					xaxis: {
-						mode: "time",
-						tickDecimals: 0,
-						tickFormatter: function (val, axis) {
-							var d = new Date(val);
-							return month_short[d.getUTCMonth()] + ' ' + d.getUTCDate();//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
-						}
-					},
-					yaxis: {
-						show: false,
-						min: 0
-					}
-				});
-			});
+		?>
+		{
+			"datasets": [
+				{
+					"color": "orange",
+					"label": "<?php echo Lang::txt('COM_ACTIVITY_RECENT'); ?>",
+					"data": [<?php echo $c; ?>]
+				}
+			]
 		}
 	</script>
-	<div class="clr"></div>
 
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

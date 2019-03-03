@@ -34,17 +34,9 @@ defined('_HZEXEC_') or die();
 
 Html::behavior('modal');
 
+$this->js();
 $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 ?>
-<script type="text/javascript">
-jQuery(document).ready(function($){
-	$('a.edit-asset').on('click', function(e) {
-		e.preventDefault();
-
-		window.parent.$.fancybox.open($(this).attr('href'), {type: 'iframe', size: {x: 570, y: 550}});
-	});
-});
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">

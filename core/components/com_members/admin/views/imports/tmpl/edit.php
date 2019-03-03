@@ -49,26 +49,18 @@ if ($canDo->get('core.admin'))
 	Toolbar::spacer();
 }
 Toolbar::cancel();
-?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
+?>
 
 <?php foreach ($this->getErrors() as $error) : ?>
 	<p class="error"><?php echo $error; ?></p>
 <?php endforeach; ?>
 
-<form action="<?php echo Route::url('index.php?option=com_members&controller=import&task=save'); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
+<form action="<?php echo Route::url('index.php?option=com_members&controller=import&task=save'); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -76,7 +68,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-name"><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_NAME'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<input type="text" name="import[name]" id="field-name" value="<?php echo $this->escape($this->import->get('name')); ?>" />
+					<input type="text" name="import[name]" id="field-name" class="required" value="<?php echo $this->escape($this->import->get('name')); ?>" />
 				</div>
 
 				<div class="input-wrap">
@@ -222,11 +214,11 @@ function submitbutton(pressbutton)
 				<table class="meta">
 					<tbody>
 						<tr>
-							<th><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_ID'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_ID'); ?></th>
 							<td><?php echo $this->import->get('id'); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_CREATEDBY'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_CREATEDBY'); ?></th>
 							<td>
 								<?php
 									if ($created_by = User::getInstance($this->import->get('created_by')))
@@ -237,11 +229,11 @@ function submitbutton(pressbutton)
 							</td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_CREATEDON'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_CREATEDON'); ?></th>
 							<td>
-								<?php
+								<time datetime="<?php echo $this->import->get('created_at'); ?>"><?php
 									echo Date::of($this->import->get('created_at'))->toLocal('m/d/Y @ g:i a');
-								?>
+								?></time>
 							</td>
 						</tr>
 					</tbody>

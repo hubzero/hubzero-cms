@@ -285,9 +285,9 @@ class Articles extends SiteController
 				$category = $category->getParent();
 			}
 			$path = array_reverse($path);
-			foreach ($path as $item)
+			foreach ($path as $itm)
 			{
-				Pathway::append($item['title'], $item['link']);
+				Pathway::append($itm['title'], $itm['link']);
 			}
 		}
 

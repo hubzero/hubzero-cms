@@ -43,20 +43,9 @@ Toolbar::help('version');
 
 Html::behavior('modal');
 Html::behavior('switcher', 'submenu');
-?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('item-form');
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
+$this->js();
+?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<nav role="navigation" class="sub-navigation">
@@ -64,8 +53,8 @@ function submitbutton(pressbutton)
 			<div class="submenu-box">
 				<div class="submenu-pad">
 					<ul id="submenu">
-						<li><a href="#" onclick="return false;" id="details" class="active"><?php echo Lang::txt('JDETAILS'); ?></a></li>
-						<li><a href="#" onclick="return false;" id="zones"><?php echo Lang::txt('COM_TOOLS_FIELDSET_ZONES'); ?></a></li>
+						<li><a href="#page-details" id="details" class="active"><?php echo Lang::txt('JDETAILS'); ?></a></li>
+						<li><a href="#page-zones" id="zones"><?php echo Lang::txt('COM_TOOLS_FIELDSET_ZONES'); ?></a></li>
 					</ul>
 					<div class="clr"></div>
 				</div>

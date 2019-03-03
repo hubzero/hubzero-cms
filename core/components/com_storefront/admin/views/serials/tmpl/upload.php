@@ -47,19 +47,6 @@ Html::behavior('framework');
 ?>
 
 <script type="text/javascript">
-	function submitbutton(pressbutton)
-	{
-		var form = document.adminForm;
-
-		if (pressbutton == 'cancel') {
-			submitform(pressbutton);
-			return;
-		}
-
-		submitform(pressbutton);
-		//window.top.setTimeout("window.parent.location='index.php?option=<?php echo $this->option; ?>&controller=<?php echo $this->controller; ?>&id=<?php echo $this->sId; ?>'", 700);
-	}
-
 	jQuery(document).ready(function($){
 		$(window).on('keypress', function(){
 			if (window.event.keyCode == 13) {
@@ -84,7 +71,7 @@ Html::behavior('framework');
 			</div>
 		</fieldset>
 	<?php } ?>
-	<div class="col width-100">
+	<div class="col span12">
 		<fieldset class="adminform">
 			<input type="hidden" name="sId" value="<?php echo $this->sId; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

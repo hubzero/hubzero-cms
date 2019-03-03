@@ -101,32 +101,9 @@ Html::behavior('framework');
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
 Html::behavior('modal');
-?>
 
-<script type="text/javascript">
-	Joomla.submitbutton = function(task, type)
-	{
-		if (task == 'items.setType' || task == 'items.setMenuType') {
-			if (task == 'items.setType') {
-				$('#item-form').find('input[name="fields[type]"]').val(type);
-				$('#fieldtype').val('type');
-			} else {
-				$('#item-form').find('input[name="fields[menutype]"]').val(type);
-			}
-			Joomla.submitform('items.setType', $('#item-form'));
-		} else if (task == 'items.cancel' || document.formvalidator.isValid($('#item-form'))) {
-			Joomla.submitform(task, $('#item-form'));
-		} else {
-			// special case for modal popups validation response
-			$('#item-form .modal-value.invalid').each(function(i, field){
-				var idReversed = field.id.split("").reverse().join("");
-				var separatorLocation = idReversed.indexOf('_');
-				var name = idReversed.substr(separatorLocation).split("").reverse().join("")+'name';
-				$('#'+name).addClass('invalid');
-			});
-		}
-	}
-</script>
+$this->js();
+?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&cid[]='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="grid">

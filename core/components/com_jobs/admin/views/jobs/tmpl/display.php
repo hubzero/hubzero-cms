@@ -63,7 +63,7 @@ Html::behavior('tooltip');
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_JOBS_SEARCH_PLACEHOLDER'); ?>" />
+		<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_JOBS_SEARCH_PLACEHOLDER'); ?>" />
 
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_JOBS_GO'); ?>" />
 	</fieldset>
@@ -71,7 +71,7 @@ Html::behavior('tooltip');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_JOBS_COL_CODE'); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_JOBS_COL_TITLE', 'title', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_JOBS_COL_COMPANY', 'location', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
@@ -185,7 +185,7 @@ Html::behavior('tooltip');
 				</td>
 				<td class="priority-3">
 					<span <?php echo $adminclass; ?>>
-						<span><?php echo ($admin ? Lang::txt('COM_JOBS_ADMIN') : ''); ?></span>
+						<span><?php echo ($admin) ? Lang::txt('COM_JOBS_ADMIN') : ''; ?></span>
 					</span>
 				</td>
 				<td class="priority-4">

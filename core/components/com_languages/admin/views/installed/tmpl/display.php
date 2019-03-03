@@ -110,15 +110,20 @@ $pagination = $this->rows->pagination;
 		$canChange = User::authorise('core.edit.state', $this->option);
 
 		foreach ($this->rows as $i => $row) :
+			$cls = $i % 2;
+			if (isset($row->missing))
+			{
+				echo ' archived';
+			}
 		?>
-			<tr class="row<?php echo $i % 2; if (isset($row->missing)) { echo ' archived'; } ?>">
+			<tr class="row<?php echo $cls; ?>">
 				<td class="priority-6">
 					<?php echo $pagination->getRowOffset($i); ?>
 				</td>
 				<td>
 					<?php
 					if (!$row->missing) :
-						echo '<input type="radio" id="cb' . $i . '" name="cid" value="' . $this->escape($row->language) . '" onclick="Joomla.isChecked(this.checked);" title="' . ($i+1) . '"/>';
+						echo '<input type="radio" id="cb' . $i . '" name="cid" value="' . $this->escape($row->language) . '" class="checkbox-toggle" title="' . ($i+1) . '"/>';
 					endif;
 					?>
 				</td>

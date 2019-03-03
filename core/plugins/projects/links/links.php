@@ -30,6 +30,9 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
+use \Components\Citations\Models\Citation;
+use \Components\Citations\Models\Association;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -408,10 +411,11 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 */
 	public function attachCitation($pid = 0, $doi = null, $format = 'apa', $actor = 0, $returnStatus = false)
 	{
-		include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
-		include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
+		$componentPath = \Component::path('com_citations');
+		include_once "$componentPath/models/citation.php";
+		include_once "$componentPath/helpers/format.php";
 
-		$out = array('error' => null, 'success' => null);
+		$out = ['error' => null, 'success' => null];
 
 		if (!$doi || !$pid)
 		{
@@ -425,18 +429,19 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$query = \Components\Citations\Models\Citation::all();
+		$query = Association::all();
 
-		$c = $query->getTableName();
-		$a = \Components\Citations\Models\Association::blank()->getTableName();
+		$citationAssociationsTable = $query->getTableName();
+		$citationsTable = Citation::blank()->getTableName();
 
-		$citation = $query
-			->join($a, $a . '.cid', $c . '.id', 'inner')
-			->whereEquals($a . '.tbl', 'publication')
-			->whereEquals($c . '.doi', $doi)
+		$citationAssociation = $query
+			->join($citationsTable, $citationsTable. '.id', $citationAssociationsTable. '.cid', 'inner')
+			->whereEquals($citationAssociationsTable . '.tbl', 'publication')
+			->whereEquals($citationsTable . '.doi', $doi)
+			->whereEquals($citationAssociationsTable . '.oid', $pid)
 			->row();
 
-		if ($citation->get('id'))
+		if (!$citationAssociation->isNew())
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_LINKS_CITATION_ALREADY_ATTACHED'));
 
@@ -468,7 +473,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			}
 			elseif (isset($output->preview) && $output->preview)
 			{
-				$citation = \Components\Citations\Models\Citation::all()
+				$citation = Citation::all()
 					->whereEquals('doi', $doi)
 					->row();
 

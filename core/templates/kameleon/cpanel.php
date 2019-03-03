@@ -65,7 +65,6 @@ $browser = new \Hubzero\Browser\Detector();
 
 		<jdoc:include type="head" />
 
-		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/placeholder.js?v=<?php echo filemtime(__DIR__ . '/js/placeholder.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/index.js?v=<?php echo filemtime(__DIR__ . '/js/index.js'); ?>"></script>
 
 		<!--[if lt IE 9]>

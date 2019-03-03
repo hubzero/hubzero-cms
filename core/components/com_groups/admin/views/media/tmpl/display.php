@@ -33,24 +33,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css('media.css');
+$this->css('media.css')
+	->js('media.js');
 ?>
-<script type="text/javascript">
-function dirup()
-{
-	var urlquery = frames['filer'].location.search.substring(1);
-	var curdir = urlquery.substring(urlquery.indexOf('dir=')+8);
-	var listdir = curdir.substring(0,curdir.lastIndexOf('/'));
-	frames['filer'].location.href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&gidNumber=' . $this->group->get('gidNumber') . '&task=list&tmpl=component&dir=');?>" + listdir;
-}
 
-function goUpDir()
-{
-	var selection = document.getElementById('dir');
-	var dir = selection.options[selection.selectedIndex].value;
-	frames['filer'].location.href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&gidNumber=' . $this->group->get('gidNumber') . '&task=list&tmpl=component&dir=', false); ?>" + dir;
-}
-</script>
 <div id="attachments">
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=component&controller=' . $this->controller . '&gidNumber=' . $this->group->get('gidNumber') . '&task=upload'); ?>" id="adminForm" method="post" enctype="multipart/form-data">
 		<fieldset>

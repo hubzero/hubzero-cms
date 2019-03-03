@@ -33,7 +33,7 @@ $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product')
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_STOREFRONT_EDIT') : Lang::txt('COM_STOREFRONT_NEW'));
 
-Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_OPTION_GROUP') . ': ' . $text, 'storefront.png');
+Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_OPTION_GROUP') . ': ' . $text, 'storefront');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -43,38 +43,26 @@ Toolbar::cancel();
 //Toolbar::spacer();
 //Toolbar::help('category');
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	<?php echo $this->editor()->save('text'); ?>
 
-	// do field validation
-	if (document.getElementById('field-title').value == ''){
-		alert("<?php echo Lang::txt('COM_STOREFRONT_ERROR_MISSING_TITLE'); ?>");
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="index.php" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+	<div class="grid">
+	<div class="col span7">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_STOREFRONT_DETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
 				<label for="field-title"><?php echo Lang::txt('COM_STOREFRONT_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[ogName]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getName())); ?>" />
+				<input type="text" name="fields[ogName]" id="field-title" class="required" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getName())); ?>" />
 			</div>
 
 		</fieldset>
 	</div>
-	<div class="col width-40 fltrt">
+	<div class="col span5">
 		<table class="meta">
 			<tbody>
 				<tr>
@@ -99,19 +87,7 @@ function submitbutton(pressbutton)
 			</div>
 		</fieldset>
 	</div>
-	<div class="clr"></div>
-
-	<?php /*
-		<?php if ($canDo->get('core.admin')): ?>
-			<div class="col width-100 fltlft">
-				<fieldset class="panelform">
-					<?php echo $this->form->getLabel('rules'); ?>
-					<?php echo $this->form->getInput('rules'); ?>
-				</fieldset>
-			</div>
-			<div class="clr"></div>
-		<?php endif; ?>
-	*/ ?>
+	</div>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

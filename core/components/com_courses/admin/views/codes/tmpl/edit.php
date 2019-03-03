@@ -44,29 +44,15 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 
 Html::behavior('calendar');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// form field validation
-	if ($('#field-code').val() == '') {
-		alert('<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_CODE'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -83,7 +69,7 @@ function submitbutton(pressbutton)
 					<select name="fields[section_id]" id="field-section_id">
 						<option value="-1"><?php echo Lang::txt('COM_COURSES_SELECT'); ?></option>
 						<?php
-						require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+						require_once Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
 						$model = \Components\Courses\Models\Courses::getInstance();
 						if ($model->courses()->total() > 0)
 						{
@@ -118,7 +104,7 @@ function submitbutton(pressbutton)
 				</div>
 				<div class="input-wrap">
 					<label for="field-code"><?php echo Lang::txt('COM_COURSES_FIELD_CODE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[code]" id="field-code" value="<?php echo $this->escape(stripslashes($this->row->get('code'))); ?>" />
+					<input type="text" name="fields[code]" id="field-code" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('code'))); ?>" />
 				</div>
 			</fieldset>
 
@@ -173,19 +159,19 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?></th>
 						<td><?php echo $this->escape($this->row->get('id')); ?></td>
 					</tr>
 					<?php if ($this->row->get('created')) { ?>
 						<tr>
-							<th><?php echo Lang::txt('COM_COURSES_FIELD_CREATED'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_CREATED'); ?></th>
 							<td>
-								<?php echo $this->escape($this->row->get('created')); ?>
+								<time datetime="<?php echo $this->escape($this->row->get('created')); ?>"><?php echo $this->escape(Date::of($this->row->get('created'))->toLocal()); ?></time>
 							</td>
 						</tr>
 						<?php if ($this->row->get('created_by')) { ?>
 							<tr>
-								<th><?php echo Lang::txt('COM_COURSES_FIELD_CREATOR'); ?></th>
+								<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_CREATOR'); ?></th>
 								<td><?php
 								$creator = User::getInstance($this->row->get('created_by'));
 								echo $this->escape(stripslashes($creator->get('name'))); ?></td>

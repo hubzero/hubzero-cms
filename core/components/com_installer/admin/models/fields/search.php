@@ -54,9 +54,9 @@ class Search extends Field
 	protected function getInput()
 	{
 		$html  = '';
-		$html .= '<input type="text" name="' . $this->name . '" id="' . $this->id . '" value="' . htmlspecialchars($this->value) . '" title="' . Lang::txt('JSEARCH_FILTER') . '" onchange="this.form.submit();" />';
+		$html .= '<input type="text" name="' . $this->name . '" id="' . $this->id . '" class="filter" value="' . htmlspecialchars($this->value) . '" title="' . Lang::txt('JSEARCH_FILTER') . '" />';
 		$html .= '<button type="submit" class="btn">' . Lang::txt('JSEARCH_FILTER_SUBMIT') . '</button>';
-		$html .= '<button type="button" class="btn" onclick="$(\'#' . $this->id . '\').val(\'\');this.form.submit();">' . Lang::txt('JSEARCH_FILTER_CLEAR') . '</button>';
+		$html .= '<button type="button" class="btn filter-clear">' . Lang::txt('JSEARCH_FILTER_CLEAR') . '</button>';
 		return $html;
 	}
 }

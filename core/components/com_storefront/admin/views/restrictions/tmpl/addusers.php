@@ -45,15 +45,15 @@ Html::behavior('framework');
 		</div>
 	</fieldset>
 
-	<div class="col width-100">
+	<div class="col span12">
 		<fieldset class="adminform">
 			<div class="current">
 			<?php
 
 			echo '<p><strong>' . $this->matched . '</strong> user(s) added.</p>';
-			if (sizeof($this->noUserMatch))
+			if (count($this->noUserMatch))
 			{
-				echo '<p><strong>' . sizeof($this->noUserMatch) . '</strong> user(s) could not be added:<br>';
+				echo '<p><strong>' . count($this->noUserMatch) . '</strong> user(s) could not be added:<br>';
 			}
 
 			$i = 0;

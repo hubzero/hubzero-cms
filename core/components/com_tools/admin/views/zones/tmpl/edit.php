@@ -45,6 +45,8 @@ Toolbar::help('zone');
 
 Html::behavior('modal');
 Html::behavior('switcher', 'submenu');
+
+$this->js('zones.js');
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
@@ -53,8 +55,8 @@ Html::behavior('switcher', 'submenu');
 			<div class="submenu-box">
 				<div class="submenu-pad">
 					<ul id="submenu">
-						<li><a href="#" id="profile" class="active"><?php echo Lang::txt('JDETAILS'); ?></a></li>
-						<li><a href="#" id="locations"><?php echo Lang::txt('COM_TOOLS_FIELDSET_LOCATIONS'); ?></a></li>
+						<li><a href="#page-profile" id="profile" class="active"><?php echo Lang::txt('JDETAILS'); ?></a></li>
+						<li><a href="#page-locations" id="locations"><?php echo Lang::txt('COM_TOOLS_FIELDSET_LOCATIONS'); ?></a></li>
 					</ul>
 					<div class="clr"></div>
 				</div>
@@ -117,22 +119,6 @@ Html::behavior('switcher', 'submenu');
 						<legend><span><?php echo Lang::txt('COM_TOOLS_FIEDSET_ZONES_PARAMS'); ?></span></legend>
 
 						<?php $hn = Request::host(); ?>
-
-						<script>
-							jQuery(document).ready(function($)
-							{
-								$('#field-zone-params-websocket-enable').on('click', function()
-								{
-									$('.websocket').prop('disabled', function(i, v) { return !v; })
-									               .toggleClass('opaque');
-								});
-								$('#field-zone-params-vnc-enable').on('click', function()
-								{
-									$('.vnc').prop('disabled', function(i, v) { return !v; })
-									               .toggleClass('opaque');
-								});
-							});
-						</script>
 
 						<?php $websocketEnabled = $this->row->params->get('websocket_enable'); ?>
 						<?php $vncEnabled       = $this->row->params->get('vnc_enable'); ?>
@@ -200,7 +186,7 @@ Html::behavior('switcher', 'submenu');
 							$this->css('fileupload.css')
 							     ->js('jquery.fileuploader.js', 'system');
 						?>
-							<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=upload&id=' . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1'); ?>">
+							<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=upload&id=' . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1'); ?>" data-instrucitons="<?php echo Lang::txt('COM_TOOLS_IMAGE_CLICK_OR_DROP'); ?>">
 								<noscript>
 									<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&id=' . $this->row->get('id')); ?>"></iframe>
 								</noscript>
@@ -249,61 +235,6 @@ Html::behavior('switcher', 'submenu');
 									</tr>
 								</tbody>
 							</table>
-
-							<script type="text/javascript">
-							String.prototype.nohtml = function () {
-								if (this.indexOf('?') == -1) {
-									return this + '?no_html=1';
-								} else {
-									return this + '&no_html=1';
-								}
-							};
-							jQuery(document).ready(function($){
-								if ($("#ajax-uploader").length) {
-									var uploader = new qq.FileUploader({
-										element: $("#ajax-uploader")[0],
-										action: $("#ajax-uploader").attr("data-action"), // + $('#field-dir').val()
-										//params: {listdir: $('#listdir').val()},
-										multiple: true,
-										debug: true,
-										template: '<div class="qq-uploader">' +
-													'<div class="qq-upload-button"><span><?php echo Lang::txt('COM_TOOLS_IMAGE_CLICK_OR_DROP'); ?></span></div>' +
-													'<div class="qq-upload-drop-area"><span><?php echo Lang::txt('COM_TOOLS_IMAGE_CLICK_OR_DROP'); ?></span></div>' +
-													'<ul class="qq-upload-list"></ul>' +
-												   '</div>',
-										/*onSubmit: function(id, file) {
-											//$("#ajax-upload-left").append("<div id=\"ajax-upload-uploading\" />");
-										},*/
-										onComplete: function(id, file, response) {
-											if (response.success) {
-												$('#img-display').attr('src', '..' + response.directory + '/' + response.file);
-												$('#img-name').text(response.file);
-												$('#img-size').text(response.size);
-												$('#img-width').text(response.width);
-												$('#img-height').text(response.height);
-
-												$('#img-delete').show();
-											//$('#imgManager').attr('src', $('#imgManager').attr('src'));
-											}
-										}
-									});
-								}
-								$('#img-delete').on('click', function (e) {
-									e.preventDefault();
-									var el = $(this);
-									$.getJSON(el.attr('href').nohtml(), {}, function(response) {
-										if (response.success) {
-											$('#img-display').attr('src', '../media/images/blank.png');
-											$('#img-name').text('[ none ]');
-											$('#img-size').text('0');
-											$('#img-width').text('0');
-											$('#img-height').text('0');
-										}
-										el.hide();
-									});
-								});
-							});
-							</script>
 						<?php
 						} else {
 							echo '<p class="warning">' . Lang::txt('COM_TOOLS_PICTURE_ADDED_LATER') . '</p>';

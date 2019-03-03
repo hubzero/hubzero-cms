@@ -182,9 +182,11 @@ class Attachment extends Relational
 
 		$exts = explode(',', Component::params('com_media')->get('upload_extensions', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,wav,mp3,eps,ppt,pps,swf,tar,tex,gz'));
 		$exts = array_map('trim', $exts);
+		$exts = array_values(array_filter($exts));
 
 		if (!in_array($ext, $exts))
 		{
+			$this->setError(Lang::txt('COM_WISHLIST_ERROR_UPLOADING_INVALID_FILE', implode(', ', $exts)));
 			return false;
 		}
 

@@ -25,7 +25,7 @@ class Migration20160419144221ComGroups extends Base
 				  PRIMARY KEY (`id`),
 				  KEY `idx_user_id` (`user_id`),
 				  KEY `idx_group_id` (`group_id`)
-				) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;";
+				) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

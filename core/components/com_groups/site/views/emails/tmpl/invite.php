@@ -165,7 +165,7 @@ $accept = $base . '/' . ltrim(Route::url('index.php?option=' . $this->option . '
 										<table cellpadding="0" cellspacing="0" style="border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background: #439fe0; border-bottom: 2px solid #3286b1; padding: 1em 2em; display: inline-block;">
 											<tr>
 												<td style="border-collapse: collapse;">
-													<a target="_blank" style="color: white; font-weight: normal; text-decoration: none; word-break: break-word; display: inline-block; letter-spacing: 1px; font-size: 1.5em; text-shadow: 0 1px 1px rgba(0,0,0,0.25);" align="center" href="<?php echo $accept; ?>"><?php echo Lang::txt('Accept Invite'); ?></a>
+													<a style="color: white; font-weight: normal; text-decoration: none; word-break: break-word; display: inline-block; letter-spacing: 1px; font-size: 1.5em; text-shadow: 0 1px 1px rgba(0,0,0,0.25);" align="center" href="<?php echo $accept; ?>"><?php echo Lang::txt('Accept Invite'); ?></a>
 												</td>
 											</tr>
 										</table>

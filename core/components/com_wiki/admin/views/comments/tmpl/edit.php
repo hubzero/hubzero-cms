@@ -47,27 +47,13 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('comment');
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// do field validation
-	if ($('#field-ctext').value == ''){
-		alert(<?php echo Lang::txt('COM_WIKI_ERROR_MISSING_COMMENT'); ?>);
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="colspan7">
 			<fieldset class="adminform">
@@ -80,7 +66,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-ctext"><?php echo Lang::txt('COM_WIKI_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<textarea name="fields[ctext]" id="field-ctext" cols="35" rows="15"><?php echo $this->escape(stripslashes($this->row->get('ctext'))); ?></textarea>
+					<textarea name="fields[ctext]" id="field-ctext" class="required" cols="35" rows="15"><?php echo $this->escape(stripslashes($this->row->get('ctext'))); ?></textarea>
 				</div>
 			</fieldset>
 		</div>

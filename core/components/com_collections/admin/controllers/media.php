@@ -256,8 +256,12 @@ class Media extends AdminController
 			$listdir = $item->get('id');
 		}
 
-		//max upload size
-		$sizeLimit = $this->config->get('maxAllowed', 40000000);
+		// Get media config
+		$mediaConfig = \Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
 
 		// get the file
 		if (isset($_GET['qqfile']))
@@ -303,6 +307,7 @@ class Media extends AdminController
 			echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_EMPTY_FILE')));
 			return;
 		}
+
 		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
@@ -324,8 +329,16 @@ class Media extends AdminController
 		{
 			$filename .= rand(10, 99);
 		}
-
 		$file = $path . DS . $filename . '.' . $ext;
+
+		// Check that the file type is allowed
+		$allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
+
+		if (!empty($allowed) && !in_array(strtolower($ext), $allowed))
+		{
+			echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed))));
+			return;
+		}
 
 		if ($stream)
 		{
@@ -371,7 +384,7 @@ class Media extends AdminController
 		$view->asset      = $asset;
 		$view->no_html    = 1;
 
-		//echo result
+		// Echo result
 		echo json_encode(array(
 			'success'   => true,
 			'file'      => $filename . '.' . $ext,
@@ -404,17 +417,28 @@ class Media extends AdminController
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming file
-		$file = Request::getArray('upload', '', 'files');
-		if (!$file['name'])
+		$file = Request::getArray('upload', array(), 'files');
+		if (empty($file) || !$file['name'])
 		{
 			$this->setError(Lang::txt('COM_COLLECTIONS_NO_FILE'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
+		}
+
+		// Get media config
+		$mediaConfig = Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
+
+		if ($file['size'] > $sizeLimit)
+		{
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_FILE_TOO_BIG', Number::formatBytes($sizeLimit)));
+			return $this->displayTask();
 		}
 
 		$asset = Asset::blank();
@@ -427,8 +451,7 @@ class Media extends AdminController
 			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_CREATE_UPLOAD_DIR'));
-				$this->displayTask();
-				return;
+				return $this->displayTask();
 			}
 		}
 
@@ -436,6 +459,16 @@ class Media extends AdminController
 		$file['name'] = urldecode($file['name']);
 		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
+		$ext = Filesystem::extension($file['name']);
+
+		// Check that the file type is allowed
+		$allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
+
+		if (!empty($allowed) && !in_array(strtolower($ext), $allowed))
+		{
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
+			return $this->displayTask();
+		}
 
 		// Upload new files
 		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
@@ -445,16 +478,26 @@ class Media extends AdminController
 		// File was uploaded
 		else
 		{
-			// Create database entry
-			$asset->set('item_id', intval($listdir));
-			$asset->set('filename', $file['name']);
-			$asset->set('description', Request::getString('description', '', 'post'));
-			$asset->set('state', $asset::STATE_PUBLISHED);
-			$asset->set('type', 'file');
-
-			if (!$asset->save())
+			// Virus scan
+			if (!Filesystem::isSafe($path . DS . $file['name']))
 			{
-				$this->setError($asset->getError());
+				Filesystem::delete($path . DS . $file['name']);
+
+				$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_VIRUS'));
+			}
+			else
+			{
+				// Create database entry
+				$asset->set('item_id', intval($listdir));
+				$asset->set('filename', $file['name']);
+				$asset->set('description', Request::getString('description', '', 'post'));
+				$asset->set('state', $asset::STATE_PUBLISHED);
+				$asset->set('type', 'file');
+
+				if (!$asset->save())
+				{
+					$this->setError($asset->getError());
+				}
 			}
 		}
 

@@ -32,17 +32,9 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
-?>
-<script type="text/javascript">
-	function deleteFile(file)
-	{
-		if (confirm("Delete file \""+file+"\"?")) {
-			return true;
-		}
 
-		return false;
-	}
-</script>
+$this->js('media.js');
+?>
 <div id="attachments">
 	<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" id="filelist" name="filelist">
 		<table>
@@ -67,7 +59,7 @@ defined('_HZEXEC_') or die();
 								<?php echo $docs[$docName]; ?>
 							</td>
 							<td>
-								<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=deletefile&delFile=' . $docs[$docName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course=' . $this->course_id . '&' . Session::getFormToken() . '=1'); ?>" target="filelist" onclick="return deleteFile('<?php echo $docs[$docName]; ?>');" title="<?php echo Lang::txt('DELETE'); ?>">
+								<a class="delete-file" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=deletefile&delFile=' . $docs[$docName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course=' . $this->course_id . '&' . Session::getFormToken() . '=1'); ?>" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the file "%s"?', $docs[$docName]); ?>" title="<?php echo Lang::txt('DELETE'); ?>">
 									<img src="<?php echo Request::base(true); ?>/core/components/<?php echo $this->option; ?>/admin/assets/img/trash.png" width="15" height="15" alt="<?php echo Lang::txt('DELETE'); ?>" />
 								</a>
 							</td>

@@ -51,31 +51,19 @@ Toolbar::spacer();
 Toolbar::help('edit');
 
 Html::behavior('framework');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
 
-	// do field validation
-	if ($('#field-name').val() == '') {
-		alert('<?php echo Lang::txt('COM_GROUPS_ERROR_EMPTY_NAME'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 <?php if ($tmpl == 'component') { ?>
 	<fieldset>
 		<div class="configuration">
 			<div class="fltrt configuration-options">
-				<button type="button" onclick="submitbutton('save');"><?php echo Lang::txt('JTOOLBAR_SAVE');?></button>
-				<button type="button" onclick="submitbutton('cancel');"><?php echo Lang::txt('COM_GROUPS_MEMBER_CANCEL');?></button>
+				<button type="button" id="btn-save"><?php echo Lang::txt('JTOOLBAR_SAVE');?></button>
+				<button type="button" id="btn-cancel"><?php echo Lang::txt('COM_GROUPS_MEMBER_CANCEL');?></button>
 			</div>
 			<?php echo Lang::txt('COM_GROUPS_ROLES') . ': ' . $text; ?>
 		</div>
@@ -83,7 +71,8 @@ function submitbutton(pressbutton)
 	<fieldset id="filter-bar" class="filter clearfix">
 	</fieldset>
 <?php } ?>
-	<div class="col width-60 fltlft">
+	<div class="grid">
+	<div class="col span7">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
@@ -114,7 +103,7 @@ function submitbutton(pressbutton)
 			</fieldset>
 		</fieldset>
 	</div>
-	<div class="col width-40 fltrt">
+	<div class="col span5">
 		<table class="meta">
 			<tbody>
 				<tr>
@@ -128,7 +117,7 @@ function submitbutton(pressbutton)
 			</tbody>
 		</table>
 	</div>
-	<div class="clr"></div>
+	</div>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

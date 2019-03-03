@@ -135,10 +135,7 @@ class Helper extends Module
 		$this->css('providers.css', 'com_users');
 		$this->js('login', 'com_users');
 
-		$this->css('uniform.css', 'system');
-		$this->js('jquery.uniform', 'system');
 		$this->js('jquery.hoverIntent', 'system');
-		$this->js('placeholder', 'system');
 
 		$type    = self::getType();
 		$return  = Request::getString('return', null);

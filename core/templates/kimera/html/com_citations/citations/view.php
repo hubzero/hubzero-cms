@@ -635,7 +635,7 @@ $area = Request::getString('area', 'about');
 							$query .= $citation->title;
 						}
 						?>
-						<a target="_blank" title="Google Scholar Search Results" href="http://scholar.google.com/scholar?q=<?php echo $query; ?>">
+						<a rel="nofollow external" title="Google Scholar Search Results" href="http://scholar.google.com/scholar?q=<?php echo $query; ?>">
 							<img src="<?php echo Request::base(true); ?>/core/components/com_citations/site/assets/img/googlescholar.gif" alt="Google Scholar Search Results" width="100" />
 						</a>
 					</td>

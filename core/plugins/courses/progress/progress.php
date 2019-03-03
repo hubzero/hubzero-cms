@@ -188,7 +188,6 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		$this->js('handlebars', 'system');
 		$this->css('contentbox.css', 'system');
 		$this->js('contentbox', 'system');
-		$this->js('jquery.uniform.min', 'system');
 
 		// Set the layout
 		$this->view->setLayout($layout);

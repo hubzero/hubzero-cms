@@ -31,11 +31,9 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
 Html::behavior('framework');
 ?>
-<script type="text/javascript">
-
-</script>
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
@@ -47,15 +45,15 @@ Html::behavior('framework');
 		</div>
 	</fieldset>
 
-	<div class="col width-100">
+	<div class="col span12">
 		<fieldset class="adminform">
 			<div class="current">
 			<?php
 
 			echo '<p><strong>' . $this->matched . '</strong> user(s) added.</p>';
-			if (sizeof($this->noUserMatch))
+			if (count($this->noUserMatch) > 0)
 			{
-				echo '<p><strong>' . sizeof($this->noUserMatch) . '</strong> user(s) could not be added (no matching users):<br>';
+				echo '<p><strong>' . count($this->noUserMatch) . '</strong> user(s) could not be added (no matching users):<br>';
 			}
 
 			$i = 0;

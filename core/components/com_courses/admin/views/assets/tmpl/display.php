@@ -48,24 +48,11 @@ $pageNav = $this->pagination(
 );
 
 Html::behavior('modal');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function setTask(task)
-{
-	$('#task').val(task);
-}
-
-jQuery(document).ready(function($){
-	$('a.edit-asset').on('click', function(e) {
-		e.preventDefault();
-
-		window.top.document.assetform.open({'href': $(this).attr('href'), 'type': 'iframe', 'width': 570, 'height': 550, 'autoHeight': false});
-	});
-});
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
-
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -85,7 +72,7 @@ jQuery(document).ready(function($){
 							<?php } ?>
 						<?php } ?>
 					</select>
-					<input type="submit" value="<?php echo Lang::txt('COM_COURSES_ATTACH_ASSET'); ?>" onclick="setTask('link');" />
+					<input type="submit" id="btn-attach" value="<?php echo Lang::txt('COM_COURSES_ATTACH_ASSET'); ?>" />
 				</th>
 				<th colspan="4" class="align-right">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=add&scope=' . $this->filters['asset_scope'] . '&scope_id=' . $this->filters['asset_scope_id'] . '&course_id=' . $this->filters['course_id'] . '&tmpl=' . $this->filters['tmpl']); ?>" class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"><?php echo Lang::txt('COM_COURSES_CREATE_ASSET'); ?></a>
@@ -111,7 +98,7 @@ foreach ($this->rows as $row)
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php echo $this->escape($row->id); ?>
-					<input class="invisible" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input class="invisible" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>

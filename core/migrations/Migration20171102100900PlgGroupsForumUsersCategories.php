@@ -26,7 +26,7 @@ class Migration20171102100900PlgGroupsForumUsersCategories extends Base
 					PRIMARY KEY (`id`)
 				)
 				ENGINE=MyISAM
-				DEFAULT CHARSET=latin1;";
+				DEFAULT CHARSET=utf8;";
 		}
 
 		$this->db->setQuery($createTable);

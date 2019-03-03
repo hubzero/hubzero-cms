@@ -51,7 +51,7 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.delete'))
 {
-	Toolbar::deleteList();
+	Toolbar::deleteList('COM_WISHLIST_CONFIRM_DELETE');
 }
 Toolbar::spacer();
 Toolbar::help('wishes');
@@ -64,13 +64,13 @@ $this->css();
 		<div class="grid">
 			<div class="col span6">
 				<label for="filter_search"><?php echo Lang::txt('COM_WISHLIST_SEARCH'); ?>:</label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_WISHLIST_SEARCH_PLACEHOLDER'); ?>" />
+				<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_WISHLIST_SEARCH_PLACEHOLDER'); ?>" />
 				<input type="submit" value="<?php echo Lang::txt('COM_WISHLIST_GO'); ?>" />
-				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span6">
 				<label for="filter-status"><?php echo Lang::txt('COM_WISHLIST_FILTER_STATUS'); ?>:</label>
-				<select name="status" id="filter-status" onchange="this.form.submit()">
+				<select name="status" id="filter-status" class="filter filter-submit">
 					<option value="all"<?php echo ($this->filters['status'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_ALL'); ?></option>
 					<option value="granted"<?php echo ($this->filters['status'] == 'granted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_GRANTED'); ?></option>
 					<option value="open"<?php echo ($this->filters['status'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_OPEN'); ?></option>
@@ -92,13 +92,13 @@ $this->css();
 		<thead>
 			<?php if ($this->wishlist->id) { ?>
 				<tr>
-					<th colspan="<?php echo (!$this->wishlist->id ? 9 : 8); ?>">
+					<th colspan="<?php echo (!$this->wishlist->id) ? 9 : 8; ?>">
 						(<?php echo $this->escape(stripslashes($this->wishlist->category)); ?>) &nbsp; <?php echo $this->escape(stripslashes($this->wishlist->title)); ?>
 					</th>
 				</tr>
 			<?php } ?>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_WISHLIST_WISH_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_WISHLIST_TITLE', 'subject', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<?php if (!$this->wishlist->id) { ?>
@@ -113,7 +113,7 @@ $this->css();
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="<?php echo (!$this->wishlist->id ? 9 : 8); ?>"><?php
+				<td colspan="<?php echo (!$this->wishlist->id) ? 9 : 8; ?>"><?php
 				// Initiate paging
 				echo $this->rows->pagination;
 				?></td>
@@ -180,7 +180,7 @@ $this->css();
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
 				</td>
 				<td class="priority-5">
 					<?php echo $row->id; ?>

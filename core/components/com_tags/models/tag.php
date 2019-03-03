@@ -437,13 +437,12 @@ class Tag extends Relational
 
 		if (!empty($objectAttributes['objects']))
 		{
-			$this->set('objects', $this->objects()->total());
+			$this->set('objects', $this->purgeCache()->objects()->total());
 		}
 		$this->set('id', $objectAttributes['id']);
 		$this->set('raw_tag', $objectAttributes['raw_tag']);
-		$this->save();
 
-		return true;
+		return $this->save();
 	}
 
 	/**
@@ -490,11 +489,10 @@ class Tag extends Relational
 
 		if ($this->hasAttribute('objects'))
 		{
-			$this->set('objects', $this->objects()->total());
+			$this->set('objects', $this->purgeCache()->objects()->total());
 		}
-		$this->save();
 
-		return true;
+		return $this->save();
 	}
 
 	/**
@@ -543,11 +541,11 @@ class Tag extends Relational
 			$tag = self::one($tag_id);
 			if ($this->hasAttribute('objects'))
 			{
-				$tag->set('objects', $tag->objects()->total());
+				$tag->set('objects', $tag->purgeCache()->objects()->total());
 			}
 			if ($this->hasAttribute('substitutes'))
 			{
-				$tag->set('substitutes', $tag->substitutes()->total());
+				$tag->set('substitutes', $tag->purgeCache()->substitutes()->total());
 			}
 			$tag->save();
 		}
@@ -672,15 +670,14 @@ class Tag extends Relational
 
 		if ($this->hasAttribute('objects'))
 		{
-			$this->set('objects', $this->objects()->total());
+			$this->set('objects', $this->purgeCache()->objects()->total());
 		}
 		if ($this->hasAttribute('substitutes'))
 		{
-			$this->set('substitutes', $this->substitutes()->total());
+			$this->set('substitutes', $this->purgeCache()->substitutes()->total());
 		}
-		$this->save();
 
-		return true;
+		return $this->save();
 	}
 
 	/**

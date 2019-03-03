@@ -36,21 +36,15 @@ defined('_HZEXEC_') or die();
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
+
+$this->js('config.js');
 ?>
-<script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
-		if (task == 'config.cancel' || document.formvalidator.isValid($('#config-form'))) {
-			Joomla.submitform(task, document.getElementById('config-form'));
-		}
-	}
-</script>
-<form action="<?php echo Route::url('index.php?option=com_messages&controller=configs'); ?>" method="post" name="adminForm" id="message-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=com_messages&controller=configs'); ?>" method="post" name="adminForm" id="config-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<fieldset>
 		<div class="configuration">
 			<div class="configuration-options">
-				<button type="button" onclick="Joomla.submitform('save', this.form);window.top.setTimeout('window.parent.$.fancybox.close()', 1400);"><?php echo Lang::txt('JSAVE');?></button>
-				<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo Lang::txt('JCANCEL');?></button>
+				<button type="button" id="action_save"><?php echo Lang::txt('JSAVE');?></button>
+				<button type="button" id="action_cancel"><?php echo Lang::txt('JCANCEL');?></button>
 			</div>
 			<?php echo Lang::txt('COM_MESSAGES_MY_SETTINGS') ?>
 		</div>

@@ -26,22 +26,22 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 				<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('COM_USERS_SEARCH_ASSETS'); ?></label>
 				<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" title="<?php echo Lang::txt('COM_USERS_SEARCH_USERS'); ?>" />
 				<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_RESET'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_RESET'); ?></button>
 			</div>
 			<div class="filter-select col span7">
-				<select name="filter_component" class="inputbox" onchange="this.form.submit()">
+				<select name="filter_component" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('COM_USERS_OPTION_SELECT_COMPONENT');?></option>
 					<?php if (!empty($this->components)) {
 						echo Html::select('options', $this->components, 'value', 'text', $this->state->get('filter.component'));
 					}?>
 				</select>
 
-				<select name="filter_level_start" class="inputbox" onchange="this.form.submit()">
+				<select name="filter_level_start" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('COM_USERS_OPTION_SELECT_LEVEL_START');?></option>
 					<?php echo Html::select('options', $this->levels, 'value', 'text', $this->state->get('filter.level_start'));?>
 				</select>
 
-				<select name="filter_level_end" class="inputbox" onchange="this.form.submit()">
+				<select name="filter_level_end" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('COM_USERS_OPTION_SELECT_LEVEL_END');?></option>
 					<?php echo Html::select('options', $this->levels, 'value', 'text', $this->state->get('filter.level_end'));?>
 				</select>

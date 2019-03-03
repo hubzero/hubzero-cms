@@ -507,11 +507,24 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		Request::checkToken(['get', 'post']);
 
 		// Incoming file
-		$file = Request::getArray('uploadres', '', 'files');
+		$file = Request::getArray('uploadres', array(), 'files');
 
-		if (!$file['name'])
+		if (empty($file) || !$file['name'])
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_RESUME_SUPPORT_NO_FILE'));
+			return $this->_view($database, $option, $member, $emp);
+		}
+
+		// Get media config
+		$mediaConfig = Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
+
+		if ($file['size'] > $sizeLimit)
+		{
+			$this->setError(Lang::txt('PLG_MEMBERS_RESUME_ERROR_FILE_TOO_LARGE', Hubzero\Utility\Number::formatBytes($sizeLimit)));
 			return $this->_view($database, $option, $member, $emp);
 		}
 
@@ -529,10 +542,13 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
+		// Check that the file type is allowed
 		$ext = strtolower(Filesystem::extension($file['name']));
-		if (!in_array($ext, explode(',', $this->params->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,txt,rtf,doc,docx,ppt'))))
+
+		$allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
+		if (!empty($allowed) && !in_array($ext, $allowed))
 		{
-			$this->setError(Lang::txt('Disallowed file type.'));
+			$this->setError(Lang::txt('PLG_MEMBERS_RESUME_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
 			return $this->_view($database, $option, $member, $emp);
 		}
 

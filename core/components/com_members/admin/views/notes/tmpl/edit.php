@@ -62,23 +62,12 @@ Toolbar::help('note');
 
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-
-	submitform( pressbutton );
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -86,7 +75,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-subject"><?php echo Lang::txt('COM_MEMBERS_FIELD_SUBJECT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<input type="text" name="fields[subject]" id="field-subject" value="<?php echo $this->escape(stripslashes($this->row->get('subject'))); ?>" />
+					<input type="text" name="fields[subject]" id="field-subject" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('subject'))); ?>" />
 				</div>
 
 				<div class="input-wrap">
@@ -126,7 +115,7 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_MEMBERS_FIELD_ID'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_MEMBERS_FIELD_ID'); ?></th>
 						<td>
 							<?php echo $this->row->get('id'); ?>
 							<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />

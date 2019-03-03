@@ -33,38 +33,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css();
+$this->css()
+	->js('media.js');
 ?>
-<script type="text/javascript">
-	function updateDir()
-	{
-		var allPaths = window.top.document.forms[0].dirPath.options;
-		for (i=0; i<allPaths.length; i++) {
-			allPaths.item(i).selected = false;
-			if (allPaths.item(i).value == '<?php echo $this->archive->get('scope_id'); ?>') {
-				allPaths.item(i).selected = true;
-			}
-		}
-	}
-	function deleteFile(file)
-	{
-		if (confirm('Delete file "' + file + '"?')) {
-			return true;
-		}
-		return false;
-	}
-	function deleteFolder(folder, numFiles)
-	{
-		if (numFiles > 0) {
-			alert('There are ' + numFiles + ' files/folders in "' + folder + '". Please delete all files/folder in "' + folder + '" first.');
-			return false;
-		}
-		if (confirm('Delete folder "' + folder + '"?')) {
-			return true;
-		}
-		return false;
-	}
-</script>
+
 <div id="attachments">
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="filelist">
 		<?php if (count($this->folders) == 0 && count($this->docs) == 0) { ?>
@@ -85,7 +57,7 @@ $this->css();
 							</span>
 						</td>
 						<td>
-							<a class="icon-delete delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefolder&folder=' . basename($folder) . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" target="filer" onclick="return deleteFolder('<?php echo basename($folder); ?>', '<?php echo $num_files; ?>');" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
+							<a class="icon-delete delete delete-folder" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefolder&folder=' . basename($folder) . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" target="filer" data-confirm="<?php echo Lang::txt('Are you sure you want to delete folder "%s"?', basename($folder)); ?>" data-files="<?php echo $num_files; ?>" data-notempty="<?php echo LAng::txt('There are %s files/folders in the folder. Please delete all files/folder first.', $num_files); ?>" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
 								<span><?php echo Lang::txt('COM_BLOG_DELETE'); ?></span>
 							</a>
 						</td>
@@ -99,7 +71,7 @@ $this->css();
 							</span>
 						</td>
 						<td>
-							<a class="icon-delete delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefile&file=' . basename($doc) . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" target="filer" onclick="return deleteFile('<?php echo basename($doc); ?>');" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
+							<a class="icon-delete delete delete-file" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefile&file=' . basename($doc) . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" target="filer" data-confirm="<?php echo Lang::txt('Are you sure you want to delete file "%s"?', basename($doc)); ?>" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
 								<span><?php echo Lang::txt('COM_BLOG_DELETE'); ?></span>
 							</a>
 						</td>

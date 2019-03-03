@@ -42,8 +42,8 @@ Toolbar::deleteList();
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
-				<th scope="col"><?php echo $this->grid('sort', 'COM_TOOLS_HANDLERS_TOOLNAME', 'tool.title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_HANDLERS_TOOLNAME', 'tool.title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_TOOLS_HANDLERS_PROMPT'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_TOOLS_HANDLERS_RULES'); ?></th>
 			</tr>
@@ -61,7 +61,7 @@ Toolbar::deleteList();
 				<?php foreach ($this->rows as $row) : ?>
 					<tr>
 						<td>
-							<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
+							<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
 						</td>
 						<td>
 							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">

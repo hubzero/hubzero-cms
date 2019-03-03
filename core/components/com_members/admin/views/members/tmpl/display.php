@@ -50,6 +50,7 @@ if ($canDo->get('core.admin'))
 }
 if ($canDo->get('core.edit.state'))
 {
+	//Toolbar::confirm('COM_MEMBERS_CONFIRMATION_WARNING', 'remove', 'COM_MEMBERS_CLEAR_TERMS', 'clearTerms');
 	Toolbar::custom('clearTerms', 'remove', '', 'COM_MEMBERS_CLEAR_TERMS', false);
 	Toolbar::publishList('confirm', 'COM_MEMBERS_CONFIRM');
 	Toolbar::unpublishList('unconfirm', 'COM_MEMBERS_UNCONFIRM');
@@ -65,80 +66,60 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.delete'))
 {
-	Toolbar::deleteList();
+	Toolbar::deleteList('COM_MEMBERS_CONFIRMATION_WARNING');
 }
 Toolbar::spacer();
 Toolbar::help('users');
 
-$this->css();
-
 Html::behavior('tooltip');
+
+$this->css()
+	->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('adminForm');
-
-	if (pressbutton == 'clearTerms' || pressbutton == 'remove') {
-		var res = confirm("<?php echo Lang::txt('COM_MEMBERS_CONFIRMATION_WARNING'); ?>");
-
-		if (!res) {
-			return;
-		}
-	}
-
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="grid">
 			<div class="col span4">
 				<label for="filter_search"><?php echo Lang::txt('COM_MEMBERS_SEARCH_FOR'); ?></label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
+				<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
 
 				<input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_GO'); ?>" />
-				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_RESET'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_RESET'); ?></button>
 			</div>
 			<div class="col span8">
-				<select name="activation" id="filter_emailConfirmed" onchange="document.adminForm.submit( );">
+				<select name="activation" id="filter_emailConfirmed" class="inputbox filter filter-submit">
 					<option value="0"<?php if ($this->filters['activation'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FILTER_EMAIL_CONFIRMED'); ?></option>
 					<option value="1"<?php if ($this->filters['activation'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_CONFIRMED'); ?></option>
 					<option value="-1"<?php if ($this->filters['activation'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_UNCONFIRMED'); ?></option>
 				</select>
 
 				<label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
-				<select name="access" id="filter-access" onchange="this.form.submit()">
+				<select name="access" id="filter-access" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
 					<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
 				</select>
 
 				<label for="filter-state"><?php echo Lang::txt('COM_MEMBERS_FILTER_STATE'); ?>:</label>
-				<select name="state" id="filter-state" onchange="this.form.submit()">
+				<select name="state" id="filter-state" class="inputbox filter filter-submit">
 					<option value="*"><?php echo Lang::txt('COM_MEMBERS_FILTER_STATE');?></option>
 					<?php echo Html::select('options', Components\Members\Helpers\Admin::getStateOptions(), 'value', 'text', $this->filters['state']); ?>
 				</select>
 
 				<label for="filter-approved"><?php echo Lang::txt('COM_MEMBERS_FILTER_APPROVED'); ?>:</label>
-				<select name="approved" id="filter-approved" onchange="this.form.submit()">
+				<select name="approved" id="filter-approved" class="inputbox filter filter-submit">
 					<option value="*"><?php echo Lang::txt('COM_MEMBERS_FILTER_APPROVED');?></option>
 					<?php echo Html::select('options', Components\Members\Helpers\Admin::getApprovedOptions(), 'value', 'text', $this->filters['approved']); ?>
 				</select>
 
 				<label for="filter-group_id"><?php echo Lang::txt('COM_MEMBERS_FILTER_USERGROUP'); ?>:</label>
-				<select name="group_id" id="filter-group_id" onchange="this.form.submit()">
+				<select name="group_id" id="filter-group_id" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('COM_MEMBERS_FILTER_USERGROUP');?></option>
 					<?php echo Html::select('options', Components\Members\Helpers\Admin::getAccessGroups(), 'value', 'text', $this->filters['group_id']); ?>
 				</select>
 
 				<label for="filter-range"><?php echo Lang::txt('COM_MEMBERS_OPTION_FILTER_DATE'); ?>:</label>
-				<select name="range" id="filter-range" class="inputbox" onchange="this.form.submit()">
+				<select name="range" id="filter-range" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_FILTER_DATE');?></option>
 					<?php echo Html::select('options', Components\Members\Helpers\Admin::getRangeOptions(), 'value', 'text', $this->filters['range']); ?>
 				</select>
@@ -149,7 +130,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_MEMBERS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_MEMBERS_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_MEMBERS_COL_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -249,7 +230,7 @@ function submitbutton(pressbutton)
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php if ($canEdit) : ?>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
 					<?php endif; ?>
 				</td>
 				<td class="priority-2">

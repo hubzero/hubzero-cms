@@ -76,7 +76,8 @@ if (empty($this->meta->qtyTxt))
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
+	<div class="grid">
+	<div class="col span7">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_STOREFRONT_DETAILS'); ?></span></legend>
 
@@ -106,7 +107,7 @@ if (empty($this->meta->qtyTxt))
 			</div>
 		</fieldset>
 	</div>
-	<div class="col width-40 fltrt">
+	<div class="col span5">
 		<table class="meta">
 			<tbody>
 			<tr>
@@ -468,11 +469,11 @@ if (empty($this->meta->qtyTxt))
 		</fieldset>
 
 	</div>
-	<div class="clr"></div>
+	</div>
 
 	<?php /*
 		<?php if ($canDo->get('core.admin')): ?>
-			<div class="col width-100 fltlft">
+			<div class="col span12">
 				<fieldset class="panelform">
 					<?php echo $this->form->getLabel('rules'); ?>
 					<?php echo $this->form->getInput('rules'); ?>

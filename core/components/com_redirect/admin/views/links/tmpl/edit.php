@@ -68,16 +68,11 @@ Toolbar::help('link');
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
-?>
-<script type="text/javascript">
-	Joomla.submitbutton = function(task) {
-		if (task == 'cancel' || document.formvalidator.isValid($('#item-form'))) {
-			Joomla.submitform(task, document.getElementById('item-form'));
-		}
-	}
-</script>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . (int) $this->row->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+$this->js();
+?>
+
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . (int) $this->row->id); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">

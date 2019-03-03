@@ -40,10 +40,10 @@ $canDo = \Components\Collections\Helpers\Permissions::getActions('post');
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="postsForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COLLECTIONS_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+		<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COLLECTIONS_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
 		<input type="submit" value="<?php echo Lang::txt('COM_COLLECTIONS_GO'); ?>" />
-		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+		<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 
 		<input type="hidden" name="collection_id" value="<?php echo $this->filters['collection_id']; ?>" />
 		<input type="hidden" name="item_id" value="<?php echo $this->escape($this->filters['item_id']); ?>" />
@@ -74,7 +74,7 @@ $canDo = \Components\Collections\Helpers\Permissions::getActions('post');
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="<?php echo ($this->filters['collection_id'] ? '7' : '8'); ?>">
+				<td colspan="<?php echo ($this->filters['collection_id']) ? '7' : '8'; ?>">
 					<?php
 					echo $this->rows->pagination;
 					?>

@@ -32,9 +32,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css();
+$this->css()
+	->js('media.js');
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist" onsubmit="return validate();">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
 	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
@@ -67,10 +68,10 @@ $this->css();
 						<img src="<?php echo $this->webpath . DS . $this->path . DS . $this->file; ?>" alt="" id="conimage" height="<?php echo $mh; ?>" width="<?php echo $mw; ?>" />
 					</td>
 					<td width="100%">
-						<input type="hidden" name="conimg" value="<?php echo $this->webpath . DS . $this->path . DS . $this->file; ?>" />
+						<input type="hidden" name="conimg" value="<?php echo $this->escape($this->webpath . DS . $this->path . DS . $this->file); ?>" />
 						<input type="hidden" name="task" value="delete" />
-						<input type="hidden" name="file" id="file" value="<?php echo $this->file; ?>" />
-						<input type="submit" name="submit" value="<?php echo Lang::txt('DELETE'); ?>" />
+						<input type="hidden" name="file" id="file" value="<?php echo $this->escape($this->file); ?>" />
+						<input type="submit" name="submit" value="<?php echo Lang::txt('JACTION_DELETE'); ?>" />
 					</td>
 				</tr>
 			<?php } else { ?>
@@ -86,7 +87,7 @@ $this->css();
 					<td colspan="2">
 						<input type="hidden" name="conimg" value="" />
 						<input type="hidden" name="task" value="upload" />
-						<input type="hidden" name="currentfile" value="<?php $this->file; ?>" />
+						<input type="hidden" name="currentfile" value="<?php echo $this->escape($this->file); ?>" />
 						<input type="file" name="upload" id="upload" size="10" /> <input type="submit" value="<?php echo Lang::txt('COM_FEEDBACK_UPLOAD'); ?>" />
 					</td>
 				</tr>
@@ -99,19 +100,3 @@ $this->css();
 	<input type="hidden" name="tmpl" value="component" />
 	<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 </form>
-<script type="text/javascript">
-	<!--
-	function validate()
-	{
-		var apuf = document.getElementById('file');
-		return apuf.value ? true : false;
-	}
-
-	function passparam()
-	{
-		parent.document.getElementById('picture').value = this.document.forms[0].conimg.value;
-	}
-
-	window.onload = passparam;
-	//-->
-</script>

@@ -5,11 +5,6 @@
  * @license     http://opensource.org/licenses/MIT MIT
  */
 
-/*
-#content {
-	background: #FFFFFF;
-}*/
-
 .auth {
 	margin: 75px auto 20px auto;
 	background: #F2F2F2;
@@ -187,7 +182,6 @@
 	border-width: 1px;
 	border-style: solid;
 	background: transparent;
-
 	-webkit-transition: background ease-in-out 0.25s, border-color ease-in-out 0.25s;
 	-moz-transition: background ease-in-out 0.25s, border-color ease-in-out 0.25s;
 	-o-transition: background ease-in-out 0.25s, border-color ease-in-out 0.25s;
@@ -198,7 +192,6 @@
 	-moz-transition: background ease-in-out 0.25s, border-color ease-in-out 0.25s;
 	-o-transition: background ease-in-out 0.25s, border-color ease-in-out 0.25s;
 	transition: background ease-in-out 0.25s, border-color ease-in-out 0.25s;
-
 	border-color: #CC0000;
 	background: rgba(155, 0, 0, .2);
 }
@@ -222,8 +215,6 @@
 	padding: 10px;
 	border: 1px solid #CCCCCC;
 	background-color: #FFFFFF;
-	background-repeat: no-repeat;
-	background-position: 7px 9px;
 	width: 100%;
 	outline: none;
 	-webkit-box-sizing: border-box;
@@ -279,6 +270,17 @@
 }
 .primary .instructions {
 	color: #888888;
+}
+
+.hz_user>p {
+	margin: 1em;
+}
+
+@media only screen  and (min-width : 1024px) {
+	.hz_user>p {
+		max-width: 700px;
+		margin: 2em auto;
+	}
 }
 
 /* loading */

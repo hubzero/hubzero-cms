@@ -717,7 +717,9 @@ class Items extends AdminController
 			return $this->editTask($row);
 		}
 
-		$row->checkin();
+		$row
+			->purgeCache()
+			->checkin();
 
 		User::setState('com_menus.edit.item.data', null);
 		User::setState('com_menus.edit.item.type', null);

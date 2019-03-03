@@ -39,31 +39,20 @@ Toolbar::save();
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('collection');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
 
-	// form field validation
-	if ($('#field-name').val() == '') {
-		alert('<?php echo Lang::txt('COM_BILLBOARDS_ERROR_COLLECTION_NO_NAME'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<fieldset class="adminform">
 		<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
 		<div class="input-wrap">
 			<label for="field-name"><?php echo Lang::txt('COM_BILLBOARDS_FIELD_COLLECTION_NAME'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-			<input type="text" name="name" id="field-name" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" />
+			<input type="text" name="name" id="field-name" class="required" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" />
 		</div>
 	</fieldset>
 	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />

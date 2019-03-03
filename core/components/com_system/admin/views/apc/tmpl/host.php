@@ -33,9 +33,10 @@
 defined('_HZEXEC_') or die();
 
 // Menu items
-Toolbar::title(Lang::txt('COM_SYSTEM_APC_HOST'), 'config.png');
+Toolbar::title(Lang::txt('COM_SYSTEM_APC_HOST'), 'config');
 
-$this->css('apc.css');
+$this->css('apc.css')
+	->js();
 
 $time = $this->time;
 
@@ -45,20 +46,8 @@ $time = $this->time;
 	$this->view('_submenu')->display();
 ?>
 
-<script type="text/javascript">
-jQuery(document).ready(function($){
-	$('#clearcache').on('click', function(e) {
-		var mes = confirm('<?php echo Lang::txt('COM_SYSTEM_APC_CONFIRM'); ?>');
-		if (!mes) {
-			e.preventDefault();
-		}
-		return res;
-	});
-});
-</script>
-
 <div id="clearcache">
-	<a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=clrcache'); ?>">Clear <?php echo $this->cache_mode; ?> cache</a>
+	<a class="button" data-confirm="<?php echo Lang::txt('COM_SYSTEM_APC_CONFIRM'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=clrcache'); ?>">Clear <?php echo $this->cache_mode; ?> cache</a>
 </div>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">

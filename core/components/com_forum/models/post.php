@@ -240,7 +240,7 @@ class Post extends Relational
 	 */
 	public function automaticModified($data)
 	{
-		return (isset($data['id']) && $data['id'] ? Date::of('now')->toSql() : '0000-00-00 00:00:00');
+		return (isset($data['id']) && $data['id'] ? Date::of('now')->toSql() : null);
 	}
 
 	/**
@@ -484,6 +484,14 @@ class Post extends Relational
 			$this->adapter = new $cls($this->get('scope_id'));
 
 			// Set some needed info
+
+			// If no thread ID and no parent ID
+			if (!$this->get('thread') && !$this->get('parent'))
+			{
+				// We have to assume thi is the thread starting post but
+				// the thread ID somehow didn't get set.
+				$this->set('thread', $this->get('id'));
+			}
 			$this->adapter->set('thread', $this->get('thread'));
 			$this->adapter->set('parent', $this->get('parent'));
 			$this->adapter->set('post', $this->get('id'));
@@ -832,7 +840,8 @@ class Post extends Relational
 			->select($user->getTableName() . '.name')
 			->join($user->getTableName(), $user->getTableName() . '.id', $this->getTableName() . '.created_by', 'left')
 			->whereEquals('thread', $this->get('thread'))
-			->group('created_by');
+			->group('created_by')
+			->group('anonymous');
 	}
 
 	/**

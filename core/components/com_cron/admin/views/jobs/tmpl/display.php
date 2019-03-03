@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Cron\Helpers\Permissions::getActions('component');
 
-Toolbar::title(Lang::txt('COM_CRON'), 'cron.png');
+Toolbar::title(Lang::txt('COM_CRON'), 'cron');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences($this->option, '550');
@@ -55,7 +55,7 @@ if ($canDo->get('core.create'))
 }
 if ($canDo->get('core.delete'))
 {
-	Toolbar::deleteList();
+	Toolbar::deleteList('COM_CRON_CONFIRM_DELETE');
 }
 Toolbar::spacer();
 Toolbar::help('jobs');
@@ -70,7 +70,7 @@ $this->css('.toolbar-box li a span.icon-32-deactivate:before {
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_CRON_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_CRON_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_CRON_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -125,7 +125,7 @@ $this->css('.toolbar-box li a span.icon-32-deactivate:before {
 			?>
 			<tr>
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
 				</td>
 				<td class="priority-5">
 					<?php echo $row->get('id'); ?>

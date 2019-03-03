@@ -60,20 +60,7 @@ $firstname = $this->author->firstName ? htmlspecialchars($this->author->firstNam
 $lastname  = $this->author->lastName ? htmlspecialchars($this->author->lastName) : $lastname;
 
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	submitform(pressbutton);
-
-}
-</script>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>

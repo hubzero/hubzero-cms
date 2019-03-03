@@ -22,19 +22,19 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 		<div class="grid">
 			<div class="col span8">
 				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?></label>
-				<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" size="40" placeholder="<?php echo Lang::txt('COM_USERS_SEARCH_IN_NAME'); ?>" />
+				<input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" size="40" placeholder="<?php echo Lang::txt('COM_USERS_SEARCH_IN_NAME'); ?>" />
 
 				<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 				<button type="button" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('', '<?php echo Lang::txt('JLIB_FORM_SELECT_USER') ?>');"><?php echo Lang::txt('JOPTION_NO_USER')?></button>
 			</div>
 			<div class="col span4">
-				<select name="filter_state" class="inputbox" onchange="this.form.submit()">
+				<select name="filter_state" class="inputbox filter filter-submit">
 					<option value="*"><?php echo Lang::txt('COM_USERS_FILTER_STATE');?></option>
 					<?php echo Html::select('options', UsersHelper::getStateOptions(), 'value', 'text', $this->state->get('filter.state'));?>
 				</select>
 
-				<select name="filter_approved" class="inputbox" onchange="this.form.submit()">
+				<select name="filter_approved" class="inputbox filter filter-submit">
 					<option value="*"><?php echo Lang::txt('COM_USERS_FILTER_APPROVED');?></option>
 					<?php echo Html::select('options', UsersHelper::getApprovedOptions(), 'value', 'text', $this->state->get('filter.approved'));?>
 				</select>

@@ -43,226 +43,147 @@ Toolbar::cancel();
 //Toolbar::spacer();
 //Toolbar::help('category');
 
-$this->css();
+$this->css()
+	->js('jquery.fileuploader.js', 'system')
+	->js();
 
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
 
-	<?php echo $this->editor()->save('text'); ?>
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+	<div class="grid">
+		<div class="col span7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_STOREFRONT_DETAILS'); ?></span></legend>
 
-	// do field validation
-	if (document.getElementById('field-title').value == ''){
-		alert("<?php echo Lang::txt('COM_STOREFRONT_ERROR_MISSING_TITLE'); ?>");
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
+				<div class="input-wrap">
+					<label for="field-title"><?php echo Lang::txt('COM_STOREFRONT_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<input type="text" name="fields[cName]" id="field-title" class="required" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getName())); ?>" />
+				</div>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_STOREFRONT_DETAILS'); ?></span></legend>
+				<div class="input-wrap">
+					<label for="field-alias"><?php echo Lang::txt('Alias'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<input type="text" name="fields[alias]" id="field-alias" class="required" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getAlias())); ?>" />
+				</div>
 
-			<div class="input-wrap">
-				<label for="field-title"><?php echo Lang::txt('COM_STOREFRONT_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[cName]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getName())); ?>" />
-			</div>
+			</fieldset>
+		</div>
+		<div class="col span5">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th class="key"><?php echo Lang::txt('COM_STOREFRONT_ID'); ?>:</th>
+						<td>
+							<?php echo $this->row->getId(); ?>
+							<input type="hidden" name="fields[cId]" id="field-id" value="<?php echo $this->escape($this->row->getId()); ?>" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
 
-			<div class="input-wrap">
-				<label for="field-alias"><?php echo Lang::txt('Alias'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getAlias())); ?>" />
-			</div>
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_STOREFRONT_PUBLISH_OPTIONS'); ?></span></legend>
 
-		</fieldset>
-	</div>
-	<div class="col width-40 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_STOREFRONT_ID'); ?>:</th>
-					<td>
-						<?php echo $this->row->getId(); ?>
-						<input type="hidden" name="fields[cId]" id="field-id" value="<?php echo $this->escape($this->row->getId()); ?>" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
+				<div class="input-wrap">
+					<label for="field-state"><?php echo Lang::txt('COM_STOREFRONT_PUBLISH'); ?>:</label>
+					<select name="fields[state]" id="field-state">
+						<option value="0"<?php if ($this->row->getActiveStatus() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+						<option value="1"<?php if ($this->row->getActiveStatus() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+					</select>
+				</div>
+			</fieldset>
 
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_STOREFRONT_PUBLISH_OPTIONS'); ?></span></legend>
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('Image'); ?></span></legend>
 
-			<div class="input-wrap">
-				<label for="field-state"><?php echo Lang::txt('COM_STOREFRONT_PUBLISH'); ?>:</label>
-				<select name="fields[state]" id="field-state">
-					<option value="0"<?php if ($this->row->getActiveStatus() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-					<option value="1"<?php if ($this->row->getActiveStatus() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-				</select>
-			</div>
-		</fieldset>
+				<?php
+				if ($this->row->getId()) {
 
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('Image'); ?></span></legend>
+					$img = $this->row->getImage();
 
-			<?php
-			if ($this->row->getId()) {
+					if (!empty($img))
+					{
+						$image = stripslashes($img->imgName);
+						$pics = explode(DS, $image);
+						$file = end($pics);
+					}
+					else {
+						$image = false;
+						$file = false;
+						$img = new \stdClass();
+						$img->imgId = null;
+					}
+					?>
+					<div class="uploader-wrap">
+						<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&task=upload&type=collection&id=' . $this->row->getId() . '&no_html=1&' . Session::getFormToken() . '=1'); ?>" data-instructions="<?php echo Lang::txt('COM_STOREFRONT_UPLOAD_CLICK_OR_DROP'); ?>">
+							<noscript>
+								<iframe height="350" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&tmpl=component&file=' . $file . '&type=collection&id=' . $this->row->getId()); ?>"></iframe>
+							</noscript>
+						</div>
+					</div>
+				<?php
+				$width = 0;
+				$height = 0;
+				$this_size = 0;
+				$pathl = DS . trim($this->config->get('collectionsImagesFolder', '/site/storefront/collections'), DS) . DS . $this->row->getId();
 
-				$img = $this->row->getImage();
-
-				if (!empty($img))
+				if ($image && file_exists(PATH_APP . $pathl . DS . $file))
 				{
-					$image = stripslashes($img->imgName);
-					$pics = explode(DS, $image);
-					$file = end($pics);
+					$this_size = filesize(PATH_APP . $pathl . DS . $file);
+					list($width, $height, $type, $attr) = getimagesize(PATH_APP . $pathl . DS . $file);
+					$pic  = $file;
+					$path = '/app/' . $pathl;
 				}
-				else {
+				else
+				{
 					$image = false;
-					$file = false;
-					$img = new \stdClass();
-					$img->imgId = null;
+					$pic = 'noimage.png';
+					$path = dirname(dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__))))) . '/site/assets/img';
 				}
 				?>
-				<div class="uploader-wrap">
-					<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&task=upload&type=collection&id=' . $this->row->getId() . '&no_html=1&' . Session::getFormToken() . '=1'); ?>">
-						<noscript>
-							<iframe height="350" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&tmpl=component&file=' . $file . '&type=collection&id=' . $this->row->getId()); ?>"></iframe>
-						</noscript>
+					<div id="img-container">
+						<img id="img-display" src="<?php echo $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_STOREFRONT_PRODUCT_IMAGE'); ?>" />
+						<input type="hidden" name="currentfile" id="currentfile" value="<?php echo $img->imgId; ?>" />
 					</div>
-				</div>
-			<?php
-			$width = 0;
-			$height = 0;
-			$this_size = 0;
-			$pathl = DS . trim($this->config->get('collectionsImagesFolder', '/site/storefront/collections'), DS) . DS . $this->row->getId();
 
-			if ($image && file_exists(PATH_APP . $pathl . DS . $file))
-			{
-				$this_size = filesize(PATH_APP . $pathl . DS . $file);
-				list($width, $height, $type, $attr) = getimagesize(PATH_APP . $pathl . DS . $file);
-				$pic  = $file;
-				$path = '/app/' . $pathl;
-			}
-			else
-			{
-				$image = false;
-				$pic = 'noimage.png';
-				$path = dirname(dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__))))) . '/site/assets/img';
-			}
-			?>
-				<div id="img-container">
-					<img id="img-display" src="<?php echo $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_STOREFRONT_PRODUCT_IMAGE'); ?>" />
-					<input type="hidden" name="currentfile" id="currentfile" value="<?php echo $img->imgId; ?>" />
-				</div>
-
-				<table class="formed">
-					<tbody>
-					<tr>
-						<th><?php echo Lang::txt('COM_STOREFRONT_FILE'); ?>:</th>
-						<td>
-							<span id="img-name"><?php echo $image; ?></span>
-						</td>
-						<td>
-							<a id="img-delete <?php echo $image ? '' : 'hide'; ?>"
-							   href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&tmpl=component&task=remove&currentfile=' . $img->imgId . '&type=collection&id=' . $this->row->getId() . '&' . Session::getFormToken() . '=1'); ?>"
-							   title="<?php echo Lang::txt('Delete'); ?>">[ x ]</a>
-						</td>
-					</tr>
-					<tr>
-						<th><?php echo Lang::txt('COM_STOREFRONT_PICTURE_SIZE'); ?>:</th>
-						<td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></span></td>
-						<td></td>
-					</tr>
-					<tr>
-						<th><?php echo Lang::txt('COM_STOREFRONT_PICTURE_WIDTH'); ?>:</th>
-						<td><span id="img-width"><?php echo $width; ?></span> px</td>
-						<td></td>
-					</tr>
-					<tr>
-						<th><?php echo Lang::txt('COM_STOREFRONT_PICTURE_HEIGHT'); ?>:</th>
-						<td><span id="img-height"><?php echo $height; ?></span> px</td>
-						<td></td>
-					</tr>
-					</tbody>
-				</table>
-
-				<script type="text/javascript" src="<?php echo rtrim(Request::root(true), '/'); ?>/core/assets/js/jquery.fileuploader.js"></script>
-				<script type="text/javascript">
-					String.prototype.nohtml = function () {
-						if (this.indexOf('?') == -1) {
-							return this + '?no_html=1';
-						} else {
-							return this + '&no_html=1';
-						}
-					};
-					jQuery(document).ready(function($){
-						if ($("#ajax-uploader").length) {
-							var uploader = new qq.FileUploader({
-								element: $("#ajax-uploader")[0],
-								action: $("#ajax-uploader").attr("data-action"),
-								multiple: true,
-								debug: true,
-								template: '<div class="qq-uploader">' +
-								'<div class="qq-upload-button"><span><?php echo Lang::txt('COM_STOREFRONT_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
-								'<div class="qq-upload-drop-area"><span><?php echo Lang::txt('COM_STOREFRONT_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
-								'<ul class="qq-upload-list"></ul>' +
-								'</div>',
-								onComplete: function(id, file, response) {
-									if (response.success) {
-										$('#img-display').attr('src', '..' + response.directory + '/' + response.file);
-										$('#img-name').text(response.file);
-										$('#img-size').text(response.size);
-										$('#img-width').text(response.width);
-										$('#img-height').text(response.height);
-										$('#currentfile').val(response.imgId);
-
-										$('#img-delete').show();
-									}
-								}
-							});
-						}
-						$('#img-delete').on('click', function (e) {
-							e.preventDefault();
-							var el = $(this);
-							var currentfileVal = $('#currentfile').val();
-							$.getJSON(el.attr('href').nohtml(), {currentfile: currentfileVal}, function(response) {
-								if (response.success) {
-									$('#img-display').attr('src', '<?php echo rtrim(Request::root(true), '/'); ?>/core/components/com_storefront/site/assets/img/noimage.png');
-									$('#img-name').text('[ none ]');
-									$('#img-size').text('0');
-									$('#img-width').text('0');
-									$('#img-height').text('0');
-								}
-								el.hide();
-							});
-						});
-					});
-				</script>
-				<?php
-			} else {
-				echo '<p class="warning">'.Lang::txt('COM_STOREFRONT_PICTURE_ADDED_LATER').'</p>';
-			}
-			?>
-		</fieldset>
+					<table class="formed">
+						<tbody>
+						<tr>
+							<th><?php echo Lang::txt('COM_STOREFRONT_FILE'); ?>:</th>
+							<td>
+								<span id="img-name"><?php echo $image; ?></span>
+							</td>
+							<td>
+								<a id="img-delete <?php echo $image ? '' : 'hide'; ?>"
+								   href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&tmpl=component&task=remove&currentfile=' . $img->imgId . '&type=collection&id=' . $this->row->getId() . '&' . Session::getFormToken() . '=1'); ?>"
+								   title="<?php echo Lang::txt('Delete'); ?>"
+								   data-noimg="/core/components/com_storefront/site/assets/img/noimage.png">[ x ]</a>
+							</td>
+						</tr>
+						<tr>
+							<th><?php echo Lang::txt('COM_STOREFRONT_PICTURE_SIZE'); ?>:</th>
+							<td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></span></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th><?php echo Lang::txt('COM_STOREFRONT_PICTURE_WIDTH'); ?>:</th>
+							<td><span id="img-width"><?php echo $width; ?></span> px</td>
+							<td></td>
+						</tr>
+						<tr>
+							<th><?php echo Lang::txt('COM_STOREFRONT_PICTURE_HEIGHT'); ?>:</th>
+							<td><span id="img-height"><?php echo $height; ?></span> px</td>
+							<td></td>
+						</tr>
+						</tbody>
+					</table>
+					<?php
+				} else {
+					echo '<p class="warning">'.Lang::txt('COM_STOREFRONT_PICTURE_ADDED_LATER').'</p>';
+				}
+				?>
+			</fieldset>
+		</div>
 	</div>
-	<div class="clr"></div>
-
-	<?php /*
-		<?php if ($canDo->get('core.admin')): ?>
-			<div class="col width-100 fltlft">
-				<fieldset class="panelform">
-					<?php echo $this->form->getLabel('rules'); ?>
-					<?php echo $this->form->getInput('rules'); ?>
-				</fieldset>
-			</div>
-			<div class="clr"></div>
-		<?php endif; ?>
-	*/ ?>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

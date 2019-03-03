@@ -33,7 +33,7 @@ $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product')
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_STOREFRONT_EDIT') : Lang::txt('COM_STOREFRONT_NEW'));
 
-Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_PRODUCT_META') . ': ' . $text, 'storefront.png');
+Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_PRODUCT_META') . ': ' . $text, 'storefront');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -60,15 +60,10 @@ if (empty($this->meta->globalDownloadLimit))
 }
 
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	submitform(pressbutton);
-}
-</script>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+	<div class="grid">
+	<div class="col span7">
 		<fieldset class="adminform">
 			<legend><span><?php echo 'Software download options'; ?></span></legend>
 
@@ -91,7 +86,7 @@ function submitbutton(pressbutton)
 			</div>
 		</fieldset>
 	</div>
-	<div class="col width-40 fltrt">
+	<div class="col span5">
 
 		<table class="meta">
 			<tbody>
@@ -113,11 +108,11 @@ function submitbutton(pressbutton)
 		</table>
 
 	</div>
-	<div class="clr"></div>
+	</div>
 
 	<?php /*
 		<?php if ($canDo->get('core.admin')): ?>
-			<div class="col width-100 fltlft">
+			<div class="col span12">
 				<fieldset class="panelform">
 					<?php echo $this->form->getLabel('rules'); ?>
 					<?php echo $this->form->getInput('rules'); ?>

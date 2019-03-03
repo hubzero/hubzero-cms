@@ -120,7 +120,7 @@ $this->css('tools.css');
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="radio" name="id" id="cb<?php echo $i; ?>" value="<?php echo $row['id']; ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input type="radio" name="id" id="cb<?php echo $i; ?>" value="<?php echo $row['id']; ?>" class="checkbox-toggle" />
 				</td>
 				<td class="priority-5">
 					<?php echo $this->escape($row['id']); ?>

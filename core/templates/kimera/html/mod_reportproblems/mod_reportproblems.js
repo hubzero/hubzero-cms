@@ -33,6 +33,11 @@ HUB.Modules.ReportProblems = {
 			return;
 		}
 
+		pane.on('click', 'button.btn-reset', function (e) {
+			e.preventDefault();
+			HUB.Modules.ReportProblems.resetForm();
+		});
+
 		var frm = $(pane.find('form')[0]);
 
 		trigger.fancybox({
@@ -86,6 +91,8 @@ HUB.Modules.ReportProblems = {
 							if (upload.val()) {
 								var validExt = false,
 									file = upload.val();
+
+								var _validFileExtensions = upload.attr('data-allowed').split(',');
 
 								for (var j = 0; j < _validFileExtensions.length; j++) {
 									var sCurExtension = _validFileExtensions[j];

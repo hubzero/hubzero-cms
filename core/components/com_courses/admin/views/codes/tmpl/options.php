@@ -46,6 +46,8 @@ if ($tmpl != 'component')
 
 Html::behavior('framework', true);
 
+$this->js();
+
 $offset = Config::get('config.offset');
 
 $year  = strftime("%Y", time()+($offset*60*60));
@@ -57,50 +59,23 @@ $nextYear  = date("Y", mktime(0, 0, 0, $month+1, $day, $year));
 $nextMonth = date("m", mktime(0, 0, 0, $month+1, $day, $year));
 $nextDay   = date("d", mktime(0, 0, 0, $month+1, $day, $year));
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// form field validation
-	if (form.num.value == '') {
-		alert('<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_INFORMATION'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-	window.top.setTimeout("window.parent.location='<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&section=' . $this->section->get('id'), false); ?>'", 700);
-}
-
-jQuery(document).ready(function($){
-	$(window).on('keypress', function(){
-		if (window.event.keyCode == 13) {
-			submitbutton('generate');
-		}
-	})
-});
-</script>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="<?php echo ($tmpl == 'component') ? 'component-form' : 'item-form'; ?>">
 <?php if ($tmpl == 'component') { ?>
 	<fieldset>
 		<div class="configuration">
 			<div class="configuration-options">
-				<button type="button" onclick="submitbutton('generate');"><?php echo Lang::txt('COM_COURSES_GENERATE');?></button>
-				<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo Lang::txt('COM_COURSES_CANCEL');?></button>
+				<button type="button" id="btn-generate" data-redirect="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&section=' . $this->section->get('id'), false); ?>"><?php echo Lang::txt('COM_COURSES_GENERATE');?></button>
+				<button type="button" id="btn-cancel"><?php echo Lang::txt('COM_COURSES_CANCEL');?></button>
 			</div>
 
 			<?php echo Lang::txt('COM_COURSES_GENERATE_CODES') ?>
 		</div>
 	</fieldset>
 <?php } ?>
-	<div class="col width-100">
+	<div class="col span12">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
@@ -114,7 +89,7 @@ jQuery(document).ready(function($){
 				<tbody>
 					<tr>
 						<td class="key"><label for="field-num"><?php echo Lang::txt('COM_COURSES_FIELD_NUMBER_OF_CODES'); ?>:</label></td>
-						<td colspan="3"><input type="text" name="num" id="field-num" value="" size="5" /></td>
+						<td colspan="3"><input type="text" name="num" id="field-num" value="5" size="5" /></td>
 					</tr>
 					<tr>
 						<td class="key"><label for="field-expires-year"><?php echo Lang::txt('COM_COURSES_FIELD_EXPIRES'); ?>:</label></td>

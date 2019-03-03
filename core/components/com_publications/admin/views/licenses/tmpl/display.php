@@ -67,7 +67,7 @@ $this->css();
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th class="priority-4"><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th class="priority-3"><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -94,7 +94,7 @@ $this->css();
 				?>
 				<tr class="<?php echo "row$k"; ?>">
 					<td>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
 					</td>
 					<td class="priority-4">
 						<?php echo $row->id; ?>

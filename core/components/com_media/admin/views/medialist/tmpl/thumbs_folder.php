@@ -31,19 +31,37 @@
 
 // No direct access.
 defined('_HZEXEC_') or die();
+
+$href = Route::url('index.php?option=' . $this->option . '&task=download&' . Session::getFormToken() . '=1&folder=' . urlencode($this->currentFolder['path']));
 ?>
-		<div class="imgOutline">
-			<div class="imgTotal">
-				<div align="center" class="imgBorder">
-					<a class="folder-item" href="<?php echo Route::url('index.php?option=com_media&controller=medialist&view=medialist&tmpl=component&folder=' . $this->currentFolder['path']); ?>" target="folderframe">
-						<?php echo Lang::txt('COM_MEDIA_FOLDER'); ?>
+		<div class="media-item media-item-thumb">
+			<div class="media-preview">
+				<div class="media-preview-inner">
+					<a class="media-thumb folder-item" href="<?php echo Route::url('index.php?option=com_media&controller=media&folder=' . $this->currentFolder['path']); ?>">
+						<span class="media-preview-shim"></span><!--
+						--><img src="<?php echo $this->img('folder.svg'); ?>" alt="<?php echo $this->escape($this->currentFolder['name']); ?>" width="80" />
 					</a>
+					<span class="media-options-btn"></span>
 				</div>
 			</div>
-			<div class="imginfoBorder">
-				<?php if (User::authorise('core.delete', 'com_media')):?>
-					<input type="checkbox" name="rm[]" value="<?php echo $this->currentFolder['name']; ?>" />
-				<?php endif; ?>
-				<a href="<?php echo Route::url('index.php?option=com_media&controller=medialist&view=medialist&tmpl=component&folder=' . $this->currentFolder['path']); ?>" target="folderframe"><?php echo substr($this->currentFolder['name'], 0, 10) . (strlen($this->currentFolder['name']) > 10 ? '...' : ''); ?></a>
+			<div class="media-info">
+				<div class="media-name">
+					<?php echo substr($this->currentFolder['name'], 0, 10) . (strlen($this->currentFolder['name']) > 10 ? '...' : ''); ?>
+				</div>
+				<div class="media-options">
+					<ul>
+						<li>
+							<a class="icon-info media-opt-info" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=info&' . Session::getFormToken() . '=1&folder=' . urlencode($this->currentFolder['path'])); ?>"><?php echo Lang::txt('Info'); ?></a>
+						</li>
+						<?php if (User::authorise('core.delete', 'com_media')): ?>
+							<li>
+								<span class="separator"></span>
+							</li>
+							<li>
+								<a class="icon-trash media-opt-delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete&' . Session::getFormToken() . '=1&rm=' . urlencode($this->currentFolder['path'])); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
+							</li>
+						<?php endif; ?>
+					</ul>
+				</div>
 			</div>
 		</div>

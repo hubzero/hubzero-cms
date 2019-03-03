@@ -32,6 +32,8 @@
 
 defined('_HZEXEC_') or die();
 
+Html::behavior('chart', 'pie');
+
 $this->css();
 
 $this->css('
@@ -51,8 +53,8 @@ $this->css('
 	background-color: ' . $this->params->get("color_removed", "#ccc") . ';
 }
 ');
-//Html::behavior('chart', 'resize');
-Html::behavior('chart', 'pie');
+
+$this->js();
 
 $total = $this->draftInternal + $this->draftUser + $this->pending + $this->published + $this->unpublished + $this->removed;
 
@@ -60,47 +62,40 @@ $this->draft = $this->draftInternal + $this->draftUser;
 ?>
 <div class="mod_resources">
 	<div class="overview-container">
-		<div id="resources-container<?php echo $this->module->id; ?>" class="chrt"></div>
+		<div id="resources-container<?php echo $this->module->id; ?>" class="<?php echo $this->module->module; ?>-chart chrt" data-datasets="<?php echo $this->module->module; ?>-data<?php echo $this->module->id; ?>"></div>
 		<?php if ($total > 0): ?>
-		<script type="text/javascript">
-		if (!jq) {
-			var jq = $;
-		}
-		if (jQuery()) {
-			var $ = jq,
-				resolutionPie;
-
-			$(document).ready(function() {
-				resolutionPie = $.plot($("#resources-container<?php echo $this->module->id; ?>"), [
-					{label: '<?php echo strtolower(Lang::txt('MOD_RESOURCES_PUBLISHED')); ?>', data: <?php echo round(($this->published / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_published", "#656565"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_RESOURCES_DRAFT')); ?>', data: <?php echo round(($this->draft / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_draft", "#999"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_RESOURCES_PENDING')); ?>', data: <?php echo round(($this->pending / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_pending", "#f9d180"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_RESOURCES_REMOVED')); ?>', data: <?php echo round(($this->removed / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_removed", "#ccc"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_RESOURCES_UNPUBLISHED')); ?>', data: <?php echo round(($this->unpublished / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_unpublished", "#fff"); ?>'}
-				], {
-					legend: {
-						show: false
+			<script type="application/json" id="<?php echo $this->module->module; ?>-data<?php echo $this->module->id; ?>">
+			{
+				"datasets": [
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_RESOURCES_PUBLISHED')); ?>",
+						"data": <?php echo round(($this->published / $total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_published", "#656565"); ?>"
 					},
-					series: {
-						pie: {
-							innerRadius: 0.5,
-							show: true,
-							label: {
-								show: false
-							},
-							stroke: {
-								color: '#efefef'
-							}
-						}
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_RESOURCES_DRAFT')); ?>",
+						"data": <?php echo round(($this->draft / $total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_draft", "#999"); ?>"
 					},
-					grid: {
-						hoverable: false
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_RESOURCES_PENDING')); ?>",
+						"data": <?php echo round(($this->pending / $total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_pending", "#f9d180"); ?>"
+					},
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_RESOURCES_REMOVED')); ?>",
+						"data": <?php echo round(($this->removed / $total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_removed", "#ccc"); ?>"
+					},
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_RESOURCES_UNPUBLISHED')); ?>",
+						"data": <?php echo round(($this->unpublished / $total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_unpublished", "#fff"); ?>"
 					}
-				});
-			});
-		}
-		</script>
-	<?php endif; ?>
+				]
+			}
+			</script>
+		<?php endif; ?>
 		<p class="resources-total"><?php echo $total; ?></p>
 	</div>
 	<div class="overview-container resources-stats-overview">

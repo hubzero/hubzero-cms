@@ -36,7 +36,7 @@ $this->css();
 
 $total = $this->closed + $this->open;
 
-$percent = round(($this->closed / $total) * 100, 2);
+$percent = $total ? round(($this->closed / $total) * 100, 2) : 100;
 
 $this->css('
 	.' . $this->module->module . ' .graph .bar {

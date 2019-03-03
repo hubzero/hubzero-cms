@@ -32,16 +32,8 @@ HUB.User = {
 			loading      = $('.spinner'),
 			attempts     = 0;
 
-		$('input:checkbox').uniform();
-
-		$('#username, #password').placeholder();
-
-		$('.local').click(function ( e ) {
-
-		});
-
 		inputs.on('keyup', function(event) {
-			if(error.html() !== '' && event.keyCode != '13') {
+			if (error.html() !== '' && event.keyCode != '13') {
 				$('.input-wrap').removeClass('input-wrap-error');
 				error.slideUp('fast');
 				login_button.attr('disabled', false);
@@ -72,7 +64,7 @@ HUB.User = {
 					var response = {};
 					try {
 						// Parse the returned json data
-						response = jQuery.parseJSON(data);
+						response = JSON.parse(data);
 					} catch (err) {
 						console.log(err);
 						password.val('');
@@ -88,12 +80,12 @@ HUB.User = {
 					}
 
 					// If all went well
-					if(response.success)
+					if (response.success)
 					{
 						window.location.href = response.redirect;
 					}
 					// If there were errors
-					else if(response.error)
+					else if (response.error)
 					{
 						password.val('');
 						password.focus();

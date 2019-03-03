@@ -39,25 +39,10 @@ if ($this->getError())
 	echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>';
 }
 
-$this->css('uploader');
+$this->css('uploader')
+	->js('jquery.fileuploader.js', 'system')
+	->js('media.js');
 ?>
-<script type="text/javascript">
-function dirup()
-{
-	var urlquery = frames['imgManager'].location.search.substring(1);
-	var curdir = urlquery.substring(urlquery.indexOf('listdir=')+8);
-	var listdir = curdir.substring(0,curdir.lastIndexOf('/'));
-	frames['imgManager'].location.href='<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=list&tmpl=component&course=' . $this->course_id); ?>&listdir=' + listdir;
-}
-
-function goUpDir()
-{
-	var listdir = document.getElementById('listdir');
-	var selection = document.forms[0].subdir;
-	var dir = selection.options[selection.selectedIndex].value;
-	frames['imgManager'].location.href='<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=list&tmpl=component&course=' . $this->course_id); ?>&listdir=' + listdir.value +'&subdir='+ dir;
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
 	<fieldset>
@@ -65,7 +50,7 @@ function goUpDir()
 			<span><?php echo Lang::txt('COM_COURSES_FILES'); ?> - <?php echo DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->course_id . DS . $this->listdir; ?> <?php echo $this->dirPath; ?></span>
 		</legend>
 		<div id="ajax-uploader-before">&nbsp;</div>
-		<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=upload&course=' . $this->course_id . '&listdir=' . $this->listdir . '&no_html=1&' . Session::getFormToken() . '=1'); ?>">
+		<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=upload&course=' . $this->course_id . '&listdir=' . $this->listdir . '&no_html=1&' . Session::getFormToken() . '=1'); ?>" data-instructions="<?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?>">
 			<table>
 				<tbody>
 					<tr>
@@ -83,30 +68,9 @@ function goUpDir()
 			</table>
 		</div>
 
-		<script type="text/javascript" src="../core/assets/js/jquery.fileuploader.js"></script>
-		<script type="text/javascript">
-		jQuery(document).ready(function($){
-			if ($("#ajax-uploader").length) {
-				var uploader = new qq.FileUploader({
-					element: $("#ajax-uploader")[0],
-					action: $("#ajax-uploader").attr("data-action"),
-					multiple: true,
-					debug: true,
-					template: '<div class="qq-uploader">' +
-								'<div class="qq-upload-button"><span><?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
-								'<div class="qq-upload-drop-area"><span><?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
-								'<ul class="qq-upload-list"></ul>' +
-							'</div>',
-					onComplete: function(id, file, response) {
-						$('#imgManager').attr('src', $('#imgManager').attr('src'));
-					}
-				});
-			}
-		});
-		</script>
-
 		<div id="themanager" class="manager">
-			<iframe src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=list&tmpl=component&listdir=' . $this->listdir . '&subdir=' . $this->subdir . '&course=' . $this->course_id); ?>" name="imgManager" id="imgManager" width="98%" height="150"></iframe>
+			<iframe src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=list&tmpl=component&listdir=' . $this->listdir . '&subdir=' . $this->subdir . '&course=' . $this->course_id); ?>" name="imgManager" id="imgManager" width="98%" height="150"
+				data-dir="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=list&tmpl=component&course=' . $this->course_id); ?>"></iframe>
 		</div>
 
 		<input type="hidden" name="tmpl" value="component" />

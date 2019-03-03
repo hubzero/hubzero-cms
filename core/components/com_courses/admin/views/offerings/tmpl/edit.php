@@ -49,30 +49,17 @@ Toolbar::help('offering');
 
 $base = str_replace('/administrator', '', Request::base(true));
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js('jquery.fileuploader.js', 'system')
+	->js();
 $this->css();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// form field validation
-	if ($('#field-title').val() == '') {
-		alert('<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_TITLE'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -87,7 +74,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-title"><?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+					<input type="text" name="fields[title]" id="field-title" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 				</div>
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
 					<label for="field-alias"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
@@ -132,22 +119,22 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_COURSES_FIELD_COURSE_ID'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_COURSE_ID'); ?></th>
 						<td><?php echo $this->escape($this->row->get('course_id')); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_COURSES_FIELD_OFFERING_ID'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_OFFERING_ID'); ?></th>
 						<td><?php echo $this->escape($this->row->get('id')); ?></td>
 					</tr>
 					<?php if ($this->row->get('created')) { ?>
 						<tr>
-							<th><?php echo Lang::txt('COM_COURSES_FIELD_CREATED'); ?></th>
-							<td><?php echo $this->escape($this->row->get('created')); ?></td>
+							<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_CREATED'); ?></th>
+							<td><time datetime="<?php echo $this->escape($this->row->get('created')); ?>"><?php echo $this->escape(Date::of($this->row->get('created'))->toLocal()); ?></time></td>
 						</tr>
 					<?php } ?>
 					<?php if ($this->row->get('created_by')) { ?>
 						<tr>
-							<th><?php echo Lang::txt('COM_COURSES_FIELD_CREATOR'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_CREATOR'); ?></th>
 							<td><?php
 							$creator = User::getInstance($this->row->get('created_by'));
 							echo $this->escape(stripslashes($creator->get('name'))); ?></td>
@@ -165,7 +152,7 @@ function submitbutton(pressbutton)
 					$logo = $this->row->params('logo');
 					?>
 					<div class="uploader-wrap">
-						<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&task=upload&type=offering&id=' . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1'); ?>">
+						<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&task=upload&type=offering&id=' . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1'); ?>" data-instructions="<?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?>">
 							<noscript>
 								<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&file=' . $logo . '&type=offering&id=' . $this->row->get('id')); ?>"></iframe>
 							</noscript>
@@ -208,7 +195,7 @@ function submitbutton(pressbutton)
 										<span id="img-name"><?php echo $pic && $pic != 'blank.png' ? $pic : Lang::txt('COM_COURSES_NONE'); ?></span>
 									</td>
 									<td>
-										<a id="img-delete" <?php echo $logo ? '' : 'class="hide"'; ?> href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo . '&type=offering&id=' . $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">[ x ]</a>
+										<a id="img-delete" <?php echo $logo ? '' : 'class="hide"'; ?> href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo . '&type=offering&id=' . $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>" data-defaultimg="'../core/components/com_courses/admin/assets/img/blank.png'">[ x ]</a>
 									</td>
 								</tr>
 								<tr>
@@ -228,57 +215,6 @@ function submitbutton(pressbutton)
 								</tr>
 							</tbody>
 						</table>
-
-						<script type="text/javascript" src="<?php echo $base; ?>/core/assets/js/jquery.fileuploader.js"></script>
-						<script type="text/javascript">
-						String.prototype.nohtml = function () {
-							if (this.indexOf('?') == -1) {
-								return this + '?no_html=1';
-							} else {
-								return this + '&no_html=1';
-							}
-						};
-						jQuery(document).ready(function($){
-							if ($("#ajax-uploader").length) {
-								var uploader = new qq.FileUploader({
-									element: $("#ajax-uploader")[0],
-									action: $("#ajax-uploader").attr("data-action"),
-									multiple: true,
-									debug: true,
-									template: '<div class="qq-uploader">' +
-												'<div class="qq-upload-button"><span><?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
-												'<div class="qq-upload-drop-area"><span><?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
-												'<ul class="qq-upload-list"></ul>' +
-											   '</div>',
-									onComplete: function(id, file, response) {
-										if (response.success) {
-											$('#img-display').attr('src', '..' + response.directory + '/' + response.file);
-											$('#img-name').text(response.file);
-											$('#img-size').text(response.size);
-											$('#img-width').text(response.width);
-											$('#img-height').text(response.height);
-
-											$('#img-delete').show();
-										}
-									}
-								});
-							}
-							$('#img-delete').on('click', function (e) {
-								e.preventDefault();
-								var el = $(this);
-								$.getJSON(el.attr('href').nohtml(), {}, function(response) {
-									if (response.success) {
-										$('#img-display').attr('src', '../core/components/com_courses/admin/assets/img/blank.png');
-										$('#img-name').text('[ none ]');
-										$('#img-size').text('0');
-										$('#img-width').text('0');
-										$('#img-height').text('0');
-									}
-									el.hide();
-								});
-							});
-						});
-						</script>
 				<?php
 				} else {
 					echo '<p class="warning">'.Lang::txt('COM_COURSES_PICTURE_ADDED_LATER').'</p>';

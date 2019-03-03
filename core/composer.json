@@ -64,6 +64,9 @@
         "classmap": [ "libraries/joomla" ]
     },
     "config": {
-        "preferred-install": "dist"
+        "preferred-install": "dist",
+        "platform": {
+            "php": "5.6.1"
+        }
     }
 }

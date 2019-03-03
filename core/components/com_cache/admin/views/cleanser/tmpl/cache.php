@@ -49,7 +49,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 <form action="<?php echo Route::url('index.php?option=com_cache'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-select">
-			<select name="filter_client_id" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_client_id" class="inputbox" class="filter filter-submit">
 				<?php foreach (\Components\Cache\Helpers\Helper::getClientOptions() as $option) : ?>
 					<option value="<?php echo $option->value; ?>"<?php if ($option->value == $this->state->get('clientId')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(ucfirst($option->text)); ?></option>
 				<?php endforeach; ?>
@@ -64,7 +64,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					<?php echo Lang::txt('COM_CACHE_NUM'); ?>
 				</th>
 				<th scope="col">
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
 				</th>
 				<th scope="col" class="title nowrap">
 					<?php echo Html::grid('sort', 'COM_CACHE_GROUP', 'group', $listDirn, $listOrder); ?>
@@ -93,7 +93,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						<?php echo $this->pagination->getRowOffset($i); ?>
 					</td>
 					<td>
-						<input type="checkbox" id="cb<?php echo $i; ?>" name="cid[]" value="<?php echo $item->group; ?>" onclick="Joomla.isChecked(this.checked);" />
+						<input type="checkbox" id="cb<?php echo $i; ?>" name="cid[]" value="<?php echo $item->group; ?>" class="checkbox-toggle" />
 					</td>
 					<td>
 						<strong><?php echo $item->group; ?></strong>
@@ -105,7 +105,10 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						<?php echo \Hubzero\Utility\Number::formatBytes($item->size * 1024); ?>
 					</td>
 				</tr>
-			<?php $i++; endforeach; ?>
+				<?php
+				$i++;
+			endforeach;
+			?>
 		</tbody>
 	</table>
 

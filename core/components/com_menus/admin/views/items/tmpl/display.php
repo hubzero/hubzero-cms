@@ -82,6 +82,8 @@ Html::addIncludePath(Component::path($this->option) . '/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('multiselect');
 
+$this->js();
+
 $userId    = User::get('id');
 $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);
@@ -94,31 +96,31 @@ $saveOrder = ($listOrder == 'lft' && $listDirn == 'asc');
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER'); ?>" />
+			<input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER'); ?>" />
 			<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="filter-select fltrt">
-			<select name="menutype" class="inputbox" onchange="this.form.submit()">
+			<select name="menutype" class="inputbox filter filter-submit">
 				<?php echo Html::select('options', Html::menu('menus'), 'value', 'text', $this->filters['menutype']); ?>
 			</select>
 
-			<select name="filter_level" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_level" class="inputbox filter filter-submit">
 				<option value=""><?php echo Lang::txt('COM_MENUS_OPTION_SELECT_LEVEL');?></option>
 				<?php echo Html::select('options', $this->f_levels, 'value', 'text', $this->filters['level']); ?>
 			</select>
 
-			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_published" class="inputbox filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php echo Html::select('options', Html::grid('publishedOptions', array('archived' => false)), 'value', 'text', $this->filters['published'], true); ?>
 			</select>
 
-			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_access" class="inputbox filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
 				<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
 			</select>
 
-			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_language" class="inputbox filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
 				<?php echo Html::select('options', Html::contentlanguage('existing', true, true), 'value', 'text', $this->filters['language']); ?>
 			</select>
@@ -130,7 +132,7 @@ $saveOrder = ($listOrder == 'lft' && $listDirn == 'asc');
 		<thead>
 			<tr>
 				<th>
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
 				</th>
 				<th class="title">
 					<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'title', $listDirn, $listOrder); ?>

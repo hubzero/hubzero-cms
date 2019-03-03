@@ -43,86 +43,60 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('category');
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
 
-	<?php echo $this->editor()->save('text'); ?>
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+	<div class="grid">
+		<div class="col span7">
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_STOREFRONT_DETAILS'); ?></span></legend>
 
-	// do field validation
-	if (document.getElementById('field-title').value == ''){
-		alert("<?php echo 'Title cannot be empty' ?>");
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
+				<div class="input-wrap">
+					<label for="field-title"><?php echo Lang::txt('COM_STOREFRONT_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<input type="text" name="fields[oName]" id="field-title" class="required" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getName())); ?>" />
+				</div>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_STOREFRONT_DETAILS'); ?></span></legend>
+			</fieldset>
 
-			<div class="input-wrap">
-				<label for="field-title"><?php echo Lang::txt('COM_STOREFRONT_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[oName]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getName())); ?>" />
-			</div>
+		</div>
+		<div class="col span5">
+			<table class="meta">
+				<tbody>
+					<tr>
+						<th class="key"><?php echo Lang::txt('COM_STOREFRONT_ID'); ?>:</th>
+						<td>
+							<?php echo $this->row->getId(); ?>
+							<input type="hidden" name="fields[oId]" id="field-oid" value="<?php echo $this->escape($this->row->getId()); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th class="key"><?php echo Lang::txt('COM_STOREFRONT_OPTION_GROUP'); ?>:</th>
+						<td>
+							<?php echo $this->ogInfo->ogName; ?>
+							<input type="hidden" name="fields[ogId]" id="field-ogid" value="<?php echo $this->escape($this->ogInfo->ogId); ?>" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
 
-		</fieldset>
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_STOREFRONT_PARAMETERS'); ?></span></legend>
 
+				<div class="input-wrap">
+					<label for="field-state"><?php echo Lang::txt('COM_STOREFRONT_PUBLISH'); ?>:</label>
+					<select name="fields[state]" id="field-state">
+						<option value="0"<?php if ($this->row->getActiveStatus() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+						<option value="1"<?php if ($this->row->getActiveStatus() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+					</select>
+				</div>
+
+			</fieldset>
+		</div>
 	</div>
-	<div class="col width-40 fltrt">
-		<table class="meta">
-			<tbody>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_STOREFRONT_ID'); ?>:</th>
-					<td>
-						<?php echo $this->row->getId(); ?>
-						<input type="hidden" name="fields[oId]" id="field-oid" value="<?php echo $this->escape($this->row->getId()); ?>" />
-					</td>
-				</tr>
-				<tr>
-					<th class="key"><?php echo Lang::txt('COM_STOREFRONT_OPTION_GROUP'); ?>:</th>
-					<td>
-						<?php echo $this->ogInfo->ogName; ?>
-						<input type="hidden" name="fields[ogId]" id="field-ogid" value="<?php echo $this->escape($this->ogInfo->ogId); ?>" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
-
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('COM_STOREFRONT_PARAMETERS'); ?></span></legend>
-
-			<div class="input-wrap">
-				<label for="field-state"><?php echo Lang::txt('COM_STOREFRONT_PUBLISH'); ?>:</label>
-				<select name="fields[state]" id="field-state">
-					<option value="0"<?php if ($this->row->getActiveStatus() == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-					<option value="1"<?php if ($this->row->getActiveStatus() == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-				</select>
-			</div>
-
-		</fieldset>
-
-	</div>
-	<div class="clr"></div>
-
-	<?php /*
-		<?php if ($canDo->get('core.admin')): ?>
-			<div class="col width-100 fltlft">
-				<fieldset class="panelform">
-					<?php echo $this->form->getLabel('rules'); ?>
-					<?php echo $this->form->getInput('rules'); ?>
-				</fieldset>
-			</div>
-			<div class="clr"></div>
-		<?php endif; ?>
-	*/ ?>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
