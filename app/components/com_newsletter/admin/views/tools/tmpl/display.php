@@ -38,6 +38,8 @@ Toolbar::title(Lang::txt( 'COM_NEWSLETTER_NEWSLETTER_TOOLS' ), 'tools');
 
 // add jquery
 Html::behavior('framework');
+
+$this->js();
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
@@ -60,7 +62,7 @@ Html::behavior('framework');
 							</td>
 						</tr>
 						<tr>
-							<td colspan="2" style="text-align:center;font-weight:bold;font-size:16px">&mdash;&mdash;&mdash; or &mdash;&mdash;&mdash;</td>
+							<td colspan="2">&mdash;&mdash;&mdash; or &mdash;&mdash;&mdash;</td>
 						</tr>
 						<tr>
 							<th><?php echo Lang::txt('COM_NEWSLETTER_TOOLS_MOZIFY_IMAGE_URL'); ?></th>
@@ -103,28 +105,11 @@ Html::behavior('framework');
 				<img src="<?php echo str_replace(PATH_APP, '', $this->original); ?>" alt="" />
 
 				<h3><?php echo Lang::txt('COM_NEWSLETTER_TOOLS_MOZIFY_MOZIFIED'); ?></h3>
-				<iframe id="preview-iframe" style="border:1px solid transparent"></iframe>
-				<div id="preview-code" style="display:none"><?php echo $this->preview; ?></div>
+				<iframe id="preview-iframe"></iframe>
+				<div id="preview-code" class="hide"><?php echo $this->preview; ?></div>
 
 				<h3><?php echo Lang::txt('COM_NEWSLETTER_TOOLS_MOZIFY_CODE'); ?></h3>
 				<textarea id="code"><?php echo str_replace("\n", "", $this->code); ?></textarea>
-
-				<script>
-					jQuery(document).ready(function($){
-						//get iframe and mozified code
-						var previewIframe = $('#preview-iframe'),
-							previewCode = $('#preview-code').find('table').first();
-
-						//set iframe height and width
-						//add preview code to iframe
-						previewIframe
-							.css({
-								width: previewCode.attr('width') + 'px',
-								height: previewCode.attr('height') + 'px'
-							})
-							.contents().find('html').html( previewCode );
-					});
-				</script>
 			<?php endif; ?>
 		</div>
 	</div>

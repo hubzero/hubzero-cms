@@ -48,11 +48,11 @@ Toolbar::cancel('cancelemail');
 		<table class="admintable">
 			<tbody>
 				<tr>
-					<th width="200px"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_MAILINGLIST'); ?>:</th>
+					<th><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_MAILINGLIST'); ?>:</th>
 					<td><strong><?php echo $this->list->name; ?></strong></td>
 				</tr>
 				<tr>
-					<th width="200px"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_CONFIRMATION'); ?>:</th>
+					<th><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_CONFIRMATION'); ?>:</th>
 					<td>
 						<select name="email_confirmation">
 							<option value="-1"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_CONFIRMATION_OPTION_NULL'); ?></option>
@@ -70,7 +70,7 @@ Toolbar::cancel('cancelemail');
 				<?php if (!empty($this->groups)): ?>
 					<tr>
 						<td colspan="2">
-							<span style="display:block;text-align:center;font-weight:bold;font-size:18px"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_AND_OR'); ?></span>
+							<strong><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_AND_OR'); ?></strong>
 						</td>
 					</tr>
 					<tr>
@@ -87,7 +87,7 @@ Toolbar::cancel('cancelemail');
 				<?php endif; ?>
 				<tr>
 					<td colspan="2">
-						<span style="display:block;text-align:center;font-weight:bold;font-size:18px"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_AND_OR'); ?></span>
+						<strong><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_AND_OR'); ?></strong>
 					</td>
 				</tr>
 				<tr>

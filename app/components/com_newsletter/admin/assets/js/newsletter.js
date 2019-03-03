@@ -5,6 +5,52 @@
  * @license     http://opensource.org/licenses/MIT MIT
  */
 
+Joomla.submitbutton = function(task) {
+	if (task == 'preview') {
+		var id = '',
+			ids = document.getElementsByName('id[]');
+		for (var i=0; i< ids.length;i++)
+		{
+			if (id == '' && ids[i].type == 'checkbox' && ids[i].checked)
+			{
+				id = parseInt(ids[i].value);
+			}
+		}
+
+		HUB.Administrator.Newsletter.newsletterPreview(id);
+		return;
+	}
+
+	if (task == 'stop') {
+		var message = document.getElementById('admin-form').getAttribute('data-confirm-stop');
+		if (!confirm(message)) {
+			return;
+		}
+	}
+
+	if (task == 'dosendnewsletter') {
+		// check to make sure we all set to go
+		if (!HUB.Administrator.Newsletter.sendNewsletterCheck()) {
+			return;
+		}
+
+		// double check with user
+		if (!HUB.Administrator.Newsletter.sendNewsletterDoubleCheck()) {
+			return;
+		}
+	}
+
+	var frm = document.getElementById('item-form');
+
+	if (frm) {
+		if (task == 'cancel' || document.formvalidator.isValid(frm)) {
+			Joomla.submitform(task, frm);
+		} else {
+			alert(frm.getAttribute('data-invalid-msg'));
+		}
+	}
+}
+
 //-----------------------------------------------------------
 //  Ensure we have our namespace
 //-----------------------------------------------------------
@@ -32,7 +78,19 @@ HUB.Administrator.Newsletter = {
 	{
 		var $ = this.jQuery,
 			scheduler = $('#scheduler');
-		
+
+		$('#add-newsletter').on('click', function (e){
+			e.preventDefault();
+
+			Joomla.submitbutton('add');
+		});
+
+		$('#btn-manage').on('click', function (e){
+			e.preventDefault();
+
+			Joomla.submitbutton('manage');
+		});
+
 		//if we have a scheduler
 		if (scheduler.length)
 		{
@@ -194,8 +252,8 @@ HUB.Administrator.Newsletter = {
 			//lets hide the us map for now
 			$('#us-map').hide();
 			
-			var worldData = jQuery.parseJSON( $('#world-map-data').attr('data-src') );
-			var usData = jQuery.parseJSON( $('#us-map-data').attr('data-src') );
+			var worldData = JSON.parse( $('#world-map-data').attr('data-src') );
+			var usData = JSON.parse( $('#us-map-data').attr('data-src') );
 			
 			//add World map
 			$('#world-map').vectorMap({
@@ -313,4 +371,20 @@ HUB.Administrator.Newsletter = {
 
 jQuery(document).ready(function($){
 	HUB.Administrator.Newsletter.initialize();
+
+	// get iframe and mozified code
+	var previewIframe = $('#preview-iframe');
+
+	if (previewIframe.length) {
+		previewCode = $('#preview-code').find('table').first();
+
+		// set iframe height and width
+		// add preview code to iframe
+		previewIframe
+			.css({
+				width: previewCode.attr('width') + 'px',
+				height: previewCode.attr('height') + 'px'
+			})
+			.contents().find('html').html(previewCode);
+	}
 });

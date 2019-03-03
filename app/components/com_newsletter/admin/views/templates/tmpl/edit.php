@@ -101,14 +101,14 @@ Toolbar::help('index.php?option=com_help&component=com_newsletter&page=template'
 			<?php if ($this->config->get('template_tips')) : ?>
 				<span class="hint">
 					<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_TIPS') ?><br />
-					<a target="_blank" href="<?php echo $this->config->get('template_tips'); ?>"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_TIPS_HINT'); ?></a>
+					<a href="<?php echo $this->config->get('template_tips'); ?>"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_TIPS_HINT'); ?></a>
 				</span>
 				<br /><br />
 			<?php endif; ?>
 			<?php if ($this->config->get('template_templates')) : ?>
 				<span class="hint">
 					<?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_EXAMPLES'); ?><br />
-					<a target="_blank" href="<?php echo $this->config->get('template_templates'); ?>"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_EXAMPLES_HINT'); ?></a>
+					<a href="<?php echo $this->config->get('template_templates'); ?>"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_EXAMPLES_HINT'); ?></a>
 				</span>
 				<br /><br />
 			<?php endif; ?>

@@ -159,7 +159,7 @@ $this->js()
 				<?php if (count($this->clicks) > 0) : ?>
 					<?php foreach ($this->clicks as $url => $count) : ?>
 						<tr>
-							<td><?php echo '<a target="_blank" href="' . $url . '">' . $url . '</a>'; ?></td>
+							<td><?php echo '<a rel="nofollow" href="' . $url . '">' . $url . '</a>'; ?></td>
 							<td><?php echo number_format($count); ?></td>
 						</tr>
 					<?php endforeach; ?>
