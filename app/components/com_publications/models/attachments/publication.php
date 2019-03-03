@@ -158,7 +158,7 @@ class Publication extends Base
 
 				$html .= '<li>';
 				$html .= $authorized === 'administrator' ? '[' . $this->_name . '] ' : '';
-				$html .= '<p><a href="' . $itemUrl . '" title="' . $pop . '" target="_blank" class="link-type">' . $title . '</a></p>';
+				$html .= '<p><a href="' . $itemUrl . '" title="' . $pop . '" rel="noopener" target="_blank" class="link-type">' . $title . '</a></p>';
 				$html .= '<p>' . $description . '</p>';
 				$html .= '</li>';
 			}

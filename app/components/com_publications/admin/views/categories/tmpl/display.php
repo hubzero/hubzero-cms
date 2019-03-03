@@ -56,7 +56,7 @@ $this->css();
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th class="priority-4"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_NAME'), 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th class="priority-3"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'), 'contributable', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -79,7 +79,7 @@ $this->css();
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
 				</td>
 				<td class="priority-4">
 					<?php echo $row->id; ?>
@@ -95,13 +95,13 @@ $this->css();
 					</span>
 				</td>
 				<td class="priority-3 centeralign">
-					<span class="state <?php echo ($row->contributable == 1 ? 'yes' : 'no'); ?>">
-						<span><?php echo ($row->contributable == 1 ? Lang::txt('JYES') : Lang::txt('JNO')); ?></span>
+					<span class="state <?php echo ($row->contributable == 1) ? 'yes' : 'no'; ?>">
+						<span><?php echo ($row->contributable == 1) ? Lang::txt('JYES') : Lang::txt('JNO'); ?></span>
 					</span>
 				</td>
 				<td class="priority-2 centeralign">
-					<span class="state <?php echo ($row->state == 1 ? 'on' : 'off'); ?>">
-						<span><?php echo ($row->state == 1 ? Lang::txt('COM_PUBLICATIONS_ON') : Lang::txt('COM_PUBLICATIONS_OFF')); ?></span>
+					<span class="state <?php echo ($row->state == 1) ? 'on' : 'off'; ?>">
+						<span><?php echo ($row->state == 1) ? Lang::txt('COM_PUBLICATIONS_ON') : Lang::txt('COM_PUBLICATIONS_OFF'); ?></span>
 					</span>
 				</td>
 			</tr>
