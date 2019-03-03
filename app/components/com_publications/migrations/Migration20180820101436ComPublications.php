@@ -2,7 +2,7 @@
 
 use Hubzero\Content\Migration\Base;
 use \Components\Publications\Models\Publication;
-include Component::path('com_publications') . '/models/publication.php';
+include_once(Component::path('com_publications') . '/models/publication.php');
 // No direct access
 defined('_HZEXEC_') or die();
 
