@@ -43,19 +43,6 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('merge');
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	submitform(pressbutton);
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform" id="item-form">
 	<p class="warning"><?php echo Lang::txt('COM_TAGS_MERGED_EXPLANATION'); ?></p>
@@ -90,7 +77,7 @@ function submitbutton(pressbutton)
 							array('tags', 'newtag', 'newtag')
 						)
 					);
-					echo (count($tf) ? implode("\n", $tf) : '<input type="text" name="newtag" id="newtag" size="25" value="" />');
+					echo (count($tf)) ? implode("\n", $tf) : '<input type="text" name="newtag" id="newtag" size="25" value="" />';
 					?>
 				</div>
 				<p><?php echo Lang::txt('COM_TAGS_SELECT_TAG'); ?></p>

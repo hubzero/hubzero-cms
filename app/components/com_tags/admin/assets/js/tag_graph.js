@@ -6,6 +6,24 @@ jQuery(function(jq)
 	    w = $('#graph').innerWidth(),
 	    h = 600;
 
+	var window.resourceTypes = new Array,
+		resourcetypes = $('#resource-types');
+
+	if (resourcetypes.length) {
+		var cdata = JSON.parse(resourcetypes.html());
+
+		window.resourceTypes = cdata.rtypes;
+	}
+	
+	var window.publicationTypes = new Array,
+		publicationtypes = $('#publication-types');
+
+	if (publicationtypes.length) {
+		var cdata = jQuery.parseJSON(publicationtypes.html());
+
+		window.publicationTypes = cdata.ptypes;
+	}
+
 	var tag_editors = function(json)
 	{
 		var blur_timeout = null;
