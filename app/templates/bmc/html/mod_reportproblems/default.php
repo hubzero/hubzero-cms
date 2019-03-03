@@ -112,12 +112,9 @@ defined('_HZEXEC_') or die();
 					</label>
 
 					<label for="trUpload">
-						Attach a file or screenshot: <span class="optional"><?php echo Lang::txt('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
-						<input type="file" name="upload[]" id="trUpload" multiple="multiple" />
-						<span class="filetypes">(.<?php echo str_replace(',', ', .', $this->supportParams->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif')); ?>)</span>
-						<script type="text/javascript">
-							var _validFileExtensions = ['.<?php echo str_replace(',', "','.", $this->supportParams->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif')); ?>'];
-						</script>
+						<?php echo Lang::txt('MOD_REPORTPROBLEMS_LABEL_ATTACH'); ?>: <span class="optional"><?php echo Lang::txt('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
+						<input type="file" name="upload[]" id="trUpload" multiple="multiple" data-allowed=".<?php echo str_replace(',', ',.', $this->allowed); ?>" />
+						<span class="filetypes">(.<?php echo str_replace(',', ', .', $this->allowed); ?>)</span>
 					</label>
 
 					<input type="hidden" name="problem[topic]" value="???" />
