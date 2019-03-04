@@ -26,14 +26,14 @@ class Migration20190228114147ComTools extends Base
 		{
 			if (!$this->db->tableHasKey(self::$table, 'idx_uid'))
 			{
-				$query = "ALTER IGNORE TABLE `" . self::$table . "` ADD INDEX `idx_uid` (`uid`)";
+				$query = "ALTER TABLE `" . self::$table . "` ADD INDEX `idx_uid` (`uid`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey(self::$table, 'idx_tool'))
 			{
-				$query = "ALTER IGNORE TABLE `" . self::$table . "` ADD INDEX `idx_tool` (`tool`)";
+				$query = "ALTER TABLE `" . self::$table . "` ADD INDEX `idx_tool` (`tool`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
