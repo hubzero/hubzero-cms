@@ -19,14 +19,14 @@ class Migration20170117114147ComProjects extends Base
 		{
 			if (!$this->db->tableHasKey('#__project_activity', 'idx_projectid'))
 			{
-				$query = "ALTER IGNORE TABLE `#__project_activity` ADD INDEX `idx_projectid` (`projectid`)";
+				$query = "ALTER TABLE `#__project_activity` ADD INDEX `idx_projectid` (`projectid`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__project_activity', 'idx_state'))
 			{
-				$query = "ALTER IGNORE TABLE `#__project_activity` ADD INDEX `idx_state` (`state`)";
+				$query = "ALTER TABLE `#__project_activity` ADD INDEX `idx_state` (`state`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -36,21 +36,21 @@ class Migration20170117114147ComProjects extends Base
 		{
 			if (!$this->db->tableHasKey('#__project_comments', 'idx_itemid'))
 			{
-				$query = "ALTER IGNORE TABLE `#__project_comments` ADD INDEX `idx_itemid` (`itemid`)";
+				$query = "ALTER TABLE `#__project_comments` ADD INDEX `idx_itemid` (`itemid`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__project_comments', 'idx_activityid'))
 			{
-				$query = "ALTER IGNORE TABLE `#__project_comments` ADD INDEX `idx_activityid` (`activityid`)";
+				$query = "ALTER TABLE `#__project_comments` ADD INDEX `idx_activityid` (`activityid`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__project_comments', 'idx_state'))
 			{
-				$query = "ALTER IGNORE TABLE `#__project_comments` ADD INDEX `idx_state` (`state`)";
+				$query = "ALTER TABLE `#__project_comments` ADD INDEX `idx_state` (`state`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -60,7 +60,7 @@ class Migration20170117114147ComProjects extends Base
 		{
 			if (!$this->db->tableHasKey('#__project_logs', 'idx_projectid'))
 			{
-				$query = "ALTER IGNORE TABLE `#__project_logs` ADD INDEX `idx_projectid` (`projectid`)";
+				$query = "ALTER TABLE `#__project_logs` ADD INDEX `idx_projectid` (`projectid`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -70,14 +70,14 @@ class Migration20170117114147ComProjects extends Base
 		{
 			if (!$this->db->tableHasKey('#__project_microblog', 'idx_projectid'))
 			{
-				$query = "ALTER IGNORE TABLE `#__project_microblog` ADD INDEX `idx_projectid` (`projectid`)";
+				$query = "ALTER TABLE `#__project_microblog` ADD INDEX `idx_projectid` (`projectid`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__project_microblog', 'idx_state'))
 			{
-				$query = "ALTER IGNORE TABLE `#__project_microblog` ADD INDEX `idx_state` (`state`)";
+				$query = "ALTER TABLE `#__project_microblog` ADD INDEX `idx_state` (`state`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -87,35 +87,35 @@ class Migration20170117114147ComProjects extends Base
 		{
 			if (!$this->db->tableHasKey('#__project_owners', 'idx_projectid'))
 			{
-				$query = "ALTER IGNORE TABLE `#__project_owners` ADD INDEX `idx_projectid` (`projectid`)";
+				$query = "ALTER TABLE `#__project_owners` ADD INDEX `idx_projectid` (`projectid`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__project_owners', 'idx_userid'))
 			{
-				$query = "ALTER IGNORE TABLE `#__project_owners` ADD INDEX `idx_userid` (`userid`)";
+				$query = "ALTER TABLE `#__project_owners` ADD INDEX `idx_userid` (`userid`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__project_owners', 'idx_groupid'))
 			{
-				$query = "ALTER IGNORE TABLE `#__project_owners` ADD INDEX `idx_groupid` (`groupid`)";
+				$query = "ALTER TABLE `#__project_owners` ADD INDEX `idx_groupid` (`groupid`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__project_owners', 'idx_status'))
 			{
-				$query = "ALTER IGNORE TABLE `#__project_owners` ADD INDEX `idx_status` (`status`)";
+				$query = "ALTER TABLE `#__project_owners` ADD INDEX `idx_status` (`status`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__project_owners', 'idx_role'))
 			{
-				$query = "ALTER IGNORE TABLE `#__project_owners` ADD INDEX `idx_role` (`role`)";
+				$query = "ALTER TABLE `#__project_owners` ADD INDEX `idx_role` (`role`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}

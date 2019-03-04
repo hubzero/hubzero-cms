@@ -19,14 +19,14 @@ class Migration20170129140423PlgXmessage extends Base
 		{
 			if ($this->db->tableHasField('#__xmessage', 'created_by') && !$this->db->tableHasKey('#__xmessage', 'idx_created_by'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xmessage` ADD INDEX `idx_created_by` (`created_by`)";
+				$query = "ALTER TABLE `#__xmessage` ADD INDEX `idx_created_by` (`created_by`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if ($this->db->tableHasField('#__xmessage', 'type') && !$this->db->tableHasKey('#__xmessage', 'idx_type'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xmessage` ADD INDEX `idx_type` (`type`)";
+				$query = "ALTER TABLE `#__xmessage` ADD INDEX `idx_type` (`type`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -36,7 +36,7 @@ class Migration20170129140423PlgXmessage extends Base
 		{
 			if ($this->db->tableHasField('#__xmessage_notify', 'type') && !$this->db->tableHasKey('#__xmessage_notify', 'idx_type'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xmessage_notify` ADD INDEX `idx_type` (`type`)";
+				$query = "ALTER TABLE `#__xmessage_notify` ADD INDEX `idx_type` (`type`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -46,7 +46,7 @@ class Migration20170129140423PlgXmessage extends Base
 		{
 			if ($this->db->tableHasField('#__xmessage_recipient', 'state') && !$this->db->tableHasKey('#__xmessage_recipient', 'idx_state'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xmessage_recipient` ADD INDEX `idx_state` (`state`)";
+				$query = "ALTER TABLE `#__xmessage_recipient` ADD INDEX `idx_state` (`state`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -79,7 +79,7 @@ class Migration20170129140423PlgXmessage extends Base
 		{
 			if ($this->db->tableHasKey('#__xmessage_notify', 'idx_type'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xmessage_notify` DROP KEY `idx_type`";
+				$query = "ALTER TABLE `#__xmessage_notify` DROP KEY `idx_type`";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -89,7 +89,7 @@ class Migration20170129140423PlgXmessage extends Base
 		{
 			if ($this->db->tableHasKey('#__xmessage_recipient', 'idx_state'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xmessage_recipient` DROP KEY `idx_state`";
+				$query = "ALTER TABLE `#__xmessage_recipient` DROP KEY `idx_state`";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}

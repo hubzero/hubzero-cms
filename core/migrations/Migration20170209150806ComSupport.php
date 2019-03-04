@@ -60,7 +60,7 @@ class Migration20170209150806ComSupport extends Base
 			// Add the new index
 			if (!$this->db->tableHasKey('#__support_tickets', 'idx_group_id'))
 			{
-				$query = "ALTER IGNORE TABLE `#__support_tickets` ADD INDEX `idx_group_id` (`group_id`)";
+				$query = "ALTER TABLE `#__support_tickets` ADD INDEX `idx_group_id` (`group_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -94,7 +94,7 @@ class Migration20170209150806ComSupport extends Base
 
 			if (!$this->db->tableHasKey('#__support_tickets', 'idx_group'))
 			{
-				$query = "ALTER IGNORE TABLE `#__support_tickets` ADD INDEX `idx_group` (`group`)";
+				$query = "ALTER TABLE `#__support_tickets` ADD INDEX `idx_group` (`group`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}

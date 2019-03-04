@@ -47,14 +47,43 @@ use Hubzero\Search\Index;
 class plgSearchSolr extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * onContentSave 
-	 * 
+	 * Table exists or not
+	 *
+	 * @var  bool
+	 */
+	public static $tableExists = null;
+
+	/**
+	 * Does the required table exist?
+	 *
+	 * Operations are dependent upon this table
+	 *
+	 * @return  bool
+	 */
+	private function tableExists()
+	{
+		if (is_null(self::$tableExists))
+		{
+			self::$tableExists = (bool)App::get('db')->tableExists('#__solr_search_searchcomponents');
+		}
+
+		return self::$tableExists;
+	}
+
+	/**
+	 * Add index
+	 *
 	 * @param   mixed  $table
 	 * @param   mixed  $model
 	 * @return  void
 	 */
 	public function onAddIndex($table, $model)
 	{
+		if (!$this->tableExists())
+		{
+			return;
+		}
+
 		$modelClass = new ReflectionClass($model);
 		$modelNamespace = explode('\\', $modelClass->getNamespaceName());
 		$componentName = strtolower($modelNamespace[1]);
@@ -91,14 +120,19 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * onContentDestroy 
-	 * 
+	 * Remove index
+	 *
 	 * @param   mixed  $table
 	 * @param   mixed  $model
 	 * @return  void
 	 */
 	public function onRemoveIndex($table, $model)
 	{
+		if (!$this->tableExists())
+		{
+			return;
+		}
+
 		// @TODO: Implement mechanism to send to Solr index
 		// This Event is called in the Relational save() method.
 		$modelName = '';

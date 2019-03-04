@@ -12,7 +12,7 @@ class Migration20161213132518PlgSearchSolr extends Base
 	 **/
 	public function up()
 	{
-		$this->addPluginEntry('search', 'solr');
+		$this->addPluginEntry('search', 'solr', 0);
 	}
 
 	/**

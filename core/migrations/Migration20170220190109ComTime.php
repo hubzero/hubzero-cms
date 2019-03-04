@@ -19,7 +19,7 @@ class Migration20170220190109ComTime extends Base
 		{
 			if ($this->db->tableHasField('#__time_tasks', 'hub_id') && !$this->db->tableHasKey('#__time_tasks', 'idx_hub_id'))
 			{
-				$query = "ALTER IGNORE TABLE `#__time_tasks` ADD INDEX `idx_hub_id` (`hub_id`)";
+				$query = "ALTER TABLE `#__time_tasks` ADD INDEX `idx_hub_id` (`hub_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -32,7 +32,7 @@ class Migration20170220190109ComTime extends Base
 
 				if (!$this->db->tableHasKey('#__time_tasks', 'idx_liaison_id'))
 				{
-					$query = "ALTER IGNORE TABLE `#__time_tasks` ADD INDEX `idx_liaison_id` (`liaison_id`)";
+					$query = "ALTER TABLE `#__time_tasks` ADD INDEX `idx_liaison_id` (`liaison_id`)";
 					$this->db->setQuery($query);
 					$this->db->query();
 				}
@@ -46,7 +46,7 @@ class Migration20170220190109ComTime extends Base
 
 				if (!$this->db->tableHasKey('#__time_tasks', 'idx_assignee_id'))
 				{
-					$query = "ALTER IGNORE TABLE `#__time_tasks` ADD INDEX `idx_assignee_id` (`assignee_id`)";
+					$query = "ALTER TABLE `#__time_tasks` ADD INDEX `idx_assignee_id` (`assignee_id`)";
 					$this->db->setQuery($query);
 					$this->db->query();
 				}
@@ -60,7 +60,7 @@ class Migration20170220190109ComTime extends Base
 
 				if (!$this->db->tableHasKey('#__time_tasks', 'idx_priority'))
 				{
-					$query = "ALTER IGNORE TABLE `#__time_tasks` ADD INDEX `idx_priority` (`priority`)";
+					$query = "ALTER TABLE `#__time_tasks` ADD INDEX `idx_priority` (`priority`)";
 					$this->db->setQuery($query);
 					$this->db->query();
 				}
@@ -75,7 +75,7 @@ class Migration20170220190109ComTime extends Base
 
 			if ($this->db->tableHasField('#__time_tasks', 'billable') && !$this->db->tableHasKey('#__time_tasks', 'idx_billable'))
 			{
-				$query = "ALTER IGNORE TABLE `#__time_tasks` ADD INDEX `idx_billable` (`billable`)";
+				$query = "ALTER TABLE `#__time_tasks` ADD INDEX `idx_billable` (`billable`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -85,14 +85,14 @@ class Migration20170220190109ComTime extends Base
 		{
 			if ($this->db->tableHasField('#__time_records', 'task_id') && !$this->db->tableHasKey('#__time_records', 'idx_task_id'))
 			{
-				$query = "ALTER IGNORE TABLE `#__time_records` ADD INDEX `idx_task_id` (`task_id`)";
+				$query = "ALTER TABLE `#__time_records` ADD INDEX `idx_task_id` (`task_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if ($this->db->tableHasField('#__time_records', 'user_id') && !$this->db->tableHasKey('#__time_records', 'idx_user_id'))
 			{
-				$query = "ALTER IGNORE TABLE `#__time_records` ADD INDEX `idx_user_id` (`user_id`)";
+				$query = "ALTER TABLE `#__time_records` ADD INDEX `idx_user_id` (`user_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -102,7 +102,7 @@ class Migration20170220190109ComTime extends Base
 		{
 			if ($this->db->tableHasField('#__time_hubs', 'active') && !$this->db->tableHasKey('#__time_hubs', 'idx_active'))
 			{
-				$query = "ALTER IGNORE TABLE `#__time_hubs` ADD INDEX `idx_active` (`active`)";
+				$query = "ALTER TABLE `#__time_hubs` ADD INDEX `idx_active` (`active`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -112,7 +112,7 @@ class Migration20170220190109ComTime extends Base
 		{
 			if ($this->db->tableHasField('#__time_hub_contacts', 'hub_id') && !$this->db->tableHasKey('#__time_hub_contacts', 'idx_hub_id'))
 			{
-				$query = "ALTER IGNORE TABLE `#__time_hub_contacts` ADD INDEX `idx_hub_id` (`hub_id`)";
+				$query = "ALTER TABLE `#__time_hub_contacts` ADD INDEX `idx_hub_id` (`hub_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
