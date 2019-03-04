@@ -306,7 +306,7 @@ class Imports extends AdminController
 		$success = 0;
 		foreach ($ids as $id)
 		{
-			$resourceImport = Models\Import::oneOrFail($id);
+			$resourceImport = Import::oneOrFail($id);
 
 			// attempt to delete import
 			if (!$resourceImport->destroy())
