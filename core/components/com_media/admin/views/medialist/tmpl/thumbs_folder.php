@@ -32,12 +32,12 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$href = Route::url('index.php?option=' . $this->option . '&task=download&' . Session::getFormToken() . '=1&folder=' . urlencode($this->currentFolder['path']));
+$href = Route::url('index.php?option=' . $this->option . '&task=download&' . Session::getFormToken() . '=1&folder=' . urlencode('/' . $this->currentFolder['path']));
 ?>
 		<div class="media-item media-item-thumb">
 			<div class="media-preview">
 				<div class="media-preview-inner">
-					<a class="media-thumb folder-item" href="<?php echo Route::url('index.php?option=com_media&controller=media&folder=' . $this->currentFolder['path']); ?>">
+					<a class="media-thumb folder-item" data-folder="<?php echo $this->escape('/' . $this->currentFolder['path']); ?>" href="<?php echo Route::url('index.php?option=com_media&controller=medialist&' . Session::getFormToken() . '=1&folder=/' . $this->currentFolder['path']); ?>">
 						<span class="media-preview-shim"></span><!--
 						--><img src="<?php echo $this->img('folder.svg'); ?>" alt="<?php echo $this->escape($this->currentFolder['name']); ?>" width="80" />
 					</a>

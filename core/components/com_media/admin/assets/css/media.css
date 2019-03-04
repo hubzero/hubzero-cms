@@ -18,6 +18,7 @@
 .icon-align-justify:before      { content: "\f039"; }
 .icon-th:before                 { content: "\f00a"; }
 .icon-download:before                 { content: "\f0ab"; }
+.icon-upload:before                 { content: "\f046"; }
 .icon-link:before                 { content: "\26D3"; }
 .icon-trash:before                 { content: "\f014"; }
 .icon-info:before                 { content: "\f05a"; }
@@ -34,6 +35,7 @@
 }*/
 /* Panels */
 .media-panels {
+	min-height: 500px;
 	display: flex;
 	flex-flow: row wrap;
 	border-top: 1px solid rgba(0,0,0,0.1);
@@ -57,14 +59,18 @@
 .media-header {
 	white-space: nowrap;
 	background-color: #fff;
-	position: relative;
-	overflow: hidden;
+	/*position: relative;
+	overflow: hidden;*/
 	border-bottom: 1px solid rgba(0,0,0,0.1);
 	display: flex;
 	width: 100%;
 }
 .media-header>div {
 	flex: 1 1 auto;
+}
+.media-header form {
+	margin: 0;
+	padding: 0;
 }
 .media-header:after {
 	content: '';
@@ -119,11 +125,13 @@
 	-o-transition: opacity 200ms ease-in-out;
 	transition: opacity 200ms ease-in-out;
 	cursor: pointer;
-	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=30);
-	-moz-opacity: 0.3;
-	-khtml-opacity: 0.3;
-	opacity: 0.3;
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=40);
+	-moz-opacity: 0.4;
+	-khtml-opacity: 0.4;
+	opacity: 0.4;
 }
+.media-files-action:hover,
+.media-files-view:hover,
 .media-files-view.active {
 	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
 	-moz-opacity: 1;
@@ -578,6 +586,7 @@ h2.modal-title {
 	}
 	/* Upload list */
 	.qq-upload-list {
+		display: none;
 		list-style: none;
 		margin: 1em 0;
 	}
@@ -713,10 +722,13 @@ h2.modal-title {
 		display: none;
 	}
 
-	/* Drop areas */
-	.qq-upload-button {
-		display: none;
-	}
+	/* Drop areas 
+	.qq-upload-button-wrap {
+		display: block;
+		position: absolute;
+		top: 0;
+		right: 0;
+	}*/
 	/*.qq-upload-button,*/
 	.qq-upload-drop-area {
 		/*background: #f7f7f7;
