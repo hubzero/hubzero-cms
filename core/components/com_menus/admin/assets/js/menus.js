@@ -1,9 +1,16 @@
-Joomla.submitbutton = function(task) {
-	$(document).trigger('editorSave');
+Joomla.submitbutton = function(task, type='') {
+	var afrm = document.getElementById('adminForm');
+
+	if (afrm) {
+		Joomla.submitform(task, afrm);
+		return;
+	}
 
 	var frm = document.getElementById('item-form');
 
 	if (frm) {
+		$(document).trigger('editorSave');
+
 		if (task == 'items.setType' || task == 'items.setMenuType') {
 			if (task == 'items.setType') {
 				$('#item-form').find('input[name="fields[type]"]').val(type);
