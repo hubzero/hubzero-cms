@@ -81,7 +81,7 @@ class Migration20190228114147ComCourses extends Base
 				{
 					if (!$this->db->tableHasKey($table, 'idx_' . $field))
 					{
-						$query = "ALTER IGNORE TABLE `" . $table . "` ADD INDEX `idx_" . $field . "` (`" . $field . "`)";
+						$query = "ALTER TABLE `" . $table . "` ADD INDEX `idx_" . $field . "` (`" . $field . "`)";
 						$this->db->setQuery($query);
 						$this->db->query();
 					}
