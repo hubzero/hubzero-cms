@@ -344,29 +344,11 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 		}
 
 		// Calculate the new average rating for the parent resource
-		$ratings = \Components\Resources\Reviews\Models\Review::all()
-			->whereEquals('resource_id', $this->resource->get('id'))
-			->rows()
-			->fieldsByKey('rating');
-
-		$totalcount = count($ratings);
-		$totalvalue = 0;
-
-		// Add the ratings up
-		foreach ($ratings as $rating)
-		{
-			$totalvalue = $totalvalue + $rating;
-		}
-
-		// Find the average of all ratings
-		$newrating = ($totalcount > 0) ? $totalvalue / $totalcount : 0;
-
-		// Round to the nearest half
-		$newrating = ($newrating > 0) ? round($newrating*2)/2 : 0;
+		$calculated = \Components\Resources\Reviews\Models\Review::averageByResource($this->resource->get('id'));
 
 		// Recalculate the average rating for the parent resource
-		$this->resource->set('rating', $newrating);
-		$this->resource->set('times_rated', $totalcount);
+		$this->resource->set('rating', $calculated['newrating']);
+		$this->resource->set('times_rated', $calculated['times_rated']);
 		$this->resource->save();
 
 		// Instantiate a helper object and get all the contributor IDs
