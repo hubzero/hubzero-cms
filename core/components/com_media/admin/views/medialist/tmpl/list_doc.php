@@ -36,10 +36,9 @@ $icon = 'file.svg';
 
 $path = Component::path('com_media') . '/admin/assets/img/';
 $ext = Filesystem::extension($this->currentDoc['name']);
-if (file_exists($path . $ext . '.svg'))
-{
+if (file_exists($path . $ext . '.svg')):
 	$icon = $ext . '.svg';
-}
+endif;
 
 $params = new Hubzero\Config\Registry;
 
@@ -76,16 +75,16 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_do
 				<div class="media-options">
 					<ul>
 						<li>
-							<a class="icon-info media-opt-info" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=info&' . Session::getFormToken() . '=1&file=' . urlencode($this->currentDoc['path'])); ?>"><?php echo Lang::txt('Info'); ?></a>
+							<a class="icon-info media-opt-info" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=info&' . Session::getFormToken() . '=1&file=' . urlencode($this->currentDoc['path'])); ?>"><?php echo Lang::txt('COM_MEDIA_FILE_INFO'); ?></a>
 						</li>
 						<li>
 							<span class="separator"></span>
 						</li>
 						<li>
-							<a download class="icon-download media-opt-download" href="<?php echo $href; ?>"><?php echo Lang::txt('Download'); ?></a>
+							<a download class="icon-download media-opt-download" href="<?php echo $href; ?>"><?php echo Lang::txt('COM_MEDIA_DOWNLOAD'); ?></a>
 						</li>
 						<li>
-							<a class="icon-link media-opt-path" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=path&' . Session::getFormToken() . '=1&file=' . urlencode($this->currentDoc['path'])); ?>"><?php echo Lang::txt('Get link'); ?></a>
+							<a class="icon-link media-opt-path" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=path&' . Session::getFormToken() . '=1&file=' . urlencode($this->currentDoc['path'])); ?>"><?php echo Lang::txt('COM_MEDIA_FILE_LINK'); ?></a>
 						</li>
 						<?php if (User::authorise('core.delete', 'com_media')): ?>
 							<li>
