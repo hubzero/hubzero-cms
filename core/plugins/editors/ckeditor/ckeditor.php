@@ -57,8 +57,8 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 		$this->css();
 
 		// Add ckeditor
-		Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'ckeditor.js' );
-		Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'adapters/jquery.js' );
+		Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'ckeditor.js?v=' . filemtime(__DIR__ . '/assets/ckeditor.js'));
+		Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'adapters/jquery.js?v=' . filemtime(__DIR__ . '/assets/adapters/jquery.js'));
 	}
 
 	/**
