@@ -61,20 +61,52 @@ jQuery(document).ready(function($){
 	});
 
 	contents
-		.on('click', '.media-preview', function(e){
+		/*.on('click', '.media-preview', function(e){
 			e.preventDefault();
 
 			$(this).closest('.media-item').toggleClass('ui-selected');
+		})*/
+		.on('click', '.folder-item', function(e){
+			e.preventDefault();
+
+			folder.val($(this).attr('data-folder'));
+
+			if (_DEBUG) {
+				window.console && console.log('Calling: ' + $(this).attr('href').nohtml() + '&layout=' + layout.val());
+			}
+
+			var trail = $(this).attr('data-folder').split('/'),
+				crumbs = '',
+				href = contents.attr('data-list').nohtml() + '&layout=' + layout.val() + '&folder=';
+
+			for (var i = 0; i < trail.length; i++)
+			{
+				if (trail[i] == '')
+				{
+					continue;
+				}
+
+				href += '/'  + trail[i];
+
+				crumbs += '<span class="icon-chevron-right dir-separator">/</span>';
+				crumbs += '<a href="' + href + '" class="media-breadcrumbs folder has-next-button" id="path_' + trail[i] + '">' + trail[i] + '</a>';
+			}
+
+			$('#media-breadcrumbs').html(crumbs);
+
+			$.get($(this).attr('href').nohtml() + '&layout=' + layout.val(), function(data){
+				contents.html(data);
+			});
 		})
 		.on('click', '.media-options-btn', function(e){
 			e.preventDefault();
 
 			var item = $(this).closest('.media-item');
 
-			if (!item.hasClass('ui-activated')) {
+			/*if (!item.hasClass('ui-activated')) {
 				$('.media-item').removeClass('ui-activated');
 				item.toggleClass('ui-selected');
-			}
+			}*/
 
 			item.toggleClass('ui-activated');
 		})
@@ -174,8 +206,8 @@ jQuery(document).ready(function($){
 			},
 			multiple: true,
 			debug: true,
-			template: '<div class="qq-uploader">' +
-						'<div class="qq-upload-button"><span>' + attach.attr('data-instructions') + '</span></div>' + 
+			template: '<div class="icon-upload qq-upload-button media-files-action hasTip" title="' + attach.attr('data-instructions-btn') + '"><span>' + attach.attr('data-instructions-btn') + '</span></div>' + 
+					'<div class="qq-uploader">' +
 						'<div class="qq-upload-drop-area"><span>' + attach.attr('data-instructions') + '</span></div>' +
 						'<ul class="qq-upload-list"></ul>' + 
 					'</div>',
