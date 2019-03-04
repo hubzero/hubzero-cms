@@ -134,29 +134,34 @@ class Job extends Relational
 	 * @param   array   $data  the data being saved
 	 * @return  string
 	 **/
-	/*public function automaticPublishUp($data)
+	public function automaticPublishUp($data)
 	{
-		if (!$data['publish_up'])
+		if (!isset($data['publish_up']))
 		{
-			$data['publish_up'] = '0000-00-00 00:00:00';
+			$data['publish_up'] = null;
 		}
-		return $data['publish_up'];
-	}*/
 
+		if (!$data['publish_up'] || $data['publish_up'] == '0000-00-00 00:00:00')
+		{
+			$data['publish_up'] = ($data['id'] ? $this->get('created') : \Date::toSql());
+		}
+
+		return $data['publish_up'];
+	}
 	/**
 	 * Set publish down value
 	 *
 	 * @param   array   $data  the data being saved
 	 * @return  string
 	 */
-	/*public function automaticPublishDown($data)
+	public function automaticPublishDown($data)
 	{
-		if (!$data['publish_down'])
+		if (!$data['publish_down'] || $data['publish_down'] == '0000-00-00 00:00:00')
 		{
-			$data['publish_down'] = '0000-00-00 00:00:00';
+			$data['publish_down'] = null;
 		}
 		return $data['publish_down'];
-	}*/
+	}
 
 	/**
 	 * Runs extra setup code when creating a new model
