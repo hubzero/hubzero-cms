@@ -26,21 +26,21 @@ class Migration20190228114147MediaTracking extends Base
 		{
 			if (!$this->db->tableHasKey(self::$table, 'idx_user_id'))
 			{
-				$query = "ALTER IGNORE TABLE `" . self::$table . "` ADD INDEX `idx_user_id` (`user_id`)";
+				$query = "ALTER TABLE `" . self::$table . "` ADD INDEX `idx_user_id` (`user_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey(self::$table, 'idx_session_id'))
 			{
-				$query = "ALTER IGNORE TABLE `" . self::$table . "` ADD INDEX `idx_session_id` (`session_id`)";
+				$query = "ALTER TABLE `" . self::$table . "` ADD INDEX `idx_session_id` (`session_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey(self::$table, 'idx_object_id'))
 			{
-				$query = "ALTER IGNORE TABLE `" . self::$table . "` ADD INDEX `idx_object_id` (`object_id`)";
+				$query = "ALTER TABLE `" . self::$table . "` ADD INDEX `idx_object_id` (`object_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
