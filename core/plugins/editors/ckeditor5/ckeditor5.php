@@ -232,7 +232,7 @@ class plgEditorCkeditor5 extends \Hubzero\Plugin\Plugin
 				{
 					$modal   = ($button->get('modal')) ? ' class="modal-button"' : null;
 					$href    = ($button->get('link')) ? ' href="'.Request::base().$button->get('link').'"' : null;
-					$onclick = ($button->get('onclick')) ? ' onclick="'.$button->get('onclick').'"' : 'onclick="IeCursorFix(); return false;"';
+					$onclick = ($button->get('onclick')) ? ' onclick="'.$button->get('onclick').'"' : 'onclick="return false;"';
 					$title   = ($button->get('title')) ? $button->get('title') : $button->get('text');
 					$return .= '<div class="button2-left"><div class="' . $button->get('name') . '"><a' . $modal . ' title="' . $title . '"' . $href . $onclick . ' rel="' . $button->get('options') . '">' . $button->get('text') . "</a></div></div>\n";
 				}
