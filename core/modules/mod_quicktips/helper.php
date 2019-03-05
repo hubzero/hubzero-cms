@@ -85,13 +85,13 @@ class Helper extends Module
 			$order = "a.publish_up DESC";
 		}
 
-		$query = "SELECT a.id, a.title, a.introtext, a.created"
-				. " FROM `#__content` AS a"
-				. " WHERE (a.state = '1' AND a.checked_out = '0' AND a.sectionid > '0')"
-				. " AND (a.publish_up = '0000-00-00 00:00:00' OR a.publish_up <= '$now')"
-				. " AND (a.publish_down = '0000-00-00 00:00:00' OR a.publish_down >= '$now')"
-				. ($catid ? "\n AND (a.catid IN (" . $catid . "))" : '')
-				. ($secid ? "\n AND (a.sectionid IN (" . $secid . "))" : '')
+		$query = "SELECT a.id, a.title, a.introtext, a.created
+				FROM `#__content` AS a
+				WHERE (a.state = '1' AND a.checked_out = '0' AND a.sectionid > '0')
+				AND (a.publish_up IS NULL OR a.publish_up <= " . $database->quote($now) . ")
+				AND (a.publish_down IS NULL OR a.publish_down >= " . $database->quote($now) . ")"
+				. ($catid ? " AND (a.catid IN (" . $catid . "))" : '')
+				. ($secid ? " AND (a.sectionid IN (" . $secid . "))" : '')
 				. " ORDER BY $order LIMIT 1";
 		$database->setQuery($query);
 		$this->rows = $database->loadObjectList();
