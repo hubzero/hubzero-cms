@@ -30,7 +30,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\MyGroups;
+namespace Modules\MyGroupsMini;
 
 require_once __DIR__ . DS . 'helper.php';
 

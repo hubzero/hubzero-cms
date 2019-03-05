@@ -29,7 +29,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\MyGroups;
+namespace Modules\MyGroupsMini;
 
 use Hubzero\Module\Module;
 use Components\Groups\Models\Recent;

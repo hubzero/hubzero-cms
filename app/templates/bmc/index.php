@@ -285,18 +285,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 											<li id="account-messages">
 												<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages'); ?>"><span class="nav-icon-messages"><?php echo file_get_contents("core/assets/icons/envelope-alt.svg") ?></span><span><?php echo Lang::txt('TPL_BMC_ACCOUNT_MESSAGES'); ?></span></a>
 											</li>
-											<li id="account-groups">
-												<a href="#" class="component-button"><span class="nav-icon-groups"><?php echo file_get_contents("core/assets/icons/group.svg") ?></span><span>My Groups</span><span class="nav-icon-more"><?php echo file_get_contents("core/assets/icons/chevron-right.svg") ?></span></a>
-												<div class="component-panel">
-													<header><h2>My Groups</h2></header>
-													<a href="#" class="component-button"><span class="nav-icon-back"><?php echo file_get_contents("core/assets/icons/chevron-left.svg") ?></span>Back</a>
-													<ul>
-														<li><a href="#">My Group</a></li>
-														<li><a href="#">My Group</a></li>
-														<li><a href="#">All Groups</a></li>
-													</ul>
-												</div>
-											</li>
+											<jdoc:include type="modules" name="minidash" />
 											<li id="account-logout">
 												<a href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span class="nav-icon-logout"><?php echo file_get_contents("core/assets/icons/signout.svg") ?></span><span><?php echo Lang::txt('TPL_BMC_LOGOUT'); ?></span></a>
 											</li>

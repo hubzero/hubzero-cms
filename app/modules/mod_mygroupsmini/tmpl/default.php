@@ -102,3 +102,17 @@ $this->css()
 		</ul>
 	<?php } ?>
 </div>
+
+<!-- Temporary location of code -->
+<li id="account-groups">
+  <a href="#" class="component-button"><span class="nav-icon-groups"><?php echo file_get_contents("core/assets/icons/group.svg") ?></span><span>My Groups</span><span class="nav-icon-more"><?php echo file_get_contents("core/assets/icons/chevron-right.svg") ?></span></a>
+  <div class="component-panel">
+    <header><h2>My Groups</h2></header>
+    <a href="#" class="component-button"><span class="nav-icon-back"><?php echo file_get_contents("core/assets/icons/chevron-left.svg") ?></span>Back</a>
+    <ul>
+      <li><a href="#">My Group</a></li>
+      <li><a href="#">My Group</a></li>
+      <li><a href="#">All Groups</a></li>
+    </ul>
+  </div>
+</li>

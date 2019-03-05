@@ -5,14 +5,14 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for installing mygroups module
  **/
-class Migration20190109000000ModMyGroups extends Base
+class Migration20190305000000ModMyGroupsMini extends Base
 {
 	/**
 	 * Up
 	 **/
 	public function up()
 	{
-		$this->addModuleEntry('mod_mygroups');
+		$this->addModuleEntry('mod_mygroupsmini');
 	}
 
 	/**
@@ -20,6 +20,6 @@ class Migration20190109000000ModMyGroups extends Base
 	 **/
 	public function down()
 	{
-		$this->deleteModuleEntry('mod_mygroups');
+		$this->deleteModuleEntry('mod_mygroupsmini');
 	}
 }
