@@ -63,12 +63,14 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_do
 		<td>
 			<span class="media-size"><?php echo Components\Media\Admin\Helpers\MediaHelper::parseSize($this->currentDoc['size']); ?></span>
 		</td>
+	<?php if (Request::getCmd('tmpl') != 'component'): ?>
 		<td>
 			<span class="media-type"><?php echo strtoupper($ext); ?></span>
 		</td>
 		<td>
 			<time class="media-modified" datetime="<?php echo $modified->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo $modified->toSql(); ?></time>
 		</td>
+	<?php endif; ?>
 		<td>
 			<div class="media-preview-inner">
 				<span class="media-options-btn"></span>

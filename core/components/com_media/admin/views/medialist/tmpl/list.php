@@ -21,8 +21,10 @@ endif;
 					<tr>
 						<th scope="col">Name</th>
 						<th scope="col">Size</th>
+					<?php if (Request::getCmd('tmpl') != 'component'): ?>
 						<th scope="col">Type</th>
 						<th scope="col">Last modified</th>
+					<?php endif; ?>
 						<th scope="col"></th>
 					</tr>
 				</thead>

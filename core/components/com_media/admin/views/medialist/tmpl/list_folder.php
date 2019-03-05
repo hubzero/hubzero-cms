@@ -51,12 +51,14 @@ $href = Route::url('index.php?option=' . $this->option . '&task=download&' . Ses
 		<td>
 			<!-- Nothing here -->
 		</td>
+	<?php if (Request::getCmd('tmpl') != 'component'): ?>
 		<td>
 			<span class="media-type"><?php echo Lang::txt('Folder'); ?></span>
 		</td>
 		<td>
 			<time class="media-modified" datetime="<?php echo $modified->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo $modified->toSql(); ?></time>
 		</td>
+	<?php endif; ?>
 		<td>
 			<div class="media-preview-inner">
 				<span class="media-options-btn"></span>
