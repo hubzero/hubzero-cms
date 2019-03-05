@@ -90,6 +90,52 @@ class Module extends Relational
 	);
 
 	/**
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 */
+	public $always = array(
+		'publish_up',
+		'publish_down'
+	);
+
+	/**
+	 * Generates automatic publish_up field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticPublishUp($data)
+	{
+		if (!isset($data['publish_up'])
+		 || !$data['publish_up']
+		 || $data['publish_up'] == '0000-00-00 00:00:00')
+		{
+			$data['publish_up'] = null;
+		}
+
+		return $data['publish_up'];
+	}
+
+	/**
+	 * Generates automatic publish_down field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticPublishDown($data)
+	{
+		if (!isset($data['publish_down'])
+		 || !$data['publish_down']
+		 || $data['publish_down'] == '0000-00-00 00:00:00')
+		{
+			$data['publish_down'] = null;
+		}
+
+		return $data['publish_down'];
+	}
+
+	/**
 	 * Get the XML maniest
 	 *
 	 * @return  mixed  XML object or null
@@ -658,5 +704,20 @@ class Module extends Relational
 		}
 
 		return true;
+	}
+
+	/**
+	 * Checks back in the current model
+	 *
+	 * @return  void
+	 **/
+	public function checkin()
+	{
+		if (!$this->isNew())
+		{
+			$this->set('checked_out', 0)
+			     ->set('checked_out_time', null)
+			     ->save();
+		}
 	}
 }

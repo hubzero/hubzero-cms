@@ -1,9 +1,16 @@
 Joomla.submitbutton = function(task) {
-	$(document).trigger('editorSave');
+	var afrm = document.getElementById('adminForm');
+
+	if (afrm) {
+		Joomla.submitform(task, afrm);
+		return;
+	}
 
 	var frm = document.getElementById('item-form');
 
 	if (frm) {
+		$(document).trigger('editorSave');
+
 		if (task == 'cancel' || task == 'module.cancel' || document.formvalidator.isValid(frm)) {
 			Joomla.submitform(task, frm);
 			if (self != top) {
