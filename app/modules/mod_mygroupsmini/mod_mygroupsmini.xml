@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           modules/mod_mygroups/mod_mygroups.xml
+@file           modules/mod_mygroupsmini/mod_mygroupsmini.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -36,7 +36,7 @@ HUBzero is a registered trademark of Purdue University.
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>MOD_MYGROUPSMINI_XML_DESCRIPTION</description>
 	<files>
-		<filename module="mod_mygroups">mod_mygroupsmini.php</filename>
+		<filename module="mod_mygroupsmini">mod_mygroupsmini.php</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
 		<filename>tmpl/index.html</filename>
