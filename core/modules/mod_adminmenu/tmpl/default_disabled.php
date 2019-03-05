@@ -37,14 +37,14 @@ defined('_HZEXEC_') or die;
 //
 // Site SubMenu
 //
-$menu->addChild(new Node(Lang::txt('JSITE'), null, 'disabled'));
+$menu->addChild(new Node(Lang::txt('JSITE'), null, 'class:site disabled'));
 
 //
 // Users Submenu
 //
 if ($user->authorise('core.manage', 'com_members'))
 {
-	$menu->addChild(new Node(Lang::txt('MOD_MENU_COM_USERS'), null, 'disabled'));
+	$menu->addChild(new Node(Lang::txt('MOD_MENU_COM_USERS'), null, 'class:users disabled'));
 }
 
 //
@@ -52,7 +52,7 @@ if ($user->authorise('core.manage', 'com_members'))
 //
 if ($user->authorise('core.manage', 'com_menus'))
 {
-	$menu->addChild(new Node(Lang::txt('MOD_MENU_MENUS'), null, 'disabled'));
+	$menu->addChild(new Node(Lang::txt('MOD_MENU_MENUS'), null, 'class:menus disabled'));
 }
 
 //
@@ -60,7 +60,7 @@ if ($user->authorise('core.manage', 'com_menus'))
 //
 if ($user->authorise('core.manage', 'com_content'))
 {
-	$menu->addChild(new Node(Lang::txt('MOD_MENU_COM_CONTENT'), null, 'disabled'));
+	$menu->addChild(new Node(Lang::txt('MOD_MENU_COM_CONTENT'), null, 'class:articles disabled'));
 }
 
 //
@@ -70,7 +70,7 @@ if ($user->authorise('core.manage', 'com_content'))
 // Check if there are any components, otherwise, don't display the components menu item
 if ($components = $this->getComponents(true))
 {
-	$menu->addChild(new Node(Lang::txt('MOD_MENU_COMPONENTS'), null, 'disabled'));
+	$menu->addChild(new Node(Lang::txt('MOD_MENU_COMPONENTS'), null, 'class:components disabled'));
 }
 
 //
@@ -84,7 +84,7 @@ $lm = $user->authorise('core.manage', 'com_languages');
 
 if ($im || $mm || $pm || $tm || $lm)
 {
-	$menu->addChild(new Node(Lang::txt('MOD_MENU_EXTENSIONS_EXTENSIONS'), null, 'disabled'));
+	$menu->addChild(new Node(Lang::txt('MOD_MENU_EXTENSIONS_EXTENSIONS'), null, 'class:extensions disabled'));
 }
 
 //
@@ -92,5 +92,5 @@ if ($im || $mm || $pm || $tm || $lm)
 //
 if ($params->get('showhelp', 0) == 1)
 {
-	$menu->addChild(new Node(Lang::txt('MOD_MENU_HELP'), null, 'disabled'));
+	$menu->addChild(new Node(Lang::txt('MOD_MENU_HELP'), null, 'class:help disabled'));
 }
