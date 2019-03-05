@@ -110,20 +110,23 @@ class Forum extends GenericItem
 
 		include_once \Component::path('com_forum') . DS . 'models' . DS . 'post.php';
 
-		$thread = new Post($id);
+		$thread = Post::oneOrNew($id);
 
-		if (!$thread->exists())
+		if ($thread->isNew())
 		{
 			$this->setError(Lang::txt('Forum thread not found.'));
 			return false;
 		}
+
+		$clean = strip_tags($thread->get('comment'));
+		$clean = \Hubzero\Utility\Str::truncate($clean, 200);
 
 		$this->set('type', $this->_type)
 		     ->set('object_id', $thread->get('id'))
 		     ->set('created', $thread->get('created'))
 		     ->set('created_by', $thread->get('created_by'))
 		     ->set('title', $thread->get('title'))
-		     ->set('description', $thread->content('clean', 200))
+		     ->set('description', $clean)
 		     ->set('url', $thread->link());
 
 		if (!$this->store())
