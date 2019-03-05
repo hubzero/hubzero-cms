@@ -141,7 +141,7 @@ Html::behavior('tooltip');
 				$cls  = 'publish';
 				$task = 'unpublish';
 			}
-			else if (($now->toUnix() <= $publish_down->toUnix() || $row->get('publish_down') == $nullDate) && $row->get('state') == 1)
+			else if (($now->toUnix() <= $publish_down->toUnix() || !$row->get('publish_down') || $row->get('publish_down') == $nullDate) && $row->get('state') == 1)
 			{
 				$alt  = Lang::txt('JPUBLISHED');
 				$cls  = 'publish';
@@ -175,7 +175,7 @@ Html::behavior('tooltip');
 			$times = '';
 			if ($row->get('publish_up'))
 			{
-				if ($row->get('publish_up') == $nullDate)
+				if (!$row->get('publish_up') || $row->get('publish_up') == $nullDate)
 				{
 					$times .= Lang::txt('COM_BLOG_START') . ': ' . Lang::txt('COM_BLOG_ALWAYS');
 				}
@@ -186,7 +186,7 @@ Html::behavior('tooltip');
 			}
 			if ($row->get('publish_down'))
 			{
-				if ($row->get('publish_down') == $nullDate)
+				if (!$row->get('publish_down') || $row->get('publish_down') == $nullDate)
 				{
 					$times .= '<br />' . Lang::txt('COM_BLOG_FINISH') . ': ' . Lang::txt('COM_BLOG_NO_EXPIRY');
 				}
