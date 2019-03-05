@@ -250,6 +250,7 @@ class LocalProvider extends AbstractProvider implements ProviderInterface
 		array('code' => 'SO', 'name' => 'Somalia', 'continent' => 'Africa'),
 		array('code' => 'ZA', 'name' => 'South Africa', 'continent' => 'Africa'),
 		array('code' => 'GS', 'name' => 'South Georgia and The South Sandwich Islands', 'continent' => 'Antarctica'),
+		array('code' => 'SS', 'name' => 'South Sudan', 'continent' => 'Africa'),
 		array('code' => 'ES', 'name' => 'Spain', 'continent' => 'Europe'),
 		array('code' => 'LK', 'name' => 'Sri Lanka', 'continent' => 'Asia'),
 		array('code' => 'SD', 'name' => 'Sudan', 'continent' => 'Africa'),
