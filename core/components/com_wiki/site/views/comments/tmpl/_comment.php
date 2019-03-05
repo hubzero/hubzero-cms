@@ -74,22 +74,46 @@ $this->comment->set('category', 'answercomment');
 		</p>
 		<div class="comment-content">
 			<?php
-			if ($this->comment->get('rating'))
+			if ($this->page->config('comment_ratings') && $this->comment->get('rating'))
 			{
 				switch ($this->comment->get('rating'))
 				{
-					case 0:   $rcls = ' no-stars';        break;
-					case 0.5: $rcls = ' half-stars';      break;
-					case 1:   $rcls = ' one-stars';       break;
-					case 1.5: $rcls = ' onehalf-stars';   break;
-					case 2:   $rcls = ' two-stars';       break;
-					case 2.5: $rcls = ' twohalf-stars';   break;
-					case 3:   $rcls = ' three-stars';     break;
-					case 3.5: $rcls = ' threehalf-stars'; break;
-					case 4:   $rcls = ' four-stars';      break;
-					case 4.5: $rcls = ' fourhalf-stars';  break;
-					case 5:   $rcls = ' five-stars';      break;
-					default:  $rcls = ' no-stars';        break;
+					case 0:
+						$rcls = ' no-stars';
+						break;
+					case 0.5:
+						$rcls = ' half-stars';
+						break;
+					case 1:
+						$rcls = ' one-stars';
+						break;
+					case 1.5:
+						$rcls = ' onehalf-stars';
+						break;
+					case 2:
+						$rcls = ' two-stars';
+						break;
+					case 2.5:
+						$rcls = ' twohalf-stars';
+						break;
+					case 3:
+						$rcls = ' three-stars';
+						break;
+					case 3.5:
+						$rcls = ' threehalf-stars';
+						break;
+					case 4:
+						$rcls = ' four-stars';
+						break;
+					case 4.5:
+						$rcls = ' fourhalf-stars';
+						break;
+					case 5:
+						$rcls = ' five-stars';
+						break;
+					default:
+						$rcls = ' no-stars';
+						break;
 				}
 				?>
 				<p><span class="avgrating<?php echo $rcls; ?>"><span><?php echo Lang::txt('COM_WIKI_COMMENT_RATING', $this->comment->get('rating')); ?></span></span></p>

@@ -91,6 +91,7 @@
     text-indent: 15px;
     line-height: 40px;
     margin: 0;
+    position: relative;
 }
 
 .sidebar-nav a,
@@ -245,18 +246,20 @@
   color: #fff;
 }
 .more-links {
-  position: absolute;
-  top: 5em;
   display: none;
+  height: calc(100% - 80px);
   left: 0;
+  margin: 0;
+  overflow-y: scroll;
+  padding: 2em;
   width: 100%;
 }
 .links-visible {
   display: block;
 }
 .fullscreen {
-  height: 100vh;
-  width: 100vh;
+  height: calc(100%);
+  transition: height 0.66s ease-out !important;
   z-index: 2000 !important; /* Go fullscreen */
 }
 .more-menu-expanded {

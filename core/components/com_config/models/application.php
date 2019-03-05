@@ -93,6 +93,17 @@ class Application extends Obj
 		// Get the config data.
 		$data = Config::getRoot()->toArray();
 
+		// Set the site code, if not present
+		if (isset($data['app']))
+		{
+			if (!isset($data['app']['sitecode']) || !$data['app']['sitecode'])
+			{
+				// This should be 4 alpha-numeric characters at most
+				$sitename = preg_replace("/[^a-zA-Z0-9]/", '', $data['app']['sitename']);
+				$data['app']['sitecode'] = strtolower(substr($sitename, 0, 4));
+			}
+		}
+
 		// Prime the asset_id for the rules.
 		$data['asset_id'] = 1;
 

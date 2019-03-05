@@ -34,23 +34,15 @@ defined('_HZEXEC_') or die();
 
 Html::behavior('modal');
 
+$this->js();
 $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 ?>
-<script type="text/javascript">
-jQuery(document).ready(function($){
-	$('a.edit-asset').on('click', function(e) {
-		e.preventDefault();
-
-		window.parent.$.fancybox.open($(this).attr('href'), {type: 'iframe', size: {x: 570, y: 550}});
-	});
-});
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th colspan="4" style="text-align:right;">
+				<th colspan="4" class="align-right">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=addZone&version=' . $this->version . '&tmpl=component'); ?>" class="button edit-asset" rel="{type: 'iframe', size: {x: 570, y: 550}}"><?php echo Lang::txt('COM_TOOLS_ADD_ZONE'); ?></a>
 				</th>
 			</tr>

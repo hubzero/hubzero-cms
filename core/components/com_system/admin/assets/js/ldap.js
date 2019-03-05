@@ -15,6 +15,22 @@ jQuery(document).ready(function(jq){
 
 	_DEBUG = document.getElementById('system-debug') ? true : false;
 
+	$('#importHubConfig').on('click', function(e){
+		return Joomla.submitbutton('importHubConfig');
+	});
+
+	$('#deleteUsers').on('click', function(e){
+		return Joomla.submitbutton('deleteUsers');
+	});
+
+	$('#exportGroups').on('click', function(e){
+		return Joomla.submitbutton('exportGroups');
+	});
+
+	$('#deleteGroups').on('click', function(e){
+		return Joomla.submitbutton('deleteGroups');
+	});
+
 	var BatchRecords = new function() {
 		this.timer     = null;
 		this.checker   = null;

@@ -261,13 +261,14 @@ class Pipeline extends AdminController
 		$created = array();
 		$failed = array();
 
-		// Initiate extended database classes
-		require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
-		require_once \Component::path('com_resources') . DS . 'models' . DS . 'doi.php';
+		$database = App::get('db');
 
-		$objDOI   = \Components\Resources\Models\Doi::blank();
-		$objV     = new \Components\Tools\Tables\Version($this->database);
-		$objA     = new \Components\Tools\Tables\Author($this->database);
+		// Initiate extended database classes
+		require_once \Component::path('com_resources') . '/models/entry.php';
+		require_once \Component::path('com_resources') . '/models/doi.php';
+
+		$objV     = new \Components\Tools\Tables\Version($database);
+		$objA     = new \Components\Tools\Tables\Author($database);
 
 		$live_site = rtrim(Request::base(), '/');
 		$sitename = Config::get('sitename');
@@ -276,8 +277,8 @@ class Pipeline extends AdminController
 		$config = \Component::params($this->_option);
 
 		// Get all tool publications without new DOI
-		$this->database->setQuery("SELECT * FROM `#__doi_mapping` WHERE doi='' OR doi IS NULL");
-		$rows = $this->database->loadObjectList();
+		$database->setQuery("SELECT * FROM `#__doi_mapping` WHERE `doi`='' OR `doi` IS NULL");
+		$rows = $database->loadObjectList();
 
 		if ($rows)
 		{
@@ -291,7 +292,7 @@ class Pipeline extends AdminController
 					{
 						foreach ($created as $cr)
 						{
-							echo '<p>'.$cr.'</p>';
+							echo '<p>' . $cr . '</p>';
 						}
 					}
 					echo '<p>' . Lang::txt('COM_TOOLS_REGISTERED_DOIS', count($created), count($failed)) . '</p>';
@@ -306,8 +307,15 @@ class Pipeline extends AdminController
 				}
 
 				// Get version info
-				$this->database->setQuery("SELECT * FROM `#__tool_version` WHERE toolname=" . $this->database->quote($row->alias) . " AND revision=" . $this->database->quote($row->local_revision) . " AND state!=3 LIMIT 1");
-				$results = $this->database->loadObjectList();
+				$database->setQuery(
+					"SELECT *
+					FROM `#__tool_version`
+					WHERE `toolname`=" . $database->quote($row->alias) . "
+					AND `revision`=" . $database->quote($row->local_revision) . "
+					AND state!=3
+					LIMIT 1"
+				);
+				$results = $database->loadObjectList();
 
 				if ($results)
 				{
@@ -325,17 +333,26 @@ class Pipeline extends AdminController
 				$metadata['targetURL'] = $live_site . '/resources/' . $row->rid . '/?rev=' . $row->local_revision;
 				$metadata['title']     = htmlspecialchars($title);
 				$metadata['pubYear']   = $pubyear;
+				$metadata['version']   = $results[0]->version;
+				$metadata['license']   = $results[0]->license;
 
 				// Get authors
-				$objA = new \Components\Tools\Tables\Author($this->database);
+				$objA = new \Components\Tools\Tables\Author($database);
 				$authors = $objA->getAuthorsDOI($row->rid);
 
 				// Register DOI
+				$objDOI = \Components\Resources\Models\Doi::blank();
 				$doiSuccess = $objDOI->register($authors, $config, $metadata);
 				if ($doiSuccess)
 				{
-					$this->database->setQuery("UPDATE `#__doi_mapping` SET doi='$doiSuccess' WHERE rid=$row->rid AND local_revision=$row->local_revision");
-					if (!$this->database->query())
+					$database->setQuery(
+						"UPDATE `#__doi_mapping`
+						SET `doi`=" . $database->quote($doiSuccess) . ",
+						`doi_shoulder`=" . $database->quote($this->config->get('doi_shoulder')) . "
+						WHERE `rid`=" . $database->quote($row->rid) . "
+						AND `local_revision`=" . $database->quote($row->local_revision)
+					);
+					if (!$database->query())
 					{
 						$failed[] = $doiSuccess;
 					}

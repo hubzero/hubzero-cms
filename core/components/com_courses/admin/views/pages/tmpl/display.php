@@ -56,14 +56,14 @@ Toolbar::help('pages');
 		<div class="grid">
 			<div class="col span6">
 				<label for="filter_search"><?php echo Lang::txt('COM_COURSES_SEARCH'); ?>:</label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
+				<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
 
 				<input type="submit" value="<?php echo Lang::txt('COM_COURSES_GO'); ?>" />
-				<button type="button" onclick="$('#filter_search').val('');$('#filter-active').val('-1');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span6">
 				<label for="filter-active"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label>
-				<select name="active" id="filter-active" onchange="this.form.submit();">
+				<select name="active" id="filter-active" class="filter filter-submit">
 					<option value="-1"<?php if ($this->filters['active'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ALL_STATES'); ?></option>
 					<option value="0"<?php if ($this->filters['active'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></option>
 					<option value="1"<?php if ($this->filters['active'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></option>
@@ -93,7 +93,7 @@ Toolbar::help('pages');
 		</caption>
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_TITLE'); ?></th>
 				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_COURSES_COL_STATE'); ?></th>
@@ -134,7 +134,7 @@ Toolbar::help('pages');
 				?>
 				<tr>
 					<td>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $this->escape($page->get('id')); ?>" onclick="Joomla.isChecked(this.checked);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $this->escape($page->get('id')); ?>" class="checkbox-toggle" />
 					</td>
 					<td class="priority-3">
 						<?php echo $this->escape($page->get('id')); ?>
@@ -179,7 +179,7 @@ Toolbar::help('pages');
 							<?php } ?>
 						<?php } ?>
 					</td>
-					<td class="order" style="whitespace:nowrap">
+					<td class="order">
 						<?php echo $page->get('ordering'); ?>
 						<span><?php echo $pageNav->orderUpIcon($i, isset($rows[$i - 1]), 'orderup', 'COM_COURSES_MOVE_UP', true); ?></span>
 						<span><?php echo $pageNav->orderDownIcon($i, $n, isset($rows[$i + 1]), 'orderdown', 'COM_COURSES_MOVE_DOWN', true); ?></span>

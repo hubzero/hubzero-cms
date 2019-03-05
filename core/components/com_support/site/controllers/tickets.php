@@ -47,6 +47,7 @@ use Hubzero\Component\SiteController;
 use Hubzero\Browser\Detector;
 use Hubzero\Content\Server;
 use Hubzero\Utility\Validate;
+use Hubzero\Utility\Arr;
 use Filesystem;
 use Exception;
 use Request;
@@ -196,10 +197,10 @@ class Tickets extends SiteController
 		$this->view->group = preg_replace('/[^0-9a-zA-Z_\-]/', '', Request::getString('group', '_none_'));
 
 		// Set up some dates
-		$this->offset = Config::get('offset');
+		$date = new \Hubzero\Utility\Date();
 
-		$year  = Request::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
-		$month = strftime("%m", time()+($this->offset*60*60));
+		$year  = Request::getInt('year', $date->toLocal('Y'));
+		$month = strftime("%m", $date->toLocal('m'));
 
 		$this->view->year = $year;
 		$this->view->opened = array();
@@ -297,7 +298,7 @@ class Tickets extends SiteController
 			}
 		}
 
-		$this->view->end   = Request::getString('end', '');
+		$this->view->end = Request::getString('end', '');
 
 		$endmonth = $month;
 		$endyear = date("Y");
@@ -889,6 +890,22 @@ class Tickets extends SiteController
 		$reporter = Request::getArray('reporter', array(), 'post');
 		$problem  = Request::getArray('problem', array(), 'post');
 
+		foreach ($reporter as $key => $field)
+		{
+			if (is_array($field))
+			{
+				$reporter[$key] = Arr::toString($field);
+			}
+		}
+
+		foreach ($problem as $key => $field)
+		{
+			if (is_array($field))
+			{
+				$problem[$key] = Arr::toString($field);
+			}
+		}
+
 		$reporter = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $reporter);
 
 		$reporter['name']  = trim($reporter['name']);
@@ -1050,7 +1067,7 @@ class Tickets extends SiteController
 		{
 			if (!$incoming['target_date'])
 			{
-				$row->set('target_date', '0000-00-00 00:00:00');
+				$row->set('target_date', null);
 			}
 			else
 			{
@@ -1698,7 +1715,7 @@ class Tickets extends SiteController
 		{
 			if (!$incoming['target_date'])
 			{
-				$incoming['target_date'] = '0000-00-00 00:00:00';
+				$incoming['target_date'] = null;
 			}
 			else
 			{
@@ -2448,10 +2465,30 @@ class Tickets extends SiteController
 			}
 		}
 
+		$mediaConfig = Component::params('com_media');
+
+		$sizeLimit = $this->config->get('maxAllowed');
+		if (!$sizeLimit)
+		{
+			// Size limit is in MB, so we need to turn it into just B
+			$sizeLimit = $mediaConfig->get('upload_maxsize');
+			$sizeLimit = $sizeLimit * 1024 * 1024;
+		}
+
+		$exts = $this->config->get('file_ext');
+		$exts = $exts ?: $mediaConfig->get('upload_extensions');
+		$allowed = array_values(array_filter(explode(',', $exts)));
+
 		foreach ($file['name'] as $i => $name)
 		{
 			if (!trim($name))
 			{
+				continue;
+			}
+
+			if ($file['size'][$i] > $sizeLimit)
+			{
+				$this->setError(Lang::txt('File is too large. Max file upload size is %s', Number::formatBytes($sizeLimit)));
 				continue;
 			}
 
@@ -2460,10 +2497,11 @@ class Tickets extends SiteController
 			$name = str_replace(' ', '_', $name);
 			$ext = strtolower(Filesystem::extension($name));
 
-			//make sure that file is acceptable type
-			if (!in_array($ext, explode(',', $this->config->get('file_ext'))))
+			// Make sure that file is acceptable type
+			if (!in_array($ext, $allowed))
 			{
 				$this->setError(Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE'));
+				continue;
 				//return Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE');
 			}
 

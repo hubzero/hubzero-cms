@@ -46,9 +46,15 @@ HUBzero is a registered trademark of Purdue University.
 			<fieldset group="authorstats">
 				<field name="userids" type="text" menu="hide" label="PLG_CRON_PUBLICATIONS_USERIDS_LABEL" default="" description="PLG_CRON_PUBLICATIONS_USERIDS_DESC" />
 			</fieldset>
+			<fieldset group="ftplinkdates">
+				<field name="startdate" type="text" label="PLG_CRON_PUBLICATIONS_STARTDATE_LABEL" default="" description="PLG_CRON_PUBLICATIONS_STARTDATE_DESC" />
+			</fieldset>
 		</fields>
 	</config>
 	<params group="authorstats">
 		<param name="userids" type="text" menu="hide" label="PLG_CRON_PUBLICATIONS_USERIDS_LABEL" default="" description="PLG_CRON_PUBLICATIONS_USERIDS_DESC" />
+	</params>
+	<params group="ftplinkdates">
+		<param name="startdate" type="text" label="PLG_CRON_PUBLICATIONS_STARTDATE_LABEL" default="" description="PLG_CRON_PUBLICATIONS_STARTDATE_DESC" />
 	</params>
 </extension>

@@ -155,15 +155,13 @@ class Blocks extends Obj
 			}
 			else
 			{
-				$false = false;
-				return $false;
+				return false;
 			}
 		}
 
 		if (!class_exists($elementClass))
 		{
-			$false = false;
-			return $false;
+			return false;
 		}
 
 		$this->_blocks[$signature] = new $elementClass($this);

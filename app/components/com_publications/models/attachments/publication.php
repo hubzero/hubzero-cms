@@ -128,11 +128,20 @@ class Publication extends Base
 					continue;
 				}
 
-				$itemUrl = Route::url('index.php?option=com_publications&id=' . $attach->object_id);
+				$db = \App::get('db');
+				$version = new \Components\Publications\Tables\Version($db);
+				$version->load($attach->object_id);
 
-				$publication = new \Components\Publications\Models\Publication($attach->object_id, 'default');
+				if (!$version)
+				{
+					continue;
+				}
+				//$publication = new \Components\Publications\Models\Publication($attach->object_id, 'default');
+				$publication = new \Components\Publications\Models\Publication($version->publication_id, $version->version_number);
 
-				$title = $publication->title ? $publication->title : $configs->title;
+				$itemUrl = Route::url($publication->link() . '&v=' . $version->version_number);
+
+				$title = $publication->title ? $publication->title . ' (v' . $version->version_label . ')' : $configs->title;
 				$title = $title ? $title : $attach->path;
 
 				$description = '';
@@ -149,7 +158,7 @@ class Publication extends Base
 
 				$html .= '<li>';
 				$html .= $authorized === 'administrator' ? '[' . $this->_name . '] ' : '';
-				$html .= '<p><a href="' . $itemUrl . '" title="' . $pop . '" target="_blank" class="link-type">' . $title . '</a></p>';
+				$html .= '<p><a href="' . $itemUrl . '" title="' . $pop . '" rel="noopener" target="_blank" class="link-type">' . $title . '</a></p>';
 				$html .= '<p>' . $description . '</p>';
 				$html .= '</li>';
 			}
@@ -416,7 +425,7 @@ class Publication extends Base
 			$ordering = $i + 1;
 
 			$row = new \Components\Publications\Tables\Version($this->_parent->_db);
-			if (!$row->loadVersion($identifier, 'current'))
+			if (!$row->load($identifier))
 			{
 				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
 				return false;
@@ -467,7 +476,18 @@ class Publication extends Base
 			}
 		}
 
+		$db = \App::get('db');
+		$version = new \Components\Publications\Tables\Version($db);
+		$version->load($id);
+
 		$path = rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_publications&id=' . $id), '/');
+
+		if ($version)
+		{
+			$title = $version->title . ' (v' . $version->version_label . ')';
+
+			$path = rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_publications&id=' . $version->publication_id . '&v=' . $version->version_number), '/');
+		}
 
 		$objPA = new \Components\Publications\Tables\Attachment($this->_parent->_db);
 

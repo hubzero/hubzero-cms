@@ -104,32 +104,37 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 										<jdoc:include type="modules" name="search" />
 									</li>
 								<?php if (!User::isGuest()) { ?>
-									<li class="loggedin">
-										<a href="<?php echo Route::url(User::link()); ?>">
+									<li class="user-account loggedin<?php if (User::authorise('core.admin')) { echo ' admin'; } ?>">
+										<a class="user-avatar" href="<?php echo Route::url(User::link()); ?>">
 											<img src="<?php echo User::picture(); ?>" alt="<?php echo User::get('name'); ?>" width="30" height="30" />
-											<span class="account-details">
-												<?php echo stripslashes(User::get('name')); ?> 
-												<span class="account-email"><?php echo User::get('email'); ?></span>
-											</span>
 										</a>
-										<ul>
-											<li id="account-dashboard">
-												<a href="<?php echo Route::url(User::link() . '&active=dashboard'); ?>"><span><?php echo Lang::txt('TPL_KIMERA_ACCOUNT_DASHBOARD'); ?></span></a>
-											</li>
-											<li id="account-profile">
-												<a href="<?php echo Route::url(User::link() . '&active=profile'); ?>"><span><?php echo Lang::txt('TPL_KIMERA_ACCOUNT_PROFILE'); ?></span></a>
-											</li>
-											<li id="account-logout">
-												<a href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span><?php echo Lang::txt('TPL_KIMERA_LOGOUT'); ?></span></a>
-											</li>
-										</ul>
+										<?php if (User::authorise('core.admin')) { ?>
+											<span><a class="icon-star user-account-badge tooltips" href="<?php echo Request::root() . 'administrator'; ?>" title="<?php echo Lang::txt('TPL_KIMERA_ACCOUNT_VIEWING_AS_ADMIN'); ?>"><?php echo Lang::txt('TPL_KIMERA_ACCOUNT_ADMIN'); ?></a></span>
+										<?php } ?>
+										<div class="user-account-options">
+											<div class="user-account-details">
+												<span class="user-account-name"><?php echo stripslashes(User::get('name')); ?></span>
+												<span class="user-account-email"><?php echo User::get('email'); ?></span>
+											</div>
+											<ul>
+												<li>
+													<a class="icon-th-large" href="<?php echo Route::url(User::link() . '&active=dashboard'); ?>"><span><?php echo Lang::txt('TPL_KIMERA_ACCOUNT_DASHBOARD'); ?></span></a>
+												</li>
+												<li>
+													<a class="icon-user" href="<?php echo Route::url(User::link() . '&active=profile'); ?>"><span><?php echo Lang::txt('TPL_KIMERA_ACCOUNT_PROFILE'); ?></span></a>
+												</li>
+												<li>
+													<a class="icon-logout" href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span><?php echo Lang::txt('TPL_KIMERA_LOGOUT'); ?></span></a>
+												</li>
+											</ul>
+										</div>
 									</li>
 								<?php } else { ?>
-									<li>
+									<li class="user-account loggedout">
 										<a class="icon-login" href="<?php echo Route::url('index.php?option=com_users&view=login'); ?>" title="<?php echo Lang::txt('TPL_KIMERA_LOGIN'); ?>"><?php echo Lang::txt('TPL_KIMERA_LOGIN'); ?></a>
 									</li>
 									<?php if ($this->params->get('registerLink') && Component::params('com_members')->get('allowUserRegistration')) : ?>
-										<li>
+										<li class="user-account-create">
 											<a class="icon-register" href="<?php echo Route::url('index.php?option=com_register'); ?>" title="<?php echo Lang::txt('TPL_KIMERA_SIGN_UP'); ?>"><?php echo Lang::txt('TPL_KIMERA_REGISTER'); ?></a>
 										</li>
 									<?php endif; ?>

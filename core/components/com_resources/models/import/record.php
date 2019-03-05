@@ -35,6 +35,7 @@ namespace Components\Resources\Models\Import;
 use Components\Resources\Models\Entry;
 use Components\Resources\Models\Type;
 use Components\Resources\Models\Author;
+use Components\Resources\Models\Association;
 use Components\Resources\Helpers\Tags;
 use Hubzero\Base\Obj;
 use Exception;
@@ -281,7 +282,7 @@ class Record extends Obj
 
 				// add a notice with link to resource matched
 				$resourceLink = rtrim(str_replace('administrator', '', \Request::base()), DS) . DS . 'resources' . DS . $resource->id;
-				$link = '<a target="_blank" href="' . $resourceLink . '">' . $resourceLink . '</a>';
+				$link = '<a rel="noopener" target="_blank" href="' . $resourceLink . '">' . $resourceLink . '</a>';
 				array_push($this->record->notices, Lang::txt('COM_RESOURCES_IMPORT_RECORD_MODEL_MATCHEDBYTITLE', $link));
 			}
 		}
@@ -544,7 +545,27 @@ class Record extends Obj
 		foreach ($contributors as $contributor)
 		{
 			// create resource contributor object
-			$resourceContributor = Author::blank();
+			$resourceContributor = null;
+
+			if ($this->record->resource->id)
+			{
+				if (isset($contributor->authorid))
+				{
+					// Do we already have a relationship by authorid?
+					$resourceContributor = Author::oneByRelationship($this->record->resource->id, $contributor->authorid);
+				}
+
+				if (!$resourceContributor && isset($contributor->name))
+				{
+					// Check for a relationship by author's name
+					$resourceContributor = Author::oneByName($this->record->resource->id, $contributor->name);
+				}
+			}
+
+			if (!$resourceContributor)
+			{
+				$resourceContributor = Author::blank();
+			}
 
 			// check to see if we have an author id
 			$authorid = (isset($contributor->authorid)) ? $contributor->authorid : null;

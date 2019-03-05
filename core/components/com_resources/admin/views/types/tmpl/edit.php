@@ -44,31 +44,16 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 
 Html::behavior('framework', true);
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
 
+$this->js();
 $this->css();
 
 $params = new \Hubzero\Config\Registry($this->row->get('params'));
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
 
-	<?php echo $this->editor()->save('field-description'); ?>
-
-	// form field validation
-	if ($('#field-type').val() == '') {
-		alert('<?php echo Lang::txt('COM_RESOURCES_ERROR_MISSING_TITLE'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span6">
 			<fieldset class="adminform">
@@ -76,7 +61,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-type"><?php echo Lang::txt('COM_RESOURCES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="type[type]" id="field-type" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->type)); ?>" />
+					<input type="text" name="type[type]" id="field-type" maxlength="100" class="required" value="<?php echo $this->escape(stripslashes($this->row->type)); ?>" />
 				</div>
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS_HINT'); ?>">
 					<label for="field-alias"><?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS'); ?>:</label><br />
@@ -189,7 +174,7 @@ function submitbutton(pressbutton)
 	<fieldset class="adminform">
 		<legend><span><?php echo Lang::txt('COM_RESOURCES_TYPES_CUSTOM_FIELDS'); ?></span></legend>
 
-		<table class="admintable" id="fields">
+		<table class="admintable" id="fields" data-href="<?php echo Route::url('index.php?option=com_resources&controller=types&no_html=1&task=element&ctrl=fields'); ?>">
 			<thead>
 				<tr>
 					<th scope="col"><?php echo Lang::txt('COM_RESOURCES_TYPES_REORDER'); ?></th>
@@ -283,157 +268,6 @@ function submitbutton(pressbutton)
 			?>
 			</tbody>
 		</table>
-
-		<script type="text/javascript">
-			if (!jq) {
-				var jq = $;
-			}
-
-			var Fields = {
-				isIE8: function() {
-					var rv = -1,
-						ua = navigator.userAgent,
-						re = new RegExp("Trident\/([0-9]{1,}[\.0-9]{0,})");
-					if (re.exec(ua) != null) {
-						rv = parseFloat(RegExp.$1);
-					}
-					return (rv == 4);
-				}
-			}
-
-			jQuery(document).ready(function(jq){
-				var $ = jq,
-					fields = $("#fields");
-
-				if (!fields.length) {
-					return;
-				}
-
-				$('#add-custom-field').on('click', function (e){
-					e.preventDefault();
-
-					if ($.uniform) {
-						$.uniform.restore('select');
-					}
-
-					var id = 'fields';
-					//Fields.addRow('fields');
-					var tbody     = document.getElementById(id).tBodies[0],
-						counter   = tbody.rows.length,
-						newNode   = tbody.rows[0].cloneNode(true),
-						replaceme = null;
-
-					var newField = newNode.childNodes;
-					for (var i=0;i<newField.length;i++)
-					{
-						var inputs = newField[i].childNodes;
-						for (var k=0;k<inputs.length;k++)
-						{
-							var theName = inputs[k].name;
-							if (theName) {
-								tokens = theName.split('[');
-								n = tokens[2];
-								inputs[k].name = id + '[' + counter + ']['+ n;
-								inputs[k].id = id + '-' + counter + '-' + n.replace(']', '');
-
-								if (Fields.isIE8() && inputs[k].type == 'select-one') {
-									inputs[k].id = id + '-' + counter + '-' + n.replace(']', '') + '-tmp';
-									replaceme = id + '-' + counter + '-' + n.replace(']', '') + '-tmp';
-								}
-							}
-							var n = id + '[' + counter + '][type]';
-							var z = id + '[' + counter + '][required]';
-							if (inputs[k].value && inputs[k].name != z) {
-								inputs[k].value = '';
-								inputs[k].selectedIndex = 0;
-								inputs[k].selected = false;
-							}
-							if (inputs[k].checked) {
-								inputs[k].checked = false;
-							}
-						}
-						if (newField[i].id) {
-							newField[i].id = 'fields-' + counter + '-options';
-						}
-					}
-
-					tbody.appendChild(newNode);
-
-					// Make a clone of the clone. Why? Because IE 8 is dumb.
-					// IE still retains a reference to the original object for change events
-					// So, when calling onChange, the event gets fired for the clone AND the
-					// original. Cloning the clone seems to fix this.
-					if (replaceme) {
-						var replace = $(replaceme);
-						var select  = $.clone(replace).appendAfter(replace);
-						$.remove(replace);
-					}
-
-					if ($.uniform) {
-						$('select').uniform();
-					}
-
-					return false;
-				});
-
-				fields
-					.on('change', 'select', function (e){
-						var i = $(this).attr('name').replace(/^fields\[(\d+)\]\[type\]/g, "$1");
-						$.get('/administrator/index.php?option=com_resources&controller=types&no_html=1&task=element&ctrl=fields&type=' + this.value + '&name=' + i, {}, function (response) {
-							$('#fields-' + i + '-options').html(response);
-							//Fields.initOptions();
-						});
-					})
-					.on('click', '.add-custom-option', function (e){
-						e.preventDefault();
-
-						var id = $(this).attr('data-rel');
-
-						if (!id) {
-							return;
-						}
-
-						var tbody = document.getElementById(id).tBodies[0],
-							counter = tbody.rows.length,
-							newNode = tbody.rows[0].cloneNode(true),
-							newField = newNode.childNodes;
-
-						for (var i=0; i<newField.length; i++)
-						{
-							var inputs = newField[i].childNodes;
-							for (var k=0;k<inputs.length;k++)
-							{
-								var theName = inputs[k].name;
-								if (theName) {
-									tokens = theName.split('[');
-									n = tokens[2];
-									inputs[k].name = 'fields['+id+'][' +n+ '[' + counter + '][label]';
-								}
-								if (inputs[k].value) {
-									inputs[k].value = '';
-								}
-							}
-						}
-
-						tbody.appendChild(newNode);
-
-						return false;
-					});
-
-				$("#fields tbody").sortable({
-					handle: '.handle',
-					helper: function(e, tr) {
-						var originals = tr.children();
-						var helper    = tr.clone();
-						helper.children().each(function(index) {
-							// Set helper cell sizes to match the original sizes
-							$(this).width(originals.eq(index).width())
-						});
-						return helper;
-					}
-				});  //.disableSelection();
-			});
-		</script>
 	</fieldset>
 
 	<?php echo Html::input('token'); ?>

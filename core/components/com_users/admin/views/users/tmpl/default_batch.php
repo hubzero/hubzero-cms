@@ -38,10 +38,10 @@ $options = array(
 		</div>
 		<div class="col span6">
 			<div class="input-wrap">
-				<button type="submit" onclick="Joomla.submitbutton('user.batch');">
+				<button type="submit" id="btn-batch-submit" onclick="Joomla.submitbutton('user.batch');">
 					<?php echo Lang::txt('JGLOBAL_BATCH_PROCESS'); ?>
 				</button>
-				<button type="button" onclick="$('#batch-group-id').val('');">
+				<button type="button" id="btn-batch-clear" onclick="$('#batch-group-id').val('');">
 					<?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?>
 				</button>
 			</div>

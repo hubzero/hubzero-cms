@@ -32,10 +32,21 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+$this->baseURL = rtrim($this->baseURL, '/');
+
+$link = $this->baseURL . Route::urlForClient('site', 'index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->xprofile->get('activation') . '&email=' . urlencode($this->xprofile->get('email')));
+
+//$link = $this->baseURL . $link;
+$link = str_replace('/administrator', '', $link);
 ?>
-Thank you for creating an account on <?php echo $this->sitename; ?>! Your username is: <?php echo $this->xregistration->get('login'); ?>
 
-You must follow the activation link to confirm your email address and activate your account. After navigating to the link, you will be asked to login. Use the credentials you registered with this account and you're done!
-Activation link: <?php echo $this->baseURL . Route::urlForClient('site', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=confirm&confirm=' . -$this->xprofile->get('activation') . '&email=' . urlencode($this->xprofile->get('email'))); ?>
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_CREATED'); ?>: <?php echo $this->xprofile->get('registerDate'); ?> (UTC)
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_NAME'); ?>: <?php echo $this->xprofile->get('name'); ?>
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_USERNAME'); ?>: <?php echo $this->xprofile->get('username'); ?>
 
-Do not reply to this email.  Replying to this email will not confirm or activate your account.
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_CONFIRM_MESSAGE', $this->sitename); ?>
+
+<?php echo $link; ?>
+
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_CONFIRM_DO_NOT_REPLY');

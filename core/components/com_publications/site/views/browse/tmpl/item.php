@@ -85,16 +85,18 @@ if (!$this->line->hasImage())
 			$ranking = round($this->line->get('master_ranking'), 1);
 
 			$r = (10 * $ranking);
-			if (intval($r) < 10)
-			{
-				$r = '0' . $r;
-			}
+
+			$this->css('
+				#rank-' . $this->line->get('id') . ' {
+					width: ' . $r . '%;
+				}
+			');
 			?>
 			<div class="metadata">
 				<dl class="rankinfo">
 					<dt class="ranking">
 						<span class="rank">
-							<span class="rank-<?php echo $r; ?>" style="width: <?php echo $r; ?>%;"><?php echo Lang::txt('COM_PUBLICATIONS_THIS_HAS'); ?></span>
+							<span class="rank-<?php echo $r; ?>" id="rank-<?php echo $this->line->get('id'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_THIS_HAS'); ?></span>
 						</span><?php echo number_format($ranking, 1) . ' ' . Lang::txt('COM_PUBLICATIONS_RANKING'); ?>
 					</dt>
 					<dd>

@@ -78,7 +78,7 @@ defined('_HZEXEC_') or die();
 
 		if ($this->config->get('show_sizes', 0) == 2)
 		{
-			$tll[$tag->get('tag')] = '<li' . $class . '><a href="javascript:void(0);" onclick="addtag(\'' . $this->escape($tag->get('tag')) . '\');">' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' <span>' . $tag->get('count') . '</span></a></li>';
+			$tll[$tag->get('tag')] = '<li' . $class . '><a href="' . Route::url($this->base . '&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . $append) . '" data-tag="' . $this->escape($tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' <span>' . $tag->get('count') . '</span></a></li>';
 		}
 		else if (isset($this->filters))
 		{
@@ -107,7 +107,7 @@ defined('_HZEXEC_') or die();
 			{
 				$size = $min_font_size + ($tag->get('count') - $min_qty) * $step;
 
-				$tll[$tag->get('tag')] .= '<span style="font-size: ' . round($size, 1) . 'em;">';
+				$tll[$tag->get('tag')] .= '<span data-size="' . round($size, 1) . 'em">';
 			}
 			$tll[$tag->get('tag')] .= '<a class="tag' . ($tag->get('admin') ? ' admin' : '') . '" href="' . Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag')));
 			if ($this->config->get('show_tag_count', 0))

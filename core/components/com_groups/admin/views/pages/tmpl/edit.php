@@ -50,7 +50,7 @@ Toolbar::spacer();
 Toolbar::help('page');
 
 // include modal for raw version links
-Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>true));
+Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen' => true));
 ?>
 
 <form action="<?php echo $base; ?>" method="post" name="adminForm" id="item-form">
@@ -145,9 +145,15 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>
 						$access = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'overview');
 						switch ($access)
 						{
-							case 'anyone':     $name = 'Any HUB Visitor';      break;
-							case 'registered': $name = 'Registered HUB Users'; break;
-							case 'members':    $name = 'Group Members Only';   break;
+							case 'anyone':
+								$name = 'Any HUB Visitor';
+								break;
+							case 'registered':
+								$name = 'Registered HUB Users';
+								break;
+							case 'members':
+								$name = 'Group Members Only';
+								break;
 						}
 					?>
 					<select name="page[privacy]" id="page[privacy]">
@@ -175,24 +181,24 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_GROUPS_PAGES_OWNER'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_GROUPS_PAGES_OWNER'); ?></th>
 						<td><?php echo $this->group->get('description'); ?></td>
 					</tr>
 					<?php if ($this->page->get('id')) : ?>
 						<tr>
-							<th><?php echo Lang::txt('COM_GROUPS_PAGES_ID'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_GROUPS_PAGES_ID'); ?></th>
 							<td><?php echo $this->page->get('id'); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_GROUPS_PAGES_CURRENT_VERSION'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_GROUPS_PAGES_CURRENT_VERSION'); ?></th>
 							<td><?php echo $this->version->get('version'); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_GROUPS_PAGES_CREATED'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_GROUPS_PAGES_CREATED'); ?></th>
 							<td><?php echo Date::of($this->firstversion->get('created'))->toLocal('F j, Y @ g:ia'); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_GROUPS_PAGES_CREATED_BY'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_GROUPS_PAGES_CREATED_BY'); ?></th>
 							<td>
 								<?php
 									$profile = User::getInstance($this->firstversion->get('created_by'));
@@ -201,11 +207,11 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>
 							</td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_GROUPS_PAGES_LAST_MODIFIED'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_GROUPS_PAGES_LAST_MODIFIED'); ?></th>
 							<td><?php echo Date::of($this->version->get('created'))->toLocal('F j, Y @ g:ia'); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_GROUPS_PAGES_LAST_MODIFIED_BY'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_GROUPS_PAGES_LAST_MODIFIED_BY'); ?></th>
 							<td>
 								<?php
 									$profile = User::getInstance($this->version->get('created_by'));

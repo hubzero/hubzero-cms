@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 $dataurl = Route::url('index.php?option='.$option.'&task='.$task.'&type='.$type.'&no_html=1&data=markers');
-$dataurl = str_replace('&amp;','&',$dataurl);
+$dataurl = str_replace('&amp;', '&', $dataurl);
 
 $html = '<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -46,7 +46,7 @@ $html = '<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR
 	</style>
 
 	<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$key.'"></script>
-	<script type="text/javascript" src="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/js/Clusterer2.js"></script>
+	<script type="text/javascript" src="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/js/Clusterer2.js"></script>
 	<script type="text/javascript">
 	function load()
 	{
@@ -62,7 +62,7 @@ $html = '<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR
 	{
 		//var urlstr="/components/'.$option.'/maps/read_location.php";
 		var urlstr="'.$dataurl.'";
-		var icon="/components/'.$option.'/maps/images/marker_red.png";
+		var icon="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/img/marker_red.png";
     	var request = GXmlHttp.create();
     	request.open("GET", urlstr , true); // request XML from PHP with AJAX call
     	request.onreadystatechange = function () {
@@ -76,7 +76,7 @@ $html = '<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR
 						// var user = locations[i].getAttribute("user");
 						var type = locations[i].getAttribute("type");
 						var icon = new GIcon();
-						icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/markerU.png";
+						icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/img/markerU.png";
 
 						icon.iconSize = new GSize(18, 30);
 						icon.iconAnchor = new GPoint(6, 20);
@@ -104,10 +104,15 @@ $html = '<!DOCTYPE html "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR
 	}
 	//]]>
 	</script>
+	<style>
+	#div_map {
+		width:1200px;
+		height:600px;
+	}
+	</style>
  </head>
 
  <body onload="load()" onunload="GUnload()">
-	<div id="div_map" style="width:1200px; height:600px"></div>
+	<div id="div_map"></div>
  </body>
 </html>';
-

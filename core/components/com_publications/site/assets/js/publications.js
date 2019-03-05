@@ -6,8 +6,6 @@
  */
 
 jQuery(document).ready(function($){
-	$('.entries-filters label').hide();
-
 	$('.entries-filters select').on('change', function(e){
 		$(this).closest('form').submit();
 	});

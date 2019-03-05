@@ -132,11 +132,11 @@ $this->css('create.css')
 				}
 				?>
 				</select>
-				<div id="license-preview" style="display:none;"><?php echo $preview; ?></div>
+				<div id="license-preview" class="hide"><?php echo $preview; ?></div>
 				<?php echo implode("\n", $l); ?>
 			</label>
 			<?php if ($this->config->get('cc_license_custom')) { ?>
-			<textarea name="license-text" id="license-text" cols="35" rows="10" style="display:none;"><?php echo $c; ?></textarea>
+			<textarea name="license-text" id="license-text" cols="35" rows="10" class="hide"><?php echo $c; ?></textarea>
 			<?php } ?>
 
 			<input type="hidden" name="published" value="1" />
@@ -235,11 +235,11 @@ $this->css('create.css')
 				}
 			?>
 				</select>
-				<div id="license-preview" style="display:none;"><?php echo $preview; ?></div>
+				<div id="license-preview" class="hide"><?php echo $preview; ?></div>
 				<?php echo implode("\n", $l); ?>
 			</label>
 		<?php if ($this->config->get('cc_license_custom')) { ?>
-			<textarea name="license-text" id="license-text" cols="35" rows="10" style="display:none;"><?php echo $c; ?></textarea>
+			<textarea name="license-text" id="license-text" cols="35" rows="10" class="hide"><?php echo $c; ?></textarea>
 		<?php } ?>
 	<?php } ?>
 

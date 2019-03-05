@@ -140,7 +140,7 @@ $schema = $metaElements->getSchema();
 				<?php echo $listLabel ? $listLabel : Lang::txt('COM_PUBLICATIONS_CONTENT_LIST'); ?>
 				<?php if ($showArchive && $authorized) : ?>
 					<span class="browsebundle">
-						(<a class="showBundle" href="<?php echo Route::url($archiveBase . '&render=showcontents&tmpl=component'); ?>" target="_blank">
+						(<a class="showBundle" href="<?php echo Route::url($archiveBase . '&render=showcontents&tmpl=component'); ?>">
 							<?php echo Lang::txt('COM_PUBLICATIONS_BROWSE_ARCHIVE_PACKAGE'); ?>
 						</a>)
 					</span>

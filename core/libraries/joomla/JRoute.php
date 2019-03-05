@@ -32,6 +32,8 @@ class JRoute
 	 */
 	public static function _($url, $xhtml = true, $ssl = null)
 	{
+		return \Route::url($url, $xhtml, $ssl);
+
 		// Get the router.
 		$app = JFactory::getApplication();
 		$router = $app->getRouter();

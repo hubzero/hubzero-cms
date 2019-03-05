@@ -41,6 +41,10 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 Html::behavior('tooltip');
 
 $this->css('tag_graph.css');
+$this->js('d3/d3.min.js')
+	->js('d3/d3.layout.min.js')
+	->js('d3/d3.geom.min.js')
+	->js('tag_graph.js');
 ?>
 <form id="tag-sel" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="get">
 	<fieldset class="adminform">
@@ -75,7 +79,7 @@ $this->css('tag_graph.css');
 </fieldset>
 
 <div id="metadata-cont">
-	<div class="col width-100">
+	<div class="col span12">
 		<form id="metadata" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post">
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_TAGS_RELATIONSHIP_METADATA'); ?></span></legend>
@@ -123,14 +127,4 @@ $this->css('tag_graph.css');
 	<input type="hidden" value="<?php echo $this->controller; ?>" name="controller" />
 	<input type="hidden" value="" name="task" />
 	<input type="hidden" value="0" name="boxchecked" />
-	<input type="hidden" name="plgAutocompleterCss" id="plgAutocompleterCss" value="<?php echo $base; ?>/core/plugins/hubzero/autocompleter/autocompleter.css" />
 </form>
-
-<script src="<?php echo $base; ?>/core/components/<?php echo $this->option; ?>/admin/assets/js/d3/d3.min.js"></script>
-<script src="<?php echo $base; ?>/core/components/<?php echo $this->option; ?>/admin/assets/js/d3/d3.layout.min.js"></script>
-<script src="<?php echo $base; ?>/core/components/<?php echo $this->option; ?>/admin/assets/js/d3/d3.geom.min.js"></script>
-<script src="<?php echo $base; ?>/core/components/<?php echo $this->option; ?>/admin/assets/js/tag_graph.js"></script>
-<script type="text/javascript">
-var plgAutocompleterCss = '<?php echo $base; ?>/core/plugins/hubzero/autocompleter/autocompleter.css';
-</script>
-<script src="<?php echo $base; ?>/core/plugins/hubzero/autocompleter/autocompleter.js"></script>

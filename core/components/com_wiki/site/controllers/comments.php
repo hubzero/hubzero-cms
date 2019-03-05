@@ -134,6 +134,13 @@ class Comments extends SiteController
 			App::abort(404, Lang::txt('COM_WIKI_WARNING_NOT_FOUND'));
 		}
 
+		if (!$this->page->config('comments', 1))
+		{
+			App::redirect(
+				Route::url($this->page->link())
+			);
+		}
+
 		if (is_null($this->sub))
 		{
 			$this->sub = ($this->page->get('scope') != 'site');

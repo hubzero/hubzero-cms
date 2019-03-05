@@ -48,10 +48,12 @@ Toolbar::spacer();
 Toolbar::help('wish');
 
 Html::behavior('tooltip');
-?>
-<script type="text/javascript">
-var ownerassignees = new Array;
-<?php
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
+
+$data = array();
 $i = 0;
 if ($this->ownerassignees)
 {
@@ -59,31 +61,18 @@ if ($this->ownerassignees)
 	{
 		foreach ($items as $v)
 		{
-			echo 'ownerassignees[' . $i++ . "] = new Array( '$k','" . addslashes($v->id) . "','" . addslashes($v->name) . "' );\n\t\t";
+			$data[] = array($k, $v->id, $v->name);
 		}
 	}
 }
 ?>
-
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
+<script type="application/json" id="owner-data">
+	{
+		"data": <?php echo json_encode($data); ?>
 	}
-
-	// do field validation
-	if (document.getElementById('field-subject').value == ''){
-		alert('<?php echo Lang::txt('COM_WISHLIST_ERROR_MISSING_TEXT'); ?>');
-	} else {
-		<?php echo $this->editor()->save('text'); ?>
-
-		submitform(pressbutton);
-	}
-}
 </script>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -91,7 +80,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-wishlist"><?php echo Lang::txt('COM_WISHLIST_CATEGORY'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<select name="fields[wishlist]" id="field-wishlist" onchange="changeDynaList('fieldassigned', ownerassignees, document.getElementById('field-wishlist').options[document.getElementById('field-wishlist').selectedIndex].value, 0, 0);">
+					<select name="fields[wishlist]" id="field-wishlist" class="required">
 						<option value="0"><?php echo Lang::txt('COM_WISHLIST_NONE'); ?></option>
 						<?php if ($this->lists) { ?>
 							<?php foreach ($this->lists as $list) { ?>
@@ -131,12 +120,12 @@ function submitbutton(pressbutton)
 					<legend><?php echo Lang::txt('COM_WISHLIST_DUE'); ?>:</legend>
 
 					<div class="input-wrap">
-						<input class="option" type="radio" name="fields[due]" id="field-due-never" value="0" <?php echo ($this->row->get('due') == '' || $this->row->get('due') == '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> />
+						<input class="option" type="radio" name="fields[due]" id="field-due-never" value="0" <?php echo (!$this->row->get('due') || $this->row->get('due') == '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> />
 						<label for="field-due-never"><?php echo Lang::txt('COM_WISHLIST_DUE_NEVER'); ?></label>
 						<br />
 						<strong><?php echo Lang::txt('COM_WISHLIST_OR'); ?></strong>
 						<br />
-						<input class="option" type="radio" name="fields[due]" id="field-due-on" value="0" <?php echo ($this->row->get('due') != '' && $this->row->get('due') != '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> />
+						<input class="option" type="radio" name="fields[due]" id="field-due-on" value="0" <?php echo ($this->row->get('due') && $this->row->get('due') != '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> />
 						<label for="field-due-on"><?php echo Lang::txt('COM_WISHLIST_DUE_ON'); ?></label>
 
 						<input class="option" type="text" name="fields[due]" id="field-due" size="10" maxlength="19" value="<?php echo $this->escape($this->row->get('due')); ?>" />
@@ -173,21 +162,21 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th class="key"><?php echo Lang::txt('COM_WISHLIST_FIELD_ID'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WISHLIST_FIELD_ID'); ?>:</th>
 						<td>
 							<?php echo $this->row->get('id'); ?>
 							<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->row->get('id'); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th class="key"><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATED'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATED'); ?>:</th>
 						<td>
-							<time datetime="<?php echo $this->row->get('proposed'); ?>"><?php echo $this->row->get('proposed'); ?></time>
+							<time datetime="<?php echo $this->row->get('proposed'); ?>"><?php echo Date::of($this->row->get('proposed'))->toLocal(); ?></time>
 							<input type="hidden" name="fields[proposed]" id="field-proposed" value="<?php echo $this->row->get('proposed'); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th class="key"><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATOR'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATOR'); ?>:</th>
 						<td>
 							<?php
 							$editor = User::getInstance($this->row->get('proposed_by'));
@@ -197,7 +186,7 @@ function submitbutton(pressbutton)
 						</td>
 					</tr>
 					<tr>
-						<th class="key"><?php echo Lang::txt('COM_WISHLIST_FIELD_RANKING'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WISHLIST_FIELD_RANKING'); ?>:</th>
 						<td>
 							<?php echo $this->row->get('ranking'); ?>
 							<input type="hidden" name="fields[ranking]" id="field-ranking" value="<?php echo $this->row->get('ranking'); ?>" />
@@ -241,7 +230,7 @@ function submitbutton(pressbutton)
 
 	<?php /*
 		<?php if ($canDo->get('core.admin')): ?>
-			<div class="col width-100 fltlft">
+			<div class="col span12">
 				<fieldset class="panelform">
 					<legend><span><?php echo Lang::txt('COM_WISHLIST_FIELDSET_RULES'); ?></span></legend>
 					<?php echo $this->form->getLabel('rules'); ?>

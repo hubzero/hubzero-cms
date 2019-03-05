@@ -253,7 +253,7 @@ class Applications extends SiteController
 
 		// get request vars
 		$data = Request::getArray('application', array(), 'post');
-		$team = Request::getArray('team', array(), 'post');
+		$team = Request::getString('team', '', 'post');
 
 		// must be logged in
 		if (User::isGuest())

@@ -2,7 +2,7 @@
 
 use Hubzero\Content\Migration\Base;
 use \Components\Publications\Models\Publication;
-include Component::path('com_publications') . '/models/publication.php';
+include_once(Component::path('com_publications') . '/models/publication.php');
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -104,6 +104,8 @@ class Migration20180820101436ComPublications extends Base
 			$doi = str_replace('.', '_', $doi);
 			$doi = str_replace('/', '_', $doi);
 			$bundleName = $doi;
+			// Set link to the same name as bundle if it is using DOI
+			$bundleWithVersion = $doi;
 		}
 
 		$tarname = $bundleName . '.zip';
@@ -151,6 +153,8 @@ class Migration20180820101436ComPublications extends Base
 			$doi = str_replace('.', '_', $doi);
 			$doi = str_replace('/', '_', $doi);
 			$bundleName = $doi;
+			// Set link to the same name as bundle if it is using DOI
+			$bundleWithVersion = $doi;
 		}
 
 		$tarname = $bundleWithVersion . '.zip';

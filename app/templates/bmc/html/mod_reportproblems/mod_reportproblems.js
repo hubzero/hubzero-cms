@@ -27,7 +27,7 @@ HUB.Modules.ReportProblems = {
 
 	jQuery: jq,
 
-	settings: {
+	settings: { 
 		toggle:  '#tab',
 		pane:    '#help-pane',
 		form:    '#troublereport',
@@ -53,12 +53,17 @@ HUB.Modules.ReportProblems = {
 			settings.toggle = trigger;
 		}
 
-		if (!$(settings.pane)) {
+		if (!$(settings.pane).length) {
 			return;
-		} else {
-			$(settings.pane).hide();
-			$(settings.pane).css('height', 'auto');
 		}
+
+		$(settings.pane)
+			.hide()
+			.css('height', 'auto')
+			.on('click', 'button.btn-reset', function (e) {
+				e.preventDefault();
+				ticket.resetForm();
+			});
 
 		$('<a href="#" id="help-btn-close" alt="Close">Close</a>').on('click', function (e) {
 			e.preventDefault();
@@ -131,8 +136,8 @@ HUB.Modules.ReportProblems = {
 
 	/*sendReport: function() {
 		var ticket = this,
-            $ = this.jQuery,
-            settings = this.settings;
+			$ = this.jQuery,
+			settings = this.settings;
 
 		var h = $(settings.form).height();
 		$(settings.form).hide();
@@ -152,7 +157,7 @@ HUB.Modules.ReportProblems = {
 			$(settings.fields.problem).focus();
 			return false;
 		}
-
+		
 		if ($(settings.fields.name).val() == '' || whiteSpace.test($(settings.fields.name).val()) ) {
 			alert("The 'name' field is required. Please type something and try again.");
 			$(settings.fields.name).focus();
@@ -167,7 +172,10 @@ HUB.Modules.ReportProblems = {
 
 		if ($(settings.fields.upload).val()) {
 			var validExt = false,
-				file = $(settings.fields.upload).val();
+				upload = $(settings.fields.upload),
+				file = upload.val();
+
+			var _validFileExtensions = upload.attr('data-allowed').split(',');
 
 			for (var j = 0; j < _validFileExtensions.length; j++) {
 				var sCurExtension = _validFileExtensions[j];

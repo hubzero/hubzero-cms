@@ -48,7 +48,7 @@ Toolbar::cancel();
 				<div class="submenu-pad">
 					<ul id="submenu" class="member">
 						<li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=zones&task=edit&id=' . $this->row->id); ?>" id="profile"><?php echo Lang::txt('JDETAILS'); ?></a></li>
-						<li><a href="#" onclick="return false;" id="locations" class="active"><?php echo Lang::txt('COM_TOOLS_LOCATIONS'); ?></a></li>
+						<li><a href="#page-locations" id="locations" class="active"><?php echo Lang::txt('COM_TOOLS_LOCATIONS'); ?></a></li>
 					</ul>
 					<div class="clr"></div>
 				</div>

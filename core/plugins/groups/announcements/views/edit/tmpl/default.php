@@ -118,13 +118,17 @@ $this->js()
 			</label>
 
 			<label for="field-priority" id="priority-label">
-				<input class="option" type="checkbox" name="fields[priority]" id="field-priority" value="1"<?php if ($this->announcement->get('priority')) { echo ' checked="checked"'; } ?> />
-				<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_HIGH_PRIORITY'); ?> <a href="#" class="tooltips" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_HIGH_PRIORITY_TITLE'); ?>">?</a>
+				<input class="option" type="checkbox" name="fields[priority]" id="field-priority"
+					value="1"<?php if ($this->announcement->get('priority')) { echo ' checked="checked"'; } ?> />
+				<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_HIGH_PRIORITY'); ?>
+				<span class="tooltips" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_HIGH_PRIORITY_TITLE'); ?>">?</span>
 			</label>
 
 			<label for="field-sticky" id="sticky-label">
-				<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->announcement->get('sticky')) { echo ' checked="checked"'; } ?> />
-				<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_STICKY'); ?> <a href="#" class="tooltips" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_STICKY_TITLE'); ?>">?</a>
+				<input class="option" type="checkbox" name="fields[sticky]" id="field-sticky"
+					value="1"<?php if ($this->announcement->get('sticky')) { echo ' checked="checked"'; } ?> />
+				<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_STICKY'); ?>
+				<span class="tooltips" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_STICKY_TITLE'); ?>">?</span>
 			</label>
 		</fieldset>
 		<div class="clear"></div>

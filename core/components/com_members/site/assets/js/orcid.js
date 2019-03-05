@@ -38,7 +38,7 @@ HUB.Orcid = {
 			url: $('#base_uri').val() + '/index.php?option=com_members&controller=orcid&task=fetch&no_html=1&fname=' + firstName + '&lname=' + lastName + '&return=1',
 			type: 'GET',
 			success: function(data, status, jqXHR) {
-				$('#section-orcid-results').html(jQuery.parseJSON(data));
+				$('#section-orcid-results').html(JSON.parse(data));
 			}
 		});
 	},
@@ -66,7 +66,7 @@ HUB.Orcid = {
 			url: uri,
 			type: 'GET',
 			success: function(data, status, jqXHR) {
-				var response = jQuery.parseJSON(data);
+				var response = JSON.parse(data);
 
 				if (response.success) {
 					if (response.orcid) {

@@ -58,16 +58,16 @@ Toolbar::help('categories');
 		<thead>
 			<tr>
 				<th scope="col">
-					<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
+					<input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" />
 				</th>
 				<th scope="col" class="priority-2">
-					<?php echo $this->grid('sort', 'COM_JOBS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+					<?php echo Html::grid('sort', 'COM_JOBS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 				<th scope="col">
-					<?php echo $this->grid('sort', 'COM_JOBS_COL_ORDER', 'ordernum', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+					<?php echo Html::grid('sort', 'COM_JOBS_COL_ORDER', 'ordernum', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 				<th scope="col">
-					<?php echo $this->grid('sort', 'COM_JOBS_COL_TITLE', 'category', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+					<?php echo Html::grid('sort', 'COM_JOBS_COL_TITLE', 'category', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 			</tr>
 		</thead>
@@ -93,13 +93,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
 				</td>
 				<td class="priority-2">
 					<?php echo $row->id; ?>
 				</td>
 				<td class="order">
-					<input type="text" name="order[<?php echo $row->id; ?>]" size="5" value="<?php echo $row->ordernum; ?>" class="text_area" style="text-align: center" />
+					<input type="text" name="order[<?php echo $row->id; ?>]" size="5" value="<?php echo $row->ordernum; ?>" class="text_area aligh-center" />
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>

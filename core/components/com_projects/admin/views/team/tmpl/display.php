@@ -45,7 +45,7 @@ if ($group)
 $groupSynced = ($group && $this->project->get('sync_group'));
 
 Toolbar::title(Lang::txt('COM_PROJECTS') . ': ' . Lang::txt('COM_PROJECTS_TEAM'), 'projects');
-Toolbar::appendButton('Popup', 'new', 'COM_PROJECTS_TEAM_NEW', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&project=' . $this->filters['project'], 570, 170);
+Toolbar::appendButton('Popup', 'new', 'COM_PROJECTS_TEAM_NEW', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&project=' . $this->filters['project']), 570, 170);
 Toolbar::spacer();
 Toolbar::deleteList('COM_PROJECTS_TEAM_DELETE', 'delete');
 Toolbar::spacer();
@@ -75,7 +75,7 @@ $this->css();
 			</tr>
 			<tr>
 				<?php //if (!$groupSynced) { ?>
-					<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+					<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<?php //} ?>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_PROJECTS_TEAM_USERID', 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_TEAM_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -135,7 +135,7 @@ $this->css();
 						<?php if ($disabled) { ?>
 							<!-- <input type="hidden" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" /> -->
 						<?php } else { ?>
-							<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
+							<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
 						<?php } ?>
 					</td>
 				<?php //} ?>
@@ -186,7 +186,7 @@ $this->css();
 				</td>
 				<td>
 					<?php echo $row->groupdesc ? \Hubzero\Utility\Str::truncate($row->groupdesc, 30) : ''; ?>
-					<span class="block mini short prominent"><?php echo ($row->groupname ? $row->groupname : Lang::txt('COM_PROJECTS_NONE')); ?></span>
+					<span class="block mini short prominent"><?php echo ($row->groupname) ? $row->groupname : Lang::txt('COM_PROJECTS_NONE'); ?></span>
 				</td>
 				<?php /*if (!$groupSynced) { ?>
 					<td>

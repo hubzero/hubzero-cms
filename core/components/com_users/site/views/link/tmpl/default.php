@@ -42,7 +42,7 @@ $step = (int) Request::getInt('step', 1);
 
 <section class="section">
 	<div class="prompt-wrap">
-		<div class="prompt-container prompt1" style="display:<?php echo ($step === 1) ? 'block': 'none'; ?>">
+		<div class="prompt-container prompt1 <?php echo ($step === 1) ? 'block': 'none'; ?>">
 			<div class="prompt">
 				Have you ever logged into <?php echo $this->sitename; ?> before?
 			</div>
@@ -56,7 +56,7 @@ $step = (int) Request::getInt('step', 1);
 			</div>
 		</div>
 
-		<div class="prompt-container prompt2" style="display:<?php echo ($step === 2) ? 'block': 'none'; ?>">
+		<div class="prompt-container prompt2 <?php echo ($step === 2) ? 'block': 'none'; ?>">
 			<div class="prompt">
 				Great! Did you want to link your <?php echo $this->display_name; ?> account to that existing account or create a new account?
 			</div>
@@ -70,7 +70,7 @@ $step = (int) Request::getInt('step', 1);
 			</div>
 		</div>
 
-		<div class="prompt-container prompt3" style="display:<?php echo ($step === 3) ? 'block': 'none'; ?>">
+		<div class="prompt-container prompt3 <?php echo ($step === 3) ? 'block': 'none'; ?>">
 			<div class="prompt">
 				We can do that. Just login with that existing account now and we'll link them up!
 			</div>

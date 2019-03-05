@@ -63,7 +63,7 @@ $browser = new \Hubzero\Browser\Detector();
 
 		<jdoc:include type="head" />
 
-		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/placeholder.js?v=<?php echo filemtime(__DIR__ . '/js/placeholder.js'); ?>"></script>
+		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/login.js?v=<?php echo filemtime(__DIR__ . '/js/login.js'); ?>"></script>
 
 		<!--[if lt IE 9]>
 			<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js?v=<?php echo filemtime(__DIR__ . '/js/html5.js'); ?>"></script>
@@ -75,26 +75,6 @@ $browser = new \Hubzero\Browser\Detector();
 		<!--[if IE 8]>
 			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css?v=<?php echo filemtime(__DIR__ . '/css/browser/ie8.css'); ?>" />
 		<![endif]-->
-
-		<script type="text/javascript">
-			jQuery(document).ready(function($){
-				(function worker() {
-					$.ajax({
-						url: 'index.php',
-						complete: function() {
-							setTimeout(worker, 3540000);
-						}
-					});
-				})();
-
-				if (document.getElementById('form-login')) {
-					document.getElementById('form-login').username.select();
-					document.getElementById('form-login').username.focus();
-				}
-
-				$('input, textarea').placeholder();
-			});
-		</script>
 	</head>
 	<body id="login-body">
 		<div id="bg-canvas-wrapper">
@@ -128,24 +108,5 @@ $browser = new \Hubzero\Browser\Detector();
 				</section><!-- / #main -->
 			</section><!-- / #component-content -->
 		</div><!-- / #wrap -->
-
-		<?php
-		if ($this->params->get('login'))
-		{
-			$m = 11;
-			if ($this->params->get('login') == 2)
-			{
-				$m = intval(Date::format('m'));
-			}
-			if ($m < 4 || $m > 10)
-			{
-				?><script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/snow.js?v=<?php echo filemtime(__DIR__ . '/js/snow.js'); ?>"></script><?php
-			}
-			if ($m > 3 && $m < 6)
-			{
-				?><script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/rain.js?v=<?php echo filemtime(__DIR__ . '/js/rain.js'); ?>"></script><?php
-			}
-		}
-		?>
 	</body>
 </html>

@@ -18,6 +18,15 @@
 	input[type=text],
 	input[type=password],
 	input[type=email],
+	input[type=date],
+	input[type=url],
+	input[type=color],
+	input[type=search],
+	input[type=tel],
+	input[type=month],
+	input[type=week],
+	input[type=time],
+	input[type=number],
 	textarea {
 		.box-sizing(border-box);
 		font-family: @sansFontFamily;
@@ -35,6 +44,31 @@
 		.transition(all 0.1s ease-out);
 		-webkit-background-clip: padding-box;
 		margin-bottom: 1em;
+		background-clip: padding-box;
+
+		&:hover {
+			border-color: #c9c9c9;
+		}
+		&:focus {
+			background-color: #fff;
+			border-color: #777;
+		}
+
+		&.invalid,
+		&.error {
+			//background-color: #f8d7da;
+			padding-right: 2.25rem;
+			border-color: #dc3545;
+			background-repeat: no-repeat;
+			background-position: center right calc(2.25rem / 4);
+			background-size: calc(2.25rem / 2) calc(2.25rem / 2);
+			background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23dc3545' viewBox='-2 -2 7 7'%3e%3cpath stroke='%23d9534f' d='M0 0l3 3m0-3L0 3'/%3e%3ccircle r='.5'/%3e%3ccircle cx='3' r='.5'/%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E");
+
+			&:hover,
+			&:focus {
+				box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+			}
+		}
 	}
 	#editor-xtd-buttons a,
 	a.button,
@@ -66,22 +100,16 @@
 		.background-clip(padding-box);
 		-webkit-appearance: none;
 		--webkit-appearance: none;
+
+		&:hover,
+		&:focus {
+			background: #e8e8e8;
+			border: 1px solid #aaaaaa;
+			.box-shadow(~"inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35)");
+			.transition(background-position 0.1s linear);
+		}
 	}
-	#editor-xtd-buttons a:hover,
-	#editor-xtd-buttons a:focus,
-	a.button:hover,
-	a.button:focus,
-	button:hover,
-	button:focus,
-	input[type=button]:hover,
-	input[type=button]:focus,
-	input[type=submit]:hover,
-	input[type=submit]:focus {
-		background: #e8e8e8;
-		border: 1px solid #aaaaaa;
-		.box-shadow(~"inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35)");
-		.transition(background-position 0.1s linear);
-	}
+
 	#editor-xtd-buttons {
 		border: 1px solid #D6D6D6;
 		border: 1px solid rgba(0, 0, 0, 0.1);
@@ -97,17 +125,7 @@
 	.permissions.button {
 		padding: 0.5em 0.71em;
 	}
-	table .permissions.button {
-		display: block;
-		max-width: 15em;
-		float: right;
-	}
-	table td .fltrt {
-		margin-left: 1em;
-	}
-	select {
-		margin-bottom: 1em;
-	}
+
 	input.combobox {
 		.transition(none);
 		background-color: #F6F6F6;
@@ -118,63 +136,11 @@
 	.opera input.combobox {
 		margin-top: 8px;
 	}
-	table select,
-	table .input-text,
-	table input[type=text],
-	table input[type=password],
-	table input[type=email],
-	table textarea {
-		width: auto;
-		margin-bottom: 0;
-	}
-	table select {
-		max-width: 10em;
-	}
-	.input-text:focus,
-	input[type=text]:focus,
-	textarea:focus {
-		background: #fff;
-	}
-	.input-text:hover,
-	textarea:hover, 
-	input[type=text]:hover, 
-	input[type=password]:hover, 
-	input[type=file]:hover {
-		border-color: #c9c9c9;
-	}
-	.input-text:focus,
-	textarea:focus, 
-	input[type=text]:focus, 
-	input[type=password]:focus, 
-	input[type=file]:focus {
-		background-color: #fff;
-		border-color: #777;
-	}
-	.input-text.error,
-	textarea.error, 
-	input.error[type=text], 
-	input.error[type=password], 
-	input.error[type=file] {
-		border-color: #c00;
-	}
-	.input-text.error:focus,
-	textarea.error:focus, 
-	input.error[type=text]:focus, 
-	input.error[type=password]:focus, 
-	input.error[type=file]:focus { 
-		border-color: #c00; 
-	}
-	textarea {
-		padding: 0.382em;
-	}
+
 	select {
 		width: 100%;
 		max-width: 100%;
 	}
-	table select {
-		margin-bottom: 0;
-	}
-
 	select {
 		outline: 0;
 		font-size: 1em;
@@ -206,22 +172,65 @@
 		background-position: (100% - 4.8em) 50%;
 		background-position: ~"calc(100% - 0.6em)" 50%;
 		background-size: 1.1em auto;
-	}
-	select:focus,
-	select:active,
-	select:hover {
-		outline: none;
-		border-color: #aaaaaa;
-		border-color: rgba(0, 0, 0, 0.26);
-		box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
-	}
-	select:focus,
-	select:active {
-		background-color: #f8f8f8;
-		color: #444;
+
+		&:focus,
+		&:active,
+		&:hover {
+			outline: none;
+			border-color: #aaaaaa;
+			border-color: rgba(0, 0, 0, 0.26);
+			box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
+		}
+
+		&:focus,
+		&:active {
+			background-color: #f8f8f8;
+			color: #444;
+		}
+
+		&.invalid,
+		&.error {
+			border-color: #dc3545;
+
+			&:hover,
+			&:focus {
+				box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+			}
+		}
 	}
 	select::-ms-expand { /* for IE 11 */
 		display: none;
+	}
+
+	table .permissions.button {
+		display: block;
+		max-width: 15em;
+		float: right;
+	}
+	table td .fltrt {
+		margin-left: 1em;
+	}
+	table select,
+	table .input-text,
+	table input[type=text],
+	table input[type=password],
+	table input[type=email],
+	table input[type=date],
+	table input[type=url],
+	table input[type=color],
+	table input[type=search],
+	table input[type=tel],
+	table input[type=month],
+	table input[type=week],
+	table input[type=time],
+	table input[type=number],
+	table textarea {
+		width: auto;
+		margin-bottom: 0;
+	}
+	table select {
+		max-width: 10em;
+		margin-bottom: 0;
 	}
 
 	/*target Internet Explorer 9 and Internet Explorer 10

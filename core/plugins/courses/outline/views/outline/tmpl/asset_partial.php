@@ -58,7 +58,7 @@ if ($this->a->get('type') == 'video')
 	<a class="asset-preview" href="<?php echo $href ?>" title="preview"></a>
 	<a class="asset-edit" href="#" title="edit"></a>
 	<?php if ($this->a->get('type') == 'form') : ?>
-		<a class="asset-edit-deployment" href="#" title="edit deployment"<?php echo ($this->a->get('state') != 1) ? ' style="display:none;"': ''; ?>></a>
+		<a class="asset-edit-deployment <?php echo ($this->a->get('state') != 1) ? 'hide': ''; ?>" href="#" title="edit deployment"></a>
 		<a class="asset-edit-layout" href="#" title="edit layout"></a>
 	<?php endif; ?>
 	<a class="asset-delete" href="#" title="delete"></a>
@@ -67,7 +67,7 @@ if ($this->a->get('type') == 'video')
 			<label class="published-label" for="published">
 				<span class="published-label-text"><?php echo ($this->a->get('state') == 0) ? 'Mark as reviewed and publish?' : 'Published' ?></span>
 				<input
-					class="uniform published-checkbox"
+					class="published-checkbox"
 					name="published"
 					type="checkbox"
 					<?php echo ($this->a->get('state') == 0) ? '' : 'checked="checked"' ?> />

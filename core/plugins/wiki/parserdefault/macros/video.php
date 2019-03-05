@@ -62,21 +62,21 @@ class VideoMacro extends WikiMacro
 		$txt = array();
 		$txt['wiki'] = 'Embeds a video into the Page';
 		$txt['html'] = '<p>Embeds a video into the Page. Accepts either full video URL (YouTube, Vimeo, Kaltura, Blip TV) or a file name or path.</p>
-						<p><strong>Youtube URL:</strong> http://www.youtube.com/watch?v=<span class="highlight">FgfGOEpZEOw</span></p>
+						<p><strong>Youtube URL:</strong> https://www.youtube.com/watch?v=<span class="highlight">FgfGOEpZEOw</span></p>
 						<p>Examples:</p>
 						<ul>
 							<li><code>[[Video(MyVideo.m4v)]]</code></li>
-							<li><code>[[Video(http://www.youtube.com/watch?v=FgfGOEpZEOw)]]</code></li>
-							<li><code>[[Video(http://blip.tv/play/hNNNg4uIDAI.x?p=1)]]</code></li>
-							<li><code>[[Video(http://player.vimeo.com/video/67115692)]]</code></li>
+							<li><code>[[Video(https://www.youtube.com/watch?v=FgfGOEpZEOw)]]</code></li>
+							<li><code>[[Video(https://blip.tv/play/hNNNg4uIDAI.x?p=1)]]</code></li>
+							<li><code>[[Video(https://player.vimeo.com/video/67115692)]]</code></li>
 						</ul>
 						<p>Size attributes may be given as single numeric values or with units (%, em, px). When an attribute name is given (e.g., width=600, height=338), order does not matter. Attribute values may be quoted but are not required to be. When a name attribute is not give (e.g., 600, 338), the first value will be set as width and the second value as height.</p>
 						<p>Examples:</p>
 						<ul>
 							<li><code>[[Video(MyVideo.m4v, width="600", height="338")]]</code></li>
-							<li><code>[[Video(http://www.youtube.com/watch?v=FgfGOEpZEOw, width=600px, height=338px)]]</code></li>
-							<li><code>[[Video(http://blip.tv/play/hNNNg4uIDAI.x?p=1, 640, 380)]]</code> - width 640px, height 380px</li>
-							<li><code>[[Video(http://player.vimeo.com/video/67115692, 100%)]]</code> - width of 100%</li>
+							<li><code>[[Video(https://www.youtube.com/watch?v=FgfGOEpZEOw, width=600px, height=338px)]]</code></li>
+							<li><code>[[Video(https://blip.tv/play/hNNNg4uIDAI.x?p=1, 640, 380)]]</code> - width 640px, height 380px</li>
+							<li><code>[[Video(https://player.vimeo.com/video/67115692, 100%)]]</code> - width of 100%</li>
 						</ul>';
 
 		return $txt['html'];
@@ -250,7 +250,7 @@ class VideoMacro extends WikiMacro
 			Document::addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
 			Document::addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
 
-			$html  = '<div class="flowplayer" style="width: ' . $width . 'px; height: ' . $height . 'px;">';
+			$html  = '<div class="flowplayer" data-width="' . $width . '" data-height="' . $height . '">';
 			$html .= '<video id="movie' . rand(0, 1000) . '" width="' . $width . '" height="' . $height . '" preload controls>';
 			switch ($ext)
 			{

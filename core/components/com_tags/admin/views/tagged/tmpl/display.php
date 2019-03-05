@@ -41,7 +41,7 @@ if ($canDo->get('core.create'))
 }
 if ($canDo->get('core.delete'))
 {
-	Toolbar::deleteList();
+	Toolbar::deleteList('COM_TAGS_CONFIRM_DELETE');
 }
 Toolbar::spacer();
 Toolbar::help('tagged');
@@ -50,7 +50,7 @@ Toolbar::help('tagged');
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter-tbl"><?php echo Lang::txt('COM_TAGS_FILTER'); ?>:</label>
-		<select name="tbl" id="filter-tbl" onchange="document.adminForm.submit();">
+		<select name="tbl" id="filter-tbl" class="filter filter-submit">
 			<option value=""<?php if (!$this->filters['tbl']) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TAGS_FILTER_TYPE'); ?></option>
 			<?php foreach ($this->types as $type) { ?>
 				<option value="<?php echo $type->get('tbl'); ?>"<?php if ($this->filters['tbl'] == $type->get('tbl')) { echo ' selected="selected"'; } ?>><?php echo $type->get('tbl'); ?></option>
@@ -69,7 +69,7 @@ Toolbar::help('tagged');
 		<?php } ?>
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_TAGS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<?php if (!$this->filters['tagid']) { ?>
 					<th scope="col"><?php echo Html::grid('sort', 'COM_TAGS_COL_TAGID', 'tagid', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -82,7 +82,7 @@ Toolbar::help('tagged');
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="<?php echo (!$this->filters['tagid'] ? 7 : 6); ?>"><?php
+				<td colspan="<?php echo (!$this->filters['tagid']) ? 7 : 6; ?>"><?php
 				// Initiate paging
 				echo $this->rows->pagination;
 				?></td>
@@ -98,7 +98,7 @@ Toolbar::help('tagged');
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
 					<?php } ?>
 				</td>
 				<td class="priority-5">
@@ -148,7 +148,7 @@ Toolbar::help('tagged');
 					<?php } ?>
 				</td>
 				<td class="priority-3">
-					<time datetime="<?php echo $row->get('taggedon'); ?>"><?php echo ($row->get('taggedon') != '0000-00-00 00:00:00' ? $row->get('taggedon') : Lang::txt('COM_TAGS_UNKNOWN')); ?></time>
+					<time datetime="<?php echo $row->get('taggedon'); ?>"><?php echo ($row->get('taggedon') && $row->get('taggedon') != '0000-00-00 00:00:00') ? $row->get('taggedon') : Lang::txt('COM_TAGS_UNKNOWN'); ?></time>
 				</td>
 				<td class="priority-4">
 					<?php if ($row->get('taggerid')) { ?>

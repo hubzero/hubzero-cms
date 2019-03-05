@@ -36,7 +36,7 @@ $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_
 
 $canDo = \Components\Courses\Helpers\Permissions::getActions();
 
-Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_UNITS') . ': ' . $text, 'courses.png');
+Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_UNITS') . ': ' . $text, 'courses');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -46,31 +46,16 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 
 Html::behavior('modal');
-?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
 
-	// form field validation
-	if ($('#field-title').val() == '') {
-		alert('<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_TITLE'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-jQuery(document).ready(function($){
-	document.assetform = $.fancybox;
-});
-</script>
+$this->js();
+?>
+
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -88,7 +73,7 @@ jQuery(document).ready(function($){
 					<select name="fields[offering_id]" id="offering_id">
 						<option value="-1"><?php echo Lang::txt('COM_COURSES_SELECT'); ?></option>
 						<?php
-						require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+						require_once Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
 						$model = \Components\Courses\Models\Courses::getInstance();
 						if ($model->courses()->total() > 0)
 						{
@@ -119,7 +104,7 @@ jQuery(document).ready(function($){
 				</div>
 				<div class="input-wrap">
 					<label for="field-title"><?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+					<input type="text" name="fields[title]" id="field-title" class="title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 				</div>
 				<div class="input-wrap">
 					<label for="field-description"><?php echo Lang::txt('COM_COURSES_FIELD_DESCRIPTION'); ?>:</label><br />
@@ -140,22 +125,22 @@ jQuery(document).ready(function($){
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?></th>
 						<td><?php echo $this->escape($this->row->get('id')); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_COURSES_FIELD_ORDERING'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_ORDERING'); ?></th>
 						<td><?php echo $this->escape($this->row->get('ordering')); ?></td>
 					</tr>
 					<?php if ($this->row->get('created')) { ?>
 						<tr>
-							<th><?php echo Lang::txt('COM_COURSES_FIELD_CREATED'); ?></th>
-							<td><?php echo $this->escape($this->row->get('created')); ?></td>
+							<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_CREATED'); ?></th>
+							<td><time datetime="<?php echo $this->escape($this->row->get('created')); ?>"><?php echo $this->escape(Date::of($this->row->get('created'))->toLocal()); ?></time></td>
 						</tr>
 					<?php } ?>
 					<?php if ($this->row->get('created_by')) { ?>
 						<tr>
-							<th><?php echo Lang::txt('COM_COURSES_FIELD_CREATOR'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_CREATOR'); ?></th>
 							<td><?php
 							$creator = User::getInstance($this->row->get('created_by'));
 							echo $this->escape(stripslashes($creator->get('name'))); ?></td>

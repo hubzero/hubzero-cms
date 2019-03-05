@@ -539,7 +539,8 @@ class Admin extends SiteController
 					'targetURL' => $url,
 					'title'     => htmlspecialchars(stripslashes($status['title'])),
 					'version'   => $status['version'],
-					'abstract'  => htmlspecialchars(stripslashes($status['description']))
+					'abstract'  => htmlspecialchars(stripslashes($status['description'])),
+					'license'   => $status['license']
 				);
 
 				// Get authors
@@ -547,7 +548,7 @@ class Admin extends SiteController
 				$authors = $objA->getAuthorsDOI($status['resourceid']);
 
 				// Register DOI
-				$doiSuccess = $objDOI->register($authors, $this->config, $metadata, $doierr);
+				$doiSuccess = $objDOI->register($authors, $this->config, $metadata);
 
 				// Save [new] DOI record
 				if ($doiSuccess)

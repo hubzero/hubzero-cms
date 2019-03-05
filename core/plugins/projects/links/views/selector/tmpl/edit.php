@@ -191,7 +191,7 @@ $citationFormat = $this->publication->config('citation_format', 'apa');
 
 			<label for="uri">
 				<?php echo Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_URL'); ?>:
-				<input type="text" name="cite[uri]" id="uri" size="30" maxlength="250" value="<?php echo $this->escape($this->row->url); ?>" />
+				<input type="text" name="cite[url]" id="uri" size="30" maxlength="250" value="<?php echo $this->escape($this->row->url); ?>" />
 			</label>
 		</div>
 		<div class="formatted-cite">

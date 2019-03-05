@@ -47,6 +47,11 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('quote');
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
+
 $short_quote = stripslashes($this->row->get('short_quote'));
 $miniquote   = stripslashes($this->row->get('miniquote'));
 if (!$short_quote)
@@ -63,83 +68,8 @@ if (strlen($short_quote) >= 271)
 	$short_quote = $short_quote . '...';
 }
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('item-form');
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	<?php echo $this->editor()->save('text'); ?>
-
-	// form field validation
-	if ($('#field-fullname').val() == '') {
-		alert('<?php echo Lang::txt('COM_FEEDBACK_AUTHOR_MUST_HAVE_NAME'); ?>');
-	} else if ($('#field-org').val() == '') {
-		alert('<?php echo Lang::txt('COM_FEEDBACK_AUTHOR_MUST_HAVE_AFFILIATION'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-
-function getAuthorImage()
-{
-	var filew = window.filer;
-	if (filew) {
-		var conimg = filew.document.forms['filelist'].conimg;
-		if (conimg) {
-			document.forms['adminForm'].elements['picture'].value = conimg.value;
-		}
-	}
-}
-
-function checkState(checkboxname)
-{
-	if (checkboxname.checked == false) {
-		checkboxname.checked = false;
-	}
-}
-
-jQuery(document).ready(function($) {
-	$('.fancybox-inline').fancybox({
-		padding: 0,
-		helpers: {
-			overlay: {
-					locked: false
-			}
-		},
-	});
-
-	$('.fancybox-inline').on('click', function(e){
-		e.preventDefault();
-	});
-
-	$('.delete-image').on('click', function(e){
-		$('#picture-' + e.target.id).remove();
-	});
-
-	function readURL(input) {
-		var files = Array.prototype.slice.call($(input)[0].files);
-		files.forEach(function(file) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				$('#uploadImages').append('<img style="margin-left: 15px" src="' + e.target.result + '" width="100" height="100" alt="" />');
-			}
-			reader.readAsDataURL(file);
-		});
-	}
-
-	$("#imgInp").change(function(e){
-		$('#uploadImages').html("");
-		readURL(this);
-	});
-});
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>" enctype="multipart/form-data">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -152,12 +82,12 @@ jQuery(document).ready(function($) {
 
 				<div class="input-wrap">
 					<label for="field-fullname"><?php echo Lang::txt('COM_FEEDBACK_FULL_NAME'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[fullname]" id="field-fullname" value="<?php echo $this->escape(stripslashes($this->row->get('fullname'))); ?>" />
+					<input type="text" name="fields[fullname]" id="field-fullname" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('fullname'))); ?>" />
 				</div>
 
 				<div class="input-wrap">
-					<label for="field-org"><?php echo Lang::txt('COM_FEEDBACK_ORGANIZATION'); ?>:</label><br />
-					<input type="text" name="fields[org]" id="field-org" value="<?php echo $this->escape(stripslashes($this->row->org)); ?>" />
+					<label for="field-org"><?php echo Lang::txt('COM_FEEDBACK_ORGANIZATION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<input type="text" name="fields[org]" id="field-org" class="required" value="<?php echo $this->escape(stripslashes($this->row->org)); ?>" />
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_FEEDBACK_USER_ID_EXPLANATION'); ?>">
@@ -175,10 +105,12 @@ jQuery(document).ready(function($) {
 					<legend><?php echo Lang::txt('COM_FEEDBACK_AUTHOR_CONSENTS'); ?>:</legend>
 
 					<div class="input-wrap">
-						<input type="checkbox" name="fields[publish_ok]" id="publish_ok" value="1" <?php if ($this->row->get('publish_ok') == 1) { echo ' checked="checked"'; } if ($this->row->get('id')) { echo (' disabled="disabled"'); } ?>  />
+						<input type="checkbox" name="fields[publish_ok]" id="publish_ok" value="1" <?php if ($this->row->get('publish_ok') == 1) { echo ' checked="checked"';
+} if ($this->row->get('id')) { echo ' disabled="disabled"'; } ?>  />
 						<label for="publish_ok"><?php echo Lang::txt('COM_FEEDBACK_AUTHOR_CONSENT_PUBLISH'); ?></label><br />
 
-						<input type="checkbox" name="fields[contact_ok]" id="contact_ok" value="1" <?php if ($this->row->get('contact_ok') == 1) { echo ' checked="checked"'; } if ($this->row->get('id')) { echo (' disabled="disabled"'); } ?> />
+						<input type="checkbox" name="fields[contact_ok]" id="contact_ok" value="1" <?php if ($this->row->get('contact_ok') == 1) { echo ' checked="checked"';
+} if ($this->row->get('id')) { echo ' disabled="disabled"'; } ?> />
 						<label for="contact_ok"><?php echo Lang::txt('COM_FEEDBACK_AUTHOR_CONSENT_CONTACT'); ?></label>
 					</div>
 				</fieldset>
@@ -197,7 +129,7 @@ jQuery(document).ready(function($) {
 
 				<div class="input-wrap">
 					<label for="field-quote"><?php echo Lang::txt('COM_FEEDBACK_FULL_QUOTE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<?php echo $this->editor('fields[quote]', stripslashes($this->row->get('quote')), 50, 10, 'field-quote'); ?>
+					<?php echo $this->editor('fields[quote]', stripslashes($this->row->get('quote')), 50, 10, 'field-quote', array('class' => 'required')); ?>
 				</div>
 
 				<div class="input-wrap">

@@ -40,15 +40,9 @@ $loginUrl = Route::url('index.php?option=com_users&view=login&return=' . $return
 
 if ($customLandingPage && is_numeric($customLandingPage))
 {
-	include_once(PATH_CORE . DS . 'components' . DS . 'com_content' . DS . 'site' . DS . 'models' . DS . 'article.php');
-	$content = new ContentModelArticle();
-	$article = $content->getItem($customLandingPage);
+	$article = $this->content;
 
-	if ($article->params->get('show_intro', '1') == '1')
-	{
-		$article->text = $article->introtext . ' ' . $article->fulltext;
-	}
-	elseif ($item->fulltext)
+	if ($article->fulltext)
 	{
 		$article->text = $article->fulltext;
 	}
@@ -69,7 +63,7 @@ if ($customLandingPage && is_numeric($customLandingPage))
 	<section class="section">
 		<div class="section-inner">
 
-			<div class="login-storefront"><a class="btn" href="<?php echo($loginUrl); ?>">Login</a></div>
+			<div class="login-storefront"><a class="btn" href="<?php echo $loginUrl; ?>">Login</a></div>
 
 			<?php
 
@@ -97,11 +91,10 @@ else
 				<p>Welcome to our store! In order to see the items in the store you need to login.</p>
 			</div>
 			<div class="col span3 offset1 omega">
-				<a class="btn" href="<?php echo($loginUrl); ?>">Login</a>
+				<a class="btn" href="<?php echo $loginUrl; ?>">Login</a>
 			</div>
 		</div>
 	</section>
 
 <?php
 }
-?>

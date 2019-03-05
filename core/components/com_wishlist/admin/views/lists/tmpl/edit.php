@@ -44,34 +44,14 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('list');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton =='resethits') {
-		if (confirm('<?php echo Lang::txt('COM_WISHLIST_RESET_HITS_WARNING'); ?>')){
-			submitform(pressbutton);
-			return;
-		} else {
-			return;
-		}
-	}
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// do field validation
-	if (document.getElementById('field-title').value == ''){
-		alert('<?php echo Lang::txt('COM_WISHLIST_ERROR_MISSING_TITLE'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -112,21 +92,21 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_WISHLIST_FIELD_ID'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WISHLIST_FIELD_ID'); ?>:</th>
 						<td>
 							<?php echo $this->row->id; ?>
 							<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->row->id; ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATED'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATED'); ?>:</th>
 						<td>
-							<time datetime="<?php echo $this->row->get('created'); ?>"><?php echo $this->row->get('created'); ?></time>
+							<time datetime="<?php echo $this->row->get('created'); ?>"><?php echo Date::of($this->row->get('created'))->toLocal(); ?></time>
 							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->get('created'); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATOR'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATOR'); ?>:</th>
 						<td>
 							<?php
 							$editor  = User::getInstance($this->row->get('created_by'));
@@ -162,7 +142,7 @@ function submitbutton(pressbutton)
 	</div>
 
 	<?php /*
-			<div class="col width-100 fltlft">
+			<div class="col span12">
 				<fieldset class="panelform">
 					<legend><span><?php echo Lang::txt('COM_WISHLIST_FIELDSET_RULES'); ?></span></legend>
 					<?php echo $this->form->getLabel('rules'); ?>

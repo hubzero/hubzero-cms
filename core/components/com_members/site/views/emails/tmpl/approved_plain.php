@@ -32,10 +32,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 ?>
-Created: <?php echo $this->user->get('registerDate'); ?> UTC
-Name: <?php echo $this->user->get('name'); ?>
-Username: <?php echo $this->user->get('username'); ?>
 
-Your account on <?php echo $this->sitename; ?> has been approved! You may log in at any time and begin exploring.
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_CREATED'); ?>: <?php echo $this->user->get('registerDate'); ?> UTC
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_NAME'); ?>: <?php echo $this->user->get('name'); ?>
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_USERNAME'); ?>: <?php echo $this->user->get('username'); ?>
+
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_APPROVED_MESSAGE', $this->sitename); ?>
 
 Do not reply to this email.  Replies to this email will not be read.

@@ -47,7 +47,7 @@ $html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"
 <html xmlns=\"http://www.w3.org/1999/xhtml\">
  <head>
 	<script type='text/javascript' src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=".$key."'></script>
-	<script type='text/javascript' src='/core/components/".$option."/maps/js/Clusterer2.js'> </script>
+	<script type='text/javascript' src='" . rtrim(Request::base(), '/') . "/core/plugins/usage/maps/assets/js/Clusterer2.js'> </script>
 	<script type='text/javascript'>
 	function load() {
 		if (GBrowserIsCompatible()) {
@@ -69,7 +69,7 @@ $html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"
 				if (locations.length) {
 					for (var i = 0; i < locations.length; i++) { // cycle thru locations
 						var icon = new GIcon();
-						icon.image = '/core/components/".$option."/maps/images/1.png';
+						icon.image = '" . rtrim(Request::base(), '/') . "/core/plugins/usage/maps/assets/img/1.png';
 						icon.iconSize = new GSize(12, 20);
 						icon.iconAnchor = new GPoint(6, 20);
 						markers[i] = new GMarker(new GLatLng(locations[i].getAttribute('lat'),locations[i].getAttribute('lng')),icon);
@@ -81,9 +81,15 @@ $html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"
 	   request.send(null);
 	}
 	</script>
+	<style>
+	#div_map {
+		width:1024px;
+		height:600px;
+	}
+	</style>
  </head>
  <body onload='load()' onunload='GUnload()'>
-	<div id='div_map' style='width:1024px; height:600px'> </div>
+	<div id='div_map'> </div>
  </body>
 </html>";
 }

@@ -185,7 +185,7 @@ $revision = $this->revision;
 						{
 							if ($this->model->doi && $tconfig->get('doi_shoulder'))
 							{
-								$doi = 'doi:' . $tconfig->get('doi_shoulder') . '/' . strtoupper($this->model->doi);
+								$doi = 'doi:' . ($this->model->doi_shoulder ? $this->model->doi_shoulder : $tconfig->get('doi_shoulder')) . '/' . strtoupper($this->model->doi);
 							}
 							else
 							{
@@ -329,4 +329,4 @@ $revision = $this->revision;
 		</aside><!-- / .aside extracontent -->
 		</div>
 	</section><!-- / .main section -->
-<?php } ?>
+<?php }

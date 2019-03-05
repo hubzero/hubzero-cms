@@ -60,18 +60,6 @@ $this->css('edit')
 	->js('editsearchable');
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="grid">
 		<div class="col span7">
@@ -81,7 +69,11 @@ function submitbutton(pressbutton)
 				<!-- Name -->
 				<div class="input-wrap">
 					<label for="field-name"><?php echo Lang::txt('COM_SEARCH_FIELD_TITLE'); ?>:</label>
-						<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->searchComponent->title)); ?>" />
+					<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->searchComponent->title)); ?>" />
+				</div> <!-- /.input-wrap -->
+				<div class="input-wrap">
+					<label for="field-name"><?php echo Lang::txt('COM_SEARCH_FIELD_CUSTOM'); ?>:</label>
+					<input type="text" name="fields[custom]" id="field-custom" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->searchComponent->custom)); ?>" />
 				</div> <!-- /.input-wrap -->
 			</fieldset> <!-- /.adminform -->
 		</div><!-- /.col span7 -->
@@ -111,11 +103,15 @@ function submitbutton(pressbutton)
 				<label for="searchable-filter-field">
 					<?php echo Lang::txt('COM_SEARCH_COMPONENT_FILTER_FIELD');?>
 				</label>
-				<select name="add-filter" id="searchable-filter-field">
-					<?php foreach ($this->availableFields as $field): ?>
-					<option value="<?php echo $field;?>"><?php echo $field;?></option>
-					<?php endforeach; ?>
-				</select>
+				<?php if (!empty($this->availableFields)): ?>
+					<select name="add-filter" id="searchable-filter-field">
+						<?php foreach ($this->availableFields as $field): ?>
+						<option value="<?php echo $field;?>"><?php echo $field;?></option>
+						<?php endforeach; ?>
+					</select>
+				<?php else: ?>
+					<input type="text" name="add-filter" id="searchable-filter-field" />
+				<?php endif; ?>
 			</div>
 			<div class="input-wrap">
 				<label for="filter-type">
@@ -124,6 +120,7 @@ function submitbutton(pressbutton)
 				<select id="filter-type" name="filter-type">
 					<option value="list">List</option>
 					<option value="daterange">Date Range</option>
+					<option value="textfield">Text</option>
 				</select>
 			</div>
 			<button id="add-filter">Add Filter</button>

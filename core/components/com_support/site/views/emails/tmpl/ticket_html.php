@@ -277,15 +277,3 @@ $this->css(
 		</tbody>
 	</table>
 	<!-- End Spacer -->
-
-	<!-- Start Footer -->
-	<table class="tbl-footer" width="100%" cellpadding="0" cellspacing="0" border="0">
-		<tbody>
-			<tr>
-				<td align="left" valign="bottom">
-					<span><?php echo Lang::txt('COM_SUPPORT_EMAIL_WHY_NOTFIED', Config::get('sitename'), $link, '#' . $this->ticket->get('id'), $base, $base); ?></span>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<!-- End Footer -->

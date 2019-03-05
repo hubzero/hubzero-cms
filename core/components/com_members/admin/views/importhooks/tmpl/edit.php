@@ -39,26 +39,18 @@ $title  = ($this->hook->get('id')) ? Lang::txt('COM_MEMBERS_IMPORTHOOK_TITLE_EDI
 Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt($title), 'import');
 Toolbar::save();
 Toolbar::cancel();
-?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
+?>
 
 <?php foreach ($this->getErrors() as $error) : ?>
 	<p class="error"><?php echo $error; ?></p>
 <?php endforeach; ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span8">
 			<fieldset class="adminform">
@@ -105,7 +97,7 @@ function submitbutton(pressbutton)
 						if ($this->hook->get('file'))
 						{
 							echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_SCRIPT_CURRENT', $this->hook->get('file'));
-							echo ' &mdash; <a target="_blank" href="' . Route::url('index.php?option=com_resources&controller=importhooks&task=raw&id='.$this->hook->get('id')) . '">'.Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_SCRIPT_VIEWRAW').'</a><br />';
+							echo ' &mdash; <a rel="noopener" target="_blank" href="' . Route::url('index.php?option=com_resources&controller=importhooks&task=raw&id='.$this->hook->get('id')) . '">'.Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_SCRIPT_VIEWRAW').'</a><br />';
 						}
 					?>
 					<input type="file" name="file" />
@@ -117,11 +109,11 @@ function submitbutton(pressbutton)
 				<table class="meta">
 					<tbody>
 						<tr>
-							<th><?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_ID'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_ID'); ?></th>
 							<td><?php echo $this->hook->get('id'); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_CREATEDBY'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_CREATEDBY'); ?></th>
 							<td>
 								<?php
 									if ($created_by = User::getInstance($this->hook->get('created_by')))
@@ -132,11 +124,11 @@ function submitbutton(pressbutton)
 							</td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_CREATEDON'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_CREATEDON'); ?></th>
 							<td>
-								<?php
+								<time datetime="<?php echo $this->hook->get('created_at'); ?>"><?php
 									echo Date::of($this->hook->get('created_at'))->toLocal('m/d/Y @ g:i a');
-								?>
+								?></time>
 							</td>
 						</tr>
 					</tbody>

@@ -24,7 +24,7 @@ class Migration20180924153232ComTools extends Base
 
 		if ($mwdb->tableExists('hosttype'))
 		{
-			if (!$mwdb->tableHasKey('hosttype', 'name'))
+			if (!$mwdb->tableHasKey('hosttype', 'name') && !$mwdb->getPrimaryKey('hosttype'))
 			{
 				$query = "ALTER TABLE `hosttype` ADD PRIMARY KEY (name)";
 				$mwdb->setQuery($query);

@@ -40,19 +40,6 @@ Toolbar::help('windows');
 
 Html::behavior('tooltip');
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	submitform(pressbutton);
-}
-</script>
 
 <?php
 	$this->view('_submenu')
@@ -63,15 +50,13 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_TOOLS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_NAME', 'toolname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_TOOLS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TOOLS_COL_UUID', 'path', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-
 				<th scope="col" class="priority-2">In use sessions</th>
 				<th scope="col" class="priority-1">Available sessions</th>
-
 				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
@@ -92,11 +77,10 @@ function submitbutton(pressbutton)
 		{
 			$appinfo = exec("/usr/bin/hz-aws-appstream getapp --appid " . $this->escape(stripslashes($row->get('path'))));
 			$appinfoArray = explode("|", $appinfo);
-
-		?>
+			?>
 			<tr>
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
 				</td>
 				<td class="priority-5">
 					<?php echo $this->escape($row->get('id')); ?>
@@ -111,30 +95,27 @@ function submitbutton(pressbutton)
 						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</a>
 				</td>
-
 				<td class="priority-3">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($row->get('path'))); ?>
 					</a>
 				</td>
-
 				<td class="priority-2">
-
 					<?php
-						if ( count($appinfoArray) > 2)
-							print($appinfoArray[2]);
+					if (count($appinfoArray) > 2)
+					{
+						echo $appinfoArray[2];
+					}
 					?>
-
 				</td>
-
 				<td class="priority-1">
 					<?php
-						if ( count($appinfoArray) > 2)
-							print($appinfoArray[3]);
-					?>	
+					if (count($appinfoArray) > 2)
+					{
+						echo $appinfoArray[3];
+					}
+					?>
 				</td>
-
-
 				<td>
 					<span><?php echo $this->escape($row->get('published')); ?></span>
 				</td>

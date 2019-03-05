@@ -177,7 +177,7 @@ for ($i=0, $n=count($images); $i < $n; $i++)
 		// add re-ordering option
 		if ($i != ($n-1))
 		{
-			$els .= '<li style="width:20px;top:40px;">';
+			$els .= '<li>';
 				$els .= '<a class="icon-reorder reorder" href="' . $base . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=order&amp;pid='.$this->rid.'&amp;fl='.$images[$i+1]['img'].'&amp;fr='.$images[$i]['img'].'&amp;ol='.($i+1).'&amp;or='.$i.'&amp;version='.$this->version.'&amp;tmpl=component" title="' .Lang::txt('COM_TOOLS_REORDER'). '">';
 					$els .= Lang::txt('COM_TOOLS_REORDER');
 				$els .= '</a>';
@@ -223,8 +223,8 @@ echo $html;
 	</fieldset>
 </form>
 <?php if ($this->published && $this->version=='dev') { ?>
-	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" name="copySSForm"  method="post" enctype="multipart/form-data">
-		<fieldset style="border-top:1px solid #ccc;padding-top:1em;">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" name="copySSForm" method="post" enctype="multipart/form-data">
+		<fieldset>
 			<legend><?php echo Lang::txt('COM_TOOLS_COPY_SCREENSHOTS'); ?></legend>
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -242,4 +242,4 @@ echo $html;
 			</label>
 		</fieldset>
 	</form>
-<?php } ?>
+<?php } 

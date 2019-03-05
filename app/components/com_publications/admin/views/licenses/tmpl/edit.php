@@ -46,13 +46,6 @@ Toolbar::cancel();
 $text = preg_replace("/\r\n/", "\r", trim($this->row->text));
 
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	submitform( pressbutton );
-	return;
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=licenses'); ?>" method="post" id="item-form" name="adminForm">
 	<div class="grid">
@@ -105,7 +98,7 @@ function submitbutton(pressbutton)
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DEFAULT'); ?></th>
-						<td><?php echo $this->row->main == 1 ? Lang::txt('COM_PUBLICATIONS_LICENSE_YES') : Lang::txt('COM_PUBLICATIONS_LICENSE_NO') ; ?></td>
+						<td><?php echo $this->row->isMain() ? Lang::txt('COM_PUBLICATIONS_LICENSE_YES') : Lang::txt('COM_PUBLICATIONS_LICENSE_NO'); ?></td>
 					</tr>
 				<?php if ($this->row->id) { ?>
 					<tr>

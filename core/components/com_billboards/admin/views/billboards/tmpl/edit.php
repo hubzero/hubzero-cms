@@ -44,46 +44,22 @@ Toolbar::save();
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('billboard');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton) {
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// Do field validation:
-	// Make sure there's a billboard name and that there's a css class if there's CSS
-	if ($('#billboardname').val() == "") {
-		alert("<?php echo Lang::txt('COM_BILLBOARDS_MUST_HAVE_A_NAME', true); ?>");
-	} else {
-		submitform(pressbutton);
-	}
-}
-
-// @TODO: should probably put this somewhere else
-jQuery(document).ready(function($){
-	var styling        = $('#styling');
-	var styling_table  = $('#styling_table');
-	var slider         = styling_table.hide();
-
-	styling.on('click', function(e) {
-		e.preventDefault();
-		slider.slideToggle();
-	});
-});
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_BILLBOARDS_CONTENT'); ?></span></legend>
 
 				<div class="input-wrap">
-					<label for="billboardname"><?php echo Lang::txt('COM_BILLBOARDS_FIELD_NAME'); ?>:</label><br />
-					<input type="text" name="billboard[name]" id="billboardname" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" />
+					<label for="billboardname"><?php echo Lang::txt('COM_BILLBOARDS_FIELD_NAME'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<input type="text" name="billboard[name]" id="billboardname" class="required" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" />
 				</div>
 				<div class="input-wrap">
 					<label for="billboardcollection"><?php echo Lang::txt('COM_BILLBOARDS_FIELD_COLLECTION'); ?>:</label><br />
@@ -166,14 +142,13 @@ jQuery(document).ready(function($){
 					<?php $image = new \Hubzero\Image\Processor(PATH_ROOT . DS . ltrim($this->row->background_img, DS)); ?>
 					<?php if (count($image->getErrors()) == 0) : ?>
 						<?php $image->resize(500); ?>
-						<div style="padding: 10px;"><img src="<?php echo $image->inline(); ?>" alt="billboard image" /></div>
+						<div class="billboard-img"><img src="<?php echo $image->inline(); ?>" alt="billboard image" /></div>
 					<?php endif; ?>
 				</fieldset>
 			<?php endif; ?>
 			<fieldset class="adminform">
-				<!-- @TODO: remove inline styles -->
-				<legend id="styling" style="cursor:pointer;"><?php echo Lang::txt('COM_BILLBOARDS_STYLING'); ?></legend>
-				<br style="clear:both;" />
+				<legend id="styling"><?php echo Lang::txt('COM_BILLBOARDS_STYLING'); ?></legend>
+				<br />
 
 				<div id="styling_table">
 					<div class="input-wrap">

@@ -77,6 +77,7 @@ class Members extends AdminController
 		$this->registerTask('unconfirm', 'state');
 		$this->registerTask('applyprofile', 'saveprofile');
 		$this->registerTask('unblock', 'block');
+		$this->registerTask('disapprove', 'approve');
 
 		parent::execute();
 	}
@@ -670,8 +671,17 @@ class Members extends AdminController
 		$this->cancelTask();
 	}
 
+	/**
+	 * Re-send a confirmation email to a user
+	 *
+	 * @return  void
+	 */
 	public function resendConfirmTask()
 	{
+		// Check for request forgeries
+		Request::checkToken('get');
+
+		// Check for permission to perform this aciton
 		if (!User::authorise('core.manage', $this->_option)
 		 && !User::authorise('core.admin', $this->_option)
 		 && !User::authorise('core.create', $this->_option)
@@ -679,16 +689,19 @@ class Members extends AdminController
 		{
 			return $this->cancelTask();
 		}
-		Request::checkToken('get');
+
 		$id = Request::getInt('id');
 		$user = Member::oneOrFail($id);
+
 		$xregistration = new \Components\Members\Models\Registration();
 		$xregistration->loadProfile($user);
+
 		// Send confirmation email
 		if ($user->get('activation') < 0)
 		{
 			$sendEmail = \Components\Members\Helpers\Utility::sendConfirmEmail($user, $xregistration);
 		}
+
 		if ($sendEmail)
 		{
 			Notify::success(Lang::txt('COM_MEMBERS_RESEND_CONFIRM_SUCCESS'));
@@ -697,8 +710,10 @@ class Members extends AdminController
 		{
 			Notify::error(Lang::txt('COM_MEMBERS_RESEND_CONFIRM_ERROR'));
 		}
+
 		return $this->editTask($user);
 	}
+
 	/**
 	 * Removes a profile entry, associated picture, and redirects to main listing
 	 *
@@ -849,7 +864,7 @@ class Members extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$state = ($this->getTask() == 'approve' ? 2 : 0);
+		$state = ($this->getTask() == 'approve' ? 1 : 0);
 
 		// Incoming user ID
 		$ids = Request::getArray('id', array());
@@ -869,8 +884,10 @@ class Members extends AdminController
 			// Load the profile
 			$user = Member::oneOrFail(intval($id));
 
+			$prev = $user->get('approved');
+
 			// Extra, paranoid check that we only approve accounts that need it
-			if (!$user->get('approved'))
+			if ($prev != $state)
 			{
 				$user->set('approved', $state);
 
@@ -881,7 +898,7 @@ class Members extends AdminController
 				}
 
 				// Email the user that their account has been approved
-				if ($this->config->get('useractivation_email'))
+				if ($state && $this->config->get('useractivation_email'))
 				{
 					if (!$this->emailApprovedUser($user))
 					{

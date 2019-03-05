@@ -1,6 +1,291 @@
 @import "variables.scss";
 @import "mixins.scss";
 
+// New resource cards as of 10/2018
+
+.icon-spinner {
+  -webkit-animation: spin-animation .2s infinite linear;
+  animation: spin-animation .2s infinite linear;
+  display: inline-block;
+}
+
+@keyframes spin-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-position: center;
+  background-size: cover;
+  margin: .5em;
+  position: relative;
+  
+  .meta {
+    @include flexbox;
+    bottom: 0;
+    font-family: 'Martel', serif;
+    font-size: 0.8125rem;
+    justify-content: space-between;
+    left: 0;
+    padding: 0 .5em;
+    position: absolute;
+    transition: .2s;
+    width: 100%;
+    z-index: 99;
+  }
+
+  &.active {
+
+    .title {
+      background-color: $white;
+      height: 100%;
+
+      h3 {
+        height: 2.5rem;
+        max-width: 85%;
+      }
+    }
+
+    .card-content {
+      z-index: 80;
+    }
+
+    .featured-tag {
+      bottom: 0;
+    }
+
+    .abstract {
+      margin-top: .5em;
+    }
+
+    .sub-menu {
+      margin-top: 0;
+    }
+
+    .meta {
+      background-color: $white;
+    }
+  }
+}
+
+.logo-wrap {
+  left: .3125em;
+  position: absolute;
+  top: .3125em;
+  z-index: 4;
+}
+
+.logo {
+  height: 2rem;
+}
+
+// .img-wrap {
+//   height: 100%;
+//   width: 100%;
+//
+//   img {
+//     height: 100%;
+//     object-fit: cover;
+//     width: 100%;
+//   }
+// }
+
+.card-content {
+  height: 17.1875rem;
+  overflow: hidden;
+  position: relative;
+  width: 21.875rem;
+  transition: .4s;
+  z-index: 3;
+}
+
+.title {
+  background-color: rgba($white, .95);
+  border: 1px solid $light-gray;
+  bottom: 0;
+  height: 6.75rem;
+  width: 100%;
+  padding: .3em .5em;
+  position: absolute;
+  transition: .4s;
+
+  .authors {
+    @include truncate(.75rem, 1, 1);
+  }
+
+  h3 {
+    @include truncate(1.125rem, 1.2, 2);
+    font-family: 'Martel', serif;
+    margin: inherit;
+    margin-bottom: .2em;
+  }
+
+  p {
+    font-size: 0.75rem;
+    line-height: 1;
+    margin: 0;
+  }
+}
+
+.featured-tag {
+  background-color: $teal;
+  bottom: 6.75rem;
+  color: $white !important;
+  font-family: 'Martel', sans-serif;
+  font-size: .8rem;
+  height: auto;
+  left: 0;
+  padding: .25em .5em;
+  position: absolute;
+  transition: .6s;
+}
+
+.featured {
+  position: absolute;
+  top: -0.9375em;
+  left: -0.625em;
+  z-index: 5;
+
+  span {
+    padding: .5em .75em;
+    display: block;
+    position: relative;
+    background-color: $green;
+    color: $white;
+    font-size: .8rem;
+    font-weight: bold;
+
+    &::before {
+      content: '';
+      height: 0;
+      width: 0;
+      display: block;
+      position: absolute;
+      bottom: -0.625em;
+      left: 0;
+      border-top: 10px solid $link-color;
+      border-left: 10px solid transparent;
+    }
+  }
+
+}
+
+.abstract {
+  @include truncate(1rem, 1.2, 5);
+  margin: 14em .5em .5em .5em;
+  position: absolute;
+  top: 6.5rem;
+  transition: .4s;
+}
+
+.hist {
+  @include flexbox;
+  justify-content: space-between;
+}
+
+.versions {
+  width: 5rem;
+}
+
+.adapted {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 14.5rem;
+}
+
+.icons {
+  display: inline-block;
+  width: .75rem;
+}
+
+.menu-icon {
+  display: inline-block;
+  fill: $white;
+  width: 1.1875rem;
+}
+
+.menu:before {
+  color: $white;
+  content: '\f039';
+  font-family: 'Fontcons';
+  font-style: normal;
+}
+
+.arrow-left:before {
+  color: $white;
+  content: '\2190';
+  font-family: 'Fontcons';
+  font-style: normal;
+}
+
+.tag-wrap {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 9.6875rem;
+  
+  .tags {
+    font-size: 0.75rem !important;
+  }
+}
+
+.sub-menu {
+  @include flexbox;
+  background-color: $green;
+  font-size: 0.875rem;
+  justify-content: flex-end;
+  margin-top: 5em;
+  position: absolute;
+  padding: .2em .5em .1em;
+  top: 16em;
+  transition: .4s;
+  width: 100%;
+
+  a {
+    color: $white;
+    margin: 0 1em;
+
+    &:first-child {
+      left: 0;
+      position: absolute;
+    }
+  }
+}
+
+.btn-action {
+  background-color: $green;
+  border: 5px solid $white;
+  border-radius: 50%;
+  color: $white;
+  height: 3.375rem;
+  line-height: 44px;
+  position: absolute;
+  right: 0.3125em;
+  text-align: center;
+  top: 0.3125em;
+  transition: .3s;
+  width: 3.375rem;
+  z-index: 100;
+  padding: 0;
+
+  &:hover {
+    border: 5px solid $white;
+  }
+}
+
+// Original resource cards
+
 a {
   border: none;
 }

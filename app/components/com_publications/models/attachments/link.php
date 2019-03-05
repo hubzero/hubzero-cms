@@ -137,7 +137,7 @@ class Link extends Base
 
 				$html .= '<li>';
 				$html .= $authorized === 'administrator' ? '[' . $this->_name . '] ' : '';
-				$html .= '<a href="' . $itemUrl . '" title="' . $pop . '" target="_blank" class="link-type">' . $title . '</a>';
+				$html .= '<a href="' . $itemUrl . '" title="' . $pop . '" rel="noreferrer" target="_blank" class="link-type">' . $title . '</a>';
 				$html .='</li>';
 			}
 		}

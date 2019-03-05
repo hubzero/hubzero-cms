@@ -107,8 +107,6 @@ class Helper extends Module
 
 		$this->topened = $types['common'];
 
-		$this->offset = Config::get('offset');
-
 		$date = new \Hubzero\Utility\Date();
 		$year = $date->toLocal('Y');
 		$month = $date->toLocal('m');

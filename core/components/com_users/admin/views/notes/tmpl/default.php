@@ -21,18 +21,18 @@ $canEdit = User::authorise('core.edit', 'com_users');
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo Lang::txt('COM_USERS_SEARCH_IN_NOTE_TITLE'); ?>" />
+			<input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo Lang::txt('COM_USERS_SEARCH_IN_NOTE_TITLE'); ?>" />
 			<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			<button type="button" class="filter-submit"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 
 		<div class="filter-select fltrt">
-			<select name="filter_category_id" id="filter_category_id" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_category_id" id="filter_category_id" class="inputbox filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
 				<?php echo Html::select('options', Html::category('options', 'com_users.notes'), 'value', 'text', $this->state->get('filter.category_id'));?>
 			</select>
 
-			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_published" class="inputbox filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php echo Html::select('options', Html::grid('publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);?>
 			</select>
@@ -43,7 +43,7 @@ $canEdit = User::authorise('core.edit', 'com_users');
 		<thead>
 			<tr>
 				<th>
-					<input type="checkbox" name="toggle" value="" class="checklist-toggle" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+					<input type="checkbox" name="toggle" value="" class="checklist-toggle" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
 				</th>
 				<th class="left">
 					<?php echo Html::grid('sort', 'COM_USERS_USER_HEADING', 'u.name', $listDirn, $listOrder); ?>
@@ -55,7 +55,7 @@ $canEdit = User::authorise('core.edit', 'com_users');
 					<?php echo Html::grid('sort', 'COM_USERS_CATEGORY_HEADING', 'c.title', $listDirn, $listOrder); ?>
 				</th>
 				<th class="priority-3">
-					<?php echo Html::grid('sort',  'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
 				</th>
 				<th>
 					<?php echo Html::grid('sort', 'COM_USERS_REVIEW_HEADING', 'a.review_time', $listDirn, $listOrder); ?>
@@ -74,7 +74,7 @@ $canEdit = User::authorise('core.edit', 'com_users');
 		</tfoot>
 		<tbody>
 		<?php foreach ($this->items as $i => $item) : ?>
-			<?php $canChange = User::authorise('core.edit.state',  'com_users'); ?>
+			<?php $canChange = User::authorise('core.edit.state', 'com_users'); ?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center checklist">
 					<?php echo Html::grid('id', $i, $item->id); ?>

@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 $dataurl = Route::url('index.php?option='.$option.'&task='.$task.'&type='.$type.'&no_html=1&data=locations');
-$dataurl = str_replace('&amp;','&',$dataurl);
+$dataurl = str_replace('&amp;', '&', $dataurl);
 
 $html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
@@ -47,7 +47,7 @@ behavior:url(#default#VML);
 }
 </style>
 <script src="https://maps.google.com/maps?file=api&amp;v=2&amp;key='.$key.'" type="text/javascript"> </script>
-<script src="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/js/Clusterer2.js" type="text/javascript"> </script>
+<script src="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/js/Clusterer2.js" type="text/javascript"> </script>
 <script type="text/javascript">
 	//<![CDATA[
 	function load() {
@@ -84,7 +84,7 @@ behavior:url(#default#VML);
 	function getMarkers() {
 	//var urlstr="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/read.php";
 	var urlstr="'.$dataurl.'";
-	var icon="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/marker_red.png";
+	var icon="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/img/marker_red.png";
 		var request = GXmlHttp.create();
 		request.open(\'GET\', urlstr , true); // request XML from PHP with AJAX call
 		request.onreadystatechange = function () {
@@ -98,37 +98,37 @@ behavior:url(#default#VML);
 			var usage = locations[i].getAttribute("hits");
 			var icon = new GIcon();
 			if ( usage > 0 ) {
-				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/11.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/img/11.png";
 			}
 			if ( usage > 2 ) {
-				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/10.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/img/10.png";
 			}
 			if ( usage > 10 ) {
-				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/9.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/img/9.png";
 			}
 			if ( usage > 50 ) {
-				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/8.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/img/8.png";
 			}
 			if ( usage > 100 ) {
-				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/7.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/img/7.png";
 			}
 			if ( usage > 250 ) {
-				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/6.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/img/6.png";
 			}
 			if ( usage > 500 ) {
-				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/5.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/img/5.png";
 			}
 			if ( usage > 1000 ) {
-				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/4.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/img/4.png";
 			}
 			if ( usage > 5000 ) {
-				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/3.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/img/3.png";
 			}
 			if ( usage > 10000 ) {
-				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/2.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/img/2.png";
 			}
 			if ( usage > 25000 ) {
-				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/images/1.png";
+				icon.image = "' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/img/1.png";
 			}
 
 			// icon.shadow = "http://labs.google.com/ridefinder/images/mm_20_shadow.png";
@@ -164,25 +164,32 @@ behavior:url(#default#VML);
 	}
 	//]]>
 </script>
+<style>
+	#div_map {
+		width:1280px;
+		height: 860px;
+	}
+	</style>
 </head>
 <body onload="load()" onunload="GUnload()">
-<div id="div_map" style="width:1280px; height: 860px"> </div>
+<div id="div_map"> </div>
 <table>
+<tbody>
 <tr>
 <td>Usage:&nbsp;&nbsp;&nbsp;</td>
-<td>&nbsp;&nbsp;&nbsp;<img src="1.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="2.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="3.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="4.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="5.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="6.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="7.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="8.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="9.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="10.png" width=12 height=20/>&nbsp;&nbsp;&nbsp;></td>
-<td>&nbsp;&nbsp;&nbsp;<img src="11.png" width=12 height=20/></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="1.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="2.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="3.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="4.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="5.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="6.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="7.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="8.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="9.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="10.png" width="12" height="20" alt="" />&nbsp;&nbsp;&nbsp;></td>
+<td>&nbsp;&nbsp;&nbsp;<img src="11.png" width="12" height="20" alt="" /></td>
 </tr>
+</tbody>
 </table>
 </body>
 </html>';
-

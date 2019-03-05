@@ -31,7 +31,7 @@ class Migration20150610123746ComDeveloper extends Base
 						  `state` int(11) DEFAULT '1',
 						  `hub_account` int(11) DEFAULT '0',
 						  PRIMARY KEY (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=latin1;";
+						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
@@ -62,7 +62,7 @@ class Migration20150610123746ComDeveloper extends Base
 						  `scope` varchar(2000) DEFAULT NULL,
 						  `state` int(11) DEFAULT '1',
 						  PRIMARY KEY (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=latin1;";
+						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
@@ -79,7 +79,7 @@ class Migration20150610123746ComDeveloper extends Base
 						  `expires` datetime NOT NULL,
 						  `scope` varchar(2000) DEFAULT NULL,
 						  PRIMARY KEY (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=latin1;";
+						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
@@ -97,7 +97,7 @@ class Migration20150610123746ComDeveloper extends Base
 						  `scope` varchar(2000) DEFAULT NULL,
 						  `state` int(11) DEFAULT '1',
 						  PRIMARY KEY (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=latin1;";
+						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

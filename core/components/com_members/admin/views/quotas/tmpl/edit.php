@@ -45,41 +45,15 @@ if ($canDo->get('core.edit'))
 }
 Toolbar::cancel();
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
+
 $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 ?>
 
-<script type="text/javascript">
-	function submitbutton(pressbutton)
-	{
-		var form = document.adminForm;
-
-		if (pressbutton == 'cancel') {
-			submitform( pressbutton );
-			return;
-		}
-
-		submitform( pressbutton );
-	}
-
-	jQuery(document).ready(function($){
-		$('#class_id').on('change', function (e) {
-			//e.preventDefault();
-			$.getJSON('<?php echo Route::url('index.php?option=' . $this->option . '&controller=quotas&task=getClassValues&class_id=', false); ?>' + $(this).val(), {}, function (data) {
-				$.each(data, function (key, val) {
-					var item = $('#field-'+key);
-					item.val(val);
-
-					if (e.target.options[e.target.selectedIndex].text == 'custom') {
-						item.prop("readonly", false);
-					} else {
-						item.prop("readonly", true);
-					}
-				});
-			});
-		});
-	});
-</script>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<?php if ($this->getError()) : ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php endif; ?>
@@ -96,8 +70,8 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 
 				<?php if (!$this->row->get('user_id')) : ?>
 					<div class="input-wrap">
-						<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
-						<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css";</script>
+						<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/assets/js/autocompleter.js"></script>
+						<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/assets/css/autocompleter.css";</script>
 
 						<label for="field-user_id"><?php echo Lang::txt('COM_MEMBERS_QUOTA_USER'); ?>:</label>
 						<input type="text" name="fields[user_id]" id="field-user_id" data-options="members,multi," id="acmembers" class="autocomplete" value="" autocomplete="off" data-css="" data-script="<?php echo $base; ?>/administrator/index.php" />
@@ -132,28 +106,24 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_ID'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_MEMBERS_QUOTA_ID'); ?></th>
 						<td><?php echo $this->row->get('user_id'); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_USERNAME'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_MEMBERS_QUOTA_USERNAME'); ?></th>
 						<td><?php echo $this->row->get('username'); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_NAME'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_MEMBERS_QUOTA_NAME'); ?></th>
 						<td><?php echo $this->row->get('name'); ?></td>
 					</tr>
-				</tbody>
-			</table>
-			<table class="meta">
-				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_SPACE'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_MEMBERS_QUOTA_SPACE'); ?></th>
 						<td><?php echo Lang::txt('COM_MEMBERS_QUOTA_SPACE_DISPLAY', (isset($this->du['info']['space']) ? $this->du['info']['space'] / 1024 : 0), $this->du['percent']); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_MEMBERS_QUOTA_FILES'); ?></th>
-						<td><?php echo (isset($this->du['info']['files']) ? $this->du['info']['files'] : 0); ?></td>
+						<th scope="row"><?php echo Lang::txt('COM_MEMBERS_QUOTA_FILES'); ?></th>
+						<td><?php echo (isset($this->du['info']['files'])) ? $this->du['info']['files'] : 0; ?></td>
 					</tr>
 				</tbody>
 			</table>

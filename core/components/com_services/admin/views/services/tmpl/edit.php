@@ -45,28 +45,13 @@ if ($canDo->get('core.edit'))
 }
 Toolbar::cancel();
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-<!--
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
 
-	// do field validation
-	if (document.getElementById('field-title').value == ''){
-		alert( '<?php echo Lang::txt('COM_SERVICES_ERROR_MISSING_TITLE'); ?>' );
-	} else {
-		submitform( pressbutton );
-	}
-}
-//-->
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -74,12 +59,12 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-category"><?php echo Lang::txt('COM_SERVICES_FIELD_CATEGORY'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[category]" id="field-category" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->category)); ?>" />
+					<input type="text" name="fields[category]" id="field-category" class="required" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->category)); ?>" />
 				</div>
 
 				<div class="input-wrap">
 					<label for="field-title"><?php echo Lang::txt('COM_SERVICES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[title]" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+					<input type="text" name="fields[title]" id="field-title" class="required" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_SERVICES_FIELD_ALIAS_HINT'); ?>">
@@ -143,7 +128,7 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_SERVICES_FIELD_ID'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_SERVICES_FIELD_ID'); ?>:</th>
 						<td>
 							<?php echo $this->escape($this->row->id); ?>
 						</td>

@@ -46,33 +46,14 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('collection');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	<?php echo $this->editor()->save('text'); ?>
-
-	// do field validation
-	if ($('#field-title').val() == '') {
-		alert('<?php echo Lang::txt('COM_COLLECTIONS_ERROR_MISSING_TITLE'); ?>');
-	} else if ($('#field-object_type').val() == '') {
-		alert('<?php echo Lang::txt('COM_COLLECTIONS_ERROR_MISSING_OBJECT_TYPE'); ?>');
-	} else if ($('#field-object_id').val() == '') {
-		alert('<?php echo Lang::txt('COM_COLLECTIONS_ERROR_MISSING_OBJECT_ID'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform form-validate" id="item-form" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 	<?php } ?>
@@ -85,7 +66,7 @@ function submitbutton(pressbutton)
 					<div class="col span6">
 						<div class="input-wrap">
 							<label for="field-object_type"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_OWNER_TYPE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-							<select name="fields[object_type]" id="field-object_type">
+							<select name="fields[object_type]" id="field-object_type" class="required">
 								<!-- <option value="site"<?php if ($this->row->get('object_type') == 'site' || $this->row->get('object_type') == '') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COLLECTIONS_FIELD_OWNER_TYPE_SITE'); ?></option> -->
 								<option value="member"<?php if ($this->row->get('object_type') == 'member') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COLLECTIONS_FIELD_OWNER_TYPE_MEMBER'); ?></option>
 								<option value="group"<?php if ($this->row->get('object_type') == 'group') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COLLECTIONS_FIELD_OWNER_TYPE_GROUP'); ?></option>
@@ -94,26 +75,26 @@ function submitbutton(pressbutton)
 					</div>
 					<div class="col span6">
 						<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COLLECTIONS_FIELD_OWNER_ID_HINT'); ?>">
-							<label for="field-title"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_OWNER_ID'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-							<input type="text" name="fields[object_id]" id="field-object_id" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('object_id'))); ?>" />
+							<label for="field-object_id"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_OWNER_ID'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+							<input type="text" name="fields[object_id]" id="field-object_id" class="required" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('object_id'))); ?>" />
 							<span class="hint"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_OWNER_ID_HINT'); ?></span>
 						</div>
 					</div>
 				</div>
 
 				<div class="input-wrap">
-					<label for="field-title"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+					<label for="field-title"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+					<input type="text" name="fields[title]" id="field-title" class="required" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COLLECTIONS_FIELD_ALIAS_HINT'); ?>">
-					<label for="field-alias"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_ALIAS'); ?>:</label><br />
+					<label for="field-alias"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_ALIAS'); ?>:</label>
 					<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
 					<span class="hint"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_ALIAS_HINT'); ?></span>
 				</div>
 
 				<div class="input-wrap">
-					<label for="field-description"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_DESCRIPTION'); ?></label><br />
+					<label for="field-description"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_DESCRIPTION'); ?></label>
 					<?php echo $this->editor('fields[description]', $this->escape($this->row->get('description')), 35, 10, 'field-description', array('class' => 'minimal no-footer')); ?>
 				</div>
 
@@ -155,7 +136,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<th class="key"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_CREATED'); ?>:</th>
 						<td>
-							<?php echo $this->row->get('created'); ?>
+							<?php echo Date::of($this->row->get('created'))->toLocal(); ?>
 							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
 						</td>
 					</tr>
@@ -185,7 +166,7 @@ function submitbutton(pressbutton)
 				<legend><span><?php echo Lang::txt('JGLOBAL_FIELDSET_PUBLISHING'); ?></span></legend>
 
 				<div class="input-wrap">
-					<label for="field-state"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_STATE'); ?>:</label><br />
+					<label for="field-state"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_STATE'); ?>:</label>
 					<select name="fields[state]" id="field-state">
 						<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
 						<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
@@ -194,7 +175,7 @@ function submitbutton(pressbutton)
 				</div>
 
 				<div class="input-wrap">
-					<label for="field-access"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_ACCESS'); ?>:</label><br />
+					<label for="field-access"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_ACCESS'); ?>:</label>
 					<select name="fields[access]" id="field-access">
 						<option value="0"<?php if ($this->row->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COLLECTIONS_ACCESS_PUBLIC'); ?></option>
 						<option value="1"<?php if ($this->row->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COLLECTIONS_ACCESS_REGISTERED'); ?></option>

@@ -257,11 +257,19 @@ if ($this->message) { ?>
 						<h4><?php echo Lang::txt('PLG_USAGE_OVERVIEW_ID_BY_RES'); ?></h4>
 						<ul class="bars">
 							<?php foreach ($residence as $res) { ?>
+								<?php
+								$this->css(
+									'.users-visits-res-' . strtolower($res['column']) . ' .bar-value {
+										background-color: ' . $res['color'] . ';
+										width: ' . number_format($res['value']) . '%;
+									}'
+								);
+								?>
 								<li id="users-visits-res-<?php echo strtolower($res['column']); ?>">
 									<span class="item-label"><?php echo $res['column']; ?></span>
 									<span class="item-value"><?php echo number_format($res['value']); ?>%</span>
 									<span class="bar-container">
-										<span class="bar-value" style="background-color: <?php echo $res['color']; ?>; width: <?php echo number_format($res['value']); ?>%;"></span>
+										<span class="bar-value" title="<?php echo number_format($res['value']); ?>%"></span>
 									</span>
 								</li>
 							<?php } ?>
@@ -273,11 +281,19 @@ if ($this->message) { ?>
 						<h4><?php echo Lang::txt('PLG_USAGE_OVERVIEW_ID_BY_ORG'); ?></h4>
 						<ul class="bars">
 							<?php foreach ($organization as $res) { ?>
+								<?php
+								$this->css(
+									'.users-visits-org-' . strtolower($res['column']) . ' .bar-value {
+										background-color: ' . $res['color'] . ';
+										width: ' . number_format($res['value']) . '%;
+									}'
+								);
+								?>
 								<li id="users-visits-org-<?php echo strtolower($res['column']); ?>">
 									<span class="item-label"><?php echo $res['column']; ?></span>
 									<span class="item-value"><?php echo number_format($res['value']); ?>%</span>
 									<span class="bar-container">
-										<span class="bar-value" style="background-color: <?php echo $res['color']; ?>; width: <?php echo number_format($res['value']); ?>%;"></span>
+										<span class="bar-value" title="<?php echo number_format($res['value']); ?>%;"></span>
 									</span>
 								</li>
 							<?php } ?>
@@ -400,11 +416,19 @@ if ($this->message) { ?>
 						<h4><?php echo Lang::txt('PLG_USAGE_OVERVIEW_ID_BY_RES'); ?></h4>
 						<ul class="bars">
 							<?php foreach ($residence as $res) { ?>
+								<?php
+								$this->css(
+									'.users-downloads-res-' . strtolower($res['column']) . ' .bar-value {
+										background-color: ' . $res['color'] . ';
+										width: ' . number_format($res['value']) . '%;
+									}'
+								);
+								?>
 								<li id="users-downloads-res-<?php echo strtolower($res['column']); ?>">
 									<span class="item-label"><?php echo $res['column']; ?></span>
 									<span class="item-value"><?php echo number_format($res['value']); ?>%</span>
 									<span class="bar-container">
-										<span class="bar-value" style="background-color: <?php echo $res['color']; ?>; width: <?php echo number_format($res['value']); ?>%;"></span>
+										<span class="bar-value" title="<?php echo number_format($res['value']); ?>%;"></span>
 									</span>
 								</li>
 							<?php } ?>
@@ -416,11 +440,19 @@ if ($this->message) { ?>
 						<h4><?php echo Lang::txt('PLG_USAGE_OVERVIEW_ID_BY_ORG'); ?></h4>
 						<ul class="bars">
 							<?php foreach ($organization as $res) { ?>
+								<?php
+								$this->css(
+									'.users-downloads-org-' . strtolower($res['column']) . ' .bar-value {
+										background-color: ' . $res['color'] . ';
+										width: ' . number_format($res['value']) . '%;
+									}'
+								);
+								?>
 								<li id="users-downloads-org-<?php echo strtolower($res['column']); ?>">
 									<span class="item-label"><?php echo $res['column']; ?></span>
 									<span class="item-value"><?php echo number_format($res['value']); ?>%</span>
 									<span class="bar-container">
-										<span class="bar-value" style="background-color: <?php echo $res['color']; ?>; width: <?php echo number_format($res['value']); ?>%;"></span>
+										<span class="bar-value" title="<?php echo number_format($res['value']); ?>%;"></span>
 									</span>
 								</li>
 							<?php } ?>

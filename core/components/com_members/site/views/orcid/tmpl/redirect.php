@@ -44,7 +44,7 @@ defined('_HZEXEC_') or die();
 			<br />
 			<p><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_INDICATION_MESSAGE'); ?></p>
 		<?php } elseif (Request::getString('error') && Request::getString('error_description')) { ?>
-			<p><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_DENY'); ?><a class="btn" href="https://orcid.org/signin" target="_blank"><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_SIGN_IN_OR_REGISTER'); ?></a></p>
+			<p><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_DENY'); ?><a class="btn" href="https://orcid.org/signin" rel="nofollow external"><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_SIGN_IN_OR_REGISTER'); ?></a></p>
 		<?php } ?>
 	</div>
 </section>

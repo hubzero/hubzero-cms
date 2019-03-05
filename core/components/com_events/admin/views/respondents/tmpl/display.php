@@ -44,7 +44,7 @@ Toolbar::cancel();
 
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo Lang::txt('COM_EVENTS_SEARCH'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+		<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" />
 
 		<input type="submit" value="<?php echo Lang::txt('COM_EVENTS_GO'); ?>" />
 	</fieldset>
@@ -52,7 +52,7 @@ Toolbar::cancel();
 	<table class="adminlist">
 		<thead>
  			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_EVENTS_RESPONDANT_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_EVENTS_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_EVENTS_RESPONDANT_REGISTERED', 'registered', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
@@ -76,7 +76,7 @@ Toolbar::cancel();
 				?>
 				<tr class="<?php echo "row$k"; ?>">
 					<td>
-						<input type="checkbox" name="rid[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="Joomla.isChecked(this.checked);" />
+						<input type="checkbox" name="rid[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" class="checkbox-toggle" />
 					</td>
 					<td>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=respondent&id=' . $row->id . '&event_id=' . $this->event->id); ?>">
@@ -115,8 +115,9 @@ Toolbar::cancel();
 		</tbody>
 	</table>
 
-	<input type="hidden" name="event" value="<?php $id = Request::getArray('id', array()); echo is_array($id) ? implode(',', $id) : $id; ?>" />
-	<input type="hidden" name="id[]" value="<?php $id = Request::getArray('id', array()); echo is_array($id) ? implode(',', $id) : $id; ?>" />
+	<?php $id = Request::getArray('id', array()); ?>
+	<input type="hidden" name="event" value="<?php echo is_array($id) ? implode(',', $id) : $id; ?>" />
+	<input type="hidden" name="id[]" value="<?php echo is_array($id) ? implode(',', $id) : $id; ?>" />
 
 	<input type="hidden" name="task" value="" autocomplete="" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

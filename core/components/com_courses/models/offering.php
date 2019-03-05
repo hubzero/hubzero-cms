@@ -657,7 +657,7 @@ class Offering extends Base
 
 	/**
 	 * Get a list of assets for an offering
-	 * 
+	 *
 	 * Accepts an array of filters to apply to the list of assets
 	 *
 	 * @param      array $filters Filters to apply
@@ -1002,20 +1002,14 @@ class Offering extends Base
 	 * @param      array $filters
 	 * @return     mixed
 	 */
-	public function announcements($filters=array())
+	public function announcements($filters = [])
 	{
-		if (!isset($filters['offering_id']))
-		{
-			$filters['offering_id'] = (int) $this->get('id');
-		}
-		if (!isset($filters['section_id']))
-		{
-			$filters['section_id'] = (int) $this->section()->get('id');
-		}
-		if (!isset($filters['state']))
-		{
-			$filters['state'] = 1;
-		}
+		$defaultFilters = [
+			'offering_id' => (int) $this->get('id'),
+			'section_id' => (int) $this->section()->get('id'),
+			'state' => 1
+		];
+		$filters = array_merge($defaultFilters, $filters);
 
 		if (isset($filters['count']) && $filters['count'])
 		{
@@ -1028,7 +1022,7 @@ class Offering extends Base
 		{
 			$tbl = new Tables\Announcement($this->_db);
 
-			$results = array();
+			$results = [];
 
 			if (($data = $tbl->find($filters)))
 			{

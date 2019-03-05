@@ -31,22 +31,62 @@
 
 // No direct access.
 defined('_HZEXEC_') or die();
+
+if (!isset($this->folderDepth))
+{
+	$this->folderDepth = 1;
+}
 ?>
-<ul <?php echo $this->folders_id; ?>>
+<ul <?php echo $this->folders_id; ?> class="<?php echo 'depth' . $this->folderDepth; ?>">
 	<?php foreach ($this->folderTree as $folder) : ?>
-		<li id="<?php echo $this->escape($folder['name']); ?>">
-			<a href="<?php echo Route::url('index.php?option=com_media&controller=medialist&tmpl=component&folder=' . '/' . $folder['path']); ?>" target="folderframe">
+		<?php
+		$cls = '';
+		$icon = 'folder.svg';
+		$open = 0;
+		$p = array();
+		if ($this->folderDepth == 1):
+			$cls = ' class="open"';
+			$icon = 'folder-open.svg';
+		else:
+			$fld = trim($this->folder, '/');
+			$trail = explode('/', $fld);
+
+			$p = explode('/', trim($folder['path'], '/'));
+
+			foreach ($p as $i => $f):
+				if (!isset($trail[$i])):
+					break;
+				endif;
+
+				if ($p[$i] == $trail[$i]):
+					$open++;
+				endif;
+			endforeach;
+
+			if ($open && $open == count($p)):
+				$cls = ' class="open"';
+			endif;
+		endif;
+		?>
+		<li id="<?php echo $this->escape($folder['name']); ?>"<?php echo $cls; ?>>
+			<a class="folder" data-folder="<?php echo $this->escape('/' . $folder['path']); ?>" href="<?php echo Route::url('index.php?option=com_media&controller=medialist&tmpl=component&' . Session::getFormToken() . '=1&folder=/' . urlencode($folder['path'])); ?>">
+				<span class="folder-icon">
+					<img src="<?php echo $this->img($icon); ?>" alt="<?php echo $this->escape($folder['name']); ?>" />
+				</span>
 				<?php echo $this->escape($folder['name']); ?>
 			</a>
 			<?php
-			if (isset($folder['children']) && count($folder['children'])) :
+			if (isset($folder['children']) && count($folder['children'])):
 				$temp = $this->folderTree;
 
 				$this->folderTree = $folder['children'];
+				$this->folders_id = 'id="folder-' . $folder['name'] . '"';
+				$this->folderDepth++;
 
 				echo $this->loadTemplate('folders');
 
 				$this->folderTree = $temp;
+				$this->folderDepth--;
 			endif;
 			?>
 		</li>

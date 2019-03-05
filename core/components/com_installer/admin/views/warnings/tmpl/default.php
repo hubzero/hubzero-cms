@@ -28,7 +28,7 @@
 
 $canDo = \Components\Installer\Admin\Helpers\Installer::getActions();
 
-Toolbar::title(Lang::txt('COM_INSTALLER_HEADER_' . $this->getName()), 'install.png');
+Toolbar::title(Lang::txt('COM_INSTALLER_HEADER_' . $this->getName()), 'install');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences('com_installer');
@@ -51,10 +51,10 @@ Document::setTitle(Lang::txt('COM_INSTALLER_TITLE_' . $this->getName()));
 			foreach ($this->messages as $message)
 			{
 				echo Html::sliders('panel', $message['message'], str_replace(' ', '', $message['message']));
-				echo '<div style="padding: 5px;">' . $message['description'] . '</div>';
+				echo '<div class="warning">' . $message['description'] . '</div>';
 			}
 			echo Html::sliders('panel', Lang::txt('COM_INSTALLER_MSG_WARNINGFURTHERINFO'), 'furtherinfo-pane');
-			echo '<div style="padding: 5px;" >'. Lang::txt('COM_INSTALLER_MSG_WARNINGFURTHERINFODESC') .'</div>';
+			echo '<div class="warning">'. Lang::txt('COM_INSTALLER_MSG_WARNINGFURTHERINFODESC') .'</div>';
 			echo Html::sliders('end');
 		}
 		?>

@@ -48,27 +48,13 @@ Toolbar::spacer();
 Toolbar::help('comment');
 
 Html::behavior('tooltip');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
 
-	<?php echo $this->editor()->save('text'); ?>
-
-	// do field validation
-	if ($('#field-content').val() == ''){
-		alert('<?php echo Lang::txt('COM_WISHLIST_ERROR_MISSING_TEXT'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -76,7 +62,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-content"><?php echo Lang::txt('COM_WISHLIST_COMMENT'); ?>:</label><br />
-					<?php echo $this->editor('fields[content]', $this->escape(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->row->content))), 50, 30, 'field-content', array('class' => 'minimal no-footer')); ?>
+					<?php echo $this->editor('fields[content]', $this->escape(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->row->content))), 50, 30, 'field-content', array('class' => 'required minimal no-footer')); ?>
 				</div>
 			</fieldset>
 		</div>
@@ -84,35 +70,35 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_WISHLIST_REFERENCEID'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WISHLIST_REFERENCEID'); ?>:</th>
 						<td>
 							<?php echo $this->row->item_id; ?>
 							<input type="hidden" name="fields[item_id]" value="<?php echo $this->escape($this->row->item_id); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WISHLIST_FIELD_CATEGORY'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WISHLIST_FIELD_CATEGORY'); ?>:</th>
 						<td>
 							<?php echo $this->row->item_type; ?>
 							<input type="hidden" name="fields[item_type]" value="<?php echo $this->escape($this->row->item_type); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WISHLIST_FIELD_ID'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WISHLIST_FIELD_ID'); ?>:</th>
 						<td>
 							<?php echo $this->row->id; ?>
 							<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->escape($this->row->id); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATED'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATED'); ?>:</th>
 						<td>
-							<time datetime="<?php echo $this->escape($this->row->created); ?>"><?php echo $this->escape($this->row->created); ?></time>
+							<time datetime="<?php echo $this->escape($this->row->created); ?>"><?php echo Date::of($this->row->created)->toLocal(); ?></time>
 							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->created); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATOR'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATOR'); ?>:</th>
 						<td>
 							<?php
 							$editor = User::getInstance($this->row->created_by);
@@ -146,7 +132,7 @@ function submitbutton(pressbutton)
 
 	<?php /*
 		<?php if ($canDo->get('core.admin')): ?>
-			<div class="col width-100 fltlft">
+			<div class="col span12">
 				<fieldset class="panelform">
 					<legend><span><?php echo Lang::txt('COM_WISHLIST_FIELDSET_RULES'); ?></span></legend>
 					<?php echo $this->form->getLabel('rules'); ?>

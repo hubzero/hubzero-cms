@@ -51,7 +51,7 @@ if ($canDo->get('core.edit.state'))
 		Toolbar::publish('publish', 'JTOOLBAR_ENABLE', true);
 		Toolbar::unpublish('unpublish', 'JTOOLBAR_DISABLE', true);
 	}
-	if ($this->filters['state'] != -1 )
+	if ($this->filters['state'] != -1)
 	{
 		Toolbar::divider();
 		if ($this->filters['state'] != 2)
@@ -99,13 +99,13 @@ $this->css('.adminlist tr td {
 		<div class="grid">
 			<div class="col span6">
 				<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_REDIRECT_SEARCH_LINKS'); ?>" />
+				<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_REDIRECT_SEARCH_LINKS'); ?>" />
 				<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span6">
 				<label for="filter_state"><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></label>
-				<select name="state" id="filter_state" class="inputbox" onchange="this.form.submit()">
+				<select name="state" id="filter_state" class="inputbox filter filter-submit">
 					<?php echo Html::select('options', Components\Redirect\Helpers\Redirect::publishedOptions(), 'value', 'text', $this->filters['state'], true);?>
 				</select>
 			</div>
@@ -116,7 +116,7 @@ $this->css('.adminlist tr td {
 		<thead>
 			<tr>
 				<th scope="col">
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
 				</th>
 				<th scope="col" class="title">
 					<?php echo Html::grid('sort', 'COM_REDIRECT_HEADING_OLD_URL', 'old_url', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
@@ -172,14 +172,14 @@ $this->css('.adminlist tr td {
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $item->id ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $item->id ?>" class="checkbox-toggle" />
 				</td>
 				<td>
 					<?php if ($canEdit) : ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $item->id);?>" title="<?php echo $this->escape($item->old_url); ?>">
 							<?php
 							$old = str_replace(Request::root(), '', $item->old_url);
-							echo '<span style="color:#ccc">' . Lang::txt('COM_REDIRECT_ROOT') . '</span>/' . $this->escape(ltrim($old, '/')); ?>
+							echo '<span class="smallsub">' . Lang::txt('COM_REDIRECT_ROOT') . '</span>/' . $this->escape(ltrim($old, '/')); ?>
 						</a>
 					<?php else : ?>
 						<?php echo $this->escape(str_replace(Request::root(), '', $item->old_url)); ?>
@@ -190,7 +190,7 @@ $this->css('.adminlist tr td {
 					<?php
 					if (substr($item->new_url, 0, strlen('http')) != 'http')
 					{
-						echo '<span style="color:#ccc">' . Lang::txt('COM_REDIRECT_ROOT') . '</span>/';
+						echo '<span class="smallsub">' . Lang::txt('COM_REDIRECT_ROOT') . '</span>/';
 					}
 					echo $this->escape(ltrim($item->new_url, '/'));
 					?>

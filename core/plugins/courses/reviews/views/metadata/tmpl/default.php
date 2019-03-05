@@ -74,19 +74,59 @@ if ($ratings)
 
 switch ($avg)
 {
-	case 0.5: $cls = ' half-stars';      break;
-	case 1:   $cls = ' one-stars';       break;
-	case 1.5: $cls = ' onehalf-stars';   break;
-	case 2:   $cls = ' two-stars';       break;
-	case 2.5: $cls = ' twohalf-stars';   break;
-	case 3:   $cls = ' three-stars';     break;
-	case 3.5: $cls = ' threehalf-stars'; break;
-	case 4:   $cls = ' four-stars';      break;
-	case 4.5: $cls = ' fourhalf-stars';  break;
-	case 5:   $cls = ' five-stars';      break;
+	case 0.5:
+		$cls = ' half-stars';
+		break;
+	case 1:
+		$cls = ' one-stars';
+		break;
+	case 1.5:
+		$cls = ' onehalf-stars';
+		break;
+	case 2:
+		$cls = ' two-stars';
+		break;
+	case 2.5:
+		$cls = ' twohalf-stars';
+		break;
+	case 3:
+		$cls = ' three-stars';
+		break;
+	case 3.5:
+		$cls = ' threehalf-stars';
+		break;
+	case 4:
+		$cls = ' four-stars';
+		break;
+	case 4.5:
+		$cls = ' fourhalf-stars';
+		break;
+	case 5:
+		$cls = ' five-stars';
+		break;
 	case 0:
-	default:  $cls = ' no-stars';      break;
+	default:
+		$cls = ' no-stars';
+		break;
 }
+
+$this->css('
+	.review-bar-5star {
+		"width: ' . ($total ? round($distribution[5] / $total, 2)*100 : 0) . '%;
+	}
+	.review-bar-4star {
+		"width: ' . ($total ? round($distribution[4] / $total, 2)*100 : 0) . '%;
+	}
+	.review-bar-3star {
+		"width: ' . ($total ? round($distribution[3] / $total, 2)*100 : 0) . '%;
+	}
+	.review-bar-2star {
+		"width: ' . ($total ? round($distribution[2] / $total, 2)*100 : 0) . '%;
+	}
+	.review-bar-1star {
+		"width: ' . ($total ? round($distribution[1] / $total, 2)*100 : 0) . '%;
+	}
+');
 ?>
 <div class="reviews-summary">
 	<p class="avgrating <?php echo $cls; ?>">
@@ -99,7 +139,7 @@ switch ($avg)
 				<th><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_5_STAR'); ?></th>
 				<td>
 					<span class="review-base">
-						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[5] / $total, 2)*100 : 0; ?>%;">
+						<strong class="review-bar review-bar-5star">
 							<span><?php echo $this->escape($distribution[5]); ?></span>
 						</strong>
 					</span>
@@ -109,7 +149,7 @@ switch ($avg)
 				<th><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_4_STAR'); ?></th>
 				<td>
 					<span class="review-base">
-						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[4] / $total, 2)*100 : 0; ?>%;">
+						<strong class="review-bar review-bar-4star">
 							<span><?php echo $this->escape($distribution[4]); ?></span>
 						</strong>
 					</span>
@@ -119,7 +159,7 @@ switch ($avg)
 				<th><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_3_STAR'); ?></th>
 				<td>
 					<span class="review-base">
-						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[3] / $total, 2)*100 : 0; ?>%;">
+						<strong class="review-bar review-bar-3star">
 							<span><?php echo $this->escape($distribution[3]); ?></span>
 						</strong>
 					</span>
@@ -129,7 +169,7 @@ switch ($avg)
 				<th><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_2_STAR'); ?></th>
 				<td>
 					<span class="review-base">
-						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[2] / $total, 2)*100 : 0; ?>%;">
+						<strong class="review-bar review-bar-2star">
 							<span><?php echo $this->escape($distribution[2]); ?></span>
 						</strong>
 					</span>
@@ -139,7 +179,7 @@ switch ($avg)
 				<th><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_1_STAR'); ?></th>
 				<td>
 					<span class="review-base">
-						<strong class="review-bar" style="width: <?php echo $total ? round($distribution[1] / $total, 2)*100 : 0; ?>%;">
+						<strong class="review-bar review-bar-1star">
 							<span><?php echo $this->escape($distribution[1]); ?></span>
 						</strong>
 					</span>

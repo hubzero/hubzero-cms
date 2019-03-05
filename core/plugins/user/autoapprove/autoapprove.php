@@ -94,12 +94,12 @@ class plgUserAutoapprove extends \Hubzero\Plugin\Plugin
 
 		if (!$pattern)
 		{
-			return false;
+			return true;
 		}
 
 		if (!$user || !$user['email'])
 		{
-			return false;
+			return true;
 		}
 
 		if ($user['approved'])
@@ -120,12 +120,11 @@ class plgUserAutoapprove extends \Hubzero\Plugin\Plugin
 			$db = App::get('db');
 			$db->setQuery($query);
 
-			if (!$db->query())
+			if ($db->query())
 			{
-				return false;
+				//return false;
+				User::set('approved', 1);
 			}
-
-			User::set('approved', 1);
 		}
 
 		return true;

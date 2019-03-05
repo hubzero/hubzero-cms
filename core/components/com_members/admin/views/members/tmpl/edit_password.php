@@ -43,37 +43,10 @@ defined('_HZEXEC_') or die();
 	<?php endif; ?>
 	<div class="input-wrap">
 		<label for="newpass"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_NEW'); ?>:</label>
-		<input type="password" name="newpass" id="newpass" value="" autocomplete="off" />
+		<input type="password" name="newpass" id="newpass" value="" autocomplete="off" data-href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=checkpass&no_html=1', false); ?>" data-values="user_id=<?php echo $this->profile->get('id', 0); ?>&option=<?php echo $this->option; ?>&controller=<?php echo $this->controller; ?>&task=checkpass&no_html=1" />
 		<p class="warning"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_NEW_WARNING'); ?></p>
 		<?php if (count($this->password_rules) > 0) : ?>
 			<?php $this->css('password.css'); ?>
-			<script type="text/javascript">
-				jQuery(document).ready(function ($) {
-					var password = $('#newpass'),
-						passrule = $('#passrules');
-
-					if (password.length > 0 && passrule.length > 0) {
-						password.on('keyup', function(){
-							// Create an ajax call to check the potential password
-							$.ajax({
-								url: "<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=checkpass&no_html=1', false); ?>", //"/api/members/checkpass",
-								type: "POST",
-								data: "password1="+password.val()+"&user_id=<?php echo $this->profile->get('id', 0); ?>&option=<?php echo $this->option; ?>&controller=<?php echo $this->controller; ?>&task=checkpass&no_html=1",
-								dataType: "json",
-								cache: false,
-								success: function(json) {
-									if (json.html.length > 0 && password.val() !== '') {
-										passrule.html(json.html);
-									} else {
-										// Probably deleted password, so reset classes
-										passrule.find('li').switchClass('error passed', 'empty', 200);
-									}
-								}
-							});
-						});
-					}
-				});
-			</script>
 			<div><?php echo Lang::txt('COM_MEMBERS_PASSWORD_RULES'); ?>:</div>
 			<ul id="passrules" class="passrules">
 				<?php foreach ($this->password_rules as $rule) : ?>

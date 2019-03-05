@@ -35,22 +35,10 @@ defined('_HZEXEC_') or die();
 $this->css();
 
 Toolbar::title(Lang::txt('COM_GROUPS'), 'groups.png');
-Toolbar::custom('display','back','back','COM_GROUPS_BACK', false);
+Toolbar::custom('display', 'back', 'back', 'COM_GROUPS_BACK', false);
 
 Html::behavior('tooltip');
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('adminForm');
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 

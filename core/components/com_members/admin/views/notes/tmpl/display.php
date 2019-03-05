@@ -80,18 +80,18 @@ Toolbar::help('notes');
 		<div class="grid">
 			<div class="col span6">
 				<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-				<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_IN_NOTE_TITLE'); ?>" />
+				<input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_IN_NOTE_TITLE'); ?>" />
 				<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 
 			<div class="col span6">
-				<select name="filter_category_id" id="filter_category_id" class="inputbox" onchange="this.form.submit()">
+				<select name="filter_category_id" id="filter_category_id" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
 					<?php echo Html::select('options', Html::category('options', 'com_members'), 'value', 'text', $this->filters['category_id']); ?>
 				</select>
 
-				<select name="filter_published" class="inputbox" onchange="this.form.submit()">
+				<select name="filter_published" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
 					<?php echo Html::select('options', Html::grid('publishedOptions'), 'value', 'text', $this->filters['state'], true); ?>
 				</select>
@@ -103,7 +103,7 @@ Toolbar::help('notes');
 		<thead>
 			<tr>
 				<th>
-					<input type="checkbox" name="toggle" value="" class="checklist-toggle" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+					<input type="checkbox" name="toggle" value="" class="checklist-toggle" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
 				</th>
 				<th class="left">
 					<?php echo Html::grid('sort', 'COM_MEMBERS_USER_HEADING', 'u.name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>

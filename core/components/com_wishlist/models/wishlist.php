@@ -822,6 +822,7 @@ class Wishlist extends Relational
 		{
 			$owners = $this->getOwners($this->config('group'));
 			$voters = $owners['individuals'] + $owners['advisory'];
+			$advisory = $owners['advisory'];
 
 			if (!count($voters))
 			{

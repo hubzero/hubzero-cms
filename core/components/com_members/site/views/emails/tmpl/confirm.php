@@ -33,14 +33,21 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->baseURL = rtrim(str_replace('/administrator', '', $this->baseURL), '/');
+$this->baseURL = rtrim($this->baseURL, '/');
 
-$link = Config::get('sef') && App::isAdmin()
-	? '/members/confirm?confirm=' . -$this->confirm
-	: Route::url('index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->confirm . '&email=' . urlencode($this->email), false);
+$confirmationCode = -$this->confirm;
+$userEmail = urlencode($this->email);
+$relativeUrl = "index.php?option=$this->option&task=confirm&confirm=$confirmationCode&email=$userEmail";
+$link = $this->baseURL . Route::urlForClient($relativeUrl, false);
+$link = str_replace('/administrator', '', $link);
 ?>
-This email is to confirm the email address for the <?php echo $this->sitename; ?> account: <?php echo $this->login; ?>.
 
-Click the following link to confirm your email address and activate your <?php echo $this->sitename; ?> account.
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_CREATED') . ": $this->registerDate (UTC)"; ?>
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_NAME') . ": $this->name"; ?>
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_USERNAME') . ": $this->login"; ?>
 
-<?php echo $this->baseURL . $link; ?>
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_CONFIRM_MESSAGE', $this->sitename); ?>
+
+<?php echo $link; ?>
+
+<?php echo Lang::txt('COM_MEMBERS_EMAIL_CONFIRM_DO_NOT_REPLY');

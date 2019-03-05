@@ -173,9 +173,14 @@
 .super-group-menu li:hover > ul {
 	left: 0px;
 }
+/* Use touch for mobile */
+.super-group-menu li.hover-effect > ul {
+	left: 0px;
+}
 .super-group-menu ul ul li {
 	display: block !important; /* Override display: table-cell for submenus on greedy nav */
 	float: none;
+	white-space: normal !important; /* Allow submenu items to wrap */
 }
 .super-group-menu ul ul li a {
 	padding: 5px 15px;
@@ -209,6 +214,10 @@
 /*** END SUBMENU ARROWS ***/
 
 .super-group-menu ul ul li a:hover {
+	background: rgba(0,0,0,0.4);
+}
+
+.super-group-menu ul ul li a.hover-effect {
 	background: rgba(0,0,0,0.4);
 }
 

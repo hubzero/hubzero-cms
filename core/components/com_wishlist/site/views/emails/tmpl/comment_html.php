@@ -174,15 +174,3 @@ $this->css(
 		</tbody>
 	</table>
 	<!-- End Spacer -->
-
-	<!-- Start Footer -->
-	<table class="tbl-footer" width="100%" cellpadding="0" cellspacing="0" border="0">
-		<tbody>
-			<tr>
-				<td align="left" valign="bottom">
-					<span><?php echo Config::get('sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo $link; ?>">wish #<?php echo $this->wish->get('id'); ?></a>. Visit our <a href="<?php echo rtrim(Request::base(), '/'); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo rtrim(Request::base(), '/'); ?>/support">Support Center</a> if you have any questions.</span>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<!-- End Footer -->

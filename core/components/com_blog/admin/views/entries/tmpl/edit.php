@@ -47,30 +47,14 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('entry');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-Joomla.submitbutton = function(pressbutton) {
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		Joomla.submitform(pressbutton, document.getElementById('item-form'));
-		return;
-	}
-
-	<?php echo $this->editor()->save('text'); ?>
-
-	// do field validation
-	if ($('#field-title').val() == ''){
-		alert("<?php echo Lang::txt('COM_BLOG_ERROR_MISSING_TITLE'); ?>");
-	} else if ($('#field-content').val() == ''){
-		alert("<?php echo Lang::txt('COM_BLOG_ERROR_MISSING_CONTENT'); ?>");
-	} else {
-		Joomla.submitform(pressbutton, document.getElementById('item-form'));
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform form-validate" id="item-form" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -106,7 +90,7 @@ Joomla.submitbutton = function(pressbutton) {
 
 				<div class="input-wrap">
 					<label for="field-title"><?php echo Lang::txt('COM_BLOG_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[title]" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+					<input type="text" name="fields[title]" id="field-title" class="required" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_BLOG_FIELD_ALIAS_HINT'); ?>">
@@ -117,12 +101,19 @@ Joomla.submitbutton = function(pressbutton) {
 
 				<div class="input-wrap">
 					<label for="field-content"><?php echo Lang::txt('COM_BLOG_FIELD_CONTENT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<?php echo $this->editor('fields[content]', $this->escape($this->row->get('content')), 50, 30, 'field-content', array('buttons' => false)); ?>
+					<?php echo $this->editor('fields[content]', $this->escape($this->row->get('content')), 50, 30, 'field-content', array('class' => 'required', 'buttons' => false)); ?>
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_BLOG_FIELD_TAGS_HINT'); ?>">
-					<label for="field-tags"><?php echo Lang::txt('COM_BLOG_FIELD_TAGS'); ?>:</label><br />
-					<textarea name="tags" id="field-tags" cols="35" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
+					<label for="field-tags"><?php echo Lang::txt('COM_BLOG_FIELD_TAGS'); ?>:</label>
+					<?php
+					$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'field-tags', '', $this->row->tags('string'))));
+
+					if (count($tf) > 0) {
+						echo $tf[0];
+					} else { ?>
+						<textarea name="tags" id="field-tags" cols="35" rows="3"><?php echo $this->escape($this->row->tags('string')); ?></textarea>
+					<?php } ?>
 					<span class="hint"><?php echo Lang::txt('COM_BLOG_FIELD_TAGS_HINT'); ?></span>
 				</div>
 			</fieldset>
@@ -151,7 +142,7 @@ Joomla.submitbutton = function(pressbutton) {
 					<tr>
 						<th><?php echo Lang::txt('COM_BLOG_FIELD_CREATED'); ?>:</th>
 						<td>
-							<?php echo $this->row->get('created'); ?>
+							<?php echo Date::of($this->row->get('created'))->toLocal(); ?>
 							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
 						</td>
 					</tr>
@@ -191,12 +182,12 @@ Joomla.submitbutton = function(pressbutton) {
 
 				<div class="input-wrap">
 					<label for="field-publish_up"><?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_UP'); ?>:</label><br />
-					<?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->get('publish_up') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('publish_up'))->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_up')); ?>
+					<?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->get('publish_up') && $this->row->get('publish_up') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('publish_up'))->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_up')); ?>
 				</div>
 
 				<div class="input-wrap">
 					<label for="field-publish_down"><?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_DOWN'); ?>:</label><br />
-					<?php echo Html::input('calendar', 'fields[publish_down]', ($this->row->get('publish_down') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('publish_down'))->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_down')); ?>
+					<?php echo Html::input('calendar', 'fields[publish_down]', ($this->row->get('publish_down') && $this->row->get('publish_down') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('publish_down'))->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_down')); ?>
 				</div>
 			</fieldset>
 		</div>

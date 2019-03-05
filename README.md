@@ -1,5 +1,7 @@
 # QUBESHub Instance of The HUBzero® Platform for Scientific Collaboration
 
+[![DOI](https://zenodo.org/badge/70513480.svg)](https://zenodo.org/badge/latestdoi/70513480)
+
 All extensions of the `app` directory are subtrees (effectively).
 
 ## Components
@@ -23,6 +25,7 @@ Note:  Needed to include extra installation directory instructions in the `compo
  * [plg_content_qubesmacros](https://github.com/qubeshub/plg_content_qubesmacros): Content plugin that contains QUBES macros. **dev** :white_check_mark: **prod** :white_check_mark:
  * [plg_projects_publications](https://github.com/qubeshub/plg_projects_publications): **Override** of HubZero project publications plugin. **dev** :white_check_mark: **prod** :white_check_mark:
  * [plg_groups_publications](https://github.com/qubeshub/plg_groups_publications): Publication plugin for groups component. **dev** :white_check_mark: **prod** :x:
+ * [plg_groups_resources](https://github.com/qubeshub/plg_groups_resources): **Override** of HubZero resource plugin for groups. *This will eventually take over the plg_groups_publications plugin above* **dev** :x: **prod** :x:
  * [plg_groups_usage](https://github.com/qubeshub/plg_groups_usage): **Override** of HubZero usage plugin for groups. **dev** :white_check_mark: **prod** :white_check_mark:
  * [plg_system_menurouter](https://github.com/qubeshub/plg_system_menurouter): Prepend menu parent items to generated component URLs and route menu items appropriately. **dev** :white_check_mark: **prod** :white_check_mark:
  * [plg_system_subnav](https://github.com/qubeshub/plg_system_subnav): Component/URL to subnavigation mapping **dev** :white_check_mark: **prod** :white_check_mark:
@@ -51,6 +54,38 @@ Interesting stuff happens only when you want to update the code on the servers.
 Note that in the commands below, while we are referring to "subtrees", we are not using the "subtree" scripts bundled with git.  This is due to (1) the complete clusterfudge that occurs with history when using subtrees, and (2) the occurrence of the [subtree-cache directory](https://github.com/dflydev/git-subsplit/issues/14) which gets HUGE and is never cleaned.  Also, going the manual route forces a deeper understanding of git, which overall HAS to be a good thing, right?
 
 **Reference for manual subtree commands**:  [Mastering Git subtrees](https://medium.com/@porteneuve/mastering-git-subtrees-943d29a798ec) by [Christophe Porteneuve](https://medium.com/@porteneuve?source=post_header_lockup).
+
+## Overriding a core extension
+
+First, checkout a new branch:
+
+```
+[master]$ git checkout -b <extension>
+```
+
+Filter out the core extension from the history into the new branch:
+
+```
+[extension]$ git filter-branch --subdirectory-filter <path to core extension>
+``` 
+
+Add the new remote on GitHub:
+
+```
+[extension]$ git remote add <extension> https://github.com/qubeshub/<extension>.git
+```
+
+Push to the new remote repository:
+
+```
+[extension]$ git push -u <extension> <extension>:master
+```
+
+Switch back to the `master` branch and follow the instructions in the next section to add in the new remote extension as a subtree to the `app` directory.
+
+```
+[extension]$ git checkout master
+```
 
 ## Adding remote extension as a subtree to this repository
 
@@ -283,6 +318,8 @@ Note the change of the remote from `origin` to `qubeshub`.  On `dev`, `origin` i
 
 # Monthly updates
 
+## Pull in code from upstream
+
 On the Thursday or Friday before QA push, do the following:
 
 ```
@@ -290,7 +327,26 @@ git fetch --all
 git pull upstream 2.2
 ```
 
-This will pull in the new code into `/core`.  For the extensions that have overrides, follow the same steps above for updating remote extensions.
+This will pull in the new code into `/core`.  
+
+## Update HubZero framework and run migration files in Vagrant Box
+
+Make sure you are in the vagrant directory and run the following commands:
+
+```
+vagrant ssh
+cd /var/www/public/core
+php bin/composer install
+cd ..
+php muse migration -f
+exit
+```
+
+## Update remote extensions
+
+For the extensions that have overrides, follow the same steps above for updating remote extensions.
+
+## Merge into app directory
 
 After updating the remote extension, we need to merge those commits into the extensions in the app directory on the master branch.
 
@@ -302,7 +358,7 @@ The `-Xtheirs` is important and safe, as we effectively want our version in the 
 
 **This will pull in ALL commits in the history of the repo into the commit message.**  Edit the commit file as follows.
 
-## Change the edit message
+### Change the edit message
 
 ```
 Squashed commit of the following:
@@ -314,7 +370,7 @@ to
 [extension] Squashed commit of the following...
 ```
 
-## Change the edit description
+### Change the edit description
 
 Include all recent commits from the core to app merge.  After the oldest more recent commit, add `...` on its own line and delete all the way until the commit info at the end (although these will be stripped as they are just comments - good to reread just to be sure).
 

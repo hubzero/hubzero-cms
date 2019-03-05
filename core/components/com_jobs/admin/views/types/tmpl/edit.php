@@ -44,26 +44,14 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('type');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('item-form');
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// form field validation
-	if (form.category.value == '') {
-		alert('<?php echo Lang::txt('COM_JOBS_ERROR_MISSING_TITLE'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<?php if ($this->task == 'edit') { ?>
 	<p class="warning">
 		<?php echo Lang::txt('COM_JOBS_WARNING_EDIT_TYPE'); ?>
@@ -75,7 +63,7 @@ function submitbutton(pressbutton)
 
 		<div class="input-wrap">
 			<label for="category"><?php echo Lang::txt('COM_JOBS_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-			<input type="text" name="category" id="category" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->category)); ?>" />
+			<input type="text" name="category" id="category" class="required" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->category)); ?>" />
 		</div>
 
 		<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />

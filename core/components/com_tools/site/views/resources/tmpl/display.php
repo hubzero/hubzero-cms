@@ -78,13 +78,12 @@ $this->css('resource.css')
 			<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 		<?php } ?>
 
-		<div style="float:left; width:70%;padding:1em 0 1em 0;">
-		<?php if ($this->step !=1 ) { ?>
-			<span style="float:left;"><input type="button" value=" &lt; <?php echo ucfirst(Lang::txt('COM_TOOLS_PREVIOUS')); ?> " class="btn returntoedit" /></span>
-		<?php } ?>
-			<span style="float:right;"><input class="btn" type="submit" value="<?php echo ucfirst(Lang::txt('COM_TOOLS_SAVE_AND_GO_NEXT')); ?>" /></span>
+		<div class="steps-nav">
+			<?php if ($this->step !=1) { ?>
+				<span class="step-prev"><input type="button" value="&lt; <?php echo ucfirst(Lang::txt('COM_TOOLS_PREVIOUS')); ?>" class="btn returntoedit" /></span>
+			<?php } ?>
+			<span class="step-next"><input type="submit" value="<?php echo ucfirst(Lang::txt('COM_TOOLS_SAVE_AND_GO_NEXT')); ?>" class="btn" /></span>
 		</div>
-		<div class="clear"></div>
 
 		<?php
 			switch ($this->step)
@@ -128,12 +127,11 @@ $this->css('resource.css')
 		<input type="hidden" name="toolname" value="<?php echo $this->status['toolname']; ?>" />
 		<?php echo Html::input('token'); ?>
 
-		<div style="float:left; width:70%;padding:1em 0 1em 0;">
+		<div class="steps-nav">
 			<?php if ($this->step != 1) { ?>
-				<span style="float:left;"><input type="button" value=" &lt; <?php echo ucfirst(Lang::txt('COM_TOOLS_PREVIOUS')); ?> " class="btn returntoedit" /></span>
+				<span class="step-prev"><input type="button" value="&lt; <?php echo ucfirst(Lang::txt('COM_TOOLS_PREVIOUS')); ?>" class="btn returntoedit" /></span>
 			<?php } ?>
-			<span style="float:right;"><input class="btn" type="submit" value="<?php echo ucfirst(Lang::txt('COM_TOOLS_SAVE_AND_GO_NEXT')); ?>" /></span>
+			<span class="step-next"><input type="submit" value="<?php echo ucfirst(Lang::txt('COM_TOOLS_SAVE_AND_GO_NEXT')); ?>" class="btn" /></span>
 		</div>
-		<div class="clear"></div>
 	</form>
 </section>

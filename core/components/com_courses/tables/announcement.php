@@ -210,7 +210,7 @@ class Announcement extends Table
 	 * @param     array $filters
 	 * @return    array
 	 */
-	public function find($filters=array())
+	public function find($filters = [])
 	{
 		$query  = "SELECT a.*";
 		$query .= $this->_buildQuery($filters);
@@ -227,6 +227,7 @@ class Announcement extends Table
 		}
 
 		$this->_db->setQuery($query);
+
 		return $this->_db->loadObjectList();
 	}
 }

@@ -36,7 +36,7 @@ foreach ($item_blogs as $blog)
 {
 	// https://stackoverflow.com/a/21947465
 	preg_match("/\<img.+src\=(?:\"|\')(.+?)(?:\"|\')(?:.+?)\>/", $blog->get('content'), $matches);
-	$img_link = $matches[1];
+	$img_link = (!empty($matches) ? $matches[1] : Route::url('app/modules/mod_showcase/assets/img/blog_placeholder.jpg'));
 	
 	echo '<div class="' . $item['class'] . ' blog' . ($item["featured"] ? ' featured' : '') . '">
 ';

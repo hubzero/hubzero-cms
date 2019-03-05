@@ -626,7 +626,7 @@ class Wishlists extends SiteController
 
 		// Do we have a due date?
 		$wish->set('urgent', 0);
-		if ($wish->get('due') != '0000-00-00 00:00:00')
+		if ($wish->get('due') && $wish->get('due') != '0000-00-00 00:00:00')
 		{
 			$delivery = $this->convertTime($wish->get('average_effort'));
 			if ($wish->get('due') < $delivery['warning'])
@@ -904,7 +904,7 @@ class Wishlists extends SiteController
 
 		$new_assignee = ($assignedto && $objWish->get('assigned') != $assignedto) ? 1 : 0;
 
-		$objWish->set('due', ($due ? $due : '0000-00-00 00:00:00'));
+		$objWish->set('due', ($due ? $due : null));
 		$objWish->set('assigned', ($assignedto ? $assignedto : 0));
 
 		// store our due date
@@ -1547,7 +1547,7 @@ class Wishlists extends SiteController
 				$wish->set('wishlist', $newlist->get('id'));
 				$wish->set('assigned', 0); // moved wish is not assigned to anyone yet
 				$wish->set('ranking', 0); // zero ranking
-				$wish->set('due', '0000-00-00 00:00:00');
+				$wish->set('due', null);
 
 				// renew state if option chosen
 				if (!$options['keepstatus'])
@@ -2472,18 +2472,33 @@ class Wishlists extends SiteController
 		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
-		//make sure that file is acceptable type
+		// Create an attachment entry
 		$attachment = Attachment::blank()->set(array(
 			'description' => Request::getString('description', ''),
 			'wish'        => $listdir,
 			'filename'    => $file['name']
 		));
 
-		// make sure that file is acceptable type
+		// Get media config
+		$mediaConfig = \Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
+
+		if ($file['size'] > $sizeLimit)
+		{
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+
+			$this->setError(Lang::txt('COM_WISHLIST_ERROR_UPLOADING_FILE_TOO_BIG', $max));
+			return $this->getError();
+		}
+
+		// Make sure that file is acceptable type
 		if (!$attachment->isAllowedType())
 		{
-			$this->setError(Lang::txt('ATTACHMENT: Incorrect file type.'));
-			return Lang::txt('ATTACHMENT: Incorrect file type.');
+			$this->setError($attachment->getError());
+			return $this->getError();
 		}
 
 		$path = $attachment->link('dir');
@@ -2494,7 +2509,7 @@ class Wishlists extends SiteController
 			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_WISHLIST_UNABLE_TO_CREATE_UPLOAD_PATH'));
-				return 'ATTACHMENT: ' . Lang::txt('COM_WISHLIST_UNABLE_TO_CREATE_UPLOAD_PATH');
+				return 'ATTACHMENT: ' . $this->getError();
 			}
 		}
 
@@ -2502,7 +2517,7 @@ class Wishlists extends SiteController
 		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('COM_WISHLIST_ERROR_UPLOADING'));
-			return 'ATTACHMENT: ' . Lang::txt('COM_WISHLIST_ERROR_UPLOADING');
+			return 'ATTACHMENT: ' . $this->getError();
 		}
 		else
 		{
@@ -2513,8 +2528,8 @@ class Wishlists extends SiteController
 			{
 				if (Filesystem::delete($path))
 				{
-					$this->setError(Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.'));
-					return Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.');
+					$this->setError(Lang::txt('COM_WISHLIST_ERROR_UPLOADING_VIRUS_SCAN'));
+					return $this->getError();
 				}
 			}
 

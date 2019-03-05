@@ -213,7 +213,9 @@ HUB.Plugins.MemberDashboard = {
 			success: function(data, status, jqXHR)
 			{
 				dashboard.addModuleAssets(data.assets);
-				dashboard.modules.replace_widget($('.module[data-moduleid='+moduleid+']'), data.html);
+				//$('.module[data-moduleid='+moduleid+']').replaceWith(data.html);
+				$('.module[data-moduleid='+moduleid+']').html($(data.html).html());
+				//dashboard.modules.replace_widget($('.module[data-moduleid='+moduleid+']'), data.html);
 			},
 			error: function(jqXHR, status, error)
 			{

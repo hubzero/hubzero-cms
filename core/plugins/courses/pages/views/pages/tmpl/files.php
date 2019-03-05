@@ -39,7 +39,7 @@ $base = $this->offering->link() . '&active=pages';
 	<form action="<?php echo Route::url($base); ?>" id="adminForm" method="post" enctype="multipart/form-data">
 		<fieldset>
 			<div id="themanager" class="manager">
-				<iframe style="border:1px solid #eee;margin-top: 0;overflow-y:auto;" src="<?php echo Route::url($base . '&action=list&tmpl=component&page=' . $this->page->get('id') . '&section_id=' . $this->page->get('section_id')); ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
+				<iframe src="<?php echo Route::url($base . '&action=list&tmpl=component&page=' . $this->page->get('id') . '&section_id=' . $this->page->get('section_id')); ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
 			</div>
 		</fieldset>
 

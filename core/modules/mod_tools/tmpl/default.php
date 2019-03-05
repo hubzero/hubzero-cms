@@ -32,52 +32,60 @@
 
 defined('_HZEXEC_') or die();
 
-$this->css();
-
-//Html::behavior('chart', 'resize');
 Html::behavior('chart', 'pie');
+
+$this->css()
+	->js();
 ?>
 <div class="<?php echo $this->module->module; ?>">
 	<div class="overview-container">
-		<div id="<?php echo $this->module->module; ?>-container<?php echo $this->module->id; ?>" class="chrt"></div>
+		<div id="tools-container<?php echo $this->module->id; ?>" class="<?php echo $this->module->module; ?>-chart chrt" data-datasets="<?php echo $this->module->module; ?>-data<?php echo $this->module->id; ?>"></div>
 
-		<script type="text/javascript">
-		if (!jq) {
-			var jq = $;
-		}
-		if (jQuery()) {
-			var $ = jq,
-				<?php echo $this->module->module; ?>Pie;
-
-			$(document).ready(function() {
-				<?php echo $this->module->module; ?>Pie = $.plot($("#<?php echo $this->module->module; ?>-container<?php echo $this->module->id; ?>"), [
-					{label: '<?php echo strtolower(Lang::txt('MOD_TOOLS_COL_REGISTERED')); ?>', data: <?php echo round(($this->registered / $this->total)*100, 2); ?>, color: '<?php echo $this->params->get("color_registered", "#333333"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_TOOLS_COL_CREATED')); ?>', data: <?php echo round(($this->created / $this->total)*100, 2); ?>, color: '<?php echo $this->params->get("color_created", "#999"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_TOOLS_COL_UPLOADED')); ?>', data: <?php echo round(($this->uploaded / $this->total)*100, 2); ?>, color: '<?php echo $this->params->get("color_uploaded", "#656565"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_TOOLS_COL_UPDATED')); ?>', data: <?php echo round(($this->updated / $this->total)*100, 2); ?>, color: '<?php echo $this->params->get("color_updated", "#cccccc"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_TOOLS_COL_APPROVED')); ?>', data: <?php echo round(($this->approved / $this->total)*100, 2); ?>, color: '<?php echo $this->params->get("color_approved", "#ffffff"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_TOOLS_COL_PUBLISHED')); ?>', data: <?php echo round(($this->published / $this->total)*100, 2); ?>, color: '<?php echo $this->params->get("color_published", "#f9d180"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_TOOLS_COL_RETIRED')); ?>', data: <?php echo round(($this->retired / $this->total)*100, 2); ?>, color: '<?php echo $this->params->get("color_retired", "#e1e1e1"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_TOOLS_COL_ABANDONED')); ?>', data: <?php echo round(($this->abandoned / $this->total)*100, 2); ?>, color: '<?php echo $this->params->get("color_abandoned", "#000000"); ?>'}
-				], {
-					legend: {
-						show: true
+		<script type="application/json" id="<?php echo $this->module->module; ?>-data<?php echo $this->module->id; ?>">
+			{
+				"datasets": [
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_TOOLS_COL_REGISTERED')); ?>",
+						"data": <?php echo round(($this->registered / $this->total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_registered", "#333333"); ?>"
 					},
-					series: {
-						pie: {
-							innerRadius: 0.5,
-							show: true,
-							stroke: {
-								color: '#efefef'
-							}
-						}
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_TOOLS_COL_CREATED')); ?>",
+						"data": <?php echo round(($this->created / $this->total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_created", "#999"); ?>"
 					},
-					grid: {
-						hoverable: false
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_TOOLS_COL_UPLOADED')); ?>",
+						"data": <?php echo round(($this->uploaded / $this->total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_uploaded", "#656565"); ?>"
+					},
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_TOOLS_COL_UPDATED')); ?>",
+						"data": <?php echo round(($this->updated / $this->total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_updated", "#cccccc"); ?>"
+					},
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_TOOLS_COL_APPROVED')); ?>",
+						"data": <?php echo round(($this->approved / $this->total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_approved", "#ffffff"); ?>"
+					},
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_TOOLS_COL_PUBLISHED')); ?>",
+						"data": <?php echo round(($this->published / $this->total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_published", "#f9d180"); ?>"
+					},
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_TOOLS_COL_RETIRED')); ?>",
+						"data": <?php echo round(($this->retired / $this->total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_retired", "#e1e1e1"); ?>"
+					},
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_TOOLS_COL_ABANDONED')); ?>",
+						"data": <?php echo round(($this->abandoned / $this->total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_abandoned", "#000000"); ?>"
 					}
-				});
-			});
-		}
+				]
+			}
 		</script>
 
 		<p class="tools-total"><?php echo $this->total; ?></p>

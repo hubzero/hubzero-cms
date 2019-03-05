@@ -217,7 +217,8 @@ class Cloud extends \Hubzero\Base\Obj
 		{
 			$results
 				->select($tbl . '.taggedon')
-				->join($tbl, $tbl . '.tagid', $results->getTableName() . '.id');
+				->join($tbl, $tbl . '.tagid', $results->getTableName() . '.id')
+				->group('taggedon');
 		}
 
 		if (isset($filters['tagger_id'])
@@ -227,7 +228,8 @@ class Cloud extends \Hubzero\Base\Obj
 		{
 			$results
 				->select($tbl . '.label')
-				->join($tbl, $tbl . '.tagid', $results->getTableName() . '.id');
+				->join($tbl, $tbl . '.tagid', $results->getTableName() . '.id')
+				->group($tbl . '.label');
 
 			if (isset($filters['tagger_id']) && $filters['tagger_id'])
 			{

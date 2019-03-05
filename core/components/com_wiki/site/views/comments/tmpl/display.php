@@ -191,7 +191,7 @@ if (!$this->sub)
 					<img src="<?php echo User::picture($anon); ?>" alt="<?php echo Lang::txt('COM_WIKI_MEMBER_PICTURE'); ?>" />
 				</p>
 				<fieldset>
-					<?php if (!$this->mycomment->get('parent')) { ?>
+					<?php if ($this->page->config('comment_ratings') && !$this->mycomment->get('parent')) { ?>
 						<fieldset>
 							<legend><?php echo Lang::txt('COM_WIKI_FIELD_RATING'); ?>:</legend>
 							<label for="review_rating_1"><input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($this->mycomment->get('rating') == 1) { echo ' checked="checked"'; } ?> /> &#x272D;&#x2729;&#x2729;&#x2729;&#x2729; <?php echo Lang::txt('COM_WIKI_FIELD_RATING_ONE'); ?></label>

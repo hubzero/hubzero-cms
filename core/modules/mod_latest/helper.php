@@ -36,7 +36,6 @@ use Hubzero\Module\Module;
 use Hubzero\Utility\Str;
 use Components\Content\Models\Article;
 use Components\Categories\Models\Category;
-use ContentHelperRoute;
 use Component;
 use stdClass;
 use Request;
@@ -349,7 +348,7 @@ class Helper extends Module
 			if ($access || in_array($item->access, User::getAuthorisedViewLevels()))
 			{
 				// We know that user has the privilege to view the article
-				$item->link = Route::url(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->language));
+				$item->link = Route::url(\Components\Content\Site\Helpers\Route::getArticleRoute($item->slug, $item->catslug, $item->language));
 			}
 			else
 			{
@@ -380,7 +379,7 @@ class Helper extends Module
 
 			if ($item->catid)
 			{
-				$item->displayCategoryLink  = Route::url(ContentHelperRoute::getCategoryRoute($item->catid));
+				$item->displayCategoryLink  = Route::url(\Components\Content\Site\Helpers\Route::getCategoryRoute($item->catid));
 				$item->displayCategoryTitle = $show_category ? '<a href="' . $item->displayCategoryLink . '">' . $item->category_title . '</a>' : '';
 			}
 			else

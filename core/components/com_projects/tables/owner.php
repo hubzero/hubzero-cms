@@ -498,25 +498,25 @@ class Owner extends Table
 		$query   =  "SELECT DISTINCT ";
 		if (!$select)
 		{
-			$query	.= " o.*, x.name, x.username, x.organization, x.picture, g.cn as groupname, g.description as groupdesc, p.created_by_user ";
-			$query  .= ", if (o.userid = 0, o.invited_name, x.name) as fullname ";
+			$query .= " o.*, x.name, x.username, x.organization, x.picture, g.cn as groupname, g.description as groupdesc, p.created_by_user ";
+			$query .= ", if (o.userid = 0, o.invited_name, x.name) as fullname ";
 			if ($pub)
 			{
-				$query	.= " , pa.organization as a_organization, pa.name as a_name, pa.credit ";
+				$query .= " , pa.organization as a_organization, pa.name as a_name, pa.credit ";
 			}
 		}
 		else
 		{
-			$query .= $select;
+			$query .= $select . ",o.added";
 		}
-		$query  .= " FROM $this->_tbl AS o ";
-		$query  .=  " JOIN #__projects as p ON o.projectid=p.id";
+		$query .= " FROM $this->_tbl AS o ";
+		$query .= " JOIN #__projects as p ON o.projectid=p.id";
 		if ($pub)
 		{
-			$query  .=  " LEFT JOIN #__publication_authors as pa ON o.id=pa.project_owner_id AND pa.publication_version_id=" . $this->_db->quote($pub);
+			$query .= " LEFT JOIN #__publication_authors as pa ON o.id=pa.project_owner_id AND pa.publication_version_id=" . $this->_db->quote($pub);
 		}
-		$query  .=  " LEFT JOIN #__xprofiles as x ON o.userid=x.uidNumber ";
-		$query  .=  " LEFT JOIN #__xgroups as g ON o.groupid=g.gidNumber ";
+		$query .=  " LEFT JOIN #__xprofiles as x ON o.userid=x.uidNumber ";
+		$query .=  " LEFT JOIN #__xgroups as g ON o.groupid=g.gidNumber ";
 
 		if (is_numeric($projectid))
 		{
@@ -598,7 +598,7 @@ class Owner extends Table
 			foreach ($owners as $k => $owner)
 			{
 				$online = SessionHelper::getSessionWithUserId($owner->userid);
-				$owners[$k]->online = count($online);
+				$owners[$k]->online = ($online ? 1 : 0);
 			}
 		}
 
@@ -621,7 +621,7 @@ class Owner extends Table
 			return false;
 		}
 
-		$query  = "SELECT DISTINCT ".$what;
+		$query  = "SELECT DISTINCT o.added,".$what;
 		$query .= " FROM $this->_tbl AS o ";
 		if ($join)
 		{

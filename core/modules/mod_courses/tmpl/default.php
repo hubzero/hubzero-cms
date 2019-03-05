@@ -38,7 +38,7 @@ Html::behavior('chart');
 ?>
 <div class="mod_courses">
 	<div class="overview-container">
-		<div id="container<?php echo $this->module->id; ?>" class="chart" style="min-width: 400px; height: 200px;"></div>
+		<div id="container<?php echo $this->module->id; ?>" class="chart"></div>
 	<?php
 		$top = 0;
 
@@ -104,7 +104,11 @@ Html::behavior('chart');
 						backgroundColor: 'transparent',
 						margin: [0, -50]
 					},
-					xaxis: { mode: "time", tickLength: 0, tickDecimals: 0, <?php if (count($c) <= 12) { echo 'ticks: ' . count($c) . ','; } ?>
+					xaxis: {
+						mode: "time",
+						tickLength: 0,
+						tickDecimals: 0,
+						<?php if (count($c) <= 12) { echo 'ticks: ' . count($c) . ','; } ?>
 						tickFormatter: function (val, axis) {
 							var d = new Date(val);
 							return month_short[d.getUTCMonth()];//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);

@@ -534,6 +534,11 @@ class Items extends AdminController
 				if (preg_match("/" . $doiService->_configs->shoulder . "/", $model->version->doi))
 				{
 					$doiService->update($model->version->doi, true);
+
+					if ($doiService->getError())
+					{
+						$this->setError($doiService->getError());
+					}
 				}
 			}
 
@@ -626,6 +631,11 @@ class Items extends AdminController
 				if (preg_match("/" . $doiService->_configs->shoulder . "/", $model->version->get('doi')))
 				{
 					$doiService->update($model->version->get('doi'), true);
+
+					if ($doiService->getError())
+					{
+						$this->setError($doiService->getError());
+					}
 				}
 			}
 
@@ -755,8 +765,8 @@ class Items extends AdminController
 					{
 						if ($f[0] == $tagname && end($f) == 1)
 						{
-							echo Helpers\Html::alert(Lang::txt('COM_PUBLICATIONS_REQUIRED_FIELD_CHECK', $f[1]));
-							exit();
+							Notify::error(Lang::txt('COM_PUBLICATIONS_REQUIRED_FIELD_CHECK', $f[1]));
+							return $this->cancelTask();
 						}
 					}
 				}
@@ -825,6 +835,11 @@ class Items extends AdminController
 			if (preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
 			{
 				$doiService->update($this->model->version->doi, true);
+
+				if ($doiService->getError())
+				{
+					$this->setError($doiService->getError());
+				}
 			}
 		}
 
@@ -873,6 +888,12 @@ class Items extends AdminController
 							&& preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
 						{
 							$doiService->update($this->model->version->doi, true);
+
+							if ($doiService->getError())
+							{
+								$this->setError($doiService->getError());
+								break;
+							}
 
 							// Register URL and DOI name for DataCite DOI service
 							$doiService->register(false, true, $this->model->version->doi);

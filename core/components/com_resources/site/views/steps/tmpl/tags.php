@@ -128,7 +128,7 @@ class RecommendedTags
 
 		$freq = array();
 		$last = array();
-		foreach ($words as $idx=>$word)
+		foreach ($words as $idx => $word)
 		{
 			if (self::is_stop_word($word, $opts['min_len']))
 			{
@@ -146,7 +146,7 @@ class RecommendedTags
 					Hubzero\Utility\Inflector::singularize(strtolower($word)).' '.strtolower($words[$idx + 1]).' '.strtolower($words[$idx + 2])
 				);
 			}
-			foreach ($stems as $set_idx=>$set)
+			foreach ($stems as $set_idx => $set)
 			{
 				list($stem, $word) = $set;
 				if (isset($this->existing_map[strtolower($word)]) || isset($this->focus_area_map[strtolower($word)]))
@@ -165,7 +165,7 @@ class RecommendedTags
 			}
 		}
 
-		foreach ($freq as $stem=>$def)
+		foreach ($freq as $stem => $def)
 		{
 			foreach (array($stem, $def['text']) as $text)
 			{
@@ -287,7 +287,7 @@ $this->css('create.css')
 
 	$recommended = new RecommendedTags($this->id, $this->existing);
 
-	function fa_controls($idx, $fas, $fa_props, $existing, $parent = NULL, $depth = 1)
+	function fa_controls($idx, $fas, $fa_props, $existing, $parent = null, $depth = 1)
 	{
 		foreach ($fas as $fa)
 		{
@@ -295,7 +295,7 @@ $this->css('create.css')
 			$multiple = !is_null($props['multiple_depth']) && $props['multiple_depth'] <= $depth;
 			echo '<div class="fa'.($depth === 1 ? ' top-level' : '').'">';
 			echo '<input class="option" class="'.($multiple ? 'checkbox' : 'radio').'" type="'.($multiple ? 'checkbox' : 'radio').'" '.(isset($existing[strtolower($fa['raw_tag'])]) ? 'checked="checked" ' : '' ).'id="tagfa-'.$idx.'-'.$fa['tag'].'" name="tagfa-'.$idx.($parent ? '-'.$parent : '').'[]" value="' . $fa['tag'] . '"';
-			echo ' /><label style="display: inline;" for="tagfa-'.$idx.'-'.$fa['tag'].'"' . ($fa['description'] ? ' title="' . htmlentities($fa['description']) . '" class="tooltips"' : '') . '>'.$fa['raw_tag'].'</label>';
+			echo ' /><label for="tagfa-'.$idx.'-'.$fa['tag'].'"' . ($fa['description'] ? ' title="' . htmlentities($fa['description']) . '" class="tooltips"' : '') . '>'.$fa['raw_tag'].'</label>';
 			if ($fa['children'])
 			{
 				echo fa_controls($idx, $fa['children'], $fa_props, $existing, $fa['tag'], $depth + 1);
@@ -325,7 +325,7 @@ $this->css('create.css')
 					$fa_existing = $recommended->get_existing_focus_areas_map();
 					$fa_props = $recommended->get_focus_area_properties();
 					$idx = 0;
-					foreach ($this->fas as $label=>$fas):
+					foreach ($this->fas as $label => $fas):
 					?>
 						<fieldset>
 							<legend><?php echo 'Select '.$label.': '.($fa_props[$label]['mandatory_depth'] ? '<span class="required">required</span>' : ''); ?></legend>

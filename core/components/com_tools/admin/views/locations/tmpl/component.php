@@ -33,38 +33,15 @@
 defined('_HZEXEC_') or die();
 
 Html::behavior('modal');
+
+$this->js('locations.js');
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('adminForm');
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
-function setTask(task)
-{
-	$('#task').value = task;
-}
-jQuery(document).ready(function($){
-	$('a.edit-asset').on('click', function(e) {
-		e.preventDefault();
-
-		window.parent.$.fancybox.open($(this).attr('href'), {type: 'iframe', size: {x: 570, y: 550}});
-	});
-});
-
-</script>
-
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th colspan="<?php echo (!$this->filters['zone'] ? 9 : 8); ?>" style="text-align:right;">
+				<th colspan="<?php echo !$this->filters['zone'] ? 9 : 8; ?>" class="align-right">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=add&zone=' . $this->filters['zone'] . '&tmpl=' . $this->filters['tmpl']); ?>" class="button edit-asset" rel="{type: 'iframe', size: {x: 570, y: 550}}"><?php echo Lang::txt('COM_TOOLS_ADD_LOCATION'); ?></a>
 				</th>
 			</tr>
@@ -92,7 +69,7 @@ foreach ($this->rows as $row)
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php echo $this->escape($row->get('id')); ?>
-					<input style="visibility:hidden;" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
+					<input class="hide" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
 				</td>
 			<?php if (!$this->filters['zone']) { ?>
 				<td>

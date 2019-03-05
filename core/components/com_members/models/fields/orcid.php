@@ -102,7 +102,7 @@ class Orcid extends Text
 			$html[] = 'sandbox.';
 		}
 	    $html[] = 'orcid.org/oauth/authorize?client_id=' . $clientID . htmlspecialchars('&') . 'response_type=code' . htmlspecialchars('&') . 'scope=/authenticate' . htmlspecialchars('&'). 'redirect_uri=' . urlencode($redirectURI)
-		. '" target="_blank">' . '<img src="' . Request::root() . '/core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt="iD"/>'
+		. '" rel="nofollow external">' . '<img src="' . Request::root() . '/core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt="iD"/>'
 		. Lang::txt('COM_MEMBERS_PROFILE_ORCID_CREATE_OR_CONNECT') . '</a>';
 		$html[] = '	</div>';
 		$html[] = '</div>';

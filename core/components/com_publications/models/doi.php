@@ -67,7 +67,7 @@ class Doi extends Obj
 	 * @var  object
 	 */
 	private $_db = null;
-	
+
 	/**
 	 * DataCite and EZID switch options
 	 *
@@ -76,7 +76,15 @@ class Doi extends Obj
 	const SWITCH_OPTION_NONE = 0;
 	const SWITCH_OPTION_EZID = 1;
 	const SWITCH_OPTION_DATACITE = 2;
-	
+
+	/**
+	 * Publication state transition
+	 *
+	 * @const
+	 */
+	const STATE_FROM_PUBLISHED_TO_DRAFTREADY = 0;
+	const STATE_FROM_DRAFTREADY_TO_PUBLISHED = 1;
+
 	/**
 	 * Constructor
 	 *
@@ -201,7 +209,7 @@ class Doi extends Obj
 			elseif ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
 			{
 				$call  = $this->_configs->ezidServiceURL . DS . 'id' . DS . 'doi:' . $doi;
-			}			
+			}
 		}
 		else
 		{
@@ -213,7 +221,7 @@ class Doi extends Obj
 			{
 				$call  = $this->_configs->ezidServiceURL . DS . 'shoulder' . DS . 'doi:';
 			}
-			
+
 			$call .= $this->_configs->shoulder;
 			$call .= $this->_configs->prefix ? DS . $this->_configs->prefix : DS;
 
@@ -471,9 +479,9 @@ class Doi extends Obj
 
 		return $xmlfile;
 	}
-	
+
 	/**
-	 * Run cURL to register metadata and create DOI on DataCite
+	 * Run cURL to register metadata. When input $doi is null, it is going to create DOI on DataCite. Otherwise, the function is to update DOI state to public.
 	 *
 	 * @param	string	$url
 	 * @param	array	$postVals
@@ -490,27 +498,30 @@ class Doi extends Obj
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($postvals)));
 		curl_setopt($ch, CURLOPT_FAILONERROR, true);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-		
+
 		$response = curl_exec($ch);
-		
-		if(!$response)
+
+		if (!$response)
 		{
 			return false;
 		}
-		
-		$pattern = '/\((.*?)\)/';
-		$ret = preg_match($pattern, $response, $match);
-		if ($ret != 1)
+
+		if (!$doi)
 		{
-			return false;
+			$pattern = '/\((.*?)\)/';
+			$ret = preg_match($pattern, $response, $match);
+			if ($ret != 1)
+			{
+				return false;
+			}
+
+			$doi = $match[1];
 		}
-		
-		$doi = $match[1];
-		
+
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		
+
 		curl_close($ch);
-		
+
 		if ($code == 201 || $code == 200)
 		{
 			return true;
@@ -520,7 +531,7 @@ class Doi extends Obj
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Run cURL to register DOI name and URL that refers to the dataset on DataCite
 	 *
@@ -538,18 +549,18 @@ class Doi extends Obj
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($postvals)));
 		curl_setopt($ch, CURLOPT_FAILONERROR, true);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-		
+
 		$response = curl_exec($ch);
-		
-		if(!$response)
+
+		if (!$response)
 		{
 			return false;
 		}
-		
+
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		
+
 		curl_close($ch);
-		
+
 		if ($code == 201 || $code == 200)
 		{
 			return true;
@@ -559,32 +570,32 @@ class Doi extends Obj
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Register DOI metadata. This is the first step to create DOI name and register metadata on DataCite.
 	 *
+	 * @param  string  $doi  - It is null when the function is used for DOI registration. Otherwise, the function is used for updating DOI state on DataCite.
+	 *
 	 * @return string $doi
 	 */
-	public function registerMetadata()
+	public function registerMetadata($doi = null)
 	{
-		$doi = null;
-		
 		if (!$this->on())
 		{
 			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
 			return false;
 		}
-		
+
 		// Submit DOI metadata
 		$metadataURL = $this->_configs->dataciteServiceURL . DS . 'metadata' . DS . $this->_configs->shoulder;
-		$xml = $this->buildXml();
+		$xml = $this->buildXml($doi);
 		$subResult = $this->regMetadata($metadataURL, $xml, $doi);
 
 		if (!$subResult)
 		{
 			return false;
 		}
-		
+
 		return $doi;
 	}
 	/**
@@ -599,15 +610,15 @@ class Doi extends Obj
 			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
 			return false;
 		}
-		
+
 		// Register URL
 		$resURL = $this->get('url');
 		$url = $this->_configs->dataciteServiceURL . DS . 'doi' . DS . $doi;
 		$postvals = "doi=" . $doi . "\n" . "url=" . $resURL;
-		
+
 		$regResult = $this->regURL($url, $postvals);
-		
-		if(!$regResult)
+
+		if (!$regResult)
 		{
 			return false;
 		}
@@ -616,9 +627,9 @@ class Doi extends Obj
 			return true;
 		}
 	}
-	
+
 	/**
-	 * Update DOI metadata 
+	 * Update DOI metadata
 	 *
 	 * @param   string   $doi
 	 *
@@ -627,22 +638,22 @@ class Doi extends Obj
 	public function dataciteMetadataUpdate($doi)
 	{
 		$doi = $doi ? $doi : $this->get('doi');
-		
+
 		if (!$doi)
 		{
 			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_UPDATE_NO_HANDLE'));
 			return false;
 		}
-		
+
 		if (!$this->on())
 		{
 			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
 			return false;
 		}
-		
+
 		$metadataURL = $this->_configs->dataciteServiceURL . DS . 'metadata';
 		$xml = $this->buildXml($doi);
-		
+
 		$ch = curl_init($metadataURL);
 		curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->dataciteUserPW);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
@@ -650,18 +661,18 @@ class Doi extends Obj
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($xml)));
 		curl_setopt($ch, CURLOPT_FAILONERROR, true);
 		curl_setopt($ch, CURLOPT_POST, true);
-		
+
 		$response = curl_exec($ch);
-		
-		if(!$response)
+
+		if (!$response)
 		{
 			return false;
 		}
-		
+
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		
+
 		curl_close($ch);
-		
+
 		if ($code == 201 || $code == 200)
 		{
 			return true;
@@ -697,11 +708,11 @@ class Doi extends Obj
 		// Call to delete a DOI
 		return true;
 	}
-	
+
 	/**
 	 * Start input
 	 *
-	 * @param   string  $status  DOI status [public, reserved]
+	 * @param   string  $status  DOI status [draft/reserved, findable/public, registered/unavailable]
 	 * @return  string  response string
 	 */
 	public function startInput($status = 'public')
@@ -721,16 +732,12 @@ class Doi extends Obj
 		$input .= "_profile: datacite". "\n";
 
 		$status = strtolower($status);
-		if (!in_array($status, array('public', 'reserved')))
-		{
-			$status = 'public';
-		}
 
 		$input .= "_status: " . $status . "\n";
 
 		return $input;
 	}
-	
+
 	/**
 	 * Run cURL to register DOI on EZID
 	 *
@@ -773,7 +780,7 @@ class Doi extends Obj
 
 		return false;
 	}
-	
+
 	/**
 	 * Register a DOI on EZID
 	 *
@@ -804,7 +811,7 @@ class Doi extends Obj
 		{
 			$doi = $this->runCurl($url, $input);
 		}
-		
+
 		if (($status == 'public') && ($sendXml == true))
 		{
 			$xml = $this->buildXml();
@@ -812,7 +819,7 @@ class Doi extends Obj
 			// Load the xml document in the DOMDocument object
 			$xdoc = new \DomDocument;
 			$xdoc->loadXML($xml);
-			
+
 			// Append XML
 			$input .= 'datacite: ' . strtr($xml, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n";
 
@@ -820,36 +827,10 @@ class Doi extends Obj
 			$doi = $this->runCurl($url, $input);
 		}
 
-		// Are we sending extended data?
-		/*
-		if ($sendXml == true && $doi)
-		{
-			$xml = $this->buildXml($doi);
-
-			// Load the xml document in the DOMDocument object
-			$xdoc = new \DomDocument;
-			$xdoc->loadXML($xml);
-
-			// Validate against schema
-			if (!$xdoc->schemaValidate($this->_configs->xmlSchema))
-			{
-				$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_XML_INVALID'));
-			}
-			else
-			{
-				// Append XML
-				$input .= 'datacite: ' . strtr($xml, array(":" => "%3A", "%" => "%25", "\n" => "%0A", "\r" => "%0D")) . "\n";
-
-				// Make service call to send extended metadata
-				$doi = $this->runCurl($url, $input);
-			}
-		}
-		*/
-
 		// Return DOI
 		return $doi;
 	}
-	
+
 	/**
 	 * Update a DOI on EZID
 	 *
@@ -915,9 +896,109 @@ class Doi extends Obj
 
 		return $result ? $result : false;
 	}
-	
+
 	/**
-	 * Update DOI metadata - Entry to update DOI metadata. 
+	 * Update DOI status on EZID
+	 *
+	 * @param   string   $doi
+	 * @param   string   $stateSwitch   0 - Publication changed from published to draft   1 - Publication changed from draft to published
+	 * @return  boolean
+	 */
+	public function ezidDoiStatusUpdate($doi, $stateSwitch)
+	{
+		if (!$doi)
+		{
+			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NULL'));
+			return false;
+		}
+
+		if ($stateSwitch == self::STATE_FROM_PUBLISHED_TO_DRAFTREADY)
+		{
+			$postVals = "_status:unavailable";
+		}
+		elseif ($stateSwitch == self::STATE_FROM_DRAFTREADY_TO_PUBLISHED)
+		{
+			$postVals = "_status:public";
+		}
+
+		$url = $this->getServicePath($doi);
+
+		$ch = curl_init($url);
+
+		$options = array(
+			CURLOPT_URL             => $url,
+			CURLOPT_POST            => true,
+			CURLOPT_USERPWD         => $this->_configs->ezidUserPW,
+			CURLOPT_POSTFIELDS      => $postVals,
+			CURLOPT_RETURNTRANSFER  => true,
+			CURLOPT_HTTPHEADER      => array('Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($postVals))
+		);
+		curl_setopt_array($ch, $options);
+
+		$response = curl_exec($ch);
+		$success = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		curl_close($ch);
+
+		if ($success === 201 || $success === 200)
+		{
+			return true;
+		}
+		else
+		{
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_STATUS'), 400);
+		}
+	}
+
+	/**
+	 * Update DOI status on DataCite
+	 *
+	 * @param   string   $doi
+	 * @param   integer  $stateSwitch   0 - Publication changed from published to draftready   1 - Publication changed from draftready to published
+	 *
+	 * @return  boolean
+	 */
+	public function dataciteDoiStatusUpdate($doi, $stateSwitch)
+	{
+		if (!$doi)
+		{
+			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NULL'));
+			return false;
+		}
+
+		if ($stateSwitch == self::STATE_FROM_PUBLISHED_TO_DRAFTREADY)
+		{
+			$url = $this->_configs->dataciteServiceURL . DS . 'metadata' . DS . $doi;
+
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->dataciteUserPW);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8'));
+			curl_setopt($ch, CURLOPT_FAILONERROR, true);
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+
+			$response = curl_exec($ch);
+
+			$success = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			curl_close($ch);
+
+			if ($success === 200 || $success === 201)
+			{
+				return true;
+			}
+			else
+			{
+				$this->setError($success . ' ' . $response);
+				return false;
+			}
+		}
+		elseif ($stateSwitch == self::STATE_FROM_DRAFTREADY_TO_PUBLISHED)
+		{
+			return $this->registerMetadata($doi);
+		}
+	}
+
+	/**
+	 * Update DOI metadata - Entry to update DOI metadata.
 	 *
 	 * @param   string   $doi
 	 * @param   boolean  $sendXML   -- This is set to true when using EZID DOI service
@@ -929,20 +1010,25 @@ class Doi extends Obj
 		if ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
 		{
 			$result = $this->dataciteMetadataUpdate($doi);
-			
+
 			if (!$result)
 			{
-				throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_METADATA'), 400);
+				$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_DATACITE_DOI_METADATA'));
 			}
 		}
 		elseif ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
 		{
-			$this->ezidMetadataUpdate($doi, $sendXML);
+			$result = $this->ezidMetadataUpdate($doi, $sendXML);
+
+			if (!$result)
+			{
+				$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_EZID_DOI_METADATA'));
+			}
 		}
 	}
-	
+
 	/**
-	 * Register - Entry to register DOI metadata, or URL for DataCite DOI; Or register DOI for EZID 
+	 * Register - Entry to register DOI metadata, or URL for DataCite DOI; Or register DOI for EZID
 	 *
 	 * @param   boolean  $regMetadata - Register Metadata for DataCite DOI when it is set to true.
 	 * @param   boolean  $regUrl      - Register URL and DOI name for for DataCite DOI when it is set to true.
@@ -960,17 +1046,25 @@ class Doi extends Obj
 			if ($regMetadata)
 			{
 				$doi = $this->registerMetadata();
+
+				if (!$doi)
+				{
+					$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI'));
+				}
+
 				return $doi;
 			}
-			
+
 			if ($regUrl && !empty($doi))
 			{
 				$regResult = $this->registerURL($doi);
-				
+
 				if (!$regResult)
 				{
 					$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_REGISTER_NAME_URL'));
 				}
+
+				return $regResult;
 			}
 		}
 		elseif ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
@@ -979,14 +1073,75 @@ class Doi extends Obj
 			if (!$regUrl)
 			{
 				$doi = $this->registerEZID($sendXML, $status);
+
+				if (!$doi)
+				{
+					$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI'));
+				}
+
 				return $doi;
 			}
 		}
 		elseif ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_NONE)
 		{
-			$doi = null;
-			return $doi;
+			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_NO_DOI_SERVICE_ACTIVATED'));
+
+			return false;
 		}
-	}	
+	}
+
+	/**
+	 * Revert - DOI state update according to specific revert operation on publication.
+	 *          When a publication is reverted from published to draft, the DOI state is supposed to change
+	 *          from findable/public to registered/unavailable. When such publication is submitted, the DOI state
+	 *          is set to findable/public.
+	 *
+	 * @param   string    $doi
+	 * @param   integer   $stateSwitch   0 - Publication changed from published to draft   1 - Publication changed from draft to published
+	 *
+	 * @return
+	 */
+	public function revert($doi, $stateSwitch)
+	{
+		if (!$this->on())
+		{
+			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
+			return false;
+		}
+
+		if (!$doi)
+		{
+			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NULL'));
+			return false;
+		}
+
+		if (($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
+			|| ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID))
+		{
+			if ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
+			{
+				$result = $this->dataciteDoiStatusUpdate($doi, $stateSwitch);
+			}
+
+			if ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID)
+			{
+				$result = $this->ezidDoiStatusUpdate($doi, $stateSwitch);
+			}
+
+			if ($result)
+			{
+				return true;
+			}
+			else
+			{
+				$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_DOI_STATUS'));
+				return false;
+			}
+		}
+		elseif ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_NONE)
+		{
+			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_NO_DOI_SERVICE_ACTIVATED'));
+			return false;
+		}
+	}
 }
-	

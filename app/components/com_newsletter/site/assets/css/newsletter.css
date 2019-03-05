@@ -1,0 +1,58 @@
+.newsletter {
+	max-width:1000px;
+}
+.newsletter table {
+	border:none;
+}
+.newsletter .display-browser {
+	display:none;
+}
+.com_newsletter .subject #hubForm p.submit {
+	margin-right:270px;
+}
+.com_newsletter .subject.subscribe,
+.com_newsletter .subject.unsubscibe {
+	margin:0;
+}	
+.com_newsletter #hubForm input[type=checkbox] {
+	margin:0;
+	width:auto;
+}
+.com_newsletter #hubForm .desc {
+	display:block;
+	margin:2px 0 0 18px;
+	color:#aaa;
+}
+.com_newsletter .unsubscribed {
+	text-transform:uppercase;
+	font-size:0.8em;
+	color:#999;
+}
+.com_newsletter .unconfirmed {
+	text-transform:uppercase;
+	font-size:0.8em;
+	color:#F00;
+}
+.com_newsletter .unconfirmed-link {
+	font-size:0.85em;
+	color:#999;
+}
+.com_newsletter #hubForm ol {
+	margin:20px 0 0 60px;
+}
+.com_newsletter #hubForm .complete {
+	color:#aaa;
+}
+.com_newsletter #hubForm .complete:after {
+	content: ' \2714';
+}
+
+#content-header-extra {
+	width: auto;
+}
+
+
+/* Newsletter iframe */
+#newsletter-iframe {
+	background:#FFF;
+}

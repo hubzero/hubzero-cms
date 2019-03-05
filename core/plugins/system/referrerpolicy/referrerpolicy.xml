@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           plugins/system/referrerpolicy/referrerpolicy.xml
+@copyright      Copyright 2005-2019 HUBzero Foundation, LLC.
+@license        http://opensource.org/licenses/MIT MIT
+-->
+
+<extension version="2.5" type="plugin" group="system">
+	<name>plg_system_referrerpolicy</name>
+	<author>HUBzero</author>
+	<creationDate>September 2015</creationDate>
+	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
+	<version>2.5.0</version>
+	<description>PLG_SYSTEM_REFERRERPOLICY_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="referrerpolicy">referrerpolicy.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_system_referrerpolicy.ini</language>
+		<language tag="en-GB">en-GB.plg_system_referrerpolicy.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="policy" type="list" default="same-origin" label="PLG_SYSTEM_REFERRERPOLICY_POLICY_LABEL" description="PLG_SYSTEM_REFERRERPOLICY_POLICY_DESC">
+					<option value="">PLG_SYSTEM_REFERRERPOLICY_POLICY_NONE</option>
+					<option value="no-referrer">no-referrer</option>
+					<option value="no-referrer-when-downgrade">no-referrer-when-downgrade</option>
+					<option value="same-origin">same-origin</option>
+					<option value="origin">origin</option>
+					<option value="strict-origin">strict-origin</option>
+					<option value="origin-when-cross-origin">origin-when-cross-origin</option>
+					<option value="strict-origin-when-cross-origin">strict-origin-when-cross-origin</option>
+					<option value="unsafe-url">unsafe-url</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

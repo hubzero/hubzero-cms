@@ -43,70 +43,56 @@ Toolbar::custom('downloadorders', 'download.png', '', 'Download CSV', false);
 Toolbar::spacer();
 Toolbar::help('downloads');
 ?>
-<script type="text/javascript">
-	function submitbutton(pressbutton)
-	{
-		var form = document.adminForm;
-		if (pressbutton == 'cancel') {
-			submitform(pressbutton);
-			return;
-		}
-		// do field validation
-		submitform(pressbutton);
-	}
-</script>
 
 <?php
 $this->view('_submenu')
 	->display();
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
-		<tr>
-			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_SKU_ID', 'sId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-			<th scope="col">Product</th>
-			<th scope="col">QTY</th>
-			<th scope="col">Price</th>
-			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDER_ID', 'tId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDER_PALCED', 'tLastUpdated', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDERED_BY', 'Name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-		</tr>
+			<tr>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_SKU_ID', 'sId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col">Product</th>
+				<th scope="col">QTY</th>
+				<th scope="col">Price</th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDER_ID', 'tId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDER_PALCED', 'tLastUpdated', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDERED_BY', 'Name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+			</tr>
 		</thead>
 		<tfoot>
-		<tr>
-			<td colspan="7"><?php
-				// Initiate paging
-				echo $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
-				?></td>
-		</tr>
+			<tr>
+				<td colspan="7"><?php
+					// Initiate paging
+					echo $this->pagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					?></td>
+			</tr>
 		</tfoot>
 		<tbody>
 		<?php
 		$k = 0;
-		//for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		$i = 0;
 
 		foreach ($this->rows as $row)
 		{
 			$itemInfo = $row->itemInfo['info'];
-			//print_r($row); die;
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php
-					$sId = '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $itemInfo->sId) . '"">' . $this->escape(stripslashes($row->sId)) . '</a>';
+					$sId = '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $itemInfo->sId) . '">' . $this->escape(stripslashes($row->sId)) . '</a>';
 					?>
 					<span><?php echo $sId; ?></span>
 				</td>
 				<td>
 					<?php
-					$product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $itemInfo->pId) . '" target="_blank">' . $this->escape(stripslashes($itemInfo->pName)) . '</a>';
+					$product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $itemInfo->pId) . '">' . $this->escape(stripslashes($itemInfo->pName)) . '</a>';
 					if (!stripslashes($itemInfo->pName))
 					{
 						$product = '<span class="missing">Product n/a</span>';
@@ -116,7 +102,7 @@ $this->view('_submenu')
 						$product .= ', <span class="missing">SKU n/a</span>';
 					}
 					else {
-						$product .= ', ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '" target="_blank">' . $this->escape(stripslashes($itemInfo->sSku)) . '</a>';
+						$product .= ', ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '">' . $this->escape(stripslashes($itemInfo->sSku)) . '</a>';
 					}
 					?>
 					<span><?php echo $product; ?></span>
@@ -129,7 +115,7 @@ $this->view('_submenu')
 				</td>
 				<td>
 					<?php
-					$tId = '<a href="' . Route::url('index.php?option=com_cart&controller=orders&task=view&id=' . $row->tId) . '"">' . $this->escape(stripslashes($row->tId)) . '</a>';
+					$tId = '<a href="' . Route::url('index.php?option=com_cart&controller=orders&task=view&id=' . $row->tId) . '">' . $this->escape(stripslashes($row->tId)) . '</a>';
 					?>
 					<span><?php echo $tId; ?></span>
 				</td>

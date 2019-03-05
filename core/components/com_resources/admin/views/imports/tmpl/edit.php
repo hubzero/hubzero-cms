@@ -44,19 +44,6 @@ Toolbar::save();
 Toolbar::cancel();
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
-
 <?php foreach ($this->getErrors() as $error) : ?>
 	<p class="error"><?php echo $error; ?></p>
 <?php endforeach; ?>
@@ -247,7 +234,7 @@ function submitbutton(pressbutton)
 					<label for="import-group">
 						<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_GROUP'); ?>
 					</label>
-					<?php echo \Components\Resources\Helpers\Html::selectGroup($this->groups, $this->params->get('group', ''), 'params[group]' ,'import-group'); ?>
+					<?php echo \Components\Resources\Helpers\Html::selectGroup($this->groups, $this->params->get('group', ''), 'params[group]', 'import-group'); ?>
 					<span class="hint"><?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_GROUP_HINT'); ?></span>
 				</div>
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_MATCHTITLE_HINT'); ?>">

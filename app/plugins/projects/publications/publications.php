@@ -62,6 +62,22 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected $_msg = null;
 	
 	/**
+	 * Publication state transition
+	 *
+	 * @const
+	 */
+	const STATE_FROM_PUBLISHED_TO_DRAFTREADY = 0;
+	const STATE_FROM_DRAFTREADY_TO_PUBLISHED = 1;
+
+	/**
+	 * Publication state transition
+	 *
+	 * @const
+	 */
+	const STATE_FROM_PUBLISHED_TO_DRAFTREADY = 0;
+	const STATE_FROM_DRAFTREADY_TO_PUBLISHED = 1;
+
+	/**
 	 * Event call to determine if this plugin should return data
 	 *
 	 * @param   string  $alias
@@ -2231,23 +2247,100 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			{
 				$pub->version->set('doi', $doi);
 			}
-
-			// Can't proceed without a valid DOI
-			if (!$doi || $doiService->getError())
+			else
 			{
-				if ($doiService->_configs->dataciteEZIDSwitch == \Components\Publications\Models\Doi::SWITCH_OPTION_DATACITE)
-				{
-					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_METADATA') . ' ' . $doiService->getError());
-				}
-				elseif ($doiService->_configs->dataciteEZIDSwitch == \Components\Publications\Models\Doi::SWITCH_OPTION_EZID)
-				{
-					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI') . ' ' . $doiService->getError());
-				}
-				elseif ($doiService->_configs->dataciteEZIDSwitch == \Components\Publications\Models\Doi::SWITCH_OPTION_NONE)
-				{
-					$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_NO_DOI_SERVICE_ACTIVATED'));
-				}
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_DOI') . ' ' . $doiService->getError());
 				$doiErr = true;
+			}
+		}
+
+		// When dataset is automatically approved.
+		if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1) && $pub->version->get('doi'))
+		{
+			// Update DOI metadata
+			$doiService->update($pub->version->get('doi'), true);
+
+			if ($doiService->getError())
+			{
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_UPDATE_DOI') . ' ' . $doiService->getError());
+				$doiErr = true;
+			}
+			else
+			{
+				// Register DOI name and target URL for DataCite DOI
+				$doiService->register(false, true, $pub->version->get('doi'));
+
+				if ($doiService->getError())
+				{
+					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_NAME_URL') . ' ' . $doiService->getError());
+					$doiErr = true;
+				}
+			}
+		}
+
+		if ($this->_task == 'revert' && $pub->version->doi && $originalStatus == 1)
+		{
+			$doiService->revert($pub->version->doi, self::STATE_FROM_PUBLISHED_TO_DRAFTREADY);
+
+			if ($doiService->getError())
+			{
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_UNREGISTER_DOI') . ' ' . $doiService->getError());
+				$doiErr = true;
+			}
+		}
+
+		if ($this->_task == 'publish' && $pub->version->doi && $originalStatus == 4)
+		{
+			$doiService->revert($pub->version->doi, self::STATE_FROM_DRAFTREADY_TO_PUBLISHED);
+
+			if ($doiService->getError())
+			{
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_UNREGISTER_DOI') . ' ' . $doiService->getError());
+				$doiErr = true;
+			}
+			else
+			{
+				// Register DOI name and target URL for DataCite DOI
+				$doiService->register(false, true, $pub->version->get('doi'));
+
+				if ($doiService->getError())
+				{
+					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_NAME_URL') . ' ' . $doiService->getError());
+					$doiErr = true;
+				}
+			}
+		}
+
+		if ($this->_task == 'revert' && $pub->version->doi && $originalStatus == 1)
+		{
+			$doiService->revert($pub->version->doi, self::STATE_FROM_PUBLISHED_TO_DRAFTREADY);
+
+			if ($doiService->getError())
+			{
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_UNREGISTER_DOI') . ' ' . $doiService->getError());
+				$doiErr = true;
+			}
+		}
+
+		if ($this->_task == 'publish' && $pub->version->doi && $originalStatus == 4)
+		{
+			$doiService->revert($pub->version->doi, self::STATE_FROM_DRAFTREADY_TO_PUBLISHED);
+
+			if ($doiService->getError())
+			{
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_UNREGISTER_DOI') . ' ' . $doiService->getError());
+				$doiErr = true;
+			}
+			else
+			{
+				// Register DOI name and target URL for DataCite DOI
+				$doiService->register(false, true, $doi);
+
+				if ($doiService->getError())
+				{
+					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_NAME_URL') . ' ' . $doiService->getError());
+					$doiErr = true;
+				}
 			}
 		}
 

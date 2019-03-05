@@ -36,7 +36,7 @@ $canDo = \Components\Members\Helpers\Permissions::getActions('component');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_MENU_MESSAGING') . ': ' . $text, 'user.png');
+Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_MENU_MESSAGING') . ': ' . $text, 'user');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -44,17 +44,7 @@ if ($canDo->get('core.edit'))
 }
 Toolbar::cancel();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
 
-	submitform(pressbutton);
-}
-</script>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<?php if ($this->getErrors()) { ?>
 		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>

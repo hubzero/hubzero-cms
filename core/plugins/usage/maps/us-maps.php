@@ -50,7 +50,7 @@ $html = "<!DOCTYPE html '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR
 <meta http-equiv='content-type' content='text/html; charset=utf-8'/>
 <title>User Animation</title>
 <script type='text/javascript' src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=".$key."'></script>
-<script type='text/javascript' src='/core/components/".$option."/maps/js/elabel.js'></script>
+<script type='text/javascript' src='" . rtrim(Request::base(), '/') . "/core/plugins/usage/maps/assets/js/elabel.js'></script>
 <script type='text/javascript'>
 
 	function initialize() {
@@ -67,7 +67,7 @@ $html = "<!DOCTYPE html '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR
 			map.setCenter(new GLatLng(35,-113), 5, G_HYBRID_MAP);
 
 			var icon1 = new GIcon();
-			icon1.image = '/core/components/".$option."/maps/images/org.png';
+			icon1.image = '" . rtrim(Request::base(), '/') . "/core/plugins/usage/maps/assets/img/org.png';
 			icon1.iconSize = new GSize(40, 40);
 			icon1.iconAnchor = new GPoint(20, 20);
 			marker1 = new GMarker(new GLatLng('40.4427','-86.9237'),icon1);
@@ -115,9 +115,14 @@ $html = "<!DOCTYPE html '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR
 		request.send(null);
 	}
 </script>
-
+<style>
+	#div_map {
+		width: 2200px;
+		height: 1010px;
+	}
+	</style>
 </head>
 <body onload='initialize()' onunload='GUnload()'>
-	<div id='map_canvas' style='width: 2200px; height: 1010px'></div>
+	<div id='map_canvas'></div>
 </body>
 </html>";

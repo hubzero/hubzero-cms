@@ -49,45 +49,27 @@ Html::behavior('calendar');
 
 $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 
+$this->js('jquery.fileuploader.js', 'system')
+	->js();
 $this->css(); //->css('classic');
 
 $course_id = 0;
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// form field validation
-	if ($('#field-title').val() == '') {
-		alert('<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_TITLE'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-jQuery(document).ready(function($){
-	$('#section-document').tabs();
-});
-</script>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 
 	<nav role="navigation" class="sub-navigation">
 		<div id="submenu-box">
 			<div class="submenu-box">
 				<div class="submenu-pad">
 					<ul id="submenu" class="coursesection">
-						<li><a href="#" onclick="return false;" id="details" class="active"><?php echo Lang::txt('JDETAILS'); ?></a></li>
-						<li><a href="#" onclick="return false;" id="managers"><?php echo Lang::txt('COM_COURSES_FIELDSET_MANAGERS'); ?></a></li>
-						<li><a href="#" onclick="return false;" id="datetime"><?php echo Lang::txt('COM_COURSES_FIELDSET_DATES'); ?></a></li>
-						<li><a href="#" onclick="return false;" id="badge"><?php echo Lang::txt('COM_COURSES_FIELDSET_REWARDS'); ?></a></li>
+						<li><a href="#page-details" id="details" class="active"><?php echo Lang::txt('JDETAILS'); ?></a></li>
+						<li><a href="#page-managers" id="managers"><?php echo Lang::txt('COM_COURSES_FIELDSET_MANAGERS'); ?></a></li>
+						<li><a href="#page-datetime" id="datetime"><?php echo Lang::txt('COM_COURSES_FIELDSET_DATES'); ?></a></li>
+						<li><a href="#page-badge" id="badge"><?php echo Lang::txt('COM_COURSES_FIELDSET_REWARDS'); ?></a></li>
 					</ul>
 					<div class="clr"></div>
 				</div>
@@ -114,15 +96,15 @@ jQuery(document).ready(function($){
 							<select name="fields[offering_id]" id="offering_id">
 								<option value="-1"><?php echo Lang::txt('COM_COURSES_SELECT'); ?></option>
 								<?php
-									require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+									require_once Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
 									$model = \Components\Courses\Models\Courses::getInstance();
 									if ($model->courses()->total() > 0)
 									{
 										foreach ($model->courses() as $course)
 										{
-								?>
+											?>
 											<optgroup label="<?php echo $this->escape(stripslashes($course->get('alias'))); ?>">
-								<?php
+											<?php
 											$j = 0;
 											foreach ($course->offerings() as $i => $offering)
 											{
@@ -130,13 +112,13 @@ jQuery(document).ready(function($){
 												{
 													$course_id = $offering->get('course_id');
 												}
-								?>
+												?>
 												<option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->row->get('offering_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
-								<?php
+												<?php
 											}
-								?>
+											?>
 											</optgroup>
-								<?php
+											<?php
 										}
 									}
 								?>
@@ -150,8 +132,8 @@ jQuery(document).ready(function($){
 						</div>
 
 						<div class="input-wrap">
-							<label for="field-title"><?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>:</label><br />
-							<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+							<label for="field-title"><?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+							<input type="text" name="fields[title]" id="field-title" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 						</div>
 
 						<fieldset>
@@ -253,8 +235,8 @@ jQuery(document).ready(function($){
 						{
 							$logo = $this->row->params('logo');
 							?>
-							<div style="padding-top: 2.5em">
-								<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&task=upload&type=section&id=' . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1'); ?>">
+							<div class="uploader-wrap">
+								<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&task=upload&type=section&id=' . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1'); ?>" data-instructions="<?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?>">
 									<noscript>
 										<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&file=' . $logo . '&type=section&id=' . $this->row->get('id')); ?>"></iframe>
 									</noscript>
@@ -290,7 +272,7 @@ jQuery(document).ready(function($){
 												<span id="img-name"><?php echo $this->row->params('logo', Lang::txt('COM_COURSES_NONE')); ?></span>
 											</td>
 											<td>
-												<a id="img-delete" <?php echo $logo ? '' : 'style="display: none;"'; ?> href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo . '&type=section&id=' . $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">[ x ]</a>
+												<a id="img-delete" <?php echo $logo ? '' : 'class="hide"'; ?> href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo . '&type=section&id=' . $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>" data-defaultimg="../core/components/com_courses/admin/assets/img/blank.png">[ x ]</a>
 											</td>
 										</tr>
 										<tr>
@@ -310,57 +292,6 @@ jQuery(document).ready(function($){
 										</tr>
 									</tbody>
 								</table>
-
-								<script type="text/javascript" src="<?php echo $base; ?>/core/assets/js/jquery.fileuploader.js"></script>
-								<script type="text/javascript">
-								String.prototype.nohtml = function () {
-									if (this.indexOf('?') == -1) {
-										return this + '?no_html=1';
-									} else {
-										return this + '&no_html=1';
-									}
-								};
-								jQuery(document).ready(function($){
-									if ($("#ajax-uploader").length) {
-										var uploader = new qq.FileUploader({
-											element: $("#ajax-uploader")[0],
-											action: $("#ajax-uploader").attr("data-action"),
-											multiple: true,
-											debug: true,
-											template: '<div class="qq-uploader">' +
-														'<div class="qq-upload-button"><span><?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
-														'<div class="qq-upload-drop-area"><span><?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
-														'<ul class="qq-upload-list"></ul>' +
-													   '</div>',
-											onComplete: function(id, file, response) {
-												if (response.success) {
-													$('#img-display').attr('src', '..' + response.directory + '/' + response.file);
-													$('#img-name').text(response.file);
-													$('#img-size').text(response.size);
-													$('#img-width').text(response.width);
-													$('#img-height').text(response.height);
-
-													$('#img-delete').show();
-												}
-											}
-										});
-									}
-									$('#img-delete').on('click', function (e) {
-										e.preventDefault();
-										var el = $(this);
-										$.getJSON(el.attr('href').nohtml(), {}, function(response) {
-											if (response.success) {
-												$('#img-display').attr('src', '../core/components/com_courses/admin/assets/img/blank.png');
-												$('#img-name').text('[ none ]');
-												$('#img-size').text('0');
-												$('#img-width').text('0');
-												$('#img-height').text('0');
-											}
-											el.hide();
-										});
-									});
-								});
-								</script>
 						<?php
 						} else {
 							echo '<p class="warning">' . Lang::txt('COM_COURSES_UPLOAD_ADDED_LATER') . '</p>';
@@ -436,7 +367,7 @@ jQuery(document).ready(function($){
 
 		<div id="page-datetime" class="tab">
 		<?php if ($this->offering->units()->total() > 0) { ?>
-			<div class="col width-100">
+			<div class="col span12">
 				<?php if (!$this->row->exists() && !$this->row->get('is_default')) { ?>
 				<p class="info"><?php echo Lang::txt('COM_COURSES_SECTION_DATES_HELP'); ?></p>
 				<?php } ?>
@@ -463,12 +394,12 @@ jQuery(document).ready(function($){
 										<th class="key"><label for="dates_<?php echo $i; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_FROM'); ?></label></th>
 										<td>
 											<?php $tm = ($unit->get('publish_up') && $unit->get('publish_up') != $nullDate ? $unit->get('publish_up') : $this->row->date('unit', $unit->get('id'))->get('publish_up')); ?>
-											<input type="text" name="dates[<?php echo $i; ?>][publish_up]" id="dates_<?php echo $i; ?>_publish_up" class="datetime-field" value="<?php echo (!$tm || $tm == $nullDate ? '' : Date::of($tm)->toLocal('Y-m-d H:i:s')); ?>" />
+											<input type="text" name="dates[<?php echo $i; ?>][publish_up]" id="dates_<?php echo $i; ?>_publish_up" class="datetime-field" value="<?php echo !$tm || $tm == $nullDate ? '' : Date::of($tm)->toLocal('Y-m-d H:i:s'); ?>" />
 										</td>
 										<th class="key"><label for="dates_<?php echo $i; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_TO'); ?></label></th>
 										<td>
 											<?php $tm = ($unit->get('publish_down') && $unit->get('publish_down') != $nullDate ? $unit->get('publish_down') : $this->row->date('unit', $unit->get('id'))->get('publish_down')); ?>
-											<input type="text" name="dates[<?php echo $i; ?>][publish_down]" id="dates_<?php echo $i; ?>_publish_down" class="datetime-field" value="<?php echo (!$tm || $tm == $nullDate ? '' : Date::of($tm)->toLocal('Y-m-d H:i:s')); ?>" />
+											<input type="text" name="dates[<?php echo $i; ?>][publish_down]" id="dates_<?php echo $i; ?>_publish_down" class="datetime-field" value="<?php echo !$tm || $tm == $nullDate ? '' : Date::of($tm)->toLocal('Y-m-d H:i:s'); ?>" />
 										</td>
 										<td>
 											<?php echo Lang::txt('COM_COURSES_SECTION_DATES_INHERITED'); ?>
@@ -506,11 +437,11 @@ jQuery(document).ready(function($){
 											<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][id]" value="<?php echo $this->row->date('asset_group', $agt->get('id'))->get('id'); ?>" />
 											<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][scope]" value="asset_group" />
 											<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][scope_id]" value="<?php echo $agt->get('id'); ?>" />
-											<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_publish_up" class="datetime-field" value="<?php echo (!$agt->get('publish_up') || $agt->get('publish_up') == $unit->get('publish_up') || $agt->get('publish_up') == $nullDate ? '' : Date::of($agt->get('publish_up'))->toLocal('Y-m-d H:i:s')); ?>" />
+											<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_publish_up" class="datetime-field" value="<?php echo !$agt->get('publish_up') || $agt->get('publish_up') == $unit->get('publish_up') || $agt->get('publish_up') == $nullDate ? '' : Date::of($agt->get('publish_up'))->toLocal('Y-m-d H:i:s'); ?>" />
 										</td>
 										<td><label for="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_TO'); ?></label></th>
 										<td>
-											<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_publish_down" class="datetime-field" value="<?php echo (!$agt->get('publish_down') || $agt->get('publish_down') == $unit->get('publish_down') || $agt->get('publish_down') == $nullDate ? '' : Date::of($agt->get('publish_down'))->toLocal('Y-m-d H:i:s')); ?>" />
+											<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_publish_down" class="datetime-field" value="<?php echo !$agt->get('publish_down') || $agt->get('publish_down') == $unit->get('publish_down') || $agt->get('publish_down') == $nullDate ? '' : Date::of($agt->get('publish_down'))->toLocal('Y-m-d H:i:s'); ?>" />
 										</td>
 									</tr>
 
@@ -540,11 +471,11 @@ jQuery(document).ready(function($){
 													<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][id]" value="<?php echo $this->row->date('asset_group', $ag->get('id'))->get('id'); ?>" />
 													<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][scope]" value="asset_group" />
 													<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][scope_id]" value="<?php echo $ag->get('id'); ?>" />
-													<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>_publish_up" class="datetime-field" value="<?php echo (!$ag->get('publish_up') || $ag->get('publish_up') == $agt->get('publish_up') || $ag->get('publish_up') == $nullDate ? '' : Date::of($ag->get('publish_up'))->toLocal('Y-m-d H:i:s')); ?>" />
+													<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>_publish_up" class="datetime-field" value="<?php echo !$ag->get('publish_up') || $ag->get('publish_up') == $agt->get('publish_up') || $ag->get('publish_up') == $nullDate ? '' : Date::of($ag->get('publish_up'))->toLocal('Y-m-d H:i:s'); ?>" />
 												</td>
 												<td><label for="dates_<?php echo $i; ?>_<?php echo $j; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_TO'); ?></label></th>
 												<td>
-													<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>_publish_down" class="datetime-field" value="<?php echo (!$ag->get('publish_down') || $ag->get('publish_down') == $agt->get('publish_down') || $ag->get('publish_down') == $nullDate ? '' : Date::of($ag->get('publish_down'))->toLocal('Y-m-d H:i:s')); ?>" />
+													<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>_publish_down" class="datetime-field" value="<?php echo !$ag->get('publish_down') || $ag->get('publish_down') == $agt->get('publish_down') || $ag->get('publish_down') == $nullDate ? '' : Date::of($ag->get('publish_down'))->toLocal('Y-m-d H:i:s'); ?>" />
 												</td>
 											</tr>
 
@@ -577,11 +508,11 @@ jQuery(document).ready(function($){
 															<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][asset][<?php echo $k; ?>][id]" value="<?php echo $this->row->date('asset', $a->get('id'))->get('id'); ?>" />
 															<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][asset][<?php echo $k; ?>][scope]" value="asset" />
 															<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][asset][<?php echo $k; ?>][scope_id]" value="<?php echo $a->get('id'); ?>" />
-															<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][asset][<?php echo $k; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>asset_<?php echo $k; ?>_publish_up" class="datetime-field" value="<?php echo (!$a->get('publish_up') || $a->get('publish_up') == $ag->get('publish_up') || $a->get('publish_up') == $nullDate ? '' : Date::of($a->get('publish_up'))->toLocal('Y-m-d H:i:s')); ?>" />
+															<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][asset][<?php echo $k; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>asset_<?php echo $k; ?>_publish_up" class="datetime-field" value="<?php echo !$a->get('publish_up') || $a->get('publish_up') == $ag->get('publish_up') || $a->get('publish_up') == $nullDate ? '' : Date::of($a->get('publish_up'))->toLocal('Y-m-d H:i:s'); ?>" />
 														</td>
 														<td><label for="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>asset_<?php echo $k; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_TO'); ?></label></th>
 														<td>
-															<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][asset][<?php echo $k; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>asset_<?php echo $k; ?>_publish_down" class="datetime-field" value="<?php echo (!$a->get('publish_down') || $a->get('publish_down') == $ag->get('publish_down') || $a->get('publish_down') == $nullDate ? '' : Date::of($a->get('publish_down'))->toLocal('Y-m-d H:i:s')); ?>" />
+															<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][asset][<?php echo $k; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>asset_<?php echo $k; ?>_publish_down" class="datetime-field" value="<?php echo !$a->get('publish_down') || $a->get('publish_down') == $ag->get('publish_down') || $a->get('publish_down') == $nullDate ? '' : Date::of($a->get('publish_down'))->toLocal('Y-m-d H:i:s'); ?>" />
 														</td>
 													</tr>
 
@@ -618,11 +549,11 @@ jQuery(document).ready(function($){
 														<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][id]" value="<?php echo $this->row->date('asset', $a->get('id'))->get('id'); ?>" />
 														<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][scope]" value="asset" />
 														<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][scope_id]" value="<?php echo $a->get('id'); ?>" />
-														<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_asset_<?php echo $k; ?>_publish_up" class="datetime-field" value="<?php echo (!$a->get('publish_up') || $a->get('publish_up') == $agt->get('publish_up') || $a->get('publish_up') == $nullDate ? '' : Date::of($a->get('publish_up'))->toLocal('Y-m-d H:i:s')); ?>" />
+														<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_asset_<?php echo $k; ?>_publish_up" class="datetime-field" value="<?php echo !$a->get('publish_up') || $a->get('publish_up') == $agt->get('publish_up') || $a->get('publish_up') == $nullDate ? '' : Date::of($a->get('publish_up'))->toLocal('Y-m-d H:i:s'); ?>" />
 													</td>
 													<td><label for="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_asset_<?php echo $k; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_TO'); ?></label></th>
 													<td>
-														<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_asset_<?php echo $k; ?>_publish_down" class="datetime-field" value="<?php echo (!$a->get('publish_down') || $a->get('publish_down') == $agt->get('publish_down') || $a->get('publish_down') == $nullDate ? '' : Date::of($a->get('publish_down'))->toLocal('Y-m-d H:i:s')); ?>" />
+														<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_asset_<?php echo $k; ?>_publish_down" class="datetime-field" value="<?php echo !$a->get('publish_down') || $a->get('publish_down') == $agt->get('publish_down') || $a->get('publish_down') == $nullDate ? '' : Date::of($a->get('publish_down'))->toLocal('Y-m-d H:i:s'); ?>" />
 													</td>
 												</tr>
 
@@ -659,11 +590,11 @@ jQuery(document).ready(function($){
 													<input type="hidden" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][id]" value="<?php echo $this->row->date('asset', $a->get('id'))->get('id'); ?>" />
 													<input type="hidden" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][scope]" value="asset" />
 													<input type="hidden" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][scope_id]" value="<?php echo $a->get('id'); ?>" />
-													<input type="text" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][publish_up]" id="dates_<?php echo $i; ?>_asset_<?php echo $k; ?>_publish_up" class="datetime-field" value="<?php echo (!$a->get('publish_up') || $a->get('publish_up') == $unit->get('publish_up') || $a->get('publish_up') == $nullDate ? '' : Date::of($a->get('publish_up'))->toLocal('Y-m-d H:i:s')); ?>" />
+													<input type="text" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][publish_up]" id="dates_<?php echo $i; ?>_asset_<?php echo $k; ?>_publish_up" class="datetime-field" value="<?php echo !$a->get('publish_up') || $a->get('publish_up') == $unit->get('publish_up') || $a->get('publish_up') == $nullDate ? '' : Date::of($a->get('publish_up'))->toLocal('Y-m-d H:i:s'); ?>" />
 												</td>
 												<td><label for="dates_<?php echo $i; ?>_asset_<?php echo $k; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_TO'); ?></label></th>
 												<td>
-													<input type="text" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][publish_down]" id="dates_<?php echo $i; ?>_asset_<?php echo $k; ?>_publish_down" class="datetime-field" value="<?php echo (!$a->get('publish_down') || $a->get('publish_down') == $unit->get('publish_down') || $a->get('publish_down') == $nullDate ? '' : Date::of($a->get('publish_down'))->toLocal('Y-m-d H:i:s')); ?>" />
+													<input type="text" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][publish_down]" id="dates_<?php echo $i; ?>_asset_<?php echo $k; ?>_publish_down" class="datetime-field" value="<?php echo !$a->get('publish_down') || $a->get('publish_down') == $unit->get('publish_down') || $a->get('publish_down') == $nullDate ? '' : Date::of($a->get('publish_down'))->toLocal('Y-m-d H:i:s'); ?>" />
 												</td>
 											</tr>
 
@@ -801,7 +732,7 @@ jQuery(document).ready(function($){
 									<?php
 										echo $this->editor('badge[criteria]', $this->escape(stripslashes($this->badge->get('criteria_text'))), 35, 5, 'badge-criteria');
 									?>
-									<a target="_blank" href="<?php echo Request::base(true); ?>/courses/badge/<?php echo $this->badge->get('id'); ?>/criteria"><?php echo Lang::txt('COM_COURSES_FIELD_BADGE_CRITERIA'); ?></a>
+									<a rel="noopener" target="_blank" href="<?php echo Request::base(true); ?>/courses/badge/<?php echo $this->badge->get('id'); ?>/criteria"><?php echo Lang::txt('COM_COURSES_FIELD_BADGE_CRITERIA'); ?></a>
 								</td>
 							</tr>
 						</tbody>

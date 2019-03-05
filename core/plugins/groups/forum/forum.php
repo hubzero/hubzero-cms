@@ -115,7 +115,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// The output array we're returning
 		$arr = array(
-			'html'=>'',
+			'html' => '',
+			'metadata' => array(),
 			'name' => $active
 		);
 
@@ -865,7 +866,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		$threads = $category->threads()
-			->select("*, (CASE WHEN last_activity != '0000-00-00 00:00:00' THEN last_activity ELSE created END)", 'activity')
+			->select("*, (CASE WHEN last_activity IS NULL THEN last_activity ELSE created END)", 'activity')
 			->whereEquals('state', $filters['state'])
 			->whereIn('access', $filters['access'])
 			->order($filters['sort'], $filters['sort_Dir'])
@@ -1933,7 +1934,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming file
-		$file = Request::getArray('upload', '', 'files');
+		$file = Request::getArray('upload', array(), 'files');
 		if (!$file || !isset($file['name']) || !$file['name'])
 		{
 			if ($attachment->get('id'))
@@ -1946,6 +1947,33 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				}
 			}
 			return true;
+		}
+
+		// Get media config
+		$mediaConfig = \Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
+
+		if ($file['size'] > $sizeLimit)
+		{
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+
+			$this->setError(Lang::txt('PLG_GROUPS_FORUM_ERROR_UPLOADING_FILE_TOO_BIG', $max));
+			return false;
+		}
+
+		// Ensure file names fit.
+		$ext = Filesystem::extension($file['name']);
+
+		// Check that the file type is allowed
+		$allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
+
+		if (!empty($allowed) && !in_array(strtolower($ext), $allowed))
+		{
+			$this->setError(Lang::txt('PLG_GROUPS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
+			return false;
 		}
 
 		// Upload file

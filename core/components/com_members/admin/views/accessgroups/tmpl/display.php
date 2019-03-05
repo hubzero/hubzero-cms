@@ -46,7 +46,7 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.delete'))
 {
-	Toolbar::deleteList();
+	Toolbar::deleteList('COM_MEMBERS_CONFIRM_DELETE');
 	Toolbar::divider();
 }
 if ($canDo->get('core.admin'))
@@ -71,36 +71,13 @@ Html::behavior('multiselect');
 	</ul>
 </nav>
 
-<script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
-		if (task == 'groups.delete')
-		{
-			var f = document.adminForm;
-			var cb='';
-<?php foreach ($this->rows as $i => $row): ?>
-	<?php if ($row->maps()->select('group_id', 'count', true)->rows(false)->first()->count > 0): ?>
-			cb = f['cb'+<?php echo $i;?>];
-			if (cb && cb.checked) {
-				if (confirm('<?php echo Lang::txt('COM_MEMBERS_GROUPS_CONFIRM_DELETE'); ?>')) {
-					Joomla.submitform(task);
-				}
-				return;
-			}
-	<?php endif; ?>
-<?php endforeach; ?>
-		}
-		Joomla.submitform(task);
-	}
-</script>
-
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('COM_MEMBERS_SEARCH_GROUPS_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_IN_GROUPS'); ?>" />
+			<input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_IN_GROUPS'); ?>" />
 			<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 	</fieldset>
 
@@ -108,7 +85,7 @@ Html::behavior('multiselect');
 		<thead>
 			<tr>
 				<th>
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
 				</th>
 				<th class="priority-4">
 					<?php echo Lang::txt('JGRID_HEADING_ID'); ?>

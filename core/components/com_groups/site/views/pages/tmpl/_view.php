@@ -41,8 +41,8 @@ $displayComments = $groupParams->get('page_comments', $this->config->get('page_c
 $displayAuthor   = $groupParams->get('page_author', $this->config->get('page_author', 0));
 
 // take page setting if we have one
-if ($this->page->get('comments') !== NULL
-	&& in_array($this->page->get('comments'), array(0,1,2)))
+if ($this->page->get('comments') !== null
+	&& in_array($this->page->get('comments'), array(0, 1, 2)))
 {
 	$displayComments = $this->page->get('comments');
 }
@@ -52,6 +52,11 @@ $versions = $this->page->versions();
 
 // get page category
 $category = $this->page->category();
+
+if ($category->get('color'))
+{
+	$this->css('.category-' . $category->get('id') . ' { background-color: #' . $category->get('color') . '; }');
+}
 
 // is there a newer version of this page
 $newerVersion = false;
@@ -153,7 +158,7 @@ if (($pagePrivacy== 'registered' && User::isGuest())
 
 						<?php if ($category->get('id') != '') : ?>
 							<li>
-								<a href="<?php echo $categoryLink; ?>" class="tooltips category" title="In <?php echo $category->get('title'); ?>" style="background-color:#<?php echo $category->get('color'); ?>"></a>
+								<a href="<?php echo $categoryLink; ?>" class="tooltips category category-<?php echo $category->get('id'); ?>" title="In <?php echo $category->get('title'); ?>"></a>
 							</li>
 						<?php endif; ?>
 					<?php else : ?>
@@ -237,4 +242,4 @@ if (($pagePrivacy== 'registered' && User::isGuest())
 			echo implode("\n", $comments);
 		?>
 	</div>
-<?php endif; ?>
+<?php endif; 

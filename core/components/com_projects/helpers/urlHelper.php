@@ -22,19 +22,25 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package	  hubzero-cms
- * @author	  Anthony Fuents <fuentesa@purdue.edu>
- * @copyright	  Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license	  http://opensource.org/licenses/MIT MIT
+ * @package	   hubzero-cms
+ * @author     Anthony Fuents <fuentesa@purdue.edu>
+ * @copyright  Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license	   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Projects\Helpers;
 
-use Hubzero\Base\Object;
+use Hubzero\Base\Obj;
 
-class UrlHelper extends Object
+class UrlHelper extends Obj
 {
-
+	/**
+	 * Set URL based on user being a member of the project
+	 *
+	 * @param   string   $url
+	 * @param   boolean  $userIsMember
+	 * @return  string
+	 */
 	public static function updatePerMembership($url, $userIsMember)
 	{
 		if (!$userIsMember)
@@ -46,6 +52,12 @@ class UrlHelper extends Object
 		return $url;
 	}
 
+	/**
+	 * Append correct querystring delimiter
+	 *
+	 * @param   string   $url
+	 * @return  string
+	 */
 	protected static function _appendQueryCharacter($url)
 	{
 		if (!preg_match('/\?.+$/', $url))
@@ -59,5 +71,4 @@ class UrlHelper extends Object
 
 		return $url;
 	}
-
 }

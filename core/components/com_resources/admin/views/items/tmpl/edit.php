@@ -163,7 +163,7 @@ $this->view('_edit_script')
 						<td>
 							<?php echo $this->row->ranking; ?>/10
 							<?php if ($this->row->ranking != '0') { ?>
-								<input type="button" name="reset_ranking" id="reset_ranking" value="Reset ranking" onclick="submitbutton('resetranking');" />
+								<input type="button" name="reset_ranking" id="reset_ranking" value="Reset ranking" data-task="resetranking" />
 							<?php } ?>
 						</td>
 					</tr>
@@ -172,8 +172,8 @@ $this->view('_edit_script')
 						<td>
 							<?php echo $this->row->rating . '/5.0 (' . $this->row->times_rated . ')'; ?>
 							<?php if ($this->row->rating != '0.0') { ?>
-								<input type="button" name="reset_rating" id="reset_rating" value="Reset rating" onclick="submitbutton('resetrating');" />
-								<a onclick="popratings();" href="#"><?php echo Lang::txt('COM_RESOURCES_VIEW'); ?></a>
+								<input type="button" name="reset_rating" id="reset_rating" value="Reset rating" data-task="resetrating" />
+								<a class="btn btn-ratings" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ratings&id=' . $this->row->id . '&no_html=1'); ?>"><?php echo Lang::txt('COM_RESOURCES_VIEW'); ?></a>
 							<?php } ?>
 						</td>
 					</tr>
@@ -183,7 +183,7 @@ $this->view('_edit_script')
 						<td>
 							<?php echo $this->row->hits; ?>
 							<?php if ($this->row->hits) { ?>
-								<input type="button" name="reset_hits" id="field-reset_hits" value="Reset Hit Count" onclick="submitbutton('resethits');" />
+								<input type="button" name="reset_hits" id="reset_hits" value="Reset Hit Count" data-task="resethits" />
 							<?php } ?>
 						</td>
 					</tr>
@@ -258,7 +258,7 @@ $this->view('_edit_script')
 			echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_FILES'), 'file-page');
 		?>
 			<p>
-				<label>
+				<label for="fileoptions">
 					<?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED'); ?>:
 					<select name="fileoptions" id="fileoptions">
 						<option value="2"><?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_MAIN'); ?></option>
@@ -276,7 +276,7 @@ $this->view('_edit_script')
 				?>
 				<textarea name="tags" id="tags" cols="35" rows="6"><?php echo $this->lists['tags']; ?></textarea>
 				<?php echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_BADGES'), 'badges-page'); ?>
-				<textarea name="badges" id="badges" cols="35" rows="6"><?php echo $this->lists['badges']; ?></textarea>
+				<textarea name="badges" id="badges" cols="35" rows="6"><?php echo isset($this->lists['badges']) ? $this->lists['badges'] : ''; ?></textarea>
 				<?php
 				echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_PARAMETERS'), 'params-page');
 				echo '<fieldset class="paramlist">' . $this->params->render() . '</fieldset>';

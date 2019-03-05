@@ -37,7 +37,7 @@ $base = rtrim(Request::base(true), '/');
 
 $this->css('create.css')
 	->css('autocompleter.css')
-    ->js('create.js');
+	->js('create.js');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -80,12 +80,17 @@ $this->css('create.css')
 			<div class="field-wrap">
 				<div class="asset-uploader">
 					<div class="grid">
-						<script src="<?php echo $base; ?>/core/assets/js/jquery.fileuploader.js"></script>
-						<script src="<?php echo $base; ?>/core/components/com_resources/site/assets/js/fileupload.js"></script>
 						<?php if (!$this->row->type->get('collection')): ?>
-							<?php echo $this->loadTemplate('fileuploader'); ?>
+							<?php
+							$this->js('jquery.fileuploader.js', 'system')
+								->js('fileupload.js');
+							echo $this->loadTemplate('fileuploader');
+							?>
 						<?php else: ?>
-							<?php echo $this->loadTemplate('addchild'); ?>
+							<?php
+							$this->js('addchild.js');
+							echo $this->loadTemplate('addchild');
+							?>
 						<?php endif; ?>
 					</div>
 					<iframe width="100%" height="500" frameborder="0" name="attaches" id="attaches" src="index.php?option=<?php echo $this->option; ?>&amp;controller=attachments&amp;id=<?php echo $this->id; ?>&amp;tmpl=component"></iframe>

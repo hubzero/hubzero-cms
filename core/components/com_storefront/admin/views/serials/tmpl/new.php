@@ -90,7 +90,7 @@ jQuery(document).ready(function($){
 		</div>
 	</fieldset>
 <?php } ?>
-	<div class="col width-100">
+	<div class="col span12">
 		<fieldset class="adminform">
 			<input type="hidden" name="sId" value="<?php echo $this->sId; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

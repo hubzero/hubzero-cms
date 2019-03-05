@@ -51,10 +51,16 @@ Html::behavior('tooltip');
 						$passed = $test['total'] <= 0 ? 0 : round(($test['totals']['passed'] / $test['total']) * 100, 2);
 						$failed = $test['total'] <= 0 ? 0 : round(($test['totals']['failed'] / $test['total']) * 100, 2);
 						$passed = $passed + $failed;
+
+						$this->css('
+							.bars .skipped' . $key . ' { width: 100%; }
+							.bars .passed' . $key . ' { width: ' . $passed . '%; }
+							.bars .failed' . $key . ' { width: ' . $failed . '%; }
+						');
 						?>
-						<span class="bar skipped" style="width: 100%"></span>
-						<span class="bar passed" style="width: <?php echo $passed; ?>%"></span>
-						<span class="bar failed" style="width: <?php echo $failed; ?>%"></span>
+						<span class="bar skipped skipped<?php echo $key; ?>"></span>
+						<span class="bar passed passed<?php echo $key; ?>"></span>
+						<span class="bar failed failed<?php echo $key; ?>"></span>
 					</div>
 				</div>
 				<div class="test-key col span2">

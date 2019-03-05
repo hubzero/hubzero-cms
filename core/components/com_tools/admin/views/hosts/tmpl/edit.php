@@ -44,19 +44,6 @@ Toolbar::spacer();
 Toolbar::help('host');
 
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-
-	submitform( pressbutton );
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="grid">

@@ -67,7 +67,7 @@ $this->css();
 					<?php echo $this->email_label; ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 				</label>
 				<span class="input">
-					<input type="text" id="contact-email<?php echo $this->module->id; ?>" name="rp[email]" value="<?php echo $this->escape($this->posted['email']); ?>" />
+					<input type="email" id="contact-email<?php echo $this->module->id; ?>" name="rp[email]" value="<?php echo $this->escape($this->posted['email']); ?>" />
 				</span>
 			</div>
 

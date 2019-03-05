@@ -287,6 +287,11 @@ class Ticket extends Relational
 			$dt = Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 		}
 
+		if ($as == 'local')
+		{
+			$dt = Date::of($this->get('created'))->toLocal();
+		}
+
 		return $dt;
 	}
 

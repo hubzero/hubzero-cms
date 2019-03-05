@@ -45,11 +45,11 @@ class ComponentsSystemHelpersHtmlDirectory
 	{
 		if ($writable)
 		{
-			return '<span class="writable" style="color: green;">' . Lang::txt('COM_SYSTEM_INFO_WRITABLE') . '</span>';
+			return '<span class="writable">' . Lang::txt('COM_SYSTEM_INFO_WRITABLE') . '</span>';
 		}
 		else
 		{
-			return '<span class="unwritable" style="color: red;">' . Lang::txt('COM_SYSTEM_INFO_UNWRITABLE') . '</span>';
+			return '<span class="unwritable">' . Lang::txt('COM_SYSTEM_INFO_UNWRITABLE') . '</span>';
 		}
 	}
 

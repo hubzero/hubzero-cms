@@ -58,7 +58,7 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.delete'))
 {
-	Toolbar::deleteList();
+	Toolbar::deleteList('COM_KB_CONFIRM_DELETE');
 }
 Toolbar::spacer();
 Toolbar::help('articles');
@@ -71,17 +71,17 @@ $access = Html::access('assetgroups');
 		<div class="grid">
 			<div class="col span5">
 				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
+				<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
 
 				<input type="submit" value="<?php echo Lang::txt('COM_KB_GO'); ?>" />
-				<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span7">
 				<label for="filter-category"><?php echo Lang::txt('COM_KB_CATEGORY'); ?>:</label>
-				<?php echo Components\Kb\Admin\Helpers\Html::categories($this->categories, $this->filters['category'], 'category', 'filter-category', 'onchange="this.form.submit()"'); ?>
+				<?php echo Components\Kb\Admin\Helpers\Html::categories($this->categories, $this->filters['category'], 'category', 'filter-category', 'class="filter filter-submit"'); ?>
 
 				<label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
-				<select name="access" id="filter-access" onchange="this.form.submit()">
+				<select name="access" id="filter-access" class="filter filter-submit">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
 					<?php echo Html::select('options', $access, 'value', 'text', $this->filters['access']); ?>
 				</select>
@@ -92,7 +92,7 @@ $access = Html::access('assetgroups');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_KB_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_KB_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_KB_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -153,7 +153,7 @@ $access = Html::access('assetgroups');
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
 				</td>
 				<td>
 					<?php if ($row->get('checked_out') && $row->get('checked_out') != User::get('id')) { ?>
@@ -195,8 +195,8 @@ $access = Html::access('assetgroups');
 					<?php echo $this->escape($row->get('ctitle')); ?>
 				</td>
 				<td class="priority-5">
-					<span style="color: green;">+<?php echo $row->get('helpful', 0); ?></span>
-					<span style="color: red;">-<?php echo $row->get('nothelpful', 0); ?></span>
+					<span class="vote helpful">+<?php echo $row->get('helpful', 0); ?></span>
+					<span class="vote nothelpful">-<?php echo $row->get('nothelpful', 0); ?></span>
 				</td>
 			</tr>
 			<?php

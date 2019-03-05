@@ -36,7 +36,7 @@ $canDo = \Components\Courses\Helpers\Permissions::getActions();
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_PAGES') . ': ' . $text, 'courses.png');
+Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_PAGES') . ': ' . $text, 'courses');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -48,30 +48,13 @@ Toolbar::spacer();
 Toolbar::help('page');
 
 Html::behavior('framework');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-Joomla.submitbutton = function(pressbutton) {
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		Joomla.submitform(pressbutton, document.getElementById('item-form'));
-		return;
-	}
-
-	<?php echo $this->editor()->save('text'); ?>
-
-	// do field validation
-	if ($('#field-title').val() == ''){
-		alert("<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_TITLE'); ?>");
-	} else if ($('#field-content').val() == ''){
-		alert("<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_CONTENT'); ?>");
-	} else {
-		Joomla.submitform(pressbutton, document.getElementById('item-form'));
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span8">
 			<fieldset class="adminform">
@@ -88,7 +71,7 @@ Joomla.submitbutton = function(pressbutton) {
 
 				<div class="input-wrap">
 					<label for="field-title"><?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape($this->row->get('title')); ?>" />
+					<input type="text" name="fields[title]" id="field-title" class="required" value="<?php echo $this->escape($this->row->get('title')); ?>" />
 				</div>
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
 					<label for="field-url"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
@@ -97,7 +80,7 @@ Joomla.submitbutton = function(pressbutton) {
 				</div>
 				<div class="input-wrap">
 					<label for="field-content"><?php echo Lang::txt('COM_COURSES_FIELD_CONTENT'); ?>:</label><br />
-					<?php echo $this->editor('fields[content]', $this->escape($this->row->content('raw')), 50, 30, 'field-content'); ?>
+					<?php echo $this->editor('fields[content]', $this->escape($this->row->content('raw')), 50, 30, 'field-content', array('class' => 'required')); ?>
 				</div>
 			</fieldset>
 		</div>

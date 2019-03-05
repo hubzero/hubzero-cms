@@ -137,7 +137,11 @@ class Archive extends Obj
 
 		if (isset($filters['state']))
 		{
-			$results->whereEquals('state', $filters['state']);
+			if (!is_array($filters['state']))
+			{
+				$filters['state'] = array($filters['state']);
+			}
+			$results->whereIn('state', $filters['state']);
 		}
 
 		if (isset($filters['access']))
@@ -174,14 +178,14 @@ class Archive extends Obj
 		}
 		else
 		{
-			$results->whereEquals('publish_up', '0000-00-00 00:00:00', 1)
+			$results->where('publish_up', 'IS', null, 'and', 1)
 						->orWhere('publish_up', '<=', Date::toSql(), 1)
 						->resetDepth();
 		}
 
 		if (!isset($filters['authorized']) || !$filters['authorized'])
 		{
-			$results->whereEquals('publish_down', '0000-00-00 00:00:00', 1)
+			$results->where('publish_down', 'IS', null, 'and', 1)
 						->orWhere('publish_down', '>=', Date::toSql(), 1)
 						->resetDepth();
 		}
@@ -244,7 +248,7 @@ class Archive extends Obj
 				{
 					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
 				}
-				include_once($path);
+				include_once $path;
 			}
 
 			$this->_adapter = new $cls($this->get('scope_id'));

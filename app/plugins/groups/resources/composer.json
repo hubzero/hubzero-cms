@@ -1,0 +1,8 @@
+{
+	"name": "qubeshub/plg_groups_resources",
+	"description": "**Override** of HubZero group resources plugin.",
+	"type": "hubzero-plugin",
+  	"extra": {
+	    "install-directory": "/plugins/groups/resources"
+	}
+}

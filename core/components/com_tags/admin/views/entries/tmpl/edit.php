@@ -48,26 +48,15 @@ Toolbar::spacer();
 Toolbar::help('edit');
 
 Html::behavior('framework');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
 
-	// do field validation
-	if ($('#field-raw_tag').val() == '') {
-		alert('<?php echo Lang::txt('COM_TAGS_ERROR_EMPTY_TAG'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+	<div class="grid">
+	<div class="col span7">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
@@ -78,7 +67,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_TAGS_FIELD_TAG_HINT'); ?>">
 				<label for="field-raw_tag"><?php echo Lang::txt('COM_TAGS_FIELD_RAW_TAG'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[raw_tag]" id="field-raw_tag" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->tag->get('raw_tag'))); ?>" />
+				<input type="text" name="fields[raw_tag]" id="field-raw_tag" class="required" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->tag->get('raw_tag'))); ?>" />
 				<span class="hint"><?php echo Lang::txt('COM_TAGS_FIELD_TAG_HINT'); ?></span>
 			</div>
 
@@ -99,18 +88,18 @@ function submitbutton(pressbutton)
 			</div>
 		</fieldset>
 	</div>
-	<div class="col width-40 fltrt">
+	<div class="col span5">
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th class="key"><?php echo Lang::txt('COM_TAGS_FIELD_ID'); ?>:</th>
+					<th scope="row"><?php echo Lang::txt('COM_TAGS_FIELD_ID'); ?>:</th>
 					<td>
 						<?php echo $this->tag->get('id'); ?>
 						<input type="hidden" name="fields[id]" value="<?php echo $this->tag->get('id'); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo Lang::txt('COM_TAGS_FIELD_CREATOR'); ?>:</th>
+					<th scope="row"><?php echo Lang::txt('COM_TAGS_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php
 						if (!$this->tag->get('created_by') && $this->tag->get('id'))
@@ -135,15 +124,15 @@ function submitbutton(pressbutton)
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo Lang::txt('COM_TAGS_FIELD_CREATED'); ?>:</th>
+					<th scope="row"><?php echo Lang::txt('COM_TAGS_FIELD_CREATED'); ?>:</th>
 					<td>
-						<?php echo ($this->tag->created() != '0000-00-00 00:00:00' ? $this->tag->created() : Lang::txt('COM_TAGS_UNKNOWN')); ?>
+						<?php echo ($this->tag->created() && $this->tag->created() != '0000-00-00 00:00:00') ? $this->tag->created() : Lang::txt('COM_TAGS_UNKNOWN'); ?>
 						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->tag->get('created')); ?>" />
 					</td>
 				</tr>
 				<?php if ($this->tag->get('id') && $this->tag->wasModified()) { ?>
 					<tr>
-						<th class="key"><?php echo Lang::txt('COM_TAGS_FIELD_MODIFIER'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_TAGS_FIELD_MODIFIER'); ?>:</th>
 						<td>
 							<?php
 							if ($this->tag->get('modified_by'))
@@ -160,9 +149,9 @@ function submitbutton(pressbutton)
 						</td>
 					</tr>
 					<tr>
-						<th class="key"><?php echo Lang::txt('COM_TAGS_FIELD_MODIFIED'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_TAGS_FIELD_MODIFIED'); ?>:</th>
 						<td>
-							<?php echo ($this->tag->modified() != '0000-00-00 00:00:00' ? $this->tag->modified() : Lang::txt('COM_TAGS_UNKNOWN')); ?>
+							<?php echo ($this->tag->modified() && $this->tag->modified() != '0000-00-00 00:00:00') ? $this->tag->modified() : Lang::txt('COM_TAGS_UNKNOWN'); ?>
 							<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->escape($this->tag->get('modified')); ?>" />
 						</td>
 					</tr>
@@ -272,7 +261,7 @@ function submitbutton(pressbutton)
 			?>
 		</div>
 	</div>
-	<div class="clr"></div>
+	</div>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

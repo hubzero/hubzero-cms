@@ -44,14 +44,16 @@ class UsersViewLogin extends JViewLegacy
 		}
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
+		if (count($errors = $this->get('Errors')))
+		{
 			App::abort(500, implode('<br />', $errors));
 			return false;
 		}
 
 		// Check for layout override
 		$active = \App::get('menu')->getActive();
-		if (isset($active->query['layout'])) {
+		if (isset($active->query['layout']))
+		{
 			$this->setLayout($active->query['layout']);
 		}
 
@@ -115,7 +117,7 @@ class UsersViewLogin extends JViewLegacy
 		}
 
 		// Set return if is isn't already
-		if (is_null($return) && is_object($active))
+		if (!$return && is_object($active))
 		{
 			$return = $defaultReturn;
 		}
@@ -179,18 +181,20 @@ class UsersViewLogin extends JViewLegacy
 
 			if (class_exists($className))
 			{
-				$myplugin = new $className($this,(array)$plugin);
+				$myplugin = new $className($this, (array)$plugin);
 
-				if (method_exists($className,'status'))
+				if (method_exists($className, 'status'))
 				{
 					$status[$plugin->name] = $myplugin->status();
 					$this->status = $status;
 				}
 
 				if ($plugin->name != $authenticator)
+				{
 					continue;
+				}
 
-				if (method_exists($className,'display'))
+				if (method_exists($className, 'display'))
 				{
 					$result = $myplugin->display($this, $tpl);
 

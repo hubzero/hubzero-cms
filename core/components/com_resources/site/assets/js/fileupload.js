@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_resources/site/assets/js/fileupload.jquery.js
+ * @file        components/com_resources/site/assets/js/fileupload.js
  * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license     http://opensource.org/licenses/MIT MIT
  */
@@ -21,16 +21,16 @@ if (!jq) {
 
 jQuery(document).ready(function(jq){
 	var $ = jq,
-		iframe = $('#attaches');
+		iframe = $('#attaches'),
+		attach = $("#ajax-uploader");
 
-	if ($("#ajax-uploader").length) {
+	if (attach.length) {
 		iframe.parent().append('<div class="processing-indicator"></div>');
 
 		if ($('#link-adder').length > 0) {
 			$('#link-adder')
 				.on('click', function(){
 					iframe.parent().find('p.error').remove();
-					
 
 					var fname = prompt("Please provide a link:", "http://");
 
@@ -52,26 +52,17 @@ jQuery(document).ready(function(jq){
 					'</div>'
 				);
 
-			/*iframe.on('load', function() {
-				iframe.contents().find('.list .up').each(function(index) {
-					$(this).attr('href',  $(this).attr('href') + '&hideform=1')
-				});
-				iframe.contents().find('.list .down').each(function(index) {
-					$(this).attr('href',  $(this).attr('href') + '&hideform=1')
-				});
-			});*/
-
 			iframe.attr('src', iframe.attr('src') + '&hideform=1&t=');
 		}
 
 		var uploader = new qq.FileUploader({
-			element: $("#ajax-uploader")[0],
-			action: $("#ajax-uploader").attr("data-action"),
+			element: attach[0],
+			action: attach.attr("data-action"),
 			multiple: true,
 			debug: false,
 			template: '<div class="qq-uploader">' +
-						'<div class="qq-upload-button"><span>Click or drop file</span></div>' + 
-						'<div class="qq-upload-drop-area"><span>Click or drop file</span></div>' +
+						'<div class="qq-upload-button"><span>' + attach.attr('data-instructions') + '</span></div>' + 
+						'<div class="qq-upload-drop-area"><span>' + attach.attr('data-instructions') + '</span></div>' +
 						'<ul class="qq-upload-list"></ul>' + 
 					'</div>',
 			onSubmit: function(id, file) {

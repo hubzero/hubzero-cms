@@ -1,7 +1,7 @@
 $(function(){
 	$('#add-filter').on('click', function(e){
 		e.preventDefault();
-		var filterName = $('select[name="add-filter"]').val();
+		var filterName = $('[name="add-filter"]').val();
 		var filterType = $('select[name="filter-type"]').val();
 		$('input[name="add-filter"]').val('');
 		var values = {'type': filterType};
@@ -156,6 +156,17 @@ var daterange = {
 		minDateContainer.append(minDate);	
 		maxDateContainer.append(maxDate);
 		optionsContainer.append(minDateContainer).append(maxDateContainer);
+		return optionsContainer;
+	}
+}
+
+var textfield = {
+	addOptionContainer: function(filterName, values){
+		var optionsContainer = $('<section class="options">');
+		var textContainer = $('<div class="input-wrap col span12"></div>');
+		var textField = $('<input type="text" name="filters[' + filterName + '][default]" value="" placeholder="Filter..."/>');
+		textContainer.append(textField);	
+		optionsContainer.append(textContainer);
 		return optionsContainer;
 	}
 }

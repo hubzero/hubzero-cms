@@ -1281,15 +1281,4 @@ class Html
 
 		return true;
 	}
-
-	/**
-	 * Display an alert message
-	 *
-	 * @param   string  $msg
-	 * @return  string
-	 */
-	public static function alert($msg)
-	{
-		return "<script type=\"text/javascript\"> alert('" . $msg . "'); window.history.go(-1); </script>\n";
-	}
 }

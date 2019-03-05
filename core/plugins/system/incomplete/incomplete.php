@@ -98,29 +98,29 @@ class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
 				// Tmp users
 				if (User::get('tmp_user'))
 				{
-					Request::setVar('option',     'com_members');
+					Request::setVar('option', 'com_members');
 					Request::setVar('controller', 'register');
-					Request::setVar('task',       'create');
-					Request::setVar('act',        '');
+					Request::setVar('task', 'create');
+					Request::setVar('act', '');
 
 					$this->event->stop();
 				}
 				else if (substr(User::get('email'), -8) == '@invalid') // force auth_link users to registration update page
 				{
-					$usersConfig        = Component::params('com_users');
+					$usersConfig        = Component::params('com_members');
 					$simpleRegistration = $usersConfig->get('simple_registration', false);
 
 					if (Session::get('linkaccount', true) && !$simpleRegistration)
 					{
 						Request::setVar('option', 'com_users');
-						Request::setVar('view',   'link');
+						Request::setVar('view', 'link');
 					}
 					else
 					{
-						Request::setVar('option',     'com_members');
+						Request::setVar('option', 'com_members');
 						Request::setVar('controller', 'register');
-						Request::setVar('task',       'update');
-						Request::setVar('act',        '');
+						Request::setVar('task', 'update');
+						Request::setVar('act', '');
 					}
 
 					$this->event->stop();
@@ -134,8 +134,8 @@ class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
 					if (!empty($plugin))
 					{
 						Request::setVar('option', 'com_members');
-						Request::setVar('task',   'view');
-						Request::setVar('id',      User::get('id'));
+						Request::setVar('task', 'view');
+						Request::setVar('id', User::get('id'));
 						Request::setVar('active', 'profile');
 
 						$this->event->stop();

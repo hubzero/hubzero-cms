@@ -1688,7 +1688,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		{
 			foreach ($fields as $key => $value)
 			{
-				$fieldName = $key . '_s';
+				$fieldName = str_replace(['"', ' ', '='], '', $key) . '_s';
 				$obj->$fieldName = $value;
 			}
 		}

@@ -165,7 +165,7 @@ if ($mode != 'preview')
 
 						echo $html;
 
-						$live_site = rtrim(Request::base(),'/');
+						$live_site = rtrim(Request::base(), '/');
 						?>
 						<p>
 							<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->id.'/feed.rss?content=audio'; ?>"><?php echo Lang::txt('Audio podcast'); ?></a><br />
@@ -299,7 +299,7 @@ if ($mode != 'preview')
 								$html .= '<a href="'.Route::url('index.php?option='.$this->option.'&id='.$child->id).'"';
 								if ($link_action == 1)
 								{
-									$html .= ' target="_blank"';
+									$html .= ' rel="noreferrer" target="_blank"';
 								}
 								elseif ($link_action == 2)
 								{
@@ -422,4 +422,4 @@ if ($mode != 'preview')
 		}
 	}
 	?>
-<?php } ?>
+<?php }

@@ -32,10 +32,32 @@
 
 defined('_HZEXEC_') or die();
 
+Html::behavior('chart', 'pie');
+
 $this->css();
 
-//Html::behavior('chart', 'resize');
-Html::behavior('chart', 'pie');
+$this->css('
+.wishlist-removed {
+	background-color: ' . $this->params->get("color_removed", "#cccccc") . ';
+}
+.wishlist-granted {
+	background-color: ' . $this->params->get("color_granted", "#999") . ';
+}
+.wishlist-withdrawn {
+	background-color: ' . $this->params->get("color_withdrawn", "#ffffff") . ';
+}
+.wishlist-pending {
+	background-color: ' . $this->params->get("color_pending", "#656565") . ';
+}
+.wishlist-rejected {
+	background-color: ' . $this->params->get("color_rejected", "#333333") . ';
+}
+.wishlist-accepted {
+	background-color: ' . $this->params->get("color_accepted", "#f9d180") . ';
+}
+');
+
+$this->js();
 
 $total = $this->granted + $this->accepted + $this->pending + $this->removed + $this->withdrawn + $this->removed + $this->rejected;
 if ($total == 0)
@@ -46,46 +68,43 @@ if ($total == 0)
 ?>
 <div class="<?php echo $this->module->module; ?>">
 	<div class="overview-container">
-		<div id="wishlist-container<?php echo $this->module->id; ?>" class="chrt"></div>
+		<div id="wishlist-container<?php echo $this->module->id; ?>" class="<?php echo $this->module->module; ?>-chart chrt" data-datasets="<?php echo $this->module->module; ?>-data<?php echo $this->module->id; ?>"></div>
 
-		<script type="text/javascript">
-		if (!jq) {
-			var jq = $;
-		}
-		if (jQuery()) {
-			var $ = jq,
-				wishlistPie;
-
-			$(document).ready(function() {
-				wishlistPie = $.plot($("#wishlist-container<?php echo $this->module->id; ?>"), [
-					{label: '<?php echo strtolower(Lang::txt('MOD_WISHLIST_PENDING')); ?>', data: <?php echo round(($this->pending / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_pending", "#656565"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_WISHLIST_GRANTED')); ?>', data: <?php echo round(($this->granted / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_granted", "#999"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_WISHLIST_ACCEPTED')); ?>', data: <?php echo round(($this->accepted / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_accepted", "#f9d180"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_WISHLIST_REMOVED')); ?>', data: <?php echo round(($this->removed / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_removed", "#cccccc"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_WISHLIST_WITHDRAWN')); ?>', data: <?php echo round(($this->withdrawn / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_withdrawn", "#ffffff"); ?>'},
-					{label: '<?php echo strtolower(Lang::txt('MOD_WISHLIST_REJECTED')); ?>', data: <?php echo round(($this->rejected / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_rejected", "#333333"); ?>'}
-				], {
-					legend: {
-						show: false
+		<script type="application/json" id="<?php echo $this->module->module; ?>-data<?php echo $this->module->id; ?>">
+			{
+				"datasets": [
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_WISHLIST_PENDING')); ?>",
+						"data": <?php echo round(($this->pending / $total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_pending", "#656565"); ?>"
 					},
-					series: {
-						pie: {
-							innerRadius: 0.5,
-							show: true,
-							label: {
-								show: false
-							},
-							stroke: {
-								color: '#efefef'
-							}
-						}
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_WISHLIST_GRANTED')); ?>",
+						"data": <?php echo round(($this->granted / $total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_granted", "#999"); ?>"
 					},
-					grid: {
-						hoverable: false
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_WISHLIST_ACCEPTED')); ?>",
+						"data": <?php echo round(($this->accepted / $total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_accepted", "#f9d180"); ?>"
+					},
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_WISHLIST_REMOVED')); ?>",
+						"data": <?php echo round(($this->removed / $total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_removed", "#cccccc"); ?>"
+					},
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_WISHLIST_WITHDRAWN')); ?>",
+						"data": <?php echo round(($this->withdrawn / $total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_withdrawn", "#ffffff"); ?>"
+					},
+					{
+						"label": "<?php echo strtolower(Lang::txt('MOD_WISHLIST_REJECTED')); ?>",
+						"data": <?php echo round(($this->rejected / $total)*100, 2); ?>,
+						"color": "<?php echo $this->params->get("color_rejected", "#333333"); ?>"
 					}
-				});
-			});
-		}
+				]
+			}
 		</script>
 
 		<p class="wishlist-total"><?php echo $total; ?></p>
@@ -96,7 +115,7 @@ if ($total == 0)
 				<tr class="pending-items">
 					<th scope="row">
 						<a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=pending'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_PENDING_TITLE'); ?>">
-							<span style="background-color: <?php echo $this->params->get("color_pending", "#656565"); ?>;"></span><?php echo Lang::txt('MOD_WISHLIST_PENDING'); ?>
+							<span class="wishlist-pending"></span><?php echo Lang::txt('MOD_WISHLIST_PENDING'); ?>
 						</a>
 					</th>
 					<td>
@@ -108,7 +127,7 @@ if ($total == 0)
 				<tr class="accepted-items">
 					<th scope="row">
 						<a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=accepted'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_ACCEPTED_TITLE'); ?>">
-							<span style="background-color: <?php echo $this->params->get("color_accepted", "#f9d180"); ?>;"></span><?php echo Lang::txt('MOD_WISHLIST_ACCEPTED'); ?>
+							<span class="wishlist-accepted"></span><?php echo Lang::txt('MOD_WISHLIST_ACCEPTED'); ?>
 						</a>
 					</th>
 					<td>
@@ -120,7 +139,7 @@ if ($total == 0)
 				<tr class="granted-items">
 					<th scope="row">
 						<a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=granted'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_GRANTED_TITLE'); ?>">
-							<span style="background-color: <?php echo $this->params->get("color_granted", "#999"); ?>;"></span><?php echo Lang::txt('MOD_WISHLIST_GRANTED'); ?>
+							<span class="wishlist-granted"></span><?php echo Lang::txt('MOD_WISHLIST_GRANTED'); ?>
 						</a>
 					</th>
 					<td>
@@ -132,7 +151,7 @@ if ($total == 0)
 				<tr class="rejected-items">
 					<th scope="row">
 						<a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=rejected'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_REJECTED_TITLE'); ?>">
-							<span style="background-color: <?php echo $this->params->get("color_rejected", "#333333"); ?>;"></span><?php echo Lang::txt('MOD_WISHLIST_REJECTED'); ?>
+							<span class="wishlist-rejected"></span><?php echo Lang::txt('MOD_WISHLIST_REJECTED'); ?>
 						</a>
 					</th>
 					<td>
@@ -144,7 +163,7 @@ if ($total == 0)
 				<tr class="withdrawn-items">
 					<th scope="row">
 						<a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=withdrawn'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_WITHDRAWN_TITLE'); ?>">
-							<span style="background-color: <?php echo $this->params->get("color_withdrawn", "#ffffff"); ?>;"></span><?php echo Lang::txt('MOD_WISHLIST_WITHDRAWN'); ?>
+							<span class="wishlist-withdrawn"></span><?php echo Lang::txt('MOD_WISHLIST_WITHDRAWN'); ?>
 						</a>
 					</th>
 					<td>
@@ -156,7 +175,7 @@ if ($total == 0)
 				<tr class="removed-items">
 					<th scope="row">
 						<a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=deleted'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_REMOVED_TITLE'); ?>">
-							<span style="background-color: <?php echo $this->params->get("color_removed", "#cccccc"); ?>;"></span><?php echo Lang::txt('MOD_WISHLIST_REMOVED'); ?>
+							<span class="wishlist-removed"></span><?php echo Lang::txt('MOD_WISHLIST_REMOVED'); ?>
 						</a>
 					</th>
 					<td>

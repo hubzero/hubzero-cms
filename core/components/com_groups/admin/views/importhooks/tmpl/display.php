@@ -65,7 +65,7 @@ Toolbar::help('import');
 		<table class="admintable">
 			<thead>
 				<tr>
-					<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+					<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 					<th scope="col" class="priority-3"><?php echo Lang::txt('COM_GROUPS_IMPORTHOOK_DISPLAY_FIELD_NAME'); ?></th>
 					<th scope="col" class="priority-2"><?php echo Lang::txt('COM_GROUPS_IMPORTHOOK_DISPLAY_FIELD_TYPE'); ?></th>
 					<th scope="col"><?php echo Lang::txt('COM_GROUPS_IMPORTHOOK_DISPLAY_FIELD_FILE'); ?></th>
@@ -86,7 +86,7 @@ Toolbar::help('import');
 					<?php foreach ($this->hooks as $i => $hook) : ?>
 						<tr>
 							<td>
-								<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $hook->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
+								<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $hook->get('id'); ?>" class="checkbox-toggle" />
 							</td>
 							<td class="priority-3">
 								<?php echo $this->escape($hook->get('name')); ?> <br />
@@ -113,7 +113,7 @@ Toolbar::help('import');
 							</td>
 							<td>
 								<?php echo $hook->get('file'); ?> &mdash;
-								<a target="_blank" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=raw&id=' . $hook->get('id')); ?>">
+								<a rel="noopener" target="_blank" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=raw&id=' . $hook->get('id')); ?>">
 									<?php echo Lang::txt('COM_GROUPS_IMPORTHOOK_DISPLAY_FILE_VIEWRAW'); ?>
 								</a>
 							</td>

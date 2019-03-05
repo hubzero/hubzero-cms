@@ -1016,12 +1016,41 @@ class File extends Base
 
 					// Create file objects
 					$conFile = Entity::fromPath($identifier, $connection->adapter());
+					$dirParts = explode(DS, $identifier);
 
+					// We need the pretty directory that the file is stored in
+					// This is important mostly to translate between remote filesystems and local
+					$subdir = array_slice($dirParts, 0, -1);
+					$subdir = implode(DS, $subdir);
+
+					// Remote file
 					if (!$conFile->isLocal())
 					{
 						// Create a temp file and write to it
-						$tempFile = Manager::getTempPath($conFile->getName());
-						Manager::copy($conFile, $tempFile);
+						$tempFile = Manager::getTempPath($conFile->getFilename());
+						$tempFile->write($conFile->read());
+
+						// Rebuild identifier
+						// We need to make sure the filename and directory are human readable at this point
+						$id = array();
+						if (count($dirParts) > 0)
+						{
+							for ($p = 0; $p < count($dirParts) - 1; $p++)
+							{
+								// For some adapters that store files in a flat structure we need to actually
+								// query each entity for its human readable name
+								$tempParent = Entity::fromPath($dirParts[$p], $connection->adapter());
+								if ($tempParent)
+								{
+									$id[] = $tempParent->getDisplayName();
+								}
+							}
+							// Use a human readable subdir
+							$subdir = implode(DS, $id);
+							// Add the filename for a full path
+							$id[] = $conFile->getFilename();
+						}
+						$identifier = implode(DS, $id);
 					}
 					else
 					{
@@ -1030,7 +1059,7 @@ class File extends Base
 
 					// Insert the file into the repo
 					$result = $pub->_project->repo()->insert([
-						'subdir'   => $conFile->getParent(),
+						'subdir'   => $subdir,
 						'dataPath' => $tempFile->getAbsolutePath(),
 						'update'   => false
 					]);

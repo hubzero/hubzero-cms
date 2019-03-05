@@ -46,29 +46,14 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('comment');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	<?php echo $this->editor()->save('text'); ?>
-
-	// do field validation
-	if ($('#field-content').val() == ''){
-		alert("<?php echo Lang::txt('COM_BLOG_ERROR_MISSING_CONTENT'); ?>");
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform form-validate" id="item-form" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -81,7 +66,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-content"><?php echo Lang::txt('COM_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<?php echo $this->editor('fields[content]', $this->escape($this->row->get('content')), 50, 15, 'field-content', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
+					<?php echo $this->editor('fields[content]', $this->escape($this->row->get('content')), 50, 15, 'field-content', array('class' => 'required minimal no-footer', 'buttons' => false)); ?>
 				</div>
 			</fieldset>
 		</div>
@@ -109,7 +94,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<th><?php echo Lang::txt('COM_BLOG_FIELD_CREATED'); ?>:</th>
 						<td>
-							<?php echo $this->row->get('created'); ?>
+							<?php echo Date::of($this->row->get('created'))->toLocal(); ?>
 							<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
 						</td>
 					</tr>

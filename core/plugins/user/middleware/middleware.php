@@ -80,10 +80,10 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 				if (!$row->get('id') || ($row->get('id') && $row->get('class_id')))
 				{
 					$val = array(
-						'hard_files'  => 0,
-						'soft_files'  => 0,
-						'hard_blocks' => 0,
-						'soft_blocks' => 0
+						'hard_files'  => $row->set('hard_files', 0),
+						'soft_files'  => $row->set('soft_files', 0),
+						'hard_blocks' => $row->set('hard_blocks', 0),
+						'soft_blocks' => $row->set('soft_blocks', 0)
 					);
 
 					$db->setQuery("SELECT c.* FROM `#__users_quotas_classes` AS c LEFT JOIN `#__users_quotas_classes_groups` AS g ON g.`class_id`=c.`id` WHERE g.`group_id` IN (" . implode(',', $gids) . ")");

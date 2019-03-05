@@ -129,7 +129,7 @@ class Restrictions extends AdminController
 		Request::checkToken();
 
 		// Incoming
-		$ids = Request::getInt('id', 0);
+		$ids = Request::getArray('id', array());
 		$sId = Request::getInt('sId');
 
 		RestrictionsHelper::removeUsers($ids);

@@ -51,8 +51,8 @@ HUBzero is a registered trademark of Purdue University.
 	</fieldset>
 	<fieldset name="files">
 		<field name="webpath" type="text" menu="hide" default="/site/tickets" label="COM_SUPPORT_CONFIG_WEBPATH_LABEL" description="COM_SUPPORT_CONFIG_WEBPATH_DESC" />
-		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="COM_SUPPORT_CONFIG_MAXALLOWED_LABEL" description="COM_SUPPORT_CONFIG_MAXALLOWED_DESC" />
-		<field name="file_ext" type="textarea" rows="10" cols="30" menu="hide" label="COM_SUPPORT_CONFIG_EXTENSIONS_LABEL" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="COM_SUPPORT_CONFIG_EXTENSIONS_DESC" />
+		<field name="maxAllowed" type="text" menu="hide" default="" label="COM_SUPPORT_CONFIG_MAXALLOWED_LABEL" description="COM_SUPPORT_CONFIG_MAXALLOWED_DESC" />
+		<field name="file_ext" type="textarea" rows="10" cols="30" menu="hide" label="COM_SUPPORT_CONFIG_EXTENSIONS_LABEL" default="" description="COM_SUPPORT_CONFIG_EXTENSIONS_DESC" />
 	</fieldset>
 	<fieldset name="spam">
 		<field name="blacklist" type="textarea" rows="15" cols="40" label="COM_SUPPORT_CONFIG_BLACKLIST_LABEL" default="" description="COM_SUPPORT_CONFIG_BLACKLIST_DESC" />

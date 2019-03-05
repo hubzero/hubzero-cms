@@ -1,21 +1,25 @@
 <?php
-require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'orm' . DS . 'handler.php';
+
+$toolComponentPath = Component::path('com_tools');
+
+require_once "$toolComponentPath/models/orm/handler.php";
 
 use \Components\Tools\Models\Orm\Handler;
 use \Components\Projects\Helpers\Html;
 
+$model = $this->model;
 $handlerPath = str_replace(
-	array('{project}', '{file}'),
-	array($this->model->get('alias'), $this->itemPath),
+	['{project}', '{file}'],
+	[$model->get('alias'), $this->itemPath],
 	$this->handlerBase
 );
 $handlers = Handler::getLaunchUrlsForFile($handlerPath);
 $urlEncodedItemName = urlencode($this->itemName);
-$itemDropdownClass = ($handlers) ? ' hasMultiple' : '';
+$itemDropdownClass = $handlers ? ' hasMultiple' : '';
 $itemFileNameShort = Html::shortenFileName($this->itemFileName, 60);
 $itemMimeType = $this->itemMimeType;
 
-$linkUrl = Route::url($this->model->link('files') . "&action=download&connection=$this->connectionId$this->subdirPath&asset=$urlEncodedItemName");
+$linkUrl = Route::url($model->link('files') . "&action=download&connection=$this->connectionId$this->subdirPath&asset=$urlEncodedItemName");
 $linkTarget = '';
 
 if ($itemMimeType && strpos($itemMimeType, 'application/vnd.google') === 0)
@@ -26,7 +30,7 @@ if ($itemMimeType && strpos($itemMimeType, 'application/vnd.google') === 0)
 		'presentation' => 'presentation',  // Google Slides
 		'spreadsheet'  => 'spreadsheets',  // Google Sheets
 		//'map'          => 'map',           // Google My Maps
-		//'form'         => 'form',          // Google Forms
+		'form'         => 'forms',          // Google Forms
 		//'site'         => 'site',          // Google Sites
 		//'script'       => 'script',        // Google Apps Scripts
 		//'fusiontable'  => 'fusiontable',   // Google Fusion Tables
@@ -44,7 +48,7 @@ if ($itemMimeType && strpos($itemMimeType, 'application/vnd.google') === 0)
 		{
 			$itemFormat = $formatMappings[$match[1]];
 			$linkUrl = "https://docs.google.com/$itemFormat/d/$urlEncodedItemName/edit";
-			$linkTarget = 'target="blank"';
+			$linkTarget = 'rel="nofollow external" target="_blank"';
 		}
 		elseif (isset($unlinkable[$match[1]]))
 		{
@@ -74,4 +78,3 @@ if ($itemMimeType && strpos($itemMimeType, 'application/vnd.google') === 0)
 		<?php endforeach; ?>
 	<?php endif; ?>
 </div>
-

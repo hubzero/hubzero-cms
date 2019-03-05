@@ -39,6 +39,7 @@ use Components\Groups\Helpers\Permissions;
 use Components\Groups\Models\Page;
 use Components\Groups\Models\Log;
 use Components\Groups\Helpers\Gitlab;
+use Components\Groups\Models\Orm\Field;
 use Filesystem;
 use Request;
 use Config;
@@ -49,6 +50,8 @@ use Lang;
 use User;
 use Date;
 use App;
+
+include_once dirname(dirname(__DIR__)) . '/models/orm/field.php';
 
 /**
  * Groups controller class for managing membership and group info
@@ -223,11 +226,25 @@ class Manage extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
+		// Get custom fields and their values
+		$customFields = Field::all()
+			->order('ordering', 'asc')
+			->rows();
+
+		$customAnswers = array();
+		foreach ($customFields as $field)
+		{
+			$fieldName = $field->get('name');
+			$customAnswers[$fieldName] = $field->collectGroupAnswers($group->get('gidNumber'));
+		}
+
 		// Output the HTML
 		$this->view
 			->setErrors($this->getErrors())
 			->setLayout('edit')
 			->set('group', $group)
+			->set('customFields', $customFields)
+			->set('customAnswers', $customAnswers)
 			->display();
 	}
 
@@ -334,6 +351,17 @@ class Manage extends AdminController
 			}
 		}
 
+		$customFields = Field::all()->rows();
+		$customFieldForm = Request::getArray('customfields', array());
+		foreach ($customFields as $field)
+		{
+			$field->setFormAnswers($customFieldForm);
+			if (!$field->validate())
+			{
+				$this->setError($field->getError());
+			}
+		}
+
 		// Push back into edit mode if any errors
 		if ($this->getError())
 		{
@@ -375,14 +403,28 @@ class Manage extends AdminController
 		$group->set('description', $g['description']);
 		$group->set('discoverability', $g['discoverability']);
 		$group->set('join_policy', $g['join_policy']);
-		$group->set('public_desc', $g['public_desc']);
-		$group->set('private_desc', $g['private_desc']);
+		if (isset($g['public_desc']))
+		{
+			$group->set('public_desc', $g['public_desc']);
+		}
+		if (isset($g['private_desc']))
+		{
+			$group->set('private_desc', $g['private_desc']);
+		}
 		$group->set('restrict_msg', $g['restrict_msg']);
 		$group->set('logo', $g['logo']);
 		$group->set('plugins', $g['plugins']);
 		$group->set('discussion_email_autosubscribe', isset($g['discussion_email_autosubscribe']) ? $g['discussion_email_autosubscribe'] : '');
 		$group->set('params', $params);
 		$group->update();
+
+		if (isset($customFields))
+		{
+			foreach ($customFields as $field)
+			{
+				$field->saveGroupAnswers($group->get('gidNumber'));
+			}
+		}
 
 		// create home page
 		if ($isNew)
@@ -547,7 +589,7 @@ class Manage extends AdminController
 		}
 		else
 		{
-			Notify::warning(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_CREATE_DB'));
+			Notify::warning(Lang::txt('COM_GROUPS_SUPER_UNABLE_TO_CREATE_DB_PERMISSIONS'));
 		}
 
 		// check to see if we have a super group db config
@@ -630,19 +672,8 @@ class Manage extends AdminController
 		// instantiate new gitlab client
 		$client = new Gitlab($gitlabUrl, $gitlabKey);
 
-		// get list of groups
-		$groups = $client->groups();
-
-		// attempt to get already existing group
-		$gitLabGroup = null;
-		foreach ($groups as $g)
-		{
-			if ($groupName == $g['name'])
-			{
-				$gitLabGroup = $g;
-				break;
-			}
-		}
+		// Search for group in Gitlab
+		$gitLabGroup = $client->groups($groupName);
 
 		// create group if doesnt exist
 		if ($gitLabGroup == null)
@@ -652,20 +683,24 @@ class Manage extends AdminController
 				'path' => strtolower($groupName)
 			));
 		}
-
-		//get groups projects
-		$projects = $client->projects();
-
-		// attempt to get already existing project
-		$gitLabProject = null;
-		foreach ($projects as $p)
-		{
-			if ($projectName == $p['name'] && $p['namespace']['id'] == $gitLabGroup['id'])
-			{
-				$gitLabProject = $p;
-				break;
-			}
+		elseif (count($gitLabGroup) > 1)
+		{  // If search returns more than one match, return with error.
+			Notify::error(Lang::txt('COM_GROUPS_GITLAB_GET_GROUPS_MORE_THAN_ONE' . $groupName));
+			return;
 		}
+		elseif (count($gitLabGroup) == 1)
+		{
+			// Grab first element of array
+			$gitLabGroup = $gitLabGroup[0];
+		}
+		else
+		{
+			Notify::error(Lang::txt('COM_GROUPS_GITLAB_GET_GROUPS_UNKNOWN_ERROR'));
+			return;
+		}
+
+		//Search for project in Gitlab
+		$gitLabProject = $client->projects($projectName);
 
 		// create project if doesnt exist
 		if ($gitLabProject == null)
@@ -679,6 +714,21 @@ class Manage extends AdminController
 				'wiki_enabled'           => true,
 				'snippets_enabled'       => true,
 			));
+		}
+		elseif (count($gitLabProject) > 1)
+		{  // If search returns more than one match return with error.
+			Notify::error(Lang::txt('COM_GROUPS_GITLAB_PROJECTS_MORE_THAN_ONE' . $projectName));
+			return;
+		}
+		elseif (count($gitLabProject) == 1)
+		{
+			// Grab first element of array
+			$gitLabProject = $gitLabProject[0];
+		}
+		else
+		{
+			Notify::error(Lang::txt('COM_GROUPS_GITLAB_GET_PROJECTS_UNKNOWN_ERROR'));
+			return;
 		}
 
 		// path to group folder

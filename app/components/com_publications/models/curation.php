@@ -2094,19 +2094,19 @@ class Curation extends Obj
 		{
 			return false;
 		}
-		$bundleName = 'Resource' . '_' . $this->_pub->id;
-		if ($symLinkName)
+		$doi = $this->_pub->version->get('doi');
+		if ($doi != '')
 		{
-			$bundleName .= '_' . $this->_pub->version->get('version_number');
+			$doi = str_replace('.', '_', $doi);
+			$doi = str_replace('/', '_', $doi);
+			$bundleName = $doi;
 		}
 		else
 		{
-			$doi = $this->_pub->version->get('doi');
-			if ($doi != '')
+			$bundleName = 'Resource' . '_' . $this->_pub->id;
+			if ($symLinkName)
 			{
-				$doi = str_replace('.', '_', $doi);
-				$doi = str_replace('/', '_', $doi);
-				$bundleName = $doi;
+				$bundleName .= '_' . $this->_pub->version->get('version_number');
 			}
 		}
 		return $bundleName . '.zip';

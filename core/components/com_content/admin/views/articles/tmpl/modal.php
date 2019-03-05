@@ -37,9 +37,9 @@ if (App::isSite())
 	Session::checkToken('get') or die(Lang::txt('JINVALID_TOKEN'));
 }
 
-require_once PATH_CORE . '/components/com_content/site/helpers/route.php';
+require_once Component::path('com_content') . '/site/helpers/route.php';
 
-Html::addIncludePath(PATH_CORE . '/components/com_content/admin/helpers/html');
+Html::addIncludePath(Component::path('com_content') . '/admin/helpers/html');
 Html::behavior('tooltip');
 
 $function  = Request::getCmd('function', 'jSelectArticle');
@@ -47,7 +47,7 @@ $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);
 ?>
 <h2 class="modal-title"><?php echo Lang::txt('Select Article'); ?></h2>
-<form action="<?php echo Route::url('index.php?option=com_content&view=articles&layout=modal&tmpl=component&function='.$function.'&'.Session::getFormToken().'=1');?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=com_content&view=articles&layout=modal&tmpl=component&function='.$function.'&'.Session::getFormToken().'=1'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar" class="filter clearfix">
 		<div class="grid">
 			<div class="col span5">
@@ -55,27 +55,27 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 				<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" size="30" placeholder="<?php echo Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC'); ?>" />
 
 				<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span7">
-				<select name="filter_access" class="inputbox" onchange="this.form.submit()">
+				<select name="filter_access" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-					<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']);?>
+					<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
 				</select>
 
-				<select name="filter_published" class="inputbox" onchange="this.form.submit()">
+				<select name="filter_published" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-					<?php echo Html::select('options', Html::grid('publishedOptions'), 'value', 'text', $this->filters['published'], true);?>
+					<?php echo Html::select('options', Html::grid('publishedOptions'), 'value', 'text', $this->filters['published'], true); ?>
 				</select>
 
-				<select name="filter_category_id" class="inputbox" onchange="this.form.submit()">
+				<select name="filter_category_id" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
-					<?php echo Html::select('options', Html::category('options', 'com_content'), 'value', 'text', $this->filters['category_id']);?>
+					<?php echo Html::select('options', Html::category('options', 'com_content'), 'value', 'text', $this->filters['category_id']); ?>
 				</select>
 
-				<select name="filter_language" class="inputbox" onchange="this.form.submit()">
+				<select name="filter_language" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
-					<?php echo Html::select('options', Html::contentlanguage('existing', true, true), 'value', 'text', $this->filters['language']);?>
+					<?php echo Html::select('options', Html::contentlanguage('existing', true, true), 'value', 'text', $this->filters['language']); ?>
 				</select>
 			</div>
 		</div>
@@ -114,25 +114,30 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 		<tbody>
 			<?php foreach ($this->items as $i => $item) : ?>
 				<?php
-				if ($item->language && Lang::isMultilang()) {
+				if ($item->language && Lang::isMultilang())
+				{
 					$tag = strlen($item->language);
-					if ($tag == 5) {
+					if ($tag == 5)
+					{
 						$lang = substr($item->language, 0, 2);
 					}
-					elseif ($tag == 6) {
+					elseif ($tag == 6)
+					{
 						$lang = substr($item->language, 0, 3);
 					}
-					else {
-						$lang = "";
+					else
+					{
+						$lang = '';
 					}
 				}
-				elseif (!Lang::isMultilang()) {
-					$lang = "";
+				elseif (!Lang::isMultilang())
+				{
+					$lang = '';
 				}
 				?>
 				<tr class="row<?php echo $i % 2; ?>">
 					<td>
-						<a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo $item->id; ?>', '<?php echo $this->escape(addslashes($item->title)); ?>', '<?php echo $this->escape($item->catid); ?>', null, '<?php echo $this->escape(ContentHelperRoute::getArticleRoute($item->id, $item->catid, $item->language)); ?>', '<?php echo $this->escape($lang); ?>', null);">
+						<a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo $item->id; ?>', '<?php echo $this->escape(addslashes($item->title)); ?>', '<?php echo $this->escape($item->catid); ?>', null, '<?php echo $this->escape(Components\Content\Site\Helpers\Route::getArticleRoute($item->id, $item->catid, $item->language)); ?>', '<?php echo $this->escape($lang); ?>', null);">
 							<?php echo $this->escape($item->title); ?>
 						</a>
 					</td>

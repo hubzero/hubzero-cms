@@ -36,7 +36,7 @@ $canDo = Components\Citations\Helpers\Permissions::getActions('citation');
 
 $text = ($this->task == 'edit' ? Lang::txt('EDIT') : Lang::txt('NEW'));
 
-Toolbar::title(Lang::txt('CITATION') . ': ' . $text, 'citation.png');
+Toolbar::title(Lang::txt('CITATION') . ': ' . $text, 'citation');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::save();
@@ -44,6 +44,11 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('citation');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 
 //set the escape callback
 $this->setEscape("htmlentities");
@@ -68,45 +73,13 @@ $journal = html_entity_decode($this->row->journal);
 $journal = (!preg_match('!\S!u', $journal)) ? utf8_encode($journal) : $journal;
 ?>
 
-<!-- <script type="text/javascript" src="<?php echo Request::root(); ?>core/components/com_citations/site/assets/js/citations.js"></script> -->
-
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('adminForm');
-
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// form field validation
-	//if (form.title.value == '') {
-	//	alert('<?php echo Lang::txt('CITATION_MUST_HAVE_TITLE'); ?>');
-	//} else {
-		submitform(pressbutton);
-	//}
-}
-function citeaddRow(id) {
-	var tr    = $('#' + id).find('tbody tr:last');
-	var clone = tr.clone(true);
-	var cindex = $('#' + id).find('tbody tr').length;
-	var inputs = clone.find('input,select');
-
-	inputs.val('');
-	inputs.each(function(i, el){
-		$(el).attr('name', $(el).attr('name').replace(/\[\d+\]/, '[' + cindex + ']'));
-	});
-	tr.after(clone);
-};
-</script>
 <?php
 	if ($this->getError())
 	{
 		echo '<p class="error">' . $this->getError() . '</p>';
 	}
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" class="form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -256,7 +229,7 @@ function citeaddRow(id) {
 				<div class="input-wrap">
 					<label for="edition"><?php echo Lang::txt('EDITION'); ?>:</label><br />
 					<input type="text" name="citation[edition]" id="edition" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->edition)); ?>" />
-					<br /><span style="font-size: 90%;color:#aaa;"><?php echo Lang::txt('EDITION_EXPLANATION'); ?></span>
+					<br /><span class="hint"><?php echo Lang::txt('EDITION_EXPLANATION'); ?></span>
 				</div>
 				<div class="input-wrap">
 					<label for="school"><?php echo Lang::txt('SCHOOL'); ?>:</label><br />
@@ -269,7 +242,7 @@ function citeaddRow(id) {
 				<div class="input-wrap">
 					<label for="institution"><?php echo Lang::txt('INSTITUTION'); ?>:</label><br />
 					<input type="text" name="citation[institution]" id="institution" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->institution)); ?>" />
-					<br /><span style="font-size: 90%;color:#aaa;"><?php echo Lang::txt('INSTITUTION_EXPLANATION'); ?></span>
+					<br /><span class="hint"><?php echo Lang::txt('INSTITUTION_EXPLANATION'); ?></span>
 				</div>
 				<div class="input-wrap">
 					<label for="address"><?php echo Lang::txt('ADDRESS'); ?>:</label><br />
@@ -278,12 +251,12 @@ function citeaddRow(id) {
 				<div class="input-wrap">
 					<label for="location"><?php echo Lang::txt('LOCATION'); ?>:</label><br />
 					<input type="text" name="citation[location]" id="location" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->location)); ?>" />
-					<span style="font-size: 90%;color:#aaa;"><?php echo Lang::txt('LOCATION_EXPLANATION'); ?></span>
+					<span class="hint"><?php echo Lang::txt('LOCATION_EXPLANATION'); ?></span>
 				</div>
 				<div class="input-wrap">
 					<label for="howpublished"><?php echo Lang::txt('PUBLISH_METHOD'); ?>:</label><br />
 					<input type="text" name="citation[howpublished]" id="howpublished" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->howpublished)); ?>" />
-					<br /><span style="font-size: 90%;color:#aaa;"><?php echo Lang::txt('PUBLISH_METHOD_EXPLANATION'); ?></span>
+					<br /><span class="hint"><?php echo Lang::txt('PUBLISH_METHOD_EXPLANATION'); ?></span>
 				</div>
 				<div class="input-wrap">
 					<label for="url"><?php echo Lang::txt('URL'); ?>:</label><br />
@@ -334,14 +307,14 @@ function citeaddRow(id) {
 				<table class="admintable" id="assocs">
 					<thead>
 						<tr>
-							<th><?php echo Lang::txt('TYPE'); ?></th>
-							<th><?php echo Lang::txt('ID'); ?></th>
-							<th><?php echo Lang::txt('COM_CITATIONS_CONTEXT'); ?></th>
+							<th scope="col"><?php echo Lang::txt('TYPE'); ?></th>
+							<th scope="col"><?php echo Lang::txt('ID'); ?></th>
+							<th scope="col"><?php echo Lang::txt('COM_CITATIONS_CONTEXT'); ?></th>
 						</tr>
 					</thead>
 					<tfoot>
 						<tr>
-							<td colspan="3"><a href="#" onclick="citeaddRow('assocs');return false;"><?php echo Lang::txt('ADD_A_ROW'); ?></a></td>
+							<td colspan="3"><button id="add_row"><?php echo Lang::txt('ADD_A_ROW'); ?></button></td>
 						</tr>
 					</tfoot>
 					<tbody>

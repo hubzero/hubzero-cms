@@ -66,7 +66,7 @@ $this->css()
 	}
 
 	$this->wish->set('status', ($this->wish->get('accepted')==1 && $this->wish->get('status')==0 ? 6 : $this->wish->get('status')));
-	$due  = ($this->wish->get('due') !='0000-00-00 00:00:00') ? Date::of($this->wish->get('due'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : '';
+	$due  = ($this->wish->get('due') && $this->wish->get('due') != '0000-00-00 00:00:00') ? Date::of($this->wish->get('due'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : '';
 
 	$this->wish->set('positive', $this->wish->votes()->whereEquals('helpful', 'yes')->total());
 	$this->wish->set('negative', $this->wish->votes()->whereEquals('helpful', 'no')->total());
@@ -137,7 +137,7 @@ $this->css()
 	</section><!-- / .main section -->
 		<?php } else { ?>
 			<div class="entry wish" id="w<?php echo $this->wish->get('id'); ?>">
-				<p class="entry-member-photo <?=($this->wish->get('anonymous')) ? 'anonymous' : '' ?>">
+				<p class="entry-member-photo <?php echo ($this->wish->get('anonymous')) ? 'anonymous' : ''; ?>">
 					<?php echo $memberImage; ?>
 				</p><!-- / .wish-member-photo -->
 
@@ -195,7 +195,7 @@ $this->css()
 						$voters = ($this->wish->votes()->total() <= count($eligible)) ? count($eligible) : $this->wish->votes()->total();
 						//$html .= "\t\t\t".'<div class="wishpriority">'.Lang::txt('PRIORITY').': '.$this->wish->ranking.' <span>('.$this->wish->num_votes.' '.Lang::txt('NOTICE_OUT_OF').' '.$voters.' '.Lang::txt('VOTES').')</span>';
 						$html = '';
-						if ($this->wish->due() != '0000-00-00 00:00:00' && !$this->wish->isGranted())
+						if ($this->wish->due() && $this->wish->due() != '0000-00-00 00:00:00' && !$this->wish->isGranted())
 						{
 							$html .= ($this->wish->get('due') <= Date::of('now')->toSql())
 									? '<span class="overdue"><a href="'.Route::url($this->wish->link('editplan')).'">'.Lang::txt('COM_WISHLIST_OVERDUE')
@@ -459,7 +459,10 @@ $this->css()
 							</label>
 
 							<label<?php if ($this->wishlist->get('category') == 'resource') { echo ' class="grantstatus"'; } ?>>
-								<input type="radio" name="status" value="granted" <?php echo ($this->wish->get('status') == 1) ? 'checked="checked"' : ''; echo ($this->wish->get('assigned') && $this->wish->get('assigned') != User::get('id')) ? 'disabled="disabled"' : ''; ?> />
+								<input type="radio" name="status" value="granted" <?php
+									echo ($this->wish->get('status') == 1) ? 'checked="checked"' : '';
+									echo ($this->wish->get('assigned') && $this->wish->get('assigned') != User::get('id')) ? 'disabled="disabled"' : '';
+									?> />
 								<?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED'); ?>
 							<?php if ($this->wish->get('assigned') && $this->wish->get('assigned') != User::get('id')) { ?>
 								<span class="forbidden"> - <?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED_WARNING'); ?>

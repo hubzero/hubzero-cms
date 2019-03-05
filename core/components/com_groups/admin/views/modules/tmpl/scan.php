@@ -40,25 +40,16 @@ Toolbar::spacer();
 Toolbar::custom('scanagain', 'check', 'check', 'COM_GROUPS_MODULES_SCAN_AGAIN', false);
 Toolbar::cancel();
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
+
 // page version content
 $content = $this->module->get('content');
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'markscanned')
-	{
-		if (!confirm('<?php echo Lang::txt('COM_GROUPS_MODULES_MARK_SCANNED_CONFIRM'); ?>'))
-		{
-			return false;
-		}
-	}
-	submitform(pressbutton);
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-confirm="<?php echo Lang::txt('COM_GROUPS_MODULES_MARK_SCANNED_CONFIRM'); ?>" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 
 	<?php
 		unset($this->issues->count);

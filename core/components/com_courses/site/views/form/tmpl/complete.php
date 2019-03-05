@@ -66,9 +66,7 @@ if ($this->resp->getStartTime())
 	else:
 		if ($this->dep->getTimeLimit()):
 	?>
-	<script type="text/javascript">
-		window.timeLeft = <?php echo $timeLeft; ?>;
-	</script>
+	<span id="time-left" data-time="<?php echo $timeLeft; ?>"></span>
 	<?php
 		endif;
 		$layout = $pdf->getPageLayout();
@@ -84,11 +82,23 @@ if ($this->resp->getStartTime())
 				<?php
 				if (isset($layout[$idx - 1])):
 					$qidx = 0;
-					foreach ($layout[$idx - 1] as $qid=>$group):
-						foreach ($group['answers'] as $aidx=>$ans):
-							echo '<input name="question-'.$qid.'" value="'.$ans['id'].'" '.((isset($_POST['question-'.$qid]) && $_POST['question-'.$qid] == $ans['id']) || (!isset($_POST['question-'.$qid]) && isset($progress[$qid]) && $progress[$qid]['answer_id'] == $ans['id']) ? ' checked="checked" ' : '').'class="placeholder" type="radio" style="top: '.$ans['top'].'px; left: '.$ans['left'].'px" />';
+					foreach ($layout[$idx - 1] as $qid => $group):
+						foreach ($group['answers'] as $aidx => $ans):
+							$this->css('
+								#question-'.$qid.'-'.$aidx.' {
+									top: '.$ans['top'].'px;
+									left: '.$ans['left'].'px;
+								}
+							');
+							echo '<input name="question-'.$qid.'" id="question-'.$qid.'-'.$aidx.'" value="'.$ans['id'].'" '.((isset($_POST['question-'.$qid]) && $_POST['question-'.$qid] == $ans['id']) || (!isset($_POST['question-'.$qid]) && isset($progress[$qid]) && $progress[$qid]['answer_id'] == $ans['id']) ? ' checked="checked" ' : '').'class="placeholder" type="radio" />';
 							if (isset($incomplete[$qid])):
-								echo '<div class="incomplete-marker" style="top: '.$ans['top'].'px; left: '.($ans['left'] - 20).'px">*</div>';
+								$this->css('
+									#question-'.$qid.'-incomplete-marker {
+										top: '.$ans['top'].'px;
+										left: '.($ans['left'] - 20).'px;
+									}
+								');
+								echo '<div class="incomplete-marker" id="question-'.$qid.'-incomplete-marker">*</div>';
 							endif;
 						endforeach;
 						++$qidx;

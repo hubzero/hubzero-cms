@@ -32,6 +32,7 @@
 
 namespace Components\Collections\Admin\Controllers;
 
+use Components\Collections\Models\Orm\Item;
 use Components\Collections\Models\Orm\Post;
 use Hubzero\Component\AdminController;
 use Request;
@@ -112,29 +113,39 @@ class Posts extends AdminController
 				$creator->select('*');
 			}]);
 
+		$p = $model->getTableName();
+
+		$model->select($p . '.*');
+
 		if ($filters['search'])
 		{
-			$model->whereLike('title', strtolower((string)$filters['search']));
+			$i = Item::blank()->getTableName();
+
+			$model->join($i, $i . '.id', $p . '.item_id', 'left');
+
+			$model->whereLike($p . '.description', strtolower((string)$filters['search']), 1)
+				->orWhereLike($i . '.title', strtolower((string)$filters['search']), 1)
+				->resetDepth();
 		}
 
 		if ($filters['state'] >= 0)
 		{
-			$model->whereEquals('state', $filters['state']);
+			$model->whereEquals($p . '.state', $filters['state']);
 		}
 
 		if ($filters['access'] >= 0)
 		{
-			$model->whereEquals('access', (int)$filters['access']);
+			$model->whereEquals($p . '.access', (int)$filters['access']);
 		}
 
 		if ($filters['collection_id'])
 		{
-			$model->whereEquals('collection_id', $filters['collection_id']);
+			$model->whereEquals($p . '.collection_id', $filters['collection_id']);
 		}
 
 		if ($filters['item_id'])
 		{
-			$model->whereEquals('item_id', $filters['item_id']);
+			$model->whereEquals($p . '.item_id', $filters['item_id']);
 		}
 
 		// Get records

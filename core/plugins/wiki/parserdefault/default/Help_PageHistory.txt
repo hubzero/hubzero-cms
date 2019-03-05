@@ -1,0 +1,19 @@
+== Introduction ==
+
+All editable pages have an associated page history, which consists of the old versions of the wikitext, as well as a record of the date and time of every edit, the name of the user who wrote it, and their edit summary. Access the page history by clicking the "history" tab at the top of the page. This may also be referred to as the revision history or edit history.
+
+ * All changes made to the page are listed in reverse-chronological order (newest to oldest).
+ * To view a specific version, click a date.
+ * To compare an old version with the current version, click cur.
+ * To compare a version with its predecessor, click last.
+ * To compare two specific versions, tick the left-column radio button of the older version and the right-column radio button of the newer version, and then click the "Compare selected versions" button.
+
+=== Linking to a specific version of a page ===
+
+It is occasionally useful to link to a specific version of an article (a snapshot of it). For example, one might have done a review of an article and want to indicate which particular version was reviewed.
+
+If the version is not the current version, one can use the page history to view the old version of the page. The URL of this old version is suitable for use to permanently reference this version, and can usually be obtained from the browser's location bar.
+
+=== Reverting a page ===
+
+If your new pages edits aren't to your liking, don't panic; you can 'revert' or restore the page to any previous version.

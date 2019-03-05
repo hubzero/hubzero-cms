@@ -42,17 +42,19 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 <h2 class="modal-title"><?php echo Lang::txt('Users'); ?></h2>
 <form action="<?php echo Route::url('index.php?option=com_members&controllers=members&task=modal&tmpl=component&groups=' . Request::getString('groups', '') . '&excluded=' . Request::getString('excluded', ''));?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar" class="filter clearfix">
-		<div class="col width-70 fltlft">
-			<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" size="40" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_IN_NAME'); ?>" />
+		<div class="grid">
+			<div class="col span8">
+				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?></label>
+				<input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" size="40" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_IN_NAME'); ?>" />
 
-			<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-			<button type="button" onclick="if (window.parent) window.parent.<?php echo $this->escape($function); ?>('', '<?php echo Lang::txt('JLIB_FORM_SELECT_USER') ?>');"><?php echo Lang::txt('JOPTION_NO_USER')?></button>
-		</div>
-		<div class="col width-30 fltrt">
-			<label for="filter_group_id"><?php echo Lang::txt('COM_MEMBERS_FILTER_USER_GROUP'); ?></label>
-			<?php echo Html::access('usergroup', 'filter_group_id', $this->filters['group_id'], 'onchange="this.form.submit()"'); ?>
+				<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
+				<button type="button" flass="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<button type="button" onclick="if (window.parent) window.parent.<?php echo $this->escape($function); ?>('', '<?php echo Lang::txt('JLIB_FORM_SELECT_USER') ?>');"><?php echo Lang::txt('JOPTION_NO_USER')?></button>
+			</div>
+			<div class="col span4">
+				<label for="filter_group_id"><?php echo Lang::txt('COM_MEMBERS_FILTER_USER_GROUP'); ?></label>
+				<?php echo Html::access('usergroup', 'filter_group_id', $this->filters['group_id'], 'class="filter filter-submit"'); ?>
+			</div>
 		</div>
 	</fieldset>
 

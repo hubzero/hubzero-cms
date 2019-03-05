@@ -1163,6 +1163,25 @@
 		background: transparent;
 		border: none;
 	}
+	.stats-pie-chart {
+		min-width: 270px;
+		height: 270px;
+	}
+	.stats-user-chart {
+		min-width: 200px;
+		height: 100px;
+	}
+	.stats-tickets-chart {
+		min-width: 400px;
+		height: 200px;
+		margin: 0 auto;
+	}
+	.chart-label {
+		font-size:8pt;
+		text-align:center;
+		padding:2px;
+		color:white;
+	}
 	#flotTip {
 		-webkit-border-radius: 0.25em;
 		   -moz-border-radius: 0.25em;

@@ -47,43 +47,15 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('status');
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
 $this->css('jquery.colpick.css', 'system')
-     ->js('jquery.colpick.js', 'system');
+	->js('jquery.colpick.js', 'system')
+	->js('edit.js');
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
 
-	// form field validation
-	if ($('#field-title').val() == '') {
-		alert('<?php echo Lang::txt('COM_SUPPORT_STATUS_ERROR_NO_TEXT'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-
-jQuery(document).ready(function($){
-	var col = $('#field-color');
-
-	col.colpick({
-		layout: 'hex',
-		colorScheme: 'dark',
-		submit: 1,
-		onSubmit: function(hsb,hex,rgb,el) {
-			col.val(hex);
-		}
-		/*onChange:function(hsb,hex,rgb,el,bySetColor) {
-			col.val(hex);
-		}*/
-	});
-});
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">

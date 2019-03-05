@@ -43,28 +43,13 @@ if ($canDo->get('core.edit'))
 }
 Toolbar::cancel();
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('adminForm');
 
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-
-	// form field validation
-	var field = document.getElementById('field-title');
-	if (field.value == '') {
-		alert('<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_TITLE'); ?>');
-	} else {
-		submitform( pressbutton );
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span8">
 			<fieldset class="adminform">
@@ -85,7 +70,7 @@ function submitbutton(pressbutton)
 				</div>
 				<div class="input-wrap">
 					<label for="field-title"><?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[title]" id="field-title" size="50" value="<?php echo $this->escape($this->row->title); ?>" />
+					<input type="text" name="fields[title]" id="field-title" class="required" size="50" value="<?php echo $this->escape($this->row->title); ?>" />
 				</div>
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
 					<label for="field-alias"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />

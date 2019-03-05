@@ -33,17 +33,7 @@ Toolbar::title(Lang::txt('COM_STOREFRONT') . ': Delete SKU', 'storefront');
 Toolbar::cancel();
 
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-}
-</script>
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $this->task . '&step=2'); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
@@ -55,7 +45,7 @@ function submitbutton(pressbutton)
 			<tr>
 				<td>
 					<input type="checkbox" name="delete" value="delete" id="field-delete">
-					<label for="field-delete">I'm positive. Go ahead and do the delete.</label>
+					<label for="field-delete"><?php echo Lang::txt('I\'m positive. Go ahead and do the delete.'); ?></label>
 				</td>
 			</tr>
 			<tr>

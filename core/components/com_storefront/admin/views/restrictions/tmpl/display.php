@@ -36,7 +36,7 @@ $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product')
 
 Toolbar::title(Lang::txt('COM_STOREFRONT') . ': SKU\'s permitted users', 'storefront');
 
-Toolbar::appendButton('Popup', 'new', 'Add Users', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&id=' . $this->sku->getId(), 570, 170);
+Toolbar::appendButton('Popup', 'new', 'Add Users', \Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&id=' . $this->sku->getId()), 570, 170);
 if ($canDo->get('core.delete'))
 {
 	Toolbar::deleteList();
@@ -44,7 +44,7 @@ if ($canDo->get('core.delete'))
 
 Toolbar::spacer();
 //Toolbar::custom('upload', 'upload.png', '', 'Upload CSV', false);
-Toolbar::appendButton('Popup', 'upload', 'Upload CSV', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=upload&id=' . $this->sku->getId(), 570, 170);
+Toolbar::appendButton('Popup', 'upload', 'Upload CSV', \Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=upload&id=' . $this->sku->getId()), 570, 170);
 Toolbar::spacer();
 Toolbar::cancel();
 
@@ -72,7 +72,7 @@ Behavior::modal('a.specialPop', array('onHide' => '\\function() { refreshMe(); }
 				</th>
 			</tr>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col"><?php echo Html::grid('sort', 'ID', 'uId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'Name', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col">Email</th>
@@ -107,7 +107,7 @@ Behavior::modal('a.specialPop', array('onHide' => '\\function() { refreshMe(); }
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
 				</td>
 				<td>
 					<span>

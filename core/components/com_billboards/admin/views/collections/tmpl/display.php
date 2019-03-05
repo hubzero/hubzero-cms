@@ -55,7 +55,7 @@ Toolbar::help('collections');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_BILLBOARDS_COL_ID'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_COLLECTION'); ?></th>
 			</tr>
@@ -70,7 +70,7 @@ Toolbar::help('collections');
 		<?php $i = 0; ?>
 		<?php foreach ($this->rows as $row) : ?>
 			<tr>
-				<td><input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" /></td>
+				<td><input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" /></td>
 				<td class="priority-3"><?php echo $row->id; ?></td>
 				<td>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">

@@ -14,6 +14,10 @@ Joomla.editors.instances = {};
 
 /**
  * Generic submit form
+ *
+ * @param   string  task
+ * @param   mixed   form
+ * @return  void
  */
 Joomla.submitform = function(task, form) {
 	if (typeof(form) === 'undefined') {
@@ -58,15 +62,20 @@ Joomla.submitform = function(task, form) {
 
 /**
  * Default function. Usually would be overriden by the component
+ *
+ * @param   string  pressbutton
+ * @return  void
  */
 Joomla.submitbutton = function(pressbutton) {
 	Joomla.submitform(pressbutton);
 }
 
 /**
- * Custom behavior for JavaScript I18N in Joomla! 1.6
+ * Custom behavior for JavaScript I18N
  *
  * Allows you to call Joomla.JText._() to get a translated JavaScript string pushed in with JText::script() in Joomla.
+ *
+ * @return  mixed
  */
 Joomla.JText = {
 	strings: {},
@@ -83,6 +92,9 @@ Joomla.JText = {
 
 /**
  * Method to replace all request tokens on the page with a new one.
+ *
+ * @param   string  n
+ * @return  void
  */
 Joomla.replaceTokens = function(n) {
 	var els = document.getElementsByTagName('input');
@@ -94,12 +106,10 @@ Joomla.replaceTokens = function(n) {
 };
 
 /**
- * USED IN: administrator/components/com_banners/views/client/tmpl/default.php
- *
  * Verifies if the string is in a valid email format
  *
- * @param string
- * @return boolean
+ * @param   string   text
+ * @return  boolean
  */
 Joomla.isEmail = function(text) {
 	var regex = new RegExp("^[\\w-_\.]*[\\w-_\.]\@[\\w]\.+[\\w]+[\\w]$");
@@ -107,14 +117,13 @@ Joomla.isEmail = function(text) {
 };
 
 /**
- * USED IN: all list forms.
- *
  * Toggles the check state of a group of boxes
  *
  * Checkboxes must have an id attribute in the form cb0, cb1...
  *
- * @param	mixed	The number of box to 'check', for a checkbox element
- * @param	string	An alternative field name
+ * @param   mixed   checkbox  The number of box to 'check', for a checkbox element
+ * @param   string  stub      An alternative field name
+ * @return  bool
  */
 Joomla.checkAll = function(checkbox, stub) {
 	if (!stub) {
@@ -142,8 +151,8 @@ Joomla.checkAll = function(checkbox, stub) {
 /**
  * Render messages send via JSON
  *
- * @param	object	messages	JavaScript object containing the messages to render
- * @return	void
+ * @param   object  messages  JavaScript object containing the messages to render
+ * @return  void
  */
 Joomla.renderMessages = function(messages) {
 	Joomla.removeMessages();
@@ -181,7 +190,7 @@ Joomla.renderMessages = function(messages) {
 /**
  * Remove messages
  *
- * @return	void
+ * @return  void
  */
 Joomla.removeMessages = function() {
 	var children = $('#system-message-container > *');
@@ -189,23 +198,17 @@ Joomla.removeMessages = function() {
 }
 
 /**
- * USED IN: administrator/components/com_cache/views/cache/tmpl/default.php
- * administrator/components/com_installer/views/discover/tmpl/default_item.php
- * administrator/components/com_installer/views/update/tmpl/default_item.php
- * administrator/components/com_languages/helpers/html/languages.php
- * libraries/joomla/html/html/grid.php
+ * Evaluate if any items in a list of checkboxes are checked
  *
- * @param isitchecked
- * @param form
- * @return
+ * @param   isitchecked
+ * @param   form
+ * @return  void
  */
 Joomla.isChecked = function(isitchecked, form) {
 	if (typeof(form) === 'undefined') {
 		form = document.getElementById('adminForm');
-		/**
-		 * Added to ensure Joomla 1.5 compatibility
-		 */
-		if (!form){
+
+		if (!form) {
 			form = document.adminForm;
 		}
 	}
@@ -218,53 +221,88 @@ Joomla.isChecked = function(isitchecked, form) {
 }
 
 /**
- * USED IN: libraries/joomla/html/toolbar/button/help.php
- *
  * Pops up a new window in the middle of the screen
+ *
+ * @param   string  mypage
+ * @param   string  myname
+ * @param   string  w
+ * @param   string  h
+ * @param   string  scroll
+ * @return  void
  */
 Joomla.popupWindow = function(mypage, myname, w, h, scroll) {
 	var winl = (screen.width - w) / 2;
 	var wint = (screen.height - h) / 2;
 	var winprops = 'height=' + h + ',width=' + w + ',top=' + wint + ',left=' + winl
 			+ ',scrollbars=' + scroll + ',resizable'
+
 	var win = window.open(mypage, myname, winprops)
 	win.window.focus();
 }
 
 /**
- * USED IN: libraries/joomla/html/html/grid.php
+ * Set the table sort and direction on a form and submit it
+ *
+ * @param   string  order
+ * @param   string  dir
+ * @param   string  task
+ * @param   mixed   form
+ * @return  void
  */
 Joomla.tableOrdering = function(order, dir, task, form) {
 	if (typeof(form) === 'undefined') {
 		form = document.getElementById('adminForm');
-		/**
-		 * Added to ensure Joomla 1.5 compatibility
-		 */
-		if (!form){
+
+		if (!form) {
 			form = document.adminForm;
 		}
 	}
 
 	form.filter_order.value = order;
 	form.filter_order_Dir.value = dir;
+
 	Joomla.submitform(task, form);
 }
 
 /**
- * USED IN: administrator/components/com_modules/views/module/tmpl/default.php
+ * Check the checkbox for this item and submit the form with the task
  *
+ * @param   string  id
+ * @param   string  task
+ * @return  bool
+ */
+Joomla.listItemTask = function(id, task) {
+	var f = document.adminForm;
+	var cb = f[id];
+	if (cb) {
+		// Uncheck all other checkboxes
+		for (var i = 0; true; i++) {
+			var cbx = f['cb'+i];
+			if (!cbx) {
+				break;
+			}
+			cbx.checked = false;
+		}
+		// Check this checkbox
+		cb.checked = true;
+		f.boxchecked.value = 1;
+
+		// Submit the form
+		var form = document.getElementById('adminForm');
+		Joomla.submitform(task, form);
+	}
+	return false;
+}
+
+/**
  * Writes a dynamically generated list
  *
- * @param string
- *			The parameters to insert into the <select> tag
- * @param array
- *			A javascript array of list options in the form [key,value,text]
- * @param string
- *			The key to display for the initial state of the list
- * @param string
- *			The original key that was selected
- * @param string
- *			The original item value that was selected
+ * @param   string  selectParams  The parameters to insert into the <select> tag
+ * @param   array   source        A javascript array of list options in the form [key,value,text]
+ * @param   string  key           The key to display for the initial state of the list
+ * @param   string  orig_key      The original key that was selected
+ * @param   string  orig_val      The original item value that was selected
+ * @return  void
  */
 function writeDynaList(selectParams, source, key, orig_key, orig_val) {
 	var html = '\n	<select ' + selectParams + '>';
@@ -276,8 +314,7 @@ function writeDynaList(selectParams, source, key, orig_key, orig_val) {
 					|| (i == 0 && orig_key != key)) {
 				selected = 'selected="selected"';
 			}
-			html += '\n		<option value="' + source[x][1] + '" ' + selected
-					+ '>' + source[x][2] + '</option>';
+			html += '\n		<option value="' + source[x][1] + '" ' + selected + '>' + source[x][2] + '</option>';
 		}
 		i++;
 	}
@@ -287,20 +324,14 @@ function writeDynaList(selectParams, source, key, orig_key, orig_val) {
 }
 
 /**
- * USED IN: administrator/components/com_content/views/article/view.html.php
- *
  * Changes a dynamically generated list
  *
- * @param string
- *			The name of the list to change
- * @param array
- *			A javascript array of list options in the form [key,value,text]
- * @param string
- *			The key to display
- * @param string
- *			The original key that was selected
- * @param string
- *			The original item value that was selected
+ * @param   string  listname  The name of the list to change
+ * @param   array   source    A javascript array of list options in the form [key,value,text]
+ * @param   string  key       The key to display
+ * @param   string  orig_key  The original key that was selected
+ * @param   string  orig_val  The original item value that was selected
+ * @return  void
  */
 function changeDynaList(listname, source, key, orig_key, orig_val) {
 	var list = document.adminForm[listname];
@@ -346,7 +377,7 @@ function radioGetCheckedValue(radioObj) {
 			return '';
 		}
 	}
-	for ( var i = 0; i < n; i++) {
+	for (var i = 0; i < n; i++) {
 		if (radioObj[i].checked) {
 			return radioObj[i].value;
 		}
@@ -355,21 +386,11 @@ function radioGetCheckedValue(radioObj) {
 }
 
 /**
- * USED IN: administrator/components/com_banners/views/banner/tmpl/default/php
- * administrator/components/com_categories/views/category/tmpl/default.php
- * administrator/components/com_categories/views/copyselect/tmpl/default.php
- * administrator/components/com_content/views/copyselect/tmpl/default.php
- * administrator/components/com_massmail/views/massmail/tmpl/default.php
- * administrator/components/com_menus/views/list/tmpl/copy.php
- * administrator/components/com_menus/views/list/tmpl/move.php
- * administrator/components/com_messages/views/message/tmpl/default_form.php
- * administrator/components/com_newsfeeds/views/newsfeed/tmpl/default.php
- * components/com_content/views/article/tmpl/form.php
- * templates/beez/html/com_content/article/form.php
+ * Get the selected value of a <select> list
  *
- * @param frmName
- * @param srcListName
- * @return
+ * @param   string  frmName
+ * @param   string  srcListName
+ * @return  mixed
  */
 function getSelectedValue(frmName, srcListName) {
 	var form = document[frmName];
@@ -384,20 +405,18 @@ function getSelectedValue(frmName, srcListName) {
 }
 
 /**
- * USED IN: all list forms.
- *
  * Toggles the check state of a group of boxes
  *
  * Checkboxes must have an id attribute in the form cb0, cb1...
  *
- * @param	mixed	The number of box to 'check', for a checkbox element
- * @param	string	An alternative field name
- *
- * @deprecated	12.1 This function will be removed in a future version. Use Joomla.checkAll() instead.
+ * @param   mixed   checkbox  The number of box to 'check', for a checkbox element
+ * @param   string  stub      An alternative field name
+ * @return  mixed
+ * @deprecated  12.1 This function will be removed in a future version. Use Joomla.checkAll() instead.
  */
 function checkAll(checkbox, stub) {
 	if (!stub) {
-			stub = 'cb';
+		stub = 'cb';
 	}
 	if (checkbox.form) {
 		var c = 0;
@@ -436,41 +455,21 @@ function checkAll(checkbox, stub) {
 }
 
 /**
- * USED IN: all over :)
+ * Check the checkbox for this item and submit the form with the task
  *
- * @param id
- * @param task
- * @return
+ * @param   string  id
+ * @param   string  task
+ * @return  bool
  */
 function listItemTask(id, task) {
-	var f = document.adminForm;
-	var cb = f[id];
-	if (cb) {
-		for (var i = 0; true; i++) {
-			var cbx = f['cb'+i];
-			if (!cbx)
-				break;
-			cbx.checked = false;
-		} // for
-		cb.checked = true;
-		f.boxchecked.value = 1;
-		submitbutton(task);
-	}
-	return false;
+	return Joomla.listItemTask(id, task);
 }
 
 /**
- * USED IN: administrator/components/com_cache/views/cache/tmpl/default.php
- * administrator/components/com_installer/views/discover/tmpl/default_item.php
- * administrator/components/com_installer/views/update/tmpl/default_item.php
- * administrator/components/com_languages/helpers/html/languages.php
- * libraries/joomla/html/html/grid.php
+ * @deprecated  12.1 This function will be removed in a future version. Use Joomla.isChecked() instead.
  *
- * @deprecated	12.1 This function will be removed in a future version. Use Joomla.isChecked() instead.
- *
- * @param isitchecked
- * @return
- *
+ * @param   bool  isitchecked
+ * @return  void
  */
 function isChecked(isitchecked) {
 	if (isitchecked == true) {
@@ -483,83 +482,79 @@ function isChecked(isitchecked) {
 /**
  * Default function. Usually would be overriden by the component
  *
- * @deprecated	12.1 This function will be removed in a future version. Use Joomla.submitbutton() instead.
+ * @param   string  pressbutton
+ * @return  void
+ * @deprecated  12.1 This function will be removed in a future version. Use Joomla.submitbutton() instead.
  */
 function submitbutton(pressbutton) {
-	submitform(pressbutton);
+	return Joomla.submitbutton(pressbutton);
 }
 
 /**
  * Submit the admin form
  *
- * @deprecated	12.1 This function will be removed in a future version. Use Joomla.submitform() instead.
+ * @param   string  pressbutton
+ * @return  void
+ * @deprecated  12.1 This function will be removed in a future version. Use Joomla.submitform() instead.
  */
 function submitform(pressbutton) {
-	var event;
-	if (document.createEvent) {
-		event = document.createEvent('HTMLEvents');
-		event.initEvent('submit', true, true);
-	} else if (document.createEventObject) { // IE < 9
-		event = document.createEventObject();
-		event.eventType = 'submit';
-	}
-
-	if (pressbutton) {
-		document.adminForm.task.value = pressbutton;
-	}
-
-	if (typeof document.adminForm.onsubmit == "function") {
-		document.adminForm.onsubmit();
-	}
-	else if (typeof document.adminForm.dispatchEvent == "function") {
-		document.adminForm.dispatchEvent(event);
-	}
-	else if (typeof document.adminForm.fireEvent == "function") {
-		document.adminForm.fireEvent(event);
-	}
-	document.adminForm.submit();
+	return Joomla.submitform(pressbutton);
 }
 
 /**
- * USED IN: libraries/joomla/html/toolbar/button/help.php
- *
  * Pops up a new window in the middle of the screen
  *
- * @deprecated	12.1 This function will be removed in a future version. Use Joomla.popupWindow() instead.
+ * @param   string  mypage
+ * @param   string  myname
+ * @param   string  w
+ * @param   string  h
+ * @param   string  scroll
+ * @return  void
+ * @deprecated  12.1 This function will be removed in a future version. Use Joomla.popupWindow() instead.
  */
 function popupWindow(mypage, myname, w, h, scroll) {
-	var winl = (screen.width - w) / 2;
-	var wint = (screen.height - h) / 2;
-	winprops = 'height=' + h + ',width=' + w + ',top=' + wint + ',left=' + winl
-			+ ',scrollbars=' + scroll + ',resizable'
-	win = window.open(mypage, myname, winprops)
-	if (parseInt(navigator.appVersion) >= 4) {
-		win.window.focus();
-	}
+	return Joomla.popupWindow(mypage, myname, w, h, scroll);
 }
 
-// needed for Table Column ordering
 /**
- * USED IN: libraries/joomla/html/html/grid.php
+ * Set the table sort and direction on a form and submit it
  *
- * @deprecated	12.1 This function will be removed in a future version. Use Joomla.tableOrdering() instead.
+ * @param   string  order
+ * @param   string  dir
+ * @param   string  task
+ * @return  void
+ * @deprecated  12.1 This function will be removed in a future version. Use Joomla.tableOrdering() instead.
  */
 function tableOrdering(order, dir, task) {
 	var form = document.adminForm;
 
-	form.filter_order.value = order;
-	form.filter_order_Dir.value = dir;
-	submitform(task);
+	return Joomla.tableOrdering(order, dir, task, form);
 }
 
 /**
- * USED IN: libraries/joomla/html/html/grid.php
+ * Check if an element has the specified class name
+ *
+ * @param   integer  n
+ * @param   string   task
+ * @return  mixed
+ * @deprecated  12.1 This function will be removed in a future version. Use Joomla.tableOrdering() instead.
  */
 function saveorder(n, task) {
 	checkAll_button(n, task);
 }
 
 function checkAll_button(n, task) {
+	return Joomla.saveOrder(n, task);
+}
+
+/**
+ * Check if an element has the specified class name
+ *
+ * @param   integer  n
+ * @param   string   task
+ * @return  mixed
+ */
+Joomla.saveOrder = function(n, task) {
 	if (!task) {
 		task = 'saveorder';
 	}
@@ -575,5 +570,206 @@ function checkAll_button(n, task) {
 			return;
 		}
 	}
-	submitform(task);
+
+	return Joomla.submitform(task);
 }
+
+/**
+ * Check if an element has the specified class name
+ *
+ * @param   el         The element to test
+ * @param   className  The class to test for
+ * @return  bool
+ */
+Joomla.hasClass = function(el, className) {
+	return el.classList ? el.classList.contains(className) : new RegExp('\\b'+ className+'\\b').test(el.className);
+}
+
+/**
+ * Add a class to an element
+ *
+ * @param   el         The element to add the class to
+ * @param   className  The class to add
+ * @return  bool
+ */
+Joomla.addClass = function(el, className) {
+	if (el.classList) {
+		el.classList.add(className);
+	} else if (!hasClass(el, className)) {
+		el.className += ' ' + className;
+	}
+}
+
+/**
+ * Remove a class from an element
+ *
+ * @param   el         The element to remove the class from
+ * @param   className  The class to remove
+ * @return  bool
+ */
+Joomla.removeClass = function(el, className) {
+	if (el.classList) {
+		el.classList.remove(className);
+	} else {
+		el.className = el.className.replace(new RegExp('\\b'+ className+'\\b', 'g'), '');
+	}
+}
+
+/**
+ * Initiate event hooks
+ */
+document.addEventListener('DOMContentLoaded', function() {
+	var i;
+	// Add event listeners to toolbar buttons
+	var toolbarbuttons = document.getElementsByClassName('toolbar');
+	for (i = 0; i < toolbarbuttons.length; i++)
+	{
+		toolbarbuttons[i].addEventListener('click', function(event) {
+			event.preventDefault();
+
+			var el = this;
+
+			if (Joomla.hasClass(el, 'toolbar-submit')) {
+				if (Joomla.hasClass(el, 'toolbar-list') && document.adminForm.boxchecked.value == 0) {
+					alert(el.getAttribute('data-message'));
+				} else {
+					if (el.getAttribute('data-task')) {
+						Joomla.submitbutton(el.getAttribute('data-task'));
+					} else {
+						console.log('Error: no task found.');
+					}
+				}
+			}
+
+			if (Joomla.hasClass(el, 'toolbar-popup')) {
+				var width  = (el.getAttribute('data-width') ? el.getAttribute('data-width') : 700),
+					height = (el.getAttribute('data-height') ? el.getAttribute('data-height') : 500),
+					scroll = 1;
+
+				Joomla.popupWindow(
+					el.getAttribute('href'),
+					el.getAttribute('data-message'),
+					width,
+					height,
+					scroll
+				);
+			}
+
+			if (Joomla.hasClass(el, 'toolbar-confirm')) {
+				if (Joomla.hasClass(el, 'toolbar-list') && document.adminForm.boxchecked.value == 0) {
+					alert(el.getAttribute('data-message'));
+				} else {
+					if (confirm(el.getAttribute('data-confirm'))) {
+						if (el.getAttribute('data-task')) {
+							Joomla.submitbutton(el.getAttribute('data-task'));
+						} else {
+							console.log('Error: no task found.');
+						}
+					}
+				}
+			}
+		});
+	}
+
+	// Add event listener for checkbox toggles
+	var checkboxes = document.getElementsByClassName('checkbox-toggle');
+	for (i = 0; i < checkboxes.length; i++)
+	{
+		checkboxes[i].addEventListener('click', function(event) {
+			if (Joomla.hasClass(this, 'toggle-all')) {
+				Joomla.checkAll(this);
+			} else {
+				Joomla.isChecked(this.checked);
+			}
+		});
+	}
+
+	// Add event listener for filters
+	var filters = document.getElementsByClassName('filter-submit');
+	for (i = 0; i < filters.length; i++)
+	{
+		filters[i].addEventListener('change', function(event) {
+			this.form.submit();
+		});
+	}
+
+	var clearfilters = document.getElementsByClassName('filter-clear');
+	for (i = 0; i < clearfilters.length; i++)
+	{
+		clearfilters[i].addEventListener('click', function(event) {
+			var k,
+				filters = this.form.getElementsByClassName('filter');
+
+			for (k = 0; k < filters.length; k++)
+			{
+				if (filters[k].tagName.toLowerCase() == 'select') {
+					filters[k].selectedIndex = 0;
+				}
+				if (filters[k].tagName.toLowerCase() == 'input') {
+					filters[k].value = '';
+				}
+			}
+
+			this.form.submit();
+		});
+	}
+
+	// Add event listener for table sorting
+	var clearfilters = document.getElementsByClassName('grid-order');
+	for (i = 0; i < clearfilters.length; i++)
+	{
+		clearfilters[i].addEventListener('click', function(event) {
+			event.preventDefault();
+
+			Joomla.tableOrdering(
+				this.getAttribute('data-order'),
+				this.getAttribute('data-direction'),
+				this.getAttribute('data-task')
+			);
+
+			return false;
+		});
+	}
+
+	// Add event listener for saving table sorting
+	var ordering = document.getElementsByClassName('grid-order-save');
+	for (i = 0; i < ordering.length; i++) {
+		ordering[i].addEventListener('click', function(event) {
+			event.preventDefault();
+
+			var rows = this.getAttribute('data-rows'),
+				task = this.getAttribute('data-task');
+
+			if (rows && task) {
+				Joomla.saveOrder(rows, task);
+			}
+
+			return false;
+		});
+	}
+
+	// Add event listener for action items
+	var actions = document.getElementsByClassName('grid-action');
+	for (i = 0; i < actions.length; i++) {
+		actions[i].addEventListener('click', function(event) {
+			event.preventDefault();
+
+			var id = this.getAttribute('data-id'),
+				task = this.getAttribute('data-task');
+
+			if (id && task) {
+				return Joomla.listItemTask(id, task);
+			}
+
+			return false;
+		});
+	}
+
+	/*$("a.move_up, a.move_down, a.grid_true, a.grid_false, a.trash")
+		.on("click", function(){
+			if ($(this).attr("rel")) {
+				args = JSON.parse($(this).attr("rel").replace(/\'/g, '"'));
+				Joomla.listItemTask(args.id, args.task);
+			}
+		});*/
+});

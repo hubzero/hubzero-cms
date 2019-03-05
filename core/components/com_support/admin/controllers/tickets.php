@@ -399,10 +399,6 @@ class Tickets extends AdminController
 		{
 			$ticket->set('target_date', Date::of($ticket->get('target_date'), Config::get('offset'))->toSql());
 		}
-		else
-		{
-			$ticket->set('target_date', '0000-00-00 00:00:00');
-		}
 
 		$text = Request::getString('comment', '', 'post');
 		$comment = Comment::blank();
@@ -1421,6 +1417,22 @@ class Tickets extends AdminController
 			}
 		}
 
+		$mediaConfig = Component::params('com_media');
+
+		$sizeLimit = $this->config->get('maxAllowed');
+		if (!$sizeLimit)
+		{
+			// Size limit is in MB, so we need to turn it into just B
+			$sizeLimit = $mediaConfig->get('upload_maxsize');
+			$sizeLimit = $sizeLimit * 1024 * 1024;
+		}
+
+		if ($file['size'] > $sizeLimit)
+		{
+			$this->setError(Lang::txt('File is too large. Max file upload size is %s', Number::formatBytes($sizeLimit)));
+			return '';
+		}
+
 		// Make the filename safe
 		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
@@ -1433,6 +1445,17 @@ class Tickets extends AdminController
 		}
 
 		$finalfile = $file_path . DS . $filename . '.' . $ext;
+
+		$exts = $this->config->get('file_ext');
+		$exts = $exts ?: $mediaConfig->get('upload_extensions');
+		$allowed = array_values(array_filter(explode(',', $exts)));
+
+		// Make sure that file is acceptable type
+		if (!in_array($ext, $allowed))
+		{
+			$this->setError(Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE'));
+			return '';
+		}
 
 		// Perform the upload
 		if (!Filesystem::upload($file['tmp_name'], $finalfile))

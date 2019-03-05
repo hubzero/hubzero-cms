@@ -1,46 +1,62 @@
 <?php
 /**
- * @package		Joomla.Site
- * @subpackage	com_content
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
+namespace Components\Content\Site\Helpers;
 
-// no direct access
-defined('_HZEXEC_') or die();
+use Component;
 
 /**
  * Content Component Query Helper
- *
- * @static
- * @package		Joomla.Site
- * @subpackage	com_content
- * @since		1.5
  */
-class ContentHelperQuery
+class Query
 {
 	/**
 	 * Translate an order code to a field for primary category ordering.
 	 *
-	 * @param	string	$orderby	The ordering code.
-	 *
-	 * @return	string	The SQL field(s) to order by.
-	 * @since	1.5
+	 * @param   string  $orderby  The ordering code.
+	 * @return  string  The SQL field(s) to order by.
 	 */
 	public static function orderbyPrimary($orderby)
 	{
 		switch ($orderby)
 		{
-			case 'alpha' :
-				$orderby = 'c.path, ';
+			case 'alpha':
+				$orderby = array('c.path', 'asc');
 				break;
 
-			case 'ralpha' :
-				$orderby = 'c.path DESC, ';
+			case 'ralpha':
+				$orderby = array('c.path', 'desc');
 				break;
 
-			case 'order' :
-				$orderby = 'c.lft, ';
+			case 'order':
+				$orderby = array('c.lft', 'asc');
 				break;
 
 			default :
@@ -54,11 +70,9 @@ class ContentHelperQuery
 	/**
 	 * Translate an order code to a field for secondary category ordering.
 	 *
-	 * @param	string	$orderby	The ordering code.
-	 * @param	string	$orderDate	The ordering code for the date.
-	 *
-	 * @return	string	The SQL field(s) to order by.
-	 * @since	1.5
+	 * @param   string  $orderby    The ordering code.
+	 * @param   string  $orderDate  The ordering code for the date.
+	 * @return  string  The SQL field(s) to order by.
 	 */
 	public static function orderbySecondary($orderby, $orderDate = 'created')
 	{
@@ -67,47 +81,47 @@ class ContentHelperQuery
 		switch ($orderby)
 		{
 			case 'date' :
-				$orderby = $queryDate;
+				$orderby = array($queryDate, 'asc');
 				break;
 
 			case 'rdate' :
-				$orderby = $queryDate . ' DESC ';
+				$orderby = array($queryDate, 'DESC');
 				break;
 
 			case 'alpha' :
-				$orderby = 'a.title';
+				$orderby = array('a.title', 'asc');
 				break;
 
 			case 'ralpha' :
-				$orderby = 'a.title DESC';
+				$orderby = array('a.title', 'DESC');
 				break;
 
 			case 'hits' :
-				$orderby = 'a.hits DESC';
+				$orderby = array('a.hits', 'DESC');
 				break;
 
 			case 'rhits' :
-				$orderby = 'a.hits';
+				$orderby = array('a.hits', 'asc');
 				break;
 
 			case 'order' :
-				$orderby = 'a.ordering';
+				$orderby = array('a.ordering', 'asc');
 				break;
 
 			case 'author' :
-				$orderby = 'author';
+				$orderby = array('author', 'asc');
 				break;
 
 			case 'rauthor' :
-				$orderby = 'author DESC';
+				$orderby = array('author', 'DESC');
 				break;
 
 			case 'front' :
-				$orderby = 'a.featured DESC, fp.ordering';
+				$orderby = array('a.featured', 'DESC'); //, fp.ordering';
 				break;
 
 			default :
-				$orderby = 'a.ordering';
+				$orderby = array('a.ordering', 'asc');
 				break;
 		}
 
@@ -117,27 +131,25 @@ class ContentHelperQuery
 	/**
 	 * Translate an order code to a field for primary category ordering.
 	 *
-	 * @param	string	$orderDate	The ordering code.
-	 *
-	 * @return	string	The SQL field(s) to order by.
-	 * @since	1.6
+	 * @param   string  $orderDate  The ordering code.
+	 * @return  string  The SQL field(s) to order by.
 	 */
 	public static function getQueryDate($orderDate)
 	{
 		switch ($orderDate)
 		{
 			case 'modified' :
-				$queryDate = ' CASE WHEN a.modified = 0 THEN a.created ELSE a.modified END';
+				$queryDate = 'CASE WHEN a.modified = 0 THEN a.created ELSE a.modified END';
 				break;
 
 			// use created if publish_up is not set
 			case 'published' :
-				$queryDate = ' CASE WHEN a.publish_up = 0 THEN a.created ELSE a.publish_up END ';
+				$queryDate = 'CASE WHEN a.publish_up = 0 THEN a.created ELSE a.publish_up END';
 				break;
 
 			case 'created' :
 			default :
-				$queryDate = ' a.created ';
+				$queryDate = 'a.created';
 				break;
 		}
 
@@ -147,30 +159,34 @@ class ContentHelperQuery
 	/**
 	 * Get join information for the voting query.
 	 *
-	 * @param	Registry	$param	An options object for the article.
-	 *
-	 * @return	array		A named array with "select" and "join" keys.
-	 * @since	1.5
+	 * @param   object  $param  An options object for the article.
+	 * @return  array   A named array with "select" and "join" keys.
 	 */
 	public static function buildVotingQuery($params=null)
 	{
-		if (!$params) {
+		if (!$params)
+		{
 			$params = Component::params('com_content');
 		}
 
 		$voting = $params->get('show_vote');
 
-		if ($voting) {
+		if ($voting)
+		{
 			// calculate voting count
 			$select = ' , ROUND(v.rating_sum / v.rating_count) AS rating, v.rating_count';
 			$join = ' LEFT JOIN #__content_rating AS v ON a.id = v.content_id';
 		}
-		else {
+		else
+		{
 			$select = '';
 			$join = '';
 		}
 
-		$results = array ('select' => $select, 'join' => $join);
+		$results = array(
+			'select' => $select,
+			'join'   => $join
+		);
 
 		return $results;
 	}
@@ -183,22 +199,22 @@ class ContentHelperQuery
 	 * across columns in the layout, the result is that the
 	 * desired article ordering is achieved down the columns.
 	 *
-	 * @param	array	$articles	Array of intro text articles
-	 * @param	integer	$numColumns	Number of columns in the layout
-	 *
-	 * @return	array	Reordered array to achieve desired ordering down columns
-	 * @since	1.6
+	 * @param   array    $articles    Array of intro text articles
+	 * @param   integer  $numColumns  Number of columns in the layout
+	 * @return  array    Reordered array to achieve desired ordering down columns
 	 */
 	public static function orderDownColumns(&$articles, $numColumns = 1)
 	{
 		$count = count($articles);
 
 		// just return the same array if there is nothing to change
-		if ($numColumns == 1 || !is_array($articles) || $count <= $numColumns) {
+		if ($numColumns == 1 || !is_array($articles) || $count <= $numColumns)
+		{
 			$return = $articles;
 		}
 		// we need to re-order the intro articles array
-		else {
+		else
+		{
 			// we need to preserve the original array keys
 			$keys = array_keys($articles);
 
@@ -209,19 +225,19 @@ class ContentHelperQuery
 
 			// calculate number of empty cells in the array
 
-
 			// fill in all cells of the array
 			// put -1 in empty cells so we can skip later
-
 			for ($row = 1, $i = 1; $row <= $maxRows; $row++)
 			{
 				for ($col = 1; $col <= $numColumns; $col++)
 				{
-					if ($numEmpty > ($numCells - $i)) {
+					if ($numEmpty > ($numCells - $i))
+					{
 						// put -1 in empty cells
 						$index[$row][$col] = -1;
 					}
-					else {
+					else
+					{
 						// put in zero as placeholder
 						$index[$row][$col] = 0;
 					}
@@ -235,7 +251,8 @@ class ContentHelperQuery
 			{
 				for ($row = 1; ($row <= $maxRows) && ($i < $count); $row++)
 				{
-					if ($index[$row][$col] != - 1) {
+					if ($index[$row][$col] != - 1)
+					{
 						$index[$row][$col] = $keys[$i];
 						$i++;
 					}
@@ -255,6 +272,7 @@ class ContentHelperQuery
 				}
 			}
 		}
+
 		return $return;
 	}
 }

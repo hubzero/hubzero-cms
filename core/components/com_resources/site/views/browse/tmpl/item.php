@@ -86,9 +86,15 @@ $extras = Event::trigger('resources.onResourcesList', array($this->line));
 					$this->line->set('ranking', round($this->line->get('ranking'), 1));
 
 					$r = (10 * $this->line->get('ranking'));
+
+					$this->css('
+						#rank-' . $this->line->get('id') . ' {
+							width: ' . $r . '%;
+						}
+					');
 					?>
 					<span class="rank">
-						<span class="rank-<?php echo $r; ?>" style="width: <?php echo $r; ?>%;"><?php echo Lang::txt('COM_RESOURCES_THIS_HAS'); ?></span>
+						<span class="rank-<?php echo $r; ?>" id="rank-<?php echo $this->line->get('id'); ?>"><?php echo Lang::txt('COM_RESOURCES_THIS_HAS'); ?></span>
 					</span>
 					<?php echo number_format($this->line->get('ranking'), 1) . ' ' . Lang::txt('COM_RESOURCES_RANKING'); ?>
 				</dt>

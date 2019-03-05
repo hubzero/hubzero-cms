@@ -33,6 +33,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+require_once __DIR__ . '/helpers/publicationUsageHelper.php';
+
 /**
  * Publications Plugin class for usage
  */
@@ -131,6 +133,10 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 		$stats = new \Components\Publications\Tables\Stats($database);
 		$stats->loadStats($publication->id, $period, $dthis);
 
+		$usageHelper = new PublicationUsageHelper(['publication' => $publication]);
+		$views = $usageHelper->totalViews();
+		$downloads = $usageHelper->totalDownloads();
+
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
@@ -142,56 +148,20 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 				->set('option', $option)
 				->set('publication', $publication)
 				->set('stats', $stats)
+				->set('totalViews', $views)
+				->set('totalDownloads', $downloads)
 				->setErrors($this->getErrors());
 
 			// Return the output
 			$arr['html'] = $view->loadTemplate();
 		}
 
-		/*if ($rtrn == 'metadata')
-		{
-			$stats->loadStats($publication->id, $period);
+		$view = $this->view('default', 'metadata')
+			->set('publication', $publication)
+			->set('views', $views)
+			->set('downloads', $downloads);
 
-			if ($stats->users)
-			{
-				$action = $publication->base == 'files' ? '%s download(s)' : '%s view(s)';
-
-				$arr['metadata']  = '<p class="usage">' . Lang::txt('%s user(s)',$stats->users);
-				$arr['metadata'] .= $stats->downloads ? ' | ' . Lang::txt($action, $stats->downloads) : '';
-				$arr['metadata'] .= '</p>';
-			}*/
-			$db = App::get('db');
-			$db->setQuery(
-				"SELECT SUM(page_views)
-				FROM `#__publication_logs`
-				WHERE `publication_id`=" . $db->quote($publication->id) . " AND `publication_version_id`=" . $db->quote($publication->version->id) . "
-				ORDER BY `year` ASC, `month` ASC"
-			);
-			$views = (int) $db->loadResult();
-
-			$db->setQuery(
-				"SELECT SUM(primary_accesses)
-				FROM `#__publication_logs`
-				WHERE `publication_id`=" . $db->quote($publication->id) . " AND `publication_version_id`=" . $db->quote($publication->version->id) . "
-				ORDER BY `year` ASC, `month` ASC"
-			);
-			$downloads = (int) $db->loadResult();
-
-			$view = $this->view('default', 'metadata')
-				->set('publication', $publication)
-				->set('views', $views)
-				->set('downloads', $downloads);
-
-			$arr['metadata'] = $view->loadTemplate();
-
-			//$arr['metadata'] = '<p class="usage">' . Lang::txt('PLG_PUBLICATIONS_USAGE_TOTALS', $views, $downloads) . '</p>';
-		/*}
-
-		if ($stats->users)
-		{
-			$arr['name']  = 'usage';
-			$arr['count'] = $stats->users;
-		}*/
+		$arr['metadata'] = $view->loadTemplate();
 
 		return $arr;
 	}

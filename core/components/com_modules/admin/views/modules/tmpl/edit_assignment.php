@@ -33,43 +33,11 @@
 defined('_HZEXEC_') or die();
 
 // Initiasile related data.
-require_once PATH_CORE.'/components/com_menus/admin/helpers/menus.php';
-$menuTypes = MenusHelper::getMenuLinks();
+require_once Component::path('com_menus') . '/helpers/menus.php';
+$menuTypes = Components\Menus\Helpers\Menus::getMenuLinks();
 
 $assignment = $this->item->disableCaching()->purgeCache()->menuAssignment();
 ?>
-		<script type="text/javascript">
-			jQuery(document).ready(function($){
-				validate();
-				$('select').on('change', function(e){validate();});
-			});
-			function validate(){
-				var value = $('#jform_assignment').val(),
-					list  = $('#menu-assignment');
-
-				if (value == '-' || value == '0') {
-					$('.jform-assignments-button').each(function(i, el) {
-						$(el).prop('disabled', true);
-					});
-					list.find('input').each(function(i, el){
-						$(el).prop('disabled', true);
-						if (value == '-'){
-							$(el).prop('checked', false);
-						} else {
-							$(el).prop('checked', true);
-						}
-					});
-				} else {
-					$('.jform-assignments-button').each(function(i, el) {
-						$(el).prop('disabled', false);
-					});
-					list.find('input').each(function(i, el){
-						$(el).prop('disabled', false);
-					});
-				}
-			}
-		</script>
-
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_MODULES_MENU_ASSIGNMENT'); ?></span></legend>
 
@@ -102,7 +70,7 @@ $assignment = $this->item->disableCaching()->purgeCache()->menuAssignment();
 
 			<div id="menu-assignment">
 
-			<?php echo Html::tabs('start', 'module-menu-assignment-tabs', array('useCookie'=>1));?>
+			<?php echo Html::tabs('start', 'module-menu-assignment-tabs', array('useCookie' => 1));?>
 
 			<?php foreach ($menuTypes as &$type) :
 				echo Html::tabs('panel', $type->title ? $type->title : $type->menutype, $type->menutype.'-details');

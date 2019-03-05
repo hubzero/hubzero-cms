@@ -209,7 +209,7 @@ $this->css('pipeline.css')
 					<?php echo \Components\Tools\Helpers\Html::formSelect('tool[exec]', 't_exec', $execChoices, $this->defaults['exec'], 'groupchoices'); ?>
 				</label>
 
-				<div id="groupname" <?php echo ($this->defaults['exec']=='@GROUP') ? 'style="display:block"': 'style="display:none"'; ?>>
+				<div id="groupname" class="<?php echo ($this->defaults['exec'] == '@GROUP') ? '': 'hide'; ?>">
 					<input type="text" name="tool[membergroups]" id="t_groups" value="<?php echo \Components\Tools\Helpers\Html::getGroups($this->defaults['membergroups'], $this->id); ?>" />
 					<p class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_GROUPS'); ?></p>
 				</div>

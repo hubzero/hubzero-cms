@@ -32,11 +32,6 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
-
-require_once PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'post.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'category.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'section.php';
-
 ?>
 
 Instructor Digest Course Update: <?php echo $this->course->get('title'); ?>

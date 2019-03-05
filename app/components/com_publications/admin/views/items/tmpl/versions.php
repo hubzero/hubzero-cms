@@ -39,18 +39,7 @@ Toolbar::spacer();
 Toolbar::cancel();
 
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
+
 <?php if ($this->config->get('enabled') == 0) { ?>
 	<p class="warning"><?php echo Lang::txt('COM_PUBLICATIONS_COMPONENT_DISABLED'); ?></p>
 <?php } ?>

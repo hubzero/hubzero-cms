@@ -37,11 +37,7 @@ defined('_HZEXEC_') or die();
 \Hubzero\Document\Assets::addComponentStylesheet('com_users', 'login.css');
 \Hubzero\Document\Assets::addComponentStylesheet('com_users', 'providers.css');
 \Hubzero\Document\Assets::addComponentScript('com_users', 'login');
-
-\Hubzero\Document\Assets::addSystemStylesheet('uniform.css');
-\Hubzero\Document\Assets::addSystemScript('jquery.uniform');
 \Hubzero\Document\Assets::addSystemScript('jquery.hoverIntent');
-\Hubzero\Document\Assets::addSystemScript('placeholder');
 
 $hash  = App::hash(App::get('client')->name . ':authenticator');
 
@@ -89,7 +85,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 	$primary = null;
 }
 ?>
-<?php if ($this->params->get('show_page_title', 1)) : ?>
+<?php if ($this->params->get('show_page_heading', 1)) : ?>
 	<header id="content-header">
 		<h2><?php echo $this->escape($this->params->get('page_heading')) ?></h2>
 	</header>
@@ -131,7 +127,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 					<img class="<?php echo $class; ?>" src="<?php echo $user_img; ?>" alt="<?php echo Lang::txt('COM_USERS_LOGIN_USER_PICTURE'); ?>" />
 				<?php endif; ?>
 			</div>
-			<div class="default" style="display:<?php echo ($primary || $login_provider_html == '') ? 'none' : 'block'; ?>;">
+			<div class="default <?php echo ($primary || $login_provider_html == '') ? 'none' : 'block'; ?>">
 				<div class="instructions"><?php echo Lang::txt('COM_USERS_LOGIN_CHOOSE_METHOD'); ?></div>
 				<div class="options">
 					<?php echo $login_provider_html; ?>
@@ -145,7 +141,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 					</div>
 				<?php endif; ?>
 			</div>
-			<div class="hz" style="display:<?php echo ($primary == 'hubzero' || $login_provider_html == '') ? 'block' : 'none'; ?>;">
+			<div class="hz <?php echo ($primary == 'hubzero' || $login_provider_html == '') ? 'block' : 'none'; ?>">
 				<div class="instructions"><?php echo Lang::txt('COM_USERS_LOGIN_TO', Config::get('sitename')); ?></div>
 				<form action="<?php echo Route::url('index.php', true, true); ?>" method="post" class="login_form">
 					<div class="input-wrap">
