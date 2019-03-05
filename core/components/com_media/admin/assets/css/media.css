@@ -41,6 +41,10 @@
 	border-top: 1px solid rgba(0,0,0,0.1);
 	border-bottom: 1px solid rgba(0,0,0,0.1);
 }
+#component-body .media-panels {
+	margin-top: 3em;
+	min-height: 560px;
+}
 .panel {
 	flex: 0 1 auto;
 }
@@ -207,6 +211,7 @@
 	border: none;
 	background-color: rgba(0, 0, 0, 0.6);
 	color: #fff;
+	margin: 0;
 }
 .treeview a:hover:before {
 	color: #fff;

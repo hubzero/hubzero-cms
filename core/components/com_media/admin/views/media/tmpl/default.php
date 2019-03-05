@@ -49,24 +49,21 @@ if (DIRECTORY_SEPARATOR == '\\')
 $style = Request::getState('media.list.layout', 'layout', 'thumbs', 'word');
 
 Html::behavior('framework', true);
+Html::behavior('modal');
 Html::behavior('tooltip');
 
 $this->css();
 $this->js('jquery.treeview.js', 'system');
 $this->js();
 ?>
-<div class="media-container">
+<?php if (Request::getCmd('tmpl') == 'component'): ?>
+	<h2 class="modal-title"><?php echo Lang::txt('COM_MEDIA'); ?></h2>
+<?php endif; ?>
+<div class="media-container modal">
 	<div class="media-panels">
 		<div class="panel panel-tree">
 			<div id="media-tree_tree">
-				<ul>
-					<li>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&tmpl=component&folder=' . '/' . $this->folders[0]['path']); ?>">
-							<?php echo $this->escape($this->folders[0]['name']); ?>
-						</a>
-						<?php echo $this->loadTemplate('folders'); ?>
-					</li>
-				</ul>
+				<?php echo $this->loadTemplate('folders'); ?>
 			</div>
 		</div><!-- / .panel-tree -->
 		<div class="panel panel-files">
@@ -147,6 +144,7 @@ $this->js();
 				<input type="hidden" name="token" value="<?php echo Session::getFormToken(); ?>" />
 				<input type="hidden" name="folder" id="folder" value="<?php echo $this->escape($this->folder); ?>" />
 				<input type="hidden" name="layout" id="layout" value="<?php echo $this->escape($this->layout); ?>" />
+				<input type="hidden" name="tmpl" value="<?php echo $this->escape(Request::getCmd('tmpl', '')); ?>" />
 				<?php echo Html::input('token'); ?>
 			</form>
 		</div><!-- / .panel-files -->

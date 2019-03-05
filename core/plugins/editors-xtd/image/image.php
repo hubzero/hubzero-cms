@@ -75,7 +75,7 @@ class plgButtonImage extends \Hubzero\Plugin\Plugin
 			|| (count(User::getAuthorisedCategories($extension, 'core.edit.own')) > 0 && $author == User::get('id'))
 		)
 		{
-			$link = 'index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;e_name=' . $name . '&amp;asset=' . $asset . '&amp;author=' . $author;
+			$link = 'index.php?option=com_media&amp;layout=list&amp;tmpl=component&amp;e_name=' . $name . '&amp;asset=' . $asset . '&amp;author=' . $author;
 			Html::behavior('modal');
 
 			$button = new \Hubzero\Base\Obj;
