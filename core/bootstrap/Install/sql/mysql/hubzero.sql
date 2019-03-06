@@ -79,14 +79,6 @@ CREATE TABLE `fileperm` (
   PRIMARY KEY (`sessnum`,`fileuser`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `hg_update_queue` (
-  `action` enum('INSERT','UPDATE','DELETE') NOT NULL,
-  `table_name` varchar(50) NOT NULL,
-  `id` int(11) NOT NULL,
-  `other_id` int(11) DEFAULT NULL,
-  `note` text
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 CREATE TABLE `host` (
   `hostname` varchar(40) NOT NULL DEFAULT '',
   `provisions` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -1463,29 +1455,6 @@ CREATE TABLE `#__faq_helpful_log` (
   PRIMARY KEY (`id`),
   KEY `idx_type_object_id` (`type`,`object_id`),
   KEY `idx_user_id` (`user_id`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `#__feedaggregator_feeds` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `url` varchar(255) DEFAULT NULL,
-  `created` date DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `enabled` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `#__feedaggregator_posts` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) DEFAULT NULL,
-  `created` int(20) DEFAULT NULL,
-  `created_by` varchar(255) DEFAULT NULL,
-  `feed_id` int(11) NOT NULL,
-  `status` varchar(45) DEFAULT NULL,
-  `description` text,
-  `url` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__feedback` (
@@ -3103,23 +3072,6 @@ CREATE TABLE `#__session_log` (
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `#__sites` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(100) DEFAULT NULL,
-  `category` varchar(100) DEFAULT NULL,
-  `url` varchar(255) DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL,
-  `teaser` varchar(255) DEFAULT NULL,
-  `description` text,
-  `notes` text,
-  `checked_out` int(11) NOT NULL DEFAULT '0',
-  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `published` tinyint(1) NOT NULL DEFAULT '0',
-  `published_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `state` varchar(30) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8;
-
 CREATE TABLE `#__stats_tops` (
   `id` tinyint(4) NOT NULL DEFAULT '0',
   `name` varchar(128) NOT NULL DEFAULT '',
@@ -3502,62 +3454,6 @@ CREATE TABLE `#__tags_substitute` (
   KEY `idx_tag_id` (`tag_id`),
   KEY `idx_tag` (`tag`),
   KEY `idx_created_by` (`created_by`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `#__time_hub_contacts` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `phone` varchar(255) DEFAULT '000-000-0000',
-  `email` varchar(255) DEFAULT '',
-  `role` varchar(255) DEFAULT '',
-  `hub_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `#__time_hubs` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `name_normalized` varchar(255) NOT NULL DEFAULT '',
-  `liaison` varchar(255) DEFAULT NULL,
-  `anniversary_date` date DEFAULT '0000-00-00',
-  `support_level` varchar(255) DEFAULT 'Standard Support',
-  `active` int(1) NOT NULL DEFAULT '1',
-  `notes` blob,
-  `asset_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `#__time_records` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `task_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `time` double NOT NULL,
-  `date` datetime NOT NULL,
-  `end` datetime NOT NULL,
-  `description` longtext,
-  PRIMARY KEY (`id`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `#__time_tasks` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `hub_id` int(11) NOT NULL,
-  `start_date` date DEFAULT '0000-00-00',
-  `end_date` date DEFAULT '0000-00-00',
-  `active` int(1) NOT NULL DEFAULT '1',
-  `description` blob,
-  `priority` int(1) DEFAULT NULL,
-  `assignee` int(11) DEFAULT NULL,
-  `liaison` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `#__time_users` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `manager_id` int(11) NOT NULL,
-  `liaison` int(1) DEFAULT '0',
-  PRIMARY KEY (`id`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tool` (
@@ -5063,13 +4959,9 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1316, 'mod_mytodos','module','mod_mytodos','',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0);
 
 UPDATE `#__template_styles` SET home=0;
-INSERT INTO `#__template_styles` VALUES (7,'hubbasic',0,'0','HUBzero Standard Site Template - 2011','{}');
-INSERT INTO `#__template_styles` VALUES (8,'hubbasic2012',0,'0','HUBzero Standard Site Template - 2012','{}');
-INSERT INTO `#__template_styles` VALUES (9,'hubbasic2013',0,'0','HUBzero Standard Site Template - 2013','{}');
-INSERT INTO `#__template_styles` VALUES (10,'welcome', 0, '1', 'Welcome Template', '{\"flavor\":\"\",\"template\":\"kimera\"}');
-INSERT INTO `#__template_styles` VALUES (11,'hubbasicadmin',1,'0','HUBzero Standard Admin Template','{}');
-INSERT INTO `#__template_styles` VALUES (12,'kameleon', 1, '1', 'kameleon (admin)', '{\"header\":\"dark\",\"theme\":\"bluesteel\"}');
-INSERT INTO `#__template_styles` VALUES (13,'kimera',0,'0','HUBzero Standard Site Template - 2015','{}');
+INSERT INTO `#__template_styles` VALUES (1,'welcome', 0, '1', 'Welcome Template', '{\"flavor\":\"\",\"template\":\"kimera\"}');
+INSERT INTO `#__template_styles` VALUES (2,'kameleon', 1, '1', 'kameleon (admin)', '{\"header\":\"dark\",\"theme\":\"bluesteel\"}');
+INSERT INTO `#__template_styles` VALUES (3,'kimera',0,'0','HUBzero Standard Site Template - 2015','{}');
 
 INSERT INTO `#__stats_tops` VALUES (1,'Top Tools by Ranking',1,5);
 INSERT INTO `#__stats_tops` VALUES (2,'Top Tools by Simulation Users',1,5);
@@ -5137,14 +5029,6 @@ INSERT INTO `#__courses_roles` (`offering_id`, `alias`, `title`, `permissions`) 
 
 INSERT INTO `#__courses_grade_policies` (`id`, `description`, `threshold`, `exam_weight`, `quiz_weight`, `homework_weight`)
 						VALUES (1, 'An average exam score of 70% or greater is required to pass the class.  Quizzes and homeworks do not count toward the final score.', 0.70, 1.00, 0.00, 0.00);
-
-INSERT INTO `#__newsletter_templates` (`editable`, `name`, `template`, `primary_title_color`, `primary_text_color`, `secondary_title_color`, `secondary_text_color`, `deleted`) VALUES
-(0, 'Default HTML Email Template', '<html>\n <head>\n    <title>{{TITLE}}</title>\n  </head>\n <body>\n    <table width=\"100%\" border=\"0\" cellspacing=\"0\">\n     <tr>\n        <td align=\"center\">\n         \n          <table width=\"700\" border=\"0\" cellpadding=\"20\" cellspacing=\"0\">\n           <tr class=\"display-browser\">\n              <td colspan=\"2\" style=\"font-size:10px;padding:0 0 5px 0;\" align=\"center\">\n               Email not displaying correctly? <a href=\"{{LINK}}\">View in a Web Browser</a>\n              </td>\n           </tr>\n           <tr>\n              <td colspan=\"2\" style=\"background:#000000;\">\n                <h1 style=\"color:#FFFFFF;\">HUB Campaign Template</h1>\n               <h3 style=\"color:#888888;\">{{TITLE}}</h3>\n             </td>\n           <tr>\n              <td width=\"500\" valign=\"top\" style=\"font-size:14px;color:#222222;border-left:1px solid #000000;\">\n               <span style=\"display:block;color:#CCCCCC;margin-bottom:20px;\">Issue {{ISSUE}}</span>\n                {{PRIMARY_STORIES}}\n             </td>\n             <td width=\"200\" valign=\"top\" style=\"font-size:12px;color:#555555;border-left:1px solid #AAAAAA;border-right:1px solid #000000;\">\n                {{SECONDARY_STORIES}}\n             </td>\n           </tr>\n           <tr>\n              <td colspan=\"2\" align=\"center\" style=\"background:#000000;color:#FFFFFF;\">\n               Copyright &copy; {{COPYRIGHT}} HUB. All Rights reserved.\n              </td>\n           </tr>\n         </table>\n        \n        </td>\n     </tr>\n   </table>\n  </body>\n</html>  ', '', '', '', '', 0),
-(0, 'Default Plain Text Email Template', 'View In Browser - {{LINK}}\n=====================================\n{{TITLE}} - {{ISSUE}}\n=====================================\n\n{{PRIMARY_STORIES}}\n\n--------------------------------------------------\n\n{{SECONDARY_STORIES}}\n\n--------------------------------------------------\n\nUnsubscribe - {{UNSUBSCRIBE_LINK}}\nCopyright - {{COPYRIGHT}}', NULL, NULL, NULL, NULL, 0);
-
-INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`) VALUES ('Process Newsletter Mailings', 0, 'newsletter', 'processMailings', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '*/5 * * * *', '2013-06-25 08:23:04', 1001, '2013-07-16 17:15:01', 0, 0, 0, '');
-INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`) VALUES ('Process Newsletter Opens & Click IP Addresses', 0, 'newsletter', 'processIps', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '*/5 * * * *', '2013-06-25 08:23:04', 1001, '2013-07-16 17:15:01', 0, 0, 0, '');
-INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`) VALUES ('Group Announcements', 1, 'groups', 'sendGroupAnnouncements', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '*/5 * * * *', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 0, 0, '');
 
 INSERT INTO `#__publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('1','Datasets','Dataset','dataset','datasets','A collection of research data','1','1','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1\nplg_wishlist=1\nplg_citations=1\nplg_usage = 1');
 INSERT INTO `#__publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('2','Workshops','Event','workshop','workshops','A collection of lectures, seminars, and materials that were presented at a workshop.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1');
