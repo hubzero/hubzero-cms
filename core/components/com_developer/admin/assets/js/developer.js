@@ -1,20 +1,23 @@
 
 Joomla.submitbutton = function(task) {
-	if (task == 'resetclientsecret') {
-		var afrm = document.getElementById('adminForm');
+	var afrm = document.getElementById('adminForm');
 
-		if (confirm(afrm.getAttribute('data-confirmreset'))) {
-			Joomla.submitform(task, afrm);
+	if (afrm) {
+		if (task == 'resetclientsecret') {
+			if (confirm(afrm.getAttribute('data-confirmreset'))) {
+				Joomla.submitform(task, afrm);
+			}
+			return;
 		}
-		return;
-	}
 
-	if (task == 'removetokens') {
-		var afrm = document.getElementById('adminForm');
-
-		if (confirm(afrm.getAttribute('data-confirmrevoke'))) {
-			Joomla.submitform(task, afrm);
+		if (task == 'removetokens') {
+			if (confirm(afrm.getAttribute('data-confirmrevoke'))) {
+				Joomla.submitform(task, afrm);
+			}
+			return;
 		}
+
+		Joomla.submitform(task, afrm);
 		return;
 	}
 
