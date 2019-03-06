@@ -40,6 +40,13 @@ Joomla.submitbutton = function(task) {
 		}
 	}
 
+	var afrm = document.getElementById('adminForm');
+
+	if (afrm) {
+		Joomla.submitform(task, afrm);
+		return;
+	}
+
 	var frm = document.getElementById('item-form');
 
 	if (frm) {
