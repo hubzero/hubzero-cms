@@ -6,9 +6,9 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for adding component entry for com_mailto
+ * Migration script for adding component entry for com_installer
  **/
-class Migration20170831000000ComMailto extends Base
+class Migration20170831000000ComInstaller extends Base
 {
 	/**
 	 * Up
@@ -23,7 +23,7 @@ class Migration20170831000000ComMailto extends Base
 		// int     $enabled         Whether or not the component should be enabled
 		// string  $params          Component params (if already known)
 		// bool    $createMenuItem  Create an admin menu item for this component
-		$this->addComponentEntry('mailto', null, 1, '', false);
+		$this->addComponentEntry('installer', null, 1, '', false);
 	}
 
 	/**
@@ -31,6 +31,6 @@ class Migration20170831000000ComMailto extends Base
 	 **/
 	public function down()
 	{
-		$this->deleteComponentEntry('mailto');
+		$this->deleteComponentEntry('installer');
 	}
 }
