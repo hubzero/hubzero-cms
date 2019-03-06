@@ -102,7 +102,7 @@ class plgUserAutoapprove extends \Hubzero\Plugin\Plugin
 			return true;
 		}
 
-		if ($user['approved'])
+		if (isset($user['approved']) && $user['approved'])
 		{
 			return true;
 		}
@@ -122,7 +122,6 @@ class plgUserAutoapprove extends \Hubzero\Plugin\Plugin
 
 			if ($db->query())
 			{
-				//return false;
 				User::set('approved', 1);
 			}
 		}
