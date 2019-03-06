@@ -6,9 +6,9 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for changing DATETIME fields default to NULL for com_collections
+ * Migration script for changing DATETIME fields default to NULL for com_activity (catching missed column in previous mgiration)
  **/
-class Migration20190221000000ComCollections extends Base
+class Migration20190305000000ComActivity extends Base
 {
 	/**
 	 * List of tables and their datetime fields
@@ -16,24 +16,8 @@ class Migration20190221000000ComCollections extends Base
 	 * @var  array
 	 **/
 	public static $tables = array(
-		'#__collections' => array(
-			'created'
-		),
-		'#__collections_assets' => array(
-			'created'
-		),
-		'#__collections_following' => array(
-			'created'
-		),
-		'#__collections_items' => array(
-			'created',
-			'modified'
-		),
-		'#__collections_posts' => array(
-			'created'
-		),
-		'#__collections_votes' => array(
-			'created'
+		'#__activity_recipients' => array(
+			'viewed'
 		)
 	);
 
