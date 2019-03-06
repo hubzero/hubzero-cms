@@ -266,8 +266,16 @@ $legacy = array(
 						$page = $db->loadObject();
 						if ($page && $page->id)
 						{
+							if ($page->fulltext)
+							{
+								$page->text = $page->fulltext;
+							}
+							else
+							{
+								$page->text = $page->introtext;
+							}
 							$params = new \Hubzero\Config\Registry($page->attribs);
-							$results = Event::trigger('content.onContentPrepare', array ('com_content.article', &$page, &$params, 0));
+							$results = Event::trigger('content.onContentPrepare', array('com_content.article', &$page, &$params, 0));
 							echo $page->text;
 						}
 						?>
