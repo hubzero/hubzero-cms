@@ -115,7 +115,7 @@ class Migration20170901000000ComGroups extends Base
 			$query = "CREATE TABLE `#__xgroups_log` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `gidNumber` int(11) DEFAULT NULL,
-			  `timestamp` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `timestamp` datetime DEFAULT NULL,
 			  `userid` int(11) DEFAULT NULL,
 			  `action` varchar(50) DEFAULT NULL,
 			  `comments` text,
@@ -170,7 +170,7 @@ class Migration20170901000000ComGroups extends Base
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `user_id` int(11) unsigned NOT NULL DEFAULT '0',
 			  `group_id` int(11) unsigned NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  PRIMARY KEY (`id`),
 			  KEY `idx_user_id` (`user_id`),
 			  KEY `idx_group_id` (`group_id`)

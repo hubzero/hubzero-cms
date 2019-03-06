@@ -137,7 +137,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 			->whereEquals('scope', 'user')
 			->whereEquals('scope_id', $member->get('id'))
 			->whereEquals('state', 1)
-			->whereEquals('viewed', '0000-00-00 00:00:00')
+			->where('viewed', 'IS', null)
 			->total();
 
 		// Return total message count
