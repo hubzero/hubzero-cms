@@ -62,29 +62,29 @@ $this->js();
 						<div class="input-wrap">
 							<label for="field->category"><?php echo Lang::txt('COM_WISHLIST_CATEGORY'); ?>:</label><br />
 							<select name="fields[category]" id="field-category">
-								<option value=""<?php echo ($this->row->category == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_SELECT_CATEGORY'); ?></option>
-								<option value="general"<?php echo ($this->row->category == 'general') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_CATEGORY_GENERAL'); ?></option>
-								<option value="group"<?php echo ($this->row->category == 'group') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_CATEGORY_GROUP'); ?></option>
-								<option value="resource"<?php echo ($this->row->category == 'resource') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_CATEGORY_RESOURCE'); ?></option>
+								<option value=""<?php echo ($this->row->get('category') == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_SELECT_CATEGORY'); ?></option>
+								<option value="general"<?php echo ($this->row->get('category') == 'general') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_CATEGORY_GENERAL'); ?></option>
+								<option value="group"<?php echo ($this->row->get('category') == 'group') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_CATEGORY_GROUP'); ?></option>
+								<option value="resource"<?php echo ($this->row->get('category') == 'resource') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_CATEGORY_RESOURCE'); ?></option>
 							</select>
 						</div>
 					</div>
 					<div class="col span6">
 						<div class="input-wrap">
 							<label for="field-referenceid"><?php echo Lang::txt('COM_WISHLIST_REFERENCEID'); ?>:</label><br />
-							<input type="text" name="fields[referenceid]" id="field-referenceid" size="11" maxlength="11" value="<?php echo $this->escape(stripslashes($this->row->referenceid)); ?>" />
+							<input type="text" name="fields[referenceid]" id="field-referenceid" size="11" maxlength="11" value="<?php echo $this->escape(stripslashes($this->row->get('referenceid'))); ?>" />
 						</div>
 					</div>
 				</div>
 
 				<div class="input-wrap">
 					<label for="field-title"><?php echo Lang::txt('COM_WISHLIST_TITLE'); ?>:</label><br />
-					<input type="text" name="fields[title]" id="field-title" size="30" maxlength="150" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+					<input type="text" name="fields[title]" id="field-title" size="30" maxlength="150" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 				</div>
 
 				<div class="input-wrap">
 					<label for="field-description"><?php echo Lang::txt('COM_WISHLIST_DESCRIPTION'); ?>:</label><br />
-					<input type="text" name="fields[description]" id="field-description" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->description)); ?>" />
+					<input type="text" name="fields[description]" id="field-description" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('description'))); ?>" />
 				</div>
 			</fieldset>
 		</div>
@@ -94,8 +94,8 @@ $this->js();
 					<tr>
 						<th scope="row"><?php echo Lang::txt('COM_WISHLIST_FIELD_ID'); ?>:</th>
 						<td>
-							<?php echo $this->row->id; ?>
-							<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->row->id; ?>" />
+							<?php echo $this->row->get('id'); ?>
+							<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->row->get('id'); ?>" />
 						</td>
 					</tr>
 					<tr>

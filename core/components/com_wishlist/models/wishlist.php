@@ -221,6 +221,11 @@ class Wishlist extends Relational
 		{
 			$scope = strtolower($this->get('category'));
 
+			if (!$scope && $this->isNew())
+			{
+				$scope = 'general';
+			}
+
 			$files = glob(__DIR__ . '/adapters/*.php');
 
 			// Loop through the types and find the ones that are available
