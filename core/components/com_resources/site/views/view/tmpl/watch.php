@@ -69,7 +69,7 @@ $parent = $rr->parents()
 	->first();
 
 //check to see if parent type is series
-if ($parent && ($parent->type->get('type') == 'Series' || $parent->type->get('type') == 'Courses'))
+if ($parent && $parent->id && ($parent->type->get('type') == 'Series' || $parent->type->get('type') == 'Courses'))
 {
 	//if we have a series get children
 	$children = $parent->children()
@@ -104,15 +104,19 @@ else
 	$children = null;
 }
 
-//get the contributors for the resource
-$sql = "SELECT authorid, role, name FROM `#__author_assoc` "
-	 . "WHERE subtable='resources' "
-	 . "AND subid=" . $parent->id . " "
-	 . "ORDER BY ordering";
+$lectureAuthors = array();
+if ($parent && $parent->id)
+{
+	//get the contributors for the resource
+	$sql = "SELECT authorid, role, name FROM `#__author_assoc` "
+		 . "WHERE subtable='resources' "
+		 . "AND subid=" . $parent->id . " "
+		 . "ORDER BY ordering";
 
-$database = App::get('db');
-$database->setQuery($sql);
-$lectureAuthors = $database->loadObjectList();
+	$database = App::get('db');
+	$database->setQuery($sql);
+	$lectureAuthors = $database->loadObjectList();
+}
 
 //get the author names from ids
 $a = array();
