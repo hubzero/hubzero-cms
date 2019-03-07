@@ -82,7 +82,7 @@ $this->js()
 							<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_START'); ?>
 							<?php
 								$publish_up = $this->announcement->get('publish_up');
-								if ($publish_up != '' && $publish_up != '0000-00-00 00:00:00')
+								if ($publish_up && $publish_up != '0000-00-00 00:00:00')
 								{
 									$publish_up = Date::of($publish_up)->toLocal('m/d/Y @ g:i a');
 								}
@@ -96,7 +96,7 @@ $this->js()
 							<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_END'); ?>
 							<?php
 								$publish_down = $this->announcement->get('publish_down');
-								if ($publish_down != '' && $publish_down != '0000-00-00 00:00:00')
+								if ($publish_down && $publish_down != '0000-00-00 00:00:00')
 								{
 									$publish_down = Date::of($publish_down)->toLocal('m/d/Y @ g:i a');
 								}

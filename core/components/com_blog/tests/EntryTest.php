@@ -201,6 +201,7 @@ class EntryTest extends Database
 		$data['publish_up'] = $entry->automaticPublishUp($data);
 
 		$this->assertNotEquals('0000-00-00 00:00:00', $data['publish_up']);
+		$this->assertNotEquals(null, $data['publish_up']);
 		$this->assertTrue($data['publish_up'] >= $now);
 
 		// Test that publish_up is set to created date if using an existing record

@@ -438,7 +438,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 					{
 						$recipient->set(array(
 							'created'  => Date::toSql(),
-							'viewed'   => '0000-00-00 00:00:00'
+							'viewed'   => null
 						));
 						$recipient->save();
 					}

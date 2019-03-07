@@ -473,7 +473,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$event->url       = $rawEvent->link();
 			$event->start     = ($event->allDay == 1) ? $up->setTimezone('UTC')->format($timeFormat, true) : $up->toLocal($timeFormat);
 			$event->className = ($rawEvent->get('calendar_id')) ? 'calendar-' . $rawEvent->get('calendar_id') : 'calendar-0';
-			if ($rawEvent->get('publish_down') != '0000-00-00 00:00:00')
+			if ($rawEvent->get('publish_down') && $rawEvent->get('publish_down') != '0000-00-00 00:00:00')
 			{
 				$event->end = ($event->allDay == 1) ? $down->setTimezone('UTC')->format($timeFormat, true) : $down->toLocal($timeFormat);
 			}
@@ -483,7 +483,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			if ($rawEvent->get('repeating_rule') != '')
 			{
 				$event->url .= '?start=' . $up->toUnix();
-				if ($rawEvent->get('publish_down') != '0000-00-00 00:00:00')
+				if ($rawEvent->get('publish_down') && $rawEvent->get('publish_down') != '0000-00-00 00:00:00')
 				{
 					$event->url .= '&end=' . $down->toUnix();
 				}
@@ -771,7 +771,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 
 		//check to make sure end time is greater than start time
-		if (isset($event['publish_down']) && $event['publish_down'] != '0000-00-00 00:00:00' && $event['publish_down'] != '')
+		if (isset($event['publish_down']) && $event['publish_down'] && $event['publish_down'] != '0000-00-00 00:00:00')
 		{
 			$up     = strtotime($event['publish_up']);
 			$down   = strtotime($event['publish_down']);
@@ -1152,7 +1152,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->registrants = $eventsRespondent->getCount();
 
 		//do we have a registration deadline
-		if ($view->event->get('registerby') == '' || $view->event->get('registerby') == '0000-00-00 00:00:00')
+		if (!$view->event->get('registerby') || $view->event->get('registerby') == '0000-00-00 00:00:00')
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $view->event->get('id')),

@@ -169,25 +169,25 @@ $course_id = 0;
 
 						<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_PUBLISH_UP_HINT'); ?>">
 							<label for="field-publish_up"><?php echo Lang::txt('COM_COURSES_FIELD_PUBLISH_UP'); ?>:</label><br />
-							<?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->get('publish_up') != '0000-00-00 00:00:00' ? $this->row->get('publish_up') : ''), array('id' => 'field-publish_up')); ?>
+							<?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->get('publish_up') && $this->row->get('publish_up') != '0000-00-00 00:00:00' ? $this->row->get('publish_up') : ''), array('id' => 'field-publish_up')); ?>
 							<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_PUBLISH_UP_HINT'); ?></span>
 						</div>
 
 						<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_SECTION_STARTS_HINT'); ?>">
 							<label for="field-start_date"><?php echo Lang::txt('COM_COURSES_FIELD_SECTION_STARTS'); ?>:</label><br />
-							<?php echo Html::input('calendar', 'fields[start_date]', ($this->row->get('start_date') != '0000-00-00 00:00:00' ? $this->row->get('start_date') : ''), array('id' => 'field-start_date')); ?>
+							<?php echo Html::input('calendar', 'fields[start_date]', ($this->row->get('start_date') && $this->row->get('start_date') != '0000-00-00 00:00:00' ? $this->row->get('start_date') : ''), array('id' => 'field-start_date')); ?>
 							<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_SECTION_STARTS_HINT'); ?></span>
 						</div>
 
 						<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_FINISHES_HINT'); ?>">
 							<label for="field-end date"><?php echo Lang::txt('COM_COURSES_FIELD_FINISHES'); ?>:</label><br />
-							<?php echo Html::input('calendar', 'fields[end_date]', ($this->row->get('end_date') != '0000-00-00 00:00:00' ? $this->row->get('end_date') : ''), array('id' => 'field-end_date')); ?>
+							<?php echo Html::input('calendar', 'fields[end_date]', ($this->row->get('end_date') && $this->row->get('end_date') != '0000-00-00 00:00:00' ? $this->row->get('end_date') : ''), array('id' => 'field-end_date')); ?>
 							<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_FINISHES_HINT'); ?></span>
 						</div>
 
 						<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_PUBLISH_DOWN_HINT'); ?>">
 							<label for="field-publish_down"><?php echo Lang::txt('COM_COURSES_FIELD_PUBLISH_DOWN'); ?>:</label><br />
-							<?php echo Html::input('calendar', 'fields[publish_down]', ($this->row->get('publish_down') != '0000-00-00 00:00:00' ? $this->row->get('publish_down') : ''), array('id' => 'field-publish_down')); ?>
+							<?php echo Html::input('calendar', 'fields[publish_down]', ($this->row->get('publish_down') && $this->row->get('publish_down') != '0000-00-00 00:00:00' ? $this->row->get('publish_down') : ''), array('id' => 'field-publish_down')); ?>
 							<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_PUBLISH_DOWN_HINT'); ?></span>
 						</div>
 					</fieldset>

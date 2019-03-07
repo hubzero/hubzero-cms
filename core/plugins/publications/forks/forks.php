@@ -201,12 +201,13 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
 			->whereEquals('state', Publication::STATE_PUBLISHED)
 			->where('access', '!=', 2)
 			->where('published_up', '<=', Date::toSql(), 1)
-			->orWhere('published_up', '=', '0000-00-00 00:00:00', 1)
-			->resetDepth()
-			->whereRaw('published_up IS NULL', array(), 1)
-			->orWhere('published_down', '>=', Date::toSql(), 1)
-			->orWhere('published_up', '=', '0000-00-00 00:00:00', 1)
-			->resetDepth()
+				->orWhere('published_up', 'IS', null, 1)
+				->orWhere('published_up', '=', '0000-00-00 00:00:00', 1)
+				->resetDepth()
+			->where('published_up', 'IS', null, 'and', 1)
+				->orWhere('published_up', '=', '0000-00-00 00:00:00', 1)
+				->orWhere('published_down', '>=', Date::toSql(), 1)
+				->resetDepth()
 			->rows();
 		*/
 

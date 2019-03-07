@@ -325,7 +325,7 @@ $panels = array(
 				<?php endif; ?>
 				<div class="input-wrap">
 					<label for="publish_up"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_PUBLISH_DATE'); ?>:</label><br />
-					<?php echo Html::input('calendar', 'published_up', ($this->model->version->published_up != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->model->version->published_up)->toLocal('Y-m-d H:i:s')) : '')); ?>
+					<?php echo Html::input('calendar', 'published_up', ($this->model->version->published_up && $this->model->version->published_up != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->model->version->published_up)->toLocal('Y-m-d H:i:s')) : '')); ?>
 				</div>
 				<div class="input-wrap">
 					<label for="publish_down"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_UNPUBLISH_DATE'); ?>:</label><br />
@@ -333,7 +333,7 @@ $panels = array(
 						$down = 'Never';
 						if (strtolower($this->model->version->published_down) != Lang::txt('COM_PUBLICATIONS_NEVER'))
 						{
-							$down = $this->model->version->published_down != '0000-00-00 00:00:00'
+							$down = $this->model->version->published_down && $this->model->version->published_down != '0000-00-00 00:00:00'
 								? Date::of($this->model->version->published_down)->toLocal('Y-m-d H:i:s')
 								: null;
 						}

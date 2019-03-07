@@ -92,7 +92,7 @@ class Stamp extends Relational
 	{
 		if (!isset($data['processed']) || !$data['processed'] || $data['processed'] == '0000-00-00 00:00:00')
 		{
-			$data['processed'] = '0000-00-00 00:00:00';
+			$data['processed'] = null;
 		}
 
 		return $data['processed'];

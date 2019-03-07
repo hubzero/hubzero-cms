@@ -139,10 +139,10 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 							$publish_up      = ($this->event->get('publish_up')) ? $this->event->get('publish_up') : $start;
 							$publish_up_date = '';
 							$publish_up_time = '';
-							if ($publish_up != '' && $publish_up != '0000-00-00 00:00:00')
+							if ($publish_up && $publish_up != '0000-00-00 00:00:00')
 							{
-								$publish_up_date = Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->timezone,'m/d/Y');
-								$publish_up_time = Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->timezone,'g:i a');
+								$publish_up_date = Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->timezone, 'm/d/Y');
+								$publish_up_time = Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->timezone, 'g:i a');
 							}
 						?>
 						<div class="input-group">
@@ -158,10 +158,10 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 							$publish_down      = ($this->event->get('publish_down')) ? $this->event->get('publish_down') : $end;
 							$publish_down_date = '';
 							$publish_down_time = '';
-							if ($publish_down != '' && $publish_down != '0000-00-00 00:00:00')
+							if ($publish_down && $publish_down != '0000-00-00 00:00:00')
 							{
-								$publish_down_date = Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->timezone,'m/d/Y');
-								$publish_down_time = Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->timezone,'g:i a');
+								$publish_down_date = Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->timezone, 'm/d/Y');
+								$publish_down_time = Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->timezone, 'g:i a');
 							}
 						?>
 						<div class="input-group">
@@ -285,7 +285,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					<legend><?php echo Lang::txt('Registration Settings'); ?></legend>
 
 					<label id="include-registration-toggle">
-						<?php $ckd = (($this->event->get('registerby') != '0000-00-00 00:00:00' && $this->event->get('registerby') != '') || $includeRegistration) ? 'checked="checked"' : ''; ?>
+						<?php $ckd = (($this->event->get('registerby') && $this->event->get('registerby') != '0000-00-00 00:00:00') || $includeRegistration) ? 'checked="checked"' : ''; ?>
 						<input class="option" type="checkbox" id="include-registration" name="include-registration" value="1" <?php echo $ckd; ?> />
 						<?php echo Lang::txt('Include registration for this event.'); ?>
 					</label>
@@ -295,7 +295,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 							<?php echo Lang::txt('Deadline:'); ?> <span class="required"><?php echo Lang::txt('Required for Registration Tab to Appear'); ?></span>
 							<?php
 								$register_by = '';
-								if ($this->event->get('registerby') != '' && $this->event->get('registerby') != '0000-00-00 00:00:00')
+								if ($this->event->get('registerby') && $this->event->get('registerby') != '0000-00-00 00:00:00')
 								{
 									$register_by = Date::of($this->event->get('registerby'))->toLocal('m/d/Y @ g:i a');
 								}

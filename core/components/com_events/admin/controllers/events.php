@@ -236,7 +236,7 @@ class Events extends AdminController
 		{
 			$this->view->row->checkout(User::get('id'));
 
-			if (trim($this->view->row->publish_down) == '0000-00-00 00:00:00')
+			if (!$this->view->row->publish_down || trim($this->view->row->publish_down) == '0000-00-00 00:00:00')
 			{
 				$this->view->row->publish_down = Lang::txt('COM_EVENTS_CAL_LANG_NEVER');
 			}

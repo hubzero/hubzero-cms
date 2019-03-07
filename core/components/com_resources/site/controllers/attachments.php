@@ -128,7 +128,6 @@ class Attachments extends SiteController
 				'created_by'   => User::get('id'),
 				'published'    => 1,
 				'publish_up'   => Date::toSql(),
-				'publish_down' => '0000-00-00 00:00:00',
 				'standalone'   => 0,
 				'access'       => 0,
 				'path'         => 'http://', // make sure no path is specified just yet
@@ -206,7 +205,6 @@ class Attachments extends SiteController
 				'created_by'   => User::get('id'),
 				'published'    => 1,
 				'publish_up'   => Date::toSql(),
-				'publish_down' => '0000-00-00 00:00:00',
 				'standalone'   => 0,
 				'access'       => 0,
 				'path'         => Request::getString('url', 'http://'),
@@ -349,7 +347,6 @@ class Attachments extends SiteController
 			'created_by'   => User::get('id'),
 			'published'    => 1,
 			'publish_up'   => Date::toSql(),
-			'publish_down' => '0000-00-00 00:00:00',
 			'standalone'   => 0,
 			'access'       => 0,
 			'path'         => '', // make sure no path is specified just yet
@@ -603,7 +600,6 @@ class Attachments extends SiteController
 			'created_by'   => User::get('id'),
 			'published'    => 1,
 			'publish_up'   => Date::toSql(),
-			'publish_down' => '0000-00-00 00:00:00',
 			'standalone'   => 0,
 			'access'       => 0,
 			'path'         => '', // make sure no path is specified just yet
@@ -975,7 +971,7 @@ class Attachments extends SiteController
 	}
 
 	/**
-	 * Build a path from a creation date (0000-00-00 00:00:00)
+	 * Build a path from a creation date (YYYY-MM-DD hh:mm:ss)
 	 *
 	 * @param   string   $date  Resource created date
 	 * @param   integer  $id    Resource ID

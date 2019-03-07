@@ -1387,9 +1387,11 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		$now = Date::toSql();
 
 		$this->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
+			->orWhere($r . '.publish_up', 'IS', null, 1)
 			->orWhere($r . '.publish_up', '<=', $now, 1)
 			->resetDepth()
 			->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
+			->orWhere($r . '.publish_down', 'IS', null, 1)
 			->orWhere($r . '.publish_down', '>=', $now, 1)
 			->resetDepth();
 
@@ -1563,11 +1565,13 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		if (isset($filters['now']))
 		{
 			$query->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
-				->orWhere($r . '.publish_up', '<=', $filters['now'], 1)
-				->resetDepth()
+					->orWhere($r . '.publish_up', 'IS', null, 1)
+					->orWhere($r . '.publish_up', '<=', $filters['now'], 1)
+					->resetDepth()
 				->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
-				->orWhere($r . '.publish_down', '>=', $filters['now'], 1)
-				->resetDepth();
+					->orWhere($r . '.publish_down', 'IS', null, 1)
+					->orWhere($r . '.publish_down', '>=', $filters['now'], 1)
+					->resetDepth();
 		}
 
 		if (isset($filters['startdate']) && $filters['startdate'])

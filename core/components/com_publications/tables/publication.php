@@ -292,7 +292,7 @@ class Publication extends Table
 		}
 		if (!$dev)
 		{
-			$query .= " AND (V.published_up = '0000-00-00 00:00:00' OR V.published_up <= '" . $now . "') ";
+			$query .= " AND (V.published_up IS NULL OR V.published_up = '0000-00-00 00:00:00' OR V.published_up <= '" . $now . "') ";
 			$query .= " AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00' OR V.published_down >= '".$now."') ";
 		}
 		if (isset($filters['startdate']))

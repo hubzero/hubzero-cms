@@ -204,8 +204,8 @@ class Offering extends Table
 		{
 			$now = Date::toSql();
 
-			$where[] = "(ci.publish_up = '0000-00-00 00:00:00' OR ci.publish_up <= " . $this->_db->quote($now) . ")";
-			$where[] = "(ci.publish_down = '0000-00-00 00:00:00' OR ci.publish_down >= " . $this->_db->quote($now) . ")";
+			$where[] = "(ci.publish_up IS NULL OR ci.publish_up = '0000-00-00 00:00:00' OR ci.publish_up <= " . $this->_db->quote($now) . ")";
+			$where[] = "(ci.publish_down IS NULL OR ci.publish_down = '0000-00-00 00:00:00' OR ci.publish_down >= " . $this->_db->quote($now) . ")";
 
 			$filters['state'] = 1;
 		}

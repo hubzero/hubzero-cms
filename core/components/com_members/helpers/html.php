@@ -82,10 +82,18 @@ class Html
 		$html = '';
 		switch ($response)
 		{
-			case '':        $html .= Lang::txt('COM_MEMBERS_FIELD_VALUE_NA');      break;
-			case 'no':      $html .= Lang::txt('COM_MEMBERS_FIELD_VALUE_NONE');    break;
-			case 'refused': $html .= Lang::txt('COM_MEMBERS_FIELD_VALUE_REFUSED'); break;
-			default:        $html .= htmlentities(ucfirst($response), ENT_COMPAT, 'UTF-8'); break;
+			case '':
+				$html .= Lang::txt('COM_MEMBERS_FIELD_VALUE_NA');
+				break;
+			case 'no':
+				$html .= Lang::txt('COM_MEMBERS_FIELD_VALUE_NONE');
+				break;
+			case 'refused':
+				$html .= Lang::txt('COM_MEMBERS_FIELD_VALUE_REFUSED');
+				break;
+			default:
+				$html .= htmlentities(ucfirst($response), ENT_COMPAT, 'UTF-8');
+				break;
 		}
 		return $html;
 	}
@@ -149,7 +157,7 @@ class Html
 	/**
 	 * Transform a date to an epoch
 	 *
-	 * @param   string   $datestr  Datetime (0000-00-00 00:00:00)
+	 * @param   string   $datestr  Datetime (YYYY-MM-DD hh:mm:ss)
 	 * @return  integer
 	 */
 	public static function date2epoch($datestr)
@@ -161,7 +169,7 @@ class Html
 		list ($date, $time) = explode(' ', $datestr);
 		list ($y, $m, $d) = explode('-', $date);
 		list ($h, $i, $s) = explode(':', $time);
-		return (mktime($h, $i, $s, $m, $d, $y));
+		return mktime($h, $i, $s, $m, $d, $y);
 	}
 
 	/**
@@ -175,7 +183,7 @@ class Html
 	{
 		if ($format == 1)
 		{
-			return(number_format($value));
+			return number_format($value);
 		}
 		elseif ($format == 2 || $format == 3)
 		{
@@ -206,17 +214,16 @@ class Html
 			}
 			if ($format == 2)
 			{
-				return(sprintf("%s%d:%02d", $day, $hr, $min));
+				return sprintf("%s%d:%02d", $day, $hr, $min);
 			}
 			else
 			{
-				return(sprintf("%s%d:%02d:%02d", $day, $hr, $min, $sec));
+				return sprintf("%s%d:%02d:%02d", $day, $hr, $min, $sec);
 			}
 		}
 		else
 		{
-			return($value);
+			return $value;
 		}
 	}
 }
-

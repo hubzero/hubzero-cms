@@ -998,7 +998,9 @@ class Project extends Model
 			$this->_newCount = \Hubzero\Activity\Recipient::all()
 				->whereEquals('scope', 'project')
 				->whereEquals('scope_id', $this->get('id'))
-				->whereEquals('viewed', '0000-00-00 00:00:00')
+				->where('viewed', 'IS', null, 'and', 1)
+					->orWhereEquals('viewed', '0000-00-00 00:00:00', 1)
+					->resetDepth()
 				->whereEquals('state', 1)
 				->total();
 		}

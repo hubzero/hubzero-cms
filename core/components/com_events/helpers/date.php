@@ -42,47 +42,47 @@ class EventsDate
 	 *
 	 * @var number
 	 */
-	public $year   = NULL;
+	public $year   = null;
 
 	/**
 	 * Month
 	 *
 	 * @var number
 	 */
-	public $month  = NULL;
+	public $month  = null;
 
 	/**
 	 * Day
 	 *
 	 * @var unknown
 	 */
-	public $day    = NULL;
+	public $day    = null;
 
 	/**
 	 * Hour
 	 *
 	 * @var integer
 	 */
-	public $hour   = NULL;
+	public $hour   = null;
 
 	/**
 	 * Minute
 	 *
 	 * @var integer
 	 */
-	public $minute = NULL;
+	public $minute = null;
 
 	/**
 	 * Second
 	 *
 	 * @var integer
 	 */
-	public $second = NULL;
+	public $second = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      string $datetime Timestamp (0000-00-00 00:00:00)
+	 * @param      string $datetime Timestamp (YYYY-MM-DD hh:mm:ss)
 	 * @return     void
 	 */
 	public function __construct($datetime='')
@@ -429,4 +429,3 @@ class EventsDate
 		$this->year  = $century*100 + $year;
 	}
 }
-

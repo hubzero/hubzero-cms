@@ -167,7 +167,7 @@ $loggeduser = User::getInstance();
 					<?php echo $this->escape($item->email); ?>
 				</td>
 				<td class="center priority-6">
-					<?php if ($item->lastvisitDate!='0000-00-00 00:00:00'):?>
+					<?php if ($item->lastvisitDate && $item->lastvisitDate != '0000-00-00 00:00:00'):?>
 						<?php echo Date::of($item->lastvisitDate)->toLocal('Y-m-d H:i:s'); ?>
 					<?php else:?>
 						<?php echo Lang::txt('JNEVER'); ?>
