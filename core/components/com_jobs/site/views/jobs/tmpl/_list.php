@@ -67,7 +67,7 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
 		$model = new Components\Jobs\Models\Job($this->jobs[$i]);
 
 		$closedate = ($this->jobs[$i]->closedate && $this->jobs[$i]->closedate !='0000-00-00 00:00:00') ? Date::of($this->jobs[$i]->closedate)->toLocal('d&\nb\sp;M&\nb\sp;y') : 'ASAP';
-		if ($this->jobs[$i]->closedate !='0000-00-00 00:00:00' && $this->jobs[$i]->closedate < Date::toSql())
+		if ($this->jobs[$i]->closedate && $this->jobs[$i]->closedate !='0000-00-00 00:00:00' && $this->jobs[$i]->closedate < Date::toSql())
 		{
 			$closedate = 'closed';
 		}
@@ -85,7 +85,7 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
 		{
 			$status = '';
 			$class =  '';
-			switch ( $this->jobs[$i]->status )
+			switch ($this->jobs[$i]->status)
 			{
 				case 0:     $status =  Lang::txt('COM_JOBS_JOB_STATUS_PENDING');
 							$class  = 'post_pending';

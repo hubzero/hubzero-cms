@@ -107,7 +107,7 @@ $this->js();
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_FIELD_REVIEW_TIME_DESC'); ?>">
 					<label for="field-review_time"><?php echo Lang::txt('COM_MEMBERS_FIELD_REVIEW_TIME_LABEL'); ?>:</label>
-					<?php echo Html::input('calendar', 'fields[review_time]', ($this->row->get('review_time') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('review_time'))->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-review_time')); ?>
+					<?php echo Html::input('calendar', 'fields[review_time]', ($this->row->get('review_time') && $this->row->get('review_time') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('review_time'))->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-review_time')); ?>
 				</div>
 			</fieldset>
 		</div>

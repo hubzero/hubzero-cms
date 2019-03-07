@@ -278,7 +278,7 @@ class Html
 	/**
 	 * Convert a date to a path
 	 *
-	 * @param   string  $date  Date to convert (0000-00-00 00:00:00)
+	 * @param   string  $date  Date to convert (YYYY-MM-DD hh:mm:ss)
 	 * @return  string
 	 */
 	public static function dateToPath($date)
@@ -295,7 +295,7 @@ class Html
 	/**
 	 * Build the path to resources files from the creating date
 	 *
-	 * @param   string   $date  Timestamp (0000-00-00 00:00:00)
+	 * @param   string   $date  Timestamp (YYYY-MM-DD hh:mm:ss)
 	 * @param   integer  $id    Resource ID
 	 * @param   string   $base  Base path to prepend
 	 * @return  string

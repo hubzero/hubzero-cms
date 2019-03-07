@@ -201,7 +201,8 @@ abstract class Modules
 			->joinRaw('#__modules as m', 'm.module=e.element AND m.client_id=e.client_id', 'left')
 			->whereRaw('m.module IS NOT NULL')
 			->group('element')
-			->group('name');
+			->group('name')
+			->group('protected');
 
 		$db->setQuery($query->toString());
 		$modules = $db->loadObjectList();

@@ -211,7 +211,7 @@ class DoiService extends Obj
 
 		// Set dates
 		$pubYear = isset($pub['pubYear']) ? $pub['pubYear'] : gmdate('Y');
-		$pubDate = isset($pub['datePublished']) && $pub['datePublished'] != '0000-00-00 00:00:00'
+		$pubDate = isset($pub['datePublished']) && $pub['datePublished'] && $pub['datePublished'] != '0000-00-00 00:00:00'
 				? gmdate('Y-m-d', strtotime($pub['datePublished']))
 				: gmdate('Y-m-d');
 		$this->set('pubYear', $pubYear);

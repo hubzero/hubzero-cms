@@ -208,8 +208,8 @@ class Tags extends \Hubzero\Base\Obj
 				AND t.admin=0
 				AND o.objectid=r.id
 				AND V.state=1
-				AND (V.publish_up = '0000-00-00 00:00:00' OR V.publish_up <= '$now')
-				AND (V.publish_down = '0000-00-00 00:00:00' OR V.publish_down >= '$now') ";
+				AND (V.publish_up IS NULL OR V.publish_up = '0000-00-00 00:00:00' OR V.publish_up <= '$now')
+				AND (V.publish_down IS NULL OR V.publish_down = '0000-00-00 00:00:00' OR V.publish_down >= '$now') ";
 		if ($category)
 		{
 			$sql .= "AND r.category=" . $category . " ";
@@ -519,8 +519,8 @@ class Tags extends \Hubzero\Base\Obj
 		if ($category) {
 			$query .= "AND C.category=" . $category . " ";
 		}
-		$query .= "AND (V.published_up = '0000-00-00 00:00:00' OR V.published_up <= '" . $now . "') ";
-		$query .= "AND (V.published_down = '0000-00-00 00:00:00' OR V.published_down >= '" . $now . "') AND ";
+		$query .= "AND (V.published_up IS NULL OR V.published_up = '0000-00-00 00:00:00' OR V.published_up <= '" . $now . "') ";
+		$query .= "AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00' OR V.published_down >= '" . $now . "') AND ";
 
 		$query .= (!User::isGuest())
 			   ? "(C.access=0 OR C.access=1) "
@@ -773,7 +773,7 @@ class Tags extends \Hubzero\Base\Obj
 		$sql .= "AND tj.tbl=" . $this->_db->quote($this->_tbl) . " ";
 		$sql .= "AND V.state=1 AND V.main=1 AND V.access!=4 ";
 		$sql .= "AND V.published_up < " . $this->_db->quote(Date::toSql()) . " ";
-		$sql .= "AND (V.published_down = '0000-00-00 00:00:00' OR V.published_down > " . $this->_db->quote(Date::toSql()) . ") ";
+		$sql .= "AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00' OR V.published_down > " . $this->_db->quote(Date::toSql()) . ") ";
 		$sql .= "GROUP BY tj.tagid, tj.objectid ";
 		$sql .= "ORDER BY tcount DESC ";
 		$sql .= "LIMIT $limit";

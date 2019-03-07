@@ -690,7 +690,7 @@ class Items extends AdminController
 			$row->checkout(User::get('id'));
 		}
 
-		if ($row->get('publish_down') == '0000-00-00 00:00:00')
+		if (!$row->get('publish_down') || $row->get('publish_down') == '0000-00-00 00:00:00')
 		{
 			$row->set('publish_down', Lang::txt('COM_RESOURCES_NEVER'));
 		}

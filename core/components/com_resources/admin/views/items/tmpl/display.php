@@ -165,7 +165,7 @@ $this->css();
 						$class = 'pending';
 						$task  = 'unpublish';
 					}
-					else if ($now <= $row->publish_down || $row->publish_down == '0000-00-00 00:00:00')
+					else if ($now <= $row->publish_down || !$row->publish_down || $row->publish_down == '0000-00-00 00:00:00')
 					{
 						$alt   = Lang::txt('JPUBLISHED');
 						$class = 'published';
@@ -240,7 +240,7 @@ $this->css();
 			$tags = count($row->tags());
 
 			// See if it's checked out or not
-			if (($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')) // && $row->checked_out != User::get('id'))
+			if ($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')) // && $row->checked_out != User::get('id'))
 			{
 				$date = Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_LC1'));
 				$time = Date::of($row->checked_out_time)->toLocal('H:i');
@@ -250,7 +250,7 @@ $this->css();
 				$checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::' . $this->escape($editor->get('name')) . '<br />' . $date . '<br />' . $time . '">';
 				$checked .= '<span class="checkedout"></span>' . '</span>';
 
-				$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
+				$info .= ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
 						 ? Lang::txt('COM_RESOURCES_CHECKED_OUT') . ': ' . Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />'
 						 : '';
 
@@ -287,11 +287,11 @@ $this->css();
 					</a>
 				</td>
 				<td class="priority-4">
-					<?php if ($row->modified == '0000-00-00 00:00:00') { ?>
+					<?php if (!$row->modified || $row->modified == '0000-00-00 00:00:00') { ?>
 						<?php echo Lang::txt('COM_RESOURCES_NOT_MODIFIED'); ?>
 					<?php } else { ?>
-						<time datetime="<?php echo $row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created; ?>">
-							<?php echo Date::of($row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>
+						<time datetime="<?php echo ($row->modified && $row->modified != '0000-00-00 00:00:00') ? $row->modified : $row->created; ?>">
+							<?php echo Date::of($row->modified && $row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>
 						</time>
 					<?php } ?>
 				</td>

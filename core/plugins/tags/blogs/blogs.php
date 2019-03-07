@@ -98,8 +98,8 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 		{
 			$e_where .= " AND e.state>0";
 		}
-		$e_where .= " AND (e.publish_up = '0000-00-00 00:00:00' OR e.publish_up <= " . $database->quote($now) . ") ";
-		$e_where .= " AND (e.publish_down = '0000-00-00 00:00:00' OR e.publish_down >= " . $database->quote($now) . ") ";
+		$e_where .= " AND (e.publish_up IS NULL OR e.publish_up <= " . $database->quote($now) . ") ";
+		$e_where .= " AND (e.publish_down IS NULL OR e.publish_down >= " . $database->quote($now) . ") ";
 		$e_where .= " GROUP BY e.id HAVING uniques=" . count($tags);
 		$order_by  = " ORDER BY ";
 		switch ($sort)

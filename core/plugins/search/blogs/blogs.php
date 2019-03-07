@@ -69,8 +69,8 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 		{
 			$addtl_where[] = "(be.title NOT LIKE '%$forb%' AND be.content NOT LIKE '%$forb%')";
 		}
-		$addtl_where[] = "(be.publish_up <= '$now')";
-		$addtl_where[] = "(be.publish_down = '0000-00-00 00:00:00' OR (be.publish_down != '0000-00-00 00:00:00' AND be.publish_down > '$now'))";
+		$addtl_where[] = "(be.publish_up IS NULL OR be.publish_up <= '$now')";
+		$addtl_where[] = "(be.publish_down IS NULL OR be.publish_down > '$now')";
 		$addtl_where[] = '(be.access IN (0,' . implode(',', User::getAuthorisedViewLevels()) . '))';
 
 		$rows = new \Components\Search\Models\Basic\Result\Sql(
