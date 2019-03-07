@@ -54,7 +54,7 @@ $this->js();
 	}
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<div class="col span12">
 		<?php if ($this->newsletter->id != null) : ?>
 			<a name="distribution"></a>
