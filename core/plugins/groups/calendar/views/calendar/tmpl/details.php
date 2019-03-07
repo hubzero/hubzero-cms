@@ -140,9 +140,9 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			<tr>
 				<th class="date"></th>
 				<td colspan="3">
-					<?php echo Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', true); ?>
+					<?php echo $this->event->get('time_zone') ? Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', true) : Components\Events\Models\EventDate::of($publish_up)->toLocal('l, F d, Y @ h:i a T'); ?>
 					&mdash;
-					<?php echo Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', true); ?>
+					<?php echo $this->event->get('time_zone') ? Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', true) : Components\Events\Models\EventDate::of($publish_down)->toLocal('l, F d, Y @ h:i a T'); ?>
 				</td>
 			</tr>
 		<?php else : ?>
