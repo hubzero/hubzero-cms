@@ -348,9 +348,11 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
 		if (isset($filters['now']))
 		{
 			$query->whereEquals($r . '.published_up', '0000-00-00 00:00:00', 1)
+				->orWhere($r . '.published_up', 'IS', null, 1)
 				->orWhere($r . '.published_up', '<=', $filters['now'], 1)
 				->resetDepth()
 				->whereEquals($r . '.published_down', '0000-00-00 00:00:00', 1)
+				->orWhere($r . '.published_down', 'IS', null, 1)
 				->orWhere($r . '.published_down', '>=', $filters['now'], 1)
 				->resetDepth();
 		}

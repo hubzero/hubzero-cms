@@ -190,7 +190,7 @@ class Link extends Relational
 	{
 		if (!isset($data['modified_date']) || !$data['modified_date'])
 		{
-			$data['modified_date'] = '0000-00-00 00:00:00';
+			$data['modified_date'] = null;
 		}
 		if (isset($data['id']) && $data['id'])
 		{

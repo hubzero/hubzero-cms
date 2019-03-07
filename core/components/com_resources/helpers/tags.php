@@ -94,8 +94,8 @@ class Tags extends Cloud
 				AND o.objectid=r.id
 				AND r.published=1
 				AND r.standalone=1
-				AND (r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= " . $this->_db->quote($now) . ")
-				AND (r.publish_down = '0000-00-00 00:00:00' OR r.publish_down >= " . $this->_db->quote($now) . ") ";
+				AND (r.publish_up IS NULL OR r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= " . $this->_db->quote($now) . ")
+				AND (r.publish_down IS NULL OR r.publish_down = '0000-00-00 00:00:00' OR r.publish_down >= " . $this->_db->quote($now) . ") ";
 		if ($type)
 		{
 			$sql .= "AND r.type=" . $this->_db->quote($type) . " ";
@@ -299,8 +299,8 @@ class Tags extends Cloud
 			$fquery .= "))";
 			$query .= $fquery;
 		}
-		$query .= "AND (C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= " . $this->_db->quote($now) . ") ";
-		$query .= "AND (C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= " . $this->_db->quote($now) . ") AND ";
+		$query .= "AND (C.publish_up IS NULL OR C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= " . $this->_db->quote($now) . ") ";
+		$query .= "AND (C.publish_down IS NULL OR C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= " . $this->_db->quote($now) . ") AND ";
 
 		if (!\User::isGuest())
 		{

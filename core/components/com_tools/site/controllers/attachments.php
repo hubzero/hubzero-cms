@@ -196,7 +196,6 @@ class Attachments extends SiteController
 			'created_by'   => User::get('id'),
 			'published'    => Entry::STATE_PUBLISHED,
 			'publish_up'   => Date::toSql(),
-			'publish_down' => '0000-00-00 00:00:00',
 			'standalone'   => 0,
 			'access'       => 0,
 			'path'         => '', // make sure no path is specified just yet

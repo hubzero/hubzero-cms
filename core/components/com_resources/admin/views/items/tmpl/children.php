@@ -136,7 +136,7 @@ else
 						$alt   = Lang::txt('COM_RESOURCES_PENDING');
 						$class = 'pending';
 						$task  = 'unpublish';
-					} else if ($now <= $row->publish_down || $row->publish_down == "0000-00-00 00:00:00")
+					} else if ($now <= $row->publish_down || !$row->publish_down || $row->publish_down == '0000-00-00 00:00:00')
 					{
 						$alt   = Lang::txt('JPUBLISHED');
 						$class = 'published';
@@ -218,7 +218,7 @@ else
 			}
 
 			// See if it's checked out or not
-			if (($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')) // && $row->checked_out != User::get('id'))
+			if ($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')) // && $row->checked_out != User::get('id'))
 			{
 				$date = Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_LC1'));
 				$time = Date::of($row->checked_out_time)->toLocal('H:i');
@@ -226,7 +226,7 @@ else
 				$checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::' . $this->escape($row->editor) . '<br />' . $date . '<br />' . $time . '">';
 				$checked .= '<span class="checkedout"></span>' . '</span>';
 
-				$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
+				$info .= ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
 						 ? Lang::txt('COM_RESOURCES_CHECKED_OUT') . ': ' . Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />'
 						 : '';
 				if ($row->editor)
@@ -247,7 +247,7 @@ else
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<?php if ((($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00') && $row->checked_out != User::get('id')) || !$canDo->get('core.edit')) { ?>
+					<?php if ((($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')) && $row->checked_out != User::get('id')) || !$canDo->get('core.edit')) { ?>
 						<span class="editlinktip hasTip" title="<?php echo Lang::txt('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
 							<?php echo $this->escape(stripslashes($row->title)); ?>
 						</span>
@@ -260,7 +260,7 @@ else
 					<?php } ?>
 				</td>
 				<td>
-					<?php if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00' || !$canDo->get('core.edit.state')) { ?>
+					<?php if ($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00') || !$canDo->get('core.edit.state')) { ?>
 						<span class="state <?php echo $class;?>">
 							<span><?php echo $alt; ?></span>
 						</span>
@@ -271,7 +271,7 @@ else
 					<?php } ?>
 				</td>
 				<td>
-					<?php if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00' || !$canDo->get('core.edit.state')) { ?>
+					<?php if ($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00') || !$canDo->get('core.edit.state')) { ?>
 						<span class="access <?php echo $color_access; ?>">
 							<span><?php echo Lang::txt($row->groupname); ?></span>
 						</span>

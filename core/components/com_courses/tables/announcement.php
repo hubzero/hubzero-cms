@@ -165,8 +165,8 @@ class Announcement extends Table
 		if (isset($filters['published']))
 		{
 			$now = \Date::toSql();
-			$where[] = "(a.`publish_up` = '0000-00-00 00:00:00' OR a.`publish_up` <= " . $this->_db->quote($now) . ")";
-			$where[] = "(a.`publish_down` = '0000-00-00 00:00:00' OR a.`publish_down` >= " . $this->_db->quote($now) . ")";
+			$where[] = "(a.`publish_up` IS NULL OR a.`publish_up` = '0000-00-00 00:00:00' OR a.`publish_up` <= " . $this->_db->quote($now) . ")";
+			$where[] = "(a.`publish_down` IS NULL OR a.`publish_down` = '0000-00-00 00:00:00' OR a.`publish_down` >= " . $this->_db->quote($now) . ")";
 		}
 
 		if (isset($filters['search']) && $filters['search'])

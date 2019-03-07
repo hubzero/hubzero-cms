@@ -544,7 +544,7 @@ class Tool extends Table
 		$status = array(
 			'resourceid'    => isset($toolinfo[0]->rid) ? $toolinfo[0]->rid : 0,
 			'resource_created' => isset($toolinfo[0]->rcreated) ? $toolinfo[0]->rcreated : '',
-			'resource_modified' => (isset($toolinfo[0]) && isset($toolinfo[0]->rmodified)
+			'resource_modified' => (isset($toolinfo[0]) && isset($toolinfo[0]->rmodified) && $toolinfo[0]->rmodified
 				&& $toolinfo[0]->rmodified !='0000-00-00 00:00:00' && isset($version[0]) && $version[0]->fulltxt != '') ? 1 : 0,
 			'fulltxt'      => isset($version[0]->fulltxt) ? $version[0]->fulltxt : $toolinfo[0]->rfulltxt,
 			'toolname'      => isset($toolinfo[0]->toolname) ? $toolinfo[0]->toolname : '',
@@ -570,7 +570,7 @@ class Tool extends Table
 			'ntoolsdev'     => isset($toolinfo[0]->ntoolsdev) ? $toolinfo[0]->ntoolsdev : 0,
 			'ntools_published' => isset($toolinfo[0]->ntoolspublished) ? $toolinfo[0]->ntoolspublished : 0,
 			'newmessages'   => isset($toolinfo[0]->comments) ? $toolinfo[0]->comments : 0,
-			'changed'       => (isset($toolinfo[0]->state_changed) && $toolinfo[0]->state_changed!='0000-00-00 00:00:00') ? $toolinfo[0]->state_changed : $toolinfo[0]->registered,
+			'changed'       => (isset($toolinfo[0]->state_changed) && $toolinfo[0]->state_changed && $toolinfo[0]->state_changed!='0000-00-00 00:00:00') ? $toolinfo[0]->state_changed : $toolinfo[0]->registered,
 			'registered_by' => isset($toolinfo[0]->registered_by) ? $toolinfo[0]->registered_by : '',
 			'registered'    => isset($toolinfo[0]->registered) ? $toolinfo[0]->registered : '',
 			'ticketid'      => isset($toolinfo[0]->ticketid) ? $toolinfo[0]->ticketid : '',

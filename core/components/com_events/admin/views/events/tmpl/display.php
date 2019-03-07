@@ -132,7 +132,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					$alt = Lang::txt('COM_EVENTS_EVENT_UNPUBLISHED');
 					if ($now <= $row->publish_up && $row->state == "1") {
 						$alt = Lang::txt('COM_EVENTS_EVENT_PENDING');
-					} else if (($now <= $row->publish_down || $row->publish_down == "0000-00-00 00:00:00") && $row->state == "1") {
+					} else if (($now <= $row->publish_down || !$row->publish_down || $row->publish_down == "0000-00-00 00:00:00") && $row->state == "1") {
 						$alt = Lang::txt('COM_EVENTS_EVENT_PUBLISHED');
 					} else if ($now > $row->publish_down && $row->state == "1") {
 						$alt = Lang::txt('COM_EVENTS_EVENT_EXPIRED');
@@ -142,14 +142,14 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 					$times = '';
 					if (isset($row->publish_up)) {
-						if ($row->publish_up == '0000-00-00 00:00:00') {
+						if (!$row->publish_up || $row->publish_up == '0000-00-00 00:00:00') {
 							$times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM') . ' : ' . Lang::txt('COM_EVENTS_CAL_LANG_ALWAYS').'<br />';
 						} else {
 							$times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM') . ' : ' . date('Y-m-d H:i:s', strtotime($row->publish_up)) . '<br />';
 						}
 					}
 					if (isset($row->publish_down)) {
-						if ($row->publish_down == '0000-00-00 00:00:00') {
+						if (!$row->publish_down || $row->publish_down == '0000-00-00 00:00:00') {
 							$times .= Lang::txt('COM_EVENTS_CAL_LANG_TO') . ' : ' . Lang::txt('COM_EVENTS_CAL_LANG_NEVER').'<br />';
 						} else {
 							$times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM') . ' : ' . date('Y-m-d H:i:s', strtotime($row->publish_down)) . '<br />';

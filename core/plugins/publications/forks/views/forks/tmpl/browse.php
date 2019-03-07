@@ -53,9 +53,18 @@ $this->css();
 				</div>
 				<div class="publication-details">
 					<div class="publication-title">
-						<?php if ($publication->version->get('state') == 1 &&
-							(!$publication->version->get('published_up') || $publication->version->get('published_up') == '0000-00-00 00:00:00' || ($publication->version->get('published_up') != '0000-00-00 00:00:00' && $publication->version->get('published_up') <= Date::toSql())) &&
-							(!$publication->version->get('published_down') || $publication->version->get('published_down') == '0000-00-00 00:00:00' || ($publication->version->get('published_down') != '0000-00-00 00:00:00' && $publication->version->get('published_down') > Date::toSql()))) { ?>
+						<?php if ($publication->version->get('state') == 1
+								&& (
+									!$publication->version->get('published_up')
+									|| $publication->version->get('published_up') == '0000-00-00 00:00:00'
+									|| $publication->version->get('published_up') <= Date::toSql()
+								)
+								&& (
+									!$publication->version->get('published_down')
+									|| $publication->version->get('published_down') == '0000-00-00 00:00:00'
+									|| $publication->version->get('published_down') > Date::toSql()
+								)
+							) { ?>
 							<a href="<?php echo Route::url('index.php?option=com_publications&id=' . $publication->get('id') . '&v=' . $publication->version->get('version_number')); ?>">
 								<?php echo $this->escape($publication->version->get('title')); ?>
 							</a>
@@ -91,7 +100,7 @@ $this->css();
 						&& (!$publication->version->get('published_up') || $publication->version->get('published_up') == '0000-00-00 00:00:00' || ($publication->version->get('published_up') != '0000-00-00 00:00:00' && $publication->version->get('published_up') <= Date::toSql()))
 						&& (!$publication->version->get('published_down') || $publication->version->get('published_down') == '0000-00-00 00:00:00' || ($publication->version->get('published_down') != '0000-00-00 00:00:00' && $publication->version->get('published_down') > Date::toSql()));
 				?>
-				<div class="publication-fork icon-fork <?php echo ($isPublished ? 'published' : 'unpublished'); ?>">
+				<div class="publication-fork icon-fork <?php echo ($isPublished) ? 'published' : 'unpublished'; ?>">
 					<div class="publication-datetime">
 						<span class="publication-date"><time datetime="<?php echo $publication->version->get('created'); ?>"><?php echo Date::of($publication->version->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 						<span class="publication-time"><time datetime="<?php echo $publication->version->get('created'); ?>"><?php echo Date::of($publication->version->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>

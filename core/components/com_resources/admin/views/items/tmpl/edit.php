@@ -142,7 +142,7 @@ $this->view('_edit_script')
 							<input type="hidden" name="created_by_id" value="<?php echo $this->row->created_by; ?>" />
 						</td>
 					</tr>
-				<?php if ($this->row->modified != '0000-00-00 00:00:00') { ?>
+				<?php if ($this->row->modified && $this->row->modified != '0000-00-00 00:00:00') { ?>
 					<tr>
 						<th><?php echo Lang::txt('COM_RESOURCES_FIELD_MODIFIED'); ?></th>
 						<td>

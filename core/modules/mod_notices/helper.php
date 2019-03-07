@@ -78,7 +78,7 @@ class Helper extends Module
 	}
 
 	/**
-	 * Turn datetime 0000-00-00 00:00:00 to time
+	 * Turn datetime YYYY-MM-DD hh:mm:ss to time
 	 *
 	 * @param   string   $stime  Datetime to convert
 	 * @return  integer
