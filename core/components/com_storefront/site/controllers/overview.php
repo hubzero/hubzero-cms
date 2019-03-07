@@ -30,8 +30,7 @@
 
 namespace Components\Storefront\Site\Controllers;
 
-//use Components\Storefront\Models\Warehouse;
-
+use Components\Content\Models\Article;
 
 /**
  * Courses controller class
