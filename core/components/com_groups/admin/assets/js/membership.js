@@ -1,9 +1,9 @@
 Joomla.submitbutton = function(task) {
-	$(document).trigger('editorSave');
-
 	var frm = document.getElementById('component-form');
 
 	if (frm) {
+		$(document).trigger('editorSave');
+
 		if (task == 'markscanned') {
 			if (!confirm(frm.getAttribute('data-confirm'))) {
 				return false;
