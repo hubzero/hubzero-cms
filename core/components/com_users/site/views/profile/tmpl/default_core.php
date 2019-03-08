@@ -38,7 +38,7 @@ defined('_HZEXEC_') or die();
 			<?php echo Lang::txt('COM_USERS_PROFILE_LAST_VISITED_DATE_LABEL'); ?>
 		</dt>
 
-		<?php if ($this->data->lastvisitDate != '0000-00-00 00:00:00'){?>
+		<?php if ($this->data->lastvisitDate && $this->data->lastvisitDate != '0000-00-00 00:00:00'){?>
 			<dd>
 				<?php echo Date::of($this->data->lastvisitDate)->toLocal(); ?>
 			</dd>

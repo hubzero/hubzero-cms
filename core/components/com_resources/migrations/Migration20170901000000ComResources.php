@@ -145,9 +145,9 @@ class Migration20170901000000ComResources extends Base
 			  `title` varchar(255) DEFAULT NULL,
 			  `alias` varchar(255) DEFAULT NULL,
 			  `state` tinyint(3) NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
-			  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `modified` datetime DEFAULT NULL,
 			  `modified_by` int(11) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";

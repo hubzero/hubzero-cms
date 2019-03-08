@@ -56,8 +56,8 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		include_once(Component::path('com_publications') . DS . 'tables' . DS . 'category.php');
-		include_once(Component::path('com_publications') . DS . 'tables' . DS . 'publication.php');
+		include_once Component::path('com_publications') . DS . 'tables' . DS . 'category.php';
+		include_once Component::path('com_publications') . DS . 'tables' . DS . 'publication.php';
 	}
 
 	/**
@@ -241,7 +241,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 
 		if (isset($filters['tags']))
 		{
-			$query .= " GROUP BY r.id HAVING uniques=" . count($filters['tags']) . " ";
+			$query .= " GROUP BY r.id, V.id, V.version_number, V.title, V.abstract HAVING uniques=" . count($filters['tags']) . " ";
 		}
 		if (isset($filters['select']) && $filters['select'] != 'count')
 		{
@@ -303,8 +303,8 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		include_once(Component::path('com_publications') . DS . 'tables' . DS . 'author.php');
-		require_once(Component::path('com_publications') . DS . 'helpers' . DS . 'html.php');
+		include_once Component::path('com_publications') . DS . 'tables' . DS . 'author.php';
+		require_once Component::path('com_publications') . DS . 'helpers' . DS . 'html.php';
 
 		$row->href = Route::url('index.php?option=com_publications&id=' . $row->id);
 

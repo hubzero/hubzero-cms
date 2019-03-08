@@ -85,7 +85,7 @@ defined('_HZEXEC_') or die();
 							<dd class="calendar">
 								in <?php echo ($event->calendar()->get('id')) ? $event->calendar()->get('title') : 'Uncategorized'; ?>
 							</dd>
-							<?php if ($event->get('publish_down') != '0000-00-00 00:00:00') : ?>
+							<?php if ($event->get('publish_down') && $event->get('publish_down') != '0000-00-00 00:00:00') : ?>
 								<dd class="start-and-end">
 									<?php echo Date::of($event->get('publish_up'))->toLocal('l, F d, Y @ g:i a'); ?>
 									&mdash;

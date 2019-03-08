@@ -43,7 +43,7 @@ class UsersModelRegistration extends JModelForm
 			'SELECT '.$db->quoteName('id').' FROM '.$db->quoteName('#__users') .
 			' WHERE '.$db->quoteName('activation').' = '.$db->Quote($token) .
 			' AND '.$db->quoteName('block').' = 1' .
-			' AND '.$db->quoteName('lastvisitDate').' = '.$db->Quote($db->getNullDate())
+			' AND ('.$db->quoteName('lastvisitDate').' IS NULL OR '.$db->quoteName('lastvisitDate').' = '.$db->Quote($db->getNullDate()) . ')'
 		);
 		$userId = (int) $db->loadResult();
 
@@ -540,10 +540,16 @@ class UsersModelRegistration extends JModelForm
 		}
 
 		if ($useractivation == 1)
+		{
 			return "useractivate";
+		}
 		elseif ($useractivation == 2)
+		{
 			return "adminactivate";
+		}
 		else
+		{
 			return $user->id;
+		}
 	}
 }

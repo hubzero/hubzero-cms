@@ -150,7 +150,9 @@ $this->css();
 							continue;
 						}
 						// If a publish down time is set and that time happened before now
-						if ($section->get('publish_down') != '0000-00-00 00:00:00' && $section->get('publish_down') <= $now)
+						if ($section->get('publish_down')
+						 && $section->get('publish_down') != '0000-00-00 00:00:00'
+						 && $section->get('publish_down') <= $now)
 						{
 							continue;
 						}

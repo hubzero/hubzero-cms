@@ -6,9 +6,8 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration to add id and primary key to jos_events_config table
+ * Migration to add id and primary key to #__events_config table
  **/
-
 class Migration20180924164848ComEvents extends Base
 {
 	/**
