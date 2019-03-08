@@ -37,7 +37,7 @@ class Migration20141120161609ComTime extends Base
 
 					foreach ($results as $result)
 					{
-						$date  = \JFactory::getDate($result->date, \JFactory::getConfig()->get('offset'))->toSql();
+						$date  = with(new \Hubzero\Utility\Date($result->date, \App::get('config')->get('offset')))->toSql();
 						$query = "UPDATE `#__time_records` SET `date` = " . $this->db->quote($date) . " WHERE `id` = " . (int)$result->id;
 						$this->db->setQuery($query);
 						$this->db->query();

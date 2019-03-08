@@ -120,7 +120,8 @@ class Type extends Relational
 				$scope = empty($filters['scope']) ? 'hub' : $filters['scope'];
 				$citation->select('*, count(type) as totalcite')
 						 ->whereIn('published', $publishState)
-						 ->group('type');
+						 ->group('type')
+						 ->group('id');
 				if (strtolower($scope) == 'hub')
 				{
 					$citation->whereEquals('scope', '', 1);

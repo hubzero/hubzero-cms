@@ -65,7 +65,7 @@ class JobAdmin extends Table
 		}
 
 		$query  = "SELECT id ";
-		$query .= "FROM #__jobs_admins  ";
+		$query .= "FROM `$this->_tbl` ";
 		$query .= "WHERE uid = " . $this->_db->quote($uid) . " AND jid = " . $this->_db->quote($jid);
 		$this->_db->setQuery($query);
 		if ($this->_db->loadResult())
@@ -91,7 +91,7 @@ class JobAdmin extends Table
 		$admins = array();
 
 		$query  = "SELECT uid ";
-		$query .= "FROM #__jobs_admins ";
+		$query .= "FROM `$this->_tbl` ";
 		$query .= "WHERE jid = " . $this->_db->quote($jid);
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();

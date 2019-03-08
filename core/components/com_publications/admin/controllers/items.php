@@ -800,10 +800,10 @@ class Items extends AdminController
 
 		$this->model->version->published_up   = $published_up
 							? Date::of($published_up, Config::get('offset'))->toSql()
-							: '0000-00-00 00:00:00';
+							: null;
 		$this->model->version->published_down = $published_down && trim($published_down) != 'Never'
 							? Date::of($published_down, Config::get('offset'))->toSql()
-							: '0000-00-00 00:00:00';
+							: null;
 
 		// Determine action (if status is flipped)
 		if ($this->model->version->state != $state)
@@ -870,7 +870,7 @@ class Items extends AdminController
 				case 'publish':
 				case 'republish':
 					// Unset the published_down timestamp if publishing
-					$this->model->version->published_down = '0000-00-00 00:00:00';
+					$this->model->version->published_down = null;
 
 					$activity = $action == 'publish'
 						? Lang::txt('COM_PUBLICATIONS_ACTIVITY_ADMIN_PUBLISHED')
@@ -957,10 +957,11 @@ class Items extends AdminController
 						}
 
 						// Run mkAIP if no grace period set or passed
-						if (!$this->getError() && $this->model->version->doi
-							&& $allowArchive == true && (!$this->model->version->archived
-							|| $this->model->version->archived == '0000-00-00 00:00:00')
-							&& Helpers\Utilities::mkAip($this->model->version))
+						if (!$this->getError()
+						 && $this->model->version->doi
+						 && $allowArchive == true
+						 && (!$this->model->version->archived || $this->model->version->archived == '0000-00-00 00:00:00')
+						 && Helpers\Utilities::mkAip($this->model->version))
 						{
 							$this->model->version->archived = Date::toSql();
 						}

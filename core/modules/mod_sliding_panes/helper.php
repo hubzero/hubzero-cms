@@ -84,8 +84,8 @@ class Helper extends Module
 		$query = 'SELECT a.* FROM `#__content` AS a' .
 			' INNER JOIN `#__categories` AS cc ON cc.id = a.catid' .
 			' WHERE a.state = 1 ' .
-			' AND (a.publish_up = ' . $db->Quote($nullDate) . ' OR a.publish_up <= ' . $db->Quote($now) . ' ) ' .
-			' AND (a.publish_down = ' . $db->Quote($nullDate) . ' OR a.publish_down >= ' . $db->Quote($now) . ' )' .
+			' AND (a.publish_up IS NULL OR a.publish_up = ' . $db->Quote($nullDate) . ' OR a.publish_up <= ' . $db->Quote($now) . ' ) ' .
+			' AND (a.publish_down IS NULL OR a.publish_down = ' . $db->Quote($nullDate) . ' OR a.publish_down >= ' . $db->Quote($now) . ' )' .
 			' AND cc.id = ' . (int) $catid .
 			' AND cc.published = 1' .
 			' ORDER BY ' . $orderby . ' ' . $limitby;

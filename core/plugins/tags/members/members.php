@@ -95,7 +95,7 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 					AND a.id=t.objectid
 					AND t.tbl='xprofiles'
 					AND t.tagid IN ($ids)";
-		$f_from .= " GROUP BY a.id HAVING uniques=".count($tags);
+		$f_from .= " GROUP BY a.id, b.profile_value HAVING uniques=".count($tags);
 		$order_by  = " ORDER BY ";
 		switch ($sort)
 		{

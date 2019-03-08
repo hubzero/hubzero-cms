@@ -169,13 +169,13 @@ class Helper extends Module
 					$query->where('a.access IN (' . $groups . ')');
 					$concat_string = $query->concatenate(array('","', ' REPLACE(a.metakey, ", ", ",")', ' ","'));
 					$query->where('(' . $concat_string . ' LIKE "%' . implode('%" OR ' . $concat_string . ' LIKE "%', $likes) . '%")'); //remove single space after commas in keywords)
-					$query->where('(a.publish_up = ' . $db->Quote($nullDate).' OR a.publish_up <= ' . $db->Quote($now) . ')');
-					$query->where('(a.publish_down = ' . $db->Quote($nullDate).' OR a.publish_down >= ' . $db->Quote($now) . ')');
+					$query->where('(a.publish_up IS NULL OR a.publish_up = ' . $db->quote($nullDate).' OR a.publish_up <= ' . $db->quote($now) . ')');
+					$query->where('(a.publish_down IS NULL OR a.publish_down = ' . $db->quote($nullDate).' OR a.publish_down >= ' . $db->quote($now) . ')');
 
 					// Filter by language
 					if (\App::get('language.filter'))
 					{
-						$query->where('a.language in (' . $db->Quote(Lang::getTag()) . ',' . $db->Quote('*') . ')');
+						$query->where('a.language in (' . $db->quote(Lang::getTag()) . ',' . $db->quote('*') . ')');
 					}
 
 					$db->setQuery($query);
