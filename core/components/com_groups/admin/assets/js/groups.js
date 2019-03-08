@@ -1,6 +1,6 @@
 Joomla.submitbutton = function(task) {
 	var cfrm = document.getElementById('component-form');
-console.log(cfrm);
+
 	if (cfrm) {
 		Joomla.submitform(task, cfrm);
 		return;
