@@ -65,10 +65,10 @@ class Employer extends Table
 		}
 
 		$now = \Date::toSql();
-		$query  = "SELECT e.id FROM $this->_tbl AS e  ";
+		$query  = "SELECT e.id FROM `$this->_tbl` AS e  ";
 		if (!$admin)
 		{
-			$query .= "JOIN #__users_points_subscriptions AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
+			$query .= "JOIN `#__users_points_subscriptions` AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
 			$query .= "WHERE e.uid = " . $this->_db->quote($uid) . " AND s.status=1";
 			$query .= " AND s.expires > " . $this->_db->quote($now) . " ";
 		}
@@ -97,7 +97,7 @@ class Employer extends Table
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid=" . $this->_db->quote($uid));
+		$this->_db->setQuery("SELECT * FROM `$this->_tbl` WHERE uid=" . $this->_db->quote($uid));
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
@@ -119,14 +119,14 @@ class Employer extends Table
 			return false;
 		}
 		$query  = "SELECT e.* ";
-		$query .= "FROM #__jobs_employers AS e  ";
+		$query .= "FROM `$this->_tbl` AS e ";
 		if ($subscriptionCode == 'admin')
 		{
 			$query .= "WHERE e.uid = 1";
 		}
 		else if ($subscriptionCode)
 		{
-			$query .= "JOIN #__users_points_subscriptions AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
+			$query .= "JOIN `#__users_points_subscriptions` AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
 			$query .= "WHERE s.code=" . $this->_db->quote($subscriptionCode);
 		}
 		else if ($uid)

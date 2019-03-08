@@ -229,7 +229,7 @@ class Archive extends Model
 			$output .= "SEQUENCE:{$sequence}\r\n";
 			$output .= "DTSTAMP:{$now}\r\n";
 			$output .= $dtStart  . "\r\n";
-			if ($event->get('publish_down') != '' && $event->get('publish_down') != '0000-00-00 00:00:00')
+			if ($event->get('publish_down') && $event->get('publish_down') != '0000-00-00 00:00:00')
 			{
 				$output .= $dtEnd . "\r\n";
 			}

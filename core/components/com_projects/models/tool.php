@@ -32,15 +32,15 @@
 
 namespace Components\Projects\Models;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'tool.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'tool.instance.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'tool.status.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'tool.log.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'tool.view.php');
-require_once(__DIR__ . DS . 'tool' . DS . 'instance.php');
-require_once(__DIR__ . DS . 'tool' . DS . 'log.php');
-require_once(__DIR__ . DS . 'tool' . DS . 'status.php');
-require_once(__DIR__ . DS . 'tool' . DS . 'view.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'tool.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'tool.instance.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'tool.status.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'tool.log.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'tool.view.php';
+require_once __DIR__ . DS . 'tool' . DS . 'instance.php';
+require_once __DIR__ . DS . 'tool' . DS . 'log.php';
+require_once __DIR__ . DS . 'tool' . DS . 'status.php';
+require_once __DIR__ . DS . 'tool' . DS . 'view.php';
 
 use Hubzero\Base\Model;
 use Components\Projects\Tables;
@@ -391,7 +391,7 @@ class Tool extends Model
 	 */
 	protected function _date($key, $as='')
 	{
-		if ($this->get($key) == $this->_db->getNullDate())
+		if ($this->get($key) == '0000-00-00 00:00:00')
 		{
 			return null;
 		}

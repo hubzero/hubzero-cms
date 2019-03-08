@@ -25,17 +25,29 @@ class Migration20140528145010ComRegister extends Base
 			$this->db->setQuery("SELECT * FROM `#__extensions` WHERE `type`='component' AND `element`='com_members' LIMIT 1");
 			if ($data = $this->db->loadAssoc())
 			{
-				$component = new \JTableExtension($this->db);
-				$component->bind($data);
-
-				$mparams = new \Hubzero\Config\Registry($component->params);
+				$mparams = new \Hubzero\Config\Registry($data['params']);
 				foreach ($values as $key => $value)
 				{
 					$mparams->set($key, $value);
 				}
 
-				$component->params = $mparams->toString();
-				$component->store();
+				$data['params'] = $mparams->toString();
+
+				$vals = array();
+				foreach ($data as $key => $val)
+				{
+					if ($key == 'extension_id')
+					{
+						continue;
+					}
+					$vals[] = "`$key`=" . $this->db->quote($val);
+				}
+				$vals = implode(', ', $vals);
+
+				$query = "UPDATE `#__extensions` SET $vals WHERE `extension_id`=" . $this->db->quote($data['extension_id']);
+
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 
@@ -73,8 +85,8 @@ class Migration20140528145010ComRegister extends Base
 			if (class_exists('JTableNested') && method_exists('JTableNested', 'rebuild'))
 			{
 				// Use the MySQL driver for this
-				$config = \JFactory::getConfig();
-				$database = \JDatabase::getInstance(
+				$config = \App::get('config');
+				$database = \Hubzero\Database\Driver::getInstance(
 					array(
 						'driver'   => 'mysql',
 						'host'     => $config->get('host'),
@@ -107,17 +119,29 @@ class Migration20140528145010ComRegister extends Base
 		$this->db->setQuery("SELECT * FROM `#__extensions` WHERE `type`='component' AND `element`='com_register' LIMIT 1");
 		if ($data = $this->db->loadAssoc())
 		{
-			$component = new \JTableExtension($this->db);
-			$component->bind($data);
-
-			$mparams = new \Hubzero\Config\Registry($component->params);
+			$mparams = new \Hubzero\Config\Registry($data['params']);
 			foreach ($values as $key => $value)
 			{
 				$mparams->set($key, $value);
 			}
 
-			$component->params = $mparams->toString();
-			$component->store();
+			$data['params'] = $mparams->toString();
+
+			$vals = array();
+			foreach ($data as $key => $val)
+			{
+				if ($key == 'extension_id')
+				{
+					continue;
+				}
+				$vals[] = "`$key`=" . $this->db->quote($val);
+			}
+			$vals = implode(', ', $vals);
+
+			$query = "UPDATE `#__extensions` SET $vals WHERE `extension_id`=" . $this->db->quote($data['extension_id']);
+
+			$this->db->setQuery($query);
+			$this->db->query();
 		}
 	}
 }

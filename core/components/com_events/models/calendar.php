@@ -436,7 +436,7 @@ class Calendar extends Model
 				$event->set('created', Date::toSql());
 				$event->set('created_by', User::get('id'));
 				$event->set('time_zone', -5);
-				$event->set('registerby', '0000-00-00 00:00:00');
+				$event->set('registerby', null);
 				$event->set('params', '');
 			}
 

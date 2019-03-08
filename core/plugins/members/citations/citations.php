@@ -576,9 +576,9 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				'type' => Request::getInt('type'),
 				'cite' => Request::getString('cite'),
 				'ref_type' => Request::getString('ref_type'),
-				'date_submit' => Request::getString('date_submit', '0000-00-00 00:00:00'),
-				'date_accept' => Request::getString('date_accept', '0000-00-00 00:00:00'),
-				'date_publish' => Request::getString('date_publish', '0000-00-00 00:00:00'),
+				'date_submit' => Request::getString('date_submit'),
+				'date_accept' => Request::getString('date_accept'),
+				'date_publish' => Request::getString('date_publish'),
 				'year' => Request::getString('year'),
 				'month' => Request::getString('month'),
 				'author_address' => Request::getString('author_address'),
@@ -616,6 +616,15 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				'scope' => $scope,
 				'scope_id' => $scopeID
 			));
+
+		// Datetime fields need to be set to null instead of empty strings
+		foreach (['date_submit', 'date_accept', 'date_publish'] as $key)
+		{
+			if (!$citation->get($key))
+			{
+				$citation->set($key, null);
+			}
+		}
 
 		if ($isNew)
 		{

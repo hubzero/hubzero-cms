@@ -246,6 +246,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($members as $m)
 			{
+				$lst = User::getInstance($m->get('user_id'))->get('lastvisitDate');
 				$member_ids[] = $m->get('id');
 				$mems[] = array(
 					'id'        => $m->get('id'),
@@ -253,11 +254,11 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 					'name'      => User::getInstance($m->get('user_id'))->get('name'),
 					'thumb'     => ltrim(User::getInstance($m->get('user_id'))->picture(0, true), DS),
 					'full'      => ltrim(User::getInstance($m->get('user_id'))->picture(0, false), DS),
-					'enrolled'  => (($m->get('enrolled') != '0000-00-00 00:00:00')
+					'enrolled'  => (($m->get('enrolled') && $m->get('enrolled') != '0000-00-00 00:00:00')
 										? Date::of($m->get('enrolled'))->format('M j, Y')
 										: 'unknown'),
-					'lastvisit' => ((User::getInstance($m->get('user_id'))->get('lastvisitDate') != '0000-00-00 00:00:00')
-										? Date::of(User::getInstance($m->get('user_id'))->get('lastvisitDate'))->format('M j, Y')
+					'lastvisit' => (($lst && $lst != '0000-00-00 00:00:00')
+										? Date::of($lst)->format('M j, Y')
 										: 'never')
 				);
 			}

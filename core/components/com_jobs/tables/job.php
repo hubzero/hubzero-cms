@@ -92,8 +92,8 @@ class Job extends Table
 		}
 
 		$sql  = "SELECT j.id, j.title, j.status, j.added, j.code, ";
-		$sql .= $current ? "(SELECT j.id FROM $this->_tbl AS j WHERE j.id=" . $this->_db->quote($current) . ") as current, " : "0 as current, ";
-		$sql .= "(SELECT count(*) FROM  #__jobs_applications AS a WHERE a.jid=j.id AND a.status=1) as applications ";
+		$sql .= $current ? "(SELECT j.id FROM `$this->_tbl` AS j WHERE j.id=" . $this->_db->quote($current) . ") as current, " : "0 as current, ";
+		$sql .= "(SELECT count(*) FROM `#__jobs_applications` AS a WHERE a.jid=j.id AND a.status=1) as applications ";
 		$sql .= " FROM $this->_tbl AS j ";
 		$sql .= " WHERE  j.status!=2 ";
 		$sql .= $active ? " AND  j.status!=3 " : "";
@@ -119,14 +119,14 @@ class Job extends Table
 			$uid = User::get('id');
 		}
 
-		$sql  = "SELECT count(*) FROM $this->_tbl AS j ";
+		$sql  = "SELECT count(*) FROM `$this->_tbl` AS j ";
 		if ($onlypublished)
 		{
-			$sql .= " WHERE  j.status=1 ";
+			$sql .= " WHERE j.status=1 ";
 		}
 		else
 		{
-			$sql .= " WHERE  j.status!=2 AND  j.status!=3 ";
+			$sql .= " WHERE j.status!=2 AND j.status!=3 ";
 		}
 		$sql .= $admin ? " AND j.employerid=1 " : " AND j.employerid=" . $this->_db->quote($uid) . " ";
 
@@ -222,25 +222,25 @@ class Job extends Table
 			$sql .= $admin ? "s.expires  AS inactive,  " : ' null AS inactive, ';
 			if ($uid)
 			{
-				$sql.= "\n (SELECT count(*) FROM #__jobs_admins AS B WHERE B.jid=j.id AND B.uid=" . $this->_db->quote($uid) . ") AS manager,";
+				$sql.= "\n (SELECT count(*) FROM `#__jobs_admins` AS B WHERE B.jid=j.id AND B.uid=" . $this->_db->quote($uid) . ") AS manager,";
 			}
 			else
 			{
 				$sql.= "\n null AS manager,";
 			}
-			$sql.= "\n (SELECT count(*) FROM #__jobs_applications AS a WHERE a.jid=j.id) AS applications,";
+			$sql.= "\n (SELECT count(*) FROM `#__jobs_applications` AS a WHERE a.jid=j.id) AS applications,";
 			if (!User::isGuest())
 			{
 				$myid = User::get('id');
-				$sql .= "\n (SELECT a.applied FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid=" . $this->_db->quote($myid) . " AND a.status=1) AS applied,";
-				$sql .= "\n (SELECT a.withdrawn FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid=" . $this->_db->quote($myid) . " AND a.status=2) AS withdrawn,";
+				$sql .= "\n (SELECT a.applied FROM `#__jobs_applications` AS a WHERE a.jid=j.id AND a.uid=" . $this->_db->quote($myid) . " AND a.status=1) AS applied,";
+				$sql .= "\n (SELECT a.withdrawn FROM `#__jobs_applications` AS a WHERE a.jid=j.id AND a.uid=" . $this->_db->quote($myid) . " AND a.status=2) AS withdrawn,";
 			}
 			else
 			{
 				$sql .= "\n null AS applied,";
 				$sql .= "\n null AS withdrawn,";
 			}
-			$sql .= "\n (SELECT t.category FROM #__jobs_types AS t WHERE t.id=j.type) AS typename ";
+			$sql .= "\n (SELECT t.category FROM `#__jobs_types` AS t WHERE t.id=j.type) AS typename ";
 
 			if (isset($filters['search']) && trim($filters['search']))
 			{
@@ -259,9 +259,9 @@ class Job extends Table
 					$kw = 0;
 					for ($i=0, $n=count($s); $i < $n; $i++)
 					{
-						$sql .= "\n , (SELECT count(*) FROM $this->_tbl AS o WHERE o.id=j.id ";
+						$sql .= "\n , (SELECT count(*) FROM `$this->_tbl` AS o WHERE o.id=j.id ";
 						$sql .= "AND  LOWER(o.title) LIKE " . $this->_db->quote('%' . $s[$i] . '%') . ") AS keyword$i ";
-						$sql .= "\n , (SELECT count(*) FROM $this->_tbl AS o WHERE o.id=j.id ";
+						$sql .= "\n , (SELECT count(*) FROM `$this->_tbl` AS o WHERE o.id=j.id ";
 						$sql .= "AND  LOWER(o.description) LIKE " . $this->_db->quote('%' . $s[$i] . '%') . ") AS bodykeyword$i ";
 						$kw .= '+ keyword' . $i . ' * 2 ';
 						$kw .= '+ bodykeyword' . $i;
@@ -280,11 +280,11 @@ class Job extends Table
 			}
 		}
 
-		$sql .= "\n FROM $this->_tbl AS j";
-		$sql .= "\n LEFT JOIN #__jobs_categories AS c ON c.id=j.cid ";
+		$sql .= "\n FROM `$this->_tbl` AS j";
+		$sql .= "\n LEFT JOIN `#__jobs_categories` AS c ON c.id=j.cid ";
 
 		// make sure the employer profile is active
-		$sql .= $admin ? "\n LEFT JOIN #__jobs_employers AS e ON e.uid=j.employerid " : "\n JOIN #__jobs_employers AS e ON e.uid=j.employerid ";
+		$sql .= $admin ? "\n LEFT JOIN `#__jobs_employers` AS e ON e.uid=j.employerid " : "\n JOIN `#__jobs_employers` AS e ON e.uid=j.employerid ";
 		$sql .= "LEFT JOIN #__users_points_subscriptions AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
 		$sql .= " WHERE ";
 		// only show active ads
@@ -300,7 +300,7 @@ class Job extends Table
 		if ($active)
 		{
 			$sql .= "\n AND (j.closedate ='0000-00-00 00:00:00' OR j.closedate IS null OR j.closedate > " . $this->_db->quote($now) . ") ";
-			$sql .= "\n AND (j.expiredate ='0000-00-00 00:00:00' OR j.expiredate IS null OR j.expiredate> " . $this->_db->quote($now) . ") ";
+			$sql .= "\n AND (j.expiredate ='0000-00-00 00:00:00' OR j.expiredate IS null OR j.expiredate > " . $this->_db->quote($now) . ") ";
 		}
 
 		if (!$count)
@@ -330,7 +330,7 @@ class Job extends Table
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE code=" . $this->_db->quote($code) . " LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM `$this->_tbl` WHERE code=" . $this->_db->quote($code) . " LIMIT 1");
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
@@ -355,7 +355,7 @@ class Job extends Table
 			return false;
 		}
 
-		$query  = "UPDATE $this->_tbl SET status='2' WHERE id=" . $this->_db->quote($jid);
+		$query  = "UPDATE `$this->_tbl` SET status='2' WHERE id=" . $this->_db->quote($jid);
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
@@ -386,21 +386,21 @@ class Job extends Table
 
 		$sql  = "SELECT j.*, ";
 		$sql .= $admin ? "s.expires IS null AS inactive,  " : ' null AS inactive, ';
-		$sql .= "\n (SELECT count(*) FROM #__jobs_applications AS a WHERE a.jid=j.id) AS applications,";
+		$sql .= "\n (SELECT count(*) FROM `#__jobs_applications` AS a WHERE a.jid=j.id) AS applications,";
 		if (!User::isGuest())
 		{
-			$sql .= "\n (SELECT a.applied FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid=" . $this->_db->quote($myid) . " AND a.status=1) AS applied,";
-			$sql .= "\n (SELECT a.withdrawn FROM #__jobs_applications AS a WHERE a.jid=j.id AND a.uid=" . $this->_db->quote($myid) . " AND a.status=2) AS withdrawn,";
+			$sql .= "\n (SELECT a.applied FROM `#__jobs_applications` AS a WHERE a.jid=j.id AND a.uid=" . $this->_db->quote($myid) . " AND a.status=1) AS applied,";
+			$sql .= "\n (SELECT a.withdrawn FROM `#__jobs_applications` AS a WHERE a.jid=j.id AND a.uid=" . $this->_db->quote($myid) . " AND a.status=2) AS withdrawn,";
 		}
 		else
 		{
 			$sql .= "\n null AS applied,";
 			$sql .= "\n null AS withdrawn,";
 		}
-		$sql .= "\n (SELECT t.category FROM #__jobs_types AS t WHERE t.id=j.type) AS typename ";
-		$sql .= "\n FROM $this->_tbl AS j";
-		$sql .= $admin ? "\n LEFT JOIN #__jobs_employers AS e ON e.uid=j.employerid " : "\n JOIN #__jobs_employers AS e ON e.uid=j.employerid ";
-		$sql .= "LEFT JOIN #__users_points_subscriptions AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
+		$sql .= "\n (SELECT t.category FROM `#__jobs_types` AS t WHERE t.id=j.type) AS typename ";
+		$sql .= "\n FROM `$this->_tbl` AS j";
+		$sql .= $admin ? "\n LEFT JOIN `#__jobs_employers` AS e ON e.uid=j.employerid " : "\n JOIN #__jobs_employers AS e ON e.uid=j.employerid ";
+		$sql .= "LEFT JOIN `#__users_points_subscriptions` AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
 		$sql .= "AND s.status=1 AND s.expires > " . $this->_db->quote($now) . " WHERE ";
 
 		if ($admin)

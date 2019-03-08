@@ -736,7 +736,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//did we want to turn off registration?
 		if (!$registration)
 		{
-			$event['registerby'] = '0000-00-00 00:00:00';
+			$event['registerby'] = null;
 		}
 
 		//instantiate new event object

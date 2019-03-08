@@ -63,7 +63,7 @@ class JobCategory extends Table
 		$cats = array();
 
 		$query  = $getobject ? "SELECT * " : "SELECT id, category ";
-		$query .= "FROM $this->_tbl ORDER BY $sortby $sortdir";
+		$query .= "FROM `$this->_tbl` ORDER BY $sortby $sortdir";
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 		if ($getobject)
@@ -100,7 +100,7 @@ class JobCategory extends Table
 			return $default;
 		}
 
-		$query  = "SELECT category FROM $this->_tbl WHERE id=" . $this->_db->quote($id);
+		$query  = "SELECT category FROM `$this->_tbl` WHERE id=" . $this->_db->quote($id);
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
@@ -119,7 +119,7 @@ class JobCategory extends Table
 			 return false;
 		}
 
-		$query  = "UPDATE $this->_tbl SET ordernum=" . $this->_db->quote($ordernum) . " WHERE id=" . $this->_db->quote($id);
+		$query  = "UPDATE `$this->_tbl` SET ordernum=" . $this->_db->quote($ordernum) . " WHERE id=" . $this->_db->quote($id);
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{

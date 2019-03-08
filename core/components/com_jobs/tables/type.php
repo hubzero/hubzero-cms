@@ -61,7 +61,7 @@ class JobType extends Table
 	{
 		$types = array();
 
-		$query  = "SELECT id, category FROM $this->_tbl ORDER BY $sortby $sortdir ";
+		$query  = "SELECT id, category FROM `$this->_tbl` ORDER BY $sortby $sortdir ";
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 		if ($result)
@@ -93,7 +93,7 @@ class JobType extends Table
 			return $default;
 		}
 
-		$query = "SELECT category FROM $this->_tbl WHERE id=" . $this->_db->quote($id);
+		$query = "SELECT category FROM `$this->_tbl` WHERE id=" . $this->_db->quote($id);
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
