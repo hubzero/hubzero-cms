@@ -1,9 +1,16 @@
 Joomla.submitbutton = function(task) {
-	$(document).trigger('editorSave');
+	var cfrm = document.getElementById('component-form');
+console.log(cfrm);
+	if (cfrm) {
+		Joomla.submitform(task, cfrm);
+		return;
+	}
 
 	var frm = document.getElementById('item-form');
 
 	if (frm) {
+		$(document).trigger('editorSave');
+
 		if (task == 'markscanned') {
 			if (!confirm(frm.getAttribute('data-confirm'))) {
 				return false;
