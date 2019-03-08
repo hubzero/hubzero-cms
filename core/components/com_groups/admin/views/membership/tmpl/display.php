@@ -80,10 +80,10 @@ Toolbar::help('membership');
 
 $database = App::get('db');
 
+Html::behavior('tooltip');
+
 $this->css()
 	->js();
-
-Html::behavior('tooltip');
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
