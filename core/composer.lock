@@ -1182,12 +1182,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "8da32f44743e221a21eaf7ddc1043d7056c8cfaf"
+                "reference": "43f4868f95bdc8c3da98a3ffbb238c443f5e94ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/8da32f44743e221a21eaf7ddc1043d7056c8cfaf",
-                "reference": "8da32f44743e221a21eaf7ddc1043d7056c8cfaf",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/43f4868f95bdc8c3da98a3ffbb238c443f5e94ef",
+                "reference": "43f4868f95bdc8c3da98a3ffbb238c443f5e94ef",
                 "shasum": ""
             },
             "require": {
@@ -1222,7 +1222,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2019-03-05 12:11:26"
+            "time": "2019-03-11 16:21:34"
         },
         {
             "name": "hubzero/orcid-php",
@@ -3607,7 +3607,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
