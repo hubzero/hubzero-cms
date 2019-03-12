@@ -43,24 +43,30 @@ $status = '';
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=install'); ?>" method="post" name="adminForm" id="item-form">
 	<div class="grid">
-		<div class="col span5">
-			<fieldset class="adminform">
-				<legend><span><?php echo Lang::txt('COM_INSTALLER_PACKAGES_BASIC_INFO'); ?></span></legend>
+		<?php if ($this->getError()): ?>
+			<div class="col span12">
+				<p class="error"><?php echo $this->getError(); ?></p>
+			</div>
+		<?php else: ?>
+			<div class="col span5">
+				<fieldset class="adminform">
+					<legend><span><?php echo Lang::txt('COM_INSTALLER_PACKAGES_BASIC_INFO'); ?></span></legend>
 
-				<div class="input-wrap">
-					<label for="packageName"><?php echo Lang::txt('COM_INSTALLER_PACKAGES_AVAILABLE_PACKAGES'); ?>:</label>
-					<select name="packageName">
-						<?php foreach ($this->availablePackages as $package): ?>
-						<option name="<?php echo $package->getName(); ?>"value="<?php echo $package->getName(); ?>"><?php echo $package->getPrettyName(); ?></option>
-						<?php endforeach; ?>
-					</select> 
-				</div>
+					<div class="input-wrap">
+						<label for="packageName"><?php echo Lang::txt('COM_INSTALLER_PACKAGES_AVAILABLE_PACKAGES'); ?>:</label>
+						<select name="packageName">
+							<?php foreach ($this->availablePackages as $package): ?>
+							<option name="<?php echo $this->escape($package->getName()); ?>"value="<?php echo $this->escape($package->getName()); ?>"><?php echo $this->escape($package->getPrettyName()); ?></option>
+							<?php endforeach; ?>
+						</select> 
+					</div>
 
-				<div class="input-wrap">
-					<input type="submit" value="<?php echo Lang::txt('COM_INSTALLER_PACKAGES_INSTALL_PACKAGE'); ?>">
-				</div>
-			</fieldset>
-		</div>
+					<div class="input-wrap">
+						<input type="submit" value="<?php echo Lang::txt('COM_INSTALLER_PACKAGES_INSTALL_PACKAGE'); ?>">
+					</div>
+				</fieldset>
+			</div>
+		<?php endif; ?>
 	</div>
 
 	<input type="hidden" name="packageVersion" value="dev-master" />

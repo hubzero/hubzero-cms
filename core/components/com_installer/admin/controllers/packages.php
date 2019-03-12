@@ -87,7 +87,7 @@ class Packages extends AdminController
 	/**
 	 * Edit or create a new package
 	 * 
-	 * @return void
+	 * @return  void
 	 */
 	public function editTask()
 	{
@@ -100,13 +100,24 @@ class Packages extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		$packageName = Request::getString('packageName', '');
-		$versions = ComposerHelper::findRemotePackages($packageName, '*');
-		$installedPackage = ComposerHelper::findLocalPackage($packageName);
+
+		try
+		{
+			$versions = ComposerHelper::findRemotePackages($packageName, '*');
+			$installedPackage = ComposerHelper::findLocalPackage($packageName);
+		}
+		catch (\Exception $e)
+		{
+			$versions = array();
+			$installedPackage = null;
+			$this->setError($e->getMessage());
+		}
 
 		$this->view
 			->set('packageName', $packageName)
 			->set('installedPackage', $installedPackage)
 			->set('versions', $versions)
+			->setErrors($this->getErrors())
 			->display();
 	}
 
@@ -132,20 +143,33 @@ class Packages extends AdminController
 	/**
 	 * Add a package to track
 	 * 
-	 * @return void
+	 * @return  void
 	 */
 	public function addTask()
 	{
-		$availablePackages = ComposerHelper::getAvailablePackages();
+		Request::setVar('hidemainmenu', 1);
+
+		try
+		{
+			$availablePackages = ComposerHelper::getAvailablePackages();
+		}
+		catch (\Exception $e)
+		{
+			$availablePackages = array();
+
+			$this->setError($e->getMessage());
+		}
+
 		$this->view
 			->set('availablePackages', $availablePackages)
+			->setErrors($this->getErrors())
 			->display();
 	}
 
 	/**
 	 * Remove a package
 	 * 
-	 * @return void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
