@@ -39,8 +39,7 @@ $tmpl    = Request::getWord('tmpl', false);
 $sparams = new \Hubzero\Config\Registry($this->course->offering()->section()->get('params'));
 
 if (!$no_html && $tmpl != 'component') :
-	$this->css('offering.css')
-	     ->js('courses.offering.js');
+	$this->css('offering.css');
 
 	$src = $this->course->logo('url');
 	if ($logo = $this->course->offering()->section()->logo('url'))
@@ -146,7 +145,7 @@ if (!$no_html && $tmpl != 'component') :
 						{
 							$link = Route::url($this->course->offering()->link() . '&active=' . $plugin->get('name'));
 							?>
-							<li class="<?php echo ($active == $plugin->get('name') ? 'active' : ''); ?> course-<?php echo $plugin->get('name'); ?>-tab">
+							<li class="<?php echo ($active == $plugin->get('name')) ? 'active' : ''; ?> course-<?php echo $plugin->get('name'); ?>-tab">
 								<a class="<?php echo $plugin->get('name'); ?>" data-icon="&#x<?php echo $plugin->get('icon', 'f0a1'); ?>" data-title="<?php echo $this->escape($plugin->get('title')) . '&#xa;' . $this->escape($plugin->get('description')); ?>" href="<?php echo $link; ?>">
 									<?php echo $this->escape($plugin->get('title')); ?>
 								</a>
@@ -196,4 +195,4 @@ if (!$no_html && $tmpl != 'component') :
 	<?php if (!$no_html && $tmpl != 'component') : ?>
 		</div><!-- /#page_container -->
 	</div><!-- /.innerwrap -->
-	<?php endif; ?>
+	<?php endif;

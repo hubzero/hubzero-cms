@@ -444,7 +444,7 @@ class Course extends SiteController
 	/**
 	 * Show a form for editing a course
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function newofferingTask($offering=null)
 	{
@@ -476,7 +476,7 @@ class Course extends SiteController
 	/**
 	 * Show a form for editing a course
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveofferingTask()
 	{
@@ -852,7 +852,7 @@ class Course extends SiteController
 	 * @param   object  $course  CoursesCourse
 	 * @return  string
 	 */
-	private function courseAvailability($course = null)
+	public function courseavailabilityTask($course = null)
 	{
 		//get the course
 		$course = (!is_null($course)) ? $course : Request::getString('course', '');
@@ -908,7 +908,7 @@ class Course extends SiteController
 	}
 
 	/**
-	 * Download a wiki file
+	 * Download a page file
 	 *
 	 * @return  void
 	 */
