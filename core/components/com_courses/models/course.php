@@ -37,13 +37,13 @@ use Hubzero\Config\Registry;
 use Filesystem;
 use Lang;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'course.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'page.php');
-require_once(__DIR__ . DS . 'base.php');
-require_once(__DIR__ . DS . 'permissions.php');
-require_once(__DIR__ . DS . 'offering.php');
-require_once(__DIR__ . DS . 'iterator.php');
-require_once(__DIR__ . DS . 'tags.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'course.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'page.php';
+require_once __DIR__ . DS . 'base.php';
+require_once __DIR__ . DS . 'permissions.php';
+require_once __DIR__ . DS . 'offering.php';
+require_once __DIR__ . DS . 'iterator.php';
+require_once __DIR__ . DS . 'tags.php';
 
 /**
  * Courses model class for a course
@@ -947,10 +947,12 @@ class Course extends Base
 	/**
 	 * Copy an entry and associated data
 	 *
-	 * @param   boolean $deep Copy associated data?
-	 * @return  boolean True on success, false on error
+	 * @param   boolean  $deep  Copy associated data?
+	 * @param   string   $title
+	 * @param   string   $alias
+	 * @return  boolean  True on success, false on error
 	 */
-	public function copy($deep=true)
+	public function copy($deep=true, $title = '', $alias = '')
 	{
 		// Get some old info we may need
 		//  - Course ID
@@ -959,8 +961,11 @@ class Course extends Base
 		// Reset the ID. This will force store() to create a new record.
 		$this->set('id', 0);
 		// We want to distinguish this course from the one we copied from
-		$this->set('title', $this->get('title') . ' (copy)');
-		$this->set('alias', $this->get('alias') . '_copy');
+		$title = $title ? $title : $this->get('title') . ' (copy)';
+		$alias = $alias ? $alias : $this->get('alias') . '_copy';
+
+		$this->set('title', $title);
+		$this->set('alias', $alias);
 
 		if (!$this->store())
 		{
@@ -1040,7 +1045,7 @@ class Course extends Base
 	{
 		if (!$this->_certificate)
 		{
-			include_once(__DIR__ . DS . 'certificate.php');
+			include_once __DIR__ . DS . 'certificate.php';
 
 			$this->_certificate = Certificate::getInstance(0, $this->get('id'));
 		}

@@ -70,6 +70,11 @@ $this->css('course.css')
 
 	<div id="content-header-extra">
 		<p>
+			<?php if ($this->course->access('edit', 'course') && $this->course->access('create', 'course')) { ?>
+				<a class="btn icon-copy copy" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('blurb') . '&task=copy'); ?>">
+				<?php echo Lang::txt('COM_COURSES_COPY'); ?>
+			</a>
+			<?php } ?>
 			<a class="btn icon-browse browse" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>">
 				<?php echo Lang::txt('COM_COURSES_CATALOG'); ?>
 			</a>

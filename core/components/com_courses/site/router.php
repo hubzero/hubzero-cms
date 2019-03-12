@@ -205,6 +205,8 @@ class Router extends Base
 				case 'newoffering':
 				case 'saveoffering':
 				case 'deletepage':
+				case 'copy':
+				case 'docopy':
 					$vars['task'] = $segments[1];
 				break;
 
