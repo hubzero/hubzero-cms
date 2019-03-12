@@ -52,49 +52,55 @@ $status = '';
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=install'); ?>" method="post" name="adminForm" id="item-form">
 	<div class="grid">
-		<div class="col span7">
-			<fieldset class="adminform">
-				<legend><span><?php echo Lang::txt('COM_INSTALLER_PACKAGES_BASIC_INFO'); ?></span></legend>
+		<?php if ($this->getError()): ?>
+			<div class="col span12">
+				<p class="error"><?php echo $this->getError(); ?></p>
+			</div>
+		<?php else: ?>
+			<div class="col span7">
+				<fieldset class="adminform">
+					<legend><span><?php echo Lang::txt('COM_INSTALLER_PACKAGES_BASIC_INFO'); ?></span></legend>
 
-				<div class="input-wrap">
-					<label for="version"><?php echo Lang::txt('COM_INSTALLER_PACKAGES_AVAILABLE_VERSIONS'); ?>:</label>
-					<select name='packageVersion'>
-						<?php foreach ($this->versions as $version): ?>
-						<option value="<?php echo $version->getVersion(); ?>" <?php echo ($this->installedPackage->getVersion() == $version->getVersion()) ? 'selected="true"' : '';?> > <?php echo $version->getFullPrettyVersion(); ?></option>
-						<?php endforeach; ?>
-					</select>
-				</div>
+					<div class="input-wrap">
+						<label for="version"><?php echo Lang::txt('COM_INSTALLER_PACKAGES_AVAILABLE_VERSIONS'); ?>:</label>
+						<select name='packageVersion'>
+							<?php foreach ($this->versions as $version): ?>
+								<option value="<?php echo $this->escape($version->getVersion()); ?>" <?php echo ($this->installedPackage->getVersion() == $version->getVersion()) ? 'selected="true"' : '';?>><?php echo $this->escape($version->getFullPrettyVersion()); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
 
-				<div class="input-wrap">
-					<input type="submit" value="<?php echo Lang::txt('COM_INSTALLER_PACKAGES_INSTALL_VERSION'); ?>">
-				</div>
-			</fieldset>
-		</div>
-		<div class="col span5">
-			<table class="meta">
-				<tbody>
-					<tr>
-						<th><?php echo Lang::txt('COM_INSTALLER_PACKAGES_INSTALLED_VERSION'); ?>:</th>
-						<td><?php echo $this->installedPackage->getFullPrettyVersion(); ?></td>
-					</tr>
-					<tr>
-						<th><?php echo Lang::txt('COM_INSTALLER_PACKAGES_RELEASE_DATE'); ?>:</th>
-						<td><?php echo $this->installedPackage->getReleaseDate()->format("Y-m-d H:i:s"); ?></td>
-					</tr>
-					<tr>
-						<th><?php echo Lang::txt('COM_INSTALLER_PACKAGES_TYPE'); ?>:</th>
-						<td><?php echo $this->installedPackage->getType(); ?></td>
-					</tr>
-					<tr>
-						<th><?php echo Lang::txt('COM_INSTALLER_PACKAGES_AUTHORS'); ?>:</th>
-						<td><?php echo implode(', ', $authors); ?></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+					<div class="input-wrap">
+						<input type="submit" value="<?php echo Lang::txt('COM_INSTALLER_PACKAGES_INSTALL_VERSION'); ?>">
+					</div>
+				</fieldset>
+			</div>
+			<div class="col span5">
+				<table class="meta">
+					<tbody>
+						<tr>
+							<th><?php echo Lang::txt('COM_INSTALLER_PACKAGES_INSTALLED_VERSION'); ?>:</th>
+							<td><?php echo $this->installedPackage->getFullPrettyVersion(); ?></td>
+						</tr>
+						<tr>
+							<th><?php echo Lang::txt('COM_INSTALLER_PACKAGES_RELEASE_DATE'); ?>:</th>
+							<td><?php echo $this->installedPackage->getReleaseDate()->format("Y-m-d H:i:s"); ?></td>
+						</tr>
+						<tr>
+							<th><?php echo Lang::txt('COM_INSTALLER_PACKAGES_TYPE'); ?>:</th>
+							<td><?php echo $this->installedPackage->getType(); ?></td>
+						</tr>
+						<tr>
+							<th><?php echo Lang::txt('COM_INSTALLER_PACKAGES_AUTHORS'); ?>:</th>
+							<td><?php echo implode(', ', $authors); ?></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		<?php endif; ?>
 	</div>
 
-	<input type="hidden" name="packageName" value="<?php echo $this->packageName; ?>" />
+	<input type="hidden" name="packageName" value="<?php echo $this->escape($this->packageName); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="task" value="install" />
 
