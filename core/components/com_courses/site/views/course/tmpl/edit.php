@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 $this->css('course.css')
-     ->js();
+     ->js('courses.overview.js');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -59,7 +59,7 @@ $this->css('course.css')
 			<?php else: ?>
 				<label class="course_alias_label" for="course_alias_field">
 					<?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					<input name="course[alias]" id="course_alias_field" type="text" size="35" value="<?php echo $this->escape($this->course->get('alias')); ?>" autocomplete="off" />
+					<input name="course[alias]" id="course_alias_field" type="text" size="35" value="<?php echo $this->escape($this->course->get('alias')); ?>" autocomplete="off" data-route="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=courseavailability&no_html=1'); ?>" />
 					<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
 				</label>
 			<?php endif; ?>

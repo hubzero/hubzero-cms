@@ -89,7 +89,7 @@
 		margin: 0 2em 0 0.2em;
 	}
 /* Identity */
-	p.course-identity {
+	.course-identity {
 		display: block;
 		margin: 30px 0;
 		padding: 0;
@@ -108,20 +108,46 @@
 		background: #f1f1f1;
 		text-align: center;
 	}
-	p.course-identity span:after {
+	.course-identity>span:after {
 		content: "\f09c";
 		font-family: "Fontcons";
 		font-size: 7em;
 		color: #e1e1e1;
 		line-height: 1.6em;
 	}
-	p.course-identity:after {
+	.course-identity:after {
 		content: "";
 		display: none;
 	}
-	p.course-identity img {
+	.course-identity img {
 		width: 100%;
 		*width: auto;
+	}
+
+	.course_alias_label {
+		position: relative;
+	}
+	.available,
+	.not-available {
+		text-align: right;
+		position: absolute;
+		color: #1f8a11;
+		top: 1.6em;
+		right: 0;
+		font-weight: bold;
+		padding-left: 15px;
+	}
+	.not-available {
+		color: #8a1111;
+	}
+	.available:before,
+	.not-available:before {
+		content: '\f058';
+		font-family: 'Fontcons';
+		margin-right: 0.4em;
+	}
+	.not-available:before {
+		content: '\f057';
 	}
 
 /* Offering info */
@@ -549,4 +575,192 @@
 		content: "\2714";
 		font-family: "Fontcons";
 		margin-right: 0.2em;
+	}
+
+/* Uploader */
+	.qq-uploading {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 107px;
+		color: #fff;
+		font-size: 18px;
+		padding: 75px 0 0 0;
+		text-align: center;
+		background: rgba(0,0,0,0.75);
+	}
+	.qq-uploader {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+	}
+	/* Upload list */
+	.qq-upload-list {
+		list-style: none;
+		margin: 1em 0;
+	}
+	.qq-upload-list li {
+		color: #FFFFFF;
+		margin: 0 0 1px;
+		padding: 0.5em;
+		overflow: hidden;
+		line-height: 1;
+		font-size: 1em;
+		list-style: none;
+		-webkit-text-shadow: none;
+		   -moz-text-shadow: none;
+		    -ms-text-shadow: none;
+		     -o-text-shadow: none;
+		        text-shadow: none;
+		-webkit-border-radius: 0.5em;
+		   -moz-border-radius: 0.5em;
+		    -ms-border-radius: 0.5em;
+		     -o-border-radius: 0.5em;
+		        border-radius: 0.5em;
+		position: relative;
+		background: #BFE613;
+		background: #5DA30C -moz-linear-gradient(-45deg, rgba(45, 170, 60, 0), rgba(45, 170, 60, 0) 10%, rgba(146, 209, 0, 0.4) 30%, rgba(146, 209, 0, 0.4) 50%, rgba(45, 170, 60, 0) 50%, rgba(45, 170, 60, 0));
+		background: #5DA30C -webkit-gradient(linear, 0 0, 60 60, from(rgba(45, 170, 60, 0)), color-stop(.49, rgba(45, 170, 60, 0)), color-stop(.491, rgba(146, 209, 0, .4)), color-stop(.8, rgba(146, 209, 0, .4)), color-stop(.801, rgba(45, 170, 60, 0)), to(rgba(45, 170, 60, 0)));
+		background-size: 120px 120px;
+		-webkit-animation-name: gradientShift;
+		-webkit-animation-duration: 1s;
+		-webkit-animation-iteration-count: infinite;
+		-webkit-animation-fill-mode: both;
+		-webkit-animation-timing-function: linear;
+		-moz-animation-name: gradientShift;
+		-moz-animation-duration: 1s;
+		-moz-animation-iteration-count: infinite;
+		-moz-animation-fill-mode: both;
+		-moz-animation-timing-function: linear;
+		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+		filter: alpha(opacity=75);
+		-webkit-opacity: 0.75;
+		-moz-opacity: 0.75;
+		opacity: 0.75;
+	}
+	@-webkit-keyframes gradientShift {
+		0%   { background-position-x: 0px; }
+		100% { background-position-x: 120px; }
+	}
+
+	@-moz-keyframes gradientShift {
+		0%   { background-position: 0px 0; }
+		100% { background-position: 120px 0; }
+	}
+	.qq-upload-file,
+	.qq-upload-spinner,
+	.qq-upload-size,
+	.qq-upload-cancel,
+	.qq-upload-failed-text {
+		margin-right: 12px;
+		z-index: 250;
+		position: relative;
+	}
+	.qq-upload-spinner {
+		display: inline-block;
+		background: url("../img/loading.gif");
+		width: 15px;
+		height: 15px;
+		vertical-align: text-bottom;
+	}
+	.qq-upload-size,
+	.qq-upload-cancel {
+		font-size: 0.9em;
+		font-weight: normal;
+	}
+	.qq-upload-failed-text {
+		display: none;
+	}
+	.qq-upload-fail .qq-upload-failed-text {
+		display: inline;
+	}
+	.qq-upload-list li.qq-upload-success {
+		background: #5DA30C;
+		color: #FFFFFF;
+	}
+	.qq-upload-list li.qq-upload-fail {
+		background: #AF0000;
+		color: #FFFFFF;
+	}
+	.qq-upload-spinner,
+	.qq-upload-size,
+	.qq-upload-cancel,
+	.qq-upload-failed-text {
+		float: right;
+	}
+	.qq-upload-spinner {
+		display: none;
+	}
+	.qq-progress-bar {
+		width: 51%;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		background-color: #5DA30C;
+		-webkit-box-shadow: 0px 0px 14px #0D4500;
+		   -moz-box-shadow: 0px 0px 14px #0D4500;
+		    -ms-box-shadow: 0px 0px 14px #0D4500;
+		     -o-box-shadow: 0px 0px 14px #0D4500;
+		        box-shadow: 0px 0px 14px #0D4500;
+		-webkit-border-radius: 0.5em;
+		   -moz-border-radius: 0.5em;
+		    -ms-border-radius: 0.5em;
+		     -o-border-radius: 0.5em;
+		        border-radius: 0.5em;
+	}
+	.qq-upload-cancel {
+		color: #800000;
+		display: none;
+	}
+	.qq-upload-success .qq-progress-bar {
+		display: none;
+	}
+
+	/* Drop areas */
+	.qq-upload-button,
+	.qq-upload-drop-area {
+		text-align: center;
+		color: #bbb;
+		padding: 0;
+		height: 100%;
+		text-align: center;
+		padding: 0;
+	}
+	.qq-upload-button span,
+	.qq-upload-drop-area span {
+		display: block;
+		margin-top: 50px;
+		padding: 1em;
+		position: relative;
+		padding-left: 1.5em;
+		background: rgba(0, 0, 0, 0.4);
+		color: #fff;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+	}
+	.qq-upload-button span:before,
+	.qq-upload-drop-area span:before {
+		font-family: "Fontcons";
+		content: "\f03e";
+		margin-right: 0.4em;
+	}
+	.qq-upload-button:hover,
+	.qq-upload-drop-area:hover,
+	.qq-upload-drop-area-active {
+		cursor: pointer;
+		background: rgba(0, 0, 0, 0.4);
+	}
+	.qq-upload-button:hover span,
+	.qq-upload-drop-area:hover span,
+	.qq-upload-drop-area-active span {
+		background: transparent;
+	}
+	.qq-upload-drop-area {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
 	}
