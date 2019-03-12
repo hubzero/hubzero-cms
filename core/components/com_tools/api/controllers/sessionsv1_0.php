@@ -1476,7 +1476,7 @@ class Sessionsv1_0 extends ApiController
 
 		// get any request vars
 		$username   = Request::getString('username');
-		$sessionid  = Request::getString('id');
+		$sessionid  = Request::getString('sessionid', '');
 		$private_ip = Request::getString('private_ip');
 		$public_ip  = Request::getString('public_ip', Request::ip());
 
