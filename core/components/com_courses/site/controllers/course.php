@@ -974,4 +974,56 @@ class Course extends SiteController
 
 		exit;
 	}
+
+	/**
+	 * Show a form for providing copy title
+	 *
+	 * @return  void
+	 */
+	public function copyTask()
+	{
+		$rtrn = Request::getString('return');
+
+		$this->view
+			->set('course', $this->course)
+			->set('return', $rtrn)
+			->display();
+	}
+
+	/**
+	 * Copy an entry and all associated data
+	 *
+	 * @return  void
+	 */
+	public function docopyTask()
+	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		// Incoming
+		$rtrn = Request::getString('return', '', 'post');
+		if ($rtrn)
+		{
+			$rtrn = base64_decode($rtrn);
+		}
+		if (!$rtrn)
+		{
+			$rtrn = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false);
+		}
+
+		$fields = Request::getArray('fields', array('title' => '', 'alias' => ''), 'post');
+
+		// Copy the course
+		if (!$this->course->copy(true, $fields['title'], $fields['alias']))
+		{
+			Notify::error(Lang::txt('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $this->course->getError());
+
+			App::redirect($rtrn);
+		}
+
+		// Success
+		Notify::success(Lang::txt('COM_COURSES_ITEM_COPIED'));
+
+		App::redirect($rtrn);
+	}
 }

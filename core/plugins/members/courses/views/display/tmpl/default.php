@@ -99,6 +99,7 @@ $this->css();
 				<tbody>
 		<?php if (count($this->results) > 0) { ?>
 			<?php
+				$rtrn = base64_encode(Request::getString('REQUEST_URI', $base, 'server'));
 				foreach ($this->results as $row)
 				{
 					$cls = '';
@@ -128,7 +129,7 @@ $this->css();
 							$dateText = Lang::txt('PLG_MEMBERS_COURSES_EMPOWERED');
 						break;
 					}
-			?>
+					?>
 					<tr class="course<?php echo ($cls) ? ' ' . $cls : ''; ?>">
 						<th>
 							<span class="entry-id"><?php echo $row->id; ?></span>
@@ -146,51 +147,56 @@ $this->css();
 								<span class="entry-date-on"><?php echo Lang::txt('PLG_MEMBERS_COURSES_ON'); ?></span>
 								<span class="entry-date"><time datetime="<?php echo $row->enrolled; ?>"><?php echo Date::of($row->enrolled)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
 								<?php if ($row->section_title) { ?>
-								<span class="entry-section">
-									 &mdash; <strong><?php echo Lang::txt('PLG_MEMBERS_COURSES_SECTION'); ?></strong> <?php echo $this->escape(stripslashes($row->section_title)); ?>
-								</span>
+									<span class="entry-section">
+										 &mdash; <strong><?php echo Lang::txt('PLG_MEMBERS_COURSES_SECTION'); ?></strong> <?php echo $this->escape(stripslashes($row->section_title)); ?>
+									</span>
 								<?php } ?>
 							</span>
 						</td>
 						<td>
 							<?php if ($row->state == 3) { ?>
-							<span class="entry-state draft">
-								<?php echo Lang::txt('PLG_MEMBERS_COURSES_STATE_DRAFT'); ?>
-							</span>
+								<span class="entry-state draft">
+									<?php echo Lang::txt('PLG_MEMBERS_COURSES_STATE_DRAFT'); ?>
+								</span>
 							<?php } ?>
 						</td>
 						<td>
 							<?php if ($row->starts) { ?>
-							<?php echo Lang::txt('PLG_MEMBERS_COURSES_STARTS'); ?><br />
-							<span class="entry-details">
-							<?php if ($row->starts && $row->starts != '0000-00-00 00:00:00') { ?>
-								<span class="entry-date-at"><?php echo Lang::txt('PLG_MEMBERS_COURSES_AT'); ?></span>
-								<span class="entry-time"><time datetime="<?php echo $row->starts; ?>"><?php echo Date::of($row->starts)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
-								<span class="entry-date-on"><?php echo Lang::txt('PLG_MEMBERS_COURSES_ON'); ?></span>
-								<span class="entry-date"><time datetime="<?php echo $row->starts; ?>"><?php echo Date::of($row->starts)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
-							<?php } else { ?>
-								<?php echo Lang::txt('PLG_MEMBERS_COURSES_NA'); ?>
-							<?php } ?>
-							</span>
+								<?php echo Lang::txt('PLG_MEMBERS_COURSES_STARTS'); ?><br />
+								<span class="entry-details">
+									<?php if ($row->starts && $row->starts != '0000-00-00 00:00:00') { ?>
+										<span class="entry-date-at"><?php echo Lang::txt('PLG_MEMBERS_COURSES_AT'); ?></span>
+										<span class="entry-time"><time datetime="<?php echo $row->starts; ?>"><?php echo Date::of($row->starts)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+										<span class="entry-date-on"><?php echo Lang::txt('PLG_MEMBERS_COURSES_ON'); ?></span>
+										<span class="entry-date"><time datetime="<?php echo $row->starts; ?>"><?php echo Date::of($row->starts)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+									<?php } else { ?>
+										<?php echo Lang::txt('PLG_MEMBERS_COURSES_NA'); ?>
+									<?php } ?>
+								</span>
 							<?php } ?>
 						</td>
 						<td>
 							<?php if ($row->ends) { ?>
-							<?php echo Lang::txt('PLG_MEMBERS_COURSES_ENDS'); ?><br />
-							<span class="entry-details">
-								<?php if ($row->ends && $row->ends != '0000-00-00 00:00:00') { ?>
-								<span class="entry-date-at"><?php echo Lang::txt('PLG_MEMBERS_COURSES_AT'); ?></span>
-								<span class="entry-time"><time datetime="<?php echo $row->ends; ?>"><?php echo Date::of($row->ends)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
-								<span class="entry-date-on"><?php echo Lang::txt('PLG_MEMBERS_COURSES_ON'); ?></span>
-								<span class="entry-date"><time datetime="<?php echo $row->ends; ?>"><?php echo Date::of($row->ends)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
-								<?php } else { ?>
-									<?php echo Lang::txt('PLG_MEMBERS_COURSES_NA'); ?>
-								<?php } ?>
-							</span>
+								<?php echo Lang::txt('PLG_MEMBERS_COURSES_ENDS'); ?><br />
+								<span class="entry-details">
+									<?php if ($row->ends && $row->ends != '0000-00-00 00:00:00') { ?>
+										<span class="entry-date-at"><?php echo Lang::txt('PLG_MEMBERS_COURSES_AT'); ?></span>
+										<span class="entry-time"><time datetime="<?php echo $row->ends; ?>"><?php echo Date::of($row->ends)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+										<span class="entry-date-on"><?php echo Lang::txt('PLG_MEMBERS_COURSES_ON'); ?></span>
+										<span class="entry-date"><time datetime="<?php echo $row->ends; ?>"><?php echo Date::of($row->ends)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+									<?php } else { ?>
+										<?php echo Lang::txt('PLG_MEMBERS_COURSES_NA'); ?>
+									<?php } ?>
+								</span>
+							<?php } ?>
+						</td>
+						<td>
+							<?php if ($this->filters['task'] == 'manager' || $this->filters['task'] == 'instructor') { ?>
+								<a class="icon-copy btn btn-copy" href="<?php echo Route::url('index.php?option=com_courses&gid=' . $row->alias . '&task=copy&return=' . $rtrn); ?>"><?php echo Lang::txt('PLG_MEMBERS_COURSES_ACTION_COPY'); ?></a>
 							<?php } ?>
 						</td>
 					</tr>
-			<?php
+					<?php
 				}
 			?>
 		<?php } else { ?>
