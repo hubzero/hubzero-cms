@@ -22,9 +22,7 @@ Joomla.editors.instances = {};
 Joomla.submitform = function(task, form) {
 	if (typeof(form) === 'undefined') {
 		form = document.getElementById('adminForm');
-		/**
-		 * Added to ensure Joomla 1.5 compatibility
-		 */
+
 		if (!form) {
 			form = document.adminForm;
 		}
@@ -616,160 +614,243 @@ Joomla.removeClass = function(el, className) {
 }
 
 /**
+ * Handle toolbar actions
+ *
+ * @param   event
+ * @return  void
+ */
+Joomla.toolbarAction = function(event) {
+	event.preventDefault();
+
+	var el = this;
+
+	if (Joomla.hasClass(el, 'toolbar-submit')) {
+		if (Joomla.hasClass(el, 'toolbar-list') && document.adminForm.boxchecked.value == 0) {
+			alert(el.getAttribute('data-message'));
+		} else {
+			if (el.getAttribute('data-task')) {
+				Joomla.submitbutton(el.getAttribute('data-task'));
+			} else {
+				console.log('Error: no task found.');
+			}
+		}
+	}
+
+	if (Joomla.hasClass(el, 'toolbar-popup')) {
+		var width  = (el.getAttribute('data-width') ? el.getAttribute('data-width') : 700),
+			height = (el.getAttribute('data-height') ? el.getAttribute('data-height') : 500),
+			scroll = 1;
+
+		Joomla.popupWindow(
+			el.getAttribute('href'),
+			el.getAttribute('data-message'),
+			width,
+			height,
+			scroll
+		);
+	}
+
+	if (Joomla.hasClass(el, 'toolbar-confirm')) {
+		if (Joomla.hasClass(el, 'toolbar-list') && document.adminForm.boxchecked.value == 0) {
+			alert(el.getAttribute('data-message'));
+		} else {
+			if (confirm(el.getAttribute('data-confirm'))) {
+				if (el.getAttribute('data-task')) {
+					Joomla.submitbutton(el.getAttribute('data-task'));
+				} else {
+					console.log('Error: no task found.');
+				}
+			}
+		}
+	}
+}
+
+/**
+ * Submit a form
+ *
+ * @param   event
+ * @return  void
+ */
+Joomla.filterSubmit = function(event)
+{
+	this.form.submit();
+}
+
+/**
+ * Clear filters in a form and submit
+ *
+ * @param   event
+ * @return  void
+ */
+Joomla.filterClear = function(event)
+{
+	var k,
+		filters = this.form.getElementsByClassName('filter');
+
+	for (k = 0; k < filters.length; k++)
+	{
+		if (filters[k].tagName.toLowerCase() == 'select') {
+			filters[k].selectedIndex = 0;
+		}
+		if (filters[k].tagName.toLowerCase() == 'input') {
+			filters[k].value = '';
+		}
+	}
+
+	this.form.submit();
+}
+
+/**
+ * Toggle check-all checkbox
+ *
+ * @param   event
+ * @return  void
+ */
+Joomla.gridCheckboxToggle = function(event)
+{
+	if (Joomla.hasClass(this, 'toggle-all')) {
+		Joomla.checkAll(this);
+	} else {
+		Joomla.isChecked(this.checked);
+	}
+}
+
+/**
+ * Grid ordering
+ *
+ * @param   event
+ * @return  void
+ */
+Joomla.gridOrder = function(event)
+{
+	event.preventDefault();
+
+	Joomla.tableOrdering(
+		this.getAttribute('data-order'),
+		this.getAttribute('data-direction'),
+		this.getAttribute('data-task')
+	);
+
+	return false;
+}
+
+Joomla.gridOrderSave = function(event)
+{
+	event.preventDefault();
+
+	var rows = this.getAttribute('data-rows'),
+		task = this.getAttribute('data-task');
+
+	if (rows && task) {
+		Joomla.saveOrder(rows, task);
+	}
+
+	return false;
+}
+
+/**
+ * Grid actions
+ *
+ * @param   event
+ * @return  void
+ */
+Joomla.gridAction = function(event)
+{
+	event.preventDefault();
+
+	var id = this.getAttribute('data-id'),
+		task = this.getAttribute('data-task');
+
+	if (id && task) {
+		return Joomla.listItemTask(id, task);
+	}
+
+	return false;
+}
+
+/**
+ * Attach pagination events
+ *
+ * @return  void
+ */
+Joomla.paginate = function()
+{
+	var i,
+		pages = document.querySelectorAll('.pagination a');
+	for (i = 0; i < pages.length; i++)
+	{
+		pages[i].addEventListener('click', function(event){
+			event.preventDefault();
+			document.adminForm[this.getAttribute('data-prefix') + 'limitstart'].value = parseInt(this.getAttribute('data-start'));
+			Joomla.submitform();
+		});
+	}
+	var limits = document.querySelectorAll('.pagination select');
+	for (i = 0; i < limits.length; i++)
+	{
+		limits[i].addEventListener('change', function(event){
+			Joomla.submitform();
+		});
+	}
+}
+
+/**
  * Initiate event hooks
  */
 document.addEventListener('DOMContentLoaded', function() {
 	var i;
+
 	// Add event listeners to toolbar buttons
 	var toolbarbuttons = document.getElementsByClassName('toolbar');
 	for (i = 0; i < toolbarbuttons.length; i++)
 	{
-		toolbarbuttons[i].addEventListener('click', function(event) {
-			event.preventDefault();
-
-			var el = this;
-
-			if (Joomla.hasClass(el, 'toolbar-submit')) {
-				if (Joomla.hasClass(el, 'toolbar-list') && document.adminForm.boxchecked.value == 0) {
-					alert(el.getAttribute('data-message'));
-				} else {
-					if (el.getAttribute('data-task')) {
-						Joomla.submitbutton(el.getAttribute('data-task'));
-					} else {
-						console.log('Error: no task found.');
-					}
-				}
-			}
-
-			if (Joomla.hasClass(el, 'toolbar-popup')) {
-				var width  = (el.getAttribute('data-width') ? el.getAttribute('data-width') : 700),
-					height = (el.getAttribute('data-height') ? el.getAttribute('data-height') : 500),
-					scroll = 1;
-
-				Joomla.popupWindow(
-					el.getAttribute('href'),
-					el.getAttribute('data-message'),
-					width,
-					height,
-					scroll
-				);
-			}
-
-			if (Joomla.hasClass(el, 'toolbar-confirm')) {
-				if (Joomla.hasClass(el, 'toolbar-list') && document.adminForm.boxchecked.value == 0) {
-					alert(el.getAttribute('data-message'));
-				} else {
-					if (confirm(el.getAttribute('data-confirm'))) {
-						if (el.getAttribute('data-task')) {
-							Joomla.submitbutton(el.getAttribute('data-task'));
-						} else {
-							console.log('Error: no task found.');
-						}
-					}
-				}
-			}
-		});
+		toolbarbuttons[i].addEventListener('click', Joomla.toolbarAction);
 	}
 
 	// Add event listener for checkbox toggles
 	var checkboxes = document.getElementsByClassName('checkbox-toggle');
 	for (i = 0; i < checkboxes.length; i++)
 	{
-		checkboxes[i].addEventListener('click', function(event) {
-			if (Joomla.hasClass(this, 'toggle-all')) {
-				Joomla.checkAll(this);
-			} else {
-				Joomla.isChecked(this.checked);
-			}
-		});
+		checkboxes[i].addEventListener('click', Joomla.gridCheckboxToggle);
 	}
 
 	// Add event listener for filters
 	var filters = document.getElementsByClassName('filter-submit');
 	for (i = 0; i < filters.length; i++)
 	{
-		filters[i].addEventListener('change', function(event) {
-			this.form.submit();
-		});
+		filters[i].addEventListener('change', Joomla.filterSubmit);
 	}
 
+	// Add event listener for clearing filters
 	var clearfilters = document.getElementsByClassName('filter-clear');
 	for (i = 0; i < clearfilters.length; i++)
 	{
-		clearfilters[i].addEventListener('click', function(event) {
-			var k,
-				filters = this.form.getElementsByClassName('filter');
-
-			for (k = 0; k < filters.length; k++)
-			{
-				if (filters[k].tagName.toLowerCase() == 'select') {
-					filters[k].selectedIndex = 0;
-				}
-				if (filters[k].tagName.toLowerCase() == 'input') {
-					filters[k].value = '';
-				}
-			}
-
-			this.form.submit();
-		});
+		clearfilters[i].addEventListener('click', Joomla.filterClear);
 	}
 
 	// Add event listener for table sorting
 	var clearfilters = document.getElementsByClassName('grid-order');
 	for (i = 0; i < clearfilters.length; i++)
 	{
-		clearfilters[i].addEventListener('click', function(event) {
-			event.preventDefault();
-
-			Joomla.tableOrdering(
-				this.getAttribute('data-order'),
-				this.getAttribute('data-direction'),
-				this.getAttribute('data-task')
-			);
-
-			return false;
-		});
+		clearfilters[i].addEventListener('click', Joomla.gridOrder);
 	}
 
 	// Add event listener for saving table sorting
 	var ordering = document.getElementsByClassName('grid-order-save');
-	for (i = 0; i < ordering.length; i++) {
-		ordering[i].addEventListener('click', function(event) {
-			event.preventDefault();
-
-			var rows = this.getAttribute('data-rows'),
-				task = this.getAttribute('data-task');
-
-			if (rows && task) {
-				Joomla.saveOrder(rows, task);
-			}
-
-			return false;
-		});
+	for (i = 0; i < ordering.length; i++)
+	{
+		ordering[i].addEventListener('click', Joomla.gridOrderSave);
 	}
 
 	// Add event listener for action items
 	var actions = document.getElementsByClassName('grid-action');
-	for (i = 0; i < actions.length; i++) {
-		actions[i].addEventListener('click', function(event) {
-			event.preventDefault();
-
-			var id = this.getAttribute('data-id'),
-				task = this.getAttribute('data-task');
-
-			if (id && task) {
-				return Joomla.listItemTask(id, task);
-			}
-
-			return false;
-		});
+	for (i = 0; i < actions.length; i++)
+	{
+		actions[i].addEventListener('click', Joomla.gridAction);
 	}
 
-	/*$("a.move_up, a.move_down, a.grid_true, a.grid_false, a.trash")
-		.on("click", function(){
-			if ($(this).attr("rel")) {
-				args = JSON.parse($(this).attr("rel").replace(/\'/g, '"'));
-				Joomla.listItemTask(args.id, args.task);
-			}
-		});*/
+	// Attach pagination events
+	// @TODO: Remove inline JS from framework pagiantor
+	//        This will require some co-ordination
+	//Joomla.paginate();
 });
