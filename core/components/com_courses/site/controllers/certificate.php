@@ -62,36 +62,23 @@ class Certificate extends SiteController
 		// Ensure the course exists
 		if (!$course->exists() || !$offering->exists())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=courses'),
-				Lang::txt('COM_COURSES_ERROR_COURSE_OR_OFFERING_NOT_FOUND'),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('COM_COURSES_ERROR_COURSE_OR_OFFERING_NOT_FOUND'));
+			return $this->cancelTask();
 		}
 
 		// Ensure specified user is enrolled in the course
-		//$student = $offering->member(User::get('id'));
 		$student = Member::getInstance(User::get('id'), $course->get('id'), $offering->get('id'), null, 1);
 		if (!$student->exists())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=courses'),
-				Lang::txt('COM_COURSES_ERROR_STUDENT_RECORD_NOT_FOUND'),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('COM_COURSES_ERROR_STUDENT_RECORD_NOT_FOUND'));
+			return $this->cancelTask();
 		}
 
 		$certificate = $course->certificate();
 		if (!$certificate->exists() || !$certificate->hasFile())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=courses'),
-				Lang::txt('COM_COURSES_ERROR_NO_CERTIFICATE_FOR_COURSE'),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('COM_COURSES_ERROR_NO_CERTIFICATE_FOR_COURSE'));
+			return $this->cancelTask();
 		}
 
 		// Path and file name
@@ -136,5 +123,17 @@ class Certificate extends SiteController
 
 		// Output failure message
 		$this->view->display();
+	}
+
+	/**
+	 * Redirect to main page
+	 *
+	 * @return  void
+	 */
+	public function cancelTask()
+	{
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=courses')
+		);
 	}
 }
