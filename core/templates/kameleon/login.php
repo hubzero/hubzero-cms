@@ -35,30 +35,29 @@ defined('_HZEXEC_') or die();
 
 // Load base styles
 $this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/login.css?v=' . filemtime(__DIR__ . '/css/login.css'));
+
 // Load theme
-if ($theme = $this->params->get('theme'))
+$theme = $this->params->get('theme');
+if ($theme == 'custom')
 {
-	if ($theme == 'custom')
-	{
-		$color = $this->params->get('color');
-		$this->addStyleDeclaration(include_once __DIR__ . '/css/themes/custom.php');
-	}
-	else if ($theme != 'gray')
-	{
-		$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/themes/' . $theme . '.css?v=' . filemtime(__DIR__ . '/css/themes/' . $theme . '.css'));
-	}
-}
-// Load language direction CSS
-if ($this->direction == 'rtl')
-{
-	$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/rtl.css?v=' . filemtime(__DIR__ . '/css/common/rtl.css'));
+	$color = $this->params->get('color');
+	$this->addStyleDeclaration(include_once __DIR__ . '/css/themes/custom.php');
 }
 
 $browser = new \Hubzero\Browser\Detector();
+
+$cls = array(
+	'nojs',
+	$this->direction,
+	$theme,
+	$browser->name(),
+	$browser->name() . $browser->major()
+);
 ?>
 <!DOCTYPE html>
-<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $browser->name() . ' ' . $browser->name() . $browser->major(); ?>">
+<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo implode(' ', $cls); ?>">
 	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width" />
 
 		<jdoc:include type="head" />
@@ -72,15 +71,8 @@ $browser = new \Hubzero\Browser\Detector();
 		<!--[if IE 9]>
 			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css?v=<?php echo filemtime(__DIR__ . '/css/browser/ie9.css'); ?>" />
 		<![endif]-->
-		<!--[if IE 8]>
-			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css?v=<?php echo filemtime(__DIR__ . '/css/browser/ie8.css'); ?>" />
-		<![endif]-->
 	</head>
 	<body id="login-body">
-		<div id="bg-canvas-wrapper">
-			<canvas id="bg-canvas"></canvas>
-		</div>
-
 		<jdoc:include type="modules" name="notices" />
 
 		<header id="header" role="banner">
