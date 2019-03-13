@@ -201,7 +201,7 @@ class Inspector extends Obj
 				continue;
 			}
 
-			$fields = $db->getTableColumns($tn, true);
+			$fields = $db->getTableColumns($tn, false);
 
 			if (!(isset($fields['checked_out']) && isset($fields['checked_out_time'])))
 			{
@@ -210,7 +210,7 @@ class Inspector extends Obj
 
 			$values = array(
 				'checked_out' => 0,
-				'checked_out_time' => $fields['checked_out_time']['default']
+				'checked_out_time' => $fields['checked_out_time']->Default
 			);
 
 			if (isset($fields[$tn]['editor']))
