@@ -1234,17 +1234,22 @@ class Sessionsv1_0 extends ApiController
 			$object->session = array(
 				'session' => $sessionid,
 				'status'  => 'stopped',
+				'output' => $out,
 				'stopped' => with(new Date)->toSql()
 			);
 
 			$this->send($object);
 		}
+		// TODO: middleware helper or middleware itself seems to return true/false instead of 1/0
+		// upon failure to figure out what the middleware did, just return the status that was given
+		// even though it generally stops the session anyway
 		else
 		{
 			$object = new stdClass();
 			$object->session = array(
 				'session' => $sessionid,
 				'status' => $status,
+				'output' => $out,
 				'time' => with(new Date)->toSql()
 			);
 			$this->send($object);
