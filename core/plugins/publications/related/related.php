@@ -133,7 +133,7 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 		{
 			$sql1 .= "AND w.access!=1 ";
 		}
-		$sql1 .= "GROUP BY pageid ORDER BY ranking DESC, title LIMIT 10";
+		$sql1 .= "GROUP BY pageid, v.id ORDER BY ranking DESC, title LIMIT 10";
 
 		// Initiate a helper class
 		$model = new \Components\Publications\Models\Publication($publication);
@@ -179,7 +179,7 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 		$sql2 .= " AND C.category = rt.id AND C.category!=8 ";
 		$sql2 .= "AND r.access=0 ";
 		$sql2 .= "AND r.state=1 ";
-		$sql2 .= "GROUP BY r.publication_id ORDER BY r.ranking LIMIT 10";
+		$sql2 .= "GROUP BY r.publication_id, r.id ORDER BY r.ranking LIMIT 10";
 
 		// Build the query that get publications related by tag
 		$sql3 = "SELECT DISTINCT r.publication_id as id, NULL AS pageid, r.id AS version,
@@ -196,7 +196,7 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 				AND r.state=1
 				AND a.object_name='publication'
 				AND a.object_id=" . $publication->id . "
-				GROUP BY r.publication_id
+				GROUP BY r.publication_id, r.id
 				ORDER BY r.ranking
 				LIMIT 10";
 
