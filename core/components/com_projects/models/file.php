@@ -63,7 +63,11 @@ class File extends Obj
 		$this->set('localPath', $localPath); // Path to item within repo
 
 		$fullPath = trim($repoPath, DS) . DS . trim($localPath, DS);
-		$this->set('fullPath', DS . trim($fullPath, DS)); // Full server path to item
+		$fullPath = trim($fullPath, DS);
+		if ($fullPath)
+		{
+			$this->set('fullPath', DS . $fullPath); // Full server path to item
+		}
 
 		// Set defaults
 		$this->defaults();
@@ -137,7 +141,7 @@ class File extends Obj
 	 */
 	public function exists()
 	{
-		return file_exists($this->get('fullPath')) ? true : false;
+		return $this->get('fullPath') && is_file($this->get('fullPath')) ? true : false;
 	}
 
 	/**
