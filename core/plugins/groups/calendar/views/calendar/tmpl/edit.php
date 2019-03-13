@@ -50,6 +50,8 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 {
 	$showImport = true;
 }
+$eventParams = new \Hubzero\Config\Registry($this->event->get('params'));
+$ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 ?>
 
 <?php if ($this->getError()) { ?>
@@ -141,8 +143,8 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 							$publish_up_time = '';
 							if ($publish_up && $publish_up != '0000-00-00 00:00:00')
 							{
-								$publish_up_date = Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->timezone, 'm/d/Y');
-								$publish_up_time = Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->timezone, 'g:i a');
+								$publish_up_date = Date::of($publish_up)->toTimezone($this->timezone, 'm/d/Y', $ignoreDst);
+								$publish_up_time = Date::of($publish_up)->toTimezone($this->timezone, 'g:i a', $ignoreDst);
 							}
 						?>
 						<div class="input-group">
@@ -160,8 +162,8 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 							$publish_down_time = '';
 							if ($publish_down && $publish_down != '0000-00-00 00:00:00')
 							{
-								$publish_down_date = Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->timezone, 'm/d/Y');
-								$publish_down_time = Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->timezone, 'g:i a');
+								$publish_down_date = Date::of($publish_down)->toTimezone($this->timezone, 'm/d/Y', $ignoreDst);
+								$publish_down_time = Date::of($publish_down)->toTimezone($this->timezone, 'g:i a', $ignoreDst);
 							}
 						?>
 						<div class="input-group">
@@ -185,6 +187,10 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 						<?php
 							echo \Components\Events\Helpers\Html::buildTimeZoneSelect($this->timezone, '');
 						?>
+					</label>
+					<label>
+						<input type="checkbox" id="ignore_dst" name="params[ignore_dst]" value="1" <?php echo $ignoreDst ? "checked" : ''; ?>/>
+						<?php echo Lang::txt('PLG_GROUPS_CALENDAR_IGNORE_DST'); ?>
 					</label>
 				</fieldset>
 				<?php

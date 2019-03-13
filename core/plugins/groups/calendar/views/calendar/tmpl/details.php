@@ -35,6 +35,8 @@ defined('_HZEXEC_') or die();
 
 $year  = date("Y", strtotime($this->event->get('publish_up')));
 $month = date("m", strtotime($this->event->get('publish_up')));
+$params = new \Hubzero\Config\Registry($this->event->get('params'));
+$ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
 ?>
 
 <?php if ($this->getError()) { ?>
@@ -140,9 +142,9 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			<tr>
 				<th class="date"></th>
 				<td colspan="3">
-					<?php echo $this->event->get('time_zone') ? Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', true) : Components\Events\Models\EventDate::of($publish_up)->toLocal('l, F d, Y @ h:i a T'); ?>
+					<?php echo $this->event->get('time_zone') ? Date::of($publish_up)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', $ignoreDst) : Date::of($publish_up)->toLocal('l, F d, Y @ h:i a T'); ?>
 					&mdash;
-					<?php echo $this->event->get('time_zone') ? Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', true) : Components\Events\Models\EventDate::of($publish_down)->toLocal('l, F d, Y @ h:i a T'); ?>
+					<?php echo $this->event->get('time_zone') ? Date::of($publish_down)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', $ignoreDst) : Date::of($publish_down)->toLocal('l, F d, Y @ h:i a T'); ?>
 				</td>
 			</tr>
 		<?php else : ?>
