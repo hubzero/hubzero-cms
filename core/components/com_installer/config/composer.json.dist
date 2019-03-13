@@ -1,0 +1,25 @@
+{
+	"name": "hubzero/hubzero-app",
+	"description": "App directory",
+	"repositories": {
+		"hz-installer": {
+			"type": "github",
+			"name": "Hubzero Extension Installer",
+			"description": "Custom installer for Hubzero extensions",
+			"url": "https://github.com/hubzero/extension-installer",
+			"options": {
+			}
+		}
+	},
+	"config": {
+		"github-protocols": ["https"],
+		"github-domains": ["www.github.com"],
+		"preferred-install": {
+			"*": "dist"
+		},
+		"cache-dir": "tmp/cache"
+	},
+	"require": {
+		"hubzero/extension-installer": "dev-master"
+	}
+}
