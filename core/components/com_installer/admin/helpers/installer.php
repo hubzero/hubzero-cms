@@ -53,7 +53,7 @@ class Installer
 		Submenu::addEntry(
 			Lang::txt('COM_INSTALLER_SUBMENU_PACKAGES'),
 			Route::url('index.php?option=com_installer&controller=packages'),
-			$vName == 'repositories'
+			($vName == 'packages' || $vName == 'repositories')
 		);
 		Submenu::addEntry(
 			Lang::txt('COM_INSTALLER_SUBMENU_MIGRATIONS'),

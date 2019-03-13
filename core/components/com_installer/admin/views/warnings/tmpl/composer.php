@@ -27,7 +27,7 @@
 
 $canDo = \Components\Installer\Admin\Helpers\Installer::getActions();
 
-Toolbar::title(Lang::txt('COM_INSTALLER_HEADER_' . $this->getName()), 'install');
+Toolbar::title(Lang::txt('COM_INSTALLER_TITLE_PACKAGES'), 'install');
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences('com_installer');
@@ -35,31 +35,32 @@ if ($canDo->get('core.admin'))
 }
 Toolbar::help('warnings');
 
-Document::setTitle(Lang::txt('COM_INSTALLER_TITLE_' . $this->getName()));
+$example = Component::path('com_installer') . '/config/composer.json.dist';
 ?>
 <div id="installer-warnings">
 	<form action="<?php echo Route::url('index.php?option=com_installer&controller=warnings'); ?>" method="post" name="adminForm" id="item-form">
-		<?php
-		if (!count($this->messages))
-		{
-			echo '<p class="nowarning">' . Lang::txt('COM_INSTALLER_MSG_WARNINGS_NONE') . '</p>';
-		}
-		else
-		{
-			echo Html::sliders('start', 'warning-sliders', array('useCookie' => 1));
-			foreach ($this->messages as $message)
-			{
-				echo Html::sliders('panel', $message['message'], str_replace(' ', '', $message['message']));
-				echo '<div class="warning">' . $message['description'] . '</div>';
-			}
-			echo Html::sliders('panel', Lang::txt('COM_INSTALLER_MSG_WARNINGFURTHERINFO'), 'furtherinfo-pane');
-			echo '<div class="warning">'. Lang::txt('COM_INSTALLER_MSG_WARNINGFURTHERINFODESC') .'</div>';
-			echo Html::sliders('end');
-		}
-		?>
-		<div class="clr"></div>
+		<div class="input-wrap">
+			<p class="error"><?php echo Lang::txt('COM_INSTALLER_MSG_WARNINGS_MISSING_COMPOSER', PATH_APP . '/composer.json'); ?></p>
+			<?php
+			if (file_exists($example)):
+				$contents = file_get_contents($example);
+				if ($contents):
+					?>
+					<label for="sample"><?php echo Lang::txt('COM_INSTALLER_MSG_WARNINGS_MISSING_COMPOSER_SAMPLE'); ?></label>
+					<textarea name="sample" id="sample" cols="100" rows="28"><?php
+					$site = preg_replace('/[^a-zA-Z0-9\-]/', '', strtolower(Config::get('sitename')));
 
-		<input type="hidden" name="boxchecked" value="0" />
-		<?php echo Html::input('token'); ?>
+					$contents = json_decode($contents);
+					$contents->name = $site . '/' . $site . '-app';
+					$contents = json_encode($contents, JSON_PRETTY_PRINT);
+					$contents = str_replace('\/', '/', $contents);
+
+					echo $contents;
+					?></textarea>
+					<?php
+				endif;
+			endif;
+			?>
+		</div>
 	</form>
 </div>
