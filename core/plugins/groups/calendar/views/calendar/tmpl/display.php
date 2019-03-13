@@ -75,6 +75,11 @@ defined('_HZEXEC_') or die();
 		<?php if ($this->eventsCount > 0) : ?>
 			<ol class="calendar-entries">
 				<?php foreach ($this->events as $event) : ?>
+					<?php
+						$params = new \Hubzero\Config\Registry($event->get('params'));
+						$ignoreDst = false;
+						$ignoreDst = $params->get('ignore_dst') == 1 ? true : false;
+					?>
 					<li>
 						<h4 class="entry-title">
 							<a href="<?php echo $event->link(); ?>">
@@ -87,16 +92,16 @@ defined('_HZEXEC_') or die();
 							</dd>
 							<?php if ($event->get('publish_down') && $event->get('publish_down') != '0000-00-00 00:00:00') : ?>
 								<dd class="start-and-end">
-									<?php echo Date::of($event->get('publish_up'))->toLocal('l, F d, Y @ g:i a'); ?>
+									<?php echo Date::of($event->get('publish_up'))->toLocal('l, F d, Y @ g:i a', $ignoreDst); ?>
 									&mdash;
-									<?php echo Date::of($event->get('publish_down'))->toLocal('l, F d, Y @ g:i a'); ?>
+									<?php echo Date::of($event->get('publish_down'))->toLocal('l, F d, Y @ g:i a', $ignoreDst); ?>
 								</dd>
 							<?php else : ?>
 								<dd class="date">
-									<?php echo Date::of($event->get('publish_up'))->toLocal('l, F d, Y'); ?>
+									<?php echo Date::of($event->get('publish_up'))->toLocal('l, F d, Y', $ignoreDst); ?>
 								<dd>
 								<dd class="time">
-									<?php echo Date::of($event->get('publish_up'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?>
+									<?php echo Date::of($event->get('publish_up'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'), $ignoreDst); ?>
 								<dd>
 							<?php endif; ?>
 						</dl>
