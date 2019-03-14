@@ -5,3 +5,4 @@ app/site/**
 app/tmp/**
 core/vendor/**
 *.sublime-*
+.DS_Store
