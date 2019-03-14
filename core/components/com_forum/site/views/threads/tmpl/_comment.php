@@ -88,36 +88,48 @@ defined('_HZEXEC_') or die();
 						$attachment->set('description', $attachment->get('filename'));
 					}
 
-					$link = $this->comment->link() . '&post=' . $attachment->get('post_id') . '&file=' . $attachment->get('filename');
-
-					if ($attachment->isImage())
+					if ($attachment->exists())
 					{
-						if ($attachment->width() > 400)
+						$link = $this->comment->link() . '&post=' . $attachment->get('post_id') . '&file=' . $attachment->get('filename');
+
+						if ($attachment->isImage())
 						{
-							$html = '<p><a href="' . Route::url($link) . '" rel="external"><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+							if ($attachment->width() > 400)
+							{
+								$html = '<p><a href="' . Route::url($link) . '" rel="external"><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+							}
+							else
+							{
+								$html = '<p><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+							}
 						}
 						else
 						{
-							$html = '<p><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+							$html  = '<a class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">';
+							$html .= '<p class="attachment-description">' . $attachment->get('description') . '</p>';
+							$html .= '<p class="attachment-meta">';
+							$html .= '<span class="attachment-size">' . Hubzero\Utility\Number::formatBytes($attachment->size()) . '</span>';
+							$html .= '<span class="attachment-action">' . Lang::txt('COM_FORUM_CLICK_TO_DOWNLOAD') . '</span>';
+							$html .= '</p>';
+							$html .= '</a>';
 						}
 					}
 					else
 					{
-						$html  = '<a class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">';
+						$html  = '<div class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" title="' . $this->escape($attachment->get('description')) . '">';
 						$html .= '<p class="attachment-description">' . $attachment->get('description') . '</p>';
 						$html .= '<p class="attachment-meta">';
-						$html .= '<span class="attachment-size">' . Hubzero\Utility\Number::formatBytes($attachment->size()) . '</span>';
-						$html .= '<span class="attachment-action">' . Lang::txt('COM_FORUM_CLICK_TO_DOWNLOAD') . '</span>';
+						$html .= '<span class="attachment-size">' . $attachment->get('filename') . '</span>';
+						$html .= '<span class="attachment-action">' . Lang::txt('COM_FORUM_ERROR_FILE_NOT_FOUND') . '</span>';
 						$html .= '</p>';
-						$html .= '</a>';
+						$html .= '</div>';
 					}
 
 					echo $html;
 				}
 				?>
 			</div><!-- / .comment-attachments -->
-			<?php if (
-						$this->config->get('access-manage-thread')
+			<?php if ($this->config->get('access-manage-thread')
 						||
 						(!$this->comment->get('parent') && $this->comment->get('created_by') == User::get('id') &&
 							(

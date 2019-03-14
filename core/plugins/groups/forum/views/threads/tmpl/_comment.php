@@ -94,28 +94,41 @@ defined('_HZEXEC_') or die();
 						$attachment->set('description', $attachment->get('filename'));
 					}
 
-					$link = $this->comment->link() . '/' . $attachment->get('post_id') . '/' . $attachment->get('filename');
-
-					if ($attachment->isImage())
+					if ($attachment->exists())
 					{
-						if ($attachment->width() > 400)
+						$link = $this->comment->link() . '/' . $attachment->get('post_id') . '/' . $attachment->get('filename');
+
+						if ($attachment->isImage())
 						{
-							$html = '<p><a href="' . Route::url($link) . '"><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+							if ($attachment->width() > 400)
+							{
+								$html = '<p><a href="' . Route::url($link) . '"><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+							}
+							else
+							{
+								$html = '<p><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+							}
 						}
 						else
 						{
-							$html = '<p><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+							$html  = '<a class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">';
+							$html .= '<p class="attachment-description">' . $attachment->get('description') . '</p>';
+							$html .= '<p class="attachment-meta">';
+							$html .= '<span class="attachment-size">' . Hubzero\Utility\Number::formatBytes($attachment->size()) . '</span>';
+							$html .= '<span class="attachment-action">' . Lang::txt('PLG_GROUPS_FORUM_CLICK_TO_DOWNLOAD') . '</span>';
+							$html .= '</p>';
+							$html .= '</a>';
 						}
 					}
 					else
 					{
-						$html  = '<a class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">';
+						$html  = '<div class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" title="' . $this->escape($attachment->get('description')) . '">';
 						$html .= '<p class="attachment-description">' . $attachment->get('description') . '</p>';
 						$html .= '<p class="attachment-meta">';
-						$html .= '<span class="attachment-size">' . Hubzero\Utility\Number::formatBytes($attachment->size()) . '</span>';
-						$html .= '<span class="attachment-action">' . Lang::txt('Click to download') . '</span>';
+						$html .= '<span class="attachment-size">' . $attachment->get('filename') . '</span>';
+						$html .= '<span class="attachment-action">' . Lang::txt('PLG_GROUPS_FORUM_ERROR_FILE_NOT_FOUND') . '</span>';
 						$html .= '</p>';
-						$html .= '</a>';
+						$html .= '</div>';
 					}
 
 					echo $html;
@@ -124,13 +137,11 @@ defined('_HZEXEC_') or die();
 			</div><!-- / .comment-attachments -->
 		<?php if ($this->group->published == 1) { ?>
 			<p class="comment-options">
-			<?php if (
-						$this->config->get('access-manage-thread')
-					 || $this->config->get('access-delete-thread')
-					 || $this->config->get('access-edit-thread')
-					 || $this->config->get('access-delete-post')
-					 || $this->config->get('access-edit-post')
-					) { ?>
+			<?php if ($this->config->get('access-manage-thread')
+				 || $this->config->get('access-delete-thread')
+				 || $this->config->get('access-edit-thread')
+				 || $this->config->get('access-delete-post')
+				 || $this->config->get('access-edit-post')) { ?>
 				<?php if ($this->comment->get('parent') && ($this->config->get('access-delete-post') || $this->comment->get('created_by') == User::get('id'))) { ?>
 					<a class="icon-delete delete" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo Route::url($this->comment->link('delete')); ?>"><!--
 						--><?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?><!--
