@@ -91,7 +91,7 @@ class PageMacro extends WikiMacro
 		{
 			$page = rtrim($page, '/');
 
-			$row = \Components\Wiki\Models\Page::oneByPagename($page, $this->domain, $this->domain_id);
+			$row = \Components\Wiki\Models\Page::oneByPath($page, $this->domain, $this->domain_id);
 		}
 
 		if (!$row->exists())
