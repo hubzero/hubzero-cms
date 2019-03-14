@@ -210,7 +210,7 @@ $schema = $metaElements->getSchema();
 		if ($this->publication->groupOwner())
 		{
 			$cite->organization = $this->publication->groupOwner('description');
-			$cite->org_url = '/groups/' . $this->publication->groupOwner('cn');
+			$cite->location = '/groups/' . $this->publication->groupOwner('cn');
 		}
 		if ($this->publication->version_label > 1)
 		{
@@ -280,4 +280,3 @@ if (($this->publication->params->get('show_notes')) && $this->publication->get('
 	$this->view('_bundle_metadata')
 		->set('bundle', $this->bundle)
 		->display();*/
-

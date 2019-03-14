@@ -343,8 +343,7 @@ class Html
 
 		$cconfig  = Component::params('com_citations');
 
-		$template = "{AUTHORS} ({YEAR}). <b>{TITLE/CHAPTER}</b>. <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b> {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}. {VERSION}. {PUBLISHER}. doi:{DOI}";
-
+		$template = "{AUTHORS} ({YEAR}). <b>{TITLE/CHAPTER}</b>. <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b> {PAGES}, <a href='{LOCATION}' rel='internal'>{ORGANIZATION}</a>, {INSTITUTION}, {SCHOOL}, {MONTH}, {ISBN/ISSN}. {VERSION}. {PUBLISHER}. doi:{DOI}";
 		$formatter = new \Components\Citations\Helpers\Format();
 		$formatter->setTemplate($template);
 
@@ -370,11 +369,6 @@ class Html
 			else
 			{
 				$formatted = str_replace('doi:', '', $formatted);
-			}
-
-			if (array_key_exists('organization', $cite) && 
-				array_key_exists('org_url', $cite)) {
-				$formatted = str_replace($cite->organization, '<a href="' . $cite->org_url . '" rel="internal">' . $cite->organization . '</a>', $formatted);
 			}
 
 			$html .= $formatted;
