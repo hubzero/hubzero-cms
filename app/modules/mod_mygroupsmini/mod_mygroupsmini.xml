@@ -46,7 +46,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="moduleclass_sfx" type="text" default="" label="MOD_MYGROUPSMINI_PARAM_CLASS_LABEL" description="MOD_MYGROUPSMINI_PARAM_CLASS_DESC" />
+				<field name="moduleclass" type="text" default="" label="MOD_MYGROUPSMINI_PARAM_CLASS_LABEL" description="MOD_MYGROUPSMINI_PARAM_CLASS_DESC" />
 				<field name="limit" type="text" default="5" label="MOD_MYGROUPSMINI_PARAM_LIMIT_LABEL" description="MOD_MYGROUPSMINI_PARAM_LIMIT_DESC" member_dashboard="1" />
 				<field name="include_archived" type="list" default="1" label="MOD_MYGROUPSMINI_PARAM_ARCHIVED_LABEL" description="MOD_MYGROUPSMINI_PARAM_ARCHIVED_DESC">
 					<option value="1">JYES</option>

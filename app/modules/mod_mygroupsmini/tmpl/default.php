@@ -72,9 +72,6 @@ $this->css()
       			<li>
       				<a class="icon-plus" href="<?php echo Route::url('index.php?option=com_groups&task=new'); ?>"><?php echo Lang::txt('MOD_MYGROUPSMINI_NEW_GROUP'); ?></a></li>
       			</li>
-      			<?php /*if ($this->params->get('button_show_all', 1)) { ?>
-      				<p><a class="icon-browse" href="<?php echo Route::url('index.php?option=com_groups&task=browse'); ?>"><?php echo Lang::txt('MOD_MYGROUPS_ALL_GROUPS'); ?></a></p>
-      			<?php }*/ ?>
       </ul>
       	<?php } ?>
       </div>
