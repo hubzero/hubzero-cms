@@ -378,7 +378,7 @@ class Jobs extends AdminController
 	 *
 	 * @param    object  $job       Job entry
 	 * @param   integer  $uid       User ID
-	 * @param   object   $database  JDatabase
+	 * @param   object   $database  Database
 	 * @return  integer
 	 */
 	private function _checkQuota($job, $uid, $database)

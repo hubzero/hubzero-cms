@@ -61,7 +61,7 @@ class Archive extends Obj
 	private $_pages_count = null;
 
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var object
 	 */

@@ -39,9 +39,9 @@ use Hubzero\Plugin\Params;
 use User;
 use Lang;
 
-require_once(__DIR__ . DS . 'post.php');
-require_once(__DIR__ . DS . 'following.php');
-require_once(__DIR__ . DS . 'collection.php');
+require_once __DIR__ . DS . 'post.php';
+require_once __DIR__ . DS . 'following.php';
+require_once __DIR__ . DS . 'collection.php';
 
 /**
  * Collections archive model
@@ -63,7 +63,7 @@ class Archive extends Obj
 	private $_object_id = null;
 
 	/**
-	 * JDatabase
+	 * Database
 	 *
 	 * @var object
 	 */
@@ -649,7 +649,7 @@ class Archive extends Obj
 
 			if (file_exists($path))
 			{
-				include_once($path);
+				include_once $path;
 
 				$cls = __NAMESPACE__ . '\\Item\\' . ucfirst($option);
 			}

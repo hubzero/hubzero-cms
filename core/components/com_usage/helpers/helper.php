@@ -306,13 +306,13 @@ class Helper
 			$newarr[$i] = $v;
 			$i++;
 		}
-		return($newarr);
+		return $newarr;
 	}
 
 	/**
 	 * Check for data for a date
 	 *
-	 * @param      object $db       JDatabase
+	 * @param      object $db        Database
 	 * @param      string $yearmonth YYYY-MM
 	 * @param      string $period    Time period to check for
 	 * @return     boolean True if data is found
@@ -327,15 +327,15 @@ class Helper
 		$result = $db->loadResult();
 		if ($result && $result > 0)
 		{
-			return(true);
+			return true;
 		}
-		return(false);
+		return false;
 	}
 
 	/**
 	 * Check for domain class data
 	 *
-	 * @param      object $db       JDatabase
+	 * @param      object $db        Database
 	 * @param      string $yearmonth YYYY-MM
 	 * @return     boolean True if data is found
 	 */
@@ -348,15 +348,15 @@ class Helper
 		$result = $db->loadResult();
 		if ($result && $result > 0)
 		{
-			return(true);
+			return true;
 		}
-		return(false);
+		return false;
 	}
 
 	/**
 	 * Check for region data for a date
 	 *
-	 * @param      object $db       JDatabase
+	 * @param      object $db        Database
 	 * @param      string $yearmonth YYYY-MM
 	 * @return     boolean True if data is found
 	 */
@@ -369,9 +369,9 @@ class Helper
 		$result = $db->loadResult();
 		if ($result && $result > 0)
 		{
-			return(true);
+			return true;
 		}
-		return(false);
+		return false;
 	}
 
 	/**
@@ -393,15 +393,15 @@ class Helper
 			case 'fiscalyear':
 				if ($month <= 9)
 				{
-					return("FY " . $year);
+					return "FY " . $year;
 				}
 				else
 				{
-					return("FY " . ($year + 1));
+					return "FY " . ($year + 1);
 				}
 			break;
 			case 'calyear':
-				return($year);
+				return $year;
 			break;
 			case 'quarter':
 				if ($month <= 3)
@@ -420,16 +420,16 @@ class Helper
 				{
 					$qtr = '4th';
 				}
-				return($qtr .' Quarter ' . $year);
+				return $qtr .' Quarter ' . $year;
 			break;
 			default:
 				if ($day > 0)
 				{
-					return(sprintf("%d/%d/%d", $month, $day, $year));
+					return sprintf("%d/%d/%d", $month, $day, $year);
 				}
 				else
 				{
-					return(sprintf("%d/%d", $month, $year));
+					return sprintf("%d/%d", $month, $year);
 				}
 			break;
 		}
@@ -450,11 +450,11 @@ class Helper
 		$day   = substr($seldate, 8, 2);
 		if ($day > 0)
 		{
-			return(sprintf("%02d/%02d/%04d", $month, $day, $year));
+			return sprintf("%02d/%02d/%04d", $month, $day, $year);
 		}
 		else
 		{
-			return(sprintf("%02d/%04d", $month, $year));
+			return sprintf("%02d/%04d", $month, $year);
 		}
 	}
 
@@ -476,11 +476,11 @@ class Helper
 			{
 				if (substr($val['date'], 0, strlen($seldate)) == $seldate)
 				{
-					return($val[$valkey]);
+					return $val[$valkey];
 				}
 			}
 		}
-		return(0);
+		return 0;
 	}
 
 	/**
@@ -494,7 +494,7 @@ class Helper
 	 */
 	public static function seldate_next($seldate, $period)
 	{
-		return(self::seldate_shift($seldate, $period, 1));
+		return self::seldate_shift($seldate, $period, 1);
 	}
 
 	/**
@@ -508,7 +508,7 @@ class Helper
 	 */
 	public function seldate_prev($seldate, $period)
 	{
-		return(self::seldate_shift($seldate, $period, 0));
+		return self::seldate_shift($seldate, $period, 0);
 	}
 
 	/**
@@ -526,7 +526,7 @@ class Helper
 		{
 			$date = self::seldate_shift($date, 'month', 1);
 		}
-		return($date);
+		return $date;
 	}
 
 	/**
@@ -544,7 +544,7 @@ class Helper
 		{
 			$date = self::seldate_shift($date, 'month', 0);
 		}
-		return($date);
+		return $date;
 	}
 
 	/**
@@ -599,7 +599,7 @@ class Helper
 				$month = 12;
 			}
 		}
-		return(sprintf("%04d-%02d-%02d", $year, $month, $day));
+		return sprintf("%04d-%02d-%02d", $year, $month, $day);
 	}
 
 	/**
@@ -673,7 +673,7 @@ class Helper
 				break;
 			}
 		}
-		return(sprintf("%04d-%02d-%02d", $year, $month, $day));
+		return sprintf("%04d-%02d-%02d", $year, $month, $day);
 	}
 
 	/**
@@ -720,7 +720,7 @@ class Helper
 			}
 			$arr[$i]['sortkey'] .= sprintf($format, $dateval, $arr[$i]['total']) . strtr(strtoupper($arr[$i]['name']), $reversealpha);
 		}
-		return($arr);
+		return $arr;
 	}
 
 	/**
@@ -733,7 +733,7 @@ class Helper
 	 */
 	public static function seldate_valuedescsort(&$arr)
 	{
-		return(usort($arr, "arraykeyeddesccmp"));
+		return usort($arr, "arraykeyeddesccmp");
 	}
 
 	/**
@@ -749,7 +749,7 @@ class Helper
 	{
 		if ($format == 1)
 		{
-			return(number_format($value));
+			return number_format($value);
 		}
 		elseif ($format == 2 || $format == 3)
 		{
@@ -780,23 +780,23 @@ class Helper
 			}
 			if ($format == 2)
 			{
-				return(sprintf("%s%d:%02d", $day, $hr, $min));
+				return sprintf("%s%d:%02d", $day, $hr, $min);
 			}
 			else
 			{
-				return(sprintf("%s%d:%02d:%02d", $day, $hr, $min, $sec));
+				return sprintf("%s%d:%02d:%02d", $day, $hr, $min, $sec);
 			}
 		}
 		else
 		{
-			return($value);
+			return $value;
 		}
 	}
 
 	/**
 	 * Build a list of select options
 	 *
-	 * @param   object   $db             JDatabase
+	 * @param   object   $db             Database
 	 * @param   string   $enddate        Parameter description (if any) ...
 	 * @param   integer  $thisyear       Current year
 	 * @param   array    $monthsReverse  List of months (Dec -> Jan)
