@@ -15,7 +15,15 @@ class Migration20170831000000ComWhatsnew extends Base
 	 **/
 	public function up()
 	{
-		$this->addComponentEntry('whatsnew');
+		// Create component entry but do NOT create a menu item as
+		// com_plugins is purposely separate from the 'components' list.
+		//
+		// string  $name            Component name
+		// string  $option          com_xyz
+		// int     $enabled         Whether or not the component should be enabled
+		// string  $params          Component params (if already known)
+		// bool    $createMenuItem  Create an admin menu item for this component
+		$this->addComponentEntry('whatsnew', null, 1, '', false);
 	}
 
 	/**
