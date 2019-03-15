@@ -84,7 +84,7 @@ $this->js();
 
 			<div class="input-wrap">
 				<label for="field-description"><?php echo Lang::txt('COM_TAGS_FIELD_DESCRIPTION'); ?>:</label><br />
-				<?php echo $this->editor('fields[description]', stripslashes($this->tag->get('description')), 50, 4, 'field-description', array('class' => 'minimal')); ?>
+				<?php echo $this->editor('fields[description]', stripslashes($this->tag->get('description')), 50, 4, 'field-description', array('class' => 'minimal', 'buttons' => false)); ?>
 			</div>
 		</fieldset>
 	</div>

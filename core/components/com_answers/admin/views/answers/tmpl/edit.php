@@ -69,7 +69,7 @@ $this->js();
 				</div>
 				<div class="input-wrap">
 					<label for="field-answer"><?php echo Lang::txt('COM_ANSWERS_FIELD_ANSWER'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<?php echo $this->editor('answer[answer]', $this->escape($this->row->get('answer')), 50, 15, 'field-answer', array('class' => 'required minimal no-footer')); ?>
+					<?php echo $this->editor('answer[answer]', $this->escape($this->row->get('answer')), 50, 15, 'field-answer', array('class' => 'required minimal no-footer', 'buttons' => false)); ?>
 				</div>
 			</fieldset>
 		</div>
