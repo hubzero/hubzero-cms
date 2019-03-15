@@ -141,7 +141,7 @@ class File extends Obj
 	 */
 	public function exists()
 	{
-		return $this->get('fullPath') && is_file($this->get('fullPath')) ? true : false;
+		return $this->get('fullPath') && is_file($this->get('fullPath'));
 	}
 
 	/**
