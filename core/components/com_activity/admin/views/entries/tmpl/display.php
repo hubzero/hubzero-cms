@@ -49,10 +49,11 @@ $this->css()
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
-	<div id="container1" class="<?php echo $this->option; ?>-chart" data-datasets="<?php echo $this->option; ?>-data"></div>
+	<div id="container1" class="<?php echo $this->option; ?>-chart chart" data-datasets="<?php echo $this->option; ?>-data"></div>
 	<script type="application/json" id="<?php echo $this->option; ?>-data">
 		<?php
 		$c = '';
+		$top = 0;
 		if ($this->data)
 		{
 			$c = array();
