@@ -146,7 +146,7 @@ Html::behavior('tooltip');
 				<td>
 					<?php echo $row->get('treename'); ?>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&page_id=' . $this->filters['page_id'] . '&' . Session::getFormToken() . '=1'); ?>">
 							<?php echo \Hubzero\Utility\Str::truncate($this->escape(stripslashes($row->get('ctext'))), 90); ?>
 						</a>
 					<?php } else { ?>
