@@ -8,7 +8,7 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for removing items from 'components' menu (they have hard-coded menu links elsewhere)
  **/
-class Migration20190306000000ModAdminmenu extends Base
+class Migration20190306000000ComWhatsnew extends Base
 {
 	/**
 	 * List of tables
@@ -16,26 +16,7 @@ class Migration20190306000000ModAdminmenu extends Base
 	 * @var  array
 	 **/
 	public static $components = array(
-		'com_cache',
-		'com_categories',
-		'com_checkin',
-		'com_config',
-		'com_cpanel',
-		'com_groups',
-		'com_help',
-		'com_installer',
-		'com_languages',
-		'com_login',
-		'com_menus',
-		'com_mailto',
-		'com_members',
-		'com_media',
-		'com_modules',
-		'com_plugins',
-		'com_redirect',
-		'com_system',
-		'com_templates',
-		'com_users'
+		'com_whatsnew'
 	);
 
 	/**
