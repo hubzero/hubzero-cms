@@ -206,11 +206,14 @@ class Categories extends AdminController
 		$items = $categories->paginated('limitstart', 'limit');
 		$itemsArray = array();
 		$ordering = array();
+
 		$levels = Category::all()
 			->whereEquals('extension', $filters['extension'])
 			->group('level')
+			->group('id')
 			->order('level', 'asc')
 			->rows();
+
 		$fLevels = array();
 		foreach ($levels as $level)
 		{
