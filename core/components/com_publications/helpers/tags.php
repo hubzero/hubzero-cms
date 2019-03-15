@@ -82,7 +82,7 @@ class Tags extends \Hubzero\Base\Obj
 	/**
 	 * Constructor
 	 *
-	 * @param      object $db     JDatabase
+	 * @param      object $db     Database
 	 * @param      array  $config Optional configurations
 	 * @return     void
 	 */

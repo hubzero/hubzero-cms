@@ -60,7 +60,7 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 	/**
 	 * Print Region List from Database
 	 *
-	 * @param      object &$db     JDatabase
+	 * @param      object &$db     Database
 	 * @param      string $region  Parameter description (if any) ...
 	 * @param      mixed  $t       Parameter description (if any) ...
 	 * @param      mixed  $enddate Parameter description (if any) ...
@@ -258,7 +258,7 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 	 *
 	 * @param      string $option        Component name
 	 * @param      string $task          Component task
-	 * @param      object $db            JDatabase
+	 * @param      object $db            Database
 	 * @param      array  $months        Month names (Jan -> Dec)
 	 * @param      array  $monthsReverse Month names in reverse (Dec -> Jan)
 	 * @param      string $enddate       Time period

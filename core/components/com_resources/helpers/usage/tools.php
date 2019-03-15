@@ -33,6 +33,8 @@
 namespace Components\Resources\Helpers\Usage;
 
 use Components\Resources\Helpers\Usage as Base;
+use Lang;
+use Date;
 
 /**
  * Extended resource stats class (Tools)
@@ -91,7 +93,7 @@ class Tools extends Base
 	/**
 	 * Constructor
 	 *
-	 * @param      object  &$db      JDatabase
+	 * @param      object  &$db      Database
 	 * @param      integer $resid    Resource ID
 	 * @param      integer $type     Resource type
 	 * @param      integer $rating   Resource rating
@@ -188,7 +190,6 @@ class Tools extends Base
 				{
 					$this->avg_exec = $this->avg_cpu;
 				}
-				# $this->avg_exec = $this->avg_wall;
 
 				if ($this->tot_cpu == 0)
 				{

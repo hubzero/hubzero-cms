@@ -33,6 +33,8 @@
 namespace Components\Resources\Helpers\Usage;
 
 use Components\Resources\Helpers\Usage as Base;
+use Lang;
+use Date;
 
 /**
  * Extended resource stats class (And More)
@@ -63,7 +65,7 @@ class Andmore extends Base
 	/**
 	 * Constructor
 	 *
-	 * @param      object  &$db      JDatabase
+	 * @param      object  &$db      Database
 	 * @param      integer $resid    Resource ID
 	 * @param      integer $type     Resource type
 	 * @param      integer $rating   Resource rating
@@ -179,4 +181,3 @@ class Andmore extends Base
 		}
 	}
 }
-

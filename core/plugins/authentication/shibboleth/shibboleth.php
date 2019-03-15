@@ -420,11 +420,11 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 			self::log('session attributes: ', $attrs);
 			self::log('cookie', $_COOKIE);
 			self::log('server attributes: ', $_SERVER);
-			//JFactory::getSession()->set('shibboleth.session', $attrs);
+
 			$key = trim(base64_encode(openssl_random_pseudo_bytes(128)));
 			setcookie('shib-session', $key);
 			$dbh = App::get('db');
-			$dbh->setQuery('INSERT INTO #__shibboleth_sessions(session_key, data) VALUES('.$dbh->quote($key).', '.$dbh->quote(json_encode($attrs)).')');
+			$dbh->setQuery('INSERT INTO `#__shibboleth_sessions` (session_key, data) VALUES('.$dbh->quote($key).', '.$dbh->quote(json_encode($attrs)).')');
 			$dbh->execute();
 		}
 	}
