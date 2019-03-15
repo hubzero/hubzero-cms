@@ -177,4 +177,3 @@ function dv_dataview_list()
 	</div>
 <?php
 }
-?>
