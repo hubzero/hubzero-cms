@@ -47,8 +47,7 @@ $userc = is_object($xprofilec) ? $xprofilec->get('name') : '';
 
 $params = new \Hubzero\Html\Parameter($this->row->params, Component::path($this->option) . DS . 'events.xml');
 
-$this->js('calendar.rc4.js')
-	->js('events.js');
+$this->js('events.js');
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" class="editform form-validate" id="item-form" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
