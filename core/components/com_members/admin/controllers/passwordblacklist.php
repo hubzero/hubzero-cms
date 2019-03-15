@@ -212,7 +212,7 @@ class PasswordBlacklist extends AdminController
 				if (!$row->destroy())
 				{
 					Notify::error($row->getError());
-					continue;å
+					continue;
 				}
 
 				$i++;
