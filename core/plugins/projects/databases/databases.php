@@ -160,19 +160,19 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		try
 		{
 			// Check if the plugin parameters the two mysql accounts are properly set
-			$db_opt_rw['driver']   = 'mysqli';
+			$db_opt_rw['driver']   = 'mysql';
 			$db_opt_rw['host']     = $this->params->get('db_host');
 			$db_opt_rw['user']     = $this->params->get('db_user');
 			$db_opt_rw['password'] = $this->params->get('db_password');
 			$db_opt_rw['prefix']   = '';
-			$db_rw = JDatabase::getInstance($db_opt_rw);
+			$db_rw = Hubzero\Database\Driver::getInstance($db_opt_rw);
 
-			$db_opt_ro['driver']   = 'mysqli';
+			$db_opt_ro['driver']   = 'mysql';
 			$db_opt_ro['host']     = $this->params->get('db_host');
 			$db_opt_ro['user']     = $this->params->get('db_ro_user');
 			$db_opt_ro['password'] = $this->params->get('db_ro_password');
 			$db_opt_ro['prefix']   = '';
-			$db_ro = JDatabase::getInstance($db_opt_ro);
+			$db_ro = Hubzero\Database\Driver::getInstance($db_opt_ro);
 
 			if ($db_rw->getErrorNum() > 0 || $db_ro->getErrorNum() > 0)
 			{
@@ -282,7 +282,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		{
 			if ($raw_op)
 			{
-				print json_encode(array('status' => 'success', 'data' => $table));
+				echo json_encode(array('status' => 'success', 'data' => $table));
 				exit();
 			}
 			else
@@ -651,7 +651,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 		if (!$file)
 		{
-			print json_encode(array('status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')));
+			echo json_encode(array('status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')));
 			return;
 		}
 
@@ -828,7 +828,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			$table['rec_total'] = $count;
 			$table['rec_display'] = $display_count;
 
-			print json_encode(array('status' => 'success', 'data' => $table));
+			echo json_encode(array('status' => 'success', 'data' => $table));
 		}
 	}
 
@@ -951,7 +951,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 		if (!$file)
 		{
-			print json_encode(array('status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')));
+			echo json_encode(array('status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')));
 			return;
 		}
 
@@ -1145,7 +1145,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 		$url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI']) . "/projects/" . $this->model->get('alias') . "/databases/";
 
-		print json_encode(array('status' => 'success', 'data' => $url));
+		echo json_encode(array('status' => 'success', 'data' => $url));
 
 		// Success message
 		if (!empty($this->_msg))
@@ -1499,20 +1499,20 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		// Create database if it doesn't exist
 		$sql = "CREATE DATABASE IF NOT EXISTS " . 'prj_db_' . $id;
 
-		$opt['driver']   = 'mysqli';
+		$opt['driver']   = 'mysql';
 		$opt['host']     = $this->params->get('db_host');
 		$opt['user']     = $this->params->get('db_user');
 		$opt['password'] = $this->params->get('db_password');
 		$opt['prefix']   = '';
 
-		$db = JDatabase::getInstance($opt);
+		$db = Hubzero\Database\Driver::getInstance($opt);
 
 		$db->setQuery($sql);
 		$db->query();
 
 		$opt['database'] = 'prj_db_' . $id;
 
-		$db = JDatabase::getInstance($opt);
+		$db = Hubzero\Database\Driver::getInstance($opt);
 
 		return $db;
 	}
