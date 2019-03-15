@@ -95,7 +95,7 @@ $this->js();
 
 				<div class="input-wrap">
 					<label for="field-description"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_DESCRIPTION'); ?></label>
-					<?php echo $this->editor('fields[description]', $this->escape($this->row->get('description')), 35, 10, 'field-description', array('class' => 'minimal no-footer')); ?>
+					<?php echo $this->editor('fields[description]', $this->escape($this->row->get('description')), 35, 10, 'field-description', array('class' => 'required minimal no-footer', 'buttons' => false)); ?>
 				</div>
 
 				<div class="grid">
