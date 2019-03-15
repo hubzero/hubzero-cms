@@ -111,11 +111,30 @@ $this->view('_edit_script')
 		<?php if ($this->row->standalone == 1 && !$this->row->type->isForTools()) { ?>
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('Custom fields'); ?></span></legend>
-				<div class="input-wrap" id="resource-custom-fields">
+				<div id="resource-custom-fields">
 					<?php
 					include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
-					$elements = new \Components\Resources\Models\Elements($data, $type->customFields);
-					echo $elements->render();
+					$elements = new Components\Resources\Models\Elements($data, $type->customFields);
+
+					$fields = $elements->getElements('nbtag');
+
+					if (count($fields) > 0)
+					{
+						foreach ($fields as $field)
+						{
+							?>
+							<div class="input-wrap">
+								<?php
+								if ($field->label)
+								{
+									echo $field->label;
+								}
+								echo $field->element;
+								?>
+							</div>
+							<?php
+						}
+					}
 					?>
 				</div>
 			</fieldset>

@@ -81,7 +81,7 @@ $this->js();
 
 				<div class="input-wrap">
 					<label for="field-question"><?php echo Lang::txt('COM_ANSWERS_FIELD_QUESTION'); ?>:</label><br />
-					<?php echo $this->editor('question[question]', $this->escape($this->row->get('question')), 50, 15, 'field-question', array('class' => 'minimal no-footer')); ?>
+					<?php echo $this->editor('question[question]', $this->escape($this->row->get('question')), 50, 15, 'field-question', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_ANSWERS_FIELD_TAGS_HINT'); ?>">
