@@ -55,7 +55,7 @@ $this->js();
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
-		<div class="colspan7">
+		<div class="col span7">
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
@@ -94,7 +94,7 @@ $this->js();
 						<td>
 							<?php echo $this->row->get('page_id'); ?>
 							<input type="hidden" name="fields[page_id]" id="field-page_id" value="<?php echo $this->escape($this->row->get('page_id')); ?>" />
-							<input type="hidden" name="pageid" value="<?php echo $this->escape($this->row->get('page_id')); ?>" />
+							<input type="hidden" name="page_id" value="<?php echo $this->escape($this->row->get('page_id')); ?>" />
 						</td>
 					</tr>
 				</tbody>
