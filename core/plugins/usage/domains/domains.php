@@ -62,7 +62,7 @@ class plgUsageDomains extends \Hubzero\Plugin\Plugin
 	 *
 	 * @param      string $option        Component name
 	 * @param      string $task          Component task
-	 * @param      object $db            JDatabase
+	 * @param      object $db            Database
 	 * @param      array  $months        Month names (Jan -> Dec)
 	 * @param      array  $monthsReverse Month names in reverse (Dec -> Jan)
 	 * @param      string $enddate       Time period
@@ -99,11 +99,11 @@ class plgUsageDomains extends \Hubzero\Plugin\Plugin
 		$html .= \Components\Usage\Helpers\Helper::toplist($db, 10, 1, $enddate);
 		$html .= \Components\Usage\Helpers\Helper::toplist($db, 17, 2, $enddate);
 		$html .= \Components\Usage\Helpers\Helper::toplist($db, 11, 3, $enddate);
-		$html .= \Components\Usage\Helpers\Helper::toplist($db,  9, 4, $enddate);
+		$html .= \Components\Usage\Helpers\Helper::toplist($db, 9, 4, $enddate);
 		$html .= \Components\Usage\Helpers\Helper::toplist($db, 12, 5, $enddate);
 		$html .= \Components\Usage\Helpers\Helper::toplist($db, 19, 6, $enddate);
 		$html .= \Components\Usage\Helpers\Helper::toplist($db, 18, 7, $enddate);
-		$html .= \Components\Usage\Helpers\Helper::toplist($db,  7, 8, $enddate);
+		$html .= \Components\Usage\Helpers\Helper::toplist($db, 7, 8, $enddate);
 
 		// Return HTML
 		return $html;
