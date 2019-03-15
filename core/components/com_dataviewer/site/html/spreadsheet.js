@@ -68,7 +68,7 @@ jQuery(document).ready(function($) {
 		"aaData": dv_data.aaData,
 		"aoColumns": dv_data.aoColumns,
 		"bProcessing": true,
-		"bServerSide": false,
+		"bServerSide": dv_settings.serverside,
 		"sAjaxSource": (dv_settings.serverside)? dv_settings.data_url + '&type=json&format=raw': null,
 		"sDom": '<"H"lpf<"clear">>rt<"F"lip<"clear">>',
 		"sPaginationType": "full_numbers",
@@ -227,7 +227,6 @@ jQuery(document).ready(function($) {
 
 	$('tfoot input').each(function(i) {
 		$(this).data('filter-value', '');
-
 		if (dv_settings.show_filter_options) {
 			$(this).autocomplete({
 				disabled: true,
@@ -326,7 +325,6 @@ jQuery(document).ready(function($) {
 				title: res.title,
 				modal: true
 			}).find('.dv_image').lazyload({failure_limit:1000});
-
 		}
 	}
 
@@ -810,9 +808,7 @@ jQuery(document).ready(function($) {
 				$('#dv_filters_tabs').append(filter_div);
 				$('#dv_filters_tabs ul').append(tpl_title.supplant({'id': i, 'name': dv_data.filters[i].filter_name}));
 			}
-
 		}
-
 		$('#dv_filters_tabs').tabs("refresh").tabs( 'option', "active", 0);
 
 
