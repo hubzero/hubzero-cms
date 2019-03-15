@@ -3,7 +3,7 @@
  * HUBzero CMS
  *
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -33,6 +33,23 @@
 
 error_reporting(-1);
 ini_set('display_errors', 0);
+
+/*
+|--------------------------------------------------------------------------
+| Set PHP default timezone
+|--------------------------------------------------------------------------
+|
+| PHP gets very angry if you don't set the default date timezone. While
+| we're here, we'll set the internal encoding to UTF-8 for good measure.
+|
+*/
+
+date_default_timezone_set('UTC');
+
+if (function_exists('mb_internal_encoding'))
+{
+	mb_internal_encoding('UTF-8');
+}
 
 /*
 |--------------------------------------------------------------------------
