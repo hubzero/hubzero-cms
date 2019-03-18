@@ -65,18 +65,7 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 		$data['name'] = $publication->title;
 		$data['description'] = strip_tags($publication->abstract);
 		
-		if ((substr(Request::root(), -1) == '/') && (substr(Route::url($publication->link()), 0, 1) == '/'))
-		{
-			$data['url'] = rtrim(Request::root(), '/') . Route::url($publication->link());
-		}
-		elseif ((substr(Request::root(), -1) != '/') && (substr(Route::url($publication->link()), 0, 1) != '/'))
-		{
-			$data['url'] = Request::root() . '/' . Route::url($publication->link());
-		}
-		else
-		{
-			$data['url'] = Request::root() . Route::url($publication->link());
-		}
+		$data['url'] = rtrim(Request::root(), '/') . '/' . ltrim(Route::url($publication->link()), '/');
 		
 		$nullDate = '0000-00-00 00:00:00';
 
@@ -181,18 +170,7 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 
 			if ($contributor->user_id && $contributor->open)
 			{
-				if ((substr(Request::root(), -1) == '/') && (substr(Route::url('index.php?option=com_members&id=' . $contributor->user_id), 0, 1) == '/'))
-				{
-					$author['url'] = rtrim(Request::root(), '/') . Route::url('index.php?option=com_members&id=' . $contributor->user_id);
-				}
-				elseif ((substr(Request::root(), -1) != '/') && (substr(Route::url('index.php?option=com_members&id=' . $contributor->user_id), 0, 1) != '/'))
-				{
-					$author['url'] = Request::root() . '/' . Route::url('index.php?option=com_members&id=' . $contributor->user_id);
-				}
-				else
-				{
-					$author['url'] = Request::root() . Route::url('index.php?option=com_members&id=' . $contributor->user_id);
-				}
+				$data['url'] = rtrim(Request::root(), '/') . '/' . ltrim(Route::url('index.php?option=com_members&id=' . $contributor->user_id), '/');
 			}
 
 			$authors[] = $author;
