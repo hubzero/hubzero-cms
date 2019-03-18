@@ -377,8 +377,9 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		$jsession = App::get('session');
 
 		// Set up linkedin configuration
-		$linkedin_config['appKey']    = $this->params->get('api_key');
-		$linkedin_config['appSecret'] = $this->params->get('app_secret');
+		$linkedin_config['appKey']      = $this->params->get('api_key');
+		$linkedin_config['appSecret']   = $this->params->get('app_secret');
+		$linkedin_config['callbackUrl'] = self::getRedirectUri('linkedin');
 
 		// Create Object
 		$linkedin_client = new LinkedIn($linkedin_config);
