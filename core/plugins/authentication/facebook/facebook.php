@@ -262,7 +262,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 			}
 
 			// Create the hubzero auth link
-			$method = (Component::params('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+			$method = (Component::params('com_members')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
 			$hzal = \Hubzero\Auth\Link::$method('authentication', 'facebook', null, $id);
 
 			if ($hzal === false)

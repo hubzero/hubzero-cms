@@ -287,7 +287,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			$full_name  = $first_name . ' ' . $last_name;
 			$username   = (string) $li_id; // (make sure this is unique)
 
-			$method = (Component::params('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+			$method = (Component::params('com_members')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
 			$hzal = \Hubzero\Auth\Link::$method('authentication', 'linkedin', null, $username);
 
 			if ($hzal === false)

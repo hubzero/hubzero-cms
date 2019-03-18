@@ -218,7 +218,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 		{
 			$username = phpCAS::getUser();
 
-			$method = (Component::params('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+			$method = (Component::params('com_members')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
 			$hzal = \Hubzero\Auth\Link::$method('authentication', 'pucas', null, $username);
 
 			if ($hzal === false)

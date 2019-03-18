@@ -158,7 +158,7 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 			$domain   = $_SERVER['SSL_CLIENT_I_DN_CN'];
 			$username = $_SERVER['SSL_CLIENT_S_DN_CN'];
 
-			$method = (Component::params('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+			$method = (Component::params('com_members')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
 			$hzal   = \Hubzero\Auth\Link::$method('authentication', 'certificate', $domain, $username);
 
 			if ($hzal === false)
