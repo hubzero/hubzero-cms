@@ -427,10 +427,6 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 
 			foreach ($users as $user)
 			{
-				if ($user != 1001)
-				{
-					continue;
-				}
 				$query = Components\Resources\Models\Entry::all();
 
 				$r = $query->getTableName();
