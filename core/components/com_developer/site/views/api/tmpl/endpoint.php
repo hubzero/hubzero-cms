@@ -45,9 +45,19 @@ $this->css('docs')
 //Document::addStyleSheet('//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css');
 //Document::addScript('//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js');
 
+$available = [];
+foreach ($this->documentation['sections'][$this->active] as $endpoint)
+{
+	if (in_array($endpoint['_metadata']['version'], $available))
+	{
+		continue;
+	}
+	$available[] = $endpoint['_metadata']['version'];
+}
 // pull list of versions from doc
-$versions = $this->documentation['versions']['available'];
+$versions = $available;
 $versions = array_reverse($versions);
+$done = [];
 
 // either the request var or the first version (newest)
 $activeVersion = Request::getString('version', reset($versions));
@@ -63,21 +73,6 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				<a class="btn icon-cog" href="<?php echo Route::url('index.php?option=com_developer&controller=api'); ?>">
 					<?php echo Lang::txt('COM_DEVELOPER_API_HOME'); ?>
 				</a>
-			<?php if (!empty($versions)) : ?>
-				<div class="btn-group dropdown">
-					<a class="btn" href="<?php echo Route::url('index.php?option=com_developer&controller=api&task=docs&version=' . $activeVersion); ?>"><?php echo $activeVersion; ?></a>
-					<span class="btn dropdown-toggle"></span>
-					<ul class="dropdown-menu">
-						<?php foreach ($versions as $version) : ?>
-							<li>
-								<a href="<?php echo Route::url('index.php?option=com_developer&controller=api&task=docs&version=' . $version); ?>">
-									<?php echo $version; ?>
-								</a>
-							</li>
-						<?php endforeach; ?>
-					</ul>
-				</div>
-			<?php endif; ?>
 			</li>
 		</ul>
 	</div>
@@ -97,16 +92,30 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 		<div class="subject">
 				<h2 class="doc-section-header" id="<?php echo $this->active; ?>">
 					<?php echo ucfirst($this->active); ?>
+					<?php if (!empty($versions)) : ?>
+						<div class="btn-group dropdown">
+							<a class="btn" href="<?php echo Route::url('index.php?option=com_developer&controller=api&task=docs&version=' . $activeVersion); ?>"><?php echo $activeVersion; ?></a>
+							<span class="btn dropdown-toggle"></span>
+							<ul class="dropdown-menu">
+								<?php foreach ($versions as $version) : ?>
+									<li>
+										<a href="<?php echo Route::url($base . '&task=endpoint&active=' . $this->active . '&version=' . $version); ?>">
+											<?php echo $version; ?>
+										</a>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+					<?php endif; ?>
 				</h2>
 				<?php foreach ($this->documentation['sections'][$this->active] as $endpoint) : ?>
 					<?php
-						$key = implode('-', $endpoint['_metadata']);
-
-						if ($endpoint['_metadata']['version'] != $activeVersion)
+						$key = $endpoint['_metadata']['component'] . '-' . $endpoint['_metadata']['method'];
+						if (in_array($key, $done))
 						{
 							continue;
 						}
-
+						$done[] = $key;
 					?>
 					<div class="doc-section endpoint" id="<?php echo $key; ?>">
 						<h3><?php echo $endpoint['name']; ?></h3>

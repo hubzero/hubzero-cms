@@ -61,21 +61,6 @@ $activeVersion = Request::getString('version', reset($versions));
 				<a class="btn icon-cog" href="<?php echo Route::url('index.php?option=com_developer&controller=api&version=' . $activeVersion); ?>">
 					<?php echo Lang::txt('COM_DEVELOPER_API_HOME'); ?>
 				</a>
-			<?php if (!empty($versions)) : ?>
-				<div class="btn-group dropdown">
-					<a class="btn" href="<?php echo Route::url('index.php?option=com_developer&controller=api&task=docs&version=' . $activeVersion); ?>"><?php echo $activeVersion; ?></a>
-					<span class="btn dropdown-toggle"></span>
-					<ul class="dropdown-menu">
-						<?php foreach ($versions as $version) : ?>
-							<li>
-								<a href="<?php echo Route::url('index.php?option=com_developer&controller=api&task=docs&version=' . $version); ?>">
-									<?php echo $version; ?>
-								</a>
-							</li>
-						<?php endforeach; ?>
-					</ul>
-				</div>
-			<?php endif; ?>
 			</li>
 		</ul>
 	</div>
