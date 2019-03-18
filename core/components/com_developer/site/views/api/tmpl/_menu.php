@@ -69,20 +69,21 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				<h3 class="toc-header" data-section="endpoints" data-index="2"><?php echo Lang::txt('API Endpoints'); ?></h3>
 				<div class="toc-content">
 					<ul>
-				<?php $i = 2; foreach ($this->documentation['sections'] as $component => $endpoints) :?>
+				<?php $i = 2; $done = []; foreach ($this->documentation['sections'] as $component => $endpoints) :?>
 						<li class="<?php echo $component == $this->active ? 'active' : 'inactive'; ?>">
-							<a href="<?php echo Route::url($base . '&task=endpoint&active=' . $component . '&version=' . $this->version); ?>"><?php echo ucfirst($component); ?></a>
+							<a href="<?php echo Route::url($base . '&task=endpoint&active=' . $component); ?>"><?php echo ucfirst($component); ?></a>
 							<?php if (count($endpoints)) : ?>
 								<ul>
 									<?php foreach ($endpoints as $endpoint) : ?>
 										<?php
-											$key = implode('-', $endpoint['_metadata']);
-											if ($endpoint['_metadata']['version'] != $this->version)
+											$key = $endpoint['_metadata']['component'] . '-' . $endpoint['_metadata']['method'];
+											if (in_array($key, $done))
 											{
 												continue;
 											}
+											$done[] = $key;
 										?>
-										<li><a href="<?php echo Route::url($base . '&task=endpoint&active=' . $component . '&version=' . $this->version . '#' . $key); ?>"><?php echo $endpoint['name']; ?></a></li>
+										<li><a href="<?php echo Route::url($base . '&task=endpoint&active=' . $component . '#' . $key); ?>"><?php echo $endpoint['name']; ?></a></li>
 									<?php endforeach; ?>
 								</ul>
 							<?php endif; ?>
