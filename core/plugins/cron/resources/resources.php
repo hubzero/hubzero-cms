@@ -435,7 +435,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 					->deselect()
 					->select('DISTINCT ' . $r . '.*')
 					->whereEquals($r . '.published', Components\Resources\Models\Entry::STATE_PUBLISHED)
-					->whereIn($r . '.access', User::getAuthorisedViewLevels())
+					->whereIn($r . '.access', array(0, 1))
 					->whereEquals($r . '.standalone', 1);
 
 				$query->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
