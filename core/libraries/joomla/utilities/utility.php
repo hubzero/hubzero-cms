@@ -109,10 +109,6 @@ class JUtility
 			->setSubject($subject)
 			->setBody($message);
 
-		$this->addRecipient($adminEmail);
-		$this->setSubject($subject);
-		$this->setBody($message);
-
 		return $mail->send();
 	}
 
