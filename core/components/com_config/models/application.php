@@ -236,27 +236,37 @@ class Application extends Obj
 
 		$prev = $config->toArray();
 
-		/*$extras = array();
-		foreach ($prev as $key => $val)
+		// We do this to preserve values that were not in the form.
+		// Note: We can't use array_merge() as we're trying to preserve
+		//       options that were explicitely set to blank and merging
+		//       will return the previous, filled-in value
+		foreach ($prev as $key => $vals)
 		{
-			$found = false;
+			$values = isset($data[$key]) ? $data[$key] : array();
 
-			foreach ($data as $group => $values)
+			foreach ($vals as $k => $v)
 			{
-				if (in_array($key, $values))
+				if (!isset($values[$k]))
 				{
-					$found = true;
+					if (is_numeric($v))
+					{
+						$values[$k] = 0;
+					}
+					elseif (is_array($v))
+					{
+						$values[$k] = array();
+					}
+					else
+					{
+						$values[$k] = '';
+					}
 				}
 			}
+			ksort($values);
 
-			if (!$found)
-			{
-				$extras[$key] = $val;
-			}
+			$data[$key] = $values;
 		}
-
-		// Merge the new data in. We do this to preserve values that were not in the form.
-		$data['app'] = array_merge($data['app'], $extras);*/
+		ksort($data);
 
 		// Perform miscellaneous options based on configuration settings/changes.
 		// Escape the offline message if present.
