@@ -191,7 +191,7 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 				return;
 			}
 			// Create the hubzero auth link
-			$method = (Component::params('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+			$method = (Component::params('com_members')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
 			$hzal = \Hubzero\Auth\Link::$method('authentication', 'cilogon', null, $id);
 			if ($hzal === false)
 			{
