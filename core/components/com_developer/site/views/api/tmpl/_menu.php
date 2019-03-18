@@ -31,6 +31,7 @@
  */
 
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
+$done = array();
 ?>
 			<nav class="toc">
 				<h3 class="toc-header" data-section="overview" data-index="0"><?php echo Lang::txt('Using the API'); ?></h3>
@@ -69,7 +70,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				<h3 class="toc-header" data-section="endpoints" data-index="2"><?php echo Lang::txt('API Endpoints'); ?></h3>
 				<div class="toc-content">
 					<ul>
-				<?php $i = 2; $done = []; foreach ($this->documentation['sections'] as $component => $endpoints) :?>
+				<?php foreach ($this->documentation['sections'] as $component => $endpoints) :?>
 						<li class="<?php echo $component == $this->active ? 'active' : 'inactive'; ?>">
 							<a href="<?php echo Route::url($base . '&task=endpoint&active=' . $component); ?>"><?php echo ucfirst($component); ?></a>
 							<?php if (count($endpoints)) : ?>
@@ -88,8 +89,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 								</ul>
 							<?php endif; ?>
 						</li>
-				<?php endforeach;
-					$i++; ?>
+				<?php endforeach; ?>
 					</ul>
 				</div>
 			</nav>
