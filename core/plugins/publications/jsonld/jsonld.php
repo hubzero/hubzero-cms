@@ -64,8 +64,20 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 		$data['@type'] = 'Dataset';
 		$data['name'] = $publication->title;
 		$data['description'] = strip_tags($publication->abstract);
-		$data['url'] = Request::root() . Route::url($publication->link());
-
+		
+		if ((substr(Request::root(), -1) == '/') && (substr(Route::url($publication->link()), 0, 1) == '/'))
+		{
+			$data['url'] = rtrim(Request::root(), '/') . Route::url($publication->link());
+		}
+		elseif ((substr(Request::root(), -1) != '/') && (substr(Route::url($publication->link()), 0, 1) != '/'))
+		{
+			$data['url'] = Request::root() . '/' . Route::url($publication->link());
+		}
+		else
+		{
+			$data['url'] = Request::root() . Route::url($publication->link());
+		}
+		
 		$nullDate = '0000-00-00 00:00:00';
 
 		if ($publication->created && $publication->created != $nullDate)
@@ -169,7 +181,18 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 
 			if ($contributor->user_id && $contributor->open)
 			{
-				$author['url'] = Request::root() . Route::url('index.php?option=com_members&id=' . $contributor->user_id);
+				if ((substr(Request::root(), -1) == '/') && (substr(Route::url('index.php?option=com_members&id=' . $contributor->user_id), 0, 1) == '/'))
+				{
+					$author['url'] = rtrim(Request::root(), '/') . Route::url('index.php?option=com_members&id=' . $contributor->user_id);
+				}
+				elseif ((substr(Request::root(), -1) != '/') && (substr(Route::url('index.php?option=com_members&id=' . $contributor->user_id), 0, 1) != '/'))
+				{
+					$author['url'] = Request::root() . '/' . Route::url('index.php?option=com_members&id=' . $contributor->user_id);
+				}
+				else
+				{
+					$author['url'] = Request::root() . Route::url('index.php?option=com_members&id=' . $contributor->user_id);
+				}
 			}
 
 			$authors[] = $author;
@@ -179,9 +202,7 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 		{
 			$data['author'] = $authors;
 		}
-
-		Document::addScriptDeclaration(json_encode($data), 'application/ld+json');
-
+		
 		$data['publisher'] = array(
 			'@type' => 'Organization',
 			'url' => Request::root(),
@@ -192,8 +213,10 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 		{
 			$data['publisher']['description'] = $desc;
 		}
-
-		$data['version'] = $publication->version->get('title');
+		
+		$data['version'] = $publication->version->get('version_number');
+		
+		Document::addScriptDeclaration(json_encode($data, JSON_UNESCAPED_SLASHES), 'application/ld+json');
 
 		/*
 		Example
