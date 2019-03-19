@@ -154,7 +154,9 @@ $revisions = $this->page->versions()
 
 							switch ($revision->get('approved'))
 							{
-								case 1: $status = '<span class="approved icon-success">approved</span>'; break;
+								case 1:
+									$status = '<span class="approved icon-success">approved</span>';
+									break;
 								case 0:
 								default:
 									$status = '<span class="suggested icon-warning">suggested</span>';
