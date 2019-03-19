@@ -48,6 +48,7 @@ class plgSystemSpamjail extends \Hubzero\Plugin\Plugin
 		if (App::isSite() && !User::isGuest())
 		{
 			$exceptions = [
+				'com_login.logout',
 				'com_users.logout',
 				'com_support.tickets.save.index',
 				'com_members.media.download.profiles'
