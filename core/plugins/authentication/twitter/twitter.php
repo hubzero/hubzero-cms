@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 // Include php library
-require_once PATH_CORE . DS . 'libraries' . DS . 'twitteroauth' . DS . 'twitteroauth.php';
+require_once __DIR__ . DS . 'twitteroauth' . DS . 'twitteroauth.php';
 
 class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 {
