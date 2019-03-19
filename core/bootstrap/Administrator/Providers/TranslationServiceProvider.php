@@ -107,7 +107,7 @@ class TranslationServiceProvider extends ServiceProvider
 			$translator->setLanguage($language);
 		}
 
-		$translator->load('lib_joomla', $path, null, false, true) ||
-		$translator->load('lib_joomla', PATH_CORE . DS . 'bootstrap' . DS . ucfirst($this->app['client']->name), null, false, true);
+		$translator->load('lib_hubzero', $path, null, false, true) ||
+		$translator->load('lib_hubzero', dirname(__DIR__), null, false, true);
 	}
 }
