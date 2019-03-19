@@ -219,6 +219,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 				case 'compare':
 				case 'approve':
 				case 'deleterevision':
+				case 'setcurrentrevision':
 					$controllerName = 'history';
 				break;
 
@@ -236,7 +237,6 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 				case 'save':
 				case 'rename':
 				case 'saverename':
-				case 'setcurrentrevision':
 				default:
 					$controllerName = 'pages';
 				break;
