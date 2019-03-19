@@ -48,6 +48,7 @@ class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
 		if (App::isSite() && !User::isGuest())
 		{
 			$exceptions = [
+				'com_login.logout',
 				'com_users.logout',
 				'com_users.userlogout',
 				'com_support.tickets.save.index',
