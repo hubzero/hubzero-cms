@@ -80,12 +80,10 @@ class PlgSystemHighlight extends \Hubzero\Plugin\Plugin
 		}
 
 		// Clean the terms array
-		$filter = JFilterInput::getInstance();
-
 		$cleanTerms = array();
 		foreach ($terms as $term)
 		{
-			$cleanTerms[] = htmlspecialchars($filter->clean($term, 'string'));
+			$cleanTerms[] = htmlspecialchars(Hubzero\Utility\Sanitize::clean($term));
 		}
 
 		// Activate the highlighter.
