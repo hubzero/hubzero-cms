@@ -130,7 +130,7 @@ class TranslationServiceProvider extends ServiceProvider
 
 		$boot = DS . 'bootstrap' . DS . $this->app['client']->name;
 
-		$translator->load('lib_joomla', PATH_APP . $boot, null, false, true) ||
-		$translator->load('lib_joomla', PATH_CORE . $boot, null, false, true);
+		$translator->load('lib_hubzero', PATH_APP . $boot, null, false, true) ||
+		$translator->load('lib_hubzero', dirname(__DIR__), null, false, true);
 	}
 }

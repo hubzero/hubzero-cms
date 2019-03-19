@@ -10,15 +10,10 @@
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>en-GB site language</description>
 	<files>
-		<filename>en-GB.files_joomla.sys.ini</filename>
 		<filename>en-GB.ini</filename>
-		<filename>en-GB.lib_joomla.ini</filename>
-		<filename>en-GB.lib_joomla.sys.ini</filename>
-		<filename>en-GB.lib_phpmailer.sys.ini</filename>
-		<filename>en-GB.lib_phputf8.sys.ini</filename>
-		<filename>en-GB.lib_simplepie.sys.ini</filename>
+		<filename>en-GB.lib_hubzero.ini</filename>
+		<filename>en-GB.lib_hubzero.sys.ini</filename>
 		<filename>en-GB.localise.php</filename>
-		<filename>en-GB.pkg_joomla.sys.ini</filename>
 	</files>
 	<metadata>
 		<name>English (United Kingdom)</name>
