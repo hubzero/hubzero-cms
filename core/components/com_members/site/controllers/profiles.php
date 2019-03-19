@@ -1941,4 +1941,48 @@ class Profiles extends SiteController
 			Route::url('index.php?option=' . $this->_option . '&id=' . $id . '&active=profile')
 		);
 	}
+
+	/**
+	 * Display a message noting the person is in spamjail
+	 *
+	 * @return  void
+	 */
+	public function spamjailTask()
+	{
+		$this->view->display();
+	}
+
+	/**
+	 * Display a message showing the person's account is waiting approval
+	 *
+	 * @return  void
+	 */
+	public function unapprovedTask()
+	{
+		// Only logged-in users should ever get to this page
+		if (User::isGuest())
+		{
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Request::current(true)), false)
+			);
+		}
+
+		// Get the user and then check the database to see if the session and database are out of sync
+		$real = User::getInstance(User::get('id'));
+
+		if ($real->get('approved'))
+		{
+			// Update the session and redirect
+			$session = App::get('session');
+
+			$sessionUser = $session->get('user');
+			$sessionUser->set('approved', $real->get('approved'));
+			$session->set('user', $sessionUser);
+
+			// Redirect
+			App::redirect(Request::current(true));
+		}
+
+		$this->view->display();
+	}
 }
