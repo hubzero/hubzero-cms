@@ -170,7 +170,7 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 
 			if ($contributor->user_id && $contributor->open)
 			{
-				$data['url'] = rtrim(Request::root(), '/') . '/' . ltrim(Route::url('index.php?option=com_members&id=' . $contributor->user_id), '/');
+				$author['url'] = rtrim(Request::root(), '/') . '/' . ltrim(Route::url('index.php?option=com_members&id=' . $contributor->user_id), '/');
 			}
 
 			$authors[] = $author;
