@@ -154,6 +154,9 @@ class Router extends Base
 					break;
 				case 'activity':
 				case 'autocomplete':
+				case 'spamjail':
+				case 'unapproved':
+					$vars['controller'] = 'profiles';
 					$vars['task'] = $segments[0];
 				break;
 				case 'vips':
