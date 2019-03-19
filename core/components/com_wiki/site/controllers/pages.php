@@ -1030,6 +1030,70 @@ class Pages extends SiteController
 	}
 
 	/**
+	 * Set the current revision of a wiki page
+	 * 
+	 * @return void
+	 */
+	public function setcurrentrevisionTask()
+	{
+		// Check if they are logged in
+		if (User::isGuest())
+		{
+			$url = Request::getString('REQUEST_URI', '', 'server');
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
+			);
+		}
+
+		// Incoming
+		$newversion_id = trim(Request::getString('version_id', ''));
+		$newversion = Version::oneOrFail($newversion_id);
+
+		$this->page->set('version_id', $newversion_id);
+
+		if (!$this->page->save())
+		{
+			$this->setError($this->page->getError());
+			return $this->renameTask();
+		}
+		$this->page->log('page_version_changed');
+
+		Event::trigger('wiki.onWikiAfterSave', array(&$this->page, false));
+
+		// Log activity
+		$recipients = array(
+			['wiki.site', 1],
+			['user', $this->page->get('created_by')],
+			['user', $this->page->version->get('created_by')],
+			['user', $newversion->get('created_by')]
+		);
+		dlog($recipients);
+		if ($this->page->get('scope') != 'site')
+		{
+			$recipients[]  = [$this->page->get('scope'), $this->page->get('scope_id')];
+			$recipients[0] = ['wiki.' . $this->page->get('scope'), $this->page->get('scope_id')];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($this->page['id'] ? 'updated' : 'created'),
+				'scope'       => 'wiki.page',
+				'scope_id'    => $this->page->get('id'),
+				'description' => Lang::txt('COM_WIKI_ACTIVITY_PAGE_UPDATED', '<a href="' . Route::url($this->page->link()) . '">' . $this->page->title . '</a>'),
+				'details'     => array(
+					'title'    => $this->page->title,
+					'url'      => Route::url($this->page->link()),
+					'name'     => $this->page->get('pagename'),
+					'oldrevision' => $this->page->version->get('id'),
+					'newrevision' => $this->page->get('version_id')
+				)
+			],
+			'recipients' => $recipients
+		]);
+		App::redirect($this->page->link('history'));
+	}
+
+	/**
 	 * Output the contents of a wiki page as a PDF
 	 *
 	 * Based on work submitted by Steven Maus <steveng4235@gmail.com> (2014)

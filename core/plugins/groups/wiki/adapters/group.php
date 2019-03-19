@@ -110,6 +110,7 @@ class Group extends Base
 			case 'comments':
 			case 'deleterevision':
 			case 'addcomment':
+			case 'setcurrentrevision':
 				$segments['action'] = $type;
 			break;
 
