@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           plugins/content/externalhref.xml
+@copyright      Copyright 2005-2019 HUBzero Foundation, LLC.
+@license        http://opensource.org/licenses/MIT MIT
+-->
+
+<extension version="2.5" type="plugin" group="system">
+	<name>plg_content_externalhref</name>
+	<author>HUBzero</author>
+	<creationDate>MArch 2019</creationDate>
+	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
+	<version>1.0</version>
+	<description>PLG_CONTENT_EXTERNALHREF_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="externalhref">externalhref.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_content_externalhref.ini</language>
+		<language tag="en-GB">en-GB.plg_content_externalhref.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="mode" type="list" default="0" label="PLG_CONTENT_EXTERNALHREF_PARAM_MODE_LABEL" description="PLG_CONTENT_EXTERNALHREF_PARAM_MODE_DESC">
+					<option value="0">PLG_CONTENT_EXTERNALHREF_PARAM_MODE_SETIF</option>
+					<option value="1">PLG_CONTENT_EXTERNALHREF_PARAM_MODE_FORCE</option>
+					<option value="2">PLG_CONTENT_EXTERNALHREF_PARAM_MODE_STRIP</option>
+					<option value="3">PLG_CONTENT_EXTERNALHREF_PARAM_MODE_NOCHANGE</option>
+				</field>
+				<field name="target" type="list" default="0" label="PLG_CONTENT_EXTERNALHREF_PARAM_TARGET_LABEL" description="PLG_CONTENT_EXTERNALHREF_PARAM_TARGET_DESC">
+					<option value="0">PLG_CONTENT_EXTERNALHREF_PARAM_TARGET_IFSET</option>
+					<option value="1">PLG_CONTENT_EXTERNALHREF_PARAM_TARGET_BLANK</option>
+					<option value="2">PLG_CONTENT_EXTERNALHREF_PARAM_TARGET_PARENT</option>
+					<option value="3">PLG_CONTENT_EXTERNALHREF_PARAM_TARGET_NOCHANGE</option>
+				</field>
+				<field name="classes" type="textarea" default="" label="PLG_CONTENT_EXTERNALHREF_PARAM_CSS_LABEL" description="PLG_CONTENT_EXTERNALHREF_PARAM_CSS_DESC" rows="10" cols="25" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
