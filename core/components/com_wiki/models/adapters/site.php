@@ -95,6 +95,7 @@ class Site extends Base
 			case 'comments':
 			case 'deleterevision':
 			case 'addcomment':
+			case 'setcurrentrevision':
 				$segments['task'] = $type;
 			break;
 
