@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 // Include LinkedIn php library
-require_once PATH_CORE . DS . 'libraries' . DS . 'simplelinkedin-php' . DS . 'linkedin_3.2.0.class.php';
+require_once __DIR__ . DS . 'simplelinkedin-php' . DS . 'linkedin_3.2.0.class.php';
 
 class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 {
