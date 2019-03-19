@@ -236,6 +236,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 				case 'save':
 				case 'rename':
 				case 'saverename':
+				case 'setcurrentrevision':
 				default:
 					$controllerName = 'pages';
 				break;
