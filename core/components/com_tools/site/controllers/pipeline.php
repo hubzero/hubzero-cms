@@ -906,10 +906,9 @@ class Pipeline extends SiteController
 		$tool = Request::getArray('tool', array(), 'post');
 		$tool = array_map('trim', $tool);
 		// Sanitize the input a bit
-		$noHtmlFilter = \JFilterInput::getInstance();
 		foreach ($tool as $i => $var)
 		{
-			$tool[$i] = $noHtmlFilter->clean($var);
+			$tool[$i] = Hubzero\Utility\Sanitize::clean($var);
 		}
 
 		$today = Date::toSql();

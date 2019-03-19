@@ -58,8 +58,6 @@ class plgSystemRemember extends \Hubzero\Plugin\Plugin
 				$credentials = array();
 				$goodCookie  = true;
 
-				$filter = JFilterInput::getInstance();
-
 				// Create the encryption key, apply extra hardening using the user agent string.
 				// Since we're decoding, no UA validity check is required.
 				$privateKey = App::hash(@$_SERVER['HTTP_USER_AGENT']);
@@ -94,7 +92,7 @@ class plgSystemRemember extends \Hubzero\Plugin\Plugin
 					// credentials are well structured and only have user and password.
 					if (isset($cookieData->username) && is_string($cookieData->username))
 					{
-						$credentials['username'] = $filter->clean($cookieData->username, 'username');
+						$credentials['username'] = (string) preg_replace('/[\x00-\x1F\x7F<>"\'%&]/', '', $cookieData->username);
 					}
 					else
 					{
@@ -103,7 +101,7 @@ class plgSystemRemember extends \Hubzero\Plugin\Plugin
 
 					if (isset($cookieData->password) && is_string($cookieData->password))
 					{
-						$credentials['password'] = $filter->clean($cookieData->password, 'string');
+						$credentials['password'] = Hubzero\Utility\Sanitize::clean($cookieData->password);
 					}
 					else
 					{
