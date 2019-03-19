@@ -1067,7 +1067,6 @@ class Pages extends SiteController
 			['user', $this->page->version->get('created_by')],
 			['user', $newversion->get('created_by')]
 		);
-		dlog($recipients);
 		if ($this->page->get('scope') != 'site')
 		{
 			$recipients[]  = [$this->page->get('scope'), $this->page->get('scope_id')];
