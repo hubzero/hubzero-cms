@@ -343,11 +343,20 @@ class UsersControllerUser extends UsersController
 			}
 
 			// Get the return url from the request and validate that it is internal.
-			$return = Request::getString('return', '');
+			$return = Request::getString('return', 'index.php');
 			$return = base64_decode($return);
-			if (!JURI::isInternal($return))
+			// Assume redirect URLs that start with a slash are internal
+			// As such, we want to make sure the path has the appropriate root
+			$root = Request::root(true);
+			if (substr($return, 0, 1) == '/'
+			 && substr($return, 0, strlen($root)) != $root)
 			{
-				$return = '';
+				$return = rtrim($root, '/') . $return;
+			}
+
+			if (!$return || !JURI::isInternal($return))
+			{
+				$return = 'index.php';
 			}
 
 			// Redirect the user.
