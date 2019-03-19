@@ -116,6 +116,14 @@ class Auth extends SiteController
 		if ($menu && isset($menu->params) && is_object($menu->params))
 		{
 			$defaultReturn = $menu->params->get('login_redirect_url', $defaultReturn);
+			// Assume redirect URLs that start with a slash are internal
+			// As such, we want to make sure the path has the appropriate root
+			$root = Request::root(true);
+			if (substr($defaultReturn, 0, 1) == '/'
+			 && substr($defaultReturn, 0, strlen($root)) != $root)
+			{
+				$defaultReturn = rtrim($root, '/') . $defaultReturn;
+			}
 			$description   = $menu->params->get('login_description');
 		}
 		$defaultReturn = base64_encode($defaultReturn);
@@ -910,11 +918,20 @@ class Auth extends SiteController
 			}
 
 			// Get the return url from the request and validate that it is internal.
-			$return = Request::getString('return');
+			$return = Request::getString('return', 'index.php');
 
 			if ($this->isBase64($return))
 			{
 				$return = base64_decode($return);
+			}
+
+			// Assume redirect URLs that start with a slash are internal
+			// As such, we want to make sure the path has the appropriate root
+			$root = Request::root(true);
+			if (substr($return, 0, 1) == '/'
+			 && substr($return, 0, strlen($root)) != $root)
+			{
+				$return = rtrim($root, '/') . $return;
 			}
 
 			if (!$return || !Uri::isInternal($return))
