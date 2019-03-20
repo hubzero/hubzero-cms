@@ -722,7 +722,10 @@ class Create extends SiteController
 
 		$row->set('published', (int)$row->get('published', 2));
 		$row->set('publish_up', ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00' ? $row->get('publish_up') : Date::toSql()));
-		$row->set('publish_down', ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00' ? $row->get('publish_down') : '0000-00-00 00:00:00'));
+		if ($row->get('publish_down') && $row->get('publish_down') == '0000-00-00 00:00:00')
+		{
+			$row->set('publish_down', null);
+		}
 		$row->set('modified', Date::toSql());
 		$row->set('modified_by', User::get('id'));
 		$row->set('access', (int)$row->get('access', 0));

@@ -1,9 +1,9 @@
-Joomla.submitbutton = function(task) {
-	$(document).trigger('editorSave');
-
+Hubzero.submitbutton = function(task) {
 	var frm = document.getElementById('component-form');
 
 	if (frm) {
+		$(document).trigger('editorSave');
+
 		if (task == 'markscanned') {
 			if (!confirm(frm.getAttribute('data-confirm'))) {
 				return false;
@@ -11,7 +11,7 @@ Joomla.submitbutton = function(task) {
 		}
 
 		if (task == 'cancel' || frm.usernames.value != '') {
-			Joomla.submitform(task, frm);
+			Hubzero.submitform(task, frm);
 			window.top.setTimeout("window.parent.location='" + frm.getAttribute('data-redirect') + "'", 700);
 		} else {
 			alert(frm.getAttribute('data-invalid-msg'));
@@ -21,7 +21,7 @@ Joomla.submitbutton = function(task) {
 
 jQuery(document).ready(function($){
 	$("#btn-save").on('click', function(e){
-		Joomla.submitbutton('addusers');
+		Hubzero.submitbutton('addusers');
 	});
 
 	$("#btn-cancel").on('click', function(e){

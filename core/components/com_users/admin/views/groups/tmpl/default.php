@@ -20,10 +20,10 @@ $user      = User::getInstance();
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 
-JText::script('COM_USERS_GROUPS_CONFIRM_DELETE');
+Lang::script('COM_USERS_GROUPS_CONFIRM_DELETE');
 ?>
 <script type="text/javascript">
-	Joomla.submitbutton = function(task)
+	Hubzero.submitbutton = function(task)
 	{
 		if (task == 'groups.delete')
 		{
@@ -33,15 +33,15 @@ JText::script('COM_USERS_GROUPS_CONFIRM_DELETE');
 <?php if ($item->user_count > 0):?>
 			cb = f['cb'+<?php echo $i;?>];
 			if (cb && cb.checked) {
-				if (confirm(Joomla.JText._('COM_USERS_GROUPS_CONFIRM_DELETE'))) {
-					Joomla.submitform(task);
+				if (confirm(Hubzero.Lang.txt('COM_USERS_GROUPS_CONFIRM_DELETE'))) {
+					Hubzero.submitform(task);
 				}
 				return;
 			}
 <?php endif;?>
 <?php endforeach;?>
 		}
-		Joomla.submitform(task);
+		Hubzero.submitform(task);
 	}
 </script>
 <form action="<?php echo Route::url('index.php?option=com_users&view=groups');?>" method="post" name="adminForm" id="adminForm">

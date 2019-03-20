@@ -155,7 +155,6 @@ class Jobs extends AdminController
 		{
 			$this->view->row->created      = Date::toSql();
 			$this->view->row->created_by   = User::get('id');
-			$this->view->row->modified     = '0000-00-00 00:00:00';
 			$this->view->row->modified_by  = 0;
 			$this->view->row->publish_up   = Date::toSql();
 			$this->view->row->employerid   = 1; // admin
@@ -379,7 +378,7 @@ class Jobs extends AdminController
 	 *
 	 * @param    object  $job       Job entry
 	 * @param   integer  $uid       User ID
-	 * @param   object   $database  JDatabase
+	 * @param   object   $database  Database
 	 * @return  integer
 	 */
 	private function _checkQuota($job, $uid, $database)

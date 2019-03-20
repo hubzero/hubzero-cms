@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2018 HUBzero Foundation, LLC.
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
  *
  * @package   hubzero-cms
  * @author    Zach Weidner <zweidner@purdue.edu>
- * @copyright Copyright 2005-2018 HUBzero Foundation, LLC.
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  */
 
@@ -43,6 +43,27 @@ include_once dirname(__DIR__) . '/helpers/cli.php';
  */
 class Packages extends AdminController
 {
+	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		if (!is_file(PATH_APP . '/composer.json'))
+		{
+			$view = new \Hubzero\Component\View(array(
+				'base_path' => dirname(__DIR__),
+				'name'      => 'warnings',
+				'layout'    => 'composer'
+			));
+			$view->display();
+			return;
+		}
+
+		parent::execute();
+	}
+
 	/**
 	 * Display a list of uninstalled extensions
 	 *
@@ -87,7 +108,7 @@ class Packages extends AdminController
 	/**
 	 * Edit or create a new package
 	 * 
-	 * @return void
+	 * @return  void
 	 */
 	public function editTask()
 	{
@@ -100,13 +121,24 @@ class Packages extends AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		$packageName = Request::getString('packageName', '');
-		$versions = ComposerHelper::findRemotePackages($packageName, '*');
-		$installedPackage = ComposerHelper::findLocalPackage($packageName);
+
+		try
+		{
+			$versions = ComposerHelper::findRemotePackages($packageName, '*');
+			$installedPackage = ComposerHelper::findLocalPackage($packageName);
+		}
+		catch (\Exception $e)
+		{
+			$versions = array();
+			$installedPackage = null;
+			$this->setError($e->getMessage());
+		}
 
 		$this->view
 			->set('packageName', $packageName)
 			->set('installedPackage', $installedPackage)
 			->set('versions', $versions)
+			->setErrors($this->getErrors())
 			->display();
 	}
 
@@ -132,20 +164,33 @@ class Packages extends AdminController
 	/**
 	 * Add a package to track
 	 * 
-	 * @return void
+	 * @return  void
 	 */
 	public function addTask()
 	{
-		$availablePackages = ComposerHelper::getAvailablePackages();
+		Request::setVar('hidemainmenu', 1);
+
+		try
+		{
+			$availablePackages = ComposerHelper::getAvailablePackages();
+		}
+		catch (\Exception $e)
+		{
+			$availablePackages = array();
+
+			$this->setError($e->getMessage());
+		}
+
 		$this->view
 			->set('availablePackages', $availablePackages)
+			->setErrors($this->getErrors())
 			->display();
 	}
 
 	/**
 	 * Remove a package
 	 * 
-	 * @return void
+	 * @return  void
 	 */
 	public function removeTask()
 	{

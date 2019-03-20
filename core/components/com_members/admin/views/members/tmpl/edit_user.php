@@ -170,28 +170,28 @@ if (substr($this->profile->get('email'), -8) == '@invalid')
 				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_MEMBERS_FIELD_REGISTERIP'); ?></th>
-					<th><?php echo $this->profile->get('registerIP'); ?></th>
+					<td><?php echo $this->profile->get('registerIP'); ?></td>
 				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_MEMBERS_FIELD_REGISTERDATE'); ?></th>
-					<th><?php echo $this->profile->get('registerDate'); ?></th>
+					<td><?php echo $this->profile->get('registerDate'); ?></td>
 				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_MEMBERS_FIELD_LASTVISITDATE'); ?></th>
-					<th><?php echo !$this->profile->get('lastvisitDate') || $this->profile->get('lastvisitDate') == '0000-00-00 00:00:00' ? Lang::txt('COM_MEMBERS_NEVER') : $this->profile->get('lastvisitDate'); ?></th>
+					<td><?php echo !$this->profile->get('lastvisitDate') || $this->profile->get('lastvisitDate') == '0000-00-00 00:00:00' ? Lang::txt('COM_MEMBERS_NEVER') : $this->profile->get('lastvisitDate'); ?></td>
 				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_MEMBERS_FIELD_MODIFIED'); ?></th>
-					<th><?php echo !$this->profile->get('modifiedDate') || $this->profile->get('modifiedDate') == '0000-00-00 00:00:00' ? Lang::txt('COM_MEMBERS_NEVER') : $this->profile->get('modifiedDate'); ?></th>
+					<td><?php echo !$this->profile->get('modifiedDate') || $this->profile->get('modifiedDate') == '0000-00-00 00:00:00' ? Lang::txt('COM_MEMBERS_NEVER') : $this->profile->get('modifiedDate'); ?></td>
 				</tr>
 				<?php if ($incomplete) : ?>
 					<tr>
 						<th><?php echo Lang::txt('COM_MEMBERS_AUTHENTICATOR'); ?></th>
-						<th><?php echo $authenticator; ?></th>
+						<td><?php echo $authenticator; ?></td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_MEMBERS_AUTHENTICATOR_STATUS'); ?></th>
-						<th><?php echo Lang::txt('COM_MEMBERS_INCOMPLETE'); ?></th>
+						<td><?php echo Lang::txt('COM_MEMBERS_INCOMPLETE'); ?></td>
 					</tr>
 				<?php endif; ?>
 			</tbody>
@@ -298,7 +298,7 @@ if (substr($this->profile->get('email'), -8) == '@invalid')
 							<input type="text" name="spam_count" id="field-reputation" value="<?php echo $this->escape($this->profile->reputation->get('spam_count', 0)); ?>" />
 						</span>
 						<span class="input-cell">
-							<a class="button" href="#field-reputation" onclick="document.getElementById('field-reputation').value='0';Joomla.submitbutton('apply');"><?php echo Lang::txt('COM_MEMBERS_RESET'); ?></a>
+							<a class="button" href="#field-reputation" onclick="document.getElementById('field-reputation').value='0';Hubzero.submitbutton('apply');"><?php echo Lang::txt('COM_MEMBERS_RESET'); ?></a>
 						</span>
 					</div>
 					<?php if ($this->profile->reputation->get('spam_count', 0) > Plugin::params('system', 'spamjail')->get('user_count', 10)) : ?>

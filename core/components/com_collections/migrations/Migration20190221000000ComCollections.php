@@ -32,7 +32,7 @@ class Migration20190221000000ComCollections extends Base
 		'#__collections_posts' => array(
 			'created'
 		),
-		'#__collections_voted' => array(
+		'#__collections_votes' => array(
 			'created'
 		)
 	);

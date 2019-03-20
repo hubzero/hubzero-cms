@@ -1562,7 +1562,7 @@ class Publications extends SiteController
 		$publication = $version->publication;
 		$publication->set('id', 0);
 		$publication->set('checked_out', 0);
-		$publication->set('checked_out_time', '0000-00-00 00:00:00');
+		$publication->set('checked_out_time', null);
 		$publication->set('created', Date::of('now')->toSql());
 		$publication->set('created_by', User::get('id'));
 		$publication->set('rating', 0.0);
@@ -1591,17 +1591,17 @@ class Publications extends SiteController
 		$version->set('state', 3);
 		$version->set('created', Date::of('now')->toSql());
 		$version->set('created_by', User::get('id'));
-		$version->set('published_up', '0000-00-00 00:00:00');
-		$version->set('published_down', '0000-00-00 00:00:00');
-		$version->set('modified', '0000-00-00 00:00:00');
+		$version->set('published_up', null);
+		$version->set('published_down', null);
+		$version->set('modified', null);
 		$version->set('modified_by', 0);
-		$version->set('accepted', '0000-00-00 00:00:00');
-		$version->set('archived', '0000-00-00 00:00:00');
-		$version->set('submitted', '0000-00-00 00:00:00');
+		$version->set('accepted', null);
+		$version->set('archived', null);
+		$version->set('submitted', null);
 		$version->set('version_label', '1.0.0');
 		$version->set('version_number', 1);
 		$version->set('curation', '');
-		$version->set('reviewed', '0000-00-00 00:00:00');
+		$version->set('reviewed', null);
 		$version->set('reviewed_by', 0);
 		$version->set('curator', 0);
 		$version->set('curation_version_id', 0);
@@ -1687,7 +1687,7 @@ class Publications extends SiteController
 			$author->set('project_owner_id', $owners[$author->get('user_id')]);
 			$author->set('created', Date::of('now')->toSql());
 			$author->set('created_by', User::get('id'));
-			$author->set('modified', '0000-00-00 00:00:00');
+			$author->set('modified', null);
 			$author->set('modified_by', 0);
 
 			if (!$author->save())
@@ -1715,7 +1715,7 @@ class Publications extends SiteController
 			$author->set('project_owner_id', $owners[$author->get('user_id')]);
 			$author->set('created', Date::of('now')->toSql());
 			$author->set('created_by', User::get('id'));
-			$author->set('modified', '0000-00-00 00:00:00');
+			$author->set('modified', null);
 			$author->set('modified_by', 0);
 
 			if (!$author->save())
@@ -1809,7 +1809,7 @@ class Publications extends SiteController
 			$attachment->set('publication_version_id', $version->get('id'));
 			$attachment->set('created', Date::of('now')->toSql());
 			$attachment->set('created_by', User::get('id'));
-			$attachment->set('modified', '0000-00-00 00:00:00');
+			$attachment->set('modified', null);
 			$attachment->set('modified_by', 0);
 
 			if (!$attachment->save())

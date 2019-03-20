@@ -55,6 +55,8 @@ class plgSystemUserconsent extends \Hubzero\Plugin\Plugin
 			if (App::isSite())
 			{
 				$pages = [
+					'com_login',
+					'com_login.login',
 					'com_users.login'
 				];
 

@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 // Include LinkedIn php library
-require_once PATH_CORE . DS . 'libraries' . DS . 'simplelinkedin-php' . DS . 'linkedin_3.2.0.class.php';
+require_once __DIR__ . DS . 'simplelinkedin-php' . DS . 'linkedin_3.2.0.class.php';
 
 class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 {
@@ -287,7 +287,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			$full_name  = $first_name . ' ' . $last_name;
 			$username   = (string) $li_id; // (make sure this is unique)
 
-			$method = (Component::params('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+			$method = (Component::params('com_members')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
 			$hzal = \Hubzero\Auth\Link::$method('authentication', 'linkedin', null, $username);
 
 			if ($hzal === false)
@@ -377,8 +377,9 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		$jsession = App::get('session');
 
 		// Set up linkedin configuration
-		$linkedin_config['appKey']    = $this->params->get('api_key');
-		$linkedin_config['appSecret'] = $this->params->get('app_secret');
+		$linkedin_config['appKey']      = $this->params->get('api_key');
+		$linkedin_config['appSecret']   = $this->params->get('app_secret');
+		$linkedin_config['callbackUrl'] = self::getRedirectUri('linkedin');
 
 		// Create Object
 		$linkedin_client = new LinkedIn($linkedin_config);

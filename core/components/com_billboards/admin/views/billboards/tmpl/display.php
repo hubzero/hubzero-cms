@@ -87,7 +87,7 @@ Toolbar::help('billboards');
 	foreach ($this->rows as $row)
 	{
 		// See if the billboard is being edited by someone else
-		if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
+		if ($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00'))
 		{
 			$checked = Html::grid('checkedout', $row, User::getInstance($row->checked_out)->get('name'), $row->checked_out_time);
 		}

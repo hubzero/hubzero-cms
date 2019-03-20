@@ -39,6 +39,7 @@ use Hubzero\Base\Obj;
 use Filesystem;
 use Config;
 use Notify;
+use Event;
 use Cache;
 use Lang;
 use User;
@@ -236,27 +237,46 @@ class Application extends Obj
 
 		$prev = $config->toArray();
 
-		/*$extras = array();
-		foreach ($prev as $key => $val)
+		// We do this to preserve values that were not in the form.
+		// Note: We can't use array_merge() as we're trying to preserve
+		//       options that were explicitely set to blank and merging
+		//       will return the previous, filled-in value
+		foreach ($prev as $key => $vals)
 		{
-			$found = false;
+			$values = isset($data[$key]) ? $data[$key] : array();
 
-			foreach ($data as $group => $values)
+			foreach ($vals as $k => $v)
 			{
-				if (in_array($key, $values))
+				if (!isset($values[$k]))
 				{
-					$found = true;
+					// Database password isn't apart of the config form
+					// and we don't want to overwrite it. So we need to
+					// inherit from previous settings.
+					if ($key == 'database' && $k == 'password')
+					{
+						$values[$k] = $v;
+						continue;
+					}
+
+					if (is_numeric($v))
+					{
+						$values[$k] = 0;
+					}
+					elseif (is_array($v))
+					{
+						$values[$k] = array();
+					}
+					else
+					{
+						$values[$k] = '';
+					}
 				}
 			}
+			ksort($values);
 
-			if (!$found)
-			{
-				$extras[$key] = $val;
-			}
+			$data[$key] = $values;
 		}
-
-		// Merge the new data in. We do this to preserve values that were not in the form.
-		$data['app'] = array_merge($data['app'], $extras);*/
+		ksort($data);
 
 		// Perform miscellaneous options based on configuration settings/changes.
 		// Escape the offline message if present.
@@ -266,7 +286,8 @@ class Application extends Obj
 		}
 
 		// Purge the database session table if we are changing to the database handler.
-		if ($prev['session']['session_handler'] != 'database' && $data['session']['session_handler'] == 'database')
+		if ($prev['session']['session_handler'] != 'database'
+		 && $data['session']['session_handler'] == 'database')
 		{
 			$db = App::get('db');
 
@@ -285,29 +306,31 @@ class Application extends Obj
 		}
 
 		// Clean the cache if disabled but previously enabled.
-		if (!$data['cache']['caching'] && $prev['cache']['caching'])
+		if ((!$data['cache']['caching'] && $prev['cache']['caching'])
+		 || $data['cache']['cache_handler'] !== $prev['cache']['cache_handler'])
 		{
-			Cache::clean();
-		}
-
-		foreach ($data as $group => $values)
-		{
-			foreach ($values as $key => $value)
+			try
 			{
-				if (!isset($prev[$group]))
-				{
-					$prev[$group] = array();
-				}
-				$prev[$group][$key] = $value;
+				Cache::clean();
+			}
+			catch (\Exception $e)
+			{
+				Notify::error('SOME_ERROR_CODE', $e->getMessage());
 			}
 		}
-
-		// Create the new configuration object.
-		//$config = new Registry($data);
 
 		// Overwrite the old FTP credentials with the new ones.
 		if (isset($data['ftp']))
 		{
+			// Fix misnamed FTP key
+			// Not sure how or where this originally happened...
+			if (!isset($data['ftp']['ftp_enable'])
+			 && isset($data['ftp']['ftp_enabled']))
+			{
+				$data['ftp']['ftp_enable'] = $data['ftp']['ftp_enabled'];
+				unset($data['ftp']['ftp_enabled']);
+			}
+
 			$temp = Config::getRoot();
 			$temp->set('ftp.ftp_enable', $data['ftp']['ftp_enable']);
 			$temp->set('ftp.ftp_host', $data['ftp']['ftp_host']);
@@ -320,8 +343,21 @@ class Application extends Obj
 		// Clear cache of com_config component.
 		Cache::clean('_system');
 
+		$result = Event::trigger('onApplicationBeforeSave', array($data));
+
+		// Store the data.
+		if (in_array(false, $result, true))
+		{
+			throw new \RuntimeException(Lang::txt('COM_CONFIG_ERROR_UNKNOWN_BEFORE_SAVING'));
+		}
+
 		// Write the configuration file.
-		return $this->writeConfigFile($prev);
+		$return = $this->writeConfigFile($data);
+
+		// Trigger the after save event.
+		Event::trigger('onApplicationAfterSave', array($data));
+
+		return $result;
 	}
 
 	/**

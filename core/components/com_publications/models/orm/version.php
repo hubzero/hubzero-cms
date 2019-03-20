@@ -509,7 +509,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
 	 */
 	protected function _date($key, $as='')
 	{
-		if ($this->get($key) == '0000-00-00 00:00:00')
+		if (!$this->get($key) || $this->get($key) == '0000-00-00 00:00:00')
 		{
 			return '';
 		}

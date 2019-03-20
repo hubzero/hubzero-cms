@@ -279,8 +279,8 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 
 				// Recalculate the average rating for the parent resource
 				$resource = \Components\Resources\Models\Entry::oneOrFail($parentid);
-				$resource->set('rating', $rating[0]);
-				$resource->set('times_rated', $rating[1]);
+				$resource->set('rating', $rating['rating']);
+				$resource->set('times_rated', $rating['times_rated']);
 				if (!$resource->save())
 				{
 					$this->setError($resource->getError());

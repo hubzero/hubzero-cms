@@ -34,10 +34,9 @@ defined('_HZEXEC_') or die();
 
 $ext = Filesystem::extension($this->currentImg['name']);
 $name = Filesystem::name($this->currentImg['name']);
-if (strlen($name) > 10)
-{
+if (strlen($name) > 10):
 	$name = substr($name, 0, 10) . ' ... ';
-}
+endif;
 $name .= '.' . $ext;
 
 $params = new Hubzero\Config\Registry;
@@ -63,16 +62,16 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_im
 				<div class="media-options">
 					<ul>
 						<li>
-							<a class="icon-info media-opt-info" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=info&' . Session::getFormToken() . '=1&file=' . urlencode($this->currentImg['path'])); ?>"><?php echo Lang::txt('Info'); ?></a>
+							<a class="icon-info media-opt-info" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=info&' . Session::getFormToken() . '=1&file=' . urlencode($this->currentImg['path'])); ?>"><?php echo Lang::txt('COM_MEDIA_FILE_INFO'); ?></a>
 						</li>
 						<li>
 							<span class="separator"></span>
 						</li>
 						<li>
-							<a download class="icon-download media-opt-download" href="<?php echo $href; ?>"><?php echo Lang::txt('Download'); ?></a>
+							<a download class="icon-download media-opt-download" href="<?php echo $href; ?>"><?php echo Lang::txt('COM_MEDIA_DOWNLOAD'); ?></a>
 						</li>
 						<li>
-							<a class="icon-link media-opt-path" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=path&' . Session::getFormToken() . '=1&file=' . urlencode($this->currentImg['path'])); ?>"><?php echo Lang::txt('Get link'); ?></a>
+							<a class="icon-link media-opt-path" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=path&' . Session::getFormToken() . '=1&file=' . urlencode($this->currentImg['path'])); ?>"><?php echo Lang::txt('COM_MEDIA_FILE_LINK'); ?></a>
 						</li>
 						<?php if (User::authorise('core.delete', 'com_media')): ?>
 							<li>

@@ -295,7 +295,7 @@ class Base extends SiteController
 	/**
 	 * Check if user is authorized in groups
 	 *
-	 * @param   boolean  $checkOnlyMembership  Do we want to check joomla admin
+	 * @param   boolean  $checkOnlyMembership  Do we want to check admin
 	 * @return  boolean  True if authorized, false if not
 	 */
 	protected function _authorize($checkOnlyMembership = true)

@@ -239,15 +239,15 @@ $maintext = $this->model->description;
 				?>
 
 				<?php if ($this->model->params->get('show_citation') == 3): ?>
-				<h4><?php echo (isset($citations) && ($citations != null || $citations != '') ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS') : ''); ?></h4>
+				<h4><?php echo (isset($citations) && ($citations != null || $citations != '')) ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS') : ''; ?></h4>
 
 				<div class="resource-content">
-					<?php echo (isset($citations) && ($citations != null || $citations != '') ? $citeinstruct : ''); ?>
+					<?php echo (isset($citations) && ($citations != null || $citations != '')) ? $citeinstruct : ''; ?>
 				</div>
 				<?php else: ?>
-					<h4><?php echo (isset($cite) && ($cite != null || $cite != '') ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS') : ''); ?></h4>
+					<h4><?php echo (isset($cite) && ($cite != null || $cite != '')) ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS') : ''; ?></h4>
 					<div class="resource-content">
-						<?php echo (isset($cite) && ($cite != null || $cite != '') ? $citeinstruct : ''); ?>
+						<?php echo (isset($cite) && ($cite != null || $cite != '')) ? $citeinstruct : ''; ?>
 					</div>
 				<?php endif; ?>
 			<?php } ?>
@@ -267,7 +267,7 @@ $maintext = $this->model->description;
 				}
 				if (substr($this->model->attribs->get('timeof', ''), 4, 1) == '-')
 				{
-					$seminarTime = ($this->model->attribs->get('timeof', '') != '0000-00-00 00:00:00' || $this->model->attribs->get('timeof', '') != '')
+					$seminarTime = ($this->model->attribs->get('timeof', '') != '0000-00-00 00:00:00' && $this->model->attribs->get('timeof', '') != '')
 								  ? Date::of($this->model->attribs->get('timeof', ''))->toLocal($exp)
 								  : '';
 				}

@@ -23,7 +23,8 @@ class Migration20190221000000ComActivity extends Base
 			'created'
 		),
 		'#__activity_recipients' => array(
-			'created'
+			'created',
+			'viewed'
 		),
 		'#__activity_subscriptions' => array(
 			'created'

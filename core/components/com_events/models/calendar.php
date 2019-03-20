@@ -189,7 +189,7 @@ class Calendar extends Model
 
 							// calculate diff so we can create down
 							$diff = new DateInterval('P0Y0DT0H0M');
-							if ($result->publish_down != '0000-00-00 00:00:00')
+							if ($result->publish_down && $result->publish_down != '0000-00-00 00:00:00')
 							{
 								$diff = date_diff(Date::of($result->publish_up), Date::of($result->publish_down));
 							}
@@ -436,7 +436,7 @@ class Calendar extends Model
 				$event->set('created', Date::toSql());
 				$event->set('created_by', User::get('id'));
 				$event->set('time_zone', -5);
-				$event->set('registerby', '0000-00-00 00:00:00');
+				$event->set('registerby', null);
 				$event->set('params', '');
 			}
 

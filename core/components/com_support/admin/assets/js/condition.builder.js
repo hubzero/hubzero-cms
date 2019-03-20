@@ -295,7 +295,7 @@ var Conditions = {
 	}
 };
 
-Joomla.submitbutton = function(task) {
+Hubzero.submitbutton = function(task) {
 {
 	var query = {},
 		component = false;
@@ -309,7 +309,7 @@ Joomla.submitbutton = function(task) {
 
 	if (frm) {
 		if (task == 'cancel') {
-			Joomla.submitform(task, frm);
+			Hubzero.submitform(task, frm);
 			return;
 		}
 
@@ -318,7 +318,7 @@ Joomla.submitbutton = function(task) {
 		$('#field-conditions').val(JSON.stringify(query));
 
 		if (!component) {
-			Joomla.submitform(task, frm);
+			Hubzero.submitform(task, frm);
 		}
 	}
 }

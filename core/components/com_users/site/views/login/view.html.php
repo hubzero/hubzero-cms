@@ -62,11 +62,19 @@ class UsersViewLogin extends JViewLegacy
 
 		$this->prepareDocument();
 
-		$defaultReturn = Route::url('index.php?option=com_members&task=myaccount');
+		$defaultReturn = Route::url('index.php?option=com_members&task=myaccount', false);
 		$description = '';
 		if (isset($active->params) && is_object($active->params))
 		{
 			$defaultReturn = $active->params->get('login_redirect_url', $defaultReturn);
+			// Assume redirect URLs that start with a slash are internal
+			// As such, we want to make sure the path has the appropriate root
+			$root = Request::root(true);
+			if (substr($defaultReturn, 0, 1) == '/'
+			 && substr($defaultReturn, 0, strlen($root)) != $root)
+			{
+				$defaultReturn = rtrim($root, '/') . $defaultReturn;
+			}
 			$description = $active->params->get('login_description');
 		}
 		$defaultReturn = base64_encode($defaultReturn);

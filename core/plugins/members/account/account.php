@@ -500,8 +500,8 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get the password input
-		$password1 = Request::getString('password1', null, 'post', 'string', JREQUEST_ALLOWRAW);
-		$password2 = Request::getString('password2', null, 'post', 'string', JREQUEST_ALLOWRAW);
+		$password1 = Request::getString('password1', null, 'post');
+		$password2 = Request::getString('password2', null, 'post');
 		$change    = Request::getString('change', '', 'post');
 
 		// Create the view
@@ -1017,7 +1017,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Exit - don't go any further (i.e. no joomla template stuff)
+		// Exit - don't go any further (i.e. no template stuff)
 		exit;
 	}
 }

@@ -109,7 +109,7 @@ class Comments extends AdminController
 			)
 		);
 
-		$page = Page::oneOrFail($filters['page_id']);
+		$page = Page::oneOrNew($filters['page_id']);
 
 		$comments = Comment::all();
 

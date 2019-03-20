@@ -1,11 +1,11 @@
-Joomla.submitbutton = function(task) {
+Hubzero.submitbutton = function(task) {
 	$(document).trigger('editorSave');
 
 	var frm = document.getElementById('adminForm');
 
 	if (frm) {
 		if (task == 'cancel' || document.formvalidator.isValid(frm)) {
-			Joomla.submitform(task, frm);
+			Hubzero.submitform(task, frm);
 		} else {
 			alert(frm.getAttribute('data-invalid-msg'));
 		}
@@ -19,7 +19,7 @@ function setTask(task)
 
 function saveAndUpdate()
 {
-	Joomla.submitbutton('save');
+	Hubzero.submitbutton('save');
 	window.parent.setTimeout(function(){
 		var src = window.parent.document.getElementById('locationslist').src;
 

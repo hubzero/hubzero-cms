@@ -22,7 +22,7 @@ function dv_dataview_list()
 	$db_conf_file = $base . DS . $db_id . DS . 'database.json';
 	$db_conf = json_decode(file_get_contents($db_conf_file), true);
 
-	$jdb =  JDatabase::getInstance($db_conf['database_ro']);
+	$jdb = Hubzero\Database\Driver::getInstance($db_conf['database_ro']);
 
 	Toolbar::title($db_conf['name'] . ' >> <small> The list of Dataviews</small>', 'databases');
 
@@ -177,4 +177,3 @@ function dv_dataview_list()
 	</div>
 <?php
 }
-?>

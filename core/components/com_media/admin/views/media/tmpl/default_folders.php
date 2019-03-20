@@ -32,10 +32,9 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-if (!isset($this->folderDepth))
-{
+if (!isset($this->folderDepth)):
 	$this->folderDepth = 1;
-}
+endif;
 ?>
 <ul <?php echo $this->folders_id; ?> class="<?php echo 'depth' . $this->folderDepth; ?>">
 	<?php foreach ($this->folderTree as $folder) : ?>

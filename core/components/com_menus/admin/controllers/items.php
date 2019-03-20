@@ -479,6 +479,19 @@ class Items extends AdminController
 			$row = Item::oneOrNew($id);
 		}
 
+		// Fail if checked out not by 'me'
+		if ($row->get('checked_out') && $row->get('checked_out') != User::get('id'))
+		{
+			Notify::warning(Lang::txt('COM_MENUS_CHECKED_OUT'));
+			return $this->cancelTask();
+		}
+
+		if (!$row->isNew())
+		{
+			// Checkout the record
+			$row->checkout();
+		}
+
 		$data = User::getState('com_menus.edit.item.data', array());
 		if (!empty($data))
 		{
@@ -489,11 +502,13 @@ class Items extends AdminController
 		if ($type = Request::getState('com_menus.edit.item.type', 'type'))
 		{
 			$row->set('type', $type);
+			User::setState('com_menus.edit.item.type', null);
 		}
 
 		if ($link = Request::getState('com_menus.edit.item.link', 'link'))
 		{
 			$row->set('link', $link);
+			User::setState('com_menus.edit.item.link', null);
 		}
 
 		if ($row->isNew())
@@ -501,6 +516,9 @@ class Items extends AdminController
 			$row->set('parent_id', Request::getState('com_menus.edit.item.parent_id', 'parent_id'));
 			$row->set('menutype', Request::getState('com_menus.edit.item.menutype', 'menutype'));
 			$row->set('params', '{}');
+
+			User::setState('com_menus.edit.item.parent_id', null);
+			User::setState('com_menus.edit.item.menutype', null);
 		}
 
 		User::setState('com_menus.edit.item.type', $row->get('type'));
@@ -591,19 +609,6 @@ class Items extends AdminController
 			{
 				$row->set('associations', array());
 			}
-		}
-
-		// Fail if checked out not by 'me'
-		if ($row->get('checked_out') && $row->get('checked_out') != User::get('id'))
-		{
-			Notify::warning(Lang::txt('COM_MENUS_CHECKED_OUT'));
-			return $this->cancelTask();
-		}
-
-		if (!$row->isNew())
-		{
-			// Checkout the record
-			$row->checkout();
 		}
 
 		$form = $row->getForm();

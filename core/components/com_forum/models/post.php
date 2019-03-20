@@ -374,6 +374,7 @@ class Post extends Relational
 		if (!$this->get('thread') && !$this->get('parent'))
 		{
 			$this->set('thread', $this->get('id'));
+			$this->save();
 		}
 
 		return self::all()

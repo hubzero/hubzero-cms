@@ -5,7 +5,7 @@
  * @license     http://opensource.org/licenses/MIT MIT
  */
 
-Joomla.submitbutton = function(task) {
+Hubzero.submitbutton = function(task) {
 	if (task == 'preview') {
 		var id = '',
 			ids = document.getElementsByName('id[]');
@@ -40,11 +40,18 @@ Joomla.submitbutton = function(task) {
 		}
 	}
 
+	var afrm = document.getElementById('adminForm');
+
+	if (afrm) {
+		Hubzero.submitform(task, afrm);
+		return;
+	}
+
 	var frm = document.getElementById('item-form');
 
 	if (frm) {
 		if (task == 'cancel' || document.formvalidator.isValid(frm)) {
-			Joomla.submitform(task, frm);
+			Hubzero.submitform(task, frm);
 		} else {
 			alert(frm.getAttribute('data-invalid-msg'));
 		}
@@ -82,13 +89,13 @@ HUB.Administrator.Newsletter = {
 		$('#add-newsletter').on('click', function (e){
 			e.preventDefault();
 
-			Joomla.submitbutton('add');
+			Hubzero.submitbutton('add');
 		});
 
 		$('#btn-manage').on('click', function (e){
 			e.preventDefault();
 
-			Joomla.submitbutton('manage');
+			Hubzero.submitbutton('manage');
 		});
 
 		//if we have a scheduler

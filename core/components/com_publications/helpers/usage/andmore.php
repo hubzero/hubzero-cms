@@ -33,6 +33,8 @@
 namespace Components\Publications\Helpers\Usage;
 
 use Components\Publications\Helpers\Usage as Base;
+use Lang;
+use Date;
 
 /**
  * Extended resource stats class (And More)
@@ -44,32 +46,32 @@ class Andmore extends Base
 	 *
 	 * @var string
 	 */
-	var $views    = 'unavailable';
+	public $views = 'unavailable';
 
 	/**
 	 * Average view time
 	 *
 	 * @var string
 	 */
-	var $avg_view = 'unavailable';
+	public $avg_view = 'unavailable';
 
 	/**
 	 * Total views
 	 *
 	 * @var string
 	 */
-	var $tot_view = 'unavailable';
+	public $tot_view = 'unavailable';
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object  &$db      JDatabase
-	 * @param      integer $resid    Resource ID
-	 * @param      integer $type     Resource type
-	 * @param      integer $rating   Resource rating
-	 * @param      integer $cites    Number of citations
-	 * @param      string  $lastcite Last citation date
-	 * @return     void
+	 * @param   object   &$db       Database
+	 * @param   integer  $resid     Publication ID
+	 * @param   integer  $type      Publication type
+	 * @param   integer  $rating    Publication rating
+	 * @param   integer  $cites     Number of citations
+	 * @param   string   $lastcite  Last citation date
+	 * @return  void
 	 */
 	public function __construct(&$db, $resid, $type, $rating=0, $cites=0, $lastcite='')
 	{
@@ -79,8 +81,8 @@ class Andmore extends Base
 	/**
 	 * Display formatted results for a given time range
 	 *
-	 * @param      string $disp Time range [curr, last, year, all]
-	 * @return     string
+	 * @param   string  $disp  Time range [curr, last, year, all]
+	 * @return  string
 	 */
 	public function display($disp='ALL')
 	{
@@ -131,8 +133,8 @@ class Andmore extends Base
 	/**
 	 * Push database results to $this for internal use
 	 *
-	 * @param      array &$result Database results
-	 * @return     void
+	 * @param   array  $result  Database results
+	 * @return  void
 	 */
 	public function process($result)
 	{

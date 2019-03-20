@@ -57,8 +57,12 @@ else
 }
 $offerings = $this->course->offerings($filters, true);
 
+if ($this->course->access('edit', 'course'))
+{
+	$this->js('jquery.fileuploader.js', 'system');
+}
+
 $this->css('course.css')
-     ->js()
      ->js('courses.overview.js');
 ?>
 <header id="content-header">
@@ -66,6 +70,11 @@ $this->css('course.css')
 
 	<div id="content-header-extra">
 		<p>
+			<?php if ($this->course->access('edit', 'course') && $this->course->access('create', 'course')) { ?>
+				<a class="btn icon-copy copy" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('blurb') . '&task=copy'); ?>">
+				<?php echo Lang::txt('COM_COURSES_COPY'); ?>
+			</a>
+			<?php } ?>
 			<a class="btn icon-browse browse" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>">
 				<?php echo Lang::txt('COM_COURSES_CATALOG'); ?>
 			</a>
@@ -167,16 +176,36 @@ $this->css('course.css')
 			<?php } ?>
 		</div><!-- / .subject -->
 		<aside class="aside">
-			<p class="course-identity">
+			<div class="course-identity">
 				<?php if ($logo = $this->course->logo('url')) { ?>
 					<img src="<?php 
 						$size = $this->course->logo('size');
 						echo Route::url($logo);
-						?>" class="<?php echo ($size['width'] >= $size['height'] ? 'landscape' : 'portrait'); ?>" alt="<?php echo $this->escape($this->course->get('title')); ?>" />
+						?>" class="<?php echo ($size['width'] >= $size['height']) ? 'landscape' : 'portrait'; ?>" alt="<?php echo $this->escape($this->course->get('title')); ?>" />
 				<?php } else { ?>
 					<span></span>
 				<?php } ?>
-			</p>
+			<?php if ($this->course->access('edit', 'course')) { ?>
+				<div id="ajax-uploader"
+					data-instructions="<?php echo Lang::txt('COM_COURSES_CLICK_OR_DROP_FILE'); ?>"
+					data-action="<?php echo Route::url('index.php?option=' . $this->option . '&no_html=1&controller=media&task=upload&listdir=' . $this->course->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
+					<noscript>
+						<form action="<?php echo Route::url($this->course->link()); ?>" class="form-inplace" method="post">
+							<label for="upload">
+								<?php echo Lang::txt('COM_SUPPORT_COMMENT_FILE'); ?>:
+								<input type="file" name="upload" id="upload" />
+							</label>
+
+							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+							<input type="hidden" name="controller" value="media" />
+							<input type="hidden" name="task" value="upload" />
+							<input type="hidden" name="listdir" value="<?php echo $this->course->get('id'); ?>" />
+							<?php echo Html::input('token'); ?>
+						</form>
+					</noscript>
+				</div>
+			<?php } ?>
+			</div>
 		</aside><!-- / .aside -->
 	</div>
 </section><!-- / .course section intro -->
@@ -661,4 +690,4 @@ if ($after && count($after) > 0) { ?>
 <section class="below course section">
 	<?php echo implode("\n", $after); ?>
 </section><!-- / .course section -->
-<?php } ?>
+<?php }

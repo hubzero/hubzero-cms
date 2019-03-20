@@ -300,7 +300,7 @@ class Manager extends Obj
 			$model->where('id', '>', (int)$filters['start_id']);
 		}
 
-		if (isset($filters['start_at']) && $filters['start_at'])
+		if (isset($filters['start_at']) && $filters['start_at'] && $filters['start_at'] != '0000-00-00 00:00:00')
 		{
 			$model->where('created', '>', $filters['start_at']);
 		}
@@ -493,7 +493,7 @@ class Manager extends Obj
 			{
 				throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
 			}
-			include_once($path);
+			include_once $path;
 		}
 
 		return new $cls($this->get('scope_id'));

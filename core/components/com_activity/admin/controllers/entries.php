@@ -121,7 +121,7 @@ class Entries extends AdminController
 						->where('created', '<', $k . '-' . ($i < 10 ? '0' . $i : $i) . '-' . ($d < 10 ? '0' . $d : $d) . ' 24:59:59')
 						->total();
 
-					$data[$k . ',' . $i . ',' . $d] = $amount;
+					$data[$k . '-' . $i . '-' . $d] = $amount;
 
 					$total = $total + $amount;
 

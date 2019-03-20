@@ -70,7 +70,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 				<span><?php echo Lang::txt('Details'); ?></span>
 			</a>
 		</li>
-		<?php if ($this->event->get('registerby') != '' && $this->event->get('registerby') != '0000-00-00 00:00:00') : ?>
+		<?php if ($this->event->get('registerby') && $this->event->get('registerby') != '0000-00-00 00:00:00') : ?>
 			<li class="active">
 				<a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=register&event_id='.$this->event->get('id')); ?>">
 					<span><?php echo Lang::txt('Register'); ?></span>

@@ -11,7 +11,7 @@
 	<description>en-GB API language</description>
 	<files>
 		<filename>en-GB.ini</filename>
-		<filename>en-GB.lib_joomla.ini</filename>
+		<filename>en-GB.lib_hubzero.ini</filename>
 		<filename>en-GB.localise.php</filename>
 	</files>
 	<metadata>

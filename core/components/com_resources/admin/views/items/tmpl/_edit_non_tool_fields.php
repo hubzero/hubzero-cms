@@ -122,13 +122,13 @@ $time = $this->time;
 <div class="input-wrap">
 	<label for="field-introtext"><?php echo Lang::txt('COM_RESOURCES_FIELD_INTRO_TEXT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 	<?php
-	echo $this->editor('fields[introtext]', $this->escape(stripslashes($this->row->get('introtext'))), 45, 5, 'field-introtext');
+	echo $this->editor('fields[introtext]', $this->escape(stripslashes($this->row->get('introtext'))), 45, 5, 'field-introtext', array('buttons' => false));
 	?>
 </div>
 <div class="input-wrap">
 	<label for="field-fulltxt"><?php echo Lang::txt('COM_RESOURCES_FIELD_MAIN_TEXT'); ?>:</label><br />
 	<?php
-	echo $this->editor('fields[fulltxt]', $this->escape($this->row->description), 45, 15, 'field-fulltxt');
+	echo $this->editor('fields[fulltxt]', $this->escape($this->row->description), 45, 15, 'field-fulltxt', array('buttons' => false));
 	?>
 </div>
 

@@ -33,7 +33,7 @@
  * Members admin component helper.
  *
  * NOTE: This class isn't namespaced to allow for use by some core
- * Joomla-based components. When those components are rewritten, this
+ * components. When those components are rewritten, this
  * class should get updated.
  */
 class MembersHelper

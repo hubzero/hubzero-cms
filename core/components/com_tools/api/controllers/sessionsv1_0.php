@@ -605,7 +605,7 @@ class Sessionsv1_0 extends ApiController
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// Find out how many sessions the user is running.
-		$ms = new \Components\Tools\Models\Middleware\Session($mwdb);
+		$ms = new \Components\Tools\Models\Middleware\Session($mwdb, $result->get('username'));
 		$jobs = $ms->getCount($result->get('username'));
 
 		// Find out how many sessions the user is ALLOWED to run.
@@ -664,7 +664,7 @@ class Sessionsv1_0 extends ApiController
 
 		// Save the changed caption
 		$ms->load($app->sess);
-		$ms->sessname = $app->caption;
+		$ms->set('sessname', $app->caption);
 		if (!$ms->store())
 		{
 			throw new Exception(Lang::txt('There was a issue while trying to start the tool session. Please try again later.'), 500);
@@ -1114,7 +1114,7 @@ class Sessionsv1_0 extends ApiController
 		$app->ip   = $ip;
 
 		//load the session
-		$ms = new \Components\Tools\Models\Middleware\Session($mwdb);
+		$ms = new \Components\Tools\Models\Middleware\Session($mwdb, $result->get('username'));
 		$row = $ms->loadSession($app->sess);
 
 		//if we didnt find a session
@@ -1208,26 +1208,25 @@ class Sessionsv1_0 extends ApiController
 		}
 
 		//load the session we are trying to stop
-		$ms = new \Components\Tools\Models\Middleware\Session($mwdb);
-		$ms->load($sessionid, $result->get("username"));
+		$ms = new \Components\Tools\Models\Middleware\Session($sessionid, $result->get('username'));
 
 		//check to make sure session exists and it belongs to the user
-		if (!$ms->username || $ms->username != $result->get("username"))
+		if (!$ms->get('username') || $ms->get('username') != $result->get("username"))
 		{
 			throw new Exception('Session Doesn\'t Exist or Does Not Belong to User', 400);
 		}
 
 		//get middleware plugins
-		Plugin::import('mw', $ms->appname);
+		Plugin::import('mw', $ms->get('appname'));
 
 		// Trigger any events that need to be called before session stop
-		Event::trigger('mw.onBeforeSessionStop', array($ms->appname));
+		Event::trigger('mw.onBeforeSessionStop', array($ms->get('appname')));
 
 		//run command to stop session
 		$status = \Components\Tools\Helpers\Utils::middleware("stop $sessionid", $out);
 
 		// Trigger any events that need to be called after session stop
-		Event::trigger('mw.onAfterSessionStop', array($ms->appname));
+		Event::trigger('mw.onAfterSessionStop', array($ms->get('appname')));
 
 		// was the session stopped successfully
 		if ($status == 1)
@@ -1236,9 +1235,24 @@ class Sessionsv1_0 extends ApiController
 			$object->session = array(
 				'session' => $sessionid,
 				'status'  => 'stopped',
+				'output' => $out,
 				'stopped' => with(new Date)->toSql()
 			);
 
+			$this->send($object);
+		}
+		// TODO: middleware helper or middleware itself seems to return true/false instead of 1/0
+		// upon failure to figure out what the middleware did, just return the status that was given
+		// even though it generally stops the session anyway
+		else
+		{
+			$object = new stdClass();
+			$object->session = array(
+				'session' => $sessionid,
+				'status' => $status,
+				'output' => $out,
+				'time' => with(new Date)->toSql()
+			);
 			$this->send($object);
 		}
 	}
@@ -1477,7 +1491,7 @@ class Sessionsv1_0 extends ApiController
 
 		// get any request vars
 		$username   = Request::getString('username');
-		$sessionid  = Request::getString('id');
+		$sessionid  = Request::getString('sessionid', '');
 		$private_ip = Request::getString('private_ip');
 		$public_ip  = Request::getString('public_ip', Request::ip());
 

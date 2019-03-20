@@ -21,7 +21,7 @@ class Migration20170913133847Core extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 
-			$query = "ALTER IGNORE TABLE `#__activity_recipients` ADD INDEX `idx_scope_scope_id` (`scope`, `scope_id`)";
+			$query = "ALTER TABLE `#__activity_recipients` ADD INDEX `idx_scope_scope_id` (`scope`, `scope_id`)";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
@@ -32,7 +32,7 @@ class Migration20170913133847Core extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 
-			$query = "ALTER IGNORE TABLE `#__activity_digests` ADD INDEX `idx_scope_scope_id` (`scope`, `scope_id`)";
+			$query = "ALTER TABLE `#__activity_digests` ADD INDEX `idx_scope_scope_id` (`scope`, `scope_id`)";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
@@ -49,7 +49,7 @@ class Migration20170913133847Core extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 
-			$query = "ALTER IGNORE TABLE `#__activity_recipients` ADD INDEX `idx_user_id` (`scope_id`)";
+			$query = "ALTER TABLE `#__activity_recipients` ADD INDEX `idx_user_id` (`scope_id`)";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
@@ -60,7 +60,7 @@ class Migration20170913133847Core extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 
-			$query = "ALTER IGNORE TABLE `#__activity_digests` ADD INDEX `idx_user_id` (`scope_id`)";
+			$query = "ALTER TABLE `#__activity_digests` ADD INDEX `idx_user_id` (`scope_id`)";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

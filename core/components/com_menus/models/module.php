@@ -170,7 +170,7 @@ class Module extends Relational
 			->from(self::blank()->getTableName(), 'a');
 
 		$query->joinRaw('#__modules_menu AS map', sprintf('map.moduleid = a.id AND map.menuid IN (0, %1$d, -%1$d)', $pk), 'left');
-		$query->select('(SELECT COUNT(*) FROM #__modules_menu WHERE moduleid = a.id AND menuid < 0)', 'except');
+		$query->select('(SELECT COUNT(*) FROM #__modules_menu WHERE moduleid = a.id AND menuid < 0)', '`except`');
 
 		// Join on the asset groups table.
 		$query->select('ag.title', 'access_title')

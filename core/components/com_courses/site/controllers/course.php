@@ -444,7 +444,7 @@ class Course extends SiteController
 	/**
 	 * Show a form for editing a course
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function newofferingTask($offering=null)
 	{
@@ -476,7 +476,7 @@ class Course extends SiteController
 	/**
 	 * Show a form for editing a course
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveofferingTask()
 	{
@@ -852,7 +852,7 @@ class Course extends SiteController
 	 * @param   object  $course  CoursesCourse
 	 * @return  string
 	 */
-	private function courseAvailability($course = null)
+	public function courseavailabilityTask($course = null)
 	{
 		//get the course
 		$course = (!is_null($course)) ? $course : Request::getString('course', '');
@@ -908,7 +908,7 @@ class Course extends SiteController
 	}
 
 	/**
-	 * Download a wiki file
+	 * Download a page file
 	 *
 	 * @return  void
 	 */
@@ -973,5 +973,57 @@ class Course extends SiteController
 		}
 
 		exit;
+	}
+
+	/**
+	 * Show a form for providing copy title
+	 *
+	 * @return  void
+	 */
+	public function copyTask()
+	{
+		$rtrn = Request::getString('return');
+
+		$this->view
+			->set('course', $this->course)
+			->set('return', $rtrn)
+			->display();
+	}
+
+	/**
+	 * Copy an entry and all associated data
+	 *
+	 * @return  void
+	 */
+	public function docopyTask()
+	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		// Incoming
+		$rtrn = Request::getString('return', '', 'post');
+		if ($rtrn)
+		{
+			$rtrn = base64_decode($rtrn);
+		}
+		if (!$rtrn)
+		{
+			$rtrn = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false);
+		}
+
+		$fields = Request::getArray('fields', array('title' => '', 'alias' => ''), 'post');
+
+		// Copy the course
+		if (!$this->course->copy(true, $fields['title'], $fields['alias']))
+		{
+			Notify::error(Lang::txt('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $this->course->getError());
+
+			App::redirect($rtrn);
+		}
+
+		// Success
+		Notify::success(Lang::txt('COM_COURSES_ITEM_COPIED'));
+
+		App::redirect($rtrn);
 	}
 }

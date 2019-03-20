@@ -212,8 +212,8 @@ class Citations extends SiteController
 
 		// Convert upload dates to correct time format
 		if (!is_string($this->view->filters['startuploaddate'])
-		 || !preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $this->view->filters['startuploaddate'])
-		 || !preg_match('/([0-9]{4})-([0-9]{2})-([0-9]{2})/', $this->view->filters['startuploaddate']))
+		 || !preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})$/", $this->view->filters['startuploaddate'])
+		 || !preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $this->view->filters['startuploaddate']))
 		{
 			$this->view->filters['startuploaddate'] = '0000-00-00 00:00:00';
 		}
@@ -229,8 +229,8 @@ class Citations extends SiteController
 		}
 
 		if (!is_string($this->view->filters['enduploaddate'])
-		 || !preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $this->view->filters['enduploaddate'])
-		 || !preg_match('/([0-9]{4})-([0-9]{2})-([0-9]{2})/', $this->view->filters['enduploaddate']))
+		 || !preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})$/", $this->view->filters['enduploaddate'])
+		 || !preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $this->view->filters['enduploaddate']))
 		{
 			$this->view->filters['enduploaddate'] = '';
 		}

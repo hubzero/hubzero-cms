@@ -60,7 +60,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get the top list for a tool
 	 *
-	 * @param   object  $database      JDatabase
+	 * @param   object  $database      Database
 	 * @param   string  $period        Tiem period (quarterly, yearly, etc)
 	 * @param   string  $dthis         Time (YYYY-MM)
 	 * @param   string  $s_top         Top value
@@ -229,7 +229,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	/**
 	 * Gets top cited tools
 	 *
-	 * @param   object $database JDatabase
+	 * @param   object $database Database
 	 * @return  string HTML
 	 */
 	private function gettopcited_tools($database)
@@ -335,7 +335,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build date selectors
 	 *
-	 * @param   object &$db    JDatabase
+	 * @param   object &$db    Database
 	 * @param   string $period Time period (quarterly, yearly, etc)
 	 * @param   string $s_top  Top value
 	 * @param   string $dthis  Time (YYYY-MM)
@@ -708,7 +708,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	 *
 	 * @param   string $option         Component name
 	 * @param   string $task           Component task
-	 * @param   object $db             JDatabase
+	 * @param   object $db             Database
 	 * @param   array  $months         Month names (Jan -> Dec)
 	 * @param   array  $monthsReverse  Month names in reverse (Dec -> Jan)
 	 * @param   string $enddate        Time period

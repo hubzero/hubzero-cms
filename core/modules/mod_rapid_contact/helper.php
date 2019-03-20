@@ -130,6 +130,9 @@ class Helper extends Module
 
 		if (isset($_POST['rp']))
 		{
+			// Check for request forgeries
+			Request::checkToken();
+
 			$this->posted = Request::getArray('rp', array(), 'post');
 
 			// Make sure input is of the correct type.

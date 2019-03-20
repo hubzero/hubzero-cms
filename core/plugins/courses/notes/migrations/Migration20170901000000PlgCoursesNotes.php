@@ -21,7 +21,7 @@ class Migration20170901000000PlgCoursesNotes extends Base
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `scope` varchar(255) NOT NULL DEFAULT '',
 			  `scope_id` int(11) NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  `content` mediumtext NOT NULL,
 			  `pos_x` int(11) NOT NULL DEFAULT '0',

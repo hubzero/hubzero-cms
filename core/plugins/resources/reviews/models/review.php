@@ -416,4 +416,39 @@ class Review extends Relational
 
 		return $link;
 	}
+
+	/**
+	 * Calculate the average rating for a resource
+	 *
+	 * @param   integer  $id
+	 * @return  array
+	 */
+	public static function averageByResource($id)
+	{
+		// Calculate the new average rating for the parent resource
+		$ratings = self::all()
+			->whereEquals('resource_id', $id)
+			->rows()
+			->fieldsByKey('rating');
+
+		$totalcount = count($ratings);
+		$totalvalue = 0;
+
+		// Add the ratings up
+		foreach ($ratings as $rating)
+		{
+			$totalvalue = $totalvalue + $rating;
+		}
+
+		// Find the average of all ratings
+		$newrating = ($totalcount > 0) ? $totalvalue / $totalcount : 0;
+
+		// Round to the nearest half
+		$newrating = ($newrating > 0) ? round($newrating*2)/2 : 0;
+
+		return array(
+			'rating' => $newrating,
+			'times_rated' => $totalcount
+		);
+	}
 }

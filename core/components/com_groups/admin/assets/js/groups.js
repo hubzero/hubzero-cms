@@ -1,9 +1,16 @@
-Joomla.submitbutton = function(task) {
-	$(document).trigger('editorSave');
+Hubzero.submitbutton = function(task) {
+	var cfrm = document.getElementById('component-form');
+
+	if (cfrm) {
+		Hubzero.submitform(task, cfrm);
+		return;
+	}
 
 	var frm = document.getElementById('item-form');
 
 	if (frm) {
+		$(document).trigger('editorSave');
+
 		if (task == 'markscanned') {
 			if (!confirm(frm.getAttribute('data-confirm'))) {
 				return false;
@@ -11,7 +18,7 @@ Joomla.submitbutton = function(task) {
 		}
 
 		if (task == 'cancel' || document.formvalidator.isValid(frm)) {
-			Joomla.submitform(task, frm);
+			Hubzero.submitform(task, frm);
 		} else {
 			alert(frm.getAttribute('data-invalid-msg'));
 		}
@@ -46,10 +53,10 @@ jQuery(document).ready(function($){
 	});
 
 	$("#btn-save").on('click', function(e){
-		Joomla.submitbutton('save');
+		Hubzero.submitbutton('save');
 	});
 
 	$("#btn-cancel").on('click', function(e){
-		Joomla.submitbutton('cancel');
+		Hubzero.submitbutton('cancel');
 	});
 });

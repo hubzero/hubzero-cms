@@ -20,9 +20,8 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Zach Weidner <zweidner@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @copyright Copyright 2005-2014 Open Source Matters, Inc.
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  */
 
@@ -99,8 +98,8 @@ class Warnings extends AdminController
 		if (!$tmp_path)
 		{
 			$messages[] = array(
-				'message' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_JOOMLATMPNOTSET'),
-				'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_JOOMLATMPNOTSETDESC')
+				'message' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_TMPNOTSET'),
+				'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_TMPNOTSETDESC')
 			);
 		}
 		else
@@ -108,8 +107,8 @@ class Warnings extends AdminController
 			if (!is_writeable($tmp_path))
 			{
 				$messages[] = array(
-					'message' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_JOOMLATMPNOTWRITEABLE'),
-					'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_JOOMLATMPNOTWRITEABLEDESC', $tmp_path)
+					'message' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_TMPNOTWRITEABLE'),
+					'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_TMPNOTWRITEABLEDESC', $tmp_path)
 				);
 			}
 		}

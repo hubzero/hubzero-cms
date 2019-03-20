@@ -8,7 +8,7 @@ jQuery(document).ready(function($){
 	});
 
 	$('#btn-save').on('click', function(e) {
-		Joomla.submitbutton('saveZone');
+		Hubzero.submitbutton('saveZone');
 		window.parent.setTimeout(function(){
 			var src = window.parent.document.getElementById('zoneslist').src;
 

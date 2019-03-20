@@ -58,7 +58,7 @@ class Html
 	}
 
 	/**
-	 * Turn datetime 0000-00-00 00:00:00 to timestamp
+	 * Turn datetime YYYY-MM-DD hh:mm:ss to timestamp
 	 *
 	 * @param      string $stime Datetime to convert
 	 * @return     number

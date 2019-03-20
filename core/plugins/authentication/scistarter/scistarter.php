@@ -191,7 +191,7 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
 				$username = (string) $account->email;
 
 				// Create the hubzero auth link
-				$method = (Component::params('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+				$method = (Component::params('com_members')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
 				$hzal = \Hubzero\Auth\Link::$method('authentication', 'scistarter', null, $username);
 
 				if ($hzal === false)

@@ -142,7 +142,7 @@ class Category extends Nested
 	 */
 	public function automaticCreatedTime($data)
 	{
-		if (!isset($data['created_time']))
+		if (!isset($data['created_time']) || !$data['created_time'])
 		{
 			$data['created_time'] = Date::toSql();
 		}
@@ -190,7 +190,11 @@ class Category extends Nested
 	 */
 	public function automaticModifiedTime()
 	{
-		return (isset($data['id']) && $data['id'] ? Date::of('now')->toSql() : '0000-00-00 00:00:00');
+		if (isset($data['id']) && $data['id'])
+		{
+			return Date::of('now')->toSql();
+		}
+		return null;
 	}
 
 	/**

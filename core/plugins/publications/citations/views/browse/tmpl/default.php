@@ -39,7 +39,7 @@ $numnon = 0;
 if ($this->citations)
 {
 	// Get a needed library
-	include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+	include_once Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
 	// Set some vars
 	$affiliated    = '';
@@ -113,4 +113,4 @@ if ($this->citations)
 	<?php } ?>
 <?php } else { ?>
 	<p><?php echo Lang::txt('PLG_PUBLICATION_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
-<?php } ?>
+<?php }

@@ -60,7 +60,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get hosts data
 	 *
-	 * @param      object &$db      JDatabase
+	 * @param      object &$db      Database
 	 * @param      array  $location Longitude/latitude
 	 * @return     string
 	 */
@@ -85,7 +85,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get a record count
 	 *
-	 * @param      object &$db      JDatabase
+	 * @param      object &$db      Database
 	 * @param      string $domain   Domain
 	 * @param      array  $location Longitude/latitude
 	 * @return     string
@@ -137,7 +137,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 	/**
 	 * Check if the location is from a bot
 	 *
-	 * @param      object &$db      JDatabase
+	 * @param      object &$db      Database
 	 * @param      array  $location Longitude/latitude
 	 * @return     integer
 	 */
@@ -262,7 +262,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 	 *
 	 * @param      string $option        Component name
 	 * @param      string $task          Component task
-	 * @param      object $db            JDatabase
+	 * @param      object $db            Database
 	 * @param      array  $months        Month names (Jan -> Dec)
 	 * @param      array  $monthsReverse Month names in reverse (Dec -> Jan)
 	 * @param      string $enddate       Time period

@@ -89,7 +89,7 @@ class JobStats extends Table
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE itemid=" . $this->_db->quote($itemid) . " AND category=" . $this->_db->quote($category) . " ORDER BY ";
+		$query  = "SELECT * FROM `$this->_tbl` WHERE itemid=" . $this->_db->quote($itemid) . " AND category=" . $this->_db->quote($category) . " ORDER BY ";
 		$query .= $type=='shared' ? "lastshared": "lastviewed";
 		$query .= " DESC LIMIT 1";
 
@@ -132,7 +132,13 @@ class JobStats extends Table
 
 		// get total resumes in the pool
 		$row = new JobSeeker($this->_db);
-		$filters = array('filterby'=>'all', 'sortby'=>'', 'search'=>'', 'category'=>'', 'type'=>'');
+		$filters = array(
+			'filterby' => 'all',
+			'sortby' => '',
+			'search' => '',
+			'category' => '',
+			'type' => ''
+		);
 		$stats['total_resumes'] = $row->countSeekers($filters);
 
 		// get stats for employer
@@ -183,7 +189,7 @@ class JobStats extends Table
 		{
 			$query .= " MAX(p.total_shared) AS times ";
 		}
-		$query .= " FROM $this->_tbl WHERE itemid=" . $this->_db->quote($itemid) . " AND category=" . $this->_db->quote($category) . " AND ";
+		$query .= " FROM `$this->_tbl` WHERE itemid=" . $this->_db->quote($itemid) . " AND category=" . $this->_db->quote($category) . " AND ";
 
 		switch ($when)
 		{
@@ -282,7 +288,7 @@ class JobStats extends Table
 	public function cleanup()
 	{
 		$lastmonth = Date::of(time() - (30 * 24 * 60 * 60))->toSql();
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE lastviewed < " . $this->_db->quote($lastmonth));
+		$this->_db->setQuery("DELETE FROM `$this->_tbl` WHERE lastviewed < " . $this->_db->quote($lastmonth));
 		$this->_db->query();
 	}
 
@@ -300,7 +306,7 @@ class JobStats extends Table
 			$this->setError(Lang::txt('Missing argument'));
 			return false;
 		}
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE itemid =" . $this->_db->quote($itemid) . " AND category =" . $this->_db->quote($category));
+		$this->_db->setQuery("DELETE FROM `$this->_tbl` WHERE itemid =" . $this->_db->quote($itemid) . " AND category =" . $this->_db->quote($category));
 		$this->_db->query();
 	}
 }

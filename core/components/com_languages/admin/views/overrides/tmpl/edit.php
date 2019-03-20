@@ -149,7 +149,7 @@ $this->css('overrider.css')
 				<legend><span><?php echo Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_RESULTS_LEGEND'); ?></span></legend>
 
 				<span id="more-results">
-					<a href="javascript:Joomla.overrider.searchStrings(Joomla.overrider.states.more);">
+					<a href="javascript:Hubzero.overrider.searchStrings(Hubzero.overrider.states.more);">
 						<?php echo Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_MORE_RESULTS'); ?>
 					</a>
 				</span>

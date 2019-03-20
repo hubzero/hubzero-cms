@@ -24,7 +24,7 @@ class Migration20170901000000PlgPublicationsReviews extends Base
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  `rating` decimal(2,1) NOT NULL DEFAULT '0.0',
 			  `comment` text NOT NULL,
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `anonymous` tinyint(3) NOT NULL DEFAULT '0',
 			  `state` tinyint(2) NOT NULL DEFAULT '1',
 			  PRIMARY KEY (`id`),

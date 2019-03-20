@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 // Include php library
-require_once PATH_CORE . DS . 'libraries' . DS . 'twitteroauth' . DS . 'twitteroauth.php';
+require_once __DIR__ . DS . 'twitteroauth' . DS . 'twitteroauth.php';
 
 class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 {
@@ -185,7 +185,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 			$username = (string) $account->id;
 
 			// Create the hubzero auth link
-			$method = (Component::params('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+			$method = (Component::params('com_members')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
 			$hzal = \Hubzero\Auth\Link::$method('authentication', 'twitter', null, $username);
 
 			if ($hzal === false)

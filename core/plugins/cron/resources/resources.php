@@ -427,10 +427,6 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 
 			foreach ($users as $user)
 			{
-				if ($user != 1001)
-				{
-					continue;
-				}
 				$query = Components\Resources\Models\Entry::all();
 
 				$r = $query->getTableName();
@@ -439,14 +435,16 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 					->deselect()
 					->select('DISTINCT ' . $r . '.*')
 					->whereEquals($r . '.published', Components\Resources\Models\Entry::STATE_PUBLISHED)
-					->whereIn($r . '.access', User::getAuthorisedViewLevels())
+					->whereIn($r . '.access', array(0, 1))
 					->whereEquals($r . '.standalone', 1);
 
 				$query->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
+					->orWhere($r . '.publish_up', 'IS', null, 1)
 					->orWhere($r . '.publish_up', '<=', Date::toSql(), 1)
 					->resetDepth();
 
 				$query->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
+					->orWhere($r . '.publish_down', 'IS', null, 1)
 					->orWhere($r . '.publish_down', '>=', Date::toSql(), 1)
 					->resetDepth();
 

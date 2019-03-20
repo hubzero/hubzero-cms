@@ -41,6 +41,8 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('version');
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
 Html::behavior('modal');
 Html::behavior('switcher', 'submenu');
 

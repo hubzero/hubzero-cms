@@ -76,7 +76,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			</a>
 		</li>
 
-		<?php if ($this->event->get('registerby') != '' && $this->event->get('registerby') != '0000-00-00 00:00:00') : ?>
+		<?php if ($this->event->get('registerby') && $this->event->get('registerby') != '0000-00-00 00:00:00') : ?>
 			<li>
 				<a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=register&event_id='.$this->event->get('id')); ?>">
 					<span><?php echo Lang::txt('Register'); ?></span>
@@ -114,7 +114,6 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			}
 		?>
 		<?php if ($allday_event) : ?>
-
 			<tr>
 				<th class="date"></th>
 				<td width="50%">
@@ -122,7 +121,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 						// check to see if its a single date all day event
 						$d1 = Date::of($publish_up);
 						$d2 = Date::of($publish_down)->subtract('24 hours');
-						if ($d1 == $d2 || $publish_down == '0000-00-00 00:00:00')
+						if ($d1 == $d2 || !$publish_down || $publish_down == '0000-00-00 00:00:00')
 						{
 							echo $d1->format('l, F d, Y', true);
 						}
@@ -137,13 +136,13 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 					<?php echo Lang::txt('All Day Event'); ?>
 				</td>
 			</tr>
-		<?php elseif ($publish_down != '0000-00-00 00:00:00') : ?>
+		<?php elseif ($publish_down && $publish_down != '0000-00-00 00:00:00') : ?>
 			<tr>
 				<th class="date"></th>
 				<td colspan="3">
-					<?php echo Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', true); ?>
+					<?php echo $this->event->get('time_zone') ? Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', true) : Components\Events\Models\EventDate::of($publish_up)->toLocal('l, F d, Y @ h:i a T'); ?>
 					&mdash;
-					<?php echo Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', true); ?>
+					<?php echo $this->event->get('time_zone') ? Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', true) : Components\Events\Models\EventDate::of($publish_down)->toLocal('l, F d, Y @ h:i a T'); ?>
 				</td>
 			</tr>
 		<?php else : ?>

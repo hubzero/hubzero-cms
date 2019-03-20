@@ -151,11 +151,19 @@ class Link extends Relational
 
 		foreach ($links as $link)
 		{
+			if (!$link['page_id'])
+			{
+				$this->addError('Missing page ID for link "%s"', $link['link']);
+				continue;
+			}
 			$row = self::blank();
-			$row->set('page_id', $link['page_id']);
+			$row->set('page_id', intval($link['page_id']));
 			$row->set('timestamp', $timestamp);
 			$row->set('scope', $link['scope']);
-			$row->set('scope_id', $link['scope_id']);
+			if ($link['scope_id'])
+			{
+				$row->set('scope_id', intval($link['scope_id']));
+			}
 			$row->set('link', $link['link']);
 			$row->set('url', $link['url']);
 

@@ -132,7 +132,7 @@ class Page extends Relational
 	 */
 	public function automaticModified($data)
 	{
-		if (!isset($data['modified']))
+		if (!isset($data['modified']) || !$data['modified'])
 		{
 			$data['modified'] = Date::toSql();
 		}

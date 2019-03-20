@@ -64,8 +64,9 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 		$data['@type'] = 'Dataset';
 		$data['name'] = $publication->title;
 		$data['description'] = strip_tags($publication->abstract);
-		$data['url'] = Request::root() . Route::url($publication->link());
-
+		
+		$data['url'] = rtrim(Request::root(), '/') . '/' . ltrim(Route::url($publication->link()), '/');
+		
 		$nullDate = '0000-00-00 00:00:00';
 
 		if ($publication->created && $publication->created != $nullDate)
@@ -169,7 +170,7 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 
 			if ($contributor->user_id && $contributor->open)
 			{
-				$author['url'] = Request::root() . Route::url('index.php?option=com_members&id=' . $contributor->user_id);
+				$author['url'] = rtrim(Request::root(), '/') . '/' . ltrim(Route::url('index.php?option=com_members&id=' . $contributor->user_id), '/');
 			}
 
 			$authors[] = $author;
@@ -179,9 +180,7 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 		{
 			$data['author'] = $authors;
 		}
-
-		Document::addScriptDeclaration(json_encode($data), 'application/ld+json');
-
+		
 		$data['publisher'] = array(
 			'@type' => 'Organization',
 			'url' => Request::root(),
@@ -192,8 +191,10 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 		{
 			$data['publisher']['description'] = $desc;
 		}
-
-		$data['version'] = $publication->version->get('title');
+		
+		$data['version'] = $publication->version->get('version_number');
+		
+		Document::addScriptDeclaration(json_encode($data, JSON_UNESCAPED_SLASHES), 'application/ld+json');
 
 		/*
 		Example

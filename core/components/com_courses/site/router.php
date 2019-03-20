@@ -149,6 +149,16 @@ class Router extends Base
 					return $vars;
 				}
 			}
+			else if ($segments[0] == 'upload')
+			{
+				$vars['controller'] = 'media';
+				$vars['task'] = $segments[0];
+				if (isset($segments[1]))
+				{
+					$vars['course'] = $segments[1];
+				}
+				return $vars;
+			}
 			else if ($segments[0] == 'certificate')
 			{
 				$vars['controller'] = $segments[0];
@@ -164,7 +174,7 @@ class Router extends Base
 			}
 			else
 			{
-				if ($segments[0] == 'new')
+				if ($segments[0] == 'new' || $segments[0] == 'courseavailability')
 				{
 					$vars['task'] = $segments[0];
 				}
@@ -195,6 +205,8 @@ class Router extends Base
 				case 'newoffering':
 				case 'saveoffering':
 				case 'deletepage':
+				case 'copy':
+				case 'docopy':
 					$vars['task'] = $segments[1];
 				break;
 
@@ -234,7 +246,7 @@ class Router extends Base
 				// Defaults
 				default:
 					$pagefound = false;
-					require_once(dirname(__DIR__) . DS . 'models' . DS . 'course.php');
+					require_once dirname(__DIR__) . DS . 'models' . DS . 'course.php';
 					$course = \Components\Courses\Models\Course::getInstance($vars['gid']);
 					if ($course->exists())
 					{

@@ -222,7 +222,7 @@ $this->css()
 						$lastcomment = $row->comments()
 							->order('created', 'desc')
 							->row()
-							->get('created', '0000-00-00 00:00:00');
+							->get('created');
 
 						$tags = '';
 						if (isset($alltags[$row->get('id')]))

@@ -8,10 +8,10 @@
 
 // no direct access
 defined('_HZEXEC_') or die();
-$script = "\t".'Joomla.submitbutton = function(pressbutton) {'."\n";
+$script = "\t".'Hubzero.submitbutton = function(pressbutton) {'."\n";
 $script .= "\t\t".'var form = document.adminForm;'."\n";
 $script .= "\t\t".'if (pressbutton == \'mail.cancel\') {'."\n";
-$script .= "\t\t\t".'Joomla.submitform(pressbutton);'."\n";
+$script .= "\t\t\t".'Hubzero.submitform(pressbutton);'."\n";
 $script .= "\t\t\t".'return;'."\n";
 $script .= "\t\t".'}'."\n";
 $script .= "\t\t".'// do field validation'."\n";
@@ -22,7 +22,7 @@ $script .= "\t\t\t".'alert("'.Lang::txt('COM_USERS_MAIL_PLEASE_SELECT_A_GROUP', 
 $script .= "\t\t".'} else if (form.jform_message.value == ""){'."\n";
 $script .= "\t\t\t".'alert("'.Lang::txt('COM_USERS_MAIL_PLEASE_FILL_IN_THE_MESSAGE', true).'");'."\n";
 $script .= "\t\t".'} else {'."\n";
-$script .= "\t\t\t".'Joomla.submitform(pressbutton);'."\n";
+$script .= "\t\t\t".'Hubzero.submitform(pressbutton);'."\n";
 $script .= "\t\t".'}'."\n";
 $script .= "\t\t".'}'."\n";
 

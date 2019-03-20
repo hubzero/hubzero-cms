@@ -50,7 +50,7 @@ if ($tmpl != 'component')
 
 Html::behavior('framework');
 
-$this->js('memberships.js');
+$this->js('membership.js');
 ?>
 
 <?php if ($this->getError()) { ?>

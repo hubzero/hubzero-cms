@@ -213,8 +213,8 @@ class Section extends Table
 		{
 			$now = Date::toSql();
 
-			$where[] = "(os.publish_up = '0000-00-00 00:00:00' OR os.publish_up <= " . $this->_db->quote($now) . ")";
-			$where[] = "(os.publish_down = '0000-00-00 00:00:00' OR os.publish_down >= " . $this->_db->quote($now) . ")";
+			$where[] = "(os.publish_up IS NULL OR os.publish_up = '0000-00-00 00:00:00' OR os.publish_up <= " . $this->_db->quote($now) . ")";
+			$where[] = "(os.publish_down IS NULL OR os.publish_down = '0000-00-00 00:00:00' OR os.publish_down >= " . $this->_db->quote($now) . ")";
 		}
 
 		if (isset($filters['started']))
@@ -223,11 +223,11 @@ class Section extends Table
 
 			if ($filters['started'] === true)
 			{
-				$where[] = "(os.start_date = '0000-00-00 00:00:00' OR os.start_date <= " . $this->_db->quote($now) . ")";
+				$where[] = "(os.start_date IS NULL OR os.start_date = '0000-00-00 00:00:00' OR os.start_date <= " . $this->_db->quote($now) . ")";
 			}
 			else if ($filters['started'] === false)
 			{
-				$where[] = "(os.start_date != '0000-00-00 00:00:00' AND os.start_date > " . $this->_db->quote($now) . ")";
+				$where[] = "(os.start_date IS NOT NULL AND os.start_date != '0000-00-00 00:00:00' AND os.start_date > " . $this->_db->quote($now) . ")";
 			}
 		}
 
@@ -237,11 +237,11 @@ class Section extends Table
 
 			if ($filters['ended'] === true)
 			{
-				$where[] = "(os.end_date != '0000-00-00 00:00:00' AND os.end_date < " . $this->_db->quote($now) . ")";
+				$where[] = "(os.end_date IS NOT NULL AND os.end_date != '0000-00-00 00:00:00' AND os.end_date < " . $this->_db->quote($now) . ")";
 			}
 			else if ($filters['ended'] === false)
 			{
-				$where[] = "(os.end_date = '0000-00-00 00:00:00' OR os.end_date >= " . $this->_db->quote($now) . ")";
+				$where[] = "(os.end_date IS NULL OR os.end_date = '0000-00-00 00:00:00' OR os.end_date >= " . $this->_db->quote($now) . ")";
 			}
 		}
 

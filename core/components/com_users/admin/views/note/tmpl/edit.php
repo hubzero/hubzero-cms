@@ -15,10 +15,10 @@ Html::behavior('tooltip');
 Html::behavior('formvalidation');
 ?>
 <script language="javascript" type="text/javascript">
-Joomla.submitbutton = function(task)
+Hubzero.submitbutton = function(task)
 {
 	if (task == 'note.cancel' || document.formvalidator.isValid($('#item-form'))) {
-		Joomla.submitform(task, document.getElementById('item-form'));
+		Hubzero.submitform(task, document.getElementById('item-form'));
 	}
 }
 </script>

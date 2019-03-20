@@ -160,11 +160,14 @@ class Event extends Table
 				$sql = "SELECT $this->_tbl.*
 					FROM #__categories AS b, $this->_tbl
 					WHERE $this->_tbl.catid = b.id
-					AND (((publish_up >= " . $this->_db->quote($select_date . '%') . " AND publish_up <= " . $this->_db->quote($select_date_fin . '%') . " AND publish_down <> '0000-00-00 00:00:00')
-						OR (publish_down >= " . $this->_db->quote($select_date . '%') . " AND publish_down <= " . $this->_db->quote($select_date_fin . '%') . " AND publish_down <> '0000-00-00 00:00:00')
-						OR (publish_up >= " . $this->_db->quote($select_date . '%') . " AND publish_down <= " . $this->_db->quote($select_date_fin . '%') . " AND publish_down <> '0000-00-00 00:00:00')
-						OR (publish_up <= " . $this->_db->quote($select_date . '%') . " AND publish_down >= " . $this->_db->quote($select_date_fin . '%') . " AND publish_down <> '0000-00-00 00:00:00'))
-						AND $this->_tbl.state = '1'";
+					AND (
+					(
+							(publish_up >= " . $this->_db->quote($select_date . '%') . " AND publish_up <= " . $this->_db->quote($select_date_fin . '%') . " AND publish_down IS NOT NULL AND publish_down != '0000-00-00 00:00:00')
+						OR (publish_down IS NOT NULL AND publish_down !='0000-00-00 00:00:00' AND publish_down >= " . $this->_db->quote($select_date . '%') . " AND publish_down <= " . $this->_db->quote($select_date_fin . '%') . ")
+						OR (publish_up >= " . $this->_db->quote($select_date . '%') . " AND publish_down IS NOT NULL AND publish_down !='0000-00-00 00:00:00' AND publish_down <= " . $this->_db->quote($select_date_fin . '%') . ")
+						OR (publish_up <= " . $this->_db->quote($select_date . '%') . " AND publish_down IS NOT NULL AND publish_down !='0000-00-00 00:00:00' AND publish_down >= " . $this->_db->quote($select_date_fin . '%') . ")
+					)
+					AND $this->_tbl.state = '1'";
 
 				$sql .= ($filters['category'] != 0) ? " AND b.id=" . intval($filters['category']) . ")" : ")";
 
@@ -195,7 +198,7 @@ class Event extends Table
 
 				$sql = "SELECT $this->_tbl.* FROM #__categories AS b, $this->_tbl
 					WHERE $this->_tbl.catid = b.id
-					AND publish_up LIKE " . $this->_db->quote($year . '%') . " AND (publish_down >= " . $this->_db->quote($year . '%') . " OR publish_down = '0000-00-00 00:00:00')
+					AND publish_up LIKE " . $this->_db->quote($year . '%') . " AND (publish_down >= " . $this->_db->quote($year . '%') . " OR publish_down = '0000-00-00 00:00:00' OR publish_down IS NULL)
 					AND $this->_tbl.state = '1'";
 
 				//did we pass in a scope filter
@@ -468,8 +471,8 @@ class Event extends Table
 		if (isset($filters['publish_up']) && isset($filters['publish_down']))
 		{
 			$q  = "(publish_up >=" . $this->_db->quote($filters['publish_up']);
-			$q .= " OR (publish_down <> '0000-00-00 00:00:00' AND publish_down <=" . $this->_db->quote($filters['publish_down']) . ")";
-			$q .= " OR (publish_up <= " . $this->_db->quote($filters['publish_up']) . " AND publish_down >=" . $this->_db->quote($filters['publish_down']) . "))";
+			$q .= " OR (publish_down IS NOT NULL AND publish_down != '0000-00-00 00:00:00' AND publish_down <=" . $this->_db->quote($filters['publish_down']) . ")";
+			$q .= " OR (publish_up IS NOT NULL AND publish_up <= " . $this->_db->quote($filters['publish_up']) . " AND publish_down >=" . $this->_db->quote($filters['publish_down']) . "))";
 			$where[] = $q;
 		}
 

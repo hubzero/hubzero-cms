@@ -6,6 +6,32 @@
  */
 
 jQuery(document).ready(function ($) {
+	var attach = $("#ajax-uploader");
+
+	if (attach.length) {
+		var uploader = new qq.FileUploader({
+			element: attach[0],
+			action: attach.attr("data-action"),
+			multiple: false,
+			debug: true,
+			template: '<div class="qq-uploader">' +
+						'<div class="qq-upload-button"><span>' + attach.attr("data-instructions") + '</span></div>' + 
+						'<div class="qq-upload-drop-area"><span>' + attach.attr("data-instructions") + '</span></div>' +
+						'<ul class="qq-upload-list"></ul>' + 
+					'</div>',
+			onComplete: function(id, file, response) {
+
+				// HTML entities had to be encoded for the JSON or IE 8 went nuts. So, now we have to decode it.
+				if (response.error !== undefined) {
+					alert(response.error);
+					return;
+				}
+
+				$('.course-identity>span').replaceWith('<img src="' + response.file + '" />');
+			}
+		});
+	}
+
 	$('a.delete-file')
 		.on('click', function (e) {
 			var res = confirm($(this).attr('data-confirm'));

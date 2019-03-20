@@ -191,8 +191,7 @@ class Inspector extends Obj
 			return $results;
 		}
 
-		$db       = $this->db;
-		$nullDate = $db->getNullDate();
+		$db = $this->db;
 
 		foreach ($ids as $tn)
 		{
@@ -202,7 +201,7 @@ class Inspector extends Obj
 				continue;
 			}
 
-			$fields = $db->getTableColumns($tn);
+			$fields = $db->getTableColumns($tn, false);
 
 			if (!(isset($fields['checked_out']) && isset($fields['checked_out_time'])))
 			{
@@ -211,7 +210,7 @@ class Inspector extends Obj
 
 			$values = array(
 				'checked_out' => 0,
-				'checked_out_time' => $nullDate
+				'checked_out_time' => $fields['checked_out_time']->Default
 			);
 
 			if (isset($fields[$tn]['editor']))
@@ -222,7 +221,7 @@ class Inspector extends Obj
 			$query = $db->getQuery()
 				->update($tn)
 				->set($values)
-				->where('checked_out', '>', '0');
+				->where('checked_out', '>', 0);
 
 			if ($query->execute())
 			{

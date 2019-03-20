@@ -38,7 +38,7 @@ $this->baseURL = rtrim($this->baseURL, '/');
 $confirmationCode = -$this->confirm;
 $userEmail = urlencode($this->email);
 $relativeUrl = "index.php?option=$this->option&task=confirm&confirm=$confirmationCode&email=$userEmail";
-$link = $this->baseURL . Route::urlForClient($relativeUrl, false);
+$link = $this->baseURL . Route::urlForClient('site', $relativeUrl, false);
 $link = str_replace('/administrator', '', $link);
 ?>
 
