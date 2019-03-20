@@ -43,7 +43,7 @@ return array(
 	|
 	| If enabled, diagnostic information, language translation, and SQL errors
 	| (if present) will be displayed. The information will be displayed at the
-	| foot of every page you view within the Joomla backend and frontend. It is
+	| foot of every page you view within the CMS backend and frontend. It is
 	| not advisable to leave the debug mode activated when running a live site.
 	|
 	*/
@@ -55,7 +55,7 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	| Select whether the debugging indicators (<bold>**...**</bold>) or
-	| (<bold>??...??</bold>) for the Joomla! Language files will be displayed.
+	| (<bold>??...??</bold>) for the Language files will be displayed.
 	| Debug Language will work without Debug System being activated, but you
 	| will not get the additional detailed references that will help you
 	| correct any errors.
