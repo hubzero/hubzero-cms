@@ -1179,7 +1179,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		}
 		else
 		{
-			// Check if they're a site admin (from Joomla)
+			// Check if they're a site admin
 			$this->params->set('access-admin-resource', User::authorise('core.admin', null));
 			$this->params->set('access-manage-resource', User::authorise('core.manage', null));
 			if ($this->params->get('access-admin-resource')

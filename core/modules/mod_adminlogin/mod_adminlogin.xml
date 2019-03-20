@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           administrator/modules/mod_login/mod_login.xml
+@file           modules/mod_adminlogin/mod_adminlogin.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 

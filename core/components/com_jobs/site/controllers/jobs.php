@@ -1810,7 +1810,7 @@ class Jobs extends SiteController
 	{
 		if (!User::isGuest())
 		{
-			// Check if they're a site admin (from Joomla)
+			// Check if they're a site admin
 			$this->config->set('access-admin-component', User::authorise('core.admin', null));
 			$this->config->set('access-manage-component', User::authorise('core.manage', null));
 			if ($this->config->get('access-admin-component') || $this->config->get('access-manage-component'))

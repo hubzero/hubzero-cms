@@ -36,8 +36,8 @@ use stdClass;
 use Filesystem;
 use Lang;
 
-include_once(__DIR__ . DS . 'format.php');
-include_once(__DIR__ . DS . 'element.php');
+include_once __DIR__ . DS . 'format.php';
+include_once __DIR__ . DS . 'element.php';
 
 /**
  * Publications elements class
@@ -149,7 +149,7 @@ class Elements
 	/**
 	 * Check if a registry path exists.
 	 *
-	 * @param   string  $path  Registry path (e.g. joomla.content.showauthor)
+	 * @param   string  $path  Registry path (e.g. content.showauthor)
 	 * @return  boolean
 	 */
 	public function exists($path)
@@ -185,7 +185,7 @@ class Elements
 	/**
 	 * Get a registry value.
 	 *
-	 * @param   string  $path     Registry path (e.g. joomla.content.showauthor)
+	 * @param   string  $path     Registry path (e.g. content.showauthor)
 	 * @param   mixed   $default  Optional default value, returned if the internal value is null.
 	 * @return  mixed  Value of entry or null
 	 */
@@ -399,7 +399,7 @@ class Elements
 	/**
 	 * Set a registry value.
 	 *
-	 * @param   string  $path   Registry Path (e.g. joomla.content.showauthor)
+	 * @param   string  $path   Registry Path (e.g. content.showauthor)
 	 * @param   mixed   $value  Value of entry
 	 * @return  mixed  The value of the that has been set.
 	 */

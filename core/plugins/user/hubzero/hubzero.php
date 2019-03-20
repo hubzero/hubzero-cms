@@ -321,7 +321,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 
 		if (App::get('config')->get('session_handler') == 'database')
 		{
-			// Update the user related fields for the Joomla sessions table.
+			// Update the user related fields for the sessions table.
 			$db = App::get('db');
 			$query = $db->getQuery()
 				->update('#__session')
@@ -416,7 +416,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 		$instance->set('loginShell', '/bin/bash');
 		$instance->set('ftpShell', '/usr/lib/sftp-server');
 
-		// Check joomla user activation setting
+		// Check user activation setting
 		// 0 = automatically confirmed
 		// 1 = require email confirmation (the norm)
 		// 2 = require admin confirmation
