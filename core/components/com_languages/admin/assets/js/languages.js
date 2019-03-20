@@ -1,11 +1,11 @@
-Joomla.submitbutton = function(task) {
+Hubzero.submitbutton = function(task) {
 	$(document).trigger('editorSave');
 
 	var frm = document.getElementById('item-form');
 
 	if (frm) {
 		if (task == 'cancel' || document.formvalidator.isValid(frm)) {
-			Joomla.submitform(task, frm);
+			Hubzero.submitform(task, frm);
 		} else {
 			alert(frm.getAttribute('data-invalid-msg'));
 		}
@@ -14,10 +14,10 @@ Joomla.submitbutton = function(task) {
 
 jQuery(document).ready(function($){
 	$('#jform_searchstring').on('focus', function() {
-		if (!Joomla.overrider.states.refreshed) {
+		if (!Hubzero.overrider.states.refreshed) {
 			if ($(this).attr('data-cache_expired')) {
-				Joomla.overrider.refreshCache();
-				Joomla.overrider.states.refreshed = true;
+				Hubzero.overrider.refreshCache();
+				Hubzero.overrider.states.refreshed = true;
 			}
 		}
 		$(this).removeClass('invalid');
@@ -26,7 +26,7 @@ jQuery(document).ready(function($){
 	$('#searchstrings').on('click', function(e) {
 		e.preventDefault();
 
-		Joomla.overrider.searchStrings();
+		Hubzero.overrider.searchStrings();
 		return false;
 	});
 });

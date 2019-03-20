@@ -71,7 +71,7 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
 	 */
 	public function onSave($id)
 	{
-		return "document.getElementById('$id').value = Joomla.editors.instances['$id'].getCode();\n";
+		return "document.getElementById('$id').value = Hubzero.editors.instances['$id'].getCode();\n";
 	}
 
 	/**
@@ -83,7 +83,7 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
 	 */
 	public function onGetContent($id)
 	{
-		return "Joomla.editors.instances['$id'].getCode();\n";
+		return "Hubzero.editors.instances['$id'].getCode();\n";
 	}
 
 	/**
@@ -96,7 +96,7 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
 	 */
 	public function onSetContent($id, $content)
 	{
-		return "Joomla.editors.instances['$id'].setCode($content);\n";
+		return "Hubzero.editors.instances['$id'].setCode($content);\n";
 	}
 
 	/**
@@ -114,7 +114,7 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
 			$done = true;
 
 			$js = "\tfunction jInsertEditorText(text, editor) {
-					Joomla.editors.instances[editor].replaceSelection(text);\n
+					Hubzero.editors.instances[editor].replaceSelection(text);\n
 			}";
 			Document::addScriptDeclaration($js);
 		}
@@ -192,7 +192,6 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
 					break;
 
 				default:
-					;
 					break;
 			} //switch
 		}
@@ -229,7 +228,7 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
 		$html[] = '<script type="text/javascript">';
 		$html[] = '(function() {';
 		$html[] = 'var editor = CodeMirror.fromTextArea("'.$id.'", '.json_encode($options).');';
-		$html[] = 'Joomla.editors.instances[\''.$id.'\'] = editor;';
+		$html[] = 'Hubzero.editors.instances[\''.$id.'\'] = editor;';
 		$html[] = '})()';
 		$html[] = '</script>';
 

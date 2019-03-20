@@ -16,19 +16,19 @@ jQuery(document).ready(function(jq){
 	_DEBUG = document.getElementById('system-debug') ? true : false;
 
 	$('#importHubConfig').on('click', function(e){
-		return Joomla.submitbutton('importHubConfig');
+		return Hubzero.submitbutton('importHubConfig');
 	});
 
 	$('#deleteUsers').on('click', function(e){
-		return Joomla.submitbutton('deleteUsers');
+		return Hubzero.submitbutton('deleteUsers');
 	});
 
 	$('#exportGroups').on('click', function(e){
-		return Joomla.submitbutton('exportGroups');
+		return Hubzero.submitbutton('exportGroups');
 	});
 
 	$('#deleteGroups').on('click', function(e){
-		return Joomla.submitbutton('deleteGroups');
+		return Hubzero.submitbutton('deleteGroups');
 	});
 
 	var BatchRecords = new function() {

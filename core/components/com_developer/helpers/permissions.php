@@ -38,7 +38,7 @@ use User;
 /**
  * Developer helper for permissions
  * 
- * This ties into Joomla's permissions ACL and the 
+ * This ties into the permissions ACL and the 
  * component's access.xml that defines that permissions
  * exist for what objects.
  */

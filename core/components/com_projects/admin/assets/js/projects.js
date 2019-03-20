@@ -1,33 +1,33 @@
 
-Joomla.submitbutton = function(task) {
+Hubzero.submitbutton = function(task) {
 	var frm = document.getElementById('item-form');
 
 	if (frm) {
 		if (task == 'cancel') {
-			Joomla.submitform(task, frm);
+			Hubzero.submitform(task, frm);
 			return;
 		}
 
 		if (task == 'delete') {
 			frm.admin_action.value = 'delete';
-			Joomla.submitform('save', frm);
+			Hubzero.submitform('save', frm);
 			return;
 		}
 
 		if (task == 'suspend') {
 			frm.admin_action.value = 'suspend';
-			Joomla.submitform('save', frm);
+			Hubzero.submitform('save', frm);
 			return;
 		}
 
 		if (task == 'reinstate') {
 			form.admin_action.value = 'reinstate';
-			Joomla.submitform('save', frm);
+			Hubzero.submitform('save', frm);
 			return;
 		}
 
 		if (task == 'cancel' || document.formvalidator.isValid(frm)) {
-			Joomla.submitform(task, frm);
+			Hubzero.submitform(task, frm);
 		} else {
 			alert(frm.getAttribute('data-invalid-msg'));
 		}
@@ -62,30 +62,30 @@ jQuery(document).ready(function($){
 	$('#do-delete').on('click', function (e) {
 		e.preventDefault();
 
-		Joomla.submitbutton('delete');
+		Hubzero.submitbutton('delete');
 	});
 
 	$('#do-unarchive').on('click', function (e) {
 		e.preventDefault();
 
-		Joomla.submitbutton('unarchive');
+		Hubzero.submitbutton('unarchive');
 	});
 
 	$('#do-archive').on('click', function (e) {
 		e.preventDefault();
 
-		Joomla.submitbutton('archive');
+		Hubzero.submitbutton('archive');
 	});
 
 	$('#do-reinstate').on('click', function (e) {
 		e.preventDefault();
 
-		Joomla.submitbutton('reinstate');
+		Hubzero.submitbutton('reinstate');
 	});
 
 	$('#do-suspend').on('click', function (e) {
 		e.preventDefault();
 
-		Joomla.submitbutton('suspend');
+		Hubzero.submitbutton('suspend');
 	});
 });

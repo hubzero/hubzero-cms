@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 <script type="text/javascript">
 	setmenutype = function(type)
 	{
-		window.parent.Joomla.submitbutton('items.setType', type);
+		window.parent.Hubzero.submitbutton('items.setType', type);
 		window.parent.$.fancybox.close();
 	}
 </script>

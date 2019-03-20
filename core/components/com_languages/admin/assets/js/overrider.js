@@ -1,12 +1,7 @@
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-/**
  * Some state variables for the overrider
  */
-Joomla.overrider = {
+Hubzero.overrider = {
 	states : {
 		refreshing: false,
 		refreshed: false,
@@ -19,18 +14,16 @@ Joomla.overrider = {
 /**
  * Method for refreshing the database cache of known language strings via Ajax
  *
- * @return	void
- *
- * @since		2.5
+ * @return  void
  */
-Joomla.overrider.refreshCache = function()
+Hubzero.overrider.refreshCache = function()
 {
 	$.ajax({
 		url: 'index.php?option=com_languages&controller=overrides&task=refresh&format=json',
 		type: 'POST',
 		dataType: 'json',
 		beforeSend: function() {
-			Joomla.overrider.states.refreshing = true;
+			Hubzero.overrider.states.refreshing = true;
 			$('#refresh-status').show();
 		},
 		success: function(r) {
@@ -40,14 +33,14 @@ Joomla.overrider.refreshCache = function()
 			}
 			if (r.messages)
 			{
-				Joomla.renderMessages(r.messages);
+				Hubzero.renderMessages(r.messages);
 			}
 			$('#refresh-status').hide();
-			Joomla.overrider.states.refreshing = false;
+			Hubzero.overrider.states.refreshing = false;
 		},
 		/*onFailure: function(xhr)
 		{
-			alert(Joomla.JText._('COM_LANGUAGES_VIEW_OVERRIDE_REQUEST_ERROR'));
+			alert(Hubzero.Lang.txt('COM_LANGUAGES_VIEW_OVERRIDE_REQUEST_ERROR'));
 			$('#refresh-status').dissolve();
 		}.bind(this),*/
 		error: function(text, error) {
@@ -60,16 +53,13 @@ Joomla.overrider.refreshCache = function()
 /**
  * Method for searching known language strings via Ajax
  *
- * @param		int		 	more	Determines the limit start of the results
- *
- * @return	void
- *
- * @since		2.5
+ * @param   int   more  Determines the limit start of the results
+ * @return  void
  */
-Joomla.overrider.searchStrings = function(more)
+Hubzero.overrider.searchStrings = function(more)
 {
 	// Prevent searching if the cache is refreshed at the moment
-	if (Joomla.overrider.states.refreshing)
+	if (Hubzero.overrider.states.refreshing)
 	{
 		return;
 	}
@@ -78,15 +68,15 @@ Joomla.overrider.searchStrings = function(more)
 	// was used to start the search (that will be the case if 'more' is null)
 	if (!more)
 	{
-		Joomla.overrider.states.searchstring = $('#fields_searchstring').val();
-		Joomla.overrider.states.searchtype   = 'value';
+		Hubzero.overrider.states.searchstring = $('#fields_searchstring').val();
+		Hubzero.overrider.states.searchtype   = 'value';
 		if ($('#fields_searchtype0').attr('checked'))
 		{
-			Joomla.overrider.states.searchtype = 'constant';
+			Hubzero.overrider.states.searchtype = 'constant';
 		}
 	}
 
-	if (!Joomla.overrider.states.searchstring)
+	if (!Hubzero.overrider.states.searchstring)
 	{
 		$('#jform_searchstring').addClass('invalid');
 
@@ -96,7 +86,7 @@ Joomla.overrider.searchStrings = function(more)
 	$.ajax({
 		dataType: 'json',
 		type: 'POST',
-		url: 'index.php?option=com_languages&controller=overrides&task=search&format=json&searchstring=' + Joomla.overrider.states.searchstring + '&searchtype=' + Joomla.overrider.states.searchtype + '&more=' + more,
+		url: 'index.php?option=com_languages&controller=overrides&task=search&format=json&searchstring=' + Hubzero.overrider.states.searchstring + '&searchtype=' + Hubzero.overrider.states.searchtype + '&more=' + more,
 		beforeSend: function()
 		{
 			if (more)
@@ -121,19 +111,19 @@ Joomla.overrider.searchStrings = function(more)
 			}
 			if (r.messages)
 			{
-				Joomla.renderMessages(r.messages);
+				Hubzero.renderMessages(r.messages);
 			}
 			if (r.data)
 			{
 				if (r.data.results)
 				{
-					Joomla.overrider.insertResults(r.data.results);
+					Hubzero.overrider.insertResults(r.data.results);
 				}
 				if (r.data.more)
 				{
 					// If there are more results than the sent ones
 					// display the more link
-					Joomla.overrider.states.more = r.data.more;
+					Hubzero.overrider.states.more = r.data.more;
 					$('#more-results').show();
 				}
 				else
@@ -146,7 +136,7 @@ Joomla.overrider.searchStrings = function(more)
 		},
 		/*onFailure: function(xhr)
 		{
-			alert(Joomla.JText._('COM_LANGUAGES_VIEW_OVERRIDE_REQUEST_ERROR'));
+			alert(Hubzero.Lang.txt('COM_LANGUAGES_VIEW_OVERRIDE_REQUEST_ERROR'));
 			document.id('results-container').removeClass('overrider-spinner');
 			document.id('more-results').removeClass('overrider-spinner');
 		}.bind(this),*/
@@ -162,20 +152,17 @@ Joomla.overrider.searchStrings = function(more)
 /**
  * Method inserting the received results into the results container
  *
- * @param		array results An array of search result objects
- *
- * @return	void
- *
- * @since		2.5
+ * @param   array  results  An array of search result objects
+ * @return  void
  */
-Joomla.overrider.insertResults = function(results)
+Hubzero.overrider.insertResults = function(results)
 {
 	// For creating an individual ID for each result we use a counter
-	Joomla.overrider.states.counter = Joomla.overrider.states.counter + 1;
+	Hubzero.overrider.states.counter = Hubzero.overrider.states.counter + 1;
 
 	// Create a container into which all the results will be inserted
 	var results_div = $('<div></div>')
-		.attr('id', 'language-results' + Joomla.overrider.states.counter)
+		.attr('id', 'language-results' + Hubzero.overrider.states.counter)
 		.addClass('language-results')
 		.hide();
 
@@ -184,11 +171,11 @@ Joomla.overrider.insertResults = function(results)
 		var div = $('<div></div>')
 			.addClass('result row' + index%2)
 			.on('click', function(e) {
-				Joomla.overrider.selectString(String(Joomla.overrider.states.counter) + String(index));
+				Hubzero.overrider.selectString(String(Hubzero.overrider.states.counter) + String(index));
 			});
 
 		var key = $('<div></div>')
-			.attr('id', 'override_key' + Joomla.overrider.states.counter + index)
+			.attr('id', 'override_key' + Hubzero.overrider.states.counter + index)
 			.addClass('result-key')
 			.html(item.constant)
 			.attr('title', item.file);
@@ -196,7 +183,7 @@ Joomla.overrider.insertResults = function(results)
 		key.appendTo(div);
 
 		var string = $('<div></div>')
-			.attr('id', 'override_string' + Joomla.overrider.states.counter + index)
+			.attr('id', 'override_string' + Hubzero.overrider.states.counter + index)
 			.addClass('result-string')
 			.html(item.string);
 
@@ -208,28 +195,24 @@ Joomla.overrider.insertResults = function(results)
 	// If there aren't any results display an appropriate message
 	if (!results.length)
 	{
-		var noresult = $('<div></div>').html(Joomla.JText._('COM_LANGUAGES_VIEW_OVERRIDE_NO_RESULTS'));
+		var noresult = $('<div></div>').html(Hubzero.Lang.txt('COM_LANGUAGES_VIEW_OVERRIDE_NO_RESULTS'));
 		noresult.appendTo(results_div);
 	}
 
 	// Finally insert the container afore the more link and reveal it
 	results_div.insertBefore($('#more-results'));
 
-	$('#language-results' + Joomla.overrider.states.counter).show();
+	$('#language-results' + Hubzero.overrider.states.counter).show();
 };
 
 /**
  * Inserts a specific constant/value pair into the form and scrolls the page back to the top
  *
- * @param		int		id	The ID of the element which was selected for insertion
- *
- * @return	void
- *
- * @since		2.5
+ * @param   int   id  The ID of the element which was selected for insertion
+ * @return  void
  */
-Joomla.overrider.selectString = function(id)
+Hubzero.overrider.selectString = function(id)
 {
 	$('#field-key').val($('#override_key' + id).html());
 	$('#field-override').val($('#override_string' + id).html());
-	//new Fx.Scroll(window).toTop();
 };

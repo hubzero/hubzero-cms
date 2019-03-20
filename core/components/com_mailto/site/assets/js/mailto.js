@@ -1,4 +1,4 @@
-Joomla.submitbutton = function(task) {
+Hubzero.submitbutton = function(task) {
 	var frm = document.getElementById('mailtoForm');
 
 	// do field validation
@@ -13,7 +13,7 @@ jQuery(document).ready(function($){
 	$('#mailto_send').on('click', function(e) {
 		e.preventDefault();
 
-		return Joomla.submitbutton('send');
+		return Hubzero.submitbutton('send');
 	});
 
 	$('.cancel').on('click', function(e) {
