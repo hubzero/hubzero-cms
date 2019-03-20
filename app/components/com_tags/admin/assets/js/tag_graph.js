@@ -6,8 +6,8 @@ jQuery(function(jq)
 	    w = $('#graph').innerWidth(),
 	    h = 600;
 
-	var window.resourceTypes = new Array,
-		resourcetypes = $('#resource-types');
+	window.resourceTypes = new Array;
+	var resourcetypes = $('#resource-types');
 
 	if (resourcetypes.length) {
 		var cdata = JSON.parse(resourcetypes.html());
