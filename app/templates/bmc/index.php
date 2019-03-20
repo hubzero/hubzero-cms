@@ -277,17 +277,17 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 									<nav class="user-nav">
 										<ul>
 											<li id="account-profile">
-												<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile'); ?>"><span class="nav-icon-user"><?php echo file_get_contents("core/assets/icons/user.svg") ?></span><span><?php echo Lang::txt('TPL_BMC_ACCOUNT_PROFILE'); ?></span></a>
+												<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile'); ?>"><span class="nav-icon-user"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/user.svg") ?></span><span><?php echo Lang::txt('TPL_BMC_ACCOUNT_PROFILE'); ?></span></a>
 											</li>
 											<li id="account-dashboard">
-												<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=dashboard'); ?>"><span class="nav-icon-dashboard"><?php echo file_get_contents("core/assets/icons/th-large.svg") ?></span><span><?php echo Lang::txt('TPL_BMC_ACCOUNT_DASHBOARD'); ?></span></a>
+												<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=dashboard'); ?>"><span class="nav-icon-dashboard"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/th-large.svg") ?></span><span><?php echo Lang::txt('TPL_BMC_ACCOUNT_DASHBOARD'); ?></span></a>
 											</li>
 											<li id="account-messages">
-												<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages'); ?>"><span class="nav-icon-messages"><?php echo file_get_contents("core/assets/icons/envelope-alt.svg") ?></span><span><?php echo Lang::txt('TPL_BMC_ACCOUNT_MESSAGES'); ?></span></a>
+												<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages'); ?>"><span class="nav-icon-messages"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/envelope-alt.svg") ?></span><span><?php echo Lang::txt('TPL_BMC_ACCOUNT_MESSAGES'); ?></span></a>
 											</li>
 											<jdoc:include type="modules" name="minidash" />
 											<li id="account-logout">
-												<a href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span class="nav-icon-logout"><?php echo file_get_contents("core/assets/icons/signout.svg") ?></span><span><?php echo Lang::txt('TPL_BMC_LOGOUT'); ?></span></a>
+												<a href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span class="nav-icon-logout"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/signout.svg") ?></span><span><?php echo Lang::txt('TPL_BMC_LOGOUT'); ?></span></a>
 											</li>
 										</ul>
 									</nav>
