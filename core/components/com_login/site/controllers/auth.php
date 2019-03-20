@@ -374,7 +374,7 @@ class Auth extends SiteController
 			}
 		}
 
-		// If no authenticator is specified, or the login method for that plugin did not exist then use joomla default
+		// If no authenticator is specified, or the login method for that plugin did not exist then use default
 		if (!isset($myplugin))
 		{
 			// Check for request forgeries

@@ -1,8 +1,8 @@
-Joomla.submitbutton = function(task, type='') {
+Hubzero.submitbutton = function(task, type='') {
 	var afrm = document.getElementById('adminForm');
 
 	if (afrm) {
-		Joomla.submitform(task, afrm);
+		Hubzero.submitform(task, afrm);
 		return;
 	}
 
@@ -18,9 +18,9 @@ Joomla.submitbutton = function(task, type='') {
 			} else {
 				$('#item-form').find('input[name="fields[menutype]"]').val(type);
 			}
-			Joomla.submitform('items.setType', frm);
+			Hubzero.submitform('items.setType', frm);
 		} else if (task == 'cancel' || task == 'items.cancel' || document.formvalidator.isValid(frm)) {
-			Joomla.submitform(task, frm);
+			Hubzero.submitform(task, frm);
 		} else {
 			var invalids = $('#item-form .modal-value.invalid');
 
@@ -46,7 +46,7 @@ jQuery(document).ready(function($){
 
 	$('#btn-batch-submit')
 		.on('click', function (e){
-			Joomla.submitbutton('item.batch');
+			Hubzero.submitbutton('item.batch');
 		});
 
 	$('#btn-batch-clear')

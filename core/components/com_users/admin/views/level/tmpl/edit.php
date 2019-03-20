@@ -18,10 +18,10 @@ $canDo = UsersHelper::getActions();
 ?>
 
 <script type="text/javascript">
-Joomla.submitbutton = function(task)
+Hubzero.submitbutton = function(task)
 {
 	if (task == 'level.cancel' || document.formvalidator.isValid($('#item-form'))) {
-		Joomla.submitform(task, document.getElementById('item-form'));
+		Hubzero.submitform(task, document.getElementById('item-form'));
 	}
 }
 /*

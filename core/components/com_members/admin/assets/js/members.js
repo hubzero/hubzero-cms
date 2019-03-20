@@ -1,8 +1,8 @@
-Joomla.submitbutton = function(task, type = '') {
+Hubzero.submitbutton = function(task, type = '') {
 	var afrm = document.getElementById('adminForm');
 
 	if (afrm) {
-		Joomla.submitform(task, afrm);
+		Hubzero.submitform(task, afrm);
 		return;
 	}
 
@@ -11,7 +11,7 @@ Joomla.submitbutton = function(task, type = '') {
 	if (frm) {
 		$(document).trigger('editorSave');
 		if (task == 'cancel' || task == 'cancelemail' || document.formvalidator.isValid(frm)) {
-			Joomla.submitform(task, frm);
+			Hubzero.submitform(task, frm);
 		} else {
 			alert(frm.getAttribute('data-invalid-msg'));
 		}
@@ -21,7 +21,7 @@ Joomla.submitbutton = function(task, type = '') {
 jQuery(document).ready(function($){
 	$('#btn-batch-submit')
 		.on('click', function (e){
-			Joomla.submitbutton('user.batch');
+			Hubzero.submitbutton('user.batch');
 		});
 
 	$('#btn-batch-clear')

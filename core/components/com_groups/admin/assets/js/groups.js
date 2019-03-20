@@ -1,8 +1,8 @@
-Joomla.submitbutton = function(task) {
+Hubzero.submitbutton = function(task) {
 	var cfrm = document.getElementById('component-form');
 
 	if (cfrm) {
-		Joomla.submitform(task, cfrm);
+		Hubzero.submitform(task, cfrm);
 		return;
 	}
 
@@ -18,7 +18,7 @@ Joomla.submitbutton = function(task) {
 		}
 
 		if (task == 'cancel' || document.formvalidator.isValid(frm)) {
-			Joomla.submitform(task, frm);
+			Hubzero.submitform(task, frm);
 		} else {
 			alert(frm.getAttribute('data-invalid-msg'));
 		}
@@ -53,10 +53,10 @@ jQuery(document).ready(function($){
 	});
 
 	$("#btn-save").on('click', function(e){
-		Joomla.submitbutton('save');
+		Hubzero.submitbutton('save');
 	});
 
 	$("#btn-cancel").on('click', function(e){
-		Joomla.submitbutton('cancel');
+		Hubzero.submitbutton('cancel');
 	});
 });

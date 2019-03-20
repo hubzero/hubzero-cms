@@ -5,14 +5,14 @@
  * @license     http://opensource.org/licenses/MIT MIT
  */
 
-Joomla.submitbutton = function(task) {
+Hubzero.submitbutton = function(task) {
 	$(document).trigger('editorSave');
 
 	var frm = document.getElementById('item-form');
 
 	if (frm) {
 		if (task == 'cancel' || document.formvalidator.isValid(frm)) {
-			Joomla.submitform(task, frm);
+			Hubzero.submitform(task, frm);
 		} else {
 			alert(frm.getAttribute('data-invalid-msg'));
 		}
@@ -22,7 +22,7 @@ Joomla.submitbutton = function(task) {
 jQuery(document).ready(function ($) {
 	$('#btn-batch-submit')
 		.on('click', function (e){
-			return Joomla.submitbutton('category.batch');
+			return Hubzero.submitbutton('category.batch');
 		});
 
 	$('#btn-batch-clear')

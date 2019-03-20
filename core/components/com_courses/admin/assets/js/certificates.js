@@ -307,12 +307,12 @@ jQuery(window).load(function() {
 	init();
 });
 
-Joomla.submitbutton = function(task)
+Hubzero.submitbutton = function(task)
 {
 	var form = document.adminForm;
 
 	if (pressbutton == 'cancel') {
-		Joomla.submitform(task, form);
+		Hubzero.submitform(task, form);
 		return;
 	}
 
@@ -332,5 +332,5 @@ Joomla.submitbutton = function(task)
 	$('#field-properties').val(JSON.stringify(cert));
 
 	// form field validation
-	Joomla.submitform(task, form);
+	Hubzero.submitform(task, form);
 }
