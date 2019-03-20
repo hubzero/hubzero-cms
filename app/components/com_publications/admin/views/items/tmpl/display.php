@@ -148,7 +148,7 @@ Html::behavior('tooltip');
 			// See if it's checked out or not
 			$checked = '';
 			$checkedInfo = '';
-			if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
+			if ($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00'))
 			{
 				$date = Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_LC1'));
 				$time = Date::of($row->checked_out_time)->toLocal('H:i');
@@ -159,7 +159,7 @@ Html::behavior('tooltip');
 				$checked .= '<span class="checkedout">' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '</span>';
 				$checked .= '</span>';
 
-				$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
+				$info .= ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
 						? Lang::txt('COM_PUBLICATIONS_FIELD_CHECKED_OUT').': '
 						. $date . '<br />'
 						: '';

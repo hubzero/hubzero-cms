@@ -44,31 +44,31 @@ use Date;
 use Lang;
 
 // Include table classes
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'publication.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'version.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'access.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'audience.level.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'audience.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'author.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'license.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'master.type.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'screenshot.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'logs.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'publication.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'version.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'access.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'audience.level.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'audience.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'author.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'license.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'category.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'master.type.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'screenshot.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'logs.php';
 
 // Projects
 require_once \Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 require_once \Component::path('com_projects') . DS . 'models' . DS . 'repo.php';
 
 // Common models
-require_once(__DIR__ . DS . 'curation.php');
-require_once(__DIR__ . DS . 'doi.php');
+require_once __DIR__ . DS . 'curation.php';
+require_once __DIR__ . DS . 'doi.php';
 
 // Helpers
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php');
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
 
 /**
  * Information retrieval for items/info linked to a publication
@@ -1210,7 +1210,7 @@ class Publication extends Obj
 			return;
 		}
 
-		// Check if they're a site admin (from Joomla)
+		// Check if they're a site admin
 		$this->params->set('access-admin-publication', User::authorise('core.admin', null));
 		$this->params->set('access-manage-publication', User::authorise('core.manage', null));
 
