@@ -191,6 +191,9 @@ class Pages extends AdminController
 	 */
 	public function saveTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Get the page vars being posted
 		$page    = Request::getArray('page', array(), 'post');
 		$version = Request::getArray('pageversion', array(), 'post');

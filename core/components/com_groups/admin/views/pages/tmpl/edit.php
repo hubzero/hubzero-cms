@@ -60,13 +60,13 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen' =
 				<legend><span><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_DETAILS'); ?></span></legend>
 
 				<div class="input-wrap">
-					<label for="field-title"><?php echo Lang::txt('COM_GROUPS_PAGES_TITLE'); ?>:</label><br />
-					<input type="text" name="page[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->page->get('title'))); ?>" />
+					<label for="field-title"><?php echo Lang::txt('COM_GROUPS_PAGES_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<input type="text" name="page[title]" id="field-title" class="required" value="<?php echo $this->escape(stripslashes($this->page->get('title'))); ?>" />
 				</div>
 
 				<div class="input-wrap">
-					<label for="field-alias"><?php echo Lang::txt('COM_GROUPS_PAGES_ALIAS'); ?>:</label><br />
-					<input type="text" name="page[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->page->get('alias'))); ?>" />
+					<label for="field-alias"><?php echo Lang::txt('COM_GROUPS_PAGES_ALIAS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></label><br />
+					<input type="text" name="page[alias]" id="field-alias" class="required" value="<?php echo $this->escape(stripslashes($this->page->get('alias'))); ?>" />
 				</div>
 			</fieldset>
 
@@ -171,8 +171,8 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen' =
 				<legend><span><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CONTENT'); ?></span></legend>
 
 				<div class="input-wrap">
-					<label for="field-content"><?php echo Lang::txt('COM_GROUPS_PAGES_CONTENT'); ?>:</label><br />
-					<textarea name="pageversion[content]" id="field-content" rows="30"><?php echo $this->escape(stripslashes($this->version->get('content'))); ?></textarea>
+					<label for="field-content"><?php echo Lang::txt('COM_GROUPS_PAGES_CONTENT'); ?>:</span></label><br />
+					<?php echo $this->editor('pageversion[content]', $this->escape(stripslashes($this->version->get('content'))), 50, 30, 'field-content', array('buttons' => false)); ?>
 					<input type="hidden" name="pageversion[version]" value="<?php echo $this->version->get('version'); ?>" />
 				</div>
 			</fieldset>
