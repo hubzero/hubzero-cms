@@ -48,7 +48,7 @@ class HtmlIcon
 	{
 		$url = 'index.php?option=com_content&task=article.add&return=' . base64_encode(urlencode(Request::current(true))) . '&a_id=0&catid=' . $category->id;
 
-		$button =  '<a href="' . Route::url($url) . '">' . Lang::txt('JNEW') . '</a>';
+		$button =  '<a class="icon-add" href="' . Route::url($url) . '">' . Lang::txt('JNEW') . '</a>';
 
 		$output = '<span class="hasTip" title="' . Lang::txt('COM_CONTENT_CREATE_ARTICLE') . '">' . $button . '</span>';
 		return $output;
@@ -82,7 +82,7 @@ class HtmlIcon
 			$attribs['title']   = Lang::txt('JGLOBAL_EMAIL');
 			$attribs['onclick'] = "window.open(this.href,'win2','" . $status . "'); return false;";
 
-			$output = '<a href="' . Route::url($url) . '" ' . Hubzero\Utility\Arr::toString($attribs) . '>' . Lang::txt('JGLOBAL_EMAIL') . '</a>';
+			$output = '<a class="icon-email" href="' . Route::url($url) . '" ' . Hubzero\Utility\Arr::toString($attribs) . '>' . Lang::txt('JGLOBAL_EMAIL') . '</a>';
 		}
 
 		return $output;
@@ -132,13 +132,13 @@ class HtmlIcon
 			return '<span class="hasTip" title="' . htmlspecialchars($tooltip, ENT_COMPAT, 'UTF-8') . '">' . $button . '</span>';
 		}
 
-		$url  = 'index.php?option=com_content&task=article.edit&a_id=' . $article->id . '&return=' . base64_encode(urlencode(Request::current(true)));
-		$icon = $article->state ? 'edit.png' : 'edit_unpublished.png';
+		$url = 'index.php?option=com_content&task=article.edit&a_id=' . $article->id . '&return=' . base64_encode(urlencode(Request::current(true)));
+		$cls = $article->state ? 'icon-edit edit' : 'icon-edit edit unpublished';
 		if (strtotime($article->publish_up) > strtotime(Date::of('now')))
 		{
-			$icon = 'edit_unpublished.png';
+			$cls = 'icon-edit edit unpublished';
 		}
-		$text = Lang::txt('JGLOBAL_EDIT'); //Html::asset('image', $icon, Lang::txt('JGLOBAL_EDIT'), null, true);
+		$text = Lang::txt('JGLOBAL_EDIT');
 
 		if ($article->state == 0)
 		{
@@ -157,7 +157,7 @@ class HtmlIcon
 		$overlib .= '&lt;br /&gt;';
 		$overlib .= Lang::txt('COM_CONTENT_WRITTEN_BY', htmlspecialchars($author, ENT_COMPAT, 'UTF-8'));
 
-		$button = '<a href="' . Route::url($url) . '">' . $text . '</a>';
+		$button = '<a class="' . $cls . '" href="' . Route::url($url) . '">' . $text . '</a>';
 
 		$output = '<span class="hasTip" title="' . Lang::txt('COM_CONTENT_EDIT_ITEM') . ' :: ' . $overlib . '">' . $button . '</span>';
 

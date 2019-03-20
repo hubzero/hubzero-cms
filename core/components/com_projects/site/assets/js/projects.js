@@ -117,7 +117,7 @@ HUB.Projects = {
 		}
 	},
 
-	// Launch SqueezeBox with Ajax actions
+	// Launch modal with Ajax actions
 	launchBox: function()
 	{
 		var $ = this.jQuery;
