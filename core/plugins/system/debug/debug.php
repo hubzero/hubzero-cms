@@ -58,9 +58,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		// Log database queries
 		if ($this->params->get('log-database-queries'))
 		{
-			// Register the HUBzero database logger as well
-			// Don't worry, this won't log things twice...queries through joomla's database driver
-			// will get logged above, and this will catch queries through hubzero's database driver
+			// Register the HUBzero database logger
 			Event::listen(function($event)
 			{
 				Hubzero\Database\Log::add($event->getArgument('query'), $event->getArgument('time'));

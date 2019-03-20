@@ -180,8 +180,8 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 
 						$boot = DS . 'bootstrap' . DS . ucfirst(App::get('client')->name);
 
-						Lang::load('lib_joomla', PATH_APP . $boot, null, false, true) ||
-						Lang::load('lib_joomla', PATH_CORE . $boot, null, false, true);
+						Lang::load('lib_hubzero', PATH_APP . $boot, null, false, true) ||
+						Lang::load('lib_hubzero', PATH_CORE . $boot, null, false, true);
 					}
 
 					// Create a cookie

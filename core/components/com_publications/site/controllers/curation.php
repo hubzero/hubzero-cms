@@ -878,7 +878,7 @@ class Curation extends SiteController
 
 		$authorized = false;
 
-		// Check if they're a site admin (from Joomla)
+		// Check if they're a site admin
 		if (User::authorize($this->_option, 'manage'))
 		{
 			$authorized = 'admin';

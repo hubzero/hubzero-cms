@@ -98,8 +98,8 @@ class Warnings extends AdminController
 		if (!$tmp_path)
 		{
 			$messages[] = array(
-				'message' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_JOOMLATMPNOTSET'),
-				'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_JOOMLATMPNOTSETDESC')
+				'message' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_TMPNOTSET'),
+				'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_TMPNOTSETDESC')
 			);
 		}
 		else
@@ -107,8 +107,8 @@ class Warnings extends AdminController
 			if (!is_writeable($tmp_path))
 			{
 				$messages[] = array(
-					'message' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_JOOMLATMPNOTWRITEABLE'),
-					'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_JOOMLATMPNOTWRITEABLEDESC', $tmp_path)
+					'message' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_TMPNOTWRITEABLE'),
+					'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_TMPNOTWRITEABLEDESC', $tmp_path)
 				);
 			}
 		}

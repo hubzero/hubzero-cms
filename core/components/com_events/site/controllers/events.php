@@ -2196,7 +2196,7 @@ class Events extends SiteController
 		$headers .= "Reply-To: <" . $email . ">\r\n";
 		$headers .= "X-Priority: 3\r\n";
 		$headers .= "X-MSMail-Priority: Low\r\n";
-		$headers .= "X-Mailer: Joomla 1.5\r\n";
+		$headers .= "X-Mailer: HUBzero CMS\r\n";
 
 		@mail($email, $subject, $message, $headers);
 	}
@@ -2215,7 +2215,7 @@ class Events extends SiteController
 			return false;
 		}
 
-		// Check if they're a site admin from Joomla
+		// Check if they're a site admin
 		if (User::authorise('core.admin', $this->_option)
 		 || User::authorise('core.manage', $this->_option))
 		{
