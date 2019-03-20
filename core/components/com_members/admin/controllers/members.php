@@ -481,11 +481,18 @@ class Members extends AdminController
 		$user->set('name', $name);
 		$user->set('modifiedDate', Date::toSql());
 
+		// Get their current activation code
+		$ac = $user->get('activation');
+
+		// If the incoming code is > zero, then the account being activated
+		// (unactivated accoutns have a negative-value code, e.g.: -123456)
 		if ($ec = Request::getInt('activation', 0, 'post'))
 		{
 			$user->set('activation', $ec);
 		}
-		else
+		// If the account was previously activated and we're de-activating
+		// reset the activation code.
+		elseif ($ac > 0)
 		{
 			$user->set('activation', Helpers\Utility::genemailconfirm());
 		}
