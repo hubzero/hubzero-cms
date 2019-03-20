@@ -1,14 +1,5 @@
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-/**
- * JImageManager behavior for media component
- *
- * @package		Joomla.Extensions
- * @subpackage	Media
- * @since		1.5
+ * ImageManager behavior for media component
  */
 Array.prototype.associate = function (keys) {
 	var result = {};

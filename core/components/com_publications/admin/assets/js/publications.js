@@ -5,7 +5,7 @@
  * @license     http://opensource.org/licenses/MIT MIT
  */
 
-Joomla.submitbutton = function(task) {
+Hubzero.submitbutton = function(task) {
 	$(document).trigger('editorSave');
 
 	var frm = document.getElementById('item-form');
@@ -13,7 +13,7 @@ Joomla.submitbutton = function(task) {
 	if (frm) {
 		if (task == 'resetrating') {
 			if (confirm(frm.getAttribute('data-confirmreset'))) {
-				Joomla.submitform(task, frm);
+				Hubzero.submitform(task, frm);
 				return;
 			} else {
 				return;
@@ -23,42 +23,42 @@ Joomla.submitbutton = function(task) {
 		var admin_action = document.getElementById('admin_action');
 
 		if (task == 'saveorder') {
-			Joomla.submitform('saveauthororder', frm);
+			Hubzero.submitform('saveauthororder', frm);
 			return;
 		}
 
 		if (task == 'publish') {
 			admin_action.value = 'publish';
-			Joomla.submitform('save', frm);
+			Hubzero.submitform('save', frm);
 			return;
 		}
 
 		if (task == 'revert') {
 			admin_action.value = 'revert';
-			Joomla.submitform('save', frm);
+			Hubzero.submitform('save', frm);
 			return;
 		}
 
 		if (task == 'message') {
 			admin_action.value = 'message';
-			Joomla.submitform('save', frm);
+			Hubzero.submitform('save', frm);
 			return;
 		}
 
 		if (task == 'unpublish') {
 			admin_action.value = 'unpublish';
-			Joomla.submitform('save', frm);
+			Hubzero.submitform('save', frm);
 			return;
 		}
 
 		if (task == 'republish') {
 			admin_action.value = 'republish';
-			Joomla.submitform('save', frm);
+			Hubzero.submitform('save', frm);
 			return;
 		}
 
 		if (task == 'cancel' || document.formvalidator.isValid(frm)) {
-			Joomla.submitform(task, frm);
+			Hubzero.submitform(task, frm);
 		} else {
 			alert(frm.getAttribute('data-invalid-msg'));
 		}
@@ -124,30 +124,30 @@ jQuery(document).ready(function($){
 	HUB.Publications.reorder($('#author-list'));
 
 	$('#reset_rating').on('click', function(e){
-		Joomla.submitbutton('resetrating');
+		Hubzero.submitbutton('resetrating');
 	});
 
 	$('#reset_ranking').on('click', function(e){
-		Joomla.submitbutton('resetranking');
+		Hubzero.submitbutton('resetranking');
 	});
 
 	$('#do-message').on('click', function(e){
-		Joomla.submitbutton('message');
+		Hubzero.submitbutton('message');
 	});
 
 	$('#do-unpublish').on('click', function(e){
-		Joomla.submitbutton('unpublish');
+		Hubzero.submitbutton('unpublish');
 	});
 
 	$('#do-republish').on('click', function(e){
-		Joomla.submitbutton('republish');
+		Hubzero.submitbutton('republish');
 	});
 
 	$('#do-publish').on('click', function(e){
-		Joomla.submitbutton('publish');
+		Hubzero.submitbutton('publish');
 	});
 
 	$('#do-revert').on('click', function(e){
-		Joomla.submitbutton('revert');
+		Hubzero.submitbutton('revert');
 	});
 });

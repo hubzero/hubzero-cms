@@ -298,7 +298,7 @@ if (substr($this->profile->get('email'), -8) == '@invalid')
 							<input type="text" name="spam_count" id="field-reputation" value="<?php echo $this->escape($this->profile->reputation->get('spam_count', 0)); ?>" />
 						</span>
 						<span class="input-cell">
-							<a class="button" href="#field-reputation" onclick="document.getElementById('field-reputation').value='0';Joomla.submitbutton('apply');"><?php echo Lang::txt('COM_MEMBERS_RESET'); ?></a>
+							<a class="button" href="#field-reputation" onclick="document.getElementById('field-reputation').value='0';Hubzero.submitbutton('apply');"><?php echo Lang::txt('COM_MEMBERS_RESET'); ?></a>
 						</span>
 					</div>
 					<?php if ($this->profile->reputation->get('spam_count', 0) > Plugin::params('system', 'spamjail')->get('user_count', 10)) : ?>

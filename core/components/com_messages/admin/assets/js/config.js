@@ -1,11 +1,11 @@
-Joomla.submitbutton = function(task) {
+Hubzero.submitbutton = function(task) {
 	$(document).trigger('editorSave');
 
 	var frm = document.getElementById('config-form');
 
 	if (frm) {
 		if (task == 'cancel' || task == 'config.cancel' || document.formvalidator.isValid(frm)) {
-			Joomla.submitform(task, frm);
+			Hubzero.submitform(task, frm);
 		} else {
 			alert(frm.getAttribute('data-invalid-msg'));
 		}
@@ -16,7 +16,7 @@ jQuery(document).ready(function($){
 	$("#action_save").on('click', function(e){
 		e.preventDefault();
 
-		Joomla.submitform('save', this.form);
+		Hubzero.submitform('save', this.form);
 		window.top.setTimeout('window.parent.$.fancybox.close()', 1400);
 	});
 

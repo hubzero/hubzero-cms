@@ -53,10 +53,10 @@ endif;
 ?>
 
 <script type="text/javascript">
-	Joomla.submitbutton = function(task) {
+	Hubzero.submitbutton = function(task) {
 		if (task == 'article.cancel' || document.formvalidator.isValid($('#adminForm'))) {
 			<?php echo $this->form->getField('articletext')->save(); ?>
-			Joomla.submitform(task);
+			Hubzero.submitform(task);
 		} else {
 			alert('<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
 		}
