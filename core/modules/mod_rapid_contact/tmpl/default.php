@@ -101,7 +101,8 @@ $this->css();
 			<?php } ?>
 
 			<span class="submit">
-				<input type="submit" class="btn" value="<?php echo $this->button_text; ?>" />
+				<?php echo Html::input('token'); ?>
+				<input type="submit" class="btn" value="<?php echo $this->escape($this->button_text); ?>" />
 			</span>
 		</fieldset>
 	</form>
