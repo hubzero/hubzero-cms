@@ -1017,7 +1017,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Exit - don't go any further (i.e. no joomla template stuff)
+		// Exit - don't go any further (i.e. no template stuff)
 		exit;
 	}
 }

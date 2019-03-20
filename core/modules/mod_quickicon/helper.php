@@ -94,84 +94,72 @@ class Helper extends Module
 				self::$buttons[$key] = array(
 					array(
 						'link'   => Route::url('index.php?option=com_content&task=article.add'),
-						//'image'  => 'header/icon-48-article-add.png',
 						'id'     => 'icon-article-add',
 						'text'   => Lang::txt('MOD_QUICKICON_ADD_NEW_ARTICLE'),
 						'access' => array('core.manage', 'com_content', 'core.create', 'com_content', )
 					),
 					array(
 						'link'   => Route::url('index.php?option=com_content'),
-						//'image'  => 'header/icon-48-article.png',
 						'id'     => 'icon-article',
 						'text'   => Lang::txt('MOD_QUICKICON_ARTICLE_MANAGER'),
 						'access' => array('core.manage', 'com_content')
 					),
 					array(
 						'link'   => Route::url('index.php?option=com_categories&extension=com_content'),
-						//'image'  => 'header/icon-48-category.png',
 						'id'     => 'icon-category',
 						'text'   => Lang::txt('MOD_QUICKICON_CATEGORY_MANAGER'),
 						'access' => array('core.manage', 'com_content')
 					),
 					array(
 						'link'   => Route::url('index.php?option=com_media'),
-						//'image'  => 'header/icon-48-media.png',
 						'id'     => 'icon-media',
 						'text'   => Lang::txt('MOD_QUICKICON_MEDIA_MANAGER'),
 						'access' => array('core.manage', 'com_media')
 					),
 					array(
 						'link'   => Route::url('index.php?option=com_menus'),
-						//'image'  => 'header/icon-48-menumgr.png',
 						'id'     => 'icon-menumgr',
 						'text'   => Lang::txt('MOD_QUICKICON_MENU_MANAGER'),
 						'access' => array('core.manage', 'com_menus')
 					),
 					array(
 						'link'   => Route::url('index.php?option=com_users'),
-						//'image'  => 'header/icon-48-user.png',
 						'id'     => 'icon-user',
 						'text'   => Lang::txt('MOD_QUICKICON_USER_MANAGER'),
 						'access' => array('core.manage', 'com_users')
 					),
 					array(
 						'link'   => Route::url('index.php?option=com_modules'),
-						//'image'  => 'header/icon-48-module.png',
 						'id'     => 'icon-module',
 						'text'   => Lang::txt('MOD_QUICKICON_MODULE_MANAGER'),
 						'access' => array('core.manage', 'com_modules')
 					),
 					array(
 						'link'   => Route::url('index.php?option=com_installer'),
-						//'image'  => 'header/icon-48-extension.png',
 						'id'     => 'icon-extension',
 						'text'   => Lang::txt('MOD_QUICKICON_EXTENSION_MANAGER'),
 						'access' => array('core.manage', 'com_installer')
 					),
 					array(
 						'link'   => Route::url('index.php?option=com_languages'),
-						//'image'  => 'header/icon-48-language.png',
 						'id'     => 'icon-language',
 						'text'   => Lang::txt('MOD_QUICKICON_LANGUAGE_MANAGER'),
 						'access' => array('core.manage', 'com_languages')
 					),
 					array(
 						'link'   => Route::url('index.php?option=com_config'),
-						//'image'  => 'header/icon-48-config.png',
 						'id'     => 'icon-config',
 						'text'   => Lang::txt('MOD_QUICKICON_GLOBAL_CONFIGURATION'),
 						'access' => array('core.manage', 'com_config', 'core.admin', 'com_config')
 					),
 					array(
 						'link'   => Route::url('index.php?option=com_templates'),
-						//'image'  => 'header/icon-48-themes.png',
 						'id'     => 'icon-themes',
 						'text'   => Lang::txt('MOD_QUICKICON_TEMPLATE_MANAGER'),
 						'access' => array('core.manage', 'com_templates')
 					),
 					array(
 						'link'   => Route::url('index.php?option=com_members&task=edit&id=' . User::get('id')),
-						//'image'  => 'header/icon-48-user-profile.png',
 						'id'     => 'icon-user-profile',
 						'text'   => Lang::txt('MOD_QUICKICON_PROFILE'),
 						'access' => true
@@ -194,7 +182,8 @@ class Helper extends Module
 				{
 					$default = array(
 						'link'   => null,
-						'image'  => 'header/icon-48-config.png',
+						'id'     => '',
+						'class'  => 'icon-config',
 						'text'   => null,
 						'access' => true
 					);

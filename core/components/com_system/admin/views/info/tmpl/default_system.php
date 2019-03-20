@@ -97,7 +97,7 @@ defined('_HZEXEC_') or die();
 			</tr>
 			<tr>
 				<th scope="row">
-					<?php echo Lang::txt('COM_SYSTEM_INFO_JOOMLA_VERSION'); ?>
+					<?php echo Lang::txt('COM_SYSTEM_INFO_CMS_VERSION'); ?>
 				</th>
 				<td>
 					<?php echo $this->info['version'];?>

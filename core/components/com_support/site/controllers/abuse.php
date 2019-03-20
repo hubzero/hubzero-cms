@@ -293,7 +293,7 @@ class Abuse extends SiteController
 			// Loop through the addresses
 			foreach ($defs as $def)
 			{
-				// Check if the address should come from Joomla config
+				// Check if the address should come from site config
 				if ($def == '{config.mailfrom}')
 				{
 					$def = Config::get('mailfrom');
