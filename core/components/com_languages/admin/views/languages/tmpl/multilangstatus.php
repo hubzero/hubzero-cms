@@ -49,7 +49,9 @@ $notice_switchers = !$this->switchers && ($this->homes > 1 || $this->language_fi
 		<?php if ($notice_homes) : ?>
 			<tr>
 				<td>
-					<?php echo Html::asset('image', 'menu/icon-16-alert.png', Lang::txt('WARNING'), null, true); ?>
+					<span title="<?php echo Lang::txt('WARNING'); ?>">
+						<?php echo Html::asset('icon', 'warning-sign'); ?>
+					</span>
 				</td>
 				<td>
 					<?php echo Lang::txt('COM_LANGUAGES_MULTILANGSTATUS_HOMES_MISSING'); ?>
@@ -59,7 +61,9 @@ $notice_switchers = !$this->switchers && ($this->homes > 1 || $this->language_fi
 		<?php if ($notice_disabled) : ?>
 			<tr>
 				<td>
-					<?php echo Html::asset('image', 'menu/icon-16-alert.png', Lang::txt('WARNING'), null, true); ?>
+					<span title="<?php echo Lang::txt('WARNING'); ?>">
+						<?php echo Html::asset('icon', 'warning-sign'); ?>
+					</span>
 				</td>
 				<td>
 					<?php echo Lang::txt('COM_LANGUAGES_MULTILANGSTATUS_LANGUAGEFILTER_DISABLED'); ?>
@@ -69,7 +73,9 @@ $notice_switchers = !$this->switchers && ($this->homes > 1 || $this->language_fi
 		<?php if ($notice_switchers) : ?>
 			<tr>
 				<td>
-					<?php echo Html::asset('image', 'menu/icon-16-alert.png', Lang::txt('WARNING'), null, true); ?>
+					<span title="<?php echo Lang::txt('WARNING'); ?>">
+						<?php echo Html::asset('icon', 'warning-sign'); ?>
+					</span>
 				</td>
 				<td>
 					<?php echo Lang::txt('COM_LANGUAGES_MULTILANGSTATUS_LANGSWITCHER_UNPUBLISHED'); ?>
@@ -80,7 +86,9 @@ $notice_switchers = !$this->switchers && ($this->homes > 1 || $this->language_fi
 			<?php if (array_key_exists($contentlang->lang_code, $this->homepages) && (!array_key_exists($contentlang->lang_code, $this->site_langs) || !$contentlang->published)) : ?>
 				<tr>
 					<td>
-						<?php echo Html::asset('image', 'menu/icon-16-alert.png', Lang::txt('WARNING'), null, true); ?>
+						<span title="<?php echo Lang::txt('WARNING'); ?>">
+							<?php echo Html::asset('icon', 'warning-sign'); ?>
+						</span>
 					</td>
 					<td>
 						<?php echo Lang::txt('COM_LANGUAGES_MULTILANGSTATUS_ERROR_CONTENT_LANGUAGE', $contentlang->lang_code); ?>
@@ -172,7 +180,9 @@ $notice_switchers = !$this->switchers && ($this->homes > 1 || $this->language_fi
 				<?php endif; ?>
 				<?php if ($status->element) : // Published Site languages ?>
 						<td class="center">
-							<?php echo Html::asset('image', 'admin/tick.png', Lang::txt('JON'), null, true); ?>
+							<span title="<?php echo Lang::txt('JON'); ?>">
+								<?php echo Html::asset('icon', 'ok-sign'); ?>
+							</span>
 						</td>
 				<?php else : ?>
 						<td class="center">
@@ -181,20 +191,28 @@ $notice_switchers = !$this->switchers && ($this->homes > 1 || $this->language_fi
 				<?php endif; ?>
 				<?php if ($status->lang_code && $status->published) : // Published Content languages ?>
 						<td class="center">
-							<?php echo Html::asset('image', 'admin/tick.png', Lang::txt('JON'), null, true); ?>
+							<span title="<?php echo Lang::txt('JON'); ?>">
+								<?php echo Html::asset('icon', 'ok-sign'); ?>
+							</span>
 						</td>
 				<?php else : ?>
 						<td class="center">
-							<?php echo Html::asset('image', 'menu/icon-16-notice.png', Lang::txt('JON'), null, true); ?>
+							<span title="<?php echo Lang::txt('JON'); ?>">
+								<?php echo Html::asset('icon', 'warning-sign'); ?>
+							</span>
 						</td>
 				<?php endif; ?>
 				<?php if ($status->home_language) : // Published Home pages ?>
 						<td class="center">
-							<?php echo Html::asset('image', 'admin/tick.png', Lang::txt('JON'), null, true); ?>
+							<span title="<?php echo Lang::txt('JON'); ?>">
+								<?php echo Html::asset('icon', 'ok-sign'); ?>
+							</span>
 						</td>
 				<?php else : ?>
 						<td class="center">
-							<?php echo Html::asset('image', 'menu/icon-16-deny.png', Lang::txt('WARNING'), null, true); ?>
+							<span title="<?php echo Lang::txt('WARNING'); ?>">
+								<?php echo Html::asset('icon', 'warning-sign'); ?>
+							</span>
 						</td>
 				<?php endif; ?>
 				</tr>
@@ -206,22 +224,34 @@ $notice_switchers = !$this->switchers && ($this->homes > 1 || $this->language_fi
 							<?php echo $contentlang->lang_code; ?>
 						</td>
 						<td class="center">
-							<?php echo Html::asset('image', 'menu/icon-16-notice.png', Lang::txt('NOTICE'), null, true); ?>
+							<span title="<?php echo Lang::txt('NOTICE'); ?>">
+								<?php echo Html::asset('icon', 'exclamation-sign'); ?>
+							</span>
 						</td>
 						<td class="center">
 							<?php if ($contentlang->published) : ?>
-								<?php echo Html::asset('image', 'admin/tick.png', Lang::txt('JON'), null, true); ?>
+								<span title="<?php echo Lang::txt('JON'); ?>">
+									<?php echo Html::asset('icon', 'ok-sign'); ?>
+								</span>
 							<?php elseif (!$contentlang->published && array_key_exists($contentlang->lang_code, $this->homepages)) : ?>
-								<?php echo Html::asset('image', 'menu/icon-16-deny.png', Lang::txt('WARNING'), null, true); ?>
+								<span title="<?php echo Lang::txt('WARNING'); ?>">
+									<?php echo Html::asset('icon', 'warning-sign'); ?>
+								</span>
 							<?php elseif (!$contentlang->published) : ?>
-								<?php echo Html::asset('image', 'menu/icon-16-notice.png', Lang::txt('NOTICE'), null, true); ?>
+								<span title="<?php echo Lang::txt('NOTICE'); ?>">
+									<?php echo Html::asset('icon', 'exclamation-sign'); ?>
+								</span>
 							<?php endif; ?>
 						</td>
 						<td class="center">
 							<?php if (!array_key_exists($contentlang->lang_code, $this->homepages)) : ?>
-								<?php echo Html::asset('image', 'menu/icon-16-notice.png', Lang::txt('NOTICE'), null, true); ?>
+								<span title="<?php echo Lang::txt('NOTICE'); ?>">
+									<?php echo Html::asset('icon', 'exclamation-sign'); ?>
+								</span>
 							<?php else : ?>
-								<?php echo Html::asset('image', 'admin/tick.png', Lang::txt('JON'), null, true); ?>
+								<span title="<?php echo Lang::txt('JON'); ?>">
+									<?php echo Html::asset('icon', 'ok-sign'); ?>
+								</span>
 							<?php endif; ?>
 						</td>
 				<?php endif; ?>
