@@ -264,7 +264,7 @@ function _dd_post($dd)
 		}
 
 		// Hiding
-		foreach ($order_cols as $id=>$prop) {
+		foreach ($order_cols as $id => $prop) {
 			if (!in_array($id, $custom_view)) {
 				$dd['cols'][$id] = $prop;
 
