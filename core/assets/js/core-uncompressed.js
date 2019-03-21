@@ -908,7 +908,5 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	// Attach pagination events
-	// @TODO: Remove inline JS from framework pagiantor
-	//        This will require some co-ordination
-	//Hubzero.paginate();
+	Hubzero.paginate();
 });
