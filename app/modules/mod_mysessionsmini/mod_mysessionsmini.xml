@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           modules/mod_mysessions/mod_mysessions.xml
+@file           modules/mod_mysessionsmini/mod_mysessionsmini.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -30,41 +30,41 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>mod_mysessions</name>
+	<name>mod_mysessionsmini</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>MOD_MYSESSIONS_XML_DESCRIPTION</description>
+	<description>MOD_MYSESSIONSMINI_XML_DESCRIPTION</description>
 	<files>
-		<filename module="mod_mysessions">mod_mysessions.php</filename>
+		<filename module="mod_mysessionsmini">mod_mysessionsmini.php</filename>
 		<filename>helper.php</filename>
 		<filename>index.html</filename>
-		<filename>assets/css/mod_mysessions.css</filename>
-		<filename>assets/js/mod_mysessions.js</filename>
-		<filename>mod_mysessions.xml</filename>
+		<filename>assets/css/mod_mysessionsmini.css</filename>
+		<filename>assets/js/mod_mysessionsmini.js</filename>
+		<filename>mod_mysessionsmini.xml</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="moduleclass_sfx" type="text" default="" label="MOD_MYSESSIONS_PARAM_CLASS_LABEL" description="MOD_MYSESSIONS_PARAM_CLASS_DESC" />
+				<field name="moduleclass_sfx" type="text" default="" label="MOD_MYSESSIONSMINI_PARAM_CLASS_LABEL" description="MOD_MYSESSIONSMINI_PARAM_CLASS_DESC" />
 				<field type="spacer" />
-				<field name="show_screenshots" member_dashboard="1" type="list" default="1" label="MOD_MYSESSIONS_PARAM_SHOWSCREENSHOTS_LABEL" description="MOD_MYSESSIONS_PARAM_SHOWSCREENSHOTS_DESC">
+				<field name="show_screenshots" member_dashboard="1" type="list" default="1" label="MOD_MYSESSIONSMINI_PARAM_SHOWSCREENSHOTS_LABEL" description="MOD_MYSESSIONSMINI_PARAM_SHOWSCREENSHOTS_DESC">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
-				<field name="show_storage"  member_dashboard="1" type="list" default="1" label="MOD_MYSESSIONS_PARAM_SHOWSTORAGE_LABEL" description="MOD_MYSESSIONS_PARAM_SHOWSTORAGE_DESC">
+				<field name="show_storage"  member_dashboard="1" type="list" default="1" label="MOD_MYSESSIONSMINI_PARAM_SHOWSTORAGE_LABEL" description="MOD_MYSESSIONSMINI_PARAM_SHOWSTORAGE_DESC">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
 				<field type="spacer" />
 
-				<field name="quick_launch" member_dashboard="1" type="list" default="1" label="MOD_MYSESSIONS_PARAM_QUICKLAUNCH_LABEL" description="MOD_MYSESSIONS_PARAM_QUICKLAUNCH_DESC">
+				<field name="quick_launch" member_dashboard="1" type="list" default="1" label="MOD_MYSESSIONSMINI_PARAM_QUICKLAUNCH_LABEL" description="MOD_MYSESSIONSMINI_PARAM_QUICKLAUNCH_DESC">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
-				<field name="terminate_double_check" member_dashboard="1" type="list" default="1" label="MOD_MYSESSIONS_PARAM_DOUBLECLICK_LABEL" description="MOD_MYSESSIONS_PARAM_DOUBLECLICK_DESC">
+				<field name="terminate_double_check" member_dashboard="1" type="list" default="1" label="MOD_MYSESSIONSMINI_PARAM_DOUBLECLICK_LABEL" description="MOD_MYSESSIONSMINI_PARAM_DOUBLECLICK_DESC">
 					<option value="1">JYes</option>
 					<option value="0">JNo</option>
 				</field>
@@ -72,6 +72,6 @@ HUBzero is a registered trademark of Purdue University.
 		</fields>
 	</config>
 	<languages>
-		<language tag="en-GB">en-GB.mod_mysessions.ini</language>
+		<language tag="en-GB">en-GB.mod_mysessionsmini.ini</language>
 	</languages>
 </extension>

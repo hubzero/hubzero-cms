@@ -53,7 +53,7 @@ $this->css()
       				   {
       					  if ($group->published)
       					  {
-      						 $status = $this->getStatus($group);
+                   $status = $this->getStatus($group);
 
       						 require $this->getLayoutPath('_item');
       					  }

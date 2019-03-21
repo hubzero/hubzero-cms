@@ -30,7 +30,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\MySessions;
+namespace Modules\MySessionsMini;
 
 require_once __DIR__ . DS . 'helper.php';
 

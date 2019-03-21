@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        modules/mod_mysessions/assets/js/mod_mysessions.js
+ * @file        modules/mod_mysessionsmini/assets/js/mod_mysessionsmini.js
  * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
  * @license     http://opensource.org/licenses/MIT MIT
  */
@@ -25,18 +25,18 @@ var failedScreenshotLookup = 0;
 //----------------------------------------------------------
 // My Sessions Module
 //----------------------------------------------------------
-HUB.Modules.MySessions = {
+HUB.Modules.MySessionsMini = {
 	jQuery: jq,
 
 	initialize: function() {
 		//session snapshots
-		HUB.Modules.MySessions.sessionSnapshots();
+		HUB.Modules.MySessionsMini.sessionSnapshots();
 
 		//terminate confirm?
-		HUB.Modules.MySessions.confirmTerminate();
+		HUB.Modules.MySessionsMini.confirmTerminate();
 
 		//collapsable sessions
-		HUB.Modules.MySessions.collapsableSessions();
+		HUB.Modules.MySessionsMini.collapsableSessions();
 	},
 
 	sessionSnapshots: function() {
@@ -132,7 +132,7 @@ HUB.Modules.MySessions = {
 							.find('img.snapshot')
 							.attr('data-src', source + '&vid=' + d.getTime());
 
-						HUB.Modules.MySessions.sessionSnapshotImages(true);
+						HUB.Modules.MySessionsMini.sessionSnapshotImages(true);
 					}
 				});
 			}
@@ -178,5 +178,5 @@ HUB.Modules.MySessions = {
 };
 
 jQuery(document).ready(function($){
-	Hubzero.initApi(HUB.Modules.MySessions.initialize);
+	Hubzero.initApi(HUB.Modules.MySessionsMini.initialize);
 });

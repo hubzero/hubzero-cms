@@ -31,7 +31,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\MySessions;
+namespace Modules\MySessionsMini;
 
 use Hubzero\Module\Module;
 use Component;
