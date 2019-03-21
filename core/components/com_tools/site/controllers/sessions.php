@@ -342,7 +342,7 @@ class Sessions extends SiteController
 			return;
 		}
 
-		$params = Request::getString('params', '', 'default', JREQUEST_ALLOWRAW);
+		$params = Request::getString('params', '');
 
 		if (!empty($params))
 		{
