@@ -69,6 +69,7 @@ class Items extends AdminController
 	{
 		// Incoming
 		$this->view->filters = array();
+		$this->view->filters['ignore_access'] = true;
 		$this->view->filters['limit']    = Request::getState(
 			$this->_option . '.publications.limit',
 			'limit',
