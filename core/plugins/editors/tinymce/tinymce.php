@@ -23,7 +23,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 	/**
 	 * Base path for editor files
 	 */
-	protected $_basePath = 'plugins/editors/tinymce/assets/jscripts/tiny_mce';
+	protected $_basePath = 'core/plugins/editors/tinymce/assets/jscripts/tiny_mce';
 
 	/**
 	 * Initialises the Editor.
@@ -86,7 +86,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
 		$content_css = '';
 
-		$templates_path = PATH_ROOT . '/templates';
+		$templates_path = PATH_APP . '/templates';
 
 		// loading of css file for 'styles' dropdown
 		if ($content_css_custom)
@@ -99,13 +99,12 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 			// If it is not a URL, assume it is a file name in the current template folder
 			else
 			{
-				$content_css = 'content_css : "'. Request::root() .'templates/'. $template . '/css/'. $content_css_custom .'",';
+				$content_css = 'content_css : "'. Request::root() . 'app/templates/'. $template . '/css/'. $content_css_custom .'",';
 
 				// Issue warning notice if the file is not found (but pass name to $content_css anyway to avoid TinyMCE error
 				if (!file_exists($templates_path . '/' . $template . '/css/' . $content_css_custom))
 				{
-					$msg = sprintf(Lang::txt('PLG_TINY_ERR_CUSTOMCSSFILENOTPRESENT'), $content_css_custom);
-					Notify::warning($msg);
+					Notify::warning(sprintf(Lang::txt('PLG_TINY_ERR_CUSTOMCSSFILENOTPRESENT'), $content_css_custom));
 				}
 			}
 		}
@@ -121,18 +120,18 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 					$template = 'system';
 
 					// if no editor.css file in system folder, show alert
-					if (!file_exists($templates_path . '/system/css/editor.css'))
+					if (!file_exists(PATH_CORE . '/templates/system/css/editor.css'))
 					{
 						Notify::warning(Lang::txt('PLG_TINY_ERR_EDITORCSSFILENOTPRESENT'));
 					}
 					else
 					{
-						$content_css = 'content_css : "' . Request::root() .'templates/system/css/editor.css",';
+						$content_css = 'content_css : "' . Request::root() .'core/templates/system/css/editor.css",';
 					}
 				}
 				else
 				{
-					$content_css = 'content_css : "' . Request::root() .'templates/'. $template . '/css/editor.css",';
+					$content_css = 'content_css : "' . Request::root() .'core/templates/'. $template . '/css/editor.css",';
 				}
 			}
 		}
@@ -579,7 +578,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 					remove_script_host : false,
 					document_base_url : \"". Request::root() ."\",
 					//Templates
-					template_external_list_url :  \"". Request::root() ."plugins/editors/tinymce/assets/templates/template_list.js\",
+					template_external_list_url :  \"". Request::root() ."core/plugins/editors/tinymce/assets/templates/template_list.js\",
 					// Layout
 					$content_css
 					// Advanced theme
@@ -771,7 +770,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 	private function _toogleButton($name)
 	{
 		$return  = "\n<div class=\"toggle-editor\">\n";
-		$return .= "<div class=\"button2-left\"><div class=\"blank\"><a href=\"#\" onclick=\"tinyMCE.execCommand('mceToggleEditor', false, '" . $name . "');return false;\" title=\"" . Lang::txt('PLG_TINY_BUTTON_TOGGLE_EDITOR') . '">' . Lang::txt('PLG_TINY_BUTTON_TOGGLE_EDITOR') . "</a></div></div>";
+		$return .= '<button class="btn button" onclick="tinyMCE.execCommand(\'mceToggleEditor\', false, \'' . $name . '\');return false;" title="' . Lang::txt('PLG_TINY_BUTTON_TOGGLE_EDITOR') . '">' . Lang::txt('PLG_TINY_BUTTON_TOGGLE_EDITOR') . '</button>';
 		$return .= "</div>\n";
 
 		return $return;
