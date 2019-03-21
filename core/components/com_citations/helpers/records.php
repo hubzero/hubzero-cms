@@ -54,14 +54,14 @@ class Records
 	 * @var string
 	 */
 	public $_publication_ver_tbl;
-	
+
 	/**
 	 * The table
 	 *
 	 * @var string
 	 */
 	public $_configs = null;
-	
+
 	/**
 	 * DataCite and EZID switch options
 	 *
@@ -83,29 +83,29 @@ class Records
 		$this->_db  = \App::get('db');
 		$this->_publication_ver_tbl= '#__publication_versions';
 	}
-	
-	// Get doi based on publication id	
-	// Get DOI metadata xml	
+
+	// Get doi based on publication id
+	// Get DOI metadata xml
 	// Insert citations to DOI metadata record and update DOI metadata record on DataCite
 
 	/**
 	 * Get DOI based on the publication ID
-	 *  
+	 *
 	 * @param      pubID    publication ID
-	 * @param      
+	 * @param
 	 *
 	 * @return     array
 	 */
 	public function getDoiList($pubIDArr, &$pubWithMultiVer)
 	{
 		$doiArr = [];
-		
+
 		foreach ($pubIDArr as $pubID)
 		{
 			$sql = "SELECT doi FROM $this->_publication_ver_tbl WHERE publication_id = " . $pubID;
 			$this->_db->setQuery($sql);
 			$result = $this->_db->loadObjectList();
-			
+
 			if (count($result) > 1)
 			{
 				$pubWithMultiVer[] = $pubID;
@@ -115,13 +115,13 @@ class Records
 				$doiArr[] = $result[0]->doi;
 			}
 		}
-		
+
 		return $doiArr;
 	}
-	
+
 	/**
 	 * Get DOI service information from publication component configuration
-	 *  
+	 *
 	 * @param      null
 	 * @return     stdClass object
 	 */
@@ -130,7 +130,7 @@ class Records
 		if (empty($this->_configs))
 		{
 			$params = Component::params('com_publications');
-			
+
 			$configs = new stdClass;
 			$configs->dataciteEZIDSwitch = $params->get('datacite_ezid_doi_service_switch');
 			$configs->dataciteServiceURL = $params->get('datacite_doi_service');
@@ -141,10 +141,10 @@ class Records
 			$this->_configs = $configs;
 		}
 	}
-	
+
 	/**
 	 * Get citation informaiton from original whole citation
-	 *  
+	 *
 	 * @param      array    $doi
 	 * @param      array    $origCitation
 	 *
@@ -153,11 +153,11 @@ class Records
 	public function getCitationInfo($citation)
 	{
 		$citationArr = [];
-		
+
 		if (!empty($citation['doi']))
 		{
 			$citationArr['DOI'] = $citation['doi'];
-			
+
 		}
 		else
 		{
@@ -185,13 +185,13 @@ class Records
 				}
 			}
 		}
-		
+
 		return $citationArr;
 	}
-	
+
 	/**
 	 * Get DOI metadata XML from DataCite
-	 *  
+	 *
 	 * @param      $doi
 	 * @return     string  XML or false
 	 */
@@ -199,11 +199,11 @@ class Records
 	{
 		// Get DOI service configuration information
 		$this->getPubConfig();
-		
+
 		if ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
 		{
 			$url = rtrim($this->_configs->dataciteServiceURL, '/') . '/metadata/' . $doi;
-			
+
 			$ch = curl_init($url);
 			$options = array(
 				CURLOPT_URL  			=> $url,
@@ -211,11 +211,11 @@ class Records
 				CURLOPT_RETURNTRANSFER  => true,
 				CURLOPT_HTTPHEADER      => array('Content-Type:text/plain;charset=UTF-8')
 			);
-			
+
 			curl_setopt_array($ch, $options);
-				
+
 			$response = curl_exec($ch);
-			
+
 			$success = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			curl_close($ch);
 
@@ -226,17 +226,17 @@ class Records
 			else
 			{
 				return false;
-			}			
+			}
 		}
 		else
 		{
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Include citation and update DOI metadata record on DataCite
-	 *  
+	 *
 	 * @param      $xml
 	 * @param      $citationInfo
 	 *
@@ -246,11 +246,11 @@ class Records
 	{
 		$xmlStr = '';
 		$url = rtrim($this->_configs->dataciteServiceURL, '/') . '/' . 'metadata';
-		
+
 		$dom = new \DomDocument();
 		$dom->loadXML($xml);
 		$relatedIdentifiersNodeList = $dom->getElementsByTagName("relatedIdentifiers");
-		
+
 		if ($relatedIdentifiersNodeList->length != 0)
 		{
 			foreach ($citationInfo as $key => $citation)
@@ -266,12 +266,12 @@ class Records
 		{
 			$resourceElementNodeList = $dom->getElementsByTagName("resource");
 			$sizeElementNodeList = $dom->getElementsByTagName("sizes");
-			
+
 			if ($sizeElementNodeList->length != 0 )
 			{
 				$relatedIdentifiersElement = $dom->createElement("relatedIdentifiers");
 				$relatedIdentifiersNode = $resourceElementNodeList->item(0)->insertBefore($relatedIdentifiersElement, $sizeElementNodeList->item(0));
-				
+
 				foreach ($citationInfo as $key => $citation)
 				{
 					$relatedIdentifierElement = $dom->createElement("relatedIdentifier", $citation);
@@ -284,12 +284,12 @@ class Records
 			else
 			{
 				$formatElementNodeList = $dom->getElementsByTagName("formats");
-				
+
 				if ($formatElementNodeList->length != 0)
 				{
 					$relatedIdentifiersElement = $dom->createElement("relatedIdentifiers");
 					$relatedIdentifiersNode = $resourceElementNodeList->item(0)->insertBefore($relatedIdentifiersElement, $formatElementNodeList->item(0));
-					
+
 					foreach ($citationInfo as $key => $citation)
 					{
 						$relatedIdentifierElement = $dom->createElement("relatedIdentifier", $citation);
@@ -302,12 +302,12 @@ class Records
 				else
 				{
 					$versionElementNodeList = $dom->getElementsByTagName("version");
-					
+
 					if ($versionElementNodeList->length != 0)
 					{
 						$relatedIdentifiersElement = $dom->createElement("relatedIdentifiers");
 						$relatedIdentifiersNode = $resourceElementNodeList->item(0)->insertBefore($relatedIdentifiersElement, $versionElementNodeList->item(0));
-						
+
 						foreach ($citationInfo as $key => $citation)
 						{
 							$relatedIdentifierElement = $dom->createElement("relatedIdentifier", $citation);
@@ -320,7 +320,7 @@ class Records
 				}
 			}
 		}
-		
+
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->dataciteUserPW);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlStr);
@@ -330,7 +330,7 @@ class Records
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
 
 		curl_exec($ch);
-		
+
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
 		if ($code == 201 || $code == 200)
@@ -342,10 +342,10 @@ class Records
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Check if the citation is included
-	 *  
+	 *
 	 * @param      $xml
 	 * @param      $citation
 	 *
@@ -358,13 +358,13 @@ class Records
 		$relatedIdentifierNodeList = $dom->getElementsByTagName("relatedIdentifier");
 		$key = key($citation);
 		$val = current($citation);
-		
+
 		if ($relatedIdentifierNodeList->length != 0)
 		{
 			foreach ($relatedIdentifierNodeList as $relatedIdentifier)
 			{
-				if ( ($relatedIdentifier->getAttribute("relationType") == "IsReferencedBy") 
-					&& ($relatedIdentifier->getAttribute("relatedIdentifierType") == $key) 
+				if ( ($relatedIdentifier->getAttribute("relationType") == "IsReferencedBy")
+					&& ($relatedIdentifier->getAttribute("relatedIdentifierType") == $key)
 					&& ($relatedIdentifier->nodeValue == $val))
 				{
 					return true;
@@ -380,10 +380,10 @@ class Records
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Update DOI metadata record with citation information
-	 *  
+	 *
 	 * @param      array    $doi
 	 * @param      array    $citation
 	 *
@@ -393,13 +393,13 @@ class Records
 	{
 		$citationInfo = [];
 		$citationInfo = $this->getCitationInfo($citation);
-		
+
 		if (!empty($citationInfo))
 		{
 			foreach ($doiArr as $doi)
 			{
 				$xml = $this->getDoiXML($doi);
-				
+
 				if ($xml && !$this->isCitationIncluded($xml, $citationInfo))
 				{
 					$this->updateDoiXml($xml, $citationInfo);

@@ -287,23 +287,23 @@ class Doi extends Obj
 		{
 			$this->set('relatedDoi', $lastPub->doi);
 		}
-		
+
 		// Set references
         $citationRows = $pub->getCitations();
 		$references = array();
-		
+
 		if (!empty($citationRows))
 		{
 			$rowArr = $citationRows->raw();
 			$keys = array_keys($rowArr);
-			
+
 			for ($i = 0; $i < count($keys); $i++)
 			{
 				if (!empty($rowArr[$keys[$i]]["doi"]))
 				{
 					array_push($references, array("DOI" => $rowArr[$keys[$i]]["doi"]));
 				}
-				else 
+				else
 				{
 					if (!empty($rowArr[$keys[$i]]["url"]))
 					{
@@ -331,7 +331,7 @@ class Doi extends Obj
 				}
 			}
 		}
-		
+
 		$this->set("references", $references);
 	}
 
@@ -523,14 +523,14 @@ class Doi extends Obj
 		$xmlfile.= '</description>
 			</descriptions>
 		</resource>';
-		
+
 		// Related identifier/references
 		if ($this->get('references'))
 		{
 			$dom = new \DomDocument();
 			$dom->loadXML($xmlfile);
 			$relatedIdentifiersNodeList = $dom->getElementsByTagName("relatedIdentifiers");
-			
+
 			if ($relatedIdentifiersNodeList->length != 0)
 			{
 				foreach ($this->get('references') as $reference)
@@ -546,12 +546,12 @@ class Doi extends Obj
 			{
 				$resourceElementNodeList = $dom->getElementsByTagName("resource");
 				$sizeElementNodeList = $dom->getElementsByTagName("sizes");
-				
+
 				if ($sizeElementNodeList->length != 0 )
 				{
 					$relatedIdentifiersElement = $dom->createElement("relatedIdentifiers");
 					$relatedIdentifiersNode = $resourceElementNodeList->item(0)->insertBefore($relatedIdentifiersElement, $sizeElementNodeList->item(0));
-					
+
 					foreach ($this->get('references') as $reference)
 					{
 						$relatedIdentifierElement = $dom->createElement("relatedIdentifier", current($reference));
@@ -564,12 +564,12 @@ class Doi extends Obj
 				else
 				{
 					$formatElementNodeList = $dom->getElementsByTagName("formats");
-					
+
 					if ($formatElementNodeList->length != 0)
 					{
 						$relatedIdentifiersElement = $dom->createElement("relatedIdentifiers");
 						$relatedIdentifiersNode = $resourceElementNodeList->item(0)->insertBefore($relatedIdentifiersElement, $formatElementNodeList->item(0));
-						
+
 						foreach ($this->get('references') as $reference)
 						{
 							$relatedIdentifierElement = $dom->createElement("relatedIdentifier", current($reference));
@@ -582,12 +582,12 @@ class Doi extends Obj
 					else
 					{
 						$versionElementNodeList = $dom->getElementsByTagName("version");
-						
+
 						if ($versionElementNodeList->length != 0)
 						{
 							$relatedIdentifiersElement = $dom->createElement("relatedIdentifiers");
 							$relatedIdentifiersNode = $resourceElementNodeList->item(0)->insertBefore($relatedIdentifiersElement, $versionElementNodeList->item(0));
-							
+
 							foreach ($this->get('references') as $reference)
 							{
 								$relatedIdentifierElement = $dom->createElement("relatedIdentifier", current($reference));
@@ -598,7 +598,7 @@ class Doi extends Obj
 							}
 						}
 					}
-					
+
 				}
 			}
 		}
@@ -643,9 +643,9 @@ class Doi extends Obj
 
 			$doi = $match[1];
 		}
-		
+
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		curl_close($ch);		
+		curl_close($ch);
 
 		if ($code == 201 || $code == 200)
 		{
