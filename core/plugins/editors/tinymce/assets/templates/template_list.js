@@ -6,6 +6,6 @@ var tinyMCETemplateList = [
 	// Name, URL, Description
 
 	["Simple snippet", "core/plugins/editors/tinymce/assets/templates/snippet1.html", "Simple HTML snippet."],
-	["Layout", "core/plugins/editors/tinymce/assets//templates/layout1.html", "HTMLLayout."]
+	["Layout", "core/plugins/editors/tinymce/assets/templates/layout1.html", "HTMLLayout."]
 
 ];
