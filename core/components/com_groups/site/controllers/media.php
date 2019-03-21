@@ -945,24 +945,24 @@ class Media extends Base
 	{
 		// Incoming file
 		$file = trim(Request::getString('file', '', 'get'));
-		$file = $this->path . $file;
 
-		// get base path
-		$fileInfo = pathinfo($file);
+		$adapter = \Hubzero\Filesystem\Manager::adapter('local', array('path' => $this->path));
+		$archive = \Hubzero\Filesystem\File::fromPath($file, $adapter);
 
-		// return folder
+		// Get base path
+		$fileInfo = pathinfo($this->path . $file);
 		$folder = str_replace($this->path, '', $fileInfo['dirname']);
 
-		// if file exists extract
-		if (file_exists($file))
+		// If file exists extract
+		if ($archive->isExpandable())
 		{
-			jimport('joomla.filesystem.archive');
-			\JArchive::extract($file, $fileInfo['dirname']);
+			if (!$archive->expand())
+			{
+				$this->setError(Lang::txt('Failed to extract archive %s.', $file));
+			}
 		}
 
-		// delete garbage folders
-
-		//return folder
+		// Return folder
 		echo $folder;
 		exit();
 	}
