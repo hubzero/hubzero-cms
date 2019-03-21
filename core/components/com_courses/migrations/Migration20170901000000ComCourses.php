@@ -181,9 +181,9 @@ class Migration20170901000000ComCourses extends Base
 			$this->db->query();
 		}
 
-		if (!$this->db->tableExists('#__collections_items'))
+		if (!$this->db->tableExists('#__courses_announcements'))
 		{
-			$query = "CREATE TABLE `jos_courses_announcements` (
+			$query = "CREATE TABLE `#__courses_announcements` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `offering_id` int(11) NOT NULL DEFAULT '0',
 			  `content` text,
@@ -681,6 +681,13 @@ class Migration20170901000000ComCourses extends Base
 		if ($this->db->tableExists('#__courses_units'))
 		{
 			$query = "DROP TABLE IF EXISTS `#__courses_units`;";
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
+
+		if ($this->db->tableExists('#__courses_announcements'))
+		{
+			$query = "DROP TABLE IF EXISTS `#__courses_announcements`;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script to create the jos_support_criteria table
+ * Migration script to create the `#__support_criteria` table
  **/
 class Migration20171115112800ComSupportCriteria extends Base
 {

@@ -49,7 +49,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="mailinglist" label="MOD_NEWSLETTER_PARAM_MAILINGLIST_LABEL" description="MOD_NEWSLETTER_PARAM_MAILINGLIST_DESC" type="sql" query="SELECT * FROM jos_newsletter_mailinglists WHERE deleted=0 AND private=0" key_field="id" value_field="name" />
+				<field name="mailinglist" label="MOD_NEWSLETTER_PARAM_MAILINGLIST_LABEL" description="MOD_NEWSLETTER_PARAM_MAILINGLIST_DESC" type="sql" query="SELECT * FROM `#__newsletter_mailinglists` WHERE deleted=0 AND private=0" key_field="id" value_field="name" />
 			</fieldset>
 		</fields>
 	</config>
