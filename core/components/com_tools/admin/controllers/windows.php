@@ -387,7 +387,7 @@ class Windows extends AdminController
 		$sql .= ', truncate(avg(walltime)/60/60,3) as "averagehours" ';
 		$sql .= ', truncate(sum(walltime)/60/60,3) as "totalhours" ';
 		$sql .= 'FROM sessionlog ';
-		$sql .= 'JOIN jos_resources jr on (jr.path = appname and jr.`type` = 64) ';
+		$sql .= 'JOIN `#__resources` jr on (jr.path = appname and jr.`type` = 64) ';
 		$sql .= 'WHERE start >"' . $startdate->format('Y-m-d H:i:s') . '"';
 		$sql .= ' AND start <"' . $enddate->format('Y-m-d H:i:s') . '"';
 		$sql .= 'GROUP BY appname;';
@@ -398,7 +398,7 @@ class Windows extends AdminController
 		// Get summary usage data
 		$db = App::get('db');
 		$sql  = 'SELECT ifnull(truncate(sum(walltime)/60/60,3),0) as totalhours FROM sessionlog ';
-		$sql .= 'JOIN jos_resources jr on (jr.path = appname and jr.`type` = 64) ';
+		$sql .= 'JOIN `#__resources` jr on (jr.path = appname and jr.`type` = 64) ';
 		$sql .= 'WHERE start >"' . $startdate->format('Y-m-d H:i:s') . '"';
 		$sql .= ' AND start <"' . $enddate->format('Y-m-d H:i:s') . '"';
 

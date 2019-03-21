@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script to create the jos_solr_search_searchcomponents table
+ * Migration script to create the `#__solr_search_searchcomponents` table
  **/
 class Migration20180126160144ComSearch extends Base
 {

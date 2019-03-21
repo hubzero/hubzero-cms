@@ -635,7 +635,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function updateTags($tags, $label= '', $strength = 1)
 	{
-		$currentTags = $this->tags()->whereEquals('jos_tags_object.label', $label)->rows();
+		$currentTags = $this->tags()->whereEquals('#__tags_object.label', $label)->rows();
 		$currentTagKeys = array();
 		foreach ($currentTags as $obj)
 		{

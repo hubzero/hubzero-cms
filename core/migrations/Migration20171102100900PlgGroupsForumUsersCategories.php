@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script to create the jos_safekids_events_access_methods table
+ * Migration script to create the `#__forum_users_categories` table
  **/
 class Migration20171102100900PlgGroupsForumUsersCategories extends Base
 {
@@ -43,7 +43,5 @@ class Migration20171102100900PlgGroupsForumUsersCategories extends Base
 			$this->db->setQuery($dropTable);
 			$this->db->query();
 		}
-
 	}
-
 }

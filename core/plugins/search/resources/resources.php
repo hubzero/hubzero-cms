@@ -361,10 +361,10 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
 				}
 
 				// Get children
-				$sql3 = "SELECT title AS childTitle, path FROM jos_resources
-				JOIN jos_resource_assoc
-				ON jos_resource_assoc.child_id = jos_resources.id
-				WHERE jos_resource_assoc.parent_id = {$id} AND standalone = 0 AND published = 1;";
+				$sql3 = "SELECT title AS childTitle, path FROM `#__resources`
+					JOIN `#__resource_assoc`
+					ON `#__resource_assoc`.child_id = `#__resources`.id
+					WHERE `#__resource_assoc`.parent_id = {$id} AND standalone = 0 AND published = 1;";
 				$children = $db->setQuery($sql3)->query()->loadAssocList();
 
 				$fileData = '';
@@ -408,7 +408,7 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$db = App::get('db');
-				$sql = "SELECT id FROM #__resources WHERE standalone=1;";
+				$sql = "SELECT id FROM `#__resources` WHERE standalone=1;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
 				return $ids;
 			}
