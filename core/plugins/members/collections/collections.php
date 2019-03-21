@@ -1785,6 +1785,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			return $this->_editcollection($collection);
 		}
 
+		$collection->item()->tag(trim(Request::getString('tags', '', 'post')));
+
 		$url = Route::url($this->member->link() . '&active=' . $this->_name . '&task=all');
 
 		// Record the activity
