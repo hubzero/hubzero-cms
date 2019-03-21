@@ -287,9 +287,9 @@ class Doi extends Obj
 		{
 			$this->set('relatedDoi', $lastPub->doi);
 		}
-
+		
 		// Set references
-        $citationRows = $pub->getCitations();
+		$citationRows = $pub->getCitations();
 		$references = array();
 
 		if (!empty($citationRows))
@@ -547,7 +547,7 @@ class Doi extends Obj
 				$resourceElementNodeList = $dom->getElementsByTagName("resource");
 				$sizeElementNodeList = $dom->getElementsByTagName("sizes");
 
-				if ($sizeElementNodeList->length != 0 )
+				if ($sizeElementNodeList->length != 0)
 				{
 					$relatedIdentifiersElement = $dom->createElement("relatedIdentifiers");
 					$relatedIdentifiersNode = $resourceElementNodeList->item(0)->insertBefore($relatedIdentifiersElement, $sizeElementNodeList->item(0));

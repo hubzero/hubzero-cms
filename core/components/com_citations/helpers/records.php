@@ -267,7 +267,7 @@ class Records
 			$resourceElementNodeList = $dom->getElementsByTagName("resource");
 			$sizeElementNodeList = $dom->getElementsByTagName("sizes");
 
-			if ($sizeElementNodeList->length != 0 )
+			if ($sizeElementNodeList->length != 0)
 			{
 				$relatedIdentifiersElement = $dom->createElement("relatedIdentifiers");
 				$relatedIdentifiersNode = $resourceElementNodeList->item(0)->insertBefore($relatedIdentifiersElement, $sizeElementNodeList->item(0));
@@ -363,7 +363,7 @@ class Records
 		{
 			foreach ($relatedIdentifierNodeList as $relatedIdentifier)
 			{
-				if ( ($relatedIdentifier->getAttribute("relationType") == "IsReferencedBy")
+				if (($relatedIdentifier->getAttribute("relationType") == "IsReferencedBy")
 					&& ($relatedIdentifier->getAttribute("relatedIdentifierType") == $key)
 					&& ($relatedIdentifier->nodeValue == $val))
 				{
