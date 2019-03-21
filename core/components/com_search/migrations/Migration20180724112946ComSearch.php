@@ -6,13 +6,16 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script to create the jos_solr_filters and jos_solr_search_filter_options tables
+ * Migration script to create the `#__solr_filters` and `#__solr_search_filter_options` tables
  **/
 class Migration20180724112946ComSearch extends Base
 {
 	static $filtersTable = '#__solr_search_filters';
 	static $filterOptionsTable = '#__solr_search_filter_options';
 
+	/**
+	 * Up
+	 **/
 	public function up()
 	{
 		$filtersTableName = self::$filtersTable;
@@ -59,6 +62,9 @@ class Migration20180724112946ComSearch extends Base
 		}
 	}
 
+	/**
+	 * Down
+	 **/
 	public function	down()
 	{
 		$filtersTableName = self::$filtersTable;

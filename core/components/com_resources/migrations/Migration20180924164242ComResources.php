@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration to add primary key to jos_resource_stats_tools_topvals table
+ * Migration to add primary key to `#__resource_stats_tools_topvals` table
  **/
 
 class Migration20180924164242ComResources extends Base

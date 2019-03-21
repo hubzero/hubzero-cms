@@ -884,7 +884,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$citationsFormat = (isset($params->citationFormat) ? $params->citationFormat : 1);
 
 			// intended for the case that the group's custom
-			// format is removed from the jos_citations_format
+			// format is removed from the `#__citations_format`
 			try
 			{
 				$view->currentFormat = \Components\Citations\Models\Format::oneOrFail($citationsFormat);
