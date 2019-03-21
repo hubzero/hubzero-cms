@@ -280,7 +280,7 @@ class Admin extends SiteController
 		{
 			$command  = '/usr/bin/sudo -u apps ';
 			$command .=    '/usr/bin/installtool';
-			$command .=       ' -type raw'
+			$command .=       ' -type raw';
 			$command .=       ' -hubdir ' . PATH_ROOT . '/';
 			$command .=       $status['toolname'];
 		}
