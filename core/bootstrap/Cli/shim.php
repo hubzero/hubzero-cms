@@ -22,6 +22,23 @@
 
 /*
 |--------------------------------------------------------------------------
+| Set PHP default timezone
+|--------------------------------------------------------------------------
+|
+| PHP gets very angry if you don't set the default date timezone. While
+| we're here, we'll set the internal encoding to UTF-8 for good measure.
+|
+*/
+
+date_default_timezone_set('UTC');
+
+if (function_exists('mb_internal_encoding'))
+{
+	mb_internal_encoding('UTF-8');
+}
+
+/*
+|--------------------------------------------------------------------------
 | Create The Application
 |--------------------------------------------------------------------------
 |
@@ -72,9 +89,6 @@ $app['app'] = $app;
 $app['config'] = new Hubzero\Config\Repository('cli');
 $app['config']->set('session_handler', 'none');
 
-if (!defined('JDEBUG'))   define('JDEBUG',   $app['config']->get('debug'));
-if (!defined('JPROFILE')) define('JPROFILE', $app['config']->get('debug') || $app['config']->get('profile'));
-
 /*
 |--------------------------------------------------------------------------
 | Register The Core Service Providers
@@ -86,6 +100,9 @@ if (!defined('JPROFILE')) define('JPROFILE', $app['config']->get('debug') || $ap
 
 $providers = PATH_CORE . DS . 'bootstrap' . DS . 'Cli' .  DS . 'services.php';
 $services  = file_exists($providers) ? require $providers : array();
+
+$providers = PATH_APP . DS . 'bootstrap' . DS . 'cli' .  DS . 'services.php';
+$services  = file_exists($providers) ? array_merge($services, require $providers) : $services;
 
 foreach ($services as $service)
 {
@@ -104,6 +121,9 @@ foreach ($services as $service)
 
 $facades = PATH_CORE . DS . 'bootstrap' . DS . 'Cli' .  DS . 'aliases.php';
 $aliases = file_exists($facades) ? require $facades : array();
+
+$facades = PATH_APP . DS . 'bootstrap' . DS . 'cli' .  DS . 'aliases.php';
+$aliases = file_exists($facades) ? array_merge($aliases, require $facades) : $aliases;
 
 $app->registerFacades($aliases);
 
