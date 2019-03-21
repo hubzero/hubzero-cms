@@ -39,6 +39,7 @@ if (!\User::authorise('core.manage', 'com_citations'))
 
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'format.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'records.php';
 require_once dirname(__DIR__) . DS . 'models'  . DS . 'format.php';
 
 $controllerName = \Request::getCmd('controller', 'citations');

@@ -39,6 +39,7 @@ use Components\Citations\Models\Association;
 use Components\Citations\Models\Type;
 use Components\Citations\Models\Sponsor;
 use Components\Citations\Helpers\Format;
+use Components\Citations\Helpers\Records;
 use Hubzero\Component\AdminController;
 use Hubzero\Config\Registry;
 use Exception;
@@ -385,8 +386,8 @@ class Citations extends AdminController
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
-
-		$citation = array_map('trim', Request::getArray('citation', array(), 'post'));
+		
+		$citation = array_map('trim', Request::getArray('citation', array(), 'post'));		
 		$exclude  = Request::getString('exclude', '', 'post');
 		$rollover = Request::getInt("rollover", 0);
 		$this->tags = Request::getString('tags', '');
@@ -394,7 +395,7 @@ class Citations extends AdminController
 		$this->sponsors = array_filter(Request::getArray('sponsors', array(), 'post'));
 		$citationId = !empty($citation['id']) ? $citation['id'] : null;
 		unset($citation['id']);
-
+		
 		// toggle the affiliation
 		if (!isset($citation['affiliated']) || $citation['affiliated'] == null)
 		{
@@ -415,7 +416,7 @@ class Citations extends AdminController
 		$cparams->set('exclude', $exclude);
 		$cparams->set('rollover', $rollover);
 		$row->set('params', $cparams->toString());
-
+		
 		// Incoming associations
 		$assocParams = Request::getArray('assocs', array(), 'post');
 		$associations = array();
@@ -439,7 +440,35 @@ class Citations extends AdminController
 		}
 
 		$row->attach('associations', $associations);
-
+		
+		// Update DOI metadata record when assocs is set
+		if (!empty($assocParams))
+		{
+			$records = new Records();
+			$pubArr = [];
+			$pubWithMultiVer = [];
+			
+			foreach ($assocParams as $assocParam)
+			{
+				if ($assocParam['tbl'] == 'publication' && !empty($assocParam['oid']))
+				{
+					$pubArr[] = $assocParam['oid'];
+				}
+			}
+			
+			$doiArr = $records->getDoiList($pubArr, $pubWithMultiVer);
+			
+			if (!empty($pubWithMultiVer))
+			{
+				Notify::error(Lang::txt('MUTIPLE_VERSION_PUBLICATIONS', implode(",", $pubWithMultiVer)));
+			}
+			
+			if (!empty($citation))
+			{
+				$records->updateDoiRecord($doiArr, $citation);
+			}		
+		}
+		
 		// Store new content
 		if (!$row->saveAndPropagate())
 		{

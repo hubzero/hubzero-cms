@@ -287,6 +287,52 @@ class Doi extends Obj
 		{
 			$this->set('relatedDoi', $lastPub->doi);
 		}
+		
+		// Set references
+        $citationRows = $pub->getCitations();
+		$references = array();
+		
+		if (!empty($citationRows))
+		{
+			$rowArr = $citationRows->raw();
+			$keys = array_keys($rowArr);
+			
+			for ($i = 0; $i < count($keys); $i++)
+			{
+				if (!empty($rowArr[$keys[$i]]["doi"]))
+				{
+					array_push($references, array("DOI" => $rowArr[$keys[$i]]["doi"]));
+				}
+				else 
+				{
+					if (!empty($rowArr[$keys[$i]]["url"]))
+					{
+						if (preg_match("/purl/", $rowArr[$keys[$i]]["url"]))
+						{
+							array_push($references, array("PURL" => $rowArr[$keys[$i]]["url"]));
+						}
+						elseif (preg_match("/handle/", $rowArr[$keys[$i]]["url"]))
+						{
+							array_push($references, array("Handle" => $rowArr[$keys[$i]]["url"]));
+						}
+						elseif (preg_match("/ark/", $rowArr[$keys[$i]]["url"]))
+						{
+							array_push($references, array("ARK" => $rowArr[$keys[$i]]["url"]));
+						}
+						elseif (preg_match("/arxiv/", $rowArr[$keys[$i]]["url"]))
+						{
+							array_push($references, array("arXiv" => $rowArr[$keys[$i]]["url"]));
+						}
+						else
+						{
+							array_push($references, array("URL" => $rowArr[$keys[$i]]["url"]));
+						}
+					}
+				}
+			}
+		}
+		
+		$this->set("references", $references);
 	}
 
 	/**
@@ -365,6 +411,7 @@ class Doi extends Obj
 		$this->set('creator', '');
 		$this->set('creatorOrcid', '');
 		$this->set('authors', array());
+		$this->set('references', array());
 		$this->setDefaults();
 	}
 
@@ -476,12 +523,91 @@ class Doi extends Obj
 		$xmlfile.= '</description>
 			</descriptions>
 		</resource>';
+		
+		// Related identifier/references
+		if ($this->get('references'))
+		{
+			$dom = new \DomDocument();
+			$dom->loadXML($xmlfile);
+			$relatedIdentifiersNodeList = $dom->getElementsByTagName("relatedIdentifiers");
+			
+			if ($relatedIdentifiersNodeList->length != 0)
+			{
+				foreach ($this->get('references') as $reference)
+				{
+					$relatedIdentifierElement = $dom->createElement("relatedIdentifier", current($reference));
+					$relatedIdentifierNode = $relatedIdentifiersNodeList->item(0)->appendChild($relatedIdentifierElement);
+					$relatedIdentifierNode->setAttribute("relatedIdentifierType", key($reference));
+					$relatedIdentifierNode->setAttribute("relationType", "IsReferencedBy");
+					$xmlfile = $dom->saveXML();
+				}
+			}
+			else
+			{
+				$resourceElementNodeList = $dom->getElementsByTagName("resource");
+				$sizeElementNodeList = $dom->getElementsByTagName("sizes");
+				
+				if ($sizeElementNodeList->length != 0 )
+				{
+					$relatedIdentifiersElement = $dom->createElement("relatedIdentifiers");
+					$relatedIdentifiersNode = $resourceElementNodeList->item(0)->insertBefore($relatedIdentifiersElement, $sizeElementNodeList->item(0));
+					
+					foreach ($this->get('references') as $reference)
+					{
+						$relatedIdentifierElement = $dom->createElement("relatedIdentifier", current($reference));
+						$relatedIdentifierNode = $relatedIdentifiersNode->appendChild($relatedIdentifierElement);
+						$relatedIdentifierNode->setAttribute("relatedIdentifierType", key($reference));
+						$relatedIdentifierNode->setAttribute("relationType", "IsReferencedBy");
+						$xmlfile = $dom->saveXML();
+					}
+				}
+				else
+				{
+					$formatElementNodeList = $dom->getElementsByTagName("formats");
+					
+					if ($formatElementNodeList->length != 0)
+					{
+						$relatedIdentifiersElement = $dom->createElement("relatedIdentifiers");
+						$relatedIdentifiersNode = $resourceElementNodeList->item(0)->insertBefore($relatedIdentifiersElement, $formatElementNodeList->item(0));
+						
+						foreach ($this->get('references') as $reference)
+						{
+							$relatedIdentifierElement = $dom->createElement("relatedIdentifier", current($reference));
+							$relatedIdentifierNode = $relatedIdentifiersNode->appendChild($relatedIdentifierElement);
+							$relatedIdentifierNode->setAttribute("relatedIdentifierType", key($reference));
+							$relatedIdentifierNode->setAttribute("relationType", "IsReferencedBy");
+							$xmlfile = $dom->saveXML();
+						}
+					}
+					else
+					{
+						$versionElementNodeList = $dom->getElementsByTagName("version");
+						
+						if ($versionElementNodeList->length != 0)
+						{
+							$relatedIdentifiersElement = $dom->createElement("relatedIdentifiers");
+							$relatedIdentifiersNode = $resourceElementNodeList->item(0)->insertBefore($relatedIdentifiersElement, $versionElementNodeList->item(0));
+							
+							foreach ($this->get('references') as $reference)
+							{
+								$relatedIdentifierElement = $dom->createElement("relatedIdentifier", current($reference));
+								$relatedIdentifierNode = $relatedIdentifiersNode->appendChild($relatedIdentifierElement);
+								$relatedIdentifierNode->setAttribute("relatedIdentifierType", key($reference));
+								$relatedIdentifierNode->setAttribute("relationType", "IsReferencedBy");
+								$xmlfile = $dom->saveXML();
+							}
+						}
+					}
+					
+				}
+			}
+		}
 
 		return $xmlfile;
 	}
 
 	/**
-	 * Run cURL to register metadata. When input $doi is null, it is going to create DOI on DataCite. Otherwise, the function is to update DOI state to public.
+	 * Run cURL to register metadata. When input $doi is null, it is going to create DOI on DataCite.
 	 *
 	 * @param	string	$url
 	 * @param	array	$postVals
@@ -497,7 +623,7 @@ class Doi extends Obj
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($postvals)));
 		curl_setopt($ch, CURLOPT_FAILONERROR, true);
-		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
 
 		$response = curl_exec($ch);
 
@@ -517,10 +643,9 @@ class Doi extends Obj
 
 			$doi = $match[1];
 		}
-
+		
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-		curl_close($ch);
+		curl_close($ch);		
 
 		if ($code == 201 || $code == 200)
 		{
