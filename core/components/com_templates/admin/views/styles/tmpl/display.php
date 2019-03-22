@@ -121,28 +121,36 @@ Html::behavior('multiselect');
 		</tfoot>
 		<tbody>
 			<?php foreach ($this->rows as $i => $item) :
+
+				$path = $item->path();
+
 				$canCreate = User::authorise('core.create', $this->option);
-				$canEdit   = User::authorise('core.edit', $this->option);
+				$canEdit   = $path ? User::authorise('core.edit', $this->option) : false;
 				$canChange = User::authorise('core.edit.state', $this->option);
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
-					<?php echo Html::grid('id', $i, $item->id, false, 'id'); ?>
+					<?php if ($path) : ?>
+						<?php echo Html::grid('id', $i, $item->id, false, 'id'); ?>
+					<?php endif; ?>
 				</td>
 				<td>
-					<?php if ($this->preview && $item->client_id == '0'): ?>
+					<?php if ($path && $this->preview && $item->client_id == '0'): ?>
 						<a rel="noopener" target="_blank" href="<?php echo Request::root().'index.php?tp=1&templateStyle='.(int) $item->id; ?>" class="jgrid hasTip" title="<?php echo htmlspecialchars(Lang::txt('COM_TEMPLATES_TEMPLATE_PREVIEW')); ?>::<?php echo htmlspecialchars($item->title); ?>" ><span class="state preview"><span class="text"><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_PREVIEW'); ?></span></span></a>
-					<?php elseif ($item->client_id == '1'): ?>
+					<?php elseif ($path && $item->client_id == '1'): ?>
 						<span class="jgrid hasTip" title="<?php echo htmlspecialchars(Lang::txt('COM_TEMPLATES_TEMPLATE_NO_PREVIEW_ADMIN')); ?>"><span class="state nopreview"><span class="text"><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NO_PREVIEW_ADMIN'); ?></span></span></span>
 					<?php else: ?>
 						<span class="jgrid hasTip" title="<?php echo htmlspecialchars(Lang::txt('COM_TEMPLATES_TEMPLATE_NO_PREVIEW')); ?>"><span class="state nopreview"><span class="text"><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NO_PREVIEW'); ?></span></span></span>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='.(int) $item->id); ?>">
-							<?php echo $this->escape($item->title);?>
+							<?php echo $this->escape($item->title); ?>
 						</a>
 					<?php else : ?>
-						<?php echo $this->escape($item->title);?>
+						<?php echo $this->escape($item->title); ?>
+					<?php endif; ?>
+					<?php if (!$path) : ?>
+						<p class="smallsub"><?php echo Lang::txt('COM_TEMPLATES_ERROR_MISSING_FILES'); ?></p>
 					<?php endif; ?>
 				</td>
 				<td class="center priority-2">
