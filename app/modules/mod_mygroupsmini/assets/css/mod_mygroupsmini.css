@@ -183,3 +183,15 @@
 	.mod_mygroups .compactlist li.group a.fav:hover {
 		color: red;
 	}
+.truncate {
+		display: block; /* Fallback for non-webkit */
+	  display: -webkit-box;
+	  height: 2.4em; /* Fallback for non-webkit */
+	  margin: 0 auto;
+	  font-size: 1em;
+	  line-height: 1.2;
+	  -webkit-line-clamp: 2;
+	  -webkit-box-orient: vertical;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+	}

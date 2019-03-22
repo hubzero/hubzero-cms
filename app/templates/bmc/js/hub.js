@@ -498,15 +498,27 @@ if (!jq) {
 			});
 		}
 
-		// I'm not sure how well it works, test it
-		dashboardScroller.on( 'mousewheel DOMMouseScroll', function (e) {
+		// Truncate links if greater than 2 lines
 
-			var e0 = e.originalEvent;
-			var delta = e0.wheelDelta || -e0.detail;
+		$('li.group a').each(function() {
 
-			this.scrollTop += delta * -1;
-			e.preventDefault();
+			if (this.offsetHeight > 22) {
+				$(this).addClass('truncate');
+			} else {
+				//do nothing
+			}
 		});
+
+		// I'm not sure how well it works, test it
+		// Comment out disabling of scroll on dashboard
+		// dashboardScroller.on( 'mousewheel DOMMouseScroll', function (e) {
+		//
+		// 	var e0 = e.originalEvent;
+		// 	var delta = e0.wheelDelta || -e0.detail;
+		//
+		// 	this.scrollTop += delta * -1;
+		// 	e.preventDefault();
+		// });
 
 		// swipe
 		var dp = document.getElementById('dashboard-panel');

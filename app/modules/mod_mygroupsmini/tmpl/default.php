@@ -39,10 +39,10 @@ $this->css()
 
 <!-- Temporary location of code -->
 <li id="account-groups">
-  <a href="#" class="component-button"><span class="nav-icon-groups"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/group.svg") ?></span><span>My Groups</span><span class="nav-icon-more"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/chevron-right.svg") ?></span></a>
+  <a class="component-button"><span class="nav-icon-groups"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/group.svg") ?></span><span>My Groups</span><span class="nav-icon-more"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/chevron-right.svg") ?></span></a>
   <div class="component-panel">
     <header><h2>My Groups</h2></header>
-    <a href="#" class="component-button"><span class="nav-icon-back"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/chevron-left.svg") ?></span>Back</a>
+    <a class="component-button"><span class="nav-icon-back"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/chevron-left.svg") ?></span>Back</a>
       <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
 
     <ul class="module-nav grouped">
