@@ -287,7 +287,7 @@ class Doi extends Obj
 		{
 			$this->set('relatedDoi', $lastPub->doi);
 		}
-		
+
 		// Set references
 		$citationRows = $pub->getCitations();
 		$references = array();
