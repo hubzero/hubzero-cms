@@ -191,15 +191,24 @@ $saveOrder = $listOrder == 'ordering';
 		$i = 0;
 		$positions = $this->items->fieldsByKey('position');
 		foreach ($this->items as $item) :
+
+			$path = $item->path();
+
+			if (!$path):
+				$item->published = 0;
+			endif;
+
 			$ordering   = ($listOrder == 'ordering');
 			$canCreate  = User::authorise('core.create', 'com_modules');
-			$canEdit    = User::authorise('core.edit', 'com_modules');
+			$canEdit    = $path ? User::authorise('core.edit', 'com_modules') : false;
 			$canCheckin = User::authorise('core.manage', 'com_checkin') || $item->checked_out == User::get('id')|| $item->checked_out==0;
 			$canChange  = User::authorise('core.edit.state', 'com_modules') && $canCheckin;
 		?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
-					<?php echo Html::grid('id', $i, $item->id); ?>
+					<?php if ($path) : ?>
+						<?php echo Html::grid('id', $i, $item->id); ?>
+					<?php endif; ?>
 				</td>
 				<td>
 					<?php if ($item->checked_out) : ?>
@@ -211,6 +220,11 @@ $saveOrder = $listOrder == 'ordering';
 						</a>
 					<?php else : ?>
 						<?php echo $this->escape($item->title); ?>
+						<?php if (!$path) : ?>
+							<p class="smallsub">
+								<?php echo Lang::txt('COM_MODULES_ERROR_MISSING_FILES'); ?>
+							</p>
+						<?php endif; ?>
 					<?php endif; ?>
 					<?php if (!empty($item->note)) : ?>
 						<p class="smallsub">
