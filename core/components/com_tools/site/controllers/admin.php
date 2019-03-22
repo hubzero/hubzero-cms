@@ -281,8 +281,9 @@ class Admin extends SiteController
 			$command  = '/usr/bin/sudo -u apps ';
 			$command .=    '/usr/bin/installtool';
 			$command .=       ' -type raw';
-			$command .=       ' -hubdir ' . PATH_ROOT . '/';
+			$command .=       ' -hubdir ' . PATH_ROOT . '/ ';
 			$command .=       $status['toolname'];
+			$commitHashRequired = false;
 		}
 		else
 		{
@@ -298,6 +299,7 @@ class Admin extends SiteController
 					$command .= ' --gitURL ' . $status['github'];
 				}
 			}
+			$commitHashRequired = true;
 		}
 
 		// Invoke the script
@@ -325,7 +327,7 @@ class Admin extends SiteController
 						$txt->set('commitHash', $commitHash);
 						$hztv->params = $txt->toString();
 					}
-					else
+					else if ($commitHashRequired)
 					{
 						$this->setError(Lang::txt('COM_TOOLS_ERR_CANNOT_SAVE_REVISION_INFO'));
 					}
