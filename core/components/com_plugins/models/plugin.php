@@ -199,9 +199,14 @@ class Plugin extends Relational
 	public function loadLanguage($system = false)
 	{
 		$file = 'plg_' . $this->get('folder') . '_' . $this->get('element') . ($system ? '.sys' : '');
-		$path = '/plugins/' . $this->get('folder') . '/' . $this->get('element');
+		$path = $this->path();
 
-		return (Lang::load($file, PATH_APP . $path, null, false, true) || Lang::load($file, PATH_CORE . $path, null, false, true));
+		if ($path)
+		{
+			return Lang::load($file, $path, null, false, true);
+		}
+
+		return false;
 	}
 
 	/**
@@ -216,6 +221,20 @@ class Plugin extends Relational
 			$this->paramsRegistry = new Registry($this->get('params'));
 		}
 		return $this->paramsRegistry;
+	}
+
+	/**
+	 * Get the installed path
+	 *
+	 * @return  string
+	 */
+	public function path()
+	{
+		if (!$this->get('folder') || !$this->get('element'))
+		{
+			return '';
+		}
+		return \Plugin::path($this->get('folder'), $this->get('element'));
 	}
 
 	/**
@@ -237,24 +256,16 @@ class Plugin extends Relational
 			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
 		}
 
-		$path = '/plugins/' . $this->get('folder') . '/' . $this->get('element') . '/' . $this->get('element') . '.xml';
+		$file = $this->path() . '/' . $this->get('element') . '.xml';
 
-		$paths = array(
-			PATH_APP . $path,
-			PATH_CORE . $path
-		);
-
-		foreach ($paths as $file)
+		if (file_exists($file))
 		{
-			if (file_exists($file))
+			// Get the plugin form.
+			if (!$form->loadFile($file, false, '//config'))
 			{
-				// Get the plugin form.
-				if (!$form->loadFile($file, false, '//config'))
-				{
-					$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
-				}
-				break;
+				$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
 			}
+			break;
 		}
 
 		$data = $this->toArray();

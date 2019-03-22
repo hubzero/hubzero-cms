@@ -139,15 +139,22 @@ $saveOrder = $listOrder == 'ordering';
 			foreach ($this->items as $item) :
 
 				$item->loadLanguage(true);
+				$path = $item->path();
+
+				if (!$path):
+					$item->enabled = 0;
+				endif;
 
 				$ordering   = ($listOrder == 'ordering');
-				$canEdit    = User::authorise('core.edit', 'com_plugins');
+				$canEdit    = $path ? User::authorise('core.edit', 'com_plugins') : false;
 				$canCheckin = User::authorise('core.manage', 'com_checkin') || $item->checked_out==User::get('id') || $item->checked_out==0;
 				$canChange  = User::authorise('core.edit.state', 'com_plugins') && $canCheckin;
 				?>
-				<tr class="row<?php echo $i % 2; ?>">
+				<tr class="row<?php echo ($i % 2) . (!$path ? 'missing' : ''); ?>">
 					<td class="center">
-						<?php echo Html::grid('id', $i, $item->extension_id); ?>
+						<?php if ($path) : ?>
+							<?php echo Html::grid('id', $i, $item->extension_id); ?>
+						<?php endif; ?>
 					</td>
 					<td>
 						<?php if ($item->checked_out) : ?>
@@ -159,6 +166,9 @@ $saveOrder = $listOrder == 'ordering';
 							</a>
 						<?php else : ?>
 							<?php echo Lang::txt($item->name); ?>
+							<?php if (!$path) : ?>
+								<p class="smallsub"><?php echo Lang::txt('COM_PLUGINS_ERROR_MISSING_FILES'); ?></p>
+							<?php endif; ?>
 						<?php endif; ?>
 					</td>
 					<td class="center">
