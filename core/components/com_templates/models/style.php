@@ -219,4 +219,30 @@ class Style extends Relational
 
 		return parent::destroy();
 	}
+
+	/**
+	 * Get the path to the installed files
+	 *
+	 * @return  string
+	 */
+	public function path()
+	{
+		$path = '';
+
+		$paths = array(
+			PATH_APP . DS . 'templates' . DS . $this->get('template'),
+			PATH_CORE . DS . 'templates' . DS . $this->get('template')
+		);
+
+		foreach ($paths as $dir)
+		{
+			if (is_dir($dir))
+			{
+				$path = $dir;
+				break;
+			}
+		}
+
+		return $path;
+	}
 }
