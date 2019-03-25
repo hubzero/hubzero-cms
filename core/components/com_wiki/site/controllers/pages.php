@@ -291,7 +291,10 @@ class Pages extends SiteController
 		// Output view
 		if (Request::getWord('format') == 'raw')
 		{
-			$this->view->setLayout('display_raw');
+			ob_clean();
+			header('Content-type: text/plain');
+			echo $revision->get('pagetext');
+			exit();
 		}
 
 		$this->view
