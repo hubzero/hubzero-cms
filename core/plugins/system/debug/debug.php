@@ -989,7 +989,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			$logger = App::get('log')->logger('post');
 
 			$post     = json_encode($_POST);
-			$referrer = $_SERVER['HTTP_REFERER'];
+			$referrer = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');
 
 			// Encrypt for some reasonable level of obscurity
 			$key = md5(App::get('config')->get('secret'));
