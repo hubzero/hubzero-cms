@@ -281,6 +281,9 @@ class Manage extends AdminController
 		$g = Request::getArray('group', array(), 'post');
 		$g = $this->_multiArrayMap('trim', $g);
 
+		$customFields = Field::all()->rows();
+		$customFieldForm = Request::getArray('customfields', array());
+
 		// Instantiate a Group object
 		$group = new Group();
 
@@ -325,11 +328,17 @@ class Manage extends AdminController
 		// Push back into edit mode if any errors
 		if ($this->getError())
 		{
+			foreach ($g as $k => $v)
+			{
+				$group->set($k, $v);
+			}
 			// Output the HTML
 			$this->view
 				->setErrors($this->getErrors())
 				->setLayout('edit')
 				->set('group', $group)
+				->set('customFields', $customFields)
+				->set('customAnswers', $customFieldForms)
 				->display();
 			return;
 		}
@@ -351,8 +360,6 @@ class Manage extends AdminController
 			}
 		}
 
-		$customFields = Field::all()->rows();
-		$customFieldForm = Request::getArray('customfields', array());
 		foreach ($customFields as $field)
 		{
 			$field->setFormAnswers($customFieldForm);
@@ -365,11 +372,17 @@ class Manage extends AdminController
 		// Push back into edit mode if any errors
 		if ($this->getError())
 		{
+			foreach ($g as $k => $v)
+			{
+				$group->set($k, $v);
+			}
 			// Output the HTML
 			$this->view
 				->setErrors($this->getErrors())
 				->setLayout('edit')
 				->set('group', $group)
+				->set('customFields', $customFields)
+				->set('customAnswers', $customFieldForm)
 				->display();
 			return;
 		}
