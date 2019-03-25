@@ -196,13 +196,13 @@ $revision = $this->revision;
 						}
 
 						// Open/closed source
-						if ($this->model->toolsource && $this->model->toolsource == 1 && $this->model->tool)
+						if ($this->model->toolsource && $this->model->tool)
 						{ // open source
 							$html .= '<p class="opensource_license">'.Lang::txt('Open source').': <a class="popup" href="' . Route::url('index.php?option='.$this->option.'&task=license&tool='.$this->model->tool.'&tmpl=component') . '">license</a> ';
 							$html .= ($this->model->taravailable) ? ' |  <a href="' . Route::url('index.php?option='.$this->option.'&task=sourcecode&tool='.$this->model->tool).'">'.Lang::txt('download').'</a> '."\n" : ' | <span class="unavail">'.Lang::txt('code unavailable').'</span>'."\n";
 							$html .= '</p>'."\n";
 						}
-						elseif ($this->model->toolsource)
+						elseif (!$this->model->toolsource)
 						{ // closed source, archive page
 							$html .= '<p class="closedsource_license">'.Lang::txt('COM_RESOURCES_TOOL_IS_CLOSED_SOURCE').'</p>'."\n";
 						}
