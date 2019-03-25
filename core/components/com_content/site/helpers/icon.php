@@ -125,7 +125,7 @@ class HtmlIcon
 		 && $article->checked_out != User::get('id'))
 		{
 			$checkoutUser = User::getInstance($article->checked_out);
-			$button  = Html::asset('image', 'checked_out.png', null, null, true);
+			$button  = Html::asset('icon', 'lock');
 			$date    = Date::of($article->checked_out_time)->toLocal();
 			$tooltip = Lang::txt('JLIB_HTML_CHECKED_OUT') . ' :: ' . Lang::txt('COM_CONTENT_CHECKED_OUT_BY', $checkoutUser->name) . ' <br /> ' . $date;
 
