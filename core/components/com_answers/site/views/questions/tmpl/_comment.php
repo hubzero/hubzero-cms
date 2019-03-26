@@ -153,7 +153,7 @@ if (!$this->comment->get('item_id'))
 						<input type="hidden" name="comment[id]" value="0" />
 						<input type="hidden" name="comment[item_type]" value="<?php echo $this->comment->get('item_type', 'response'); ?>" />
 						<input type="hidden" name="comment[item_id]" value="<?php echo $this->comment->get('item_id'); ?>" />
-						<input type="hidden" name="comment[parent]" value="<?php echo ($this->depth == 1 ? 0 : $this->comment->get('id')); ?>" />
+						<input type="hidden" name="comment[parent]" value="<?php echo ($this->depth == 1) ? 0 : $this->comment->get('id'); ?>" />
 						<input type="hidden" name="comment[created]" value="" />
 						<input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
 						<input type="hidden" name="comment[state]" value="1" />
@@ -164,20 +164,24 @@ if (!$this->comment->get('item_id'))
 
 						<?php echo Html::input('token'); ?>
 
-						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
-							<span class="label-text"><?php echo Lang::txt('COM_ANSWERS_ENTER_COMMENTS'); ?></span>
-							<?php
-							echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
-							?>
-						</label>
+						<div class="form-group">
+							<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
+								<span class="label-text"><?php echo Lang::txt('COM_ANSWERS_ENTER_COMMENTS'); ?></span>
+								<?php
+								echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'form-control minimal no-footer'));
+								?>
+							</label>
+						</div>
 
-						<label class="comment-anonymous-label" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
-							<input class="option" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" />
-							<?php echo Lang::txt('COM_ANSWERS_POST_COMMENT_ANONYMOUSLY'); ?>
-						</label>
+						<div class="form-group">
+							<label class="comment-anonymous-label" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
+								<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" />
+								<?php echo Lang::txt('COM_ANSWERS_POST_COMMENT_ANONYMOUSLY'); ?>
+							</label>
+						</div>
 
 						<p class="submit">
-							<input type="submit" value="<?php echo Lang::txt('COM_ANSWERS_SUBMIT'); ?>" />
+							<input type="submit" class="btn" value="<?php echo Lang::txt('COM_ANSWERS_SUBMIT'); ?>" />
 						</p>
 					</fieldset>
 				</form>
