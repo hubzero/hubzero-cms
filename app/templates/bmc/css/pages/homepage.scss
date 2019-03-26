@@ -4,196 +4,200 @@
 .wrapper {
   @include grid-template(repeat(4, [col] 1fr), repeat(4, [row] minmax(30rem, auto)));
 
-  h3 {
+  h1 {
+    font-family: 'montserratultra_light', Helvetica Neue, Helvetica, sans-serif;
+  }
+
+  h2,
+  h3,
+  h4,
+  h5 {
+    color: $dark-blue;
+  }
+
+  h3,
+  h4,
+  h5 {
     font-family: 'Martel', serif;
   }
 }
 
 //Banner
 .intro-container {
-  @include flexbox;
+  @include flexbox(wrap);
   @include grid(col / span 4, row);
-  @include grid-template(repeat(4, 1fr), repeat(2, auto));
-  @include bcg-img('/app/site/media/images/pexels-photo-355988.jpg');
-  @include bcg($black, $white);
   @include respond-at(901px) {
-    @include grid-template(repeat(4, 1fr), 35rem);
+    @include flexbox;
   }
-  @include grid-support {
-    height: auto;
-  }
-  min-height: 25rem;
 }
 
 .intro {
-  @include grid(1 / span 4, 1);
-  align-self: center;
-  padding: 2.5em;
+  @include bcg-img('/app/site/media/images/pexels-photo-355988.jpg');
+  @include bcg($black, $white);
+  color: $white;
+  flex-direction: column;
   width: 100%;
 
-  .tagline {
-    color: $white;
-  }
-  @include respond-at(901px) {
-    @include grid(1 / span 2, null);
-    width: 40%;
-  }
-  @include grid-support {
-    width: auto;
-  }
-}
-
-.feature {
-  @include grid(1 / span 4, 2);
-  border: 1px solid $green;
-  border-radius: 6px;
-  margin: 2em;
-  padding: 2em;
-  position: relative;
-
-  h2 {
-    color: $green;
-    font-size: 1.5rem;
-    left: 0;
-    position: absolute;
-    text-transform: uppercase;
-    top: -1.6rem;
-  }
-
-  h3 {
+  h2,
+  h4 {
     color: $white;
   }
 
   h5 {
-    color: $white;
+    text-align: center;
   }
   @include respond-at(901px) {
-    @include grid(3 / span 2, 1);
-    align-self: center;
+    width: 50%;
+  }
+}
+
+.tagline-wrap {
+  padding: 2.5em;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+
+  h4 {
+    margin-top: 2em;
+  }
+}
+
+.green {
+  color: $green;
+}
+
+.anchor-link-wrap {
+  @include flexbox;
+  justify-content: space-around;
+  margin-top: 2em;
+}
+
+.latest-tweet {
+  margin: 2em;
+  width: 100%;
+  @include respond-at(901px) {
+    width: 20%;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+
+    span {
+      font-size: 1.2rem;
+      text-transform: lowercase;
+    }
+  }
+
+  svg {
+    fill: $dark-blue;
+    float: left;
+    margin-right: .5em;
+    width: 1.2rem;
+  }
+}
+
+.feature {
+  margin: 2em;
+  position: relative;
+  width: 100%;
+
+  h2 {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  @include respond-at(901px) {
+    width: 25%;
   }
 
   .module-feature {
-    @include grid-template(1fr 1fr, null, 10px);
-    grid-auto-rows: 9rem;
-    // @include respond-at(601px) {
-    //   @include grid-template(repeat(2, 1fr), repeat(2, 10rem), 10px);
-    // }
+    @include flexbox;
+    flex-direction: column;
+    margin-bottom: 1em;
   }
+
   .billboard-image {
-    @extend %showcase-img;
     background-color: $white;
+    border-right: 3px solid $green;
+    height: 5rem;
     overflow: hidden;
     transition: 3s ease-in-out;
+    width: 5rem;
 
     img {
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
       transition: 3s ease-in-out;
     }
 
     &:hover {
       img {
-        transform: scale(1.1);
+        transform: translateY(-50%) scale(1.1)
       }
     }
   }
 
   .billboard {
-    height: 10rem;
+    @include flexbox;
     position: relative;
 
     .billboard-tag {
       @include showcase-tag($green, $white);
+      bottom: 15%;
+      font-size: .7em;
+      left: -.5em;
     }
 
     .billboard-header {
-      bottom: 0;
-      padding: 10px;
-      position: absolute;
+      margin-left: .5em;
 
       a {
-        @include showcase-header(1em, 1, 2);
+        @include showcase-header(1em, 1.2, 4);
+        color: $body-color;
+      }
+
+      span {
+        color: $body-color;
       }
     }
   }
 
-  .blog {
-    @include flexbox;
-    position: relative;
-  }
-
-  .blog-img {
-    @extend %showcase-img;
-  }
-
-  .blog-title {
-    position: absolute;
-    bottom: 0;
-    padding: 10px;
-
-    a {
-      @include showcase-header(1em, 1, 2);
-    }
-  }
-
-  .newsletter-img {
-    @extend %showcase-img;
-  }
-
-  .newsletter {
-    position: relative;
-
-    .newsletter-title {
-      bottom: 0;
-      padding: 10px;
-      position: absolute;
-
-      a {
-        @include showcase-header(1.1rem, 1.3, 2);
-      }
-    }
-  }
-
-  .fmn-img {
-    @extend %showcase-img;
-    background-color: $white;
-  }
-
+  .blog,
+  .newsletter,
   .fmn {
-    position: relative;
-
-    .fmn-title {
-      bottom: 0;
-      padding: 10px;
-      position: absolute;
-
-      a {
-        @include showcase-header(1.1rem, 1.3, 2);
-      }
-    }
-
-    .fmn-tag {
-      @include showcase-tag($green, $white);
-    }
+    @extend .billboard;
   }
 
-  .horizontal {
-    @include grid(1 / span 2, null);
-    @include grid-support {
-      height: auto;
-      margin: 0;
-      width: auto;
-    }
+  .blog-img,
+  .newsletter-img,
+  .fmn-img {
+    @extend .billboard-image;
+  }
+
+  .blog-title,
+  .newsletter-title,
+  .fmn-title {
+    @extend .billboard-header;
+  }
+
+  .fmn-tag {
+    @extend .billboard-tag;
   }
 
   .regular {
-    @include grid-support {
-      height: auto;
-      margin: 0;
-      width: auto;
-    }
-    flex: 1 1 20rem;
-    height: 10rem;
-    margin: 2.5px;
+    margin: .25em;
   }
+}
+
+.button {
+  margin-top: 1em;
+}
+
+.link {
+  @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
+  border-radius: 2px;
 }
 
 //Resources
