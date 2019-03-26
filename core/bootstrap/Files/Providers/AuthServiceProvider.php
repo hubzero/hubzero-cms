@@ -70,6 +70,7 @@ class AuthServiceProvider extends Middleware
 			exit();
 		}
 
+		$this->app['session']   = $session_id;
 		$this->app['moderator'] = $moderator;
 
 		return $response;
