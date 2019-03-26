@@ -44,9 +44,9 @@ use User;
 use Lang;
 
 require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'item.php');
-require_once(__DIR__ . DS . 'asset.php');
-require_once(__DIR__ . DS . 'tags.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'item.php';
+require_once __DIR__ . DS . 'asset.php';
+require_once __DIR__ . DS . 'tags.php';
 
 /**
  * Collections model for an item
@@ -484,7 +484,7 @@ class Item extends Base
 	 */
 	public function vote()
 	{
-		require_once(dirname(__DIR__) . DS . 'tables' . DS . 'vote.php');
+		require_once dirname(__DIR__) . DS . 'tables' . DS . 'vote.php';
 
 		$vote = new Tables\Vote($this->_db);
 		$vote->loadByBulletin($this->get('id'), User::get('id'));
@@ -686,7 +686,7 @@ class Item extends Base
 						'pagename' => 'collections',
 						'pageid'   => 0,
 						'filepath' => '',
-						'domain'   => 'collection'
+						'domain'   => ''//'collection'
 					);
 
 					$content = stripslashes((string) $this->get('description', ''));
@@ -889,7 +889,7 @@ class Item extends Base
 
 		if ($id)
 		{
-			require_once(dirname(__DIR__) . DS . 'tables' . DS . 'post.php');
+			require_once dirname(__DIR__) . DS . 'tables' . DS . 'post.php';
 
 			$post = new Tables\Post($this->_db);
 			$post->load($id);
