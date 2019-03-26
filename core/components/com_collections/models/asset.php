@@ -36,8 +36,8 @@ use Hubzero\Image\Processor;
 use Filesystem;
 use Lang;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'asset.php');
-require_once(__DIR__ . DS . 'base.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.php';
+require_once __DIR__ . DS . 'base.php';
 
 /**
  * Collections model class for an Asset
@@ -50,6 +50,20 @@ class Asset extends Base
 	 * @var string
 	 */
 	public $_tbl_name = '\\Components\\Collections\\Tables\\Asset';
+
+	/**
+	 * File size
+	 *
+	 * @var  string
+	 */
+	protected $_size = null;
+
+	/**
+	 * Diemnsions for file (must be an image)
+	 *
+	 * @var  array
+	 */
+	protected $_dimensions = null;
 
 	/**
 	 * Constructor
@@ -127,6 +141,131 @@ class Asset extends Base
 		}
 
 		return false;
+	}
+
+	/**
+	 * Is an asset a link?
+	 *
+	 * @return  boolean  True if image, false if not
+	 */
+	public function isLink()
+	{
+		return ($this->get('type') == 'link');
+	}
+
+	/**
+	 * Is an asset an external link?
+	 *
+	 * @return  boolean  True if image, false if not
+	 */
+	public function isExternalLink()
+	{
+		if ($this->isLink())
+		{
+			$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)"
+					 . "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
+
+			if (preg_match("/$UrlPtn/", $this->get('filename')))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Does the file exist?
+	 *
+	 * @return  boolean  True if image, false if not
+	 */
+	public function exists()
+	{
+		$path  = $this->filespace() . DS . $this->get('item_id') . DS;
+		$path .= ltrim($this->get('filename'), DS);
+
+		return file_exists($path);
+	}
+
+	/**
+	 * Is the file an image?
+	 *
+	 * @return  boolean
+	 */
+	public function size()
+	{
+		if (is_null($this->_size))
+		{
+			$this->_size = 0;
+
+			if ($this->exists())
+			{
+				$path  = $this->filespace() . DS . $this->get('item_id') . DS;
+				$path .= ltrim($this->get('filename'), DS);
+
+				$this->_size = filesize($path);
+			}
+		}
+
+		return $this->_size;
+	}
+
+	/**
+	 * File width and height
+	 *
+	 * @return  array
+	 */
+	public function dimensions()
+	{
+		if (!$this->_dimensions)
+		{
+			$this->_dimensions = array(0, 0);
+
+			if ($this->isImage() && $this->exists())
+			{
+				$this->_dimensions = getimagesize($this->path());
+			}
+		}
+
+		return $this->_dimensions;
+	}
+
+	/**
+	 * File width
+	 *
+	 * @return  integer
+	 */
+	public function width()
+	{
+		$dimensions = $this->dimensions();
+
+		return $dimensions[0];
+	}
+
+	/**
+	 * File height
+	 *
+	 * @return  integer
+	 */
+	public function height()
+	{
+		$dimensions = $this->dimensions();
+
+		return $dimensions[1];
+	}
+
+	/**
+	 * Download URL
+	 *
+	 * @param   string  $size
+	 * @return  string
+	 */
+	public function link($size = 'original')
+	{
+		$path  = $this->filespace() . DS . $this->get('item_id') . DS;
+		$path .= ltrim($this->file($size), DS);
+
+		return with(new \Hubzero\Content\Moderator($path, 'public'))->getUrl();
 	}
 
 	/**

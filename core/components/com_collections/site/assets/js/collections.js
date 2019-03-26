@@ -30,6 +30,7 @@ jQuery(document).ready(function(jq){
 
 	// Set overlays for lightboxed elements
 	$('a.img-link').fancybox({
+		type: 'image',
 		afterLoad: function() {
 			if ($(this.element).attr('data-download')) {
 				this.title = '<a href="' + $(this.element).attr('data-download') + '" download="' + $(this.element).attr('data-download') + '">' + $(this.element).attr('data-downloadtext') + '</a> ' + this.title;
