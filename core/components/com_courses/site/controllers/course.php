@@ -1006,10 +1006,6 @@ class Course extends SiteController
 		{
 			$rtrn = base64_decode($rtrn);
 		}
-		if (!$rtrn)
-		{
-			$rtrn = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false);
-		}
 
 		$fields = Request::getArray('fields', array('title' => '', 'alias' => ''), 'post');
 
@@ -1018,7 +1014,17 @@ class Course extends SiteController
 		{
 			Notify::error(Lang::txt('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $this->course->getError());
 
+			if (!$rtrn)
+			{
+				$rtrn = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false);
+			}
+
 			App::redirect($rtrn);
+		}
+
+		if (!$rtrn)
+		{
+			$rtrn = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $fields['alias'], false);
 		}
 
 		// Success
