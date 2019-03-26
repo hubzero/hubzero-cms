@@ -101,7 +101,7 @@ $this->js();
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_REDIRECT_FIELD_COMMENT_DESC'); ?>">
 					<label id="fields-comment-lbl" for="fields-comment"><?php echo Lang::txt('COM_REDIRECT_FIELD_COMMENT_LABEL'); ?></label>
-					<input type="text" name="fields[comment]" id="fields-comment" value="<?php echo $this->escape($this->row->comment); ?>" class="inputbox required" />
+					<input type="text" name="fields[comment]" id="fields-comment" value="<?php echo $this->escape($this->row->comment); ?>" class="inputbox" />
 					<span class="hint"><?php echo Lang::txt('COM_REDIRECT_FIELD_COMMENT_DESC'); ?></span>
 				</div>
 			</fieldset>
