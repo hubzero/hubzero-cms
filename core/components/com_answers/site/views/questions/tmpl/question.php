@@ -357,18 +357,22 @@ if ($this->question->isDeleted() or !$this->question->get('id'))
 									<input type="hidden" name="response[id]" value="0" />
 									<input type="hidden" name="response[question_id]" value="<?php echo $this->question->get('id'); ?>" />
 
-									<label for="responseanswer">
-										<?php echo Lang::txt('COM_ANSWERS_YOUR_RESPONSE'); ?>:
-										<?php echo $this->editor('response[answer]', '', 50, 10, 'responseanswer', array('class' => 'minimal')); ?>
-									</label>
+									<div class="form-group">
+										<label for="responseanswer">
+											<?php echo Lang::txt('COM_ANSWERS_YOUR_RESPONSE'); ?>:
+											<?php echo $this->editor('response[answer]', '', 50, 10, 'responseanswer', array('class' => 'form-control minimal')); ?>
+										</label>
+									</div>
 
-									<label for="answer-anonymous" id="answer-anonymous-label">
-										<input class="option" type="checkbox" name="response[anonymous]" value="1" id="answer-anonymous" />
-										<?php echo Lang::txt('COM_ANSWERS_POST_ANON'); ?>
-									</label>
+									<div class="form-group">
+										<label for="answer-anonymous" id="answer-anonymous-label">
+											<input class="option form-check-input" type="checkbox" name="response[anonymous]" value="1" id="answer-anonymous" />
+											<?php echo Lang::txt('COM_ANSWERS_POST_ANON'); ?>
+										</label>
+									</div>
 
 									<p class="submit">
-										<input type="submit" value="<?php echo Lang::txt('COM_ANSWERS_SUBMIT'); ?>" />
+										<input type="submit" class="btn" value="<?php echo Lang::txt('COM_ANSWERS_SUBMIT'); ?>" />
 									</p>
 
 									<div class="sidenote">
@@ -481,7 +485,7 @@ if ($this->question->isDeleted() or !$this->question->get('id'))
 						<div class="container">
 							<p><a class="icon-add add btn" href="<?php
 							$route = Route::url($this->question->link('answer'), false, true);
-							echo (User::isGuest() ? Route::url('index.php?option=com_users&view=login&return=' . base64_encode($route)) : $route);
+							echo (User::isGuest()) ? Route::url('index.php?option=com_users&view=login&return=' . base64_encode($route)) : $route;
 							?>"><?php echo Lang::txt('COM_ANSWERS_ANSWER_THIS'); ?></a></p>
 						</div><!-- / .container -->
 					<?php } ?>
@@ -496,4 +500,4 @@ if ($this->question->isDeleted() or !$this->question->get('id'))
 		</section>
 		<!-- end comment block -->
 	<?php } ?>
-<?php } ?>
+<?php }

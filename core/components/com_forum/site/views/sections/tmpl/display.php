@@ -154,10 +154,10 @@ $this->css()
 											</span>
 										</td>
 										<td  class="priority-3">
-											<span><?php echo ($threads ? $row->posts()
+											<span><?php echo ($threads )? $row->posts()
 												->whereEquals('state', $this->filters['state'])
 												->whereIn('access', $this->filters['access'])
-												->total() : 0); ?></span>
+												->total() : 0; ?></span>
 											<span class="entry-details">
 												<?php echo Lang::txt('COM_FORUM_POSTS'); ?>
 											</span>
@@ -270,12 +270,14 @@ $this->css()
 					<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post">
 						<fieldset>
 							<legend><?php echo Lang::txt('COM_FORUM_NEW_SECTION'); ?></legend>
-							<label for="field-title">
-								<?php echo Lang::txt('COM_FORUM_FIELD_TITLE'); ?>
-								<input type="text" name="fields[title]" id="field-title" value="" />
-							</label>
+							<div class="form-group">
+								<label for="field-title">
+									<?php echo Lang::txt('COM_FORUM_FIELD_TITLE'); ?>
+									<input type="text" class="form-control" name="fields[title]" id="field-title" value="" />
+								</label>
+							</div>
 							<p class="submit">
-								<input type="submit" value="<?php echo Lang::txt('JACTION_CREATE'); ?>" />
+								<input type="submit" class="btn" value="<?php echo Lang::txt('JACTION_CREATE'); ?>" />
 							</p>
 							<input type="hidden" name="task" value="save" />
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -302,15 +304,15 @@ $this->css()
 					<fieldset class="entry-section">
 						<legend><?php echo Lang::txt('COM_FORUM_NEW_SECTION'); ?></legend>
 
-						<span class="input-wrap">
+						<div class="form-group">
 							<label for="field-title"><span><?php echo Lang::txt('COM_FORUM_FIELD_TITLE'); ?></span></label>
 							<span class="input-cell">
-								<input type="text" name="fields[title]" id="field-title" value="" placeholder="<?php echo Lang::txt('COM_FORUM_ENTER_TITLE'); ?>" />
+								<input type="text" class="form-control" name="fields[title]" id="field-title" value="" placeholder="<?php echo Lang::txt('COM_FORUM_ENTER_TITLE'); ?>" />
 							</span>
 							<span class="input-cell">
 								<input type="submit" class="btn" value="<?php echo Lang::txt('JACTION_CREATE'); ?>" />
 							</span>
-						</span>
+						</div>
 
 						<input type="hidden" name="task" value="save" />
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
