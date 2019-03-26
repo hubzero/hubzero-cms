@@ -70,6 +70,18 @@ class FileServiceProvider extends Middleware
 		// Serve up the file
 		$result = $server->serve();
 
+		// If the file was served and we have an event dispatcher...
+		if ($result && $this->app->has('dispatcher'))
+		{
+			$dt = new \Hubzero\Utility\Date('now');
+
+			$this->app['dispatcher']->trigger('onFileServe', [
+				'file'       => $filename,
+				'timestamp'  => $dt->format('Y-m-d H:i:s'),
+				'session_id' => $this->app->has('session') ? $this->app['session'] : '???'
+			]);
+		}
+
 		return $response;
 	}
 }
