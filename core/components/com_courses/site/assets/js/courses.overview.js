@@ -84,6 +84,7 @@ jQuery(document).ready(function(jq) {
 				}
 
 				$('.course-identity>span').replaceWith('<img src="' + response.file + '" />');
+				$('.course-identity>img').replaceWith('<img src="' + response.file + '" />');
 			}
 		});
 	}
