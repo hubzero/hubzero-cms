@@ -79,16 +79,27 @@ if ($assets->total() > 0)
 			list($originalWidth, $originalHeight) = getimagesize($imgPath);
 			$ratio = $originalWidth / $originalHeight;
 
+			$alt = $this->escape(stripslashes($first->get('description', '')));
+			$height = (!isset($this->actual) || !$this->actual) ? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP) : $originalHeight;
+
 			if ($isLocal) : ?>
 				<div class="holder">
-					<a class="img-link" data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo Route::url($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS) . '&size=medium'); ?>" data-download="<?php echo Route::url($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS) . '&size=original'); ?>" data-downloadtext="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DOWNLOAD'); ?>">
-						<img src="<?php echo Route::url($href . $this->row->get('id') . '&file=' . ltrim($first->get('filename'), DS) . '&size=thumb'); ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : ''; ?>" class="img" height="<?php echo (!isset($this->actual) || !$this->actual) ? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP) : $originalHeight; ?>" />
+					<a class="img-link"
+						href="<?php echo $first->link('medium'); ?>"
+						data-rel="post<?php echo $this->row->get('id'); ?>"
+						data-download="<?php echo $first->link('original'); ?>"
+						data-downloadtext="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DOWNLOAD'); ?>">
+						<img src="<?php echo $first->link('thumb'); ?>" alt="<?php echo $alt; ?>" class="img" height="<?php echo $height; ?>" />
 					</a>
 				</div>
 			<?php else : ?>
 				<div class="holder">
-					<a rel="nofollow" download class="img-link" data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo $imgPath; ?>" data-download="<?php echo $imgPath; ?>" data-downloadtext="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DOWNLOAD'); ?>">
-						<img src="<?php echo $imgPath; ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : ''; ?>" class="img" height="<?php echo (!isset($this->actual) || !$this->actual) ? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP) : $originalHeight; ?>" />
+					<a class="img-link" rel="nofollow" download="download"
+						href="<?php echo $imgPath; ?>"
+						data-rel="post<?php echo $this->row->get('id'); ?>"
+						data-download="<?php echo $imgPath; ?>"
+						data-downloadtext="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DOWNLOAD'); ?>">
+						<img src="<?php echo $imgPath; ?>" alt="<?php echo $alt; ?>" class="img" height="<?php echo $height; ?>" />
 					</a>
 				</div>
 			<?php endif;
@@ -110,8 +121,12 @@ if ($assets->total() > 0)
 				foreach ($images as $asset)
 				{
 					?>
-					<a class="img-link" data-rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo Route::url($href . $this->row->get('id') . '&file=' . ltrim($asset->get('filename'), DS) . '&size=medium'); ?>" data-download="<?php echo Route::url($href . $this->row->get('id') . '&file=' . ltrim($asset->get('filename'), DS) . '&size=original'); ?>" data-downloadtext="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DOWNLOAD'); ?>">
-						<img src="<?php echo Route::url($href . $this->row->get('id') . '&file=' . ltrim($asset->get('filename'), DS) . '&size=thumb'); ?>" alt="<?php echo ($asset->get('description')) ? $this->escape(stripslashes($asset->get('description'))) : ''; ?>" class="img" width="50" height="50" />
+					<a class="img-link"
+						href="<?php echo $asset->link('medium'); ?>"
+						data-rel="post<?php echo $this->row->get('id'); ?>"
+						data-download="<?php echo $asset->link('original'); ?>"
+						data-downloadtext="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DOWNLOAD'); ?>">
+						<img src="<?php echo $asset->link('thumb'); ?>" alt="<?php echo $this->escape(stripslashes($asset->get('description', ''))); ?>" class="img" width="50" height="50" />
 					</a>
 					<?php
 				}
@@ -126,44 +141,36 @@ if ($assets->total() > 0)
 	{
 ?>
 		<ul class="file-list">
-<?php
-		foreach ($files as $asset)
-		{
-?>
+			<?php foreach ($files as $asset) { ?>
 				<li class="type-<?php echo $asset->get('type'); ?>">
-					<a href="<?php echo ($asset->get('type') == 'link') ? $asset->get('filename') : Route::url($href . $this->row->get('id') . '&file=' . ltrim($asset->get('filename'), DS)); ?>" <?php echo ($asset->get('type') == 'link') ? ' rel="external"' : ''; ?>>
+					<a href="<?php echo ($asset->isLink()) ? $asset->get('filename') : $asset->link(); ?>" <?php echo ($asset->isLink()) ? ' rel="external nofollow"' : ''; ?>>
 						<?php echo $asset->get('filename'); ?>
 					</a>
 					<span class="file-meta">
 						<span class="file-size">
-				<?php if ($asset->get('type') != 'link' && file_exists($path . DS . ltrim($asset->get('filename'), DS))) { ?>
-							<?php echo \Hubzero\Utility\Number::formatBytes(filesize($path . DS . ltrim($asset->get('filename'), DS))); ?>
-				<?php } else { ?>
-							<?php
-							$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)" .
-							           "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
-
-							if (preg_match("/$UrlPtn/", $asset->get('filename')))
-							{
-								echo Lang::txt('external link');
-							}
-							else
-							{
-								echo Lang::txt('internal link');
-							}
-							?>
-				<?php } ?>
+							<?php if (!$asset->isLink() && $asset->exists()) { ?>
+								<?php echo \Hubzero\Utility\Number::formatBytes($asset->size()); ?>
+							<?php } else { ?>
+								<?php
+								if ($asset->isExternalLink())
+								{
+									echo Lang::txt('external link');
+								}
+								else
+								{
+									echo Lang::txt('internal link');
+								}
+								?>
+							<?php } ?>
 						</span>
-				<?php if ($asset->get('description')) { ?>
-						<span class="file-description">
-							<?php echo \Hubzero\Utility\Number::formatBytes(filesize($path . DS . ltrim($asset->get('filename'), DS))); ?>
-						</span>
-				<?php } ?>
+						<?php if ($desc = $asset->get('description')) { ?>
+							<span class="file-description">
+								<?php echo $this->escape($desc); ?>
+							</span>
+						<?php } ?>
 					</span>
 				</li>
-<?php
-		}
-?>
+			<?php } ?>
 		</ul>
 <?php
 	}
@@ -173,4 +180,4 @@ if ($assets->total() > 0)
 		<div class="description">
 			<?php echo $content; ?>
 		</div>
-<?php } 
+<?php }
