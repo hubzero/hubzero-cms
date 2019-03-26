@@ -1,7 +1,7 @@
 Hubzero.submitbutton = function(task) {
 	$(document).trigger('editorSave');
 
-	var frm = document.getElementById('item-form');å
+	var frm = document.getElementById('item-form');
 
 	if (frm) {
 		if (task == 'cancel' || document.formvalidator.isValid(frm)) {
