@@ -87,40 +87,42 @@ $this->css();
 				<input type="hidden" name="fields[email]" value="1" />
 				<input type="hidden" name="fields[state]" value="0" />
 
-				<label for="field-anonymous">
-					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
-					<?php echo Lang::txt('COM_ANSWERS_POST_QUESTION_ANON'); ?>
-				</label>
+				<div class="form-group">
+					<label for="field-anonymous">
+						<input class="option form-check-input" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
+						<?php echo Lang::txt('COM_ANSWERS_POST_QUESTION_ANON'); ?>
+					</label>
+				</div>
 
-				<label>
-					<?php echo Lang::txt('COM_ANSWERS_TAGS'); ?>: <span class="required"><?php echo Lang::txt('COM_ANSWERS_REQUIRED'); ?></span><br />
-					<?php echo $this->autocompleter('tags', 'tags', $this->escape($this->tag), 'actags'); ?>
-				</label>
+				<div class="form-group">
+					<label for="actags">
+						<?php echo Lang::txt('COM_ANSWERS_TAGS'); ?>: <span class="required"><?php echo Lang::txt('COM_ANSWERS_REQUIRED'); ?></span><br />
+						<?php echo $this->autocompleter('tags', 'tags', $this->escape($this->tag), 'actags'); ?>
+					</label>
+				</div>
 
-				<label for="field-subject">
-					<?php echo Lang::txt('COM_ANSWERS_ASK_ONE_LINER'); ?>: <span class="required"><?php echo Lang::txt('COM_ANSWERS_REQUIRED'); ?></span><br />
-					<input type="text" name="fields[subject]" id="field-subject" value="<?php echo $this->escape($this->question->get('subject', '')); ?>" />
-				</label>
+				<div class="form-group">
+					<label for="field-subject">
+						<?php echo Lang::txt('COM_ANSWERS_ASK_ONE_LINER'); ?>: <span class="required"><?php echo Lang::txt('COM_ANSWERS_REQUIRED'); ?></span><br />
+						<input type="text" class="form-control" name="fields[subject]" id="field-subject" value="<?php echo $this->escape($this->question->get('subject', '')); ?>" />
+					</label>
+				</div>
 
-				<label for="field-question">
-					<?php echo Lang::txt('COM_ANSWERS_ASK_DETAILS'); ?>:<br />
-					<?php
-						echo $this->editor(
-							'fields[question]', // name
-							$this->question->get('question'), // content
-							35,  // cols
-							10,   // rows
-							'field-question'   // id
-						);
-					?>
-				</label>
+				<div class="form-group">
+					<label for="field-question">
+						<?php echo Lang::txt('COM_ANSWERS_ASK_DETAILS'); ?>:<br />
+						<?php echo $this->editor('fields[question]', $this->question->get('question'), 35, 10, 'field-question', array('class' => 'form-control')); ?>
+					</label>
+				</div>
 
 				<?php if ($this->config->get('banking')) { ?>
-					<label for="field-reward">
-						<?php echo Lang::txt('COM_ANSWERS_ASSIGN_REWARD'); ?>:<br />
-						<input type="text" name="fields[reward]" id="field-reward" value="" size="5" <?php if ($this->funds <= 0) { echo 'disabled="disabled" '; } ?>/>
-						<?php echo Lang::txt('COM_ANSWERS_YOU_HAVE'); ?> <strong><?php echo $this->escape($this->funds); ?></strong> <?php echo Lang::txt('COM_ANSWERS_POINTS_TO_SPEND'); ?>
-					</label>
+					<div class="form-group">
+						<label for="field-reward">
+							<?php echo Lang::txt('COM_ANSWERS_ASSIGN_REWARD'); ?>:<br />
+							<input type="text" class="form-control" name="fields[reward]" id="field-reward" value="" size="5" <?php if ($this->funds <= 0) { echo 'disabled="disabled" '; } ?>/>
+							<?php echo Lang::txt('COM_ANSWERS_YOU_HAVE'); ?> <strong><?php echo $this->escape($this->funds); ?></strong> <?php echo Lang::txt('COM_ANSWERS_POINTS_TO_SPEND'); ?>
+						</label>
+					</div>
 				<?php } else { ?>
 					<input type="hidden" name="fields[reward]" value="0" />
 				<?php } ?>
