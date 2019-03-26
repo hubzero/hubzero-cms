@@ -255,11 +255,21 @@ class Attachment extends Relational
 	/**
 	 * File path
 	 *
-	 * @return  integer
+	 * @return  string
 	 */
 	public function path()
 	{
 		return $this->getUploadDir() . DS . $this->get('parent') . DS . $this->get('post_id') . DS . $this->get('filename');
+	}
+
+	/**
+	 * Download URL
+	 *
+	 * @return  string
+	 */
+	public function link()
+	{
+		return with(new \Hubzero\Content\Moderator($this->path(), 'public'))->getUrl();
 	}
 
 	/**
