@@ -1,0 +1,43 @@
+/**
+ * @package     hubzero-cms
+ * @file        plgins/authentication/pucas/assets/css/pucas.css
+ * @copyright   Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+.auth .pucas:before {
+	content: "";
+	width: 50px;
+	height: 50px;
+	background-image: url('../img/purdue-sign.svg');
+	background-repeat: no-repeat;
+	background-size: 50px 50px;
+	top: 0;
+	left: -5px;
+}
+.auth .pucas {
+	background: #A3792C;
+}
+.auth .pucas .signin {
+	margin-left: 55px;
+}
+
+/* Others */
+.others .pucas:before {
+	content: "\f006";
+}
+.others .pucas {
+	color: #A3792C;
+}
+
+/* Primary */
+.primary .upper.pucas:before {
+	content: "Purdue Career Account";
+}
+
+.primary .pucas:before {
+	content: "";
+}
+.primary .pucas {
+	background: #D1D3D4 url('../img/logo.png') no-repeat 75px 7px;
+}
