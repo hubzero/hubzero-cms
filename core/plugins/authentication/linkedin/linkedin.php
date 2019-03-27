@@ -460,4 +460,23 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			);
 		}
 	}
+
+	/**
+	 * Display login button
+	 *
+	 * @param   string  $return
+	 * @return  string
+	 */
+	public static function onRenderOption($return = null)
+	{
+		Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/linkedin/assets/css/linkedin.css');
+
+		$html = '<a class="linkedin account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=linkedin' . $return) . '">';
+			$html .= '<div class="signin">';
+				$html .= Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', 'LinkedIn');
+			$html .= '</div>';
+		$html .= '</a>';
+
+		return $html;
+	}
 }

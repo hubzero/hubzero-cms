@@ -277,4 +277,23 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 	{
 		return (isset($_SERVER['SSL_CLIENT_S_DN']) && $_SERVER['SSL_CLIENT_S_DN']);
 	}
+
+	/**
+	 * Display login button
+	 *
+	 * @param   string  $return
+	 * @return  string
+	 */
+	public static function onRenderOption($return = null)
+	{
+		Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/certificate/assets/css/certificate.css');
+
+		$html = '<a class="certificate account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=certificate' . $return) . '">';
+			$html .= '<div class="signin">';
+				$html .= Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', 'Client Certificate');
+			$html .= '</div>';
+		$html .= '</a>';
+
+		return $html;
+	}
 }

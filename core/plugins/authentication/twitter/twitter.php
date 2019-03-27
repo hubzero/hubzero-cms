@@ -310,4 +310,23 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 			return;
 		}
 	}
+
+	/**
+	 * Display login button
+	 *
+	 * @param   string  $return
+	 * @return  string
+	 */
+	public static function onRenderOption($return = null)
+	{
+		Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/twitter/assets/css/twitter.css');
+
+		$html = '<a class="twitter account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=twitter' . $return) . '">';
+			$html .= '<div class="signin">';
+				$html .= Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', 'Twitter');
+			$html .= '</div>';
+		$html .= '</a>';
+
+		return $html;
+	}
 }
