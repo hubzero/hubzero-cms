@@ -55,6 +55,34 @@ class Auth extends SiteController
 		$menus = App::get('menu');
 		$menu = $menus->getActive();
 
+		$title = Config::get('sitename');
+		$description = Config::get('MetaDesc');
+		$rights = Config::get('MetaRights');
+		$robots = Config::get('robots');
+		// Lets cascade the parameters if we have menu item parameters
+		if (is_object($menu))
+		{
+			$temp = $menu->params;
+
+			$params->merge($temp);
+			$title = $menu->title;
+		}
+		else
+		{
+			// get com_menu global settings
+			$temp = clone \Component::params('com_menus');
+			$params->merge($temp);
+
+			// if supplied, use page title
+			$title = $temp->get('page_title', $title);
+		}
+
+		$params->def('page_title', $title);
+		$params->def('page_description', $description);
+		$params->def('page_rights', $rights);
+		$params->def('robots', $robots);
+
+
 		$this->view->setLayout('login');
 
 		// Escape strings for HTML output

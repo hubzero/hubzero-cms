@@ -66,6 +66,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 	</header>
 <?php endif; ?>
 
+<section class="main section">
 	<div class="hz_user">
 		<?php if ($errorText = Request::getString('errorText', false)) : ?>
 			<p class="error">
@@ -185,3 +186,4 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 		</p>
 <?php endif; ?>
 	</div> <!-- / .hz_user -->
+</section>
