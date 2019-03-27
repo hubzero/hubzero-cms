@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_members/views/edit/tmpl/filebrowser.xml
+@file           components/com_members/views/orcid/tmpl/display.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -30,15 +30,13 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Image Upload">
+	<layout title="ORCID Lookup">
 		<message>
-			<![CDATA[Image Upload]]>
+			<![CDATA[ORCID Lookup]]>
 		</message>
 	</layout>
 	<state>
-		<name>Image Upload</name>
-		<description>Image Upload</description>
-		<params>
-		</params>
+		<name>ORCID Lookup</name>
+		<description>ORCID Lookup</description>
 	</state>
 </metadata>
