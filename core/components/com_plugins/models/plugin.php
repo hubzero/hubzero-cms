@@ -265,7 +265,6 @@ class Plugin extends Relational
 			{
 				$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
 			}
-			break;
 		}
 
 		$data = $this->toArray();
