@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           components/com_register/views/registration/tmpl/raceethnic.xml
+@file           components/com_members/views/register/tmpl/raceethnic.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 
@@ -30,15 +30,13 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Register Race Ethnic Explanation Layout">
+	<layout title="Register Race Ethnic Explanation Layout">
 		<message>
-			<![CDATA[STANDARD REGISTER RACE ETHNIC EXPLANATION LAYOUT DESC]]>
+			<![CDATA[Register Race Ethnic Explanation Layout]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Register Race Ethnic Explanation Layout</name>
-		<description>STANDARD REGISTER RACE ETHNIC EXPLANATION LAYOUT DESC</description>
-		<params>
-		</params>
+		<name>Register Race Ethnic Explanation Layout</name>
+		<description>Register Race Ethnic Explanation Layout</description>
 	</state>
 </metadata>

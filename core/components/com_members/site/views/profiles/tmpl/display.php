@@ -64,10 +64,10 @@ $this->css('introduction.css', 'system')
 		<div class="col span3 omega">
 			<ul>
 				<li>
-					<a href="<?php echo Route::url('index.php?option=com_users&view=remind'); ?>"><?php echo Lang::txt('COM_MEMBERS_FORGOT_USERNAME'); ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_members&view=credentials&layout=remind'); ?>"><?php echo Lang::txt('COM_MEMBERS_FORGOT_USERNAME'); ?></a>
 				</li>
 				<li>
-					<a href="<?php echo Route::url('index.php?option=com_users&view=reset'); ?>"><?php echo Lang::txt('COM_MEMBERS_FORGOT_PASSWORD'); ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_members&view=credentials&layout=reset'); ?>"><?php echo Lang::txt('COM_MEMBERS_FORGOT_PASSWORD'); ?></a>
 				</li>
 				<li>
 					<a class="popup" href="<?php echo Route::url('index.php?option=com_help&component=members'); ?>"><?php echo Lang::txt('COM_MEMBERS_NEED_HELP'); ?></a>
