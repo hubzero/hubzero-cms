@@ -19,6 +19,10 @@ if (!jq) {
 	var jq = $;
 }
 
+String.prototype.nohtml = function () {
+	return this + (this.indexOf('?') == -1 ? '?' : '&') + 'no_html=1';
+};
+
 HUB.User = {
 	jQuery: jq,
 
@@ -30,7 +34,8 @@ HUB.User = {
 			error        = $('.auth .input-error'),
 			inputs       = $('.input-wrap'),
 			loading      = $('.spinner'),
-			attempts     = 0;
+			attempts     = 0,
+			_DEBUG       = $('#system-debug').length > 0 ? true : false;
 
 		inputs.on('keyup', function(event) {
 			if (error.html() !== '' && event.keyCode != '13') {
@@ -57,7 +62,7 @@ HUB.User = {
 			// Ajax request
 			$.ajax({
 				type: 'POST',
-				url: form.attr("action")+"?no_html=1",
+				url: form.attr("action").nohtml(),
 				data: form.serialize(),
 				success: function(data, status, xhr)
 				{
@@ -66,7 +71,10 @@ HUB.User = {
 						// Parse the returned json data
 						response = JSON.parse(data);
 					} catch (err) {
-						console.log(err);
+						if (_DEBUG) {
+							console.log(err);
+							console.log(data);
+						}
 						password.val('');
 						password.focus();
 						error.html('Sorry. Something went wrong. Please try logging in again.');
@@ -97,7 +105,9 @@ HUB.User = {
 				},
 				error: function(xhr, status, error)
 				{
-					console.log("An error occurred while trying to login.");
+					if (_DEBUG) {
+						console.log("An error occurred while trying to login.");
+					}
 					// Probably related to an expired session, reload the page to try and clear the problem up
 					window.location.reload();
 				},
