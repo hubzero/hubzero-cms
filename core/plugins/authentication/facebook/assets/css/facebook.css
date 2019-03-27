@@ -1,0 +1,42 @@
+/**
+ * @package     hubzero-cms
+ * @file        plgins/authentication/facebook/assets/css/facebook.css
+ * @copyright   Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+.auth .facebook:before {
+	content: "";
+	width: 50px;
+	height: 50px;
+	background-image: url('../img/flogo-HexRBG-Wht-58.svg');
+	background-repeat: no-repeat;
+	background-size: 40px 40px;
+	top: 5px;
+}
+.auth .facebook {
+	background:#3B5998;
+}
+.auth .facebook .signin {
+	margin-left: 55px;
+}
+
+/* Others */
+.others .facebook:before {
+	content: "\f012";
+}
+.others .facebook {
+	color: #3B5998;
+}
+
+/* Primary */
+.primary .upper.facebook:before {
+	content: "Facebook";
+}
+
+.primary .facebook:before {
+	content: "";
+}
+.primary .facebook {
+	background-color: #3B5998;
+}

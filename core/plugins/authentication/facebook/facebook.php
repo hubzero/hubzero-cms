@@ -446,4 +446,23 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 
 		return self::getRedirectUri('facebook') . $rtrn;
 	}
+
+	/**
+	 * Display login button
+	 *
+	 * @param   string  $return
+	 * @return  string
+	 */
+	public static function onRenderOption($return = null)
+	{
+		Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/facebook/assets/css/facebook.css');
+
+		$html = '<a class="facebook account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=facebook' . $return) . '">';
+			$html .= '<div class="signin">';
+				$html .= Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', 'Facebook');
+			$html .= '</div>';
+		$html .= '</a>';
+
+		return $html;
+	}
 }

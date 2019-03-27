@@ -286,4 +286,23 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 			);
 		}
 	}
+
+	/**
+	 * Display login button
+	 *
+	 * @param   string  $return
+	 * @return  string
+	 */
+	public static function onRenderOption($return = null)
+	{
+		Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/orcid/assets/css/orcid.css');
+
+		$html = '<a class="orcid account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=orcid' . $return) . '">';
+			$html .= '<div class="signin">';
+				$html .= Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', 'ORCID');
+			$html .= '</div>';
+		$html .= '</a>';
+
+		return $html;
+	}
 }
