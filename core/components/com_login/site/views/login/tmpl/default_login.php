@@ -156,9 +156,9 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 						<?php endif; ?>
 						<a class="forgot-password" href="<?php echo Route::url('index.php?option=com_members&task=reset'); ?>"><?php echo Lang::txt('COM_USERS_LOGIN_RESET'); ?></a>
 					</div>
-					<input type="hidden" name="option" value="com_users" />
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="authenticator" value="hubzero" />
-					<input type="hidden" name="task" value="user.login" />
+					<input type="hidden" name="task" value="login" />
 					<input type="hidden" name="return" value="<?php echo $this->escape($this->return); ?>" />
 					<input type="hidden" name="freturn" value="<?php echo $this->escape($this->freturn); ?>" />
 					<?php echo Html::input('token'); ?>
