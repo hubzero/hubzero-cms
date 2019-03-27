@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for updating menu items to point to com_login
+ * Migration script for updating menu items to point to com_members
  **/
 class Migration20190327000000ComMembers extends Base
 {
