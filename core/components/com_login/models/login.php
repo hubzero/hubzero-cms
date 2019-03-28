@@ -151,7 +151,7 @@ class Login extends Obj
 		// Set the return URL if empty.
 		if (empty($return))
 		{
-			$return = 'index.php';
+			$return = Route::url('index.php');
 		}
 
 		$this->setState('return', $return);
