@@ -677,6 +677,7 @@ class Projectsv2_0 extends ApiController
 	 *
 	 * @apiMethod GET
 	 * @apiUri    /projects/{id}
+	 * @apiReplaces  getTask
 	 * @apiParameter {
 	 * 		"name":        "id",
 	 * 		"description": "Project identifier (numeric ID or alias)",
