@@ -59,7 +59,8 @@ $this->css()
       					  }
       				   }
       				 ?>
-      		<?php } else { ?>
+
+          <?php } else { ?>
       			<p><em><?php echo Lang::txt('MOD_MYGROUPSMINI_NO_RECENT_GROUPS'); ?></em></p>
       		<?php } ?>
         </div>

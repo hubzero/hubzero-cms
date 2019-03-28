@@ -47,6 +47,7 @@ foreach ($item_groups as $grp)
 		echo '    </div>';
 		echo '  </a>';
 	}
+
 	if ($item['tag']) {
 		if ($item['tag-target'])
 		{

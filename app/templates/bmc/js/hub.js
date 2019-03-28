@@ -498,17 +498,29 @@ if (!jq) {
 			});
 		}
 
+		// Truncate links if greater than 2 lines
+
+				$('li.group a').each(function() {
+
+					if (this.offsetHeight > 22) {
+						$(this).addClass('truncate');
+					} else {
+						//do nothing
+					}
+				});
+
 		// I'm not sure how well it works, test it
-		dashboardScroller.on( 'mousewheel DOMMouseScroll', function (e) {
+		//dashboardScroller.on( 'mousewheel DOMMouseScroll', function (e) {
 
-			var e0 = e.originalEvent;
-			var delta = e0.wheelDelta || -e0.detail;
+			//var e0 = e.originalEvent;
+			//var delta = e0.wheelDelta || -e0.detail;
 
-			this.scrollTop += delta * -1;
-			e.preventDefault();
-		});
+			//this.scrollTop += delta * -1;
+			//e.preventDefault();
+		//});
 
-		// swipe
+
+    // swipe
 		var dp = document.getElementById('dashboard-panel');
 		Hammer(dp).on("swiperight", function() {
 			hideDashboard();
