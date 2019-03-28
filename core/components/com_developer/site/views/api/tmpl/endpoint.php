@@ -163,6 +163,10 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 							<pre><code class="http"><?php echo $endpoint['method']; ?> <?php echo $endpoint['uri']; ?></code></pre>
 						<?php endif; ?>
 
+						<?php if (!empty($endpoint['replaces'])) : ?>
+							<p class="warning"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_REPLACES', $endpoint['replaces']); ?></p>
+						<?php endif; ?>
+
 						<?php if (count($endpoint['parameters']) > 0) : ?>
 							<table>
 								<caption><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETERS'); ?></caption>
