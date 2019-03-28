@@ -77,14 +77,14 @@ class Commentsv2_0 extends ApiController
 	 * 		"description":   "List comments from a specific ticket (by id)",
 	 * 		"type":          "integer",
 	 * 		"required":      false,
-	 * 		"default":       null,
+	 * 		"default":       null
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "created_by",
 	 * 		"description":   "List comments from a specific user (by id)",
 	 * 		"type":          "integer",
 	 * 		"required":      false,
-	 * 		"default":       null,
+	 * 		"default":       null
 	 * }
 	 * @return    void
 	 */
@@ -137,78 +137,78 @@ class Commentsv2_0 extends ApiController
 	 * 		"description": "Id of the ticket to make a comment on",
 	 * 		"type":        "integer",
 	 * 		"required":    true,
-	 * 		"default":		 null
+	 * 		"default":     null
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "comment",
 	 * 		"description": "Comment text",
 	 * 		"type":        "string",
 	 * 		"required":    true,
-	 * 		"default":		 null
+	 * 		"default":     null
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "group",
 	 * 		"description": "Group to assign the ticket to (by alias)",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":		 null
+	 * 		"default":     null
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "owner",
 	 * 		"description": "Id of the owner to assign ticket to",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
-	 * 		"default":		 null
+	 * 		"default":     null
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "severity",
 	 * 		"description": "Severity of the ticket",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":		 null
-	 *		"allowed_values":	"minor, normal, major, critical"
+	 * 		"default":     null,
+	 *		"allowed_values": "minor, normal, major, critical"
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "status",
 	 * 		"description": "Status of the ticket",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
-	 * 		"default":		 null
+	 * 		"default":     null
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "target_date",
 	 * 		"description": "Target date for completion of ticket (YYYY-MM-DD hh:mm:ss)",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":		 null
+	 * 		"default":     null
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "cc",
 	 * 		"description": "Comma separated list of email addresses to email updates to",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":		 submitter,owner
+	 * 		"default":     "submitter,owner"
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "private",
 	 * 		"description": "Should the comment be flagged as private",
 	 * 		"type":        "boolean",
 	 * 		"required":    false,
-	 * 		"default":		 false
+	 * 		"default":     false
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "email_submitter",
 	 * 		"description": "Should the submitter be emailed about this comment",
 	 * 		"type":        "boolean",
 	 * 		"required":    false,
-	 * 		"default":		 false
+	 * 		"default":     false
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "email_owner",
 	 * 		"description": "Should the ticket owner be emailed about this comment",
 	 * 		"type":        "boolean",
 	 * 		"required":    false,
-	 * 		"default":		 false
+	 * 		"default":     false
 	 * }
 	 * @return     void
 	 */
