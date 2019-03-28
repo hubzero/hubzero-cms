@@ -1361,19 +1361,24 @@ class WikiParser
 	 */
 	private function math($text)
 	{
-		$path = __DIR__;
+		Html::behavior('math');
+		return preg_replace_callback('/<math>(.*?)<\/math>/s', array(&$this, '_stripMath'), $text);
+	}
 
-		if (is_file($path . DS . 'formula.php'))
-		{
-			include_once $path . DS . 'formula.php';
-			include_once $path . DS . 'math' . DS . 'mathrenderer.php';
-		}
-		else
-		{
-			return $text;
-		}
-
-		return preg_replace_callback('/<math>(.*?)<\/math>/s', array(&$this, '_getMath'), $text);
+	/**
+	 * Wrap an older math formula in $$ delimiters for MathJax to render
+	 * 
+	 * @param	array	$matches	Wiki markup matching a <math>formula</math>
+	 * @return	string
+	 */
+	private function _stripMath($matches)
+	{
+		return $this->_dataPush(array(
+			$matches[0],
+			'math',
+			$this->_randomString(),
+			'$$' . $matches[1] . '$$'	
+		));
 	}
 
 	/**
