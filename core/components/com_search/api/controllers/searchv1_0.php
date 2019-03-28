@@ -84,21 +84,21 @@ class Searchv1_0 extends ApiController
 	 * 		"description":   "Field to sort results by.",
 	 * 		"type":          "string",
 	 * 		"required":      false,
-	 *      "default":       "",
+	 *      "default":       ""
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "sortDir",
 	 * 		"description":   "Direction to sort results by.",
 	 * 		"type":          "string",
 	 * 		"required":      false,
-	 * 		"default":       "",
+	 * 		"default":       ""
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "filters",
 	 * 		"description":   "Filters to apply to results.",
 	 * 		"type":          "array",
 	 * 		"required":      false,
-	 * 		"default":       "[]",
+	 * 		"default":       "[]"
 	 * }
 	 * @return  void
 	 */

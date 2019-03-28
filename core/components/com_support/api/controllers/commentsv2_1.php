@@ -319,7 +319,7 @@ class Commentsv2_1 extends ApiController
 	 * 		"description": "Severity of the ticket",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":     null
+	 * 		"default":     null,
 	 *		"allowed_values": "minor, normal, major, critical"
 	 * }
 	 * @apiParameter {

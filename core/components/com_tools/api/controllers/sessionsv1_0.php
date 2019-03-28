@@ -695,20 +695,20 @@ class Sessionsv1_0 extends ApiController
 	 * 		"name":          "app",
 	 * 		"description":   "Name of app installed as a tool in the hub",
 	 * 		"type":          "string",
-	 * 		"required":      true,
+	 * 		"required":      true
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "revision",
 	 * 		"description":   "The specific requested revision of the app",
 	 * 		"type":          "string",
 	 * 		"required":      false,
-	 * 		"default":       "default",
+	 * 		"default":       "default"
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "xml",
 	 * 		"description":   "Content of the driver file that rappture will use to invoke the given app",
 	 * 		"type":          "string",
-	 * 		"required":      true,
+	 * 		"required":      true
 	 * }
 	 * @return     void
 	 */
@@ -1012,7 +1012,7 @@ class Sessionsv1_0 extends ApiController
 	 * 		"name":          "run_file",
 	 * 		"description":   "the name of the run file that contains the desired output",
 	 * 		"type":          "string",
-	 * 		"required":      true,
+	 * 		"required":      true
 	 * }
 	 * @return void
 	 */
