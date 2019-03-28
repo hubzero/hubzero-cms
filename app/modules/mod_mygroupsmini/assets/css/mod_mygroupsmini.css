@@ -237,23 +237,3 @@ div.a.group-img img{
 	width: 100%;
 	vertical-align:middle;
  }
-
-
-/*
- .no-logo:before{
-	 content: "\f042";
-   font-family: "Fontcons";
-   font-size: 45px;
-   color: #ccc;
-
-
-	 }
-
-/*
-div.a.default-logo{
- content: "\f042";
- font-family: "Fontcons";
-
- font-size: 45px;
- color: #ccc;
-}
