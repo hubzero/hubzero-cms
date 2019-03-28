@@ -164,19 +164,34 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 						<?php endif; ?>
 
 						<?php if (!empty($endpoint['replaces'])) : ?>
-							<p class="warning"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_REPLACES', $endpoint['replaces']); ?></p>
+							<p class="info"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_REPLACES', $endpoint['replaces']); ?></p>
 						<?php endif; ?>
+
+						<?php if (!empty($endpoint['deprecated'])) : ?>
+							<p class="warning"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_DEPRECATED', $endpoint['deprecated']); ?></p>
+						<?php endif; ?>
+
+						<?php
+						foreach ($endpoint as $k => $v) :
+							if (in_array($k, array('name', 'method', 'description', 'replaces', 'deprecated', 'uri', 'parameters', 'return', '_metadata'))):
+								continue;
+							endif;
+							?>
+							<p><strong><?php echo $k; ?>:</strong> <?php echo $v; ?></p>
+							<?php
+						endforeach;
+						?>
 
 						<?php if (count($endpoint['parameters']) > 0) : ?>
 							<table>
 								<caption><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETERS'); ?></caption>
 								<thead>
 									<tr>
-										<th><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_NAME'); ?></th>
-										<th><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_TYPE'); ?></th>
-										<th><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_DESC'); ?></th>
-										<th><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_DEFAULT'); ?></th>
-										<th><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_ACCEPTED_VALUES'); ?></th>
+										<th scope="col"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_NAME'); ?></th>
+										<th scope="col"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_TYPE'); ?></th>
+										<th scope="col"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_DESC'); ?></th>
+										<th scope="col"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_DEFAULT'); ?></th>
+										<th scope="col"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_ACCEPTED_VALUES'); ?></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -187,10 +202,6 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 											<td>
 												<?php echo ($param['required']) ? '<span class="required">' . Lang::txt('JREQUIRED') . '</span>.' : ''; ?> 
 												<?php echo $param['description']; ?>
-												<!-- <br /><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_DEFAULT'); ?>: <code class="nohighlight"><?php echo ($param['default']) ? $param['default'] : 'null'; ?></code>
-												<?php if (isset($param['allowedValues'])) : ?>
-													<br /><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_ACCEPTED_VALUES'); ?>: <code class="nohighlight"><?php echo $param['allowedValues']; ?></code>
-												<?php endif; ?> -->
 											</td>
 											<td>
 												<code class="nohighlight"><?php echo (!is_null($param['default'])) ? $param['default'] : 'null'; ?></code>
