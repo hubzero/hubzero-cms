@@ -296,7 +296,7 @@ class Media extends AdminController
 		$exts = $exts ?: $mediaConfig->get('upload_extensions');
 		$allowed = array_values(array_filter(explode(',', $exts)));
 
-		if (!in_array($ext, explode(',', $allowed))
+		if (!in_array($ext, explode(',', $allowed)))
 		{
 			$this->setError(Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE'));
 			echo $this->getError();
