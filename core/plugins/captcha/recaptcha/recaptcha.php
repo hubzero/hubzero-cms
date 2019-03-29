@@ -108,7 +108,8 @@ class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
 
 		// recaptcha html structure
 		// this has support for users with js off
-		$html  = '<label class="">&nbsp;</label><div class="field-wrap">';
+		$html  = '<div class="form-group">';
+		$html .= '<label class="">&nbsp;</label><div class="field-wrap">';
 		$html .= '<div class="g-recaptcha" id="' . $id . '" data-type="' . $this->params->get('type', 'image') . '" data-theme="' . $this->params->get('theme', 'light') . '" data-sitekey="' . $this->params->get('public') . '"></div>
 					<noscript>
 					  <div style="width: 302px; height: 352px;">
@@ -131,6 +132,7 @@ class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
 					  </div>
 					</noscript>
 					<script type="text/javascript" src="' . static::$_jsUrl . '?hl=' . $this->params->get('language', 'en') . '" async defer></script>';
+		$html .= '</div>';
 		$html .= '</div>';
 
 		return $html;

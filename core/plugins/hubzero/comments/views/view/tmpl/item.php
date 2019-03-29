@@ -108,37 +108,56 @@ defined('_HZEXEC_') or die();
 					?>
 				</div><!-- / .comment-body -->
 
-				<?php //if (!$this->comment->isReported() && $this->comment->files()->count()) { ?>
-					<div class="comment-attachments">
-						<?php
-						foreach ($this->comment->files()->rows() as $attachment)
+				<div class="comment-attachments">
+					<?php
+					foreach ($this->comment->files()->rows() as $attachment)
+					{
+						if (!trim($attachment->get('description')))
 						{
-							if (!trim($attachment->get('description')))
-							{
-								$attachment->set('description', $attachment->get('filename'));
-							}
+							$attachment->set('description', $attachment->get('filename'));
+						}
+
+						if ($attachment->exists())
+						{
+							$link = $attachment->link();
 
 							if ($attachment->isImage())
 							{
 								if ($attachment->width() > 400)
 								{
-									$html = '<p><a href="' . Route::url($attachment->link()) . '"><img src="' . Route::url($attachment->link()) . '" alt="' . $attachment->get('description') . '" width="400" /></a></p>';
+									$html = '<p><a href="' . Route::url($link) . '" rel="external"><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
 								}
 								else
 								{
-									$html = '<p><img src="' . Route::url($attachment->link()) . '" alt="' . $attachment->get('description') . '" /></p>';
+									$html = '<p><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
 								}
 							}
 							else
 							{
-								$html = '<p class="attachment"><a href="' . Route::url($attachment->link()) . '" title="' . $attachment->get('description') . '">' . $attachment->get('description') . '</a></p>';
+								$html  = '<a class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">';
+								$html .= '<p class="attachment-description">' . $this->escape($attachment->get('description')) . '</p>';
+								$html .= '<p class="attachment-meta">';
+								$html .= '<span class="attachment-size">' . Hubzero\Utility\Number::formatBytes($attachment->size()) . '</span>';
+								$html .= '<span class="attachment-action">' . Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD') . '</span>';
+								$html .= '</p>';
+								$html .= '</a>';
 							}
-
-							echo $html;
 						}
-						?>
-					</div><!-- / .comment-attachments -->
-				<?php //} ?>
+						else
+						{
+							$html  = '<div class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" title="' . $this->escape($attachment->get('description')) . '">';
+							$html .= '<p class="attachment-description">' . $this->escape($attachment->get('description')) . '</p>';
+							$html .= '<p class="attachment-meta">';
+							$html .= '<span class="attachment-size">' . $this->escape($attachment->get('filename')) . '</span>';
+							$html .= '<span class="attachment-action">' . Lang::txt('JLIB_HTML_ERROR_FILE_NOT_FOUND') . '</span>';
+							$html .= '</p>';
+							$html .= '</div>';
+						}
+
+						echo $html;
+					}
+					?>
+				</div><!-- / .comment-attachments -->
 
 				<?php if (!$this->comment->isReported()) { ?>
 					<p class="comment-options">
@@ -183,25 +202,33 @@ defined('_HZEXEC_') or die();
 
 								<?php echo Html::input('token'); ?>
 
-								<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
-									<span class="label-text"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_ENTER_COMMENTS'); ?></span>
-									<?php
-									echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
-									?>
-								</label>
+								<div class="form-group">
+									<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
+										<span class="label-text"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_ENTER_COMMENTS'); ?></span>
+										<?php
+										echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'form-control minimal no-footer'));
+										?>
+									</label>
+								</div>
 
-								<label class="comment-<?php echo $this->comment->get('id'); ?>-file" for="comment-<?php echo $this->comment->get('id'); ?>-file">
-									<span class="label-text"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_ATTACH_FILE'); ?>:</span>
-									<input type="file" name="comment_file" id="comment-<?php echo $this->comment->get('id'); ?>-file" />
-								</label>
+								<div class="form-group">
+									<label class="form-check-label comment-<?php echo $this->comment->get('id'); ?>-file" for="comment-<?php echo $this->comment->get('id'); ?>-file">
+										<span class="label-text"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_ATTACH_FILE'); ?>:</span>
+										<input type="file" class="form-control-file" name="comment_file" id="comment-<?php echo $this->comment->get('id'); ?>-file" />
+									</label>
+								</div>
 
-								<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
-									<input class="option" type="checkbox" name="comment[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
-									<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_POST_COMMENT_ANONYMOUSLY'); ?>
-								</label>
+								<div class="form-group">
+									<div class="form-check">
+										<label class="form-check-label reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
+											<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
+											<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_POST_COMMENT_ANONYMOUSLY'); ?>
+										</label>
+									</div>
+								</div>
 
 								<p class="submit">
-									<input type="submit" value="<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_POST_COMMENT'); ?>" />
+									<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_POST_COMMENT'); ?>" />
 								</p>
 							</fieldset>
 						</form>

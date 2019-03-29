@@ -32,13 +32,22 @@
 namespace Plugins\Hubzero\Comments\Models;
 
 use Hubzero\Item\Comment\File as ItemFile;
-use Request;
 
 /**
  * Model class for a forum post attachment
  */
 class File extends ItemFile
 {
+	/**
+	 * Does the file exist?
+	 *
+	 * @return  boolean
+	 */
+	public function exists()
+	{
+		return file_exists($this->path());
+	}
+
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
@@ -69,11 +78,10 @@ class File extends ItemFile
 
 			case 'permalink':
 			default:
-				$link = rtrim(Request::base(), '/') . substr($this->getUploadDir(), strlen(PATH_ROOT)) . '/' . $this->get('comment_id') . '/' . $this->get('filename');
+				$link = with(new \Hubzero\Content\Moderator($this->path(), 'public'))->getUrl();
 			break;
 		}
 
 		return $link;
 	}
 }
-

@@ -99,10 +99,12 @@ $this->css()
 		<div class="grid">
 			<div class="col span6">
 				<div class="form-group">
-					<label for="field-allow_comments">
-						<input type="checkbox" class="option form-check-input" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) { echo ' checked="checked"'; } ?> />
-						<?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_ALLOW_COMMENTS'); ?>
-					</label>
+					<div class="form-check">
+						<label for="field-allow_comments" class="form-check-label">
+							<input type="checkbox" class="option form-check-input" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) { echo ' checked="checked"'; } ?> />
+							<?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_ALLOW_COMMENTS'); ?>
+						</label>
+					</div>
 				</div>
 			</div>
 			<div class="col span6 omega">
