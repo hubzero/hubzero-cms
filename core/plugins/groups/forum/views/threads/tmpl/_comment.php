@@ -112,10 +112,10 @@ defined('_HZEXEC_') or die();
 						else
 						{
 							$html  = '<a class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">';
-							$html .= '<p class="attachment-description">' . $attachment->get('description') . '</p>';
+							$html .= '<p class="attachment-description">' . $this->escape($attachment->get('description')) . '</p>';
 							$html .= '<p class="attachment-meta">';
 							$html .= '<span class="attachment-size">' . Hubzero\Utility\Number::formatBytes($attachment->size()) . '</span>';
-							$html .= '<span class="attachment-action">' . Lang::txt('PLG_GROUPS_FORUM_CLICK_TO_DOWNLOAD') . '</span>';
+							$html .= '<span class="attachment-action">' . Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD') . '</span>';
 							$html .= '</p>';
 							$html .= '</a>';
 						}
@@ -123,10 +123,10 @@ defined('_HZEXEC_') or die();
 					else
 					{
 						$html  = '<div class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" title="' . $this->escape($attachment->get('description')) . '">';
-						$html .= '<p class="attachment-description">' . $attachment->get('description') . '</p>';
+						$html .= '<p class="attachment-description">' . $this->escape($attachment->get('description')) . '</p>';
 						$html .= '<p class="attachment-meta">';
-						$html .= '<span class="attachment-size">' . $attachment->get('filename') . '</span>';
-						$html .= '<span class="attachment-action">' . Lang::txt('PLG_GROUPS_FORUM_ERROR_FILE_NOT_FOUND') . '</span>';
+						$html .= '<span class="attachment-size">' . $this->escape($attachment->get('filename')) . '</span>';
+						$html .= '<span class="attachment-action">' . Lang::txt('JLIB_HTML_ERROR_FILE_NOT_FOUND') . '</span>';
 						$html .= '</p>';
 						$html .= '</div>';
 					}
@@ -198,27 +198,35 @@ defined('_HZEXEC_') or die();
 
 							<?php echo Html::input('token'); ?>
 
-							<label for="comment-<?php echo $this->comment->get('id'); ?>-content">
-								<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?></span>
-								<?php
-								echo $this->editor('fields[comment]', '', 35, 4, 'field_' . $this->comment->get('id') . '_comment', array('class' => 'minimal no-footer'));
-								?>
-							</label>
+							<div class="form-group">
+								<label for="comment-<?php echo $this->comment->get('id'); ?>-content">
+									<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?></span>
+									<?php
+									echo $this->editor('fields[comment]', '', 35, 4, 'field_' . $this->comment->get('id') . '_comment', array('class' => 'form-control minimal no-footer'));
+									?>
+								</label>
+							</div>
 
-							<label class="upload-label" for="comment-<?php echo $this->comment->get('id'); ?>-file">
-								<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_FILE'); ?>:</span>
-								<input type="file" name="upload" id="comment-<?php echo $this->comment->get('id'); ?>-file" />
-							</label>
+							<div class="form-group">
+								<label class="upload-label" for="comment-<?php echo $this->comment->get('id'); ?>-file">
+									<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_FILE'); ?>:</span>
+									<input type="file" class="form-control-file" name="upload" id="comment-<?php echo $this->comment->get('id'); ?>-file" />
+								</label>
+							</div>
 
 							<?php if ($this->config->get('allow_anonymous')) { ?>
-								<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
-									<input class="option" type="checkbox" name="fields[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
-									<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
-								</label>
+								<div class="form-group">
+									<div class="form-check">
+										<label class="form-check-label reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
+											<input class="option form-check-input" type="checkbox" name="fields[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
+											<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
+										</label>
+									</div>
+								</div>
 							<?php } ?>
 
 							<p class="submit">
-								<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
+								<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
 							</p>
 						</fieldset>
 					</form>

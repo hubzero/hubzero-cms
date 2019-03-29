@@ -62,44 +62,56 @@ if ($this->category->get('section_id') == 0)
 				<?php } ?>
 			</legend>
 
-			<label for="field-section_id">
-				<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_SECTION'); ?>
-				<span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
-				<select name="fields[section_id]" id="field-section_id">
-					<option value="0"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_SECTION_SELECT'); ?></option>
-					<?php foreach ($this->forum->sections(array('state' => 1))->rows() as $section) { ?>
-						<option value="<?php echo $section->get('id'); ?>"<?php if ($this->category->get('section_id') == $section->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
-					<?php } ?>
-				</select>
-			</label>
+			<div class="form-group">
+				<label for="field-section_id">
+					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_SECTION'); ?>
+					<span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
+					<select name="fields[section_id]" id="field-section_id" class="form-control">
+						<option value="0"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_SECTION_SELECT'); ?></option>
+						<?php foreach ($this->forum->sections(array('state' => 1))->rows() as $section) { ?>
+							<option value="<?php echo $section->get('id'); ?>"<?php if ($this->category->get('section_id') == $section->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+						<?php } ?>
+					</select>
+				</label>
+			</div>
 
-			<label for="field-title">
-				<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_TITLE'); ?>
-				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->category->get('title'))); ?>" />
-			</label>
+			<div class="form-group">
+				<label for="field-title">
+					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_TITLE'); ?>
+					<input type="text" name="fields[title]" id="field-title" class="form-control" value="<?php echo $this->escape(stripslashes($this->category->get('title'))); ?>" />
+				</label>
+			</div>
 
-			<label for="field-description">
-				<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_DESCRIPTION'); ?>
-				<textarea name="fields[description]" id="field-description" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->category->get('description'))); ?></textarea>
-			</label>
+			<div class="form-group">
+				<label for="field-description">
+					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_DESCRIPTION'); ?>
+					<textarea name="fields[description]" id="field-description" class="form-control" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->category->get('description'))); ?></textarea>
+				</label>
+			</div>
 
 			<div class="grid">
 				<div class="col span6">
-					<label for="field-closed" id="comment-anonymous-label">
-						<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_LOCKED'); ?><br />
-						<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?php if ($this->category->get('closed')) { echo ' checked="checked"'; } ?> />
-						<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_CLOSED'); ?>
-					</label>
+					<div class="form-group">
+						<div class="form-check">
+							<label for="field-closed" id="comment-anonymous-label" class="form-check-label">
+								<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_LOCKED'); ?><br />
+								<input class="option" type="checkbox form-check-input" name="fields[closed]" id="field-closed" value="3"<?php if ($this->category->get('closed')) { echo ' checked="checked"'; } ?> />
+								<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_CLOSED'); ?>
+							</label>
+						</div>
+					</div>
 				</div>
 				<div class="col span6 omega">
-					<label for="field-access">
-						<?php echo Lang::txt('PLG_GROUPS_FORUM_ACCESS_DESCRIPTION'); ?>:
-						<select name="fields[access]" id="field-access">
-							<option value="1"<?php if ($this->category->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PUBLIC'); ?></option>
-							<option value="2"<?php if ($this->category->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_REGISTERED'); ?></option>
-							<option value="5"<?php if ($this->category->get('access') == 5) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PRIVATE'); ?></option>
-						</select>
-					</label>
+					<div class="form-group">
+						<label for="field-access">
+							<?php echo Lang::txt('PLG_GROUPS_FORUM_ACCESS_DESCRIPTION'); ?>:
+							<select name="fields[access]" id="field-access" class="form-control">
+								<option value="1"<?php if ($this->category->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PUBLIC'); ?></option>
+								<option value="2"<?php if ($this->category->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_REGISTERED'); ?></option>
+								<option value="5"<?php if ($this->category->get('access') == 5) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PRIVATE'); ?></option>
+							</select>
+						</label>
+					</div>
 				</div>
 			</div>
 		</fieldset>

@@ -89,18 +89,18 @@ if (!$no_html) {
 			</p>
 
 			<fieldset>
-				<div class="input-wrap">
+				<div class="form-group">
 					<label for="activity-description">
 						<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_COMMENTS'); ?></span>
-						<?php echo $this->editor('activity[description]', '', 5, 3, 'activity-description', array('class' => 'minimal no-footer')); ?>
+						<?php echo $this->editor('activity[description]', '', 5, 3, 'activity-description', array('class' => 'form-control minimal no-footer')); ?>
 					</label>
 				</div>
 
 				<?php if (in_array(User::get('id'), $this->group->get('managers'))) { ?>
-					<div class="input-wrap">
+					<div class="form-group">
 						<label for="activity-recipients">
 							<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS'); ?></span>
-							<select name="activity_recipients" id="activity-recipients">
+							<select name="activity_recipients" id="activity-recipients" class="form-control">
 								<option value="all"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_ALL'); ?></option>
 								<option value="managers"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_MANAGERS'); ?></option>
 							</select>
@@ -108,10 +108,10 @@ if (!$no_html) {
 					</div>
 				<?php } ?>
 
-				<div class="input-wrap">
+				<div class="form-group">
 					<label class="upload-label" for="activity-file">
 						<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_FILE'); ?></span>
-						<input type="file" class="inputfile" name="activity_file" id="activity-file" data-multiple-caption="<?php echo Lang::txt('{count} files selected'); ?>" multiple="multiple" />
+						<input type="file" class="inputfile form-control-file" name="activity_file" id="activity-file" data-multiple-caption="<?php echo Lang::txt('{count} files selected'); ?>" multiple="multiple" />
 					</label>
 				</div>
 

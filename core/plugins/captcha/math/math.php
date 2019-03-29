@@ -75,11 +75,13 @@ class plgCaptchaMath extends \Hubzero\Plugin\Plugin
 		$problem['key'] = $this->_generateHash($problem['sum'], date('j'));
 
 		// Build the fields
-		$html  = '<label for="captcha-answer">' . "\n";
+		$html  = '<div class="form-group">' . "\n";
+		$html .= '<label for="captcha-answer">' . "\n";
 		$html .= Lang::txt('PLG_CAPTCHA_MATH_TROUBLE_MATH', $problem['operand1'], $problem['operand2']);
-		$html .= "\t" . '<input type="text" name="captcha_answer" id="captcha-answer" value="" size="3" id="answer" class="option" /> <span class="required">' . Lang::txt('JREQUIRED') . '</span>' . "\n";
+		$html .= "\t" . '<input type="text" name="captcha_answer" id="captcha-answer" value="" size="3" id="answer" class="option form-control" /> <span class="required">' . Lang::txt('JREQUIRED') . '</span>' . "\n";
 		$html .= "\t" . '<input type="hidden" name="captcha_krhash" id="captcha-krhash" value="' . $problem['key'] . '" />' . "\n";
 		$html .= '</label>' . "\n";
+		$html .= '</div>' . "\n";
 
 		// Return the HTML
 		return $html;

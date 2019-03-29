@@ -47,26 +47,40 @@ $this->css()
 		<fieldset class="settings">
 			<legend><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADS'); ?></legend>
 
-			<label for="param-threading">
-				<?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING'); ?>
-				<select name="params[threading]" id="param-threading">
-					<option value="list"<?php if ($this->config->get('threading', 'list') == 'list') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_LIST'); ?></option>
-					<option value="tree"<?php if ($this->config->get('threading', 'list') == 'tree') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_TREE'); ?></option>
-				</select>
-				<span class="hint"><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_HINT'); ?>
-			</label>
+			<div class="form-group">
+				<label for="param-threading">
+					<?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING'); ?>
+					<select name="params[threading]" id="param-threading" class="form-control">
+						<option value="list"<?php if ($this->config->get('threading', 'list') == 'list') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_LIST'); ?></option>
+						<option value="tree"<?php if ($this->config->get('threading', 'list') == 'tree') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_TREE'); ?></option>
+					</select>
+					<span class="hint"><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_HINT'); ?></span>
+				</label>
+			</div>
 
-			<label for="param-threading_depth">
-				<?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_DEPTH'); ?>
-				<input type="text" name="params[threading_depth]" id="param-threading_depth" value="<?php echo $this->config->get('threading_depth', 3); ?>" />
-				<span class="hint"><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_DEPTH_HINT'); ?></span>
-			</label>
+			<div class="form-group">
+				<label for="param-threading_depth">
+					<?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_DEPTH'); ?>
+					<input type="text" class="form-control" name="params[threading_depth]" id="param-threading_depth" value="<?php echo $this->config->get('threading_depth', 3); ?>" />
+					<span class="hint"><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_DEPTH_HINT'); ?></span>
+				</label>
+			</div>
 
-			<fieldset>
+			<fieldset class="form-group">
 				<legend><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_ALLOW_ANONYMOUS'); ?></legend>
 
-				<label for="param-allow_anonymous-no"><input type="radio" name="params[allow_anonymous]" id="param-allow_anonymous-no" value="0" <?php if (!$this->config->get('allow_anonymous')) { echo ' checked="checked"'; } ?> /> <?php echo Lang::txt('JNO'); ?></label>
-				<label for="param-allow_anonymous-yes"><input type="radio" name="params[allow_anonymous]" id="param-allow_anonymous-yes" value="1" <?php if ($this->config->get('allow_anonymous')) { echo ' checked="checked"'; } ?> /> <?php echo Lang::txt('JYES'); ?></label>
+				<div class="form-check">
+					<label for="param-allow_anonymous-no" class="form-check-label">
+						<input type="radio" class="form-check-input" name="params[allow_anonymous]" id="param-allow_anonymous-no" value="0" <?php if (!$this->config->get('allow_anonymous')) { echo ' checked="checked"'; } ?> />
+						<?php echo Lang::txt('JNO'); ?>
+					</label>
+				</div>
+				<div class="form-check">
+					<label for="param-allow_anonymous-yes" class="form-check-label">
+						<input type="radio" class="form-check-input" name="params[allow_anonymous]" id="param-allow_anonymous-yes" value="1" <?php if ($this->config->get('allow_anonymous')) { echo ' checked="checked"'; } ?> />
+						<?php echo Lang::txt('JYES'); ?>
+					</label>
+				</div>
 			</fieldset>
 
 			<input type="hidden" name="settings[id]" value="<?php echo $this->settings->get('id'); ?>" />

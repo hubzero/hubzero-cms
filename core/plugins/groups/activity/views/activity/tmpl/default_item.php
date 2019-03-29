@@ -97,7 +97,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 			<div class="activity-details">
 				<span class="activity-actor"><?php echo $name; ?></span>
 				<span class="activity-action"><?php echo $this->escape($this->row->log->get('action')); ?></span>
-				<span class="activity-channel"><?php echo ($this->row->get('scope') == 'group_managers' ? Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_MANAGERS') : Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_ALL')); //$this->escape($this->row->get('scope') . '.' . $this->row->get('scope_id')); ?></span>
+				<span class="activity-channel"><?php echo ($this->row->get('scope') == 'group_managers') ? Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_MANAGERS') : Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_ALL'); ?></span>
 				<span class="activity-context"><?php
 					$scope = explode('.', $this->row->log->get('scope'));
 					echo $this->escape($scope[0]);
@@ -173,7 +173,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 					<?php
 				}
 				?>
-				<div class="activity-event-content<?php echo ($short ? ' hide' : ''); ?>" id="activity-event-content<?php echo $this->row->get('id'); ?>">
+				<div class="activity-event-content<?php echo ($short) ? ' hide' : ''; ?>" id="activity-event-content<?php echo $this->row->get('id'); ?>">
 					<?php echo $content; ?>
 				</div>
 
@@ -201,7 +201,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 							{
 								?>
 								<a class="attachment img" rel="lightbox" href="<?php echo Route::url($link); ?>">
-									<img src="<?php echo Route::url($link); ?>" alt="<?php echo $this->escape($attachment->get('description')); ?>" width="<?php echo ($attachment->width() > 400 ? 400 : $attachment->width()); ?>" />
+									<img src="<?php echo Route::url($link); ?>" alt="<?php echo $this->escape($attachment->get('description')); ?>" width="<?php echo ($attachment->width() > 400) ? 400 : $attachment->width(); ?>" />
 									<p class="attachment-meta">
 										<span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
 										<span class="attachment-action"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FILE_DOWNLOAD'); ?></span>
@@ -265,8 +265,8 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 								data-hrf-inactive="<?php echo Route::url($base . '&action=star&activity=' . $this->row->get('id')); ?>"
 								data-txt-active="<?php echo Lang::txt('Unstar this'); ?>"
 								data-txt-inactive="<?php echo Lang::txt('Star this'); ?>"
-								title="<?php echo ($this->row->get('starred') ? Lang::txt('Unstar this') : Lang::txt('Star this')); ?>"><!--
-								--><?php echo ($this->row->get('starred') ? Lang::txt('Unstar this') : Lang::txt('Star this')); ?><!--
+								title="<?php echo ($this->row->get('starred')) ? Lang::txt('Unstar this') : Lang::txt('Star this'); ?>"><!--
+								--><?php echo ($this->row->get('starred')) ? Lang::txt('Unstar this') : Lang::txt('Star this'); ?><!--
 							--></a>
 						</li>
 					<?php } ?>
@@ -314,17 +314,17 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 
 						<?php echo Html::input('token'); ?>
 
-						<div class="input-wrap">
+						<div class="form-group">
 							<label for="comment-<?php echo $this->row->get('id'); ?>-content">
 								<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_COMMENTS'); ?></span>
-								<?php echo $this->editor('activity[description]', '', 35, 4, 'field_' . $this->row->get('id') . '_comment', array('class' => 'minimal no-footer')); ?>
+								<?php echo $this->editor('activity[description]', '', 35, 4, 'field_' . $this->row->get('id') . '_comment', array('class' => 'form-control minimal no-footer')); ?>
 							</label>
 						</div>
 
-						<div class="input-wrap">
+						<div class="form-group">
 							<label class="upload-label" for="activity-<?php echo $this->row->get('id'); ?>-file">
 								<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_FILE'); ?></span>
-								<input type="file" class="inputfile" name="activity_file" id="activity-<?php echo $this->row->get('id'); ?>-file" data-multiple-caption="<?php echo Lang::txt('{count} files selected'); ?>" multiple="multiple" />
+								<input type="file" class="inputfile form-control-file" name="activity_file" id="activity-<?php echo $this->row->get('id'); ?>-file" data-multiple-caption="<?php echo Lang::txt('{count} files selected'); ?>" multiple="multiple" />
 							</label>
 						</div>
 
