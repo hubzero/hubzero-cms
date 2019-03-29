@@ -212,7 +212,7 @@ $cc = array();
 								</tr>
 								<tr>
 									<th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_IP'); ?>:</th>
-									<td><?php echo $this->escape($this->row->get('ip')); ?> (<?php echo  $this->escape($this->row->get('hostname')); ?>)</td>
+									<td><?php echo $this->escape($this->row->get('ip')); ?> (<?php echo $this->escape($this->row->get('hostname')); ?>)</td>
 								</tr>
 								<tr>
 									<th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_REFERRER'); ?>:</th>
@@ -340,29 +340,44 @@ $cc = array();
 									$attachment->set('description', $attachment->get('filename'));
 								}
 
-								if ($attachment->isImage())
+								if ($attachment->hasFile())
 								{
-									if ($attachment->width() > 400)
+									if ($attachment->isImage())
 									{
-										$img = '<p><a href="' . Route::url($attachment->link()) . '" rel="lightbox"><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+										if ($attachment->width() > 400)
+										{
+											$img = '<p><a href="' . Route::url($attachment->link()) . '" rel="lightbox"><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+										}
+										else
+										{
+											$img = '<p><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+										}
+										echo $img;
 									}
 									else
 									{
-										$img = '<p><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+										?>
+										<a class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" href="<?php echo Route::url($attachment->link()); ?>" title="<?php echo $this->escape($attachment->get('description')); ?>">
+											<p class="attachment-description"><?php echo $this->escape($attachment->get('description')); ?></p>
+											<p class="attachment-meta">
+												<span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
+												<span class="attachment-action"><?php echo Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD'); ?></span>
+											</p>
+										</a>
+										<?php
 									}
-									echo $img;
-								}
-								else
-								{
-									?>
-									<a class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" href="<?php echo Route::url($attachment->link()); ?>" title="<?php echo $this->escape($attachment->get('description')); ?>">
-										<p class="attachment-description"><?php echo $attachment->get('description'); ?></p>
-										<p class="attachment-meta">
-											<span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
-											<span class="attachment-action"><?php echo Lang::txt('COM_SUPPORT_CLICK_TO_DOWNLOAD'); ?></span>
-										</p>
-									</a>
-									<?php
+									else
+									{
+										?>
+										<div class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" title="<?php echo $this->escape($attachment->get('description')); ?>">
+											<p class="attachment-description"><?php echo $this->escape($attachment->get('description')); ?></p>
+											<p class="attachment-meta">
+												<span class="attachment-size"><?php echo $this->escape($attachment->get('filename')); ?></span>
+												<span class="attachment-action"><?php echo Lang::txt('JLIB_HTML_ERROR_FILE_NOT_FOUND'); ?></span>
+											</p>
+										</div>
+										<?php
+									}
 								}
 							}
 							?>
@@ -529,7 +544,7 @@ $cc = array();
 
 						<label for="field-target_date">
 							<?php echo Lang::txt('COM_SUPPORT_COMMENT_TARGET_DATE'); ?>:
-							<input type="text" name="ticket[target_date]" class="datetime-field" id="field-target_date" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot()) / 60); ?>" placeholder="YYYY-MM-DD hh:mm:ss" value="<?php echo ($this->row->get('target_date') && $this->row->get('target_date') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('target_date'))->toLocal('Y-m-d H:i:s')) : ''); ?>" />
+							<input type="text" name="ticket[target_date]" class="datetime-field" id="field-target_date" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot()) / 60); ?>" placeholder="YYYY-MM-DD hh:mm:ss" value="<?php echo ($this->row->get('target_date') && $this->row->get('target_date') != '0000-00-00 00:00:00') ? $this->escape(Date::of($this->row->get('target_date'))->toLocal('Y-m-d H:i:s')) : ''; ?>" />
 						</label>
 
 						<?php if (isset($this->lists['categories']) && $this->lists['categories']) { ?>
@@ -685,4 +700,4 @@ $cc = array();
 	</aside><!-- / .aside -->
 	</div>
 </section><!-- / .section -->
-<?php } // ACL can create comments ?>
+<?php } // ACL can create comments
