@@ -85,7 +85,7 @@
 				type="databaseconnection"
 				label="COM_CONFIG_FIELD_DATABASE_TYPE_LABEL"
 				description="COM_CONFIG_FIELD_DATABASE_TYPE_DESC"
-				supported="pdo,mariadb,mysql,pgsql,sqlite"
+				supported="pdo,mariadb,mysql,percona,pgsql,sqlite"
 				filter="string" />
 
 			<field
