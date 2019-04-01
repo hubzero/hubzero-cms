@@ -26,7 +26,7 @@
 .intro-container {
   @include flexbox(wrap);
   @include grid(col / span 4, row);
-  @include respond-at(901px) {
+  @include respond-at(56.3125em) {
     @include flexbox;
   }
 }
@@ -46,7 +46,7 @@
   h5 {
     text-align: center;
   }
-  @include respond-at(901px) {
+  @include respond-at(56.3125em) {
     width: 50%;
   }
 }
@@ -73,10 +73,21 @@
 }
 
 .latest-tweet {
+  @include respond-at(56.3125em) {
+    width: 20%;
+  }
   margin: 2em;
   width: 100%;
-  @include respond-at(901px) {
-    width: 20%;
+
+  .link {
+    @include respond-at(56.3125em) {
+      display: block;
+      text-align: center;
+    }
+    @include respond-at(62.375em) {
+      display: inline;
+      text-align: left;
+    }
   }
 
   h2 {
@@ -107,7 +118,7 @@
     text-transform: uppercase;
   }
 
-  @include respond-at(901px) {
+  @include respond-at(56.3125em) {
     width: 25%;
   }
 
@@ -134,7 +145,7 @@
 
     &:hover {
       img {
-        transform: translateY(-50%) scale(1.1)
+        transform: translateY(-50%) scale(1.1);
       }
     }
   }
@@ -207,7 +218,7 @@
   @include bcg($light-gray, null);
 }
 
-@include respond-at(901px) {
+@include respond-at(56.3125em) {
   @include grid-template(repeat(4, 1fr), repeat(2, minmax(23rem, auto)));
 }
 
@@ -215,7 +226,7 @@
   @include flexbox(wrap);
   @include grid(null, 1);
   @include grid-template(1fr, repeat(2, auto));
-  @include respond-at(901px) {
+  @include respond-at(56.3125em) {
     @include grid(1 / span 4, 1);
     @include grid-template(repeat(4, 1fr), auto);
   }
@@ -234,7 +245,7 @@
       margin-top: 2em;
     }
 
-    @include respond-at(901px) {
+    @include respond-at(56.3125em) {
       @include grid(3 / span 2, null);
       order: 0;
       width: 50%;
@@ -278,12 +289,12 @@
         margin: 0;
       }
     }
-    @include respond-at(901px) {
+    @include respond-at(56.3125em) {
       @include grid(1 / span 2, null);
       @include grid-template(1fr, repeat(3, 15rem), 5px);
       width: 50%;
     }
-    @include respond-at(1201px) {
+    @include respond-at(75.0625em) {
       @include grid-template(repeat(3, 1fr), 1fr, 5px);
       grid-auto-rows: auto;
     }
@@ -297,7 +308,7 @@
   @include flexbox(wrap);
   @include grid(1fr, 2);
   @include grid-template(1fr, repeat(2, auto));
-  @include respond-at(901px) {
+  @include respond-at(56.3125em) {
     @include grid(1 / span 4, 2);
     @include grid-template(repeat(2, 1fr), null);
   }
@@ -312,7 +323,7 @@
       border-radius: 2px;
       margin-top: 2em;
     }
-    @include respond-at(901px) {
+    @include respond-at(56.3125em) {
       width: 50%;
     }
     @include grid-support {
@@ -359,7 +370,7 @@
       margin: 0;
       padding-top: .5em;
     }
-    @include respond-at(901px) {
+    @include respond-at(56.3125em) {
       width: 50%;
     }
     @include grid-support {
@@ -382,7 +393,7 @@
   @include flexbox(wrap);
   @include grid(null, 1);
   @include grid-template(1fr, repeat(2, auto));
-  @include respond-at(901px) {
+  @include respond-at(56.3125em) {
     @include grid-template(repeat(2, 1fr), 23rem);
   }
 
@@ -400,7 +411,7 @@
   }
 
   .left {
-    @include respond-at(901px) {
+    @include respond-at(56.3125em) {
       @include grid(1 / span 1, null);
       width: 50%;
     }
@@ -414,7 +425,7 @@
   .right {
     @extend .left;
     @include grid(1fr, 1);
-    @include respond-at(901px) {
+    @include respond-at(56.3125em) {
       @include grid(2 / span 1, null);
       order: 0;
       width: 50%;
@@ -436,16 +447,16 @@
 .community {
   @include flexbox(wrap);
   @include grid-template(1fr, repeat(2, auto));
-  @include respond-at(901px) {
+  @include respond-at(56.3125em) {
     @include grid-template(repeat(2, 1fr), auto);
   }
   padding: 0 2.5em;
 
   .left {
-    @include respond-at(620px) {
+    @include respond-at(37.625em) {
       @include grid-template(repeat(2, 1fr), repeat(2, auto));
     }
-    @include respond-at(901px) {
+    @include respond-at(56.3125em) {
       width: 50%;
     }
     padding-right: 2.5em;
@@ -453,14 +464,14 @@
 
     .title {
       @include grid(null, 1);
-      @include respond-at(620px) {
+      @include respond-at(37.625em) {
         @include grid(span 2, null);
       }
     }
 
     ul {
       @include grid(null, 2);
-      @include respond-at(620px) {
+      @include respond-at(37.625em) {
         @include grid(span 1, null);
       }
       list-style: none;
@@ -478,7 +489,7 @@
         position: relative;
         top: 50%;
       }
-      @include respond-at(620px) {
+      @include respond-at(37.625em) {
         @include grid(null, 2);
       }
     }
@@ -488,7 +499,7 @@
   }
 
   .right {
-    @include respond-at(901px) {
+    @include respond-at(56.3125em) {
       width: 50%;
     }
     @include grid-support {
@@ -509,19 +520,19 @@
   .module-right {
     @include flexbox(wrap);
     @include grid-template(repeat(4, 1fr), repeat(4, 15rem));
-    @include respond-at(1001px) {
+    @include respond-at(62.5625em) {
       @include grid-template(nykk, repeat(2, 15rem), 5px);
     }
     padding: 1em;
 
     .horizontal {
       @include grid(span 4, null);
-      @include respond-at(901px) {
+      @include respond-at(56.3125em) {
         @include grid(span 4, null);
         flex: 1 1 24rem;
         height: 12rem;
       }
-      @include respond-at(1001px) {
+      @include respond-at(62.5625em) {
         @include grid(span 2, null);
       }
       @include grid-support {
@@ -534,12 +545,12 @@
 
     .regular {
       @include grid(span 2, null);
-      @include respond-at(901px) {
+      @include respond-at(56.3125em) {
         @include grid(span 2, null);
         flex: 1 1 12rem;
         height: 12rem;
       }
-      @include respond-at(1001px) {
+      @include respond-at(62.5625em) {
         @include grid(span 1, null);
       }
       @include grid-support {
@@ -708,7 +719,7 @@
   @include flexbox(wrap);
   @include grid(col / span 4, row 4);
   @include grid-template(2fr , repeat(5, auto), 10px);
-  @include respond-at(901px) {
+  @include respond-at(56.3125em) {
     @include grid-template(repeat(4, 1fr), auto, 10px);
   }
   flex: 1;
@@ -728,12 +739,12 @@
 
   .service {
     @include grid(1 / span 2, null);
-    @include respond-at(901px) {
+    @include respond-at(56.3125em) {
       @include grid(span 2, null);
       width: 47%;
       margin: 5px;
     }
-    @include respond-at(1201px) {
+    @include respond-at(75.0625em) {
       @include grid(span 1, null);
       width: 21%;
     }
