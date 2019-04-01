@@ -1,0 +1,254 @@
+/**
+ * Copyright 2005-2009 HUBzero Foundation, LLC.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Project files CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Files management - file upload
+--------------------------------------------- */
+/* Drag and drop file upload */
+	.qq-uploading {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 107px;
+		color: #fff;
+		font-size: 18px;
+		padding: 75px 0 0 0;
+		text-align: center;
+		background: rgba(0,0,0,0.75);
+	}
+	.qq-uploader {
+		position: relative;
+		margin: 0;
+		padding: 0;
+	}
+	.linker-button,
+	.qq-upload-button,
+	.qq-upload-drop-area {
+		background: #f7f7f7;
+		border: 3px dashed #ddd;
+		text-align: center;
+		color: #bbb;
+		text-shadow: 0 1px 0 #FFF;
+		padding: 0;
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		-ms-border-radius: 3px;
+		-o-border-radius: 3px;
+		border-radius: 3px;
+		font-size: 1.5em;
+	}
+	/*.asset-uploader:hover {
+		border: 3px solid #333;
+	}*/
+	.asset-uploader .columns {
+		margin-top: 0;
+		padding-top: 0;
+	}
+	.linker-button,
+	.qq-upload-button,
+	.qq-upload-drop-area {
+		text-align: center;
+		padding: 0.8em 0;
+	}
+	.linker-button span,
+	.qq-upload-button span,
+	.qq-upload-drop-area span {
+		position: relative;
+		padding-left: 1.5em;
+	}
+	.linker-button span:before,
+	.qq-upload-button span:before,
+	.qq-upload-drop-area span:before {
+		display: block;
+		position: absolute;
+		top: -0.2em;
+		left: -1.1em;
+		left: -0.2em;
+		font-family: "Fontcons";
+		content: "\f08c"; /*"\f046";*/
+		font-size: 1.5em;
+		line-height: 1;
+		
+		content: "\f016";
+		left: 0;
+	}
+	.linker-button span:before {
+		font-size: 1.5em;
+		left: -0.1em;
+		content: "\26D3";
+	}
+	.linker-button:hover,
+	.qq-upload-button:hover,
+	.qq-upload-drop-area:hover,
+	.qq-upload-drop-area-active {
+		/*background: #fdfce4;*/
+		border: 3px solid #333;
+		color: #333;
+		cursor: pointer;
+	}
+	.qq-upload-drop-area {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+	}
+	.qq-upload-list {
+		/*display: none;*/
+	}
+	.field-wrap {
+		clear: right;
+		padding-bottom: 1em;
+	}	
+	.qq-upload-list {
+	    margin: 0;
+	    padding: 0;
+	    list-style: none;
+		max-height: 250px;
+		overflow: auto;
+		border-left: 4px solid #f0f7f8;
+		border-right: 4px solid #f0f7f8;
+		border-top: 1px solid #E2E2E2;
+	}
+	.qq-upload-list li {
+	    margin: 0;
+	    padding: 1em;
+	    line-height: 15px;
+		background: #fcfcfc;
+		border-bottom: 1px solid #E2E2E2;
+	}
+	.qq-upload-list li:hover {
+		background: #effffe;		
+	}
+	.qq-upload-file, .qq-upload-spinner, .qq-upload-size, .qq-upload-cancel, .qq-upload-retry, .qq-upload-failed-text, .qq-upload-finished, .qq-upload-delete {
+	    margin-right: 12px;
+	}
+	.qq-upload-file {
+	}
+	.qq-upload-icon {
+		background: url("/core/plugins/projects/files/assets/img/page_white.gif") 0 0 no-repeat;
+		padding: 0.2em;
+		padding-left: 20px;
+	}
+	.type-image {
+		background: url("/core/plugins/projects/files/assets/img/page_white_picture.gif") 0 0 no-repeat;
+	}
+	.type-text {
+		background: url("/core/plugins/projects/files/assets/img/page_white_text.gif") 0 0 no-repeat;
+	}
+	.type-video {
+		background: url("/core/plugins/projects/files/assets/img/page_white_dvd.gif") 0 0 no-repeat;
+	}
+	.type-archive {
+		background: url("/core/plugins/projects/files/assets/img/page_white_compressed.gif") 0 0 no-repeat;
+	}
+	.type-pdf {
+		background: url("/core/plugins/projects/files/assets/img/page_white_acrobat.gif") 0 0 no-repeat;
+	}
+	.type-office {
+		background: url("/core/plugins/projects/files/assets/img/page_white_office.gif") 0 0 no-repeat;
+	}
+	.qq-upload-size, .qq-upload-ext, .qq-upload-status {
+		color: #CCC;
+		float: right;
+		margin: 0 2em;
+	}
+	.qq-upload-status {
+		color: #CCC;
+		width: 100px;
+	}
+	.qq-upload-size, #csize {
+		/*position: absolute;
+		right: 150px;*/
+		text-align: right;
+		width: 100px;
+		display: inline-block;
+	}
+	#csize {
+		margin-right: 3em;
+		float: right;
+		width: 100px;
+	}
+	.qq-upload-name {
+		display: none;
+	}
+	.qq-upload-ext {
+		text-transform: uppercase;
+		width: 50px;
+		display: inline-block;
+	}
+	.qq-upload-processing {
+		color: orange;
+		width: 100px;
+	}
+	.qq-upload-fail {
+		color: red;
+		width: 100px;
+	}
+	.qq-upload-success {
+		color: green;
+		width: 100px;
+	}
+	.qq-upload-controls {
+		float: right;
+	}	
+	.qq-upload-cancel, .qq-upload-delete {
+		color: #000000;
+		float: right;
+	}
+	#upload-csize
+	{
+		height: 20px;
+		display: none;
+		background: #f0f7f8;
+	}
+	.qq-upload-error {
+		margin: 0 0 0 3em;
+		color: red;
+	}
+	#csize-avail {
+		margin: 0 0.5em 0 1.5em;
+		float: right;
+		width: 100px;
+		display: inline-block;
+	}	
+	#f-upload.disabled {
+		border: 1px solid #CCC !important;
+	}
+	.qq-progress-bar {
+	    background: -moz-linear-gradient(top,  rgba(30,87,153,1) 0%, rgba(41,137,216,1) 50%, rgba(32,124,202,1) 51%, rgba(125,185,232,1) 100%); /* FF3.6+ */
+	    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(30,87,153,1)), color-stop(50%,rgba(41,137,216,1)), color-stop(51%,rgba(32,124,202,1)), color-stop(100%,rgba(125,185,232,1))); /* Chrome,Safari4+ */
+	    background: -webkit-linear-gradient(top,  rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* Chrome10+,Safari5.1+ */
+	    background: -o-linear-gradient(top,  rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* Opera 11.10+ */
+	    background: -ms-linear-gradient(top,  rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* IE10+ */
+	    background: linear-gradient(to bottom,  rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* W3C */
+	    width: 0%;
+	    height: 15px;
+	    border-radius: 6px;
+	    margin-bottom: 3px;
+	    display: none;
+	}
+	@-webkit-keyframes greenPulse {
+	from { -webkit-box-shadow: 0 0 9px #333; }
+	50% { -webkit-box-shadow: 0 0 18px #91bd09; }
+	to { -webkit-box-shadow: 0 0 9px #333; }
+	}
+	
+	input[type="submit"].started, input[type="submit"].started:hover {
+	-webkit-animation-name: greenPulse;
+	-webkit-animation-duration: 2s;
+	-webkit-animation-iteration-count: infinite;
+	}

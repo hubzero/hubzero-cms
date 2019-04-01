@@ -1,0 +1,155 @@
+/**
+ * Copyright 2005-2009 HUBzero Foundation, LLC.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Disk space CSS
+	-- -- -- -- -- -- --
+*/
+	
+/* Disk space indicator
+--------------------------------------------- */
+	#indicator-wrapper {
+		padding: 0;
+		margin-left: 1em;
+		margin-top: 0.3em;
+		border: 1px solid #CCC;
+		background: #FFFFFF;
+		width: 100px;
+		height: 10px;
+		position: absolute;
+	}
+	#indicator-area {
+		background: #d0e4fe;
+		height: 10px;
+		width: 100px;
+		padding: 0;
+		position: absolute;
+		border-right: 1px solid #CCC;
+	}
+	#actual-area {
+		background: #abc5e6;
+		height: 15px;
+		width: 100px;
+		padding: 0;
+		position: absolute;
+	}
+	#indicator-value {
+		position: absolute;
+		text-align: center;
+		color: #5180c0;
+		width: 100px;
+		margin-top: -0.5em;
+		font-size: 85%;
+	}
+	#disk-usage.quota-warning .l-actual {
+		background: #ec9881;
+	} 
+	#disk-usage.quota-warning #actual-area {
+		background: #ec9881;
+	}
+	.quota-warning #indicator-area, #disk-usage.quota-warning #indicator-area, #disk-usage.quota-warning .l-regular {
+		background: #fedad0;
+	}
+	.quota-warning #indicator-value, #disk-usage.quota-warning #indicator-value, .approaching-quota  {
+		color: #df7052;
+	}
+	#indicator-value  span {
+		position: relative;
+	}
+	#disk-usage {
+		border: 1px dotted #CCC;
+		padding: 1em 0;
+		width: 100%;
+		min-height: 100px;
+		background: #f6f7f9;
+	}
+	#disk-usage div.disk-usage-wrapper {
+		width: 95% ;
+	}
+	#disk-usage #indicator-wrapper {
+		width: 100%;
+		height: 15px;
+		position: relative;	
+	}
+	#disk-usage #indicator-area {
+		width: 100%;
+		height: 15px;		
+	}
+	#disk-usage #indicator-value {
+		width: 100%;
+		margin: 0;
+		margin-top: -2em;
+	}
+	#disk-usage h3 {
+		padding: 0;
+		margin: 0 0 0 1em;
+		font-size: 100%;
+	}
+	#usage-labels {
+		padding: 1em;
+		text-align: center;
+		margin-top: 1em;
+		font-size: 85%;
+	}
+	#usage-labels.usage-admin {
+		width: 100%;
+		min-width: 450px;
+	}
+	#usage-labels .l-h {
+		display: block;
+		text-align: left;
+		margin-top: 0.5em;
+	}
+	.l-regular, .l-unused, .l-actual, .l-pub {
+		border: 1px solid #CCC;
+		background: #FFFFFF;
+		margin-right: 0.5em;
+		margin-left: 1em;
+		padding: 0 0.5em;
+	}
+	.l-pub {
+		background: #dafce3;
+	}
+	.l-regular {
+		background: #d0e4fe;
+	}
+	.l-actual {
+		background: #abc5e6;
+	}
+	.show-quota {
+		margin-left: 130px;
+	}
+	.diskmanage-about {
+		width: 50%;
+		margin-left: 1em;
+		font-size: 85%;
+		float: left;
+		padding: 0.5em 1em;
+		background: #f6f7f9;
+	}
+	.disk-manage-option {
+		margin-bottom: 2em;
+		min-height: 100px;
+	}
+	.disk-usage-optimize {
+		float: left;
+		width: 260px;
+	}
+	#disk-manage {
+		margin-top: 3em;
+		border-top: 4px solid #f6f7f9;
+	}
+	
+	/* back-end display
+	--------------------------------------------- */
+	.editform #disk-usage div.disk-usage-wrapper {
+		width: 38%;
+	}
