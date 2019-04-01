@@ -70,14 +70,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	const STATE_FROM_DRAFTREADY_TO_PUBLISHED = 1;
 
 	/**
-	 * Publication state transition
-	 *
-	 * @const
-	 */
-	const STATE_FROM_PUBLISHED_TO_DRAFTREADY = 0;
-	const STATE_FROM_DRAFTREADY_TO_PUBLISHED = 1;
-
-	/**
 	 * Event call to determine if this plugin should return data
 	 *
 	 * @param   string  $alias
