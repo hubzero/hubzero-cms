@@ -366,18 +366,18 @@ $cc = array();
 										</a>
 										<?php
 									}
-									else
-									{
-										?>
-										<div class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" title="<?php echo $this->escape($attachment->get('description')); ?>">
-											<p class="attachment-description"><?php echo $this->escape($attachment->get('description')); ?></p>
-											<p class="attachment-meta">
-												<span class="attachment-size"><?php echo $this->escape($attachment->get('filename')); ?></span>
-												<span class="attachment-action"><?php echo Lang::txt('JLIB_HTML_ERROR_FILE_NOT_FOUND'); ?></span>
-											</p>
-										</div>
-										<?php
-									}
+								}
+								else
+								{
+									?>
+									<div class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" title="<?php echo $this->escape($attachment->get('description')); ?>">
+										<p class="attachment-description"><?php echo $this->escape($attachment->get('description')); ?></p>
+										<p class="attachment-meta">
+											<span class="attachment-size"><?php echo $this->escape($attachment->get('filename')); ?></span>
+											<span class="attachment-action"><?php echo Lang::txt('JLIB_HTML_ERROR_FILE_NOT_FOUND'); ?></span>
+										</p>
+									</div>
+									<?php
 								}
 							}
 							?>
