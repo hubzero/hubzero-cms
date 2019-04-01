@@ -1166,12 +1166,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "521b62d093f2b00d2e973f2d1624877fda0dc610"
+                "reference": "5206d57413294326a5870af7d5b2fa52f9335e60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/521b62d093f2b00d2e973f2d1624877fda0dc610",
-                "reference": "521b62d093f2b00d2e973f2d1624877fda0dc610",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/5206d57413294326a5870af7d5b2fa52f9335e60",
+                "reference": "5206d57413294326a5870af7d5b2fa52f9335e60",
                 "shasum": ""
             },
             "require": {
@@ -1206,7 +1206,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2019-03-21 13:55:43"
+            "time": "2019-03-28 18:20:06"
         },
         {
             "name": "hubzero/orcid-php",
