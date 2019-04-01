@@ -236,11 +236,17 @@ class Resources extends SiteController
 			'start'  => Request::getInt('limitstart', 0),
 			'search' => Request::getString('search', ''),
 			'tag'    => trim(Request::getString('tag', '', 'request', 'none', 2)),
-			'tag_ignored' => array()
+			'tag_ignored' => array(),
+			'access' => array(0)
 		);
 		if (!in_array($filters['sortby'], array('date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random')))
 		{
 			App::abort(404, Lang::txt('Invalid sort value of "%s" used.', $filters['sortby']));
+		}
+
+		if (!User::isGuest())
+		{
+			$filters['access'][] = 1;
 		}
 
 		if (isset($filters['tag']) && $filters['tag'] != '')
@@ -303,6 +309,7 @@ class Resources extends SiteController
 		//$t = Type::blank()->getTableName();
 
 		$query->whereEquals($r . '.standalone', 1);
+		$query->whereIn($r . '.access', $filters['access']);
 
 		if ($filters['tag'] != '')
 		{
@@ -468,8 +475,14 @@ class Resources extends SiteController
 			'published' => 1,
 			'now'    => Date::toSql(),
 			'limit'  => 10,
-			'start'  => 0
+			'start'  => 0,
+			'access' => array(0)
 		);
+
+		if (!User::isGuest())
+		{
+			$filters['access'][] = 1;
+		}
 
 		$query = Entry::allWithFilters($filters);
 
