@@ -251,9 +251,9 @@ class Collections extends AdminController
 					return;
 				}
 
-				$delete = Request::getInt('delete', 0);
+				$delete = Request::getString('delete');
 
-				$msg = "Delete canceled";
+				$msg = "Delete cancelled";
 				$type = 'error';
 				if ($delete)
 				{
