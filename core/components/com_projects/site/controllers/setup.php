@@ -511,7 +511,7 @@ class Setup extends Base
 			}
 
 			// Collect grant information
-			if ($this->config->get('grantinfo', 0))
+			if ($this->config->get('grantinfo', 0) && Request::getInt('grant_info', 0))
 			{
 				$grant_agency = Request::getString('grant_agency', '');
 				$grant_title  = Request::getString('grant_title', '');
