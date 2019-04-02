@@ -1224,7 +1224,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			}
 
 			// More custom parsing
-			if (isset($metadata['container-title']))
+			if (isset($metadata['container-title']) && is_string($metadata['container-title']))
 			{
 				$data->journal = $metadata['container-title'];
 			}
