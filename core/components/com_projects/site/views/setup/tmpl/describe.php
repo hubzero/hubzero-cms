@@ -95,7 +95,7 @@ $this->view('_title')
 				<p class="hint"><?php echo Lang::txt('COM_PROJECTS_HINTS_TITLE'); ?></p>
 				<label for="field-alias"><?php echo Lang::txt('COM_PROJECTS_ALIAS_NAME'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 					<span class="verification"></span>
-					<input name="name" maxlength="30" id="field-alias" type="text" value="<?php echo $this->model->get('alias'); ?>" <?php echo $this->model->get('id') ? ' disabled="disabled"' : ''; ?> class="verifyme" />
+					<input name="name" maxlength="30" id="field-alias" type="text" value="<?php echo $this->model->get('alias'); ?>" <?php echo $this->model->get('id') ? ' disabled="disabled"' : ''; ?> class="verifyme" data-verify="<?php echo Route::url('index.php?option=com_projects&task=verify&no_html=1&ajax=1&text='); ?>" data-suggest="<?php echo Route::url('index.php?option=com_projects&task=suggestalias&no_html=1&ajax=1&text='); ?>" />
 				</label>
 				<p class="hint"><?php echo Lang::txt('COM_PROJECTS_HINTS_NAME'); ?></p>
 				<div id="moveon" class="nogo">

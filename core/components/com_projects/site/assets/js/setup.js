@@ -96,6 +96,10 @@ HUB.ProjectSetup = {
 			}
 		}
 
+		$('[name=grant_info]').on('change', function(e){
+			$('#grant_info_block').toggleClass('hidden');
+		});
+
 		// Setup pre-screen
 		if ($('#f-restricted-no').length && $('#f-restricted-explain').length)
 		{
@@ -194,8 +198,7 @@ HUB.ProjectSetup = {
 						if (id == 'field-alias')
 						{
 							// Via AJAX
-							url = '/projects/verify/?no_html=1&ajax=1&text='
-							+ $(item).val() + '&pid=' + $('#pid').val();
+							url = $(item).attr('data-verify') + $(item).val() + '&pid=' + $('#pid').val();
 							$.post(url, {},
 								function (response) {
 
@@ -233,12 +236,14 @@ HUB.ProjectSetup = {
 
 	suggestAlias: function()
 	{
-		if ($('#field-alias').length && $('#field-alias').val() == ''
+		var alias = $('#field-alias');
+
+		if (alias.length && alias.val() == ''
 		&& $('#field-title').length && $('#field-title').val().length > 15)
 		{
-			var output = $('#field-alias').parent().find('.verification')[0];
+			var output = alias.parent().find('.verification')[0];
 			// Via AJAX
-			url = '/projects/suggestalias/?no_html=1&ajax=1&text=' + escape($('#field-title').val());
+			url = alias.attr('data-suggest') + escape($('#field-title').val());
 			$.post(url, {},
 				function (response) {
 					if (response)
