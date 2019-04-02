@@ -98,14 +98,14 @@ class Helper extends Module
 	public function display()
 	{
 		// Include mw libraries
-		include_once(Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php');
-		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'job.php');
-		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'view.php');
-		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'viewperm.php');
-		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'session.php');
-		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'host.php');
-		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'hosttype.php');
-		include_once(Component::path('com_tools') . DS . 'tables' . DS . 'recent.php');
+		include_once Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
+		include_once Component::path('com_tools') . DS . 'tables' . DS . 'job.php';
+		include_once Component::path('com_tools') . DS . 'tables' . DS . 'view.php';
+		include_once Component::path('com_tools') . DS . 'tables' . DS . 'viewperm.php';
+		include_once Component::path('com_tools') . DS . 'tables' . DS . 'session.php';
+		include_once Component::path('com_tools') . DS . 'tables' . DS . 'host.php';
+		include_once Component::path('com_tools') . DS . 'tables' . DS . 'hosttype.php';
+		include_once Component::path('com_tools') . DS . 'tables' . DS . 'recent.php';
 
 		// Get database object
 		$this->database = \App::get('db');
@@ -128,8 +128,10 @@ class Helper extends Module
 		}
 
 		// Run middleware command to create screenshots
-		// only take snapshots if screenshots are on
-		if ($this->params->get('show_screenshots', 1))
+		// only take snapshots if screenshots are on and
+		// it's a valid account
+		if ($this->params->get('show_screenshots', 1)
+		 && strstr(User::get('email'), '@') != '@invalid')
 		{
 			$cmd = "/bin/sh ". Component::path('com_tools') . "/scripts/mw screenshot " . User::get('username') . " 2>&1 </dev/null";
 			exec($cmd, $results, $status);
