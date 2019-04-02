@@ -45,6 +45,7 @@ use Filesystem;
 use Exception;
 use Document;
 use Notify;
+use Event;
 use Date;
 use Lang;
 use App;
@@ -734,6 +735,17 @@ class Citations extends SiteController
 		}
 
 		$row->attach('associations', $associations);
+
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('onCitationBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			$this->setError($row->getError());
+			return $this->editTask($row);
+		}
+
 		if (!$row->saveAndPropagate())
 		{
 			$this->setError($row->getError());
@@ -741,8 +753,7 @@ class Citations extends SiteController
 			{
 				$row->set('id', $updateAuthorsId);
 			}
-			$this->editTask($row);
-			return;
+			return $this->editTask($row);
 		}
 
 		//check if we are allowing tags
@@ -758,6 +769,9 @@ class Citations extends SiteController
 			$badges = trim(Request::getString('badges', '', 'post'));
 			$row->updateTags($badges, 'badge');
 		}
+
+		// Trigger after save event
+		Event::trigger('onCitationAfterSave', array(&$row, $isNew));
 
 		// Redirect
 		$task = '&task=browse';
