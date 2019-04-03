@@ -309,6 +309,7 @@ $journal = (!preg_match('!\S!u', $journal)) ? utf8_encode($journal) : $journal;
 						<tr>
 							<th scope="col"><?php echo Lang::txt('TYPE'); ?></th>
 							<th scope="col"><?php echo Lang::txt('ID'); ?></th>
+							<th scope="col"><?php echo Lang::txt('DOI'); ?></th>
 							<th scope="col"><?php echo Lang::txt('COM_CITATIONS_CONTEXT'); ?></th>
 						</tr>
 					</thead>
@@ -334,6 +335,7 @@ $journal = (!preg_match('!\S!u', $journal)) ? utf8_encode($journal) : $journal;
 								$assocs[$i]->id   = null;
 								$assocs[$i]->cid  = null;
 								$assocs[$i]->oid  = null;
+								$assocs[$i]->doi = null;
 								$assocs[$i]->type = null;
 								$assocs[$i]->tbl  = null;
 							}
@@ -348,6 +350,11 @@ $journal = (!preg_match('!\S!u', $journal)) ? utf8_encode($journal) : $journal;
 								</td>
 								<td>
 									<input type="text" name="assocs[<?php echo $i; ?>][oid]" value="<?php echo $this->escape($assocs[$i]->oid); ?>" size="5" />
+									<input type="hidden" name="assocs[<?php echo $i; ?>][id]" value="<?php echo $this->escape($assocs[$i]->id); ?>" />
+									<input type="hidden" name="assocs[<?php echo $i; ?>][cid]" value="<?php echo $this->escape($assocs[$i]->cid); ?>" />
+								</td>
+								<td>
+									<input type="text" name="assocs[<?php echo $i; ?>][doi]" value="<?php echo $this->escape($assocs[$i]->doi); ?>" size="16" />
 									<input type="hidden" name="assocs[<?php echo $i; ?>][id]" value="<?php echo $this->escape($assocs[$i]->id); ?>" />
 									<input type="hidden" name="assocs[<?php echo $i; ?>][cid]" value="<?php echo $this->escape($assocs[$i]->cid); ?>" />
 								</td>

@@ -262,7 +262,7 @@ class Citations extends AdminController
 	}
 
 	/**
-	 * Toggle affliliation 
+	 * Toggle affliliation
 	 *
 	 * @return  void
 	 */
@@ -307,7 +307,7 @@ class Citations extends AdminController
 	}
 
 	/**
-	 * Toggle fundedby 
+	 * Toggle fundedby
 	 *
 	 * @return  void
 	 */
@@ -381,6 +381,8 @@ class Citations extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		Plugin::import('citation');
+
 		if (!User::authorise('core.edit', $this->_option)
 		 && !User::authorise('core.create', $this->_option))
 		{
@@ -426,13 +428,23 @@ class Citations extends AdminController
 			$assocId = !empty($assoc['id']) ? $assoc['id'] : null;
 			unset($assoc['id']);
 			$newAssociation = Association::oneOrNew($assocId)->set($assoc);
-			if (!$newAssociation->isNew() && (empty($assoc['tbl']) || empty($assoc['oid'])))
+			if (!$newAssociation->isNew())
 			{
-				$newAssociation->destroy();
+				if (!empty($assoc['tbl']) && !empty($assoc['doi']))
+				{
+					$newAssociation->set('id', $assocId);
+					$newAssociation->set('tbl', $assoc['tbl']);
+					$newAssociation->set('doi', $assoc['doi']);
+					$newAssociation->save();
+				}
+				elseif (empty($assoc['tbl']) || empty($assoc['oid']))
+				{
+					$newAssociation->destroy();
+				}
 			}
 			else
 			{
-				if (!empty($assoc['tbl']) && !empty($assoc['oid']))
+				if (!empty($assoc['tbl']) && !empty($assoc['oid']) && !empty($assoc['doi']))
 				{
 					$associations[] = $newAssociation;
 				}
