@@ -191,7 +191,7 @@ $val--) {}
 	 */
 	public static function formSelect($name, $idname, $array, $value, $class='', $jscall='')
 	{
-		$out  = '<select name="'.$name.'" id="'.$idname.'"';
+		$out  = '<select class="form-control" name="'.$name.'" id="'.$idname.'"';
 		$out .= ($class)  ? ' class="'.$class.'"'           : ''."";
 		$out .= ($jscall) ? ' onChange="'.$jscall.'">'."\n" : '>'."\n";
 		foreach ($array as $avalue => $alabel)
