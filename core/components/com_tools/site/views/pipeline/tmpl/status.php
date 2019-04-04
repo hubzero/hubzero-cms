@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 
 // get configurations/ defaults
 $developer_site = $this->config->get('developer_site', 'hubFORGE');
-$live_site = rtrim(Request::base(),'/');
+$live_site = rtrim(Request::base(), '/');
 $developer_url = $live_site = 'https://' . preg_replace('#^(https://|http://)#', '', $live_site);
 $project_path  = $this->config->get('project_path', '/tools/');
 $dev_suffix    = $this->config->get('dev_suffix', '_dev');
@@ -168,7 +168,7 @@ $this->css('pipeline.css')
 						<tr>
 							<th><?php echo Lang::txt('COM_TOOLS_SOURCE_CODE'); ?></th>
 							<td><?php echo \Components\Tools\Helpers\Html::getCodeAccess($this->status['code']); ?>
-							<?php if ( \Components\Tools\Helpers\Html::toolActive($this->status['state']) && \Components\Tools\Helpers\Html::toolWIP($this->status['state'])) { ?>
+							<?php if (\Components\Tools\Helpers\Html::toolActive($this->status['state']) && \Components\Tools\Helpers\Html::toolWIP($this->status['state'])) { ?>
 								[<a class="license-tool" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license&app=' . $this->status['toolname']); ?>"><?php echo Lang::txt('COM_TOOLS_CHANGE_LICENSE'); ?></a>]
 							<?php } ?>
 							</td>
@@ -265,33 +265,37 @@ $this->css('pipeline.css')
 
 							<div class="grid">
 								<div class="col span6">
-									<label>
-										<?php echo Lang::txt('COM_TOOLS_FLIP_STATUS');?>:
-										<select name="newstate">
-											<option value="1"<?php if ($this->status['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_REGISTERED');?></option>
-											<option value="2"<?php if ($this->status['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_CREATED');?></option>
-											<option value="3"<?php if ($this->status['state'] == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_UPLOADED');?></option>
-											<option value="4"<?php if ($this->status['state'] == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_INSTALLED');?></option>
-											<option value="5"<?php if ($this->status['state'] == 5) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_UPDATED');?></option>
-											<option value="6"<?php if ($this->status['state'] == 6) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_APPROVED');?></option>
-											<option value="7"<?php if ($this->status['state'] == 7) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_PUBLISHED');?></option>
-											<?php if ($this->status['published']==1) { // admin can retire only tools that have a published flag on ?>
-												<option value="8"<?php if ($this->status['state'] == 8) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_RETIRED');?></option>
-											<?php } ?>
-										</select>
-									</label>
+									<div class="form-group">
+										<label for="tool-newstate">
+											<?php echo Lang::txt('COM_TOOLS_FLIP_STATUS');?>:
+											<select name="newstate" id="tool-newstate" class="form-control">
+												<option value="1"<?php if ($this->status['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_REGISTERED');?></option>
+												<option value="2"<?php if ($this->status['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_CREATED');?></option>
+												<option value="3"<?php if ($this->status['state'] == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_UPLOADED');?></option>
+												<option value="4"<?php if ($this->status['state'] == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_INSTALLED');?></option>
+												<option value="5"<?php if ($this->status['state'] == 5) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_UPDATED');?></option>
+												<option value="6"<?php if ($this->status['state'] == 6) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_APPROVED');?></option>
+												<option value="7"<?php if ($this->status['state'] == 7) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_PUBLISHED');?></option>
+												<?php if ($this->status['published']==1) { // admin can retire only tools that have a published flag on ?>
+													<option value="8"<?php if ($this->status['state'] == 8) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_RETIRED');?></option>
+												<?php } ?>
+											</select>
+										</label>
+									</div>
 								</div>
 								<div class="col span6 omega">
-									<label>
-										<?php echo Lang::txt('COM_TOOLS_PRIORITY');?>:
-										<select name="priority">
-											<option value="3"<?php if ($this->status['priority'] == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_NORMAL');?></option>
-											<option value="2"<?php if ($this->status['priority'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_HIGH');?></option>
-											<option value="1"<?php if ($this->status['priority'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_CRITICAL');?></option>
-											<option value="4"<?php if ($this->status['priority'] == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_LOW');?></option>
-											<option value="5"<?php if ($this->status['priority'] == 5) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_LOWEST');?></option>
-										</select>
-									</label>
+									<div class="form-group">
+										<label for="tool-priority">
+											<?php echo Lang::txt('COM_TOOLS_PRIORITY');?>:
+											<select name="priority" id="tool-priority" class="form-control">
+												<option value="3"<?php if ($this->status['priority'] == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_NORMAL');?></option>
+												<option value="2"<?php if ($this->status['priority'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_HIGH');?></option>
+												<option value="1"<?php if ($this->status['priority'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_CRITICAL');?></option>
+												<option value="4"<?php if ($this->status['priority'] == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_LOW');?></option>
+												<option value="5"<?php if ($this->status['priority'] == 5) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_LOWEST');?></option>
+											</select>
+										</label>
+									</div>
 								</div>
 							</div>
 
@@ -303,13 +307,15 @@ $this->css('pipeline.css')
 
 							<?php echo Html::input('token'); ?>
 
-							<label for="comment">
-								<?php echo Lang::txt('COM_TOOLS_MESSAGE_TO_DEV_TEAM') . ' (' . Lang::txt('COM_TOOLS_OPTIONAL') . ')';?>
-								<textarea name="comment" id="comment" cols="40" rows="5"></textarea>
-							</label>
+							<div class="form-group">
+								<label for="comment">
+									<?php echo Lang::txt('COM_TOOLS_MESSAGE_TO_DEV_TEAM') . ' (' . Lang::txt('COM_TOOLS_OPTIONAL') . ')';?>
+									<textarea name="comment" id="comment" class="form-control" cols="40" rows="5"></textarea>
+								</label>
+							</div>
 
 							<p class="submit">
-								<input type="submit" class="btn" value="<?php echo Lang::txt('COM_TOOLS_APPLY_CHANGE'); ?>" />
+								<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_TOOLS_APPLY_CHANGE'); ?>" />
 							</p>
 						</fieldset>
 					</form>
@@ -334,8 +340,8 @@ $this->css('pipeline.css')
 
 				// get tool access text
 				$toolaccess = \Components\Tools\Helpers\Html::getToolAccess($this->status['exec'], $this->status['membergroups']);
-				$live_site = rtrim(Request::base(),'/');
-				$developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#','',$live_site);
+				$live_site = rtrim(Request::base(), '/');
+				$developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#', '', $live_site);
 
 				// get configurations/ defaults
 				$developer_site = $this->config->get('developer_site', 'hubFORGE');
