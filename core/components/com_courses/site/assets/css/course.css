@@ -9,6 +9,9 @@
 	.course {
 		padding: 0 30px 0 0;
 	}
+	.icon-fork:before {
+		content: "\f16b";
+	}
 	section.course .subject,
 	.course .subject {
 		padding: 0;
