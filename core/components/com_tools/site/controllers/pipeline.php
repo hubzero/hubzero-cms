@@ -908,7 +908,7 @@ class Pipeline extends SiteController
 		// Sanitize the input a bit
 		foreach ($tool as $i => $var)
 		{
-			$tool[$i] = Hubzero\Utility\Sanitize::clean($var);
+			$tool[$i] = \Hubzero\Utility\Sanitize::clean($var);
 		}
 
 		$today = Date::toSql();
@@ -1539,7 +1539,8 @@ class Pipeline extends SiteController
 		{
 			Log::debug(__FUNCTION__ . "() state changing");
 
-			if ($newstate == \Components\Tools\Helpers\Html::getStatusNum('Approved') && \Components\Tools\Models\Tool::validateVersion($oldstatus['version'], $error, $hzt->id))
+			if ($newstate == \Components\Tools\Helpers\Html::getStatusNum('Approved')
+			 && \Components\Tools\Models\Tool::validateVersion($oldstatus['version'], $error, $hzt->id))
 			{
 				$this->_error = $error;
 				Log::debug(__FUNCTION__ . "() state changing to approved, action confirm");
@@ -1675,7 +1676,7 @@ class Pipeline extends SiteController
 
 		$newstate = Request::getString('newstate', '');
 		$access   = Request::getInt('access', 0);
-		$comment  = Request::getString('comment', '', 'post', 'none', 2);
+		$comment  = Request::getString('comment', '', 'post');
 
 		if ($newstate && !intval($newstate))
 		{
@@ -2030,6 +2031,30 @@ class Pipeline extends SiteController
 			}
 		}
 
+		// Log activity
+		$recipients = array();
+		$recipients[] = array('user', User::get('id'));
+
+		$hzt = new \Components\Tools\Tables\Tool($this->database);
+		foreach ($hzt->getToolDevelopers($toolid) as $developer)
+		{
+			$recipients[] = array('user', $developer->uidNumber);
+		}
+
+		$hzt->load($toolid);
+		$url = Route::url('index.php?option='.$this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $hzt->toolname);
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($toolid ? 'updated' : 'created'),
+				'scope'       => 'tool',
+				'scope_id'    => $toolid,
+				'description' => ($summary ? '<a href="' . $url . '">' . $hzt->title . ' (' . $hzt->toolname . ')</a>: ' . $summary : $comment),
+				'details'     => $log
+			],
+			'recipients' => $recipients
+		]);
+
 		return true;
 	}
 
@@ -2213,6 +2238,30 @@ class Pipeline extends SiteController
 			$summary = $summary ? $summary : $comment;
 			$this->_email($toolid, $summary, $comment, $access, $action, $toolinfo);
 		}
+
+		// Log activity
+		$recipients = array();
+		$recipients[] = array('user', User::get('id'));
+
+		$hzt = new \Components\Tools\Tables\Tool($this->database);
+		foreach ($hzt->getToolDevelopers($toolid) as $developer)
+		{
+			$recipients[] = array('user', $developer->uidNumber);
+		}
+
+		$hzt->load($toolid);
+		$url = Route::url('index.php?option='.$this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $hzt->toolname);
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($toolid ? 'updated' : 'created'),
+				'scope'       => 'tool',
+				'scope_id'    => $toolid,
+				'description' => ($summary ? '<a href="' . $url . '">' . $hzt->title . ' (' . $hzt->toolname . ')</a>: ' . $summary : $comment),
+				'details'     => $rowc->changelog()->lists()
+			],
+			'recipients' => $recipients
+		]);
 
 		return true;
 	}
