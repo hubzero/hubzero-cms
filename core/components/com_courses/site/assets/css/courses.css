@@ -79,6 +79,10 @@
 		margin:0;
 	}
 
+	.icon-fork:before {
+		content: "\2298";
+	}
+
 /* IE 7 hacks */
 	html>body .resource th {
 		*width: 10em;

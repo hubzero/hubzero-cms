@@ -68,15 +68,19 @@ $this->css()
 
 	 		<p class="warning"><?php echo Lang::txt('COURSES_DELETE_WARNING', $this->course->get('description')).'<br /><br />'.$this->log; ?></p>
 
-			<label>
-				<?php echo Lang::txt('COURSES_DELETE_MESSAGE'); ?>
-				<textarea name="msg" id="msg" rows="12" cols="50"><?php echo $this->escape($this->msg); ?></textarea>
-			</label>
+			<div class="form-group">
+				<label for="msg">
+					<?php echo Lang::txt('COURSES_DELETE_MESSAGE'); ?>
+					<textarea name="msg" id="msg" rows="12" class="form-control" cols="50"><?php echo $this->escape($this->msg); ?></textarea>
+				</label>
+			</div>
 
-			<label>
-				<input type="checkbox" class="option" name="confirmdel" value="1" />
-				<?php echo Lang::txt('COURSES_DELETE_CONFIRM'); ?>
-			</label>
+			<div class="form-group form-check">
+				<label for="confirmdel" class="form-check-label">
+					<input type="checkbox" class="option form-check-input" name="confirmdel" id="confirmdel" value="1" />
+					<?php echo Lang::txt('COURSES_DELETE_CONFIRM'); ?>
+				</label>
+			</div>
 		</fieldset>
 		<div class="clear"></div>
 

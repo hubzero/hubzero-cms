@@ -37,7 +37,7 @@ $this->css('course.css')
      ->js();
 ?>
 <header id="content-header">
-	<h2><?php echo Lang::txt('COM_COURSES_COPY_COURSE'); ?></h2>
+	<h2><?php echo Lang::txt('COM_COURSES_FORK_COURSE'); ?></h2>
 
 	<div id="content-header-extra">
 		<p>
@@ -49,15 +49,15 @@ $this->css('course.css')
 <section class="main section">
 	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
 		<div class="explaination">
-			<p><?php echo Lang::txt('COM_COURSES_COPY_EXPLANATION'); ?></p>
+			<p><?php echo Lang::txt('COM_COURSES_FORK_EXPLANATION'); ?></p>
 		</div>
 		<fieldset id="top_box">
-			<legend><?php echo Lang::txt('COM_COURSES_COPY_ENTRY'); ?></legend>
+			<legend><?php echo Lang::txt('COM_COURSES_FORK_ENTRY'); ?></legend>
 
 			<div class="form-group">
 				<label class="course_alias_label" for="course_alias_field">
 					<?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?></span>
-					<input name="fields[alias]" id="course_alias_field" type="text" size="35" value="<?php echo $this->escape($this->course->get('alias') . '_copy'); ?>" autocomplete="off" />
+					<input name="fields[alias]" id="course_alias_field" type="text" size="35" class="form-control" value="<?php echo $this->escape($this->course->get('alias') . '_fork'); ?>" autocomplete="off" />
 					<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
 				</label>
 			</div>
@@ -65,7 +65,7 @@ $this->css('course.css')
 			<div class="form-group">
 				<label for="field-title">
 					<?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?></span>
-					<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->course->get('title')) . ' Copy'); ?>" />
+					<input type="text" name="fields[title]" id="field-title" size="35" class="form-control" value="<?php echo $this->escape(Lang::txt('COM_COURSES_FORK_TITLE', stripslashes($this->course->get('title')))); ?>" />
 				</label>
 			</div>
 		</fieldset>
@@ -75,13 +75,13 @@ $this->css('course.css')
 		<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-		<input type="hidden" name="task" value="docopy" />
+		<input type="hidden" name="task" value="dofork" />
 		<input type="hidden" name="return" value="<?php echo $this->escape($this->return); ?>" />
 
 		<?php echo Html::input('token'); ?>
 
 		<p class="submit">
-			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('COM_COURSES_COPY'); ?>" />
+			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('COM_COURSES_FORK'); ?>" />
 		</p>
 	</form>
 </section><!-- / .section -->

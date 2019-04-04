@@ -207,6 +207,8 @@ class Router extends Base
 				case 'deletepage':
 				case 'copy':
 				case 'docopy':
+				case 'fork':
+				case 'dofork':
 					$vars['task'] = $segments[1];
 				break;
 
