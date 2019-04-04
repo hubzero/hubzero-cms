@@ -298,7 +298,8 @@ class Course extends SiteController
 		}
 
 		// Incoming
-		$data = Request::getArray('course', array(), 'post');
+		$data   = Request::getArray('course', array(), 'post');
+		$params = Request::getArray('params', array(), 'post');
 
 		$course = Models\Course::getInstance($data['id']);
 
@@ -329,6 +330,10 @@ class Course extends SiteController
 		{
 			$course->set('state', 3);
 		}
+
+		$p = new \Hubzero\Config\Registry($params);
+
+		$course->set('params', $p->toString());
 
 		// Push back into edit mode if any errors
 		if (!$course->store(true))
@@ -982,6 +987,12 @@ class Course extends SiteController
 	 */
 	public function copyTask()
 	{
+		// Ensure we found the course info
+		if (!$this->course->exists())
+		{
+			App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+		}
+
 		$rtrn = Request::getString('return');
 
 		$this->view
@@ -999,6 +1010,12 @@ class Course extends SiteController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		// Ensure we found the course info
+		if (!$this->course->exists())
+		{
+			App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+		}
 
 		// Incoming
 		$rtrn = Request::getString('return', '', 'post');
@@ -1029,6 +1046,110 @@ class Course extends SiteController
 
 		// Success
 		Notify::success(Lang::txt('COM_COURSES_ITEM_COPIED'));
+
+		App::redirect($rtrn);
+	}
+
+	/**
+	 * Show a form for providing formed title
+	 *
+	 * @return  void
+	 */
+	public function forkTask()
+	{
+		// Ensure we found the course info
+		if (!$this->course->exists())
+		{
+			App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+		}
+
+		if (!$this->course->config('allow_forks'))
+		{
+			App::abort(403, Lang::txt('COM_COURSES_ERROR_FORK_DIASABLED'));
+		}
+
+		$rtrn = Request::getString('return');
+
+		$this->view
+			->set('course', $this->course)
+			->set('return', $rtrn)
+			->display();
+	}
+
+	/**
+	 * Copy an entry and all associated data
+	 *
+	 * @return  void
+	 */
+	public function doforkTask()
+	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		// Ensure we found the course info
+		if (!$this->course->exists())
+		{
+			App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+		}
+
+		if (!$this->course->isPublished() && !$this->course->isDraft())
+		{
+			App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+		}
+
+		if (!$this->course->config('allow_forks'))
+		{
+			App::abort(403, Lang::txt('COM_COURSES_ERROR_FORK_DIASABLED'));
+		}
+
+		// Incoming
+		$rtrn = Request::getString('return', '', 'post');
+		if ($rtrn)
+		{
+			$rtrn = base64_decode($rtrn);
+		}
+
+		$fields = Request::getArray('fields', array('title' => '', 'alias' => ''), 'post');
+
+		$original = $this->course->get('id');
+
+		// Copy the course
+		if (!$this->course->copy(true, $fields['title'], $fields['alias']))
+		{
+			Notify::error(Lang::txt('COM_COURSES_ERROR_FORK_FAILED') . ': ' . $this->course->getError());
+
+			if (!$rtrn)
+			{
+				$rtrn = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false);
+			}
+
+			App::redirect($rtrn);
+		}
+
+		// Remove all the managers
+		foreach ($this->course->managers() as $manager)
+		{
+			if (!$manager->delete())
+			{
+				Notify::error($manager->getError());
+			}
+		}
+
+		// Set the current user as a manager
+		$role_id = 2;
+		$this->course->add(User::get('id'), $role_id);
+
+		// Note where the course was forked from
+		$this->course->set('forked_from', $original);
+		$this->course->store();
+
+		if (!$rtrn)
+		{
+			$rtrn = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $fields['alias'], false);
+		}
+
+		// Success
+		Notify::success(Lang::txt('COM_COURSES_ITEM_FORKED'));
 
 		App::redirect($rtrn);
 	}

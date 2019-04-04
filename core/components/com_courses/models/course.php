@@ -337,7 +337,7 @@ class Course extends Base
 
 			if (!$this->_manager)
 			{
-				$this->_manager = \Components\Courses\Models\Manager::getInstance($user_id, $this->get('course_id'), 0, 0);
+				$this->_manager = \Components\Courses\Models\Manager::getInstance($user_id, $this->get('id'), 0, 0);
 			}
 		}
 
