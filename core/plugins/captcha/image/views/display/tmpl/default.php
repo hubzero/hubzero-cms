@@ -58,7 +58,7 @@ $this->css();
 		</div>
 		<div class="col span4 omega">
 			<div class="captcha-wrap">
-				<img id="captchaCode<?php echo $this->total; ?>" src="<?php echo $current . htmlentities($append); ?>showCaptcha=True&amp;instanceNo=<?php echo $this->total; ?>" alt="<?php echo LAng::txt('PLG_CAPTCHA_IMAGE_ALT'); ?>" />
+				<img id="captchaCode<?php echo $this->total; ?>" src="<?php echo $current . htmlentities($append); ?>showCaptcha=True&amp;instanceNo=<?php echo $this->total; ?>" alt="<?php echo Lang::txt('PLG_CAPTCHA_IMAGE_ALT'); ?>" />
 
 				<script type="text/javascript">
 					//<![CDATA[
