@@ -113,8 +113,8 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 
 				<div class="grid">
 					<div class="col span-half">
-						<div class="form-group">
-							<label for="field-allow_comments">
+						<div class="form-group form-check">
+							<label for="field-allow_comments" class="form-check-label">
 								<input type="checkbox" class="option form-check-input" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) { echo ' checked="checked"'; } ?> />
 								<?php echo Lang::txt('COM_BLOG_FIELD_ALLOW_COMMENTS'); ?>
 							</label>
