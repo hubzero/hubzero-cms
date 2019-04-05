@@ -88,6 +88,9 @@
 		color: #000;
 	}
 
+  .th_membership .btn-success[disabled] {
+		color: #000 !important;
+	}
 /* Browse Projects - project thumbnail 
 --------------------------------------------- 
 */

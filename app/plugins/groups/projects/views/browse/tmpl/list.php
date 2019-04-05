@@ -141,8 +141,36 @@ switch ($this->which)
 					<td class="th_role">
 						<?php echo $role; ?>
 					</td>
-					<td class="th_membership">
-						<?php echo ($row->get('sync_group') ? '<span class="synced">' . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SYNCED') . '</span>' : '<span class="selected">' . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SELECTED') . '</span>'); ?>
+					<td class="th_membership"> 
+						<?php $member = $row->member(); ?>
+						<?php $link = Route::url('index.php?option=com_projects&task=requestaccess&alias=' . $row->get('alias') . '&' . Session::getFormToken() . '=1'); ?>
+						<?php if ($row->allowMembershipRequest()): ?>
+							<?php echo $member->get('status'); ?>
+							<?php if (!$member): ?>
+								<div class="btn-container tooltips span4">
+									<a href="<?php echo $link;?>" class="tooltips btn btn-success"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_REQUEST_MEMBERSHIP') ;?></a>
+								</div>
+							<?php elseif ($member->get('status') == 3): ?>
+								<div class="btn-container tooltips span4" title="<?php echo Lang::txt('PLG_GROUPS_PROJECTS_REQUEST_PENDING') ;?>">
+									<a href="<?php echo $link; ?>" class="tooltips btn btn-success" disabled><?php echo Lang::txt('PLG_GROUPS_PROJECTS_REQUEST_PENDING') ;?></a>
+								</div>
+							<?php elseif ($member->get('status') == 4): ?>
+								<?php 
+									$params = new Hubzero\Config\Registry($member->get('params')); 
+									$denyMessage = 'Membership has been denied. <br/>';
+									$denyMessage .= 'Reason: <br/>';
+									$denyMessage .= $params->get('denyMessage');	
+								?>
+								
+								<div class="btn-container tooltips span4" title="<?php echo $denyMessage;?>">
+									<a href="<?php echo $link; ?>" class="btn btn-success" disabled><?php echo Lang::txt('PLG_GROUPS_PROJECTS_REQUEST_DENIED') ;?></a>
+								</div>
+							<?php else: ?>
+								<?php echo ($row->get('sync_group') ? '<span class="synced">' . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SYNCED') . '</span>' : '<span class="selected">' . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SELECTED') . '</span>'); ?>
+							<?php endif; ?>
+						<?php else: ?>
+							<?php echo ($row->get('sync_group') ? '<span class="synced">' . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SYNCED') . '</span>' : '<span class="selected">' . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SELECTED') . '</span>'); ?>
+						<?php endif; ?>
 					</td>
 				</tr>
 				<?php
