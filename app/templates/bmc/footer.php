@@ -51,10 +51,9 @@
   <nav class="legal">
     <div class="inner">
       <ul>
-        <li><a href="/legal/privacy">Privacy Policy</a></li>
-        <li><a href="/legal/abuse">Abuse Policy</a></li>
-        <li><a href="/legal/licensing">Licensing Content</a></li>
-        <li><a href="/legal/dmcapolicy">Copyright Infringement</a></li>
+        <li><a href="/terms">Terms of Use</a></li>
+        <li><a href="/terms#codeofconduct">Code of Conduct</a></li>
+        <li><a href="/terms#privacy">Privacy Policy</a></li>
       </ul>
     </div>
   </nav>
