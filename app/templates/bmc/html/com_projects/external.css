@@ -1,0 +1,9 @@
+@import url("/core/components/com_projects/site/assets/css/external.css");
+
+.project-inner-wrap .btn-success[disabled] {
+	background: #685427;
+}
+
+.project-inner-wrap .denied .btn-success[disabled] {
+	background: #682727;
+}

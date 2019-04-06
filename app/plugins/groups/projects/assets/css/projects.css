@@ -89,7 +89,11 @@
 	}
 
   .th_membership .btn-success[disabled] {
-		color: #000 !important;
+		background: #685427;
+	}
+	
+	.th_membership .denied .btn-success[disabled] {
+		background: #682727;
 	}
 /* Browse Projects - project thumbnail 
 --------------------------------------------- 

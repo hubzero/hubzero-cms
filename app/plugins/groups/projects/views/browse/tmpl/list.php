@@ -145,7 +145,6 @@ switch ($this->which)
 						<?php $member = $row->member(); ?>
 						<?php $link = Route::url('index.php?option=com_projects&task=requestaccess&alias=' . $row->get('alias') . '&' . Session::getFormToken() . '=1'); ?>
 						<?php if ($row->allowMembershipRequest()): ?>
-							<?php echo $member->get('status'); ?>
 							<?php if (!$member): ?>
 								<div class="btn-container tooltips span4">
 									<a href="<?php echo $link;?>" class="tooltips btn btn-success"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_REQUEST_MEMBERSHIP') ;?></a>
@@ -162,7 +161,7 @@ switch ($this->which)
 									$denyMessage .= $params->get('denyMessage');	
 								?>
 								
-								<div class="btn-container tooltips span4" title="<?php echo $denyMessage;?>">
+								<div class="btn-container tooltips span4 denied" title="<?php echo $denyMessage;?>">
 									<a href="<?php echo $link; ?>" class="btn btn-success" disabled><?php echo Lang::txt('PLG_GROUPS_PROJECTS_REQUEST_DENIED') ;?></a>
 								</div>
 							<?php else: ?>
