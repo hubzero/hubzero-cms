@@ -188,7 +188,7 @@ class Asset extends Base
 	}
 
 	/**
-	 * Is the file an image?
+	 * Get the file size
 	 *
 	 * @return  boolean
 	 */
