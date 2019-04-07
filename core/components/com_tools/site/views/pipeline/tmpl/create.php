@@ -94,44 +94,52 @@ $this->css('pipeline.css')
 				<input type="hidden" name="editversion" value="<?php echo $this->editversion; ?>" />
 				<?php echo Html::input('token'); ?>
 
-				<label for="t_toolname">
-					<?php echo Lang::txt('COM_TOOLS_TOOLNAME'); ?>:
-					<?php if ($this->id) { ?>
-						<input type="hidden" name="tool[toolname]" id="t_toolname" value="<?php echo $this->defaults['toolname']; ?>" />
-						<strong><?php echo $this->defaults['toolname']; ?> (<?php echo ($this->editversion == 'current') ? Lang::txt('COM_TOOLS_CURRENT_VERSION') : Lang::txt('COM_TOOLS_DEV_VERSION'); ?>)</strong>
-						<?php if (isset($this->defaults['published']) && $this->defaults['published']) { ?>
-							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&app='.$this->id); ?>"><?php echo Lang::txt('COM_TOOLS_ALL_VERSIONS'); ?></a>
+				<div class="form-group">
+					<label for="t_toolname">
+						<?php echo Lang::txt('COM_TOOLS_TOOLNAME'); ?>:
+						<?php if ($this->id) { ?>
+							<input type="hidden" name="tool[toolname]" id="t_toolname" value="<?php echo $this->defaults['toolname']; ?>" />
+							<strong><?php echo $this->defaults['toolname']; ?> (<?php echo ($this->editversion == 'current') ? Lang::txt('COM_TOOLS_CURRENT_VERSION') : Lang::txt('COM_TOOLS_DEV_VERSION'); ?>)</strong>
+							<?php if (isset($this->defaults['published']) && $this->defaults['published']) { ?>
+								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&app='.$this->id); ?>"><?php echo Lang::txt('COM_TOOLS_ALL_VERSIONS'); ?></a>
+							<?php } ?>
+						<?php } else { ?>
+							<span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+							<input type="text" name="tool[toolname]" id="t_toolname" maxlength="15" class="form-control" value="<?php echo $this->escape($this->defaults['toolname']); ?>" />
+							<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_TOOLNAME'); ?></span>
 						<?php } ?>
-					<?php } else { ?>
-						<span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-						<input type="text" name="tool[toolname]" id="t_toolname" maxlength="15" value="<?php echo $this->escape($this->defaults['toolname']); ?>" />
-						<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_TOOLNAME'); ?></span>
-					<?php } ?>
-				</label>
+					</label>
+				</div>
 
-				<label for="t_title">
-					<?php echo Lang::txt('COM_TOOLS_TITLE') ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					<input type="text" name="tool[title]" id="t_title" maxlength = "127" value="<?php echo $this->escape(stripslashes($this->defaults['title'])); ?>" />
-					<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_TITLE'); ?></span>
-				</label>
+				<div class="form-group">
+					<label for="t_title">
+						<?php echo Lang::txt('COM_TOOLS_TITLE') ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+						<input type="text" name="tool[title]" id="t_title" maxlength="127" class="form-control" value="<?php echo $this->escape(stripslashes($this->defaults['title'])); ?>" />
+						<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_TITLE'); ?></span>
+					</label>
+				</div>
 
-				<label for="t_version">
-					<?php echo Lang::txt('COM_TOOLS_VERSION') ?>:
-					<?php if ($this->editversion == 'current') { ?>
-						<input type="hidden" name="tool[version]" id="t_version" value="<?php echo $this->escape($this->defaults['version']); ?>" />
-						<strong><?php echo $this->defaults['version']; ?></strong>
-						<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_VERSION_PUBLISHED'); ?></span>
-					<?php } else { ?>
-						<input type="text" name="tool[version]" id="t_version" maxlength="15" value="<?php echo $this->escape($this->defaults['version']); ?>" />
-						<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_VERSION'); ?></span>
-					<?php } ?>
-				</label>
+				<div class="form-group">
+					<label for="t_version">
+						<?php echo Lang::txt('COM_TOOLS_VERSION') ?>:
+						<?php if ($this->editversion == 'current') { ?>
+							<input type="hidden" name="tool[version]" id="t_version" value="<?php echo $this->escape($this->defaults['version']); ?>" />
+							<strong><?php echo $this->defaults['version']; ?></strong>
+							<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_VERSION_PUBLISHED'); ?></span>
+						<?php } else { ?>
+							<input type="text" name="tool[version]" id="t_version" maxlength="15" class="form-control" value="<?php echo $this->escape($this->defaults['version']); ?>" />
+							<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_VERSION'); ?></span>
+						<?php } ?>
+					</label>
+				</div>
 
-				<label for="t_description">
-					<?php echo Lang::txt('COM_TOOLS_AT_A_GLANCE') ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					<input type="text" name="tool[description]" id="t_description" maxlength="256" value="<?php echo $this->escape(stripslashes($this->defaults['description'])); ?>" />
-					<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_DESCRIPTION'); ?></span>
-				</label>
+				<div class="form-group">
+					<label for="t_description">
+						<?php echo Lang::txt('COM_TOOLS_AT_A_GLANCE') ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+						<input type="text" name="tool[description]" id="t_description" maxlength="256" class="form-control" value="<?php echo $this->escape(stripslashes($this->defaults['description'])); ?>" />
+						<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_DESCRIPTION'); ?></span>
+					</label>
+				</div>
 
 				<?php if ($this->id && isset($this->defaults['resourceid'])) { ?>
 					<p>
@@ -143,19 +151,23 @@ $this->css('pipeline.css')
 
 				<fieldset>
 					<legend><?php echo ($this->id) ? Lang::txt('COM_TOOLS_APPLICATION_SCREEN_SIZE'): Lang::txt('COM_TOOLS_SUGGESTED_SCREEN_SIZE')  ?>:</legend>
-					<div class="inline">
-						<label for="vncGeometryX"><?php echo Lang::txt('COM_TOOLS_MARKER_WIDTH'); ?> <input type="text" name="tool[vncGeometryX]" id="vncGeometryX" size="4" maxlength="4" value="<?php echo $this->defaults['vncGeometryX']; ?>" /></label> x
-						<label for="vncGeometryY"><?php echo Lang::txt('COM_TOOLS_MARKER_HEIGHT'); ?> <input type="text" name="tool[vncGeometryY]" id="vncGeometryY" size="4" maxlength="4" value="<?php echo $this->defaults['vncGeometryY']; ?>" /></label>
+					<div class="form-group">
+						<div class="inline">
+							<label for="vncGeometryX"><?php echo Lang::txt('COM_TOOLS_MARKER_WIDTH'); ?> <input type="text" name="tool[vncGeometryX]" id="vncGeometryX" size="4" maxlength="4" class="form-control" value="<?php echo $this->defaults['vncGeometryX']; ?>" /></label> x
+							<label for="vncGeometryY"><?php echo Lang::txt('COM_TOOLS_MARKER_HEIGHT'); ?> <input type="text" name="tool[vncGeometryY]" id="vncGeometryY" size="4" maxlength="4" class="form-control" value="<?php echo $this->defaults['vncGeometryY']; ?>" /></label>
+						</div>
 					</div>
 					<p class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_VNC'); ?></p>
 				</fieldset>
 
 				<?php if ($this->config->get('access-admin-component')) { ?>
-					<label for="t_hostreq">
-						<?php echo Lang::txt('COM_TOOLS_HOSTREQ') ?>:</span>
-						<input type="text" name="tool[hostreq]" id="t_hostreq" value="<?php echo $this->escape(stripslashes($this->defaults['hostreq'])); ?>" />
-						<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_HOSTREQ'); ?></span>
-					</label>
+					<div class="form-group">
+						<label for="t_hostreq">
+							<?php echo Lang::txt('COM_TOOLS_HOSTREQ') ?>:</span>
+							<input type="text" name="tool[hostreq]" id="t_hostreq" class="form-control" value="<?php echo $this->escape(stripslashes($this->defaults['hostreq'])); ?>" />
+							<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_HOSTREQ'); ?></span>
+						</label>
+					</div>
 				<?php } else { ?>
 					<input type="hidden" name="tool[hostreq]" id="t_hostreq" value="<?php echo $this->escape(stripslashes($this->defaults['hostreq'])); ?>" />
 				<?php } ?>
@@ -164,37 +176,45 @@ $this->css('pipeline.css')
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_TOOLS_LEGEND_ACCESS'); ?>:</legend>
 
-				<label for="t_exec">
-					<?php echo Lang::txt('COM_TOOLS_TOOL_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					<?php echo \Components\Tools\Helpers\Html::formSelect('tool[exec]', 't_exec', $execChoices, $this->defaults['exec'], 'groupchoices'); ?>
-				</label>
+				<div class="form-group">
+					<label for="t_exec">
+						<?php echo Lang::txt('COM_TOOLS_TOOL_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+						<?php echo \Components\Tools\Helpers\Html::formSelect('tool[exec]', 't_exec', $execChoices, $this->defaults['exec'], 'groupchoices'); ?>
+					</label>
+				</div>
 
 				<p><?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_TOOLACCESS'); ?></p>
 
-				<div id="groupname" class="<?php echo ($this->defaults['exec'] == '@GROUP') ? '': 'hide'; ?>">
-					<input type="text" name="tool[membergroups]" id="t_groups" value="<?php echo \Components\Tools\Helpers\Html::getGroups($this->defaults['membergroups'], $this->id); ?>" />
+				<div id="groupname" class="form-group<?php echo ($this->defaults['exec'] == '@GROUP') ? '': ' hide'; ?>">
+					<input type="text" name="tool[membergroups]" id="t_groups" class="form-control" value="<?php echo \Components\Tools\Helpers\Html::getGroups($this->defaults['membergroups'], $this->id); ?>" />
 					<p class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_GROUPS'); ?></p>
 				</div>
 
-				<label for="t_code">
-					<?php echo Lang::txt('COM_TOOLS_CODE_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					<?php echo \Components\Tools\Helpers\Html::formSelect('tool[code]', 't_code', $codeChoices, $this->defaults['code']); ?>
-				</label>
+				<div class="form-group">
+					<label for="t_code">
+						<?php echo Lang::txt('COM_TOOLS_CODE_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+						<?php echo \Components\Tools\Helpers\Html::formSelect('tool[code]', 't_code', $codeChoices, $this->defaults['code']); ?>
+					</label>
+				</div>
 
 				<?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_CODEACCESS'); ?>
 
-				<label for="t_wiki">
-					<?php echo Lang::txt('COM_TOOLS_WIKI_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					<?php echo \Components\Tools\Helpers\Html::formSelect('tool[wiki]', 't_wiki', $wikiChoices, $this->defaults['wiki']); ?>
-				</label>
+				<div class="form-group">
+					<label for="t_wiki">
+						<?php echo Lang::txt('COM_TOOLS_WIKI_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+						<?php echo \Components\Tools\Helpers\Html::formSelect('tool[wiki]', 't_wiki', $wikiChoices, $this->defaults['wiki']); ?>
+					</label>
+				</div>
 
 				<p><?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_WIKIACCESS'); ?></p>
 
-				<label for="t_team">
-					<?php echo Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					<input type="text" name="tool[developers]" id="t_team" value="<?php echo \Components\Tools\Helpers\Html::getDevTeam($this->defaults['developers'], $this->id);  ?>" />
-					<span class="hint"><?php echo Config::get('sitename') . ' ' . Lang::txt('COM_TOOLS_HINT_TEAM'); ?></span>
-				</label>
+				<div class="form-group">
+					<label for="t_team">
+						<?php echo Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+						<input type="text" name="tool[developers]" id="t_team" class="form-control" value="<?php echo \Components\Tools\Helpers\Html::getDevTeam($this->defaults['developers'], $this->id);  ?>" />
+						<span class="hint"><?php echo Config::get('sitename') . ' ' . Lang::txt('COM_TOOLS_HINT_TEAM'); ?></span>
+					</label>
+				</div>
 			</fieldset>
 
 			<p class="submit">

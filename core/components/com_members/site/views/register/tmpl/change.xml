@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 @package        hubzero-cms
-@file           components/com_register/views/change/tmpl/default.xml
+@file           components/com_members/views/register/tmpl/change.xml
 @copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
 @license        http://opensource.org/licenses/MIT MIT
 

@@ -172,7 +172,7 @@ class LinkedIn
 	 */
 	public function __destruct()
 	{
-		unset($this);
+		//unset($this);
 	}
 
 	/**
@@ -1253,7 +1253,7 @@ class LinkedIn
 		if (!empty($body))
 		{
 			$body = trim(htmlspecialchars(strip_tags(stripslashes($body))));
-			if (strlen($body) > self::_INV_BODY_LENGTH
+			if (strlen($body) > self::_INV_BODY_LENGTH)
 			{
 				throw new LinkedInException('LinkedIn->invite(): message body length is too long - max length is ' . self::_INV_BODY_LENGTH . ' characters.');
 			}

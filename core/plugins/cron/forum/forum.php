@@ -87,7 +87,7 @@ class plgCronForum extends \Hubzero\Plugin\Plugin
 		$db = clone(App::get('db'));
 
 		// Get all site members who have the digest option set for at least one group
-		// Currently stored in jos_xgroups_memberoption - this will transition to a central
+		// Currently stored in `#__xgroups_memberoption` - this will transition to a central
 		// location when we implement the large messaging/digest functionality
 		// 0 = no email
 		// 1 = immediately

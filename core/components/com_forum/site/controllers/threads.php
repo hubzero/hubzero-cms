@@ -374,6 +374,10 @@ class Threads extends SiteController
 		}
 
 		// Bind data
+		if (!$fields['id'])
+		{
+			$fields['id'] = null;
+		}
 		$post->set($fields);
 
 		// Make sure the thread exists and is accepting new posts

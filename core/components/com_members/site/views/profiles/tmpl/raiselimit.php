@@ -55,10 +55,12 @@ $this->css();
 				who will grant your request or provide a reason why we are unable to meet your
 				request at this time.
 			</p>
-			<label>
-				Reason for Increase:
-				<textarea name="request" id="request" rows="6" cols="32"></textarea>
-			</label>
+			<div class="form-group">
+				<label for="request">
+					Reason for Increase:
+					<textarea class="form-control" name="request" id="request" rows="6" cols="32"></textarea>
+				</label>
+			</div>
 		</fieldset>
 		<div class="clear"></div>
 

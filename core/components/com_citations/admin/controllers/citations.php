@@ -45,6 +45,7 @@ use Exception;
 use Request;
 use Config;
 use Route;
+use Event;
 use Lang;
 use App;
 
@@ -440,6 +441,16 @@ class Citations extends AdminController
 
 		$row->attach('associations', $associations);
 
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('onCitationBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			Notify::error($row->getError());
+			return $this->editTask($row);
+		}
+
 		// Store new content
 		if (!$row->saveAndPropagate())
 		{
@@ -452,6 +463,9 @@ class Citations extends AdminController
 		//add tags & badges
 		$row->updateTags($this->tags);
 		$row->updateTags($this->badges, 'badge');
+
+		// Trigger after save event
+		Event::trigger('onCitationAfterSave', array(&$row, $isNew));
 
 		Notify::success(Lang::txt('CITATION_SAVED', $row->id));
 

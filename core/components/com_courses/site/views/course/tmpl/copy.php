@@ -54,16 +54,20 @@ $this->css('course.css')
 		<fieldset id="top_box">
 			<legend><?php echo Lang::txt('COM_COURSES_COPY_ENTRY'); ?></legend>
 
-			<label class="course_alias_label" for="course_alias_field">
-				<?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?></span>
-				<input name="fields[alias]" id="course_alias_field" type="text" size="35" value="<?php echo $this->escape($this->course->get('alias') . '_copy'); ?>" autocomplete="off" />
-				<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
-			</label>
+			<div class="form-group">
+				<label class="course_alias_label" for="course_alias_field">
+					<?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?></span>
+					<input name="fields[alias]" id="course_alias_field" type="text" size="35" value="<?php echo $this->escape($this->course->get('alias') . '_copy'); ?>" autocomplete="off" />
+					<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
+				</label>
+			</div>
 
-			<label for="field-title">
-				<?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?></span>
-				<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->course->get('title')) . ' Copy'); ?>" />
-			</label>
+			<div class="form-group">
+				<label for="field-title">
+					<?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?></span>
+					<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->course->get('title')) . ' Copy'); ?>" />
+				</label>
+			</div>
 		</fieldset>
 		<div class="clear"></div>
 

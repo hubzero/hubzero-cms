@@ -208,7 +208,7 @@ class Zones extends Table
 			$query .= " WHERE ";
 			$query .= implode(" AND ", $where);
 		}
-		$query .= " GROUP BY `zone` ";
+		$query .= " GROUP BY `zone`, c.id ";
 
 		return $query;
 	}

@@ -447,4 +447,23 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 		phpCAS::setServerLoginURL($loginUrl);
 		phpCAS::forceAuthentication();
 	}
+
+	/**
+	 * Display login button
+	 *
+	 * @param   string  $return
+	 * @return  string
+	 */
+	public static function onRenderOption($return = null)
+	{
+		Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/pucas/assets/css/pucas.css');
+
+		$html = '<a class="pucas account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=pucas' . $return) . '">';
+			$html .= '<div class="signin">';
+				$html .= Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', 'Purdue Career Account');
+			$html .= '</div>';
+		$html .= '</a>';
+
+		return $html;
+	}
 }

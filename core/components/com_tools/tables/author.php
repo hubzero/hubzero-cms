@@ -153,13 +153,13 @@ class Author extends Table
 	{
 		if ($version == 'dev' && $rid)
 		{
-			$query = "SELECT authorid as uidNumber FROM `#__author_assoc` WHERE subid= " . $this->_db->quote($rid) . " AND subtable='resources' ORDER BY ordering";
+			$query = "SELECT authorid as uidNumber, ordering FROM `#__author_assoc` WHERE subid= " . $this->_db->quote($rid) . " AND subtable='resources' ORDER BY ordering";
 			$this->_db->setQuery($query);
 			$authors = $this->_db->loadObjectList();
 		}
 		else
 		{
-			$query  = "SELECT DISTINCT a.uid as uidNumber ";
+			$query  = "SELECT DISTINCT a.uid as uidNumber, a.ordering ";
 			$query .= "FROM `#__tool_authors` as a  ";
 			if ($version == 'current' && $toolname)
 			{

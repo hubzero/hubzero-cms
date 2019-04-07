@@ -1946,6 +1946,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			return $this->_editcollection($collection);
 		}
 
+		$collection->item()->tag(trim(Request::getString('tags', '', 'post')));
+
 		$url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
 
 		// Record the activity

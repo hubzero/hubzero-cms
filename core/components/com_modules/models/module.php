@@ -100,6 +100,13 @@ class Module extends Relational
 	);
 
 	/**
+	 * The path to the installed files
+	 *
+	 * @var  string
+	 */
+	protected $path = null;
+
+	/**
 	 * Generates automatic publish_up field value
 	 *
 	 * @param   array   $data  the data being saved
@@ -144,21 +151,23 @@ class Module extends Relational
 	{
 		if (is_null($this->manifest))
 		{
-			$path = DS . 'modules' . DS . $this->get('module') . DS . $this->get('module') . '.xml';
+			$paths = array();
 
-			$paths = array(
-				'app'  => Filesystem::cleanPath(PATH_APP . $path),
-				'core' => Filesystem::cleanPath(PATH_CORE . $path)
-			);
-
-			foreach ($paths as $p)
+			if (substr($this->get('module'), 0, 4) == 'mod_')
 			{
-				if (file_exists($p))
+				$paths[] = $this->path() . DS . substr($this->get('module'), 4) . '.xml';
+			}
+
+			$paths[] = $this->path() . DS . $this->get('module') . '.xml';
+
+			foreach ($paths as $file)
+			{
+				if (file_exists($file))
 				{
 					// Disable libxml errors and allow to fetch error information as needed
 					libxml_use_internal_errors(true);
 
-					$this->manifest = simplexml_load_file($p);
+					$this->manifest = simplexml_load_file($file);
 					break;
 				}
 			}
@@ -191,31 +200,7 @@ class Module extends Relational
 	{
 		$file = $this->get('module') . ($system ? '.sys' : '');
 
-		$paths = array();
-
-		if (substr($this->get('module'), 0, 4) == 'mod_')
-		{
-			$path = '/modules/' . substr($this->get('module'), 4);
-
-			$paths[] = PATH_APP . $path;
-			$paths[] = PATH_CORE . $path;
-		}
-
-		$path = '/modules/' . $this->get('module');
-
-		$paths[] = PATH_APP . $path;
-		$paths[] = PATH_CORE . $path;
-
-		foreach ($paths as $p)
-		{
-			if (Lang::load($file, $p, null, false, true))
-			{
-				return true;
-			}
-		}
-
-		//return (Lang::load($file, PATH_APP . $path, null, false, true) || Lang::load($file, PATH_CORE . $path, null, false, true));
-		return false;
+		return Lang::load($file, $this->path(), null, false, true);
 	}
 
 	/**
@@ -255,16 +240,10 @@ class Module extends Relational
 
 		if (substr($this->get('module'), 0, 4) == 'mod_')
 		{
-			$path = '/modules/' . substr($this->get('module'), 4) . '/' . substr($this->get('module'), 4) . '.xml';
-
-			$paths[] = PATH_APP . $path;
-			$paths[] = PATH_CORE . $path;
+			$paths[] = $this->path() . DS . substr($this->get('module'), 4) . '.xml';
 		}
 
-		$path = '/modules/' . $this->get('module') . '/' . $this->get('module') . '.xml';
-
-		$paths[] = PATH_APP . $path;
-		$paths[] = PATH_CORE . $path;
+		$paths[] = $this->path() . DS . $this->get('module') . '.xml';
 
 		foreach ($paths as $file)
 		{
@@ -399,6 +378,48 @@ class Module extends Relational
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Get the installed path
+	 *
+	 * @return  string
+	 */
+	public function path()
+	{
+		if (is_null($this->path))
+		{
+			$this->path = '';
+
+			if ($module = $this->get('module'))
+			{
+				$paths = array();
+
+				if (substr($module, 0, 4) == 'mod_')
+				{
+					$path = '/modules/' . substr($module, 4) . '/' . substr($module, 4) . '.php';
+
+					$paths[] = PATH_APP . $path;
+					$paths[] = PATH_CORE . $path;
+				}
+
+				$path = '/modules/' . $module . '/' . $module . '.php';
+
+				$paths[] = PATH_APP . $path;
+				$paths[] = PATH_CORE . $path;
+
+				foreach ($paths as $file)
+				{
+					if (file_exists($file))
+					{
+						$this->path = dirname($file);
+						break;
+					}
+				}
+			}
+		}
+
+		return $this->path;
 	}
 
 	/**

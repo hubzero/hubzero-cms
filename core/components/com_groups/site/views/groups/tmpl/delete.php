@@ -41,13 +41,11 @@ $this->css()
 	<h2><?php echo $this->title; ?></h2>
 
 	<div id="content-header-extra">
-		<ul id="useroptions">
-			<li class="last">
-				<a class="group btn" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn')); ?>">
-					<?php echo Lang::txt('COM_GROUPS_ACTION_BACK_TO_GROUP'); ?>
-				</a>
-			</li>
-		</ul>
+		<p>
+			<a class="icon-group btn" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn')); ?>">
+				<?php echo Lang::txt('COM_GROUPS_ACTION_BACK_TO_GROUP'); ?>
+			</a>
+		</p>
 	</div><!-- / #content-header-extra -->
 </header>
 
@@ -75,15 +73,19 @@ $this->css()
 
 	 		<p class="warning"><?php echo Lang::txt('COM_GROUPS_DELETE_CONFIRM_BOX_WARNING', $this->group->get('description')) . '<br /><br />' . $this->log; ?></p>
 
-			<label for="msg">
-				<?php echo Lang::txt('COM_GROUPS_DELETE_CONFIRM_BOX_MESSAGE_LABEL'); ?>
-				<textarea name="msg" id="msg" rows="12" cols="50"><?php echo htmlentities($this->msg); ?></textarea>
-			</label>
+			<div class="form-group">
+				<label for="msg">
+					<?php echo Lang::txt('COM_GROUPS_DELETE_CONFIRM_BOX_MESSAGE_LABEL'); ?>
+					<textarea class="form-control" name="msg" id="msg" rows="12" cols="50"><?php echo htmlentities($this->msg); ?></textarea>
+				</label>
+			</div>
 
-			<label for="confirmdel">
-				<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" />
-				<?php echo Lang::txt('COM_GROUPS_DELETE_CONFIRM_CONFIRM'); ?>
-			</label>
+			<div class="form-group form-check">
+				<label for="confirmdel" class="form-check-label">
+					<input type="checkbox" class="option form-check-input" name="confirmdel" id="confirmdel" value="1" />
+					<?php echo Lang::txt('COM_GROUPS_DELETE_CONFIRM_CONFIRM'); ?>
+				</label>
+			</div>
 		</fieldset>
 		<div class="clear"></div>
 

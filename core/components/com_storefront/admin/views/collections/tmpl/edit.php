@@ -43,6 +43,9 @@ Toolbar::cancel();
 //Toolbar::spacer();
 //Toolbar::help('category');
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
 $this->css()
 	->js('jquery.fileuploader.js', 'system')
 	->js();

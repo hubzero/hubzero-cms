@@ -95,6 +95,20 @@ class Asset extends Relational
 	);
 
 	/**
+	 * File size
+	 *
+	 * @var  string
+	 */
+	protected $size = null;
+
+	/**
+	 * Diemnsions for file (must be an image)
+	 *
+	 * @var  array
+	 */
+	protected $dimensions = null;
+
+	/**
 	 * Generates automatic ordering field value
 	 *
 	 * @param   array   $data  the data being saved
@@ -212,6 +226,131 @@ class Asset extends Relational
 		}
 
 		return false;
+	}
+
+	/**
+	 * Is an asset a link?
+	 *
+	 * @return  boolean  True if image, false if not
+	 */
+	public function isLink()
+	{
+		return ($this->get('type') == 'link');
+	}
+
+	/**
+	 * Is an asset an external link?
+	 *
+	 * @return  boolean  True if image, false if not
+	 */
+	public function isExternalLink()
+	{
+		if ($this->isLink())
+		{
+			$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)"
+					 . "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
+
+			if (preg_match("/$UrlPtn/", $this->get('filename')))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Does the file exist?
+	 *
+	 * @return  boolean  True if image, false if not
+	 */
+	public function exists()
+	{
+		$path  = $this->filespace() . DS . $this->get('item_id') . DS;
+		$path .= ltrim($this->get('filename'), DS);
+
+		return file_exists($path);
+	}
+
+	/**
+	 * Is the file an image?
+	 *
+	 * @return  boolean
+	 */
+	public function size()
+	{
+		if (is_null($this->size))
+		{
+			$this->size = 0;
+
+			if ($this->exists())
+			{
+				$path  = $this->filespace() . DS . $this->get('item_id') . DS;
+				$path .= ltrim($this->get('filename'), DS);
+
+				$this->size = filesize($path);
+			}
+		}
+
+		return $this->size;
+	}
+
+	/**
+	 * File width and height
+	 *
+	 * @return  array
+	 */
+	public function dimensions()
+	{
+		if (is_null($this->_dimensions))
+		{
+			$this->_dimensions = array(0, 0);
+
+			if ($this->isImage() && $this->exists())
+			{
+				$this->_dimensions = getimagesize($this->path());
+			}
+		}
+
+		return $this->_dimensions;
+	}
+
+	/**
+	 * File width
+	 *
+	 * @return  integer
+	 */
+	public function width()
+	{
+		$dimensions = $this->dimensions();
+
+		return $dimensions[0];
+	}
+
+	/**
+	 * File height
+	 *
+	 * @return  integer
+	 */
+	public function height()
+	{
+		$dimensions = $this->dimensions();
+
+		return $dimensions[1];
+	}
+
+	/**
+	 * Download URL
+	 *
+	 * @param   string  $size
+	 * @return  string
+	 */
+	public function link($size = 'original')
+	{
+		$path  = $this->filespace() . DS . $this->get('item_id') . DS;
+		$path .= ltrim($this->file($size), DS);
+
+		return with(new \Hubzero\Content\Moderator($path, 'public'))->getUrl();
 	}
 
 	/**

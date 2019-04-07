@@ -32,6 +32,7 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+use Hubzero\Utility\Date;
 
 /**
  * Groups Plugin class for calendar
@@ -187,9 +188,9 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$this->js('calendar');
 
 			//get the request vars
-			$this->month    = Request::getInt('month', Date::format("m"), 'get');
+			$this->month    = Request::getInt('month', Date::of()->format("m"), 'get');
 			$this->month    = (strlen($this->month) == 1) ? '0' . $this->month : $this->month;
-			$this->year     = Request::getInt('year', Date::format("Y"), 'get');
+			$this->year     = Request::getInt('year', Date::of()->format("Y"), 'get');
 			$this->calendar = Request::getInt('calendar', 0, 'get');
 
 			// make sure month is always two digets
@@ -464,6 +465,9 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			$up   = Date::of($rawEvent->get('publish_up'));
 			$down = Date::of($rawEvent->get('publish_down'));
+			$params = new \Hubzero\Config\Registry($rawEvent->get('params'));
+			$ignoreDst = false;
+			$ignoreDst = $params->get('ignore_dst') == 1 ? true : false;
 			$timeFormat = 'Y-m-d\TH:i:sO';
 
 			$event            = new stdClass;
@@ -471,11 +475,11 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$event->title     = $rawEvent->get('title');
 			$event->allDay    = $rawEvent->get('allday') == 1;
 			$event->url       = $rawEvent->link();
-			$event->start     = ($event->allDay == 1) ? $up->setTimezone('UTC')->format($timeFormat, true) : $up->toLocal($timeFormat);
+			$event->start     = ($event->allDay == 1) ? $up->setTimezone('UTC')->format($timeFormat, true) : $up->toLocal($timeFormat, $ignoreDst);
 			$event->className = ($rawEvent->get('calendar_id')) ? 'calendar-' . $rawEvent->get('calendar_id') : 'calendar-0';
 			if ($rawEvent->get('publish_down') && $rawEvent->get('publish_down') != '0000-00-00 00:00:00')
 			{
-				$event->end = ($event->allDay == 1) ? $down->setTimezone('UTC')->format($timeFormat, true) : $down->toLocal($timeFormat);
+				$event->end = ($event->allDay == 1) ? $down->setTimezone('UTC')->format($timeFormat, true) : $down->toLocal($timeFormat, $ignoreDst);
 			}
 
 			// add start & end for displaying dates user clicked on
@@ -669,11 +673,24 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$event['state']       = 1;
 		$event['scope']       = 'group';
 		$event['scope_id']    = $this->group->get('gidNumber');
-		$event['modified']    = Date::toSql();
+		$event['modified']    = Date::of()->toSql();
 		$event['modified_by'] = $this->user->get('id');
 
 		// repeating rule
 		$event['repeating_rule'] = $this->_buildRepeatingRule();
+
+		//stringify params
+		if (isset($event['params']) && count($event['params']) > 0)
+		{
+			$params = new \Hubzero\Config\Registry($event['params']);
+			$event['params'] = $params->toString();
+		}
+
+		$ignoreDst = false;
+		if (isset($params))
+		{
+			$ignoreDst = $params->get('ignore_dst') == 1 ? true : false;
+		}
 
 		//if we are updating set modified time and actor
 		if (!isset($event['id']) || $event['id'] == 0)
@@ -702,7 +719,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			{
 				$event['publish_up'] = $event['publish_up'] . ' ' . $event['publish_up_time'];
 			}
-			$event['publish_up'] = Date::of($event['publish_up'], $event['time_zone'])->toSql();
+			$event['publish_up'] = Date::of($event['publish_up'], $event['time_zone'], $ignoreDst)->toSql();
 			unset($event['publish_up_time']);
 		}
 
@@ -714,7 +731,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			{
 				$event['publish_down'] = $event['publish_down'] . ' ' . $event['publish_down_time'];
 			}
-			$event['publish_down'] = Date::of($event['publish_down'], $event['time_zone'])->toSql();
+			$event['publish_down'] = Date::of($event['publish_down'], $event['time_zone'], $ignoreDst)->toSql();
 			unset($event['publish_down_time']);
 		}
 
@@ -724,13 +741,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			//remove @ symbol
 			$event['registerby'] = str_replace("@", "", $event['registerby']);
 			$event['registerby'] = Date::of($event['registerby'], $event['time_zone'])->toSql();
-		}
-
-		//stringify params
-		if (isset($event['params']) && count($event['params']) > 0)
-		{
-			$params = new \Hubzero\Config\Registry($event['params']);
-			$event['params'] = $params->toString();
 		}
 
 		//did we want to turn off registration?
@@ -1896,7 +1906,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				WHERE scope=" . $db->quote('group') . "
 				AND scope_id=" . $this->group->get('gidNumber') . "
 				AND state=1
-				AND (publish_up >=" . $db->quote(Date::toSql()) . " OR publish_down >= " . $db->quote(Date::toSql()) . ")";
+				AND (publish_up >=" . $db->quote(Date::of()->toSql()) . " OR publish_down >= " . $db->quote(Date::of()->toSql()) . ")";
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}
@@ -1914,7 +1924,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				WHERE scope=" . $db->quote('group') . "
 				AND scope_id=" . $this->group->get('gidNumber') . "
 				AND state=1
-				AND (publish_up >= " . $db->quote(Date::toSql()) . " OR publish_down >= " . $db->quote(Date::toSql()) . ") AND publish_up <= " . $db->quote(Date::format("Y-m-t 23:59:59"));
+				AND (publish_up >= " . $db->quote(Date::of()->toSql()) . " OR publish_down >= " . $db->quote(Date::of()->toSql()) . ") AND publish_up <= " . $db->quote(Date::of()->format("Y-m-t 23:59:59"));
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}

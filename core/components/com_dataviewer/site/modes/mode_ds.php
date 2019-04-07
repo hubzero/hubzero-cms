@@ -182,8 +182,8 @@ function get_dd($db_id)
 
 	// Dataviews attached to resources & publised
 	$sql = "SELECT r.id, r.published, r.access, r.group_owner, r.group_access, dv.path
-		FROM jos_datastore_resources AS dr
-			LEFT JOIN (jos_resources AS r, jos_resource_assoc ra, jos_resources AS dv) ON (r.id = dr.resource_id AND ra.parent_id = r.id AND ra.child_id = dv.id)
+		FROM `#__datastore_resources` AS dr
+			LEFT JOIN (`#__resources` AS r, `#__resource_assoc` ra, `#__resources` AS dv) ON (r.id = dr.resource_id AND ra.parent_id = r.id AND ra.child_id = dv.id)
 		WHERE r.id IS NOT NULL
 			AND r.published = 1
 			AND dr.datastore_id = {$db_id['name']}
@@ -200,8 +200,8 @@ function get_dd($db_id)
 		}
 	}
 
-	//$sql = 'SELECT username FROM #__datastores ds LEFT JOIN #__users u ON (u.id = ds.created_by)';
-	$sql = "SELECT username FROM #__datastore_users ds LEFT JOIN #__users u ON (u.id = ds.value AND ds.type='user') WHERE ds.id = " . $db_id['name'];
+	//$sql = 'SELECT username FROM `#__datastores` ds LEFT JOIN `#__users` u ON (u.id = ds.created_by)';
+	$sql = "SELECT username FROM `#__datastore_users` ds LEFT JOIN `#__users` u ON (u.id = ds.value AND ds.type='user') WHERE ds.id = " . $db_id['name'];
 	$db->setQuery($sql);
 	$managers = $db->loadColumn();
 
@@ -264,7 +264,7 @@ function _dd_post($dd)
 		}
 
 		// Hiding
-		foreach ($order_cols as $id=>$prop) {
+		foreach ($order_cols as $id => $prop) {
 			if (!in_array($id, $custom_view)) {
 				$dd['cols'][$id] = $prop;
 

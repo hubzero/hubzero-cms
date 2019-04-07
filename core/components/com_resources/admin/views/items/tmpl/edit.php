@@ -226,7 +226,7 @@ $this->view('_edit_script')
 		?>
 			<div class="paramlist">
 				<div class="input-wrap">
-					<input type="checkbox" name="fields[standalone]" id="field-standalone" value="1" <?php echo ($this->row->standalone == 1) ? 'checked="checked"' : ''; ?> />
+					<input type="checkbox" disabled name="fields[standalone]" id="field-standalone" value="1" <?php echo ($this->row->standalone == 1) ? 'checked="checked"' : ''; ?> />
 					<label for="field-standalone"><?php echo Lang::txt('COM_RESOURCES_FIELD_STANDALONE'); ?></label>
 				</div>
 				<div class="input-wrap">

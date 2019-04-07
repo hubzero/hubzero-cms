@@ -77,43 +77,50 @@ if ($this->params->get('stamp_logo'))
 		<fieldset class="hub-mail">
 			<div class="cont">
 				<h3><?php echo Lang::txt('Compose Message to Group'); ?></h3>
-				<label class="width-65"><?php echo Lang::txt('GROUP_MESSAGE_USERS'); ?>  <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-					<select name="users[]" id="msg-recipient">
-						<optgroup label="Group Status">
-							<?php foreach ($group_statuses as $val => $name) { ?>
-								<?php $sel = ($val == $this->users[0]) ? 'selected="selected"' : ''; ?>
-								<option <?php echo $sel; ?> value="<?php echo $val; ?>"><?php echo $name; ?></option>
+				<div class="form-group">
+					<label class="width-65" for="msg-recipient">
+						<?php echo Lang::txt('GROUP_MESSAGE_USERS'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+						<select name="users[]" id="msg-recipient" class="form-control">
+							<optgroup label="Group Status">
+								<?php foreach ($group_statuses as $val => $name) { ?>
+									<?php $sel = ($val == $this->users[0]) ? 'selected="selected"' : ''; ?>
+									<option <?php echo $sel; ?> value="<?php echo $val; ?>"><?php echo $name; ?></option>
+								<?php } ?>
+							</optgroup>
+							<?php if (count($this->member_roles) > 0) { ?>
+								<optgroup label="Group Member Roles">
+									<?php foreach ($this->member_roles as $role) { ?>
+										<?php $sel = ($role['name'] == $role_name) ? 'selected="selected"' : ''; ?>
+										<option <?php echo $sel; ?> value="role_<?php echo $role['id']; ?>"><?php echo $role['name']; ?></option>
+									<?php } ?>
+								</optgroup>
 							<?php } ?>
-						</optgroup>
-						<?php if (count($this->member_roles) > 0) { ?>
-							<optgroup label="Group Member Roles">
-								<?php foreach ($this->member_roles as $role) { ?>
-									<?php $sel = ($role['name'] == $role_name) ? 'selected="selected"' : ''; ?>
-									<option <?php echo $sel; ?> value="role_<?php echo $role['id']; ?>"><?php echo $role['name']; ?></option>
-								<?php } ?>
-							</optgroup>
-						<?php } ?>
-						<?php if (count($this->members) > 0) { ?>
-							<optgroup label="Group Members">
-								<?php foreach ($this->members as $m) { ?>
-									<?php $u = User::getInstance($m); ?>
-									<?php $sel = ($u->get('id') == $this->users[0]) ? 'selected="selected"' : ''; ?>
-									<option <?php echo $sel; ?> value="<?php echo $u->get('id'); ?>"><?php echo $u->get('name'); ?></option>
-								<?php } ?>
-							</optgroup>
-						<?php } ?>
-					</select>
-				</label>
-				<label>
-					<?php echo Lang::txt('GROUP_MESSAGE_SUBJECT'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-					<input type="text" name="subject" id="msg-subject" value="" />
-				</label>
-				<label>
-					<?php echo Lang::txt('GROUP_MESSAGE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-					<textarea name="message" id="msg-message" rows="12" cols="50"></textarea>
-				</label>
+							<?php if (count($this->members) > 0) { ?>
+								<optgroup label="Group Members">
+									<?php foreach ($this->members as $m) { ?>
+										<?php $u = User::getInstance($m); ?>
+										<?php $sel = ($u->get('id') == $this->users[0]) ? 'selected="selected"' : ''; ?>
+										<option <?php echo $sel; ?> value="<?php echo $u->get('id'); ?>"><?php echo $u->get('name'); ?></option>
+									<?php } ?>
+								</optgroup>
+							<?php } ?>
+						</select>
+					</label>
+				</div>
+				<div class="form-group">
+					<label for="msg-subject">
+						<?php echo Lang::txt('GROUP_MESSAGE_SUBJECT'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+						<input type="text" class="form-control" name="subject" id="msg-subject" value="" />
+					</label>
+				</div>
+				<div class="form-group">
+					<label for="msg-message">
+						<?php echo Lang::txt('GROUP_MESSAGE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+						<textarea class="form-control" name="message" id="msg-message" rows="12" cols="50"></textarea>
+					</label>
+				</div>
 				<p class="submit">
-					<input type="submit" value="<?php echo Lang::txt('GROUP_MESSAGE_SEND'); ?>" />
+					<input type="submit" class="btn" value="<?php echo Lang::txt('GROUP_MESSAGE_SEND'); ?>" />
 				</p>
 			<div><!-- /.cont -->
 		</fieldset>
@@ -124,4 +131,3 @@ if ($this->params->get('stamp_logo'))
 		<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 	</form>
 </div><!-- // .subject -->
-

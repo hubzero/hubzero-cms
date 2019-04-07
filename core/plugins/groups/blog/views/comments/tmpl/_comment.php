@@ -96,20 +96,26 @@ defined('_HZEXEC_') or die();
 
 					<?php echo Html::input('token'); ?>
 
-					<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
-						<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_COMMENTS'); ?></span>
-						<?php
-						echo $this->editor('comment[content]', $this->comment->get('content'), 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
-						?>
-					</label>
+					<div class="form-group">
+						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
+							<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_COMMENTS'); ?></span>
+							<?php
+							echo $this->editor('comment[content]', $this->comment->get('content'), 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'form-control minimal no-footer'));
+							?>
+						</label>
+					</div>
 
-					<label class="comment-anonymous-label" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
-						<input class="option" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" <?php if ($this->comment->get('anonymous')) { echo ' checked="checked"'; } ?> />
-						<?php echo Lang::txt('PLG_GROUPS_BLOG_POST_ANONYMOUS'); ?>
-					</label>
+					<div class="form-group">
+						<div class="form-check">
+							<label class="form-check-label comment-anonymous-label" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
+								<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" <?php if ($this->comment->get('anonymous')) { echo ' checked="checked"'; } ?> />
+								<?php echo Lang::txt('PLG_GROUPS_BLOG_POST_ANONYMOUS'); ?>
+							</label>
+						</div>
+					</div>
 
 					<p class="submit">
-						<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_BLOG_SUBMIT'); ?>" />
+						<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_GROUPS_BLOG_SUBMIT'); ?>" />
 					</p>
 				</fieldset>
 			</form>
@@ -166,17 +172,23 @@ defined('_HZEXEC_') or die();
 
 						<?php echo Html::input('token'); ?>
 
-						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
-							<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_COMMENTS'); ?></span>
-							<?php
-							echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
-							?>
-						</label>
+						<div class="form-group">
+							<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
+								<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_COMMENTS'); ?></span>
+								<?php
+								echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'form-control minimal no-footer'));
+								?>
+							</label>
+						</div>
 
-						<label id="comment-anonymous-label" for="comment-anonymous">
-							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
-							<?php echo Lang::txt('PLG_GROUPS_BLOG_POST_ANONYMOUS'); ?>
-						</label>
+						<div class="form-group">
+							<div class="form-check">
+								<label for="comment-anonymous" class="form-check-label comment-anonymous-label">
+									<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+									<?php echo Lang::txt('PLG_GROUPS_BLOG_POST_ANONYMOUS'); ?>
+								</label>
+							</div>
+						</div>
 
 						<p class="submit">
 							<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_BLOG_SUBMIT'); ?>" />

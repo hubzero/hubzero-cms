@@ -44,23 +44,52 @@ $this->css('docs')
 // add highlight lib
 //Document::addStyleSheet('//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css');
 //Document::addScript('//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js');
-
 $available = [];
-foreach ($this->documentation['sections'][$this->active] as $endpoint)
+$endpoints = [];
+foreach ($this->documentation['sections'][$this->active] as &$endpoint)
 {
-	if (in_array($endpoint['_metadata']['version'], $available))
+	$version = str_replace('_', '.', $endpoint['_metadata']['version']);
+	$version = number_format((float)$version, 1);
+
+	$endpoint['_metadata']['version'] = $version;
+
+	$available[] = $version;
+
+	if (!isset($endpoints[$version]))
 	{
-		continue;
+		$endpoints[$version] = array();
 	}
-	$available[] = $endpoint['_metadata']['version'];
 }
+
+foreach (array_keys($endpoints) as $version)
+{
+	foreach ($this->documentation['sections'][$this->active] as $endpoint)
+	{
+		if ($endpoint['_metadata']['version'] > $version)
+		{
+			continue;
+		}
+
+		$key = (isset($endpoint['_metadata']['controller']) ? $endpoint['_metadata']['controller'] : '') . $endpoint['_metadata']['method'];
+
+		if (!isset($endpoints[$version][$key])
+		 || $endpoint['_metadata']['version'] > $endpoints[$version][$key]['_metadata']['version'])
+		{
+			$endpoints[$version][$key] = $endpoint;
+		}
+	}
+}
+
 // pull list of versions from doc
-$versions = $available;
+$versions = array_unique($available);
+asort($versions);
 $versions = array_reverse($versions);
 $done = [];
 
 // either the request var or the first version (newest)
 $activeVersion = Request::getString('version', reset($versions));
+$activeVersion = str_replace('_', '.', $activeVersion);
+$activeVersion = number_format((float)$activeVersion, 1);
 
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
 ?>
@@ -108,17 +137,23 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 						</div>
 					<?php endif; ?>
 				</h2>
-				<?php foreach ($this->documentation['sections'][$this->active] as $endpoint) : ?>
+				<?php foreach ($endpoints[$activeVersion] as $endpoint): ?>
 					<?php
 						$key = $endpoint['_metadata']['component'] . '-' . $endpoint['_metadata']['method'];
-						if (in_array($key, $done))
+
+						if ($endpoint['_metadata']['version'] > $activeVersion)
 						{
 							continue;
 						}
-						$done[] = $key;
+
+						$inherited = '';
+						if ($endpoint['_metadata']['version'] < $activeVersion)
+						{
+							$inherited = ' ' . Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_INHERITED', $endpoint['_metadata']['version']);
+						}
 					?>
 					<div class="doc-section endpoint" id="<?php echo $key; ?>">
-						<h3><?php echo $endpoint['name']; ?></h3>
+						<h3><?php echo $endpoint['name'] . $inherited; ?></h3>
 
 						<?php if ($endpoint['description']) : ?>
 							<p><?php echo $endpoint['description']; ?></p>
@@ -128,16 +163,35 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 							<pre><code class="http"><?php echo $endpoint['method']; ?> <?php echo $endpoint['uri']; ?></code></pre>
 						<?php endif; ?>
 
+						<?php if (!empty($endpoint['replaces'])) : ?>
+							<p class="info"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_REPLACES', $endpoint['replaces']); ?></p>
+						<?php endif; ?>
+
+						<?php if (!empty($endpoint['deprecated'])) : ?>
+							<p class="warning"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_DEPRECATED', $endpoint['deprecated']); ?></p>
+						<?php endif; ?>
+
+						<?php
+						foreach ($endpoint as $k => $v) :
+							if (in_array($k, array('name', 'method', 'description', 'replaces', 'deprecated', 'uri', 'parameters', 'return', '_metadata'))):
+								continue;
+							endif;
+							?>
+							<p><strong><?php echo $k; ?>:</strong> <?php echo $v; ?></p>
+							<?php
+						endforeach;
+						?>
+
 						<?php if (count($endpoint['parameters']) > 0) : ?>
 							<table>
 								<caption><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETERS'); ?></caption>
 								<thead>
 									<tr>
-										<th><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_NAME'); ?></th>
-										<th><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_TYPE'); ?></th>
-										<th><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_DESC'); ?></th>
-										<th><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_DEFAULT'); ?></th>
-										<th><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_ACCEPTED_VALUES'); ?></th>
+										<th scope="col"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_NAME'); ?></th>
+										<th scope="col"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_TYPE'); ?></th>
+										<th scope="col"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_DESC'); ?></th>
+										<th scope="col"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_DEFAULT'); ?></th>
+										<th scope="col"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_ACCEPTED_VALUES'); ?></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -148,10 +202,6 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 											<td>
 												<?php echo ($param['required']) ? '<span class="required">' . Lang::txt('JREQUIRED') . '</span>.' : ''; ?> 
 												<?php echo $param['description']; ?>
-												<!-- <br /><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_DEFAULT'); ?>: <code class="nohighlight"><?php echo ($param['default']) ? $param['default'] : 'null'; ?></code>
-												<?php if (isset($param['allowedValues'])) : ?>
-													<br /><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_ACCEPTED_VALUES'); ?>: <code class="nohighlight"><?php echo $param['allowedValues']; ?></code>
-												<?php endif; ?> -->
 											</td>
 											<td>
 												<code class="nohighlight"><?php echo (!is_null($param['default'])) ? $param['default'] : 'null'; ?></code>

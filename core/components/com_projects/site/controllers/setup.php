@@ -511,7 +511,7 @@ class Setup extends Base
 			}
 
 			// Collect grant information
-			if ($this->config->get('grantinfo', 0))
+			if ($this->config->get('grantinfo', 0) && Request::getInt('grant_info', 0))
 			{
 				$grant_agency = Request::getString('grant_agency', '');
 				$grant_title  = Request::getString('grant_title', '');
@@ -569,10 +569,18 @@ class Setup extends Base
 		{
 			$admingroup     = $this->config->get('admingroup', '');
 			$sdata_group    = $this->config->get('sdata_group', '');
-			$ginfo_group    = $this->config->get('ginfo_group', '');
 			$project_admins = Helpers\Html::getGroupMembers($admingroup);
-			$ginfo_admins   = Helpers\Html::getGroupMembers($ginfo_group);
 			$sdata_admins   = Helpers\Html::getGroupMembers($sdata_group);
+			$ginfo_admins   = array();
+
+			// Was grant information set?
+			if ($this->config->get('grantinfo', 0)
+			 && ($this->model->params->get('grant_title') || $this->model->params->get('grant_PI')))
+			{
+				// Notify the reviewer group
+				$ginfo_group  = $this->config->get('ginfo_group', '');
+				$ginfo_admins = Helpers\Html::getGroupMembers($ginfo_group);
+			}
 
 			$admins = array_merge($project_admins, $ginfo_admins, $sdata_admins);
 			$admins = array_unique($admins);

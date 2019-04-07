@@ -7,9 +7,9 @@ before_script:
   - composer require squizlabs/php_codesniffer:2.*
   - mkdir -p ~/build
   - git clone --branch hubzero-cms-2.1 --depth=1 https://github.com/hubzero/standards ~/build/standards
-  - changes=`git diff --name-only $TRAVIS_COMMIT_RANGE`
-  - for f in $changes; do if [[ -f "$f" ]]; then files_exist="$files_exist $f"; else files_removed="$files_removed $f"; fi done
-  - echo $files_exist
-  - echo $files_removed
+  - git config diff.renameLimit 0
+  - changed_files=`git diff --diff-filter=ACMRTUXB --name-only $TRAVIS_COMMIT_RANGE`
+  - echo "The following will be tested:"
+  - echo $changed_files
 script:
-- vendor/squizlabs/php_codesniffer/scripts/phpcs -np --standard=~/build/standards/Php/ruleset.xml --extensions=php --ignore=*.js,*.css,*.ini,*.xml,*/tests/*,/core/libraries/* $files_exist
+- core/bin/php_tests.sh $changed_files

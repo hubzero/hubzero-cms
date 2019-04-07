@@ -67,7 +67,7 @@ class Toolsv1_0 extends ApiController
 		$userid = Request::getInt('id', 0);
 		$result = User::getInstance($userid);
 
-		if ($result === false)
+		if (!$result || $result->isNew() || strstr($result->get('email'), '@') == '@invalid')
 		{
 			throw new Exception(Lang::txt('COM_MEMBERS_ERROR_USER_NOT_FOUND'), 404);
 		}
@@ -220,7 +220,7 @@ class Toolsv1_0 extends ApiController
 		$userid = Request::getInt('id', 0);
 		$result = User::getInstance($userid);
 
-		if ($result === false)
+		if (!$result || $result->isNew() || strstr($result->get('email'), '@') == '@invalid')
 		{
 			throw new Exception(Lang::txt('COM_MEMBERS_ERROR_USER_NOT_FOUND'), 404);
 		}
@@ -292,7 +292,7 @@ class Toolsv1_0 extends ApiController
 		$userid = App::get('authn')['user_id'];
 		$result = User::getInstance($userid);
 
-		if ($result === false)
+		if (!$result || $result->isNew() || strstr($result->get('email'), '@') == '@invalid')
 		{
 			throw new Exception(Lang::txt('COM_MEMBERS_ERROR_USER_NOT_FOUND'), 404);
 		}

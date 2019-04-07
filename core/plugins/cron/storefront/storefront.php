@@ -131,7 +131,7 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get all existing notifications about potentially affected SKUs
-		$query = "SELECT scope_id, meta FROM jos_notifications WHERE scope = 'publishDownSku' AND scope_id IN ({$affectedSkus})";
+		$query = "SELECT scope_id, meta FROM `#__notifications` WHERE scope = 'publishDownSku' AND scope_id IN ({$affectedSkus})";
 		$db->setQuery($query);
 		$notifications = $db->loadObjectList();
 
@@ -201,7 +201,7 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get all existing notifications about potentially affected Products
-		$query = "SELECT scope_id, meta FROM jos_notifications WHERE scope = 'publishDownProduct' AND scope_id IN ({$affectedProducts})";
+		$query = "SELECT scope_id, meta FROM `#__notifications` WHERE scope = 'publishDownProduct' AND scope_id IN ({$affectedProducts})";
 		$db->setQuery($query);
 		$notifications = $db->loadObjectList();
 

@@ -112,6 +112,15 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 	);
 
 	/**
+	 * Fields to be parsed
+	 *
+	 * @var array
+	 */
+	protected $parsed = array(
+		'about'
+	);
+
+	/**
 	 * Hubzero\Config\Registry
 	 *
 	 * @var  object
@@ -124,6 +133,20 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 	 * @var  string
 	 */
 	protected $url = null;
+
+	/**
+	 * Params registry
+	 *
+	 * @var  object
+	 */
+	protected $paramsRegistry = null;
+
+	/**
+	 * Authorization check flag
+	 *
+	 * @var  boolean
+	 */
+	protected $authorized = false;
 
 	/**
 	 * Sets up additional custom rules
@@ -160,6 +183,42 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 			{
 				// Check for all numeric (not allowed)
 				return Lang::txt('COM_PROJECTS_ERROR_NAME_INVALID_NUMERIC');
+			}
+
+			// Array of reserved names (task names and default dirs)
+			$reserved = explode(',', $this->config('reserved_names'));
+			$reserved = array_map('trim', $reserved);
+			$reserved = array_filter($reserved);
+			$tasks    = array(
+				'start', 'setup', 'browse',
+				'intro', 'features', 'deleteimg',
+				'reports', 'stats', 'view', 'edit',
+				'suspend', 'reinstate', 'fixownership',
+				'delete', 'intro', 'activate', 'process',
+				'upload', 'img', 'verify', 'autocomplete',
+				'showcount', 'preview', 'auth', 'public',
+				'get', 'media'
+			);
+			$reserved = array_merge($reserved, $tasks);
+			$reserved = array_unique($reserved);
+
+			// Verify name uniqueness
+			if (in_array($alias, $reserved))
+			{
+				return Lang::txt('COM_PROJECTS_ERROR_NAME_RESERVED');
+			}
+
+			/*$taken = self::all()
+				->clear('select')
+				->select('alias')
+				->where('id', '!=', $this->get('id'))
+				->rows()
+				->fieldsByKey('alias');*/
+			$taken = self::oneByAlias($alias);
+
+			if ($taken && $taken->get('id') != $this->get('id'))
+			{
+				return Lang::txt('COM_PROJECTS_ERROR_NAME_NOT_UNIQUE');
 			}
 
 			return false;
@@ -232,6 +291,41 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
+	 * Defines a one to one relationship between project and group
+	 *
+	 * @return  \Hubzero\User\Group
+	 **/
+	public function group()
+	{
+		$group = \Hubzero\User\Group::getInstance($this->get('owned_by_group'));
+		if (!$group)
+		{
+			$group = new \Hubzero\User\Group;
+		}
+		return $group;
+	}
+
+	/**
+	 * Defines a one to one relationship between project and owner
+	 *
+	 * @return  \Hubzero\Database\Relationship\OneToOne
+	 **/
+	public function owner()
+	{
+		return $this->oneToOne('Hubzero\User\User', 'id', 'owned_by_user');
+	}
+
+	/**
+	 * Defines a one to one relationship between project and  creator
+	 *
+	 * @return  \Hubzero\Database\Relationship\OneToOne
+	 **/
+	public function creator()
+	{
+		return $this->oneToOne('Hubzero\User\User', 'id', 'created_by_user');
+	}
+
+	/**
 	 * Check if the project is private
 	 *
 	 * @return  boolean
@@ -253,7 +347,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 			return false;
 		}
 
-		if ($this->get('private') == self::PRIVACY_PRIVATE)
+		if ($this->isPrivate())
 		{
 			return false;
 		}
@@ -362,6 +456,23 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 			return $this->config->get($key, $default);
 		}
 		return $this->config;
+	}
+
+	/**
+	 * Get a configuration value
+	 * If no key is passed, it returns the configuration object
+	 *
+	 * @param   string  $key      Config property to retrieve
+	 * @param   mixed   $default  Default value if property is not found
+	 * @return  mixed
+	 */
+	public function transformParams()
+	{
+		if (is_null($this->paramsRegistry))
+		{
+			$this->paramsRegistry = new \Hubzero\Config\Registry($this->get('params'));
+		}
+		return $this->paramsRegistry;
 	}
 
 	/**
@@ -488,6 +599,8 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 			// No thumb. Try to create it...
 			if (!$src && $this->get('picture'))
 			{
+				include_once dirname(dirname(__DIR__)) . '/helpers/html.php';
+
 				$thumb = \Components\Projects\Helpers\Html::createThumbName($this->get('picture'));
 
 				if ($thumb && file_exists($path . DS . $thumb))
@@ -600,7 +713,8 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 		}
 		$page = new stdClass;
 
-		if ($this->get('state') == self::STATE_PUBLISHED && ($this->isPublic() || $this->isOpen()))
+		if ($this->get('state') == self::STATE_PUBLISHED
+		 && ($this->isPublic() || $this->isOpen()))
 		{
 			$access_level = 'public';
 		}
@@ -612,6 +726,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 		$page->url = rtrim(Request::root(), '/') . Route::urlForClient('site', $this->link());
 		$page->access_level = $access_level;
 		$page->owner_type = 'user';
+
 		$team = array();
 		$team = array_map(
 			function($member)
@@ -623,12 +738,223 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 			},
 			$this->team->toArray()
 		);
-		$page->owner = $team;
-		$page->id = $this->searchId();
-		$page->title = $this->title;
-		$page->hubtype = self::searchNamespace();
+
+		$page->owner       = $team;
+		$page->id          = $this->searchId();
+		$page->title       = $this->title;
+		$page->hubtype     = self::searchNamespace();
 		$page->description = \Hubzero\Utility\Sanitize::stripAll($this->about);
 
 		return $page;
+	}
+
+	/**
+	 * Authorize current user
+	 *
+	 * @param   boolean  $reviewer
+	 * @return  boolean
+	 */
+	private function authorize($reviewer = false)
+	{
+		$this->authorized = true;
+
+		// NOT logged in
+		if (User::isGuest())
+		{
+			// If the project is active and public
+			if ($this->isPublic() && $this->isActive())
+			{
+				// Allow public view access
+				$this->params->set('access-view-project', true);
+			}
+			// If an open project
+			if ($this->get('private') < 0 && ($this->isActive() || $this->isArchived()))
+			{
+				// Allow read-only mode for everything
+				$this->params->set('access-member-project', true);
+				$this->params->set('access-readonly-project', true);
+			}
+			return true;
+		}
+
+		// Check reviewer access?
+		if ($reviewer)
+		{
+			// Get user groups
+			$ugs = \Hubzero\User\Helper::getGroups(User::get('id'));
+
+			$userGroups = array();
+			if (!empty($ugs))
+			{
+				foreach ($ugs as $group)
+				{
+					if ($group->regconfirmed)
+					{
+						$userGroups[] = $group->gidNumber;
+					}
+				}
+			}
+
+			switch (strtolower($reviewer))
+			{
+				case 'general':
+				case 'admin':
+				default:
+					$reviewer = 'admin';
+					$group = \Hubzero\User\Group::getInstance($this->config()->get('admingroup'));
+				break;
+
+				case 'sensitive':
+					$group = \Hubzero\User\Group::getInstance($this->config()->get('sdata_group'));
+				break;
+
+				case 'sponsored':
+					$group = \Hubzero\User\Group::getInstance($this->config()->get('ginfo_group'));
+				break;
+
+				case 'reports':
+					$group = \Hubzero\User\Group::getInstance($this->config()->get('reportgroup'));
+				break;
+			}
+
+			$authorized = false;
+			if (!empty($userGroups))
+			{
+				if (in_array($group->get('gidNumber'), $userGroups))
+				{
+					$authorized = true;
+				}
+			}
+
+			$this->params->set('access-reviewer-' . strtolower($reviewer) . '-project', $authorized);
+			return true;
+		}
+
+		// Allowed to create a project
+		if ($this->isNew())
+		{
+			$cg = $this->config()->get('creatorgroup');
+			$cg = explode(',', $cg);
+			$cg = array_map('trim', $cg);
+			$cg = array_filter($cg);
+
+			if (!empty($cg))
+			{
+				foreach ($cg as $c)
+				{
+					$group = \Hubzero\User\Group::getInstance($c);
+
+					if ($group)
+					{
+						if ($group->is_member_of('members', User::get('id'))
+						 || $group->is_member_of('managers', User::get('id')))
+						{
+							$this->params->set('access-create-project', true);
+						}
+					}
+				}
+			}
+			else
+			{
+				$this->params->set('access-create-project', true);
+			}
+		}
+
+		// Is the user a manager of the component? (set in component permissions)
+		if (User::authorise('core.manage', 'com_projects'))
+		{
+			$this->params->set('access-view-project', true);
+			$this->params->set('access-member-project', true);
+
+			if ($this->isArchived())
+			{
+				$this->params->set('access-readonly-project', true);
+			}
+			else
+			{
+				$this->params->set('access-manager-project', true); // May edit project properties
+				$this->params->set('access-content-project', true); // May add/edit/delete all content
+				$this->params->set('access-owner-project', true);
+				$this->params->set('access-componentmanager-project', true);
+				$this->params->set('access-delete-project', true);
+			}
+			return true;
+		}
+
+		// Is user project member?
+		$member = $this->member();
+		if (empty($member) || $member->get('status') != 1)
+		{
+			if ($this->isPublic() && $this->isActive())
+			{
+				// Allow public view access
+				$this->params->set('access-view-project', true);
+			}
+			// If an open project
+			if ($this->get('private') < 0)
+			{
+				// Allow read-only mode for everything
+				$this->params->set('access-member-project', true);
+				$this->params->set('access-readonly-project', true);
+			}
+		}
+		else
+		{
+			$this->params->set('access-view-project', true);
+			$this->params->set('access-member-project', true); // internal project view
+
+			if ($this->isArchived() || $this->get('private') < 0)
+			{
+				// Read-only
+				$this->params->set('access-readonly-project', true);
+				return true;
+			}
+
+			// Project roles
+			switch ($member->role)
+			{
+				case 1:
+					// Manager
+					$this->params->set('access-manager-project', true); // May edit project properties
+					$this->params->set('access-content-project', true); // May add/edit/delete all content
+
+					// Owner (principal user/creator)
+					if ($this->owner('id') == $member->userid)
+					{
+						$this->params->set('access-owner-project', true);
+						$this->params->set('access-delete-project', true);
+					}
+				break;
+
+				case 5:
+					// Read-only
+					$this->params->set('access-readonly-project', true);
+				break;
+
+				case 2:
+				case 3:
+				default:
+					// Collaborator/author
+					$this->params->set('access-content-project', true);
+				break;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Check a user's authorization
+	 *
+	 * @param   string   $action  Action to check
+	 * @return  boolean
+	 */
+	public function access($action = 'view')
+	{
+		if (!$this->authorized)
+		{
+			$this->authorize();
+		}
+		return $this->params->get('access-' . strtolower($action) . '-project');
 	}
 }

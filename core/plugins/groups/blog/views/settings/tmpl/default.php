@@ -60,13 +60,15 @@ $this->css()
 		<fieldset class="settings">
 			<legend><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENTRIES'); ?></legend>
 
-			<label for="param-posting">
-				<?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENTRY_POST'); ?>
-				<select name="params[posting]" id="param-posting">
-					<option value="0"<?php if (!$this->config->get('posting', 0)) { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENTRY_POST_ALL'); ?></option>
-					<option value="1"<?php if ($this->config->get('posting', 0) == 1) { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENTRY_POST_MANAGERS'); ?></option>
-				</select>
-			</label>
+			<div class="form-group">
+				<label for="param-posting">
+					<?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENTRY_POST'); ?>
+					<select name="params[posting]" id="param-posting" class="form-control">
+						<option value="0"<?php if (!$this->config->get('posting', 0)) { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENTRY_POST_ALL'); ?></option>
+						<option value="1"<?php if ($this->config->get('posting', 0) == 1) { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENTRY_POST_MANAGERS'); ?></option>
+					</select>
+				</label>
+			</div>
 
 			<p class="help">
 				<?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENTRY_POST_HELP'); ?>
@@ -75,21 +77,25 @@ $this->css()
 		<fieldset class="settings">
 			<legend><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_FEEDS'); ?></legend>
 
-			<label for="param-feeds_enabled">
-				<?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENTRY_FEED'); ?>
-				<select name="params[feeds_enabled]" id="param-feeds_enabled">
-					<option value="0"<?php if (!$this->config->get('feeds_enabled', 1)) { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_DISABLED'); ?></option>
-					<option value="1"<?php if ($this->config->get('feeds_enabled', 1) == 1) { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENABLED'); ?></option>
-				</select>
-			</label>
+			<div class="form-group">
+				<label for="param-feeds_enabled">
+					<?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENTRY_FEED'); ?>
+					<select name="params[feeds_enabled]" id="param-feeds_enabled" class="form-control">
+						<option value="0"<?php if (!$this->config->get('feeds_enabled', 1)) { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_DISABLED'); ?></option>
+						<option value="1"<?php if ($this->config->get('feeds_enabled', 1) == 1) { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENABLED'); ?></option>
+					</select>
+				</label>
+			</div>
 
-			<label for="param-feeds_entries">
-				<?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_FEED_ENTRY_LENGTH'); ?>
-				<select name="params[feed_entries]" id="param-feeds_entries">
-					<option value="full"<?php if ($this->config->get('feed_entries', 'partial') == 'full') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_FULL'); ?></option>
-					<option value="partial"<?php if ($this->config->get('feed_entries', 'partial') == 'partial') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_PARTIAL'); ?></option>
-				</select>
-			</label>
+			<div class="form-group">
+				<label for="param-feeds_entries">
+					<?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_FEED_ENTRY_LENGTH'); ?>
+					<select name="params[feed_entries]" id="param-feeds_entries" class="form-control">
+						<option value="full"<?php if ($this->config->get('feed_entries', 'partial') == 'full') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_FULL'); ?></option>
+						<option value="partial"<?php if ($this->config->get('feed_entries', 'partial') == 'partial') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_PARTIAL'); ?></option>
+					</select>
+				</label>
+			</div>
 
 			<p class="help">
 				<?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_FEED_HELP'); ?>

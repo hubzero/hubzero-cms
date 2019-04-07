@@ -1,30 +1,20 @@
-/**
- * @package		Joomla.JavaScript
- * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
-
-
-// Only define the Joomla namespace if not defined.
-if (typeof(Joomla) === 'undefined') {
-	var Joomla = {};
+// Only define the Hubzero namespace if not defined.
+if (typeof(Hubzero) === 'undefined') {
+	var Hubzero = {};
 }
 
 /**
-* JCombobox JavaScript behavior.
+* Combobox JavaScript behavior.
 *
 * Inspired by: Subrata Chakrabarty <http://chakrabarty.com/editable_dropdown_samplecode.html>
-*
-* @package		Joomla.JavaScript
-* @since		1.6
 */
-Joomla.combobox = {};
-Joomla.combobox.transform = function(el, options)
+Hubzero.combobox = {};
+Hubzero.combobox.transform = function(el, options)
 {
 	el = $(el);
 	// Add the editable option to the select.
 	var o = $('<option class="custom">')
-				.attr('text', Joomla.JText._('ComboBoxInitString', 'type custom...'))
+				.attr('text', Hubzero.Lang.txt('ComboBoxInitString', 'type custom...'))
 				.prependTo(el);
 
 	el.attr('changeType', 'manual');
@@ -55,7 +45,7 @@ Joomla.combobox.transform = function(el, options)
 			// If the string is being edited for the first time, nullify it.
 			if ((validChar == true) || (e.key == 'backspace'))
 			{
-				if (customString == Joomla.JText._('ComboBoxInitString', 'type custom...')) {
+				if (customString == Hubzero.Lang.txt('ComboBoxInitString', 'type custom...')) {
 					customString = '';
 				}
 			}
@@ -65,7 +55,7 @@ Joomla.combobox.transform = function(el, options)
 			{
 				customString = customString.substring(0, customString.length - 1);
 				if (customString == '') {
-					customString = Joomla.JText._('ComboBoxInitString', 'type custom...');
+					customString = Hubzero.Lang.txt('ComboBoxInitString', 'type custom...');
 				}
 
 				// Indicate that the change event was manually initiated.
@@ -90,10 +80,8 @@ Joomla.combobox.transform = function(el, options)
 
 	// Add a change event handler.
 	el.on('change', function(e){
-
 		// The change in selected option was browser behavior.
-		if ((this.options.selectedIndex != 0) && (this.get('changeType') == 'auto'))
-		{
+		if ((this.options.selectedIndex != 0) && (this.get('changeType') == 'auto')) {
 			this.options.selectedIndex = 0;
 			this.attr('changeType', 'manual');
 		}
@@ -101,7 +89,6 @@ Joomla.combobox.transform = function(el, options)
 
 	// Add a keydown event handler.
 	el.on('keydown', function(e){
-
 		// Stop the backspace key from firing the back button of the browser.
 		if (e.code == 8 || e.code == 127) {
 			e.stop();
@@ -112,8 +99,7 @@ Joomla.combobox.transform = function(el, options)
 			}*/
 		}
 
-		if (this.options.selectedIndex == 0)
-		{
+		if (this.options.selectedIndex == 0) {
 			/*
 			 * In some browsers a feature exists to automatically jump to select options which
 			 * have the same letter typed as the first letter of the option.  The following
@@ -156,9 +142,9 @@ Joomla.combobox.transform = function(el, options)
 
 };
 
-// Load the combobox behavior into the Joomla namespace when the document is ready.
+// Load the combobox behavior into the Hubzero namespace when the document is ready.
 jQuery(document).ready(function($){
 	$('select.combobox').each(function(i, el){
-		Joomla.combobox.transform(el);
+		Hubzero.combobox.transform(el);
 	});
 });

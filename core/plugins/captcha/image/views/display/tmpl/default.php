@@ -47,16 +47,18 @@ $this->css();
 <div class="captcha-block">
 	<div class="grid">
 		<div class="col span8">
-			<label for="imgCatchaTxt<?php echo $this->total; ?>">
-				<?php echo Lang::txt('PLG_CAPTCHA_IMAGE_ENTER_CAPTCHA_VALUE'); ?>
-				<input type="text" name="imgCatchaTxt" id="imgCatchaTxt<?php echo $this->total; ?>" />
-			</label>
+			<div class="form-group">
+				<label for="imgCatchaTxt<?php echo $this->total; ?>">
+					<?php echo Lang::txt('PLG_CAPTCHA_IMAGE_ENTER_CAPTCHA_VALUE'); ?>
+					<input type="text" class="form-control" name="imgCatchaTxt" id="imgCatchaTxt<?php echo $this->total; ?>" />
+				</label>
+			</div>
 
 			<input type="hidden" name="imgCatchaTxtInst" id="imgCatchaTxtInst" value="<?php echo $this->total; ?>" />
 		</div>
 		<div class="col span4 omega">
 			<div class="captcha-wrap">
-				<img id="captchaCode<?php echo $this->total; ?>" src="<?php echo $current . htmlentities($append); ?>showCaptcha=True&amp;instanceNo=<?php echo $this->total; ?>" alt="This is a randomly generated image of letters and numbers." />
+				<img id="captchaCode<?php echo $this->total; ?>" src="<?php echo $current . htmlentities($append); ?>showCaptcha=True&amp;instanceNo=<?php echo $this->total; ?>" alt="<?php echo Lang::txt('PLG_CAPTCHA_IMAGE_ALT'); ?>" />
 
 				<script type="text/javascript">
 					//<![CDATA[
@@ -69,7 +71,7 @@ $this->css();
 				</script>
 
 				<a class="tooltips" href="#" onclick="reloadCapthcha<?php echo $this->total; ?>(<?php echo $this->total; ?>);return false;" title="<?php echo Lang::txt('PLG_CAPTCHA_IMAGE_REFRESH_CAPTCHA'); ?>"><?php echo Lang::txt('PLG_CAPTCHA_IMAGE_REFRESH_CAPTCHA'); ?></a>
-			</div><!-- /.captcha-wrap -->
+			</div>
 		</div>
-	</div><!-- / .grid -->
-</div><!-- /.captcha-block -->
+	</div>
+</div>

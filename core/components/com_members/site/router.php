@@ -78,10 +78,25 @@ class Router extends Base
 			unset($query['controller']);
 		}
 
+		if (!empty($query['view']))
+		{
+			if ($query['view'] == 'register')
+			{
+				$segments[] = $query['view'];
+			}
+			unset($query['view']);
+		}
+
 		if (empty($query['id']) && !empty($query['task']))
 		{
 			$segments[] = $query['task'];
 			unset($query['task']);
+		}
+
+		if (empty($query['id']) && !empty($query['layout']))
+		{
+			$segments[] = $query['layout'];
+			unset($query['layout']);
 		}
 
 		return $segments;
