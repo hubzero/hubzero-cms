@@ -22,9 +22,7 @@
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @copyright Copyright 2005-2014 Open Source Matters, Inc.
- * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2
- *
+ * @license   http://opensource.org/licenses/MIT MIT
  * @purpose  The override adds the alias data attribute to the navigation items to be used with the tempalte's lookup code to map the current page to the main navigation subnav
  */
 
