@@ -38,6 +38,7 @@ use Hubzero\Form\Form;
 use Filesystem;
 use Lang;
 use User;
+use Date;
 
 /**
  * Menu item model
@@ -109,7 +110,16 @@ class Item extends Nested
 	 */
 	protected $rules = array(
 		'title'    => 'notempty',
-		'menutype' => 'notempty'
+		'menutype' => 'notempty',
+	);
+
+	/**
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 **/
+	public $always = array(
+		'alias'
 	);
 
 	/**
@@ -151,6 +161,78 @@ class Item extends Nested
 			}
 			return false;
 		});
+
+		$this->addRule('alias', function($data)
+		{
+			$alias = $this->automaticAlias($data);
+
+			// Verify that a first level menu item alias is not 'component'.
+			if ($this->get('parent_id') == 1 && $alias == 'component')
+			{
+				return Lang::txt('JLIB_DATABASE_ERROR_MENU_ROOT_ALIAS_COMPONENT');
+			}
+
+			// Make sure menu alias doesn't interfere with known client routes and system directories
+			// Maybe use `Filesystem::directories(PATH_ROOT)` instead?
+			if ($this->get('parent_id') == 1 && in_array($alias, ['app', 'core', 'api', 'administrator', 'files']))
+			{
+				return Lang::txt('JLIB_DATABASE_ERROR_MENU_ROOT_ALIAS_FOLDER', $alias, $alias);
+			}
+
+			return false;
+		});
+
+		$this->addRule('home', function($data)
+		{
+			// Verify that the default home menu is not unpublished
+			if ($this->get('home') == '1' && $this->get('language') == '*' && $this->get('published') != '1')
+			{
+				return Lang::txt('JLIB_DATABASE_ERROR_MENU_UNPUBLISH_DEFAULT_HOME');
+			}
+
+			// Verify that the home item a component.
+			if ($this->get('home') && $this->get('type') != 'component')
+			{
+				return Lang::txt('JLIB_DATABASE_ERROR_MENU_HOME_NOT_COMPONENT');
+			}
+
+			return false;
+		});
+	}
+
+	/**
+	 * Generates automatic alias field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticAlias($data)
+	{
+		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : '');
+
+		if (empty($alias)
+		 && $this->get('type') != 'alias'
+		 && $this->get('type') != 'url')
+		{
+			$alias = $this->get('title');
+		}
+
+		$alias = trim($alias);
+
+		// Remove any '-' from the string since they will be used as concatenaters
+		$alias = str_replace('-', ' ', $alias);
+
+		$alias = Lang::transliterate($alias);
+
+		$alias = preg_replace('/(\s|[^A-Za-z0-9\-])+/', '-', strtolower($alias));
+		$alias = trim($alias, '-');
+
+		if (trim(str_replace('-', '', $alias)) == '')
+		{
+			$alias = Date::of('now')->format('Y-m-d-H-i-s');
+		}
+
+		return $alias;
 	}
 
 	/**
