@@ -32,7 +32,6 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
-use Hubzero\Utility\Date;
 
 /**
  * Groups Plugin class for calendar
