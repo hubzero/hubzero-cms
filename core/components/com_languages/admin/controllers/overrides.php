@@ -193,7 +193,7 @@ class Overrides extends AdminController
 				'language' => $language
 			));
 
-			$row = $model->one(Request::getInt('id'));
+			$row = $model->one(Request::getString('id'));
 		}
 
 		// Output the HTML
