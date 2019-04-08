@@ -193,7 +193,7 @@ class Overrides extends AdminController
 				'language' => $language
 			));
 
-			$row = $model->one(Request::getInt('id'));
+			$row = $model->one(Request::getString('id'));
 		}
 
 		// Output the HTML
@@ -263,7 +263,7 @@ class Overrides extends AdminController
 	 *
 	 * @return  void
 	 */
-	public function deleteTask()
+	public function removeTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();

@@ -214,13 +214,20 @@ class Override extends Obj
 		$client   = $this->get('client', 0);
 		$language = $this->get('language', 'en-GB');
 
+		// If using client name
+		if (!is_numeric($client))
+		{
+			// Get the numeric client value
+			$client = \Hubzero\Base\ClientManager::client($client, true)->id;
+		}
+
 		// If the override should be created for both
 		if ($opposite_client)
 		{
 			$client = 1 - $client;
 		}
 
-		$client = $client ? 'administrator' : 'site';
+		$client = \Hubzero\Base\ClientManager::client($client)->name;
 
 		// Parse the override.ini file in oder to get the keys and strings
 		$filename = $this->path($client, $language);
