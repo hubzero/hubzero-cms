@@ -37,12 +37,15 @@ Toolbar::title(Lang::txt('COM_INSTALLER_PACKAGES_PACKAGE') . ': ' . $this->packa
 Toolbar::cancel();
 
 $authors = array();
-$packageAuthors = $this->installedPackage->getAuthors();
-if ($packageAuthors)
+if ($this->installedPackage)
 {
-	foreach ($packageAuthors as $author)
+	$packageAuthors = $this->installedPackage->getAuthors();
+	if ($packageAuthors)
 	{
-		$authors[] = $author['name'] . ' &lt' . $author['email'] . '&gt';
+		foreach ($packageAuthors as $author)
+		{
+			$authors[] = $author['name'] . ' &lt' . $author['email'] . '&gt';
+		}
 	}
 }
 // Determine status & options
