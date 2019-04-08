@@ -263,7 +263,7 @@ class Overrides extends AdminController
 	 *
 	 * @return  void
 	 */
-	public function deleteTask()
+	public function removeTask()
 	{
 		// Check for request forgeries
 		Request::checkToken();
