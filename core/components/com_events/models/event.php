@@ -41,7 +41,6 @@ use Lang;
 use Date;
 // include tables
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'event.php';
-require_once Component::path('com_events') . DS . 'models' . DS . 'eventdate.php';
 /**
  * Event model
  */
