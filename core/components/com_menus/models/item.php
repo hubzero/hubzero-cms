@@ -357,7 +357,24 @@ class Item extends Nested
 
 		$this->set('params', $this->params->toString());
 
-		return parent::save();
+		$result = parent::save();
+
+		if ($result)
+		{
+			$this->rebuildPath();
+
+			foreach ($this->children()->rows() as $child)
+			{
+				// Rebuild the tree path.
+				if (!$child->rebuildPath())
+				{
+					$this->addError($child->getError());
+					return false;
+				}
+			}
+		}
+
+		return $result;
 	}
 
 	/**
