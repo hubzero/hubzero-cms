@@ -482,7 +482,7 @@ class Items extends AdminController
 		// Fail if checked out not by 'me'
 		if ($row->get('checked_out') && $row->get('checked_out') != User::get('id'))
 		{
-			Notify::warning(Lang::txt('COM_MENUS_CHECKED_OUT'));
+			Notify::warning(Lang::txt('JLIB_HTML_CHECKED_OUT'));
 			return $this->cancelTask();
 		}
 
@@ -1141,6 +1141,11 @@ class Items extends AdminController
 				$row->checkin();
 			}
 		}
+
+		// Clear the ancillary data from the session.
+		User::setState('com_menus.edit.item.data', null);
+		User::setState('com_menus.edit.item.type', null);
+		User::setState('com_menus.edit.item.link', null);
 
 		$menutype = Request::getString('menutype');
 
