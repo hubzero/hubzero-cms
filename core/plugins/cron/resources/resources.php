@@ -62,7 +62,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 				'params' => 'audit'
 			),
 			array(
-				'name'   => 'emailMemberDigest',
+				'name'   => 'emailMemberResources',
 				'label'  => Lang::txt('PLG_CRON_RESOURCES_EMAIL_MEMBER_DIGEST'),
 				'params' => 'digest'
 			)/*,
@@ -386,7 +386,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 	 * @param   object  $job  \Components\Cron\Models\Job
 	 * @return  bool
 	 */
-	public function emailMemberDigest(\Components\Cron\Models\Job $job)
+	public function emailMemberResources(\Components\Cron\Models\Job $job)
 	{
 		$params = $job->params;
 
