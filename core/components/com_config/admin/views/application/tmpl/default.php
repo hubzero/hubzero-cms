@@ -46,6 +46,25 @@ Html::behavior('formvalidation');
 Html::behavior('switcher', 'submenu');
 Html::behavior('tooltip');
 
+$ignore = array(
+	'app', 'site', 'offline', 'meta', 'seo', 'cookie', 'system',
+	'debug', 'cache', 'session', 'server', 'locale', 'ftp', 'database',
+	'mail', 'api', 'permissions', 'filters', 'rate_limit', 'asset_id'
+);
+
+$others = array();
+foreach ($this->data as $section => $values):
+	if (in_array($section, $ignore)):
+		continue;
+	endif;
+
+	if (empty($values) || !is_array($values)):
+		continue;
+	endif;
+
+	$this->others[$section] = $values;
+endforeach;
+
 // Load submenu template, using element id 'submenu' as needed by behavior.switcher
 Document::setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
 
@@ -113,6 +132,19 @@ $this->js();
 				<?php echo $this->loadTemplate('filters'); ?>
 			</div>
 		</div>
+		<?php
+		foreach ($this->others as $section => $values):
+			$this->section = $section;
+			$this->values  = $values;
+			?>
+			<div id="page-<?php echo $section; ?>" class="tab">
+				<div class="noshow">
+					<?php echo $this->loadTemplate('other'); ?>
+				</div>
+			</div>
+			<?php
+		endforeach;
+		?>
 		<input type="hidden" name="task" value="" />
 		<?php echo Html::input('token'); ?>
 	</div>
