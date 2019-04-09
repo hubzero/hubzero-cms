@@ -213,20 +213,18 @@
 
 div.grpdisp{
     display:table;
-		padding: 5px;
 		width: 100%;
 }
 
 div .group-name{
     vertical-align:middle;
     display:table-cell;
-    text-align:justify;
+		padding-left:15px;
 }
 
 div.grpdisp .group-img{
     vertical-align:middle;
     display:table-cell;
-		padding-right:7px;
     width:45px;
 		/* you can change width */
 }
