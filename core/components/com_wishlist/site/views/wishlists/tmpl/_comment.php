@@ -93,27 +93,39 @@ defined('_HZEXEC_') or die();
 
 						$link = $attachment->link('download');
 
-						if ($attachment->isImage())
+						if ()
 						{
-							if ($attachment->width() > 400)
+							if ($attachment->isImage())
 							{
-								$html = '<p><a href="' . Route::url($link) . '"><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+								if ($attachment->width() > 400)
+								{
+									$html = '<p><a href="' . Route::url($link) . '"><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+								}
+								else
+								{
+									$html = '<p><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+								}
 							}
 							else
 							{
-								$html = '<p><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+								$html  = '<a class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">';
+								$html .= '<p class="attachment-description">' . $this->escape($attachment->get('description')) . '</p>';
+								$html .= '<p class="attachment-meta">';
+								$html .= '<span class="attachment-size">' . Hubzero\Utility\Number::formatBytes($attachment->size()) . '</span>';
+								$html .= '<span class="attachment-action">' . Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD') . '</span>';
+								$html .= '</p>';
+								$html .= '</a>';
 							}
 						}
 						else
 						{
-							//$html = '<p class="attachment"><a href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">' . $attachment->get('description') . '</a></p>';
-							$html  = '<a class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">';
-							$html .= '<p class="attachment-description">' . $attachment->get('description') . '</p>';
+							$html  = '<div class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" title="' . $this->escape($attachment->get('description')) . '">';
+							$html .= '<p class="attachment-description">' . $this->escape($attachment->get('description')) . '</p>';
 							$html .= '<p class="attachment-meta">';
-							$html .= '<span class="attachment-size">' . Hubzero\Utility\Number::formatBytes($attachment->size()) . '</span>';
-							$html .= '<span class="attachment-action">' . Lang::txt('Click to download') . '</span>';
+							$html .= '<span class="attachment-size">' . $this->escape($attachment->get('filename')) . '</span>';
+							$html .= '<span class="attachment-action">' . Lang::txt('JLIB_HTML_ERROR_FILE_NOT_FOUND') . '</span>';
 							$html .= '</p>';
-							$html .= '</a>';
+							$html .= '</div>';
 						}
 
 						echo $html;
@@ -177,20 +189,24 @@ defined('_HZEXEC_') or die();
 
 						<?php echo Html::input('token'); ?>
 
-						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
-							<span class="label-text"><?php echo Lang::txt('COM_WISHLIST_ENTER_COMMENTS'); ?></span>
-							<?php
-							echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
-							?>
-						</label>
+						<div class="form-group">
+							<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
+								<span class="label-text"><?php echo Lang::txt('COM_WISHLIST_ENTER_COMMENTS'); ?></span>
+								<?php
+								echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'form-control minimal no-footer'));
+								?>
+							</label>
+						</div>
 
-						<label class="comment-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
-							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
-							<?php echo Lang::txt('COM_WISHLIST_POST_COMMENT_ANONYMOUSLY'); ?>
-						</label>
+						<div class="form-group form-check">
+							<label class="comment-anonymous-label form-check-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
+								<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
+								<?php echo Lang::txt('COM_WISHLIST_POST_COMMENT_ANONYMOUSLY'); ?>
+							</label>
+						</div>
 
 						<p class="submit">
-							<input type="submit" value="<?php echo Lang::txt('COM_WISHLIST_SUBMIT'); ?>" />
+							<input type="submit" class="btn" value="<?php echo Lang::txt('COM_WISHLIST_SUBMIT'); ?>" />
 						</p>
 					</fieldset>
 				</form>

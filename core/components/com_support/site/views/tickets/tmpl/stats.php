@@ -173,18 +173,22 @@ break;
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=stats'); ?>" method="get" enctype="multipart/form-data">
 	<section class="main section" id="ticket-stats">
 		<div class="grid">
-			<div class="col span-half">
-				<p class="time-range">
-					<label for="start-date"><?php echo Lang::txt('COM_SUPPORT_DATE_FROM'); ?></label> <input type="text" name="start" id="start-date" value="<?php echo $this->escape($this->start); ?>" size="7" />
-					<label for="end-date"><?php echo Lang::txt('COM_SUPPORT_DATE_TO'); ?></label> <input type="text" name="end" id="end-date" value="<?php echo $this->escape($this->end); ?>" size="7" />
-				</p>
-			</div><!-- / .col span-half omega -->
-			<div class="col span-half omega">
-				<fieldset class="support-stats-filter">
-					<label for="ticket-group">
-						<?php echo Lang::txt('COM_SUPPORT_FILTER_GROUP'); ?>
-					</label>
-					<select name="group" id="ticket-group">
+			<div class="col span4">
+				<div class="form-group">
+					<label for="start-date"><?php echo Lang::txt('COM_SUPPORT_DATE_FROM'); ?></label>
+					<input type="text" class="form-control" name="start" id="start-date" value="<?php echo $this->escape($this->start); ?>" size="7" />
+				</div>
+			</div>
+			<div class="col span4">
+				<div class="form-group">
+					<label for="end-date"><?php echo Lang::txt('COM_SUPPORT_DATE_TO'); ?></label>
+					<input type="text" class="form-control" name="end" id="end-date" value="<?php echo $this->escape($this->end); ?>" size="7" />
+				</div>
+			</div>
+			<div class="col span4 omega">
+				<div class="form-group">
+					<label for="ticket-group"><?php echo Lang::txt('COM_SUPPORT_FILTER_GROUP'); ?></label>
+					<select name="group" id="ticket-group" class="form-control">
 						<option value=""<?php if (!$this->group) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_ALL'); ?></option>
 						<option value="_none_"<?php if ($this->group == '_none_') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_NONE'); ?></option>
 						<?php
@@ -199,9 +203,9 @@ break;
 						}
 						?>
 					</select>
-					<input type="submit" value="Go" />
-				</fieldset>
-			</div><!-- / .col span-half omega -->
+					<input type="submit" class="btn" value="Go" />
+				</div>
+			</div>
 		</div><!-- / .grid -->
 
 		<div class="container">

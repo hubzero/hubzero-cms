@@ -36,6 +36,7 @@ use Hubzero\Database\Relational;
 use Filesystem;
 use Component;
 use Route;
+use Lang;
 
 /**
  * Model class for a wish attachment
@@ -200,11 +201,9 @@ class Attachment extends Relational
 	 */
 	public function destroy()
 	{
-		$path = $this->link('file');
-
-		if (file_exists($path))
+		if ($this->exists())
 		{
-			if (!Filesystem::delete($path))
+			if (!Filesystem::delete($this->link('file')))
 			{
 				$this->addError('Unable to delete file.');
 
@@ -236,11 +235,9 @@ class Attachment extends Relational
 		{
 			$this->size = 0;
 
-			$path = $this->link('file');
-
-			if (file_exists($path))
+			if ($this->exists())
 			{
-				$this->size = filesize($path);
+				$this->size = filesize($this->link('file'));
 			}
 		}
 
@@ -258,7 +255,7 @@ class Attachment extends Relational
 		{
 			$this->dimensions = array(0, 0);
 
-			if ($this->isImage() && file_exists($this->link('file')))
+			if ($this->isImage() && $this->exists())
 			{
 				$this->dimensions = getimagesize($this->link('file'));
 			}
@@ -289,5 +286,15 @@ class Attachment extends Relational
 		$dimensions = $this->dimensions();
 
 		return $dimensions[1];
+	}
+
+	/**
+	 * Check if the file exists
+	 *
+	 * @return  bool
+	 */
+	public function exists()
+	{
+		return file_exists($this->link('file'));
 	}
 }
