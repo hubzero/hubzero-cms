@@ -165,8 +165,12 @@ class Application extends AdminController
 			return false;
 		}
 
+		// 'other' is passed as a separate array because form validation
+		// above will strip it out,
+		$other = Request::getArray('hzother', array(), 'post');
+		$data  = array_merge($return, $other);
+
 		// Attempt to save the configuration.
-		$data   = $return;
 		$return = $model->save($data);
 
 		// Check the return value.

@@ -33,22 +33,30 @@
 // No direct access
 defined('_HZEXEC_') or die();
 ?>
-<div id="submenu-box">
-	<div class="submenu-box">
-		<div class="submenu-pad">
-			<ul id="submenu" class="configuration">
-				<li><a href="#page-site" id="site" class="active"><?php echo Lang::txt('JSITE'); ?></a></li>
-				<li><a href="#page-system" id="system"><?php echo Lang::txt('COM_CONFIG_SYSTEM'); ?></a></li>
-				<li><a href="#page-server" id="server"><?php echo Lang::txt('COM_CONFIG_SERVER'); ?></a></li>
-				<li><a href="#page-api" id="api"><?php echo Lang::txt('COM_CONFIG_API'); ?></a></li>
-				<li><a href="#page-permissions" id="permissions"><?php echo Lang::txt('COM_CONFIG_PERMISSIONS'); ?></a></li>
-				<li><a href="#page-filters" id="filters"><?php echo Lang::txt('COM_CONFIG_TEXT_FILTERS')?></a></li>
-				<?php foreach ($this->others as $key => $data): ?>
-					<li><a href="#page-<?php echo $key; ?>" id="<?php echo $key; ?>"><?php echo $key; ?></a></li>
-				<?php endforeach; ?>
-			</ul>
-			<div class="clr"></div>
-		</div>
-	</div>
-	<div class="clr"></div>
+<div class="width-100">
+	<fieldset class="adminform">
+		<legend><span><?php echo Lang::txt('COM_CONFIG_OTHER_SETTINGS', $this->section); ?></span></legend>
+
+		<?php
+		foreach ($this->values as $key => $val):
+			if (is_array($val)):
+				foreach ($val as $k => $v):
+					?>
+					<div class="input-wrap">
+						<label for="hzform_<?php echo $this->section; ?>_<?php echo $key; ?>_<?php echo $k; ?>"><?php echo $key; ?></label>
+						<input type="text" name="hzother[<?php echo $this->section; ?>][<?php echo $key; ?>][<?php echo $k; ?>]" id="hzform_<?php echo $this->section; ?>_<?php echo $key; ?>_<?php echo $k; ?>" value="<?php echo $this->escape($v); ?>" />
+					</div>
+					<?php
+				endforeach;
+			else:
+				?>
+				<div class="input-wrap">
+					<label for="hzform_<?php echo $this->section; ?>_<?php echo $key; ?>"><?php echo $key; ?></label>
+					<input type="text" name="hzother[<?php echo $this->section; ?>][<?php echo $key; ?>]" id="hzform_<?php echo $this->section; ?>_<?php echo $key; ?>" value="<?php echo $this->escape($val); ?>" />
+				</div>
+				<?php
+			endif;
+		endforeach;
+		?>
+	</fieldset>
 </div>
