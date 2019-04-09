@@ -33,7 +33,7 @@ defined('_HZEXEC_') or die();
 
 $inGroup = false;
 
-if ($this->group)
+if ($this->group && $this->model->get('sync_group') == 1)
 {
 	$group = \Hubzero\User\Group::getInstance($this->group);
 	if ($group && in_array(User::get('id'), $group->get('members')))
