@@ -33,10 +33,9 @@ defined('_HZEXEC_') or die();
 
 // is the dashboard customizable?
 $customizable = true;
-if ($this->params->get('allow_customization', 1) == 0)
-{
+if ($this->params->get('allow_customization', 1) == 0):
 	$customizable = false;
-}
+endif;
 ?>
 
 <h3 class="section-header">
@@ -44,30 +43,31 @@ if ($this->params->get('allow_customization', 1) == 0)
 </h3>
 
 <?php if ($customizable) : ?>
-<ul id="page_options">
-	<li>
-		<a class="icon-add btn add-module" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=dashboard&action=add' ); ?>">
-			<?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES'); ?>
-		</a>
-	</li>
-</ul>
+	<ul id="page_options">
+		<li>
+			<a class="icon-add btn add-module" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=dashboard&action=add'); ?>">
+				<?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES'); ?>
+			</a>
+		</li>
+	</ul>
 <?php endif; ?>
 
 <noscript>
 	<p class="warning"><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_NO_JAVASCRIPT'); ?></p>
 </noscript>
 
-<div class="modules <?php echo ($customizable) ? 'customizable' : ''; ?>" data-userid="<?php echo User::get('id'); ?>" data-token="<?php echo Session::getFormToken(); ?>">
-	<?php
-		foreach ($this->modules as $module)
-		{
-			// create view object
-			$this->view('module')
-			     ->set('admin', $this->admin)
-			     ->set('module', $module)
-			     ->display();
-		}
-	?>
+<div class="modules-container">
+	<div class="modules <?php echo ($customizable) ? 'customizable' : ''; ?>" data-userid="<?php echo User::get('id'); ?>" data-token="<?php echo Session::getFormToken(); ?>">
+		<?php
+			foreach ($this->modules as $module):
+				// create view object
+				$this->view('module')
+				     ->set('admin', $this->admin)
+				     ->set('module', $module)
+				     ->display();
+			endforeach;
+		?>
+	</div>
 </div>
 
 <div class="modules-empty">
