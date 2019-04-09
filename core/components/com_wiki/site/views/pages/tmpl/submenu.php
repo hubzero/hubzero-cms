@@ -82,7 +82,7 @@ if ($tmpl != 'component' && $this->sub) { ?>
 		</a>
 	</li>
 	<?php if ($tmpl != 'component') { ?>
-		<?php if ($this->page->exists() && !$this->page->isDeleted() && $this->page->get('namespace') != 'Special') { ?>
+		<?php if ($this->page->exists() && !$this->page->isDeleted() && $this->page->getNamespace() != 'special') { ?>
 			<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('edit'))) { ?>
 				<li class="page-edit<?php if ($this->controller == 'pages' && in_array($this->task, array('edit', 'preview', 'save'))) { echo ' active'; } ?>">
 					<a href="<?php echo Route::url($this->page->link('edit')); ?>" title="<?php echo Lang::txt('COM_WIKI_TAB_EDIT'); ?>">
