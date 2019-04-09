@@ -1377,7 +1377,7 @@ class WikiParser
 			$matches[0],
 			'math',
 			$this->_randomString(),
-			'$$' . $matches[1] . '$$'	
+			'$$' . $matches[1] . '$$'
 		));
 	}
 
