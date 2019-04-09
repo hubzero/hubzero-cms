@@ -74,10 +74,10 @@ $this->css()
 	<header id="content-header">
 		<h2><?php echo $this->title . ': ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . $this->wish->get('id'); ?></h2>
 
-		<div id="content-header-extra">
+		<?php /*<div id="content-header-extra">
 			<ul id="useroptions">
 				<li>
-				<?php /*if ($prv = $this->wish->neighbor('prev')) { ?>
+				if ($prv = $this->wish->neighbor('prev')) { ?>
 					<a class="icon-prev prev btn" href="<?php echo Route::url($this->wishlist->link('permalink', array_merge($this->filters, array('wishid' => $prv)))); ?>">
 						<span><?php echo Lang::txt('COM_WISHLIST_PREV'); ?></span>
 					</a>
@@ -101,10 +101,10 @@ $this->css()
 					<span class="icon-next next opposite btn">
 						<span><?php echo Lang::txt('COM_WISHLIST_NEXT'); ?></span>
 					</span>
-				<?php }*/ ?>
+				<?php }
 				</li>
 			</ul>
-		</div><!-- / #content-header-extra -->
+		</div><!-- / #content-header-extra -->*/ ?>
 	</header><!-- / #content-header -->
 
 	<?php if (!$this->getError()) { ?>
@@ -443,45 +443,53 @@ $this->css()
 							<input type="hidden" id="rid" name="rid" value="<?php echo $this->escape($this->wishlist->get('referenceid')); ?>" />
 							<input type="hidden" id="wishid" name="wishid" value="<?php echo $this->escape($this->wish->get('id')); ?>" />
 
-							<label for="field-status-pending">
-								<input type="radio" name="status" id="field-status-pending" value="pending" <?php echo ($this->wish->isOpen()) ? 'checked="checked"' : ''; ?> />
-								<?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_PENDING'); ?>
-							</label>
-
-							<label for="field-status-accepted">
-								<input type="radio" name="status" id="field-status-accepted" value="accepted" <?php echo ($this->wish->isAccepted()) ? 'checked="checked"' : ''; ?> />
-								<?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_ACCEPTED'); ?>
-							</label>
-
-							<label for="field-status-rejected">
-								<input type="radio" name="status" id="field-status-rejected" value="rejected" <?php echo ($this->wish->isRejected()) ? 'checked="checked"' : ''; ?> />
-								<?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_REJECTED'); ?>
-							</label>
-
-							<label<?php if ($this->wishlist->get('category') == 'resource') { echo ' class="grantstatus"'; } ?>>
-								<input type="radio" name="status" value="granted" <?php
-									echo ($this->wish->get('status') == 1) ? 'checked="checked"' : '';
-									echo ($this->wish->get('assigned') && $this->wish->get('assigned') != User::get('id')) ? 'disabled="disabled"' : '';
-									?> />
-								<?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED'); ?>
-							<?php if ($this->wish->get('assigned') && $this->wish->get('assigned') != User::get('id')) { ?>
-								<span class="forbidden"> - <?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED_WARNING'); ?>
-							<?php }
-							// Throws error Hubzero\Base\Model; Method [versions] does not exist.
-							/*else if ($this->wishlist->get('category')=='resource' && $this->wish->versions()) { ?>
-								<label class="doubletab">
-									<?php echo Lang::txt('COM_WISHLIST_IN'); ?>
-									<select name="vid" id="vid">
-								<?php foreach ($this->wish->versions() as $v) {
-									$v_label = $v->state == 3 ? Lang::txt('COM_WISHLIST_NEXT_TOOL_RELEASE') : Lang::txt('COM_WISHLIST_VERSION').' '.$v->version.' ('.Lang::txt('COM_WISHLIST_REVISION').' '.$v->revision.')';
-								?>
-										<option value="<?php echo $v->id; ?>"><?php echo $v_label; ?></option>
-								<?php } ?>
-									</select>
+							<div class="form-group form-check">
+								<label for="field-status-pending" class="form-check-label">
+									<input type="radio" name="status" id="field-status-pending" class="form-check-input" value="pending" <?php echo ($this->wish->isOpen()) ? 'checked="checked"' : ''; ?> />
+									<?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_PENDING'); ?>
 								</label>
-							<?php }
-							*/ ?>
-							</label>
+							</div>
+
+							<div class="form-group form-check">
+								<label for="field-status-accepted" class="form-check-label">
+									<input type="radio" name="status" id="field-status-accepted" class="form-check-input" value="accepted" <?php echo ($this->wish->isAccepted()) ? 'checked="checked"' : ''; ?> />
+									<?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_ACCEPTED'); ?>
+								</label>
+							</div>
+
+							<div class="form-group form-check">
+								<label for="field-status-rejected" class="form-check-label">
+									<input type="radio" name="status" id="field-status-rejected" class="form-check-input" value="rejected" <?php echo ($this->wish->isRejected()) ? 'checked="checked"' : ''; ?> />
+									<?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_REJECTED'); ?>
+								</label>
+							</div>
+
+							<div class="form-group form-check">
+								<label for="field-status" class="form-check-label<?php if ($this->wishlist->get('category') == 'resource') { echo ' grantstatus'; } ?>">
+									<input type="radio" name="status" value="granted" id="field-status" class="form-check-input" <?php
+										echo ($this->wish->get('status') == 1) ? 'checked="checked"' : '';
+										echo ($this->wish->get('assigned') && $this->wish->get('assigned') != User::get('id')) ? 'disabled="disabled"' : '';
+										?> />
+									<?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED'); ?>
+								<?php if ($this->wish->get('assigned') && $this->wish->get('assigned') != User::get('id')) { ?>
+									<span class="forbidden"> - <?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED_WARNING'); ?>
+								<?php }
+								// Throws error Hubzero\Base\Model; Method [versions] does not exist.
+								/*else if ($this->wishlist->get('category')=='resource' && $this->wish->versions()) { ?>
+									<label class="doubletab">
+										<?php echo Lang::txt('COM_WISHLIST_IN'); ?>
+										<select name="vid" id="vid">
+									<?php foreach ($this->wish->versions() as $v) {
+										$v_label = $v->state == 3 ? Lang::txt('COM_WISHLIST_NEXT_TOOL_RELEASE') : Lang::txt('COM_WISHLIST_VERSION').' '.$v->version.' ('.Lang::txt('COM_WISHLIST_REVISION').' '.$v->revision.')';
+									?>
+											<option value="<?php echo $v->id; ?>"><?php echo $v_label; ?></option>
+									<?php } ?>
+										</select>
+									</label>
+								<?php }
+								*/ ?>
+								</label>
+							</div>
 
 							<p>
 								<input type="submit" class="btn btn-success" value="<?php echo strtolower(Lang::txt('COM_WISHLIST_ACTION_CHANGE_STATUS')); ?>" />
@@ -518,15 +526,17 @@ $this->css()
 								<input type="hidden" name="wishlist" id="wishlist" value="<?php echo $this->escape($this->wishlist->get('id')); ?>" />
 								<input type="hidden" name="wish" id="wish" value="<?php echo $this->escape($this->wish->get('id')); ?>" />
 
-								<label for="field-amount">
-									<?php echo Lang::txt('COM_WISHLIST_ACTION_ADD'); ?>
-									<span class="price"></span>
-									<input class="option" type="text" maxlength="4" name="amount" id="field-amount" value=""<?php echo ($this->wish->get('funds') <= 0) ? ' disabled="disabled"' : ''; ?> />
-									<span>
-										(<?php echo Lang::txt('COM_WISHLIST_NOTICE_OUT_OF'); ?> <?php echo $this->wish->get('funds'); ?> <?php echo Lang::txt('COM_WISHLIST_NOTICE_POINTS_AVAILABLE'); ?>
-										<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=points'); ?>"><?php echo Lang::txt('COM_WISHLIST_ACCOUNT'); ?></a>)
-									</span>
-								</label>
+								<div class="form-group">
+									<label for="field-amount">
+										<?php echo Lang::txt('COM_WISHLIST_ACTION_ADD'); ?>
+										<span class="price"></span>
+										<input class="option form-control" type="text" maxlength="4" name="amount" id="field-amount" value=""<?php echo ($this->wish->get('funds') <= 0) ? ' disabled="disabled"' : ''; ?> />
+										<span>
+											(<?php echo Lang::txt('COM_WISHLIST_NOTICE_OUT_OF'); ?> <?php echo $this->wish->get('funds'); ?> <?php echo Lang::txt('COM_WISHLIST_NOTICE_POINTS_AVAILABLE'); ?>
+											<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=points'); ?>"><?php echo Lang::txt('COM_WISHLIST_ACCOUNT'); ?></a>)
+										</span>
+									</label>
+								</div>
 
 								<p>
 									<?php if ($this->wish->get('funds') > 0) { ?>
@@ -558,47 +568,66 @@ $this->css()
 								<input type="hidden" id="wishlist" name="wishlist" value="<?php echo $this->wishlist->get('id'); ?>" />
 								<input type="hidden" id="wish" name="wish" value="<?php echo $this->wish->get('id'); ?>" />
 
-								<label>
-									<input class="option" type="radio" name="type" value="general" <?php echo ($this->wishlist->get('category')=='general') ? 'checked="checked"' : ''; ?> />
-									<?php echo Lang::txt('COM_WISHLIST_MAIN_NAME'); ?>
-								</label>
+								<div class="form-group form-check">
+									<label class="form-check-label" for="field-type-general">
+										<input class="option form-check-input" type="radio" name="type" value="general" id="field-type-general" <?php echo ($this->wishlist->get('category')=='general') ? 'checked="checked"' : ''; ?> />
+										<?php echo Lang::txt('COM_WISHLIST_MAIN_NAME'); ?>
+									</label>
+								</div>
 
-								<label>
-									<input class="option" type="radio" name="type" value="resource" <?php echo ($this->wishlist->get('category')=='resource') ? 'checked="checked"' : ''; ?> />
-									<?php echo Lang::txt('COM_WISHLIST_RESOURCE_NAME'); ?>
-								</label>
-								<label>
-									<input class="secondary_option" type="text" name="resource" id="acresource" value="<?php echo ($this->wishlist->get('category')=='resource') ? $this->wishlist->get('referenceid') : ''; ?>" autocomplete="off" />
-								</label>
+								<div class="form-group form-check">
+									<label class="form-check-label" for="field-type-resource">
+										<input class="option form-check-input" type="radio" name="type" value="resource" id="field-type-resource" <?php echo ($this->wishlist->get('category')=='resource') ? 'checked="checked"' : ''; ?> />
+										<?php echo Lang::txt('COM_WISHLIST_RESOURCE_NAME'); ?>
+									</label>
+								</div>
+
+								<div class="form-group">
+									<label class="form-check-label" for="acresource">
+										<input class="form-control secondary_option" type="text" name="resource" id="acresource" value="<?php echo ($this->wishlist->get('category')=='resource') ? $this->wishlist->get('referenceid') : ''; ?>" autocomplete="off" />
+									</label>
+								</div>
 
 							<?php if ($this->wish->get('cats') && preg_replace("/group/", '', $this->wish->get('cats')) != $this->wish->get('cats')) { ?>
-								<label>
-									<input class="option" type="radio" name="type" value="group" <?php if ($this->wishlist->get('category')=='group') { echo 'checked="checked"'; } ?> />
-									<?php echo Lang::txt('COM_WISHLIST_GROUP_NAME'); ?>
-								</label>
+								<div class="form-group form-check">
+									<label class="form-check-label" for="field-type-group">
+										<input class="option form-check-input" type="radio" name="type" value="group" id="field-type-group" <?php if ($this->wishlist->get('category')=='group') { echo 'checked="checked"'; } ?> />
+										<?php echo Lang::txt('COM_WISHLIST_GROUP_NAME'); ?>
+									</label>
+								</div>
 
-								<label>
-									<input type="text" name="group" value="<?php if ($this->wishlist->get('category')=='group') { echo $this->wishlist->item('alias'); } ?>" id="acgroup" class="secondary_option" autocomplete="off" />
-								</label>
+								<div class="form-group">
+									<label for="acgroup">
+										<input type="text" name="group" value="<?php if ($this->wishlist->get('category')=='group') { echo $this->wishlist->item('alias'); } ?>" id="acgroup" class="form-control secondary_option" autocomplete="off" />
+									</label>
+								</div>
 							<?php } ?>
 								<fieldset>
 									<legend><?php echo Lang::txt('COM_WISHLIST_TRANSFER_OPTIONS'); ?>:</legend>
-									<label>
-										<input class="option" type="checkbox" name="keepcomments" value="1" checked="checked" />
-										<?php echo Lang::txt('COM_WISHLIST_TRANSFER_OPTIONS_PRESERVE_COMMENTS'); ?>
-									</label>
-									<label>
-										<input class="option" type="checkbox" name="keepplan" value="1" checked="checked" />
-										<?php echo Lang::txt('COM_WISHLIST_TRANSFER_OPTIONS_PRESERVE_PLAN'); ?>
-									</label>
-									<label>
-										<input class="option" type="checkbox" name="keepstatus" value="1" checked="checked" />
-										<?php echo Lang::txt('COM_WISHLIST_TRANSFER_OPTIONS_PRESERVE_STATUS'); ?>
-									</label>
-									<label>
-										<input class="option" type="checkbox" name="keepfeedback" value="1" checked="checked" />
-										<?php echo Lang::txt('COM_WISHLIST_TRANSFER_OPTIONS_PRESERVE_VOTES'); ?>
-									</label>
+									<div class="form-group form-check">
+										<label class="form-check-label" for="field-keepcomments">
+											<input class="option" type="checkbox" name="keepcomments" id="field-keepcomments" value="1" checked="checked" />
+											<?php echo Lang::txt('COM_WISHLIST_TRANSFER_OPTIONS_PRESERVE_COMMENTS'); ?>
+										</label>
+									</div>
+									<div class="form-group form-check">
+										<label class="form-check-label" for="field-keepplan">
+											<input class="option" type="checkbox" name="keepplan" id="field-keepplan" value="1" checked="checked" />
+											<?php echo Lang::txt('COM_WISHLIST_TRANSFER_OPTIONS_PRESERVE_PLAN'); ?>
+										</label>
+									</div>
+									<div class="form-group form-check">
+										<label class="form-check-label" for="field-keepstatus">
+											<input class="option" type="checkbox" name="keepstatus" id="field-keepstatus" value="1" checked="checked" />
+											<?php echo Lang::txt('COM_WISHLIST_TRANSFER_OPTIONS_PRESERVE_STATUS'); ?>
+										</label>
+									</div>
+									<div class="form-group form-check">
+										<label class="form-check-label" for="field-keepfeedback">
+											<input class="option" type="checkbox" name="keepfeedback" id="field-keepfeedback" value="1" checked="checked" />
+											<?php echo Lang::txt('COM_WISHLIST_TRANSFER_OPTIONS_PRESERVE_VOTES'); ?>
+										</label>
+									</div>
 								</fieldset>
 
 								<p>
@@ -713,30 +742,38 @@ $this->css()
 
 						<?php echo Html::input('token'); ?>
 
-						<label for="comment<?php echo $this->wish->get('id'); ?>">
-							<?php echo Lang::txt('COM_WISHLIST_ENTER_COMMENTS'); ?>
-							<?php
-							echo $this->editor('comment[content]', '', 35, 4, 'comment' . $this->wish->get('id'), array('class' => 'minimal no-footer'));
-							?>
-						</label>
+						<div class="form-group">
+							<label for="comment<?php echo $this->wish->get('id'); ?>">
+								<?php echo Lang::txt('COM_WISHLIST_ENTER_COMMENTS'); ?>
+								<?php
+								echo $this->editor('comment[content]', '', 35, 4, 'comment' . $this->wish->get('id'), array('class' => 'form-control minimal no-footer'));
+								?>
+							</label>
+						</div>
 
 						<fieldset>
 							<div class="grouping">
-								<label for="comment-upload">
-									<?php echo Lang::txt('COM_WISHLIST_ACTION_ATTACH_FILE'); ?>
-									<input type="file" name="upload" id="comment-upload" />
-								</label>
-								<label for="comment-description">
-									<?php echo Lang::txt('COM_WISHLIST_ACTION_ATTACH_FILE_DESC'); ?>
-									<input type="text" name="description" id="comment-description" value="" />
-								</label>
+								<div class="form-group">
+									<label for="comment-upload">
+										<?php echo Lang::txt('COM_WISHLIST_ACTION_ATTACH_FILE'); ?>
+										<input type="file" name="upload" id="comment-upload" class="form-control-file" />
+									</label>
+								</div>
+								<div class="form-group">
+									<label for="comment-description">
+										<?php echo Lang::txt('COM_WISHLIST_ACTION_ATTACH_FILE_DESC'); ?>
+										<input type="text" name="description" id="comment-description" class="form-control" value="" />
+									</label>
+								</div>
 							</div>
 						</fieldset>
 
-						<label id="comment-anonymous-label" for="comment-anonymous">
-							<input class="option" type="checkbox" name="comment[anonymous]" value="1" id="comment-anonymous" />
-							<?php echo Lang::txt('COM_WISHLIST_POST_COMMENT_ANONYMOUSLY'); ?>
-						</label>
+						<div class="form-group form-check">
+							<label id="comment-anonymous-label" for="comment-anonymous" class="form-check-label">
+								<input class="option form-check-input" type="checkbox" name="comment[anonymous]" value="1" id="comment-anonymous" />
+								<?php echo Lang::txt('COM_WISHLIST_POST_COMMENT_ANONYMOUSLY'); ?>
+							</label>
+						</div>
 
 						<p class="submit">
 							<input type="submit" value="<?php echo Lang::txt('COM_WISHLIST_POST_COMMENT'); ?>" />
@@ -789,17 +826,21 @@ $this->css()
 						</div>
 
 						<?php if ($this->wish->get('plan')) { ?>
-							<label class="newrev" for="create_revision">
-								<input type="checkbox" class="option" name="create_revision" id="create_revision" value="1" />
-								<?php echo Lang::txt('COM_WISHLIST_PLAN_NEW_REVISION'); ?>
-							</label>
+							<div class="form-group form-check">
+								<label class="newrev form-check-label" for="create_revision">
+									<input type="checkbox" class="option form-check-input" name="create_revision" id="create_revision" value="1" />
+									<?php echo Lang::txt('COM_WISHLIST_PLAN_NEW_REVISION'); ?>
+								</label>
+							</div>
 						<?php } else { ?>
 							<input type="hidden" name="create_revision" value="0" />
 						<?php } ?>
-						<label>
-							<?php echo Lang::txt('COM_WISHLIST_ACTION_INSERT_TEXT'); ?>
-							<?php echo $this->editor('pagetext', $this->escape($this->wish->plan->get('pagetext')), 35, 40, 'pagetext', array('class' => 'minimal no-footer')); ?>
-						</label>
+						<div class="form-group">
+							<label for="pagetext">
+								<?php echo Lang::txt('COM_WISHLIST_ACTION_INSERT_TEXT'); ?>
+								<?php echo $this->editor('pagetext', $this->escape($this->wish->plan->get('pagetext')), 35, 40, 'pagetext', array('class' => 'form-control minimal no-footer')); ?>
+							</label>
+						</div>
 
 						<input type="hidden" name="pageid" value="<?php echo $this->wish->plan()->get('id', 0); ?>" />
 						<input type="hidden" name="version" value="<?php echo $this->wish->plan()->get('version', 1); ?>" />
