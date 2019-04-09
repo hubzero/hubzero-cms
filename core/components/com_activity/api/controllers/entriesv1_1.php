@@ -165,7 +165,6 @@ class Entriesv1_1 extends ApiController
 			'search'     => Request::getString('search', ''),
 			'action'     => Request::getCmd('action'),
 			'created_by' => Request::getInt('created_by', 0),
-			'date'       => Request::getString('date', ''),
 			'start_date' => Request::getString('start_date', ''),
 			'end_date'   => Request::getString('end_date', ''),
 			'recipients' => Request::getString('recipients', ''),
