@@ -165,11 +165,14 @@ class Entriesv1_1 extends ApiController
 			'search'     => Request::getString('search', ''),
 			'action'     => Request::getCmd('action'),
 			'created_by' => Request::getInt('created_by', 0),
+			'date'       => Request::getString('date', ''),
 			'start_date' => Request::getString('start_date', ''),
 			'end_date'   => Request::getString('end_date', ''),
 			'recipients' => Request::getString('recipients', ''),
 			'sort'       => Request::getString('sort', 'created'),
-			'sort_Dir'   => strtolower(Request::getString('sort_Dir', 'desc'))
+			'sort_Dir'   => strtolower(Request::getString('sort_Dir', 'desc')),
+			'limit'      => Request::getInt('limit', \Config::get('list_limit')),
+			'start'      => Request::getInt('start', 0)
 		);
 
 		if (!in_array($filters['sort_Dir'], ['asc', 'desc']))
@@ -313,8 +316,8 @@ class Entriesv1_1 extends ApiController
 
 		$rows = $query
 			->order($l . '.' . $filters['sort'], $filters['sort_Dir'])
-			//->limit($filters['limit'])
-			//->start($filters['start'])
+			->limit($filters['limit'])
+			->start($filters['start'])
 			->paginated()
 			->rows();
 
@@ -325,6 +328,38 @@ class Entriesv1_1 extends ApiController
 			$obj = $row->toObject();
 			$obj->details = $row->details->toObject();
 			$obj->recipients = $row->recipients->toObject();
+			$obj->created_by_name = User::getInstance($obj->created_by)->get('name');
+
+			$dt = Date::of($obj->created);
+			$ct = Date::of('now');
+
+			$lapsed = $ct->toUnix() - $dt->toUnix();
+
+			if ($lapsed < 30)
+			{
+				$obj->created_relative = Lang::txt('COM_ACTIVITY_JUST_NOW');
+			}
+			elseif ($lapsed > 86400 && $ct->format('Y') != $dt->format('Y'))
+			{
+				$obj->created_relative = $dt->toLocal('M j, Y');
+			}
+			elseif ($lapsed > 86400)
+			{
+				$obj->created_relative = $dt->toLocal('M j') . ' @ ' . $dt->toLocal('g:i a');
+			}
+			else
+			{
+				$obj->created_relative = $dt->relative();
+			}
+
+			if (User::authorise('core.edit') || User::get('id') == $obj->created_by)
+			{
+				$obj->canEdit = true;
+			}
+			if (User::authorise('core.delete') || User::get('id') == $obj->created_by)
+			{
+				$obj->canDelete = true;
+			}
 
 			foreach ($obj->recipients as $k => $recipient)
 			{
