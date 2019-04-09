@@ -43,6 +43,7 @@ $this->js();
 
 $base = rtrim(Request::base(true), '/');
 ?>
+
 <div class="<?php echo $this->module->module . ' ' . $this->params->get('moduleclass_sfx', ''); ?> session-list <?php if (!$this->params->get('show_storage', 1)) { echo 'without-storage'; } ?>">
 	<ul>
 		<?php if (count($this->sessions) > 0) : ?>
@@ -204,4 +205,5 @@ $base = rtrim(Request::base(true), '/');
 			</p>
 		<?php endif; ?>
 	</div>
-<?php endif;
+	
+<?php endif; ?>

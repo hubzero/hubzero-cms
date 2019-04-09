@@ -11,7 +11,7 @@ if (!jq) {
 
 jQuery(document).ready(function(jq){
 	var $ = jq,
-		containers = $('.mod_mygroups');
+		containers = $('.mod_mygroupsmini');
 
 	if (containers.length <= 0) {
 		return;

@@ -183,7 +183,8 @@
 	.mod_mygroups .compactlist li.group a.fav:hover {
 		color: red;
 	}
-.truncate {
+
+  .truncate {
 		display: block; /* Fallback for non-webkit */
 	  display: -webkit-box;
 	  height: 2.4em; /* Fallback for non-webkit */
@@ -195,3 +196,44 @@
 	  overflow: hidden;
 	  text-overflow: ellipsis;
 	}
+
+/*
+  .grpdisp {
+	 align-items:center;
+  }
+
+
+.group-img{
+ position: absolute;
+ right: 10px;
+}
+*/
+
+/* Created a table for styling the group logo and the group name */
+
+div.grpdisp{
+    display:table;
+		padding: 5px;
+		width: 100%;
+}
+
+div .group-name{
+    vertical-align:middle;
+    display:table-cell;
+    text-align:justify;
+}
+
+div.grpdisp .group-img{
+    vertical-align:middle;
+    display:table-cell;
+		padding-right:7px;
+    width:45px;
+		/* you can change width */
+}
+
+
+div.a.group-img img{
+	height:45px;
+	width: 100%;
+	vertical-align:middle;
+ }
