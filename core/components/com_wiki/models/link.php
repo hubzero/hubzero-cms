@@ -160,10 +160,7 @@ class Link extends Relational
 			$row->set('page_id', intval($link['page_id']));
 			$row->set('timestamp', $timestamp);
 			$row->set('scope', $link['scope']);
-			if ($link['scope_id'])
-			{
-				$row->set('scope_id', intval($link['scope_id']));
-			}
+			$row->set('scope_id', intval($link['scope_id']));
 			$row->set('link', $link['link']);
 			$row->set('url', $link['url']);
 
