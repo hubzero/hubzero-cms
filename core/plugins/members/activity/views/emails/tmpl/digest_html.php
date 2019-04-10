@@ -137,7 +137,7 @@ $link = $base . '/' . trim($sef, '/');
 				<td style="font-weight: normal; padding: 8px; text-align: left; " align="left">
 					<span class="activity-actor">
 						<?php
-						$name = Lang::txt('PLG_MEMBERS_ACTIVITY_ANONYMOUS');
+						$name = Lang::txt('JANONYMOUS');
 
 						if (!$row->log->get('anonymous'))
 						{

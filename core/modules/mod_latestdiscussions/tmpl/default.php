@@ -67,7 +67,7 @@ $c = 0;
 						<span class="discussion-author">
 							<?php
 								if ($post->get('anonymous')) {
-									echo '<em>' . Lang::txt('MOD_LATESTDISCUSSIONS_ANONYMOUS') . '</em>';
+									echo '<em>' . Lang::txt('JANONYMOUS') . '</em>';
 								} else {
 									echo '<a href="' . Route::url('index.php?option=com_members&id=' . $post->creator()->get('id')) . '">' . $this->escape(stripslashes($post->creator()->get('name'))) . '</a>';
 								}

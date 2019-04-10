@@ -78,7 +78,7 @@ $this->css()
 									$title = $this->escape(stripslashes($row->get('title')));
 									$title = preg_replace('#' . $this->filters['search'] . '#i', "<span class=\"highlight\">\\0</span>", $title);
 
-									$name = Lang::txt('COM_FORUM_ANONYMOUS');
+									$name = Lang::txt('JANONYMOUS');
 									if (!$row->get('anonymous'))
 									{
 										$name = $this->escape(stripslashes($row->creator->get('name')));

@@ -115,7 +115,7 @@ $this->js();
 
 				<div class="input-wrap">
 					<input type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" <?php echo $this->row->anonymous ? 'checked="checked"' : ''; ?> />
-					<label for="field-anonymous"><?php echo Lang::txt('COM_WISHLIST_ANONYMOUS'); ?></label>
+					<label for="field-anonymous"><?php echo Lang::txt('JANONYMOUS'); ?></label>
 				</div>
 
 				<div class="input-wrap">

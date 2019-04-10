@@ -251,7 +251,7 @@ if ($this->wishlist->get('id'))
 										$state .= ' private';
 									}
 
-									$name = Lang::txt('COM_WISHLIST_ANONYMOUS');
+									$name = Lang::txt('JANONYMOUS');
 									if (!$item->get('anonymous'))
 									{
 										$name = $this->escape(stripslashes($item->proposer->get('name', $name)));

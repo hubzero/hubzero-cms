@@ -414,7 +414,7 @@ class Articles extends SiteController
 			// Load individual item creator class
 			$item = new \Hubzero\Document\Type\Feed\Item();
 
-			$item->author = Lang::txt('COM_KB_ANONYMOUS');
+			$item->author = Lang::txt('JANONYMOUS');
 			if (!$comment->get('anonymous'))
 			{
 				$item->author = $comment->creator('name', $item->author);

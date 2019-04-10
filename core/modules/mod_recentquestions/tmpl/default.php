@@ -32,13 +32,13 @@
 defined('_HZEXEC_') or die();
 ?>
 <div<?php echo ($this->cssId) ? ' id="' . $this->cssId . '"' : '';
-	echo ($this->cssClass) ? ' class="' . $this->cssClass . '"' : ''; ?>>
+		echo ($this->cssClass) ? ' class="' . $this->cssClass . '"' : ''; ?>>
 <?php if (count($this->rows) > 0) { ?>
 	<ul class="questions">
 	<?php
 	foreach ($this->rows as $row)
 	{
-		$name = Lang::txt('MOD_RECENTQUESTIONS_ANONYMOUS');
+		$name = Lang::txt('JANONYMOUS');
 		if (!$row->get('anonymous'))
 		{
 			$name = $row->creator()->get('name');

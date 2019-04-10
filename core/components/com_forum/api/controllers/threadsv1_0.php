@@ -549,7 +549,7 @@ class Threadsv1_0 extends ApiController
 
 				$obj->creator = new stdClass;
 				$obj->creator->id   = 0;
-				$obj->creator->name = Lang::txt('COM_FORUM_ANONYMOUS');
+				$obj->creator->name = Lang::txt('JANONYMOUS');
 
 				if (!$thread->get('anonymous'))
 				{

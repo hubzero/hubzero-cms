@@ -497,7 +497,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			// URL link to article
 			$link = Route::url('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $row->id);
 
-			$author = Lang::txt('PLG_HUBZERO_COMMENTS_ANONYMOUS');
+			$author = Lang::txt('JANONYMOUS');
 			if (!$row->get('anonymous'))
 			{
 				$author = $row->creator->get('name');
@@ -536,7 +536,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 				// URL link to article
 				$link = Route::url('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $reply->id);
 
-				$author = Lang::txt('PLG_HUBZERO_COMMENTS_ANONYMOUS');
+				$author = Lang::txt('JANONYMOUS');
 				if (!$reply->anonymous)
 				{
 					$author = $reply->creator->get('name');
@@ -575,7 +575,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 					// URL link to article
 					$link = Route::url('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $response->id);
 
-					$author = Lang::txt('PLG_HUBZERO_COMMENTS_ANONYMOUS');
+					$author = Lang::txt('JANONYMOUS');
 					if (!$response->anonymous)
 					{
 						$author = $response->creator->get('name');

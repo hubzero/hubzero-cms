@@ -204,7 +204,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 					{
 						if (!$replyto->isNew())
 						{
-							$name = Lang::txt('COM_KB_ANONYMOUS');
+							$name = Lang::txt('JANONYMOUS');
 							if (!$replyto->get('anonymous'))
 							{
 								$name = $this->escape(stripslashes($replyto->creator->get('name')));
@@ -287,4 +287,4 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 	</div><!-- / .section-inner -->
 </section><!-- / .below -->
 
-<?php } // if ($this->config->get('allow_comments')) ?>
+<?php }

@@ -58,7 +58,7 @@ $this->css();
 			$i++;
 
 			// author name
-			$name = Lang::txt('PLG_PUBLICATION_QUESTIONS_ANONYMOUS');
+			$name = Lang::txt('JANONYMOUS');
 			if (!$row->get('anonymous'))
 			{
 				$user = User::getInstance($row->get('created_by'));

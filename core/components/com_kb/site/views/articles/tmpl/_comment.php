@@ -44,7 +44,7 @@ if ($this->comment->get('state') == 1)
 	$cls .= ' chosen';
 }
 
-$name = Lang::txt('COM_KB_ANONYMOUS');
+$name = Lang::txt('JANONYMOUS');
 if (!$this->comment->get('anonymous'))
 {
 	$name = $this->escape(stripslashes($this->comment->creator->get('name', $name)));
@@ -144,7 +144,7 @@ else
 				<?php } else { ?>
 				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
 					<fieldset>
-						<legend><span><?php echo Lang::txt('COM_KB_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('COM_KB_ANONYMOUS'))); ?></span></legend>
+						<legend><span><?php echo Lang::txt('COM_KB_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="comment[id]" value="0" />
 						<input type="hidden" name="comment[parent]" value="<?php echo $this->escape($this->comment->get('id')); ?>" />

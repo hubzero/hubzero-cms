@@ -36,7 +36,7 @@ if ($this->getError()) { ?>
 	<p class="error"><?php echo Lang::txt('MOD_FEATUREDQUESTION_MISSING_CLASS'); ?></p>
 <?php } else {
 	if ($this->row) {
-		$name = Lang::txt('MOD_FEATUREDQUESTION_ANONYMOUS');
+		$name = Lang::txt('JANONYMOUS');
 		if (!$this->row->get('anonymous'))
 		{
 			$name = $this->row->creator->get('name');

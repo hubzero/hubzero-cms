@@ -37,13 +37,13 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 if (!function_exists('sortDir'))
 {
 	/**
-	* Returns opposite of how it was sorted
-	*
-	* @param  array  $filters  Array of filters
-	* @param  string $current  
-	* @param  string $dir      Direction of order
-	* @return string
-	*/
+	 * Returns opposite of how it was sorted
+	 *
+	 * @param  array  $filters  Array of filters
+	 * @param  string $current  
+	 * @param  string $dir      Direction of order
+	 * @return string
+	 */
 	function sortDir($filters, $current, $dir='DESC')
 	{
 		if ($filters['sortby'] == $current && $filters['sort_Dir'] == $dir)
@@ -161,7 +161,7 @@ $this->css()
 					{
 						foreach ($this->threads as $row)
 						{
-							$name = Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
+							$name = Lang::txt('JANONYMOUS');
 							if (!$row->get('anonymous'))
 							{
 								$name = $this->escape(stripslashes($row->creator->get('name', $name)));
@@ -216,7 +216,7 @@ $this->css()
 										$lastpost = $row->lastActivity();
 										if ($lastpost->get('id'))
 										{
-											$lname = Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
+											$lname = Lang::txt('JANONYMOUS');
 											if (!$lastpost->get('anonymous'))
 											{
 												$lname = $this->escape(stripslashes($lastpost->creator->get('name')));
