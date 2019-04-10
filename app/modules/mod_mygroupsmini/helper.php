@@ -172,9 +172,9 @@ class Helper extends Module
 			->limit(5)
 			->rows();
 
-		foreach ($this->allgroups as $group)
+		foreach ($recents as $recent)
 		{
-			foreach ($recents as $recent)
+			foreach ($this->allgroups as $group)
 			{
 				if ($recent->get('group_id') == $group->gidNumber)
 				{
