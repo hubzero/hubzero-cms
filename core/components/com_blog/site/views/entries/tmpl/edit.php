@@ -140,7 +140,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 						<div class="form-group">
 							<label for="field-publish_up">
 								<?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_UP'); ?>
-								<input type="text" class="form-control" name="entry[publish_up]" class="datetime-field" id="field-publish_up" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot()) / 60); ?>" value="<?php echo ($this->entry->get('publish_up')) ? $this->escape(Date::of($this->entry->get('publish_up'))->toLocal('Y-m-d H:i:s')) : ''; ?>" />
+								<input type="text" name="entry[publish_up]" class="form-control datetime-field" id="field-publish_up" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot()) / 60); ?>" value="<?php echo ($this->entry->get('publish_up')) ? $this->escape(Date::of($this->entry->get('publish_up'))->toLocal('Y-m-d H:i:s')) : ''; ?>" />
 								<span class="hint"><?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 							</label>
 						</div>
@@ -150,7 +150,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 						<div class="form-group">
 							<label for="field-publish_down">
 								<?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_DOWN'); ?>
-								<input type="text" class="form-control" name="entry[publish_down]" class="datetime-field" id="field-publish_down" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot()) / 60); ?>" value="<?php echo ($this->entry->get('publish_down')) ? $this->escape(Date::of($this->entry->get('publish_down'))->toLocal('Y-m-d H:i:s')) : ''; ?>" />
+								<input type="text" name="entry[publish_down]" class="form-control datetime-field" id="field-publish_down" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot()) / 60); ?>" value="<?php echo ($this->entry->get('publish_down')) ? $this->escape(Date::of($this->entry->get('publish_down'))->toLocal('Y-m-d H:i:s')) : ''; ?>" />
 								<span class="hint"><?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 							</label>
 						</div>
