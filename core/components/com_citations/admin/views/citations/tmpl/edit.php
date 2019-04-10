@@ -269,19 +269,19 @@ $journal = (!preg_match('!\S!u', $journal)) ? utf8_encode($journal) : $journal;
 				</div>
 				<div class="input-wrap">
 					<label for="abstract"><?php echo Lang::txt('COM_CITATIONS_FIELD_ABSTRACT'); ?>:</label><br />
-					<?php echo $this->editor('citation[abstract]', stripslashes($this->row->abstract), 50, 10, 'abstract', array('class' => 'required minimal no-footer', 'buttons' => false)); ?>
+					<?php echo $this->editor('citation[abstract]', stripslashes($this->row->abstract), 50, 10, 'abstract', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 				</div>
 				<div class="input-wrap">
 					<label for="note"><?php echo Lang::txt('NOTES'); ?>:</label><br />
-					<?php echo $this->editor('citation[note]', stripslashes($this->row->note), 50, 10, 'note', array('class' => 'required minimal no-footer', 'buttons' => false)); ?>
+					<?php echo $this->editor('citation[note]', stripslashes($this->row->note), 50, 10, 'note', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 				</div>
 				<div class="input-wrap">
 					<label for="keywords"><?php echo Lang::txt('COM_CITATIONS_FIELD_KEYWORDS'); ?>:</label><br />
-					<?php echo $this->editor('citation[keywords]', stripslashes($this->row->keywords), 50, 10, 'keywords', array('class' => 'required minimal no-footer', 'buttons' => false)); ?>
+					<?php echo $this->editor('citation[keywords]', stripslashes($this->row->keywords), 50, 10, 'keywords', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 				</div>
 				<div class="input-wrap">
 					<label for="research_notes"><?php echo Lang::txt('COM_CITATIONS_FIELD_RESEARCH_NOTES'); ?>:</label><br />
-					<?php echo $this->editor('citation[research_notes]', stripslashes($this->row->research_notes), 50, 10, 'research_notes', array('class' => 'required minimal no-footer', 'buttons' => false)); ?>
+					<?php echo $this->editor('citation[research_notes]', stripslashes($this->row->research_notes), 50, 10, 'research_notes', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 				</div>
 			</fieldset>
 
@@ -296,7 +296,7 @@ $journal = (!preg_match('!\S!u', $journal)) ? utf8_encode($journal) : $journal;
 				</div>
 				<div class="input-wrap">
 					<label for="citation-formatted"><?php echo Lang::txt('MANUAL_FORMAT_CITATION'); ?>:</label>
-					<?php echo $this->editor('citation[formatted]', stripslashes($this->row->get('formatted')), 50, 10, 'formatted', array('class' => 'required minimal no-footer', 'buttons' => false)); ?>
+					<?php echo $this->editor('citation[formatted]', stripslashes($this->row->get('formatted')), 50, 10, 'formatted', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 				</div>
 			</fieldset>
 		</div>
