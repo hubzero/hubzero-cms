@@ -48,7 +48,7 @@ if ($this->model->member())
 
 $recorded = $this->activity->get('created');
 
-$name = Lang::txt('PLG_PROJECTS_ACTIVITY_ANONYMOUS');
+$name = Lang::txt('JANONYMOUS');
 
 $online = false;
 
@@ -140,7 +140,7 @@ if (!$this->activity->log->get('anonymous'))
 							<?php
 						}
 						?>
-						<div class="activity-event-content<?php echo ($short ? ' hide' : ''); ?>" id="activity-event-full-content<?php echo $this->activity->log->get('id'); ?>">
+						<div class="activity-event-content<?php echo ($short) ? ' hide' : ''; ?>" id="activity-event-full-content<?php echo $this->activity->log->get('id'); ?>">
 							<?php echo $content; ?>
 						</div>
 					<?php } else { ?>

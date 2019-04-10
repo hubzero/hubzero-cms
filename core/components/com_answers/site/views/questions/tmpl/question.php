@@ -110,10 +110,10 @@ if ($this->question->isDeleted() or !$this->question->get('id'))
 
 					<p class="entry-title">
 						<strong><?php
-						$name = Lang::txt('COM_ANSWERS_ANONYMOUS');
+						$name = Lang::txt('JANONYMOUS');
 						if (!$this->question->get('anonymous'))
 						{
-							$name = $this->escape(stripslashes($this->question->creator->get('name', Lang::txt('COM_ANSWERS_UNKNOWN'))));
+							$name = $this->escape(stripslashes($this->question->creator->get('name', Lang::txt('JUNKNOWN'))));
 							if (in_array($this->question->creator->get('access'), User::getAuthorisedViewLevels()) && !$this->question->creator->get('block') && $this->question->creator->get('approved'))
 							{
 								$name = '<a href="' . Route::url($this->question->creator->link()) . '">' . $name . '</a>';

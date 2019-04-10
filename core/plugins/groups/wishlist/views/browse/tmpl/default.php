@@ -118,7 +118,7 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 					break;
 				}
 
-				$name = Lang::txt('PLG_GROUPS_WISHLIST_ANONYMOUS');
+				$name = Lang::txt('JANONYMOUS');
 				if (!$item->anonymous)
 				{
 					$name = '<a href="'.Route::url('index.php?option=com_members&id='.$item->proposed_by).'">' . $this->escape($item->proposer->get('name')) . '</a>';

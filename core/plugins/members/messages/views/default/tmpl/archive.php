@@ -141,7 +141,7 @@ $this->css()
 						//get who the message is from
 						if (substr($row->type, -8) == '_message')
 						{
-							$from = Lang::txt('PLG_MEMBERS_MESSAGES_ANONYMOUS');
+							$from = Lang::txt('JANONYMOUS');
 							if (!$row->anonymous)
 							{
 								$u = User::getInstance($row->created_by);

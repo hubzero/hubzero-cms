@@ -1202,8 +1202,8 @@ class Wishlists extends SiteController
 
 			if ($row->get('anonymous'))
 			{
-				$name  = Lang::txt('COM_WISHLIST_ANONYMOUS');
-				$login = Lang::txt('COM_WISHLIST_ANONYMOUS');
+				$name  = Lang::txt('JANONYMOUS');
+				$login = Lang::txt('JANONYMOUS');
 			}
 
 			$this->_list_title = $wishlist->get('title');
@@ -1604,7 +1604,7 @@ class Wishlists extends SiteController
 
 				if ($wish->get('anonymous'))
 				{
-					$name = Lang::txt('COM_WISHLIST_ANONYMOUS');
+					$name = Lang::txt('JANONYMOUS');
 				}
 
 				$subject1 = Lang::txt(strtoupper($this->_option)).', '.Lang::txt('COM_WISHLIST_NEW_WISH').' '.Lang::txt('COM_WISHLIST_FOR').' '.$newtitle.' '.Lang::txt('COM_WISHLIST_FROM').' '.$name.' - '.Lang::txt('COM_WISHLIST_TRANSFERRED');

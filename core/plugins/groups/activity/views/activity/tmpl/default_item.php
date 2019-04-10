@@ -41,7 +41,7 @@ if (!$this->row->wasViewed())
 
 $creator = User::getInstance($this->row->log->get('created_by'));
 
-$name = Lang::txt('PLG_GROUPS_ACTIVITY_ANONYMOUS');
+$name = Lang::txt('JANONYMOUS');
 
 $online = false;
 
@@ -204,7 +204,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 									<img src="<?php echo Route::url($link); ?>" alt="<?php echo $this->escape($attachment->get('description')); ?>" width="<?php echo ($attachment->width() > 400) ? 400 : $attachment->width(); ?>" />
 									<p class="attachment-meta">
 										<span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
-										<span class="attachment-action"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FILE_DOWNLOAD'); ?></span>
+										<span class="attachment-action"><?php echo Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD'); ?></span>
 									</p>
 								</a>
 								<?php
@@ -216,7 +216,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 									<p class="attachment-description"><?php echo $attachment->get('description'); ?></p>
 									<p class="attachment-meta">
 										<span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
-										<span class="attachment-action"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FILE_DOWNLOAD'); ?></span>
+										<span class="attachment-action"><?php echo Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD'); ?></span>
 									</p>
 								</a>
 								<?php
@@ -297,7 +297,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 			<div class="comment-add<?php if (Request::getInt('reply', 0) != $this->row->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->row->get('id'); ?>">
 				<form id="cform<?php echo $this->row->get('id'); ?>" action="<?php echo Route::url($base); ?>" method="post" enctype="multipart/form-data">
 					<fieldset>
-						<legend><span><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_REPLYING_TO', (!$this->row->log->get('anonymous') ? $name : Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS'))); ?></span></legend>
+						<legend><span><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_REPLYING_TO', (!$this->row->log->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="activity[id]" value="0" />
 						<input type="hidden" name="activity[action]" value="created" />

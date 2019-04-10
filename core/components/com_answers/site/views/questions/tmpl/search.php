@@ -185,7 +185,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 					foreach ($this->results as $row)
 					{
 						// author name
-						$name = Lang::txt('COM_ANSWERS_ANONYMOUS');
+						$name = Lang::txt('JANONYMOUS');
 						if (!$row->get('anonymous'))
 						{
 							$name = $this->escape(stripslashes($row->creator->get('name', $name)));

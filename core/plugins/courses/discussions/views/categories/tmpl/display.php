@@ -95,7 +95,7 @@ $base = $this->offering->link() . '&active=forum';
 						{
 							foreach ($this->threads as $row)
 							{
-								$name = Lang::txt('PLG_COURSES_DISCUSSIONS_ANONYMOUS');
+								$name = Lang::txt('JANONYMOUS');
 								if (!$row->get('anonymous'))
 								{
 									$name = $this->escape(stripslashes($row->creator->get('name', $name)));
@@ -150,7 +150,7 @@ $base = $this->offering->link() . '&active=forum';
 											$lastpost = $row->lastActivity();
 											if ($lastpost->get('id'))
 											{
-												$lname = Lang::txt('PLG_COURSES_DISCUSSIONS_ANONYMOUS');
+												$lname = Lang::txt('JANONYMOUS');
 												if (!$lastpost->get('anonymous'))
 												{
 													$lname = $this->escape(stripslashes($lastpost->creator->get('name')));

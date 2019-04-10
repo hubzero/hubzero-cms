@@ -254,7 +254,7 @@ $now = Date::of('now')->toSql();
 								?>
 								<li>
 									<span class="member">
-										<?php echo Lang::txt('COM_FORUM_ANONYMOUS'); ?>
+										<?php echo Lang::txt('JANONYMOUS'); ?>
 									</span>
 								</li>
 								<?php
@@ -286,7 +286,7 @@ $now = Date::of('now')->toSql();
 								$title = ($title ? $title : $attachment->get('filename'));
 
 								// trims long titles
-								$title = (strlen($title) > 25) ? substr($title,0,22) . '...' : $title;
+								$title = (strlen($title) > 25) ? substr($title, 0, 22) . '...' : $title;
 
 								if ($attachment->isImage())
 								{

@@ -39,7 +39,7 @@ array_walk($this->posts, function($val, $idx) use (&$posts)
 	$posts += count($val);
 });
 ?>
-You have <?php echo $posts; ?> new post<?php if ($posts > 1) echo 's'; ?> across <?php echo $groups; ?> of your groups
+You have <?php echo $posts; ?> new post<?php echo ($posts > 1) ? 's' : ''; ?> across <?php echo $groups; ?> of your groups
 
 =======================
 <?php foreach ($this->posts as $group => $posts) : ?>
@@ -49,7 +49,7 @@ You have <?php echo $posts; ?> new post<?php if ($posts > 1) echo 's'; ?> across
 <?php $inst = $post; ?>
 
 <?php
-$name = Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
+$name = Lang::txt('JANONYMOUS');
 if (!$post->anonymous)
 {
 	$name = User::getInstance($post->created_by)->get('name');

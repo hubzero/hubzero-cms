@@ -47,7 +47,7 @@ $this->css();
 			<?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_RECENT_QUESTIONS'); ?>
 			<span>
 				(<?php
-					$visibleCount = sizeof($this->rows);
+					$visibleCount = count($this->rows);
 					$limit = Request::getInt('limit') ? Request::getInt('limit') : $visibleCount;
 					$total = $this->count;
 					$start = $limit > $total ? 1 : Request::getInt('limitstart') + 1;
@@ -73,7 +73,7 @@ $this->css();
 		{
 			$i++;
 
-			$name = Lang::txt('PLG_RESOURCES_QUESTIONS_ANONYMOUS');
+			$name = Lang::txt('JANONYMOUS');
 			if (!$row->get('anonymous'))
 			{
 				$name = $this->escape(stripslashes($row->creator->get('name', $name)));

@@ -129,7 +129,7 @@ array_walk($this->posts, function($val, $idx) use (&$posts)
 									<div style="background: #FFFFFF; width: 11px; height: 23px; position: absolute; top: 50%; left: -1px; margin-top: -10px;"></div>
 									<div style="color: #AAAAAA; font-size: 11px;">
 										<?php
-										$name = Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
+										$name = Lang::txt('JANONYMOUS');
 										if (!$post->anonymous)
 										{
 											$name = User::getInstance($post->created_by)->get('name');

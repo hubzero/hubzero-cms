@@ -53,7 +53,7 @@ $this->css()
 				<td><?php
 				if (substr($this->xmessage->get('type'), -8) == '_message')
 				{
-					$from = Lang::txt('PLG_MEMBERS_MESSAGES_ANONYMOUS');
+					$from = Lang::txt('JANONYMOUS');
 					if (!$this->xmessage->anonymous)
 					{
 						$u = $this->xmessage->creator;

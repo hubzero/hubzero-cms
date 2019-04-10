@@ -183,7 +183,7 @@ $cc = array();
 											<p class="attachment-description"><?php echo $attachment->get('description'); ?></p>
 											<p class="attachment-meta">
 												<span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
-												<span class="attachment-action"><?php echo Lang::txt('COM_SUPPORT_CLICK_TO_DOWNLOAD'); ?></span>
+												<span class="attachment-action"><?php echo Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD'); ?></span>
 											</p>
 										</a>
 										<?php

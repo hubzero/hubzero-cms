@@ -85,7 +85,7 @@ Toolbar::help('comments');
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_WISHLIST_ADDED_BY', 'added_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_WISHLIST_ADDED', 'added', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_WISHLIST_STATE', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_WISHLIST_ANONYMOUS', 'anonymous', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'JANONYMOUS', 'anonymous', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -136,7 +136,7 @@ Toolbar::help('comments');
 			{
 				$aclass = 'publish';
 				$atask = 'publicize';
-				$aalt = Lang::txt('COM_WISHLIST_ANONYMOUS');
+				$aalt = Lang::txt('JANONYMOUS');
 			}
 			else
 			{

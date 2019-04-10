@@ -52,7 +52,7 @@ if (is_object($this->reported))
 	{
 		$this->title .= Lang::txt('COM_SUPPORT_UNKNOWN');
 	}
-	$this->title .= ($this->reported->anon) ? '(' . Lang::txt('COM_SUPPORT_ANONYMOUS') . ')':'';
+	$this->title .= ($this->reported->anon) ? '(' . Lang::txt('JANONYMOUS') . ')':'';
 
 	$link = str_replace('/administrator', '', $this->reported->href);
 }

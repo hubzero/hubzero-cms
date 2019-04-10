@@ -793,7 +793,7 @@ class Entries extends SiteController
 
 		if ($row->get('anonymous'))
 		{
-			//$item->author = Lang::txt('COM_BLOG_ANONYMOUS');
+			//$item->author = Lang::txt('JANONYMOUS');
 		}
 		else
 		{

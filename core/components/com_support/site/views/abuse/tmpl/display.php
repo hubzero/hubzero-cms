@@ -65,7 +65,8 @@ if (!$no_html)
 				<div class="field-wrap">
 					<div class="abuseitem">
 						<p><?php
-							$name = Lang::txt('COM_SUPPORT_ANONYMOUS');
+							$name = Lang::txt('JANONYMOUS');
+
 							if ($this->report->anon == 0)
 							{
 								$user = User::getInstance($this->report->author);
@@ -78,7 +79,7 @@ if (!$no_html)
 
 							echo ($this->report->href) ? '<a href="' . $this->report->href . '">': '';
 							echo ucfirst($this->cat) . ' by ';
-							echo ($this->report->anon != 0) ? Lang::txt('COM_SUPPORT_REPORT_ABUSE_ANONYMOUS') : $name;
+							echo ($this->report->anon != 0) ? Lang::txt('JANONYMOUS') : $name;
 							echo ($this->report->href) ? '</a>': '';
 						?></p>
 						<?php echo ($this->report->subject) ? '<p><strong>'.stripslashes($this->report->subject).'</strong></p>' : ''; ?>

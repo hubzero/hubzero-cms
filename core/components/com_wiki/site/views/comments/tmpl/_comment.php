@@ -47,7 +47,7 @@ if (strstr($lnk, '?'))
 }
 $this->comment->base = $lnk . $d . ($this->page->get('scope_id') ? 'action' : 'task');
 
-$name = Lang::txt('COM_WIKI_ANONYMOUS');
+$name = Lang::txt('JANONYMOUS');
 if (!$this->comment->get('anonymous'))
 {
 	$name = $this->escape(stripslashes($this->comment->creator->get('name', $name)));
@@ -175,7 +175,7 @@ $this->comment->set('category', 'answercomment');
 				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->page->link('comments')); ?>" method="post" enctype="multipart/form-data">
 					<a name="commentform<?php echo $this->comment->get('id'); ?>"></a>
 					<fieldset>
-						<legend><span><?php echo Lang::txt('COM_WIKI_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('COM_WIKI_ANONYMOUS'))); ?></span></legend>
+						<legend><span><?php echo Lang::txt('COM_WIKI_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="comment[id]" value="0" />
 						<input type="hidden" name="comment[parent]" value="<?php echo $this->comment->get('id'); ?>" />

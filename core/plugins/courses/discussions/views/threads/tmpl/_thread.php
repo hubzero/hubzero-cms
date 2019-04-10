@@ -67,9 +67,13 @@ if (!$this->thread->thread)
 	$this->thread->thread = $this->thread->id;
 }
 ?>
-<li class="thread thread<?php echo $this->thread->thread; if ($this->active == $this->thread->thread) { echo ' active'; } ?><?php echo ($this->thread->sticky) ? ' stuck' : '' ?>" id="<?php echo $prfx . ($this->thread->parent ? $this->thread->id . '-' : '') . $this->thread->thread; ?>" data-thread="<?php echo $this->thread->thread; ?>">
+<li class="thread thread<?php echo $this->thread->thread;
+	echo ($this->active == $this->thread->thread) ? ' active' : '';
+	echo ($this->thread->sticky) ? ' stuck' : ''; ?>"
+	id="<?php echo $prfx . ($this->thread->parent ? $this->thread->id . '-' : '') . $this->thread->thread; ?>"
+	data-thread="<?php echo $this->thread->thread; ?>">
 	<?php
-		$name = Lang::txt('PLG_COURSES_DISCUSSIONS_ANONYMOUS');
+		$name = Lang::txt('JANONYMOUS');
 		$huser = '';
 		if (!$this->thread->anonymous)
 		{
