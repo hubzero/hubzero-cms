@@ -88,7 +88,7 @@ $this->css();
 				break;
 			}
 
-			$name = Lang::txt('COM_WISHLIST_ANONYMOUS');
+			$name = Lang::txt('JANONYMOUS');
 			if (!$item->anonymous) {
 				$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $item->proposed_by) . '">' . $this->escape($item->proposer->get('name')) . '</a>';
 			}

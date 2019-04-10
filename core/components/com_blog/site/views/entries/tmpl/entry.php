@@ -355,7 +355,7 @@ $first = $this->archive->entries(array(
 					{
 						if ($replyto->get('id'))
 						{
-							$name = Lang::txt('COM_BLOG_ANONYMOUS');
+							$name = Lang::txt('JANONYMOUS');
 							if (!$replyto->get('anonymous'))
 							{
 								$name = $this->escape(stripslashes($replyto->creator->get('name', $name)));

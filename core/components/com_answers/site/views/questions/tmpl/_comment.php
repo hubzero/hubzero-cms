@@ -72,7 +72,7 @@ if (!$this->comment->get('item_id'))
 			<p class="comment-title">
 				<strong>
 					<?php
-					$name = Lang::txt('COM_ANSWERS_ANONYMOUS');
+					$name = Lang::txt('JANONYMOUS');
 					if (!$this->comment->get('anonymous'))
 					{
 						$name = $this->escape(stripslashes($this->comment->creator->get('name', $name)));
@@ -148,7 +148,7 @@ if (!$this->comment->get('item_id'))
 				<?php } else { ?>
 				<form id="cform<?php echo $this->depth . $this->comment->get('item_type') . $this->comment->get('id'); ?>" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
 					<fieldset>
-						<legend><span><?php echo Lang::txt('COM_ANSWERS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('COM_ANSWERS_ANONYMOUS'))); ?></span></legend>
+						<legend><span><?php echo Lang::txt('COM_ANSWERS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="comment[id]" value="0" />
 						<input type="hidden" name="comment[item_type]" value="<?php echo $this->comment->get('item_type', 'response'); ?>" />

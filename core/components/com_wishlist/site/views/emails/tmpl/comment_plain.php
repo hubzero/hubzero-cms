@@ -44,8 +44,8 @@ $login = $this->wish->proposer->get('username', Lang::txt('COM_WISHLIST_UNKNOWN'
 
 if ($this->wish->get('anonymous'))
 {
-	$name  = Lang::txt('COM_WISHLIST_ANONYMOUS');
-	$login = Lang::txt('COM_WISHLIST_ANONYMOUS');
+	$name  = Lang::txt('JANONYMOUS');
+	$login = Lang::txt('JANONYMOUS');
 }
 
 // Build message
@@ -62,8 +62,8 @@ $login = $this->comment->creator->get('username', Lang::txt('COM_WISHLIST_UNKNOW
 
 if ($this->comment->get('anonymous'))
 {
-	$name  = Lang::txt('COM_WISHLIST_ANONYMOUS');
-	$login = Lang::txt('COM_WISHLIST_ANONYMOUS');
+	$name  = Lang::txt('JANONYMOUS');
+	$login = Lang::txt('JANONYMOUS');
 }
 
 $message .= Lang::txt('COM_WISHLIST_MSG_COMMENT_BY') . ' ' . $name . ' ';

@@ -122,9 +122,9 @@ $this->css()
 						//support - special
 						if ($component == 'support')
 						{
-							$fg = explode(' ',$row->subject);
+							$fg = explode(' ', $row->subject);
 							$fh = array_pop($fg);
-							$subject = implode(' ',$fg);
+							$subject = implode(' ', $fg);
 						}
 
 						//get the message
@@ -139,7 +139,7 @@ $this->css()
 						//get who the message is from
 						if (substr($row->type, -8) == '_message')
 						{
-							$from = Lang::txt('PLG_MEMBERS_MESSAGES_ANONYMOUS');
+							$from = Lang::txt('JANONYMOUS');
 							if (!$row->anonymous)
 							{
 								$u = User::getInstance($row->created_by);

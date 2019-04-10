@@ -161,7 +161,7 @@ if (!$no_html) {
 					foreach ($item->comments() as $comment)
 					{
 						$cuser = Components\Members\Models\Member::oneOrNew($comment->created_by);
-						$cname = Lang::txt('COM_COLLECTIONS_ANONYMOUS');
+						$cname = Lang::txt('JANONYMOUS');
 						if (!$comment->anonymous)
 						{
 							$cname = $this->escape(stripslashes($cuser->get('name')));
@@ -447,4 +447,4 @@ if (!$no_html) {
 			<?php } ?>
 		</div>
 	</section>
-<?php } ?>
+<?php }

@@ -1232,7 +1232,7 @@ class Questions extends SiteController
 			$item->description = html_entity_decode(Sanitize::stripAll(stripslashes($question->question)));
 			$item->date        = date("r", strtotime($question->get('created')));
 			$item->category    = Lang::txt('COM_ANSWERS_LATEST_QUESTIONS_RSS_CATEGORY_ITEM');
-			$item->author      = $question->creator()->get('name', Lang::txt('COM_ANSWERS_ANONYMOUS'));
+			$item->author      = $question->creator->get('name', Lang::txt('JANONYMOUS'));
 
 			$doc->addItem($item);
 		}

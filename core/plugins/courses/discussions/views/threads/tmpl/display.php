@@ -154,7 +154,7 @@ $this->thread->set('category', $this->category->get('alias'));
 							?>
 							<li>
 								<span class="member">
-									<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ANONYMOUS'); ?>
+									<?php echo Lang::txt('JANONYMOUS'); ?>
 								</span>
 							</li>
 							<?php
@@ -185,7 +185,7 @@ $this->thread->set('category', $this->category->get('alias'));
 							$title = ($title ? $title : $attachment->get('filename'));
 
 							// trims long titles
-							$title = (strlen($title) > 25) ? substr($title,0,22) . '...' : $title;
+							$title = (strlen($title) > 25) ? substr($title, 0, 22) . '...' : $title;
 
 							if ($attachment->isImage())
 							{

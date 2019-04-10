@@ -269,7 +269,7 @@ if ($this->config->get('access-manage-section')) {
 
 				if ($post->get('id'))
 				{
-					$lname = Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
+					$lname = Lang::txt('JANONYMOUS');
 					if (!$post->get('anonymous'))
 					{
 						$lname = $this->escape(stripslashes($post->creator->get('name', $lname)));

@@ -165,7 +165,7 @@ $this->css()
 							?>
 							<li>
 								<span class="member">
-									<?php echo Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS'); ?>
+									<?php echo Lang::txt('JANONYMOUS'); ?>
 								</span>
 							</li>
 							<?php
@@ -196,7 +196,7 @@ $this->css()
 							$title = ($title ? $title : $attachment->get('filename'));
 
 							// trims long titles
-							$title = (strlen($title) > 25) ? substr($title,0,22) . '...' : $title;
+							$title = (strlen($title) > 25) ? substr($title, 0, 22) . '...' : $title;
 
 							if ($attachment->isImage())
 							{
@@ -316,4 +316,4 @@ $this->css()
 	<aside class="aside">
 	</aside><!-- /.aside -->
 </section><!-- / .below section -->
-<?php } ?>
+<?php }

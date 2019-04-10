@@ -44,7 +44,7 @@ if ($this->row->get('starred'))
 }
 $creator = User::getInstance($this->row->log->get('created_by'));
 
-$name = Lang::txt('PLG_MEMBERS_ACTIVITY_ANONYMOUS');
+$name = Lang::txt('JANONYMOUS');
 
 $online = false;
 
@@ -218,7 +218,7 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
 					<?php
 				}
 				?>
-				<div class="activity-event-content<?php echo ($short ? ' hide' : ''); ?>" id="activity-event-content<?php echo $this->row->get('id'); ?>">
+				<div class="activity-event-content<?php echo ($short) ? ' hide' : ''; ?>" id="activity-event-content<?php echo $this->row->get('id'); ?>">
 					<?php echo $content; ?>
 				</div>
 				<?php
@@ -275,8 +275,8 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
 								data-hrf-inactive="<?php echo Route::url($base . '&action=star&activity=' . $this->row->get('id')); ?>"
 								data-txt-active="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR'); ?>"
 								data-txt-inactive="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_STAR'); ?>"
-								title="<?php echo ($this->row->get('starred') ? Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR') : Lang::txt('PLG_MEMBERS_ACTIVITY_STAR')); ?>"><!--
-								--><?php echo ($this->row->get('starred') ? Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR') : Lang::txt('PLG_MEMBERS_ACTIVITY_STAR')); ?><!--
+								title="<?php echo ($this->row->get('starred')) ? Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR') : Lang::txt('PLG_MEMBERS_ACTIVITY_STAR'); ?>"><!--
+								--><?php echo ($this->row->get('starred')) ? Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR') : Lang::txt('PLG_MEMBERS_ACTIVITY_STAR'); ?><!--
 							--></a>
 						</li>
 					<?php } ?>

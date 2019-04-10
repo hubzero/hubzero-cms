@@ -40,7 +40,7 @@ defined('_HZEXEC_') or die();
 		$this->config->set('access-edit-post', true);
 	}
 
-	$name = Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS');
+	$name = Lang::txt('JANONYMOUS');
 	if (!$this->comment->get('anonymous'))
 	{
 		$name = $this->escape(stripslashes($this->comment->creator->get('name', $name)));
@@ -176,7 +176,7 @@ defined('_HZEXEC_') or die();
 				<div class="comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
 					<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->thread->link()); ?>" method="post" enctype="multipart/form-data">
 						<fieldset>
-							<legend><span><?php echo Lang::txt('PLG_GROUPS_FORUM_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS'))); ?></span></legend>
+							<legend><span><?php echo Lang::txt('PLG_GROUPS_FORUM_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
 
 							<input type="hidden" name="fields[id]" value="0" />
 							<input type="hidden" name="fields[state]" value="1" />

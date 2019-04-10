@@ -84,7 +84,7 @@ defined('_HZEXEC_') or die();
 								<?php echo $this->escape(stripslashes($this->comment->creator->get('name'))); ?>
 							<?php } ?>
 						<?php } else { ?>
-							<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_ANONYMOUS'); ?>
+							<?php echo Lang::txt('JANONYMOUS'); ?>
 						<?php } ?>
 					</strong>
 					<a class="permalink" href="<?php echo $this->comment->link(); ?>" title="<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_PERMALINK'); ?>">
@@ -186,7 +186,7 @@ defined('_HZEXEC_') or die();
 						<form action="<?php echo Route::url($this->comment->link('base')); ?>" method="post" enctype="multipart/form-data">
 							<fieldset>
 								<legend>
-									<span><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_REPLYING_TO', (!$this->comment->get('anonymous') ? $this->comment->get('name') : Lang::txt('PLG_HUBZERO_COMMENTS_ANONYMOUS'))); ?></span>
+									<span><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_REPLYING_TO', (!$this->comment->get('anonymous') ? $this->comment->get('name') : Lang::txt('JANONYMOUS'))); ?></span>
 								</legend>
 
 								<input type="hidden" name="comment[id]" value="0" />

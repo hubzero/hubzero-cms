@@ -119,7 +119,7 @@ $this->js();
 					{
 						$reply = \Components\Courses\Models\Comment::oneOrNew($parent);
 
-						$name = Lang::txt('COM_KB_ANONYMOUS');
+						$name = Lang::txt('JANONYMOUS');
 						if (!$reply->get('anonymous'))
 						{
 							$name = $reply->creator->get('name');
@@ -223,7 +223,7 @@ $this->js();
 					<input type="hidden" name="comment[item_id]" value="<?php echo $this->obj->get('id'); ?>" />
 					<input type="hidden" name="comment[item_type]" value="<?php echo $this->obj_type; ?>" />
 					<input type="hidden" name="comment[parent]" value="<?php echo $comment->get('parent'); ?>" />
-					<input type="hidden" name="comment[created_by]" value="<?php echo ($comment->get('id') ? $comment->get('created_by') : User::get('id')); ?>" />
+					<input type="hidden" name="comment[created_by]" value="<?php echo ($comment->get('id')) ? $comment->get('created_by') : User::get('id'); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="action" value="save" />
 
@@ -243,4 +243,4 @@ $this->js();
 	<p class="warning">
 		<?php echo Lang::txt('PLG_COURSES_REVIEWS_MUST_BE_LOGGED_IN'); ?>
 	</p>
-<?php } ?>
+<?php }

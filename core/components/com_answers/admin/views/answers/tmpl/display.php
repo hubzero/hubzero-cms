@@ -153,7 +153,7 @@ Toolbar::help('responses');
 						<span><?php echo $this->escape($row->creator->get('name')) . ' (' . $row->get('created_by') . ')'; ?></span>
 					</a>
 					<?php if ($row->get('anonymous')) { ?>
-						<br /><span>(<?php echo Lang::txt('COM_ANSWERS_ANONYMOUS'); ?>)</span>
+						<br /><span>(<?php echo Lang::txt('JANONYMOUS'); ?>)</span>
 					<?php } ?>
 				</td>
 				<td class="priority-4">

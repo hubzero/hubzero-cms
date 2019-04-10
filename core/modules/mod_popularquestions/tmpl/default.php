@@ -40,7 +40,7 @@ defined('_HZEXEC_') or die();
 		<?php
 		foreach ($this->rows as $row)
 		{
-			$name = Lang::txt('MOD_POPULARQUESTIONS_ANONYMOUS');
+			$name = Lang::txt('JANONYMOUS');
 			if (!$row->get('anonymous'))
 			{
 				$name = $row->creator()->get('name');

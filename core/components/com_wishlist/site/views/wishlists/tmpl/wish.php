@@ -43,7 +43,7 @@ $this->css()
 	// What name should we dispay for the submitter?
 	$user = $this->wish->proposer;
 
-	$name = Lang::txt('COM_WISHLIST_ANONYMOUS');
+	$name = Lang::txt('JANONYMOUS');
 	$memberImage = '';
 	if (!$this->wish->get('anonymous'))
 	{

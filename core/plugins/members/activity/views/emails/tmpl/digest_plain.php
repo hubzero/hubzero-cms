@@ -52,7 +52,7 @@ foreach ($this->rows as $row)
 		$output
 	);
 
-	$name = Lang::txt('PLG_MEMBERS_ACTIVITY_ANONYMOUS');
+	$name = Lang::txt('JANONYMOUS');
 
 	if (!$row->log->get('anonymous'))
 	{

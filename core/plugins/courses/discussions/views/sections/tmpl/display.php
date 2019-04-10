@@ -236,7 +236,7 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 
 				if ($post->get('id'))
 				{
-					$lname = Lang::txt('PLG_COURSES_DISCUSSIONS_ANONYMOUS');
+					$lname = Lang::txt('JANONYMOUS');
 					if (!$post->get('anonymous'))
 					{
 						$lname = $this->escape(stripslashes($post->creator->get('name', $lname)));

@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $cls = isset($this->cls) ? $this->cls : 'odd';
 
-$name = Lang::txt('PLG_RESOURCES_REVIEWS_ANONYMOUS');
+$name = Lang::txt('JANONYMOUS');
 
 if (!$this->comment->get('anonymous'))
 {
@@ -64,18 +64,40 @@ if ($this->comment->get('resource_id'))
 
 	switch ($this->comment->get('rating', 0))
 	{
-		case 0.5: $class = ' half-stars';      break;
-		case 1:   $class = ' one-stars';       break;
-		case 1.5: $class = ' onehalf-stars';   break;
-		case 2:   $class = ' two-stars';       break;
-		case 2.5: $class = ' twohalf-stars';   break;
-		case 3:   $class = ' three-stars';     break;
-		case 3.5: $class = ' threehalf-stars'; break;
-		case 4:   $class = ' four-stars';      break;
-		case 4.5: $class = ' fourhalf-stars';  break;
-		case 5:   $class = ' five-stars';      break;
+		case 0.5:
+			$class = ' half-stars';
+			break;
+		case 1:
+			$class = ' one-stars';
+			break;
+		case 1.5:
+			$class = ' onehalf-stars';
+			break;
+		case 2:
+			$class = ' two-stars';
+			break;
+		case 2.5:
+			$class = ' twohalf-stars';
+			break;
+		case 3:
+			$class = ' three-stars';
+			break;
+		case 3.5:
+			$class = ' threehalf-stars';
+			break;
+		case 4:
+			$class = ' four-stars';
+			break;
+		case 4.5:
+			$class = ' fourhalf-stars';
+			break;
+		case 5:
+			$class = ' five-stars';
+			break;
 		case 0:
-		default:  $class = ' no-stars';      break;
+		default:
+			$class = ' no-stars';
+			break;
 	}
 }
 
@@ -203,12 +225,12 @@ if ($this->comment->get('resource_id'))
 				<?php } else { ?>
 				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
 					<fieldset>
-						<legend><span><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('PLG_RESOURCES_REVIEWS_ANONYMOUS'))); ?></span></legend>
+						<legend><span><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="comment[id]" value="0" />
 						<input type="hidden" name="comment[item_type]" value="<?php echo $this->comment->get('item_type'); ?>" />
 						<input type="hidden" name="comment[item_id]" value="<?php echo $this->comment->get('item_id'); ?>" />
-						<input type="hidden" name="comment[parent]" value="<?php echo ($this->comment->get('resource_id') ? 0 : $this->comment->get('id')); ?>" />
+						<input type="hidden" name="comment[parent]" value="<?php echo ($this->comment->get('resource_id')) ? 0 : $this->comment->get('id'); ?>" />
 						<input type="hidden" name="comment[created]" value="" />
 						<input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
 
