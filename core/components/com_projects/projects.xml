@@ -43,7 +43,7 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>assets/css/projects.css</filename>
 		<filename>assets/js/projects.js</filename>
 		<filename>assets/js/setup.js</filename>
-		<filename>assets/js/calendar.js</filename>
+		<filename>assets/js/reports.js</filename>
 		<filename>helpers/autocomplete.php</filename>
 		<filename>helpers/html.php</filename>
 		<filename>helpers/install.php</filename>
