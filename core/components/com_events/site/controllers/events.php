@@ -1490,7 +1490,7 @@ class Events extends SiteController
 			$row->bind($_POST);
 			$row->created_by = User::get('id');
 
-			$lists = '';
+			$lists = array();
 		}
 
 		// Get custom fields
