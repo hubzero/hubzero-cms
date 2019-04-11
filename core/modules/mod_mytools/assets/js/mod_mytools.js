@@ -54,15 +54,16 @@ HUB.Modules.MyTools	 = {
 		}
 
 		$(settings.titles).each(function(i, item) {
-			$(item).on('click', function () {
+			$(item).on('click', function (e) {
 				$(this).removeClass(settings.mouseOverClass);
 				mod.activate($(this));
 			});
 		});
 
 		$(settings.favs).each(function(i, item) {
-			$(item).toggle(function (e) {
+			$(item).on('click', function (e) {
 				e.preventDefault();
+
 				if ($(this).parent().hasClass('favd')) {
 					$(this).parent().removeClass('favd');
 				} else {
@@ -70,16 +71,7 @@ HUB.Modules.MyTools	 = {
 				}
 				mod.updateFavs($(this).parents('.module').first());
 				return false;
-			},function (e) {
-				e.preventDefault();
-				if ($(this).parent().hasClass('favd')) {
-					$(this).parent().removeClass('favd');
-				} else {
-					$(this).parent().addClass('favd');
-				}
-				mod.updateFavs($(this).parents('.module').first());
-				return false;
-			})
+			});
 		});
 
 		// move current favs to settings cont
