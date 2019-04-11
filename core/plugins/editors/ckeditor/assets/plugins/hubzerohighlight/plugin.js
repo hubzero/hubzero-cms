@@ -7,6 +7,8 @@
 				plugin = this,
 				ready  = false;
 
+			var path = this.path;
+
 			editor.on('instanceReady', function(event){
 				ready = true;
 
@@ -16,7 +18,7 @@
 				// add css for mark elements
 				if (editor.mode != 'source')
 				{
-					this.document.appendStyleSheet('/core/plugins/editors/ckeditor/assets/plugins/hubzerohighlight/plugin.css');
+					this.document.appendStyleSheet(path + 'plugin.css');
 				}
 			});
 
@@ -28,7 +30,7 @@
 					// add css for mark elements
 					if (editor.mode != 'source')
 					{
-						this.document.appendStyleSheet('/core/plugins/editors/ckeditor/assets/plugins/hubzerohighlight/plugin.css');
+						this.document.appendStyleSheet(path + 'plugin.css');
 					}
 				}
 			});
@@ -41,7 +43,7 @@
 					// add css for mark elements
 					if (editor.mode != 'source')
 					{
-						this.document.appendStyleSheet('/core/plugins/editors/ckeditor/assets/plugins/hubzerohighlight/plugin.css');
+						this.document.appendStyleSheet(path + 'plugin.css');
 					}
 				}
 			});

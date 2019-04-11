@@ -483,7 +483,7 @@ class Media extends SiteController
 
 		echo json_encode(array(
 			'success'   => true,
-			'file'      => str_replace(PATH_ROOT, '', $file),
+			'file'      => rtrim(Request::root(true), DS) . str_replace(PATH_ROOT, '', $file),
 			'id'        => $listdir,
 			'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
 			'width'     => $width,
