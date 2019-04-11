@@ -72,25 +72,26 @@ $this->css('jquery.ui.css', 'system')
 						foreach ($layout[$idx - 1] as $group)
 						{
 							\Document::addstyleDeclaration('
-								#group-marker-'.$idx.' {
+								#group-marker-'.$qidx.' {
 									width: '.$group['width'].'px;
 									height: '.$group['height'].'px;
 									top: '.$group['top'].'px;
 									left: '.$group['left'].'px;
 								}
 							');
-							echo '<div class="group-marker" id="group-marker-'.$idx.'">';
+							echo '<div class="group-marker" id="group-marker-'.$qidx.'">';
 							echo '<div class="group-marker-header"></div>';
 							echo '<button class="remove">x</button>';
 							foreach ($group['answers'] as $aidx => $ans)
 							{
-								\Document::addstyleDeclaration('
-									#question-saved-'.$idx.'-'.$qidx.' {
+								$answerId = 'question-saved-' . $idx . '-' . $qidx . '-' . $aidx;
+								\Document::addstyleDeclaration(
+									'#' . $answerId . '{
 										top: '.($ans['top'] - $group['top'] - 5).'px;
 										left: '.($ans['left'] - $group['left'] - 26).'px;
 									}
 								');
-								echo '<div class="radio-container'.($ans['correct'] ? ' selected' : '').'" id="question-saved-'.$idx.'-'.$qidx.'">';
+								echo '<div class="radio-container'.($ans['correct'] ? ' selected' : '').'" id="' . $answerId . '">';
 								echo '<button class="remove">x</button>';
 								echo '<input name="question-saved-'.$idx.'-'.$qidx.'" value="'.$aidx.'" class="placeholder"'.($ans['correct'] ? ' checked="checked"' : '').' type="radio" />';
 								echo '</div>';
