@@ -109,7 +109,7 @@ HUB.NanoHUBU = {
 	hubpresenterWindow: function()
 	{
 		//HUBpresenter open window
-		$jQ(".hubpresenter").live("click", function(e) {
+		$jQ(".hubpresenter").on("click", function(e) {
 			mobile = navigator.userAgent.match(/iPad|iPhone|iPod|Android/i) != null;
 			if(!mobile) {
 		 		HUBpresenter_window = window.open(this.href,'name','height=650,width=1100');
@@ -122,7 +122,7 @@ HUB.NanoHUBU = {
 	
 	youtubeLightbox: function()
 	{
-		$jQ(".videos a").live("click", function(e) {
+		$jQ(".videos a").on("click", function(e) {
 			e.preventDefault();
 			var url = this.href;
 		
@@ -306,7 +306,7 @@ HUB.NanoHUBU = {
 	{
 		if( $jQ("#to").length )
 		{
-			$jQ("#token-input-to").live("focus",function(e){
+			$jQ("#token-input-to").on("focus",function(e){
 				$jQ(".token-input-dropdown").width( $jQ(".token-input-list").outerWidth(true) );
 			});
 			
