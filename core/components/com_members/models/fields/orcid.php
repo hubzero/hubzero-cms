@@ -102,18 +102,20 @@ class Orcid extends Text
 			$html[] = 'sandbox.';
 		}
 	    $html[] = 'orcid.org/oauth/authorize?client_id=' . $clientID . htmlspecialchars('&') . 'response_type=code' . htmlspecialchars('&') . 'scope=/authenticate' . htmlspecialchars('&'). 'redirect_uri=' . urlencode($redirectURI)
-		. '" rel="nofollow external">' . '<img src="' . Request::root() . '/core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt="iD"/>'
+		. '" rel="nofollow external">' . '<img src="' . Request::root(true) . 'core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt="iD"/>'
 		. Lang::txt('COM_MEMBERS_PROFILE_ORCID_CREATE_OR_CONNECT') . '</a>';
 		$html[] = '	</div>';
 		$html[] = '</div>';
-		$html[] = '<p><img src="' . Request::root()  . '/core/components/com_members/site/assets/img/orcid-logo.png" width="80" alt="ORCID" /> ' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>';
+		$html[] = '<p><img src="' . Request::root(true)  . 'core/components/com_members/site/assets/img/orcid-logo.png" width="80" alt="ORCID" /> ' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>';
 
 		Behavior::framework(true);
 		Behavior::modal();
 
-		if (file_exists(PATH_ROOT . '/core/components/com_members/site/assets/js/orcid.js'))
+		$path = dirname(dirname(__DIR__)) . '/site/assets/js/orcid.js';
+
+		if (file_exists($path))
 		{
-			Document::addScript('/core/components/com_members/site/assets/js/orcid.js?t=' . filemtime(PATH_ROOT . '/core/components/com_members/site/assets/js/orcid.js'));
+			Document::addScript(Request::root(true) . 'core/components/com_members/site/assets/js/orcid.js?t=' . filemtime($path));
 		}
 
 		return implode($html);
