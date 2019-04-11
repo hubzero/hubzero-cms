@@ -15,6 +15,9 @@ jQuery(function(jq)
 		window.resourceTypes = cdata.types;
 	}
 
+	var root = $('#tag-sel').attr('action');
+	root += (root.indexOf('?') == -1) ? '?' : '&';
+
 	var tag_editors = function(json)
 	{
 		var blur_timeout = null;
@@ -29,7 +32,7 @@ jQuery(function(jq)
 				}
 
 				var text = $('<input id="maininput-actags" class="maininput" type="text" autocomplete="off" />');
-				text.autocomplete({ source: 'index.php?option=com_tags&controller=relationships&task=suggest&limit=50' });
+				text.autocomplete({ source: root + 'task=suggest&limit=50' });
 
 				par.append(text);
 				text.focus();
@@ -104,13 +107,12 @@ jQuery(function(jq)
 	{
 		$('#graph, #labels, #labeled, #parents, #children').empty();
 		$('#metadata-cont').css('display', 'none');
-		$('#graph').css('background', 'url(\'/core/components/com_tags/admin/assets/img/throbber.gif\') no-repeat top left');
 
 		var vis = d3.select("#graph")
 			.append("svg:svg")
 			.attr("width", w)
 			.attr("height", h);
-		d3.json("/administrator/index.php?option=com_tags&controller=relationships&task=implicit&tag=" + tag, function(json) 
+		d3.json(root + 'task=implicit&tag=' + tag, function(json) 
 		{
 			$('#description').val(json.description);
 			$('.tag-id').val(json.id);
@@ -189,14 +191,13 @@ jQuery(function(jq)
 	{
 		$('#graph, #labels, #labeled, #parents, #children').empty();
 		$('#metadata-cont').css('display', 'none');
-		$('#graph').css('background', 'url(\'/core/components/com_tags/admin/assets/img/throbber.gif\') no-repeat top left');
 
 		var vis = d3.select("#graph")
 			.append("svg:svg")
 			.attr("width", w)
 			.attr("height", 400);
 		console.log(tag);
-		d3.json("/administrator/index.php?option=com_tags&controller=relationships&task=hierarchy&tag=" + tag, function(json) 
+		d3.json(root + 'task=hierarchy&tag=' + tag, function(json) 
 		{
 			$('#description').val(json.description);
 			$('.tag-id').val(json.id);
@@ -302,7 +303,7 @@ jQuery(function(jq)
 			.append("<a>" + item.label.replace(re, "<span class=\"highlight\">$1</span>") + "</a>")
 			.appendTo(ul);
 	};
-	$(".tag-entry").autocomplete({ source: 'index.php?option=com_tags&controller=relationships&task=suggest&limit=50' });
+	$(".tag-entry").autocomplete({ source: root + 'task=suggest&limit=50' });
 
 	var form_idx = $('fieldset.adminform').length,
 		new_idx = 0;
