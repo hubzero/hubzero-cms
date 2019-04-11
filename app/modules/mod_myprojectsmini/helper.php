@@ -30,7 +30,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\MyProjects;
+namespace Modules\MyProjectsMini;
 
 use Hubzero\Module\Module;
 use Components\Projects\Tables\Project;
@@ -44,7 +44,7 @@ class Helper extends Module
 {
 	/**
 	 * Display module content
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function display()

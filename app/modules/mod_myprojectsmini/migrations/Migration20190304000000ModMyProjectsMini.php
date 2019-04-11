@@ -5,14 +5,14 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for installing myprojects module
  **/
-class Migration20190109000000ModMyProjects extends Base
+class Migration20190304000000ModMyProjectsMini extends Base
 {
 	/**
 	 * Up
 	 **/
 	public function up()
 	{
-		$this->addModuleEntry('mod_myprojects');
+		$this->addModuleEntry('mod_myprojectsmini');
 	}
 
 	/**
@@ -20,6 +20,6 @@ class Migration20190109000000ModMyProjects extends Base
 	 **/
 	public function down()
 	{
-		$this->deleteModuleEntry('mod_myprojects');
+		$this->deleteModuleEntry('mod_myprojectsmini');
 	}
 }

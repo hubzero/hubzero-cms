@@ -30,7 +30,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\MyProjects;
+namespace Modules\MyProjectsMini;
 
 require_once __DIR__ . DS . 'helper.php';
 
