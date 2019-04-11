@@ -42,7 +42,7 @@ if (!HUB.Plugins) {
 	$.ajaxTransport("iframe", function(options, origOptions, jqXHR) {
 		var form = null,
 			iframe = null,
-			name = "iframe-" + $.now(),
+			name = "iframe-" + Date.now(),
 			files = $(options.files).filter(":file:enabled"),
 			markers = null,
 			accepts = null;
