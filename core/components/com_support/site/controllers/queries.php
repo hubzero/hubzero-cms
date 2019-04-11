@@ -123,6 +123,12 @@ class Queries extends SiteController
 		$tmpl    = Request::getCmd('component', '');
 
 		$row = Query::oneOrNew($fields['id'])->set($fields);
+		$row->set('query', $row->toSql());
+
+		if ($row->isNew())
+		{
+			$row->set('id', null);
+		}
 
 		// Store new content
 		if (!$row->save())

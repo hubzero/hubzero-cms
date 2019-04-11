@@ -551,7 +551,7 @@ class Owner extends Table
 		}
 		if ($pub)
 		{
-			$query  .= " GROUP BY o.id ";
+			$query  .= " GROUP BY o.id, pa.name, pa.organization, pa.credit ";
 		}
 
 		$query  .= " ORDER BY ";
