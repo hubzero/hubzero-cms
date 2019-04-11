@@ -93,7 +93,7 @@ defined('_HZEXEC_') or die();
 
 						$link = $attachment->link('download');
 
-						if ()
+						if ($attachment->exists())
 						{
 							if ($attachment->isImage())
 							{
