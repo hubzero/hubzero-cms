@@ -63,11 +63,6 @@ jQuery(document).ready(function($){
 	});
 
 	contents
-		/*.on('click', '.media-preview', function(e){
-			e.preventDefault();
-
-			$(this).closest('.media-item').toggleClass('ui-selected');
-		})*/
 		.on('click', '.folder-item', function(e){
 			e.preventDefault();
 
@@ -104,11 +99,6 @@ jQuery(document).ready(function($){
 			e.preventDefault();
 
 			var item = $(this).closest('.media-item');
-
-			/*if (!item.hasClass('ui-activated')) {
-				$('.media-item').removeClass('ui-activated');
-				item.toggleClass('ui-selected');
-			}*/
 
 			item.toggleClass('ui-activated');
 		})
@@ -197,7 +187,7 @@ jQuery(document).ready(function($){
 
 		var uploader = new qq.FileUploader({
 			element: attach[0],
-			action: attach.attr('data-action').nohtml(), // + '&layout=' + layout.val() + '&folder=' + folder.val(),
+			action: attach.attr('data-action').nohtml(),
 			params: {
 				layout: function() {
 					return layout.val();
