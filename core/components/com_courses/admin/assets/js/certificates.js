@@ -12,7 +12,7 @@ function Box() {
 
 jQuery(window).load(function() {
 
-	if ($('#field-properties').length) {
+	if ($('#field-properties').length && $('#field-properties').val()) {
 		var props = JSON.parse($('#field-properties').val());
 
 		for (var i = 0; i < props.elements.length; i++)
@@ -311,7 +311,7 @@ Hubzero.submitbutton = function(task)
 {
 	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
+	if (task == 'cancel') {
 		Hubzero.submitform(task, form);
 		return;
 	}
