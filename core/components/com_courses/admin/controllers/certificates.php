@@ -283,7 +283,10 @@ class Certificates extends AdminController
 			$this->setError(Lang::txt('COM_COURSES_ERROR_UPLOADING') . $path . DS . $file['name']);
 		}
 
-		$model->renderPageImages();
+		if (!$model->renderPageImages())
+		{
+			$this->setError($model->getError());
+		}
 
 		// Push through to the media view
 		$this->displayTask();
