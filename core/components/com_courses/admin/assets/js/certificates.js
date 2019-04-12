@@ -164,8 +164,12 @@ jQuery(window).load(function() {
 	// myDown will call this with the ghost canvas
 	function drawshape(context, shape) { //, fill) {
 		// We can skip the drawing of elements that have moved off the screen:
-		if (shape.x > WIDTH || shape.y > HEIGHT) return; 
-		if (shape.x + shape.w < 0 || shape.y + shape.h < 0) return;
+		if (shape.x > WIDTH || shape.y > HEIGHT) {
+			return;
+		}
+		if (shape.x + shape.w < 0 || shape.y + shape.h < 0) {
+			return;
+		}
 
 		shape.h = (shape.h > 30) ? shape.h : 30;
 
