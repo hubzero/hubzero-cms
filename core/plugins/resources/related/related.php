@@ -78,11 +78,12 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 		$database = App::get('db');
 
 		// Build the query that checks topic pages
-		$sql1 = "SELECT v.id, v.page_id AS pageid, MAX(v.version) AS version, w.title, w.pagename AS alias, v.pagetext AS introtext,
-					NULL AS type, NULL AS published, NULL AS publish_up, w.scope, w.rating, w.times_rated, w.ranking, 'Topic' AS section
+		$sql1 = "SELECT DISTINCT w.id, w.title, w.pagename AS alias, v.pagetext AS introtext,
+						NULL AS type, NULL AS published, NULL AS publish_up, w.scope,
+						w.rating, w.times_rated, w.ranking, 'Topic' AS section
 				FROM `#__wiki_pages` AS w
-				JOIN `#__wiki_versions` AS v ON w.id=v.page_id
-				JOIN `#__wiki_links` AS wl ON wl.page_id=w.id
+				INNER JOIN `#__wiki_versions` AS v ON w.id=v.page_id
+				INNER JOIN `#__wiki_links` AS wl ON wl.page_id=w.id
 				WHERE v.approved=1 AND wl.scope='resource' AND wl.scope_id=" . $database->quote($resource->id);
 
 		if (!User::isGuest())
@@ -121,10 +122,10 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 		{
 			$sql1 .= "AND w.access!=1 ";
 		}
-		$sql1 .= "GROUP BY pageid, v.id ORDER BY ranking DESC, title LIMIT 10";
+		$sql1 .= "GROUP BY w.id ORDER BY ranking DESC, title LIMIT 10";
 
 		// Build the query that checks resource parents
-		$sql2 = "SELECT DISTINCT r.id, NULL AS pageid, NULL AS version, r.title, r.alias, r.introtext, r.type, r.published, r.publish_up,
+		$sql2 = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext, r.type, r.published, r.publish_up,
 				NULL AS scope, r.rating, r.times_rated, r.ranking, rt.type AS section
 				FROM `#__resource_types` AS rt, `#__resources` AS r
 				JOIN `#__resource_assoc` AS a ON r.id=a.parent_id
