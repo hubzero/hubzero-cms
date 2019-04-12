@@ -343,6 +343,11 @@ class PdfForm
 	 **/
 	public function renderPageImages()
 	{
+		if (!class_exists('Imagick'))
+		{
+			App::abort(500, Lang::txt('Imagick extension required.'));
+		}
+
 		try
 		{
 			$fid = $this->getId();
