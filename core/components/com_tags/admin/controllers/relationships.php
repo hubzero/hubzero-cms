@@ -191,7 +191,7 @@ class Relationships extends AdminController
 				}
 			}
 		}
-		header('Content-type: application/octet-stream');
+		header('Content-type: application/json');
 		$rv['nodes'] = $nodes;
 		$rv['links'] = $links;
 		echo json_encode($rv);
@@ -284,7 +284,7 @@ class Relationships extends AdminController
 			}
 		}
 
-		header('Content-type: text/plain');
+		header('Content-type: application/json');
 		$rv['nodes'] = $nodes;
 		$rv['links'] = $links;
 		echo json_encode($rv, \JSON_PRETTY_PRINT);
@@ -325,7 +325,7 @@ class Relationships extends AdminController
 				$suggestions = array_slice($suggestions, 0, (int)$_GET['limit']);
 			}
 		}
-		header('Content-type: application/octet-stream');
+		header('Content-type: application/json');
 		echo json_encode($suggestions);
 		exit();
 	}

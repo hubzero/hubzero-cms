@@ -43,7 +43,9 @@ Toolbar::help('focusareas');
 
 Html::behavior('framework');
 
-$this->js('tag_graph.js');
+$this->css('tag_graph.css');
+$this->js('d3.js', 'system')
+	->js('tag_graph.js');
 
 $dbh = App::get('db');
 $dbh->setQuery(
