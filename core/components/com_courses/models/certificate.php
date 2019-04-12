@@ -37,8 +37,8 @@ use ImagickException;
 use Imagick;
 use Lang;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'certificate.php');
-require_once(__DIR__ . DS . 'base.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'certificate.php';
+require_once __DIR__ . DS . 'base.php';
 
 /**
  * Courses model class for a certificate
@@ -166,6 +166,13 @@ class Certificate extends Base
 	 */
 	public function renderPageImages()
 	{
+		if (!class_exists('Imagick'))
+		{
+			// nothing
+			$this->setError(Lang::txt('Imagick extension required.'));
+			return false;
+		}
+
 		try
 		{
 			if (!$this->exists())
@@ -327,24 +334,30 @@ class Certificate extends Base
 
 		if (!class_exists('\Components\Courses\Models\Course'))
 		{
-			require_once(__DIR__ . DS . 'course.php');
+			require_once __DIR__ . DS . 'course.php';
 		}
 		$course = Course::getInstance($this->get('course_id'));
 
-		require_once(PATH_CORE . DS . 'libraries' . DS . 'fpdf16' . DS . 'fpdf.php');
-		require_once(PATH_CORE . DS . 'libraries' . DS . 'fpdi' . DS . 'fpdi.php');
+		require_once __DIR__ . DS . 'certificatepdf.php';
 
-		// Get the pdf and draw on top of it
-		$pdf = new \FPDI();
+		$img = $this->path('system') . '/1.png';
 
-		$pageCount = $pdf->setSourceFile($this->path('system') . DS . 'certificate.pdf');
-		$tplIdx = $pdf->importPage(1);
+		list($width, $height) = getimagesize($img);
 
-		$size = $pdf->getTemplateSize($tplIdx);
+		// 300 dots per inch
+		// 1 inch = 25.4mm
+		$w = ($width / 300);
+		$h = ($height / 300);
+		$mm = 25.4;
+		$size = array(
+			'width' => ($w * $mm),
+			'height' => ($h * $mm)
+		);
 
-		$pdf->AddPage('L', array($size['h'], $size['w']));
+		$pdf = new CertificatePdf(PDF_PAGE_ORIENTATION, PDF_UNIT, $size, true, 'UTF-8', false);
+		$pdf->img_file = $img;
 
-		$pdf->useTemplate($tplIdx, 0, 0, 0, 0, true);
+		$pdf->AddPage('L', array($size['height'], $size['width']));
 
 		$pdf->SetFillColor(0, 0, 0);
 
@@ -383,10 +396,10 @@ class Certificate extends Base
 				break;
 			}
 
-			$pdf->SetFont('Arial', '', 30); //($element->h * $size['h']));
+			$pdf->SetFont('Helvetica', '', 30);
 
-			$pdf->setXY($element->x * $size['w'], $element->y * $size['h']); //  - ($element->h * $size['h'])
-			$pdf->Cell($element->w * $size['w'], ($element->h * $size['h']), $val, '', 1, 'C');
+			$pdf->SetXY($element->x * $size['width'], $element->y * $size['height']);
+			$pdf->Cell($element->w * $size['width'], ($element->h * $size['height']), $val, '', 1, 'C');
 		}
 
 		if (!$path)
