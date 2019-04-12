@@ -118,7 +118,7 @@ $this->view('_edit_script')
 
 					$fields = $elements->getElements('nbtag');
 
-					if (count($fields) > 0)
+					if ($fields && count($fields) > 0)
 					{
 						foreach ($fields as $field)
 						{
