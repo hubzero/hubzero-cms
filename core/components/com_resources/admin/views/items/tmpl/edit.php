@@ -276,19 +276,26 @@ $this->view('_edit_script')
 		<?php
 			echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_FILES'), 'file-page');
 		?>
-			<p>
+			<div class="input-wrap">
 				<label for="fileoptions">
 					<?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED'); ?>:
-					<select name="fileoptions" id="fileoptions">
-						<option value="2"><?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_MAIN'); ?></option>
-						<option value="3"><?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_IMG'); ?></option>
-						<option value="4"><?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_LINKED'); ?></option>
-					</select>
 				</label>
-				<input type="button" value="<?php echo Lang::txt('COM_RESOURCES_APPLY'); ?>" onclick="doFileoptions();" />
-			</p>
-			<iframe width="100%" height="400" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&listdir=' . $path . DS . $dir_id); ?>"></iframe>
-			<input type="hidden" name="tmpid" value="<?php echo $dir_id; ?>" />
+				<div class="grid">
+					<div class="col span9">
+						<select name="fileoptions" id="fileoptions">
+							<option value="2"><?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_MAIN'); ?></option>
+							<option value="3"><?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_IMG'); ?></option>
+							<option value="4"><?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_LINKED'); ?></option>
+						</select>
+					</div>
+					<div class="col span3">
+						<input type="button" value="<?php echo Lang::txt('COM_RESOURCES_APPLY'); ?>" onclick="doFileoptions();" />
+					</div>
+				</div>
+
+				<iframe width="100%" height="400" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&listdir=' . $path . DS . $dir_id); ?>"></iframe>
+				<input type="hidden" name="tmpid" value="<?php echo $dir_id; ?>" />
+			</div>
 		<?php
 			if ($this->row->standalone == 1) {
 				echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_TAGS'), 'tags-page');
