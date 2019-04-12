@@ -104,7 +104,9 @@ jQuery(function(jq)
 	};
 
 	function dragstart(d) {
-		if (!d3.event.active) force.alphaTarget(0.3).restart();
+		if (!d3.event.active) {
+			force.alphaTarget(0.3).restart();
+		}
 		d.fx = d.x;
 		d.fy = d.y;
 	}
@@ -115,7 +117,9 @@ jQuery(function(jq)
 	}
 
 	function dragend(d) {
-		if (!d3.event.active) force.alphaTarget(0);
+		if (!d3.event.active) {
+			force.alphaTarget(0);
+		}
 	}
 
 	var center = function(tag)
