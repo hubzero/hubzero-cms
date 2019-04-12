@@ -31,6 +31,14 @@
 
 // No direct access.
 defined('_HZEXEC_') or die();
+
+$path = trim($this->rconfig->get('uploadpath'), DS);
+$root = substr(PATH_APP, strlen(PATH_ROOT));
+if (substr($path, 0, strlen($root)) != $root)
+{
+	$path = $root . DS . $path;
+}
+$path .= DS;
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -102,17 +110,20 @@ function doFileoptions()
 					document.forms['adminForm'].elements['params[series_banner]'].value = '<?php echo $this->rconfig->get('uploadpath') . '/'; ?>' + filepath;
 				} else if (act == '2') {
 					//if (filepath) {
-					//document.forms['adminForm'].elements['path'].value = '<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath;
+					//document.forms['adminForm'].elements['path'].value = '<?php echo $path; ?>' + filepath;
 					document.forms['adminForm'].elements['fields[path]'].value = filepath;
 					//}
 				} else if (act == '3') {
 					var content = <?php echo $this->editor()->getContent('field-fulltxt'); ?>
-					content = content + '<p><img class="contentimg" src="<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath + '" alt="image" /></p>';
-					<?php echo $this->editor()->setContent('field-fulltxt', 'content'); ?>
+					console.log(content);
+					content = content + '<p><img class="contentimg" src="<?php echo $path; ?>' + filepath + '" alt="image" /></p>';
+					<?php //echo $this->editor()->setContent('field-fulltxt', 'content'); ?>
+					setEditorContent('field-fulltxt', content);
 				} else if (act == '4') {
 					var content = <?php echo $this->editor()->getContent('field-fulltxt'); ?>
-					content = content + '<p><a href="<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath + '">' + filepath + '</a></p>';
-					<?php echo $this->editor()->setContent('field-fulltxt', 'content'); ?>
+					content = content + '<p><a href="<?php echo $path; ?>' + filepath + '">' + filepath + '</a></p>';
+					<?php //echo $this->editor()->setContent('field-fulltxt', 'content'); ?>
+					setEditorContent('field-fulltxt', content);
 				}
 			}
 		}
