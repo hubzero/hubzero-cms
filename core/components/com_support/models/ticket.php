@@ -88,7 +88,8 @@ class Ticket extends Relational
 	 */
 	public $always = array(
 		'owner',
-		'group_id'
+		'group_id',
+		'target_date'
 	);
 
 	/**
@@ -172,6 +173,24 @@ class Ticket extends Relational
 		}
 
 		return $data['group_id'];
+	}
+
+	/**
+	 * Generates automatic target_date value
+	 *
+	 * @param   array  $data
+	 * @return  string
+	 */
+	public function automaticTargetDate($data)
+	{
+		$data['target_date'] = isset($data['target_date']) ? $data['target_date'] : null;
+
+		if (!$data['target_date'])
+		{
+			$data['target_date'] = null;
+		}
+
+		return $data['target_date'];
 	}
 
 	/**
