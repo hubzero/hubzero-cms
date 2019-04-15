@@ -44,8 +44,9 @@ if (!empty($this->file))
 <h3><?php echo $remoteControl ? Lang::txt('PLG_PROJECTS_FILES_UNSHARE_PROJECT_FILES') : Lang::txt('PLG_PROJECTS_FILES_SHARE_PROJECT_FILES'); ?></h3>
 <?php
 // Display error or success message
-if ($this->getError()) {
-	echo ('<p class="witherror">' . $this->getError() . '</p>');
+if ($this->getError())
+{
+	echo '<p class="witherror">' . $this->getError() . '</p>';
 }
 else
 { ?>
@@ -114,7 +115,7 @@ else
 				? '<input type="hidden" name="folder" value="' . $this->file->get('name') . '" />'
 				: '<input type="hidden" name="asset" value="' . $this->file->get('name') . '" />'; ?>
 			<input type="submit" value="<?php echo $remoteControl ? Lang::txt('PLG_PROJECTS_FILES_ACTION_UNSHARE') : Lang::txt('PLG_PROJECTS_FILES_ACTION_SHARE'); ?>" id="submit-ajaxform" class="btn" />
-			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_CANCEL'); ?>" />
+			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
 		</p>
 	</fieldset>
 </form>

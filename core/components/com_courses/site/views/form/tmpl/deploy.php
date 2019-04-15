@@ -50,7 +50,7 @@ $this->css('form.css')
 				<input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
 			<?php endif; ?>
 			<div class="navbar">
-				<div><a href="<?php echo Request::base(true); ?>/courses/form" id="cancel"><?php echo Lang::txt('COM_COURSES_CANCEL'); ?></a></div>
+				<div><a href="<?php echo Request::base(true); ?>/courses/form" id="cancel"><?php echo Lang::txt('JCANCEL'); ?></a></div>
 				<button id="submit" type="submit"><?php echo Lang::txt('COM_COURSES_CREATE_DEPLOYMENT'); ?></button>
 			</div>
 		</fieldset>

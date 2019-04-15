@@ -87,11 +87,11 @@ if ($this->getError()) {
 		<p class="submitarea">
 			<input type="submit" class="btn active btn-success" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_NEW_VERSION'); ?>" />
 				<?php if ($this->ajax) { ?>
-				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?>" />
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
 				<?php } else {
 					$rtn = Request::getString('HTTP_REFERER', Route::url($this->pub->link('editversion')), 'server');
 				?>
-				<span class="btn btncancel"><a href="<?php echo $rtn; ?>"><?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?></a></span>
+				<span class="btn btncancel"><a href="<?php echo $rtn; ?>"><?php echo Lang::txt('JCANCEL'); ?></a></span>
 				<?php } ?>
 		</p>
 </form>

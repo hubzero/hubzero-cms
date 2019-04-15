@@ -163,7 +163,7 @@ if ($this->wishlist->get('id'))
 			<p class="submit">
 				<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_WISHLIST_FORM_SUBMIT'); ?>" />
 				<a class="btn btn-secondary" href="<?php echo $this->wish->link(); ?>">
-					<?php echo Lang::txt('COM_WISHLIST_CANCEL'); ?>
+					<?php echo Lang::txt('JCANCEL'); ?>
 				</a>
 			</p>
 		</form>

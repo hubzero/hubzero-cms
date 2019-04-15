@@ -68,7 +68,7 @@ $nextDay   = date("d", mktime(0, 0, 0, $month+1, $day, $year));
 		<div class="configuration">
 			<div class="configuration-options">
 				<button type="button" id="btn-generate" data-redirect="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&section=' . $this->section->get('id'), false); ?>"><?php echo Lang::txt('COM_COURSES_GENERATE');?></button>
-				<button type="button" id="btn-cancel"><?php echo Lang::txt('COM_COURSES_CANCEL');?></button>
+				<button type="button" id="btn-cancel"><?php echo Lang::txt('JCANCEL');?></button>
 			</div>
 
 			<?php echo Lang::txt('COM_COURSES_GENERATE_CODES') ?>

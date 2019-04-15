@@ -98,9 +98,9 @@ if ($this->resource->get('id'))
 			<?php if ($this->progress['submitted'] != 1) { ?>
 				<td>
 				<?php if ($this->step == 'discard') { ?>
-					<strong><?php echo Lang::txt('COM_CONTRIBUTE_CANCEL'); ?></strong>
+					<strong><?php echo Lang::txt('JCANCEL'); ?></strong>
 				<?php } else { ?>
-					<a class="icon-delete" href="<?php echo Route::url('index.php?option='.$this->option.'&task=discard&id='.$this->id); ?>"><?php echo Lang::txt('COM_CONTRIBUTE_CANCEL'); ?></a>
+					<a class="icon-delete" href="<?php echo Route::url('index.php?option='.$this->option.'&task=discard&id='.$this->id); ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
 				<?php } ?>
 				</td>
 			<?php } ?>

@@ -76,14 +76,12 @@ $base = $this->member->link() . '&active=citations';
 						<?php $counter = 0; ?>
 						<?php foreach ($citations_require_attention as $c) : ?>
 							<?php
-                                //load the duplicate citation
-                                $cc = $c['duplicate'];
-
-                                $type_title = $cc->relatedType->get('type_title');
-                                $tags = implode(', ', \Components\Citations\Helpers\Format::citationTags($c['duplicate'], false));
-                                $badges = implode(', ', \Components\Citations\Helpers\Format::citationBadges($c['duplicate'], false));
-                            ?>
-
+							//load the duplicate citation
+							$cc = $c['duplicate'];
+							$type_title = $cc->relatedType->get('type_title');
+							$tags = implode(', ', \Components\Citations\Helpers\Format::citationTags($c['duplicate'], false));
+							$badges = implode(', ', \Components\Citations\Helpers\Format::citationBadges($c['duplicate'], false));
+							?>
 							<tr>
 								<!--<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>-->
 								<td>
@@ -124,7 +122,7 @@ $base = $this->member->link() . '&active=citations';
 											</tr>
 										</thead>
 										<tbody>
-										<?php
+											<?php
 											$recordAttributes = $cc->getAttributes();
 											$changedKeys = array();
 											foreach ($c as $attribute => $value)
@@ -132,10 +130,9 @@ $base = $this->member->link() . '&active=citations';
 												if (!empty($recordAttributes[$attribute]) || !empty($value))
 												{
 													$changedKeys[] = $attribute;
-												} 
+												}
 											}
-												
-										?>
+											?>
 											<?php foreach ($changedKeys as $k) : ?>
 												<?php if (!in_array($k, $no_show)) : ?>
 													<tr>
@@ -157,9 +154,15 @@ $base = $this->member->link() . '&active=citations';
 																			<?php
 																				switch ($k)
 																				{
-																					case 'type':	echo $type_title;		break;
-																					case 'tags':	echo $tags;				break;
-																					case 'badges':	echo $badges;			break;
+																					case 'type':
+																						echo $type_title;
+																						break;
+																					case 'tags':
+																						echo $tags;
+																						break;
+																					case 'badges':
+																						echo $badges;
+																						break;
 																					default:
 																						echo html_entity_decode(nl2br($cc->get($k)));
 																					break;
@@ -243,7 +246,7 @@ $base = $this->member->link() . '&active=citations';
 				<input type="submit" class="btn btn-success" name="submit" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_SUBMIT_IMPORTED'); ?>" />
 
 				<a class="btn btn-secondary" href="<?php echo Route::url($base); ?>">
-					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CANCEL'); ?>
+					<?php echo Lang::txt('JCANCEL'); ?>
 				</a>
 			</p>
 

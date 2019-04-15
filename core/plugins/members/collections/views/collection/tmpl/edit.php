@@ -127,7 +127,7 @@ $this->css();
 	<p class="submit">
 		<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_SAVE'); ?>" />
 		<a class="btn btn-secondary" href="<?php echo Route::url($base . '&task=all'); ?>">
-			<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_CANCEL'); ?>
+			<?php echo Lang::txt('JCANCEL'); ?>
 		</a>
 	</p>
 </form>

@@ -82,7 +82,7 @@ $this->css()
 		<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SAVE'); ?>" />
 
 		<a class="btn btn-secondary" href="<?php echo Route::url($this->member->link() . '&active=activity'); ?>">
-			<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_CANCEL'); ?>
+			<?php echo Lang::txt('JCANCEL'); ?>
 		</a>
 	</p>
 </form>

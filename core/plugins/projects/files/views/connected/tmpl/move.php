@@ -48,7 +48,7 @@ $subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 	</h3>
 
 	<?php if ($this->getError()) : ?>
-		<?php echo ('<p class="witherror">' . $this->getError() . '</p>'); ?>
+		<?php echo '<p class="witherror">' . $this->getError() . '</p>'; ?>
 	<?php else : ?>
 		<form id="hubForm-ajax" method="post" action="<?php echo Route::url($this->url); ?>">
 			<fieldset >
@@ -105,10 +105,10 @@ $subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 				<p class="submitarea">
 					<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE'); ?>" />
 					<?php if ($this->ajax) : ?>
-						<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_CANCEL'); ?>" />
+						<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
 					<?php else : ?>
 						<span>
-							<a id="cancel-action"  class="btn btn-cancel"  href="<?php echo Route::url($this->url . '&a=1' . $subdirlink); ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_CANCEL'); ?></a>
+							<a id="cancel-action"  class="btn btn-cancel"  href="<?php echo Route::url($this->url . '&a=1' . $subdirlink); ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
 						</span>
 					<?php endif; ?>
 				</p>

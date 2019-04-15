@@ -45,7 +45,7 @@ $suggested = is_numeric($this->pub->version_label) ? number_format(($this->pub->
 <?php
 // Display error  message
 if ($this->getError()) {
-	echo ('<p class="error">' . $this->getError() . '</p>');
+	echo '<p class="error">' . $this->getError() . '</p>';
 } ?>
 
 <?php if (!$this->ajax) { ?>
@@ -92,9 +92,9 @@ if ($this->getError()) {
 		<p class="submitarea">
 			<input type="submit" id="submit-ajaxform" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE'); ?>" />
 			<?php if ($this->ajax) { ?>
-				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?>" />
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
 			<?php } else { $rtn = Request::getString('HTTP_REFERER', Route::url($this->pub->link('editversion')), 'server'); ?>
-				<a href="<?php echo $rtn; ?>" class="btn btn-cancel"><?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?></a>
+				<a href="<?php echo $rtn; ?>" class="btn btn-cancel"><?php echo Lang::txt('JCANCEL'); ?></a>
 			<?php } ?>
 		</p>
 </form>

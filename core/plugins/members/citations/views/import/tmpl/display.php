@@ -75,7 +75,7 @@ $base = $this->member->link() . '&active=citations';
 				<input type="submit" class="btn btn-success" name="submit" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD'); ?>" />
 
 				<a class="btn btn-secondary" href="<?php echo Route::url($base); ?>">
-					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CANCEL'); ?>
+					<?php echo Lang::txt('JCANCEL'); ?>
 				</a>
 			</p>
 

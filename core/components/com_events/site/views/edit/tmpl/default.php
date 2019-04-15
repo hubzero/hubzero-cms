@@ -159,7 +159,7 @@ $this->css()
 			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('EVENTS_SAVE'); ?>" />
 
 			<a class="btn btn-secondary" href="<?php echo $this->row->id ? Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id) : Route::url('index.php?option=' . $this->option); ?>">
-				<?php echo Lang::txt('EVENTS_CANCEL'); ?>
+				<?php echo Lang::txt('JCANCEL'); ?>
 			</a>
 		</p>
 

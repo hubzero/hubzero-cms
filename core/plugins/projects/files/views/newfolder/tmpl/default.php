@@ -37,8 +37,9 @@ defined('_HZEXEC_') or die();
 <h3><?php echo Lang::txt('PLG_PROJECTS_FILES_ADD_NEW_FOLDER'); ?> <?php if ($this->subdir) { ?> <?php echo Lang::txt('PLG_PROJECTS_FILES_IN'); ?> <span class="folder"><?php echo $this->subdir; ?></span> <?php } ?></h3>
 <?php
 // Display error
-if ($this->getError()) {
-	echo ('<p class="witherror">' . $this->getError() . '</p>');
+if ($this->getError())
+{
+	echo '<p class="witherror">' . $this->getError() . '</p>';
 }
 else
 {
@@ -53,7 +54,7 @@ else
 				<input type="text" name="newdir" maxlength="100" value="untitled" />
 			</label>
 			<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_SAVE'); ?>" />
-			<input type="reset" class="btn btn-cancel" id="cancel-action" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_CANCEL'); ?>" />
+			<input type="reset" class="btn btn-cancel" id="cancel-action" value="<?php echo Lang::txt('JCANCEL'); ?>" />
 		</fieldset>
 	</form>
 <?php } ?>

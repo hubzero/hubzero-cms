@@ -125,7 +125,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
 											</tr>
 										</thead>
 										<tbody>
-										<?php
+											<?php
 											$recordAttributes = $cc->getAttributes();
 											$changedKeys = array();
 											foreach ($c as $attribute => $value)
@@ -133,10 +133,9 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
 												if (!empty($recordAttributes[$attribute]) || !empty($value))
 												{
 													$changedKeys[] = $attribute;
-												} 
+												}
 											}
-												
-										?>
+											?>
 											<?php foreach ($changedKeys as $k) : ?>
 												<?php if (!in_array($k, $no_show)) : ?>
 													<tr>
@@ -158,9 +157,15 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
 																			<?php
 																				switch ($k)
 																				{
-																					case 'type':	echo $type_title;		break;
-																					case 'tags':	echo $tags;				break;
-																					case 'badges':	echo $badges;			break;
+																					case 'type':
+																						echo $type_title;
+																						break;
+																					case 'tags':
+																						echo $tags;
+																						break;
+																					case 'badges':
+																						echo $badges;
+																						break;
 																					default:
 																						if (in_array($k, array_keys($cc->getAttributes())))
 																						{
@@ -247,7 +252,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
 				<input type="submit" class="btn btn-success" id="review-input" name="submit" value="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_SUBMIT_IMPORTED'); ?>" />
 
 				<a class="btn btn-secondary" href="<?php echo Route::url($base); ?>">
-					<?php echo Lang::txt('PLG_GROUPS_CITATIONS_CANCEL'); ?>
+					<?php echo Lang::txt('JCANCEL'); ?>
 				</a>
 			</p>
 

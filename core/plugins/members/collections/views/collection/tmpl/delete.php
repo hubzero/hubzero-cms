@@ -70,7 +70,7 @@ $this->css();
 			<input class="btn btn-danger" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE'); ?>" />
 
 			<?php if (!$this->no_html) { ?>
-				<a class="btn btn-secondary" href="<?php echo Route::url($base); ?>"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_CANCEL'); ?></a>
+				<a class="btn btn-secondary" href="<?php echo Route::url($base); ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
 			<?php } ?>
 		</p>
 	</form>

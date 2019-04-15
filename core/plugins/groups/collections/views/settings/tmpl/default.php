@@ -89,7 +89,7 @@ defined('_HZEXEC_') or die();
 			<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SAVE'); ?>" />
 
 			<a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=collections'); ?>">
-				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_CANCEL'); ?>
+				<?php echo Lang::txt('JCANCEL'); ?>
 			</a>
 		</p>
 	</form>

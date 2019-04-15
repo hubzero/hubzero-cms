@@ -229,7 +229,7 @@ defined('_HZEXEC_') or die();
 		<p class="submit">
 			<input type="submit" class="btn btn-success" name="submit" value="<?php echo ($this->task=='addjob' or $job->status == 4) ? Lang::txt('COM_JOBS_ACTION_SAVE_PREVIEW') : Lang::txt('COM_JOBS_ACTION_SAVE'); ?>" />
 
-			<a class="btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_CANCEL'); ?></a>
+			<a class="btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
 		</p>
 	</form>
 </section>
