@@ -138,18 +138,24 @@ $MY_SELF   = str_replace('&', '&amp;', $MY_SELF);
 	{
 		switch ($this->MYREQUEST['SORT1'])
 		{
-			case 'A': $kn = sprintf('%015d-', $v['size'] / $v['ents']);
-break;
-			case 'T': $kn = sprintf('%015d-', $v['ents']);
-break;
-			case 'H': $kn = sprintf('%015d-', $v['hits']);
-break;
-			case 'Z': $kn = sprintf('%015d-', $v['size']);
-break;
-			case 'C': $kn = sprintf('%015d-', $v['hits'] / $v['ents']);
-break;
-			case 'S': $kn = $k;
-break;
+			case 'A':
+				$kn = sprintf('%015d-', $v['size'] / $v['ents']);
+				break;
+			case 'T':
+				$kn = sprintf('%015d-', $v['ents']);
+				break;
+			case 'H':
+				$kn = sprintf('%015d-', $v['hits']);
+				break;
+			case 'Z':
+				$kn = sprintf('%015d-', $v['size']);
+				break;
+			case 'C':
+				$kn = sprintf('%015d-', $v['hits'] / $v['ents']);
+				break;
+			case 'S':
+				$kn = $k;
+				break;
 		}
 		$list[$kn . $k] = array($k, $v['ents'], $v['hits'], $v['size']);
 	}
@@ -159,10 +165,12 @@ break;
 		// sort list
 		switch ($this->MYREQUEST['SORT2'])
 		{
-			case "A":	krsort($list);
-break;
-			case "D":	ksort($list);
-break;
+			case "A":
+				krsort($list);
+				break;
+			case "D":
+				ksort($list);
+				break;
 		}
 		// output list
 		$i = 0;
