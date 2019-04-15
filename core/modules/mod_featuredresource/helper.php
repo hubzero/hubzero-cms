@@ -101,7 +101,7 @@ class Helper extends Module
 
 			if ($row->isTool())
 			{
-				include_once(Component::path('com_tools') . DS . 'tables' . DS . 'version.php');
+				include_once Component::path('com_tools') . DS . 'tables' . DS . 'version.php';
 
 				$tv = new \Components\Tools\Tables\Version($database);
 

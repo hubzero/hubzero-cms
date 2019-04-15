@@ -34,7 +34,7 @@
 // no direct access
 defined('_HZEXEC_') or die;
 ?>
-<form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get" id="searchform<?php echo (self::$instances > 1 ? $this->module->id : ''); ?>" class="<?php echo $moduleclass_sfx; ?>searchform">
+<form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get" id="searchform<?php echo (self::$instances) > 1 ? $this->module->id : ''; ?>" class="<?php echo $moduleclass_sfx; ?>searchform">
 	<fieldset>
 		<legend><?php echo $text; ?></legend>
 

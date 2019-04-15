@@ -38,7 +38,7 @@ if ($this->getError())
 	<p class="error"><?php echo Lang::txt('MOD_FEATUREDBLOG_MISSING_CLASS'); ?></p>
 	<?php
 }
-else if ($this->row)
+elseif ($this->row)
 {
 	$base = rtrim(Request::base(true), '/');
 	?>

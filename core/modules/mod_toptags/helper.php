@@ -48,7 +48,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(\Component::path('com_tags') . DS . 'models' . DS . 'cloud.php');
+		require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
 		$this->tags = Tag::all()
 			->whereEquals('admin', 0)
@@ -75,4 +75,3 @@ class Helper extends Module
 		$this->run();
 	}
 }
-

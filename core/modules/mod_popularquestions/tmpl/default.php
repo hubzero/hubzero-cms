@@ -33,7 +33,8 @@
 // no direct access
 defined('_HZEXEC_') or die();
 ?>
-<div<?php echo ($this->cssId) ? ' id="' . $this->cssId . '"' : ''; echo ($this->cssClass) ? ' class="' . $this->cssClass . '"' : ''; ?>>
+<div<?php echo ($this->cssId) ? ' id="' . $this->cssId . '"' : '';
+	echo ($this->cssClass) ? ' class="' . $this->cssClass . '"' : ''; ?>>
 	<?php if (count($this->rows) > 0) { ?>
 		<ul class="questions">
 		<?php

@@ -66,7 +66,7 @@ $subscribelink = $this->params->get('show_subscribe', '') &&  $this->params->get
 			$url = DS . $item->catpath . DS . $item->alias;
 
 			// get associated image
-			preg_match('/<img\s+.*?src="(.*?)"/is', $item->introtext , $match);
+			preg_match('/<img\s+.*?src="(.*?)"/is', $item->introtext, $match);
 			$img = count($match) > 1
 			     ? trim(stripslashes($match[1]))
 			     : $this->params->get('default_image', 'modules/mod_announcements/assets/img/default.gif');

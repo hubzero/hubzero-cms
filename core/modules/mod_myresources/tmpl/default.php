@@ -59,10 +59,18 @@ if (!$this->no_html)
 						// Determine css class
 						switch ($this->contributions[$i]->published)
 						{
-							case 1:  $class = 'published';  break;  // published
-							case 2:  $class = 'draft';      break;  // draft
-							case 3:  $class = 'pending';    break;  // pending
-							case 0:  $class = 'deleted';    break;  // pending
+							case 1:
+								$class = 'published';
+								break;
+							case 2:
+								$class = 'draft';
+								break;
+							case 3:
+								$class = 'pending';
+								break;
+							case 0:
+								$class = 'deleted';
+								break;
 						}
 
 						$thedate = Date::of($this->contributions[$i]->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));

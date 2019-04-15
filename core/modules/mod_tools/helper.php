@@ -78,15 +78,33 @@ class Helper extends Module
 			{
 				switch ($data->state)
 				{
-					case 1: $this->registered++; break;
-					case 2: $this->created++;    break;
-					case 3: $this->uploaded++;   break;
-					case 4: $this->installed++;  break;
-					case 5: $this->updated++;    break;
-					case 6: $this->approved++;   break;
-					case 7: $this->published++;  break;
-					case 8: $this->retired++;    break;
-					case 9: $this->abandoned++;  break;
+					case 1:
+						$this->registered++;
+						break;
+					case 2:
+						$this->created++;
+						break;
+					case 3:
+						$this->uploaded++;
+						break;
+					case 4:
+						$this->installed++;
+						break;
+					case 5:
+						$this->updated++;
+						break;
+					case 6:
+						$this->approved++;
+						break;
+					case 7:
+						$this->published++;
+						break;
+					case 8:
+						$this->retired++;
+						break;
+					case 9:
+						$this->abandoned++;
+						break;
 				}
 			}
 		}

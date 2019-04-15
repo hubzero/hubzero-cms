@@ -168,4 +168,4 @@ $this->css();
 	<?php } else { ?>
 		<p><em><?php echo Lang::txt('MOD_MYQUESTIONS_NO_QUESTIONS'); ?></em></p>
 	<?php } ?>
-<?php } ?>
+<?php }
