@@ -68,7 +68,10 @@ class Helper extends Module
 			$pparams = new Registry($p->params);
 
 			// Make sure it supports admin login
-			if (!$pparams->get('admin_login', false)) continue;
+			if (!$pparams->get('admin_login', false))
+			{
+				continue;
+			}
 
 			// If it's the default hubzero plugin, don't include it in the list (we'll include it separately)
 			if ($p->name == 'hubzero')

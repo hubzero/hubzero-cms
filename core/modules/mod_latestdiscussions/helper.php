@@ -56,7 +56,7 @@ class Helper extends Module
 		$this->limit = $this->params->get('limit', 5);
 		$this->charlimit = $this->params->get('charlimit', 100);
 
-		include_once(Component::path('com_forum') . DS . 'models' . DS . 'manager.php');
+		include_once Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
 
 		$forum = new Manager();
 

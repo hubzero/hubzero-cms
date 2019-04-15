@@ -67,4 +67,4 @@ if ($this->getError()) { ?>
 	<p class="more">
 		<a href="<?php echo Route::url('index.php?option=com_events&year=' . Date::of('now')->format('Y') . '&month=' . Date::of('now')->format('m')); ?>"><?php echo Lang::txt('MOD_EVENTS_LATEST_MORE'); ?></a>
 	</p>
-<?php } ?>
+<?php }

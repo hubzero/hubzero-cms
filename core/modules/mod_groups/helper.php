@@ -57,10 +57,18 @@ class Helper extends Module
 
 		switch ($type)
 		{
-			case '0': $this->type = 'system'; break;
-			case '1': $this->type = 'hub'; break;
-			case '2': $this->type = 'project'; break;
-			case '3': $this->type = 'partner'; break;
+			case '0':
+				$this->type = 'system';
+				break;
+			case '1':
+				$this->type = 'hub';
+				break;
+			case '2':
+				$this->type = 'project';
+				break;
+			case '3':
+				$this->type = 'partner';
+				break;
 		}
 
 		$queries = array(
@@ -83,7 +91,7 @@ class Helper extends Module
 		}
 
 		// Last 24 hours
-		$lastDay = with(new Date('now'))->subtract('1 Day')->toSql(); //gmdate('Y-m-d', (time() - 24*3600)) . ' 00:00:00';
+		$lastDay = with(new Date('now'))->subtract('1 Day')->toSql();
 
 		$database->setQuery("SELECT count(*) FROM `#__xgroups` WHERE created >= '$lastDay' AND type='$type'");
 		$this->pastDay = $database->loadResult();
