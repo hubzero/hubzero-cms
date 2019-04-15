@@ -111,8 +111,9 @@ function get_dd($db_id)
 
 		$vis_col_count = 0;
 		if (isset($dd['cols'])) {
-			$vis_col_count = count(array_filter($dd['cols'], function ($col) { return !isset($col['hide']);
-}));
+			$vis_col_count = count(array_filter($dd['cols'], function ($col) {
+				return !isset($col['hide']);
+			}));
 		} elseif (isset($db_id['extra']) && $db_id['extra'] == 'table') {
 			$sql = "SELECT COUNT(*) AS cols FROM information_schema.columns WHERE table_name = '{$dd['table']}'";
 			$cols = mysqli_fetch_assoc(mysqli_query($link, $sql));
