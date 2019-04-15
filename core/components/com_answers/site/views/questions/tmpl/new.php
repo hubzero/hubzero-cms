@@ -135,7 +135,7 @@ $this->css();
 				<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('COM_ANSWERS_SUBMIT'); ?>" />
 
 				<a class="btn btn-secondary" href="<?php echo $this->question->get('id') ? Route::url($this->question->link()) : Route::url('index.php?option=' . $this->option); ?>">
-					<?php echo Lang::txt('COM_ANSWERS_CANCEL'); ?>
+					<?php echo Lang::txt('JCANCEL'); ?>
 				</a>
 			</p>
 		</form>

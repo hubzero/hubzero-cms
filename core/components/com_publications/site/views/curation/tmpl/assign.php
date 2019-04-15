@@ -67,9 +67,9 @@ if (!$this->ajax)
 		<p class="submitarea">
 			<input type="submit" class="btn" value="<?php echo Lang::txt('COM_PUBLICATIONS_SAVE'); ?>" />
 			<?php if ($this->ajax) { ?>
-				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('COM_PUBLICATIONS_CANCEL'); ?>" />
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
 			<?php } else { ?>
-				<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=curation'); ?>" class="btn btn-cancel"><?php echo Lang::txt('COM_PUBLICATIONS_CANCEL'); ?></a>
+				<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=curation'); ?>" class="btn btn-cancel"><?php echo Lang::txt('JCANCEL'); ?></a>
 			<?php } ?>
 		</p>
 	</form>

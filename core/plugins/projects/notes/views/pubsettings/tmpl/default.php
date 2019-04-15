@@ -38,7 +38,7 @@ defined('_HZEXEC_') or die();
 <?php
 // Display error or success message
 if ($this->getError()) {
-	echo ('<p class="witherror">'.$this->getError().'</p>');
+	echo '<p class="witherror">'.$this->getError().'</p>';
 }
 ?>
 <?php
@@ -66,10 +66,10 @@ if (!$this->getError()) {
 		<p class="submitarea">
 			<input type="submit" class="btn" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_MY_CHOICE'); ?>" />
 			<?php if ($this->ajax) { ?>
-				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?>" />
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
 			<?php } else {  ?>
 				<span>
-					<a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . DS . $this->page->get('pagename'); ?>"><?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?></a>
+					<a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . DS . $this->page->get('pagename'); ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
 				</span>
 			<?php } ?>
 		</p>

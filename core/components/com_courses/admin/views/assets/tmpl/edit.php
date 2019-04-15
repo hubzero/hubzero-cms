@@ -69,7 +69,7 @@ else
 		<div class="configuration">
 			<div class="configuration-options">
 				<button type="button" id="btn-save"><?php echo Lang::txt('COM_COURSES_SAVE'); ?></button>
-				<button type="button" id="btn-cancel"><?php echo Lang::txt('COM_COURSES_CANCEL'); ?></button>
+				<button type="button" id="btn-cancel"><?php echo Lang::txt('JCANCEL'); ?></button>
 			</div>
 			<?php echo $text; ?>
 		</div>

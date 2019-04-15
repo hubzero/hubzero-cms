@@ -114,7 +114,7 @@ $this->css()
 				<input class="btn btn-success" type="submit" name="submit" value="<?php echo Lang::txt('COM_FEEDBACK_SUBMIT'); ?>" />
 
 				<a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option); ?>">
-					<?php echo Lang::txt('COM_FEEDBACK_CANCEL'); ?>
+					<?php echo Lang::txt('JCANCEL'); ?>
 				</a>
 			</p>
 		</form>

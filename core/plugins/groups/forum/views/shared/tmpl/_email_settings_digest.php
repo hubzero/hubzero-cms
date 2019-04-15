@@ -44,7 +44,7 @@
 
 		<div class="edit-forum-options-actions">
 			<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SAVE'); ?>" />
-			<input type="button" class="btn edit-forum-options-cancel" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_CANCEL'); ?>" />
+			<input type="button" class="btn edit-forum-options-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
 		</div>
 	</form>
 </div>

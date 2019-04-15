@@ -222,7 +222,7 @@ $this->css('pipeline.css')
 
 				<?php if ($this->id) { ?>
 					<a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->defaults['toolname']); ?>" title="<?php echo Lang::txt('COM_TOOLS_HINT_CANCEL'); ?>">
-						<?php echo Lang::txt('COM_TOOLS_CANCEL'); ?>
+						<?php echo Lang::txt('JCANCEL'); ?>
 					</a>
 				<?php } ?>
 			</p>

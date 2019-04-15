@@ -235,17 +235,17 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 							<?php if (Request::getInt('reply', 0) == $this->row->get('id')) { ?>
 								<a
 									class="icon-reply reply tooltips active"
-									data-txt-active="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_CANCEL'); ?>"
+									data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>"
 									data-txt-inactive="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_REPLY'); ?>"
-									title="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_CANCEL'); ?>"
+									title="<?php echo Lang::txt('JCANCEL'); ?>"
 									href="<?php echo Route::url($base); ?>"
 									rel="comment-form<?php echo $this->row->get('id'); ?>"><!--
-									--><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_CANCEL'); ?><!--
+									--><?php echo Lang::txt('JCANCEL'); ?><!--
 								--></a>
 							<?php } else { ?>
 								<a
 									class="icon-reply reply tooltips"
-									data-txt-active="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_CANCEL'); ?>"
+									data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>"
 									data-txt-inactive="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_REPLY'); ?>"
 									title="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_REPLY'); ?>"
 									href="<?php echo Route::url($base . '&action=reply&activity=' . $this->row->get('id')); ?>"

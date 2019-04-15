@@ -68,7 +68,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 			<input type="submit" class="btn btn-danger" value="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?>" />
 
 			<?php if (!$this->no_html) { ?>
-				<a class="btn btn-secondary" href="<?php echo Route::url($base); ?>"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_CANCEL'); ?></a>
+				<a class="btn btn-secondary" href="<?php echo Route::url($base); ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
 			<?php } ?>
 		</p>
 	</form>

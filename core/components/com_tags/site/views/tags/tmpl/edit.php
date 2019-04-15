@@ -100,7 +100,7 @@ $this->css()
 			<p class="submit">
 				<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_TAGS_SUBMIT'); ?>" />
 				<a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>">
-					<?php echo Lang::txt('COM_TAGS_CANCEL'); ?>
+					<?php echo Lang::txt('JCANCEL'); ?>
 				</a>
 			</p>
 		</form>

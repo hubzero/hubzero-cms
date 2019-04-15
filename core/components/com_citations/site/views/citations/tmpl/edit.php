@@ -516,7 +516,7 @@ $pid = Request::getInt('publication', 0);
 			<input type="submit" class="btn btn-success" name="create" value="<?php echo Lang::txt('COM_CITATIONS_SAVE'); ?>" />
 
 			<a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option); ?>">
-				<?php echo Lang::txt('COM_CITATIONS_CANCEL'); ?>
+				<?php echo Lang::txt('JCANCEL'); ?>
 			</a>
 		</p>
 	</form>

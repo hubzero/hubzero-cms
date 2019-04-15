@@ -257,7 +257,7 @@ if (!$dir)
 			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt(strtoupper($this->option) . '_SAVE'); ?>" />
 			<?php if ($item->get('id')) { ?>
 				<a class="btn btn-secondary" href="<?php echo Route::url($base . ($item->get('id') ? '&task=' . $this->collection->get('alias') : '')); ?>">
-					<?php echo Lang::txt('COM_COLLECTIONS_CANCEL'); ?>
+					<?php echo Lang::txt('JCANCEL'); ?>
 				</a>
 			<?php } ?>
 		</p>

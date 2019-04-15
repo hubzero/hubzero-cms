@@ -130,7 +130,7 @@ if ($this->application->get('id'))
 				<p class="submit">
 					<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('COM_DEVELOPER_SAVE'); ?>">
 					<a class="btn btn-secondary" href="<?php echo $return; ?>">
-						<?php echo Lang::txt('COM_DEVELOPER_CANCEL'); ?>
+						<?php echo Lang::txt('JCANCEL'); ?>
 					</a>
 				</p>
 				<input type="hidden" name="option" value="com_developer" />

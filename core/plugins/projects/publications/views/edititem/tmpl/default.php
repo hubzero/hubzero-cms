@@ -74,11 +74,11 @@ $inDir   = $dirname && $dirname != '.' ? ' in /' . \Components\Projects\Helpers\
 				<p class="submitarea">
 					<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?>" />
 					<?php if ($this->ajax) { ?>
-						<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?>" />
+						<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
 					<?php } else {
 						$rtn = Request::getString('HTTP_REFERER', $this->url, 'server');
 						?>
-						<a href="<?php echo $rtn; ?>" class="btn btn-cancel"><?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?></a>
+						<a href="<?php echo $rtn; ?>" class="btn btn-cancel"><?php echo Lang::txt('JCANCEL'); ?></a>
 					<?php } ?>
 				</p>
 			</div>

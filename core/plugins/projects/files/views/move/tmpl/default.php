@@ -57,7 +57,7 @@ if ($this->list)
 <?php
 // Display error or success message
 if ($this->getError()) {
-	echo ('<p class="witherror">' . $this->getError() . '</p>');
+	echo '<p class="witherror">' . $this->getError() . '</p>';
 }
 else {
 ?>
@@ -124,10 +124,10 @@ else {
 		<p class="submitarea">
 			<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE'); ?>" />
 			<?php if ($this->ajax) { ?>
-				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_CANCEL'); ?>" />
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
 			<?php } else {  ?>
 				<span>
-					<a id="cancel-action"  class="btn btn-cancel"  href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_CANCEL'); ?></a>
+					<a id="cancel-action"  class="btn btn-cancel"  href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
 				</span>
 			<?php } ?>
 		</p>

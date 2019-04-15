@@ -495,7 +495,7 @@ $this->css()
 								<input type="submit" class="btn btn-success" value="<?php echo strtolower(Lang::txt('COM_WISHLIST_ACTION_CHANGE_STATUS')); ?>" />
 
 								<a class="btn btn-secondary" href="<?php echo Route::url($this->wish->link()); ?>">
-									<?php echo Lang::txt('COM_WISHLIST_CANCEL'); ?>
+									<?php echo Lang::txt('JCANCEL'); ?>
 								</a>
 							</p>
 						</fieldset>
@@ -543,7 +543,7 @@ $this->css()
 										<input type="submit" class="btn btn-success process" value="<?php echo strtolower(Lang::txt('COM_WISHLIST_ACTION_ADD_POINTS')); ?>" />
 									<?php } ?>
 									<a class="btn btn-secondary" href="<?php echo Route::url($this->wish->link()); ?>">
-										<?php echo Lang::txt('COM_WISHLIST_CANCEL'); ?>
+										<?php echo Lang::txt('JCANCEL'); ?>
 									</a>
 								</p>
 							</fieldset>
@@ -634,7 +634,7 @@ $this->css()
 									<input type="submit" value="<?php echo strtolower(Lang::txt('COM_WISHLIST_ACTION_MOVE_THIS_WISH')); ?>" />
 									<span class="cancelaction">
 										<a href="<?php echo Route::url($this->wish->link()); ?>">
-											<?php echo Lang::txt('COM_WISHLIST_CANCEL'); ?>
+											<?php echo Lang::txt('JCANCEL'); ?>
 										</a>
 									</span>
 								</p>
@@ -855,7 +855,7 @@ $this->css()
 							<input type="submit" name="submit" value="<?php echo Lang::txt('COM_WISHLIST_SAVE'); ?>" />
 							<span class="cancelaction">
 								<a href="<?php echo Route::url($this->wish->link()); ?>">
-									<?php echo Lang::txt('COM_WISHLIST_CANCEL'); ?>
+									<?php echo Lang::txt('JCANCEL'); ?>
 								</a>
 							</span>
 						</p>

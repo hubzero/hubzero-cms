@@ -86,7 +86,7 @@ jQuery(document).ready(function($){
 			<div class="configuration" >
 				<div class="fltrt configuration-options">
 					<button type="button" onclick="submitbutton('addusers');"><?php echo Lang::txt('COM_PROJECTS_SAVE'); ?></button>
-					<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?></button>
+					<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo Lang::txt(JCANCEL); ?></button>
 				</div>
 				<?php echo Lang::txt('COM_PROJECTS') ?>
 			</div>

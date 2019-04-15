@@ -70,7 +70,7 @@ $blocks    = $manifest->blocks;
 			<p class="submit">
 				<input class="btn btn-danger" type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_DELETE'); ?>" />
 				<a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->row->id); ?>">
-					<?php echo Lang::txt('COM_PUBLICATIONS_CANCEL'); ?>
+					<?php echo Lang::txt('JCANCEL'); ?>
 				</a>
 			</p>
 		</div>

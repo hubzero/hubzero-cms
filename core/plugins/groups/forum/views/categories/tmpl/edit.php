@@ -120,7 +120,7 @@ if ($this->category->get('section_id') == 0)
 			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SAVE'); ?>" />
 
 			<a class="btn btn-secondary" href="<?php echo Route::url($base); ?>">
-				<?php echo Lang::txt('PLG_GROUPS_FORUM_CANCEL'); ?>
+				<?php echo Lang::txt('JCANCEL'); ?>
 			</a>
 		</p>
 

@@ -100,7 +100,7 @@ $crumbs = $draft
 		 ?>
 		<p class="warning"><?php echo $warning; ?></p>
 		<?php } ?>
-		<p><span><input type="submit" value="<?php echo $crumbs; ?>" class="btn btn-success active" /></span><span><a href="<?php echo Route::url($this->pub->link('editversion')); ?>" class="btn btn-cancel"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CANCEL'); ?></a></span></p>
+		<p><span><input type="submit" value="<?php echo $crumbs; ?>" class="btn btn-success active" /></span><span><a href="<?php echo Route::url($this->pub->link('editversion')); ?>" class="btn btn-cancel"><?php echo Lang::txt('JCANCEL'); ?></a></span></p>
 	<?php } ?>
 </form>
 </div>
