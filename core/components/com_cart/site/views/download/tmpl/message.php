@@ -38,7 +38,7 @@ $this->css()
 ?>
 
 <header id="content-header">
-	<h2><?php echo  Lang::txt('COM_CART'); ?>: Download</h2>
+	<h2><?php echo Lang::txt('COM_CART'); ?>: Download</h2>
 </header>
 
 <?php
@@ -50,4 +50,3 @@ if (!empty($this->notifications))
 	$view->display();
 }
 
-?>

@@ -50,4 +50,4 @@ if ($this->html)
 
 		<?php echo Html::input('token'); ?>
 	</form>
-<?php } ?>
+<?php } 

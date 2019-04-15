@@ -35,9 +35,15 @@ defined('_HZEXEC_') or die();
 
 switch ($this->count)
 {
-	case 0: $cls = 'span4';  break;
-	case 1: $cls = 'span4'; break;
-	case 2: $cls = 'span4 omega'; break;
+	case 0:
+		$cls = 'span4';
+		break;
+	case 1:
+		$cls = 'span4';
+		break;
+	case 2:
+		$cls = 'span4 omega';
+		break;
 }
 ?>
 <div class="col <?php echo $cls; ?>">

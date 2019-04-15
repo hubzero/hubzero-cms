@@ -48,8 +48,8 @@ $this->css('apc.css');
 <?php
 	if (defined('PROXY'))
 	{
-		$ctxt = stream_context_create( array( 'http' => array( 'proxy' => PROXY, 'request_fulluri' => True ) ) );
-		$rss = @file_get_contents("http://pecl.php.net/feeds/pkg_apc.rss", False, $ctxt);
+		$ctxt = stream_context_create( array( 'http' => array( 'proxy' => PROXY, 'request_fulluri' => true ) ) );
+		$rss = @file_get_contents("http://pecl.php.net/feeds/pkg_apc.rss", false, $ctxt);
 	}
 	else
 	{
@@ -85,7 +85,8 @@ $this->css('apc.css');
 		echo '<div class="change-log-contents">';
 
 		preg_match_all('!<(title|description)>([^<]+)</\\1>!', $rss, $match);
-		next($match[2]); next($match[2]);
+		next($match[2]);
+next($match[2]);
 
 		while (list(,$v) = each($match[2]))
 		{

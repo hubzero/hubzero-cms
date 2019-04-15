@@ -58,4 +58,3 @@ function dv_list()
 	</table>
 <?php
 }
-?>

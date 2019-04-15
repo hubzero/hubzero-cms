@@ -97,7 +97,7 @@ defined('_HZEXEC_') or die();
 				if ($this->fields) {
 					foreach ($this->fields as $field)
 					{
-						if (end($field) != NULL) {
+						if (end($field) != null) {
 							if (end($field) == '1') {
 				?>
 					<h3><?php echo $this->escape(stripslashes($field[1])); ?></h3>
@@ -137,7 +137,7 @@ defined('_HZEXEC_') or die();
 				if (intval($ts[0]) > 12) {
 					$ts[0] = ($ts[0] - 12);
 					$ts[0] = (substr($ts[0], 0, 1) == '0') ? substr($ts[0], 1) : $ts[0];
-					$this->row->start_time = implode(':',$ts);
+					$this->row->start_time = implode(':', $ts);
 					$this->row->start_time .= ' <abbr title="Post Meridian">am</abbr>';
 				} else {
 					$this->row->start_time = (substr($this->row->start_time, 0, 1) == '0') ? substr($this->row->start_time, 1) : $this->row->start_time;

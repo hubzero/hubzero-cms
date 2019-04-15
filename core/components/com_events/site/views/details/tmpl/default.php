@@ -127,7 +127,7 @@ $this->css()
 				$ts = explode(':', $this->row->start_time);
 				if (intval($ts[0]) > 12) {
 					$ts[0] = ($ts[0] - 12);
-					$this->row->start_time = implode(':',$ts);
+					$this->row->start_time = implode(':', $ts);
 					$this->row->start_time .= ' <small>PM</small>';
 				} else {
 					$this->row->start_time .= (intval($ts[0]) == 12) ? ' <small>'.Lang::txt('EVENTS_NOON').'</small>' : ' <small>AM</small>';
@@ -135,7 +135,7 @@ $this->css()
 				$te = explode(':', $this->row->stop_time);
 				if (intval($te[0]) > 12) {
 					$te[0] = ($te[0] - 12);
-					$this->row->stop_time = implode(':',$te);
+					$this->row->stop_time = implode(':', $te);
 					$this->row->stop_time .= ' <small>PM</small>';
 				} else {
 					$this->row->stop_time .= (intval($te[0]) == 12) ? ' <small>'.Lang::txt('EVENTS_NOON').'</small>' : ' <small>AM</small>';
@@ -197,7 +197,7 @@ $this->css()
 				if ($this->fields) {
 					foreach ($this->fields as $field)
 					{
-						if (end($field) != NULL) {
+						if (end($field) != null) {
 							if (end($field) == '1') {
 								$html .= '  <tr>'."\n";
 								$html .= '   <th scope="row">'.$field[1].':</th>'."\n";

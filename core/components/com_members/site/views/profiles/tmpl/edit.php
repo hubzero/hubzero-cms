@@ -163,7 +163,7 @@ foreach ($profiles as $profile)
 						<div class="col span4 omega">
 							<?php
 							echo '<label>' . Lang::txt('COM_MEMBERS_FIELD_ACCESS')  . '</label>';
-							echo Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']',$field->get('access'),'input-select');
+							echo Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $field->get('access'), 'input-select');
 							?>
 						</div>
 					</div>

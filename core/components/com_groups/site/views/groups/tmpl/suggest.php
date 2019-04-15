@@ -43,4 +43,3 @@ defined('_HZEXEC_') or die();
 	{
 		echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 	}
-?>

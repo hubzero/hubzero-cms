@@ -156,7 +156,7 @@ class Finder
 		if (is_dir($helpPagesPath))
 		{
 			// Get help pages for this component
-			$pages = \Filesystem::files($helpPagesPath , '.' . self::$ext);
+			$pages = \Filesystem::files($helpPagesPath, '.' . self::$ext);
 		}
 
 		$pages = array_map(function($file)

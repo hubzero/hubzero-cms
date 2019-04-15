@@ -81,7 +81,7 @@ abstract class Result
 	 * @param      unknown $plugin Parameter description (if any) ...
 	 * @return     mixed Return description (if any) ...
 	 */
-	public function is_in_section($section, $plugin = NULL)
+	public function is_in_section($section, $plugin = null)
 	{
 		if (is_null($plugin))
 		{
@@ -278,7 +278,7 @@ abstract class Result
 	public function set_link($link)
 	{
 		$this->link = $link;
-		$this->canonicalized_link = NULL;
+		$this->canonicalized_link = null;
 	}
 
 	/**

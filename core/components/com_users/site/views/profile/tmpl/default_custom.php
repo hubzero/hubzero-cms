@@ -13,8 +13,10 @@ JLoader::register('JHtmlUsers', JPATH_COMPONENT . '/helpers/html/users.php');
 Html::register('users.spacer', array('JHtmlUsers', 'spacer'));
 
 $fieldsets = $this->form->getFieldsets();
-if (isset($fieldsets['core']))   unset($fieldsets['core']);
-if (isset($fieldsets['params'])) unset($fieldsets['params']);
+if (isset($fieldsets['core'])) {   unset($fieldsets['core']);
+}
+if (isset($fieldsets['params'])) { unset($fieldsets['params']);
+}
 
 foreach ($fieldsets as $group => $fieldset): // Iterate through the form fieldsets
 	$fields = $this->form->getFieldset($group);
@@ -44,4 +46,4 @@ foreach ($fieldsets as $group => $fieldset): // Iterate through the form fieldse
 	</dl>
 </fieldset>
 	<?php endif;?>
-<?php endforeach;?>
+<?php endforeach;

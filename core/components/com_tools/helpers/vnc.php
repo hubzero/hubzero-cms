@@ -78,10 +78,10 @@ class Vnc
 
 		if (is_string($data))
 		{
-			$data = array_values(unpack('C*',$data));
+			$data = array_values(unpack('C*', $data));
 		}
 
-		$result = self::crypt($data, $vnckey, False);
+		$result = self::crypt($data, $vnckey, false);
 
 		if (!$return_string)
 		{
@@ -99,10 +99,10 @@ class Vnc
 
 		if (is_string($data))
 		{
-			$data = array_values(unpack('C*',$data));
+			$data = array_values(unpack('C*', $data));
 		}
 
-		$result = self::crypt($data, $vnckey, True);
+		$result = self::crypt($data, $vnckey, true);
 
 		if (!$return_string)
 		{
@@ -329,9 +329,9 @@ class Vnc
 			int edf;
 		*/
 
-		$pc1m = array_pad(array(),56,0);
-		$pcr = array_pad(array(),56,0);
-		$kn = array_pad(array(),32,0);
+		$pc1m = array_pad(array(), 56, 0);
+		$pcr = array_pad(array(), 56, 0);
+		$kn = array_pad(array(), 32, 0);
 
 		for ($j =0; $j < 56; $j++)
 		{
@@ -549,12 +549,12 @@ class Vnc
 
 function genrandpassword()
 {
-	$len = mt_rand(0,8);
+	$len = mt_rand(0, 8);
 	$password = ''; // "\0\0\0\0\0\0\0\0";
 
 	for ($i=0; $i<$len; $i++)
 	{
-		$c = mt_rand(32,255);
+		$c = mt_rand(32, 255);
 
 		if ($c == ord("'"))
 		{

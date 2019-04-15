@@ -63,4 +63,4 @@ defined('_HZEXEC_') or die();
 		</form>
 <?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
+<?php } 

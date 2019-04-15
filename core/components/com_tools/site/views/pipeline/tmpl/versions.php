@@ -49,10 +49,10 @@ $this->css('pipeline.css')
 
 <section class="main section">
 	<?php
-	($this->status['published'] != 1 && !$this->status['version']) ?  $hint = '1.0' :$hint = '' ; // if tool is under dev and no version was specified before
+	($this->status['published'] != 1 && !$this->status['version']) ?  $hint = '1.0' :$hint = ''; // if tool is under dev and no version was specified before
 	$statuspath = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']);
 
-	$newstate = ($this->action == 'edit') ? $this->status['state']: \Components\Tools\Helpers\Html::getStatusNum('Approved') ;
+	$newstate = ($this->action == 'edit') ? $this->status['state']: \Components\Tools\Helpers\Html::getStatusNum('Approved');
 	$submitlabel = ($this->action == 'edit') ? Lang::txt('COM_TOOLS_SAVE') : Lang::txt('COM_TOOLS_USE_THIS_VERSION');
 	if ($this->action == 'confirm')
 	{
@@ -116,7 +116,7 @@ $this->css('pipeline.css')
 						// get wiki access text
 						$wikiaccess = \Components\Tools\Helpers\Html::getWikiAccess($t->wikiaccess);
 
-						$handle = (isset($t->doi) && $t->doi) ? $hubDOIpath.'r'.$this->status['resourceid'].'.'.$t->doi : '' ;
+						$handle = (isset($t->doi) && $t->doi) ? $hubDOIpath.'r'.$this->status['resourceid'].'.'.$t->doi : '';
 
 						$t->version = ($t->state==3 && $t->version==$this->status['currentversion']) ? Lang::txt('COM_TOOLS_NO_LABEL') : $t->version;
 				?>
@@ -135,10 +135,11 @@ $this->css('pipeline.css')
 							<?php } ?>
 						</td>
 						<td>
-							<?php if ($t->state!=3 or ($t->state==3 && $t->revision != $this->status['currentrevision'])) { echo $t->revision; } else { echo '-'; } ?>
+							<?php if ($t->state!=3 or ($t->state==3 && $t->revision != $this->status['currentrevision'])) { echo $t->revision;
+} else { echo '-'; } ?>
 						</td>
 						<td>
-							<span class="<?php echo ($t->state=='1' ? 'toolpublished' : 'toolunpublished'); ?>"></span>
+							<span class="<?php echo $t->state=='1' ? 'toolpublished' : 'toolunpublished'; ?>"></span>
 						</td>
 						<td>
 							<?php if ($t->state == 1 && $this->admin) { ?>
@@ -173,7 +174,7 @@ $this->css('pipeline.css')
 		</table>
 	<?php
 	} else { // no versions found
-		echo (Lang::txt('COM_TOOLS_CONTRIBTOOL_NO_VERSIONS').' '.$this->status['toolname']. '. '.ucfirst(Lang::txt('COM_TOOLS_GO_BACK_TO')).' <a href="'.$statuspath.'">'.strtolower(Lang::txt('COM_TOOLS_TOOL_STATUS')).'</a>.');
+		echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NO_VERSIONS').' '.$this->status['toolname']. '. '.ucfirst(Lang::txt('COM_TOOLS_GO_BACK_TO')).' <a href="'.$statuspath.'">'.strtolower(Lang::txt('COM_TOOLS_TOOL_STATUS')).'</a>.';
 	}
 	?>
 		</div>

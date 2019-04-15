@@ -37,11 +37,11 @@ $this->css()
 ?>
 
 <header id="content-header">
-	<h2><?php echo  Lang::txt('COM_STOREFRONT'); ?> homepage</h2>
+	<h2><?php echo Lang::txt('COM_STOREFRONT'); ?> homepage</h2>
 
 	<div id="content-header-extra">
 		<p>
-			<a class="btn" href="/cart"><?php echo  Lang::txt('COM_STOREFRONT_CART'); ?></a>
+			<a class="btn" href="/cart"><?php echo Lang::txt('COM_STOREFRONT_CART'); ?></a>
 		</p>
 	</div>
 </header>
@@ -60,7 +60,7 @@ $this->css()
 
 		<?php
 
-		if (sizeof($this->categories))
+		if (count($this->categories))
 		{
 			//echo '<h3>Product categories</h3>';
 

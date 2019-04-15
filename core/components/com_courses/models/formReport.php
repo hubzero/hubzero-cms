@@ -57,7 +57,7 @@ class FormReport extends Model
 	 * @param  int    - limit to only a certain section
 	 * @return array
 	 **/
-	public static function getLetterResponsesForAssetId($db, $asset_id, $include_headers=true, $section_id=NULL)
+	public static function getLetterResponsesForAssetId($db, $asset_id, $include_headers=true, $section_id=null)
 	{
 		// Is it a number?
 		if (!is_numeric($asset_id))
@@ -111,7 +111,7 @@ class FormReport extends Model
 
 				if ($ans && count($ans) > 0)
 				{
-					$letter = NULL;
+					$letter = null;
 
 					foreach ($ans as $a)
 					{
@@ -211,7 +211,7 @@ class FormReport extends Model
 	 * @param  int   - section id
 	 * @return array - counts of letter responses
 	 **/
-	public static function getLetterResponseCountsForAssetId($db, $asset_id, $section_id=NULL)
+	public static function getLetterResponseCountsForAssetId($db, $asset_id, $section_id=null)
 	{
 		if (!is_numeric($asset_id))
 		{
@@ -265,7 +265,7 @@ class FormReport extends Model
 
 				if ($ans && count($ans) > 0)
 				{
-					$letter = NULL;
+					$letter = null;
 
 					foreach ($ans as $a)
 					{
@@ -299,7 +299,7 @@ class FormReport extends Model
 				// We only want data for students, so check that first
 				$query  = "SELECT `student`, `section_id` FROM `#__courses_members` AS cm, ";
 				$query .= "`#__courses_form_respondents` AS cfr WHERE cm.id = cfr.member_id ";
-				$query .= "AND cfr.id = " . $db->quote($response->respondent_id);;
+				$query .= "AND cfr.id = " . $db->quote($response->respondent_id);
 				$db->setQuery($query);
 				if (!$student = $db->loadObject())
 				{

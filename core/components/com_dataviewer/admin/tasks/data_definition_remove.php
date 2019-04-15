@@ -38,4 +38,3 @@ function dv_data_definition_remove()
 	header("Location: $url");
 	exit();
 }
-?>

@@ -182,4 +182,3 @@ class Group extends Base
 		return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
 	}
 }
-

@@ -32,4 +32,4 @@
 defined('_HZEXEC_') or die('Restricted access');
 ?>
 
-<?php echo $this->message; ?>
+<?php echo $this->message; 

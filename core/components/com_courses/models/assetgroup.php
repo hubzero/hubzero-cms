@@ -88,7 +88,7 @@ class Assetgroup extends Base
 	 *
 	 * @var object
 	 */
-	private $_parent = NULL;
+	private $_parent = null;
 
 	/**
 	 * Container for properties
@@ -123,7 +123,7 @@ class Assetgroup extends Base
 	 * @param   string $property The name of the property
 	 * @param   mixed  $default  The default value
 	 * @return  mixed  The value of the property
- 	 */
+  */
 	public function params($key, $default=null)
 	{
 		if (!($this->_params instanceof Registry))
@@ -139,7 +139,7 @@ class Assetgroup extends Base
 	 * @param   string $property The name of the property
 	 * @param   mixed  $default  The default value
 	 * @return  mixed  The value of the property
- 	 */
+  */
 	public function get($property, $default=null)
 	{
 		if (isset($this->_tbl->$property))
@@ -572,4 +572,3 @@ class Assetgroup extends Base
 		return true;
 	}
 }
-

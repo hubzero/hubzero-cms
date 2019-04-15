@@ -69,5 +69,4 @@ if ($canDo->get('core.edit'))
 			echo '</p>';
 		}
 	}
-?>
 

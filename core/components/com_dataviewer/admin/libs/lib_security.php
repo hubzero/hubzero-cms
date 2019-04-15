@@ -18,4 +18,3 @@ function check_rid()
 
 	exit;
 }
-?>

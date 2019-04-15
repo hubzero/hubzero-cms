@@ -39,10 +39,10 @@ use stdClass;
 class Date extends Base
 {
 	/**
-	* Element name
-	*
-	* @var		string
-	*/
+  * Element name
+  *
+  * @var		string
+  */
 	protected	$_name = 'Date';
 
 	/**
@@ -223,19 +223,45 @@ class Date extends Base
 	{
 		switch ($month)
 		{
-			case 1: $monthname = Lang::txt('January');   break;
-			case 2: $monthname = Lang::txt('February');  break;
-			case 3: $monthname = Lang::txt('March');     break;
-			case 4: $monthname = Lang::txt('April');     break;
-			case 5: $monthname = Lang::txt('May');       break;
-			case 6: $monthname = Lang::txt('June');      break;
-			case 7: $monthname = Lang::txt('July');      break;
-			case 8: $monthname = Lang::txt('August');    break;
-			case 9: $monthname = Lang::txt('September'); break;
-			case 10: $monthname = Lang::txt('October');   break;
-			case 11: $monthname = Lang::txt('November');  break;
-			case 12: $monthname = Lang::txt('December');  break;
-			default: $monthname = $month; break;
+			case 1:
+				$monthname = Lang::txt('January');
+				break;
+			case 2:
+				$monthname = Lang::txt('February');
+				break;
+			case 3:
+				$monthname = Lang::txt('March');
+				break;
+			case 4:
+				$monthname = Lang::txt('April');
+				break;
+			case 5:
+				$monthname = Lang::txt('May');
+				break;
+			case 6:
+				$monthname = Lang::txt('June');
+				break;
+			case 7:
+				$monthname = Lang::txt('July');
+				break;
+			case 8:
+				$monthname = Lang::txt('August');
+				break;
+			case 9:
+				$monthname = Lang::txt('September');
+				break;
+			case 10:
+				$monthname = Lang::txt('October');
+				break;
+			case 11:
+				$monthname = Lang::txt('November');
+				break;
+			case 12:
+				$monthname = Lang::txt('December');
+				break;
+			default:
+				$monthname = $month;
+				break;
 		}
 		return $monthname;
 	}

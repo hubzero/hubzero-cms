@@ -196,9 +196,15 @@ if ($this->page->get('id'))
 							$access = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'overview');
 							switch ($access)
 							{
-								case 'anyone':     $name = Lang::txt('COM_GROUPS_PLUGIN_ANYONE');     break;
-								case 'registered': $name = Lang::txt('COM_GROUPS_PLUGIN_REGISTERED'); break;
-								case 'members':    $name = Lang::txt('COM_GROUPS_PLUGIN_MEMBERS');    break;
+								case 'anyone':
+									$name = Lang::txt('COM_GROUPS_PLUGIN_ANYONE');
+									break;
+								case 'registered':
+									$name = Lang::txt('COM_GROUPS_PLUGIN_REGISTERED');
+									break;
+								case 'members':
+									$name = Lang::txt('COM_GROUPS_PLUGIN_MEMBERS');
+									break;
 							}
 						?>
 						<select name="page[privacy]" class="fancy-select">
@@ -317,7 +323,7 @@ if ($this->page->get('id'))
 		<input type="hidden" name="page[id]" value="<?php echo $id; ?>" />
 		<input type="hidden" name="option" value="com_groups" />
 		<input type="hidden" name="controller" value="pages" />
-		<input type="hidden" name="return" value="<?php echo $this->escape(Request::getString('return', '','get')); ?>" />
+		<input type="hidden" name="return" value="<?php echo $this->escape(Request::getString('return', '', 'get')); ?>" />
 		<input type="hidden" name="task" value="save" />
 	</form>
 </section>

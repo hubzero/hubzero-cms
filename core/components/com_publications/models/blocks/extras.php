@@ -39,31 +39,31 @@ use stdClass;
 class Extras extends Base
 {
 	/**
-	* Block name
-	*
-	* @var		string
-	*/
+  * Block name
+  *
+  * @var		string
+  */
 	protected	$_name 			= 'extras';
 
 	/**
-	* Parent block name
-	*
-	* @var		string
-	*/
+  * Parent block name
+  *
+  * @var		string
+  */
 	protected	$_parentname 	= 'content';
 
 	/**
-	* Default manifest
-	*
-	* @var		string
-	*/
-	protected	$_manifest 		= NULL;
+  * Default manifest
+  *
+  * @var		string
+  */
+	protected	$_manifest 		= null;
 
 	/**
-	* Numeric block ID
-	*
-	* @var		integer
-	*/
+  * Numeric block ID
+  *
+  * @var		integer
+  */
 	protected	$_blockId 		= 0;
 
 	/**
@@ -107,7 +107,7 @@ class Extras extends Base
 								'allowed_ext' 		=> array('gif', 'jpg', 'jpeg', 'png', 'bmp'),
 								'required_ext'  	=> array(),
 								'handler'			=> 'imageviewer',
-								'handlers'			=> NULL,
+								'handlers'			=> null,
 								'directory'			=> 'gallery',
 								'reuse' 			=> 1,
 								'dirHierarchy' 		=> 0,
@@ -132,8 +132,8 @@ class Extras extends Base
 							'typeParams'	=> array(
 								'allowed_ext' 		=> array(),
 								'required_ext'  	=> array(),
-								'handler'			=> NULL,
-								'handlers'			=> NULL,
+								'handler'			=> null,
+								'handlers'			=> null,
 								'directory'			=> '',
 								'reuse' 			=> 1,
 								'dirHierarchy' 		=> 1,
@@ -150,7 +150,7 @@ class Extras extends Base
 				)
 			);
 
-			return json_decode(json_encode($manifest), FALSE);
+			return json_decode(json_encode($manifest), false);
 		}
 
 		return $manifest;

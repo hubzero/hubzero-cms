@@ -111,4 +111,3 @@ class Manager extends Member
 		return $instances[$oid . '_' . $uid];
 	}
 }
-

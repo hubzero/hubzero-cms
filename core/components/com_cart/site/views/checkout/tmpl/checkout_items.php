@@ -164,4 +164,3 @@ defined('_HZEXEC_') or die('Restricted access');
 		echo '</table>';
 
 	}
-?>

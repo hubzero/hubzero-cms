@@ -128,7 +128,7 @@ $this->css('introduction.css', 'system')
 				</div><!-- / .col span3 -->
 			<?php } ?>
 			<?php if (Component::isEnabled('com_wiki')) { $i++; ?>
-				<div class="col span3<?php echo($i == 3 ? ' omega' : ''); ?>">
+				<div class="col span3<?php echo $i == 3 ? ' omega' : ''; ?>">
 					<div class="wiki">
 						<h3><a class="com-wiki" href="<?php echo Route::url('index.php?option=com_wiki'); ?>">Wiki</a></h3>
 						<p>Take a look at our user-generated <a class="com-wiki" href="<?php echo Route::url('index.php?option=com_wiki'); ?>">wiki pages</a> or write your own.</p>
@@ -159,7 +159,7 @@ $this->css('introduction.css', 'system')
 				<p><a class="ticket-report" href="<?php echo Route::url('index.php?option=com_support&task=new'); ?>">Report problems</a> with our form and have your problem entered into our <a class="ticket-track" href="<?php echo Route::url('index.php?option=com_support&task=tickets'); ?>">ticket tracking system</a>. We guarantee a response!</p>
 			</div><!-- / .note -->
 		</div><!-- / .col span3 -->
-		<div class="col span3<?php echo($i == 1 ? 'omega' : ''); ?>">
+		<div class="col span3<?php echo $i == 1 ? 'omega' : ''; ?>">
 			<div class="ticket">
 				<h3><a class="ticket-track" href="<?php echo Route::url('index.php?option=com_support&task=tickets'); ?>">Track Tickets</a></h3>
 				<p>Have a problem entered into our <a class="ticket-track" href="<?php echo Route::url('index.php?option=com_support&task=tickets'); ?>">ticket tracking system</a>? Track its progress, add comments and notes, or close resolved issues.</p>

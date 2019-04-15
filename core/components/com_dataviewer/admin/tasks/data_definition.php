@@ -112,4 +112,3 @@ function dv_data_definition()
 	</form>
 <?php
 }
-?>

@@ -69,19 +69,31 @@ $no_html = Request::getInt( 'no_html', 0 );
 						// Determine the join policy
 						switch ($this->group->get('join_policy'))
 						{
-							case 3: $policy = Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_CLOSED_SETTING');	 break;
-							case 2: $policy = Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_INVITE_SETTING');	 break;
-							case 1: $policy = Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING'); break;
+							case 3:
+								$policy = Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_CLOSED_SETTING');
+								break;
+							case 2:
+								$policy = Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_INVITE_SETTING');
+								break;
+							case 1:
+								$policy = Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING');
+								break;
 							case 0:
-							default: $policy = Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_OPEN_SETTING');	  break;
+							default:
+								$policy = Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_OPEN_SETTING');
+								break;
 						}
 
 						// Determine the discoverability
 						switch ($this->group->get('discoverability'))
 						{
-							case 1: $discoverability = Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING');   break;
+							case 1:
+								$discoverability = Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING');
+								break;
 							case 0:
-							default: $discoverability = Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING'); break;
+							default:
+								$discoverability = Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING');
+								break;
 						}
 
 						// use created date
@@ -149,4 +161,4 @@ $no_html = Request::getInt( 'no_html', 0 );
 			<br class="clear" />
 		</div><!-- /#page_container -->
 	</div><!-- /.innerwrap -->
-<?php endif; ?>
+<?php endif; 

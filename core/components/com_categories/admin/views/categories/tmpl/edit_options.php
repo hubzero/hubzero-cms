@@ -59,4 +59,4 @@ defined('_HZEXEC_') or die();
 			</div>
 		<?php endif; ?>
 	</fieldset>
-<?php endforeach; ?>
+<?php endforeach; 

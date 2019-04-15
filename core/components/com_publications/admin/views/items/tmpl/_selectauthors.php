@@ -37,7 +37,7 @@ $html = '';
 $i = 1;
 $option = $this->option;
 
-if ($this->authNames != NULL)
+if ($this->authNames != null)
 {
 	$html = '<ul id="author-list">'."\n";
 	foreach ($this->authNames as $authname)

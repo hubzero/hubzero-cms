@@ -35,8 +35,8 @@ namespace Components\Courses\Models\Assets;
 use Components\Courses\Tables;
 
 /**
-* Content based asset handler (i.e. things like notes, wiki, html, etc...)
-*/
+ * Content based asset handler (i.e. things like notes, wiki, html, etc...)
+ */
 class Content extends Handler
 {
 	/**
@@ -71,17 +71,17 @@ class Content extends Handler
 
 		// Get everything ready to store
 		// Check if vars are already set (i.e. by a sub class), before setting them here
-		$asset->set('title',        ((!empty($this->asset['title']))        ? $this->asset['title']        : strip_tags(substr($content, 0, 25))));
-		$asset->set('type',         ((!empty($this->asset['type']))         ? $this->asset['type']         : 'text'));
-		$asset->set('subtype',      ((!empty($this->asset['subtype']))      ? $this->asset['subtype']      : 'content'));
-		$asset->set('content',      ((!empty($this->asset['content']))      ? $this->asset['content']      : $content));
-		$asset->set('url',          ((!empty($this->asset['url']))          ? $this->asset['url']          : ''));
-		$asset->set('graded',       ((!empty($this->asset['graded']))       ? $this->asset['graded']       : 0));
+		$asset->set('title', ((!empty($this->asset['title']))        ? $this->asset['title']        : strip_tags(substr($content, 0, 25))));
+		$asset->set('type', ((!empty($this->asset['type']))         ? $this->asset['type']         : 'text'));
+		$asset->set('subtype', ((!empty($this->asset['subtype']))      ? $this->asset['subtype']      : 'content'));
+		$asset->set('content', ((!empty($this->asset['content']))      ? $this->asset['content']      : $content));
+		$asset->set('url', ((!empty($this->asset['url']))          ? $this->asset['url']          : ''));
+		$asset->set('graded', ((!empty($this->asset['graded']))       ? $this->asset['graded']       : 0));
 		$asset->set('grade_weight', ((!empty($this->asset['grade_weight'])) ? $this->asset['grade_weight'] : ''));
-		$asset->set('created',      \Date::toSql());
-		$asset->set('created_by',   App::get('authn')['user_id']);
-		$asset->set('course_id',    Request::getInt('course_id', 0));
-		$asset->set('state',        0);
+		$asset->set('created', \Date::toSql());
+		$asset->set('created_by', App::get('authn')['user_id']);
+		$asset->set('course_id', Request::getInt('course_id', 0));
+		$asset->set('state', 0);
 
 		// Check whether asset should be graded
 		if ($graded = Request::getInt('graded', false))
@@ -171,8 +171,8 @@ class Content extends Handler
 
 		// Get everything ready to store
 		// Check if vars are already set (i.e. by a sub class), before setting them here
-		$asset->set('title',   ((!empty($this->asset['title']))   ? $this->asset['title']   : strip_tags(substr($content, 0, 25))));
-		$asset->set('type',    ((!empty($this->asset['type']))    ? $this->asset['type']    : 'text'));
+		$asset->set('title', ((!empty($this->asset['title']))   ? $this->asset['title']   : strip_tags(substr($content, 0, 25))));
+		$asset->set('type', ((!empty($this->asset['type']))    ? $this->asset['type']    : 'text'));
 		$asset->set('subtype', ((!empty($this->asset['subtype'])) ? $this->asset['subtype'] : 'content'));
 		$asset->set('content', ((!empty($this->asset['content'])) ? $this->asset['content'] : $content));
 

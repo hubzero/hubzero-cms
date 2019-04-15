@@ -73,7 +73,7 @@ $this->css()
 
 			<label>
 				<?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_DESCRIPTION'); ?>:
-				<?php echo App::get('editor')->display('econtent', $this->row->content, '', '', 10, 15, false , 'econtent' , null, null, array('class' => 'minimal no-footer')); ?>
+				<?php echo App::get('editor')->display('econtent', $this->row->content, '', '', 10, 15, false, 'econtent', null, null, array('class' => 'minimal no-footer')); ?>
 			</label>
 
 			<label>
@@ -128,8 +128,8 @@ $this->css()
 					<input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10" value="<?php echo $this->times['start_publish']; ?>" />
 					<input class="option" type="text" name="start_time" id="start_time" size="5" maxlength="6" value="<?php echo $this->times['start_time']; ?>" />
 					<?php if ($this->config->getCfg('calUseStdTime') =='YES') { ?>
-					<input class="option" id="start_pm0" name="start_pm" type="radio"  value="0" <?php if (!$this->times['start_pm']) echo 'checked="checked"'; ?> /><small>AM</small>
-					<input class="option" id="start_pm1" name="start_pm" type="radio"  value="1" <?php if ($this->times['start_pm']) echo 'checked="checked"'; ?> /><small>PM</small>
+					<input class="option" id="start_pm0" name="start_pm" type="radio"  value="0" <?php if (!$this->times['start_pm']) { echo 'checked="checked"';} ?> /><small>AM</small>
+					<input class="option" id="start_pm1" name="start_pm" type="radio"  value="1" <?php if ($this->times['start_pm']) { echo 'checked="checked"';} ?> /><small>PM</small>
 					<?php } ?>
 				</p>
 
@@ -140,8 +140,8 @@ $this->css()
 					<input class="option" type="text" name="publish_down" id="publish_down" size="10" maxlength="10" value="<?php echo $this->times['stop_publish']; ?>" />
 					<input class="option" type="text" name="end_time" id="end_time" size="5" maxlength="6" value="<?php echo $this->times['end_time']; ?>" />
 					<?php if ($this->config->getCfg('calUseStdTime') =='YES') { ?>
-					<input class="option" id="end_pm0" name="end_pm" type="radio"  value="0" <?php if (!$this->times['end_pm']) echo 'checked="checked"'; ?> /><small>AM</small>
-					<input class="option" id="end_pm1" name="end_pm" type="radio"  value="1" <?php if ($this->times['end_pm']) echo 'checked="checked"'; ?> /><small>PM</small>
+					<input class="option" id="end_pm0" name="end_pm" type="radio"  value="0" <?php if (!$this->times['end_pm']) { echo 'checked="checked"';} ?> /><small>AM</small>
+					<input class="option" id="end_pm1" name="end_pm" type="radio"  value="1" <?php if ($this->times['end_pm']) { echo 'checked="checked"';} ?> /><small>PM</small>
 					<?php } ?>
 				</p>
 

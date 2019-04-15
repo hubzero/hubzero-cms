@@ -35,4 +35,3 @@ defined('_HZEXEC_') or die();
 
 //output content
 echo $this->content;
-?>

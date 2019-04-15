@@ -36,8 +36,8 @@ use Component;
 use Request;
 
 /**
-* Wiki page asset handler class
-*/
+ * Wiki page asset handler class
+ */
 class Wiki extends Content
 {
 	/**

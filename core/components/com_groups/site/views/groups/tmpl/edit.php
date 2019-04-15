@@ -329,7 +329,7 @@ else
 		<?php echo Html::input('token'); ?>
 
 		<input type="hidden" name="published" value="<?php echo $this->group->get('published'); ?>" />
-        <input type="hidden" name="gidNumber" value="<?php echo ($this->group->get('gidNumber') != '' ? $this->group->get('gidNumber') : 0); ?>" />
+        <input type="hidden" name="gidNumber" value="<?php echo $this->group->get('gidNumber') != '' ? $this->group->get('gidNumber') : 0; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="task" value="save" />
 	</form>

@@ -173,6 +173,3 @@ function authorize($dd)
 
 	return false;
 }
-
-
-?>

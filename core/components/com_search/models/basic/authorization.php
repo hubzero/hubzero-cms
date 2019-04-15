@@ -42,7 +42,7 @@ class Authorization
 	 *
 	 * @var string
 	 */
-	private $uid = NULL, $super_admin = false, $groups = NULL;
+	private $uid = null, $super_admin = false, $groups = null;
 
 	/**
 	 * Constructor
@@ -136,4 +136,3 @@ class Authorization
 		return array_values($this->get_groups());
 	}
 }
-

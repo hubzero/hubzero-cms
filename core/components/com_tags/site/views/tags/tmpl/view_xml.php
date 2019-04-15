@@ -120,7 +120,7 @@ foreach ($this->results as $category)
 			{
 				$row->href = Route::url($row->href);
 			}
-			if (substr($row->href,0,1) == '/')
+			if (substr($row->href, 0, 1) == '/')
 			{
 				$row->href = substr($row->href, 1, strlen($row->href));
 			}

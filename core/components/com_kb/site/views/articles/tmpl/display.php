@@ -148,8 +148,12 @@ Document::setTitle(Lang::txt('COM_KB'));
 							$i++;
 							switch ($i)
 							{
-								case 1: $cls = ''; break;
-								case 2: $cls = ' omega'; break;
+								case 1:
+									$cls = '';
+									break;
+								case 2:
+									$cls = ' omega';
+									break;
 							}
 							?>
 							<div class="col span-half<?php echo $cls; ?>">

@@ -57,4 +57,4 @@ defined('_HZEXEC_') or die();
 	<?php endforeach; ?>
 	<?php if (!$k) { ?>
 		<p class="warning"><?php echo Lang::txt('No options found for this template.'); ?></p>
-	<?php } ?>
+	<?php } 

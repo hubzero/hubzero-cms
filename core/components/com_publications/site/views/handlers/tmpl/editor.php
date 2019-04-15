@@ -38,7 +38,7 @@ $url = Route::url($this->publication->link('edit'));
 	<?php
 	// Display error  message
 	if ($this->getError()) {
-		echo ('<p class="error">' . $this->getError() . '</p>');
+		echo '<p class="error">' . $this->getError() . '</p>';
 	} else { // No error
 	?>
 	<form id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>" method="post" action="<?php echo $url; ?>">

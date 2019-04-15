@@ -92,11 +92,11 @@ class AssocList extends Assoc implements Iterator
 	 * @param      unknown $plugin Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function __construct($rows, $plugin = NULL)
+	public function __construct($rows, $plugin = null)
 	{
 		$this->rows = is_array($rows) ? $rows : array($rows);
 		$scale = 1;
-		foreach ($this->rows as $idx=>&$row)
+		foreach ($this->rows as $idx => &$row)
 		{
 			if (!($row instanceof SearchResult))
 			{

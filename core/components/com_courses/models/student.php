@@ -124,4 +124,3 @@ class Student extends Member
 		return true;
 	}
 }
-

@@ -47,4 +47,4 @@ $content = ($content ?: $item->description('parsed'));
 		<div class="description">
 			<?php echo $content; ?>
 		</div>
-<?php } ?>
+<?php } 

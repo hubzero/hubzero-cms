@@ -54,4 +54,3 @@ function dv_auth()
 
 	return false;
 }
-?>

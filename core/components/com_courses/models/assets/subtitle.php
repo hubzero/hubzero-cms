@@ -182,8 +182,8 @@ class Subtitle extends Handler
 
 		// create subtitle details based on filename
 		$info      = pathinfo($file);
-		$name      = str_replace('-auto','', $info['filename']);
-		$autoplay  = (strstr($info['filename'],'-auto')) ? 1 : 0;
+		$name      = str_replace('-auto', '', $info['filename']);
+		$autoplay  = (strstr($info['filename'], '-auto')) ? 1 : 0;
 		$source    = $file;
 
 		// use only the last segment from name (ex. ThisIsATest.English => English)
@@ -217,7 +217,7 @@ class Subtitle extends Handler
 		}
 
 		// trim transcript and replace add slide markers
-		$transcript = str_replace(array("\r\n", "\n"),array('',''), $transcript);
+		$transcript = str_replace(array("\r\n", "\n"), array('',''), $transcript);
 		$transcript = preg_replace("/\\[([^\\]]*)\\]/ux", "\n\n[$1]", $transcript);
 
 		// add title to transcript
@@ -310,9 +310,9 @@ class Subtitle extends Handler
 	private function _parseSubtitleFile($file)
 	{
 		define('SRT_STATE_SUBNUMBER', 0);
-		define('SRT_STATE_TIME',      1);
-		define('SRT_STATE_TEXT',      2);
-		define('SRT_STATE_BLANK',     3);
+		define('SRT_STATE_TIME', 1);
+		define('SRT_STATE_TEXT', 2);
+		define('SRT_STATE_BLANK', 3);
 
 		$lines   = file($file);
 		$subs    = array();

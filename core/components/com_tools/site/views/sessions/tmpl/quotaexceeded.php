@@ -39,7 +39,8 @@ $this->css('tools.css');
 	<h2><?php echo Lang::txt('COM_TOOLS_QUOTAEXCEEDED'); ?></h2>
 </header><!-- / #content-header -->
 
-<section class="main section<?php if (!$this->config->get('access-manage-session') && $this->active == 'all') { echo ' hide'; } else { echo ''; }?>" id="mysessions-section">
+<section class="main section<?php if (!$this->config->get('access-manage-session') && $this->active == 'all') { echo ' hide';
+} else { echo ''; }?>" id="mysessions-section">
 	<p class="warning"><?php echo Lang::txt('COM_TOOLS_ERROR_QUOTAEXCEEDED'); ?></p>
 	<table class="sessions">
 		<thead>

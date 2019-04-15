@@ -37,11 +37,11 @@ $this->css()
 ?>
 
 <header id="content-header">
-	<h2><?php echo  Lang::txt('COM_STOREFRONT'); ?> search</h2>
+	<h2><?php echo Lang::txt('COM_STOREFRONT'); ?> search</h2>
 
 	<div id="content-header-extra">
 		<p>
-			<a class="btn" href="/cart"><?php echo  Lang::txt('COM_STOREFRONT_CART'); ?></a>
+			<a class="btn" href="/cart"><?php echo Lang::txt('COM_STOREFRONT_CART'); ?></a>
 		</p>
 	</div>
 </header>

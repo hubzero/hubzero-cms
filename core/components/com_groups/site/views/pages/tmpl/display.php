@@ -61,4 +61,3 @@ defined('_HZEXEC_') or die();
 		 ->set('group', $this->group)
 		 ->set('config', $this->config)
 		 ->display();
-?>

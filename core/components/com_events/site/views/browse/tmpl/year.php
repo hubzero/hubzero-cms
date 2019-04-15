@@ -90,7 +90,7 @@ $this->css()
 				<?php
 				if ($this->categories)
 				{
-					foreach ($this->categories as $id=>$title)
+					foreach ($this->categories as $id => $title)
 					{
 					?>
 						<option value="<?php echo $id; ?>"<?php if ($this->category == $id) { echo ' selected="selected"'; } ?>><?php echo stripslashes($title); ?></option>

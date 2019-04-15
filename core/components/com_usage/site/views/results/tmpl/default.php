@@ -88,4 +88,3 @@ if ($this->sections) {
 		$k++;
 	}
 }
-?>

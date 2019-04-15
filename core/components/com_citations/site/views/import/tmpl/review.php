@@ -123,9 +123,8 @@ $no_show = array("errors","duplicate");
 													if (!empty($recordAttributes[$attribute]) || !empty($value))
 													{
 														$changedKeys[] = $attribute;
-													} 
+													}
 												}
-													
 											?>
 											<?php foreach ($changedKeys as $k) : ?>
 												<?php if (!in_array($k, $no_show)) : ?>
@@ -148,9 +147,12 @@ $no_show = array("errors","duplicate");
 																			<?php
 																				switch ($k)
 																				{
-																					case 'type':	echo $type_title;		break;
-																					case 'tags':	echo $tags;				break;
-																					case 'badges':	echo $badges;			break;
+																					case 'type':	echo $type_title;
+break;
+																					case 'tags':	echo $tags;
+break;
+																					case 'badges':	echo $badges;
+break;
 																					default:		echo html_entity_decode(nl2br($c['duplicate']->get($k)));
 																				}
 																			?>

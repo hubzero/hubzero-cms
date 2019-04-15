@@ -69,7 +69,7 @@ $html = '';
 	}
 
 	$type = '';
-	$arr  = explode('.',$url);
+	$arr  = explode('.', $url);
 	$type = end($arr);
 	$type = (strlen($type) > 4) ? 'html' : $type;
 	$type = (strlen($type) > 3) ? substr($type, 0, 3) : $type;

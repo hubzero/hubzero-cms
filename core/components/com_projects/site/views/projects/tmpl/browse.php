@@ -126,7 +126,7 @@ $total = $this->model->entries('count', $this->filters);
 					$this->filters['limit']
 				);
 				$pagenavhtml = $pageNav->render();
-				$pagenavhtml = str_replace('projects/?','projects/browse/?', $pagenavhtml);
+				$pagenavhtml = str_replace('projects/?', 'projects/browse/?', $pagenavhtml);
 				?>
 				<?php echo $pagenavhtml; ?>
 				<?php if (!empty($this->filters['reviewer'])): ?>
