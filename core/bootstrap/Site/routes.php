@@ -538,7 +538,7 @@ $router->rules('parse')->append('content', function ($uri)
 	}
 	// Count 1 - we're either looking for an article alias that matches and is in the uncategorised category,
 	// or, an article alias and category series that are all the same (ex: about/about/about - supported for legacy reasons)
-	else if ($count == 1)
+	elseif ($count == 1)
 	{
 		// First, do query
 		$query  = "SELECT con.`id`, cat.`alias`, cat.`path` FROM `#__content` AS con";
@@ -592,7 +592,7 @@ $router->rules('parse')->append('content', function ($uri)
 			}
 		}
 	}
-	else if ($count > 1)
+	elseif ($count > 1)
 	{
 		// Build the path
 		$path = array();
