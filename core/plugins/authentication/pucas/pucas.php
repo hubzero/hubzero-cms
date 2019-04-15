@@ -286,6 +286,20 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 
 			$hzal->update();
 
+			// Save extra data
+			if ($this->params->get('profile_i2a2'))
+			{
+				$val = phpCAS::getAttribute('i2a2characteristics');
+
+				$datum = Hubzero\Auth\Link\Data::oneByLinkAndKey($hzal->id, 'i2a2');
+				$datum->set(array(
+					'link_id'      => $hzal->id,
+					'domain_key'   => 'i2a2',
+					'domain_value' => (string)$val
+				));
+				$datum->save();
+			}
+
 			// If we have a real user, drop the authenticator cookie
 			if (isset($user) && is_object($user))
 			{
