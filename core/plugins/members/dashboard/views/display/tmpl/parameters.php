@@ -85,7 +85,7 @@ if ($count < 1 || $this->admin)
 
 		<div class="form-controls">
 			<button class="btn btn-success save" type="submit"><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_MODULE_SETTINGS_SAVE'); ?></button>
-			<button class="btn cancel" type="button"><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_MODULE_SETTINGS_CANCEL'); ?></button>
+			<button class="btn cancel" type="button"><?php echo Lang::txt('JCANCEL'); ?></button>
 		</div>
 	</form>
 </div>

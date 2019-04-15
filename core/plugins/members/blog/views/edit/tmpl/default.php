@@ -167,7 +167,7 @@ $this->css('jquery.datepicker.css', 'system')
 
 			<?php if ($this->entry->get('id')) { ?>
 				<a class="btn btn-secondary" href="<?php echo Route::url($this->entry->link()); ?>">
-					<?php echo Lang::txt('PLG_MEMBERS_BLOG_CANCEL'); ?>
+					<?php echo Lang::txt('JCANCEL'); ?>
 				</a>
 			<?php } ?>
 		</p>

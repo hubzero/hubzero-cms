@@ -232,7 +232,7 @@ if (!$this->activity->log->get('anonymous'))
 						<?php if ($edit && $commentable) { ?>
 							<?php if ($this->model->access('content')) { ?>
 								<li>
-									<a class="icon-reply reply tooltips" href="#commentform_<?php echo $this->activity->log->get('id'); ?>" id="addc_<?php echo $this->activity->log->get('id'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?>" data-inactive="<?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?>" data-active="<?php echo Lang::txt('COM_PROJECTS_COMMENT_CANCEL'); ?>"><!--
+									<a class="icon-reply reply tooltips" href="#commentform_<?php echo $this->activity->log->get('id'); ?>" id="addc_<?php echo $this->activity->log->get('id'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?>" data-inactive="<?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?>" data-active="<?php echo Lang::txt('JCANCEL'); ?>"><!--
 										--><?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?><!--
 									--></a>
 								</li>
@@ -240,7 +240,7 @@ if (!$this->activity->log->get('anonymous'))
 						<?php } ?>
 						<?php if ($edit && in_array($class, array('blog', 'quote')) && $this->model->access('manager')) { ?>
 							<li>
-								<a class="icon-edit edit tooltips" data-form="activity-form<?php echo $this->activity->log->get('id'); ?>" data-content="activity-event-content<?php echo $this->activity->log->get('id'); ?>" href="<?php echo Route::url($this->model->link('feed') . '&action=edit&activity=' . $this->activity->log->get('id'));  ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>" data-inactive="<?php echo Lang::txt('JACTION_EDIT'); ?>" data-active="<?php echo Lang::txt('COM_PROJECTS_COMMENT_CANCEL'); ?>"><!--
+								<a class="icon-edit edit tooltips" data-form="activity-form<?php echo $this->activity->log->get('id'); ?>" data-content="activity-event-content<?php echo $this->activity->log->get('id'); ?>" href="<?php echo Route::url($this->model->link('feed') . '&action=edit&activity=' . $this->activity->log->get('id'));  ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>" data-inactive="<?php echo Lang::txt('JACTION_EDIT'); ?>" data-active="<?php echo Lang::txt('JCANCEL'); ?>"><!--
 									--><?php echo Lang::txt('JACTION_EDIT'); ?><!--
 								--></a>
 							</li>

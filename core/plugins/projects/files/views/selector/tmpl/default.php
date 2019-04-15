@@ -177,7 +177,7 @@ if ($this->folders)
 		<span class="abox-controls">
 			<a class="btn btn-success active" id="b-filesave"><?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_SAVE_SELECTION'); ?></a>
 			<?php if ($this->ajax) { ?>
-				<a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_FILES_CANCEL'); ?></a>
+				<a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('JCANCEL'); ?></a>
 			<?php } ?>
 		</span>
 	</h3>

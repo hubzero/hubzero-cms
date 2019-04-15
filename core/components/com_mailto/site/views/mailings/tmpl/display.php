@@ -75,7 +75,7 @@ $data = $this->get('data');
 				<?php echo Lang::txt('COM_MAILTO_SEND'); ?>
 			</button>
 			<button class="button" id="mailto_cancel" class="cancel">
-				<?php echo Lang::txt('COM_MAILTO_CANCEL'); ?>
+				<?php echo Lang::txt('JCANCEL'); ?>
 			</button>
 		</p>
 		<input type="hidden" name="layout" value="<?php echo $this->getLayout(); ?>" />

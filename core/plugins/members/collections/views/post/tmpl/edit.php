@@ -239,7 +239,7 @@ $this->css()
 
 		<?php if ($item->get('id')) { ?>
 			<a class="btn btn-secondary" href="<?php echo Route::url($base . ($item->get('id') ? '&task=' . $this->collection->get('alias') : '')); ?>">
-				<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_CANCEL'); ?>
+				<?php echo Lang::txt('JCANCEL'); ?>
 			</a>
 		<?php } ?>
 	</p>

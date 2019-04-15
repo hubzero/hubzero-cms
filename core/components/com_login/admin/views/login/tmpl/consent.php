@@ -45,7 +45,7 @@ $this->css('userconsent');
 			<input type="hidden" name="return" value="<?php echo base64_encode(Request::current(true)); ?>" />
 			<div class="actions">
 				<button class="btn btn-success" type="submit"><?php echo Lang::txt('COM_LOGIN_USERCONSENT_AGREE'); ?></button>
-				<a class="btn btn-secondary" href="/"><?php echo Lang::txt('COM_LOGIN_USERCONSENT_CANCEL'); ?></a>
+				<a class="btn btn-secondary" href="/"><?php echo Lang::txt('JCANCEL'); ?></a>
 			</div>
 		</form>
 	</div>

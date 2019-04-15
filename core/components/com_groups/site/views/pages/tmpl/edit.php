@@ -218,7 +218,7 @@ if ($this->page->get('id'))
 				</fieldset>
 
 				<div class="form-controls cf">
-					<a href="<?php echo Route::url($return_link); ?>" class="cancel"><?php echo Lang::txt('COM_GROUPS_PAGES_CANCEL'); ?></a>
+					<a href="<?php echo Route::url($return_link); ?>" class="cancel"><?php echo Lang::txt('JCANCEL'); ?></a>
 					<div class="btn-group save">
 						<button type="submit" class="btn btn-info btn-main icon-save"><?php echo Lang::txt('COM_GROUPS_PAGES_SAVE_PAGE'); ?></button>
 						<span class="btn dropdown-toggle btn-info"></span>

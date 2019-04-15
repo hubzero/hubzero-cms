@@ -87,7 +87,7 @@ $this->css('jobs', 'com_jobs');
 					<label>
 						<?php echo Lang::txt('PLG_MEMBERS_RESUME_WEBSITE');?>
 						<span class="selectgroup">
-							<input type="text" class="inputtxt" maxlength="190" name="url" value="<?php echo ($this->js->url ? $this->js->url : $this->member->get('url')); ?>" placeholder="http://" />
+							<input type="text" class="inputtxt" maxlength="190" name="url" value="<?php echo ($this->js->url) ? $this->js->url : $this->member->get('url'); ?>" placeholder="http://" />
 						</span>
 					</label>
 					<label>
@@ -144,7 +144,7 @@ $this->css('jobs', 'com_jobs');
 						<span class="selectgroup">
 							<input type="submit" class="btn" value="<?php echo $this->editpref == 1 ? Lang::txt('PLG_MEMBERS_RESUME_ACTION_SAVE_AND_INCLUDE') : Lang::txt('PLG_MEMBERS_RESUME_ACTION_SAVE'); ?>" />
 							<span>
-								<a href="<?php echo Route::url($this->member->link() . '&active=resume'); ?>" class="btn"><?php echo Lang::txt('PLG_MEMBERS_RESUME_CANCEL'); ?></a>
+								<a href="<?php echo Route::url($this->member->link() . '&active=resume'); ?>" class="btn"><?php echo Lang::txt('JCANCEL'); ?></a>
 							</span>
 						</span>
 					</div>
@@ -268,7 +268,7 @@ $this->css('jobs', 'com_jobs');
 
 			<p>
 				<a class="icon-next btn" href="<?php echo Route::url('index.php?option=com_jobs'); ?>">
-					<?php echo ($this->config->get('industry') ? Lang::txt('PLG_MEMBERS_RESUME_VIEW_JOBS_IN', $this->config->get('industry')) : Lang::txt('PLG_MEMBERS_RESUME_VIEW_JOBS')); ?>
+					<?php echo ($this->config->get('industry')) ? Lang::txt('PLG_MEMBERS_RESUME_VIEW_JOBS_IN', $this->config->get('industry')) : Lang::txt('PLG_MEMBERS_RESUME_VIEW_JOBS'); ?>
 				</a>
 			</p>
 		</div><!-- / .container -->

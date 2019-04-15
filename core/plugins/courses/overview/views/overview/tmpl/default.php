@@ -49,7 +49,7 @@ if ($this->course->access('edit', 'course') && $field == 'description')
 		<p class="submit">
 			<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_COURSES_SAVE'); ?>" />
 			<a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias')); ?>">
-				<?php echo Lang::txt('COM_COURSES_CANCEL'); ?>
+				<?php echo Lang::txt('JCANCEL'); ?>
 			</a>
 		</p>
 

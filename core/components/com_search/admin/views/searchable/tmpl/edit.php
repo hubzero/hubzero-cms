@@ -36,7 +36,7 @@ Toolbar::title(Lang::txt('COM_SEARCH_EDIT_COMPONENT'));
 Toolbar::spacer();
 
 Toolbar::custom('save', 'save', 'save', 'COM_SEARCH_SAVE_FACET', false);
-Toolbar::custom('searchindex', 'cancel', 'cancel', 'COM_SEARCH_CANCEL', false);
+Toolbar::custom('searchindex', 'cancel', 'cancel', 'JCANCEL', false);
 //Toolbar::cancel();
 Toolbar::spacer();
 

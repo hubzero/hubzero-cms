@@ -329,7 +329,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 				<input class="btn btn-success" type="submit" name="submit" value="<?php echo Lang::txt('COM_WISHLIST_SAVE'); ?>" />
 
 				<a class="btn btn-secondary" href="<?php echo Route::url($this->wishlist->link()); ?>">
-					<?php echo Lang::txt('COM_WISHLIST_CANCEL'); ?>
+					<?php echo Lang::txt('JCANCEL'); ?>
 				</a>
 			</p>
 

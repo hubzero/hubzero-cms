@@ -150,11 +150,11 @@ defined('_HZEXEC_') or die();
 			<?php if (!$this->comment->isReported()) { ?>
 				<?php if ($this->depth < $this->wish->config()->get('comments_depth', 3)) { ?>
 					<?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
-					<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('COM_WISHLIST_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_WISHLIST_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
-					--><?php echo Lang::txt('COM_WISHLIST_CANCEL'); ?><!--
+					<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_WISHLIST_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo Lang::txt('JCANCEL'); ?><!--
 				--></a>
 					<?php } else { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('COM_WISHLIST_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_WISHLIST_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_WISHLIST_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
 					--><?php echo Lang::txt('COM_WISHLIST_REPLY'); ?><!--
 				--></a>
 					<?php } ?>

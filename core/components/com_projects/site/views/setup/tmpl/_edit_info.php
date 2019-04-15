@@ -133,7 +133,7 @@ if ($this->config->get('grantinfo', 0))
 	<input type="submit" class="btn" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_CHANGES'); ?>" />
 	<span>
 		<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=info'); ?>" class="btn btn-cancel">
-			<?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?>
+			<?php echo Lang::txt(JCANCEL); ?>
 		</a>
 	</span>
 </p>

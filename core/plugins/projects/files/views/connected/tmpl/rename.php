@@ -57,7 +57,7 @@ $lang  = $this->item->isDir() ? 'folder' : 'file';
 					<input type="text" name="newname" maxlength="250" value="<?php echo $this->item->getFilename(); ?>" />
 				</label>
 				<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_SAVE'); ?>" />
-				<input type="reset" class="btn btn-cancel" id="cancel-action" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_CANCEL'); ?>" />
+				<input type="reset" class="btn btn-cancel" id="cancel-action" value="<?php echo Lang::txt('JCANCEL'); ?>" />
 			</fieldset>
 		</form>
 	<?php endif; ?>

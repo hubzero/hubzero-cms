@@ -167,7 +167,7 @@ foreach ($menus as $menu)
 					</label>
 				</fieldset>
 				<div class="form-controls cf">
-					<a href="<?php echo $base_link; ?>" class="cancel"><?php echo Lang::txt('COM_GROUPS_PAGES_CANCEL'); ?></a>
+					<a href="<?php echo $base_link; ?>" class="cancel"><?php echo Lang::txt('JCANCEL'); ?></a>
 					<button type="submit" class="btn btn-info opposite save icon-save"><?php echo Lang::txt('COM_GROUPS_PAGES_SAVE_MODULE'); ?></button>
 				</div>
 

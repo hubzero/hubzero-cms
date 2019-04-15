@@ -50,7 +50,7 @@ $this->css();
 				<p class="submit">
 					<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_RESOURCES_WINDOWSTOOLS_SAVE'); ?>" />
 					<a class="btn btn-secondary" href="<?php echo Route::url($this->base); ?>">
-						<?php echo Lang::txt('PLG_RESOURCES_WINDOWSTOOLS_CANCEL'); ?>
+						<?php echo Lang::txt('JCANCEL'); ?>
 					</a>
 				</p>
 			</fieldset>

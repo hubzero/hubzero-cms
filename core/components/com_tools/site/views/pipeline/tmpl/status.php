@@ -209,7 +209,7 @@ $this->css('pipeline.css')
 									<?php } ?>
 									<li class="message"><a href="javascript:void(0);" title="<?php echo Lang::txt('COM_TOOLS_SEND_MESSAGE').' '.Lang::txt('COM_TOOLS_TO');?> <?php echo ($this->config->get('access-admin-component')) ? strtolower(Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM')) : Lang::txt('COM_TOOLS_SITE_ADMIN'); ?>" class="showmsg"><?php echo Lang::txt('COM_TOOLS_MESSAGE');?></a></li>
 									<?php if ($this->status['published']!=1 && \Components\Tools\Helpers\Html::toolActive($this->status['state'])) {  // show cancel option only for tools under development ?>
-										<li class="canceltool"><a href="javascript:void(0);" title="<?php echo Lang::txt('COM_TOOLS_CANCEL_TIPS');?>" class="showcancel"><?php echo Lang::txt('COM_TOOLS_CANCEL');?></a></li>
+										<li class="canceltool"><a href="javascript:void(0);" title="<?php echo Lang::txt('COM_TOOLS_CANCEL_TIPS');?>" class="showcancel"><?php echo Lang::txt('JCANCEL');?></a></li>
 		 							<?php } ?>
 								</ul>
 								<div id="ctCancel">

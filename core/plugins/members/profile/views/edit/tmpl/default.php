@@ -47,7 +47,7 @@ if ($this->isUser) : ?>
 					</div>
 
 					<input type="submit" class="section-edit-submit btn" value="<?php echo Lang::txt('PLG_MEMBERS_PROFILE_SAVE'); ?>" />
-					<input type="reset" class="section-edit-cancel btn" value="<?php echo Lang::txt('PLG_MEMBERS_PROFILE_CANCEL'); ?>" />
+					<input type="reset" class="section-edit-cancel btn" value="<?php echo Lang::txt('JCANCEL'); ?>" />
 					<input type="hidden" name="field_to_check[]" value="<?php echo $this->registration_field; ?>" />
 					<input type="hidden" name="option" value="com_members" />
 					<input type="hidden" name="controller" value="profiles" />
@@ -59,4 +59,4 @@ if ($this->isUser) : ?>
 			</div>
 		<?php endif; ?>
 	</div>
-<?php endif;?>
+<?php endif;

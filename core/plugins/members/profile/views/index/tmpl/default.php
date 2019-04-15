@@ -414,7 +414,7 @@ $legacy = array(
 									</div>
 									<input type="hidden" name="change" value="1" />
 									<input type="submit" class="section-edit-submit btn" value="<?php echo Lang::txt('PLG_MEMBERS_PROFILE_SAVE'); ?>" />
-									<input type="reset" class="section-edit-cancel btn" value="<?php echo Lang::txt('PLG_MEMBERS_PROFILE_CANCEL'); ?>" />
+									<input type="reset" class="section-edit-cancel btn" value="<?php echo Lang::txt('JCANCEL'); ?>" />
 									<input type="hidden" name="option" value="com_members" />
 									<input type="hidden" name="controller" value="profiles" />
 									<input type="hidden" name="id" value="<?php echo $this->profile->get('id'); ?>" />
