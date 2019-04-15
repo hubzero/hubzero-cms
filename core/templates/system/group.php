@@ -33,10 +33,10 @@
 defined('_HZEXEC_') or die();
 
 // get needed objects
-$group  = \Hubzero\User\Group::getInstance(Request::getCmd('cn', ''));
+$group  = Hubzero\User\Group::getInstance(Request::getCmd('cn', ''));
 
 // return url (if any)
-$return = '/' . trim(str_replace(Request::base(),'', Request::current()), '/');
+$return = '/' . trim(str_replace(Request::base(), '', Request::current()), '/');
 
 // include frameworks
 Html::behavior('framework', true);
@@ -47,7 +47,7 @@ $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js'
 $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/group.js');
 
 // get browser agent
-$browser = new \Hubzero\Browser\Detector();
+$browser = new Hubzero\Browser\Detector();
 $p = strtolower(str_replace(' ', '', $browser->platform()));
 $b = $browser->name();
 $v = $browser->major();
@@ -191,7 +191,7 @@ $membership_control = $params->get('membership_control', 1);
 									</li>
 								<?php endif; ?>
 								<li id="account-login">
-									<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . Request::getCmd('cn','') . '&task=login&return=' . base64_encode($return)); ?>" title="<?php echo Lang::txt('TPL_SYSTEM_LOGIN'); ?>">
+									<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . Request::getCmd('cn', '') . '&task=login&return=' . base64_encode($return)); ?>" title="<?php echo Lang::txt('TPL_SYSTEM_LOGIN'); ?>">
 										<?php echo Lang::txt('TPL_SYSTEM_LOGIN'); ?>
 									</a>
 								</li>
