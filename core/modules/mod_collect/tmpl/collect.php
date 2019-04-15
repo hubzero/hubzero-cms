@@ -69,9 +69,9 @@ $url = implode('/', array_map('rawurlencode', explode('/', $url)));
 						{
 							foreach ($this->myboards as $board)
 							{
-						?>
-							<option<?php if ($i == 0) { echo ' selected="selected"'; } ?> value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
-						<?php
+								?>
+								<option<?php if ($i == 0) { echo ' selected="selected"'; } ?> value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
+								<?php
 								$i++;
 							}
 						}
@@ -82,7 +82,10 @@ $url = implode('/', array_map('rawurlencode', explode('/', $url)));
 						{
 							foreach ($this->groupboards as $optgroup => $boards)
 							{
-								if (count($boards) <= 0) continue;
+								if (count($boards) <= 0)
+								{
+									continue;
+								}
 								?>
 								<optgroup label="<?php echo $this->escape(stripslashes($optgroup)); ?>">
 									<?php
@@ -94,8 +97,8 @@ $url = implode('/', array_map('rawurlencode', explode('/', $url)));
 										$i++;
 									}
 									?>
-						</optgroup>
-						<?php
+								</optgroup>
+								<?php
 							}
 						}
 						?>

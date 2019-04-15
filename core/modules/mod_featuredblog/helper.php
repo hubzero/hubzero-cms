@@ -62,7 +62,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		include_once(\Component::path('com_blog') . DS . 'models' . DS . 'entry.php');
+		include_once \Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
 
 		$this->row = null;
 
@@ -94,4 +94,3 @@ class Helper extends Module
 		}
 	}
 }
-

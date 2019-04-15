@@ -79,4 +79,3 @@ class Helper extends Module
 		require $this->getLayoutPath();
 	}
 }
-

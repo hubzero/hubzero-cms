@@ -120,13 +120,13 @@ $editAuthorized = User::authorise('com_users', 'manage');
 					<?php endif; ?>
 				<?php endforeach; ?>
 				<tr>
-					<td colspan="<?php echo ($editAuthorized ? 4 : 3); ?>" class="view-all">
+					<td colspan="<?php echo ($editAuthorized) ? 4 : 3; ?>" class="view-all">
 						<a href="<?php echo Route::url('index.php?option=com_members&controller=whosonline'); ?>"><?php echo Lang::txt('MOD_WHOSONLINE_VIEW_ALL'); ?></a>
 					</td>
 				</tr>
 			<?php else : ?>
 				<tr>
-					<td colspan="<?php echo ($editAuthorized ? 4 : 3); ?>">
+					<td colspan="<?php echo ($editAuthorized) ? 4 : 3; ?>">
 						<?php echo Lang::txt('MOD_WHOSONLINE_NO_RESULTS'); ?>
 					</td>
 				</tr>

@@ -48,5 +48,5 @@ defined('_HZEXEC_') or die();
 			</div>
 		<?php endforeach; ?>
 	</div>
-	<div <?php echo ($this->pager == 'null') ? '' : 'class="pager"'; ?> id="<?php echo($this->pager); ?>"></div>
+	<div <?php echo ($this->pager == 'null') ? '' : 'class="pager"'; ?> id="<?php echo $this->pager; ?>"></div>
 </div>

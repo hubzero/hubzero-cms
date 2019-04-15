@@ -200,7 +200,7 @@ class Helper extends Module
 				$authenticators[$p->name] = array('name' => $p->name, 'display' => $display);
 				$multiAuth = true;
 			}
-			else if ($p->name == 'hubzero')
+			elseif ($p->name == 'hubzero')
 			{
 				$pparams = new Registry($p->params);
 				$remember_me_default = $pparams->get('remember_me_default', 0);

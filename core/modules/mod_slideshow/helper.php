@@ -141,7 +141,7 @@ class Helper extends Module
 					$xmlpath.= '.xml';
 
 					$fh = fopen($xmlpath, "w");
-					fwrite($fh,utf8_encode($xml));
+					fwrite($fh, utf8_encode($xml));
 					fclose($fh);
 				}
 			}
@@ -166,6 +166,6 @@ class Helper extends Module
 		$this->noflash_link = $noflash_link;
 		$this->noflash_file = $noflash_file;
 
-		require($this->getLayoutPath());
+		require $this->getLayoutPath();
 	}
 }

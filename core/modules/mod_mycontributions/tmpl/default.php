@@ -58,7 +58,7 @@ if ($this->show_tools && $tools)
 		if ($i <= $this->limit_tools)
 		{
 			$class =  $tools[$i]->published ? 'published' : 'draft';
-			$urgency = ($this->getState($tools[$i]->state) == 'installed' or $this->getState($tools[$i]->state)=='created') ? ' ' . Lang::txt('MOD_MYCONTRIBUTIONS_ACTION_REQUIRED') : '' ;
+			$urgency = ($this->getState($tools[$i]->state) == 'installed' || $this->getState($tools[$i]->state) == 'created') ? ' ' . Lang::txt('MOD_MYCONTRIBUTIONS_ACTION_REQUIRED') : '';
 
 			$html .= '<li class="' . $class . '">' . "\n";
 			$html .= '<a href="' . Route::url('index.php?option=com_tools&controller=pipeline&task=status&app=' . $tools[$i]->toolname) . '">' . stripslashes($tools[$i]->toolname) . '</a>' . "\n";
@@ -123,9 +123,15 @@ else
 			// Determine css class
 			switch ($contributions[$i]->published)
 			{
-				case 1:  $class = 'published';  break;  // published
-				case 2:  $class = 'draft';      break;  // draft
-				case 3:  $class = 'pending';    break;  // pending
+				case 1:
+					$class = 'published';
+					break;
+				case 2:
+					$class = 'draft';
+						break;
+				case 3:
+					$class = 'pending';
+					break;
 			}
 
 			// Get author login

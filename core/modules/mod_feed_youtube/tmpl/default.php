@@ -59,7 +59,7 @@ if ($this->feed)
 		<h3 class="feed_title">
 			<?php if ((!is_null($this->feed->title) or $this->params->get('feedtitle', '')) && $this->params->get('rsstitle', 1)) { ?>
 				<a href="<?php echo $morelink; ?>" rel="external">
-					<?php echo ($this->params->get('feedtitle') ? $this->params->get('feedtitle') : $this->feed->title); ?>
+					<?php echo ($this->params->get('feedtitle')) ? $this->params->get('feedtitle') : $this->feed->title; ?>
 				</a>
 			<?php } ?>
 			<?php if ($this->params->get('rssimage', 1) && $youtube_ima) { ?>
@@ -71,7 +71,7 @@ if ($this->feed)
 	<?php } ?>
 
 	<?php if ((!is_null($this->feed->description) or $this->params->get('feeddesc', '')) && $this->params->get('rssdesc', 0)) { ?>
-		<p><?php echo ($this->params->get('feeddesc') ? $this->params->get('feeddesc') : $this->feed->description); ?></p>
+		<p><?php echo ($this->params->get('feeddesc')) ? $this->params->get('feeddesc') : $this->feed->description; ?></p>
 	<?php } ?>
 
 	<ul class="layout_<?php echo $layout; ?>">
@@ -99,7 +99,7 @@ if ($this->feed)
 				// Get video id
 				$match = array();
 				$vid = 0;
-				preg_match("/youtube\.com\/watch\?v=(.*)/", $currItem->get_link() , $match);
+				preg_match("/youtube\.com\/watch\?v=(.*)/", $currItem->get_link(), $match);
 				if (count($match) > 1 && strlen($match[1]) > 11)
 				{
 					$vid = substr($match[1], 0, 11);
