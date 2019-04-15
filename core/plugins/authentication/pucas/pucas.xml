@@ -42,7 +42,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="domain" type="text" size="20" default="PLG_AUTHENTICATION_PUCAS_PARAM_DOMAIN_LABEL" label="Domain" description="PLG_AUTHENTICATION_PUCAS_PARAM_DOMAIN_DESC" />
+				<field name="domain" type="text" size="20" default="Purdue Career Account (CAS)" label="PLG_AUTHENTICATION_PUCAS_PARAM_DOMAIN_LABEL" description="PLG_AUTHENTICATION_PUCAS_PARAM_DOMAIN_DESC" />
 				<field name="display_name" type="text" size="32" label="PLG_AUTHENTICATION_PUCAS_PARAM_NAME_LABEL" description="PLG_AUTHENTICATION_PUCAS_PARAM_NAME_DESC" default="Purdue Career" />
 				<field name="auto_logoff" type="radio" default="0" label="PLG_AUTHENTICATION_PUCAS_PARAM_AUTOLOGOFF_LABEL" description="PLG_AUTHENTICATION_PUCAS_PARAM_AUTOLOGOFF_DESC">
 					<option value="0">JNo</option>
@@ -65,6 +65,12 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="1">JYes</option>
 				</field>
 				<field name="auto_approve" type="radio" label="PLG_AUTHENTICATION_PUCAS_PARAM_AUTO_APPROVE_LABEL" default="0" description="PLG_AUTHENTICATION_PUCAS_PARAM_AUTO_APPROVE_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+			</fieldset>
+			<fieldset name="profile">
+				<field name="profile_age_range" type="radio" label="PLG_AUTHENTICATION_PUCAS_PARAM_I2A2_LABEL" default="0" description="PLG_AUTHENTICATION_PUCAS_PARAM_PROFILE_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
