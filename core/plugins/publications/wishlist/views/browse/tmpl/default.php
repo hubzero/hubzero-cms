@@ -65,8 +65,8 @@ $this->css();
 				$status = 'outstanding';
 			}
 
-			$state  = (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? 'new' : '' ;
-			$state .= ($item->private) ? ' private' : '' ;
+			$state  = (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? 'new' : '';
+			$state .= ($item->private) ? ' private' : '';
 			switch ($item->status)
 			{
 				case 3:
