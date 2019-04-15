@@ -300,7 +300,6 @@ class FormReport extends Model
 				$query  = "SELECT `student`, `section_id` FROM `#__courses_members` AS cm, ";
 				$query .= "`#__courses_form_respondents` AS cfr WHERE cm.id = cfr.member_id ";
 				$query .= "AND cfr.id = " . $db->quote($response->respondent_id);
-;
 				$db->setQuery($query);
 				if (!$student = $db->loadObject())
 				{
