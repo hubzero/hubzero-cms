@@ -152,7 +152,7 @@ $revision = $this->revision;
 								$versiontext .= ' ('.Lang::txt('COM_RESOURCES_IN_DEVELOPMENT').')';
 							}
 						}
-						else if ($curtool)
+						elseif ($curtool)
 						{
 							$versiontext .= $curtool->version.'</strong> - '.Lang::txt('COM_RESOURCES_PUBLISHED_ON').' ';
 							$versiontext .= ($curtool->released && $curtool->released != '0000-00-00 00:00:00') ? Date::of($curtool->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1')): Date::of($this->model->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
@@ -162,7 +162,7 @@ $revision = $this->revision;
 						{
 							$html .= "\t\t\t\t".'<p class="curversion">'.Lang::txt('COM_RESOURCES_VERSION').' '.$versiontext.'</p>'."\n";
 						}
-						else if ($revision == 'dev')
+						elseif ($revision == 'dev')
 						{
 							$html .= "\t\t\t\t".'<p class="devversion">'.Lang::txt('COM_RESOURCES_VERSION').' '.$versiontext;
 							$html .= $this->model->toolpublished ? ' <span>'.Lang::txt('View').' <a href="'.Route::url($this->model->link() . '&active=versions').'">'.Lang::txt('other versions').'</a></span>' : '';
@@ -261,7 +261,7 @@ $revision = $this->revision;
 						->display();
 				}
 			}
-			else if ($revision == 'dev' or !$this->model->toolpublished)
+			elseif ($revision == 'dev' or !$this->model->toolpublished)
 			{
 				?>
 				<div class="metaplaceholder">
