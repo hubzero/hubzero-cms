@@ -256,15 +256,19 @@ $groupLink = $base . '/groups/' . $this->group->get('cn');
 									// Determine the join policy
 									switch ($this->group->get('join_policy'))
 									{
-										case 3: $policy = Lang::txt('Closed');
-break;
-										case 2: $policy = Lang::txt('Invite Only');
-break;
-										case 1: $policy = Lang::txt('Restricted');
-break;
+										case 3:
+											$policy = Lang::txt('Closed');
+											break;
+										case 2:
+											$policy = Lang::txt('Invite Only');
+											break;
+										case 1:
+											$policy = Lang::txt('Restricted');
+											break;
 										case 0:
-										default: $policy = Lang::txt('Open');
-break;
+										default:
+											$policy = Lang::txt('Open');
+											break;
 									}
 									echo $policy;
 
