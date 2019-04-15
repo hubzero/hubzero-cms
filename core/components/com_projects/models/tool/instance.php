@@ -52,14 +52,14 @@ class Instance extends Model
 	 *
 	 * @var object
 	 */
-	public $config = NULL;
+	public $config = null;
 
 	/**
 	 * Constructor
 	 *
 	 * @return     void
 	 */
-	public function __construct($oid, $parent = NULL)
+	public function __construct($oid, $parent = null)
 	{
 		$this->_db = \App::get('db');
 

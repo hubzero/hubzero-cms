@@ -41,7 +41,7 @@ $html = $this->page->pagehtml;
 $html = str_replace('projects/projects/', 'projects/', $html);
 
 // Fix up images
-$html = str_replace($this->page->scope . DS . $this->page->pagename , 'wiki/' . $this->page->id, $html);
+$html = str_replace($this->page->scope . DS . $this->page->pagename, 'wiki/' . $this->page->id, $html);
 ?>
 <div class="wiki-wrap">
 	<p class="wiki-back"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_BACK_TO_PUBLICATION'); ?>  &ldquo;<?php echo $this->publication->title; ?>&rdquo;</a></p>

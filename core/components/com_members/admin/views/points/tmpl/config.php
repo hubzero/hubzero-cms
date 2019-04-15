@@ -57,7 +57,7 @@ Toolbar::cancel();
 		<?php
 		$rows = 50;
 		$i = 0;
-		for ( $r = 0; $r < $rows; $r++ )
+		for ($r = 0; $r < $rows; $r++)
 		{
 			?>
 			<tr>

@@ -94,11 +94,11 @@ $rows = $this->archive->entries($this->filters)
 			$feed = Route::url($path);
 			if (substr($feed, 0, 4) != 'http')
 			{
-				$live_site = rtrim(Request::base(),'/');
+				$live_site = rtrim(Request::base(), '/');
 
 				$feed = rtrim($live_site, '/') . '/' . ltrim($feed, '/');
 			}
-			$feed = str_replace('https:://','http://', $feed);
+			$feed = str_replace('https:://', 'http://', $feed);
 			?>
 			<p><a class="icon-feed feed btn" href="<?php echo $feed; ?>"><?php echo Lang::txt('COM_BLOG_FEED'); ?></a></p>
 		</div>

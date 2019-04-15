@@ -38,7 +38,7 @@ function filter($res, &$dd)
 	}
 
 	while ($rec = mysqli_fetch_assoc($data)) {
-		if ($rec[$dd['maps'][0]['lat']] == NULL || $rec[$dd['maps'][0]['lng']] == NULL) {
+		if ($rec[$dd['maps'][0]['lat']] == null || $rec[$dd['maps'][0]['lng']] == null) {
 			continue;
 		}
 
@@ -56,7 +56,7 @@ function filter($res, &$dd)
 		$pm .= '<description><![CDATA[<div dir="ltr">' . htmlentities($rec[$dd['maps'][0]['title']]);
 		if (isset($dd['maps'][0]['info'])) {
 			$info_str = $dd['maps'][0]['info'];
-			foreach ($rec as $key=>$val) {
+			foreach ($rec as $key => $val) {
 				$info_str = str_replace('{' . $key . '}', $rec[$key], $info_str);
 				$info_str = str_replace('{' . $key . '|html}', $rec[$key], $info_str);
 			}
@@ -95,4 +95,3 @@ function dms2dc($cood)
 	}
 	return $dc;
 }
-?>

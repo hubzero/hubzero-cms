@@ -57,14 +57,14 @@ abstract class Base extends Model
 	 *
 	 * @var string
 	 */
-	protected $_scope = NULL;
+	protected $_scope = null;
 
 	/**
 	 * Entry creator
 	 *
 	 * @var object
 	 */
-	protected $_creator = NULL;
+	protected $_creator = null;
 
 	/**
 	 * Date keys coming from
@@ -83,7 +83,7 @@ abstract class Base extends Model
 	 *
 	 * @var object
 	 */
-	protected $_config = NULL;
+	protected $_config = null;
 
 	/**
 	 * Is the entyr in draft state?
@@ -283,4 +283,3 @@ abstract class Base extends Model
 		return $this->config()->access($action, $item);
 	}
 }
-

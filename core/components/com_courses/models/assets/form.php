@@ -36,8 +36,8 @@ use Components\Courses\Models\PdfForm;
 use Request;
 
 /**
-* Form (exam) Asset handler class
-*/
+ * Form (exam) Asset handler class
+ */
 class Form extends Content
 {
 	/**

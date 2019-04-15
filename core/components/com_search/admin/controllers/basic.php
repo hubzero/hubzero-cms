@@ -72,4 +72,3 @@ class Basic extends AdminController
 		$this->view->display();
 	}
 }
-

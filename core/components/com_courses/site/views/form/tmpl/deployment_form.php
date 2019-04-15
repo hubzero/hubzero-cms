@@ -72,9 +72,9 @@ $this->css('jquery.ui.css', 'system');
 		?>
 		<h3>Results</h3>
 		<p>While the form is open, show users:<br />
-			<input type="radio" name="deployment[resultsOpen]" value="confirmation" <?php if ($resultPages['open'] == 'confirmation') echo 'checked="checked" '; ?>/> only confirmation that their submission was accepted<br />
-			<input type="radio" name="deployment[resultsOpen]" value="score" <?php if ($resultPages['open'] == 'score' || !$resultPages['open']) echo 'checked="checked" '; ?>/> their score<br />
-			<input type="radio" name="deployment[resultsOpen]" value="details" <?php if ($resultPages['open'] == 'details') echo 'checked="checked" '; ?>/> a complete comparison of their answers to the correct answers<br />
+			<input type="radio" name="deployment[resultsOpen]" value="confirmation" <?php if ($resultPages['open'] == 'confirmation') { echo 'checked="checked" ';} ?>/> only confirmation that their submission was accepted<br />
+			<input type="radio" name="deployment[resultsOpen]" value="score" <?php if ($resultPages['open'] == 'score' || !$resultPages['open']) { echo 'checked="checked" ';} ?>/> their score<br />
+			<input type="radio" name="deployment[resultsOpen]" value="details" <?php if ($resultPages['open'] == 'details') { echo 'checked="checked" ';} ?>/> a complete comparison of their answers to the correct answers<br />
 			<?php if ($showErrors && $this->dep->hasErrors('resultsOpen')): ?>
 			<ul class="error">
 				<?php foreach ($this->dep->getErrors('resultsOpen') as $err): ?>
@@ -84,9 +84,9 @@ $this->css('jquery.ui.css', 'system');
 			<?php endif; ?>
 		</p>
 		<p>After the form is closed, show users:<br />
-			<input type="radio" name="deployment[resultsClosed]" value="confirmation" <?php if ($resultPages['closed'] == 'confirmation') echo 'checked="checked" '; ?>/> only confirmation that their submission was accepted<br />
-			<input type="radio" name="deployment[resultsClosed]" value="score" <?php if ($resultPages['closed'] == 'score') echo 'checked="checked" '; ?>/> their score<br />
-			<input type="radio" name="deployment[resultsClosed]" value="details" <?php if ($resultPages['closed'] == 'details' || !$resultPages['closed']) echo 'checked="checked" '; ?>/> a complete comparison of their answers to the correct answers<br />
+			<input type="radio" name="deployment[resultsClosed]" value="confirmation" <?php if ($resultPages['closed'] == 'confirmation') { echo 'checked="checked" ';} ?>/> only confirmation that their submission was accepted<br />
+			<input type="radio" name="deployment[resultsClosed]" value="score" <?php if ($resultPages['closed'] == 'score') { echo 'checked="checked" ';} ?>/> their score<br />
+			<input type="radio" name="deployment[resultsClosed]" value="details" <?php if ($resultPages['closed'] == 'details' || !$resultPages['closed']) { echo 'checked="checked" ';} ?>/> a complete comparison of their answers to the correct answers<br />
 			<?php if ($showErrors && $this->dep->hasErrors('resultsClosed')): ?>
 			<ul class="error">
 				<?php foreach ($this->dep->getErrors('resultsClosed') as $err): ?>

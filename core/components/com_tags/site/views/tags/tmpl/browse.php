@@ -130,7 +130,7 @@ $this->css()
 							?>
 							<tr class="<?php echo $cls; ?>">
 								<td>
-									<a class="tag <?php echo ($row->get('admin') ? ' admin' : ''); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&tag=' . $row->get('tag')); ?>">
+									<a class="tag <?php echo $row->get('admin') ? ' admin' : ''; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&tag=' . $row->get('tag')); ?>">
 										<?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>
 									</a>
 								</td>
@@ -165,7 +165,7 @@ $this->css()
 					{
 						?>
 						<tr class="odd">
-							<td colspan="<?php echo ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag') ? 4 : 2); ?>">
+							<td colspan="<?php echo $this->config->get('access-edit-tag') || $this->config->get('access-delete-tag') ? 4 : 2; ?>">
 								<?php echo Lang::txt('COM_TAGS_NO_RESULTS'); ?>
 							</td>
 						</tr>

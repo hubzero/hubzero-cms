@@ -45,7 +45,7 @@ $content = $this->page->version()->get('content');
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" method="post" name="adminForm" id="item-form">
 
 	<p class="error">
-		<?php echo Lang::txt('COM_GROUPS_PAGES_ERROR_LIST' , $this->page->get('title'), $this->error); ?>
+		<?php echo Lang::txt('COM_GROUPS_PAGES_ERROR_LIST', $this->page->get('title'), $this->error); ?>
 	</p>
 
 	<h3><?php echo Lang::txt('COM_GROUPS_PAGES_VIEW_RAW_CODE'); ?></h3>

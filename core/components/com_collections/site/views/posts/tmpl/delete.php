@@ -46,7 +46,7 @@ defined('_HZEXEC_') or die();
 		<fieldset>
 			<legend><?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE_HEADER'); ?></legend>
 
-	 		<p class="warning"><?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE_WARNING',$this->entry->title); ?></p>
+	 		<p class="warning"><?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE_WARNING', $this->entry->title); ?></p>
 
 			<label>
 				<input type="checkbox" class="option" name="confirmdel" value="1" />

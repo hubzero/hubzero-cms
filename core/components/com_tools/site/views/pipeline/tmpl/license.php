@@ -33,7 +33,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$open             = ($this->code == '@OPEN') ? 1 : 0 ;
+$open             = ($this->code == '@OPEN') ? 1 : 0;
 $this->codeaccess = ($this->code == '@OPEN') ? 'open' : 'closed';
 $newstate         = ($this->action == 'confirm') ? 'Approved' :  $this->status['state'];
 
@@ -102,7 +102,7 @@ $this->css('pipeline.css')
 					<div id="open-source">
 						<div id="lic">
 							<label><?php echo Lang::txt('COM_TOOLS_LICENSE_TEMPLATE'); ?>:</label>
-							<?php echo \Components\Tools\Helpers\Html::formSelect('templates', 'templates',  $licenseChoices, $this->license_choice['template'], 'shifted', ''); ?>
+							<?php echo \Components\Tools\Helpers\Html::formSelect('templates', 'templates', $licenseChoices, $this->license_choice['template'], 'shifted', ''); ?>
 						</div>
 						<div class="licinput">
 							<label>

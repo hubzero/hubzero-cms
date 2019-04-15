@@ -84,7 +84,7 @@ class Poll extends Relational
 	{
 		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['title']);
 		$alias = str_replace(' ', '-', $alias);
-		if (trim(str_replace('-','',$this->alias)) == '')
+		if (trim(str_replace('-', '', $this->alias)) == '')
 		{
 			$alias = \Date::of('now')->format("%Y-%m-%d-%H-%M-%S");
 		}
@@ -219,4 +219,3 @@ class Poll extends Relational
 		return parent::destroy();
 	}
 }
-

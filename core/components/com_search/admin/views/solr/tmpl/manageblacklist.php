@@ -87,4 +87,4 @@ $header = $header->toArray();
 	</table>
 <?php else: ?>
 	<div class="warning message"><?php echo Lang::txt('COM_SEARCH_NO_BLACKLIST_ENTRIES'); ?></div>
-<?php endif; ?>
+<?php endif; 

@@ -203,10 +203,13 @@ if ($categories) {
 			$i++;
 			switch ($i)
 			{
-				case 3: $clm = 'omega'; break;
-				case 2: $clm = ''; break;
+				case 3: $clm = 'omega';
+break;
+				case 2: $clm = '';
+break;
 				case 1:
-				default: $clm = ''; break;
+				default: $clm = '';
+break;
 			}
 
 			if (substr($category->get('alias'), -3) == 'ies') {

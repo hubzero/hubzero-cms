@@ -41,10 +41,10 @@ use stdClass;
 class INI extends Base
 {
 	/**
-	* Cache container
-	*
-	* @var		array
-	*/
+  * Cache container
+  *
+  * @var		array
+  */
 	protected static $cache = array();
 
 	/**

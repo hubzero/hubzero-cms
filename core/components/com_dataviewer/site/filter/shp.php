@@ -44,7 +44,7 @@ function filter($res, &$dd)
 	$csv .= $nl;
 
 	while ($rec = mysqli_fetch_assoc($data)) {
-		if ($rec[$dd['maps'][0]['lat']] == NULL || $rec[$dd['maps'][0]['lng']] == NULL) {
+		if ($rec[$dd['maps'][0]['lat']] == null || $rec[$dd['maps'][0]['lng']] == null) {
 			continue;
 		}
 
@@ -109,4 +109,3 @@ function dms2dc($cood)
 	}
 	return $dc;
 }
-?>

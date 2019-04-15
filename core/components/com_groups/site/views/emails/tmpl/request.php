@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
 
 $sef = Route::url('index.php?option='.$this->option.'&cn='. $this->group->get('cn').'&active=members');
 
-$message  = Lang::txt('COM_GROUPS_JOIN_REQUEST_EMAIL_DETAILS',$this->sitename)."\n\n";
+$message  = Lang::txt('COM_GROUPS_JOIN_REQUEST_EMAIL_DETAILS', $this->sitename)."\n\n";
 $message .= "\t".' '.Lang::txt('COM_GROUPS_GROUP').': '. $this->group->get('description') .' ('.$this->group->get('cn').')'."\n";
 $message .= "\t".' '.Lang::txt('COM_GROUPS_JOIN_REQUEST').': '."\n";
 $message .= "\n".'---------------------------------------------------------------------------------------'."\n";

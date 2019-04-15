@@ -49,4 +49,3 @@ function dv_data_definition_update()
 	header("Location: $url");
 	exit();
 }
-?>

@@ -64,7 +64,8 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 		</div>
 		<p class="instruct">
 			<span class="pubimage"><img src="<?php echo Route::url('index.php?option=com_publications&id=' . $this->pub->id . '&v=' . $this->pub->version_id) . '/Image:thumb'; ?>" alt="" /></span>
-			<strong class="block"><?php echo $this->pub->reviewed ? Lang::txt('COM_PUBLICATIONS_CURATION_RESUBMITTED') : Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED'); echo ' ' . Date::of($this->pub->submitted)->toLocal('M d, Y') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_BY') . ' ' . $this->pub->modifier('name'); ?></strong>
+			<strong class="block"><?php echo $this->pub->reviewed ? Lang::txt('COM_PUBLICATIONS_CURATION_RESUBMITTED') : Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED');
+echo ' ' . Date::of($this->pub->submitted)->toLocal('M d, Y') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_BY') . ' ' . $this->pub->modifier('name'); ?></strong>
 			<?php if ($this->pub->curator()) { ?>
 				<span class="block"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGNED_CURATOR') . ' <strong>' . $this->pub->curator('name') . ' (' . $this->pub->curator('username') . ')</strong>';  ?></span>
 			<?php } ?>

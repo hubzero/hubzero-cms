@@ -95,4 +95,4 @@ if (!$this->no_html) {
 
 <?php if (!$this->no_html) { ?>
 </section><!-- / .section -->
-<?php } ?>
+<?php } 

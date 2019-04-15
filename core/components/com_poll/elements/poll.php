@@ -63,6 +63,6 @@ class JElementPoll extends JElement
 
 		array_unshift($options, \Html::select('option', '0', '- '. \Lang::txt('Select Poll') . ' -', 'id', 'title'));
 
-		return \Html::select('genericlist',  $options, $control_name . '[' . $name . ']', 'class="inputbox"', 'id', 'title', $value, $control_name . $name);
+		return \Html::select('genericlist', $options, $control_name . '[' . $name . ']', 'class="inputbox"', 'id', 'title', $value, $control_name . $name);
 	}
 }

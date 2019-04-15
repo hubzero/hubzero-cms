@@ -85,7 +85,7 @@ $this->css()
 									}
 								?>
 								<span class="desc">
-									<?php echo ($mylist->description ? nl2br($mylist->description) : Lang::txt('COM_NEWSLETTER_MAILINGLISTS_LIST_NODESCRIPTION')); ?>
+									<?php echo $mylist->description ? nl2br($mylist->description) : Lang::txt('COM_NEWSLETTER_MAILINGLISTS_LIST_NODESCRIPTION'); ?>
 								</span>
 							</label>
 						<?php endif; ?>

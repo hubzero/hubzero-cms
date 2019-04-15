@@ -52,4 +52,4 @@ Document::addScript($base . DS . 'assets/js/main.js');
 </div>
 
 <group:include type="googleanalytics" account="" />
-<?php endif; ?>
+<?php endif; 

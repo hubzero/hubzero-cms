@@ -164,4 +164,4 @@ $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'membe
 			<?php endif; ?>
 		<?php endforeach; ?>
 	</div>
-<?php endif; ?>
+<?php endif; 

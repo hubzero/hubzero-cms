@@ -56,4 +56,4 @@ defined('_HZEXEC_') or die();
 
 			<?php echo $hidden_fields; ?>
 		</fieldset>
-	<?php endforeach; ?>
+	<?php endforeach; 

@@ -112,7 +112,7 @@ if ($this->application->get('id'))
 						</label>
 					<?php else : ?>
 						<p class="info"><?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TEAM_DONT_ADD_YOURSELF'); ?></p>
-					<?php endif ;?>
+					<?php endif;?>
 
 					<label for="whoknows">
 						<?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TEAM_ADD'); ?>: <span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>

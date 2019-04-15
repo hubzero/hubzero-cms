@@ -287,7 +287,8 @@ function view($dd = false)
 				<select id="dv_chart_name" style="width: 100%;">
 					<?php $pd_id = 0; foreach ($dd['charts_list'] as $cl): ?>
 					<option value="<?php print $pd_id?>"><?php print $cl['title']; ?></option>
-					<?php $pd_id++; endforeach; ?>
+					<?php $pd_id++;
+endforeach; ?>
 				</select>
 
 				<div id="dv_chart_desc" class=" ui-widget-content ui-corner-all" style="margin-top: 10px; font-size: 0.9em; border-style: inset; padding: 2px; overflow: auto; height: 340px;"></div>
@@ -323,7 +324,7 @@ function view($dd = false)
 		<?php
 			$full_list = '';
 			$selected = '';
-			foreach ($dd['cols'] as $id=>$prop) {
+			foreach ($dd['cols'] as $id => $prop) {
 				if (!isset($prop['hide']) || (isset($prop['hide']) && $prop['hide'] != 'hide')) {
 					if (!isset($prop['label'])) {
 						$prop['label'] = $id;
@@ -454,7 +455,7 @@ function view($dd = false)
 				}
 			}
 
-			$colid++ ;
+			$colid++;
 		}
 		print '</tr></tfoot>';
 	?>

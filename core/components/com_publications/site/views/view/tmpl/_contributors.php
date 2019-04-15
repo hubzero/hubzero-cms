@@ -116,7 +116,7 @@ if ($this->contributors)
 	if (count($names) > 0)
 	{
 		$html = '<p>' . ucfirst(Lang::txt('By')) . ' ';
-		$html .= count($names) > 1 && count($orgs) > 0  ? implode( ', ', $names ) : implode( ', ', $names_s )  ;
+		$html .= count($names) > 1 && count($orgs) > 0  ? implode( ', ', $names ) : implode( ', ', $names_s );
 		$html .= '</p>';
 	}
 	if ($this->showorgs && count($orgs) > 0)
@@ -127,7 +127,7 @@ if ($this->contributors)
 	}
 	if ($this->showaslist)
 	{
-		$html = count($names) > 1  ? implode( ', ', $names ) : implode( ', ', $names_s ) ;
+		$html = count($names) > 1  ? implode( ', ', $names ) : implode( ', ', $names_s );
 	}
 
 }

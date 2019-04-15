@@ -85,4 +85,3 @@ function StorefrontParseRoute($segments)
 	//print_r($vars);
 	return $vars;
 }
-

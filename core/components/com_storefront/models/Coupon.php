@@ -38,7 +38,7 @@ namespace Components\Storefront\Models;
 class Coupon
 {
 	// Database instance
-	var $db = NULL;
+	var $db = null;
 	var $data;
 
 	/**

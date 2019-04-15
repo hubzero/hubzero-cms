@@ -76,4 +76,3 @@ function zip_files($hash_list)
 
 	exit(0);
 }
-?>

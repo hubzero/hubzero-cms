@@ -94,7 +94,9 @@ $rows = $this->model->entries('list', $this->filters);
 					{
 						$setup = ($row->inSetup()) ? Lang::txt('COM_PROJECTS_COMPLETE_SETUP') : '';
 						?>
-						<li <?php if ($setup) { echo 'class="s-dev"'; } else if ($row->get('state') == 0) { echo 'class="s-inactive"'; } else if ($row->get('state') == 5) { echo 'class="s-pending"'; } ?>>
+						<li <?php if ($setup) { echo 'class="s-dev"';
+} else if ($row->get('state') == 0) { echo 'class="s-inactive"';
+} else if ($row->get('state') == 5) { echo 'class="s-pending"'; } ?>>
 							<?php if (!$setup && !$row->isPublic()) { ?>
 								<span class="s-private">&nbsp;</span>
 							<?php } ?>

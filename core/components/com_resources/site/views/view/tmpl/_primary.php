@@ -50,4 +50,4 @@ if (isset($this->disabled) && $this->disabled) { ?>
 	<div id="primary-document_pop">
 		<div><?php echo $this->pop; ?></div>
 	</div>
-<?php } ?>
+<?php } 

@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 class Type_Handler
 {
 	// Database instance
-	var $db = NULL;
+	var $db = null;
 
 	// Item info
 	var $item;

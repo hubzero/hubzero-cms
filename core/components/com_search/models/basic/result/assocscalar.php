@@ -105,12 +105,12 @@ class AssocScalar extends SearchResult
 		}
 
 		self::assert_keys(array('title', 'description', 'link'), $row);
-		foreach ($row as $key=>$val)
+		foreach ($row as $key => $val)
 		{
 			$this->$key = is_array($val) ? array_map('stripslashes', array_map('strip_tags', $val)) : stripslashes(strip_tags($val));
 		}
 
-		if ($this->weight === NULL)
+		if ($this->weight === null)
 		{
 			if ($this->tag_count)
 			{

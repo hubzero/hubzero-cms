@@ -78,8 +78,9 @@ function json_format($json)
 
 	$json_obj = json_decode($json);
 
-	if ($json_obj === false)
+	if ($json_obj === false) {
 		return false;
+	}
 
 	$json = json_encode($json_obj);
 	$len = strlen($json);
@@ -131,4 +132,3 @@ function json_format($json)
 
 	return $new_json;
 }
-?>

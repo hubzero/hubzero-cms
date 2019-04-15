@@ -46,7 +46,7 @@ class Sql extends SearchResult
 	 * @param   string  $sql
 	 * @return  void
 	 */
-	public function __construct($sql = NULL)
+	public function __construct($sql = null)
 	{
 		$this->sql = $sql;
 	}
@@ -83,4 +83,3 @@ class Sql extends SearchResult
 		return new AssocList($rows, $this->get_plugin());
 	}
 }
-

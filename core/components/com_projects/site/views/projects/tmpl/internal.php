@@ -70,14 +70,14 @@ $notification = Event::trigger('projects.onProjectNotification',
 	array( $this->model, $this->active )
 );
 $notification 	= $notification && !empty($notification)
-	? $notification[0] : NULL;
+	? $notification[0] : null;
 
 // Get side content
 $sideContent = Event::trigger('projects.onProjectExtras',
 	array( $this->model, $this->active )
 );
 $sideContent 	= $sideContent && !empty($sideContent)
-	? $sideContent[0] : NULL;
+	? $sideContent[0] : null;
 
 ?>
 <div id="project-wrap" class="theme">

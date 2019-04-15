@@ -102,4 +102,4 @@ $canDo = (User::authorise('core.admin', $this->option) || User::authorise('core.
 
 		<?php echo Html::input('token'); ?>
 	</form>
-<?php } ?>
+<?php } 

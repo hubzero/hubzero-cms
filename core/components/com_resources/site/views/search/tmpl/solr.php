@@ -33,7 +33,7 @@ $id = str_replace('resource-', '', $this->result['id']);
 $extras = Event::trigger('resources.onResourcesList', array($id));
 ?>
 
-<div class="result <?php echo (isset($this->result['access_level']) ? $this->result['access_level'] : 'public'); ?>" id="<?php echo $this->result['id']; ?>">
+<div class="result <?php echo isset($this->result['access_level']) ? $this->result['access_level'] : 'public'; ?>" id="<?php echo $this->result['id']; ?>">
 	<div class="result-body">
 		<!-- Cateogory : mandatory -->
 		<span class="result-category"><?php echo ucfirst($this->result['hubtype']); ?></span>

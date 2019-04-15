@@ -81,7 +81,7 @@ if ($timezone === false)
 
 
 $this->row->content = stripslashes($this->row->content);
-$this->row->content = str_replace('<br />','',$this->row->content);
+$this->row->content = str_replace('<br />', '', $this->row->content);
 
 //$fields = $config->getCfg('fields');
 if (!empty($this->fields)) {
@@ -90,7 +90,7 @@ if (!empty($this->fields)) {
 		// explore the text and pull out all matches
 		array_push($this->fields[$i], \Components\Events\Site\Controllers\Events::parseTag($this->row->content, $this->fields[$i][0]));
 		// clean the original text of any matches
-		$this->row->content = str_replace('<ef:'.$this->fields[$i][0].'>'.end($this->fields[$i]).'</ef:'.$this->fields[$i][0].'>','',$this->row->content);
+		$this->row->content = str_replace('<ef:'.$this->fields[$i][0].'>'.end($this->fields[$i]).'</ef:'.$this->fields[$i][0].'>', '', $this->row->content);
 	}
 	$this->row->content = trim($this->row->content);
 }
@@ -141,9 +141,8 @@ foreach ($this->fields as $field)
 }
 $html .= $info;
 if (!$info) {
-	$html .= "\t\t".'<p class="description">'. \Hubzero\Utility\Str::truncate(strip_tags($this->row->content),300) .'</p>'."\n";
+	$html .= "\t\t".'<p class="description">'. \Hubzero\Utility\Str::truncate(strip_tags($this->row->content), 300) .'</p>'."\n";
 }
 $html .= "\t".'</div></li>'."\n";
 
 echo $html;
-

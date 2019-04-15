@@ -44,4 +44,3 @@ function dataviewerParseRoute($segments)
 
 	return $vars;
 }
-

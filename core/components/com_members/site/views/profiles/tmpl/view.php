@@ -171,7 +171,8 @@ if (!$no_html)
 									$attribs = array();
 									foreach ($option as $key => $val)
 									{
-										if ($key == 'text') continue;
+										if ($key == 'text') { continue;
+										}
 
 										$attribs[] = $key . '="' . $this->escape($val) . '"';
 									}
@@ -200,7 +201,8 @@ if (!$no_html)
 				<ul id="page_options">
 					<?php if ($edit) : ?>
 						<li>
-							<a class="edit tooltips" id="edit-profile" title="<?php echo Lang::txt('COM_MEMBERS_EDIT_PROFILE'); ?> :: Edit <?php if ($this->profile->get('id') == User::get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo Route::url($this->profile->link() . '&task=edit'); ?>">
+							<a class="edit tooltips" id="edit-profile" title="<?php echo Lang::txt('COM_MEMBERS_EDIT_PROFILE'); ?> :: Edit <?php if ($this->profile->get('id') == User::get("id")) { echo "my";
+} else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo Route::url($this->profile->link() . '&task=edit'); ?>">
 								<?php echo Lang::txt('COM_MEMBERS_EDIT_PROFILE'); ?>
 							</a>
 						</li>
@@ -246,7 +248,7 @@ if (!$no_html)
 							<?php echo $title; ?>
 						</a>
 					<?php else: ?>
-						<span id="profile-privacy"<?php echo ($cls ? ' class="' . $cls . '"' : ''); ?>
+						<span id="profile-privacy"<?php echo $cls ? ' class="' . $cls . '"' : ''; ?>
 							data-id="<?php echo $this->profile->get('id'); ?>"
 							data-private="<?php echo Lang::txt('Click here to set your profile private.'); ?>"
 							data-public="<?php echo Lang::txt('Click here to set your profile public.'); ?>">

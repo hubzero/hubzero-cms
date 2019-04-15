@@ -107,7 +107,7 @@ class UsersModelLevel extends JModelAdmin
 	 * @param	array	Configuration array for model. Optional.
 	 * @return	JTable	A database object
 	 * @since	1.6
-	*/
+  */
 	public function getTable($type = 'Viewlevel', $prefix = 'JTable', $config = array())
 	{
 		$return = JTable::getInstance($type, $prefix, $config);

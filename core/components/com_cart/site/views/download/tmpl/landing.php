@@ -42,7 +42,7 @@ $link = Route::url('index.php?option=com_cart', true, 0) . 'download/' . $this->
 ?>
 
 <header id="content-header">
-	<h2><?php echo  Lang::txt('COM_CART'); ?>: Download</h2>
+	<h2><?php echo Lang::txt('COM_CART'); ?>: Download</h2>
 </header>
 
 <section class="section">

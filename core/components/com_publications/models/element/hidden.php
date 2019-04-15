@@ -38,10 +38,10 @@ use Components\Publications\Models\Element as Base;
 class Hidden extends Base
 {
 	/**
-	* Element name
-	*
-	* @var  string
-	*/
+  * Element name
+  *
+  * @var  string
+  */
 	protected $_name = 'Hidden';
 
 	/**

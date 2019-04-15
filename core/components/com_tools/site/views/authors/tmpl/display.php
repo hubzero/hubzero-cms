@@ -128,7 +128,7 @@ if ($this->contributors) {
 				if ($contributor->lastname || $contributor->firstname)
 				{
 					$name  = stripslashes($contributor->firstname) . ' ';
-					if ($contributor->middlename != NULL)
+					if ($contributor->middlename != null)
 					{
 						$name .= stripslashes($contributor->middlename) . ' ';
 					}
@@ -198,4 +198,4 @@ if ($this->contributors) {
 	</form>
 <?php } else { ?>
 	<p><?php echo Lang::txt('COM_TOOLS_AUTHORS_NONE_FOUND'); ?></p>
-<?php } ?>
+<?php } 

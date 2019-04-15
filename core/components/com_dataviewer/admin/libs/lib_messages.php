@@ -27,4 +27,3 @@ function db_show_msg()
 
 	$_SESSION['databases']['notifications'] = array();
 }
-?>

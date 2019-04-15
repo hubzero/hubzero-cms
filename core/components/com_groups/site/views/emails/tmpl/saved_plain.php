@@ -60,20 +60,26 @@ $message .= "\t" . Lang::txt('Logo:') . ' ' . ($this->group->get('logo') ? $base
 $message .= "\t" . Lang::txt('Membership Settings/Join Policy:') . ' ';
 	switch ($this->group->get('join_policy'))
 	{
-		case 3: $policy = Lang::txt('Closed');      break;
-		case 2: $policy = Lang::txt('Invite Only'); break;
-		case 1: $policy = Lang::txt('Restricted');  break;
+		case 3: $policy = Lang::txt('Closed');
+break;
+		case 2: $policy = Lang::txt('Invite Only');
+break;
+		case 1: $policy = Lang::txt('Restricted');
+break;
 		case 0:
-		default: $policy = Lang::txt('Open'); break;
+		default: $policy = Lang::txt('Open');
+break;
 	}
 	$message .= $policy . "\n\n";
 
 $message .= "\t" . Lang::txt('Discoverability:') . ' ';
 	switch ($this->group->get('discoverability'))
 	{
-		case 1:  $discoverability = Lang::txt('Hidden'); break;
+		case 1:  $discoverability = Lang::txt('Hidden');
+break;
 		case 0:
-		default: $discoverability = Lang::txt('Visible'); break;
+		default: $discoverability = Lang::txt('Visible');
+break;
 	}
 	$message .= $discoverability . "\n\n";
 

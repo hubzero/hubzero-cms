@@ -35,4 +35,3 @@ function dv_config_current()
 	print json_format(json_encode($dv_conf));
 	exit;
 }
-?>

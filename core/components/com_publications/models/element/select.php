@@ -40,10 +40,10 @@ use Lang;
 class Select extends Base
 {
 	/**
-	* Element type
-	*
-	* @var  string
-	*/
+  * Element type
+  *
+  * @var  string
+  */
 	protected $_name = 'Select list';
 
 	/**
@@ -71,7 +71,7 @@ class Select extends Base
 			$options[] = Html::select('option', $val, Lang::txt($text));
 		}
 
-		return '<span class="field-wrap">' . Html::select('genericlist',  $options, $control_name.'['.$name.']', $class, 'value', 'text', $value, $control_name.'-'.$name) . '</span>';
+		return '<span class="field-wrap">' . Html::select('genericlist', $options, $control_name.'['.$name.']', $class, 'value', 'text', $value, $control_name.'-'.$name) . '</span>';
 	}
 
 	/**

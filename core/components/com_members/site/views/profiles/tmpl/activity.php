@@ -89,16 +89,26 @@ $this->css()
 							$html .= Lang::txt('UNIVERSITY_STAFF');
 							break;
 						case 'precollege':
-						case 'precollegefacultystaff': $html .= Lang::txt('PRECOLLEGE_STAFF'); break;
-						case 'precollegestudent':  $html .= Lang::txt('PRECOLLEGE_STUDENT'); break;
-						case 'educational': $html .= Lang::txt('EDUCATIONAL');          break;
-						case 'nationallab': $html .= Lang::txt('NATIONALLAB');  break;
-						case 'industry':    $html .= Lang::txt('INDUSTRY');   break;
-						case 'government':  $html .= Lang::txt('GOVERNMENT');    break;
-						case 'military':    $html .= Lang::txt('MILITARY');             break;
-						case 'personal':    $html .= Lang::txt('PERSONAL');             break;
-						case 'unemployed':  $html .= Lang::txt('UNEMPLOYED'); break;
-						default: $html .=  $users[$userkey]['orgtype']; break;
+						case 'precollegefacultystaff': $html .= Lang::txt('PRECOLLEGE_STAFF');
+break;
+						case 'precollegestudent':  $html .= Lang::txt('PRECOLLEGE_STUDENT');
+break;
+						case 'educational': $html .= Lang::txt('EDUCATIONAL');
+break;
+						case 'nationallab': $html .= Lang::txt('NATIONALLAB');
+break;
+						case 'industry':    $html .= Lang::txt('INDUSTRY');
+break;
+						case 'government':  $html .= Lang::txt('GOVERNMENT');
+break;
+						case 'military':    $html .= Lang::txt('MILITARY');
+break;
+						case 'personal':    $html .= Lang::txt('PERSONAL');
+break;
+						case 'unemployed':  $html .= Lang::txt('UNEMPLOYED');
+break;
+						default: $html .=  $users[$userkey]['orgtype'];
+break;
 					}
 					$html .= '</td>'."\n";
 					$html .= "\t\t\t".'<td class="textual-data">'. $this->escape(stripslashes($users[$userkey]['org'])) .'</td>'."\n";

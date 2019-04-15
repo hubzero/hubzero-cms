@@ -64,7 +64,7 @@ $active_key = Request::get('tab_active_key', null) ? Request::get('tab_active_ke
 			$active = true;
 		}
 		?>
-		<li id="sm-<?php echo $name; ?>"<?php echo ($active ? ' class="active"' : ''); ?>>
+		<li id="sm-<?php echo $name; ?>"<?php echo $active ? ' class="active"' : ''; ?>>
 			<a class="tab" data-rel="<?php echo $name; ?>" href="<?php echo Route::url($url); ?>"><span><?php echo $cat[$name]; ?></span></a>
 		</li>
 		<?php

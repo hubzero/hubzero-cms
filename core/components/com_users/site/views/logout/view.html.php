@@ -121,8 +121,8 @@ class UsersViewLogout extends JViewLegacy
 			$url = base64_encode($params->get($type));
 		}
 
-		$this->assign('image' , $image);
-		$this->assign('type'  , $type);
+		$this->assign('image', $image);
+		$this->assign('type', $type);
 		$this->assign('return', $url);
 
 		$this->assignRef('params', $params);
@@ -141,4 +141,3 @@ class UsersViewLogout extends JViewLegacy
 	{
 	}
 }
-

@@ -44,4 +44,3 @@ controller_exec();
 
 // Restore umask
 umask($conf['sys_umask']);
-?>

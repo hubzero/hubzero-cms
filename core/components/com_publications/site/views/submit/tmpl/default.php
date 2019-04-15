@@ -8,9 +8,9 @@ $this->css()
 // Add projects stylesheet
 \Hubzero\Document\Assets::addComponentStylesheet('com_projects');
 \Hubzero\Document\Assets::addComponentScript('com_projects');
-\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','uploader');
-\Hubzero\Document\Assets::addPluginScript('projects', 'files','jquery.fileuploader.js');
-\Hubzero\Document\Assets::addPluginScript('projects', 'files','jquery.queueuploader.js');
+\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files', 'uploader');
+\Hubzero\Document\Assets::addPluginScript('projects', 'files', 'jquery.fileuploader.js');
+\Hubzero\Document\Assets::addPluginScript('projects', 'files', 'jquery.queueuploader.js');
 
 ?>
 <header id="content-header">

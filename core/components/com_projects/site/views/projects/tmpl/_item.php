@@ -184,7 +184,7 @@ $privacyTxt = $this->row->isPublic()
 				{
 					echo '<span class="italic pending">' . Lang::txt('COM_PROJECTS_STATUS_PENDING_SPS') . '</span>';
 				}
-				else if ($params->get('grant_approval') || $params->get('grant_status') == 1 )
+				else if ($params->get('grant_approval') || $params->get('grant_status') == 1)
 				{
 					echo '<span class="active green">' . Lang::txt('COM_PROJECTS_APPROVAL_CODE') . ': ' . $params->get('grant_approval', '(N/A)') . '</span>';
 				}

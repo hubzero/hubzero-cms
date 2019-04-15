@@ -58,7 +58,7 @@ if ($comment)
 // Project owner
 if ($this->project->isProvisioned())
 {
-	$owner = NULL;
+	$owner = null;
 }
 else
 {

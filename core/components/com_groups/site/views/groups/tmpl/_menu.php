@@ -138,7 +138,8 @@ defined('_HZEXEC_') or die();
 							$attribs = array();
 							foreach ($option as $key => $val)
 							{
-								if ($key == 'text') continue;
+								if ($key == 'text') { continue;
+								}
 
 								$attribs[] = $key . '="' . $this->escape($val) . '"';
 							}

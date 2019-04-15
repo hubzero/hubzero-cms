@@ -40,7 +40,7 @@ $link = rtrim($base, DS) . DS . trim($sef, DS);
 
 $message  = Lang::txt('COM_PROJECTS_EMAIL_ADMIN_NEW_PUB_STATUS') . "\n";
 $message .= '-------------------------------' . "\n";
-$message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->get('title') . ' (' . $this->project->get('alias') ;
+$message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->get('title') . ' (' . $this->project->get('alias');
 
 if ($this->project->isProvisioned())
 {
@@ -77,5 +77,3 @@ $message = str_replace('<br />', '', $message);
 $message = preg_replace('/\n{3,}/', "\n\n", $message);
 
 echo $message;
-
-?>

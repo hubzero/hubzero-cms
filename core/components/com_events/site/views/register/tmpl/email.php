@@ -67,7 +67,7 @@ if ($this->race)
 {
 	//$message .= 'Race: '.implode(', ',$race) ."\n\n";
 	$message .= Lang::txt('COM_EVENTS_RACE') . ': ';
-	foreach ($this->race as $r=>$t)
+	foreach ($this->race as $r => $t)
 	{
 		$message .= ($r != 'nativetribe') ? $r.', ' : '';
 	}
