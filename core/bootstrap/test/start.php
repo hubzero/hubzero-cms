@@ -130,7 +130,7 @@ $app['app'] = $app;
 |
 */
 
-$app['config'] = new \Hubzero\Config\Repository($client);
+$app['config'] = new Hubzero\Config\Repository($client);
 
 /*
 |--------------------------------------------------------------------------
@@ -146,6 +146,9 @@ $providers = PATH_CORE . DS . 'bootstrap' . DS . $client .  DS . 'services.php';
 $services  = file_exists($providers) ? require $providers : array();
 
 $providers = PATH_CORE . DS . 'bootstrap' . DS . ucfirst($client) .  DS . 'services.php';
+$services  = file_exists($providers) ? array_merge($services, require $providers) : $services;
+
+$providers = PATH_APP . DS . 'bootstrap' . DS . $client .  DS . 'services.php';
 $services  = file_exists($providers) ? array_merge($services, require $providers) : $services;
 
 foreach ($services as $service)
@@ -167,6 +170,9 @@ $facades = PATH_CORE . DS . 'bootstrap' . DS . $client .  DS . 'aliases.php';
 $aliases = file_exists($facades) ? require $facades : array();
 
 $facades = PATH_CORE . DS . 'bootstrap' . DS . ucfirst($client) .  DS . 'aliases.php';
+$aliases = file_exists($facades) ? array_merge($aliases, require $facades) : $aliases;
+
+$facades = PATH_APP . DS . 'bootstrap' . DS . $client .  DS . 'aliases.php';
 $aliases = file_exists($facades) ? array_merge($aliases, require $facades) : $aliases;
 
 $app->registerFacades($aliases);
