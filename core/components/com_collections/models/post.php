@@ -392,4 +392,3 @@ class Post extends Base
 		return $content;
 	}
 }
-

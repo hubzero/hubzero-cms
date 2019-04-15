@@ -38,7 +38,7 @@ defined('_HZEXEC_') or die();
 
 	<div id="content-header-extra">
 		<p>
-			<a class="btn" href="/cart"><?php echo  Lang::txt('COM_STOREFRONT_CART'); ?></a>
+			<a class="btn" href="/cart"><?php echo Lang::txt('COM_STOREFRONT_CART'); ?></a>
 		</p>
 	</div>
 </header>

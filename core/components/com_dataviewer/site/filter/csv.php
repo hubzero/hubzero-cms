@@ -66,11 +66,11 @@ function filter($res, &$dd, $ob_mode = false)
 		foreach ($rec as $key => $val) {
 			if (!isset($dd['cols'][$key]['hide'])) {
 
-				if ($val != NULL) {
+				if ($val != null) {
 					$val = html_entity_decode(strip_tags($val), ENT_QUOTES, 'UTF-8');
 				}
 
-				if ($val == NULL) {
+				if ($val == null) {
 					$val = '';
 				}
 

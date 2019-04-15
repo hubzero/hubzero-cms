@@ -72,7 +72,7 @@ class Select extends Base
 			$options[] = \Html::select('option', $val, $text);
 		}
 
-		return '<span class="field-wrap">' . \Html::select('genericlist',  $options, $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . '-' . $name) . '</span>';
+		return '<span class="field-wrap">' . \Html::select('genericlist', $options, $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . '-' . $name) . '</span>';
 	}
 
 	/**

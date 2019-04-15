@@ -53,4 +53,3 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($contro
 $controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
-

@@ -250,7 +250,7 @@ class Help extends AdminController
 		// Loop through each component and pages group passed in
 		foreach ($componentAndPages as $component)
 		{
-			$name = ucfirst(str_replace('com_', '',$component['name']));
+			$name = ucfirst(str_replace('com_', '', $component['name']));
 
 			// Build content to return
 			$content .= '<' . $headingLevel . '>' . Lang::txt('COM_HELP_COMPONENT_HELP', $name) . '</' . $headingLevel . '>';

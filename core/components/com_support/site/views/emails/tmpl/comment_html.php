@@ -235,7 +235,7 @@ $this->css(
 		<table width="100%" id="ticket-comments" style="border-collapse: collapse; margin: 2em 0 0 0; padding: 0" cellpadding="0" cellspacing="0" border="0">
 			<tbody>
 				<tr>
-					<th style="text-align: left;" align="left"><?php echo ($this->comment->creator->get('id') ? $this->comment->creator->get('name') . ' (' . $this->comment->creator->get('username') . ')' : Lang::txt('JADMINISTRATOR')); ?></th>
+					<th style="text-align: left;" align="left"><?php echo $this->comment->creator->get('id') ? $this->comment->creator->get('name') . ' (' . $this->comment->creator->get('username') . ')' : Lang::txt('JADMINISTRATOR'); ?></th>
 					<th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide"><?php echo Lang::txt('COM_SUPPORT_TICKET_CREATED', $this->comment->created('time'), $this->comment->created('date')); ?></span></th>
 				</tr>
 				<tr>

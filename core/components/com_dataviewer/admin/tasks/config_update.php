@@ -29,4 +29,3 @@ function dv_config_update()
 	header("Location: $url");
 	exit;
 }
-?>

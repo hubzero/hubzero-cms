@@ -37,7 +37,7 @@ defined('_HZEXEC_') or die();
 
 	<div id="content-header-extra">
 		<p>
-			<a class="btn" href="/cart"><?php echo  Lang::txt('COM_STOREFRONT_CART'); ?></a>
+			<a class="btn" href="/cart"><?php echo Lang::txt('COM_STOREFRONT_CART'); ?></a>
 		</p>
 	</div>
 </header>
@@ -169,7 +169,7 @@ if (!empty($this->notifications))
 					<?php if ($this->inStock && $this->productAvailable) { ?>
 						<p class="submit">
 							<input type="submit" value="Add to cart"
-								   class="btn <?php  echo($addToCartEnabled ? 'enabled' : 'disabled'); ?>"
+								   class="btn <?php  echo $addToCartEnabled ? 'enabled' : 'disabled'; ?>"
 								   name="addToCart" id="addToCart" />
 						</p>
 					<?php } ?>

@@ -35,8 +35,8 @@ namespace Components\Courses\Models\Assets;
 use Filesystem;
 
 /**
-* Video Asset handler class
-*/
+ * Video Asset handler class
+ */
 class Video extends File
 {
 	/**

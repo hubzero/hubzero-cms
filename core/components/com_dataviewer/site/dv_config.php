@@ -15,7 +15,7 @@ global $html_path, $com_name, $dv_conf;
 
 $html_path = str_replace(PATH_ROOT, '', __DIR__) . '/html';
 $com_name = basename(dirname(__DIR__));
-$com_name = str_replace('com_', '' , $com_name);
+$com_name = str_replace('com_', '', $com_name);
 $com_name = trim($com_name, DS);
 $com_path = str_replace(PATH_ROOT, '', __DIR__);
 
@@ -58,4 +58,3 @@ if ($acl_groups != '') {
 } else {
 	$dv_conf['acl']['allowed_groups'] = false;
 }
-?>

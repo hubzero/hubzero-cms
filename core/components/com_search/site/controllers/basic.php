@@ -112,4 +112,3 @@ class Basic extends SiteController
 		$this->view->display();
 	}
 }
-

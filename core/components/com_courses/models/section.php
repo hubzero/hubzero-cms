@@ -75,63 +75,63 @@ class Section extends Base
 	 *
 	 * @var object
 	 */
-	private $_roles = NULL;
+	private $_roles = null;
 
 	/**
 	 * List of members
 	 *
 	 * @var object
 	 */
-	private $_members = NULL;
+	private $_members = null;
 
 	/**
 	 * Member
 	 *
 	 * @var object
 	 */
-	private $_member = NULL;
+	private $_member = null;
 
 	/**
 	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
-	private $_codes = NULL;
+	private $_codes = null;
 
 	/**
 	 * \Components\Courses\Models\Section\Code
 	 *
 	 * @var object
 	 */
-	private $_code = NULL;
+	private $_code = null;
 
 	/**
 	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
-	private $_dates = NULL;
+	private $_dates = null;
 
 	/**
 	 * \Components\Courses\Models\Section\Date
 	 *
 	 * @var object
 	 */
-	private $_date = NULL;
+	private $_date = null;
 
 	/**
 	 * \Components\Courses\Models\Section\Badge
 	 *
 	 * @var object
 	 */
-	private $_badge = NULL;
+	private $_badge = null;
 
 	/**
 	 * Registry
 	 *
 	 * @var object
 	 */
-	private $_params = NULL;
+	private $_params = null;
 
 	/**
 	 * Constructor
@@ -767,7 +767,7 @@ class Section extends Base
 	 * Get section badge
 	 *
 	 * @return     obj
-	*/
+  */
 	public function badge()
 	{
 		if (!isset($this->_badge))

@@ -33,7 +33,7 @@ $id = str_replace('resource-', '', $this->result['id']);
 $extras = Event::trigger('resources.onResourcesList', array($id));
 ?>
 
-<div class="result <?php echo (isset($this->result['access_level']) ? $this->result['access_level'] : 'public'); ?>" id="<?php echo $this->result['id']; ?>">
+<div class="result <?php echo isset($this->result['access_level']) ? $this->result['access_level'] : 'public'; ?>" id="<?php echo $this->result['id']; ?>">
 	<div class="result-body">
 		<!-- Cateogory : mandatory -->
 		<span class="result-category"><?php echo ucfirst($this->result['hubtype']); ?></span>
@@ -79,10 +79,10 @@ $extras = Event::trigger('resources.onResourcesList', array($id));
 				$fullCitation .= !empty($year) ? ' ('. $year . '). ' : '. ';
 				$title = !empty($this->result['title']) ? $this->result['title'] : '';
 				$title = in_array(substr(trim($title), -1), array('.', '?', '!')) ? $title : $title . '.';
-				$fullCitation .= $title . ' '; 
+				$fullCitation .= $title . ' ';
 				$journalTitle = !empty($this->result['journaltitle_s']) ? $this->result['journaltitle_s'] : '';
 				$journalTitle = in_array(substr(trim($journalTitle), -1), array('.', '?', '!')) || empty($journalTitle) ? $journalTitle : $journalTitle . '.';
-				$fullCitation .= '<em>' . $journalTitle . '</em> '; 
+				$fullCitation .= '<em>' . $journalTitle . '</em> ';
 				$fullCitation .= !empty($this->result['volumeno_s']) ? '<em>' . $this->result['volumeno_s']  . '</em>' : '';
 				$issueNumber = '';
 				if (!empty($this->result['issuenomonth_s']))
@@ -93,7 +93,6 @@ $extras = Event::trigger('resources.onResourcesList', array($id));
 						$subStrNum = strpos($issueNumber, '/');
 						$issueNum = substr($issueNumber, 0, $subStrNum);
 					}
-					
 					$issueNumber = !empty($issueNum) ? $issueNum : $issueNumber;
 					$issueNumber = '(' . $issueNumber . ').';
 				}

@@ -106,12 +106,12 @@ $MY_SELF   = str_replace('&', '&amp;', $MY_SELF);
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'S','Directory Name',  "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'T','Number of Files', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'H','Total Hits',      "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'Z','Total Size',      "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'C','Avg. Hits',       "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'A','Avg. Size',       "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'S', 'Directory Name', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'T', 'Number of Files', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'H', 'Total Hits', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'Z', 'Total Size', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'C', 'Avg. Hits', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'A', 'Avg. Size', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -138,12 +138,24 @@ $MY_SELF   = str_replace('&', '&amp;', $MY_SELF);
 	{
 		switch ($this->MYREQUEST['SORT1'])
 		{
-			case 'A': $kn = sprintf('%015d-', $v['size'] / $v['ents']); break;
-			case 'T': $kn = sprintf('%015d-', $v['ents']);              break;
-			case 'H': $kn = sprintf('%015d-', $v['hits']);              break;
-			case 'Z': $kn = sprintf('%015d-', $v['size']);              break;
-			case 'C': $kn = sprintf('%015d-', $v['hits'] / $v['ents']); break;
-			case 'S': $kn = $k;                                         break;
+			case 'A':
+				$kn = sprintf('%015d-', $v['size'] / $v['ents']);
+				break;
+			case 'T':
+				$kn = sprintf('%015d-', $v['ents']);
+				break;
+			case 'H':
+				$kn = sprintf('%015d-', $v['hits']);
+				break;
+			case 'Z':
+				$kn = sprintf('%015d-', $v['size']);
+				break;
+			case 'C':
+				$kn = sprintf('%015d-', $v['hits'] / $v['ents']);
+				break;
+			case 'S':
+				$kn = $k;
+				break;
 		}
 		$list[$kn . $k] = array($k, $v['ents'], $v['hits'], $v['size']);
 	}
@@ -153,8 +165,12 @@ $MY_SELF   = str_replace('&', '&amp;', $MY_SELF);
 		// sort list
 		switch ($this->MYREQUEST['SORT2'])
 		{
-			case "A":	krsort($list);	break;
-			case "D":	ksort($list);	break;
+			case "A":
+				krsort($list);
+				break;
+			case "D":
+				ksort($list);
+				break;
 		}
 		// output list
 		$i = 0;

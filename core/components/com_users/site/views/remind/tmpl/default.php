@@ -5,7 +5,7 @@ Html::behavior('keepalive');
 Html::behavior('formvalidation');
 ?>
 
-<?php if ($this->params->get('show_page_title',1)) : ?>
+<?php if ($this->params->get('show_page_title', 1)) : ?>
 <header id="content-header">
 	<h2><?php echo $this->escape($this->params->get('page_title')) ?></h2>
 </header>

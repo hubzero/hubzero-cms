@@ -69,13 +69,13 @@ class Documentation extends Base implements CommandInterface
 		// Output error messages
 		foreach ($documentation['errors'] as $error)
 		{
-			$this->output->addLine($error , 'error');
+			$this->output->addLine($error, 'error');
 		}
 
 		// Successfully processed the following files
 		foreach ($documentation['files'] as $file)
 		{
-			$this->output->addLine('Successfully processed the file: ' . $file , 'success');
+			$this->output->addLine('Successfully processed the file: ' . $file, 'success');
 		}
 	}
 

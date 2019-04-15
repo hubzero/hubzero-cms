@@ -118,7 +118,7 @@ class SingleSkuProduct extends Product
 		$sku = $warehouse->getProductSkus($this->data->id);
 
 		// Must be just one SKU
-		if (sizeof($sku) != 1)
+		if (count($sku) != 1)
 		{
 			throw new \Exception(Lang::txt('Only one SKU is allowed'));
 		}

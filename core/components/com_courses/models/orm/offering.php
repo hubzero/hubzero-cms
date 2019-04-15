@@ -97,7 +97,7 @@ class Offering extends Relational
 	 *
 	 * @var  object
 	 */
-	public $params = NULL;
+	public $params = null;
 
 	/**
 	 * Generates automatic owned by field value
@@ -113,7 +113,7 @@ class Offering extends Relational
 		if (strlen($alias) > 100)
 		{
 			$alias = substr($alias . ' ', 0, 100);
-			$alias = substr($alias, 0, strrpos($alias,' '));
+			$alias = substr($alias, 0, strrpos($alias, ' '));
 		}
 		$alias = str_replace(' ', '_', $alias);
 

@@ -446,12 +446,12 @@ class Collection
 				}
 				else
 				{
-					return NULL;
+					return null;
 				}
 			}
 			else
 			{
-				return NULL;
+				return null;
 			}
 		}
 		return $this->data->image;

@@ -94,7 +94,7 @@ else if ($this->version == 'current')
 	$html .= 'currentversion">' . ucfirst(Lang::txt('COM_TOOLS_VERSION')) . ' ' . $this->vnum . ' - ' . Lang::txt('COM_TOOLS_CONTRIBTOOL_PUBLISHED_NOW');
 }
 $html .= ($this->version == 'dev' && $this->status['published']) ? ' <span><a href="'.Route::url('index.php?option=' . $this->option . '&task=' . $this->controller . '&step='.$this->stage.'&app=' . $this->row->alias . '&editversion=current') . '">' . Lang::txt('COM_TOOLS_CONTRIBTOOL_CHANGE_CURRENT_VERSION') . '</a></span>' : '';
-$html .= ($this->version == 'current' && $this->status['published']) ? ' <span><a href="'.Route::url('index.php?option=' . $this->option . '&task=' . $this->controller . '&step='.$this->stage.'&app=' . $this->row->alias) . '">' . Lang::txt('COM_TOOLS_CONTRIBTOOL_CHANGE_UPCOMING_VERSION') . '</a></span>' : '' ;
+$html .= ($this->version == 'current' && $this->status['published']) ? ' <span><a href="'.Route::url('index.php?option=' . $this->option . '&task=' . $this->controller . '&step='.$this->stage.'&app=' . $this->row->alias) . '">' . Lang::txt('COM_TOOLS_CONTRIBTOOL_CHANGE_UPCOMING_VERSION') . '</a></span>' : '';
 $html .= '</p>';
 
 echo $html;

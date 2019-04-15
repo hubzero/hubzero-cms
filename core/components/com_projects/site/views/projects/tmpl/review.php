@@ -38,7 +38,7 @@ if ($this->reviewer == 'sponsored')
 
 	$b_action = $approved ?
 			Lang::txt('COM_PROJECTS_SAVE_SPS_APPROVED') :
-			Lang::txt('COM_PROJECTS_SAVE_SPS') ;
+			Lang::txt('COM_PROJECTS_SAVE_SPS');
 }
 else {
 	$title = $this->model->isPending()
@@ -64,7 +64,7 @@ $notes = \Components\Projects\Helpers\Html::getAdminNotes($this->model->get('adm
 <?php
 // Display error  message
 if ($this->getError()) {
-	echo ('<p class="error">'.$this->getError().'</p>');
+	echo '<p class="error">'.$this->getError().'</p>';
 } ?>
 
 <?php if ($this->model->exists()) { ?>
@@ -123,7 +123,8 @@ if ($this->getError()) {
 			</tr>
 			<tr>
 				<td>
-					<label for "grant_approval" class="<?php if ($approved) { echo ' spsapproved'; } else { echo 'spsapproval'; } ?>"><?php echo $approved
+					<label for "grant_approval" class="<?php if ($approved) { echo ' spsapproved';
+} else { echo 'spsapproval'; } ?>"><?php echo $approved
 						? ucfirst(Lang::txt('COM_PROJECTS_APPROVAL_CODE_APPROVED'))
 						: Lang::txt('COM_PROJECTS_APPROVAL_CODE_PROVIDE'); ?>:
 					 <input name="grant_approval" id="grant_approval" maxlength="250" type="text" value="<?php echo $this->params->get('grant_approval'); ?>"  />

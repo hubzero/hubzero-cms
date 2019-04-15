@@ -72,4 +72,3 @@ function dv_add_css($css, $local = true)
 	}
 
 }
-?>

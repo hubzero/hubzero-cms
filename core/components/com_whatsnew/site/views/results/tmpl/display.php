@@ -69,7 +69,7 @@ foreach ($this->cats as $cat)
 		{
 			$a = ' class="active"';
 
-			Pathway::append($cat['title'],'index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob)));
+			Pathway::append($cat['title'], 'index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob)));
 		}
 
 		// Build the HTML

@@ -176,7 +176,7 @@ $site = rtrim(Request::base(), '/');
 									</tr>
 									<tr>
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Tags:</th>
-										<td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?php echo ($tags ? $tags : '--'); ?></td>
+										<td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?php echo $tags ? $tags : '--'; ?></td>
 									</tr>
 								<?php } ?>
 									<tr>
@@ -274,7 +274,7 @@ $site = rtrim(Request::base(), '/');
 									</tr>
 									<tr>
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Tags:</th>
-										<td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?php echo ($tags ? $tags : '--'); ?></td>
+										<td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?php echo $tags ? $tags : '--'; ?></td>
 									</tr>
 								<?php } ?>
 									<tr>
@@ -381,7 +381,7 @@ $site = rtrim(Request::base(), '/');
 							#<?php echo $ticket->id; ?>
 						</td>
 						<td width="75%" colspan="2" style="font-weight: normal; padding: 8px 8px 0 8px; text-align: left;" align="left">
-							<?php echo (!$this->config->get('email_terse') ? $this->escape($ticket->summary) : Lang::txt('COM_SUPPORT_TICKET')); ?>
+							<?php echo !$this->config->get('email_terse') ? $this->escape($ticket->summary) : Lang::txt('COM_SUPPORT_TICKET'); ?>
 						</td>
 					</tr>
 					<tr>

@@ -34,10 +34,16 @@ defined('_HZEXEC_') or die();
 $database = \App::get('db');
 switch ($this->filters['sortby'])
 {
-	case 'date_created': $show_date = 1; break;
-	case 'date_modified': $show_date = 2; break;
+	case 'date_created':
+		$show_date = 1;
+		break;
+	case 'date_modified':
+		$show_date = 2;
+		break;
 	case 'date':
-	default: $show_date = 3; break;
+	default:
+		$show_date = 3;
+		break;
 }
 
 // Get version authors
@@ -60,10 +66,18 @@ foreach ($this->results as $line)
 	// Set the display date
 	switch ($show_date)
 	{
-		case 0: $thedate = ''; break;
-		case 1: $thedate = $line->created();      break;
-		case 2: $thedate = $line->modified();     break;
-		case 3: $thedate = $line->published();    break;
+		case 0:
+			$thedate = '';
+			break;
+		case 1:
+			$thedate = $line->created();
+			break;
+		case 2:
+			$thedate = $line->modified();
+			break;
+		case 3:
+			$thedate = $line->published();
+			break;
 	}
 
 	// Display List of items

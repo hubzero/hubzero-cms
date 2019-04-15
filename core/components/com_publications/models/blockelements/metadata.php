@@ -38,10 +38,10 @@ use Components\Publications\Models\BlockElement as Base;
 class Metadata extends Base
 {
 	/**
-	* Element name
-	*
-	* @var		string
-	*/
+  * Element name
+  *
+  * @var		string
+  */
 	protected	$_name = 'metadata';
 
 	/**
@@ -49,7 +49,7 @@ class Metadata extends Base
 	 *
 	 * @return  object
 	 */
-	public function getStatus( $manifest, $pub = NULL )
+	public function getStatus( $manifest, $pub = null )
 	{
 		$status = new \Components\Publications\Models\Status();
 
@@ -57,8 +57,8 @@ class Metadata extends Base
 		$field	  = $manifest->params->field;
 		$required = $manifest->params->required;
 		$key 	  = $manifest->params->aliasmap;
-		$default  = isset($manifest->params->default) ? $manifest->params->default : NULL;
-		$value	  = isset($pub->$key) ? $pub->$key : NULL;
+		$default  = isset($manifest->params->default) ? $manifest->params->default : null;
+		$value	  = isset($pub->$key) ? $pub->$key : null;
 
 		$incomplete = 0;
 
@@ -76,7 +76,7 @@ class Metadata extends Base
 		// Metadata field (special treatment)
 		if ($field == 'metadata')
 		{
-			$value = isset($data[$key]) ? $data[$key] : NULL;
+			$value = isset($data[$key]) ? $data[$key] : null;
 		}
 
 		// Default value not replaced?
@@ -108,8 +108,8 @@ class Metadata extends Base
 	 *
 	 * @return  object
 	 */
-	public function render( $elementid, $manifest, $pub = NULL, $viewname = 'edit',
-		$status = NULL, $master = NULL, $order = 0 )
+	public function render( $elementid, $manifest, $pub = null, $viewname = 'edit',
+		$status = null, $master = null, $order = 0 )
 	{
 		$html   = '';
 
@@ -146,8 +146,8 @@ class Metadata extends Base
 	 *
 	 * @return  object
 	 */
-	public function drawItem( $elementId, $manifest, $pub = NULL,
-		$status = NULL, $master = NULL, $viewname = 'freeze')
+	public function drawItem( $elementId, $manifest, $pub = null,
+		$status = null, $master = null, $viewname = 'freeze')
 	{
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -173,9 +173,9 @@ class Metadata extends Base
 	 *
 	 * @return  object
 	 */
-	public function drawFormField( $elementId, $manifest, $pub = NULL,
-		$status = NULL, $active = 0, $collapse = 0, $total = 0,
-		$master = NULL, $order = 0)
+	public function drawFormField( $elementId, $manifest, $pub = null,
+		$status = null, $active = 0, $collapse = 0, $total = 0,
+		$master = null, $order = 0)
 	{
 		$view = new \Hubzero\Plugin\View(
 			array(

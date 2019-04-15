@@ -239,7 +239,7 @@ class PdfFormRespondent
 		$dbh->setQuery('SELECT pfr.question_id, answer_id, pfa.id AS correct_answer_id, version FROM #__courses_form_latest_responses_view pfr INNER JOIN #__courses_form_questions pfq ON pfq.id = pfr.question_id INNER JOIN #__courses_form_answers pfa ON pfr.question_id = pfa.question_id AND pfa.correct WHERE pfr.respondent_id = '.$this->id);
 
 		$rv = array(
-			'summary' => array('correct' => 0, 'total' => 0, 'score' => NULL, 'version' => NULL),
+			'summary' => array('correct' => 0, 'total' => 0, 'score' => null, 'version' => null),
 			'detail' => array()
 		);
 

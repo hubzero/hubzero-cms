@@ -33,7 +33,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$open             = ($this->code == '@OPEN') ? 1 : 0 ;
+$open             = ($this->code == '@OPEN') ? 1 : 0;
 $this->codeaccess = ($this->code == '@OPEN') ? 'open' : 'closed';
 $newstate         = ($this->action == 'confirm') ? 'Approved' :  $this->status['state'];
 //$this->statuspath = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app='.$this->status['toolid']);
@@ -110,13 +110,13 @@ $this->css('pipeline.css')
 						<input type="hidden" name="curcode" id="curcode" value="<?php echo $open; ?>" />
 						<input type="hidden" name="newstate" value="<?php echo $this->escape($newstate); ?>" />
 						<input type="hidden" name="action" value="<?php echo $this->escape($this->action); ?>" />
-						<input type="hidden" name="toolid" value="<?php echo$this->escape( $this->status['toolid']); ?>" />
+						<input type="hidden" name="toolid" value="<?php echo $this->escape( $this->status['toolid']); ?>" />
 						<input type="hidden" name="alias" value="<?php echo $this->escape($this->status['toolname']); ?>" />
 						<?php echo Html::input('token'); ?>
 					</div>
 					<div id="lic">
 						<label><?php echo Lang::txt('LICENSE_TEMPLATE'); ?>:</label>
-						<?php echo \Components\Tools\Helpers\Html::formSelect('templates', 'templates',  $licenseChoices, $this->license_choice['template'],'shifted',''); ?>
+						<?php echo \Components\Tools\Helpers\Html::formSelect('templates', 'templates', $licenseChoices, $this->license_choice['template'], 'shifted', ''); ?>
 					</div>
 					<div id="legendnotes">
 						<p>

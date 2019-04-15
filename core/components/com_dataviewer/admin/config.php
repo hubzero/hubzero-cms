@@ -23,7 +23,7 @@ define('DB_RID', $_SESSION['db']['__rid']);
 global $conf, $com_name;
 $document = App::get('document');
 $com_name = Request::get('option');
-$com_name = str_replace('com_', '' , $com_name);
+$com_name = str_replace('com_', '', $com_name);
 
 $com_path = str_replace(PATH_ROOT, '', __DIR__);
 
@@ -40,7 +40,7 @@ $conf['app_title'] = 'Dataviewer';
 // Base directory
 $db_params = Component::params('com_databases');
 $conf['dir_base'] = $db_params->get('base_dir');
-if ($conf['dir_base'] == NULL || $conf['dir_base'] == '') {
+if ($conf['dir_base'] == null || $conf['dir_base'] == '') {
 	$conf['dir_base'] = '/db/databases';
 }
 
@@ -58,5 +58,3 @@ if ($conf['modes']['db']['enabled']) {
 
 // Makesure the files are not accessible by other
 $conf['sys_umask'] = umask(0007);
-
-?>

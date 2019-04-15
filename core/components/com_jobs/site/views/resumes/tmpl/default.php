@@ -139,7 +139,8 @@ defined('_HZEXEC_') or die();
 					<?php echo Lang::txt('Sort by'); ?>:
 					<div class="together">
 						<input class="option" type="radio" name="sortby" value="lastupdate"<?php if ($filters['sortby']!='bestmatch') { echo ' checked="checked"'; } ?> /> <?php echo Lang::txt('last update'); ?> &nbsp;
-						<input class="option" type="radio" name="sortby" value="bestmatch"<?php if ($filters['sortby']=='bestmatch') { echo ' checked="checked"'; } else if (!$filters['match']) { echo ' disabled="disabled"'; } ?> /> <?php echo Lang::txt('best match'); ?>
+						<input class="option" type="radio" name="sortby" value="bestmatch"<?php if ($filters['sortby']=='bestmatch') { echo ' checked="checked"';
+} else if (!$filters['match']) { echo ' disabled="disabled"'; } ?> /> <?php echo Lang::txt('best match'); ?>
 					</div>
 				</label>
 				<label>

@@ -58,4 +58,3 @@ else
 
 echo '<span class="mini">' . $ownedby . '</span>';
 
-?>

@@ -276,4 +276,3 @@ class Iterator implements \Countable, \Iterator
 		return isset($this->_data[$this->_pos]);
 	}
 }
-

@@ -45,4 +45,3 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($contro
 // Instantiate controller
 $controller = new $controllerName();
 $controller->execute();
-

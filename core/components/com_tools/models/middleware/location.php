@@ -70,4 +70,3 @@ class Location extends Base
 		return $instances[$oid];
 	}
 }
-

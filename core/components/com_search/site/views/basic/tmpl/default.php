@@ -102,9 +102,9 @@ $show_weight = array_key_exists('show_weight', $_GET);
 												$contrib_len = count($contributors);
 											?>
 											Contributor(s):
-											<?php foreach ($contributors as $idx=>$contrib): ?>
+											<?php foreach ($contributors as $idx => $contrib): ?>
 												<?php if (isset($contrib_ids[$idx])): ?>
-												<a href="<?php echo Route::url('index.php?option=com_members&id=' . $contrib_ids[$idx]); ?>"><?php echo $contrib; ?></a><?php if ($idx != $contrib_len - 1) echo ', '; ?>
+												<a href="<?php echo Route::url('index.php?option=com_members&id=' . $contrib_ids[$idx]); ?>"><?php echo $contrib; ?></a><?php if ($idx != $contrib_len - 1) { echo ', ';} ?>
 												<?php else: ?>
 												<?php echo $contrib; ?>
 												<?php endif; ?>
@@ -133,24 +133,27 @@ $show_weight = array_key_exists('show_weight', $_GET);
 							<p class="clear"></p>
 						</div><!-- / .summary -->
 						<?php
-							$last_type = NULL;
+							$last_type = null;
 							if (($children = $res->get_children())):
 								$ctypec = array();
 								foreach ($children as $child)
 								{
-									if (($section = $child->get_section()))
-										if (!array_key_exists($section, $ctypec))
+									if (($section = $child->get_section())) {
+										if (!array_key_exists($section, $ctypec)) {
 											$ctypec[$section] = 1;
-										else
+										} else {
 											++$ctypec[$section];
+										}
+									}
 								}
 								if ($ctypec):
 							?>
 							<ul class="child-types">
-								<?php foreach ($children as $idx=>$child): ?>
+								<?php foreach ($children as $idx => $child): ?>
 									<?php
-										if (!($current_type = $child->get_section()))
+										if (!($current_type = $child->get_section())) {
 											continue;
+										}
 										if (!$last_type):
 									?>
 										<li>
@@ -197,7 +200,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 	<?php elseif (($raw = $this->terms->get_raw())): ?>
 		<p><?php echo Lang::txt('COM_SEARCH_RESULTS_NONE', $this->escape($raw)); ?></p>
 		<?php
-			# raw terms were specified but no chunks were parsed out, meaning they were all stop words, so we can give a quasi-helpful explanation of why nothing turned up
+			// raw terms were specified but no chunks were parsed out, meaning they were all stop words, so we can give a quasi-helpful explanation of why nothing turned up
 			if (!$this->terms->any() || strlen($raw) <= 3):
 		?>
 			<p class="warning"><?php echo Lang::txt('COM_SEARCH_WARNING_SHORT_WORDS'); ?></p>
@@ -218,7 +221,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 						<strong><?php echo Lang::txt('COM_SEARCH_FILTER_ALL'); ?> <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></strong>
 					<?php endif; ?>
 				</li>
-			<?php foreach ($this->results->get_result_counts() as $cat=>$def): ?>
+			<?php foreach ($this->results->get_result_counts() as $cat => $def): ?>
 				<?php if ($def['count']): ?>
 					<li>
 						<?php if ($this->plugin == $cat && !$this->section): ?>
@@ -231,7 +234,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 						if ((!defined($fc_child_flag) || constant($fc_child_flag)) && array_key_exists('sections', $def) && count($def['sections']) > 1):
 						?>
 							<ul>
-							<?php foreach ($def['sections'] as $section_key=>$sdef): ?>
+							<?php foreach ($def['sections'] as $section_key => $sdef): ?>
 								<?php
 								if (!$this->plugin || !$this->section || $cat != $this->plugin || $this->section != $section_key):
 								?>

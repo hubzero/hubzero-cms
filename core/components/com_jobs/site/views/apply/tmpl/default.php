@@ -72,7 +72,7 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
 		$appid = $application->status !=2 ? $application->id : 0;
 		?>
 
-		<?php if ((!$this->admin && User::get('id') == $job->employerid) or ($this->admin && $job->employerid == 1) ) { ?>
+		<?php if ((!$this->admin && User::get('id') == $job->employerid) or ($this->admin && $job->employerid == 1)) { ?>
 			<p class="warning"><?php echo Lang::txt('COM_JOBS_APPLY_WARNING_OWN_AD'); ?></p>
 		<?php } ?>
 
@@ -132,4 +132,4 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
 			</p>
 		</form>
 	</section>
-<?php } ?>
+<?php } 

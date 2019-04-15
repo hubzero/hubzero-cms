@@ -331,7 +331,7 @@ class Version
 
 		$this->_updatedkeys = array();
 
-		foreach ($cvars as $key=>$value)
+		foreach ($cvars as $key => $value)
 		{
 			if ($key{0} != '_')
 			{
@@ -431,7 +431,7 @@ class Version
 
 		if (true)
 		{
-			foreach (self::$_propertyattrmap as $key=>$value)
+			foreach (self::$_propertyattrmap as $key => $value)
 			{
 				$current = $this->__get($key);
 
@@ -623,7 +623,7 @@ class Version
 
 		$this->clear();
 
-		foreach ($result as $key=>$value)
+		foreach ($result as $key => $value)
 		{
 			$this->__set($key, $value);
 		}
@@ -716,7 +716,7 @@ class Version
 
 		$first = true;
 
-		foreach ($classvars as $property=>$value)
+		foreach ($classvars as $property => $value)
 		{
 			if (($property{0} == '_') || in_array($property, $this->_list_keys))
 			{
@@ -770,8 +770,9 @@ class Version
 
 		foreach ($this->_list_keys as $property)
 		{
-			if (!$all && !in_array($property, $this->_updatedkeys))
+			if (!$all && !in_array($property, $this->_updatedkeys)) {
 				continue;
+			}
 
 			if ($property == 'author' || $property == 'xauthor')
 			{
@@ -894,7 +895,7 @@ class Version
 			}
 			else
 			{
-				foreach ($list as $key=>$value)
+				foreach ($list as $key => $value)
 				{
 					$list[$key] = $db->Quote($value);
 				}
@@ -1080,8 +1081,9 @@ class Version
 	{
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
 		{
-			if (empty($property))
+			if (empty($property)) {
 				$property = '(null)';
+			}
 
 			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
 			die();
@@ -1133,8 +1135,9 @@ class Version
 					{
 						$result = $db->loadAssocList();
 					}
-					else
+					else {
 						$result = $db->loadColumn();
+					}
 
 					if ($result !== false)
 					{
@@ -1145,11 +1148,13 @@ class Version
 			}
 		}
 
-		if (isset($this->$property))
+		if (isset($this->$property)) {
 			return $this->$property;
+		}
 
-		if (array_key_exists($property, get_object_vars($this)))
+		if (array_key_exists($property, get_object_vars($this))) {
 			return null;
+		}
 
 		$this->_error("Undefined property " . __CLASS__ . "::$" . $property, E_USER_NOTICE);
 
@@ -1185,9 +1190,9 @@ class Version
 		}
 		else if ($property == 'xauthor')
 		{
-			if (array_key_exists('uid',$value))
+			if (array_key_exists('uid', $value)) {
 				$value = array($value);
-			else if (is_numeric($value))
+			} else if (is_numeric($value))
 			{
 				$val['uid'] = $value;
 				$value[0] = $val;
@@ -1197,14 +1202,15 @@ class Version
 			{
 				unset($val);
 
-				if (is_numeric($nvalue))
+				if (is_numeric($nvalue)) {
 					$val['uid'] = $nvalue;
+				}
 
 				$val['uid'] = isset($nvalue['uid']) ? $nvalue['uid'] : '';
 				$val['name'] = isset($nvalue['name']) ? $nvalue['name'] : '';
 				$val['organization'] = isset($nvalue['organization']) ? $nvalue['organization'] : '';
 
-				if (array_key_exists('uid',$val) && is_numeric($val['uid']))
+				if (array_key_exists('uid', $val) && is_numeric($val['uid']))
 				{
 					$found = false;
 
@@ -1217,8 +1223,9 @@ class Version
 						}
 					}
 
-					if (!$found)
-						$this->xauthor[] = $val ;
+					if (!$found) {
+						$this->xauthor[] = $val;
+					}
 				}
 			}
 		}
@@ -1231,8 +1238,9 @@ class Version
 			$this->$property = $value;
 		}
 
-		if (!in_array($property, $this->_updatedkeys))
+		if (!in_array($property, $this->_updatedkeys)) {
 			$this->_updatedkeys[] = $property;
+		}
 	}
 
 	/**
@@ -1247,8 +1255,9 @@ class Version
 	{
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
 		{
-			if (empty($property))
+			if (empty($property)) {
 				$property = '(null)';
+			}
 
 			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
 			die();
@@ -1269,8 +1278,9 @@ class Version
 	{
 		if (!property_exists(__CLASS__, $property) || $property{0} == '_')
 		{
-			if (empty($property))
+			if (empty($property)) {
 				$property = '(null)';
+			}
 
 			$this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
 			die();

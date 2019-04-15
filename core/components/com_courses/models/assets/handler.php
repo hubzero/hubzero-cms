@@ -36,8 +36,8 @@ use Components\Courses\Models\Base;
 use Components\Courses\Models\Asset;
 
 /**
-* Courses asset handler
-*/
+ * Courses asset handler
+ */
 class Handler
 {
 	/**

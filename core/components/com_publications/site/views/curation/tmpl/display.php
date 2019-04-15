@@ -66,7 +66,7 @@ $this->css()
 		</nav>
 
 		<div class="container-block">
-			<?php if (count($this->rows) > 0 ) { ?>
+			<?php if (count($this->rows) > 0) { ?>
 				<div class="publist">
 					<table class="listing">
 						<thead>
@@ -100,7 +100,7 @@ $this->css()
 										$reviewed  = strtolower(Lang::txt('COM_PUBLICATIONS_CURATION_REVIEWED')) . ' <span class="prominent">' . Date::of($row->reviewed)->toLocal('M d, Y') . '</span> ';
 
 										$reviewer  = User::getInstance($row->reviewed_by);
-										$reviewed .= $reviewer ? ' <span class="block">' . Lang::txt('COM_PUBLICATIONS_CURATION_BY') . ' ' . $reviewer->get('name') . '</span>' : NULL;
+										$reviewed .= $reviewer ? ' <span class="block">' . Lang::txt('COM_PUBLICATIONS_CURATION_BY') . ' ' . $reviewer->get('name') . '</span>' : null;
 									}
 
 									$class = $row->state == 5 ? 'status-pending' : 'status-wip';
@@ -118,7 +118,7 @@ $this->css()
 										<td><span class="icon <?php echo $row->base; ?>">&nbsp;</span><?php echo $row->base; ?></td>
 										<td>
 											<span class="block"><?php echo $submitted; ?></span>
-											<?php if ($row->reviewed && $row->state == 5 ) { ?>
+											<?php if ($row->reviewed && $row->state == 5) { ?>
 												<span class="item-updated"></span>
 											<?php } ?>
 										</td>

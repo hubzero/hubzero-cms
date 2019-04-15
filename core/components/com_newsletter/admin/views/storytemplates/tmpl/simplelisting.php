@@ -19,7 +19,7 @@
 <ul class="autogen">
 <?php foreach ($this->object as $o): ?>
 	<?php
-		if (strpos($o->path, "http") === FALSE)
+		if (strpos($o->path, "http") === false)
 		{
 			$path = Route::url($hostname . $o->path);
 		}

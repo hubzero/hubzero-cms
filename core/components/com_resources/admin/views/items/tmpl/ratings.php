@@ -129,4 +129,4 @@ if ($this->getError()) { ?>
 		?>
 		</tbody>
 	</table>
-<?php } ?>
+<?php } 

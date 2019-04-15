@@ -213,4 +213,4 @@ if ($mode != 'preview')
 		</aside><!-- / .aside extracontent -->
 		</div>
 	</section><!-- / .main section -->
-<?php } ?>
+<?php } 

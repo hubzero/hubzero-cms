@@ -151,7 +151,7 @@ class PdfFormDeployment
 		foreach ($dbh->loadAssocList() as $depData)
 		{
 			$dep = new self;
-			foreach ($depData as $k=>$v)
+			foreach ($depData as $k => $v)
 			{
 				$dep->$k = $v;
 			}
@@ -191,7 +191,7 @@ class PdfFormDeployment
 			}
 			$timeA = $a->getStartTime();
 			$timeB = $b->getStartTime();
-			if ($timeA == NULL || $timeB == NULL)
+			if ($timeA == null || $timeB == null)
 			{
 				return 0;
 			}
@@ -335,7 +335,7 @@ class PdfFormDeployment
 			throw new \Hubzero\Error\Exception\RuntimeException("no such deployment", 404);
 		}
 
-		foreach ($res as $k=>$v)
+		foreach ($res as $k => $v)
 		{
 			$dep->$k = $v;
 		}
@@ -532,7 +532,7 @@ class PdfFormDeployment
 	 *
 	 * @return bool
 	 **/
-	public function hasErrors($col = NULL, $update = FALSE)
+	public function hasErrors($col = null, $update = false)
 	{
 		static $checked;
 
@@ -646,7 +646,7 @@ class PdfFormDeployment
 	 *
 	 * @return int
 	 **/
-	public function save($id = NULL)
+	public function save($id = null)
 	{
 		$dbh = self::getDbh();
 

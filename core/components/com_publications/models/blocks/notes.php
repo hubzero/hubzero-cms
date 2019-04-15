@@ -39,31 +39,31 @@ use stdClass;
 class Notes extends Base
 {
 	/**
-	* Block name
-	*
-	* @var		string
-	*/
+  * Block name
+  *
+  * @var		string
+  */
 	protected	$_name 				= 'notes';
 
 	/**
-	* Parent block name
-	*
-	* @var		string
-	*/
+  * Parent block name
+  *
+  * @var		string
+  */
 	protected	$_parentname 		= 'description';
 
 	/**
-	* Default manifest
-	*
-	* @var		string
-	*/
-	protected	$_manifest 			= NULL;
+  * Default manifest
+  *
+  * @var		string
+  */
+	protected	$_manifest 			= null;
 
 	/**
-	* Numeric block ID
-	*
-	* @var		integer
-	*/
+  * Numeric block ID
+  *
+  * @var		integer
+  */
 	protected	$_blockId 			= 0;
 
 	/**
@@ -111,7 +111,7 @@ class Notes extends Base
 				'params'	=> array( 'required' => 0, 'published_editing' => 0, 'collapse_elements' => 1 )
 			);
 
-			return json_decode(json_encode($manifest), FALSE);
+			return json_decode(json_encode($manifest), false);
 		}
 
 		return $manifest;

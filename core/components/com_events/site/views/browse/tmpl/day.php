@@ -85,7 +85,7 @@ $this->css();
 				</li>
 			</ul>
 		<?php } else { ?>
-			<p class="warning"><?php echo Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR').' <strong>'.\Components\Events\Helpers\Html::getDateFormat($this->year,$this->month,$this->day,0).'</strong>'; ?></p>
+			<p class="warning"><?php echo Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR').' <strong>'.\Components\Events\Helpers\Html::getDateFormat($this->year, $this->month, $this->day, 0).'</strong>'; ?></p>
 		<?php } ?>
 		</div><!-- / .subject -->
 		<div class="aside">
@@ -97,7 +97,7 @@ $this->css();
 				<?php
 				if ($this->categories)
 				{
-					foreach ($this->categories as $id=>$title)
+					foreach ($this->categories as $id => $title)
 					{
 					?>
 						<option value="<?php echo $id; ?>"<?php if ($this->category == $id) { echo ' selected="selected"'; } ?>><?php echo stripslashes($title); ?></option>

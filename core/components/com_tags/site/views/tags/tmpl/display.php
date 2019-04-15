@@ -91,7 +91,7 @@ $this->css('introduction.css', 'system')
 				$cloud = $this->cloud->render('html', $filters, true);
 			}
 
-			echo ($cloud ? $cloud : '<p class="warning">' . Lang::txt('COM_TAGS_NO_TAGS') . '</p>' . "\n");
+			echo $cloud ? $cloud : '<p class="warning">' . Lang::txt('COM_TAGS_NO_TAGS') . '</p>' . "\n";
 			?>
 		</div><!-- / .col span6 -->
 		<div class="col span6 omega top-tags">
@@ -119,7 +119,7 @@ $this->css('introduction.css', 'system')
 				$cloud = $this->cloud->render('html', $filters, true);
 			}
 
-			echo ($cloud ? $cloud : '<p class="warning">' . Lang::txt('COM_TAGS_NO_TAGS') . '</p>' . "\n");
+			echo $cloud ? $cloud : '<p class="warning">' . Lang::txt('COM_TAGS_NO_TAGS') . '</p>' . "\n";
 			?>
 		</div><!-- / .col span6 omega -->
 	</div><!-- / .grid -->

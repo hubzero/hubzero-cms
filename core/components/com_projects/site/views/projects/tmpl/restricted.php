@@ -53,11 +53,11 @@ $title = $this->project->title ? Lang::txt('COM_PROJECTS_NEW_PROJECT') . ': ' . 
 			// Display error or success message
 			if ($this->getError())
 			{
-				echo ('<p class="witherror">' . $this->getError().'</p>');
+				echo '<p class="witherror">' . $this->getError().'</p>';
 			}
 			else if ($this->msg)
 			{
-				echo ('<p>' . $this->msg . '</p>');
+				echo '<p>' . $this->msg . '</p>';
 			}
 			?>
 		</div>

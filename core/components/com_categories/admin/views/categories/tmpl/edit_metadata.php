@@ -50,4 +50,4 @@ defined('_HZEXEC_') or die();
 				<?php echo $field->input; ?>
 			</div>
 		<?php endif; ?>
-	<?php endforeach; ?>
+	<?php endforeach; 

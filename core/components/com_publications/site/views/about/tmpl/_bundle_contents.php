@@ -45,4 +45,4 @@ defined('_HZEXEC_') or die();
 				->set('file', $element)
 				->display();
 		endif; ?>
-<?php endforeach; ?>
+<?php endforeach; 
