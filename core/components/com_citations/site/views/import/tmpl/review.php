@@ -123,9 +123,8 @@ $no_show = array("errors","duplicate");
 													if (!empty($recordAttributes[$attribute]) || !empty($value))
 													{
 														$changedKeys[] = $attribute;
-													} 
+													}
 												}
-													
 											?>
 											<?php foreach ($changedKeys as $k) : ?>
 												<?php if (!in_array($k, $no_show)) : ?>

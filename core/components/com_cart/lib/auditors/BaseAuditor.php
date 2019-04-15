@@ -94,7 +94,7 @@ class BaseAuditor
 
 	public function getResponseError()
 	{
-		if (sizeof($this->response->errors) > 0)
+		if (count($this->response->errors) > 0)
 		{
 			return $this->response->errors[0];
 		}

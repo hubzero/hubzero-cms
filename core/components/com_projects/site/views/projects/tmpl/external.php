@@ -98,10 +98,10 @@ $this->css('theme' . $theme . '.css');
 					</div>
 				<?php elseif ($member->get('status') == 4): ?>
 					<?php 
-						$params = new Hubzero\Config\Registry($member->get('params')); 
+						$params = new Hubzero\Config\Registry($member->get('params'));
 						$denyMessage = 'Membership has been denied. <br/>';
 						$denyMessage .= 'Reason: <br/>';
-						$denyMessage .= $params->get('denyMessage');	
+						$denyMessage .= $params->get('denyMessage');
 					?>
 					
 					<div class="btn-container tooltips span4" title="<?php echo $denyMessage;?>">

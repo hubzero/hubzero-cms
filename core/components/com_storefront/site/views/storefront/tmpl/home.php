@@ -60,7 +60,7 @@ $this->css()
 
 		<?php
 
-		if (sizeof($this->categories))
+		if (count($this->categories))
 		{
 			//echo '<h3>Product categories</h3>';
 
