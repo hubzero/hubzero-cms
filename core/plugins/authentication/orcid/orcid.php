@@ -299,7 +299,7 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 
 		$html = '<a class="orcid account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=orcid' . $return) . '">';
 			$html .= '<div class="signin">';
-				$html .= Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', 'ORCID');
+				$html .= Lang::txt('PLG_AUTHENTICATION_ORCID_SIGN_IN');
 			$html .= '</div>';
 		$html .= '</a>';
 
