@@ -56,10 +56,12 @@ $this->css();
 
 	 		<p class="warning"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE_WARNING', $this->escape(stripslashes($identifier))); ?></p>
 
-			<label>
-				<input type="checkbox" class="option" name="confirmdel" value="1" />
-				<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE_CONFIRM'); ?>
-			</label>
+			<div class="form-group form-check">
+				<label for="confirmdel" class="form-check-label">
+					<input type="checkbox" class="option form-check-input" name="confirmdel" value="1" />
+					<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE_CONFIRM'); ?>
+				</label>
+			</div>
 		</fieldset>
 		<div class="clear"></div>
 

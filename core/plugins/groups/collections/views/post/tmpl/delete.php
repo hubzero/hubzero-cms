@@ -54,10 +54,12 @@ if (!$identifier)
 
 			<p class="warning"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE_WARNING', $this->escape(stripslashes($identifier))); ?></p>
 
-			<label>
-				<input type="checkbox" class="option" name="confirmdel" value="1" />
-				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE_CONFIRM'); ?>
-			</label>
+			<div class="form-group form-check">
+				<label for="confirmdel" class="form-check-label">
+					<input type="checkbox" class="option form-check-input" name="confirmdel" if="confirmdel" value="1" />
+					<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE_CONFIRM'); ?>
+				</label>
+			</div>
 		</fieldset>
 		<div class="clear"></div>
 
@@ -74,7 +76,7 @@ if (!$identifier)
 		<p class="submit">
 			<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?>" />
 		<?php if (!$this->no_html) { ?>
-			<a href="<?php echo Route::url($base . '&scope=' . $this->collection->get('alias')); ?>"><?php echo Lang::txt('Cancel'); ?></a>
+			<a href="<?php echo Route::url($base . '&scope=' . $this->collection->get('alias')); ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
 		<?php } ?>
 		</p>
 	</form>

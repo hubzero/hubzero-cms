@@ -202,10 +202,12 @@ if (!$this->sub)
 						</fieldset>
 					<?php } ?>
 
-					<label for="ctext">
-						<?php echo Lang::txt('COM_WIKI_FIELD_COMMENTS'); ?>:
-						<?php echo \Components\Wiki\Helpers\Editor::getInstance()->display('comment[ctext]', 'ctext', $this->mycomment->get('ctext'), '', '35', '15'); ?>
-					</label>
+					<div class="form-group">
+						<label for="ctext">
+							<?php echo Lang::txt('COM_WIKI_FIELD_COMMENTS'); ?>:
+							<?php echo \Components\Wiki\Helpers\Editor::getInstance()->display('comment[ctext]', 'ctext', $this->mycomment->get('ctext'), 'form-control minimal no-footer', '35', '15'); ?>
+						</label>
+					</div>
 
 					<input type="hidden" name="comment[created]" value="<?php echo $this->escape($this->mycomment->get('created')); ?>" />
 					<input type="hidden" name="comment[id]" value="<?php echo $this->escape($this->mycomment->get('id')); ?>" />
@@ -221,14 +223,18 @@ if (!$this->sub)
 						<input type="hidden" name="<?php echo $this->escape($name); ?>" value="<?php echo $this->escape($val); ?>" />
 					<?php } ?>
 
-					<label id="comment-anonymous-label" for="comment-anonymous">
-						<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($this->mycomment->get('anonymous') != 0) { echo ' checked="checked"'; } ?> />
-						<?php echo Lang::txt('COM_WIKI_FIELD_ANONYMOUS'); ?>
-					</label>
+					<div class="form-group form-check">
+						<label id="comment-anonymous-label" class="form-check-label" for="comment-anonymous">
+							<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($this->mycomment->get('anonymous') != 0) { echo ' checked="checked"'; } ?> />
+							<?php echo Lang::txt('COM_WIKI_FIELD_ANONYMOUS'); ?>
+						</label>
+					</div>
 
 					<?php echo Html::input('token'); ?>
 
-					<p class="submit"><input type="submit" class="btn" value="<?php echo Lang::txt('COM_WIKI_SUBMIT'); ?>" /></p>
+					<p class="submit">
+						<input type="submit" class="btn" value="<?php echo Lang::txt('COM_WIKI_SUBMIT'); ?>" />
+					</p>
 
 					<div class="sidenote">
 						<p>

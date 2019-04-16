@@ -752,18 +752,22 @@ $this->css()
 						</div>
 
 						<fieldset>
-							<div class="grouping">
-								<div class="form-group">
-									<label for="comment-upload">
-										<?php echo Lang::txt('COM_WISHLIST_ACTION_ATTACH_FILE'); ?>
-										<input type="file" name="upload" id="comment-upload" class="form-control-file" />
-									</label>
+							<div class="grid">
+								<div class="col span6">
+									<div class="form-group">
+										<label for="comment-upload">
+											<?php echo Lang::txt('COM_WISHLIST_ACTION_ATTACH_FILE'); ?>
+											<input type="file" name="upload" id="comment-upload" class="form-control-file" />
+										</label>
+									</div>
 								</div>
-								<div class="form-group">
-									<label for="comment-description">
-										<?php echo Lang::txt('COM_WISHLIST_ACTION_ATTACH_FILE_DESC'); ?>
-										<input type="text" name="description" id="comment-description" class="form-control" value="" />
-									</label>
+								<div class="col span6 omega">
+									<div class="form-group">
+										<label for="comment-description">
+											<?php echo Lang::txt('COM_WISHLIST_ACTION_ATTACH_FILE_DESC'); ?>
+											<input type="text" name="description" id="comment-description" class="form-control" value="" />
+										</label>
+									</div>
 								</div>
 							</div>
 						</fieldset>
@@ -812,16 +816,20 @@ $this->css()
 				<?php if ($this->wish->get('action') == 'editplan') { ?>
 						<div class="grid">
 							<div class="col span6">
-								<label>
-									<?php echo Lang::txt('COM_WISHLIST_WISH_ASSIGN_TO'); ?>:
-									<?php echo $this->wish->get('assignlist'); ?>
-								</label>
+								<div class="form-group">
+									<label for="assigned">
+										<?php echo Lang::txt('COM_WISHLIST_WISH_ASSIGN_TO'); ?>:
+										<?php echo $this->wish->get('assignlist'); ?>
+									</label>
+								</div>
 							</div>
 							<div class="col span6 omega">
-								<label for="publish_up" id="publish_up-label">
-									<?php echo Lang::txt('COM_WISHLIST_DUE'); ?> (<?php echo Lang::txt('COM_WISHLIST_OPTIONAL'); ?>)
-									<input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10" placeholder="YYYY-MM-DD" value="<?php echo $due ? $this->wish->due() : ''; ?>" />
-								</label>
+								<div class="form-group">
+									<label for="publish_up" id="publish_up-label">
+										<?php echo Lang::txt('COM_WISHLIST_DUE'); ?> (<?php echo Lang::txt('COM_WISHLIST_OPTIONAL'); ?>)
+										<input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10" placeholder="YYYY-MM-DD" value="<?php echo $due ? $this->wish->due() : ''; ?>" />
+									</label>
+								</div>
 							</div>
 						</div>
 
@@ -852,12 +860,11 @@ $this->css()
 						<?php echo Html::input('token'); ?>
 
 						<p class="submit">
-							<input type="submit" name="submit" value="<?php echo Lang::txt('COM_WISHLIST_SAVE'); ?>" />
-							<span class="cancelaction">
-								<a href="<?php echo Route::url($this->wish->link()); ?>">
-									<?php echo Lang::txt('JCANCEL'); ?>
-								</a>
-							</span>
+							<input class="btn btn-success" type="submit" name="submit" value="<?php echo Lang::txt('COM_WISHLIST_SAVE'); ?>" />
+
+							<a class="btn btn-secondary" href="<?php echo Route::url($this->wish->link()); ?>">
+								<?php echo Lang::txt('JCANCEL'); ?>
+							</a>
 						</p>
 
 						<div class="sidenote">
