@@ -40,6 +40,14 @@ $projects = $this->rows;
 
 $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 ?>
+
+<li class="component-parent" id="account-groups">
+  <a href="#" class="component-button"><span class="nav-icon-groups"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/paper-airplane.svg") ?></span><span>My Projects</span><span class="nav-icon-more"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/chevron-right.svg") ?></span></a>
+  <div class="component-panel">
+    <header><h2>My Projects</h2></header>
+    <a href="#" class="component-button"><span class="nav-icon-back"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/chevron-left.svg") ?></span>Back</a>
+      <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
+
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?> id="myprojectsmini">
 	<?php if ($this->params->get('button_show_all', 1) || $this->params->get('button_show_add', 1)) { ?>
 	<ul class="module-nav">
@@ -136,4 +144,7 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 			<?php echo Lang::txt('MOD_MYPROJECTSMINI_YOU_HAVE_MORE', $this->limit, $this->total, Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=projects')); ?>
 		</p>
 	<?php } ?>
-</div>
+  </div>
+  </div>
+ </div>
+</li>
