@@ -44,6 +44,12 @@ $this->js();
 $base = rtrim(Request::base(true), '/');
 ?>
 
+<li class="component-parent" id="account-sessions">
+  <a href="#" class="component-button"><span class="nav-icon-groups"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/window.svg") ?></span><span>My Sessions</span><span class="nav-icon-more"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/chevron-right.svg") ?></span></a>
+  <div class="component-panel">
+    <header><h2>My Sessions</h2></header>
+    <a href="#" class="component-button"><span class="nav-icon-back"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/chevron-left.svg") ?></span>Back</a>
+
 <div class="<?php echo $this->module->module . ' ' . $this->params->get('moduleclass_sfx', ''); ?> session-list <?php if (!$this->params->get('show_storage', 1)) { echo 'without-storage'; } ?>">
 	<ul>
 		<?php if (count($this->sessions) > 0) : ?>
@@ -205,5 +211,7 @@ $base = rtrim(Request::base(true), '/');
 			</p>
 		<?php endif; ?>
 	</div>
-	
+
 <?php endif; ?>
+ </div>
+</li>

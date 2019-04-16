@@ -38,7 +38,7 @@ $this->css()
 ?>
 
 <!-- Temporary location of code -->
-<li id="account-groups">
+<li class="component-parent" id="account-groups">
   <a class="component-button"><span class="nav-icon-groups"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/group.svg") ?></span><span>My Groups</span><span class="nav-icon-more"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/chevron-right.svg") ?></span></a>
   <div class="component-panel">
     <header><h2>My Groups</h2></header>

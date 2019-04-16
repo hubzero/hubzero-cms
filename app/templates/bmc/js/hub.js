@@ -470,30 +470,30 @@ if (!jq) {
 		}
 
 		// Minidash
-		var showMinidash = function() {
-			minidashPanel.addClass('show');
+		var showMinidash = function(minidashPanelActive) {
+      minidashPanelActive.addClass('show');
 
-			minidashPanel.on('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+			minidashPanelActive.on('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
 				function(e) {
 					TPL.resize();
 				});
 		};
 
-		var hideMinidash = function() {
-			minidashPanel.removeClass('show');
-
-			dashboardPanel.on('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+		var hideMinidash = function(minidashPanelActive) {
+			minidashPanelActive.removeClass('show');
+      dashboardPanel.on('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
 				function(e) {
 					TPL.resize();
 				});
 		};
 
 		if (componentButton.length > 0) {
-			componentButton.on('click', function() {
-				if (!(minidashPanel.hasClass('show'))) {
-					showMinidash();
+			componentButton.on('click', function(event) {
+				var minidashPanelActive = $(event.target).closest('.component-parent').find('.component-panel');
+				if (!(minidashPanelActive.hasClass('show'))) {
+					showMinidash(minidashPanelActive);
 				} else {
-					hideMinidash();
+					hideMinidash(minidashPanelActive);
 				}
 			});
 		}
