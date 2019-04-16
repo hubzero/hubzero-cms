@@ -11,6 +11,24 @@ String.prototype.nohtml = function () {
 
 var _DEBUG = 0;
 
+function bindContextModals()
+{
+	$('.media-opt-path,.media-opt-info').fancybox({
+		type: 'ajax',
+		width: 700,
+		height: 'auto',
+		autoSize: false,
+		fitToView: false,
+		titleShow: false,
+		beforeLoad: function() {
+			if (_DEBUG) {
+				window.console && console.log('Calling: ' + $(this).attr('href').nohtml());
+			}
+			$(this).attr('href', $(this).attr('href').nohtml());
+		}
+	});
+}
+
 jQuery(document).ready(function($){
 	var contents = $('#media-items'),
 		layout = $('#layout'),
@@ -59,6 +77,8 @@ jQuery(document).ready(function($){
 						window.console && console.log(data);
 					}
 					contents.html(data);
+
+					bindContextModals();
 				});
 			});
 		}
@@ -95,6 +115,8 @@ jQuery(document).ready(function($){
 
 			$.get($(this).attr('href').nohtml() + '&layout=' + layout.val(), function(data){
 				contents.html(data);
+
+				bindContextModals();
 			});
 		})
 		.on('click', '.doc-item', function(e){
@@ -160,24 +182,13 @@ jQuery(document).ready(function($){
 						window.console && console.log(data);
 					}
 					contents.html(data);
+
+					bindContextModals();
 				});
 			});
 		});
 
-	$('.media-opt-path,.media-opt-info').fancybox({
-		type: 'ajax',
-		width: 700,
-		height: 'auto',
-		autoSize: false,
-		fitToView: false,
-		titleShow: false,
-		beforeLoad: function() {
-			if (_DEBUG) {
-				window.console && console.log('Calling: ' + $(this).attr('href').nohtml());
-			}
-			$(this).attr('href', $(this).attr('href').nohtml());
-		}
-	});
+	bindContextModals();
 
 	$('#media-tree')
 		.find('a')
@@ -211,6 +222,8 @@ jQuery(document).ready(function($){
 
 			$.get($(this).attr('href').nohtml() + '&layout=' + layout.val(), function(data){
 				contents.html(data);
+
+				bindContextModals();
 			});
 		});
 
@@ -258,6 +271,8 @@ jQuery(document).ready(function($){
 				}
 				$.get(contents.attr('data-list').nohtml() + '&layout=' + layout.val() + '&folder=' + folder.val(), function(data){
 					contents.html(data);
+
+					bindContextModals();
 				});
 			}
 		});
