@@ -162,7 +162,7 @@ else
 										$remove = PATH_APP . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'uploads' . DS;
 										$sel = (str_replace($remove, '', $logo) == $this->group->get('logo')) ? 'selected' : '';
 									?>
-									<option <?php echo $sel; ?> value="<?php echo str_replace(PATH_ROOT, '', $logo); ?>"><?php echo str_replace($remove, '', $logo); ?></option>
+									<option <?php echo $sel; ?> value="<?php echo rtrim(Request::root(true), '/') . str_replace(PATH_ROOT, '', $logo); ?>"><?php echo str_replace($remove, '', $logo); ?></option>
 								<?php } ?>
 							</select>
 						</label>
@@ -171,9 +171,9 @@ else
 								<div id="logo_picked">
 									<?php if ($this->group->get('logo')) { ?>
 										<?php $selectedPath = substr(PATH_APP . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'uploads' . DS . $this->group->get('logo'), strlen(PATH_ROOT)); ?>
-										<img src="<?php echo $selectedPath; ?>" alt="<?php echo $this->group->get('cn') ?>" />
+										<img src="<?php echo rtrim(Request::root(true), '/') . $selectedPath; ?>" alt="<?php echo $this->group->get('cn') ?>" />
 									<?php } else { ?>
-										<img src="<?php echo $default_logo; ?>" alt="<?php echo $this->group->get('cn') ?>" >
+										<img src="<?php echo rtrim(Request::root(true), '/') . $default_logo; ?>" alt="<?php echo $this->group->get('cn') ?>" >
 									<?php } ?>
 								</div>
 							</div>
