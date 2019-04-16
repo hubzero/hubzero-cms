@@ -42,10 +42,10 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 ?>
 
 <li class="component-parent" id="account-groups">
-  <a href="#" class="component-button"><span class="nav-icon-groups"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/paper-airplane.svg") ?></span><span>My Projects</span><span class="nav-icon-more"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/chevron-right.svg") ?></span></a>
+  <a class="component-button"><span class="nav-icon-groups"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/paper-airplane.svg") ?></span><span>My Projects</span><span class="nav-icon-more"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/chevron-right.svg") ?></span></a>
   <div class="component-panel">
     <header><h2>My Projects</h2></header>
-    <a href="#" class="component-button"><span class="nav-icon-back"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/chevron-left.svg") ?></span>Back</a>
+    <a class="component-button"><span class="nav-icon-back"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/chevron-left.svg") ?></span>Back</a>
       <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
 
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?> id="myprojectsmini">
