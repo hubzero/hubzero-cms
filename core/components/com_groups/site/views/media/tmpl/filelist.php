@@ -45,8 +45,7 @@ $this->css()
      ->css('jquery.contextMenu.css', 'system');
 
 // define base URI
-$baseURI  = ($_SERVER['SERVER_PORT'] == '443') ? 'https://' : 'http://';
-$baseURI .= $_SERVER['HTTP_HOST'] . DS . 'groups' . DS . $this->group->get('cn');
+$baseURI = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'));
 
 //get request vars
 $type          = Request::getWord('type', '', 'get');
