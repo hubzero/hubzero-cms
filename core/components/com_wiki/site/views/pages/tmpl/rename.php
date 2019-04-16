@@ -106,11 +106,13 @@ if (!$this->sub)
 
 					<p><?php echo Lang::txt('COM_WIKI_PAGENAME_EXPLANATION'); ?></p>
 
-					<label for="newpagename">
-						<?php echo Lang::txt('COM_WIKI_FIELD_PAGENAME'); ?>:
-						<input type="text" name="newpagename" id="newpagename" value="<?php echo $this->escape($this->page->get('pagename')); ?>" />
-						<span><?php echo Lang::txt('COM_WIKI_FIELD_PAGENAME_HINT'); ?></span>
-					</label>
+					<div class="form-group">
+						<label for="newpagename">
+							<?php echo Lang::txt('COM_WIKI_FIELD_PAGENAME'); ?>:
+							<input type="text" name="newpagename" id="newpagename"  class="form-control" value="<?php echo $this->escape($this->page->get('pagename')); ?>" />
+							<span><?php echo Lang::txt('COM_WIKI_FIELD_PAGENAME_HINT'); ?></span>
+						</label>
+					</div>
 
 					<input type="hidden" name="oldpagename" value="<?php echo $this->escape($this->page->get('pagename')); ?>" />
 					<input type="hidden" name="page_id" value="<?php echo $this->escape($this->page->get('id')); ?>" />
