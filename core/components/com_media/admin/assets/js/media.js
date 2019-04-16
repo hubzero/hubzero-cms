@@ -22,6 +22,8 @@ jQuery(document).ready(function($){
 		return;
 	}
 
+	var isModal = (contents.attr('data-tmpl') == 'component');
+
 	var views = $('.media-files-view');
 	$('.media-files-view').on('click', function(e){
 		e.preventDefault();
@@ -94,6 +96,44 @@ jQuery(document).ready(function($){
 			$.get($(this).attr('href').nohtml() + '&layout=' + layout.val(), function(data){
 				contents.html(data);
 			});
+		})
+		.on('click', '.doc-item', function(e){
+			if (isModal) {
+				e.preventDefault();
+
+				// Get the image tag field information
+				var url = $(this).attr('href');
+
+				if (url == '') {
+					return false;
+				}
+
+				if ($('#e_name').length) {
+					var alt = $(this).attr('title');
+					var tag = '<img src="' + url + '" ';
+
+					// Set alt attribute
+					if (alt != '') {
+						tag += 'alt="' + alt + '" ';
+					} else {
+						tag += 'alt="" ';
+					}
+
+					tag += '/>';
+
+					window.parent.jInsertEditorText(tag, $('#e_name').val());
+				}
+				if ($('#fieldid').length) {
+					var id = $('#fieldid').val();
+					window.parent.document.getElementById(id).value = url;
+					// Update preview area
+					//window.parent.document.getElementById(id + '_preview_empty').style.display = 'hidden';
+					//window.parent.document.getElementById(id + '_preview_img').style.display = 'block';
+					//window.parent.document.getElementById(id + '_preview').src = url;
+				}
+				window.parent.$.fancybox.close();
+				return false;
+			}
 		})
 		.on('click', '.media-options-btn', function(e){
 			e.preventDefault();
