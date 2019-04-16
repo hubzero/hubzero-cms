@@ -749,6 +749,16 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
+	 * Get project member
+	 *
+	 * @return  object
+	 */
+	public function member()
+	{
+		return Owner::oneByProjectAndUser($this->get('id'), User::get('id'));
+	}
+
+	/**
 	 * Authorize current user
 	 *
 	 * @param   boolean  $reviewer
