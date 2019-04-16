@@ -191,22 +191,26 @@ $this->comment->set('category', 'answercomment');
 							<input type="hidden" name="<?php echo $this->escape($name); ?>" value="<?php echo $this->escape($val); ?>" />
 						<?php } ?>
 
-						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
-							<span class="label-text"><?php echo Lang::txt('COM_WIKI_ENTER_COMMENTS'); ?></span>
-							<?php
-							echo \Components\Wiki\Helpers\Editor::getInstance()->display('comment[ctext]', 'comment_' . $this->comment->get('id') . '_content', '', 'minimal no-footer', '35', '4');
-							?>
-						</label>
+						<div class="form-group">
+							<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
+								<span class="label-text"><?php echo Lang::txt('COM_WIKI_ENTER_COMMENTS'); ?></span>
+								<?php
+								echo \Components\Wiki\Helpers\Editor::getInstance()->display('comment[ctext]', 'comment_' . $this->comment->get('id') . '_content', '', 'form-control minimal no-footer', '35', '4');
+								?>
+							</label>
+						</div>
 
-						<label id="comment-anonymous-label" for="comment-anonymous">
-							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
-							<?php echo Lang::txt('COM_WIKI_POST_COMMENT_ANONYMOUSLY'); ?>
-						</label>
+						<div class="form-group form-check">
+							<label id="comment-anonymous-label" class="form-check-label" for="comment-anonymous">
+								<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+								<?php echo Lang::txt('COM_WIKI_POST_COMMENT_ANONYMOUSLY'); ?>
+							</label>
+						</div>
 
 						<?php echo Html::input('token'); ?>
 
 						<p class="submit">
-							<input type="submit" value="<?php echo Lang::txt('COM_WIKI_SUBMIT'); ?>" />
+							<input class="btn" type="submit" value="<?php echo Lang::txt('COM_WIKI_SUBMIT'); ?>" />
 						</p>
 					</fieldset>
 				</form>

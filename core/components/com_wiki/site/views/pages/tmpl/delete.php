@@ -101,10 +101,12 @@ if (!$this->sub)
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_WIKI_DELETE_PAGE'); ?></legend>
 
-				<label for="confirm-delete">
-					<input class="option" type="checkbox" name="confirm" id="confirm-delete" value="1" />
-					<?php echo Lang::txt('COM_WIKI_FIELD_CONFIRM_DELETE'); ?>
-				</label>
+				<div class="form-group form-check">
+					<label for="confirm-delete" class="form-check-label">
+						<input class="option form-check-input" type="checkbox" name="confirm" id="confirm-delete" value="1" />
+						<?php echo Lang::txt('COM_WIKI_FIELD_CONFIRM_DELETE'); ?>
+					</label>
+				</div>
 
 				<p class="warning">
 					<?php echo Lang::txt('COM_WIKI_FIELD_CONFIRM_DELETE_HINT'); ?>
