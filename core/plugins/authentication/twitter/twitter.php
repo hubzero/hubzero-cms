@@ -323,7 +323,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 
 		$html = '<a class="twitter account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=twitter' . $return) . '">';
 			$html .= '<div class="signin">';
-				$html .= Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', 'Twitter');
+				$html .= Lang::txt('PLG_AUTHENTICATION_TWITTER_SIGN_IN');
 			$html .= '</div>';
 		$html .= '</a>';
 

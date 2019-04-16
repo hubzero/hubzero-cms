@@ -473,7 +473,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 
 		$html = '<a class="linkedin account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=linkedin' . $return) . '">';
 			$html .= '<div class="signin">';
-				$html .= Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', 'LinkedIn');
+				$html .= Lang::txt('PLG_AUTHENTICATION_LINKEDIN_SIGN_IN');
 			$html .= '</div>';
 		$html .= '</a>';
 
