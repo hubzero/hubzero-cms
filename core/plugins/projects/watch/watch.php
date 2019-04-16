@@ -457,7 +457,7 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 		// Send mail
 		if (!$message->send())
 		{
-			$this->setError('Failed to mail %s', $email);
+			$this->setError(Lang::txt('Failed to mail %s', $email));
 			return false;
 		}
 
