@@ -68,7 +68,7 @@ endif;
 		endif;
 		?>
 		<li id="<?php echo $this->escape($folder['name']); ?>"<?php echo $cls; ?>>
-			<a class="folder" data-folder="<?php echo $this->escape('/' . $folder['path']); ?>" href="<?php echo Route::url('index.php?option=com_media&controller=medialist&tmpl=component&' . Session::getFormToken() . '=1&folder=/' . urlencode($folder['path'])); ?>">
+			<a class="folder" data-folder="<?php echo $this->escape('/' . $folder['path']); ?>" href="<?php echo Route::url('index.php?option=com_media&controller=medialist&tmpl=component&tmpl=' . Request::getCmd('tmpl') . '&' . Session::getFormToken() . '=1&folder=/' . urlencode($folder['path'])); ?>">
 				<span class="folder-icon">
 					<img src="<?php echo $this->img($icon); ?>" alt="<?php echo $this->escape($folder['name']); ?>" />
 				</span>
