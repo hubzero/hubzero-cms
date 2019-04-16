@@ -866,7 +866,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		$threads = $category->threads()
-			->select("*, (CASE WHEN last_activity IS NULL THEN last_activity ELSE created END)", 'activity')
+			->select("*, (CASE WHEN last_activity IS NOT NULL THEN last_activity ELSE created END)", 'activity')
 			->whereEquals('state', $filters['state'])
 			->whereIn('access', $filters['access'])
 			->order($filters['sort'], $filters['sort_Dir'])
