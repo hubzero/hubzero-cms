@@ -290,7 +290,7 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 
 		$html = '<a class="certificate account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=certificate' . $return) . '">';
 			$html .= '<div class="signin">';
-				$html .= Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', 'Client Certificate');
+				$html .= Lang::txt('PLG_AUTHENTICATION_CERTIFICATE_SIGN_IN');
 			$html .= '</div>';
 		$html .= '</a>';
 
