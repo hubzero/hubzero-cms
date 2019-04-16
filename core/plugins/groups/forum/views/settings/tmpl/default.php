@@ -59,6 +59,19 @@ $this->css()
 			</div>
 
 			<div class="form-group">
+				<label for="param-sorting">
+					<?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_SORTING'); ?>
+					<select name="params[sorting]" id="param-sorting" class="form-control">
+						<option value="activity"<?php if ($this->config->get('sorting', 'activity') == 'activity') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_ACTIVITY'); ?></option>
+						<option value="created"<?php if ($this->config->get('sorting', 'activity') == 'created') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_CREATED'); ?></option>
+						<option value="replies"<?php if ($this->config->get('sorting', 'activity') == 'replies') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_REPLIES'); ?></option>
+						<option value="title"<?php if ($this->config->get('sorting', 'activity') == 'title') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_TITLE'); ?></option>
+					</select>
+					<span class="hint"><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_SORTING_HINT'); ?></span>
+				</label>
+			</div>
+
+			<div class="form-group">
 				<label for="param-threading_depth">
 					<?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_DEPTH'); ?>
 					<input type="text" class="form-control" name="params[threading_depth]" id="param-threading_depth" value="<?php echo $this->config->get('threading_depth', 3); ?>" />

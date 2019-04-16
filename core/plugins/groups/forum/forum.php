@@ -803,7 +803,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$filters['access'][] = 5;
 		}
 
-		$filters['sortby'] = Request::getWord('sortby', 'activity');
+		$filters['sortby'] = Request::getWord('sortby', $this->params->get('sorting', 'activity'));
 		switch ($filters['sortby'])
 		{
 			case 'title':
