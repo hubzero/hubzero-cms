@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 // Push the module CSS to the template
 $this->css();
 
-$projects = $this->rows;
+$projects = $projctsorted;
 
 $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 ?>

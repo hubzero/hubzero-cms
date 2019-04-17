@@ -52,12 +52,12 @@ else
 
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?>>
 		<ul class="module-nav">
-			<li><a class="icon-email-alt" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages'); ?>"><?php echo Lang::txt('MOD_MYMESSAGES_ALL_MESSAGES'); ?></a></li>
-			<li><a class="icon-plus" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages&task=settings'); ?>"><?php echo Lang::txt('MOD_MYMESSAGES_MESSAGE_SETTINGS'); ?></a></li>
+			<li><a class="icon-email-alt" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages'); ?>"><?php echo Lang::txt('MOD_MYMESSAGESMINI_ALL_MESSAGES'); ?></a></li>
+			<li><a class="icon-plus" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages&task=settings'); ?>"><?php echo Lang::txt('MOD_MYMESSAGESMINI_MESSAGE_SETTINGS'); ?></a></li>
 		</ul>
 
 		<?php if (count($this->rows) <= 0) { ?>
-			<p><em><?php echo Lang::txt('MOD_MYMESSAGES_NO_MESSAGES'); ?></em></p>
+			<p><em><?php echo Lang::txt('MOD_MYMESSAGESMINI_NO_MESSAGES'); ?></em></p>
 		<?php } else { ?>
 			<ul class="expandedlist">
 				<?php
@@ -91,7 +91,7 @@ else
 			</ul>
 		<?php } ?>
 		<?php if ($this->total > $this->limit) { ?>
-			<p class="note"><?php echo Lang::txt('MOD_MYMESSAGES_YOU_HAVE_MORE', $this->limit, $this->total, Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages')); ?></p>
+			<p class="note"><?php echo Lang::txt('MOD_MYMESSAGESMINI_YOU_HAVE_MORE', $this->limit, $this->total, Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages')); ?></p>
 		<?php } ?>
 	</div>
 	<?php
