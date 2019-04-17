@@ -803,7 +803,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$filters['access'][] = 5;
 		}
 
-		$filters['sortby'] = Request::getWord('sortby', 'activity');
+		$filters['sortby'] = Request::getWord('sortby', $this->params->get('sorting', 'activity'));
 		switch ($filters['sortby'])
 		{
 			case 'title':
@@ -866,7 +866,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		$threads = $category->threads()
-			->select("*, (CASE WHEN last_activity IS NULL THEN last_activity ELSE created END)", 'activity')
+			->select("*, (CASE WHEN last_activity IS NOT NULL THEN last_activity ELSE created END)", 'activity')
 			->whereEquals('state', $filters['state'])
 			->whereIn('access', $filters['access'])
 			->order($filters['sort'], $filters['sort_Dir'])
