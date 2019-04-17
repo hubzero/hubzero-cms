@@ -74,7 +74,7 @@ class HtmlIcon
 
 			$base     = Hubzero\Utility\Uri::getInstance()->toString(array('scheme', 'host', 'port'));
 			$template = App::get('template')->template;
-			$link     = $base . Route::url(Component\Content\Site\Helpers\Route::getArticleRoute($article->slug, $article->catid, $article->language), false);
+			$link     = $base . Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($article->slug, $article->catid, $article->language), false);
 			$url      = 'index.php?option=com_mailto&tmpl=component&template=' . $template . '&link=' . Components\Mailto\Site\Helpers\Mailto::addLink($link);
 
 			$status = 'width=400,height=350,menubar=yes,resizable=yes';
