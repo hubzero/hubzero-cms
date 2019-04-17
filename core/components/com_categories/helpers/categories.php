@@ -238,7 +238,7 @@ class Categories
 
 		if ($this->_options['access'])
 		{
-			$query->whereIn('c.access', User::getAuthorisedViewLevels());
+			$query->whereIn('c.access', \User::getAuthorisedViewLevels());
 		}
 
 		if ($this->_options['published'] == 1)
