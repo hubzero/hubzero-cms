@@ -33,6 +33,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+Html::behavior('framework', true);
+
 $this->css('media.css')
 	->js('media.js');
 ?>
@@ -52,12 +54,19 @@ $this->css('media.css')
 					?>
 					<tr>
 						<td width="100%">
-							<a class="icon-folder folder" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&dir=' . urlencode($k) . '&gidNumber=' . $this->group->get('gidNumber') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>">
+							<a class="icon-folder folder" target="media" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&dir=' . urlencode($k) . '&gidNumber=' . $this->group->get('gidNumber') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>">
 								<?php echo trim($k, DS); ?>
 							</a>
 						</td>
 						<td>
-							<a class="icon-delete delete deletefolder" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefolder&dir=' . urlencode($this->dir) . '&folder=' . urlencode($folder) . '&gidNumber=' . $this->group->get('gidNumber') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" data-folder="<?php echo basename($folder); ?>" data-files="<?php echo $num_files; ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+							<a class="icon-delete delete deletefolder"
+								target="media"
+								href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefolder&dir=' . urlencode($this->dir) . '&folder=' . urlencode($folder) . '&gidNumber=' . $this->group->get('gidNumber') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>"
+								data-folder="<?php echo basename($folder); ?>"
+								data-files="<?php echo $num_files; ?>"
+								data-confirm="<?php echo Lang::txt('COM_GROUPS_MEDIA_DELETE_FOLDER', basename($folder)); ?>"
+								data-notempty="<?php echo Lang::txt('COM_GROUPS_MEDIA_DIRECTORY_NOT_EMPTY'); ?>"
+								title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 								<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
 							</a>
 						</td>
@@ -73,7 +82,12 @@ $this->css('media.css')
 							</a>
 						</td>
 						<td>
-							<a class="icon-delete delete deletefile" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefile&file=' . urlencode($k) . '&gidNumber=' . $this->group->get('gidNumber') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" data-file="<?php echo basename($doc); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+							<a class="icon-delete delete deletefile"
+								target="media"
+								href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefile&file=' . urlencode($k) . '&gidNumber=' . $this->group->get('gidNumber') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>"
+								data-file="<?php echo basename($doc); ?>"
+								data-confirm="<?php echo Lang::txt('COM_GROUPS_MEDIA_DELETE_FILE', basename($doc)); ?>"
+								title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 								<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
 							</a>
 						</td>
