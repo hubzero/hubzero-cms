@@ -485,7 +485,7 @@ class Articles extends AdminController
 		if ($checkedOut)
 		{
 			$article->set('checked_out', 0);
-			$article->set('checked_out_time', '');
+			$article->set('checked_out_time', null);
 			$article->save();
 		}
 

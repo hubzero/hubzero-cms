@@ -173,7 +173,7 @@ endif;
 						<th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_CREATED_BY_LABEL'); ?></th>
 						<td>
 							<?php echo User::getInstance($this->item->createdBy)->get('name'); ?>
-							<input type="hidden" name="fields[created_by]" value="<?php echo $this->escape($this->item->createdBy); ?>" />
+							<input type="hidden" name="fields[created_by]" value="<?php echo $this->escape($this->item->created_by); ?>" />
 						</td> 
 					</tr>
 					<tr>
@@ -187,7 +187,7 @@ endif;
 							<th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_MODIFIER_LABEL'); ?></th>
 							<td>
 								<?php echo User::getInstance($this->item->modifiedBy)->get('name'); ?>
-								<input type="hidden" name="fields[modified_by]" value="<?php echo $this->escape($this->item->modifiedBy); ?>" />
+								<input type="hidden" name="fields[modified_by]" value="<?php echo $this->escape($this->item->modified_by); ?>" />
 							</td> 
 						</tr>
 						<tr>
