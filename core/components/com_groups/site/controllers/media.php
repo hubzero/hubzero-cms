@@ -37,6 +37,7 @@ use Hubzero\Utility;
 use Filesystem;
 use Request;
 use Route;
+use Event;
 use User;
 use Lang;
 use App;
@@ -49,7 +50,7 @@ class Media extends Base
 	/**
 	 * Override Execute Method
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -114,11 +115,10 @@ class Media extends Base
 		parent::execute();
 	}
 
-
 	/**
 	 * Show File Browser method
 	 *
-	 * @return     array
+	 * @return  void
 	 */
 	public function filebrowserTask()
 	{
@@ -613,6 +613,8 @@ class Media extends Base
 			}
 		}
 
+		$this->logActivity('uploaded', str_replace($this->path, '', $finalFileName));
+
 		// return our final upload status
 		$returnObj->file    = $finalFileName;
 		$returnObj->message = Lang::txt('COM_GROUPS_MEDIA_UPLOAD_SUCCESS');
@@ -778,8 +780,10 @@ class Media extends Base
 			}
 		}
 
+		$this->logActivity('uploaded', str_replace($this->path, '', $file));
+
 		//return success
-		echo json_encode(array('success'=>true));
+		echo json_encode(array('success' => true));
 		return;
 	}
 
@@ -864,6 +868,8 @@ class Media extends Base
 		// move file
 		Filesystem::move($source, $destination);
 
+		$this->logActivity('moved', [$file, $folder]);
+
 		// return folder were moving to
 		echo $folder;
 		exit();
@@ -931,6 +937,8 @@ class Media extends Base
 		// move file
 		Filesystem::move($source, $destination);
 
+		$this->logActivity('renamed', [$file, $name]);
+
 		// return folder were moving to
 		echo $fileInfo['dirname'];
 		exit();
@@ -989,6 +997,8 @@ class Media extends Base
 		{
 			Filesystem::delete($file);
 		}
+
+		$this->logActivity('deleted', str_replace($this->path, '', $file));
 
 		//are we deleting through ckeditor
 		$ckeditor     = Request::getString('CKEditor', '', 'get');
@@ -1095,6 +1105,8 @@ class Media extends Base
 		// create folder
 		Filesystem::makeDirectory($newFolder);
 
+		$this->logActivity('created', $name, false);
+
 		// output return folder
 		echo $returnFolder;
 		exit();
@@ -1172,6 +1184,8 @@ class Media extends Base
 
 		// rename folder
 		Filesystem::move($oldFolder, $newFolder);
+
+		$this->logActivity('renamed', [$folder, $name], false);
 
 		// output return folder
 		echo $returnFolder;
@@ -1262,6 +1276,8 @@ class Media extends Base
 		// move folder
 		Filesystem::move($oldPath, $newPath);
 
+		$this->logActivity('moved', [$current, $folder], false);
+
 		// output return folder
 		echo $returnFolder;
 		exit();
@@ -1289,9 +1305,75 @@ class Media extends Base
 		if (is_dir($folder))
 		{
 			Filesystem::deleteDirectory($folder);
+
+			$this->logActivity('deleted', $folder, false);
 		}
 
 		echo $returnFolder;
 		exit();
+	}
+
+	/**
+	 * Loag activity
+	 *
+	 * @param   string   $action
+	 * @param   mixed    $item
+	 * @param   boolean  $isfile  Is the action on a file or a directory?
+	 * @return  void
+	 */
+	private function logActivity($action, $item, $isFile = true)
+	{
+		// Buld recipients list
+		$recipients = array(
+			['group', $this->group->get('gidNumber')],
+			['user', User::get('id')]
+		);
+		foreach ($this->group->get('managers') as $recipient)
+		{
+			$recipients[] = ['user', $recipient];
+		}
+
+		// Gather details
+		$url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn'));
+
+		$details = array(
+			'title'     => $this->group->get('description'),
+			'url'       => $url,
+			'cn'        => $this->group->get('cn'),
+			'gidNumber' => $this->group->get('gidNumber')
+		);
+		$key = $isFile ? 'file' : 'folder';
+
+		$details[$key] = $item;
+
+		if (is_array($item))
+		{
+			$description = Lang::txt(
+				strtoupper('COM_GROUPS_ACTIVITY_' . $key . '_' . $action),
+				trim($item[0], '/'),
+				trim($item[1], '/'),
+				'<a href="' . $url . '">' . $this->group->get('description') . '</a>'
+			);
+		}
+		else
+		{
+			$description = Lang::txt(
+				strtoupper('COM_GROUPS_ACTIVITY_' . $key . '_' . $action),
+				trim($item, '/'),
+				'<a href="' . $url . '">' . $this->group->get('description') . '</a>'
+			);
+		}
+
+		// Log activity
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => $action,
+				'scope'       => 'group.file',
+				'scope_id'    => $this->group->get('gidNumber'),
+				'description' => $description,
+				'details'     => $details
+			],
+			'recipients' => $recipients
+		]);
 	}
 }
