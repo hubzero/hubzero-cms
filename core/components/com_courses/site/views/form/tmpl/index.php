@@ -78,7 +78,7 @@ $this->css('form.css')
 					<form action="<?php echo Route::url('index.php?option=com_courses&controller=form'); ?>" method="get">
 						<input type="hidden" name="task" value="layout" />
 						<input type="hidden" name="formId" value="<?php echo $form['id'] ?>" />
-						<button type="submit"><?php echo Lang::txt('COM_COURSES_EDIT'); ?></button>
+						<button type="submit"><?php echo Lang::txt('JACTION_EDIT'); ?></button>
 					</form>
 					<br />
 					<?php if ($deps = \Components\Courses\Models\PdfFormDeployment::forForm($form['id'])): ?>

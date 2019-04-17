@@ -123,10 +123,10 @@ $this->css()
 									<?php if (!User::isGuest()) { ?>
 										<?php if ($row->get('object_type') == 'member' && $row->get('object_id') == User::get('id')) { ?>
 												<a class="btn edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($row->link() . '/edit'); ?>">
-													<span><?php echo Lang::txt('COM_COLLECTIONS_EDIT'); ?></span>
+													<span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
 												</a>
 												<a class="btn delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($row->link() . '/delete'); ?>">
-													<span><?php echo Lang::txt('COM_COLLECTIONS_DELETE'); ?></span>
+													<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
 												</a>
 										<?php } else { ?>
 												<a class="btn repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&controller=posts&board=' . $row->get('id') . '&task=collect'); ?>">

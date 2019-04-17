@@ -244,7 +244,7 @@ if ($label == 'none') {
 										<?php if ($this->isAdmin === true) : ?>
 											<td class="col-edit">
 												<a class="icon-edit" href="<?php echo Route::url('index.php?option='.$this->option.'&task=edit&id=' . $citeId); ?>">
-													<?php echo Lang::txt('COM_CITATIONS_EDIT'); ?>
+													<?php echo Lang::txt('JACTION_EDIT'); ?>
 												</a>
 											</td>
 										<?php endif; ?>

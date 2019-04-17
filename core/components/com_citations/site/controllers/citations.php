@@ -620,7 +620,7 @@ class Citations extends SiteController
 		{
 			Pathway::append($shortenedTitle, 'index.php?option=' . $this->_option . '&task=view&id=' . $this->view->row->id);
 		}
-		Pathway::append(Lang::txt('COM_CITATIONS_EDIT'), 'index.php?option=' . $this->_option . '&task=edit&id=' . $this->view->row->id);
+		Pathway::append(Lang::txt('JACTION_EDIT'), 'index.php?option=' . $this->_option . '&task=edit&id=' . $this->view->row->id);
 
 		// Set the page title
 		Document::setTitle(Lang::txt('COM_CITATIONS_CITATION') . $shortenedTitle);
