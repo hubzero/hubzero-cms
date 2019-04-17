@@ -75,45 +75,6 @@
     margin: 0 .75em .75em;
     width: 12rem;
   }
-
-  .newsletter {
-    position: relative;
-  }
-
-  .newsletter-img {
-    border: none;
-    width: 100%;
-    height: 7rem;
-    overflow: hidden;
-
-    img {
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
-    }
-  }
-
-  .newsletter-tag {
-    position: absolute;
-    bottom: 0;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: .8em;
-    padding: .5em .8em;
-    background-color: $green;
-    a {
-      color: $white;
-    }
-  }
-
-  .newsletter-title {
-    @include showcase-header(1em, 1.2, 4);
-    border-bottom: 2px solid $green;
-
-    a {
-      color: $dark-blue;
-    }
-  }
 }
 
 .module-row {
@@ -126,7 +87,7 @@
 
 .inner-wrap {
   @include flexbox(wrap);
-  margin-top: 3em;
+  margin-top: 1.5em;
 }
 
 .blogs,
@@ -137,13 +98,73 @@
   width: 100%;
 }
 
-.module-blogs,
-.module-newsletters {
+.module-blogs {
   @include flexbox(wrap);
 
   .regular {
     flex: 1 1 20rem;
     margin: 0 .75em .75em;
+  }
+}
+
+.newsletters {
+  border: 1px solid $green;
+  border-radius: 6px;
+  padding: 1em;
+
+  h2 {
+    color: $green;
+    margin-bottom: .6em;
+    text-align: center;
+  }
+
+  h6 {
+    margin-bottom: 2em;
+    text-align: center;
+  }
+}
+
+.module-newsletters {
+  @include flexbox(wrap);
+  justify-content: center;
+
+  .newsletter-img {
+    img {
+      object-fit: contain;
+    }
+  }
+
+  .newsletter-title {
+    @include showcase-header(1em, 1.2, 2);
+  }
+
+  div:first-of-type {
+    width: 100%;
+    .newsletter-img {
+      display: block;
+      border: none;
+      height: auto;
+      margin: 0 auto;
+      width: 50%;
+    }
+
+    .newsletter-title {
+      border: none;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: .75em;
+      text-align: center;
+    }
+  }
+
+  div:nth-of-type(2) {
+    margin: 0 1em;
+    width: 40%;
+  }
+
+  div:nth-of-type(3) {
+    margin: 0 1em;
+    width: 40%;
   }
 }
 
@@ -188,13 +209,47 @@
 }
 
 .newsletter {
-  @extend .blog;
+  position: relative;
 }
 
 .newsletter-img {
-  @extend .blog-img;
+  border: none;
+  width: 100%;
+  height: 7rem;
+  overflow: hidden;
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: 3s ease-in-out;
+  }
+
+  &:hover {
+    img {
+      transform: scale(1.1)
+    }
+  }
+}
+
+.newsletter-tag {
+  position: absolute;
+  bottom: 0;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: .8em;
+  padding: .5em .8em;
+  background-color: $green;
+  a {
+    color: $white;
+  }
 }
 
 .newsletter-title {
-  @extend .blog-title;
+  @include showcase-header(1em, 1.2, 4);
+  border-bottom: 2px solid $green;
+
+  a {
+    color: $dark-blue;
+  }
 }
