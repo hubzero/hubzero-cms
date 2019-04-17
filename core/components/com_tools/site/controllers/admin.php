@@ -847,7 +847,7 @@ class Admin extends SiteController
 			{
 				$command  = '/usr/bin/sudo -u apps ';
 				$command .=    '/usr/bin/finalizetool';
-				$command .=       ' -hubdir ' . PATH_ROOT . '/ ';
+				$command .=       ' -hubdir ' . PATH_ROOT . '/';
 				$command .=       ' -title "' . $status['title'] . '"';
 				$command .=       ' -version "' . $status['version'] . '"';
 				$command .=       ' -license ' . $fname;
