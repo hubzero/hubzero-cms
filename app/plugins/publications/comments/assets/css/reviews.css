@@ -1,0 +1,46 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/resources/reviews/reviews.css
+ * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license     http://opensource.org/licenses/MIT MIT
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Resources Reviews plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+
+	ol.comments .comment-none {
+		color: #ccc;
+	}
+	ol.comments .comment-options a.active:before {
+		content: "\2716";
+	}
+	ol.comments .edit,
+	ol.comments .delete {
+		float: right;
+	}
+	ol.comments form legend,
+	ol.comments span.label-text {
+		display: none;
+	}
+	ol.comments form .submit {
+		clear: both;
+		margin: -1.5em 0 0 0;
+		padding: 0;
+		text-align: right;
+	}
+	.section-options {
+		text-align: right;
+	}
+	.submitarea  {
+		text-align: center;
+		display: block;
+		padding: 2em 0;
+	}
+	.submitarea input {
+		width: auto !important;
+	}
