@@ -39,11 +39,11 @@ defined('_HZEXEC_') or die();
 	<h2 class="entry-title">
 		<?php echo $this->escape(stripslashes($this->row->title)); ?>
 		<?php if ($this->authorized || $this->row->created_by == User::get('id')) { ?>
-			<a class="edit" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->row->id); ?>" title="<?php echo Lang::txt('EVENTS_EDIT'); ?>">
-				<?php echo strtolower(Lang::txt('EVENTS_EDIT')); ?>
+			<a class="edit" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->row->id); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
+				<?php echo strtolower(Lang::txt('JACTION_EDIT')); ?>
 			</a>
-			<a class="delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete&id=' . $this->row->id); ?>" title="<?php echo Lang::txt('EVENTS_DELETE'); ?>">
-				<?php echo strtolower(Lang::txt('EVENTS_DELETE')); ?>
+			<a class="delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete&id=' . $this->row->id); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+				<?php echo strtolower(Lang::txt('JACTION_DELETE')); ?>
 			</a>
 		<?php } ?>
 	</h2>

@@ -109,12 +109,12 @@ if (!$this->comment->get('item_id'))
 			<?php /*if ($this->config->get('access-edit-thread')) { // || User::get('id') == $this->comment->created_by ?>
 				<?php if ($this->config->get('access-delete-thread')) { ?>
 					<a class="icon-delete delete" href="<?php echo Route::url($this->base . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!--
-						--><?php echo Lang::txt('COM_ANSWERS_DELETE'); ?><!--
+						--><?php echo Lang::txt('JACTION_DELETE'); ?><!--
 					--></a>
 				<?php } ?>
 				<?php if ($this->config->get('access-edit-thread')) { ?>
 					<a class="icon-edit edit" href="<?php echo Route::url($this->base . '&action=edit&comment=' . $this->comment->get('id')); ?>"><!--
-						--><?php echo Lang::txt('COM_ANSWERS_EDIT'); ?><!--
+						--><?php echo Lang::txt('JACTION_EDIT'); ?><!--
 					--></a>
 				<?php } ?>
 			<?php }*/ ?>

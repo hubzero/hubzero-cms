@@ -50,7 +50,7 @@ if (User::isGuest()) { ?>
 				<h4>
 					<?php echo $this->escape(stripslashes($row->title)); ?>
 					<a class="edit" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $row->id); ?>">
-						<?php echo Lang::txt('MOD_MYSUBMISSIONS_EDIT'); ?>
+						<?php echo Lang::txt('JACTION_EDIT'); ?>
 					</a>
 				</h4>
 				<table>
@@ -81,7 +81,7 @@ if (User::isGuest()) { ?>
 									<td><?php echo $completed; ?></td>
 									<td>
 										<a href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=' . $i . '&id=' . $row->id); ?>">
-											<?php echo Lang::txt('MOD_MYSUBMISSIONS_EDIT'); ?>
+											<?php echo Lang::txt('JACTION_EDIT'); ?>
 										</a>
 									</td>
 								</tr>

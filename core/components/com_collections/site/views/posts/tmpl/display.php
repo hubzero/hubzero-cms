@@ -280,10 +280,10 @@ if (!$no_html) {
 							<?php if (!User::isGuest()) { ?>
 								<?php if ($this->collection->get('object_type') == 'member' && $this->collection->get('object_id') == User::get('id')) { ?>
 										<a class="btn edit" data-id="<?php echo $this->collection->get('id'); ?>" href="<?php echo Route::url($this->collection->link() . '/edit'); ?>">
-											<span><?php echo Lang::txt('COM_COLLECTIONS_EDIT'); ?></span>
+											<span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
 										</a>
 										<a class="btn delete" data-id="<?php echo $this->collection->get('id'); ?>" href="<?php echo Route::url($this->collection->link() . '/delete'); ?>">
-											<span><?php echo Lang::txt('COM_COLLECTIONS_DELETE'); ?></span>
+											<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
 										</a>
 								<?php } else { ?>
 										<a class="btn repost" data-id="<?php echo $this->collection->get('id'); ?>" href="<?php echo Route::url($base . '&controller=posts&board=' . $this->collection->get('id') . '&task=collect'); ?>">
@@ -382,10 +382,10 @@ if (!$no_html) {
 								<?php if (!User::isGuest()) { ?>
 									<?php if ($collection->get('object_type') == 'member' && $collection->get('object_id') == User::get('id')) { ?>
 											<a class="btn edit" data-id="<?php echo $collection->get('id'); ?>" href="<?php echo Route::url($collection->link() . '/edit'); ?>">
-												<span><?php echo Lang::txt('COM_COLLECTIONS_EDIT'); ?></span>
+												<span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
 											</a>
 											<a class="btn delete" data-id="<?php echo $collection->get('id'); ?>" href="<?php echo Route::url($collection->link() . '/delete'); ?>">
-												<span><?php echo Lang::txt('COM_COLLECTIONS_DELETE'); ?></span>
+												<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
 											</a>
 									<?php } else { ?>
 											<a class="btn repost" data-id="<?php echo $collection->get('id'); ?>" href="<?php echo Route::url($base . '&controller=posts&board=' . $collection->get('id') . '&task=collect'); ?>">

@@ -138,12 +138,12 @@ $this->comment->set('category', 'answercomment');
 			<p class="comment-options">
 				<?php if ($this->page->access('delete', 'comment')) { ?>
 					<a class="icon-delete delete" href="<?php echo Route::url($this->comment->link('delete')); ?>"><!--
-						--><?php echo Lang::txt('COM_WIKI_DELETE'); ?><!--
+						--><?php echo Lang::txt('JACTION_DELETE'); ?><!--
 					--></a>
 				<?php } ?>
 				<?php if ($this->page->access('edit', 'comment')) { ?>
 					<a class="icon-edit edit" href="<?php echo Route::url($this->comment->link('edit')); ?>"><!--
-						--><?php echo Lang::txt('COM_WIKI_EDIT'); ?><!--
+						--><?php echo Lang::txt('JACTION_EDIT'); ?><!--
 					--></a>
 				<?php } ?>
 

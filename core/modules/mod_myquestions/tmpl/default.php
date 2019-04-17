@@ -135,7 +135,7 @@ $this->css();
 		<span class="configure">
 			[<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile#profile-interests'); ?>">
 			<?php if ($this->interests) { ?>
-				<?php echo Lang::txt('MOD_MYQUESTIONS_EDIT'); ?>
+				<?php echo Lang::txt('JACTION_EDIT'); ?>
 			<?php } else { ?>
 				<?php echo Lang::txt('MOD_MYQUESTIONS_ADD_INTERESTS'); ?>
 			<?php } ?>
