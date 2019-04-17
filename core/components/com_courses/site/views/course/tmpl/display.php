@@ -154,7 +154,7 @@ $this->css('course.css')
 				<?php if ($this->course->access('edit', 'course')) { ?>
 					<div class="manager-options">
 						<a class="icon-edit btn btn-secondary" href="<?php echo Route::url($this->course->link() . '&task=edit&field=blurb'); ?>">
-							<?php echo Lang::txt('COM_COURSES_EDIT'); ?>
+							<?php echo Lang::txt('JACTION_EDIT'); ?>
 						</a>
 						<span><strong><?php echo Lang::txt('COM_COURSES_FIELDS_TITLE_BLURB'); ?></strong></span>
 					</div>
@@ -375,7 +375,7 @@ $this->css('course.css')
 										<?php echo Lang::txt('COM_COURSES_DELETE'); ?>
 									</a>
 									<a class="icon-edit btn btn-secondary" href="<?php echo Route::url($this->course->link() . '&active=' . $plugin->get('name') . '&action=editpage'); ?>">
-										<?php echo Lang::txt('COM_COURSES_EDIT'); ?>
+										<?php echo Lang::txt('JACTION_EDIT'); ?>
 									</a>
 									<span><strong><?php echo Lang::txt('COM_COURSES_PAGE_CONTENTS'); ?></strong></span>
 								</div>
@@ -429,7 +429,7 @@ $this->css('course.css')
 				?>
 				<div class="manager-options">
 					<a class="icon-edit btn btn-secondary" href="<?php echo Route::url($this->course->link() . '&task=edit&field=summary'); ?>">
-						<?php echo Lang::txt('COM_COURSES_EDIT'); ?>
+						<?php echo Lang::txt('JACTION_EDIT'); ?>
 					</a>
 					<span><strong><?php echo Lang::txt('COM_COURSES_SUMMARY'); ?></strong></span>
 				</div>

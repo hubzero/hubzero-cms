@@ -128,7 +128,7 @@ $this->css()
 									<?php if (!User::isGuest()) { ?>
 										<?php if ($row->get('created_by') == User::get('id')) { ?>
 											<a class="btn edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=edit'); ?>">
-												<span><?php echo Lang::txt('COM_COLLECTIONS_EDIT'); ?></span>
+												<span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
 											</a>
 										<?php } else { ?>
 											<a class="btn vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $item->get('id'); ?>" data-text-like="<?php echo Lang::txt('COM_COLLECTIONS_LIKE'); ?>" data-text-unlike="<?php echo Lang::txt('COM_COLLECTIONS_UNLIKE'); ?>" href="<?php echo Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=vote'); ?>">

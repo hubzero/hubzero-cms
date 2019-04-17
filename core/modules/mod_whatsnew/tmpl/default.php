@@ -87,7 +87,7 @@ else
 	$html .= "\t" . '<p class="category-header-details">' . "\n";
 	if (count($this->tags) > 0)
 	{
-		$html .= "\t\t" . '<span class="configure">[<a href="' . Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile#profile-interests') . '">' . Lang::txt('MOD_WHATSNEW_EDIT').'</a>]</span>' . "\n";
+		$html .= "\t\t" . '<span class="configure">[<a href="' . Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile#profile-interests') . '">' . Lang::txt('JACTION_EDIT').'</a>]</span>' . "\n";
 	}
 	else
 	{
