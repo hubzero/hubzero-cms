@@ -33,6 +33,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+Html::behavior('framework', true);
+
 $this->css('media.css')
 	->js('media.js');
 ?>
@@ -62,7 +64,7 @@ $this->css('media.css')
 			<input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>" />
 			<input type="hidden" name="task" value="upload" />
 			<input type="hidden" name="gidNumber" value="<?php echo $this->escape($this->group->get('gidNumber')); ?>" />
-			<input type="hidden" name="dir" value="<?php echo $this->escape(urlencode($this->dir)); ?>" />
+			<input type="hidden" name="dir" id="currentdir" value="<?php echo $this->escape(urlencode($this->dir)); ?>" />
 			<input type="hidden" name="tmpl" value="component" />
 
 			<?php echo Html::input('token'); ?>
@@ -74,7 +76,7 @@ $this->css('media.css')
 
 		<div id="themanager" class="manager">
 			<div class="input-wrap">
-				<label>
+				<label for="dir">
 					<?php echo Lang::txt('COM_GROUPS_MEDIA_DIRECTORY'); ?>
 					<?php echo $this->dirPath; ?>
 				</label>
