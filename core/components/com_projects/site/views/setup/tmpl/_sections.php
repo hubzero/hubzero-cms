@@ -47,5 +47,5 @@ defined('_HZEXEC_') or die();
 				</a>
 			</li>
 		<?php endif; ?>
-	<?php endif; ?>
+	<?php endforeach; ?>
 </ul>
