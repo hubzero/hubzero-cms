@@ -285,7 +285,7 @@ class Credentials extends SiteController
 		}
 
 		// Set the confirmation token
-		$token       = App::hash(\JUserHelper::genRandomPassword());
+		$token       = App::hash(\Hubzero\User\Password::genRandomPassword());
 		$salt        = \JUserHelper::getSalt('crypt-md5');
 		$hashedToken = md5($token . $salt) . ':' . $salt;
 

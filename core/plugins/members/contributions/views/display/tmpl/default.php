@@ -188,7 +188,7 @@ foreach ($this->results as $category)
 		{
 			$f();
 		}
-		// Check if a method exist (using JPlugin style)
+		// Check if a method exist (using old Plugin style)
 		$obj = 'plgMembers' . ucfirst($this->cats[$k]['category']);
 		if (method_exists($obj, 'documents'))
 		{
@@ -229,7 +229,7 @@ foreach ($this->results as $category)
 		{
 			$html .= $func();
 		}
-		// Check if a method exist (using JPlugin style)
+		// Check if a method exist (using old Plugin style)
 		$obj = 'plgMembers' . ucfirst($this->cats[$k]['category']);
 		if (method_exists($obj, 'before'))
 		{
@@ -244,7 +244,7 @@ foreach ($this->results as $category)
 
 			// Does this category have a unique output display?
 			$func = 'plgMembers' . ucfirst($row->section) . 'Out';
-			// Check if a method exist (using JPlugin style)
+			// Check if a method exist (using old Plugin style)
 			$obj = 'plgMembers' . ucfirst($this->cats[$k]['category']);
 
 			if (function_exists($func))

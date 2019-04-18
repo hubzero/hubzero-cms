@@ -25,7 +25,7 @@ class Migration20150330124145Core extends Base
 
 		if (substr($permissions, 1, 1) != '6')
 		{
-			\JPath::setPermissions(PATH_ROOT . DS . 'configuration.php', substr_replace($permissions, '6', 1, 1));
+			\App::get('filesystem')->setPermissions(PATH_ROOT . DS . 'configuration.php', substr_replace($permissions, '6', 1, 1));
 		}
 
 		if (!file_put_contents(PATH_ROOT . DS . 'configuration.php', $configuration))
@@ -35,6 +35,6 @@ class Migration20150330124145Core extends Base
 		}
 
 		// Change permissions back to what they were before
-		\JPath::setPermissions(PATH_ROOT . DS . 'configuration.php', $permissions);
+		\App::get('filesystem')->setPermissions(PATH_ROOT . DS . 'configuration.php', $permissions);
 	}
 }

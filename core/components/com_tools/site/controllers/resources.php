@@ -567,7 +567,7 @@ class Resources extends SiteController
 
 		// get language library
 		$lang = Lang::getRoot();
-		if (!$lang->load(strtolower('com_resources'), JPATH_BASE))
+		if (!$lang->load('com_resources', Component::path('com_resources') . DS . 'site'))
 		{
 			$this->setError(Lang::txt('COM_TOOLS_ERROR_LOADING_LANGUAGE'));
 		}

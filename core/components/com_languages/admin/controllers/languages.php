@@ -350,7 +350,6 @@ class Languages extends AdminController
 
 		$this->view
 			->set('homes', Multilangstatus::getHomes())
-			//->set('language_filter', JLanguageMultilang::isEnabled())
 			->set('switchers', Multilangstatus::getLangswitchers())
 			->set('contentlangs', Multilangstatus::getContentlangs())
 			->set('site_langs', Multilangstatus::getSitelangs())
