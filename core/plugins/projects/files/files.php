@@ -3161,11 +3161,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$kind = 'projects.' . $this->model->get('alias') . '.' . $type;
 
 		// Get session
-		$jsession = App::get('session');
+		$session = App::get('session');
 
 		if ($append == true)
 		{
-			$exVal = $jsession->get($kind);
+			$exVal = $session->get($kind);
 			$val   = $exVal ? $exVal . ', ' . $file : $file;
 		}
 		else
@@ -3175,7 +3175,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		$val .= $appendMessage ? ' (' . $appendMessage . ') ' : '';
 
-		$jsession->set($kind, $val);
+		$session->set($kind, $val);
 		return true;
 	}
 
@@ -3198,23 +3198,23 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (empty($changes))
 		{
 			// Get session
-			$jsession = App::get('session');
+			$session = App::get('session');
 
 			// Get values from session
-			$updated  = $jsession->get('projects.' . $model->get('alias') . '.updated');
-			$uploaded = $jsession->get('projects.' . $model->get('alias') . '.uploaded');
-			$failed   = $jsession->get('projects.' . $model->get('alias') . '.failed');
-			$deleted  = $jsession->get('projects.' . $model->get('alias') . '.deleted');
-			$restored = $jsession->get('projects.' . $model->get('alias') . '.restored');
-			$expanded = $jsession->get('projects.' . $model->get('alias') . '.expanded');
+			$updated  = $session->get('projects.' . $model->get('alias') . '.updated');
+			$uploaded = $session->get('projects.' . $model->get('alias') . '.uploaded');
+			$failed   = $session->get('projects.' . $model->get('alias') . '.failed');
+			$deleted  = $session->get('projects.' . $model->get('alias') . '.deleted');
+			$restored = $session->get('projects.' . $model->get('alias') . '.restored');
+			$expanded = $session->get('projects.' . $model->get('alias') . '.expanded');
 
 			// Clean up session values
-			$jsession->set('projects.' . $model->get('alias') . '.failed', '');
-			$jsession->set('projects.' . $model->get('alias') . '.updated', '');
-			$jsession->set('projects.' . $model->get('alias') . '.uploaded', '');
-			$jsession->set('projects.' . $model->get('alias') . '.deleted', '');
-			$jsession->set('projects.' . $model->get('alias') . '.restored', '');
-			$jsession->set('projects.' . $model->get('alias') . '.expanded', '');
+			$session->set('projects.' . $model->get('alias') . '.failed', '');
+			$session->set('projects.' . $model->get('alias') . '.updated', '');
+			$session->set('projects.' . $model->get('alias') . '.uploaded', '');
+			$session->set('projects.' . $model->get('alias') . '.deleted', '');
+			$session->set('projects.' . $model->get('alias') . '.restored', '');
+			$session->set('projects.' . $model->get('alias') . '.expanded', '');
 		}
 		else
 		{

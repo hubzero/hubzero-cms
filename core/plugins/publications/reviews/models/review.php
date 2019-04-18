@@ -162,7 +162,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
+	 * it returns the entire User object
 	 *
 	 * @param   boolean  $property  Holds property value
 	 * @return  mixed

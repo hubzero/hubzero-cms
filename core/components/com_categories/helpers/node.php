@@ -509,7 +509,7 @@ class Node extends Obj
 	/**
 	 * Returns the category metadata
 	 *
-	 * @return  object  A JRegistry object containing the metadata
+	 * @return  object  A Registry object containing the metadata
 	 */
 	public function getMetadata()
 	{

@@ -382,7 +382,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get the form input
-		$token  = Request::getString('token', null, 'post', 'alnum');
+		$token  = Request::getString('token', null, 'post');
 		$change = Request::getString('change', '', 'post');
 
 		// Create the view
@@ -439,7 +439,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		/*
 		$salt = $parts[1];
-		$testcrypt = JUserHelper::getCryptedPassword($token, $salt);
+		$testcrypt = Hubzero\User\Password::getPasshash($token);
 
 		// Verify the token provided and the one in the db match
 		if (!($crypt == $testcrypt))

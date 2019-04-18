@@ -33,19 +33,22 @@ namespace Components\Cart\Lib\Auditors;
 use Components\Storefront\Models\Product;
 use Components\Storefront\Models\Sku;
 use Components\Cart\Helpers\CartDownload;
+use User;
 
-require_once('BaseAuditor.php');
-require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php';
-require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php';
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php');
+require_once __DIR__ . DS . 'BaseAuditor.php';
+require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Product.php';
+require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Sku.php';
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php';
 
 class Software_Auditor extends BaseAuditor
 {
 	/**
 	 * Constructor
 	 *
-	 * @param 	void
-	 * @return 	void
+	 * @param   string   $type
+	 * @param   integer  $pId
+	 * @param   integer  $crtId
+	 * @return  void
 	 */
 	public function __construct($type, $pId, $crtId)
 	{
@@ -55,16 +58,15 @@ class Software_Auditor extends BaseAuditor
 	/**
 	 * Main handler. Does all the checks
 	 *
-	 * @param 	void
-	 * @return 	void
+	 * @return  void
 	 */
 	public function audit()
 	{
-		/* If no user, some checks may be skipped... */
+		// If no user, some checks may be skipped...
 		// Get user
-		$jUser = User::getInstance();
+		$user = User::getInstance();
 		// User specific checks
-		if (!$jUser->get('guest'))
+		if (!$user->get('guest'))
 		{
 			if ($sId = $this->getSku())
 			{
@@ -73,9 +75,9 @@ class Software_Auditor extends BaseAuditor
 				$skuDownloadLimit = $sku->getMeta('downloadLimit');
 				if ($skuDownloadLimit > 0)
 				{
-				// Get SKU download count
-				$skuDownloadCount = CartDownload::countUserSkuDownloads($this->sId, $this->uId);
-				// Check if the limit is reached
+					// Get SKU download count
+					$skuDownloadCount = CartDownload::countUserSkuDownloads($this->sId, $this->uId);
+					// Check if the limit is reached
 					if ($skuDownloadCount >= $skuDownloadLimit)
 					{
 						$this->setResponseStatus('error');
@@ -83,7 +85,7 @@ class Software_Auditor extends BaseAuditor
 						$this->setResponseError(': you have reached the maximum number of allowed downloads for this product.');
 					}
 				}
-				return ($this->getResponse());
+				return $this->getResponse();
 			}
 		}
 
@@ -105,7 +107,7 @@ class Software_Auditor extends BaseAuditor
 					$this->setResponseError(': this product has reached the maximum number of allowed downloads and cannot be downloaded.');
 				}
 			}
-			return($this->getResponse());
+			return $this->getResponse();
 		}
 
 		// Get product download limit
@@ -122,6 +124,6 @@ class Software_Auditor extends BaseAuditor
 				$this->setResponseError(': this product has reached the maximum number of allowed downloads and cannot be downloaded.');
 			}
 		}
-		return($this->getResponse());
+		return $this->getResponse();
 	}
 }

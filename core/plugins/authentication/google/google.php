@@ -211,10 +211,10 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 		$oauth2 = new Google_Service_Oauth2($client);
 
 		// Check if there's an active token in the session
-		$jsession = App::get('session');
-		if ($jsession->get('google.token', null))
+		$session = App::get('session');
+		if ($session->get('google.token', null))
 		{
-			$client->setAccessToken($jsession->get('google.token'));
+			$client->setAccessToken($session->get('google.token'));
 		}
 
 		// If we have an access token set, carry on
@@ -262,7 +262,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 				// Also set a suggested username for their hub account
 				$sub_email    = explode('@', $user_profile['email'], 2);
 				$tmp_username = $sub_email[0];
-				$jsession->set('auth_link.tmp_username', $tmp_username);
+				$session->set('auth_link.tmp_username', $tmp_username);
 			}
 
 			$hzal->update();

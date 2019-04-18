@@ -147,8 +147,8 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 
 		// Capture output
 		// [!] zooley Nov 03, 2014 - PHP 5.4 changed behavior for ob_end_clean().
-		//     ob_end_clean(), called in JError, clears and stops buffering.
-		//     On error, pages, there will be no buller to get so ob_get_contents()
+		//     ob_end_clean() clears and stops buffering.
+		//     On error, pages, there will be no buffer to get so ob_get_contents()
 		//     will be false.
 		$contents = ob_get_contents();
 

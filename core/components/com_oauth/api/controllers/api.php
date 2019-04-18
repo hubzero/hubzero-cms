@@ -375,7 +375,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 				return;
 			}
 
-			$useraccount = User::getInstance(JUserHelper::getUserId($x_auth_username));
+			$useraccount = User::getInstance($x_auth_username);
 
 			$db = App::get('db');
 
