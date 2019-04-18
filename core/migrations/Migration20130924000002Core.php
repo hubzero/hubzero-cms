@@ -312,7 +312,7 @@ class Migration20130924000002Core extends Base
 		$query->update('#__assets');
 		$query->set(array(
 			'lft'   => (int) $leftId,
-			'rgt'   => (int) $rightId),
+			'rgt'   => (int) $rightId,
 			'level' => (int) $level
 		));
 		$query->whereEquals('id', (int) $parentId);
