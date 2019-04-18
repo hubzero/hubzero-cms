@@ -662,7 +662,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 					foreach (Lang::available() as $language)
 					{
 						$item = $menu->getDefault($language->lang_code);
-						if ($item && $item->language != $active->language && $item->language != '*' && JLanguage::exists($language->lang_code))
+						if ($item && $item->language != $active->language && $item->language != '*' && Lang::exists($language->lang_code))
 						{
 							if (Config::get('sef'))
 							{

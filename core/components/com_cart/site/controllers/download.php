@@ -54,10 +54,10 @@ class Download extends ComponentController
 	{
 		$this->warehouse = new Warehouse();
 
-		$this->juser = User::getInstance();
+		$this->user = User::getInstance();
 
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if ($this->user->get('guest'))
 		{
 			$this->login('Please login to continue');
 			return;
@@ -92,7 +92,7 @@ class Download extends ComponentController
 
 		// get cart user
 		$cartUser = Cart::getCartUser($crtId);
-		$currentUser = $this->juser->id;
+		$currentUser = $this->user->id;
 
 		// Error if needed
 		if ($tStatus !== 'completed')

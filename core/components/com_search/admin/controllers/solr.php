@@ -154,7 +154,7 @@ class Solr extends AdminController
 			}
 
 			$user->set('accessgroups', $userAccessGroups);
-			$newpass = \JUserHelper::genRandomPassword();
+			$newpass = \Hubzero\User\Password::genRandomPassword();
 			$user->set('password', \Hubzero\User\Password::getPasshash($newpass));
 
 			// Save the User

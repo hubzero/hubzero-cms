@@ -32,18 +32,21 @@ namespace Components\Cart\Lib\Auditors;
 
 use Components\Storefront\Models\Product;
 use Components\Storefront\Models\Memberships;
+use User;
 
-require_once('BaseAuditor.php');
-require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php';
-require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php';
+require_once __DIR__ . DS . 'BaseAuditor.php';
+require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Product.php';
+require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Memberships.php';
 
 class Membership_Auditor extends BaseAuditor
 {
 	/**
 	 * Constructor
 	 *
-	 * @param 	void
-	 * @return 	void
+	 * @param   string   $type
+	 * @param   integer  $pId
+	 * @param   integer  $crtId
+	 * @return  void
 	 */
 	public function __construct($type, $pId, $crtId)
 	{
@@ -53,33 +56,31 @@ class Membership_Auditor extends BaseAuditor
 	/**
 	 * Main handler. Does all the checks
 	 *
-	 * @param 	void
-	 * @return 	void
+	 * @return  void
 	 */
 	public function audit()
 	{
-		/* Membership may have a limit on when it can be extended */
+		// Membership may have a limit on when it can be extended
 
-		/* If no user, some checks may be skipped... */
+		// If no user, some checks may be skipped...
 		// Get user
-		$jUser = User::getInstance();
-		if (!$jUser->get('guest')) {
+		$user = User::getInstance();
+		if (!$user->get('guest'))
+		{
 			// Check if there is a limitation on when the subscription can be extended
 			$subscriptionMaxLen = Product::getMetaValue($this->pId, 'subscriptionMaxLen');
-			if ($subscriptionMaxLen) {
-				/* Check if the current user has the existing subscription and how much is left on it
-				 i.e. figure out if he may extend his current subscription */
+			if ($subscriptionMaxLen)
+			{
+				// Check if the current user has the existing subscription and how much is left on it
+				// i.e. figure out if he may extend his current subscription
 
-				/*
-				 *  This is not working very well for multiple SKUs with multiple subscriptionMaxLen's
-				 *  at this point code doesn't know what SKU will be added,
-				 *  so for one SKU subscriptionMaxLen should
-				 *  be set to time less than actual membership length, ie if membership is sold for 1 year and
-				 *  cannot be renewed more than 6 month before it expires the subscriptionMaxLen must be set to 6 MONTH
-				 *  if it cannot be renewed more than 3 month before it expires the subscriptionMaxLen must be set to 3 MONTH
-				 *
-				 *  so subscriptionMaxLen = XX is actually "let renew XX time before expiration"
-				 */
+				// This is not working very well for multiple SKUs with multiple subscriptionMaxLen's
+				// at this point code doesn't know what SKU will be added,
+				// so for one SKU subscriptionMaxLen should
+				// be set to time less than actual membership length, ie if membership is sold for 1 year and
+				// cannot be renewed more than 6 month before it expires the subscriptionMaxLen must be set to 6 MONTH
+				// if it cannot be renewed more than 3 month before it expires the subscriptionMaxLen must be set to 3 MONTH
+				// so subscriptionMaxLen = XX is actually "let renew XX time before expiration"
 
 				// Get the proper product type subscription object reference
 				$subscription = Memberships::getSubscriptionObject($this->type, $this->pId, $this->uId);
@@ -99,10 +100,9 @@ class Membership_Auditor extends BaseAuditor
 						$this->setResponseError(': you already have an active subscription. Subscription extension is not available at this time.');
 					}
 				}
-
 			}
 		}
 
-		return($this->getResponse());
+		return $this->getResponse();
 	}
 }

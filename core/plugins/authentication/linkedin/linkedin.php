@@ -108,7 +108,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 	 */
 	public function login(&$credentials, &$options)
 	{
-		$jsession   = App::get('session');
+		$session    = App::get('session');
 		$b64dreturn = '';
 
 		// Check to see if a return parameter was specified
@@ -144,7 +144,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 
 		// LinkedIn has sent a response, user has granted permission, take the temp access token,
 		// the user's secret and the verifier to request the user's real secret key
-		$request = $jsession->get('linkedin.oauth.request');
+		$request = $session->get('linkedin.oauth.request');
 		$reply = $linkedin_client->retrieveTokenAccess(
 			$request['oauth_token'],
 			$request['oauth_token_secret'],
@@ -153,10 +153,10 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		if ($reply['success'] === true)
 		{
 			// The request went through without an error, gather user's 'access' tokens
-			$jsession->set('linkedin.oauth.access', $reply['linkedin']);
+			$session->set('linkedin.oauth.access', $reply['linkedin']);
 
 			// Set the user as authorized for future quick reference
-			$jsession->set('linkedin.oauth.authorized', true);
+			$session->set('linkedin.oauth.authorized', true);
 		}
 		else
 		{
@@ -233,9 +233,9 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
 		// Make sure we have authorization
-		$jsession = App::get('session');
+		$session = App::get('session');
 
-		if ($jsession->get('linkedin.oauth.authorized') == true)
+		if ($session->get('linkedin.oauth.authorized') == true)
 		{
 			// User initiated LinkedIn connection, set up config
 			$config = array(
@@ -246,7 +246,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 
 			// Create the object
 			$linkedin_client = new LinkedIn($config);
-			$linkedin_client->setTokenAccess($jsession->get('linkedin.oauth.access'));
+			$linkedin_client->setTokenAccess($session->get('linkedin.oauth.access'));
 
 			// Fields we need
 			$retrieve = array(
@@ -321,7 +321,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 				// Also set a suggested username for their hub account
 				$sub_email    = explode('@', (string) $profile->{'email-address'}, 2);
 				$tmp_username = $sub_email[0];
-				$jsession->set('auth_link.tmp_username', $tmp_username);
+				$session->set('auth_link.tmp_username', $tmp_username);
 			}
 
 			$hzal->update();
@@ -374,7 +374,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 	 */
 	public function link($options=array())
 	{
-		$jsession = App::get('session');
+		$session = App::get('session');
 
 		// Set up linkedin configuration
 		$linkedin_config['appKey']      = $this->params->get('api_key');
@@ -396,7 +396,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 
 		// LinkedIn has sent a response, user has granted permission, take the temp access token,
 		// the user's secret and the verifier to request the user's real secret key
-		$request = $jsession->get('linkedin.oauth.request');
+		$request = $session->get('linkedin.oauth.request');
 		$reply = $linkedin_client->retrieveTokenAccess(
 			$request['oauth_token'],
 			$request['oauth_token_secret'],
@@ -405,19 +405,19 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		if ($reply['success'] === true)
 		{
 			// The request went through without an error, gather user's 'access' tokens
-			$jsession->set('linkedin.oauth.access', $reply['linkedin']);
+			$session->set('linkedin.oauth.access', $reply['linkedin']);
 
 			// Set the user as authorized for future quick reference
-			$jsession->set('linkedin.oauth.authorized', true);
+			$session->set('linkedin.oauth.authorized', true);
 		}
 		else
 		{
 			return new Exception(Lang::txt('Access token retrieval failed'), 500);
 		}
 
-		if ($jsession->get('linkedin.oauth.authorized') == true)
+		if ($session->get('linkedin.oauth.authorized') == true)
 		{
-			$linkedin_client->setTokenAccess($jsession->get('linkedin.oauth.access'));
+			$linkedin_client->setTokenAccess($session->get('linkedin.oauth.access'));
 
 			// Get the linked in profile
 			$profile = $linkedin_client->profile('~:(id,first-name,last-name,email-address)');

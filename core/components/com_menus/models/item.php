@@ -831,7 +831,7 @@ class Item extends Nested
 		}
 
 		// Now load the component params.
-		// TODO: Work out why 'fixing' this breaks JForm
+		// TODO: Work out why 'fixing' this breaks Form
 		if ($isNew = false)
 		{
 			$path = \Hubzero\Filesystem\Util::normalizePath(\Component::path($option) . '/config/config.xml');

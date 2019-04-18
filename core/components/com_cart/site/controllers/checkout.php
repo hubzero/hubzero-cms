@@ -65,10 +65,10 @@ class Checkout extends ComponentController
 			$this->registerTask('__default', $this->_task);
 		}
 
-		$this->juser = User::getInstance();
+		$this->user = User::getInstance();
 
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if ($this->user->get('guest'))
 		{
 			$this->login('Please login to continue');
 			return;
@@ -456,7 +456,7 @@ class Checkout extends ComponentController
 			);
 		}
 
-		$savedShippingAddresses = $cart->getSavedShippingAddresses($this->juser->id);
+		$savedShippingAddresses = $cart->getSavedShippingAddresses($this->user->id);
 		$this->view->savedShippingAddresses = $savedShippingAddresses;
 		$this->view->display();
 	}
@@ -587,7 +587,7 @@ class Checkout extends ComponentController
 		if ($selected && $provider)
 		{
 			// Do whatever needed to do on the server side
-			$payments = Event::trigger('cart.onSelectedPayment', array($transaction, User::getRoot()));
+			$payments = Event::trigger('cart.onSelectedPayment', array($transaction, User::getInstance()));
 
 			$paymentResponse = false;
 			foreach ($payments as $options)
@@ -613,7 +613,7 @@ class Checkout extends ComponentController
 		elseif ($submitted && $provider)
 		{
 			// Do whatever needed to do on the server side
-			$payments = Event::trigger('cart.onProcessPayment', array($transaction, User::getRoot()));
+			$payments = Event::trigger('cart.onProcessPayment', array($transaction, User::getInstance()));
 
 			$paymentResponse = false;
 			foreach ($payments as $options)

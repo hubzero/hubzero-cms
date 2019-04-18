@@ -39,9 +39,9 @@ use Hubzero\Geocode\Geocode;
 use Hubzero\Base\ItemList;
 use Hubzero\Base\Obj;
 
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utils.php');
-require_once(__DIR__ . DS . 'middleware' . DS . 'zone.php');
-require_once(__DIR__ . DS . 'middleware' . DS . 'session.php');
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'utils.php';
+require_once __DIR__ . DS . 'middleware' . DS . 'zone.php';
+require_once __DIR__ . DS . 'middleware' . DS . 'session.php';
 
 /**
  * Tools middleware model
@@ -76,7 +76,7 @@ class Middleware extends Obj
 	 */
 	public function __construct($db=null)
 	{
-		if (!($db instanceof \JDatabase) && !($db instanceof \Hubzero\Database\Driver))
+		if (!($db instanceof \Hubzero\Database\Driver))
 		{
 			$db = Utils::getMWDBO();
 		}
