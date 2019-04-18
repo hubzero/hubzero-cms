@@ -47,21 +47,19 @@ $this->view('_title')
 
 <section class="main section" id="setup">
 	<?php
-		// Display status message
-		$this->view('_statusmsg', 'projects')
-		     ->set('error', $this->getError())
-		     ->set('msg', $this->msg)
-		     ->display();
-	?>
-	<?php
-		// Display metadata
-		$this->view('_metadata')
-		     ->set('model', $this->model)
-		     ->set('step', $this->step)
-		     ->set('option', $this->option)
-		     ->display();
-	?>
-	<?php
+	// Display status message
+	$this->view('_statusmsg', 'projects')
+	     ->set('error', $this->getError())
+	     ->set('msg', $this->msg)
+	     ->display();
+
+	// Display metadata
+	$this->view('_metadata')
+	     ->set('model', $this->model)
+	     ->set('step', $this->step)
+	     ->set('option', $this->option)
+	     ->display();
+
 	// Display steps
 	$this->view('_steps')
 	     ->set('model', $this->model)
@@ -77,6 +75,7 @@ $this->view('_title')
 			</div>
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_PROJECTS_PICK_NAME'); ?></legend>
+
 				<?php // Display form fields
 				$this->view('_form')
 				     ->set('model', $this->model)
@@ -86,23 +85,33 @@ $this->view('_title')
 				     ->set('section', $this->section)
 				     ->display();
 				?>
-				<input type="hidden" id="extended" name="extended" value="0" />
+				<input type="hidden" name="extended" id="extended" value="0" />
 				<input type="hidden" name="verified" id="verified" value="0" />
-				<label for="field-title"><?php echo Lang::txt('COM_PROJECTS_TITLE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-					<span class="verification"></span>
-					<input name="title" maxlength="250" id="field-title" type="text" value="<?php echo $this->escape($this->model->get('title')); ?>" class="verifyme" />
-				</label>
-				<p class="hint"><?php echo Lang::txt('COM_PROJECTS_HINTS_TITLE'); ?></p>
-				<label for="field-alias"><?php echo Lang::txt('COM_PROJECTS_ALIAS_NAME'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-					<span class="verification"></span>
-					<input name="name" maxlength="30" id="field-alias" type="text" value="<?php echo $this->model->get('alias'); ?>" <?php echo $this->model->get('id') ? ' disabled="disabled"' : ''; ?> class="verifyme" data-verify="<?php echo Route::url('index.php?option=com_projects&task=verify&no_html=1&ajax=1&text='); ?>" data-suggest="<?php echo Route::url('index.php?option=com_projects&task=suggestalias&no_html=1&ajax=1&text='); ?>" />
-				</label>
-				<p class="hint"><?php echo Lang::txt('COM_PROJECTS_HINTS_NAME'); ?></p>
+
+				<div class="form-group">
+					<label for="field-title">
+						<?php echo Lang::txt('COM_PROJECTS_TITLE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+						<span class="verification"></span>
+						<input name="title" maxlength="250" id="field-title" type="text" value="<?php echo $this->escape($this->model->get('title')); ?>" class="form-control verifyme" />
+					</label>
+					<p class="hint"><?php echo Lang::txt('COM_PROJECTS_HINTS_TITLE'); ?></p>
+				</div>
+
+				<div class="form-group">
+					<label for="field-alias">
+						<?php echo Lang::txt('COM_PROJECTS_ALIAS_NAME'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+						<span class="verification"></span>
+						<input name="name" maxlength="30" id="field-alias" type="text" value="<?php echo $this->model->get('alias'); ?>" <?php echo $this->model->get('id') ? ' disabled="disabled"' : ''; ?> class="form-control verifyme" data-verify="<?php echo Route::url('index.php?option=com_projects&task=verify&no_html=1&ajax=1&text='); ?>" data-suggest="<?php echo Route::url('index.php?option=com_projects&task=suggestalias&no_html=1&ajax=1&text='); ?>" />
+					</label>
+					<p class="hint"><?php echo Lang::txt('COM_PROJECTS_HINTS_NAME'); ?></p>
+				</div>
+
 				<div id="moveon" class="nogo">
 					<p class="submitarea">
 						<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_AND_CONTINUE'); ?>" class="btn disabled" disabled="disabled" />
 					</p>
 				</div>
+
 				<div id="describe">
 					<h2><?php echo Lang::txt('COM_PROJECTS_DESCRIBE_PROJECT'); ?></h2>
 					<p class="question"><?php echo Lang::txt('COM_PROJECTS_QUESTION_DESCRIBE_NOW_OR_LATER'); ?></p>	
@@ -113,6 +122,7 @@ $this->view('_title')
 				</div>
 			</fieldset>
 			<div class="clear"></div>
+
 			<div id="describearea">
 				<div class="explaination">
 					<h4><?php echo Lang::txt('COM_PROJECTS_HOWTO_TITLE_DESC'); ?></h4>
@@ -120,39 +130,53 @@ $this->view('_title')
 				</div>
 				<fieldset>
 					<legend><?php echo Lang::txt('COM_PROJECTS_DESCRIBE_PROJECT'); ?></legend>
-					<label for="field-about"><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?> <span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
-						<?php
-							echo $this->editor('about', $this->escape($this->model->about('raw')), 35, 25, 'field-about', array('class' => 'minimal no-footer'));
-						?>
-					</label>
-					<h4><?php echo Lang::txt('COM_PROJECTS_SETTING_APPEAR_IN_SEARCH'); ?></h4>
-					<label>
-						<input class="option" name="private" type="radio" value="1" <?php echo !$this->model->isPublic() ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PRIVATE'); ?>
-					</label>
-					<label>
-						<input class="option" name="private" type="radio" value="0" <?php echo $this->model->isPublic() ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PUBLIC'); ?>
-					</label>
+
+					<div class="form-group">
+						<label for="field-about">
+							<?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?> <span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
+							<?php echo $this->editor('about', $this->escape($this->model->about('raw')), 35, 25, 'field-about', array('class' => 'form-control minimal no-footer')); ?>
+						</label>
+					</div>
+
+					<fieldset>
+						<legend><?php echo Lang::txt('COM_PROJECTS_SETTING_APPEAR_IN_SEARCH'); ?></legend>
+
+						<div class="form-group form-check">
+							<label for="privacy-private" class="form-check-label">
+								<input class="option form-check-input" name="private" id="privacy-private" type="radio" value="1" <?php echo !$this->model->isPublic() ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PRIVATE'); ?>
+							</label>
+						</div>
+
+						<div class="form-group form-check">
+							<label for="privacy-public" class="form-check-label">
+								<input class="option form-check-input" name="private" id="privacy-public" type="radio" value="0" <?php echo $this->model->isPublic() ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PUBLIC'); ?>
+							</label>
+						</div>
+					</fieldset>
 				</fieldset>
-			<?php if ($this->model->get('id')) { ?>
-			<div class="js">
-				<div class="clear"></div>
-				<div class="explaination">
-					<h4><?php echo Lang::txt('COM_PROJECTS_HOWTO_TITLE_THUMB'); ?></h4>
-					<p><?php echo Lang::txt('COM_PROJECTS_HOWTO_THUMB'); ?></p>
-				</div>
-				<fieldset>
-					<legend><?php echo Lang::txt('COM_PROJECTS_ADD_PICTURE'); ?></legend>
-					<?php
-						// Display project image upload
-						$this->view('_picture')
-						     ->set('model', $this->model)
-						     ->set('step', $this->step)
-						     ->set('option', $this->option)
-						     ->display();
-					?>
-				</fieldset>
-			</div>
-			<?php } ?>
+
+				<?php if ($this->model->get('id')): ?>
+					<div class="js">
+						<div class="clear"></div>
+						<div class="explaination">
+							<h4><?php echo Lang::txt('COM_PROJECTS_HOWTO_TITLE_THUMB'); ?></h4>
+							<p><?php echo Lang::txt('COM_PROJECTS_HOWTO_THUMB'); ?></p>
+						</div>
+						<fieldset>
+							<legend><?php echo Lang::txt('COM_PROJECTS_ADD_PICTURE'); ?></legend>
+
+							<?php
+							// Display project image upload
+							$this->view('_picture')
+							     ->set('model', $this->model)
+							     ->set('step', $this->step)
+							     ->set('option', $this->option)
+							     ->display();
+							?>
+						</fieldset>
+					</div>
+				<?php endif; ?>
+
 				<div class="submitarea">
 					<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_AND_CONTINUE'); ?>" class="btn btn-success" id="gonext" />
 				</div>
