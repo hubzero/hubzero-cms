@@ -42,10 +42,10 @@ HUB.ProjectSetup = {
 
 	initialize: function()
 	{
-		var $ 				= this.jQuery;
-		var hubfrm 			= $('#hubForm');
-		var next_desc		= $('#next_desc');
-		var next_step		= $('#next_step');
+		var $ = this.jQuery;
+		var hubfrm = $('#hubForm');
+		var next_desc = $('#next_desc');
+		var next_step = $('#next_step');
 
 		// Setup
 		var rest  = $('.restricted-opt');
@@ -106,7 +106,7 @@ HUB.ProjectSetup = {
 			$('#f-restricted-no').on('click', function(e) {
 				$('#f-restricted-explain').addClass('hidden');
 			});
-			if ($('#f-restricted-no').attr('checked') == 'checked')
+			if ($('#f-restricted-no').prop('checked'))
 			{
 				$('#f-restricted-explain').addClass('hidden');
 			}
@@ -409,27 +409,27 @@ HUB.ProjectSetup = {
 		var con = $('#btn-finalize');
 		var passed = 1;
 
-		if($('#export') && $('#export').attr('checked') == 'checked')
+		if ($('#export') && $('#export').prop('checked'))
 		{
 			passed = 0;
 		}
-		if($('#hipaa') && $('#hipaa').attr('checked') == 'checked')
+		if ($('#hipaa') && $('#hipaa').prop('checked'))
 		{
 			passed = 0;
 		}
-		if($('#irb') && $('#irb').attr('checked') == 'checked' && $('#agree_irb').attr('checked') != 'checked' )
+		if ($('#irb') && $('#irb').prop('checked') && !$('#agree_irb').prop('checked'))
 		{
 			passed = 0;
 		}
-		if($('#ferpa') && $('#ferpa').attr('checked') == 'checked' && $('#agree_ferpa').attr('checked') != 'checked' )
+		if ($('#ferpa') && $('#ferpa').prop('checked') && !$('#agree_ferpa').prop('checked'))
 		{
 			passed = 0;
 		}
 
-		if(passed == 1 && con.hasClass('disabled')) {
+		if (passed == 1 && con.hasClass('disabled')) {
 			con.removeClass('disabled');
 		}
-		if(passed == 0 && !con.hasClass('disabled')) {
+		if (passed == 0 && !con.hasClass('disabled')) {
 			con.addClass('disabled');
 		}
 
@@ -451,7 +451,7 @@ HUB.ProjectSetup = {
 		var oid = $(el).attr('id');
 		var obox = '#stop-' + oid;
 
-		if($(el).attr('checked') == 'checked' && $(obox).hasClass('hidden'))
+		if($(el).prop('checked') && $(obox).hasClass('hidden'))
 		{
 			$(obox).removeClass('hidden');
 		}

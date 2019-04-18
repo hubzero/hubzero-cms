@@ -55,7 +55,7 @@ $start = ($this->showPrivacy == 2 && $this->model->access('member')) ? '<span cl
 		{
 			$thumbClass = ' no-picture';
 		}
-	?>
+		?>
 		<div class="pthumb<?php echo $thumbClass; ?>"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>" title="<?php echo Lang::txt('COM_PROJECTS_VIEW_UPDATES'); ?>"><img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&controller=media&media=thumb'); ?>" alt="<?php echo $this->escape($this->model->get('title')); ?>" /></a></div>
 	<?php } ?>
 	<div class="ptitle">
@@ -78,15 +78,13 @@ $start = ($this->showPrivacy == 2 && $this->model->access('member')) ? '<span cl
 		echo ' ' . Lang::txt('COM_PROJECTS_BY') . ' ';
 		if ($cn = $this->model->groupOwner('cn'))
 		{
-			echo ' ' . Lang::txt('COM_PROJECTS_GROUP')
-				. ' <a href="/groups/' . $cn . '">' . $cn . '</a>';
+			echo ' ' . Lang::txt('COM_PROJECTS_GROUP') . ' <a href="' . Route::url('index.php?option=com_groups&cn=' . $cn) . '">' . $cn . '</a>';
 		}
 		else
 		{
 			echo Lang::txt('COM_PROJECTS_UNKNOWN') . ' ' . Lang::txt('COM_PROJECTS_GROUP');
 		}
 		echo '</p>';
-
 	 } ?>
 	</div>
 </div>

@@ -48,21 +48,19 @@ $this->view('_title')
 
 <section class="main section" id="setup">
 	<?php
-		// Display status message
-		$this->view('_statusmsg', 'projects')
-		     ->set('error', $this->getError())
-		     ->set('msg', $this->msg)
-		     ->display();
-	?>
-	<?php
-		// Display metadata
-		$this->view('_metadata')
-		     ->set('model', $this->model)
-		     ->set('step', $this->step)
-		     ->set('option', $this->option)
-		     ->display();
-	?>
-	<?php
+	// Display status message
+	$this->view('_statusmsg', 'projects')
+	     ->set('error', $this->getError())
+	     ->set('msg', $this->msg)
+	     ->display();
+
+	// Display metadata
+	$this->view('_metadata')
+	     ->set('model', $this->model)
+	     ->set('step', $this->step)
+	     ->set('option', $this->option)
+	     ->display();
+
 	// Display steps
 	$this->view('_steps')
 	     ->set('model', $this->model)
@@ -90,10 +88,10 @@ $this->view('_title')
 				<ul>
 					<li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_REVIEWER_CAN_ONE'); ?></li>
 				</ul>
-				<?php if ($this->model->get('owned_by_group')) { ?>
+				<?php if ($this->model->get('owned_by_group')): ?>
 					<h4><?php echo Lang::txt('COM_PROJECTS_HOWTO_GROUP_PROJECT'); ?></h4>
 					<p><?php echo Lang::txt('COM_PROJECTS_HOWTO_GROUP_EXPLAIN'); ?></p>
-				<?php } ?>
+				<?php endif; ?>
 			</div>
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_PROJECTS_ADD_TEAM'); ?></legend>
