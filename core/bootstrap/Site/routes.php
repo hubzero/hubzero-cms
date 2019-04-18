@@ -40,6 +40,11 @@
 */
 $router->rules('build')->append('content', function ($uri)
 {
+	if (!\App::has('menu.manager'))
+	{
+		return $uri;
+	}
+
 	// Set URI defaults
 	$menu = \App::get('menu.manager')->menu('site');
 
@@ -185,7 +190,7 @@ $router->rules('build')->append('component', function ($uri)
 
 	$built = false;
 
-	if (isset($query['Itemid']) && !empty($query['Itemid']))
+	if (isset($query['Itemid']) && !empty($query['Itemid']) && \App::has('menu.manager'))
 	{
 		$menu = \App::get('menu.manager')->menu('site');
 		$item = $menu->getItem($query['Itemid']);
