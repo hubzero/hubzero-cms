@@ -161,7 +161,7 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 		{
 			// Setup view
 			$this->view->setLayout("edit{$scope}");
-
+			$this->css('selector.css');
 			$this->css('build.css');
 			$this->css($scope . '.css');
 			$this->js($scope);

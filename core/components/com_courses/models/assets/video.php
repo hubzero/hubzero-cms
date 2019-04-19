@@ -57,7 +57,7 @@ class Video extends File
 	 *
 	 * @return array of assets created
 	 **/
-	public function create()
+	public function create($localPath = null)
 	{
 		// Set the asset type to video
 		$this->asset['type']    = 'video';
@@ -66,7 +66,7 @@ class Video extends File
 		// @FIXME: if extension is .zip, go ahead and set subtype (html5/hubpresenter) accordingly
 
 		// Call the primary create method on the file asset handler
-		$return_info = parent::create();
+		$return_info = parent::create($localPath);
 
 		// Check for errors in response
 		if (array_key_exists('error', $return_info))

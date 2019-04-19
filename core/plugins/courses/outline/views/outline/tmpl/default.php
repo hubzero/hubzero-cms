@@ -366,8 +366,29 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 																$link = '<span class="info">' . $this->escape(stripslashes(($a->get('content')) ? $a->get('content') : $a->get('title'))) . '</span>';
 															}
 
-
-															$found[] = '<li>' . $link . '</li>';
+															$children = '';
+															if ($a->get('type') == 'tool')
+															{
+																$handler = $a->loadHandler();
+																if (method_exists($handler, 'files'))
+																{
+																	$files = $handler->files($a);
+																	if (!empty($files))
+																	{
+																		$children = '<ul>';
+																		foreach ($files as $child)
+																		{
+																			$fullFilePath = $handler::getToolDirectory() . $a->get('path') . '/' . $child;
+																			$childHref = $href . '?file=' . urlencode($fullFilePath);
+																			$childLink = '<a class="' . $cls . '" href="' . $childHref . '"' . $target . '>' .
+																				$this->escape(stripslashes($child)) . '</a>';
+																			$children .= '<li>' . $childLink . '</li>';
+																		}
+																		$children .= '</ul>';
+																	}
+																}
+															}
+															$found[] = '<li>' . $link . $children . '</li>';
 
 															//if ($a->get('type') == 'video')
 															if ($k == 0)

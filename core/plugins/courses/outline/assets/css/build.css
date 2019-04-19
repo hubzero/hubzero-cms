@@ -251,6 +251,9 @@
 .aux-attachments a.attach-wiki:before {
 	content: "\f02a";
 }
+.aux-attachments a.attach-tool:before {
+	content: "\f0ad";
+}
 .aux-attachments a.attach-object:before {
 	content: "\f0c3";
 }
@@ -723,7 +726,7 @@ ul {
 	display: none;
 }
 .asset-group-item-container {
-	margin: 10px 210px 10px 10px;
+	margin: 10px 240px 10px 10px;
 }
 .uploadfiles {
 	position: absolute;
@@ -734,7 +737,7 @@ ul {
 	top: 0;
 	bottom: 0;
 	right: 0;
-	width: 180px;
+	width: 210px;
 }
 .uploadfiles p {
 	margin: 0;
@@ -839,7 +842,7 @@ ul {
 	content: "\f03d";
 }
 .tool:after {
-	content: "\f0c3";
+	content: "\f0ad";
 }
 
 .asset-group-item .checker {
@@ -1063,7 +1066,8 @@ ul {
 /* Styles for popup edit pages */
 .edit-asset,
 .edit-assetgroup,
-.wiki-edit {
+.wiki-edit,
+.tool-edit {
 	margin: 0 20px;
 }
 .edit-asset h3,
