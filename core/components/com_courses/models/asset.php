@@ -33,6 +33,7 @@
 namespace Components\Courses\Models;
 
 use Components\Courses\Tables;
+use Components\Courses\Models\Assets;
 use Component;
 use Request;
 use Date;
@@ -40,10 +41,12 @@ use User;
 use Lang;
 use App;
 
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.association.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.php';
-require_once __DIR__ . DS . 'base.php';
-require_once __DIR__ . DS . 'section' . DS . 'date.php';
+require_once Component::path('com_courses') . '/tables/asset.association.php';
+require_once Component::path('com_courses') . '/tables/asset.php';
+require_once Component::path('com_courses') . '/models/assets/handler.php';
+require_once Component::path('com_courses') . '/models/assets/content.php';
+require_once Component::path('com_courses') . '/models/base.php';
+require_once Component::path('com_courses') . '/models/section/date.php';
 
 /**
  * Asset model class for a course
@@ -553,5 +556,24 @@ class Asset extends Base
 		}
 
 		return true;
+	}
+
+	/**
+	 * Specific child asset handler object of type
+	 *
+	 * @return object child asset handler
+	 */
+	public function loadHandler()
+	{
+		$handlerName = $this->get('type');
+		$filePath = Component::path('com_courses') . '/models/assets/' . $handlerName . '.php';
+		if (file_exists($filePath))
+		{
+			require_once $filePath;
+			$handlerClassString = 'Components\\Courses\\Models\\Assets\\' . ucfirst($handlerName);
+			$handlerModel = new $handlerClassString($this->_db); 
+			return $handlerModel;
+		}
+		return false;
 	}
 }

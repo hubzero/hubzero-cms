@@ -32,6 +32,8 @@
 
 namespace Components\Courses\Site\Controllers;
 
+require_once Component::path('com_courses') . '/models/assets/tool.php';
+use Components\Courses\Models\Assets\Tool;
 use Components\Courses\Models;
 use Hubzero\Component\SiteController;
 use Hubzero\Content\Server;

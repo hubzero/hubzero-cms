@@ -63,6 +63,11 @@ class Content extends Handler
 		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php';
 		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php';
 
+		if (!empty($this->asset['tool-alias']))
+		{
+			$this->asset['url'] = '/tools/' . $this->asset['tool-alias'] . '/invoke';
+		}
+
 		// Create our asset table object
 		$asset = new \Components\Courses\Models\Asset();
 
@@ -123,7 +128,8 @@ class Content extends Handler
 		$course->offering($offering_alias);
 
 		$url = Route::url($course->offering()->link() . '&asset=' . $asset->get('id'));
-		$url = rtrim(str_replace('/api', '', Request::root()), '/') . '/' . ltrim($url, '/');
+		$url = str_replace('/api', '', $url);
+		$url = rtrim(Request::root(), '/') . '/' . ltrim($url, '/');
 
 		$files = array(
 			'asset_id'       => $asset->get('id'),
@@ -168,6 +174,18 @@ class Content extends Handler
 
 		// Grab the incoming content
 		$content = Request::getString('content', '');
+		if (isset($this->asset['tool-alias']))
+		{
+			$toolAlias = $this->asset['tool-alias'];
+			if (!empty($toolAlias))
+			{
+				$asset->set('url', '/tools/' . $toolAlias . '/invoke');
+			}
+			else
+			{
+				$asset->set('url', '');
+			}
+		}
 
 		// Get everything ready to store
 		// Check if vars are already set (i.e. by a sub class), before setting them here
