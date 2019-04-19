@@ -1206,7 +1206,6 @@ class Curation extends Obj
 
 		// Get blocks model
 		$blocksModel = new Blocks($this->_db);
-
 		// Save data
 		$blocksModel->saveBlock($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
 
