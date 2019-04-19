@@ -41,8 +41,8 @@ use Components\Projects\Models\Orm\Connection;
 use \Hubzero\Filesystem\Entity;
 use \Hubzero\Filesystem\Manager;
 /**
-* Wiki page asset handler class
-*/
+ * Tool asset handler class
+ */
 class Tool extends Content
 {
 	/**
