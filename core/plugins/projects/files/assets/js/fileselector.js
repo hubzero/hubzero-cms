@@ -196,7 +196,6 @@ HUB.ProjectFilesFileSelect = {
 			if (!btn.hasClass('disabled'))
 			{
 				$('#selecteditems').val(HUB.ProjectFilesFileSelect.collectSelections());
-
 				form.submit();
 			}
 		});
