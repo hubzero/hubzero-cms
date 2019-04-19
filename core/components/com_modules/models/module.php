@@ -238,6 +238,8 @@ class Module extends Relational
 
 		$paths = array();
 
+		$paths[] = $this->path() . DS . 'config' . DS . 'config.xml';
+
 		if (substr($this->get('module'), 0, 4) == 'mod_')
 		{
 			$paths[] = $this->path() . DS . substr($this->get('module'), 4) . '.xml';

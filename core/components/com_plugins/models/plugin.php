@@ -256,14 +256,20 @@ class Plugin extends Relational
 			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
 		}
 
-		$file = $this->path() . '/' . $this->get('element') . '.xml';
+		$paths   = array();
+		$paths[] = $this->path() . '/config/config.xml';
+		$paths[] = $this->path() . '/' . $this->get('element') . '.xml';
 
-		if (file_exists($file))
+		foreach ($paths as $file)
 		{
-			// Get the plugin form.
-			if (!$form->loadFile($file, false, '//config'))
+			if (file_exists($file))
 			{
-				$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
+				// Get the plugin form.
+				if (!$form->loadFile($file, false, '//config'))
+				{
+					$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
+				}
+				break;
 			}
 		}
 
