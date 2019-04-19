@@ -229,20 +229,28 @@ class Styles extends AdminController
 			$base = PATH_APP;
 		}
 
-		$formFile = Filesystem::cleanPath($base . '/templates/' . $template . '/templateDetails.xml');
-
-		$form = new Form('style', array('control' => 'fields'));
-
 		// Load the core and/or local language file(s).
 		Lang::load('tpl_' . $template, $base . '/bootstrap/' . $client->name, null, false, true) ||
 		Lang::load('tpl_' . $template, $base . '/templates/' . $template, null, false, true);
 
-		if (file_exists($formFile))
+		$paths   = array();
+		$paths[] = $base . '/templates/' . $template . '/config/config.xml';
+		$paths[] = $base . '/templates/' . $template . '/templateDetails.xml';
+
+		$form = new Form('style', array('control' => 'fields'));
+
+		foreach ($paths as $file)
 		{
-			// Get the template form.
-			if (!$form->loadFile($formFile, false, '//config'))
+			$file = Filesystem::cleanPath($file);
+
+			if (file_exists($file))
 			{
-				App::abort(500, Lang::txt('JERROR_LOADFILE_FAILED'));
+				// Get the template form.
+				if (!$form->loadFile($file, false, '//config'))
+				{
+					App::abort(500, Lang::txt('JERROR_LOADFILE_FAILED'));
+				}
+				break;
 			}
 		}
 
