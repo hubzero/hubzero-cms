@@ -1073,7 +1073,6 @@ class File extends Base
 
 			$a++;
 			$ordering = $i + 1;
-
 			if ($this->addAttachment($identifier, $pub, $configs, User::get('id'), $elementId, $element, $ordering))
 			{
 				$i++;

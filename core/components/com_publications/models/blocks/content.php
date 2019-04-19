@@ -146,7 +146,7 @@ class Content extends Base
 	 *
 	 * @return  string  HTML
 	 */
-	public function save( $manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
+	public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
 	{
 		// Set block manifest
 		if ($this->_manifest === null)
