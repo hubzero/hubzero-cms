@@ -622,7 +622,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				array('name' => 'active', 'value' => 'publications'),
 				array('name' => 'action', 'value' => 'apply'),
 				array('name' => 'move', 'value' => 'continue')
-			);			
+			);
 			if ($this->model->isProvisioned())
 			{
 				$extraFields = array(
@@ -631,7 +631,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					array('name' => 'option', 'value' => 'com_publications'),
 					array('name' => 'ajax', 'value' => '0')
 				);
-			}	
+			}
 			else
 			{
 				$extraFields = array(
@@ -642,7 +642,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			foreach ($extraFields as $extra)
 			{
 				$hiddenFields[] = $extra;
-			}		
+			}
 		}
 
 		// Get file list

@@ -75,7 +75,7 @@ jQuery(document).ready(function($) {
 
 	$('.edit-form').submit(function ( e ) {
 		if (typeof CKEDITOR !== 'undefined') {
-			for ( var instance in CKEDITOR.instances ) {
+			for (var instance in CKEDITOR.instances) {
 				CKEDITOR.instances[instance].updateElement();
 			}
 		}
