@@ -593,7 +593,7 @@ class Projectsv2_0 extends ApiController
 
 		if (!$row->save())
 		{
-			throw new Exception(Lang::txt('COM_PROJECTS_ERROR_SAVING_DATA'), 500);
+			throw new Exception($row->getError(), 500);
 		}
 
 		// Trigger after save event
