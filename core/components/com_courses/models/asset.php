@@ -571,7 +571,7 @@ class Asset extends Base
 		{
 			require_once $filePath;
 			$handlerClassString = 'Components\\Courses\\Models\\Assets\\' . ucfirst($handlerName);
-			$handlerModel = new $handlerClassString($this->_db); 
+			$handlerModel = new $handlerClassString($this->_db);
 			return $handlerModel;
 		}
 		return false;

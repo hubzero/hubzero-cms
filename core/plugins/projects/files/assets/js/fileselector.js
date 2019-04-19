@@ -355,7 +355,7 @@ HUB.ProjectFilesFileSelect = {
 	{
 		var $         = this.jQuery,
 			btn       = $('#b-filesave'),
-			selection = $('#selecteditems').length ? $('#selecteditems').val() : '' ;
+			selection = $('#selecteditems').length ? $('#selecteditems').val() : '';
 
 		if (!btn.length)
 		{
