@@ -148,6 +148,9 @@ class Assetv1_0 extends base
 				case 'wiki':
 					$ext = 'wiki';
 					break;
+				case 'tool':
+					$ext = 'tool';
+					break;
 			}
 		}
 		else
@@ -158,7 +161,6 @@ class Assetv1_0 extends base
 		// Initiate our file handler
 		$database     = App::get('db');
 		$assetHandler = new Handler($database, $ext);
-
 		// Create the new asset
 		$return = $assetHandler->doCreate(Request::getString('handler', null));
 
@@ -167,7 +169,6 @@ class Assetv1_0 extends base
 		{
 			App::abort(400, $return['error']);
 		}
-
 		// Return message
 		$this->send(['assets'=>$return], 201);
 	}
