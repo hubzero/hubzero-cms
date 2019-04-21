@@ -15,11 +15,11 @@ jQuery(function(jq)
 		window.resourceTypes = cdata.rtypes;
 	}
 	
-	var window.publicationTypes = new Array,
-		publicationtypes = $('#publication-types');
+	window.publicationTypes = new Array;
+	var	publicationtypes = $('#publication-types');
 
 	if (publicationtypes.length) {
-		var cdata = jQuery.parseJSON(publicationtypes.html());
+		var cdata = JSON.parse(publicationtypes.html());
 
 		window.publicationTypes = cdata.ptypes;
 	}
