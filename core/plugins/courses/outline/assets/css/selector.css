@@ -158,6 +158,11 @@
 	#abox-content p.connection-message {
 		display: none;
 	}
+
+	#b-filesave {
+		display: none;
+	}
+
 	#b-filesave.disabled, 
 	#b-filesave.disabled:hover,
 	#upload-file.disabled,

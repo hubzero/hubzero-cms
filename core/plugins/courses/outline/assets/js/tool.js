@@ -35,6 +35,8 @@ jQuery(document).ready(function($) {
 				var projectFiles = response.assets.projectFiles;
 				var asset_id = response.assets.assets.asset_id;
 				addAssetItems(projectFiles, asset_id);
+				$('#b-filesave').removeClass('disabled');
+				$('#b-filesave').text('Add selected');
 				$('#file-selector').find('.type-file').removeClass('selectedfilter');
 				selectedItems.val('');
 			}
@@ -43,37 +45,49 @@ jQuery(document).ready(function($) {
 	// Send data
 	$('#b-filesave').on('click', function(e){
 		e.preventDefault();
-		$('#selecteditems').val(HUB.ProjectFilesFileSelect.collectSelections());
-		$('#select-form').submit();
+		if (!$(this).hasClass('disabled'))
+		{
+			$(this).addClass('disabled');
+			$(this).text('Adding file(s)');
+			$('#selecteditems').val(HUB.ProjectFilesFileSelect.collectSelections());
+			$('#select-form').submit();
+		}
 	});
 
 	$('#project-selector').on('change', function(e){
 		var projectAlias = $(this).val();
-		var url = '/projects/' + projectAlias + '/files';
-		var data = {
-			action: 'filter',
-			ajax: '1',
-			no_html: '1'
-		}
-
-		if ($('#content-selector').length){
-			data.partial = '1';
-		}
-		$.ajax({
-			url: url,
-			data: data,
-			success: function(response){
-				if ($('#content-selector').length) {
-					$('#content-selector').html(response);
-					url += '?action=filter&ajax=1&no_html=1';
-					$('#filterUrl').val(url);
-					HUB.ProjectFilesFileSelect.selector();
-					HUB.ProjectFilesFileSelect.collapse();
-				} else {
-					$('#project-selector').after(response);
-				}
+		if (projectAlias == ''){
+			$('#content-selector').html('');
+			$('#b-filesave').hide();
+		} else {
+			var url = '/projects/' + projectAlias + '/files';
+			var data = {
+				action: 'filter',
+				ajax: '1',
+				no_html: '1'
 			}
-		});
+
+			if ($('#content-selector').length){
+				data.partial = '1';
+			}
+			$.ajax({
+				url: url,
+				data: data,
+				success: function(response){
+					if ($('#content-selector').length) {
+						$('#content-selector').html(response);
+						url += '?action=filter&ajax=1&no_html=1';
+						$('#filterUrl').val(url);
+						HUB.ProjectFilesFileSelect.selector();
+						HUB.ProjectFilesFileSelect.collapse();
+					} else {
+						$('#project-selector').after(response);
+						$('.abox-controls').html('');
+					}
+				}
+			});
+			$('#b-filesave').show();
+		}
 	});
 
 	$('.fileupload').fileupload({
