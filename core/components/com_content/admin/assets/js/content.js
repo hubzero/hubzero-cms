@@ -1,5 +1,11 @@
 
 Hubzero.submitbutton = function(task) {
+	var frm = document.getElementById('adminForm');
+
+	if (frm) {
+		return Hubzero.submitform(task, frm);
+	}
+
 	$(document).trigger('editorSave');
 
 	var frm = document.getElementById('item-form');
