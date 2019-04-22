@@ -90,9 +90,9 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	 * @var  array
 	 */
 	protected $rules = array(
-		'title'    => 'notempty',
-		'content'  => 'notempty',
-		'scope'    => 'notempty'
+		'title'     => 'notempty',
+		'introtext' => 'notempty',
+		'scope'     => 'notempty'
 	);
 
 	/**
@@ -103,6 +103,9 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	public $always = array(
 		'publish_up',
 		'publish_down',
+		'fulltext',
+		'images',
+		'urls',
 		'modified',
 		'modified_by',
 		'metadata',
@@ -171,6 +174,54 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 			return parent::automaticAssetId();
 		}
 		return $this->get('asset_id');
+	}
+
+	/**
+	 * Generates automatic fulltext field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticFulltext($data)
+	{
+		if (!isset($data['fulltext']) || is_null($data['fulltext']))
+		{
+			$data['fulltext'] = '';
+		}
+
+		return $data['fulltext'];
+	}
+
+	/**
+	 * Generates automatic images field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticImages($data)
+	{
+		if (!isset($data['images']) || is_null($data['images']))
+		{
+			$data['images'] = '';
+		}
+
+		return $data['images'];
+	}
+
+	/**
+	 * Generates automatic urls field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticUrls($data)
+	{
+		if (!isset($data['urls']) || is_null($data['urls']))
+		{
+			$data['urls'] = '';
+		}
+
+		return $data['urls'];
 	}
 
 	/**
