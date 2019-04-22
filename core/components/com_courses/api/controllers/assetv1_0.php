@@ -704,17 +704,24 @@ class Assetv1_0 extends base
 		{
 			App::abort(500, 'Asset is not a part of this course.');
 		}
+	
+		$toolHandler = null;
+		if ($asset->get('type') == 'tool')
+		{
+			$toolHandler = $asset->loadHandler();
+		}
 
-		$basePath = $asset->path($this->course->get('id'));
+		$basePath = $toolHandler !== null ? $asset->get('path') . '/' : $asset->path($this->course->get('id'));
 		$path     = $basePath . $filename;
 		$dirname  = dirname($path);
+		$corePath = $toolHandler !== null ? $toolHandler::getToolDirectory() : PATH_APP;
 
-		if (!is_file(PATH_APP . $path) || $dirname != rtrim($basePath, DS))
+		if (!is_file($corePath . $path) || $dirname != rtrim($basePath, DS))
 		{
 			App::abort(500, 'Illegal file path');
 		}
 
-		unlink(PATH_APP . $path);
+		unlink($corePath . $path);
 
 		// Return message
 		$this->send('File deleted');
