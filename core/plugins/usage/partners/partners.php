@@ -89,11 +89,11 @@ class plgUsagePartners extends \Hubzero\Plugin\Plugin
 		$html  = '<form method="post" action="'. Route::url('index.php?option=' . $option . '&task=' . $task) .'">' . "\n";
 		$html .= "\t" . '<fieldset class="filters">' . "\n";
 		$html .= "\t\t" . '<label>' . "\n";
-		$html .= "\t\t\t".Lang::txt('PLG_USAGE_SHOW_DATA_FOR').': ' . "\n";
+		$html .= "\t\t\t".Lang::txt('COM_USAGE_SHOW_DATA_FOR').': ' . "\n";
 		$html .= "\t\t\t" . '<select name="selectedPeriod" id="selectedPeriod">' . "\n";
 		$html .= $o;
 		$html .= "\t\t\t" . '</select>' . "\n";
-		$html .= "\t\t" . '</label> <input type="submit" value="'.Lang::txt('PLG_USAGE_VIEW').'" />' . "\n";
+		$html .= "\t\t" . '</label> <input type="submit" value="'.Lang::txt('COM_USAGE_VIEW').'" />' . "\n";
 		$html .= "\t" . '</fieldset>' . "\n";
 		$html .= '</form>' . "\n";
 		$html .= \Components\Usage\Helpers\Helper::toplist($db, 24, 1, $enddate);

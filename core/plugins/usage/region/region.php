@@ -68,6 +68,18 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 	 */
 	private function regionlist(&$db, $region, $t=0, $enddate = 0)
 	{
+		if (!$db->tableExists('regions'))
+		{
+			\Notify::error('COM_USAGE_ERROR_MISSING_TABLE', 'regions');
+			return '';
+		}
+
+		if (!$db->tableExists('regionvals'))
+		{
+			\Notify::error('COM_USAGE_ERROR_MISSING_TABLE', 'regionvals');
+			return '';
+		}
+
 		// Set region list parameters...
 		$hub = 1;
 		if (!$enddate)
@@ -84,7 +96,9 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 
 		// Look up region list information...
 		$regionname = '';
-		$sql = "SELECT name, valfmt, size FROM regions WHERE region = '" . $db->quote($region) . "'";
+		$sql = "SELECT name, valfmt, size
+				FROM regions
+				WHERE region = " . $db->quote($region);
 		$db->setQuery($sql);
 		$result = $db->loadRow();
 		if ($result)
@@ -125,7 +139,14 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 			{
 				// Calculate the total value for this regionlist...
 				$regionlistset = array();
-				$sql = "SELECT regionvals.name, regionvals.value FROM regions, regionvals WHERE regions.region = regionvals.region AND regionvals.hub = '" . $db->quote($hub) . "' AND regions.region = '" . $db->quote($region) . "' AND regionvals.datetime = '" . $db->quote($dt) . "' AND regionvals.period = '" . $db->quote($period[$pidx]["key"]) . "' AND regionvals.rank = '0'";
+				$sql = "SELECT regionvals.name, regionvals.value
+						FROM regions, regionvals
+						WHERE regions.region = regionvals.region
+						AND regionvals.hub = " . $db->quote($hub) . "
+						AND regions.region = " . $db->quote($region) . "
+						AND regionvals.datetime = " . $db->quote($dt) . "
+						AND regionvals.period = " . $db->quote($period[$pidx]["key"]) . "
+						AND regionvals.rank = '0'";
 				$db->setQuery($sql);
 				$results = $db->loadObjectList();
 				if ($results)
@@ -151,7 +172,15 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 
 				// Calculate the region values for the regionlist...
 				$rank = 1;
-				$sql = "SELECT regionvals.rank, regionvals.name, regionvals.value FROM regions, regionvals WHERE regions.region = regionvals.region AND regionvals.hub = '" . $db->quote($hub) . "' AND regions.region = '" . $db->quote($region) . "' AND datetime = '" . $db->quote($dt) . "' AND regionvals.period = '" . $db->quote($period[$pidx]["key"]) . "' AND regionvals.rank > '0' ORDER BY regionvals.rank, regionvals.name";
+				$sql = "SELECT regionvals.rank, regionvals.name, regionvals.value
+						FROM regions, regionvals
+						WHERE regions.region = regionvals.region
+						AND regionvals.hub = " . $db->quote($hub) . "
+						AND regions.region = " . $db->quote($region) . "
+						AND datetime = " . $db->quote($dt) . "
+						AND regionvals.period = " . $db->quote($period[$pidx]["key"]) . "
+						AND regionvals.rank > '0'
+						ORDER BY regionvals.rank, regionvals.name";
 				$db->setQuery($sql);
 				$results = $db->loadObjectList();
 				if ($results)
@@ -285,11 +314,11 @@ class plgUsageRegion extends \Hubzero\Plugin\Plugin
 		$html  = '<form method="post" action="'. Route::url('index.php?option=' . $option . '&task=' . $task) .'">' . "\n";
 		$html .= "\t" . '<fieldset class="filters">' . "\n";
 		$html .= "\t\t" . '<label>' . "\n";
-		$html .= "\t\t\t".Lang::txt('PLG_USAGE_SHOW_DATA_FOR').': ' . "\n";
+		$html .= "\t\t\t".Lang::txt('COM_USAGE_SHOW_DATA_FOR').': ' . "\n";
 		$html .= "\t\t\t" . '<select name="selectedPeriod" id="selectedPeriod">' . "\n";
 		$html .= $o;
 		$html .= "\t\t\t" . '</select>' . "\n";
-		$html .= "\t\t" . '</label> <input type="submit" value="' . Lang::txt('PLG_USAGE_VIEW') . '" />' . "\n";
+		$html .= "\t\t" . '</label> <input type="submit" value="' . Lang::txt('COM_USAGE_VIEW') . '" />' . "\n";
 		$html .= "\t" . '</fieldset>' . "\n";
 		$html .= '</form>' . "\n";
 		$html .= $this->regionlist($db, 1, 1, $enddate);
