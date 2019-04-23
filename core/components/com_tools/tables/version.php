@@ -414,6 +414,8 @@ class Version extends Table
 	 */
 	public function getToolVersions($toolid, &$versions, $toolname='', $exclude_dev = 0)
 	{
+		require_once __DIR__ . '/author.php';
+
 		$objA = new \Components\Tools\Tables\Author($this->_db);
 
 		$query  = "SELECT v.*, d.local_revision, d.doi_label, d.rid, d.alias, d.versionid, d.doi, d.doi_shoulder ";
