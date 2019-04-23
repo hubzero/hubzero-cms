@@ -139,15 +139,21 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 				$wishlist->set('referenceid', $refid);
 				$wishlist->set('public', 1);
 				$wishlist->set('title', $rtitle);
-				$wishlist->stage();
-
+				if (!$wishlist->stage())
+				{
+					$this->setError($wishlist->getError());
+				}
 				$id = $wishlist->get('id');
 			}
 		}
 
 		if (!$wishlist->get('id'))
 		{
-			$html = '<p class="error">' . Lang::txt('ERROR_WISHLIST_NOT_FOUND') . '</p>';
+			$arr['html'] = '<p class="warning">' . Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND') . '</p>';
+			if ($err = $this->getError())
+			{
+				$arr['html'] .= '<p class="warning">' . $err . '</p>';
+			}
 		}
 		else
 		{
