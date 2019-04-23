@@ -273,7 +273,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 											<span><?php echo User::get('email'); ?></span>
 										</a>
 									</div>
-									<header><h2>All Categories</h2></header>
+									<!-- <header><h2>All Categories</h2></header> -->
 									<nav class="user-nav">
 										<ul>
 											<li id="account-profile">
