@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Resources\Helpers\Permissions::getActions('resource');
 
-$text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') . ' #' . $this->row->id : Lang::txt('JACTION_CREATE'));
+$text = ($this->row->id ? Lang::txt('JACTION_EDIT') . ' #' . $this->row->id : Lang::txt('JACTION_CREATE'));
 
 Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . $text, 'resources');
 if ($canDo->get('core.edit'))
@@ -225,10 +225,8 @@ $this->view('_edit_script')
 			echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_PUBLISHING'), 'publish-page');
 		?>
 			<div class="paramlist">
-				<div class="input-wrap">
-					<input type="checkbox" disabled name="fields[standalone]" id="field-standalone" value="1" <?php echo ($this->row->standalone == 1) ? 'checked="checked"' : ''; ?> />
-					<label for="field-standalone"><?php echo Lang::txt('COM_RESOURCES_FIELD_STANDALONE'); ?></label>
-				</div>
+				 <input type="hidden" name="fields[standalone]" id="field-standalone" value="<?php echo $this->row->standalone; ?>" />
+
 				<div class="input-wrap">
 					<label for="field-published"><?php echo Lang::txt('COM_RESOURCES_FIELD_STATUS'); ?>:</label><br />
 					<select name="fields[published]" id="field-published">
