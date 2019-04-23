@@ -122,7 +122,7 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 		{
 			$sql1 .= "AND w.access!=1 ";
 		}
-		$sql1 .= "GROUP BY w.id ORDER BY ranking DESC, title LIMIT 10";
+		$sql1 .= "GROUP BY w.id, v.pagetext ORDER BY ranking DESC, title LIMIT 10";
 
 		// Build the query that checks resource parents
 		$sql2 = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext, r.type, r.published, r.publish_up,
