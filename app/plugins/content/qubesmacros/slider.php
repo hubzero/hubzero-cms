@@ -123,7 +123,7 @@ class Slider extends Macro
 				//check if internal file actually exists
 				if (is_file(PATH_APP . $base_url . DS . $slide))
 				{
-					$final_slides[] = $base_url . DS . $slide;
+					$final_slides[] = 'app' . $base_url . DS . $slide;
 				}
 			}
 			else
