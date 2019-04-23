@@ -135,7 +135,11 @@
   }
 
   .newsletter-title {
-    @include showcase-header(1em, 1.2, 2);
+    a {
+      @include showcase-header(1em, 1.2, 2);
+      color: $body;
+      margin: .3em 0;
+    }
   }
 
   div:first-of-type {
@@ -200,11 +204,11 @@
 
   a {
     @include showcase-header(1em, 1.2, 4);
-    color: $body-color;
+    color: $body;
   }
 
   span {
-    color: $body-color;
+    color: $body;
   }
 }
 
@@ -246,10 +250,11 @@
 }
 
 .newsletter-title {
-  @include showcase-header(1em, 1.2, 4);
   border-bottom: 2px solid $green;
 
   a {
-    color: $dark-blue;
+    @include showcase-header(1em, 1.2, 4);
+    color: $body;
+    margin: .3em 0;
   }
 }

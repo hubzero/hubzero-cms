@@ -84,9 +84,9 @@ body > .wrap {
 
 				.user-info {
 					font-family: @fontGeometric;
-					font-size: 2rem;
+					font-size: 1.3rem;
 					line-height: 1em;
-					margin-bottom: 1rem;
+					padding: 1.7em .5em 0;
 
 					span {
 						font-size: 0.8rem;
@@ -133,13 +133,6 @@ body > .wrap {
 			  }
 			}
 
-			.nav-icon-more {
-				svg {
-					top: .2rem;
-					margin-left: 1.0rem;
-				}
-			}
-
 			h2 {
 				font-size: 1.6rem;
 				color: #fff;
@@ -147,6 +140,29 @@ body > .wrap {
 
 			.component-button {
 				cursor: pointer;
+
+				.nav-icon-more {
+					svg {
+						top: .2rem;
+						margin-left: 1.0rem;
+						position: relative;
+					}
+				}
+
+				.nav-icon-back {
+					// font-size: .8rem !important;
+					// font-weight: bold;
+					// text-transform: uppercase;
+
+					svg {
+						margin-left: .5em;
+						width: 1rem;
+					}
+				}
+			}
+
+			.icon-plus::before {
+				margin-right: .5em;
 			}
 
 			.component-panel {
@@ -164,19 +180,6 @@ body > .wrap {
 
 				&.show {
 					margin-right: 0;
-				}
-
-				.back {
-					font-size: .8rem !important;
-					font-weight: bold;
-					text-transform: uppercase;
-
-					.nav-icon-back {
-						svg {
-							margin-left: .5em;
-							width: 1rem;
-						}
-					}
 				}
 
 				ul {

@@ -267,12 +267,12 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 						<div class="scroller">
 							<?php if (!User::isGuest()) { ?>
 								<section class="user">
-									<!-- <div class="user-info">
+									<div class="user-info">
 										<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>">
 											<?php echo stripslashes(User::get('name')); ?>
 											<span><?php echo User::get('email'); ?></span>
 										</a>
-									</div> -->
+									</div>
 									<header><h2>All Categories</h2></header>
 									<nav class="user-nav">
 										<ul>

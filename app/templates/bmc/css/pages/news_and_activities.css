@@ -41,7 +41,7 @@
 }
 
 .header h1 {
-  border-bottom: 3px solid #84bf41;
+  border-bottom: 3px solid #8CC540;
   color: #222b37;
   font-family: 'montserratultra_light', Helvetica Neue, Helvetica, sans-serif;
   margin: 1rem 0;
@@ -133,13 +133,13 @@
 }
 
 .newsletters {
-  border: 1px solid #84bf41;
+  border: 1px solid #8CC540;
   border-radius: 6px;
   padding: 1em;
 }
 
 .newsletters h2 {
-  color: #84bf41;
+  color: #8CC540;
   margin-bottom: .6em;
   text-align: center;
 }
@@ -159,7 +159,7 @@
   object-fit: contain;
 }
 
-.module-newsletters .newsletter-title {
+.module-newsletters .newsletter-title a {
   display: block;
   /* Fallback for non-webkit */
   display: -webkit-box;
@@ -173,6 +173,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
   color: #fff;
+  color: #4c4c4c;
+  margin: .3em 0;
 }
 
 .module-newsletters div:first-of-type {
@@ -213,7 +215,7 @@
 
 .blog-img {
   background-color: #fff;
-  border-right: 3px solid #84bf41;
+  border-right: 3px solid #8CC540;
   height: 5rem;
   overflow: hidden;
   transition: 3s ease-in-out;
@@ -285,7 +287,7 @@
   font-weight: bold;
   font-size: .8em;
   padding: .5em .8em;
-  background-color: #84bf41;
+  background-color: #8CC540;
 }
 
 .newsletter-tag a {
@@ -293,6 +295,10 @@
 }
 
 .newsletter-title {
+  border-bottom: 2px solid #8CC540;
+}
+
+.newsletter-title a {
   display: block;
   /* Fallback for non-webkit */
   display: -webkit-box;
@@ -306,9 +312,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   color: #fff;
-  border-bottom: 2px solid #84bf41;
-}
-
-.newsletter-title a {
-  color: #222b37;
+  color: #4c4c4c;
+  margin: .3em 0;
 }
