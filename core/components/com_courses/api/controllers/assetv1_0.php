@@ -704,7 +704,7 @@ class Assetv1_0 extends base
 		{
 			App::abort(500, 'Asset is not a part of this course.');
 		}
-	
+
 		$toolHandler = null;
 		if ($asset->get('type') == 'tool')
 		{
