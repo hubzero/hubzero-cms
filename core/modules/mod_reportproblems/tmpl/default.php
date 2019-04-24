@@ -78,8 +78,11 @@ defined('_HZEXEC_') or die();
 
 					<label<?php if ($this->guestOrTmpAccount) { echo ' for="trName"'; } ?>>
 						<?php echo Lang::txt('MOD_REPORTPROBLEMS_LABEL_NAME'); ?>: <span class="required"><?php echo Lang::txt('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
-						<?php if (!$this->guestOrTmpAccount) { ?>
-							<input type="hidden" name="reporter[name]" id="trName" value="<?php echo $this->escape(User::get('name')); ?>" /><br /><span class="info-block"><?php echo $this->escape(User::get('name')); ?></span>
+						<?php if (!$this->guestOrTmpAccount) {
+							$name = trim(User::get('name'));
+							$name = $name ?: User::get('username');
+							?>
+							<input type="hidden" name="reporter[name]" id="trName" value="<?php echo $this->escape($name); ?>" /><br /><span class="info-block"><?php echo $this->escape($name); ?></span>
 						<?php } else { ?>
 							<input type="text" name="reporter[name]" id="trName" value="" />
 						<?php } ?>
