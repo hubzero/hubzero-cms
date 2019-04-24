@@ -38,7 +38,7 @@ defined('_HZEXEC_') or die();
 	</h2>
 	<ul class="module-list-triggers">
 		<?php foreach ($this->modules as $module) : ?>
-			<?php $cls = (in_array($module->id, $this->mymodules)) ? ' class="installed"' : '' ; ?>
+			<?php $cls = (in_array($module->id, $this->mymodules)) ? ' class="installed"' : ''; ?>
 			<li <?php echo $cls; ?>>
 				<a href="javascript:void(0);" data-module="<?php echo $module->id; ?>">
 					<?php echo $module->title; ?>
@@ -93,7 +93,7 @@ defined('_HZEXEC_') or die();
 						echo $xml->description; ?></dd>
 					<?php endif; ?>
 
-					<?php if (count($xml->images->image) > 0) : ?>
+					<?php if (isset($xml->images) && isset($xml->images->image) && !empty($xml->images->image)) : ?>
 						<dt><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES_MODULE_SCREENSHOTS'); ?></dt>
 						<dd>
 							<?php foreach ($xml->images->image as $image) : ?>
