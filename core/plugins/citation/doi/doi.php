@@ -70,18 +70,36 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 		if (!empty($assocParams))
 		{
 			$doiArr = [];
+			$relTypeArr = [];
 
 			foreach ($assocParams as $assocParam)
 			{
-				if ($assocParam['tbl'] == 'publication' && !empty($assocParam['doi']))
+				if (!empty($assocParam))
 				{
-					$doiArr[] = $assocParam['doi'];
+					if ($assocParam['tbl'] == 'publication' && !empty($assocParam['doi']) && !empty($assocParam['type']))
+					{
+						$doiArr[] = $assocParam['doi'];
+						$relTypeArr[$assocParam['doi']] = $assocParam['type'];
+					}
+
+					if (!empty($assocParam['tbl']) && !empty($assocParam['oid']) && empty($assocParam['doi']) && empty($assocParam['type']))
+					{
+						Notify::warning("Both DOI and Context of publication " . $assocParam['oid'] . " are not set, so the citation won't be pushed to DataCite");
+					}
+					elseif (!empty($assocParam['tbl']) && !empty($assocParam['oid']) && empty($assocParam['doi']) && !empty($assocParam['type']))
+					{
+						Notify::warning("DOI of publication " . $assocParam['oid'] . " is not set, so the citation won't be pushed to DataCite");
+					}
+					elseif (!empty($assocParam['tbl']) && !empty($assocParam['oid']) && !empty($assocParam['doi']) && empty($assocParam['type']))
+					{
+						Notify::warning("Context of publication " . $assocParam['doi'] . " is not set, so the citation won't be pushed to DataCite");
+					}
 				}
 			}
 
-			if (!empty($doiArr) && !empty($citation))
+			if (!empty($doiArr) && !empty($relTypeArr) && !empty($citation))
 			{
-				$this->updateDoiRecord($doiArr, $citation);
+				$this->updateDoiRecord($doiArr, $citation, $relTypeArr);
 			}
 		}
 	}
@@ -89,12 +107,13 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 	/**
 	 * Update DOI metadata record with citation information
 	 *
-	 * @param      array    $doi
+	 * @param      array    $doiArr
 	 * @param      array    $citation
+	 * @param      array    $relationTypeArr
 	 *
 	 * @return     null
 	 */
-	protected function updateDoiRecord($doiArr, $citation)
+	protected function updateDoiRecord($doiArr, $citation, $relationTypeArr)
 	{
 		$citationInfo = [];
 		$citationInfo = $this->getCitationInfo($citation);
@@ -108,9 +127,24 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 			{
 				$xml = $this->getDoiXML($doi);
 
-				if ($xml && !$this->isCitationIncluded($xml, $citationInfo))
+				if ($xml)
 				{
-					$this->updateDoiXml($xml, $citationInfo);
+					if (!empty($relationTypeArr[$doi]))
+					{
+						if (!$this->isCitationUpdated($xml, $citationInfo, $relationTypeArr[$doi]))
+						{
+							file_put_contents("/tmp/1", "The xml of $doi is going to be updated", FILE_APPEND);
+							$this->updateDoiMetadataXML($xml, $citationInfo, $relationTypeArr[$doi]);
+						}
+						else
+						{
+							if (!$this->isCitationIncluded($xml, $citationInfo, $relationTypeArr[$doi]))
+							{
+								file_put_contents("/tmp/1", "The xml of $doi is going to be included", FILE_APPEND);
+								$this->incCitationInDoiMetadataXML($xml, $citationInfo, $relationTypeArr[$doi]);
+							}
+						}
+					}
 				}
 			}
 		}
@@ -209,10 +243,11 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 	 *
 	 * @param      string		$xml
 	 * @param      array		$citation
+	 * @param      string       $relationType
 	 *
 	 * @return     boolean
 	 */
-	protected function isCitationIncluded($xml, $citation)
+	protected function isCitationIncluded($xml, $citation, $relationType)
 	{
 		$dom = new \DomDocument();
 		$dom->loadXML($xml);
@@ -224,15 +259,12 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($relatedIdentifierNodeList as $relatedIdentifier)
 			{
-				if (($relatedIdentifier->getAttribute("relationType") == "IsReferencedBy")
+				if (!empty($relatedIdentifier->getAttribute("relationType"))
+					&& ($relatedIdentifier->getAttribute("relationType") == $relationType)
 					&& ($relatedIdentifier->getAttribute("relatedIdentifierType") == $key)
 					&& ($relatedIdentifier->nodeValue == $val))
 				{
 					return true;
-				}
-				else
-				{
-					continue;
 				}
 			}
 		}
@@ -241,17 +273,80 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Check if the citation exists and relationType is set to the given relationType.
+	 *
+	 * @param      string		$xml
+	 * @param      array		$citation
+	 * @param      string       $relationType
+	 *
+	 * @return     boolean
+	 */
+	protected function isCitationUpdated($xml, $citation, $relationType)
+	{
+		$dom = new \DomDocument();
+		$dom->loadXML($xml);
+		$relatedIdentifierNodeList = $dom->getElementsByTagName("relatedIdentifier");
+		$key = key($citation);
+		$val = current($citation);
+
+		if ($relatedIdentifierNodeList->length != 0)
+		{
+			foreach ($relatedIdentifierNodeList as $relatedIdentifier)
+			{
+				if (($relatedIdentifier->getAttribute("relatedIdentifierType") == $key)	&& ($relatedIdentifier->nodeValue == $val))
+				{
+					if ($relatedIdentifier->getAttribute("relationType") != $relationType)
+					{
+						return false;
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Update citation record in DOI metadata xml on DataCite
+	 *
+	 * @param      string		$xml
+	 * @param      array		$citationInfo
+	 * @param      string       $relationType
+	 *
+	 * @return     boolean
+	 */
+	public function updateDoiMetadataXML($xml, $citationInfo, $relationType)
+	{
+		$xmlStr = '';
+		$key = key($citationInfo);
+		$val = current($citationInfo);
+
+		$dom = new \DomDocument();
+		$dom->loadXML($xml);
+		$xpath = new DOMXPath($dom);
+		$xpath->registerNamespace('ns', "http://datacite.org/schema/kernel-4");
+		$query = "//ns:relatedIdentifier[text()=" . "'" . $val . "'" . " and @relatedIdentifierType=" . "'" . $key . "'" . "]";
+		$nodeList = $xpath->query($query);
+		$nodeList->item(0)->setAttribute("relationType", $relationType);
+		$xmlStr = $dom->saveXML();
+
+		$result = $this->regMetadata($xmlStr);
+
+		return $result;
+	}
+
+	/**
 	 * Include citation and update DOI metadata record on DataCite
 	 *
 	 * @param      string		$xml
 	 * @param      array		$citationInfo
+	 * @param      string       $relationType
 	 *
-	 * @return     string  XML or false
+	 * @return     boolean
 	 */
-	public function updateDoiXML($xml, $citationInfo)
+	public function incCitationInDoiMetadataXML($xml, $citationInfo, $relationType)
 	{
 		$xmlStr = '';
-		$url = rtrim($this->_configs->dataciteServiceURL, '/') . '/' . 'metadata';
 
 		$dom = new \DomDocument();
 		$dom->loadXML($xml);
@@ -264,7 +359,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 				$relatedIdentifierElement = $dom->createElement("relatedIdentifier", $citation);
 				$relatedIdentifierNode = $relatedIdentifiersNodeList->item(0)->appendChild($relatedIdentifierElement);
 				$relatedIdentifierNode->setAttribute("relatedIdentifierType", $key);
-				$relatedIdentifierNode->setAttribute("relationType", "IsReferencedBy");
+				$relatedIdentifierNode->setAttribute("relationType", $relationType);
 				$xmlStr = $dom->saveXML();
 			}
 		}
@@ -283,7 +378,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 					$relatedIdentifierElement = $dom->createElement("relatedIdentifier", $citation);
 					$relatedIdentifierNode = $relatedIdentifiersNode->appendChild($relatedIdentifierElement);
 					$relatedIdentifierNode->setAttribute("relatedIdentifierType", $key);
-					$relatedIdentifierNode->setAttribute("relationType", "IsReferencedBy");
+					$relatedIdentifierNode->setAttribute("relationType", $relationType);
 					$xmlStr = $dom->saveXML();
 				}
 			}
@@ -301,7 +396,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 						$relatedIdentifierElement = $dom->createElement("relatedIdentifier", $citation);
 						$relatedIdentifierNode = $relatedIdentifiersNode->appendChild($relatedIdentifierElement);
 						$relatedIdentifierNode->setAttribute("relatedIdentifierType", $key);
-						$relatedIdentifierNode->setAttribute("relationType", "IsReferencedBy");
+						$relatedIdentifierNode->setAttribute("relationType", $relationType);
 						$xmlStr = $dom->saveXML();
 					}
 				}
@@ -319,7 +414,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 							$relatedIdentifierElement = $dom->createElement("relatedIdentifier", $citation);
 							$relatedIdentifierNode = $relatedIdentifiersNode->appendChild($relatedIdentifierElement);
 							$relatedIdentifierNode->setAttribute("relatedIdentifierType", $key);
-							$relatedIdentifierNode->setAttribute("relationType", "IsReferencedBy");
+							$relatedIdentifierNode->setAttribute("relationType", $relationType);
 							$xmlStr = $dom->saveXML();
 						}
 					}
@@ -327,9 +422,24 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 			}
 		}
 
+		$result = $this->regMetadata($xmlStr);
+
+		return $result;
+	}
+
+	/**
+	 * Get DOI service information from publication component configuration
+	 *
+	 * @param      $xml    the DOI metadata xml file
+	 * @return     stdClass object
+	 */
+	protected function regMetadata($xml)
+	{
+		$url = rtrim($this->_configs->dataciteServiceURL, '/') . '/' . 'metadata';
+
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->dataciteUserPW);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlStr);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8'));
 		curl_setopt($ch, CURLOPT_FAILONERROR, true);

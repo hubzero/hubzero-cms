@@ -428,23 +428,13 @@ class Citations extends AdminController
 			$assocId = !empty($assoc['id']) ? $assoc['id'] : null;
 			unset($assoc['id']);
 			$newAssociation = Association::oneOrNew($assocId)->set($assoc);
-			if (!$newAssociation->isNew())
+			if (!$newAssociation->isNew() && (empty($assoc['tbl']) || empty($assoc['oid'])))
 			{
-				if (!empty($assoc['tbl']) && !empty($assoc['doi']))
-				{
-					$newAssociation->set('id', $assocId);
-					$newAssociation->set('tbl', $assoc['tbl']);
-					$newAssociation->set('doi', $assoc['doi']);
-					$newAssociation->save();
-				}
-				elseif (empty($assoc['tbl']) || empty($assoc['oid']))
-				{
-					$newAssociation->destroy();
-				}
+				$newAssociation->destroy();
 			}
 			else
 			{
-				if (!empty($assoc['tbl']) && !empty($assoc['oid']) && !empty($assoc['doi']))
+				if (!empty($assoc['tbl']) && !empty($assoc['oid']))
 				{
 					$associations[] = $newAssociation;
 				}
