@@ -63,6 +63,7 @@ HUB.Modules.ReportProblems = {
 						.attr('target', 'upload_target')
 						.on('submit', function (e) {
 							//e.preventDefault();
+							frm.find('.warning').remove();
 
 							var name   = $('#trName'),
 								email  = $('#trEmail'),
