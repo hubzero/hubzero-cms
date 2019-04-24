@@ -363,10 +363,10 @@ class Test extends ComponentController
 		try
 		{
 			// Single user
-			//$passport->grantBadge($badge, 'ishunko@purdue.edu');
+			//$passport->grantBadge($badge, 'example@example.com');
 
 			// Multiple users
-			$users = array('ishunko@purdue.edu', 'mshunko@purdue.edu');
+			$users = array('example@example.com', 'sample@sample.com');
 			$passport->grantBadge($badge, $users);
 
 			echo 'Badges granted';
