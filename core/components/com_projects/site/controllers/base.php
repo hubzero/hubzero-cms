@@ -124,9 +124,9 @@ class Base extends SiteController
 	protected function _setNotification($message, $type = 'success')
 	{
 		// If message is set push to notifications
-		if ($message != '')
+		if ($message)
 		{
-			\Notify::message($message, $type, 'projects');
+			\Notify::message($message, $type);//, 'projects');
 		}
 	}
 
