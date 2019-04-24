@@ -226,6 +226,8 @@ div.grpdisp .group-img{
     vertical-align:middle;
     display:table-cell;
     width:45px;
+		background: #fff;
+		padding: 2px;
 		/* you can change width */
 }
 
