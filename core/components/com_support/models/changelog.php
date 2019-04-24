@@ -91,8 +91,6 @@ class Changelog extends Obj
 				$data = explode('</li>', $data);
 				$data = array_map('trim', $data);
 
-				/*<ul class=email-in-log><li>Comment submitted via email from zooley@purdue.edu</li></ul><ul class=email-out-log><li>E-mailed ticket creator zooley@purdue.edu </li></ul><ul class=email-out-log><li>E-mailed ticket owner zooley@purdue.edu </li></ul>*/
-
 				foreach ($data as $key => $item)
 				{
 					$item = trim($item);
