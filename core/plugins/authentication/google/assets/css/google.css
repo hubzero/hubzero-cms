@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        plgins/authentication/google/assets/css/google.css
- * @copyright   Copyright 2005-2019 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 @font-face {
@@ -14,11 +13,10 @@
 }
 
 .auth .google:before {
-	content: ""; /*"\f02b";*/
+	content: "";
 	width: 47px;
 	height: 47px;
 	background-image: url('../img/btn_google_dark_normal_ios.svg');
-	/*background-size: 40px 40px;*/
 	background-repeat: no-repeat;
 	left: -2px;
 	top: 2px;
