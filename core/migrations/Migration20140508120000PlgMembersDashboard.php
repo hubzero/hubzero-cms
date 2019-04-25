@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -24,7 +29,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
 			$newDefaults = array();
 			if (isset($params->defaults))
 			{
-				$oldDefaultCols = array_map("trim", explode(';',$params->defaults));
+				$oldDefaultCols = array_map("trim", explode(';', $params->defaults));
 
 				foreach ($oldDefaultCols as $col => $oldCol)
 				{
@@ -87,7 +92,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
 			foreach ($preferences as $preference)
 			{
 				$newPrefCols = array();
-				$oldPrefCols = array_map("trim", explode(';',$preference->prefs));
+				$oldPrefCols = array_map("trim", explode(';', $preference->prefs));
 
 				foreach ($oldPrefCols as $col => $oldCol)
 				{
@@ -115,7 +120,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
 			{
 				foreach ($newpreferences as $pref)
 				{
-					$query = "INSERT INTO `#__xprofiles_dashboard_preferences`(uidNumber,preferences,modified) VALUES " . $pref ;
+					$query = "INSERT INTO `#__xprofiles_dashboard_preferences`(uidNumber,preferences,modified) VALUES " . $pref;
 					$this->db->setQuery($query);
 					$this->db->query();
 				}

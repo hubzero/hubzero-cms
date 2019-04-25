@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -230,30 +235,30 @@ class Migration20130924000000ComCategories extends Base
 
 					$query  = "INSERT INTO `#__categories` (parent_id,lft,rgt,level,path,extension,title,alias,note,description,published,checked_out,checked_out_time,access,params,metadesc,metakey,metadata,created_user_id,created_time,modified_user_id,modified_time,hits,language) VALUES ";
 					$query .= "(";
-					$query .= '"0",';                                # parent_id
-					$query .= '"",';                                 # lft
-					$query .= '"",';                                 # rgt
-					$query .= '"1",';                                # level
-					$query .= $this->db->Quote($r->alias).",";             # path
-					$query .= '"com_content",';                      # extension
-					$query .= $this->db->Quote($r->title).",";             # title
-					$query .= $this->db->Quote($r->alias).",";             # alias
-					$query .= '"",';                                 # note
-					$query .= $this->db->Quote($r->description).",";       # description
-					$query .= $this->db->Quote($r->published).",";         # published
-					$query .= $this->db->Quote($r->checked_out).",";       # checked_out
-					$query .= $this->db->Quote($r->checked_out_time).",";  # checked_out_time
-					$query .= $this->db->Quote($r->access).",";            # access
-					$query .= $this->db->Quote($r->params).",";            # params
-					$query .= '"",';                                 # metadesc
-					$query .= '"",';                                 # metakey
-					$query .= '"",';                                 # metadata
-					$query .= '"",';                                 # created_user_id
-					$query .= '"",';                                 # created_time
-					$query .= '"",';                                 # modified_user_id,
-					$query .= '"",';                                 # modified_time
-					$query .= '"",';                                 # hits
-					$query .= '""';                                  # language
+					$query .= '"0",';                                // parent_id
+					$query .= '"",';                                 // lft
+					$query .= '"",';                                 // rgt
+					$query .= '"1",';                                // level
+					$query .= $this->db->Quote($r->alias).",";             // path
+					$query .= '"com_content",';                      // extension
+					$query .= $this->db->Quote($r->title).",";             // title
+					$query .= $this->db->Quote($r->alias).",";             // alias
+					$query .= '"",';                                 // note
+					$query .= $this->db->Quote($r->description).",";       // description
+					$query .= $this->db->Quote($r->published).",";         // published
+					$query .= $this->db->Quote($r->checked_out).",";       // checked_out
+					$query .= $this->db->Quote($r->checked_out_time).",";  // checked_out_time
+					$query .= $this->db->Quote($r->access).",";            // access
+					$query .= $this->db->Quote($r->params).",";            // params
+					$query .= '"",';                                 // metadesc
+					$query .= '"",';                                 // metakey
+					$query .= '"",';                                 // metadata
+					$query .= '"",';                                 // created_user_id
+					$query .= '"",';                                 // created_time
+					$query .= '"",';                                 // modified_user_id,
+					$query .= '"",';                                 // modified_time
+					$query .= '"",';                                 // hits
+					$query .= '""';                                  // language
 					$query .= ");";
 					$this->db->setQuery($query);
 					$this->db->query();

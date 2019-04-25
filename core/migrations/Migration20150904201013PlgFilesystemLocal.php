@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -12,7 +17,7 @@ class Migration20150904201013PlgFilesystemLocal extends Base
 	 **/
 	public function up()
 	{
-		$this->addPluginEntry('filesystem','local');
+		$this->addPluginEntry('filesystem', 'local');
 	}
 
 	/**
@@ -20,6 +25,6 @@ class Migration20150904201013PlgFilesystemLocal extends Base
 	 **/
 	public function down()
 	{
-		$this->deletePluginEntry('filesystem','local');
+		$this->deletePluginEntry('filesystem', 'local');
 	}
 }

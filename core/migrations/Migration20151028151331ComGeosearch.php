@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -19,7 +24,7 @@ class Migration20151028151331ComGeosearch extends Base
 			$this->db->query();
 			$key = $this->db->loadAssoc();
 
-			if ($key == NULL || $key['Key_name'] != 'PRIMARY' && $key['column'] =! 'id')
+			if ($key == null || $key['Key_name'] != 'PRIMARY' && $key['column'] =! 'id')
 			{
 				// Make an auto-incrementing index as ID
 				$query = "ALTER TABLE `#__geosearch_markers` MODIFY COLUMN id INT AUTO_INCREMENT, ADD PRIMARY KEY (id);";

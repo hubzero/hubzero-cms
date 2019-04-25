@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -39,7 +44,7 @@ class Migration20160927193030ComProjects extends Base
 				}
 				elseif (file_exists(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'asset.php'))
 				{
-					include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'asset.php');
+					include_once PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'asset.php';
 
 					$tbl = new \JTableAsset($this->db);
 					$tbl->level  = 1;
@@ -90,7 +95,7 @@ class Migration20160927193030ComProjects extends Base
 				}
 				elseif (file_exists(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'asset.php'))
 				{
-					include_once(PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'asset.php');
+					include_once PATH_CORE . DS . 'libraries' . DS . 'joomla' . DS . 'database' . DS . 'table' . DS . 'asset.php';
 
 					$tbl = new \JTableAsset($this->db);
 					$tbl->level  = 1;

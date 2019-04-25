@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -12,7 +17,7 @@ class Migration20160328155038PlgMetadataLocal extends Base
 	 **/
 	public function up()
 	{
-		$this->addPluginEntry('metadata','local', 0);
+		$this->addPluginEntry('metadata', 'local', 0);
 
 		if (!$this->db->tableExists('#__file_metadata'))
 		{
@@ -34,7 +39,7 @@ class Migration20160328155038PlgMetadataLocal extends Base
 	 **/
 	public function down()
 	{
-		$this->deletePluginEntry('metadata','local');
+		$this->deletePluginEntry('metadata', 'local');
 
 		if (!$this->db->tableExists('#__file_metadata'))
 		{
