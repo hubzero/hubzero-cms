@@ -3,7 +3,9 @@
 	<name>kameleon (admin)</name>
 	<creationDate>05/24/14</creationDate>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<version>1.0</version>
 	<description>Administration template for HUBzero CMS</description>

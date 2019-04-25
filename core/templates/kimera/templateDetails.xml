@@ -2,7 +2,9 @@
 <extension type="template" version="2.5">
 	<name>kimera</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>Site template for HUBzero CMS</description>
 	<files>
