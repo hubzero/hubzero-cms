@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -32,13 +37,13 @@ class Migration20150826208413ComContent extends Base
 					else
 					{
 						$attribs = $r->attribs;
-						$attribs = preg_replace("/^{\"{\\\\\"{/","{",$attribs);
-						$attribs = preg_replace("/^{\"{/","{",$attribs);
-						$attribs = preg_replace("/}\\\\\":\\\\\\\"\\\\\"}\":\"\"}$/","}",$attribs);
-						$attribs = preg_replace("/}\":\"\"}$/","}",$attribs);
-						$attribs = preg_replace("/\\\\\\\\\\\\\"/","\"",$attribs);
-						$attribs = preg_replace("/\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"/","\"",$attribs);
-						$attribs = preg_replace("/\\\\\"/","\"",$attribs);
+						$attribs = preg_replace("/^{\"{\\\\\"{/", "{", $attribs);
+						$attribs = preg_replace("/^{\"{/", "{", $attribs);
+						$attribs = preg_replace("/}\\\\\":\\\\\\\"\\\\\"}\":\"\"}$/", "}", $attribs);
+						$attribs = preg_replace("/}\":\"\"}$/", "}", $attribs);
+						$attribs = preg_replace("/\\\\\\\\\\\\\"/", "\"", $attribs);
+						$attribs = preg_replace("/\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"/", "\"", $attribs);
+						$attribs = preg_replace("/\\\\\"/", "\"", $attribs);
 					}
 
 					$attribs = json_decode($attribs);

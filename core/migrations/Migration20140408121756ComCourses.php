@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -25,43 +30,46 @@ class Migration20140408121756ComCourses extends Base
 
 			if (is_dir($path))
 			{
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
-
-				// Loop through all files and separate them into arrays of images, folders, and other
-				$dirIterator = new DirectoryIterator($path);
-				foreach ($dirIterator as $file)
+				if (file_exists(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php'))
 				{
-					if ($file->isDot())
-					{
-						continue;
-					}
+					require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php';
 
-					if ($file->isDir())
+					// Loop through all files and separate them into arrays of images, folders, and other
+					$dirIterator = new DirectoryIterator($path);
+					foreach ($dirIterator as $file)
 					{
-						continue;
-					}
-
-					if ($file->isFile())
-					{
-						$name = $file->getFilename();
-						if (('cvs' == strtolower($name))
-						 || ('.svn' == strtolower($name)))
+						if ($file->isDot())
 						{
 							continue;
 						}
 
-						$bits = explode('_', $name);
-						if (count($bits) < 4)
+						if ($file->isDir())
 						{
 							continue;
 						}
 
-						$course = $bits[1];
-						$offering = $bits[2];
-						$user = strstr($bits[3], '.', true);
+						if ($file->isFile())
+						{
+							$name = $file->getFilename();
+							if (('cvs' == strtolower($name))
+							 || ('.svn' == strtolower($name)))
+							{
+								continue;
+							}
 
-						$member = \Components\Courses\Models\Member::getInstance($user, $course, $offering, null);
-						$member->token();
+							$bits = explode('_', $name);
+							if (count($bits) < 4)
+							{
+								continue;
+							}
+
+							$course = $bits[1];
+							$offering = $bits[2];
+							$user = strstr($bits[3], '.', true);
+
+							$member = \Components\Courses\Models\Member::getInstance($user, $course, $offering, null);
+							$member->token();
+						}
 					}
 				}
 			}

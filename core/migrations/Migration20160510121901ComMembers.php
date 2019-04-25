@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -336,11 +341,16 @@ class Migration20160510121901ComMembers extends Base
 		switch ($task)
 		{
 			case 'register':
-			case 'create': $index = 0; break;
-			case 'proxy':  $index = 1; break;
-			case 'update': $index = 2; break;
-			case 'edit':   $index = 3; break;
-			default:       $index = 0; break;
+			case 'create': $index = 0;
+break;
+			case 'proxy':  $index = 1;
+break;
+			case 'update': $index = 2;
+break;
+			case 'edit':   $index = 3;
+break;
+			default:       $index = 0;
+break;
 		}
 
 		$default = str_pad($default, 4, '-');
@@ -361,12 +371,16 @@ class Migration20160510121901ComMembers extends Base
 
 		switch ($key)
 		{
-			case 'R': $val = 2; break;
-			case 'O': $val = 1; break;
-			case 'U': $val = 4; break;
+			case 'R': $val = 2;
+break;
+			case 'O': $val = 1;
+break;
+			case 'U': $val = 4;
+break;
 			case 'H':
 			case '-':
-			default : $val = 0; break;
+			default : $val = 0;
+break;
 		}
 
 		return $val;

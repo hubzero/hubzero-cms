@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -15,7 +20,7 @@ class Migration20140421130020PlgHubzeroSystemplate extends Base
 	 **/
 	public function up()
 	{
-		$this->addPluginEntry('hubzero','systemplate');
+		$this->addPluginEntry('hubzero', 'systemplate');
 	}
 
 	/**
@@ -23,6 +28,6 @@ class Migration20140421130020PlgHubzeroSystemplate extends Base
 	 **/
 	public function down()
 	{
-		$this->deletePluginEntry('hubzero','systemplate');
+		$this->deletePluginEntry('hubzero', 'systemplate');
 	}
 }
