@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5" client="administrator" method="upgrade">
 	<name>mod_multilangstatus</name>
-	<author>HUBzero</author>
 	<creationDate>January 2015</creationDate>
-	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://opensource.org/licenses/MIT MIT</license>
-	<authorEmail>support@hubzero.org</authorEmail>
+	<author>HUBzero</author>
 	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<version>1.0.0</version>
 	<description>MOD_MULTILANGSTATUS_XML_DESCRIPTION</description>
 	<files>
