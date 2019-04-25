@@ -127,10 +127,11 @@ var youtube_feed = 0;
 			var topHTML = "";
 			var title, description, logo;
 			var details = settings.details;
-return "";
+			return "";
 			// if we have no details return nothing
-			if (!details)
+			if (!details) {
 				return "";
+			}
 
 			// set title based on if we have an alternative title
 			if (details.altTitle && details.altTitle != "") {
