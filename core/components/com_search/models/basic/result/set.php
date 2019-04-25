@@ -365,6 +365,11 @@ class Set extends Obj implements Iterator
 		{
 			foreach ($plugins as $plugin)
 			{
+				if (!is_dir(Plugin::path('search', $plugin->name)))
+				{
+					continue;
+				}
+
 				if (Plugin::isEnabled('search', $plugin->name))
 				{
 					$refl = new ReflectionClass("plgSearch$plugin->name");
@@ -384,6 +389,11 @@ class Set extends Obj implements Iterator
 
 		foreach ($plugins as $plugin)
 		{
+			if (!is_dir(Plugin::path('search', $plugin->name)))
+			{
+				continue;
+			}
+
 			if (!Plugin::isEnabled('search', $plugin->name))
 			{
 				continue;
@@ -424,6 +434,11 @@ class Set extends Obj implements Iterator
 		$plugin_types = array_keys($weighters);
 		foreach ($plugins as $plugin)
 		{
+			if (!is_dir(Plugin::path('search', $plugin->name)))
+			{
+				continue;
+			}
+
 			if (!Plugin::isEnabled('search', $plugin->name))
 			{
 				continue;
