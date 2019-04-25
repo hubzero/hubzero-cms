@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -15,7 +20,7 @@ class Migration20140108233320PlgEditorsCkeditor extends Base
 	 **/
 	public function up()
 	{
-		$this->addPluginEntry('editors','ckeditor');
+		$this->addPluginEntry('editors', 'ckeditor');
 	}
 
 	/**
@@ -23,6 +28,6 @@ class Migration20140108233320PlgEditorsCkeditor extends Base
 	 **/
 	public function down()
 	{
-		$this->deletePluginEntry('editors','ckeditor');
+		$this->deletePluginEntry('editors', 'ckeditor');
 	}
 }

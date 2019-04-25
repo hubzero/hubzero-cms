@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -23,7 +28,7 @@ class Migration20150901115230ComResources extends Base
 
 			if (!$id)
 			{
-				include_once(PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'license.php');
+				include_once PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'license.php';
 
 				$query = "SELECT ordering FROM `#__resource_licenses` ORDER BY ordering DESC LIMIT 1";
 				$this->db->setQuery($query);

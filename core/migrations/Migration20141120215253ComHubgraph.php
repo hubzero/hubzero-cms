@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -47,19 +52,19 @@ class Migration20141120215253ComHubgraph extends Base
 
 			if (is_null(json_decode($params)))
 			{
-				$object = unserialize($params);
+				/*$object = unserialize($params);
 				$params = $object->settings();
 
 				$query = "UPDATE `#__extensions` SET `params` = " . $this->db->quote(json_encode($params)) . " WHERE `element` = 'com_hubgraph'";
 				$this->db->setQuery($query);
-				$this->db->query();
+				$this->db->query();*/
 			}
 		}
 	}
 }
 
 // Placeholder class needed to parse serialized object/params previously stored in extensions directory
-class HubgraphConfiguration
+/*class HubgraphConfiguration
 {
 	private $settings, $idx;
 
@@ -67,4 +72,4 @@ class HubgraphConfiguration
 	{
 		return $this->settings;
 	}
-}
+}*/
