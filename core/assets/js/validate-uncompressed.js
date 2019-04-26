@@ -1,24 +1,20 @@
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 /**
  * Unobtrusive Form Validation library
  *
  * Inspired by: Chris Campbell <www.particletree.com>
- *
- * @package		Joomla.Framework
- * @subpackage	Forms
- * @since		1.5
  */
-//var JFormValidator = new Class({
 var JFormValidator = function() {
 	this.initialize = function()
 	{
 		// Initialize variables
-		this.handlers	= Object();
-		this.custom		= Object();
+		this.handlers = Object();
+		this.custom   = Object();
 
 		// Default handlers
 		this.setHandler('username',
