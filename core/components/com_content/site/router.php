@@ -54,7 +54,8 @@ class Router extends Base
 
 		for ($i = 0; $i < $total; $i++)
 		{
-			$segments[$i] = str_replace(':', '-', $segments[$i]);
+			//$segments[$i] = str_replace(':', '-', $segments[$i]);
+			$segments[$i] = trim(strstr($segments[$i], ':'), ':');
 		}
 
 		return $segments;
@@ -138,7 +139,7 @@ class Router extends Base
 					if (strpos($query['id'], ':') === false)
 					{
 						$db = App::get('db');
-						$aquery = $db->setQuery(
+						$db->setQuery(
 							$db->getQuery()
 								->select('alias')
 								->from('#__content')
