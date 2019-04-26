@@ -520,7 +520,8 @@ class Repo extends Obj
 		$reserved  = isset($params['reserved']) ? $params['reserved'] : array();
 
 		$newDir    = isset($params['newDir']) ? $params['newDir'] : null; // New directory name
-		$newDir    = Filesystem::cleanPath($newDir);
+		$newDir    = Filesystem::cleanDirectory($newDir); // Remove unwanted characters
+		$newDir    = Filesystem::cleanPath($newDir); // Remove path shenanigans like "/./"
 		$localDirPath = $dirPath ? $dirPath . DS . $newDir : $newDir;
 
 		// Check that we have directory to create
@@ -540,8 +541,7 @@ class Repo extends Obj
 		// Directory already exists ?
 		if ($this->dirExists($localDirPath))
 		{
-			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_DIR_CREATE') . ' "' . $newDir . '". '
-			. Lang::txt('COM_PROJECTS_FILES_ERROR_DIRECTORY_EXISTS'));
+			$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_DIR_CREATE') . ' "' . $newDir . '". ' . Lang::txt('COM_PROJECTS_FILES_ERROR_DIRECTORY_EXISTS'));
 			return false;
 		}
 
