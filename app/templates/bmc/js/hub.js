@@ -209,6 +209,10 @@ if (!jq) {
 			}
 		});
 
+		// Secondary Menu - adjust margin of last visible link
+
+		$('.nav-secondary > .menu > li > a:not(".hidden"):last').closest('li').addClass('removeMargin');
+
 		body = $('body');
 
 		// Sticky header vars

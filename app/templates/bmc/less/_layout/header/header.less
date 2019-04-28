@@ -25,7 +25,7 @@ header.page {
 			display: inline-block;
 		}
 
-		&.nav-primary, 
+		&.nav-primary,
 		&.nav-secondary {
 			width: auto;
 			li {
@@ -42,7 +42,11 @@ header.page {
 						color: @colorLink;
 					}
 				}
-				
+
+				a.hidden {
+					display: none;
+				}
+
 				span:hover {
 					color: @colorLink !important;
 				}
@@ -74,21 +78,27 @@ header.page {
 					}
 				}
 			}
+
+			li.removeMargin {
+				a {
+					margin-right: 0;
+				}
+			}
 		}
 	}
-	
+
 	// Adjust for smaller text for secondary menu
 	nav.nav-secondary {
 		ul {
 			 display: inline-block;
 			 vertical-align: middle;
 		}
-		
+
 		li.active a:after {
 			bottom: 0.5rem;
 		}
 	}
-	
+
 	// Adjust help indicator (triangle)
 	nav.nav-secondary li.helpme.active a:after {
     display: none;
@@ -121,7 +131,7 @@ header.page {
 	nav.nav-primary {
 		float: left;
 	}
-	
+
 	li#help {
 		padding: 0 8px 0 4px;
 	}
@@ -418,7 +428,7 @@ header.page {
 					}
 				}
 			}
-			
+
 			&.nav-secondary li.active a:after{
 				bottom: 0.3rem;
 				height: 1px;
