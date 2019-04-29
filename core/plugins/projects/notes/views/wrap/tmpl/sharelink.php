@@ -20,4 +20,4 @@ if ($stamp) { ?>
 	</p>
 <?php } else { ?>
 	<p class="publink"><?php echo Lang::txt('COM_PROJECTS_NOTES_SHARE_GET_LINK'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias') . '&active=notes&p=' . $this->page->get('id')) . '&amp;action=share'; ?>" class="showinbox"><?php echo Lang::txt('COM_PROJECTS_NOTES_SHARE_GENERATE_LINK'); ?></a></p>
-<?php } ?>
+<?php }

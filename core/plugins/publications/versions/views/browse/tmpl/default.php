@@ -42,7 +42,7 @@ $url = Route::url($route . '&pid=' . $this->publication->id);
 
 			foreach ($this->versions as $v)
 			{
-				$handle = ($v->doi) ? $v->doi : '' ;
+				$handle = ($v->doi) ? $v->doi : '';
 
 				$cls = (($cls == 'even') ? 'odd' : 'even');
 				?>
@@ -74,4 +74,4 @@ $url = Route::url($route . '&pid=' . $this->publication->id);
 	</table>
 <?php } else { ?>
 	<p class="nocontent"><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_NO_VERIONS_FOUND'); ?></p>
-<?php } ?>
+<?php }

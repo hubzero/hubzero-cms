@@ -35,4 +35,4 @@ if ($this->getError())
 	<div id="preview-image">
 		<img src="data:<?php echo $attr['mime']; ?>;base64,<?php echo $base64; ?>" alt="<?php echo Lang::txt('PLG_PROJECTS_FILES_LOADING_PREVIEW'); ?>" />
 	</div>
-<?php endif; ?>
+<?php endif;

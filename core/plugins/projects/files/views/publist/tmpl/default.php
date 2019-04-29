@@ -8,11 +8,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once( PATH_CORE . DS . 'components' . DS
-	.'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
+require_once PATH_CORE . DS . 'components' . DS .'com_projects' . DS . 'tables' . DS . 'publicstamp.php';
 
-$database 	= App::get('db');
-$objSt 		= new \Components\Projects\Tables\Stamp( $database );
+$database = App::get('db');
+$objSt = new \Components\Projects\Tables\Stamp($database);
 
 // Get listed public files
 $items = $objSt->getPubList($this->model->get('id'), 'files');
@@ -34,4 +33,4 @@ if ($items) {
 		} ?>
 	</ul>
 </div>
-<?php } ?>
+<?php }

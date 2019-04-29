@@ -151,7 +151,7 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
 			?>
 		</tbody>
 	</table>
-	<?php if (count($this->items) == 0 ) : ?>
+	<?php if (count($this->items) == 0) : ?>
 		<p class="noresults">
 			<?php echo ($this->subdir) ? Lang::txt('PLG_PROJECTS_FILES_THIS_DIRECTORY_IS_EMPTY') : Lang::txt('PLG_PROJECTS_FILES_PROJECT_HAS_NO_FILES'); ?>
 		</p>

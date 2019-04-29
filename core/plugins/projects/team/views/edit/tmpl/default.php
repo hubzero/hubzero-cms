@@ -215,8 +215,18 @@ $roles = [
 			{
 				$disabled = true;
 			}
+
+			$cls = '';
+			if ($owner->userid == $this->uid)
+			{
+				$cls = 'native';
+			}
+			elseif ($owner->status == 0)
+			{
+				$cls = 'u_invited';
+			}
 			?>
-			<tr class="mline <?php if ($owner->userid == $this->uid) { echo 'native'; } else if ($owner->status == 0) { echo 'u_invited'; } ?>" id="tr_<?php echo $owner->id; ?>">
+			<tr class="mline <?php $cls; ?>" id="tr_<?php echo $owner->id; ?>">
 				<td>
 					<input type="checkbox" value="<?php echo $owner->id; ?>" name="owner[]" class="checkmember <?php if ($owner->groupid) { echo 'group:' . $owner->groupid; } ?>" data-group="<?php echo $owner->groupid; ?>" <?php if ($disabled) { echo 'disabled="disabled"'; } ?> />
 				</td>

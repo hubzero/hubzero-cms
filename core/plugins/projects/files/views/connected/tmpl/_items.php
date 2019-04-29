@@ -8,7 +8,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$handlerBase = DS . trim($this->config->get('handler_base_path','srv' . DS . 'projects'), DS);
+$handlerBase = DS . trim($this->config->get('handler_base_path', 'srv' . DS . 'projects'), DS);
 if (!strstr($handlerBase, '{'))
 {
 	$handlerBase .= '/{project}/files/{file}';
@@ -25,4 +25,4 @@ if (!strstr($handlerBase, '{'))
 			->set('subdir', $this->subdir)
 			->display();
 	?>
-<?php endforeach; ?>
+<?php endforeach;

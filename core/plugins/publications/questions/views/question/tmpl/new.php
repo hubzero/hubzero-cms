@@ -58,7 +58,7 @@ $this->css();
 
 			<label for="field-question">
 				<?php echo Lang::txt('COM_ANSWERS_ASK_DETAILS'); ?>:<br />
-				<?php echo $this->editor('question[question]', $this->escape(stripslashes($this->row->get('question'))),  50, 10, 'field-question', array('class' => 'minimal no-footer')); ?>
+				<?php echo $this->editor('question[question]', $this->escape(stripslashes($this->row->get('question'))), 50, 10, 'field-question', array('class' => 'minimal no-footer')); ?>
 			</label>
 
 			<?php if ($this->banking) { ?>

@@ -93,7 +93,7 @@ class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
 			);
 
 			// Get projects html helper
-			require_once( PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php' );
+			require_once Component::path('com_projects') . DS . 'helpers' . DS . 'html.php';
 
 			// Build publication path
 			$path = \Components\Publications\Helpers\Html::buildPubPath(
