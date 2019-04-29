@@ -41,7 +41,7 @@ class plgWikiParserdefault extends \Hubzero\Plugin\Plugin
 			$path = dirname(__FILE__);
 			if (is_file($path . DS . 'parser.php'))
 			{
-				include_once($path . DS . 'parser.php');
+				include_once $path . DS . 'parser.php';
 			}
 			else
 			{

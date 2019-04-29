@@ -44,7 +44,7 @@ class MacrolistMacro extends WikiMacro
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file($path . DS . $entry) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html')
+				if (is_file($path . DS . $entry) && substr($entry, 0, 1) != '.' && strtolower($entry) !== 'index.html')
 				{
 					if (preg_match("#php#i", $entry))
 					{
@@ -59,7 +59,7 @@ class MacrolistMacro extends WikiMacro
 		$m = array();
 		foreach ($macros as $f)
 		{
-			include_once($path . DS . $f);
+			include_once $path . DS . $f;
 
 			$f = str_replace('.php', '', $f);
 
@@ -82,4 +82,3 @@ class MacrolistMacro extends WikiMacro
 		return $txt;
 	}
 }
-

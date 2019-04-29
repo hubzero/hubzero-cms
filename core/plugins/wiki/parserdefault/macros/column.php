@@ -71,23 +71,22 @@ class ColumnMacro extends WikiMacro
 
 			switch ($this->_columns)
 			{
-				case 6: $cls[] = 'span2';   break;
-				//case 5: $cls[] = 'five';  break;
-				case 4: $cls[] = 'span3';  break;
-				case 3: $cls[] = 'span4'; break;
-				case 2: $cls[] = 'span6';   break;
-				default: break;
+				case 6:
+					$cls[] = 'span2';
+					break;
+				//case 5:
+					//$cls[] = 'five';
+					//break;
+				case 4: $cls[] = 'span3';
+					break;
+				case 3: $cls[] = 'span4';
+					break;
+				case 2: $cls[] = 'span6';
+					break;
+				default:
+					break;
 			}
-			/*switch ($this->_cursor)
-			{
-				case 6:  $cls[] = 'sixth';  break;
-				case 5:  $cls[] = 'fifth';  break;
-				case 4:  $cls[] = 'fourth'; break;
-				case 3:  $cls[] = 'third';  break;
-				case 2:  $cls[] = 'second'; break;
-				case 1:
-				default: $cls[] = 'first';  break;
-			}*/
+
 			if ($this->_cursor == $this->_columns)
 			{
 				$cls[] = 'omega';
@@ -98,7 +97,7 @@ class ColumnMacro extends WikiMacro
 			{
 				foreach ($attribs as $a)
 				{
-					$a = preg_split('/=/',$a);
+					$a = preg_split('/=/', $a);
 					$key = strtolower(trim($a[0]));
 					$val = trim(end($a));
 					$val = trim($val, '"');
@@ -133,4 +132,3 @@ class ColumnMacro extends WikiMacro
 		return $div;
 	}
 }
-

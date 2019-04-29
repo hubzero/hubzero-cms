@@ -50,4 +50,3 @@ class AnchorMacro extends WikiMacro
 		}
 	}
 }
-

@@ -14,12 +14,12 @@ defined('_HZEXEC_') or die();
 class plgUserGeo extends \Hubzero\Plugin\Plugin
 {
 	/**
-	* This method should handle any login logic and report back to the subject
-	*
-	* @param array $user    holds the user data
-	* @param array $options holding options (remember, autoregister, group)
-	* @return bool
-	*/
+	 * This method should handle any login logic and report back to the subject
+	 *
+	 * @param array $user    holds the user data
+	 * @param array $options holding options (remember, autoregister, group)
+	 * @return bool
+	 */
 	public function onUserLogin($user, $options = array())
 	{
 		// Get params

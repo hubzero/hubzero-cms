@@ -66,4 +66,3 @@ class TagMacro extends WikiMacro
 		}
 	}
 }
-

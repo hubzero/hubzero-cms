@@ -170,4 +170,3 @@ class plgToolsJava extends \Hubzero\Plugin\Plugin
 		return true;
 	}
 }
-

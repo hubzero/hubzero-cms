@@ -43,4 +43,3 @@ class UnreferencedMacro extends WikiMacro
 		return '<div class="mbox-content mbox-unreferenced"><p class="mbox-text">This section <strong>does not cite any references or sources</strong>.' . $dt . '</span></p></div>';
 	}
 }
-
