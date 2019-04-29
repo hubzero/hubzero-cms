@@ -92,7 +92,7 @@ class plgCronGroups extends \Hubzero\Plugin\Plugin
 			->whereEquals('scope', 'group')
 			->rows();
 
-		include_once(dirname(dirname(__DIR__)) . DS . 'groups' . DS . 'announcements' . DS . 'announcements.php');
+		include_once dirname(dirname(__DIR__)) . DS . 'groups' . DS . 'announcements' . DS . 'announcements.php';
 
 		// Loop through each announcement
 		foreach ($announcements as $announcement)
@@ -115,4 +115,3 @@ class plgCronGroups extends \Hubzero\Plugin\Plugin
 		return true;
 	}
 }
-

@@ -17,7 +17,7 @@ class HelloWorld extends Macro
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function description()
 	{
@@ -30,11 +30,10 @@ class HelloWorld extends Macro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
 		return 'Hello World, args = ' . $this->args;
 	}
 }
-

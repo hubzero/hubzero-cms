@@ -45,4 +45,4 @@ defined('_HZEXEC_') or die();
 	<?php endforeach; ?>
 <?php else : ?>
 	<p class="warning">There are no responses to display at this time</p>
-<?php endif; ?>
+<?php endif;

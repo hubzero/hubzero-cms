@@ -51,4 +51,3 @@ class Anchor extends Macro
 		}
 	}
 }
-

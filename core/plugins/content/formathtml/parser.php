@@ -388,7 +388,7 @@ class Parser
 		if (is_file($path . DS . 'macro.php'))
 		{
 			// Include abstract macro class
-			include_once($path . DS . 'macro.php');
+			include_once $path . DS . 'macro.php';
 		}
 		else
 		{
@@ -432,7 +432,7 @@ class Parser
 					{
 						$found = true;
 
-						include_once($path . $file);
+						include_once $path . $file;
 						break;
 					}
 				}

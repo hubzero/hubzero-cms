@@ -155,7 +155,7 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 			$content = str_replace('href="/site', 'href="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $content);
 			$content = str_replace("href='/site", "href='" . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $content);
 
-			include_once(__DIR__ . '/parser.php');
+			include_once __DIR__ . '/parser.php';
 
 			if ($this->params->get('unlink', 0))
 			{

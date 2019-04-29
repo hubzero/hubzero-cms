@@ -68,4 +68,3 @@ class plgCoursesRelated extends \Hubzero\Plugin\Plugin
 		}
 	}
 }
-
