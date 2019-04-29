@@ -1,4 +1,12 @@
-<?php use Components\Projects\Models\Orm\Project; ?>
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+use Components\Projects\Models\Orm\Project;
+?>
 	<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="">
 		<fieldset>
 			<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
