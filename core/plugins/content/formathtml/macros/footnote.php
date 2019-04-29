@@ -110,4 +110,3 @@ class FootNote extends Macro
 		}
 	}
 }
-

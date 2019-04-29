@@ -75,7 +75,7 @@ class Contributor extends Macro
 			// No, it could be username or name
 			$n = trim($et);
 			// Is there a space in it inidcating name ("First Last")?
-			if (!strpos($n,' '))
+			if (!strpos($n, ' '))
 			{
 				// No, then we must have a username
 				// Get user's name
@@ -92,7 +92,7 @@ class Contributor extends Macro
 			}
 			else
 			{
-				$bits = explode(' ',$n);
+				$bits = explode(' ', $n);
 				$sql = "SELECT id, givenName, middleName, surname, name FROM `#__users` WHERE givenName=" . $this->_db->quote($bits[0]) . " AND surname=" . $this->_db->quote(end($bits));
 				// Perform query
 				$this->_db->setQuery($sql);
@@ -129,4 +129,3 @@ class Contributor extends Macro
 		}
 	}
 }
-

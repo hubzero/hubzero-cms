@@ -68,26 +68,26 @@ if (!$no_html) { ?>
 <?php } ?>
 	<span class="vote-like<?php echo $lcls; ?>">
 	<?php if (User::isGuest() || $this->item->get('vote') || User::get('id') == $this->item->get('created_by')) { ?>
-		<span class="vote-button <?php echo ($this->item->get('positive', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" title="<?php echo $like_title; ?>">
+		<span class="vote-button <?php echo ($this->item->get('positive', 0) > 0) ? 'like' : 'neutral'; ?> <?php echo $cls; ?>" title="<?php echo $like_title; ?>">
 			<?php echo $this->item->get('positive', 0); ?><span> <?php echo Lang::txt('PLG_COURSES_REVIEWS_VOTE_LIKE'); ?></span>
 		</span>
 	<?php } else { ?>
-		<a class="vote-button <?php echo ($this->item->get('positive', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" href="<?php echo Route::url($this->url . 'action=vote&voteup=' . $this->item->get('id')); ?>" title="<?php echo $like_title; ?>">
+		<a class="vote-button <?php echo ($this->item->get('positive', 0) > 0) ? 'like' : 'neutral'; ?> <?php echo $cls; ?>" href="<?php echo Route::url($this->url . 'action=vote&voteup=' . $this->item->get('id')); ?>" title="<?php echo $like_title; ?>">
 			<?php echo $this->item->get('positive', 0); ?><span> <?php echo Lang::txt('PLG_COURSES_REVIEWS_VOTE_LIKE'); ?></span>
 		</a>
 	<?php } ?>
 	</span>
 	<span class="vote-dislike<?php echo $dcls; ?>">
 	<?php if (User::isGuest() || $this->item->get('vote') || User::get('id') == $this->item->get('created_by')) { ?>
-		<span class="vote-button <?php echo ($this->item->get('negative', 0) > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" title="<?php echo $dislike_title; ?>">
+		<span class="vote-button <?php echo ($this->item->get('negative', 0) > 0) ? 'dislike' : 'neutral'; ?> <?php echo $cls; ?>" title="<?php echo $dislike_title; ?>">
 			<?php echo $this->item->get('negative', 0); ?><span> <?php echo Lang::txt('PLG_COURSES_REVIEWS_VOTE_DISLIKE'); ?></span>
 		</span>
 	<?php } else { ?>
-		<a class="vote-button <?php echo ($this->item->get('negative', 0) > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" href="<?php echo Route::url($this->url . 'action=vote&votedown=' . $this->item->get('id')); ?>" title="<?php echo $dislike_title; ?>">
+		<a class="vote-button <?php echo ($this->item->get('negative', 0) > 0) ? 'dislike' : 'neutral'; ?> <?php echo $cls; ?>" href="<?php echo Route::url($this->url . 'action=vote&votedown=' . $this->item->get('id')); ?>" title="<?php echo $dislike_title; ?>">
 			<?php echo $this->item->get('negative', 0); ?><span> <?php echo Lang::txt('PLG_COURSES_REVIEWS_VOTE_DISLIKE'); ?></span>
 		</a>
 	<?php } ?>
 	</span>
 <?php if (!$no_html) { ?>
 </p>
-<?php } ?>
+<?php }

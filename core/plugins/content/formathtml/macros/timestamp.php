@@ -44,4 +44,3 @@ class Timestamp extends Macro
 		return \Date::toSql();
 	}
 }
-
