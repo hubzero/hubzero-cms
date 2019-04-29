@@ -376,7 +376,7 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 
 		<input type="hidden" name="scope" value="<?php echo $this->escape($this->row->scope); ?>" />
 		<input type="hidden" name="scope_id" value="<?php echo $this->escape($this->row->scope_id); ?>" />
-		<input type="hidden" name="published" value="<?php echo ($this->row->id ? $this->escape($this->row->published) : 1); ?>" />
+		<input type="hidden" name="published" value="<?php echo ($this->row->id) ? $this->escape($this->row->published) : 1; ?>" />
 
 		<input type="hidden" name="uid" value="<?php echo $this->row->uid; ?>" />
 		<input type="hidden" name="created" value="<?php echo $this->row->created; ?>" />

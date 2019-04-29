@@ -80,7 +80,7 @@ $this->css()
 	<?php } ?>
 
 <?php if ($this->rows->total() > 0) { ?>
-	<div id="posts" data-base="<?php echo rtrim(Request::base(true), '/'); ?>" class="<?php echo (User::isGuest() ? 'loggedout' : 'loggedin'); ?>">
+	<div id="posts" data-base="<?php echo rtrim(Request::base(true), '/'); ?>" class="<?php echo (User::isGuest()) ? 'loggedout' : 'loggedin'; ?>">
 	<?php if (!User::isGuest()) { ?>
 		<?php if ($this->params->get('access-create-collection') && !Request::getInt('no_html', 0)) { ?>
 			<div class="post new-collection">
@@ -91,7 +91,10 @@ $this->css()
 		<?php } ?>
 	<?php } ?>
 	<?php foreach ($this->rows as $row) { ?>
-		<div class="post collection <?php echo ($row->get('access') == 4) ? 'private' : 'public'; echo ($row->get('is_default')) ? ' default' : ''; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">
+		<div class="post collection <?php
+			echo ($row->get('access') == 4) ? 'private' : 'public'; ?
+			echo ($row->get('is_default')) ? ' default' : '';
+			?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">
 			<div class="content">
 				<?php
 				$this->view('default_collection', 'post')

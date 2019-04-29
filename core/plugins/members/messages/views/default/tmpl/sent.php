@@ -44,7 +44,7 @@ $this->css()
 				<?php foreach ($this->rows as $row) : ?>
 					<?php
 						//get the component that created message
-						$component = (substr($row->component,0,4) == 'com_') ? substr($row->component,4) : $row->component;
+						$component = (substr($row->component, 0, 4) == 'com_') ? substr($row->component, 4) : $row->component;
 
 						//url to view message
 						$url = Route::url($this->member->link() . '&active=messages&msg=' . $row->id);
@@ -69,7 +69,7 @@ $this->css()
 						$subject  = "<a class=\"{$subject_cls}\" href=\"{$url}\">{$subject}</a>";
 
 						// Check for identity masking flag
-						if (strpos($row->type, '_anonymous') === false )
+						if (strpos($row->type, '_anonymous') === false)
 						{
 							// Display who the message is to
 							$to = '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $row->uid) . '">' . $row->name . '</a>';
