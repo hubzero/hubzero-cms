@@ -76,4 +76,3 @@ class Redirect extends GroupMacro
 				<p class="warning">' . \Lang::txt('This page will redirect in %s seconds', $delay) . '</p>';
 	}
 }
-

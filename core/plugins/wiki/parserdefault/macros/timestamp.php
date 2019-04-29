@@ -43,4 +43,3 @@ class TimestampMacro extends WikiMacro
 		return new \Hubzero\Utility\Date('now');
 	}
 }
-

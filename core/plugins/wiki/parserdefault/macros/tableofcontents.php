@@ -36,4 +36,3 @@ class TableOfContentsMacro extends WikiMacro
 		return 'MACRO' . $this->uniqPrefix . '[[TableOfContents]]';
 	}
 }
-

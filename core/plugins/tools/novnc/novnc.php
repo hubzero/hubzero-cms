@@ -170,4 +170,3 @@ class plgToolsNovnc extends \Hubzero\Plugin\Plugin
 		return true;
 	}
 }
-

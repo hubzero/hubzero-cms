@@ -251,4 +251,4 @@ else
 		//Final attachment for onload
 		window.onload = UI.load;
 	</script>
-<?php } ?>
+<?php }
