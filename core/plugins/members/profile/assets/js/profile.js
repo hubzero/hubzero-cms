@@ -462,7 +462,7 @@ HUB.Members.Profile = {
 			beforeLoad: function() 
 			{
 				href = $(this).attr('href').replace("#", "");
-				href += (href.indexOf('?') == -1) ? '?no_html=1' : '&no_html=1' ;
+				href += (href.indexOf('?') == -1) ? '?no_html=1' : '&no_html=1';
 				$(this).attr('href', href);
 			},
 			beforeShow: function()
@@ -601,7 +601,7 @@ HUB.Members.Profile = {
 				beforeLoad: function() 
 				{
 					href = $("#usage-agreement-popup form").attr('action').replace("#", "");
-					href += (href.indexOf('?') == -1) ? '?no_html=1' : '&no_html=1' ;
+					href += (href.indexOf('?') == -1) ? '?no_html=1' : '&no_html=1';
 					$("#usage-agreement-popup form").attr('action', href);	
 				}
 			});
