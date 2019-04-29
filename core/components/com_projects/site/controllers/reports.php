@@ -162,7 +162,7 @@ class Reports extends Base
 						$input = $record->$field;
 						if ($field == 'doi')
 						{
-							$input = $input ? 'http://dx.doi.org/' . $input : 'N/A';
+							$input = $input ? 'https://doi.org/' . $input : 'N/A';
 						}
 
 						$sorted[] = $input;
