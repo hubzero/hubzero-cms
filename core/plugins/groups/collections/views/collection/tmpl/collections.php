@@ -59,7 +59,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 	<?php } ?>
 
 	<?php if ($this->rows->total() > 0) { ?>
-		<div id="posts" data-base="<?php echo rtrim(Request::base(true), '/'); ?>" class="<?php echo (User::isGuest() ? 'loggedout' : 'loggedin'); ?>">
+		<div id="posts" data-base="<?php echo rtrim(Request::base(true), '/'); ?>" class="<?php echo (User::isGuest()) ? 'loggedout' : 'loggedin'; ?>">
 			<?php if (!User::isGuest()) { ?>
 				<?php if ($this->params->get('access-create-collection') && !Request::getInt('no_html', 0)) { ?>
 					<div class="post new-collection">

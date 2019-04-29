@@ -196,7 +196,7 @@ foreach ($profiles as $profile)
 					<li class="<?php echo implode(' ', $cls); ?> section">
 						<div class="section-content">
 							<div class="key"><?php echo $field->get('label'); ?></div>
-							<div class="value"><?php echo (!empty($value) ? (is_array($value) ? implode(', ', $value) : $value) : '(not set)'); ?></div>
+							<div class="value"><?php echo !empty($value) ? (is_array($value) ? implode(', ', $value) : $value) : '(not set)'; ?></div>
 						</div>
 					</li>
 				<?php } ?>

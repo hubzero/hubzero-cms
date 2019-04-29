@@ -26,7 +26,7 @@ foreach ($this->calendars as $calendar)
 	<div class="container">
 		<h3>
 			<?php echo Lang::txt('Subscribe'); ?>
-			<a class="popup subscribe-help" href="<?php echo Route::url('index.php?option=com_help&component=groups&extension=calendar&page=subscriptions') ;?>">
+			<a class="popup subscribe-help" href="<?php echo Route::url('index.php?option=com_help&component=groups&extension=calendar&page=subscriptions'); ?>">
 				<?php echo Lang::txt('Need Help?'); ?>
 			</a>
 		</h3>

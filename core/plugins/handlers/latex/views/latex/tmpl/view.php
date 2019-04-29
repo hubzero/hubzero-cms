@@ -23,7 +23,7 @@ $source = with(new \Hubzero\Content\Moderator($this->compiled->getAbsolutePath()
 		<pre>
 			<?php if (!empty($this->log)) : ?>
 				<?php echo $this->log; ?>
-			<?php endif ; ?>
+			<?php endif; ?>
 		</pre>
 	</div>
 <?php endif; ?>

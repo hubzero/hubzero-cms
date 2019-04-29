@@ -106,7 +106,7 @@ if (isset($this->messages))
 							<?php $x = (1 + Request::getInt('start', 0)); ?>
 							<?php foreach ($this->citations as $cite) : ?>
 								<?php if (!$this->isManager && $cite->published == $cite::STATE_UNPUBLISHED) { continue; } ?> 
-								<tr class="citation-row <?php echo ($cite->published == $cite::STATE_UNPUBLISHED ? 'unpublished' : ''); ?>">
+								<tr class="citation-row <?php echo ($cite->published == $cite::STATE_UNPUBLISHED) ? 'unpublished' : ''; ?>">
 									<td class="batch">
 										<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
 									</td>
@@ -196,7 +196,7 @@ if (isset($this->messages))
 												<p><?php echo nl2br($cite->abstract); ?></p>
 											</div>
 										<?php endif; ?>
-										<div class="citation-details <?php echo ($cite->published == $cite::STATE_UNPUBLISHED ? 'unpublished-details' : ''); ?>">
+										<div class="citation-details <?php echo ($cite->published == $cite::STATE_UNPUBLISHED) ? 'unpublished-details' : ''; ?>">
 											<?php if ($this->config->get('citations_show_badges', 'yes') == 'yes'): ?>
 												<?php echo $cite->badgeCloud(); ?> 
 											<?php endif; ?>
@@ -218,8 +218,8 @@ if (isset($this->messages))
 											</a>
 										</td>
 										<td class="col-publish">
-											<a class="icon-window-publish individual publish" href="<?php echo Route::url($base. '&action=publish&id=' . $cite->id); ?>" title="<?php echo ($cite->published == $cite::STATE_PUBLISHED ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH')); ?>">
-												<span><?php echo ($cite->published == $cite::STATE_PUBLISHED ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') . '</strong>'); ?></span>
+											<a class="icon-window-publish individual publish" href="<?php echo Route::url($base. '&action=publish&id=' . $cite->id); ?>" title="<?php echo ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH'); ?>">
+												<span><?php echo ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') . '</strong>'; ?></span>
 											</a>
 										</td>
 									<?php endif; ?>
@@ -286,7 +286,7 @@ if (isset($this->messages))
 						<?php echo Lang::txt('PLG_GROUPS_CITATIONS_SORT_BY'); ?>
 						<select name="filters[sort]" id="filter_sort">
 							<?php foreach ($this->sorts as $k => $v) : ?>
-								<option value="<?php echo $k; ?>" <?php echo (trim($this->filters['sort']) == $k ? 'selected' : ''); ?>>
+								<option value="<?php echo $k; ?>" <?php echo (trim($this->filters['sort']) == $k) ? 'selected' : ''; ?>>
 									<?php echo $v; ?>
 								</option>
 							<?php endforeach; ?>
