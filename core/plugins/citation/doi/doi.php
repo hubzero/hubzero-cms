@@ -99,7 +99,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 
 			if (!empty($doiArr) && !empty($relTypeArr) && !empty($citation))
 			{
-				$this->updateDoiRecord($doiArr, $citation, $relTypeArr);
+				$this->_updateDoiRecord($doiArr, $citation, $relTypeArr);
 			}
 		}
 	}
@@ -113,10 +113,10 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     null
 	 */
-	protected function updateDoiRecord($doiArr, $citation, $relationTypeArr)
+	protected function _updateDoiRecord($doiArr, $citation, $relationTypeArr)
 	{
 		$citationInfo = [];
-		$citationInfo = $this->getCitationInfo($citation);
+		$citationInfo = $this->_getCitationInfo($citation);
 
 		// Get DOI service configuration information
 		$this->getPubConfig();
@@ -125,13 +125,13 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($doiArr as $doi)
 			{
-				$xml = $this->getDoiXML($doi);
+				$xml = $this->_getDoiXML($doi);
 
 				if ($xml)
 				{
 					if (!empty($relationTypeArr[$doi]))
 					{
-						if (!$this->isCitationUpdated($xml, $citationInfo, $relationTypeArr[$doi]))
+						if (!$this->_isCitationUpdated($xml, $citationInfo, $relationTypeArr[$doi]))
 						{
 							file_put_contents("/tmp/1", "The xml of $doi is going to be updated", FILE_APPEND);
 							$this->updateDoiMetadataXML($xml, $citationInfo, $relationTypeArr[$doi]);
@@ -157,7 +157,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     array    $citationArr
 	 */
-	protected function getCitationInfo($citation)
+	protected function _getCitationInfo($citation)
 	{
 		$citationArr = [];
 
@@ -202,7 +202,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 	 * @param      array	$doi
 	 * @return     string  	XML or false
 	 */
-	protected function getDoiXML($doi)
+	protected function _getDoiXML($doi)
 	{
 		if ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
 		{
@@ -281,7 +281,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     boolean
 	 */
-	protected function isCitationUpdated($xml, $citation, $relationType)
+	protected function _isCitationUpdated($xml, $citation, $relationType)
 	{
 		$dom = new \DomDocument();
 		$dom->loadXML($xml);
@@ -330,7 +330,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 		$nodeList->item(0)->setAttribute("relationType", $relationType);
 		$xmlStr = $dom->saveXML();
 
-		$result = $this->regMetadata($xmlStr);
+		$result = $this->_regMetadata($xmlStr);
 
 		return $result;
 	}
@@ -422,7 +422,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$result = $this->regMetadata($xmlStr);
+		$result = $this->_regMetadata($xmlStr);
 
 		return $result;
 	}
@@ -431,9 +431,9 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 	 * Get DOI service information from publication component configuration
 	 *
 	 * @param      $xml    the DOI metadata xml file
-	 * @return     stdClass object
+	 * @return     $code   curl command response code
 	 */
-	protected function regMetadata($xml)
+	protected function _regMetadata($xml)
 	{
 		$url = rtrim($this->_configs->dataciteServiceURL, '/') . '/' . 'metadata';
 
@@ -448,15 +448,8 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 		curl_exec($ch);
 
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-		if ($code == 201 || $code == 200)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		
+		return $code == 201 || $code == 200;
 	}
 
 	/**
