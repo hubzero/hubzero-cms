@@ -41,4 +41,3 @@ class plgSearchWeightContributor extends \Hubzero\Plugin\Plugin
 		return 0.5;
 	}
 }
-

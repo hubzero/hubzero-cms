@@ -203,4 +203,3 @@ class plgSearchCourses extends \Hubzero\Plugin\Plugin
 		}
 	}
 }
-

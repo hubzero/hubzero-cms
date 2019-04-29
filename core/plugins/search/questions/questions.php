@@ -243,7 +243,7 @@ class plgSearchQuestions extends \Hubzero\Plugin\Plugin
 
 				// Concatenate responses
 				$responseString = '';
-				foreach ($responses as  $response)
+				foreach ($responses as $response)
 				{
 					if ($response->state == 0)
 					{
@@ -294,4 +294,3 @@ class plgSearchQuestions extends \Hubzero\Plugin\Plugin
 		}
 	}
 }
-
