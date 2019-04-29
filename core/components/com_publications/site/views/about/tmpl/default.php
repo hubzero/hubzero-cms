@@ -202,7 +202,7 @@ $schema = $metaElements->getSchema();
 		$cite->date      = '';
 
 		$cite->doi       = $this->publication->doi ? $this->publication->doi : '';
-		$cite->url       = $cite->doi ? trim($this->config->get('doi_resolve', 'http://dx.doi.org/'), '/') . '/' . $cite->doi : null;
+		$cite->url       = $cite->doi ? trim($this->config->get('doi_resolve', 'https://doi.org/'), '/') . '/' . $cite->doi : null;
 		$cite->type      = '';
 		$cite->pages     = '';
 		$cite->author    = $this->publication->getUnlinkedContributors();

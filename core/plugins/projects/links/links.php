@@ -1099,7 +1099,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$format = in_array($format, array('apa', 'ieee')) ? $format : 'apa';
 
 		$ch  = curl_init();
-		$url = 'http://dx.doi.org/doi:' . $doi;
+		$url = 'https://doi.org/doi:' . $doi;
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
