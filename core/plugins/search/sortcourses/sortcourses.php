@@ -54,4 +54,3 @@ class plgSearchSortCourses extends \Hubzero\Plugin\Plugin
 		return $a->get_date() > $b->get_date() ? 1 : -1;
 	}
 }
-

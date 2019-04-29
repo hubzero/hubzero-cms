@@ -338,4 +338,3 @@ class plgSearchForum extends \Hubzero\Plugin\Plugin
 		}
 	}
 }
-

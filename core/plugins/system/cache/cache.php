@@ -129,7 +129,7 @@ class plgSystemCache extends \Hubzero\Plugin\Plugin
 		$defs = str_replace("\r", '', $this->params->def('cacheexempt', '/about/contact'));
 		$defs = explode("\n", $defs);
 
-		foreach ($defs As $def)
+		foreach ($defs as $def)
 		{
 			$result = trim($def);
 			$result = trim($result, '/');

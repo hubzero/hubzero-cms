@@ -41,7 +41,7 @@ class plgSearchWeightTitle extends \Hubzero\Plugin\Plugin
 
 		$term_stems = array();
 		$quoted_weight = 0;
-		foreach ($terms->get_positive_chunks() as $idx=>$chunk)
+		foreach ($terms->get_positive_chunks() as $idx => $chunk)
 		{
 			if ($terms->is_quoted($idx))
 			{
@@ -89,4 +89,3 @@ class plgSearchWeightTitle extends \Hubzero\Plugin\Plugin
 		return $stems;
 	}
 }
-

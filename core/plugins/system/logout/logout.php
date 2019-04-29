@@ -27,7 +27,7 @@ class plgSystemLogout extends \Hubzero\Plugin\Plugin
 
 		$hash = App::hash('plgSystemLogout');
 
-		if (App::isSite() && Request::getString($hash, null , 'cookie'))
+		if (App::isSite() && Request::getString($hash, null, 'cookie'))
 		{
 			// Destroy the cookie
 			$cookie_domain = Config::get('config.cookie_domain', '');
