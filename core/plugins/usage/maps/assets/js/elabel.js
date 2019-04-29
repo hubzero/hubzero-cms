@@ -1,11 +1,4 @@
-/**
- * @package     hubzero-cms
- * @file        plugins/usage/maps/js/elabel.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
- */
-
-// ELabel.js 
+// ELabel.js
 //
 //   This Javascript is provided by Mike Williams
 //   Blackpool Community Church Javascript Team

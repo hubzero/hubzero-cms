@@ -1,9 +1,7 @@
-/*
- * noVNC: HTML5 VNC client
- * Copyright (C) 2012 Joel Martin
- * Licensed under LGPL-3 (see LICENSE.txt)
- *
- * See README.md for usage and integration instructions.
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 "use strict";
