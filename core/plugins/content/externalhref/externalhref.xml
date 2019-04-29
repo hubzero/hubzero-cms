@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--
-@package        hubzero-cms
-@file           plugins/content/externalhref.xml
-@copyright      Copyright 2005-2019 HUBzero Foundation, LLC.
-@license        http://opensource.org/licenses/MIT MIT
--->
-
 <extension version="2.5" type="plugin" group="system">
 	<name>plg_content_externalhref</name>
+	<creationDate>March 2019</creationDate>
 	<author>HUBzero</author>
-	<creationDate>MArch 2019</creationDate>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
 	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<authorEmail>support@hubzero.org</authorEmail>
-	<authorUrl>hubzero.org</authorUrl>
 	<version>1.0</version>
 	<description>PLG_CONTENT_EXTERNALHREF_XML_DESCRIPTION</description>
 	<files>
