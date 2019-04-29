@@ -130,7 +130,7 @@ if (count($matches) > 0)
 				<ul>
 					<li>
 						<?php
-							$url = 'http://www.deepdyve.com/search?query=' . str_replace(' ', '+',  $this->model->title);
+							$url = 'http://www.deepdyve.com/search?query=' . str_replace(' ', '+', $this->model->title);
 							echo Lang::txt('PLG_RESOURCES_FINDTHISTEXT_SOURCES_DEEPDYVE', $url);
 						?>
 					</li>
