@@ -156,4 +156,3 @@ class Members extends GroupMacro
 		return $content;
 	}
 }
-

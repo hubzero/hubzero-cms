@@ -71,4 +71,3 @@ class Span extends Macro
 		return $span;
 	}
 }
-

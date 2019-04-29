@@ -135,4 +135,3 @@ class plgCronCache extends \Hubzero\Plugin\Plugin
 		return true;
 	}
 }
-

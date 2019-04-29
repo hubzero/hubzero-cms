@@ -75,4 +75,3 @@ class Div extends Macro
 		return $div;
 	}
 }
-
