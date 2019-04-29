@@ -16,11 +16,11 @@ $this->css()
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<form action="<?php echo Route::url('index.php?option=com_members'); ?>" method="post" id="hubForm<?php if (Request::getInt('no_html', 0)) { echo '-ajax'; }; ?>" class="member-address-form">
+<form action="<?php echo Route::url('index.php?option=com_members'); ?>" method="post" id="hubForm<?php echo (Request::getInt('no_html', 0)) ? '-ajax' : ''; ?>" class="member-address-form">
 	<?php if (!Request::getInt('no_html', 0)) : ?>
 	<div class="explaination">
 		<h3><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_MANAGE'); ?></h3>
-		<p><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_MANAGE_EXPLANATION') ;?></p>
+		<p><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_MANAGE_EXPLANATION'); ?></p>
 		<p><a class="icon-prev btn" href="<?php echo Route::url('index.php?option=com_members&id='.$this->member->get('id').'&active=profile&action=manageaddresses'); ?>"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_MANAGE'); ?></a></p>
 	</div>
 	<?php endif; ?>

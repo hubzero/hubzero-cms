@@ -97,7 +97,7 @@ $this->css()
 						} ?>
 						<?php
 						if ($this->config->get('feeds_enabled', 1)) {
-							$live_site = rtrim(Request::base(),'/');
+							$live_site = rtrim(Request::base(), '/');
 							$path  = $base . '&task=feed.rss';
 							$path .= ($this->filters['year'])  ? '&year=' . $this->filters['year']   : '';
 							$path .= ($this->filters['month']) ? '&month=' . $this->filters['month'] : '';
@@ -306,4 +306,4 @@ $this->css()
 		</section>
 	</form>
 
-<?php } ?>
+<?php }

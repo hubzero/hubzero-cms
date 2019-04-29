@@ -64,4 +64,4 @@ $cfilters = array(
 		echo implode("\n", $results);
 		?>
 	</div>
-<?php } ?>
+<?php }

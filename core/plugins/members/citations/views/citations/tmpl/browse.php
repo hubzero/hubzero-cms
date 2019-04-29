@@ -78,7 +78,7 @@ if (isset($this->messages))
 						<tbody>
 							<?php $x = 0; ?>
 							<?php foreach ($this->citations as $cite) : ?>
-								<tr class="citation-row <?php echo ($cite->published == $cite::STATE_UNPUBLISHED ? 'unpublished' : ''); ?>">
+								<tr class="citation-row <?php echo ($cite->published == $cite::STATE_UNPUBLISHED) ? 'unpublished' : ''; ?>">
 									<td class="batch">
 										<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
 									</td>
@@ -153,19 +153,19 @@ if (isset($this->messages))
 										<?php endif; ?>
 									</td>
 									<?php if ($this->isAdmin === true) : ?>
-										<td class="col-edit"><a class="icon-edit edit individual" href="<?php echo Route::url($base. '&action=edit&cid=' .$cite->id ); ?>"></span>
+										<td class="col-edit"><a class="icon-edit edit individual" href="<?php echo Route::url($base. '&action=edit&cid=' .$cite->id); ?>"></span>
 											<span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'); ?></span>
 										</a></td>
 										<td class="col-delete"><a class="icon-delete delete individual protected" href="<?php echo Route::url($base. '&action=delete&cid=' . $cite->id); ?>">
 											<span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_DELETE'); ?></span>
 										</a></td>
 										<td class="col-publish"><a class="icon-window-publish individual publish" href="<?php echo Route::url($base. '&action=publish&cid=' . $cite->id); ?>">
-											<span><?php echo ($cite->published == $cite::STATE_PUBLISHED ? Lang::txt('PLG_MEMBERS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_MEMBERS_CITATIONS_PUBLISH') . '</strong>'); ?></span>
+											<span><?php echo ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_MEMBERS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_MEMBERS_CITATIONS_PUBLISH') . '</strong>'; ?></span>
 										</a></td>
 									<?php endif; ?>
 								</tr>
 								<tr>
-									<td <?php if ($this->label == "none") { echo 'colspan="5"'; } else { echo 'colspan="6"'; } ?> class="citation-details <?php echo ($cite->published == $cite::STATE_UNPUBLISHED ? 'unpublished-details' : ''); ?>">
+									<td <?php echo ($this->label == "none") ? 'colspan="5"' : 'colspan="6"'; ?> class="citation-details <?php echo ($cite->published == $cite::STATE_UNPUBLISHED) ? 'unpublished-details' : ''; ?>">
 										<?php	echo $cite->citationDetails($this->openurl); ?>
 										<?php if ($this->config->get('citations_show_badges', 'yes') == "yes"): ?>
 										 	<?php echo $cite->badgeCloud(); ?>
@@ -203,7 +203,7 @@ if (isset($this->messages))
 						<select name="filters[type]" id="filter_type">
 							<option value=""><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ALL'); ?></option>
 							<?php foreach ($this->types as $t) : ?>
-								<?php $sel = ($this->filters['type'] == $t->id) ? "selected=\"selected\"" : ""; ?>
+								<?php $sel = ($this->filters['type'] == $t->id) ? 'selected="selected"' : ''; ?>
 								<option <?php echo $sel; ?> value="<?php echo $t->id; ?>"><?php echo $t->type_title; ?></option>
 							<?php endforeach; ?>
 						</select>
@@ -236,7 +236,7 @@ if (isset($this->messages))
 						<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SORT_BY'); ?>
 						<select name="filters[sort]" id="filter_sort">
 							<?php foreach ($this->sorts as $k => $v) : ?>
-								<option value="<?php echo $k; ?>" <?php echo (trim($this->filters['sort']) == $k ? 'selected' : ''); ?>>
+								<option value="<?php echo $k; ?>" <?php echo (trim($this->filters['sort'])) == $k ? 'selected' : ''; ?>>
 									<?php echo $v; ?>
 								</option>
 							<?php endforeach; ?>

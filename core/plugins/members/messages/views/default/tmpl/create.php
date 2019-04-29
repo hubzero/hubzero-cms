@@ -16,7 +16,7 @@ $tos = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'mbrs', 
 
 $this->css();
 ?>
-<form action="<?php echo Route::url($this->member->link() . '&active=messages'); ?>" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>">
+<form action="<?php echo Route::url($this->member->link() . '&active=messages'); ?>" method="post" id="hubForm<?php echo ($this->no_html) ? '-ajax' : ''; ?>">
 	<fieldset class="hub-mail">
 		<div class="cont">
 			<h3><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_COMPOSE_MESSAGE'); ?></h3>
