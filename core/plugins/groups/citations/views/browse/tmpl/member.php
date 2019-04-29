@@ -105,7 +105,7 @@ if (count($this->citations) > 0) :
 						</td>
 					</tr>
 					<tr>
-						<td <?php if ($this->label == "none") { echo 'colspan="3"'; } else { echo 'colspan="3"'; } ?> class="citation-details">
+						<td colspan="3" class="citation-details">
 							<?php
 								$singleCitationView = $this->config->get('citation_single_view', 0);
 								if (!$singleCitationView)
@@ -113,11 +113,11 @@ if (count($this->citations) > 0) :
 									echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl, true);
 								}
 							?>
-							<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
+							<?php if ($this->config->get("citation_show_badges", "no") == "yes") : ?>
 								<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
 							<?php endif; ?>
 
-							<?php if ($this->config->get("citation_show_tags","no") == "yes") : ?>
+							<?php if ($this->config->get("citation_show_tags", "no") == "yes") : ?>
 								<?php echo \Components\Citations\Helpers\Format::citationTags($cite, $this->database); ?>
 							<?php endif; ?>
 						</td>

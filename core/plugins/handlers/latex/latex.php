@@ -75,7 +75,7 @@ class plgHandlersLatex extends Plugin
 		$temp      = File::fromPath($uniqid . '.tex', $adapter);
 
 		// Clean up data from Windows characters - important!
-		$data = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $file->read());
+		$data = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $file->read());
 
 		// Store file locally
 		$temp->write($data);

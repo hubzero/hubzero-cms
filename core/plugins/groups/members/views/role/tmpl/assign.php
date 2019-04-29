@@ -12,7 +12,7 @@ defined('_HZEXEC_') or die();
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<form action="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=members'); ?>" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax'; }; ?>">
+<form action="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=members'); ?>" method="post" id="hubForm<?php echo ($this->no_html) ? '-ajax' : ''; ?>">
 	<fieldset>
 		<legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ASSIGN_ROLE'); ?></legend>
 
@@ -39,7 +39,7 @@ defined('_HZEXEC_') or die();
 			<select name="role" id="roles">
 				<option value=""><?php echo Lang::txt('PLG_GROUPS_MEMBERS_OPT_SELECT_ROLE'); ?></option>
 				<?php foreach ($this->roles as $role) { ?>
-					<?php if (!in_array($role['name'],$current_roles)) { ?>
+					<?php if (!in_array($role['name'], $current_roles)) { ?>
 						<option value="<?php echo $role['id']; ?>"><?php echo $this->escape($role['name']); ?></option>
 					<?php } ?>
 				<?php } ?>
