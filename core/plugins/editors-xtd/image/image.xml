@@ -3,10 +3,10 @@
 	<name>plg_editors-xtd_image</name>
 	<creationDate>August 2004</creationDate>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://opensource.org/licenses/MIT MIT</license>
+	<authorUrl>hubzero.org</authorUrl>
 	<authorEmail>support@hubzero.org</authorEmail>
-	<authorUrl>https://hubzero.org</authorUrl>
+	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<version>2.5.0</version>
 	<description>PLG_IMAGE_XML_DESCRIPTION</description>
 	<files>
