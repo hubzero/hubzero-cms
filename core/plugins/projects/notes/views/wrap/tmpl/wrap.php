@@ -16,7 +16,7 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->project->get('al
 // Com_wiki adds /projects - strip it out
 $this->content = str_replace('projects/projects/', 'projects/', $this->content);
 
-$this->content = str_replace('projects/pr-' . $this->project->get('alias') , 'projects/' . $this->project->get('alias'), $this->content);
+$this->content = str_replace('projects/pr-' . $this->project->get('alias'), 'projects/' . $this->project->get('alias'), $this->content);
 
 // Get the page
 $page = $this->page;

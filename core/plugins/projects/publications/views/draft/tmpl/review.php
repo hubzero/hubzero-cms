@@ -113,7 +113,13 @@ $unsubmitted = $this->pub->version->get('state') == 3;
 				<span class="checker">&nbsp;</span>
 				<h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_TITLE_DOI'); ?></h5>
 				<div class="element-instructions">
-					<?php if ($citation) { echo '<p>' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_DOI_EXISTS') . '</p><div class="citeit">' . $citation . '</div>'; } else { echo '<p>' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_DOI') . '</p>'; } ?>
+					<?php
+					if ($citation) {
+						echo '<p>' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_DOI_EXISTS') . '</p><div class="citeit">' . $citation . '</div>';
+					} else {
+						echo '<p>' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_DOI') . '</p>';
+					}
+					?>
 				</div>
 			</div>
 		</div>
@@ -213,9 +219,12 @@ $unsubmitted = $this->pub->version->get('state') == 3;
 				<div class="element-instructions">
 					<label><span class="required"><?php echo Lang::txt('Required'); ?></span>
 						<input class="option" name="agree" type="checkbox" value="1" />
-						<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_AGREE_TO'); if ($termsUrl) { echo ' <a href="'
-						. $termsUrl . '" class="popup">'; } echo
-						$sitename . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_TERMS_OF_DEPOSIT'); if ($termsUrl) { echo '</a>.'; }  ?>
+						<?php
+						echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_AGREE_TO');
+						if ($termsUrl) { echo ' <a href="' . $termsUrl . '" class="popup">'; }
+						echo $sitename . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_TERMS_OF_DEPOSIT');
+						if ($termsUrl) { echo '</a>.'; }
+						?>
 					</label>
 				</div>
 			</div>

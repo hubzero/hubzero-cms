@@ -76,7 +76,7 @@ if (isset($this->online) && in_array($comment->created_by, $this->online))
 							$fragment = ltrim(Hubzero\Utility\Uri::getInstance()->toString(['fragment']), '#');
 							$cls = ($fragment == 'fullbodyc' . $comment->id ? '' : ' hidden');
 
-							echo '<div class="fullbody' . $cls . '" id="fullbodyc' . $comment->id . '">' . $longComment . '</div>' ;
+							echo '<div class="fullbody' . $cls . '" id="fullbodyc' . $comment->id . '">' . $longComment . '</div>';
 						}
 						?>
 					</div>

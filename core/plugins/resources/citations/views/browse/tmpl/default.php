@@ -78,4 +78,4 @@ if ($this->citations)
 	<?php } ?>
 <?php } else { ?>
 	<p><?php echo Lang::txt('PLG_RESOURCES_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
-<?php } ?>
+<?php }

@@ -17,4 +17,4 @@ defined('_HZEXEC_') or die();
 	<div id="abox-content">
 		<?php echo $this->handler->loadTemplate(); ?>
 	</div>
-<?php endif; ?>
+<?php endif;

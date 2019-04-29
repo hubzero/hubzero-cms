@@ -23,7 +23,7 @@ defined('_HZEXEC_') or die();
 <div class="welcome">
 	<h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_WHAT'); ?></h3>
 	<div id="suggestions" class="suggestions">
-		<?php for ( $i = 0; $i < count($this->choices); $i++)
+		<?php for ($i = 0; $i < count($this->choices); $i++)
 		{
 			$current = $this->choices[$i];
 			$action = 'publication';
@@ -44,4 +44,4 @@ defined('_HZEXEC_') or die();
 		</div>
 	</div><!-- / .aside -->
 </div>
-<?php } ?>
+<?php }

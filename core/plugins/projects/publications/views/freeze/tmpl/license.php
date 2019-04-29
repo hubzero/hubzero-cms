@@ -19,7 +19,10 @@ $text = $this->pub->license_text ? $this->pub->license_text : $defaultText;
 
 ?>
 <!-- Load content selection browser //-->
-<div id="<?php echo $elName; ?>" class="blockelement<?php echo $required ? ' el-required' : ' el-optional'; echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">
+<div id="<?php echo $elName; ?>" class="blockelement<?php
+	echo $required ? ' el-required' : ' el-optional';
+	echo $complete ? ' el-complete' : ' el-incomplete';
+	?> freezeblock">
 	<?php if ($this->license) {
 		$info = $this->license->info;
 		if ($this->license->url)

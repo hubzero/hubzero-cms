@@ -60,7 +60,7 @@ tooltip: true,
 $base = rtrim(Request::base(true), '/');
 ?>
 <div id="plg-header">
-<?php if ($this->project->isProvisioned() ) { ?>
+<?php if ($this->project->isProvisioned()) { ?>
 <h3 class="prov-header"><a href="<?php echo Route::url($this->pub->link('editbase')); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> <?php if ($this->pub->exists()) { ?>  &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo Route::url($this->pub->link('editversion')); ?>"><?php echo $this->pub->title; ?></a></span><?php } ?> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS')); ?></h3>
 <?php } else { ?>
 <h3 class="publications c-header"><a href="<?php echo Route::url($this->project->link('publications')); ?>"><?php echo $this->title; ?></a> <?php if ($this->pub->exists()) { ?>  &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo Route::url($this->pub->link('editversion')); ?>"><?php echo $this->pub->title; ?></a></span><?php } ?> &raquo; <span class="indlist"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS')); ?></span></h3>

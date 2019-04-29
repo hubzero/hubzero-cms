@@ -53,7 +53,7 @@ $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 
 	<?php if (!empty($this->data) && $this->cType != 'application/pdf') {
 		// Clean up data from Windows characters - important!
-		$this->data = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $this->data);
+		$this->data = preg_replace('/[^(\x20-\x7F)\x0A]*/', '', $this->data);
 	?>
 		<pre><?php echo htmlentities($this->data); ?></pre>
 	<?php } elseif ($this->embed && file_exists(PATH_APP . $this->outputDir . DS . $this->embed)) {

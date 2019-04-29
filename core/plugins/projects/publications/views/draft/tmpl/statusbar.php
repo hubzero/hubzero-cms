@@ -38,7 +38,7 @@ $i = 1;
 	}
 ?>
 	<ul id="status-bar" <?php if ($move) { echo 'class="moving"'; } ?>>
-		<?php foreach ($this->pub->curation('blocks') as $blockId => $block ) {
+		<?php foreach ($this->pub->curation('blocks') as $blockId => $block) {
 
 			$blockname = $block->name;
 			$status    = $block->review && $block->review->status != 2
@@ -77,7 +77,7 @@ $i = 1;
 			}
 		?>
 		<li<?php if ($blockId == $activenum) { echo ' class="active"'; } ?>>
-			<a href="<?php echo Route::url( $this->pub->link('editversion') . '&section=' . $blockname . '&step=' . $blockId . '&move=continue'); ?>" <?php echo $class ? 'class="' . $class . '"' : '' ; ?>><?php echo $block->manifest->label; ?></a>
+			<a href="<?php echo Route::url( $this->pub->link('editversion') . '&section=' . $blockname . '&step=' . $blockId . '&move=continue'); ?>" <?php echo $class ? 'class="' . $class . '"' : ''; ?>><?php echo $block->manifest->label; ?></a>
 		</li>
 	<?php } ?>
 	</ul>

@@ -37,13 +37,19 @@ if (in_array($this->file->get('ext'), $native))
 	<ul class="filedata">
 		<?php echo $this->file->get('ext') && !$this->file->get('converted') ? '<li>' . strtoupper($this->file->get('ext')) . '</li>' : ''; ?>
 		<?php echo $this->file->get('converted') ? '<li>' . Lang::txt('PLG_PROJECTS_FILES_REMOTE_FILE_GOOGLE') . '</li>' : ''; ?>
-		<?php if ($this->file->get('converted') && $this->file->get('originalPath')) { echo '<li>From ' . basename($this->file->get('originalPath')); if ($this->file->get('originalFormat')) { echo ' (' . $this->file->get('originalFormat') . ')'; } echo '</li>'; } ?>
+		<?php
+		if ($this->file->get('converted') && $this->file->get('originalPath'))
+		{
+			echo '<li>From ' . basename($this->file->get('originalPath'));
+			if ($this->file->get('originalFormat')) { echo ' (' . $this->file->get('originalFormat') . ')'; }
+			echo '</li>';
+		}
+		å?>
 		<?php echo $this->file->get('originalPath') && $this->file->getSize() ? '<li>' . strtoupper($this->file->getSize('formatted')) . '</li>' : ''; ?>
 	</ul>
 
 	<?php if ($this->file->getPreview($this->model, $this->file->get('hash'), 'fullPath')) { ?>
 		<div id="preview-image"><img src="<?php echo $this->file->getPreview($this->model, $this->file->get('hash'), 'url'); ?>" alt="<?php echo Lang::txt('PLG_PROJECTS_FILES_LOADING_PREVIEW'); ?>" /></div>
+	<?php } elseif ($this->file->get('content')) { ?>
+		<pre><?php echo $this->file->get('content'); ?></pre>
 	<?php }
-	elseif ($this->file->get('content')) { ?>
-	<pre><?php echo $this->file->get('content'); ?></pre>
-	<?php } ?>

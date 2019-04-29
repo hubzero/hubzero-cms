@@ -87,7 +87,22 @@ $updated = $curatorStatus->updated && (($curatorStatus->status == 3 && !$complet
 $elementUrl = Route::url($this->pub->link('editversion') . '&section=' . $this->master->block . '&step=' . $this->master->blockId . '&move=continue' . '&el=' . $this->elementId . '#' . $elName);
 ?>
 
-<div id="<?php echo $elName; ?>" class="blockelement <?php echo $required ? ' el-required' : ' el-optional'; echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo ' el-editor'; } ?> <?php if ($coming) { echo ' el-coming'; } ?> <?php echo $curatorStatus->status == 1 ? ' el-passed el-reviewed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $updated ? ' el-updated' : ''; echo ($curatorStatus->status == 3 && !$complete) ? ' el-skipped' : ''; ?> ">
+<div id="<?php echo $elName; ?>" class="blockelement <?php
+	echo $required ? ' el-required' : ' el-optional';
+	echo $complete ? ' el-complete' : ' el-incomplete';
+	if ($editor)
+	{
+		echo ' el-editor';
+	}
+	if ($coming)
+	{
+		echo ' el-coming';
+	}
+	echo $curatorStatus->status == 1 ? ' el-passed el-reviewed' : '';
+	echo $curatorStatus->status == 0 ? ' el-failed' : '';
+	echo $updated ? ' el-updated' : '';
+	echo ($curatorStatus->status == 3 && !$complete) ? ' el-skipped' : '';
+	?>">
 	<!-- Showing status only -->
 	<div class="element_overview<?php if ($active) { echo ' hidden'; } ?>">
 		<div class="block-aside"></div>
@@ -164,7 +179,10 @@ $elementUrl = Route::url($this->pub->link('editversion') . '&section=' . $this->
 				echo $output; ?>
 			</label>
 			<?php if ($curatorStatus->status == 3 && !$complete) { ?>
-				<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SKIPPED_ITEM'); echo $curatorStatus->authornotice ? ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_REASON') . ':"' . $curatorStatus->authornotice . '"' : ''; ?></p>
+				<p class="warning"><?php
+					echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SKIPPED_ITEM');
+					echo $curatorStatus->authornotice ? ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_REASON') . ':"' . $curatorStatus->authornotice . '"' : '';
+					?></p>
 			<?php } ?>
 			<?php // Navigate to next element
 				if ($active && $this->collapse) { ?>

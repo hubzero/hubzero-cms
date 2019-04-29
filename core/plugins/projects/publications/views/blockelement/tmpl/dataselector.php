@@ -68,8 +68,18 @@ $elementUrl = Route::url($this->pub->link('editversion') . '&section=' . $this->
 
 ?>
 
-<div id="<?php echo $elName; ?>" class="blockelement <?php echo $required ? ' el-required' : ' el-optional';
-echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo ' el-coming'; } ?> <?php echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $updated ? ' el-updated' : ''; echo ($curatorStatus->status == 3 && !$complete) ? ' el-skipped' : ''; ?> ">
+<div id="<?php echo $elName; ?>" class="blockelement <?php
+	echo $required ? ' el-required' : ' el-optional';
+	echo $complete == 1 ? ' el-complete' : ' el-incomplete';
+	if ($coming)
+	{
+		echo ' el-coming';
+	}
+	echo $curatorStatus->status == 1 ? ' el-passed' : '';
+	echo $curatorStatus->status == 0 ? ' el-failed' : '';
+	echo $updated ? ' el-updated' : '';
+	echo ($curatorStatus->status == 3 && !$complete) ? ' el-skipped' : '';
+	?>">
 	<!-- Showing status only -->
 	<div class="element_overview<?php if ($active) { echo ' hidden'; } ?>">
 		<div class="block-subject withhandler">
@@ -138,7 +148,10 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) {
 			</div><!-- / .list-wrapper -->
 
 			<?php if ($curatorStatus->status == 3 && !$complete) { ?>
-				<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SKIPPED_ITEM'); echo $curatorStatus->authornotice ? ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_REASON') . ':"' . $curatorStatus->authornotice . '"' : ''; ?></p>
+				<p class="warning"><?php
+					echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SKIPPED_ITEM');
+					echo $curatorStatus->authornotice ? ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_REASON') . ':"' . $curatorStatus->authornotice . '"' : '';
+					?></p>
 			<?php } ?>
 		</div><!-- / .block-subject -->
 		<?php if ($handlerOptions) { ?>
