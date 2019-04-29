@@ -294,7 +294,7 @@ $this->css()
 											?>
 											<?php for ($k=0, $z=$months; $k < $z; $k++) { ?>
 												<li>
-													<a<?php if ($this->filters['month'] && $this->filters['month'] == ($k+1)) { echo ' class="active"'; } ?> href="<?php echo Route::url($base . '&scope='.$i.'/'.sprintf( "%02d",($k+1),1)); ?>">
+													<a<?php if ($this->filters['month'] && $this->filters['month'] == ($k+1)) { echo ' class="active"'; } ?> href="<?php echo Route::url($base . '&scope='.$i.'/'.sprintf("%02d", ($k+1), 1)); ?>">
 														<?php echo Lang::txt($m[$k]); ?>
 													</a>
 												</li>
@@ -341,4 +341,4 @@ $this->css()
 		</section>
 	</form><!-- /.main -->
 
-<?php } ?>
+<?php }

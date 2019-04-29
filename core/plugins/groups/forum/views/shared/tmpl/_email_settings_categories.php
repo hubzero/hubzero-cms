@@ -18,7 +18,7 @@ $currentUserId = User::get('id');
 			<?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_CATEGORIES'); ?>
 		</span>
 
-		<?php foreach($this->categories as $category): ?>
+		<?php foreach ($this->categories as $category): ?>
 			<?php
 			$usersSubscription = $category->usersCategories()
 				->whereEquals('user_id', $currentUserId)

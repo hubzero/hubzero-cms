@@ -57,9 +57,8 @@ if ($this->params->get('show_address', 1) == 1)
 	}
 }
 
-
-
-if ($this->params->get('show_position', 1) == 1 && (isset($this->register['position']) || isset($this->register['position_other']))) {
+if ($this->params->get('show_position', 1) == 1 && (isset($this->register['position']) || isset($this->register['position_other'])))
+{
 	$message .= 'Current position: ';
 	$message .= ($this->register['position']) ? $this->register['position'] : $this->register['position_other'];
 	$message .= "\n\n";
@@ -79,7 +78,7 @@ if ($this->params->get('show_race', 1) == 1 && isset($this->race))
 		$tribe = $this->race['nativetribe'];
 		unset($this->race['nativetribe']);
 	}
-	$message .= 'Race: '.implode(', ',$this->race);
+	$message .= 'Race: '.implode(', ', $this->race);
 	$message .= ($tribe != '') ? ', '.$tribe : '';
 	$message .= "\n\n";
 }
