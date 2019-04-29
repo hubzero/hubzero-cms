@@ -685,13 +685,15 @@ HUB.Presenter = {
 		if( paused ) {
 			jQ("#play-pause").removeClass('playing').addClass('paused');
 			jQ('#presenter-content').addClass('paused');
-			if( clicking ) 
+			if( clicking ) {
 				player.play();
+			}
 		} else {
 			jQ("#play-pause").removeClass('paused').addClass('playing');
 			jQ('#presenter-content').removeClass('paused');
-			if( clicking )
+			if( clicking ) {
 				player.pause();
+			}
 		}
 
 		// pause play slide videos
@@ -885,8 +887,9 @@ HUB.Presenter = {
 		});
 		
 		//sync the volume slider and player
-		if(!flash)
+		if(!flash) {
 			HUB.Presenter.syncVolume();
+		}
 	},
 	
 	//----------------------------------------
@@ -1206,21 +1209,25 @@ HUB.Presenter = {
 	{
 		var icon = jQ('#volume');
 
-		if(volume == 0)
+		if(volume == 0) {
 			icon.removeClass('low medium high')
 				.addClass('none');
+		}
 			
-		if( volume > 0 && volume < 33) 
+		if( volume > 0 && volume < 33) {
 			icon.removeClass('zero medium high')
 				.addClass('low');
+		}
 			
-		if( volume > 33 && volume < 66) 
+		if( volume > 33 && volume < 66) {
 			icon.removeClass('zero low high')
 				.addClass('medium');
+		}
 			
-		if( volume > 66) 
+		if( volume > 66) {
 			icon.removeClass('zero low medium')
 				.addClass('high');
+		}
 	},
 	
 	locationHash: function()
@@ -1539,8 +1546,9 @@ HUB.Presenter = {
 			submit: 1,
 			onChange: function(hsb,hex,rgb,fromSetColor) 
 			{
-				if(!fromSetColor)
+				if(!fromSetColor) {
 					jQ('.subtitle-settings-preview .test').css('color', '#' + hex);
+				}
 			},
 			onSubmit: function(hsb,hex,rgb,fromSetColor)
 			{
@@ -1558,8 +1566,9 @@ HUB.Presenter = {
 			submit: 1,
 			onChange: function(hsb,hex,rgb,fromSetColor)
 			{
-				if(!fromSetColor)
+				if(!fromSetColor) {
 					jQ('.subtitle-settings-preview .test').css('background-color', '#' + hex);
+				}
 			},
 			onSubmit: function(hsb,hex,rgb,fromSetColor)
 			{
@@ -1727,7 +1736,7 @@ HUB.Presenter = {
 			
 			//get the sub text
 			if(parts.length > 3) {
-				for(i=2,text="";i<parts.length;i++) {
+				for(i=2,text=""; i<parts.length; i++) {
 					text += parts[i] + "\n";
 				}
 			} else {
@@ -1992,20 +2001,20 @@ HUB.Presenter = {
 	{
 		var parts = [],
 			seconds = 0.0;
-			
-		if( time ) {
+
+		if (time) {
 			parts = time.split(':');
-			
-			for( i=0; i < parts.length; i++ ) {
-	        	seconds = seconds * 60 + parseFloat(parts[i].replace(',', '.'))
+
+			for (i=0; i < parts.length; i++) {
+				seconds = seconds * 60 + parseFloat(parts[i].replace(',', '.'))
 			}
 		}
-		
+
 		return seconds;
 	},
-	
+
 	//-----
-	
+
 	ucfirst: function( string )
 	{
 		var first = string.substr(0, 1);
@@ -2020,8 +2029,9 @@ HUB.Presenter = {
 var jQ = jQuery.noConflict();
 
 jQ(document).ready(function(e) {
-	if( jQ("#presenter-header").length )
+	if (jQ("#presenter-header").length) {
 		HUB.Presenter.loading();
+	}
 });
 
 //-----
@@ -2030,7 +2040,7 @@ var mobile = navigator.userAgent.match(/iPad|iPhone|iPod|Android/i) != null;
 
 //-----
 
-if(mobile) {
+if (mobile) {
 	jQ(window).load(function(e) {
 		HUB.Presenter.doneLoading();
 	});
