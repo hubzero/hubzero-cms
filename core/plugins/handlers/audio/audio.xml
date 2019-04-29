@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--
-@package      hubzero-cms
-@copyright    Copyright 2005-2019 HUBzero Foundation, LLC.
-@license      http://opensource.org/licenses/MIT MIT
--->
-
 <extension version="2.2.14" type="plugin" group="handlers">
 	<name>PLG_HANDLERS_AUDIO</name>
 	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
 	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>PLG_HANDLERS_AUDIO_XML_DESCRIPTION</description>
