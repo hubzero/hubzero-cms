@@ -35,7 +35,10 @@ if (!is_dir(PATH_APP . $path))
 
 $resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS . $this->seeker->filename : '';
 ?>
-<div class="aboutme<?php echo $this->seeker->mine && $this->list ? ' mine' : ''; echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortlisted' : ''; ?>">
+<div class="aboutme<?php
+	echo $this->seeker->mine && $this->list ? ' mine' : '';
+	echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortlisted' : '';
+	?>">
 	<div class="thumb">
 		<img src="<?php echo $profile->picture(); ?>" alt="<?php echo $this->seeker->name; ?>" />
 	</div>

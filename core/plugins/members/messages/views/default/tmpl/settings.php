@@ -71,4 +71,4 @@ $this->css()
 
 		<?php echo Html::input('token'); ?>
 	</form>
-<?php } ?>
+<?php }

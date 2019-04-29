@@ -83,4 +83,4 @@ $no_html = Request::getInt("no_html", 0);
 <?php if (!$no_html) : ?>
 	</div>
 </div>
-<?php endif; ?>
+<?php endif;

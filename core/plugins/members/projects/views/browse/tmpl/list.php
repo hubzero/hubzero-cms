@@ -82,7 +82,7 @@ if (User::get('id') == $this->user->get('id'))
 						<?php } ?>
 					</td>
 					<td class="th_privacy">
-						<?php if (!$row->isPublic()) { echo '<span class="privacy-icon">&nbsp;</span>' ;} ?>
+						<?php if (!$row->isPublic()) { echo '<span class="privacy-icon">&nbsp;</span>'; } ?>
 					</td>
 					<td class="th_title">
 						<a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>"><?php echo $this->escape($row->get('title')); ?></a>
