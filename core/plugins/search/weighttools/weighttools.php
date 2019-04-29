@@ -9,13 +9,10 @@
 defined('_HZEXEC_') or die();
 
 /**
- * Short description for 'plgSearchWeightTools'
- *
- * Long description (if any) ...
+ * Search pluginf or weighting tools
  */
 class plgSearchWeightTools extends \Hubzero\Plugin\Plugin
 {
-
 	/**
 	 * Short description for 'onSearchWeightResources'
 	 *
@@ -30,4 +27,3 @@ class plgSearchWeightTools extends \Hubzero\Plugin\Plugin
 		return $res->get_plugin() == 'resources' && $res->get_section() == 'Tools' ? 1 : 0.5;
 	}
 }
-

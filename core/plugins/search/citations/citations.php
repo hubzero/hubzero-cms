@@ -267,4 +267,3 @@ class plgSearchCitations extends \Hubzero\Plugin\Plugin
 		}
 	}
 }
-

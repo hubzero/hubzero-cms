@@ -53,4 +53,3 @@ class plgSearchSuffixes extends \Hubzero\Plugin\Plugin
 		$terms = array_merge($terms, $add);
 	}
 }
-
