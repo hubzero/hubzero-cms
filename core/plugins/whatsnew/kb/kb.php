@@ -104,4 +104,3 @@ class plgWhatsnewKb extends \Hubzero\Plugin\Plugin
 		}
 	}
 }
-

@@ -36,4 +36,3 @@ class HelloWorldMacro extends WikiMacro
 		return 'Hello World, args = ' . $this->args;
 	}
 }
-

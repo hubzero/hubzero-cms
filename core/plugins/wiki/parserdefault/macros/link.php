@@ -74,4 +74,3 @@ Examples:
 		return '<a class="' . $cls . '" href="' . $href . '">' . trim($title) . '</a>';
 	}
 }
-

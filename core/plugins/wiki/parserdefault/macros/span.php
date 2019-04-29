@@ -70,4 +70,3 @@ class SpanMacro extends WikiMacro
 		return $span;
 	}
 }
-

@@ -108,4 +108,3 @@ class FootNoteMacro extends WikiMacro
 		}
 	}
 }
-

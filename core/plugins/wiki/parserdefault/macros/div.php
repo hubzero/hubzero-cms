@@ -74,4 +74,3 @@ class DivMacro extends WikiMacro
 		return $div;
 	}
 }
-

@@ -44,4 +44,3 @@ class RandomPageMacro extends WikiMacro
 		return '<a href="' . Route::url($row->link()) . '">' . $row->title . '</a>';
 	}
 }
-

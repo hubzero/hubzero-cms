@@ -92,4 +92,3 @@ class RedirectMacro extends WikiMacro
 		return explode(',', $this->args);
 	}
 }
-
