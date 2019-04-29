@@ -60,7 +60,7 @@ if (count($matches) > 0)
 				<td>
 					<?php
 						// make sure have a valid url
-						$doiUrl = 'http://dx.doi.org/' . $resourceFields['doi'];
+						$doiUrl = 'https://doi.org/' . $resourceFields['doi'];
 					?>
 					<a rel="external" href="<?php echo $doiUrl; ?>">
 						<?php echo $doiUrl; ?>

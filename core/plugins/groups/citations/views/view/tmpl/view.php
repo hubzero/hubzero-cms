@@ -389,7 +389,7 @@ $area = Request::getString('area', 'about');
 					 <tr>
 						<th><?php echo Lang::txt('COM_CITATIONS_DOI'); ?></th>
 						<td>
-							<a href="http://dx.doi.org/<?php echo $citation->doi; ?>">
+							<a href="https://doi.org/<?php echo $citation->doi; ?>">
 								<?php echo $citation->doi; ?>
 							</a>
 						</td>
@@ -579,8 +579,8 @@ $area = Request::getString('area', 'about');
 					 <tr>
 						<th><?php echo Lang::txt('COM_CITATIONS_DOI_RESOLVER'); ?></th>
 						<td>
-							<a rel="external" href="http://dx.doi.org/<?php echo $citation->doi; ?>">
-								http://dx.doi.org/<?php echo $citation->doi; ?>
+							<a rel="external" href="https://doi.org/<?php echo $citation->doi; ?>">
+								https://doi.org/<?php echo $citation->doi; ?>
 							</a>
 						</td>
 					</tr>

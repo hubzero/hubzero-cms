@@ -426,7 +426,7 @@ class Miner extends Obj implements Provider
 
 		if (!$resolver)
 		{
-			$resolver = \Component::params('com_publications')->get('doi_resolve', 'http://dx.doi.org/');
+			$resolver = \Component::params('com_publications')->get('doi_resolve', 'https://doi.org/');
 			$resolver = rtrim($resolver, '/') . '/';
 		}
 

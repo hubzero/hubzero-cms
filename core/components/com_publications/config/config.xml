@@ -72,7 +72,7 @@
 		<field name="ezid_doi_userpw" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_EZID_DOI_SERVICE_USERPASS" description="COM_PUBLICATIONS_CONFIG_EZID_DOI_SERVICE_USERPASS_DESC" />
 		<field name="doi_xmlschema" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_XML_SCHEMA" description="COM_PUBLICATIONS_CONFIG_DOI_XML_SCHEMA_DESC" />
 		<field name="doi_publisher" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_PUBLISHER" description="COM_PUBLICATIONS_CONFIG_DOI_PUBLISHER_DESC" />
-		<field name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="COM_PUBLICATIONS_CONFIG_DOI_RESOLVE" description="COM_PUBLICATIONS_CONFIG_DOI_RESOLVE_DESC" />
+		<field name="doi_resolve" type="text" menu="hide" default="https://doi.org/" label="COM_PUBLICATIONS_CONFIG_DOI_RESOLVE" description="COM_PUBLICATIONS_CONFIG_DOI_RESOLVE_DESC" />
 		<field name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="COM_PUBLICATIONS_CONFIG_DOI_VERIFY" description="COM_PUBLICATIONS_CONFIG_DOI_VERIFY_DESC" />
 		<field name="master_doi" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_ISSUE_MASTER_DOI" description="COM_PUBLICATIONS_CONFIG_ISSUE_MASTER_DOI_DESC">
 			<option value="0">JNO</option>
