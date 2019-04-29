@@ -42,4 +42,4 @@ $i = 0;
 			<div class="clear"></div>
 		</div>
 	</div>
-<?php } ?>
+<?php }

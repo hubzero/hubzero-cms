@@ -38,4 +38,4 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
 		</ul>
 	</div>
 </div>
-<?php } ?>
+<?php }

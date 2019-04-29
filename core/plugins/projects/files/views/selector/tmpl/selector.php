@@ -73,4 +73,4 @@ defined('_HZEXEC_') or die();
 
 <?php if (!isset($this->noUl) || !$this->noUl) : ?>
 	</ul>
-<?php endif; ?>
+<?php endif;

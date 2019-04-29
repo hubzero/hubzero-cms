@@ -17,7 +17,7 @@ $attModel = new \Components\Publications\Models\Attachments($this->database);
 
 // Get attached items
 $attachments = $this->publication->attachments();
-$attachments = isset($attachments['elements'][$this->element]) ? $attachments['elements'][$this->element] : NULL;
+$attachments = isset($attachments['elements'][$this->element]) ? $attachments['elements'][$this->element] : null;
 $attachments = $attModel->getElementAttachments($this->element, $attachments, $params->type);
 
 // Get preselected items

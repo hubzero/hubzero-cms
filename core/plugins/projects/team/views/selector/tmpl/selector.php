@@ -40,4 +40,4 @@ if (count($this->team) > 0) {
 	</ul>
 <?php } else {  ?>
 	<p class="noresults"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_NO_MEMBERS'); ?></p>
-<?php } ?>
+<?php }

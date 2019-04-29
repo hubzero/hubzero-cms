@@ -16,7 +16,7 @@ $missing = array();
 $shown = array();
 
 // Attached item
-$selected = NULL;
+$selected = null;
 if ($this->primary && !empty($this->attachments))
 {
 	$selected = $this->attachments[0]->object_name;
@@ -36,7 +36,7 @@ $p_url = Route::url($route . '&active=databases');
 	<?php
 		foreach ($items as $item)
 		{
-			if ($item->revision == NULL || ($selected && $selected == $item->database_name) )
+			if ($item->revision == null || ($selected && $selected == $item->database_name))
 			{
 			?>
 		<li class="c-click databases" id="data::<?php echo $item->database_name; ?>"><?php echo $item->title; ?></li>
@@ -85,4 +85,4 @@ $p_url = Route::url($route . '&active=databases');
 
 <?php if (!$this->model->isProvisioned()) { ?>
 	<p class="addnew"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_GO_TO'); ?> <a href="<?php echo Route::url($route . '&active=databases'); ?>"><?php echo Lang::txt('PLG_PROJECTS_DATABASES'); ?></a> <?php echo Lang::txt('PLG_PROJECTS_DATABASES_TO_CREATE'); ?></p>
-<?php } ?>
+<?php }

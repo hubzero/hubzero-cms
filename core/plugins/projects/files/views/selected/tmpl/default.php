@@ -19,7 +19,17 @@ $multi = isset($this->multi) && $this->multi ? '[]' : '';
 <li><img src="<?php echo $this->file->getIcon(); ?>" alt="<?php echo $this->file->get('name'); ?>" />
 <?php echo $this->file->get('name'); ?>
 <?php if ($this->file->get('converted')) { echo '<span class="remote-file">' . $slabel . '</span>'; } ?>
-<?php if ($this->file->get('converted') && $this->file->get('originalPath')) { echo '<span class="remote-file faded">' . Lang::txt('PLG_PROJECTS_FILES_CONVERTED_FROM_ORIGINAL'). ' ' . basename($this->file->get('originalPath')); if ($this->file->get('originalFormat')) { echo ' (' . $this->file->get('originalPath') . ')'; } echo '</span>'; } ?>
+<?php
+if ($this->file->get('converted') && $this->file->get('originalPath'))
+{
+	echo '<span class="remote-file faded">' . Lang::txt('PLG_PROJECTS_FILES_CONVERTED_FROM_ORIGINAL'). ' ' . basename($this->file->get('originalPath'));
+	if ($this->file->get('originalFormat'))
+	{
+		echo ' (' . $this->file->get('originalPath') . ')';
+	}
+	echo '</span>';
+}
+?>
 
 <?php if (isset($this->skip) && $this->skip == true) { echo '<span class="file-skipped">' . Lang::txt('PLG_PROJECTS_FILES_SKIPPED') . '</span>'; } ?>
 <?php echo $this->file->get('type') == 'folder'

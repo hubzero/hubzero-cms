@@ -109,7 +109,7 @@ if (count($this->rows) > 0)
 }
 else
 {
-	echo ('<p class="noresults">'.Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_PUBS_FOUND').' <span class="addnew"><a href="' . Route::url($this->project->link('publications') . '&action=start') . '"  >' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION') . '</a></span></p>');
+	echo '<p class="noresults">'.Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_PUBS_FOUND').' <span class="addnew"><a href="' . Route::url($this->project->link('publications') . '&action=start') . '"  >' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION') . '</a></span></p>';
 
 	// Show intro banner with publication steps
 	$this->view('intro')
@@ -120,7 +120,7 @@ else
 }
 ?>
 
-<?php if (count($this->rows) > 0 ) { ?>
+<?php if (count($this->rows) > 0) { ?>
 	<p class="extras">
 		<span class="leftfloat">
 		<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE'); ?>
@@ -131,4 +131,4 @@ else
 	<?php if ($showStats) { ?>
 		<p class="viewallstats mini"><a href="<?php echo Route::url($this->project->link('publications') . '&action=stats'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_USAGE_STATS'); ?> &raquo;</a></p>
 	<?php } ?>
-<?php } ?>
+<?php }

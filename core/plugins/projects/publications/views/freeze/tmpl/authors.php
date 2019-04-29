@@ -16,7 +16,10 @@ $elName = "authorList";
 ?>
 
 <!-- Load content selection browser //-->
-<div id="<?php echo $elName; ?>" class="blockelement<?php echo $required ? ' el-required' : ' el-optional'; echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">
+<div id="<?php echo $elName; ?>" class="blockelement<?php
+	echo $required ? ' el-required' : ' el-optional';
+	echo $complete ? ' el-complete' : ' el-incomplete';
+	?> freezeblock">
 	<?php if (count($this->pub->_authors) > 0) { ?>
 		<div class="list-wrapper">
 			<ul class="itemlist" id="author-list">

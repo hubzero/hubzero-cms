@@ -26,4 +26,4 @@ if (count($this->items) > 0) {
 		} ?>
 	</ul>
 </div>
-<?php } ?>
+<?php }

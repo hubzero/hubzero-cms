@@ -24,7 +24,7 @@ $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action
 <?php
 // Display error
 if ($this->getError()) {
-	echo ('<p class="witherror">'.$this->getError().'</p>');
+	echo '<p class="witherror">'.$this->getError().'</p>';
 }
 ?>
 <?php } else {
@@ -143,11 +143,11 @@ if ($this->getError()) {
 			<?php } ?>
 
 			<?php if ($this->getError()) {
-				echo ('<p class="witherror">'.$this->getError().'</p>');
+				echo '<p class="witherror">'.$this->getError().'</p>';
 			} ?>
 		</fieldset>
 </form>
 <?php } ?>
 <?php if ($this->ajax) { ?>
 </div>
-<?php } ?>
+<?php }

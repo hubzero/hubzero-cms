@@ -57,13 +57,12 @@ $class = $color ? 'pin_' . $color : 'pin_grey';
 				<div class="todo-content">
 					<textarea name="content" rows="10" cols="25" placeholder="<?php echo Lang::txt('PLG_PROJECTS_TODO_TYPE_TODO'); ?>"><?php echo $this->row->get('details') ? stripslashes($this->row->get('details')) :  stripslashes($this->row->get('content')); ?></textarea>
 					<div class="todo-edits">
-						<?php if (count($lists) > 0 ) { ?>
+						<?php if (count($lists) > 0) { ?>
 						<label><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_TODO_CHOOSE_LIST')); ?>:
 							<select name="list">
-								<option value="none" <?php if ($color == '') echo 'selected="selected"'?>><?php echo Lang::txt('PLG_PROJECTS_TODO_ADD_TO_NO_LIST'); ?></option>
-							<?php foreach ($lists as $list) {
-							?>
-								<option value="<?php echo $list->color; ?>" <?php if ($list->color == $color) echo 'selected="selected"'?>><?php echo stripslashes($list->todolist); ?></option>
+								<option value="none" <?php if ($color == '') { echo 'selected="selected"'; } ?>><?php echo Lang::txt('PLG_PROJECTS_TODO_ADD_TO_NO_LIST'); ?></option>
+							<?php foreach ($lists as $list) { ?>
+								<option value="<?php echo $list->color; ?>" <?php if ($list->color == $color) { echo 'selected="selected"'; } ?>><?php echo stripslashes($list->todolist); ?></option>
 							<?php } ?>
 							</select>
 						</label>
@@ -71,11 +70,12 @@ $class = $color ? 'pin_' . $color : 'pin_grey';
 						<label id="td-selector"><?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_ASSIGNED_TO'); ?>
 							<select name="assigned">
 								<option value=""><?php echo Lang::txt('PLG_PROJECTS_TODO_NOONE'); ?></option>
-							<?php foreach ($this->team as $member) {
-								if ($member->userid && $member->userid != 0) {
+							<?php foreach ($this->team as $member) { ?>
+								<?php if ($member->userid && $member->userid != 0) {
 									$team_ids[] = $member->userid; ?>
-								<option value="<?php echo $member->userid; ?>" class="nameopt" <?php if ($member->userid == $this->row->get('assigned_to') ) { echo 'selected="selected"'; } ?>><?php echo $member->name; ?></option>
-							<?php } } ?>
+								<option value="<?php echo $member->userid; ?>" class="nameopt" <?php if ($member->userid == $this->row->get('assigned_to')) { echo 'selected="selected"'; } ?>><?php echo $member->name; ?></option>
+								<?php } ?>
+							<?php } ?>
 							</select>
 						</label>
 						<label><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_DUE')); ?>

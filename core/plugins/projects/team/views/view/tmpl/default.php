@@ -111,7 +111,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 						<span class="block mini short prominent"><?php echo $this->escape($username); ?></span>
 					</td>
 					<td>
-						<?php echo $creator && !$this->model->groupOwner() ? '<span class="prominent">' . Lang::txt('PLG_PROJECTS_TEAM_OWNER') . '</span>/' : ''; echo $role; ?>
+						<?php echo ($creator && !$this->model->groupOwner() ? '<span class="prominent">' . Lang::txt('PLG_PROJECTS_TEAM_OWNER') . '</span>/' : '') . $role; ?>
 					</td>
 					<td class="priority-5">
 						<?php if ($owner->status == 1): ?>
@@ -126,15 +126,13 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 					</td>
 					<td>
 						<?php if ($owner->status == 3 && $this->currentUser->isManager()): ?>
-							<a id="<?php echo 'form-' . $owner->id;?>" 
-								href="<?php echo Route::url('index.php?option=com_projects&alias=' . 
-									$this->model->get('alias') . '&task=team&action=approvemembership&owner=' . $owner->userid . '&' . Session::getFormToken() . '=1');?>" 
+							<a id="<?php echo 'form-' . $owner->id;?>"
+								href="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=team&action=approvemembership&owner=' . $owner->userid . '&' . Session::getFormToken() . '=1');?>"
 								class="btn btn-success">
 								<?php echo Lang::txt('PLG_PROJECTS_TEAM_APPROVE_REQUEST'); ?>
 							</a>
-							<a id="<?php echo 'form-' . $owner->id;?>" 
-								href="<?php echo Route::url('index.php?option=com_projects&alias=' . 
-									$this->model->get('alias') . '&task=team&action=denymembership&owner=' . $owner->userid . '&' . Session::getFormToken() . '=1');?>" 
+							<a id="<?php echo 'form-' . $owner->id;?>"
+								href="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=team&action=denymembership&owner=' . $owner->userid . '&' . Session::getFormToken() . '=1');?>"
 								class="btn btn-danger modal">
 								<?php echo Lang::txt('PLG_PROJECTS_TEAM_DENY_REQUEST'); ?>
 							</a>

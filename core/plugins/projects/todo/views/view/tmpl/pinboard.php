@@ -86,7 +86,7 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
 							<?php } ?>
 							</span>
 							<input type="hidden" name="order" id="order-<?php echo $row->get('id'); ?>" value="<?php echo $order; ?>" />
-							<span class="comment-blurb"><a href="<?php echo Route::url($url . '&action=view').'/?todoid=' . $row->get('id') ; ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT'); ?>"><?php echo $row->comments('count'); ?>&nbsp;&raquo;</a></span>
+							<span class="comment-blurb"><a href="<?php echo Route::url($url . '&action=view').'/?todoid=' . $row->get('id'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT'); ?>"><?php echo $row->comments('count'); ?>&nbsp;&raquo;</a></span>
 						</div>
 					</li>
 					<?php
