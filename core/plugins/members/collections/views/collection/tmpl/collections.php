@@ -92,7 +92,7 @@ $this->css()
 	<?php } ?>
 	<?php foreach ($this->rows as $row) { ?>
 		<div class="post collection <?php
-			echo ($row->get('access') == 4) ? 'private' : 'public'; ?
+			echo ($row->get('access') == 4) ? 'private' : 'public';
 			echo ($row->get('is_default')) ? ' default' : '';
 			?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">
 			<div class="content">
