@@ -3,11 +3,11 @@
 	<name>plg_editors_none</name>
 	<version>2.5.0</version>
 	<creationDate>August 2004</creationDate>
-	<author></author>
-	<authorEmail>N/A</authorEmail>
-	<authorUrl></authorUrl>
-	<copyright></copyright>
-	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>PLG_NONE_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="none">none.php</filename>
