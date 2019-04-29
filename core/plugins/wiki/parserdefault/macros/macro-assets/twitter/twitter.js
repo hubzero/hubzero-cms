@@ -29,7 +29,7 @@ Parameters:
 	
 - Linkify
 	Link up all external links as well as all mentions and trends in tweets. True or False.
-*/
+ */
 
 if(!HUB) {
 	var HUB = {};
