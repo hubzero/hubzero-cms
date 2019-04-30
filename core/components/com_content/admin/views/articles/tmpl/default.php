@@ -232,10 +232,10 @@ $saveOrder = $listOrder == 'ordering';
 				</td>
 				<td class="priority-6 center">
 					<?php if ($item->created_by_alias) : ?>
-						<?php echo $this->escape($item->author_name); ?>
+						<?php echo $this->escape($item->author->get('name', Lang::txt('JUNKNOWN'))); ?>
 						<p class="smallsub"> <?php echo Lang::txt('JGLOBAL_LIST_ALIAS', $this->escape($item->created_by_alias)); ?></p>
 					<?php else : ?>
-						<?php echo $this->escape($item->author->name); ?>
+						<?php echo $item->created_by ? $this->escape($item->author->get('name', Lang::txt('JUNKNOWN'))) : Lang::txt('JUNKNOWN'); ?>
 					<?php endif; ?>
 				</td>
 				<td class="priority-5 center nowrap">
