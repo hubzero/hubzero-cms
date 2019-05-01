@@ -744,7 +744,7 @@ abstract class Cart
 		$allSkuInfo = $db->loadObjectList('sId');
 		if ($returnSimpleInfo)
 		{
-			return($allSkuInfo);
+			return $allSkuInfo;
 		}
 
 		$skus = $db->loadColumn();
@@ -769,7 +769,7 @@ abstract class Cart
 					$info['transactionInfo'] = $transactionInfo;
 					$allSkuInfo[$sId] = $info;
 				}
-				return($allSkuInfo);
+				return $allSkuInfo;
 			}
 			return false;
 		}
@@ -852,7 +852,7 @@ abstract class Cart
 			self::saveTransactionPaymentInfo($paymentInfo, $tId);
 		}
 
-		/* Clean up cart */
+		// Clean up cart
 		$db = \App::get('db');
 
 		// Delete zero and negative qty items in the cart
@@ -932,9 +932,6 @@ abstract class Cart
 			$transactionItem->tiMeta = json_decode($transactionItem->tiMeta);
 		}
 
-		//print_r($transactionItems); die;
-		//print_r($tiInfo); die;
-
 		// We can check what changes have been made here and return them
 
 		if ($returnChanges)
@@ -984,12 +981,9 @@ abstract class Cart
 			}
 
 			$setSql = (implode(', ', $setSql));
-			//echo $setSql; die;
-			//print_r($transactionItemsChanges); die;
 
 			$sql = "UPDATE `#__cart_transaction_items` SET " . $setSql . " WHERE `tId` = " . $db->quote($tId) . " AND `sId` = " . $db->quote($sId);
 			$db->setQuery($sql);
-			//echo $db->toString(); die;
 			$db->query();
 		}
 
@@ -1057,16 +1051,12 @@ abstract class Cart
 		}
 
 		$setSql = implode(', ', $setSql);
-		//echo $setSql; die;
 
 		$sql = "UPDATE `#__cart_transaction_info` SET " . $setSql . " WHERE `tId` = " . $db->quote($tId);
 		$db->setQuery($sql);
-		//echo $db->toString(); die;
 		$db->query();
 
 		// Need to recalculate the transaction total
-		//print_r(self::getTransactionItems($tId)); die;
-		//print_r($currerntTransactionInfo); die;
 
 		// Subtotal
 		$transactionItems = self::getTransactionItems($tId);
@@ -1240,7 +1230,7 @@ abstract class Cart
 
 		if (!empty($tItems))
 		{
-			require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php';
+			require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Sku.php';
 
 			foreach ($tItems as $sId => $itemInfo)
 			{
