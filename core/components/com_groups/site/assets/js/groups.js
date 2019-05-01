@@ -290,7 +290,7 @@ HUB.Groups = {
 				min       = floatingIframe.parents('form').find('fieldset').first().offset().top,
 				max       = floatingIframe.parents('form').find('fieldset').last().offset().top + floatingIframe.parents('form').find('fieldset').last().outerHeight(true) - floatingIframe.outerHeight(true);
 
-			if ( scrollTop > min && scrollTop < max)
+			if (scrollTop > min && scrollTop < max)
 			{
 				floatingIframe.css({
 					top: scrollTop - min
@@ -843,7 +843,7 @@ HUB.Groups = {
 			data: {
 				order: sort
 			},
-			success: function( data, status, jqXHR )
+			success: function(data, status, jqXHR)
 			{
 				$('.pages').load(window.location.href + " .pages > *", function(){
 					$('.pages').removeClass('rebuilding');
@@ -1078,8 +1078,9 @@ HUB.Groups = {
 				layout: 'hex',
 				submit: 0,
 				onChange: function(hsb,hex,rgb,el,fromSetColor) {
-					if(!fromSetColor)
+					if(!fromSetColor) {
 						categoryColorPicker.val(hex).css('border-color','#' + hex);
+					}
 				}
 			});
 		}
@@ -1087,11 +1088,11 @@ HUB.Groups = {
 
 	//-----
 
-	_getUrlParam: function( paramName )
+	_getUrlParam: function(paramName)
 	{
-		var reParam = new RegExp( '(?:[\?&]|&)' + paramName + '=([^&]+)', 'i' ) ;
-		var match = window.location.search.match(reParam) ;
-		return ( match && match.length > 1 ) ? match[ 1 ] : null ;
+		var reParam = new RegExp('(?:[\?&]|&)' + paramName + '=([^&]+)', 'i');
+		var match = window.location.search.match(reParam);
+		return (match && match.length > 1) ? match[ 1 ] : null;
 	},
 }
 
