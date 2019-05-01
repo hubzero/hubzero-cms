@@ -128,12 +128,18 @@ class Projects extends AdminController
 				'filterby',
 				''
 			),
-			'private' => Request::getState(
+			'access' => Request::getState(
+				$this->_option . '.projects.access',
+				'access',
+				0,
+				'int'
+			),
+			/*'private' => Request::getState(
 				$this->_option . '.projects.private',
 				'private',
 				-1,
 				'int'
-			),
+			),*/
 			'sortby' => Request::getState(
 				$this->_option . '.projects.sort',
 				'filter_order',
@@ -408,7 +414,8 @@ class Projects extends AdminController
 		$model->set('type', $type);
 		$model->set('modified', Date::toSql());
 		$model->set('modified_by', User::get('id'));
-		$model->set('private', Request::getInt('private', 0));
+		$model->set('private', Request::getInt('private', $this->config->get('private', 1)));
+		$model->set('access', Request::getInt('access', $this->config->get('access', 5)));
 
 		$this->_message = Lang::txt('COM_PROJECTS_SUCCESS_SAVED');
 
@@ -677,7 +684,7 @@ class Projects extends AdminController
 		}
 
 		// Incoming
-		$private = ($this->getTask() == 'accesspublic' ? 0 : 1); //Request::getInt('private', 0);
+		$private = ($this->getTask() == 'accesspublic' ? 0 : 1);
 		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
@@ -702,6 +709,7 @@ class Projects extends AdminController
 			}
 
 			$model->set('private', $private);
+			$model->set('access', ($private ? 5 : 4));
 
 			if (!$model->store())
 			{

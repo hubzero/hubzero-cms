@@ -134,7 +134,8 @@ class Projectsv2_0 extends ApiController
 		if (!$admin)
 		{
 			$query->whereEquals('state', Project::STATE_PUBLISHED);
-			$query->whereIn('private', [Project::PRIVACY_PUBLIC, Project::PRIVACY_OPEN]);
+			//$query->whereIn('private', [Project::PRIVACY_PUBLIC, Project::PRIVACY_OPEN]);
+			$query->whereIn('access', User::getAuthorisedViewLevels());
 		}
 
 		$response = new stdClass;
@@ -169,7 +170,7 @@ class Projectsv2_0 extends ApiController
 						$obj->owner[] = $member->userid;
 					}
 
-					if ($entry->get('private') == 0 && $entry->isProvisioned())
+					if (!$entry->isPrivate() && $entry->isProvisioned())
 					{
 						$obj->access_level = 'public';
 					}
@@ -192,6 +193,7 @@ class Projectsv2_0 extends ApiController
 					//$obj->userRole      = $entry->member()->role;
 					$obj->thumbUrl      = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('thumb')), '/'));
 					$obj->privacy       = $entry->get('private');
+					$obj->access        = $entry->get('access');
 					$obj->provisioned   = $entry->isProvisioned();
 					$obj->groupOwnerId  = $entry->get('owned_by_group');
 					$obj->userOwnerId   = $entry->get('owned_by_user');
@@ -222,7 +224,7 @@ class Projectsv2_0 extends ApiController
 						}
 
 						// Privacy
-						$obj->privacy = $entry->get('private') == 1 ? Lang::txt('private') : Lang::txt('public');
+						$obj->privacy = $entry->isPrivate() ? Lang::txt('private') : Lang::txt('public');
 
 						// Team role
 						switch ($obj->userRole)
@@ -417,9 +419,16 @@ class Projectsv2_0 extends ApiController
 			'state'           => Request::getInt('state', Project::STATE_PUBLISHED, 'post'),
 			'type'            => 1,
 			'provisioned'     => 0,
-			'private'         => Request::getInt('private', 1, 'post'),
+			'private'         => Request::getInt('private', $this->config->get('privacy', 1), 'post'),
+			//'access'          => Request::getInt('access', $this->config->get('access', 5), 'post'),
 			'owned_by_group'  => Request::getInt('owned_by_group', 0, 'post')
 		);
+
+		$fields['access'] = Project::PRIVACY_PUBLIC;
+		if ($fields['private'])
+		{
+			$fields['access'] = Project::PRIVACY_PRIVATE;
+		}
 
 		$row = Project::blank();
 
@@ -927,6 +936,12 @@ class Projectsv2_0 extends ApiController
 			'private'        => Request::getInt('private', $row->get('private')),
 			'owned_by_group' => Request::getInt('owned_by_group', $row->get('owned_by_group'))
 		);
+
+		$fields['access'] = $row->get('access');
+		if ($fields['private'])
+		{
+			$fields['access'] = Project::PRIVACY_PRIVATE;
+		}
 
 		if (!$row->set($fields))
 		{

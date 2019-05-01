@@ -147,8 +147,7 @@ class Projectsv1_1 extends ApiController
 						$obj->owner[] = $member->userid;
 					}
 
-					$privacy = $entry->get('private');
-					if ($privacy == 0 && $entry->isProvisioned())
+					if ($entry->isPublic() && $entry->isProvisioned())
 					{
 						$obj->access_level = 'public';
 					}
@@ -171,6 +170,7 @@ class Projectsv1_1 extends ApiController
 					//$obj->userRole      = $entry->member()->role;
 					$obj->thumbUrl      = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('thumb')), '/'));
 					$obj->privacy       = $entry->get('private');
+					$obj->access        = $entry->get('access');
 					$obj->provisioned   = $entry->isProvisioned();
 					$obj->groupOwnerId  = $entry->groupOwner('id');
 					$obj->userOwnerId   = $entry->owner('id');
@@ -201,7 +201,7 @@ class Projectsv1_1 extends ApiController
 						}
 
 						// Privacy
-						$obj->privacy = $entry->get('private') == 1 ? Lang::txt('private') : Lang::txt('public');
+						$obj->privacy = $entry->isPrivate() ? Lang::txt('private') : Lang::txt('public');
 
 						// Team role
 						switch ($obj->userRole)
@@ -271,6 +271,7 @@ class Projectsv1_1 extends ApiController
 		$obj->title         = $this->model->get('title');
 		$obj->description   = $this->model->get('about');
 		$obj->private       = $this->model->get('private');
+		$obj->access        = $this->model->get('access');
 		$obj->owner         = $this->model->owner('name');
 		$obj->created       = $this->model->get('created');
 		$obj->groupOwnerId  = $this->model->groupOwner('id');
