@@ -308,7 +308,7 @@ class Media extends AdminController
 				$batch = Request::getInt('batch', 0, 'post');
 				if ($batch)
 				{
-					/*require_once(PATH_CORE . DS . 'includes' . DS . 'pcl' . DS . 'pclzip.lib.php');
+					/*require_once PATH_CORE . DS . 'includes' . DS . 'pcl' . DS . 'pclzip.lib.php';
 
 					if (!extension_loaded('zlib'))
 					{

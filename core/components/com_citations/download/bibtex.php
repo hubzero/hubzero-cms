@@ -8,7 +8,7 @@
 namespace Components\Citations\Download;
 
 
-include_once(__DIR__ . DS . 'downloadable.php');
+include_once __DIR__ . DS . 'downloadable.php';
 
 /**
  * Citations download class for BibText format
@@ -58,7 +58,7 @@ class Bibtex extends Downloadable
 		//merge overall exclude and specific exclude
 		$exclude = array_values(array_unique(array_merge($exclude, $citation_exclude)));
 
-		include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'BibTex.php');
+		include_once dirname(__DIR__) . DS . 'helpers' . DS . 'BibTex.php';
 		$bibtex = new \Structures_BibTex();
 
 		$addarray = array();

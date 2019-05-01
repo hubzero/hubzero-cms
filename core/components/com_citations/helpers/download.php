@@ -202,7 +202,7 @@ class Download
 
 			if (is_file(dirname(__DIR__) . DS . 'download' . DS . strtolower($format) . '.php'))
 			{
-				include_once(dirname(__DIR__) . DS . 'download' . DS . strtolower($format) . '.php');
+				include_once dirname(__DIR__) . DS . 'download' . DS . strtolower($format) . '.php';
 			}
 			if (!class_exists($cls))
 			{

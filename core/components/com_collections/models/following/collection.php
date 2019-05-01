@@ -9,8 +9,8 @@ namespace Components\Collections\Models\Following;
 
 use Components\Collections\Models;
 
-require_once(__DIR__ . DS . 'base.php');
-require_once(dirname(__DIR__) . DS . 'collection.php');
+require_once __DIR__ . DS . 'base.php';
+require_once dirname(__DIR__) . DS . 'collection.php';
 
 /**
  * Model class for following a collection

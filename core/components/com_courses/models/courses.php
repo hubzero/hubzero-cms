@@ -10,9 +10,9 @@ namespace Components\Courses\Models;
 use Components\Courses\Tables;
 use Hubzero\Base\Obj;
 
-require_once(__DIR__ . DS . 'course.php');
-require_once(__DIR__ . DS . 'iterator.php');
-require_once(__DIR__ . DS . 'tags.php');
+require_once __DIR__ . DS . 'course.php';
+require_once __DIR__ . DS . 'iterator.php';
+require_once __DIR__ . DS . 'tags.php';
 
 /**
  * Courses model class for a course

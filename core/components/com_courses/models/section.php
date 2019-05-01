@@ -12,12 +12,12 @@ use Components\Courses\Tables;
 use Lang;
 use Date;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'section.php');
-require_once(__DIR__ . DS . 'base.php');
-require_once(__DIR__ . DS . 'section' . DS . 'code.php');
-require_once(__DIR__ . DS . 'section' . DS . 'date.php');
-require_once(__DIR__ . DS . 'section' . DS . 'badge.php');
-require_once(__DIR__ . DS . 'member.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'section.php';
+require_once __DIR__ . DS . 'base.php';
+require_once __DIR__ . DS . 'section' . DS . 'code.php';
+require_once __DIR__ . DS . 'section' . DS . 'date.php';
+require_once __DIR__ . DS . 'section' . DS . 'badge.php';
+require_once __DIR__ . DS . 'member.php';
 
 /**
  * Courses model class for a course
@@ -476,7 +476,7 @@ class Section extends Base
 		}
 		if (!$this->get('course_id'))
 		{
-			require_once(__DIR__ . DS . 'offering.php');
+			require_once __DIR__ . DS . 'offering.php';
 			$offering = Offering::getInstance($this->get('offering_id'));
 			$this->set('course_id', $offering->get('course_id'));
 		}
@@ -523,7 +523,7 @@ class Section extends Base
 		}
 		if (!$this->get('course_id'))
 		{
-			require_once(__DIR__ . DS . 'offering.php');
+			require_once __DIR__ . DS . 'offering.php';
 			$offering = Offering::getInstance($this->get('offering_id'));
 			$this->set('course_id', $offering->get('course_id'));
 		}

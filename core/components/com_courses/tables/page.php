@@ -235,7 +235,7 @@ class Page extends Table
 			$page_id = $this->page_id;
 		}
 
-		require_once(__DIR__ . DS . 'page.hit.php');
+		require_once __DIR__ . DS . 'page.hit.php';
 
 		$tbl = new PageHit($this->_db);
 		if (!$tbl->hit($offering_id, $page_id))

@@ -7,14 +7,14 @@
 
 namespace Components\Collections\Site;
 
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'archive.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'archive.php';
 
 $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'collections'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'collections';
 }
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller

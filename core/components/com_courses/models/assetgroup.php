@@ -12,11 +12,11 @@ use Hubzero\Config\Registry;
 use Lang;
 
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'asset.group.php');
-require_once(__DIR__ . DS . 'base.php');
-require_once(__DIR__ . DS . 'asset.php');
-require_once(__DIR__ . DS . 'iterator.php');
-require_once(__DIR__ . DS . 'section' . DS . 'date.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.group.php';
+require_once __DIR__ . DS . 'base.php';
+require_once __DIR__ . DS . 'asset.php';
+require_once __DIR__ . DS . 'iterator.php';
+require_once __DIR__ . DS . 'section' . DS . 'date.php';
 
 /**
  * Courses model class for an asset group

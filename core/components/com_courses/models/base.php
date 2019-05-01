@@ -13,7 +13,7 @@ use Component;
 use Date;
 use User;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'log.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'log.php';
 
 /**
  * Abstract class for course models
