@@ -246,25 +246,15 @@ class Doi extends Obj
 		// Map resource type
 		$category = $pub->category();
 		$dcType   = $category->dc_type ? $category->dc_type : 'Dataset';
-		//$categoryName = explode('/', $category->name);
-		//$categoryName = array_pop($categoryName);
-		if ($category->alias == "series")
-		{
-			$categoryName = "Dataset series";
-		}
-		else
-		{
-			$categoryName = $category->name;
-		}
-		
 		$this->set('resourceType', $dcType);
+		$categoryName = ($category->alias == "series") ? "Dataset series" : $category->name;
 		$this->set('resourceTypeTitle', htmlspecialchars($categoryName));
 
 		// Map license
 		$license = $pub->license();
 		$licenseTitle = is_object($license) ? $license->title : null;
 		$this->set('license', htmlspecialchars($licenseTitle));
-
+		
 		// Map related identifier
 		$lastPub = $pub->lastPublicRelease();
 		if ($lastPub && $lastPub->doi && $pub->version->version_number > 1)
