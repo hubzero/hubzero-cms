@@ -252,7 +252,7 @@ class Doi extends Obj
 		$license = $pub->license();
 		$licenseTitle = is_object($license) ? $license->title : null;
 		$this->set('license', htmlspecialchars($licenseTitle));
-		
+
 		// Map related identifier
 		$lastPub = $pub->lastPublicRelease();
 		if ($lastPub && $lastPub->doi && $pub->version->version_number > 1)
