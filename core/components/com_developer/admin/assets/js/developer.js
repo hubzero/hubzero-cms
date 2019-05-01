@@ -1,3 +1,8 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 Hubzero.submitbutton = function(task) {
 	var afrm = document.getElementById('adminForm');

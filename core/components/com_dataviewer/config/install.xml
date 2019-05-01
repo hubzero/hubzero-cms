@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install type="component" version="1.5.0">
+
+<!--
+@package      hubzero-cms
+@copyright    Copyright 2005-2019 HUBzero Foundation, LLC.
+@license      http://opensource.org/licenses/MIT MIT
+-->
+
+<extension type="component" version="1.5.0">
 	<name>Dataviewer</name>
 	<creationDate>2013-08-07</creationDate>
-	<author>Sudheera R. Fernando</author>
-	<authorEmail>srf@xconsole.org</authorEmail>
-	<copyright>Copyright 2010-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://opensource.org/licenses/MIT MIT or later</license>
 	<version>2.0.1</version>
 	<description>Dataviewer for HUB Databases</description>
 
@@ -369,4 +372,4 @@
 		<param name="processing_mode_switch" default="1" />
 		<param name="proc_switch_threshold" default="50000" />
 	</params>
-</install>
+</extension>
