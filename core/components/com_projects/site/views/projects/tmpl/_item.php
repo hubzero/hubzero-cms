@@ -45,7 +45,8 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
 ?>
 <div class="project-card" id="project-<?php echo $this->row->get('id'); ?>">
 	<div class="project-contents">
-		<?php if ($this->row->access('member') || $this->row->access('readonly')): ?>
+		<?php if ((!$this->row->inSetup() && $this->row->access('view'))
+				|| ($this->row->inSetup() && $this->row->access('owner'))): ?>
 			<a class="project-identity" href="<?php echo Route::url($this->row->link()); ?>">
 				<img src="<?php echo $src; ?>" alt="<?php echo $this->escape($this->row->get('title')); ?>" />
 			</a>
@@ -64,7 +65,8 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
 		<div class="project-details">
 			<span class="project-alias"><?php echo $this->escape($this->row->get('alias')); ?></span>
 
-			<?php if ($this->row->access('member') || $this->row->access('readonly')): ?>
+			<?php if ((!$this->row->inSetup() && $this->row->access('view'))
+					|| ($this->row->inSetup() && $this->row->access('owner'))): ?>
 				<a class="project-title" rel="<?php echo $this->row->get('id'); ?>" href="<?php echo Route::url($this->row->link()); ?>">
 					<?php echo $this->escape(Hubzero\Utility\Str::truncate($this->row->get('title'), 60)); ?>
 				</a>
@@ -82,11 +84,12 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
 
 			<?php
 			// Private
-			$icon = 'icon-eye-close';
+			//$icon = 'icon-eye-close';
+			$icon = 'icon-lock';
 			$privacyTxt = Lang::txt('COM_PROJECTS_PRIVATE');
 
 			// Open project
-			if ($this->row->get('private') < 0):
+			/*if ($this->row->get('private') < 0):
 				$privacyTxt = Lang::txt('COM_PROJECTS_OPEN');
 				$icon = 'icon-unlock';
 			endif;
@@ -95,6 +98,9 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
 			if ($this->row->get('private') == 0):
 				$privacyTxt = Lang::txt('COM_PROJECTS_PUBLIC');
 				$icon = 'icon-lock';
+			endif;*/
+			if ($this->row->access('member')):
+				$icon = 'icon-unlock';
 			endif;
 
 			// Archived
@@ -112,7 +118,7 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
 			<?php
 			$setup = $this->row->inSetup() ? Lang::txt('COM_PROJECTS_COMPLETE_SETUP') : '';
 			?>
-			<?php if ($setup): ?>
+			<?php if ($setup && $this->row->access('member')): ?>
 				<div class="project-state s-complete"><?php echo Lang::txt('COM_PROJECTS_COMPLETE_SETUP'); ?></div>
 			<?php elseif ($this->row->get('state') == 0): ?>
 				<div class="project-state s-suspended"><?php echo Lang::txt('COM_PROJECTS_STATUS_INACTIVE'); ?></div>

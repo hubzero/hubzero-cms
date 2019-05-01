@@ -123,7 +123,8 @@ class Setup extends Base
 			$this->model->set('alias', Request::getString('name', '', 'post'));
 			$this->model->set('title', Request::getString('title', '', 'post'));
 			$this->model->set('about', trim(Request::getString('about', '', 'post', 'none', 2)));
-			$this->model->set('private', 1);
+			$this->model->set('private', $this->config->get('privacy', 1));
+			$this->model->set('access', $this->config->get('accesslevel', 5));
 			$this->model->set('setup_stage', 0);
 			$this->model->set('type', Request::getInt('type', 1, 'post'));
 		}
@@ -653,7 +654,9 @@ class Setup extends Base
 		$setup = ($new || $this->model->inSetup());
 
 		// Incoming
-		$private = Request::getInt('private', 1);
+		$access  = Request::getInt('access', $this->model->get('access', 5));
+		$private = Request::getInt('private', $this->model->get('private', 1));
+		$private = $access == 5 ? 1 : 0;
 
 		// Save section
 		switch ($this->section)
@@ -696,7 +699,6 @@ class Setup extends Base
 					$this->model->set('created_by_user', User::get('id'));
 					$this->model->set('owned_by_group', $this->_gid);
 					$this->model->set('owned_by_user', User::get('id'));
-					$this->model->set('private', $this->config->get('privacy', 1));
 				}
 
 				$this->model->set('title', \Hubzero\Utility\Str::truncate($title, 250));
@@ -704,10 +706,8 @@ class Setup extends Base
 				$this->model->set('type', Request::getInt('type', 1, 'post'));
 
 				// save advanced permissions
-				if (isset($_POST['private']))
-				{
-					$this->model->set('private', $private);
-				}
+				$this->model->set('private', $private);
+				$this->model->set('access', $access);
 
 				if ($setup && !$this->model->exists())
 				{
@@ -837,18 +837,6 @@ class Setup extends Base
 
 				if (!$new)
 				{
-					// Save privacy
-					if (isset($_POST['private']))
-					{
-						$this->model->set('private', $private);
-
-						// Save changes
-						if (!$this->model->store())
-						{
-							$this->setError($this->model->getError());
-							return false;
-						}
-					}
 					// Save params
 					$incoming   = Request::getArray('params', array());
 					if (!empty($incoming))
@@ -966,9 +954,10 @@ class Setup extends Base
 				}
 
 				// Save privacy
-				if (isset($_POST['private']))
+				if ($this->model->get('access') != $access)
 				{
 					$this->model->set('private', $private);
+					$this->model->set('access', $access);
 
 					// Save changes
 					if (!$this->model->store())
