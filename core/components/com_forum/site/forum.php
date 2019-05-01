@@ -7,14 +7,14 @@
 
 namespace Components\Forum\Site;
 
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'manager.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'manager.php';
 
 $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'sections'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'sections';
 }
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller

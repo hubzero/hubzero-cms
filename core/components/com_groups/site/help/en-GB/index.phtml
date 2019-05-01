@@ -10,7 +10,7 @@ defined('_HZEXEC_') or die();
 
 // lets see if the logged in user is a manager in any super groups
 $superGroups = \Hubzero\User\Helper::getGroups(
-	User::get('id'), 
+	User::get('id'),
 	'managers',
 	3
 );

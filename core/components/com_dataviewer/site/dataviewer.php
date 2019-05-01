@@ -9,13 +9,13 @@ defined('_HZEXEC_') or die();
 
 
 
-require_once(__DIR__ . DS . 'controller.php');
-require_once(__DIR__ . DS . 'dv_config.php');
+require_once __DIR__ . DS . 'controller.php';
+require_once __DIR__ . DS . 'dv_config.php';
 
-require_once(__DIR__ . DS . 'lib' . DS. 'html.php');
+require_once __DIR__ . DS . 'lib' . DS. 'html.php';
 
-require_once(__DIR__ . DS . 'lib/db.php');
-require_once(__DIR__ . DS . 'lib/dl.php');
+require_once __DIR__ . DS . 'lib/db.php';
+require_once __DIR__ . DS . 'lib/dl.php';
 
 $document = App::get('document');
 

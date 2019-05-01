@@ -13,11 +13,11 @@ if (!\User::authorise('core.manage', 'com_feedback'))
 }
 
 // Include scripts
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'quote.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'quote.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
 
 $controllerName = 'quotes';
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Initiate controller

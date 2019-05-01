@@ -35,7 +35,7 @@ if (pathinfo($ip, PATHINFO_EXTENSION) == 'php' && pathinfo($op, PATHINFO_EXTENSI
 {
 	define('_HZEXEC_', 'true');
 
-	require_once($ip);
+	require_once $ip;
 	$func = 'get_' . pathinfo($ip, PATHINFO_FILENAME);
 	$dd_arr = $func();
 

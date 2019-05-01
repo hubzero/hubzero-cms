@@ -55,7 +55,7 @@ class Help extends AdminController
 		if ($finalHelpPage != '')
 		{
 			ob_start();
-			require_once($finalHelpPage);
+			require_once $finalHelpPage;
 			$this->view->content = ob_get_contents();
 			ob_end_clean();
 		}
