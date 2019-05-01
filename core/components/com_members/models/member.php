@@ -14,11 +14,11 @@ use Request;
 use Event;
 use Route;
 
-require_once(__DIR__ . DS . 'profile.php');
-require_once(__DIR__ . DS . 'tags.php');
-require_once(__DIR__ . DS . 'note.php');
-require_once(__DIR__ . DS . 'quota.php');
-require_once(__DIR__ . DS . 'host.php');
+require_once __DIR__ . DS . 'profile.php';
+require_once __DIR__ . DS . 'tags.php';
+require_once __DIR__ . DS . 'note.php';
+require_once __DIR__ . DS . 'quota.php';
+require_once __DIR__ . DS . 'host.php';
 
 /**
  * User model

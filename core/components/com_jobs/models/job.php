@@ -11,8 +11,8 @@ use Components\Members\Models\Member;
 use Hubzero\Base\Model;
 use Hubzero\Utility\Str;
 
-require_once(dirname(__DIR__). DS . 'tables' . DS . 'job.php');
-require_once(\Component::path('com_members') . DS . 'models' . DS . 'member.php');
+require_once dirname(__DIR__). DS . 'tables' . DS . 'job.php';
+require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Courses model class for a forum
