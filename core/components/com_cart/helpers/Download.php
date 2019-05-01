@@ -186,7 +186,7 @@ class CartDownload
 		$db->execute();
 		if ($rtrn == 'count')
 		{
-			return($db->getNumRows());
+			return $db->getNumRows();
 		}
 
 		// Get results keyed on download ID so we can add metadata later easily
@@ -313,12 +313,12 @@ class CartDownload
 		$db->execute();
 		if ($rtrn == 'count')
 		{
-			return($db->getNumRows());
+			return $db->getNumRows();
 		}
 
 		elseif ($rtrn == 'array')
 		{
-			return($db->loadAssocList());
+			return $db->loadAssocList();
 		}
 
 		$res = $db->loadObjectList();
