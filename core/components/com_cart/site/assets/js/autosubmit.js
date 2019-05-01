@@ -1,7 +1,13 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 $(document).ready(function() {
-	
+
 	$('#content form').hide();
-	
+
 	var opts = {
 		lines: 13, // The number of lines to draw
 		length: 7, // The length of each line
@@ -19,7 +25,7 @@ $(document).ready(function() {
 		top: '0', // Top position relative to parent in px
 		left: '0' // Left position relative to parent in px
 	};
-	
+
 	var overlay = $('<div id="submitOverlay"></div>').css('opacity', 0.95);
 	var spinner = $('<div id="spinner"></div>').spin(opts);
 	var overlayMessage = $('<div id="overlayMessage">Submitting your information to the payment provider. Please wait.</div>').append(spinner);

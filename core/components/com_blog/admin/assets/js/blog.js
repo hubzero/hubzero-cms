@@ -1,3 +1,8 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 Hubzero.submitbutton = function(task) {
 	$(document).trigger('editorSave');
@@ -12,20 +17,3 @@ Hubzero.submitbutton = function(task) {
 		}
 	}
 }
-
-/*
-document.addEventListener('DOMContentLoaded', function() {
-	var frm = document.getElementById('item-form');
-
-	if (frm) {
-		frm.addEventListener('submit', function(event) {
-			event.preventDefault();
-			if (!document.formvalidator.isValid(frm)) {
-				alert(frm.getAttribute('data-invalid-msg'));
-				return false;
-			}
-			return true;
-		});
-	}
-});
-*/
