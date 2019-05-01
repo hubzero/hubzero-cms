@@ -226,11 +226,9 @@ class Doi extends Obj
 		$this->set('url', $this->_configs->livesite . DS . 'publications'. DS . $pub->id . DS . $pub->version->version_number);
 
 		// Set dates
-		$pubYear = $pub->version->published_up
-				&& $pub->version->published_up != $this->_db->getNullDate()
+		$pubYear = $pub->version->published_up && $pub->version->published_up != $this->_db->getNullDate()
 				? date('Y', strtotime($pub->version->published_up)) : date('Y');
-		$pubDate = $pub->version->published_up
-			&& $pub->version->published_up != $this->_db->getNullDate()
+		$pubDate = $pub->version->published_up && $pub->version->published_up != $this->_db->getNullDate()
 				? date('Y-m-d', strtotime($pub->version->published_up)) : date('Y-m-d');
 		$this->set('pubYear', $pubYear);
 		$this->set('datePublished', $pubDate);
