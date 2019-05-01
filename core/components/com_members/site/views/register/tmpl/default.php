@@ -109,6 +109,8 @@ if ($form_redirect = Request::getString('return', '', 'get'))
 		<?php
 		if ($this->task == 'create' && empty($this->xregistration->_invalid) && empty($this->xregistration->_missing))
 		{
+			$this->css('providers.css', 'com_users');
+
 			// Check to see if third party auth plugins are enabled
 			Plugin::import('authentication');
 			$plugins        = Plugin::byType('authentication');
@@ -140,13 +142,13 @@ if ($form_redirect = Request::getString('return', '', 'get'))
 				else
 				{
 					$provider_html .= '<a class="' . $a['name'] . ' account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=' . $a['name']) . '">';
-					$provider_html .= '<div class="signin">Sign in with ' . $a['display'] . '</div>';
+					$provider_html .= '<div class="signin">' . Lang::txt('COM_MEMBERS_LOGIN_SIGN_IN_WITH_METHOD', $a['display']) . '</div>';
 					$provider_html .= '</a>';
 				}
 			}
+
 			if (!empty($provider_html))
 			{
-				$this->css('providers.css', 'com_users');
 				?>
 				<div class="explaination">
 					<p class="info">You can choose to log in via one of these services, and we'll help you fill in the info below!</p>
