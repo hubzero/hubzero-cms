@@ -7,7 +7,7 @@
 
 namespace Components\Citations\Download;
 
-include_once(__DIR__ . DS . 'downloadable.php');
+include_once __DIR__ . DS . 'downloadable.php';
 
 /**
  * Citations download class for Endnote format

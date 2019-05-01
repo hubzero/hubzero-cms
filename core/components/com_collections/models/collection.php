@@ -15,8 +15,8 @@ use Request;
 use User;
 use Lang;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'collection.php');
-require_once(__DIR__ . DS . 'post.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'collection.php';
+require_once __DIR__ . DS . 'post.php';
 
 /**
  * Collections model class for a collection
@@ -679,7 +679,7 @@ class Collection extends Base
 				{
 					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s" for collection #%s', $scope, $this->get('id')));
 				}
-				include_once($path);
+				include_once $path;
 			}
 
 			$this->_adapter = new $cls($this->get('object_id'));

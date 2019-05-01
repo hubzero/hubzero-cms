@@ -7,7 +7,7 @@
 
 namespace Components\Collections\Models\Adapters;
 
-require_once(__DIR__ . DS . 'base.php');
+require_once __DIR__ . DS . 'base.php';
 
 /**
  * Adapter class for an entry link for member collections

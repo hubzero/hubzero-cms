@@ -9,8 +9,8 @@ namespace Components\Courses\Models\Section;
 
 use Components\Courses\Models\Base;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'section.date.php');
-require_once(dirname(__DIR__) . DS . 'base.php');
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'section.date.php';
+require_once dirname(__DIR__) . DS . 'base.php';
 
 /**
  * Courses model class for a course

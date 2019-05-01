@@ -681,7 +681,7 @@ class PdfFormDeployment
 		if ($result = $dbh->loadResult())
 		{
 			// Get our asset object
-			require_once(__DIR__ . DS . 'asset.php');
+			require_once __DIR__ . DS . 'asset.php';
 			$asset = new Asset($result);
 			$asset->set('url', $this->crumb);
 			$asset->store();

@@ -238,7 +238,7 @@ class Handler
 	public function doEdit($id)
 	{
 		// Look up asset type from id
-		require_once(dirname(__DIR__) . DS . 'asset.php');
+		require_once dirname(__DIR__) . DS . 'asset.php';
 		$asset = new Asset($id);
 
 		// Classname
@@ -271,7 +271,7 @@ class Handler
 	public function preview($id)
 	{
 		// Look up asset type from id
-		require_once(dirname(__DIR__) . DS . 'asset.php');
+		require_once dirname(__DIR__) . DS . 'asset.php';
 		$asset = new Asset($id);
 
 		// Classname

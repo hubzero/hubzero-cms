@@ -9,10 +9,10 @@ namespace Components\Courses\Models;
 
 use Components\Courses\Tables;
 
-require_once(__DIR__ . DS . 'base.php');
-require_once(__DIR__ . DS . 'gradebook.php');
-require_once(__DIR__ . DS . 'asset.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'prerequisite.php');
+require_once __DIR__ . DS . 'base.php';
+require_once __DIR__ . DS . 'gradebook.php';
+require_once __DIR__ . DS . 'asset.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'prerequisite.php';
 
 /**
  * Courses model class for prerequisites

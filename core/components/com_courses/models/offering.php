@@ -13,17 +13,17 @@ use Filesystem;
 use Lang;
 use User;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'role.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'offering.php');
-require_once(__DIR__ . DS . 'base.php');
-require_once(__DIR__ . DS . 'iterator.php');
-require_once(__DIR__ . DS . 'section.php');
-require_once(__DIR__ . DS . 'unit.php');
-require_once(__DIR__ . DS . 'student.php');
-require_once(__DIR__ . DS . 'manager.php');
-require_once(__DIR__ . DS . 'announcement.php');
-require_once(__DIR__ . DS . 'page.php');
-require_once(__DIR__ . DS . 'gradebook.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'role.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'offering.php';
+require_once __DIR__ . DS . 'base.php';
+require_once __DIR__ . DS . 'iterator.php';
+require_once __DIR__ . DS . 'section.php';
+require_once __DIR__ . DS . 'unit.php';
+require_once __DIR__ . DS . 'student.php';
+require_once __DIR__ . DS . 'manager.php';
+require_once __DIR__ . DS . 'announcement.php';
+require_once __DIR__ . DS . 'page.php';
+require_once __DIR__ . DS . 'gradebook.php';
 
 /**
  * Courses model class for a course
