@@ -9,7 +9,7 @@ namespace Components\Kb\Models;
 
 use Hubzero\Database\Relational;
 
-require_once(__DIR__ . DS . 'article.php');
+require_once __DIR__ . DS . 'article.php';
 
 /**
  * Knowledgebase model for a category

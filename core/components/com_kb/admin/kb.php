@@ -13,9 +13,9 @@ if (!\User::authorise('core.manage', 'com_kb'))
 }
 
 // Include scripts
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'archive.php');
-require_once(__DIR__ . DS . 'helpers' . DS . 'html.php');
-require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'archive.php';
+require_once __DIR__ . DS . 'helpers' . DS . 'html.php';
+require_once __DIR__ . DS . 'helpers' . DS . 'permissions.php';
 
 $controllerName = \Request::getCmd('controller', 'articles');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -33,7 +33,7 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	\Route::url('index.php?option=com_categories&extension=com_kb', false)
 );
 
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller
