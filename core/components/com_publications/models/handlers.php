@@ -11,12 +11,12 @@ use Hubzero\Base\Obj;
 use Filesystem;
 use Component;
 
-include_once(dirname(__FILE__) . DS . 'attachment.php');
-include_once(dirname(__FILE__) . DS . 'handler.php');
-include_once(dirname(__FILE__) . DS . 'editor.php');
+include_once dirname(__FILE__) . DS . 'attachment.php';
+include_once dirname(__FILE__) . DS . 'handler.php';
+include_once dirname(__FILE__) . DS . 'editor.php';
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'handler.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'handlerassoc.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'handler.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'handlerassoc.php';
 
 /**
  * Publications handlers class

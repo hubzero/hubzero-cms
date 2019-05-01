@@ -30,7 +30,7 @@ class JElementPoll extends JElement
 	 */
 	public function fetchElement($name, $value, &$node, $control_name)
 	{
-		require_once(dirname(__DIR__) . DS . 'models' . DS . 'poll.php');
+		require_once dirname(__DIR__) . DS . 'models' . DS . 'poll.php';
 
 		$options = \Components\Poll\Models\Poll::all()
 			->whereEquals('published', 1)
