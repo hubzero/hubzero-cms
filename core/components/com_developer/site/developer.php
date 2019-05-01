@@ -7,14 +7,14 @@
 
 namespace Components\Developer\Site;
 
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'application.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'application.php';
 
 $controllerName = \Request::getCmd('controller', 'developer');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'developer';
 }
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Instantiate the controller

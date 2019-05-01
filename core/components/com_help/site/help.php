@@ -7,8 +7,8 @@
 
 namespace Components\Help\Site;
 
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'finder.php');
-require_once(__DIR__ . DS . 'controllers' . DS . 'help.php');
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'finder.php';
+require_once __DIR__ . DS . 'controllers' . DS . 'help.php';
 
 // Instantiate controller and execute
 $controller = new Controllers\Help();

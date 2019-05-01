@@ -12,15 +12,15 @@ if (!\User::authorise('core.manage', 'com_events'))
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'tags.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'date.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'event.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'config.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'page.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'respondent.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'csv.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'tags.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'date.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'category.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'event.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'config.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'page.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'respondent.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'csv.php';
 
 $controllerName = \Request::getCmd('controller', 'events');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -44,7 +44,7 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName == 'configure'
 );
 
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller

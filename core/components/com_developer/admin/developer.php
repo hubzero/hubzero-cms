@@ -13,8 +13,8 @@ if (!\User::authorise('core.manage', 'com_developer'))
 	return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'application.php');
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'application.php';
 
 // Make extra sure that controller exists
 $controllerName = \Request::getCmd('controller', 'applications');
@@ -22,7 +22,7 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'applications';
 }
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 
 // Add some submenu items
 \Submenu::addEntry(

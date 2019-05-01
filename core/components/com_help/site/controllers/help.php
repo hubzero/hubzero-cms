@@ -47,7 +47,7 @@ class Help extends SiteController
 		if ($finalHelpPage != '')
 		{
 			ob_start();
-			require_once($finalHelpPage);
+			require_once $finalHelpPage;
 			$content = ob_get_contents();
 			ob_end_clean();
 		}

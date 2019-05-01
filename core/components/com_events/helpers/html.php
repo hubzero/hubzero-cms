@@ -417,7 +417,7 @@ class Html
 		{
 			return $timezones[$tz];
 		}
-		return('(timezone n/a)');
+		return '(timezone n/a)';
 	}
 
 	/**
