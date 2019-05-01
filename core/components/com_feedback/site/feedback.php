@@ -7,14 +7,14 @@
 
 namespace Components\Feedback\Site;
 
-include_once(dirname(__DIR__) . DS . 'models' . DS . 'quote.php');
+include_once dirname(__DIR__) . DS . 'models' . DS . 'quote.php';
 
 $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'feedback'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'feedback';
 }
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller

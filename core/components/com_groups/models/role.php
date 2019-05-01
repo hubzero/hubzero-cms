@@ -11,7 +11,7 @@ use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
 use Hubzero\User\Group;
 
-include_once(__DIR__ . DS . 'member' . DS . 'role.php');
+include_once __DIR__ . DS . 'member' . DS . 'role.php';
 
 /**
  * Group role
