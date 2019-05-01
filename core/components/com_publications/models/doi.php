@@ -246,8 +246,17 @@ class Doi extends Obj
 		// Map resource type
 		$category = $pub->category();
 		$dcType   = $category->dc_type ? $category->dc_type : 'Dataset';
-		$categoryName = explode('/', $category->name);
-		$categoryName = array_pop($categoryName);
+		//$categoryName = explode('/', $category->name);
+		//$categoryName = array_pop($categoryName);
+		if ($category->alias == "series")
+		{
+			$categoryName = "Dataset series";
+		}
+		else
+		{
+			$categoryName = $category->name;
+		}
+		
 		$this->set('resourceType', $dcType);
 		$this->set('resourceTypeTitle', htmlspecialchars($categoryName));
 
