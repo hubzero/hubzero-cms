@@ -1,5 +1,11 @@
 <?php
-	$base = rtrim(Request::base(true), '/');
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+$base = rtrim(Request::base(true), '/');
 ?>
 <div class="col span-half">
 	<div id="ajax-uploader" data-action="index.php?option=com_resources&amp;no_html=1&amp;controller=attachments&amp;task=save&amp;pid=<?php echo $this->id; ?>" data-list="index.php?option=com_resources&amp;no_html=1&amp;controller=attachments&amp;pid=<?php echo $this->id; ?>" data-instructions="Click or drop file">
