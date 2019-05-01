@@ -1,13 +1,8 @@
-/*
-* @package     hubzero-cms
-* @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
-* @license     http://opensource.org/licenses/MIT MIT
-* @description Emocons
-               -------------------------------------------------------
-               Based off of Font Awesome
-                  http://fontello.com/
-                  Email: dave@davegandy.com
-*/
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 @font-face {
   font-family: 'emocons';
