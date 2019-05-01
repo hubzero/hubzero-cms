@@ -9,7 +9,7 @@ namespace Components\Cart\Helpers;
 
 use Components\Storefront\Models\Warehouse;
 
-require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
+require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse.php';
 
 /**
  * Product handler. Handles purchased products/items. Runs a proper handler on each purchased item.
@@ -52,16 +52,17 @@ class CartProductHandler
 		// Run both product model handler and type handler if needed.
 		// Model handlers must go first for type handlers to potentially use their updates
 
-		$handlersPath = PATH_CORE . DS. 'components' . DS . 'com_cart' . DS . 'lib' . DS . 'handlers';
+		$handlersPath = dirname(__DIR__) . DS . 'lib' . DS . 'handlers';
 
 		// MODEL HANDLER
 		$modelHandlerClass = str_replace(' ', '_', ucwords(strtolower($ptIdTypeInfo['ptModel']))) . '_Model_Handler';
-		if (file_exists($handlersPath . DS . 'model' . DS . $modelHandlerClass . '.php')) {
+		if (file_exists($handlersPath . DS . 'model' . DS . $modelHandlerClass . '.php'))
+		{
 			// Include the parent class
-			include_once($handlersPath . DS . 'ModelHandler.php');
+			include_once $handlersPath . DS . 'ModelHandler.php';
 
 			// Include the handler file
-			include_once($handlersPath . DS . 'model' . DS . $modelHandlerClass . '.php');
+			include_once $handlersPath . DS . 'model' . DS . $modelHandlerClass . '.php';
 
 			$modelHandler = new $modelHandlerClass($this->item, $this->crtId, $this->tId);
 			$modelHandler->handle();
@@ -71,12 +72,13 @@ class CartProductHandler
 		// TYPE HANDLER
 		$typeHandlerClass = str_replace(' ', '_', ucwords(strtolower($ptIdTypeInfo['ptName']))) . '_Type_Handler';
 		//print_r($typeHandlerClass); die;
-		if (file_exists($handlersPath . DS . 'type' . DS . $typeHandlerClass . '.php')) {
+		if (file_exists($handlersPath . DS . 'type' . DS . $typeHandlerClass . '.php'))
+		{
 			// Include the parent class
-			include_once($handlersPath . DS . 'TypeHandler.php');
+			include_once $handlersPath . DS . 'TypeHandler.php';
 
 			// Include the handler file
-			include_once($handlersPath . DS . 'type' . DS . $typeHandlerClass . '.php');
+			include_once $handlersPath . DS . 'type' . DS . $typeHandlerClass . '.php';
 
 			$typeHandler = new $typeHandlerClass($this->item, $this->crtId);
 			$typeHandler->handle();
@@ -89,17 +91,17 @@ class CartProductHandler
 			$customHandler = $this->item['meta']['customHandler'];
 			$customHandlerClass = str_replace(' ', '_', ucwords(strtolower($customHandler))) . '_Custom_Handler';
 
-			if (file_exists($handlersPath . DS . 'custom' . DS . $customHandlerClass . '.php')) {
+			if (file_exists($handlersPath . DS . 'custom' . DS . $customHandlerClass . '.php'))
+			{
 				// Include the parent class
-				include_once($handlersPath . DS . 'CustomHandler.php');
+				include_once $handlersPath . DS . 'CustomHandler.php';
 
 				// Include the handler file
-				include_once($handlersPath . DS . 'custom' . DS . $customHandlerClass . '.php');
+				include_once $handlersPath . DS . 'custom' . DS . $customHandlerClass . '.php';
 
 				$customHandler = new $customHandlerClass($this->item, $this->crtId);
 				$customHandler->handle();
 			}
 		}
 	}
-
 }

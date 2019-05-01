@@ -45,7 +45,7 @@ class BaseAuditor
 
 	public function audit()
 	{
-		return($this->getResponse());
+		return $this->getResponse();
 	}
 
 	protected function setResponseStatus($status)

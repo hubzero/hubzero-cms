@@ -9,16 +9,16 @@ namespace Components\Cart\Helpers;
 
 use Components\Storefront\Models\Warehouse;
 
-require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
+require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse.php';
 
 class Audit
 {
 	/**
 	 * Constructor
-	 * @param 	Object  Product info
+	 * @param   object  Product info
 	 * @param   int     Cart ID
 	 * @param   int     User ID
-	 * @return 	Void
+	 * @return  void
 	 */
 	public static function getAuditor($pInfo, $crtId)
 	{
@@ -38,13 +38,13 @@ class Audit
 		if (file_exists($auditorsPath . DS . $auditorClass . '.php'))
 		{
 			// Include the auditor file
-			require_once($auditorsPath . DS . $auditorClass . '.php');
+			require_once $auditorsPath . DS . $auditorClass . '.php';
 			$className = "\\Components\\Cart\\Lib\\Auditors\\" . $auditorClass;
 			return new $className($type, $pId, $crtId);
 		}
 		else
 		{
-			require_once($auditorsPath . DS . 'BaseAuditor.php');
+			require_once $auditorsPath . DS . 'BaseAuditor.php';
 			return new \Components\Cart\Lib\Auditors\BaseAuditor($type);
 		}
 	}
