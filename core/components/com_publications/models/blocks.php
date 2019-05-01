@@ -10,10 +10,10 @@ namespace Components\Publications\Models;
 use Hubzero\Base\Obj;
 use Filesystem;
 
-include_once(__DIR__ . DS . 'format.php');
-include_once(__DIR__ . DS . 'block.php');
+include_once __DIR__ . DS . 'format.php';
+include_once __DIR__ . DS . 'block.php';
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'block.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'block.php';
 
 /**
  * Publications blocks class

@@ -12,7 +12,7 @@ use Components\Oaipmh\Models\Service;
 use Components\Oaipmh\Models\Schema;
 use Date;
 
-require_once(__DIR__ . '/dublincore.php');
+require_once __DIR__ . '/dublincore.php';
 
 /**
  * Qualified Dublin Core schema handler

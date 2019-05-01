@@ -8,7 +8,7 @@
 namespace Components\Poll\Site;
 
 // Require the base controller
-require_once(__DIR__ . DS . 'controllers' . DS . 'polls.php');
+require_once __DIR__ . DS . 'controllers' . DS . 'polls.php';
 
 $controller = new Controllers\Polls();
 $controller->execute();

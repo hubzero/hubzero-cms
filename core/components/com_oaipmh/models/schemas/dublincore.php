@@ -13,7 +13,7 @@ use Components\Oaipmh\Models\Schema;
 use Hubzero\Base\Traits\Escapable;
 use Date;
 
-require_once(__DIR__ . '/../schema.php');
+require_once __DIR__ . '/../schema.php';
 
 /**
  * Dublin Core schema handler

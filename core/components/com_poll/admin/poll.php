@@ -13,9 +13,9 @@ if (!\User::authorise('core.manage', 'com_poll'))
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'poll.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
-require_once(__DIR__ . DS . 'controllers' . DS . 'polls.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'poll.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
+require_once __DIR__ . DS . 'controllers' . DS . 'polls.php';
 
 // Create the controller
 $controller = new Controllers\Polls();

@@ -9,7 +9,7 @@ namespace Components\Oaipmh\Models\Xml;
 
 use DOMDocument;
 
-require_once(__DIR__ . DS . 'element.php');
+require_once __DIR__ . DS . 'element.php';
 
 /**
  * XML Response Builder
