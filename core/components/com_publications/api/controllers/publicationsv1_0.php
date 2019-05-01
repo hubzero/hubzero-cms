@@ -17,7 +17,7 @@ use Config;
 use Route;
 use Lang;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'publication.php');
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'publication.php';
 
 /**
  * API controller for the publications component

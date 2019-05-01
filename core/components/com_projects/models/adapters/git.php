@@ -659,7 +659,7 @@ class Git extends Models\Adapter
 		$rev2['text'] = $this->_git->gitLog($rev2['fpath'], $rev2['hash'], 'blob');
 
 		// Diff class
-		include_once(PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'helpers' . DS . 'Diff.php');
+		include_once PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'helpers' . DS . 'Diff.php';
 
 		$context = ($rev1['text'] == $rev2['text'] || $full) ? count($rev1['text']) : 10;
 		$options = array('context' => $context);
@@ -669,7 +669,7 @@ class Git extends Models\Adapter
 
 		if ($mode == 'side-by-side')
 		{
-			include_once(PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'php-diff' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html' . DS . 'hubSideBySide.php');
+			include_once PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'php-diff' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html' . DS . 'hubSideBySide.php';
 
 			// Generate a side by side diff
 			$renderer = new \Diff_Renderer_Html_SideBySide;
@@ -677,7 +677,7 @@ class Git extends Models\Adapter
 		}
 		elseif ($mode == 'inline')
 		{
-			include_once(PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'php-diff' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html' . DS . 'hubInline.php');
+			include_once PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'php-diff' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html' . DS . 'hubInline.php';
 
 			// Generate inline diff
 			$renderer = new \Diff_Renderer_Html_Inline;

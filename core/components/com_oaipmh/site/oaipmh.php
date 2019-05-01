@@ -7,10 +7,10 @@
 
 namespace Components\Oaipmh\Site;
 
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'service.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'service.php';
 
 $controllerName = 'xml';
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller

@@ -10,8 +10,8 @@ namespace Components\Publications\Models;
 use Hubzero\Base\Obj;
 use Filesystem;
 
-include_once(dirname(__FILE__) . DS . 'blockelement.php');
-include_once(dirname(__FILE__) . DS . 'status.php');
+include_once dirname(__FILE__) . DS . 'blockelement.php';
+include_once dirname(__FILE__) . DS . 'status.php';
 
 /**
  * Publications block elements class

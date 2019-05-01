@@ -13,8 +13,8 @@ if (!\User::authorise('core.manage', 'com_publications'))
 }
 
 // Include scripts
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'publication.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'publication.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
 
 // get controller name
 $controllerName = \Request::getCmd('controller', 'items');
@@ -57,7 +57,7 @@ if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage'))
 	);
 }
 
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller
