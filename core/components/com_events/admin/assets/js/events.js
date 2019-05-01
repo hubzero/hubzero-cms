@@ -164,13 +164,19 @@ HUB.Events = {
 		var time = myField.value;
 
 		// if value begins with an optional leading 0 followed by a delimiter, assume only minutes being specified
-		if (time.search(/^\s*0?[\.\-\+:]/) != -1) no_hours=true;
+		if (time.search(/^\s*0?[\.\-\+:]/) != -1) {
+			no_hours=true;
+		}
 		time = time.replace(/[-\.,_=\+:;]/g, "");
 		time = time.replace(/^\s+/,"");
 		if (time.search(/^\d+/) != -1) {
-			if(time.search(/^0+\D*$/) != -1) time = '0';
+			if(time.search(/^0+\D*$/) != -1) {
+				time = '0';
+			}
 			// leading zeros may indicate 24 hr format
-			else time = time.replace(/^0+(\d{4})/,"$1");
+			else {
+				time = time.replace(/^0+(\d{4})/,"$1");
+			}
 			time = time.replace(/\s+$/,"");
 			//time = time.replace(/([^1,2]\d{2})\d+/,"$1");
 			//time = time.replace(/((1|2)\d{3})\d+/,"$1");
@@ -187,8 +193,12 @@ HUB.Events = {
 				num = num.replace(/^((1|2)\d)$/,"$1" + "00");
 				num = num.replace(/^(\d\d)$/,"$1" + "0");
 
-				if (document.all) mins = num.slice(-2);
-				else mins = num.substr(-2);
+				if (document.all) {
+					mins = num.slice(-2);
+				}
+				else {
+					mins = num.substr(-2);
+				}
 				//alert('mins are: '+ mins);
 				if (mins*1 < 60) {
 					num *= 1;
@@ -199,13 +209,19 @@ HUB.Events = {
 						// if pm, don't allow number to exceed 1200
 						if (time.search(/p(m)?$/i) != -1) {
 							pmUsed=true;
-							if(num < 1200) num += 1200;
+							if(num < 1200) {
+								num += 1200;
+							}
 						} else {
 							amUsed=true;
-							if(num >= 1200 && num < 1300) num -= 1200;
+							if(num >= 1200 && num < 1300) {
+								num -= 1200;
+							}
 						}
 					}
-					if(num < 60) hrs = '0';
+					if(num < 60) {
+						hrs = '0';
+					}
 					else {
 						num = num + '';
 						hrs = num.substr(0,num.length - mins.length);
@@ -226,7 +242,9 @@ HUB.Events = {
 						chkBoxGroup[0].checked = true;
 						chkBoxGroup[1].checked = false;
 					}
-					if (hrs*1 == 0) hrs = 12;
+					if (hrs*1 == 0) {
+						hrs = 12;
+					}
 					time = hrs + ':' + mins;
 
 					// successful field edit.  update the old field value with the new one
@@ -237,11 +255,19 @@ HUB.Events = {
 			}
 		}
 		// bad input format, alert user, reset field value
-		if(myField.name.search(/start/i) != -1) name = "Start";
-		else name = "End";
+		if(myField.name.search(/start/i) != -1) {
+			name = "Start";
+		}
+		else {
+			name = "End";
+		}
 		alert('Bad ' + name + ' Time format: ' + myField.value + '\nValid format is hh:mm {am|pm} (12 or 24hr format).  Please try again.');
-		if(myField.oldValue) myField.value = myField.oldValue;
-		else myField.value = '';
+		if(myField.oldValue) {
+			myField.value = myField.oldValue;
+		}
+		else {
+			myField.value = '';
+		}
 		window.globalObj = myField;
 		var t = setTimeout('window.globalObj.focus();',100);
 		return true;
