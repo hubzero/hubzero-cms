@@ -1,0 +1,16 @@
+/* not yet supported
+.keyframes(@name; @arguments) {
+	@-moz-keyframes @name { @arguments(); }
+	@-webkit-keyframes @name { @arguments(); }
+	@keyframes @name { @arguments(); }
+}
+*/
+@import url("/core/components/com_projects/site/assets/css/features.css");
+.feature p.ima {
+  width: 50px;
+  height: 50px;
+}
+.feature p.ima:before {
+  margin-left: -0.45em;
+  margin-top: -0.6em;
+}
