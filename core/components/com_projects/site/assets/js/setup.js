@@ -100,6 +100,18 @@ HUB.ProjectSetup = {
 			$('#grant_info_block').toggleClass('hidden');
 		});
 
+		$('#field-access').on('change', function(e){
+			var fieldset = $('#access-public');
+
+			if (parseInt($(this).val()) == 5) {
+				if (!fieldset.hasClass('hidden')) {
+					fieldset.addClass('hidden');
+				}
+			} else if (fieldset.hasClass('hidden')) {
+				fieldset.removeClass('hidden');
+			}
+		});
+
 		// Setup pre-screen
 		if ($('#f-restricted-no').length && $('#f-restricted-explain').length)
 		{
@@ -167,9 +179,9 @@ HUB.ProjectSetup = {
 						var key = eventInstance.keyCode || eventInstance.which;
 
 						// Disallow spaces
-						if (key == 32 )
+						if (key == 32)
 						{
-						  	eventInstance.preventDefault();
+							eventInstance.preventDefault();
 						}
 					}
 				});

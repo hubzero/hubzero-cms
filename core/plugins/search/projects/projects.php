@@ -21,10 +21,10 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  \Components\Search\Models\Basic\Request
-	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
-	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
-	 * @return     void
+	 * @param   object  $request   \Components\Search\Models\Basic\Request
+	 * @param   object  &$results  \Components\Search\Models\Basic\Result\Set
+	 * @param   object  $authz     \Components\Search\Models\Basic\Authorization
+	 * @return  void
 	 */
 	public static function onSearch($request, &$results, $authz)
 	{
@@ -48,6 +48,8 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
 			$addtl_where[] = "(p.alias NOT LIKE '%$forb%' AND p.title NOT LIKE '%$forb%' AND p.about NOT LIKE '%$forb%')";
 		}
 
+		$access = implode(',', User::getAuthorisedViewLevels());
+
 		$results->add(new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				p.title,
@@ -58,7 +60,7 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
 				'Projects' AS `section`
 			FROM `#__projects` AS p $from
 			WHERE
-				p.state!=2 AND p.private=0 AND $weight > 0" .
+				p.state!=2 AND (p.private=0 OR p.access IN ($access)) AND $weight > 0" .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 			" ORDER BY $weight DESC"
 		));
@@ -87,13 +89,12 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * onIndex 
-	 * 
-	 * @param string $type
-	 * @param integer $id 
-	 * @param boolean $run 
-	 * @access public
-	 * @return void
+	 * onIndex
+	 *
+	 * @param   string   $type
+	 * @param   integer  $id
+	 * @param   boolean  $run
+	 * @return  void
 	 */
 	public function onIndex($type, $id, $run = false)
 	{
@@ -108,7 +109,7 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
 				$id = \Hubzero\Utility\Sanitize::paranoid($id);
 
 				// Get the record
-				$sql = "SELECT * FROM #__projects WHERE id={$id} AND type=1;";
+				$sql = "SELECT * FROM `#__projects` WHERE id={$id} AND type=1;";
 				$row = $db->setQuery($sql)->query()->loadObject();
 
 				// Determine the path
@@ -160,7 +161,7 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$db = App::get('db');
-				$sql = "SELECT id FROM #__projects WHERE type=1;";
+				$sql = "SELECT id FROM `#__projects` WHERE type=1;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
 				return $ids;
 			}

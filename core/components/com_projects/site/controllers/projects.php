@@ -317,6 +317,11 @@ class Projects extends Base
 		$this->view->filters['reviewer'] = $reviewer;
 		$this->view->filters['filterby'] = Request::getWord('filterby', 'all');
 
+		if (User::isGuest() || (!User::authorise('core.manage', $this->_option) && !$this->model->reviewerAccess($reviewer)))
+		{
+			$this->view->filters['active'] = true;
+		}
+
 		if (!in_array($this->view->filters['sortby'], array('title', 'id', 'myprojects', 'owner', 'created', 'type', 'role', 'privacy', 'status', 'grant_status')))
 		{
 			$this->view->filters['sortby'] = 'title';
@@ -474,9 +479,8 @@ class Projects extends Base
 
 		// Determine layout to load
 		$layout = ($this->model->access('member') || AccessHelper::allowPublicAccess($subdir)) ? 'internal' : 'external';
-		$layout = $this->model->access('member')
-				&& $preview && $this->model->isPublic()
-				? 'external' : $layout;
+		//$layout = $this->model->access('member') && $preview && $this->model->isPublic() ? 'external' : $layout;
+		$layout = $this->model->access('member') && $preview ? 'external' : $layout;
 
 		// Is this a provisioned project?
 		if ($this->model->isProvisioned())
@@ -570,7 +574,10 @@ class Projects extends Base
 		}
 
 		// Private project
-		if (!$this->model->isPublic() && $layout != 'invited' && !AccessHelper::allowPublicAccess($subdir))
+		//if (!$this->model->isPublic() && $layout != 'invited' && !AccessHelper::allowPublicAccess($subdir))
+		if (!in_array($this->model->get('access'), User::getAuthorisedViewLevels())
+		 && $layout != 'invited'
+		 && !AccessHelper::allowPublicAccess($subdir))
 		{
 			// Login required
 			if (User::isGuest())

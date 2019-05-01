@@ -98,29 +98,25 @@ defined('_HZEXEC_') or die();
 <fieldset>
 	<legend><?php echo Lang::txt('COM_PROJECTS_ACCESS'); ?></legend>
 
-	<div class="form-group form-check">
-		<label for="privacy-private" class="form-check-label">
-			<input class="option form-check-input" name="private" type="radio" id="privacy-private" value="1" <?php if (!$this->model->isPublic()) { echo 'checked="checked"'; }?> />
-			<?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PRIVATE'); ?>
+	<input type="hidden" name="private" value="<?php echo $this->escape($this->model->get('private')); ?>" />
+
+	<div class="form-group">
+		<label for="field-access">
+			<?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT'); ?>
+			<select class="form-control" name="access" id="field-access">
+				<?php if (($this->model->get('access') && !in_array($this->model->get('access'), [1, 2, 5])) || User::authorise('core.manage', 'com_projects')): ?>
+					<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->model->get('access')); ?>
+				<?php else: ?>
+					<option value="1"<?php if ($this->model->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PUBLIC'); ?></option>
+					<option value="2"<?php if ($this->model->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_REGISTERED'); ?></option>
+					<option value="5"<?php if ($this->model->get('access') == 5) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PRIVATE'); ?></option>
+				<?php endif; ?>
+			</select>
 		</label>
 	</div>
 
-	<div class="form-group form-check">
-		<label for="privacy-public" class="form-check-label">
-			<input class="option form-check-input" name="private" type="radio" id="privacy-public" value="0" <?php if ($this->model->isPublic()) { echo 'checked="checked"'; }?> />
-			<?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PUBLIC'); ?>
-		</label>
-	</div>
-</fieldset>
-
-<?php if ($this->model->isPublic()): ?>
-	<fieldset>
+	<fieldset id="access-public"<?php if ($this->model->get('access') == 5) { echo ' class="hidden"'; } ?>>
 		<legend><?php echo Lang::txt('COM_PROJECTS_OPTIONS_FOR_PUBLIC'); ?></legend>
-
-		<p class="hint">
-			<?php echo Lang::txt('COM_PROJECTS_YOUR_PROJECT_IS'); ?>
-			<span class="prominent urgency"><?php echo $this->privacy; ?></span>
-		</p>
 
 		<div class="form-group form-check">
 			<label for="params-allow_membershiprequest" class="form-check-label">
@@ -167,8 +163,7 @@ defined('_HZEXEC_') or die();
 			</div>
 		<?php endif; ?>
 	</fieldset>
-<?php endif; ?>
-
+</fieldset>
 <?php
 if ($this->config->get('grantinfo', 0)):
 	$this->view('_edit_grant_info')
