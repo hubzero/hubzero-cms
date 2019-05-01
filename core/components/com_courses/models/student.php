@@ -9,7 +9,7 @@ namespace Components\Courses\Models;
 
 use Components\Courses\Models\Member;
 
-require_once(__DIR__ . DS . 'member.php');
+require_once __DIR__ . DS . 'member.php';
 
 /**
  * Courses model class for a student

@@ -13,8 +13,8 @@ use Components\Courses\Tables;
 use Date;
 use Lang;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'announcement.php');
-require_once(__DIR__ . DS . 'base.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'announcement.php';
+require_once __DIR__ . DS . 'base.php';
 
 /**
  * Announcement model class for a course
