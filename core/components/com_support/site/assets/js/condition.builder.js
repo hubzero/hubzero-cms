@@ -1,3 +1,9 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 //Helps in creating a structure will help later.
 function makeStruct(names) {
 	var names = names.split(' ');

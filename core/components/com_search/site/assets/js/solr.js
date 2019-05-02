@@ -1,9 +1,9 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_search/assets/search.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
+
 $(function(){
 	// Add tag to search and submit query
 	$('a[data-tag]').on('click', function(e){
