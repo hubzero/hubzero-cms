@@ -52,14 +52,15 @@ class Carousel extends Macro
 	public function description()
 	{
 		$txt = array();
-		$txt['wiki'] = "Creates a slider with the images passed in.";
-		$txt['html'] = '<p>Creates a slider with the images passed in. Enter uploaded image names seperated by commas.</p>
-						<p>Examples:</p>
+		$txt['html']  = "<p>Creates a carousel of images.</p>";
+		$txt['html'] .= '<p>Examples:</p>
 						<ul>
-							<li><code>[[Carousel(images=image1.jpg;image2.gif;image3.png)]]</code></li>
-							<li><code>[[Carousel(images=image1.jpg;image2.gif;image3.png, timeout=3000)]]</code></li>
-							<li><code>[[Carousel(images=image1.jpg;image2.gif;image3.png, timeout=3000, height=100%, width=100%)]]</code></li>
-
+							<li><code>[[Carousel(images=image1.jpg;image2.gif;image3.png)]]</code> - Display 3 images.</li>
+							<li><code>[[Carousel(images=image1.jpg;imagedir)]]</code> - Display "image1.jpg" and all images in the "imagedir" directory.</li>
+							<li><code>[[Carousel(images=imagedir, timeout=3000)]]</code> - Display all images in the imagedir directory, displaying each image for 3000 milliseconds.</li>
+							<li><code>[[Carousel(images=imagedir, height=50%, width=50%)]]</code> - Display all images in the imagedir directory, scaling height and width by 50%.</li>
+							<li><code>[[Carousel(images=imagedir, align=center)]]</code> - Center carousel. Other option includes <code>align=right</code>.</li>
+							<li><code>[[Carousel(images=imagedir, float=right)]]</code> - Float carousel to the right. Other option includes <code>float=left</code>.</li>
 						</ul>';
 
 		return $txt['html'];
@@ -90,7 +91,8 @@ class Carousel extends Macro
 		$timeout = $this->_getTimeout($args);
 		$height = $this->_getHeight($args);
 		$width = $this->_getWidth($args);
-
+		$align = $this->_getAlignment($args);
+		$float = $this->_getFloat($args);
 
 		//generate a unique id for the slider
 		$id = uniqid();
@@ -175,7 +177,7 @@ class Carousel extends Macro
 		}
 
 		$html  = '';
-		$html .= '<div class="wiki_slider">';
+		$html .= '<div class="wiki_slider' . ($align ? ' ' . $align : '') . ($float ? ' ' . $float : '') . '">';
 			$html .= '<div id="slider_' . $id . '", style="height: ' . $height . ';width:' . $width . '">';
 			foreach ($final_slides as $fs)
 			{
@@ -263,6 +265,36 @@ class Carousel extends Macro
 		}
 
 		return $default;
+	}
+	
+	private function _getAlignment(&$args)
+	{
+		foreach ($args as $k => $arg)
+		{
+			if (preg_match('/align=([\w;]*)/', $arg, $matches))
+			{
+				$align = (isset($matches[1]) ? $matches[1] : '');
+				unset($args[$k]);
+				return 'align-' . $align;
+			}
+		}
+
+		return false;
+	}
+	
+	private function _getFloat(&$args)
+	{
+		foreach ($args as $k => $arg)
+		{
+			if (preg_match('/float=([\w;]*)/', $arg, $matches))
+			{
+				$float = (isset($matches[1]) ? $matches[1] : '');
+				unset($args[$k]);
+				return 'float-' . $float;
+			}
+		}
+
+		return false;
 	}
 
 }

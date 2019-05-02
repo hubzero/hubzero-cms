@@ -33,3 +33,26 @@
 .wiki_slider_pager a.activeSlide {
 	background:#555;
 	}
+	
+.wiki_slider.float-right {
+	float: right;
+	margin-left: 20px;
+	margin-bottom: 20px;
+}
+
+.wiki_slider.float-left {
+	float: left;
+	margin-right: 20px;
+	margin-bottom: 20px;
+}
+
+.wiki_slider.align-center {
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.wiki_slider.align-right {
+	width: 50%;
+	margin-left: auto;
+}
