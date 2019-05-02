@@ -28,6 +28,21 @@ if (isset($pub->_curationModel))
 	// Get attachment type model
 	$attModel = new \Components\Publications\Models\Attachments($database);
 
+	foreach ($prime as $i => $elm)
+	{
+		$prime[$i]->manifest->params->typeParams->multiZip = 0;
+	}
+
+	foreach ($second as $i => $elm)
+	{
+		$second[$i]->manifest->params->typeParams->multiZip = 0;
+	}
+
+	foreach ($gallery as $i => $elm)
+	{
+		$gallery[$i]->manifest->params->typeParams->multiZip = 0;
+	}
+
 	// Draw list of primary elements
 	$html .= '<h5>' . Lang::txt('COM_PUBLICATIONS_PRIMARY_CONTENT') . '</h5>';
 	$list  = $attModel->listItems(
