@@ -1,4 +1,10 @@
-.item-list li {
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+	.item-list li {
 		padding: 1em 1.618em 1em 3.218em;
 		margin: 0;
 		border-bottom: 1px solid #ccc;
