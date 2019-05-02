@@ -7,9 +7,9 @@
 
 namespace Components\Storefront\Models;
 
-require_once(__DIR__ . DS . 'Product.php');
-require_once(__DIR__ . DS . 'Sku.php');
-require_once(__DIR__ . DS . 'Warehouse.php');
+require_once __DIR__ . DS . 'Product.php';
+require_once __DIR__ . DS . 'Sku.php';
+require_once __DIR__ . DS . 'Warehouse.php';
 
 /**
  *

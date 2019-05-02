@@ -8,7 +8,7 @@
 namespace Components\Storefront\Models;
 use Exception;
 
-require_once(__DIR__ . DS . 'Warehouse.php');
+require_once __DIR__ . DS . 'Warehouse.php';
 
 /**
  *
@@ -239,7 +239,7 @@ class Collection
 	 */
 	public function verify()
 	{
-		require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'Integrity.php');
+		require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Integrity.php';
 		$integrityCheck = \Integrity::collectionIntegrityCheck($this);
 
 		if ($integrityCheck->status != 'ok')
@@ -276,7 +276,7 @@ class Collection
 
 		$warehouse = new Warehouse();
 
-		return($warehouse->addCollection($this));
+		return $warehouse->addCollection($this);
 	}
 
 	/**

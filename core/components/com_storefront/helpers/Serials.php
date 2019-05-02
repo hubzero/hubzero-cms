@@ -155,7 +155,7 @@ class Serials
 		$db->execute();
 		if ($filters['return'] == 'count')
 		{
-			return($db->getNumRows());
+			return $db->getNumRows();
 		}
 		$users = $db->loadObjectList();
 

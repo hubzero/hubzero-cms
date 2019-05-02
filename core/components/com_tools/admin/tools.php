@@ -13,9 +13,9 @@ if (!\User::authorise('core.manage', 'com_tools'))
 }
 
 // Include scripts
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utils.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'tool.php');
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'utils.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'tool.php';
 
 $controllerName = \Request::getCmd('controller', 'pipeline');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -71,7 +71,7 @@ if (\Component::params('com_tools')->get('windows_key_id'))
 	);
 }
 
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller

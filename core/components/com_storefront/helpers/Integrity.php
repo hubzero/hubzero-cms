@@ -5,8 +5,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'Warehouse.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'Collection.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'Warehouse.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'Collection.php';
 
 class Integrity
 {

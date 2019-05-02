@@ -14,11 +14,11 @@ use User;
 use Lang;
 
 $base = dirname(dirname(__DIR__));
-require_once($base . DS . 'models' . DS . 'middleware' . DS . 'base.php');
-require_once($base . DS . 'tables' . DS . 'session.php');
-require_once($base . DS . 'tables' . DS . 'view.php');
-require_once($base . DS . 'tables' . DS . 'viewperm.php');
-require_once($base . DS . 'tables' . DS . 'job.php');
+require_once $base . DS . 'models' . DS . 'middleware' . DS . 'base.php';
+require_once $base . DS . 'tables' . DS . 'session.php';
+require_once $base . DS . 'tables' . DS . 'view.php';
+require_once $base . DS . 'tables' . DS . 'viewperm.php';
+require_once $base . DS . 'tables' . DS . 'job.php';
 
 /**
  * Middleware model for a tool session

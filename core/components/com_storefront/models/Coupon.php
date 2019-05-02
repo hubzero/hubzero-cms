@@ -303,10 +303,10 @@ class Coupon
 	{
 		$this->verify();
 
-		require_once(__DIR__ . DS . 'Option.php');
+		require_once __DIR__ . DS . 'Option.php';
 		$warehouse = new Warehouse();
 
-		return($warehouse->addCoupon($this));
+		return $warehouse->addCoupon($this);
 	}
 
 	public function verify()

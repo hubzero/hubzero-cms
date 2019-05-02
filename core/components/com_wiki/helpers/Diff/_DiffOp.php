@@ -55,7 +55,7 @@ class _DiffOp
 	 */
 	public function norig()
 	{
-		return $this->orig ? sizeof($this->orig) : 0;
+		return $this->orig ? count($this->orig) : 0;
 	}
 
 	/**
@@ -67,6 +67,6 @@ class _DiffOp
 	 */
 	public function nclosing()
 	{
-		return $this->closing ? sizeof($this->closing) : 0;
+		return $this->closing ? count($this->closing) : 0;
 	}
 }

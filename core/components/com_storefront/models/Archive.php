@@ -425,7 +425,7 @@ class Archive extends \Hubzero\Base\Obj
 	 */
 	public function optionGroup($ogId)
 	{
-		require_once(__DIR__ . DS . 'OptionGroup.php');
+		require_once __DIR__ . DS . 'OptionGroup.php';
 		$optionGroup = new OptionGroup($ogId);
 
 		return $optionGroup;

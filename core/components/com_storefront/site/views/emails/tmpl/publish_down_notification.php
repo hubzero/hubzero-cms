@@ -11,13 +11,13 @@ defined('_HZEXEC_') or die();
 $productsCount = 0;
 if (!empty($this->products))
 {
-	$productsCount = sizeof($this->products);
+	$productsCount = count($this->products);
 }
 
 $skusCount = 0;
 if (!empty($this->skus))
 {
-	$skusCount = sizeof($this->skus);
+	$skusCount = count($this->skus);
 }
 
 ?>
