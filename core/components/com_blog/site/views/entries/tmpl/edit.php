@@ -16,11 +16,11 @@ if (Pathway::count() <= 0)
 	);
 }
 Pathway::append(
-	($this->entry->isNew() ? Lang::txt('COM_BLOG_NEW') : Lang::txt('COM_BLOG_EDIT')),
+	($this->entry->isNew() ? Lang::txt('JACTION_NEW') : Lang::txt('JACTION_EDIT')),
 	$this->entry->link('edit')
 );
 
-Document::setTitle(Lang::txt('COM_BLOG') . ': ' . ($this->entry->isNew() ? Lang::txt('COM_BLOG_NEW') : Lang::txt('COM_BLOG_EDIT')));
+Document::setTitle(Lang::txt('COM_BLOG') . ': ' . ($this->entry->isNew() ? Lang::txt('JACTION_NEW') : Lang::txt('JACTION_EDIT')));
 
 /*if ($this->entry->id) {
 	$lid = $this->entry->id;
@@ -38,7 +38,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 }
 ?>
 <header id="content-header">
-	<h2><?php echo Lang::txt('COM_BLOG') . ': ' . ($this->entry->isNew() ? Lang::txt('COM_BLOG_NEW') : Lang::txt('COM_BLOG_EDIT')); ?></h2>
+	<h2><?php echo Lang::txt('COM_BLOG') . ': ' . ($this->entry->isNew() ? Lang::txt('JACTION_NEW') : Lang::txt('JACTION_EDIT')); ?></h2>
 
 	<div id="content-header-extra">
 		<p><a class="icon-archive archive btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_BLOG_ARCHIVE'); ?></a></p>
