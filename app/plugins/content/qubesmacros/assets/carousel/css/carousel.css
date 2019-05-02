@@ -5,7 +5,7 @@
 	overflow:hidden;
 	position:relative;
 	text-align:center;
-	max-height:250px;
+	max-height:450px;
 	}
 .wiki_slider img {
 	max-width:100%;
@@ -25,7 +25,7 @@
 	padding:5px;
 	color:#aaa;
 	}
-.wiki_slider_pager a:hover, 
+.wiki_slider_pager a:hover,
 .wiki_slider_pager a.activeSlide {
 	border:none;
 	background:#333;

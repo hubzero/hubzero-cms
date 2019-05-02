@@ -34,11 +34,15 @@ namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
 use Hubzero\User\Group;
+use Filesystem;
+use FilesystemIterator;
+use DirectoryIterator;
+
 
 /**
  * macro class for displaying an image slider
  */
-class Slider extends Macro
+class Carousel extends Macro
 {
 	/**
 	 * Returns description of macro, use, and accepted arguments
@@ -52,12 +56,20 @@ class Slider extends Macro
 		$txt['html'] = '<p>Creates a slider with the images passed in. Enter uploaded image names seperated by commas.</p>
 						<p>Examples:</p>
 						<ul>
-							<li><code>[[Slider(image1.jpg, image2.gif, image3.png)]]</code></li>
+							<li><code>[[Carousel(images=image1.jpg;image2.gif;image3.png)]]</code></li>
+							<li><code>[[Carousel(images=image1.jpg;image2.gif;image3.png, timeout=3000)]]</code></li>
+							<li><code>[[Carousel(images=image1.jpg;image2.gif;image3.png, timeout=3000, height=100%, width=100%)]]</code></li>
+
 						</ul>';
 
 		return $txt['html'];
 	}
 
+  protected function getArgs()
+	{
+		//get the args passed in
+		return explode(',', $this->args);
+	}
 	/**
 	 * Generate macro output
 	 *
@@ -66,13 +78,19 @@ class Slider extends Macro
 	public function render()
 	{
 		//get the args passed in
-		$content = $this->args;
+		$args = $this->getArgs();
 
 		// args will be null if the macro is called without parenthesis.
-		if (!$content)
+		if (!$args)
 		{
-			return;
+				return;
 		}
+
+		$images = $this->_getImages($args);
+		$timeout = $this->_getTimeout($args);
+		$height = $this->_getHeight($args);
+		$width = $this->_getWidth($args);
+
 
 		//generate a unique id for the slider
 		$id = uniqid();
@@ -106,14 +124,12 @@ class Slider extends Macro
 			break;
 		}
 
-		//seperate image list into array of images
-		$slides = array_map('trim', explode(',', $content));
 
 		//array for checked slides
 		$final_slides = array();
 
 		//check each passed in slide
-		foreach ($slides as $slide)
+		foreach ($images as $slide)
 		{
 			//check to see if image is external
 			if (strpos($slide, 'http') === false)
@@ -125,7 +141,29 @@ class Slider extends Macro
 				{
 					$final_slides[] = 'app' . $base_url . DS . $slide;
 				}
-			}
+
+        //If a directory is taken as the input argument,it will get into the directory and render the images
+				else
+				{
+					$path =  'app' . $base_url . DS . $slide;
+					$imgpath = Filesystem::listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'));
+				  foreach($imgpath as $img){
+
+						foreach($img as $key => $value){
+              if($key==='path'){
+                  //Used to check if it's an image file
+									if(preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i",$value))
+									 {
+								     $imgaddr = $path . $value;
+                     $final_slides[] = $imgaddr;
+							     }
+								}
+							}
+						}
+
+				}
+
+      }
 			else
 			{
 				$headers = get_headers($slide);
@@ -138,26 +176,26 @@ class Slider extends Macro
 
 		$html  = '';
 		$html .= '<div class="wiki_slider">';
-			$html .= '<div id="slider_' . $id . '">';
+			$html .= '<div id="slider_' . $id . '", style="height: ' . $height . ';width:' . $width . '">';
 			foreach ($final_slides as $fs)
 			{
 				$html .= '<img src="' . $fs . '" alt="" />';
-			}
+      }
 			$html .= '</div>';
 			$html .= '<div class="wiki_slider_pager" id="slider_' . $id . '_pager"></div>';
 		$html .= '</div>';
 
 		$base = rtrim(str_replace(PATH_ROOT, '', __DIR__));
-		
-		\Document::addStyleSheet($base . DS . 'assets' . DS . 'slider' . DS . 'css' . DS . 'slider.css');
-		\Document::addScript($base . DS . 'assets' . DS . 'slider' . DS . 'js' . DS . 'slider.js');
+
+		\Document::addStyleSheet($base . DS . 'assets' . DS . 'carousel' . DS . 'css' . DS . 'carousel.css');
+		\Document::addScript($base . DS . 'assets' . DS . 'carousel' . DS . 'js' . DS . 'carousel.js');
 		\Document::addScriptDeclaration('
 			var $jQ = jQuery.noConflict();
 
 			$jQ(function() {
 				$jQ("#slider_' . $id . '").cycle({
 					fx: \'scrollHorz\',
-					speed: 450,
+					timeout: ' . $timeout . ',
 					pager: \'#slider_' . $id . '_pager\'
 				});
 			});
@@ -165,4 +203,66 @@ class Slider extends Macro
 
 		return $html;
 	}
+
+	private function _getImages(&$args)
+	{
+		foreach ($args as $k => $arg)
+		{
+			if (preg_match('/images=([\S;]*)/', $arg, $matches))
+			{
+				$image = array_map('trim' , explode(';', (isset($matches[1])) ? $matches[1] : ''));
+				unset($args[$k]);
+				return $image;
+			}
+		}
+
+		return false;
+	}
+
+	private function _getTimeout(&$args, $default = "3000")
+	{
+		foreach ($args as $k => $arg)
+		{
+			if (preg_match('/timeout=([\w;]*)/', $arg, $matches))
+			{
+				$timeout = (isset($matches[1]) ? $matches[1] : '');
+				unset($args[$k]);
+				return $timeout;
+			}
+		}
+
+		return $default;
+	}
+
+
+	private function _getHeight(&$args, $default = "100%")
+	{
+		foreach ($args as $k => $arg)
+		{
+			if (preg_match('/height=([\S;]*)/', $arg, $matches))
+			{
+				$imgHeight = (isset($matches[1]) ? $matches[1] : '');
+				unset($args[$k]);
+				return $imgHeight;
+			}
+		}
+
+		return $default;
+	}
+
+	private function _getWidth(&$args, $default = "100%")
+	{
+		foreach ($args as $k => $arg)
+		{
+			if (preg_match('/width=([\S;]*)/', $arg, $matches))
+			{
+				$imgWidth = (isset($matches[1]) ? $matches[1] : '');
+				unset($args[$k]);
+				return $imgWidth;
+			}
+		}
+
+		return $default;
+	}
+
 }
