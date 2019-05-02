@@ -33,7 +33,7 @@
 // no direct access
 defined('_HZEXEC_') or die();
 ?>
-<li id="account-messages">
+<li class="component-parent" id="account-messages">
 	  <a class="component-button"><span class="nav-icon-groups"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/envelope.svg") ?></span><span>My Messages</span><span class="nav-icon-more"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/chevron-right.svg") ?></span></a>
 	  <div class="component-panel">
 	    <header><h2>My Messages</h2></header>
