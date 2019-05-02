@@ -336,7 +336,7 @@ $wgHtmlEntityAliases = array(
 	'رلم' => 'rlm',
 );
 
-include_once(__DIR__ . DS . 'utfnormalutil.php');
+include_once __DIR__ . DS . 'utfnormalutil.php';
 
 /**
  * XHTML sanitizer for MediaWiki

@@ -10,7 +10,7 @@ namespace Components\Search\Models\Basic\Result;
 use Components\Search\Models\Basic\Result as SearchResult;
 use Exception;
 
-include_once(dirname(__DIR__) . DS . 'result.php');
+include_once dirname(__DIR__) . DS . 'result.php';
 
 /**
  * Associative scalar result

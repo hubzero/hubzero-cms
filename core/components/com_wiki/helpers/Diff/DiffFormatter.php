@@ -72,7 +72,7 @@ class DiffFormatter
 			{
 				if (is_array($block))
 				{
-					if (sizeof($edit->orig) <= $nlead + $ntrail)
+					if (count($edit->orig) <= $nlead + $ntrail)
 					{
 						$block[] = $edit;
 					}
@@ -99,9 +99,9 @@ class DiffFormatter
 			{
 				if (!is_array($block))
 				{
-					$context = array_slice($context, sizeof($context) - $nlead);
-					$x0 = $xi - sizeof($context);
-					$y0 = $yi - sizeof($context);
+					$context = array_slice($context, count($context) - $nlead);
+					$x0 = $xi - count($context);
+					$y0 = $yi - count($context);
 					$block = array();
 					if ($context)
 					{
@@ -113,11 +113,11 @@ class DiffFormatter
 
 			if ($edit->orig)
 			{
-				$xi += sizeof($edit->orig);
+				$xi += count($edit->orig);
 			}
 			if ($edit->closing)
 			{
-				$yi += sizeof($edit->closing);
+				$yi += count($edit->closing);
 			}
 
 			foreach ($context as $ctx)

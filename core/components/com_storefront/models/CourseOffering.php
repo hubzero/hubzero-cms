@@ -7,7 +7,7 @@
 
 namespace Components\Storefront\Models;
 
-require_once(__DIR__ . DS . 'Sku.php');
+require_once __DIR__ . DS . 'Sku.php';
 
 class CourseOffering extends Sku
 {

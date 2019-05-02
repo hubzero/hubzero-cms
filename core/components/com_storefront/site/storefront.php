@@ -8,7 +8,7 @@
 namespace Components\Storefront\Site;
 
 // require base component controller
-require_once(__DIR__ . DS . 'controllers' . DS . 'component.php');
+require_once __DIR__ . DS . 'controllers' . DS . 'component.php';
 
 // require models
 require_once dirname(__DIR__) . DS . 'models' . DS . 'Warehouse.php';
@@ -28,7 +28,7 @@ elseif (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php
 
 $controllerRequested = $controllerName;
 
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller and execute

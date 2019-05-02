@@ -7,7 +7,7 @@
 
 namespace Components\Wiki\Models\Adapters;
 
-require_once(__DIR__ . DS . 'base.php');
+require_once __DIR__ . DS . 'base.php';
 
 /**
  * Adapter class for site-wide wiki

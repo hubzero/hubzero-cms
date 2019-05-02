@@ -7,11 +7,11 @@
 
 namespace Components\Storefront\Models;
 
-require_once(__DIR__ . DS . 'Memberships.php');
-require_once(__DIR__ . DS . 'Product.php');
-require_once(__DIR__ . DS . 'Option.php');
-require_once(__DIR__ . DS . 'OptionGroup.php');
-require_once(__DIR__ . DS . 'Warehouse.php');
+require_once __DIR__ . DS . 'Memberships.php';
+require_once __DIR__ . DS . 'Product.php';
+require_once __DIR__ . DS . 'Option.php';
+require_once __DIR__ . DS . 'OptionGroup.php';
+require_once __DIR__ . DS . 'Warehouse.php';
 
 /**
  *
@@ -310,7 +310,7 @@ class Sku
 		}
 
 		// Integrity check
-		require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'Integrity.php');
+		require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Integrity.php';
 		$integrityCheck = \Integrity::skuIntegrityCheck($this);
 
 		if ($integrityCheck->status != 'ok')
@@ -805,7 +805,7 @@ class Sku
 
 		$sku = self::getProperInstance($productType, $sId);
 
-		return($sku);
+		return $sku;
 	}
 
 	public static function newInstance($pId)
@@ -817,7 +817,7 @@ class Sku
 		$sku = self::getProperInstance($productType);
 		$sku->setProductId($pId);
 
-		return($sku);
+		return $sku;
 	}
 
 	private static function getProperInstance($productType, $sId = false)
@@ -825,12 +825,12 @@ class Sku
 		// Initialize the correct SKU based on the product type
 		if ($productType && $productType == 'Software Download')
 		{
-			require_once(__DIR__ . DS . 'SoftwareSku.php');
+			require_once __DIR__ . DS . 'SoftwareSku.php';
 			$sku = new SoftwareSku($sId);
 		}
 		elseif ($productType && $productType == 'Course')
 		{
-			require_once(__DIR__ . DS . 'CourseOffering.php');
+			require_once __DIR__ . DS . 'CourseOffering.php';
 			$sku = new CourseOffering();
 		}
 		else
@@ -838,7 +838,7 @@ class Sku
 			$sku = new Sku($sId);
 		}
 
-		return($sku);
+		return $sku;
 	}
 
 	// Update all SKUs' references for a given product -- called when the product is updated to bring the SKUs up to speed

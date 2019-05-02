@@ -16,12 +16,12 @@ use Components\Storefront\Models\Coupon;
 use Components\Storefront\Models\Collection;
 use Lang;
 
-require_once(__DIR__ . DS . 'Product.php');
-require_once(__DIR__ . DS . 'Course.php');
-require_once(__DIR__ . DS . 'CourseOffering.php');
-require_once(__DIR__ . DS . 'Sku.php');
-require_once(__DIR__ . DS . 'Coupon.php');
-require_once(__DIR__ . DS . 'Collection.php');
+require_once __DIR__ . DS . 'Product.php';
+require_once __DIR__ . DS . 'Course.php';
+require_once __DIR__ . DS . 'CourseOffering.php';
+require_once __DIR__ . DS . 'Sku.php';
+require_once __DIR__ . DS . 'Coupon.php';
+require_once __DIR__ . DS . 'Collection.php';
 
 /**
  *
@@ -137,8 +137,6 @@ class Warehouse extends \Hubzero\Base\Obj
 
 		// Get all product info
 		$collectionInfo = $this->getCollectionInfo($cId, true);
-
-		//print_r($collectionInfo); die;
 
 		$collection->setType($collectionInfo->cType);
 		$collection->setId($collectionInfo->cId);
@@ -321,7 +319,6 @@ class Warehouse extends \Hubzero\Base\Obj
 		}
 
 		$this->_db->setQuery($sql);
-		//print_r($this->_db->replacePrefix($this->_db->getQuery())); die;
 		$this->_db->query();
 
 		return ($cId);
@@ -632,7 +629,6 @@ class Warehouse extends \Hubzero\Base\Obj
 		}
 
 		$this->_db->setQuery($sql);
-		//print_r($this->_db->toString()); die;
 		$this->_db->execute();
 
 		// WhiteList logic: run the expensive query twice, find the whitlisted SKUs for each product, white list the corresponding product,
@@ -640,13 +636,11 @@ class Warehouse extends \Hubzero\Base\Obj
 		if ($this->userScope && ($useAccessGroups || $this->accessLevelsScope))
 		{
 			$products = $this->_db->loadObjectList('pId');
-			//print_r($this->userScope); die;
+
 			// get all products
 			$this->_db->setQuery($whiteListSql);
-			//print_r($this->_db->toString()); die;
 			$this->_db->execute();
 			$allProducts = $this->_db->loadObjectList('pId');
-			//print_r($allProducts);
 
 			// compare the two results and find those that didn't make the permissions test
 			$notAuthorizedProducts = [];
@@ -673,17 +667,18 @@ class Warehouse extends \Hubzero\Base\Obj
 
 			if ($return == 'count')
 			{
-				return(count($allProducts));
+				return count($allProducts);
 			}
 
 			return $allProducts;
 		}
-		else {
+		else
+		{
 			$products = $this->_db->loadObjectList();
 
 			if ($return == 'count')
 			{
-				return($this->_db->getNumRows());
+				return $this->_db->getNumRows();
 			}
 
 			return $products;
@@ -788,7 +783,6 @@ class Warehouse extends \Hubzero\Base\Obj
 		$sql .= "	ORDER BY og.`ogId`, o.`oId`";
 
 		$this->_db->setQuery($sql);
-		//print_r($this->_db->toString()); die;
 		$this->_db->query();
 
 		// check some values to figure out what to return
@@ -867,9 +861,11 @@ class Warehouse extends \Hubzero\Base\Obj
 		foreach ($res as $line)
 		{
 			// Populate options
-			if ($line->ogId) {
+			if ($line->ogId)
+			{
 				// Keep track of option groups and do not do anything if no options
-				if ($currentOgId != $line->ogId) {
+				if ($currentOgId != $line->ogId)
+				{
 					$currentOgId = $line->ogId;
 
 					$ogInfo = new \stdClass();
@@ -904,7 +900,6 @@ class Warehouse extends \Hubzero\Base\Obj
 		$ret = new \stdClass();
 		$ret->options = $options;
 		$ret->skus = $skus;
-		//print_r($ret); die;
 
 		$returnObject->options = $ret;
 		return $returnObject;
@@ -918,7 +913,6 @@ class Warehouse extends \Hubzero\Base\Obj
 				WHERE 1";
 
 		// Filter by filters
-		//print_r($filters);
 		if (isset($filters['active']) && $filters['active'] == 1)
 		{
 			$sql .= " AND ogActive = 1";
@@ -966,12 +960,10 @@ class Warehouse extends \Hubzero\Base\Obj
 		$this->_db->execute();
 		if ($rtrn == 'count')
 		{
-			return($this->_db->getNumRows());
+			return $this->_db->getNumRows();
 		}
 
-		//$res = $this->_db->loadObjectList('ogId');
 		$res = $this->_db->loadObjectList();
-		//print_r($res); die;
 
 		return $res;
 	}
@@ -992,7 +984,6 @@ class Warehouse extends \Hubzero\Base\Obj
 		$sql .= " AND `ogId` = " . $this->_db->quote($ogId);
 
 		// Filter by filters
-		//print_r($filters);
 		if (isset($filters['sort']))
 		{
 			if ($filters['sort'] == 'title')
@@ -1026,7 +1017,6 @@ class Warehouse extends \Hubzero\Base\Obj
 			}
 		}
 		$this->_db->setQuery($sql);
-		//print_r($this->_db->replacePrefix($this->_db->getQuery()));
 		$this->_db->execute();
 		if ($return == 'count')
 		{
@@ -1069,7 +1059,6 @@ class Warehouse extends \Hubzero\Base\Obj
 		else {
 			$totalOptionsRequired = $this->_db->loadResult();
 		}
-		//print_r($this->_db->replacePrefix( (string) $sql )); die;
 
 		if (!empty($options) && $totalOptionsRequired > count($options))
 		{
@@ -1095,8 +1084,6 @@ class Warehouse extends \Hubzero\Base\Obj
 			$sql .= " AND {$skuOptionsSql}";
 		}
 		$sql .= " GROUP BY s.`sId` HAVING matches = {$totalOptionsRequired}";
-
-		//print_r($this->_db->replacePrefix( (string) $sql )); die;
 
 		$this->_db->setQuery($sql);
 		$sId = $this->_db->loadObject();
@@ -1157,7 +1144,6 @@ class Warehouse extends \Hubzero\Base\Obj
 		}
 
 		// Filter by filters
-		//print_r($filters); die;
 		if (isset($filters['sort']))
 		{
 			if ($filters['sort'] == 'title')
@@ -1187,12 +1173,9 @@ class Warehouse extends \Hubzero\Base\Obj
 		}
 
 		$this->_db->setQuery($sql);
-		//print_r($this->_db->toString()); die;
 		$this->_db->execute();
 
 		$rawSkusInfo = $this->_db->loadObjectList();
-
-		//print_r($rawSkusInfo); die(); //
 
 		/*
 			Parse the result and organize it by SKU (since same SKU can be returned several times, depending on the number of options):
@@ -1286,7 +1269,7 @@ class Warehouse extends \Hubzero\Base\Obj
 			}
 		}
 
-		return($sInfo);
+		return $sInfo;
 	}
 
 	/**
@@ -1314,7 +1297,6 @@ class Warehouse extends \Hubzero\Base\Obj
 		$sql .= " AND `pId` = " . $this->_db->quote($pId);
 
 		// Filter by filters
-		//print_r($filters); die;
 		if (isset($filters['sort']))
 		{
 			if ($filters['sort'] == 'title')
@@ -1446,7 +1428,7 @@ class Warehouse extends \Hubzero\Base\Obj
 
 		$this->_db->setQuery($sql);
 		$this->_db->query();
-		return($this->_db->loadResult());
+		return $this->_db->loadResult();
 	}
 
 	/**
@@ -1490,25 +1472,21 @@ class Warehouse extends \Hubzero\Base\Obj
 		// Delete conditions
 		$sql = "DELETE FROM `#__storefront_coupon_conditions` WHERE `cnId` = " . $this->_db->quote($cnId);
 		$this->_db->setQuery($sql);
-		//echo '<br>'; echo $this->_db->_sql; die;
 		$this->_db->query();
 
 		// Delete actions
 		$sql = "DELETE FROM `#__storefront_coupon_actions` WHERE `cnId` = " . $this->_db->quote($cnId);
 		$this->_db->setQuery($sql);
-		//echo '<br>'; echo $this->_db->_sql; die;
 		$this->_db->query();
 
 		// Delete objects
 		$sql = "DELETE FROM `#__storefront_coupon_objects` WHERE `cnId` = " . $this->_db->quote($cnId);
 		$this->_db->setQuery($sql);
-		//echo '<br>'; echo $this->_db->_sql; die;
 		$this->_db->query();
 
 		// Delete coupon
 		$sql = "DELETE FROM `#__storefront_coupons` WHERE `cnId` = " . $this->_db->quote($cnId);
 		$this->_db->setQuery($sql);
-		//echo '<br>'; echo $this->_db->_sql; die;
 		$this->_db->query();
 	}
 
@@ -1744,11 +1722,10 @@ class Warehouse extends \Hubzero\Base\Obj
 		$this->_db->execute();
 		if ($return == 'count')
 		{
-			return($this->_db->getNumRows());
+			return $this->_db->getNumRows();
 		}
 
 		$res = $this->_db->loadObjectList();
-		//print_r($this->_db->toString());
 
 		return $res;
 	}
@@ -1767,5 +1744,4 @@ class Warehouse extends \Hubzero\Base\Obj
 
 		return $res;
 	}
-
 }

@@ -13,8 +13,8 @@ if (!\User::authorise('core.manage', 'com_system'))
 }
 
 // Include scripts
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
 
 $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'info'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
@@ -38,7 +38,7 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName == 'apc'
 );
 
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller

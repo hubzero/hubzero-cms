@@ -7,7 +7,7 @@
 
 namespace Components\Tools\Helpers;
 
-include_once(dirname(__DIR__) . DS . 'models' . DS . 'version.php');
+include_once dirname(__DIR__) . DS . 'models' . DS . 'version.php';
 
 /**
  * Tool version helper class
