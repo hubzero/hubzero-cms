@@ -11,8 +11,8 @@ use Components\Storefront\Helpers\Serials;
 use Component;
 use Lang;
 
-require_once(__DIR__ . DS . 'Sku.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'Serials.php');
+require_once __DIR__ . DS . 'Sku.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Serials.php';
 
 /**
  *

@@ -120,7 +120,7 @@ class Diff
 		{
 			if ($edit->type == 'copy')
 			{
-				$lcs += sizeof($edit->orig);
+				$lcs += count($edit->orig);
 			}
 		}
 		return $lcs;
@@ -141,7 +141,7 @@ class Diff
 		{
 			if ($edit->orig)
 			{
-				array_splice($lines, sizeof($lines), 0, $edit->orig);
+				array_splice($lines, count($lines), 0, $edit->orig);
 			}
 		}
 		return $lines;
@@ -162,7 +162,7 @@ class Diff
 		{
 			if ($edit->closing)
 			{
-				array_splice($lines, sizeof($lines), 0, $edit->closing);
+				array_splice($lines, count($lines), 0, $edit->closing);
 			}
 		}
 		return $lines;

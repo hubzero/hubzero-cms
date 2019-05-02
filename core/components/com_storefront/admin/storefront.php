@@ -15,8 +15,8 @@ if (!\User::authorise('core.manage', $option))
 }
 
 // Include scripts
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'Archive.php');
-require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
+require_once dirname(__DIR__) . DS . 'models' . DS . 'Archive.php';
+require_once __DIR__ . DS . 'helpers' . DS . 'permissions.php';
 
 $scope = \Request::getCmd('scope', 'site');
 $controllerName = \Request::getCmd('controller', 'products');
@@ -41,7 +41,7 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'products';
 }
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller

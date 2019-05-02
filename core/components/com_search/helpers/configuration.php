@@ -36,7 +36,7 @@ class ConfigHelper
 			{
 				if (Filesystem::extension($baseDir . $file['path']) == 'php')
 				{
-					$typeConfig = require_once($baseDir . $file['path']);
+					$typeConfig = require_once $baseDir . $file['path'];
 					array_push($config, $typeConfig);
 				}
 			}
@@ -47,7 +47,7 @@ class ConfigHelper
 			$filename = $baseDir . DS . $name . '.php';
 			if (Filesystem::exists($filename))
 			{
-				$config = include($filename);
+				$config = include_once $filename;
 			}
 			else
 			{

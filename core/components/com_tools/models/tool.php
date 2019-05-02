@@ -13,7 +13,7 @@ use Lang;
 use User;
 use Log;
 
-include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'version.php');
+include_once dirname(__DIR__) . DS . 'helpers' . DS . 'version.php';
 
 /**
  * Hubzero class for tools

@@ -82,7 +82,7 @@ class RestrictionsHelper
 				WHERE p.scope='skuWhitelist' AND uId = '{$uId}' AND p.scope_id IN (" . $skus . ')';
 		$db->setQuery($sql);
 		$db->execute();
-		return($db->loadColumn());
+		return $db->loadColumn();
 	}
 
 	/**

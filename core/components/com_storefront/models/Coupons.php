@@ -153,7 +153,7 @@ class Coupons
 			$couponInfo->info = $info;
 		}
 
-		return($couponInfo);
+		return $couponInfo;
 	}
 
 	/**

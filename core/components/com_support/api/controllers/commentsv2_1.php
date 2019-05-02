@@ -497,7 +497,7 @@ class Commentsv2_1 extends ApiController
 		// Check if the notify list has eny entries
 		if (count($comment->to()))
 		{
-			include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utilities.php');
+			include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utilities.php';
 
 			$allowEmailResponses = $ticket->config('email_processing');
 			if ($allowEmailResponses)

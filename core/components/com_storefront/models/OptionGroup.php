@@ -275,7 +275,7 @@ class OptionGroup
 		$this->db->execute();
 		$res = $this->db->loadObjectList();
 
-		require_once(__DIR__ . DS . 'Option.php');
+		require_once __DIR__ . DS . 'Option.php';
 		foreach ($res as $option)
 		{
 			$option = new Option($option->oId);

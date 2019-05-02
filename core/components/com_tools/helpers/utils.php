@@ -190,10 +190,10 @@ class Utils
 	{
 		if (preg_match("#^[_0-9a-zA-Z.:-]+$#i", $field) or $field=='')
 		{
-			return(0);
+			return 0;
 		}
 
-		return(1);
+		return 1;
 	}
 
 	/**
@@ -306,9 +306,9 @@ class Utils
 	public static function getToolAccess($tool, $login = '')
 	{
 		//include tool models
-		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'tool.php');
-		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'group.php');
-		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'version.php');
+		include_once dirname(__DIR__) . DS . 'tables' . DS . 'tool.php';
+		include_once dirname(__DIR__) . DS . 'tables' . DS . 'group.php';
+		include_once dirname(__DIR__) . DS . 'tables' . DS . 'version.php';
 
 		//instantiate objects
 		$access = new stdClass();
@@ -545,8 +545,8 @@ class Utils
 	public static function recordToolUsage($tool, $userid = '')
 	{
 		//include needed files
-		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'version.php');
-		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'recent.php');
+		include_once dirname(__DIR__) . DS . 'tables' . DS . 'version.php';
+		include_once dirname(__DIR__) . DS . 'tables' . DS . 'recent.php';
 
 		//instantiate needed objects
 		$database = \App::get('db');

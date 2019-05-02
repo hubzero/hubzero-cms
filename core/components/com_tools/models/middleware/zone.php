@@ -9,8 +9,8 @@ namespace Components\Tools\Models\Middleware;
 
 use Hubzero\Base\ItemList;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'zones.php');
-require_once(__DIR__ . DS . 'location.php');
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'zones.php';
+require_once __DIR__ . DS . 'location.php';
 
 /**
  * Middleware zone mdel
