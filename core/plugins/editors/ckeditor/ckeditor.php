@@ -342,10 +342,27 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 			array('Link', 'Unlink', 'Anchor'),
 			'/',
 			array('Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'),
-			array('NumberedList', 'BulletedList', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'),
-			// Array('HubzeroAutoGrow', 'HubzeroMacro')
-			array('HubzeroMacro')
+			array('NumberedList', 'BulletedList', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock')
 		);
+
+		$tlbr = array();
+		if ($this->params->get('colorButton'))
+		{
+			$config->extraPlugins .= ',colorbutton';
+			$tlbr[] = 'TextColor';
+			$tlbr[] = 'BGColor';
+		}
+		if ($this->params->get('fontSize'))
+		{
+			$config->extraPlugins .= ',font';
+			$tlbr[] = 'FontSize';
+		}
+		if (!empty($tlbr))
+		{
+			$config->toolbar[] = $tlbr;
+		}
+
+		$config->toolbar[] = array('HubzeroMacro');
 
 		// If minimal toolbar
 		if (in_array('minimal', $this->params->get('class')))
