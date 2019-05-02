@@ -26,6 +26,14 @@
 					<option value="0">JOFF</option>
 					<option value="1">JON</option>
 				</field>
+				<field name="colorButton" type="radio" default="0" description="Allow colors?" label="Allow buttons for changing text or backgorund colors">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="fontSize" type="radio" default="0" description="Allow font size?" label="Allow option for changing font size">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
 				<field name="autoGrowAutoStart" type="radio" default="0" description="Auto Grow content area" label="Auto-grow">
 					<option value="0">JOFF</option>
 					<option value="1">JON</option>
