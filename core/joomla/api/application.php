@@ -338,7 +338,7 @@ class JApi extends JApplication
 				{
 					if (is_file($filename))
 					{
-						require($filename);
+						require $filename;
 						break;
 					}
 				}
