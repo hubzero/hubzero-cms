@@ -91,7 +91,6 @@ function doFileoptions()
 					//}
 				} else if (act == '3') {
 					var content = <?php echo $this->editor()->getContent('field-fulltxt'); ?>
-					console.log(content);
 					content = content + '<p><img class="contentimg" src="<?php echo $path; ?>' + filepath + '" alt="image" /></p>';
 					<?php //echo $this->editor()->setContent('field-fulltxt', 'content'); ?>
 					setEditorContent('field-fulltxt', content);
