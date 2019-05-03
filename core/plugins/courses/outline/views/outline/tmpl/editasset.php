@@ -32,7 +32,7 @@ foreach ($this->course->offering()->units() as $unit) :
 	endforeach;
 endforeach;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
+require_once Component::path('com_tools') . DS . 'models' . DS . 'tool.php';
 
 $tools     = \Components\Tools\Models\Tool::getMyTools();
 $config    = Component::params('com_courses');

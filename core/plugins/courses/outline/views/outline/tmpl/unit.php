@@ -8,20 +8,14 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-//$this->database = App::get('db');
-
 $unit = $this->course->offering()->unit($this->unit);
-if (!$unit)
-{
+
+if (!$unit):
 	throw new Exception(Lang::txt('uh-oh'), 404);
-}
+endif;
 
-//echo $this->course->offering()->units()->key();
-
-if (!$this->course->offering()->access('view')) { ?>
+if (!$this->course->offering()->access('view')): ?>
 	<p class="info"><?php echo Lang::txt('Access to the "Syllabus" section of this course is restricted to members only. You must be a member to view the content.'); ?></p>
-<?php } else { ?>
-
+<?php else: ?>
 	<?php echo $unit->get('title'); ?>
-
-<?php } ?>
+<?php endif;
