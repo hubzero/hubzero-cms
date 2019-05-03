@@ -17,7 +17,7 @@ class Migration20190503162652PlgSupportMarkdown extends Base
 	 **/
 	public function up()
 	{
-		$this->addPluginEntry('support', 'markdown');
+		$this->addPluginEntry('support', 'markdown', 0);
 	}
 
 	/**
