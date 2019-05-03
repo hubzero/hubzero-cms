@@ -1,5 +1,5 @@
 {
-	"name": "hubzero/plg_wiki_markdownparser",
+	"name": "hubzero/plg_wiki_parsermarkdown",
 	"description": "Markdown parser for the wiki component",
 	"type": "hubzero-plugin",
 	"keywords": ["hubzero"],
@@ -20,6 +20,6 @@
 		"hubzero/com_wiki": "dev-master"
 	},
 	"extra": {
-		"install-directory": "/plugins/wiki/markdownparser/"
+		"install-directory": "/plugins/wiki/parsermarkdown/"
 	}
 }
