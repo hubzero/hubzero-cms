@@ -67,4 +67,4 @@ foreach ($existing as $value)
 	<input type="hidden" name="item_id" value="<?php echo $this->scope_id; ?>" />
 	<input type="hidden" name="requisite_scope" value="<?php echo $this->scope; ?>" />
 	<input type="hidden" name="section_id" value="<?php echo $this->section_id; ?>" />
-<?php if ($includeForm) : ?></form><?php endif; ?>
+<?php if ($includeForm) : ?></form><?php endif;
