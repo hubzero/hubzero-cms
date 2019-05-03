@@ -18,7 +18,7 @@ class Helper extends Module
 	/**
 	 * Display module contents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -28,7 +28,15 @@ class Helper extends Module
 		}
 
 		$database = App::get('db');
-		$database->setQuery("SELECT * FROM `#__users` WHERE `approved` = 0");
+		$database->setQuery(
+			"SELECT *
+			FROM `#__users`
+			WHERE `block`=0
+			AND `activation`=1
+			AND `approved`=0
+			ORDER BY `registerDate` DESC
+			LIMIT " . $this->params->get('limit', 25)
+		);
 		$this->unapproved = $database->loadObjectList();
 
 		// Get the view
