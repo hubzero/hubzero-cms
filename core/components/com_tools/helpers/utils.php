@@ -480,7 +480,7 @@ class Utils
 		if (empty($country) && in_array($export_control, array('us', 'd1', 'pu')))
 		{
 			$export_access->valid = 0;
-			$export_access->error->message = 'This tool may not be accessed from your unknown current location due to export/license restrictions.';
+			$export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_UNKNOWN');
 			\Log::debug("mw::_getToolExportControl($export_control) FAILED location export control check");
 			return $export_access;
 		}
@@ -489,7 +489,7 @@ class Utils
 		if (\Hubzero\Geocode\Geocode::is_e1nation(\Hubzero\Geocode\Geocode::ipcountry($ip)))
 		{
 			$export_access->valid = 0;
-			$export_access->error->message = 'This tool may not be accessed from your current location due to E1 export/license restrictions.';
+			$export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_E1');
 			\Log::debug("mw::_getToolExportControl($export_control) FAILED E1 export control check");
 			return $export_access;
 		}
@@ -501,7 +501,7 @@ class Utils
 				if (\Hubzero\Geocode\Geocode::ipcountry($ip) != 'us')
 				{
 					$export_access->valid = 0;
-					$export_access->error->message = 'This tool may only be accessed from within the U.S. due to export/licensing restrictions.';
+					$export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_USA_ONLY');
 					\Log::debug("mw::_getToolExportControl($export_control) FAILED US export control check");
 					return $export_access;
 				}
@@ -511,7 +511,7 @@ class Utils
 				if (\Hubzero\Geocode\Geocode::is_d1nation(\Hubzero\Geocode\Geocode::ipcountry($ip)))
 				{
 					$export_access->valid = 0;
-					$export_access->error->message = 'This tool may not be accessed from your current location due to export/license restrictions.';
+					$export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_LICENSE');
 					\Log::debug("mw::_getToolExportControl($export_control) FAILED D1 export control check");
 					return $export_access;
 				}
@@ -521,7 +521,7 @@ class Utils
 				if (!\Hubzero\Geocode\Geocode::is_iplocation($ip, $export_control))
 				{
 					$export_access->valid = 0;
-					$export_access->error->message = 'This tool may only be accessed by authorized users while on the West Lafayette campus of Purdue University due to license restrictions.';
+					$export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_PURDUE_ONLY');
 					\Log::debug("mw::_getToolExportControl($export_control) FAILED PURDUE export control check");
 					return $export_access;
 				}
