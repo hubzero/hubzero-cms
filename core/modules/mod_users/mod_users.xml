@@ -16,6 +16,7 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
+				<field name="limit" type="text" default="25" label="MOD_USERS_LIMIT_LABEL" description="MOD_USERS_LIMIT_DESC" />
 				<field name="cache" type="list" default="1" label="MOD_USERS_CACHE_LABEL" description="MOD_USERS_CACHE_DESC">
 					<option value="1">MOD_USERS_CACHE_GLOBAL</option>
 					<option value="0">MOD_USERS_CACHE_NONE</option>
