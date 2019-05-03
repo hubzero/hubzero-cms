@@ -74,7 +74,7 @@ $this->css('storage.css')
 							</td>
 							<td>
 								<?php if ($dir != '/data' && $dir != '/sessions') { ?>
-									<a class="delete icon-delete delete-folder" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefolder&amp;delFolder=<?php echo urlencode($dir); ?>&amp;listdir=<?php echo urlencode($this->listdir); ?>&amp;tmpl=component" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the folder "%s"?', $dir); ?>" data-files="<?php echo $numFiles; ?>" data-notempty="<?php echo Lang::txt('Sorry unable to delete folder because it is not empty'); ?>"target="filer" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+									<a class="delete icon-delete delete-folder" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefolder&amp;delFolder=<?php echo urlencode($dir); ?>&amp;listdir=<?php echo urlencode($this->listdir); ?>&amp;tmpl=component" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the folder "%s"?', $dir); ?>" data-files="<?php echo $numFiles; ?>" data-notempty="<?php echo Lang::txt('Sorry unable to delete folder because it is not empty'); ?>" target="filer" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 
 										<?php echo Lang::txt('JACTION_DELETE'); ?>
 									</a>
