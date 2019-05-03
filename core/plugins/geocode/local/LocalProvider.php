@@ -14,9 +14,6 @@ use Geocoder\Exception\NoResultException;
 use Geocoder\Exception\InvalidCredentialsException;
 use Geocoder\Exception\UnsupportedException;
 
-/**
- * @author Shawn Rice <zooley@purdue.edu>
- */
 class LocalProvider extends AbstractProvider implements ProviderInterface
 {
 	public static $countries = array(
