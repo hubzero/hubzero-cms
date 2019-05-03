@@ -59,7 +59,6 @@
 				}
 				else
 				{
-					console.log('should fire callback');
 					callback();
 				}
 			}, 
