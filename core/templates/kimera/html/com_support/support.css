@@ -28,6 +28,12 @@ ol.comments .comment-changelog {
 	margin: 0;
 }
 
+.com_support .comment-body code {
+	color: #e2306d;
+	background-color: #f7f7f9;
+	border-color: #e2e1e9;
+}
+
 .com_support .ticket-watch {
 	-webkit-border-radius: 0;
 	   -moz-border-radius: 0;
