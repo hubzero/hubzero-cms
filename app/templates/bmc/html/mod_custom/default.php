@@ -1,13 +1,12 @@
 <?php
 /**
- * @package		Joomla.Site
- * @subpackage	mod_custom
- * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // no direct access
-defined('_JEXEC') or die;
+defined('_HZEXEC_') or die;
 ?>
 
 

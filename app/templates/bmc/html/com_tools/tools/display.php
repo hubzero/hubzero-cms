@@ -1,32 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
- * @purpose		Temp fix until the view fix comes from the core. Updated <section> closing tag to </section> (was </div>)
- *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license		 http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -87,7 +63,8 @@ $this->css('introduction.css', 'system')
 						{
 							$status = ($project->codeaccess == '@OPEN' ? Lang::txt('COM_TOOLS_OPEN_SOURCE') : Lang::txt('COM_TOOLS_CLOSED_SOURCE'));
 							?>
-					<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
+					<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even';
+echo $cls; ?>">
 						<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki'); ?>"><?php echo \Hubzero\Utility\Str::truncate(stripslashes($project->title), 50); ?></a></td>
 						<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki'); ?>"><?php echo $this->escape($project->toolname); ?></a></td>
 						<td><span class="<?php echo $status; ?>-code"><?php echo $status; ?></span></td>
@@ -97,7 +74,8 @@ $this->css('introduction.css', 'system')
 					}
 				} else {
 				?>
-					<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
+					<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even';
+echo $cls; ?>">
 						<td colspan="3"><?php echo Lang::txt('COM_TOOLS_NONE'); ?></td>
 					</tr>
 				<?php
