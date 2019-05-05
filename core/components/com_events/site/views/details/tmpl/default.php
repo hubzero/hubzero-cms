@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -66,9 +41,9 @@ $this->css()
 			if ($this->auth && $this->row->created_by == User::get('id'))
 			{
 				$html .= '&nbsp;&nbsp;';
-				$html .= '<a class="edit" href="'. Route::url('index.php?option='.$this->option.'&task=edit&id='.$this->row->id) .'" title="'.Lang::txt('EVENTS_EDIT').'">'.strtolower(Lang::txt('EVENTS_EDIT')).'</a>'."\n";
+				$html .= '<a class="edit" href="'. Route::url('index.php?option='.$this->option.'&task=edit&id='.$this->row->id) .'" title="'.Lang::txt('JACTION_EDITT').'">'.strtolower(Lang::txt('JACTION_EDIT')).'</a>'."\n";
 				$html .= '&nbsp;&nbsp;'."\n";
-				$html .= '<a class="delete" href="'. Route::url('index.php?option='.$this->option.'&task=delete&id='.$this->row->id) .'" title="'.Lang::txt('EVENTS_DELETE').'">'.strtolower(Lang::txt('EVENTS_DELETE')).'</a>'."\n";
+				$html .= '<a class="delete" href="'. Route::url('index.php?option='.$this->option.'&task=delete&id='.$this->row->id) .'" title="'.Lang::txt('JACTION_DELETE').'">'.strtolower(Lang::txt('JACTION_DELETE')).'</a>'."\n";
 			}
 			$html .= '</h3>'."\n";
 			if ($this->row->registerby && $this->row->registerby != '0000-00-00 00:00:00') {
@@ -127,7 +102,7 @@ $this->css()
 				$ts = explode(':', $this->row->start_time);
 				if (intval($ts[0]) > 12) {
 					$ts[0] = ($ts[0] - 12);
-					$this->row->start_time = implode(':',$ts);
+					$this->row->start_time = implode(':', $ts);
 					$this->row->start_time .= ' <small>PM</small>';
 				} else {
 					$this->row->start_time .= (intval($ts[0]) == 12) ? ' <small>'.Lang::txt('EVENTS_NOON').'</small>' : ' <small>AM</small>';
@@ -135,7 +110,7 @@ $this->css()
 				$te = explode(':', $this->row->stop_time);
 				if (intval($te[0]) > 12) {
 					$te[0] = ($te[0] - 12);
-					$this->row->stop_time = implode(':',$te);
+					$this->row->stop_time = implode(':', $te);
 					$this->row->stop_time .= ' <small>PM</small>';
 				} else {
 					$this->row->stop_time .= (intval($te[0]) == 12) ? ' <small>'.Lang::txt('EVENTS_NOON').'</small>' : ' <small>AM</small>';
@@ -197,7 +172,7 @@ $this->css()
 				if ($this->fields) {
 					foreach ($this->fields as $field)
 					{
-						if (end($field) != NULL) {
+						if (end($field) != null) {
 							if (end($field) == '1') {
 								$html .= '  <tr>'."\n";
 								$html .= '   <th scope="row">'.$field[1].':</th>'."\n";

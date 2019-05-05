@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -162,7 +137,7 @@ else
 										$remove = PATH_APP . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'uploads' . DS;
 										$sel = (str_replace($remove, '', $logo) == $this->group->get('logo')) ? 'selected' : '';
 									?>
-									<option <?php echo $sel; ?> value="<?php echo str_replace(PATH_ROOT, '', $logo); ?>"><?php echo str_replace($remove, '', $logo); ?></option>
+									<option <?php echo $sel; ?> value="<?php echo rtrim(Request::root(true), '/') . str_replace(PATH_ROOT, '', $logo); ?>"><?php echo str_replace($remove, '', $logo); ?></option>
 								<?php } ?>
 							</select>
 						</label>
@@ -171,9 +146,9 @@ else
 								<div id="logo_picked">
 									<?php if ($this->group->get('logo')) { ?>
 										<?php $selectedPath = substr(PATH_APP . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'uploads' . DS . $this->group->get('logo'), strlen(PATH_ROOT)); ?>
-										<img src="<?php echo $selectedPath; ?>" alt="<?php echo $this->group->get('cn') ?>" />
+										<img src="<?php echo rtrim(Request::root(true), '/') . $selectedPath; ?>" alt="<?php echo $this->group->get('cn') ?>" />
 									<?php } else { ?>
-										<img src="<?php echo $default_logo; ?>" alt="<?php echo $this->group->get('cn') ?>" >
+										<img src="<?php echo rtrim(Request::root(true), '/') . $default_logo; ?>" alt="<?php echo $this->group->get('cn') ?>" >
 									<?php } ?>
 								</div>
 							</div>
@@ -329,7 +304,7 @@ else
 		<?php echo Html::input('token'); ?>
 
 		<input type="hidden" name="published" value="<?php echo $this->group->get('published'); ?>" />
-        <input type="hidden" name="gidNumber" value="<?php echo ($this->group->get('gidNumber') != '' ? $this->group->get('gidNumber') : 0); ?>" />
+        <input type="hidden" name="gidNumber" value="<?php echo $this->group->get('gidNumber') != '' ? $this->group->get('gidNumber') : 0; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="task" value="save" />
 	</form>

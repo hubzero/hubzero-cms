@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        media/hubzero/css/notifications.css
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 /* Environment */
@@ -106,8 +105,6 @@
 		-o-border-radius: 0.27em;
 		border-radius: 0.27em;
 		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
-		/*z-index: 1;*/
-		background-image: url("/core/assets/images/light-stripes.png");
 		background-image: -webkit-gradient(linear, 0 0, 100% 100%,
 											color-stop(.25, rgba(255, 255, 255, .065)), color-stop(.25, transparent),
 											color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .065)),
@@ -132,7 +129,7 @@
 		-moz-background-size: 30px 30px;
 		-ms-background-size: 30px 30px;
 		-o-background-size: 30px 30px;
-		background-size: 30px 30px; /* Controls the size of the stripes */
+		background-size: 30px 30px;
 	}
 	.help,
 	.info,

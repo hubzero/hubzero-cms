@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 namespace Plugins\Antispam\SpamAssassin\Service\Client;
 
@@ -47,36 +52,36 @@ class Remote
 
 		$result->output = json_encode($report);
 
-		if (preg_match(
-			'/Spam: (True|False|Yes|No); (\S+)\/ (\S+)/',
-			$report->message,
-			$matches
-		))
+		if (preg_match('/Spam: (True|False|Yes|No); (\S+)\/ (\S+)/', $report->message, $matches))
 		{
-			($matches[1] == 'True' || $matches[1] == 'Yes')?
-				$result->isSpam = true :
+			if ($matches[1] == 'True' || $matches[1] == 'Yes')
+			{
+				$result->isSpam = true;
+			}
+			else
+			{
 				$result->isSpam = false;
+			}
 
 			$result->score    = (float)$matches[2];
 			$result->thresold = (float)$matches[3];
-		} 
-		else 
+		}
+		else
 		{
-			/**
-			 * In PROCESS method with protocol version before 1.3, SpamAssassin 
-			 * won't return the 'Spam:' field in the response header. In this case,
-			 * it is necessary to check for the X-Spam-Status: header in the
-			 * processed message headers.
-			*/
-			if (preg_match(
-				  '/X-Spam-Status: (Yes|No)\, score=(\d+\.\d)required=(\d+\.\d)/',
-				  $report->message,
-				  $matches))
+			// In PROCESS method with protocol version before 1.3, SpamAssassin 
+			// won't return the 'Spam:' field in the response header. In this case,
+			// it is necessary to check for the X-Spam-Status: header in the
+			// processed message headers.
+			if (preg_match('/X-Spam-Status: (Yes|No)\, score=(\d+\.\d)required=(\d+\.\d)/', $report->message, $matches))
 			{
-
-				($matches[1] == 'Yes')? 
-					$result->isSpam = true :
+				if ($matches[1] == 'Yes')
+				{
+					$result->isSpam = true;
+				}
+				else
+				{
 					$result->isSpam = false;
+				}
 
 				$result->score    = (float)$matches[2];
 				$result->thresold = (float)$matches[3];

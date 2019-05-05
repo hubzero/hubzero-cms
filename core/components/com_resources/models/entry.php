@@ -1,34 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Kevin Wojkovich <kevinw@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
- * @since     Class available since release 1.3.2
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Resources\Models;
@@ -1014,6 +988,33 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
+	 * Generate URL for tool
+	 *
+	 * @return  mixed	string or boolean if pubishedOnly is flagged and tool hasn't been published
+	 */
+	public function generateToolUrl()
+	{
+		$lurl = '';
+		if (isset($this->revision) && $this->toolpublished)
+		{
+			$sess = $this->tool ? $this->tool : $this->alias . '_r' . $this->revision;
+			$v = (!isset($this->revision) or $this->revision=='dev') ? 'test' : $this->revision;
+			$lurl = 'index.php?option=com_tools&app=' . $this->alias . '&task=invoke&version=' . $v;
+		}
+		elseif (!isset($this->revision) or $this->revision=='dev')
+		{
+			// serve dev version
+			$lurl = 'index.php?option=com_tools&app=' . $this->alias . '&task=invoke&version=dev';
+		}
+		else
+		{
+			$lurl = 'index.php?option=com_tools&task=invoke&app=' . $this->alias;
+		}
+		return $lurl;
+	}
+
+
+	/**
 	 * Authorize current user
 	 *
 	 * @return  void
@@ -1282,6 +1283,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		if ($this->isTool())
 		{
 			require_once Component::path('com_tools') . '/tables/version.php';
+			require_once Component::path('com_tools') . '/tables/author.php';
 
 			$this->thistool = null;
 			$this->curtool  = null;
@@ -1642,6 +1644,15 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	{
 		$type = $this->type();
 		$obj = new stdClass;
+		if ($this->isTool())
+		{
+			$this->compileToolInfo('');
+			$toolUrl = $this->generateToolUrl();
+			if (!empty($toolUrl))
+			{
+				$obj->launchlinkurl_s = rtrim(Request::root(), '/') . Route::urlForClient('site', $toolUrl);
+			}
+		}
 		$obj->url = rtrim(Request::root(), '/') . Route::urlForClient('site', $this->link());
 		$obj->title = $this->title;
 		$id = $this->id;

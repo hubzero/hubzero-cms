@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        modules/mod_collect/assets/js/collect.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 String.prototype.nohtml = function () {

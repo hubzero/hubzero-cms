@@ -1,3 +1,9 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 //--------------------------------------------------------------------------
 //
 //	Video Plugin
@@ -182,19 +188,19 @@ HUB.Video = {
 	controlBar: function()
 	{
 		//play pause functionality
-		$jQ('#play-pause').bind('click', function(e) {
+		$jQ('#play-pause').on('click', function(e) {
 			HUB.Video.playPause(true);
 			e.preventDefault();
 		});
 		
 		//play pause functionality
-		$jQ('#link').bind('click', function(e) {
+		$jQ('#link').on('click', function(e) {
 			HUB.Video.linkVideo();
 			e.preventDefault();
 		});
 		
 		//full screen mode
-		$jQ('#full-screen').bind('click', function(e) {
+		$jQ('#full-screen').on('click', function(e) {
 			HUB.Video.fullScreen();
 			e.preventDefault();
 		});
@@ -703,19 +709,19 @@ HUB.Video = {
 		$jQ("#replay-details #title").html( "<span>Title:</span> " + document.title );
 		
 		//auto-select replay link
-		$jQ("#replay-link").live("click", function(e) {
+		$jQ("#replay-link").on("click", function(e) {
 			this.select();
 			e.preventDefault();
 		});
 		
 		//replay video link
-		$jQ("#replay-now").live("click", function(e) {
+		$jQ("#replay-now").on("click", function(e) {
 			HUB.Video.doReplay("#replay");
 			e.preventDefault();
 		});
 		
 		//close video
-		$jQ("#replay-back").live("click", function(e) {
+		$jQ("#replay-back").on("click", function(e) {
 			window.close();
 			e.preventDefault();
 		});

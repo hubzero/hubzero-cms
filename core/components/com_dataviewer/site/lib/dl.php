@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero.cms.site
- * @subpackage  com_dataviewer
- *
- * @author      Sudheera R. Fernando srf@xconsole.org
- * @copyright   Copyright 2010-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT or later; see LICENSE.txt
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -76,4 +73,3 @@ function zip_files($hash_list)
 
 	exit(0);
 }
-?>

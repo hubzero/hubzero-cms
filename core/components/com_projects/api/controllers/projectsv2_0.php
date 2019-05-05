@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2011-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Projects\Api\Controllers;
@@ -134,7 +110,8 @@ class Projectsv2_0 extends ApiController
 		if (!$admin)
 		{
 			$query->whereEquals('state', Project::STATE_PUBLISHED);
-			$query->whereIn('private', [Project::PRIVACY_PUBLIC, Project::PRIVACY_OPEN]);
+			//$query->whereIn('private', [Project::PRIVACY_PUBLIC, Project::PRIVACY_OPEN]);
+			$query->whereIn('access', User::getAuthorisedViewLevels());
 		}
 
 		$response = new stdClass;
@@ -169,7 +146,7 @@ class Projectsv2_0 extends ApiController
 						$obj->owner[] = $member->userid;
 					}
 
-					if ($entry->get('private') == 0 && $entry->isProvisioned())
+					if (!$entry->isPrivate() && $entry->isProvisioned())
 					{
 						$obj->access_level = 'public';
 					}
@@ -192,6 +169,7 @@ class Projectsv2_0 extends ApiController
 					//$obj->userRole      = $entry->member()->role;
 					$obj->thumbUrl      = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('thumb')), '/'));
 					$obj->privacy       = $entry->get('private');
+					$obj->access        = $entry->get('access');
 					$obj->provisioned   = $entry->isProvisioned();
 					$obj->groupOwnerId  = $entry->get('owned_by_group');
 					$obj->userOwnerId   = $entry->get('owned_by_user');
@@ -222,7 +200,7 @@ class Projectsv2_0 extends ApiController
 						}
 
 						// Privacy
-						$obj->privacy = $entry->get('private') == 1 ? Lang::txt('private') : Lang::txt('public');
+						$obj->privacy = $entry->isPrivate() ? Lang::txt('private') : Lang::txt('public');
 
 						// Team role
 						switch ($obj->userRole)
@@ -417,9 +395,16 @@ class Projectsv2_0 extends ApiController
 			'state'           => Request::getInt('state', Project::STATE_PUBLISHED, 'post'),
 			'type'            => 1,
 			'provisioned'     => 0,
-			'private'         => Request::getInt('private', 1, 'post'),
+			'private'         => Request::getInt('private', $this->config->get('privacy', 1), 'post'),
+			//'access'          => Request::getInt('access', $this->config->get('access', 5), 'post'),
 			'owned_by_group'  => Request::getInt('owned_by_group', 0, 'post')
 		);
+
+		$fields['access'] = Project::PRIVACY_PUBLIC;
+		if ($fields['private'])
+		{
+			$fields['access'] = Project::PRIVACY_PRIVATE;
+		}
 
 		$row = Project::blank();
 
@@ -593,7 +578,7 @@ class Projectsv2_0 extends ApiController
 
 		if (!$row->save())
 		{
-			throw new Exception(Lang::txt('COM_PROJECTS_ERROR_SAVING_DATA'), 500);
+			throw new Exception($row->getError(), 500);
 		}
 
 		// Trigger after save event
@@ -927,6 +912,12 @@ class Projectsv2_0 extends ApiController
 			'private'        => Request::getInt('private', $row->get('private')),
 			'owned_by_group' => Request::getInt('owned_by_group', $row->get('owned_by_group'))
 		);
+
+		$fields['access'] = $row->get('access');
+		if ($fields['private'])
+		{
+			$fields['access'] = Project::PRIVACY_PRIVATE;
+		}
 
 		if (!$row->set($fields))
 		{

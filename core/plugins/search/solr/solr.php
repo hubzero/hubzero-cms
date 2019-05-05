@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -90,40 +66,27 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 		$searchComponent = SearchComponent::all()->whereEquals('name', $componentName)->row();
 		if ($searchComponent && $searchComponent->get('state') == 1)
 		{
-			$searchModel = Components\Search\Helpers\DiscoveryHelper::isSearchable($model);
-			$indexResultModel = $model;
-			if ($searchModel === false)
-			{
-				$searchModel = $searchComponent->getSearchableModel();
-				if (!$searchModel)
-				{
-					return false;
-				}
-				$searchModelBlank = new $searchModel;
-				$searchModelTable = $searchModelBlank->getTableName();
-				if ($table != $searchModelTable)
-				{
-					return false;
-				}
-				$indexResultModel = $searchModel::newFromResults($model);
-			}
-
+			$indexResultModel = $this->getSearchableModel($table, $model, $searchComponent);
 			if ($indexResultModel)
 			{
 				$config = Component::params('com_search');
 				$commitWithin = $config->get('solr_commit');
 				$index = new Hubzero\Search\Index($config);
+				$method = '';
 				$modelIndex = $indexResultModel->searchResult();
 				$blackListIds = Blacklist::getDocIdsByScope($indexResultModel::searchNamespace());
 				if ($modelIndex !== false && !in_array($modelIndex->id, $blackListIds))
 				{
 					$message = $index->updateIndex($modelIndex, $commitWithin);
+					$method = 'update';
 				}
 				else
 				{
 					$modelIndexId = $indexResultModel->searchId();
 					$message = $index->delete($modelIndexId);
+					$method = 'delete';
 				}
+				Event::trigger('search.sendSolrRequest', array($modelIndex, $method));
 				if ($message)
 				{
 					Notify::error($message);
@@ -155,11 +118,46 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 			$searchComponent = SearchComponent::all()->whereEquals('name', $extensionName)->row();
 			if ($searchComponent->get('state') == 1)
 			{
-				$config = Component::params('com_search');
-				$index = new Hubzero\Search\Index($config);
-				$modelIndexId = $model->searchId();
-				$index->delete($modelIndexId);
+				$indexResultModel = $this->getSearchableModel($table, $model, $searchComponent);
+				if ($indexResultModel)
+				{
+					$config = Component::params('com_search');
+					$index = new Hubzero\Search\Index($config);
+					$modelIndexId = $indexResultModel->searchId();
+					$index->delete($modelIndexId);
+					$method = 'delete';
+					Event::trigger('search.sendSolrRequest', array($indexResultModel->searchResult(), $method));
+				}
 			}
 		}
+	}
+
+	/**
+	 *
+	 * @param Components\Search\Models\Solr\SearchComponent $searchComponent
+	 * @param mixed	$table
+	 * @param mixed	$model
+	 * @return mixed
+	 */
+	private function getSearchableModel($table, $model, $searchComponent)
+	{
+		$searchModel = Components\Search\Helpers\DiscoveryHelper::isSearchable($model);
+		$indexResultModel = $model;
+		if ($searchModel === false)
+		{
+			$searchModel = $searchComponent->getSearchableModel();
+			if (!$searchModel)
+			{
+				return false;
+			}
+			$searchModelBlank = new $searchModel;
+			$searchModelTable = $searchModelBlank->getTableName();
+			if ($table != $searchModelTable)
+			{
+				return false;
+			}
+			$indexResultModel = $searchModel::newFromResults($model);
+		}
+		return $indexResultModel;
 	}
 }

@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // no direct access
@@ -58,7 +33,7 @@ if ($this->show_tools && $tools)
 		if ($i <= $this->limit_tools)
 		{
 			$class =  $tools[$i]->published ? 'published' : 'draft';
-			$urgency = ($this->getState($tools[$i]->state) == 'installed' or $this->getState($tools[$i]->state)=='created') ? ' ' . Lang::txt('MOD_MYCONTRIBUTIONS_ACTION_REQUIRED') : '' ;
+			$urgency = ($this->getState($tools[$i]->state) == 'installed' || $this->getState($tools[$i]->state) == 'created') ? ' ' . Lang::txt('MOD_MYCONTRIBUTIONS_ACTION_REQUIRED') : '';
 
 			$html .= '<li class="' . $class . '">' . "\n";
 			$html .= '<a href="' . Route::url('index.php?option=com_tools&controller=pipeline&task=status&app=' . $tools[$i]->toolname) . '">' . stripslashes($tools[$i]->toolname) . '</a>' . "\n";
@@ -123,9 +98,15 @@ else
 			// Determine css class
 			switch ($contributions[$i]->published)
 			{
-				case 1:  $class = 'published';  break;  // published
-				case 2:  $class = 'draft';      break;  // draft
-				case 3:  $class = 'pending';    break;  // pending
+				case 1:
+					$class = 'published';
+					break;
+				case 2:
+					$class = 'draft';
+						break;
+				case 3:
+					$class = 'pending';
+					break;
 			}
 
 			// Get author login

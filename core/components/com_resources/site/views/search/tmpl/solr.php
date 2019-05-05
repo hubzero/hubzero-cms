@@ -1,39 +1,15 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 $id = str_replace('resource-', '', $this->result['id']);
 $extras = Event::trigger('resources.onResourcesList', array($id));
 ?>
 
-<div class="result <?php echo (isset($this->result['access_level']) ? $this->result['access_level'] : 'public'); ?>" id="<?php echo $this->result['id']; ?>">
+<div class="result <?php echo isset($this->result['access_level']) ? $this->result['access_level'] : 'public'; ?>" id="<?php echo $this->result['id']; ?>">
 	<div class="result-body">
 		<!-- Cateogory : mandatory -->
 		<span class="result-category"><?php echo ucfirst($this->result['hubtype']); ?></span>
@@ -79,10 +55,10 @@ $extras = Event::trigger('resources.onResourcesList', array($id));
 				$fullCitation .= !empty($year) ? ' ('. $year . '). ' : '. ';
 				$title = !empty($this->result['title']) ? $this->result['title'] : '';
 				$title = in_array(substr(trim($title), -1), array('.', '?', '!')) ? $title : $title . '.';
-				$fullCitation .= $title . ' '; 
+				$fullCitation .= $title . ' ';
 				$journalTitle = !empty($this->result['journaltitle_s']) ? $this->result['journaltitle_s'] : '';
 				$journalTitle = in_array(substr(trim($journalTitle), -1), array('.', '?', '!')) || empty($journalTitle) ? $journalTitle : $journalTitle . '.';
-				$fullCitation .= '<em>' . $journalTitle . '</em> '; 
+				$fullCitation .= '<em>' . $journalTitle . '</em> ';
 				$fullCitation .= !empty($this->result['volumeno_s']) ? '<em>' . $this->result['volumeno_s']  . '</em>' : '';
 				$issueNumber = '';
 				if (!empty($this->result['issuenomonth_s']))
@@ -93,7 +69,6 @@ $extras = Event::trigger('resources.onResourcesList', array($id));
 						$subStrNum = strpos($issueNumber, '/');
 						$issueNum = substr($issueNumber, 0, $subStrNum);
 					}
-					
 					$issueNumber = !empty($issueNum) ? $issueNum : $issueNumber;
 					$issueNumber = '(' . $issueNumber . ').';
 				}

@@ -1,8 +1,7 @@
 /**
- * @package	 hubzero-cms
- * @file		plugins/members/dashboard/dashboard.jquery.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license	 http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 if (!jq) {
@@ -44,7 +43,7 @@ HUB.Plugins.MemberDashboard = {
 		}
 
 		// tell the modules we have js
-		$('.member_dashboard').addClass('js-enabled');
+		$('.modules-container').addClass('js-enabled');
 
 		// calculate working area
 		this._calculateWorkingArea();
@@ -447,18 +446,13 @@ HUB.Plugins.MemberDashboard = {
 
 	_calculateWorkingArea: function()
 	{
-		var $                  = this.jQuery,
-			modulesAreasWidth  = 0,
-			moduleBaseWidth    = 0,
-			moduleBaseHeight   = 0,
-			innerWrapWidth     = $('#page_main').width(),
-			pageContentMargins = 20;
-
-		// calculate total working area width
-		modulesAreasWidth = innerWrapWidth - pageContentMargins;
+		var $                = this.jQuery,
+			moduleBaseWidth  = 0,
+			moduleBaseHeight = 0,
+			innerWrapWidth   = $('.modules-container').innerWidth();
 
 		// get module width
-		moduleBaseWidth = parseInt(modulesAreasWidth / this.settings.max_cols);
+		moduleBaseWidth = parseInt(innerWrapWidth / this.settings.max_cols);
 
 		// subtract margins
 		moduleBaseWidth -= (this.settings.col_margin_horz * 2);

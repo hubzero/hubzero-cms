@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Courses\Models;
@@ -37,12 +12,12 @@ use Components\Courses\Tables;
 use Lang;
 use Date;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'section.php');
-require_once(__DIR__ . DS . 'base.php');
-require_once(__DIR__ . DS . 'section' . DS . 'code.php');
-require_once(__DIR__ . DS . 'section' . DS . 'date.php');
-require_once(__DIR__ . DS . 'section' . DS . 'badge.php');
-require_once(__DIR__ . DS . 'member.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'section.php';
+require_once __DIR__ . DS . 'base.php';
+require_once __DIR__ . DS . 'section' . DS . 'code.php';
+require_once __DIR__ . DS . 'section' . DS . 'date.php';
+require_once __DIR__ . DS . 'section' . DS . 'badge.php';
+require_once __DIR__ . DS . 'member.php';
 
 /**
  * Courses model class for a course
@@ -75,63 +50,63 @@ class Section extends Base
 	 *
 	 * @var object
 	 */
-	private $_roles = NULL;
+	private $_roles = null;
 
 	/**
 	 * List of members
 	 *
 	 * @var object
 	 */
-	private $_members = NULL;
+	private $_members = null;
 
 	/**
 	 * Member
 	 *
 	 * @var object
 	 */
-	private $_member = NULL;
+	private $_member = null;
 
 	/**
 	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
-	private $_codes = NULL;
+	private $_codes = null;
 
 	/**
 	 * \Components\Courses\Models\Section\Code
 	 *
 	 * @var object
 	 */
-	private $_code = NULL;
+	private $_code = null;
 
 	/**
 	 * \Components\Courses\Models\Iterator
 	 *
 	 * @var object
 	 */
-	private $_dates = NULL;
+	private $_dates = null;
 
 	/**
 	 * \Components\Courses\Models\Section\Date
 	 *
 	 * @var object
 	 */
-	private $_date = NULL;
+	private $_date = null;
 
 	/**
 	 * \Components\Courses\Models\Section\Badge
 	 *
 	 * @var object
 	 */
-	private $_badge = NULL;
+	private $_badge = null;
 
 	/**
 	 * Registry
 	 *
 	 * @var object
 	 */
-	private $_params = NULL;
+	private $_params = null;
 
 	/**
 	 * Constructor
@@ -501,7 +476,7 @@ class Section extends Base
 		}
 		if (!$this->get('course_id'))
 		{
-			require_once(__DIR__ . DS . 'offering.php');
+			require_once __DIR__ . DS . 'offering.php';
 			$offering = Offering::getInstance($this->get('offering_id'));
 			$this->set('course_id', $offering->get('course_id'));
 		}
@@ -548,7 +523,7 @@ class Section extends Base
 		}
 		if (!$this->get('course_id'))
 		{
-			require_once(__DIR__ . DS . 'offering.php');
+			require_once __DIR__ . DS . 'offering.php';
 			$offering = Offering::getInstance($this->get('offering_id'));
 			$this->set('course_id', $offering->get('course_id'));
 		}
@@ -767,7 +742,7 @@ class Section extends Base
 	 * Get section badge
 	 *
 	 * @return     obj
-	*/
+  */
 	public function badge()
 	{
 		if (!isset($this->_badge))

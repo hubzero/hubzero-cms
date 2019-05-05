@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -106,12 +82,12 @@ $MY_SELF   = str_replace('&', '&amp;', $MY_SELF);
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'S','Directory Name',  "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'T','Number of Files', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'H','Total Hits',      "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'Z','Total Size',      "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'C','Avg. Hits',       "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'A','Avg. Size',       "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'S', 'Directory Name', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'T', 'Number of Files', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'H', 'Total Hits', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'Z', 'Total Size', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'C', 'Avg. Hits', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'A', 'Avg. Size', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -138,12 +114,24 @@ $MY_SELF   = str_replace('&', '&amp;', $MY_SELF);
 	{
 		switch ($this->MYREQUEST['SORT1'])
 		{
-			case 'A': $kn = sprintf('%015d-', $v['size'] / $v['ents']); break;
-			case 'T': $kn = sprintf('%015d-', $v['ents']);              break;
-			case 'H': $kn = sprintf('%015d-', $v['hits']);              break;
-			case 'Z': $kn = sprintf('%015d-', $v['size']);              break;
-			case 'C': $kn = sprintf('%015d-', $v['hits'] / $v['ents']); break;
-			case 'S': $kn = $k;                                         break;
+			case 'A':
+				$kn = sprintf('%015d-', $v['size'] / $v['ents']);
+				break;
+			case 'T':
+				$kn = sprintf('%015d-', $v['ents']);
+				break;
+			case 'H':
+				$kn = sprintf('%015d-', $v['hits']);
+				break;
+			case 'Z':
+				$kn = sprintf('%015d-', $v['size']);
+				break;
+			case 'C':
+				$kn = sprintf('%015d-', $v['hits'] / $v['ents']);
+				break;
+			case 'S':
+				$kn = $k;
+				break;
 		}
 		$list[$kn . $k] = array($k, $v['ents'], $v['hits'], $v['size']);
 	}
@@ -153,8 +141,12 @@ $MY_SELF   = str_replace('&', '&amp;', $MY_SELF);
 		// sort list
 		switch ($this->MYREQUEST['SORT2'])
 		{
-			case "A":	krsort($list);	break;
-			case "D":	ksort($list);	break;
+			case "A":
+				krsort($list);
+				break;
+			case "D":
+				ksort($list);
+				break;
 		}
 		// output list
 		$i = 0;

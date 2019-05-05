@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -41,7 +17,7 @@ if (!$this->row->wasViewed())
 
 $creator = User::getInstance($this->row->log->get('created_by'));
 
-$name = Lang::txt('PLG_GROUPS_ACTIVITY_ANONYMOUS');
+$name = Lang::txt('JANONYMOUS');
 
 $online = false;
 
@@ -204,7 +180,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 									<img src="<?php echo Route::url($link); ?>" alt="<?php echo $this->escape($attachment->get('description')); ?>" width="<?php echo ($attachment->width() > 400) ? 400 : $attachment->width(); ?>" />
 									<p class="attachment-meta">
 										<span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
-										<span class="attachment-action"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FILE_DOWNLOAD'); ?></span>
+										<span class="attachment-action"><?php echo Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD'); ?></span>
 									</p>
 								</a>
 								<?php
@@ -216,7 +192,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 									<p class="attachment-description"><?php echo $attachment->get('description'); ?></p>
 									<p class="attachment-meta">
 										<span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
-										<span class="attachment-action"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FILE_DOWNLOAD'); ?></span>
+										<span class="attachment-action"><?php echo Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD'); ?></span>
 									</p>
 								</a>
 								<?php
@@ -235,17 +211,17 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 							<?php if (Request::getInt('reply', 0) == $this->row->get('id')) { ?>
 								<a
 									class="icon-reply reply tooltips active"
-									data-txt-active="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_CANCEL'); ?>"
+									data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>"
 									data-txt-inactive="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_REPLY'); ?>"
-									title="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_CANCEL'); ?>"
+									title="<?php echo Lang::txt('JCANCEL'); ?>"
 									href="<?php echo Route::url($base); ?>"
 									rel="comment-form<?php echo $this->row->get('id'); ?>"><!--
-									--><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_CANCEL'); ?><!--
+									--><?php echo Lang::txt('JCANCEL'); ?><!--
 								--></a>
 							<?php } else { ?>
 								<a
 									class="icon-reply reply tooltips"
-									data-txt-active="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_CANCEL'); ?>"
+									data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>"
 									data-txt-inactive="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_REPLY'); ?>"
 									title="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_REPLY'); ?>"
 									href="<?php echo Route::url($base . '&action=reply&activity=' . $this->row->get('id')); ?>"
@@ -297,7 +273,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 			<div class="comment-add<?php if (Request::getInt('reply', 0) != $this->row->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->row->get('id'); ?>">
 				<form id="cform<?php echo $this->row->get('id'); ?>" action="<?php echo Route::url($base); ?>" method="post" enctype="multipart/form-data">
 					<fieldset>
-						<legend><span><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_REPLYING_TO', (!$this->row->log->get('anonymous') ? $name : Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS'))); ?></span></legend>
+						<legend><span><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_REPLYING_TO', (!$this->row->log->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="activity[id]" value="0" />
 						<input type="hidden" name="activity[action]" value="created" />

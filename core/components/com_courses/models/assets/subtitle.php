@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2011-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Courses\Models\Assets;
@@ -66,9 +41,9 @@ class Subtitle extends Handler
 	public function create()
 	{
 		// Include needed files
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.association.php');
-		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.php');
-		require_once(dirname(__DIR__) . DS . 'asset.php');
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.association.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.php';
+		require_once dirname(__DIR__) . DS . 'asset.php';
 
 		// Get the file
 		if (isset($_FILES['files']))
@@ -182,8 +157,8 @@ class Subtitle extends Handler
 
 		// create subtitle details based on filename
 		$info      = pathinfo($file);
-		$name      = str_replace('-auto','', $info['filename']);
-		$autoplay  = (strstr($info['filename'],'-auto')) ? 1 : 0;
+		$name      = str_replace('-auto', '', $info['filename']);
+		$autoplay  = (strstr($info['filename'], '-auto')) ? 1 : 0;
 		$source    = $file;
 
 		// use only the last segment from name (ex. ThisIsATest.English => English)
@@ -217,7 +192,7 @@ class Subtitle extends Handler
 		}
 
 		// trim transcript and replace add slide markers
-		$transcript = str_replace(array("\r\n", "\n"),array('',''), $transcript);
+		$transcript = str_replace(array("\r\n", "\n"), array('',''), $transcript);
 		$transcript = preg_replace("/\\[([^\\]]*)\\]/ux", "\n\n[$1]", $transcript);
 
 		// add title to transcript
@@ -310,9 +285,9 @@ class Subtitle extends Handler
 	private function _parseSubtitleFile($file)
 	{
 		define('SRT_STATE_SUBNUMBER', 0);
-		define('SRT_STATE_TIME',      1);
-		define('SRT_STATE_TEXT',      2);
-		define('SRT_STATE_BLANK',     3);
+		define('SRT_STATE_TIME', 1);
+		define('SRT_STATE_TEXT', 2);
+		define('SRT_STATE_BLANK', 3);
 
 		$lines   = file($file);
 		$subs    = array();

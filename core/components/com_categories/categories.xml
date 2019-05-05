@@ -3,9 +3,9 @@
 	<name>com_categories</name>
 	<creationDate>December 2007</creationDate>
 	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
 	<authorEmail>support@hubzero.org</authorEmail>
-	<authorUrl>http://hubzero.org</authorUrl>
-	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
+	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<version>2.5.0</version>
 	<description>COM_CATEGORIES_XML_DESCRIPTION</description>

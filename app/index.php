@@ -1,9 +1,7 @@
 <?php
 /**
- * HUBzero CMS
- *
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -24,4 +22,3 @@ define('DS', DIRECTORY_SEPARATOR);
 
 // Load the webroot application
 require_once PATH_ROOT . DS . 'index.php';
-

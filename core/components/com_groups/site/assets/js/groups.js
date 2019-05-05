@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_groups/assets/js/groups.jquery.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 //-----------------------------------------------------------
@@ -193,7 +192,7 @@ HUB.Groups = {
 	{
 		var $ = this.jQuery;
 
-		$(".cancel_group_membership").live('click', function(e) {
+		$(".cancel_group_membership").on('click', function(e) {
 			e.preventDefault();
 
 			var answer = confirm('Are you sure you would like to cancel your group membership?');
@@ -291,7 +290,7 @@ HUB.Groups = {
 				min       = floatingIframe.parents('form').find('fieldset').first().offset().top,
 				max       = floatingIframe.parents('form').find('fieldset').last().offset().top + floatingIframe.parents('form').find('fieldset').last().outerHeight(true) - floatingIframe.outerHeight(true);
 
-			if ( scrollTop > min && scrollTop < max)
+			if (scrollTop > min && scrollTop < max)
 			{
 				floatingIframe.css({
 					top: scrollTop - min
@@ -844,7 +843,7 @@ HUB.Groups = {
 			data: {
 				order: sort
 			},
-			success: function( data, status, jqXHR )
+			success: function(data, status, jqXHR)
 			{
 				$('.pages').load(window.location.href + " .pages > *", function(){
 					$('.pages').removeClass('rebuilding');
@@ -1079,8 +1078,9 @@ HUB.Groups = {
 				layout: 'hex',
 				submit: 0,
 				onChange: function(hsb,hex,rgb,el,fromSetColor) {
-					if(!fromSetColor)
+					if(!fromSetColor) {
 						categoryColorPicker.val(hex).css('border-color','#' + hex);
+					}
 				}
 			});
 		}
@@ -1088,11 +1088,11 @@ HUB.Groups = {
 
 	//-----
 
-	_getUrlParam: function( paramName )
+	_getUrlParam: function(paramName)
 	{
-		var reParam = new RegExp( '(?:[\?&]|&)' + paramName + '=([^&]+)', 'i' ) ;
-		var match = window.location.search.match(reParam) ;
-		return ( match && match.length > 1 ) ? match[ 1 ] : null ;
+		var reParam = new RegExp('(?:[\?&]|&)' + paramName + '=([^&]+)', 'i');
+		var match = window.location.search.match(reParam);
+		return (match && match.length > 1) ? match[ 1 ] : null;
 	},
 }
 

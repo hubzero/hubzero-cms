@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Menus\Admin\Controllers;
@@ -482,7 +458,7 @@ class Items extends AdminController
 		// Fail if checked out not by 'me'
 		if ($row->get('checked_out') && $row->get('checked_out') != User::get('id'))
 		{
-			Notify::warning(Lang::txt('COM_MENUS_CHECKED_OUT'));
+			Notify::warning(Lang::txt('JLIB_HTML_CHECKED_OUT'));
 			return $this->cancelTask();
 		}
 
@@ -1141,6 +1117,11 @@ class Items extends AdminController
 				$row->checkin();
 			}
 		}
+
+		// Clear the ancillary data from the session.
+		User::setState('com_menus.edit.item.data', null);
+		User::setState('com_menus.edit.item.type', null);
+		User::setState('com_menus.edit.item.link', null);
 
 		$menutype = Request::getString('menutype');
 

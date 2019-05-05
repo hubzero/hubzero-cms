@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        plugins/members/profile/profile.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 //-----------------------------------------------------------
@@ -463,7 +462,7 @@ HUB.Members.Profile = {
 			beforeLoad: function() 
 			{
 				href = $(this).attr('href').replace("#", "");
-				href += (href.indexOf('?') == -1) ? '?no_html=1' : '&no_html=1' ;
+				href += (href.indexOf('?') == -1) ? '?no_html=1' : '&no_html=1';
 				$(this).attr('href', href);
 			},
 			beforeShow: function()
@@ -602,7 +601,7 @@ HUB.Members.Profile = {
 				beforeLoad: function() 
 				{
 					href = $("#usage-agreement-popup form").attr('action').replace("#", "");
-					href += (href.indexOf('?') == -1) ? '?no_html=1' : '&no_html=1' ;
+					href += (href.indexOf('?') == -1) ? '?no_html=1' : '&no_html=1';
 					$("#usage-agreement-popup form").attr('action', href);	
 				}
 			});

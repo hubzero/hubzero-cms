@@ -1,36 +1,20 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
 defined('_HZEXEC_') or die();
+
+$path = trim($this->rconfig->get('uploadpath'), DS);
+$root = substr(PATH_APP, strlen(PATH_ROOT));
+if (substr($path, 0, strlen($root)) != $root)
+{
+	$path = $root . DS . $path;
+}
+$path .= DS;
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -102,17 +86,19 @@ function doFileoptions()
 					document.forms['adminForm'].elements['params[series_banner]'].value = '<?php echo $this->rconfig->get('uploadpath') . '/'; ?>' + filepath;
 				} else if (act == '2') {
 					//if (filepath) {
-					//document.forms['adminForm'].elements['path'].value = '<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath;
+					//document.forms['adminForm'].elements['path'].value = '<?php echo $path; ?>' + filepath;
 					document.forms['adminForm'].elements['fields[path]'].value = filepath;
 					//}
 				} else if (act == '3') {
 					var content = <?php echo $this->editor()->getContent('field-fulltxt'); ?>
-					content = content + '<p><img class="contentimg" src="<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath + '" alt="image" /></p>';
-					<?php echo $this->editor()->setContent('field-fulltxt', 'content'); ?>
+					content = content + '<p><img class="contentimg" src="<?php echo $path; ?>' + filepath + '" alt="image" /></p>';
+					<?php //echo $this->editor()->setContent('field-fulltxt', 'content'); ?>
+					setEditorContent('field-fulltxt', content);
 				} else if (act == '4') {
 					var content = <?php echo $this->editor()->getContent('field-fulltxt'); ?>
-					content = content + '<p><a href="<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath + '">' + filepath + '</a></p>';
-					<?php echo $this->editor()->setContent('field-fulltxt', 'content'); ?>
+					content = content + '<p><a href="<?php echo $path; ?>' + filepath + '">' + filepath + '</a></p>';
+					<?php //echo $this->editor()->setContent('field-fulltxt', 'content'); ?>
+					setEditorContent('field-fulltxt', content);
 				}
 			}
 		}

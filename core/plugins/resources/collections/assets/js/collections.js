@@ -1,9 +1,9 @@
 /**
- * @package     hubzero-cms
- * @file        plugins/resources/collections/assets/js/collections.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
+
 $(function(){
 	$('#add-collection').fancybox();
 	$('body').on('change', '#collectionForm #pid', function(e){

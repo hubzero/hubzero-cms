@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        modules/mod_slideshow/mod_slideshow.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 //----------------------------------------------------------
@@ -149,11 +148,17 @@ HUB.ModSlideshow = {
 			}
 		}
 		// MSN/WebTV 2.6 supports Flash 4
-		else if (navigator.userAgent.toLowerCase().indexOf("webtv/2.6") != -1) flashVer = 4;
+		else if (navigator.userAgent.toLowerCase().indexOf("webtv/2.6") != -1) {
+			flashVer = 4;
+		}
 		// WebTV 2.5 supports Flash 3
-		else if (navigator.userAgent.toLowerCase().indexOf("webtv/2.5") != -1) flashVer = 3;
+		else if (navigator.userAgent.toLowerCase().indexOf("webtv/2.5") != -1) {
+			flashVer = 3;
+		}
 		// older WebTV supports Flash 2
-		else if (navigator.userAgent.toLowerCase().indexOf("webtv") != -1) flashVer = 2;
+		else if (navigator.userAgent.toLowerCase().indexOf("webtv") != -1) {
+			flashVer = 2;
+		}
 		else if ( HUB.ModSlideshow.isIE && HUB.ModSlideshow.isWin && !HUB.ModSlideshow.isOpera ) {
 			flashVer = HUB.ModSlideshow.ControlVersion();
 		}
@@ -182,11 +187,13 @@ HUB.ModSlideshow = {
 			if (versionMajor > parseFloat(reqMajorVer)) {
 				return true;
 			} else if (versionMajor == parseFloat(reqMajorVer)) {
-				if (versionMinor > parseFloat(reqMinorVer))
+				if (versionMinor > parseFloat(reqMinorVer)) {
 					return true;
+				}
 				else if (versionMinor == parseFloat(reqMinorVer)) {
-					if (versionRevision >= parseFloat(reqRevision))
+					if (versionRevision >= parseFloat(reqRevision)) {
 						return true;
+					}
 				}
 			}
 			return false;
@@ -194,10 +201,12 @@ HUB.ModSlideshow = {
 	},
 
 	AddExtension: function(src, ext) {
-		if (src.indexOf('?') != -1)
+		if (src.indexOf('?') != -1) {
 			return src.replace(/\?/, ext+'?'); 
-		else
+		}
+		else {
 			return src + ext;
+		}
 	},
 
 	Generateobj: function(objAttrs, params, embedAttrs) { 
@@ -205,14 +214,20 @@ HUB.ModSlideshow = {
 		if (HUB.ModSlideshow.isIE && HUB.ModSlideshow.isWin && !HUB.ModSlideshow.isOpera) {
 			str += '<object ';
 			for (var i in objAttrs)
+			{
 				str += i + '="' + objAttrs[i] + '" ';
+			}
 			for (var i in params)
+			{
 				str += '><param name="WMode" value="Transparent"/><param name="' + i + '" value="' + params[i] + '" /> ';
+			}
 			str += '></object>';
 		} else {
 			str += '<embed wmode="transparent" ';
 			for (var i in embedAttrs)
+			{
 				str += i + '="' + embedAttrs[i] + '" ';
+			}
 			str += '> </embed>';
 		}
 		return str;
@@ -316,7 +331,9 @@ HUB.ModSlideshow = {
 			}
 		}
 		ret.objAttrs["classid"] = classid;
-		if (mimeType) ret.embedAttrs["type"] = mimeType;
+		if (mimeType) {
+			ret.embedAttrs["type"] = mimeType;
+		}
 		return ret;
 	}
 }

@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Steve Snyder <snyder13@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -102,9 +77,9 @@ $show_weight = array_key_exists('show_weight', $_GET);
 												$contrib_len = count($contributors);
 											?>
 											Contributor(s):
-											<?php foreach ($contributors as $idx=>$contrib): ?>
+											<?php foreach ($contributors as $idx => $contrib): ?>
 												<?php if (isset($contrib_ids[$idx])): ?>
-												<a href="<?php echo Route::url('index.php?option=com_members&id=' . $contrib_ids[$idx]); ?>"><?php echo $contrib; ?></a><?php if ($idx != $contrib_len - 1) echo ', '; ?>
+												<a href="<?php echo Route::url('index.php?option=com_members&id=' . $contrib_ids[$idx]); ?>"><?php echo $contrib; ?></a><?php if ($idx != $contrib_len - 1) { echo ', ';} ?>
 												<?php else: ?>
 												<?php echo $contrib; ?>
 												<?php endif; ?>
@@ -133,24 +108,27 @@ $show_weight = array_key_exists('show_weight', $_GET);
 							<p class="clear"></p>
 						</div><!-- / .summary -->
 						<?php
-							$last_type = NULL;
+							$last_type = null;
 							if (($children = $res->get_children())):
 								$ctypec = array();
 								foreach ($children as $child)
 								{
-									if (($section = $child->get_section()))
-										if (!array_key_exists($section, $ctypec))
+									if (($section = $child->get_section())) {
+										if (!array_key_exists($section, $ctypec)) {
 											$ctypec[$section] = 1;
-										else
+										} else {
 											++$ctypec[$section];
+										}
+									}
 								}
 								if ($ctypec):
 							?>
 							<ul class="child-types">
-								<?php foreach ($children as $idx=>$child): ?>
+								<?php foreach ($children as $idx => $child): ?>
 									<?php
-										if (!($current_type = $child->get_section()))
+										if (!($current_type = $child->get_section())) {
 											continue;
+										}
 										if (!$last_type):
 									?>
 										<li>
@@ -197,7 +175,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 	<?php elseif (($raw = $this->terms->get_raw())): ?>
 		<p><?php echo Lang::txt('COM_SEARCH_RESULTS_NONE', $this->escape($raw)); ?></p>
 		<?php
-			# raw terms were specified but no chunks were parsed out, meaning they were all stop words, so we can give a quasi-helpful explanation of why nothing turned up
+			// raw terms were specified but no chunks were parsed out, meaning they were all stop words, so we can give a quasi-helpful explanation of why nothing turned up
 			if (!$this->terms->any() || strlen($raw) <= 3):
 		?>
 			<p class="warning"><?php echo Lang::txt('COM_SEARCH_WARNING_SHORT_WORDS'); ?></p>
@@ -218,7 +196,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 						<strong><?php echo Lang::txt('COM_SEARCH_FILTER_ALL'); ?> <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></strong>
 					<?php endif; ?>
 				</li>
-			<?php foreach ($this->results->get_result_counts() as $cat=>$def): ?>
+			<?php foreach ($this->results->get_result_counts() as $cat => $def): ?>
 				<?php if ($def['count']): ?>
 					<li>
 						<?php if ($this->plugin == $cat && !$this->section): ?>
@@ -231,7 +209,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 						if ((!defined($fc_child_flag) || constant($fc_child_flag)) && array_key_exists('sections', $def) && count($def['sections']) > 1):
 						?>
 							<ul>
-							<?php foreach ($def['sections'] as $section_key=>$sdef): ?>
+							<?php foreach ($def['sections'] as $section_key => $sdef): ?>
 								<?php
 								if (!$this->plugin || !$this->section || $cat != $this->plugin || $this->section != $section_key):
 								?>

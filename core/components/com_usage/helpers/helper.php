@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Usage\Helpers;
@@ -94,15 +69,27 @@ class Helper
 	/**
 	 * Print Top X List from Database
 	 *
-	 * @param      object $db Parameter description (if any) ...
-	 * @param      unknown $top Parameter description (if any) ...
-	 * @param      mixed $t Parameter description (if any) ...
-	 * @param      mixed $enddate Parameter description (if any) ...
-	 * @param      integer $raw Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   object   $db
+	 * @param   unknown  $top
+	 * @param   mixed    $t
+	 * @param   mixed    $enddate
+	 * @param   integer  $raw
+	 * @return  string
 	 */
 	public static function toplist($db, $top, $t=0, $enddate=0, $raw=0)
 	{
+		if (!$db->tableExists('tops'))
+		{
+			\Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'tops'));
+			return false;
+		}
+
+		if (!$db->tableExists('topvals'))
+		{
+			\Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'topvals'));
+			return false;
+		}
+
 		// Set top list parameters...
 		$hub = 1;
 		$html = '';
@@ -319,6 +306,12 @@ class Helper
 	 */
 	public static function check_for_data($db, $yearmonth, $period)
 	{
+		if (!$db->tableExists('totalvals'))
+		{
+			\Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'totalvals'));
+			return false;
+		}
+
 		$sql = "SELECT COUNT(datetime)
 				FROM totalvals
 				WHERE datetime LIKE " . $db->quote($yearmonth . '-%') . "
@@ -341,6 +334,12 @@ class Helper
 	 */
 	public static function check_for_classdata($db, $yearmonth)
 	{
+		if (!$db->tableExists('classvals'))
+		{
+			\Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'classvals'));
+			return false;
+		}
+
 		$sql = "SELECT COUNT(datetime)
 				FROM classvals
 				WHERE datetime LIKE " . $db->quote($yearmonth . '-%');
@@ -362,6 +361,12 @@ class Helper
 	 */
 	public static function check_for_regiondata($db, $yearmonth)
 	{
+		if (!$db->tableExists('regionvals'))
+		{
+			\Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'regionvals'));
+			return false;
+		}
+
 		$sql = "SELECT COUNT(datetime)
 				FROM regionvals
 				WHERE datetime LIKE " . $db->quote($yearmonth . '-%');
@@ -375,13 +380,11 @@ class Helper
 	}
 
 	/**
-	 * Short description for 'dateformat'
+	 * Output data in specified format
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $seldate Parameter description (if any) ...
-	 * @param      string $period Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   string  $seldate
+	 * @param   string  $period
+	 * @return  mixed
 	 */
 	public static function dateformat($seldate, $period='month')
 	{
@@ -436,37 +439,32 @@ class Helper
 	}
 
 	/**
-	 * Short description for 'dateformat_plot'
+	 * Output format for plotted data
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $seldate Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   string  $seldate
+	 * @return  string
 	 */
 	public static function dateformat_plot($seldate)
 	{
 		$year  = substr($seldate, 0, 4);
 		$month = substr($seldate, 5, 2);
 		$day   = substr($seldate, 8, 2);
+
 		if ($day > 0)
 		{
 			return sprintf("%02d/%02d/%04d", $month, $day, $year);
 		}
-		else
-		{
-			return sprintf("%02d/%04d", $month, $year);
-		}
+
+		return sprintf("%02d/%04d", $month, $year);
 	}
 
 	/**
-	 * Short description for 'seldate_value'
+	 * Retrieve value from an array for specified date
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $valarray Parameter description (if any) ...
-	 * @param      unknown $seldate Parameter description (if any) ...
-	 * @param      string $valkey Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   array   $valarray
+	 * @param   string  $seldate
+	 * @param   string  $valkey
+	 * @return  integer
 	 */
 	public static function seldate_value($valarray, $seldate, $valkey='value')
 	{
@@ -480,6 +478,7 @@ class Helper
 				}
 			}
 		}
+
 		return 0;
 	}
 

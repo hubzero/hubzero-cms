@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -58,7 +33,7 @@ if ($this->cats)
 			$blob = ($cat['category']) ? $cat['category'] : '';
 
 			// Build the HTML
-			$l = "\t" . '<li' . $a . '><a href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area='. urlencode(stripslashes($blob))) . '">' . $this->escape(stripslashes($cat['title'])) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
+			$l = "\t" . '<li' . $a . '><a href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area='. urlencode(stripslashes($blob))) . '&limit=' . $this->limit . '">' . $this->escape(stripslashes($cat['title'])) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
 
 			// Are there sub-categories?
 			if (isset($cat['_sub']) && is_array($cat['_sub']))
@@ -78,7 +53,7 @@ if ($this->cats)
 						$blob = ($subcat['category']) ? $subcat['category'] : '';
 
 						// Build the HTML
-						$k[] = "\t\t\t" . '<li' . $a . '><a href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area='. urlencode(stripslashes($blob))) . '">' . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">' . $subcat['total'] . '</span></a></li>';
+						$k[] = "\t\t\t" . '<li' . $a . '><a href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area='. urlencode(stripslashes($blob))) . '&limit=' . $this->limit . '">' . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">' . $subcat['total'] . '</span></a></li>';
 					}
 				}
 				// Do we actually have any links?
@@ -117,29 +92,29 @@ if ($this->cats)
 				<ul class="entries-menu filter-options">
 					<?php if (count($links) > 0) { ?>
 						<li class="filter-categories">
-							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=' . $this->active); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_CATEGORIES'); ?></a>
+							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=' . $this->active . '&limit=' . $this->limit); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_CATEGORIES'); ?></a>
 							<ul>
 								<?php echo implode("\n", $links); ?>
 							</ul>
 						</li>
 					<?php } ?>
 					<li>
-						<a<?php echo ($this->access == 'all') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=all'); ?>">
+						<a<?php echo ($this->access == 'all') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=all&limit=' . $this->limit); ?>">
 							<?php echo Lang::txt('PLG_GROUPS_RESOURCES_ACCESS_ALL'); ?>
 						</a>
 					</li>
 					<li>
-						<a<?php echo ($this->access == 'public') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=public'); ?>">
+						<a<?php echo ($this->access == 'public') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=public&limit=' . $this->limit); ?>">
 							<?php echo Lang::txt('PLG_GROUPS_RESOURCES_ACCESS_PUBLIC'); ?>
 						</a>
 					</li>
 					<li>
-						<a<?php echo ($this->access == 'protected') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=protected'); ?>">
+						<a<?php echo ($this->access == 'protected') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=protected&limit=' . $this->limit); ?>">
 							<?php echo Lang::txt('PLG_GROUPS_RESOURCES_ACCESS_PROTECTED'); ?>
 						</a>
 					</li>
 					<li>
-						<a<?php echo ($this->access == 'private') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=private'); ?>">
+						<a<?php echo ($this->access == 'private') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=private&limit=' . $this->limit); ?>">
 							<?php echo Lang::txt('PLG_GROUPS_RESOURCES_ACCESS_PRIVATE'); ?>
 						</a>
 					</li>
@@ -147,24 +122,24 @@ if ($this->cats)
 
 				<ul class="entries-menu">
 					<li>
-						<a class="<?php echo ($this->sort == 'date') ? 'active ' . ($this->sortdir == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=date&sortdir=' . ($this->sort == 'date' ? ($this->sortdir == 'desc' ? 'asc' : 'desc') : 'asc') . '&access=' . $this->access); ?>" title="Sort by newest to oldest">
+						<a class="<?php echo ($this->sort == 'date') ? 'active ' . ($this->sortdir == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=date&sortdir=' . ($this->sort == 'date' ? ($this->sortdir == 'desc' ? 'asc' : 'desc') : 'asc') . '&access=' . $this->access . '&limit=' . $this->limit); ?>" title="Sort by newest to oldest">
 							<?php echo Lang::txt('PLG_GROUPS_RESOURCES_SORT_BY_DATE'); ?>
 						</a>
 					</li>
 					<li>
-						<a class="<?php echo ($this->sort == 'title') ? 'active ' . ($this->sortdir == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=title&sortdir=' . ($this->sort == 'title' ? ($this->sortdir == 'desc' ? 'asc' : 'desc') : 'asc') . '&access=' . $this->access); ?>" title="Sort by title">
+						<a class="<?php echo ($this->sort == 'title') ? 'active ' . ($this->sortdir == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=title&sortdir=' . ($this->sort == 'title' ? ($this->sortdir == 'desc' ? 'asc' : 'desc') : 'asc') . '&access=' . $this->access . '&limit=' . $this->limit); ?>" title="Sort by title">
 							<?php echo Lang::txt('PLG_GROUPS_RESOURCES_SORT_BY_TITLE'); ?>
 						</a>
 					</li>
 					<?php if ($config->get('show_ranking')) { ?>
 						<li>
-							<a class="<?php echo ($this->sort == 'ranking') ? 'active ' . ($this->sortdir == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=ranking&sortdir=' . ($this->sort == 'ranking' ? ($this->sortdir == 'desc' ? 'asc' : 'desc') : 'asc') . '&access=' . $this->access); ?>" title="Sort by popularity">
+							<a class="<?php echo ($this->sort == 'ranking') ? 'active ' . ($this->sortdir == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=ranking&sortdir=' . ($this->sort == 'ranking' ? ($this->sortdir == 'desc' ? 'asc' : 'desc') : 'asc') . '&access=' . $this->access . '&limit=' . $this->limit); ?>" title="Sort by popularity">
 								<?php echo Lang::txt('PLG_GROUPS_RESOURCES_SORT_BY_RANKING'); ?>
 							</a>
 						</li>
 					<?php } else { ?>
 						<li>
-							<a class="<?php echo ($this->sort == 'rating') ? 'active ' . ($this->sortdir == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=rating&sortdir=' . ($this->sort == 'rating' ? ($this->sortdir == 'desc' ? 'asc' : 'desc') : 'asc') . '&access=' . $this->access); ?>" title="Sort by popularity">
+							<a class="<?php echo ($this->sort == 'rating') ? 'active ' . ($this->sortdir == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=rating&sortdir=' . ($this->sort == 'rating' ? ($this->sortdir == 'desc' ? 'asc' : 'desc') : 'asc') . '&access=' . $this->access . '&limit=' . $this->limit); ?>" title="Sort by popularity">
 								<?php echo Lang::txt('PLG_GROUPS_RESOURCES_SORT_BY_RATING'); ?>
 							</a>
 						</li>

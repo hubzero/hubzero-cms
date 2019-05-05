@@ -32,7 +32,7 @@ class UsersModelUser extends JModelAdmin
 	 * @return  JTable  A database object
 	 *
 	 * @since   1.6
-	*/
+  */
 	public function getTable($type = 'User', $prefix = 'JTable', $config = array())
 	{
 		$table = JTable::getInstance($type, $prefix, $config);
@@ -149,7 +149,7 @@ class UsersModelUser extends JModelAdmin
 		// Fire HUBzero registration check here so that we don't have to duplicate validation code
 		require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php';
 		$registration = new \Components\Members\Models\Registration();
-		$registration->set('name',  $data['name']);
+		$registration->set('name', $data['name']);
 		$registration->set('login', $data['username']);
 		$registration->set('email', $data['email']);
 		$registration->set('confirmEmail', $data['email']);

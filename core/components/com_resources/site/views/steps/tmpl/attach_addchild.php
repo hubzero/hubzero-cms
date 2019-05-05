@@ -1,4 +1,10 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 $baseUrl = '/resources/draft?controller=attachments&no_html=1';
 $actionUrl = $baseUrl . '&task=create';
 ?>

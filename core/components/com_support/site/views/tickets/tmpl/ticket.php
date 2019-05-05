@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -183,7 +158,7 @@ $cc = array();
 											<p class="attachment-description"><?php echo $attachment->get('description'); ?></p>
 											<p class="attachment-meta">
 												<span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
-												<span class="attachment-action"><?php echo Lang::txt('COM_SUPPORT_CLICK_TO_DOWNLOAD'); ?></span>
+												<span class="attachment-action"><?php echo Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD'); ?></span>
 											</p>
 										</a>
 										<?php
@@ -450,45 +425,51 @@ $cc = array();
 					<?php if ($this->row->access('update', 'tickets') > 0) { ?>
 						<legend><span><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS'); ?></span></legend>
 
-						<label for="tags">
-							<?php echo Lang::txt('COM_SUPPORT_COMMENT_TAGS'); ?>:<br />
-							<?php
-							$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->row->tags('string', null))));
+						<div class="form-group">
+							<label for="tags">
+								<?php echo Lang::txt('COM_SUPPORT_COMMENT_TAGS'); ?>:<br />
+								<?php
+								$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->row->tags('string', null))));
 
-							if (count($tf) > 0) {
-								echo $tf[0];
-							} else { ?>
-								<input type="text" name="tags" id="tags" value="<?php echo $this->escape($this->row->tags('string')); ?>" />
-							<?php } ?>
-						</label>
+								if (count($tf) > 0) {
+									echo $tf[0];
+								} else { ?>
+									<input type="text" name="tags" id="tags" class="form-control" value="<?php echo $this->escape($this->row->tags('string')); ?>" />
+								<?php } ?>
+							</label>
+						</div>
 
 						<div class="grid">
 							<div class="col span6">
-								<label for="acgroup">
-									<?php echo Lang::txt('COM_SUPPORT_COMMENT_GROUP'); ?>:
-									<?php
-									$group = '';
-									if ($this->row->get('group_id'))
-									{
-										if ($g = \Hubzero\User\Group::getInstance($this->row->get('group_id')))
+								<div class="form-group">
+									<label for="acgroup">
+										<?php echo Lang::txt('COM_SUPPORT_COMMENT_GROUP'); ?>:
+										<?php
+										$group = '';
+										if ($this->row->get('group_id'))
 										{
-											$group = $g->get('cn');
+											if ($g = \Hubzero\User\Group::getInstance($this->row->get('group_id')))
+											{
+												$group = $g->get('cn');
+											}
 										}
-									}
 
-									$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'ticket[group_id]', 'acgroup', '', $group, '', 'ticketowner')));
-									if (count($gc) > 0) {
-										echo $gc[0];
-									} else { ?>
-										<input type="text" name="ticket[group_id]" value="<?php echo $this->row->get('group_id'); ?>" id="acgroup" value="" autocomplete="off" />
-									<?php } ?>
-								</label>
+										$gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('groups', 'ticket[group_id]', 'acgroup', '', $group, '', 'ticketowner')));
+										if (count($gc) > 0) {
+											echo $gc[0];
+										} else { ?>
+											<input type="text" name="ticket[group_id]" value="<?php echo $this->row->get('group_id'); ?>" class="form-control" id="acgroup" autocomplete="off" />
+										<?php } ?>
+									</label>
+								</div>
 							</div>
 							<div class="col span6 omega">
-								<label>
-									<?php echo Lang::txt('COM_SUPPORT_COMMENT_OWNER'); ?>:
-									<?php echo $this->lists['owner']; ?>
-								</label>
+								<div class="form-group">
+									<label>
+										<?php echo Lang::txt('COM_SUPPORT_COMMENT_OWNER'); ?>:
+										<?php echo $this->lists['owner']; ?>
+									</label>
+								</div>
 							</div>
 						</div>
 
@@ -496,7 +477,7 @@ $cc = array();
 							<div class="col span6">
 								<label for="ticket-field-severity">
 									<?php echo Lang::txt('COM_SUPPORT_COMMENT_SEVERITY'); ?>: <a class="icon-help tooltips popup" href="<?php echo Route::url('index.php?option=com_help&component=support&page=ticket#severity'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_HELP'); ?>"><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_HELP'); ?></a>
-									<select name="ticket[severity]" id="ticket-field-severity">
+									<select name="ticket[severity]" id="ticket-field-severity" class="form-control">
 										<?php foreach ($this->lists['severities'] as $severity) { ?>
 											<option value="<?php echo $severity; ?>"<?php if ($severity == $this->row->get('severity')) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity)); ?></option>
 										<?php } ?>
@@ -504,36 +485,42 @@ $cc = array();
 								</label>
 							</div>
 							<div class="col span6 omega">
-								<label for="status">
-									<?php echo Lang::txt('COM_SUPPORT_COMMENT_STATUS'); ?>:
-									<select name="ticket[status]" id="status">
-										<optgroup label="<?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_OPEN'); ?>">
-											<?php foreach (\Components\Support\Models\Status::allOpen()->rows() as $status) { ?>
-												<option value="<?php echo $status->get('id'); ?>"<?php if ($this->row->isOpen() && $this->row->get('status') == $status->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($status->get('title')); ?></option>
-											<?php } ?>
-										</optgroup>
-										<optgroup label="<?php echo Lang::txt('COM_SUPPORT_CLOSED'); ?>">
-											<option value="0"<?php if (!$this->row->isOpen() && $this->row->get('status') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED'); ?></option>
-											<?php foreach (\Components\Support\Models\Status::allClosed()->rows() as $status) { ?>
-												<option value="<?php echo $status->get('id'); ?>"<?php if (!$this->row->isOpen() && $this->row->get('status') == $status->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($status->get('title')); ?></option>
-											<?php } ?>
-										</optgroup>
-									</select>
-								</label>
+								<div class="form-group">
+									<label for="status">
+										<?php echo Lang::txt('COM_SUPPORT_COMMENT_STATUS'); ?>:
+										<select name="ticket[status]" id="status" class="form-control">
+											<optgroup label="<?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_OPEN'); ?>">
+												<?php foreach (\Components\Support\Models\Status::allOpen()->rows() as $status) { ?>
+													<option value="<?php echo $status->get('id'); ?>"<?php if ($this->row->isOpen() && $this->row->get('status') == $status->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($status->get('title')); ?></option>
+												<?php } ?>
+											</optgroup>
+											<optgroup label="<?php echo Lang::txt('COM_SUPPORT_CLOSED'); ?>">
+												<option value="0"<?php if (!$this->row->isOpen() && $this->row->get('status') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED'); ?></option>
+												<?php foreach (\Components\Support\Models\Status::allClosed()->rows() as $status) { ?>
+													<option value="<?php echo $status->get('id'); ?>"<?php if (!$this->row->isOpen() && $this->row->get('status') == $status->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($status->get('title')); ?></option>
+												<?php } ?>
+											</optgroup>
+										</select>
+									</label>
+								</div>
 					<?php } else { ?>
 							<input type="hidden" name="tags" value="<?php echo $this->escape($this->row->tags('string')); ?>" />
 
 						<?php if ($this->row->isSubmitter()) { ?>
 							<?php if (!$this->row->isOpen()) { ?>
-								<label class="option" for="field-status">
-									<input class="option" type="checkbox" name="ticket[status]" id="field-status" value="1" />
-									<?php echo Lang::txt('COM_SUPPORT_COMMENT_REOPEN'); ?>
-								</label>
+								<div class="form-group form-check">
+									<label class="option form-check-label" for="field-status">
+										<input class="option form-check-input" type="checkbox" name="ticket[status]" id="field-status" value="1" />
+										<?php echo Lang::txt('COM_SUPPORT_COMMENT_REOPEN'); ?>
+									</label>
+								</div>
 							<?php } else { ?>
-								<label class="option" for="field-status">
-									<input class="option" type="checkbox" name="ticket[status]" id="field-status" value="0" />
-									<?php echo Lang::txt('COM_SUPPORT_COMMENT_CLOSE'); ?>
-								</label>
+								<div class="form-group form-check">
+									<label class="option form-check-label" for="field-status">
+										<input class="option form-check-input" type="checkbox" name="ticket[status]" id="field-status" value="0" />
+										<?php echo Lang::txt('COM_SUPPORT_COMMENT_CLOSE'); ?>
+									</label>
+								</div>
 							<?php } ?>
 						<?php } ?>
 					<?php } // ACL can update ticket (admin) ?>
@@ -542,26 +529,30 @@ $cc = array();
 							</div>
 						</div>
 
-						<label for="field-target_date">
-							<?php echo Lang::txt('COM_SUPPORT_COMMENT_TARGET_DATE'); ?>:
-							<input type="text" name="ticket[target_date]" class="datetime-field" id="field-target_date" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot()) / 60); ?>" placeholder="YYYY-MM-DD hh:mm:ss" value="<?php echo ($this->row->get('target_date') && $this->row->get('target_date') != '0000-00-00 00:00:00') ? $this->escape(Date::of($this->row->get('target_date'))->toLocal('Y-m-d H:i:s')) : ''; ?>" />
-						</label>
+						<div class="form-group">
+							<label for="field-target_date">
+								<?php echo Lang::txt('COM_SUPPORT_COMMENT_TARGET_DATE'); ?>:
+								<input type="text" name="ticket[target_date]" class="datetime-field form-control" id="field-target_date" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot()) / 60); ?>" placeholder="YYYY-MM-DD hh:mm:ss" value="<?php echo ($this->row->get('target_date') && $this->row->get('target_date') != '0000-00-00 00:00:00') ? $this->escape(Date::of($this->row->get('target_date'))->toLocal('Y-m-d H:i:s')) : ''; ?>" />
+							</label>
+						</div>
 
 						<?php if (isset($this->lists['categories']) && $this->lists['categories']) { ?>
-						<label for="ticket-field-category">
-							<?php echo Lang::txt('COM_SUPPORT_COMMENT_CATEGORY'); ?>:
-							<select name="ticket[category]" id="ticket-field-category">
-								<option value=""><?php echo Lang::txt('COM_SUPPORT_NONE'); ?></option>
-								<?php
-								foreach ($this->lists['categories'] as $category)
-								{
-									?>
-									<option value="<?php echo $this->escape($category->alias); ?>"<?php if ($this->row->get('category') == $category->alias) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
-									<?php
-								}
-								?>
-							</select>
-						</label>
+							<div class="form-group">
+								<label for="ticket-field-category">
+									<?php echo Lang::txt('COM_SUPPORT_COMMENT_CATEGORY'); ?>:
+									<select name="ticket[category]" id="ticket-field-category" class="form-control">
+										<option value=""><?php echo Lang::txt('COM_SUPPORT_NONE'); ?></option>
+										<?php
+										foreach ($this->lists['categories'] as $category)
+										{
+											?>
+											<option value="<?php echo $this->escape($category->alias); ?>"<?php if ($this->row->get('category') == $category->alias) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
+											<?php
+										}
+										?>
+									</select>
+								</label>
+							</div>
 						<?php } ?>
 					<?php } ?>
 					</fieldset>
@@ -581,41 +572,49 @@ $cc = array();
 						<div class="top grouping">
 					<?php } ?>
 						<?php if ($this->row->access('create', 'comments') > 0) { ?>
-							<label for="messages">
-								<select name="messages" id="messages">
-									<option value="mc"><?php echo Lang::txt('COM_SUPPORT_COMMENT_CUSTOM'); ?></option>
-									<?php
-									$hi = array();
-									foreach ($this->lists['messages'] as $message)
-									{
-										?>
-										<option value="m<?php echo $message->id; ?>"><?php echo $this->escape(stripslashes($message->title)); ?></option>
+							<div class="form-group">
+								<label for="messages">
+									<select name="messages" id="messages" class="form-control">
+										<option value="mc"><?php echo Lang::txt('COM_SUPPORT_COMMENT_CUSTOM'); ?></option>
 										<?php
-										$hi[] = '<input type="hidden" name="m' . $message->id . '" id="m' . $message->id . '" value="' . $this->escape($message->transformMessage($this->row->get('id'))) . '" />' . "\n";
-									}
-									?>
-								</select>
-							</label>
-							<?php echo implode("\n", $hi); ?>
+										$hi = array();
+										foreach ($this->lists['messages'] as $message)
+										{
+											?>
+											<option value="m<?php echo $message->id; ?>"><?php echo $this->escape(stripslashes($message->title)); ?></option>
+											<?php
+											$hi[] = '<input type="hidden" name="m' . $message->id . '" id="m' . $message->id . '" value="' . $this->escape($message->transformMessage($this->row->get('id'))) . '" />' . "\n";
+										}
+										?>
+									</select>
+								</label>
+								<?php echo implode("\n", $hi); ?>
+							</div>
 						<?php } // ACL can create comment (admin) ?>
 						<?php if ($this->row->access('create', 'private_comments')) { ?>
-							<label for="make-private">
-								<input class="option" type="checkbox" name="access" id="make-private" value="1" />
-								<?php echo Lang::txt('COM_SUPPORT_COMMENT_PRIVATE'); ?>
-							</label>
+							<div class="form-group form-check">
+								<label for="make-private" class="form-check-label">
+									<input class="option form-check-input" type="checkbox" name="access" id="make-private" value="1" />
+									<?php echo Lang::txt('COM_SUPPORT_COMMENT_PRIVATE'); ?>
+								</label>
+							</div>
 						<?php } // ACL can create private comments ?>
 					<?php if ($this->row->access('create', 'comments') > 0 || $this->row->access('create', 'private_comments')) { ?>
 						</div>
 						<div class="clear"></div>
 					<?php } // ACL can create comments (admin) or private comments ?>
-						<textarea name="comment" id="comment" rows="13" cols="35"><?php echo $this->comment->get('comment'); ?></textarea>
+						<div class="form-group">
+							<textarea name="comment" id="comment" class="form-control" rows="13" cols="35"><?php echo $this->comment->get('comment'); ?></textarea>
+						</div>
 
 						<?php if ($this->row->access('create', 'comments') > 0) { ?>
 							<?php if ($this->config->get('email_terse')) { ?>
-								<label for="email_terse">
-									<input class="option" type="checkbox" name="email_terse" id="email_terse" value="1" checked="checked" />
-									<?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_TERSE'); ?>
-								</label>
+								<div class="form-group form-check">
+									<label for="email_terse" class="form-check-label">
+										<input class="option form-check-input" type="checkbox" name="email_terse" id="email_terse" value="1" checked="checked" />
+										<?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_TERSE'); ?>
+									</label>
+								</div>
 							<?php } ?>
 						<?php } ?>
 					</fieldset>
@@ -629,15 +628,18 @@ $cc = array();
 						?>
 						<div id="ajax-uploader" data-action="<?php echo $jbase; ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=upload&amp;ticket=<?php echo $this->row->get('id'); ?>&amp;comment=<?php echo $tmp; ?>" data-list="<?php echo $jbase; ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=list&amp;ticket=<?php echo $this->row->get('id'); ?>&amp;comment=<?php echo $tmp; ?>">
 							<noscript>
-								<label for="upload">
-									<?php echo Lang::txt('COM_SUPPORT_COMMENT_FILE'); ?>:
-									<input type="file" name="upload[]" id="upload" multiple="multiple" />
-								</label>
-
-								<label for="field-description">
-									<?php echo Lang::txt('COM_SUPPORT_COMMENT_FILE_DESCRIPTION'); ?>:
-									<input type="text" name="description" id="field-description" value="" />
-								</label>
+								<div class="form-group">
+									<label for="upload">
+										<?php echo Lang::txt('COM_SUPPORT_COMMENT_FILE'); ?>:
+										<input type="file" name="upload[]" id="upload" class="form-control-file" multiple="multiple" />
+									</label>
+								</div>
+								<div class="form-group">
+									<label for="field-description">
+										<?php echo Lang::txt('COM_SUPPORT_COMMENT_FILE_DESCRIPTION'); ?>:
+										<input type="text" name="description" id="field-description" class="form-control" value="" />
+									</label>
+								</div>
 							</noscript>
 						</div>
 						<div class="field-wrap file-list" id="ajax-uploader-list">
@@ -658,28 +660,34 @@ $cc = array();
 						<legend><?php echo Lang::txt('COM_SUPPORT_COMMENT_LEGEND_EMAIL'); ?>:</legend>
 						<div class="grid">
 							<div class="col span6">
-								<label for="email_submitter">
-									<input class="option" type="checkbox" name="email_submitter" id="email_submitter" value="1" checked="checked" />
-									<?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_SUBMITTER'); ?>
-								</label>
+								<div class="form-group">
+									<label for="email_submitter" class="form-check-label">
+										<input class="option form-check-input" type="checkbox" name="email_submitter" id="email_submitter" value="1" checked="checked" />
+										<?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_SUBMITTER'); ?>
+									</label>
+								</div>
 							</div>
 							<div class="col span6 omega">
-								<label for="email_owner">
-									<input class="option" type="checkbox" name="email_owner" id="email_owner" value="1" checked="checked" />
-									<?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'); ?>
-								</label>
+								<div class="form-group">
+									<label for="email_owner" class="form-check-label">
+										<input class="option form-check-input" type="checkbox" name="email_owner" id="email_owner" value="1" checked="checked" />
+										<?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'); ?>
+									</label>
+								</div>
 							</div>
 						</div>
 
-						<label for="acmembers">
-							<?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'); ?>: <?php
-							$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'cc', 'acmembers', '', implode(', ', $cc))));
-							if (count($mc) > 0) {
-								echo '<span class="hint">' . Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE') . '</span>' . $mc[0];
-							} else { ?> <span class="hint"><?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS'); ?></span>
-							<input type="text" name="cc" id="acmembers" value="<?php echo implode(', ', $cc); ?>" size="35" />
-							<?php } ?>
-						</label>
+						<div class="form-group">
+							<label for="acmembers">
+								<?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'); ?>: <?php
+								$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'cc', 'acmembers', '', implode(', ', $cc))));
+								if (count($mc) > 0) {
+									echo '<span class="hint">' . Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE') . '</span>' . $mc[0];
+								} else { ?> <span class="hint"><?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS'); ?></span>
+								<input type="text" name="cc" id="acmembers" class="form-control" value="<?php echo implode(', ', $cc); ?>" size="35" />
+								<?php } ?>
+							</label>
+						</div>
 					</fieldset>
 				<?php } else { ?>
 					<input type="hidden" name="email_submitter" id="email_submitter" value="1" />
@@ -690,7 +698,7 @@ $cc = array();
 					<?php echo Html::input('token'); ?>
 
 					<p class="submit">
-						<input type="submit" value="<?php echo Lang::txt('COM_SUPPORT_SUBMIT_COMMENT'); ?>" />
+						<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_SUPPORT_SUBMIT_COMMENT'); ?>" />
 					</p>
 				</fieldset>
 			</form>

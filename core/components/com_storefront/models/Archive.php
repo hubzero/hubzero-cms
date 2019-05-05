@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 namespace Components\Storefront\Models;
 
@@ -420,7 +425,7 @@ class Archive extends \Hubzero\Base\Obj
 	 */
 	public function optionGroup($ogId)
 	{
-		require_once(__DIR__ . DS . 'OptionGroup.php');
+		require_once __DIR__ . DS . 'OptionGroup.php';
 		$optionGroup = new OptionGroup($ogId);
 
 		return $optionGroup;

@@ -25,23 +25,6 @@ defined('_HZEXE_') or die();
  * @version     2.5.28
  * @link        http://joomlacode.org/gf/download/frsrelease/19918/161803/Joomla_2.5.28-Stable-Full_Package.zip
  *
- * Library - FPDF
- *
- * @package     fpdf
- * @author      Oliver Plathey
- * @license     permissive
- * @link        http://www.fpdf.org
- *
- * Library - NUSOAP
- *
- * @package     nusoap
- * @author      Dietrich Ayala
- * @author      Scott Nichol
- * @author      Ingo Fischer
- * @copyright   Copyright (c) 2002 NuSphere Corporation
- * @version     0.7.3
- * @license     LGPL
- *
  * Library - CAS
  *
  * @package     phpCAS
@@ -65,14 +48,6 @@ defined('_HZEXE_') or die();
  * @copyright   Copyright 2005,2006 by Jef Poskanzer <jef@mail.acme.com>. All rights reserved.
  * @license     http://www.acme.com/license.html
  * @link        http://www.acme.com/javascript/
- *
- * PHP - Math Wiki Class
- *
- * @package     math wiki
- * @author      Tomasz Wegrzanowski
- * @author      Brion Vibber
- * @copyright   Copyright 2003 Tomasz Wegrzanowski
- * @file        plugins/wiki/parserdefault/math/math.php
  *
  * Javascript - Flash Player Version Detection
  *

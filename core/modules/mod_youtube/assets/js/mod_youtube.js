@@ -1,8 +1,7 @@
-/*
- * @package     hubzero-cms
- * @file        modules/mod_youtube/assets/js/mod_youtube.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 if (!HUB) {
@@ -128,10 +127,11 @@ var youtube_feed = 0;
 			var topHTML = "";
 			var title, description, logo;
 			var details = settings.details;
-return "";
+			return "";
 			// if we have no details return nothing
-			if (!details)
+			if (!details) {
 				return "";
+			}
 
 			// set title based on if we have an alternative title
 			if (details.altTitle && details.altTitle != "") {

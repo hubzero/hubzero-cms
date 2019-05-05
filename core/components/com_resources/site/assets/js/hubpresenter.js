@@ -1,3 +1,9 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 if(!HUB) {
 	var HUB = {};
 }
@@ -961,17 +967,17 @@ HUB.Presenter = {
 		
 		jQ("#replay-details #title").html( "<span>Title:</span> " + jQ("#presenter-header #title").html() );
 		
-		jQ("#replay-link").live("click", function(e) {
+		jQ("#replay-link").on("click", function(e) {
 			this.select();
 			e.preventDefault();
 		});
 		
-		jQ("#replay-now").live("click", function(e) {
+		jQ("#replay-now").on("click", function(e) {
 			HUB.Presenter.doReplay("#replay");
 			e.preventDefault();
 		});
 		
-		jQ("#replay-back").live("click", function(e) {
+		jQ("#replay-back").on("click", function(e) {
 			window.close();
 			e.preventDefault();
 		});

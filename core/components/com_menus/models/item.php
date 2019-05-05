@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Menus\Models;
@@ -38,6 +14,7 @@ use Hubzero\Form\Form;
 use Filesystem;
 use Lang;
 use User;
+use Date;
 
 /**
  * Menu item model
@@ -109,7 +86,16 @@ class Item extends Nested
 	 */
 	protected $rules = array(
 		'title'    => 'notempty',
-		'menutype' => 'notempty'
+		'menutype' => 'notempty',
+	);
+
+	/**
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 **/
+	public $always = array(
+		'alias'
 	);
 
 	/**
@@ -151,6 +137,78 @@ class Item extends Nested
 			}
 			return false;
 		});
+
+		$this->addRule('alias', function($data)
+		{
+			$alias = $this->automaticAlias($data);
+
+			// Verify that a first level menu item alias is not 'component'.
+			if ($this->get('parent_id') == 1 && $alias == 'component')
+			{
+				return Lang::txt('JLIB_DATABASE_ERROR_MENU_ROOT_ALIAS_COMPONENT');
+			}
+
+			// Make sure menu alias doesn't interfere with known client routes and system directories
+			// Maybe use `Filesystem::directories(PATH_ROOT)` instead?
+			if ($this->get('parent_id') == 1 && in_array($alias, ['app', 'core', 'api', 'administrator', 'files']))
+			{
+				return Lang::txt('JLIB_DATABASE_ERROR_MENU_ROOT_ALIAS_FOLDER', $alias, $alias);
+			}
+
+			return false;
+		});
+
+		$this->addRule('home', function($data)
+		{
+			// Verify that the default home menu is not unpublished
+			if ($this->get('home') == '1' && $this->get('language') == '*' && $this->get('published') != '1')
+			{
+				return Lang::txt('JLIB_DATABASE_ERROR_MENU_UNPUBLISH_DEFAULT_HOME');
+			}
+
+			// Verify that the home item a component.
+			if ($this->get('home') && $this->get('type') != 'component')
+			{
+				return Lang::txt('JLIB_DATABASE_ERROR_MENU_HOME_NOT_COMPONENT');
+			}
+
+			return false;
+		});
+	}
+
+	/**
+	 * Generates automatic alias field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticAlias($data)
+	{
+		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : '');
+
+		if (empty($alias)
+		 && $this->get('type') != 'alias'
+		 && $this->get('type') != 'url')
+		{
+			$alias = $this->get('title');
+		}
+
+		$alias = trim($alias);
+
+		// Remove any '-' from the string since they will be used as concatenaters
+		$alias = str_replace('-', ' ', $alias);
+
+		$alias = Lang::transliterate($alias);
+
+		$alias = preg_replace('/(\s|[^A-Za-z0-9\-])+/', '-', strtolower($alias));
+		$alias = trim($alias, '-');
+
+		if (trim(str_replace('-', '', $alias)) == '')
+		{
+			$alias = Date::of('now')->format('Y-m-d-H-i-s');
+		}
+
+		return $alias;
 	}
 
 	/**
@@ -357,7 +415,24 @@ class Item extends Nested
 
 		$this->set('params', $this->params->toString());
 
-		return parent::save();
+		$result = parent::save();
+
+		if ($result)
+		{
+			$this->rebuildPath();
+
+			foreach ($this->children()->rows() as $child)
+			{
+				// Rebuild the tree path.
+				if (!$child->rebuildPath())
+				{
+					$this->addError($child->getError());
+					return false;
+				}
+			}
+		}
+
+		return $result;
 	}
 
 	/**
@@ -732,7 +807,7 @@ class Item extends Nested
 		}
 
 		// Now load the component params.
-		// TODO: Work out why 'fixing' this breaks JForm
+		// TODO: Work out why 'fixing' this breaks Form
 		if ($isNew = false)
 		{
 			$path = \Hubzero\Filesystem\Util::normalizePath(\Component::path($option) . '/config/config.xml');

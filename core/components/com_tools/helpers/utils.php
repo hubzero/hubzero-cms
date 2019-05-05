@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Tools\Helpers;
@@ -214,10 +189,10 @@ class Utils
 	{
 		if (preg_match("#^[_0-9a-zA-Z.:-]+$#i", $field) or $field=='')
 		{
-			return(0);
+			return 0;
 		}
 
-		return(1);
+		return 1;
 	}
 
 	/**
@@ -330,9 +305,9 @@ class Utils
 	public static function getToolAccess($tool, $login = '')
 	{
 		//include tool models
-		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'tool.php');
-		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'group.php');
-		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'version.php');
+		include_once dirname(__DIR__) . DS . 'tables' . DS . 'tool.php';
+		include_once dirname(__DIR__) . DS . 'tables' . DS . 'group.php';
+		include_once dirname(__DIR__) . DS . 'tables' . DS . 'version.php';
 
 		//instantiate objects
 		$access = new stdClass();
@@ -505,7 +480,7 @@ class Utils
 		if (empty($country) && in_array($export_control, array('us', 'd1', 'pu')))
 		{
 			$export_access->valid = 0;
-			$export_access->error->message = 'This tool may not be accessed from your unknown current location due to export/license restrictions.';
+			$export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_UNKNOWN');
 			\Log::debug("mw::_getToolExportControl($export_control) FAILED location export control check");
 			return $export_access;
 		}
@@ -514,7 +489,7 @@ class Utils
 		if (\Hubzero\Geocode\Geocode::is_e1nation(\Hubzero\Geocode\Geocode::ipcountry($ip)))
 		{
 			$export_access->valid = 0;
-			$export_access->error->message = 'This tool may not be accessed from your current location due to E1 export/license restrictions.';
+			$export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_E1');
 			\Log::debug("mw::_getToolExportControl($export_control) FAILED E1 export control check");
 			return $export_access;
 		}
@@ -526,7 +501,7 @@ class Utils
 				if (\Hubzero\Geocode\Geocode::ipcountry($ip) != 'us')
 				{
 					$export_access->valid = 0;
-					$export_access->error->message = 'This tool may only be accessed from within the U.S. due to export/licensing restrictions.';
+					$export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_USA_ONLY');
 					\Log::debug("mw::_getToolExportControl($export_control) FAILED US export control check");
 					return $export_access;
 				}
@@ -536,7 +511,7 @@ class Utils
 				if (\Hubzero\Geocode\Geocode::is_d1nation(\Hubzero\Geocode\Geocode::ipcountry($ip)))
 				{
 					$export_access->valid = 0;
-					$export_access->error->message = 'This tool may not be accessed from your current location due to export/license restrictions.';
+					$export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_LICENSE');
 					\Log::debug("mw::_getToolExportControl($export_control) FAILED D1 export control check");
 					return $export_access;
 				}
@@ -546,7 +521,7 @@ class Utils
 				if (!\Hubzero\Geocode\Geocode::is_iplocation($ip, $export_control))
 				{
 					$export_access->valid = 0;
-					$export_access->error->message = 'This tool may only be accessed by authorized users while on the West Lafayette campus of Purdue University due to license restrictions.';
+					$export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_PURDUE_ONLY');
 					\Log::debug("mw::_getToolExportControl($export_control) FAILED PURDUE export control check");
 					return $export_access;
 				}
@@ -569,8 +544,8 @@ class Utils
 	public static function recordToolUsage($tool, $userid = '')
 	{
 		//include needed files
-		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'version.php');
-		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'recent.php');
+		include_once dirname(__DIR__) . DS . 'tables' . DS . 'version.php';
+		include_once dirname(__DIR__) . DS . 'tables' . DS . 'recent.php';
 
 		//instantiate needed objects
 		$database = \App::get('db');

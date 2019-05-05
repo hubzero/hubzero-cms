@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -81,7 +56,7 @@ if ($timezone === false)
 
 
 $this->row->content = stripslashes($this->row->content);
-$this->row->content = str_replace('<br />','',$this->row->content);
+$this->row->content = str_replace('<br />', '', $this->row->content);
 
 //$fields = $config->getCfg('fields');
 if (!empty($this->fields)) {
@@ -90,7 +65,7 @@ if (!empty($this->fields)) {
 		// explore the text and pull out all matches
 		array_push($this->fields[$i], \Components\Events\Site\Controllers\Events::parseTag($this->row->content, $this->fields[$i][0]));
 		// clean the original text of any matches
-		$this->row->content = str_replace('<ef:'.$this->fields[$i][0].'>'.end($this->fields[$i]).'</ef:'.$this->fields[$i][0].'>','',$this->row->content);
+		$this->row->content = str_replace('<ef:'.$this->fields[$i][0].'>'.end($this->fields[$i]).'</ef:'.$this->fields[$i][0].'>', '', $this->row->content);
 	}
 	$this->row->content = trim($this->row->content);
 }
@@ -141,9 +116,8 @@ foreach ($this->fields as $field)
 }
 $html .= $info;
 if (!$info) {
-	$html .= "\t\t".'<p class="description">'. \Hubzero\Utility\Str::truncate(strip_tags($this->row->content),300) .'</p>'."\n";
+	$html .= "\t\t".'<p class="description">'. \Hubzero\Utility\Str::truncate(strip_tags($this->row->content), 300) .'</p>'."\n";
 }
 $html .= "\t".'</div></li>'."\n";
 
 echo $html;
-

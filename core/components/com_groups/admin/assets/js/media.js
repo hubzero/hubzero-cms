@@ -1,3 +1,9 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 function dirup()
 {
 	var urlquery = frames['filer'].location.search.substring(1);
@@ -6,42 +12,36 @@ function dirup()
 	frames['filer'].location.href = selection.getAttribute('data-path') + listdir;
 }
 
-function goUpDir()
-{
-	var selection = document.getElementById('dir');
-	var dir = selection.options[selection.selectedIndex].value;
-	frames['filer'].location.href = selection.getAttribute('data-path') + dir;
-}
-
-function deleteFile(file)
-{
-	if (confirm('Delete file "' + file + '"?')) {
-		return true;
-	}
-	return false;
-}
-function deleteFolder(folder, numFiles)
-{
-	if (numFiles > 0) {
-		alert('There are ' + numFiles + ' files/folders in "' + folder + '". Please delete all files/folder in "' + folder + '" first.');
-		return false;
-	}
-	if (confirm('Delete folder "' + folder + '"?')) {
-		return true;
-	}
-	return false;
-}
-
 jQuery(document).ready(function($){
 	$("a.deletefolder").on('click', function(e){
-		e.preventDefault();
+		var numFiles = parseInt($(this).attr('data-files'));
 
-		return deleteFolder($(this).attr('data-folder'), $(this).attr('data-files'));
+		if (numFiles > 0) {
+			e.preventDefault();
+			alert($(this).attr('data-notempty'));
+			return false;
+		}
+
+		var res = confirm($(this).attr('data-confirm'));
+		if (!res) {
+			e.preventDefault();
+		}
+		return res;
 	});
 
 	$("a.deletefile").on('click', function(e){
-		e.preventDefault();
+		var res = confirm($(this).attr('data-confirm'));
+		if (!res) {
+			e.preventDefault();
+		}
+		return res;
+	});
 
-		return deleteFile($(this).attr('data-file'));
+	$("#dir").on('change', function(e){
+		var selection = document.getElementById('dir');
+		var dir = selection.options[selection.selectedIndex].value;
+		frames['filer'].location.href = selection.getAttribute('data-path') + dir;
+
+		$('#currentdir').val(dir);
 	});
 });

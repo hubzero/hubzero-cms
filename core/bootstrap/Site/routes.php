@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 /*
@@ -40,6 +15,11 @@
 */
 $router->rules('build')->append('content', function ($uri)
 {
+	if (!\App::has('menu.manager'))
+	{
+		return $uri;
+	}
+
 	// Set URI defaults
 	$menu = \App::get('menu.manager')->menu('site');
 
@@ -185,7 +165,7 @@ $router->rules('build')->append('component', function ($uri)
 
 	$built = false;
 
-	if (isset($query['Itemid']) && !empty($query['Itemid']))
+	if (isset($query['Itemid']) && !empty($query['Itemid']) && \App::has('menu.manager'))
 	{
 		$menu = \App::get('menu.manager')->menu('site');
 		$item = $menu->getItem($query['Itemid']);
@@ -538,7 +518,7 @@ $router->rules('parse')->append('content', function ($uri)
 	}
 	// Count 1 - we're either looking for an article alias that matches and is in the uncategorised category,
 	// or, an article alias and category series that are all the same (ex: about/about/about - supported for legacy reasons)
-	else if ($count == 1)
+	elseif ($count == 1)
 	{
 		// First, do query
 		$query  = "SELECT con.`id`, cat.`alias`, cat.`path` FROM `#__content` AS con";
@@ -592,7 +572,7 @@ $router->rules('parse')->append('content', function ($uri)
 			}
 		}
 	}
-	else if ($count > 1)
+	elseif ($count > 1)
 	{
 		// Build the path
 		$path = array();

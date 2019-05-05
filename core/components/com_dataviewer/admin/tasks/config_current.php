@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero.cms.admin
- * @subpackage  com_dataviewer
- *
- * @author      Sudheera R. Fernando sudheera@xconsole.org
- * @copyright   Copyright 2010-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT or later; see LICENSE.txt
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -16,7 +13,7 @@ function dv_config_current()
 	$base = $conf['dir_base'];
 	$db_id = Request::getString('db', false);
 
-	require_once(PATH_COMPONENT_SITE . DS . 'dv_config.php');
+	require_once PATH_COMPONENT_SITE . DS . 'dv_config.php';
 
 	$dv_conf_file = $base . DS . $db_id . DS . 'applications/dataviewer/config.json';
 
@@ -35,4 +32,3 @@ function dv_config_current()
 	print json_format(json_encode($dv_conf));
 	exit;
 }
-?>

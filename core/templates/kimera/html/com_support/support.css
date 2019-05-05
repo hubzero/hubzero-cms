@@ -1,3 +1,9 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 @import url("../../../../../core/components/com_support/site/assets/css/support.css");
 
 .panel {
@@ -20,6 +26,12 @@ ol.comments .comment-changelog {
 }
 .aside {
 	margin: 0;
+}
+
+.com_support .comment-body code {
+	color: #e2306d;
+	background-color: #f7f7f9;
+	border-color: #e2e1e9;
 }
 
 .com_support .ticket-watch {

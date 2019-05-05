@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -22,37 +27,40 @@ class Migration20140310130202ComTags extends Base
 			$this->db->setQuery($query);
 			if ($results = $this->db->loadObjectList())
 			{
-				require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
-
-				$cls = '\\Components\\Tags\\Models\\Tag';
-				// [!] - Backwards compatibility
-				if (class_exists('TagsModelTag'))
+				if (file_exists(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php'))
 				{
-					$cls = 'TagsModelTag';
-				}
+					require_once PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php';
 
-				foreach ($results as $result)
-				{
-					// Get all duplicate tags
-					$query = "SELECT * FROM `#__tags` WHERE `tag`=" . $this->db->quote($result->tag) . ";";
-					$this->db->setQuery($query);
-					if ($tags = $this->db->loadObjectList())
+					$cls = '\\Components\\Tags\\Models\\Tag';
+					// [!] - Backwards compatibility
+					if (class_exists('TagsModelTag'))
 					{
-						foreach ($tags as $tag)
-						{
-							if ($tag->id == $result->id)
-							{
-								continue;
-							}
+						$cls = 'TagsModelTag';
+					}
 
-							$oldtag = new $cls($tag->id);
-							if ($oldtag instanceof \Hubzero\Database\Relational)
+					foreach ($results as $result)
+					{
+						// Get all duplicate tags
+						$query = "SELECT * FROM `#__tags` WHERE `tag`=" . $this->db->quote($result->tag) . ";";
+						$this->db->setQuery($query);
+						if ($tags = $this->db->loadObjectList())
+						{
+							foreach ($tags as $tag)
 							{
-								$oldtag = \Components\Tags\Models\Tag::oneOrNew($tag->id);
-							}
-							if (!$oldtag->mergeWith($result->id))
-							{
-								continue;
+								if ($tag->id == $result->id)
+								{
+									continue;
+								}
+
+								$oldtag = new $cls($tag->id);
+								if ($oldtag instanceof \Hubzero\Database\Relational)
+								{
+									$oldtag = \Components\Tags\Models\Tag::oneOrNew($tag->id);
+								}
+								if (!$oldtag->mergeWith($result->id))
+								{
+									continue;
+								}
 							}
 						}
 					}

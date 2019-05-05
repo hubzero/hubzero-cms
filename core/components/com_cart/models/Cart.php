@@ -1,30 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
- *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   Ilya Shunko <ishunko@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Cart\Models;
@@ -766,7 +744,7 @@ abstract class Cart
 		$allSkuInfo = $db->loadObjectList('sId');
 		if ($returnSimpleInfo)
 		{
-			return($allSkuInfo);
+			return $allSkuInfo;
 		}
 
 		$skus = $db->loadColumn();
@@ -791,7 +769,7 @@ abstract class Cart
 					$info['transactionInfo'] = $transactionInfo;
 					$allSkuInfo[$sId] = $info;
 				}
-				return($allSkuInfo);
+				return $allSkuInfo;
 			}
 			return false;
 		}
@@ -874,7 +852,7 @@ abstract class Cart
 			self::saveTransactionPaymentInfo($paymentInfo, $tId);
 		}
 
-		/* Clean up cart */
+		// Clean up cart
 		$db = \App::get('db');
 
 		// Delete zero and negative qty items in the cart
@@ -954,9 +932,6 @@ abstract class Cart
 			$transactionItem->tiMeta = json_decode($transactionItem->tiMeta);
 		}
 
-		//print_r($transactionItems); die;
-		//print_r($tiInfo); die;
-
 		// We can check what changes have been made here and return them
 
 		if ($returnChanges)
@@ -1006,12 +981,9 @@ abstract class Cart
 			}
 
 			$setSql = (implode(', ', $setSql));
-			//echo $setSql; die;
-			//print_r($transactionItemsChanges); die;
 
 			$sql = "UPDATE `#__cart_transaction_items` SET " . $setSql . " WHERE `tId` = " . $db->quote($tId) . " AND `sId` = " . $db->quote($sId);
 			$db->setQuery($sql);
-			//echo $db->toString(); die;
 			$db->query();
 		}
 
@@ -1079,16 +1051,12 @@ abstract class Cart
 		}
 
 		$setSql = implode(', ', $setSql);
-		//echo $setSql; die;
 
 		$sql = "UPDATE `#__cart_transaction_info` SET " . $setSql . " WHERE `tId` = " . $db->quote($tId);
 		$db->setQuery($sql);
-		//echo $db->toString(); die;
 		$db->query();
 
 		// Need to recalculate the transaction total
-		//print_r(self::getTransactionItems($tId)); die;
-		//print_r($currerntTransactionInfo); die;
 
 		// Subtotal
 		$transactionItems = self::getTransactionItems($tId);
@@ -1262,7 +1230,7 @@ abstract class Cart
 
 		if (!empty($tItems))
 		{
-			require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php';
+			require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Sku.php';
 
 			foreach ($tItems as $sId => $itemInfo)
 			{

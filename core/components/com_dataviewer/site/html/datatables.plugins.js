@@ -1,10 +1,7 @@
 /**
- * @package     hubzero.cms.site
- * @subpackage  com_dataviewer
- *
- * @author      Sudheera R. Fernando srf@xconsole.org
- * @copyright   Copyright 2010-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT or later; see LICENSE.txt
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 
@@ -14,64 +11,80 @@ jQuery.fn.dataTableExt.oApi.fnFilterClear = function (oSettings) {
 	oSettings.oPreviousSearch.sSearch = "";
 
 	/* Remove the text of the global filter in the input boxes */
-	if ( typeof oSettings.aanFeatures.f != 'undefined' )
+	if (typeof oSettings.aanFeatures.f != 'undefined')
 	{
 		var n = oSettings.aanFeatures.f;
-		for ( var i=0, iLen=n.length ; i<iLen ; i++ )
+		for (var i=0, iLen=n.length; i<iLen; i++)
 		{
-			jQuery('input', n[i]).val( '' );
+			jQuery('input', n[i]).val('');
 		}
 	}
 
 	/* Remove the search text for the column filters */
-	for ( var i=0, iLen=oSettings.aoPreSearchCols.length ; i<iLen ; i++ )
+	for (var i=0, iLen=oSettings.aoPreSearchCols.length; i<iLen; i++)
 	{
 		oSettings.aoPreSearchCols[i].sSearch = "";
 		jQuery('th>input', oSettings.nTFoot)[i].value = '';
 	}
 
 	/* Redraw */
-	oSettings.oApi._fnReDraw( oSettings );
+	oSettings.oApi._fnReDraw(oSettings);
 };
 
 
-jQuery.fn.dataTableExt.oApi.fnGetColumnData = function ( oSettings, iColumn, bUnique, bFiltered, bIgnoreEmpty ) {
+jQuery.fn.dataTableExt.oApi.fnGetColumnData = function (oSettings, iColumn, bUnique, bFiltered, bIgnoreEmpty) {
 	// check that we have a column id
-	if ( typeof iColumn == "undefined" ) return [];
+	if (typeof iColumn == "undefined") {
+		return [];
+	}
 
 	// by default we only wany unique data
-	if ( typeof bUnique == "undefined" ) bUnique = true;
+	if (typeof bUnique == "undefined") {
+		bUnique = true;
+	}
 
 	// by default we do want to only look at filtered data
-	if ( typeof bFiltered == "undefined" ) bFiltered = true;
+	if (typeof bFiltered == "undefined") {
+		bFiltered = true;
+	}
 
 	// by default we do not wany to include empty values
-	if ( typeof bIgnoreEmpty == "undefined" ) bIgnoreEmpty = true;
+	if (typeof bIgnoreEmpty == "undefined") {
+		bIgnoreEmpty = true;
+	}
 
 	// list of rows which we're going to loop through
 	var aiRows;
 
 	// use only filtered rows
-	if (bFiltered == true) aiRows = oSettings.aiDisplay;
+	if (bFiltered == true) {
+		aiRows = oSettings.aiDisplay;
+	}
 	// use all rows
-	else aiRows = oSettings.aiDisplayMaster; // all row numbers
+	else {
+		aiRows = oSettings.aiDisplayMaster; // all row numbers
+	}
 
 	// set up data array
 	var asResultData = new Array();
 
-	for (var i=0,c=aiRows.length; i<c; i++) {
+	for (var i=0, c=aiRows.length; i<c; i++) {
 		iRow = aiRows[i];
 		var sValue = this.fnGetData(iRow, iColumn);
 		sValue = ('' + sValue).stripTags().trim();
 
 		// ignore empty values?
-		if (bIgnoreEmpty == true && sValue.length == 0) continue;
-
+		if (bIgnoreEmpty == true && sValue.length == 0) {
+			continue;
+		}
 		// ignore unique values?
-		else if (bUnique == true && jQuery.inArray(sValue, asResultData) > -1) continue;
-
+		else if (bUnique == true && jQuery.inArray(sValue, asResultData) > -1) {
+			continue;
+		}
 		// else push the value onto the result data array
-		else asResultData.push(sValue);
+		else {
+			asResultData.push(sValue);
+		}
 	}
 
 	return asResultData;
@@ -81,7 +94,7 @@ jQuery.fn.dataTableExt.oApi.fnGetColumnData = function ( oSettings, iColumn, bUn
 jQuery.fn.dataTableExt.oApi.fnGetFilteredData = function(oSettings) {
 	var a = [];
 	var i;
-	for (i=0, iLen=oSettings.aiDisplay.length ; i<iLen ; i++) {
+	for (i=0, iLen=oSettings.aiDisplay.length; i<iLen; i++) {
 		a.push(oSettings.aoData[ oSettings.aiDisplay[i] ]._aData);
 	}
 	return a;
@@ -96,8 +109,8 @@ jQuery.fn.dataTableExt.oSort['number-asc']  = function(a,b) {
 	var x = a.stripTags();
 	var y = b.stripTags();
 
-	x = parseFloat( x );
-	y = parseFloat( y );
+	x = parseFloat(x);
+	y = parseFloat(y);
 	return ((x < y) ? -1 : ((x > y) ?  1 : 0));
 };
 
@@ -110,8 +123,8 @@ jQuery.fn.dataTableExt.oSort['number-desc'] = function(a,b) {
 	var x = a.stripTags();
 	var y = b.stripTags();
 
-	x = parseFloat( x );
-	y = parseFloat( y );
+	x = parseFloat(x);
+	y = parseFloat(y);
 
 	return ((x < y) ?  1 : ((x > y) ? -1 : 0));
 };

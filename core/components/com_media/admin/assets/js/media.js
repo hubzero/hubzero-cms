@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_media/admin/assets/js/media.js
- * @copyright   Copyright 2005-2019 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 String.prototype.nohtml = function () {
@@ -10,6 +9,24 @@ String.prototype.nohtml = function () {
 };
 
 var _DEBUG = 0;
+
+function bindContextModals()
+{
+	$('.media-opt-path,.media-opt-info').fancybox({
+		type: 'ajax',
+		width: 700,
+		height: 'auto',
+		autoSize: false,
+		fitToView: false,
+		titleShow: false,
+		beforeLoad: function() {
+			if (_DEBUG) {
+				window.console && console.log('Calling: ' + $(this).attr('href').nohtml());
+			}
+			$(this).attr('href', $(this).attr('href').nohtml());
+		}
+	});
+}
 
 jQuery(document).ready(function($){
 	var contents = $('#media-items'),
@@ -21,6 +38,8 @@ jQuery(document).ready(function($){
 	if (!contents.length) {
 		return;
 	}
+
+	var isModal = (contents.attr('data-tmpl') == 'component');
 
 	var views = $('.media-files-view');
 	$('.media-files-view').on('click', function(e){
@@ -57,17 +76,14 @@ jQuery(document).ready(function($){
 						window.console && console.log(data);
 					}
 					contents.html(data);
+
+					bindContextModals();
 				});
 			});
 		}
 	});
 
 	contents
-		/*.on('click', '.media-preview', function(e){
-			e.preventDefault();
-
-			$(this).closest('.media-item').toggleClass('ui-selected');
-		})*/
 		.on('click', '.folder-item', function(e){
 			e.preventDefault();
 
@@ -98,17 +114,52 @@ jQuery(document).ready(function($){
 
 			$.get($(this).attr('href').nohtml() + '&layout=' + layout.val(), function(data){
 				contents.html(data);
+
+				bindContextModals();
 			});
+		})
+		.on('click', '.doc-item', function(e){
+			if (isModal) {
+				e.preventDefault();
+
+				// Get the image tag field information
+				var url = $(this).attr('href');
+
+				if (url == '') {
+					return false;
+				}
+
+				if ($('#e_name').length) {
+					var alt = $(this).attr('title');
+					var tag = '<img src="' + url + '" ';
+
+					// Set alt attribute
+					if (alt != '') {
+						tag += 'alt="' + alt + '" ';
+					} else {
+						tag += 'alt="" ';
+					}
+
+					tag += '/>';
+
+					window.parent.jInsertEditorText(tag, $('#e_name').val());
+				}
+				if ($('#fieldid').length) {
+					var id = $('#fieldid').val();
+					window.parent.document.getElementById(id).value = url;
+					// Update preview area
+					//window.parent.document.getElementById(id + '_preview_empty').style.display = 'hidden';
+					//window.parent.document.getElementById(id + '_preview_img').style.display = 'block';
+					//window.parent.document.getElementById(id + '_preview').src = url;
+				}
+				window.parent.$.fancybox.close();
+				return false;
+			}
 		})
 		.on('click', '.media-options-btn', function(e){
 			e.preventDefault();
 
 			var item = $(this).closest('.media-item');
-
-			/*if (!item.hasClass('ui-activated')) {
-				$('.media-item').removeClass('ui-activated');
-				item.toggleClass('ui-selected');
-			}*/
 
 			item.toggleClass('ui-activated');
 		})
@@ -130,24 +181,13 @@ jQuery(document).ready(function($){
 						window.console && console.log(data);
 					}
 					contents.html(data);
+
+					bindContextModals();
 				});
 			});
 		});
 
-	$('.media-opt-path,.media-opt-info').fancybox({
-		type: 'ajax',
-		width: 700,
-		height: 'auto',
-		autoSize: false,
-		fitToView: false,
-		titleShow: false,
-		beforeLoad: function() {
-			if (_DEBUG) {
-				window.console && console.log('Calling: ' + $(this).attr('href').nohtml());
-			}
-			$(this).attr('href', $(this).attr('href').nohtml());
-		}
-	});
+	bindContextModals();
 
 	$('#media-tree')
 		.find('a')
@@ -181,6 +221,8 @@ jQuery(document).ready(function($){
 
 			$.get($(this).attr('href').nohtml() + '&layout=' + layout.val(), function(data){
 				contents.html(data);
+
+				bindContextModals();
 			});
 		});
 
@@ -197,7 +239,7 @@ jQuery(document).ready(function($){
 
 		var uploader = new qq.FileUploader({
 			element: attach[0],
-			action: attach.attr('data-action').nohtml(), // + '&layout=' + layout.val() + '&folder=' + folder.val(),
+			action: attach.attr('data-action').nohtml(),
 			params: {
 				layout: function() {
 					return layout.val();
@@ -228,6 +270,8 @@ jQuery(document).ready(function($){
 				}
 				$.get(contents.attr('data-list').nohtml() + '&layout=' + layout.val() + '&folder=' + folder.val(), function(data){
 					contents.html(data);
+
+					bindContextModals();
 				});
 			}
 		});

@@ -1,3 +1,9 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 var boxes = []
 	grabbing = false;
 
@@ -12,7 +18,7 @@ function Box() {
 
 jQuery(window).load(function() {
 
-	if ($('#field-properties').length) {
+	if ($('#field-properties').length && $('#field-properties').val()) {
 		var props = JSON.parse($('#field-properties').val());
 
 		for (var i = 0; i < props.elements.length; i++)
@@ -164,8 +170,12 @@ jQuery(window).load(function() {
 	// myDown will call this with the ghost canvas
 	function drawshape(context, shape) { //, fill) {
 		// We can skip the drawing of elements that have moved off the screen:
-		if (shape.x > WIDTH || shape.y > HEIGHT) return; 
-		if (shape.x + shape.w < 0 || shape.y + shape.h < 0) return;
+		if (shape.x > WIDTH || shape.y > HEIGHT) {
+			return;
+		}
+		if (shape.x + shape.w < 0 || shape.y + shape.h < 0) {
+			return;
+		}
 
 		shape.h = (shape.h > 30) ? shape.h : 30;
 
@@ -311,7 +321,7 @@ Hubzero.submitbutton = function(task)
 {
 	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
+	if (task == 'cancel') {
 		Hubzero.submitform(task, form);
 		return;
 	}

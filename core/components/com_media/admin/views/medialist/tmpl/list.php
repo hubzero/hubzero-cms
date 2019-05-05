@@ -1,8 +1,8 @@
 <?php
 /**
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -12,6 +12,8 @@ $cls = '';
 if (!empty($this->active)):
 	$cls = ' active';
 endif;
+
+$tmpl = Request::getCmd('tmpl', '');
 ?>
 <div class="media-files media-list<?php echo $cls ?>" id="media-list">
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&folder=' . $this->folder); ?>" method="post" id="media-form-list" name="media-form-list">
@@ -19,13 +21,15 @@ endif;
 			<table>
 				<thead>
 					<tr>
-						<th scope="col">Name</th>
-						<th scope="col">Size</th>
-					<?php if (Request::getCmd('tmpl') != 'component'): ?>
-						<th scope="col">Type</th>
-						<th scope="col">Last modified</th>
+						<th scope="col"><?php echo Lang::txt('COM_MEDIA_LIST_HEADER_NAME'); ?></th>
+						<th scope="col"><?php echo Lang::txt('COM_MEDIA_LIST_HEADER_SIZE'); ?></th>
+					<?php if ($tmpl != 'component'): ?>
+						<th scope="col"><?php echo Lang::txt('COM_MEDIA_LIST_HEADER_TYPE'); ?></th>
+						<th scope="col"><?php echo Lang::txt('COM_MEDIA_LIST_HEADER_MODIFIED'); ?></th>
 					<?php endif; ?>
+					<?php if ($tmpl != 'component' || User::authorise('core.delete', 'com_media')): ?>
 						<th scope="col"></th>
+					<?php endif; ?>
 					</tr>
 				</thead>
 				<tbody>
@@ -49,6 +53,10 @@ endif;
 
 					// Display files
 					foreach ($files as $child):
+						if ($tmpl == 'component' && $child['type'] != 'img'):
+							continue;
+						endif;
+
 						$this->currentDoc = $child;
 						echo $this->loadTemplate('doc');
 					endforeach;
@@ -62,6 +70,7 @@ endif;
 			<?php echo Html::input('token'); ?>
 			<input type="hidden" name="folder" value="<?php echo $this->escape($this->folder); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="tmpl" value="<?php echo $this->escape($tmpl); ?>" />
 		</div>
 	</form>
 </div>

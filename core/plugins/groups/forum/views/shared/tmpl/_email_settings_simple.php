@@ -1,5 +1,11 @@
 <?php
-	$base = $this->base;
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+$base = $this->base;
 ?>
 
 <form method="post" action="<?php echo Route::url($base); ?>" id="forum-options">

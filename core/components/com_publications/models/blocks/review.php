@@ -1,31 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
- *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Publications\Models\Block;
@@ -39,31 +16,31 @@ use stdClass;
 class Review extends Base
 {
 	/**
-	* Element name
-	*
-	* @var		string
-	*/
+  * Element name
+  *
+  * @var		string
+  */
 	protected	$_name 			= 'review';
 
 	/**
-	* Parent block name
-	*
-	* @var		string
-	*/
-	protected	$_parentname 	= NULL;
+  * Parent block name
+  *
+  * @var		string
+  */
+	protected	$_parentname 	= null;
 
 	/**
-	* Default manifest
-	*
-	* @var		string
-	*/
-	protected	$_manifest 		= NULL;
+  * Default manifest
+  *
+  * @var		string
+  */
+	protected	$_manifest 		= null;
 
 	/**
-	* Numeric block ID
-	*
-	* @var		integer
-	*/
+  * Numeric block ID
+  *
+  * @var		integer
+  */
 	protected	$_blockId 		= 0;
 
 	/**
@@ -71,10 +48,10 @@ class Review extends Base
 	 *
 	 * @return  string  HTML
 	 */
-	public function display( $pub = NULL, $manifest = NULL, $viewname = 'review', $blockId = 0)
+	public function display( $pub = null, $manifest = null, $viewname = 'review', $blockId = 0)
 	{
 		// Set block manifest
-		if ($this->_manifest === NULL)
+		if ($this->_manifest === null)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
@@ -121,7 +98,7 @@ class Review extends Base
 	 *
 	 * @return  string  HTML
 	 */
-	public function buildContent( $pub = NULL, $viewname = 'edit' )
+	public function buildContent( $pub = null, $viewname = 'edit' )
 	{
 		$name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
 
@@ -153,10 +130,10 @@ class Review extends Base
 	 *
 	 * @return  string  HTML
 	 */
-	public function save( $manifest = NULL, $blockId = 0, $pub = NULL, $actor = 0, $elementId = 0)
+	public function save( $manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
 	{
 		// Set block manifest
-		if ($this->_manifest === NULL)
+		if ($this->_manifest === null)
 		{
 			$this->_manifest = $manifest ? $manifest : self::getManifest();
 		}
@@ -169,7 +146,7 @@ class Review extends Base
 	 *
 	 * @return  object
 	 */
-	public function getStatus( $pub = NULL, $manifest = NULL, $elementId = NULL )
+	public function getStatus( $pub = null, $manifest = null, $elementId = null )
 	{
 		// Start status
 		$status 	 	= new \Components\Publications\Models\Status();
@@ -203,7 +180,7 @@ class Review extends Base
 				'params'		=> array(  'required' => 1, 'published_editing' => 0 )
 			);
 
-			return json_decode(json_encode($manifest), FALSE);
+			return json_decode(json_encode($manifest), false);
 		}
 
 		return $manifest;

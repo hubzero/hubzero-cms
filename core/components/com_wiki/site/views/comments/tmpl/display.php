@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -202,10 +178,12 @@ if (!$this->sub)
 						</fieldset>
 					<?php } ?>
 
-					<label for="ctext">
-						<?php echo Lang::txt('COM_WIKI_FIELD_COMMENTS'); ?>:
-						<?php echo \Components\Wiki\Helpers\Editor::getInstance()->display('comment[ctext]', 'ctext', $this->mycomment->get('ctext'), '', '35', '15'); ?>
-					</label>
+					<div class="form-group">
+						<label for="ctext">
+							<?php echo Lang::txt('COM_WIKI_FIELD_COMMENTS'); ?>:
+							<?php echo \Components\Wiki\Helpers\Editor::getInstance()->display('comment[ctext]', 'ctext', $this->mycomment->get('ctext'), 'form-control minimal no-footer', '35', '15'); ?>
+						</label>
+					</div>
 
 					<input type="hidden" name="comment[created]" value="<?php echo $this->escape($this->mycomment->get('created')); ?>" />
 					<input type="hidden" name="comment[id]" value="<?php echo $this->escape($this->mycomment->get('id')); ?>" />
@@ -221,14 +199,18 @@ if (!$this->sub)
 						<input type="hidden" name="<?php echo $this->escape($name); ?>" value="<?php echo $this->escape($val); ?>" />
 					<?php } ?>
 
-					<label id="comment-anonymous-label" for="comment-anonymous">
-						<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($this->mycomment->get('anonymous') != 0) { echo ' checked="checked"'; } ?> />
-						<?php echo Lang::txt('COM_WIKI_FIELD_ANONYMOUS'); ?>
-					</label>
+					<div class="form-group form-check">
+						<label id="comment-anonymous-label" class="form-check-label" for="comment-anonymous">
+							<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($this->mycomment->get('anonymous') != 0) { echo ' checked="checked"'; } ?> />
+							<?php echo Lang::txt('COM_WIKI_FIELD_ANONYMOUS'); ?>
+						</label>
+					</div>
 
 					<?php echo Html::input('token'); ?>
 
-					<p class="submit"><input type="submit" class="btn" value="<?php echo Lang::txt('COM_WIKI_SUBMIT'); ?>" /></p>
+					<p class="submit">
+						<input type="submit" class="btn" value="<?php echo Lang::txt('COM_WIKI_SUBMIT'); ?>" />
+					</p>
 
 					<div class="sidenote">
 						<p>

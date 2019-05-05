@@ -1,0 +1,135 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+.wykiwyg {
+	width: auto !important;
+}
+.tool-edit input[type="text"] {
+	width: 100%;
+}
+.tool-edit .prerequisites {
+	background: #F1F1F1;
+	margin-bottom: 20px;
+	border: 1px solid #AAAAAA;
+}
+.tool-edit .tool-asterisk {
+	font-size: 11px;
+}
+.tool-edit .required {
+	color: red;
+	font-size: 11px;
+}
+.tool-edit .title-error {
+	display: none;
+}
+.tool-edit .tool-include-assets {
+	margin: 10px 0;
+	width: 100%;
+	height: 250px;
+	border: 1px solid #999;
+	overflow: scroll;
+}
+.tool-edit .tool-assets-inner {
+	padding: 15px;
+}
+.tool-files {
+	border: 1px solid #D9D9D9;
+	background-color: #F0F0F0;
+	background-color: rgba(0, 0, 0, .039);
+	overflow: hidden;
+	color: #777;
+	padding: 20px;
+
+	-webkit-border-bottom-right-radius: 3px;
+	-webkit-border-bottom-left-radius: 3px;
+	-moz-border-radius-bottomright: 3px;
+	-moz-border-radius-bottomleft: 3px;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+}
+.tool-files p.hint {
+	margin: 0 0 1em 0;
+	padding: 0;
+}
+.tool-files p.hint code {
+	background: #fff;
+	color: #333;
+	display: inline-block;
+	padding: 0.1em 0.3em;
+}
+.fileupload {
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	zoom: 1;
+	filter: alpha(opacity = 0);
+	-ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
+}
+.fileupload:hover {
+	cursor: pointer;
+}
+.tool-files-upload-wrapper,
+.tool-files-available-wrapper {
+	float: left;
+	width: 49%;
+	position: relative;
+}
+.tool-files-available-wrapper {
+	margin-left: 2%;
+}
+.tool-files-upload,
+.tool-files-available {
+	background-color: #FFF;
+	height: 100px;
+
+	-webkit-border-radius-: 3px;
+	-moz-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-o-border-radius: 3px;
+	border-radius: 3px;
+}
+.tool-files-upload {
+	border: 3px dotted #CCC;
+	opacity: 0.7;
+}
+.tool-files-upload p,
+.tool-files-available p {
+	text-align: center;
+	font-size: 24px;
+	line-height: 100px;
+	margin: 0;
+}
+.tool-files-upload p:before {
+	font-family: "fontcons";
+	content: "\f046";
+	margin-right: 10px;
+}
+.tool-files-available {
+	border: 3px solid #E1E1E1;
+	overflow: scroll;
+}
+.tool-file {
+	display: block;
+	border-bottom: 1px solid #CCC;
+	margin: 5px 10px;
+}
+.tool-files-filename {
+	margin-right: 20px;
+}
+.tool-files-delete {
+	position: relative;
+	float: right;
+}
+.tool-files-delete:before {
+	content: "\f014";
+	font-family: "fontcons";
+}
+.tool-files-delete:hover {
+	cursor: pointer;
+}

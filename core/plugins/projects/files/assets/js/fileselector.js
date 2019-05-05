@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        core/plugins/projects/files/assets/js/fileselector.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 //-----------------------------------------------------------
@@ -196,7 +195,6 @@ HUB.ProjectFilesFileSelect = {
 			if (!btn.hasClass('disabled'))
 			{
 				$('#selecteditems').val(HUB.ProjectFilesFileSelect.collectSelections());
-
 				form.submit();
 			}
 		});
@@ -356,7 +354,7 @@ HUB.ProjectFilesFileSelect = {
 	{
 		var $         = this.jQuery,
 			btn       = $('#b-filesave'),
-			selection = $('#selecteditems').length ? $('#selecteditems').val() : '' ;
+			selection = $('#selecteditems').length ? $('#selecteditems').val() : '';
 
 		if (!btn.length)
 		{

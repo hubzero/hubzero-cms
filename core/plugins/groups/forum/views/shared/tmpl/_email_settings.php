@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 $base = $this->base;
 
@@ -31,4 +36,4 @@ if (Component::params('com_groups')->get('email_comment_processing') && $this->c
 		?>
 	</div>
 
-<?php endif; ?>
+<?php endif;

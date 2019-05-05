@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -269,19 +245,19 @@ $journal = (!preg_match('!\S!u', $journal)) ? utf8_encode($journal) : $journal;
 				</div>
 				<div class="input-wrap">
 					<label for="abstract"><?php echo Lang::txt('COM_CITATIONS_FIELD_ABSTRACT'); ?>:</label><br />
-					<?php echo $this->editor('citation[abstract]', stripslashes($this->row->abstract), 50, 10, 'abstract', array('class' => 'required minimal no-footer', 'buttons' => false)); ?>
+					<?php echo $this->editor('citation[abstract]', stripslashes($this->row->abstract), 50, 10, 'abstract', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 				</div>
 				<div class="input-wrap">
 					<label for="note"><?php echo Lang::txt('NOTES'); ?>:</label><br />
-					<?php echo $this->editor('citation[note]', stripslashes($this->row->note), 50, 10, 'note', array('class' => 'required minimal no-footer', 'buttons' => false)); ?>
+					<?php echo $this->editor('citation[note]', stripslashes($this->row->note), 50, 10, 'note', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 				</div>
 				<div class="input-wrap">
 					<label for="keywords"><?php echo Lang::txt('COM_CITATIONS_FIELD_KEYWORDS'); ?>:</label><br />
-					<?php echo $this->editor('citation[keywords]', stripslashes($this->row->keywords), 50, 10, 'keywords', array('class' => 'required minimal no-footer', 'buttons' => false)); ?>
+					<?php echo $this->editor('citation[keywords]', stripslashes($this->row->keywords), 50, 10, 'keywords', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 				</div>
 				<div class="input-wrap">
 					<label for="research_notes"><?php echo Lang::txt('COM_CITATIONS_FIELD_RESEARCH_NOTES'); ?>:</label><br />
-					<?php echo $this->editor('citation[research_notes]', stripslashes($this->row->research_notes), 50, 10, 'research_notes', array('class' => 'required minimal no-footer', 'buttons' => false)); ?>
+					<?php echo $this->editor('citation[research_notes]', stripslashes($this->row->research_notes), 50, 10, 'research_notes', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 				</div>
 			</fieldset>
 
@@ -296,7 +272,7 @@ $journal = (!preg_match('!\S!u', $journal)) ? utf8_encode($journal) : $journal;
 				</div>
 				<div class="input-wrap">
 					<label for="citation-formatted"><?php echo Lang::txt('MANUAL_FORMAT_CITATION'); ?>:</label>
-					<?php echo $this->editor('citation[formatted]', stripslashes($this->row->get('formatted')), 50, 10, 'formatted', array('class' => 'required minimal no-footer', 'buttons' => false)); ?>
+					<?php echo $this->editor('citation[formatted]', stripslashes($this->row->get('formatted')), 50, 10, 'formatted', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 				</div>
 			</fieldset>
 		</div>

@@ -1,8 +1,8 @@
 <?php
 /**
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -12,6 +12,8 @@ $cls = '';
 if (!empty($this->active)):
 	$cls = ' active';
 endif;
+
+$tmpl = Request::getCmd('tmpl', '');
 ?>
 <div class="media-files media-thumbs<?php echo $cls; ?>" id="media-thumbs">
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&folder=' . $this->folder); ?>" method="post" id="media-form-thumbs" name="media-form-thumbs">
@@ -38,6 +40,10 @@ endif;
 			// Display files
 			foreach ($files as $child):
 				if ($child['type'] == 'file'):
+					if ($tmpl == 'component'):
+						continue;
+					endif;
+
 					$this->currentDoc = $child;
 					echo $this->loadTemplate('doc');
 				elseif ($child['type'] == 'img'):
@@ -53,6 +59,7 @@ endif;
 			<?php echo Html::input('token'); ?>
 			<input type="hidden" name="folder" value="<?php echo $this->escape($this->folder); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="tmpl" value="<?php echo $this->escape($tmpl); ?>" />
 		</div>
 	</form>
 </div>

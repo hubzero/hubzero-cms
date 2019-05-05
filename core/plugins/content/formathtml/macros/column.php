@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Plugins\Content\Formathtml\Macros;
@@ -99,23 +74,25 @@ class Column extends Macro
 
 			switch ($this->_columns)
 			{
-				case 6: $cls[] = 'span2';   break;
-				//case 5: $cls[] = 'five';  break;
-				case 4: $cls[] = 'span3';  break;
-				case 3: $cls[] = 'span4'; break;
-				case 2: $cls[] = 'span6';   break;
-				default: break;
+				case 6:
+					$cls[] = 'span2';
+					break;
+				//case 5:
+					//$cls[] = 'five';
+					//break;
+				case 4:
+					$cls[] = 'span3';
+					break;
+				case 3:
+					$cls[] = 'span4';
+					break;
+				case 2:
+					$cls[] = 'span6';
+					break;
+				default:
+					break;
 			}
-			/*switch ($this->_cursor)
-			{
-				case 6:  $cls[] = 'sixth';  break;
-				case 5:  $cls[] = 'fifth';  break;
-				case 4:  $cls[] = 'fourth'; break;
-				case 3:  $cls[] = 'third';  break;
-				case 2:  $cls[] = 'second'; break;
-				case 1:
-				default: $cls[] = 'first';  break;
-			}*/
+
 			if ($this->_cursor == $this->_columns)
 			{
 				$cls[] = 'omega';
@@ -126,7 +103,7 @@ class Column extends Macro
 			{
 				foreach ($attribs as $a)
 				{
-					$a = preg_split('/=/',$a);
+					$a = preg_split('/=/', $a);
 					$key = strtolower(trim($a[0]));
 					$val = trim(end($a));
 					$val = trim($val, '"');
@@ -161,4 +138,3 @@ class Column extends Macro
 		return $div;
 	}
 }
-

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -476,8 +481,9 @@ class Migration20120101000004Core extends Base
 
 			if (!$this->db->tableHasKey('#__tags', 'jos_tags_raw_tag_alias_description_ftidx')
 				&& $this->db->tableHasField('#__tags', 'raw_tag')
-				&& $this->db->tableHasField('#__tags', 'description'))
+				&& $this->db->tableHasField('#__tags', 'description')) {
 				$query = "ALTER TABLE `#__tags` ADD FULLTEXT INDEX `jos_tags_raw_tag_alias_description_ftidx` (`raw_tag` ASC, `description` ASC)";
+			}
 				$this->db->setQuery($query);
 				$this->db->query();
 		}

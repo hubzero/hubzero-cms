@@ -1,40 +1,15 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
 
 	$cls = isset($this->cls) ? $this->cls : 'odd';
 
-	$name = Lang::txt('PLG_PUBLICATIONS_REVIEWS_ANONYMOUS');
+	$name = Lang::txt('JANONYMOUS');
 	$huser = \Hubzero\User\User::oneOrNew($this->comment->get('created_by'));
 
 	if (!$this->comment->get('anonymous'))
@@ -64,18 +39,40 @@ defined('_HZEXEC_') or die();
 
 		switch ($this->comment->get('rating', 0))
 		{
-			case 0.5: $class = ' half-stars';      break;
-			case 1:   $class = ' one-stars';       break;
-			case 1.5: $class = ' onehalf-stars';   break;
-			case 2:   $class = ' two-stars';       break;
-			case 2.5: $class = ' twohalf-stars';   break;
-			case 3:   $class = ' three-stars';     break;
-			case 3.5: $class = ' threehalf-stars'; break;
-			case 4:   $class = ' four-stars';      break;
-			case 4.5: $class = ' fourhalf-stars';  break;
-			case 5:   $class = ' five-stars';      break;
+			case 0.5:
+				$class = ' half-stars';
+				break;
+			case 1:
+				$class = ' one-stars';
+				break;
+			case 1.5:
+				$class = ' onehalf-stars';
+				break;
+			case 2:
+				$class = ' two-stars';
+				break;
+			case 2.5:
+				$class = ' twohalf-stars';
+				break;
+			case 3:
+				$class = ' three-stars';
+				break;
+			case 3.5:
+				$class = ' threehalf-stars';
+				break;
+			case 4:
+				$class = ' four-stars';
+				break;
+			case 4.5:
+				$class = ' fourhalf-stars';
+				break;
+			case 5:
+				$class = ' five-stars';
+				break;
 			case 0:
-			default:  $class = ' no-stars';      break;
+			default:
+				$class = ' no-stars';
+				break;
 		}
 	}
 
@@ -184,11 +181,11 @@ defined('_HZEXEC_') or die();
 			<?php if (!$this->comment->get('reports')) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 					<?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
-					<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id') . '-' . $this->depth; ?>"><!--
-					--><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_CANCEL'); ?><!--
+					<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id') . '-' . $this->depth; ?>"><!--
+					--><?php echo Lang::txt('JCANCEL'); ?><!--
 				--></a>
 					<?php } else { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id') . '-' . $this->depth; ?>"><!--
+					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id') . '-' . $this->depth; ?>"><!--
 					--><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_REPLY'); ?><!--
 				--></a>
 					<?php } ?>
@@ -209,12 +206,12 @@ defined('_HZEXEC_') or die();
 				<?php } else { ?>
 				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
 					<fieldset>
-						<legend><span><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('PLG_PUBLICATIONS_REVIEWS_ANONYMOUS'))); ?></span></legend>
+						<legend><span><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="comment[id]" value="0" />
 						<input type="hidden" name="comment[item_type]" value="<?php echo $this->comment->get('item_type'); ?>" />
 						<input type="hidden" name="comment[item_id]" value="<?php echo $this->comment->get('item_id'); ?>" />
-						<input type="hidden" name="comment[parent]" value="<?php echo ($this->comment->get('publication_id') ? 0 : $this->comment->get('id')); ?>" />
+						<input type="hidden" name="comment[parent]" value="<?php echo ($this->comment->get('publication_id')) ? 0 : $this->comment->get('id'); ?>" />
 						<input type="hidden" name="comment[created]" value="" />
 						<input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
 						<input type="hidden" name="comment[state]" value="<?php echo $this->comment->get('state', 1); ?>" />

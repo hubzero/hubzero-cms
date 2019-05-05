@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -53,57 +28,69 @@ $default = $this->params->get('access-plugin');
 	<fieldset>
 		<legend><?php echo Lang::txt($legend); ?></legend>
 
-		<label for="field-access">
-			<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_PRIVACY'); ?>
-			<select name="fields[access]" id="field-access">
-				<option value="0"<?php if ($this->entry->get('access', $default) == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_PRIVACY_PUBLIC'); ?></option>
-				<option value="1"<?php if ($this->entry->get('access', $default) == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_PRIVACY_REGISTERED'); ?></option>
-				<option value="4"<?php if ($this->entry->get('access', $default) == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_PRIVACY_PRIVATE'); ?></option>
-			</select>
-		</label>
+		<div class="form-group">
+			<label for="field-access">
+				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_PRIVACY'); ?>
+				<select name="fields[access]" id="field-access" class="form-control">
+					<option value="0"<?php if ($this->entry->get('access', $default) == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_PRIVACY_PUBLIC'); ?></option>
+					<option value="1"<?php if ($this->entry->get('access', $default) == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_PRIVACY_REGISTERED'); ?></option>
+					<option value="4"<?php if ($this->entry->get('access', $default) == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_PRIVACY_PRIVATE'); ?></option>
+				</select>
+			</label>
+		</div>
 
-		<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
-			<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-			<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
-		</label>
+		<div class="form-group">
+			<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
+				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+				<input type="text" name="fields[title]" id="field-title" size="35" class="form-control" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
+			</label>
+		</div>
 
-		<label for="field-description">
-			<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_DESCRIPTION'); ?>
-			<?php echo $this->editor('fields[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field-description', array('class' => 'minimal no-footer')); ?>
-		</label>
+		<div class="form-group">
+			<label for="field-description">
+				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_DESCRIPTION'); ?>
+				<?php echo $this->editor('fields[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field-description', array('class' => 'form-control minimal no-footer')); ?>
+			</label>
+		</div>
 
-		<label>
-			<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_TAGS'); ?>
-			<?php
-			$tags = ($this->entry->get('id') ? $this->entry->item()->tags('string') : '');
-			$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $tags)));
-			$tf = implode('', $tf);
-			if ($tf) {
-				echo $tf;
-			} else { ?>
-				<input type="text" name="tags" value="<?php echo $this->escape($tags); ?>" />
-			<?php } ?>
-			<span class="hint"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_TAGS_HINT'); ?></span>
-		</label>
+		<div class="form-group">
+			<label for="actags">
+				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_TAGS'); ?>
+				<?php
+				$tags = ($this->entry->get('id') ? $this->entry->item()->tags('string') : '');
+				$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $tags)));
+				$tf = implode('', $tf);
+				if ($tf) {
+					echo $tf;
+				} else { ?>
+					<input type="text" name="tags" id="actags" class="form-control" value="<?php echo $this->escape($tags); ?>" />
+				<?php } ?>
+				<span class="hint"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_TAGS_HINT'); ?></span>
+			</label>
+		</div>
 
 		<div class="grid">
 			<div class="col span6">
-				<label for="field-layout"<?php if ($this->task == 'save' && !$this->entry->get('layout')) { echo ' class="fieldWithErrors"'; } ?>>
-					<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_LAYOUT'); ?>
-					<select name="fields[layout]" id="field-layout">
-						<option value="grid"<?php if ($this->entry->get('layout') == 'grid') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_LAYOUT_GRID'); ?></option>
-						<option value="list"<?php if ($this->entry->get('layout') == 'list') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_LAYOUT_LIST'); ?></option>
-					</select>
-				</label>
+				<div class="form-group">
+					<label for="field-layout" class="form-control<?php if ($this->task == 'save' && !$this->entry->get('layout')) { echo ' fieldWithErrors'; } ?>">
+						<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_LAYOUT'); ?>
+						<select name="fields[layout]" id="field-layout">
+							<option value="grid"<?php if ($this->entry->get('layout') == 'grid') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_LAYOUT_GRID'); ?></option>
+							<option value="list"<?php if ($this->entry->get('layout') == 'list') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_LAYOUT_LIST'); ?></option>
+						</select>
+					</label>
+				</div>
 			</div>
 			<div class="col span6 omega">
-				<label for="field-sort"<?php if ($this->task == 'save' && !$this->entry->get('sort')) { echo ' class="fieldWithErrors"'; } ?>>
-					<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_SORT'); ?>
-					<select name="fields[sort]" id="field-sort">
-						<option value="created"<?php if ($this->entry->get('sort') == 'created') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_SORT_CREATED'); ?></option>
-						<option value="ordering"<?php if ($this->entry->get('sort') == 'ordering') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_SORT_ORDERING'); ?></option>
-					</select>
-				</label>
+				<div class="form-group">
+					<label for="field-sort" class="form-control<?php if ($this->task == 'save' && !$this->entry->get('sort')) { echo ' fieldWithErrors'; } ?>">
+						<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_SORT'); ?>
+						<select name="fields[sort]" id="field-sort">
+							<option value="created"<?php if ($this->entry->get('sort') == 'created') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_SORT_CREATED'); ?></option>
+							<option value="ordering"<?php if ($this->entry->get('sort') == 'ordering') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_SORT_ORDERING'); ?></option>
+						</select>
+					</label>
+				</div>
 			</div>
 		</div>
 		<p class="hint"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_SORT_DETAILS'); ?></p>

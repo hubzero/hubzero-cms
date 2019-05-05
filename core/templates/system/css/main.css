@@ -1,3 +1,9 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 /*
 
 	-- -- -- -- -- -- --
@@ -1593,7 +1599,18 @@ System styles
 	to the template BEFORE main.css.
 */
 	.container-block h3 {
-		background: #f8f8f8 url("../images/layout/light-stripes.png");
+		background-color: #f8f8f8;
+		background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(0,0,0, .065)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(0,0,0, .065)), color-stop(.75, rgba(0,0,0, .065)), color-stop(.75, transparent), to(transparent));
+		background-image: -webkit-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
+		background-image: -moz-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
+		background-image: -ms-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
+		background-image: -o-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
+		background-image: linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
+		-webkit-background-size: 30px 30px;
+		-moz-background-size: 30px 30px;
+		-ms-background-size: 30px 30px;
+		-o-background-size: 30px 30px;
+		background-size: 30px 30px;
 	}
 
 	.entry-search input[type="text"],

@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--
-@package        hubzero-cms
-@file           plugins/system/referrerpolicy/referrerpolicy.xml
-@copyright      Copyright 2005-2019 HUBzero Foundation, LLC.
-@license        http://opensource.org/licenses/MIT MIT
--->
-
 <extension version="2.5" type="plugin" group="system">
 	<name>plg_system_referrerpolicy</name>
-	<author>HUBzero</author>
 	<creationDate>September 2015</creationDate>
-	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://opensource.org/licenses/MIT MIT</license>
-	<authorEmail>support@hubzero.org</authorEmail>
+	<author>HUBzero</author>
 	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<version>2.5.0</version>
 	<description>PLG_SYSTEM_REFERRERPOLICY_XML_DESCRIPTION</description>
 	<files>

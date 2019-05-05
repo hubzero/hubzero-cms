@@ -1,3 +1,9 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 // Map selection example (selecting coordinates of a search rectangle)
 
 var BASE_PROJ = 'EPSG:4326'; // default projection

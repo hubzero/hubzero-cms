@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        core/core/modules/mod_members/assets/css/mod_members.css
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 	.mod_members {
@@ -15,8 +14,12 @@
 		        box-sizing: border-box;
 	}
 
+	.mod_members .note {
+		margin: 1em 0 0 0;
+		text-align: center;
+	}
 	.mod_members .stats-overview {
-		margin: 0;
+		margin: 0 0 1em 0;
 		padding: 0;
 	}
 	.mod_members .stats-overview tbody tr:hover,
@@ -28,14 +31,15 @@
 	.mod_members .stats-overview tbody tr td:first-child,
 	.mod_members .stats-overview tbody tr td:last-child {
 		text-align: center;
-		font-size: 3em;
-		font-weight: 300;
+		font-size: 1.5em;
+		/*font-weight: 300;*/
 		padding: 0;
 		border: none;
 	}
 	.mod_members .stats-overview tbody tr td a {
 		color: #666;
 	}
+	.mod_members .stats-overview tbody tr td.unapproved a,
 	.mod_members .stats-overview tbody tr td.unconfirmed a {
 		color: orange;
 	}
@@ -44,10 +48,31 @@
 	}
 	.mod_members .stats-overview tbody tr td a>span {
 		font-size: 0.35em;
-		font-weight: 400;
+		font-size: 0.65em;
+		/*font-weight: 400;*/
 		display: block;
 		margin: 1em 0 0 0;
 		color: #999;
+	}
+
+	.mod_members .member-stats-overview span {
+		display: inline-block;
+		width: 0.65em;
+		height: 0.65em;
+		line-height: 1;
+		padding: 0;
+		margin-right: 0.5em;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+	}
+	.mod_members .member-stats-overview thead th {
+		font-weight: bold;
+	}
+	.mod_members .member-stats-overview th {
+		font-weight: normal;
+	}
+	.mod_members .member-stats-overview .val {
+		text-align: right;
 	}
 
 	.mod_members .stats-overview tbody tr td a:hover,
@@ -57,6 +82,47 @@
 		color: #222;
 		text-decoration: none;
 	}
+
+	.mod_members .overview-container {
+		position: relative;
+		float: left;
+		width: 50%;
+		margin: 0;
+		padding: 1em 0 0 0;
+	}
+	.mod_members .members-total {
+		position: absolute;
+		top: 93px;
+		left: 50%;
+		margin-left: -50px;
+		font-size: 2em;
+		color: #666;
+		font-weight: 300;
+		text-align: center;
+		width: 100px;
+	}
+	.mod_members .chrt {
+		min-width: 200px;
+		height: 200px;
+	}
+
+@media (max-width: 600px) {
+	.mod_members .chrt {
+		min-width: 160px;
+	}
+}
+
+@media (max-width: 500px) {
+	.mod_members .chrt {
+		min-width: 150px;
+	}
+	.mod_members .overview-container {
+		width: 55%;
+	}
+	.mod_members .members-stats-overview {
+		width: 45%;
+	}
+}
 
 	/* CSS bar graph */
 	.mod_members .graph { 

@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2014-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2014-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Tools\Helpers;
@@ -78,10 +53,10 @@ class Vnc
 
 		if (is_string($data))
 		{
-			$data = array_values(unpack('C*',$data));
+			$data = array_values(unpack('C*', $data));
 		}
 
-		$result = self::crypt($data, $vnckey, False);
+		$result = self::crypt($data, $vnckey, false);
 
 		if (!$return_string)
 		{
@@ -99,10 +74,10 @@ class Vnc
 
 		if (is_string($data))
 		{
-			$data = array_values(unpack('C*',$data));
+			$data = array_values(unpack('C*', $data));
 		}
 
-		$result = self::crypt($data, $vnckey, True);
+		$result = self::crypt($data, $vnckey, true);
 
 		if (!$return_string)
 		{
@@ -329,9 +304,9 @@ class Vnc
 			int edf;
 		*/
 
-		$pc1m = array_pad(array(),56,0);
-		$pcr = array_pad(array(),56,0);
-		$kn = array_pad(array(),32,0);
+		$pc1m = array_pad(array(), 56, 0);
+		$pcr = array_pad(array(), 56, 0);
+		$kn = array_pad(array(), 32, 0);
 
 		for ($j =0; $j < 56; $j++)
 		{
@@ -549,12 +524,12 @@ class Vnc
 
 function genrandpassword()
 {
-	$len = mt_rand(0,8);
+	$len = mt_rand(0, 8);
 	$password = ''; // "\0\0\0\0\0\0\0\0";
 
 	for ($i=0; $i<$len; $i++)
 	{
-		$c = mt_rand(32,255);
+		$c = mt_rand(32, 255);
 
 		if ($c == ord("'"))
 		{

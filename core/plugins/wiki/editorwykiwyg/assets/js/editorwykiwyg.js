@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        plugins/hubzero/wikieditorwykiwyg/wikieditorwykiwyg.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 if (!String.prototype.trim) {
@@ -643,14 +642,16 @@ WYKIWYG.converter = function() {
 
 			return text;
 		}
-		
+
 		function writeAnchorTag(wholeMatch,m1,m2,m3,m4,m5,m6,m7) {
-			if (m7 == undefined) m7 = "";
+			if (m7 == undefined) {
+				m7 = "";
+			}
 			var whole_match = m1;
-			var link_text   = m2;
-			var link_id	 = m3.toLowerCase();
-			var url		= m4;
-			var title	= m7;
+			var link_text = m2;
+			var link_id = m3.toLowerCase();
+			var url = m4;
+			var title = m7;
 
 			if (url[0] == '!') {
 				return '[' + whole_match.substr(2);
@@ -663,11 +664,11 @@ WYKIWYG.converter = function() {
 				} else {
 					return whole_match;
 				}
-			}	
+			}
 
 			url = escapeCharacters(url,"*_");
 			var result = (whole_match.substr(0, 1) == ' ' ? ' ' : '') + "<a href=\"" + url + "\"";
-			
+
 			if (title != "" && title != url) {
 				title = title.replace(/"/g,"&quot;");
 				title = escapeCharacters(title,"*_");
@@ -697,11 +698,13 @@ WYKIWYG.converter = function() {
 			var whole_match = m1,
 				url         = m2;
 
-			if (!title) title = '';
+			if (!title) {
+				title = '';
+			}
 
 			if (url == '') {
 				return whole_match;
-			}	
+			}
 
 			alt_text = alt_text.replace(/"/g,"&quot;");
 			url = escapeCharacters(url,"*_");
@@ -717,7 +720,7 @@ WYKIWYG.converter = function() {
 
 			return result;
 		}
-		
+
 		function _DoFiles(text) {
 			// Handle macros:  [[File(url, alt="optional title")]]
 			// Don't forget: encode * and _
@@ -729,11 +732,13 @@ WYKIWYG.converter = function() {
 			var whole_match = m1,
 				url	        = m2;
 
-			if (!title) title = '';
+			if (!title) {
+				title = '';
+			}
 
 			if (url == '') {
 				return whole_match;
-			}	
+			}
 
 			url = escapeCharacters(url,"*_");
 			var result = '<a rel="filemacro" href="' + url + '"';
@@ -766,7 +771,7 @@ WYKIWYG.converter = function() {
 
 			var a = [];
 			atts = atts.split(',');
-			
+
 			for (var i=0; i < atts.length; i++) {
 				atts[i] = atts[i].replace(/^\s+|\s+$/g,"");
 				if (atts[i] == '') {
@@ -785,13 +790,13 @@ WYKIWYG.converter = function() {
 
 			return result;
 		}
-		
+
 		var columns = {
 			count: 0,
 			cls: '',
 			current: 0
 		};
-		
+
 		function _DoColumns(text) {
 			// Turn Wiki column macros [[Column(start, attribute=value)]]content[[column(end)]] into <div> tags.
 			//text = text.replace(/(\[\[Column\((\d)\)\]\]([\s\S]*?)\]\](?=((\n{2,}[^\[]|\[\[Column\(\d|$))))/gi, function(wholeMatch, m1, m2, m3, m4) {
@@ -1615,7 +1620,9 @@ WYKIWYG.converter = function() {
 					var numSpaces = 4 - leadingText.length % 4;
 
 					// there *must* be a better way to do this:
-					for (var i=0; i<numSpaces; i++) leadingText+=" ";
+					for (var i=0; i<numSpaces; i++) {
+						leadingText+=" ";
+					}
 
 					return leadingText;
 				}
@@ -1823,7 +1830,7 @@ WYKIWYG.editor = function() {
 					sel.className = 'wykiwyg-font'; 
 					sel.onchange = new Function(this.n+'.ddaction(this,"fontname")');
 					sel.options[0] = new Option('Font','');
-					for (x;x<fl;x++) {
+					for (x; x<fl; x++) {
 						var font = fonts[x];
 						sel.options[x+1] = new Option(font,font)
 					}

@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero.cms.site
- * @subpackage  com_dataviewer
- *
- * @author      Sudheera R. Fernando srf@xconsole.org
- * @copyright   Copyright 2010-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT or later; see LICENSE.txt
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -66,11 +63,11 @@ function filter($res, &$dd, $ob_mode = false)
 		foreach ($rec as $key => $val) {
 			if (!isset($dd['cols'][$key]['hide'])) {
 
-				if ($val != NULL) {
+				if ($val != null) {
 					$val = html_entity_decode(strip_tags($val), ENT_QUOTES, 'UTF-8');
 				}
 
-				if ($val == NULL) {
+				if ($val == null) {
 					$val = '';
 				}
 

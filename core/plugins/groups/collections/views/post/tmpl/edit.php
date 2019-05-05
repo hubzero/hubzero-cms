@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -76,10 +51,12 @@ $jbase = rtrim(Request::base(true), '/');
 						<div class="col span-half">
 							<div id="ajax-uploader" data-txt-instructions="<?php echo Lang::txt('Click or drop file'); ?>" data-action="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=upload<?php //&amp;dir=echo $dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
 								<noscript>
-									<label for="upload">
-										<?php echo Lang::txt('File:'); ?>
-										<input type="file" name="upload" id="upload" />
-									</label>
+									<div class="form-group">
+										<label for="upload">
+											<?php echo Lang::txt('File:'); ?>
+											<input type="file" name="upload" id="upload" class="form-control-file" />
+										</label>
+									</div>
 								</noscript>
 							</div>
 							<script src="<?php echo $jbase; ?>/core/assets/js/jquery.fileuploader.js"></script>
@@ -88,12 +65,14 @@ $jbase = rtrim(Request::base(true), '/');
 						<div class="col span-half omega">
 							<div id="link-adder" data-base="<?php echo rtrim(Request::base(true), '/'); ?>" data-txt-delete="<?php echo Lang::txt('JACTION_DELETE'); ?>" data-txt-instructions="<?php echo Lang::txt('Click to add link'); ?>" data-action="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
 								<noscript>
-									<label for="add-link">
-										<?php echo Lang::txt('Add a link:'); ?>
-										<input type="text" name="assets[-1][filename]" id="add-link" value="http://" />
-										<input type="hidden" name="assets[-1][id]" value="0" />
-										<input type="hidden" name="assets[-1][type]" value="link" />
-									</label>
+									<div class="form-group">
+										<label for="add-link">
+											<?php echo Lang::txt('Add a link:'); ?>
+											<input type="text" name="assets[-1][filename]" id="add-link" class="form-control" value="http://" />
+											<input type="hidden" name="assets[-1][id]" value="0" />
+											<input type="hidden" name="assets[-1][type]" value="link" />
+										</label>
+									</div>
 								</noscript>
 							</div>
 						</div><!-- / .col span-half -->
@@ -142,30 +121,36 @@ $jbase = rtrim(Request::base(true), '/');
 						?>
 					</div><!-- / .field-wrap -->
 
-					<label for="field-title">
-						<?php echo Lang::txt('Title'); ?>
-						<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($item->get('title'))); ?>" />
-					</label>
+					<div class="form-group">
+						<label for="field-title">
+							<?php echo Lang::txt('Title'); ?>
+							<input type="text" name="fields[title]" id="field-title" class="form-control" size="35" value="<?php echo $this->escape(stripslashes($item->get('title'))); ?>" />
+						</label>
+					</div>
 					<input type="hidden" name="fields[type]" value="file" />
 				<?php } else { ?>
-					<label for="field-title">
-						<?php echo Lang::txt('Title'); ?>
-						<input type="text" name="fieldstitle" id="field-title" class="disabled" disabled="disabled" value="<?php echo $this->escape(stripslashes($item->get('title'))); ?>" />
-					</label>
+					<div class="form-group">
+						<label for="field-title">
+							<?php echo Lang::txt('Title'); ?>
+							<input type="text" name="fieldstitle" id="field-title" class="form-control disabled" disabled="disabled" value="<?php echo $this->escape(stripslashes($item->get('title'))); ?>" />
+						</label>
+					</div>
 				<?php } ?>
 
-				<label for="field_description">
-					<?php echo Lang::txt('Description'); ?>
-					<?php if ($this->entry->get('original')) { ?>
-						<?php echo $this->editor('fields[description]', $this->escape(stripslashes($item->description('raw'))), 35, 5, 'field_description', array('class' => 'minimal no-footer')); ?>
-					<?php } else { ?>
-						<?php echo $this->editor('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field_description', array('class' => 'minimal no-footer')); ?>
-					<?php } ?>
-				</label>
+				<div class="form-group">
+					<label for="field_description">
+						<?php echo Lang::txt('Description'); ?>
+						<?php if ($this->entry->get('original')) { ?>
+							<?php echo $this->editor('fields[description]', $this->escape(stripslashes($item->description('raw'))), 35, 5, 'field_description', array('class' => 'form-control minimal no-footer')); ?>
+						<?php } else { ?>
+							<?php echo $this->editor('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field_description', array('class' => 'form-control minimal no-footer')); ?>
+						<?php } ?>
+					</label>
+				</div>
+
 				<?php if ($this->task == 'save' && !$item->get('description')) { ?>
 					<p class="error"><?php echo Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_ERROR_PROVIDE_CONTENT'); ?></p>
 				<?php } ?>
-
 			</div><!-- / #post-file -->
 		</div><!-- / #post-type-form -->
 
@@ -175,31 +160,37 @@ $jbase = rtrim(Request::base(true), '/');
 	<?php } ?>
 
 		<?php if ($this->collections->total() > 0) { ?>
-			<label for="post-collection_id">
-				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SELECT_COLLECTION'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-				<select name="post[collection_id]" id="post-collection_id">
-				<?php foreach ($this->collections as $collection) { ?>
-					<option value="<?php echo $this->escape($collection->get('id')); ?>"<?php if ($this->collection->get('id') == $collection->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($collection->get('title'))); ?></option>
-				<?php } ?>
-				</select>
-				<span class="hint"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SELECT_COLLECTION_HINT'); ?></span>
-			</label>
+			<div class="form-group">
+				<label for="post-collection_id">
+					<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SELECT_COLLECTION'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+					<select name="post[collection_id]" id="post-collection_id" class="form-control">
+					<?php foreach ($this->collections as $collection) { ?>
+						<option value="<?php echo $this->escape($collection->get('id')); ?>"<?php if ($this->collection->get('id') == $collection->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($collection->get('title'))); ?></option>
+					<?php } ?>
+					</select>
+					<span class="hint"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SELECT_COLLECTION_HINT'); ?></span>
+				</label>
+			</div>
 		<?php } else { ?>
-			<label for="post-collection_title">
-				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_NEW_COLLECTION'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-				<input type="text" name="collection_title" id="post-collection_title" value="" />
-				<span class="hint"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_NEW_COLLECTION_HINT'); ?></span>
-			</label>
+			<div class="form-group">
+				<label for="post-collection_title">
+					<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_NEW_COLLECTION'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+					<input type="text" name="collection_title" id="post-collection_title" class="form-control" value="" />
+					<span class="hint"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_NEW_COLLECTION_HINT'); ?></span>
+				</label>
+			</div>
 		<?php } ?>
 
 	<?php if ($this->entry->get('original')) { ?>
 			</div>
 			<div class="col span6 omega">
-				<label>
-					<?php echo Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_FIELD_TAGS'); ?>
-					<?php echo $this->autocompleter('tags', 'tags', $this->escape($item->tags('string')), 'actags'); ?>
-					<span class="hint"><?php echo Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_FIELD_TAGS_HINT'); ?></span>
-				</label>
+				<div class="form-group">
+					<label for="actags">
+						<?php echo Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_FIELD_TAGS'); ?>
+						<?php echo $this->autocompleter('tags', 'tags', $this->escape($item->tags('string')), 'actags'); ?>
+						<span class="hint"><?php echo Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_FIELD_TAGS_HINT'); ?></span>
+					</label>
+				</div>
 			</div>
 		</div>
 	<?php } else { ?>

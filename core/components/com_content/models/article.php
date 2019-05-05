@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Content\Models;
@@ -90,9 +66,9 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	 * @var  array
 	 */
 	protected $rules = array(
-		'title'    => 'notempty',
-		'content'  => 'notempty',
-		'scope'    => 'notempty'
+		'title'     => 'notempty',
+		'introtext' => 'notempty',
+		'scope'     => 'notempty'
 	);
 
 	/**
@@ -103,6 +79,9 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	public $always = array(
 		'publish_up',
 		'publish_down',
+		'fulltext',
+		'images',
+		'urls',
 		'modified',
 		'modified_by',
 		'metadata',
@@ -171,6 +150,54 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 			return parent::automaticAssetId();
 		}
 		return $this->get('asset_id');
+	}
+
+	/**
+	 * Generates automatic fulltext field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticFulltext($data)
+	{
+		if (!isset($data['fulltext']) || is_null($data['fulltext']))
+		{
+			$data['fulltext'] = '';
+		}
+
+		return $data['fulltext'];
+	}
+
+	/**
+	 * Generates automatic images field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticImages($data)
+	{
+		if (!isset($data['images']) || is_null($data['images']))
+		{
+			$data['images'] = '';
+		}
+
+		return $data['images'];
+	}
+
+	/**
+	 * Generates automatic urls field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticUrls($data)
+	{
+		if (!isset($data['urls']) || is_null($data['urls']))
+		{
+			$data['urls'] = '';
+		}
+
+		return $data['urls'];
 	}
 
 	/**

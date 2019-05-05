@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -211,10 +186,10 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 		$oauth2 = new Google_Service_Oauth2($client);
 
 		// Check if there's an active token in the session
-		$jsession = App::get('session');
-		if ($jsession->get('google.token', null))
+		$session = App::get('session');
+		if ($session->get('google.token', null))
 		{
-			$client->setAccessToken($jsession->get('google.token'));
+			$client->setAccessToken($session->get('google.token'));
 		}
 
 		// If we have an access token set, carry on
@@ -262,7 +237,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 				// Also set a suggested username for their hub account
 				$sub_email    = explode('@', $user_profile['email'], 2);
 				$tmp_username = $sub_email[0];
-				$jsession->set('auth_link.tmp_username', $tmp_username);
+				$session->set('auth_link.tmp_username', $tmp_username);
 			}
 
 			$hzal->update();
@@ -367,7 +342,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 
 		$html = '<a class="google account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=google' . $return) . '">';
 			$html .= '<div class="signin">';
-				$html .= Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', 'Google');
+				$html .= Lang::txt('PLG_AUTHENTICATION_GOOGLE_SIGN_IN');
 			$html .= '</div>';
 		$html .= '</a>';
 

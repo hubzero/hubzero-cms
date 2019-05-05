@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Steve Snyder <snyder13@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -46,10 +21,10 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  \Components\Search\Models\Basic\Request
-	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
-	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
-	 * @return     void
+	 * @param   object  $request   \Components\Search\Models\Basic\Request
+	 * @param   object  &$results  \Components\Search\Models\Basic\Result\Set
+	 * @param   object  $authz     \Components\Search\Models\Basic\Authorization
+	 * @return  void
 	 */
 	public static function onSearch($request, &$results, $authz)
 	{
@@ -73,6 +48,8 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
 			$addtl_where[] = "(p.alias NOT LIKE '%$forb%' AND p.title NOT LIKE '%$forb%' AND p.about NOT LIKE '%$forb%')";
 		}
 
+		$access = implode(',', User::getAuthorisedViewLevels());
+
 		$results->add(new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				p.title,
@@ -83,7 +60,7 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
 				'Projects' AS `section`
 			FROM `#__projects` AS p $from
 			WHERE
-				p.state!=2 AND p.private=0 AND $weight > 0" .
+				p.state!=2 AND (p.private=0 OR p.access IN ($access)) AND $weight > 0" .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 			" ORDER BY $weight DESC"
 		));
@@ -112,13 +89,12 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * onIndex 
-	 * 
-	 * @param string $type
-	 * @param integer $id 
-	 * @param boolean $run 
-	 * @access public
-	 * @return void
+	 * onIndex
+	 *
+	 * @param   string   $type
+	 * @param   integer  $id
+	 * @param   boolean  $run
+	 * @return  void
 	 */
 	public function onIndex($type, $id, $run = false)
 	{
@@ -133,7 +109,7 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
 				$id = \Hubzero\Utility\Sanitize::paranoid($id);
 
 				// Get the record
-				$sql = "SELECT * FROM #__projects WHERE id={$id} AND type=1;";
+				$sql = "SELECT * FROM `#__projects` WHERE id={$id} AND type=1;";
 				$row = $db->setQuery($sql)->query()->loadObject();
 
 				// Determine the path
@@ -185,7 +161,7 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$db = App::get('db');
-				$sql = "SELECT id FROM #__projects WHERE type=1;";
+				$sql = "SELECT id FROM `#__projects` WHERE type=1;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
 				return $ids;
 			}

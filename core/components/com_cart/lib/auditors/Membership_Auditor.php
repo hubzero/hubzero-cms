@@ -1,49 +1,29 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
- *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Ilya Shunko <ishunko@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Cart\Lib\Auditors;
 
 use Components\Storefront\Models\Product;
 use Components\Storefront\Models\Memberships;
+use User;
 
-require_once('BaseAuditor.php');
-require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php';
-require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php';
+require_once __DIR__ . DS . 'BaseAuditor.php';
+require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Product.php';
+require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Memberships.php';
 
 class Membership_Auditor extends BaseAuditor
 {
 	/**
 	 * Constructor
 	 *
-	 * @param 	void
-	 * @return 	void
+	 * @param   string   $type
+	 * @param   integer  $pId
+	 * @param   integer  $crtId
+	 * @return  void
 	 */
 	public function __construct($type, $pId, $crtId)
 	{
@@ -53,33 +33,31 @@ class Membership_Auditor extends BaseAuditor
 	/**
 	 * Main handler. Does all the checks
 	 *
-	 * @param 	void
-	 * @return 	void
+	 * @return  void
 	 */
 	public function audit()
 	{
-		/* Membership may have a limit on when it can be extended */
+		// Membership may have a limit on when it can be extended
 
-		/* If no user, some checks may be skipped... */
+		// If no user, some checks may be skipped...
 		// Get user
-		$jUser = User::getInstance();
-		if (!$jUser->get('guest')) {
+		$user = User::getInstance();
+		if (!$user->get('guest'))
+		{
 			// Check if there is a limitation on when the subscription can be extended
 			$subscriptionMaxLen = Product::getMetaValue($this->pId, 'subscriptionMaxLen');
-			if ($subscriptionMaxLen) {
-				/* Check if the current user has the existing subscription and how much is left on it
-				 i.e. figure out if he may extend his current subscription */
+			if ($subscriptionMaxLen)
+			{
+				// Check if the current user has the existing subscription and how much is left on it
+				// i.e. figure out if he may extend his current subscription
 
-				/*
-				 *  This is not working very well for multiple SKUs with multiple subscriptionMaxLen's
-				 *  at this point code doesn't know what SKU will be added,
-				 *  so for one SKU subscriptionMaxLen should
-				 *  be set to time less than actual membership length, ie if membership is sold for 1 year and
-				 *  cannot be renewed more than 6 month before it expires the subscriptionMaxLen must be set to 6 MONTH
-				 *  if it cannot be renewed more than 3 month before it expires the subscriptionMaxLen must be set to 3 MONTH
-				 *
-				 *  so subscriptionMaxLen = XX is actually "let renew XX time before expiration"
-				 */
+				// This is not working very well for multiple SKUs with multiple subscriptionMaxLen's
+				// at this point code doesn't know what SKU will be added,
+				// so for one SKU subscriptionMaxLen should
+				// be set to time less than actual membership length, ie if membership is sold for 1 year and
+				// cannot be renewed more than 6 month before it expires the subscriptionMaxLen must be set to 6 MONTH
+				// if it cannot be renewed more than 3 month before it expires the subscriptionMaxLen must be set to 3 MONTH
+				// so subscriptionMaxLen = XX is actually "let renew XX time before expiration"
 
 				// Get the proper product type subscription object reference
 				$subscription = Memberships::getSubscriptionObject($this->type, $this->pId, $this->uId);
@@ -99,10 +77,9 @@ class Membership_Auditor extends BaseAuditor
 						$this->setResponseError(': you already have an active subscription. Subscription extension is not available at this time.');
 					}
 				}
-
 			}
 		}
 
-		return($this->getResponse());
+		return $this->getResponse();
 	}
 }

@@ -1,25 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Alissa Nedossekina <alisa@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
- *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -74,13 +57,12 @@ $class = $color ? 'pin_' . $color : 'pin_grey';
 				<div class="todo-content">
 					<textarea name="content" rows="10" cols="25" placeholder="<?php echo Lang::txt('PLG_PROJECTS_TODO_TYPE_TODO'); ?>"><?php echo $this->row->get('details') ? stripslashes($this->row->get('details')) :  stripslashes($this->row->get('content')); ?></textarea>
 					<div class="todo-edits">
-						<?php if (count($lists) > 0 ) { ?>
+						<?php if (count($lists) > 0) { ?>
 						<label><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_TODO_CHOOSE_LIST')); ?>:
 							<select name="list">
-								<option value="none" <?php if ($color == '') echo 'selected="selected"'?>><?php echo Lang::txt('PLG_PROJECTS_TODO_ADD_TO_NO_LIST'); ?></option>
-							<?php foreach ($lists as $list) {
-							?>
-								<option value="<?php echo $list->color; ?>" <?php if ($list->color == $color) echo 'selected="selected"'?>><?php echo stripslashes($list->todolist); ?></option>
+								<option value="none" <?php if ($color == '') { echo 'selected="selected"'; } ?>><?php echo Lang::txt('PLG_PROJECTS_TODO_ADD_TO_NO_LIST'); ?></option>
+							<?php foreach ($lists as $list) { ?>
+								<option value="<?php echo $list->color; ?>" <?php if ($list->color == $color) { echo 'selected="selected"'; } ?>><?php echo stripslashes($list->todolist); ?></option>
 							<?php } ?>
 							</select>
 						</label>
@@ -88,11 +70,12 @@ $class = $color ? 'pin_' . $color : 'pin_grey';
 						<label id="td-selector"><?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_ASSIGNED_TO'); ?>
 							<select name="assigned">
 								<option value=""><?php echo Lang::txt('PLG_PROJECTS_TODO_NOONE'); ?></option>
-							<?php foreach ($this->team as $member) {
-								if ($member->userid && $member->userid != 0) {
+							<?php foreach ($this->team as $member) { ?>
+								<?php if ($member->userid && $member->userid != 0) {
 									$team_ids[] = $member->userid; ?>
-								<option value="<?php echo $member->userid; ?>" class="nameopt" <?php if ($member->userid == $this->row->get('assigned_to') ) { echo 'selected="selected"'; } ?>><?php echo $member->name; ?></option>
-							<?php } } ?>
+								<option value="<?php echo $member->userid; ?>" class="nameopt" <?php if ($member->userid == $this->row->get('assigned_to')) { echo 'selected="selected"'; } ?>><?php echo $member->name; ?></option>
+								<?php } ?>
+							<?php } ?>
 							</select>
 						</label>
 						<label><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_DUE')); ?>

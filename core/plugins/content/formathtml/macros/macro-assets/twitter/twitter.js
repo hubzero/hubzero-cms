@@ -2,7 +2,7 @@
 
 Author:
 -----------------		
-Christopher Smoak <csmoak@purdue.edu>
+HUBzero
 
 Created:
 -----------------
@@ -10,7 +10,7 @@ April 2011
 
 Requires:
 -----------------
-jQuery 1.7
+jQuery 1.7+
 
 Parameters:
 -----------------

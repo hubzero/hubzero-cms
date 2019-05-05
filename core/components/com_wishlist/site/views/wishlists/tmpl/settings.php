@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -67,44 +42,53 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_WISHLIST_INFORMATION'); ?></legend>
 
-				<label for="field-title">
-					<?php echo Lang::txt('COM_WISHLIST_TITLE'); ?>:
-			<?php if ($this->wishlist->get('category') == 'resource') { ?>
-					<span class="highighted"><?php echo $this->wishlist->get('title'); ?></span>
-					<input name="fields[title]" id="field-title" type="hidden" value="<?php echo $this->escape($this->wishlist->get('title')); ?>" />
-				</label>
-				<p class="hint"><?php echo Lang::txt('COM_WISHLIST_TITLE_NOTE'); ?></p>
-			<?php } else { ?>
-					<input name="fields[title]" id="field-title" type="text" value="<?php echo $this->escape($this->wishlist->get('title')); ?>" />
-				</label>
-			<?php } ?>
+				<div class="form-group">
+					<label for="field-title">
+						<?php echo Lang::txt('COM_WISHLIST_TITLE'); ?>:
+				<?php if ($this->wishlist->get('category') == 'resource') { ?>
+						<span class="highighted"><?php echo $this->wishlist->get('title'); ?></span>
+						<input name="fields[title]" id="field-title" type="hidden" value="<?php echo $this->escape($this->wishlist->get('title')); ?>" />
+					</label>
+					<p class="hint"><?php echo Lang::txt('COM_WISHLIST_TITLE_NOTE'); ?></p>
+				<?php } else { ?>
+						<input name="fields[title]" id="field-title" class="form-control" type="text" value="<?php echo $this->escape($this->wishlist->get('title')); ?>" />
+					</label>
+				<?php } ?>
+				</div>
 
-				<label for="field-description">
-					<?php echo Lang::txt('COM_WISHLIST_DESC'); ?> (<?php echo Lang::txt('COM_WISHLIST_OPTIONAL'); ?>):
-					<textarea name="fields[description]" id="field-description" rows="10" cols="50"><?php echo $this->escape($this->wishlist->get('description')); ?></textarea>
-				</label>
+				<div class="form-group">
+					<label for="field-description">
+						<?php echo Lang::txt('COM_WISHLIST_DESC'); ?> (<?php echo Lang::txt('COM_WISHLIST_OPTIONAL'); ?>):
+						<textarea name="fields[description]" id="field-description" class="form-control" rows="10" cols="50"><?php echo $this->escape($this->wishlist->get('description')); ?></textarea>
+					</label>
+				</div>
 
 				<fieldset>
 					<legend><?php echo Lang::txt('COM_WISHLIST_THIS_LIST_IS'); ?>:</legend>
-					<label for="field-public-yes">
-						<input class="option" type="radio" name="fields[public]" id="field-public-yes" value="1" <?php
-						if ($this->wishlist->get('public') == 1) {
-							echo ' checked="checked"';
-						}
-						if ($this->wishlist->get('category') == 'resource' or ($this->wishlist->get('category') == 'general' && $this->wishlist->get('referenceid') == 1)) {
-							echo ' disabled="disabled"';
-						} ?> /> <?php echo Lang::txt('COM_WISHLIST_PUBLIC'); ?>
-					</label>
 
-					<label for="field-public-no">
-						<input class="option" type="radio" name="fields[public]" id="field-public-no" value="0" <?php
-						if ($this->wishlist->get('public') == 0) {
-							echo ' checked="checked"';
-						}
-						if ($this->wishlist->get('category') =='resource' or ($this->wishlist->get('category') == 'general' && $this->wishlist->get('referenceid') == 1)) {
-							echo ' disabled="disabled"';
-						} ?> /> <?php echo Lang::txt('COM_WISHLIST_PRIVATE'); ?>
-					</label>
+					<div class="form-group form-check">
+						<label for="field-public-yes" class="form-check-label">
+							<input class="option form-check-input" type="radio" name="fields[public]" id="field-public-yes" value="1" <?php
+							if ($this->wishlist->get('public') == 1) {
+								echo ' checked="checked"';
+							}
+							if ($this->wishlist->get('category') == 'resource' or ($this->wishlist->get('category') == 'general' && $this->wishlist->get('referenceid') == 1)) {
+								echo ' disabled="disabled"';
+							} ?> /> <?php echo Lang::txt('COM_WISHLIST_PUBLIC'); ?>
+						</label>
+					</div>
+
+					<div class="form-group form-check">
+						<label for="field-public-no" class="form-check-label">
+							<input class="option form-check-input" type="radio" name="fields[public]" id="field-public-no" value="0" <?php
+							if ($this->wishlist->get('public') == 0) {
+								echo ' checked="checked"';
+							}
+							if ($this->wishlist->get('category') =='resource' or ($this->wishlist->get('category') == 'general' && $this->wishlist->get('referenceid') == 1)) {
+								echo ' disabled="disabled"';
+							} ?> /> <?php echo Lang::txt('COM_WISHLIST_PRIVATE'); ?>
+						</label>
+					</div>
 				</fieldset>
 			</fieldset>
 			<div class="clear"></div>
@@ -229,17 +213,19 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 					</table>
 				</div>
 
-				<label for="field_newowners">
-					<?php echo Lang::txt('COM_WISHLIST_ADD_IND'); ?>:
-					<?php
-					$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'newowners', 'field_newowners', '', '')));
-					if (count($mc) > 0) {
-						echo $mc[0];
-					} else { ?>
-					<input type="text" name="newowners" id="field_newowners" value="" />
-					<?php } ?>
-					<span class="hint"><?php echo Lang::txt('COM_WISHLIST_ENTER_LOGINS'); ?></span>
-				</label>
+				<div class="form-group">
+					<label for="field_newowners">
+						<?php echo Lang::txt('COM_WISHLIST_ADD_IND'); ?>:
+						<?php
+						$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'newowners', 'field_newowners', '', '')));
+						if (count($mc) > 0) {
+							echo $mc[0];
+						} else { ?>
+						<input type="text" name="newowners" id="field_newowners" class="form-control" value="" />
+						<?php } ?>
+						<span class="hint"><?php echo Lang::txt('COM_WISHLIST_ENTER_LOGINS'); ?></span>
+					</label>
+				</div>
 			</fieldset>
 			<div class="clear"></div>
 
@@ -294,17 +280,19 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 						</table>
 					</div>
 
-					<label for="field_newadvisory">
-						<?php echo Lang::txt('COM_WISHLIST_ADD_ADVISORY_MEMBERS'); ?>:
-						<?php
-						$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'newadvisory', 'field_newadvisory', '', '')));
-						if (count($mc) > 0) {
-							echo $mc[0];
-						} else { ?>
-						<input type="text" name="newadvisory" id="field_newadvisory" value="" />
-						<?php } ?>
-						<span><?php echo Lang::txt('COM_WISHLIST_ENTER_LOGINS'); ?></span>
-					</label class="hint">
+					<div class="form-group">
+						<label for="field_newadvisory">
+							<?php echo Lang::txt('COM_WISHLIST_ADD_ADVISORY_MEMBERS'); ?>:
+							<?php
+							$mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'newadvisory', 'field_newadvisory', '', '')));
+							if (count($mc) > 0) {
+								echo $mc[0];
+							} else { ?>
+							<input type="text" name="newadvisory" id="field_newadvisory" class="form-control" value="" />
+							<?php } ?>
+							<span><?php echo Lang::txt('COM_WISHLIST_ENTER_LOGINS'); ?></span>
+						</label>
+					</div>
 				<?php if ($this->wishlist->get('category') == 'resource' or ($this->wishlist->get('category') == 'general' && $this->wishlist->get('referenceid') == 1)) { ?>
 					<input type="hidden" name="fields[public]" value="<?php echo $this->wishlist->get('public'); ?>" />
 				<?php } ?>
@@ -316,7 +304,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 				<input class="btn btn-success" type="submit" name="submit" value="<?php echo Lang::txt('COM_WISHLIST_SAVE'); ?>" />
 
 				<a class="btn btn-secondary" href="<?php echo Route::url($this->wishlist->link()); ?>">
-					<?php echo Lang::txt('COM_WISHLIST_CANCEL'); ?>
+					<?php echo Lang::txt('JCANCEL'); ?>
 				</a>
 			</p>
 

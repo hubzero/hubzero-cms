@@ -1,8 +1,8 @@
 <?php
 /**
- * @package   hubzero-cms
- * @copyright Copyright 2005-2019 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Login\Site\Controllers;
@@ -639,14 +639,14 @@ class Auth extends SiteController
 
 		if ($profile_conflicts)
 		{
-			foreach ($profile_conflicts as $juser)
+			foreach ($profile_conflicts as $auser)
 			{
-				$auth_link  = \Hubzero\Auth\Link::find_by_user_id($juser->id);
+				$auth_link  = \Hubzero\Auth\Link::find_by_user_id($auser->id);
 				$dname      = (is_object($auth_link) && $auth_link->auth_domain_name) ? $auth_link->auth_domain_name : 'hubzero';
 				$conflict[] = array(
 					'auth_domain_name' => $dname,
-					'name'  => $juser->name,
-					'email' => $juser->email
+					'name'  => $auser->name,
+					'email' => $auser->email
 				);
 			}
 		}
@@ -655,10 +655,10 @@ class Auth extends SiteController
 		{
 			foreach ($link_conflicts as $l)
 			{
-				$juser      = User::getInstance($l['user_id']);
+				$auser      = User::getInstance($l['user_id']);
 				$conflict[] = array(
 					'auth_domain_name' => $l['auth_domain_name'],
-					'name'  => $juser->name,
+					'name'  => $auser->name,
 					'email' => $l['email']
 				);
 			}
@@ -680,7 +680,7 @@ class Auth extends SiteController
 			->set('display_name', $display_name)
 			->set('conflict', $conflict)
 			->set('sitename', $sitename)
-			->set('juser', $user)
+			->set('user', $user)
 			->setName('link')
 			->setLayout('default')
 			->addTemplatePath($this->getTemplatePath())

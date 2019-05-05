@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -342,7 +347,7 @@ class Migration20130829211856ComPublications extends Base
 			"doi_userpw" => "",
 			"doi_xmlschema" => "",
 			"doi_publisher" => "",
-			"doi_resolve" => "http://dx.doi.org/",
+			"doi_resolve" => "https://doi.org/",
 			"doi_verify" => "http://n2t.net/ezid/id/",
 			"supportedtag" => "",
 			"supportedlink" => "",

@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        plugins/courses/outline/wiki.jquery.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 //-----------------------------------------------------------
@@ -75,7 +74,7 @@ jQuery(document).ready(function($) {
 
 	$('.edit-form').submit(function ( e ) {
 		if (typeof CKEDITOR !== 'undefined') {
-			for ( var instance in CKEDITOR.instances ) {
+			for (var instance in CKEDITOR.instances) {
 				CKEDITOR.instances[instance].updateElement();
 			}
 		}

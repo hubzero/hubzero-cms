@@ -1,34 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- * All rights reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author	Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -173,18 +147,22 @@ break;
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=stats'); ?>" method="get" enctype="multipart/form-data">
 	<section class="main section" id="ticket-stats">
 		<div class="grid">
-			<div class="col span-half">
-				<p class="time-range">
-					<label for="start-date"><?php echo Lang::txt('COM_SUPPORT_DATE_FROM'); ?></label> <input type="text" name="start" id="start-date" value="<?php echo $this->escape($this->start); ?>" size="7" />
-					<label for="end-date"><?php echo Lang::txt('COM_SUPPORT_DATE_TO'); ?></label> <input type="text" name="end" id="end-date" value="<?php echo $this->escape($this->end); ?>" size="7" />
-				</p>
-			</div><!-- / .col span-half omega -->
-			<div class="col span-half omega">
-				<fieldset class="support-stats-filter">
-					<label for="ticket-group">
-						<?php echo Lang::txt('COM_SUPPORT_FILTER_GROUP'); ?>
-					</label>
-					<select name="group" id="ticket-group">
+			<div class="col span4">
+				<div class="form-group">
+					<label for="start-date"><?php echo Lang::txt('COM_SUPPORT_DATE_FROM'); ?></label>
+					<input type="text" class="form-control" name="start" id="start-date" value="<?php echo $this->escape($this->start); ?>" size="7" />
+				</div>
+			</div>
+			<div class="col span4">
+				<div class="form-group">
+					<label for="end-date"><?php echo Lang::txt('COM_SUPPORT_DATE_TO'); ?></label>
+					<input type="text" class="form-control" name="end" id="end-date" value="<?php echo $this->escape($this->end); ?>" size="7" />
+				</div>
+			</div>
+			<div class="col span4 omega">
+				<div class="form-group">
+					<label for="ticket-group"><?php echo Lang::txt('COM_SUPPORT_FILTER_GROUP'); ?></label>
+					<select name="group" id="ticket-group" class="form-control">
 						<option value=""<?php if (!$this->group) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_ALL'); ?></option>
 						<option value="_none_"<?php if ($this->group == '_none_') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_NONE'); ?></option>
 						<?php
@@ -199,9 +177,9 @@ break;
 						}
 						?>
 					</select>
-					<input type="submit" value="Go" />
-				</fieldset>
-			</div><!-- / .col span-half omega -->
+					<input type="submit" class="btn" value="Go" />
+				</div>
+			</div>
 		</div><!-- / .grid -->
 
 		<div class="container">

@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -221,27 +197,31 @@ if ($this->model->groupOwner())
 				<legend><?php echo Lang::txt('COM_PROJECTS_PARAMETERS'); ?></legend>
 
 				<div class="input-wrap">
-					<label><?php echo Lang::txt('COM_PROJECTS_PRIVACY'); ?>:</label>
+					<?php /*<label><?php echo Lang::txt('COM_PROJECTS_PRIVACY'); ?>:</label>
 					<select name="private">
 						<option value="-1" <?php if ($this->model->get('private') < 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_OPEN'); ?></option>
 						<option value="0" <?php if ($this->model->get('private') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_PUBLIC'); ?></option>
 						<option value="1" <?php if (!$this->model->isPublic()) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_PRIVATE'); ?></option>
+					</select>*/ ?>
+					<label for="field-access"><?php echo Lang::txt('COM_PROJECTS_PRIVACY'); ?>:</label>
+					<select name="access" id="field-access">
+						<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->model->get('access')); ?>
 					</select>
 				</div>
 
 				<div class="input-wrap">
-					<input type="hidden"  name="params[team_public]" value="0" />
-					<input type="checkbox" class="option" name="params[team_public]" value="1" <?php if ($this->params->get( 'team_public')) { echo ' checked="checked"'; } ?> />
-					<label><?php echo Lang::txt('COM_PROJECTS_TEAM_PUBLIC'); ?></label>
+					<input type="hidden" name="params[team_public]" value="0" />
+					<input type="checkbox" class="option" name="params[team_public]" id="param-team_public" value="1" <?php if ($this->params->get( 'team_public')) { echo ' checked="checked"'; } ?> />
+					<label for="param-team_public"><?php echo Lang::txt('COM_PROJECTS_TEAM_PUBLIC'); ?></label>
 				</div>
 				<div class="input-wrap">
-					<input type="hidden"  name="params[publications_public]" value="0" />
-					<input type="checkbox" class="option" name="params[publications_public]" value="1" <?php if ($this->params->get( 'publications_public')) { echo ' checked="checked"'; } ?> />
-					<label><?php echo Lang::txt('COM_PROJECTS_PUBLICATIONS_PUBLIC'); ?></label>
+					<input type="hidden" name="params[publications_public]" value="0" />
+					<input type="checkbox" class="option" name="params[publications_public]" id="param-publications_public" value="1" <?php if ($this->params->get( 'publications_public')) { echo ' checked="checked"'; } ?> />
+					<label for="param-publications_public"><?php echo Lang::txt('COM_PROJECTS_PUBLICATIONS_PUBLIC'); ?></label>
 				</div>
 				<div class="input-wrap">
-					<label><?php echo Lang::txt('COM_PROJECTS_LAYOUT'); ?>:</label>
-					<select name="params[layout]">
+					<label for="param-layout"><?php echo Lang::txt('COM_PROJECTS_LAYOUT'); ?>:</label>
+					<select name="params[layout]" id="param-layout">
 						<option value="standard" <?php if ($this->params->get( 'layout', 'standard') == 'standard') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_LAYOUT_STANDARD'); ?></option>
 						<option value="extended" <?php if ($this->params->get( 'layout') == 'extended') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_LAYOUT_EXTENDED'); ?></option>
 					</select>
@@ -260,22 +240,23 @@ if ($this->model->groupOwner())
 						<?php } ?>
 					</div>
 				<?php } ?>
+
 				<?php if ($this->config->get('grantinfo', 0)) { ?>
 					<div class="input-wrap">
-						<label><?php echo Lang::txt('COM_PROJECTS_TERMS_GRANT_TITLE'); ?>:</label>
-						<input name="params[grant_title]" maxlength="250" type="text" value="<?php echo $this->escape(html_entity_decode($this->params->get( 'grant_title'))); ?>" class="long" />
+						<label for="param-grant_title"><?php echo Lang::txt('COM_PROJECTS_TERMS_GRANT_TITLE'); ?>:</label>
+						<input name="params[grant_title]" id="param-grant_title" maxlength="250" type="text" value="<?php echo $this->escape(html_entity_decode($this->params->get( 'grant_title'))); ?>" class="long" />
 					</div>
 					<div class="input-wrap">
-						<label><?php echo Lang::txt('COM_PROJECTS_TERMS_GRANT_PI'); ?>:</label>
-						<input name="params[grant_PI]" maxlength="250" type="text" value="<?php echo $this->escape(html_entity_decode($this->params->get( 'grant_PI'))); ?>" class="long" />
+						<label for="param-grant_PI"><?php echo Lang::txt('COM_PROJECTS_TERMS_GRANT_PI'); ?>:</label>
+						<input name="params[grant_PI]" id="param-grant_PI" maxlength="250" type="text" value="<?php echo $this->escape(html_entity_decode($this->params->get( 'grant_PI'))); ?>" class="long" />
 					</div>
 					<div class="input-wrap">
-						<label><?php echo Lang::txt('COM_PROJECTS_TERMS_GRANT_AGENCY'); ?>:</label>
-						<input name="params[grant_agency]" maxlength="250" type="text" value="<?php echo $this->escape(html_entity_decode($this->params->get( 'grant_agency'))); ?>" class="long" />
+						<label for="param-grant_agency"><?php echo Lang::txt('COM_PROJECTS_TERMS_GRANT_AGENCY'); ?>:</label>
+						<input name="params[grant_agency]" id="param-grant_agency" maxlength="250" type="text" value="<?php echo $this->escape(html_entity_decode($this->params->get( 'grant_agency'))); ?>" class="long" />
 					</div>
 					<div class="input-wrap">
-						<label><?php echo Lang::txt('COM_PROJECTS_TERMS_GRANT_BUDGET'); ?>:</label>
-						<input name="params[grant_budget]" maxlength="250" type="text" value="<?php echo $this->escape(html_entity_decode($this->params->get( 'grant_budget'))); ?>" class="long" />
+						<label for="param-grant_budget"><?php echo Lang::txt('COM_PROJECTS_TERMS_GRANT_BUDGET'); ?>:</label>
+						<input name="params[grant_budget]" id="param-grant_budget" maxlength="250" type="text" value="<?php echo $this->escape(html_entity_decode($this->params->get( 'grant_budget'))); ?>" class="long" />
 					</div>
 					<div class="input-wrap">
 						<label><?php echo Lang::txt('COM_PROJECTS_TERMS_GRANT_APPROVAL_CODE'); ?>:</label>
@@ -293,17 +274,18 @@ if ($this->model->groupOwner())
 
 					<div class="input-wrap">
 						<input name="params[versionTracking]" type="hidden" value="0" />
-						<input name="params[versionTracking]" type="checkbox" value="1" <?php echo ($this->params->get('versionTracking', '0') == '1') ? 'checked="checked"' : '';?> class="option" ><label><?php echo Lang::txt('Version Tracking'); ?> </label></input>
+						<input name="params[versionTracking]" id="param-versionTracking" type="checkbox" value="1" <?php echo ($this->params->get('versionTracking', '0') == '1') ? 'checked="checked"' : '';?> class="option" />
+						<label for="param-versionTracking"><?php echo Lang::txt('Version Tracking'); ?> </label>
 					</div>
 
 					<div class="input-wrap">
-						<label><?php echo Lang::txt('Files Quota'); ?>: <?php echo ' (' . Lang::txt('COM_PROJECTS_FILES_GBYTES').')'; ?></label>
-						<input name="params[quota]" maxlength="100" type="text" value="<?php echo \Components\Projects\Helpers\Html::convertSize($quota, 'b', 'GB', 2); ?>" class="short" />
+						<label for="param-quota"><?php echo Lang::txt('Files Quota'); ?>: <?php echo ' (' . Lang::txt('COM_PROJECTS_FILES_GBYTES').')'; ?></label>
+						<input name="params[quota]" id="param-quota" maxlength="100" type="text" value="<?php echo \Components\Projects\Helpers\Html::convertSize($quota, 'b', 'GB', 2); ?>" class="short" />
 					</div>
 
 					<div class="input-wrap">
-						<label><?php echo Lang::txt('Publications Quota'); ?>: <?php echo ' (' . Lang::txt('COM_PROJECTS_FILES_GBYTES').')'; ?></label>
-						<input name="params[pubQuota]" maxlength="100" type="text" value="<?php echo \Components\Projects\Helpers\Html::convertSize($pubQuota, 'b', 'GB', 2); ?>" class="short" />
+						<label for="param-pubQuota"><?php echo Lang::txt('Publications Quota'); ?>: <?php echo ' (' . Lang::txt('COM_PROJECTS_FILES_GBYTES').')'; ?></label>
+						<input name="params[pubQuota]" id="param-pubQuota" maxlength="100" type="text" value="<?php echo \Components\Projects\Helpers\Html::convertSize($pubQuota, 'b', 'GB', 2); ?>" class="short" />
 					</div>
 
 					<?php if ($this->diskusage) { ?>
@@ -311,6 +293,7 @@ if ($this->model->groupOwner())
 							<?php echo $this->diskusage; ?>
 						</div>
 					<?php } ?>
+
 					<div class="input-wrap">
 						<?php echo Lang::txt('Maintenance options:'); ?> &nbsp; <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=gitgc&id=' . $this->model->get('id')); ?>"><?php echo Lang::txt('git gc --aggressive'); ?></a> [<?php echo Lang::txt('Takes minutes to run'); ?>]
 					</div>
@@ -384,15 +367,15 @@ if ($this->model->groupOwner())
 				<legend><?php echo Lang::txt('COM_PROJECTS_STATUS'); ?></legend>
 
 				<div class="input-wrap">
-					<?php echo Lang::txt('COM_PROJECTS_MESSAGE'); ?>:
+					<label for="message"><?php echo Lang::txt('COM_PROJECTS_MESSAGE'); ?>:</label>
 					<textarea name="message" id="message" rows="5" cols="50"></textarea>
 				</div>
 
 				<div class="input-wrap">
 					<?php echo Lang::txt('COM_PROJECTS_OPTIONS'); ?>:<br />
 
-						<input type="hidden" name="admin_action" value="" />
-						<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_SEND_MESSAGE'); ?>" class="btn" id="do-message" /> <span class="breaker"> | </span>
+					<input type="hidden" name="admin_action" value="" />
+					<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_SEND_MESSAGE'); ?>" class="btn" id="do-message" /> <span class="breaker"> | </span>
 					<?php if ($this->model->isActive()) { ?>
 						<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_SUSPEND'); ?>" class="btn" id="do-suspend" />
 					<?php } else if ($this->model->isInactive() || $this->model->isDeleted()) { ?>
@@ -434,14 +417,15 @@ if ($this->model->groupOwner())
 
 				<fieldset>
 					<legend><?php echo Lang::txt('COM_PROJECTS_ADD_MEMBER'); ?></legend>
+
 					<div class="input-wrap">
-						<label><?php echo Lang::txt('COM_PROJECTS_ADD_MEMBER_USERNAME'); ?></label>
+						<label for="newmember"><?php echo Lang::txt('COM_PROJECTS_ADD_MEMBER_USERNAME'); ?></label>
 						<input type="text" name="newmember" id="newmember" value="" />
 					</div>
 
 					<div class="input-wrap">
-						<label><?php echo Lang::txt('COM_PROJECTS_ADD_MEMBER_ROLE'); ?></label>
-						<select name="role">
+						<label for="field-role"><?php echo Lang::txt('COM_PROJECTS_ADD_MEMBER_ROLE'); ?></label>
+						<select name="role" id="field-role">
 							<option value="1"><?php echo Lang::txt('COM_PROJECTS_ADD_MEMBER_ROLE_MANAGER'); ?></option>
 							<option value="0"><?php echo Lang::txt('COM_PROJECTS_ADD_MEMBER_ROLE_COLLABORATOR'); ?></option>
 						</select>

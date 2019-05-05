@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Activity\Api\Controllers;
@@ -169,7 +145,9 @@ class Entriesv1_1 extends ApiController
 			'end_date'   => Request::getString('end_date', ''),
 			'recipients' => Request::getString('recipients', ''),
 			'sort'       => Request::getString('sort', 'created'),
-			'sort_Dir'   => strtolower(Request::getString('sort_Dir', 'desc'))
+			'sort_Dir'   => strtolower(Request::getString('sort_Dir', 'desc')),
+			'limit'      => Request::getInt('limit', \Config::get('list_limit')),
+			'start'      => Request::getInt('start', 0)
 		);
 
 		if (!in_array($filters['sort_Dir'], ['asc', 'desc']))
@@ -313,8 +291,8 @@ class Entriesv1_1 extends ApiController
 
 		$rows = $query
 			->order($l . '.' . $filters['sort'], $filters['sort_Dir'])
-			//->limit($filters['limit'])
-			//->start($filters['start'])
+			->limit($filters['limit'])
+			->start($filters['start'])
 			->paginated()
 			->rows();
 
@@ -325,6 +303,38 @@ class Entriesv1_1 extends ApiController
 			$obj = $row->toObject();
 			$obj->details = $row->details->toObject();
 			$obj->recipients = $row->recipients->toObject();
+			$obj->created_by_name = User::getInstance($obj->created_by)->get('name');
+
+			$dt = Date::of($obj->created);
+			$ct = Date::of('now');
+
+			$lapsed = $ct->toUnix() - $dt->toUnix();
+
+			if ($lapsed < 30)
+			{
+				$obj->created_relative = Lang::txt('COM_ACTIVITY_JUST_NOW');
+			}
+			elseif ($lapsed > 86400 && $ct->format('Y') != $dt->format('Y'))
+			{
+				$obj->created_relative = $dt->toLocal('M j, Y');
+			}
+			elseif ($lapsed > 86400)
+			{
+				$obj->created_relative = $dt->toLocal('M j') . ' @ ' . $dt->toLocal('g:i a');
+			}
+			else
+			{
+				$obj->created_relative = $dt->relative();
+			}
+
+			if (User::authorise('core.edit') || User::get('id') == $obj->created_by)
+			{
+				$obj->canEdit = true;
+			}
+			if (User::authorise('core.delete') || User::get('id') == $obj->created_by)
+			{
+				$obj->canDelete = true;
+			}
 
 			foreach ($obj->recipients as $k => $recipient)
 			{

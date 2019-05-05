@@ -178,7 +178,7 @@ class UsersModelReset extends JModelForm
 		$password2 = $data['password2'];
 
 		if (!empty($password1)) {
-			$msg = \Hubzero\Password\Rule::verify($password1,$password_rules,$profile->get('username'));
+			$msg = \Hubzero\Password\Rule::verify($password1, $password_rules, $profile->get('username'));
 		} else {
 			$msg = array();
 		}

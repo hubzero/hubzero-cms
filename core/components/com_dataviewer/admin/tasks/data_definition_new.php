@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero.cms.admin
- * @subpackage  com_dataviewer
- *
- * @author      Sudheera R. Fernando sudheera@xconsole.org
- * @copyright   Copyright 2010-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT or later; see LICENSE.txt
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -56,7 +53,7 @@ function dv_data_definition_new()
 	$dd_text .= "\t" . '$dd[\'table\'] = \'' . $dd['table'] . '\';' . "\n";
 	$dd_text .= "\t" . '$dd[\'pk\'] = \'' . $pk . '\';' . "\n\n";
 
-	foreach ($dd['cols'] as $col=>$val) {
+	foreach ($dd['cols'] as $col => $val) {
 		$dd_text .= "\t" . '$dd[\'cols\'][\'' . $col . '\'] = ' . format_var(var_export($val, true)) . "\n";
 	}
 
@@ -105,4 +102,3 @@ function format_var($var)
 {
 	return str_replace(' => ', '=>', str_replace(',)', ');', str_replace(' (  ', '(', str_replace("\n", '', $var))));
 }
-?>

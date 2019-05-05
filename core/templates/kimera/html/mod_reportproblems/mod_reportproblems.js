@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        modules/mod_reportproblems/mod_reportproblems.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 //----------------------------------------------------------
@@ -63,6 +62,7 @@ HUB.Modules.ReportProblems = {
 						.attr('target', 'upload_target')
 						.on('submit', function (e) {
 							//e.preventDefault();
+							frm.find('.warning').remove();
 
 							var name   = $('#trName'),
 								email  = $('#trEmail'),

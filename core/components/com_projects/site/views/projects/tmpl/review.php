@@ -1,31 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Alissa Nedossekina <alisa@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
- *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -38,7 +15,7 @@ if ($this->reviewer == 'sponsored')
 
 	$b_action = $approved ?
 			Lang::txt('COM_PROJECTS_SAVE_SPS_APPROVED') :
-			Lang::txt('COM_PROJECTS_SAVE_SPS') ;
+			Lang::txt('COM_PROJECTS_SAVE_SPS');
 }
 else {
 	$title = $this->model->isPending()
@@ -64,7 +41,7 @@ $notes = \Components\Projects\Helpers\Html::getAdminNotes($this->model->get('adm
 <?php
 // Display error  message
 if ($this->getError()) {
-	echo ('<p class="error">'.$this->getError().'</p>');
+	echo '<p class="error">'.$this->getError().'</p>';
 } ?>
 
 <?php if ($this->model->exists()) { ?>
@@ -123,7 +100,8 @@ if ($this->getError()) {
 			</tr>
 			<tr>
 				<td>
-					<label for "grant_approval" class="<?php if ($approved) { echo ' spsapproved'; } else { echo 'spsapproval'; } ?>"><?php echo $approved
+					<label for "grant_approval" class="<?php if ($approved) { echo ' spsapproved';
+} else { echo 'spsapproval'; } ?>"><?php echo $approved
 						? ucfirst(Lang::txt('COM_PROJECTS_APPROVAL_CODE_APPROVED'))
 						: Lang::txt('COM_PROJECTS_APPROVAL_CODE_PROVIDE'); ?>:
 					 <input name="grant_approval" id="grant_approval" maxlength="250" type="text" value="<?php echo $this->params->get('grant_approval'); ?>"  />
@@ -162,7 +140,7 @@ if ($this->getError()) {
 	</div>
 	<p class="submitarea">
 		<input type="submit" value="<?php echo $b_action; ?>" class="btn" />
-		<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?>" />
+		<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt(JCANCEL); ?>" />
 	</p>
 	<div id="admincommentbox">
 	<h4><?php echo ucfirst(Lang::txt('COM_PROJECTS_REVIEWER_COMMENTS')); ?> <span class="hint"> <?php echo ucfirst(Lang::txt('COM_PROJECTS_REVIEWER_COMMENTS_LATEST_FIRST')); ?></span></h4>

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -15,7 +20,7 @@ class Migration20150610140035PlgAntispamBabajispam extends Base
 	 **/
 	public function up()
 	{
-		$this->addPluginEntry('antispam','babajispam', 0);
+		$this->addPluginEntry('antispam', 'babajispam', 0);
 	}
 
 	/**
@@ -23,6 +28,6 @@ class Migration20150610140035PlgAntispamBabajispam extends Base
 	 **/
 	public function down()
 	{
-		$this->deletePluginEntry('antispam','babajispam');
+		$this->deletePluginEntry('antispam', 'babajispam');
 	}
 }

@@ -1,38 +1,14 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Courses\Models;
 
 use Components\Courses\Tables;
+use Components\Courses\Models\Assets;
 use Component;
 use Request;
 use Date;
@@ -40,10 +16,12 @@ use User;
 use Lang;
 use App;
 
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.association.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.php';
-require_once __DIR__ . DS . 'base.php';
-require_once __DIR__ . DS . 'section' . DS . 'date.php';
+require_once Component::path('com_courses') . '/tables/asset.association.php';
+require_once Component::path('com_courses') . '/tables/asset.php';
+require_once Component::path('com_courses') . '/models/assets/handler.php';
+require_once Component::path('com_courses') . '/models/assets/content.php';
+require_once Component::path('com_courses') . '/models/base.php';
+require_once Component::path('com_courses') . '/models/section/date.php';
 
 /**
  * Asset model class for a course
@@ -553,5 +531,24 @@ class Asset extends Base
 		}
 
 		return true;
+	}
+
+	/**
+	 * Specific child asset handler object of type
+	 *
+	 * @return object child asset handler
+	 */
+	public function loadHandler()
+	{
+		$handlerName = $this->get('type');
+		$filePath = Component::path('com_courses') . '/models/assets/' . $handlerName . '.php';
+		if (file_exists($filePath))
+		{
+			require_once $filePath;
+			$handlerClassString = 'Components\\Courses\\Models\\Assets\\' . ucfirst($handlerName);
+			$handlerModel = new $handlerClassString($this->_db);
+			return $handlerModel;
+		}
+		return false;
 	}
 }

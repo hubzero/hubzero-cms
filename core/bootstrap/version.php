@@ -1,9 +1,7 @@
 <?php
 /**
- * HUBzero CMS
- *
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2018 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -18,4 +16,4 @@
 |
 */
 
-define('HVERSION', '2.2.15');
+define('HVERSION', '2.2.16');

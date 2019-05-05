@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_groups/assets/js/groups.jquery.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 //-----------------------------------------------------------
@@ -314,9 +313,9 @@ HUB.GroupsMediaList = {
 	
 	_getUrlParam: function( paramName )
 	{
-		var reParam = new RegExp( '(?:[\?&]|&)' + paramName + '=([^&]+)', 'i' ) ;
-		var match = window.location.search.match(reParam) ;
-		return ( match && match.length > 1 ) ? match[ 1 ] : null ;
+		var reParam = new RegExp( '(?:[\?&]|&)' + paramName + '=([^&]+)', 'i' );
+		var match = window.location.search.match(reParam);
+		return ( match && match.length > 1 ) ? match[ 1 ] : null;
 	},
 };
 

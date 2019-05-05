@@ -1,8 +1,7 @@
 /**
- * @package	 hubzero-cms
- * @file		plugins/hubzero/autocompleter/assets/js/autocompleter.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license	 http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 /* Plugin based off of Tokenizing Autocomplete by James Smith (http://loopj.com) */

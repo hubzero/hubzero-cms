@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -136,7 +111,7 @@ $this->css('course.css')
 					<p class="submit">
 						<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_COURSES_SAVE'); ?>" />
 						<a class="btn btn-secondary" href="<?php echo Route::url($this->course->link()); ?>">
-							<?php echo Lang::txt('COM_COURSES_CANCEL'); ?>
+							<?php echo Lang::txt('JCANCEL'); ?>
 						</a>
 					</p>
 
@@ -154,7 +129,7 @@ $this->css('course.css')
 				<?php if ($this->course->access('edit', 'course')) { ?>
 					<div class="manager-options">
 						<a class="icon-edit btn btn-secondary" href="<?php echo Route::url($this->course->link() . '&task=edit&field=blurb'); ?>">
-							<?php echo Lang::txt('COM_COURSES_EDIT'); ?>
+							<?php echo Lang::txt('JACTION_EDIT'); ?>
 						</a>
 						<span><strong><?php echo Lang::txt('COM_COURSES_FIELDS_TITLE_BLURB'); ?></strong></span>
 					</div>
@@ -340,7 +315,7 @@ $this->css('course.css')
 							<p class="submit">
 								<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_COURSES_SAVE'); ?>" />
 								<a class="btn btn-secondary" href="<?php echo Route::url($this->course->link()); ?>">
-									<?php echo Lang::txt('COM_COURSES_CANCEL'); ?>
+									<?php echo Lang::txt('JCANCEL'); ?>
 								</a>
 							</p>
 
@@ -375,7 +350,7 @@ $this->css('course.css')
 										<?php echo Lang::txt('COM_COURSES_DELETE'); ?>
 									</a>
 									<a class="icon-edit btn btn-secondary" href="<?php echo Route::url($this->course->link() . '&active=' . $plugin->get('name') . '&action=editpage'); ?>">
-										<?php echo Lang::txt('COM_COURSES_EDIT'); ?>
+										<?php echo Lang::txt('JACTION_EDIT'); ?>
 									</a>
 									<span><strong><?php echo Lang::txt('COM_COURSES_PAGE_CONTENTS'); ?></strong></span>
 								</div>
@@ -408,7 +383,7 @@ $this->css('course.css')
 				<p class="submit">
 					<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_COURSES_SAVE'); ?>" />
 					<a class="btn btn-secondary" href="<?php echo Route::url($this->course->link()); ?>">
-						<?php echo Lang::txt('COM_COURSES_CANCEL'); ?>
+						<?php echo Lang::txt('JCANCEL'); ?>
 					</a>
 				</p>
 
@@ -429,7 +404,7 @@ $this->css('course.css')
 				?>
 				<div class="manager-options">
 					<a class="icon-edit btn btn-secondary" href="<?php echo Route::url($this->course->link() . '&task=edit&field=summary'); ?>">
-						<?php echo Lang::txt('COM_COURSES_EDIT'); ?>
+						<?php echo Lang::txt('JACTION_EDIT'); ?>
 					</a>
 					<span><strong><?php echo Lang::txt('COM_COURSES_SUMMARY'); ?></strong></span>
 				</div>

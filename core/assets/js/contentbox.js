@@ -53,18 +53,27 @@
 				// Finally, execute show
 				methods.show();
 			},
+			waitForLoad: function (obj, callback) {
+				if ($(obj)[0].contentWindow.readyState != "complete") {
+					setTimeout(function(){methods.waitForLoad(obj, callback);}, 1000);
+				}
+				else
+				{
+					callback();
+				}
+			}, 
 			show : function () {
 				$('.content-box-header span').html(settings.title);
 				settings.element.find('.loading-bar').show();
 				$('.content-box-body-wrap').addClass('content-box-body-wrap-active');
 				$('.content-box-overlay').addClass('content-box-overlay-active');
 				settings.element.show('slide', {'direction':'down'}, 500, function () {
-					$(this).find('.content-box-inner').append('<iframe src="'+settings.src+'"></iframe>');
+					var iFrame = $('<iframe src="' + settings.src + '">');
+					$(this).find('.content-box-inner').append(iFrame);
 
 					// Execute after load function
-					settings.element.find('iframe').load(function () {
+					iFrame.on("load", function () {
 						var content = $(this).contents();
-
 						// Add close on escape within iframe as well
 						content.bind('keydown', function ( e ) {
 							if(e.which == 27) {

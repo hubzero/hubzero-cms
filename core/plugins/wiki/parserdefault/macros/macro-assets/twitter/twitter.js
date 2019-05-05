@@ -1,9 +1,10 @@
 /**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
-Author:
------------------		
-Christopher Smoak <csmoak@purdue.edu>
-
+/**
 Created:
 -----------------
 April 2011
@@ -28,9 +29,7 @@ Parameters:
 	
 - Linkify
 	Link up all external links as well as all mentions and trends in tweets. True or False.
-
-
-**/
+ */
 
 if(!HUB) {
 	var HUB = {};
