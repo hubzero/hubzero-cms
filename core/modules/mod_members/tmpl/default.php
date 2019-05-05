@@ -58,8 +58,9 @@ $this->css();
 				{
 					"datasets": [
 					<?php
+					$d = array();
 					foreach ($this->domains as $i => $domain):
-						if ($k > 12):
+						if ($k > 11):
 							$k = 0;
 						endif;
 
