@@ -201,7 +201,7 @@ jQuery(document).ready(function($){
 			var source = $(this).attr('href').tmplComponent();
 			var content = '<section class="embedded-hubpresenter"><iframe src="' + source + '"  webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></section>';
 			$('section.upperpane').after(content);
-			$('.embedded-hubpresenter iframe').load(function(event){
+			$('.embedded-hubpresenter iframe').on('load', function(event){
 				var height = $(this).contents().height();
 				
 				// make embed area height of iframe
@@ -250,7 +250,7 @@ jQuery(document).ready(function($){
 			{
 				var content = '<section class="embedded-video"><iframe src="' + source + '"  webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></section>';
 				$('section.upperpane').after(content);
-				$('.embedded-video iframe').load(function(event){
+				$('.embedded-video iframe').on('load', function(event){
 					var iframe = $(this);
 					setTimeout(function() {
 						var height = '75vh';
