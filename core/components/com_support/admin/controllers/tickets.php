@@ -427,7 +427,7 @@ class Tickets extends AdminController
 		}
 
 		// Save the tags
-		$ticket->tag(Request::getString('tags', '', 'post'), User::get('id'), 1);
+		$ticket->tag(Request::getString('tags', '', 'post'), User::get('id'));
 		$ticket->set('tags', $ticket->tags('string'));
 
 		$base = Request::base();
@@ -933,7 +933,7 @@ class Tickets extends AdminController
 			if ($tags)
 			{
 				$ticket->set('tags', $tags);
-				$ticket->tag($ticket->get('tags'), User::get('id'), 1);
+				$ticket->tag($ticket->get('tags'), User::get('id'));
 			}
 			else
 			{
