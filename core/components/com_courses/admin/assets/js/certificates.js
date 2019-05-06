@@ -16,7 +16,7 @@ function Box() {
 	this.id = '';
 }
 
-jQuery(window).load(function() {
+jQuery(window).on('load', function() {
 
 	if ($('#field-properties').length && $('#field-properties').val()) {
 		var props = JSON.parse($('#field-properties').val());

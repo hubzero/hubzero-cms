@@ -531,7 +531,7 @@ HUB.CoursesOutline = {
 								afterLoad: function() {
 									// Highjack the 'done' button to close the iframe
 									var iframe = $('.fancybox-iframe');
-									iframe.load(function() {
+									iframe.on('load', function() {
 										var frameContents = $('.fancybox-iframe').contents();
 										frameContents.find('#done').bind('click', function(e) {
 											e.preventDefault();
