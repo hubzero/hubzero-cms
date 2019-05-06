@@ -57,7 +57,7 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 						NULL AS type, NULL AS published, NULL AS publish_up, w.scope,
 						w.rating, w.times_rated, w.ranking, 'Topic' AS section
 				FROM `#__wiki_pages` AS w
-				INNER JOIN `#__wiki_versions` AS v ON w.id=v.page_id
+				INNER JOIN `#__wiki_versions` AS v ON w.version_id=v.id
 				INNER JOIN `#__wiki_links` AS wl ON wl.page_id=w.id
 				WHERE v.approved=1 AND wl.scope='resource' AND wl.scope_id=" . $database->quote($resource->id);
 
