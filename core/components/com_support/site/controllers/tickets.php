@@ -1075,7 +1075,7 @@ class Tickets extends SiteController
 		$attachment = $this->uploadTask($row->get('id'));
 
 		// Save tags
-		$row->tag(Request::getString('tags', '', 'post'), User::get('id'), 1);
+		$row->tag(Request::getString('tags', '', 'post'), User::get('id'));
 
 		// Get any set emails that should be notified of ticket submission
 		$defs = explode(',', $this->config->get('emails', '{config.mailfrom}'));
@@ -1757,7 +1757,7 @@ class Tickets extends SiteController
 		}
 
 		// Save the tags
-		$row->tag(Request::getString('tags', '', 'post'), User::get('id'), 1);
+		$row->tag(Request::getString('tags', '', 'post'), User::get('id'));
 		$row->set('tags', $row->tags('string'));
 
 		// Create a new support comment object and populate it
@@ -2282,7 +2282,7 @@ class Tickets extends SiteController
 				return;
 			}
 
-			$row->tag($incoming['tags'], User::get('id'), 1);
+			$row->tag($incoming['tags'], User::get('id'));
 
 			$this->uploadTask($row->get('id'));
 
