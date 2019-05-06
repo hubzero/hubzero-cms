@@ -729,6 +729,5 @@ jQuery(document).ready(function(jq) {
 	TPL.init();
 });
 
-$(window).load(function() {
-
+$(window).on("load", function() {
 });
