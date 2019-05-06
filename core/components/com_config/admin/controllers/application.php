@@ -67,10 +67,10 @@ class Application extends AdminController
 			$form->bind($data);
 		}
 
-		// Get the params for com_users.
-		$usersParams = Component::params('com_users');
+		// Get the params for members.
+		$usersParams = Component::params('com_members');
 
-		// Get the params for com_media.
+		// Get the params for media.
 		$mediaParams = Component::params('com_media');
 
 		$this->view

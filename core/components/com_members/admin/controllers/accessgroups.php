@@ -279,7 +279,7 @@ class Accessgroups extends AdminController
 				}
 
 				// Access checks.
-				$allow = User::authorise('core.edit.state', 'com_users');
+				$allow = User::authorise('core.edit.state', 'com_members');
 
 				// Don't allow non-super-admin to delete a super admin
 				$allow = (!$iAmSuperAdmin && Access::checkGroup($id, 'core.admin')) ? false : $allow;

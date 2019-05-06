@@ -500,7 +500,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 			if (!$newUsertype)
 			{
-				$usersConfig = Component::params('com_users');
+				$usersConfig = Component::params('com_members');
 				$newUsertype = $usersConfig->get('new_usertype');
 				if (!$newUsertype)
 				{

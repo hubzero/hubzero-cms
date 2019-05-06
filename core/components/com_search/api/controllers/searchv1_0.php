@@ -103,7 +103,7 @@ class Searchv1_0 extends ApiController
 		}
 
 		// Administrators can see all records
-		$isAdmin = User::authorise('core.admin', 'com_users');
+		$isAdmin = User::authorise('core.admin');
 		if ($isAdmin)
 		{
 			$query = $query->query($terms)->limit($limit)->start($start);
@@ -272,7 +272,7 @@ class Searchv1_0 extends ApiController
 		}
 
 		// Administrators can see all records
-		$isAdmin = User::authorise('core.admin', 'com_users');
+		$isAdmin = User::authorise('core.admin');
 		if ($isAdmin)
 		{
 			$query = $query->query($terms)->limit($limit)->start($start);

@@ -169,7 +169,7 @@ class Profilesv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		// Initialize new usertype setting
-		$usersConfig = Component::params('com_users');
+		$usersConfig = Component::params('com_members');
 		$newUsertype = $usersConfig->get('new_usertype');
 		if (!$newUsertype)
 		{

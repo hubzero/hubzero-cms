@@ -43,7 +43,7 @@ class Category extends Relational
 	 */
 	public static function all($columns = null)
 	{
-		return self::blank()->whereEquals('extension', 'com_users');
+		return self::blank()->whereEquals('extension', 'com_members');
 	}
 
 	/**

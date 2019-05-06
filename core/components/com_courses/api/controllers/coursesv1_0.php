@@ -57,7 +57,7 @@ class Coursesv1_0 extends base
 
 		// Search API hooks
 		$admin = false;
-		if (User::authorise('core.admin', 'com_users'))
+		if (User::authorise('core.admin'))
 		{
 			$admin = true;
 			$searchable = Request::getBool('searchable', false);

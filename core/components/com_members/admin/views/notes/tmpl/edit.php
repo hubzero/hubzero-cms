@@ -16,19 +16,19 @@ $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_
 Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_NOTES') . ': ' . $text, 'user');
 
 // If not checked out, can save the item.
-if (!$checkedOut && ($canDo->get('core.edit') || (count(User::getAuthorisedCategories('com_users', 'core.create')))))
+if (!$checkedOut && ($canDo->get('core.edit') || (count(User::getAuthorisedCategories('com_members', 'core.create')))))
 {
 	Toolbar::apply();
 	Toolbar::save();
 }
 
-if (!$checkedOut && (count(User::getAuthorisedCategories('com_users', 'core.create'))))
+if (!$checkedOut && (count(User::getAuthorisedCategories('com_members', 'core.create'))))
 {
 	Toolbar::save2new();
 }
 
 // If an existing item, can save to a copy.
-if (!$this->row->isNew() && (count(User::getAuthorisedCategories('com_users', 'core.create')) > 0))
+if (!$this->row->isNew() && (count(User::getAuthorisedCategories('com_members', 'core.create')) > 0))
 {
 	Toolbar::save2copy();
 }

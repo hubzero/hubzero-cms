@@ -13,12 +13,11 @@ $canDo = Components\Members\Helpers\Admin::getActions('component');
 $text = ($this->task == 'editClass' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
 Toolbar::title(Lang::txt('COM_MEMBERS_QUOTA_CLASSES') . ': ' . $text, 'user');
-if ($canDo->get('core.edit'))
-{
+if ($canDo->get('core.edit')):
 	Toolbar::apply('applyClass');
 	Toolbar::save('saveClass');
 	Toolbar::spacer();
-}
+endif;
 Toolbar::cancel('cancelClass');
 
 Html::behavior('formvalidation');
@@ -63,13 +62,12 @@ $this->js();
 				<p><?php echo Lang::txt('COM_MEMBERS_QUOTA_CLASS_USERGROUPS_DESC'); ?></p>
 				<?php
 				// Include the component HTML helpers.
-				Html::addIncludePath(Component::path('com_users') . '/admin/helpers/html');
+				Html::addIncludePath(Component::path('com_members') . '/admin/helpers/html');
 
 				$groups = array();
-				foreach ($this->row->groups as $g)
-				{
+				foreach ($this->row->groups as $g):
 					$groups[] = $g->get('group_id');
-				}
+				endforeach;
 				?>
 				<div class="input-wrap">
 					<?php echo Html::access('usergroups', 'fields[groups]', $groups, true); ?>
