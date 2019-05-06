@@ -47,7 +47,7 @@ HUB.Newsletter = {
 		if ($iframe.length )
 		{
 			//on iframe load
-			$iframe.load(function(){
+			$iframe.on("load", function(){
 				
 				//make links open in new window
 				$iframe.contents().find('a').attr('target', '_blank');
