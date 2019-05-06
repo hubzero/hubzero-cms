@@ -434,7 +434,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 
 		$html = '<a class="facebook account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=facebook' . $return) . '">';
 			$html .= '<div class="signin">';
-				$html .= Lang::txt('PLG_AUTHENICATION_FACEBOOK_SIGN_IN');
+				$html .= Lang::txt('PLG_AUTHENTICATION_FACEBOOK_SIGN_IN');
 			$html .= '</div>';
 		$html .= '</a>';
 
