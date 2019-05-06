@@ -9,6 +9,7 @@ namespace Components\Projects\Models\Orm;
 
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
+use Hubzero\User\Group;
 
 /**
  * Projects owner model
@@ -78,13 +79,12 @@ class Owner extends Relational
 	 */
 	public function group()
 	{
-		$group = \Hubzero\User\Group::getInstance($this->get('groupid'));
+		$group = Group::getInstance($this->get('groupid'));
 		if (!$group)
 		{
-			$group = new \Hubzero\User\Group();
+			$group = new Group();
 		}
 		return $group;
-		//return $this->belongsToOne('Hubzero\User\Group', 'groupid');
 	}
 
 	/**
@@ -170,5 +170,56 @@ class Owner extends Relational
 		}
 
 		return $this->paramsRegistry;
+	}
+
+	/**
+	 * Get ids of project owners
+	 *
+	 * @param   integer  $projectid
+	 * @param   string   $role       get owners in specific role or all
+	 * @param   integer  $get_uids   get user ids (1) or owner ids (0)
+	 * @param   integer  $active     get only active users (1) or any
+	 * @return  array
+	 */
+	public static function getIds($projectid, $role = null, $uids = 0, $active = 1)
+	{
+		if (is_null($role))
+		{
+			$role = self::ROLE_MANAGER;
+		}
+
+		if (!is_numeric($projectid))
+		{
+			$project = Project::oneByAlias($projectid);
+			$projectid = $project->id;
+		}
+
+		$key = $uids ? 'userid' : 'id';
+
+		$query = self::all()
+			->whereEquals('projectid', $projectid);
+
+		if ($active)
+		{
+			$query->whereEquals('status', 1);
+		}
+		else
+		{
+			$query->whereEquals('status', '!=', 2);
+		}
+
+		if ($role != 'all')
+		{
+			$query->whereEquals('role', (int)$role);
+		}
+
+		if ($uids)
+		{
+			$query->where('userid', '!=', 0);
+		}
+
+		return $query
+			->rows()
+			->fieldsByKey($key);
 	}
 }
