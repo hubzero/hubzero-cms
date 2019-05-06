@@ -27,7 +27,7 @@ foreach ($this->rows as $row)
 }
 
 //are we authorized to edit users
-$editAuthorized = User::authorise('core.manage', 'com_users');
+$editAuthorized = User::authorise('core.manage', 'com_members');
 ?>
 
 <table class="adminlist whosonline-summary">

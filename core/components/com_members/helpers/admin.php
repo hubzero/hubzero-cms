@@ -149,7 +149,6 @@ class Admin
 
 	/**
 	 * Creates a list of range options used in filter select list
-	 * used in com_users on users view
 	 *
 	 * @return  array
 	 */
