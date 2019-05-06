@@ -18,14 +18,14 @@ HUB.NanoHUBU = {
 		HUB.NanoHUBU.youtubeLightbox();
 		HUB.NanoHUBU.courseLogin();
 		HUB.NanoHUBU.manage();
-		
+
 		HUB.NanoHUBU.supportPage();
 		HUB.NanoHUBU.hotseatPage();
-			
-		$jQ("#yes-btn, #no-btn").bind("click", function(e){
+
+		$jQ("#yes-btn, #no-btn").on("click", function(e){
 			e.preventDefault();
 			var id = "#"+this.id;
-			
+
 			$jQ("#yes, #no").addClass("hide");
 			$jQ(id.replace("-btn", "")).toggleClass("hide");
 		});
@@ -90,7 +90,7 @@ HUB.NanoHUBU = {
 				me.addClass('open');
 			}
 			else 
-			{			
+			{
 				var openTab = $jQ('.open');
 				var openTabDetails = openTab.next('.details');
 
@@ -155,9 +155,9 @@ HUB.NanoHUBU = {
 	{
 		if( $jQ("#course-tech-support").length )
 		{
-			$jQ("#course-tech-support").load(function() {
+			$jQ("#course-tech-support").on('load', function() {
 				//remove header on support form
-				$jQ("#course-tech-support").contents().find("#content-header").hide();	
+				$jQ("#course-tech-support").contents().find("#content-header").hide();
 
 				//remove styling on part of support form
 				$jQ("#course-tech-support").contents().find(".main").css("border","none");
@@ -182,7 +182,7 @@ HUB.NanoHUBU = {
 			
 			if(!matches)
 			{
-				$jQ("#course-hotseat").load(function() {
+				$jQ("#course-hotseat").on('load', function() {
 					var body = $jQ("#course-hotseat").contents().find("html");
 					$jQ("#course-hotseat").attr("height", body.height());
 				});
@@ -361,7 +361,7 @@ HUB.NanoHUBU = {
 		   	var html = "<iframe width=\"100%\" height=\"500\" id=\"announcements-preview-iframe\" src=\""+ $jQ(this).attr("rel") +"\"></iframe>";
 			$jQ("<div id=\"annoucement-preview-box\" class=\"reveal-modal\"></div>").html(html).appendTo(document.body);    
 		   
-			$jQ("#announcements-preview-iframe").load(function() {
+			$jQ("#announcements-preview-iframe").on('load', function() {
 			   	$jQ("#annoucement-preview-box").reveal({
 					closeonescapepress:true,
 					afterReveal: function() {

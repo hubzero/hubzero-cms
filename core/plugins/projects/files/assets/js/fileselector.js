@@ -84,7 +84,7 @@ HUB.ProjectFilesFileSelect = {
 				target.find('.collapsor').first().trigger('click');
 
 				// Listen for the oauth process to land back on the hub
-				$(auth).load(function () {
+				$(auth).on('load', function () {
 					if (this.location.hostname == window.location.hostname) {
 						// Close the oauth window and refetch the providers fields
 						auth.close();
