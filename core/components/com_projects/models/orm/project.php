@@ -282,6 +282,27 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
+	 * Get the system group
+	 *
+	 * @return  \Hubzero\User\Group
+	 **/
+	public function systemGroup()
+	{
+		$cn = $this->config('group_prefix', 'pr-') . $this->get('alias');
+
+		$group = \Hubzero\User\Group::getInstance($cn);
+
+		if (!$group)
+		{
+			$group = new \Hubzero\User\Group();
+			$group->set('cn', $cn);
+			$group->create();
+		}
+
+		return $group;
+	}
+
+	/**
 	 * Defines a one to one relationship between project and owner
 	 *
 	 * @return  \Hubzero\Database\Relationship\OneToOne
@@ -954,5 +975,37 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 			$this->authorize();
 		}
 		return $this->params->get('access-' . strtolower($action) . '-project');
+	}
+
+	/**
+	 * Sync with system project group
+	 *
+	 * @param   string   $alias   project alias
+	 * @param   string   $prefix  all project group names start with this
+	 * @return  boolean
+	 */
+	public function syncSystemGroup()
+	{
+		$members  = Owner::getIds($this->get('id'), Owner::ROLE_COLLABORATOR, 1);
+		$authors  = Owner::getIds($this->get('id'), Owner::ROLE_AUTHOR, 1);
+		$managers = Owner::getIds($this->get('id'), Owner::ROLE_MANAGER, 1);
+
+		$all = array_merge($members, $managers, $authors);
+		$all = array_unique($all);
+
+		$group = $this->systemGroup();
+		$group->set('members', $all);
+		$group->set('managers', $managers);
+		$group->set('type', 2);
+		$group->set('published', 1);
+		$group->set('discoverability', 1);
+
+		if (!$group->update())
+		{
+			$this->addError(Lang::txt('COM_PROJECTS_ERROR_SAVING_SYS_GROUP'));
+			return false;
+		}
+
+		return true;
 	}
 }

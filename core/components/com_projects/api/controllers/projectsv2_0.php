@@ -626,6 +626,12 @@ class Projectsv2_0 extends ApiController
 		$row->set('setup_stage', $setupComplete);
 		$row->save();
 
+		// Sync with system group
+		if (!$row->syncSystemGroup())
+		{
+			throw new Exception($row->getError());
+		}
+
 		// Set timestamp with timezone
 		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
 		if ($row->get('modified') && $row->get('modified') != '0000-00-00 00:00:00')
@@ -1119,6 +1125,12 @@ class Projectsv2_0 extends ApiController
 					}
 				}
 			}
+		}
+
+		// Sync with system group
+		if (!$row->syncSystemGroup())
+		{
+			throw new Exception($row->getError());
 		}
 
 		// Set timestamp with timezone
