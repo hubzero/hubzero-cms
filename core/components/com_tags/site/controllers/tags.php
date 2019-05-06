@@ -321,9 +321,13 @@ class Tags extends SiteController
 		$filters = array(
 			'limit'  => 20,
 			'start'  => 0,
-			'admin'  => 0,
 			'search' => trim(Request::getString('value', ''))
 		);
+
+		if (!User::authorise('core.manage'))
+		{
+			$filters['admin'] = 0;
+		}
 
 		// Create a Tag object
 		$cloud = new Cloud();
