@@ -1140,7 +1140,7 @@ class Pipeline extends SiteController
 				'toolname'    => $tool['toolname'],
 				'title'       => $tool['title'],
 				'description' => $tool['description'],
-				'repohost'    => $tool['repohost'],
+				'repohost'    => (isset($tool['repohost']) ? $tool['repohost'] : ''),
 				'github'      => $tool['github']
 			));
 			if ($output['class'] != 'error')
