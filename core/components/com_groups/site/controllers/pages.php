@@ -283,6 +283,11 @@ class Pages extends Base
 		$depth  = ($parent->get('id')) ? $parent->get('depth') + 1 : 0;
 		$this->page->set('depth', $depth);
 
+		if (!$this->page->get('category'))
+		{
+			$this->page->set('category', null);
+		}
+
 		// make sure we can create both the page and version
 		if (!$this->page->check() || !$this->version->check())
 		{
