@@ -269,11 +269,13 @@ class Membership extends Base
 			{
 				require_once \Component::path('com_members') . DS . 'helpers' . DS . 'utility.php';
 
+				$l = strtolower($l);
+
 				// If not a userid check if proper email
 				if (\Components\Members\Helpers\Utility::validemail($l))
 				{
 					// Try to find an account that might match this e-mail
-					$this->database->setQuery("SELECT u.id FROM `#__users` AS u WHERE u.email=" . $this->database->quote($l) . " OR u.email LIKE " . $this->database->quote($l . '%') . " LIMIT 1;");
+					$this->database->setQuery("SELECT u.id FROM `#__users` AS u WHERE LOWER(u.email)=" . $this->database->quote($l) . " OR LOWER(u.email) LIKE " . $this->database->quote($l . '%') . " LIMIT 1;");
 					$uid = $this->database->loadResult();
 					if (!$this->database->query())
 					{
@@ -332,11 +334,20 @@ class Membership extends Base
 		// Add the inviteemails
 		foreach ($inviteemails as $ie)
 		{
-			$group_inviteemails = new \Hubzero\User\Group\InviteEmail();
-			$group_inviteemails->set('email', $ie['email']);
-			$group_inviteemails->set('gidNumber', $ie['gidNumber']);
-			$group_inviteemails->set('token', $ie['token']);
-			$group_inviteemails->save();
+			// Check for an existing invite
+			$group_inviteemails = \Hubzero\User\Group\InviteEmail::all()
+				->whereEquals('email', $ie['email'])
+				->whereEquals('gidNumber', $ie['gidNumber'])
+				->row();
+
+			if (!$group_inviteemails || !$group_inviteemails->get('id'))
+			{
+				$group_inviteemails = \Hubzero\User\Group\InviteEmail::blank();
+				$group_inviteemails->set('email', $ie['email']);
+				$group_inviteemails->set('gidNumber', $ie['gidNumber']);
+				$group_inviteemails->set('token', $ie['token']);
+				$group_inviteemails->save();
+			}
 		}
 
 		// log invites
@@ -612,6 +623,7 @@ class Membership extends Base
 		// Get invite emails
 		$group_inviteemails = new \Hubzero\User\Group\InviteEmail();
 		$inviteemails = $group_inviteemails->getInviteEmails($this->view->group->get('gidNumber'), true);
+		$inviteemails = array_map('strtolower', $inviteemails);
 		$inviteemails_with_token = $group_inviteemails->getInviteEmails($this->view->group->get('gidNumber'), false);
 
 		//are we already a member
@@ -641,11 +653,11 @@ class Membership extends Base
 				$this->database->query();
 			}
 		}
-		elseif (in_array(User::get('email'), $inviteemails))
+		elseif (in_array(strtolower(User::get('email')), $inviteemails))
 		{
 			$this->view->group->add('members', array(User::get('id')));
 			$this->view->group->update();
-			$sql = "DELETE FROM `#__xgroups_inviteemails` WHERE email=" . $this->database->quote(User::get('email')) . " AND gidNumber=" . $this->database->quote($this->view->group->get('gidNumber'));
+			$sql = "DELETE FROM `#__xgroups_inviteemails` WHERE LOWER(email)=" . $this->database->quote(strtolower(User::get('email'))) . " AND gidNumber=" . $this->database->quote($this->view->group->get('gidNumber'));
 			$this->database->setQuery($sql);
 			$this->database->query();
 		}
