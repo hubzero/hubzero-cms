@@ -446,6 +446,7 @@
 		border-top: none;
 	}
 	#page_menu li a,
+	#page_menu li>span,
 	#page_menu li .disabled {
 		color: #aaa;
 		position: relative;
@@ -453,7 +454,8 @@
 		padding: 0.75em 2em 0.75em 4em;
 		border: none;
 	}
-	#page_menu li li a {
+	#page_menu li li a,
+	#page_menu li li span {
 		padding: 0.4em;
 	}
 	#page_menu li a:before,
@@ -1474,7 +1476,8 @@
 		text-indent: 0;
 		width: auto;
 	}
-	#page_menu li ul li a {
+	#page_menu li li a,
+	#page_menu li li span {
 		padding-left: 20px;
 	}
 	#page_menu li ul li a:after {
