@@ -83,16 +83,16 @@ HUB.ProjectFiles = {
 		// Toggle
 		if (toggle.length > 0) {
 			toggle.on('click', function(e) {
-				var tog = toggle.attr('checked') == 'checked' ? 2 : 3;
+				var tog = toggle.prop('checked') ? 2 : 3;
 				HUB.ProjectFiles.remote = 0;
 				boxes.each(function(i, item)
 				{
-					if (toggle.attr('checked') == 'checked') {
-						$(item).attr('checked','checked');
+					if (toggle.prop('checked')) {
+						$(item).prop('checked', true);
 					}
 					else
 					{
-						$(item).removeAttr("checked");
+						$(item).prop('checked', false);
 					}
 
 					HUB.ProjectFiles.collectSelections(item, tog);
@@ -436,9 +436,9 @@ HUB.ProjectFiles = {
 					var idx = HUB.Projects.getArrayIndex($(el).val(), HUB.ProjectFiles.bselected);
 				}
 
-				if (idx != -1 && $(el).attr('checked') != 'checked')
+				if (idx != -1 && !$(el).prop('checked'))
 				{
-					$(el).attr('checked', 'checked');
+					$(el).prop('checked', true);
 					HUB.ProjectFiles.collectSelections(el, 0);
 					HUB.ProjectFiles.watchSelections();
 				}
@@ -839,7 +839,7 @@ HUB.ProjectFiles = {
 		var sConflict 	= this.sConflict;
 
 		// Is item checked?
-		if ($(el).attr('checked') == 'checked' || tog == 2)
+		if ($(el).prop('checked') || tog == 2)
 		{
 			if ($(el).hasClass('publ')) {
 				pub = pub + 1;
