@@ -330,6 +330,12 @@ class Categories extends AdminController
 			return $this->editTask($category);
 		}
 
+		if (!$category->rebuild(1))
+		{
+			Notify::error($category->getError());
+			return $this->editTask($category);
+		}
+
 		Notify::success(Lang::txt('COM_CATEGORIES_SAVE_SUCCESS'));
 
 		if ($this->_task == 'apply' || $this->_task == 'save2copy')
