@@ -27,7 +27,7 @@ $ignore = array(
 	'mail', 'api', 'permissions', 'filters', 'rate_limit', 'asset_id'
 );
 
-$others = array();
+$this->others = array();
 foreach ($this->data as $section => $values):
 	if (in_array($section, $ignore)):
 		continue;
