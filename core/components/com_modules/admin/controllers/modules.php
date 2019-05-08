@@ -398,6 +398,11 @@ class Modules extends AdminController
 			$fields['publish_down'] = Date::of($fields['publish_down'], Config::get('offset'))->toSql();
 		}
 
+		if (!isset($fields['content']))
+		{
+			$fields['content'] = '';
+		}
+
 		// Initiate extended database class
 		$model = Module::oneOrNew($fields['id'])->set($fields);
 
