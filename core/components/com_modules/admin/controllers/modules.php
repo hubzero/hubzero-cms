@@ -387,6 +387,20 @@ class Modules extends AdminController
 			$fields['id'] = 0;
 		}
 
+		if (isset($fields['publish_up']) && $fields['publish_up'] != '')
+		{
+			$fields['publish_up']   = Date::of($fields['publish_up'], Config::get('offset'))->toSql();
+		}
+		if (isset($fields['publish_down']) && $fields['publish_down'] != '')
+		{
+			$fields['publish_down'] = Date::of($fields['publish_down'], Config::get('offset'))->toSql();
+		}
+
+		if (!isset($fields['content']))
+		{
+			$fields['content'] = '';
+		}
+
 		// Initiate extended database class
 		$model = Module::oneOrNew($fields['id'])->set($fields);
 
