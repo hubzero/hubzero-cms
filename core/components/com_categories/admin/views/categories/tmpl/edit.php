@@ -102,7 +102,7 @@ $this->js();
 						<th scope="row"><?php echo Lang::txt('COM_CATEGORIES_FIELD_CREATOR'); ?></th>
 						<td>
 							<?php echo User::getInstance($this->item->get('created_user_id'))->get('name'); ?>
-							<input type="hidden" name="fields[created_user_id]" value="<?php echo $this->item->createdUserId; ?>" />
+							<input type="hidden" name="fields[created_user_id]" value="<?php echo $this->item->created_user_id; ?>" />
 						</td>
 					</tr>
 					<tr>
@@ -116,7 +116,7 @@ $this->js();
 							<th scope="row"><?php echo Lang::txt('COM_CATEGORIES_FIELD_MODIFIER'); ?></th>
 							<td>
 								<?php echo User::getInstance($this->item->get('modified_user_id'))->get('name'); ?>
-								<input type="hidden" name="fields[modified_user_id]" value="<?php echo $this->item->modifiedUserId; ?>" />
+								<input type="hidden" name="fields[modified_user_id]" value="<?php echo $this->item->modified_user_id; ?>" />
 							</td>
 						</tr>
 						<tr>
