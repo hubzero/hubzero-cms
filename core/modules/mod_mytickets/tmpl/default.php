@@ -62,7 +62,7 @@ $this->css();
 	<h4>
 		<?php echo Lang::txt('MOD_MYTICKETS_CONTRIBUTIONS'); ?>
 	</h4>
-	<?php if (count($this->rows3) <= 0) { ?>
+	<?php if (!is_countable($this->rows3) || count($this->rows3) <= 0) { ?>
 		<p><em><?php echo Lang::txt('MOD_MYTICKETS_NO_TICKETS'); ?></em></p>
 	<?php } else { ?>
 		<ul class="expandedlist">
