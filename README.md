@@ -372,7 +372,39 @@ to
 
 ### Change the edit description
 
-Include all recent commits from the core to app merge.  After the oldest more recent commit, add `...` on its own line and delete all the way until the commit info at the end (although these will be stripped as they are just comments - good to reread just to be sure).
+Include all recent commits from the core to app merge.  After the oldest more recent commit, delete all the way until the commit info at the end (although these will be stripped as they are just comments - good to reread just to be sure).
+
+### Interactively rebase to merge all extensions updates into one commit
+
+Supposing you just did 3 squash merges of updated extensions into the app directory, you now want to merge all of these into one commit by performing an interactive rebase as follows.
+
+```
+git rebase -i HEAD~3
+```
+
+This will put you into an editor and give you something like the following.
+
+```
+pick e43cebab [extension #1] Squashed commit of the following...
+pick 56bcce71 [extension #2] Squashed commit of the following...
+pick a2b6eecf [extension #3] Squashed commit of the following...
+```
+
+Change this to the following:
+
+```
+pick e43cebab [extension #1] Squashed commit of the following...
+squash 56bcce71 [extension #2] Squashed commit of the following...
+squash a2b6eecf [extension #3] Squashed commit of the following...
+```
+
+It will then open up the editor again to let you edit the commit message.  All commit messages for the three commits will be combined, giving you the option to create a new merged commit message.  Make this commit message the following:
+
+```
+[maint] April subtree merge of app extensions
+```
+
+For more info, check out the git docs:  https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History
 
 # Fixing core issues
 
