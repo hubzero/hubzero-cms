@@ -11,7 +11,7 @@ use Hubzero\Module\Module;
 use App;
 
 /**
- * Module class for com_users data
+ * Module class for users data
  */
 class Helper extends Module
 {

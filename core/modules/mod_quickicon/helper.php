@@ -98,10 +98,10 @@ class Helper extends Module
 						'access' => array('core.manage', 'com_menus')
 					),
 					array(
-						'link'   => Route::url('index.php?option=com_users'),
+						'link'   => Route::url('index.php?option=com_members'),
 						'id'     => 'icon-user',
 						'text'   => Lang::txt('MOD_QUICKICON_USER_MANAGER'),
-						'access' => array('core.manage', 'com_users')
+						'access' => array('core.manage', 'com_members')
 					),
 					array(
 						'link'   => Route::url('index.php?option=com_modules'),

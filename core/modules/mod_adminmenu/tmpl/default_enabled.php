@@ -146,14 +146,14 @@ if (User::authorise('core.manage', 'com_members'))
 	}
 
 	$menu->addChild(
-		new Node(Lang::txt('MOD_MENU_COM_USERS_NOTE_CATEGORIES'), 'index.php?option=com_categories&view=categories&extension=com_users', 'class:category'),
+		new Node(Lang::txt('MOD_MENU_COM_USERS_NOTE_CATEGORIES'), 'index.php?option=com_categories&view=categories&extension=com_members', 'class:category'),
 		$createUser
 	);
 
 	if ($createUser)
 	{
 		$menu->addChild(
-			new Node(Lang::txt('MOD_MENU_COM_CONTENT_NEW_CATEGORY'), 'index.php?option=com_categories&task=category.add&extension=com_users', 'class:newarticle')
+			new Node(Lang::txt('MOD_MENU_COM_CONTENT_NEW_CATEGORY'), 'index.php?option=com_categories&task=category.add&extension=com_members', 'class:newarticle')
 		);
 		$menu->getParent();
 	}

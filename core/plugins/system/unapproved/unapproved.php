@@ -39,8 +39,8 @@ class plgSystemUnapproved extends \Hubzero\Plugin\Plugin
 			// If guest, proceed as normal and they'll land on the login page
 			if (!in_array($current, $exceptions) && !User::get('approved'))
 			{
-				Request::setVar('option', 'com_users');
-				Request::setVar('view', 'unapproved');
+				Request::setVar('option', 'com_members');
+				Request::setVar('task', 'unapproved');
 
 				$this->event->stop();
 			}

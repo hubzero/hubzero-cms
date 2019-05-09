@@ -24,7 +24,7 @@ foreach ($this->rows as $row)
 	}
 }
 
-$editAuthorized = User::authorise('com_users', 'manage');
+$editAuthorized = User::authorise('core.manage', 'com_members');
 ?>
 
 <div class="<?php echo $this->module->module; ?>" id="<?php echo $this->module->module . $this->module->id; ?>">

@@ -200,7 +200,7 @@ if (!empty($this->item->pagination) && $this->item->pagination && !$this->item->
 			<?php echo $this->item->introtext; ?>
 			<?php //Optional link to let them register to see the whole article. ?>
 			<?php if ($params->get('show_readmore') && $this->item->fulltext != null):
-				$link1 = Route::url('index.php?option=com_users&view=login');
+				$link1 = Route::url('index.php?option=com_login');
 				$link = new Hubzero\Utility\Uri($link1);?>
 				<p class="readmore">
 					<a href="<?php echo $link; ?>">
