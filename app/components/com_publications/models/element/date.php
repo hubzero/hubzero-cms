@@ -1,31 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
- *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Publications\Models\Element;
@@ -39,10 +16,10 @@ use stdClass;
 class Date extends Base
 {
 	/**
-	* Element name
-	*
-	* @var		string
-	*/
+  * Element name
+  *
+  * @var		string
+  */
 	protected	$_name = 'Date';
 
 	/**
@@ -223,19 +200,45 @@ class Date extends Base
 	{
 		switch ($month)
 		{
-			case 1: $monthname = Lang::txt('January');   break;
-			case 2: $monthname = Lang::txt('February');  break;
-			case 3: $monthname = Lang::txt('March');     break;
-			case 4: $monthname = Lang::txt('April');     break;
-			case 5: $monthname = Lang::txt('May');       break;
-			case 6: $monthname = Lang::txt('June');      break;
-			case 7: $monthname = Lang::txt('July');      break;
-			case 8: $monthname = Lang::txt('August');    break;
-			case 9: $monthname = Lang::txt('September'); break;
-			case 10: $monthname = Lang::txt('October');   break;
-			case 11: $monthname = Lang::txt('November');  break;
-			case 12: $monthname = Lang::txt('December');  break;
-			default: $monthname = $month; break;
+			case 1:
+				$monthname = Lang::txt('January');
+				break;
+			case 2:
+				$monthname = Lang::txt('February');
+				break;
+			case 3:
+				$monthname = Lang::txt('March');
+				break;
+			case 4:
+				$monthname = Lang::txt('April');
+				break;
+			case 5:
+				$monthname = Lang::txt('May');
+				break;
+			case 6:
+				$monthname = Lang::txt('June');
+				break;
+			case 7:
+				$monthname = Lang::txt('July');
+				break;
+			case 8:
+				$monthname = Lang::txt('August');
+				break;
+			case 9:
+				$monthname = Lang::txt('September');
+				break;
+			case 10:
+				$monthname = Lang::txt('October');
+				break;
+			case 11:
+				$monthname = Lang::txt('November');
+				break;
+			case 12:
+				$monthname = Lang::txt('December');
+				break;
+			default:
+				$monthname = $month;
+				break;
 		}
 		return $monthname;
 	}

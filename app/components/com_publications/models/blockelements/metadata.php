@@ -1,31 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
- *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Publications\Models\BlockElement;
@@ -38,10 +15,10 @@ use Components\Publications\Models\BlockElement as Base;
 class Metadata extends Base
 {
 	/**
-	* Element name
-	*
-	* @var		string
-	*/
+  * Element name
+  *
+  * @var		string
+  */
 	protected	$_name = 'metadata';
 
 	/**
@@ -49,7 +26,7 @@ class Metadata extends Base
 	 *
 	 * @return  object
 	 */
-	public function getStatus( $manifest, $pub = NULL )
+	public function getStatus( $manifest, $pub = null )
 	{
 		$status = new \Components\Publications\Models\Status();
 
@@ -57,8 +34,8 @@ class Metadata extends Base
 		$field	  = $manifest->params->field;
 		$required = $manifest->params->required;
 		$key 	  = $manifest->params->aliasmap;
-		$default  = isset($manifest->params->default) ? $manifest->params->default : NULL;
-		$value	  = isset($pub->$key) ? $pub->$key : NULL;
+		$default  = isset($manifest->params->default) ? $manifest->params->default : null;
+		$value	  = isset($pub->$key) ? $pub->$key : null;
 
 		$incomplete = 0;
 
@@ -76,7 +53,7 @@ class Metadata extends Base
 		// Metadata field (special treatment)
 		if ($field == 'metadata')
 		{
-			$value = isset($data[$key]) ? $data[$key] : NULL;
+			$value = isset($data[$key]) ? $data[$key] : null;
 		}
 
 		// Default value not replaced?
@@ -108,8 +85,8 @@ class Metadata extends Base
 	 *
 	 * @return  object
 	 */
-	public function render( $elementid, $manifest, $pub = NULL, $viewname = 'edit',
-		$status = NULL, $master = NULL, $order = 0 )
+	public function render( $elementid, $manifest, $pub = null, $viewname = 'edit',
+		$status = null, $master = null, $order = 0 )
 	{
 		$html   = '';
 
@@ -146,8 +123,8 @@ class Metadata extends Base
 	 *
 	 * @return  object
 	 */
-	public function drawItem( $elementId, $manifest, $pub = NULL,
-		$status = NULL, $master = NULL, $viewname = 'freeze')
+	public function drawItem( $elementId, $manifest, $pub = null,
+		$status = null, $master = null, $viewname = 'freeze')
 	{
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -173,9 +150,9 @@ class Metadata extends Base
 	 *
 	 * @return  object
 	 */
-	public function drawFormField( $elementId, $manifest, $pub = NULL,
-		$status = NULL, $active = 0, $collapse = 0, $total = 0,
-		$master = NULL, $order = 0)
+	public function drawFormField( $elementId, $manifest, $pub = null,
+		$status = null, $active = 0, $collapse = 0, $total = 0,
+		$master = null, $order = 0)
 	{
 		$view = new \Hubzero\Plugin\View(
 			array(
