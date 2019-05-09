@@ -655,19 +655,16 @@ class Ticket extends Relational
 				$this->_acl->setAccess('read', 'comments', 1);
 				$this->_acl->setAccess('create', 'private_comments', 1);
 				$this->_acl->setAccess('read', 'private_comments', 1);
-
-				$this->set('_cc-check-done', true);
 			}
 
 			$this->set('_access-check-done', true);
 		}
 
-		if ($action == 'read' && $item == 'tickets' && !$this->_acl->check('read', 'tickets') && !$this->get('_cc-check-done'))
+		if ($action == 'read' && $item == 'tickets' && !$this->get('_cc-check-done'))
 		{
 			if (!User::get('guest') && $this->comments->count() > 0)
 			{
 				$last = $this->comments->last();
-
 				$cc = $last->changelog()->get('cc');
 
 				if (in_array(User::get('username'), $cc) || in_array(User::get('email'), $cc))
