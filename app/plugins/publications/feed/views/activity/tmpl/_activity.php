@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -48,7 +24,7 @@ if ($this->model->member())
 
 $recorded = $this->activity->get('created');
 
-$name = Lang::txt('PLG_PROJECTS_ACTIVITY_ANONYMOUS');
+$name = Lang::txt('JANONYMOUS');
 
 $online = false;
 
@@ -140,7 +116,7 @@ if (!$this->activity->log->get('anonymous'))
 							<?php
 						}
 						?>
-						<div class="activity-event-content<?php echo ($short ? ' hide' : ''); ?>" id="activity-event-full-content<?php echo $this->activity->log->get('id'); ?>">
+						<div class="activity-event-content<?php echo ($short) ? ' hide' : ''; ?>" id="activity-event-full-content<?php echo $this->activity->log->get('id'); ?>">
 							<?php echo $content; ?>
 						</div>
 					<?php } else { ?>
@@ -232,7 +208,7 @@ if (!$this->activity->log->get('anonymous'))
 						<?php if ($edit && $commentable) { ?>
 							<?php if ($this->model->access('content')) { ?>
 								<li>
-									<a class="icon-reply reply tooltips" href="#commentform_<?php echo $this->activity->log->get('id'); ?>" id="addc_<?php echo $this->activity->log->get('id'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?>" data-inactive="<?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?>" data-active="<?php echo Lang::txt('COM_PROJECTS_COMMENT_CANCEL'); ?>"><!--
+									<a class="icon-reply reply tooltips" href="#commentform_<?php echo $this->activity->log->get('id'); ?>" id="addc_<?php echo $this->activity->log->get('id'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?>" data-inactive="<?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?>" data-active="<?php echo Lang::txt('JCANCEL'); ?>"><!--
 										--><?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?><!--
 									--></a>
 								</li>
@@ -240,7 +216,7 @@ if (!$this->activity->log->get('anonymous'))
 						<?php } ?>
 						<?php if ($edit && in_array($class, array('blog', 'quote')) && $this->model->access('manager')) { ?>
 							<li>
-								<a class="icon-edit edit tooltips" data-form="activity-form<?php echo $this->activity->log->get('id'); ?>" data-content="activity-event-content<?php echo $this->activity->log->get('id'); ?>" href="<?php echo Route::url($this->model->link('feed') . '&action=edit&activity=' . $this->activity->log->get('id'));  ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>" data-inactive="<?php echo Lang::txt('JACTION_EDIT'); ?>" data-active="<?php echo Lang::txt('COM_PROJECTS_COMMENT_CANCEL'); ?>"><!--
+								<a class="icon-edit edit tooltips" data-form="activity-form<?php echo $this->activity->log->get('id'); ?>" data-content="activity-event-content<?php echo $this->activity->log->get('id'); ?>" href="<?php echo Route::url($this->model->link('feed') . '&action=edit&activity=' . $this->activity->log->get('id'));  ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>" data-inactive="<?php echo Lang::txt('JACTION_EDIT'); ?>" data-active="<?php echo Lang::txt('JCANCEL'); ?>"><!--
 									--><?php echo Lang::txt('JACTION_EDIT'); ?><!--
 								--></a>
 							</li>
