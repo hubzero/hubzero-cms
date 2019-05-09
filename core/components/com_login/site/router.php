@@ -29,6 +29,11 @@ class Router extends Base
 			$segments[] = $query['task'];
 			unset($query['task']);
 		}
+		elseif (isset($query['view']))
+		{
+			$segments[] = $query['view'];
+			unset($query['view']);
+		}
 
 		if (isset($query['controller']))
 		{

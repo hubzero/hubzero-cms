@@ -35,7 +35,7 @@ class Migration20190505000000ComLogin extends Base
 
 				if ($menu && $menu->id)
 				{
-					$link = 'index.php?option=com_login';
+					$link = 'index.php?option=com_login&view=login';
 
 					$query = "UPDATE `#__menu` SET `link`=" . $this->db->quote($link) . ", `component_id`=" . $this->db->quote($extension_id) . " WHERE `id`=" . $this->db->quote($menu->id);
 					$this->db->setQuery($query);
@@ -56,7 +56,7 @@ class Migration20190505000000ComLogin extends Base
 
 				if ($menu && $menu->id)
 				{
-					$link = 'index.php?option=com_login&task=logout';
+					$link = 'index.php?option=com_login&view=logout';
 
 					$query = "UPDATE `#__menu` SET `link`=" . $this->db->quote($link) . ", `component_id`=" . $this->db->quote($extension_id) . " WHERE `id`=" . $this->db->quote($menu->id);
 					$this->db->setQuery($query);
@@ -87,7 +87,7 @@ class Migration20190505000000ComLogin extends Base
 			if ($extension_id)
 			{
 				// Login link
-				$query = "SELECT * FROM `#__menu` WHERE `link`='index.php?option=com_login'";
+				$query = "SELECT * FROM `#__menu` WHERE `link`='index.php?option=com_login' OR `link`='index.php?option=com_login&view=login'";
 				$this->db->setQuery($query);
 				$menu = $this->db->loadObject();
 
@@ -98,11 +98,18 @@ class Migration20190505000000ComLogin extends Base
 					$query = "UPDATE `#__menu` SET `link`=" . $this->db->quote($link) . ", `component_id`=" . $this->db->quote($extension_id) . " WHERE `id`=" . $this->db->quote($menu->id);
 					$this->db->setQuery($query);
 
-					$this->log('Updated login menu link to use `com_users`');
+					if ($this->db->query())
+					{
+						$this->log('Updated login menu link to use `com_users`');
+					}
+					else
+					{
+						$this->log($query, 'warning');
+					}
 				}
 
 				// Logout link
-				$query = "SELECT * FROM `#__menu` WHERE `link`='index.php?option=com_login&task=logout'";
+				$query = "SELECT * FROM `#__menu` WHERE `link`='index.php?option=com_login&task=logout' OR `link`='index.php?option=com_login&view=logout'";
 				$this->db->setQuery($query);
 				$menu = $this->db->loadObject();
 
@@ -113,7 +120,14 @@ class Migration20190505000000ComLogin extends Base
 					$query = "UPDATE `#__menu` SET `link`=" . $this->db->quote($link) . ", `component_id`=" . $this->db->quote($extension_id) . " WHERE `id`=" . $this->db->quote($menu->id);
 					$this->db->setQuery($query);
 
-					$this->log('Updated logout menu link to use `com_users`');
+					if ($this->db->query())
+					{
+						$this->log('Updated logout menu link to use `com_users`');
+					}
+					else
+					{
+						$this->log($query, 'warning');
+					}
 				}
 			}
 		}
