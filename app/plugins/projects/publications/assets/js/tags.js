@@ -10,7 +10,7 @@ jQuery(function($) {
 	var change = function(evt) {
 		nested_fa.css('display', 'none');
 		fas.each(function(idx, div) {
-			if ($(div.firstChild).attr('checked')) {
+			if ($(div.firstChild).prop('checked')) {
 				$(div).children().each(function(idx, el) {
 					if ($(el).hasClass('fa')) {
 						$(el).css('display', 'block');
