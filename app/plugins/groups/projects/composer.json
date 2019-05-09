@@ -1,0 +1,8 @@
+{
+	"name": "qubeshub/plg_groups_projects",
+	"description": "**Override** of HubZero groups projects plugin.",
+	"type": "hubzero-plugin",
+  "extra": {
+	    "install-directory": "/plugins/groups/projects"
+	}
+}
