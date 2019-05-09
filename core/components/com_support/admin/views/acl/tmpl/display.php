@@ -13,6 +13,8 @@ Toolbar::deleteList();
 Toolbar::spacer();
 Toolbar::help('acl');
 
+Html::behavior('framework');
+
 $this->js('edit.js');
 ?>
 
