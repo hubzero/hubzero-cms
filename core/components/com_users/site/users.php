@@ -1,19 +1,63 @@
 <?php
 /**
- * @package		Joomla.Site
- * @subpackage	com_users
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- * @since		1.5
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
-defined('_HZEXEC_') or die();
+$task = Request::getCmd('task');
 
-require_once JPATH_COMPONENT . '/helpers/route.php';
+if (strstr($task, '.'))
+{
+	$task = explode('.', $task);
+	$task = end($task);
+}
 
-\Hubzero\Document\Assets::addComponentStylesheet('com_users');
+$uri = new Hubzero\Utility\Uri(Request::current());
+$uri ->setQuery(Request::query());
 
-// Launch the controller.
-$controller = JControllerLegacy::getInstance('Users');
-$controller->execute(Request::getCmd('task', 'display'));
-$controller->redirect();
+switch ($task)
+{
+	case 'reset':
+	case 'remind':
+	case 'unapproved':
+	case 'userconsent':
+		$uri->setVar('option', 'com_members');
+
+		$url = $uri->toString();
+
+		$redirect = new Hubzero\Http\RedirectResponse($url, 301);
+		$redirect->setRequest(App::get('request'));
+		$redirect->send();
+	break;
+
+	case 'logout':
+	case 'factors':
+	case 'userconsent':
+	case 'link':
+	case 'endsinglesignon':
+	case 'spamjail':
+		//$uri->setVar('option', 'com_login');
+		//$uri->setVar('task', $task);
+		Request::setVar('option', 'com_login');
+		Request::setVar('task', $task);
+	break;
+
+	default:
+		//$uri->setVar('option', 'com_login');
+		//$uri->delVar('task');
+		Request::setVar('option', 'com_login');
+		Request::setVar('task', '');
+	break;
+}
+/*$url = $uri->toString();
+
+$redirect = new Hubzero\Http\RedirectResponse($url, 301);
+$redirect->setRequest(App::get('request'));
+$redirect->send();*/
+Lang::load('com_login', Component::path('com_login') . '/site');
+
+require_once Component::path('com_login') . '/site/controllers/auth.php';
+
+$controller = new Components\Login\Site\controllers\Auth();
+$controller->execute();

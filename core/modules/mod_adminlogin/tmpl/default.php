@@ -8,7 +8,7 @@
 defined('_HZEXEC_') or die;
 
 $this->css('login')
-     ->css('providers', 'com_users')
+     ->css('providers', 'com_login')
      ->js('login');
 
 Html::behavior('keepalive');

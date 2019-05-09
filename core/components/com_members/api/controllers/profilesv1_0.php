@@ -461,7 +461,7 @@ class Profilesv1_0 extends ApiController
 			// If so, check session for a user id
 			$session  = App::get('session');
 			$registry = $session->get('registry');
-			$userid   = (!is_null($registry)) ? $registry->get('com_users.reset.user', null) : null;
+			$userid   = (!is_null($registry)) ? $registry->get('com_members.reset.user', null) : null;
 		}
 
 		// Get the password rules

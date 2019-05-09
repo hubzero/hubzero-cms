@@ -4,7 +4,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-@import url("../../../../../core/components/com_users/site/assets/css/login.css");
+@import url("../../../../../core/components/com_login/site/assets/css/login.css");
 
 .hz_user {
 	background: #f9f9f9;

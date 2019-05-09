@@ -470,14 +470,14 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 			{
 				if (App::isSite())
 				{
-					User::setState('com_users.edit.profile.redirect', null);
+					User::setState('com_members.edit.profile.redirect', null);
 				}
 			}
 			else
 			{
 				if (App::isSite())
 				{
-					User::setState('com_users.edit.profile.redirect', 'index.php?Itemid=' . App::get('menu')->getDefault($lang_code)->id . '&lang=' . self::$lang_codes[$lang_code]->sef);
+					User::setState('com_members.edit.profile.redirect', 'index.php?Itemid=' . App::get('menu')->getDefault($lang_code)->id . '&lang=' . self::$lang_codes[$lang_code]->sef);
 					self::$tag = $lang_code;
 					// Create a cookie
 					$cookie_domain = Config::get('cookie_domain', '');

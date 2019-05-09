@@ -42,7 +42,7 @@ foreach ($authenticators as $a)
 	}
 	else
 	{
-		$login_provider_html .= '<a class="' . $a['name'] . ' account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=' . $a['name'] . $returnQueryString) . '">';
+		$login_provider_html .= '<a class="' . $a['name'] . ' account" href="' . Route::url('index.php?option=com_login&authenticator=' . $a['name'] . $returnQueryString) . '">';
 		$login_provider_html .= '<div class="signin">' . Lang::txt('MOD_LOGIN_SIGN_IN_WITH_METHOD', $a['display']) . '</div>';
 		$login_provider_html .= '</a>';
 	}
@@ -59,7 +59,7 @@ $current .= (strstr($current, '?') ? '&' : '?');
 <div class="hz_user">
 
 <?php if ($primary && $primary != 'hubzero') : ?>
-	<a class="primary" href="<?php echo Route::url('index.php?option=com_users&view=login&authenticator=' . $primary . $returnQueryString); ?>">
+	<a class="primary" href="<?php echo Route::url('index.php?option=com_login&authenticator=' . $primary . $returnQueryString); ?>">
 		<div class="<?php echo $primary; ?> upper"></div>
 		<div class="auth">
 			<div class="person">
@@ -133,9 +133,9 @@ $current .= (strstr($current, '?') ? '&' : '?');
 					<?php endif; ?>
 					<a class="forgot-password" href="<?php echo Route::url('index.php?option=com_members&task=reset'); ?>"><?php echo Lang::txt('MOD_LOGIN_RESET'); ?></a>
 				</div>
-				<input type="hidden" name="option" value="com_users" />
+				<input type="hidden" name="option" value="com_login" />
 				<input type="hidden" name="authenticator" value="hubzero" />
-				<input type="hidden" name="task" value="user.login" />
+				<input type="hidden" name="task" value="login" />
 				<input type="hidden" name="return" value="<?php echo $this->escape($return); ?>" />
 				<input type="hidden" name="freturn" value="<?php echo $this->escape($freturn); ?>" />
 				<?php echo Html::input('token'); ?>

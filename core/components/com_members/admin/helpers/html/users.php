@@ -41,7 +41,7 @@ class HtmlUsers
 	 */
 	public static function addNote($userId)
 	{
-		$title = Lang::txt('COM_USERS_ADD_NOTE');
+		$title = Lang::txt('COM_MEMBERS_ADD_NOTE');
 
 		return '<a class="state notes" href="' . Route::url('index.php?option=com_members&controller=notes&task=add&u_id=' . (int) $userId) . '" title="' . $title . '"><span>' . Lang::txt('COM_MEMBERS_NOTES') . '</span></a>';
 	}

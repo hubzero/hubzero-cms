@@ -96,8 +96,8 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 		else
 		{
 			// If someone is logged in already, then we're linking an account
-			$task  = (User::isGuest()) ? 'user.login' : 'user.link';
-			$scope = '/index.php?option=com_users&task=' . $task . '&authenticator=certificate';
+			$task  = (User::isGuest()) ? 'login' : 'link';
+			$scope = '/index.php?option=com_login&task=' . $task . '&authenticator=certificate';
 		}
 
 		App::redirect($scope . $return);
@@ -263,7 +263,7 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 	{
 		Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/certificate/assets/css/certificate.css');
 
-		$html = '<a class="certificate account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=certificate' . $return) . '">';
+		$html = '<a class="certificate account" href="' . Route::url('index.php?option=com_login&authenticator=certificate' . $return) . '">';
 			$html .= '<div class="signin">';
 				$html .= Lang::txt('PLG_AUTHENTICATION_CERTIFICATE_SIGN_IN');
 			$html .= '</div>';
