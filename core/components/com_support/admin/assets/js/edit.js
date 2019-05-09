@@ -13,6 +13,10 @@ Hubzero.submitbutton = function(task) {
 		frm = document.getElementById('component-form');
 	}
 
+	if (!frm) {
+		frm = document.getElementById('adminForm');
+	}
+
 	if (frm) {
 		if (task == 'cancel' || document.formvalidator.isValid(frm)) {
 			Hubzero.submitform(task, frm);
@@ -45,7 +49,11 @@ jQuery(document).ready(function($){
 	});
 
 	$('#newacl').on('click', function(e){
-		Hubzero.submitbutton('save');
+		e.preventDefault();
+
+		frm = document.getElementById('adminForm');
+
+		Hubzero.submitform('save', frm);
 	});
 
 	var col = $('#field-color');
