@@ -11,7 +11,7 @@ defined('_HZEXEC_') or die();
 /**
  * Projects Feed plugin
  */
-class plgProjectsFeed extends \Hubzero\Plugin\Plugin
+class plgPublicationsFeed extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
