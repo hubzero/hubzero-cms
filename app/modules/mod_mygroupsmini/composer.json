@@ -1,0 +1,8 @@
+{
+	"name": "qubeshub/mod_mygroupsmini",
+	"description": "Display users groups in mini-dashboard.",
+	"type": "hubzero-module",
+	"extra": {
+	    "install-directory": "/modules/mod_mygroupsmini"
+	}
+}
