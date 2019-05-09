@@ -167,7 +167,7 @@ class Threads extends SiteController
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $this->view->filters['section'] . '&category=' . $this->view->filters['category'] . '&thread=' . $this->view->filters['parent'], false, true));
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . $return)
+				Route::url('index.php?option=com_login&return=' . $return)
 			);
 		}
 
@@ -226,7 +226,7 @@ class Threads extends SiteController
 				$return = Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category . '&thread=' . $id . '&task=edit');
 			}
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)) . Lang::txt('COM_FORUM_LOGIN_NOTICE'),
+				Route::url('index.php?option=com_login&return=' . base64_encode($return)) . Lang::txt('COM_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
 		}
@@ -305,7 +305,7 @@ class Threads extends SiteController
 		{
 			$return = Route::url('index.php?option=' . $this->_option, false, true);
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_login&return=' . base64_encode($return))
 			);
 		}
 
@@ -616,7 +616,7 @@ class Threads extends SiteController
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $section . '&category=' . $category . '&thread=' . $thread_id . '&post=' . $post_id . '&file=' . $file));
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . $return)
+				Route::url('index.php?option=com_login&return=' . $return)
 			);
 		}
 

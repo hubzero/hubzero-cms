@@ -327,7 +327,7 @@ class Helper extends Module
 			{
 				// Angie Fixed Routing
 				$menu = \App::get('menu');
-				$menuitems = $menu->getItems('link', 'index.php?option=com_users&view=login');
+				$menuitems = $menu->getItems('link', 'index.php?option=com_login');
 				if (isset($menuitems[0]))
 				{
 					$Itemid = $menuitems[0]->id;
@@ -338,7 +338,7 @@ class Helper extends Module
 					$Itemid = Request::getInt('Itemid');
 				}
 
-				$item->link = Route::url('index.php?option=com_users&view=login&Itemid=' . $Itemid);
+				$item->link = Route::url('index.php?option=com_login&Itemid=' . $Itemid);
 			}
 
 			// Used for styling the active article

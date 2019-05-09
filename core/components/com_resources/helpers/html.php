@@ -876,7 +876,7 @@ class Html
 					//if (User::isGuest()) {
 						// Not logged-in = show message
 						//$html .= self::primaryButton('launchtool disabled', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
-						//$html .= self::warning('You must <a href="'.Route::url('index.php?option=com_users&view=login').'">log in</a> before you can run this tool.')."\n";
+						//$html .= self::warning('You must <a href="'.Route::url('index.php?option=com_login').'">log in</a> before you can run this tool.')."\n";
 					//} else {
 						$pop = (User::isGuest()) ? '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_LOGIN_REQUIRED_TO_RUN') . '</p>' : '';
 						$pop = ($resource->revision =='dev') ? '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_VERSION_UNDER_DEVELOPMENT') . '</p>' : $pop;
@@ -1008,7 +1008,7 @@ class Html
 				{
 					// first child is for registered users only and the visitor is not logged in
 					$pop  = '<p class="warning">' . Lang::txt('COM_RESOURCES_LOGIN_REQUIRED_TO_DOWNLOAD') . '</p>' . "\n";
-					$html .= self::primaryButton($class . ' disabled', Route::url('index.php?option=com_users&view=login'), $mesg, '', '', '', '', $pop);
+					$html .= self::primaryButton($class . ' disabled', Route::url('index.php?option=com_login'), $mesg, '', '', '', '', $pop);
 				}
 				else
 				{

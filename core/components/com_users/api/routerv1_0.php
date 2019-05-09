@@ -14,7 +14,6 @@ use Hubzero\Component\Router\Base;
  */
 class Router extends Base
 {
-
 	/**
 	 * Build the route for the component
 	 *
@@ -67,5 +66,4 @@ class Router extends Base
 
 		return $vars;
 	}
-
 }

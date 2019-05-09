@@ -96,7 +96,7 @@ class Helper extends Module
 			}
 			else
 			{
-				$item->link = Route::url('index.php?option=com_users&view=login');
+				$item->link = Route::url('index.php?option=com_login');
 			}
 		}
 

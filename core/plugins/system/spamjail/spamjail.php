@@ -37,8 +37,8 @@ class plgSystemSpamjail extends \Hubzero\Plugin\Plugin
 			// If guest, proceed as normal and they'll land on the login page
 			if (!in_array($current, $exceptions) && User::getInstance()->reputation->isJailed())
 			{
-				Request::setVar('option', 'com_users');
-				Request::setVar('view', 'spamjail');
+				Request::setVar('option', 'com_members');
+				Request::setVar('task', 'spamjail');
 			}
 		}
 	}

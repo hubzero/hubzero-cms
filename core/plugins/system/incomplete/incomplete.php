@@ -88,8 +88,8 @@ class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
 
 					if (Session::get('linkaccount', true) && !$simpleRegistration)
 					{
-						Request::setVar('option', 'com_users');
-						Request::setVar('view', 'link');
+						Request::setVar('option', 'com_login');
+						Request::setVar('task', 'link');
 					}
 					else
 					{
