@@ -1,4 +1,10 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 use \Components\Projects\Helpers\Html;
 
 $directoryBrowseUrl = Route::url($this->model->link('files') . "&action=browse&connection=$this->connectionId&subdir=$this->urlEncodedItemPath");

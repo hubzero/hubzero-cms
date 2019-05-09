@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -55,6 +30,7 @@ require_once Component::path('com_projects') . '/helpers/urlHelper.php';
 use Components\Projects\Models\Orm\Connection;
 use Components\Projects\Helpers\AccessHelper;
 use Components\Projects\Helpers\UrlHelper;
+use Components\Projects\Models\Orm\Project;
 
 /**
  * Projects Files plugin
@@ -537,73 +513,149 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				'name'    => 'selector'
 			)
 		);
-
-		$view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
-
-		// On error
-		if (!$view->publication->exists())
+		$attachments = array();
+		$allowed = array();
+		$used = array();
+		$hiddenFields = array();
+		$min = '';
+		$max = '';
+		$route = $this->model->isProvisioned() ? 'index.php?option=com_publications&task=submit&active=files' : $this->model->link('files');
+		$filterUrl = Route::url($route) . '?action=filter&amp;p=' . $props . '&amp;ajax=1&amp;no_html=1';
+		$elId = '';
+		if ($pid !== 0)
 		{
-			// Output error
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'projects',
-					'element' => 'files',
-					'name'    => 'error'
-				)
+			$view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
+			// On error
+			if (!$view->publication->exists())
+			{
+				// Output error
+				$view = new \Hubzero\Plugin\View(
+					array(
+						'folder'  => 'projects',
+						'element' => 'files',
+						'name'    => 'error'
+					)
+				);
+
+				$view->title  = '';
+				$view->option = $this->_option;
+				$view->setError(Lang::txt('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
+				return $view->loadTemplate();
+			}
+
+			$view->publication->attachments();
+
+			// Get curation model
+			$view->publication->setCuration();
+			$elId = $element;
+			// Get requirements
+			$element = $view->publication->curation('blocks', $step, 'elements', $element);
+			$params = $element->params;
+			$max = $params->max;
+			$min = $params->min;
+			$required = $params->required;
+			$role = $params->role;
+			$allowed = $params->typeParams->allowed_ext;
+			$reqext = $params->typeParams->required_ext;
+			$reuse = isset($params->typeParams->reuse) ? $params->typeParams->reuse : 1;
+
+			// Make sure block exists, else use default
+			$view->publication->_curationModel->setBlock($block, $step);
+			$attModel = new \Components\Publications\Models\Attachments($this->_database);
+			// Get attached items
+			$attachments = $view->publication->attachments();
+			$attachments = isset($attachments['elements'][$elId]) ? $attachments['elements'][$elId] : null;
+			$attachments = $attModel->getElementAttachments($elId, $attachments, $params->type);
+			$route = $this->model->isProvisioned() ? 'index.php?option=com_publications&task=submit&active=files' : $this->model->link('files');
+			$filterUrl .= '&amp;pid=' . $view->publication->get('id') . '&amp;vid=' . $view->publication->get('version_id');
+
+			// Set params
+			$used = array();
+			if (!$reuse && $view->publication->_attachments['elements'])
+			{
+				foreach ($view->publication->_attachments['elements'] as $o => $elms)
+				{
+					if ($o != $elId)
+					{
+						foreach ($elms as $elm)
+						{
+							$used[] = $elm->path;
+						}
+					}
+				}
+			}
+			$hiddenFields = array(
+				array('name' => 'p', 'value' => $props),
+				array('name' => 'vid', 'value' => $view->publication->get('version_id')),
+				array('name' => 'version', 'value' => $view->publication->get('version_number')),
+				array('id' => 'maxitems', 'name' => 'maxitems', 'value' => $max),
+				array('id' => 'minitems', 'name' => 'minitems', 'value' => $min),
+				array('name' => 'section', 'value' => $block),
+				array('name' => 'element', 'value' => $elId),
+				array('name' => 'el', 'value' => $elId),
+				array('name' => 'step', 'value' => $step),
+				array('name' => 'active', 'value' => 'publications'),
+				array('name' => 'action', 'value' => 'apply'),
+				array('name' => 'move', 'value' => 'continue')
 			);
-
-			$view->title  = '';
-			$view->option = $this->_option;
-			$view->setError(Lang::txt('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
-			return $view->loadTemplate();
+			if ($this->model->isProvisioned())
+			{
+				$extraFields = array(
+					array('name' => 'id', 'value' => $view->publication->get('id')),
+					array('name' => 'task', 'value' => 'submit'),
+					array('name' => 'option', 'value' => 'com_publications'),
+					array('name' => 'ajax', 'value' => '0')
+				);
+			}
+			else
+			{
+				$extraFields = array(
+					array('name' => 'option', 'value' => $this->option),
+					array('name' => 'id', 'value' => $this->model->get('id'))
+				);
+			}
+			foreach ($extraFields as $extra)
+			{
+				$hiddenFields[] = $extra;
+			}
 		}
-
-		$view->publication->attachments();
-
-		// Get curation model
-		$view->publication->setCuration();
-
-		// Make sure block exists, else use default
-		$view->publication->_curationModel->setBlock($block, $step);
 
 		// Get file list
 		$view->items = null;
 		if ($this->model->get('id'))
 		{
-			// Set params
-			$params = array(
+
+			// Get preselected items
+			$selected = array();
+			if ($attachments)
+			{
+				foreach ($attachments as $attach)
+				{
+					$selected[] = $attach->path;
+				}
+			}
+			$fileParams = array(
 				'sortby'           => 'localpath',
 				'showFullMetadata' => false,
 				'subdir'           => $directory
 			);
-
-			// Retrieve items
-			if (($cid = Request::getInt('cid')) && $cid > 0)
+			$fileList = $this->_fileList($fileParams, $allowed, $selected, $used);
+			if (!empty($fileList))
 			{
-				// Get directory that we're interested in
-				$con = Connection::oneOrFail($cid);
-				$dir = \Hubzero\Filesystem\Entity::fromPath(($directory != '.' ? $directory : ''), $con->adapter());
-
-				$view->items = $dir->listContents();
+				return $fileList;
 			}
-			else
-			{
-				$view->items = $this->repo->filelist($params);
-			}
-
-			$view->directory = $directory;
 
 			// Get directories
-			$params = array(
+			$fileParams = array(
 				'subdir'           => null,
 				'sortby'           => 'localpath',
 				'showFullMetadata' => false,
 				'dirsOnly'         => true,
 			);
 
-			$view->folders = $this->repo->filelist($params);
+			$view->folders = $this->repo->filelist($fileParams);
 		}
-
+		$view->hiddenFields = $hiddenFields;
 		$view->option    = $this->model->isProvisioned() ? 'com_publications' : $this->_option;
 		$view->database  = $this->_database;
 		$view->model     = $this->model;
@@ -618,6 +670,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->filter    = $filter;
 		$view->sizelimit = $this->params->get('maxUpload', '104857600');
 		$view->showCons  = ($this->params->get('default_action', 'browse') == 'connections') ? true : false;
+		$view->min = $min;
+		$view->max = $max;
+		$view->filterUrl = $filterUrl;
+		$view->elId = $elId;
+		$view->connections = $this->_connections();
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
@@ -626,9 +683,91 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$view->setError($this->getError());
 		}
 
+		$partial = Request::getInt('partial', 0);
+		if ($ajax && $view->showCons && $partial)
+		{
+			return $view->connections;
+		}
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Display list of files
+	 *
+	 * @param   array  $params 		parameters on how the file list should be displayed
+	 * @param   array  $allowed 	list of file types permitted to be included
+	 * @param   array  $selected 	list of files already included in current area
+	 * @param   array  $used 		list of files already included in other areas
+	 *
+	 * @return  string  Filelist template
+	 */
+	private function _fileList($params = array(), $allowed = array(), $selected = array(), $used = array())
+	{
+		$template = null;
+		$directory = urldecode(Request::getString('directory', ''));
+		if (!empty($directory))
+		{
+			$cid = Request::getInt('cid', 0);
+			// Show files
+			$layout = ($cid && $cid > 0) ? 'selector-remote' : 'selector';
+
+			// Retrieve items
+			if ($cid > 0)
+			{
+				// Get directory that we're interested in
+				$con = Connection::oneOrFail($cid);
+				$dir = \Hubzero\Filesystem\Entity::fromPath(($directory != '.' ? $directory : ''), $con->adapter());
+
+				$items = $dir->listContents();
+			}
+			else
+			{
+				$items = $this->repo->filelist($params);
+			}
+			$view = new \Hubzero\Plugin\View(
+				array(
+					'folder'  => 'projects',
+					'element' => 'files',
+					'name'    => 'selector',
+					'layout'  => $layout
+				)
+			);
+			$view->option       = $this->option;
+			$view->model        = $this->model;
+			$view->items        = $items;
+			$view->requirements = $params;
+			$view->publication  = $this->publication;
+			$view->selected     = $selected;
+			$view->allowed      = $allowed;
+			$view->used         = $used;
+			$view->noUl         = true;
+
+			$template = $view->loadTemplate();
+		}
+		return $template;
+	}
+
+	/**
+	 * Display list of connections
+	 *
+	 * @return  string  Connection List template
+	 */
+	private function _connections()
+	{
+		// Show files
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => 'projects',
+				'element' => 'files',
+				'name'    => 'selector',
+				'layout'  => 'connections'
+			)
+		);
+		$view->model       = $this->model;
+		$view->connections = Project::oneOrFail($this->model->get('id'))->connections()->thatICanView();
+
+		return $view->loadTemplate();
+	}
 	/**
 	 * Upload view
 	 *
@@ -3161,11 +3300,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$kind = 'projects.' . $this->model->get('alias') . '.' . $type;
 
 		// Get session
-		$jsession = App::get('session');
+		$session = App::get('session');
 
 		if ($append == true)
 		{
-			$exVal = $jsession->get($kind);
+			$exVal = $session->get($kind);
 			$val   = $exVal ? $exVal . ', ' . $file : $file;
 		}
 		else
@@ -3175,7 +3314,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		$val .= $appendMessage ? ' (' . $appendMessage . ') ' : '';
 
-		$jsession->set($kind, $val);
+		$session->set($kind, $val);
 		return true;
 	}
 
@@ -3198,23 +3337,23 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (empty($changes))
 		{
 			// Get session
-			$jsession = App::get('session');
+			$session = App::get('session');
 
 			// Get values from session
-			$updated  = $jsession->get('projects.' . $model->get('alias') . '.updated');
-			$uploaded = $jsession->get('projects.' . $model->get('alias') . '.uploaded');
-			$failed   = $jsession->get('projects.' . $model->get('alias') . '.failed');
-			$deleted  = $jsession->get('projects.' . $model->get('alias') . '.deleted');
-			$restored = $jsession->get('projects.' . $model->get('alias') . '.restored');
-			$expanded = $jsession->get('projects.' . $model->get('alias') . '.expanded');
+			$updated  = $session->get('projects.' . $model->get('alias') . '.updated');
+			$uploaded = $session->get('projects.' . $model->get('alias') . '.uploaded');
+			$failed   = $session->get('projects.' . $model->get('alias') . '.failed');
+			$deleted  = $session->get('projects.' . $model->get('alias') . '.deleted');
+			$restored = $session->get('projects.' . $model->get('alias') . '.restored');
+			$expanded = $session->get('projects.' . $model->get('alias') . '.expanded');
 
 			// Clean up session values
-			$jsession->set('projects.' . $model->get('alias') . '.failed', '');
-			$jsession->set('projects.' . $model->get('alias') . '.updated', '');
-			$jsession->set('projects.' . $model->get('alias') . '.uploaded', '');
-			$jsession->set('projects.' . $model->get('alias') . '.deleted', '');
-			$jsession->set('projects.' . $model->get('alias') . '.restored', '');
-			$jsession->set('projects.' . $model->get('alias') . '.expanded', '');
+			$session->set('projects.' . $model->get('alias') . '.failed', '');
+			$session->set('projects.' . $model->get('alias') . '.updated', '');
+			$session->set('projects.' . $model->get('alias') . '.uploaded', '');
+			$session->set('projects.' . $model->get('alias') . '.deleted', '');
+			$session->set('projects.' . $model->get('alias') . '.restored', '');
+			$session->set('projects.' . $model->get('alias') . '.expanded', '');
 		}
 		else
 		{

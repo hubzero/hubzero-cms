@@ -1,0 +1,8 @@
+{
+	"name": "qubeshub/plg_projects_files",
+	"description": "**Override** of HubZero project files plugin.",
+	"type": "hubzero-plugin",
+  "extra": {
+	    "install-directory": "/plugins/projects/files"
+	}
+}
