@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Tags\Site\Controllers;
@@ -165,13 +140,15 @@ class Tags extends SiteController
 				$tags[] = $tagobj;
 				$rt[]   = $tagobj->get('raw_tag');
 			}
+			else
+			{
+				$rt[]   = $tag;
+			}
 		}
 
-		// Ensure we loaded the tag's info from the database
-		if (empty($tags))
-		{
-			App::abort(404, Lang::txt('COM_TAGS_TAG_NOT_FOUND'));
-		}
+		$this->view->total      = 0;
+		$this->view->results    = null;
+		$this->view->categories = array();
 
 		// Incoming paging vars
 		$this->view->filters = array(
@@ -187,105 +164,110 @@ class Tags extends SiteController
 		// Get the active category
 		$area = Request::getString('area', '');
 
-		$this->view->categories = Event::trigger('tags.onTagView', array(
-			$tags,
-			$this->view->filters['limit'],
-			$this->view->filters['start'],
-			$this->view->filters['sort'],
-			$area
-		));
-
-		$this->view->total   = 0;
-		$this->view->results = null;
-
-		if (!$area)
+		// Ensure we loaded the tag's info from the database
+		if (empty($tags))
 		{
-			$query = '';
-			if ($this->view->categories)
-			{
-				$s = array();
-				foreach ($this->view->categories as $response)
-				{
-					$this->view->total += $response['total'];
-
-					if (is_array($response['sql']))
-					{
-						continue;
-					}
-					if (trim($response['sql']) != '')
-					{
-						$s[] = $response['sql'];
-					}
-					if (isset($response['children']))
-					{
-						foreach ($response['children'] as $sresponse)
-						{
-							//$this->view->total += $sresponse['total'];
-
-							if (is_array($sresponse['sql']))
-							{
-								continue;
-							}
-							if (trim($sresponse['sql']) != '')
-							{
-								$s[] = $sresponse['sql'];
-							}
-						}
-					}
-				}
-				$query .= "(";
-				$query .= implode(") UNION (", $s);
-				$query .= ") ORDER BY ";
-				switch ($this->view->filters['sort'])
-				{
-					case 'title':
-						$query .= 'title ASC, publish_up';
-						break;
-					case 'id':
-						$query .= "id DESC";
-						break;
-					case 'date':
-					default:
-						$query .= 'publish_up DESC, title';
-						break;
-				}
-				if ($this->view->filters['limit'] != 'all'
-				 && $this->view->filters['limit'] > 0)
-				{
-					$query .= " LIMIT " . $this->view->filters['start'] . "," . $this->view->filters['limit'];
-				}
-			}
-			$this->database->setQuery($query);
-			$this->view->results = $this->database->loadObjectList();
+			//App::abort(404, Lang::txt('COM_TAGS_TAG_NOT_FOUND'));
 		}
 		else
 		{
-			if ($this->view->categories)
+			$this->view->categories = Event::trigger('tags.onTagView', array(
+				$tags,
+				$this->view->filters['limit'],
+				$this->view->filters['start'],
+				$this->view->filters['sort'],
+				$area
+			));
+
+			if (!$area)
 			{
-				foreach ($this->view->categories as $response)
+				$query = '';
+				if ($this->view->categories)
 				{
-					$this->view->total += $response['total'];
-				}
-				foreach ($this->view->categories as $response)
-				{
-					//$this->view->total += $response['total'];
-
-					if (is_array($response['results']))
+					$s = array();
+					foreach ($this->view->categories as $response)
 					{
-						$this->view->results = $response['results'];
-						break;
-					}
+						$this->view->total += $response['total'];
 
-					if (isset($response['children']))
-					{
-						foreach ($response['children'] as $sresponse)
+						if (is_array($response['sql']))
 						{
-							//$this->view->total += $sresponse['total'];
-
-							if (is_array($sresponse['results']))
+							continue;
+						}
+						if (trim($response['sql']) != '')
+						{
+							$s[] = $response['sql'];
+						}
+						if (isset($response['children']))
+						{
+							foreach ($response['children'] as $sresponse)
 							{
-								$this->view->results = $sresponse['results'];
-								break 2;
+								//$this->view->total += $sresponse['total'];
+
+								if (is_array($sresponse['sql']))
+								{
+									continue;
+								}
+								if (trim($sresponse['sql']) != '')
+								{
+									$s[] = $sresponse['sql'];
+								}
+							}
+						}
+					}
+					$query .= "(";
+					$query .= implode(") UNION (", $s);
+					$query .= ") ORDER BY ";
+					switch ($this->view->filters['sort'])
+					{
+						case 'title':
+							$query .= 'title ASC, publish_up';
+							break;
+						case 'id':
+							$query .= "id DESC";
+							break;
+						case 'date':
+						default:
+							$query .= 'publish_up DESC, title';
+							break;
+					}
+					if ($this->view->filters['limit'] != 'all'
+					 && $this->view->filters['limit'] > 0)
+					{
+						$query .= " LIMIT " . $this->view->filters['start'] . "," . $this->view->filters['limit'];
+					}
+				}
+				$this->database->setQuery($query);
+				$this->view->results = $this->database->loadObjectList();
+			}
+			else
+			{
+				if ($this->view->categories)
+				{
+					foreach ($this->view->categories as $response)
+					{
+						$this->view->total += $response['total'];
+					}
+					foreach ($this->view->categories as $response)
+					{
+						//$this->view->total += $response['total'];
+
+						if (is_array($response['results']))
+						{
+							$this->view->results = $response['results'];
+							break;
+						}
+
+						if (isset($response['children']))
+						{
+							foreach ($response['children'] as $sresponse)
+							{
+								//$this->view->total += $sresponse['total'];
+
+								if (is_array($sresponse['results']))
+								{
+									$this->view->results = $sresponse['results'];
+									break 2;
+								}
 							}
 						}
 					}
