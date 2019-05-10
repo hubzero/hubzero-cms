@@ -550,7 +550,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function isDeleted()
 	{
-		return ($this->get('published') == 4);
+		return ($this->get('published') == self::STATE_TRASHED);
 	}
 
 	/**
@@ -566,7 +566,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		}
 
 		// Make sure the resource is published and standalone
-		if (in_array($this->get('published'), array(0, 2, 4, 5)))
+		if (in_array($this->get('published'), array(self::STATE_UNPUBLISHED, self::STATE_DRAFT, self::STATE_TRASHED, self::STATE_DRAFT_INTERNAL)))
 		{
 			return false;
 		}
@@ -788,6 +788,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	public function fields()
 	{
 		$data = array();
+
 		preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->get('fulltxt'), $matches, PREG_SET_ORDER);
 		if (count($matches) > 0)
 		{
@@ -796,7 +797,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 				$data[$match[1]] = stripslashes($match[2]);
 			}
 		}
-		$citations = '';
+
 		$elements = new \Components\Resources\Models\Elements($data, $this->type()->customFields);
 		$schema = $elements->getSchema();
 		if (is_object($schema))
@@ -816,6 +817,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 				}
 			}
 		}
+
 		return $data;
 	}
 
@@ -990,7 +992,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	/**
 	 * Generate URL for tool
 	 *
-	 * @return  mixed	string or boolean if pubishedOnly is flagged and tool hasn't been published
+	 * @return  string
 	 */
 	public function generateToolUrl()
 	{
@@ -1012,7 +1014,6 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		}
 		return $lurl;
 	}
-
 
 	/**
 	 * Authorize current user
@@ -1561,6 +1562,12 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 
 		return $query;
 	}
+
+	/**
+	 * Generate description
+	 *
+	 * @return  string
+	 */
 	public function searchableDescription()
 	{
 		$description = $this->description . ' ' . $this->introtext;
@@ -1569,24 +1576,33 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		return $description;
 	}
 
+	/**
+	 * Get acces level as text
+	 *
+	 * @return  string
+	 */
 	public function transformAccessLevel()
 	{
 		$accessLevel = 'private';
-		if ($this->standalone == 1 && $this->published == 1)
+
+		if ($this->standalone == 1 && $this->isPublished())
 		{
 			switch ($this->access)
 			{
 				case 0:
 					$accessLevel = 'public';
 				break;
+
 				case 1:
 					$accessLevel = 'registered';
 				break;
+
 				case 4:
 				default:
 					$accessLevel = 'private';
 			}
 		}
+
 		return $accessLevel;
 	}
 
@@ -1616,9 +1632,10 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		return $allowedgroups;
 	}
 
-	/*
+	/**
 	 * Namespace used for solr Search
-	 * @return string
+	 *
+	 * @return  string
 	 */
 	public static function searchNamespace()
 	{
@@ -1626,9 +1643,10 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		return $searchNamespace;
 	}
 
-	/*
+	/**
 	 * Generate solr search Id
-	 * @return string
+	 *
+	 * @return  string
 	 */
 	public function searchId()
 	{
@@ -1636,9 +1654,10 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		return $searchId;
 	}
 
-	/*
+	/**
 	 * Convert model results into solr readable generic object.
-	 * @return stdClass
+	 *
+	 * @return  stdClass
 	 */
 	public function searchResult()
 	{
@@ -1750,12 +1769,24 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		return $obj;
 	}
 
+	/**
+	 * Get record total
+	 *
+	 * @return  integer
+	 */
 	public static function searchTotal()
 	{
 		$total = self::all()->total();
 		return $total;
 	}
 
+	/**
+	 * Get search results
+	 *
+	 * @param   integer  $limit
+	 * @param   integer  $offset
+	 * @return  object
+	 */
 	public static function searchResults($limit, $offset = 0)
 	{
 		return self::all()->start($offset)->limit($limit)->rows();
