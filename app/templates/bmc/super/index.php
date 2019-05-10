@@ -2,8 +2,9 @@
 /**
  * Template Name: Sidebar Template
  *
- * @author 	M. Drew LaMar
- * @copyright	December 2016
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // define base path (without doc root)

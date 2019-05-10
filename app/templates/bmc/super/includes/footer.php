@@ -5,8 +5,9 @@
  * Template used for Special Groups. Will now be auto-created
  * when admin switches group from type HUB to type Special.
  *
- * @author     HUBzero, M. Drew LaMar
- * @copyright  December 2015, January 2017
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 ?>
 
