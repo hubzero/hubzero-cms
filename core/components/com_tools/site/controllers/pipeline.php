@@ -1084,7 +1084,9 @@ class Pipeline extends SiteController
 		// create/update developers group
 		$gid = $hztv->getDevelopmentGroup();
 
-		if (empty($gid))
+		$hzg = \Hubzero\User\Group::getInstance($gid);
+
+		if (!$gid || !$hzg)
 		{
 			$hzg = new \Hubzero\User\Group();
 			$hzg->cn =  $group_prefix . strtolower($tool['toolname']);
@@ -1093,10 +1095,6 @@ class Pipeline extends SiteController
 			$hzg->set('description', Lang::txt('COM_TOOLS_DELEVOPMENT_GROUP', $tool['title']));
 			$hzg->set('created', Date::toSql());
 			$hzg->set('created_by', User::get('id'));
-		}
-		else
-		{
-			$hzg = \Hubzero\User\Group::getInstance($gid);
 		}
 		$hzg->set('members', $tool['developers']);
 
