@@ -297,10 +297,5 @@ $maintext = $this->model->description;
 				</div>
 			<?php endif; ?>
 		<?php endif; ?>
-
-		<?php
-		$cite = null; // Not used
-		echo \Components\Resources\Helpers\Html::citationCOins($cite, $this->model);
-		?>
 	</div><!-- / .resource -->
 </div><!-- / .subject -->
