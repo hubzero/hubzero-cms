@@ -757,7 +757,7 @@ HUB.ProjectFiles = {
 							var dir = '';
 							var file = '';
 
-							for ( i=classes.length-1; i>=0; i-- )
+							for (i=classes.length-1; i>=0; i--)
 							{
 								if (classes[i].search("file:") >= 0)
 								{
@@ -906,12 +906,16 @@ HUB.ProjectFiles = {
 				dir = dir - 1;
 				var idx = HUB.Projects.getArrayIndex($(el).val(), bfolders);
 				//var idx = bfolders.indexOf($(el).val());
-				if (idx!=-1) bfolders.splice(idx, 1);
+				if (idx!=-1) {
+					bfolders.splice(idx, 1);
+				}
 			}
 			else {
 				//var idx = bselected.indexOf($(el).val());
 				var idx = HUB.Projects.getArrayIndex($(el).val(), bselected);
-				if (idx!=-1) bselected.splice(idx, 1);
+				if (idx!=-1) {
+					bselected.splice(idx, 1);
+				}
 			}
 
 			// Remove class from tr
@@ -1061,7 +1065,7 @@ HUB.ProjectFiles = {
 
 					in_preview = $(item).attr('id');
 					var left = $(item).innerWidth() + coord.left; // safe margin
-					var top = coord.top ;
+					var top = coord.top;
 					div.css({'width': '300px', 'top': top, 'left': left });
 
 					var original = $(item).attr('href');
