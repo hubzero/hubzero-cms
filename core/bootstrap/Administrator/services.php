@@ -7,7 +7,6 @@
 
 return array(
 	// Base Services
-	'Bootstrap\Administrator\Providers\JoomlaServiceProvider',
 	'Bootstrap\Administrator\Providers\EventServiceProvider',
 	'Bootstrap\Administrator\Providers\TranslationServiceProvider',
 	'Bootstrap\Administrator\Providers\DatabaseServiceProvider',

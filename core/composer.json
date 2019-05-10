@@ -4,7 +4,7 @@
     "type": "project",
     "keywords": [ "cms" , "hubzero" ],
     "homepage": "http://hubzero.org",
-    "license": "LGPL-2.1",
+    "license": "MIT",
     "authors": [
         {
             "name": "Hubzero",
@@ -62,8 +62,7 @@
         "mockery/mockery": "dev-master"
     },
     "autoload": {
-        "psr-4": { "Bootstrap\\": "bootstrap/"},
-        "classmap": [ "libraries/joomla" ]
+        "psr-4": { "Bootstrap\\": "bootstrap/"}
     },
     "config": {
         "preferred-install": "dist"
