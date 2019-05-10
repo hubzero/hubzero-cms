@@ -99,7 +99,7 @@ var PlaceholderTest = function(parent){
 	$('body').append(input);
 	input.on('input',function(e){
 		parent.find("input[placeholder]").removeAttr("placeholder");
-		this.remove();
 	});
 	input.focus();
+	input.remove();
 };
