@@ -67,8 +67,7 @@ jQuery(function($) {
 					location = location.protocol + '//' + location.host + (location.port ? ':' + location.port : '') + '/login?authenticator=shibboleth&idp=' + encodeURIComponent(eid);
 				}
 			}, 0);
-		})
-		;
+		});
 	priorVal = sp.val() ? sel.val()[0] : null;
 
 	// also submit the form if there is a default institution filled in and the
