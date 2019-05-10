@@ -622,9 +622,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Get file list
 		$view->items = null;
+		$view->selected = array();
 		if ($this->model->get('id'))
 		{
-
 			// Get preselected items
 			$selected = array();
 			if ($attachments)
@@ -634,6 +634,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					$selected[] = $attach->path;
 				}
 			}
+			$view->selected = $selected;
 			$fileParams = array(
 				'sortby'           => 'localpath',
 				'showFullMetadata' => false,
@@ -643,6 +644,26 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			if (!empty($fileList))
 			{
 				return $fileList;
+			}
+
+			$cid = Request::getInt('cid', 0);
+
+			// Retrieve items
+			if ($cid > 0)
+			{
+				// Get directory that we're interested in
+				$con = Connection::oneOrFail($cid);
+				$dir = \Hubzero\Filesystem\Entity::fromPath('', $con->adapter());
+
+				$fileList = $dir->listContents();
+			}
+			else
+			{
+				$fileList = $this->repo->filelist($fileParams);
+			}
+			if (!empty($fileList))
+			{
+				$view->items = $fileList;
 			}
 
 			// Get directories
