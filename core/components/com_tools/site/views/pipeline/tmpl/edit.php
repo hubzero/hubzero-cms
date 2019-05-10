@@ -162,7 +162,7 @@ $this->css('pipeline.css')
 	
 					<div class="form-group form-check">
 						<label for="tool_repohost_svnlocal" class="form-check-label">
-							<input readonly type="radio" name="tool[repohost]" id="tool_repohost_svnlocal" value="svnLocal" <?php if (!$this->defaults['repohost'] || $this->defaults['repohost'] == 'svnLocal') { echo 'checked="checked"'; } else { echo "disabled"; } ?> class="option form-check-input" />
+							<input readonly type="radio" name="tool[repohost]" id="tool_repohost_svnlocal" value="svnLocal" <?php echo (!$this->defaults['repohost'] || $this->defaults['repohost'] == 'svnLocal') ? 'checked="checked"' :  "disabled"; ?> class="option form-check-input" />
 							<?php echo Lang::txt('Host subversion repository on HUB'); ?>
 						</label>
 					</div>
@@ -170,7 +170,7 @@ $this->css('pipeline.css')
 					<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
 						<div class="form-group form-check">
 							<label for="tool_repohost_gitlocal" class="form-check-label">
-								<input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitlocal" value="gitLocal" <?php if ($this->defaults['repohost'] == 'gitLocal') { echo 'checked="checked"'; } else { echo "disabled"; } ?> class="option form-check-input" />
+								<input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitlocal" value="gitLocal" <?php echo ($this->defaults['repohost'] == 'gitLocal') ? 'checked="checked"' : "disabled"; ?> class="option form-check-input" />
 								<?php echo Lang::txt('Host GIT repository on HUB'); ?>
 							</label>
 						</div>
@@ -178,7 +178,7 @@ $this->css('pipeline.css')
 	
 					<div class="form-group form-check">
 						<label for="tool_repohost_gitexternal" class="form-check-label">
-							<input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?php if ($this->defaults['repohost'] == 'gitExternal') { echo 'checked="checked"'; } else { echo "disabled"; } ?> class="option form-check-input" />
+							<input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?php echo ($this->defaults['repohost'] == 'gitExternal') ? 'checked="checked"' : "disabled"; ?> class="option form-check-input" />
 							<?php echo Lang::txt('Host GIT repository on GitHUB'); ?>
 						</label>
 					</div>
