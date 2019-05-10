@@ -1332,6 +1332,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				'sortby'           => 'localpath', // important for selector!
 				'showFullMetadata' => false,
 				'dirsOnly'         => true,
+				'recursive'        => true
 			);
 
 			$view->list        = $this->repo->filelist($listParams);
