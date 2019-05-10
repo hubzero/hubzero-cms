@@ -87,13 +87,10 @@ class Nogit extends Models\Adapter
 		{
 			// Get a list of files from the git repository
 			$files = empty($files) ? $this->_nogit->getFiles($dirPath, $recursive) : $files;
-
 		}
 		else
 		{
-			// This is recursive by default
-			$files = empty($files) ? $this->_nogit->getDirectories($dirPath) : $files;
-
+			$files = empty($files) ? $this->_nogit->getDirectories($dirPath, $recursive) : $files;
 		}
 
 		// Output containers
