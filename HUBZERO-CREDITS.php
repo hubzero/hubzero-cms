@@ -1,13 +1,9 @@
 <?php
 /**
- * @package     hubzero-cms
- * @copyright   Copyright (c) 2005-2015 HUBzero Foundation, LLC.
- * @copyright   Copyright (C) 2005-2014 Open Source Matters, Inc.
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXE_') or die();
 
 /**
  * HUBzero includes or is derivative of works distributed under the licenses listed below.
@@ -16,28 +12,6 @@ defined('_HZEXE_') or die();
  *
  * A variety of composer packages included in core/vendor, see each package
  * for their licensing and copyright information.
- *
- * CMS - Joomla!
- *
- * @author      Open Source Matters
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters. All rights reserved.
- * @license:    GNU/GPL, see lICENSE.php
- * @version     2.5.28
- * @link        http://joomlacode.org/gf/download/frsrelease/19918/161803/Joomla_2.5.28-Stable-Full_Package.zip
- *
- * Library - CAS
- *
- * @package     phpCAS
- * @author      Pascal Aubry.
- * @copyright   Copyright © 2003-2008, The ESUP-Portail consortium & the JA-SIG Collaborative. All rights reserved
- * @version     1.0.1
- * @license     BSD
- *
- * @package     domxml-php4-php5
- * @author      Alexandre Alapetite
- * @copyright   Copyright 2004
- * @license     Creative Commons "Attribution-ShareAlike 2.0 France" BY-SA (FR)
- * @link        http://alexandre.alapetite.net/doc-alex/domxml-php4-php5/
  *
  * Javascript - Clusterer
  *
