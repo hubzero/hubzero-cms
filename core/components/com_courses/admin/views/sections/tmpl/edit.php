@@ -588,21 +588,6 @@ $course_id = 0;
 				echo Html::sliders('end');
 				?>
 				<!-- </fieldset> -->
-				<script type="text/javascript">
-				jQuery(document).ready(function($){
-					$('.datetime-field').datetimepicker({
-						duration: '',
-						showTime: true,
-						constrainInput: false,
-						stepMinutes: 1,
-						stepHours: 1,
-						altTimeField: '',
-						time24h: true,
-						dateFormat: 'yy-mm-dd',
-						timeFormat: 'HH:mm:00'
-					});
-				});
-				</script>
 			</div>
 			<div class="clr"></div>
 		<?php } else { ?>
@@ -628,18 +613,6 @@ $course_id = 0;
 				<input type="hidden" name="params[certificate]" value="0" />
 			<?php } ?>
 
-			<script type="text/javascript">
-				jQuery(document).ready(function(jq){
-					var $ = jq;
-					if (!$('#badge-published').is(':checked')) {
-						$('.badge-field-toggle').hide();
-					}
-
-					$('#badge-published').click(function(){
-						$('.badge-field-toggle').toggle();
-					});
-				});
-			</script>
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_COURSES_FIELDSET_BADGE'); ?></span></legend>
 				<?php if (!$this->badge->get('id') || !$this->badge->get('provider_badge_id')) : ?>
