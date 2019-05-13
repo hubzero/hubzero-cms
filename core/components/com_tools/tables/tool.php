@@ -566,12 +566,11 @@ class Tool extends Table
 			{
 				$status['repohost'] = 'svnLocal';
 			}
-			else 
+			else
 			{
 				$status['repohost'] = 'gitExternal';
 			}
 		}
-
 
 		list($status['vncGeometryX'], $status['vncGeometryY']) = preg_split('#[x]#', $status['vncGeometry']);
 
