@@ -100,14 +100,15 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 						{
 							continue;
 						}
+						$children = $row->children($filters)->rows();
 						?>
 						<li>
 							<a <?php if ($this->catid == $row->get('id')) { echo 'class="active" '; } ?> href="<?php echo Route::url($row->link()); ?>">
 								<?php echo $this->escape(stripslashes($row->get('title'))); ?> <span class="item-count"><?php echo $row->get('articles', 0); ?></span>
 							</a>
-							<?php if ($this->catid == $row->get('id') && count($row->children($filters)) > 0) { ?>
+							<?php if ($this->catid == $row->get('id') && count($children) > 0) { ?>
 								<ul class="categories">
-								<?php foreach ($row->children() as $cat) { ?>
+								<?php foreach ($children as $cat) { ?>
 									<li>
 										<a <?php if ($this->category->get('id') == $cat->get('id')) { echo 'class="active" '; } ?> href="<?php echo Route::url($cat->link()); ?>">
 											<?php echo $this->escape(stripslashes($cat->get('title'))); ?> <span class="item-count"><?php echo $cat->get('articles', 0); ?></span>
