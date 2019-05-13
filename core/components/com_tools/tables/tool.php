@@ -559,10 +559,17 @@ class Tool extends Table
 			'github'        => $params->get('github'),
 			'publishType'   => ($params->get('publishType') == 'weber=') ? 'jupyter' : 'standard'
 		);
-		// if github is null or '' AND repohost does not exist, set repohost... otherwise leave them alone
-		if (!empty($status['github']) && is_null($status['repohost']))
+
+		if (is_null($status['repohost']))
 		{
-			$status['repohost'] = 'gitExternal';
+			if (empty($status['github']))
+			{
+				$status['repohost'] = 'svnLocal';
+			}
+			else 
+			{
+				$status['repohost'] = 'gitExternal';
+			}
 		}
 
 
