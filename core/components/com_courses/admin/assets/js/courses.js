@@ -133,4 +133,24 @@ jQuery(document).ready(function($){
 			);
 		});
 	}
+
+	$('.datetime-field').datetimepicker({
+		duration: '',
+		showTime: true,
+		constrainInput: false,
+		stepMinutes: 1,
+		stepHours: 1,
+		altTimeField: '',
+		time24h: true,
+		dateFormat: 'yy-mm-dd',
+		timeFormat: 'HH:mm:00'
+	});
+
+	if (!$('#badge-published').is(':checked')) {
+		$('.badge-field-toggle').hide();
+	}
+
+	$('#badge-published').on('click', function(e) {
+		$('.badge-field-toggle').toggle();
+	});
 });
