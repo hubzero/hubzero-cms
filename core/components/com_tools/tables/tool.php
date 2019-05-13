@@ -555,10 +555,16 @@ class Tool extends Table
 			'license'       => isset($version[0]->license) ? $version[0]->license : '',
 			'hostreq'       => (isset($version[0]->hostreq) ? implode(', ', $version[0]->hostreq) : $hostreq),
 			'params'        => isset($version[0]->params) ? $version[0]->params : '',
-			'repohost'      => $params->get('repohost', 'svnLocal'),
+			'repohost'      => $params->get('repohost'),
 			'github'        => $params->get('github'),
 			'publishType'   => ($params->get('publishType') == 'weber=') ? 'jupyter' : 'standard'
 		);
+		// if github is null or '' AND repohost does not exist, set repohost... otherwise leave them alone
+		if (!empty($status['github']) && is_null($status['repohost']))
+		{
+			$status['repohost'] = 'gitExternal';
+		}
+
 
 		list($status['vncGeometryX'], $status['vncGeometryY']) = preg_split('#[x]#', $status['vncGeometry']);
 
