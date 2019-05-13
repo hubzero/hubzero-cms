@@ -347,8 +347,7 @@ class Wishlist extends Relational
 
 					if (!$tbl->delete_owner($this->get('id'), $user_id, $this->config('group', 'hubadmin')))
 					{
-						$this->setError($tbl->getError());
-						continue;
+						$this->addError($tbl->getError());
 					}
 				break;
 
@@ -357,8 +356,7 @@ class Wishlist extends Relational
 
 					if (!$tbl->delete_owner_group($this->get('id'), $group_id, $this->config('group', 'hubadmin')))
 					{
-						$this->setError($tbl->getError());
-						continue;
+						$this->addError($tbl->getError());
 					}
 				break;
 			}
