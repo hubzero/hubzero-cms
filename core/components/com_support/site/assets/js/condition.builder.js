@@ -301,3 +301,37 @@ var Conditions = {
 		return ['(', q.join(op), ')'].join(' ');
 	}
 };
+
+jQuery(document).ready(function($){
+	var cdata = $('#conditions-data');
+
+	if (cdata.length) {
+		var data = JSON.parse(cdata.html());
+
+		Conditions.option = data.conditions;
+	}
+
+	Conditions.addqueryroot('.query', true);
+
+	$('#btn-apply').on('click', function (e){
+		var query = {};
+
+		if (!$('#field-title').val()) {
+			alert($(this).attr('data-empty'));
+			return false;
+		}
+
+		query = Conditions.getCondition('.query > fieldset');
+		$('#field-conditions').val(JSON.stringify(query));
+
+		$.post($(this).attr('data-action'), $("#component-form").serialize(), function(data){
+			window.parent.document.getElementById('query-list').innerHTML = data;
+			window.parent.applySortable();
+			window.top.setTimeout('window.parent.$.fancybox.close()', 700);
+		});
+	});
+
+	$('#btn-cancel').on('click', function(e){
+		window.parent.$.fancybox.close();
+	});
+});

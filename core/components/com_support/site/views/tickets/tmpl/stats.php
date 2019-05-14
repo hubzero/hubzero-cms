@@ -8,7 +8,13 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+$this->js('flot/jquery.flot.min.js', 'system')
+     ->js('flot/jquery.flot.time.min.js', 'system')
+     ->js('flot/jquery.flot.pie.min.js', 'system')
+     ->js('flot/jquery.flot.resize.js', 'system');
+
 $this->css();
+$this->js('stats.js');
 
 $base = rtrim(Request::base(true), '/');
 
@@ -83,30 +89,42 @@ function getMonthName($month)
 	$monthname = '';
 	switch (intval($month))
 	{
-		case 1: $monthname = Lang::txt('January');
-break;
-		case 2: $monthname = Lang::txt('February');
-break;
-		case 3: $monthname = Lang::txt('March');
-break;
-		case 4: $monthname = Lang::txt('April');
-break;
-		case 5: $monthname = Lang::txt('May');
-break;
-		case 6: $monthname = Lang::txt('June');
-break;
-		case 7: $monthname = Lang::txt('July');
-break;
-		case 8: $monthname = Lang::txt('August');
-break;
-		case 9: $monthname = Lang::txt('September');
-break;
-		case 0: $monthname = Lang::txt('October');
-break;
-		case 11: $monthname = Lang::txt('November');
-break;
-		case 12: $monthname = Lang::txt('December');
-break;
+		case 1:
+			$monthname = Lang::txt('January');
+		break;
+		case 2:
+			$monthname = Lang::txt('February');
+		break;
+		case 3:
+			$monthname = Lang::txt('March');
+		break;
+		case 4:
+			$monthname = Lang::txt('April');
+		break;
+		case 5:
+			$monthname = Lang::txt('May');
+		break;
+		case 6:
+			$monthname = Lang::txt('June');
+		break;
+		case 7:
+			$monthname = Lang::txt('July');
+		break;
+		case 8:
+			$monthname = Lang::txt('August');
+		break;
+		case 9:
+			$monthname = Lang::txt('September');
+		break;
+		case 0:
+			$monthname = Lang::txt('October');
+		break;
+		case 11:
+			$monthname = Lang::txt('November');
+		break;
+		case 12:
+			$monthname = Lang::txt('December');
+		break;
 	}
 	return $monthname;
 }
@@ -170,9 +188,9 @@ break;
 						{
 							foreach ($this->groups as $group)
 							{
-						?>
-						<option value="<?php echo $group->cn; ?>"<?php if ($this->group == $group->cn) { echo ' selected="selected"'; } ?>><?php echo ($group->description) ? stripslashes($this->escape($group->description)) : $this->escape($group->cn); ?></option>
-						<?php
+								?>
+								<option value="<?php echo $group->cn; ?>"<?php if ($this->group == $group->cn) { echo ' selected="selected"'; } ?>><?php echo ($group->description) ? stripslashes($this->escape($group->description)) : $this->escape($group->cn); ?></option>
+								<?php
 							}
 						}
 						?>
@@ -183,7 +201,7 @@ break;
 		</div><!-- / .grid -->
 
 		<div class="container">
-			<div id="container" class="stats-tickets-chart"></div>
+			<div id="container" class="stats-tickets-chart" data-datasets="<?php echo $this->option; ?>-data-openedclosed"></div>
 			<?php
 				$top = 0;
 
@@ -196,7 +214,7 @@ break;
 						foreach ($data as $k => $v)
 						{
 							$top = ($v > $top) ? $v : $top;
-							$c[] = '[new Date(' . $year . ',  ' . ($k - 1) . ', 1),' . $v . ']';
+							$c[] = '[' . Date::of($year . '-' . Hubzero\Utility\Str::pad(($k - 1), 2) . '-01')->toUnix() . ',' . $v . ']';
 						}
 					}
 					$closeddata = implode(',', $c);
@@ -211,94 +229,26 @@ break;
 						foreach ($data as $k => $v)
 						{
 							$top = ($v > $top) ? $v : $top;
-							$o[] = '[new Date(' . $year . ',  ' . ($k - 1) . ', 1),' . $v . ']';
+							$o[] = '[' . Date::of($year . '-' . Hubzero\Utility\Str::pad(($k - 1), 2) . '-01')->toUnix() . ',' . $v . ']';
 						}
 					}
 					$openeddata = implode(',', $o);
 				}
-
-				$this->js('flot/jquery.flot.min.js', 'system')
-				     ->js('flot/jquery.flot.time.min.js', 'system')
-				     ->js('flot/jquery.flot.pie.min.js', 'system')
-				     ->js('flot/jquery.flot.resize.js', 'system');
 			?>
-			<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo $base; ?>/core/assets/js/excanvas/excanvas.min.js"></script><![endif]-->
-			<script type="text/javascript">
-				if (!jq) {
-					var jq = $;
-				}
-				if (jQuery()) {
-					var $ = jq,
-						chart,
-						month_short = [
-							'<?php echo Lang::txt('JANUARY_SHORT'); ?>',
-							'<?php echo Lang::txt('FEBRUARY_SHORT'); ?>',
-							'<?php echo Lang::txt('MARCH_SHORT'); ?>',
-							'<?php echo Lang::txt('APRIL_SHORT'); ?>',
-							'<?php echo Lang::txt('MAY_SHORT'); ?>',
-							'<?php echo Lang::txt('JUNE_SHORT'); ?>',
-							'<?php echo Lang::txt('JULY_SHORT'); ?>',
-							'<?php echo Lang::txt('AUGUST_SHORT'); ?>',
-							'<?php echo Lang::txt('SEPTEMBER_SHORT'); ?>',
-							'<?php echo Lang::txt('OCTOBER_SHORT'); ?>',
-							'<?php echo Lang::txt('NOVEMBER_SHORT'); ?>',
-							'<?php echo Lang::txt('DECEMBER_SHORT'); ?>'
-						],
-						datasets = [
-							{
-								color: "#AA4643", //#93ACCA
-								label: "<?php echo Lang::txt('COM_SUPPORT_OPENED'); ?>",
-								data: [<?php echo $openeddata; ?>]
-							},
-							{
-								color: "#656565", //#CFCFAB
-								label: "<?php echo Lang::txt('COM_SUPPORT_CLOSED'); ?>",
-								data: [<?php echo $closeddata; ?>]
-							}
-						];
-
-					$(document).ready(function() {
-						var chart = $.plot($('#container'), datasets, {
-							series: {
-								lines: {
-									show: true,
-									fill: true
-								},
-								points: { show: false },
-								shadowSize: 0
-							},
-							//crosshair: { mode: "x" },
-							grid: {
-								color: 'rgba(0, 0, 0, 0.6)',
-								borderWidth: 1,
-								borderColor: 'transparent',
-								hoverable: true,
-								clickable: true
-							},
-							tooltip: true,
-								tooltipOpts: {
-								content: "%y %s in %x",
-								shifts: {
-									x: -60,
-									y: 25
-								},
-								defaultTheme: false
-							},
-							legend: {
-								show: true,
-								noColumns: 2,
-								position: "nw",
-								margin: [50, 5]
-							},
-							xaxis: { mode: "time", tickLength: 0, tickDecimals: 0, <?php if (count($o) <= 12) { echo 'ticks: ' . count($o) . ','; } ?>
-								tickFormatter: function (val, axis) {
-									var d = new Date(val);
-									return month_short[d.getUTCMonth()] + ' ' + d.getUTCFullYear();
-								}
-							},
-							yaxis: { min: 0 }
-						});
-					});
+			<script type="application/json" id="<?php echo $this->option; ?>-data-openedclosed">
+				{
+					"datasets": [
+						{
+							"color": "#AA4643",
+							"label": "<?php echo Lang::txt('COM_SUPPORT_OPENED'); ?>",
+							"data": [<?php echo $openeddata; ?>]
+						},
+						{
+							"color": "#656565",
+							"label": "<?php echo Lang::txt('COM_SUPPORT_CLOSED'); ?>",
+							"data": [<?php echo $closeddata; ?>]
+						}
+					]
 				}
 			</script>
 		</div><!-- / #container -->
@@ -335,7 +285,7 @@ break;
 		<div class="grid">
 			<div class="col span-half">
 				<h3><?php echo Lang::txt('COM_SUPPORT_TICKETS_BY_SEVERITY'); ?></h3>
-				<div id="severities-container" class="stats-pie-chart">
+				<div id="severities-container" class="stats-pie-chart" data-datasets="<?php echo $this->option; ?>-data-severity">
 					<table class="support-stats-resolutions">
 						<thead>
 							<tr>
@@ -390,9 +340,9 @@ break;
 
 								foreach ($severtes as $severity)
 								{
-									$r  = "{label: '" . $this->escape(addslashes($severity)) . "', data: ";
+									$r  = '{"label": "' . $this->escape(addslashes($severity)) . '", "data": ';
 									$r .= (isset($sev[$severity])) ? round(($sev[$severity]/$total)*100, 2) : 0;
-									$r .= ", color: '" . $colors[$i] . "'}";
+									$r .= ', "color": "' . $colors[$i] . '"}';
 
 									$data[] = $r;
 
@@ -410,42 +360,15 @@ break;
 						</tbody>
 					</table>
 				</div><!-- / #severities-container -->
-				<script type="text/javascript">
-				if (jQuery()) {
-					var $ = jq, severityPie;
-
-					function labelFormatter(label, series) {
-						return '<div class="chart-label">' + label + '<br/>' + Math.round(series.percent) + "%</div>";
+				<script type="application/json" id="<?php echo $this->option; ?>-data-severity">
+					{
+						"datasets": [<?php echo implode(',' . "\n", $data); ?>]
 					}
-
-					$(document).ready(function() {
-						severityPie = $.plot($("#severities-container"), [<?php echo implode(',' . "\n", $data); ?>], {
-							series: {
-								pie: {
-									radius: 1,
-									label: {
-										show: true,
-										radius: 2/3,
-										formatter: labelFormatter,
-										threshold: 0.03
-									},
-									show: true,
-									stroke: {
-										color: '#efefef'
-									}
-								}
-							},
-							grid: {
-								hoverable: false
-							}
-						});
-					});
-				}
 				</script>
 			</div><!-- / .col span-half -->
 			<div class="col span-half omega">
 				<h3><?php echo Lang::txt('COM_SUPPORT_TICKETS_BY_RESOLUTION'); ?></h3>
-				<div id="resolutions-container" class="stats-pie-chart">
+				<div id="resolutions-container" class="stats-pie-chart" data-datasets="<?php echo $this->option; ?>-data-resolution">
 					<table class="support-stats-resolutions">
 						<thead>
 							<tr>
@@ -460,7 +383,7 @@ break;
 								<td><?php echo (isset($res[0])) ? $res[0] : '0'; ?></td>
 								<td><?php echo (isset($res[0])) ? $res[0]/$total : '0'; ?></td>
 							</tr>
-						<?php
+							<?php
 							$resolutions = \Components\Support\Models\Status::all()
 								->whereEquals('open', 0)
 								->rows();
@@ -484,53 +407,31 @@ break;
 
 							foreach ($resolutns as $resolution)
 							{
-								$r  = "{label: '" . $this->escape(addslashes($resolution->title)) . "', data: ";
+								$r  = '{"label": "' . $this->escape($resolution->title) . '", "data": ';
 								$r .= (isset($res[$resolution->id])) ? round(($res[$resolution->id]/$total)*100, 2) : 0;
-								$r .= ", color: '" . $colors[$i] . "'}";
+								$r .= ', "color": "' . $colors[$i] . '"}';
 								$data[] = $r;
 
 								$cls = ($cls == 'even') ? 'odd' : 'even';
-						?>
-							<tr class="<?php echo $cls; ?>">
-								<th scope="row"><?php echo $this->escape(stripslashes($resolution->title)); ?></th>
-								<td><?php echo (isset($res[$resolution->id])) ? $res[$resolution->id] : '0'; ?></td>
-								<td><?php echo (isset($res[$resolution->id])) ? round($res[$resolution->id]/$total*100, 2) : '0'; ?></td>
-							</tr>
-						<?php
+								?>
+								<tr class="<?php echo $cls; ?>">
+									<th scope="row"><?php echo $this->escape($resolution->title); ?></th>
+									<td><?php echo (isset($res[$resolution->id])) ? $res[$resolution->id] : '0'; ?></td>
+									<td><?php echo (isset($res[$resolution->id])) ? round($res[$resolution->id]/$total*100, 2) : '0'; ?></td>
+								</tr>
+								<?php
 								$i++;
 							}
-							$nores = "{label: '" . Lang::txt('COM_SUPPORT_STATS_RESOLUTION_NONE') . "', data: " . (isset($res[0]) ? $res[0]/$total : '0') . ", color: '" . $colors[$i] . "'}";
+							$nores = '{"label": "' . Lang::txt('COM_SUPPORT_STATS_RESOLUTION_NONE') . '", "data": ' . (isset($res[0]) ? $res[0]/$total : '0') . ', "color:": "' . $colors[$i] . '"}';
 							array_push($data, $nores);
 						?>
 						</tbody>
 					</table>
 				</div><!-- / #resolutions-container -->
-				<script type="text/javascript">
-				if (jQuery()) {
-					var $ = jq, resolutionPie;
-					$(document).ready(function() {
-						resolutionPie = $.plot($("#resolutions-container"), [<?php echo implode(',' . "\n", $data); ?>], {
-							series: {
-								pie: {
-									radius: 1,
-									label: {
-										show: true,
-										radius: 2/3,
-										formatter: labelFormatter,
-										threshold: 0.03
-									},
-									show: true,
-									stroke: {
-										color: '#efefef'
-									}
-								}
-							},
-							grid: {
-								hoverable: false
-							}
-						});
-					});
-				}
+				<script type="application/json" id="<?php echo $this->option; ?>-data-resolution">
+					{
+						"datasets": [<?php echo implode(',' . "\n", $data); ?>]
+					}
 				</script>
 			</div><!-- / .col span-half omega -->
 		</div><!-- / .grid -->
@@ -581,8 +482,7 @@ break;
 					{
 						foreach ($data as $k => $v)
 						{
-							//$utot += $v;
-							$c[] = '[Date.UTC(' . $year . ',  ' . ($k - 1) . ', 1),' . $v . ']';
+							$c[] = '[' . Date::of($year . '-' . Hubzero\Utility\Str::pad(($k - 1), 2) . '-01')->toUnix() . ',' . $v . ']';
 						}
 					}
 					$closeddata = implode(',', $c);
@@ -593,101 +493,62 @@ break;
 				{
 					$anon = 1;
 				}
-	?>
-	<div class="breakdown container">
-		<div class="entry-head">
-			<p class="entry-rank">
-				<strong>#<?php echo $j; ?></strong>
-			</p>
-			<p class="entry-member-photo">
-				<img src="<?php echo $profile->picture($anon); ?>" alt="<?php echo $this->escape(stripslashes($user->name)); ?>" />
-			</p>
-			<p class="entry-title">
-				<?php echo $this->escape(stripslashes($user->name)); ?><br />
-				<span><?php echo Lang::txt('COM_SUPPORT_STATS_NUM_ASSIGNED', number_format($user->assigned)); ?></span>
-			</p>
-		</div>
-		<div class="entry-content">
-			<div id="user-<?php echo $this->escape($user->username); ?>" class="stats-user-chart">
-				<script type="text/javascript">
-					if (jQuery()) {
-						var $ = jq, chart<?php echo $user->username; ?>;
-
-						$(document).ready(function() {
-							var chart<?php echo $user->username; ?> = $.plot($('#user-<?php echo $user->username; ?>'),
-								[{
-									color: "#656565",
-									label: "<?php echo Lang::txt('COM_SUPPORT_CLOSED'); ?>",
-									data: [<?php echo $closeddata; ?>]
-								}], {
-								series: {
-									lines: {
-										show: true,
-										fill: true
-									},
-									points: { show: false },
-									shadowSize: 0
-								},
-								grid: {
-									color: 'rgba(0, 0, 0, 0.6)',
-									borderWidth: 1,
-									borderColor: 'transparent',
-									hoverable: true,
-									clickable: true
-								},
-								tooltip: true,
-									tooltipOpts: {
-									content: "%y %s in %x",
-									shifts: {
-										x: -60,
-										y: 25
-									},
-									defaultTheme: false
-								},
-								legend: {
-									show: false,
-								},
-								xaxis: { mode: "time", tickLength: 0, tickDecimals: 0,
-									tickFormatter: function (val, axis) {
-										var d = new Date(val);
-										return month_short[d.getUTCMonth()] + ' \'' + d.getUTCFullYear().toString().substring(2);
-									}
-								},
-								yaxis: { min: 0, max: <?php echo $top; ?> }
-							});
-						});
-					}
-				</script>
-			</div><!-- / #user -->
-			<table class="support-stats-overview">
-				<thead>
-					<tr>
-						<th scope="col"><?php echo Lang::txt('COM_SUPPORT_CLOSED'); ?></th>
-						<th scope="col" class="block"><?php echo Lang::txt('COM_SUPPORT_STATS_AVERAGE_LIFETIME'); ?></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td><?php echo number_format($user->total); ?></td>
-						<td class="block">
-							<?php
-							$lifetime = \Components\Support\Helpers\Utilities::calculateAverageLife($user->tickets);
-							?>
-							<?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?> <span><?php echo Lang::txt('COM_SUPPORT_STATS_DAYS'); ?></span>
-							<?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?> <span><?php echo Lang::txt('COM_SUPPORT_STATS_HOURS'); ?></span>
-							<?php echo (isset($lifetime[2])) ? $lifetime[2] : 0; ?> <span><?php echo Lang::txt('COM_SUPPORT_STATS_MINUTES'); ?></span>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div><!-- / .entry-content -->
-	</div><!-- / .container -->
-	<?php
+				?>
+				<div class="breakdown container">
+					<div class="entry-head">
+						<p class="entry-rank">
+							<strong>#<?php echo $j; ?></strong>
+						</p>
+						<p class="entry-member-photo">
+							<img src="<?php echo $profile->picture($anon); ?>" alt="<?php echo $this->escape(stripslashes($user->name)); ?>" />
+						</p>
+						<p class="entry-title">
+							<?php echo $this->escape($user->name); ?><br />
+							<span><?php echo Lang::txt('COM_SUPPORT_STATS_NUM_ASSIGNED', number_format($user->assigned)); ?></span>
+						</p>
+					</div>
+					<div class="entry-content">
+						<div id="user-<?php echo $this->escape($user->username); ?>" class="stats-user-chart" data-datasets="<?php echo $this->option; ?>-data-user<?php echo $user->id; ?>">
+							<script type="application/json" id="<?php echo $this->option; ?>-data-user<?php echo $user->id; ?>">
+								{
+									"top": <?php echo $top; ?>,
+									"datasets": [{
+										"color": "#656565",
+										"label": "<?php echo Lang::txt('COM_SUPPORT_CLOSED'); ?>",
+										"data": [<?php echo $closeddata; ?>]
+									}]
+								}
+							</script>
+						</div><!-- / #user -->
+						<table class="support-stats-overview">
+							<thead>
+								<tr>
+									<th scope="col"><?php echo Lang::txt('COM_SUPPORT_CLOSED'); ?></th>
+									<th scope="col" class="block"><?php echo Lang::txt('COM_SUPPORT_STATS_AVERAGE_LIFETIME'); ?></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><?php echo number_format($user->total); ?></td>
+									<td class="block">
+										<?php
+										$lifetime = \Components\Support\Helpers\Utilities::calculateAverageLife($user->tickets);
+										?>
+										<?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?> <span><?php echo Lang::txt('COM_SUPPORT_STATS_DAYS'); ?></span>
+										<?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?> <span><?php echo Lang::txt('COM_SUPPORT_STATS_HOURS'); ?></span>
+										<?php echo (isset($lifetime[2])) ? $lifetime[2] : 0; ?> <span><?php echo Lang::txt('COM_SUPPORT_STATS_MINUTES'); ?></span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div><!-- / .entry-content -->
+				</div><!-- / .container -->
+				<?php
 				$j++;
 				$z++;
 			}
 		}
-	?>
+		?>
 		</div><!-- / .col span-half omega -->
 	</div><!-- / .grid -->
 	<?php
