@@ -293,10 +293,12 @@ var Conditions = {
 		}
 
 		var q = [];
-		if (e.length > 0)
+		if (e.length > 0) {
 			q.push(e.join(op));
-		if (n.length > 0)
+		}
+		if (n.length > 0) {
 			q.push(n.join(op));
+		}
 
 		return ['(', q.join(op), ')'].join(' ');
 	}
