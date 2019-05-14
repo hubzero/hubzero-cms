@@ -764,7 +764,12 @@ class Tickets extends SiteController
 
 			if ($referrer = Request::getString('referrer'))
 			{
-				$row->set('referrer', base64_encode($referrer));
+				// Rough test to see if it's already base64 encoded
+				if (!Utilities::isBase64($referrer))
+				{
+					$referrer = base64_encode($referrer);
+				}
+				$row->set('referrer', $referrer);
 			}
 
 			if (!User::isGuest())
