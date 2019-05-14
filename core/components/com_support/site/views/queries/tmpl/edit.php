@@ -76,13 +76,13 @@ if (!$tmpl && !$no_html) {
 							<td class="key"><label for="field-sort"><?php echo Lang::txt('Sort results by:'); ?></label></td>
 							<td>
 								<select name="fields[sort]" id="field-sort">
-									<option value="open"<?php if ($this->row->sort == 'open') { echo ' selected="selected"'; }; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OPEN'); ?></option>
-									<option value="status"<?php if ($this->row->sort == 'status') { echo ' selected="selected"'; }; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_STATUS'); ?></option>
-									<option value="login"<?php if ($this->row->sort == 'login') { echo ' selected="selected"'; }; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SUBMITTER'); ?></option>
-									<option value="owner"<?php if ($this->row->sort == 'owner') { echo ' selected="selected"'; }; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OWNER'); ?></option>
-									<option value="group"<?php if ($this->row->sort == 'group') { echo ' selected="selected"'; }; ?>><?php echo Lang::txt('Group'); ?></option>
-									<option value="id"<?php if ($this->row->sort == 'id') { echo ' selected="selected"'; }; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_ID'); ?></option>
-									<option value="report"<?php if ($this->row->sort == 'report') { echo ' selected="selected"'; }; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_REPORT'); ?></option>
+									<option value="open"<?php if ($this->row->sort == 'open') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OPEN'); ?></option>
+									<option value="status"<?php if ($this->row->sort == 'status') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_STATUS'); ?></option>
+									<option value="login"<?php if ($this->row->sort == 'login') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SUBMITTER'); ?></option>
+									<option value="owner"<?php if ($this->row->sort == 'owner') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OWNER'); ?></option>
+									<option value="group"<?php if ($this->row->sort == 'group') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Group'); ?></option>
+									<option value="id"<?php if ($this->row->sort == 'id') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_ID'); ?></option>
+									<option value="report"<?php if ($this->row->sort == 'report') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_REPORT'); ?></option>
 									<?php /*<option value="resolved"<?php if ($this->row->sort == 'resolved') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>*/ ?>
 									<option value="severity"<?php if ($this->row->sort == 'severity') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SEVERITY'); ?></option>
 									<option value="tag"<?php if ($this->row->sort == 'tag') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_TAG'); ?></option>
