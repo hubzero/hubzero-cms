@@ -1008,6 +1008,7 @@ HUB.ProjectFiles = {
 		// Preview files
 		var preview = $('.preview');
 		var div = $('#preview-window');
+		div.appendTo('body');
 		var keyupTimer2 = '';
 		var preview_open = 0;
 		var in_preview = 0;
@@ -1045,10 +1046,12 @@ HUB.ProjectFiles = {
 			{
 				e.preventDefault();
 				var coord = $(item).offset();
-				if (subtract) {
+				coord.top += $(item).height();
+				coord.left += $(item).width();
+				/*if (subtract) {
 					coord.top -= subtract.top;
 					coord.left -= subtract.left;
-				}
+				}*/
 
 				if (keyupTimer2) {
 					clearTimeout(keyupTimer2);
