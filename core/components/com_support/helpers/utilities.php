@@ -330,4 +330,34 @@ class Utilities
 			}
 		}
 	}
+
+	/**
+	 * Check if a string is base64 encoded
+	 *
+	 * @param   string  $str
+	 * @return  bool
+	 */
+	public static function isBase64($str)
+	{
+		// Check if there are valid base64 characters
+		if (!preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $str))
+		{
+			return false;
+		}
+
+		// Decode the string in strict mode and check the results
+		$decoded = base64_decode($str, true);
+		if (false === $decoded)
+		{
+			return false;
+		}
+
+		// Encode the string again
+		if (base64_encode($decoded) != $str)
+		{
+			return false;
+		}
+
+		return true;
+	}
 }
