@@ -59,21 +59,20 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 	 * @param   string  $after    Attributes after email.
 	 * @return  string  Js cloaked email with attributes.
 	 */
-	protected function _addAttributesToEmail($jsEmail, $before, $after)
+	protected function _addAttributesToEmail($email, $before, $after)
 	{
 		if ($before !== '')
 		{
 			$before  = str_replace("'", "\'", $before);
-			$jsEmail = str_replace(".innerHTML += '<a '", ".innerHTML += '<a {$before}'", $jsEmail);
+			$email = str_replace('<a ', '<a ' . $before, $email);
 		}
 
 		if ($after !== '')
 		{
-			$after   = str_replace("'", "\'", $after);
-			$jsEmail = str_replace("'\'>'", "'\'{$after}>'", $jsEmail);
+			$email = str_replace('">', '"' . $after . '>', $email);
 		}
 
-		return $jsEmail;
+		return $email;
 	}
 
 	/**
@@ -482,81 +481,6 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 	 */
 	public function cloak($mail, $mailto = true, $text = '', $email = true)
 	{
-		// Convert mail
-		$mail = $this->convertEncoding($mail);
-
-		// Split email by @ symbol
-		$mail = explode('@', $mail);
-		$mail_parts = explode('.', $mail[1]);
-
-		// Random number
-		$rand = rand(1, 100000);
-
-		$replacement = '<span id="cloak' . $rand . '">' . Lang::txt('JLIB_HTML_CLOAKING') . '</span><script type="text/javascript">';
-		$replacement .= "\n //<!--";
-		$replacement .= "\n document.getElementById('cloak$rand').innerHTML = '';";
-		$replacement .= "\n var prefix = '&#109;a' + 'i&#108;' + '&#116;o';";
-		$replacement .= "\n var path = 'hr' + 'ef' + '=';";
-		$replacement .= "\n var addy" . $rand . " = '" . @$mail[0] . "' + '&#64;';";
-		$replacement .= "\n addy" . $rand . " = addy" . $rand . " + '" . implode("' + '&#46;' + '", $mail_parts) . "';";
-
-		if ($mailto)
-		{
-			// Special handling when mail text is different from mail address
-			if ($text)
-			{
-				// Convert text - here is the right place
-				$text = $this->convertEncoding($text);
-
-				if ($email)
-				{
-					// Split email by @ symbol
-					$text = explode('@', $text);
-					$text_parts = explode('.', $text[1]);
-					$replacement .= "\n var addy_text" . $rand . " = '" . @$text[0] . "' + '&#64;' + '" . implode("' + '&#46;' + '", @$text_parts) . "';";
-				}
-				else
-				{
-					$replacement .= "\n var addy_text" . $rand . " = '" . $text . "';";
-				}
-
-				$replacement .= "\n document.getElementById('cloak$rand').innerHTML += '<a ' + path + '\'' + prefix + ':' + addy" . $rand . " + '\'>'+addy_text" . $rand . "+'<\/a>';";
-			}
-			else
-			{
-				$replacement .= "\n document.getElementById('cloak$rand').innerHTML += '<a ' + path + '\'' + prefix + ':' + addy" . $rand . " + '\'>' + addy" . $rand . "+'<\/a>';";
-			}
-		}
-		else
-		{
-			$replacement .= "\n document.getElementById('cloak$rand').innerHTML += addy" . $rand . ";";
-		}
-
-		$replacement .= "\n //-->";
-		$replacement .= "\n </script>";
-
-		return $replacement;
-	}
-
-	/**
-	 * Convert encoded text
-	 *
-	 * @param   string  $text  Text to convert
-	 * @return  string  The converted text.
-	 */
-	protected function convertEncoding($text)
-	{
-		$text = html_entity_decode($text);
-
-		// Replace vowels with character encoding
-		$text = str_replace('a', '&#97;', $text);
-		$text = str_replace('e', '&#101;', $text);
-		$text = str_replace('i', '&#105;', $text);
-		$text = str_replace('o', '&#111;', $text);
-		$text = str_replace('u', '&#117;', $text);
-
-		$text = htmlentities($text, ENT_QUOTES, 'UTF-8', false);
-
-		return $text;
+		return '<a href="mailto:' . Hubzero\Utility\Str::obfuscate($mail) . '">' . Hubzero\Utility\Str::obfuscate($text ? $text : $mail) . '</a>';
 	}
 }
