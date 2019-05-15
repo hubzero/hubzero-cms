@@ -99,7 +99,7 @@ HUB.Publications = {
 				id = id.replace('author_', '');
 
 				if (id != '' && id != ' ') {
-					selections = selections + id + '-' ;
+					selections = selections + id + '-';
 				}
 			});
 		}
