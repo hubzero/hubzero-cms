@@ -8,6 +8,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+Html::behavior('framework', true);
+
 $this->css();
 $this->js();
 
