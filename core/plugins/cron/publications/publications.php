@@ -479,22 +479,25 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 
 		$versions = \Components\Publications\Models\Orm\Version::all()
 			->select('#__publication_versions.*')
+			->select('t.alias', 'master_alias')
 			->join('#__publications p', '#__publication_versions.publication_id', 'p.id')
 			->join('#__publication_master_types t', 'p.master_type', 't.id')
 			->whereEquals('#__publication_versions.state', 1)
-			->whereNotIn('t.alias', array('series', 'databases'))
 			->where('#__publication_versions.published_up', '>=', $yesterday, 'AND', 1)
 			->where('#__publication_versions.published_up', '<=', $today, 'AND', 1)
 			->resetDepth()
 			->where('#__publication_versions.published_down', '>=', $yesterday, 'OR', 1)
 			->where('#__publication_versions.published_down', '<=', $today, 'AND', 1)
 			->rows();
-
+		$publicationParams = Component::params('com_publications');
+		$typeBlackList = array();
+		$typeBlackList = explode(',', $publicationParams->get('sftptypeblacklist'));
+		$typeBlackList = array_filter($typeBlackList, 'trim');
 		foreach ($versions as $version)
 		{
 			$publication = new \Components\Publications\Models\Publication($version->publication_id, $version->version_number);
 			$publication->setCuration();
-			if ($version->isPublished())
+			if ($version->isPublished() && !in_array($version->master_alias, $typeBlackList))
 			{
 				$publication->_curationModel->createSymLink();
 			}
