@@ -272,8 +272,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 			if (!$js->bind($_POST))
 			{
-				echo $this->alert($js->getError());
-				exit();
+				App::abort(500, $js->getError());
 			}
 
 			$js->active = $active;
@@ -281,8 +280,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 			if (!$js->store())
 			{
-				echo $this->alert($js->getError());
-				exit();
+				App::abort(500, $js->getError());
 			}
 		}
 		else if ($task == 'savetitle' && $author && $title)
@@ -293,8 +291,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 				$resume->title = $title;
 				if (!$resume->store())
 				{
-					echo $this->alert($resume->getError());
-					exit();
+					App::abort(500, $resume->getError());
 				}
 			}
 		}
@@ -698,17 +695,6 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 				$view->display();
 			}
 		}
-	}
-
-	/**
-	 * Return javascript to generate an alert prompt
-	 *
-	 * @param   string  $msg  Message to show
-	 * @return  string  HTML
-	 */
-	public function alert($msg)
-	{
-		return "<script type=\"text/javascript\"> alert('" . $msg . "'); window.history.go(-1); </script>\n";
 	}
 
 	/**
