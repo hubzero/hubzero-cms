@@ -57,7 +57,7 @@ $this->css('.none {
 
 				<div class="input-wrap">
 					<label for="field-event"><?php echo Lang::txt('COM_CRON_FIELD_EVENT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<select name="fields[event]" id="field-event" c;ass="required">
+					<select name="fields[event]" id="field-event" class="required">
 						<option value=""<?php echo (!$this->row->get('plugin')) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_SELECT'); ?></option>
 						<?php
 						if ($this->plugins)
