@@ -39,6 +39,13 @@ defined('_HZEXEC_') or die();
 class plgCitationDoi extends \Hubzero\Plugin\Plugin
 {
 	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var  boolean
+	 */
+	protected $_autoloadLanguage = true;
+
+	/**
 	 * The publication component configuration
 	 *
 	 * @var object
@@ -84,15 +91,15 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 
 					if (!empty($assocParam['tbl']) && !empty($assocParam['oid']) && empty($assocParam['doi']) && empty($assocParam['type']))
 					{
-						Notify::warning("Both DOI and Context of publication " . $assocParam['oid'] . " are not set, so the citation won't be pushed to DataCite");
+						Notify::warning(Lang::txt('PLG_CITATION_DOI_CONTEXT_MISSING', $assocParam['oid']));
 					}
 					elseif (!empty($assocParam['tbl']) && !empty($assocParam['oid']) && empty($assocParam['doi']) && !empty($assocParam['type']))
 					{
-						Notify::warning("DOI of publication " . $assocParam['oid'] . " is not set, so the citation won't be pushed to DataCite");
+						Notify::warning(Lang::txt('PLG_CITATION_DOI_MISSING', $assocParam['oid']));
 					}
 					elseif (!empty($assocParam['tbl']) && !empty($assocParam['oid']) && !empty($assocParam['doi']) && empty($assocParam['type']))
 					{
-						Notify::warning("Context of publication " . $assocParam['doi'] . " is not set, so the citation won't be pushed to DataCite");
+						Notify::warning(Lang::txt('PLG_CITATION_CONTEXT_MISSING', $assocParam['doi']));
 					}
 				}
 			}
@@ -448,7 +455,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 		curl_exec($ch);
 
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		
+
 		return $code == 201 || $code == 200;
 	}
 
