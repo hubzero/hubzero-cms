@@ -8,9 +8,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$this->css();
-$this->js();
-
 $canDo = \Components\Publications\Helpers\Permissions::getActions('item');
 
 Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'), 'publications');
@@ -30,6 +27,9 @@ if ($canDo->get('core.delete'))
 }
 
 Html::behavior('tooltip');
+
+$this->css();
+$this->js();
 ?>
 
 <?php if ($this->config->get('enabled') == 0) { ?>

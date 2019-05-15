@@ -64,12 +64,16 @@ Hubzero.submitbutton = function(task) {
 	}
 }
 
+if (typeof(HUB) === 'undefined') {
+	var HUB = {};
+}
+
 HUB.Publications = {
 
 	popratings: function() {
 		window.open("<?php echo Route::url('index.php?option=' . $this->option . '&task=ratings&id=' . $this->model->id . '&no_html=1'); ?>", 'ratings', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=400,height=480,directories=no,location=no');
 		return false;
-	}
+	},
 
 	reorder: function(list) {
 		if ($('.reorder').length == 0 || $(list).length == 0 || $(list).hasClass('noedit')) {
