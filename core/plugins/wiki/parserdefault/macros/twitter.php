@@ -35,8 +35,7 @@ class TwitterMacro extends WikiMacro
 							data-screen-name="hubzeroplatform"
 							data-tweet-limit="2"
 							data-chrome=""
-							>Loading Tweets...</a>
-						<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
+							>Loading Tweets...</a>';
 
 		return $txt['html'];
 	}
@@ -80,7 +79,7 @@ class TwitterMacro extends WikiMacro
 		{
 			$atts = array('data-widget-id="' . $widgetId . '"');
 		}
-		//no widget id, set up the screen name to show tweets from
+		// no widget id, set up the screen name to show tweets from
 		else
 		{
 			$atts[] = 'href="https://twitter.com/'. $screenName . '"';
@@ -97,8 +96,9 @@ class TwitterMacro extends WikiMacro
 			$atts[] = 'data-tweet-limit="' . $args[1] . '"';
 		}
 
-		//output embeded timeline
-		return '<a class="twitter-timeline" ' . implode(' ', $atts) . '>Loading Tweets...</a>
-				<script>!function(d,s,id) {var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if (!d.getElementById(id)) {js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
+		\Document::addScript(\Request::root() . 'core/plugins/wiki/parserdefault/macros/macro-assets/twitter/twitter.js?t=' . filemtime(__DIR__ . '/macro-assets/twitter/twitter.js'));
+
+		// output embeded timeline
+		return '<a class="twitter-timeline" ' . implode(' ', $atts) . '>Loading Tweets...</a>';
 	}
 }
