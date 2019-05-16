@@ -178,5 +178,38 @@ jQuery(document).ready(function (jq) {
 		}
 	});
 
+	var formatSelector = $('#format-selector'),
+		formatBox = $('#format-string');
 
+	if (formatSelector.length) {
+		//when we change format box
+		formatSelector.on('change', function(event) {
+			var value  = $(this).val(),
+				format = $(this).find(':selected').attr('data-format');
+			formatBox.val(format);
+		});
+
+		//when we customize the format
+		formatBox.on('keyup', function(event) {
+			var customOption = formatSelector.find('option[value=custom]');
+			customOption.attr('data-format', formatBox.val());
+		});
+
+		$('.templateTable').on('click', 'tr', function(e) {
+			if ($('select[name="citation-format"]').find('option[value="custom"]').prop("selected") != "selected")
+			{
+				// force custom format
+				$('select[name="citation-format"]').find('option[value="custom"]').prop("selected",true);
+			}
+
+			if ($('select[name="citation-format"] option:contains(custom-group-' + formatSelector.attr('data-cn') + ')').prop("selected") != "selected")
+			{
+				// force the existing custom group format to be selected
+				$('select[name="citation-format"] option:contains(custom-group-' + formatSelector.attr('data-cn') + ')').prop("selected", true);
+			}
+
+			$('#format-string').val($('#format-string').val() + $(this).attr('id'));
+			$('#format-string').focus();
+		});
+	}
 });
