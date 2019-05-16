@@ -8,7 +8,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Html::behavior('framework', true);
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
 
 $this->css();
 $this->js();
@@ -85,7 +86,7 @@ $panels = array(
 				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 				<div class="input-wrap">
 					<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="title" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->model->get('title'))); ?>" />
+					<input type="text" name="title" id="field-title" maxlength="250" class="required" value="<?php echo $this->escape(stripslashes($this->model->get('title'))); ?>" />
 				</div>
 				<div class="input-wrap">
 					<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CATEGORY'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
