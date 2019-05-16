@@ -632,6 +632,14 @@ class Projectsv2_0 extends ApiController
 			throw new Exception($row->getError());
 		}
 
+		require_once \Component::path('com_projects') . '/models/repo.php';
+
+		$repo = new Repo($row, 'local');
+		if (!$repo->iniLocal())
+		{
+			throw new Exception($repo->getError());
+		}
+
 		// Set timestamp with timezone
 		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
 		if ($row->get('modified') && $row->get('modified') != '0000-00-00 00:00:00')
