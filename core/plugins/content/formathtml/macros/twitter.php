@@ -36,8 +36,7 @@ class Twitter extends Macro
 							data-screen-name="hubzeroplatform"
 							data-tweet-limit="2"
 							data-chrome=""
-							>Loading Tweets...</a>
-						<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
+							>Loading Tweets...</a>';
 
 		return $txt['html'];
 	}
@@ -49,17 +48,17 @@ class Twitter extends Macro
 	 */
 	public function render()
 	{
-		//get the args passed in
+		// get the args passed in
 		$args = array_map('trim', explode(',', $this->args));
 
-		//get screen name & num tweets
+		// get screen name & num tweets
 		$screenName = (isset($args[0])) ? ltrim($args[0], '@') : '';
 		$widgetId   = (preg_match('/widgetid="([^"]*)"/', $this->args, $matches)) ? $matches[1] : '';
 		$chrome     = (preg_match('/chrome="([^"]*)"/', $this->args, $matches)) ? $matches[1] : '';
 		$width      = (preg_match('/width="([^"]*)"/', $this->args, $matches)) ? $matches[1] : '100%';
 		$height     = (preg_match('/height="([^"]*)"/', $this->args, $matches)) ? $matches[1] : 500;
 
-		//make sure we have a user name
+		// make sure we have a user name
 		if ($screenName == '' && $widgetId == '' || strpos($screenName, '#') !== false)
 		{
 			return '(Please enter a valid Twitter Username/ID or Widget ID)';
@@ -81,7 +80,7 @@ class Twitter extends Macro
 		{
 			$atts = array('data-widget-id="' . $widgetId . '"');
 		}
-		//no widget id, set up the screen name to show tweets from
+		// no widget id, set up the screen name to show tweets from
 		else
 		{
 			$atts[] = 'href="https://twitter.com/'. $screenName . '"';
@@ -98,8 +97,9 @@ class Twitter extends Macro
 			$atts[] = 'data-tweet-limit="' . $args[1] . '"';
 		}
 
-		//output embeded timeline
-		return '<a class="twitter-timeline" ' . implode(' ', $atts) . '>Loading Tweets...</a>
-				<script>!function(d,s,id) {var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if (!d.getElementById(id)) {js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>';
+		\Document::addScript(\Request::root() . 'core/plugins/content/formathtml/macros/macro-assets/twitter/twitter.js?t=' . filemtime(__DIR__ . '/macro-assets/twitter/twitter.js'));
+
+		// output embeded timeline
+		return '<a class="twitter-timeline" ' . implode(' ', $atts) . '>Loading Tweets...</a>';
 	}
 }
