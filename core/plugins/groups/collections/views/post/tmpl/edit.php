@@ -8,6 +8,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+$this->js('jquery.fileuploader.js', 'system');
+$this->js('fileupload.js');
 $this->js();
 
 $item = $this->entry->item();
@@ -59,8 +61,6 @@ $jbase = rtrim(Request::base(true), '/');
 									</div>
 								</noscript>
 							</div>
-							<script src="<?php echo $jbase; ?>/core/assets/js/jquery.fileuploader.js"></script>
-							<script src="<?php echo $jbase; ?>/core/plugins/groups/collections/assets/js/fileupload.js"></script>
 						</div><!-- / .col span-half -->
 						<div class="col span-half omega">
 							<div id="link-adder" data-base="<?php echo rtrim(Request::base(true), '/'); ?>" data-txt-delete="<?php echo Lang::txt('JACTION_DELETE'); ?>" data-txt-instructions="<?php echo Lang::txt('Click to add link'); ?>" data-action="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
