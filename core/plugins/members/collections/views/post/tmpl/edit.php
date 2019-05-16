@@ -39,7 +39,9 @@ if (!$dir)
 $jbase = rtrim(Request::base(true), '/');
 
 $this->css()
-     ->js();
+	->js('jquery.fileuploader.js', 'system')
+	->js('fileupload.js')
+	->js();
 ?>
 
 <?php if ($this->getError()) { ?>
@@ -64,8 +66,6 @@ $this->css()
 									</div>
 								</noscript>
 							</div>
-							<script src="<?php echo $jbase; ?>/core/assets/js/jquery.fileuploader.js"></script>
-							<script src="<?php echo $jbase; ?>/core/plugins/members/collections/assets/js/fileupload.js"></script>
 						</div><!-- / .col span-half -->
 						<div class="col span-half omega">
 							<div id="link-adder" data-base="<?php echo rtrim(Request::base(true), '/'); ?>" data-txt-delete="<?php echo Lang::txt('JACTION_DELETE'); ?>" data-txt-instructions="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_CLICK_TO_ADD_LINK'); ?>" data-action="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir; ?>" data-list="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
