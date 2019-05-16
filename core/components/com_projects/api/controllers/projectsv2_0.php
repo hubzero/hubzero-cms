@@ -9,6 +9,7 @@ namespace Components\Projects\Api\Controllers;
 
 use Components\Projects\Models\Orm\Project;
 use Components\Projects\Models\Orm\Owner;
+use Components\Projects\Models\Repo;
 use Hubzero\Component\ApiController;
 use Hubzero\Utility\Date;
 use Exception;
