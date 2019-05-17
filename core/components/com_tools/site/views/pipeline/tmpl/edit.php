@@ -157,7 +157,7 @@ $this->css('pipeline.css')
 			</fieldset>
 
 			<?php if ($this->id) { ?>
-				<fieldset>
+				<fieldset id="gitExternalInput">
 					<legend><?php echo Lang::txt('Repository Host'); ?>:</legend>
 	
 					<div class="form-group form-check">
@@ -185,7 +185,7 @@ $this->css('pipeline.css')
 				</fieldset>
 	
 				<?php if ($this->config->get('github', 1)) { ?>
-					<div class="explaination">
+					<div id="gitExternalExplanation" class="explaination">
 						<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
 							<p><?php echo Lang::txt('You can optionally provide a URL for your Git repository containing the tool code, and we will grab code from this repository when installing your tool.  Public repositories should be specified as https://git@github.com/[reponame] while private repositories should be specified as ssh://git@github.com/[reponame]'); ?></p>
 						<?php } else { ?>
@@ -206,7 +206,7 @@ $this->css('pipeline.css')
 					</fieldset>
 				<?php } ?>
 			<?php } else { ?>
-				<fieldset>
+				<fieldset id="gitExternalInput">
 					<legend><?php echo Lang::txt('Repository Host'); ?>:</legend>
 	
 					<div class="form-group form-check">
@@ -234,14 +234,14 @@ $this->css('pipeline.css')
 				</fieldset>
 	
 				<?php if ($this->config->get('github', 1)) { ?>
-					<div class="explaination">
+					<div id="gitExternalExplanation" class="explaination">
 						<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
 							<p><?php echo Lang::txt('You can optionally provide a URL for your Git repository containing the tool code, and we will grab code from this repository when installing your tool.  Public repositories should be specified as https://git@github.com/[reponame] while private repositories should be specified as ssh://git@github.com/[reponame]'); ?></p>
 						<?php } else { ?>
 							<p><?php echo Lang::txt('You can optionally provide a URL for your public Github repository with the tool code (https://github.com/[reponame]), and we will grab code from this repository when installing your tool.'); ?></p>
 						<?php } ?>
 					</div>
-					<fieldset>
+					<fieldset id="gitExternalInput">
 						<legend><?php echo Lang::txt('Git Repository URL'); ?>:</legend>
 						<label for="github">
 							<?php echo Lang::txt('Git Repository for Source Code') ?>: 
