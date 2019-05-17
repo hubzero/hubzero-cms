@@ -60,7 +60,7 @@ defined('_HZEXEC_') or die('Restricted access');
 					{
 						$status = 'Ready';
 						$action = '<a href="' . Route::url('index.php?option=com_cart') . 'download/' . $this->transactionInfo->tId . '/' . $info->sId;
-						$action .= '" target="_blank" download="download" rel="noopener">Download</a>';
+						$action .= '" target="_blank" rel="noopener">Download</a>';
 
 						if (isset($item['meta']['serialManagement']) && $item['meta']['serialManagement'] == 'multiple' && isset($item['meta']['serials']) && !empty($item['meta']['serials']))
 						{
