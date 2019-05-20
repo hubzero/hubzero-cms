@@ -12,9 +12,9 @@ class Migration20190403124646ComCitations extends Base
 	 **/
 	public function up()
 	{
-		if ($this->db->tableExists('#__citations_assoc') && !$this->db->tableHasField('#__citations_assoc', 'doi'))
+		if ($this->db->tableExists('#__citations_assoc') && !$this->db->tableHasField('#__citations_assoc', 'doiRef'))
 		{
-			$query = "ALTER TABLE `#__citations_assoc` ADD COLUMN `doi` VARCHAR(255) AFTER `oid`";
+			$query = "ALTER TABLE `#__citations_assoc` ADD COLUMN `doiRef` VARCHAR(255) AFTER `oid`";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
@@ -25,9 +25,9 @@ class Migration20190403124646ComCitations extends Base
 	 **/
 	public function down()
 	{
-		if ($this->db->tableExists('#__citations_assoc') && $this->db->tableHasField('#__citations_assoc', 'doi'))
+		if ($this->db->tableExists('#__citations_assoc') && $this->db->tableHasField('#__citations_assoc', 'doiRef'))
 		{
-			$query = "ALTER TABLE `#__citations_assoc` DROP COLUMN `doi`";
+			$query = "ALTER TABLE `#__citations_assoc` DROP COLUMN `doiRef`";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

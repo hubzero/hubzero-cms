@@ -83,23 +83,23 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 			{
 				if (!empty($assocParam))
 				{
-					if ($assocParam['tbl'] == 'publication' && !empty($assocParam['doi']) && !empty($assocParam['type']))
+					if ($assocParam['tbl'] == 'publication' && !empty($assocParam['doiRef']) && !empty($assocParam['type']))
 					{
-						$doiArr[] = $assocParam['doi'];
-						$relTypeArr[$assocParam['doi']] = $assocParam['type'];
+						$doiArr[] = $assocParam['doiRef'];
+						$relTypeArr[$assocParam['doiRef']] = $assocParam['type'];
 					}
 
-					if (!empty($assocParam['tbl']) && !empty($assocParam['oid']) && empty($assocParam['doi']) && empty($assocParam['type']))
+					if (!empty($assocParam['tbl']) && !empty($assocParam['oid']) && empty($assocParam['doiRef']) && empty($assocParam['type']))
 					{
 						Notify::warning(Lang::txt('PLG_CITATION_DOI_CONTEXT_MISSING', $assocParam['oid']));
 					}
-					elseif (!empty($assocParam['tbl']) && !empty($assocParam['oid']) && empty($assocParam['doi']) && !empty($assocParam['type']))
+					elseif (!empty($assocParam['tbl']) && !empty($assocParam['oid']) && empty($assocParam['doiRef']) && !empty($assocParam['type']))
 					{
 						Notify::warning(Lang::txt('PLG_CITATION_DOI_MISSING', $assocParam['oid']));
 					}
-					elseif (!empty($assocParam['tbl']) && !empty($assocParam['oid']) && !empty($assocParam['doi']) && empty($assocParam['type']))
+					elseif (!empty($assocParam['tbl']) && !empty($assocParam['oid']) && !empty($assocParam['doiRef']) && empty($assocParam['type']))
 					{
-						Notify::warning(Lang::txt('PLG_CITATION_CONTEXT_MISSING', $assocParam['doi']));
+						Notify::warning(Lang::txt('PLG_CITATION_CONTEXT_MISSING', $assocParam['doiRef']));
 					}
 				}
 			}
@@ -140,14 +140,12 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 					{
 						if (!$this->_isCitationUpdated($xml, $citationInfo, $relationTypeArr[$doi]))
 						{
-							file_put_contents("/tmp/1", "The xml of $doi is going to be updated", FILE_APPEND);
 							$this->updateDoiMetadataXML($xml, $citationInfo, $relationTypeArr[$doi]);
 						}
 						else
 						{
 							if (!$this->isCitationIncluded($xml, $citationInfo, $relationTypeArr[$doi]))
 							{
-								file_put_contents("/tmp/1", "The xml of $doi is going to be included", FILE_APPEND);
 								$this->incCitationInDoiMetadataXML($xml, $citationInfo, $relationTypeArr[$doi]);
 							}
 						}

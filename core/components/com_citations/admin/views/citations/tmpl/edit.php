@@ -320,7 +320,7 @@ $journal = (!preg_match('!\S!u', $journal)) ? utf8_encode($journal) : $journal;
 					</tfoot>
 					<tbody>
 						<?php
-						$assocs = $this->assocs;
+						$assocs = $this->assocs;						
 						$r = count($assocs);
 						if ($r > 5) {
 							$n = $r;
@@ -335,7 +335,7 @@ $journal = (!preg_match('!\S!u', $journal)) ? utf8_encode($journal) : $journal;
 								$assocs[$i]->id   = null;
 								$assocs[$i]->cid  = null;
 								$assocs[$i]->oid  = null;
-								$assocs[$i]->doi = null;
+								$assocs[$i]->doiRef = null;
 								$assocs[$i]->type = null;
 								$assocs[$i]->tbl  = null;
 							}
@@ -354,7 +354,7 @@ $journal = (!preg_match('!\S!u', $journal)) ? utf8_encode($journal) : $journal;
 									<input type="hidden" name="assocs[<?php echo $i; ?>][cid]" value="<?php echo $this->escape($assocs[$i]->cid); ?>" />
 								</td>
 								<td>
-									<input type="text" name="assocs[<?php echo $i; ?>][doi]" value="<?php echo $this->escape($assocs[$i]->doi); ?>" size="16" />
+									<input type="text" name="assocs[<?php echo $i; ?>][doiRef]" value="<?php echo $this->escape($assocs[$i]->doiRef); ?>" size="16" />
 									<input type="hidden" name="assocs[<?php echo $i; ?>][id]" value="<?php echo $this->escape($assocs[$i]->id); ?>" />
 									<input type="hidden" name="assocs[<?php echo $i; ?>][cid]" value="<?php echo $this->escape($assocs[$i]->cid); ?>" />
 								</td>
