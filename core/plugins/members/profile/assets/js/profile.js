@@ -313,12 +313,11 @@ HUB.Members.Profile = {
 			
 			//show updating overlay
 			HUB.Members.Profile.editShowUpdatingOverlay(".member_profile");
-
 			var url = $('#profile-page-content').attr('data-url');
 
-			$(".member_profile").on('load', url + " #profile-page-content", function() {
+			$(".member_profile").load(url + " #profile-page-content", function() {
 				//reload page header in case we edited name
-				$("#page_header").on('load', url +  " #page_header > *");
+				$("#page_header").load(url +  " #page_header > *");
 			
 				//show edit links
 				$(".section-edit a").show();

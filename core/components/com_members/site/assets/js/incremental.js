@@ -6,7 +6,7 @@
 
 jQuery(document).ready(function($)
 {
-	var inps = document.getElementById('hubForm').getElementsByTagName('input');
+	var inps = document.getElementById('profile').getElementsByTagName('input');
 	var wallet = document.getElementById('wallet').getElementsByTagName('span')[0];
 	var wallet_par = document.getElementById('wallet');
 	var showing = 0;
