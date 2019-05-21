@@ -5,11 +5,18 @@
  */
 
 Hubzero.submitbutton = function(task) {
-	$(document).trigger('editorSave');
-
-	var frm = document.getElementById('item-form');
+	var frm = document.getElementById('adminForm');
 
 	if (frm) {
+		Hubzero.submitform(task, frm);
+		return;
+	}
+
+	frm = document.getElementById('item-form');
+
+	if (frm) {
+		$(document).trigger('editorSave');
+
 		if (task == 'cancel' || document.formvalidator.isValid(frm)) {
 			Hubzero.submitform(task, frm);
 		} else {
