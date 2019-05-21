@@ -550,7 +550,7 @@ class Member extends User implements \Hubzero\Search\Searchable
 			->start($offset)
 			->limit($limit)
 			->whereEquals('block', 0)
-			->whereEquals('activation', 1)
+			->where('activation', '>', 0)
 			->where('approved', '>', 0)
 			->rows();
 	}
@@ -564,7 +564,7 @@ class Member extends User implements \Hubzero\Search\Searchable
 	{
 		return self::all()
 			->whereEquals('block', 0)
-			->whereEquals('activation', 1)
+			->where('activation', '>', 0)
 			->where('approved', '>', 0)
 			->total();
 	}
