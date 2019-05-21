@@ -165,12 +165,25 @@ class Category extends Nested
 	 * @param   array   $data  the data being saved
 	 * @return  string
 	 */
-	public function automaticModifiedTime()
+	public function automaticModifiedTime($data)
 	{
 		if (isset($data['id']) && $data['id'])
 		{
 			return Date::of('now')->toSql();
 		}
+
+		$columns = $this->getStructure()->getTableColumns($this->getTableName(), false);
+
+		foreach ($columns as $column)
+		{
+			// We want to get the default values from the
+			// table's schema, rather than assuming
+			if ($column['name'] == 'modified_time')
+			{
+				return $column['default'];
+			}
+		}
+
 		return null;
 	}
 
