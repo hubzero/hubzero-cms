@@ -19,8 +19,19 @@ $selectUrl = Route::url( $this->pub->link('editversionid') . '&active=publicatio
 $elName = "licensePick";
 
 // Get version params and extract agreement
+$versionParams = array_filter(explode(PHP_EOL, $this->pub->version->params));
+$versionParams = array_reduce($versionParams, function($carry, $item){
+	$keyValueSplit = explode('=', $item);
+	$key = trim(array_shift($keyValueSplit));
+	$value = trim(array_shift($keyValueSplit));
+	if ($key && $value)
+	{
+		$carry[$key] = $value;
+		return $carry;
+	}
+});
 $agreed = $this->pub->params->get('licenseagreement', 0);
-
+$agreed = !$agreed && isset($versionParams['licenseagreement']) ? $versionParams['licenseagreement'] : $agreed;
 // Get curator status
 $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->step, 0, 'author');
 
@@ -99,10 +110,12 @@ $text = $this->pub->get('license_text', $defaultText);
 								$subs = array_unique($substitutes[1]);
 								foreach ($subs as $sub)
 								{
+									$customKey = 'licensecustom' . strtolower($sub);
+									$customValue = isset($versionParams[$customKey]) ? $versionParams[$customKey] : '';
 									?>
 									<label>
 										[<?php echo $sub; ?>]<span class="required"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REQUIRED'); ?></span>
-										<input name="substitute[<?php echo $sub; ?>]" type="text" value="<?php echo $this->pub->params->get('licensecustom' . strtolower($sub), ''); ?>" class="customfield" />
+										<input name="substitute[<?php echo $sub; ?>]" type="text" value="<?php echo $customValue; ?>" class="customfield" />
 									</label>
 									<?php
 									$i++;
