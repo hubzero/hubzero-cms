@@ -183,9 +183,9 @@ $maintext = $this->model->description;
 						$tconfig = Component::params('com_tools');
 						$doi = '';
 
-						if ($this->model->doi && $tconfig->get('doi_shoulder'))
+						if ($this->model->doi)
 						{
-							$doi = $tconfig->get('doi_shoulder') . '/' . strtoupper($this->model->doi);
+							$doi = ($this->model->doi_shoulder ? $this->model->doi_shoulder : $tconfig->get('doi_shoulder')) . '/' . strtoupper($this->model->doi);
 						}
 						else if ($this->model->doi_label)
 						{
