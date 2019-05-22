@@ -87,7 +87,7 @@ else
 					</div>
 
 					<p class="submit">
-						<input type="submit" class="btn" value="<?php echo Lang::txt('COM_BLOG_SUBMIT'); ?>" />
+						<input type="submit" class="btn" value="<?php echo Lang::txt('JSUBMIT'); ?>" />
 					</p>
 				</fieldset>
 			</form>
