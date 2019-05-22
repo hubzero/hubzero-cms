@@ -1308,7 +1308,7 @@
 		width: 70%;
 		float: left;
 	}
-	.separator {
+	#plg-content .separator {
 		width: 3%;
 		float: left;
 		min-height: 36px;
