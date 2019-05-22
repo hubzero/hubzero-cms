@@ -10,6 +10,7 @@ namespace Components\Blog\Models;
 use Hubzero\Database\Relational;
 use Lang;
 use Date;
+use User;
 
 /**
  * Blog model for a comment
@@ -63,6 +64,19 @@ class Comment extends Relational
 	);
 
 	/**
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 */
+	public $always = array(
+		'parent',
+		'anonymous',
+		'state',
+		'modified',
+		'modified_by'
+	);
+
+	/**
 	 * Fields to be parsed
 	 *
 	 * @var  array
@@ -70,6 +84,73 @@ class Comment extends Relational
 	protected $parsed = array(
 		'content'
 	);
+
+	/**
+	 * Generates automatic state field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticState($data)
+	{
+		if (!isset($data['state']))
+		{
+			$data['state'] = self::STATE_PUBLISHED;
+		}
+		return (int)$data['state'];
+	}
+
+	/**
+	 * Generates automatic state field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticAnonymous($data)
+	{
+		if (!isset($data['anonymous']))
+		{
+			$data['anonymous'] = 0;
+		}
+		return (int)$data['anonymous'];
+	}
+
+	/**
+	 * Generates automatic state field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticParent($data)
+	{
+		if (!isset($data['parent']))
+		{
+			$data['parent'] = 0;
+		}
+		return (int)$data['parent'];
+	}
+
+	/**
+	 * Generates automatic created field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticModified($data)
+	{
+		return (isset($data['id']) && $data['id'] ? Date::of('now')->toSql() : null);
+	}
+
+	/**
+	 * Generates automatic created by field value
+	 *
+	 * @param   array  $data
+	 * @return  int
+	 */
+	public function automaticModifiedBy($data)
+	{
+		return (isset($data['id']) && $data['id'] ? User::get('id') : 0);
+	}
 
 	/**
 	 * Parses content string as directed
@@ -107,14 +188,12 @@ class Comment extends Relational
 	 */
 	public function created($as='')
 	{
-		$as = strtolower($as);
-
-		if ($as == 'date')
+		if (strtolower($as) == 'date')
 		{
 			return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
 
-		if ($as == 'time')
+		if (strtolower($as) == 'time')
 		{
 			return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 		}
@@ -135,14 +214,12 @@ class Comment extends Relational
 	 */
 	public function modified($as='')
 	{
-		$as = strtolower($as);
-
-		if ($as == 'date')
+		if (strtolower($as) == 'date')
 		{
 			return Date::of($this->get('modified'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
 
-		if ($as == 'time')
+		if (strtolower($as) == 'time')
 		{
 			return Date::of($this->get('modified'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 		}
