@@ -725,7 +725,7 @@ class File extends Obj
 		}
 
 		// Directory where images are stored
-		$basePath = "/core/plugins/projects/files/assets/img/";
+		$basePath = rtrim(\Request::root(true), '/') . '/core/plugins/projects/files/assets/img/';
 		return $basename ? basename($icon) :  $basePath . $icon . '.gif';
 	}
 
