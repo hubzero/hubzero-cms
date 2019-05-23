@@ -584,6 +584,9 @@ HUB.Groups = {
 						$.fancybox({
 							type: 'ajax',
 							href: $('.page-category').attr('data-url'),
+							autoSize:false,
+							width: 600,
+							height: 'auto',
 							afterShow: function() {
 								// instantiate color picker
 								HUB.Groups.categoriesColorPicker();
