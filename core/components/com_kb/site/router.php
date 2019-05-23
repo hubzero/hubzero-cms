@@ -130,6 +130,7 @@ class Router extends Base
 
 				$category = Category::all()
 					->whereEquals('alias', $categoryAlias)
+					->whereEquals('published', Category::STATE_PUBLISHED)
 					->row();
 				$categoryId = $category->get('id');
 
@@ -137,6 +138,7 @@ class Router extends Base
 				// If not, then we assume it's an article
 				$category = Category::all()
 					->whereEquals('alias', $articleAlias)
+					->whereEquals('published', Category::STATE_PUBLISHED)
 					->row();
 				if ($category && $category->get('id'))
 				{
@@ -173,6 +175,7 @@ class Router extends Base
 
 					$category = Category::all()
 						->whereEquals('alias', $categoryAlias)
+						->whereEquals('published', Category::STATE_PUBLISHED)
 						->row();
 					$vars['categoryId'] = $category->get('id');
 
