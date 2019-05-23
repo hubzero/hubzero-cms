@@ -464,3 +464,14 @@
 		background: #fff url("../img/loading.gif") 50% 50% no-repeat;
 		background: rgba(255, 255, 255, 0.8) url("../img/loading.gif") 50% 50% no-repeat;
 	}
+
+/* Tags */
+	
+	#hubForm .fa label {
+		display: inline;
+		padding-left: .5em;
+	}
+
+	#hubForm fieldset .fa .option {
+		margin-left: .5em !important;
+	}
