@@ -12,6 +12,8 @@
 		    -ms-box-sizing: border-box;
 		     -o-box-sizing: border-box;
 		        box-sizing: border-box;
+		max-height: 60em;
+		overflow-x: auto;
 	}
 
 	.mod_members .note {
