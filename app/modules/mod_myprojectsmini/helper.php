@@ -63,8 +63,6 @@ class Helper extends Module
 		// Get records
 		$this->rows = $obj->getRecords($filters, false, User::get('id'), 0, $setup_complete);
 		
-		echo count($this->rows);
-
     $projctsorted = $this->rows;
 		foreach ($projctsorted as $project) {
 			$query = "SELECT lastvisit FROM `#__project_owners` WHERE userid = " . User::get('id') . " AND projectid= " . $project->id;
