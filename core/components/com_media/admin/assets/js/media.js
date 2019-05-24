@@ -83,6 +83,43 @@ jQuery(document).ready(function($){
 		}
 	});
 
+	$('.media-breadcrumbs-block').on('click', '.media-breadcrumbs', function(e){
+		e.preventDefault();
+
+		folder.val($(this).attr('data-folder'));
+
+		if (_DEBUG) {
+			window.console && console.log('Calling: ' + $(this).attr('href').nohtml() + '&layout=' + layout.val());
+		}
+
+		var trail = $(this).attr('data-folder').split('/'),
+			crumbs = '',
+			fld = '',
+			href = contents.attr('data-list').nohtml() + '&layout=' + layout.val() + '&folder=';
+
+		for (var i = 0; i < trail.length; i++)
+		{
+			if (trail[i] == '')
+			{
+				continue;
+			}
+
+			href += '/' + trail[i];
+			fld += '/' + trail[i];
+
+			crumbs += '<span class="icon-chevron-right dir-separator">/</span>';
+			crumbs += '<a href="' + href + '" data-folder="' + fld + '" class="media-breadcrumbs folder has-next-button" id="path_' + trail[i] + '">' + trail[i] + '</a>';
+		}
+
+		$('#media-breadcrumbs').html(crumbs);
+
+		$.get($(this).attr('href').nohtml() + '&layout=' + layout.val(), function(data){
+			contents.html(data);
+
+			bindContextModals();
+		});
+	});
+
 	contents
 		.on('click', '.folder-item', function(e){
 			e.preventDefault();
@@ -95,6 +132,7 @@ jQuery(document).ready(function($){
 
 			var trail = $(this).attr('data-folder').split('/'),
 				crumbs = '',
+				fld = '',
 				href = contents.attr('data-list').nohtml() + '&layout=' + layout.val() + '&folder=';
 
 			for (var i = 0; i < trail.length; i++)
@@ -104,10 +142,11 @@ jQuery(document).ready(function($){
 					continue;
 				}
 
-				href += '/'  + trail[i];
+				href += '/' + trail[i];
+				fld += '/' + trail[i];
 
 				crumbs += '<span class="icon-chevron-right dir-separator">/</span>';
-				crumbs += '<a href="' + href + '" class="media-breadcrumbs folder has-next-button" id="path_' + trail[i] + '">' + trail[i] + '</a>';
+				crumbs += '<a href="' + href + '" data-folder="' + fld + '" class="media-breadcrumbs folder has-next-button" id="path_' + trail[i] + '">' + trail[i] + '</a>';
 			}
 
 			$('#media-breadcrumbs').html(crumbs);

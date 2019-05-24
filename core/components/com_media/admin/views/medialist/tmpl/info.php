@@ -9,22 +9,21 @@
 defined('_HZEXEC_') or die();
 
 if ($this->data['type'] != 'folder'):
-	$icon = 'file.svg';
-
-	$path = Component::path('com_media') . '/admin/assets/img/';
 	$ext = Filesystem::extension($this->data['name']);
-	if (file_exists($path . $ext . '.svg')):
-		$icon = $ext . '.svg';
+
+	$icon = Html::asset('image', 'assets/filetypes/' . $ext . '.svg', '', null, true, true);
+	if (!$icon):
+		$icon = Html::asset('image', 'assets/filetypes/file.svg', '', null, true, true);
 	endif;
 else:
-	$icon = 'folder.svg';
+	$icon = Html::asset('image', 'assets/filetypes/folder.svg', '', null, true, true);
 endif;
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&file=' . urlencode($this->data['path'])); ?>" id="component-form" method="post" name="adminForm" autocomplete="off">
 	<fieldset>
 		<h2 class="modal-title">
-			<?php echo Lang::txt('File Info'); ?>
+			<?php echo Lang::txt('COM_MEDIA_FILE_INFO'); ?>
 		</h2>
 	</fieldset>
 	<div class="grid">
@@ -39,7 +38,7 @@ endif;
 					<?php else: ?>
 						<div class="media-thumb doc-item <?php echo Filesystem::extension($this->data['name']); ?>" title="<?php echo $this->escape($this->data['name']); ?>" >
 							<span class="media-preview-shim"></span><!--
-							--><img src="<?php echo $this->img($icon); ?>" alt="<?php echo $this->escape(Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->data['name'], Components\Media\Admin\Helpers\MediaHelper::parseSize($this->data['size']))); ?>" width="80" />
+							--><img src="<?php echo $icon; ?>" alt="<?php echo $this->escape(Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->data['name'], Components\Media\Admin\Helpers\MediaHelper::parseSize($this->data['size']))); ?>" width="80" />
 						</div>
 					<?php endif; ?>
 				</div>
@@ -47,12 +46,12 @@ endif;
 		</div>
 		<div class="col span7">
 			<div class="input-wrap">
-				<span class="media-info-label"><?php echo Lang::txt('Name:'); ?></span>
+				<span class="media-info-label"><?php echo Lang::txt('COM_MEDIA_LIST_HEADER_NAME'); ?>:</span>
 				<span class="media-info-value"><?php echo $this->escape($this->data['name']); ?></span>
 			</div>
 
 			<div class="input-wrap">
-				<span class="media-info-label"><?php echo Lang::txt('Path:'); ?></span>
+				<span class="media-info-label"><?php echo Lang::txt('COM_MEDIA_LIST_HEADER_PATH'); ?>:</span>
 				<span class="media-info-value"><?php echo $this->escape($this->data['path']); ?></span>
 			</div>
 
@@ -62,20 +61,20 @@ endif;
 						<div class="col span4">
 				<?php endif; ?>
 				<div class="input-wrap">
-					<span class="media-info-label"><?php echo Lang::txt('Size:'); ?></span>
+					<span class="media-info-label"><?php echo Lang::txt('COM_MEDIA_LIST_HEADER_SIZE'); ?>:</span>
 					<span class="media-info-value"><?php echo Hubzero\Utility\Number::formatBytes($this->data['size']); ?></span>
 				</div>
 				<?php if ($this->data['type'] == 'img'): ?>
 						</div>
 						<div class="col span4">
 							<div class="input-wrap">
-								<span class="media-info-label"><?php echo Lang::txt('Width:'); ?></span>
+								<span class="media-info-label"><?php echo Lang::txt('COM_MEDIA_LIST_HEADER_WIDTH'); ?>:</span>
 								<span class="media-info-value"><?php echo $this->data['width']; ?>px</span>
 							</div>
 						</div>
 						<div class="col span4">
 							<div class="input-wrap">
-								<span class="media-info-label"><?php echo Lang::txt('Height:'); ?></span>
+								<span class="media-info-label"><?php echo Lang::txt('COM_MEDIA_LIST_HEADER_HEIGHT'); ?>:</span>
 								<span class="media-info-value"><?php echo $this->data['height']; ?>px</span>
 							</div>
 						</div>
@@ -84,7 +83,7 @@ endif;
 			<?php endif; ?>
 
 			<div class="input-wrap">
-				<span class="media-info-label"><?php echo Lang::txt('Last modified:'); ?></span>
+				<span class="media-info-label"><?php echo Lang::txt('COM_MEDIA_LIST_HEADER_MODIFIED'); ?>:</span>
 				<span class="media-info-value"><?php echo Date::of($this->data['modified'])->toSql(); ?></span>
 			</div>
 		</div>
