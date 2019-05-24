@@ -39,7 +39,10 @@ $cls = array(
 );
 
 // Prepend site name to document title
-$this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
+if ($this->getTitle() != Config::get('sitename'))
+{
+	$this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
+}
 ?>
 <!DOCTYPE html>
 <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo implode(' ', $cls); ?>">
