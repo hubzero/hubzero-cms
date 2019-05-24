@@ -11,11 +11,11 @@ defined('_HZEXEC_') or die();
 $this->currentDoc['path'] = ltrim($this->currentDoc['path'], '/');
 
 // File type icon
-$icon = 'file.svg';
-$path = Component::path('com_media') . '/admin/assets/img/';
 $ext  = Filesystem::extension($this->currentDoc['name']);
-if (file_exists($path . $ext . '.svg')):
-	$icon = $ext . '.svg';
+
+$icon = Html::asset('image', 'assets/filetypes/' . $ext . '.svg', '', null, true, true);
+if (!$icon):
+	$icon = Html::asset('image', 'assets/filetypes/file.svg', '', null, true, true);
 endif;
 
 // Querystring option
@@ -47,7 +47,7 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_do
 		<td width="50%">
 			<a class="doc-item" href="<?php echo COM_MEDIA_BASEURL . $this->currentDoc['path']; ?>" title="<?php echo $this->escape($this->currentDoc['name']); ?>">
 				<span class="media-icon">
-					<img src="<?php echo $this->img($icon); ?>" alt="<?php echo $this->escape(Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->currentDoc['name'], Components\Media\Admin\Helpers\MediaHelper::parseSize($this->currentDoc['size']))); ?>" />
+					<img src="<?php echo $icon; ?>" alt="<?php echo $this->escape(Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->currentDoc['name'], Components\Media\Admin\Helpers\MediaHelper::parseSize($this->currentDoc['size']))); ?>" />
 				</span>
 				<span class="media-name">
 					<?php echo $this->escape($name); ?>
