@@ -165,6 +165,7 @@
 		padding-top: 0.2em;
 		float: left;
 		margin-right: 0.2em;
+		height: 1.5em;
 	}
 	#preview-image img {
 		max-width: 100%;
@@ -1400,6 +1401,9 @@
 --------------------------------------------- */
 	.fancybox-title {
 		display: none;
+	}
+	table#filelist img {
+		height: 1.5em;
 	}
 	table#filelist tbody tr {
 		height: 38px;

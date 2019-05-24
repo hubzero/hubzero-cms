@@ -598,135 +598,15 @@ class File extends Obj
 	 */
 	public static function getIconImage($ext, $basename = false, $icon = '')
 	{
-		switch (strtolower($ext))
+		$ext = strtolower($ext);
+
+		$icon = \Html::asset('image', 'assets/filetypes/' . $ext . '.svg', '', null, true, true);
+		if (!$icon)
 		{
-			case 'pdf':
-				$icon = 'page_white_acrobat';
-				break;
-			case 'txt':
-			case 'css':
-			case 'rtf':
-			case 'sty':
-			case 'cls':
-			case 'log':
-				$icon = 'page_white_text';
-				break;
-			case 'sql':
-				$icon = 'page_white_sql';
-				break;
-			case 'm':
-				$icon = 'page_white_matlab';
-				break;
-			case 'dmg':
-			case 'exe':
-			case 'va':
-			case 'ini':
-				$icon = 'page_white_gear';
-				break;
-			case 'eps':
-			case 'ai':
-			case 'wmf':
-				$icon = 'page_white_vector';
-				break;
-			case 'php':
-				$icon = 'page_white_php';
-				break;
-			case 'tex':
-			case 'ltx':
-				$icon = 'page_white_tex';
-				break;
-			case 'swf':
-				$icon = 'page_white_flash';
-				break;
-			case 'key':
-				$icon = 'page_white_keynote';
-				break;
-			case 'numbers':
-				$icon = 'page_white_numbers';
-				break;
-			case 'pages':
-				$icon = 'page_white_pages';
-				break;
-			case 'html':
-			case 'htm':
-				$icon = 'page_white_code';
-				break;
-			case 'xls':
-			case 'xlsx':
-			case 'tsv':
-			case 'csv':
-			case 'ods':
-				$icon = 'page_white_excel';
-				break;
-			case 'ppt':
-			case 'pptx':
-			case 'pps':
-				$icon = 'page_white_powerpoint';
-				break;
-			case 'mov':
-			case 'mp4':
-			case 'm4v':
-			case 'avi':
-				$icon = 'page_white_film';
-				break;
-			case 'jpg':
-			case 'jpeg':
-			case 'gif':
-			case 'tiff':
-			case 'bmp':
-			case 'png':
-				$icon = 'page_white_picture';
-				break;
-			case 'mp3':
-			case 'aiff':
-			case 'm4a':
-			case 'wav':
-				$icon = 'page_white_sound';
-				break;
-			case 'zip':
-			case 'rar':
-			case 'gz':
-			case 'sit':
-			case 'sitx':
-			case 'zipx':
-			case 'tar':
-			case '7z':
-				$icon = 'page_white_compressed';
-				break;
-			case 'doc':
-			case 'docx':
-				$icon = 'page_white_word';
-				break;
-
-			case 'folder':
-				$icon = 'folder';
-				break;
-
-			// Google files
-			case 'gsheet':
-				$icon = 'google/sheet';
-				break;
-			case 'gdoc':
-				$icon = 'google/doc';
-				break;
-			case 'gslides':
-				$icon = 'google/presentation';
-				break;
-			case 'gdraw':
-				$icon = 'google/drawing';
-				break;
-			case 'gform':
-				$icon = 'google/form';
-				break;
-
-			default:
-				$icon = 'page_white';
-				break;
+			$icon = \Html::asset('image', 'assets/filetypes/file.svg', '', null, true, true);
 		}
 
-		// Directory where images are stored
-		$basePath = rtrim(\Request::root(true), '/') . '/core/plugins/projects/files/assets/img/';
-		return $basename ? basename($icon) :  $basePath . $icon . '.gif';
+		return $basename ? basename($icon) : $icon;
 	}
 
 	/**
