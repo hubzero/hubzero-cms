@@ -16,35 +16,15 @@ $projects = $projctsorted;
 $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 ?>
 
-<li class="component-parent" id="account-groups">
+<li class="component-parent" id="account-projects">
   <a class="component-button"><span class="nav-icon-groups"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/paper-airplane.svg") ?></span><span>My Projects</span><span class="nav-icon-more"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/chevron-right.svg") ?></span></a>
   <div class="component-panel">
     <header><h2>My Projects</h2></header>
     <a class="component-button"><span class="nav-icon-back"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/chevron-left.svg") ?></span>Back</a>
       <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
 
-<div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?> id="myprojectsmini">
-	<?php if ($this->params->get('button_show_all', 1) || $this->params->get('button_show_add', 1)) { ?>
-	<ul class="module-nav">
-		<?php if ($this->params->get('button_show_all', 1)) { ?>
-		<li>
-			<a class="icon-browse" href="<?php echo Route::url('index.php?option=com_projects&task=browse'); ?>">
-				<?php echo Lang::txt('MOD_MYPROJECTSMINI_ALL_PROJECTS'); ?>
-			</a>
-		</li>
-		<?php } ?>
-		<?php if ($this->params->get('button_show_add', 1)) { ?>
-		<li>
-			<a class="icon-plus" href="<?php echo Route::url('index.php?option=com_projects&task=start'); ?>">
-				<?php echo Lang::txt('MOD_MYPROJECTSMINI_NEW_PROJECT'); ?>
-			</a>
-		</li>
-		<?php } ?>
-	</ul>
-	<?php } ?>
-
+      <ul class="module-nav grouped">
 	<?php if ($projects && $this->total > 0) { ?>
-		<ul class="compactlist">
 			<?php
 			$i = 0;
 			foreach ($projects as $row)
@@ -86,30 +66,10 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 				$class = $class ? ' class="' . $class . '"' : '';
 
 				$i++;
-				?>
-					<li <?php echo $class; ?>>
-						<a href="<?php echo Route::url('index.php?option=com_projects&task=view&' . $goto); ?>" title="<?php echo $this->escape($row->title) . ' (' . $row->alias . ')'; ?>"><img src="<?php echo Route::url('index.php?option=com_projects&alias=' . $row->alias . '&controller=media&media=thumb'); ?>" alt="<?php echo $this->escape($row->title); ?>" class="project-image" /></a>
-						<a href="<?php echo Route::url('index.php?option=com_projects&task=view&' . $goto); ?>" title="<?php echo $this->escape($row->title) . ' (' . $row->alias . ')'; ?>"><?php echo \Hubzero\Utility\Str::truncate($this->escape($row->title), 30); ?></a>
-						<span class="sub">
-							<?php echo $owned_by; ?> | <?php echo $role; ?> <?php
-							if ($setup)
-							{
-								echo ' | ' . $setup;
-							}
-							elseif ($row->state == 0)
-							{
-								echo ' | ' . Lang::txt('MOD_MYPROJECTSMINI_STATUS_SUSPENDED');
-							}
-							?>
-							<?php if ($row->newactivity && $row->state == 1 && !$setup) { ?>
-								<span class="s-new"><?php echo $row->newactivity; ?></span>
-							<?php } ?>
-						</span>
-					</li>
-				<?php
+        
+        require $this->getLayoutPath('_item');
 			}
 			?>
-		</ul>
 	<?php } else { ?>
 		<p><em><?php echo Lang::txt('MOD_MYPROJECTSMINI_NO_PROJECTS'); ?></em></p>
 	<?php } ?>
@@ -119,7 +79,25 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 			<?php echo Lang::txt('MOD_MYPROJECTSMINI_YOU_HAVE_MORE', $this->limit, $this->total, Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=projects')); ?>
 		</p>
 	<?php } ?>
+
+  <?php if ($this->params->get('button_show_all', 1) || $this->params->get('button_show_add', 1)) { ?>
+		<?php if ($this->params->get('button_show_all', 1)) { ?>
+		<li>
+			<a class="icon-browse" href="<?php echo Route::url('index.php?option=com_projects&task=browse'); ?>">
+				<?php echo Lang::txt('MOD_MYPROJECTSMINI_ALL_PROJECTS'); ?>
+			</a>
+		</li>
+		<?php } ?>
+		<?php if ($this->params->get('button_show_add', 1)) { ?>
+		<li>
+			<a class="icon-plus" href="<?php echo Route::url('index.php?option=com_projects&task=start'); ?>">
+				<?php echo Lang::txt('MOD_MYPROJECTSMINI_NEW_PROJECT'); ?>
+			</a>
+		</li>
+		<?php } ?>
+	<?php } ?>
+  </ul>
+
   </div>
   </div>
- </div>
 </li>

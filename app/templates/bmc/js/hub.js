@@ -511,6 +511,15 @@ if (!jq) {
 				//do nothing
 			}
 		});
+		
+		$('li.pr-active a').each(function() {
+
+			if (this.offsetHeight > 22) {
+				$(this).addClass('truncate');
+			} else {
+				//do nothing
+			}
+		});
 
 		// I'm not sure how well it works, test it
 		// Comment out disabling of scroll on dashboard
