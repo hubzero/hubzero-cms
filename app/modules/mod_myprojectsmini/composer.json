@@ -1,0 +1,8 @@
+{
+	"name": "qubeshub/mod_myprojectsmini",
+	"description": "Display users projects in mini-dashboard.",
+	"type": "hubzero-module",
+	"extra": {
+	    "install-directory": "/modules/mod_myprojectsmini"
+	}
+}
