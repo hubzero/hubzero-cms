@@ -75,9 +75,9 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 	<?php } ?>
 
 	<?php if ($this->total > $this->limit) { ?>
-		<p class="note">
+		<li class="note">
 			<?php echo Lang::txt('MOD_MYPROJECTSMINI_YOU_HAVE_MORE', $this->limit, $this->total, Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=projects')); ?>
-		</p>
+		</li>
 	<?php } ?>
 
   <?php if ($this->params->get('button_show_all', 1) || $this->params->get('button_show_add', 1)) { ?>

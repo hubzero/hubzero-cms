@@ -51,6 +51,21 @@ div.a.project-img img{
  }
 
 li.pr-active span.sub .s-new {
-   margin-top: -50px;
-   margin-left: -5px;
+   margin-top: -50px !important;
+	 margin-left: -5px;
+	 display: block;
+	 position: absolute;
+	 margin-top: -2em;
+	 font-size: 75%;
+	 font-weight: bold;
+	 color: #FFF;
+	 background: red;
+	 padding: 0 6px;
+	 top: auto;
+	 left: auto;
+}
+
+p.note {
+	padding: .8rem 2rem;
+	margin: 0;
 }
