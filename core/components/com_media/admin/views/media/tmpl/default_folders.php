@@ -16,12 +16,14 @@ endif;
 	<?php foreach ($this->folderTree as $folder) : ?>
 		<?php
 		$cls = '';
-		$icon = 'folder.svg';
+
+		$icon = Html::asset('image', 'assets/filetypes/folder.svg', '', null, true, true);
+
 		$open = 0;
 		$p = array();
 		if ($this->folderDepth == 1):
 			$cls = ' class="open"';
-			$icon = 'folder-open.svg';
+			$icon = Html::asset('image', 'assets/filetypes/folder-open.svg', '', null, true, true);
 		else:
 			$fld = trim($this->folder, '/');
 			$trail = explode('/', $fld);
@@ -46,7 +48,7 @@ endif;
 		<li id="<?php echo $this->escape($folder['name']); ?>"<?php echo $cls; ?>>
 			<a class="folder" data-folder="<?php echo $this->escape('/' . $folder['path']); ?>" href="<?php echo Route::url('index.php?option=com_media&controller=medialist&tmpl=component&tmpl=' . Request::getCmd('tmpl') . '&' . Session::getFormToken() . '=1&folder=/' . urlencode($folder['path'])); ?>">
 				<span class="folder-icon">
-					<img src="<?php echo $this->img($icon); ?>" alt="<?php echo $this->escape($folder['name']); ?>" />
+					<img src="<?php echo $icon; ?>" alt="<?php echo $this->escape($folder['name']); ?>" />
 				</span>
 				<?php echo $this->escape($folder['name']); ?>
 			</a>

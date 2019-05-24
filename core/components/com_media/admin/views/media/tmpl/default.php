@@ -47,22 +47,25 @@ $this->js();
 			<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1', true, true); ?>" name="adminForm" id="upload-form" method="post" enctype="multipart/form-data">
 				<div class="media-header">
 					<div class="media-breadcrumbs-block">
-						<a class="media-breadcrumbs has-next-button folder-link" id="path_root">
-							<img src="<?php echo $this->img('folder.svg'); ?>" alt="<?php echo COM_MEDIA_BASEURL; ?>" />
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1&folder=/'); ?>" data-folder="/" class="media-breadcrumbs has-next-button folder-link" id="path_root">
+							<img src="<?php echo Html::asset('image', 'assets/filetypes/folder.svg', '', null, true, true); ?>" alt="<?php echo COM_MEDIA_BASEURL; ?>" />
 						</a>
 						<span id="media-breadcrumbs">
 							<?php
 							$folder = trim($this->folder, '/');
 							$trail = explode('/', $folder);
+							$fld = '';
 
 							foreach ($trail as $crumb):
 								// Skip the root directory
 								if ($crumb == $this->folders[0]['name']):
 									continue;
 								endif;
+
+								$fld .= '/' . $crumb;
 								?>
 								<span class="icon-chevron-right dir-separator">/</span>
-								<a class="media-breadcrumbs folder has-next-button" id="path_<?php echo $crumb; ?>"><?php echo $crumb; ?></a>
+								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1&folder=' . $fld); ?>" data-folder="<?php echo $fld; ?>" class="media-breadcrumbs folder has-next-button" id="path_<?php echo $crumb; ?>"><?php echo $crumb; ?></a>
 								<?php
 							endforeach;
 							?>
