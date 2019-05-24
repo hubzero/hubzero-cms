@@ -235,7 +235,7 @@ class Articles extends SiteController
 			$params->def('page_heading', Lang::txt('JGLOBAL_ARTICLES'));
 		}
 
-		$title = $params->get('page_title', '');
+		$title = $params->get('page_title', $item->title);
 
 		$id = (int) @$menu->query['id'];
 
