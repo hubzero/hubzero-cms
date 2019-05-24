@@ -503,7 +503,7 @@ if (!jq) {
 
 		// Truncate links if greater than 2 lines
 
-		$('li.group a').each(function() {
+		$('li.group-mini a').each(function() {
 
 			if (this.offsetHeight > 22) {
 				$(this).addClass('truncate');

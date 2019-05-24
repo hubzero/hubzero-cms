@@ -8,7 +8,7 @@
 // no direct access
 defined('_HZEXEC_') or die();
 ?>
-<li class="group<?php if ($group->published == 2) { echo ' archived'; } ?>">
+<li class="group-mini<?php if ($group->published == 2) { echo ' archived'; } ?>">
    <div class="grpdisp">
    <?php
 	 $group1 = Hubzero\User\Group::getInstance($group->gidNumber);

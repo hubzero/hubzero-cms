@@ -23,6 +23,7 @@ $this->css()
     <ul class="module-nav grouped">
       <?php if (count($this->recentgroups) > 0) { ?>
         <?php
+        $total = count($this->allgroups);
         foreach ($this->recentgroups as $group)
         {
           if ($group->published)
@@ -37,13 +38,21 @@ $this->css()
         <p><em><?php echo Lang::txt('MOD_MYGROUPSMINI_NO_RECENT_GROUPS'); ?></em></p>
       <?php } ?>
       
+      <?php if ($total > $this->limit) { ?>
+  			<li class="note"><?php echo Lang::txt('MOD_MYGROUPSMINI_YOU_HAVE_MORE', $this->limit, $total, Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=groups')); ?></li>
+  		<?php } ?>
+      
       <li>
-        <a class="icon-browse" href="<?php echo Route::url('index.php?option=com_groups'); ?>">All Groups </a>
+        <a class="icon-browse" href="<?php echo Route::url('index.php?option=com_groups'); ?>">
+          <?php echo Lang::txt('MOD_MYGROUPSMINI_ALL_GROUPS'); ?>
+        </a>
       </li>
       
       <?php if ($this->params->get('button_show_add', 1)) { ?>
         <li>
-          <a class="icon-plus" href="<?php echo Route::url('index.php?option=com_groups&task=new'); ?>"><?php echo Lang::txt('MOD_MYGROUPSMINI_NEW_GROUP'); ?></a></li>
+          <a class="icon-plus" href="<?php echo Route::url('index.php?option=com_groups&task=new'); ?>">
+            <?php echo Lang::txt('MOD_MYGROUPSMINI_NEW_GROUP'); ?>
+          </a>
         </li>
       </ul>
     <?php } ?>
