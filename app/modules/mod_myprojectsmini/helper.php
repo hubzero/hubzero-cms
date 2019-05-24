@@ -41,7 +41,6 @@ class Helper extends Module
 		// Set filters
 		$filters = array(
 			'mine'     => 1,
-			'limit'    => $limit,
 			'start'    => 0,
 			'updates'  => 1,
 			'sortby'   => 'myprojects',
@@ -63,10 +62,12 @@ class Helper extends Module
 
 		// Get records
 		$this->rows = $obj->getRecords($filters, false, User::get('id'), 0, $setup_complete);
+		
+		echo count($this->rows);
 
     $projctsorted = $this->rows;
 		foreach ($projctsorted as $project) {
-			$query = "SELECT lastvisit FROM `#__project_owners` WHERE id= " . $project->id;
+			$query = "SELECT lastvisit FROM `#__project_owners` WHERE userid = " . User::get('id') . " AND projectid= " . $project->id;
 			$db->setQuery($query);
 			$lastvisit= $db->loadResult();
 			$project->lastvisit = $lastvisit;
