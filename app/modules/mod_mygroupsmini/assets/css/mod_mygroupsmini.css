@@ -25,18 +25,18 @@
 	text-overflow: ellipsis;
 }
 
-div.grpdisp{
+#mygroupsmini div.grpdisp{
 	display:table;
 	width: 100%;
 }
 
-div .group-name{
+#mygroupsmini div .group-name{
 	vertical-align:middle;
 	display:table-cell;
 	padding-left:15px;
 }
 
-div.grpdisp .group-img{
+#mygroupsmini div.grpdisp .group-img{
 	vertical-align:middle;
 	display:table-cell;
 	width:45px;
@@ -44,7 +44,7 @@ div.grpdisp .group-img{
 	padding: 2px;
 }
 
-div.a.group-img img{
+#mygroupsmini div.a.group-img img{
 	height:45px;
 	width: 100%;
 	vertical-align:middle;

@@ -25,18 +25,18 @@
 	text-overflow: ellipsis;
 }
 
-div.prjctdisp{
+#myprojectsmini div.prjctdisp {
     display:table;
 		width: 100%;
 }
 
-div .project-name{
+#myprojectsmini div .project-name{
 		vertical-align:middle;
 		display:table-cell;
 		padding-left:15px;
 }
 
-div.prjctdisp .project-img{
+#myprojectsmini div.prjctdisp .project-img{
     vertical-align:middle;
     display:table-cell;
 		width:45px;
@@ -44,13 +44,13 @@ div.prjctdisp .project-img{
 		padding: 2px;
 }
 
-div.a.project-img img{
+#myprojectsmini div.a.project-img img{
 	height:45px;
 	width: 100%;
 	vertical-align:middle;
  }
 
-li.pr-active span.sub .s-new {
+#myprojectsmini li.pr-active span.sub .s-new {
    margin-top: -50px !important;
 	 margin-left: -5px;
 	 display: block;
@@ -65,7 +65,7 @@ li.pr-active span.sub .s-new {
 	 left: auto;
 }
 
-p.note {
+#myprojectsmini p.note {
 	padding: .8rem 2rem;
 	margin: 0;
 }

@@ -16,7 +16,7 @@ $projects = $projctsorted;
 $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 ?>
 
-<li class="component-parent" id="account-projects">
+<li class="component-parent" id="myprojectsmini">
   <a class="component-button"><span class="nav-icon-groups"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/paper-airplane.svg") ?></span><span>My Projects</span><span class="nav-icon-more"><?php echo file_get_contents(PATH_CORE . DS . "assets/icons/chevron-right.svg") ?></span></a>
   <div class="component-panel">
     <header><h2>My Projects</h2></header>
