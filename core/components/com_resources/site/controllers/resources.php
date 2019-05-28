@@ -2449,13 +2449,9 @@ class Resources extends SiteController
 
 			$rdoi = Doi::oneByResource($id, $revision);
 
-			if ($rdoi->get('doi') && $tconfig->get('doi_shoulder'))
+			if ($rdoi->get('doi') && ($rdoi->get('doi_shoulder') || $tconfig->get('doi_shoulder')))
 			{
-				$handle = 'doi:' . $tconfig->get('doi_shoulder') . DS . strtoupper($rdoi->doi);
-			}
-			else if ($rdoi->doi_label)
-			{
-				$handle = 'doi:10254/' . $tconfig->get('doi_prefix') . $id . '.' . $rdoi->doi_label;
+				$handle = 'doi:' . ($rdoi->get('doi_shoulder') ? $rdoi->get('doi_shoulder') : $tconfig->get('doi_shoulder')) . '/' . strtoupper($rdoi->doi);
 			}
 		}
 
