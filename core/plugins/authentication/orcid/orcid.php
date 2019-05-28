@@ -246,9 +246,20 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 			{
 				// Create the hubzero auth link
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'orcid', null, $username);
-				$hzal->set('user_id', User::get('id'));
-				$hzal->set('email', $orcid->email());
-				$hzal->update();
+				// if `$hzal` === false, then either:
+				//    the authenticator Domain couldn't be found,
+				//    no username was provided,
+				//    or the Link record failed to be created
+				if ($hzal)
+				{
+					$hzal->set('user_id', User::get('id'));
+					$hzal->set('email', $orcid->email());
+					$hzal->update();
+				}
+				else
+				{
+					Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "orcid", null, %s) returned false', $username));
+				}
 			}
 		}
 		else

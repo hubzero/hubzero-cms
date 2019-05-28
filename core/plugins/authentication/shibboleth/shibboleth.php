@@ -611,10 +611,21 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'shibboleth', $status['idp'], $username);
-				$hzal->set('user_id', User::get('id'));
-				$hzal->set('email', $status['email']);
-				self::log('setting link', $hzal);
-				$hzal->update();
+				// if `$hzal` === false, then either:
+				//    the authenticator Domain couldn't be found,
+				//    no username was provided,
+				//    or the Link record failed to be created
+				if ($hzal)
+				{
+					$hzal->set('user_id', User::get('id'));
+					$hzal->set('email', $status['email']);
+					self::log('setting link', $hzal);
+					$hzal->update();
+				}
+				else
+				{
+					Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "shibboleth", %s, %s) returned false', $status['idp'], $username));
+				}
 			}
 		}
 		else
