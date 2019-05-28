@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--This is the publication plugin for groups manifest file. here we set the language, main php file, and some params, I am using code from the publications
-plugin in projects and the resources plugin in groups to help me get this plug in done.  -->
-
 <extension version="0.1" type="plugin" group="groups">
 	<name>Groups - Publications</name>
-	<author>Jacob Harless</author>
-	<creationDate>May 2018</creationDate>
-	<version>0.1</version>
-	<copyright>Copyright 2018 QUBES</copyright>
+	<author>HubZero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description>View publications in groups</description>
 	<files>
 		<filename plugin="publications">publications.php</filename>
 		<filename>index.html</filename>
 	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_groups_publications.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_groups_publications.sys.ini</language>
+	</languages>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<!--code from plugins-group-resources, plugin_access is for giving access to users, display_tabs is for putting link in menu -->
 				<field name="plugin_access" type="list" default="members" label="Default Plugin Access" description="Default access level assigned to the blog plugin.">
 					<option value="anyone">Any HUB Visitor</option>
 					<option value="registered">Only Registered HUB Users</option>
@@ -29,23 +28,7 @@ plugin in projects and the resources plugin in groups to help me get this plug i
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
-
-
-				<!--code from plugins-projects-publications -->
-				<field name="display_limit" type="text" menu="hide" label="Display limit" default="50" description="Number of items to return" />
-				<field name="updatable_areas" type="text" menu="hide" default="" label="Updatable fields" description="Publication info areas that may be updated after version release" />
-				<field name="image_types" type="text" menu="hide" default="jpg, jpeg, gif, png" label="Gallery image formats" description="Allowable image types for gallery" />
-				<field name="video_types" type="text" menu="hide" default="avi, mpeg, mov, mpg, wmv, rm, mp4" label="Gallery video formats" description="Allowable video types for gallery" />
-				<field name="googleview" type="radio" default="0" label="Use google viewer" description="Allow certain types of docs to be served inline via Google Docs viewer">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
-				</field>
-				<field name="restricted" type="text" menu="hide" default="" label="Restricted to groups" description="Comma-separated aliases of groups that have databases plugin enabled (empty field means NO RESTRICTIONS)" />
 			</fieldset>
 		</fields>
 	</config>
-	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.plg_groups_publications.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.plg_groups_publications.sys.ini</language>
-	</languages>
 </extension>
