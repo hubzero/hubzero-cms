@@ -21,9 +21,8 @@ $this->css()
     <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
     
     <ul class="module-nav grouped">
-      <?php if (count($this->recentgroups) > 0) { ?>
-        <?php
-        $total = count($this->allgroups);
+      <?php $total = count($this->allgroups);
+      if (count($this->recentgroups) > 0) {
         foreach ($this->recentgroups as $group)
         {
           if ($group->published)
