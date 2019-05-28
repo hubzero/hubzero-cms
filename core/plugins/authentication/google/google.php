@@ -314,9 +314,20 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 			{
 				// Create the hubzero auth link
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'google', null, $username);
-				$hzal->set('user_id', User::get('id'));
-				$hzal->set('email', $user_profile['email']);
-				$hzal->update();
+				// if `$hzal` === false, then either:
+				//    the authenticator Domain couldn't be found,
+				//    no username was provided,
+				//    or the Link record failed to be created
+				if ($hzal)
+				{
+					$hzal->set('user_id', User::get('id'));
+					$hzal->set('email', $user_profile['email']);
+					$hzal->update();
+				}
+				else
+				{
+					Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "google", null, %s) returned false', $username));
+				}
 			}
 		}
 		else
