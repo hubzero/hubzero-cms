@@ -9,9 +9,9 @@
 defined('_HZEXEC_') or die();
 
 /**
- * Helper class for reviews
+ * Helper class for comments
  */
-class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
+class PlgPublicationsCommentsHelper extends \Hubzero\Base\Obj
 {
 	/**
 	 * Execute an action
@@ -75,7 +75,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 		// Is the user logged in?
 		if (User::isGuest())
 		{
-			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN_NOTICE'));
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_COMMENTS_LOGIN_NOTICE'));
 			return;
 		}
 
@@ -87,7 +87,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 		if (!$publication->exists())
 		{
 			// Cannot proceed
-			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID'));
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_COMMENTS_COMMENT_ERROR_NO_REFERENCE_ID'));
 			return;
 		}
 
@@ -95,7 +95,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 
 		$row = \Hubzero\Item\Comment::blank()->set($comment);
 
-		$message = $row->id ? Lang::txt('PLG_PUBLICATIONS_REVIEWS_EDITS_SAVED') : Lang::txt('PLG_PUBLICATIONS_REVIEWS_COMMENT_POSTED');
+		$message = $row->id ? Lang::txt('PLG_PUBLICATIONS_COMMENTS_EDITS_SAVED') : Lang::txt('PLG_PUBLICATIONS_COMMENTS_COMMENT_POSTED');
 
 		// Perform some text cleaning, etc.
 		$row->set('content', \Hubzero\Utility\Sanitize::clean($row->get('content')));
@@ -110,7 +110,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 		}
 
 		// Redirect
-		App::redirect(Route::url($publication->link('reviews')), $message);
+		App::redirect(Route::url($publication->link('comments')), $message);
 	}
 
 	/**
@@ -128,14 +128,14 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 		// Do we have a review ID?
 		if (!$replyid)
 		{
-			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID'));
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_COMMENTS_COMMENT_ERROR_NO_REFERENCE_ID'));
 			return;
 		}
 
 		// Do we have a publication ID?
 		if (!$publication->exists())
 		{
-			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_NO_RESOURCE_ID'));
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_COMMENTS_NO_RESOURCE_ID'));
 			return;
 		}
 
@@ -152,8 +152,8 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 
 		// Redirect
 		App::redirect(
-			Route::url($publication->link('reviews')),
-			Lang::txt('PLG_PUBLICATIONS_REVIEWS_COMMENT_DELETED')
+			Route::url($publication->link('comments')),
+			Lang::txt('PLG_PUBLICATIONS_COMMENTS_COMMENT_DELETED')
 		);
 	}
 
@@ -182,7 +182,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 		// Is the user logged in?
 		if (User::isGuest())
 		{
-			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN_NOTICE'));
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_COMMENTS_LOGIN_NOTICE'));
 			return;
 		}
 
@@ -219,7 +219,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 			$view = new \Hubzero\Plugin\View(
 				array(
 					'folder' =>'publications',
-					'element'=>'reviews',
+					'element'=>'comments',
 					'name'   =>'browse',
 					'layout' =>'_rateitem'
 				)
@@ -232,7 +232,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 			exit();
 		}
 
-		App::redirect(Route::url($publication->get('reviews')));
+		App::redirect(Route::url($publication->get('comments')));
 	}
 
 	/**
@@ -245,7 +245,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 		// Is the user logged in?
 		if (User::isGuest())
 		{
-			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN_NOTICE'));
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_COMMENTS_LOGIN_NOTICE'));
 			return;
 		}
 
@@ -255,7 +255,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 		if (!$publication->exists())
 		{
 			// No - fail! Can't do anything else without an ID
-			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_NO_RESOURCE_ID'));
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_COMMENTS_NO_RESOURCE_ID'));
 			return;
 		}
 
@@ -301,7 +301,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 		// Is the user logged in?
 		if (User::isGuest())
 		{
-			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN_NOTICE'));
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_COMMENTS_LOGIN_NOTICE'));
 			return;
 		}
 
@@ -311,7 +311,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 		if (!$publication->exists())
 		{
 			// No ID - fail! Can't do anything else without an ID
-			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_NO_RESOURCE_ID'));
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_COMMENTS_NO_RESOURCE_ID'));
 			return;
 		}
 
@@ -333,7 +333,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 		$row->created    = ($row->created) ? $row->created : Date::toSql();
 		$row->created_by = User::get('id');
 
-		$message = $row->id ? Lang::txt('PLG_PUBLICATIONS_REVIEWS_EDITS_SAVED') : Lang::txt('PLG_PUBLICATIONS_REVIEWS_REVIEW_POSTED');
+		$message = $row->id ? Lang::txt('PLG_PUBLICATIONS_COMMENTS_EDITS_SAVED') : Lang::txt('PLG_PUBLICATIONS_COMMENTS_REVIEW_POSTED');
 
 		// Check for missing (required) fields
 		if (!$row->check())
@@ -364,13 +364,13 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 		$users = $publication->table('Author')->getAuthors($publication->get('version_id'), 1, 1, true);
 
 		// Build the subject
-		$subject = Config::get('sitename') . ' ' . Lang::txt('PLG_PUBLICATIONS_REVIEWS_CONTRIBUTIONS');
+		$subject = Config::get('sitename') . ' ' . Lang::txt('PLG_PUBLICATIONS_COMMENTS_CONTRIBUTIONS');
 
 		// Message
 		$eview = new \Hubzero\Plugin\View(
 			array(
 				'folder'  =>'publications',
-				'element' =>'reviews',
+				'element' =>'comments',
 				'name'    =>'emails'
 			)
 		);
@@ -382,7 +382,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 
 		// Build the "from" data for the e-mail
 		$from = array();
-		$from['name']  = Config::get('sitename').' '.Lang::txt('PLG_PUBLICATIONS_REVIEWS_CONTRIBUTIONS');
+		$from['name']  = Config::get('sitename').' '.Lang::txt('PLG_PUBLICATIONS_COMMENTS_CONTRIBUTIONS');
 		$from['email'] = Config::get('mailfrom');
 
 		// Send message
@@ -396,10 +396,10 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 			)
 		))
 		{
-			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_FAILED_TO_MESSAGE'));
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_COMMENTS_FAILED_TO_MESSAGE'));
 		}
 
-		App::redirect(Route::url($publication->link('reviews')), $message);
+		App::redirect(Route::url($publication->link('comments')), $message);
 		return;
 	}
 
@@ -419,14 +419,14 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 		// Do we have a review ID?
 		if (!$reviewid)
 		{
-			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_NO_ID'));
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_COMMENTS_NO_ID'));
 			return;
 		}
 
 		// Do we have a publication ID?
 		if (!$publication->exists())
 		{
-			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_NO_RESOURCE_ID'));
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_COMMENTS_NO_RESOURCE_ID'));
 			return;
 		}
 
@@ -461,8 +461,8 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 		$publication->table()->updateRating();
 
 		App::redirect(
-			Route::url($publication->link('reviews')),
-			Lang::txt('PLG_PUBLICATIONS_REVIEWS_REVIEW_DELETED')
+			Route::url($publication->link('comments')),
+			Lang::txt('PLG_PUBLICATIONS_COMMENTS_REVIEW_DELETED')
 		);
 		return;
 	}

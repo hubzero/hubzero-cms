@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="1.7" type="plugin" group="publications">
-	<name>Publication - Reviews</name>
+	<name>Publication - Comments</name>
 	<author>HUBzero</author>
 	<authorUrl>hubzero.org</authorUrl>
 	<authorEmail>support@hubzero.org</authorEmail>
 	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Displays reviews for a publication</description>
+	<description>Displays comments for a publication</description>
 	<files>
-		<filename plugin="reviews">reviews.php</filename>
+		<filename plugin="comments">comments.php</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.plg_publication_reviews.ini</language>
+		<language tag="en-GB">en-GB.plg_publications_comments.ini</language>
+		<language tag="en-GB">en-GB.plg_publications_comments.sys.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
 				<field name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
-				<field name="voting" type="radio" default="1" label="Voting Enabled" description="Allow voting on reviews and comments">
-					<option value="0">JNo</option>
-					<option value="1">JYes</option>
+				<field name="voting" type="radio" default="1" label="Voting Enabled" description="Allow voting on comments">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
 				</field>
 			</fieldset>
 		</fields>

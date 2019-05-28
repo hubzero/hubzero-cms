@@ -11,9 +11,9 @@ defined('_HZEXEC_') or die();
 require_once Component::path('com_publications') . DS . 'tables' . DS . 'review.php';
 
 /**
- * Publications Plugin class for reviews
+ * Publications Plugin class for comments
  */
-class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
+class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -34,9 +34,9 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	{
 		$areas = array();
 
-		if ($model->_category->_params->get('plg_reviews') && $extended && $model->access('view-all'))
+		if ($model->_category->_params->get('plg_comments') && $extended && $model->access('view-all'))
 		{
-			$areas['reviews'] = Lang::txt('PLG_PUBLICATIONS_REVIEWS');
+			$areas['comments'] = Lang::txt('PLG_PUBLICATIONS_COMMENTS');
 		}
 
 		return $areas;
@@ -91,7 +91,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 				$rtrn = 'metadata';
 			}
 		}
-		if (!$model->category()->_params->get('plg_reviews') || !$extended)
+		if (!$model->category()->_params->get('plg_comments') || !$extended)
 		{
 			return $arr;
 		}
@@ -106,12 +106,12 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 		$h->_option     = $option;
 		$h->execute();
 
-		// Get reviews for this publication
+		// Get comments for this publication
 		$database = App::get('db');
 		$r = new \Components\Publications\Tables\Review($database);
 
 		$arr['count'] = $r->countRatings($model->get('id'));
-		$arr['name']  = 'reviews';
+		$arr['name']  = 'comments';
 
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
@@ -130,10 +130,10 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 				return;
 			}
 
-			$reviews = $r->getRatings($model->get('id'));
-			if (!$reviews)
+			$comments = $r->getRatings($model->get('id'));
+			if (!$comments)
 			{
-				$reviews = array();
+				$comments = array();
 			}
 
 			$infolink = '/kb/points/';
@@ -143,7 +143,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 			$view = $this->view('default', 'browse')
 				->set('option', $option)
 				->set('publication', $model)
-				->set('reviews', $reviews)
+				->set('comments', $comments)
 				->set('voting', $this->params->get('voting', 1))
 				->set('h', $h)
 				->set('banking', $banking)
@@ -165,7 +165,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 			$view = $this->view('default', 'metadata')
 				->set('url', Route::url($model->link($this->_name)))
 				->set('url2', Route::url($model->link($this->_name) . '&action=addreview#reviewform'))
-				->set('reviews', $arr['count']);
+				->set('comments', $arr['count']);
 
 			$arr['metadata'] = $view->loadTemplate();
 		}
