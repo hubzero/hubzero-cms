@@ -183,17 +183,9 @@ $maintext = $this->model->description;
 						$tconfig = Component::params('com_tools');
 						$doi = '';
 
-						if ($this->model->doi)
+						if ($this->model->doi && ($this->model->doi_shoulder || $tconfig->get('doi_shoulder')))
 						{
 							$doi = ($this->model->doi_shoulder ? $this->model->doi_shoulder : $tconfig->get('doi_shoulder')) . '/' . strtoupper($this->model->doi);
-						}
-						else if ($this->model->doi_label)
-						{
-							$doi = '10254/' . $tconfig->get('doi_prefix') . $this->model->id . '.' . $this->model->doi_label;
-						}
-
-						if ($doi)
-						{
 							$cite->doi = $doi;
 						}
 
