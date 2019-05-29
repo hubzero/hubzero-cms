@@ -49,6 +49,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_ANSWERS_SEARCH'); ?>" />
 					<fieldset class="entry-search">
+						<legend><?php echo Lang::txt('COM_ANSWERS_SEARCH'); ?></legend>
 						<label for="entry-search-field"><?php echo Lang::txt('COM_ANSWERS_SEARCH_LABEL'); ?></label>
 						<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_ANSWERS_SEARCH_PLACEHOLDER'); ?>" />
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
