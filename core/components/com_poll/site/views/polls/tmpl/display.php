@@ -30,11 +30,11 @@ $this->css();
 		<div class="col span4<?php if ($i == 2) { echo ' omega'; } ?>">
 			<div class="poll">
 				<div class="details">
-					<h3><?php echo $this->escape($poll->get('title')); ?></h3>
-
 					<?php if ($poll->get('open')) { ?>
 						<form id="poll<?php echo $poll->get('id'); ?>" method="post" action="<?php echo Route::url('index.php?option=com_poll&task=vote'); ?>">
 							<fieldset>
+								<legend><?php echo $this->escape($poll->get('title')); ?></legend>
+
 								<ul class="poll-options">
 									<?php foreach ($poll->options()->where('text', '!=', '')->ordered()->rows() as $option) : ?>
 										<li>
@@ -58,6 +58,7 @@ $this->css();
 							</fieldset>
 						</form>
 					<?php } else { ?>
+						<h3><?php echo $this->escape($poll->get('title')); ?></h3>
 						<ul class="poll-results">
 							<?php $i = 1; ?>
 							<?php foreach ($poll->options()->where('text', '!=', '')->ordered()->rows() as $option) : ?>

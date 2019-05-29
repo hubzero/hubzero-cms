@@ -125,7 +125,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 	</div><!-- / .section-inner -->
 </section><!-- / .main section -->
 
-<?php if ($this->article->param('allow_comments')) { ?>
+<?php //if ($this->article->param('allow_comments')) { ?>
 <section class="below section" id="comments">
 	<div class="section-inner hz-layout-with-aside">
 		<div class="subject">
@@ -174,6 +174,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 					<img src="<?php echo User::picture(!User::isGuest() ? 0 : 1); ?>" alt="" />
 				</p>
 				<fieldset>
+					<legend><?php echo Lang::txt('COM_KB_POST_COMMENT'); ?></legend>
 					<?php
 					$replyto = \Components\Kb\Models\Comment::oneOrNew(Request::getInt('replyto'));
 
@@ -209,27 +210,31 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 					?>
 
 					<?php if ($this->article->commentsOpen()) { ?>
-						<label for="commentcontent">
-							<?php echo Lang::txt('COM_KB_YOUR_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-							<?php
-							if (!User::isGuest()) {
-								echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal'));
-							} else {
-								$rtrn = Route::url($this->article->link() . '#post-comment', false, true);
-								?>
-								<p class="warning">
-									<?php echo Lang::txt('COM_KB_MUST_LOG_IN', Route::url('index.php?option=com_login&return=' . base64_encode($rtrn), false)); ?>
-								</p>
+						<div class="form-group">
+							<label for="commentcontent">
+								<?php echo Lang::txt('COM_KB_YOUR_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 								<?php
-							}
-							?>
-						</label>
+								if (!User::isGuest()) {
+									echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal'));
+								} else {
+									$rtrn = Route::url($this->article->link() . '#post-comment', false, true);
+									?>
+									<p class="warning">
+										<?php echo Lang::txt('COM_KB_MUST_LOG_IN', Route::url('index.php?option=com_login&return=' . base64_encode($rtrn), false)); ?>
+									</p>
+									<?php
+								}
+								?>
+							</label>
+						</div>
 
 						<?php if (!User::isGuest()) { ?>
-							<label id="comment-anonymous-label" for="comment-anonymous">
-								<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
-								<?php echo Lang::txt('COM_KB_FIELD_ANONYMOUS'); ?>
-							</label>
+							<div class="form-group">
+								<label id="comment-anonymous-label" for="comment-anonymous">
+									<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+									<?php echo Lang::txt('COM_KB_FIELD_ANONYMOUS'); ?>
+								</label>
+							</div>
 
 							<p class="submit">
 								<input type="submit" name="submit" value="<?php echo Lang::txt('COM_KB_SUBMIT'); ?>" />
@@ -264,4 +269,4 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 	</div><!-- / .section-inner -->
 </section><!-- / .below -->
 
-<?php }
+<?php //}
