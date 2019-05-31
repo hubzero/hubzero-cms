@@ -264,6 +264,16 @@ class Format
 					}
 				}
 
+				if ($k == 'doi')
+				{
+					$this->$k = str_replace('https://doi.org/', '', $this->$k);
+					$this->$k = str_replace('https://dx.doi.org/', '', $this->$k);
+					$this->$k = str_replace('http://doi.org/', '', $this->$k);
+					$this->$k = str_replace('http://dx.doi.org/', '', $this->$k);
+
+					$replace_values[$v] = '<a rel="external" href="https://doi.org/' . $this->$k . '">' . $this->$k . '</a>';
+				}
+
 				if ($k == 'author')
 				{
 					$a = array();
@@ -1063,8 +1073,13 @@ class Format
 		}
 		if (self::keyExistsOrIsNotEmpty('doi', $row))
 		{
+			$row->doi = str_replace('https://doi.org/', '', $row->doi);
+			$row->doi = str_replace('https://dx.doi.org/', '', $row->doi);
+			$row->doi = str_replace('http://doi.org/', '', $row->doi);
+			$row->doi = str_replace('http://dx.doi.org/', '', $row->doi);
+
 			$html  = self::grammarCheck($html, '.');
-			$html .= ' (' . \Lang::txt('DOI') . ': ' . $row->doi . ')';
+			$html .= ' (' . \Lang::txt('DOI') . ': <a rel="external" href="https://doi.org/' . $row->doi . '">' . $row->doi . '</a>)';
 		}
 		$html  = self::grammarCheck($html, '.');
 		$html .= '</p>' . "\n";
