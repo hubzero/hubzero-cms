@@ -784,16 +784,12 @@ class Curation extends SiteController
 		$sef     = 'publications' . DS . $pub->id . DS . $pub->version_number;
 		$link    = rtrim(Request::base(), DS) . DS . trim(Route::url($pub->link('version')), DS);
 		$manage  = rtrim(Request::base(), DS) . DS . trim(Route::url($pub->link('editversion')), DS);
-		$message = $status == 1 ? Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_APPROVED') : Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_KICKED_BACK');
+		$message = $status == 1 ? Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_APPROVED', $link) : Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_KICKED_BACK');
 
 		if ($status != 1)
 		{
 			$message .= "\n" . "\n";
 			$message .= Lang::txt('COM_PUBLICATIONS_CURATION_TAKE_ACTION') . ' ' . $manage;
-		}
-		else
-		{
-			$message .= ' ' . $link;
 		}
 
 		$pubtitle = \Hubzero\Utility\Str::truncate($pub->title, 100);
