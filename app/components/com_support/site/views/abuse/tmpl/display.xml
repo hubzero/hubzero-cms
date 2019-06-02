@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+@package      hubzero-cms
+@copyright    Copyright 2005-2019 HUBzero Foundation, LLC.
+@license      http://opensource.org/licenses/MIT MIT
+-->
+
+<metadata>
+	<layout title="Report abuse">
+		<message>
+			<![CDATA[Report abuse]]>
+		</message>
+	</layout>
+	<state>
+		<name>Report abuse</name>
+		<description>Report abuse</description>
+		<params>
+			<param name="id" type="text" label="Reference ID" description="Enter a reference ID such as a resource ID or comment ID" />
+			<param name="parent" type="text" label="Parent ID" description="Enter a parent ID. This is, for example, if the reported item is a reply to a comment." />
+			<param name="category" type="text" label="Category" description="Enter a category such as reply, comment, etc." />
+		</params>
+	</state>
+</metadata>
+
