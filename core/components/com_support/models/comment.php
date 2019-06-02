@@ -190,32 +190,39 @@ class Comment extends Relational
 	 */
 	public function transformComment()
 	{
-		$comment = $this->get('comment');
-
-		// Replace {ticket#123}
-		$comment = preg_replace('/\{ticket#([\d]+)\}/i', '<a href="' . Route::url("index.php?option=com_support&task=ticket&id=$1") . '">' . Lang::txt('ticket #%s', "$1") . '</a>', $comment);
-
-		// Handle legacy attachment strings
-		$comment = preg_replace_callback('/\{attachment#[0-9]*\}/sU', array(&$this,'_getAttachment'), $comment);
-
-		$this->set('comment', $comment);
-
-		// Prepare comment
-		$results = \Event::trigger('support.onCommentPrepare', array('com_support.comment', &$this));
-		$results = implode('', $results);
-
-		$comment = $this->get('comment');
-
-		if (!trim($results))
+		if (is_null($this->get('comment_transformed')))
 		{
-			$comment = preg_replace("/<br\s?\/>/i", '', $comment);
-			$comment = htmlentities($comment, ENT_COMPAT, 'UTF-8');
-			$comment = nl2br($comment);
-			$comment = str_replace("\t", ' &nbsp; &nbsp;', $comment);
-			$comment = preg_replace('/  /', ' &nbsp;', $comment);
+			$comment  = (string)$this->get('comment');
+			$original = $comment;
+
+			// Replace {ticket#123}
+			$comment = preg_replace('/\{ticket#([\d]+)\}/i', '<a href="' . Route::url("index.php?option=com_support&task=ticket&id=$1") . '">' . Lang::txt('ticket #%s', "$1") . '</a>', $comment);
+
+			// Handle legacy attachment strings
+			$comment = preg_replace_callback('/\{attachment#[0-9]*\}/sU', array(&$this,'_getAttachment'), $comment);
+
+			$this->set('comment', $comment);
+
+			// Prepare comment
+			$results = \Event::trigger('support.onCommentPrepare', array('com_support.comment', &$this));
+			$results = implode('', $results);
+
+			$comment = $this->get('comment');
+
+			if (!trim($results))
+			{
+				$comment = preg_replace("/<br\s?\/>/i", '', $comment);
+				$comment = htmlentities($comment, ENT_COMPAT, 'UTF-8');
+				$comment = nl2br($comment);
+				$comment = str_replace("\t", ' &nbsp; &nbsp;', $comment);
+				$comment = preg_replace('/  /', ' &nbsp;', $comment);
+			}
+
+			$this->set('comment_transformed', $comment);
+			$this->set('comment', $original);
 		}
 
-		return $comment;
+		return $this->get('comment_transformed');
 	}
 
 	/**

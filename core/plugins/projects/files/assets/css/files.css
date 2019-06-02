@@ -20,13 +20,14 @@
 		float: left;
 		display: inline;
 		width: auto;
-		margin-top: 0.2em;	
+		margin-top: 0.2em;
 	}
 	#manage_upload {
 		float: right;
 		margin-top: 0.2em;
 	}
-	#manage_assets label, #pub-editor .c-inner #manage_assets label {
+	#manage_assets label,
+	#pub-editor .c-inner #manage_assets label {
 		padding: 0;
 		margin: 0;
 		padding-left: 25px;
@@ -43,7 +44,9 @@
 	#filerForm #manage_assets label {
 		display: block;
 	}
-	#hubForm label.inliner, #filerForm #manage_assets label.inliner, #filerForm label.inliner {
+	#hubForm label.inliner,
+	#filerForm #manage_assets label.inliner,
+	#filerForm label.inliner {
 		display: inline;
 		padding: 0;
 	}
@@ -89,7 +92,7 @@
 	}
 	input[type="submit"].started {
 		color: green;
-		border: 3px solid green !important;
+		border: 3px solid green;
 		cursor: pointer;
 	}
 	input[type="submit"].started:hover {
@@ -98,13 +101,12 @@
 
 /* Move files
 --------------------------------------------- */
-
 	#abox-content ul li span.folder {
 		background: url("/core/plugins/projects/files/assets/img/folder.gif") 0 0 no-repeat;
 		padding-left: 20px;
 		margin-left: 0;
 	}
-	
+
 /* Files management icons
 --------------------------------------------- */
 	.uptoparent {
@@ -120,16 +122,16 @@
 		padding-left: 20px;
 		*background: url("../img/gdrive.gif") 0 0 no-repeat;
 	}
-		
+
 /* File preview window 
 --------------------------------------------- */
 	#preview-window {
 		padding: 1em;
-		border: 1px solid #CCC;
-		-moz-box-shadow: 5px 5px 5px #999;
-		-webkit-box-shadow: 5px 5px 5px #999;
-		box-shadow: 5px 5px 5px #999;
-		background: #FFFFFF;
+		border: 1px solid #ccc;
+		-webkit-box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+		   -moz-box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+		        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+		background: #fff;
 		width: 300px;
 		min-height: 50px;
 		position: absolute;
@@ -138,8 +140,9 @@
 		display: none;
 		overflow: hidden;
 		font-size: 85%;
-		-moz-border-radius: 15px;
-		border-radius: 15px;
+		-webkit-border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		        border-radius: 0.25em;
 		z-index: 999;
 	}
 	#preview-window pre {
@@ -162,6 +165,7 @@
 		padding-top: 0.2em;
 		float: left;
 		margin-right: 0.2em;
+		height: 1.5em;
 	}
 	#preview-image img {
 		max-width: 100%;
@@ -172,9 +176,9 @@
 	}
 	#preview-image img {
 		border: 1px solid #ebebeb;
-		-moz-box-shadow: 5px 5px 5px #ebebeb;
 		-webkit-box-shadow: 5px 5px 5px #ebebeb;
-		box-shadow: 5px 5px 5px #ebebeb;
+		   -moz-box-shadow: 5px 5px 5px #ebebeb;
+		        box-shadow: 5px 5px 5px #ebebeb;
 		padding: 0.5em;
 	}
 	ul.filedata {
@@ -195,7 +199,7 @@
 	ul.filedata li:last-child {
 		border: none;
 	}
-	
+
 /* Revision table and versioning
 --------------------------------------------- */
 	#plg-form fieldset.diff-form td {
@@ -233,7 +237,8 @@
 	table.revisions th, table.revisions td {
 		font-size: 85%;
 	}
-	table.revisions tbody tr:hover td, table.revisions tbody tr.prime {
+	table.revisions tbody tr:hover td,
+	table.revisions tbody tr.prime {
 		background: #f4fcff;
 	}
 	ul.sample, div.sample {
@@ -252,7 +257,9 @@
 	ul.sample img, div.sample img {
 		padding-top: 0.3em;
 	}
-	ul.sample .remote-file, div.sample .remote-file, .file-skipped {
+	ul.sample .remote-file,
+	div.sample .remote-file,
+	.file-skipped {
 		font-size: 85%;
 		color: #CCC;
 		display: inline;
@@ -282,7 +289,7 @@
 		color: #c4d2d6;
 		display: none;
 		position: absolute;
-	}	
+	}
 	table.listing tbody tr.mline:hover .i-history:before,
 	table.listing tbody tr.mline:hover .i-delete:before,
 	table.listing tbody tr.mline:hover .i-move:before,
@@ -307,7 +314,7 @@
 		border: none;
 	}
 	.i-commit:before {
-		content: "\2611";	
+		content: "\2611";
 	}
 	table.revisions td.commit-actor {
 		width: 20%;
@@ -334,20 +341,20 @@
 		font-weight: bold;
 	}
 	table.revisions tbody tr:hover td.commit-details {
-		background: #e9f0f2;	
+		background: #e9f0f2;
 	}
 	table.revisions tbody tr.current-revision td.commit-details {
-		background: #fafff7;	
+		background: #fafff7;
 	}
 	table.revisions tbody tr.current-revision:hover td {
 		background: #fafff7;
 	}
 	table.revisions tbody tr.current-revision:hover td.commit-details {
-		background: #f1feea;	
+		background: #f1feea;
 	}
 	table.revisions tbody tr.deleted-revision {
 		background: #f9f9f9;
-		color: #999;	
+		color: #999;
 	}
 	table.revisions #preview-image {
 		padding-bottom: 2em;
@@ -364,17 +371,17 @@
 	pre span.rev-removed {
 		color: red;
 	}
-	
+
 /* Diffing
 --------------------------------------------- */
 	table.revisions td.diffing {
 		white-space: nowrap;
 	}
 	table.revisions th.diffing {
-		
 	}
-	.diffing label, .diffing input {
-		display: inline !important;
+	.diffing label,
+	.diffing input {
+		display: inline;
 		float: none;
 		margin: 0 0.5em 0 0;
 	}
@@ -393,7 +400,7 @@
 	}
 	.diff tbody td {
 		padding: 0 0.3em;
-		border-bottom: 1 px solid #CCC;
+		border-bottom: 1px solid #CCC;
 	}
 	.diffGit {
 		padding: 0 1em;
@@ -404,33 +411,28 @@
 		border: none;
 		background: white;
 	}
-	
+
 	.diffSideBySide td.Right,
 	.diffSideBySide td.Left {
 		width: 45%;
-	}	
+	}
 	.diffSideBySide .ChangeInsert td.Left {
 		background: #dfd;
 	}
-
 	.diffSideBySide .ChangeInsert td.Right,
 	.diff-legend dt.diff-add {
 		background: #cfc;
 	}
-
 	.diffSideBySide .ChangeDelete td.Left {
 		background: #f88;
 	}
-
 	.diffSideBySide .ChangeDelete td.Right,
 	.diff-legend dt.diff-rem {
 		background: #faa;
 	}
-
 	.diffSideBySide .ChangeReplace .Left {
 		background: #fe9;
 	}
-
 	.diffSideBySide .ChangeReplace .Right,
 	.diff-legend dt.diff-mod {
 		background: #fd8;
@@ -440,7 +442,8 @@
 		text-decoration: none;
 	}
 
-	.diffSideBySide .ChangeReplace ins, .diffSideBySide .ChangeReplace del {
+	.diffSideBySide .ChangeReplace ins,
+	.diffSideBySide .ChangeReplace del {
 		background: #fc0;
 	}
 
@@ -452,23 +455,20 @@
 	.diffInline .ChangeDelete .Left {
 		background: #fdd;
 	}
-
 	.diffInline .ChangeReplace .Right,
 	.diffInline .ChangeInsert .Right {
 		background: #dfd;
 	}
-
 	.diffInline .ChangeReplace ins {
 		background: #9e9;
 	}
-
 	.diffInline .ChangeReplace del {
 		background: #e99;
 	}
-	.diff-legend  {
+	.diff-legend {
 		margin-bottom: 1em;
 		vertical-align: top;
-	}	
+	}
 	.diff-legend label {
 		padding-bottom: 0.5em;
 	}
@@ -497,11 +497,11 @@
 		display: inline-block;
 		margin-left: 1em;
 	}
-	
+
 /* Show more/less of revision text
 --------------------------------------------- */
-	.long-txt pre, .short-txt pre 
-	{
+	.long-txt pre,
+	.short-txt pre {
 		max-height: 400px;
 		overflow: auto;
 		max-width: 500px;
@@ -517,10 +517,9 @@
 		margin-left: 0.3em;
 		vertical-align: middle;
 	}
-	
+
 /* New file management (icon-based)
 --------------------------------------------- */
-	
 	#a-download:before,
 	#a-move:before,
 	#a-history:before,
@@ -536,8 +535,7 @@
 	#a-compile:before,
 	#a-handle:before,
 	#a-rename:before,
-	#a-annotate:before
-	{
+	#a-annotate:before {
 		content: "";
 		width: 16px;
 		height: 16px;
@@ -753,10 +751,9 @@
 		margin-right: 0.3em;
 		vertical-align: middle;
 	}
-	
+
 /* Extra file options
 --------------------------------------------- */
-
 	#more-options {
 		position: absolute;
 		width: 150px;
@@ -771,7 +768,6 @@
 		box-shadow: 0 0 4px #666;
 		text-align: left;
 	}
-	
 	#more-options ul {
 		list-style: none;
 		margin: 0;
@@ -790,10 +786,9 @@
 		width: 100%;
 		max-width: 780px;
 	}
-	
+
 /* Syncing
 --------------------------------------------- */
-	
 	#manage_sync {
 		float: right;
 		background: #FFF;
@@ -801,7 +796,9 @@
 		border: 1px solid #a1bec6;
 		display: block;
 	}
-	#manage_sync, #sync-wrap, #sync-wrap a {
+	#manage_sync,
+	#sync-wrap,
+	#sync-wrap a {
 		display: block;
 	}
 	#manage_sync a span {
@@ -816,32 +813,32 @@
 		*background: url("../img/gdrive.gif") 0 0 no-repeat;
 	}
 	@-o-keyframes Rotate {
-	  from {-o-transform:rotate(0deg);}
-	  to {-o-transform:rotate(360deg);}
+		from {-o-transform:rotate(0deg);}
+		to {-o-transform:rotate(360deg);}
 	}
 	@-moz-keyframes Rotate {
-	 from {-moz-transform:rotate(0deg);}
-	 to {-moz-transform:rotate(360deg);}
+		from {-moz-transform:rotate(0deg);}
+		to {-moz-transform:rotate(360deg);}
 	}
 	@-ms-keyframes Rotate {
-	  from {-ms-transform:rotate(0deg);}
-	  to {-ms-transform:rotate(360deg);}
+		from {-ms-transform:rotate(0deg);}
+		to {-ms-transform:rotate(360deg);}
 	}
 	@-webkit-keyframes Rotate {
-	  from {-webkit-transform:rotate(0deg);}
-	  to {-webkit-transform:rotate(360deg);}
+		from {-webkit-transform:rotate(0deg);}
+		to {-webkit-transform:rotate(360deg);}
 	}
 	@-keyframes Rotate {
-	  from { transform:rotate(0deg);}
-	  to { transform:rotate(360deg);}
+		from { transform:rotate(0deg);}
+		to { transform:rotate(360deg);}
 	}
-	
+
 	#manage_sync .syncing {
 		-webkit-animation: Rotate 1000ms infinite linear;
-		  -moz-animation: Rotate 1000ms infinite linear;
-		  -ms-animation: Rotate 1000ms infinite linear;
-		  -o-animation: Rotate 1000ms infinite linear;
-		  animation: Rotate 1000ms infinite linear;
+		   -moz-animation: Rotate 1000ms infinite linear;
+		    -ms-animation: Rotate 1000ms infinite linear;
+		     -o-animation: Rotate 1000ms infinite linear;
+		        animation: Rotate 1000ms infinite linear;
 	}
 	#manage_sync .syncing #a-sync:before {
 		color: black;
@@ -877,7 +874,7 @@
 		text-align: right;
 		color: green;
 	}
-	
+
 /* Untracked files
 --------------------------------------------- */
 	table.listing tbody tr.mline .fileoptions {
@@ -887,7 +884,7 @@
 	table.listing tbody tr.mline:hover .fileoptions {
 		display: inline;
 	}
-	
+
 /* Renaming & tex files
 --------------------------------------------- */
 	.rename, .tex-menu {
@@ -926,7 +923,7 @@
 	.tex-menu {
 		margin-left: 5em;
 	}
-	.tex-menu span {		
+	.tex-menu span {
 		background: white;
 		padding: 0.2em 0.5em;
 		color: #6897a4;
@@ -939,9 +936,9 @@
 	}
 	.tex-menu span:hover {
 		color: black;
-		color: #5dbfec;	
+		color: #5dbfec;
 	}
-	
+
 /* Connect to Google/Dropbox etc.
 --------------------------------------------- */
 	@font-face {
@@ -967,17 +964,18 @@
 		font-family: 'Socicons';
 		margin-right: 1em;
 		margin-left: -1em;
-		padding: 2px;	
+		padding: 2px;
 	}
 	#connector .google:before,
 	#connections .google:before,
-	.sharing-option .google:before  {		
+	.sharing-option .google:before {
 		content: "\f02c";
 		color: #5dbfec;	
 		background: #f8f5cd;
 		border: 1px solid #eed235;
 	}
-	.google-resource .sharing:before, .s-google:before {
+	.google-resource .sharing:before,
+	.s-google:before {
 		content: "\f02c";
 		color: #d0ba40;
 		position: absolute;
@@ -1000,10 +998,10 @@
 		padding-left: 20px;
 	}
 	.google-resource {
-		background: #fdfff6;	
+		background: #fdfff6;
 	}
 	table.listing tbody tr.google-resource:hover {
-		background: #f8fbee !important;	
+		background: #f8fbee;
 	}
 	.sharing {
 		vertical-align: top;
@@ -1026,7 +1024,7 @@
 	#connector .dropbox:before,
 	#connections .dropbox:before {
 		content: "\f026";
-		color: #5dbfec;	
+		color: #5dbfec;
 		background: #cef4fb;
 		border: 1px solid #7dddee;
 	}
@@ -1049,7 +1047,7 @@
 	#connections .infuture:before {
 		content: "\22EF";
 		font-family: 'Fontcons';
-		color: #CCC;	
+		color: #CCC;
 		background: #FFF;
 		border: 1px solid #CCC;
 		padding-left: 0.4em;
@@ -1058,7 +1056,7 @@
 	#connections .inactive:before {
 		color: #CCC;
 		background: #fdfdfd;
-		border: 1px solid #CCC;		
+		border: 1px solid #CCC;
 	}
 	#connector {
 		float: right;
@@ -1080,10 +1078,12 @@
 		margin-top: 1em;
 		border: 1px solid #7dddee;
 		background: #eff8f9;
-		border-radius: 10px;
-		-moz-border-radius: 10px;
-		-moz-box-shadow: inset 0 0.3em 2em #fff;
+		-webkit-border-radius: 10px;
+		   -moz-border-radius: 10px;
+		        border-radius: 10px;
 		-webkit-box-shadow: inset 0 0.3em 2em #fff;
+		   -moz-box-shadow: inset 0 0.3em 2em #fff;
+		        box-shadow: inset 0 0.3em 2em #fff;
 	}
 	#connections .inactive, #connections .infuture {
 		background: #f6f6f6;
@@ -1139,7 +1139,7 @@
 	}
 	.connect-action a {
 		color: #52ad4b;
-		border-bottom: 1px dotted #52ad4b !important;
+		border-bottom: 1px dotted #52ad4b;
 		text-transform: uppercase;
 	}
 	.disconnect {
@@ -1153,8 +1153,8 @@
 	}
 	.sync span {
 		background: #FFF;
-		padding: 0.1em 0.5em !important;
-		border: 1px solid #7dddee !important;
+		padding: 0.1em 0.5em;
+		border: 1px solid #7dddee;
 	}
 	p.sync {
 		margin-top: 1em;
@@ -1190,7 +1190,7 @@
 		font-size: 75%;
 		color: #000;
 		border-bottom: 1px dotted #000;
-		background: url("/core/plugins/projects/files/assets/img/folder.gif") 0 0 no-repeat;
+		background: url("../img/folder.gif") 0 0 no-repeat;
 		padding-left: 20px;
 	}
 	#abox-content h3 span.folder {
@@ -1222,8 +1222,8 @@
 	}
 	.sharing-option-extra label {
 		display: block;
-		margin: 0.5em 0 0 0 !important;
-		padding: 0 !important;
+		margin: 0.5em 0 0 0;
+		padding: 0;
 	}
 	.sharing-option .google:before {
 		margin-right: 0.5em;
@@ -1247,7 +1247,7 @@
 	p.send_to .send_to_remote span:before {
 		width: 32px;
 		height: 32px;
-		font-size: 32px;	
+		font-size: 32px;
 	}
 	span.moved {
 		float: right;
@@ -1271,12 +1271,12 @@
 	}
 	.send_to_local:before,
 	.send_to_remote:after {
-		content: "\2641";	
+		content: "\2641";
 	}
 	.send_to_remote:before,
 	.send_to_local:after {
 		content: "\f03f";
-		color: #c3b9aa;	
+		color: #c3b9aa;
 	}
 	.send_to_local span:before,
 	.send_to_remote span:before {
@@ -1309,7 +1309,7 @@
 		width: 70%;
 		float: left;
 	}
-	.separator {
+	#plg-content .separator {
 		width: 3%;
 		float: left;
 		min-height: 36px;
@@ -1317,7 +1317,7 @@
 		text-align: center;
 	}
 	#metadata-entries .entry input {
-		width: 100% !important;
+		width: 100%;
 	}
 	#metadata-entries .entry .dublin {
 		opacity: 0.6;
@@ -1340,6 +1340,9 @@
 	.is-relative {
 		position: relative;
 	}
+	.file-action-dropdown {
+		display: inline-block;
+	}
 	.file-action-dropdown.hasMultiple {
 		position: absolute;
 		border: 1px solid transparent;
@@ -1359,16 +1362,16 @@
 		content: '\2303';
 		margin-left: 5px;
 		color: #CCCCCC;
-
 		-webkit-transition: 0.15s ease-in-out;
-		-o-transition: 0.15s ease-in-out;
-		transition: 0.15s ease-in-out;
+		   -moz-transition: 0.15s ease-in-out;
+		     -o-transition: 0.15s ease-in-out;
+		        transition: 0.15s ease-in-out;
 	}
 	.file-action-dropdown.hasMultiple:hover a:first-child:after {
 		-webkit-transform: rotate(180deg);
-		-moz-transform: rotate(180deg); 
-		-o-transform: rotate(180deg);
-		transform: rotate(180deg);
+		   -moz-transform: rotate(180deg); 
+		     -o-transform: rotate(180deg);
+		        transform: rotate(180deg);
 	}
 	.file-action-dropdown.hasMultiple:hover {
 		border: 1px solid #DADADA;
@@ -1399,6 +1402,9 @@
 	.fancybox-title {
 		display: none;
 	}
+	table#filelist img {
+		height: 1.5em;
+	}
 	table#filelist tbody tr {
 		height: 38px;
 	}
@@ -1423,16 +1429,3 @@
 		width: 5%;
 		white-space: nowrap;
 	}
-	
-/* IE7 hacks 
---------------------------------------------- */
-	#manage_assets a span {
-		*display: inline;
-	}
-	#connector .google {
-		*padding-left: 10px;
-		*width: 10px;
-		*background: url("../img/gdrive.gif") 0 0 no-repeat;
-		*display: inline-block;
-	}
-	

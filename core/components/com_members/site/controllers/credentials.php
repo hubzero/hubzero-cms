@@ -137,7 +137,7 @@ class Credentials extends SiteController
 
 		// Everything went well...go to the login page
 		App::redirect(
-			Route::url('index.php?option=com_users&view=login', false),
+			Route::url('index.php?option=com_login', false),
 			Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_SENT'),
 			'passed'
 		);
@@ -311,7 +311,7 @@ class Credentials extends SiteController
 		}
 
 		// Push the user data into the session
-		User::setState('com_users.reset.user', $user->get('id'));
+		User::setState('com_members.reset.user', $user->get('id'));
 
 		// Everything went well...go to the token verification page
 		App::redirect(
@@ -354,7 +354,7 @@ class Credentials extends SiteController
 		}
 
 		// Get the token and user id from the confirmation process
-		$id = User::getState('com_users.reset.user', null);
+		$id = User::getState('com_members.reset.user', null);
 
 		// Get the user object
 		try
@@ -409,7 +409,7 @@ class Credentials extends SiteController
 		}
 
 		// Push the user data into the session
-		User::setState('com_users.reset.token', $crypt . ':' . $salt);
+		User::setState('com_members.reset.token', $crypt . ':' . $salt);
 
 		// Everything went well...go to the actual change password page
 		App::redirect(
@@ -458,8 +458,8 @@ class Credentials extends SiteController
 		Session::checkToken('post') or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get the token and user id from the verification process
-		$token   = User::getState('com_users.reset.token', null);
-		$id      = User::getState('com_users.reset.user', null);
+		$token   = User::getState('com_members.reset.token', null);
+		$id      = User::getState('com_members.reset.user', null);
 		$no_html = Request::getInt('no_html', 0);
 
 		// Check the token and user id
@@ -599,14 +599,14 @@ class Credentials extends SiteController
 		}
 
 		// Flush the user data from the session
-		User::setState('com_users.reset.token', null);
-		User::setState('com_users.reset.user', null);
+		User::setState('com_members.reset.token', null);
+		User::setState('com_members.reset.user', null);
 
 		if ($no_html)
 		{
 			$response = array(
 				'success'  => true,
-				'redirect' => Route::url('index.php?option=com_users&view=login', false)
+				'redirect' => Route::url('index.php?option=com_login', false)
 			);
 
 			echo json_encode($response);
@@ -616,7 +616,7 @@ class Credentials extends SiteController
 		{
 			// Everything went well...go to the login page
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login', false),
+				Route::url('index.php?option=com_login', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_PASSWORD_RESET_COMPLETE'),
 				'passed'
 			);

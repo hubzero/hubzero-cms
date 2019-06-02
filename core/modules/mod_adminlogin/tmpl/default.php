@@ -8,7 +8,7 @@
 defined('_HZEXEC_') or die;
 
 $this->css('login')
-     ->css('providers', 'com_users')
+     ->css('providers', 'com_login')
      ->js('login');
 
 Html::behavior('keepalive');
@@ -19,11 +19,21 @@ Html::behavior('keepalive');
 		<div class="default <?php echo count($authenticators) == 0 ? 'none' : 'block'; ?>">
 			<div class="instructions"><?php echo Lang::txt('COM_LOGIN_CHOOSE_METHOD'); ?></div>
 			<div class="options">
-				<?php foreach ($authenticators as $a) : ?>
-					<a class="<?php echo $a['name']; ?> account" href="<?php echo Route::url('index.php?option=com_login&task=display&authenticator=' . $a['name'] . $returnQueryString); ?>">
-						<div class="signin"><?php echo Lang::txt('COM_LOGIN_SIGN_IN_WITH_METHOD', $a['display']); ?></div>
-					</a>
-				<?php endforeach; ?>
+				<?php
+				foreach ($authenticators as $a):
+					$refl[$a['name']] = new \ReflectionClass("plgAuthentication{$a['name']}");
+					if ($refl[$a['name']]->hasMethod('onRenderOption')):
+						$html = $refl[$a['name']]->getMethod('onRenderOption')->invoke(null, $returnQueryString);
+						echo is_array($html) ? implode("\n", $html) : $html;
+					else:
+						?>
+						<a class="<?php echo $a['name']; ?> account" href="<?php echo Route::url('index.php?option=com_login&task=display&authenticator=' . $a['name'] . $returnQueryString); ?>">
+							<div class="signin"><?php echo Lang::txt('COM_LOGIN_SIGN_IN_WITH_METHOD', $a['display']); ?></div>
+						</a>
+						<?php
+					endif;
+				endforeach;
+				?>
 			</div>
 			<?php if (isset($basic) && $basic) : ?>
 				<div class="or"></div>

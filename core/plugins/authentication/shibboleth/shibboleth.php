@@ -198,8 +198,8 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 			$service = $_SERVER['HTTP_HOST'];
 		}
 
-		$com_user = 'com_users';
-		$task     = (User::isGuest()) ? 'user.login' : 'user.link';
+		$com_user = 'com_login';
+		$task     = (User::isGuest()) ? 'login' : 'link';
 
 		self::log('getLoginParams', array($service, $com_user, $task));
 		return array($service, $com_user, $task);
@@ -276,7 +276,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		$html[] = '<h3>Select an affiliated institution</h3>';
 		$html[] = '<ol>';
 		$html = array_merge($html, array_map(function($idp) use($h, $a) {
-			return '<li data-entityid="'.$a($idp['entity_id']).'" data-content="'.(isset($idp['logo_data']) ? $a($idp['logo_data']) : '').' '.$h($idp['label']).'"><a href="'.Route::url('index.php?option=com_users&view=login&authenticator=shibboleth&idp='.$a($idp['entity_id'])).'">'.$h($idp['label']).'</a></li>';
+			return '<li data-entityid="'.$a($idp['entity_id']).'" data-content="'.(isset($idp['logo_data']) ? $a($idp['logo_data']) : '').' '.$h($idp['label']).'"><a href="'.Route::url('index.php?option=com_login&authenticator=shibboleth&idp='.$a($idp['entity_id'])).'">'.$h($idp['label']).'</a></li>';
 		}, self::getInstitutions()));
 		$html[] = '</ol></div>';
 		return $html;
@@ -455,7 +455,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		// 	AuthType shibboleth
 		// 	ShibRequestSetting requireSession 1
 		// 	Require valid-user
-		// 	RewriteRule (.*) /index.php?option=com_users&authenticator=shibboleth&task=user.login [L]
+		// 	RewriteRule (.*) /index.php?option=com_login&authenticator=shibboleth&task=user.login [L]
 		// </Location>
 		//
 		// mod_shib protects the path, and in doing so it looks at your SessionInitiators.
@@ -611,10 +611,21 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'shibboleth', $status['idp'], $username);
-				$hzal->set('user_id', User::get('id'));
-				$hzal->set('email', $status['email']);
-				self::log('setting link', $hzal);
-				$hzal->update();
+				// if `$hzal` === false, then either:
+				//    the authenticator Domain couldn't be found,
+				//    no username was provided,
+				//    or the Link record failed to be created
+				if ($hzal)
+				{
+					$hzal->set('user_id', User::get('id'));
+					$hzal->set('email', $status['email']);
+					self::log('setting link', $hzal);
+					$hzal->update();
+				}
+				else
+				{
+					Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "shibboleth", %s, %s) returned false', $status['idp'], $username));
+				}
 			}
 		}
 		else

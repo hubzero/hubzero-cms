@@ -67,7 +67,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 		{
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . $return),
+				Route::url('index.php?option=com_login&return=' . $return),
 				Lang::txt('PLG_AUTHENTICATION_TWITTER_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
 				'error'
 			);
@@ -270,8 +270,19 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'twitter', null, $username);
-				$hzal->set('user_id', User::get('id'));
-				$hzal->update();
+				// if `$hzal` === false, then either:
+				//    the authenticator Domain couldn't be found,
+				//    no username was provided,
+				//    or the Link record failed to be created
+				if ($hzal)
+				{
+					$hzal->set('user_id', User::get('id'));
+					$hzal->update();
+				}
+				else
+				{
+					Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "twitter", null, %s) returned false', $username));
+				}
 			}
 		}
 		else
@@ -296,7 +307,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
 	{
 		Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/twitter/assets/css/twitter.css');
 
-		$html = '<a class="twitter account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=twitter' . $return) . '">';
+		$html = '<a class="twitter account" href="' . Route::url('index.php?option=com_login&authenticator=twitter' . $return) . '">';
 			$html .= '<div class="signin">';
 				$html .= Lang::txt('PLG_AUTHENTICATION_TWITTER_SIGN_IN');
 			$html .= '</div>';

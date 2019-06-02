@@ -16,7 +16,7 @@ class SliderMacro extends WikiMacro
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function description()
 	{
@@ -34,7 +34,7 @@ class SliderMacro extends WikiMacro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
@@ -95,9 +95,8 @@ class SliderMacro extends WikiMacro
 			}
 		}
 
-		$html  = '';
-		$html .= '<div class="wiki_slider">';
-		$html .= '<div id="slider_' . $id . '">';
+		$html  = '<div class="wiki_slider">';
+		$html .= '<div id="slider_' . $id . '" class="slider_macro">';
 		foreach ($final_slides as $fs)
 		{
 			$html .= '<img src="' . $fs . '" alt="" />';
@@ -106,17 +105,8 @@ class SliderMacro extends WikiMacro
 		$html .= '<div class="wiki_slider_pager" id="slider_' . $id . '_pager"></div>';
 		$html .= '</div>';
 
-		Document::addStyleSheet('plugins/wiki/parserdefault/macros/macro-assets/slider/slider.css');
-		Document::addScript('plugins/wiki/parserdefault/macros/macro-assets/slider/slider.js');
-		Document::addScriptDeclaration('
-			jQuery(document).ready(function($) {
-				$("#slider_' . $id . '").cycle({
-					fx: \'scrollHorz\',
-					speed: 450,
-					pager: \'#slider_' . $id . '_pager\'
-				});
-			});
-		');
+		\Document::addStyleSheet(\Request::root() . 'core/plugins/wiki/parserdefault/macros/macro-assets/slider/slider.css?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.css'));
+		\Document::addScript(\Request::root() . 'core/plugins/wiki/parserdefault/macros/macro-assets/slider/slider.js?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.js'));
 
 		return $html;
 	}

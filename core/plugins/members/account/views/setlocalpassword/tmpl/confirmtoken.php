@@ -9,7 +9,7 @@
 defined('_HZEXEC_') or die();
 
 $this->css()
-     ->css('providers.css', 'com_users')
+     ->css('providers.css', 'com_login')
      ->js()
      ->js('jquery.hoverIntent', 'system');
 ?>

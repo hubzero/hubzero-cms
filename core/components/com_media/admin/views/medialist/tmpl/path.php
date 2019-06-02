@@ -13,7 +13,7 @@ defined('_HZEXEC_') or die();
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&file=' . urlencode($this->file)); ?>" id="component-form" method="post" name="adminForm" autocomplete="off">
 	<fieldset>
 		<h2 class="modal-title">
-			<?php echo Lang::txt('File Link'); ?>
+			<?php echo Lang::txt('COM_MEDIA_FILE_LINK'); ?>
 		</h2>
 	</fieldset>
 	<div class="manager">

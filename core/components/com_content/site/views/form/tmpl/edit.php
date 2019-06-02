@@ -28,16 +28,6 @@ if (!$editoroptions):
 endif;
 ?>
 
-<script type="text/javascript">
-	Hubzero.submitbutton = function(task) {
-		if (task == 'article.cancel' || document.formvalidator.isValid($('#adminForm'))) {
-			<?php echo $this->form->getField('articletext')->save(); ?>
-			Hubzero.submitform(task);
-		} else {
-			alert('<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
-		}
-	}
-</script>
 <?php if ($params->get('show_page_heading')) : ?>
 	<header id="content-header">
 		<h2>

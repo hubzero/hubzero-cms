@@ -19,10 +19,7 @@ $this->css()
 			<h3><?php echo Lang::txt('COM_HELP_USERS'); ?></h3>
 			<ul>
 				<li>
-					<a target="help-page" href="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=help&component=com_users'); ?>"><?php echo Lang::txt('COM_HELP_USER_ACCOUNTS'); ?></a>
-				</li>
-				<li>
-					<a target="help-page" href="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=help&component=com_members'); ?>"><?php echo Lang::txt('COM_HELP_USER_PROFILES'); ?></a>
+					<a target="help-page" href="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=help&component=com_members'); ?>"><?php echo Lang::txt('COM_HELP_USER_ACCOUNTS'); ?></a>
 				</li>
 				<li>
 					<a target="help-page" href="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=help&component=com_groups'); ?>"><?php echo Lang::txt('COM_HELP_USER_GROUPS'); ?></a>

@@ -49,7 +49,7 @@ class Html
 		$l = sprintf(
 			' <a class="ext-link" href="%s"%s>%s</a>',
 			$href,
-			' rel="external"',
+			' rel="external noreferrer"',
 			$name
 		);
 		return $l;

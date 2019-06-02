@@ -108,7 +108,7 @@ class Sections extends SiteController
 		if (User::isGuest())
 		{
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option, false, true))),
+				Route::url('index.php?option=com_login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option, false, true))),
 				Lang::txt('COM_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
@@ -188,7 +188,7 @@ class Sections extends SiteController
 		if (User::isGuest())
 		{
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option, false, true))),
+				Route::url('index.php?option=com_login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option, false, true))),
 				Lang::txt('COM_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);

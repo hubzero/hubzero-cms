@@ -320,7 +320,7 @@ class Auth extends SiteController
 	 **/
 	protected function getTemplatePath()
 	{
-		return App::get('template')->path . '/html/com_users/' . $this->view->getName();
+		return App::get('template')->path . '/html/com_login/' . $this->view->getName();
 	}
 
 	/**

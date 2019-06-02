@@ -9,6 +9,7 @@ namespace Components\Projects\Api\Controllers;
 
 use Components\Projects\Models\Orm\Project;
 use Components\Projects\Models\Orm\Owner;
+use Components\Projects\Models\Repo;
 use Hubzero\Component\ApiController;
 use Hubzero\Utility\Date;
 use Exception;
@@ -385,6 +386,8 @@ class Projectsv2_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
+		$row = Project::blank();
+
 		$fields = array(
 			'title'           => Request::getString('title', '', 'post'),
 			'alias'           => Request::getString('alias', '', 'post'),
@@ -395,8 +398,8 @@ class Projectsv2_0 extends ApiController
 			'state'           => Request::getInt('state', Project::STATE_PUBLISHED, 'post'),
 			'type'            => 1,
 			'provisioned'     => 0,
-			'private'         => Request::getInt('private', $this->config->get('privacy', 1), 'post'),
-			//'access'          => Request::getInt('access', $this->config->get('access', 5), 'post'),
+			'private'         => Request::getInt('private', $row->config('privacy', 1), 'post'),
+			//'access'          => Request::getInt('access', $row->config('access', 5), 'post'),
 			'owned_by_group'  => Request::getInt('owned_by_group', 0, 'post')
 		);
 
@@ -405,8 +408,6 @@ class Projectsv2_0 extends ApiController
 		{
 			$fields['access'] = Project::PRIVACY_PRIVATE;
 		}
-
-		$row = Project::blank();
 
 		if (!$row->access('create'))
 		{
@@ -625,6 +626,20 @@ class Projectsv2_0 extends ApiController
 
 		$row->set('setup_stage', $setupComplete);
 		$row->save();
+
+		// Sync with system group
+		if (!$row->syncSystemGroup())
+		{
+			throw new Exception($row->getError());
+		}
+
+		require_once \Component::path('com_projects') . '/models/repo.php';
+
+		$repo = new Repo($row, 'local');
+		if (!$repo->iniLocal())
+		{
+			throw new Exception($repo->getError());
+		}
 
 		// Set timestamp with timezone
 		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
@@ -1119,6 +1134,12 @@ class Projectsv2_0 extends ApiController
 					}
 				}
 			}
+		}
+
+		// Sync with system group
+		if (!$row->syncSystemGroup())
+		{
+			throw new Exception($row->getError());
 		}
 
 		// Set timestamp with timezone

@@ -84,7 +84,7 @@ if ($form_redirect = Request::getString('return', '', 'get'))
 		<?php
 		if ($this->task == 'create' && empty($this->xregistration->_invalid) && empty($this->xregistration->_missing))
 		{
-			$this->css('providers.css', 'com_users');
+			$this->css('providers.css', 'com_login');
 
 			// Check to see if third party auth plugins are enabled
 			Plugin::import('authentication');
@@ -116,7 +116,7 @@ if ($form_redirect = Request::getString('return', '', 'get'))
 				}
 				else
 				{
-					$provider_html .= '<a class="' . $a['name'] . ' account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=' . $a['name']) . '">';
+					$provider_html .= '<a class="' . $a['name'] . ' account" href="' . Route::url('index.php?option=com_login&authenticator=' . $a['name']) . '">';
 					$provider_html .= '<div class="signin">' . Lang::txt('COM_MEMBERS_LOGIN_SIGN_IN_WITH_METHOD', $a['display']) . '</div>';
 					$provider_html .= '</a>';
 				}
@@ -127,7 +127,7 @@ if ($form_redirect = Request::getString('return', '', 'get'))
 				?>
 				<div class="explaination">
 					<p class="info">You can choose to log in via one of these services, and we'll help you fill in the info below!</p>
-					<p>Already have an account? <a href="<?php echo Route::url('index.php?option=com_users&view=login'); ?>">Log in here.</a></p>
+					<p>Already have an account? <a href="<?php echo Route::url('index.php?option=com_login'); ?>">Log in here.</a></p>
 				</div>
 				<fieldset>
 					<legend>Connect With</legend>
@@ -149,7 +149,7 @@ if ($form_redirect = Request::getString('return', '', 'get'))
 		if (($this->task == 'create' || $this->task == 'proxycreate') && $emailusers) { ?>
 			<div class="error">
 				<p>The email address "<?php echo $this->escape($this->registration['email']); ?>" is already registered. If you have lost or forgotten this <?php echo $this->sitename; ?> login information, we can help you recover it:</p>
-				<p class="submit"><a href="<?php echo Route::url('index.php?option=com_users&view=remind'); ?>" class="btn btn-danger">Email Existing Account Information</a>
+				<p class="submit"><a href="<?php echo Route::url('index.php?option=com_members&task=remind'); ?>" class="btn btn-danger">Email Existing Account Information</a>
 				<p>If you are aware you already have another account registered to this email address, and are requesting another account because you need more resources, <?php echo $this->sitename; ?> would be happy to work with you to raise your resource limits instead:</p>
 				<p class="submit"><a href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=new'); ?>" class="btn btn-danger">Submit Request to Raise Existing Limits</a></p>
 			</div>
@@ -366,7 +366,7 @@ if ($form_redirect = Request::getString('return', '', 'get'))
 							<p class="warning">Important! The user <strong>MUST</strong> click on the email confirmation link that you will send them in order for them to start using the account you have created for them.</p>
 						<?php } else if ($this->task == 'create') { ?>
 							<?php
-							$usersConfig    = Component::params('com_users');
+							$usersConfig    = Component::params('com_members');
 							$useractivation = $usersConfig->get('useractivation', 1);
 							if ($useractivation != 0) { ?>
 								<p class="warning"><?php echo Lang::txt('COM_MEMBERS_REGISTER_YOU_MUST_CONFIRM_EMAIL', \Hubzero\Utility\Str::obfuscate(Config::get('mailfrom'))); ?></p>

@@ -56,7 +56,8 @@ class Category extends Nested
 		'metadata',
 		'modified_user_id',
 		'asset_id',
-		'modified_time'
+		'modified_time',
+		'path'
 	);
 
 	/**
@@ -164,12 +165,25 @@ class Category extends Nested
 	 * @param   array   $data  the data being saved
 	 * @return  string
 	 */
-	public function automaticModifiedTime()
+	public function automaticModifiedTime($data)
 	{
 		if (isset($data['id']) && $data['id'])
 		{
 			return Date::of('now')->toSql();
 		}
+
+		$columns = $this->getStructure()->getTableColumns($this->getTableName(), false);
+
+		foreach ($columns as $column)
+		{
+			// We want to get the default values from the
+			// table's schema, rather than assuming
+			if ($column['name'] == 'modified_time')
+			{
+				return $column['default'];
+			}
+		}
+
 		return null;
 	}
 
@@ -267,6 +281,57 @@ class Category extends Nested
 	}
 
 	/**
+	 * Generates automatic alias field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticAlias($data)
+	{
+		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['title']);
+		$alias = strip_tags($alias);
+		$alias = trim($alias);
+
+		// Remove any '-' from the string since they will be used as concatenaters
+		$alias = str_replace('-', ' ', $alias);
+		$alias = \Lang::transliterate($alias);
+
+		// Trim white spaces at beginning and end of alias and make lowercase
+		$alias = strtolower($alias);
+		$alias = trim($alias);
+
+		// Remove any duplicate whitespace, and ensure all characters are alphanumeric
+		$alias = preg_replace('/(\s|[^A-Za-z0-9\-])+/', '-', $alias);
+
+		// Trim dashes at beginning and end of alias
+		$alias = trim($alias, '-');
+
+		if (trim(str_replace('-', '', $alias)) == '')
+		{
+			$alias = Date::of('now')->format('Y-m-d-H-i-s');
+		}
+
+		return $alias;
+	}
+
+	/**
+	 * Create path
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticPath($data)
+	{
+		$alias = $this->automaticAlias($data);
+
+		$path  = $this->parent->get('path');
+		$path  = $path ? $path . '/' : '';
+		$path .= $alias;
+
+		return $path;
+	}
+
+	/**
 	 * Generate a Form object and bind data to it
 	 *
 	 * @return  object
@@ -302,6 +367,125 @@ class Category extends Nested
 	public function editor()
 	{
 		return $this->belongsToOne('\Hubzero\User\User', 'checked_out');
+	}
+
+	/**
+	 * Get parent
+	 *
+	 * @return  object
+	 */
+	public function parent()
+	{
+		return $this->belongsToOne('Category', 'parent_id');
+	}
+
+	/**
+	 * Method to rebuild the node's path field from the alias values of the
+	 * nodes from the current node to the root node of the tree.
+	 *
+	 * @return  boolean  True on success.
+	 */
+	public function rebuildPath()
+	{
+		// Get the aliases for the path from the node to the root node.
+		$db = App::get('db');
+		$path = $this->parent->get('path');
+		$segments = explode('/', $path);
+
+		// Make sure to remove the root path if it exists in the list.
+		if ($segments[0] == 'root')
+		{
+			array_shift($segments);
+		}
+		$segments[] = $this->get('alias');
+
+		// Build the path.
+		$path = trim(implode('/', $segments), ' /\\');
+
+		// Update the path field for the node.
+		$query = $db->getQuery()
+			->update($this->getTableName())
+			->set(array(
+				'path' => $path
+			))
+			->whereEquals('id', (int) $this->get('id'));
+		$db->setQuery($query->toString());
+
+		// Check for a database error.
+		if (!$db->execute())
+		{
+			$this->addError(Lang::txt('JLIB_DATABASE_ERROR_REBUILDPATH_FAILED', get_class($this), $db->getErrorMsg()));
+			return false;
+		}
+
+		// Update the current record's path to the new one:
+		$this->set('path', $path);
+
+		return true;
+	}
+
+	/**
+	 * Method to recursively rebuild the whole nested set tree.
+	 *
+	 * @param   integer  $parentId  The root of the tree to rebuild.
+	 * @param   integer  $leftId    The left id to start with in building the tree.
+	 * @param   integer  $level     The level to assign to the current nodes.
+	 * @param   string   $path      The path to the current nodes.
+	 * @return  integer  1 + value of root rgt on success, false on failure
+	 */
+	public function rebuild($parentId, $leftId = 0, $level = 0, $path = '')
+	{
+		$query = $this->getQuery()
+			->select('id')
+			->select('alias')
+			->from($this->getTableName())
+			->whereEquals('parent_id', (int) $parentId)
+			->order('parent_id', 'asc')
+			->order('lft', 'asc');
+
+		// Assemble the query to find all children of this node.
+		$db = \App::get('db');
+		$db->setQuery($query->toString());
+		$children = $db->loadObjectList();
+
+		// The right value of this node is the left value + 1
+		$rightId = $leftId + 1;
+
+		// execute this function recursively over all children
+		foreach ($children as $node)
+		{
+			// $rightId is the current right value, which is incremented on recursion return.
+			// Increment the level for the children.
+			// Add this item's alias to the path (but avoid a leading /)
+			$rightId = $this->rebuild($node->id, $rightId, $level + 1, $path . (empty($path) ? '' : '/') . $node->alias);
+
+			// If there is an update failure, return false to break out of the recursion.
+			if ($rightId === false)
+			{
+				return false;
+			}
+		}
+
+		// We've got the left value, and now that we've processed
+		// the children of this node we also know the right value.
+		$query = $this->getQuery()
+			->update($this->getTableName())
+			->set(array(
+				'lft'   => (int) $leftId,
+				'rgt'   => (int) $rightId,
+				'level' => (int) $level,
+				'path'  => $path
+			))
+			->whereEquals('id', (int) $parentId);
+
+		// If there is an update failure, return false to break out of the recursion.
+		if (!$query->execute())
+		{
+			return false;
+		}
+
+		// Return the right value of this node + 1.
+		return $rightId + 1;
 	}
 
 	/**

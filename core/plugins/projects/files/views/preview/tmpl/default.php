@@ -44,7 +44,7 @@ if (in_array($this->file->get('ext'), $native))
 			if ($this->file->get('originalFormat')) { echo ' (' . $this->file->get('originalFormat') . ')'; }
 			echo '</li>';
 		}
-		å?>
+		?>
 		<?php echo $this->file->get('originalPath') && $this->file->getSize() ? '<li>' . strtoupper($this->file->getSize('formatted')) . '</li>' : ''; ?>
 	</ul>
 

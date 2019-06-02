@@ -86,7 +86,7 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 		{
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . $return),
+				Route::url('index.php?option=com_login&return=' . $return),
 				Lang::txt('PLG_AUTHENTICATION_CILOGON_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
 				'error'
 			);
@@ -273,9 +273,20 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'cilogon', null, $id);
-				$hzal->set('user_id', User::get('id'));
-				$hzal->set('email', $email);
-				$hzal->update();
+				// if `$hzal` === false, then either:
+				//    the authenticator Domain couldn't be found,
+				//    no username was provided,
+				//    or the Link record failed to be created
+				if ($hzal)
+				{
+					$hzal->set('user_id', User::get('id'));
+					$hzal->set('email', $email);
+					$hzal->update();
+				}
+				else
+				{
+					Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "cilogon", null, %s) returned false', $id));
+				}
 			}
 		}
 		else

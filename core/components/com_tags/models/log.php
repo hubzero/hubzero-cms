@@ -9,6 +9,7 @@ namespace Components\Tags\Models;
 
 use Hubzero\Database\Relational;
 use Date;
+use User;
 
 /**
  * Tag log
@@ -64,11 +65,13 @@ class Log extends Relational
 	 * @var  array
 	 */
 	public $initiate = array(
-		'timestamp'
+		'timestamp',
+		'user_id',
+		'actorid'
 	);
 
 	/**
-	 * Generates automatic modified field value
+	 * Generates automatic timestamp field value
 	 *
 	 * @param   array   $data  the data being saved
 	 * @return  string
@@ -76,6 +79,32 @@ class Log extends Relational
 	public function automaticTimestamp($data)
 	{
 		return Date::toSql();
+	}
+
+	/**
+	 * Generates automatic user_id field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticUserId($data)
+	{
+		if (empty($data['user_id']))
+		{
+			$data['user_id'] = User::get('id');
+		}
+		return $data['user_id'];
+	}
+
+	/**
+	 * Generates automatic actorid field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticActorid($data)
+	{
+		return User::get('id');
 	}
 
 	/**

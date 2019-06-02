@@ -1005,7 +1005,7 @@ HUB.ProjectPublicationsDraft = {
 		var agree 		= $('#agreement');
 
 		// Checks if agreement is a required step. If so, ensures it has been checked
-		var agreementValidated = agree.length ? agree.attr('checked') == 'checked' : true;
+		var agreementValidated = agree.length ? agree.prop('checked') : true;
 		var element 	= $('#licensePick');
 		var required 	= $(element).hasClass('el-required') ? 1 : 0;
 		var custom 		= $('.customfield');

@@ -313,7 +313,6 @@ HUB.Members.Profile = {
 			
 			//show updating overlay
 			HUB.Members.Profile.editShowUpdatingOverlay(".member_profile");
-
 			var url = $('#profile-page-content').attr('data-url');
 
 			$(".member_profile").load(url + " #profile-page-content", function() {

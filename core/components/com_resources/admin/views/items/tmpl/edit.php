@@ -26,7 +26,8 @@ if ($this->row->standalone == 1)
 
 	$type = $this->row->type;
 
-	$data = $this->row->fields(); /*array();
+	//$data = $this->row->fields();
+	$data = array();
 	preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->row->fulltxt, $matches, PREG_SET_ORDER);
 	if (count($matches) > 0)
 	{
@@ -37,7 +38,7 @@ if ($this->row->standalone == 1)
 	}
 	$this->row->fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->row->fulltxt);
 	$this->row->fulltxt = trim($this->row->fulltxt);
-	$this->row->fulltxt = ($this->row->fulltxt) ? trim(stripslashes($this->row->fulltxt)): trim(stripslashes($this->row->introtext));*/
+	$this->row->fulltxt = ($this->row->fulltxt) ? trim(stripslashes($this->row->fulltxt)): trim(stripslashes($this->row->introtext));
 }
 
 // Build the path for uploading files

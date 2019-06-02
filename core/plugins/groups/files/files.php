@@ -130,7 +130,7 @@ class plgGroupsFiles extends \Hubzero\Plugin\Plugin
 				$url = Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active, false, true);
 
 				App::redirect(
-					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
+					Route::url('index.php?option=com_login&return=' . base64_encode($url)),
 					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 					'warning'
 				);

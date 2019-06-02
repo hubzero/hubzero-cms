@@ -96,14 +96,12 @@ $this->js();
 						$name = $this->tag->creator->get('name');
 						echo $this->escape(($name ? $name : Lang::txt('COM_TAGS_UNKNOWN')));
 						?>
-						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->tag->get('created_by')); ?>" />
 					</td>
 				</tr>
 				<tr>
 					<th scope="row"><?php echo Lang::txt('COM_TAGS_FIELD_CREATED'); ?>:</th>
 					<td>
 						<?php echo ($this->tag->created() && $this->tag->created() != '0000-00-00 00:00:00') ? $this->tag->created() : Lang::txt('COM_TAGS_UNKNOWN'); ?>
-						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->tag->get('created')); ?>" />
 					</td>
 				</tr>
 				<?php if ($this->tag->get('id') && $this->tag->wasModified()) { ?>
@@ -121,14 +119,12 @@ $this->js();
 								echo Lang::txt('COM_TAGS_UNKNOWN');
 							}
 							?>
-							<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->escape($this->tag->get('modified_by')); ?>" />
 						</td>
 					</tr>
 					<tr>
 						<th scope="row"><?php echo Lang::txt('COM_TAGS_FIELD_MODIFIED'); ?>:</th>
 						<td>
 							<?php echo ($this->tag->modified() && $this->tag->modified() != '0000-00-00 00:00:00') ? $this->tag->modified() : Lang::txt('COM_TAGS_UNKNOWN'); ?>
-							<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->escape($this->tag->get('modified')); ?>" />
 						</td>
 					</tr>
 				<?php } ?>
@@ -146,6 +142,7 @@ $this->js();
 						foreach ($this->tag->logs()->ordered()->rows() as $log)
 						{
 							$actor = $this->escape(stripslashes($log->actor->get('name')));
+							$actor = $actor ?: Lang::txt('JUNKNOWN');
 
 							$s = null;
 							$c = '';

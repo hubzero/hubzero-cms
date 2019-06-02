@@ -12,23 +12,9 @@ if (!$this->no_html)
 {
 	$this->css();
 }
+
+$tmpl = Request::getCmd('tmpl');
 ?>
-<?php if ($this->no_html) { ?>
-	<div id="report-response">
-		<?php if ($this->getError()) { ?>
-			<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
-		<?php } ?>
-		<div>
-			<p><?php echo Lang::txt('COM_SUPPORT_YOUR_TICKET'); ?> # <span><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket); ?>"><?php echo $this->ticket; ?></a></span></p>
-			<p><button class="btn btn-reset" title="<?php echo Lang::txt('COM_SUPPORT_NEW_REPORT'); ?>"><?php echo Lang::txt('COM_SUPPORT_NEW_REPORT'); ?></button></p>
-		</div>
-		<p>
-			<?php echo Lang::txt('COM_SUPPORT_TROUBLE_THANKS'); ?><br /><br />
-			<?php echo Lang::txt('COM_SUPPORT_TROUBLE_TICKET_TIMES'); ?>
-		</p>
-	</div>
-	<script type="text/javascript">window.top.window.HUB.Modules.ReportProblems.hideTimer();</script>
-<?php } else { ?>
 	<header id="content-header">
 		<h2><?php echo Lang::txt('COM_SUPPORT'); ?></h2>
 	</header><!-- / #content-header -->
@@ -40,7 +26,7 @@ if (!$this->no_html)
 			<div class="col span-half">
 				<div id="ticket-number">
 					<h2>
-						<span><?php echo Lang::txt('COM_SUPPORT_TICKET_NUMBER', ' '); ?></span><strong><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket); ?>"><?php echo $this->ticket; ?></a></strong>
+						<span><?php echo Lang::txt('COM_SUPPORT_TICKET_NUMBER', ' '); ?></span><strong><a <?php echo ($tmpl) ? 'target="_parent"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket); ?>"><?php echo $this->ticket; ?></a></strong>
 					</h2>
 				</div>
 			</div>
@@ -60,4 +46,3 @@ if (!$this->no_html)
 			</div><!-- / .col span-half omega -->
 		</div><!-- / .grid -->
 	</section><!-- / .main section -->
-<?php }

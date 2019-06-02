@@ -18,7 +18,7 @@ class Slider extends Macro
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function description()
 	{
@@ -36,7 +36,7 @@ class Slider extends Macro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
@@ -113,7 +113,7 @@ class Slider extends Macro
 
 		$html  = '';
 		$html .= '<div class="wiki_slider">';
-			$html .= '<div id="slider_' . $id . '">';
+			$html .= '<div id="slider_' . $id . '" class="slider_macro">';
 			foreach ($final_slides as $fs)
 			{
 				$html .= '<img src="' . $fs . '" alt="" />';
@@ -122,19 +122,8 @@ class Slider extends Macro
 			$html .= '<div class="wiki_slider_pager" id="slider_' . $id . '_pager"></div>';
 		$html .= '</div>';
 
-		\Document::addStyleSheet('plugins/content/formathtml/macros/macro-assets/slider/slider.css');
-		\Document::addScript('plugins/content/formathtml/macros/macro-assets/slider/slider.js');
-		\Document::addScriptDeclaration('
-			var $jQ = jQuery.noConflict();
-
-			$jQ(function() {
-				$jQ("#slider_' . $id . '").cycle({
-					fx: \'scrollHorz\',
-					speed: 450,
-					pager: \'#slider_' . $id . '_pager\'
-				});
-			});
-		');
+		\Document::addStyleSheet(\Request::root() . 'core/plugins/content/formathtml/macros/macro-assets/slider/slider.css?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.css'));
+		\Document::addScript(\Request::root() . 'core/plugins/content/formathtml/macros/macro-assets/slider/slider.js?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.js'));
 
 		return $html;
 	}

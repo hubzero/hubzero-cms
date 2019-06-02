@@ -148,7 +148,7 @@ class Login extends AdminController
 		// Set the application login entry point
 		if (!array_key_exists('entry_url', $options))
 		{
-			$options['entry_url'] = Request::base() . 'index.php?option=com_users&task=login';
+			$options['entry_url'] = Request::base() . 'index.php?option=com_login&task=login';
 		}
 
 		$result = App::get('auth')->login($credentials, $options);

@@ -9,22 +9,26 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-//get whos online summary
+// get whos online summary
 $siteUserCount  = 0;
 $adminUserCount = 0;
-foreach ($this->rows as $row)
-{
-	if ($row->client_id == 0)
-	{
-		$siteUserCount++;
-	}
-	else
-	{
-		$adminUserCount++;
-	}
-}
+$found = array();
+foreach ($this->rows as $i => $row):
+	if ($row->userid && in_array($row->client_id . '.' . $row->userid, $found)):
+		unset($this->rows[$i]);
+		continue;
+	endif;
 
-$editAuthorized = User::authorise('com_users', 'manage');
+	$found[] = $row->client_id . '.' . $row->userid;
+
+	if ($row->client_id == 0):
+		$siteUserCount++;
+	else:
+		$adminUserCount++;
+	endif;
+endforeach;
+
+$editAuthorized = User::authorise('core.manage', 'com_members');
 ?>
 
 <div class="<?php echo $this->module->module; ?>" id="<?php echo $this->module->module . $this->module->id; ?>">
@@ -49,9 +53,9 @@ $editAuthorized = User::authorise('com_users', 'manage');
 				<th scope="col"><?php echo Lang::txt('MOD_WHOSONLINE_COL_USER'); ?></td>
 				<th scope="col"><?php echo Lang::txt('MOD_WHOSONLINE_COL_LOCATION'); ?></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('MOD_WHOSONLINE_COL_ACTIVITY'); ?></th>
-				<?php if ($editAuthorized) { ?>
+				<?php if ($editAuthorized): ?>
 					<th scope="col"><?php echo Lang::txt('MOD_WHOSONLINE_COL_LOGOUT'); ?></th>
-				<?php } ?>
+				<?php endif; ?>
 			</tr>
 		</thead>
 		<tbody>
@@ -65,14 +69,11 @@ $editAuthorized = User::authorise('com_users', 'manage');
 									$user = User::getInstance($row->username);
 
 									// Display link if we are authorized
-									if ($editAuthorized)
-									{
+									if ($editAuthorized):
 										echo '<a href="' . Route::url('index.php?option=com_members&task=edit&id='. $row->userid) . '" title="' . Lang::txt('MOD_WHOSONLINE_EDIT_USER') . '">' . $this->escape($user->get('name')) . ' [' . $this->escape($user->get('username')) . ']' . '</a>';
-									}
-									else
-									{
+									else:
 										echo $this->escape($user->get('name')) . ' [' . $this->escape($user->get('username')) . ']';
-									}
+									endif;
 								?>
 							</td>
 							<td>
@@ -84,13 +85,13 @@ $editAuthorized = User::authorise('com_users', 'manage');
 							<td class="priority-3">
 								<?php echo Lang::txt('MOD_WHOSONLINE_HOURS_AGO', (time() - $row->time)/3600.0); ?>
 							</td>
-							<?php if ($editAuthorized) { ?>
+							<?php if ($editAuthorized): ?>
 								<td>
 									<a class="force-logout" href="<?php echo Route::url('index.php?option=com_login&task=logout&uid=' . $row->userid .'&'. Session::getFormToken() .'=1'); ?>">
 										<span><?php echo Lang::txt('JLOGOUT'); ?></span>
 									</a>
 								</td>
-							<?php } ?>
+							<?php endif; ?>
 						</tr>
 					<?php endif; ?>
 				<?php endforeach; ?>

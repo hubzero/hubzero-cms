@@ -20,29 +20,14 @@ if (User::authorise('core.edit', $this->option))
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('comment');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js('activity.js');
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	<?php echo $this->editor()->save('text'); ?>
-
-	// do field validation
-	if ($('#field-content').val() == ''){
-		alert("<?php echo Lang::txt('COM_PROJECTS_ERROR_MISSING_CONTENT'); ?>");
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('COM_PROJECTS_ERROR_MISSING_CONTENT')); ?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -55,7 +40,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-description"><?php echo Lang::txt('COM_PROJECTS_FIELD_DESCRIPTION'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<?php echo $this->editor('fields[description]', $this->escape($this->row->log->get('description')), 50, 15, 'field-description', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
+					<?php echo $this->editor('fields[description]', $this->escape($this->row->log->get('description')), 50, 15, 'field-description', array('class' => 'required minimal no-footer', 'buttons' => false)); ?>
 				</div>
 			</fieldset>
 		</div>

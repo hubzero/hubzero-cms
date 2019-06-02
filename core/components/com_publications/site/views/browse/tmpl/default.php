@@ -24,14 +24,14 @@ $this->css()
 				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('Search'); ?>" />
 					<fieldset class="entry-search">
-						<legend></legend>
+						<legend><?php echo Lang::txt('Search'); ?></legend>
 						<label for="entry-search-field"><?php echo Lang::txt('Enter keyword or phrase'); ?></label>
 						<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('Enter keyword or phrase'); ?>" />
 						<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
 						<input type="hidden" name="tag" value="<?php echo $this->escape($this->filters['tag']); ?>" />
 					</fieldset>
 					<?php if ($this->filters['tag']) { ?>
-						<fieldset class="applied-tags">
+						<div class="applied-tags">
 							<ol class="tags">
 							<?php
 							$url  = 'index.php?option=' . $this->option . '&task=browse';
@@ -54,7 +54,7 @@ $this->css()
 							}
 							?>
 							</ol>
-						</fieldset>
+						</div>
 					<?php } ?>
 				</div><!-- / .container -->
 				<?php if (isset($this->filters['tag_ignored']) && count($this->filters['tag_ignored']) > 0) { ?>

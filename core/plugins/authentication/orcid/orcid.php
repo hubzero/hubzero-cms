@@ -69,7 +69,7 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 		{
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . $return),
+				Route::url('index.php?option=com_login&return=' . $return),
 				Lang::txt('PLG_AUTHENTICATION_ORCID_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
 				'error'
 			);
@@ -246,9 +246,20 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 			{
 				// Create the hubzero auth link
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'orcid', null, $username);
-				$hzal->set('user_id', User::get('id'));
-				$hzal->set('email', $orcid->email());
-				$hzal->update();
+				// if `$hzal` === false, then either:
+				//    the authenticator Domain couldn't be found,
+				//    no username was provided,
+				//    or the Link record failed to be created
+				if ($hzal)
+				{
+					$hzal->set('user_id', User::get('id'));
+					$hzal->set('email', $orcid->email());
+					$hzal->update();
+				}
+				else
+				{
+					Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "orcid", null, %s) returned false', $username));
+				}
 			}
 		}
 		else
@@ -272,7 +283,7 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 	{
 		Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/orcid/assets/css/orcid.css');
 
-		$html = '<a class="orcid account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=orcid' . $return) . '">';
+		$html = '<a class="orcid account" href="' . Route::url('index.php?option=com_login&authenticator=orcid' . $return) . '">';
 			$html .= '<div class="signin">';
 				$html .= Lang::txt('PLG_AUTHENTICATION_ORCID_SIGN_IN');
 			$html .= '</div>';

@@ -668,7 +668,7 @@ class Registration
 			}
 			else
 			{
-				$usersConfig = \Component::params('com_users');
+				$usersConfig = \Component::params('com_members');
 				$allow_duplicate_emails = $usersConfig->get('allow_duplicate_emails');
 
 				// Check if the email is already in use

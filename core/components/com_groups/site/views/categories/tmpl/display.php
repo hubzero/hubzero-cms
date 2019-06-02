@@ -31,7 +31,7 @@ defined('_HZEXEC_') or die();
 						<?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_X_PAGES', $category->getPages('count')); ?>
 					</div>
 
-					<?php $this->css('.category-' . $category->get('id') . ' { background-color: #' . $category->get('color') . '; }'); ?>
+					<?php $this->css('.item-list .category-' . $category->get('id') . ' { background-color: #' . $category->get('color') . '; }'); ?>
 					<div class="item-color category-<?php echo $category->get('id'); ?>"></div>
 
 					<div class="item-controls btn-group dropdown">

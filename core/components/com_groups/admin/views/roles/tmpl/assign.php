@@ -12,7 +12,7 @@ $tmpl = Request::getCmd('tmpl', '');
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_GROUPS_EDIT') : Lang::txt('COM_GROUPS_NEW'));
 
-$canDo = \Components\Groups\Helpers\Permissions::getActions('group');
+$canDo = Components\Groups\Helpers\Permissions::getActions('group');
 
 if ($tmpl != 'component')
 {
@@ -24,37 +24,21 @@ if ($tmpl != 'component')
 	Toolbar::cancel();
 }
 
-Html::behavior('framework');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js('roles.js');
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// form field validation
-	if (form.roleid.value == '') {
-		alert('<?php echo Lang::txt('COM_GROUPS_ERROR_MISSING_INFORMATION'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-	window.top.setTimeout("window.parent.location='index.php?option=<?php echo $this->option; ?>&controller=membership&gid=<?php echo $this->group->get('cn'); ?>'", 700);
-}
-</script>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="<?php echo ($tmpl == 'component') ? 'component' : 'item'; ?>-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="<?php echo ($tmpl == 'component') ? 'component' : 'item'; ?>-form" data-invalid-msg="<?php echo Lang::txt('COM_GROUPS_ERROR_MISSING_INFORMATION'); ?>" class="editform form-validate" data-redirect="<?php echo Route::url('index.php?option=' . $this->option . '&controller=membership&gid=' . $this->group->get('cn')); ?>">
 <?php if ($tmpl == 'component') { ?>
 	<fieldset>
 		<div class="configuration">
 			<div class="fltrt configuration-options">
-				<button type="button" onclick="submitbutton('delegate');"><?php echo Lang::txt( 'COM_GROUPS_MEMBER_SAVE' );?></button>
-				<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo Lang::txt( 'COM_GROUPS_MEMBER_CANCEL' );?></button>
+				<button type="button" id="btn-save"><?php echo Lang::txt('COM_GROUPS_MEMBER_SAVE'); ?></button>
+				<button type="button" id="btn-cancel"><?php echo Lang::txt('COM_GROUPS_MEMBER_CANCEL'); ?></button>
 			</div>
 			<?php echo Lang::txt('COM_GROUPS_ROLE_ASSIGN') ?>
 		</div>
@@ -81,7 +65,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-roleid"><?php echo Lang::txt('COM_GROUPS_ROLE_CHOOSE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<select name="roleid" id="field-roleid">
+				<select name="roleid" id="field-roleid" class="required">
 					<option value="0"><?php echo Lang::txt('COM_GROUPS_ROLE_SELECT'); ?></option>
 					<?php foreach ($this->rows as $row) { ?>
 						<option value="<?php echo $row->get('id'); ?>"><?php echo $this->escape($row->get('name')); ?></option>

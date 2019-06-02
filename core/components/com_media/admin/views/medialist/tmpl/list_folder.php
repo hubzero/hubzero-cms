@@ -27,9 +27,9 @@ $modified = Date::of($this->currentFolder['modified']);
 ?>
 	<tr class="media-item media-item-list">
 		<td width="<?php echo ($tmpl == 'component' && !User::authorise('core.delete', 'com_media')) ? '70' : '60'; ?>%">
-			<a class="folder-item" data-folder="<?php echo $this->escape('/' . $this->currentFolder['path']); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist' . $t . '&' . Session::getFormToken() . '=1&folder=/' . $this->currentFolder['path']); ?>">
+			<a class="folder-item" data-folder="<?php echo $this->escape('/' . ltrim($this->currentFolder['path'], '/')); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist' . $t . '&' . Session::getFormToken() . '=1&folder=/' . ltrim($this->currentFolder['path'], '/')); ?>">
 				<span class="media-icon">
-					<img src="<?php echo $this->img('folder.svg'); ?>" alt="<?php echo $this->escape($this->currentFolder['name']); ?>" />
+					<img src="<?php echo Html::asset('image', 'assets/filetypes/folder.svg', '', null, true, true); ?>" alt="<?php echo $this->escape($this->currentFolder['name']); ?>" />
 				</span>
 				<span class="media-name">
 					<?php echo $this->escape($name); ?>
