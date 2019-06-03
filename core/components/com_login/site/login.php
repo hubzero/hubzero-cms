@@ -10,7 +10,7 @@ namespace Components\Login\Site;
 // Maintian backwards compatibility
 if ($view = \Request::getCmd('view'))
 {
-	if ($view != 'login')
+	if ($view != 'login' && !\Request::getCmd('task'))
 	{
 		\Request::setVar('task', $view);
 	}
