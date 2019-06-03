@@ -151,7 +151,9 @@ class RecommendedTags
 				}
 			}
 		}
-		usort($freq, create_function('$a, $b', 'return $a[\'count\'] === $b[\'count\'] ? 0 : ($a[\'count\'] > $b[\'count\'] ? -1 : 1);'));
+		usort($freq, function($a, $b) {
+			return $a['count'] === $b['count'] ? 0 : ($a['count'] > $b['count'] ? -1 : 1);
+		});
 		$this->tags = array_slice($freq, 0, $opts['count']);
 	}
 
