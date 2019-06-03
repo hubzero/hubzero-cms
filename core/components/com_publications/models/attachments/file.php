@@ -385,7 +385,7 @@ class File extends Base
 			$file = new \Components\Projects\Models\File(trim($fpath));
 
 			// Get file icon
-			$icon  = '<img src="' . $file->getIcon() . '" alt="' . $file->get('ext') . '" />';
+			$icon  = '<img height="16" src="' . $file->getIcon() . '" alt="' . $file->get('ext') . '" />';
 
 			// Serve as bundle
 			$html .= '<li>';
@@ -426,7 +426,7 @@ class File extends Base
 				$title = $attach->title ? $attach->title : $configs->title;
 				$title = $title ? $title : basename($attach->path);
 				$pop   = Lang::txt('Download') . ' ' . $title;
-				$icon  = '<img src="' . $file->getIcon() . '" alt="' . $file->get('ext') . '" />';
+				$icon  = '<img height="16" src="' . $file->getIcon() . '" alt="' . $file->get('ext') . '" />';
 
 				$html .= '<li>';
 				$html .= $file->exists() && $authorized
