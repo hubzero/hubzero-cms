@@ -264,7 +264,7 @@ class Format
 					}
 				}
 
-				if ($k == 'doi')
+				if ($k == 'doi' && isset($this->$k))
 				{
 					$this->$k = str_replace('https://doi.org/', '', $this->$k);
 					$this->$k = str_replace('https://dx.doi.org/', '', $this->$k);

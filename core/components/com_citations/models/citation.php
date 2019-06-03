@@ -857,7 +857,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 					}
 				}
 
-				if ($k == 'doi')
+				if ($k == 'doi' && $this->$k)
 				{
 					$this->$k = str_replace('https://doi.org/', '', $this->$k);
 					$this->$k = str_replace('https://dx.doi.org/', '', $this->$k);
