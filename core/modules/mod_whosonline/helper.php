@@ -10,6 +10,7 @@ namespace Modules\Whosonline;
 use Hubzero\Module\Module;
 use Hubzero\Session\Helper as SessionHelper;
 use Hubzero\User\User;
+use App;
 
 /**
  * Module class for showing users online
@@ -78,7 +79,7 @@ class Helper extends Module
 	 */
 	public function displayAdmin()
 	{
-		if (!\App::isAdmin())
+		if (!App::isAdmin())
 		{
 			return;
 		}

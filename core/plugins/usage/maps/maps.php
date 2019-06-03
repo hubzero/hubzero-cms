@@ -288,14 +288,24 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 				$key = $config->get('mapsApiKey');
 				$mappath = $config->get('maps_path');
 
-				if (is_file(__DIR__ . DS . $type . '.php'))
+				if (is_file(__DIR__ . '/views/maps/tmpl/' . $type . '.php'))
 				{
-					include_once __DIR__ . DS . $type . '.php';
+					$html = $this->view($type, 'maps')
+						->set('mappath', $mappath)
+						->set('option', $option)
+						->set('task', $task)
+						->set('type', $type)
+						->set('key', $key)
+						->set('no_html', $no_html)
+						->set('config', $config)
+						->set('lat', $lat)
+						->set('long', $long)
+						->set('zoom', $zoom)
+						->loadTemplate();
 				}
 				else
 				{
 					App::abort(500, Lang::txt('PLG_USAGE_MAPS_TYPE_NOT_FOUND', $type));
-					return;
 				}
 
 				return $html;

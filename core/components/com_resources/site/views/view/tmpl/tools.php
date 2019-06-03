@@ -157,16 +157,9 @@ $revision = $this->revision;
 						}
 
 						// doi message
-						if ($revision != 'dev' && ($this->model->doi || $this->model->doi_label))
+						if ($revision != 'dev' && $this->model->doi && ($this->model->doi_shoulder || $tconfig->get('doi_shoulder')))
 						{
-							if ($this->model->doi && $tconfig->get('doi_shoulder'))
-							{
-								$doi = 'doi:' . ($this->model->doi_shoulder ? $this->model->doi_shoulder : $tconfig->get('doi_shoulder')) . '/' . strtoupper($this->model->doi);
-							}
-							else
-							{
-								$doi = 'doi:10254/' . $tconfig->get('doi_prefix') . $this->model->id . '.' . $this->model->doi_label;
-							}
+							$doi = 'doi:' . ($this->model->doi_shoulder ? $this->model->doi_shoulder : $tconfig->get('doi_shoulder')) . '/' . strtoupper($this->model->doi);
 
 							$html .= "\t\t".'<p class="doi">'.$doi.' <span><a href="'.Route::url($this->model->link() . '&active=about').'#citethis">'.Lang::txt('cite this').'</a></span></p>'."\n";
 						}

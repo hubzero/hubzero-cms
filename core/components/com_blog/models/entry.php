@@ -75,7 +75,8 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public $initiate = array(
 		'created',
-		'created_by'
+		'created_by',
+		'params'
 	);
 
 	/**
@@ -188,6 +189,21 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 			$data['publish_down'] = null;
 		}
 		return $data['publish_down'];
+	}
+
+	/**
+	 * Generates automatic params field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticParams($data)
+	{
+		if (!isset($data['params']) || is_null($data['params']))
+		{
+			$data['params'] = '';
+		}
+		return $data['params'];
 	}
 
 	/**

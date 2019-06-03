@@ -76,7 +76,7 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
 		{
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode('/members/myaccount')),
+				Route::url('index.php?option=com_login&return=' . base64_encode('/members/myaccount')),
 				Lang::txt('PLG_AUTHENTICATION_SCISTARTER_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
 				'error'
 			);
@@ -263,7 +263,7 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
 		{
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode('/members/myaccount')),
+				Route::url('index.php?option=com_login&return=' . base64_encode('/members/myaccount')),
 				Lang::txt('PLG_AUTHENTICATION_SCISTARTER_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
 				'error'
 			);
@@ -303,8 +303,19 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'scistarter', null, $username);
-				$hzal->set('user_id', User::get('id'));
-				$hzal->update();
+				// if `$hzal` === false, then either:
+				//    the authenticator Domain couldn't be found,
+				//    no username was provided,
+				//    or the Link record failed to be created
+				if ($hzal)
+				{
+					$hzal->set('user_id', User::get('id'));
+					$hzal->update();
+				}
+				else
+				{
+					Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "scistarter", null, %s) returned false', $username));
+				}
 			}
 		}
 		else

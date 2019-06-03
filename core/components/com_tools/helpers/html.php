@@ -89,7 +89,9 @@ class Html
 		// If the difference divided by the seconds is more than 1, we use that. Eg 1 year / 1 decade = 0.1, so we move on
 		// Go from decades backwards to seconds
 		for ($val = count($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1);
-$val--) {}
+		$val--)
+		{
+		}
 
 		// Ensure the script has found a match
 		if ($val < 0)
@@ -166,8 +168,8 @@ $val--) {}
 	 */
 	public static function formSelect($name, $idname, $array, $value, $class='', $jscall='')
 	{
-		$out  = '<select class="form-control" name="'.$name.'" id="'.$idname.'"';
-		$out .= ($class)  ? ' class="'.$class.'"'           : ''."";
+		$out  = '<select name="'.$name.'" id="'.$idname.'"';
+		$out .= ($class)  ? ' class="form-control '.$class.'"' : ' class="form-control"';
 		$out .= ($jscall) ? ' onChange="'.$jscall.'">'."\n" : '>'."\n";
 		foreach ($array as $avalue => $alabel)
 		{
@@ -813,8 +815,9 @@ $val--) {}
 				case 'HTML':
 				case 'PHP':
 				case 'ASF':
-				case 'SWF': $fs = '';
-break;
+				case 'SWF':
+					$fs = '';
+				break;
 				default:
 					$fs = \Hubzero\Utility\Number::formatBytes($fs);
 				break;

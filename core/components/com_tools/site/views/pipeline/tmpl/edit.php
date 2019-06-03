@@ -156,21 +156,104 @@ $this->css('pipeline.css')
 				<?php } ?>
 			</fieldset>
 
-			<?php if ($this->config->get('github', 1)) { ?>
-				<div class="explaination">
-					<p><?php echo Lang::txt('You can optionally provide a URL for your public Github repository with the tool code (https://github.com/[reponame]), and we will grab code from this repository when installing your tool.'); ?></p>
-				</div>
-				<fieldset>
-					<legend><?php echo Lang::txt('Github Repository URL'); ?>:</legend>
-
-					<div class="form-group">
-						<label for="github">
-							<?php echo Lang::txt('Github Repository for Source Code (<strong>must be public</strong>)') ?>: 
-							<input type="text" name="tool[github]" id="github"  class="form-control" placeholder="<?php echo Lang::txt('Paste the web URL of the source code repository on the github.'); ?>" value="<?php echo $this->defaults['github']; ?>" />
+			<?php if ($this->id) { ?>
+				<fieldset id="gitExternalInput">
+					<legend><?php echo Lang::txt('Repository Host'); ?>:</legend>
+	
+					<div class="form-group form-check">
+						<label for="tool_repohost_svnlocal" class="form-check-label">
+							<input readonly type="radio" name="tool[repohost]" id="tool_repohost_svnlocal" value="svnLocal" <?php echo (!$this->defaults['repohost'] || $this->defaults['repohost'] == 'svnLocal') ? 'checked="checked"' :  "disabled"; ?> class="option form-check-input" />
+							<?php echo Lang::txt('Host subversion repository on HUB'); ?>
 						</label>
 					</div>
-					<p class="hint"><?php echo Lang::txt('Web URL: https://github.com/yourgithubrepo'); ?></p>
+	
+					<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
+						<div class="form-group form-check">
+							<label for="tool_repohost_gitlocal" class="form-check-label">
+								<input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitlocal" value="gitLocal" <?php echo ($this->defaults['repohost'] == 'gitLocal') ? 'checked="checked"' : "disabled"; ?> class="option form-check-input" />
+								<?php echo Lang::txt('Host GIT repository on HUB'); ?>
+							</label>
+						</div>
+					<?php } ?>
+	
+					<div class="form-group form-check">
+						<label for="tool_repohost_gitexternal" class="form-check-label">
+							<input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?php echo ($this->defaults['repohost'] == 'gitExternal') ? 'checked="checked"' : "disabled"; ?> class="option form-check-input" />
+							<?php echo Lang::txt('Host GIT repository on GitHUB'); ?>
+						</label>
+					</div>
 				</fieldset>
+	
+				<?php if ($this->config->get('github', 1)) { ?>
+					<div id="gitExternalExplanation" class="explaination">
+						<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
+							<p><?php echo Lang::txt('You can optionally provide a URL for your Git repository containing the tool code, and we will grab code from this repository when installing your tool.  Public repositories should be specified as https://git@github.com/[reponame] while private repositories should be specified as ssh://git@github.com/[reponame]'); ?></p>
+						<?php } else { ?>
+							<p><?php echo Lang::txt('You can optionally provide a URL for your public Github repository with the tool code (https://github.com/[reponame]), and we will grab code from this repository when installing your tool.'); ?></p>
+						<?php } ?>
+					</div>
+					<fieldset>
+						<legend><?php echo Lang::txt('Git Repository URL'); ?>:</legend>
+						<label for="github">
+							<?php echo Lang::txt('Git Repository for Source Code') ?>: 
+							<input readonly type="text" name="tool[github]" id="github" placeholder="<?php echo Lang::txt('Paste the URL of the source code repository.'); ?>" value="<?php echo $this->defaults['github']; ?>" />
+						</label>
+						<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
+							<p class="hint"><?php echo Lang::txt('Public URL: https://git@github.com/yourgithubrepo<br />Private URL: ssh://git@github.com/yourgithubrepo'); ?></p>
+						<?php } else { ?>
+							<p class="hint"><?php echo Lang::txt('Public URL: https://git@github.com/yourgithubrepo'); ?></p>
+						<?php } ?>
+					</fieldset>
+				<?php } ?>
+			<?php } else { ?>
+				<fieldset id="gitExternalInput">
+					<legend><?php echo Lang::txt('Repository Host'); ?>:</legend>
+	
+					<div class="form-group form-check">
+						<label for="tool_repohost_svnlocal" class="form-check-label">
+							<input type="radio" name="tool[repohost]" id="tool_repohost_svnlocal" value="svnLocal" <?php if (!$this->defaults['repohost'] || $this->defaults['repohost'] == 'svnLocal') { echo 'checked="checked"'; } ?> class="option form-check-input" />
+							<?php echo Lang::txt('Host subversion repository on HUB'); ?>
+						</label>
+					</div>
+	
+					<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
+						<div class="form-group form-check">
+							<label for="tool_repohost_gitlocal" class="form-check-label">
+								<input type="radio" name="tool[repohost]" id="tool_repohost_gitlocal" value="gitLocal" <?php if ($this->defaults['repohost'] == 'gitLocal') { echo 'checked="checked"'; } ?> class="option form-check-input" />
+								<?php echo Lang::txt('Host GIT repository on HUB'); ?>
+							</label>
+						</div>
+					<?php } ?>
+	
+					<div class="form-group form-check">
+						<label for="tool_repohost_gitexternal" class="form-check-label">
+							<input type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?php if ($this->defaults['repohost'] == 'gitExternal') { echo 'checked="checked"'; } ?> class="option form-check-input" />
+							<?php echo Lang::txt('Host GIT repository on GitHUB'); ?>
+						</label>
+					</div>
+				</fieldset>
+	
+				<?php if ($this->config->get('github', 1)) { ?>
+					<div id="gitExternalExplanation" class="explaination">
+						<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
+							<p><?php echo Lang::txt('You can optionally provide a URL for your Git repository containing the tool code, and we will grab code from this repository when installing your tool.  Public repositories should be specified as https://git@github.com/[reponame] while private repositories should be specified as ssh://git@github.com/[reponame]'); ?></p>
+						<?php } else { ?>
+							<p><?php echo Lang::txt('You can optionally provide a URL for your public Github repository with the tool code (https://github.com/[reponame]), and we will grab code from this repository when installing your tool.'); ?></p>
+						<?php } ?>
+					</div>
+					<fieldset id="gitExternalInput">
+						<legend><?php echo Lang::txt('Git Repository URL'); ?>:</legend>
+						<label for="github">
+							<?php echo Lang::txt('Git Repository for Source Code') ?>: 
+							<input type="text" name="tool[github]" id="github" placeholder="<?php echo Lang::txt('Paste the URL of the source code repository.'); ?>" value="<?php echo $this->defaults['github']; ?>" />
+						</label>
+						<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
+							<p class="hint"><?php echo Lang::txt('Public URL: https://git@github.com/yourgithubrepo<br />Private URL: ssh://git@github.com/yourgithubrepo'); ?></p>
+						<?php } else { ?>
+							<p class="hint"><?php echo Lang::txt('Public URL: https://git@github.com/yourgithubrepo'); ?></p>
+						<?php } ?>
+					</fieldset>
+				<?php } ?>
 			<?php } ?>
 
 			<?php if ($this->config->get('jupyter', 1)) { ?>

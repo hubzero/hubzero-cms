@@ -148,7 +148,7 @@ class Tickets extends SiteController
 		{
 			$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
+				Route::url('index.php?option=com_login&return=' . $return, false)
 			);
 			return;
 		}
@@ -553,7 +553,7 @@ class Tickets extends SiteController
 		{
 			$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
+				Route::url('index.php?option=com_login&return=' . $return, false)
 			);
 			return;
 		}
@@ -764,7 +764,12 @@ class Tickets extends SiteController
 
 			if ($referrer = Request::getString('referrer'))
 			{
-				$row->set('referrer', base64_encode($referrer));
+				// Rough test to see if it's already base64 encoded
+				if (!Utilities::isBase64($referrer))
+				{
+					$referrer = base64_encode($referrer);
+				}
+				$row->set('referrer', $referrer);
 			}
 
 			if (!User::isGuest())
@@ -1513,7 +1518,7 @@ class Tickets extends SiteController
 		{
 			$return = base64_encode(Route::url($row->link(), false, true));
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
+				Route::url('index.php?option=com_login&return=' . $return, false)
 			);
 			return;
 		}
@@ -1667,7 +1672,7 @@ class Tickets extends SiteController
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
+				Route::url('index.php?option=com_login&return=' . $return, false)
 			);
 			return;
 		}
@@ -2306,7 +2311,7 @@ class Tickets extends SiteController
 		{
 			$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
+				Route::url('index.php?option=com_login&return=' . $return, false)
 			);
 			return;
 		}

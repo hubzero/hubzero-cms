@@ -315,7 +315,7 @@ class Publication extends Table
 			$tags = $tagging->_parse_tags($filters['tag']);
 
 			$query .= "AND RTA.objectid=C.id AND TA.tag IN ('" . implode("','", $tags) . "')";
-			$groupby = " GROUP BY C.id HAVING uniques=".count($tags);
+			$groupby = " GROUP BY V.id, C.id HAVING uniques=".count($tags);
 		}
 
 		$query .= $groupby;

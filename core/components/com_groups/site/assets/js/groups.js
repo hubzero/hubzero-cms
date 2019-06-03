@@ -242,7 +242,7 @@ HUB.Groups = {
 
 			//load a refreshed version of the logo list
 			//reset option previously selected by user
-			$("#group-logo-label").on('load', window.location.href + ' #group-logo-label > select', function() {
+			$("#group-logo-label").load(window.location.href + ' #group-logo-label > select', function() {
 				$("#group_logo").val(current);
 			});
 		}
@@ -584,6 +584,9 @@ HUB.Groups = {
 						$.fancybox({
 							type: 'ajax',
 							href: $('.page-category').attr('data-url'),
+							autoSize:false,
+							width: 600,
+							height: 'auto',
 							afterShow: function() {
 								// instantiate color picker
 								HUB.Groups.categoriesColorPicker();
@@ -620,7 +623,7 @@ HUB.Groups = {
 							afterClose: function() {
 								if (newCategory != '')
 								{
-									$('.page-category-label').on('load', window.location.href + ' .page-category-label > *', function(){
+									$('.page-category-label').load(window.location.href + ' .page-category-label > *', function(){
 										HUB.Groups.pagesEditPageCategory();
 										$('.page-category').HUBfancyselect('selectText', newCategory);
 									});
@@ -845,7 +848,7 @@ HUB.Groups = {
 			},
 			success: function(data, status, jqXHR)
 			{
-				$('.pages').on('load', window.location.href + " .pages > *", function(){
+				$('.pages').load(window.location.href + " .pages > *", function(){
 					$('.pages').removeClass('rebuilding');
 					$('.page-order-actions').fadeOut("slow", function() {
 						$(this).remove();
@@ -860,7 +863,7 @@ HUB.Groups = {
 
 	pagesReorderPagesReset: function()
 	{
-		$('.pages').on('load', window.location.href + " .pages > *", function(){
+		$('.pages').load(window.location.href + " .pages > *", function(){
 			$('.page-order-actions').fadeOut("slow", function() {
 				$(this).remove();
 			});

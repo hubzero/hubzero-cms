@@ -340,9 +340,20 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'pucas', null, $username);
-				$hzal->set('user_id', User::get('id'));
-				$hzal->set('email', phpCAS::getAttribute('email'));
-				$hzal->update();
+				// if `$hzal` === false, then either:
+				//    the authenticator Domain couldn't be found,
+				//    no username was provided,
+				//    or the Link record failed to be created
+				if ($hzal)
+				{
+					$hzal->set('user_id', User::get('id'));
+					$hzal->set('email', phpCAS::getAttribute('email'));
+					$hzal->update();
+				}
+				else
+				{
+					Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "pucas", null, %s) returned false', $username));
+				}
 			}
 		}
 		else
@@ -447,7 +458,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 	{
 		Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/pucas/assets/css/pucas.css');
 
-		$html = '<a class="pucas account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=pucas' . $return) . '">';
+		$html = '<a class="pucas account" href="' . Route::url('index.php?option=com_login&authenticator=pucas' . $return) . '">';
 			$html .= '<div class="signin">';
 				$html .= Lang::txt('PLG_AUTHENTICATION_PUCAS_SIGN_IN');
 			$html .= '</div>';

@@ -857,6 +857,16 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 					}
 				}
 
+				if ($k == 'doi' && $this->$k)
+				{
+					$this->$k = str_replace('https://doi.org/', '', $this->$k);
+					$this->$k = str_replace('https://dx.doi.org/', '', $this->$k);
+					$this->$k = str_replace('http://doi.org/', '', $this->$k);
+					$this->$k = str_replace('http://dx.doi.org/', '', $this->$k);
+
+					$replace_values[$v] = '<a rel="external" href="https://doi.org/' . $this->$k . '">' . $this->$k . '</a>';
+				}
+
 				if ($k == 'author')
 				{
 					$a = array();

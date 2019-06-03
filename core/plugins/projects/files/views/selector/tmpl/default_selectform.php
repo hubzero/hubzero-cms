@@ -4,8 +4,6 @@
  * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-use Components\Projects\Models\Orm\Project;
 ?>
 	<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="">
 		<fieldset>
@@ -44,11 +42,8 @@ use Components\Projects\Models\Orm\Project;
 					$view->option       = $this->option;
 					$view->model        = $this->model;
 					$view->items        = $this->items;
-					$view->requirements = $params;
 					$view->publication  = $this->publication;
-					$view->selected     = $selected;
-					$view->allowed      = $allowed;
-					$view->used         = $used;
+					$view->selected     = $this->selected;
 
 					echo $view->loadTemplate();
 				}

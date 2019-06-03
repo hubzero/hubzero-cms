@@ -183,17 +183,9 @@ $maintext = $this->model->description;
 						$tconfig = Component::params('com_tools');
 						$doi = '';
 
-						if ($this->model->doi && $tconfig->get('doi_shoulder'))
+						if ($this->model->doi && ($this->model->doi_shoulder || $tconfig->get('doi_shoulder')))
 						{
-							$doi = $tconfig->get('doi_shoulder') . '/' . strtoupper($this->model->doi);
-						}
-						else if ($this->model->doi_label)
-						{
-							$doi = '10254/' . $tconfig->get('doi_prefix') . $this->model->id . '.' . $this->model->doi_label;
-						}
-
-						if ($doi)
-						{
+							$doi = ($this->model->doi_shoulder ? $this->model->doi_shoulder : $tconfig->get('doi_shoulder')) . '/' . strtoupper($this->model->doi);
 							$cite->doi = $doi;
 						}
 
@@ -297,10 +289,5 @@ $maintext = $this->model->description;
 				</div>
 			<?php endif; ?>
 		<?php endif; ?>
-
-		<?php
-		$cite = null; // Not used
-		echo \Components\Resources\Helpers\Html::citationCOins($cite, $this->model);
-		?>
 	</div><!-- / .resource -->
 </div><!-- / .subject -->

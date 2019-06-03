@@ -11,7 +11,6 @@ use Hubzero\Component\ApiController;
 
 class CurrentUserv1_0 extends ApiController
 {
-
 	/**
 	 * Indicates whether current user is authenticated
 	 *
@@ -19,7 +18,7 @@ class CurrentUserv1_0 extends ApiController
 	 * @apiUri    /api/v1.0/users/current_user/isAuthenticated
 	 * @return    bool
 	 */
-	function isAuthenticatedTask()
+	public function isAuthenticatedTask()
 	{
 		$isAuthenticated = !User::isGuest();
 
@@ -29,5 +28,4 @@ class CurrentUserv1_0 extends ApiController
 
 		$this->send($result);
 	}
-
 }

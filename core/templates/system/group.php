@@ -149,7 +149,7 @@ $membership_control = $params->get('membership_control', 1);
 											</a>
 										</li>
 										<li id="account-logout">
-											<a href="<?php echo Route::url('index.php?option=com_users&view=logout&return=' . base64_encode($return)); ?>">
+											<a href="<?php echo Route::url('index.php?option=com_login&task=logout&return=' . base64_encode($return)); ?>">
 												<span><?php echo Lang::txt('TPL_SYSTEM_LOGOUT'); ?></span>
 											</a>
 										</li>
@@ -158,7 +158,7 @@ $membership_control = $params->get('membership_control', 1);
 							</ul>
 						<?php else : ?>
 							<ul class="menu loggedout">
-								<?php if (Component::params('com_users')->get('allowUserRegistration') != '0') : ?>
+								<?php if (Component::params('com_members')->get('allowUserRegistration') != '0') : ?>
 									<li id="account-register">
 										<a href="<?php echo Route::url('index.php?option=com_members&controller=register&return=' . base64_encode($return)); ?>" title="<?php echo Lang::txt('TPL_SYSTEM_REGISTER'); ?>">
 											<?php echo Lang::txt('TPL_SYSTEM_REGISTER'); ?>

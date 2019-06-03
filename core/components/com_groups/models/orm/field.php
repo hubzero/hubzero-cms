@@ -77,8 +77,127 @@ class Field extends Relational
 	public $always = array(
 		'name',
 		'modified',
-		'modified_by'
+		'modified_by',
+		'option_other',
+		'option_blank',
+		'required',
+		'readonly',
+		'disabled',
+		'multiple',
+		'parent_option'
 	);
+
+	/**
+	 * Generates automatic option_other field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticOptionOther($data)
+	{
+		if (!isset($data['option_other']))
+		{
+			$data['option_other'] = 0;
+		}
+
+		return (int) $data['option_other'];
+	}
+
+	/**
+	 * Generates automatic option_blank field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticOptionBlank($data)
+	{
+		if (!isset($data['option_blank']))
+		{
+			$data['option_blank'] = 0;
+		}
+
+		return (int) $data['option_blank'];
+	}
+
+	/**
+	 * Generates automatic required field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticRequired($data)
+	{
+		if (!isset($data['required']))
+		{
+			$data['required'] = 0;
+		}
+
+		return (int) $data['required'];
+	}
+
+	/**
+	 * Generates automatic readonly field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticReadonly($data)
+	{
+		if (!isset($data['readonly']))
+		{
+			$data['readonly'] = 0;
+		}
+
+		return (int) $data['readonly'];
+	}
+
+	/**
+	 * Generates automatic disabled field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticDisabled($data)
+	{
+		if (!isset($data['disabled']))
+		{
+			$data['disabled'] = 0;
+		}
+
+		return (int) $data['disabled'];
+	}
+
+	/**
+	 * Generates automatic multiple field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticMultiple($data)
+	{
+		if (!isset($data['multiple']))
+		{
+			$data['multiple'] = 0;
+		}
+
+		return (int) $data['multiple'];
+	}
+
+	/**
+	 * Generates automatic parent_option field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticParentOption($data)
+	{
+		if (!isset($data['parent_option']))
+		{
+			$data['parent_option'] = 0;
+		}
+
+		return (int) $data['parent_option'];
+	}
 
 	/**
 	 * Generates automatic name field value

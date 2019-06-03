@@ -235,6 +235,18 @@ jQuery(document).ready(function($){
 		});
 	});
 
+	$("input[name='tool[repohost]']").on('click', function (e) {
+		if ($("input[name='tool[repohost]']:checked").val() == 'gitExternal') {
+			$('#gitExternalInput').show();
+			$('#gitExternalExplanation').show();
+		} else {
+			$('#gitExternalInput').hide();
+			$('#gitExternalExplanation').hide();
+		}
+	});
+	$('#gitExternalInput').hide();
+	$('#gitExternalExplanation').hide();
+
 	/*$('script').each(function(i, s) {
 		if (s.src && s.src.match(/hub\.jquery\.js(\?.*)?$/)) {
 			HUB.ToolsPipeline.templatepath = s.src.replace(/js\/hub\.jquery\.js(\?.*)?$/,'');
@@ -323,3 +335,4 @@ jQuery(document).ready(function($){
 		});
 	}
 });
+

@@ -9,6 +9,7 @@ namespace Components\Projects\Api\Controllers;
 
 use Components\Projects\Models\Orm\Project;
 use Components\Projects\Models\Orm\Owner;
+use Components\Projects\Models\Repo;
 use Hubzero\Component\ApiController;
 use Hubzero\Utility\Date;
 use Exception;
@@ -630,6 +631,14 @@ class Projectsv2_0 extends ApiController
 		if (!$row->syncSystemGroup())
 		{
 			throw new Exception($row->getError());
+		}
+
+		require_once \Component::path('com_projects') . '/models/repo.php';
+
+		$repo = new Repo($row, 'local');
+		if (!$repo->iniLocal())
+		{
+			throw new Exception($repo->getError());
 		}
 
 		// Set timestamp with timezone

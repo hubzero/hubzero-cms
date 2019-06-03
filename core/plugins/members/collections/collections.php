@@ -314,7 +314,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$route = Route::url('index.php?option=' . $this->option . '&id=' . $this->member->get('id') . '&active=' . $this->_name);
 
 		App::redirect(
-			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($route)),
+			Route::url('index.php?option=com_login&return=' . base64_encode($route)),
 			Lang::txt('MEMBERS_LOGIN_NOTICE'),
 			'warning'
 		);
@@ -1663,7 +1663,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		if (User::isGuest())
 		{
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login?return=' . base64_encode($collection)),
+				Route::url('index.php?option=com_login?return=' . base64_encode($collection)),
 				Lang::txt('MEMBERS_LOGIN_NOTICE'),
 				'warning'
 			);

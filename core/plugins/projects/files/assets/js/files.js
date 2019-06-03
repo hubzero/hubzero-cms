@@ -83,16 +83,16 @@ HUB.ProjectFiles = {
 		// Toggle
 		if (toggle.length > 0) {
 			toggle.on('click', function(e) {
-				var tog = toggle.attr('checked') == 'checked' ? 2 : 3;
+				var tog = toggle.prop('checked') ? 2 : 3;
 				HUB.ProjectFiles.remote = 0;
 				boxes.each(function(i, item)
 				{
-					if (toggle.attr('checked') == 'checked') {
-						$(item).attr('checked','checked');
+					if (toggle.prop('checked')) {
+						$(item).prop('checked', true);
 					}
 					else
 					{
-						$(item).removeAttr("checked");
+						$(item).prop('checked', false);
 					}
 
 					HUB.ProjectFiles.collectSelections(item, tog);
@@ -436,9 +436,9 @@ HUB.ProjectFiles = {
 					var idx = HUB.Projects.getArrayIndex($(el).val(), HUB.ProjectFiles.bselected);
 				}
 
-				if (idx != -1 && $(el).attr('checked') != 'checked')
+				if (idx != -1 && !$(el).prop('checked'))
 				{
-					$(el).attr('checked', 'checked');
+					$(el).prop('checked', true);
 					HUB.ProjectFiles.collectSelections(el, 0);
 					HUB.ProjectFiles.watchSelections();
 				}
@@ -757,7 +757,7 @@ HUB.ProjectFiles = {
 							var dir = '';
 							var file = '';
 
-							for ( i=classes.length-1; i>=0; i-- )
+							for (i=classes.length-1; i>=0; i--)
 							{
 								if (classes[i].search("file:") >= 0)
 								{
@@ -839,7 +839,7 @@ HUB.ProjectFiles = {
 		var sConflict 	= this.sConflict;
 
 		// Is item checked?
-		if ($(el).attr('checked') == 'checked' || tog == 2)
+		if ($(el).prop('checked') || tog == 2)
 		{
 			if ($(el).hasClass('publ')) {
 				pub = pub + 1;
@@ -906,12 +906,16 @@ HUB.ProjectFiles = {
 				dir = dir - 1;
 				var idx = HUB.Projects.getArrayIndex($(el).val(), bfolders);
 				//var idx = bfolders.indexOf($(el).val());
-				if (idx!=-1) bfolders.splice(idx, 1);
+				if (idx!=-1) {
+					bfolders.splice(idx, 1);
+				}
 			}
 			else {
 				//var idx = bselected.indexOf($(el).val());
 				var idx = HUB.Projects.getArrayIndex($(el).val(), bselected);
-				if (idx!=-1) bselected.splice(idx, 1);
+				if (idx!=-1) {
+					bselected.splice(idx, 1);
+				}
 			}
 
 			// Remove class from tr
@@ -1004,6 +1008,7 @@ HUB.ProjectFiles = {
 		// Preview files
 		var preview = $('.preview');
 		var div = $('#preview-window');
+		div.appendTo('body');
 		var keyupTimer2 = '';
 		var preview_open = 0;
 		var in_preview = 0;
@@ -1041,10 +1046,12 @@ HUB.ProjectFiles = {
 			{
 				e.preventDefault();
 				var coord = $(item).offset();
-				if (subtract) {
+				coord.top += $(item).height();
+				coord.left += $(item).width();
+				/*if (subtract) {
 					coord.top -= subtract.top;
 					coord.left -= subtract.left;
-				}
+				}*/
 
 				if (keyupTimer2) {
 					clearTimeout(keyupTimer2);
@@ -1061,7 +1068,7 @@ HUB.ProjectFiles = {
 
 					in_preview = $(item).attr('id');
 					var left = $(item).innerWidth() + coord.left; // safe margin
-					var top = coord.top ;
+					var top = coord.top;
 					div.css({'width': '300px', 'top': top, 'left': left });
 
 					var original = $(item).attr('href');

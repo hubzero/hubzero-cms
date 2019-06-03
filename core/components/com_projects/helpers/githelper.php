@@ -691,7 +691,7 @@ class Git extends Obj
 	 * @param   string  $subdir  Local directory path
 	 * @return  array
 	 */
-	public function getDirectories($subdir = '')
+	public function getDirectories($subdir = '', $recursive = false)
 	{
 		// Make sure subdir has a trailing slash
 		$subdir = (!empty($subdir)) ? trim($subdir, DS) . DS : '';

@@ -182,11 +182,12 @@ var Conditions = {
 		elem.find('select.fld').on('change', function () {
 			var options = $(this).siblings('select.op').find('option').remove().end();
 			var val = null;
+
 			$.each(Conditions.option[$(this).val()].operators, function() {
 				if (this.sel) {
 					val = this.val;
 				}
-			    options.append($("<option />").val(this.val).text(this.label));
+				options.append($("<option />").val(this.val).text(this.label));
 			});
 			options.val(val);
 
@@ -293,11 +294,47 @@ var Conditions = {
 		}
 
 		var q = [];
-		if (e.length > 0)
+		if (e.length > 0) {
 			q.push(e.join(op));
-		if (n.length > 0)
+		}
+		if (n.length > 0) {
 			q.push(n.join(op));
+		}
 
 		return ['(', q.join(op), ')'].join(' ');
 	}
 };
+
+jQuery(document).ready(function($){
+	/*var cdata = $('#conditions-data');
+
+	if (cdata.length) {
+		var data = JSON.parse(cdata.html());
+
+		Conditions.option = data.conditions;
+	}
+
+	Conditions.addqueryroot('.query', true);*/
+
+	$('#btn-apply').on('click', function (e){
+		var query = {};
+
+		if (!$('#field-title').val()) {
+			alert($(this).attr('data-empty'));
+			return false;
+		}
+
+		query = Conditions.getCondition('.query > fieldset');
+		$('#field-conditions').val(JSON.stringify(query));
+
+		$.post($(this).attr('data-action'), $("#component-form").serialize(), function(data){
+			window.parent.document.getElementById('query-list').innerHTML = data;
+			window.parent.applySortable();
+			window.top.setTimeout('window.parent.$.fancybox.close()', 700);
+		});
+	});
+
+	$('#btn-cancel').on('click', function(e){
+		window.parent.$.fancybox.close();
+	});
+});

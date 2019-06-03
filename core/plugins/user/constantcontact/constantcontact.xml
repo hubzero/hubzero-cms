@@ -15,7 +15,7 @@
 			<fieldset name="basic">
 				<field type="list" name="ccManageEmailPreference" label="PLG_USER_CONSTANTCONTACT_PARAM_EMAIL_LABEL" default="0">
 					<option value="0">JNo</option>
-					<option value="1">JYes</option>å
+					<option value="1">JYes</option>
 				</field>
 				<field type="spacer" />
 				<field name="ccUsername" type="text" default="" label="PLG_USER_CONSTANTCONTACT_PARAM_CCUSERNAME_LABEL" description="PLG_USER_CONSTANTCONTACT_PARAM_CCUSERNAME_DESC" />

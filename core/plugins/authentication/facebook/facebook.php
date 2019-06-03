@@ -131,7 +131,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 		{
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . $return),
+				Route::url('index.php?option=com_login&return=' . $return),
 				Lang::txt('PLG_AUTHENTICATION_FACEBOOK_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
 				'error'
 			);
@@ -375,9 +375,20 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'facebook', null, $id);
-				$hzal->set('user_id', User::get('id'));
-				$hzal->set('email', $email);
-				$hzal->update();
+				// if `$hzal` === false, then either:
+				//    the authenticator Domain couldn't be found,
+				//    no username was provided,
+				//    or the Link record failed to be created
+				if ($hzal)
+				{
+					$hzal->set('user_id', User::get('id'));
+					$hzal->set('email', $email);
+					$hzal->update();
+				}
+				else
+				{
+					Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "facebook", null, %s) returned false', $id));
+				}
 			}
 		}
 		else
@@ -432,7 +443,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	{
 		Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/facebook/assets/css/facebook.css');
 
-		$html = '<a class="facebook account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=facebook' . $return) . '">';
+		$html = '<a class="facebook account" href="' . Route::url('index.php?option=com_login&authenticator=facebook' . $return) . '">';
 			$html .= '<div class="signin">';
 				$html .= Lang::txt('PLG_AUTHENTICATION_FACEBOOK_SIGN_IN');
 			$html .= '</div>';

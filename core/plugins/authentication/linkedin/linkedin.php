@@ -111,7 +111,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		{
 			// User didn't authorize our app, or, clicked cancel
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . $return),
+				Route::url('index.php?option=com_login&return=' . $return),
 				Lang::txt('PLG_AUTHENTICATION_LINKEDIN_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
 				'error'
 			);
@@ -420,9 +420,20 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'linkedin', null, $username);
-				$hzal->set('user_id', User::get('id'));
-				$hzal->set('email', (string) $profile->{'email-address'});
-				$hzal->update();
+				// if `$hzal` === false, then either:
+				//    the authenticator Domain couldn't be found,
+				//    no username was provided,
+				//    or the Link record failed to be created
+				if ($hzal)
+				{
+					$hzal->set('user_id', User::get('id'));
+					$hzal->set('email', (string) $profile->{'email-address'});
+					$hzal->update();
+				}
+				else
+				{
+					Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "linkedin", null, %s) returned false', $username));
+				}
 			}
 		}
 		else // no authorization
@@ -446,7 +457,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 	{
 		Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/linkedin/assets/css/linkedin.css');
 
-		$html = '<a class="linkedin account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=linkedin' . $return) . '">';
+		$html = '<a class="linkedin account" href="' . Route::url('index.php?option=com_login&authenticator=linkedin' . $return) . '">';
 			$html .= '<div class="signin">';
 				$html .= Lang::txt('PLG_AUTHENTICATION_LINKEDIN_SIGN_IN');
 			$html .= '</div>';

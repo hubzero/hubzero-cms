@@ -293,7 +293,14 @@ class Author extends Relational
 		// If not account if found, use a negative timestamp
 		if ($uid == null)
 		{
-			$uid = -(time());
+			//$uid = -(time());
+			$uid = self::all()
+				->where('authorid', '<', 0)
+				->order('authorid', 'asc')
+				->limit(1)
+				->row()
+				->get('authorid');
+			$uid = -(abs($uid) + 1);
 		}
 
 		return $uid;

@@ -275,10 +275,10 @@ if (!$no_html) {
 									<?php } ?>
 								<?php } ?>
 							<?php } else { ?>
-								<a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&controller=posts&board=' . $this->collection->get('id') . '&task=collect', false, true)), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
+								<a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_login&return=' . base64_encode(Route::url($base . '&controller=posts&board=' . $this->collection->get('id') . '&task=collect', false, true)), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
 									<span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
 								</a>
-								<a class="btn follow tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->collection->link() . '/follow')), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW'); ?>">
+								<a class="btn follow tooltips" href="<?php echo Route::url('index.php?option=com_login&return=' . base64_encode(Route::url($this->collection->link() . '/follow')), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW'); ?>">
 									<span><?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?></span>
 								</a>
 							<?php } ?>
@@ -377,10 +377,10 @@ if (!$no_html) {
 										<?php } ?>
 									<?php } ?>
 								<?php } else { ?>
-									<a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&controller=posts&board=' . $collection->get('id') . '&task=collect', false, true)), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
+									<a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_login&return=' . base64_encode(Route::url($base . '&controller=posts&board=' . $collection->get('id') . '&task=collect', false, true)), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
 										<span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
 									</a>
-									<a class="btn follow tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($collection->link() . '/follow')), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW'); ?>">
+									<a class="btn follow tooltips" href="<?php echo Route::url('index.php?option=com_login&return=' . base64_encode(Route::url($collection->link() . '/follow')), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW'); ?>">
 										<span><?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?></span>
 									</a>
 								<?php } ?>

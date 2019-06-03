@@ -96,8 +96,8 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 		else
 		{
 			// If someone is logged in already, then we're linking an account
-			$task  = (User::isGuest()) ? 'user.login' : 'user.link';
-			$scope = '/index.php?option=com_users&task=' . $task . '&authenticator=certificate';
+			$task  = (User::isGuest()) ? 'login' : 'link';
+			$scope = '/index.php?option=com_login&task=' . $task . '&authenticator=certificate';
 		}
 
 		App::redirect($scope . $return);
@@ -227,9 +227,20 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'certificate', $domain, $username);
-				$hzal->set('user_id', User::get('id'));
-				$hzal->set('email', $_SERVER['SSL_CLIENT_S_DN_Email']);
-				$hzal->update();
+				// if `$hzal` === false, then either:
+				//    the authenticator Domain couldn't be found,
+				//    no username was provided,
+				//    or the Link record failed to be created
+				if ($hzal)
+				{
+					$hzal->set('user_id', User::get('id'));
+					$hzal->set('email', $_SERVER['SSL_CLIENT_S_DN_Email']);
+					$hzal->update();
+				}
+				else
+				{
+					Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "certificate", %s, %s) returned false', $domain, $username));
+				}
 			}
 		}
 		else
@@ -263,7 +274,7 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 	{
 		Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/certificate/assets/css/certificate.css');
 
-		$html = '<a class="certificate account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=certificate' . $return) . '">';
+		$html = '<a class="certificate account" href="' . Route::url('index.php?option=com_login&authenticator=certificate' . $return) . '">';
 			$html .= '<div class="signin">';
 				$html .= Lang::txt('PLG_AUTHENTICATION_CERTIFICATE_SIGN_IN');
 			$html .= '</div>';

@@ -65,7 +65,7 @@ class Helper extends Module
 		{
 			// Initialise variables.
 			$list     = array();
-			$db       = \App::get('db');
+			$db       = App::get('db');
 
 			$path     = $active->tree;
 			$start    = (int) $params->get('startLevel');
@@ -106,6 +106,11 @@ class Helper extends Module
 					$item->active = false;
 					$item->flink  = $item->link;
 
+					$item->title        = htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8', false);
+					$item->anchor_css   = htmlspecialchars($item->params->get('menu-anchor_css', ''), ENT_COMPAT, 'UTF-8', false);
+					$item->anchor_title = htmlspecialchars($item->params->get('menu-anchor_title', ''), ENT_COMPAT, 'UTF-8', false);
+					$item->menu_image   = $item->params->get('menu_image', '') ? htmlspecialchars($item->params->get('menu_image', ''), ENT_COMPAT, 'UTF-8', false) : '';
+
 					// Reverted back for CMS version 2.5.6
 					switch ($item->type)
 					{
@@ -139,18 +144,13 @@ class Helper extends Module
 					{
 						$item->flink = Route::url($item->flink);
 					}
-
-					$item->title        = htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8', false);
-					$item->anchor_css   = htmlspecialchars($item->params->get('menu-anchor_css', ''), ENT_COMPAT, 'UTF-8', false);
-					$item->anchor_title = htmlspecialchars($item->params->get('menu-anchor_title', ''), ENT_COMPAT, 'UTF-8', false);
-					$item->menu_image   = $item->params->get('menu_image', '') ? htmlspecialchars($item->params->get('menu_image', ''), ENT_COMPAT, 'UTF-8', false) : '';
 				}
 
 				if (isset($items[$lastitem]))
 				{
-					$items[$lastitem]->deeper     = (($start?$start:1) > $items[$lastitem]->level);
-					$items[$lastitem]->shallower  = (($start?$start:1) < $items[$lastitem]->level);
-					$items[$lastitem]->level_diff = ($items[$lastitem]->level - ($start?$start:1));
+					$items[$lastitem]->deeper     = (($start ? $start : 1) > $items[$lastitem]->level);
+					$items[$lastitem]->shallower  = (($start ? $start : 1) < $items[$lastitem]->level);
+					$items[$lastitem]->level_diff = ($items[$lastitem]->level - ($start ? $start : 1));
 				}
 			}
 

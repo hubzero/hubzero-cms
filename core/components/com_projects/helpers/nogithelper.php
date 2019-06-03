@@ -169,9 +169,9 @@ class Nogit extends Obj
 	 * @param   string  $subdir  Local directory path
 	 * @return  array
 	 */
-	public function getDirectories($subdir = '')
+	public function getDirectories($subdir = '', $recursive = false)
 	{
-		$files = $this->adapter->listContents($subdir);
+		$files = $this->adapter->listContents($subdir, $recursive);
 		$out = array();
 		foreach ($files as $file)
 		{

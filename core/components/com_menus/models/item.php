@@ -95,7 +95,8 @@ class Item extends Nested
 	 * @var  array
 	 **/
 	public $always = array(
-		'alias'
+		'alias',
+		'img'
 	);
 
 	/**
@@ -209,6 +210,22 @@ class Item extends Nested
 		}
 
 		return $alias;
+	}
+
+	/**
+	 * Generates automatic alias field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticImg($data)
+	{
+		if (!isset($data['img']))
+		{
+			$data['img'] = '';
+		}
+
+		return (string)$data['img'];
 	}
 
 	/**

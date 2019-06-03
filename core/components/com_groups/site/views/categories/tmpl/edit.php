@@ -15,10 +15,9 @@ $this->css()
      ->js('jquery.colpick', 'system');
 
 $title = Lang::txt('COM_GROUPS_PAGES_ADD_CATEGORY');
-if ($this->category->get('id'))
-{
+if ($this->category->get('id')):
 	$title = Lang::txt('COM_GROUPS_PAGES_EDIT_CATEGORY');
-}
+endif;
 ?>
 <?php if (!Request::getInt('no_html', 0)) : ?>
 <header id="content-header">
@@ -35,23 +34,27 @@ if ($this->category->get('id'))
 <?php endif; ?>
 
 <section class="main section">
-	<?php foreach ($this->notifications as $notification) { ?>
+	<?php foreach ($this->notifications as $notification): ?>
 		<p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
-	<?php } ?>
+	<?php endforeach; ?>
 
 	<form action="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=categories&task=savecategory'); ?>" method="POST" id="hubForm" class="full editcategory">
 		<fieldset>
 			<legend><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_DETAILS'); ?></legend>
 
-			<label for="field-category-title">
-				<strong><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_TITLE')?>:</strong> <span class="required"><?php echo Lang::txt('COM_GROUPS_FIELD_REQUIRED'); ?></span>
-				<input type="text" name="category[title]" id="field-category-title" value="<?php echo $this->escape($this->category->get('title')); ?>" />
-			</label>
+			<div class="form-group">
+				<label for="field-category-title">
+					<?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_TITLE')?>: <span class="required"><?php echo Lang::txt('COM_GROUPS_FIELD_REQUIRED'); ?></span>
+					<input type="text" name="category[title]" id="field-category-title" class="form-control" value="<?php echo $this->escape($this->category->get('title')); ?>" />
+				</label>
+			</div>
 
-			<label for="field-category-color">
-				<strong><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_COLOR')?>:</strong> <span class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
-				<input type="text" maxlength="6" name="category[color]" id="field-category-color" value="<?php echo $this->escape($this->category->get('color')); ?>" />
-			</label>
+			<div class="form-group">
+				<label for="field-category-color">
+					<?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_COLOR')?>: <span class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
+					<input type="text" maxlength="6" name="category[color]" id="field-category-color" class="form-control" value="<?php echo $this->escape($this->category->get('color')); ?>" />
+				</label>
+			</div>
 		</fieldset>
 
 		<p class="submit">
@@ -61,6 +64,6 @@ if ($this->category->get('id'))
 		<input type="hidden" name="option" value="com_groups" />
 		<input type="hidden" name="controller" value="categories" />
 		<input type="hidden" name="task" value="save" />
-		<input type="hidden" name="category[id]" value="<?php echo $this->category->get('id'); ?>" />
+		<input type="hidden" name="category[id]" value="<?php echo intval($this->category->get('id', 0)); ?>" />
 	</form>
 </section>

@@ -115,8 +115,8 @@ class Git extends Models\Adapter
 		}
 		else
 		{
-			// This is recursive by default
-			$files = empty($files) ? $this->_git->getDirectories($dirPath) : $files;
+			$recursive = true;
+			$files = empty($files) ? $this->_git->getDirectories($dirPath, $recursive) : $files;
 
 			// Add untracked?
 			$untracked = $showUntracked ? $this->_git->getUntrackedDirectories($dirPath) : [];
