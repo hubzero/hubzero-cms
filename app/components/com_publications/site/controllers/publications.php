@@ -305,7 +305,7 @@ class Publications extends SiteController
 		$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 
 		App::redirect(
-			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+			Route::url('index.php?option=com_login&return=' . base64_encode($rtrn)),
 			$this->_msg,
 			'warning'
 		);

@@ -335,6 +335,23 @@ class License extends Base
 		{
 			$agreement = $pub->params->get('licenseagreement');
 
+			if (!$agreement)
+			{
+				// Get version params and extract agreement
+				$versionParams = array_filter(explode(PHP_EOL, $pub->version->params));
+				$versionParams = array_reduce($versionParams, function($carry, $item){
+					$keyValueSplit = explode('=', $item);
+					$key = trim(array_shift($keyValueSplit));
+					$value = trim(array_shift($keyValueSplit));
+					if ($key && $value)
+					{
+						$carry[$key] = $value;
+						return $carry;
+					}
+				});
+				$agreement = isset($versionParams['licenseagreement']) ? $versionParams['licenseagreement'] : 0;
+			}
+
 			// Missing agreement?
 			if ($objL->agreement == 1 && !$agreement && $required)
 			{
