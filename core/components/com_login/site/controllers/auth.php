@@ -870,7 +870,7 @@ class Auth extends SiteController
 
 		// Perform the log out
 		//$error = $app->logout();
-		// Get a user object from the JApplication.
+		// Get a user object from the Application.
 		//$user = User::getInstance();
 
 		// Build the credentials array.
@@ -972,7 +972,15 @@ class Auth extends SiteController
 			$return = 'index.php?option=com_login';
 		}
 
+		$return = Route::url($return, false);
+
+		// Try to prevent nasty redirect loops
+		if ($return == '/logout' || $return == '/index.php?option=com_login&task=logout')
+		{
+			$return = '/';
+		}
+
 		// Redirect the user.
-		App::redirect(Route::url($return, false));
+		App::redirect($return);
 	}
 }
