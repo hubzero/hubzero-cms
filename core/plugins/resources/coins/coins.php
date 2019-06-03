@@ -67,6 +67,11 @@ class plgResourcesCoins extends \Hubzero\Plugin\Plugin
 	 */
 	public function coins($model)
 	{
+		if (!is_object($model))
+		{
+			return;
+		}
+
 		$title = array(
 			'ctx_ver=Z39.88-2004',
 			'rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal',  //info:ofi/fmt:kev:mtx:journal
