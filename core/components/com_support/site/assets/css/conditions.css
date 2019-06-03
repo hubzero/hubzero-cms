@@ -132,23 +132,22 @@
 		top: 0;
 		left: 0;
 		text-indent: 0;
-		font-size: 16px;
-		line-height: 17px;
+		font-size: 14px;
+		line-height: 20px;
+		font-family: "Fontcons";
 	}
 	html.chrome .query fieldset button.remove:before,
 	html.chrome .query fieldset button.add:before {
 		line-height: 18px;
 	}
 	.query fieldset button.remove:before {
-		content: "\00D7"; /* \2297 */
+		content: "\2716"; /*00D7"; /* \2297 */
 	}
 	.query fieldset button.add:before {
-		content: "+";
+		content: "\271A";
 	}
 	.query fieldset button.addroot:before {
 		content: "\22EF";
-		line-height: 20px;
-		font-size: 20px;
 	}
 	.query fieldset button:hover:before {
 		border-color: #333;

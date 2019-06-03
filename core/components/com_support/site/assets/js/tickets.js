@@ -150,6 +150,16 @@ jQuery(document).ready(function($){
 			$(this).attr('href', href);
 		},
 		afterShow: function() {
+			var cdata = $('#conditions-data');
+
+			Conditions.option = [];
+
+			if (cdata.length) {
+				var data = JSON.parse(cdata.html());
+
+				Conditions.option = data.conditions;
+			}
+
 			Conditions.addqueryroot('.query', true);
 
 			if ($('#queryForm').length > 0) {
