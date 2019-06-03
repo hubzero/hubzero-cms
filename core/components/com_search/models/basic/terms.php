@@ -323,7 +323,12 @@ class Terms extends Obj
 	public function get_word_regex()
 	{
 		$chunks = $this->get_stemmed_chunks();
-		usort($chunks, create_function('$a, $b', '$al = strlen($a); $bl = strlen($b); if ($al == $bl) return 0; return $al > $bl ? -1 : 1;'));
+		usort($chunks, function($a, $b) {
+			$al = strlen($a);
+			$bl = strlen($b);
+			if ($al == $bl) return 0;
+			return $al > $bl ? -1 : 1;
+		});
 		return '(' . join('|', array_map('preg_quote', $chunks)) . '[[:alpha:]]*)';
 	}
 
