@@ -37,6 +37,7 @@ switch ($task)
 	case 'link':
 	case 'endsinglesignon':
 	case 'spamjail':
+	case 'login':
 		//$uri->setVar('option', 'com_login');
 		//$uri->setVar('task', $task);
 		Request::setVar('option', 'com_login');
