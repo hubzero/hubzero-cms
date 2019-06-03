@@ -24,8 +24,10 @@ class plgSystemUnconfirmed extends \Hubzero\Plugin\Plugin
 		{
 			$exceptions = [
 				'com_login.logout',
+				'com_login.logout.login',
 				'com_users.logout',
 				'com_users.userlogout',
+				'com_users.logout.login',
 				'com_support.tickets.save.index',
 				'com_support.tickets.new.index',
 				'com_members.media.download.profiles',
