@@ -27,6 +27,9 @@
 	left: 0;
 	right: 0;
 }
+.none {
+	display: none;
+}
 .prompt-container .prompt {
 	font-size: 1.3em;
 	margin: 20px;
