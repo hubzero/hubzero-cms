@@ -142,7 +142,7 @@ class Feedback extends SiteController
 		{
 			$here = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($here)),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($here)),
 				Lang::txt('COM_FEEDBACK_STORY_LOGIN'),
 				'warning'
 			);
@@ -219,7 +219,7 @@ class Feedback extends SiteController
 		{
 			$here = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($here)),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($here)),
 				Lang::txt('COM_FEEDBACK_STORY_LOGIN'),
 				'warning'
 			);

@@ -229,7 +229,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		$return = base64_encode(Request::getString('REQUEST_URI', Route::url($this->obj->link() . '&active=reviews', false, true), 'server'));
 
 		App::redirect(
-			Route::url('index.php?option=com_login&return=' . $return, false),
+			Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 			Lang::txt('PLG_COURSES_REVIEWS_LOGIN_NOTICE'),
 			'warning'
 		);

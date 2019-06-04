@@ -52,8 +52,8 @@ defined('_HZEXEC_') or die();
 						<label>&nbsp;</label>
 						<input type="submit" name="Submit" class="button login" value="<?php echo Lang::txt('JLOGIN') ?>" />
 					</p>
-					<input type="hidden" name="option" value="com_login" />
-					<input type="hidden" name="task" value="login" />
+					<input type="hidden" name="option" value="com_users" />
+					<input type="hidden" name="task" value="user.login" />
 					<input type="hidden" name="return" value="<?php echo base64_encode(Request::base()) ?>" />
 					<?php echo Html::input('token'); ?>
 				</fieldset>

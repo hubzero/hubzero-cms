@@ -1032,7 +1032,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	private function loginAction()
 	{
 		App::redirect(
-			Route::url('index.php?option=com_login&return=' . base64_encode(Route::url($this->member->link() . '&active=' . $this->_name . '&action=' . $this->action, false, true))),
+			Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->member->link() . '&active=' . $this->_name . '&action=' . $this->action, false, true))),
 			Lang::txt('PLG_MEMBERS_CITATIONS_NOT_LOGGEDIN'),
 			'warning'
 		);

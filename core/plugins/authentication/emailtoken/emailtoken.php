@@ -82,7 +82,7 @@ class plgAuthenticationEmailtoken extends \Hubzero\Plugin\Plugin
 		if ($activation == 1)
 		{
 			App::redirect(
-				Route::url('index.php?option=com_login', false),
+				Route::url('index.php?option=com_users&view=login', false),
 				Lang::txt('This account is already activated, please login'),
 				'warning');
 		}

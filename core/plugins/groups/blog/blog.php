@@ -127,7 +127,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 				$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
 
 				App::redirect(
-					Route::url('index.php?option=com_login&return=' . base64_encode($url)),
+					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
 					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 					'warning'
 				);
@@ -654,7 +654,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		if (User::isGuest())
 		{
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($blog))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($blog))
 			);
 			return;
 		}
@@ -708,7 +708,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			$blog = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name, false, true);
 
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($blog)),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($blog)),
 				Lang::txt('GROUPS_LOGIN_NOTICE'),
 				'warning'
 			);
@@ -915,7 +915,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			$blog = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name, false, true);
 
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($blog)),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($blog)),
 				Lang::txt('GROUPS_LOGIN_NOTICE'),
 				'warning'
 			);

@@ -195,7 +195,7 @@ if ($this->comment->get('resource_id'))
 			<div class="addcomment comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
 				<?php if (User::isGuest()) { ?>
 				<p class="warning">
-					<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_login&return=' . base64_encode(Route::url($this->base, false, true))) . '">' . Lang::txt('PLG_RESOURCES_REVIEWS_LOGIN') . '</a>'); ?>
+					<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true))) . '">' . Lang::txt('PLG_RESOURCES_REVIEWS_LOGIN') . '</a>'); ?>
 				</p>
 				<?php } else { ?>
 				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">

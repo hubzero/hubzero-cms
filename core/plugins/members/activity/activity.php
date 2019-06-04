@@ -551,7 +551,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 		$return = base64_encode(Route::url($this->member->link() . '&active=' . $this->_name, false, true));
 
 		App::redirect(
-			Route::url('index.php?option=com_login&return=' . $return, false),
+			Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 			Lang::txt('MEMBERS_LOGIN_NOTICE')
 		);
 	}

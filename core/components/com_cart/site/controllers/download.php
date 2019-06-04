@@ -241,7 +241,7 @@ class Download extends ComponentController
 	{
 		$return = base64_encode($_SERVER['REQUEST_URI']);
 		App::redirect(
-			Route::url('index.php?option=com_login&return=' . $return),
+			Route::url('index.php?option=com_users&view=login&return=' . $return),
 			$message,
 			'warning'
 		);

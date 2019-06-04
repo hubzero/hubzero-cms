@@ -30,8 +30,8 @@ class plgSystemCertificate extends \Hubzero\Plugin\Plugin
 		if (User::isGuest())
 		{
 			// If so, redirect to login
-			Request::setVar('option', 'com_login');
-			Request::setVar('task', 'login');
+			Request::setVar('option', 'com_users');
+			Request::setVar('task', 'user.login');
 			Request::setVar('authenticator', 'certificate');
 			Request::setVar('return', base64_encode(Request::current()));
 			return;
@@ -49,8 +49,8 @@ class plgSystemCertificate extends \Hubzero\Plugin\Plugin
 		}
 
 		// Otherwise, we have a cert-based user that doesn't match the current user
-		Request::setVar('option', 'com_login');
-		Request::setVar('task', 'logout');
+		Request::setVar('option', 'com_users');
+		Request::setVar('task', 'user.logout');
 
 		$this->event->stop();
 	}
