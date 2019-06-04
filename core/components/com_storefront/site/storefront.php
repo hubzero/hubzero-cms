@@ -52,7 +52,7 @@ if ($loginRequired && $controllerRequested != 'overview')
 		}
 		// Require login
 		\App::redirect(
-			\Route::url('index.php?option=com_login&return=' . $return),
+			\Route::url('index.php?option=com_users&view=login&return=' . $return),
 			'Please login to continue',
 			'warning'
 		);

@@ -149,7 +149,7 @@ $membership_control = $params->get('membership_control', 1);
 											</a>
 										</li>
 										<li id="account-logout">
-											<a href="<?php echo Route::url('index.php?option=com_login&task=logout&return=' . base64_encode($return)); ?>">
+											<a href="<?php echo Route::url('index.php?option=com_users&view=logout&return=' . base64_encode($return)); ?>">
 												<span><?php echo Lang::txt('TPL_SYSTEM_LOGOUT'); ?></span>
 											</a>
 										</li>

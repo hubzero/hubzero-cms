@@ -118,7 +118,7 @@ class Projects extends Base
 		$return = Route::url('index.php?option=com_projects&alias=' . $project, false);
 		if (User::isGuest())
 		{
-			$redirectUrl = Route::url('index.php?option=com_login&return=' . base64_encode($return), false);
+			$redirectUrl = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return), false);
 			App::redirect($redirectUrl);
 		}
 

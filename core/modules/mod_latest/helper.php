@@ -340,7 +340,7 @@ class Helper extends Module
 					$Itemid = Request::getInt('Itemid');
 				}
 
-				$item->link = Route::url('index.php?option=com_login&Itemid=' . $Itemid);
+				$item->link = Route::url('index.php?option=com_users&view=loginItemid=' . $Itemid);
 			}
 
 			// Used for styling the active article

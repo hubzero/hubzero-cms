@@ -13,7 +13,7 @@ $this->css();
 $url = Route::url($this->publication->link() . '&v=' . $this->publication->versionAlias . '&active=forks&action=fork');
 if (User::isGuest())
 {
-	$url = Route::url('index.php?option=com_login&return=' . base64_encode($url));
+	$url = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url));
 }
 else
 {

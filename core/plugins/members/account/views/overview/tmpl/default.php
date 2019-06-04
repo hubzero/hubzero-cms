@@ -69,7 +69,7 @@ $this->css()
 					<?php if ($refl->hasMethod('onRenderOption') && ($html = $refl->getMethod('onRenderOption')->invoke(null))) : ?>
 						<?php echo is_array($html) ? implode("\n", $html) : $html; ?>
 					<?php else : ?>
-						<a href="<?php echo Route::url('index.php?option=com_login&authenticator=' . $domain->name); ?>">
+						<a href="<?php echo Route::url('index.php?option=com_users&view=login&authenticator=' . $domain->name); ?>">
 							<div class="account inactive <?php echo $domain->name; ?>">
 								<div class="account-info">
 									<div class="account-type"><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?></div>

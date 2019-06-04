@@ -34,7 +34,7 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 	<?php } ?>
 <?php } else { ?>
 	<?php if (User::isGuest()) { ?>
-		<p class="warning"><?php echo Lang::txt('PLG_GROUPS_WISHLIST_MUST_LOGIN', Route::url('index.php?option=com_login&return=' . $url, false)); ?></p>
+		<p class="warning"><?php echo Lang::txt('PLG_GROUPS_WISHLIST_MUST_LOGIN', Route::url('index.php?option=com_users&view=login&return=' . $url, false)); ?></p>
 	<?php } else { ?>
 		<p class="warning"><?php echo Lang::txt('PLG_GROUPS_WISHLIST_MUST_BE_MEMBER'); ?></p>
 	<?php } ?>

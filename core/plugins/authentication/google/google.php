@@ -124,7 +124,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 		{
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . $return),
+				Route::url('index.php?option=com_users&view=login&return=' . $return),
 				Lang::txt('PLG_AUTHENTICATION_GOOGLE_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
 				'error'
 			);
@@ -351,7 +351,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 	{
 		Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/google/assets/css/google.css');
 
-		$html = '<a class="google account" href="' . Route::url('index.php?option=com_login&authenticator=google' . $return) . '">';
+		$html = '<a class="google account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=google' . $return) . '">';
 			$html .= '<div class="signin">';
 				$html .= Lang::txt('PLG_AUTHENTICATION_GOOGLE_SIGN_IN');
 			$html .= '</div>';

@@ -73,8 +73,8 @@ class plgSystemAuthfactors extends \Hubzero\Plugin\Plugin
 	 **/
 	private function logoutSite()
 	{
-		Request::setVar('option', 'com_login');
-		Request::setVar('task', 'logout');
+		Request::setVar('option', 'com_users');
+		Request::setVar('task', 'user.logout');
 		Request::setVar('return', base64_encode('/'));
 	}
 
@@ -96,7 +96,7 @@ class plgSystemAuthfactors extends \Hubzero\Plugin\Plugin
 	 **/
 	private function factorsSite()
 	{
-		Request::setVar('option', 'com_login');
-		Request::setVar('task', 'factors');
+		Request::setVar('option', 'com_users');
+		Request::setVar('view', 'factors');
 	}
 }

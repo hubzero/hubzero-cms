@@ -732,7 +732,7 @@ class Profiles extends SiteController
 		if (User::isGuest())
 		{
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=myaccount', false, true)), false),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=myaccount', false, true)), false),
 				Lang::txt('COM_MEMBERS_NOT_LOGGEDIN'),
 				'warning'
 			);
@@ -797,7 +797,7 @@ class Profiles extends SiteController
 				$rtrn = Request::getString('REQUEST_URI', Route::url($profile->link()), 'server');
 
 				App::redirect(
-					Route::url('index.php?option=com_login&return=' . base64_encode($rtrn))
+					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 				);
 			}
 
@@ -918,7 +918,7 @@ class Profiles extends SiteController
 			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=changepassword', false, true), 'server');
 
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($rtrn), false)
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
 			);
 		}
 
@@ -1145,7 +1145,7 @@ class Profiles extends SiteController
 			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=raiselimit', false, true), 'server');
 
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($rtrn), false)
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
 			);
 		}
 
@@ -1391,7 +1391,7 @@ class Profiles extends SiteController
 		{
 			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=activity', false, true), 'server');
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($rtrn), false)
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
 			);
 		}
 
@@ -1817,7 +1817,7 @@ class Profiles extends SiteController
 		{
 			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=activity', false, true), 'server');
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($rtrn), false)
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
 			);
 		}
 
@@ -1938,7 +1938,7 @@ class Profiles extends SiteController
 		if (User::isGuest())
 		{
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode(Request::current(true)), false)
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Request::current(true)), false)
 			);
 		}
 

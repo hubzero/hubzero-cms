@@ -154,7 +154,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 				$rtrn = Request::getString('REQUEST_URI', Route::url($model->link(), false, true), 'server');
 
 				App::redirect(
-					Route::url('index.php?option=com_login&return=' . base64_encode($rtrn))
+					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 				);
 			}
 

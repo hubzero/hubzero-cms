@@ -211,7 +211,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	protected function _login()
 	{
 		App::redirect(
-			Route::url('index.php?option=com_login&return=' . base64_encode($this->url)),
+			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($this->url)),
 			Lang::txt('PLG_HUBZERO_COMMENTS_LOGIN_NOTICE'),
 			'warning'
 		);
@@ -326,7 +326,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		if ($row->get('id') && !$this->params->get('access-edit-comment'))
 		{
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($this->url)),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($this->url)),
 				Lang::txt('PLG_HUBZERO_COMMENTS_NOTAUTH'),
 				'warning'
 			);
