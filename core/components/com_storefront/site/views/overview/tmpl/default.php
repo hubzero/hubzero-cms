@@ -13,7 +13,7 @@ $this->css();
 $customLandingPage = $this->config->get('landingPage', 0);
 
 $return = base64_encode(Route::url('index.php?option=storefront'));
-$loginUrl = Route::url('index.php?option=com_login&return=' . $return);
+$loginUrl = Route::url('index.php?option=com_users&view=login&return=' . $return);
 
 if ($customLandingPage && is_numeric($customLandingPage))
 {

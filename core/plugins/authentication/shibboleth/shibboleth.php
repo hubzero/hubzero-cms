@@ -198,8 +198,8 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 			$service = $_SERVER['HTTP_HOST'];
 		}
 
-		$com_user = 'com_login';
-		$task     = (User::isGuest()) ? 'login' : 'link';
+		$com_user = 'com_users';
+		$task     = (User::isGuest()) ? 'user.login' : 'user.link';
 
 		self::log('getLoginParams', array($service, $com_user, $task));
 		return array($service, $com_user, $task);
@@ -276,7 +276,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		$html[] = '<h3>Select an affiliated institution</h3>';
 		$html[] = '<ol>';
 		$html = array_merge($html, array_map(function($idp) use($h, $a) {
-			return '<li data-entityid="'.$a($idp['entity_id']).'" data-content="'.(isset($idp['logo_data']) ? $a($idp['logo_data']) : '').' '.$h($idp['label']).'"><a href="'.Route::url('index.php?option=com_login&authenticator=shibboleth&idp='.$a($idp['entity_id'])).'">'.$h($idp['label']).'</a></li>';
+			return '<li data-entityid="'.$a($idp['entity_id']).'" data-content="'.(isset($idp['logo_data']) ? $a($idp['logo_data']) : '').' '.$h($idp['label']).'"><a href="'.Route::url('index.php?option=com_users&view=login&authenticator=shibboleth&idp='.$a($idp['entity_id'])).'">'.$h($idp['label']).'</a></li>';
 		}, self::getInstitutions()));
 		$html[] = '</ol></div>';
 		return $html;
@@ -455,7 +455,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		// 	AuthType shibboleth
 		// 	ShibRequestSetting requireSession 1
 		// 	Require valid-user
-		// 	RewriteRule (.*) /index.php?option=com_login&authenticator=shibboleth&task=user.login [L]
+		// 	RewriteRule (.*) /index.php?option=com_users&authenticator=shibboleth&task=user.login [L]
 		// </Location>
 		//
 		// mod_shib protects the path, and in doing so it looks at your SessionInitiators.

@@ -111,7 +111,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		{
 			// User didn't authorize our app, or, clicked cancel
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . $return),
+				Route::url('index.php?option=com_users&view=login&return=' . $return),
 				Lang::txt('PLG_AUTHENTICATION_LINKEDIN_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
 				'error'
 			);
@@ -457,7 +457,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 	{
 		Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/linkedin/assets/css/linkedin.css');
 
-		$html = '<a class="linkedin account" href="' . Route::url('index.php?option=com_login&authenticator=linkedin' . $return) . '">';
+		$html = '<a class="linkedin account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=linkedin' . $return) . '">';
 			$html .= '<div class="signin">';
 				$html .= Lang::txt('PLG_AUTHENTICATION_LINKEDIN_SIGN_IN');
 			$html .= '</div>';

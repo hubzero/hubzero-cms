@@ -116,7 +116,7 @@ if ($form_redirect = Request::getString('return', '', 'get'))
 				}
 				else
 				{
-					$provider_html .= '<a class="' . $a['name'] . ' account" href="' . Route::url('index.php?option=com_login&authenticator=' . $a['name']) . '">';
+					$provider_html .= '<a class="' . $a['name'] . ' account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=' . $a['name']) . '">';
 					$provider_html .= '<div class="signin">' . Lang::txt('COM_MEMBERS_LOGIN_SIGN_IN_WITH_METHOD', $a['display']) . '</div>';
 					$provider_html .= '</a>';
 				}

@@ -175,7 +175,7 @@ class Categories extends SiteController
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $filters['section'] . '&category=' . $filters['category'], false, true));
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . $return)
+				Route::url('index.php?option=com_users&view=login&return=' . $return)
 			);
 		}
 
@@ -296,7 +296,7 @@ class Categories extends SiteController
 		{
 			$return = Route::url('index.php?option=' . $this->_option, false, true);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 		}
 
@@ -359,7 +359,7 @@ class Categories extends SiteController
 		{
 			$return = Route::url('index.php?option=' . $this->_option, false, true);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 		}
 
@@ -439,7 +439,7 @@ class Categories extends SiteController
 		if (User::isGuest())
 		{
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode(Route::url($url, false, true))),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($url, false, true))),
 				Lang::txt('COM_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);

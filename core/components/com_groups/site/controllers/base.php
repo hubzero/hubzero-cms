@@ -91,7 +91,7 @@ class Base extends SiteController
 		}
 
 		App::redirect(
-			Route::url('index.php?option=com_login&return=' . base64_encode(Route::url($return))),
+			Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($return))),
 			$message,
 			'warning'
 		);

@@ -277,7 +277,7 @@ class History extends SiteController
 		{
 			$url = Request::getString('REQUEST_URI', '', 'server');
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($url), false)
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
 			);
 		}
 
@@ -374,7 +374,7 @@ class History extends SiteController
 		{
 			$url = Request::getString('REQUEST_URI', '', 'server');
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($url), false)
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
 			);
 		}
 
@@ -457,7 +457,7 @@ class History extends SiteController
 		{
 			$url = Request::getString('REQUEST_URI', '', 'server');
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($url), false)
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
 			);
 		}
 

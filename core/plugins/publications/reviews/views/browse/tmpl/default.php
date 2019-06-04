@@ -29,7 +29,7 @@ $this->reviews = new \Hubzero\Base\ItemList($this->reviews);
 </h3>
 <p class="section-options">
 	<?php if (User::isGuest()) { ?>
-			<a href="<?php echo Route::url('index.php?option=com_login&return=' . base64_encode(Route::url($this->publication->link('reviews') . '&action=addreview#reviewform'))); ?>" class="icon-add add btn">
+			<a href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->publication->link('reviews') . '&action=addreview#reviewform'))); ?>" class="icon-add add btn">
 				<?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_WRITE_A_REVIEW'); ?>
 			</a>
 	<?php } else { ?>

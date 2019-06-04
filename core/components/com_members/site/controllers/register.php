@@ -63,7 +63,7 @@ class Register extends SiteController
 			Notify::warning(Lang::txt('COM_MEMBERS_NOT_LOGGEDIN'));
 
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . 'task=' . $this->_task, false, true)), false)
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . 'task=' . $this->_task, false, true)), false)
 			);
 			//return App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_GUEST_SESSION_EDITING'));
 		}
@@ -312,7 +312,7 @@ class Register extends SiteController
 			Notify::warning(Lang::txt('COM_MEMBERS_NOT_LOGGEDIN'));
 
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . 'task=' . $this->_task, false, true)), false)
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . 'task=' . $this->_task, false, true)), false)
 			);
 			//return App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_SESSION_EXPIRED'));
 		}
@@ -478,7 +478,7 @@ class Register extends SiteController
 				if (substr(User::getInstance(User::get('id'))->get('username'), 0, 1) != '-')
 				{
 					App::redirect(
-						Route::url('index.php?option=com_login&view=logout'),
+						Route::url('index.php?option=com_users&view=login&view=logout'),
 						Lang::txt('This account appears to already exist. Please try logging in again.'),
 						'warning'
 					);
@@ -1154,7 +1154,7 @@ class Register extends SiteController
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . $return, false),
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				Lang::txt('COM_MEMBERS_REGISTER_ERROR_LOGIN_TO_RESEND'),
 				'warning'
 			);
@@ -1249,7 +1249,7 @@ class Register extends SiteController
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . $return, false),
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				Lang::txt('COM_MEMBERS_REGISTER_ERROR_LOGIN_TO_UPDATE'),
 				'warning'
 			);
@@ -1438,7 +1438,7 @@ class Register extends SiteController
 				// and let them log in to confirm their email address
 				$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code . '&return=' . $return, false, true));
 				App::redirect(
-					Route::url('index.php?option=com_login&return=' . $return, false),
+					Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 					Lang::txt('Please login in to confirm your email address.'),
 					'warning'
 				);
@@ -1460,9 +1460,9 @@ class Register extends SiteController
 
 			// Build logout/login/confirm redirect flow
 			$login_return  = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code));
-			$logout_return = base64_encode(Route::url('index.php?option=com_login&return=' . $login_return));
+			$logout_return = base64_encode(Route::url('index.php?option=com_users&view=login&return=' . $login_return));
 
-			$redirect = Route::url('index.php?option=com_login&task=logout&return=' . $logout_return);
+			$redirect = Route::url('index.php?option=com_users&view=login&task=logout&return=' . $logout_return);
 		}
 
 
@@ -1477,9 +1477,9 @@ class Register extends SiteController
 
 				// Build logout/login/confirm redirect flow
 				$login_return  = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code));
-				$logout_return = base64_encode(Route::url('index.php?option=com_login&return=' . $login_return));
+				$logout_return = base64_encode(Route::url('index.php?option=com_users&view=login&return=' . $login_return));
 
-				$redirect = Route::url('index.php?option=com_login&task=logout&return=' . $logout_return);
+				$redirect = Route::url('index.php?option=com_users&view=login&task=logout&return=' . $logout_return);
 			}
 		}
 		elseif ($email_confirmed < 0 && $email_confirmed == -$code)
@@ -1586,7 +1586,7 @@ class Register extends SiteController
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . $return, false),
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				Lang::txt('COM_MEMBERS_REGISTER_ERROR_LOGIN_TO_CONFIRM'),
 				'warning'
 			);

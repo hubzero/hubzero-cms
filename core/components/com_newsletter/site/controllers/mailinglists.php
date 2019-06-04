@@ -114,7 +114,7 @@ class Mailinglists extends SiteController
 		{
 			//build return url and redirect url
 			$return   = Route::url('index.php?option=com_newsletter&task=subscribe');
-			$redirect = Route::url('index.php?option=com_login&return=' . base64_encode($return));
+			$redirect = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return));
 
 			//build title
 			$this->_buildTitle();
@@ -133,7 +133,7 @@ class Mailinglists extends SiteController
 		{
 			//build return url and redirect url
 			$return   = Route::url('index.php?option=com_newsletter&task=subscribe');
-			$redirect = Route::url('index.php?option=com_login&return=' . base64_encode($return));
+			$redirect = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return));
 
 			//redirect
 			App::redirect($redirect, Lang::txt('COM_NEWSLETTER_LOGIN_TO_SUBSCRIBE'), 'warning');
@@ -561,7 +561,7 @@ class Mailinglists extends SiteController
 
 				//inform user and redirect
 				App::redirect(
-					Route::url('index.php?option=com_login&return=' . base64_encode($return)),
+					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
 					Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_MUST_LOGIN'),
 					'warning'
 				);

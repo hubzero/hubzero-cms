@@ -152,7 +152,7 @@ class Wishlists extends SiteController
 		{
 			$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server'));
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . $return, false),
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				$this->_msg,
 				'warning'
 			);
