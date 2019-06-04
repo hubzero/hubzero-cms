@@ -458,7 +458,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 	{
 		Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/pucas/assets/css/pucas.css');
 
-		$html = '<a class="pucas account" href="' . Route::url('index.php?option=com_login&authenticator=pucas' . $return) . '">';
+		$html = '<a class="pucas account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=pucas' . $return) . '">';
 			$html .= '<div class="signin">';
 				$html .= Lang::txt('PLG_AUTHENTICATION_PUCAS_SIGN_IN');
 			$html .= '</div>';

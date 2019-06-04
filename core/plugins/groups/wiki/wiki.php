@@ -156,7 +156,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 				}
 
 				App::redirect(
-					Route::url('index.php?option=com_login&return=' . base64_encode($url)),
+					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
 					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 					'warning'
 				);

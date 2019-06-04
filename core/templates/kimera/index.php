@@ -104,14 +104,14 @@ if ($this->getTitle() != Config::get('sitename'))
 													<a class="icon-user" href="<?php echo Route::url(User::link() . '&active=profile'); ?>"><span><?php echo Lang::txt('TPL_KIMERA_ACCOUNT_PROFILE'); ?></span></a>
 												</li>
 												<li>
-													<a class="icon-logout" href="<?php echo Route::url('index.php?option=com_login&view=logout'); ?>"><span><?php echo Lang::txt('TPL_KIMERA_LOGOUT'); ?></span></a>
+													<a class="icon-logout" href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span><?php echo Lang::txt('TPL_KIMERA_LOGOUT'); ?></span></a>
 												</li>
 											</ul>
 										</div>
 									</li>
 								<?php } else { ?>
 									<li class="user-account loggedout">
-										<a class="icon-login" href="<?php echo Route::url('index.php?option=com_login'); ?>" title="<?php echo Lang::txt('TPL_KIMERA_LOGIN'); ?>"><?php echo Lang::txt('TPL_KIMERA_LOGIN'); ?></a>
+										<a class="icon-login" href="<?php echo Route::url('index.php?option=com_users&view=login'); ?>" title="<?php echo Lang::txt('TPL_KIMERA_LOGIN'); ?>"><?php echo Lang::txt('TPL_KIMERA_LOGIN'); ?></a>
 									</li>
 									<?php if ($this->params->get('registerLink') && Component::params('com_members')->get('allowUserRegistration')) : ?>
 										<li class="user-account-create">

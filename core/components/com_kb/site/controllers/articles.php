@@ -197,7 +197,7 @@ class Articles extends SiteController
 		{
 			$return = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -275,7 +275,7 @@ class Articles extends SiteController
 		{
 			$return = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return)),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
 				Lang::txt('COM_KB_LOGIN_NOTICE'),
 				'warning'
 			);

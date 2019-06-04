@@ -22,7 +22,7 @@ $url = Route::url($this->page->link('new'));
 if (User::isGuest())
 {
 	$return = base64_encode(Route::url($this->page->link('new'), false, true));
-	$url = Route::url('index.php?option=com_login&return=' . $return, false);
+	$url = Route::url('index.php?option=com_users&view=login&return=' . $return, false);
 }
 ?>
 
@@ -77,7 +77,7 @@ if (User::isGuest())
 							if (User::isGuest())
 							{
 								$return = base64_encode(Route::url($this->page->link('new') . '&tplate=' . stripslashes($template->get('pagename')), false, true));
-								$url = Route::url('index.php?option=com_login&return=' . $return, false);
+								$url = Route::url('index.php?option=com_users&view=login&return=' . $return, false);
 							}
 							echo $url; ?>">
 							<?php echo $this->escape(stripslashes($template->title)); ?>

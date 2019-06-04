@@ -221,7 +221,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		{
 			$return = Route::url($this->view->offering->link() . '&active=' . $this->_name, false, true);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . $return, false)
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -290,7 +290,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		{
 			$return = Route::url($this->view->offering->link() . '&active=' . $this->_name, false, true);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . $return, false)
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -340,7 +340,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		{
 			$return = Route::url($this->view->offering->link() . '&active=' . $this->_name, false, true);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . $return, false)
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
 		}

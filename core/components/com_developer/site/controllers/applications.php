@@ -50,7 +50,7 @@ class Applications extends SiteController
 		{
 			$return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -94,7 +94,7 @@ class Applications extends SiteController
 		{
 			$return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=view&id=' . $id, false, true);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -156,7 +156,7 @@ class Applications extends SiteController
 		{
 			$return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false, true);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -236,7 +236,7 @@ class Applications extends SiteController
 		{
 			$return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $data['id'], false, true);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -357,7 +357,7 @@ class Applications extends SiteController
 		{
 			$return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=delete&id=' . $id, false, true);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -426,7 +426,7 @@ class Applications extends SiteController
 		{
 			$return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=view&id=' . $id, false, true);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -477,7 +477,7 @@ class Applications extends SiteController
 		{
 			$return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=view&id=' . $id, false, true);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -523,7 +523,7 @@ class Applications extends SiteController
 		{
 			$return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=view&id=' . $id, false, true);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -559,7 +559,7 @@ class Applications extends SiteController
 		{
 			$return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=view&id=' . $id . '&active=tokens', false, true);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}

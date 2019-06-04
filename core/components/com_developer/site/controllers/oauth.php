@@ -75,7 +75,7 @@ class Oauth extends SiteController
 		{
 			// redirect to login
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($_SERVER['REQUEST_URI'])),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($_SERVER['REQUEST_URI'])),
 				Lang::txt('You must be logged in to authorize %s', $application->get('name')),
 				'warning'
 			);

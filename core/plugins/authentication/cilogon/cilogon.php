@@ -86,7 +86,7 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 		{
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . $return),
+				Route::url('index.php?option=com_users&view=login&return=' . $return),
 				Lang::txt('PLG_AUTHENTICATION_CILOGON_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
 				'error'
 			);

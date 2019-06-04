@@ -21,8 +21,8 @@ $groupUrl   = 'index.php?option=com_groups&cn='.$this->group->get('cn');
 // build login and logout links
 $loginReturn  = base64_encode($currentUrl);
 $logoutReturn = base64_encode(Route::url($groupUrl));
-$loginLink    = Route::url('index.php?option=com_login&return=' . $loginReturn);
-$logoutLink   = Route::url('index.php?option=com_login&task=logout&return=' . $logoutReturn);
+$loginLink    = Route::url('index.php?option=com_users&view=login&return=' . $loginReturn);
+$logoutLink   = Route::url('index.php?option=com_users&view=login&task=logout&return=' . $logoutReturn);
 
 // super group login link
 if ($this->group->isSuperGroup())

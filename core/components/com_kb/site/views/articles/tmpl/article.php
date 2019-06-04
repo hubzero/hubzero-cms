@@ -220,7 +220,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 									$rtrn = Route::url($this->article->link() . '#post-comment', false, true);
 									?>
 									<p class="warning">
-										<?php echo Lang::txt('COM_KB_MUST_LOG_IN', Route::url('index.php?option=com_login&return=' . base64_encode($rtrn), false)); ?>
+										<?php echo Lang::txt('COM_KB_MUST_LOG_IN', Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)); ?>
 									</p>
 									<?php
 								}

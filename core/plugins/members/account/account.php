@@ -303,7 +303,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if ($this->user->isGuest())
 		{
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=sendtoken', false)), false),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=sendtoken', false)), false),
 				Lang::txt('You must be logged in to access this area.'),
 				'warning'
 			);
@@ -348,7 +348,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if ($this->user->isGuest())
 		{
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' .
+				Route::url('index.php?option=com_users&view=login&return=' .
 					base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=confirmtoken'))),
 				Lang::txt('You must be logged in to access this area.'),
 				'warning'
@@ -451,7 +451,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if ($this->user->isGuest())
 		{
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' .
+				Route::url('index.php?option=com_users&view=login&return=' .
 					base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=setlocalpass'))),
 				Lang::txt('You must be logged in to access this area.'),
 				'warning'
