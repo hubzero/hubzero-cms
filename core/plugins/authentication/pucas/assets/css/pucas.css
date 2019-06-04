@@ -29,10 +29,10 @@
 	color: #A3792C;
 }
 
-/* Primary */
+/* Primary
 .primary .upper.pucas:before {
 	content: "Purdue Career Account";
-}
+} */
 
 .primary .pucas:before {
 	content: "";
