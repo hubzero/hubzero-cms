@@ -8,33 +8,35 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-if ($this->file->get('converted'))
-{
-	$slabel = $this->file->get('type') == 'folder' ? Lang::txt('PLG_PROJECTS_FILES_REMOTE_FOLDER') : Lang::txt('PLG_PROJECTS_FILES_REMOTE_FILE');
-}
-
 $multi = isset($this->multi) && $this->multi ? '[]' : '';
-
 ?>
-<li><img src="<?php echo $this->file->getIcon(); ?>" alt="<?php echo $this->file->get('name'); ?>" />
-<?php echo $this->file->get('name'); ?>
-<?php if ($this->file->get('converted')) { echo '<span class="remote-file">' . $slabel . '</span>'; } ?>
-<?php
-if ($this->file->get('converted') && $this->file->get('originalPath'))
-{
-	echo '<span class="remote-file faded">' . Lang::txt('PLG_PROJECTS_FILES_CONVERTED_FROM_ORIGINAL'). ' ' . basename($this->file->get('originalPath'));
-	if ($this->file->get('originalFormat'))
-	{
-		echo ' (' . $this->file->get('originalPath') . ')';
-	}
-	echo '</span>';
-}
-?>
+<li>
+	<img class="file-type file-type-<?php echo $this->file->get('ext'); ?>" src="<?php echo $this->file->getIcon(); ?>" alt="<?php echo $this->escape($this->file->get('name')); ?>" />
 
-<?php if (isset($this->skip) && $this->skip == true) { echo '<span class="file-skipped">' . Lang::txt('PLG_PROJECTS_FILES_SKIPPED') . '</span>'; } ?>
-<?php echo $this->file->get('type') == 'folder'
-	? '<input type="hidden" name="folder' . $multi . '" value="' . urlencode($this->file->get('name')) . '" />'
-	: '<input type="hidden" name="asset' . $multi . '" value="' . urlencode($this->file->get('name')) . '" />'; ?>
+	<?php echo $this->escape($this->file->get('name')); ?>
 
-<?php if (isset($this->extras)) { echo $this->extras; } ?>
+	<?php if ($this->file->get('converted')): ?>
+		<span class="remote-file"><?php echo $this->file->get('type') == 'folder' ? Lang::txt('PLG_PROJECTS_FILES_REMOTE_FOLDER') : Lang::txt('PLG_PROJECTS_FILES_REMOTE_FILE'); ?></span>
+	<?php endif; ?>
+
+	<?php if ($this->file->get('converted') && $this->file->get('originalPath')): ?>
+		<span class="remote-file faded">
+			<?php echo Lang::txt('PLG_PROJECTS_FILES_CONVERTED_FROM_ORIGINAL'). ' ' . basename($this->file->get('originalPath')); ?>
+			<?php if ($this->file->get('originalFormat')): ?>
+				(<?php echo $this->file->get('originalPath'); ?>)
+			<?php endif; ?>
+		</span>
+	<?php endif; ?>
+
+	<?php if (isset($this->skip) && $this->skip == true): ?>
+		<span class="file-skipped"><?php echo Lang::txt('PLG_PROJECTS_FILES_SKIPPED'); ?></span>
+	<?php endif; ?>
+
+	<input type="hidden" name="<?php echo ($this->file->get('type') == 'folder' ? 'folder' : 'asset') . $multi; ?>" value="<?php echo $this->escape(urlencode($this->file->get('name'))); ?>" />
+
+	<?php
+	if (isset($this->extras)):
+		echo $this->extras;
+	endif;
+	?>
 </li>
