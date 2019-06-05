@@ -72,29 +72,120 @@ class plgResourcesCoins extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		$genre = 'article';
+
+		$assocs = (array)$this->params->get('type', array());
+
+		foreach ($assocs as $assoc)
+		{
+			if ($assoc->resource == $model->get('type'))
+			{
+				$genre = $assoc->genre;
+				break;
+			}
+		}
+
+		$fields = $model->fields();
+
 		$title = array(
 			'ctx_ver=Z39.88-2004',
-			'rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal',  //info:ofi/fmt:kev:mtx:journal
-			'rft.genre=article',
-			'rft.atitle=' . urlencode($model->title),
+			'rft.genre=' . $genre,
 			'rft.date=' . Date::of($model->date)->toLocal('Y')
 		);
 
-		// DOI/identifier
-		$tconfig = Component::params('com_tools');
+		$items = array(
+			'issn'  => 'issn',
+			'eissn' => 'issn',
+			'isbn'  => 'isbn'
+		);
 
-		if ($doi = $model->get('doi'))
+		switch ($genre)
 		{
-			if ($tconfig->get('doi_shoulder'))
+			case 'book':
+				$title[] = 'rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook';  //info:ofi/fmt:kev:mtx:journal
+				$title[] = 'rft.title=' . urlencode($model->title);
+			break;
+
+			case 'bookitem':
+				$title[] = 'rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook';  //info:ofi/fmt:kev:mtx:journal
+				$title[] = 'rft.atitle=' . urlencode($model->title);
+
+				$items['booktitle'] = 'title';
+				$items['pages']     = 'pages';
+			break;
+
+			case 'article':
+			default:
+				$title[] = 'rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal';  //info:ofi/fmt:kev:mtx:journal
+				$title[] = 'rft.atitle=' . urlencode($model->title);
+
+				$items['series'] = 'jtitle';
+				$items['volume'] = 'volume';
+				$items['issue']  = 'issue';
+				$items['pages']  = 'pages';
+			break;
+		}
+
+		foreach ($items as $item => $coin)
+		{
+			if (isset($fields[$item]) && $fields[$item])
 			{
-				$doi = $tconfig->get('doi_shoulder') . '/' . strtoupper($doi);
+				$title[] = 'rft.' . $coin . '=' . urlencode($fields[$item]);
 			}
 		}
-		else if ($model->get('doi_label'))
+
+		// DOI/identifier
+		$doi = null;
+
+		if (isset($fields['url']) && $fields['url'])
 		{
-			$doi = '10254/' . $tconfig->get('doi_prefix') . $model->get('id') . '.' . $model->get('doi_label');
+			$doi = $fields['url'];
 		}
-		else
+		elseif (isset($fields['doi']) && $fields['doi'])
+		{
+			$doi = $fields['doi'];
+			if (substr($doi, 0, strlen('http')) != 'http')
+			{
+				$doi = 'https://doi.org/' . ltrim($doi, '/');
+			}
+		}
+
+		if (!$doi && $model->isTool())
+		{
+			// Get contribtool params
+			$tconfig = Component::params('com_tools');
+
+			if ($model->doi && ($model->doi_shoulder || $tconfig->get('doi_shoulder')))
+			{
+				$doi = 'https://doi.org/' . ($model->doi_shoulder ? $model->doi_shoulder : $tconfig->get('doi_shoulder')) . '/' . strtoupper($model->doi);
+			}
+		}
+
+		if ($this->params->get('payload_url'))
+		{
+			$firstchild = $model->children()
+				->whereEquals('standalone', 0)
+				->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
+				->order('ordering', 'asc')
+				->limit(1)
+				->row();
+
+			if ($firstchild && $firstchild->id)
+			{
+				$doi = Components\Resources\Helpers\Html::processPath('com_resources', $firstChild, $model->id, '');
+				if (substr($doi, 0, strlen('http')) != 'http')
+				{
+					$doi = Route::url($doi, true, 1);
+				}
+			}
+		}
+
+		if (!$doi)
+		{
+			$doi = Route::url($model->link(), true, 1);
+		}
+
+		if (!$doi)
 		{
 			$uri = Hubzero\Utility\Uri::getInstance();
 
@@ -115,7 +206,8 @@ class plgResourcesCoins extends \Hubzero\Plugin\Plugin
 
 		if (!empty($authors))
 		{
-			$i = 0;
+			$auths = array();
+
 			foreach ($authors as $author)
 			{
 				if (!$author->surname || !$author->givenName)
@@ -129,22 +221,14 @@ class plgResourcesCoins extends \Hubzero\Plugin\Plugin
 				$lastname  = $author->surname ? $author->surname : $author->name;
 				$firstname = $author->givenName ? $author->givenName : $author->name;
 
-				$title[] = 'rft.aulast=' . urlencode($lastname);
-				$title[] = 'rft.aufirst=' . urlencode($firstname);
+				$auths[] = urlencode($lastname) . ', ' . urlencode($firstname);
+			}
 
-				if ($i == 0)
-				{
-					break;
-				}
-
-				$i++;
+			if (!empty($auths))
+			{
+				$title[] = 'rft.au=' . implode(';', $auths);
 			}
 		}
-
-		// Add custom fields
-		/*foreach ($model->fields() as $key => $value)
-		{
-		}*/
 
 		return '<span class="Z3988" title="' . implode('&amp;', $title) . '"></span>' . "\n";
 	}
