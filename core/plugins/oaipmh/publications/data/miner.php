@@ -300,7 +300,7 @@ class Miner extends Obj implements Provider
 		$this->database->setQuery(
 			"SELECT pa.name
 			FROM `#__publication_authors` AS pa
-			WHERE (pa.role IS NULL OR pa.role != 'submitter') AND pa.publication_version_id=" . $this->database->quote($record->version_id) . "
+			WHERE (pa.role IS NULL OR pa.role != 'submitter') AND pa.status=1 AND pa.publication_version_id=" . $this->database->quote($record->version_id) . "
 			ORDER BY pa.name"
 		);
 		$record->creator = $this->database->loadColumn();
