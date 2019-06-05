@@ -256,6 +256,7 @@
 	}
 	ul.sample img, div.sample img {
 		padding-top: 0.3em;
+		height: 1.3em;
 	}
 	ul.sample .remote-file,
 	div.sample .remote-file,
