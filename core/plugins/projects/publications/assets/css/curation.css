@@ -309,6 +309,10 @@
 		float: left;
 		margin-right: 0.3em;
 	}
+	.item-title img,
+	.item-wrap img {
+		height: 1.3em;
+	}
 	.citation-formatted p {
 		font-size: 85%;
 		font-style: italic;
