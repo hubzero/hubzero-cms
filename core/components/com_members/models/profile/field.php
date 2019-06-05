@@ -371,7 +371,7 @@ class Field extends Relational
 			$xml[] = $f;
 			foreach ($field->options as $option)
 			{
-				$xml[] = '<option value="' . htmlspecialchars($option->get('value'), ENT_COMPAT) . '">' . htmlspecialchars($option->get('label'), ENT_COMPAT) . '</option>';
+				$xml[] = '<option value="' . htmlspecialchars($option->get('value'), ENT_COMPAT) . '"' . ($option->get('checked') ? ' selected="selected"' : '') . '>' . htmlspecialchars($option->get('label'), ENT_COMPAT) . '</option>';
 			}
 			$xml[] = '</field>';
 		}
