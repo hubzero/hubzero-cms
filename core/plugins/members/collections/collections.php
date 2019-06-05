@@ -1748,7 +1748,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			return $this->_editcollection($collection);
 		}
 
-		if ($collection->get('access') != 0 && $collection->get('access') != 4)
+		if ($collection->get('access') != 0 && $collection->get('access') != 1 && $collection->get('access') != 4)
 		{
 			$collection->set('access', 0);
 		}
