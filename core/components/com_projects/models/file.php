@@ -585,7 +585,7 @@ class File extends Obj
 	public static function drawIcon($ext = '')
 	{
 		$icon = self::getIconImage($ext);
-		return '<img src="' . $icon . '" alt="' . $ext . '" />';
+		return '<img class="file-type' . ($ext ? ' file-type-' . $ext : '') . '" src="' . $icon . '" alt="' . $ext . '" />';
 	}
 
 	/**

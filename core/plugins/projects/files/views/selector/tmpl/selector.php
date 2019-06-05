@@ -63,7 +63,7 @@ defined('_HZEXEC_') or die();
 			<span class="item-info"><?php echo $item->get('type') == 'file' ? $item->getSize('formatted') : ''; ?></span>
 			<span class="item-wrap <?php echo ($item->get('type') == 'folder' ? 'collapsor ' : '') . $levelCss; ?>" id="<?php echo urlencode($item->get('localPath')); ?>">
 				<?php if ($item->get('type') == 'folder') { ?><span class="collapsor-indicator">&nbsp;</span><?php } ?>
-				<img src="<?php echo $item->get('icon'); ?>" alt="" /> <span title="<?php echo $item->get('localPath'); ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($item->get('name'), 50); ?></span>
+				<img class="file-type file-type-<?php echo $item->get('ext'); ?>" src="<?php echo $item->get('icon'); ?>" alt="" /> <span title="<?php echo $item->get('localPath'); ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($item->get('name'), 50); ?></span>
 			</span>
 		</li>
 	<?php } ?>
