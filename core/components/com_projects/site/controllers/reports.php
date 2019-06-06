@@ -35,28 +35,27 @@ class Reports extends Base
 
 		// Set the page title
 		$this->_buildTitle();
-		$this->view->title = $this->title;
 
-		$this->_tblStats = new Tables\Stats($this->database);
+		$tblStats = new Tables\Stats($this->database);
 
-		$monthly = $this->_tblStats->monthlyStats(2, true);
-		$this->view->monthly = ($monthly && count($monthly) > 1) ? $monthly : null;
+		$monthly = $tblStats->monthlyStats(2, true);
+		$monthly = ($monthly && count($monthly) > 1) ? $monthly : null;
+
+		$stats = $tblStats->getStats($this->model, false, $this->_publishing);
 
 		// Output HTML
-		$this->view->task       = $this->_task;
-		$this->view->admin      = $this->model->reviewerAccess('admin');
-		$this->view->option     = $this->_option;
-		$this->view->config     = $this->config;
-		$this->view->publishing = $this->_publishing;
-		$this->view->stats      = $this->_tblStats->getStats($this->model, false, $this->_publishing);
-
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-
-		$this->view->msg = isset($this->_msg) ? $this->_msg : '';
-		$this->view->display();
+		$this->view
+			->set('title', $this->title)
+			->set('task', $this->_task)
+			->set('admin', $this->model->reviewerAccess('admin'))
+			->set('option', $this->_option)
+			->set('config', $this->config)
+			->set('publishing', $this->_publishing)
+			->set('monthly', $monthly)
+			->set('stats', $stats)
+			->set('msg', (isset($this->_msg) ? $this->_msg : ''))
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -157,12 +156,10 @@ class Reports extends Base
 		// Redirect on error
 		if ($this->getError())
 		{
+			Notify::error($this->getError());
+
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option
-				. '&controller=reports&task=custom'
-				. '&searchterm=' . $filter),
-				$this->getError(),
-				'error'
+				Route::url('index.php?option=' . $this->_option . '&controller=reports&task=custom&searchterm=' . $filter, false)
 			);
 		}
 
@@ -176,17 +173,11 @@ class Reports extends Base
 	 */
 	public function customTask()
 	{
-		$this->view->setLayout('custom');
-
-		// Instantiate a project
-		$obj = $this->model->table();
-
 		// Set the pathway
 		$this->_buildPathway();
 
 		// Set the page title
 		$this->_buildTitle();
-		$this->view->title = $this->title;
 
 		// Check authorization
 		if (!$this->model->reviewerAccess('admin') && !$this->model->reviewerAccess('reports'))
@@ -202,16 +193,14 @@ class Reports extends Base
 		}
 
 		// Output HTML
-		$this->view->task   = $this->_task;
-		$this->view->option = $this->_option;
-		$this->view->config = $this->config;
-
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-
-		$this->view->msg = isset($this->_msg) ? $this->_msg : '';
-		$this->view->display();
+		$this->view
+			->set('title', $this->title)
+			->set('task', $this->_task)
+			->set('option', $this->_option)
+			->set('config', $this->config)
+			->set('msg', (isset($this->_msg) ? $this->_msg : ''))
+			->setLayout('custom')
+			->setErrors($this->getErrors())
+			->display();
 	}
 }
