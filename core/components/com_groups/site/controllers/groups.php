@@ -1048,11 +1048,11 @@ class Groups extends Base
 		}
 
 		// Get request vars
-		$confirm_delete = Request::getInt('confirmdel', '');
+		$confirm_delete = Request::getString('confirmdel', '');
 		$message = trim(Request::getString('msg', '', 'post'));
 
 		// Check to make sure we have confirmed
-		if (!$confirm_delete)
+		if (!$confirm_delete || $confirm_delete != $group->get('cn'))
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_DELETE_MISSING_CONFIRM_MESSAGE'), 'error');
 			return $this->deleteTask();
