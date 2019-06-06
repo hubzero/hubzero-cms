@@ -4,40 +4,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
-}
-
-//----------------------------------------------------------
-// Project Setup JS
-//----------------------------------------------------------
-
-if (!jq) {
-	var jq = $;
-}
-
-HUB.ProjectReports = {
-	jQuery: jq,
-	
-	initialize: function() 
-	{
-		var $ = this.jQuery;
-			
-		$('.datepicker').each(function(i, el) {
-			$( this ).datepicker({
-				dateFormat: 'mm/yy',
-				minDate: '-10Y',
-				maxDate: 0
-			});
-		});
-		
-	}
-
-}
-	
 jQuery(document).ready(function($){
-	HUB.ProjectReports.initialize();
+	$('.datepicker').datepicker({
+		dateFormat: 'yy-mm',//'mm/yy',
+		minDate: '-10Y',
+		maxDate: 0
+	});
 });

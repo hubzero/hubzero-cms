@@ -7,15 +7,9 @@
 -->
 
 <metadata>
-	<layout title="Standard Projects Change Owner Layout">
+	<layout title="Projects Change Owner">
 		<message>
-			<![CDATA[STANDARD PROJECTS CHANGE OWNER LAYOUT DESC]]>
+			<![CDATA[Projects Change Owner]]>
 		</message>
 	</layout>
-	<state>
-		<name>Standard Projects Change Owner Layout</name>
-		<description>STANDARD PROJECTS CHANGE OWNER LAYOUT DESC</description>
-		<params>
-		</params>
-	</state>
 </metadata>

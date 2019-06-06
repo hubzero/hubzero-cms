@@ -9,6 +9,10 @@ namespace Components\Projects\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Projects\Tables;
+use Request;
+use Route;
+use Event;
+use App;
 
 /**
  * Projects Public links controller class
@@ -24,6 +28,8 @@ class Get extends SiteController
 	{
 		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'publicstamp.php';
 
+		$route = Route::url('index.php?option=' . $this->_option, false);
+
 		// Incoming
 		$stamp = Request::getString('s', '');
 
@@ -36,7 +42,7 @@ class Get extends SiteController
 		if (!$stamp || !$objSt->loadItem($stamp))
 		{
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option)
+				$route
 			);
 			return;
 		}
@@ -45,7 +51,7 @@ class Get extends SiteController
 		if (!in_array($objSt->type, array('files', 'notes', 'publications')))
 		{
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option)
+				$route
 			);
 			return;
 		}
@@ -64,7 +70,7 @@ class Get extends SiteController
 
 		// Redirect if nothing fetched
 		App::redirect(
-			Route::url('index.php?option=' . $this->_option)
+			$route
 		);
 	}
 }

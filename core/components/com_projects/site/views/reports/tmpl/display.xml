@@ -7,15 +7,9 @@
 -->
 
 <metadata>
-	<layout title="Standard Project Stats Layout">
+	<layout title="Project Reports">
 		<message>
-			<![CDATA[STANDARD PROJECT STATS LAYOUT DESC]]>
+			<![CDATA[Project Reports]]>
 		</message>
 	</layout>
-	<state>
-		<name>Standard Project Stats Layout</name>
-		<description>STANDARD PROJECT STATS LAYOUT DESC</description>
-		<params>
-		</params>
-	</state>
 </metadata>
