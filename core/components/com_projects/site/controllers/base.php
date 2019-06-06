@@ -33,13 +33,6 @@ class Base extends SiteController
 	 */
 	public function execute()
 	{
-		// Is component on?
-		if (!$this->config->get('component_on', 0))
-		{
-			App::redirect('/');
-			return;
-		}
-
 		// Publishing enabled?
 		$this->_publishing = \Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 
