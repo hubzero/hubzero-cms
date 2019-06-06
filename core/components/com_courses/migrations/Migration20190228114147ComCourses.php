@@ -84,7 +84,7 @@ class Migration20190228114147ComCourses extends Base
 			{
 				foreach ($fields as $field)
 				{
-					if (!$this->db->tableHasKey($table, 'idx_' . $field))
+					if ($this->db->tableHasField($table, $field) && !$this->db->tableHasKey($table, 'idx_' . $field))
 					{
 						$query = "ALTER TABLE `" . $table . "` ADD INDEX `idx_" . $field . "` (`" . $field . "`)";
 						$this->db->setQuery($query);
@@ -106,7 +106,7 @@ class Migration20190228114147ComCourses extends Base
 			{
 				foreach ($fields as $field)
 				{
-					if (!$this->db->tableHasKey($table, 'idx_' . $field))
+					if ($this->db->tableHasKey($table, 'idx_' . $field))
 					{
 						$query = "ALTER TABLE `" . $table . "` DROP KEY `idx_" . $field . "`";
 						$this->db->setQuery($query);
