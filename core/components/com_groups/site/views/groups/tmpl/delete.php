@@ -48,17 +48,17 @@ $this->css()
 
 	 		<p class="warning"><?php echo Lang::txt('COM_GROUPS_DELETE_CONFIRM_BOX_WARNING', $this->group->get('description')) . '<br /><br />' . $this->log; ?></p>
 
+			<div class="form-group form-check">
+				<label for="confirmdel">
+					<?php echo Lang::txt('COM_GROUPS_DELETE_CONFIRM_CONFIRM', $this->group->get('cn')); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+					<input type="text" name="confirmdel" id="confirmdel" value="" />
+				</label>
+			</div>
+
 			<div class="form-group">
 				<label for="msg">
 					<?php echo Lang::txt('COM_GROUPS_DELETE_CONFIRM_BOX_MESSAGE_LABEL'); ?>
 					<textarea class="form-control" name="msg" id="msg" rows="12" cols="50"><?php echo htmlentities($this->msg); ?></textarea>
-				</label>
-			</div>
-
-			<div class="form-group form-check">
-				<label for="confirmdel" class="form-check-label">
-					<input type="checkbox" class="option form-check-input" name="confirmdel" id="confirmdel" value="1" />
-					<?php echo Lang::txt('COM_GROUPS_DELETE_CONFIRM_CONFIRM'); ?>
 				</label>
 			</div>
 		</fieldset>
@@ -70,6 +70,10 @@ $this->css()
 
 		<p class="submit">
 			<input class="btn btn-danger" type="submit" value="<?php echo Lang::txt('DELETE'); ?>" />
+
+			<a class="btn btn-secondary" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn')); ?>">
+				<?php echo Lang::txt('JCANCEL'); ?>
+			</a>
 		</p>
 	</form>
 </section><!-- / .main section -->
