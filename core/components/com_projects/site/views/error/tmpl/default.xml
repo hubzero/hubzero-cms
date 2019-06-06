@@ -7,15 +7,9 @@
 -->
 
 <metadata>
-	<layout title="Standard Projects Error Layout">
+	<layout title="Projects Error">
 		<message>
-			<![CDATA[STANDARD PROJECTS ERROR LAYOUT DESC]]>
+			<![CDATA[Projects Error]]>
 		</message>
 	</layout>
-	<state>
-		<name>Standard Projects Error Layout</name>
-		<description>STANDARD PROJECTS ERROR LAYOUT DESC</description>
-		<params>
-		</params>
-	</state>
 </metadata>

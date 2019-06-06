@@ -409,7 +409,7 @@ class Media extends Base
 		}
 
 		// Return to project page
-		App::redirect(Route::url($this->model->link()));
+		App::redirect(Route::url($this->model->link(), false));
 		return;
 	}
 
@@ -486,7 +486,7 @@ class Media extends Base
 		elseif ($redirect)
 		{
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option)
+				Route::url('index.php?option=' . $this->_option, false)
 			);
 		}
 	}

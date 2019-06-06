@@ -26,8 +26,8 @@ use App;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description' . DS . 'field.php';
+require_once dirname(dirname(__DIR__)) . '/models/orm/owner.php';
 require_once dirname(dirname(__DIR__)) . '/helpers/accessHelper.php';
-require_once Component::path('com_projects') . '/models/orm/owner.php';
 
 /**
  * Primary component controller
@@ -282,7 +282,7 @@ class Projects extends Base
 		$this->view->filters = array();
 		$this->view->filters['limit'] = Request::getInt(
 			'limit',
-			intval($this->config->get('limit', 25)),
+			intval(\Config::get('list_limit', 25)),
 			'request'
 		);
 		$this->view->filters['start']    = Request::getInt('limitstart', 0, 'get');
