@@ -24,6 +24,7 @@ if ($canDo->get('core.delete'))
 
 Toolbar::addNew();
 
+Toolbar::help('packages');
 Html::behavior('tooltip');
 
 $this->css();
