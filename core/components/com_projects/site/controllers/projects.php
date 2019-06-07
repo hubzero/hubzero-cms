@@ -514,7 +514,7 @@ class Projects extends Base
 			}
 			elseif ($match && $this->model->_tblOwner->load($match))
 			{
-				if (User::get('email') == $email)
+				if (strtolower(User::get('email')) == strtolower($email))
 				{
 					// Confirm user
 					$this->model->_tblOwner->status = 1;
