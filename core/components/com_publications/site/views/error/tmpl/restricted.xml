@@ -7,15 +7,9 @@
 -->
 
 <metadata>
-	<layout title="Restricted Projects Error Layout">
+	<layout title="Restricted Publication">
 		<message>
-			<![CDATA[RESTRICTED PROJECTS ERROR LAYOUT DESC]]>
+			<![CDATA[Restricted Publication]]>
 		</message>
 	</layout>
-	<state>
-		<name>Restricted  Projects Error Layout</name>
-		<description>RESTRICTED PROJECTS ERROR LAYOUT DESC</description>
-		<params>
-		</params>
-	</state>
 </metadata>

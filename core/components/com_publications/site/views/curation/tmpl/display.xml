@@ -7,15 +7,9 @@
 -->
 
 <metadata>
-	<layout title="Display Publication Curation Items Layout">
+	<layout title="Publication Curation Items">
 		<message>
-			<![CDATA[DISPLAY PUBLICATION CURATION ITEMS DESC]]>
+			<![CDATA[Publication Curation Items]]>
 		</message>
 	</layout>
-	<state>
-		<name>Display Publication Curation Items Layout</name>
-		<description>DISPLAY PUBLICATION CURATION ITEMS DESC</description>
-		<params>
-		</params>
-	</state>
 </metadata>
