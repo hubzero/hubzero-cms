@@ -1,0 +1,12 @@
+@import url("/core/components/com_login/site/assets/css/login.css");
+
+.primary .auth {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+}
+
+.primary .upper {
+	height: auto;
+	padding: 20px 0 50px;
+}
