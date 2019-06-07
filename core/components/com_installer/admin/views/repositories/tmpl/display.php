@@ -28,6 +28,7 @@ if ($canDo->get('core.delete'))
 	Toolbar::spacer();
 }
 
+Toolbar::help('repositories');
 Html::behavior('tooltip');
 
 $this->css();
@@ -85,6 +86,8 @@ $filterstring = "";
 	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>
