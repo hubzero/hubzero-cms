@@ -10,6 +10,12 @@ defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_INSTALLER_PACKAGES_PACKAGE') . ': ' . 'ADD NEW PACKAGE', 'packages');
 
+$canDo = \Components\Installer\Admin\Helpers\Installer::getActions();
+if ($canDo->get('core.create'))
+{
+	Toolbar::save();
+	Toolbar::spacer();
+}
 Toolbar::cancel();
 
 // Determine status & options

@@ -18,8 +18,15 @@ if ($canDo->get('core.admin'))
 	Toolbar::preferences('com_installer');
 	Toolbar::divider();
 }
-
-Toolbar::addNew();
+if ($canDo->get('core.create'))
+{
+	Toolbar::addNew();
+ }
+if ($canDo->get('core.delete'))
+{
+	Toolbar::deleteList();
+	Toolbar::spacer();
+}
 
 Html::behavior('tooltip');
 

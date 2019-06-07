@@ -10,6 +10,12 @@ defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_INSTALLER_PACKAGES_PACKAGE') . ': ' . $this->packageName, 'packages');
 
+$canDo = \Components\Installer\Admin\Helpers\Installer::getActions();
+if ($canDo->get('core.edit'))
+{
+	Toolbar::save();
+	Toolbar::spacer();
+}
 Toolbar::cancel();
 
 $authors = array();

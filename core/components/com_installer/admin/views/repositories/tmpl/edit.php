@@ -12,6 +12,12 @@ use Hubzero\Utility\Arr;
 
 Toolbar::title(Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY') . ': ' . Arr::getValue($this->config, 'name', ''), 'packages');
 
+$canDo = \Components\Installer\Admin\Helpers\Installer::getActions();
+if ($canDo->get('core.edit'))
+{
+	Toolbar::save();
+	Toolbar::spacer();
+}
 Toolbar::cancel();
 
 // Determine status & options
