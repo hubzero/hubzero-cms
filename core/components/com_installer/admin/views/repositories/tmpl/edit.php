@@ -22,8 +22,52 @@ Toolbar::cancel();
 
 // Determine status & options
 $status = '';
-
+$params = Component::params($this->option);   
 ?>
+
+<script type="text/javascript">
+
+function validURL(str) {
+  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return !!pattern.test(str);
+}
+
+function submitbutton(pressbutton)
+{
+	var form = document.adminForm;
+
+	if (pressbutton == 'cancel') {
+		submitform( pressbutton );
+		return;
+	}
+
+	<?php echo $this->editor()->save('text'); ?>
+
+	// do field validation
+	if (document.getElementById('name').value == ''){
+		alert('<?php echo Lang::txt('COM_INSTALLER_PACKAGES_ERROR_REPO'); ?>');
+	} else if (document.getElementById('alias').value == ''){
+		alert('<?php echo Lang::txt('COM_INSTALLER_PACKAGES_ERROR_ALIAS'); ?>');
+	} else if (document.getElementById('alias').value == 'hz-installer'){
+		alert('<?php echo Lang::txt('COM_INSTALLER_PACKAGES_ERROR_ALIAS'); ?>');
+	} else if (document.getElementById('alias').value == 'packagist.org'){
+		alert('<?php echo Lang::txt('COM_INSTALLER_PACKAGES_ERROR_ALIAS'); ?>');
+	} else if (document.getElementById('description').value == ''){
+		alert('<?php echo Lang::txt('COM_INSTALLER_PACKAGES_ERROR_DESCRIPTION'); ?>');
+	} else if (document.getElementById('url').value == ''){
+		alert('<?php echo Lang::txt('COM_INSTALLER_PACKAGES_ERROR_URL'); ?>');
+	} else if (document.getElementById('type').value == ''){
+		alert('<?php echo Lang::txt('COM_INSTALLER_PACKAGES_ERROR_TYPE'); ?>');
+	} else {
+		submitform(pressbutton);
+	}
+}
+</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=save'); ?>" method="post" name="adminForm" id="item-form">
 	<div class="grid">
