@@ -1,34 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- * All rights reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -163,8 +137,8 @@ if ($type == 'hubpresenter')
 	foreach ($local_subs as $k => $subtitle)
 	{
 		$info     = pathinfo($subtitle);
-		$name     = str_replace('-auto','', $info['filename']);
-		$autoplay = (strstr($info['filename'],'-auto')) ? 1 : 0;
+		$name     = str_replace('-auto', '', $info['filename']);
+		$autoplay = (strstr($info['filename'], '-auto')) ? 1 : 0;
 		$source   = $content_folder . DS . $subtitle;
 
 		// add each subtitle
@@ -239,10 +213,28 @@ if ($type == 'hubpresenter' || $type == 'html5')
 		$redirect .= $delimeter . 'time=' . gmdate("H:i:s", $tracking->current_position);
 
 		// Redirect
-		App::redirect(Route::url($redirect, false), '','',false);
+		App::redirect(Route::url($redirect, false), '', '', false);
 	}
 }
 
+$this->css('
+	#video-flowplayer {
+		width: '. $width . ';
+		height: ' . $height . ';
+	}
+	#font-color {
+		background-color: #FFF;
+	}
+	#background-color {
+		background-color: #000;
+	}
+	.test {
+		font-family:arial;
+		background-color: #000;
+		color: #FFF;
+		font-size:18px;
+	}
+');
 ?>
 <?php if ($type == 'html5') : ?>
 	<div id="video-container">
@@ -253,11 +245,17 @@ if ($type == 'hubpresenter' || $type == 'html5')
 						switch ($video->type)
 						{
 							case 'ogg':
-							case 'ogv':  $type = 'video/ogg;';  break;
-							case 'webm': $type = 'video/webm;'; break;
+							case 'ogv':
+								$type = 'video/ogg;';
+								break;
+							case 'webm':
+								$type = 'video/webm;';
+								break;
 							case 'mp4':
 							case 'm4v':
-							default:     $type = 'video/mp4;';  break;
+							default:
+								$type = 'video/mp4;';
+								break;
 						}
 
 						//video source
@@ -284,7 +282,6 @@ if ($type == 'hubpresenter' || $type == 'html5')
 
 				<a href="<?php echo $mp4; ?>"
 					id="video-flowplayer"
-					style="<?php echo "width:{$width};height:{$height};"; ?>"
 					data-mediaid="<?php echo $this->asset->id; ?>"></a>
 
 				<?php if (count($presentation->subtitles) > 0) : ?>
@@ -382,7 +379,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 										<label for="font-color"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR'); ?>:</label>
 									</div>
 									<div class="col span6 omega input">
-										<div id="font-color" data-color="FFF" style="background-color: #FFF;"></div>
+										<div id="font-color" data-color="FFF"></div>
 									</div>
 								</div>
 								<div class="grid">
@@ -390,13 +387,13 @@ if ($type == 'hubpresenter' || $type == 'html5')
 										<label for="background-color"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND'); ?>:</label>
 									</div>
 									<div class="col span6 omega input">
-										<div id="background-color" data-color="000" style="background-color: #000;"></div>
+										<div id="background-color" data-color="000"></div>
 									</div>
 								</div>
 								<div class="grid">
 									<div class="col span12 omega subtitle-settings-preview-container">
 										<div class="subtitle-settings-preview">
-											<div class="test" style="font-family:arial; background-color: #000; color: #FFF; font-size:18px;"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_EXAMPLE'); ?></div>
+											<div class="test"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_EXAMPLE'); ?></div>
 										</div>
 									</div>
 								</div>
@@ -570,7 +567,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 												<label for="font-color"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR'); ?>:</label>
 											</div>
 											<div class="col span6 omega input">
-												<div id="font-color" data-color="FFF" style="background-color: #FFF;"></div>
+												<div id="font-color"></div>
 											</div>
 										</div>
 										<div class="grid">
@@ -578,13 +575,13 @@ if ($type == 'hubpresenter' || $type == 'html5')
 												<label for="background-color"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND'); ?>:</label>
 											</div>
 											<div class="col span6 omega input">
-												<div id="background-color" data-color="000" style="background-color: #000;"></div>
+												<div id="background-color" data-color="000"></div>
 											</div>
 										</div>
 										<div class="grid">
 											<div class="col span12 omega subtitle-settings-preview-container">
 												<div class="subtitle-settings-preview">
-													<div class="test" style="font-family:arial; background-color: #000; color: #FFF; font-size:18px;"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_EXAMPLE'); ?></div>
+													<div class="test"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_EXAMPLE'); ?></div>
 												</div>
 											</div>
 										</div>
@@ -660,9 +657,12 @@ if ($type == 'hubpresenter' || $type == 'html5')
 									switch (strtolower($source->type))
 									{
 										case 'm4v':
-										case 'mp4':  $type = 'video/mp4;';  break;
-										case 'ogv':  $type = 'video/ogg;';  break;
-										case 'webm': $type = 'video/webm;'; break;
+										case 'mp4':  $type = 'video/mp4;';
+break;
+										case 'ogv':  $type = 'video/ogg;';
+break;
+										case 'webm': $type = 'video/webm;';
+break;
 									}
 								?>
 								<source src="<?php echo $content_folder . DS . $source->source; ?>" type='<?php echo $type; ?>'>
@@ -692,7 +692,9 @@ if ($type == 'hubpresenter' || $type == 'html5')
 				</div>
 				<div id="list">
 					<ul id="list_items">
-						<?php $num = 0; $counter = 0; $last_slide_id = 0; ?>
+						<?php $num = 0;
+$counter = 0;
+$last_slide_id = 0; ?>
 						<?php foreach ($presentation->slides as $slide) : ?>
 							<?php if ((int)$slide->slide != $last_slide_id) : ?>
 								<li id="list_<?php echo $counter; ?>">
@@ -717,8 +719,9 @@ if ($type == 'hubpresenter' || $type == 'html5')
 											echo ($num) . '. ';
 											echo substr($slide->title, 0, $max);
 
-											if (strlen($slide->title) > $max)
+											if (strlen($slide->title) > $max) {
 												echo $elipsis;
+											}
 										?>
 									</span>
 									<span class="time"><?php echo $slide->time; ?></span>
@@ -778,4 +781,4 @@ if ($type == 'hubpresenter' || $type == 'html5')
 	</div>
 <?php else : ?>
 	<p class="warning"><?php echo (isset($error)) ? $error : Lang::txt('COM_COURSES_VIDEO_ERROR_NO_PLAYABLE_ASSETS'); ?></p>
-<?php endif; ?>
+<?php endif; 

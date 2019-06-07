@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -39,7 +14,8 @@ $this->css()
      ->css('conditions.css')
      ->js('jquery.hoverIntent.js', 'system')
      ->js('json2.js')
-     ->js('condition.builder.js');
+     ->js('condition.builder.js')
+     ->js('tickets.js');
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -95,10 +71,10 @@ $this->css()
 								<span class="icon-folder folder" id="<?php echo $this->escape($folder->id); ?>-title" data-id="<?php echo $this->escape($folder->id); ?>"><?php echo $this->escape($folder->title); ?></span>
 								<?php if ($this->acl->check('read', 'tickets')) { ?>
 									<span class="folder-options">
-										<a class="delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=removefolder&id=' . $folder->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+										<a class="delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=removefolder&id=' . $folder->id . '&' . Session::getFormToken() . '=1'); ?>" data-confirm="<?php echo Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE'); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 											<?php echo Lang::txt('JACTION_DELETE'); ?>
 										</a>
-										<a class="edit editfolder" data-id="<?php echo $this->escape($folder->id); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=editfolder&id=' . $folder->id . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" data-href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=savefolder&' . Session::getFormToken() . '=1&fields[id]=' . $folder->id); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
+										<a class="edit editfolder" data-id="<?php echo $this->escape($folder->id); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=editfolder&id=' . $folder->id . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" data-href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=savefolder&' . Session::getFormToken() . '=1&fields[id]=' . $folder->id); ?>" data-name="<?php echo Lang::txt('COM_SUPPORT_FOLDER_NAME'); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
 											<?php echo Lang::txt('JACTION_EDIT'); ?>
 										</a>
 									</span>
@@ -111,7 +87,7 @@ $this->css()
 											</a>
 											<?php if ($this->acl->check('read', 'tickets')) { ?>
 												<span class="query-options">
-													<a class="delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+													<a class="delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id . '&' . Session::getFormToken() . '=1'); ?>" data-confirm="<?php echo Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE'); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 														<?php echo Lang::txt('JACTION_DELETE'); ?>
 													</a>
 													<a class="modal edit" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
@@ -134,7 +110,7 @@ $this->css()
 							</a>
 						</li>
 						<li>
-							<a class="icon-folder" id="new-folder" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=addfolder&' . Session::getFormToken() . '=1'); ?>" data-href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=savefolder&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_ADD_FOLDER'); ?>">
+							<a class="icon-folder" id="new-folder" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=addfolder&' . Session::getFormToken() . '=1'); ?>" data-href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=savefolder&' . Session::getFormToken() . '=1'); ?>" data-name="<?php echo Lang::txt('COM_SUPPORT_FOLDER_NAME'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_ADD_FOLDER'); ?>">
 								<?php echo Lang::txt('COM_SUPPORT_ADD_FOLDER'); ?>
 							</a>
 						</li>
@@ -196,7 +172,7 @@ $this->css()
 							<input type="submit" class="submit" value="<?php echo Lang::txt('COM_SUPPORT_GO'); ?>" />
 						</fieldset>
 					</div>
-					<table id="tktlist" style="clear: none;">
+					<table id="tktlist">
 						<tfoot>
 							<tr>
 								<td colspan="8">
@@ -221,24 +197,34 @@ $this->css()
 						$cls = 'even';
 
 						$i = 0;
+						$statuses = array();
 						foreach ($this->rows as $row)
 						{
 							// Was there any activity on this item?
 							$lastcomment = $row->comments()
 								->order('created', 'desc')
 								->row()
-								->get('created', '0000-00-00 00:00:00');
+								->get('created');
 
 							$tags = $row->tags('linkedlist');
+
+							if (!in_array($row->status->get('id'), $statuses))
+							{
+								$statuses[] = $row->status->get('id');
+								$this->css('#tktlist tbody tr td.status-' . $row->status->get('id') . ' { border-left-color: #' . $row->status->get('color') . '; }');
+							}
 							?>
 							<tr class="<?php echo $cls == 'odd' ? 'even' : 'odd'; ?>">
-								<td<?php if ($row->get('status')) { echo ($row->status->get('color') ? ' style="border-left-color: #' . $row->status->get('color') . ';"' : ''); } ?>>
+								<td class="status-<?php echo $row->status->get('id'); ?>">
 									<span class="hasTip" title="<?php echo Lang::txt('COM_SUPPORT_DETAILS'); ?> :: <?php echo Lang::txt('COM_SUPPORT_COL_STATUS') . ': ' . $row->status->get('text'); ?>">
 										<span class="ticket-id">
 											<?php echo $row->get('id'); ?>
 										</span>
 										<span class="<?php echo ($row->isOpen() ? 'open' : 'closed') . ' ' . $row->status->get('class'); ?> status">
-											<?php echo $row->status->get('text'); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
+											<?php
+											echo $row->status->get('text');
+											echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : '';
+											?>
 										</span>
 										<?php if ($row->get('target_date') && $row->get('target_date') != '0000-00-00 00:00:00') { ?>
 											<span class="ticket-target_date tooltips" title="<?php echo Lang::txt('COM_SUPPORT_TARGET_DATE', Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))); ?>">
@@ -250,10 +236,13 @@ $this->css()
 								<td colspan="6">
 									<p>
 										<span class="ticket-author">
-											<?php echo $this->escape($row->get('name')); echo ($row->submitter->get('id')) ? ' (<a href="' . Route::url('index.php?option=com_members&id=' . $row->submitter->get('id')) . '">' . $this->escape($row->get('login')) . '</a>)' : ($row->get('login') ? ' (' . $this->escape($row->get('login')) . ')' : ''); ?>
+											<?php
+											echo $this->escape($row->get('name'));
+											echo ($row->submitter->get('id')) ? ' (<a href="' . Route::url('index.php?option=com_members&id=' . $row->submitter->get('id')) . '">' . $this->escape($row->get('login')) . '</a>)' : ($row->get('login') ? ' (' . $this->escape($row->get('login')) . ')' : '');
+											?>
 										</span>
 										<span class="ticket-datetime">
-											@ <time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('local'); ?></time>
+											@ <time datetime="<?php echo Date::of($row->get('created'))->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo Date::of($row->get('created'))->toLocal(); ?></time>
 										</span>
 										<?php if ($lastcomment && $lastcomment != '0000-00-00 00:00:00') { ?>
 											<span class="ticket-activity">
@@ -263,7 +252,7 @@ $this->css()
 									</p>
 									<p>
 										<a class="ticket-content" title="<?php echo $this->escape(str_replace(array('<br />', '&amp;'), array('', '&'), $row->content)); ?>" href="<?php echo Route::url($row->link() . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
-											<?php echo ($row->content ? \Hubzero\Utility\Str::truncate(strip_tags($row->content), 200) : Lang::txt('COM_SUPPORT_NO_CONTENT_FOUND')); ?>
+											<?php echo $row->content ? \Hubzero\Utility\Str::truncate(strip_tags($row->content), 200) : Lang::txt('COM_SUPPORT_NO_CONTENT_FOUND'); ?>
 										</a>
 									</p>
 									<?php if ($tags || $row->isOwned() || $row->get('group_id')) { ?>
@@ -298,7 +287,7 @@ $this->css()
 										<span><?php echo $this->escape($row->get('severity', 'normal')); ?></span>
 									</span>
 									<?php if ($this->acl->check('delete', 'tickets')) { ?>
-										<a class="delete" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+										<a class="delete" href="<?php echo Route::url($row->link('delete')); ?>" data-confirm="<?php echo Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE'); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 											<?php echo Lang::txt('JACTION_DELETE'); ?>
 										</a>
 									<?php } ?>
@@ -328,257 +317,3 @@ $this->css()
 		</div><!-- / .pane -->
 	</div><!-- / .panel-row -->
 </section><!-- / .panel -->
-<script type="text/javascript">
-<?php if ($this->acl->check('read', 'tickets')) { ?>
-String.prototype.tmpl = function (tmpl) {
-	if (typeof(tmpl) == 'undefined' || !tmpl) {
-		tmpl = 'component';
-	}
-	return this + (this.indexOf('?') == -1 ? '?' : '&') + 'tmpl=' + tmpl;
-};
-String.prototype.nohtml = function () {
-	return this + (this.indexOf('?') == -1 ? '?' : '&') + 'no_html=1';
-};
-
-var _DEBUG = 0;
-
-jQuery(document).ready(function($){
-	var panes = $('#panes');
-
-	_DEBUG = 1; //$('#system-debug').length;
-
-	$('#queries')
-		.on('click', 'span.folder', function(e) {
-			var parent = $(this).parent();
-
-			if (parent.hasClass('open')) {
-				parent.removeClass('open');
-			} else {
-				parent.addClass('open');
-			}
-		})
-		.on('click', 'a.delete', function (e){
-			e.preventDefault();
-
-			var res = confirm('<?php echo Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE'); ?>');
-			if (!res) {
-				return false;
-			}
-
-			if (_DEBUG) {
-				window.console && console.log('Calling: ' + $(this).attr('href').nohtml());
-			}
-
-			$.get($(this).attr('href').nohtml(), {}, function(response){
-				if (_DEBUG) {
-					window.console && console.log(response);
-				}
-				$('#query-list').html(response);
-			});
-
-			return false;
-		})
-		.on('click', 'a.editfolder', function(e) {
-			e.preventDefault();
-
-			var folder = $('#' + $(this).attr('data-id') + '-title');
-
-			var title = prompt('<?php echo Lang::txt('COM_SUPPORT_FOLDER_NAME'); ?>', folder.text());
-			if (title) {
-				$.get($(this).attr('data-href').nohtml() + '&fields[title]=' + title, function(response){
-					folder.text(title);
-				});
-			}
-		});
-
-	if (jQuery.ui && jQuery.ui.sortable) {
-		$('#query-list').sortable({
-			update: function (e, ui) {
-				var col = $("#query-list").sortable("serialize");
-
-				if (_DEBUG) {
-					window.console && console.log('Calling: ' + $('#queries').attr('data-update').nohtml() + '&' + col);
-				}
-
-				$.getJSON($('#queries').attr('data-update').nohtml() + '&' + col, function(response) {
-					if (_DEBUG) {
-						window.console && console.log(response);
-					}
-				});
-			}
-		});
-
-		applySortable();
-	}
-
-	$('#new-folder').on('click', function(e) {
-		e.preventDefault();
-
-		var title = prompt('<?php echo Lang::txt('COM_SUPPORT_FOLDER_NAME'); ?>');
-		if (title) {
-			if (_DEBUG) {
-				window.console && console.log('Calling: ' + $(this).attr('data-href').nohtml() + '&fields[title]=' + title);
-			}
-
-			$.get($(this).attr('data-href').nohtml() + '&fields[title]=' + title, function(response){
-				if (_DEBUG) {
-					window.console && console.log(response);
-				}
-
-				$('#query-list').html(response);
-
-				//var template = Handlebars.compile($("#folder-template").html());
-				//$('#queries').append(template(response));
-			});
-		}
-	});
-
-	var sinput = $('#filter_search');
-
-	if (sinput.length) {
-		var clear = $('#clear-search');
-
-		if (!clear.length) {
-			clear = $('<span>')
-				.attr('id', 'clear-search')
-				.css('display', 'none')
-				.on('click', function(event) {
-					sinput.val('');
-					$('#ticketForm').submit();
-				})
-				.appendTo($('#filter-bar'));
-		}
-
-		if (sinput.val() != '') {
-			clear.show();
-		}
-
-		sinput.on('keyup', function (e) {
-			if ($(this).val() != '') {
-				if (clear.css('display') != 'block') {
-					clear.show();
-				}
-			} else {
-				clear.hide();
-			}
-		});
-	}
-
-	$('a.modal').fancybox({
-		type: 'ajax',
-		width: 600,
-		height: 550,
-		autoSize: false,
-		fitToView: false,
-		titleShow: false,
-		arrows: false,
-		closeBtn: true,
-		/*tpl: {
-			wrap:'<div class="fancybox-wrap"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div><a title="Close" class="fancybox-item fancybox-close" href="javascript:;"></a></div>'
-		},*/
-		beforeLoad: function() {
-			href = $(this).attr('href');
-			if (href.indexOf('?') == -1) {
-				href += '?no_html=1';
-			} else {
-				href += '&no_html=1';
-			}
-			$(this).attr('href', href);
-		},
-		afterShow: function() {
-			Conditions.addqueryroot('.query', true);
-
-			if ($('#queryForm').length > 0) {
-				$('#queryForm').on('submit', function(e) {
-					e.preventDefault();
-
-					if (!$('#field-title').val()) {
-						alert('<?php echo Lang::txt('COM_SUPPORT_QUERY_ERROR_MISSING_TITLE'); ?>');
-						return false;
-					}
-
-					query = Conditions.getCondition('.query > fieldset');
-					$('#field-conditions').val(JSON.stringify(query));
-
-					if (_DEBUG) {
-						window.console && console.log($(this).attr('action'));
-					}
-
-					$.post($(this).attr('action'), $(this).serialize(), function(data) {
-						if (_DEBUG) {
-							window.console && console.log(data);
-						}
-						$('#query-list').html(data);
-						$.fancybox.close();
-					});
-				});
-			}
-		}
-	});
-});
-
-function applySortable()
-{
-	if (jQuery.ui && jQuery.ui.sortable) {
-		$('ul.queries').sortable({
-			connectWith: 'ul.queries',
-			update: function (e, ui) {
-				var col = [];
-
-				$('ul.queries').each(function(i, el) {
-					var ul = $(el),
-						folder = parseInt(ul.attr('id').split('_')[1]);
-
-					ul.find('li').each(function(k, elm) {
-						col.push(folder + '_' + $(elm).attr('id').split('_')[1]);
-					});
-				});
-
-				if (_DEBUG) {
-					window.console && console.log('Calling: ' + $('#queries').attr('data-update').nohtml() + '&queries[]=' + col.join('&queries[]='));
-				}
-
-				$.getJSON($('#queries').attr('data-update').nohtml() + '&queries[]=' + col.join('&queries[]='), function(response) {
-					if (_DEBUG) {
-						window.console && console.log(response);
-					}
-				});
-			}
-		});
-	}
-}
-<?php } else { ?>
-jQuery(document).ready(function($){
-	var sinput = $('#filter_search');
-
-	if (sinput.length) {
-		var clear = $('#clear-search');
-
-		if (!clear.length) {
-			clear = $('<span>')
-				.attr('id', 'clear-search')
-				.css('display', 'none')
-				.on('click', function(event) {
-					sinput.val('');
-					$('#ticketForm').submit();
-				})
-				.appendTo($('#filter-bar'));
-		}
-
-		if (sinput.val() != '') {
-			clear.show();
-		}
-
-		sinput.on('keyup', function (e) {
-			if ($(this).val() != '') {
-				if (clear.css('display') != 'block') {
-					clear.show();
-				}
-			} else {
-				clear.hide();
-			}
-		});
-	}
-});
-<?php } ?>
-</script>

@@ -1,32 +1,8 @@
 <?php
 /**
-	* HUBzero CMS
-	*
-	* Copyright 2005-2015 HUBzero Foundation, LLC.
-	*
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -132,7 +108,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// The output array we're returning
 		$arr = array(
 			'html'     => '',
-			'metadata' => ''
+			'metadata' => array()
 		);
 
 		// get this area details
@@ -192,7 +168,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 					$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active);
 
 					App::redirect(
-						Route::url('index.php?option=com_users&view=login?return=' . base64_encode($url)),
+						Route::url('index.php?option=com_login?return=' . base64_encode($url)),
 						Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
 						'warning'
 					);
@@ -1149,7 +1125,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$citationsFormat = (isset($params->citationFormat) ? $params->citationFormat : 1);
 
 			// intended for the case that the group's custom
-			// format is removed from the jos_citations_format
+			// format is removed from the `#__citations_format`
 			try
 			{
 				$view->currentFormat = \Components\Citations\Models\Format::oneOrFail($citationsFormat);

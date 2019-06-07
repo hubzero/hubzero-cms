@@ -1,0 +1,18 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+.service-active {
+	color: #197f11;
+}
+.service-expired {
+	color: #ef721e;
+}
+.service-pending {
+	color:#ff0000;
+}
+.service-cancelled {
+	color:#999;
+}

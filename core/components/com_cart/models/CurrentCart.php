@@ -1,30 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
- *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   Ilya Shunko <ishunko@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Cart\Models;
@@ -63,23 +41,22 @@ class CurrentCart extends Cart
 		parent::__construct();
 
 		// Get user
-		$juser = User::getInstance();
-		//print_r($juser); die;
+		$user = User::getInstance();
 
 		//Set the user scope
-		$this->warehouse->addAccessLevels($juser->getAuthorisedViewLevels());
+		$this->warehouse->addAccessLevels($user->getAuthorisedViewLevels());
 
 		$this->cart = new \stdClass();
 
-		/* Load current user cart */
+		// Load current user cart
 
-		/* Check if there is a session or cookie cart */
+		// Check if there is a session or cookie cart
 
 		// Get cart from session
 		$cart = $this->liftSessionCart();
 
 		// If no session cart, try to locate a cookie cart (only for not logged in users)
-		if (!$cart && $juser->get('guest'))
+		if (!$cart && $user->get('guest'))
 		{
 			$cart = $this->liftCookie();
 		}
@@ -87,7 +64,7 @@ class CurrentCart extends Cart
 		if ($cart)
 		{
 			// If cart found and user is logged in, verify if the cart is linked to the user cart in the DB
-			if (!$juser->get('guest'))
+			if (!$user->get('guest'))
 			{
 				if (empty($this->cart->linked) || !$this->cart->linked)
 				{
@@ -104,10 +81,10 @@ class CurrentCart extends Cart
 				$this->cart->linked = 0;
 			}
 		} // If no session & cookie cart found, but user is logged in
-		elseif (!$juser->get('guest'))
+		elseif (!$user->get('guest'))
 		{
 			// Try to get the saved cart in the DB
-			if (!$this->liftUserCart($juser->id))
+			if (!$this->liftUserCart($user->id))
 			{
 				// If no session, no cookie, no DB cart -- create a brand new cart
 				$this->createCart();
@@ -583,8 +560,8 @@ class CurrentCart extends Cart
 				$sqlUpdateValues = str_replace('tiShipping', 'sa', $sqlUpdateValues);
 
 				// Get user
-				$juser = User::getInstance();
-				$uId = $juser->id;
+				$user = User::getInstance();
+				$uId = $user->id;
 
 				$sql = "INSERT IGNORE INTO `#__cart_saved_addresses`
 						SET `uidNumber` = {$uId}, {$sqlUpdateValues}";
@@ -959,8 +936,8 @@ class CurrentCart extends Cart
 		$this->applyCoupon($cnId);
 
 		// If user is logged in subtract coupon use count. If not logged in subtraction will happen when user logs in
-		$juser = User::getInstance();
-		if ($juser->id)
+		$user = User::getInstance();
+		if ($user->id)
 		{
 			$coupons->apply($cnId);
 		}
@@ -1430,8 +1407,8 @@ class CurrentCart extends Cart
 		$coupons = new Coupons;
 
 		// If user is logged in return coupon back to the coupons pool.
-		$juser = User::getInstance();
-		if ($juser->id)
+		$user = User::getInstance();
+		if ($user->id)
 		{
 			$coupons->recycle($cnId);
 		}
@@ -1481,10 +1458,10 @@ class CurrentCart extends Cart
 				$type = $pType['ptName'];
 
 				// Get user
-				$jUser = User::getInstance();
+				$user = User::getInstance();
 
 				// Get the correct membership Object
-				$subscription = \Components\Storefront\Models\Memberships::getSubscriptionObject($type, $itemInfo->pId, $jUser->id);
+				$subscription = \Components\Storefront\Models\Memberships::getSubscriptionObject($type, $itemInfo->pId, $user->id);
 				// Get the expiration for the current subscription (if any)
 				$currentExpiration = $subscription->getExpiration();
 
@@ -1816,13 +1793,13 @@ class CurrentCart extends Cart
 			echo "<br>Creating new cart";
 		}
 
-		$juser = User::getInstance();
+		$user = User::getInstance();
 
 		$uId = 'NULL';
 		$cart = new \stdClass();
-		if (!$juser->get('guest'))
+		if (!$user->get('guest'))
 		{
-			$uId = $juser->id;
+			$uId = $user->id;
 			$cart->linked = 1;
 		}
 		else
@@ -1841,7 +1818,7 @@ class CurrentCart extends Cart
 		$session->set('cart', $cart);
 
 		// Set cookie for non logged-in users to recover the cart
-		if ($juser->get('guest'))
+		if ($user->get('guest'))
 		{
 			if ($this->debug)
 			{
@@ -1872,12 +1849,12 @@ class CurrentCart extends Cart
 		setcookie("cartId", '', time() - $this->cookieTTL); // Set the cookie lifetime in the past
 
 		// Get user
-		$juser = User::getInstance();
+		$user = User::getInstance();
 
 		// Check if session cart is not someone else's. Otherwise load user's cart and done
 		if ($this->cartIsLinked($this->crtId))
 		{
-			if (!$this->liftUserCart($juser->id))
+			if (!$this->liftUserCart($user->id))
 			{
 				return false;
 			}
@@ -1885,7 +1862,7 @@ class CurrentCart extends Cart
 		}
 
 		// Get user's cart
-		$userCartId = $this->getUserCartId($juser->id);
+		$userCartId = $this->getUserCartId($user->id);
 
 		// Get coupons
 		$coupons = $this->getCoupons();
@@ -1893,7 +1870,7 @@ class CurrentCart extends Cart
 		// If no user cart -- make the session cart a user's cart. Easy.
 		if (!$userCartId)
 		{
-			$sql = "UPDATE `#__cart_carts` SET `uidNumber` = {$juser->id} WHERE `crtId` = {$this->crtId}";
+			$sql = "UPDATE `#__cart_carts` SET `uidNumber` = {$user->id} WHERE `crtId` = {$this->crtId}";
 			$this->_db->setQuery($sql);
 			$this->_db->query();
 			$existingCnIds = array();

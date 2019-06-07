@@ -1,30 +1,29 @@
 <?php
 /**
- * @package		Joomla.Site
- * @subpackage	com_content
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
+namespace Components\Content\Site\Helpers;
 
-// no direct access
-defined('_HZEXEC_') or die();
-
-jimport('joomla.application.categories');
+require_once \Component::path('com_categories') . '/helpers/categories.php';
 
 /**
  * Content Component Category Tree
- *
- * @static
- * @package		Joomla.Site
- * @subpackage	com_content
- * @since 1.6
  */
-class ContentCategories extends JCategories
+class Category extends \Components\Categories\Helpers\Categories
 {
+	/**
+	 * Class constructor
+	 *
+	 * @param   array  $options  Array of options
+	 * @return  void
+	 */
 	public function __construct($options = array())
 	{
 		$options['table'] = '#__content';
 		$options['extension'] = 'com_content';
+
 		parent::__construct($options);
 	}
 }

@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Courses\Models;
@@ -37,13 +12,13 @@ use Hubzero\Config\Registry;
 use Filesystem;
 use Lang;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'course.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'page.php');
-require_once(__DIR__ . DS . 'base.php');
-require_once(__DIR__ . DS . 'permissions.php');
-require_once(__DIR__ . DS . 'offering.php');
-require_once(__DIR__ . DS . 'iterator.php');
-require_once(__DIR__ . DS . 'tags.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'course.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'page.php';
+require_once __DIR__ . DS . 'base.php';
+require_once __DIR__ . DS . 'permissions.php';
+require_once __DIR__ . DS . 'offering.php';
+require_once __DIR__ . DS . 'iterator.php';
+require_once __DIR__ . DS . 'tags.php';
 
 /**
  * Courses model class for a course
@@ -337,7 +312,7 @@ class Course extends Base
 
 			if (!$this->_manager)
 			{
-				$this->_manager = \Components\Courses\Models\Manager::getInstance($user_id, $this->get('course_id'), 0, 0);
+				$this->_manager = \Components\Courses\Models\Manager::getInstance($user_id, $this->get('id'), 0, 0);
 			}
 		}
 
@@ -947,10 +922,12 @@ class Course extends Base
 	/**
 	 * Copy an entry and associated data
 	 *
-	 * @param   boolean $deep Copy associated data?
-	 * @return  boolean True on success, false on error
+	 * @param   boolean  $deep  Copy associated data?
+	 * @param   string   $title
+	 * @param   string   $alias
+	 * @return  boolean  True on success, false on error
 	 */
-	public function copy($deep=true)
+	public function copy($deep=true, $title = '', $alias = '')
 	{
 		// Get some old info we may need
 		//  - Course ID
@@ -959,8 +936,11 @@ class Course extends Base
 		// Reset the ID. This will force store() to create a new record.
 		$this->set('id', 0);
 		// We want to distinguish this course from the one we copied from
-		$this->set('title', $this->get('title') . ' (copy)');
-		$this->set('alias', $this->get('alias') . '_copy');
+		$title = $title ? $title : $this->get('title') . ' (copy)';
+		$alias = $alias ? $alias : $this->get('alias') . '_copy';
+
+		$this->set('title', $title);
+		$this->set('alias', $alias);
 
 		if (!$this->store())
 		{
@@ -1040,7 +1020,7 @@ class Course extends Base
 	{
 		if (!$this->_certificate)
 		{
-			include_once(__DIR__ . DS . 'certificate.php');
+			include_once __DIR__ . DS . 'certificate.php';
 
 			$this->_certificate = Certificate::getInstance(0, $this->get('id'));
 		}

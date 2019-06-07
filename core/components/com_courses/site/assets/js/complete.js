@@ -1,4 +1,13 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 jQuery(function($) {
+	if ($('#time-left').length) {
+		window.timeLeft = $('#time-left').attr('data-time')
+	}
 	var timeDiff = function(secs) {
 		var seconds = [1,               'second'];
 		var minutes = [60 * seconds[0], 'minute'];

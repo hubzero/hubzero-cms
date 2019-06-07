@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_wiki/wiki.css
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 /*
@@ -207,7 +206,16 @@
 	}
 	.page-search-form form label span,
 	.page-search-form form legend {
-		display: none;
+		/*display: none;*/
+		border: 0;
+		clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+		clip: rect(1px, 1px, 1px, 1px);
+		height: 1px;
+		margin: -1px;
+		overflow: hidden;
+		padding: 0;
+		position: absolute;
+		width: 1px;
 	}
 	.page-search-form input {
 		-webkit-box-sizing: border-box;
@@ -1008,7 +1016,16 @@
 
 	.aside legend,
 	.aside label span {
-		display: none;
+		/*display: none;*/
+		border: 0;
+		clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+		clip: rect(1px, 1px, 1px, 1px);
+		height: 1px;
+		margin: -1px;
+		overflow: hidden;
+		padding: 0;
+		position: absolute;
+		width: 1px;
 	}
 	.aside fieldset {
 		display: flex;

@@ -1,3 +1,9 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 /* Intro */
 	#introduction:after {
 		content: "\f042";
@@ -73,6 +79,8 @@
 	/* Entries */
 	.groups-container {
 		margin-top: 30px;
+		display: flex;
+		flex-wrap: wrap;
 	}
 	.groups-container:before,
 	.groups-container:after {
@@ -88,9 +96,17 @@
 	}
 	.groups-container .group {
 		display: block;
+		display: flex;
 		margin-bottom: 2em;
 		background: #fff;
 		position: relative;
+		width: 100%;
+	}
+	.groups-container .group .group-contents {
+		flex: 0 1 auto;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
 	}
 	.groups-container .group.notpublished,
 	.groups-container .group.inactive {
@@ -281,7 +297,7 @@
 	.groups-container .group {
 		float: left;
 		width: 48.38709677419355%;
-		margin-left: 3.225806451612903%;
+		margin-left: 3%;
 	}
 	.groups-container .group:first-child,
 	.groups-container .group:nth-child(2n+1) {
@@ -292,18 +308,18 @@
 	.groups-container .group,
 	.groups-container .group:nth-child(2n+1) {
 		width: 31.18279569892473%;
-		margin-left: 3.225806451612903%;
+		margin-left: 3%;
 	}
 	.groups-container .group:nth-child(3n+1) {
 		margin-left: 0;
 	}
 }
-@media (min-width: 70em) {
+@media (min-width: 80em) {
 	.groups-container .group,
 	.groups-container .group:nth-child(2n+1),
 	.groups-container .group:nth-child(3n+1) {
 		width: 22.58064516129032%;
-		margin-left: 3.225806451612903%;
+		margin-left: 3%;
 	}
 	.groups-container .group:nth-child(4n+1) {
 		margin-left: 0;
@@ -430,6 +446,7 @@
 		border-top: none;
 	}
 	#page_menu li a,
+	#page_menu li>span,
 	#page_menu li .disabled {
 		color: #aaa;
 		position: relative;
@@ -437,7 +454,8 @@
 		padding: 0.75em 2em 0.75em 4em;
 		border: none;
 	}
-	#page_menu li li a {
+	#page_menu li li a,
+	#page_menu li li span {
 		padding: 0.4em;
 	}
 	#page_menu li a:before,
@@ -1458,7 +1476,8 @@
 		text-indent: 0;
 		width: auto;
 	}
-	#page_menu li ul li a {
+	#page_menu li li a,
+	#page_menu li li span {
 		padding-left: 20px;
 	}
 	#page_menu li ul li a:after {

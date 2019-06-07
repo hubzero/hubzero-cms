@@ -1,0 +1,38 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+.all-time {
+	background-color:#d0d0d0;
+}
+.all-time-col {
+	background-color:#dcdddc;
+}
+.current-month {
+	background-color:#e5d2c4;
+}
+.current-month-col {
+	background-color:#f2ede9;
+}
+
+.spendtotal {
+	color:red; background-color:#f2ede9;border-top:2px solid #ccc;
+}
+.earntotal {
+	color:green; background-color:#ecf9e9;
+}
+.royaltytotal {
+	color:#000000;border-top:2px solid #ccc;background-color:#efefef;
+}
+
+.points-hold {
+	color: #999;
+}
+.points-add {
+	color: green;
+}
+.points-subtract {
+	color: red;
+}

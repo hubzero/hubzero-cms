@@ -1,30 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
- *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -76,7 +54,8 @@ if (empty($this->meta->qtyTxt))
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
-	<div class="col width-60 fltlft">
+	<div class="grid">
+	<div class="col span7">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_STOREFRONT_DETAILS'); ?></span></legend>
 
@@ -106,7 +85,7 @@ if (empty($this->meta->qtyTxt))
 			</div>
 		</fieldset>
 	</div>
-	<div class="col width-40 fltrt">
+	<div class="col span5">
 		<table class="meta">
 			<tbody>
 			<tr>
@@ -124,7 +103,7 @@ if (empty($this->meta->qtyTxt))
 						echo $this->downloaded;
 						if ($this->downloaded == 0 || $this->downloaded > 1)
 						{
-							echo(' times');
+							echo ' times';
 						}
 						else {
 							echo 'time';
@@ -159,7 +138,7 @@ if (empty($this->meta->qtyTxt))
 			if ($this->metaNeeded) {
 				?>
 				<p>
-					<a class="options-link" href="<?php echo 'index.php?option=' . $this->option . '&controller=meta&task=edit&id=' . $this->row->getId(); ?>">Edit type-related options (save product first if you updated the type)</a></p>
+					<a class="options-link" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=meta&task=edit&id=' . $this->row->getId()); ?>">Edit type-related options (save product first if you updated the type)</a></p>
 				<?php
 			}
 			?>
@@ -191,12 +170,12 @@ if (empty($this->meta->qtyTxt))
 
 			<div class="input-wrap">
 				<label for="field-publish_up"><?php echo Lang::txt('COM_STOREFRONT_FIELD_PUBLISH_UP'); ?>:</label><br />
-				<?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->getPublishTime()->publish_up != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->getPublishTime()->publish_up)->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_up')); ?>
+				<?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->getPublishTime()->publish_up && $this->row->getPublishTime()->publish_up != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->getPublishTime()->publish_up)->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_up')); ?>
 			</div>
 
 			<div class="input-wrap">
 				<label for="field-publish_down"><?php echo Lang::txt('COM_STOREFRONT_FIELD_PUBLISH_DOWN'); ?>:</label><br />
-				<?php echo Html::input('calendar', 'fields[publish_down]', ($this->row->getPublishTime()->publish_down != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->getPublishTime()->publish_down)->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_down')); ?>
+				<?php echo Html::input('calendar', 'fields[publish_down]', ($this->row->getPublishTime()->publish_down && $this->row->getPublishTime()->publish_down != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->getPublishTime()->publish_down)->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_down')); ?>
 			</div>
 
 			<?php if ($this->config->get('productAccess')) { ?>
@@ -342,13 +321,13 @@ if (empty($this->meta->qtyTxt))
 					$image = false;
 					$file = false;
 					$img = new \stdClass();
-					$img->imgId = NULL;
+					$img->imgId = null;
 				}
 				?>
-				<div style="padding-top: 2.5em">
-					<div id="ajax-uploader" data-action="index.php?option=<?php echo $this->option; ?>&amp;controller=images&amp;task=upload&amp;type=product&amp;id=<?php echo $this->row->getId(); ?>&amp;no_html=1&amp;<?php echo JUtility::getToken(); ?>=1">
+				<div class="uploader-wrap">
+					<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&task=upload&type=product&id=' . $this->row->getId() . '&no_html=1&' . Session::getFormToken() . '=1'); ?>">
 						<noscript>
-							<iframe height="350" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;controller=images&amp;tmpl=component&amp;file=<?php echo $file; ?>&amp;type=product&amp;id=<?php echo $this->row->getId(); ?>"></iframe>
+							<iframe height="350" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&tmpl=component&file=' . $file . '&type=product&id=' . $this->row->getId()); ?>"></iframe>
 						</noscript>
 					</div>
 				</div>
@@ -385,15 +364,14 @@ if (empty($this->meta->qtyTxt))
 							<span id="img-name"><?php echo $image; ?></span>
 						</td>
 						<td>
-							<a id="img-delete" <?php echo $image ? '' : 'style="display: none;"'; ?>
-							   href="index.php?option=<?php echo $this->option; ?>&amp;controller=images&amp;tmpl=component&amp;task=remove&amp;type=product&amp;id=<?php echo $this->row->getId(); ?>&amp;<?php echo JUtility::getToken(); ?>=1"
+							<a id="img-delete <?php echo $image ? '' : 'hide'; ?>"
+							   href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&tmpl=component&task=remove&type=product&id=' . $this->row->getId() . '&' . Session::getFormToken() . '=1'); ?>"
 							   title="<?php echo Lang::txt('Delete'); ?>">[ x ]</a>
 						</td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_STOREFRONT_PICTURE_SIZE'); ?>:</th>
-						<td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></span>
-						</td>
+						<td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></span></td>
 						<td></td>
 					</tr>
 					<tr>
@@ -469,11 +447,11 @@ if (empty($this->meta->qtyTxt))
 		</fieldset>
 
 	</div>
-	<div class="clr"></div>
+	</div>
 
 	<?php /*
 		<?php if ($canDo->get('core.admin')): ?>
-			<div class="col width-100 fltlft">
+			<div class="col span12">
 				<fieldset class="panelform">
 					<?php echo $this->form->getLabel('rules'); ?>
 					<?php echo $this->form->getInput('rules'); ?>

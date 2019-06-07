@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -257,11 +233,19 @@ if ($this->message) { ?>
 						<h4><?php echo Lang::txt('PLG_USAGE_OVERVIEW_ID_BY_RES'); ?></h4>
 						<ul class="bars">
 							<?php foreach ($residence as $res) { ?>
+								<?php
+								$this->css(
+									'.users-visits-res-' . strtolower($res['column']) . ' .bar-value {
+										background-color: ' . $res['color'] . ';
+										width: ' . number_format($res['value']) . '%;
+									}'
+								);
+								?>
 								<li id="users-visits-res-<?php echo strtolower($res['column']); ?>">
 									<span class="item-label"><?php echo $res['column']; ?></span>
 									<span class="item-value"><?php echo number_format($res['value']); ?>%</span>
 									<span class="bar-container">
-										<span class="bar-value" style="background-color: <?php echo $res['color']; ?>; width: <?php echo number_format($res['value']); ?>%;"></span>
+										<span class="bar-value" title="<?php echo number_format($res['value']); ?>%"></span>
 									</span>
 								</li>
 							<?php } ?>
@@ -273,11 +257,19 @@ if ($this->message) { ?>
 						<h4><?php echo Lang::txt('PLG_USAGE_OVERVIEW_ID_BY_ORG'); ?></h4>
 						<ul class="bars">
 							<?php foreach ($organization as $res) { ?>
+								<?php
+								$this->css(
+									'.users-visits-org-' . strtolower($res['column']) . ' .bar-value {
+										background-color: ' . $res['color'] . ';
+										width: ' . number_format($res['value']) . '%;
+									}'
+								);
+								?>
 								<li id="users-visits-org-<?php echo strtolower($res['column']); ?>">
 									<span class="item-label"><?php echo $res['column']; ?></span>
 									<span class="item-value"><?php echo number_format($res['value']); ?>%</span>
 									<span class="bar-container">
-										<span class="bar-value" style="background-color: <?php echo $res['color']; ?>; width: <?php echo number_format($res['value']); ?>%;"></span>
+										<span class="bar-value" title="<?php echo number_format($res['value']); ?>%;"></span>
 									</span>
 								</li>
 							<?php } ?>
@@ -400,11 +392,19 @@ if ($this->message) { ?>
 						<h4><?php echo Lang::txt('PLG_USAGE_OVERVIEW_ID_BY_RES'); ?></h4>
 						<ul class="bars">
 							<?php foreach ($residence as $res) { ?>
+								<?php
+								$this->css(
+									'.users-downloads-res-' . strtolower($res['column']) . ' .bar-value {
+										background-color: ' . $res['color'] . ';
+										width: ' . number_format($res['value']) . '%;
+									}'
+								);
+								?>
 								<li id="users-downloads-res-<?php echo strtolower($res['column']); ?>">
 									<span class="item-label"><?php echo $res['column']; ?></span>
 									<span class="item-value"><?php echo number_format($res['value']); ?>%</span>
 									<span class="bar-container">
-										<span class="bar-value" style="background-color: <?php echo $res['color']; ?>; width: <?php echo number_format($res['value']); ?>%;"></span>
+										<span class="bar-value" title="<?php echo number_format($res['value']); ?>%;"></span>
 									</span>
 								</li>
 							<?php } ?>
@@ -416,11 +416,19 @@ if ($this->message) { ?>
 						<h4><?php echo Lang::txt('PLG_USAGE_OVERVIEW_ID_BY_ORG'); ?></h4>
 						<ul class="bars">
 							<?php foreach ($organization as $res) { ?>
+								<?php
+								$this->css(
+									'.users-downloads-org-' . strtolower($res['column']) . ' .bar-value {
+										background-color: ' . $res['color'] . ';
+										width: ' . number_format($res['value']) . '%;
+									}'
+								);
+								?>
 								<li id="users-downloads-org-<?php echo strtolower($res['column']); ?>">
 									<span class="item-label"><?php echo $res['column']; ?></span>
 									<span class="item-value"><?php echo number_format($res['value']); ?>%</span>
 									<span class="bar-container">
-										<span class="bar-value" style="background-color: <?php echo $res['color']; ?>; width: <?php echo number_format($res['value']); ?>%;"></span>
+										<span class="bar-value" title="<?php echo number_format($res['value']); ?>%;"></span>
 									</span>
 								</li>
 							<?php } ?>

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -28,7 +33,7 @@ class Migration20170901000000ComCourses extends Base
 			  `blurb` text NOT NULL,
 			  `description` text NOT NULL,
 			  `logo` varchar(255) NOT NULL DEFAULT '',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  `params` text NOT NULL,
 			  `length` varchar(255) DEFAULT NULL,
@@ -50,9 +55,9 @@ class Migration20170901000000ComCourses extends Base
 			  `title` varchar(255) NOT NULL DEFAULT '',
 			  `term` varchar(255) NOT NULL DEFAULT '',
 			  `state` tinyint(2) NOT NULL DEFAULT '1',
-			  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `publish_up` datetime DEFAULT NULL,
+			  `publish_down` datetime DEFAULT NULL,
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  `params` text NOT NULL,
 			  PRIMARY KEY (`id`),
@@ -74,11 +79,11 @@ class Migration20170901000000ComCourses extends Base
 			  `alias` varchar(255) NOT NULL DEFAULT '',
 			  `title` varchar(255) NOT NULL DEFAULT '',
 			  `state` tinyint(2) NOT NULL DEFAULT '1',
-			  `start_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `end_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `start_date` datetime DEFAULT NULL,
+			  `end_date` datetime DEFAULT NULL,
+			  `publish_up` datetime DEFAULT NULL,
+			  `publish_down` datetime DEFAULT NULL,
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  `enrollment` tinyint(2) NOT NULL DEFAULT '0',
 			  `grade_policy_id` int(11) NOT NULL DEFAULT '1',
@@ -100,9 +105,9 @@ class Migration20170901000000ComCourses extends Base
 			  `section_id` int(11) NOT NULL DEFAULT '0',
 			  `scope` varchar(150) NOT NULL DEFAULT '',
 			  `scope_id` int(11) NOT NULL DEFAULT '0',
-			  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `publish_up` datetime DEFAULT NULL,
+			  `publish_down` datetime DEFAULT NULL,
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`id`),
 			  KEY `idx_section_id` (`section_id`),
@@ -119,10 +124,10 @@ class Migration20170901000000ComCourses extends Base
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `section_id` int(11) NOT NULL DEFAULT '0',
 			  `code` varchar(10) NOT NULL DEFAULT '',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
-			  `expires` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `redeemed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `expires` datetime DEFAULT NULL,
+			  `redeemed` datetime DEFAULT NULL,
 			  `redeemed_by` int(11) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
@@ -170,7 +175,7 @@ class Migration20170901000000ComCourses extends Base
 			  `title` varchar(255) NOT NULL DEFAULT '',
 			  `description` longtext NOT NULL,
 			  `ordering` int(11) NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  `state` tinyint(2) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`id`),
@@ -181,19 +186,19 @@ class Migration20170901000000ComCourses extends Base
 			$this->db->query();
 		}
 
-		if (!$this->db->tableExists('#__collections_items'))
+		if (!$this->db->tableExists('#__courses_announcements'))
 		{
-			$query = "CREATE TABLE `jos_courses_announcements` (
+			$query = "CREATE TABLE `#__courses_announcements` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `offering_id` int(11) NOT NULL DEFAULT '0',
 			  `content` text,
 			  `priority` tinyint(2) NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  `section_id` int(11) NOT NULL DEFAULT '0',
 			  `state` tinyint(2) NOT NULL DEFAULT '0',
-			  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `publish_up` datetime DEFAULT NULL,
+			  `publish_down` datetime DEFAULT NULL,
 			  `sticky` tinyint(2) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`id`),
 			  KEY `idx_offering_id` (`offering_id`),
@@ -216,7 +221,7 @@ class Migration20170901000000ComCourses extends Base
 			  `type` varchar(255) NOT NULL DEFAULT '',
 			  `subtype` varchar(255) NOT NULL DEFAULT 'file',
 			  `url` varchar(255) NOT NULL DEFAULT '',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  `state` tinyint(2) NOT NULL DEFAULT '1',
 			  `course_id` int(11) NOT NULL DEFAULT '0',
@@ -278,7 +283,7 @@ class Migration20170901000000ComCourses extends Base
 			  `description` text NOT NULL,
 			  `ordering` int(11) NOT NULL DEFAULT '0',
 			  `parent` int(11) NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  `state` tinyint(2) NOT NULL DEFAULT '0',
 			  `params` text NOT NULL,
@@ -323,7 +328,7 @@ class Migration20170901000000ComCourses extends Base
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `scope_id` int(11) NOT NULL DEFAULT '0',
 			  `scope` varchar(100) NOT NULL DEFAULT '',
-			  `timestamp` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `timestamp` datetime DEFAULT NULL,
 			  `user_id` int(11) NOT NULL DEFAULT '0',
 			  `action` varchar(50) NOT NULL DEFAULT '',
 			  `comments` text NOT NULL,
@@ -381,9 +386,9 @@ class Migration20170901000000ComCourses extends Base
 			  `section_id` int(11) NOT NULL DEFAULT '0',
 			  `role_id` int(11) NOT NULL DEFAULT '0',
 			  `permissions` mediumtext NOT NULL,
-			  `enrolled` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `enrolled` datetime DEFAULT NULL,
 			  `student` tinyint(2) NOT NULL DEFAULT '0',
-			  `first_visit` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `first_visit` datetime DEFAULT NULL,
 			  `token` varchar(23) NOT NULL DEFAULT '',
 			  PRIMARY KEY (`id`),
 			  KEY `idx_offering_id` (`offering_id`),
@@ -460,7 +465,7 @@ class Migration20170901000000ComCourses extends Base
 			  `offering_id` int(11) NOT NULL DEFAULT '0',
 			  `page_id` int(11) NOT NULL DEFAULT '0',
 			  `user_id` int(11) NOT NULL DEFAULT '0',
-			  `datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `datetime` datetime DEFAULT NULL,
 			  `ip` varchar(15) NOT NULL DEFAULT '',
 			  PRIMARY KEY (`id`),
 			  KEY `idx_offering_id` (`offering_id`),
@@ -681,6 +686,13 @@ class Migration20170901000000ComCourses extends Base
 		if ($this->db->tableExists('#__courses_units'))
 		{
 			$query = "DROP TABLE IF EXISTS `#__courses_units`;";
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
+
+		if ($this->db->tableExists('#__courses_announcements'))
+		{
+			$query = "DROP TABLE IF EXISTS `#__courses_announcements`;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -21,7 +26,7 @@ class Migration20170901000000ComAnswers extends Base
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `subject` varchar(250) NOT NULL DEFAULT '',
 			  `question` text NOT NULL,
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  `state` tinyint(3) NOT NULL DEFAULT '0',
 			  `anonymous` tinyint(2) unsigned NOT NULL DEFAULT '0',
@@ -48,7 +53,7 @@ class Migration20170901000000ComAnswers extends Base
 			  `question_id` int(11) unsigned NOT NULL DEFAULT '0',
 			  `answer` text NOT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `helpful` int(11) unsigned NOT NULL DEFAULT '0',
 			  `nothelpful` int(11) unsigned NOT NULL DEFAULT '0',
 			  `state` tinyint(3) NOT NULL DEFAULT '0',

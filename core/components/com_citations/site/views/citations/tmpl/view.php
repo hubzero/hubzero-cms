@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -409,7 +384,7 @@ $area = Request::getString('area', 'about');
 					 <tr>
 						<th><?php echo Lang::txt('COM_CITATIONS_DOI'); ?></th>
 						<td>
-							<a href="http://dx.doi.org/<?php echo $citation->doi; ?>">
+							<a href="https://doi.org/<?php echo $citation->doi; ?>">
 								<?php echo $citation->doi; ?>
 							</a>
 						</td>
@@ -599,8 +574,8 @@ $area = Request::getString('area', 'about');
 					 <tr>
 						<th><?php echo Lang::txt('COM_CITATIONS_DOI_RESOLVER'); ?></th>
 						<td>
-							<a rel="external" href="http://dx.doi.org/<?php echo $citation->doi; ?>">
-								http://dx.doi.org/<?php echo $citation->doi; ?>
+							<a rel="external" href="https://doi.org/<?php echo $citation->doi; ?>">
+								https://doi.org/<?php echo $citation->doi; ?>
 							</a>
 						</td>
 					</tr>
@@ -635,7 +610,7 @@ $area = Request::getString('area', 'about');
 							$query .= $citation->title;
 						}
 						?>
-						<a target="_blank" title="Google Scholar Search Results" href="http://scholar.google.com/scholar?q=<?php echo $query; ?>">
+						<a rel="nofollow external" title="Google Scholar Search Results" href="http://scholar.google.com/scholar?q=<?php echo $query; ?>">
 							<img src="<?php echo Request::base(true); ?>/core/components/com_citations/site/assets/img/googlescholar.gif" alt="Google Scholar Search Results" width="100" />
 						</a>
 					</td>

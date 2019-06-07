@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -49,10 +24,10 @@ $this->css('pipeline.css')
 
 <section class="main section">
 	<?php
-	($this->status['published'] != 1 && !$this->status['version']) ?  $hint = '1.0' :$hint = '' ; // if tool is under dev and no version was specified before
+	($this->status['published'] != 1 && !$this->status['version']) ?  $hint = '1.0' :$hint = ''; // if tool is under dev and no version was specified before
 	$statuspath = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']);
 
-	$newstate = ($this->action == 'edit') ? $this->status['state']: \Components\Tools\Helpers\Html::getStatusNum('Approved') ;
+	$newstate = ($this->action == 'edit') ? $this->status['state']: \Components\Tools\Helpers\Html::getStatusNum('Approved');
 	$submitlabel = ($this->action == 'edit') ? Lang::txt('COM_TOOLS_SAVE') : Lang::txt('COM_TOOLS_USE_THIS_VERSION');
 	if ($this->action == 'confirm')
 	{
@@ -70,7 +45,7 @@ $this->css('pipeline.css')
 
 			<?php if ($this->action != 'dev' && $this->status['state'] != \Components\Tools\Helpers\Html::getStatusNum('Published')) { ?>
 				<?php if ($this->action == 'confirm' or $this->action == 'edit') { ?>
-					<h4><?php echo Lang::txt('COM_TOOLS_VERSION_PLS_CONFIRM'); ?> <?php echo($this->action == 'edit') ? Lang::txt('COM_TOOLS_NEXT'): Lang::txt('COM_TOOLS_THIS'); ?> <?php echo Lang::txt('COM_TOOLS_TOOL_RELEASE'); ?>:</h4>
+					<h4><?php echo Lang::txt('COM_TOOLS_VERSION_PLS_CONFIRM'); ?> <?php echo ($this->action == 'edit') ? Lang::txt('COM_TOOLS_NEXT') : Lang::txt('COM_TOOLS_THIS'); ?> <?php echo Lang::txt('COM_TOOLS_TOOL_RELEASE'); ?>:</h4>
 				<?php } else if ($this->action == 'new' && $this->status['toolname']) { // new version is required ?>
 					<h4><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_ENTER_UNIQUE_VERSION'); ?>:</h4>
 				<?php } ?>
@@ -116,7 +91,7 @@ $this->css('pipeline.css')
 						// get wiki access text
 						$wikiaccess = \Components\Tools\Helpers\Html::getWikiAccess($t->wikiaccess);
 
-						$handle = (isset($t->doi) && $t->doi) ? $hubDOIpath.'r'.$this->status['resourceid'].'.'.$t->doi : '' ;
+						$handle = (isset($t->doi) && $t->doi) ? $hubDOIpath.'r'.$this->status['resourceid'].'.'.$t->doi : '';
 
 						$t->version = ($t->state==3 && $t->version==$this->status['currentversion']) ? Lang::txt('COM_TOOLS_NO_LABEL') : $t->version;
 				?>
@@ -135,10 +110,11 @@ $this->css('pipeline.css')
 							<?php } ?>
 						</td>
 						<td>
-							<?php if ($t->state!=3 or ($t->state==3 && $t->revision != $this->status['currentrevision'])) { echo $t->revision; } else { echo '-'; } ?>
+							<?php if ($t->state!=3 or ($t->state==3 && $t->revision != $this->status['currentrevision'])) { echo $t->revision;
+} else { echo '-'; } ?>
 						</td>
 						<td>
-							<span class="<?php echo ($t->state=='1' ? 'toolpublished' : 'toolunpublished'); ?>"></span>
+							<span class="<?php echo $t->state=='1' ? 'toolpublished' : 'toolunpublished'; ?>"></span>
 						</td>
 						<td>
 							<?php if ($t->state == 1 && $this->admin) { ?>
@@ -173,7 +149,7 @@ $this->css('pipeline.css')
 		</table>
 	<?php
 	} else { // no versions found
-		echo (Lang::txt('COM_TOOLS_CONTRIBTOOL_NO_VERSIONS').' '.$this->status['toolname']. '. '.ucfirst(Lang::txt('COM_TOOLS_GO_BACK_TO')).' <a href="'.$statuspath.'">'.strtolower(Lang::txt('COM_TOOLS_TOOL_STATUS')).'</a>.');
+		echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NO_VERSIONS').' '.$this->status['toolname']. '. '.ucfirst(Lang::txt('COM_TOOLS_GO_BACK_TO')).' <a href="'.$statuspath.'">'.strtolower(Lang::txt('COM_TOOLS_TOOL_STATUS')).'</a>.';
 	}
 	?>
 		</div>

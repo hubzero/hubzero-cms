@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_tools/site/assets/css/resource.css
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 /*
@@ -14,6 +13,23 @@
 */
 	.icon-status:before {
 		content: "\f056";
+	}
+	.steps-nav {
+		float:left;
+		width:70%;
+		padding:1em 0 1em 0;
+	}
+	.steps-nav:after {
+		content: '';
+		display: table;
+		line-height: 0;
+		clear: both;
+	}
+	.steps-nav .step-prev {
+		float:left;
+	}
+	.steps-nav .step-next {
+		float:right;
 	}
 /* Steps */
 	.steps-section {

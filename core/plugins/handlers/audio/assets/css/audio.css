@@ -1,0 +1,11 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+.file-preview.audio {
+	text-align: center;
+	background: #7c7c7c;
+	padding: 1em;
+}

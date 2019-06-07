@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -344,29 +319,11 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 		}
 
 		// Calculate the new average rating for the parent resource
-		$ratings = \Components\Resources\Reviews\Models\Review::all()
-			->whereEquals('resource_id', $this->resource->get('id'))
-			->rows()
-			->fieldsByKey('rating');
-
-		$totalcount = count($ratings);
-		$totalvalue = 0;
-
-		// Add the ratings up
-		foreach ($ratings as $rating)
-		{
-			$totalvalue = $totalvalue + $rating;
-		}
-
-		// Find the average of all ratings
-		$newrating = ($totalcount > 0) ? $totalvalue / $totalcount : 0;
-
-		// Round to the nearest half
-		$newrating = ($newrating > 0) ? round($newrating*2)/2 : 0;
+		$calculated = \Components\Resources\Reviews\Models\Review::averageByResource($this->resource->get('id'));
 
 		// Recalculate the average rating for the parent resource
-		$this->resource->set('rating', $newrating);
-		$this->resource->set('times_rated', $totalcount);
+		$this->resource->set('rating', $calculated['newrating']);
+		$this->resource->set('times_rated', $calculated['times_rated']);
 		$this->resource->save();
 
 		// Instantiate a helper object and get all the contributor IDs

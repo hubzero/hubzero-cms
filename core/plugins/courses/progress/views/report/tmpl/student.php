@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -302,14 +277,21 @@ if (count($units) > 0)
 			$current_i = $index;
 		}
 
-		$progress_timeline .= "<div class=\"unit unit_{$index}{$current}\">";
-		$progress_timeline .= "<div class=\"person\"></div>";
-		$progress_timeline .= "<div class=\"unit-inner{$first}{$last}{$past}\">";
-		$progress_timeline .= "<div class=\"unit-fill\">";
-		$progress_timeline .= "<div class=\"unit-fill-inner{$done}\" style=\"height:{$complete}%;margin-top:{$margin}%;\"></div>";
-		$progress_timeline .= "</div>";
+		$this->css('
+			.unit-fill .unit-fill-inner' . $unit->get('id') . ' {
+				height: ' . $complete . '%;
+				margin-top: ' . $margin . '%;
+			}
+		');
+
+		$progress_timeline .= '<div class="unit unit_' . $index . $current . '">';
+		$progress_timeline .= '<div class="person"></div>';
+		$progress_timeline .= '<div class="unit-inner' . $first . $last . $past . '">';
+		$progress_timeline .= '<div class="unit-fill">';
+		$progress_timeline .= '<div class="unit-fill-inner' . $done . ' unit-fill-inner' . $unit->get('id') . '"></div>';
+		$progress_timeline .= '</div>';
 		$progress_timeline .= "Unit {$index}";
-		$progress_timeline .= "</div></div>";
+		$progress_timeline .= '</div></div>';
 
 		++$index;
 	}
@@ -349,7 +331,7 @@ $progress_timeline .= '</div>';
 				Thanks for working hard and claiming your badge. We hope you have the chance to earn another one soon!
 			</p>
 			<p>
-				<a target="_blank" class="claim-item" href="<?php echo $this->course->offering()->section()->badge()->getBadgesUrl() ?>">View your badges!</a>
+				<a class="claim-item" href="<?php echo $this->course->offering()->section()->badge()->getBadgesUrl() ?>">View your badges!</a>
 			</p>
 		<?php elseif ($student->badge()->get('action') == 'deny') : ?>
 			<h3>Congratulations! You earned the badge!</h3>
@@ -357,7 +339,7 @@ $progress_timeline .= '</div>';
 				You chose to deny the badge. That's not a problem. If you change your mind, you can always go back and claim it!
 			</p>
 			<p>
-				<a target="_blank" class="claim-item" href="<?php echo $this->course->offering()->section()->badge()->getDeniedUrl() ?>">View denied badges</a>
+				<a class="claim-item" href="<?php echo $this->course->offering()->section()->badge()->getDeniedUrl() ?>">View denied badges</a>
 			</p>
 		<?php else : ?>
 			<h3>Congratulations! You've earned the badge...and you deserve it!</h3>
@@ -367,7 +349,7 @@ $progress_timeline .= '</div>';
 			</p>
 			<?php if ($this->course->offering()->section()->badge()->getClaimUrl()) : ?>
 				<p>
-					<a target="_blank" class="claim-item" href="<?php echo $this->course->offering()->section()->badge()->getClaimUrl() ?>">Claim your badge!</a>
+					<a class="claim-item" href="<?php echo $this->course->offering()->section()->badge()->getClaimUrl() ?>">Claim your badge!</a>
 				</p>
 			<?php else : ?>
 				<p>
@@ -572,16 +554,16 @@ $progress_timeline .= '</div>';
 
 	</div>
 
-<?php if ($this->course->offering()->section()->badge()->isAvailable() && !$student->badge()->hasEarned()) : ?>
-	<div class="recognition badge">
-		<img src="<?php echo $this->course->offering()->section()->badge()->get('img_url') ?>" width="125" />
-		<h3>Work hard. Earn a badge.</h3>
-		<p>
-			Upon successful completion of this course, you will be awarded a special <?php echo $this->course->get('title') ?> badge.
-			This badge can be saved to your Purdue Passport Badges Backpack, and subsequently, your Mozilla Open Badges Backpack.
-			To learn more about Purdue's Passport initiative, please visit the
-			<a href="https://www.openpassport.org/Login" target="_blank">Open Passport website</a>.
-		</p>
-	</div>
-<?php endif; ?>
+	<?php if ($this->course->offering()->section()->badge()->isAvailable() && !$student->badge()->hasEarned()) : ?>
+		<div class="recognition badge">
+			<img src="<?php echo $this->course->offering()->section()->badge()->get('img_url') ?>" width="125" alt="Badge" />
+			<h3>Work hard. Earn a badge.</h3>
+			<p>
+				Upon successful completion of this course, you will be awarded a special <?php echo $this->course->get('title') ?> badge.
+				This badge can be saved to your Purdue Passport Badges Backpack, and subsequently, your Mozilla Open Badges Backpack.
+				To learn more about Purdue's Passport initiative, please visit the
+				<a href="https://www.openpassport.org/Login" rel="nofollow external">Open Passport website</a>.
+			</p>
+		</div>
+	<?php endif; ?>
 </div>

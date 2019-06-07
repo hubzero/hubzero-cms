@@ -1,28 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2018 HUBzero Foundation, LLC.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Zach Weidner <zweidner@purdue.edu>
- * @copyright Copyright 2005-2018 HUBzero Foundation, LLC.
- * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Installer\Admin\Controllers;
@@ -48,6 +28,17 @@ class Repositories extends AdminController
 	 */
 	public function execute()
 	{
+		if (!is_file(PATH_APP . '/composer.json'))
+		{
+			$view = new \Hubzero\Component\View(array(
+				'base_path' => dirname(__DIR__),
+				'name'      => 'warnings',
+				'layout'    => 'composer'
+			));
+			$view->display();
+			return;
+		}
+
 		$this->registerTask('add', 'edit');
 
 		parent::execute();
@@ -113,16 +104,26 @@ class Repositories extends AdminController
 
 		// If no alias is given, assume we came in via addTask
 		$isNew = false;
-		if (is_null($alias))
+		if (empty($alias))
 		{
 			$isNew = true;
 		}
-		$config = ComposerHelper::getRepositoryConfigByAlias($alias);
+
+		try
+		{
+			$config = ComposerHelper::getRepositoryConfigByAlias($alias);
+		}
+		catch (\Exception $e)
+		{
+			$config = null;
+			$this->setError($e->getMessage());
+		}
 
 		$this->view
 			->set('config', $config)
 			->set('alias', $alias)
 			->set('isNew', $isNew)
+			->setErrors($this->getErrors())
 			->display();
 	}
 
@@ -156,7 +157,7 @@ class Repositories extends AdminController
 		// Add the repository
 		ComposerHelper::addRepository($alias, $json);
 
-		Notify::success("Success");
+		Notify::success('Success');
 
 		// Set the redirect
 		$this->cancelTask();

@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -35,6 +10,8 @@ defined('_HZEXEC_') or die();
 
 $year  = date("Y", strtotime($this->event->get('publish_up')));
 $month = date("m", strtotime($this->event->get('publish_up')));
+$params = new \Hubzero\Config\Registry($this->event->get('params'));
+$ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
 ?>
 
 <?php if ($this->getError()) { ?>
@@ -76,7 +53,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			</a>
 		</li>
 
-		<?php if ($this->event->get('registerby') != '' && $this->event->get('registerby') != '0000-00-00 00:00:00') : ?>
+		<?php if ($this->event->get('registerby') && $this->event->get('registerby') != '0000-00-00 00:00:00') : ?>
 			<li>
 				<a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=register&event_id='.$this->event->get('id')); ?>">
 					<span><?php echo Lang::txt('Register'); ?></span>
@@ -114,7 +91,6 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			}
 		?>
 		<?php if ($allday_event) : ?>
-
 			<tr>
 				<th class="date"></th>
 				<td width="50%">
@@ -122,7 +98,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 						// check to see if its a single date all day event
 						$d1 = Date::of($publish_up);
 						$d2 = Date::of($publish_down)->subtract('24 hours');
-						if ($d1 == $d2 || $publish_down == '0000-00-00 00:00:00')
+						if ($d1 == $d2 || !$publish_down || $publish_down == '0000-00-00 00:00:00')
 						{
 							echo $d1->format('l, F d, Y', true);
 						}
@@ -137,13 +113,13 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 					<?php echo Lang::txt('All Day Event'); ?>
 				</td>
 			</tr>
-		<?php elseif ($publish_down != '0000-00-00 00:00:00') : ?>
+		<?php elseif ($publish_down && $publish_down != '0000-00-00 00:00:00') : ?>
 			<tr>
 				<th class="date"></th>
 				<td colspan="3">
-					<?php echo Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', true); ?>
+					<?php echo $this->event->get('time_zone') ? Date::of($publish_up)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', $ignoreDst) : Date::of($publish_up)->toLocal('l, F d, Y @ h:i a T'); ?>
 					&mdash;
-					<?php echo Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', true); ?>
+					<?php echo $this->event->get('time_zone') ? Date::of($publish_down)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', $ignoreDst) : Date::of($publish_down)->toLocal('l, F d, Y @ h:i a T'); ?>
 				</td>
 			</tr>
 		<?php else : ?>

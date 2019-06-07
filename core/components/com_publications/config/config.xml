@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
- Copyright 2005-2009 HUBzero Foundation, LLC.
- All rights reserved.
-
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License,
- Version 2 as published by the Free Software Foundation.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program; if not, write to the Free Software
- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+@package      hubzero-cms
+@copyright    Copyright 2005-2019 HUBzero Foundation, LLC.
+@license      http://opensource.org/licenses/MIT MIT
 -->
 
 <config>
@@ -45,6 +33,7 @@
 		<field name="webpath" type="text" menu="hide" default="/site/publications" label="COM_PUBLICATIONS_CONFIG_FILE_PATH" description="COM_PUBLICATIONS_CONFIG_FILE_PATH_DESC" />
 		<field name="sftppath" type="text" menu="hide" default="/site/publications/ftp" label="COM_PUBLICATIONS_CONFIG_SFTP_PATH" description="COM_PUBLICATIONS_CONFIG_SFTP_PATH_DESC" />
 		<field name="sftpsize" type="text" menu="hide" default="5000" label="COM_PUBLICATIONS_CONFIG_SFTP_SIZE" description="COM_PUBLICATIONS_CONFIG_SFTP_SIZE_DESC" />
+		<field name="sftptypeblacklist" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_SFTP_TYPE_BLACKLIST" description="COM_PUBLICATIONS_CONFIG_SFTP_TYPE_BLACKLIST_DESC" />
 		<field name="documentation" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOCUMENTATION_PATH" description="COM_PUBLICATIONS_CONFIG_DOCUMENTATION_PATH_DESC" />
 		<field name="deposit_terms" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_TERMS_URL" description="COM_PUBLICATIONS_CONFIG_TERMS_URL_DESC" />
 	</fieldset>
@@ -72,7 +61,7 @@
 		<field name="ezid_doi_userpw" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_EZID_DOI_SERVICE_USERPASS" description="COM_PUBLICATIONS_CONFIG_EZID_DOI_SERVICE_USERPASS_DESC" />
 		<field name="doi_xmlschema" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_XML_SCHEMA" description="COM_PUBLICATIONS_CONFIG_DOI_XML_SCHEMA_DESC" />
 		<field name="doi_publisher" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_PUBLISHER" description="COM_PUBLICATIONS_CONFIG_DOI_PUBLISHER_DESC" />
-		<field name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="COM_PUBLICATIONS_CONFIG_DOI_RESOLVE" description="COM_PUBLICATIONS_CONFIG_DOI_RESOLVE_DESC" />
+		<field name="doi_resolve" type="text" menu="hide" default="https://doi.org/" label="COM_PUBLICATIONS_CONFIG_DOI_RESOLVE" description="COM_PUBLICATIONS_CONFIG_DOI_RESOLVE_DESC" />
 		<field name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="COM_PUBLICATIONS_CONFIG_DOI_VERIFY" description="COM_PUBLICATIONS_CONFIG_DOI_VERIFY_DESC" />
 		<field name="master_doi" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_ISSUE_MASTER_DOI" description="COM_PUBLICATIONS_CONFIG_ISSUE_MASTER_DOI_DESC">
 			<option value="0">JNO</option>

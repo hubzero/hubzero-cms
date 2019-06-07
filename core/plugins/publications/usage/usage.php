@@ -1,37 +1,14 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+require_once __DIR__ . '/helpers/publicationUsageHelper.php';
 
 /**
  * Publications Plugin class for usage
@@ -131,6 +108,10 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 		$stats = new \Components\Publications\Tables\Stats($database);
 		$stats->loadStats($publication->id, $period, $dthis);
 
+		$usageHelper = new PublicationUsageHelper(['publication' => $publication]);
+		$views = $usageHelper->totalViews();
+		$downloads = $usageHelper->totalDownloads();
+
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
@@ -142,56 +123,20 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 				->set('option', $option)
 				->set('publication', $publication)
 				->set('stats', $stats)
+				->set('totalViews', $views)
+				->set('totalDownloads', $downloads)
 				->setErrors($this->getErrors());
 
 			// Return the output
 			$arr['html'] = $view->loadTemplate();
 		}
 
-		/*if ($rtrn == 'metadata')
-		{
-			$stats->loadStats($publication->id, $period);
+		$view = $this->view('default', 'metadata')
+			->set('publication', $publication)
+			->set('views', $views)
+			->set('downloads', $downloads);
 
-			if ($stats->users)
-			{
-				$action = $publication->base == 'files' ? '%s download(s)' : '%s view(s)';
-
-				$arr['metadata']  = '<p class="usage">' . Lang::txt('%s user(s)',$stats->users);
-				$arr['metadata'] .= $stats->downloads ? ' | ' . Lang::txt($action, $stats->downloads) : '';
-				$arr['metadata'] .= '</p>';
-			}*/
-			$db = App::get('db');
-			$db->setQuery(
-				"SELECT SUM(page_views)
-				FROM `#__publication_logs`
-				WHERE `publication_id`=" . $db->quote($publication->id) . " AND `publication_version_id`=" . $db->quote($publication->version->id) . "
-				ORDER BY `year` ASC, `month` ASC"
-			);
-			$views = (int) $db->loadResult();
-
-			$db->setQuery(
-				"SELECT SUM(primary_accesses)
-				FROM `#__publication_logs`
-				WHERE `publication_id`=" . $db->quote($publication->id) . " AND `publication_version_id`=" . $db->quote($publication->version->id) . "
-				ORDER BY `year` ASC, `month` ASC"
-			);
-			$downloads = (int) $db->loadResult();
-
-			$view = $this->view('default', 'metadata')
-				->set('publication', $publication)
-				->set('views', $views)
-				->set('downloads', $downloads);
-
-			$arr['metadata'] = $view->loadTemplate();
-
-			//$arr['metadata'] = '<p class="usage">' . Lang::txt('PLG_PUBLICATIONS_USAGE_TOTALS', $views, $downloads) . '</p>';
-		/*}
-
-		if ($stats->users)
-		{
-			$arr['name']  = 'usage';
-			$arr['count'] = $stats->users;
-		}*/
+		$arr['metadata'] = $view->loadTemplate();
 
 		return $arr;
 	}

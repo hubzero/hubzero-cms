@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -25,8 +30,8 @@ class Migration20170901000000ComPublications extends Base
 			  `access` int(11) NOT NULL DEFAULT '0',
 			  `checked_out` int(11) NOT NULL DEFAULT '0',
 			  `created_by` int(11) NOT NULL DEFAULT '0',
-			  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `checked_out_time` datetime DEFAULT NULL,
+			  `created` datetime DEFAULT NULL,
 			  `rating` decimal(2,1) NOT NULL DEFAULT '0.0',
 			  `times_rated` int(11) NOT NULL DEFAULT '0',
 			  `alias` varchar(100) NOT NULL DEFAULT '',
@@ -59,14 +64,14 @@ class Migration20170901000000ComPublications extends Base
 			  `description` text NOT NULL,
 			  `abstract` text NOT NULL,
 			  `metadata` text,
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
-			  `published_up` datetime DEFAULT '0000-00-00 00:00:00',
+			  `published_up` datetime DEFAULT NULL,
 			  `published_down` datetime DEFAULT NULL,
-			  `modified` datetime DEFAULT '0000-00-00 00:00:00',
-			  `accepted` datetime DEFAULT '0000-00-00 00:00:00',
-			  `archived` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `submitted` datetime DEFAULT '0000-00-00 00:00:00',
+			  `modified` datetime DEFAULT NULL,
+			  `accepted` datetime DEFAULT NULL,
+			  `archived` datetime DEFAULT NULL,
+			  `submitted` datetime DEFAULT NULL,
 			  `modified_by` int(11) DEFAULT '0',
 			  `version_label` varchar(100) NOT NULL DEFAULT '1.0',
 			  `secret` varchar(10) NOT NULL DEFAULT '',
@@ -174,7 +179,7 @@ class Migration20170901000000ComPublications extends Base
 			  `publication_version_id` int(11) NOT NULL,
 			  `month` int(2) NOT NULL,
 			  `year` int(2) NOT NULL,
-			  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `modified` datetime DEFAULT NULL,
 			  `page_views` int(11) DEFAULT '0',
 			  `primary_accesses` int(11) DEFAULT '0',
 			  `support_accesses` int(11) DEFAULT '0',
@@ -260,7 +265,7 @@ class Migration20170901000000ComPublications extends Base
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `type_id` int(11) NOT NULL DEFAULT '0',
 			  `version_number` int(11) NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `curation` text NOT NULL,
 			  PRIMARY KEY (`id`),
 			  KEY `idx_type_id_version_number` (`type_id`,`version_number`)
@@ -275,7 +280,7 @@ class Migration20170901000000ComPublications extends Base
 			$query = "CREATE TABLE `#__publication_curation_history` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `publication_version_id` int(11) NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  `changelog` text NOT NULL,
 			  `curator` tinyint(3) NOT NULL DEFAULT '0',
@@ -403,7 +408,7 @@ class Migration20170901000000ComPublications extends Base
 			  `level4` tinyint(2) NOT NULL DEFAULT '0',
 			  `level5` tinyint(2) NOT NULL DEFAULT '0',
 			  `comments` varchar(255) DEFAULT '',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";

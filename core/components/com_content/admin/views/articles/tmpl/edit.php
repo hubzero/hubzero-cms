@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -54,6 +30,11 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('article');
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
+
 $params = $this->item->attribs->toArray();
 
 // This checks if the config options have ever been saved. If they haven't they will fall back to the original settings.
@@ -67,34 +48,23 @@ if (!$editoroptions):
 endif;
 ?>
 
-<script type="text/javascript">
-	Joomla.submitbutton = function(task) {
-		if (task == 'article.cancel' || document.formvalidator.isValid($('#item-form'))) {
-			<?php echo $this->form->getField('introtext')->save(); ?>
-			Joomla.submitform(task, document.getElementById('item-form'));
-		} else {
-			alert('<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
-		}
-	}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
 				<legend><span><?php echo empty($this->item->id) ? Lang::txt('COM_CONTENT_NEW_ARTICLE') : Lang::txt('COM_CONTENT_EDIT_ARTICLE', $this->item->id); ?></span></legend>
 
-				<div class="input-wrap">
+				<div class="form-group input-wrap">
 					<?php echo $this->form->getLabel('title'); ?>
 					<?php echo $this->form->getInput('title'); ?>
 				</div>
 
-				<div class="input-wrap">
+				<div class="form-group input-wrap">
 					<?php echo $this->form->getLabel('alias'); ?>
 					<?php echo $this->form->getInput('alias'); ?>
 				</div>
 
-				<div class="input-wrap">
+				<div class="form-group input-wrap">
 					<label for="categories-field"><?php echo Lang::txt('COM_CONTENT_CHOOSE_CATEGORY_LABEL'); ?></label>
 					<select id="categories-field" name="fields[catid]">
 						<?php foreach ($this->item->categories as $category): ?>
@@ -121,47 +91,47 @@ endif;
 					</select>
 				</div>
 
-				<div class="width-50 fltlft">
-					<div class="input-wrap">
-						<?php echo $this->form->getLabel('state'); ?>
-						<?php if ($canDo->get('core.edit.state')): ?>
-							<?php echo $this->form->getInput('state'); ?>
-						<?php else: ?>
-						<select name="fields[state]" id="categories-field" disabled="disabled">
-							<option value="<?php echo $this->item->get('state'); ?>">
-								<?php echo $this->item->state; ?>
-							</option>
-						</select>
-						<?php endif; ?>
+				<div class="grid">
+					<div class="col span6">
+						<div class="form-group input-wrap">
+							<?php echo $this->form->getLabel('state'); ?>
+							<?php if ($canDo->get('core.edit.state')): ?>
+								<?php echo $this->form->getInput('state'); ?>
+							<?php else: ?>
+							<select name="fields[state]" id="categories-field" disabled="disabled">
+								<option value="<?php echo $this->item->get('state'); ?>">
+									<?php echo $this->item->state; ?>
+								</option>
+							</select>
+							<?php endif; ?>
+						</div>
+					</div>
+					<div class="col span6">
+						<div class="form-group input-wrap">
+							<?php echo $this->form->getLabel('access'); ?>
+							<?php echo $this->form->getInput('access'); ?>
+						</div>
 					</div>
 				</div>
-				<div class="width-50 fltrt">
-					<div class="input-wrap">
-						<?php echo $this->form->getLabel('access'); ?>
-						<?php echo $this->form->getInput('access'); ?>
-					</div>
-				</div>
-				<div class="clr"></div>
 
-				<div class="width-50 fltlft">
-					<div class="input-wrap">
-						<?php echo $this->form->getLabel('featured'); ?>
-						<?php echo $this->form->getInput('featured'); ?>
+				<div class="grid">
+					<div class="col span6">
+						<div class="form-group input-wrap">
+							<?php echo $this->form->getLabel('featured'); ?>
+							<?php echo $this->form->getInput('featured'); ?>
+						</div>
+					</div>
+					<div class="col span6">
+						<div class="form-group input-wrap">
+							<?php echo $this->form->getLabel('language'); ?>
+							<?php echo $this->form->getInput('language'); ?>
+						</div>
 					</div>
 				</div>
-				<div class="width-50 fltrt">
-					<div class="input-wrap">
-						<?php echo $this->form->getLabel('language'); ?>
-						<?php echo $this->form->getInput('language'); ?>
-					</div>
-				</div>
-				<div class="clr"></div>
 
-
-				<div class="input-wrap">
+				<div class="form-group input-wrap">
 					<?php echo $this->form->getLabel('introtext'); ?>
 					<?php echo $this->form->getInput('introtext'); ?>
-					<div class="clr"></div>
 				</div>
 			</fieldset>
 		</div>
@@ -170,65 +140,65 @@ endif;
 			<table class="meta">
 				<tbody>
 					<tr>
-						<td><?php echo Lang::txt('COM_CONTENT_FIELD_ID_LABEL');?></td>
+						<th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_ID_LABEL');?></th>
 						<td><?php echo $this->item->get('id', 0);?>
-							<input type="hidden" name="id" value="<?php echo $this->item->get('id'); ?>" />
+							<input type="hidden" name="id" value="<?php echo $this->escape($this->item->get('id')); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<td><?php echo Lang::txt('COM_CONTENT_FIELD_CREATED_BY_LABEL'); ?></td>
+						<th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_CREATED_BY_LABEL'); ?></th>
 						<td>
-							<?php echo User::getInstance($this->item->createdBy)->get('name'); ?>
-							<input type="hidden" name="fields[created_by]" value="<?php echo $this->item->createdBy; ?>" />
+							<?php echo $this->item->created_by ? User::getInstance($this->item->created_by)->get('name') : Lang::txt('JUNKNOWN'); ?>
+							<input type="hidden" name="fields[created_by]" value="<?php echo $this->escape($this->item->created_by); ?>" />
 						</td> 
 					</tr>
 					<tr>
-						<td><?php echo Lang::txt('COM_CONTENT_FIELD_CREATED_LABEL');?></td>
+						<th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_CREATED_LABEL');?></th>
 						<td>
-							<?php echo $this->item->created; ?>
+							<time datetime="<?php echo $this->item->created; ?>"><?php echo Date::of($this->item->created)->toLocal(); ?></time>
 						</td>
 					</tr>
 					<?php if ($this->item->get('modified_by', false)): ?>
-					<tr>
-						<td><?php echo Lang::txt('COM_CONTENT_FIELD_MODIFIER_LABEL'); ?></td>
-						<td>
-							<?php echo User::getInstance($this->item->modifiedBy)->get('name'); ?>
-							<input type="hidden" name="fields[modified_by]" value="<?php echo $this->item->modifiedBy; ?>" />
-						</td> 
-					</tr>
-					<tr>
-						<td><?php echo Lang::txt('COM_CONTENT_FIELD_MODIFIED_LABEL');?></td>
-						<td>
-							<?php echo $this->item->modified; ?>
-						</td>
-					</tr>
+						<tr>
+							<th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_MODIFIER_LABEL'); ?></th>
+							<td>
+								<?php echo $this->item->modified_by ? User::getInstance($this->item->modified_by)->get('name') : Lang::txt('JUNKNOWN'); ?>
+								<input type="hidden" name="fields[modified_by]" value="<?php echo $this->escape($this->item->modified_by); ?>" />
+							</td> 
+						</tr>
+						<tr>
+							<th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_MODIFIED_LABEL');?></th>
+							<td>
+								<time datetime="<?php echo $this->item->modified; ?>"><?php echo Date::of($this->item->modified)->toLocal(); ?></time>
+							</td>
+						</tr>
 					<?php endif; ?>
 				</tbody>
 			</table>
 			<?php echo Html::sliders('start', 'content-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
 			<?php // Do not show the publishing options if the edit form is configured not to. ?>
-			<?php  if ($params['show_publishing_options'] || ($params['show_publishing_options'] = '' && !empty($editoroptions))): ?>
+			<?php if ($params['show_publishing_options'] || ($params['show_publishing_options'] = '' && !empty($editoroptions))): ?>
 				<?php echo Html::sliders('panel', Lang::txt('COM_CONTENT_FIELDSET_PUBLISHING'), 'publishing-details');?>
 				<fieldset class="panelform">
-					<div class="input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('publish_up'); ?>
 						<?php echo $this->form->getInput('publish_up'); ?>
 					</div>
 
-					<div class="input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('publish_down'); ?>
 						<?php echo $this->form->getInput('publish_down'); ?>
 					</div>
 
 					<?php if ($this->item->version) : ?>
-						<div class="input-wrap">
+						<div class="form-group input-wrap">
 							<?php echo $this->form->getLabel('version'); ?>
 							<?php echo $this->form->getInput('version'); ?>
 						</div>
 					<?php endif; ?>
 
 					<?php if ($this->item->hits) : ?>
-						<div class="input-wrap">
+						<div class="form-group input-wrap">
 							<?php echo $this->form->getLabel('hits'); ?>
 							<?php echo $this->form->getInput('hits'); ?>
 						</div>
@@ -252,7 +222,7 @@ endif;
 						<?php endif; ?>
 						<fieldset class="panelform">
 							<?php foreach ($this->form->getFieldset($name) as $field) : ?>
-								<div class="input-wrap">
+								<div class="form-group input-wrap">
 									<?php echo $field->label; ?>
 									<?php echo $field->input; ?>
 								</div>
@@ -269,7 +239,7 @@ endif;
 
 			<?php // Not the best place, but here for continuity with 1.5/1/6/1.7 ?>
 			<fieldset class="panelform">
-				<div class="input-wrap">
+				<div class="form-group input-wrap">
 					<?php echo $this->form->getLabel('xreference'); ?>
 					<?php echo $this->form->getInput('xreference'); ?>
 				</div>
@@ -283,7 +253,7 @@ endif;
 				<?php echo Html::sliders('panel', Lang::txt('COM_CONTENT_SLIDER_EDITOR_CONFIG'), 'configure-sliders'); ?>
 				<fieldset class="panelform">
 					<?php foreach ($this->form->getFieldset('editorConfig') as $field) : ?>
-						<div class="input-wrap">
+						<div class="form-group input-wrap">
 							<?php echo $field->label; ?>
 							<?php echo $field->input; ?>
 						</div>
@@ -296,13 +266,13 @@ endif;
 			<?php if ($params['show_urls_images_backend']): ?>
 				<?php echo Html::sliders('panel', Lang::txt('COM_CONTENT_FIELDSET_URLS_AND_IMAGES'), 'urls_and_images-options'); ?>
 				<fieldset class="panelform">
-					<div class="input-wrap">
+					<div class="form-group input-wrap">
 						<?php echo $this->form->getLabel('images'); ?>
 						<?php echo $this->form->getInput('images'); ?>
 					</div>
 
 					<?php foreach ($this->form->getGroup('images') as $field): ?>
-						<div class="input-wrap">
+						<div class="form-group input-wrap">
 							<?php if (!$field->hidden): ?>
 								<?php echo $field->label; ?>
 							<?php endif; ?>
@@ -311,7 +281,7 @@ endif;
 					<?php endforeach; ?>
 
 					<?php foreach ($this->form->getGroup('urls') as $field): ?>
-						<div class="input-wrap">
+						<div class="form-group input-wrap">
 							<?php if (!$field->hidden): ?>
 								<?php echo $field->label; ?>
 							<?php endif; ?>
@@ -332,14 +302,9 @@ endif;
 
 	<?php if (User::authorise('core.manage')): ?>
 		<div class="width-100">
-			<?php //echo Html::sliders('start', 'permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
-
-			<?php //echo Html::sliders('panel', Lang::txt('COM_CONTENT_FIELDSET_RULES'), 'access-rules'); ?>
 			<fieldset class="panelform">
 				<?php echo $this->form->getInput('rules'); ?>
 			</fieldset>
-
-			<?php echo Html::sliders('end'); ?>
 		</div>
 	<?php endif; ?>
 

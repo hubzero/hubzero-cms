@@ -1,25 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Alissa Nedossekina <alisa@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
- *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -95,10 +78,10 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
 			?>
 			<tr class="<?php echo $class; ?>" id="todo-<?php echo $row->get('id'); ?>">
 				<td><span class="ordernum"><?php echo $order; ?></span></td>
-				<td><a href="<?php echo Route::url($url . '&action=view').'/?todoid=' . $row->get('id') ; ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT'); ?>"><?php echo \Hubzero\Utility\Str::truncate($row->get('content'), 120); ?></a></td>
+				<td><a href="<?php echo Route::url($url . '&action=view').'/?todoid=' . $row->get('id'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT'); ?>"><?php echo \Hubzero\Utility\Str::truncate($row->get('content'), 120); ?></a></td>
 				<td class="mini faded"><?php echo $row->isComplete() ? $row->closer('name') : $row->owner('name'); ?></td>
-				<td class="mini nowrap"><?php echo $row->isComplete() ? $row->closed('date') : $row->due('date') . $oNote;?></td>
-				<td class="mini"><a href="<?php echo Route::url($url . '&action=view').'/?todoid=' . $row->get('id') ; ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT'); ?>"><?php echo $row->comments('count'); ?></a></td>
+				<td class="mini nowrap"><?php echo $row->isComplete() ? $row->closed('date') : $row->due('date') . $oNote; ?></td>
+				<td class="mini"><a href="<?php echo Route::url($url . '&action=view').'/?todoid=' . $row->get('id'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT'); ?>"><?php echo $row->comments('count'); ?></a></td>
 				<td><?php if (!$row->isComplete()) { ?><a href="<?php echo Route::url($url . '&action=changestate') . '/?todoid=' . $row->get('id') . '&amp;state=1&' .  Session::getFormToken() . '=1'; ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_CHECK_OFF'); ?>" class="unchecked confirm-checkoff">&nbsp;</a><?php } ?></td>
 			</tr>
 			<?php $order++; } ?>

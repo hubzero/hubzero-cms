@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        templates/kimera/js/hub.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 if (typeof console === "undefined" || typeof console.log === "undefined") {
@@ -244,41 +243,6 @@ jQuery(document).ready(function($){
 				return $(this).attr('title');
 			},
 			tooltipClass: 'tooltip'
-		});
-	}
-
-	// Test for placeholder support
-	var test = document.createElement('input'),
-		placeholder_supported = ('placeholder' in test);
-
-	// If we dont have placeholder support mimic it with focus and blur events
-	if (!placeholder_supported) {
-		$('input[type=text]:not(.no-legacy-placeholder-support)').each(function(i, el) {
-			var placeholderText = $(el).attr('placeholder');
-
-			if (placeholderText != '' && placeholderText != null) {
-				if ($(el).val() == '') {
-					$(el).addClass('placeholder-support').val(placeholderText);
-				}
-
-				$(el)
-					.on('focus', function() {
-						if ($(el).val() == placeholderText) {
-							$(el).removeClass('placeholder-support').val('');
-						}
-					})
-					.on('blur', function(){
-						if ($(el).val() == '') {
-							$(el).addClass('placeholder-support').val(placeholderText);
-						}
-					});
-			}
-		});
-
-		$('form').on('submit', function(event){
-			$('.placeholder-support').each(function (i, el) {
-				$(this).val('');
-			});
 		});
 	}
 

@@ -1,51 +1,22 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
 defined('_HZEXEC_') or die();
 
 // Get and add the js and extra css to the page
-\Hubzero\Document\Assets::addComponentStylesheet('com_users', 'login.css');
-\Hubzero\Document\Assets::addComponentStylesheet('com_users', 'providers.css');
-\Hubzero\Document\Assets::addComponentScript('com_users', 'login');
-
-\Hubzero\Document\Assets::addSystemStylesheet('uniform.css');
-\Hubzero\Document\Assets::addSystemScript('jquery.uniform');
-\Hubzero\Document\Assets::addSystemScript('jquery.hoverIntent');
-\Hubzero\Document\Assets::addSystemScript('placeholder');
+$this->css('login.css');
+$this->css('providers.css');
+$this->js('jquery.hoverIntent.js', 'system');
+$this->js('login.js');
 
 $hash  = App::hash(App::get('client')->name . ':authenticator');
 
-if (($cookie = \Hubzero\Utility\Cookie::eat('authenticator')) && !Request::getInt('reset', false))
+if (($cookie = Hubzero\Utility\Cookie::eat('authenticator')) && !Request::getInt('reset', 0))
 {
 	$primary = $cookie->authenticator;
 
@@ -78,7 +49,7 @@ foreach ($this->authenticators as $a)
 	}
 	else
 	{
-		$login_provider_html .= '<a class="' . $a['name'] . ' account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=' . $a['name'] . $this->returnQueryString) . '">';
+		$login_provider_html .= '<a class="' . $a['name'] . ' account" href="' . Route::url('index.php?option=' . $this->option . '&authenticator=' . $a['name'] . $this->returnQueryString) . '">';
 		$login_provider_html .= '<div class="signin">' . Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', $a['display']) . '</div>';
 		$login_provider_html .= '</a>';
 	}
@@ -95,6 +66,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 	</header>
 <?php endif; ?>
 
+<section class="main section">
 	<div class="hz_user">
 		<?php if ($errorText = Request::getString('errorText', false)) : ?>
 			<p class="error">
@@ -108,7 +80,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 		<?php endif; ?>
 <?php if ($this->totalauths) : ?>
 	<?php if ($primary && $primary != 'hubzero') : ?>
-		<a class="primary" href="<?php echo Route::url('index.php?option=com_users&view=login&authenticator=' . $primary . $this->returnQueryString); ?>">
+		<a class="primary" href="<?php echo Route::url('index.php?option=' . $this->option . '&authenticator=' . $primary . $this->returnQueryString); ?>">
 			<div class="<?php echo $primary; ?> upper"></div>
 			<div class="auth">
 				<div class="person">
@@ -131,7 +103,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 					<img class="<?php echo $class; ?>" src="<?php echo $user_img; ?>" alt="<?php echo Lang::txt('COM_USERS_LOGIN_USER_PICTURE'); ?>" />
 				<?php endif; ?>
 			</div>
-			<div class="default" style="display:<?php echo ($primary || $login_provider_html == '') ? 'none' : 'block'; ?>;">
+			<div class="default <?php echo ($primary || $login_provider_html == '') ? 'none' : 'block'; ?>">
 				<div class="instructions"><?php echo Lang::txt('COM_USERS_LOGIN_CHOOSE_METHOD'); ?></div>
 				<div class="options">
 					<?php echo $login_provider_html; ?>
@@ -139,13 +111,13 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 				<?php if (isset($this->local) && $this->local) : ?>
 					<div class="or"></div>
 					<div class="local">
-						<a href="<?php echo Route::url('index.php?option=com_users&view=login&primary=hubzero&reset=1' . $this->returnQueryString); ?>">
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&view=login&primary=hubzero&reset=1' . $this->returnQueryString); ?>">
 							<?php echo Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_ACCOUNT', ((isset($this->site_display)) ? $this->site_display : Config::get('sitename'))); ?>
 						</a>
 					</div>
 				<?php endif; ?>
 			</div>
-			<div class="hz" style="display:<?php echo ($primary == 'hubzero' || $login_provider_html == '') ? 'block' : 'none'; ?>;">
+			<div class="hz <?php echo ($primary == 'hubzero' || $login_provider_html == '') ? 'block' : 'none'; ?>">
 				<div class="instructions"><?php echo Lang::txt('COM_USERS_LOGIN_TO', Config::get('sitename')); ?></div>
 				<form action="<?php echo Route::url('index.php', true, true); ?>" method="post" class="login_form">
 					<div class="input-wrap">
@@ -185,9 +157,9 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 						<?php endif; ?>
 						<a class="forgot-password" href="<?php echo Route::url('index.php?option=com_members&task=reset'); ?>"><?php echo Lang::txt('COM_USERS_LOGIN_RESET'); ?></a>
 					</div>
-					<input type="hidden" name="option" value="com_users" />
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="authenticator" value="hubzero" />
-					<input type="hidden" name="task" value="user.login" />
+					<input type="hidden" name="task" value="login" />
 					<input type="hidden" name="return" value="<?php echo $this->escape($this->return); ?>" />
 					<input type="hidden" name="freturn" value="<?php echo $this->escape($this->freturn); ?>" />
 					<?php echo Html::input('token'); ?>
@@ -197,7 +169,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 	<?php endif; ?>
 	<?php if (isset($user) && is_object($user)) : ?>
 		<div class="others">
-			<a href="<?php echo Route::url('index.php?option=com_users&view=login&reset=1' . $this->returnQueryString); ?>">
+			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&view=login&reset=1' . $this->returnQueryString); ?>">
 				<?php echo Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_DIFFERENT_ACCOUNT'); ?>
 			</a>
 		</div>
@@ -209,9 +181,9 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 		</p>
 	<?php endif; ?>
 <?php else : ?>
-	<p class="warning">
-		<?php echo Lang::txt('COM_USERS_LOGIN_UNAVAILABLE'); ?>
-	</p>
+		<p class="warning">
+			<?php echo Lang::txt('COM_USERS_LOGIN_UNAVAILABLE'); ?>
+		</p>
 <?php endif; ?>
-
 	</div> <!-- / .hz_user -->
+</section>

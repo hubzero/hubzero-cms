@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_tools/site/assets/js/pipeline.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 if (!HUB) {
@@ -236,6 +235,18 @@ jQuery(document).ready(function($){
 		});
 	});
 
+	$("input[name='tool[repohost]']").on('click', function (e) {
+		if ($("input[name='tool[repohost]']:checked").val() == 'gitExternal') {
+			$('#gitExternalInput').show();
+			$('#gitExternalExplanation').show();
+		} else {
+			$('#gitExternalInput').hide();
+			$('#gitExternalExplanation').hide();
+		}
+	});
+	$('#gitExternalInput').hide();
+	$('#gitExternalExplanation').hide();
+
 	/*$('script').each(function(i, s) {
 		if (s.src && s.src.match(/hub\.jquery\.js(\?.*)?$/)) {
 			HUB.ToolsPipeline.templatepath = s.src.replace(/js\/hub\.jquery\.js(\?.*)?$/,'');
@@ -324,3 +335,4 @@ jQuery(document).ready(function($){
 		});
 	}
 });
+

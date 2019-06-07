@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -102,44 +77,52 @@ $this->css('pipeline.css')
 				<input type="hidden" name="editversion" value="<?php echo $this->editversion; ?>" />
 				<?php echo Html::input('token'); ?>
 
-				<label for="t_toolname">
-					<?php echo Lang::txt('COM_TOOLS_TOOLNAME'); ?>:
-					<?php if ($this->id) { ?>
-						<input type="hidden" name="tool[toolname]" id="t_toolname" value="<?php echo $this->defaults['toolname']; ?>" />
-						<strong><?php echo $this->defaults['toolname']; ?> (<?php echo ($this->editversion == 'current') ? Lang::txt('COM_TOOLS_CURRENT_VERSION') : Lang::txt('COM_TOOLS_DEV_VERSION'); ?>)</strong>
-						<?php if (isset($this->defaults['published']) && $this->defaults['published']) { ?>
-							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&app=' . $this->defaults['toolname']); ?>"><?php echo Lang::txt('COM_TOOLS_ALL_VERSIONS'); ?></a>
+				<div class="form-group">
+					<label for="t_toolname">
+						<?php echo Lang::txt('COM_TOOLS_TOOLNAME'); ?>:
+						<?php if ($this->id) { ?>
+							<input type="hidden" name="tool[toolname]" id="t_toolname" value="<?php echo $this->defaults['toolname']; ?>" />
+							<strong><?php echo $this->defaults['toolname']; ?> (<?php echo ($this->editversion == 'current') ? Lang::txt('COM_TOOLS_CURRENT_VERSION') : Lang::txt('COM_TOOLS_DEV_VERSION'); ?>)</strong>
+							<?php if (isset($this->defaults['published']) && $this->defaults['published']) { ?>
+								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&app=' . $this->defaults['toolname']); ?>"><?php echo Lang::txt('COM_TOOLS_ALL_VERSIONS'); ?></a>
+							<?php } ?>
+						<?php } else { ?>
+							<span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+							<input type="text" name="tool[toolname]" id="t_toolname" maxlength="15" class="form-control" value="<?php echo $this->escape($this->defaults['toolname']); ?>" />
+							<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_TOOLNAME'); ?></span>
 						<?php } ?>
-					<?php } else { ?>
-						<span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-						<input type="text" name="tool[toolname]" id="t_toolname" maxlength="15" value="<?php echo $this->escape($this->defaults['toolname']); ?>" />
-						<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_TOOLNAME'); ?></span>
-					<?php } ?>
-				</label>
+					</label>
+				</div>
 
-				<label for="t_title">
-					<?php echo Lang::txt('COM_TOOLS_TITLE') ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					<input type="text" name="tool[title]" id="t_title" maxlength="127" value="<?php echo $this->escape(stripslashes($this->defaults['title'])); ?>" />
-					<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_TITLE'); ?></span>
-				</label>
+				<div class="form-group">
+					<label for="t_title">
+						<?php echo Lang::txt('COM_TOOLS_TITLE') ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+						<input type="text" name="tool[title]" id="t_title" maxlength="127" class="form-control" value="<?php echo $this->escape(stripslashes($this->defaults['title'])); ?>" />
+						<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_TITLE'); ?></span>
+					</label>
+				</div>
 
-				<label for="t_version">
-					<?php echo Lang::txt('COM_TOOLS_VERSION') ?>:
-					<?php if ($this->editversion == 'current') { ?>
-						<input type="hidden" name="tool[version]" id="t_version" value="<?php echo $this->escape($this->defaults['version']); ?>" />
-						<strong><?php echo $this->defaults['version']; ?></strong>
-						<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_VERSION_PUBLISHED'); ?></span>
-					<?php } else { ?>
-						<input type="text" name="tool[version]" id="t_version" maxlength="15" value="<?php echo $this->escape($this->defaults['version']); ?>" />
-						<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_VERSION'); ?></span>
-					<?php } ?>
-				</label>
+				<div class="form-group">
+					<label for="t_version">
+						<?php echo Lang::txt('COM_TOOLS_VERSION') ?>:
+						<?php if ($this->editversion == 'current') { ?>
+							<input type="hidden" name="tool[version]" id="t_version" value="<?php echo $this->escape($this->defaults['version']); ?>" />
+							<strong><?php echo $this->defaults['version']; ?></strong>
+							<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_VERSION_PUBLISHED'); ?></span>
+						<?php } else { ?>
+							<input type="text" name="tool[version]" id="t_version" maxlength="15" class="form-control" value="<?php echo $this->escape($this->defaults['version']); ?>" />
+							<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_VERSION'); ?></span>
+						<?php } ?>
+					</label>
+				</div>
 
-				<label for="t_description">
-					<?php echo Lang::txt('COM_TOOLS_AT_A_GLANCE') ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					<input type="text" name="tool[description]" id="t_description" maxlength="256" value="<?php echo $this->escape(stripslashes($this->defaults['description'])); ?>" />
-					<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_DESCRIPTION'); ?></span>
-				</label>
+				<div class="form-group">
+					<label for="t_description">
+						<?php echo Lang::txt('COM_TOOLS_AT_A_GLANCE') ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+						<input type="text" name="tool[description]" id="t_description" maxlength="256" class="form-control" value="<?php echo $this->escape(stripslashes($this->defaults['description'])); ?>" />
+						<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_DESCRIPTION'); ?></span>
+					</label>
+				</div>
 
 				<?php if ($this->id && isset($this->defaults['resourceid'])) { ?>
 					<p>
@@ -151,86 +134,189 @@ $this->css('pipeline.css')
 
 				<fieldset>
 					<legend><?php echo ($this->id) ? Lang::txt('COM_TOOLS_APPLICATION_SCREEN_SIZE'): Lang::txt('COM_TOOLS_SUGGESTED_SCREEN_SIZE')  ?>:</legend>
-					<div class="inline">
-						<label for="vncGeometryX"><?php echo Lang::txt('COM_TOOLS_MARKER_WIDTH'); ?> <input type="text" name="tool[vncGeometryX]" id="vncGeometryX" size="4" maxlength="4" value="<?php echo $this->defaults['vncGeometryX']; ?>" /></label> x
-						<label for="vncGeometryY"><?php echo Lang::txt('COM_TOOLS_MARKER_HEIGHT'); ?> <input type="text" name="tool[vncGeometryY]" id="vncGeometryY" size="4" maxlength="4" value="<?php echo $this->defaults['vncGeometryY']; ?>" /></label>
+					<div class="form-group">
+						<div class="inline">
+							<label for="vncGeometryX"><?php echo Lang::txt('COM_TOOLS_MARKER_WIDTH'); ?> <input type="text" name="tool[vncGeometryX]" id="vncGeometryX" size="4" maxlength="4" class="form-control" value="<?php echo $this->defaults['vncGeometryX']; ?>" /></label> x
+							<label for="vncGeometryY"><?php echo Lang::txt('COM_TOOLS_MARKER_HEIGHT'); ?> <input type="text" name="tool[vncGeometryY]" id="vncGeometryY" size="4" maxlength="4" class="form-control" value="<?php echo $this->defaults['vncGeometryY']; ?>" /></label>
+						</div>
 					</div>
 					<p class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_VNC'); ?></p>
 				</fieldset>
 
 				<?php if ($this->config->get('access-admin-component')) { ?>
-					<label for="t_hostreq">
-						<?php echo Lang::txt('COM_TOOLS_HOSTREQ') ?>:</span>
-						<input type="text" name="tool[hostreq]" id="t_hostreq" value="<?php echo $this->escape(stripslashes($this->defaults['hostreq'])); ?>" />
-						<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_HOSTREQ'); ?></span>
-					</label>
+					<div class="form-group">
+						<label for="t_hostreq">
+							<?php echo Lang::txt('COM_TOOLS_HOSTREQ') ?>:</span>
+							<input type="text" name="tool[hostreq]" id="t_hostreq"  class="form-control" value="<?php echo $this->escape(stripslashes($this->defaults['hostreq'])); ?>" />
+							<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_HOSTREQ'); ?></span>
+						</label>
+					</div>
 				<?php } else { ?>
 					<input type="hidden" name="tool[hostreq]" id="t_hostreq" value="<?php echo $this->escape(stripslashes($this->defaults['hostreq'])); ?>" />
 				<?php } ?>
 			</fieldset>
 
-			<?php if ($this->config->get('github', 1)) { ?>
-				<div class="explaination">
-					<p><?php echo Lang::txt('You can optionally provide a URL for your public Github repository with the tool code (https://github.com/[reponame]), and we will grab code from this repository when installing your tool.'); ?></p>
-				</div>
-				<fieldset>
-					<legend><?php echo Lang::txt('Github Repository URL'); ?>:</legend>
-
-					<label for="github">
-						<?php echo Lang::txt('Github Repository for Source Code (<strong>must be public</strong>)') ?>: 
-						<input type="text" name="tool[github]" id="github" placeholder="<?php echo Lang::txt('Paste the web URL of the source code repository on the github.'); ?>" value="<?php echo $this->defaults['github']; ?>" />
-					</label>
-					<p class="hint"><?php echo Lang::txt('Web URL: https://github.com/yourgithubrepo'); ?></p>
+			<?php if ($this->id) { ?>
+				<fieldset id="gitExternalInput">
+					<legend><?php echo Lang::txt('Repository Host'); ?>:</legend>
+	
+					<div class="form-group form-check">
+						<label for="tool_repohost_svnlocal" class="form-check-label">
+							<input readonly type="radio" name="tool[repohost]" id="tool_repohost_svnlocal" value="svnLocal" <?php echo (!$this->defaults['repohost'] || $this->defaults['repohost'] == 'svnLocal') ? 'checked="checked"' :  "disabled"; ?> class="option form-check-input" />
+							<?php echo Lang::txt('Host subversion repository on HUB'); ?>
+						</label>
+					</div>
+	
+					<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
+						<div class="form-group form-check">
+							<label for="tool_repohost_gitlocal" class="form-check-label">
+								<input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitlocal" value="gitLocal" <?php echo ($this->defaults['repohost'] == 'gitLocal') ? 'checked="checked"' : "disabled"; ?> class="option form-check-input" />
+								<?php echo Lang::txt('Host GIT repository on HUB'); ?>
+							</label>
+						</div>
+					<?php } ?>
+	
+					<div class="form-group form-check">
+						<label for="tool_repohost_gitexternal" class="form-check-label">
+							<input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?php echo ($this->defaults['repohost'] == 'gitExternal') ? 'checked="checked"' : "disabled"; ?> class="option form-check-input" />
+							<?php echo Lang::txt('Host GIT repository on GitHUB'); ?>
+						</label>
+					</div>
 				</fieldset>
+	
+				<?php if ($this->config->get('github', 1)) { ?>
+					<div id="gitExternalExplanation" class="explaination">
+						<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
+							<p><?php echo Lang::txt('You can optionally provide a URL for your Git repository containing the tool code, and we will grab code from this repository when installing your tool.  Public repositories should be specified as https://git@github.com/[reponame] while private repositories should be specified as ssh://git@github.com/[reponame]'); ?></p>
+						<?php } else { ?>
+							<p><?php echo Lang::txt('You can optionally provide a URL for your public Github repository with the tool code (https://github.com/[reponame]), and we will grab code from this repository when installing your tool.'); ?></p>
+						<?php } ?>
+					</div>
+					<fieldset>
+						<legend><?php echo Lang::txt('Git Repository URL'); ?>:</legend>
+						<label for="github">
+							<?php echo Lang::txt('Git Repository for Source Code') ?>: 
+							<input readonly type="text" name="tool[github]" id="github" placeholder="<?php echo Lang::txt('Paste the URL of the source code repository.'); ?>" value="<?php echo $this->defaults['github']; ?>" />
+						</label>
+						<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
+							<p class="hint"><?php echo Lang::txt('Public URL: https://git@github.com/yourgithubrepo<br />Private URL: ssh://git@github.com/yourgithubrepo'); ?></p>
+						<?php } else { ?>
+							<p class="hint"><?php echo Lang::txt('Public URL: https://git@github.com/yourgithubrepo'); ?></p>
+						<?php } ?>
+					</fieldset>
+				<?php } ?>
+			<?php } else { ?>
+				<fieldset id="gitExternalInput">
+					<legend><?php echo Lang::txt('Repository Host'); ?>:</legend>
+	
+					<div class="form-group form-check">
+						<label for="tool_repohost_svnlocal" class="form-check-label">
+							<input type="radio" name="tool[repohost]" id="tool_repohost_svnlocal" value="svnLocal" <?php if (!$this->defaults['repohost'] || $this->defaults['repohost'] == 'svnLocal') { echo 'checked="checked"'; } ?> class="option form-check-input" />
+							<?php echo Lang::txt('Host subversion repository on HUB'); ?>
+						</label>
+					</div>
+	
+					<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
+						<div class="form-group form-check">
+							<label for="tool_repohost_gitlocal" class="form-check-label">
+								<input type="radio" name="tool[repohost]" id="tool_repohost_gitlocal" value="gitLocal" <?php if ($this->defaults['repohost'] == 'gitLocal') { echo 'checked="checked"'; } ?> class="option form-check-input" />
+								<?php echo Lang::txt('Host GIT repository on HUB'); ?>
+							</label>
+						</div>
+					<?php } ?>
+	
+					<div class="form-group form-check">
+						<label for="tool_repohost_gitexternal" class="form-check-label">
+							<input type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?php if ($this->defaults['repohost'] == 'gitExternal') { echo 'checked="checked"'; } ?> class="option form-check-input" />
+							<?php echo Lang::txt('Host GIT repository on GitHUB'); ?>
+						</label>
+					</div>
+				</fieldset>
+	
+				<?php if ($this->config->get('github', 1)) { ?>
+					<div id="gitExternalExplanation" class="explaination">
+						<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
+							<p><?php echo Lang::txt('You can optionally provide a URL for your Git repository containing the tool code, and we will grab code from this repository when installing your tool.  Public repositories should be specified as https://git@github.com/[reponame] while private repositories should be specified as ssh://git@github.com/[reponame]'); ?></p>
+						<?php } else { ?>
+							<p><?php echo Lang::txt('You can optionally provide a URL for your public Github repository with the tool code (https://github.com/[reponame]), and we will grab code from this repository when installing your tool.'); ?></p>
+						<?php } ?>
+					</div>
+					<fieldset id="gitExternalInput">
+						<legend><?php echo Lang::txt('Git Repository URL'); ?>:</legend>
+						<label for="github">
+							<?php echo Lang::txt('Git Repository for Source Code') ?>: 
+							<input type="text" name="tool[github]" id="github" placeholder="<?php echo Lang::txt('Paste the URL of the source code repository.'); ?>" value="<?php echo $this->defaults['github']; ?>" />
+						</label>
+						<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
+							<p class="hint"><?php echo Lang::txt('Public URL: https://git@github.com/yourgithubrepo<br />Private URL: ssh://git@github.com/yourgithubrepo'); ?></p>
+						<?php } else { ?>
+							<p class="hint"><?php echo Lang::txt('Public URL: https://git@github.com/yourgithubrepo'); ?></p>
+						<?php } ?>
+					</fieldset>
+				<?php } ?>
 			<?php } ?>
 
 			<?php if ($this->config->get('jupyter', 1)) { ?>
 				<fieldset>
 					<legend><?php echo Lang::txt('Publishing Option'); ?>:</legend>
 
-					<label for="tool_publishType_standard">
-						<input type="radio" name="tool[publishType]" id="tool_publishType_standard" value="standard" <?php if (!$this->defaults['publishType'] || $this->defaults['publishType'] == 'standard') { echo 'checked="checked"'; } ?> class="option" />
-						<?php echo Lang::txt('Publish as a standard hub tool'); ?>
-					</label>
+					<div class="form-group form-check">
+						<label for="tool_publishType_standard" class="form-check-label">
+							<input type="radio" name="tool[publishType]" id="tool_publishType_standard" value="standard" <?php if (!$this->defaults['publishType'] || $this->defaults['publishType'] == 'standard') { echo 'checked="checked"'; } ?> class="option form-check-input" />
+							<?php echo Lang::txt('Publish as a standard hub tool'); ?>
+						</label>
+					</div>
 
-					<label for="tool_publishType_jupyter">
-						<input type="radio" name="tool[publishType]" id="tool_publishType_jupyter" value="jupyter" <?php if ($this->defaults['publishType'] == 'jupyter') { echo 'checked="checked"'; } ?> class="option" />
-						<?php echo Lang::txt('Publish as a Jupyter Notebook'); ?>
-					</label>
+					<div class="form-group form-check">
+						<label for="tool_publishType_jupyter"  class="form-check-label">
+							<input type="radio" name="tool[publishType]" id="tool_publishType_jupyter" value="jupyter" <?php if ($this->defaults['publishType'] == 'jupyter') { echo 'checked="checked"'; } ?> class="option form-check-input" />
+							<?php echo Lang::txt('Publish as a Jupyter Notebook'); ?>
+						</label>
+					</div>
 				</fieldset>
 			<?php } ?>
 
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_TOOLS_LEGEND_ACCESS'); ?>:</legend>
 
-				<label for="t_exec">
+				<div class="form-group">
+					<label for="t_exec">
 					<?php echo Lang::txt('COM_TOOLS_TOOL_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					<span class="question-mark tooltips" title="<?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_TOOLACCESS'); ?>">What should I choose?</span>
-					<?php echo \Components\Tools\Helpers\Html::formSelect('tool[exec]', 't_exec', $execChoices, $this->defaults['exec'], 'groupchoices'); ?>
-				</label>
-
-				<div id="groupname" <?php echo ($this->defaults['exec']=='@GROUP') ? 'style="display:block"': 'style="display:none"'; ?>>
-					<input type="text" name="tool[membergroups]" id="t_groups" value="<?php echo \Components\Tools\Helpers\Html::getGroups($this->defaults['membergroups'], $this->id); ?>" />
-					<p class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_GROUPS'); ?></p>
+						<span class="question-mark tooltips" title="<?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_TOOLACCESS'); ?>">What should I choose?</span>
+						<?php echo \Components\Tools\Helpers\Html::formSelect('tool[exec]', 't_exec', $execChoices, $this->defaults['exec'], 'groupchoices'); ?>
+					</label>
 				</div>
 
-				<label for="t_code">
-					<?php echo Lang::txt('COM_TOOLS_CODE_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					<span class="question-mark tooltips" title="<?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_CODEACCESS'); ?>">What should I choose?</span>
-					<?php echo \Components\Tools\Helpers\Html::formSelect('tool[code]', 't_code', $codeChoices, $this->defaults['code']); ?>
-				</label>
+				<div id="groupname" class="<?php echo ($this->defaults['exec'] == '@GROUP') ? '': 'hide'; ?>">
+					<div class="form-group">
+						<input type="text" name="tool[membergroups]" id="t_groups" class="form-control" value="<?php echo \Components\Tools\Helpers\Html::getGroups($this->defaults['membergroups'], $this->id); ?>" />
+						<p class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_GROUPS'); ?></p>
+					</div>
+				</div>
 
-				<label for="t_wiki">
-					<?php echo Lang::txt('COM_TOOLS_WIKI_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					<span class="question-mark tooltips" title="<?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_WIKIACCESS'); ?>">What should I choose?</span>
-					<?php echo \Components\Tools\Helpers\Html::formSelect('tool[wiki]', 't_wiki', $wikiChoices, $this->defaults['wiki']); ?>
-				</label>
+				<div class="form-group">
+					<label for="t_code">
+						<?php echo Lang::txt('COM_TOOLS_CODE_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+						<span class="question-mark tooltips" title="<?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_CODEACCESS'); ?>">What should I choose?</span>
+						<?php echo \Components\Tools\Helpers\Html::formSelect('tool[code]', 't_code', $codeChoices, $this->defaults['code']); ?>
+					</label>
+				</div>
 
-				<label for="t_team">
-					<?php echo Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-					<input type="text" name="tool[developers]" id="t_team" value="<?php echo \Components\Tools\Helpers\Html::getDevTeam($this->defaults['developers'], $this->id);  ?>" />
-					<span class="hint"><?php echo Config::get('sitename') . ' ' . Lang::txt('COM_TOOLS_HINT_TEAM'); ?></span>
-				</label>
+				<div class="form-group">
+					<label for="t_wiki">
+						<?php echo Lang::txt('COM_TOOLS_WIKI_ACCESS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+						<span class="question-mark tooltips" title="<?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_WIKIACCESS'); ?>">What should I choose?</span>
+						<?php echo \Components\Tools\Helpers\Html::formSelect('tool[wiki]', 't_wiki', $wikiChoices, $this->defaults['wiki']); ?>
+					</label>
+				</div>
+
+				<div class="form-group">
+					<label for="t_team">
+						<?php echo Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+						<input type="text" name="tool[developers]" id="t_team" class="form-control" value="<?php echo \Components\Tools\Helpers\Html::getDevTeam($this->defaults['developers'], $this->id);  ?>" />
+						<span class="hint"><?php echo Config::get('sitename') . ' ' . Lang::txt('COM_TOOLS_HINT_TEAM'); ?></span>
+					</label>
+				</div>
 			</fieldset>
 
 			<p class="submit">
@@ -238,7 +324,7 @@ $this->css('pipeline.css')
 
 				<?php if ($this->id) { ?>
 					<a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->defaults['toolname']); ?>" title="<?php echo Lang::txt('COM_TOOLS_HINT_CANCEL'); ?>">
-						<?php echo Lang::txt('COM_TOOLS_CANCEL'); ?>
+						<?php echo Lang::txt('JCANCEL'); ?>
 					</a>
 				<?php } ?>
 			</p>

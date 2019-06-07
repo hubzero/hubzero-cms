@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -76,14 +51,12 @@ $base = $this->member->link() . '&active=citations';
 						<?php $counter = 0; ?>
 						<?php foreach ($citations_require_attention as $c) : ?>
 							<?php
-                                //load the duplicate citation
-                                $cc = $c['duplicate'];
-
-                                $type_title = $cc->relatedType->get('type_title');
-                                $tags = implode(', ', \Components\Citations\Helpers\Format::citationTags($c['duplicate'], false));
-                                $badges = implode(', ', \Components\Citations\Helpers\Format::citationBadges($c['duplicate'], false));
-                            ?>
-
+							//load the duplicate citation
+							$cc = $c['duplicate'];
+							$type_title = $cc->relatedType->get('type_title');
+							$tags = implode(', ', \Components\Citations\Helpers\Format::citationTags($c['duplicate'], false));
+							$badges = implode(', ', \Components\Citations\Helpers\Format::citationBadges($c['duplicate'], false));
+							?>
 							<tr>
 								<!--<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>-->
 								<td>
@@ -124,7 +97,7 @@ $base = $this->member->link() . '&active=citations';
 											</tr>
 										</thead>
 										<tbody>
-										<?php
+											<?php
 											$recordAttributes = $cc->getAttributes();
 											$changedKeys = array();
 											foreach ($c as $attribute => $value)
@@ -132,10 +105,9 @@ $base = $this->member->link() . '&active=citations';
 												if (!empty($recordAttributes[$attribute]) || !empty($value))
 												{
 													$changedKeys[] = $attribute;
-												} 
+												}
 											}
-												
-										?>
+											?>
 											<?php foreach ($changedKeys as $k) : ?>
 												<?php if (!in_array($k, $no_show)) : ?>
 													<tr>
@@ -157,9 +129,15 @@ $base = $this->member->link() . '&active=citations';
 																			<?php
 																				switch ($k)
 																				{
-																					case 'type':	echo $type_title;		break;
-																					case 'tags':	echo $tags;				break;
-																					case 'badges':	echo $badges;			break;
+																					case 'type':
+																						echo $type_title;
+																						break;
+																					case 'tags':
+																						echo $tags;
+																						break;
+																					case 'badges':
+																						echo $badges;
+																						break;
 																					default:
 																						echo html_entity_decode(nl2br($cc->get($k)));
 																					break;
@@ -243,7 +221,7 @@ $base = $this->member->link() . '&active=citations';
 				<input type="submit" class="btn btn-success" name="submit" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_SUBMIT_IMPORTED'); ?>" />
 
 				<a class="btn btn-secondary" href="<?php echo Route::url($base); ?>">
-					<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CANCEL'); ?>
+					<?php echo Lang::txt('JCANCEL'); ?>
 				</a>
 			</p>
 

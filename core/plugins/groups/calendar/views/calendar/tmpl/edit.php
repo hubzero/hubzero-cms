@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -50,6 +25,8 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 {
 	$showImport = true;
 }
+$eventParams = new \Hubzero\Config\Registry($this->event->get('params'));
+$ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 ?>
 
 <?php if ($this->getError()) { ?>
@@ -139,10 +116,10 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 							$publish_up      = ($this->event->get('publish_up')) ? $this->event->get('publish_up') : $start;
 							$publish_up_date = '';
 							$publish_up_time = '';
-							if ($publish_up != '' && $publish_up != '0000-00-00 00:00:00')
+							if ($publish_up && $publish_up != '0000-00-00 00:00:00')
 							{
-								$publish_up_date = Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->timezone,'m/d/Y');
-								$publish_up_time = Components\Events\Models\EventDate::of($publish_up)->toTimezone($this->timezone,'g:i a');
+								$publish_up_date = Date::of($publish_up)->toTimezone($this->timezone, 'm/d/Y', $ignoreDst);
+								$publish_up_time = Date::of($publish_up)->toTimezone($this->timezone, 'g:i a', $ignoreDst);
 							}
 						?>
 						<div class="input-group">
@@ -158,10 +135,10 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 							$publish_down      = ($this->event->get('publish_down')) ? $this->event->get('publish_down') : $end;
 							$publish_down_date = '';
 							$publish_down_time = '';
-							if ($publish_down != '' && $publish_down != '0000-00-00 00:00:00')
+							if ($publish_down && $publish_down != '0000-00-00 00:00:00')
 							{
-								$publish_down_date = Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->timezone,'m/d/Y');
-								$publish_down_time = Components\Events\Models\EventDate::of($publish_down)->toTimezone($this->timezone,'g:i a');
+								$publish_down_date = Date::of($publish_down)->toTimezone($this->timezone, 'm/d/Y', $ignoreDst);
+								$publish_down_time = Date::of($publish_down)->toTimezone($this->timezone, 'g:i a', $ignoreDst);
 							}
 						?>
 						<div class="input-group">
@@ -185,6 +162,10 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 						<?php
 							echo \Components\Events\Helpers\Html::buildTimeZoneSelect($this->timezone, '');
 						?>
+					</label>
+					<label>
+						<input type="checkbox" id="ignore_dst" name="params[ignore_dst]" value="1" <?php echo $ignoreDst ? "checked" : ''; ?>/>
+						<?php echo Lang::txt('PLG_GROUPS_CALENDAR_IGNORE_DST'); ?>
 					</label>
 				</fieldset>
 				<?php
@@ -285,7 +266,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					<legend><?php echo Lang::txt('Registration Settings'); ?></legend>
 
 					<label id="include-registration-toggle">
-						<?php $ckd = (($this->event->get('registerby') != '0000-00-00 00:00:00' && $this->event->get('registerby') != '') || $includeRegistration) ? 'checked="checked"' : ''; ?>
+						<?php $ckd = (($this->event->get('registerby') && $this->event->get('registerby') != '0000-00-00 00:00:00') || $includeRegistration) ? 'checked="checked"' : ''; ?>
 						<input class="option" type="checkbox" id="include-registration" name="include-registration" value="1" <?php echo $ckd; ?> />
 						<?php echo Lang::txt('Include registration for this event.'); ?>
 					</label>
@@ -295,7 +276,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 							<?php echo Lang::txt('Deadline:'); ?> <span class="required"><?php echo Lang::txt('Required for Registration Tab to Appear'); ?></span>
 							<?php
 								$register_by = '';
-								if ($this->event->get('registerby') != '' && $this->event->get('registerby') != '0000-00-00 00:00:00')
+								if ($this->event->get('registerby') && $this->event->get('registerby') != '0000-00-00 00:00:00')
 								{
 									$register_by = Date::of($this->event->get('registerby'))->toLocal('m/d/Y @ g:i a');
 								}

@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // no direct access
@@ -70,17 +46,11 @@ Toolbar::help('language');
 
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
-?>
-<script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
-		if (task == 'cancel' || document.formvalidator.isValid($('#item-form'))) {
-			Joomla.submitform(task, document.getElementById('item-form'));
-		}
-	}
-</script>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&lang_id=' . (int) $this->item->lang_id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+$this->js();
+?>
+
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&lang_id=' . (int) $this->item->lang_id); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -92,27 +62,27 @@ Html::behavior('formvalidation');
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_FIELD_TITLE_DESC'); ?>">
 					<label for="field-title"><?php echo Lang::txt('JGLOBAL_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<input type="text" name="fields[title]" id="field-title" size="30" maxlength="50" value="<?php echo $this->escape($this->item->title); ?>" />
+					<input type="text" name="fields[title]" id="field-title" class="required" maxlength="50" value="<?php echo $this->escape($this->item->title); ?>" />
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_FIELD_TITLE_NATIVE_DESC'); ?>">
 					<label for="field-title"><?php echo Lang::txt('COM_LANGUAGES_FIELD_TITLE_NATIVE_LABEL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<input type="text" name="fields[title_native]" id="field-title_native" size="30" maxlength="50" value="<?php echo $this->escape($this->item->title_native); ?>" />
+					<input type="text" name="fields[title_native]" id="field-title_native" class="required" maxlength="50" value="<?php echo $this->escape($this->item->title_native); ?>" />
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_FIELD_LANG_CODE_DESC'); ?>">
 					<label for="field-sef"><?php echo Lang::txt('COM_LANGUAGES_FIELD_LANG_CODE_LABEL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<input type="text" name="fields[sef]" id="field-sef" size="10" maxlength="7" value="<?php echo $this->escape($this->item->sef); ?>" />
+					<input type="text" name="fields[sef]" id="field-sef" class="required" maxlength="7" value="<?php echo $this->escape($this->item->sef); ?>" />
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_FIELD_IMAGE_DESC'); ?>">
 					<label for="field-image"><?php echo Lang::txt('COM_LANGUAGES_FIELD_IMAGE_LABEL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<input type="text" name="fields[image]" id="field-image" size="10" maxlength="7" value="<?php echo $this->escape($this->item->image); ?>" />
+					<input type="text" name="fields[image]" id="field-image" class="required" maxlength="7" value="<?php echo $this->escape($this->item->image); ?>" />
 				</div>
 
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_FIELD_LANG_TAG_DESC'); ?>">
 					<label for="field-lang_code"><?php echo Lang::txt('COM_LANGUAGES_FIELD_LANG_TAG_LABEL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<input type="text" name="fields[lang_code]" id="field-lang_code" size="10" maxlength="7" value="<?php echo $this->escape($this->item->lang_code); ?>" />
+					<input type="text" name="fields[lang_code]" id="field-lang_code" class="required" maxlength="7" value="<?php echo $this->escape($this->item->lang_code); ?>" />
 				</div>
 
 				<?php if ($canDo->get('core.edit.state')) : ?>

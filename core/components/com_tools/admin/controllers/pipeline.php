@@ -1,34 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Tools\Admin\Controllers;
@@ -261,13 +235,14 @@ class Pipeline extends AdminController
 		$created = array();
 		$failed = array();
 
-		// Initiate extended database classes
-		require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
-		require_once \Component::path('com_resources') . DS . 'models' . DS . 'doi.php';
+		$database = App::get('db');
 
-		$objDOI   = \Components\Resources\Models\Doi::blank();
-		$objV     = new \Components\Tools\Tables\Version($this->database);
-		$objA     = new \Components\Tools\Tables\Author($this->database);
+		// Initiate extended database classes
+		require_once \Component::path('com_resources') . '/models/entry.php';
+		require_once \Component::path('com_resources') . '/models/doi.php';
+
+		$objV     = new \Components\Tools\Tables\Version($database);
+		$objA     = new \Components\Tools\Tables\Author($database);
 
 		$live_site = rtrim(Request::base(), '/');
 		$sitename = Config::get('sitename');
@@ -276,8 +251,8 @@ class Pipeline extends AdminController
 		$config = \Component::params($this->_option);
 
 		// Get all tool publications without new DOI
-		$this->database->setQuery("SELECT * FROM `#__doi_mapping` WHERE doi='' OR doi IS NULL");
-		$rows = $this->database->loadObjectList();
+		$database->setQuery("SELECT * FROM `#__doi_mapping` WHERE `doi`='' OR `doi` IS NULL");
+		$rows = $database->loadObjectList();
 
 		if ($rows)
 		{
@@ -291,7 +266,7 @@ class Pipeline extends AdminController
 					{
 						foreach ($created as $cr)
 						{
-							echo '<p>'.$cr.'</p>';
+							echo '<p>' . $cr . '</p>';
 						}
 					}
 					echo '<p>' . Lang::txt('COM_TOOLS_REGISTERED_DOIS', count($created), count($failed)) . '</p>';
@@ -306,8 +281,15 @@ class Pipeline extends AdminController
 				}
 
 				// Get version info
-				$this->database->setQuery("SELECT * FROM `#__tool_version` WHERE toolname=" . $this->database->quote($row->alias) . " AND revision=" . $this->database->quote($row->local_revision) . " AND state!=3 LIMIT 1");
-				$results = $this->database->loadObjectList();
+				$database->setQuery(
+					"SELECT *
+					FROM `#__tool_version`
+					WHERE `toolname`=" . $database->quote($row->alias) . "
+					AND `revision`=" . $database->quote($row->local_revision) . "
+					AND state!=3
+					LIMIT 1"
+				);
+				$results = $database->loadObjectList();
 
 				if ($results)
 				{
@@ -329,15 +311,22 @@ class Pipeline extends AdminController
 				$metadata['license']   = $results[0]->license;
 
 				// Get authors
-				$objA = new \Components\Tools\Tables\Author($this->database);
+				$objA = new \Components\Tools\Tables\Author($database);
 				$authors = $objA->getAuthorsDOI($row->rid);
 
 				// Register DOI
+				$objDOI = \Components\Resources\Models\Doi::blank();
 				$doiSuccess = $objDOI->register($authors, $config, $metadata);
 				if ($doiSuccess)
 				{
-					$this->database->setQuery("UPDATE `#__doi_mapping` SET doi='$doiSuccess' WHERE rid=$row->rid AND local_revision=$row->local_revision");
-					if (!$this->database->query())
+					$database->setQuery(
+						"UPDATE `#__doi_mapping`
+						SET `doi`=" . $database->quote($doiSuccess) . ",
+						`doi_shoulder`=" . $database->quote($this->config->get('doi_shoulder')) . "
+						WHERE `rid`=" . $database->quote($row->rid) . "
+						AND `local_revision`=" . $database->quote($row->local_revision)
+					);
+					if (!$database->query())
 					{
 						$failed[] = $doiSuccess;
 					}

@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -50,7 +26,7 @@ Toolbar::spacer();
 Toolbar::help('page');
 
 // include modal for raw version links
-Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>true));
+Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen' => true));
 ?>
 
 <form action="<?php echo $base; ?>" method="post" name="adminForm" id="item-form">
@@ -60,13 +36,13 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>
 				<legend><span><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_DETAILS'); ?></span></legend>
 
 				<div class="input-wrap">
-					<label for="field-title"><?php echo Lang::txt('COM_GROUPS_PAGES_TITLE'); ?>:</label><br />
-					<input type="text" name="page[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->page->get('title'))); ?>" />
+					<label for="field-title"><?php echo Lang::txt('COM_GROUPS_PAGES_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<input type="text" name="page[title]" id="field-title" class="required" value="<?php echo $this->escape(stripslashes($this->page->get('title'))); ?>" />
 				</div>
 
 				<div class="input-wrap">
-					<label for="field-alias"><?php echo Lang::txt('COM_GROUPS_PAGES_ALIAS'); ?>:</label><br />
-					<input type="text" name="page[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->page->get('alias'))); ?>" />
+					<label for="field-alias"><?php echo Lang::txt('COM_GROUPS_PAGES_ALIAS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></label><br />
+					<input type="text" name="page[alias]" id="field-alias" class="required" value="<?php echo $this->escape(stripslashes($this->page->get('alias'))); ?>" />
 				</div>
 			</fieldset>
 
@@ -145,9 +121,15 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>
 						$access = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'overview');
 						switch ($access)
 						{
-							case 'anyone':     $name = 'Any HUB Visitor';      break;
-							case 'registered': $name = 'Registered HUB Users'; break;
-							case 'members':    $name = 'Group Members Only';   break;
+							case 'anyone':
+								$name = 'Any HUB Visitor';
+								break;
+							case 'registered':
+								$name = 'Registered HUB Users';
+								break;
+							case 'members':
+								$name = 'Group Members Only';
+								break;
 						}
 					?>
 					<select name="page[privacy]" id="page[privacy]">
@@ -165,8 +147,8 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>
 				<legend><span><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CONTENT'); ?></span></legend>
 
 				<div class="input-wrap">
-					<label for="field-content"><?php echo Lang::txt('COM_GROUPS_PAGES_CONTENT'); ?>:</label><br />
-					<textarea name="pageversion[content]" id="field-content" rows="30"><?php echo $this->escape(stripslashes($this->version->get('content'))); ?></textarea>
+					<label for="field-content"><?php echo Lang::txt('COM_GROUPS_PAGES_CONTENT'); ?>:</span></label><br />
+					<?php echo $this->editor('pageversion[content]', $this->escape(stripslashes($this->version->get('content'))), 50, 30, 'field-content', array('buttons' => false)); ?>
 					<input type="hidden" name="pageversion[version]" value="<?php echo $this->version->get('version'); ?>" />
 				</div>
 			</fieldset>
@@ -175,24 +157,24 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_GROUPS_PAGES_OWNER'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_GROUPS_PAGES_OWNER'); ?></th>
 						<td><?php echo $this->group->get('description'); ?></td>
 					</tr>
 					<?php if ($this->page->get('id')) : ?>
 						<tr>
-							<th><?php echo Lang::txt('COM_GROUPS_PAGES_ID'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_GROUPS_PAGES_ID'); ?></th>
 							<td><?php echo $this->page->get('id'); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_GROUPS_PAGES_CURRENT_VERSION'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_GROUPS_PAGES_CURRENT_VERSION'); ?></th>
 							<td><?php echo $this->version->get('version'); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_GROUPS_PAGES_CREATED'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_GROUPS_PAGES_CREATED'); ?></th>
 							<td><?php echo Date::of($this->firstversion->get('created'))->toLocal('F j, Y @ g:ia'); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_GROUPS_PAGES_CREATED_BY'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_GROUPS_PAGES_CREATED_BY'); ?></th>
 							<td>
 								<?php
 									$profile = User::getInstance($this->firstversion->get('created_by'));
@@ -201,11 +183,11 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen'=>
 							</td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_GROUPS_PAGES_LAST_MODIFIED'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_GROUPS_PAGES_LAST_MODIFIED'); ?></th>
 							<td><?php echo Date::of($this->version->get('created'))->toLocal('F j, Y @ g:ia'); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_GROUPS_PAGES_LAST_MODIFIED_BY'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_GROUPS_PAGES_LAST_MODIFIED_BY'); ?></th>
 							<td>
 								<?php
 									$profile = User::getInstance($this->version->get('created_by'));

@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -57,8 +32,13 @@ else
 }
 $offerings = $this->course->offerings($filters, true);
 
+if ($this->course->access('edit', 'course'))
+{
+	$this->js('jquery.fileuploader.js', 'system');
+}
+$manager = $this->course->manager(User::get('id'));
+
 $this->css('course.css')
-     ->js()
      ->js('courses.overview.js');
 ?>
 <header id="content-header">
@@ -66,6 +46,17 @@ $this->css('course.css')
 
 	<div id="content-header-extra">
 		<p>
+			<?php if ($this->course->access('edit', 'course') && $this->course->access('create', 'course')) { ?>
+				<?php if ($manager && $manager->get('id')) { ?>
+					<a class="btn icon-copy copy" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&task=copy'); ?>">
+						<?php echo Lang::txt('COM_COURSES_COPY'); ?>
+					</a>
+				<?php } elseif ($this->course->config('allow_forks')) { ?>
+					<a class="btn icon-fork fork" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&task=fork'); ?>">
+						<?php echo Lang::txt('COM_COURSES_FORK'); ?>
+					</a>
+				<?php } ?>
+			<?php } ?>
 			<a class="btn icon-browse browse" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>">
 				<?php echo Lang::txt('COM_COURSES_CATALOG'); ?>
 			</a>
@@ -87,26 +78,40 @@ $this->css('course.css')
 		<div class="subject">
 			<?php if (($field == 'blurb' || $field == 'tags') && $this->course->access('edit', 'course')) { ?>
 				<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" class="form-inplace" method="post">
-					<label for="field_title">
-						<?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-						<input type="text" name="course[title]" id="field_title" value="<?php echo $this->escape($this->course->get('title')); ?>" />
-					</label>
+					<div class="form-group">
+						<label for="field_title">
+							<?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+							<input type="text" name="course[title]" id="field_title" class="form-control" value="<?php echo $this->escape($this->course->get('title')); ?>" />
+						</label>
+					</div>
 
-					<label for="field_blurb">
-						<?php echo Lang::txt('COM_COURSES_FIELD_BLURB'); ?>
-						<textarea name="course[blurb]" id="field_blurb" cols="50" rows="5"><?php echo $this->escape($this->course->get('blurb')); ?></textarea>
-					</label>
+					<div class="form-group">
+						<label for="field_blurb">
+							<?php echo Lang::txt('COM_COURSES_FIELD_BLURB'); ?>
+							<textarea name="course[blurb]" id="field_blurb" class="form-control" cols="50" rows="5"><?php echo $this->escape($this->course->get('blurb')); ?></textarea>
+						</label>
+					</div>
 
-					<label for="actags">
-						<?php echo Lang::txt('COM_COURSES_FIELD_TAGS'); ?>
-						<?php echo $this->autocompleter('tags', 'tags', $this->escape($this->course->tags('string')), 'actags'); ?>
-						<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_TAGS_HINT'); ?></span>
-					</label>
+					<div class="form-group">
+						<label for="actags">
+							<?php echo Lang::txt('COM_COURSES_FIELD_TAGS'); ?>
+							<?php echo $this->autocompleter('tags', 'tags', $this->escape($this->course->tags('string')), 'actags'); ?>
+							<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_TAGS_HINT'); ?></span>
+						</label>
+					</div>
+
+					<div class="form-group form-check">
+						<label for="params-allow_forks" class="form-check-label">
+							<input type="checkbox" class="option form-check-input" name="params[allow_forks]" id="params-allow_forks" <?php if ($this->course->config('allow_forks')) { echo 'checked="checked"'; } ?> value="1" />
+							<?php echo Lang::txt('COM_COURSES_ALLOW_FORKS'); ?>
+						</label>
+						<span class="hint"><?php echo Lang::txt('COM_COURSES_ALLOW_FORKS_HINT'); ?></span>
+					</div>
 
 					<p class="submit">
 						<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_COURSES_SAVE'); ?>" />
 						<a class="btn btn-secondary" href="<?php echo Route::url($this->course->link()); ?>">
-							<?php echo Lang::txt('COM_COURSES_CANCEL'); ?>
+							<?php echo Lang::txt('JCANCEL'); ?>
 						</a>
 					</p>
 
@@ -124,7 +129,7 @@ $this->css('course.css')
 				<?php if ($this->course->access('edit', 'course')) { ?>
 					<div class="manager-options">
 						<a class="icon-edit btn btn-secondary" href="<?php echo Route::url($this->course->link() . '&task=edit&field=blurb'); ?>">
-							<?php echo Lang::txt('COM_COURSES_EDIT'); ?>
+							<?php echo Lang::txt('JACTION_EDIT'); ?>
 						</a>
 						<span><strong><?php echo Lang::txt('COM_COURSES_FIELDS_TITLE_BLURB'); ?></strong></span>
 					</div>
@@ -167,16 +172,38 @@ $this->css('course.css')
 			<?php } ?>
 		</div><!-- / .subject -->
 		<aside class="aside">
-			<p class="course-identity">
+			<div class="course-identity">
 				<?php if ($logo = $this->course->logo('url')) { ?>
 					<img src="<?php 
 						$size = $this->course->logo('size');
 						echo Route::url($logo);
-						?>" class="<?php echo ($size['width'] >= $size['height'] ? 'landscape' : 'portrait'); ?>" alt="<?php echo $this->escape($this->course->get('title')); ?>" />
+						?>" class="<?php echo ($size['width'] >= $size['height']) ? 'landscape' : 'portrait'; ?>" alt="<?php echo $this->escape($this->course->get('title')); ?>" />
 				<?php } else { ?>
 					<span></span>
 				<?php } ?>
-			</p>
+			<?php if ($this->course->access('edit', 'course')) { ?>
+				<div id="ajax-uploader"
+					data-instructions="<?php echo Lang::txt('COM_COURSES_CLICK_OR_DROP_FILE'); ?>"
+					data-action="<?php echo Route::url('index.php?option=' . $this->option . '&no_html=1&controller=media&task=upload&listdir=' . $this->course->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
+					<noscript>
+						<form action="<?php echo Route::url($this->course->link()); ?>" class="form-inplace" method="post">
+							<div class="form-group">
+								<label for="upload">
+									<?php echo Lang::txt('COM_SUPPORT_COMMENT_FILE'); ?>:
+									<input type="file" name="upload" id="upload" />
+								</label>
+							</div>
+
+							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+							<input type="hidden" name="controller" value="media" />
+							<input type="hidden" name="task" value="upload" />
+							<input type="hidden" name="listdir" value="<?php echo $this->course->get('id'); ?>" />
+							<?php echo Html::input('token'); ?>
+						</form>
+					</noscript>
+				</div>
+			<?php } ?>
+			</div>
 		</aside><!-- / .aside -->
 	</div>
 </section><!-- / .course section intro -->
@@ -260,29 +287,35 @@ $this->css('course.css')
 						<fieldset>
 							<div class="grid">
 								<div class="col span-half">
-									<label for="field-title">
-										<?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('PLG_COURSES_PAGES_REQUIRED'); ?></span>
-										<input type="text" name="page[title]" id="field-title" value="<?php echo $this->escape(stripslashes($page->get('title'))); ?>" />
-										<span class="hint"><?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE_HINT'); ?></span>
-									</label>
+									<div class="form-group">
+										<label for="field-title">
+											<?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('PLG_COURSES_PAGES_REQUIRED'); ?></span>
+											<input type="text" name="page[title]" id="field-title" class="form-control" value="<?php echo $this->escape(stripslashes($page->get('title'))); ?>" />
+											<span class="hint"><?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE_HINT'); ?></span>
+										</label>
+									</div>
 								</div>
 								<div class="col span-half omega">
-									<label for="field-url">
-										<?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS'); ?> <span class="optional"><?php echo Lang::txt('PLG_COURSES_PAGES_OPTINAL'); ?></span>
-										<input type="text" name="page[url]" id="field-url" value="<?php echo $this->escape(stripslashes($page->get('url'))); ?>" />
-										<span class="hint"><?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS_HINT'); ?></span>
-									</label>
+									<div class="form-group">
+										<label for="field-url">
+											<?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS'); ?> <span class="optional"><?php echo Lang::txt('PLG_COURSES_PAGES_OPTINAL'); ?></span>
+											<input type="text" name="page[url]" id="field-url" class="form-control" value="<?php echo $this->escape(stripslashes($page->get('url'))); ?>" />
+											<span class="hint"><?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS_HINT'); ?></span>
+										</label>
+									</div>
 								</div>
 							</div>
 
-							<label for="field_description">
-								<?php echo $this->editor('page[content]', $this->escape(stripslashes($page->get('content'))), 35, 50, 'field_content'); ?>
-							</label>
+							<div class="form-group">
+								<label for="field_description">
+									<?php echo $this->editor('page[content]', $this->escape(stripslashes($page->get('content'))), 35, 50, 'field_content', array('class' => 'form-control')); ?>
+								</label>
+							</div>
 
 							<p class="submit">
 								<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_COURSES_SAVE'); ?>" />
 								<a class="btn btn-secondary" href="<?php echo Route::url($this->course->link()); ?>">
-									<?php echo Lang::txt('COM_COURSES_CANCEL'); ?>
+									<?php echo Lang::txt('JCANCEL'); ?>
 								</a>
 							</p>
 
@@ -317,7 +350,7 @@ $this->css('course.css')
 										<?php echo Lang::txt('COM_COURSES_DELETE'); ?>
 									</a>
 									<a class="icon-edit btn btn-secondary" href="<?php echo Route::url($this->course->link() . '&active=' . $plugin->get('name') . '&action=editpage'); ?>">
-										<?php echo Lang::txt('COM_COURSES_EDIT'); ?>
+										<?php echo Lang::txt('JACTION_EDIT'); ?>
 									</a>
 									<span><strong><?php echo Lang::txt('COM_COURSES_PAGE_CONTENTS'); ?></strong></span>
 								</div>
@@ -333,20 +366,24 @@ $this->css('course.css')
 		<aside class="aside">
 		<?php if ($field == 'summary' && $this->course->access('edit', 'course')) { ?>
 			<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" class="form-inplace course-summary" method="post">
-				<label for="field_length">
-					<?php echo Lang::txt('COM_COURSES_COURSE_LENGTH'); ?><br />
-					<input type="text" name="course[length]" id="field_length" value="<?php echo $this->escape($this->course->get('length')); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_COURSE_LENGTH_HINT'); ?>" />
-				</label>
+				<div class="form-group">
+					<label for="field_length">
+						<?php echo Lang::txt('COM_COURSES_COURSE_LENGTH'); ?><br />
+						<input type="text" name="course[length]" id="field_length" class="form-control" value="<?php echo $this->escape($this->course->get('length')); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_COURSE_LENGTH_HINT'); ?>" />
+					</label>
+				</div>
 
-				<label for="field_effort">
-					<?php echo Lang::txt('COM_COURSES_COURSE_EFFORT'); ?><br />
-					<input type="text" name="course[effort]" id="field_effort" value="<?php echo $this->escape($this->course->get('effort')); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_COURSE_EFFORT_HINT'); ?>" />
-				</label>
+				<div class="form-group">
+					<label for="field_effort">
+						<?php echo Lang::txt('COM_COURSES_COURSE_EFFORT'); ?><br />
+						<input type="text" name="course[effort]" id="field_effort" class="form-control" value="<?php echo $this->escape($this->course->get('effort')); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_COURSE_EFFORT_HINT'); ?>" />
+					</label>
+				</div>
 
 				<p class="submit">
 					<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_COURSES_SAVE'); ?>" />
 					<a class="btn btn-secondary" href="<?php echo Route::url($this->course->link()); ?>">
-						<?php echo Lang::txt('COM_COURSES_CANCEL'); ?>
+						<?php echo Lang::txt('JCANCEL'); ?>
 					</a>
 				</p>
 
@@ -367,7 +404,7 @@ $this->css('course.css')
 				?>
 				<div class="manager-options">
 					<a class="icon-edit btn btn-secondary" href="<?php echo Route::url($this->course->link() . '&task=edit&field=summary'); ?>">
-						<?php echo Lang::txt('COM_COURSES_EDIT'); ?>
+						<?php echo Lang::txt('JACTION_EDIT'); ?>
 					</a>
 					<span><strong><?php echo Lang::txt('COM_COURSES_SUMMARY'); ?></strong></span>
 				</div>
@@ -661,4 +698,4 @@ if ($after && count($after) > 0) { ?>
 <section class="below course section">
 	<?php echo implode("\n", $after); ?>
 </section><!-- / .course section -->
-<?php } ?>
+<?php }

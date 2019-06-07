@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Tools\Api\Controllers;
@@ -228,7 +203,7 @@ class Sessionsv1_0 extends ApiController
 		$result = User::getInstance($userid);
 
 		// make sure we have a user
-		if (!$result->get('id'))
+		if (!$result || $result->isNew() || strstr($result->get('email'), '@') == '@invalid')
 		{
 			throw new Exception(Lang::txt('COM_TOOLS_ERROR_USER_NOT_FOUND'), 404);
 		}
@@ -605,7 +580,7 @@ class Sessionsv1_0 extends ApiController
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// Find out how many sessions the user is running.
-		$ms = new \Components\Tools\Models\Middleware\Session($mwdb);
+		$ms = new \Components\Tools\Models\Middleware\Session($mwdb, $result->get('username'));
 		$jobs = $ms->getCount($result->get('username'));
 
 		// Find out how many sessions the user is ALLOWED to run.
@@ -664,7 +639,7 @@ class Sessionsv1_0 extends ApiController
 
 		// Save the changed caption
 		$ms->load($app->sess);
-		$ms->sessname = $app->caption;
+		$ms->set('sessname', $app->caption);
 		if (!$ms->store())
 		{
 			throw new Exception(Lang::txt('There was a issue while trying to start the tool session. Please try again later.'), 500);
@@ -696,20 +671,20 @@ class Sessionsv1_0 extends ApiController
 	 * 		"name":          "app",
 	 * 		"description":   "Name of app installed as a tool in the hub",
 	 * 		"type":          "string",
-	 * 		"required":      true,
+	 * 		"required":      true
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "revision",
 	 * 		"description":   "The specific requested revision of the app",
 	 * 		"type":          "string",
 	 * 		"required":      false,
-	 * 		"default":       "default",
+	 * 		"default":       "default"
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "xml",
 	 * 		"description":   "Content of the driver file that rappture will use to invoke the given app",
 	 * 		"type":          "string",
-	 * 		"required":      true,
+	 * 		"required":      true
 	 * }
 	 * @return     void
 	 */
@@ -1013,7 +988,7 @@ class Sessionsv1_0 extends ApiController
 	 * 		"name":          "run_file",
 	 * 		"description":   "the name of the run file that contains the desired output",
 	 * 		"type":          "string",
-	 * 		"required":      true,
+	 * 		"required":      true
 	 * }
 	 * @return void
 	 */
@@ -1114,7 +1089,7 @@ class Sessionsv1_0 extends ApiController
 		$app->ip   = $ip;
 
 		//load the session
-		$ms = new \Components\Tools\Models\Middleware\Session($mwdb);
+		$ms = new \Components\Tools\Models\Middleware\Session($mwdb, $result->get('username'));
 		$row = $ms->loadSession($app->sess);
 
 		//if we didnt find a session
@@ -1208,26 +1183,25 @@ class Sessionsv1_0 extends ApiController
 		}
 
 		//load the session we are trying to stop
-		$ms = new \Components\Tools\Models\Middleware\Session($mwdb);
-		$ms->load($sessionid, $result->get("username"));
+		$ms = new \Components\Tools\Models\Middleware\Session($sessionid, $result->get('username'));
 
 		//check to make sure session exists and it belongs to the user
-		if (!$ms->username || $ms->username != $result->get("username"))
+		if (!$ms->get('username') || $ms->get('username') != $result->get("username"))
 		{
 			throw new Exception('Session Doesn\'t Exist or Does Not Belong to User', 400);
 		}
 
 		//get middleware plugins
-		Plugin::import('mw', $ms->appname);
+		Plugin::import('mw', $ms->get('appname'));
 
 		// Trigger any events that need to be called before session stop
-		Event::trigger('mw.onBeforeSessionStop', array($ms->appname));
+		Event::trigger('mw.onBeforeSessionStop', array($ms->get('appname')));
 
 		//run command to stop session
 		$status = \Components\Tools\Helpers\Utils::middleware("stop $sessionid", $out);
 
 		// Trigger any events that need to be called after session stop
-		Event::trigger('mw.onAfterSessionStop', array($ms->appname));
+		Event::trigger('mw.onAfterSessionStop', array($ms->get('appname')));
 
 		// was the session stopped successfully
 		if ($status == 1)
@@ -1236,9 +1210,24 @@ class Sessionsv1_0 extends ApiController
 			$object->session = array(
 				'session' => $sessionid,
 				'status'  => 'stopped',
+				'output' => $out,
 				'stopped' => with(new Date)->toSql()
 			);
 
+			$this->send($object);
+		}
+		// TODO: middleware helper or middleware itself seems to return true/false instead of 1/0
+		// upon failure to figure out what the middleware did, just return the status that was given
+		// even though it generally stops the session anyway
+		else
+		{
+			$object = new stdClass();
+			$object->session = array(
+				'session' => $sessionid,
+				'status' => $status,
+				'output' => $out,
+				'time' => with(new Date)->toSql()
+			);
 			$this->send($object);
 		}
 	}
@@ -1477,7 +1466,7 @@ class Sessionsv1_0 extends ApiController
 
 		// get any request vars
 		$username   = Request::getString('username');
-		$sessionid  = Request::getString('id');
+		$sessionid  = Request::getString('sessionid', '');
 		$private_ip = Request::getString('private_ip');
 		$public_ip  = Request::getString('public_ip', Request::ip());
 

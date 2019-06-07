@@ -1,16 +1,15 @@
-//
-// @package     hubzero-cms
-// @file        templates/kameleon/less/_dark.less
-// @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
-// @license     http://opensource.org/licenses/MIT MIT
-//
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 // Dark
 // --------------------------------------------------
 
 .dark {
 	.main-navigation {
-		background: #444;
+		background-color: #444;
 
 		ul#menu {
 			border-left: 1px solid rgba(255, 255, 255, 0.1);
@@ -23,7 +22,14 @@
 
 				li {
 					background-color: rgba(0, 0, 0, 0.2);
+
+					&:hover {
+						background-color: rgba(0, 0, 0, 0.4);
+					}
 				}
+			}
+			a {
+				color: #fff;
 			}
 			&.disabled li,
 			&.disabled li:hover,
@@ -35,7 +41,7 @@
 	}
 
 	#header {
-		background: #444;
+		background-color: #444;
 
 		h1 {
 			border-color: rgba(255, 255, 255, 0.1);
@@ -60,43 +66,68 @@
 	}
 
 	#toolbar-box {
-		background: #fff;
+		background-color: #fff;
 	}
 	.toolbar-box .pagetitle h2 {
 		color: #fff;
 	}
 	.toolbar-box li a {
 		border-color: rgba(255, 255, 255, 0.4);
+		background-color: rgba(255, 255, 255, 0.6);
 
-		span:before {
+		/*span:before {
 			color: rgba(255, 255, 255, 0.8);
-		}
+		}*/
 
 		span:after {
-			color: #fff;
+			/*color: #fff;
 			text-shadow:
 			     -1px -1px 0 #333,
 			      1px -1px 0 #333,
 			      -1px 1px 0 #333,
-			       1px 1px 0 #333;
+			       1px 1px 0 #333;*/
+			text-shadow:
+			     -1px -1px 0 rgba(255, 255, 255, 0.6),
+			      1px -1px 0 rgba(255, 255, 255, 0.6),
+			      -1px 1px 0 rgba(255, 255, 255, 0.6),
+			       1px 1px 0 rgba(255, 255, 255, 0.6);
 		}
 
 		&:hover {
-			background-color: rgba(0, 0, 0, 0.2);
-			color: #fff;
+			//background-color: rgba(0, 0, 0, 0.2);
+			//color: #fff;
+			background-color: #fff;
+			color: #333;
 
-			span:before,
+			/*span:before,
 			span:after {
-				color: #fff;
-			}
+				//color: #fff;
+				color: #333;
+			}*/
 		}
 	}
+
+	/*#toolbar-help a {
+		background-color: #d3ebff;
+		border-color: #d3ebff;
+		color: #018dff;
+
+		&:hover {
+			background-color: #018dff;
+			border-color: #018dff;
+			color: #d3ebff;
+
+			span:before {
+				color: #d3ebff;
+			}
+		}
+	}*/
 }
 
 @media (max-width: 50em) {
 	.dark {
 		.main-navigation {
-			background: #444;
+			background-color: #444;
 
 			ul#menu {
 				border-left: none;

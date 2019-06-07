@@ -1,9 +1,8 @@
-//
-// @package     hubzero-cms
-// @file        templates/kameleon/less/_toolbar.less
-// @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
-// @license     http://opensource.org/licenses/MIT MIT
-//
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 // Toolbar
 // --------------------------------------------------
@@ -15,7 +14,7 @@
 	margin: 0;
 	color: #999;
 	font-size: 0.95em;
-	background: #fff;
+	background-color: #fff;
 	border-bottom: 1px solid #dadada;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 	position: absolute;
@@ -95,6 +94,7 @@
 			height: 3.2em;
 			width: 3.2em;
 			display: block;
+			background-color: rgba(0, 0, 0, 0.1);
 			border: 1px solid #dadada;
 			border: 1px solid rgba(0, 0, 0, 0.1);
 			color: transparent;
@@ -126,6 +126,7 @@
 					font-weight: 400;
 					color: #a9a9a9;
 					color: rgba(0, 0, 0, 0.6);
+					margin-right: 0;
 				}
 				&:after {
 					font-size: 16px;
@@ -226,7 +227,7 @@
 		}
 	}
 }
-
+/*
 #toolbar-help a {
 	background-color: rgba(0, 0, 0, 0.1);
 
@@ -234,6 +235,7 @@
 		background-color: rgba(0, 0, 0, 0.2);
 	}
 }
+*/
 
 @media (min-width: 50em) and (min-height: 50em) {
 	.toolbar-box {

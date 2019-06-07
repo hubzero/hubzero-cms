@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -131,11 +106,11 @@ foreach ($profiles as $profile)
 }
 
 /**
-* Renders if argument is json?
-*
-* @param  string  $v
-* @return string
-*/
+ * Renders if argument is json?
+ *
+ * @param  string  $v
+ * @return string
+ */
 function renderIfJson($v)
 {
 	if (strstr($v, '{'))
@@ -193,7 +168,7 @@ $legacy = array(
 			</ul>
 		</div>
 	<?php elseif (count($update_missing) > 0) : ?>
-		<?php if (count($update_missing) == 1 && in_array("usageAgreement",array_keys($update_missing))) : ?>
+		<?php if (count($update_missing) == 1 && in_array("usageAgreement", array_keys($update_missing))) : ?>
 		<?php else: ?>
 			<div class="error member-update-missing">
 				<strong><?php echo Lang::txt('PLG_MEMBERS_PROFILE_UPDATE_BEFORE_CONTINUING'); ?></strong>
@@ -211,7 +186,7 @@ $legacy = array(
 			<li id="member-profile-completeness" class="hide">
 				<?php echo Lang::txt('PLG_MEMBERS_PROFILE_COMPLETENESS'); ?>
 				<div id="meter">
-					<span id="meter-percent" data-percent="<?php echo $this->completeness; ?>" data-percent-level="<?php echo @$this->completeness_level; ?>" style="width:0%"></span>
+					<span id="meter-percent" data-percent="<?php echo $this->completeness; ?>" data-percent-level="<?php echo @$this->completeness_level; ?>"></span>
 				</div>
 				<?php if ($isUser && $isIncrementalEnabled) : ?>
 					<span id="completeness-info"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_COMPLETENESS_MEANS'); ?></span>
@@ -266,8 +241,16 @@ $legacy = array(
 						$page = $db->loadObject();
 						if ($page && $page->id)
 						{
+							if ($page->fulltext)
+							{
+								$page->text = $page->fulltext;
+							}
+							else
+							{
+								$page->text = $page->introtext;
+							}
 							$params = new \Hubzero\Config\Registry($page->attribs);
-							$results = Event::trigger('content.onContentPrepare', array ('com_content.article', &$page, &$params, 0));
+							$results = Event::trigger('content.onContentPrepare', array('com_content.article', &$page, &$params, 0));
 							echo $page->text;
 						}
 						?>
@@ -406,7 +389,7 @@ $legacy = array(
 									</div>
 									<input type="hidden" name="change" value="1" />
 									<input type="submit" class="section-edit-submit btn" value="<?php echo Lang::txt('PLG_MEMBERS_PROFILE_SAVE'); ?>" />
-									<input type="reset" class="section-edit-cancel btn" value="<?php echo Lang::txt('PLG_MEMBERS_PROFILE_CANCEL'); ?>" />
+									<input type="reset" class="section-edit-cancel btn" value="<?php echo Lang::txt('JCANCEL'); ?>" />
 									<input type="hidden" name="option" value="com_members" />
 									<input type="hidden" name="controller" value="profiles" />
 									<input type="hidden" name="id" value="<?php echo $this->profile->get('id'); ?>" />
@@ -789,7 +772,7 @@ $legacy = array(
 				<li class="<?php echo implode(' ', $cls); ?> section" id="input-section-<?php echo $this->escape($field->get('name')); ?>">
 					<div class="section-content">
 						<div class="key"><?php echo $field->get('label'); ?></div>
-						<div class="value"><?php echo (!empty($val) ? (is_array($val) ? implode(', ', $val) : $val) : Lang::txt('PLG_MEMBERS_PROFILE_NOT_SET')); ?></div>
+						<div class="value"><?php echo (!empty($val)) ? (is_array($val) ? implode(', ', $val) : $val) : Lang::txt('PLG_MEMBERS_PROFILE_NOT_SET'); ?></div>
 						<br class="clear" />
 						<?php
 						if ($isUser)
@@ -824,7 +807,7 @@ $legacy = array(
 								}
 								else
 								{
-									$access = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>' . Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $profile->get('access', $field->get('access')),'input-select');
+									$access = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>' . Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $profile->get('access', $field->get('access')), 'input-select');
 								}
 
 								$this->view('default', 'edit')
@@ -874,13 +857,13 @@ $legacy = array(
 				{
 					$cls .= ($isUser) ? " hidden" : " hide";
 				}
-				if (isset($update_missing) && in_array("optin",array_keys($update_missing)))
+				if (isset($update_missing) && in_array("optin", array_keys($update_missing)))
 				{
 					$cls = str_replace(' hide', '', $cls);
 					$cls .= ' missing';
 				}
 				// dont show meant for stats only
-				$cls .= (!$isUser) ? ' hide' : '' ;
+				$cls .= (!$isUser) ? ' hide' : '';
 
 				// get value of mail preference option
 				switch ($this->profile->get('sendEmail'))

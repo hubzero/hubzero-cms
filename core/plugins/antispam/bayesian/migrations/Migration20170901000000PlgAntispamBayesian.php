@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -52,8 +57,8 @@ class Migration20170901000000PlgAntispamBayesian extends Base
 			  `provider` varchar(256) DEFAULT NULL,
 			  `param1` varchar(256) NOT NULL,
 			  `param2` varchar(256) NOT NULL,
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
+			  `modified` datetime DEFAULT NULL,
 			  PRIMARY KEY (`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 

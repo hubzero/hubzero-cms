@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Modules\AdminMenu;
@@ -169,39 +144,50 @@ class Tree extends \Hubzero\Base\Obj
 	{
 		// Build the CSS class suffix
 		$class = '';
+		$iconClass = '';
+		$classes = array();
+
+		if ($this->_current->class)
+		{
+			$classes = explode(' ', trim($this->_current->class));
+			foreach ($classes as $i => $clas)
+			{
+				if (substr($clas, 0, strlen('class:')) == 'class:')
+				{
+					$iconClass = $clas;
+					unset($classes[$i]);
+				}
+			}
+		}
+
 		if ($this->_current->hasChildren())
 		{
-			$class = ' class="node"';
+			$classes[] = 'node';
 		}
 
-		if ($this->_current->class == 'separator')
+		if ($this->_current->active)
 		{
-			$class = ' class="separator"';
+			$classes[] = 'active';
 		}
 
-		if ($this->_current->class == 'disabled')
+		if (!empty($classes))
 		{
-			$class = ' class="disabled"';
+			$class = ' class="' . implode(' ', $classes) . '"';
 		}
 
 		// Print the item
 		echo '<li' . $class . '>';
 
 		// Print a link if it exists
-		$linkClass = '';
-
-		if ($this->_current->link != null)
+		$linkClass = $this->getIconClass($iconClass);
+		if (!empty($linkClass))
 		{
-			$linkClass = $this->getIconClass($this->_current->class);
-			if (!empty($linkClass))
-			{
-				$linkClass = ' class="' . $linkClass . '"';
-			}
+			$linkClass = ' class="' . $linkClass . '"';
 		}
 
 		if ($this->_current->link != null && $this->_current->target != null)
 		{
-			echo '<a' . $linkClass . ' href="' . $this->_current->link . '" target="' . $this->_current->target . '">' . $this->_current->title . '</a>';
+			echo '<a' . $linkClass . ' href="' . $this->_current->link . '" rel="noopener" target="' . $this->_current->target . '">' . $this->_current->title . '</a>';
 		}
 		elseif ($this->_current->link != null && $this->_current->target == null)
 		{
@@ -209,7 +195,7 @@ class Tree extends \Hubzero\Base\Obj
 		}
 		elseif ($this->_current->title != null)
 		{
-			echo '<a>' . $this->_current->title . '</a>';
+			echo '<a' . $linkClass . '>' . $this->_current->title . '</a>';
 		}
 		else
 		{
@@ -269,7 +255,7 @@ class Tree extends \Hubzero\Base\Obj
 			{
 				// We were passed a class name
 				$class = substr($identifier, 6);
-				$classes[$identifier] = "icon-16-$class";
+				$classes[$identifier] = "icon-$class";
 			}
 			else
 			{
@@ -282,13 +268,14 @@ class Tree extends \Hubzero\Base\Obj
 				$class = preg_replace('#\.[^.]*$#', '', basename($identifier));
 				$class = preg_replace('#\.\.[^A-Za-z0-9\.\_\- ]#', '', $class);
 
-				$this->_css  .= "\n.icon-16-$class {\n" .
+				$this->_css  .= "\n.icon-$class {\n" .
 						"\tbackground: url($identifier) no-repeat;\n" .
 					"}\n";
 
-				$classes[$identifier] = "icon-16-$class";
+				$classes[$identifier] = "icon-$class";
 			}
 		}
+
 		return $classes[$identifier];
 	}
 }

@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Members\Site\Controllers;
@@ -162,7 +137,7 @@ class Credentials extends SiteController
 
 		// Everything went well...go to the login page
 		App::redirect(
-			Route::url('index.php?option=com_users&view=login', false),
+			Route::url('index.php?option=com_login', false),
 			Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_SENT'),
 			'passed'
 		);
@@ -285,7 +260,7 @@ class Credentials extends SiteController
 		}
 
 		// Set the confirmation token
-		$token       = App::hash(\JUserHelper::genRandomPassword());
+		$token       = App::hash(\Hubzero\User\Password::genRandomPassword());
 		$salt        = \JUserHelper::getSalt('crypt-md5');
 		$hashedToken = md5($token . $salt) . ':' . $salt;
 
@@ -336,7 +311,7 @@ class Credentials extends SiteController
 		}
 
 		// Push the user data into the session
-		User::setState('com_users.reset.user', $user->get('id'));
+		User::setState('com_members.reset.user', $user->get('id'));
 
 		// Everything went well...go to the token verification page
 		App::redirect(
@@ -379,7 +354,7 @@ class Credentials extends SiteController
 		}
 
 		// Get the token and user id from the confirmation process
-		$id = User::getState('com_users.reset.user', null);
+		$id = User::getState('com_members.reset.user', null);
 
 		// Get the user object
 		try
@@ -434,7 +409,7 @@ class Credentials extends SiteController
 		}
 
 		// Push the user data into the session
-		User::setState('com_users.reset.token', $crypt . ':' . $salt);
+		User::setState('com_members.reset.token', $crypt . ':' . $salt);
 
 		// Everything went well...go to the actual change password page
 		App::redirect(
@@ -483,8 +458,8 @@ class Credentials extends SiteController
 		Session::checkToken('post') or exit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get the token and user id from the verification process
-		$token   = User::getState('com_users.reset.token', null);
-		$id      = User::getState('com_users.reset.user', null);
+		$token   = User::getState('com_members.reset.token', null);
+		$id      = User::getState('com_members.reset.user', null);
 		$no_html = Request::getInt('no_html', 0);
 
 		// Check the token and user id
@@ -624,14 +599,14 @@ class Credentials extends SiteController
 		}
 
 		// Flush the user data from the session
-		User::setState('com_users.reset.token', null);
-		User::setState('com_users.reset.user', null);
+		User::setState('com_members.reset.token', null);
+		User::setState('com_members.reset.user', null);
 
 		if ($no_html)
 		{
 			$response = array(
 				'success'  => true,
-				'redirect' => Route::url('index.php?option=com_users&view=login', false)
+				'redirect' => Route::url('index.php?option=com_login', false)
 			);
 
 			echo json_encode($response);
@@ -641,7 +616,7 @@ class Credentials extends SiteController
 		{
 			// Everything went well...go to the login page
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login', false),
+				Route::url('index.php?option=com_login', false),
 				Lang::txt('COM_MEMBERS_CREDENTIALS_PASSWORD_RESET_COMPLETE'),
 				'passed'
 			);

@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -297,8 +272,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 			if (!$js->bind($_POST))
 			{
-				echo $this->alert($js->getError());
-				exit();
+				App::abort(500, $js->getError());
 			}
 
 			$js->active = $active;
@@ -306,8 +280,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 			if (!$js->store())
 			{
-				echo $this->alert($js->getError());
-				exit();
+				App::abort(500, $js->getError());
 			}
 		}
 		else if ($task == 'savetitle' && $author && $title)
@@ -318,8 +291,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 				$resume->title = $title;
 				if (!$resume->store())
 				{
-					echo $this->alert($resume->getError());
-					exit();
+					App::abort(500, $resume->getError());
 				}
 			}
 		}
@@ -507,11 +479,24 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		Request::checkToken(['get', 'post']);
 
 		// Incoming file
-		$file = Request::getArray('uploadres', '', 'files');
+		$file = Request::getArray('uploadres', array(), 'files');
 
-		if (!$file['name'])
+		if (empty($file) || !$file['name'])
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_RESUME_SUPPORT_NO_FILE'));
+			return $this->_view($database, $option, $member, $emp);
+		}
+
+		// Get media config
+		$mediaConfig = Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
+
+		if ($file['size'] > $sizeLimit)
+		{
+			$this->setError(Lang::txt('PLG_MEMBERS_RESUME_ERROR_FILE_TOO_LARGE', Hubzero\Utility\Number::formatBytes($sizeLimit)));
 			return $this->_view($database, $option, $member, $emp);
 		}
 
@@ -529,10 +514,13 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
+		// Check that the file type is allowed
 		$ext = strtolower(Filesystem::extension($file['name']));
-		if (!in_array($ext, explode(',', $this->params->get('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,txt,rtf,doc,docx,ppt'))))
+
+		$allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
+		if (!empty($allowed) && !in_array($ext, $allowed))
 		{
-			$this->setError(Lang::txt('Disallowed file type.'));
+			$this->setError(Lang::txt('PLG_MEMBERS_RESUME_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
 			return $this->_view($database, $option, $member, $emp);
 		}
 
@@ -707,17 +695,6 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 				$view->display();
 			}
 		}
-	}
-
-	/**
-	 * Return javascript to generate an alert prompt
-	 *
-	 * @param   string  $msg  Message to show
-	 * @return  string  HTML
-	 */
-	public function alert($msg)
-	{
-		return "<script type=\"text/javascript\"> alert('" . $msg . "'); window.history.go(-1); </script>\n";
 	}
 
 	/**

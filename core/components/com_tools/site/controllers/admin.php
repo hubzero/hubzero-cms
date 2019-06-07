@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Tools\Site\Controllers;
@@ -169,12 +144,29 @@ class Admin extends SiteController
 		$ldap_params = Component::params('com_system');
 		$pw = $ldap_params->get('ldap_searchpw', '');
 
-		$command  = '/usr/bin';
-		$command .= DS . 'addrepo ' . $status['toolname'];
-		$command .= ' -title ' . escapeshellarg($status['title']);
-		$command .= ' -description ' . escapeshellarg($status['description']);
-		$command .= ' -password "' . $pw . '"';
-		$command .= ' -hubdir ' . PATH_ROOT;
+		if (!file_exists('/usr/bin/addrepo.sh'))
+		{
+			$command  = '/usr/bin/addrepo ' . $status['toolname'];
+			$command .= ' -title ' . escapeshellarg($status['title']);
+			$command .= ' -description ' . escapeshellarg($status['description']);
+			$command .= ' -password "' . $pw . '"';
+			$command .= ' -hubdir ' . PATH_ROOT;
+		}
+		else
+		{
+			$command  = '/usr/bin/addrepo.sh ' . $status['repohost'];
+			$command .= ' --project ' . $status['toolname'];
+			$command .= ' --title ' . escapeshellarg($status['title']);
+			$command .= ' --description ' . escapeshellarg($status['description']);
+			$command .= ' --hubdir ' . PATH_ROOT;
+			if ($status['repohost'] == 'gitExternal')
+			{
+				if ($status['github'])
+				{
+					$command .= ' --gitURL ' . $status['github'];
+				}
+			}
+		}
 
 		$this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_PROJECT_AREA_CREATED'));
 
@@ -241,36 +233,84 @@ class Admin extends SiteController
 		}
 
 		// Github connection?
-		if ($status['github'])
-		{
-			if (!file_exists('/usr/bin/git2svn.sh'))
-			{
-				$this->setError(Lang::txt('COM_TOOLS_GITHUB_REPO_GIT2SVN_MISSING'));
-			}
-			else
-			{
-				$command = '/usr/bin/sudo -u apps '
-						. '/usr/bin/git2svn.sh -g ' . $status['github']
-						. ' -s ' . $status['toolname']
-						. ' -c ' . PATH_ROOT;
 
-				if (!$this->_invokeScript($command, Lang::txt('Github repository connection successful')))
+		if (!file_exists('/usr/bin/git2git.sh'))
+		{
+			if ($status['github'])
+			{
+				if (!file_exists('/usr/bin/git2svn.sh'))
 				{
-					$this->setError(Lang::txt('Github connection error'));
+					$this->setError(Lang::txt('COM_TOOLS_GITHUB_REPO_GIT2SVN_MISSING'));
+				}
+				else
+				{
+					$command = '/usr/bin/sudo -u apps '
+							. '/usr/bin/git2svn.sh -g ' . $status['github']
+							. ' -s ' . $status['toolname']
+							. ' -c ' . PATH_ROOT;
+
+					if (!$this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_GIT_REPOSITORY_CONNECTION')))
+					{
+						$this->setError(Lang::txt('COM_TOOLS_ERROR_GIT_REPOSITORY_CONNECTION'));
+					}
+				}
+			}
+		}
+		else
+		{
+		if ($status['repohost'] == 'gitExternal')
+			{
+				if ($status['github'])
+				{
+					$command  = '/usr/bin/git2git.sh ' . $status['repohost'];
+					$command .= ' --project ' . $status['toolname'];
+					$command .= ' --gitURL ' . $status['github'];
+
+					if (!$this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_GIT_REPOSITORY_CONNECTION')))
+					{
+						$this->setError(Lang::txt('COM_TOOLS_ERROR_GIT_REPOSITORY_CONNECTION'));
+					}
 				}
 			}
 		}
 
 		// Build the exec command
-		$command = '/usr/bin/sudo -u apps /usr/bin/installtool -type raw -hubdir ' . PATH_ROOT . '/ ' . $status['toolname'];
+
+		if (!file_exists('/usr/bin/installtool.sh'))
+		{
+			$command  = '/usr/bin/sudo -u apps ';
+			$command .=    '/usr/bin/installtool';
+			$command .=       ' -type raw';
+			$command .=       ' -hubdir ' . PATH_ROOT . '/ ';
+			$command .=       $status['toolname'];
+			$commitHashRequired = false;
+		}
+		else
+		{
+			$command  = '/usr/bin/sudo -u apps ';
+			$command .=    '/usr/bin/installtool.sh ' . $status['repohost'];
+			$command .=       ' --type raw';
+			$command .=       ' --hubdir ' . PATH_ROOT;
+			$command .=       ' --project ' . $status['toolname'];
+			if ($status['repohost'] == 'gitExternal')
+			{
+				if ($status['github'])
+				{
+					$command .= ' --gitURL ' . $status['github'];
+				}
+			}
+			$commitHashRequired = true;
+		}
 
 		// Invoke the script
 		if (!$this->getError() && $this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_REV_INSTALLED')))
 		{
-			// Extract revision number
-			$rev = explode('installed revision: ', $this->getMessage());
+			// Extract revision number and optional commitHash
+			$rev = '';
+			$commitHash = '';
+			$nRead = sscanf($this->getMessage(), "installed revision: %s commitHash: %s", $rev, $commitHash);
 
-			if (!isset($rev[1]) || !intval($rev[1]))
+			if (!isset($rev) || !intval($rev))
 			{
 				$this->setError(Lang::txt('COM_TOOLS_ERR_CANNOT_SAVE_REVISION_INFO'));
 			}
@@ -278,7 +318,20 @@ class Admin extends SiteController
 			{
 				// Update the revision number
 				$hztv = \Components\Tools\Helpers\Version::getDevelopmentToolVersion($this->_toolid);
-				$hztv->revision = intval($rev[1]);
+				$hztv->revision = intval($rev);
+				if ($status['repohost'] == 'gitLocal' || $status['repohost'] == 'gitExternal')
+				{
+					if ($commitHash != '')
+					{
+						$txt = new \Hubzero\Config\Registry($hztv->params);
+						$txt->set('commitHash', $commitHash);
+						$hztv->params = $txt->toString();
+					}
+					else if ($commitHashRequired)
+					{
+						$this->setError(Lang::txt('COM_TOOLS_ERR_CANNOT_SAVE_REVISION_INFO'));
+					}
+				}
 				if (!$hztv->update())
 				{
 					$this->setError(Lang::txt('COM_TOOLS_ERROR_SAVING_REVISION_UPDATE'));
@@ -790,7 +843,27 @@ class Admin extends SiteController
 			fclose($handle);
 			chmod($fname, 0664);
 
-			$command = '/usr/bin/sudo -u apps /usr/bin/finalizetool -hubdir ' . PATH_ROOT . '/ -title "' . $status['title'] . '" -version "' . $status['version'] . '" -license ' . $fname . ' ' . $status['toolname'];
+			if (!file_exists('/usr/bin/finalizetool.sh'))
+			{
+				$command  = '/usr/bin/sudo -u apps ';
+				$command .=    '/usr/bin/finalizetool';
+				$command .=       ' -hubdir ' . PATH_ROOT . '/';
+				$command .=       ' -title "' . $status['title'] . '"';
+				$command .=       ' -version "' . $status['version'] . '"';
+				$command .=       ' -license ' . $fname;
+				$command .=       ' ' . $status['toolname'];
+
+			}
+			else
+			{
+				$command  = '/usr/bin/sudo -u apps ';
+				$command .=    '/usr/bin/finalizetool.sh ' . $status['repohost'];
+				$command .=       ' --hubdir ' . PATH_ROOT;
+				$command .=       ' --title ' . escapeshellarg($status['title']);
+				$command .=       ' --version ' . escapeshellarg($status['version']);
+				$command .=       ' --license ' . $fname;
+				$command .=       ' --project ' . $status['toolname'];
+			}
 
 			Log::debug("finalizeTool(): checkpoint 3: $command");
 

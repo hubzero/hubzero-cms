@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -22,11 +27,11 @@ class Migration20170901000000ComBlog extends Base
 			  `title` varchar(255) NOT NULL DEFAULT '',
 			  `alias` varchar(255) NOT NULL DEFAULT '',
 			  `content` text NOT NULL,
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
 			  `state` tinyint(2) NOT NULL DEFAULT '0',
-			  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `publish_up` datetime DEFAULT NULL,
+			  `publish_down` datetime DEFAULT NULL,
 			  `params` tinytext NOT NULL,
 			  `scope_id` int(11) NOT NULL DEFAULT '0',
 			  `hits` int(11) unsigned NOT NULL DEFAULT '0',
@@ -52,12 +57,12 @@ class Migration20170901000000ComBlog extends Base
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
 			  `content` text NOT NULL,
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
 			  `anonymous` tinyint(2) unsigned NOT NULL DEFAULT '0',
 			  `parent` int(11) unsigned NOT NULL DEFAULT '0',
 			  `state` tinyint(2) NOT NULL DEFAULT '0',
-			  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `modified` datetime DEFAULT NULL,
 			  `modified_by` int(11) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`id`),
 			  KEY `idx_entry_id` (`entry_id`),

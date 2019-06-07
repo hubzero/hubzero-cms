@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -19,21 +24,21 @@ class Migration20170124175120ComBillboards extends Base
 		{
 			if (!$this->db->tableHasKey('#__billboards_billboards', 'idx_collection_id'))
 			{
-				$query = "ALTER IGNORE TABLE `#__billboards_billboards` ADD INDEX `idx_collection_id` (`collection_id`)";
+				$query = "ALTER TABLE `#__billboards_billboards` ADD INDEX `idx_collection_id` (`collection_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__billboards_billboards', 'idx_published'))
 			{
-				$query = "ALTER IGNORE TABLE `#__billboards_billboards` ADD INDEX `idx_published` (`published`)";
+				$query = "ALTER TABLE `#__billboards_billboards` ADD INDEX `idx_published` (`published`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__billboards_billboards', 'idx_alias'))
 			{
-				$query = "ALTER IGNORE TABLE `#__billboards_billboards` ADD INDEX `idx_alias` (`alias`)";
+				$query = "ALTER TABLE `#__billboards_billboards` ADD INDEX `idx_alias` (`alias`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -60,7 +65,7 @@ class Migration20141112191247ComCourses extends Base
 							$query .= $this->db->quote($deployment->asset_id) . ",";
 							$query .= $this->db->quote($deployment->start_time) . ",";
 							$query .= $this->db->quote($deployment->end_time) . ",";
-							$query .= $this->db->quote(\JFactory::getDate()->toSql()) . ")";
+							$query .= $this->db->quote(with(new \Hubzero\Utility\Date('now'))->toSql()) . ")";
 
 							$this->db->setQuery($query);
 							$this->db->query();

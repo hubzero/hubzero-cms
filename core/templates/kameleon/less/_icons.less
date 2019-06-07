@@ -1,9 +1,8 @@
-//
-// @package     hubzero-cms
-// @file        templates/kameleon/less/_icons.less
-// @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
-// @license     http://opensource.org/licenses/MIT MIT
-//
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 // Icons
 // --------------------------------------------------
@@ -75,7 +74,7 @@
 	.publish,
 	.published {
 		&:before {
-			content: "\2714";
+			content: "\@{iconSuccess}";
 			color: #a3ca60;
 		}
 		&:hover:before {
@@ -89,7 +88,7 @@
 	.unpublish,
 	.unpublished {
 		&:before {
-			content: "\2298";
+			content: "\@{iconBanCircle}";
 			color: #ccc;
 			color: rgba(0, 0, 0, 0.2);
 		}
@@ -288,7 +287,7 @@
 		color: #777;
 		white-space: nowrap;
 	}
-	.com_users .smallsub a:before {
+	.com_members .smallsub a:before {
 		font-family: 'Fontcons';
 		border: 1px solid #D4D5AA;
 		padding: 5px;

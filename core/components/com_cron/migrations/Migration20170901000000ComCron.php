@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -23,18 +28,18 @@ class Migration20170901000000ComCron extends Base
 			  `state` tinyint(3) NOT NULL DEFAULT '0',
 			  `plugin` varchar(255) NOT NULL DEFAULT '',
 			  `event` varchar(255) NOT NULL DEFAULT '',
-			  `last_run` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `next_run` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `last_run` datetime DEFAULT NULL,
+			  `next_run` datetime DEFAULT NULL,
 			  `recurrence` varchar(50) NOT NULL DEFAULT '',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
-			  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `modified` datetime DEFAULT NULL,
 			  `modified_by` int(11) NOT NULL DEFAULT '0',
 			  `active` tinyint(3) NOT NULL DEFAULT '0',
 			  `ordering` int(11) NOT NULL DEFAULT '0',
 			  `params` text NOT NULL,
-			  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `publish_up` datetime DEFAULT NULL,
+			  `publish_down` datetime DEFAULT NULL,
 			  PRIMARY KEY (`id`),
 			  KEY `idx_state` (`state`),
 			  KEY `idx_created_by` (`created_by`)

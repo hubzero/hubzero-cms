@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -19,7 +24,7 @@ class Migration20170921120323ComMembers extends Base
 		{
 			if (!$this->db->tableHasKey('#__user_reputation', 'idx_user_id'))
 			{
-				$query = "ALTER IGNORE TABLE `#__user_reputation` ADD INDEX `idx_user_id` (`user_id`)";
+				$query = "ALTER TABLE `#__user_reputation` ADD INDEX `idx_user_id` (`user_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -29,7 +34,7 @@ class Migration20170921120323ComMembers extends Base
 		{
 			if (!$this->db->tableHasKey('#__users_password_history', 'idx_user_id'))
 			{
-				$query = "ALTER IGNORE TABLE `#__users_password_history` ADD INDEX `idx_user_id` (`user_id`)";
+				$query = "ALTER TABLE `#__users_password_history` ADD INDEX `idx_user_id` (`user_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -39,7 +44,7 @@ class Migration20170921120323ComMembers extends Base
 		{
 			if (!$this->db->tableHasKey('#__users_points', 'idx_uid'))
 			{
-				$query = "ALTER IGNORE TABLE `#__users_points` ADD INDEX `idx_uid` (`uid`)";
+				$query = "ALTER TABLE `#__users_points` ADD INDEX `idx_uid` (`uid`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -49,14 +54,14 @@ class Migration20170921120323ComMembers extends Base
 		{
 			if (!$this->db->tableHasKey('#__users_quotas', 'idx_user_id'))
 			{
-				$query = "ALTER IGNORE TABLE `#__users_quotas` ADD INDEX `idx_user_id` (`user_id`)";
+				$query = "ALTER TABLE `#__users_quotas` ADD INDEX `idx_user_id` (`user_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__users_quotas', 'idx_class_id'))
 			{
-				$query = "ALTER IGNORE TABLE `#__users_quotas` ADD INDEX `idx_class_id` (`class_id`)";
+				$query = "ALTER TABLE `#__users_quotas` ADD INDEX `idx_class_id` (`class_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}

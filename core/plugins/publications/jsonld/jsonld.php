@@ -1,30 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
- *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -64,8 +42,9 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 		$data['@type'] = 'Dataset';
 		$data['name'] = $publication->title;
 		$data['description'] = strip_tags($publication->abstract);
-		$data['url'] = Request::root() . Route::url($publication->link());
-
+		
+		$data['url'] = rtrim(Request::root(), '/') . '/' . ltrim(Route::url($publication->link()), '/');
+		
 		$nullDate = '0000-00-00 00:00:00';
 
 		if ($publication->created && $publication->created != $nullDate)
@@ -169,7 +148,7 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 
 			if ($contributor->user_id && $contributor->open)
 			{
-				$author['url'] = Request::root() . Route::url('index.php?option=com_members&id=' . $contributor->user_id);
+				$author['url'] = rtrim(Request::root(), '/') . '/' . ltrim(Route::url('index.php?option=com_members&id=' . $contributor->user_id), '/');
 			}
 
 			$authors[] = $author;
@@ -179,9 +158,7 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 		{
 			$data['author'] = $authors;
 		}
-
-		Document::addScriptDeclaration(json_encode($data), 'application/ld+json');
-
+		
 		$data['publisher'] = array(
 			'@type' => 'Organization',
 			'url' => Request::root(),
@@ -192,8 +169,10 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 		{
 			$data['publisher']['description'] = $desc;
 		}
-
-		$data['version'] = $publication->version->get('title');
+		
+		$data['version'] = $publication->version->get('version_number');
+		
+		Document::addScriptDeclaration(json_encode($data, JSON_UNESCAPED_SLASHES), 'application/ld+json');
 
 		/*
 		Example

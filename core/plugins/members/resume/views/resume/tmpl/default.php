@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -87,7 +62,7 @@ $this->css('jobs', 'com_jobs');
 					<label>
 						<?php echo Lang::txt('PLG_MEMBERS_RESUME_WEBSITE');?>
 						<span class="selectgroup">
-							<input type="text" class="inputtxt" maxlength="190" name="url" value="<?php echo ($this->js->url ? $this->js->url : $this->member->get('url')); ?>" placeholder="http://" />
+							<input type="text" class="inputtxt" maxlength="190" name="url" value="<?php echo ($this->js->url) ? $this->js->url : $this->member->get('url'); ?>" placeholder="http://" />
 						</span>
 					</label>
 					<label>
@@ -144,7 +119,7 @@ $this->css('jobs', 'com_jobs');
 						<span class="selectgroup">
 							<input type="submit" class="btn" value="<?php echo $this->editpref == 1 ? Lang::txt('PLG_MEMBERS_RESUME_ACTION_SAVE_AND_INCLUDE') : Lang::txt('PLG_MEMBERS_RESUME_ACTION_SAVE'); ?>" />
 							<span>
-								<a href="<?php echo Route::url($this->member->link() . '&active=resume'); ?>" class="btn"><?php echo Lang::txt('PLG_MEMBERS_RESUME_CANCEL'); ?></a>
+								<a href="<?php echo Route::url($this->member->link() . '&active=resume'); ?>" class="btn"><?php echo Lang::txt('JCANCEL'); ?></a>
 							</span>
 						</span>
 					</div>
@@ -268,7 +243,7 @@ $this->css('jobs', 'com_jobs');
 
 			<p>
 				<a class="icon-next btn" href="<?php echo Route::url('index.php?option=com_jobs'); ?>">
-					<?php echo ($this->config->get('industry') ? Lang::txt('PLG_MEMBERS_RESUME_VIEW_JOBS_IN', $this->config->get('industry')) : Lang::txt('PLG_MEMBERS_RESUME_VIEW_JOBS')); ?>
+					<?php echo ($this->config->get('industry')) ? Lang::txt('PLG_MEMBERS_RESUME_VIEW_JOBS_IN', $this->config->get('industry')) : Lang::txt('PLG_MEMBERS_RESUME_VIEW_JOBS'); ?>
 				</a>
 			</p>
 		</div><!-- / .container -->

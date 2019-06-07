@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -54,11 +30,11 @@ $this->css();
 		<div class="col span4<?php if ($i == 2) { echo ' omega'; } ?>">
 			<div class="poll">
 				<div class="details">
-					<h3><?php echo $this->escape($poll->get('title')); ?></h3>
-
 					<?php if ($poll->get('open')) { ?>
 						<form id="poll<?php echo $poll->get('id'); ?>" method="post" action="<?php echo Route::url('index.php?option=com_poll&task=vote'); ?>">
 							<fieldset>
+								<legend><?php echo $this->escape($poll->get('title')); ?></legend>
+
 								<ul class="poll-options">
 									<?php foreach ($poll->options()->where('text', '!=', '')->ordered()->rows() as $option) : ?>
 										<li>
@@ -82,6 +58,7 @@ $this->css();
 							</fieldset>
 						</form>
 					<?php } else { ?>
+						<h3><?php echo $this->escape($poll->get('title')); ?></h3>
 						<ul class="poll-results">
 							<?php $i = 1; ?>
 							<?php foreach ($poll->options()->where('text', '!=', '')->ordered()->rows() as $option) : ?>
@@ -89,12 +66,18 @@ $this->css();
 								$option->percent = ($poll->voters ? round(100 * $option->hits / $poll->voters, 1) : 0);
 								$option->class   = 'polls_color_' . $i;
 								$i++;
+
+								$this->css('
+									.' . $this->option .' .option' . $option->id . ' {
+										width: ' . $option->percent . '%;
+									}
+								');
 								?>
 								<li>
 									<span class="optn"><?php echo $this->escape(str_replace('&#039;', "'", $option->text)); ?></span>
 									<span class="hits"><?php echo $this->escape($option->percent); ?>%</span>
 									<div class="graph">
-										<strong class="bar <?php echo $option->class; ?>" style="width: <?php echo $this->escape($option->percent); ?>%;"><span><?php echo $this->escape($option->hits); ?>%</span></strong>
+										<strong class="bar <?php echo $option->class; ?> option<?php echo $option->id; ?>"><span><?php echo $this->escape($option->hits); ?>%</span></strong>
 									</div>
 								</li>
 							<?php endforeach; ?>

@@ -1,9 +1,9 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_blog/assets/js/blog.jquery.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
+
 $(function(){
 	$('input[data-dependents]').each(function(index, element){
 		checkDependentDisplay(element, false);	
@@ -34,8 +34,8 @@ $(function(){
 			});
 		}
 	});
-		
 });
+
 function checkDependentDisplay(element, recursive, state){
 	if (state === undefined || state === true)
 	{
@@ -51,6 +51,7 @@ function checkDependentDisplay(element, recursive, state){
 		}
 	});
 }
+
 function getDependentName(element){
 	var collection = $(element).is('option') ? $(element).parent('select').attr('name') : $(element).attr('name');
 	var dependentName = $(element).data('dependents');

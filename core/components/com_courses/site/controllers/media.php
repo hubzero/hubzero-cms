@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Courses\Site\Controllers;
@@ -52,10 +27,15 @@ class Media extends SiteController
 	/**
 	 * Track video viewing progress
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function trackingTask()
 	{
+		if (!file_exists(\Component::path('com_resources') . DS . 'models' . DS . 'mediatracking.php'))
+		{
+			return;
+		}
+
 		// Include need media tracking library
 		require_once \Component::path('com_resources') . DS . 'models' . DS . 'mediatracking.php';
 		require_once \Component::path('com_resources') . DS . 'models' . DS . 'mediatracking' . DS . 'detailed.php';
@@ -206,11 +186,17 @@ class Media extends SiteController
 	 */
 	public function uploadTask()
 	{
+		Request::checkToken(['get', 'post']);
+
+		if (Request::getInt('no_html'))
+		{
+			return $this->ajaxuploadTask();
+		}
+
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$this->mediaTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming
@@ -220,17 +206,28 @@ class Media extends SiteController
 		if (!$listdir)
 		{
 			Notify::error(Lang::txt('COURSES_NO_ID'), 'courses');
-			$this->mediaTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming file
-		$file = Request::getArray('upload', '', 'files');
-		if (!$file['name'])
+		$file = Request::getArray('upload', array(), 'files');
+		if (empty($file) || !$file['name'])
 		{
 			Notify::error(Lang::txt('COURSES_NO_FILE'), 'courses');
-			$this->mediaTask();
-			return;
+			return $this->displayTask();
+		}
+
+		// Get media config
+		$mediaConfig = \Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
+
+		if ($file['size'] > $sizeLimit)
+		{
+			Notify::error(Lang::txt('COM_COURSES_ERROR_UPLOADING_FILE_TOO_BIG', \Hubsero\Utility\Number::formatBytes($sizeLimit)));
+			return $this->displayTask();
 		}
 
 		// Build the upload path if it doesn't exist
@@ -240,9 +237,8 @@ class Media extends SiteController
 		{
 			if (!Filesystem::makeDirectory($path))
 			{
-				Notify::error(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'), 'courses');
-				$this->mediaTask();
-				return;
+				Notify::error(Lang::txt('COM_COURSES_UNABLE_TO_CREATE_UPLOAD_PATH'));
+				return $this->displayTask();
 			}
 		}
 
@@ -250,51 +246,92 @@ class Media extends SiteController
 		$file['name'] = urldecode($file['name']);
 		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
+		$ext = Filesystem::extension($file['name']);
+
+		// Check that the file type is allowed
+		$allowed = array('png', 'gif', 'jpg', 'jpeg', 'jpe', 'jp2', 'jpx');
+
+		if (!empty($allowed) && !in_array(strtolower($ext), $allowed))
+		{
+			Notify::error(Lang::txt('COM_COURSES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
+			return $this->displayTask();
+		}
 
 		// Perform the upload
 		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			Notify::error(Lang::txt('ERROR_UPLOADING'), 'courses');
-		}
-
-		if (!Filesystem::isSafe($path . DS . $file['name']))
-		{
-			Filesystem::delete($path . DS . $file['name']);
-
-			Notify::error(Lang::txt('File rejected because the anti-virus scan failed.'), 'courses');
+			Notify::error(Lang::txt('COM_COURSES_ERROR_UPLOADING'));
 		}
 		else
 		{
-			//push a success message
-			Notify::success(Lang::txt('You successfully uploaded the file.'), 'courses');
+			if (!Filesystem::isSafe($path . DS . $file['name']))
+			{
+				Filesystem::delete($path . DS . $file['name']);
+
+				Notify::error(Lang::txt('File rejected because the anti-virus scan failed.'));
+			}
+			else
+			{
+				// Instantiate a model, change some info and save
+				$model = Course::getInstance($listdir);
+
+				// Do we have an old file we're replacing?
+				if ($curfile = $model->get('logo'))
+				{
+					// Remove old image
+					if (file_exists($path . DS . $curfile))
+					{
+						if (!Filesystem::delete($path . DS . $curfile))
+						{
+							Notify::error(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_DELETE_FILE'));
+							return $this->displayTask();
+						}
+					}
+				}
+
+				$model->set('logo', $filename . '.' . $ext);
+				if (!$model->store())
+				{
+					Notify::error($model->getError());
+					return $this->displayTask();
+				}
+
+				//push a success message
+				Notify::success(Lang::txt('You successfully uploaded the file.'));
+			}
 		}
 
 		// Push through to the media view
-		$this->mediaTask();
+		$this->displayTask();
 	}
 
 	/**
-	 * Streaking file upload
+	 * Streaming file upload
 	 * This is used by AJAX
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function ajaxuploadTask()
 	{
-		// get config
-		$config = Component::params('com_media');
-
 		// Incoming
 		$listdir = Request::getInt('listdir', 0);
+		if (!$listdir)
+		{
+			echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_NO_ID')));
+			return;
+		}
 
-		// allowed extensions for uplaod
-		$allowedExtensions = array_values(array_filter(explode(',', $config->get('upload_extensions'))));
+		// Allowed extensions for uplaod
+		$allowedExtensions = array('png', 'jpe', 'jpeg', 'jpg', 'gif', 'jp2', 'jpx');
 
-		// max upload size
-		$sizeLimit = $config->get('upload_maxsize');
+		// Get media config
+		$mediaConfig = \Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
 		$sizeLimit = $sizeLimit * 1024 * 1024;
 
-		// get the file
+		// Get the file
 		if (isset($_GET['qqfile']))
 		{
 			$stream = true;
@@ -315,7 +352,7 @@ class Media extends SiteController
 		// Build the upload path if it doesn't exist
 		$uploadDirectory = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $listdir . DS;
 
-		//make sure upload directory is writable
+		// make sure upload directory is writable
 		if (!is_dir($uploadDirectory))
 		{
 			if (!Filesystem::makeDirectory($uploadDirectory))
@@ -324,18 +361,20 @@ class Media extends SiteController
 				return;
 			}
 		}
+
 		if (!is_writable($uploadDirectory))
 		{
 			echo json_encode(array('error' => "Server error. Upload directory isn't writable."));
 			return;
 		}
 
-		//check to make sure we have a file and its not too big
+		// check to make sure we have a file and its not too big
 		if ($size == 0)
 		{
 			echo json_encode(array('error' => 'File is empty'));
 			return;
 		}
+
 		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
@@ -346,13 +385,18 @@ class Media extends SiteController
 		//check to make sure we have an allowable extension
 		$pathinfo = pathinfo($file);
 		$filename = $pathinfo['filename'];
-		$ext = $pathinfo['extension'];
+		$ext      = $pathinfo['extension'];
 		if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions))
 		{
 			$these = implode(', ', $allowedExtensions);
 			echo json_encode(array('error' => 'File has an invalid extension, it should be one of ' . $these . '.'));
 			return;
 		}
+
+		// Make the filename safe
+		$filename = urldecode($filename);
+		$filename = Filesystem::clean($filename);
+		$filename = str_replace(' ', '_', $filename);
 
 		//final file
 		$file = $uploadDirectory . $filename . '.' . $ext;
@@ -385,41 +429,72 @@ class Media extends SiteController
 			return;
 		}
 
-		//return success
-		echo json_encode(array('success'=>true));
-		return;
+		// Instantiate a model, change some info and save
+		$model = Course::getInstance($listdir);
+
+		// Do we have an old file we're replacing?
+		if ($curfile = $model->get('logo'))
+		{
+			// Remove old image
+			if (file_exists($uploadDirectory . $curfile))
+			{
+				if (!Filesystem::delete($uploadDirectory . $curfile))
+				{
+					echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_UNABLE_TO_DELETE_FILE')));
+					return;
+				}
+			}
+		}
+
+		$model->set('logo', $filename . '.' . $ext);
+		if (!$model->store())
+		{
+			echo json_encode(array('error' => $model->getError()));
+			return;
+		}
+
+		$this_size = filesize($file);
+		list($width, $height, $type, $attr) = getimagesize($file);
+
+		echo json_encode(array(
+			'success'   => true,
+			'file'      => rtrim(Request::root(true), DS) . str_replace(PATH_ROOT, '', $file),
+			'id'        => $listdir,
+			'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
+			'width'     => $width,
+			'height'    => $height
+		));
 	}
 
 	/**
 	 * Delete a folder
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletefolderTask()
 	{
+		Request::checkToken(['get', 'post']);
+
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$this->mediaTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming course ID
 		$listdir = Request::getInt('listdir', 0, 'get');
 		if (!$listdir)
 		{
-			Notify::error(Lang::txt('COURSES_NO_ID'), 'courses');
-			$this->mediaTask();
-			return;
+			Notify::error(Lang::txt('COURSES_NO_ID'));
+			return $this->displayTask();
 		}
 
 		// Incoming file
 		$folder = trim(Request::getString('folder', '', 'get'));
 		if (!$folder)
 		{
-			Notify::error(Lang::txt('COURSES_NO_DIRECTORY'), 'courses');
-			$this->mediaTask();
-			return;
+			Notify::error(Lang::txt('COURSES_NO_DIRECTORY'));
+			return $this->displayTask();
 		}
 
 		$del_folder = DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . trim($listdir, DS) . DS . ltrim($folder, DS);
@@ -430,49 +505,48 @@ class Media extends SiteController
 			// Attempt to delete the file
 			if (!Filesystem::deleteDirectory(PATH_APP . $del_folder))
 			{
-				Notify::error(Lang::txt('UNABLE_TO_DELETE_DIRECTORY'), 'courses');
+				Notify::error(Lang::txt('UNABLE_TO_DELETE_DIRECTORY'));
 			}
 			else
 			{
 				//push a success message
-				Notify::success('You successfully deleted the folder.', 'courses');
+				Notify::success(Lang::txt('You successfully deleted the folder.'));
 			}
 		}
 
 		// Push through to the media view
-		$this->mediaTask();
+		$this->displayTask();
 	}
 
 	/**
 	 * Delete a file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletefileTask()
 	{
+		Request::checkToken(['get', 'post']);
+
 		// Check if they're logged in
 		if (User::isGuest())
 		{
-			$this->mediaTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming course ID
 		$listdir = Request::getInt('listdir', 0, 'get');
 		if (!$listdir)
 		{
-			Notify::error(Lang::txt('COURSES_NO_ID'), 'courses');
-			$this->mediaTask();
-			return;
+			Notify::error(Lang::txt('COURSES_NO_ID'));
+			return $this->displayTask();
 		}
 
 		// Incoming file
 		$file = trim(Request::getString('file', '', 'get'));
 		if (!$file)
 		{
-			Notify::error(Lang::txt('COURSES_NO_FILE'), 'courses');
-			$this->mediaTask();
-			return;
+			Notify::error(Lang::txt('COURSES_NO_FILE'));
+			return $this->displayTask();
 		}
 
 		// Build the file path
@@ -480,9 +554,8 @@ class Media extends SiteController
 
 		if (!file_exists($path . DS . $file) or !$file)
 		{
-			Notify::error(Lang::txt('FILE_NOT_FOUND'), 'courses');
-			$this->mediaTask();
-			return;
+			Notify::error(Lang::txt('FILE_NOT_FOUND'));
+			return $this->displayTask();
 		}
 		else
 		{
@@ -494,21 +567,22 @@ class Media extends SiteController
 		}
 
 		//push a success message
-		Notify::success('The file was successfully deleted.', 'courses');
+		Notify::success(Lang::txt('The file was successfully deleted.'));
 
 		// Push through to the media view
-		$this->mediaTask();
+		$this->displayTask();
 	}
 
 	/**
 	 * Show a form for uploading and managing files
 	 *
-	 * @return     void
+	 * @return  void
 	 */
-	public function mediaTask()
+	public function displayTask()
 	{
 		// Incoming
 		$listdir = Request::getInt('listdir', 0);
+
 		if (!$listdir)
 		{
 			Notify::error(Lang::txt('COURSES_NO_ID'), 'courses');
@@ -517,20 +591,18 @@ class Media extends SiteController
 		$course = Course::getInstance($listdir);
 
 		// Output HTML
-		$this->view->config = $this->config;
-		if (is_object($course))
-		{
-			$this->view->course = $course;
-		}
-		$this->view->listdir = $listdir;
-		$this->view->notifications = Notify::messages('courses');
-		$this->view->display();
+		$this->view
+			->set('config', $config)
+			->set('course', $course)
+			->set('listdir', $listdir)
+			->setLayout('media')
+			->display();
 	}
 
 	/**
 	 * List files for a course
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function listfilesTask()
 	{
@@ -578,9 +650,9 @@ class Media extends SiteController
 				}
 				else if (is_dir($path . DS . $img_file)
 				 && substr($entry, 0, 1) != '.'
-				 && strtolower($entry) !== 'cvs'
-				 && strtolower($entry) !== 'template'
-				 && strtolower($entry) !== 'blog')
+				 && strtolower($entry) !== '..'
+				 && strtolower($entry) !== '.git'
+				 && strtolower($entry) !== 'cvs')
 				{
 					$folders[$entry] = $img_file;
 				}
@@ -593,28 +665,25 @@ class Media extends SiteController
 			ksort($docs);
 		}
 
-		$this->view->docs = $docs;
-		$this->view->folders = $folders;
-		$this->view->images = $images;
-		$this->view->config = $this->config;
-		$this->view->listdir = $listdir;
-		$this->view->notifications = Notify::messages('courses');
-		$this->view->display();
+		$this->view
+			->set('docs', $docs)
+			->set('folders', $folders)
+			->set('images', $images)
+			->set('config', $config)
+			->set('listdir', $listdir)
+			->display();
 	}
 
 	/**
 	 * Download a file
 	 *
-	 * @param      string $filename File name
-	 * @return     void
+	 * @param   string  $filename  File name
+	 * @return  void
 	 */
 	public function downloadTask($filename)
 	{
 		//get the course
-		$course = Course::getInstance($this->gid);
-
-		//authorize
-		$authorized = $this->_authorize();
+		$course = Course::getInstance(Request::getInt('id'));
 
 		//get the file name
 		if (substr(strtolower($filename), 0, 5) == 'image')
@@ -626,41 +695,14 @@ class Media extends SiteController
 			$file = urldecode(substr($filename, 5));
 		}
 
-		//if were on the wiki we need to output files a specific way
-		if ($this->active == 'wiki')
+		//check to make sure we can access it
+		if (!in_array(User::get('id'), $course->get('members')) || User::isGuest())
 		{
-			//check to make sure user has access to wiki section
-			if (!in_array(User::get('id'), $course->get('members')) || User::isGuest())
-			{
-				return App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH') . ' ' . $file);
-			}
-
-			//load wiki page from db
-			require_once PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php';
-			$page = \Components\Wiki\Models\Page::oneByPath(Request::getString('pagename'), 'course', $course->get('id'));
-
-			//check specific wiki page access
-			if ($page->get('access') == 1 && !in_array(User::get('id'), $course->get('members')) && $authorized != 'admin')
-			{
-				return App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH') . ' ' . $file);
-			}
-
-			//get the config and build base path
-			$wiki_config = Component::params('com_wiki');
-			$base_path = $wiki_config->get('filepath') . DS . $page->get('id');
+			return App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH') . ' ' . $file);
 		}
-		else
-		{
-			//check to make sure we can access it
-			if (!in_array(User::get('id'), $course->get('members')) || User::isGuest())
-			{
-				return App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH') . ' ' . $file);
-			}
 
-			// Build the path
-			$base_path = $this->config->get('uploadpath');
-			$base_path .= DS . $course->get('gidNumber');
-		}
+		// Build the path
+		$base_path = $this->config->get('uploadpath') . DS . $course->get('id');
 
 		// Final path of file
 		$file_path = $base_path . DS . $file;

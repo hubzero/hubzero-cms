@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -6,7 +11,7 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script to create the jos_safekids_events_access_methods table
+ * Migration script to create the `#__forum_users_categories` table
  **/
 class Migration20171102100900PlgGroupsForumUsersCategories extends Base
 {
@@ -26,7 +31,7 @@ class Migration20171102100900PlgGroupsForumUsersCategories extends Base
 					PRIMARY KEY (`id`)
 				)
 				ENGINE=MyISAM
-				DEFAULT CHARSET=latin1;";
+				DEFAULT CHARSET=utf8;";
 		}
 
 		$this->db->setQuery($createTable);
@@ -43,7 +48,5 @@ class Migration20171102100900PlgGroupsForumUsersCategories extends Base
 			$this->db->setQuery($dropTable);
 			$this->db->query();
 		}
-
 	}
-
 }

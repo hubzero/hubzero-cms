@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Resources\Helpers;
@@ -278,7 +253,7 @@ class Html
 	/**
 	 * Convert a date to a path
 	 *
-	 * @param   string  $date  Date to convert (0000-00-00 00:00:00)
+	 * @param   string  $date  Date to convert (YYYY-MM-DD hh:mm:ss)
 	 * @return  string
 	 */
 	public static function dateToPath($date)
@@ -295,7 +270,7 @@ class Html
 	/**
 	 * Build the path to resources files from the creating date
 	 *
-	 * @param   string   $date  Timestamp (0000-00-00 00:00:00)
+	 * @param   string   $date  Timestamp (YYYY-MM-DD hh:mm:ss)
 	 * @param   integer  $id    Resource ID
 	 * @param   string   $base  Base path to prepend
 	 * @return  string
@@ -588,84 +563,13 @@ class Html
 	 * @param   object  $cite   Resource citation data
 	 * @param   object  $model
 	 * @return  string  HTML
+	 * @deprecated  This functionality has been moved to a plugin
 	 */
 	public static function citationCOins($cite, $model)
 	{
-		if (!$model->id)
-		{
-			return '';
-		}
+		\Log::debug(__CLASS__ . '::' . __METHOD__ . '() called');
 
-		$title = array(
-			'ctx_ver=Z39.88-2004',
-			'rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal',  //info:ofi/fmt:kev:mtx:journal
-			'rft.genre=article',
-			'rft.atitle=' . urlencode($model->title),
-			'rft.date=' . \Date::of($model->date)->toLocal('Y')
-		);
-
-		$tconfig = \Component::params('com_tools');
-
-		if ($doi = $model->get('doi'))
-		{
-			if ($tconfig->get('doi_shoulder'))
-			{
-				$doi = $tconfig->get('doi_shoulder') . '/' . strtoupper($doi);
-			}
-		}
-		else if ($model->get('doi_label'))
-		{
-			$doi = '10254/' . $tconfig->get('doi_prefix') . $model->get('id') . '.' . $model->get('doi_label');
-		}
-		else
-		{
-			$uri = \Hubzero\Utility\Uri::getInstance();
-
-			$doi = $uri->getVar('host') . ':' . \Config::get('sitename');
-		}
-
-		$title[] = 'rft_id=info%3Adoi%2F' . urlencode($doi);
-
-		if (isset($model->revision) && $model->revision != 'dev')
-		{
-			$author_array = $model->contributors('tool');
-		}
-		else
-		{
-			$author_array = $model->contributors();
-		}
-
-		if ($author_array)
-		{
-			$i = 0;
-			foreach ($author_array as $author)
-			{
-				if (!$author->surname || !$author->givenName)
-				{
-					$name = explode(' ', $author->name);
-
-					$author->givenName = array_shift($name);
-					$author->surname   = array_pop($name);
-				}
-
-				$lastname  = $author->surname ? $author->surname : $author->name;
-				$firstname = $author->givenName ? $author->givenName : $author->name;
-
-				$title[] = 'rft.aulast=' . urlencode($lastname);
-				$title[] = 'rft.aufirst=' . urlencode($firstname);
-
-				if ($i == 0)
-				{
-					break;
-				}
-
-				$i++;
-			}
-		}
-
-		$html = '<span class="Z3988" title="' . implode('&amp;', $title) . '"></span>' . "\n";
-
-		return $html;
+		return '';
 	}
 
 	/**
@@ -901,7 +805,7 @@ class Html
 					//if (User::isGuest()) {
 						// Not logged-in = show message
 						//$html .= self::primaryButton('launchtool disabled', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
-						//$html .= self::warning('You must <a href="'.Route::url('index.php?option=com_users&view=login').'">log in</a> before you can run this tool.')."\n";
+						//$html .= self::warning('You must <a href="'.Route::url('index.php?option=com_login').'">log in</a> before you can run this tool.')."\n";
 					//} else {
 						$pop = (User::isGuest()) ? '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_LOGIN_REQUIRED_TO_RUN') . '</p>' : '';
 						$pop = ($resource->revision =='dev') ? '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_VERSION_UNDER_DEVELOPMENT') . '</p>' : $pop;
@@ -1033,7 +937,7 @@ class Html
 				{
 					// first child is for registered users only and the visitor is not logged in
 					$pop  = '<p class="warning">' . Lang::txt('COM_RESOURCES_LOGIN_REQUIRED_TO_DOWNLOAD') . '</p>' . "\n";
-					$html .= self::primaryButton($class . ' disabled', Route::url('index.php?option=com_users&view=login'), $mesg, '', '', '', '', $pop);
+					$html .= self::primaryButton($class . ' disabled', Route::url('index.php?option=com_login'), $mesg, '', '', '', '', $pop);
 				}
 				else
 				{

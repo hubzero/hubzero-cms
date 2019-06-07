@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 // No direct access
 defined('_HZEXEC_') or die();
@@ -104,25 +80,31 @@ $this->css()
 								}
 							}
 							?>
-							<label for="commentcontent">
-								<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_YOUR_COMMENTS'); ?>:
-								<?php
-								if (!User::isGuest())
-								{
-									echo $this->editor('comment[content]', $this->escape($comment->get('content')), 35, 15, 'commentcontent', array('class' => 'minimal no-footer'));
-								}
-								?>
-							</label>
-
-							<label for="comment_file">
-								<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_ATTACH_FILE'); ?>
-								<input type="file" name="comment_file" id="comment_file" />
-							</label>
-
-							<label id="comment-anonymous-label">
-								<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($comment->get('anonymous')) { echo ' checked="checked"'; } ?> />
-								<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_POST_ANONYMOUSLY'); ?>
-							</label>
+							<div class="form-group">
+								<label for="commentcontent">
+									<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_YOUR_COMMENTS'); ?>:
+									<?php
+									if (!User::isGuest())
+									{
+										echo $this->editor('comment[content]', $this->escape($comment->get('content')), 35, 15, 'commentcontent', array('class' => 'form-control minimal no-footer'));
+									}
+									?>
+								</label>
+							</div>
+							<div class="form-group">
+								<label for="comment_file">
+									<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_ATTACH_FILE'); ?>
+									<input type="file" class="form-control-file" name="comment_file" id="comment_file" />
+								</label>
+							</div>
+							<div class="form-group">
+								<div class="form-check">
+									<label id="comment-anonymous-label" class="form-check-label">
+										<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($comment->get('anonymous')) { echo ' checked="checked"'; } ?> />
+										<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_POST_ANONYMOUSLY'); ?>
+									</label>
+								</div>
+							</div>
 
 							<p class="submit">
 								<input type="submit" class="btn btn-success" name="submit" value="<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_POST_COMMENT'); ?>" />
@@ -183,4 +165,4 @@ $this->css()
 	<p class="warning">
 		<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_MUST_BE_LOGGED_IN'); ?>
 	</p>
-<?php } ?>
+<?php }

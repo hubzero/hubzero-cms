@@ -1,28 +1,21 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 // No direct access
 defined('_HZEXEC_') or die();
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_TOOLS').': '. $text, 'tools.png');
+Toolbar::title(Lang::txt('COM_TOOLS').': '. $text, 'tools');
 Toolbar::save();
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('tool');
 ?>
-
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('item-form');
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="grid">
@@ -79,19 +72,19 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_TOOLS_FIELD_ID'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_TOOLS_FIELD_ID'); ?>:</th>
 						<td><?php echo $this->escape($this->row->id);?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_TOOLS_FIELD_NAME'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_TOOLS_FIELD_NAME'); ?>:</th>
 						<td><?php echo $this->escape(stripslashes($this->row->toolname)); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_TOOLS_FIELD_REGISTERED'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_TOOLS_FIELD_REGISTERED'); ?>:</th>
 						<td><?php echo $this->escape($this->row->registered); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_TOOLS_FIELD_REGISTERED_BY'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_TOOLS_FIELD_REGISTERED_BY'); ?>:</th>
 						<td><?php echo $this->escape($this->row->registered_by); ?></td>
 					</tr>
 				</tbody>

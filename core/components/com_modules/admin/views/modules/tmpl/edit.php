@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -61,26 +37,11 @@ Html::behavior('tooltip');
 Html::behavior('formvalidation');
 Html::behavior('combobox');
 
+$this->js();
+
 $hasContent = empty($this->item->get('module')) || $this->item->module == 'custom' || $this->item->module == 'mod_custom';
-
-$script = "Joomla.submitbutton = function(task)
-	{
-			if (task == 'module.cancel' || document.formvalidator.isValid($('#item-form'))) {";
-if ($hasContent) {
-	$script .= $this->form->getField('content')->save();
-}
-$script .= "	Joomla.submitform(task, document.getElementById('item-form'));
-				if (self != top) {
-					window.top.setTimeout('window.parent.$.fancybox().close()', 1000);
-				}
-			} else {
-				alert('".$this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'))."');
-			}
-	}";
-
-Document::addScriptDeclaration($script);
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -182,17 +143,26 @@ Document::addScriptDeclaration($script);
 				<?php if ($this->item->id) : ?>
 				<?php endif; ?>
 					<tr>
-						<th>
+						<th scope="row">
 							<?php echo Lang::txt('COM_MODULES_HEADING_MODULE'); ?>
 							<?php echo $this->form->getLabel('module'); ?>
 						</th>
 						<td>
 							<?php echo $this->form->getInput('module'); ?>
-							<?php if ($this->item->xml) echo ($text = (string) $this->item->xml->name) ? Lang::txt($text) : $this->item->module;else echo Lang::txt('COM_MODULES_ERR_XML');?>
+							<?php
+							if ($this->item->xml)
+							{
+								echo ($text = (string) $this->item->xml->name) ? Lang::txt($text) : $this->item->module;
+							}
+							else
+							{
+								echo Lang::txt('COM_MODULES_ERR_XML');
+							}
+							?>
 						</td>
 					</tr>
 					<tr>
-						<th>
+						<th scope="row">
 							<?php echo Lang::txt('Client'); ?>
 							<?php echo $this->form->getLabel('client_id'); ?>
 						</th>
@@ -202,7 +172,7 @@ Document::addScriptDeclaration($script);
 						</td>
 					</tr>
 					<tr>
-						<th>
+						<th scope="row">
 							<?php echo Lang::txt('COM_MODULES_MODULE_DESCRIPTION'); ?>
 						</th>
 						<td>

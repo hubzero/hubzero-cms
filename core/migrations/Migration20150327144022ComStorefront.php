@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -258,11 +263,11 @@ class Migration20150327144022ComStorefront extends Base
 			$query = "CREATE TABLE `#__storefront_skus` (
 			  `sId` int(16) NOT NULL AUTO_INCREMENT,
 			  `pId` int(16) DEFAULT NULL COMMENT 'Foreign key to products',
-			  `sSku` char(16) CHARACTER SET latin1 DEFAULT NULL,
+			  `sSku` char(16) DEFAULT NULL,
 			  `sWeight` decimal(10,2) DEFAULT NULL,
 			  `sPrice` decimal(10,2) DEFAULT NULL,
-			  `sDescriprtion` text CHARACTER SET latin1,
-			  `sFeatures` text CHARACTER SET latin1,
+			  `sDescriprtion` text,
+			  `sFeatures` text,
 			  `sTrackInventory` tinyint(1) DEFAULT '0',
 			  `sInventory` int(11) DEFAULT '0',
 			  `sEnumerable` tinyint(1) DEFAULT '1',

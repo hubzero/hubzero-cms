@@ -1,30 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
- *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -50,40 +28,9 @@ Toolbar::custom('download', 'download.png', '', 'Download CSV', false);
 
 Toolbar::spacer();
 Toolbar::help('downloads');
+
+$this->js();
 ?>
-<script type="text/javascript">
-	$( function() {
-		var dateFormat = "mm/dd/yy",
-			from = $( "#filter-report-from" )
-				.datepicker({
-					defaultDate: "+1w",
-					changeMonth: true,
-					numberOfMonths: 1
-				})
-				.on( "change", function() {
-					to.datepicker( "option", "minDate", getDate( this ) );
-				}),
-			to = $( "#filter-report-to" ).datepicker({
-					defaultDate: "+1w",
-					changeMonth: true,
-					numberOfMonths: 1
-				})
-				.on( "change", function() {
-					from.datepicker( "option", "maxDate", getDate( this ) );
-				});
-
-		function getDate( element ) {
-			var date;
-			try {
-				date = $.datepicker.parseDate( dateFormat, element.value );
-			} catch( error ) {
-				date = null;
-			}
-
-			return date;
-		}
-	} );
-</script>
 
 <?php
 $this->view('_submenu')
@@ -95,26 +42,26 @@ $this->view('_submenu')
 		<div class="grid">
 			<div class="col span5">
 				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
+				<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
 			</div>
 			<div class="col span7 align-right">
 				<?php
 				if (!empty($this->filters['skuRequested']))
 				{
 					?>
-					<select name="skuRequested" id="skuRequested" onchange="this.form.submit();">
+					<select name="skuRequested" id="skuRequested" class="filter filter-submit">
 						<option value="0"<?php if ($this->filters['skuRequested'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('All SKUs'); ?></option>
-						<option value="<?php echo $this->filters['skuRequested']; ?>" selected="selected"><?php echo $this->skuRequestedName; ?></option>
+						<option value="<?php echo $this->filters['skuRequested']; ?>"><?php echo $this->skuRequestedName; ?></option>
 					</select>
 					&nbsp;&nbsp;
 					<?php
 				}
 				?>
 				<label for="filter-report-from"><?php echo Lang::txt('From'); ?>:</label>
-				<input type="text" name="report-from" id="filter-report-from" value="<?php echo $this->escape($this->filters['report-from']); ?>" placeholder="<?php echo Lang::txt('From'); ?>" />
+				<input type="text" name="report-from" id="filter-report-from" class="filter" value="<?php echo $this->escape($this->filters['report-from']); ?>" placeholder="<?php echo Lang::txt('From'); ?>" />
 				&mdash;
 				<label for="filter-report-to"><?php echo Lang::txt('To'); ?>:</label>
-				<input type="text" name="report-to" id="filter-report-to" value="<?php echo $this->escape($this->filters['report-to']); ?>" placeholder="<?php echo Lang::txt('To'); ?>" />
+				<input type="text" name="report-to" id="filter-report-to" class="filter" value="<?php echo $this->escape($this->filters['report-to']); ?>" placeholder="<?php echo Lang::txt('To'); ?>" />
 				<input type="submit" value="<?php echo Lang::txt('Update'); ?>" />
 			</div>
 		</div>
@@ -122,71 +69,68 @@ $this->view('_submenu')
 
 	<table class="adminlist">
 		<thead>
-		<?php if ($this->filters['uidNumber'] || $this->filters['pId'] || $this->filters['sId']) { ?>
+			<?php if ($this->filters['uidNumber'] || $this->filters['pId'] || $this->filters['sId']) { ?>
+				<tr>
+					<th colspan="8"><?php
+						if ($this->filters['uidNumber'])
+						{
+							echo Lang::txt('COM_CART_ORDERS_FOR') . ': ';
+							$user = User::getInstance($this->filters['uidNumber']);
+
+							echo ($user->get('id')) ? $user->get('name') . ' (' . $user->get('username') . ')' : Lang::txt('COM_CART_USER_ID') . ': ' . $this->filters['uidNumber'];
+							?>
+							<button type="button" id="filter_uidNumber-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+							<?php
+						}
+						if ($this->filters['pId'])
+						{
+							echo Lang::txt('COM_CART_ORDERS_OF') . ': ';
+							$product = Product::getInstance($this->filters['pId']);
+
+							echo $product->getName();
+							?>
+							<button type="button" id="filter_pId-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+							<?php
+						}
+						if ($this->filters['sId'])
+						{
+							echo Lang::txt('COM_CART_ORDERS_OF') . ': ';
+							$sku = Sku::getInstance($this->filters['sId']);
+
+							echo $sku->getName();
+							?>
+							<button type="button" id="filter_sId-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+							<?php
+						}
+						?>
+
+					</th>
+				</tr>
+			<?php } ?>
 			<tr>
-				<th colspan="8"><?php
-					if ($this->filters['uidNumber'])
-					{
-						echo Lang::txt('COM_CART_ORDERS_FOR') . ': ';
-						$user = User::getInstance($this->filters['uidNumber']);
-
-						echo($user->get('id') ? $user->get('name') . ' (' . $user->get('username') . ')' : Lang::txt('COM_CART_USER_ID') . ': ' . $this->filters['uidNumber']);
-						?>
-						<button type="button"
-								onclick="$('#filter_uidNumber').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-						<?php
-					}
-					if ($this->filters['pId'])
-					{
-						echo Lang::txt('COM_CART_ORDERS_OF') . ': ';
-						$product = Product::getInstance($this->filters['pId']);
-
-						echo($product->getName());
-						?>
-						<button type="button"
-								onclick="$('#filter_pId').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-						<?php
-					}
-					if ($this->filters['sId'])
-					{
-						echo Lang::txt('COM_CART_ORDERS_OF') . ': ';
-						$sku = Sku::getInstance($this->filters['sId']);
-
-						echo($sku->getName());
-						?>
-						<button type="button"
-								onclick="$('#filter_sId').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-						<?php
-					}
-					?>
-
-				</th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED_BY', 'dName', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_CART_USER_INFO'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_CART_EULA'); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED', 'dDownloaded', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col">IP</th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_CART_STATUS', 'dStatus', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
-		<?php } ?>
-		<tr>
-			<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
-			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED_BY', 'dName', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-			<th scope="col"><?php echo Lang::txt('COM_CART_USER_INFO'); ?></th>
-			<th scope="col"><?php echo Lang::txt('COM_CART_EULA'); ?></th>
-			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED', 'dDownloaded', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-			<th scope="col">IP</th>
-			<th scope="col"><?php echo Html::grid('sort', 'COM_CART_STATUS', 'dStatus', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-		</tr>
 		</thead>
 		<tfoot>
-		<tr>
-			<td colspan="8">
-				<?php
-				// Initiate paging
-				echo $this->pagination(
-					$this->total,
-					$this->filters['start'],
-					$this->filters['limit']
-				);
-				?>
-			</td>
-		</tr>
+			<tr>
+				<td colspan="8">
+					<?php
+					// Initiate paging
+					echo $this->pagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					?>
+				</td>
+			</tr>
 		</tfoot>
 		<tbody>
 		<?php
@@ -211,11 +155,11 @@ $this->view('_submenu')
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->dId; ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->dId; ?>" class="checkbox-toggle" />
 				</td>
 				<td>
 					<?php
-					$product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $row->pId) . '" target="_blank">' . $this->escape(stripslashes($row->pName)) . '</a>';
+					$product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $row->pId) . '">' . $this->escape(stripslashes($row->pName)) . '</a>';
 					if (!stripslashes($row->pName))
 					{
 						$product = '<span class="missing">Product n/a</span>';
@@ -225,7 +169,7 @@ $this->view('_submenu')
 						$product .= '<br />SKU: <span class="missing">n/a</span>';
 					}
 					else {
-						$product .= '<br />SKU: ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '" target="_blank">' . $this->escape(stripslashes($row->sSku)) . '</a>';
+						$product .= '<br />SKU: ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '">' . $this->escape(stripslashes($row->sSku)) . '</a>';
 					}
 					?>
 
@@ -243,14 +187,13 @@ $this->view('_submenu')
 						$product .= '<br />SKU: ' . '<a href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&sId=' . $row->sId) . '">' . $this->escape(stripslashes($row->sSku)) . '</a>';
 					}
 					?>
-
 					<span><?php echo $product; ?></span>
 				</td>
 				<td>
 					<?php if ($row->uidNumber) { ?>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&uidNumber=' . $row->uidNumber); ?>">
 						<?php } ?>
-						<span><?php echo ($row->uidNumber ? $this->escape(stripslashes($row->dName)) . ' (' . $this->escape(stripslashes($row->username)) . ')' : Lang::txt('COM_CART_UNKNOWN')); ?></span>
+						<span><?php echo ($row->uidNumber) ? $this->escape(stripslashes($row->dName)) . ' (' . $this->escape(stripslashes($row->username)) . ')' : Lang::txt('COM_CART_UNKNOWN'); ?></span>
 						<?php if ($row->uidNumber) { ?>
 					</a>
 				<?php } ?>

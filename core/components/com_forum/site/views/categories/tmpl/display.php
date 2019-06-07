@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -87,22 +63,22 @@ $this->category->set('section_alias', $this->filters['section']);
 					<nav class="entries-filters">
 						<ul class="entries-menu order-options">
 							<li>
-								<a class="<?php echo ($this->filters['sortby'] == 'created' ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down'); ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=created&sortdir=' . sortDir($this->filters, 'created'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_CREATED'); ?>">
+								<a class="<?php echo ($this->filters['sortby'] == 'created') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down'; ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=created&sortdir=' . sortDir($this->filters, 'created'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_CREATED'); ?>">
 									<?php echo Lang::txt('COM_FORUM_SORT_CREATED'); ?>
 								</a>
 							</li>
 							<li>
-								<a class="<?php echo ($this->filters['sortby'] == 'activity' ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down'); ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=activity&sortdir=' . sortDir($this->filters, 'activity'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_ACTIVITY'); ?>">
+								<a class="<?php echo ($this->filters['sortby'] == 'activity') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down'; ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=activity&sortdir=' . sortDir($this->filters, 'activity'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_ACTIVITY'); ?>">
 									<?php echo Lang::txt('COM_FORUM_SORT_ACTIVITY'); ?>
 								</a>
 							</li>
 							<li>
-								<a class="<?php echo ($this->filters['sortby'] == 'replies' ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down'); ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=replies&sortdir=' . sortDir($this->filters, 'replies'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_NUM_POSTS'); ?>">
+								<a class="<?php echo ($this->filters['sortby'] == 'replies') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down'; ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=replies&sortdir=' . sortDir($this->filters, 'replies'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_NUM_POSTS'); ?>">
 									<?php echo Lang::txt('COM_FORUM_SORT_NUM_POSTS'); ?>
 								</a>
 							</li>
 							<li>
-								<a class="<?php echo ($this->filters['sortby'] == 'title' ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-up'); ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=title&sortdir=' . sortDir($this->filters, 'title', 'ASC'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_TITLE'); ?>">
+								<a class="<?php echo ($this->filters['sortby'] == 'title') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-up'; ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=title&sortdir=' . sortDir($this->filters, 'title', 'ASC'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_TITLE'); ?>">
 									<?php echo Lang::txt('COM_FORUM_SORT_TITLE'); ?>
 								</a>
 							</li>
@@ -133,7 +109,7 @@ $this->category->set('section_alias', $this->filters['section']);
 							{
 								foreach ($this->threads as $row)
 								{
-									$name = Lang::txt('COM_FORUM_ANONYMOUS');
+									$name = Lang::txt('JANONYMOUS');
 									if (!$row->get('anonymous'))
 									{
 										$name = $this->escape(stripslashes($row->creator->get('name', $name)));
@@ -191,7 +167,7 @@ $this->category->set('section_alias', $this->filters['section']);
 												$lastpost = $row->lastActivity();
 												if ($lastpost->get('id'))
 												{
-													$lname = Lang::txt('COM_FORUM_ANONYMOUS');
+													$lname = Lang::txt('JANONYMOUS');
 													if (!$lastpost->get('anonymous'))
 													{
 														$lname = $this->escape(stripslashes($lastpost->creator->get('name')));
@@ -253,7 +229,7 @@ $this->category->set('section_alias', $this->filters['section']);
 					$last = $this->category->lastActivity();
 					if ($last->get('id'))
 					{
-						$lname = Lang::txt('COM_FORUM_ANONYMOUS');
+						$lname = Lang::txt('JANONYMOUS');
 						if (!$last->get('anonymous'))
 						{
 							$lname = $this->escape(stripslashes($last->creator->get('name', $lname)));

@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Courses\Models\Section;
@@ -36,8 +11,8 @@ use Components\Courses\Models\Base;
 use Components\Courses\Tables;
 use User;
 
-require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'section.code.php');
-require_once(dirname(__DIR__) . DS . 'base.php');
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'section.code.php';
+require_once dirname(__DIR__) . DS . 'base.php';
 
 /**
  * Courses model class for a course
@@ -139,7 +114,8 @@ class Code extends Base
 	 * it will return that property value. Otherwise,
 	 * it returns the entire User object
 	 *
-	 * @return     mixed
+	 * @param   string  $property
+	 * @return  mixed
 	 */
 	public function redeemer($property=null)
 	{
@@ -157,7 +133,7 @@ class Code extends Base
 	/**
 	 * Check if a code has expired
 	 *
-	 * @return    string
+	 * @return  bool
 	 */
 	public function isExpired()
 	{
@@ -171,7 +147,7 @@ class Code extends Base
 			return true;
 		}
 
-		$now = Date::toSql();
+		$now = \Date::of('now')->toSql();
 
 		if ($this->get('expires')
 		 && $this->get('expires') != $this->_db->getNullDate()
@@ -186,7 +162,7 @@ class Code extends Base
 	/**
 	 * Check if a code has been redeemed
 	 *
-	 * @return    string
+	 * @return  bool
 	 */
 	public function isRedeemed()
 	{
@@ -204,7 +180,9 @@ class Code extends Base
 	/**
 	 * Generate a coupon code
 	 *
-	 * @return    string
+	 * @param   integer  $redeemed_by
+	 * @param   string   $code
+	 * @return  bool
 	 */
 	public function redeem($redeemed_by=0, $code=null)
 	{
@@ -217,7 +195,7 @@ class Code extends Base
 			$redeemed_by = User::get('id');
 		}
 		$this->set('redeemed_by', $redeemed_by);
-		$this->set('redeemed', Date::toSql());
+		$this->set('redeemed', \Date::of('now')->toSql());
 		return $this->store();
 	}
 }

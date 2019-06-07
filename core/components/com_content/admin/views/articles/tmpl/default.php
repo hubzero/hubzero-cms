@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // no direct access
@@ -72,6 +48,8 @@ Toolbar::help('articles');
 
 Html::behavior('tooltip');
 
+$this->js();
+
 $userId    = User::get('id');
 $listOrder = $this->filters['sort'];
 $listDirn  = $this->filters['sort_Dir'];
@@ -81,38 +59,38 @@ $saveOrder = $listOrder == 'ordering';
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC'); ?>" />
+			<input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC'); ?>" />
 
 			<button type="submit" class="btn"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			<button type="button" class="btn filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="filter-select fltrt">
-			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_published" class="inputbox" class="filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php echo Html::select('options', Html::grid('publishedOptions'), 'value', 'text', $this->filters['published'], true);?>
 			</select>
 
-			<select name="filter_category_id" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_category_id" class="inputbox" class="filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
 				<?php echo Html::select('options', Html::category('options', 'com_content'), 'value', 'text', $this->filters['category_id']); ?>
 			</select>
 
-			<select name="filter_level" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_level" class="inputbox" class="filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_MAX_LEVELS');?></option>
 				<?php echo Html::select('options', $this->f_levels, 'value', 'text', $this->filters['level']); ?>
 			</select>
 
-			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_access" class="inputbox" class="filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
 				<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
 			</select>
 
-			<select name="filter_author_id" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_author_id" class="inputbox" class="filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_AUTHOR');?></option>
 				<?php echo Html::select('options', $this->authors, 'value', 'text', $this->filters['author_id']); ?>
 			</select>
 
-			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
+			<select name="filter_language" class="inputbox" class="filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
 				<?php echo Html::select('options', Html::contentlanguage('existing', true, true), 'value', 'text', $this->filters['language']); ?>
 			</select>
@@ -123,7 +101,7 @@ $saveOrder = $listOrder == 'ordering';
 		<thead>
 			<tr>
 				<th>
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
 				</th>
 				<th>
 					<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'title', $listDirn, $listOrder); ?>
@@ -138,9 +116,9 @@ $saveOrder = $listOrder == 'ordering';
 					<?php echo Html::grid('sort', 'JCATEGORY', 'catid', $listDirn, $listOrder); ?>
 				</th>
 				<th class="priority-3">
-					<?php echo Html::grid('sort',  'JGRID_HEADING_ORDERING', 'ordering', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'ordering', $listDirn, $listOrder); ?>
 					<?php if ($saveOrder) :?>
-						<?php echo Html::grid('order',  $this->items, 'filesave.png', 'saveorder'); ?>
+						<?php echo Html::grid('order', $this->items, 'filesave.png', 'saveorder'); ?>
 					<?php endif; ?>
 				</th>
 				<th class="priority-4">
@@ -230,10 +208,10 @@ $saveOrder = $listOrder == 'ordering';
 				</td>
 				<td class="priority-6 center">
 					<?php if ($item->created_by_alias) : ?>
-						<?php echo $this->escape($item->author_name); ?>
+						<?php echo $this->escape($item->author->get('name', Lang::txt('JUNKNOWN'))); ?>
 						<p class="smallsub"> <?php echo Lang::txt('JGLOBAL_LIST_ALIAS', $this->escape($item->created_by_alias)); ?></p>
 					<?php else : ?>
-						<?php echo $this->escape($item->author->name); ?>
+						<?php echo $item->created_by ? $this->escape($item->author->get('name', Lang::txt('JUNKNOWN'))) : Lang::txt('JUNKNOWN'); ?>
 					<?php endif; ?>
 				</td>
 				<td class="priority-5 center nowrap">

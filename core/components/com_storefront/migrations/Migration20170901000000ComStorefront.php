@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -290,8 +295,8 @@ class Migration20170901000000ComStorefront extends Base
 			  `sSku` char(100) DEFAULT NULL,
 			  `sWeight` decimal(10,2) DEFAULT NULL,
 			  `sPrice` decimal(10,2) DEFAULT NULL,
-			  `sDescriprtion` text CHARACTER SET latin1,
-			  `sFeatures` text CHARACTER SET latin1,
+			  `sDescriprtion` text,
+			  `sFeatures` text,
 			  `sTrackInventory` tinyint(1) DEFAULT '0',
 			  `sInventory` int(11) DEFAULT '0',
 			  `sEnumerable` tinyint(1) DEFAULT '1',

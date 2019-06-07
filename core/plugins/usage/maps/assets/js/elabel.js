@@ -1,11 +1,4 @@
-/**
- * @package     hubzero-cms
- * @file        plugins/usage/maps/js/elabel.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
- */
-
-// ELabel.js 
+// ELabel.js
 //
 //   This Javascript is provided by Mike Williams
 //   Blackpool Community Church Javascript Team
@@ -48,7 +41,7 @@
       ELabel.prototype.initialize = function(map) {
         var div = document.createElement("div");
         div.style.position = "absolute";
-        div.innerHTML = '<div class="' + this.classname + '">' + this.html + '</div>' ;
+        div.innerHTML = '<div class="' + this.classname + '">' + this.html + '</div>';
         map.getPane(G_MAP_FLOAT_SHADOW_PANE).appendChild(div);
         this.map_ = map;
         this.div_ = div;
@@ -107,7 +100,7 @@
 
       ELabel.prototype.setContents = function(html) {
         this.html = html;
-        this.div_.innerHTML = '<div class="' + this.classname + '">' + this.html + '</div>' ;
+        this.div_.innerHTML = '<div class="' + this.classname + '">' + this.html + '</div>';
         this.redraw(true);
       }
       

@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2017 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -83,21 +59,20 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 	 * @param   string  $after    Attributes after email.
 	 * @return  string  Js cloaked email with attributes.
 	 */
-	protected function _addAttributesToEmail($jsEmail, $before, $after)
+	protected function _addAttributesToEmail($email, $before, $after)
 	{
 		if ($before !== '')
 		{
 			$before  = str_replace("'", "\'", $before);
-			$jsEmail = str_replace(".innerHTML += '<a '", ".innerHTML += '<a {$before}'", $jsEmail);
+			$email = str_replace('<a ', '<a ' . $before, $email);
 		}
 
 		if ($after !== '')
 		{
-			$after   = str_replace("'", "\'", $after);
-			$jsEmail = str_replace("'\'>'", "'\'{$after}>'", $jsEmail);
+			$email = str_replace('">', '"' . $after . '>', $email);
 		}
 
-		return $jsEmail;
+		return $email;
 	}
 
 	/**
@@ -506,81 +481,6 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 	 */
 	public function cloak($mail, $mailto = true, $text = '', $email = true)
 	{
-		// Convert mail
-		$mail = $this->convertEncoding($mail);
-
-		// Split email by @ symbol
-		$mail = explode('@', $mail);
-		$mail_parts = explode('.', $mail[1]);
-
-		// Random number
-		$rand = rand(1, 100000);
-
-		$replacement = '<span id="cloak' . $rand . '">' . Lang::txt('JLIB_HTML_CLOAKING') . '</span><script type="text/javascript">';
-		$replacement .= "\n //<!--";
-		$replacement .= "\n document.getElementById('cloak$rand').innerHTML = '';";
-		$replacement .= "\n var prefix = '&#109;a' + 'i&#108;' + '&#116;o';";
-		$replacement .= "\n var path = 'hr' + 'ef' + '=';";
-		$replacement .= "\n var addy" . $rand . " = '" . @$mail[0] . "' + '&#64;';";
-		$replacement .= "\n addy" . $rand . " = addy" . $rand . " + '" . implode("' + '&#46;' + '", $mail_parts) . "';";
-
-		if ($mailto)
-		{
-			// Special handling when mail text is different from mail address
-			if ($text)
-			{
-				// Convert text - here is the right place
-				$text = $this->convertEncoding($text);
-
-				if ($email)
-				{
-					// Split email by @ symbol
-					$text = explode('@', $text);
-					$text_parts = explode('.', $text[1]);
-					$replacement .= "\n var addy_text" . $rand . " = '" . @$text[0] . "' + '&#64;' + '" . implode("' + '&#46;' + '", @$text_parts) . "';";
-				}
-				else
-				{
-					$replacement .= "\n var addy_text" . $rand . " = '" . $text . "';";
-				}
-
-				$replacement .= "\n document.getElementById('cloak$rand').innerHTML += '<a ' + path + '\'' + prefix + ':' + addy" . $rand . " + '\'>'+addy_text" . $rand . "+'<\/a>';";
-			}
-			else
-			{
-				$replacement .= "\n document.getElementById('cloak$rand').innerHTML += '<a ' + path + '\'' + prefix + ':' + addy" . $rand . " + '\'>' + addy" . $rand . "+'<\/a>';";
-			}
-		}
-		else
-		{
-			$replacement .= "\n document.getElementById('cloak$rand').innerHTML += addy" . $rand . ";";
-		}
-
-		$replacement .= "\n //-->";
-		$replacement .= "\n </script>";
-
-		return $replacement;
-	}
-
-	/**
-	 * Convert encoded text
-	 *
-	 * @param   string  $text  Text to convert
-	 * @return  string  The converted text.
-	 */
-	protected function convertEncoding($text)
-	{
-		$text = html_entity_decode($text);
-
-		// Replace vowels with character encoding
-		$text = str_replace('a', '&#97;', $text);
-		$text = str_replace('e', '&#101;', $text);
-		$text = str_replace('i', '&#105;', $text);
-		$text = str_replace('o', '&#111;', $text);
-		$text = str_replace('u', '&#117;', $text);
-
-		$text = htmlentities($text, ENT_QUOTES, 'UTF-8', false);
-
-		return $text;
+		return '<a href="mailto:' . Hubzero\Utility\Str::obfuscate($mail) . '">' . Hubzero\Utility\Str::obfuscate($text ? $text : $mail) . '</a>';
 	}
 }

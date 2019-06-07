@@ -1,38 +1,14 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2017 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Zach Weidner <zweidner@purdue.edu>
- * @copyright Copyright 2005-2017 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Projects\Helpers;
 
 use Hubzero\Base\Obj;
+use Hubzero\Filesystem\Manager;
 use Component;
 use User;
 use Lang;
@@ -69,6 +45,9 @@ class Nogit extends Obj
 
 		// Set repo path
 		$this->_path = $path;
+		$params = [];
+		$params['path'] = $this->_path;
+		$this->adapter = Manager::adapter('local', $params);
 
 		// Set acting user
 		$this->_uid = User::get('id');
@@ -175,19 +154,13 @@ class Nogit extends Obj
 	 */
 	public function getFiles($subdir = '', $recursive = false)
 	{
-		// Make sure subdir has a trailing slash
-		$subdir = (!empty($subdir)) ? trim($subdir, DS) . DS : '';
-		// Get list of all files
-		if ($recursive)
+		$files = $this->adapter->listContents($subdir, $recursive);
+		$out = array();
+		foreach ($files as $file)
 		{
-			$out = $this->call("find ./" . escapeshellarg($subdir) . " -mindepth 1 -name '.git*' -prune -o -printf '%P\n' -not -path -'.'");
+			$out[] = $file->path;
 		}
-		else
-		{
-			$out = $this->call("find ./" . escapeshellarg($subdir) . " -mindepth 1 -maxdepth 1 -name '.git*' -prune -o -printf '%P\n' -not -path -'.'");
-		}
-
-		return (empty($out)) ? array() : $out;
+		return $out;
 	}
 
 	/**
@@ -196,14 +169,18 @@ class Nogit extends Obj
 	 * @param   string  $subdir  Local directory path
 	 * @return  array
 	 */
-	public function getDirectories($subdir = '')
+	public function getDirectories($subdir = '', $recursive = false)
 	{
-		// Make sure subdir has a trailing slash
-		$subdir = (!empty($subdir)) ? trim($subdir, DS) . DS : '';
-
-		// Get list of the directories
-		$out = $this->call("find -name '.git*' -prune -o -type d -not -path -'.' -printf '%P\n'");
-		return (empty($out) || substr($out[0], 0, 5) == 'fatal') ? array() : $out;
+		$files = $this->adapter->listContents($subdir, $recursive);
+		$out = array();
+		foreach ($files as $file)
+		{
+			if ($file->isDir())
+			{
+				$out[] = $file->path;
+			}
+		}
+		return $out;
 	}
 
 	/**

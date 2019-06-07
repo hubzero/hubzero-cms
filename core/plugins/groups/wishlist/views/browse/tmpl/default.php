@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -92,8 +67,8 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 					$status = 'outstanding';
 				}
 
-				$state  = (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? 'new' : '' ;
-				$state .= ($item->private) ? ' private' : '' ;
+				$state  = (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? 'new' : '';
+				$state .= ($item->private) ? ' private' : '';
 				switch ($item->status)
 				{
 					case 3:
@@ -118,7 +93,7 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 					break;
 				}
 
-				$name = Lang::txt('PLG_GROUPS_WISHLIST_ANONYMOUS');
+				$name = Lang::txt('JANONYMOUS');
 				if (!$item->anonymous)
 				{
 					$name = '<a href="'.Route::url('index.php?option=com_members&id='.$item->proposed_by).'">' . $this->escape($item->proposer->get('name')) . '</a>';
@@ -176,7 +151,7 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 									'layout'    => '_vote'
 								));
 								$view->set('option', 'com_wishlist')
-								     ->set('item',  $item)
+								     ->set('item', $item)
 								     ->set('listid', $this->wishlist->id)
 								     ->set('plugin', 0)
 								     ->set('admin', 0)
@@ -201,8 +176,14 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 											$html .= '<a class="rankit" href="index.php?option=com_wishlist&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'">'.Lang::txt('COM_WISHLIST_WISH_RANK_THIS').'</a>'."\n";
 										} else if (isset($item->ranked) && $item->ranked) {
 											//$html .= Lang::txt('WISH_PRIORITY').': <span class="priority">'.$item->ranking.'</span>'."\n";
+											$this->css('
+												.priority-level-' . $item->id . ' {
+													width: '.(($item->ranking/50)*100).'%;
+												}
+											');
+
 											$html .= '<span class="priority-level-base">
-												<span class="priority-level" style="width: '.(($item->ranking/50)*100).'%">
+												<span class="priority-level" priority-level-' . $item->id . '" title="'.(($item->ranking/50)*100).'%">
 													<span>'.Lang::txt('COM_WISHLIST_WISH_PRIORITY').': '.$item->ranking.'</span>
 												</span>
 											</span>';
@@ -213,7 +194,7 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 									break;
 									case 1:
 										$html .= '<span class="granted">'.Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED').'</span>';
-										/*if ($item->granted != '0000-00-00 00:00:00') {
+										/*if ($item->granted && $item->granted != '0000-00-00 00:00:00') {
 											$html .= ' <span class="mini">'.strtolower(Lang::txt('ON')).' '.Date::of($item->granted)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'</span>';
 										}*/
 									break;

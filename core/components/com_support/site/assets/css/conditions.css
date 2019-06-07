@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_support/assets/css/conditions.css
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 	#queryForm input, 
@@ -133,23 +132,22 @@
 		top: 0;
 		left: 0;
 		text-indent: 0;
-		font-size: 16px;
-		line-height: 17px;
+		font-size: 14px;
+		line-height: 20px;
+		font-family: "Fontcons";
 	}
 	html.chrome .query fieldset button.remove:before,
 	html.chrome .query fieldset button.add:before {
 		line-height: 18px;
 	}
 	.query fieldset button.remove:before {
-		content: "\00D7"; /* \2297 */
+		content: "\2716"; /*00D7"; /* \2297 */
 	}
 	.query fieldset button.add:before {
-		content: "+";
+		content: "\271A";
 	}
 	.query fieldset button.addroot:before {
 		content: "\22EF";
-		line-height: 20px;
-		font-size: 20px;
 	}
 	.query fieldset button:hover:before {
 		border-color: #333;

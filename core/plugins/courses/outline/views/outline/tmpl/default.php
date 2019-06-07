@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -38,11 +13,18 @@ defined('_HZEXEC_') or die();
 // ---------------
 
 // Member and manager checks
-$isMember       = $this->course->access('view'); //$this->config->get('access-view-course');
-$isManager      = $this->course->access('manage'); //$this->config->get('access-manage-course');
+$course = $this->course;
+$offering = $course->offering();
+$offeringEnrollUrl = Route::url($offering->link('enroll'));
+$offeringUnits = $offering->units();
+$offeringViewAccess = $offering->access('view');
+$section = $offering->section();
+$isMember = $course->access('view');
+$isManager = $course->access('manage');
 $isNowOnManager = ($isManager) ? true : false;
-$oparams        = new \Hubzero\Config\Registry($this->course->offering()->get('params'));
-$sparams        = new \Hubzero\Config\Registry($this->course->offering()->section()->get('params'));
+$oparams = new \Hubzero\Config\Registry($offering->get('params'));
+$sparams = new \Hubzero\Config\Registry($section->get('params'));
+$sparamsPreview = $sparams->get('preview', 0);
 
 $price = 'free';
 if ($oparams->get('store_price', false))
@@ -63,33 +45,33 @@ if (Request::getInt('nonadmin', 0) == 1)
 
 $this->database = App::get('db');
 
-$base = $this->course->offering()->link();
+$base = $offering->link();
 
 // Get the current time
 $now = Date::toSql();
 
 $i = 0;
 
-if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) { ?>
-	<p class="info"><?php echo Lang::txt('Access to the "Syllabus" section of this course is restricted to members only. You must be a member to view the content.'); ?></p>
+if (!$offeringViewAccess && !$sparamsPreview) { ?>
+	<p class="info"><?php echo Lang::txt('PLG_COURSES_OUTLINE_SYLLABUS_ACCESS'); ?></p>
 <?php } else { ?>
 
-	<?php if ($this->course->access('manage')) { ?>
+	<?php if ($course->access('manage')) { ?>
 		<div class="manager-options">
 			<span><strong>Manage the content of the outline here.</strong></span> <a class="btn edit icon-edit" href="<?php echo Route::url($base . '&active=outline&action=build'); ?>">Build outline</a>
 		</div>
 	<?php } ?>
 
 	<div id="course-outline">
-		<?php if (!$this->course->offering()->access('view') && $sparams->get('preview', 0)) : ?>
+		<?php if (!$offeringViewAccess && $sparamsPreview) : ?>
 			<div class="advertise-enroll">
 				<div class="advertise-text">
-					<?php echo Lang::txt('You\'re currently viewing this course in preview mode. Some features may be disabled.'); ?>
+					<?php echo Lang::txt('PLG_COURSES_OUTLINE_PREVIEW_MODE'); ?>
 				</div>
-				<a href="<?php echo Route::url($this->course->offering()->link('enroll')); ?>">
+				<a href="<?php echo $offeringEnrollUrl; ?>">
 					<div class="advertise-action btn">Enroll for <?php echo $price; ?>!</div>
 				</a>
-				<a target="_blank" class="advertise-popup" href="<?php echo Route::url('index.php?option=com_help&component=courses&page=basics#why_enroll'); ?>">
+				<a class="advertise-popup" href="<?php echo Route::url('index.php?option=com_help&component=courses&page=basics#why_enroll'); ?>">
 					<div class="advertise-help btn">Why enroll?</div>
 				</a>
 			</div>
@@ -98,36 +80,37 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 			<?php
 				// Trigger event
 				$results = Event::trigger('courses.onCourseBeforeOutline', array(
-					$this->course,
-					$this->course->offering()
+					$course,
+					$offering
 				));
+
 				// Output results
 				echo implode("\n", $results);
 
-				$this->member  = $this->course->offering()->section()->member(User::get('id'));
-				$progress      = ($this->member->get('id')) ? $this->course->offering()->gradebook()->progress($this->member->get('id')) : array();
+				$this->member  = $section->member(User::get('id'));
+				$progress      = ($this->member->get('id')) ? $offering->gradebook()->progress($this->member->get('id')) : array();
 				if (is_null($this->member->get('section_id')))
 				{
-					$this->member->set('section_id', $this->course->offering()->section()->get('id'));
+					$this->member->set('section_id', $section->get('id'));
 				}
-				$prerequisites = $this->member->prerequisites($this->course->offering()->gradebook());
+				$prerequisites = $this->member->prerequisites($offering->gradebook());
 			?>
 		</div>
 
 <?php
 	// Build array of unit titles
 	$unitTitles = array();
-	foreach ($this->course->offering()->units() as $unit)
+	foreach ($offeringUnits as $unit)
 	{
 		$unitTitles[$unit->get('id')] = $unit->get('title');
 	}
 ?>
 
-<?php if ($this->course->offering()->units()->total() > 0) : ?>
+<?php if ($offeringUnits->total() > 0) : ?>
 
-	<?php if (($this->course->offering()->section()->started() && !$this->course->offering()->section()->ended()) || $isManager) { ?>
+	<?php if (($section->started() && !$section->ended()) || $isManager) { ?>
 
-	<?php foreach ($this->course->offering()->units() as $i => $unit) { ?>
+	<?php foreach ($offeringUnits as $i => $unit) { ?>
 		<?php if ((!$isManager && $unit->isPublished()) || $isManager) {
 				$cls = '';
 				if (!$unit->isAvailable())
@@ -147,22 +130,26 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 				{
 					continue;
 				}
-		?>
 
-		<?php
 			$complete = isset($progress[$this->member->get('id')][$unit->get('id')]['percentage_complete'])
 					? $progress[$this->member->get('id')][$unit->get('id')]['percentage_complete']
 					: 0;
 			$margin   = 100 - $complete;
 			$done     = ($complete == 100) ? ' complete' : '';
-		?>
 
-		<div class="unit<?php echo ($i == 0) ? ' active' : ''; ?> unit-<?php echo ($i + 1); echo $cls; ?>">
+			$this->css('
+				.unit-fill .unit-fill-inner' . $unit->get('id') . ' {
+					height: ' . $complete . '%;
+					margin-top: '. $margin . '%;
+				}
+			');
+		?>
+		<div class="unit<?php echo ($i == 0) ? ' active' : ''; ?> unit-<?php echo ($i + 1) . $cls; ?>">
 			<div class="unit-wrap">
 				<div class="unit-content<?php echo ($unit->isAvailable()) ? ' open' : ''; ?>" data-id="<?php echo $unit->get('id'); ?>">
 					<h3 class="unit-content-available">
 						<span class="unit-fill">
-							<span class="unit-fill-inner<?php echo $done; ?>" style="height:<?php echo $complete; ?>%;margin-top:<?php echo $margin; ?>%;"></span>
+							<span class="unit-fill-inner<?php echo $done; ?> unit-fill-inner<?php echo $unit->get('id'); ?>"></span>
 						</span>
 						<?php echo $this->escape(stripslashes($unit->get('title'))); ?>
 					</h3>
@@ -173,11 +160,11 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 								<?php echo $this->escape(stripslashes($unit->get('description'))); ?>
 							</div>
 
-				<?php if (!$this->course->offering()->access('view') && $sparams->get('preview', 0) == 2 && $unit->get('ordering') > 1) { ?>
+				<?php if (!$offeringViewAccess && $sparamsPreview == 2 && $unit->get('ordering') > 1) { ?>
 							<div class="grid">
 								<p class="info">
 									Content for this unit is only available to enrolled students.
-									<a href="<?php echo Route::url($this->course->offering()->link('enroll')); ?>">
+									<a href="<?php echo $offeringEnrollUrl; ?>">
 										Enroll for <?php echo $price; ?>!
 									</a>
 								</p>
@@ -319,7 +306,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 															}
 															else if ($a->get('type') == 'file' || $a->get('type') == 'url')
 															{
-																$target = ' target="_blank"';
+																$target = ' rel="nofollow" target="_blank"';
 															}
 
 															$link = '<a class="' . $cls . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a>';
@@ -343,7 +330,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 
 																if ($crumb && strlen($crumb) == \Components\Courses\Models\PdfFormDeployment::CRUMB_LEN)
 																{
-																	$dep = \Components\Courses\Models\PdfFormDeployment::fromCrumb($crumb, $this->course->offering()->section()->get('id'));
+																	$dep = \Components\Courses\Models\PdfFormDeployment::fromCrumb($crumb, $section->get('id'));
 
 																	if ($dep && $dep->getState() == 'pending')
 																	{
@@ -356,8 +343,29 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 																$link = '<span class="info">' . $this->escape(stripslashes(($a->get('content')) ? $a->get('content') : $a->get('title'))) . '</span>';
 															}
 
-
-															$found[] = '<li>' . $link . '</li>';
+															$children = '';
+															if ($a->get('type') == 'tool')
+															{
+																$handler = $a->loadHandler();
+																if (method_exists($handler, 'files'))
+																{
+																	$files = $handler->files($a);
+																	if (!empty($files))
+																	{
+																		$children = '<ul>';
+																		foreach ($files as $child)
+																		{
+																			$fullFilePath = $handler::getToolDirectory() . $a->get('path') . '/' . $child;
+																			$childHref = $href . '?file=' . urlencode($fullFilePath);
+																			$childLink = '<a class="' . $cls . '" href="' . $childHref . '"' . $target . '>' .
+																				$this->escape(stripslashes($child)) . '</a>';
+																			$children .= '<li>' . $childLink . '</li>';
+																		}
+																		$children .= '</ul>';
+																	}
+																}
+															}
+															$found[] = '<li>' . $link . $children . '</li>';
 
 															//if ($a->get('type') == 'video')
 															if ($k == 0)
@@ -438,7 +446,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 														{
 															continue;
 														}
-														$href = Route::url($base . '&asset=' . $a->get('id')); //$a->path($this->course->get('id'));
+														$href = Route::url($base . '&asset=' . $a->get('id'));
 														$target = '';
 														if ($a->get('type') == 'video')
 														{
@@ -446,7 +454,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 														}
 														else if ($a->get('type') == 'file' || $a->get('type') == 'url')
 														{
-															$target = ' target="_blank"';
+															$target = ' rel="nofollow" target="_blank"';
 														}
 														echo '<li><a class="asset-primary ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 													}
@@ -482,7 +490,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 								{
 									if ($a->isAvailable() || $isManager)
 									{
-										$href = Route::url($base . '&asset=' . $a->get('id')); //$a->path($this->course->get('id'));
+										$href = Route::url($base . '&asset=' . $a->get('id'));
 										$target = '';
 										if ($a->get('type') == 'video')
 										{
@@ -490,7 +498,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 										}
 										else if ($a->get('type') == 'file' || $a->get('type') == 'url')
 										{
-											$target = ' target="_blank"';
+											$target = ' rel="nofollow" target="_blank"';
 										}
 										echo '<li><a class="asset ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 										$k++;
@@ -521,7 +529,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 		<p class="warning">The access time for this section has expired and the content is no longer available.</p>
 	<?php } ?>
 
-<?php elseif ($this->course->offering()->access('manage')) : ?>
+<?php elseif ($offering->access('manage')) : ?>
 		<p class="info">Your outline is currently empty. Go to the <a href="<?php echo Route::url($base . '&active=outline&action=build'); ?>">Outline Builder</a> to begin creating your course outline.</p>
 <?php else : ?>
 		<p class="info">There is currently no outline available for this course.</p>
@@ -531,8 +539,8 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 	<?php
 		// Trigger event
 		$results = Event::trigger('onCourseAfterOutline', array(
-			$this->course,
-			$this->course->offering()
+			$course,
+			$offering
 		));
 		// Output results
 		echo implode("\n", $results);

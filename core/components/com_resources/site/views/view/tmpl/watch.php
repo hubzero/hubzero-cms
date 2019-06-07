@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -69,7 +44,7 @@ $parent = $rr->parents()
 	->first();
 
 //check to see if parent type is series
-if ($parent && ($parent->type->get('type') == 'Series' || $parent->type->get('type') == 'Courses'))
+if ($parent && $parent->id && ($parent->type->get('type') == 'Series' || $parent->type->get('type') == 'Courses'))
 {
 	//if we have a series get children
 	$children = $parent->children()
@@ -104,15 +79,19 @@ else
 	$children = null;
 }
 
-//get the contributors for the resource
-$sql = "SELECT authorid, role, name FROM `#__author_assoc` "
-	 . "WHERE subtable='resources' "
-	 . "AND subid=" . $parent->id . " "
-	 . "ORDER BY ordering";
+$lectureAuthors = array();
+if ($parent && $parent->id)
+{
+	//get the contributors for the resource
+	$sql = "SELECT authorid, role, name FROM `#__author_assoc` "
+		 . "WHERE subtable='resources' "
+		 . "AND subid=" . $parent->id . " "
+		 . "ORDER BY ordering";
 
-$database = App::get('db');
-$database->setQuery($sql);
-$lectureAuthors = $database->loadObjectList();
+	$database = App::get('db');
+	$database->setQuery($sql);
+	$lectureAuthors = $database->loadObjectList();
+}
 
 //get the author names from ids
 $a = array();
@@ -164,8 +143,8 @@ $localSubtitles = Filesystem::files(PATH_APP . DS . $content_folder, '.srt|.SRT'
 foreach ($localSubtitles as $k => $subtitle)
 {
 	$info     = pathinfo($subtitle);
-	$name     = str_replace('-auto','', $info['filename']);
-	$autoplay = (strstr($info['filename'],'-auto')) ? 1 : 0;
+	$name     = str_replace('-auto', '', $info['filename']);
+	$autoplay = (strstr($info['filename'], '-auto')) ? 1 : 0;
 	$source   = $content_folder . DS . $subtitle;
 
 	// add each subtitle
@@ -311,7 +290,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 											<label for="font-color">Font Color:</label>
 										</div>
 										<div class="col span6 omega input">
-											<div id="font-color" data-color="FFF" style="background-color: #FFF;"></div>
+											<div id="font-color" data-color="FFF"></div>
 										</div>
 									</div>
 									<div class="grid">
@@ -319,13 +298,13 @@ $presentation->subtitles = array_values($presentation->subtitles);
 											<label for="background-color">Background:</label>
 										</div>
 										<div class="col span6 omega input">
-											<div id="background-color" data-color="000" style="background-color: #000;"></div>
+											<div id="background-color" data-color="000"></div>
 										</div>
 									</div>
 									<div class="grid">
 										<div class="col span12 omega subtitle-settings-preview-container">
 											<div class="subtitle-settings-preview">
-												<div class="test" style="font-family:arial; background-color: #000; color: #FFF; font-size:18px;">This is an Example</div>
+												<div class="test">This is an Example</div>
 											</div>
 										</div>
 									</div>
@@ -468,9 +447,13 @@ $presentation->subtitles = array_values($presentation->subtitles);
 							<?php
 								switch ($source->type)
 								{
-									case 'mp3': $type = 'audio/mp3'; break;
+									case 'mp3':
+										$type = 'audio/mp3';
+										break;
 									case 'ogv':
-									case 'ogg': $type = 'audio/ogg'; break;
+									case 'ogg':
+										$type = 'audio/ogg';
+										break;
 								}
 							?>
 							<source src="<?php echo $content_folder.DS.$source->source; ?>" type="<?php echo $type; ?>" />
@@ -486,7 +469,9 @@ $presentation->subtitles = array_values($presentation->subtitles);
 			</div>
 			<div id="list">
 				<ul id="list_items">
-					<?php $num = 0; $counter = 0; $last_slide_id = 0; ?>
+					<?php $num = 0;
+$counter = 0;
+$last_slide_id = 0; ?>
 					<?php foreach ($presentation->slides as $slide) : ?>
 						<?php if ((int)$slide->slide != $last_slide_id) : ?>
 							<li id="list_<?php echo $counter; ?>">

@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -34,30 +10,16 @@ defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('MEMBERS') . ': ' . Lang::txt('Manage Points'), 'user.png');
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
+
 $this->view('_submenu')
      ->display();
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-
-	// do field validation
-	if (form.uid.value == ''){
-		alert("<?php echo Lang::txt('You must fill in a UID'); ?>");
-	} else {
-		submitform( pressbutton );
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span5">
 			<fieldset class="adminform">
@@ -65,7 +27,7 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="account-uid"><?php echo Lang::txt('User ID:'); ?></label>
-					<input type="text" name="account[uid]" id="account-uid" size="20" maxlength="250" value="<?php echo $this->escape($this->row->uid); ?>" />
+					<input type="text" name="account[uid]" id="account-uid" class="required" size="20" maxlength="250" value="<?php echo $this->escape($this->row->uid); ?>" />
 					<input type="hidden" name="uid" value="<?php echo $this->escape($this->row->uid); ?>" />
 				</div>
 				<div class="input-wrap">
@@ -111,12 +73,12 @@ function submitbutton(pressbutton)
 				<caption><?php echo Lang::txt('Transaction History'); ?></caption>
 				<thead>
 					<tr>
-						<th><?php echo Lang::txt('Date'); ?></th>
-						<th><?php echo Lang::txt('Description'); ?></th>
-						<th><?php echo Lang::txt('Category'); ?></th>
-						<th><?php echo Lang::txt('Type'); ?></th>
-						<th><?php echo Lang::txt('Amount'); ?></th>
-						<th><?php echo Lang::txt('Balance'); ?></th>
+						<th scope="col"><?php echo Lang::txt('Date'); ?></th>
+						<th scope="col"><?php echo Lang::txt('Description'); ?></th>
+						<th scope="col"><?php echo Lang::txt('Category'); ?></th>
+						<th scope="col"><?php echo Lang::txt('Type'); ?></th>
+						<th scope="col"><?php echo Lang::txt('Amount'); ?></th>
+						<th scope="col"><?php echo Lang::txt('Balance'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -131,11 +93,11 @@ function submitbutton(pressbutton)
 						<td><?php echo $this->escape($item->category); ?></td>
 						<td><?php echo $this->escape($item->type); ?></td>
 						<?php if ($item->type == 'withdraw') { ?>
-							<td class="aRight"><span style="color: red;">-<?php echo $this->escape($item->amount); ?></span></td>
+							<td class="aRight"><span class="points-subtract">-<?php echo $this->escape($item->amount); ?></span></td>
 						<?php } else if ($item->type == 'hold') { ?>
-							<td class="aRight"><span style="color: #999;"> <?php echo $this->escape($item->amount); ?></span></td>
+							<td class="aRight"><span class="points-hold"> <?php echo $this->escape($item->amount); ?></span></td>
 						<?php } else { ?>
-							<td class="aRight"><span style="color: green;">+<?php echo $this->escape($item->amount); ?></span></td>
+							<td class="aRight"><span class="points-add">+<?php echo $this->escape($item->amount); ?></span></td>
 						<?php } ?>
 						<td class="aRight"><?php echo $this->escape($item->balance); ?></td>
 					</tr>

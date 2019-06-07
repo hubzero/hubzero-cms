@@ -7,7 +7,7 @@
 	$form->bind($this->customAnswers);
 	foreach ($this->customFields as $field)
 	{
-		echo '<div class="field-wrap">';	
+		echo '<div class="field-wrap">';
 		$formfield = $form->getField($field->get('name'));
 		if (strtolower($formfield->type) != 'paragraph')
 		{
@@ -19,7 +19,7 @@
 			$fieldValue = isset($this->customAnswers[$fieldName]) ? $this->customAnswers[$fieldName] : $field->get('default_value', '');
 			$fieldNameAttr = $formInfo['control'] . '[' . $fieldName . ']';
 			$fieldIdAttr = $formInfo['control'] . '_' . $fieldName;
- 			echo $this->editor($fieldNameAttr, $this->escape($fieldValue), 35, 8, $fieldIdAttr, array('class' => 'minimal no-footer images macros'));
+			echo $this->editor($fieldNameAttr, $this->escape($fieldValue), 35, 8, $fieldIdAttr, array('class' => 'minimal no-footer images macros'));
 		}
 		else
 		{
@@ -32,4 +32,3 @@
 		}
 		echo '</div>';
 	}
-	

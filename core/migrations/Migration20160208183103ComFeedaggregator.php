@@ -1,7 +1,11 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
-use Components\Feedaggregator\Models\Post;
 
 /**
  * Migration script for converting the timestamps in the created field to
@@ -17,10 +21,10 @@ class Migration20160208183103ComFeedaggregator extends Base
 	{
 		if ($this->db->tableExists('#__feedaggregator_posts'))
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_feedaggregator' . DS . 'models' . DS . 'post.php');
-
 			// Grab rows first
-			$rows = Post::all()->rows();
+			$query = "SELECT * FROM `#__feedaggregator_posts`;";
+			$this->db->setQuery($query);
+			$rows = $this->db->loadObjectList();
 
 			// Convert the field
 			$query = "ALTER TABLE `#__feedaggregator_posts` MODIFY created DATETIME;";
@@ -30,8 +34,10 @@ class Migration20160208183103ComFeedaggregator extends Base
 			// Convert each timestamp into SQL date format
 			foreach ($rows as $row)
 			{
-				$row->set('created', Date::of(date("F j, Y, g:i a", $row->created))->toSql());
-				$row->save();
+				$dt = \Date::of(date("F j, Y, g:i a", $row->created))->toSql();
+				$query = "UPDATE `#__feedaggregator_posts` SET `created`=" . $this->db->quote($dt) . " WHERE `id`=" . $this->db->quote($row->id) . ";";
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 	}
@@ -43,10 +49,10 @@ class Migration20160208183103ComFeedaggregator extends Base
 	{
 		if ($this->db->tableExists('#__feedaggregator_posts'))
 		{
-			require_once(PATH_CORE . DS . 'components' . DS . 'com_feedaggregator' . DS . 'models' . DS . 'post.php');
-
 			// Grab rows first
-			$rows = Post::all()->rows();
+			$query = "SELECT * FROM `#__feedaggregator_posts`;";
+			$this->db->setQuery($query);
+			$rows = $this->db->loadObjectList();
 
 			// Convert the field
 			$query = "ALTER TABLE `#__feedaggregator_posts` MODIFY created INT(11);";
@@ -56,8 +62,10 @@ class Migration20160208183103ComFeedaggregator extends Base
 			// Convert each timestamp into SQL date format
 			foreach ($rows as $row)
 			{
-				$row->set('created', Date::of($row->created)->toUnix());
-				$row->save();
+				$dt = \Date::of($row->created)->toUnix();
+				$query = "UPDATE `#__feedaggregator_posts` SET `created`=" . $this->db->quote($dt) . " WHERE `id`=" . $this->db->quote($row->id) . ";";
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 	}

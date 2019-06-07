@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -97,12 +72,12 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 		$image = $pconfig->get('email_image', '');
 
 		Lang::load('com_publications', PATH_APP) ||
-		Lang::load('com_publications', Component::path('com_publications') . DS . 'site');
+		Lang::load('com_publications', Component::path('com_publications') . '/site');
 
 		// Is logging enabled?
-		if (is_file(Component::path('com_publications') . DS . 'tables' . DS . 'logs.php'))
+		if (is_file(Component::path('com_publications') . '/tables/logs.php'))
 		{
-			require_once Component::path('com_publications') . DS . 'tables' . DS . 'logs.php';
+			require_once Component::path('com_publications') . '/tables/logs.php';
 		}
 		else
 		{
@@ -111,8 +86,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Helpers
-		//require_once Component::path('com_members') . DS . 'helpers' . DS . 'imghandler.php';
-		require_once Component::path('com_publications') . DS . 'helpers' . DS . 'html.php';
+		require_once Component::path('com_publications') . '/helpers/html.php';
 
 		// Get all registered authors who subscribed to email
 		$query  = "SELECT A.user_id ";
@@ -185,12 +159,11 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 			}
 
 			// Plain text
-			$eview = new \Hubzero\Plugin\View(
+			$eview = new Hubzero\Mail\View(
 				array(
-					'folder'  =>'cron',
-					'element' =>'publications',
-					'name'    =>'emails',
-					'layout'  =>'stats_plain'
+					'base_path' => __DIR__,
+					'name'      => 'emails',
+					'layout'    => 'stats_plain'
 				)
 			);
 			$eview->option     = 'com_publications';
@@ -248,9 +221,9 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 		$numMonths = 1;
 		$includeCurrent = false;
 
-		require_once Component::path('com_publications') . DS . 'tables' . DS . 'publication.php';
-		require_once Component::path('com_publications') . DS . 'tables' . DS . 'version.php';
-		require_once Component::path('com_publications') . DS . 'models' . DS . 'log.php';
+		require_once Component::path('com_publications') . '/tables/publication.php';
+		require_once Component::path('com_publications') . '/tables/version.php';
+		require_once Component::path('com_publications') . '/models/log.php';
 
 		// Get log model
 		$modelLog = new \Components\Publications\Models\Log();
@@ -286,9 +259,9 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 		$database = \App::get('db');
 		$config = Component::params('com_publications');
 
-		require_once Component::path('com_publications') . DS . 'helpers' . DS . 'utilities.php';
-		require_once Component::path('com_publications') . DS . 'tables' . DS . 'version.php';
-		require_once Component::path('com_projects') . DS . 'helpers' . DS . 'html.php';
+		require_once Component::path('com_publications') . '/helpers/utilities.php';
+		require_once Component::path('com_publications') . '/tables/version.php';
+		require_once Component::path('com_projects') . '/helpers/html.php';
 
 		// Check that mkAIP script exists
 		if (!\Components\Publications\Helpers\Utilities::archiveOn())
@@ -303,8 +276,8 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$aipBasePath = trim($config->get('aip_path', null), DS);
-		$aipBasePath = $aipBasePath && is_dir(DS . $aipBasePath) ? DS . $aipBasePath : null;
+		$aipBasePath = trim($config->get('aip_path', null), '/');
+		$aipBasePath = $aipBasePath && is_dir('/' . $aipBasePath) ? '/' . $aipBasePath : null;
 
 		// Check for base path
 		if (!$aipBasePath)
@@ -442,7 +415,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 			return true;
 		}
 
-		include_once Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
+		include_once Component::path('com_publications') . '/models/publication.php';
 
 		// Get DOI service
 		$doiService = new \Components\Publications\Models\Doi();
@@ -470,7 +443,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 
 			// Build url
 			$pointer = $model->publication->alias ? $model->publication->alias : $model->publication->id;
-			$url = $doiService->_configs->livesite . DS . 'publications' . DS . $pointer . DS . 'main';
+			$url = $doiService->_configs->livesite . '/publications/' . $pointer . '/main';
 
 			// Master DOI should link to /main
 			$doiService->set('url', $url);
@@ -499,26 +472,32 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 	{
 		include_once Component::path('com_publications') . '/models/orm/version.php';
 		include_once Component::path('com_publications') . '/models/publication.php';
+
 		$params = $job->params;
 		$yesterday = !empty($job->params['startdate']) ? $job->params['startdate'] : Date::of()->subtract('1 day')->format('Y-m-d 00:00:00');
 		$today = Date::of()->format('Y-m-d 00:00:00');
+
 		$versions = \Components\Publications\Models\Orm\Version::all()
 			->select('#__publication_versions.*')
+			->select('t.alias', 'master_alias')
 			->join('#__publications p', '#__publication_versions.publication_id', 'p.id')
 			->join('#__publication_master_types t', 'p.master_type', 't.id')
 			->whereEquals('#__publication_versions.state', 1)
-			->whereNotIn('t.alias', array('series', 'databases'))
 			->where('#__publication_versions.published_up', '>=', $yesterday, 'AND', 1)
 			->where('#__publication_versions.published_up', '<=', $today, 'AND', 1)
 			->resetDepth()
 			->where('#__publication_versions.published_down', '>=', $yesterday, 'OR', 1)
 			->where('#__publication_versions.published_down', '<=', $today, 'AND', 1)
 			->rows();
+		$publicationParams = Component::params('com_publications');
+		$typeBlackList = array();
+		$typeBlackList = explode(',', $publicationParams->get('sftptypeblacklist'));
+		$typeBlackList = array_filter($typeBlackList, 'trim');
 		foreach ($versions as $version)
 		{
 			$publication = new \Components\Publications\Models\Publication($version->publication_id, $version->version_number);
 			$publication->setCuration();
-			if ($version->isPublished())
+			if ($version->isPublished() && !in_array($version->master_alias, $typeBlackList))
 			{
 				$publication->_curationModel->createSymLink();
 			}

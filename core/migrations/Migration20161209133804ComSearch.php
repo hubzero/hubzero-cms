@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -33,7 +38,7 @@ class Migration20161209133804ComSearch extends Base
 				`created` timestamp NULL DEFAULT NULL,
 				`modified` timestamp NULL DEFAULT NULL,
 				PRIMARY KEY (`id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=latin1;";
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 			$this->db->setQuery($sql1);
 			$this->db->query();
@@ -67,7 +72,7 @@ class Migration20161209133804ComSearch extends Base
 				`created_by` int(11) DEFAULT NULL,
 				`modified` timestamp NULL DEFAULT NULL,
 				PRIMARY KEY (`id`)
-			) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;";
+			) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;";
 
 			$this->db->setQuery($sql1);
 			$this->db->query();

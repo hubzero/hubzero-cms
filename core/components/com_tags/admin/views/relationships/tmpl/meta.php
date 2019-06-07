@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -43,7 +19,9 @@ Toolbar::help('focusareas');
 
 Html::behavior('framework');
 
-$this->js('tag_graph.js');
+$this->css('tag_graph.css');
+$this->js('d3.js', 'system')
+	->js('tag_graph.js');
 
 $dbh = App::get('db');
 $dbh->setQuery(
@@ -58,8 +36,10 @@ $dbh->setQuery(
 );
 $types = $dbh->loadAssocList('id');
 ?>
-<script type="text/javascript">
-window.resourceTypes = <?php echo json_encode(array_values($types)); ?>;
+<script type="application/json" id="resource-types">
+	{
+		"types": <?php echo json_encode(array_values($types)); ?>
+	}
 </script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
@@ -84,25 +64,25 @@ window.resourceTypes = <?php echo json_encode(array_values($types)); ?>;
 						<div class="input-wrap">
 							<select id="types-<?php echo $fa['id']; ?>" name="types-<?php echo $fa['id']; ?>[]" multiple="multiple" size="<?php echo count($types); ?>">
 								<?php foreach ($types as $type): ?>
-									<option value="<?php echo $type['id']; ?>" <?php if (isset($type_ids[$type['id']])) echo 'selected="selected" '; ?>><?php echo $type['type']; ?></option>
+									<option value="<?php echo $type['id']; ?>" <?php if (isset($type_ids[$type['id']])) { echo 'selected="selected" '; } ?>><?php echo $type['type']; ?></option>
 								<?php endforeach; ?>
 							</select>
 
-							<label><input type="radio" name="mandatory-<?php echo $fa['id']; ?>" value="optional" <?php if (is_null($fa['mandatory_depth'])) echo 'checked="checked" '; ?>/> <?php echo Lang::txt('COM_TAGS_OPTIONAL'); ?></label><br />
-							<label><input type="radio" name="mandatory-<?php echo $fa['id']; ?>" value="mandatory" <?php if (!is_null($fa['mandatory_depth']) && $fa['mandatory_depth'] < 2) echo 'checked="checked" '; ?>/> <?php echo Lang::txt('COM_TAGS_MANDATORY'); ?></label><br />
-							<label><input type="radio" name="mandatory-<?php echo $fa['id']; ?>" value="depth" <?php if ($fa['mandatory_depth'] > 1) echo 'checked="checked" '; ?>/> <?php echo Lang::txt('COM_TAGS_MANDATORY'); ?></label> <label><?php echo Lang::txt('COM_TAGS_GROUP_UNTIL_DEPTH'); ?>:</label><br />
-							<input type="text" class="option" name="mandatory-depth-<?php echo $fa['id']; ?>" value="<?php if ($fa['mandatory_depth'] > 1) echo $fa['mandatory_depth']; ?>" />
+							<label><input type="radio" name="mandatory-<?php echo $fa['id']; ?>" value="optional" <?php if (is_null($fa['mandatory_depth'])) { echo 'checked="checked" '; } ?>/> <?php echo Lang::txt('COM_TAGS_OPTIONAL'); ?></label><br />
+							<label><input type="radio" name="mandatory-<?php echo $fa['id']; ?>" value="mandatory" <?php if (!is_null($fa['mandatory_depth']) && $fa['mandatory_depth'] < 2) { echo 'checked="checked" '; } ?>/> <?php echo Lang::txt('COM_TAGS_MANDATORY'); ?></label><br />
+							<label><input type="radio" name="mandatory-<?php echo $fa['id']; ?>" value="depth" <?php if ($fa['mandatory_depth'] > 1) { echo 'checked="checked" '; } ?>/> <?php echo Lang::txt('COM_TAGS_MANDATORY'); ?></label> <label><?php echo Lang::txt('COM_TAGS_GROUP_UNTIL_DEPTH'); ?>:</label><br />
+							<input type="text" class="option" name="mandatory-depth-<?php echo $fa['id']; ?>" value="<?php if ($fa['mandatory_depth'] > 1) { echo $fa['mandatory_depth']; } ?>" />
 						</div>
 					</fieldset>
 
 					<fieldset>
 						<legend><?php echo Lang::txt('COM_TAGS_GROUP_SELECTION_TYPE'); ?>:</legend>
 						<div class="input-wrap">
-							<label><input type="radio" name="multiple-<?php echo $fa['id']; ?>" value="multiple" <?php if (!is_null($fa['multiple_depth']) && $fa['multiple_depth'] < 2) echo 'checked="checked" '; ?>/> <?php echo Lang::txt('COM_TAGS_GROUP_MULTI_SELECT'); ?></label><br />
-							<label><input type="radio" name="multiple-<?php echo $fa['id']; ?>" value="single" <?php if (is_null($fa['multiple_depth'])) echo 'checked="checked" '; ?>/> <?php echo Lang::txt('COM_TAGS_GROUP_SINGLE_SELECT_RADIO'); ?> </label><br />
-							<label><input type="radio" name="multiple-<?php echo $fa['id']; ?>" value="depth" <?php if ($fa['multiple_depth'] > 1) echo 'checked="checked" '; ?>/> <?php echo Lang::txt('COM_TAGS_GROUP_SINGLE_SELECT'); ?></label> <label><?php echo Lang::txt('COM_TAGS_GROUP_UNTIL_DEPTH'); ?>: </label><br />
+							<label><input type="radio" name="multiple-<?php echo $fa['id']; ?>" value="multiple" <?php if (!is_null($fa['multiple_depth']) && $fa['multiple_depth'] < 2) { echo 'checked="checked" '; } ?>/> <?php echo Lang::txt('COM_TAGS_GROUP_MULTI_SELECT'); ?></label><br />
+							<label><input type="radio" name="multiple-<?php echo $fa['id']; ?>" value="single" <?php if (is_null($fa['multiple_depth'])) { echo 'checked="checked" '; } ?>/> <?php echo Lang::txt('COM_TAGS_GROUP_SINGLE_SELECT_RADIO'); ?> </label><br />
+							<label><input type="radio" name="multiple-<?php echo $fa['id']; ?>" value="depth" <?php if ($fa['multiple_depth'] > 1) { echo 'checked="checked" '; } ?>/> <?php echo Lang::txt('COM_TAGS_GROUP_SINGLE_SELECT'); ?></label> <label><?php echo Lang::txt('COM_TAGS_GROUP_UNTIL_DEPTH'); ?>: </label><br />
 
-							<input type="text" name="multiple-depth-<?php echo $fa['id']; ?>" value="<?php if ($fa['multiple_depth'] > 1) echo $fa['multiple_depth']; ?>" />
+							<input type="text" name="multiple-depth-<?php echo $fa['id']; ?>" value="<?php if ($fa['multiple_depth'] > 1) { echo $fa['multiple_depth']; } ?>" />
 						</div>
 					</fieldset>
 
@@ -130,4 +110,3 @@ window.resourceTypes = <?php echo json_encode(array_values($types)); ?>;
 		</div>
 	</div>
 </form>
-

@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2011-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Courses\Models\Assets;
@@ -64,28 +39,36 @@ class File extends Handler
 	 *
 	 * @return  array  of assets created
 	 **/
-	public function create()
+	public function create($localPath = null)
 	{
 		// Include needed files
 		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.association.php';
 		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.php';
 		require_once dirname(__DIR__) . DS . 'asset.php';
 
-		// Get the file
-		if (isset($_FILES['files']))
+		if (!$localPath)
 		{
-			$file = $_FILES['files']['name'][0];
-			$size = (int) $_FILES['files']['size'];
+			// Get the file
+			if (isset($_FILES['files']))
+			{
+				$file = $_FILES['files']['name'][0];
+				$size = (int) $_FILES['files']['size'];
 
-			// Get the file extension
-			$pathinfo = pathinfo($file);
-			$filename = $pathinfo['filename'];
-			$ext      = $pathinfo['extension'];
+			}
+			else
+			{
+				return array('error' => 'No files provided');
+			}
 		}
 		else
 		{
-			return array('error' => 'No files provided');
+			$file = $localPath;
+			$size = filesize($file);
 		}
+		// Get the file extension
+		$pathinfo = pathinfo($file);
+		$filename = $pathinfo['filename'];
+		$ext      = $pathinfo['extension'];
 
 		// @FIXME: should these come from the global settings, or should they be courses specific
 		// Get config
@@ -160,24 +143,29 @@ class File extends Handler
 
 		// Move the file to the site folder
 		set_time_limit(60);
-
-		// Scan for viruses
-		if (!Filesystem::isSafe($_FILES['files']['tmp_name'][0]))
+		if (!$localPath)
 		{
-			// Scan failed, delete asset and association and return an error
-			$assetObj->delete();
-			$assocObj->delete();
-			Filesystem::deleteDirectory($uploadDirectory);
-			return array('error' => 'File rejected because the anti-virus scan failed.');
+			// Scan for viruses
+			if (!Filesystem::isSafe($_FILES['files']['tmp_name'][0]))
+			{
+				// Scan failed, delete asset and association and return an error
+				$assetObj->delete();
+				$assocObj->delete();
+				Filesystem::deleteDirectory($uploadDirectory);
+				return array('error' => 'File rejected because the anti-virus scan failed.');
+			}
+			if (!$move = move_uploaded_file($_FILES['files']['tmp_name'][0], $target_path))
+			{
+				// Move failed, delete asset and association and return an error
+				$assetObj->delete();
+				$assocObj->delete();
+				Filesystem::deleteDirectory($uploadDirectory);
+				return array('error' => 'Move file failed');
+			}
 		}
-
-		if (!$move = move_uploaded_file($_FILES['files']['tmp_name'][0], $target_path))
+		else
 		{
-			// Move failed, delete asset and association and return an error
-			$assetObj->delete();
-			$assocObj->delete();
-			Filesystem::deleteDirectory($uploadDirectory);
-			return array('error' => 'Move file failed');
+			Filesystem::copy($localPath, $target_path);
 		}
 
 		// Get the url to return to the page

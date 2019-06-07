@@ -1,3 +1,9 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 /*===========================================
  	Group Media Browser
 ===========================================*/
@@ -44,6 +50,7 @@
 	}
 	.upload-browser-col.left {
 		width: 250px;
+		min-width: 250px;
 		padding-top: 7em;
 		border-right: 2px solid #eee;
 		overflow-y: auto;
@@ -51,6 +58,7 @@
 	.upload-browser-col.right {
 		/*padding-left: 30px;*/
 		border-left: 2px solid #eee;
+		width: 100%;
 	}
 	.upload-browser-col .toolbar {
 		margin: 10px;

@@ -1,10 +1,8 @@
-/*
-* @package     hubzero-cms
-* @file        media/system/css/icons.css
-* @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
-* @license     http://opensource.org/licenses/MIT MIT
-* @description Pre-defined icon classes
-*/
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 	*[class^="icon-"]:before,
 	*[class*=" icon-"]:before {

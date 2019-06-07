@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2011-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Courses\Models\Assets;
@@ -35,8 +10,8 @@ namespace Components\Courses\Models\Assets;
 use Components\Courses\Tables;
 
 /**
-* Content based asset handler (i.e. things like notes, wiki, html, etc...)
-*/
+ * Content based asset handler (i.e. things like notes, wiki, html, etc...)
+ */
 class Content extends Handler
 {
 	/**
@@ -60,8 +35,13 @@ class Content extends Handler
 	public function create()
 	{
 		// Include needed files
-		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php';
-		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php';
+		require_once dirname(__DIR__) . DS . 'asset.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.association.php';
+
+		if (!empty($this->asset['tool-alias']))
+		{
+			$this->asset['url'] = '/tools/' . $this->asset['tool-alias'] . '/invoke';
+		}
 
 		// Create our asset table object
 		$asset = new \Components\Courses\Models\Asset();
@@ -71,17 +51,17 @@ class Content extends Handler
 
 		// Get everything ready to store
 		// Check if vars are already set (i.e. by a sub class), before setting them here
-		$asset->set('title',        ((!empty($this->asset['title']))        ? $this->asset['title']        : strip_tags(substr($content, 0, 25))));
-		$asset->set('type',         ((!empty($this->asset['type']))         ? $this->asset['type']         : 'text'));
-		$asset->set('subtype',      ((!empty($this->asset['subtype']))      ? $this->asset['subtype']      : 'content'));
-		$asset->set('content',      ((!empty($this->asset['content']))      ? $this->asset['content']      : $content));
-		$asset->set('url',          ((!empty($this->asset['url']))          ? $this->asset['url']          : ''));
-		$asset->set('graded',       ((!empty($this->asset['graded']))       ? $this->asset['graded']       : 0));
+		$asset->set('title', ((!empty($this->asset['title']))        ? $this->asset['title']        : strip_tags(substr($content, 0, 25))));
+		$asset->set('type', ((!empty($this->asset['type']))         ? $this->asset['type']         : 'text'));
+		$asset->set('subtype', ((!empty($this->asset['subtype']))      ? $this->asset['subtype']      : 'content'));
+		$asset->set('content', ((!empty($this->asset['content']))      ? $this->asset['content']      : $content));
+		$asset->set('url', ((!empty($this->asset['url']))          ? $this->asset['url']          : ''));
+		$asset->set('graded', ((!empty($this->asset['graded']))       ? $this->asset['graded']       : 0));
 		$asset->set('grade_weight', ((!empty($this->asset['grade_weight'])) ? $this->asset['grade_weight'] : ''));
-		$asset->set('created',      \Date::toSql());
-		$asset->set('created_by',   App::get('authn')['user_id']);
-		$asset->set('course_id',    Request::getInt('course_id', 0));
-		$asset->set('state',        0);
+		$asset->set('created', \Date::toSql());
+		$asset->set('created_by', App::get('authn')['user_id']);
+		$asset->set('course_id', Request::getInt('course_id', 0));
+		$asset->set('state', 0);
 
 		// Check whether asset should be graded
 		if ($graded = Request::getInt('graded', false))
@@ -123,7 +103,8 @@ class Content extends Handler
 		$course->offering($offering_alias);
 
 		$url = Route::url($course->offering()->link() . '&asset=' . $asset->get('id'));
-		$url = rtrim(str_replace('/api', '', Request::root()), '/') . '/' . ltrim($url, '/');
+		$url = str_replace('/api', '', $url);
+		$url = rtrim(Request::root(), '/') . '/' . ltrim($url, '/');
 
 		$files = array(
 			'asset_id'       => $asset->get('id'),
@@ -160,7 +141,7 @@ class Content extends Handler
 	public function save()
 	{
 		// Include needed files
-		require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php';
+		require_once dirname(__DIR__) . DS . 'asset.php';
 
 		// Create our asset object
 		$id    = Request::getInt('id', null);
@@ -168,11 +149,23 @@ class Content extends Handler
 
 		// Grab the incoming content
 		$content = Request::getString('content', '');
+		if (isset($this->asset['tool-alias']))
+		{
+			$toolAlias = $this->asset['tool-alias'];
+			if (!empty($toolAlias))
+			{
+				$asset->set('url', '/tools/' . $toolAlias . '/invoke');
+			}
+			else
+			{
+				$asset->set('url', '');
+			}
+		}
 
 		// Get everything ready to store
 		// Check if vars are already set (i.e. by a sub class), before setting them here
-		$asset->set('title',   ((!empty($this->asset['title']))   ? $this->asset['title']   : strip_tags(substr($content, 0, 25))));
-		$asset->set('type',    ((!empty($this->asset['type']))    ? $this->asset['type']    : 'text'));
+		$asset->set('title', ((!empty($this->asset['title']))   ? $this->asset['title']   : strip_tags(substr($content, 0, 25))));
+		$asset->set('type', ((!empty($this->asset['type']))    ? $this->asset['type']    : 'text'));
 		$asset->set('subtype', ((!empty($this->asset['subtype'])) ? $this->asset['subtype'] : 'content'));
 		$asset->set('content', ((!empty($this->asset['content'])) ? $this->asset['content'] : $content));
 
@@ -221,7 +214,7 @@ class Content extends Handler
 		if (!is_null($scope_id) && !is_null($original_scope_id) && $scope_id != $original_scope_id)
 		{
 			// Create asset assoc object
-			require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php';
+			require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.association.php';
 			$assoc = new Tables\AssetAssociation($this->db);
 
 			if (!$assoc->loadByAssetScope($asset->get('id'), $original_scope_id, $scope))

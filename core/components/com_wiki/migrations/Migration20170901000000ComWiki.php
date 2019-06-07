@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -24,7 +29,7 @@ class Migration20170901000000ComWiki extends Base
 			  `path` varchar(255) NOT NULL,
 			  `hits` int(11) NOT NULL DEFAULT '0',
 			  `created_by` int(11) NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `rating` decimal(2,1) NOT NULL DEFAULT '0.0',
 			  `times_rated` int(11) NOT NULL DEFAULT '0',
 			  `title` varchar(255) DEFAULT NULL,
@@ -34,7 +39,7 @@ class Migration20170901000000ComWiki extends Base
 			  `ranking` float DEFAULT '0',
 			  `access` tinyint(2) DEFAULT '0',
 			  `state` tinyint(2) DEFAULT '0',
-			  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `modified` datetime DEFAULT NULL,
 			  `version_id` int(11) NOT NULL DEFAULT '0',
 			  `protected` tinyint(2) NOT NULL DEFAULT '0',
 			  `parent` int(11) NOT NULL DEFAULT '0',
@@ -78,7 +83,7 @@ class Migration20170901000000ComWiki extends Base
 			  `page_id` int(11) DEFAULT '0',
 			  `filename` varchar(255) DEFAULT NULL,
 			  `description` tinytext,
-			  `created` datetime DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) DEFAULT '0',
 			  PRIMARY KEY (`id`),
 			  KEY `idx_pageid` (`page_id`)
@@ -109,7 +114,7 @@ class Migration20170901000000ComWiki extends Base
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `page_id` int(11) DEFAULT '0',
 			  `version` int(11) NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  `ctext` text,
 			  `chtml` text,
@@ -132,7 +137,7 @@ class Migration20170901000000ComWiki extends Base
 			$query = "CREATE TABLE `#__wiki_links` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `page_id` int(11) NOT NULL DEFAULT '0',
-			  `timestamp` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `timestamp` datetime DEFAULT NULL,
 			  `scope` varchar(50) NOT NULL DEFAULT '',
 			  `scope_id` int(11) NOT NULL DEFAULT '0',
 			  `link` varchar(255) NOT NULL DEFAULT '',
@@ -151,7 +156,7 @@ class Migration20170901000000ComWiki extends Base
 			$query = "CREATE TABLE `#__wiki_logs` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `page_id` int(11) NOT NULL DEFAULT '0',
-			  `timestamp` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `timestamp` datetime DEFAULT NULL,
 			  `user_id` int(11) DEFAULT '0',
 			  `action` varchar(50) DEFAULT NULL,
 			  `comments` text,

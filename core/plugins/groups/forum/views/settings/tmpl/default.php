@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -47,26 +22,53 @@ $this->css()
 		<fieldset class="settings">
 			<legend><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADS'); ?></legend>
 
-			<label for="param-threading">
-				<?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING'); ?>
-				<select name="params[threading]" id="param-threading">
-					<option value="list"<?php if ($this->config->get('threading', 'list') == 'list') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_LIST'); ?></option>
-					<option value="tree"<?php if ($this->config->get('threading', 'list') == 'tree') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_TREE'); ?></option>
-				</select>
-				<span class="hint"><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_HINT'); ?>
-			</label>
+			<div class="form-group">
+				<label for="param-threading">
+					<?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING'); ?>
+					<select name="params[threading]" id="param-threading" class="form-control">
+						<option value="list"<?php if ($this->config->get('threading', 'list') == 'list') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_LIST'); ?></option>
+						<option value="tree"<?php if ($this->config->get('threading', 'list') == 'tree') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_TREE'); ?></option>
+					</select>
+					<span class="hint"><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_HINT'); ?></span>
+				</label>
+			</div>
 
-			<label for="param-threading_depth">
-				<?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_DEPTH'); ?>
-				<input type="text" name="params[threading_depth]" id="param-threading_depth" value="<?php echo $this->config->get('threading_depth', 3); ?>" />
-				<span class="hint"><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_DEPTH_HINT'); ?></span>
-			</label>
+			<div class="form-group">
+				<label for="param-sorting">
+					<?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_SORTING'); ?>
+					<select name="params[sorting]" id="param-sorting" class="form-control">
+						<option value="activity"<?php if ($this->config->get('sorting', 'activity') == 'activity') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_ACTIVITY'); ?></option>
+						<option value="created"<?php if ($this->config->get('sorting', 'activity') == 'created') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_CREATED'); ?></option>
+						<option value="replies"<?php if ($this->config->get('sorting', 'activity') == 'replies') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_REPLIES'); ?></option>
+						<option value="title"<?php if ($this->config->get('sorting', 'activity') == 'title') { echo ' selected="selected"'; }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_TITLE'); ?></option>
+					</select>
+					<span class="hint"><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_SORTING_HINT'); ?></span>
+				</label>
+			</div>
 
-			<fieldset>
+			<div class="form-group">
+				<label for="param-threading_depth">
+					<?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_DEPTH'); ?>
+					<input type="text" class="form-control" name="params[threading_depth]" id="param-threading_depth" value="<?php echo $this->config->get('threading_depth', 3); ?>" />
+					<span class="hint"><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_DEPTH_HINT'); ?></span>
+				</label>
+			</div>
+
+			<fieldset class="form-group">
 				<legend><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_ALLOW_ANONYMOUS'); ?></legend>
 
-				<label for="param-allow_anonymous-no"><input type="radio" name="params[allow_anonymous]" id="param-allow_anonymous-no" value="0" <?php if (!$this->config->get('allow_anonymous')) { echo ' checked="checked"'; } ?> /> <?php echo Lang::txt('JNO'); ?></label>
-				<label for="param-allow_anonymous-yes"><input type="radio" name="params[allow_anonymous]" id="param-allow_anonymous-yes" value="1" <?php if ($this->config->get('allow_anonymous')) { echo ' checked="checked"'; } ?> /> <?php echo Lang::txt('JYES'); ?></label>
+				<div class="form-check">
+					<label for="param-allow_anonymous-no" class="form-check-label">
+						<input type="radio" class="form-check-input" name="params[allow_anonymous]" id="param-allow_anonymous-no" value="0" <?php if (!$this->config->get('allow_anonymous')) { echo ' checked="checked"'; } ?> />
+						<?php echo Lang::txt('JNO'); ?>
+					</label>
+				</div>
+				<div class="form-check">
+					<label for="param-allow_anonymous-yes" class="form-check-label">
+						<input type="radio" class="form-check-input" name="params[allow_anonymous]" id="param-allow_anonymous-yes" value="1" <?php if ($this->config->get('allow_anonymous')) { echo ' checked="checked"'; } ?> />
+						<?php echo Lang::txt('JYES'); ?>
+					</label>
+				</div>
 			</fieldset>
 
 			<input type="hidden" name="settings[id]" value="<?php echo $this->settings->get('id'); ?>" />
@@ -88,7 +90,7 @@ $this->css()
 			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SAVE'); ?>" />
 
 			<a class="btn btn-secondary" href="<?php echo Route::url($base); ?>">
-				<?php echo Lang::txt('PLG_GROUPS_FORUM_CANCEL'); ?>
+				<?php echo Lang::txt('JCANCEL'); ?>
 			</a>
 		</p>
 	</form>

@@ -1,4 +1,10 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 use Hubzero\Utility\Arr;
 
 $connectionId = $this->connectionId;
@@ -19,15 +25,15 @@ if ($itemMimeType && preg_match('/^application\/vnd\.google\-apps\.([^.]+)/', $i
 {
 	$googleMimetypeMap = [
 		'document'     => 'gdoc',      // Google Docs
-		'presentation' => 'gslides',  // Google Slides
-		'spreadsheet'  => 'gsheet',  // Google Sheets
-		'map'          => 'gmap',  // Google Maps
+		'form'         => 'gform',     // Google form
+		'presentation' => 'gslides',   // Google Slides
+		'spreadsheet'  => 'gsheet',    // Google Sheets
+		'map'          => 'gmap',      // Google Maps
 	];
+
 	$format = Arr::getValue($match, 1, null);
-	if (isset($googleMimetypeMap[$format]))
-	{
-		$itemExtension = $googleMimetypeMap[$format];
-	}
+
+	$itemExtension = Arr::getValue($googleMimetypeMap, $format, null);
 }
 else
 {

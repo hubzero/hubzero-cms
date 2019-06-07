@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 use Components\Forum\Models\Manager;
@@ -115,7 +91,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// The output array we're returning
 		$arr = array(
-			'html'=>'',
+			'html' => '',
+			'metadata' => array(),
 			'name' => $active
 		);
 
@@ -802,7 +779,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$filters['access'][] = 5;
 		}
 
-		$filters['sortby'] = Request::getWord('sortby', 'activity');
+		$filters['sortby'] = Request::getWord('sortby', $this->params->get('sorting', 'activity'));
 		switch ($filters['sortby'])
 		{
 			case 'title':
@@ -865,7 +842,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		$threads = $category->threads()
-			->select("*, (CASE WHEN last_activity != '0000-00-00 00:00:00' THEN last_activity ELSE created END)", 'activity')
+			->select("*, (CASE WHEN last_activity IS NOT NULL THEN last_activity ELSE created END)", 'activity')
 			->whereEquals('state', $filters['state'])
 			->whereIn('access', $filters['access'])
 			->order($filters['sort'], $filters['sort_Dir'])
@@ -1568,7 +1545,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			}
 
 			$from = array(
-				'name'  => (!$post->get('anonymous') ? $post->creator->get('name', Lang::txt('PLG_GROUPS_FORUM_UNKNOWN')) : Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS')) . ' @ ' . Config::get('sitename'),
+				'name'  => (!$post->get('anonymous') ? $post->creator->get('name', Lang::txt('PLG_GROUPS_FORUM_UNKNOWN')) : Lang::txt('JANONYMOUS')) . ' @ ' . Config::get('sitename'),
 				'email' => Config::get('mailfrom'),
 				'replytoname'  => Config::get('sitename'),
 				'replytoemail' => Config::get('mailfrom')
@@ -1933,7 +1910,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming file
-		$file = Request::getArray('upload', '', 'files');
+		$file = Request::getArray('upload', array(), 'files');
 		if (!$file || !isset($file['name']) || !$file['name'])
 		{
 			if ($attachment->get('id'))
@@ -1946,6 +1923,33 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				}
 			}
 			return true;
+		}
+
+		// Get media config
+		$mediaConfig = \Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
+
+		if ($file['size'] > $sizeLimit)
+		{
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+
+			$this->setError(Lang::txt('PLG_GROUPS_FORUM_ERROR_UPLOADING_FILE_TOO_BIG', $max));
+			return false;
+		}
+
+		// Ensure file names fit.
+		$ext = Filesystem::extension($file['name']);
+
+		// Check that the file type is allowed
+		$allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
+
+		if (!empty($allowed) && !in_array(strtolower($ext), $allowed))
+		{
+			$this->setError(Lang::txt('PLG_GROUPS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
+			return false;
 		}
 
 		// Upload file

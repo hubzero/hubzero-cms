@@ -1,3 +1,12 @@
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+defined('_HZEXEC_') or die();
+?>
 <fieldset class="adminform">
 	<legend><span>General Software-related Options</span></legend>
 
@@ -42,7 +51,6 @@
 			$globalDownloadLimit = $skuMeta['globalDownloadLimit'];
 		}
 
-		//echo JFactory::getEditor()->display('fields[meta][eula]', $this->escape(stripslashes($eula)), '', '', 50, 10, false, 'eula');
 		echo $this->editor('fields[meta][eula]', $this->escape(stripslashes($eula)), 50, 10, 'eula', array('buttons' => false));
 		?>
 	</div>

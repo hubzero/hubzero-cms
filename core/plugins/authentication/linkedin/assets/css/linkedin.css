@@ -1,0 +1,40 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+.auth .linkedin:before {
+	content: "";
+	width: 50px;
+	height: 50px;
+	background-image: url('../img/In-White-41px-R.png');
+	background-repeat: no-repeat;
+	top: 5px;
+}
+.auth .linkedin {
+	background: #0077b5;
+}
+.auth .linkedin .signin {
+	margin-left: 55px;
+}
+
+/* Others */
+.others .linkedin:before {
+	content: "\f017";
+}
+.others .linkedin {
+	color: #0077b5;
+}
+
+/* Primary */
+.primary .upper.linkedin:before {
+	content: "LinkedIn";
+}
+
+.primary .linkedin:before {
+	content: "";
+}
+.primary .linkedin {
+	background-color: #0077b5;
+}

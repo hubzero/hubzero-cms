@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -26,7 +31,7 @@ class Migration20160205162525Core extends Base
 				  KEY `idx_scope_scope_id` (`scope`,`scope_id`),
 				  KEY `idx_status` (`status`),
 				  KEY `idx_test_id` (`test_id`)
-				) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=latin1";
+				) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

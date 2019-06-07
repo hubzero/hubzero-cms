@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Support\Api\Controllers;
@@ -77,14 +52,14 @@ class Commentsv2_0 extends ApiController
 	 * 		"description":   "List comments from a specific ticket (by id)",
 	 * 		"type":          "integer",
 	 * 		"required":      false,
-	 * 		"default":       null,
+	 * 		"default":       null
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "created_by",
 	 * 		"description":   "List comments from a specific user (by id)",
 	 * 		"type":          "integer",
 	 * 		"required":      false,
-	 * 		"default":       null,
+	 * 		"default":       null
 	 * }
 	 * @return    void
 	 */
@@ -137,78 +112,78 @@ class Commentsv2_0 extends ApiController
 	 * 		"description": "Id of the ticket to make a comment on",
 	 * 		"type":        "integer",
 	 * 		"required":    true,
-	 * 		"default":		 null
+	 * 		"default":     null
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "comment",
 	 * 		"description": "Comment text",
 	 * 		"type":        "string",
 	 * 		"required":    true,
-	 * 		"default":		 null
+	 * 		"default":     null
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "group",
 	 * 		"description": "Group to assign the ticket to (by alias)",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":		 null
+	 * 		"default":     null
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "owner",
 	 * 		"description": "Id of the owner to assign ticket to",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
-	 * 		"default":		 null
+	 * 		"default":     null
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "severity",
 	 * 		"description": "Severity of the ticket",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":		 null
-	 *		"allowed_values":	"minor, normal, major, critical"
+	 * 		"default":     null,
+	 *		"allowed_values": "minor, normal, major, critical"
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "status",
 	 * 		"description": "Status of the ticket",
 	 * 		"type":        "integer",
 	 * 		"required":    false,
-	 * 		"default":		 null
+	 * 		"default":     null
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "target_date",
 	 * 		"description": "Target date for completion of ticket (YYYY-MM-DD hh:mm:ss)",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":		 null
+	 * 		"default":     null
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "cc",
 	 * 		"description": "Comma separated list of email addresses to email updates to",
 	 * 		"type":        "string",
 	 * 		"required":    false,
-	 * 		"default":		 submitter,owner
+	 * 		"default":     "submitter,owner"
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "private",
 	 * 		"description": "Should the comment be flagged as private",
 	 * 		"type":        "boolean",
 	 * 		"required":    false,
-	 * 		"default":		 false
+	 * 		"default":     false
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "email_submitter",
 	 * 		"description": "Should the submitter be emailed about this comment",
 	 * 		"type":        "boolean",
 	 * 		"required":    false,
-	 * 		"default":		 false
+	 * 		"default":     false
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "email_owner",
 	 * 		"description": "Should the ticket owner be emailed about this comment",
 	 * 		"type":        "boolean",
 	 * 		"required":    false,
-	 * 		"default":		 false
+	 * 		"default":     false
 	 * }
 	 * @return     void
 	 */
@@ -280,7 +255,7 @@ class Commentsv2_0 extends ApiController
 						$ticket->set('open', $status_model->get('open'));
 						if ($status_model->get('get') == 'open' && $ticket->get('status', null) == 'closed')
 						{
-							$tiket->set('closed', '0000-00-00 00:00:00');
+							$tiket->set('closed', null);
 						}
 						if ($status_model->get('get') == 'closed' && $ticket->get('status', null) == 'open')
 						{
@@ -358,7 +333,7 @@ class Commentsv2_0 extends ApiController
 		// Check if the notify list has eny entries
 		if (count($comment->to()))
 		{
-			include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utilities.php');
+			include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utilities.php';
 
 			$allowEmailResponses = $ticket->config('email_processing');
 			if ($allowEmailResponses)

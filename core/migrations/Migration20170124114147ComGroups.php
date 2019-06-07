@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -19,7 +24,7 @@ class Migration20170124114147ComGroups extends Base
 		{
 			if (!$this->db->tableHasKey('#__xgroups_inviteemails', 'idx_gidNumber'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xgroups_inviteemails` ADD INDEX `idx_gidNumber` (`gidNumber`)";
+				$query = "ALTER TABLE `#__xgroups_inviteemails` ADD INDEX `idx_gidNumber` (`gidNumber`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -29,21 +34,21 @@ class Migration20170124114147ComGroups extends Base
 		{
 			if (!$this->db->tableHasKey('#__xgroups_log', 'idx_gidNumber'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xgroups_log` ADD INDEX `idx_gidNumber` (`gidNumber`)";
+				$query = "ALTER TABLE `#__xgroups_log` ADD INDEX `idx_gidNumber` (`gidNumber`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__xgroups_log', 'idx_userid'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xgroups_log` ADD INDEX `idx_userid` (`userid`)";
+				$query = "ALTER TABLE `#__xgroups_log` ADD INDEX `idx_userid` (`userid`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__xgroups_log', 'idx_actorid'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xgroups_log` ADD INDEX `idx_actorid` (`actorid`)";
+				$query = "ALTER TABLE `#__xgroups_log` ADD INDEX `idx_actorid` (`actorid`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -53,14 +58,14 @@ class Migration20170124114147ComGroups extends Base
 		{
 			if (!$this->db->tableHasKey('#__xgroups_memberoption', 'idx_gidNumber'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xgroups_memberoption` ADD INDEX `idx_gidNumber` (`gidNumber`)";
+				$query = "ALTER TABLE `#__xgroups_memberoption` ADD INDEX `idx_gidNumber` (`gidNumber`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__xgroups_memberoption', 'idx_userid'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xgroups_memberoption` ADD INDEX `idx_userid` (`userid`)";
+				$query = "ALTER TABLE `#__xgroups_memberoption` ADD INDEX `idx_userid` (`userid`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -70,14 +75,14 @@ class Migration20170124114147ComGroups extends Base
 		{
 			if (!$this->db->tableHasKey('#__xgroups_modules', 'idx_gidNumber'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xgroups_modules` ADD INDEX `idx_gidNumber` (`gidNumber`)";
+				$query = "ALTER TABLE `#__xgroups_modules` ADD INDEX `idx_gidNumber` (`gidNumber`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__xgroups_modules', 'idx_state'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xgroups_modules` ADD INDEX `idx_state` (`state`)";
+				$query = "ALTER TABLE `#__xgroups_modules` ADD INDEX `idx_state` (`state`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -87,14 +92,14 @@ class Migration20170124114147ComGroups extends Base
 		{
 			if (!$this->db->tableHasKey('#__xgroups_pages', 'idx_gidNumber'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xgroups_pages` ADD INDEX `idx_gidNumber` (`gidNumber`)";
+				$query = "ALTER TABLE `#__xgroups_pages` ADD INDEX `idx_gidNumber` (`gidNumber`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__xgroups_pages', 'idx_state'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xgroups_pages` ADD INDEX `idx_state` (`state`)";
+				$query = "ALTER TABLE `#__xgroups_pages` ADD INDEX `idx_state` (`state`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -104,7 +109,7 @@ class Migration20170124114147ComGroups extends Base
 		{
 			if (!$this->db->tableHasKey('#__xgroups_pages_categories', 'idx_gidNumber'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xgroups_pages_categories` ADD INDEX `idx_gidNumber` (`gidNumber`)";
+				$query = "ALTER TABLE `#__xgroups_pages_categories` ADD INDEX `idx_gidNumber` (`gidNumber`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -114,21 +119,21 @@ class Migration20170124114147ComGroups extends Base
 		{
 			if (!$this->db->tableHasKey('#__xgroups_pages_versions', 'idx_pageid'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xgroups_pages_versions` ADD INDEX `idx_pageid` (`pageid`)";
+				$query = "ALTER TABLE `#__xgroups_pages_versions` ADD INDEX `idx_pageid` (`pageid`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__xgroups_pages_versions', 'idx_approved'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xgroups_pages_versions` ADD INDEX `idx_approved` (`approved`)";
+				$query = "ALTER TABLE `#__xgroups_pages_versions` ADD INDEX `idx_approved` (`approved`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__xgroups_pages_versions', 'idx_scanned'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xgroups_pages_versions` ADD INDEX `idx_scanned` (`scanned`)";
+				$query = "ALTER TABLE `#__xgroups_pages_versions` ADD INDEX `idx_scanned` (`scanned`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -138,14 +143,14 @@ class Migration20170124114147ComGroups extends Base
 		{
 			if (!$this->db->tableHasKey('#__xgroups_reasons', 'idx_gidNumber'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xgroups_reasons` ADD INDEX `idx_gidNumber` (`gidNumber`)";
+				$query = "ALTER TABLE `#__xgroups_reasons` ADD INDEX `idx_gidNumber` (`gidNumber`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__xgroups_reasons', 'idx_uidNumber'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xgroups_reasons` ADD INDEX `idx_uidNumber` (`uidNumber`)";
+				$query = "ALTER TABLE `#__xgroups_reasons` ADD INDEX `idx_uidNumber` (`uidNumber`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -155,7 +160,7 @@ class Migration20170124114147ComGroups extends Base
 		{
 			if (!$this->db->tableHasKey('#__xgroups_roles', 'idx_gidNumber'))
 			{
-				$query = "ALTER IGNORE TABLE `#__xgroups_roles` ADD INDEX `idx_gidNumber` (`gidNumber`)";
+				$query = "ALTER TABLE `#__xgroups_roles` ADD INDEX `idx_gidNumber` (`gidNumber`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}

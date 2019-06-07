@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -41,6 +17,8 @@ if (!$this->tmpl)
 }
 
 Html::behavior('framework');
+
+$this->js('locations.js');
 
 $countries = array(
 		array('code' => '', 'name' => '- Select - ', 'continent' => 'AS'),
@@ -295,58 +273,10 @@ $countries = array(
 		array('code' => 'ZW', 'name' => 'Zimbabwe', 'continent' => 'AF')
 	);
 ?>
-<script type="text/javascript">
-var continentcountry = new Array;
-<?php
-$i = 0;
-if ($countries)
-{
-	echo 'continentcountry[' . $i++ . "] = new Array( '','','" . Lang::txt('COM_TOOLS_SELECT') . "' );\n\t\t";
-	foreach ($countries as $k => $items)
+<script type="application/json" id="country-data" data-select="<?php echo Lang::txt('COM_TOOLS_SELECT'); ?>">
 	{
-		echo 'continentcountry[' . $i++ . "] = new Array( '" . $items['continent'] . "','" . addslashes($items['code']) . "','" . addslashes($items['name']) . "' );\n\t\t";
+		"data": <?php echo json_encode($countries); ?>
 	}
-}
-?>
-
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// form field validation
-	submitform(pressbutton);
-}
-function saveAndUpdate()
-{
-	submitbutton('save');
-	window.parent.setTimeout(function(){
-		var src = window.parent.document.getElementById('locationslist').src;
-
-		window.parent.document.getElementById('locationslist').src = src + '&';
-		window.parent.$.fancybox.close();
-	}, 700);
-}
-
-jQuery(document).ready(function($)
-{
-	var from = $('#field-ipFROM');
-	var to   = $('#field-ipTO');
-
-	from.on('keyup', function(e) {
-		if ($(this).val().indexOf('/') !== -1) {
-			$('.ipTOrow').fadeTo(200, 0.3);
-			to.prop('disabled', true);
-		} else {
-			$('.ipTOrow').fadeTo(200, 1);
-			to.prop('disabled', false);
-		}
-	});
-});
 </script>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
@@ -356,14 +286,14 @@ jQuery(document).ready(function($)
 	<fieldset>
 		<div class="configuration">
 			<div class="configuration-options">
-				<button type="button" onclick="saveAndUpdate();"><?php echo Lang::txt('COM_TOOLS_SAVE'); ?></button>
-				<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo Lang::txt('COM_TOOLS_CANCEL'); ?></button>
+				<button type="button" id="btn-save"><?php echo Lang::txt('COM_TOOLS_SAVE'); ?></button>
+				<button type="button" id="btn-close"><?php echo Lang::txt('JCANCEL'); ?></button>
 			</div>
 			<?php echo $text; ?>
 		</div>
 	</fieldset>
 <?php } ?>
-	<div class="col width-100">
+	<div class="col span12">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
@@ -388,7 +318,7 @@ jQuery(document).ready(function($)
 					<tr>
 						<th class="key"><label for="field-continent"><?php echo Lang::txt('COM_TOOLS_FIELD_CONTINENT'); ?>:</label></th>
 						<td>
-							<select name="fields[continent]" id="field-continent" onchange="changeDynaList('field-countrySHORT', continentcountry, document.getElementById('field-continent').options[document.getElementById('field-continent').selectedIndex].value, 0, 0);">
+							<select name="fields[continent]" id="field-continent">
 								<option value=""<?php if ($this->row->get('continent') == '') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_SELECT'); ?></option>
 								<option value="NA"<?php if ($this->row->get('continent') == 'NA') { echo ' selected="selected"'; } ?>>North America</option>
 								<option value="SA"<?php if ($this->row->get('continent') == 'SA') { echo ' selected="selected"'; } ?>>South America</option>

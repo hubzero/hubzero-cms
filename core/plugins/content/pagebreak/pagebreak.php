@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2017 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2017 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -60,6 +36,10 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 	{
 		$canProceed = $context == 'com_content.article';
 		if (!$canProceed)
+		{
+			return true;
+		}
+		if (!property_exists($row, 'text'))
 		{
 			return true;
 		}
@@ -280,7 +260,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 		$class = ($limitstart === 0 && $showall === 0) ? 'toclink active' : 'toclink';
 		$row->toc .= '<ul>
 			<li>
-				<a href="'. Route::url(ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $row->language) . '&showall=&limitstart=') . '" class="' . $class . '">' . $heading . '</a>
+				<a href="'. Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($row->slug, $row->catid, $row->language) . '&showall=&limitstart=') . '" class="' . $class . '">' . $heading . '</a>
 			</li>
 			';
 
@@ -288,7 +268,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 
 		foreach ($matches as $bot)
 		{
-			$link = Route::url(ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $row->language) . '&showall=&limitstart='. ($i - 1));
+			$link = Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($row->slug, $row->catid, $row->language) . '&showall=&limitstart='. ($i - 1));
 
 			if (@$bot[0])
 			{
@@ -322,7 +302,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 
 		if ($this->params->get('showall'))
 		{
-			$link = Route::url(ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $row->language) . '&showall=1&limitstart=');
+			$link = Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($row->slug, $row->catid, $row->language) . '&showall=1&limitstart=');
 			$class = ($showall == 1) ? 'toclink active' : 'toclink';
 			$row->toc .= '
 			<li>
@@ -353,7 +333,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 		{
 			$page_next = $page + 1;
 
-			$link_next = Route::url(ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $row->language).'&showall=&limitstart='. ($page_next));
+			$link_next = Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($row->slug, $row->catid, $row->language).'&showall=&limitstart='. ($page_next));
 			// Next >>
 			$next = '<a href="'. $link_next .'">' . Lang::txt('JNEXT') . $pnSpace . Lang::txt('JGLOBAL_GT') . Lang::txt('JGLOBAL_GT') .'</a>';
 		}
@@ -366,7 +346,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 		{
 			$page_prev = $page - 1 == 0 ? '' : $page - 1;
 
-			$link_prev = Route::url(ContentHelperRoute::getArticleRoute($row->slug, $row->catid, $row->language).'&showall=&limitstart='. ($page_prev));
+			$link_prev = Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($row->slug, $row->catid, $row->language).'&showall=&limitstart='. ($page_prev));
 			// << Prev
 			$prev = '<a href="'. $link_prev .'">'. Lang::txt('JGLOBAL_LT') . Lang::txt('JGLOBAL_LT') . $pnSpace . Lang::txt('JPREV') .'</a>';
 		}

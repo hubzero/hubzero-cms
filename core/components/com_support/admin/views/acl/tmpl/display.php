@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -36,25 +12,11 @@ Toolbar::title(Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_ACL'), '
 Toolbar::deleteList();
 Toolbar::spacer();
 Toolbar::help('acl');
-?>
-<script type="text/javascript">
-/**
-* Toggles the check state of a group of boxes
-*
-* Checkboxes must have an id attribute in the form cb0, cb1...
-* @param The number of box to 'check'
-* @param An alternative field name
-*/
-function checkAllOptions()
-{
-	var f = document.adminForm;
-	var c = f.toggleOpt.checked;
 
-	$('.chk').each(function(i, el){
-		el.checked = c;
-	});
-}
-</script>
+Html::behavior('framework');
+
+$this->js('edit.js');
+?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
@@ -70,18 +32,18 @@ function checkAllOptions()
 				<th> </th>
 			</tr>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_ID'); ?></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_OBJECT'); ?></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_MODEL'); ?></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_READ'); ?></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_UPDATE'); ?></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_DELETE'); ?></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_CREATE'); ?></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_READ'); ?></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_CREATE'); ?></th>
-				<th><?php echo Lang::txt('COM_SUPPORT_COL_READ'); ?></th>
-				<th> </th>
+				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_ID'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_OBJECT'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_MODEL'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_READ'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_UPDATE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_DELETE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_CREATE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_READ'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_CREATE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_READ'); ?></th>
+				<th scope="col"> </th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -99,7 +61,7 @@ function checkAllOptions()
 						<option value="user"><?php echo Lang::txt('COM_SUPPORT_ACL_USER'); ?></option>
 						<option value="group"><?php echo Lang::txt('COM_SUPPORT_ACL_GROUP'); ?></option>
 					</select>
-					<input type="checkbox" name="toggleOpt" value="" onclick="checkAllOptions();" /> <abbr title="<?php echo Lang::txt('COM_SUPPORT_CHECK_ALL'); ?>"><?php echo Lang::txt('COM_SUPPORT_COL_ALL'); ?></abbr>
+					<input type="checkbox" name="toggleOpt" id="toggleOpt" value="" /> <abbr title="<?php echo Lang::txt('COM_SUPPORT_CHECK_ALL'); ?>"><?php echo Lang::txt('COM_SUPPORT_COL_ALL'); ?></abbr>
 				</td>
 				<td>
 					<input type="hidden" name="map[tickets][id]" value="0" />
@@ -137,7 +99,7 @@ function checkAllOptions()
 					<input type="hidden" name="map[private_comments][action_delete]" value="0" />
 				</td>
 				<td>
-					<input type="submit" name="newacl" value="Add" onclick="submitbutton('save');" />
+					<input type="submit" name="newacl" id="newacl" value="<?php echo Lang::txt('Add'); ?>" />
 				</td>
 			</tr>
 		</tfoot>
@@ -186,11 +148,11 @@ foreach ($this->rows as $row)
 	}
 ?>
 			<tr>
-				<td style="text-align:center;"><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="Joomla.isChecked(this.checked);" /></td>
-				<td style="text-align:center;"><?php echo $row->id; ?></td>
+				<td class="align-center"><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" class="checkbox-toggle" /></td>
+				<td class="align-center"><?php echo $row->id; ?></td>
 				<td><?php echo $row->alias; ?> (<?php echo $row->foreign_key; ?>)</td>
 				<td><?php echo $row->model; ?></td>
-				<td style="text-align:center;">
+				<td class="align-center">
 					<?php
 					$calt = Lang::txt('JNO');
 					$cls = 'unpublish';
@@ -204,7 +166,7 @@ foreach ($this->rows as $row)
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
-				<td style="text-align:center;">
+				<td class="align-center">
 					<?php
 					$calt = Lang::txt('JNO');
 					$cls = 'unpublish';
@@ -218,7 +180,7 @@ foreach ($this->rows as $row)
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
-				<td style="text-align:center;">
+				<td class="align-center">
 					<?php
 					$calt = Lang::txt('JNO');
 					$cls = 'unpublish';
@@ -233,7 +195,7 @@ foreach ($this->rows as $row)
 					</a>
 				</td>
 
-				<td style="text-align:center;">
+				<td class="align-center">
 					<?php
 					$calt = Lang::txt('JNO');
 					$cls = 'unpublish';
@@ -247,7 +209,7 @@ foreach ($this->rows as $row)
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
-				<td style="text-align:center;">
+				<td class="align-center">
 					<?php
 					$calt = Lang::txt('JNO');
 					$cls = 'unpublish';
@@ -262,7 +224,7 @@ foreach ($this->rows as $row)
 					</a>
 				</td>
 
-				<td style="text-align:center;">
+				<td class="align-center">
 					<?php
 					$calt = Lang::txt('JNO');
 					$cls = 'unpublish';
@@ -276,7 +238,7 @@ foreach ($this->rows as $row)
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
-				<td style="text-align:center;">
+				<td class="align-center">
 					<?php
 					$calt = Lang::txt('JNO');
 					$cls = 'unpublish';

@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -89,18 +65,18 @@ if (!$no_html) {
 			</p>
 
 			<fieldset>
-				<div class="input-wrap">
+				<div class="form-group">
 					<label for="activity-description">
 						<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_COMMENTS'); ?></span>
-						<?php echo $this->editor('activity[description]', '', 5, 3, 'activity-description', array('class' => 'minimal no-footer')); ?>
+						<?php echo $this->editor('activity[description]', '', 5, 3, 'activity-description', array('class' => 'form-control minimal no-footer')); ?>
 					</label>
 				</div>
 
 				<?php if (in_array(User::get('id'), $this->group->get('managers'))) { ?>
-					<div class="input-wrap">
+					<div class="form-group">
 						<label for="activity-recipients">
 							<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS'); ?></span>
-							<select name="activity_recipients" id="activity-recipients">
+							<select name="activity_recipients" id="activity-recipients" class="form-control">
 								<option value="all"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_ALL'); ?></option>
 								<option value="managers"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_MANAGERS'); ?></option>
 							</select>
@@ -108,10 +84,10 @@ if (!$no_html) {
 					</div>
 				<?php } ?>
 
-				<div class="input-wrap">
+				<div class="form-group">
 					<label class="upload-label" for="activity-file">
 						<span class="label-text"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_FILE'); ?></span>
-						<input type="file" class="inputfile" name="activity_file" id="activity-file" data-multiple-caption="<?php echo Lang::txt('{count} files selected'); ?>" multiple="multiple" />
+						<input type="file" class="inputfile form-control-file" name="activity_file" id="activity-file" data-multiple-caption="<?php echo Lang::txt('{count} files selected'); ?>" multiple="multiple" />
 					</label>
 				</div>
 

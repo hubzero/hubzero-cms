@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -27,7 +32,7 @@ class Migration20170901000000ComProjects extends Base
 			  `type` int(11) NOT NULL DEFAULT '1',
 			  `provisioned` int(11) NOT NULL DEFAULT '0',
 			  `private` int(11) NOT NULL DEFAULT '1',
-			  `created` datetime NOT NULL,
+			  `created` datetime DEFAULT NULL,
 			  `modified` datetime DEFAULT NULL,
 			  `owned_by_user` int(11) NOT NULL DEFAULT '0',
 			  `created_by_user` int(11) NOT NULL,
@@ -72,7 +77,7 @@ class Migration20170901000000ComProjects extends Base
 			  `status` int(11) NOT NULL DEFAULT '0',
 			  `status_changed` varchar(31) NOT NULL,
 			  `status_changed_by` int(11) NOT NULL,
-			  `created` datetime NOT NULL,
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL,
 			  `svntool_id` int(11) NOT NULL,
 			  `project_id` int(11) NOT NULL,
@@ -93,7 +98,7 @@ class Migration20170901000000ComProjects extends Base
 			  `id` int(10) NOT NULL AUTO_INCREMENT,
 			  `parent_id` int(11) NOT NULL DEFAULT '0',
 			  `userid` int(15) NOT NULL,
-			  `viewed` datetime NOT NULL,
+			  `viewed` datetime DEFAULT NULL,
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
@@ -129,7 +134,7 @@ class Migration20170901000000ComProjects extends Base
 			  `instance_id` int(11) DEFAULT NULL,
 			  `action` varchar(255) NOT NULL DEFAULT '',
 			  `actor` int(15) NOT NULL,
-			  `recorded` datetime NOT NULL,
+			  `recorded` datetime DEFAULT NULL,
 			  `project_activity_id` int(15) NOT NULL DEFAULT '0',
 			  `status_changed` tinyint(1) NOT NULL DEFAULT '0',
 			  `admin` tinyint(1) NOT NULL DEFAULT '0',
@@ -154,7 +159,7 @@ class Migration20170901000000ComProjects extends Base
 			  `access` varchar(16) NOT NULL,
 			  `state` int(11) NOT NULL,
 			  `created_by` int(11) NOT NULL,
-			  `created` datetime NOT NULL,
+			  `created` datetime DEFAULT NULL,
 			  `modified_by` int(11) DEFAULT NULL,
 			  `modified` datetime DEFAULT NULL,
 			  `svntool_version_id` int(11) DEFAULT NULL,
@@ -174,7 +179,7 @@ class Migration20170901000000ComProjects extends Base
 			  `month` int(2) DEFAULT NULL,
 			  `year` int(2) DEFAULT NULL,
 			  `week` int(2) DEFAULT NULL,
-			  `processed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `processed` datetime DEFAULT NULL,
 			  `stats` text,
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
@@ -192,7 +197,7 @@ class Migration20170901000000ComProjects extends Base
 			  `about` varchar(255) DEFAULT NULL,
 			  `path` varchar(255) NOT NULL DEFAULT '',
 			  `status` int(11) NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL,
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL,
 			  `remote` tinyint(1) NOT NULL DEFAULT '0',
 			  `engine` varchar(100) NOT NULL DEFAULT 'git',
@@ -270,7 +275,7 @@ class Migration20170901000000ComProjects extends Base
 			  `invited_name` varchar(100) DEFAULT NULL,
 			  `invited_email` varchar(100) DEFAULT NULL,
 			  `invited_code` varchar(10) DEFAULT NULL,
-			  `added` datetime NOT NULL,
+			  `added` datetime DEFAULT NULL,
 			  `lastvisit` datetime DEFAULT NULL,
 			  `prev_visit` datetime DEFAULT NULL,
 			  `status` int(11) NOT NULL DEFAULT '0',
@@ -295,7 +300,7 @@ class Migration20170901000000ComProjects extends Base
 			$query = "CREATE TABLE `#__project_microblog` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `blogentry` text,
-			  `posted` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `posted` datetime DEFAULT NULL,
 			  `posted_by` int(11) NOT NULL DEFAULT '0',
 			  `state` tinyint(2) DEFAULT '0',
 			  `params` tinytext,
@@ -324,7 +329,7 @@ class Migration20170901000000ComProjects extends Base
 			  `section` varchar(100) DEFAULT 'general',
 			  `layout` varchar(100) DEFAULT '',
 			  `action` varchar(100) DEFAULT '',
-			  `time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `time` datetime DEFAULT NULL,
 			  `request_uri` tinytext,
 			  PRIMARY KEY (`id`),
 			  KEY `idx_projectid` (`projectid`)
@@ -399,7 +404,7 @@ class Migration20170901000000ComProjects extends Base
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `itemid` int(11) NOT NULL DEFAULT '0',
 			  `comment` text NOT NULL,
-			  `created` datetime DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  `activityid` int(11) NOT NULL DEFAULT '0',
 			  `state` tinyint(2) NOT NULL DEFAULT '0',
@@ -428,7 +433,7 @@ class Migration20170901000000ComProjects extends Base
 			  `admin` tinyint(2) DEFAULT '0',
 			  `commentable` tinyint(2) NOT NULL DEFAULT '0',
 			  `state` tinyint(2) NOT NULL DEFAULT '0',
-			  `recorded` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `recorded` datetime DEFAULT NULL,
 			  `activity` varchar(255) NOT NULL DEFAULT '',
 			  `highlighted` varchar(100) NOT NULL DEFAULT '',
 			  `url` varchar(255) DEFAULT NULL,

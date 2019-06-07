@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -366,22 +371,15 @@ class Migration20130924000009ComMenus extends Base
 			}
 
 			// If we have the nested set class available, use it to rebuild lft/rgt
-			if (class_exists('JTableNested') && method_exists('JTableNested', 'rebuild'))
+			if (file_exists(PATH_CORE . '/components/com_menus/models/menu.php'))
 			{
-				// Use the MySQL driver for this
-				$config = \JFactory::getConfig();
-				$database = \JDatabase::getInstance(
-					array(
-						'driver'   => 'mysql',
-						'host'     => $config->get('host'),
-						'user'     => $config->get('user'),
-						'password' => $config->get('password'),
-						'database' => $config->get('db')
-					)
-				);
+				include_once PATH_CORE . '/components/com_menus/models/menu.php';
 
-				$table = new \JTableMenu($database);
-				$table->rebuild();
+				if (class_exists('Components\Menus\Models\Menu') && method_exists('Components\Menus\Models\Menu', 'rebuild'))
+				{
+					$table = Components\Menus\Models\Menu::blank();
+					$table->rebuild();
+				}
 			}
 
 			// Update menu params (specifically to fix menu_image)

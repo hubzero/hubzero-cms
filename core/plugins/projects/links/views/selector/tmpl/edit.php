@@ -1,31 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Alissa Nedossekina <alisa@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
- *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -130,19 +107,19 @@ $citationFormat = $this->publication->config('citation_format', 'apa');
 				<div class="col span4">
 					<label for="volume">
 						<?php echo Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_VOLUME'); ?>:
-						<input type="text" name="volume" id="volume" size="11" maxlength="11" value="<?php echo $this->escape($this->row->volume); ?>" />
+						<input type="text" name="cite[volume]" id="volume" size="11" maxlength="11" value="<?php echo $this->escape($this->row->volume); ?>" />
 					</label>
 				</div>
 				<div class="col span4">
 					<label for="number">
 						<?php echo Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_ISSUE'); ?>:
-						<input type="text" name="number" id="number" size="11" maxlength="50" value="<?php echo $this->escape($this->row->number); ?>" />
+						<input type="text" name="cite[number]" id="number" size="11" maxlength="50" value="<?php echo $this->escape($this->row->number); ?>" />
 					</label>
 				</div>
 				<div class="col span4 omega">
 					<label for="pages">
 						<?php echo Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_PAGES'); ?>:
-						<input type="text" name="pages" id="pages" size="11" maxlength="250" value="<?php echo $this->escape($this->row->pages); ?>" />
+						<input type="text" name="cite[pages]" id="pages" size="11" maxlength="250" value="<?php echo $this->escape($this->row->pages); ?>" />
 					</label>
 				</div>
 			</div>

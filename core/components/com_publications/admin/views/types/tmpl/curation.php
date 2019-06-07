@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -61,13 +37,6 @@ foreach ($this->blocks as $b)
 }
 
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	submitform( pressbutton );
-	return;
-}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
 	<div class="grid">
@@ -191,8 +160,8 @@ function submitbutton(pressbutton)
 				<div class="grid">
 					<div class="col span2">
 						<div class="input-wrap">
-							<label class="block"><input type="radio" name="curation[blocks][<?php echo $blockId; ?>][active]" value="1" <?php if (!isset($block->active) || $block->active == 1 ) { echo 'checked="checked"'; } ?> /> <?php echo Lang::txt('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></label>
-							<label class="block"><input type="radio" name="curation[blocks][<?php echo $blockId; ?>][active]" value="0" <?php if (isset($block->active) && $block->active == 0 ) { echo 'checked="checked"'; } ?> <?php if ($blockMaster->minimum > 0 && !in_array($block->name, $blockSelection['active'])) { echo ' disabled="disabled"'; } ?> /> <?php echo Lang::txt('COM_PUBLICATIONS_STATUS_INACTIVE'); ?></label>
+							<label class="block"><input type="radio" name="curation[blocks][<?php echo $blockId; ?>][active]" value="1" <?php if (!isset($block->active) || $block->active == 1) { echo 'checked="checked"'; } ?> /> <?php echo Lang::txt('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></label>
+							<label class="block"><input type="radio" name="curation[blocks][<?php echo $blockId; ?>][active]" value="0" <?php if (isset($block->active) && $block->active == 0) { echo 'checked="checked"'; } ?> <?php if ($blockMaster->minimum > 0 && !in_array($block->name, $blockSelection['active'])) { echo ' disabled="disabled"'; } ?> /> <?php echo Lang::txt('COM_PUBLICATIONS_STATUS_INACTIVE'); ?></label>
 						</div>
 						<div class="input-wrap tweakblock">
 							<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ORDER'); ?>: <?php echo $i; ?>
@@ -231,36 +200,40 @@ function submitbutton(pressbutton)
 					<div class="col span5 blockparams">
 						<h5><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_PARAMS'); ?></h5>
 						<?php foreach ($block->params as $paramname => $paramvalue) { ?>
-						<div class="input-wrap">
-							<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_PARAMS_' . strtoupper($paramname)); ?></label>
-							<?php
-								if (is_array($paramvalue)) {
-								$val = implode(',', $paramvalue);
-							?>
-							<input type="text" name="curation[blocks][<?php echo $blockId; ?>][params][<?php echo $paramname; ?>]" value="<?php echo $val;  ?>" />
-							<?php } elseif (is_numeric($paramvalue)) { ?>
-							<select name="curation[blocks][<?php echo $blockId; ?>][params][<?php echo $paramname; ?>]">
-								<option value="0" <?php echo $paramvalue == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JNO'); ?></option>
-								<option value="1" <?php echo $paramvalue == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JYES'); ?></option>
-							</select>
-							<?php } else { ?>
-								<input type="text" name="curation[blocks][<?php echo $blockId; ?>][params][<?php echo $paramname; ?>]" value="<?php echo $paramvalue;  ?>" />
-							<?php } ?>
-						</div>
-						<?php } ?>
-						<?php if ($block->elements) { ?>
-						<h5><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BLOCK_ELEMENTS'); ?> <span class="editthis"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=editelements&id=' . $this->row->id . '&bid=' . $blockId ); ?>">[<?php echo Lang::txt('COM_PUBLICATIONS_EDIT'); ?>]</a></span></h5>
-						<?php foreach ($block->elements as $elementId => $element) { ?>
 							<div class="input-wrap">
-								<span class="block-id"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ID') . ': ' . $elementId; ?> - <?php echo $element->name; ?> - <?php echo $element->name == 'metadata' ? $element->params->input : $element->params->type; ?></span>
-								<span class="el-details"><?php echo $element->label; ?></span>
+								<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_PARAMS_' . strtoupper($paramname)); ?></label>
+								<?php
+									if (is_array($paramvalue)) {
+									$val = implode(',', $paramvalue);
+								?>
+								<input type="text" name="curation[blocks][<?php echo $blockId; ?>][params][<?php echo $paramname; ?>]" value="<?php echo $val;  ?>" />
+								<?php } elseif (is_numeric($paramvalue)) { ?>
+								<select name="curation[blocks][<?php echo $blockId; ?>][params][<?php echo $paramname; ?>]">
+									<option value="0" <?php echo $paramvalue == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JNO'); ?></option>
+									<option value="1" <?php echo $paramvalue == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JYES'); ?></option>
+								</select>
+								<?php } else { ?>
+									<input type="text" name="curation[blocks][<?php echo $blockId; ?>][params][<?php echo $paramname; ?>]" value="<?php echo $paramvalue;  ?>" />
+								<?php } ?>
 							</div>
 						<?php } ?>
+						<?php if ($block->elements) { ?>
+							<h5><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BLOCK_ELEMENTS'); ?> <span class="editthis"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=editelements&id=' . $this->row->id . '&bid=' . $blockId ); ?>">[<?php echo Lang::txt('COM_PUBLICATIONS_EDIT'); ?>]</a></span></h5>
+							<?php foreach ($block->elements as $elementId => $element) { ?>
+								<div class="input-wrap">
+									<span class="block-id"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ID') . ': ' . $elementId; ?> - <?php echo $element->name; ?> - <?php echo $element->name == 'metadata' ? $element->params->input : $element->params->type; ?></span>
+									<span class="el-details"><?php echo $element->label; ?></span>
+								</div>
+							<?php } ?>
 						<?php } ?>
 					</div>
 				</div>
 			</fieldset>
-			<?php $blockSelection['active'][] = $block->name; $i++; } ?>
+			<?php
+			$blockSelection['active'][] = $block->name;
+			$i++;
+		}
+		?>
 		</fieldset>
 	<?php } ?>
 

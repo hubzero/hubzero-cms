@@ -1,9 +1,8 @@
-//
-// @package     hubzero-cms
-// @file        templates/kimera/less/_buttons.less
-// @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
-// @license     http://opensource.org/licenses/MIT MIT
-//
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 //
 // Buttons
@@ -14,7 +13,8 @@
 .btn {
 	display: inline-block;
 	.ie7-inline-block();
-	padding: 0.7em 0.91em 0.7em 0.91em;
+	//padding: 0.7em 0.91em 0.7em 0.91em;
+	padding: 0.5em 1em;
 	margin-bottom: 0; // For input.btn
 	font-size: 1em;
 	line-height: 1;
@@ -26,8 +26,8 @@
 	cursor: pointer;
 	position: relative;
 	background: transparent;
-	border: 2px solid #eee;
-	border: 2px solid rgba(0, 0, 0, 0.2);
+	border: 1px solid #eee;
+	border: 1px solid rgba(0, 0, 0, 0.2);
 	color: #777;
 	.background-clip(padding-box);
 	.ie7-restore-left-whitespace();
@@ -37,7 +37,7 @@
 	&:focus,
 	&:visited:hover {
 		color: @white;
-		border: 2px solid @grayDarker;
+		border-color: @grayDarker;
 		background: @grayDarker;
 		text-decoration: none;
 		.transition(all .1s linear);
@@ -91,7 +91,7 @@
 	&.opposite[class*=" icon-"]:before {
 		left: auto;
 		right: 0;
-		margin: 0 0 0 .2em;
+		margin: 0 0 0 0.2em;
 		padding: 0 0.7em 0 0.3em;
 	}
 }
@@ -188,7 +188,7 @@
 		//.border-radius(0);
 	}
 	.btn-group > .btn + .btn {
-		margin-left: -2px;
+		margin-left: -1px;
 		border-left-color: transparent;
 	}
 	.btn-group > .btn + .btn:hover {
@@ -350,6 +350,7 @@
 	header .btn,
 	#content-header-extra .btn {
 		background: transparent;
+		border-width: 2px;
 		border-color: rgba(255, 255, 255, 0.5);
 		//text-shadow: none;
 		color: #fff;
@@ -381,7 +382,7 @@
 			right: 0;
 			box-shadow: 0;
 			.border-radius(0);
-			border: 2px solid #fff;
+			border: 1px solid #fff;
 			background: rgba(0, 0, 0, 0.5);
 			.box-shadow(none);
 			min-width: 3em;
@@ -431,6 +432,7 @@
 @media (min-width: 50em) {
 	#page_options .btn {
 		background: transparent;
+		border-width: 2px;
 		border-color: rgba(255, 255, 255, 0.5);
 		//text-shadow: none;
 		color: #fff;

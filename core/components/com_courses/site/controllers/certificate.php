@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Courses\Site\Controllers;
@@ -62,36 +37,23 @@ class Certificate extends SiteController
 		// Ensure the course exists
 		if (!$course->exists() || !$offering->exists())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=courses'),
-				Lang::txt('COM_COURSES_ERROR_COURSE_OR_OFFERING_NOT_FOUND'),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('COM_COURSES_ERROR_COURSE_OR_OFFERING_NOT_FOUND'));
+			return $this->cancelTask();
 		}
 
 		// Ensure specified user is enrolled in the course
-		//$student = $offering->member(User::get('id'));
 		$student = Member::getInstance(User::get('id'), $course->get('id'), $offering->get('id'), null, 1);
 		if (!$student->exists())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=courses'),
-				Lang::txt('COM_COURSES_ERROR_STUDENT_RECORD_NOT_FOUND'),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('COM_COURSES_ERROR_STUDENT_RECORD_NOT_FOUND'));
+			return $this->cancelTask();
 		}
 
 		$certificate = $course->certificate();
 		if (!$certificate->exists() || !$certificate->hasFile())
 		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=courses'),
-				Lang::txt('COM_COURSES_ERROR_NO_CERTIFICATE_FOR_COURSE'),
-				'error'
-			);
-			return;
+			Notify::error(Lang::txt('COM_COURSES_ERROR_NO_CERTIFICATE_FOR_COURSE'));
+			return $this->cancelTask();
 		}
 
 		// Path and file name
@@ -136,5 +98,17 @@ class Certificate extends SiteController
 
 		// Output failure message
 		$this->view->display();
+	}
+
+	/**
+	 * Redirect to main page
+	 *
+	 * @return  void
+	 */
+	public function cancelTask()
+	{
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=courses')
+		);
 	}
 }

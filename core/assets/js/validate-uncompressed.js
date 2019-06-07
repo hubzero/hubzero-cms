@@ -1,24 +1,20 @@
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 /**
  * Unobtrusive Form Validation library
  *
  * Inspired by: Chris Campbell <www.particletree.com>
- *
- * @package		Joomla.Framework
- * @subpackage	Forms
- * @since		1.5
  */
-//var JFormValidator = new Class({
 var JFormValidator = function() {
 	this.initialize = function()
 	{
 		// Initialize variables
-		this.handlers	= Object();
-		this.custom		= Object();
+		this.handlers = Object();
+		this.custom   = Object();
 
 		// Default handlers
 		this.setHandler('username',
@@ -51,13 +47,18 @@ var JFormValidator = function() {
 
 		// Attach to forms with class 'form-validate'
 		var forms = $('form.form-validate');
-		forms.each(function(i, form){ this.attachToForm(form); }, this);
+		forms.each(function(i, form){
+			this.attachToForm(form);
+		}, this);
 	};
 
 	this.setHandler = function(name, fn, en)
 	{
 		en = (en == '') ? true : en;
-		this.handlers[name] = { enabled: en, exec: fn };
+		this.handlers[name] = {
+			enabled: en,
+			exec: fn
+		};
 	};
 
 	this.attachToForm = function(form)
@@ -71,12 +72,16 @@ var JFormValidator = function() {
 			}
 			if ((el.prop('tagName') == 'input' || $(el).prop('tagName') == 'button') && $(el).attr('type') == 'submit') {
 				if (el.hasClass('validate')) {
-					el.on('click', function(){return document.formvalidator.isValid(this.form);});
+					el.on('click', function(){
+						return document.formvalidator.isValid(this.form);
+					});
 				}
 			} else {
-				el.on('blur', function(){return document.formvalidator.validate(this);});
+				el.on('blur', function(){
+					return document.formvalidator.validate(this);
+				});
 				if (el.hasClass('validate-email') && this.inputemail) {
-					el.attr('type') = 'email';
+					el.attr('type', 'email');
 				}
 			}
 		});
@@ -102,9 +107,10 @@ var JFormValidator = function() {
 		// If the field is required make sure it has a value
 		if (el.hasClass('required')) {
 			if (el.prop('tagName')=='fieldset' && (el.hasClass('radio') || el.hasClass('checkboxes'))) {
-				for(var i=0;;i++) {
-					if ($(el.attr('id')+i)) {
-						if ($(el.attr('id')+i).checked) {
+				var elements = el.find('input');
+				for (var i=0; i < elements.length; i++) {
+					if ($('#' + el.attr('id') + i).length) {
+						if ($('#' + el.attr('id') + i).checked) {
 							break;
 						}
 					}
@@ -146,8 +152,8 @@ var JFormValidator = function() {
 		var valid = true;
 
 		// Validate form fields
-		var elements = form.find('fieldset'); //.concat(Array.from(form.elements));
-		for (var i=0;i < elements.length; i++) {
+		var elements = $(form).find('input,textarea,select'); //.concat(Array.from(form.elements));
+		for (var i=0; i < elements.length; i++) {
 			if (this.validate(elements[i]) == false) {
 				valid = false;
 			}
@@ -170,7 +176,8 @@ var JFormValidator = function() {
 			var labels = $('label');
 			labels.each(function(label){
 				label = $(label);
-				if (label.attr('for') == el.attr('id')) {
+				if (label.attr('for') != undefined
+				 && label.attr('for') == el.attr('id')) {
 					el.labelref = label;
 				}
 			});
@@ -180,16 +187,16 @@ var JFormValidator = function() {
 		if (state == false) {
 			el.addClass('invalid');
 			el.attr('aria-invalid', 'true');
-			if (el.labelref) {
+			if (el.labelref != undefined) {
 				$(el.labelref).addClass('invalid');
 				$(el.labelref).attr('aria-invalid', 'true');
 			}
 		} else {
 			el.removeClass('invalid');
 			el.attr('aria-invalid', 'false');
-			if (el.labelref) {
-				$(el.labelref).removeClass('invalid');
-				$(el.labelref).attr('aria-invalid', 'false');
+			if (el.labelref != undefined) {
+				el.labelref.removeClass('invalid');
+				el.labelref.attr('aria-invalid', 'false');
 			}
 		}
 	};

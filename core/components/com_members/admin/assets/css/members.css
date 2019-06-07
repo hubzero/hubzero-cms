@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_members/admin/assets/css/members.css
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 /*
@@ -18,6 +17,10 @@
 	}
 	.toolbar-box .icon-32-buildprofile:after {
 		content: "\f0ad"; right: 0px; bottom: -2px;
+	}
+	.tooltip img {
+		float: left;
+		margin-right: 0.5em;
 	}
 	.authenticator,
 	.authenticator-status {
@@ -35,7 +38,9 @@
 		color: red;
 		border-color: red;
 	}
-
+	.never {
+		color:#bbb;
+	}
 	.unconfirmed {
 		display: block;
 		text-align: center;

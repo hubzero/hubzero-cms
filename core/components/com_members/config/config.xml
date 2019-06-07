@@ -1,32 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-@package        hubzero-cms
-@file           components/com_members/config.xml
-@copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
-@license        http://opensource.org/licenses/MIT MIT
-
-Copyright 2005-2015 HUBzero Foundation, LLC.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-HUBzero is a registered trademark of Purdue University.
+@package      hubzero-cms
+@copyright    Copyright 2005-2019 HUBzero Foundation, LLC.
+@license      http://opensource.org/licenses/MIT MIT
 -->
 
 <config>
@@ -303,7 +280,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
-		<field name="orcid_user_institution_name" type="text" menu="hide" default="Purdue University" label="Institution name of ORCID user" description="The field for setting the institution name." />
+		<field name="orcid_user_institution_name" type="text" menu="hide" default="" label="Institution name of ORCID user" description="The field for setting the institution name." />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="defaultpic" type="text" menu="hide" default="/core/components/com_members/site/assets/img/profile.gif" label="Default picture" description="Default placeholder image for user pictures" />
 		<field name="picture" type="list" default="" label="Picture Handler" description="Select a handler for user pictures">
@@ -320,8 +297,6 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="webpath" type="text" menu="hide" default="/site/members" label="Upload path" description="File path for pictures" />
 		<field name="homedir" type="text" menu="hide" default="" label="Home directory path" description="Hub users' home directory path (typically '/home/{hubname}')" />
-		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="Max upload" description="Maximum upload file size" />
-		<field name="file_ext" type="text" menu="hide" label="Extensions" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif" description="Allowed file types" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="user_messaging" type="list" default="1" label="User-To-User Messaging" description="Allow/Disallow user-to-user messaging">
 			<option value="0">None</option>

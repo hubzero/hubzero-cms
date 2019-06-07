@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Courses\Models;
@@ -35,18 +10,18 @@ namespace Components\Courses\Models;
 use Components\Courses\Tables;
 use Hubzero\Config\Registry;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'grade.book.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'asset.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'asset.views.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'member.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'progress.factors.php');
-require_once(__DIR__ . DS . 'base.php');
-require_once(__DIR__ . DS . 'gradepolicies.php');
-require_once(__DIR__ . DS . 'memberBadge.php');
-require_once(__DIR__ . DS . 'section' . DS .'badge.php');
-require_once(__DIR__ . DS . 'form.php');
-require_once(__DIR__ . DS . 'formRespondent.php');
-require_once(__DIR__ . DS . 'formDeployment.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'grade.book.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.views.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'member.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'progress.factors.php';
+require_once __DIR__ . DS . 'base.php';
+require_once __DIR__ . DS . 'gradepolicies.php';
+require_once __DIR__ . DS . 'memberBadge.php';
+require_once __DIR__ . DS . 'section' . DS .'badge.php';
+require_once __DIR__ . DS . 'form.php';
+require_once __DIR__ . DS . 'formRespondent.php';
+require_once __DIR__ . DS . 'formDeployment.php';
 
 /**
  * Courses model class for grade book
@@ -780,13 +755,16 @@ class GradeBook extends Base
 	 * @param      int $member_id
 	 * @return     bool
 	 **/
-	public function isEligibleForRecognition($member_id=null)
+	public function isEligibleForRecognition($member_id = null)
 	{
 		static $assets = null;
 		static $grades = null;
 
 		// Get a grade policy object
-		$gradePolicy = new GradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
+		$section = $this->course->offering()->section();
+		$sectionGradePolicyId = $section->get('grade_policy_id');
+		$sectionId = $section->get('id');
+		$gradePolicy = new GradePolicies($sectionGradePolicyId, $sectionId);
 
 		if (!isset($assets))
 		{
@@ -884,11 +862,13 @@ class GradeBook extends Base
 			{
 				$passing = $this->passing(true, $m);
 
+				$examWeightPredicate = ($exam_weight == 0 || ($exam_weight > 0 && isset($counts[$m]['exam']) && $totals['exam'] == $counts[$m]['exam']));
+				$quizWeightPredicate = ($quiz_weight == 0 || ($quiz_weight > 0 && isset($counts[$m]['quiz']) && $totals['quiz'] == $counts[$m]['quiz']));
+				$homeworkWeightPredicate = ($homework_weight == 0 || ($homework_weight > 0 && isset($counts[$m]['homework']) && $totals['homework'] == $counts[$m]['homework']));
+				$passingPredicate = isset($passing[$m]) && $passing[$m];
+
 				// Now make sure they've taken all required exams/quizzes/homeworks, and that they passed
-				if (($exam_weight     == 0 || ($exam_weight     > 0 && isset($counts[$m]['exam'])     && $totals['exam']     == $counts[$m]['exam']))     &&
-					($quiz_weight     == 0 || ($quiz_weight     > 0 && isset($counts[$m]['quiz'])     && $totals['quiz']     == $counts[$m]['quiz']))     &&
-					($homework_weight == 0 || ($homework_weight > 0 && isset($counts[$m]['homework']) && $totals['homework'] == $counts[$m]['homework'])) &&
-					$passing[$m])
+				if ($examWeightPredicate && $quizWeightPredicate && $homeworkWeightPredicate && $passingPredicate)
 				{
 					$return[] = $m;
 				}

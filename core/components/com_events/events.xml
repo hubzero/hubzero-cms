@@ -1,68 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--
-@package        hubzero-cms
-@file           components/com_events/events.xml
-@copyright      Copyright 2005-2015 HUBzero Foundation, LLC.
-@license        http://opensource.org/licenses/MIT MIT
-
-Copyright 2005-2015 HUBzero Foundation, LLC.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-HUBzero is a registered trademark of Purdue University.
--->
-
 <extension type="component" version="1.5">
 	<name>Events</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<description></description>
 	<files>
-		<filename>calendar.css</filename>
-		<filename>controller.php</filename>
-		<filename>events.category.php</filename>
-		<filename>events.css</filename>
-		<filename>events.date.php</filename>
-		<filename>events.repeat.php</filename>
+		<filename>controllers/events.php</filename>
+		<filename>helpers/date.php</filename>
 		<filename>router.php</filename>
 		<filename>events.php</filename>
-		<filename>events.html.php</filename>
-		<filename>events.class.php</filename>
-		<filename>events.tags.php</filename>
+		<filename>helpers/html.php</filename>
+		<filename>models/event.php</filename>
+		<filename>models/tags.php</filename>
 		<filename>index.html</filename>
-		<filename>images/event.gif</filename>
-		<filename>images/calendar-hilite.gif</filename>
-		<filename>images/calendar-icon.gif</filename>
-		<filename>images/calendar-next.gif</filename>
-		<filename>images/calendar-next.png</filename>
-		<filename>images/calendar-prev.gif</filename>
-		<filename>images/calendar-previous.png</filename>
-		<filename>images/calendar-td.gif</filename>
-		<filename>images/calendar-valid.gif</filename>
-		<filename>images/calendar.png</filename>
-		<filename>images/tabs.png</filename>
-		<filename>images/tabs_bg.gif</filename>
-		<filename>js/calendar.rc4.js</filename>
+		<filename>assets/css/calendar.css</filename>
+		<filename>assets/css/events.css</filename>
+		<filename>assets/img/event.gif</filename>
+		<filename>assets/img/calendar-hilite.gif</filename>
+		<filename>assets/img/calendar-icon.gif</filename>
+		<filename>assets/img/calendar-next.gif</filename>
+		<filename>assets/img/calendar-next.png</filename>
+		<filename>assets/img/calendar-prev.gif</filename>
+		<filename>assets/img/calendar-previous.png</filename>
+		<filename>assets/img/calendar-td.gif</filename>
+		<filename>assets/img/calendar-valid.gif</filename>
+		<filename>assets/img/calendar.png</filename>
+		<filename>assets/img/tabs.png</filename>
+		<filename>assets/img/tabs_bg.gif</filename>
 		<filename>js/events.js</filename>
-		<filename>events.config.php</filename>
 	</files>
 	<install>
 		<sql>

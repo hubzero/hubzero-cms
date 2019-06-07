@@ -1,40 +1,15 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
 defined('_HZEXEC_') or die();
 
 // Include LinkedIn php library
-require_once PATH_CORE . DS . 'libraries' . DS . 'simplelinkedin-php' . DS . 'linkedin_3.2.0.class.php';
+require_once __DIR__ . DS . 'simplelinkedin-php' . DS . 'linkedin_3.2.0.class.php';
 
 class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 {
@@ -108,7 +83,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 	 */
 	public function login(&$credentials, &$options)
 	{
-		$jsession   = App::get('session');
+		$session    = App::get('session');
 		$b64dreturn = '';
 
 		// Check to see if a return parameter was specified
@@ -144,7 +119,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 
 		// LinkedIn has sent a response, user has granted permission, take the temp access token,
 		// the user's secret and the verifier to request the user's real secret key
-		$request = $jsession->get('linkedin.oauth.request');
+		$request = $session->get('linkedin.oauth.request');
 		$reply = $linkedin_client->retrieveTokenAccess(
 			$request['oauth_token'],
 			$request['oauth_token_secret'],
@@ -153,10 +128,10 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		if ($reply['success'] === true)
 		{
 			// The request went through without an error, gather user's 'access' tokens
-			$jsession->set('linkedin.oauth.access', $reply['linkedin']);
+			$session->set('linkedin.oauth.access', $reply['linkedin']);
 
 			// Set the user as authorized for future quick reference
-			$jsession->set('linkedin.oauth.authorized', true);
+			$session->set('linkedin.oauth.authorized', true);
 		}
 		else
 		{
@@ -233,9 +208,9 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
 		// Make sure we have authorization
-		$jsession = App::get('session');
+		$session = App::get('session');
 
-		if ($jsession->get('linkedin.oauth.authorized') == true)
+		if ($session->get('linkedin.oauth.authorized') == true)
 		{
 			// User initiated LinkedIn connection, set up config
 			$config = array(
@@ -246,7 +221,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 
 			// Create the object
 			$linkedin_client = new LinkedIn($config);
-			$linkedin_client->setTokenAccess($jsession->get('linkedin.oauth.access'));
+			$linkedin_client->setTokenAccess($session->get('linkedin.oauth.access'));
 
 			// Fields we need
 			$retrieve = array(
@@ -287,7 +262,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			$full_name  = $first_name . ' ' . $last_name;
 			$username   = (string) $li_id; // (make sure this is unique)
 
-			$method = (Component::params('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+			$method = (Component::params('com_members')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
 			$hzal = \Hubzero\Auth\Link::$method('authentication', 'linkedin', null, $username);
 
 			if ($hzal === false)
@@ -321,7 +296,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 				// Also set a suggested username for their hub account
 				$sub_email    = explode('@', (string) $profile->{'email-address'}, 2);
 				$tmp_username = $sub_email[0];
-				$jsession->set('auth_link.tmp_username', $tmp_username);
+				$session->set('auth_link.tmp_username', $tmp_username);
 			}
 
 			$hzal->update();
@@ -374,11 +349,12 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 	 */
 	public function link($options=array())
 	{
-		$jsession = App::get('session');
+		$session = App::get('session');
 
 		// Set up linkedin configuration
-		$linkedin_config['appKey']    = $this->params->get('api_key');
-		$linkedin_config['appSecret'] = $this->params->get('app_secret');
+		$linkedin_config['appKey']      = $this->params->get('api_key');
+		$linkedin_config['appSecret']   = $this->params->get('app_secret');
+		$linkedin_config['callbackUrl'] = self::getRedirectUri('linkedin');
 
 		// Create Object
 		$linkedin_client = new LinkedIn($linkedin_config);
@@ -395,7 +371,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 
 		// LinkedIn has sent a response, user has granted permission, take the temp access token,
 		// the user's secret and the verifier to request the user's real secret key
-		$request = $jsession->get('linkedin.oauth.request');
+		$request = $session->get('linkedin.oauth.request');
 		$reply = $linkedin_client->retrieveTokenAccess(
 			$request['oauth_token'],
 			$request['oauth_token_secret'],
@@ -404,19 +380,19 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 		if ($reply['success'] === true)
 		{
 			// The request went through without an error, gather user's 'access' tokens
-			$jsession->set('linkedin.oauth.access', $reply['linkedin']);
+			$session->set('linkedin.oauth.access', $reply['linkedin']);
 
 			// Set the user as authorized for future quick reference
-			$jsession->set('linkedin.oauth.authorized', true);
+			$session->set('linkedin.oauth.authorized', true);
 		}
 		else
 		{
 			return new Exception(Lang::txt('Access token retrieval failed'), 500);
 		}
 
-		if ($jsession->get('linkedin.oauth.authorized') == true)
+		if ($session->get('linkedin.oauth.authorized') == true)
 		{
-			$linkedin_client->setTokenAccess($jsession->get('linkedin.oauth.access'));
+			$linkedin_client->setTokenAccess($session->get('linkedin.oauth.access'));
 
 			// Get the linked in profile
 			$profile = $linkedin_client->profile('~:(id,first-name,last-name,email-address)');
@@ -444,9 +420,20 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 			else
 			{
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'linkedin', null, $username);
-				$hzal->set('user_id', User::get('id'));
-				$hzal->set('email', (string) $profile->{'email-address'});
-				$hzal->update();
+				// if `$hzal` === false, then either:
+				//    the authenticator Domain couldn't be found,
+				//    no username was provided,
+				//    or the Link record failed to be created
+				if ($hzal)
+				{
+					$hzal->set('user_id', User::get('id'));
+					$hzal->set('email', (string) $profile->{'email-address'});
+					$hzal->update();
+				}
+				else
+				{
+					Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "linkedin", null, %s) returned false', $username));
+				}
 			}
 		}
 		else // no authorization
@@ -458,5 +445,24 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
 				'error'
 			);
 		}
+	}
+
+	/**
+	 * Display login button
+	 *
+	 * @param   string  $return
+	 * @return  string
+	 */
+	public static function onRenderOption($return = null)
+	{
+		Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/linkedin/assets/css/linkedin.css');
+
+		$html = '<a class="linkedin account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=linkedin' . $return) . '">';
+			$html .= '<div class="signin">';
+				$html .= Lang::txt('PLG_AUTHENTICATION_LINKEDIN_SIGN_IN');
+			$html .= '</div>';
+		$html .= '</a>';
+
+		return $html;
 	}
 }

@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>, Kevin Wojkovich <kevinw@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -576,9 +551,9 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				'type' => Request::getInt('type'),
 				'cite' => Request::getString('cite'),
 				'ref_type' => Request::getString('ref_type'),
-				'date_submit' => Request::getString('date_submit', '0000-00-00 00:00:00'),
-				'date_accept' => Request::getString('date_accept', '0000-00-00 00:00:00'),
-				'date_publish' => Request::getString('date_publish', '0000-00-00 00:00:00'),
+				'date_submit' => Request::getString('date_submit'),
+				'date_accept' => Request::getString('date_accept'),
+				'date_publish' => Request::getString('date_publish'),
 				'year' => Request::getString('year'),
 				'month' => Request::getString('month'),
 				'author_address' => Request::getString('author_address'),
@@ -616,6 +591,15 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				'scope' => $scope,
 				'scope_id' => $scopeID
 			));
+
+		// Datetime fields need to be set to null instead of empty strings
+		foreach (['date_submit', 'date_accept', 'date_publish'] as $key)
+		{
+			if (!$citation->get($key))
+			{
+				$citation->set($key, null);
+			}
+		}
 
 		if ($isNew)
 		{
@@ -875,7 +859,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			$citationsFormat = (isset($params->citationFormat) ? $params->citationFormat : 1);
 
 			// intended for the case that the group's custom
-			// format is removed from the jos_citations_format
+			// format is removed from the `#__citations_format`
 			try
 			{
 				$view->currentFormat = \Components\Citations\Models\Format::oneOrFail($citationsFormat);

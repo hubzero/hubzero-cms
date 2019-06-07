@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -42,7 +18,7 @@ if (!$dir)
 	$dir = 'tmp' . time(); // . rand(0, 100);
 }
 
-Toolbar::title(Lang::txt('COM_COLLECTIONS') . ': ' . Lang::txt('COM_COLLECTIONS_ITEMS') . ': ' . $text, 'collection.png');
+Toolbar::title(Lang::txt('COM_COLLECTIONS') . ': ' . Lang::txt('COM_COLLECTIONS_ITEMS') . ': ' . $text, 'collection');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::apply();
@@ -54,38 +30,20 @@ Toolbar::spacer();
 Toolbar::help('collection');
 
 Html::behavior('switcher', 'submenu');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
 
 $this->css()
      ->js('jquery.fileuploader.js', 'system')
-     ->js('fileupload.js');
+     ->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	<?php echo $this->editor()->save('text'); ?>
-
-	// do field validation
-	if ($('#field-type').val() == '') {
-		alert('<?php echo Lang::txt('COM_COLLECTIONS_ERROR_MISSING_TYPE'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform form-validate" id="item-form" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 <?php if ($this->row->get('id')) { ?>
 	<nav role="navigation" class="sub-navigation">
 		<ul id="submenu" class="item-nav">
-			<li><a href="#" onclick="return false;" id="idetails" class="active"><?php echo Lang::txt('JDETAILS'); ?></a></li>
-			<li><a href="#" onclick="return false;" id="iposts"><?php echo Lang::txt('COM_COLLECTIONS_POSTS'); ?></a></li>
+			<li><a href="#page-idetails" id="idetails" class="active"><?php echo Lang::txt('JDETAILS'); ?></a></li>
+			<li><a href="#page-iposts" id="iposts"><?php echo Lang::txt('COM_COLLECTIONS_POSTS'); ?></a></li>
 		</ul>
 	</nav><!-- / .sub-navigation -->
 
@@ -110,7 +68,7 @@ function submitbutton(pressbutton)
 
 						<div class="input-wrap">
 							<label for="field-description"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_DESCRIPTION'); ?></label><br />
-							<?php echo $this->editor('fields[description]', $this->escape($this->row->get('description')),  35, 10, 'field-description', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
+							<?php echo $this->editor('fields[description]', $this->escape($this->row->get('description')), 35, 10, 'field-description', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 						</div>
 
 						<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COLLECTIONS_FIELD_TAGS_HINT'); ?>">
@@ -185,7 +143,7 @@ function submitbutton(pressbutton)
 								<th><?php echo Lang::txt('COM_COLLECTIONS_FIELD_TYPE'); ?>:</th>
 								<td>
 									<?php echo $this->row->get('type', 'file'); ?>
-									<input type="hidden" name="fields[type]" id="field-type" value="<?php echo $this->escape($this->row->get('type', 'file')); ?>" />
+									<input type="hidden" name="fields[type]" id="field-type" class="required" value="<?php echo $this->escape($this->row->get('type', 'file')); ?>" />
 								</td>
 							</tr>
 							<?php if ($object_id = $this->row->get('object_id')) { ?>

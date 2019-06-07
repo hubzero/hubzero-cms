@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -36,27 +12,21 @@ defined('_HZEXEC_') or die();
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
+
+$this->js('config.js');
 ?>
-<script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
-		if (task == 'config.cancel' || document.formvalidator.isValid($('#config-form'))) {
-			Joomla.submitform(task, document.getElementById('config-form'));
-		}
-	}
-</script>
-<form action="<?php echo Route::url('index.php?option=com_messages&controller=configs'); ?>" method="post" name="adminForm" id="message-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=com_messages&controller=configs'); ?>" method="post" name="adminForm" id="config-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<fieldset>
 		<div class="configuration">
 			<div class="configuration-options">
-				<button type="button" onclick="Joomla.submitform('save', this.form);window.top.setTimeout('window.parent.$.fancybox.close()', 1400);"><?php echo Lang::txt('JSAVE');?></button>
-				<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo Lang::txt('JCANCEL');?></button>
+				<button type="button" id="action_save"><?php echo Lang::txt('JSAVE');?></button>
+				<button type="button" id="action_cancel"><?php echo Lang::txt('JCANCEL');?></button>
 			</div>
 			<?php echo Lang::txt('COM_MESSAGES_MY_SETTINGS') ?>
 		</div>
 	</fieldset>
 
-	<fieldset class="adminform" style="padding-top: 3em;">
+	<fieldset class="adminform">
 		<fieldset>
 			<legend><?php echo Lang::txt('COM_MESSAGES_FIELD_LOCK_LABEL'); ?></legend>
 

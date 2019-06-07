@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        plugins/projects/publications/css/curation.css
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 /*
@@ -309,6 +308,10 @@
 	.item-title img {
 		float: left;
 		margin-right: 0.3em;
+	}
+	.item-title img,
+	.item-wrap img {
+		height: 1.3em;
 	}
 	.citation-formatted p {
 		font-size: 85%;

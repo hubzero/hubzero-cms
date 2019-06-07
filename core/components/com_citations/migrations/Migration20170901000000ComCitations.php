@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -24,7 +29,7 @@ class Migration20170901000000ComCitations extends Base
 			  `published` int(3) NOT NULL DEFAULT '1',
 			  `affiliated` int(11) NOT NULL DEFAULT '0',
 			  `fundedby` int(3) DEFAULT NULL,
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `address` varchar(250) DEFAULT NULL,
 			  `author` text,
 			  `booktitle` varchar(250) DEFAULT NULL,
@@ -53,9 +58,9 @@ class Migration20170901000000ComCitations extends Base
 			  `year` varchar(4) DEFAULT NULL,
 			  `doi` varchar(250) DEFAULT NULL,
 			  `ref_type` varchar(50) DEFAULT NULL,
-			  `date_submit` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `date_accept` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `date_publish` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `date_submit` datetime DEFAULT NULL,
+			  `date_accept` datetime DEFAULT NULL,
+			  `date_publish` datetime DEFAULT NULL,
 			  `software_use` int(3) DEFAULT NULL,
 			  `res_edu` int(3) DEFAULT NULL,
 			  `exp_list_exp_data` int(3) DEFAULT NULL,

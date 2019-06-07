@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_tools/admin/assets/js/handlers.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 if (!jq) {
@@ -29,13 +28,6 @@ jQuery(document).ready(function (jq) {
 			.attr('name', 'rules[' + counter + '][quantity]')
 			.attr('id', 'field-quantity-' + counter);
 		rule.fadeIn();
-
-		// If the template is using uniform, we have to remove
-		// and readd because we changed the id above
-		if (!!$.prototype.uniform) {
-			$.uniform.restore('#field-quantity-' + counter);
-			$('#field-quantity-' + counter).uniform();
-		}
 	});
 
 	$('.rules').on('click', '.delete-rule', function ( e ) {

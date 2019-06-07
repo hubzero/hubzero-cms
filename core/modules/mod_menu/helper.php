@@ -1,29 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @copyright Copyright 2005-2014 Open Source Matters, Inc.
- * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Modules\Menu;
@@ -86,7 +65,7 @@ class Helper extends Module
 		{
 			// Initialise variables.
 			$list     = array();
-			$db       = \App::get('db');
+			$db       = App::get('db');
 
 			$path     = $active->tree;
 			$start    = (int) $params->get('startLevel');
@@ -127,12 +106,18 @@ class Helper extends Module
 					$item->active = false;
 					$item->flink  = $item->link;
 
+					$item->title        = htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8', false);
+					$item->anchor_css   = htmlspecialchars($item->params->get('menu-anchor_css', ''), ENT_COMPAT, 'UTF-8', false);
+					$item->anchor_title = htmlspecialchars($item->params->get('menu-anchor_title', ''), ENT_COMPAT, 'UTF-8', false);
+					$item->menu_image   = $item->params->get('menu_image', '') ? htmlspecialchars($item->params->get('menu_image', ''), ENT_COMPAT, 'UTF-8', false) : '';
+
 					// Reverted back for CMS version 2.5.6
 					switch ($item->type)
 					{
 						case 'separator':
 							// No further action needed.
-							continue;
+							continue 2;
+							break;
 
 						case 'url':
 							if ((strpos($item->link, 'index.php?') === 0) && (strpos($item->link, 'Itemid=') === false))
@@ -160,18 +145,13 @@ class Helper extends Module
 					{
 						$item->flink = Route::url($item->flink);
 					}
-
-					$item->title        = htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8', false);
-					$item->anchor_css   = htmlspecialchars($item->params->get('menu-anchor_css', ''), ENT_COMPAT, 'UTF-8', false);
-					$item->anchor_title = htmlspecialchars($item->params->get('menu-anchor_title', ''), ENT_COMPAT, 'UTF-8', false);
-					$item->menu_image   = $item->params->get('menu_image', '') ? htmlspecialchars($item->params->get('menu_image', ''), ENT_COMPAT, 'UTF-8', false) : '';
 				}
 
 				if (isset($items[$lastitem]))
 				{
-					$items[$lastitem]->deeper     = (($start?$start:1) > $items[$lastitem]->level);
-					$items[$lastitem]->shallower  = (($start?$start:1) < $items[$lastitem]->level);
-					$items[$lastitem]->level_diff = ($items[$lastitem]->level - ($start?$start:1));
+					$items[$lastitem]->deeper     = (($start ? $start : 1) > $items[$lastitem]->level);
+					$items[$lastitem]->shallower  = (($start ? $start : 1) < $items[$lastitem]->level);
+					$items[$lastitem]->level_diff = ($items[$lastitem]->level - ($start ? $start : 1));
 				}
 			}
 

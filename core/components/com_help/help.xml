@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="2.5" method="upgrade">
 	<name>com_help</name>
-	<author>HUBzero</author>
 	<creationDate>February 2015</creationDate>
-	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
-	<license>http://opensource.org/licenses/MIT MIT</license>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
 	<authorEmail>support@hubzero.org</authorEmail>
-	<authorUrl>http://hubzero.org</authorUrl>
+	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
 	<version>1.0.0</version>
 	<description>COM_HELP_XML_DESCRIPTION</description>
 	<administration>

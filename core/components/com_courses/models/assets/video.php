@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2011-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Courses\Models\Assets;
@@ -35,8 +10,8 @@ namespace Components\Courses\Models\Assets;
 use Filesystem;
 
 /**
-* Video Asset handler class
-*/
+ * Video Asset handler class
+ */
 class Video extends File
 {
 	/**
@@ -57,7 +32,7 @@ class Video extends File
 	 *
 	 * @return array of assets created
 	 **/
-	public function create()
+	public function create($localPath = null)
 	{
 		// Set the asset type to video
 		$this->asset['type']    = 'video';
@@ -66,7 +41,7 @@ class Video extends File
 		// @FIXME: if extension is .zip, go ahead and set subtype (html5/hubpresenter) accordingly
 
 		// Call the primary create method on the file asset handler
-		$return_info = parent::create();
+		$return_info = parent::create($localPath);
 
 		// Check for errors in response
 		if (array_key_exists('error', $return_info))

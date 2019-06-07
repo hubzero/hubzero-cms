@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -89,35 +64,6 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public function onMembersContributionsAreas()
 	{
-		/*$areas = $this->_areas;
-		if (is_array($areas))
-		{
-			return $areas;
-		}
-
-		if (!$this->_cats)
-		{
-			// Get categories
-			$this->_cats = Components\Publications\Models\Orm\Category::all()
-				->whereEquals('state', Components\Publications\Models\Orm\Category::STATE_PUBLISHED)
-				->order('name', 'asc')
-				->rows();
-		}
-		$categories = $this->_cats;
-
-		// Normalize the category names
-		// e.g., "Oneline Presentations" -> "onlinepresentations"
-		$cats = array();
-		foreach ($categories as $category)
-		{
-			$cats[$category->alias] = $category->name;
-		}
-
-		$areas = array(
-			'publications' => $cats
-		);
-		$this->_areas = $areas;*/
-
 		$areas = array(
 			'publications' => Lang::txt('PLG_MEMBERS_PUBLICATIONS')
 		);
@@ -134,7 +80,11 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public function onMembersContributionsCount($user_id='m.uidNumber', $username='m.username')
 	{
-		$query = "SELECT COUNT(R.id) FROM `#__resources` AS R, `#__author_assoc` AS AA WHERE AA.authorid=" . $user_id . " AND R.id = AA.subid AND AA.subtable = 'resources' AND R.published=1 AND R.standalone=1";
+		$query = "SELECT COUNT(R.id)
+				FROM `#__publication_versions` AS R
+				LEFT JOIN `#__publication_authors` AS AA ON AA.publication_version_id = R.id
+				WHERE AA.user_id=" . $user_id . " AND
+				AND R.state=1";
 		return $query;
 	}
 
@@ -158,7 +108,7 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
 			$ars = $this->onMembersContributionsAreas();
 			if (!isset($areas[$this->_name])
 			 && !in_array($this->_name, $areas)
-			 && !array_intersect($areas, array_keys($ars['publications'])))
+			 && !array_intersect($areas, array_keys($ars)))
 			{
 				return array();
 			}
@@ -206,20 +156,6 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
 			$filters['sortby'] = 'created'; //'users';
 		}
 
-		/*$groups = $member->groups();
-
-		if (!empty($groups))
-		{
-			foreach ($groups as $group)
-			{
-				if ($group->regconfirmed)
-				{
-					$filters['usergroups'][] = $group->cn;
-				}
-			}
-		}
-		$filters['usergroups'] = array_unique($filters['usergroups']);*/
-
 		// If the visiting user is NOT the same as the member
 		// we want to restrict what they can see
 		if (User::get('id') != $member->get('id'))
@@ -253,45 +189,11 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
 
 		if ($limit)
 		{
-			/*if ($this->_total != null)
-			{
-				$total = 0;
-				$t = $this->_total;
-				foreach ($t as $l)
-				{
-					$total += $l;
-				}
-			}
-			if ($total == 0)
-			{
-				return array();
-			}*/
-
 			$filters['limit'] = $limit;
 			$filters['limitstart'] = $limitstart;
 
-			// Check the area of return. If we are returning results for a specific area/category
-			// we'll need to modify the query a bit
-			/*if (count($areas) == 1 && !isset($areas['publications']))
-			{
-				$filters['type'] = (isset($cats[$areas[0]])) ? $cats[$areas[0]]['id'] : 0;
-				if (!$filters['type'])
-				{
-					unset($filters['type']);
-				}
-			}*/
-
 			// Get results
 			$query = self::allWithFilters($filters);
-
-			/*if (isset($filters['sortby']) && ($filters['sortby'] == 'usage' || $filters['sortby'] == 'users'))
-			{
-				include_once \Component::path('com_resources') . DS . 'models' . DS . 'stat.php';
-
-				$s = \Components\Resources\Models\Stat::blank()->getTableName();
-
-				$query->select('(SELECT rs.users FROM ' . $s . ' AS rs WHERE rs.resid=' . $query->getTableName() . '.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1)', 'users');
-			}*/
 
 			$rows = $query
 				->limit($filters['limit'])
@@ -305,41 +207,6 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
 		else
 		{
 			return self::allWithFilters($filters)->total();
-
-			// Get a count
-			/*$counts = array();
-			$ares = $this->onMembersContributionsAreas();
-			foreach ($ares as $area => $val)
-			{
-				if (is_array($val))
-				{
-					$i = 0;
-					foreach ($val as $a => $t)
-					{
-						if ($limitstart == -1)
-						{
-							$counts[] = 0;
-
-							if ($i == 0)
-							{
-								$counts[] = self::allWithFilters($filters)->total();
-							}
-						}
-						else
-						{
-							$filters['type'] = $cats[$a]['id'];
-
-							// Execute a count query for each area/category
-							$counts[] = self::allWithFilters($filters)->total();
-						}
-						$i++;
-					}
-				}
-			}
-
-			// Return the counts
-			$this->_total = $counts;
-			return $counts;*/
 		}
 	}
 
@@ -407,10 +274,12 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
 				->join($a, $a . '.publication_version_id', $r . '.id', 'left')
 				->whereEquals($a . '.user_id', $filters['author']);
 
-			/*if (isset($filters['notauthorrole']))
+			if (isset($filters['notauthorrole']))
 			{
-				$query->where($a . '.role', '!=', $filters['notauthorrole']);
-			}*/
+				$query->where($a . '.role', 'IS', null, 'and', 1)
+					->orWhere($a . '.role', '!=', $filters['notauthorrole'], 1)
+					->resetDepth();
+			}
 		}
 
 		if (isset($filters['access']) && !empty($filters['access']))
@@ -454,9 +323,11 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
 		if (isset($filters['now']))
 		{
 			$query->whereEquals($r . '.published_up', '0000-00-00 00:00:00', 1)
+				->orWhere($r . '.published_up', 'IS', null, 1)
 				->orWhere($r . '.published_up', '<=', $filters['now'], 1)
 				->resetDepth()
 				->whereEquals($r . '.published_down', '0000-00-00 00:00:00', 1)
+				->orWhere($r . '.published_down', 'IS', null, 1)
 				->orWhere($r . '.published_down', '>=', $filters['now'], 1)
 				->resetDepth();
 		}
@@ -481,7 +352,6 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		//$row->set('typetitle', $row->type->get('type'));
 		$database = App::get('db');
 		$pa = new \Components\Publications\Tables\Author($database);
 
@@ -504,13 +374,13 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
 				$thedate = '';
 				break;
 			case 1:
-				$thedate = $row->get('created'); //$line->created();
+				$thedate = $row->get('created');
 				break;
 			case 2:
-				$thedate = $row->get('modified'); //$line->modified();
+				$thedate = $row->get('modified');
 				break;
 			case 3:
-				$thedate = $row->get('published_up'); //$line->published();
+				$thedate = $row->get('published_up');
 				break;
 		}
 
@@ -534,7 +404,7 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Include needed libraries and push scripts and CSS to the document
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public static function documents()
 	{

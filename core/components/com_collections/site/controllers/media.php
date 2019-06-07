@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Collections\Site\Controllers;
@@ -297,8 +272,12 @@ class Media extends SiteController
 			$listdir = $item->get('id');
 		}
 
-		//max upload size
-		$sizeLimit = $this->config->get('maxAllowed', 40000000);
+		// Get media config
+		$mediaConfig = \Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
 
 		// get the file
 		if (isset($_GET['qqfile']))
@@ -321,7 +300,7 @@ class Media extends SiteController
 
 		$asset = new Asset();
 
-		//define upload directory and make sure its writable
+		// Define upload directory and make sure its writable
 		$path = $asset->filespace() . DS . $listdir;
 		if (!is_dir($path))
 		{
@@ -338,12 +317,13 @@ class Media extends SiteController
 			return;
 		}
 
-		//check to make sure we have a file and its not too big
+		// Check to make sure we have a file and its not too big
 		if ($size == 0)
 		{
 			echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_EMPTY_FILE')));
 			return;
 		}
+
 		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Number::formatBytes($sizeLimit));
@@ -365,8 +345,16 @@ class Media extends SiteController
 		{
 			$filename .= rand(10, 99);
 		}
-
 		$file = $path . DS . $filename . '.' . $ext;
+
+		// Check that the file type is allowed
+		$allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
+
+		if (!empty($allowed) && !in_array(strtolower($ext), $allowed))
+		{
+			echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed))));
+			return;
+		}
 
 		if ($stream)
 		{
@@ -455,17 +443,28 @@ class Media extends SiteController
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
 		}
 
 		// Incoming file
-		$file = Request::getArray('upload', '', 'files');
-		if (!$file['name'])
+		$file = Request::getArray('upload', array(), 'files');
+		if (empty($file) || !$file['name'])
 		{
 			$this->setError(Lang::txt('COM_COLLECTIONS_NO_FILE'));
-			$this->displayTask();
-			return;
+			return $this->displayTask();
+		}
+
+		// Get media config
+		$mediaConfig = Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
+
+		if ($file['size'] > $sizeLimit)
+		{
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_FILE_TOO_BIG', Number::formatBytes($sizeLimit)));
+			return $this->displayTask();
 		}
 
 		$asset = new Asset();
@@ -478,8 +477,7 @@ class Media extends SiteController
 			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_CREATE_UPLOAD_DIR'));
-				$this->displayTask();
-				return;
+				return $this->displayTask();
 			}
 		}
 
@@ -487,6 +485,16 @@ class Media extends SiteController
 		$file['name'] = urldecode($file['name']);
 		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
+		$ext = Filesystem::extension($file['name']);
+
+		// Check that the file type is allowed
+		$allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
+
+		if (!empty($allowed) && !in_array(strtolower($ext), $allowed))
+		{
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
+			return $this->displayTask();
+		}
 
 		// Upload new files
 		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
@@ -496,25 +504,35 @@ class Media extends SiteController
 		// File was uploaded
 		else
 		{
-			// Create database entry
-			$asset->set('item_id', intval($listdir));
-			$asset->set('filename', $file['name']);
-			if ($asset->image())
+			// Virus scan
+			if (!Filesystem::isSafe($path . DS . $file['name']))
 			{
-				$hi = new \Hubzero\Image\Processor($path . DS . $file['name']);
-				if (count($hi->getErrors()) == 0)
-				{
-					$hi->autoRotate();
-					$hi->save();
-				}
-			}
-			$asset->set('description', Request::getString('description', '', 'post'));
-			$asset->set('state', 1);
-			$asset->set('type', 'file');
+				Filesystem::delete($path . DS . $file['name']);
 
-			if (!$asset->store())
+				$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_VIRUS'));
+			}
+			else
 			{
-				$this->setError($asset->getError());
+				// Create database entry
+				$asset->set('item_id', intval($listdir));
+				$asset->set('filename', $file['name']);
+				if ($asset->image())
+				{
+					$hi = new \Hubzero\Image\Processor($path . DS . $file['name']);
+					if (count($hi->getErrors()) == 0)
+					{
+						$hi->autoRotate();
+						$hi->save();
+					}
+				}
+				$asset->set('description', Request::getString('description', '', 'post'));
+				$asset->set('state', 1);
+				$asset->set('type', 'file');
+
+				if (!$asset->store())
+				{
+					$this->setError($asset->getError());
+				}
 			}
 		}
 

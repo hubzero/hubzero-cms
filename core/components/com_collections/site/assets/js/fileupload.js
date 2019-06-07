@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_groups/assets/js/groups.jquery.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 //-----------------------------------------------------------
@@ -54,7 +53,7 @@ HUB.CollectionsFileUpload = {
 					);*/
 					//console.log($('#link-adder').attr('data-action') + $('#field-dir').val());
 					$.get($('#link-adder').attr('data-action') + $('#field-dir').val(), {}, function(data){
-						var response = jQuery.parseJSON(data);
+						var response = JSON.parse(data);
 
 						if (response.id != $('#field-dir').val()) {
 							$('#field-id').val(response.id);

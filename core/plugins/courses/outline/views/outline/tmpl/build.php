@@ -1,48 +1,32 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
 defined('_HZEXEC_') or die();
 
 $base = $this->course->offering()->link();
+$course = $this->course;
+$offering = $course->offering();
+$section = $offering->section();
+$sectionId = $section->get('id');
+$units = $offering->units();
 
 HTML::behavior('core');
 
 ?>
 
 <div class="header">
-	<a href="#" class="trash btn icon-trash">Deleted Assets</a>
-	<a href="<?php echo Route::url($base . '&active=outline'); ?>" class="done btn icon-check">Done</a>
-	<h3><?php echo $this->title; ?></h2>
+	<a href="#" class="trash btn icon-trash">
+		<?php echo Lang::txt('PLG_COURSES_OUTLINE_DELETED_ASSETS'); ?>
+	</a>
+	<a href="<?php echo Route::url($base . '&active=outline'); ?>" class="done btn icon-check">
+		<?php echo Lang::txt('PLG_COURSES_OUTLINE_DONE'); ?>
+	</a>
+	<h3><?php echo $this->title; ?></h3>
 </div>
 
 <div id="dialog-confirm" class="dialog">This is a dialog box</div>
@@ -58,7 +42,7 @@ HTML::behavior('core');
 		<ul class="assets-deleted">
 
 <?php
-			foreach ($this->course->offering()->units() as $unit) :
+			foreach ($units as $unit) :
 				foreach ($unit->assetgroups() as $agt) :
 					foreach ($agt->children() as $ag) :
 						if ($ag->assets()->total()) :
@@ -66,7 +50,7 @@ HTML::behavior('core');
 								if ($a->isDeleted()) :
 									$this->view('asset_partial')
 									     ->set('base', $base)
-									     ->set('course', $this->course)
+									     ->set('course', $course)
 									     ->set('unit', $unit)
 									     ->set('ag', $ag)
 									     ->set('a', $a)
@@ -84,7 +68,7 @@ HTML::behavior('core');
 
 	<ul class="unit">
 
-		<?php foreach ($this->course->offering()->units() as $unit) : ?>
+		<?php foreach ($units as $unit) : ?>
 		<li class="unit-item" id="unit_<?php echo $unit->get('id') ?>">
 			<div class="unit-title-arrow"></div>
 			<div class="unit-edit-container">
@@ -100,9 +84,9 @@ HTML::behavior('core');
 							<input class="unit-edit-text" name="title" type="text" value="<?php echo $unit->get('title'); ?>" placeholder="title" />
 							<input class="unit-edit-save" type="submit" value="Save" />
 							<input class="unit-edit-reset" type="reset" value="Cancel" />
-							<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
-							<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
-							<input type="hidden" name="section_id" value="<?php echo $this->course->offering()->section()->get('id') ?>" />
+							<input type="hidden" name="course_id" value="<?php echo $course->get('id'); ?>" />
+							<input type="hidden" name="offering" value="<?php echo $offering->alias(); ?>" />
+							<input type="hidden" name="section_id" value="<?php echo $sectionId; ?>" />
 							<input type="hidden" name="id" value="<?php echo $unit->get('id'); ?>" />
 						</form>
 					</div>
@@ -111,8 +95,8 @@ HTML::behavior('core');
 							$this->view('_prerequisites')
 							     ->set('scope', 'unit')
 							     ->set('scope_id', $unit->get('id'))
-							     ->set('section_id', $this->course->offering()->section()->get('id'))
-							     ->set('items', clone($this->course->offering()->units()))->display();
+							     ->set('section_id', $sectionId)
+							     ->set('items', clone($units))->display();
 						?>
 					</div>
 				</div>
@@ -152,8 +136,8 @@ HTML::behavior('core');
 								</div>
 								<input class="asset-group-title-save" type="submit" value="Save" />
 								<input class="asset-group-title-cancel" type="reset" value="Cancel" />
-								<input type="hidden" name="course_id" value="<?php echo $this->course->get('id') ?>" />
-								<input type="hidden" name="offering" value="<?php echo $this->course->offering()->get('alias') ?>" />
+								<input type="hidden" name="course_id" value="<?php echo $course->get('id') ?>" />
+								<input type="hidden" name="offering" value="<?php echo $offering->get('alias') ?>" />
 								<input type="hidden" name="id" value="<?php echo $agt->get('id') ?>" />
 							</form>
 						</div>
@@ -166,7 +150,7 @@ HTML::behavior('core');
 				{
 					$this->view('asset_group_partial')
 					     ->set('base', $base)
-					     ->set('course', $this->course)
+					     ->set('course', $course)
 					     ->set('unit', $unit)
 					     ->set('ag', $ag)
 					     ->display();
@@ -177,7 +161,7 @@ HTML::behavior('core');
 				{
 					$this->view('asset_group_partial')
 					     ->set('base', $base)
-					     ->set('course', $this->course)
+					     ->set('course', $course)
 					     ->set('unit', $unit)
 					     ->set('ag', $agt)
 					     ->display();
@@ -187,8 +171,8 @@ HTML::behavior('core');
 								<li class="add-new asset-group-item">
 									Add a new <?php echo (substr($agt->get('title'), -3) == 'ies') ? strtolower(preg_replace('/ies$/', 'y', $agt->get('title'))) : strtolower(rtrim($agt->get('title'), 's')); ?>
 									<form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save">
-										<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
-										<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
+										<input type="hidden" name="course_id" value="<?php echo $course->get('id'); ?>" />
+										<input type="hidden" name="offering" value="<?php echo $offering->alias(); ?>" />
 										<input type="hidden" name="unit_id" value="<?php echo $unit->get('id'); ?>" />
 										<input type="hidden" name="parent" value="<?php echo $agt->get('id'); ?>" />
 									</form>
@@ -228,10 +212,10 @@ HTML::behavior('core');
 		<li class="add-new unit-item">
 			Add a new unit
 			<form action="<?php echo Request::base(true); ?>/api/courses/unit/save">
-				<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
-				<input type="hidden" name="offering_id" value="<?php echo $this->course->offering()->get('id'); ?>" />
-				<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
-				<input type="hidden" name="section_id" value="<?php echo $this->course->offering()->section()->get('id'); ?>" />
+				<input type="hidden" name="course_id" value="<?php echo $course->get('id'); ?>" />
+				<input type="hidden" name="offering_id" value="<?php echo $offering->get('id'); ?>" />
+				<input type="hidden" name="offering" value="<?php echo $offering->alias(); ?>" />
+				<input type="hidden" name="section_id" value="<?php echo $sectionId; ?>" />
 			</form>
 		</li>
 	</ul>

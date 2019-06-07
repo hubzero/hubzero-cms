@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -60,7 +35,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get the top list for a tool
 	 *
-	 * @param   object  $database      JDatabase
+	 * @param   object  $database      Database
 	 * @param   string  $period        Tiem period (quarterly, yearly, etc)
 	 * @param   string  $dthis         Time (YYYY-MM)
 	 * @param   string  $s_top         Top value
@@ -132,7 +107,6 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 					{
 						continue;
 					}
-					$count++;
 
 					$html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
 					$html .= "\t\t\t" . '<td>' . $row->rank . '</td>' . "\n";
@@ -145,21 +119,14 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 					$html .= "\t\t\t" . '<td>' . $vl . '%</td>' . "\n";
 					$html .= "\t\t" . '</tr>' . "\n";
 				}
-			}
-
-			if ($count == 0)
-			{
-				$html .= "\t" . '<tbody>' . "\n";
-				$html .= "\t\t" . '<tr class="odd">' . "\n";
-				$html .= "\t\t\t" . '<td colspan="4">No data available to display.</td>' . "\n";
-				$html .= "\t\t" . '</tr>' . "\n";
+				$count++;
 			}
 		}
 		else
 		{
 			$html .= "\t" . '<tbody>' . "\n";
 			$html .= "\t\t" . '<tr class="odd">' . "\n";
-			$html .= "\t\t\t" . '<td colspan="4">Data being generated. Please check back soon.</td>' . "\n";
+			$html .= "\t\t\t" . '<td colspan="4">No data available to display.</td>' . "\n";
 			$html .= "\t\t" . '</tr>' . "\n";
 		}
 		$html .= "\t" . '</tbody>' . "\n";
@@ -237,7 +204,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	/**
 	 * Gets top cited tools
 	 *
-	 * @param   object $database JDatabase
+	 * @param   object $database Database
 	 * @return  string HTML
 	 */
 	private function gettopcited_tools($database)
@@ -343,7 +310,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build date selectors
 	 *
-	 * @param   object &$db    JDatabase
+	 * @param   object &$db    Database
 	 * @param   string $period Time period (quarterly, yearly, etc)
 	 * @param   string $s_top  Top value
 	 * @param   string $dthis  Time (YYYY-MM)
@@ -361,6 +328,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 		$year_data_start = 2000;
 
 		$html = '<select name="dthis">' . "\n";
+		$html .= "<option selected disabled hidden>" . Lang::txt('PLG_USAGE_TOOLS_DEFAULT_DATE_SELECT') . "</option>\n";
 		switch ($period)
 		{
 			case '3':
@@ -664,11 +632,58 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Get first date range with data
+	 *
+	 * @param   string  $period
+	 * @return  string
+	 */
+	public function getDateWithData($period)
+	{
+		$period = intval($period);
+		$dthis  = Request::getString('dthis');
+		if (!preg_match('/[0-9]{4}\-[0-9]{2}/', $dthis))
+		{
+			$dthis = '';
+		}
+
+		if (!$dthis)
+		{
+			$cur_year  = floor(date("Y"));
+			$cur_month = floor(date("n"));
+			$year_data_start = 2000;
+			$months = array(
+				"01" => "Jan", "02" => "Feb", "03" => "Mar", "04" => "Apr", "05" => "May", "06" => "Jun",
+				"07" => "Jul", "08" => "Aug", "09" => "Sep", "10" => "Oct", "11" => "Nov", "12" => "Dec"
+			);
+			$monthsReverse = array_reverse($months, true);
+
+			for ($i = $cur_year; $i >= $year_data_start; $i--)
+			{
+				foreach ($monthsReverse as $key => $month)
+				{
+					$value = $i . '-' . $key;
+					if ($this->check_for_data($value, $period))
+					{
+						$dthis = $value;
+						break;
+					}
+				}
+				if ($dthis)
+				{
+					break;
+				}
+			}
+		}
+
+		return $dthis;
+	}
+
+	/**
 	 * Event call for displaying usage data
 	 *
 	 * @param   string $option         Component name
 	 * @param   string $task           Component task
-	 * @param   object $db             JDatabase
+	 * @param   object $db             Database
 	 * @param   array  $months         Month names (Jan -> Dec)
 	 * @param   array  $monthsReverse  Month names in reverse (Dec -> Jan)
 	 * @param   string $enddate        Time period
@@ -690,7 +705,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 
 		// Ensure the database table(s) exist
 		$tables = $database->getTableList();
-		$table = $database->getPrefix() . 'stats_tops';
+		$table  = $database->getPrefix() . 'stats_tops';
 		if (!in_array($table, $tables))
 		{
 			return '<p class="error">' . Lang::txt('Error: Required database table not found . ') . '</p>';
@@ -702,11 +717,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$period = Request::getString('period', '12');
-		$dthis  = Request::getString('dthis', date('Y') . '-' . date('m'));
-		if (!preg_match('/[0-9]{4}\-[0-9]{2}/', $dthis))
-		{
-			$dthis = date('Y') . '-' . date('m');
-		}
+		$dthis  = $this->getDateWithData($period);
 		$s_top  = Request::getInt('top', '2');
 
 		$html = '';

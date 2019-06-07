@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Steve Snyder <snyder13@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -361,10 +336,10 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
 				}
 
 				// Get children
-				$sql3 = "SELECT title AS childTitle, path FROM jos_resources
-				JOIN jos_resource_assoc
-				ON jos_resource_assoc.child_id = jos_resources.id
-				WHERE jos_resource_assoc.parent_id = {$id} AND standalone = 0 AND published = 1;";
+				$sql3 = "SELECT title AS childTitle, path FROM `#__resources`
+					JOIN `#__resource_assoc`
+					ON `#__resource_assoc`.child_id = `#__resources`.id
+					WHERE `#__resource_assoc`.parent_id = {$id} AND standalone = 0 AND published = 1;";
 				$children = $db->setQuery($sql3)->query()->loadAssocList();
 
 				$fileData = '';
@@ -408,7 +383,7 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$db = App::get('db');
-				$sql = "SELECT id FROM #__resources WHERE standalone=1;";
+				$sql = "SELECT id FROM `#__resources` WHERE standalone=1;";
 				$ids = $db->setQuery($sql)->query()->loadColumn();
 				return $ids;
 			}

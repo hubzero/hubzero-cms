@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -53,14 +29,14 @@ if ($canDo->get('core.delete'))
 	Toolbar::deleteList('COM_GROUPS_PAGES_DELETE_CONFIRM', 'delete');
 }
 Toolbar::spacer();
-Toolbar::custom('manage', 'config','config','COM_GROUPS_MANAGE',false);
+Toolbar::custom('manage', 'config', 'config', 'COM_GROUPS_MANAGE', false);
 Toolbar::spacer();
 Toolbar::help('pages');
 
 $this->css();
 
 // include modal for raw version links
-Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fullScreen'=>true));
+Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fullScreen' => true));
 ?>
 
 <?php
@@ -87,13 +63,13 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
 					<td>
 						<ol class="attention-view">
 							<li class="raw">
-								<a class="version" href="<?php echo $base; ?>&amp;task=raw&amp;pageid=<?php echo $needsAttention->get('id'); ?>" class="btn">
+								<a class="version" href="<?php echo Route::url($base . '&task=raw&pageid=' . $needsAttention->get('id')); ?>" class="btn">
 									<?php echo Lang::txt('COM_GROUPS_PAGES_NEEDING_ATTENTION_VIEW_RAW'); ?>
 								</a>
 							</li>
 							<?php if ($needsAttention->version()->get('checked_errors') && $needsAttention->version()->get('scanned')) : ?>
 								<li class="preview">
-									<a class="preview" href="<?php echo $base; ?>&amp;task=preview&amp;pageid=<?php echo $needsAttention->get('id'); ?>" class="btn">
+									<a class="preview" href="<?php echo Route::url($base . '&task=preview&pageid=' . $needsAttention->get('id')); ?>" class="btn">
 										<?php echo Lang::txt('COM_GROUPS_PAGES_NEEDING_ATTENTION_RENDER_PREVIEW'); ?>
 									</a>
 								</li>
@@ -103,7 +79,7 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
 								</li>
 							<?php endif; ?>
 							<li class="edit">
-								<a href="<?php echo $base; ?>&amp;task=edit&amp;id[]=<?php echo $needsAttention->get('id'); ?>" class="btn">
+								<a href="<?php echo Route::url($base . '&task=edit&id[]=' . $needsAttention->get('id')); ?>" class="btn">
 									<?php echo Lang::txt('COM_GROUPS_PAGES_NEEDING_ATTENTION_EDIT'); ?>
 								</a>
 							</li>
@@ -112,12 +88,12 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
 					<td>
 						<ol class="attention-actions">
 							<li class="<?php if ($needsAttention->version()->get('checked_errors')) { echo 'completed'; } ?>">
-								<a href="<?php echo $base; ?>&amp;task=errors&amp;id=<?php echo $needsAttention->get('id'); ?>" class="btn">
+								<a href="<?php echo Route::url($base . '&task=errors&id=' . $needsAttention->get('id')); ?>" class="btn">
 									<?php echo Lang::txt('COM_GROUPS_PAGES_NEEDING_ATTENTION_CHECK_FOR_ERRORS'); ?>
 								</a>
 							</li>
 							<li class="<?php if ($needsAttention->version()->get('scanned')) { echo 'completed'; } ?>">
-								<a href="<?php echo $base; ?>&amp;task=scan&amp;id=<?php echo $needsAttention->get('id'); ?>" class="btn">
+								<a href="<?php echo Route::url($base . '&task=scan&id=' . $needsAttention->get('id')); ?>" class="btn">
 									<?php echo Lang::txt('COM_GROUPS_PAGES_NEEDING_ATTENTION_SCAN_CONTENT'); ?>
 								</a>
 							</li>
@@ -127,7 +103,7 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
 						<ol class="attention-actions">
 							<?php if ($needsAttention->version()->get('checked_errors') && $needsAttention->version()->get('scanned')) : ?>
 								<li class="approve">
-									<a href="<?php echo $base; ?>&amp;task=approve&amp;id=<?php echo $needsAttention->get('id'); ?>" class="btn">
+									<a href="<?php echo Route::url($base . '&task=approve&id=' . $needsAttention->get('id')); ?>" class="btn">
 										<strong><?php echo Lang::txt('COM_GROUPS_PAGES_NEEDING_ATTENTION_APPROVE'); ?></strong>
 									</a>
 								</li>
@@ -147,7 +123,7 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col"><?php echo Lang::txt('COM_GROUPS_PAGES_TITLE'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_GROUPS_PAGES_STATE'); ?></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_GROUPS_PAGES_HOME'); ?></th>
@@ -159,7 +135,7 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
 	<?php foreach ($this->pages as $k => $page) : ?>
 			<tr>
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $page->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $page->get('id'); ?>" class="checkbox-toggle" />
 				</td>
 				<td>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&gid=' . $this->group->cn . '&id=' . $page->get('id')); ?>">

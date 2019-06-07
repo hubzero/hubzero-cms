@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -30,19 +35,19 @@ class Migration20170901000000ComEvents extends Base
 			  `contact_info` varchar(120) NOT NULL DEFAULT '',
 			  `extra_info` varchar(240) NOT NULL DEFAULT '',
 			  `state` tinyint(3) NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
-			  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `modified` datetime DEFAULT NULL,
 			  `modified_by` int(11) unsigned NOT NULL DEFAULT '0',
 			  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
-			  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `checked_out_time` datetime DEFAULT NULL,
+			  `publish_up` datetime DEFAULT NULL,
+			  `publish_down` datetime DEFAULT NULL,
 			  `allday` int(11) DEFAULT '0',
 			  `time_zone` varchar(5) DEFAULT NULL,
 			  `repeating_rule` varchar(150) DEFAULT NULL,
 			  `approved` tinyint(1) NOT NULL DEFAULT '1',
-			  `registerby` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `registerby` datetime DEFAULT NULL,
 			  `params` text,
 			  `restricted` varchar(100) DEFAULT NULL,
 			  `email` varchar(255) DEFAULT NULL,
@@ -131,9 +136,9 @@ class Migration20170901000000ComEvents extends Base
 			  `alias` varchar(100) NOT NULL,
 			  `title` varchar(250) NOT NULL,
 			  `pagetext` text,
-			  `created` datetime DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) DEFAULT '0',
-			  `modified` datetime DEFAULT '0000-00-00 00:00:00',
+			  `modified` datetime DEFAULT NULL,
 			  `modified_by` int(11) DEFAULT '0',
 			  `ordering` int(2) DEFAULT '0',
 			  `params` text,

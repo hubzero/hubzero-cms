@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Projects\Site\Controllers;
@@ -60,28 +35,27 @@ class Reports extends Base
 
 		// Set the page title
 		$this->_buildTitle();
-		$this->view->title = $this->title;
 
-		$this->_tblStats = new Tables\Stats($this->database);
+		$tblStats = new Tables\Stats($this->database);
 
-		$monthly = $this->_tblStats->monthlyStats(2, true);
-		$this->view->monthly = ($monthly && count($monthly) > 1) ? $monthly : null;
+		$monthly = $tblStats->monthlyStats(2, true);
+		$monthly = ($monthly && count($monthly) > 1) ? $monthly : null;
+
+		$stats = $tblStats->getStats($this->model, false, $this->_publishing);
 
 		// Output HTML
-		$this->view->task       = $this->_task;
-		$this->view->admin      = $this->model->reviewerAccess('admin');
-		$this->view->option     = $this->_option;
-		$this->view->config     = $this->config;
-		$this->view->publishing = $this->_publishing;
-		$this->view->stats      = $this->_tblStats->getStats($this->model, false, $this->_publishing);
-
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-
-		$this->view->msg = isset($this->_msg) ? $this->_msg : '';
-		$this->view->display();
+		$this->view
+			->set('title', $this->title)
+			->set('task', $this->_task)
+			->set('admin', $this->model->reviewerAccess('admin'))
+			->set('option', $this->_option)
+			->set('config', $this->config)
+			->set('publishing', $this->_publishing)
+			->set('monthly', $monthly)
+			->set('stats', $stats)
+			->set('msg', (isset($this->_msg) ? $this->_msg : ''))
+			->setErrors($this->getErrors())
+			->display();
 	}
 
 	/**
@@ -162,7 +136,7 @@ class Reports extends Base
 						$input = $record->$field;
 						if ($field == 'doi')
 						{
-							$input = $input ? 'http://dx.doi.org/' . $input : 'N/A';
+							$input = $input ? 'https://doi.org/' . $input : 'N/A';
 						}
 
 						$sorted[] = $input;
@@ -182,12 +156,10 @@ class Reports extends Base
 		// Redirect on error
 		if ($this->getError())
 		{
+			Notify::error($this->getError());
+
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option
-				. '&controller=reports&task=custom'
-				. '&searchterm=' . $filter),
-				$this->getError(),
-				'error'
+				Route::url('index.php?option=' . $this->_option . '&controller=reports&task=custom&searchterm=' . $filter, false)
 			);
 		}
 
@@ -201,17 +173,11 @@ class Reports extends Base
 	 */
 	public function customTask()
 	{
-		$this->view->setLayout('custom');
-
-		// Instantiate a project
-		$obj = $this->model->table();
-
 		// Set the pathway
 		$this->_buildPathway();
 
 		// Set the page title
 		$this->_buildTitle();
-		$this->view->title = $this->title;
 
 		// Check authorization
 		if (!$this->model->reviewerAccess('admin') && !$this->model->reviewerAccess('reports'))
@@ -227,16 +193,14 @@ class Reports extends Base
 		}
 
 		// Output HTML
-		$this->view->task   = $this->_task;
-		$this->view->option = $this->_option;
-		$this->view->config = $this->config;
-
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-
-		$this->view->msg = isset($this->_msg) ? $this->_msg : '';
-		$this->view->display();
+		$this->view
+			->set('title', $this->title)
+			->set('task', $this->_task)
+			->set('option', $this->_option)
+			->set('config', $this->config)
+			->set('msg', (isset($this->_msg) ? $this->_msg : ''))
+			->setLayout('custom')
+			->setErrors($this->getErrors())
+			->display();
 	}
 }

@@ -1,31 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
- *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Ilya Shunko <ishunko@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Cart\Lib\Auditors;
@@ -33,19 +10,22 @@ namespace Components\Cart\Lib\Auditors;
 use Components\Storefront\Models\Product;
 use Components\Storefront\Models\Sku;
 use Components\Cart\Helpers\CartDownload;
+use User;
 
-require_once('BaseAuditor.php');
-require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php';
-require_once PATH_CORE . DS. 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Sku.php';
-require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php');
+require_once __DIR__ . DS . 'BaseAuditor.php';
+require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Product.php';
+require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Sku.php';
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php';
 
 class Software_Auditor extends BaseAuditor
 {
 	/**
 	 * Constructor
 	 *
-	 * @param 	void
-	 * @return 	void
+	 * @param   string   $type
+	 * @param   integer  $pId
+	 * @param   integer  $crtId
+	 * @return  void
 	 */
 	public function __construct($type, $pId, $crtId)
 	{
@@ -55,16 +35,15 @@ class Software_Auditor extends BaseAuditor
 	/**
 	 * Main handler. Does all the checks
 	 *
-	 * @param 	void
-	 * @return 	void
+	 * @return  void
 	 */
 	public function audit()
 	{
-		/* If no user, some checks may be skipped... */
+		// If no user, some checks may be skipped...
 		// Get user
-		$jUser = User::getInstance();
+		$user = User::getInstance();
 		// User specific checks
-		if (!$jUser->get('guest'))
+		if (!$user->get('guest'))
 		{
 			if ($sId = $this->getSku())
 			{
@@ -73,9 +52,9 @@ class Software_Auditor extends BaseAuditor
 				$skuDownloadLimit = $sku->getMeta('downloadLimit');
 				if ($skuDownloadLimit > 0)
 				{
-				// Get SKU download count
-				$skuDownloadCount = CartDownload::countUserSkuDownloads($this->sId, $this->uId);
-				// Check if the limit is reached
+					// Get SKU download count
+					$skuDownloadCount = CartDownload::countUserSkuDownloads($this->sId, $this->uId);
+					// Check if the limit is reached
 					if ($skuDownloadCount >= $skuDownloadLimit)
 					{
 						$this->setResponseStatus('error');
@@ -83,7 +62,7 @@ class Software_Auditor extends BaseAuditor
 						$this->setResponseError(': you have reached the maximum number of allowed downloads for this product.');
 					}
 				}
-				return ($this->getResponse());
+				return $this->getResponse();
 			}
 		}
 
@@ -105,7 +84,7 @@ class Software_Auditor extends BaseAuditor
 					$this->setResponseError(': this product has reached the maximum number of allowed downloads and cannot be downloaded.');
 				}
 			}
-			return($this->getResponse());
+			return $this->getResponse();
 		}
 
 		// Get product download limit
@@ -122,6 +101,6 @@ class Software_Auditor extends BaseAuditor
 				$this->setResponseError(': this product has reached the maximum number of allowed downloads and cannot be downloaded.');
 			}
 		}
-		return($this->getResponse());
+		return $this->getResponse();
 	}
 }

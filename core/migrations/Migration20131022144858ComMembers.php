@@ -1,12 +1,18 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Utility\Date;
 
 // No direct access
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for moving member manager notes to joomla notes feature
+ * Migration script for moving member manager notes to user notes table
  **/
 class Migration20131022144858ComMembers extends Base
 {
@@ -32,7 +38,7 @@ class Migration20131022144858ComMembers extends Base
 				foreach ($results as $r)
 				{
 					$query = "INSERT INTO `#__user_notes` (`user_id`, `subject`, `state`, `created_user_id`, `created_time`) VALUES ";
-					$query .= "('{$r->uidNumber}', ".$this->db->quote($r->manager).", '1', '{$admin_id}', '".JFactory::getDate()->toSql()."')";
+					$query .= "('{$r->uidNumber}', ".$this->db->quote($r->manager).", '1', '{$admin_id}', '".with(new Date)->toSql()."')";
 					$this->db->setQuery($query);
 					$this->db->query();
 				}

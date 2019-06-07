@@ -4,9 +4,6 @@
  *
  * Template used for Special Groups. Will now be auto-created
  * when admin switches group from type HUB to type Special.
- *
- * @author 		Christopher Smoak
- * @copyright	December 2012
  */
 
 // define base path (without doc root)
@@ -52,4 +49,4 @@ Document::addScript($base . DS . 'assets/js/main.js');
 </div>
 
 <group:include type="googleanalytics" account="" />
-<?php endif; ?>
+<?php endif; 

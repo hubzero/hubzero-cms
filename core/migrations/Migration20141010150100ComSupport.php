@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -94,7 +99,7 @@ class Migration20141010150100ComSupport extends Base
 				{
 					$path = PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php';
 				}
-				include_once($path);
+				include_once $path;
 
 				$tbl = '\\Components\\Support\\Tables\\Query';
 				if (class_exists('SupportQuery'))

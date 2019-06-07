@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -45,6 +21,11 @@ if ($canDo->get('core.edit'))
 }
 Toolbar::cancel();
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
+
 $profile = User::getInstance($this->row->get('user_id'));
 
 $js = '';
@@ -60,28 +41,11 @@ foreach ($roles as $role)
 	}
 }
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// form field validation
-	if ($('#offering_id').val() == '') {
-		alert('<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_OFFERING'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -97,11 +61,12 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label for="field-offering_id"><?php echo Lang::txt('COM_COURSES_OFFERING'); ?>:</label><br />
-					<select name="fields[offering_id]" id="field-offering_id" onchange="changeDynaList('section_id', offeringsections, document.getElementById('offering_id').options[document.getElementById('offering_id').selectedIndex].value, 0, 0);">
+					<select name="fields[offering_id]" id="field-offering_id" class="required" onchange="changeDynaList('section_id', offeringsections, document.getElementById('offering_id').options[document.getElementById('offering_id').selectedIndex].value, 0, 0);">
 						<option value="-1"><?php echo Lang::txt('COM_COURSES_NONE'); ?></option>
 						<?php
-						require_once(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
+						require_once Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
 						$model = \Components\Courses\Models\Courses::getInstance();
+						$data = array();
 						if ($model->courses()->total() > 0)
 						{
 							foreach ($model->courses() as $course)
@@ -114,7 +79,7 @@ function submitbutton(pressbutton)
 								{
 									foreach ($offering->sections() as $section)
 									{
-										$js .= 'offeringsections[' . $j++ . "] = new Array( '" . $offering->get('id') . "','" . addslashes($section->get('id')) . "','" . addslashes($section->get('title')) . "' );\n\t\t";
+										$data[$j++] = array($offering->get('id'), $section->get('id'), $section->get('title'));
 									}
 									?>
 								<option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->row->get('offering_id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
@@ -151,24 +116,24 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?></th>
 						<td><?php echo $this->escape($this->row->get('id')); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_COURSES_FIELD_USER_ID'); ?></th>
+						<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_USER_ID'); ?></th>
 						<td><?php echo $this->escape($this->row->get('user_id')); ?></td>
 					</tr>
 					<?php if ($profile) { ?>
 						<tr>
-							<th><?php echo Lang::txt('COM_COURSES_FIELD_NAME'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_NAME'); ?></th>
 							<td><?php echo $this->escape(stripslashes($profile->get('name'))); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_COURSES_FIELD_USERNAME'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_USERNAME'); ?></th>
 							<td><?php echo $this->escape(stripslashes($profile->get('username'))); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_COURSES_FIELD_EMAIL'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_EMAIL'); ?></th>
 							<td><?php echo $this->escape(stripslashes($profile->get('email'))); ?></td>
 						</tr>
 					<?php } ?>
@@ -177,9 +142,10 @@ function submitbutton(pressbutton)
 		</div>
 	</div>
 
-	<script type="text/javascript">
-		var offeringsections = new Array;
-		<?php echo $js; ?>
+	<script type="application/json" id="offering-data">
+		{
+			"data": <?php echo json_encode($data); ?>
+		}
 	</script>
 
 	<?php echo Html::input('token'); ?>

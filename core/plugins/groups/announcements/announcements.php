@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -116,10 +92,10 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			->whereEquals('scope_id', $group->get('gidNumber'))
 			->whereEquals('state', Hubzero\Item\Announcement::STATE_PUBLISHED)
 			->whereEquals('sticky', 1)
-			->whereEquals('publish_up', '0000-00-00 00:00:00', 1)
+			->where('publish_up', 'IS', null, 'and', 1)
 				->orWhere('publish_up', '<=', Date::toSql(), 1)
 				->resetDepth()
-			->whereEquals('publish_down', '0000-00-00 00:00:00', 1)
+			->where('publish_down', 'IS', null, 'and', 1)
 				->orWhere('publish_down', '>=', Date::toSql(), 1)
 			->rows();
 
@@ -159,8 +135,8 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 
 		// The output array we're returning
 		$arr = array(
-			'html'=>'',
-			'metadata'=>''
+			'html' => '',
+			'metadata' => array()
 		);
 
 		// Get this area details
@@ -255,10 +231,10 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			// Only get published announcements for members
 			if ($this->authorized != 'manager')
 			{
-				$model->whereEquals('publish_up', '0000-00-00 00:00:00', 1)
+				$model->where('publish_up', 'IS', null, 'and', 1)
 					->orWhere('publish_up', '<=', Date::toSql(), 1)
 					->resetDepth()
-					->whereEquals('publish_down', '0000-00-00 00:00:00', 1)
+					->where('publish_down', 'IS', null, 'and', 1)
 					->orWhere('publish_down', '>=', Date::toSql(), 1);
 			}
 
@@ -302,10 +278,10 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		// Only get published announcements for members
 		if ($this->authorized != 'manager')
 		{
-			$model->whereEquals('publish_up', '0000-00-00 00:00:00', 1)
+			$model->where('publish_up', 'IS', null, 'and', 1)
 				->orWhere('publish_up', '<=', Date::toSql(), 1)
 				->resetDepth()
-				->whereEquals('publish_down', '0000-00-00 00:00:00', 1)
+				->where('publish_down', 'IS', null, 'and', 1)
 				->orWhere('publish_down', '>=', Date::toSql(), 1);
 		}
 
@@ -441,7 +417,8 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		// Bind data
 		$model = Hubzero\Item\Announcement::oneOrNew($fields['id'])->set($fields);
 
-		if ($model->get('publish_down') != '0000-00-00 00:00:00'
+		if ($model->get('publish_down')
+		 && $model->get('publish_down') != '0000-00-00 00:00:00'
 		 && $model->get('publish_up') > $model->get('publish_down'))
 		{
 			$this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_INVALID_PUBLISH_DATES'));
@@ -703,10 +680,10 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		// Only get published announcements for members
 		if (!in_array(User::get('id'), $group->get('managers')))
 		{
-			$model->whereEquals('publish_up', '0000-00-00 00:00:00', 1)
+			$model->where('publish_up', 'IS', null, 'and', 1)
 				->orWhere('publish_up', '<=', Date::toSql(), 1)
 				->resetDepth()
-				->whereEquals('publish_down', '0000-00-00 00:00:00', 1)
+				->where('publish_down', 'IS', null, 'and', 1)
 				->orWhere('publish_down', '>=', Date::toSql(), 1);
 		}
 
@@ -765,7 +742,8 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$model = Hubzero\Item\Announcement::blank()->set($fields);
 
 		// Validate
-		if ($model->get('publish_down') != '0000-00-00 00:00:00'
+		if ($model->get('publish_down')
+		 && $model->get('publish_down') != '0000-00-00 00:00:00'
 		 && $model->get('publish_up') > $model->get('publish_down'))
 		{
 			throw new Exception(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_INVALID_PUBLISH_DATES'), 422);
@@ -859,7 +837,8 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$model->set($fields);
 
 		// Validate
-		if ($model->get('publish_down') != '0000-00-00 00:00:00'
+		if ($model->get('publish_down')
+		 && $model->get('publish_down') != '0000-00-00 00:00:00'
 		 && $model->get('publish_up') > $model->get('publish_down'))
 		{
 			throw new Exception(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_INVALID_PUBLISH_DATES'), 422);

@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Groups\Models\Orm;
@@ -101,8 +77,127 @@ class Field extends Relational
 	public $always = array(
 		'name',
 		'modified',
-		'modified_by'
+		'modified_by',
+		'option_other',
+		'option_blank',
+		'required',
+		'readonly',
+		'disabled',
+		'multiple',
+		'parent_option'
 	);
+
+	/**
+	 * Generates automatic option_other field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticOptionOther($data)
+	{
+		if (!isset($data['option_other']))
+		{
+			$data['option_other'] = 0;
+		}
+
+		return (int) $data['option_other'];
+	}
+
+	/**
+	 * Generates automatic option_blank field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticOptionBlank($data)
+	{
+		if (!isset($data['option_blank']))
+		{
+			$data['option_blank'] = 0;
+		}
+
+		return (int) $data['option_blank'];
+	}
+
+	/**
+	 * Generates automatic required field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticRequired($data)
+	{
+		if (!isset($data['required']))
+		{
+			$data['required'] = 0;
+		}
+
+		return (int) $data['required'];
+	}
+
+	/**
+	 * Generates automatic readonly field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticReadonly($data)
+	{
+		if (!isset($data['readonly']))
+		{
+			$data['readonly'] = 0;
+		}
+
+		return (int) $data['readonly'];
+	}
+
+	/**
+	 * Generates automatic disabled field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticDisabled($data)
+	{
+		if (!isset($data['disabled']))
+		{
+			$data['disabled'] = 0;
+		}
+
+		return (int) $data['disabled'];
+	}
+
+	/**
+	 * Generates automatic multiple field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticMultiple($data)
+	{
+		if (!isset($data['multiple']))
+		{
+			$data['multiple'] = 0;
+		}
+
+		return (int) $data['multiple'];
+	}
+
+	/**
+	 * Generates automatic parent_option field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticParentOption($data)
+	{
+		if (!isset($data['parent_option']))
+		{
+			$data['parent_option'] = 0;
+		}
+
+		return (int) $data['parent_option'];
+	}
 
 	/**
 	 * Generates automatic name field value
@@ -127,7 +222,7 @@ class Field extends Relational
 	 */
 	public function automaticModified($data)
 	{
-		return (isset($data['id']) && $data['id'] ? Date::of('now')->toSql() : '0000-00-00 00:00:00');
+		return (isset($data['id']) && $data['id'] ? Date::of('now')->toSql() : null);
 	}
 
 	/**

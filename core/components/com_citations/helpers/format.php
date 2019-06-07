@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Citations\Helpers;
@@ -287,6 +262,16 @@ class Format
 						default:
 							$coins_data[] = $this->_coins_keys[$k] . '=' . $citation->$k;
 					}
+				}
+
+				if ($k == 'doi' && isset($this->$k))
+				{
+					$this->$k = str_replace('https://doi.org/', '', $this->$k);
+					$this->$k = str_replace('https://dx.doi.org/', '', $this->$k);
+					$this->$k = str_replace('http://doi.org/', '', $this->$k);
+					$this->$k = str_replace('http://dx.doi.org/', '', $this->$k);
+
+					$replace_values[$v] = '<a rel="external" href="https://doi.org/' . $this->$k . '">' . $this->$k . '</a>';
 				}
 
 				if ($k == 'author')
@@ -694,7 +679,7 @@ class Format
 		{
 			if (count($assocs) > 1)
 			{
-				$html .= '<span>|</span> <span style="line-height:1.6em;color:#444">' . \Lang::txt('COM_CITATIONS_RESOURCES_CITED') . ':</span> ';
+				$html .= '<span>|</span> <span class="cited-resources">' . \Lang::txt('COM_CITATIONS_RESOURCES_CITED') . ':</span> ';
 				$k = 0;
 				$rrs = array();
 				foreach ($assocs as $rid)
@@ -754,7 +739,7 @@ class Format
 	 * Output a tagcloud of badges associated with a citation
 	 *
 	 * @param   object   $citation  Citation
-	 * @param   object   $database  JDatabase
+	 * @param   object   $database  Database
 	 * @param   boolean  $includeHtml
 	 * @return  string   HTML
 	 */
@@ -803,7 +788,7 @@ class Format
 	 * Output a tagcloud of tags associated with a citation
 	 *
 	 * @param   object  $citation  Citation
-	 * @param   object  $database  JDatabase
+	 * @param   object  $database  Database
 	 * @return  string  HTML
 	 */
 	public static function citationTags(&$cite, $includeHtml = true)
@@ -1088,8 +1073,13 @@ class Format
 		}
 		if (self::keyExistsOrIsNotEmpty('doi', $row))
 		{
+			$row->doi = str_replace('https://doi.org/', '', $row->doi);
+			$row->doi = str_replace('https://dx.doi.org/', '', $row->doi);
+			$row->doi = str_replace('http://doi.org/', '', $row->doi);
+			$row->doi = str_replace('http://dx.doi.org/', '', $row->doi);
+
 			$html  = self::grammarCheck($html, '.');
-			$html .= ' (' . \Lang::txt('DOI') . ': ' . $row->doi . ')';
+			$html .= ' (' . \Lang::txt('DOI') . ': <a rel="external" href="https://doi.org/' . $row->doi . '">' . $row->doi . '</a>)';
 		}
 		$html  = self::grammarCheck($html, '.');
 		$html .= '</p>' . "\n";

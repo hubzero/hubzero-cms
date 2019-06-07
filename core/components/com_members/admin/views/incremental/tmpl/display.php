@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -59,7 +35,6 @@ $groupDefs = $groups->getAllGroups();
 		}
 
 		var sel = document.createElement('select');
-		sel.setAttribute('style', 'width: 300px');
 		var opt = document.createElement('option');
 		opt.setAttribute('value', '');
 		opt.appendChild(document.createTextNode('Select profile field...'));
@@ -125,11 +100,10 @@ $groupDefs = $groups->getAllGroups();
 		p.appendChild(document.createTextNode('Beginning '));
 		var hours = document.createElement('input');
 		hours.setAttribute('name', 'group-hours-0');
-		hours.setAttribute('style', 'width: 40px');
+		hours.setAttribute('size', '3');
 		p.appendChild(hours);
 		var unit = document.createElement('select');
 		unit.setAttribute('name', 'group-time-unit-0');
-		unit.setAttribute('style', 'width: 100px');
 		var units = ['hour', 'day', 'week'];
 		for (var idx = 0; idx < units.length; ++idx) {
 			var opt = document.createElement('option');
@@ -140,12 +114,12 @@ $groupDefs = $groups->getAllGroups();
 		p.appendChild(unit);
 		p.appendChild(document.createTextNode(' after registration, prompt for: '));
 		var fields = document.createElement('ul');
-		fields.setAttribute('style', 'margin-top: 0; margin-left: 40px; margin-bottom: 0');
+
 		var fieldLi = document.createElement('li');
 		fields.appendChild(fieldLi);
 		var fieldSel = document.createElement('select');
 		fieldSel.setAttribute('name', 'group-cols-0[]');
-		fieldSel.setAttribute('style', 'width: 300px');
+
 		var opt = document.createElement('option');
 		opt.appendChild(document.createTextNode('Select profile field...'));
 		fieldSel.appendChild(opt);
@@ -169,11 +143,11 @@ $groupDefs = $groups->getAllGroups();
 		var af = document.createElement('button');
 		af.setAttribute('class', 'add-field');
 		af.appendChild(document.createTextNode('Add field'));
-		af.setAttribute('style', 'margin-left: 40px');
+
 		p.appendChild(af);
 
 		var rm = document.createElement('button');
-		rm.setAttribute('style', 'margin-bottom: 30px');
+
 		rm.appendChild(document.createTextNode('Remove group'));
 		rm.onclick = function() {
 			ol.removeChild(li);
@@ -212,9 +186,9 @@ $groupDefs = $groups->getAllGroups();
 			<legend>Field groups</legend>
 
 			<p>Packages of profile information to prompt starting some time after registration</p>
-			<ol id="reg-groups" style="margin:0 0 0 30px;">
+			<ol id="reg-groups">
 				<?php
-					foreach ($groupDefs as $idx=>$group):
+					foreach ($groupDefs as $idx => $group):
 						$unit = 'hour';
 						if ($group['hours'] % (24*7) == 0):
 							$unit = 'week';
@@ -226,28 +200,28 @@ $groupDefs = $groups->getAllGroups();
 				?>
 				<li class="reg-group">
 					<p>
-						Beginning <input name="group-hours-<?php echo $idx; ?>" value="<?php echo $group['hours']; ?>" style="width: 40px;" />
-						<select name="group-time-unit-<?php echo $idx; ?>" style="width: 100px;">
-							<option value="hour" <?php if ($unit == 'hour') echo 'selected="selected" '; ?>>hours</option>
-							<option value="day" <?php if ($unit == 'day') echo 'selected="selected" '; ?>>days</option>
-							<option value="week" <?php if ($unit == 'week') echo 'selected="selected" '; ?>>weeks</option>
+						Beginning <input name="group-hours-<?php echo $idx; ?>" value="<?php echo $group['hours']; ?>" size="3" />
+						<select name="group-time-unit-<?php echo $idx; ?>">
+							<option value="hour" <?php if ($unit == 'hour') { echo 'selected="selected" ';} ?>>hours</option>
+							<option value="day" <?php if ($unit == 'day') { echo 'selected="selected" ';} ?>>days</option>
+							<option value="week" <?php if ($unit == 'week') { echo 'selected="selected" ';} ?>>weeks</option>
 						</select> after registration, prompt for:
-						<ul style="margin-top: 0; margin-left: 40px; margin-bottom: 0;">
-							<?php foreach ($group['cols'] as $cidx=>$col): ?>
+						<ul>
+							<?php foreach ($group['cols'] as $cidx => $col): ?>
 							<li>
-								<select name="group-cols-<?php echo $idx; ?>[]" style="width: 300px;">
+								<select name="group-cols-<?php echo $idx; ?>[]">
 									<option value="">Select profile field...</option>
-								<?php foreach ($possibleCols as $colName=>$colLabel): ?>
-									<option value="<?php echo str_replace('"', '&quot;', $colName); ?>"<?php if ($colName == $col) echo ' selected="selected"'; ?>><?php echo htmlentities($colLabel); ?></option>
+								<?php foreach ($possibleCols as $colName => $colLabel): ?>
+									<option value="<?php echo str_replace('"', '&quot;', $colName); ?>"<?php if ($colName == $col) { echo ' selected="selected"';} ?>><?php echo htmlentities($colLabel); ?></option>
 								<?php endforeach; ?>
 								</select>
 								<button onclick="this.parentNode.parentNode.removeChild(this.parentNode); return false">Remove field</button>
 							</li>
 							<?php endforeach; ?>
 						</ul>
-						<button class="add-field" style="margin-left: 40px;" onclick="addField(this, <?php echo $idx; ?>); return false;">Add field</button>
+						<button class="add-field" onclick="addField(this, <?php echo $idx; ?>); return false;">Add field</button>
 					</p>
-					<button onclick="this.parentNode.parentNode.removeChild(this.parentNode); renumberGroups(); return false;" style="margin-bottom: 30px">Remove group</button>
+					<button onclick="this.parentNode.parentNode.removeChild(this.parentNode); renumberGroups(); return false;">Remove group</button>
 				</li>
 				<?php endforeach; ?>
 			</ol>
@@ -260,9 +234,9 @@ $groupDefs = $groups->getAllGroups();
 			<legend>Recurrence</legend>
 
 			<p>Time to wait before asking again after subsequent clicks of the "ask me later" button</p>
-			<ol style="margin:0 0 20px 30px;">
+			<ol>
 				<?php
-					foreach ($recur as $idx=>$r):
+					foreach ($recur as $idx => $r):
 						$unit = 'hour';
 						if ($r % (24*7) == 0):
 							$unit = 'week';
@@ -273,11 +247,11 @@ $groupDefs = $groups->getAllGroups();
 						endif;
 				?>
 				<li>
-					<input name="recur-<?php echo $idx; ?>" value="<?php echo $r; ?>" style="width: 40px;" />
-					<select name="recur-type-<?php echo $idx; ?>" style="width: 100px;">
-						<option value="hour" <?php if ($unit == 'hour') echo 'selected="selected" '; ?>>hours</option>
-						<option value="day" <?php if ($unit == 'day') echo 'selected="selected" '; ?>>days</option>
-						<option value="week" <?php if ($unit == 'week') echo 'selected="selected" '; ?>>weeks</option>
+					<input name="recur-<?php echo $idx; ?>" value="<?php echo $r; ?>" size="3" />
+					<select name="recur-type-<?php echo $idx; ?>">
+						<option value="hour" <?php if ($unit == 'hour') { echo 'selected="selected" ';} ?>>hours</option>
+						<option value="day" <?php if ($unit == 'day') { echo 'selected="selected" ';} ?>>days</option>
+						<option value="week" <?php if ($unit == 'week') { echo 'selected="selected" ';} ?>>weeks</option>
 					</select>
 					<button onclick="this.parentNode.parentNode.removeChild(this.parentNode); return false">Remove recurrence</button>
 				</li>
@@ -294,11 +268,10 @@ $groupDefs = $groups->getAllGroups();
 					}
 					var len = ol.getElementsByTagName('li').length;
 					var inp = document.createElement('input');
-					inp.setAttribute('style', 'width: 40px;');
+					inp.setAttribute('size', '3');
 					inp.setAttribute('name', 'recur-' + len);
 					li.appendChild(inp);
 					var sel = document.createElement('select');
-					sel.setAttribute('style', 'width: 100px;');
 					sel.setAttribute('name', 'recur-type-' + len);
 					var units = ['hour', 'day', 'week'];
 					for (var idx = 0, len = units.length; idx < len; ++idx) {

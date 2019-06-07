@@ -1,0 +1,42 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+.auth .orcid:before {
+	content: "";
+	width: 50px;
+	height: 50px;
+	background-image: url('../img/orcid-sign.svg');
+	background-repeat: no-repeat;
+	background-size: 50px 50px;
+	top: 0;
+	left: -5px;
+}
+.auth .orcid {
+	background: #A6CE39;
+}
+.auth .orcid .signin {
+	margin-left: 55px;
+}
+
+/* Others */
+.others .orcid:before {
+	content: "\f02d";
+}
+.others .orcid {
+	color: #A6CE39;
+}
+
+/* Primary */
+.primary .upper.orcid:before {
+	content: "ORCID";
+}
+
+.primary .orcid:before {
+	content: "";
+}
+.primary .orcid {
+	background-color: #A6CE39;
+}

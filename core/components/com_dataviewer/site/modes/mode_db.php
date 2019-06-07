@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero.cms.site
- * @subpackage  com_dataviewer
- *
- * @author      Sudheera R. Fernando srf@xconsole.org
- * @copyright   Copyright 2010-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT or later; see LICENSE.txt
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -111,7 +108,9 @@ function get_dd($db_id)
 
 		$vis_col_count = 0;
 		if (isset($dd['cols'])) {
-			$vis_col_count = count(array_filter($dd['cols'], function ($col) { return !isset($col['hide']); }));
+			$vis_col_count = count(array_filter($dd['cols'], function ($col) {
+				return !isset($col['hide']);
+			}));
 		} elseif (isset($db_id['extra']) && $db_id['extra'] == 'table') {
 			$sql = "SELECT COUNT(*) AS cols FROM information_schema.columns WHERE table_name = '{$dd['table']}'";
 			$cols = mysqli_fetch_assoc(mysqli_query($link, $sql));
@@ -172,7 +171,7 @@ function _dd_post($dd)
 		}
 
 		// Hiding
-		foreach ($order_cols as $id=>$prop) {
+		foreach ($order_cols as $id => $prop) {
 			if (!in_array($id, $custom_view)) {
 				$dd['cols'][$id] = $prop;
 

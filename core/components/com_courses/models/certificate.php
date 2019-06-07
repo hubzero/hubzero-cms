@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Courses\Models;
@@ -37,8 +12,8 @@ use ImagickException;
 use Imagick;
 use Lang;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'certificate.php');
-require_once(__DIR__ . DS . 'base.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'certificate.php';
+require_once __DIR__ . DS . 'base.php';
 
 /**
  * Courses model class for a certificate
@@ -166,6 +141,13 @@ class Certificate extends Base
 	 */
 	public function renderPageImages()
 	{
+		if (!class_exists('Imagick'))
+		{
+			// nothing
+			$this->setError(Lang::txt('Imagick extension required.'));
+			return false;
+		}
+
 		try
 		{
 			if (!$this->exists())
@@ -327,24 +309,30 @@ class Certificate extends Base
 
 		if (!class_exists('\Components\Courses\Models\Course'))
 		{
-			require_once(__DIR__ . DS . 'course.php');
+			require_once __DIR__ . DS . 'course.php';
 		}
 		$course = Course::getInstance($this->get('course_id'));
 
-		require_once(PATH_CORE . DS . 'libraries' . DS . 'fpdf16' . DS . 'fpdf.php');
-		require_once(PATH_CORE . DS . 'libraries' . DS . 'fpdi' . DS . 'fpdi.php');
+		require_once __DIR__ . DS . 'certificatepdf.php';
 
-		// Get the pdf and draw on top of it
-		$pdf = new \FPDI();
+		$img = $this->path('system') . '/1.png';
 
-		$pageCount = $pdf->setSourceFile($this->path('system') . DS . 'certificate.pdf');
-		$tplIdx = $pdf->importPage(1);
+		list($width, $height) = getimagesize($img);
 
-		$size = $pdf->getTemplateSize($tplIdx);
+		// 300 dots per inch
+		// 1 inch = 25.4mm
+		$w = ($width / 300);
+		$h = ($height / 300);
+		$mm = 25.4;
+		$size = array(
+			'width' => ($w * $mm),
+			'height' => ($h * $mm)
+		);
 
-		$pdf->AddPage('L', array($size['h'], $size['w']));
+		$pdf = new CertificatePdf(PDF_PAGE_ORIENTATION, PDF_UNIT, $size, true, 'UTF-8', false);
+		$pdf->img_file = $img;
 
-		$pdf->useTemplate($tplIdx, 0, 0, 0, 0, true);
+		$pdf->AddPage('L', array($size['height'], $size['width']));
 
 		$pdf->SetFillColor(0, 0, 0);
 
@@ -383,10 +371,10 @@ class Certificate extends Base
 				break;
 			}
 
-			$pdf->SetFont('Arial', '', 30); //($element->h * $size['h']));
+			$pdf->SetFont('Helvetica', '', 30);
 
-			$pdf->setXY($element->x * $size['w'], $element->y * $size['h']); //  - ($element->h * $size['h'])
-			$pdf->Cell($element->w * $size['w'], ($element->h * $size['h']), $val, '', 1, 'C');
+			$pdf->SetXY($element->x * $size['width'], $element->y * $size['height']);
+			$pdf->Cell($element->w * $size['width'], ($element->h * $size['height']), $val, '', 1, 'C');
 		}
 
 		if (!$path)

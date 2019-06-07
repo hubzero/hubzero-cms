@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Projects\Tables;
@@ -498,25 +473,25 @@ class Owner extends Table
 		$query   =  "SELECT DISTINCT ";
 		if (!$select)
 		{
-			$query	.= " o.*, x.name, x.username, x.organization, x.picture, g.cn as groupname, g.description as groupdesc, p.created_by_user ";
-			$query  .= ", if (o.userid = 0, o.invited_name, x.name) as fullname ";
+			$query .= " o.*, x.name, x.username, x.organization, x.picture, g.cn as groupname, g.description as groupdesc, p.created_by_user ";
+			$query .= ", if (o.userid = 0, o.invited_name, x.name) as fullname ";
 			if ($pub)
 			{
-				$query	.= " , pa.organization as a_organization, pa.name as a_name, pa.credit ";
+				$query .= " , pa.organization as a_organization, pa.name as a_name, pa.credit ";
 			}
 		}
 		else
 		{
-			$query .= $select;
+			$query .= $select . ",o.added";
 		}
-		$query  .= " FROM $this->_tbl AS o ";
-		$query  .=  " JOIN #__projects as p ON o.projectid=p.id";
+		$query .= " FROM $this->_tbl AS o ";
+		$query .= " JOIN #__projects as p ON o.projectid=p.id";
 		if ($pub)
 		{
-			$query  .=  " LEFT JOIN #__publication_authors as pa ON o.id=pa.project_owner_id AND pa.publication_version_id=" . $this->_db->quote($pub);
+			$query .= " LEFT JOIN #__publication_authors as pa ON o.id=pa.project_owner_id AND pa.publication_version_id=" . $this->_db->quote($pub);
 		}
-		$query  .=  " LEFT JOIN #__xprofiles as x ON o.userid=x.uidNumber ";
-		$query  .=  " LEFT JOIN #__xgroups as g ON o.groupid=g.gidNumber ";
+		$query .=  " LEFT JOIN #__xprofiles as x ON o.userid=x.uidNumber ";
+		$query .=  " LEFT JOIN #__xgroups as g ON o.groupid=g.gidNumber ";
 
 		if (is_numeric($projectid))
 		{
@@ -551,7 +526,7 @@ class Owner extends Table
 		}
 		if ($pub)
 		{
-			$query  .= " GROUP BY o.id ";
+			$query  .= " GROUP BY o.id, pa.name, pa.organization, pa.credit ";
 		}
 
 		$query  .= " ORDER BY ";
@@ -621,7 +596,7 @@ class Owner extends Table
 			return false;
 		}
 
-		$query  = "SELECT DISTINCT ".$what;
+		$query  = "SELECT DISTINCT o.added,".$what;
 		$query .= " FROM $this->_tbl AS o ";
 		if ($join)
 		{

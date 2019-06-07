@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        plugins/members/account/account.jquery.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 //-----------------------------------------------------------
@@ -122,7 +121,7 @@ HUB.Plugins.MembersAccount = {
 			success: function(data, status, xhr)
 			{
 				// Parse the returned json data
-				var returned = jQuery.parseJSON(data);
+				var returned = JSON.parse(data);
 
 				// If we successfully saved
 				if(returned.success)

@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Collections\Models\Orm;
@@ -93,6 +69,20 @@ class Asset extends Relational
 	protected $parsed = array(
 		'description'
 	);
+
+	/**
+	 * File size
+	 *
+	 * @var  string
+	 */
+	protected $size = null;
+
+	/**
+	 * Diemnsions for file (must be an image)
+	 *
+	 * @var  array
+	 */
+	protected $dimensions = null;
 
 	/**
 	 * Generates automatic ordering field value
@@ -212,6 +202,131 @@ class Asset extends Relational
 		}
 
 		return false;
+	}
+
+	/**
+	 * Is an asset a link?
+	 *
+	 * @return  boolean  True if image, false if not
+	 */
+	public function isLink()
+	{
+		return ($this->get('type') == 'link');
+	}
+
+	/**
+	 * Is an asset an external link?
+	 *
+	 * @return  boolean  True if image, false if not
+	 */
+	public function isExternalLink()
+	{
+		if ($this->isLink())
+		{
+			$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)"
+					 . "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
+
+			if (preg_match("/$UrlPtn/", $this->get('filename')))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Does the file exist?
+	 *
+	 * @return  boolean  True if image, false if not
+	 */
+	public function exists()
+	{
+		$path  = $this->filespace() . DS . $this->get('item_id') . DS;
+		$path .= ltrim($this->get('filename'), DS);
+
+		return file_exists($path);
+	}
+
+	/**
+	 * Is the file an image?
+	 *
+	 * @return  boolean
+	 */
+	public function size()
+	{
+		if (is_null($this->size))
+		{
+			$this->size = 0;
+
+			if ($this->exists())
+			{
+				$path  = $this->filespace() . DS . $this->get('item_id') . DS;
+				$path .= ltrim($this->get('filename'), DS);
+
+				$this->size = filesize($path);
+			}
+		}
+
+		return $this->size;
+	}
+
+	/**
+	 * File width and height
+	 *
+	 * @return  array
+	 */
+	public function dimensions()
+	{
+		if (is_null($this->_dimensions))
+		{
+			$this->_dimensions = array(0, 0);
+
+			if ($this->isImage() && $this->exists())
+			{
+				$this->_dimensions = getimagesize($this->path());
+			}
+		}
+
+		return $this->_dimensions;
+	}
+
+	/**
+	 * File width
+	 *
+	 * @return  integer
+	 */
+	public function width()
+	{
+		$dimensions = $this->dimensions();
+
+		return $dimensions[0];
+	}
+
+	/**
+	 * File height
+	 *
+	 * @return  integer
+	 */
+	public function height()
+	{
+		$dimensions = $this->dimensions();
+
+		return $dimensions[1];
+	}
+
+	/**
+	 * Download URL
+	 *
+	 * @param   string  $size
+	 * @return  string
+	 */
+	public function link($size = 'original')
+	{
+		$path  = $this->filespace() . DS . $this->get('item_id') . DS;
+		$path .= ltrim($this->file($size), DS);
+
+		return with(new \Hubzero\Content\Moderator($path, 'public'))->getUrl();
 	}
 
 	/**

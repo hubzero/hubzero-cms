@@ -1,39 +1,14 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$open             = ($this->code == '@OPEN') ? 1 : 0 ;
+$open             = ($this->code == '@OPEN') ? 1 : 0;
 $this->codeaccess = ($this->code == '@OPEN') ? 'open' : 'closed';
 $newstate         = ($this->action == 'confirm') ? 'Approved' :  $this->status['state'];
 //$this->statuspath = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app='.$this->status['toolid']);
@@ -110,13 +85,13 @@ $this->css('pipeline.css')
 						<input type="hidden" name="curcode" id="curcode" value="<?php echo $open; ?>" />
 						<input type="hidden" name="newstate" value="<?php echo $this->escape($newstate); ?>" />
 						<input type="hidden" name="action" value="<?php echo $this->escape($this->action); ?>" />
-						<input type="hidden" name="toolid" value="<?php echo$this->escape( $this->status['toolid']); ?>" />
+						<input type="hidden" name="toolid" value="<?php echo $this->escape( $this->status['toolid']); ?>" />
 						<input type="hidden" name="alias" value="<?php echo $this->escape($this->status['toolname']); ?>" />
 						<?php echo Html::input('token'); ?>
 					</div>
 					<div id="lic">
 						<label><?php echo Lang::txt('LICENSE_TEMPLATE'); ?>:</label>
-						<?php echo \Components\Tools\Helpers\Html::formSelect('templates', 'templates',  $licenseChoices, $this->license_choice['template'],'shifted',''); ?>
+						<?php echo \Components\Tools\Helpers\Html::formSelect('templates', 'templates', $licenseChoices, $this->license_choice['template'], 'shifted', ''); ?>
 					</div>
 					<div id="legendnotes">
 						<p>

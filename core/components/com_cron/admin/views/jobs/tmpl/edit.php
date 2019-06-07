@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -48,147 +24,18 @@ Toolbar::spacer();
 Toolbar::help('job');
 
 Html::behavior('calendar');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
+
+$this->css('.none {
+	display: none;
+}
+.block {
+	display: block;
+}');
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-
-	// do field validation
-	if (document.getElementById('field-title').value == ''){
-		alert( '<?php echo Lang::txt('CON_CRON_ERROR_MISSING_TITLE');?>' );
-	} else {
-		submitform( pressbutton );
-	}
-}
-
-var Fields = {
-	initialise: function() {
-		$('#field-event').on('change', function(){
-			var ev = $(this).val().replace('::', '--');
-
-			$('fieldset.eventparams').each(function(i, el) {
-				$(el).css('display', 'none');
-			});
-
-			if ($('#params-' + ev)) {
-				$('#params-' + ev).css('display', 'block');
-			}
-		});
-
-		$('#field-recurrence').on('change', function(){
-			var min = '*',
-				hour = '*',
-				day = '*',
-				month = '*',
-				dow = '*',
-				recurrence = $(this).val();
-
-			switch (recurrence)
-			{
-				case '0 0 1 1 *':
-					min = '0';
-					hour = '0';
-					day = '1';
-					month = '1';
-				break;
-				case '0 0 1 * *':
-					min = '0';
-					hour = '0';
-					day = '1';
-				break;
-				case '0 0 * * 0':
-					min = '0';
-					hour = '0';
-					dow = '0';
-				break;
-				case '0 0 * * *':
-					min = '0';
-					hour = '0';
-				break;
-				case '0 * * * *':
-					min = '0';
-				break;
-			}
-
-			if (recurrence == 'custom') {
-				if ($('#custom').hasClass('hide')) {
-					$('#custom').removeClass('hide');
-				}
-			} else {
-				if (!$('#custom').hasClass('hide')) {
-					$('#custom').addClass('hide');
-				}
-			}
-
-			$('#field-minute-c').val(min);
-			$('#field-minute-s').val(min);
-			$('#field-hour-c').val(hour);
-			$('#field-hour-s').val(hour);
-			$('#field-day-c').val(day);
-			$('#field-day-s').val(day);
-			$('#field-month-c').val(month);
-			$('#field-month-s').val(month);
-			$('#field-dayofweek-c').val(dow);
-			$('#field-dayofweek-s').val(dow);
-		});
-
-		$('#field-minute-s').on('change', function(){
-			$('#field-minute-c').val($(this).val());
-			$('#field-recurrence').val('custom');
-		});
-		$('#field-minute-c').on('change', function(){
-			$('#field-minute-s').val($(this).val());
-			$('#field-recurrence').val('custom');
-		});
-
-		$('#field-hour-s').on('change', function(){
-			$('#field-hour-c').val($(this).val());
-			$('#field-recurrence').val('custom');
-		});
-		$('#field-hour-c').on('change', function(){
-			$('#field-hour-s').val($(this).val());
-			$('#field-recurrence').val('custom');
-		});
-
-		$('#field-day-s').on('change', function(){
-			$('#field-day-c').val($(this).val());
-			$('#field-recurrence').val('custom');
-		});
-		$('#field-day-c').on('change', function(){
-			$('#field-day-s').val($(this).val());
-			$('#field-recurrence').val('custom');
-		});
-
-		$('#field-month-s').on('change', function(){
-			$('#field-month-c').val($(this).val());
-			$('#field-recurrence').val('custom');
-		});
-		$('#field-month-c').on('change', function(){
-			$('#field-month-s').val($(this).val());
-			$('#field-recurrence').val('custom');
-		});
-
-		$('#field-dayofweek-s').on('change', function(){
-			$('#field-dayofweek-c').val($(this).val());
-			$('#field-recurrence').val('custom');
-		});
-		$('#field-dayofweek-c').on('change', function(){
-			$('#field-dayofweek-s').val($(this).val());
-			$('#field-recurrence').val('custom');
-		});
-	}
-}
-
-jQuery(document).ready(function($){
-	Fields.initialise();
-});
-</script>
 
 <?php
 	foreach ($this->getErrors() as $error)
@@ -197,7 +44,7 @@ jQuery(document).ready(function($){
 	}
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -205,12 +52,12 @@ jQuery(document).ready(function($){
 
 				<div class="input-wrap">
 					<label for="field-title"><?php echo Lang::txt('COM_CRON_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+					<input type="text" name="fields[title]" id="field-title" class="required" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 				</div>
 
 				<div class="input-wrap">
 					<label for="field-event"><?php echo Lang::txt('COM_CRON_FIELD_EVENT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<select name="fields[event]" id="field-event">
+					<select name="fields[event]" id="field-event" class="required">
 						<option value=""<?php echo (!$this->row->get('plugin')) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_SELECT'); ?></option>
 						<?php
 						if ($this->plugins)
@@ -272,7 +119,7 @@ jQuery(document).ready(function($){
 								$path . DS . $plugin->plugin . '.xml'
 							);
 							$param->addElementPath($path);
-							//$out = $param->render('params', $event['params']);
+
 							$html = array();
 							if ($prm = $param->getParams('params', $event['params']))
 							{
@@ -300,7 +147,7 @@ jQuery(document).ready(function($){
 							$out = '<div class="input-wrap"><p><i>' . Lang::txt('COM_CRON_NO_PARAMETERS_FOUND') . '</i></p></div>';
 						}
 						?>
-						<fieldset class="adminform paramlist eventparams" style="display: <?php echo $style; ?>;" id="params-<?php echo $plugin->plugin . '--' . $event['name']; ?>">
+						<fieldset class="adminform paramlist eventparams <?php echo $style; ?>" id="params-<?php echo $plugin->plugin . '--' . $event['name']; ?>">
 							<legend><span><?php echo Lang::txt('COM_CRON_FIELDSET_PARAMETERS'); ?></span></legend>
 							<?php echo $out; ?>
 						</fieldset>
@@ -353,7 +200,7 @@ jQuery(document).ready(function($){
 							<th>
 								<label for="field-hour-c"><?php echo Lang::txt('COM_CRON_FIELD_HOUR'); ?></label>:
 							</th>
-							<td style="width: 10%">
+							<td>
 								<input type="text" name="fields[hour][c]" id="field-hour-c" value="<?php echo $this->row->get('hour'); ?>" />
 							</td>
 							<td>
@@ -518,12 +365,12 @@ jQuery(document).ready(function($){
 
 				<div class="input-wrap">
 					<label for="field-publish_up"><?php echo Lang::txt('COM_CRON_FIELD_START_RUNNING'); ?>:</label><br />
-					<?php echo Html::input('calendar', 'fields[publish_up]', $this->escape(($this->row->get('publish_up') == '0000-00-00 00:00:00' ? '' : $this->row->get('publish_up'))), array('id' => 'field-publish_up')); ?>
+					<?php echo Html::input('calendar', 'fields[publish_up]', $this->escape((!$this->row->get('publish_up') || $this->row->get('publish_up') == '0000-00-00 00:00:00' ? '' : $this->row->get('publish_up'))), array('id' => 'field-publish_up')); ?>
 				</div>
 
 				<div class="input-wrap">
 					<label for="field-publish_down"><?php echo Lang::txt('COM_CRON_FIELD_STOP_RUNNING'); ?>:</label><br />
-					<?php echo Html::input('calendar', 'fields[publish_down]', $this->escape(($this->row->get('publish_down') == '0000-00-00 00:00:00' ? '' : $this->row->get('publish_down'))), array('id' => 'field-publish_down')); ?>
+					<?php echo Html::input('calendar', 'fields[publish_down]', $this->escape((!$this->row->get('publish_down') || $this->row->get('publish_down') == '0000-00-00 00:00:00' ? '' : $this->row->get('publish_down'))), array('id' => 'field-publish_down')); ?>
 				</div>
 			</fieldset>
 		</div>

@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero.cms.admin
- * @subpackage  com_dataviewer
- *
- * @author      Sudheera R. Fernando sudheera@xconsole.org
- * @copyright   Copyright 2010-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT or later; see LICENSE.txt
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -19,12 +16,12 @@ if (\Config::get('debug')) {
 	ini_set('display_errors', '0');
 }
 
-require_once(__DIR__ . DS . 'config.php');
+require_once __DIR__ . DS . 'config.php';
 
 // Libs
-require_once(__DIR__ . DS . 'libs' . DS . 'lib_messages.php');
-require_once(__DIR__ . DS . 'libs' . DS . 'lib_security.php');
-require_once(__DIR__ . DS . 'libs' . DS . 'lib_json.php');
+require_once __DIR__ . DS . 'libs' . DS . 'lib_messages.php';
+require_once __DIR__ . DS . 'libs' . DS . 'lib_security.php';
+require_once __DIR__ . DS . 'libs' . DS . 'lib_json.php';
 
 
 $document = App::get('document');
@@ -39,9 +36,8 @@ $document->addScript(DB_PATH . '/html/' . 'main.js');
 
 $document->setTitle($conf['app_title']);
 
-require_once(__DIR__ . DS . 'controller.php');
+require_once __DIR__ . DS . 'controller.php';
 controller_exec();
 
 // Restore umask
 umask($conf['sys_umask']);
-?>

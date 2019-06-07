@@ -1,39 +1,12 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
 defined('_HZEXEC_') or die();
-
-$this->css();
-$this->js();
 
 $canDo = \Components\Publications\Helpers\Permissions::getActions('item');
 
@@ -54,19 +27,10 @@ if ($canDo->get('core.delete'))
 }
 
 Html::behavior('tooltip');
+
+$this->css();
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
 
 <?php if ($this->config->get('enabled') == 0) { ?>
 	<p class="warning"><?php echo Lang::txt('COM_PUBLICATIONS_COMPONENT_DISABLED'); ?></p>
@@ -77,14 +41,14 @@ function submitbutton(pressbutton)
 		<div class="grid">
 			<div class="col span6">
 				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>: </label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
+				<input type="text" name="search" id="filter_search"class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
 
 				<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_GO'); ?>" />
-				<button type="button" onclick="$('#filter_search').val('');$('#status').val('all');$('#category').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span6">
 				<label for="status"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'); ?>:</label>
-				<select name="status" id="status" onchange="this.form.submit();">
+				<select name="status" id="status" class="filter filter-submit">
 					<option value="all"<?php echo ($this->filters['status'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_ALL_STATUS'); ?></option>
 					<option value="3"<?php echo ($this->filters['status'] == 3) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT'); ?></option>
 					<option value="5"<?php echo ($this->filters['status'] == 5) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PENDING'); ?></option>
@@ -104,7 +68,7 @@ function submitbutton(pressbutton)
 				     ->set('value', $this->filters['category'])
 				     ->set('name', 'category')
 				     ->set('showNone', Lang::txt('COM_PUBLICATIONS_ALL_CATEGORIES'))
-				     ->set('attributes', 'onchange="this.form.submit();"')
+				     ->set('attributes', 'class="filter filter-submit"')
 				     ->display();
 				?>
 			</div>
@@ -160,7 +124,7 @@ function submitbutton(pressbutton)
 			// See if it's checked out or not
 			$checked = '';
 			$checkedInfo = '';
-			if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
+			if ($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00'))
 			{
 				$date = Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_LC1'));
 				$time = Date::of($row->checked_out_time)->toLocal('H:i');
@@ -171,7 +135,7 @@ function submitbutton(pressbutton)
 				$checked .= '<span class="checkedout">' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '</span>';
 				$checked .= '</span>';
 
-				$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
+				$info .= ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
 						? Lang::txt('COM_PUBLICATIONS_FIELD_CHECKED_OUT').': '
 						. $date . '<br />'
 						: '';

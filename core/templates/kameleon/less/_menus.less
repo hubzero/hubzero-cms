@@ -1,9 +1,8 @@
-//
-// @package     hubzero-cms
-// @file        templates/kameleon/less/_menus.less
-// @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
-// @license     http://opensource.org/licenses/MIT MIT
-//
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 // Menus
 // --------------------------------------------------
@@ -50,12 +49,17 @@
 				background: #5c5c5c;
 				padding: 0;
 				border: none;
+
+				li {
+					background-color: rgba(0, 0, 0, 0.2);
+				}
 			}
 
 			// Drop-Down Menu Theme
 			li:hover,
 			li:focus {
 				color: #FF9966;
+				background-color: rgba(0, 0, 0, 0.4);
 			}
 			&>li.active>ul,
 			li.active>ul {
@@ -75,6 +79,10 @@
 				line-height: 1;
 				cursor: pointer;
 
+				&:before {
+					display: none;
+				}
+
 				span {
 					display: inline-block;
 					width: 1em;
@@ -82,9 +90,6 @@
 					margin-left: 1em;
 					white-space: nowrap;
 
-					img {
-						display: none;
-					}
 					&:before {
 						display: inline-block;
 						content: "\273D";
@@ -102,7 +107,7 @@
 			&>li:hover>a,
 			&>li:focus>a,
 			li>a:hover,
-			li>a:focus { 
+			li>a:focus {
 				color: #fff;
 			}
 			li.active li a:hover,

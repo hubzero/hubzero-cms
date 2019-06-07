@@ -1,38 +1,15 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Projects\Models\Orm;
 
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
+use Hubzero\User\Group;
 
 /**
  * Projects owner model
@@ -102,13 +79,12 @@ class Owner extends Relational
 	 */
 	public function group()
 	{
-		$group = \Hubzero\User\Group::getInstance($this->get('groupid'));
+		$group = Group::getInstance($this->get('groupid'));
 		if (!$group)
 		{
-			$group = new \Hubzero\User\Group();
+			$group = new Group();
 		}
 		return $group;
-		//return $this->belongsToOne('Hubzero\User\Group', 'groupid');
 	}
 
 	/**
@@ -194,5 +170,56 @@ class Owner extends Relational
 		}
 
 		return $this->paramsRegistry;
+	}
+
+	/**
+	 * Get ids of project owners
+	 *
+	 * @param   integer  $projectid
+	 * @param   string   $role       get owners in specific role or all
+	 * @param   integer  $get_uids   get user ids (1) or owner ids (0)
+	 * @param   integer  $active     get only active users (1) or any
+	 * @return  array
+	 */
+	public static function getIds($projectid, $role = null, $uids = 0, $active = 1)
+	{
+		if (is_null($role))
+		{
+			$role = self::ROLE_MANAGER;
+		}
+
+		if (!is_numeric($projectid))
+		{
+			$project = Project::oneByAlias($projectid);
+			$projectid = $project->id;
+		}
+
+		$key = $uids ? 'userid' : 'id';
+
+		$query = self::all()
+			->whereEquals('projectid', $projectid);
+
+		if ($active)
+		{
+			$query->whereEquals('status', 1);
+		}
+		else
+		{
+			$query->whereEquals('status', '!=', 2);
+		}
+
+		if ($role != 'all')
+		{
+			$query->whereEquals('role', (int)$role);
+		}
+
+		if ($uids)
+		{
+			$query->where('userid', '!=', 0);
+		}
+
+		return $query
+			->rows()
+			->fieldsByKey($key);
 	}
 }

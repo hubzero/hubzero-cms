@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Courses\Models;
@@ -38,17 +13,17 @@ use Filesystem;
 use Lang;
 use User;
 
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'role.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'offering.php');
-require_once(__DIR__ . DS . 'base.php');
-require_once(__DIR__ . DS . 'iterator.php');
-require_once(__DIR__ . DS . 'section.php');
-require_once(__DIR__ . DS . 'unit.php');
-require_once(__DIR__ . DS . 'student.php');
-require_once(__DIR__ . DS . 'manager.php');
-require_once(__DIR__ . DS . 'announcement.php');
-require_once(__DIR__ . DS . 'page.php');
-require_once(__DIR__ . DS . 'gradebook.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'role.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'offering.php';
+require_once __DIR__ . DS . 'base.php';
+require_once __DIR__ . DS . 'iterator.php';
+require_once __DIR__ . DS . 'section.php';
+require_once __DIR__ . DS . 'unit.php';
+require_once __DIR__ . DS . 'student.php';
+require_once __DIR__ . DS . 'manager.php';
+require_once __DIR__ . DS . 'announcement.php';
+require_once __DIR__ . DS . 'page.php';
+require_once __DIR__ . DS . 'gradebook.php';
 
 /**
  * Courses model class for a course
@@ -657,7 +632,7 @@ class Offering extends Base
 
 	/**
 	 * Get a list of assets for an offering
-	 * 
+	 *
 	 * Accepts an array of filters to apply to the list of assets
 	 *
 	 * @param      array $filters Filters to apply
@@ -1002,20 +977,14 @@ class Offering extends Base
 	 * @param      array $filters
 	 * @return     mixed
 	 */
-	public function announcements($filters=array())
+	public function announcements($filters = [])
 	{
-		if (!isset($filters['offering_id']))
-		{
-			$filters['offering_id'] = (int) $this->get('id');
-		}
-		if (!isset($filters['section_id']))
-		{
-			$filters['section_id'] = (int) $this->section()->get('id');
-		}
-		if (!isset($filters['state']))
-		{
-			$filters['state'] = 1;
-		}
+		$defaultFilters = [
+			'offering_id' => (int) $this->get('id'),
+			'section_id' => (int) $this->section()->get('id'),
+			'state' => 1
+		];
+		$filters = array_merge($defaultFilters, $filters);
 
 		if (isset($filters['count']) && $filters['count'])
 		{
@@ -1028,7 +997,7 @@ class Offering extends Base
 		{
 			$tbl = new Tables\Announcement($this->_db);
 
-			$results = array();
+			$results = [];
 
 			if (($data = $tbl->find($filters)))
 			{

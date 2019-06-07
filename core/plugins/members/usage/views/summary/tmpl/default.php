@@ -1,31 +1,8 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -49,7 +26,9 @@ $this->css('usage', 'com_usage');
 			</tr>
 		</thead>
 		<tbody>
-			<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
+			<tr class="<?php
+				$cls = ($cls == 'even') ? 'odd' : 'even';
+				echo $cls; ?>">
 				<th scope="row"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_CONTRIBUTIONS'); ?>:</th>
 				<td><?php echo $this->contribution['contribs']; ?></td>
 			</tr>
@@ -65,24 +44,34 @@ $this->css('usage', 'com_usage');
 				<td><?php echo number_format($this->total_andmore_users); ?></td>
 			</tr>
 		<?php }*/ ?>
-			<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
+			<tr class="<?php
+				$cls = ($cls == 'even') ? 'odd' : 'even';
+				echo $cls; ?>">
 				<th scope="row"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_CONTRIBUTIONS_RANK'); ?>:</th>
 				<td><?php echo $this->rank; ?></td>
 			</tr>
-			<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
+			<tr class="<?php
+				$cls = ($cls == 'even') ? 'odd' : 'even';
+				echo $cls; ?>">
 				<th scope="row"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_CONTRIBUTIONS_FIRST'); ?>:</th>
 				<td><?php echo $this->contribution['first']; ?></td>
 			</tr>
-			<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
+			<tr class="<?php
+				$cls = ($cls == 'even') ? 'odd' : 'even';
+				echo $cls; ?>">
 				<th scope="row"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_CONTRIBUTIONS_LAST'); ?>:</th>
 				<td><?php echo $this->contribution['last']; ?></td>
 			</tr>
-			<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
+			<tr class="<?php
+				$cls = ($cls == 'even') ? 'odd' : 'even';
+				echo $cls; ?>">
 				<th scope="row"><?php echo Lang::txt('PLG_MEMBERS_USAGE_CITATIONS'); ?>:</th>
 				<td><?php echo $this->citation_count; ?></td>
 			</tr>
 		<?php if ($this->cluster_users) { ?>
-			<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
+			<tr class="<?php
+				$cls = ($cls == 'even') ? 'odd' : 'even';
+				echo $cls; ?>">
 				<th scope="row"><?php echo Lang::txt('PLG_MEMBERS_USAGE_CLUSTERS'); ?>:</th>
 				<td><?php echo Lang::txt('PLG_MEMBERS_USAGE_USERS_IN_COURSES_SERVED', number_format($this->cluster_users), number_format($this->cluster_classes), number_format($this->cluster_schools)); ?></td>
 			</tr>
@@ -126,7 +115,9 @@ $this->css('usage', 'com_usage');
 				$sum_simcount_12  += $sim_count_12;
 				$sum_simcount_14  += $sim_count_14;
 				?>
-				<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
+				<tr class="<?php
+					$cls = ($cls == 'even') ? 'odd' : 'even';
+					echo $cls; ?>">
 					<td><?php echo ($count + 1); ?></td>
 					<td class="textual-data"><a href="<?php echo Route::url('index.php?option=com_resources&id='.$row->id); ?>"><?php echo $row->title; ?></a></td>
 					<td><a href="<?php echo Route::url('index.php?option=com_usage&task=tools&id='.$row->id.'&period=12'); ?>"><?php echo (is_numeric($user_count_12)) ? number_format($user_count_12) : $user_count_12; ?></a></td>
@@ -139,15 +130,15 @@ $this->css('usage', 'com_usage');
 				<?php
 				$count++;
 			}
-			if ($count) //$this->tool_total_14 && $this->tool_total_12)
+			if ($this->tool_total_14 && $this->tool_total_12)
 			{
 				?>
 				<tr class="summary">
 					<td class="group"></td>
 					<td class="group textual-data"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TOTAL'); ?></td>
-					<td class="group"><?php echo number_format($sum_usercount_12); ?></td>
+					<td class="group"><?php echo number_format($this->tool_total_12); ?></td>
 					<td class="group"><?php echo number_format($sum_simcount_12); ?></td>
-					<td class="group"><?php echo number_format($sum_usercount_14); ?></td>
+					<td class="group"><?php echo number_format($this->tool_total_14); ?></td>
 					<td class="group"><?php echo number_format($sum_simcount_14); ?></td>
 					<td class="group"></td>
 					<td class="group"></td>
@@ -246,7 +237,9 @@ $this->css('usage', 'com_usage');
 				}
 				$total['citations']   += (int)$cites;
 				?>
-				<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
+				<tr class="<?php
+					$cls = ($cls == 'even') ? 'odd' : 'even';
+					echo $cls; ?>">
 					<td><?php echo ($count + 1); ?></td>
 					<td class="textual-data"><a href="<?php echo Route::url('index.php?option=com_resources&id='.$row->id); ?>"><?php echo $row->title; ?></a> <span class="small"><?php echo $row->type; ?></span></td>
 					<td><?php echo $usercount12; ?></td>
@@ -273,9 +266,11 @@ $this->css('usage', 'com_usage');
 						$total['usercount14'] += (int)str_replace(',', '', $usercount14);
 						$total['citations']   += (int)$cites;
 						?>
-						<tr class="child <?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
+						<tr class="child <?php
+							$cls = ($cls == 'even') ? 'odd' : 'even';
+							echo $cls; ?>">
 							<td class="highlight"><?php echo ($count + 1); ?></td>
-							<td class="highlight textual-data"><span class="child-connector" style="color:#ccc;">|-</span> <a href="<?php echo Route::url('index.php?option=com_resources&id='.$rw->id); ?>"><?php echo $rw->title; ?></a> <span class="small"><?php echo $rw->type; ?></span></td>
+							<td class="highlight textual-data"><span class="child-connector">|-</span> <a href="<?php echo Route::url('index.php?option=com_resources&id='.$rw->id); ?>"><?php echo $rw->title; ?></a> <span class="small"><?php echo $rw->type; ?></span></td>
 							<td class="highlight"><?php echo $usercount12; ?></td>
 							<td class="highlight"><?php echo $usercount14; ?></td>
 							<td class="highlight"><?php echo $cites ?></td>

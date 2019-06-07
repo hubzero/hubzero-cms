@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -48,29 +24,16 @@ $pageNav = $this->pagination(
 );
 
 Html::behavior('modal');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function setTask(task)
-{
-	$('#task').val(task);
-}
-
-jQuery(document).ready(function($){
-	$('a.edit-asset').on('click', function(e) {
-		e.preventDefault();
-
-		window.top.document.assetform.open({'href': $(this).attr('href'), 'type': 'iframe', 'width': 570, 'height': 550, 'autoHeight': false});
-	});
-});
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
-
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th colspan="4">
-					<select name="asset" style="max-width: 15em;">
+					<select name="asset">
 						<option value="0"><?php echo Lang::txt('COM_COURSES_SELECT'); ?></option>
 						<?php if ($this->assets) { ?>
 							<?php
@@ -85,9 +48,9 @@ jQuery(document).ready(function($){
 							<?php } ?>
 						<?php } ?>
 					</select>
-					<input type="submit" value="<?php echo Lang::txt('COM_COURSES_ATTACH_ASSET'); ?>" onclick="setTask('link');" />
+					<input type="submit" id="btn-attach" value="<?php echo Lang::txt('COM_COURSES_ATTACH_ASSET'); ?>" />
 				</th>
-				<th colspan="4" style="text-align:right;">
+				<th colspan="4" class="align-right">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=add&scope=' . $this->filters['asset_scope'] . '&scope_id=' . $this->filters['asset_scope_id'] . '&course_id=' . $this->filters['course_id'] . '&tmpl=' . $this->filters['tmpl']); ?>" class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"><?php echo Lang::txt('COM_COURSES_CREATE_ASSET'); ?></a>
 				</th>
 			</tr>
@@ -111,7 +74,7 @@ foreach ($this->rows as $row)
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php echo $this->escape($row->id); ?>
-					<input style="visibility:hidden;" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input class="invisible" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>

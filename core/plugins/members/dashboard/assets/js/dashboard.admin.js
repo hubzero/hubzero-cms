@@ -1,8 +1,7 @@
 /**
- * @package	 hubzero-cms
- * @file		plugins/members/dashboard/dashboard.jquery.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license	 http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 if (!jq) {
@@ -180,13 +179,6 @@ HUB.Plugins.MemberDashboard = {
 					href += '&no_html=1';
 				}
 				$(this).attr('href', href);
-			},
-			beforeShow: function() {
-				if (jQuery.uniform)
-				{
-					$("select, input[type=file]").uniform();
-				}
-				
 			},
 			afterShow: function() {
 				$('body').on('click','.dopush', function(event) {

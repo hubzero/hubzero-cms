@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -23,12 +28,12 @@ class Migration20170901000000ComKb extends Base
 			  `alias` varchar(200) DEFAULT NULL,
 			  `params` text,
 			  `fulltxt` text,
-			  `created` datetime DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) DEFAULT '0',
-			  `modified` datetime DEFAULT '0000-00-00 00:00:00',
+			  `modified` datetime DEFAULT NULL,
 			  `modified_by` int(11) DEFAULT '0',
 			  `checked_out` int(11) DEFAULT '0',
-			  `checked_out_time` datetime DEFAULT '0000-00-00 00:00:00',
+			  `checked_out_time` datetime DEFAULT NULL,
 			  `state` int(3) DEFAULT '0',
 			  `access` tinyint(3) DEFAULT '0',
 			  `hits` int(11) DEFAULT '0',
@@ -56,7 +61,7 @@ class Migration20170901000000ComKb extends Base
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `entry_id` int(11) NOT NULL DEFAULT '0',
 			  `content` text,
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  `anonymous` tinyint(2) NOT NULL DEFAULT '0',
 			  `parent` int(11) NOT NULL DEFAULT '0',

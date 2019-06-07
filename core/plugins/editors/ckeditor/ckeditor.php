@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // no direct access
@@ -57,8 +32,8 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 		$this->css();
 
 		// Add ckeditor
-		Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'ckeditor.js' );
-		Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'adapters/jquery.js' );
+		Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'ckeditor.js?v=' . filemtime(__DIR__ . '/assets/ckeditor.js'));
+		Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'adapters/jquery.js?v=' . filemtime(__DIR__ . '/assets/adapters/jquery.js'));
 	}
 
 	/**
@@ -66,55 +41,55 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 	 *
 	 * Not applicable in this editor.
 	 *
-	 * @return  void
+	 * @return  string
 	 */
 	public function onSave()
 	{
-		$js = "for (instance in CKEDITOR.instances) {
+		/*$js = "for (instance in CKEDITOR.instances) {
 				CKEDITOR.instances[instance].fire('beforeSave');
 				CKEDITOR.instances[instance].updateElement();
-			}";
-		return $js;
+			}";*/
+		return ''; //$js;
 	}
 
 	/**
 	 * Get the editor content.
 	 *
-	 * @param   string $id The id of the editor field.
+	 * @param   string  $id  The id of the editor field.
 	 * @return  string
 	 */
 	public function onGetContent($id)
 	{
-		$this->js("
+		/*$this->js("
 			function getEditorContent(id) {
 				CKEDITOR.instances['$id'].updateElement();
 				return document.getElementById('$id').value;
 			}
-		");
+		");*/
 		return "getEditorContent('$id');\n";
 	}
 
 	/**
 	 * Set the editor content.
 	 *
-	 * @param   string $id   The id of the editor field.
-	 * @param   string $html The content to set.
+	 * @param   string  $id    The id of the editor field.
+	 * @param   string  $html  The content to set.
 	 * @return  string
 	 */
 	public function onSetContent($id, $html)
 	{
-		return "CKEDITOR.instances['$id'].setData($html);\n"; //" document.getElementById('$id').value = '$html';\n";
+		return "setEditorContent('$id', '$html');\n";
 	}
 
 	/**
 	 * Inserts text
 	 *
-	 * @param	string	$id
-	 * @return	string
+	 * @param   string  $id
+	 * @return  bool
 	 */
 	public function onGetInsertMethod($id)
 	{
-		$js = "
+		/*$js = "
 			function jInsertEditorText( text, editor ) {
 				CKEDITOR.instances[editor].updateElement();
 				var content = document.getElementById(editor).value;
@@ -123,7 +98,7 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 			}
 		";
 
-		Document::addScriptDeclaration($js);
+		Document::addScriptDeclaration($js);*/
 
 		return true;
 	}
@@ -190,18 +165,31 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 
 		// Fix script and php protected source
 		//$config = str_replace('"\\/<group:include([^\\/]*)\\/>\\/g"', '/<group:include([^/]*)/>/g', $config);
-		$config = str_replace('"\\/<script[^>]*>(.|\\\\n)*<\\\\\\/script>\\/ig"', '/<script[^>]*>(.|\n)*<\/script>/ig', $config);
+		/*$config = str_replace('"\\/<script[^>]*>(.|\\\\n)*<\\\\\\/script>\\/ig"', '/<script[^>]*>(.|\n)*<\/script>/ig', $config);
 		$config = str_replace('"\\/<\\\\?[\\\\s\\\\S]*?\\\\?>\\/g"', '/<\?[\s\S]*?\?>/g', $config);
 		$config = str_replace('"\/<group:include([^>]*)\\\\\/>\/g"', '/<group:include([^>]*)\\/>/g', $config);
 		$config = str_replace('"\/{xhub:([^}]*)}\/gi"', '/{xhub:([^}]*)}/gi', $config);
 
 		// Script to actually make ckeditor
-		$script  = '<script type="text/javascript">';
-		$script .= 'if (typeof(jQuery) !== "undefined") {';
-		$script .= 'jQuery(document).ready(function() { jQuery("#'.$id.'").ckeditor(function() {}, '.$config.'); });';
-		$script .= 'jQuery(document).on("ajaxLoad", function() { jQuery("#'.$id.'").ckeditor(function() {}, '.$config.'); });';
-		$script .= '}';
-		$script .= '</script>';
+		$script  = '<script type="text/javascript">
+					if (typeof(jQuery) !== "undefined") {
+						jQuery(document)
+							.ready(function() {
+								jQuery("#'.$id.'").ckeditor(function() {}, '.$config.');
+							})
+							.on("ajaxLoad", function() {
+								jQuery("#'.$id.'").ckeditor(function() {}, '.$config.');
+							})
+							.on("editorSave", function() {
+								for (instance in CKEDITOR.instances) {
+									CKEDITOR.instances[instance].fire("beforeSave");
+									CKEDITOR.instances[instance].updateElement();
+								}
+							});
+					}
+					</script>';*/
+
+		$script  = '<script id="' . $id . '-ckeconfig" type="application/json">' . $config . '</script>';
 
 		$params['class'] = implode(' ', $params['class']);
 
@@ -263,7 +251,7 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 				{
 					$modal   = ($button->get('modal')) ? ' class="modal-button"' : null;
 					$href    = ($button->get('link')) ? ' href="'.Request::base().$button->get('link').'"' : null;
-					$onclick = ($button->get('onclick')) ? ' onclick="'.$button->get('onclick').'"' : 'onclick="IeCursorFix(); return false;"';
+					$onclick = ($button->get('onclick')) ? ' onclick="'.$button->get('onclick').'"' : 'onclick="return false;"';
 					$title   = ($button->get('title')) ? $button->get('title') : $button->get('text');
 					$return .= '<div class="button2-left"><div class="' . $button->get('name') . '"><a' . $modal . ' title="' . $title . '"' . $href . $onclick . ' rel="' . $button->get('options') . '">' . $button->get('text') . "</a></div></div>\n";
 				}
@@ -354,10 +342,27 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 			array('Link', 'Unlink', 'Anchor'),
 			'/',
 			array('Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'),
-			array('NumberedList', 'BulletedList', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'),
-			// Array('HubzeroAutoGrow', 'HubzeroMacro')
-			array('HubzeroMacro')
+			array('NumberedList', 'BulletedList', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock')
 		);
+
+		$tlbr = array();
+		if ($this->params->get('colorButton'))
+		{
+			$config->extraPlugins .= ',colorbutton';
+			$tlbr[] = 'TextColor';
+			$tlbr[] = 'BGColor';
+		}
+		if ($this->params->get('fontSize'))
+		{
+			$config->extraPlugins .= ',font';
+			$tlbr[] = 'FontSize';
+		}
+		if (!empty($tlbr))
+		{
+			$config->toolbar[] = $tlbr;
+		}
+
+		$config->toolbar[] = array('HubzeroMacro');
 
 		// If minimal toolbar
 		if (in_array('minimal', $this->params->get('class')))

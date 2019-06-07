@@ -1,9 +1,8 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_categories
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // no direct access
@@ -38,24 +37,25 @@ $extension = $this->filters['extension'];
 						<?php echo Lang::txt('COM_CATEGORIES_BATCH_CATEGORY_LABEL'); ?>
 					</label><br />
 
-					<div class="col width-50 fltlft">
-					<select name="batch[category_id]" class="inputbox" id="batch-category-id">
-						<option value=""><?php echo Lang::txt('JSELECT') ?></option>
-						<?php echo Html::select('options', Html::category('categories', $extension, array('filter.published' => $published)));?>
-					</select>
+					<div class="grid">
+						<div class="col span6">
+							<select name="batch[category_id]" class="inputbox" id="batch-category-id">
+								<option value=""><?php echo Lang::txt('JSELECT') ?></option>
+								<?php echo Html::select('options', Html::category('categories', $extension, array('filter.published' => $published)));?>
+							</select>
+						</div>
+						<div class="col span6">
+							<?php echo Html::select('radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'); ?>
+						</div>
 					</div>
-					<div class="col width-50 fltrt">
-					<?php echo Html::select('radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'); ?>
-					</div>
-					<div class="clr"></div>
 				</div>
 			<?php endif; ?>
 
 			<div class="input-wrap">
-				<button type="submit" onclick="submitbutton('category.batch');">
+				<button type="submit" id="btn-batch-submit">
 					<?php echo Lang::txt('JGLOBAL_BATCH_PROCESS'); ?>
 				</button>
-				<button type="button" onclick="$('#batch-category-id').val('');$('#batch-access').val('');$('#batch-language-id').val('');">
+				<button type="button" id="btn-batch-clear">
 					<?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?>
 				</button>
 			</div>

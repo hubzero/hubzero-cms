@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // no direct access
@@ -106,7 +81,7 @@ $current .= (strstr($current, '?') ? '&' : '?');
 				<img class="<?php echo $class; ?>" src="<?php echo $user_img; ?>" alt="<?php echo Lang::txt('MOD_LOGIN_USER_PICTURE'); ?>" />
 			<?php endif; ?>
 		</div>
-		<div class="default" style="display:<?php echo ($primary || count($authenticators) == 0) ? 'none' : 'block'; ?>;">
+		<div class="default <?php echo ($primary || count($authenticators) == 0) ? 'none' : 'block'; ?>">
 			<div class="instructions"><?php echo Lang::txt('MOD_LOGIN_CHOOSE_METHOD'); ?></div>
 			<div class="options">
 				<?php echo $login_provider_html; ?>
@@ -118,7 +93,7 @@ $current .= (strstr($current, '?') ? '&' : '?');
 				</a>
 			</div>
 		</div>
-		<div class="hz" style="display:<?php echo ($primary == 'hubzero' || $login_provider_html == '') ? 'block' : 'none'; ?>;">
+		<div class="hz <?php echo ($primary == 'hubzero' || $login_provider_html == '') ? 'block' : 'none'; ?>">
 			<div class="instructions"><?php echo Lang::txt('MOD_LOGIN_TO', Config::get('sitename')); ?></div>
 			<form action="<?php echo Route::url('index.php', true, true); ?>" method="post" class="login_form">
 				<div class="input-wrap">
@@ -158,9 +133,9 @@ $current .= (strstr($current, '?') ? '&' : '?');
 					<?php endif; ?>
 					<a class="forgot-password" href="<?php echo Route::url('index.php?option=com_members&task=reset'); ?>"><?php echo Lang::txt('MOD_LOGIN_RESET'); ?></a>
 				</div>
-				<input type="hidden" name="option" value="com_users" />
+				<input type="hidden" name="option" value="com_login" />
 				<input type="hidden" name="authenticator" value="hubzero" />
-				<input type="hidden" name="task" value="user.login" />
+				<input type="hidden" name="task" value="login" />
 				<input type="hidden" name="return" value="<?php echo $this->escape($return); ?>" />
 				<input type="hidden" name="freturn" value="<?php echo $this->escape($freturn); ?>" />
 				<?php echo Html::input('token'); ?>

@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        plugins/members/citations/citations.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 if (!jq) {
@@ -17,6 +16,19 @@ String.prototype.nohtml = function () {
 	}
 };
 
+function citeaddRow(id) {
+	var tr    = $('#' + id).find('tbody tr:last');
+	var clone = tr.clone(true);
+	var cindex = $('#' + id).find('tbody tr').length;
+	var inputs = clone.find('input,select');
+
+	inputs.val('');
+	inputs.each(function(i, el){
+		$(el).attr('name', $(el).attr('name').replace(/\[\d+\]/, '[' + cindex + ']'));
+	});
+	tr.after(clone);
+};
+
 var _DEBUG = 0;
 
 jQuery(document).ready(function (jq){
@@ -24,6 +36,13 @@ jQuery(document).ready(function (jq){
 		manager = $('.author-manager');
 
 	_DEBUG = $('#system-debug').length;
+
+	$('#add_row').on('click', function(e){
+		e.preventDefault();
+
+		citeaddRow('assocs');
+		return false;
+	});
 
 	// Add confirm dialog to delete links
 	$('a.delete').on('click', function (e) {

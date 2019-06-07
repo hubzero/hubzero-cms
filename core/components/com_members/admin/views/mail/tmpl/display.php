@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // no direct access
@@ -41,28 +17,13 @@ Toolbar::divider();
 Toolbar::help('mail');
 
 // Load the tooltip behavior.
-Html::behavior('tooltip');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script>
-Joomla.submitbutton = function(pressbutton) {
-	var form = document.adminForm;
-	if (pressbutton == 'cancelmail') {
-		Joomla.submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	if (form.fields_subject.value == ""){
-		alert("<?php echo Lang::txt('COM_MEMBERS_MAIL_PLEASE_FILL_IN_THE_SUBJECT'); ?>");
-	} else if (getSelectedValue('adminForm','fields[group]') < 0){
-		alert("<?php echo Lang::txt('COM_MEMBERS_MAIL_PLEASE_SELECT_A_GROUP'); ?>");
-	} else if (form.fields_message.value == ""){
-		alert("<?php echo Lang::txt('COM_MEMBERS_MAIL_PLEASE_FILL_IN_THE_MESSAGE'); ?>");
-	} else {
-		Joomla.submitform(pressbutton);
-	}
-}
-</script>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="adminForm" method="post" id="item-form">
+
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="adminForm" method="post" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<p class="warning"><?php echo Lang::txt('COM_MEMBERS_MAIL_DO_NOT_USE_FOR_COMMERCIAL_USE'); ?></p>
 	<div class="grid">
 		<div class="col span5">

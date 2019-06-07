@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -22,22 +27,22 @@ class Migration20170901000000ComContent extends Base
 			  `asset_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to the #__assets table.',
 			  `title` varchar(255) NOT NULL DEFAULT '',
 			  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-			  `title_alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT 'Deprecated in Joomla! 3.0',
+			  `title_alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT 'Deprecated in HUBzero 2.0',
 			  `introtext` mediumtext NOT NULL,
 			  `fulltext` mediumtext NOT NULL,
 			  `state` tinyint(3) NOT NULL DEFAULT '0',
 			  `sectionid` int(10) unsigned NOT NULL DEFAULT '0',
 			  `mask` int(10) unsigned NOT NULL DEFAULT '0',
 			  `catid` int(10) unsigned NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(10) unsigned NOT NULL DEFAULT '0',
 			  `created_by_alias` varchar(255) NOT NULL DEFAULT '',
-			  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `modified` datetime DEFAULT NULL,
 			  `modified_by` int(10) unsigned NOT NULL DEFAULT '0',
 			  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
-			  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `checked_out_time` datetime DEFAULT NULL,
+			  `publish_up` datetime DEFAULT NULL,
+			  `publish_down` datetime DEFAULT NULL,
 			  `images` text NOT NULL,
 			  `urls` text NOT NULL,
 			  `attribs` varchar(5120) NOT NULL,

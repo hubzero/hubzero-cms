@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -15,7 +20,7 @@ class Migration20170831000000PlgSearchSolr extends Base
 	 **/
 	public function up()
 	{
-		$this->addPluginEntry('search', 'solr');
+		$this->addPluginEntry('search', 'solr', 0);
 	}
 
 	/**

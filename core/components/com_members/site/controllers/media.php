@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Members\Site\Controllers;
@@ -106,13 +81,17 @@ class Media extends SiteController
 	{
 		Request::checkToken(['get', 'post']);
 
-		//allowed extensions for uplaod
-		$allowedExtensions = array('png', 'jpe', 'jpeg', 'jpg', 'gif');
+		// Allowed extensions for uplaod
+		$allowedExtensions = array('png', 'jpe', 'jpeg', 'jpg', 'gif', 'jp2', 'jpx');
 
-		//max upload size
-		$sizeLimit = $this->config->get('maxAllowed', '40000000');
+		// Get media config
+		$mediaConfig = \Component::params('com_media');
 
-		//get the file
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
+
+		// Get the file
 		if (isset($_GET['qqfile']))
 		{
 			$stream = true;
@@ -130,7 +109,7 @@ class Media extends SiteController
 			return;
 		}
 
-		//get the id and load profile
+		// Get the id and load profile
 		$id = Request::getInt('id', 0);
 		$profile = Member::oneOrFail($id);
 
@@ -139,7 +118,7 @@ class Media extends SiteController
 			return;
 		}
 
-		//define upload directory and make sure its writable
+		// Define upload directory and make sure its writable
 		$uploadDirectory = PATH_APP . DS . $this->filespace() . DS . \Hubzero\Utility\Str::pad($id) . DS;
 
 		if (!is_dir($uploadDirectory))
@@ -157,12 +136,13 @@ class Media extends SiteController
 			return;
 		}
 
-		//check to make sure we have a file and its not too big
+		// Check to make sure we have a file and its not too big
 		if ($size == 0)
 		{
 			echo json_encode(array('error' => 'File is empty'));
 			return;
 		}
+
 		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
@@ -170,7 +150,7 @@ class Media extends SiteController
 			return;
 		}
 
-		//check to make sure we have an allowable extension
+		// Check to make sure we have an allowable extension
 		$pathinfo = pathinfo($file);
 		$filename = $pathinfo['filename'];
 		$ext      = $pathinfo['extension'];
@@ -193,13 +173,13 @@ class Media extends SiteController
 
 		if ($stream)
 		{
-			//read the php input stream to upload file
+			// Read the php input stream to upload file
 			$input = fopen("php://input", "r");
 			$temp = tmpfile();
 			$realSize = stream_copy_to_stream($input, $temp);
 			fclose($input);
 
-			//move from temp location to target location which is user folder
+			// Move from temp location to target location which is user folder
 			$target = fopen($file, "w");
 			fseek($temp, 0, SEEK_SET);
 			stream_copy_to_stream($temp, $target);
@@ -210,7 +190,7 @@ class Media extends SiteController
 			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
 		}
 
-		//resize image to max 400px and rotate in case user didnt before uploading
+		// Resize image to max 400px and rotate in case user didnt before uploading
 		$hi = new \Hubzero\Image\Processor($file);
 		if (count($hi->getErrors()) == 0)
 		{
@@ -346,8 +326,8 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getArray('upload', '', 'files');
-		if (!$file['name'])
+		$file = Request::getArray('upload', array(), 'files');
+		if (empty($file) || !$file['name'])
 		{
 			$this->setError(Lang::txt('MEMBERS_NO_FILE'));
 			return $this->displayTask('', $id);
@@ -366,9 +346,32 @@ class Media extends SiteController
 			}
 		}
 
+		// Get media config
+		$mediaConfig = \Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
+
+		if ($file['size'] > $sizeLimit)
+		{
+			$this->setError(Lang::txt('COM_MEMBERS_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
+			return $this->displayTask($file['name'], $id);
+		}
+
 		// Make the filename safe
 		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
+		$ext = Filesystem::extension($file['name']);
+
+		// Check that the file type is allowed
+		$allowed = array('png', 'jpe', 'jpeg', 'jpg', 'gif', 'jp2', 'jpx');
+
+		if (!empty($allowed) && !in_array(strtolower($ext), $allowed))
+		{
+			$this->setError(Lang::txt('COM_MEMBERS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
+			return $this->displayTask($file['name'], $id);
+		}
 
 		// Do we have an old file we're replacing?
 		$curfile = Request::getString('currentfile', '');

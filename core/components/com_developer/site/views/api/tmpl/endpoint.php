@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -44,13 +19,52 @@ $this->css('docs')
 // add highlight lib
 //Document::addStyleSheet('//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css');
 //Document::addScript('//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js');
+$available = [];
+$endpoints = [];
+foreach ($this->documentation['sections'][$this->active] as &$endpoint)
+{
+	$version = str_replace('_', '.', $endpoint['_metadata']['version']);
+	$version = number_format((float)$version, 1);
+
+	$endpoint['_metadata']['version'] = $version;
+
+	$available[] = $version;
+
+	if (!isset($endpoints[$version]))
+	{
+		$endpoints[$version] = array();
+	}
+}
+
+foreach (array_keys($endpoints) as $version)
+{
+	foreach ($this->documentation['sections'][$this->active] as $endpoint)
+	{
+		if ($endpoint['_metadata']['version'] > $version)
+		{
+			continue;
+		}
+
+		$key = (isset($endpoint['_metadata']['controller']) ? $endpoint['_metadata']['controller'] : '') . $endpoint['_metadata']['method'];
+
+		if (!isset($endpoints[$version][$key])
+		 || $endpoint['_metadata']['version'] > $endpoints[$version][$key]['_metadata']['version'])
+		{
+			$endpoints[$version][$key] = $endpoint;
+		}
+	}
+}
 
 // pull list of versions from doc
-$versions = $this->documentation['versions']['available'];
+$versions = array_unique($available);
+asort($versions);
 $versions = array_reverse($versions);
+$done = [];
 
 // either the request var or the first version (newest)
 $activeVersion = Request::getString('version', reset($versions));
+$activeVersion = str_replace('_', '.', $activeVersion);
+$activeVersion = number_format((float)$activeVersion, 1);
 
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
 ?>
@@ -63,21 +77,6 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 				<a class="btn icon-cog" href="<?php echo Route::url('index.php?option=com_developer&controller=api'); ?>">
 					<?php echo Lang::txt('COM_DEVELOPER_API_HOME'); ?>
 				</a>
-			<?php if (!empty($versions)) : ?>
-				<div class="btn-group dropdown">
-					<a class="btn" href="<?php echo Route::url('index.php?option=com_developer&controller=api&task=docs&version=' . $activeVersion); ?>"><?php echo $activeVersion; ?></a>
-					<span class="btn dropdown-toggle"></span>
-					<ul class="dropdown-menu">
-						<?php foreach ($versions as $version) : ?>
-							<li>
-								<a href="<?php echo Route::url('index.php?option=com_developer&controller=api&task=docs&version=' . $version); ?>">
-									<?php echo $version; ?>
-								</a>
-							</li>
-						<?php endforeach; ?>
-					</ul>
-				</div>
-			<?php endif; ?>
 			</li>
 		</ul>
 	</div>
@@ -97,19 +96,39 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 		<div class="subject">
 				<h2 class="doc-section-header" id="<?php echo $this->active; ?>">
 					<?php echo ucfirst($this->active); ?>
+					<?php if (!empty($versions)) : ?>
+						<div class="btn-group dropdown">
+							<a class="btn" href="<?php echo Route::url('index.php?option=com_developer&controller=api&task=docs&version=' . $activeVersion); ?>"><?php echo $activeVersion; ?></a>
+							<span class="btn dropdown-toggle"></span>
+							<ul class="dropdown-menu">
+								<?php foreach ($versions as $version) : ?>
+									<li>
+										<a href="<?php echo Route::url($base . '&task=endpoint&active=' . $this->active . '&version=' . $version); ?>">
+											<?php echo $version; ?>
+										</a>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+					<?php endif; ?>
 				</h2>
-				<?php foreach ($this->documentation['sections'][$this->active] as $endpoint) : ?>
+				<?php foreach ($endpoints[$activeVersion] as $endpoint): ?>
 					<?php
-						$key = implode('-', $endpoint['_metadata']);
+						$key = $endpoint['_metadata']['component'] . '-' . $endpoint['_metadata']['method'];
 
-						if ($endpoint['_metadata']['version'] != $activeVersion)
+						if ($endpoint['_metadata']['version'] > $activeVersion)
 						{
 							continue;
 						}
 
+						$inherited = '';
+						if ($endpoint['_metadata']['version'] < $activeVersion)
+						{
+							$inherited = ' ' . Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_INHERITED', $endpoint['_metadata']['version']);
+						}
 					?>
 					<div class="doc-section endpoint" id="<?php echo $key; ?>">
-						<h3><?php echo $endpoint['name']; ?></h3>
+						<h3><?php echo $endpoint['name'] . $inherited; ?></h3>
 
 						<?php if ($endpoint['description']) : ?>
 							<p><?php echo $endpoint['description']; ?></p>
@@ -119,16 +138,35 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 							<pre><code class="http"><?php echo $endpoint['method']; ?> <?php echo $endpoint['uri']; ?></code></pre>
 						<?php endif; ?>
 
+						<?php if (!empty($endpoint['replaces'])) : ?>
+							<p class="info"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_REPLACES', $endpoint['replaces']); ?></p>
+						<?php endif; ?>
+
+						<?php if (!empty($endpoint['deprecated'])) : ?>
+							<p class="warning"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_DEPRECATED', $endpoint['deprecated']); ?></p>
+						<?php endif; ?>
+
+						<?php
+						foreach ($endpoint as $k => $v) :
+							if (in_array($k, array('name', 'method', 'description', 'replaces', 'deprecated', 'uri', 'parameters', 'return', '_metadata'))):
+								continue;
+							endif;
+							?>
+							<p><strong><?php echo $k; ?>:</strong> <?php echo $v; ?></p>
+							<?php
+						endforeach;
+						?>
+
 						<?php if (count($endpoint['parameters']) > 0) : ?>
 							<table>
 								<caption><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETERS'); ?></caption>
 								<thead>
 									<tr>
-										<th><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_NAME'); ?></th>
-										<th><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_TYPE'); ?></th>
-										<th><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_DESC'); ?></th>
-										<th><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_DEFAULT'); ?></th>
-										<th><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_ACCEPTED_VALUES'); ?></th>
+										<th scope="col"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_NAME'); ?></th>
+										<th scope="col"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_TYPE'); ?></th>
+										<th scope="col"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_DESC'); ?></th>
+										<th scope="col"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_DEFAULT'); ?></th>
+										<th scope="col"><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_ACCEPTED_VALUES'); ?></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -139,10 +177,6 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 											<td>
 												<?php echo ($param['required']) ? '<span class="required">' . Lang::txt('JREQUIRED') . '</span>.' : ''; ?> 
 												<?php echo $param['description']; ?>
-												<!-- <br /><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_DEFAULT'); ?>: <code class="nohighlight"><?php echo ($param['default']) ? $param['default'] : 'null'; ?></code>
-												<?php if (isset($param['allowedValues'])) : ?>
-													<br /><?php echo Lang::txt('COM_DEVELOPER_API_DOC_ENDPOINT_PARAMETER_ACCEPTED_VALUES'); ?>: <code class="nohighlight"><?php echo $param['allowedValues']; ?></code>
-												<?php endif; ?> -->
 											</td>
 											<td>
 												<code class="nohighlight"><?php echo (!is_null($param['default'])) ? $param['default'] : 'null'; ?></code>

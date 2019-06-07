@@ -1,3 +1,9 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 //-----------------------------------------------------------
 //  Ensure we have our namespace
 //-----------------------------------------------------------
@@ -47,7 +53,7 @@ HUB.Newsletter = {
 		if ($iframe.length )
 		{
 			//on iframe load
-			$iframe.load(function(){
+			$iframe.on("load", function(){
 				
 				//make links open in new window
 				$iframe.contents().find('a').attr('target', '_blank');

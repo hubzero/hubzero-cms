@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_support/assets/js/support.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 if (!jq) {
@@ -25,13 +24,13 @@ jQuery(document).ready(function($){
 	if (priv.length > 0) {
 		priv.on('click', function() {
 			var es = $('#email_submitter');
-			if (priv.attr('checked')) {
-				if ($('#email_submitter').attr('checked')) {
-					$('#email_submitter').removeAttr('checked').attr('disabled', 'disabled');
+			if (priv.prop('checked')) {
+				if ($('#email_submitter').prop('checked')) {
+					$('#email_submitter').removeAttr('checked').prop('disabled', 'disabled');
 				}
 				$('#commentform').addClass('private');
 			} else {
-				$('#email_submitter').removeAttr('disabled').attr('checked', 'checked');
+				$('#email_submitter').removeAttr('disabled').prop('checked', 'checked');
 				$('#commentform').removeClass('private');
 			}
 		});

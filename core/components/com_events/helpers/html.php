@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Events\Helpers;
@@ -57,7 +32,7 @@ class Html
 
 		$href = str_replace('"', '', $href);
 		$href = str_replace("'", '', $href);
-		$href = str_replace('&#8221','', $href);
+		$href = str_replace('&#8221', '', $href);
 
 		$h = array('h', 'm', 'f', 'g', 'n');
 		if (!in_array(substr($href, 0, 1), $h))
@@ -74,7 +49,7 @@ class Html
 		$l = sprintf(
 			' <a class="ext-link" href="%s"%s>%s</a>',
 			$href,
-			' rel="external"',
+			' rel="external noreferrer"',
 			$name
 		);
 		return $l;
@@ -154,7 +129,7 @@ class Html
 	public static function buildReccurDaySelect($reccurday, $tag_name, $args)
 	{
 		$day_name = array(
-			'<span style="color:red;">'.Lang::txt('EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
+			Lang::txt('EVENTS_CAL_LANG_SUNDAYSHORT'),
 			Lang::txt('EVENTS_CAL_LANG_MONDAYSHORT'),
 			Lang::txt('EVENTS_CAL_LANG_TUESDAYSHORT'),
 			Lang::txt('EVENTS_CAL_LANG_WEDNESDAYSHORT'),
@@ -342,46 +317,46 @@ class Html
 	public static function buildTimeZoneSelect($tzselected, $args)
 	{
 		$timezones = array(
-			\Html::select('option', -12,   Lang::txt('EVENTS_TIME_UTC_-12')),
-			\Html::select('option', -11,   Lang::txt('EVENTS_TIME_UTC_-11')),
-			\Html::select('option', -10,   Lang::txt('EVENTS_TIME_UTC_-10')),
-			\Html::select('option', -9.5,  Lang::txt('EVENTS_TIME_UTC_-930')),
-			\Html::select('option', -9,    Lang::txt('EVENTS_TIME_UTC_-9')),
-			\Html::select('option', -8,    Lang::txt('EVENTS_TIME_UTC_-8')),
-			\Html::select('option', -7,    Lang::txt('EVENTS_TIME_UTC_-7')),
-			\Html::select('option', -6,    Lang::txt('EVENTS_TIME_UTC_-6')),
-			\Html::select('option', -5,    Lang::txt('EVENTS_TIME_UTC_-5')),
-			\Html::select('option', -4,    Lang::txt('EVENTS_TIME_UTC_-4')),
-			\Html::select('option', -4.5,  Lang::txt('EVENTS_TIME_UTC_-430')),
-			\Html::select('option', -3.5,  Lang::txt('EVENTS_TIME_UTC_-330')),
-			\Html::select('option', -3,    Lang::txt('EVENTS_TIME_UTC_-3')),
-			\Html::select('option', -2,    Lang::txt('EVENTS_TIME_UTC_-2')),
-			\Html::select('option', -1,    Lang::txt('EVENTS_TIME_UTC_-1')),
-			\Html::select('option', 0,     Lang::txt('EVENTS_TIME_UTC_0')),
-			\Html::select('option', 1,     Lang::txt('EVENTS_TIME_UTC_1')),
-			\Html::select('option', 2,     Lang::txt('EVENTS_TIME_UTC_2')),
-			\Html::select('option', 3,     Lang::txt('EVENTS_TIME_UTC_3')),
-			\Html::select('option', 3.5,   Lang::txt('EVENTS_TIME_UTC_330')),
-			\Html::select('option', 4,     Lang::txt('EVENTS_TIME_UTC_4')),
-			\Html::select('option', 4.5,   Lang::txt('EVENTS_TIME_UTC_430')),
-			\Html::select('option', 5,     Lang::txt('EVENTS_TIME_UTC_5')),
-			\Html::select('option', 5.5,   Lang::txt('EVENTS_TIME_UTC_530')),
-			\Html::select('option', 5.75,  Lang::txt('EVENTS_TIME_UTC_545')),
-			\Html::select('option', 6,     Lang::txt('EVENTS_TIME_UTC_6')),
-			\Html::select('option', 6.5,   Lang::txt('EVENTS_TIME_UTC_630')),
-			\Html::select('option', 7,     Lang::txt('EVENTS_TIME_UTC_7')),
-			\Html::select('option', 8,     Lang::txt('EVENTS_TIME_UTC_8')),
-			\Html::select('option', 8.75,  Lang::txt('EVENTS_TIME_UTC_845')),
-			\Html::select('option', 9,     Lang::txt('EVENTS_TIME_UTC_9')),
-			\Html::select('option', 9.5,   Lang::txt('EVENTS_TIME_UTC_930')),
-			\Html::select('option', 10,    Lang::txt('EVENTS_TIME_UTC_10')),
-			\Html::select('option', 10.5,  Lang::txt('EVENTS_TIME_UTC_1030')),
-			\Html::select('option', 11,    Lang::txt('EVENTS_TIME_UTC_11')),
-			\Html::select('option', 11.5,  Lang::txt('EVENTS_TIME_UTC_1130')),
-			\Html::select('option', 12,    Lang::txt('EVENTS_TIME_UTC_12')),
+			\Html::select('option', -12, Lang::txt('EVENTS_TIME_UTC_-12')),
+			\Html::select('option', -11, Lang::txt('EVENTS_TIME_UTC_-11')),
+			\Html::select('option', -10, Lang::txt('EVENTS_TIME_UTC_-10')),
+			\Html::select('option', -9.5, Lang::txt('EVENTS_TIME_UTC_-930')),
+			\Html::select('option', -9, Lang::txt('EVENTS_TIME_UTC_-9')),
+			\Html::select('option', -8, Lang::txt('EVENTS_TIME_UTC_-8')),
+			\Html::select('option', -7, Lang::txt('EVENTS_TIME_UTC_-7')),
+			\Html::select('option', -6, Lang::txt('EVENTS_TIME_UTC_-6')),
+			\Html::select('option', -5, Lang::txt('EVENTS_TIME_UTC_-5')),
+			\Html::select('option', -4, Lang::txt('EVENTS_TIME_UTC_-4')),
+			\Html::select('option', -4.5, Lang::txt('EVENTS_TIME_UTC_-430')),
+			\Html::select('option', -3.5, Lang::txt('EVENTS_TIME_UTC_-330')),
+			\Html::select('option', -3, Lang::txt('EVENTS_TIME_UTC_-3')),
+			\Html::select('option', -2, Lang::txt('EVENTS_TIME_UTC_-2')),
+			\Html::select('option', -1, Lang::txt('EVENTS_TIME_UTC_-1')),
+			\Html::select('option', 0, Lang::txt('EVENTS_TIME_UTC_0')),
+			\Html::select('option', 1, Lang::txt('EVENTS_TIME_UTC_1')),
+			\Html::select('option', 2, Lang::txt('EVENTS_TIME_UTC_2')),
+			\Html::select('option', 3, Lang::txt('EVENTS_TIME_UTC_3')),
+			\Html::select('option', 3.5, Lang::txt('EVENTS_TIME_UTC_330')),
+			\Html::select('option', 4, Lang::txt('EVENTS_TIME_UTC_4')),
+			\Html::select('option', 4.5, Lang::txt('EVENTS_TIME_UTC_430')),
+			\Html::select('option', 5, Lang::txt('EVENTS_TIME_UTC_5')),
+			\Html::select('option', 5.5, Lang::txt('EVENTS_TIME_UTC_530')),
+			\Html::select('option', 5.75, Lang::txt('EVENTS_TIME_UTC_545')),
+			\Html::select('option', 6, Lang::txt('EVENTS_TIME_UTC_6')),
+			\Html::select('option', 6.5, Lang::txt('EVENTS_TIME_UTC_630')),
+			\Html::select('option', 7, Lang::txt('EVENTS_TIME_UTC_7')),
+			\Html::select('option', 8, Lang::txt('EVENTS_TIME_UTC_8')),
+			\Html::select('option', 8.75, Lang::txt('EVENTS_TIME_UTC_845')),
+			\Html::select('option', 9, Lang::txt('EVENTS_TIME_UTC_9')),
+			\Html::select('option', 9.5, Lang::txt('EVENTS_TIME_UTC_930')),
+			\Html::select('option', 10, Lang::txt('EVENTS_TIME_UTC_10')),
+			\Html::select('option', 10.5, Lang::txt('EVENTS_TIME_UTC_1030')),
+			\Html::select('option', 11, Lang::txt('EVENTS_TIME_UTC_11')),
+			\Html::select('option', 11.5, Lang::txt('EVENTS_TIME_UTC_1130')),
+			\Html::select('option', 12, Lang::txt('EVENTS_TIME_UTC_12')),
 			\Html::select('option', 12.75, Lang::txt('EVENTS_TIME_UTC_1245')),
-			\Html::select('option', 13,    Lang::txt('EVENTS_TIME_UTC_13')),
-			\Html::select('option', 14,    Lang::txt('EVENTS_TIME_UTC_14')),
+			\Html::select('option', 13, Lang::txt('EVENTS_TIME_UTC_13')),
+			\Html::select('option', 14, Lang::txt('EVENTS_TIME_UTC_14')),
 		);
 
 		return \Html::select('genericlist', $timezones, 'time_zone', $args, 'value', 'text', $tzselected);
@@ -442,7 +417,7 @@ class Html
 		{
 			return $timezones[$tz];
 		}
-		return('(timezone n/a)');
+		return '(timezone n/a)';
 	}
 
 	/**
@@ -455,7 +430,7 @@ class Html
 	public static function buildWeekDaysCheck($reccurweekdays, $args)
 	{
 		$day_name = array(
-			'<span style="color:red;">' . Lang::txt('EVENTS_CAL_LANG_SUNDAYSHORT') . '</span>',
+			Lang::txt('EVENTS_CAL_LANG_SUNDAYSHORT'),
 			Lang::txt('EVENTS_CAL_LANG_MONDAYSHORT'),
 			Lang::txt('EVENTS_CAL_LANG_TUESDAYSHORT'),
 			Lang::txt('EVENTS_CAL_LANG_WEDNESDAYSHORT'),
@@ -595,18 +570,30 @@ class Html
 		$monthname = '';
 		switch ($month)
 		{
-			case '01': $monthname = Lang::txt('EVENTS_CAL_LANG_JANUARY');   break;
-			case '02': $monthname = Lang::txt('EVENTS_CAL_LANG_FEBRUARY');  break;
-			case '03': $monthname = Lang::txt('EVENTS_CAL_LANG_MARCH');     break;
-			case '04': $monthname = Lang::txt('EVENTS_CAL_LANG_APRIL');     break;
-			case '05': $monthname = Lang::txt('EVENTS_CAL_LANG_MAY');       break;
-			case '06': $monthname = Lang::txt('EVENTS_CAL_LANG_JUNE');      break;
-			case '07': $monthname = Lang::txt('EVENTS_CAL_LANG_JULY');      break;
-			case '08': $monthname = Lang::txt('EVENTS_CAL_LANG_AUGUST');    break;
-			case '09': $monthname = Lang::txt('EVENTS_CAL_LANG_SEPTEMBER'); break;
-			case '10': $monthname = Lang::txt('EVENTS_CAL_LANG_OCTOBER');   break;
-			case '11': $monthname = Lang::txt('EVENTS_CAL_LANG_NOVEMBER');  break;
-			case '12': $monthname = Lang::txt('EVENTS_CAL_LANG_DECEMBER');  break;
+			case '01': $monthname = Lang::txt('EVENTS_CAL_LANG_JANUARY');
+break;
+			case '02': $monthname = Lang::txt('EVENTS_CAL_LANG_FEBRUARY');
+break;
+			case '03': $monthname = Lang::txt('EVENTS_CAL_LANG_MARCH');
+break;
+			case '04': $monthname = Lang::txt('EVENTS_CAL_LANG_APRIL');
+break;
+			case '05': $monthname = Lang::txt('EVENTS_CAL_LANG_MAY');
+break;
+			case '06': $monthname = Lang::txt('EVENTS_CAL_LANG_JUNE');
+break;
+			case '07': $monthname = Lang::txt('EVENTS_CAL_LANG_JULY');
+break;
+			case '08': $monthname = Lang::txt('EVENTS_CAL_LANG_AUGUST');
+break;
+			case '09': $monthname = Lang::txt('EVENTS_CAL_LANG_SEPTEMBER');
+break;
+			case '10': $monthname = Lang::txt('EVENTS_CAL_LANG_OCTOBER');
+break;
+			case '11': $monthname = Lang::txt('EVENTS_CAL_LANG_NOVEMBER');
+break;
+			case '12': $monthname = Lang::txt('EVENTS_CAL_LANG_DECEMBER');
+break;
 		}
 		return $monthname;
 	}
@@ -622,13 +609,20 @@ class Html
 		$dayname = '';
 		switch ($daynb)
 		{
-			case '0': $dayname = Lang::txt('EVENTS_CAL_LANG_SUNDAY');    break;
-			case '1': $dayname = Lang::txt('EVENTS_CAL_LANG_MONDAY');    break;
-			case '2': $dayname = Lang::txt('EVENTS_CAL_LANG_TUESDAY');   break;
-			case '3': $dayname = Lang::txt('EVENTS_CAL_LANG_WEDNESDAY'); break;
-			case '4': $dayname = Lang::txt('EVENTS_CAL_LANG_THURSDAY');  break;
-			case '5': $dayname = Lang::txt('EVENTS_CAL_LANG_FRIDAY');    break;
-			case '6': $dayname = Lang::txt('EVENTS_CAL_LANG_SATURDAY');  break;
+			case '0': $dayname = Lang::txt('EVENTS_CAL_LANG_SUNDAY');
+break;
+			case '1': $dayname = Lang::txt('EVENTS_CAL_LANG_MONDAY');
+break;
+			case '2': $dayname = Lang::txt('EVENTS_CAL_LANG_TUESDAY');
+break;
+			case '3': $dayname = Lang::txt('EVENTS_CAL_LANG_WEDNESDAY');
+break;
+			case '4': $dayname = Lang::txt('EVENTS_CAL_LANG_THURSDAY');
+break;
+			case '5': $dayname = Lang::txt('EVENTS_CAL_LANG_FRIDAY');
+break;
+			case '6': $dayname = Lang::txt('EVENTS_CAL_LANG_SATURDAY');
+break;
 		}
 		return $dayname;
 	}
@@ -800,4 +794,3 @@ class Html
 		return $newdate;
 	}
 }
-

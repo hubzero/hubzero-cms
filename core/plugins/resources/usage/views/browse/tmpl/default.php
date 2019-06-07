@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -116,6 +91,8 @@ if ($results)
 	$current->datetime =  str_replace('-00 00:00:00', '-01', $current->datetime);
 }
 
+$sparklines = array();
+$bars = array();
 ?>
 <h3 id="plg-usage-header">
 	<?php echo Lang::txt('PLG_RESOURCES_USAGE'); ?>
@@ -136,7 +113,7 @@ if ($results)
 				<div class="col span9 omega">
 					<p>
 						<a href="<?php echo $png; ?>" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_MAP_LARGER'); ?>">
-							<img style="width:100%;max-width:510px;" src="<?php echo $gif; ?>" alt="<?php echo Lang::txt('PLG_RESOURCES_USAGE_MAP'); ?>" />
+							<img src="<?php echo $gif; ?>" alt="<?php echo Lang::txt('PLG_RESOURCES_USAGE_MAP'); ?>" />
 						</a>
 					</p>
 				</div><!-- / .col span9 omega -->
@@ -178,7 +155,7 @@ if ($results)
 					<a class="set-selection" rel="<?php echo $half; ?> <?php echo $to; ?>" href="<?php echo Route::url($url . '&period=13&dthis=' . $this->dthis); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_SIX_MONTHS'); ?>"><?php echo Lang::txt('6m'); ?></a>
 					<a class="set-selection" rel="<?php echo $qrtr; ?> <?php echo $to; ?>" href="<?php echo Route::url($url . '&period=3&dthis=' . $this->dthis); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_THREE_MONTHS'); ?>"><?php echo Lang::txt('3m'); ?></a>
 				</p>
-				<div id="users-overview" style="min-width:400px;height:250px;">
+				<div id="users-overview">
 				<?php
 				if ($results)
 				{
@@ -196,9 +173,21 @@ if ($results)
 					foreach ($results as $result)
 					{
 						$height = ($highest) ? round(($result->users / $highest)*100) : 0;
+
+						$nm = 'count' . $height;
+						if (!in_array($nm, $sparklines))
+						{
+							$this->css('
+								.sparkline .' . $nm . ' {
+									height: ' . $height . '%;
+								}
+							');
+							$sparklines[] = $nm;
+						}
+
 						$sparkline .= "\t" . '<span class="index">';
-						$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . Date::of($result->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . ': ' . number_format($result->users) . '">';
-						$sparkline .= number_format($result->users); //trim($this->_fmt_result($result->value, $result->valfmt));
+						$sparkline .= '<span class="count count' . $height . '" title="' . Date::of($result->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . ': ' . number_format($result->users) . '">';
+						$sparkline .= number_format($result->users);
 						$sparkline .= '</span> ';
 						$sparkline .= '</span>' . "\n";
 					}
@@ -207,7 +196,7 @@ if ($results)
 				}
 				?>
 				</div>
-				<div id="users-overview-timeline" style="min-width:400px;height:100px;margin-top: -7px">
+				<div id="users-overview-timeline">
 					<!-- blank -->
 				</div>
 
@@ -265,33 +254,25 @@ if ($results)
 					{
 						$dataset = plgResourcesUsage::getTopValue($this->resource->id, 3, $tid, $datetime);
 					}
-					//$data = array();
+
 					$r = array();
-					//$results = null;
 					$total = 0;
 					$cls = 'even';
-					//$tot = '';
-					//$pieOrg = array();
-					//$toporgs = null;
+
 					if ($dataset)
 					{
 						$i = 0;
-						//$data = array();
 						$r = array();
 
 						foreach ($dataset as $row)
 						{
 							$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
 
-							//if (!isset($data[$ky]))
 							if (!isset($r[$ky]))
 							{
 								$i = 0;
-								//$data[$ky] = array();
 								$r[$ky] = array();
 							}
-
-							//$data[$ky][] = $row;
 
 							if (!isset($colors[$i]))
 							{
@@ -332,12 +313,23 @@ if ($results)
 							}
 
 							$cls = ($cls == 'even') ? 'odd' : 'even';
+
+							$width = round((($row->value/$total)*100), 2);
+
+							$nm = 'bar' . $width;
+							if (!in_array($nm, $bars))
+							{
+								$this->css('
+									.bar-wrap .' . $nm . ' {
+										width: ' . $width . '%;
+									}
+								');
+								$bars[] = $nm;
+							}
 							?>
 							<tr rel="<?php echo $row->name; ?>">
-								<!-- <th><span style="background-color: <?php echo $colors[$i]; ?>"><?php echo $row->rank; ?></span></th> -->
 								<td class="textual-data"><?php echo $row->name; ?></td>
-								<td><span class="bar-wrap"><span class="bar" style="width: <?php echo round((($row->value/$total)*100),2); ?>%;"></span><span class="value"><?php echo number_format($row->value); ?> (<?php echo round((($row->value/$total)*100),2); ?>)</span></span></td>
-								<!-- <td><?php echo round((($row->value/$total)*100),2); ?></td> -->
+								<td><span class="bar-wrap"><span class="bar bar<?php echo $width; ?>"></span><span class="value"><?php echo number_format($row->value); ?> (<?php echo $width; ?>)</span></span></td>
 							</tr>
 							<?php
 							$i++;
@@ -396,20 +388,18 @@ if ($results)
 						$i = 0;
 						if ($dataset)
 						{
-							//$data = array();
 							$r = array();
 							$names = array();
 							foreach ($dataset as $row)
 							{
 								$ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
-								//if (!isset($data[$ky]))
+
 								if (!isset($r[$ky]))
 								{
 									$i = 0;
-									//$data[$ky] = array();
 									$r[$ky] = array();
 								}
-								//$data[$ky][] = $row;
+
 								if (!isset($colors[$i]))
 								{
 									$i = 0;
@@ -430,7 +420,6 @@ if ($results)
 							$codes = \Hubzero\Geocode\Geocode::getCodesByNames($names);
 
 							$cls = 'even';
-							//$pie = array();
 							$i = 0;
 							$total = ($total) ? $total : 1;
 
@@ -447,16 +436,27 @@ if ($results)
 								}
 
 								$cls = ($cls == 'even') ? 'odd' : 'even';
+
+								$width = round((($row->value/$total)*100), 2);
+
+								$nm = 'bar' . $width;
+								if (!in_array($nm, $bars))
+								{
+									$this->css('
+										.bar-wrap .' . $nm . ' {
+											width: ' . $width . '%;
+										}
+									');
+									$bars[] = $nm;
+								}
 								?>
 							<tr rel="<?php echo $row->name; ?>">
-								<!-- <th><span style="background-color: <?php echo $colors[$i]; ?>"><?php echo $row->rank; ?></span></th> -->
 								<td class="textual-data"><?php
 								if (isset($codes[$row->name])) { ?>
 									<img src="<?php echo $base; ?>/components/com_members/site/assets/img/flags/<?php echo strtolower($codes[$row->name]['code']); ?>.gif" alt="<?php echo strtolower($codes[$row->name]['code']); ?>" />
 								<?php }
 								echo $row->name; ?></td>
-								<td><span class="bar-wrap"><span class="bar" style="width: <?php echo round((($row->value/$total)*100),2); ?>%;"></span><span class="value"><?php echo number_format($row->value); ?> (<?php echo round((($row->value/$total)*100),2); ?>%)</span></span></td>
-								<!-- <td><?php echo round((($row->value/$total)*100),2); ?>%</td> -->
+								<td><span class="bar-wrap"><span class="bar bar<?php echo $width; ?>"></span><span class="value"><?php echo number_format($row->value); ?> (<?php echo $width; ?>%)</span></span></td>
 							</tr>
 								<?php
 								$i++;
@@ -562,10 +562,9 @@ if ($results)
 								$cls = ($cls == 'even') ? 'odd' : 'even';
 								?>
 							<tr rel="<?php echo $row->name; ?>">
-								<!-- <th><span style="background-color: <?php echo $colors[$i]; ?>"><?php echo $row->rank; ?></span></th> -->
 								<td class="textual-data"><?php echo $row->name; ?></td>
 								<td><?php echo number_format($row->value); ?></td>
-								<td><?php echo round((($row->value/$total)*100),2); ?></td>
+								<td><?php echo round((($row->value/$total)*100), 2); ?></td>
 							</tr>
 								<?php
 								$i++;
@@ -615,7 +614,7 @@ if ($results)
 						<a class="set-selection" rel="<?php echo $half; ?> <?php echo $to; ?>" href="<?php echo Route::url($url . '&period=13&dthis=' . $this->dthis); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_SIX_MONTHS'); ?>"><?php echo Lang::txt('6m'); ?></a>
 						<a class="set-selection" rel="<?php echo $qrtr; ?> <?php echo $to; ?>" href="<?php echo Route::url($url . '&period=3&dthis=' . $this->dthis); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_THREE_MONTHS'); ?>"><?php echo Lang::txt('3m'); ?></a>
 					</p>
-					<div id="runs-overview" style="min-width:400px;height:250px;">
+					<div id="runs-overview">
 					<?php
 						// Find the highest value
 						$vals = array();
@@ -631,9 +630,21 @@ if ($results)
 						foreach ($results as $result)
 						{
 							$height = ($highest) ? round(($result->jobs / $highest)*100) : 0;
+
+							$nm = 'count' . $height;
+							if (!in_array($nm, $sparklines))
+							{
+								$this->css('
+									.sparkline .' . $nm . ' {
+										height: ' . $height . '%;
+									}
+								');
+								$sparklines[] = $nm;
+							}
+
 							$sparkline .= "\t" . '<span class="index">';
-							$sparkline .= '<span class="count" style="height: ' . $height . '%;" title="' . Date::of($result->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . ': ' . $result->jobs . '">';
-							$sparkline .= number_format($result->jobs); //trim($this->_fmt_result($result->value, $result->valfmt));
+							$sparkline .= '<span class="count count' . $height . '" title="' . Date::of($result->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . ': ' . $result->jobs . '">';
+							$sparkline .= number_format($result->jobs);
 							$sparkline .= '</span> ';
 							$sparkline .= '</span>' . "\n";
 						}
@@ -641,7 +652,7 @@ if ($results)
 						echo $sparkline;
 					?>
 					</div>
-					<div id="runs-overview-timeline" style="min-width:400px;height:100px;margin-top: -7px">
+					<div id="runs-overview-timeline">
 						<!-- blank -->
 					</div>
 
@@ -748,7 +759,7 @@ if ($results)
 						tbl.append(
 							'<tr>' +
 								'<td class="textual-data">' + (data[i]['code'] ? '<img src="<?php echo $base; ?>/components/com_members/site/assets/img/flags/' + data[i]['code'] + '.gif" alt="' + data[i]['code'] + '" /> ' : '') + data[i]['label'] + '</td>' +
-								'<td><span class="bar-wrap"><span class="bar" style="width: ' + Math.round(((data[i]['data']/total)*100),2) + '%;"></span><span class="value">' + data[i]['data'] + ' (' + Math.round(((data[i]['data']/total)*100),2) + '%)</span></span></td>' +
+								'<td><span class="bar-wrap"><span class="bar" style="width: ' + Math.round(((data[i]['data']/total)*100), 2) + '%;"></span><span class="value">' + data[i]['data'] + ' (' + Math.round(((data[i]['data']/total)*100), 2) + '%)</span></span></td>' +
 								//'<td>' + Math.round(((data[i]['data']/total)*100),2) + '%</td>' +
 							'</tr>'
 						);

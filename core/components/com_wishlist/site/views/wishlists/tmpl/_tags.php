@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -78,7 +53,7 @@ defined('_HZEXEC_') or die();
 
 		if ($this->config->get('show_sizes', 0) == 2)
 		{
-			$tll[$tag->get('tag')] = '<li' . $class . '><a href="javascript:void(0);" onclick="addtag(\'' . $this->escape($tag->get('tag')) . '\');">' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' <span>' . $tag->get('count') . '</span></a></li>';
+			$tll[$tag->get('tag')] = '<li' . $class . '><a href="' . Route::url($this->base . '&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . $append) . '" data-tag="' . $this->escape($tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' <span>' . $tag->get('count') . '</span></a></li>';
 		}
 		else if (isset($this->filters))
 		{
@@ -107,7 +82,7 @@ defined('_HZEXEC_') or die();
 			{
 				$size = $min_font_size + ($tag->get('count') - $min_qty) * $step;
 
-				$tll[$tag->get('tag')] .= '<span style="font-size: ' . round($size, 1) . 'em;">';
+				$tll[$tag->get('tag')] .= '<span data-size="' . round($size, 1) . 'em">';
 			}
 			$tll[$tag->get('tag')] .= '<a class="tag' . ($tag->get('admin') ? ' admin' : '') . '" href="' . Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag')));
 			if ($this->config->get('show_tag_count', 0))

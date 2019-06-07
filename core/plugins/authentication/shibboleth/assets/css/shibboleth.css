@@ -1,3 +1,6 @@
+.auth .shibboleth {
+	background: #007db1;
+}
 .shibboleth.account:hover {
 	box-shadow: 0 0 transparent;
 }
@@ -87,6 +90,8 @@
 .shibboleth.account .dropdown-menu {
 	border-top: 0;
 	margin-top: -15px;
+	margin-left: -42px;
+	width: 348px;
 }
 .shibboleth.account .bootstrap-select img {
 	width: 32px;
@@ -124,7 +129,7 @@
 }
 .shibboleth.account .bootstrap-select:not([class*=span]):not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
 	margin-top: -10px;
-	width: 300px;
+	/*width: 300px;*/
 }
 p.create {
 	margin-bottom: 200px;

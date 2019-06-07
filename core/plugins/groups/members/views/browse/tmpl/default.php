@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -264,7 +239,7 @@ $option = 'com_groups';
 									case 'members':
 									default:
 										$status = 'Member';
-										if (in_array($guser,$this->managers))
+										if (in_array($guser, $this->managers))
 										{
 											$status = Lang::txt('PLG_GROUPS_MEMBERS_STATUS_MANAGER');
 											$cls .= 'manager';
@@ -366,7 +341,7 @@ $option = 'com_groups';
 											}
 										}
 
-										$html .= '<span class="roles-list" id="roles-list-'.$u->get('id').'">'.substr($all_roles,2).'</span>';
+										$html .= '<span class="roles-list" id="roles-list-'.$u->get('id').'">'.substr($all_roles, 2).'</span>';
 
 										if ($this->authorized == 'manager') {
 											if ($this->membership_control == 1) {
@@ -407,39 +382,39 @@ $option = 'com_groups';
 										case 'invitees':
 											if ($this->membership_control == 1) {
 												if (!$inviteemail) {
-													$html .= "\t\t\t\t".'<td class="remove-member"><a class="cancel tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=cancel&users[]='.$guser.'&filter='.$this->filter).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_CANCEL_MEMBER',$this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_CANCEL').'</a></td>'."\n";
+													$html .= "\t\t\t\t".'<td class="remove-member"><a class="cancel tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=cancel&users[]='.$guser.'&filter='.$this->filter).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_CANCEL_MEMBER', $this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_CANCEL').'</a></td>'."\n";
 												} else {
-													$html .= "\t\t\t\t".'<td class="remove-member"><a class="cancel tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=cancel&users[]='.urlencode(urlencode($guser)).'&filter='.$this->filter).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_CANCEL_MEMBER',$this->escape($guser)).'">'.Lang::txt('PLG_GROUPS_MEMBERS_CANCEL').'</a></td>'."\n";
+													$html .= "\t\t\t\t".'<td class="remove-member"><a class="cancel tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=cancel&users[]='.urlencode(urlencode($guser)).'&filter='.$this->filter).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_CANCEL_MEMBER', $this->escape($guser)).'">'.Lang::txt('PLG_GROUPS_MEMBERS_CANCEL').'</a></td>'."\n";
 												}
 											}
 											$html .= "\t\t\t\t".'<td class="approve-member"> </td>'."\n";
 										break;
 										case 'pending':
 											if ($this->membership_control == 1) {
-												$html .= "\t\t\t\t".'<td class="decline-member"><a class="decline tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=deny&users[]='.$guser.'&filter='.$this->filter).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_DECLINE_MEMBER',$this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_DENY').'</a></td>'."\n";
-												$html .= "\t\t\t\t".'<td class="approve-member"><a class="approve tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=approve&users[]='.$guser.'&filter='.$this->filter).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_APPROVE_MEMBER',$this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_APPROVE').'</a></td>'."\n";
+												$html .= "\t\t\t\t".'<td class="decline-member"><a class="decline tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=deny&users[]='.$guser.'&filter='.$this->filter).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_DECLINE_MEMBER', $this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_DENY').'</a></td>'."\n";
+												$html .= "\t\t\t\t".'<td class="approve-member"><a class="approve tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=approve&users[]='.$guser.'&filter='.$this->filter).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_APPROVE_MEMBER', $this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_APPROVE').'</a></td>'."\n";
 											}
 										break;
 										case 'managers':
 										case 'members':
 										default:
 											if ($this->membership_control == 1) {
-												if (!in_array($guser,$this->managers) || (in_array($guser,$this->managers) && count($this->managers) > 1)) {
-													$html .= "\t\t\t\t".'<td class="remove-member"><a class="remove tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=remove&users[]='.$guser.'&filter='.$this->filter).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_REMOVE_MEMBER',$this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_REMOVE').'</a></td>'."\n";
+												if (!in_array($guser, $this->managers) || (in_array($guser, $this->managers) && count($this->managers) > 1)) {
+													$html .= "\t\t\t\t".'<td class="remove-member"><a class="remove tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=remove&users[]='.$guser.'&filter='.$this->filter).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_REMOVE_MEMBER', $this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_REMOVE').'</a></td>'."\n";
 												} else {
 													$html .= "\t\t\t\t".'<td class="remove-member"> </td>'."\n";
 												}
 
-												if (in_array($guser,$this->managers)) {
+												if (in_array($guser, $this->managers)) {
 													//force admins to use backend to demote manager if only 1
 													//if ($this->authorized == 'admin' || count($this->managers) > 1) {
 													if (count($this->managers) > 1) {
-														$html .= "\t\t\t\t".'<td class="demote-member"><a class="demote tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=demote&users[]='.$guser.'&filter='.$this->filter.'&limit='.$this->limit.'&limitstart='.$this->start).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_DEMOTE_MEMBER',$this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_DEMOTE').'</a></td>'."\n";
+														$html .= "\t\t\t\t".'<td class="demote-member"><a class="demote tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=demote&users[]='.$guser.'&filter='.$this->filter.'&limit='.$this->limit.'&limitstart='.$this->start).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_DEMOTE_MEMBER', $this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_DEMOTE').'</a></td>'."\n";
 													} else {
 														$html .= "\t\t\t\t".'<td class="demote-member"> </td>'."\n";
 													}
 												} else {
-													$html .= "\t\t\t\t".'<td class="promote-member"><a class="promote tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=promote&users[]='.$guser.'&filter='.$this->filter.'&limit='.$this->limit.'&limitstart='.$this->start).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_PROMOTE_MEMBER',$this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_PROMOTE').'</a></td>'."\n";
+													$html .= "\t\t\t\t".'<td class="promote-member"><a class="promote tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=promote&users[]='.$guser.'&filter='.$this->filter.'&limit='.$this->limit.'&limitstart='.$this->start).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_PROMOTE_MEMBER', $this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_PROMOTE').'</a></td>'."\n";
 												}
 											}
 										break;

@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        plugins/courses/announcements/assets/js/announcements.dashboard.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 if (!jq) {
@@ -31,7 +30,7 @@ jQuery(document).ready(function(jq){
 			.on('submit', '#announcementForm', function(e) {
 				e.preventDefault();
 				$.post($(this).attr('action').nohtml(), $(this).serialize(), function(response){
-					var json = jQuery.parseJSON(response);
+					var json = JSON.parse(response);
 					if (json.code == 0) {
 						/*$('<div class="hubzero_notification"></div>')
 							.text('Announcement posted.')

@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Projects\Models;
@@ -63,7 +38,11 @@ class File extends Obj
 		$this->set('localPath', $localPath); // Path to item within repo
 
 		$fullPath = trim($repoPath, DS) . DS . trim($localPath, DS);
-		$this->set('fullPath', DS . trim($fullPath, DS)); // Full server path to item
+		$fullPath = trim($fullPath, DS);
+		if ($fullPath)
+		{
+			$this->set('fullPath', DS . $fullPath); // Full server path to item
+		}
 
 		// Set defaults
 		$this->defaults();
@@ -137,7 +116,7 @@ class File extends Obj
 	 */
 	public function exists()
 	{
-		return file_exists($this->get('fullPath')) ? true : false;
+		return $this->get('fullPath') && file_exists($this->get('fullPath'));
 	}
 
 	/**
@@ -606,7 +585,7 @@ class File extends Obj
 	public static function drawIcon($ext = '')
 	{
 		$icon = self::getIconImage($ext);
-		return '<img src="' . $icon . '" alt="' . $ext . '" />';
+		return '<img class="file-type' . ($ext ? ' file-type-' . $ext : '') . '" src="' . $icon . '" alt="' . $ext . '" />';
 	}
 
 	/**
@@ -619,135 +598,15 @@ class File extends Obj
 	 */
 	public static function getIconImage($ext, $basename = false, $icon = '')
 	{
-		switch (strtolower($ext))
+		$ext = strtolower($ext);
+
+		$icon = \Html::asset('image', 'assets/filetypes/' . $ext . '.svg', '', null, true, true);
+		if (!$icon)
 		{
-			case 'pdf':
-				$icon = 'page_white_acrobat';
-				break;
-			case 'txt':
-			case 'css':
-			case 'rtf':
-			case 'sty':
-			case 'cls':
-			case 'log':
-				$icon = 'page_white_text';
-				break;
-			case 'sql':
-				$icon = 'page_white_sql';
-				break;
-			case 'm':
-				$icon = 'page_white_matlab';
-				break;
-			case 'dmg':
-			case 'exe':
-			case 'va':
-			case 'ini':
-				$icon = 'page_white_gear';
-				break;
-			case 'eps':
-			case 'ai':
-			case 'wmf':
-				$icon = 'page_white_vector';
-				break;
-			case 'php':
-				$icon = 'page_white_php';
-				break;
-			case 'tex':
-			case 'ltx':
-				$icon = 'page_white_tex';
-				break;
-			case 'swf':
-				$icon = 'page_white_flash';
-				break;
-			case 'key':
-				$icon = 'page_white_keynote';
-				break;
-			case 'numbers':
-				$icon = 'page_white_numbers';
-				break;
-			case 'pages':
-				$icon = 'page_white_pages';
-				break;
-			case 'html':
-			case 'htm':
-				$icon = 'page_white_code';
-				break;
-			case 'xls':
-			case 'xlsx':
-			case 'tsv':
-			case 'csv':
-			case 'ods':
-				$icon = 'page_white_excel';
-				break;
-			case 'ppt':
-			case 'pptx':
-			case 'pps':
-				$icon = 'page_white_powerpoint';
-				break;
-			case 'mov':
-			case 'mp4':
-			case 'm4v':
-			case 'avi':
-				$icon = 'page_white_film';
-				break;
-			case 'jpg':
-			case 'jpeg':
-			case 'gif':
-			case 'tiff':
-			case 'bmp':
-			case 'png':
-				$icon = 'page_white_picture';
-				break;
-			case 'mp3':
-			case 'aiff':
-			case 'm4a':
-			case 'wav':
-				$icon = 'page_white_sound';
-				break;
-			case 'zip':
-			case 'rar':
-			case 'gz':
-			case 'sit':
-			case 'sitx':
-			case 'zipx':
-			case 'tar':
-			case '7z':
-				$icon = 'page_white_compressed';
-				break;
-			case 'doc':
-			case 'docx':
-				$icon = 'page_white_word';
-				break;
-
-			case 'folder':
-				$icon = 'folder';
-				break;
-
-			// Google files
-			case 'gsheet':
-				$icon = 'google/sheet';
-				break;
-			case 'gdoc':
-				$icon = 'google/doc';
-				break;
-			case 'gslides':
-				$icon = 'google/presentation';
-				break;
-			case 'gdraw':
-				$icon = 'google/drawing';
-				break;
-			case 'gform':
-				$icon = 'google/form';
-				break;
-
-			default:
-				$icon = 'page_white';
-				break;
+			$icon = \Html::asset('image', 'assets/filetypes/file.svg', '', null, true, true);
 		}
 
-		// Directory where images are stored
-		$basePath = "/core/plugins/projects/files/assets/img/";
-		return $basename ? basename($icon) :  $basePath . $icon . '.gif';
+		return $basename ? basename($icon) : $icon;
 	}
 
 	/**

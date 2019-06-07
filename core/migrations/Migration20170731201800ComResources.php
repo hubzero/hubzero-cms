@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -30,7 +35,7 @@ class Migration20170731201800ComResources extends Base
 
 			if (!$this->db->tableHasKey('#__resource_types', 'idx_state'))
 			{
-				$query = "ALTER IGNORE TABLE `#__resource_types` ADD INDEX `idx_state` (`state`)";
+				$query = "ALTER TABLE `#__resource_types` ADD INDEX `idx_state` (`state`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}

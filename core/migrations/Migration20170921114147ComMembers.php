@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -19,21 +24,21 @@ class Migration20170921114147ComMembers extends Base
 		{
 			if (!$this->db->tableHasKey('#__users_log_auth', 'idx_username'))
 			{
-				$query = "ALTER IGNORE TABLE `#__users_log_auth` ADD INDEX `idx_username` (`username`)";
+				$query = "ALTER TABLE `#__users_log_auth` ADD INDEX `idx_username` (`username`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__users_log_auth', 'idx_ip'))
 			{
-				$query = "ALTER IGNORE TABLE `#__users_log_auth` ADD INDEX `idx_ip` (`ip`)";
+				$query = "ALTER TABLE `#__users_log_auth` ADD INDEX `idx_ip` (`ip`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if (!$this->db->tableHasKey('#__users_log_auth', 'idx_status'))
 			{
-				$query = "ALTER IGNORE TABLE `#__users_log_auth` ADD INDEX `idx_status` (`status`)";
+				$query = "ALTER TABLE `#__users_log_auth` ADD INDEX `idx_status` (`status`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}

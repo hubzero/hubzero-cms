@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_groups/assets/js/browse.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 if (!jq) {
@@ -15,8 +14,6 @@ String.prototype.nohtml = function () {
 
 jQuery(document).ready(function(jq){
 	var $ = jq;
-
-	$('.entries-filters label').hide();
 
 	$('.entries-filters select').on('change', function(e){
 		$(this).closest('form').submit();

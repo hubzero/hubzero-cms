@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_jobs/jobs.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 //-----------------------------------------------------------
@@ -65,7 +64,7 @@ HUB.Jobs = {
 			if (services.length) {
 				var sel = 0;
 				services.each(function(i, item) {
-					if (item.attr('checked')) {
+					if ($(item).attr('checked')) {
 						$('#plan_'+ $(item).val()).show();
 					}
 					else {

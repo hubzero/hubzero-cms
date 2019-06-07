@@ -1,3 +1,10 @@
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+?>
 <article>
 	<h1>Global Configuration</h1>
 
@@ -48,11 +55,11 @@
 				<dt>Offline Image</dt>
 				<dd>The image that will be displayed on the site when the site is offline.</dd>
 				<dt>Default Editor</dt>
-				<dd>The default <a href="index.php?option=com_help&amp;view=help&amp;keyref=Content_creators#Content_Editors" title="Content creators">editor</a> to use when creating articles.</dd>
+				<dd>The default <a href="<?php echo Route::url('index.php?option=com_help&view=help&keyref=Content_creators#Content_Editors'); ?>" title="Content creators">editor</a> to use when creating articles.</dd>
 				<dt>Default Captcha</dt>
 				<dd>The default Captcha to use when called by extensions. Remember to correctly configure the associated plugin when selecting an option here. By default, this is set to <b>None</b>.</dd>
 				<dt>Default Access Level</dt>
-				<dd>The default access level to the site. The options here are from the <a href="index.php?option=com_help&amp;component=com_users&amp;page=levels">Users Access Levels</a>.</dd>
+				<dd>The default access level to the site. The options here are from the <a href="<?php echo Route::url('index.php?option=com_help&component=com_members&page=levels'); ?>">Users Access Levels</a>.</dd>
 				<dt>Default List Limit</dt>
 				<dd>The length of lists in the Control Panel for all Users.  By default, this is set to <b>20</b>.</dd>
 				<dt>Default Feed Limit</dt>
@@ -111,7 +118,7 @@
 		</section>
 		<section>
 			<h3><span class="mw-headline" id="Debug_Settings">Debug Settings</span></h3>
-			<p>For this debug settings to work the associated <a href="index.php?option=com_help&amp;component=com_plugins&amp;page=plugins#System_-_Debug" title="Extensions Plugin Manager Edit">plugin</a> must be activated (this is enabled by default). You can also customize further what will show in the debug modes in this plugin.</p>
+			<p>For this debug settings to work the associated <a href="<?php echo Route::url('index.php?option=com_help&component=com_plugins&page=plugins#System_-_Debug'); ?>" title="Extensions Plugin Manager Edit">plugin</a> must be activated (this is enabled by default). You can also customize further what will show in the debug modes in this plugin.</p>
 			<ul>
 				<li><b>Debug System</b>. This will turn on the debugging system of the CMS.  When set to <b>Yes</b>, this tool will provide diagnostic information, language translations, and SQL errors. If any such issues or errors occur, they will be displayed at the bottom of each page, in both the front-end and back-end.</li>
 				<li><b>Debug Language</b>. This will turn on the debugging indicators (*...*) or (?...?) for the Language files.  Debug Language will work without the Debug System tool set to on.  But it will not provide additional detailed references which would help in correcting any errors.</li>
@@ -313,9 +320,9 @@
 	<section id="Related_Information">
 		<h2><span>Related Information</span></h2>
 		<ul>
-			<li><a href="index.php?option=com_help&amp;component=cpanel&amp;page=cpanel" title="Site Control Panel">Control panel</a></li>
+			<li><a href="<?php echo Route::url('index.php?option=com_help&component=cpanel&page=cpanel'); ?>" title="Site Control Panel">Control panel</a></li>
 			<li><a rel="nofollow" class="external text" href="http://httpd.apache.org/docs/2.2/howto/htaccess.html">Info about .htaccess</a></li>
-			<li><a href="index.php?option=com_help&amp;component=users&amp;page=acl" title="Access Control List Tutorial" class="mw-redirect">ACL Tutorial</a></li>
+			<li><a href="<?php echo Route::url('index.php?option=com_help&component=members&page=acl'); ?>" title="Access Control List Tutorial" class="mw-redirect">ACL Tutorial</a></li>
 		</ul>
 	</section>
 </article>

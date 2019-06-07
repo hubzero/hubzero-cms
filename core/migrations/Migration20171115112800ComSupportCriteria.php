@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -6,7 +11,7 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script to create the jos_support_criteria table
+ * Migration script to create the `#__support_criteria` table
  **/
 class Migration20171115112800ComSupportCriteria extends Base
 {
@@ -25,7 +30,7 @@ class Migration20171115112800ComSupportCriteria extends Base
 				`created` timestamp NULL DEFAULT NULL,
 				`modified` timestamp NULL DEFAULT NULL,
 				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=latin1;";
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 			$this->db->setQuery($createTable);
 			$this->db->query();

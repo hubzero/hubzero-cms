@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -48,19 +24,7 @@ $browser = new \Hubzero\Browser\Detector();
 
 $cc = array();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	submitform(pressbutton);
-}
-</script>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
 	<div class="grid">
 		<div class="col span8">
@@ -79,7 +43,7 @@ function submitbutton(pressbutton)
 				</div>
 				<div class="input-wrap">
 					<label for="field-email"><?php echo Lang::txt('COM_SUPPORT_TICKET_FIELD_EMAIL'); ?>:</label>
-					<input type="text" name="ticket[email]" id="field-email" value="<?php echo $this->escape($this->row->get('email')); ?>" size="50" />
+					<input type="email" name="ticket[email]" id="field-email" value="<?php echo $this->escape($this->row->get('email')); ?>" size="50" />
 				</div>
 				<div class="input-wrap">
 					<label for="field-report"><?php echo Lang::txt('COM_SUPPORT_TICKET_FIELD_DESCRIPTION'); ?>:</label>
@@ -186,12 +150,12 @@ function submitbutton(pressbutton)
 		</div>
 	</div>
 
-	<input type="hidden" name="ticket[referrer]" value="<?php echo Request::getString('HTTP_REFERER', NULL, 'server'); ?>" />
+	<input type="hidden" name="ticket[referrer]" value="<?php echo Request::getString('HTTP_REFERER', null, 'server'); ?>" />
 	<input type="hidden" name="ticket[os]" value="<?php echo $browser->platform(); ?>" />
 	<input type="hidden" name="osver" value="<?php echo $browser->platformVersion(); ?>" />
 	<input type="hidden" name="ticket[browser]" value="<?php echo $browser->name(); ?>" />
 	<input type="hidden" name="browserver" value="<?php echo $browser->version(); ?>" />
-	<input type="hidden" name="ticket[hostname]" value="<?php echo gethostbyaddr(Request::getString('REMOTE_ADDR','','server')); ?>" />
+	<input type="hidden" name="ticket[hostname]" value="<?php echo gethostbyaddr(Request::getString('REMOTE_ADDR', '', 'server')); ?>" />
 	<input type="hidden" name="ticket[uas]" value="<?php echo Request::getString('HTTP_USER_AGENT', '', 'server'); ?>" />
 	<input type="hidden" name="ticket[open]" value="1" />
 

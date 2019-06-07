@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2017 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2017 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -127,8 +103,8 @@ class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
 			}
 
 			$xwhere = ' AND (a.state = 1 OR a.state = -1)' .
-				' AND (publish_up = ' . $db->Quote($nullDate) . ' OR publish_up <= ' . $db->Quote($now) . ')' .
-				' AND (publish_down = ' . $db->Quote($nullDate) . ' OR publish_down >= ' . $db->Quote($now) . ')';
+				' AND (publish_up IS NULL OR publish_up = ' . $db->quote($nullDate) . ' OR publish_up <= ' . $db->quote($now) . ')' .
+				' AND (publish_down IS NULL OR publish_down = ' . $db->quote($nullDate) . ' OR publish_down >= ' . $db->quote($now) . ')';
 
 			// Array of articles in same category correctly ordered.
 			$query = $db->getQuery(true);
@@ -197,7 +173,7 @@ class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
 
 			if ($row->prev)
 			{
-				$row->prev = Route::url(ContentHelperRoute::getArticleRoute($row->prev->slug, $row->prev->catslug, $row->prev->language));
+				$row->prev = Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($row->prev->slug, $row->prev->catslug, $row->prev->language));
 			}
 			else
 			{
@@ -206,7 +182,7 @@ class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
 
 			if ($row->next)
 			{
-				$row->next = Route::url(ContentHelperRoute::getArticleRoute($row->next->slug, $row->next->catslug, $row->next->language));
+				$row->next = Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($row->next->slug, $row->next->catslug, $row->next->language));
 			}
 			else
 			{
@@ -237,7 +213,7 @@ class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
 				$row->pagination = $html;
 				$row->paginationposition = $this->params->get('position', 1);
 				// This will default to the 1.5 and 1.6-1.7 behavior.
-				$row->paginationrelative = $this->params->get('relative',0);
+				$row->paginationrelative = $this->params->get('relative', 0);
 			}
 		}
 	}

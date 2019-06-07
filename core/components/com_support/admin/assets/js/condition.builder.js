@@ -1,3 +1,9 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 //Helps in creating a structure will help later.
 function makeStruct(names) {
 	var names = names.split(' ');
@@ -294,3 +300,65 @@ var Conditions = {
 		return ['(', q.join(op), ')'].join(' ');
 	}
 };
+
+Hubzero.submitbutton = function(task) {
+{
+	var query = {},
+		component = false;
+
+	var frm = document.getElementById('item-form');
+
+	if (!frm) {
+		var frm = document.getElementById('component-form');
+		component = true;
+	}
+
+	if (frm) {
+		if (task == 'cancel') {
+			Hubzero.submitform(task, frm);
+			return;
+		}
+
+		var query = {};
+		query = Conditions.getCondition('.query > fieldset');
+		$('#field-conditions').val(JSON.stringify(query));
+
+		if (!component) {
+			Hubzero.submitform(task, frm);
+		}
+	}
+}
+
+jQuery(document).ready(function($){
+	var cdata = $('#conditions-data');
+
+	if (cdata.length) {
+		var data = JSON.parse(cdata.html());
+
+		Conditions.option = data.conditions;
+	}
+
+	Conditions.addqueryroot('.query', true);
+
+	$('#btn-apply').on('click', function (e){
+		var query = {};
+
+		if (!$('#field-title').val()) {
+			alert($(this).attr('data-invalid'));
+			return false;
+		}
+
+		query = Conditions.getCondition('.query > fieldset');
+		$('#field-conditions').val(JSON.stringify(query));
+
+		$.post($(this).attr('data-action'), $("#component-form").serialize(), function(data){
+			window.parent.document.getElementById('query-list').innerHTML = data;
+			window.parent.applySortable();
+			window.top.setTimeout('window.parent.$.fancybox.close()', 700);
+		});
+	});
+
+	$('#btn-cancel').on('click', function(e){
+		window.parent.$.fancybox.close();
+	});
+});

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -17,7 +22,7 @@ class Migration20131112130740ComUsage extends Base
 	{
 		// Get stats DB object
 		$config     = $this->getParams('com_usage');
-		$siteConfig = \JFactory::getConfig();
+		$siteConfig = \App::get('config');
 
 		$options['driver']   = $config->get('statsDBDriver');
 		$options['host']     = $config->get('statsDBHost');
@@ -51,7 +56,7 @@ class Migration20131112130740ComUsage extends Base
 
 		try
 		{
-			$statsDb = \JDatabase::getInstance($options);
+			$statsDb = \Hubzero\Database\Driver::getInstance($options);
 		}
 		catch (Exception $e)
 		{

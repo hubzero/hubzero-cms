@@ -1,34 +1,12 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
+
+use \Components\Citations\Models\Citation;
+use \Components\Citations\Models\Association;
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -408,10 +386,11 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 */
 	public function attachCitation($pid = 0, $doi = null, $format = 'apa', $actor = 0, $returnStatus = false)
 	{
-		include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
-		include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
+		$componentPath = \Component::path('com_citations');
+		include_once "$componentPath/models/citation.php";
+		include_once "$componentPath/helpers/format.php";
 
-		$out = array('error' => null, 'success' => null);
+		$out = ['error' => null, 'success' => null];
 
 		if (!$doi || !$pid)
 		{
@@ -425,18 +404,19 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$query = \Components\Citations\Models\Citation::all();
+		$query = Association::all();
 
-		$c = $query->getTableName();
-		$a = \Components\Citations\Models\Association::blank()->getTableName();
+		$citationAssociationsTable = $query->getTableName();
+		$citationsTable = Citation::blank()->getTableName();
 
-		$citation = $query
-			->join($a, $a . '.cid', $c . '.id', 'inner')
-			->whereEquals($a . '.tbl', 'publication')
-			->whereEquals($c . '.doi', $doi)
+		$citationAssociation = $query
+			->join($citationsTable, $citationsTable. '.id', $citationAssociationsTable. '.cid', 'inner')
+			->whereEquals($citationAssociationsTable . '.tbl', 'publication')
+			->whereEquals($citationsTable . '.doi', $doi)
+			->whereEquals($citationAssociationsTable . '.oid', $pid)
 			->row();
 
-		if ($citation->get('id'))
+		if (!$citationAssociation->isNew())
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_LINKS_CITATION_ALREADY_ATTACHED'));
 
@@ -468,7 +448,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			}
 			elseif (isset($output->preview) && $output->preview)
 			{
-				$citation = \Components\Citations\Models\Citation::all()
+				$citation = Citation::all()
 					->whereEquals('doi', $doi)
 					->row();
 
@@ -1094,7 +1074,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$format = in_array($format, array('apa', 'ieee')) ? $format : 'apa';
 
 		$ch  = curl_init();
-		$url = 'http://dx.doi.org/doi:' . $doi;
+		$url = 'https://doi.org/doi:' . $doi;
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
@@ -1219,7 +1199,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			}
 
 			// More custom parsing
-			if (isset($metadata['container-title']))
+			if (isset($metadata['container-title']) && is_string($metadata['container-title']))
 			{
 				$data->journal = $metadata['container-title'];
 			}

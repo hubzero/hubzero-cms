@@ -1,25 +1,7 @@
 /**
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 //-----------------------------------------------------------
@@ -42,10 +24,10 @@ HUB.ProjectSetup = {
 
 	initialize: function()
 	{
-		var $ 				= this.jQuery;
-		var hubfrm 			= $('#hubForm');
-		var next_desc		= $('#next_desc');
-		var next_step		= $('#next_step');
+		var $ = this.jQuery;
+		var hubfrm = $('#hubForm');
+		var next_desc = $('#next_desc');
+		var next_step = $('#next_step');
 
 		// Setup
 		var rest  = $('.restricted-opt');
@@ -96,13 +78,29 @@ HUB.ProjectSetup = {
 			}
 		}
 
+		$('[name=grant_info]').on('change', function(e){
+			$('#grant_info_block').toggleClass('hidden');
+		});
+
+		$('#field-access').on('change', function(e){
+			var fieldset = $('#access-public');
+
+			if (parseInt($(this).val()) == 5) {
+				if (!fieldset.hasClass('hidden')) {
+					fieldset.addClass('hidden');
+				}
+			} else if (fieldset.hasClass('hidden')) {
+				fieldset.removeClass('hidden');
+			}
+		});
+
 		// Setup pre-screen
 		if ($('#f-restricted-no').length && $('#f-restricted-explain').length)
 		{
 			$('#f-restricted-no').on('click', function(e) {
 				$('#f-restricted-explain').addClass('hidden');
 			});
-			if ($('#f-restricted-no').attr('checked') == 'checked')
+			if ($('#f-restricted-no').prop('checked'))
 			{
 				$('#f-restricted-explain').addClass('hidden');
 			}
@@ -163,9 +161,9 @@ HUB.ProjectSetup = {
 						var key = eventInstance.keyCode || eventInstance.which;
 
 						// Disallow spaces
-						if (key == 32 )
+						if (key == 32)
 						{
-						  	eventInstance.preventDefault();
+							eventInstance.preventDefault();
 						}
 					}
 				});
@@ -194,8 +192,7 @@ HUB.ProjectSetup = {
 						if (id == 'field-alias')
 						{
 							// Via AJAX
-							url = '/projects/verify/?no_html=1&ajax=1&text='
-							+ $(item).val() + '&pid=' + $('#pid').val();
+							url = $(item).attr('data-verify') + $(item).val() + '&pid=' + $('#pid').val();
 							$.post(url, {},
 								function (response) {
 
@@ -233,12 +230,14 @@ HUB.ProjectSetup = {
 
 	suggestAlias: function()
 	{
-		if ($('#field-alias').length && $('#field-alias').val() == ''
+		var alias = $('#field-alias');
+
+		if (alias.length && alias.val() == ''
 		&& $('#field-title').length && $('#field-title').val().length > 15)
 		{
-			var output = $('#field-alias').parent().find('.verification')[0];
+			var output = alias.parent().find('.verification')[0];
 			// Via AJAX
-			url = '/projects/suggestalias/?no_html=1&ajax=1&text=' + escape($('#field-title').val());
+			url = alias.attr('data-suggest') + escape($('#field-title').val());
 			$.post(url, {},
 				function (response) {
 					if (response)
@@ -404,27 +403,27 @@ HUB.ProjectSetup = {
 		var con = $('#btn-finalize');
 		var passed = 1;
 
-		if($('#export') && $('#export').attr('checked') == 'checked')
+		if ($('#export') && $('#export').prop('checked'))
 		{
 			passed = 0;
 		}
-		if($('#hipaa') && $('#hipaa').attr('checked') == 'checked')
+		if ($('#hipaa') && $('#hipaa').prop('checked'))
 		{
 			passed = 0;
 		}
-		if($('#irb') && $('#irb').attr('checked') == 'checked' && $('#agree_irb').attr('checked') != 'checked' )
+		if ($('#irb') && $('#irb').prop('checked') && !$('#agree_irb').prop('checked'))
 		{
 			passed = 0;
 		}
-		if($('#ferpa') && $('#ferpa').attr('checked') == 'checked' && $('#agree_ferpa').attr('checked') != 'checked' )
+		if ($('#ferpa') && $('#ferpa').prop('checked') && !$('#agree_ferpa').prop('checked'))
 		{
 			passed = 0;
 		}
 
-		if(passed == 1 && con.hasClass('disabled')) {
+		if (passed == 1 && con.hasClass('disabled')) {
 			con.removeClass('disabled');
 		}
-		if(passed == 0 && !con.hasClass('disabled')) {
+		if (passed == 0 && !con.hasClass('disabled')) {
 			con.addClass('disabled');
 		}
 
@@ -446,7 +445,7 @@ HUB.ProjectSetup = {
 		var oid = $(el).attr('id');
 		var obox = '#stop-' + oid;
 
-		if($(el).attr('checked') == 'checked' && $(obox).hasClass('hidden'))
+		if($(el).prop('checked') && $(obox).hasClass('hidden'))
 		{
 			$(obox).removeClass('hidden');
 		}

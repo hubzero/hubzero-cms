@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -188,7 +163,6 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		$this->js('handlebars', 'system');
 		$this->css('contentbox.css', 'system');
 		$this->js('contentbox', 'system');
-		$this->js('jquery.uniform.min', 'system');
 
 		// Set the layout
 		$this->view->setLayout($layout);
@@ -247,6 +221,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($members as $m)
 			{
+				$lst = User::getInstance($m->get('user_id'))->get('lastvisitDate');
 				$member_ids[] = $m->get('id');
 				$mems[] = array(
 					'id'        => $m->get('id'),
@@ -254,11 +229,11 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 					'name'      => User::getInstance($m->get('user_id'))->get('name'),
 					'thumb'     => ltrim(User::getInstance($m->get('user_id'))->picture(0, true), DS),
 					'full'      => ltrim(User::getInstance($m->get('user_id'))->picture(0, false), DS),
-					'enrolled'  => (($m->get('enrolled') != '0000-00-00 00:00:00')
+					'enrolled'  => (($m->get('enrolled') && $m->get('enrolled') != '0000-00-00 00:00:00')
 										? Date::of($m->get('enrolled'))->format('M j, Y')
 										: 'unknown'),
-					'lastvisit' => ((User::getInstance($m->get('user_id'))->get('lastvisitDate') != '0000-00-00 00:00:00')
-										? Date::of(User::getInstance($m->get('user_id'))->get('lastvisitDate'))->format('M j, Y')
+					'lastvisit' => (($lst && $lst != '0000-00-00 00:00:00')
+										? Date::of($lst)->format('M j, Y')
 										: 'never')
 				);
 			}

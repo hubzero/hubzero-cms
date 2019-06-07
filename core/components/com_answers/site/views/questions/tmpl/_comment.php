@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -72,7 +47,7 @@ if (!$this->comment->get('item_id'))
 			<p class="comment-title">
 				<strong>
 					<?php
-					$name = Lang::txt('COM_ANSWERS_ANONYMOUS');
+					$name = Lang::txt('JANONYMOUS');
 					if (!$this->comment->get('anonymous'))
 					{
 						$name = $this->escape(stripslashes($this->comment->creator->get('name', $name)));
@@ -109,23 +84,23 @@ if (!$this->comment->get('item_id'))
 			<?php /*if ($this->config->get('access-edit-thread')) { // || User::get('id') == $this->comment->created_by ?>
 				<?php if ($this->config->get('access-delete-thread')) { ?>
 					<a class="icon-delete delete" href="<?php echo Route::url($this->base . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!--
-						--><?php echo Lang::txt('COM_ANSWERS_DELETE'); ?><!--
+						--><?php echo Lang::txt('JACTION_DELETE'); ?><!--
 					--></a>
 				<?php } ?>
 				<?php if ($this->config->get('access-edit-thread')) { ?>
 					<a class="icon-edit edit" href="<?php echo Route::url($this->base . '&action=edit&comment=' . $this->comment->get('id')); ?>"><!--
-						--><?php echo Lang::txt('COM_ANSWERS_EDIT'); ?><!--
+						--><?php echo Lang::txt('JACTION_EDIT'); ?><!--
 					--></a>
 				<?php } ?>
 			<?php }*/ ?>
 			<?php if (!$this->comment->isReported()) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 					<?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
-					<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('COM_ANSWERS_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_ANSWERS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->depth . $this->comment->get('item_type') . $this->comment->get('id'); ?>"><!--
-					--><?php echo Lang::txt('COM_ANSWERS_CANCEL'); ?><!--
+					<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_ANSWERS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->depth . $this->comment->get('item_type') . $this->comment->get('id'); ?>"><!--
+					--><?php echo Lang::txt('JCANCEL'); ?><!--
 				--></a>
 					<?php } else { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('COM_ANSWERS_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_ANSWERS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->depth . $this->comment->get('item_type') . $this->comment->get('id'); ?>"><!--
+					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_ANSWERS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->depth . $this->comment->get('item_type') . $this->comment->get('id'); ?>"><!--
 					--><?php echo Lang::txt('COM_ANSWERS_REPLY'); ?><!--
 				--></a>
 					<?php } ?>
@@ -148,12 +123,12 @@ if (!$this->comment->get('item_id'))
 				<?php } else { ?>
 				<form id="cform<?php echo $this->depth . $this->comment->get('item_type') . $this->comment->get('id'); ?>" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
 					<fieldset>
-						<legend><span><?php echo Lang::txt('COM_ANSWERS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('COM_ANSWERS_ANONYMOUS'))); ?></span></legend>
+						<legend><span><?php echo Lang::txt('COM_ANSWERS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="comment[id]" value="0" />
 						<input type="hidden" name="comment[item_type]" value="<?php echo $this->comment->get('item_type', 'response'); ?>" />
 						<input type="hidden" name="comment[item_id]" value="<?php echo $this->comment->get('item_id'); ?>" />
-						<input type="hidden" name="comment[parent]" value="<?php echo ($this->depth == 1 ? 0 : $this->comment->get('id')); ?>" />
+						<input type="hidden" name="comment[parent]" value="<?php echo ($this->depth == 1) ? 0 : $this->comment->get('id'); ?>" />
 						<input type="hidden" name="comment[created]" value="" />
 						<input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
 						<input type="hidden" name="comment[state]" value="1" />
@@ -164,20 +139,24 @@ if (!$this->comment->get('item_id'))
 
 						<?php echo Html::input('token'); ?>
 
-						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
-							<span class="label-text"><?php echo Lang::txt('COM_ANSWERS_ENTER_COMMENTS'); ?></span>
-							<?php
-							echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
-							?>
-						</label>
+						<div class="form-group">
+							<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
+								<span class="label-text"><?php echo Lang::txt('COM_ANSWERS_ENTER_COMMENTS'); ?></span>
+								<?php
+								echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'form-control minimal no-footer'));
+								?>
+							</label>
+						</div>
 
-						<label class="comment-anonymous-label" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
-							<input class="option" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" />
-							<?php echo Lang::txt('COM_ANSWERS_POST_COMMENT_ANONYMOUSLY'); ?>
-						</label>
+						<div class="form-group">
+							<label class="comment-anonymous-label" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
+								<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" />
+								<?php echo Lang::txt('COM_ANSWERS_POST_COMMENT_ANONYMOUSLY'); ?>
+							</label>
+						</div>
 
 						<p class="submit">
-							<input type="submit" value="<?php echo Lang::txt('COM_ANSWERS_SUBMIT'); ?>" />
+							<input type="submit" class="btn" value="<?php echo Lang::txt('COM_ANSWERS_SUBMIT'); ?>" />
 						</p>
 					</fieldset>
 				</form>

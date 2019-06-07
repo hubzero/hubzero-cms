@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Wiki\Site\Controllers;
@@ -469,4 +444,75 @@ class History extends SiteController
 			Route::url($this->page->link())
 		);
 	}
+
+	/**
+	 * Set the current revision of a wiki page
+	 * 
+	 * @return void
+	 */
+	public function setcurrentrevisionTask()
+	{
+		// Check if they are logged in
+		if (User::isGuest())
+		{
+			$url = Request::getString('REQUEST_URI', '', 'server');
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
+			);
+		}
+
+		// Incoming
+		$newversion_id = trim(Request::getString('version_id', ''));
+		$newversion = Version::oneOrFail($newversion_id);
+		if ($this->page->get('id') != $newversion->get('page_id'))
+		{
+			$this->setError(Lang::txt('COM_WIKI_ERROR_PAGE_NOT_FOUND'));
+			return $this->displayTask();
+
+		}
+
+		$this->page->set('version_id', $newversion_id);
+
+		if (!$this->page->save())
+		{
+			$this->setError($this->page->getError());
+			return $this->displayTask();
+		}
+		$this->page->log('page_version_changed');
+
+		Event::trigger('wiki.onWikiAfterSave', array(&$this->page, false));
+
+		// Log activity
+		$recipients = array(
+			['wiki.site', 1],
+			['user', $this->page->get('created_by')],
+			['user', $this->page->version->get('created_by')],
+			['user', $newversion->get('created_by')]
+		);
+		if ($this->page->get('scope') != 'site')
+		{
+			$recipients[]  = [$this->page->get('scope'), $this->page->get('scope_id')];
+			$recipients[0] = ['wiki.' . $this->page->get('scope'), $this->page->get('scope_id')];
+		}
+
+		Event::trigger('system.logActivity', [
+			'activity' => [
+				'action'      => ($this->page['id'] ? 'updated' : 'created'),
+				'scope'       => 'wiki.page',
+				'scope_id'    => $this->page->get('id'),
+				'description' => Lang::txt('COM_WIKI_ACTIVITY_PAGE_UPDATED', '<a href="' . Route::url($this->page->link()) . '">' . $this->page->title . '</a>'),
+				'details'     => array(
+					'title'    => $this->page->title,
+					'url'      => Route::url($this->page->link()),
+					'name'     => $this->page->get('pagename'),
+					'oldrevision' => $this->page->version->get('id'),
+					'newrevision' => $this->page->get('version_id')
+				)
+			],
+			'recipients' => $recipients
+		]);
+		App::redirect($this->page->link('history'));
+	}
+
+
 }

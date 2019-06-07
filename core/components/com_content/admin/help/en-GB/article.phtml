@@ -1,3 +1,10 @@
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+?>
 <article>
 	<h1><span>Article Manager: Edit Article</span></h1>
 
@@ -11,7 +18,7 @@
 	<section id="overview">
 		<h2> <span class="mw-headline" id="Description">Description</span></h2>
 		<p>This is the back-end screen where you can add and edit Articles. The same screen is used for adding a new Article and editing an existing Article. You can also select the Section and Category for an Article and indicate whether or not it is Published and if it is selected to appear on the Front Page.</p>
-		<p>The Article's content is edited using the default editor selected in the <a href="<?php echo Route::url('index.php?option=com_help&component=com_users&page=user'); ?>" class="mw-redirect">User Manager - New/Edit</a>. The default editor is called CKEditor.</p>
+		<p>The Article's content is edited using the default editor selected in the <a href="<?php echo Route::url('index.php?option=com_help&component=com_members'); ?>" class="mw-redirect">User Manager - New/Edit</a>. The default editor is called CKEditor.</p>
 		<p>A number of Parameters can be set for the Article. Metadata can also be entered.</p>
 	</section>
 	<section id="column-headers">
@@ -30,7 +37,7 @@
 					<li><i>Trashed:</i> Item is deleted from the site but still in the database. It can be permanently deleted from the database with the Empty Trash function in Article Manager.</li>
 				</ul>
 			</li>
-			<li><b>Access.</b> Select the viewing access level for this item from the list box. The access levels that display will depend on the what has been set up for this site in <a href="<?php echo Route::url('index.php?option=com_help&component=com_users&page=access_levels'); ?>">Users→Access Levels</a>. Note that access levels are separate from ACL permissions. Access levels control what a user can see. ACL permissions control what actions a user can perform.</li>
+			<li><b>Access.</b> Select the viewing access level for this item from the list box. The access levels that display will depend on the what has been set up for this site in <a href="<?php echo Route::url('index.php?option=com_help&component=com_members&page=access_levels'); ?>">Users→Access Levels</a>. Note that access levels are separate from ACL permissions. Access levels control what a user can see. ACL permissions control what actions a user can perform.</li>
 			<li><b>Permissions.</b> Click the Set Permissions button to navigate to the bottom of the screen, where you can set ACL permissions for this article. See <a href="#Article_Permissions">Article Permissions</a>.</li>
 			<li><b>Featured.</b> Yes/No. Select Yes if item will be shown in the Featured menu item. Select No otherwise.</li>
 			<li><b>Language.</b> Select the language for this item. If you are not using the multi-language feature, keep the default of 'All'.</li>

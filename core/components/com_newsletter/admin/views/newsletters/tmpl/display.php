@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -73,29 +48,6 @@ Html::behavior('modal');
 $this->js();
 ?>
 
-<script type="text/javascript">
-
-Joomla.submitbutton = function(pressbutton)
-{
-	if (pressbutton == 'preview')
-	{
-		var id = '',
-			ids = document.getElementsByName('id[]');
-		for (var i=0; i< ids.length;i++)
-		{
-			if (id == '' && ids[i].type == 'checkbox' && ids[i].checked)
-			{
-				id = parseInt(ids[i].value);
-			}
-		}
-
-		HUB.Administrator.Newsletter.newsletterPreview( id );
-		return;
-	}
-	submitform( pressbutton );
-}
-</script>
-
 <?php
 
 	if ($this->getError())
@@ -114,13 +66,13 @@ Joomla.submitbutton = function(pressbutton)
 		<div class="grid">
 			<div class="col span4">
 				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_NEWSLETTER_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+				<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_NEWSLETTER_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
 				<input type="submit" value="<?php echo Lang::txt('COM_NEWSLETTER_GO'); ?>" />
-				<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span8 align-right">
-				<select name="type" id="filter-type" onchange="this.form.submit();">
+				<select name="type" id="filter-type" class="filter filter-submit">
 					<option value=""<?php if ($this->filters['type'] === '') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_NEWSLETTER_ALL_TYPES'); ?></option>
 					<option value="html"<?php if ($this->filters['type'] === 'html') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_NEWSLETTER_TYPE_HTML'); ?></option>
 					<option value="plain"<?php if ($this->filters['type'] === 'plain') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_NEWSLETTER_TYPE_PLAIN'); ?></option>
@@ -131,7 +83,7 @@ Joomla.submitbutton = function(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_FORMAT', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_TEMPLATE', 'template_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -155,7 +107,7 @@ Joomla.submitbutton = function(pressbutton)
 				<?php foreach ($this->rows as $newsletter) { ?>
 					<tr>
 						<td>
-							<input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $newsletter->id; ?>" onclick="Joomla.isChecked(this.checked);" />
+							<input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $newsletter->id; ?>" class="checkbox-toggle" />
 						</td>
 						<td>
 							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $newsletter->id); ?>">
@@ -212,7 +164,7 @@ Joomla.submitbutton = function(pressbutton)
 				<tr>
 					<td colspan="7">
 						<?php echo Lang::txt('COM_NEWSLETTER_NO_NEWSLETTER'); ?>
-						<a onclick="javascript:submitbutton('add');" href="#"><?php echo Lang::txt('COM_NEWSLETTER_CREATE_NEWSLETTER'); ?></a>
+						<button id="add-newsletter"><?php echo Lang::txt('COM_NEWSLETTER_CREATE_NEWSLETTER'); ?></button>
 					</td>
 				</tr>
 			<?php } ?>

@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_publications/site/assets/css/publications.css
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 /*
@@ -45,8 +44,9 @@
 		color: #fff;
 	}
 	.com_publications .upperpane {
-		padding: 0;
-		background: transparent;
+		/*padding: 0;
+		background: transparent;*/
+		background: #fff;
 	}
 	.com_publications section.section .subject+.rankarea {
 		border: none;
@@ -54,11 +54,12 @@
 		padding: 0;
 	}
 	.com_publications .license {
-		color: #f1f1f1;
-		color: rgba(255, 255, 255, 0.75);
+		/*color: #f1f1f1;
+		color: rgba(255, 255, 255, 0.75);*/
+		color: #999;
 	}
 
-/* Resource page */
+/* Resource page
 	.com_resources #content-header .metadata {
 		border: 1px solid #fff;
 		border: 1px solid rgba(255, 255, 255, 0.5);
@@ -67,7 +68,7 @@
 	}
 	.com_resources #content-header .upperpane h2 {
 		padding: 0 0 0.5em 0;
-	}
+	} */
 
 /* Item listing */
 	.com_publications .container .container-block {
@@ -416,10 +417,11 @@
 		border:1px solid #c3b59c;
 		padding:0.5em;
 	}
-	.pubdate, .pubinfo {
+	.pubdate,
+	.pubinfo {
 		font-size: 85%;
 		color: #999;
-		color: rgba(255, 255, 255, 0.75);
+		/*color: rgba(255, 255, 255, 0.75);*/
 	}
 
 /* Supporting docs (on main publication page) */

@@ -1,36 +1,15 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
 
 $this->css();
 $this->js();
@@ -82,7 +61,7 @@ $canedit = 1;
 $now     = Date::toSql();
 $status  = $this->model->getStatusName();
 
-$rating = $this->model->get('master_rating') == 9.9 ? 0.0 : $this->model->get('master_rating') ;
+$rating = $this->model->get('master_rating') == 9.9 ? 0.0 : $this->model->get('master_rating');
 $params = $this->model->params;
 
 // Available panels and default config
@@ -100,83 +79,14 @@ $panels = array(
 
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-
-	if (pressbutton == 'resetrating') {
-		if (confirm('<?php echo Lang::txt('COM_PUBLICATIONS_CONFIRM_RATINGS_RESET'); ?>')) {
-			submitform(pressbutton);
-			return;
-		} else {
-			return;
-		}
-	}
-
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-
-	if (pressbutton == 'saveorder') {
-		submitform( 'saveauthororder' );
-		return;
-	}
-
-	if (pressbutton == 'publish') {
-		form.admin_action.value = 'publish';
-		submitform( 'save' );
-		return;
-	}
-
-	if (pressbutton == 'revert') {
-		form.admin_action.value = 'revert';
-		submitform( 'save' );
-		return;
-	}
-
-	if (pressbutton == 'message') {
-		form.admin_action.value = 'message';
-		submitform( 'save' );
-		return;
-	}
-
-	if (pressbutton == 'unpublish') {
-		form.admin_action.value = 'unpublish';
-		submitform( 'save' );
-		return;
-	}
-
-	if (pressbutton == 'republish') {
-		form.admin_action.value = 'republish';
-		submitform( 'save' );
-		return;
-	}
-
-	// do field validation
-	if (form.title.value == '') {
-		alert('<?php echo Lang::txt('COM_PUBLICATIONS_ERROR_MISSING_TITLE'); ?>');
-	}
-	else {
-		submitform( pressbutton );
-	}
-}
-
-function popratings()
-{
-	window.open("<?php echo Route::url('index.php?option=' . $this->option . '&task=ratings&id=' . $this->model->id . '&no_html=1'); ?>", 'ratings', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=400,height=480,directories=no,location=no');
-	return false;
-}
-</script>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform" data-confirmreset="<?php echo Lang::txt('COM_PUBLICATIONS_CONFIRM_RATINGS_RESET'); ?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 				<div class="input-wrap">
 					<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="title" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->model->get('title'))); ?>" />
+					<input type="text" name="title" id="field-title" maxlength="250" class="required" value="<?php echo $this->escape(stripslashes($this->model->get('title'))); ?>" />
 				</div>
 				<div class="input-wrap">
 					<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CATEGORY'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
@@ -300,15 +210,15 @@ function popratings()
 							<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_RANKING'); ?>:</th>
 							<td><?php echo $this->model->get('master_ranking'); ?>/10
 								<?php if ($this->model->get('master_ranking') != '0') { ?>
-									<input type="button" name="reset_ranking" id="reset_ranking" value="Reset ranking" onclick="submitbutton('resetranking');" />
+									<input type="button" name="reset_ranking" id="reset_ranking" value="<?php echo Lang::txt('Reset ranking'); ?>" />
 								<?php } ?>
 							</td>
 						</tr>
 						<tr>
 							<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_RATING'); ?>:</th>
 							<td><?php echo $rating . '/5.0 (' . $this->model->get('master_times_rated') . ' reviews)'; ?>
-							<?php if ( $rating != '0.0' ) { ?>
-								<input type="button" name="reset_rating" id="reset_rating" value="Reset rating" onclick="submitbutton('resetrating');" />
+							<?php if ($rating != '0.0') { ?>
+								<input type="button" name="reset_rating" id="reset_rating" value="<?php echo Lang::txt('Reset rating'); ?>" />
 							<?php } ?>
 							</td>
 						</tr>
@@ -320,13 +230,13 @@ function popratings()
 				<table>
 					<tbody>
 						<tr>
-							<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_VERSION_ID'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_VERSION_ID'); ?></th>
 							<td>
 								<?php echo $this->model->get('version_id'); ?>
 							</td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_VERSION'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_VERSION'); ?></th>
 							<td>
 								<input type="text" name="version_label" id="field-version_label" maxlength="250" size="10" value="<?php echo $this->escape($this->model->get('version_label')); ?>" />
 								<?php echo ' (' . $status . ')'; ?>
@@ -334,14 +244,14 @@ function popratings()
 						</tr>
 						<tr>
 							<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_URL'); ?></th>
-							<td><a href="<?php echo trim($site, DS) . DS . 'publications' . DS . $this->model->get('id') . DS . $this->model->get('version_number'); ?>" target="_blank"><?php echo trim($site, DS) . DS . 'publications' . DS . $this->model->get('id') . DS . $this->model->get('version_number'); ?></a></td>
+							<td><a href="<?php echo trim($site, '/') . '/publications/' . $this->model->get('id') . '/' . $this->model->get('version_number'); ?>"><?php echo trim($site, '/') . '/publications/' . $this->model->get('id') . '/' . $this->model->get('version_number'); ?></a></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_MODIFIED'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_MODIFIED'); ?></th>
 							<td><?php echo $this->model->modified('date'); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_MODIFIED_BY'); ?></th>
+							<th scope="row"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_MODIFIED_BY'); ?></th>
 							<td><?php echo $this->model->modifier()->get('name', Lang::txt('(unknown)')); ?></td>
 						</tr>
 					</tbody>
@@ -394,7 +304,7 @@ function popratings()
 				<?php endif; ?>
 				<div class="input-wrap">
 					<label for="publish_up"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_PUBLISH_DATE'); ?>:</label><br />
-					<?php echo Html::input('calendar', 'published_up', ($this->model->version->published_up != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->model->version->published_up)->toLocal('Y-m-d H:i:s')) : '')); ?>
+					<?php echo Html::input('calendar', 'published_up', ($this->model->version->published_up && $this->model->version->published_up != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->model->version->published_up)->toLocal('Y-m-d H:i:s')) : '')); ?>
 				</div>
 				<div class="input-wrap">
 					<label for="publish_down"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_UNPUBLISH_DATE'); ?>:</label><br />
@@ -402,8 +312,9 @@ function popratings()
 						$down = 'Never';
 						if (strtolower($this->model->version->published_down) != Lang::txt('COM_PUBLICATIONS_NEVER'))
 						{
-							$down = $this->model->version->published_down != '0000-00-00 00:00:00'
-								? Date::of($this->model->version->published_down)->toLocal('Y-m-d H:i:s') : NULL;
+							$down = $this->model->version->published_down && $this->model->version->published_down != '0000-00-00 00:00:00'
+								? Date::of($this->model->version->published_down)->toLocal('Y-m-d H:i:s')
+								: null;
 						}
 					?>
 					<?php echo Html::input('calendar', 'published_down', $down); ?>
@@ -459,15 +370,15 @@ function popratings()
 				<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_MANAGEMENT_OPTIONS'); ?></span></legend>
 				<div class="input-wrap">
 					<textarea name="message" id="message" rows="5" cols="50"></textarea>
-					<input type="hidden" name="admin_action" value="" />
-					<input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_SEND_MESSAGE'); ?>" class="btn" id="do-message" onclick="submitbutton('message')" />
+					<input type="hidden" name="admin_action" id="admin_action" value="" />
+					<input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_SEND_MESSAGE'); ?>" class="btn" id="do-message" />
 					<?php if ($this->model->isPublished()) { ?>
-						<input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_UNPUBLISH_VERSION'); ?>" class="btn" id="do-unpublish" onclick="submitbutton('unpublish')" />
+						<input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_UNPUBLISH_VERSION'); ?>" class="btn" id="do-unpublish" />
 					<?php } else if ($this->model->isUnpublished()) { ?>
-						<input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_REPUBLISH_VERSION'); ?>" class="btn" id="do-republish" onclick="submitbutton('republish')" />
+						<input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_REPUBLISH_VERSION'); ?>" class="btn" id="do-republish" />
 					<?php } else if ($this->model->isPending()) { ?>
-						<input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_APPROVE_AND_PUBLISH'); ?>" class="btn" id="do-publish" onclick="submitbutton('publish')" />
-						<input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_REVERT_TO_DRAFT'); ?>" class="btn" id="do-revert" onclick="submitbutton('revert')" />
+						<input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_APPROVE_AND_PUBLISH'); ?>" class="btn" id="do-publish" />
+						<input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_REVERT_TO_DRAFT'); ?>" class="btn" id="do-revert" />
 					<?php } ?>
 				</div>
 			</fieldset>

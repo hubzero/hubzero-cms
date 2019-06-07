@@ -1,9 +1,8 @@
-//
-// @package     hubzero-cms
-// @file        templates/kameleon/less/index.less
-// @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
-// @license     http://opensource.org/licenses/MIT MIT
-//
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 // Core variables and mixins
 @import "_variables.less";
@@ -13,12 +12,13 @@
 @import "_reset.less";
 
 // Fonts
-@import "_fonts.less"; // Fontcons defines available icons
+@import "_fonts.less";
+@import "../../../../core/assets/less/fontcons.less"; // Fontcons defines available icons
+@import "../../../../core/assets/less/icons.less"; // !! Dependant upon Fontcons.less
 
 // Grid system and page structure
 @import "_grid.less";
 @import "_forms.less";
-//@import "_uniform.less";
 
 html {
 	min-height: 100%;
@@ -523,6 +523,8 @@ ul {
 
 // Utility classes
 @import "_utilities.less"; // Has to be last to override when necessary
+@import "_rtl.less";
 
 // Dark header
 @import "_dark.less";
+@import "_themes.less";

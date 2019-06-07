@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -34,7 +10,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Resources\Helpers\Permissions::getActions('resource');
 
-$text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') . ' #' . $this->row->id : Lang::txt('JACTION_CREATE'));
+$text = ($this->row->id ? Lang::txt('JACTION_EDIT') . ' #' . $this->row->id : Lang::txt('JACTION_CREATE'));
 
 Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . $text, 'resources');
 if ($canDo->get('core.edit'))
@@ -50,7 +26,8 @@ if ($this->row->standalone == 1)
 
 	$type = $this->row->type;
 
-	$data = $this->row->fields(); /*array();
+	//$data = $this->row->fields();
+	$data = array();
 	preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->row->fulltxt, $matches, PREG_SET_ORDER);
 	if (count($matches) > 0)
 	{
@@ -61,7 +38,7 @@ if ($this->row->standalone == 1)
 	}
 	$this->row->fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->row->fulltxt);
 	$this->row->fulltxt = trim($this->row->fulltxt);
-	$this->row->fulltxt = ($this->row->fulltxt) ? trim(stripslashes($this->row->fulltxt)): trim(stripslashes($this->row->introtext));*/
+	$this->row->fulltxt = ($this->row->fulltxt) ? trim(stripslashes($this->row->fulltxt)): trim(stripslashes($this->row->introtext));
 }
 
 // Build the path for uploading files
@@ -111,11 +88,30 @@ $this->view('_edit_script')
 		<?php if ($this->row->standalone == 1 && !$this->row->type->isForTools()) { ?>
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('Custom fields'); ?></span></legend>
-				<div class="input-wrap" id="resource-custom-fields">
+				<div id="resource-custom-fields">
 					<?php
 					include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
-					$elements = new \Components\Resources\Models\Elements($data, $type->customFields);
-					echo $elements->render();
+					$elements = new Components\Resources\Models\Elements($data, $type->customFields);
+
+					$fields = $elements->getElements('nbtag');
+
+					if ($fields && count($fields) > 0)
+					{
+						foreach ($fields as $field)
+						{
+							?>
+							<div class="input-wrap">
+								<?php
+								if ($field->label)
+								{
+									echo $field->label;
+								}
+								echo $field->element;
+								?>
+							</div>
+							<?php
+						}
+					}
 					?>
 				</div>
 			</fieldset>
@@ -142,7 +138,7 @@ $this->view('_edit_script')
 							<input type="hidden" name="created_by_id" value="<?php echo $this->row->created_by; ?>" />
 						</td>
 					</tr>
-				<?php if ($this->row->modified != '0000-00-00 00:00:00') { ?>
+				<?php if ($this->row->modified && $this->row->modified != '0000-00-00 00:00:00') { ?>
 					<tr>
 						<th><?php echo Lang::txt('COM_RESOURCES_FIELD_MODIFIED'); ?></th>
 						<td>
@@ -163,7 +159,7 @@ $this->view('_edit_script')
 						<td>
 							<?php echo $this->row->ranking; ?>/10
 							<?php if ($this->row->ranking != '0') { ?>
-								<input type="button" name="reset_ranking" id="reset_ranking" value="Reset ranking" onclick="submitbutton('resetranking');" />
+								<input type="button" name="reset_ranking" id="reset_ranking" value="Reset ranking" data-task="resetranking" />
 							<?php } ?>
 						</td>
 					</tr>
@@ -172,8 +168,8 @@ $this->view('_edit_script')
 						<td>
 							<?php echo $this->row->rating . '/5.0 (' . $this->row->times_rated . ')'; ?>
 							<?php if ($this->row->rating != '0.0') { ?>
-								<input type="button" name="reset_rating" id="reset_rating" value="Reset rating" onclick="submitbutton('resetrating');" />
-								<a onclick="popratings();" href="#"><?php echo Lang::txt('COM_RESOURCES_VIEW'); ?></a>
+								<input type="button" name="reset_rating" id="reset_rating" value="Reset rating" data-task="resetrating" />
+								<a class="btn btn-ratings" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ratings&id=' . $this->row->id . '&no_html=1'); ?>"><?php echo Lang::txt('COM_RESOURCES_VIEW'); ?></a>
 							<?php } ?>
 						</td>
 					</tr>
@@ -183,7 +179,7 @@ $this->view('_edit_script')
 						<td>
 							<?php echo $this->row->hits; ?>
 							<?php if ($this->row->hits) { ?>
-								<input type="button" name="reset_hits" id="field-reset_hits" value="Reset Hit Count" onclick="submitbutton('resethits');" />
+								<input type="button" name="reset_hits" id="reset_hits" value="Reset Hit Count" data-task="resethits" />
 							<?php } ?>
 						</td>
 					</tr>
@@ -206,10 +202,8 @@ $this->view('_edit_script')
 			echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_PUBLISHING'), 'publish-page');
 		?>
 			<div class="paramlist">
-				<div class="input-wrap">
-					<input type="checkbox" name="fields[standalone]" id="field-standalone" value="1" <?php echo ($this->row->standalone == 1) ? 'checked="checked"' : ''; ?> />
-					<label for="field-standalone"><?php echo Lang::txt('COM_RESOURCES_FIELD_STANDALONE'); ?></label>
-				</div>
+				 <input type="hidden" name="fields[standalone]" id="field-standalone" value="<?php echo $this->row->standalone; ?>" />
+
 				<div class="input-wrap">
 					<label for="field-published"><?php echo Lang::txt('COM_RESOURCES_FIELD_STATUS'); ?>:</label><br />
 					<select name="fields[published]" id="field-published">
@@ -257,19 +251,26 @@ $this->view('_edit_script')
 		<?php
 			echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_FILES'), 'file-page');
 		?>
-			<p>
-				<label>
+			<div class="input-wrap">
+				<label for="fileoptions">
 					<?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED'); ?>:
-					<select name="fileoptions" id="fileoptions">
-						<option value="2"><?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_MAIN'); ?></option>
-						<option value="3"><?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_IMG'); ?></option>
-						<option value="4"><?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_LINKED'); ?></option>
-					</select>
 				</label>
-				<input type="button" value="<?php echo Lang::txt('COM_RESOURCES_APPLY'); ?>" onclick="doFileoptions();" />
-			</p>
-			<iframe width="100%" height="400" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&listdir=' . $path . DS . $dir_id); ?>"></iframe>
-			<input type="hidden" name="tmpid" value="<?php echo $dir_id; ?>" />
+				<div class="grid">
+					<div class="col span9">
+						<select name="fileoptions" id="fileoptions">
+							<option value="2"><?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_MAIN'); ?></option>
+							<option value="3"><?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_IMG'); ?></option>
+							<option value="4"><?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_LINKED'); ?></option>
+						</select>
+					</div>
+					<div class="col span3">
+						<input type="button" value="<?php echo Lang::txt('COM_RESOURCES_APPLY'); ?>" onclick="doFileoptions();" />
+					</div>
+				</div>
+
+				<iframe width="100%" height="400" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&listdir=' . $path . DS . $dir_id); ?>"></iframe>
+				<input type="hidden" name="tmpid" value="<?php echo $dir_id; ?>" />
+			</div>
 		<?php
 			if ($this->row->standalone == 1) {
 				echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_TAGS'), 'tags-page');

@@ -1,0 +1,108 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+/* Syntax highlighting */
+.script pre,
+.script .dp-highlighter {
+	margin: 0;
+	font-family: Monaco, Consolas, "Lucida Console", monospace;
+	padding: 1.61803399em;
+	font-size: 0.85em;
+	border: 0;
+	color: #666;
+	line-height: 1.9em;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	background: #fff; /*#f9f9f9;*/
+	border: 1px solid #e7e7e7;
+	-webkit-border-radius: 0.5em;
+	-moz-border-radius: 0.5em;
+	-ms-border-radius: 0.5em;
+	-o-border-radius: 0.5em;
+	border-radius: 0 0 0.5em 0.5em;
+}
+.script .dp-highlighter .tag {
+	background: transparent !important;
+	padding: 0 !important;
+	margin: 0 auto !important;
+	display: inline;
+	color: #069 !important;
+}
+
+/* clear styles */
+.script .dp-highlighter ol,
+.script .dp-highlighter ol li,
+.script .dp-highlighter ol li span {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+.script .dp-highlighter a,
+.script .dp-highlighter a:hover {
+	background: none;
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+.script .dp-highlighter ol {
+	list-style: decimal;
+	margin: 0px 0px 1px 45px !important;
+	padding: 0px;
+	color: #bbb;
+}
+.script .dp-highlighter.nogutter ol,
+.script .dp-highlighter.nogutter ol li {
+	list-style: none !important;
+	margin-left: 0px !important;
+}
+.script .dp-highlighter ol li,
+.script .dp-highlighter .columns div {
+	list-style: decimal-leading-zero;
+	list-style-position: outside !important;
+	padding: 0 3px 0 10px !important;
+	margin: 0 !important;
+}
+.script .dp-highlighter.nogutter ol li,
+.script .dp-highlighter.nogutter .columns div {
+	border: 0;
+}
+
+/* Language specific styles */
+.script .dp-highlighter ol,
+.script .dp-highlighter ol li,
+.script .dp-highlighter ol li.alt,
+.script .dp-highlighter ol li span,
+.script .dp-highlighter ol li.alt span, {
+	background-color: transparent;
+}
+.script .dp-highlighter span {
+	background-image: none;
+	color: #666;
+}
+.script .dp-highlighter .comment, 
+.script .dp-highlighter .comments {
+	color: #aaa;
+	background-color: inherit;
+}
+.script .dp-highlighter .string {
+	color: #bcd42a;
+	background-color: inherit;
+}
+.script .dp-highlighter .keyword {
+	color: #4bb1b1;
+	font-weight: normal;
+	background-color: inherit;
+}
+.script .dp-highlighter .preprocessor {
+	color: gray;
+	background-color: inherit;
+}
+.script .dp-highlighter .func {
+	color: #ef7c61;
+}
+.script .dp-highlighter .vars {
+	color: #9b859d;
+}

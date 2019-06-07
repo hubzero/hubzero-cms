@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -157,11 +132,12 @@ if ($label == 'none') {
 										<?php $citeId = $cite->id; ?>
 										<?php if ($batch_download) : ?>
 											<td class="batch">
-												<input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $citeId; ?>" />
+												<input type="checkbox" class="download-marker" name="download_marker[]" id="download_marker<?php echo $citeId; ?>" value="<?php echo $citeId; ?>" />
 											</td>
 										<?php endif; ?>
 										<?php if ($label != "none") : ?>
 											<td class="priority-3 citation-label <?php echo $citations_label_class; ?>">
+												<label for="download_marker<?php echo $citeId; ?>">
 												<?php
 													$type = "";
 													foreach ($this->types as $t) {
@@ -185,6 +161,7 @@ if ($label == 'none') {
 															break;
 													}
 												?>
+												</label>
 											</td>
 										<?php endif; ?>
 										<td class="citation-container">
@@ -242,7 +219,7 @@ if ($label == 'none') {
 										<?php if ($this->isAdmin === true) : ?>
 											<td class="col-edit">
 												<a class="icon-edit" href="<?php echo Route::url('index.php?option='.$this->option.'&task=edit&id=' . $citeId); ?>">
-													<?php echo Lang::txt('COM_CITATIONS_EDIT'); ?>
+													<?php echo Lang::txt('JACTION_EDIT'); ?>
 												</a>
 											</td>
 										<?php endif; ?>

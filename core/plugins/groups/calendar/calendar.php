@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -108,8 +83,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		// The output array we're returning
 		$arr = array(
-			'html'=>'',
-			'metadata'=>''
+			'html' => '',
+			'metadata' => array()
 		);
 
 		//get this area details
@@ -187,9 +162,9 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$this->js('calendar');
 
 			//get the request vars
-			$this->month    = Request::getInt('month', Date::format("m"), 'get');
+			$this->month    = Request::getInt('month', Date::of()->format("m"), 'get');
 			$this->month    = (strlen($this->month) == 1) ? '0' . $this->month : $this->month;
-			$this->year     = Request::getInt('year', Date::format("Y"), 'get');
+			$this->year     = Request::getInt('year', Date::of()->format("Y"), 'get');
 			$this->calendar = Request::getInt('calendar', 0, 'get');
 
 			// make sure month is always two digets
@@ -464,6 +439,9 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			$up   = Date::of($rawEvent->get('publish_up'));
 			$down = Date::of($rawEvent->get('publish_down'));
+			$params = new \Hubzero\Config\Registry($rawEvent->get('params'));
+			$ignoreDst = false;
+			$ignoreDst = $params->get('ignore_dst') == 1 ? true : false;
 			$timeFormat = 'Y-m-d\TH:i:sO';
 
 			$event            = new stdClass;
@@ -471,11 +449,11 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$event->title     = $rawEvent->get('title');
 			$event->allDay    = $rawEvent->get('allday') == 1;
 			$event->url       = $rawEvent->link();
-			$event->start     = ($event->allDay == 1) ? $up->setTimezone('UTC')->format($timeFormat, true) : $up->toLocal($timeFormat);
+			$event->start     = ($event->allDay == 1) ? $up->setTimezone('UTC')->format($timeFormat, true) : $up->toLocal($timeFormat, $ignoreDst);
 			$event->className = ($rawEvent->get('calendar_id')) ? 'calendar-' . $rawEvent->get('calendar_id') : 'calendar-0';
-			if ($rawEvent->get('publish_down') != '0000-00-00 00:00:00')
+			if ($rawEvent->get('publish_down') && $rawEvent->get('publish_down') != '0000-00-00 00:00:00')
 			{
-				$event->end = ($event->allDay == 1) ? $down->setTimezone('UTC')->format($timeFormat, true) : $down->toLocal($timeFormat);
+				$event->end = ($event->allDay == 1) ? $down->setTimezone('UTC')->format($timeFormat, true) : $down->toLocal($timeFormat, $ignoreDst);
 			}
 
 			// add start & end for displaying dates user clicked on
@@ -483,7 +461,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			if ($rawEvent->get('repeating_rule') != '')
 			{
 				$event->url .= '?start=' . $up->toUnix();
-				if ($rawEvent->get('publish_down') != '0000-00-00 00:00:00')
+				if ($rawEvent->get('publish_down') && $rawEvent->get('publish_down') != '0000-00-00 00:00:00')
 				{
 					$event->url .= '&end=' . $down->toUnix();
 				}
@@ -669,11 +647,24 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$event['state']       = 1;
 		$event['scope']       = 'group';
 		$event['scope_id']    = $this->group->get('gidNumber');
-		$event['modified']    = Date::toSql();
+		$event['modified']    = Date::of()->toSql();
 		$event['modified_by'] = $this->user->get('id');
 
 		// repeating rule
 		$event['repeating_rule'] = $this->_buildRepeatingRule();
+
+		//stringify params
+		if (isset($event['params']) && count($event['params']) > 0)
+		{
+			$params = new \Hubzero\Config\Registry($event['params']);
+			$event['params'] = $params->toString();
+		}
+
+		$ignoreDst = false;
+		if (isset($params))
+		{
+			$ignoreDst = $params->get('ignore_dst') == 1 ? true : false;
+		}
 
 		//if we are updating set modified time and actor
 		if (!isset($event['id']) || $event['id'] == 0)
@@ -702,7 +693,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			{
 				$event['publish_up'] = $event['publish_up'] . ' ' . $event['publish_up_time'];
 			}
-			$event['publish_up'] = Date::of($event['publish_up'], $event['time_zone'])->toSql();
+			$event['publish_up'] = Date::of($event['publish_up'], $event['time_zone'], $ignoreDst)->toSql();
 			unset($event['publish_up_time']);
 		}
 
@@ -714,7 +705,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			{
 				$event['publish_down'] = $event['publish_down'] . ' ' . $event['publish_down_time'];
 			}
-			$event['publish_down'] = Date::of($event['publish_down'], $event['time_zone'])->toSql();
+			$event['publish_down'] = Date::of($event['publish_down'], $event['time_zone'], $ignoreDst)->toSql();
 			unset($event['publish_down_time']);
 		}
 
@@ -726,17 +717,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$event['registerby'] = Date::of($event['registerby'], $event['time_zone'])->toSql();
 		}
 
-		//stringify params
-		if (isset($event['params']) && count($event['params']) > 0)
-		{
-			$params = new \Hubzero\Config\Registry($event['params']);
-			$event['params'] = $params->toString();
-		}
-
 		//did we want to turn off registration?
 		if (!$registration)
 		{
-			$event['registerby'] = '0000-00-00 00:00:00';
+			$event['registerby'] = null;
 		}
 
 		//instantiate new event object
@@ -771,7 +755,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 
 		//check to make sure end time is greater than start time
-		if (isset($event['publish_down']) && $event['publish_down'] != '0000-00-00 00:00:00' && $event['publish_down'] != '')
+		if (isset($event['publish_down']) && $event['publish_down'] && $event['publish_down'] != '0000-00-00 00:00:00')
 		{
 			$up     = strtotime($event['publish_up']);
 			$down   = strtotime($event['publish_down']);
@@ -1152,7 +1136,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->registrants = $eventsRespondent->getCount();
 
 		//do we have a registration deadline
-		if ($view->event->get('registerby') == '' || $view->event->get('registerby') == '0000-00-00 00:00:00')
+		if (!$view->event->get('registerby') || $view->event->get('registerby') == '0000-00-00 00:00:00')
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $view->event->get('id')),
@@ -1241,7 +1225,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$departure  = Request::getArray('departure', null, 'post');
 		$dietary    = Request::getArray('dietary', null, 'post');
 		$dinner     = Request::getString('dinner', null, 'post');
-		$disability = Request::getArray('disability', null, 'post');
+		$disability = Request::getString('disability', 'no', 'post');
 		$race       = Request::getArray('race', null, 'post');
 		$event_id   = Request::getInt('event_id', null, 'post');
 
@@ -1896,7 +1880,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				WHERE scope=" . $db->quote('group') . "
 				AND scope_id=" . $this->group->get('gidNumber') . "
 				AND state=1
-				AND (publish_up >=" . $db->quote(Date::toSql()) . " OR publish_down >= " . $db->quote(Date::toSql()) . ")";
+				AND (publish_up >=" . $db->quote(Date::of()->toSql()) . " OR publish_down >= " . $db->quote(Date::of()->toSql()) . ")";
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}
@@ -1914,7 +1898,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				WHERE scope=" . $db->quote('group') . "
 				AND scope_id=" . $this->group->get('gidNumber') . "
 				AND state=1
-				AND (publish_up >= " . $db->quote(Date::toSql()) . " OR publish_down >= " . $db->quote(Date::toSql()) . ") AND publish_up <= " . $db->quote(Date::format("Y-m-t 23:59:59"));
+				AND (publish_up >= " . $db->quote(Date::of()->toSql()) . " OR publish_down >= " . $db->quote(Date::of()->toSql()) . ") AND publish_up <= " . $db->quote(Date::of()->format("Y-m-t 23:59:59"));
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}

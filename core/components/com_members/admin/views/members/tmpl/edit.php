@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -54,37 +30,28 @@ Toolbar::help('user');
 $this->css();
 
 Html::behavior('switcher', 'submenu');
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	submitform(pressbutton);
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 
 	<nav role="navigation" class="sub-navigation">
 		<div id="submenu-box">
 			<div class="submenu-box">
 				<div class="submenu-pad">
 					<ul id="submenu" class="member-nav">
-						<li><a href="#page-account" onclick="return false;" id="account" class="active"><?php echo Lang::txt('COM_MEMBERS_SECTION_ACCOUNT'); ?></a></li>
-						<li><a href="#page-profile" onclick="return false;" id="profile"><?php echo Lang::txt('COM_MEMBERS_SECTION_PROFILE'); ?></a></li>
+						<li><a href="#page-account" id="account" class="active"><?php echo Lang::txt('COM_MEMBERS_SECTION_ACCOUNT'); ?></a></li>
+						<li><a href="#page-profile" id="profile"><?php echo Lang::txt('COM_MEMBERS_SECTION_PROFILE'); ?></a></li>
 						<?php if (User::authorise('core.admin', $this->option) || User::authorise('core.edit', $this->option)): ?>
-							<li><a href="#page-password" onclick="return false;" id="password"><?php echo Lang::txt('COM_MEMBERS_SECTION_PASSWORD'); ?></a></li>
+							<li><a href="#page-password" id="password"><?php echo Lang::txt('COM_MEMBERS_SECTION_PASSWORD'); ?></a></li>
 						<?php endif; ?>
 						<?php if (!$this->profile->isNew()): ?>
-							<li><a href="#page-groups" onclick="return false;" id="groups"><?php echo Lang::txt('COM_MEMBERS_SECTION_GROUPS'); ?></a></li>
-							<li><a href="#page-hosts" onclick="return false;" id="hosts"><?php echo Lang::txt('COM_MEMBERS_SECTION_HOSTS'); ?></a></li>
-							<li><a href="#page-messaging" onclick="return false;" id="messaging"><?php echo Lang::txt('COM_MEMBERS_SECTION_MESSAGING'); ?></a></li>
+							<li><a href="#page-groups" id="groups"><?php echo Lang::txt('COM_MEMBERS_SECTION_GROUPS'); ?></a></li>
+							<li><a href="#page-hosts" id="hosts"><?php echo Lang::txt('COM_MEMBERS_SECTION_HOSTS'); ?></a></li>
+							<li><a href="#page-messaging" id="messaging"><?php echo Lang::txt('COM_MEMBERS_SECTION_MESSAGING'); ?></a></li>
 							<?php
 							foreach ($this->tabs as $tab):
 								if (!$tab):
@@ -92,7 +59,7 @@ function submitbutton(pressbutton)
 								endif;
 								?>
 								<li>
-									<a href="#page-<?php echo $tab['name']; ?>" onclick="return false;" id="<?php echo $this->escape($tab['name']); ?>">
+									<a href="#page-<?php echo $tab['name']; ?>" id="<?php echo $this->escape($tab['name']); ?>">
 										<?php echo $this->escape($tab['label']); ?>
 									</a>
 								</li>

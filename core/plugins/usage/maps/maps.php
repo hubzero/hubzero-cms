@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -60,7 +35,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get hosts data
 	 *
-	 * @param      object &$db      JDatabase
+	 * @param      object &$db      Database
 	 * @param      array  $location Longitude/latitude
 	 * @return     string
 	 */
@@ -85,7 +60,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get a record count
 	 *
-	 * @param      object &$db      JDatabase
+	 * @param      object &$db      Database
 	 * @param      string $domain   Domain
 	 * @param      array  $location Longitude/latitude
 	 * @return     string
@@ -137,7 +112,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 	/**
 	 * Check if the location is from a bot
 	 *
-	 * @param      object &$db      JDatabase
+	 * @param      object &$db      Database
 	 * @param      array  $location Longitude/latitude
 	 * @return     integer
 	 */
@@ -262,7 +237,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 	 *
 	 * @param      string $option        Component name
 	 * @param      string $task          Component task
-	 * @param      object $db            JDatabase
+	 * @param      object $db            Database
 	 * @param      array  $months        Month names (Jan -> Dec)
 	 * @param      array  $monthsReverse Month names in reverse (Dec -> Jan)
 	 * @param      string $enddate       Time period
@@ -313,14 +288,24 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 				$key = $config->get('mapsApiKey');
 				$mappath = $config->get('maps_path');
 
-				if (is_file(__DIR__ . DS . $type . '.php'))
+				if (is_file(__DIR__ . '/views/maps/tmpl/' . $type . '.php'))
 				{
-					include_once __DIR__ . DS . $type . '.php';
+					$html = $this->view($type, 'maps')
+						->set('mappath', $mappath)
+						->set('option', $option)
+						->set('task', $task)
+						->set('type', $type)
+						->set('key', $key)
+						->set('no_html', $no_html)
+						->set('config', $config)
+						->set('lat', $lat)
+						->set('long', $long)
+						->set('zoom', $zoom)
+						->loadTemplate();
 				}
 				else
 				{
 					App::abort(500, Lang::txt('PLG_USAGE_MAPS_TYPE_NOT_FOUND', $type));
-					return;
 				}
 
 				return $html;

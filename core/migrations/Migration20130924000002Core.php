@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -271,40 +276,30 @@ class Migration20130924000002Core extends Base
 			$this->db->query();
 
 			// If we have the nested set class available, use it to rebuild lft/rgt
-			if (class_exists('JTableNested') && method_exists('JTableNested', 'rebuild'))
+			if (file_exists(PATH_CORE . '/components/com_categories/models/category.php'))
 			{
-				// Rebuild categories
-				// Use the MySQL driver for this
-				$config = \JFactory::getConfig();
-				$database = \JDatabase::getInstance(
-					array(
-						'driver'   => 'mysql',
-						'host'     => $config->get('host'),
-						'user'     => $config->get('user'),
-						'password' => $config->get('password'),
-						'database' => $config->get('db')
-					)
-				);
+				include_once PATH_CORE . '/components/com_categories/models/category.php';
 
-				$table = new \JTableCategory($database);
-				$table->rebuild();
-
-				// Rebuild assets
-				$this->rebuildAssets();
+				if (class_exists('Components\Categories\Models\Category') && method_exists('Components\Categories\Models\Category', 'rebuild'))
+				{
+					$table = Components\Categories\Models\Category::blank();
+					$table->rebuild();
+				}
 			}
 		}
 	}
 
 	private function rebuildAssets($parentId=1, $leftId=0, $level=0)
 	{
-		$database = \JFactory::getDbo();
-		$query = $database->getQuery(true);
+		$query = $this->db->getQuery();
 		$query->select('id');
 		$query->from('#__assets');
-		$query->where('parent_id = %d');
-		$query->order('parent_id, lft');
-		$database->setQuery(sprintf($query, (int) $parentId));
-		$children = $database->loadObjectList();
+		$query->whereEquals('parent_id', (int) $parentId);
+		$query->order('parent_id', 'asc');
+		$query->order('lft', 'asc');
+
+		$this->db->setQuery($query->toString());
+		$children = $this->db->loadObjectList();
 
 		$rightId = $leftId + 1;
 
@@ -318,14 +313,17 @@ class Migration20130924000002Core extends Base
 			}
 		}
 
-		$query = $database->getQuery(true);
+		$query = $this->db->getQuery();
 		$query->update('#__assets');
-		$query->set('lft = ' . (int) $leftId);
-		$query->set('rgt = ' . (int) $rightId);
-		$query->set('level = ' . (int) $level);
-		$query->where('id = ' . (int) $parentId);
-		$database->setQuery($query);
-		$database->execute();
+		$query->set(array(
+			'lft'   => (int) $leftId,
+			'rgt'   => (int) $rightId,
+			'level' => (int) $level
+		));
+		$query->whereEquals('id', (int) $parentId);
+
+		$this->db->setQuery($query->toString());
+		$this->db->execute();
 
 		return $rightId + 1;
 	}

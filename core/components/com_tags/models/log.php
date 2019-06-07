@@ -1,38 +1,15 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Tags\Models;
 
 use Hubzero\Database\Relational;
 use Date;
+use User;
 
 /**
  * Tag log
@@ -88,11 +65,13 @@ class Log extends Relational
 	 * @var  array
 	 */
 	public $initiate = array(
-		'timestamp'
+		'timestamp',
+		'user_id',
+		'actorid'
 	);
 
 	/**
-	 * Generates automatic modified field value
+	 * Generates automatic timestamp field value
 	 *
 	 * @param   array   $data  the data being saved
 	 * @return  string
@@ -100,6 +79,32 @@ class Log extends Relational
 	public function automaticTimestamp($data)
 	{
 		return Date::toSql();
+	}
+
+	/**
+	 * Generates automatic user_id field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticUserId($data)
+	{
+		if (empty($data['user_id']))
+		{
+			$data['user_id'] = User::get('id');
+		}
+		return $data['user_id'];
+	}
+
+	/**
+	 * Generates automatic actorid field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticActorid($data)
+	{
+		return User::get('id');
 	}
 
 	/**

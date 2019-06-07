@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -100,15 +76,9 @@ $revisions = $this->page->versions()
 <?php } ?>
 
 		<div class="grid">
-			<div class="col span-half">
+			<div class="col">
 				<p><?php echo Lang::txt('COM_WIKI_HISTORY_EXPLANATION', Route::url($this->page->link('base') . '&pagename=Help:PageHistory')); ?></p>
 			</div><!-- / .aside -->
-			<div class="col span-half omega">
-				<p>
-					<?php echo Lang::txt('COM_WIKI_HISTORY_CUR_HINT'); ?><br />
-					<?php echo Lang::txt('COM_WIKI_HISTORY_LAST_HINT'); ?>
-				</p>
-			</div><!-- / .subject -->
 		</div>
 
 		<form action="<?php echo Route::url($this->page->link('compare')); ?>" method="post">
@@ -123,12 +93,12 @@ $revisions = $this->page->versions()
 					<caption><?php echo Lang::txt('COM_WIKI_HISTORY_TBL_SUMMARY'); ?></caption>
 					<thead>
 						<tr>
-							<th scope="col"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_VERSION'); ?></th>
 							<th scope="col" colspan="2"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_COMPARE'); ?></th>
 							<th scope="col"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_WHEN'); ?></th>
 							<th scope="col"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_MADE_BY'); ?></th>
 							<th scope="col"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_LENGTH'); ?></th>
 							<th scope="col"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_STATUS'); ?></th>
+							<th scope="col"></th>
 							<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('delete'))) { ?>
 								<th scope="col"></th>
 							<?php } ?>
@@ -138,6 +108,7 @@ $revisions = $this->page->versions()
 						<?php
 						$i = 0;
 						$cur = 0;
+						$comparefirst = true;
 						$cls = 'even';
 						$total = $revisions->count();
 
@@ -146,7 +117,6 @@ $revisions = $this->page->versions()
 						{
 							$lengths[] = $revision->get('length');
 						}
-
 						foreach ($revisions as $revision)
 						{
 							$i++;
@@ -160,7 +130,9 @@ $revisions = $this->page->versions()
 
 							switch ($revision->get('approved'))
 							{
-								case 1: $status = '<span class="approved icon-success">approved</span>'; break;
+								case 1:
+									$status = '<span class="approved icon-success">approved</span>';
+									break;
 								case 0:
 								default:
 									$status = '<span class="suggested icon-warning">suggested</span>';
@@ -176,25 +148,7 @@ $revisions = $this->page->versions()
 							$diff = $revision->get('length') - $prvLength;
 							?>
 							<tr class="<?php echo $cls; ?>">
-								<td>
-									<?php if ($i == 1) {
-										$cur = $revision->get('version'); ?>
-										( cur )
-									<?php } else { ?>
-										(<a href="<?php echo Route::url($this->page->link('compare', 'oldid=' . $revision->get('version') . '&diff=' . $cur)); ?>">
-											<?php echo Lang::txt('COM_WIKI_HISTORY_CURRENT'); ?>
-										</a>)
-									<?php } ?>
-										&nbsp;
-									<?php if ($i != $total) { ?>
-										(<a href="<?php echo Route::url($this->page->link('compare', '&oldid=' . ($revision->get('version') - 1) . '&diff=' . $revision->get('version'))); ?>">
-											<?php echo Lang::txt('COM_WIKI_HISTORY_LAST'); ?>
-										</a>)
-									<?php } else { ?>
-										( last )
-									<?php } ?>
-								</td>
-								<?php if ($i == 1) { ?>
+								<?php if ($this->page->get('version_id') == $revision->get('id')) { ?>
 									<td>
 
 									</td>
@@ -203,7 +157,12 @@ $revisions = $this->page->versions()
 									</td>
 								<?php } else { ?>
 									<td>
-										<input type="radio" name="oldid" value="<?php echo $revision->get('version'); ?>"<?php if ($i == 2) { echo ' checked="checked"'; } ?> />
+										<input type="radio" name="oldid" value="<?php echo $revision->get('version'); ?>"
+										<?php if ($comparefirst == true)
+										{
+											echo ' checked="checked"';
+											$comparefirst = false;
+										} ?> />
 									</td>
 									<td>
 
@@ -233,11 +192,22 @@ $revisions = $this->page->versions()
 									<?php } ?>
 								</td>
 								<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('delete'))) { ?>
+								<?php if ($this->page->get('version_id') == $revision->get('id')) { ?>
 									<td>
-										<a class="icon-trash delete" href="<?php echo Route::url($this->page->link('deleterevision', 'oldid=' . $revision->get('id'))); ?>" title="<?php echo Lang::txt('COM_WIKI_REVISION_DELETE'); ?>">
-											<?php echo Lang::txt('JACTION_DELETE'); ?>
+										(Current Version)
+									</td>
+								<?php } else { ?>
+									<td>
+										<a class="icon-circle-arrow-up" href="<?php echo Route::url($this->page->link('setcurrentrevision', 'version_id=' . $revision->get('id'))); ?>" title="<?php echo Lang::txt('COM_WIKI_REVISION_DELETE'); ?>">
+											<?php echo Lang::txt('COM_WIKI_HISTORY_SET_CURRENT'); ?>
 										</a>
 									</td>
+								<?php } ?>
+								<td>
+									<a class="icon-trash delete" href="<?php echo Route::url($this->page->link('deleterevision', 'oldid=' . $revision->get('id'))); ?>" title="<?php echo Lang::txt('COM_WIKI_REVISION_DELETE'); ?>">
+										<?php echo Lang::txt('JACTION_DELETE'); ?>
+									</a>
+								</td>
 								<?php } ?>
 							</tr>
 							<?php

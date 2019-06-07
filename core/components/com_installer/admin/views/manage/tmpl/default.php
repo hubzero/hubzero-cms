@@ -1,29 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @copyright Copyright 2005-2014 Open Source Matters, Inc.
- * @license   http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 $canDo = Components\Installer\Admin\Helpers\Installer::getActions();
@@ -66,7 +45,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 			<thead>
 				<tr>
 					<th>
-						<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+						<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
 					</th>
 					<th class="nowrap">
 						<?php echo Html::grid('sort', 'COM_INSTALLER_HEADING_NAME', 'name', $listDirn, $listOrder); ?>
@@ -109,8 +88,14 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 			$i = 0;
 			foreach ($this->rows as $item):
 				$item->translate();
+
+				$cls = $i%2;
+				if ($item->get('status') == 2)
+				{
+					$cls .= ' protected';
+				}
 				?>
-				<tr class="row<?php echo $i%2; if ($item->get('status') == 2) echo ' protected'; ?>">
+				<tr class="row<?php echo $cls; ?>">
 					<td>
 						<?php echo Html::grid('id', $i, $item->get('extension_id')); ?>
 					</td>
@@ -133,7 +118,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 						<?php echo Lang::txt('COM_INSTALLER_TYPE_' . $item->get('type')); ?>
 					</td>
 					<td class="priority-4 center">
-						<?php echo ($item->get('version') != '' ? $item->get('version') : '&#160;'); ?>
+						<?php echo ($item->get('version') != '') ? $item->get('version') : '&#160;'; ?>
 						<?php if ($item->get('system_data')) : ?>
 							<?php if ($tooltip = $this->createCompatibilityInfo($item->get('system_data'))) : ?>
 								<?php echo Html::behavior('tooltip', $tooltip, Lang::txt('COM_INSTALLER_COMPATIBILITY_TOOLTIP_TITLE')); ?>
@@ -141,15 +126,15 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 						<?php endif; ?>
 					</td>
 					<td class="priority-5 center">
-						<?php echo ($item->get('creationDate') != '' ? $item->get('creationDate') : '&#160;'); ?>
+						<?php echo ($item->get('creationDate') != '') ? $item->get('creationDate') : '&#160;'; ?>
 					</td>
 					<td class="priority-5 center">
 						<span class="editlinktip hasTip" title="<?php echo addslashes(htmlspecialchars(Lang::txt('COM_INSTALLER_AUTHOR_INFORMATION').'::'.$item->get('author_info'))); ?>">
-							<?php echo ($item->get('author') != '' ? $item->get('author') : '&#160;'); ?>
+							<?php echo ($item->get('author') != '') ? $item->get('author') : '&#160;'; ?>
 						</span>
 					</td>
 					<td class="priority-4 center">
-						<?php echo ($item->get('folder') != '' ? $item->get('folder') : Lang::txt('COM_INSTALLER_TYPE_NONAPPLICABLE')); ?>
+						<?php echo ($item->get('folder') != '') ? $item->get('folder') : Lang::txt('COM_INSTALLER_TYPE_NONAPPLICABLE'); ?>
 					</td>
 					<td class="priority-4">
 						<?php echo $item->get('extension_id'); ?>

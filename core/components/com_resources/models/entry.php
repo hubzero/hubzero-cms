@@ -1,34 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Kevin Wojkovich <kevinw@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
- * @since     Class available since release 1.3.2
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Resources\Models;
@@ -576,7 +550,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function isDeleted()
 	{
-		return ($this->get('published') == 4);
+		return ($this->get('published') == self::STATE_TRASHED);
 	}
 
 	/**
@@ -592,7 +566,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		}
 
 		// Make sure the resource is published and standalone
-		if (in_array($this->get('published'), array(0, 2, 4, 5)))
+		if (in_array($this->get('published'), array(self::STATE_UNPUBLISHED, self::STATE_DRAFT, self::STATE_TRASHED, self::STATE_DRAFT_INTERNAL)))
 		{
 			return false;
 		}
@@ -814,6 +788,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	public function fields()
 	{
 		$data = array();
+
 		preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->get('fulltxt'), $matches, PREG_SET_ORDER);
 		if (count($matches) > 0)
 		{
@@ -822,7 +797,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 				$data[$match[1]] = stripslashes($match[2]);
 			}
 		}
-		$citations = '';
+
 		$elements = new \Components\Resources\Models\Elements($data, $this->type()->customFields);
 		$schema = $elements->getSchema();
 		if (is_object($schema))
@@ -842,6 +817,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 				}
 			}
 		}
+
 		return $data;
 	}
 
@@ -1014,6 +990,32 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
+	 * Generate URL for tool
+	 *
+	 * @return  string
+	 */
+	public function generateToolUrl()
+	{
+		$lurl = '';
+		if (isset($this->revision) && $this->toolpublished)
+		{
+			$sess = $this->tool ? $this->tool : $this->alias . '_r' . $this->revision;
+			$v = (!isset($this->revision) or $this->revision=='dev') ? 'test' : $this->revision;
+			$lurl = 'index.php?option=com_tools&app=' . $this->alias . '&task=invoke&version=' . $v;
+		}
+		elseif (!isset($this->revision) or $this->revision=='dev')
+		{
+			// serve dev version
+			$lurl = 'index.php?option=com_tools&app=' . $this->alias . '&task=invoke&version=dev';
+		}
+		else
+		{
+			$lurl = 'index.php?option=com_tools&task=invoke&app=' . $this->alias;
+		}
+		return $lurl;
+	}
+
+	/**
 	 * Authorize current user
 	 *
 	 * @return  void
@@ -1152,7 +1154,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		}
 		else
 		{
-			// Check if they're a site admin (from Joomla)
+			// Check if they're a site admin
 			$this->params->set('access-admin-resource', User::authorise('core.admin', null));
 			$this->params->set('access-manage-resource', User::authorise('core.manage', null));
 			if ($this->params->get('access-admin-resource')
@@ -1282,6 +1284,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		if ($this->isTool())
 		{
 			require_once Component::path('com_tools') . '/tables/version.php';
+			require_once Component::path('com_tools') . '/tables/author.php';
 
 			$this->thistool = null;
 			$this->curtool  = null;
@@ -1359,9 +1362,11 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		$now = Date::toSql();
 
 		$this->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
+			->orWhere($r . '.publish_up', 'IS', null, 1)
 			->orWhere($r . '.publish_up', '<=', $now, 1)
 			->resetDepth()
 			->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
+			->orWhere($r . '.publish_down', 'IS', null, 1)
 			->orWhere($r . '.publish_down', '>=', $now, 1)
 			->resetDepth();
 
@@ -1535,11 +1540,13 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		if (isset($filters['now']))
 		{
 			$query->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
-				->orWhere($r . '.publish_up', '<=', $filters['now'], 1)
-				->resetDepth()
+					->orWhere($r . '.publish_up', 'IS', null, 1)
+					->orWhere($r . '.publish_up', '<=', $filters['now'], 1)
+					->resetDepth()
 				->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
-				->orWhere($r . '.publish_down', '>=', $filters['now'], 1)
-				->resetDepth();
+					->orWhere($r . '.publish_down', 'IS', null, 1)
+					->orWhere($r . '.publish_down', '>=', $filters['now'], 1)
+					->resetDepth();
 		}
 
 		if (isset($filters['startdate']) && $filters['startdate'])
@@ -1555,6 +1562,12 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 
 		return $query;
 	}
+
+	/**
+	 * Generate description
+	 *
+	 * @return  string
+	 */
 	public function searchableDescription()
 	{
 		$description = $this->description . ' ' . $this->introtext;
@@ -1563,24 +1576,33 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		return $description;
 	}
 
+	/**
+	 * Get acces level as text
+	 *
+	 * @return  string
+	 */
 	public function transformAccessLevel()
 	{
 		$accessLevel = 'private';
-		if ($this->standalone == 1 && $this->published == 1)
+
+		if ($this->standalone == 1 && $this->isPublished())
 		{
 			switch ($this->access)
 			{
 				case 0:
 					$accessLevel = 'public';
 				break;
+
 				case 1:
 					$accessLevel = 'registered';
 				break;
+
 				case 4:
 				default:
 					$accessLevel = 'private';
 			}
 		}
+
 		return $accessLevel;
 	}
 
@@ -1610,9 +1632,10 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		return $allowedgroups;
 	}
 
-	/*
+	/**
 	 * Namespace used for solr Search
-	 * @return string
+	 *
+	 * @return  string
 	 */
 	public static function searchNamespace()
 	{
@@ -1620,9 +1643,10 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		return $searchNamespace;
 	}
 
-	/*
+	/**
 	 * Generate solr search Id
-	 * @return string
+	 *
+	 * @return  string
 	 */
 	public function searchId()
 	{
@@ -1630,14 +1654,24 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		return $searchId;
 	}
 
-	/*
+	/**
 	 * Convert model results into solr readable generic object.
-	 * @return stdClass
+	 *
+	 * @return  stdClass
 	 */
 	public function searchResult()
 	{
 		$type = $this->type();
 		$obj = new stdClass;
+		if ($this->isTool())
+		{
+			$this->compileToolInfo('');
+			$toolUrl = $this->generateToolUrl();
+			if (!empty($toolUrl))
+			{
+				$obj->launchlinkurl_s = rtrim(Request::root(), '/') . Route::urlForClient('site', $toolUrl);
+			}
+		}
 		$obj->url = rtrim(Request::root(), '/') . Route::urlForClient('site', $this->link());
 		$obj->title = $this->title;
 		$id = $this->id;
@@ -1735,12 +1769,24 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		return $obj;
 	}
 
+	/**
+	 * Get record total
+	 *
+	 * @return  integer
+	 */
 	public static function searchTotal()
 	{
 		$total = self::all()->total();
 		return $total;
 	}
 
+	/**
+	 * Get search results
+	 *
+	 * @param   integer  $limit
+	 * @param   integer  $offset
+	 * @return  object
+	 */
 	public static function searchResults($limit, $offset = 0)
 	{
 		return self::all()->start($offset)->limit($limit)->rows();

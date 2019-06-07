@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Citations\Site\Controllers;
@@ -45,6 +20,7 @@ use Filesystem;
 use Exception;
 use Document;
 use Notify;
+use Event;
 use Date;
 use Lang;
 use App;
@@ -212,8 +188,8 @@ class Citations extends SiteController
 
 		// Convert upload dates to correct time format
 		if (!is_string($this->view->filters['startuploaddate'])
-		 || !preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $this->view->filters['startuploaddate'])
-		 || !preg_match('/([0-9]{4})-([0-9]{2})-([0-9]{2})/', $this->view->filters['startuploaddate']))
+		 || !preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})$/", $this->view->filters['startuploaddate'])
+		 || !preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $this->view->filters['startuploaddate']))
 		{
 			$this->view->filters['startuploaddate'] = '0000-00-00 00:00:00';
 		}
@@ -229,8 +205,8 @@ class Citations extends SiteController
 		}
 
 		if (!is_string($this->view->filters['enduploaddate'])
-		 || !preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $this->view->filters['enduploaddate'])
-		 || !preg_match('/([0-9]{4})-([0-9]{2})-([0-9]{2})/', $this->view->filters['enduploaddate']))
+		 || !preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})$/", $this->view->filters['enduploaddate'])
+		 || !preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $this->view->filters['enduploaddate']))
 		{
 			$this->view->filters['enduploaddate'] = '';
 		}
@@ -619,7 +595,7 @@ class Citations extends SiteController
 		{
 			Pathway::append($shortenedTitle, 'index.php?option=' . $this->_option . '&task=view&id=' . $this->view->row->id);
 		}
-		Pathway::append(Lang::txt('COM_CITATIONS_EDIT'), 'index.php?option=' . $this->_option . '&task=edit&id=' . $this->view->row->id);
+		Pathway::append(Lang::txt('JACTION_EDIT'), 'index.php?option=' . $this->_option . '&task=edit&id=' . $this->view->row->id);
 
 		// Set the page title
 		Document::setTitle(Lang::txt('COM_CITATIONS_CITATION') . $shortenedTitle);
@@ -734,6 +710,17 @@ class Citations extends SiteController
 		}
 
 		$row->attach('associations', $associations);
+
+		// Trigger before save event
+		$isNew  = $row->isNew();
+		$result = Event::trigger('onCitationBeforeSave', array(&$row, $isNew));
+
+		if (in_array(false, $result, true))
+		{
+			$this->setError($row->getError());
+			return $this->editTask($row);
+		}
+
 		if (!$row->saveAndPropagate())
 		{
 			$this->setError($row->getError());
@@ -741,8 +728,7 @@ class Citations extends SiteController
 			{
 				$row->set('id', $updateAuthorsId);
 			}
-			$this->editTask($row);
-			return;
+			return $this->editTask($row);
 		}
 
 		//check if we are allowing tags
@@ -758,6 +744,9 @@ class Citations extends SiteController
 			$badges = trim(Request::getString('badges', '', 'post'));
 			$row->updateTags($badges, 'badge');
 		}
+
+		// Trigger after save event
+		Event::trigger('onCitationAfterSave', array(&$row, $isNew));
 
 		// Redirect
 		$task = '&task=browse';

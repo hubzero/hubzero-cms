@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -23,9 +28,9 @@ class Migration20170901000000ComTags extends Base
 			  `raw_tag` varchar(100) NOT NULL DEFAULT '',
 			  `description` text NOT NULL,
 			  `admin` tinyint(3) unsigned NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
-			  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `modified` datetime DEFAULT NULL,
 			  `modified_by` int(11) NOT NULL DEFAULT '0',
 			  `objects` int(11) NOT NULL DEFAULT '0',
 			  `substitutes` int(11) NOT NULL DEFAULT '0',
@@ -49,7 +54,7 @@ class Migration20170901000000ComTags extends Base
 			  `tagid` int(11) unsigned NOT NULL DEFAULT '0',
 			  `strength` tinyint(3) NOT NULL DEFAULT '0',
 			  `taggerid` int(11) unsigned NOT NULL DEFAULT '0',
-			  `taggedon` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `taggedon` datetime DEFAULT NULL,
 			  `tbl` varchar(255) NOT NULL DEFAULT '',
 			  `label` varchar(30) NOT NULL DEFAULT '',
 			  PRIMARY KEY (`id`),
@@ -71,7 +76,7 @@ class Migration20170901000000ComTags extends Base
 			  `tag` varchar(100) NOT NULL DEFAULT '',
 			  `raw_tag` varchar(100) NOT NULL DEFAULT '',
 			  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  PRIMARY KEY (`id`),
 			  KEY `idx_tag_id` (`tag_id`),
 			  KEY `idx_tag` (`tag`),
@@ -87,7 +92,7 @@ class Migration20170901000000ComTags extends Base
 			$query = "CREATE TABLE `#__tags_log` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `tag_id` int(11) unsigned NOT NULL DEFAULT '0',
-			  `timestamp` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `timestamp` datetime DEFAULT NULL,
 			  `user_id` int(11) unsigned NOT NULL DEFAULT '0',
 			  `action` varchar(50) NOT NULL DEFAULT '',
 			  `comments` text NOT NULL,

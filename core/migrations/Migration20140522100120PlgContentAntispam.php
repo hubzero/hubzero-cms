@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -15,9 +20,9 @@ class Migration20140522100120PlgContentAntispam extends Base
 	 **/
 	public function up()
 	{
-		$this->addPluginEntry('content','akismet', 0);
-		$this->addPluginEntry('content','mollom', 0);
-		$this->addPluginEntry('content','spamassassin', 0);
+		$this->addPluginEntry('content', 'akismet', 0);
+		$this->addPluginEntry('content', 'mollom', 0);
+		$this->addPluginEntry('content', 'spamassassin', 0);
 	}
 
 	/**
@@ -25,8 +30,8 @@ class Migration20140522100120PlgContentAntispam extends Base
 	 **/
 	public function down()
 	{
-		$this->deletePluginEntry('content','akismet');
-		$this->deletePluginEntry('content','mollom');
-		$this->deletePluginEntry('content','spamassassin');
+		$this->deletePluginEntry('content', 'akismet');
+		$this->deletePluginEntry('content', 'mollom');
+		$this->deletePluginEntry('content', 'spamassassin');
 	}
 }

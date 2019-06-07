@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Projects\Site\Controllers;
@@ -123,7 +98,8 @@ class Setup extends Base
 			$this->model->set('alias', Request::getString('name', '', 'post'));
 			$this->model->set('title', Request::getString('title', '', 'post'));
 			$this->model->set('about', trim(Request::getString('about', '', 'post', 'none', 2)));
-			$this->model->set('private', 1);
+			$this->model->set('private', $this->config->get('privacy', 1));
+			$this->model->set('access', $this->config->get('accesslevel', 5));
 			$this->model->set('setup_stage', 0);
 			$this->model->set('type', Request::getInt('type', 1, 'post'));
 		}
@@ -511,7 +487,7 @@ class Setup extends Base
 			}
 
 			// Collect grant information
-			if ($this->config->get('grantinfo', 0))
+			if ($this->config->get('grantinfo', 0) && Request::getInt('grant_info', 0))
 			{
 				$grant_agency = Request::getString('grant_agency', '');
 				$grant_title  = Request::getString('grant_title', '');
@@ -569,10 +545,18 @@ class Setup extends Base
 		{
 			$admingroup     = $this->config->get('admingroup', '');
 			$sdata_group    = $this->config->get('sdata_group', '');
-			$ginfo_group    = $this->config->get('ginfo_group', '');
 			$project_admins = Helpers\Html::getGroupMembers($admingroup);
-			$ginfo_admins   = Helpers\Html::getGroupMembers($ginfo_group);
 			$sdata_admins   = Helpers\Html::getGroupMembers($sdata_group);
+			$ginfo_admins   = array();
+
+			// Was grant information set?
+			if ($this->config->get('grantinfo', 0)
+			 && ($this->model->params->get('grant_title') || $this->model->params->get('grant_PI')))
+			{
+				// Notify the reviewer group
+				$ginfo_group  = $this->config->get('ginfo_group', '');
+				$ginfo_admins = Helpers\Html::getGroupMembers($ginfo_group);
+			}
 
 			$admins = array_merge($project_admins, $ginfo_admins, $sdata_admins);
 			$admins = array_unique($admins);
@@ -645,7 +629,9 @@ class Setup extends Base
 		$setup = ($new || $this->model->inSetup());
 
 		// Incoming
-		$private = Request::getInt('private', 1);
+		$access  = Request::getInt('access', $this->model->get('access', 5));
+		$private = Request::getInt('private', $this->model->get('private', 1));
+		$private = $access == 5 ? 1 : 0;
 
 		// Save section
 		switch ($this->section)
@@ -688,7 +674,6 @@ class Setup extends Base
 					$this->model->set('created_by_user', User::get('id'));
 					$this->model->set('owned_by_group', $this->_gid);
 					$this->model->set('owned_by_user', User::get('id'));
-					$this->model->set('private', $this->config->get('privacy', 1));
 				}
 
 				$this->model->set('title', \Hubzero\Utility\Str::truncate($title, 250));
@@ -696,10 +681,8 @@ class Setup extends Base
 				$this->model->set('type', Request::getInt('type', 1, 'post'));
 
 				// save advanced permissions
-				if (isset($_POST['private']))
-				{
-					$this->model->set('private', $private);
-				}
+				$this->model->set('private', $private);
+				$this->model->set('access', $access);
 
 				if ($setup && !$this->model->exists())
 				{
@@ -829,18 +812,6 @@ class Setup extends Base
 
 				if (!$new)
 				{
-					// Save privacy
-					if (isset($_POST['private']))
-					{
-						$this->model->set('private', $private);
-
-						// Save changes
-						if (!$this->model->store())
-						{
-							$this->setError($this->model->getError());
-							return false;
-						}
-					}
 					// Save params
 					$incoming   = Request::getArray('params', array());
 					if (!empty($incoming))
@@ -958,9 +929,10 @@ class Setup extends Base
 				}
 
 				// Save privacy
-				if (isset($_POST['private']))
+				if ($this->model->get('access') != $access)
 				{
 					$this->model->set('private', $private);
+					$this->model->set('access', $access);
 
 					// Save changes
 					if (!$this->model->store())

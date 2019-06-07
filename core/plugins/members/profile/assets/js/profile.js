@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        plugins/members/profile/profile.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 //-----------------------------------------------------------
@@ -178,7 +177,7 @@ HUB.Members.Profile = {
 			{
 				console.log(data);
 				//parse the returned json data
-				var returned = jQuery.parseJSON(data);
+				var returned = JSON.parse(data);
 				
 				//remove saving indicator and enable save button
 				//form.find(".section-edit-saving").remove();
@@ -314,7 +313,6 @@ HUB.Members.Profile = {
 			
 			//show updating overlay
 			HUB.Members.Profile.editShowUpdatingOverlay(".member_profile");
-
 			var url = $('#profile-page-content').attr('data-url');
 
 			$(".member_profile").load(url + " #profile-page-content", function() {
@@ -393,7 +391,7 @@ HUB.Members.Profile = {
 			};
 
 			$.post(url, params, function(data){ 
-				var returned = jQuery.parseJSON(data);
+				var returned = JSON.parse(data);
 
 				if (returned.success) {
 					if (pub == 1) {
@@ -463,7 +461,7 @@ HUB.Members.Profile = {
 			beforeLoad: function() 
 			{
 				href = $(this).attr('href').replace("#", "");
-				href += (href.indexOf('?') == -1) ? '?no_html=1' : '&no_html=1' ;
+				href += (href.indexOf('?') == -1) ? '?no_html=1' : '&no_html=1';
 				$(this).attr('href', href);
 			},
 			beforeShow: function()
@@ -506,7 +504,7 @@ HUB.Members.Profile = {
 
 						// save profile picture updates
 						$.post(form.attr("action"), form.serialize(), function(data){
-							var save = jQuery.parseJSON(data);
+							var save = JSON.parse(data);
 							if (save.success)
 							{
 								// load exact page to get results new profile pic sources
@@ -556,7 +554,7 @@ HUB.Members.Profile = {
 				url = url.replace("doajaxupload","getfileatts"); 
 
 				$.post(url, {file:response.file, dir:response.directory}, function(data) {
-					var upload = jQuery.parseJSON( data );
+					var upload = JSON.parse( data );
 					if (upload)
 					{
 						$("#ajax-upload-right").find("p.warning").remove();
@@ -602,7 +600,7 @@ HUB.Members.Profile = {
 				beforeLoad: function() 
 				{
 					href = $("#usage-agreement-popup form").attr('action').replace("#", "");
-					href += (href.indexOf('?') == -1) ? '?no_html=1' : '&no_html=1' ;
+					href += (href.indexOf('?') == -1) ? '?no_html=1' : '&no_html=1';
 					$("#usage-agreement-popup form").attr('action', href);	
 				}
 			});

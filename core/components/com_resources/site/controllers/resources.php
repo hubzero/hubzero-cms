@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Resources\Site\Controllers;
@@ -236,11 +211,17 @@ class Resources extends SiteController
 			'start'  => Request::getInt('limitstart', 0),
 			'search' => Request::getString('search', ''),
 			'tag'    => trim(Request::getString('tag', '', 'request', 'none', 2)),
-			'tag_ignored' => array()
+			'tag_ignored' => array(),
+			'access' => array(0)
 		);
 		if (!in_array($filters['sortby'], array('date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random')))
 		{
 			App::abort(404, Lang::txt('Invalid sort value of "%s" used.', $filters['sortby']));
+		}
+
+		if (!User::isGuest())
+		{
+			$filters['access'][] = 1;
 		}
 
 		if (isset($filters['tag']) && $filters['tag'] != '')
@@ -303,6 +284,7 @@ class Resources extends SiteController
 		//$t = Type::blank()->getTableName();
 
 		$query->whereEquals($r . '.standalone', 1);
+		$query->whereIn($r . '.access', $filters['access']);
 
 		if ($filters['tag'] != '')
 		{
@@ -333,10 +315,12 @@ class Resources extends SiteController
 		}
 
 		$query->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
+			->orWhere($r . '.publish_up', 'IS', null, 1)
 			->orWhere($r . '.publish_up', '<=', Date::toSql(), 1)
 			->resetDepth();
 
 		$query->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
+			->orWhere($r . '.publish_down', 'IS', null, 1)
 			->orWhere($r . '.publish_down', '>=', Date::toSql(), 1)
 			->resetDepth();
 
@@ -466,8 +450,14 @@ class Resources extends SiteController
 			'published' => 1,
 			'now'    => Date::toSql(),
 			'limit'  => 10,
-			'start'  => 0
+			'start'  => 0,
+			'access' => array(0)
 		);
+
+		if (!User::isGuest())
+		{
+			$filters['access'][] = 1;
+		}
 
 		$query = Entry::allWithFilters($filters);
 
@@ -2459,13 +2449,9 @@ class Resources extends SiteController
 
 			$rdoi = Doi::oneByResource($id, $revision);
 
-			if ($rdoi->get('doi') && $tconfig->get('doi_shoulder'))
+			if ($rdoi->get('doi') && ($rdoi->get('doi_shoulder') || $tconfig->get('doi_shoulder')))
 			{
-				$handle = 'doi:' . $tconfig->get('doi_shoulder') . DS . strtoupper($rdoi->doi);
-			}
-			else if ($rdoi->doi_label)
-			{
-				$handle = 'doi:10254/' . $tconfig->get('doi_prefix') . $id . '.' . $rdoi->doi_label;
+				$handle = 'doi:' . ($rdoi->get('doi_shoulder') ? $rdoi->get('doi_shoulder') : $tconfig->get('doi_shoulder')) . '/' . strtoupper($rdoi->doi);
 			}
 		}
 

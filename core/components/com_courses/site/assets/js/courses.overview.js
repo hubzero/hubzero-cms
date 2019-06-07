@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_courses/assets/js/courses.jquery.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 if (!jq) {
@@ -28,84 +27,151 @@ jQuery(document).ready(function(jq) {
 
 	_DEBUG = document.getElementById('system-debug') ? true : false;
 
-	$('#add-offering').fancybox({
-		type: 'ajax',
-		width: 600,
-		height: 300,
-		autoSize: true,
-		fitToView: false,
-		titleShow: false,
-		arrows: false,
-		closeBtn: true,
-		beforeLoad: function() {
-			$(this).attr('href', $(this).attr('href').nohtml());
-		},
-		afterShow: function() {
-			if ($('#hubForm').length > 0) {
-				$('#hubForm').on('submit', function (e) {
-					e.preventDefault();
+	// Check for course alias availability
+	var alias = $("#course_alias_field");
 
-					if (!$('#field-title').val()) {
-						alert('Please provide a title.');
-						return false;
+	if (alias.length) {
+		alias
+			.on("keydown", function(event) {
+				$('.available, .not-available').remove();
+			})
+			.on("keyup", function(event) { 
+				$.ajax({
+					url: alias.attr('data-route'),
+					data: { 'course' : $(this).val() },
+					success: function(data) {
+						var availability = JSON.parse(data);
+
+						if (availability) {
+							if (availability.available) {
+								if (!$('.available').length) {
+									alias.after('<span class="available">Course Available</span>');
+								}
+								$('.not-available').remove();
+							} else {
+								$(".available").remove();
+								if (!$('.not-available').length) {
+									alias.after('<span class="not-available">Course Not Available</span>');
+								}
+							}
+						}
 					}
-
-					$.post($(this).attr('action').nohtml(), $(this).serialize(), function(data) {
-						if (_DEBUG) {
-							window.console && console.log(data);
-						}
-
-						var response = jQuery.parseJSON(data);
-						if (!response.success) {
-							alert(response.message);
-							return;
-						}
-
-						$.fancybox.close();
-						window.location.reload();
-					});
 				});
+			});
+	}
+
+	// Instantiate file uploader
+	var attach = $("#ajax-uploader");
+
+	if (attach.length) {
+		var uploader = new qq.FileUploader({
+			element: attach[0],
+			action: attach.attr("data-action"),
+			multiple: false,
+			debug: true,
+			template: '<div class="qq-uploader">' +
+						'<div class="qq-upload-button"><span>' + attach.attr("data-instructions") + '</span></div>' + 
+						'<div class="qq-upload-drop-area"><span>' + attach.attr("data-instructions") + '</span></div>' +
+						'<ul class="qq-upload-list"></ul>' + 
+					'</div>',
+			onComplete: function(id, file, response) {
+
+				// HTML entities had to be encoded for the JSON or IE 8 went nuts. So, now we have to decode it.
+				if (response.error !== undefined) {
+					alert(response.error);
+					return;
+				}
+
+				$('.course-identity>span').replaceWith('<img src="' + response.file + '" />');
+				$('.course-identity>img').replaceWith('<img src="' + response.file + '" />');
 			}
-		}
-	});
+		});
+	}
 
-	$('#manage-instructors').fancybox({
-		type: 'ajax',
-		width: 600,
-		height: 500,
-		autoSize: false,
-		fitToView: false,
-		titleShow: false,
-		arrows: false,
-		closeBtn: true,
-		beforeLoad: function() {
-			$(this).attr('href', $(this).attr('href').nohtml());
-		},
-		afterShow: function() {
-			var fbox = $('div.fancybox-inner');
-
-			if (fbox.find('form.course-managers-form').length > 0) {
-				fbox
-					.on('submit', 'form.course-managers-form', function (e) {
+	// Add offering modal
+	if ($('#add-offering').length) {
+		$('#add-offering').fancybox({
+			type: 'ajax',
+			width: 600,
+			height: 300,
+			autoSize: true,
+			fitToView: false,
+			titleShow: false,
+			arrows: false,
+			closeBtn: true,
+			beforeLoad: function() {
+				$(this).attr('href', $(this).attr('href').nohtml());
+			},
+			afterShow: function() {
+				if ($('#hubForm').length > 0) {
+					$('#hubForm').on('submit', function (e) {
 						e.preventDefault();
 
-						$.post($(this).attr('action').nohtml(), $(this).serialize(), function(data) {
-							fbox.html(data);
-							//HUB.Plugins.Autocomplete.initialize();
+						if (!$('#field-title').val()) {
+							alert('Please provide a title.');
+							return false;
+						}
 
-							$('#notifier').text('Changes saved').hide().fadeIn().delay(1000).fadeOut();
+						$.post($(this).attr('action').nohtml(), $(this).serialize(), function(data) {
+							if (_DEBUG) {
+								window.console && console.log(data);
+							}
+
+							var response = JSON.parse(data);
+							if (!response.success) {
+								alert(response.message);
+								return;
+							}
+
+							$.fancybox.close();
+							window.location.reload();
 						});
-					})
-					.on('change', 'td>select', function (e) {
-						$('#task').val('update');
-						$(this).closest('form').submit();
 					});
+				}
 			}
-		},
-		afterClose: function() {
-			window.location.reload();
-		}
-	});
+		});
+	}
+
+	// Manage instructors modal
+	if ($('#manage-instructors').length) {
+		$('#manage-instructors').fancybox({
+			type: 'ajax',
+			width: 600,
+			height: 500,
+			autoSize: false,
+			fitToView: false,
+			titleShow: false,
+			arrows: false,
+			closeBtn: true,
+			beforeLoad: function() {
+				$(this).attr('href', $(this).attr('href').nohtml());
+			},
+			afterShow: function() {
+				var fbox = $('div.fancybox-inner');
+
+				if (fbox.find('form.course-managers-form').length > 0) {
+					fbox
+						.on('submit', 'form.course-managers-form', function (e) {
+							e.preventDefault();
+
+							$.post($(this).attr('action').nohtml(), $(this).serialize(), function(data) {
+								fbox.html(data);
+								//HUB.Plugins.Autocomplete.initialize();
+
+								$('#notifier').text('Changes saved').hide().fadeIn().delay(1000).fadeOut();
+							});
+						})
+						.on('change', 'td>select', function (e) {
+							$('#task').val('update');
+							$(this).closest('form').submit();
+						});
+				}
+			},
+			afterClose: function() {
+				window.location.reload();
+			}
+		});
+	}
 
 	if (!container.length) {
 		return;

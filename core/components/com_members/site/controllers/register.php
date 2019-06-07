@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Members\Site\Controllers;
@@ -503,7 +478,7 @@ class Register extends SiteController
 				if (substr(User::getInstance(User::get('id'))->get('username'), 0, 1) != '-')
 				{
 					App::redirect(
-						Route::url('index.php?option=com_users&view=logout'),
+						Route::url('index.php?option=com_users&view=login&view=logout'),
 						Lang::txt('This account appears to already exist. Please try logging in again.'),
 						'warning'
 					);
@@ -1441,8 +1416,8 @@ class Register extends SiteController
 			{
 				// An email was provided
 				// Get the Users controller
-				require_once Component::path('com_users') . '/site/controllers/user.php';
-				$user_controller = new \UsersControllerUser();
+				require_once Component::path('com_login') . '/site/controllers/auth.php';
+				$authController = new \Components\Login\Site\Controllers\Auth();
 
 				// Return back here while resetting the return to here
 				$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code . '&return=' . $return, false, true));
@@ -1451,11 +1426,11 @@ class Register extends SiteController
 				Request::setVar('return', $return);
 				Request::setVar('authenticator', 'emailtoken');
 				Request::setVar('email', $email);
-				Request::setVar('task', 'user.login');
-				Request::setVar('option', 'com_users');
+				Request::setVar('task', 'login');
+				Request::setVar('option', 'com_login');
 
-				$user_controller->login();
-				// UsersControlleUser->login() always redirects, should never make it here
+				$authController->login();
+				// $authController->login() always redirects, should never make it here
 			}
 			else
 			{
@@ -1487,7 +1462,7 @@ class Register extends SiteController
 			$login_return  = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code));
 			$logout_return = base64_encode(Route::url('index.php?option=com_users&view=login&return=' . $login_return));
 
-			$redirect = Route::url('index.php?option=com_users&view=logout&return=' . $logout_return);
+			$redirect = Route::url('index.php?option=com_users&view=login&task=logout&return=' . $logout_return);
 		}
 
 
@@ -1504,7 +1479,7 @@ class Register extends SiteController
 				$login_return  = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->_controller . '&task=' . $this->_task . '&confirm=' . $code));
 				$logout_return = base64_encode(Route::url('index.php?option=com_users&view=login&return=' . $login_return));
 
-				$redirect = Route::url('index.php?option=com_users&view=logout&return=' . $logout_return);
+				$redirect = Route::url('index.php?option=com_users&view=login&task=logout&return=' . $logout_return);
 			}
 		}
 		elseif ($email_confirmed < 0 && $email_confirmed == -$code)

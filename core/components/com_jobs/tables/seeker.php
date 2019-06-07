@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Jobs\Tables;
@@ -91,7 +66,7 @@ class JobSeeker extends Table
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE $this->_tbl_key=" . $this->_db->quote($name) . " LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM `$this->_tbl` WHERE $this->_tbl_key=" . $this->_db->quote($name) . " LIMIT 1");
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
@@ -162,9 +137,9 @@ class JobSeeker extends Table
 		if ($uid && !$count)
 		{
 			// shortlisted users
-			$query.= "\n , (SELECT count(*) FROM #__jobs_shortlist AS W WHERE W.seeker=s.uid AND W.emp=" . $this->_db->quote($uid) . " AND s.uid != " . $this->_db->quote($uid) . " AND s.uid=r.uid AND W.category='resume') AS shortlisted ";
+			$query.= "\n , (SELECT count(*) FROM `#__jobs_shortlist` AS W WHERE W.seeker=s.uid AND W.emp=" . $this->_db->quote($uid) . " AND s.uid != " . $this->_db->quote($uid) . " AND s.uid=r.uid AND W.category='resume') AS shortlisted ";
 			// is this my profile?
-			$query.= "\n , (SELECT count(*) FROM #__jobs_seekers AS s WHERE s.uid=" . $this->_db->quote($uid) . " AND s.uid=r.uid) AS mine ";
+			$query.= "\n , (SELECT count(*) FROM `#__jobs_seekers` AS s WHERE s.uid=" . $this->_db->quote($uid) . " AND s.uid=r.uid) AS mine ";
 		}
 
 		// determine relevance to search keywords
@@ -185,7 +160,7 @@ class JobSeeker extends Table
 				$kw = '';
 				for ($i=0, $n=count($s); $i < $n; $i++)
 				{
-					$query .= "\n , (SELECT count(*) FROM #__jobs_seekers AS s WHERE s.uid=r.uid ";
+					$query .= "\n , (SELECT count(*) FROM `#__jobs_seekers` AS s WHERE s.uid=r.uid ";
 					$query .= "AND  LOWER(s.tagline) LIKE " . $this->_db->quote('%' . $s[$i] . '%') . ") AS keyword$i ";
 					$kw .= $i == ($n-1) ? 'keyword' . $i . ' + 2' : 'keyword' . $i . ' + ';
 				}
@@ -209,7 +184,7 @@ class JobSeeker extends Table
 			$catquery = "AND (s.sought_cid = " . $this->_db->quote($filters['category']) . " OR  s.sought_cid = 0) ";
 		}
 
-		$query .= "\n , (SELECT count(*) FROM #__jobs_seekers AS s WHERE s.uid=r.uid " . $catquery . ") AS category ";
+		$query .= "\n , (SELECT count(*) FROM `#__jobs_seekers` AS s WHERE s.uid=r.uid " . $catquery . ") AS category ";
 
 		// Types
 		$typequery = 'AND 1=2';
@@ -218,19 +193,19 @@ class JobSeeker extends Table
 			$typequery = "AND (s.sought_type = " . $this->_db->quote($filters['type']) . " OR  s.sought_type = 0) ";
 		}
 
-		$query .= "\n , (SELECT count(*) FROM #__jobs_seekers AS s WHERE s.uid=r.uid " . $typequery . ") AS type ";
+		$query .= "\n , (SELECT count(*) FROM `#__jobs_seekers` AS s WHERE s.uid=r.uid " . $typequery . ") AS type ";
 
 		// Matching
 		$query .= "\n , (SELECT (type + category + keywords)) AS matching ";
 
 		// Join with profile & current resume
-		$query .= "FROM #__xprofiles AS x JOIN #__jobs_seekers AS s ON s.uid=x.uidNumber JOIN #__jobs_resumes AS r ON r.uid=s.uid  ";
+		$query .= "FROM #__xprofiles AS x JOIN `#__jobs_seekers` AS s ON s.uid=x.uidNumber JOIN `#__jobs_resumes` AS r ON r.uid=s.uid  ";
 
 		// Get shortlisted only
-		$query .= $filters['filterby'] == 'shortlisted' ? " JOIN #__jobs_shortlist AS W ON W.seeker=s.uid AND W.emp=" . $this->_db->quote($uid) . " AND s.uid != " . $this->_db->quote($uid) . " AND s.uid=r.uid AND W.category='resume' " : "";
+		$query .= $filters['filterby'] == 'shortlisted' ? " JOIN `#__jobs_shortlist` AS W ON W.seeker=s.uid AND W.emp=" . $this->_db->quote($uid) . " AND s.uid != " . $this->_db->quote($uid) . " AND s.uid=r.uid AND W.category='resume' " : "";
 
 		// Get applied only
-		$query .= $filters['filterby'] == 'applied' ? " JOIN #__jobs_openings AS J ON J.employerid=" . $this->_db->quote($empid) . " JOIN #__jobs_applications AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1  " : "";
+		$query .= $filters['filterby'] == 'applied' ? " JOIN `#__jobs_openings` AS J ON J.employerid=" . $this->_db->quote($empid) . " JOIN `#__jobs_applications` AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1  " : "";
 		$query .= "WHERE s.active=1 AND r.main=1 ";
 
 		// Ordering
@@ -296,10 +271,10 @@ class JobSeeker extends Table
 		$query .= "s.uid, s.lookingfor, s.tagline, s.sought_cid, s.sought_type, s.updated, s.linkedin, s.url ";
 		if ($eid)
 		{
-			$query.= "\n , (SELECT count(*) FROM #__jobs_shortlist AS W WHERE W.seeker=s.uid AND W.emp=" . $this->_db->quote($eid) . " AND s.uid=r.uid AND s.uid="  . $this->_db->quote($uid) . " AND s.uid != " . $this->_db->quote($eid) . " AND W.category='resume') AS shortlisted ";
+			$query.= "\n , (SELECT count(*) FROM `#__jobs_shortlist` AS W WHERE W.seeker=s.uid AND W.emp=" . $this->_db->quote($eid) . " AND s.uid=r.uid AND s.uid="  . $this->_db->quote($uid) . " AND s.uid != " . $this->_db->quote($eid) . " AND W.category='resume') AS shortlisted ";
 		}
-		$query .= "\n , (SELECT count(*) FROM #__jobs_seekers AS s WHERE s.uid=" . $this->_db->quote($uid) . " AND s.uid=r.uid AND s.uid = " . $this->_db->quote(User::get('id')) . ") AS mine ";
-		$query .= "FROM #__xprofiles AS x JOIN #__jobs_seekers AS s ON s.uid=x.uidNumber JOIN #__jobs_resumes AS r ON r.uid=s.uid  ";
+		$query .= "\n , (SELECT count(*) FROM `#__jobs_seekers` AS s WHERE s.uid=" . $this->_db->quote($uid) . " AND s.uid=r.uid AND s.uid = " . $this->_db->quote(User::get('id')) . ") AS mine ";
+		$query .= "FROM #__xprofiles AS x JOIN `#__jobs_seekers` AS s ON s.uid=x.uidNumber JOIN `#__jobs_resumes` AS r ON r.uid=s.uid  ";
 
 		$query .= "WHERE s.active=1 AND r.main=1 AND s.uid=" . $this->_db->quote($uid) . " LIMIT 1";
 

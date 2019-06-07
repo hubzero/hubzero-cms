@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -46,23 +22,14 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('revision');
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
-
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -83,49 +50,49 @@ function submitbutton(pressbutton)
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_PAGE') . ' ' . Lang::txt('COM_WIKI_FIELD_TITLE'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WIKI_PAGE') . ' ' . Lang::txt('COM_WIKI_FIELD_TITLE'); ?>:</th>
 						<td><?php echo $this->escape(stripslashes($this->page->get('title'))); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_PAGE') . ' ' . Lang::txt('COM_WIKI_FIELD_PAGENAME'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WIKI_PAGE') . ' ' . Lang::txt('COM_WIKI_FIELD_PAGENAME'); ?>:</th>
 						<td><?php echo $this->escape(stripslashes($this->page->get('pagename'))); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_PAGE') . ' ' . Lang::txt('COM_WIKI_FIELD_SCOPE'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WIKI_PAGE') . ' ' . Lang::txt('COM_WIKI_FIELD_SCOPE'); ?>:</th>
 						<td><?php echo $this->escape(stripslashes($this->page->get('scope') . ':' . $this->page->get('scope_id'))); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_PAGE') . ' ' . Lang::txt('COM_WIKI_FIELD_ID'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WIKI_PAGE') . ' ' . Lang::txt('COM_WIKI_FIELD_ID'); ?>:</th>
 						<td>
 							<?php echo $this->escape($this->row->get('page_id')); ?>
 							<input type="hidden" name="revision[page_id]" id="revision-page_id" value="<?php echo $this->escape($this->row->get('page_id')); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_FIELD_ID'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WIKI_FIELD_ID'); ?>:</th>
 						<td>
 							<?php echo $this->escape($this->row->get('id')); ?>
 							<input type="hidden" name="revision[id]" id="revision-id" value="<?php echo $this->escape($this->row->get('id')); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_FIELD_REVISION'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WIKI_FIELD_REVISION'); ?>:</th>
 						<td>
 							<?php echo $this->escape($this->row->get('version')); ?>
 							<input type="hidden" name="revision[version]" id="revision-version" value="<?php echo $this->escape($this->row->get('version')); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_FIELD_CREATOR'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WIKI_FIELD_CREATOR'); ?>:</th>
 						<td>
 							<?php echo $this->escape($this->row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'))); ?>
 							<input type="hidden" name="revision[created_by]" id="revision-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo Lang::txt('COM_WIKI_FIELD_CREATED'); ?>:</th>
+						<th scope="row"><?php echo Lang::txt('COM_WIKI_FIELD_CREATED'); ?>:</th>
 						<td>
-							<?php echo $this->row->get('created'); ?>
+							<time datetime="<?php echo $this->row->get('created'); ?>"><?php echo Date::of($this->row->get('created'))->toLocal(); ?></time>
 							<input type="hidden" name="revision[created]" id="revision-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
 						</td>
 					</tr>

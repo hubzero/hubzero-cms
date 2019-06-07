@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -36,36 +11,35 @@ defined('_HZEXEC_') or die();
 // Load base styles
 $this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/index.css?v=' . filemtime(__DIR__ . '/css/index.css'));
 $this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/cpanel.css?v=' . filemtime(__DIR__ . '/css/cpanel.css'));
+
 // Load theme
-if ($theme = $this->params->get('theme'))
+$theme = $this->params->get('theme');
+if ($theme == 'custom')
 {
-	if ($theme == 'custom')
-	{
-		$color = $this->params->get('color');
-		$this->addStyleDeclaration(include_once __DIR__ . '/css/themes/custom.php');
-	}
-	else if ($theme != 'gray')
-	{
-		$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/themes/' . $theme . '.css?v=' . filemtime(__DIR__ . '/css/themes/' . $theme . '.css'));
-	}
-}
-// Load language direction CSS
-if ($this->direction == 'rtl')
-{
-	$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/rtl.css?v=' . filemtime(__DIR__ . '/css/common/rtl.css'));
+	$color = $this->params->get('color');
+	$this->addStyleDeclaration(include_once __DIR__ . '/css/themes/custom.php');
 }
 
 $htheme = $this->params->get('header', 'light');
 $browser = new \Hubzero\Browser\Detector();
+
+$cls = array(
+	'nojs',
+	$this->direction,
+	$theme,
+	$htheme,
+	$browser->name(),
+	$browser->name() . $browser->major()
+);
 ?>
 <!DOCTYPE html>
-<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $htheme . ' ' . $browser->name() . ' ' . $browser->name() . $browser->major(); ?>">
+<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo implode(' ', $cls); ?>">
 	<head>
 		<meta name="viewport" content="width=device-width" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 		<jdoc:include type="head" />
 
-		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/placeholder.js?v=<?php echo filemtime(__DIR__ . '/js/placeholder.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/index.js?v=<?php echo filemtime(__DIR__ . '/js/index.js'); ?>"></script>
 
 		<!--[if lt IE 9]>
@@ -74,9 +48,6 @@ $browser = new \Hubzero\Browser\Detector();
 
 		<!--[if IE 9]>
 			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css?v=<?php echo filemtime(__DIR__ . '/css/browser/ie9.css'); ?>" />
-		<![endif]-->
-		<!--[if IE 8]>
-			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css?v=<?php echo filemtime(__DIR__ . '/css/browser/ie8.css'); ?>" />
 		<![endif]-->
 	</head>
 	<body id="cpanel-body">

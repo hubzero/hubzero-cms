@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -60,11 +36,7 @@ if (!$no_html) { ?>
 	<form action="<?php echo Route::url($this->member->link() . '&active=activity'); ?>" method="get">
 		<fieldset class="filters">
 			<div class="grid">
-				<div class="col span6">
-					<input type="text" name="q" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SEARCH_PLACEHOLDER'); ?>" />
-					<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SEARCH'); ?>" />
-				</div>
-				<div class="col span6 omega">
+				<div class="col span12 omega toolbar-options">
 					<?php if ($this->filters['filter'] == 'starred') { ?>
 						<a class="icon-star tooltips" href="<?php echo Route::url($this->member->link() . '&active=activity' . $qsfilters); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_ALL'); ?>">
 							<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_ALL'); ?>
@@ -82,25 +54,35 @@ if (!$no_html) { ?>
 				</div>
 			</div>
 			<div class="grid">
-				<div class="col span12">
-					<span class="input-wrap">
+				<div class="col span4">
+					<span class="form-group">
+						<label for="filter-search"><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SEARCH'); ?></label>
+						<input type="text" class="form-control" name="q" id="filter-search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SEARCH_PLACEHOLDER'); ?>" />
+					</span>
+				</div>
+				<div class="col span3">
+					<span class="form-group">
 						<label for="filter-scope"><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_SCOPE'); ?></label>
-						<select name="scope" id="filter-scope">
+						<select class="form-control" name="scope" id="filter-scope">
 							<option value=""><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_SCOPE_ALL'); ?></option>
 							<?php foreach ($this->categories as $category) { ?>
 								<option value="<?php echo $this->escape($category); ?>"<?php if ($this->filters['scope'] == $category) { echo ' selected="selected"'; } ?>><?php echo $this->escape($category); ?></option>
 							<?php } ?>
 						</select>
 					</span>
-
-					<span class="input-wrap">
+				</div>
+				<div class="col span3">
+					<span class="form-group">
 						<label for="filter-created_by"><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY'); ?></label>
-						<select name="created_by" id="filter-created_by">
+						<select class="form-control" name="created_by" id="filter-created_by">
 							<option value=""><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY_ALL'); ?></option>
 							<option value="me"<?php if ($this->filters['created_by'] == 'me') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY_ME'); ?></option>
 							<option value="notme"<?php if ($this->filters['created_by'] == 'notme') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY_NOTME'); ?></option>
 						</select>
 					</span>
+				</div>
+				<div class="col span2 omega">
+					<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SEARCH'); ?>" />
 				</div>
 			</div>
 		</fieldset>

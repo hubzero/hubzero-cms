@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        plugins/courses/discussions/assets/js/discussions.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 if (!jq) {
@@ -38,7 +37,7 @@ if (!HUB.Plugins) {
 	$.ajaxTransport("iframe", function(options, origOptions, jqXHR) {
 		var form = null,
 			iframe = null,
-			name = "iframe-" + $.now(),
+			name = "iframe-" + Date.now(),
 			files = $(options.files).filter(":file:enabled"),
 			markers = null,
 			accepts = null;
@@ -259,8 +258,8 @@ HUB.Plugins.CoursesForum = {
 						dataType: 'json',
 						success: function(response, status) {
 							if (typeof response === "string" ) {
-								//data = jQuery.parseJSON(response.responseText);
-								var data = jQuery.parseJSON(response);
+								//data = JSON.parse(response.responseText);
+								var data = JSON.parse(response);
 							} else {
 								var data = response;
 							}
@@ -561,8 +560,8 @@ HUB.Plugins.CoursesForum = {
 									});
 								} else {
 									if (typeof response === "string" ) {
-										//data = jQuery.parseJSON(response.responseText);
-										var data = jQuery.parseJSON(response);
+										//data = JSON.parse(response.responseText);
+										var data = JSON.parse(response);
 									} else {
 										var data = response;
 									}

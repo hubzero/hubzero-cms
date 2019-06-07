@@ -1,10 +1,7 @@
 /**
- * @package     hubzero.cms.site
- * @subpackage  com_dataviewer
- *
- * @author      Sudheera R. Fernando srf@xconsole.org
- * @copyright   Copyright 2010-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT or later; see LICENSE.txt
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 
@@ -227,7 +224,6 @@ jQuery(document).ready(function($) {
 
 	$('tfoot input').each(function(i) {
 		$(this).data('filter-value', '');
- 
 		if (dv_settings.show_filter_options) {
 			$(this).autocomplete({
 				disabled: true,
@@ -326,7 +322,6 @@ jQuery(document).ready(function($) {
 				title: res.title,
 				modal: true
 			}).find('.dv_image').lazyload({failure_limit:1000});
-			
 		}
 	}
 
@@ -810,9 +805,7 @@ jQuery(document).ready(function($) {
 				$('#dv_filters_tabs').append(filter_div);
 				$('#dv_filters_tabs ul').append(tpl_title.supplant({'id': i, 'name': dv_data.filters[i].filter_name}));
 			}
-			
 		}
-		
 		$('#dv_filters_tabs').tabs("refresh").tabs( 'option', "active", 0);
 
 

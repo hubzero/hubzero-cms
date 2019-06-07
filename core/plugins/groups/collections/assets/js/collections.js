@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        plugins/groups/collections/collections.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 if (!jq) {
@@ -30,6 +29,7 @@ jQuery(document).ready(function(jq){
 	if (container.length > 0) {
 		// Set overlays for lightboxed elements
 		$('a.img-link').fancybox({
+			type: 'image',
 			afterLoad: function() {
 				if ($(this.element).attr('data-download')) {
 					this.title = '<a href="' + $(this.element).attr('data-download') + '" download="' + $(this.element).attr('data-download') + '">' + $(this.element).attr('data-downloadtext') + '</a> ' + this.title;
@@ -168,15 +168,8 @@ jQuery(document).ready(function(jq){
 				beforeLoad: function() {
 					$(this).attr('href', $(this).attr('href').nohtml());
 				},
-				afterLoad: function(current, previous) {
-					scrp = current.content.match(/<script type=\"text\/javascript\">(.*)<\/script>/ig);
-					current.content = current.content.replace(/<script(.*)<\/script>/ig, '');
-				},
 				beforeShow: function() {
-					if (scrp && scrp.length) {
-						scrp = scrp[0].replace(/<script type=\"text\/javascript\">/ig, '').replace(/<\/script>/ig, '');
-						eval(scrp);
-					}
+					$(document).trigger('ajaxLoad');
 				},
 				afterShow: function() {
 					var el = this.element;
@@ -238,15 +231,8 @@ jQuery(document).ready(function(jq){
 			beforeLoad: function() {
 				$(this).attr('href', $(this).attr('href').nohtml());
 			},
-			afterLoad: function(current, previous) {
-				scrp = current.content.match(/<script type=\"text\/javascript\">(.*)<\/script>/ig);
-				current.content = current.content.replace(/<script(.*)<\/script>/ig, '');
-			},
 			beforeShow: function() {
-				if (scrp && scrp.length) {
-					scrp = scrp[0].replace(/<script type=\"text\/javascript\">/ig, '').replace(/<\/script>/ig, '');
-					eval(scrp);
-				}
+				$(document).trigger('ajaxLoad');
 			},
 			afterShow: function() {
 				var el = this.element;

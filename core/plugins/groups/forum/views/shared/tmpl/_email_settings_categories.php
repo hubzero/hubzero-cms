@@ -1,7 +1,13 @@
 <?php
-	$base = $this->base;
-	$preexistingSubscriptionIds = array();
-	$currentUserId = User::get('id');
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+$base = $this->base;
+$preexistingSubscriptionIds = array();
+$currentUserId = User::get('id');
 ?>
 
 <form method="post" id="email-settings">
@@ -12,19 +18,19 @@
 			<?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_CATEGORIES'); ?>
 		</span>
 
-		<?php	foreach($this->categories as $category): ?>
+		<?php foreach ($this->categories as $category): ?>
 			<?php
-				$usersSubscription = $category->usersCategories()
-					->whereEquals('user_id', $currentUserId)
-					->row();
+			$usersSubscription = $category->usersCategories()
+				->whereEquals('user_id', $currentUserId)
+				->row();
 
-				$checked = '';
+			$checked = '';
 
-				if (!$usersSubscription->isNew())
-			  {
-					$checked = 'checked';
-					$preexistingSubscriptionIds[] = $category->get('id');
-			  }
+			if (!$usersSubscription->isNew())
+			{
+				$checked = 'checked';
+				$preexistingSubscriptionIds[] = $category->get('id');
+			}
 			?>
 			<span class="line-item">
 				<input type="checkbox" name="<?php echo $category->get('id'); ?>"<?php echo $checked; ?>>
@@ -37,7 +43,6 @@
 		<input type="hidden" id="preexisting-subscriptions" value="<?php echo implode($preexistingSubscriptionIds, ','); ?>">
 
 		<input class="option" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SAVE'); ?>" />
-
 	</fieldset>
 </form>
 
@@ -53,7 +58,6 @@
 </style>
 
 <?php
-	Html::behavior('core');
-	$this->js('notify');
-	$this->js('emailSettings');
-?>
+Html::behavior('core');
+$this->js('notify');
+$this->js('emailSettings');

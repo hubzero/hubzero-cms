@@ -1,38 +1,15 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Publications\Helpers\Usage;
 
 use Components\Publications\Helpers\Usage as Base;
+use Lang;
+use Date;
 
 /**
  * Extended resource stats class (And More)
@@ -44,32 +21,32 @@ class Andmore extends Base
 	 *
 	 * @var string
 	 */
-	var $views    = 'unavailable';
+	public $views = 'unavailable';
 
 	/**
 	 * Average view time
 	 *
 	 * @var string
 	 */
-	var $avg_view = 'unavailable';
+	public $avg_view = 'unavailable';
 
 	/**
 	 * Total views
 	 *
 	 * @var string
 	 */
-	var $tot_view = 'unavailable';
+	public $tot_view = 'unavailable';
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object  &$db      JDatabase
-	 * @param      integer $resid    Resource ID
-	 * @param      integer $type     Resource type
-	 * @param      integer $rating   Resource rating
-	 * @param      integer $cites    Number of citations
-	 * @param      string  $lastcite Last citation date
-	 * @return     void
+	 * @param   object   &$db       Database
+	 * @param   integer  $resid     Publication ID
+	 * @param   integer  $type      Publication type
+	 * @param   integer  $rating    Publication rating
+	 * @param   integer  $cites     Number of citations
+	 * @param   string   $lastcite  Last citation date
+	 * @return  void
 	 */
 	public function __construct(&$db, $resid, $type, $rating=0, $cites=0, $lastcite='')
 	{
@@ -79,8 +56,8 @@ class Andmore extends Base
 	/**
 	 * Display formatted results for a given time range
 	 *
-	 * @param      string $disp Time range [curr, last, year, all]
-	 * @return     string
+	 * @param   string  $disp  Time range [curr, last, year, all]
+	 * @return  string
 	 */
 	public function display($disp='ALL')
 	{
@@ -131,8 +108,8 @@ class Andmore extends Base
 	/**
 	 * Push database results to $this for internal use
 	 *
-	 * @param      array &$result Database results
-	 * @return     void
+	 * @param   array  $result  Database results
+	 * @return  void
 	 */
 	public function process($result)
 	{

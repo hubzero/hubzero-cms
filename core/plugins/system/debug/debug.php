@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die;
@@ -58,12 +33,10 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		// Log database queries
 		if ($this->params->get('log-database-queries'))
 		{
-			// Register the HUBzero database logger as well
-			// Don't worry, this won't log things twice...queries through joomla's database driver
-			// will get logged above, and this will catch queries through hubzero's database driver
+			// Register the HUBzero database logger
 			Event::listen(function($event)
 			{
-				\Hubzero\Database\Log::add($event->getArgument('query'), $event->getArgument('time'));
+				Hubzero\Database\Log::add($event->getArgument('query'), $event->getArgument('time'));
 			}, 'database_query');
 		}
 
@@ -149,8 +122,8 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 
 		// Capture output
 		// [!] zooley Nov 03, 2014 - PHP 5.4 changed behavior for ob_end_clean().
-		//     ob_end_clean(), called in JError, clears and stops buffering.
-		//     On error, pages, there will be no buller to get so ob_get_contents()
+		//     ob_end_clean() clears and stops buffering.
+		//     On error, pages, there will be no buffer to get so ob_get_contents()
 		//     will be false.
 		$contents = ob_get_contents();
 
@@ -214,14 +187,10 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		// Load language file
 		$this->loadLanguage('plg_system_debug');
 
-		$html = '';
-
-		// Some "mousewheel protecting" JS
-		$html .= '<div id="system-debug" class="' . $this->params->get('theme', 'dark') . ' profiler">';
-
+		$html  = '<div id="system-debug" class="' . $this->params->get('theme', 'dark') . ' profiler">';
 		$html .= '<div class="debug-head" id="debug-head">';
 		$html .= '<h1>' . Lang::txt('PLG_DEBUG_TITLE') . '</h1>';
-		$html .= '<a class="debug-close-btn" href="javascript:" onclick="Debugger.close();"><span class="icon-remove">' . Lang::txt('PLG_DEBUG_CLOSE') . '</span></a>';
+		$html .= '<a class="debug-close-btn" href="#system-debug"><span class="icon-remove">' . Lang::txt('PLG_DEBUG_CLOSE') . '</span></a>';
 
 		if (Config::get('debug'))
 		{
@@ -230,32 +199,32 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 				$html .= '<span class="debug-indicator"><span class="icon-memory text" data-hint="' . Lang::txt('PLG_DEBUG_MEMORY_USAGE') . '">' . $this->displayMemoryUsage() . '</span></span>';
 			}
 
-			$dumper = \Hubzero\Debug\Dumper::getInstance();
+			$dumper = Hubzero\Debug\Dumper::getInstance();
 			if ($dumper->hasMessages())
 			{
-				$html .= '<a href="javascript:" class="debug-tab debug-tab-console" onclick="Debugger.toggleContainer(this, \'debug-debug\');"><span class="text">' . Lang::txt('PLG_DEBUG_CONSOLE') . '</span>';
+				$html .= '<a href="#debug-debug" class="debug-tab debug-tab-console"><span class="text">' . Lang::txt('PLG_DEBUG_CONSOLE') . '</span>';
 				$html .= '<span class="badge">' . count($dumper->messages()) . '</span>';
 				$html .= '</a>';
 			}
 
-			$html .= '<a href="javascript:" class="debug-tab debug-tab-request" onclick="Debugger.toggleContainer(this, \'debug-request\');"><span class="text">' . Lang::txt('PLG_DEBUG_REQUEST_DATA') . '</span></a>';
-			$html .= '<a href="javascript:" class="debug-tab debug-tab-session" onclick="Debugger.toggleContainer(this, \'debug-session\');"><span class="text">' . Lang::txt('PLG_DEBUG_SESSION') . '</span></a>';
+			$html .= '<a href="#debug-request" class="debug-tab debug-tab-request"><span class="text">' . Lang::txt('PLG_DEBUG_REQUEST_DATA') . '</span></a>';
+			$html .= '<a href="#debug-session" class="debug-tab debug-tab-session"><span class="text">' . Lang::txt('PLG_DEBUG_SESSION') . '</span></a>';
 			if ($this->params->get('profile', 1))
 			{
-				$html .= '<a href="javascript:" class="debug-tab debug-tab-timeline" onclick="Debugger.toggleContainer(this, \'debug-profile_information\');"><span class="text">' . Lang::txt('PLG_DEBUG_PROFILE_TIMELINE') . '</span></a>';
+				$html .= '<a href="#debug-profile_information" class="debug-tab debug-tab-timeline"><span class="text">' . Lang::txt('PLG_DEBUG_PROFILE_TIMELINE') . '</span></a>';
 			}
 			if ($this->params->get('queries', 1))
 			{
-				$html .= '<a href="javascript:" class="debug-tab debug-tab-database" onclick="Debugger.toggleContainer(this, \'debug-queries\');"><span class="text">' . Lang::txt('PLG_DEBUG_QUERIES') . '</span><span class="badge">' . App::get('db')->getCount() . '</span></a>';
+				$html .= '<a href="#debug-queries" class="debug-tab debug-tab-database"><span class="text">' . Lang::txt('PLG_DEBUG_QUERIES') . '</span><span class="badge">' . App::get('db')->getCount() . '</span></a>';
 			}
-			$html .= '<a href="javascript:" class="debug-tab debug-tab-events" onclick="Debugger.toggleContainer(this, \'debug-events\');"><span class="text">' . Lang::txt('PLG_DEBUG_EVENTS') . '</span><span class="badge">' . count(Event::getCalledListeners()) . '</span></a>';
+			$html .= '<a href="#debug-events" class="debug-tab debug-tab-events"><span class="text">' . Lang::txt('PLG_DEBUG_EVENTS') . '</span><span class="badge">' . count(Event::getCalledListeners()) . '</span></a>';
 		}
 
 		if (Config::get('debug_lang'))
 		{
 			if ($this->params->get('language_errorfiles', 1))
 			{
-				$html .= '<a href="javascript:" class="debug-tab debug-tab-lang-errors" onclick="Debugger.toggleContainer(this, \'debug-language_files_in_error\');"><span class="text">' . Lang::txt('PLG_DEBUG_LANGUAGE_FILE_ERRORS') . '</span>';
+				$html .= '<a href="#debug-language_files_in_error" class="debug-tab debug-tab-lang-errors"><span class="text">' . Lang::txt('PLG_DEBUG_LANGUAGE_FILE_ERRORS') . '</span>';
 				$html .= '<span class="badge">' . count(Lang::getErrorFiles()) . '</span>';
 				$html .= '</a>';
 			}
@@ -267,14 +236,14 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 				{
 					$total += count($files);
 				}
-				$html .= '<a href="javascript:" class="debug-tab debug-tab-lang-files" onclick="Debugger.toggleContainer(this, \'debug-language_files_loaded\');"><span class="text">' . Lang::txt('PLG_DEBUG_LANGUAGE_FILES_LOADED') . '</span>';
+				$html .= '<a href="#debug-language_files_loaded" class="debug-tab debug-tab-lang-files"><span class="text">' . Lang::txt('PLG_DEBUG_LANGUAGE_FILES_LOADED') . '</span>';
 				$html .= '<span class="badge">' . $total . '</span>';
 				$html .= '</a>';
 			}
 
 			if ($this->params->get('language_strings'))
 			{
-				$html .= '<a href="javascript:" class="debug-tab debug-tab-lang-untranslated" onclick="Debugger.toggleContainer(this, \'debug-untranslated_strings\');"><span class="text">' . Lang::txt('PLG_DEBUG_UNTRANSLATED') . '</span>';
+				$html .= '<a href="#debug-untranslated_strings" class="debug-tab debug-tab-lang-untranslated"><span class="text">' . Lang::txt('PLG_DEBUG_UNTRANSLATED') . '</span>';
 				$html .= '<span class="badge">' . count(Lang::getOrphans()) . '</span>';
 				$html .= '</a>';
 			}
@@ -331,234 +300,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 
 		$html .= '</div>';
 		$html .= '</div>';
-
-		$html .= "<script type=\"text/javascript\">
-		if (!document.getElementsByClassName) {
-			document.getElementsByClassName = (function() {
-				function traverse (node, callback) {
-					callback(node);
-					for (var i=0;i < node.childNodes.length; i++) {
-						traverse(node.childNodes[i],callback);
-					}
-				}
-				return function (name) {
-					var result = [];
-					traverse(document.body,function(node) {
-						if (node.className && (' ' + node.className + ' ').indexOf(' ' + name + ' ') > -1) {
-							result.push(node);
-						}
-					});
-					return result;
-				}
-			})();
-		}
-		Debugger = {
-			toggleShortFull: function(id) {
-				var d = document.getElementById('debug-' + id + '-short');
-				if (!Debugger.hasClass(d, 'open')) {
-					Debugger.addClass(d, 'open');
-				} else {
-					Debugger.removeClass(d, 'open');
-				}
-
-				var g = document.getElementById('debug-' + id + '-full');
-				if (!Debugger.hasClass(g, 'open')) {
-					Debugger.addClass(g, 'open');
-				} else {
-					Debugger.removeClass(g, 'open');
-				}
-			},
-			close: function() {
-				var d = document.getElementById('system-debug');
-				if (Debugger.hasClass(d, 'open')) {
-					Debugger.removeClass(d, 'open');
-				}
-
-				Debugger.deactivate();
-			},
-			deactivate: function() {
-				var items = document.getElementsByClassName('debug-tab');
-				for (var i=0;i<items.length;i++)
-				{
-					if (Debugger.hasClass(items[i], 'active')) {
-						Debugger.removeClass(items[i], 'active');
-					}
-				}
-
-				var items = document.getElementsByClassName('debug-container');
-				for (var i=0;i<items.length;i++)
-				{
-					if (Debugger.hasClass(items[i], 'open')) {
-						Debugger.removeClass(items[i], 'open');
-					}
-				}
-			},
-			toggleContainer: function(el, name) {
-				if (!Debugger.hasClass(el, 'active')) {
-					var d = document.getElementById('system-debug');
-					if (!Debugger.hasClass(d, 'open')) {
-						Debugger.addClass(d, 'open');
-					}
-
-					Debugger.deactivate();
-					Debugger.addClass(el, 'active');
-
-					var e = document.getElementById(name);
-					if (e) {
-						Debugger.toggleClass(e, 'open');
-					}
-				} else {
-					Debugger.close();
-				}
-			},
-			hasClass: function(elem, className) {
-				return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
-			},
-			addClass: function(elem, className) {
-				if (!Debugger.hasClass(elem, className)) {
-					elem.className += ' ' + className;
-				}
-			},
-			removeClass: function(elem, className) {
-				var newClass = ' ' + elem.className.replace( /[\\t\\r\\n]/g, ' ') + ' ';
-				if (Debugger.hasClass(elem, className)) {
-					while (newClass.indexOf(' ' + className + ' ') >= 0 ) {
-						newClass = newClass.replace(' ' + className + ' ', ' ');
-					}
-					elem.className = newClass.replace(/^\s+|\s+\$/g, '');
-				}
-			},
-			toggleClass: function(elem, className) {
-				var newClass = ' ' + elem.className.replace( /[\\t\\r\\n]/g, ' ') + ' ';
-				if (Debugger.hasClass(elem, className)) {
-					while (newClass.indexOf(' ' + className + ' ') >= 0 ) {
-						newClass = newClass.replace(' ' + className + ' ', ' ');
-					}
-					elem.className = newClass.replace(/^\s+|\s+\$/g, '');
-				} else {
-					elem.className += ' ' + className;
-				}
-			},
-			addEvent: function(obj, type, fn) {
-				if (obj.attachEvent) {
-					obj['e'+type+fn] = fn;
-					obj[type+fn] = function() {
-						obj['e'+type+fn]( window.event );
-					};
-					obj.attachEvent('on' + type, obj[type+fn]);
-				} else {
-					obj.addEventListener( type, fn, false );
-				}
-			},
-			removeEvent: function( obj, type, fn ) {
-				if (obj.detachEvent) {
-					obj.detachEvent('on' + type, obj[type+fn]);
-					obj[type+fn] = null;
-				} else {
-					obj.removeEventListener(type, fn, false);
-				}
-			}
-		};
-
-		Function.prototype.bindD = function(obj) {
-			var _method = this;
-			return function() {
-				return _method.apply(obj, arguments);
-			};
-		}
-
-		function debugDrag(id) {
-			this.id = 'id';
-			this.direction = 'y';
-		}
-		debugDrag.prototype = {
-			init: function(settings) {
-				for (var i in settings)
-				{
-					this[i] = settings[i];
-
-					for (var j in settings[i])
-					{
-						this[i][j] = settings[i][j];
-					}
-				}
-
-				this.elem = (this.id.tagName==undefined) ? document.getElementById(this.id) : this.id;
-				this.container = this.elem.parentNode;
-				this.elem.onmousedown = this._mouseDown.bindD(this);
-			},
-
-			_mouseDown: function(e) {
-				e = e || window.event;
-
-				this.elem.onselectstart=function() {return false};
-
-				this._event_docMouseMove = this._docMouseMove.bindD(this);
-				this._event_docMouseUp = this._docMouseUp.bindD(this);
-
-				if (this.onstart) this.onstart();
-
-				this.x = e.clientX || e.PageX;
-				this.y = e.clientY || e.PageY;
-
-				//this.left = parseInt(this._getstyle(this.elem, 'left'));
-				//this.top = parseInt(this._getstyle(this.elem, 'top'));
-				this.top = parseInt(this._getstyle(this.container, 'height'));
-
-				Debugger.addEvent(document, 'mousemove', this._event_docMouseMove);
-				Debugger.addEvent(document, 'mouseup', this._event_docMouseUp);
-
-				return false;
-			},
-
-			_getstyle: function(elem, prop) {
-				if (document.defaultView) {
-					return document.defaultView.getComputedStyle(elem, null).getPropertyValue(prop);
-				} else if (elem.currentStyle) {
-					var prop = prop.replace(/-(\w)/gi, function($0,$1)
-					{
-						return $1.toUpperCase();
-					});
-					return elem.currentStyle[prop];
-				} else {
-					return null;
-				}
-			},
-
-			_docMouseMove: function(e) {
-				this.setValuesClick(e);
-				if (this.ondrag) this.ondrag();
-			},
-
-			_docMouseUp: function(e) {
-				Debugger.removeEvent(document, 'mousemove', this._event_docMouseMove);
-
-				if (this.onstop) this.onstop();
-
-				Debugger.removeEvent(document, 'mouseup', this._event_docMouseUp);
-			},
-
-			setValuesClick: function(e) {
-				if (!Debugger.hasClass(this.container, 'open')) {
-					return;
-				}
-
-				this.mouseX = e.clientX || e.PageX;
-				this.mouseY = e.clientY || e.pageY;
-
-				this.Y = this.top + this.y - this.mouseY - parseInt(this._getstyle(document.getElementById('debug-head'), 'height')); //this.top + this.mouseY - this.y;
-
-				//this.container.style.height = (this.Y + 6) +'px';
-				document.getElementById('debug-body').style.height = (this.Y + 6) +'px';
-			},
-
-			_limit: function(val, mn, mx) {
-				return Math.min(Math.max(val, Math.min(mn, mx)), Math.max(mn, mx));
-			}
-		}
-		var dragBar = new debugDrag();
-		dragBar.init({id:'debug-head'});
-		</script>";
+		$html .= '<script type="text/javascript" src="' . Request::root() . '/core/plugins/system/debug/assets/js/debug.js"></script>';
 
 		echo str_replace('</body>', $html . '</body>', $contents);
 	}
@@ -613,23 +355,23 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		<dl class="debug-varlist">
 			<dt class="key">$_GET</dt>
 			<dd class="value">
-				<span id="debug-get-short" class="open" onclick="Debugger.toggleShortFull(\'get\');">' . \Hubzero\Utility\Str::truncate(strip_tags($get), 100, array('exact' => true)) . '</span>
-				<span id="debug-get-full" onclick="Debugger.toggleShortFull(\'get\');">' . nl2br($get) . '</span>
+				<span id="debug-get-short" data-section="get" class="debug-toggle open">' . Hubzero\Utility\Str::truncate(strip_tags($get), 100, array('exact' => true)) . '</span>
+				<span id="debug-get-full" data-section="get" class="debug-toggle">' . nl2br($get) . '</span>
 			</dd>
 			<dt class="key">$_POST</dt>
 			<dd class="value">
-				<span id="debug-post-short" class="open" onclick="Debugger.toggleShortFull(\'post\');">' . \Hubzero\Utility\Str::truncate(strip_tags($post), 100, array('exact' => true)) . '</span>
-				<span id="debug-post-full" onclick="Debugger.toggleShortFull(\'post\');">' . nl2br($post) . '</span>
+				<span id="debug-post-short" data-section="post" class="debug-toggle open">' . Hubzero\Utility\Str::truncate(strip_tags($post), 100, array('exact' => true)) . '</span>
+				<span id="debug-post-full" data-section="post" class="debug-toggle">' . nl2br($post) . '</span>
 			</dd>
 			<dt class="key">$_COOKIE</dt>
 			<dd class="value">
-				<span id="debug-cookies-short" class="open" onclick="Debugger.toggleShortFull(\'cookies\');">' . \Hubzero\Utility\Str::truncate(strip_tags($cookies), 100, array('exact' => true)) . '</span>
-				<span id="debug-cookies-full" onclick="Debugger.toggleShortFull(\'cookies\');">' . nl2br($cookies) . '</span>
+				<span id="debug-cookies-short" data-section="cookies" class="debug-toggle open">' . Hubzero\Utility\Str::truncate(strip_tags($cookies), 100, array('exact' => true)) . '</span>
+				<span id="debug-cookies-full" data-section="cookies" class="debug-toggle">' . nl2br($cookies) . '</span>
 			</dd>
 			<dt class="key">$_SERVER</dt>
 			<dd class="value">
-				<span id="debug-server-short" class="open" onclick="Debugger.toggleShortFull(\'server\');">' . \Hubzero\Utility\Str::truncate(strip_tags($server), 100, array('exact' => true)) . '</span>
-				<span id="debug-server-full" onclick="Debugger.toggleShortFull(\'server\');">' . nl2br($server) . '</span>
+				<span id="debug-server-short" data-section="server" class="debug-toggle open">' . Hubzero\Utility\Str::truncate(strip_tags($server), 100, array('exact' => true)) . '</span>
+				<span id="debug-server-full" data-section="server" class="debug-toggle">' . nl2br($server) . '</span>
 			</dd>
 		</dl>';
 
@@ -643,7 +385,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 	 */
 	protected function displayDebug()
 	{
-		$dumper = \Hubzero\Debug\Dumper::getInstance();
+		$dumper = Hubzero\Debug\Dumper::getInstance();
 
 		return $dumper->render();
 	}
@@ -720,7 +462,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 
 				if (is_object($entries))
 				{
-					$o = \Hubzero\Utility\Arr::fromObject($entries);
+					$o = Hubzero\Utility\Arr::fromObject($entries);
 
 					if ($o)
 					{
@@ -808,7 +550,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 	{
 		$bytes = App::get('profiler')->memory();
 
-		return \Hubzero\Utility\Number::formatBytes($bytes);
+		return Hubzero\Utility\Number::formatBytes($bytes);
 	}
 
 	/**
@@ -818,7 +560,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 	 */
 	protected function displayQueries()
 	{
-		$db = \App::get('db');
+		$db = App::get('db');
 
 		$log = $db->getLog();
 
@@ -850,8 +592,8 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			}
 
 			$fromString = substr($sql, 0, $whereStart);
-			$fromString = str_replace("\t", " ", $fromString);
-			$fromString = str_replace("\n", " ", $fromString);
+			$fromString = str_replace("\t", ' ', $fromString);
+			$fromString = str_replace("\n", ' ', $fromString);
 			$fromString = trim($fromString);
 
 			// Initialize the select/other query type counts the first time:
@@ -940,7 +682,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		$html  = '<ul>';
 		foreach ($called as $info)
 		{
-			$file = !empty($info['file']) ? substr($info['file'], strlen(PATH_ROOT)) : "";
+			$file = !empty($info['file']) ? substr($info['file'], strlen(PATH_ROOT)) : '';
 			$line = !empty($info['line']) ? $info['line'] : "";
 			$html .= '<li><code>';
 			$html .= '<span class="tm">' . $info['event'] . '</span> ';
@@ -1113,7 +855,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 	 *
 	 * @param   string  $sql  The query to highlight
 	 * @return  string
-	 * @since   2.5
+	 * @since   2.0
 	 */
 	protected function highlightQuery($sql)
 	{
@@ -1152,7 +894,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 	 * @param   string  $file  The full path to the file.
 	 * @param   string  $line  The line number.
 	 * @return  string
-	 * @since   2.5
+	 * @since   2.0
 	 */
 	protected function formatLink($file, $line = '')
 	{
@@ -1222,7 +964,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			$logger = App::get('log')->logger('post');
 
 			$post     = json_encode($_POST);
-			$referrer = $_SERVER['HTTP_REFERER'];
+			$referrer = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');
 
 			// Encrypt for some reasonable level of obscurity
 			$key = md5(App::get('config')->get('secret'));

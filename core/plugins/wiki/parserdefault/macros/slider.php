@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- * @package		HUBzero                                  CMS
- * @author		Shawn                                     Rice <zooley@purdue.edu>
- * @copyright	Copyright                               2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -40,7 +16,7 @@ class SliderMacro extends WikiMacro
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function description()
 	{
@@ -58,7 +34,7 @@ class SliderMacro extends WikiMacro
 	/**
 	 * Generate macro output
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function render()
 	{
@@ -119,9 +95,8 @@ class SliderMacro extends WikiMacro
 			}
 		}
 
-		$html  = '';
-		$html .= '<div class="wiki_slider">';
-		$html .= '<div id="slider_' . $id . '">';
+		$html  = '<div class="wiki_slider">';
+		$html .= '<div id="slider_' . $id . '" class="slider_macro">';
 		foreach ($final_slides as $fs)
 		{
 			$html .= '<img src="' . $fs . '" alt="" />';
@@ -130,17 +105,8 @@ class SliderMacro extends WikiMacro
 		$html .= '<div class="wiki_slider_pager" id="slider_' . $id . '_pager"></div>';
 		$html .= '</div>';
 
-		Document::addStyleSheet('plugins/wiki/parserdefault/macros/macro-assets/slider/slider.css');
-		Document::addScript('plugins/wiki/parserdefault/macros/macro-assets/slider/slider.js');
-		Document::addScriptDeclaration('
-			jQuery(document).ready(function($) {
-				$("#slider_' . $id . '").cycle({
-					fx: \'scrollHorz\',
-					speed: 450,
-					pager: \'#slider_' . $id . '_pager\'
-				});
-			});
-		');
+		\Document::addStyleSheet(\Request::root() . 'core/plugins/wiki/parserdefault/macros/macro-assets/slider/slider.css?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.css'));
+		\Document::addScript(\Request::root() . 'core/plugins/wiki/parserdefault/macros/macro-assets/slider/slider.js?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.js'));
 
 		return $html;
 	}

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -32,7 +37,7 @@ class Migration20170901000000ComMenus extends Base
 			  `component_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to #__extensions.id',
 			  `ordering` int(11) NOT NULL DEFAULT '0' COMMENT 'The relative ordering of the menu item in the tree.',
 			  `checked_out` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to #__users.id',
-			  `checked_out_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'The time the menu item was checked out.',
+			  `checked_out_time` timestamp DEFAULT NULL COMMENT 'The time the menu item was checked out.',
 			  `browserNav` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'The click behaviour of the link.',
 			  `access` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The access level required to view the menu item.',
 			  `img` varchar(255) NOT NULL COMMENT 'The image of the menu item.',
@@ -52,6 +57,11 @@ class Migration20170901000000ComMenus extends Base
 			  KEY `idx_language` (`language`),
 			  KEY `idx_client_id_parent_id_alias_language` (`client_id`,`parent_id`,`alias`,`language`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+
+			$this->db->setQuery($query);
+			$this->db->query();
+
+			$query = "INSERT INTO `#__menu` VALUES (1,'','Menu_Item_Root','root','','','','',1,0,0,0,0,0,NULL,0,0,'',0,'',0,1,0,'*',0);";
 
 			$this->db->setQuery($query);
 			$this->db->query();

@@ -1,29 +1,8 @@
 <?php
 /**
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license	http://opensource.org/licenses/MIT MIT
- *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -57,13 +36,12 @@ if ($this->config->get('launcher_layout', 0))
 else
 {
 	?>
-	<div id="content-header">
+
+	<?php echo \Components\Publications\Helpers\Html::title($this->publication); ?>
 		<section class="main section upperpane">
 			<div class="subject">
 				<div class="grid overviewcontainer">
 					<div class="col span8">
-						<?php echo str_replace(' id="content-header"', '', \Components\Publications\Helpers\Html::title($this->publication)); ?>
-
 						<?php if ($this->publication->params->get('show_authors') && $this->publication->_authors) { ?>
 							<div id="authorslist">
 								<?php echo \Components\Publications\Helpers\Html::showContributors($this->publication->_authors, true, false, false, false, $this->publication->params->get('format_authors', 0)); ?>
@@ -167,7 +145,7 @@ else
 				?>
 			</div><!-- / .aside -->
 		</section><!-- / .main section -->
-	</div>
+
 	<?php
 }
 

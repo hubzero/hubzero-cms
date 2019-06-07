@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="2.5" method="upgrade">
 	<name>com_categories</name>
-		<author>Joomla! Project</author>
 	<creationDate>December 2007</creationDate>
-		<copyright>(C) 2005 - 2014 Open Source Matters. All rights reserved.</copyright>
-		<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-		<authorEmail>admin@joomla.org</authorEmail>
-		<authorUrl>www.joomla.org</authorUrl>
-		<version>2.5.0</version>
-		<description>COM_CATEGORIES_XML_DESCRIPTION</description>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<version>2.5.0</version>
+	<description>COM_CATEGORIES_XML_DESCRIPTION</description>
 	<administration>
 		<files folder="admin">
 			<filename>categories.php</filename>
@@ -26,5 +26,3 @@
 		</languages>
 	</administration>
 </extension>
-
-

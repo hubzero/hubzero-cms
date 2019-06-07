@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -51,6 +26,7 @@ if ($thedate == '0000-00-00 00:00:00')
 $this->model->introtext = stripslashes($this->model->introtext);
 $this->model->fulltxt = stripslashes($this->model->fulltxt);
 $this->model->fulltxt = ($this->model->fulltxt) ? trim($this->model->fulltxt) : trim($this->model->introtext);
+$this->model->fulltxt = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $this->model->fulltxt);
 
 // Parse for <nb:field> tags
 $type = $this->model->type;
@@ -64,9 +40,9 @@ if (count($matches) > 0)
 		$data[$match[1]] = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $match[2]);
 	}
 }
-$this->model->fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->model->fulltxt);
-$this->model->fulltxt = trim($this->model->fulltxt);
-$this->model->fulltxt = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $this->model->fulltxt);
+//$fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $fulltxt);
+//$fulltxt = trim($fulltxt);
+//$fulltxt = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $fulltxt);
 
 include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
 $elements = new \Components\Resources\Models\Elements($data, $this->model->type->customFields);
@@ -208,17 +184,9 @@ $maintext = $this->model->description;
 						$tconfig = Component::params('com_tools');
 						$doi = '';
 
-						if ($this->model->doi && $tconfig->get('doi_shoulder'))
+						if ($this->model->doi && ($this->model->doi_shoulder || $tconfig->get('doi_shoulder')))
 						{
-							$doi = $tconfig->get('doi_shoulder') . '/' . strtoupper($this->model->doi);
-						}
-						else if ($this->model->doi_label)
-						{
-							$doi = '10254/' . $tconfig->get('doi_prefix') . $this->model->id . '.' . $this->model->doi_label;
-						}
-
-						if ($doi)
-						{
+							$doi = ($this->model->doi_shoulder ? $this->model->doi_shoulder : $tconfig->get('doi_shoulder')) . '/' . strtoupper($this->model->doi);
 							$cite->doi = $doi;
 						}
 
@@ -239,15 +207,15 @@ $maintext = $this->model->description;
 				?>
 
 				<?php if ($this->model->params->get('show_citation') == 3): ?>
-				<h4><?php echo (isset($citations) && ($citations != null || $citations != '') ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS') : ''); ?></h4>
+				<h4><?php echo (isset($citations) && ($citations != null || $citations != '')) ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS') : ''; ?></h4>
 
 				<div class="resource-content">
-					<?php echo (isset($citations) && ($citations != null || $citations != '') ? $citeinstruct : ''); ?>
+					<?php echo (isset($citations) && ($citations != null || $citations != '')) ? $citeinstruct : ''; ?>
 				</div>
 				<?php else: ?>
-					<h4><?php echo (isset($cite) && ($cite != null || $cite != '') ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS') : ''); ?></h4>
+					<h4><?php echo (isset($cite) && ($cite != null || $cite != '')) ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS') : ''; ?></h4>
 					<div class="resource-content">
-						<?php echo (isset($cite) && ($cite != null || $cite != '') ? $citeinstruct : ''); ?>
+						<?php echo (isset($cite) && ($cite != null || $cite != '')) ? $citeinstruct : ''; ?>
 					</div>
 				<?php endif; ?>
 			<?php } ?>
@@ -267,7 +235,7 @@ $maintext = $this->model->description;
 				}
 				if (substr($this->model->attribs->get('timeof', ''), 4, 1) == '-')
 				{
-					$seminarTime = ($this->model->attribs->get('timeof', '') != '0000-00-00 00:00:00' || $this->model->attribs->get('timeof', '') != '')
+					$seminarTime = ($this->model->attribs->get('timeof', '') != '0000-00-00 00:00:00' && $this->model->attribs->get('timeof', '') != '')
 								  ? Date::of($this->model->attribs->get('timeof', ''))->toLocal($exp)
 								  : '';
 				}
@@ -322,10 +290,5 @@ $maintext = $this->model->description;
 				</div>
 			<?php endif; ?>
 		<?php endif; ?>
-
-		<?php
-		$cite = null; // Not used
-		echo \Components\Resources\Helpers\Html::citationCOins($cite, $this->model);
-		?>
 	</div><!-- / .resource -->
 </div><!-- / .subject -->

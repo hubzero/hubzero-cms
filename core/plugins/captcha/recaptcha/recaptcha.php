@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die;
@@ -106,31 +82,68 @@ class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
 			return '<p class="error">' . Lang::txt('PLG_CAPTCHA_RECAPTCHA_API_NEEDED') . '</p>';
 		}
 
+		Document::addStyleDeclaration('
+			noscript .g-recaptcha-ns {
+				width: 302px;
+				height: 352px;
+			}
+			noscript .g-recaptcha-inner {
+				width: 302px;
+				height: 352px;
+				position: relative;
+			}
+			noscript .g-recaptcha-challenge {
+				width: 302px;
+				height: 352px;
+				position: absolute;
+			}
+			noscript .g-recaptcha-challenge iframe {
+				width: 302px;
+				height:352px;
+				border-style: none;
+			}
+			noscript .g-recaptcha-response-wrap {
+				width: 250px;
+				height: 80px;
+				position: absolute;
+				border-style: none;
+				bottom: 21px;
+				left: 25px;
+				margin: 0px;
+				padding: 0px;
+				right: 25px;
+			}
+			noscript .g-recaptcha-response {
+				width: 250px;
+				height: 80px;
+				border: 1px solid #c1c1c1;
+				margin: 0px;
+				padding: 0px;
+				resize: none;
+			}
+		');
+
 		// recaptcha html structure
 		// this has support for users with js off
-		$html  = '<label class="">&nbsp;</label><div class="field-wrap">';
+		$html  = '<div class="form-group">';
+		$html .= '<label class="">&nbsp;</label><div class="field-wrap">';
 		$html .= '<div class="g-recaptcha" id="' . $id . '" data-type="' . $this->params->get('type', 'image') . '" data-theme="' . $this->params->get('theme', 'light') . '" data-sitekey="' . $this->params->get('public') . '"></div>
 					<noscript>
-					  <div style="width: 302px; height: 352px;">
-					    <div style="width: 302px; height: 352px; position: relative;">
-					      <div style="width: 302px; height: 352px; position: absolute;">
-					        <iframe src="' . static::$_jsFallbackUrl . $this->params->get('public') . '"
-					                frameborder="0" scrolling="no" title="' . Lang::txt('PLG_CAPTCHA_RECAPTCHA_TITLE') . '"
-					                style="width: 302px; height:352px; border-style: none;">
+					  <div class="g-recaptcha-ns">
+					    <div class="g-recaptcha-inner">
+					      <div class="g-recaptcha-challenge">
+					        <iframe src="' . static::$_jsFallbackUrl . $this->params->get('public') . '" frameborder="0" scrolling="no" title="' . Lang::txt('PLG_CAPTCHA_RECAPTCHA_TITLE') . '">
 					        </iframe>
 					      </div>
-					      <div style="width: 250px; height: 80px; position: absolute; border-style: none;
-					                  bottom: 21px; left: 25px; margin: 0px; padding: 0px; right: 25px;">
-					        <textarea id="g-recaptcha-response" name="g-recaptcha-response"
-					                  class="g-recaptcha-response"
-					                  style="width: 250px; height: 80px; border: 1px solid #c1c1c1;
-					                         margin: 0px; padding: 0px; resize: none;" value="">
+					      <div class="g-recaptcha-response-wrap">
+					        <textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response" value="">
 					        </textarea>
 					      </div>
 					    </div>
 					  </div>
 					</noscript>
 					<script type="text/javascript" src="' . static::$_jsUrl . '?hl=' . $this->params->get('language', 'en') . '" async defer></script>';
+		$html .= '</div>';
 		$html .= '</div>';
 
 		return $html;

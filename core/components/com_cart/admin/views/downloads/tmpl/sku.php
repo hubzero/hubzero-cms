@@ -1,30 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
- *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -42,51 +20,9 @@ Toolbar::custom('downloadSku', 'download.png', '', 'Download CSV', false);
 
 //Toolbar::spacer();
 //Toolbar::help('downloads');
+
+$this->js();
 ?>
-<script type="text/javascript">
-	function submitbutton(pressbutton)
-	{
-		var form = document.adminForm;
-		if (pressbutton == 'cancel') {
-			submitform(pressbutton);
-			return;
-		}
-		// do field validation
-		submitform(pressbutton);
-	}
-
-	$( function() {
-		var dateFormat = "mm/dd/yy",
-			from = $( "#filter-report-from" )
-				.datepicker({
-					defaultDate: "+1w",
-					changeMonth: true,
-					numberOfMonths: 1
-				})
-				.on( "change", function() {
-					to.datepicker( "option", "minDate", getDate( this ) );
-				}),
-			to = $( "#filter-report-to" ).datepicker({
-					defaultDate: "+1w",
-					changeMonth: true,
-					numberOfMonths: 1
-				})
-				.on( "change", function() {
-					from.datepicker( "option", "maxDate", getDate( this ) );
-				});
-
-		function getDate( element ) {
-			var date;
-			try {
-				date = $.datepicker.parseDate( dateFormat, element.value );
-			} catch( error ) {
-				date = null;
-			}
-
-			return date;
-		}
-	} );
-</script>
 
 <?php
 $this->view('_submenu')
@@ -98,14 +34,14 @@ $this->view('_submenu')
 		<div class="grid">
 			<div class="col span5">
 				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
+				<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
 			</div>
 			<div class="col span7 align-right">
 				<label for="filter-report-from"><?php echo Lang::txt('From'); ?>:</label>
-				<input type="text" name="report-from" id="filter-report-from" value="<?php echo $this->escape($this->filters['report-from']); ?>" placeholder="<?php echo Lang::txt('From'); ?>" />
+				<input type="text" name="report-from" id="filter-report-from" class="filter" value="<?php echo $this->escape($this->filters['report-from']); ?>" placeholder="<?php echo Lang::txt('From'); ?>" />
 				&mdash;
 				<label for="filter-report-to"><?php echo Lang::txt('To'); ?>:</label>
-				<input type="text" name="report-to" id="filter-report-to" value="<?php echo $this->escape($this->filters['report-to']); ?>" placeholder="<?php echo Lang::txt('To'); ?>" />
+				<input type="text" name="report-to" id="filter-report-to" class="filter" value="<?php echo $this->escape($this->filters['report-to']); ?>" placeholder="<?php echo Lang::txt('To'); ?>" />
 				<input type="submit" value="<?php echo Lang::txt('Update'); ?>" />
 			</div>
 		</div>
@@ -142,7 +78,7 @@ $this->view('_submenu')
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php
-					$product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $row->pId) . '" target="_blank">' . $this->escape(stripslashes($row->pName)) . '</a>';
+					$product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $row->pId) . '">' . $this->escape(stripslashes($row->pName)) . '</a>';
 					if (!stripslashes($row->pName))
 					{
 						$product = '<span class="missing">Product n/a</span>';
@@ -158,7 +94,7 @@ $this->view('_submenu')
 					}
 					else
 					{
-						$sku = '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '" target="_blank">' . $this->escape(stripslashes($row->sSku)) . '</a>';
+						$sku = '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '">' . $this->escape(stripslashes($row->sSku)) . '</a>';
 					}
 					?>
 					<span><?php echo $sku; ?></span>

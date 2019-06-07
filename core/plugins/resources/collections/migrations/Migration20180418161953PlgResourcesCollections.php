@@ -1,4 +1,10 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 require_once Component::path('com_resources') . '/models/type.php';
 use Components\Resources\Models\Type;
 use Hubzero\Content\Migration\Base;

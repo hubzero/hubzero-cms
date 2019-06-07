@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Collections\Models;
@@ -44,9 +19,9 @@ use User;
 use Lang;
 
 require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'item.php');
-require_once(__DIR__ . DS . 'asset.php');
-require_once(__DIR__ . DS . 'tags.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'item.php';
+require_once __DIR__ . DS . 'asset.php';
+require_once __DIR__ . DS . 'tags.php';
 
 /**
  * Collections model for an item
@@ -484,7 +459,7 @@ class Item extends Base
 	 */
 	public function vote()
 	{
-		require_once(dirname(__DIR__) . DS . 'tables' . DS . 'vote.php');
+		require_once dirname(__DIR__) . DS . 'tables' . DS . 'vote.php';
 
 		$vote = new Tables\Vote($this->_db);
 		$vote->loadByBulletin($this->get('id'), User::get('id'));
@@ -686,7 +661,7 @@ class Item extends Base
 						'pagename' => 'collections',
 						'pageid'   => 0,
 						'filepath' => '',
-						'domain'   => 'collection'
+						'domain'   => ''//'collection'
 					);
 
 					$content = stripslashes((string) $this->get('description', ''));
@@ -889,7 +864,7 @@ class Item extends Base
 
 		if ($id)
 		{
-			require_once(dirname(__DIR__) . DS . 'tables' . DS . 'post.php');
+			require_once dirname(__DIR__) . DS . 'tables' . DS . 'post.php';
 
 			$post = new Tables\Post($this->_db);
 			$post->load($id);

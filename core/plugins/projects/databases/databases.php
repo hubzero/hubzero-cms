@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Sudheera R. Fernando <sudheera@xconsole.org>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -160,19 +135,19 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		try
 		{
 			// Check if the plugin parameters the two mysql accounts are properly set
-			$db_opt_rw['driver']   = 'mysqli';
+			$db_opt_rw['driver']   = 'mysql';
 			$db_opt_rw['host']     = $this->params->get('db_host');
 			$db_opt_rw['user']     = $this->params->get('db_user');
 			$db_opt_rw['password'] = $this->params->get('db_password');
 			$db_opt_rw['prefix']   = '';
-			$db_rw = JDatabase::getInstance($db_opt_rw);
+			$db_rw = Hubzero\Database\Driver::getInstance($db_opt_rw);
 
-			$db_opt_ro['driver']   = 'mysqli';
+			$db_opt_ro['driver']   = 'mysql';
 			$db_opt_ro['host']     = $this->params->get('db_host');
 			$db_opt_ro['user']     = $this->params->get('db_ro_user');
 			$db_opt_ro['password'] = $this->params->get('db_ro_password');
 			$db_opt_ro['prefix']   = '';
-			$db_ro = JDatabase::getInstance($db_opt_ro);
+			$db_ro = Hubzero\Database\Driver::getInstance($db_opt_ro);
 
 			if ($db_rw->getErrorNum() > 0 || $db_ro->getErrorNum() > 0)
 			{
@@ -282,7 +257,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		{
 			if ($raw_op)
 			{
-				print json_encode(array('status' => 'success', 'data' => $table));
+				echo json_encode(array('status' => 'success', 'data' => $table));
 				exit();
 			}
 			else
@@ -651,7 +626,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 		if (!$file)
 		{
-			print json_encode(array('status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')));
+			echo json_encode(array('status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')));
 			return;
 		}
 
@@ -828,7 +803,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			$table['rec_total'] = $count;
 			$table['rec_display'] = $display_count;
 
-			print json_encode(array('status' => 'success', 'data' => $table));
+			echo json_encode(array('status' => 'success', 'data' => $table));
 		}
 	}
 
@@ -951,7 +926,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 		if (!$file)
 		{
-			print json_encode(array('status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')));
+			echo json_encode(array('status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')));
 			return;
 		}
 
@@ -1145,7 +1120,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 		$url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI']) . "/projects/" . $this->model->get('alias') . "/databases/";
 
-		print json_encode(array('status' => 'success', 'data' => $url));
+		echo json_encode(array('status' => 'success', 'data' => $url));
 
 		// Success message
 		if (!empty($this->_msg))
@@ -1499,20 +1474,20 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		// Create database if it doesn't exist
 		$sql = "CREATE DATABASE IF NOT EXISTS " . 'prj_db_' . $id;
 
-		$opt['driver']   = 'mysqli';
+		$opt['driver']   = 'mysql';
 		$opt['host']     = $this->params->get('db_host');
 		$opt['user']     = $this->params->get('db_user');
 		$opt['password'] = $this->params->get('db_password');
 		$opt['prefix']   = '';
 
-		$db = JDatabase::getInstance($opt);
+		$db = Hubzero\Database\Driver::getInstance($opt);
 
 		$db->setQuery($sql);
 		$db->query();
 
 		$opt['database'] = 'prj_db_' . $id;
 
-		$db = JDatabase::getInstance($opt);
+		$db = Hubzero\Database\Driver::getInstance($opt);
 
 		return $db;
 	}

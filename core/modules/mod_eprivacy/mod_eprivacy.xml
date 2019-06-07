@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site">
+	<name>mod_eprivacy</name>
+	<creationDate>January 2019</creationDate>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<version>1.2.0</version>
+	<description>MOD_EPRIVACY_XML_DESCRIPTION</description>
+	<files>
+		<filename module="mod_activity">mod_eprivacy.php</filename>
+		<filename>assets/css/mod_eprivacy.css</filename>
+		<filename>assets/js/mod_eprivacy.js</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="moduleid" type="text" default="eprivacy" label="MOD_EPRIVACY_PARAM_MODULEID_LABEL" description="MOD_EPRIVACY_PARAM_MODULEID_DESC" />
+				<field name="message" type="textarea" rows="5" cols="40" default="" label="MOD_EPRIVACY_PARAM_MESSAGE_LABEL" description="MOD_EPRIVACY_PARAM_MESSAGE_DESC" />
+				<field name="duration" type="text" default="365" label="MOD_EPRIVACY_PARAM_DURATION_LABEL" description="MOD_EPRIVACY_PARAM_DURATION_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>

@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Events\Admin\Controllers;
@@ -236,7 +211,7 @@ class Events extends AdminController
 		{
 			$this->view->row->checkout(User::get('id'));
 
-			if (trim($this->view->row->publish_down) == '0000-00-00 00:00:00')
+			if (!$this->view->row->publish_down || trim($this->view->row->publish_down) == '0000-00-00 00:00:00')
 			{
 				$this->view->row->publish_down = Lang::txt('COM_EVENTS_CAL_LANG_NEVER');
 			}
@@ -572,40 +547,7 @@ class Events extends AdminController
 	 */
 	private function _clean($string)
 	{
-		// strip out any KL_PHP, script, style, HTML comments
-		$string = preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $string);
-		$string = preg_replace("'<head[^>]*?>.*?</head>'si", '', $string);
-		$string = preg_replace("'<body[^>]*?>.*?</body>'si", '', $string);
-		$string = preg_replace("'<style[^>]*>.*?</style>'si", '', $string);
-		$string = preg_replace("'<script[^>]*>.*?</script>'si", '', $string);
-		$string = preg_replace('/<!--.+?-->/', '', $string);
-
-		$string = str_replace(array("&amp;","&lt;","&gt;"), array("&amp;amp;","&amp;lt;","&amp;gt;",), $string);
-		// fix &entitiy\n;
-
-		$string = preg_replace('#(&\#*\w+)[\x00-\x20]+;#u', "$1;", $string);
-		$string = preg_replace('#(&\#x*)([0-9A-F]+);*#iu', "$1$2;", $string);
-		$string = html_entity_decode($string, ENT_COMPAT, "UTF-8");
-
-		// remove any attribute starting with "on" or xmlns
-		$string = preg_replace('#(<[^>]+[\x00-\x20\"\'])(on|xmlns)[^>]*>#iUu', "$1>", $string);
-		// remove javascript: and vbscript: protocol
-		$string = preg_replace('#([a-z]*)[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*)[\\x00-\x20]*j[\x00-\x20]*a[\x00-\x20]*v[\x00-\x20]*a[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu', '$1=$2nojavascript...', $string);
-		$string = preg_replace('#([a-z]*)[\x00-\x20]*=([\'\"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu', '$1=$2novbscript...', $string);
-		//<span style="width: expression(alert('Ping!'));"></span>
-		// only works in ie...
-		$string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*expression[\x00-\x20]*\([^>]*>#iU', "$1>", $string);
-		$string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*behaviour[\x00-\x20]*\([^>]*>#iU', "$1>", $string);
-		$string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:*[^>]*>#iUu', "$1>", $string);
-		//remove namespaced elements (we do not need them...)
-		$string = preg_replace('#</*\w+:\w[^>]*>#i', '', $string);
-		//remove really unwanted tags
-		do {
-			$oldstring = $string;
-			$string = preg_replace('#</*(applet|meta|xml|blink|link|style|script|embed|object|iframe|frame|frameset|ilayer|layer|bgsound|title|base)[^>]*>#i', '', $string);
-		} while ($oldstring != $string);
-
-		return $string;
+		return \Hubzero\Utility\Sanitize::clean($string);
 	}
 
 	/**

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -38,6 +43,11 @@ class Migration20170901000000ComLanguages extends Base
 			  KEY `idx_access` (`access`),
 			  KEY `idx_ordering` (`ordering`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+
+			$this->db->setQuery($query);
+			$this->db->query();
+
+			$query = "INSERT INTO `#__languages` VALUES (1,'en-GB','English (UK)','English (UK)','en','en','','','','',1,1,1)";
 
 			$this->db->setQuery($query);
 			$this->db->query();

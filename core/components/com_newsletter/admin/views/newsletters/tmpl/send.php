@@ -1,40 +1,15 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
 defined('_HZEXEC_') or die();
 
 //set title
-Toolbar::title(Lang::txt('COM_NEWSLETTER_SEND') . ': ' . $this->newsletter->name, 'newsletter.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_SEND') . ': ' . $this->newsletter->name, 'newsletter');
 
 //add buttons to toolbar
 Toolbar::custom('dosendnewsletter', 'send', '', 'COM_NEWSLETTER_TOOLBAR_SEND', false);
@@ -47,30 +22,6 @@ Html::behavior('framework', true);
 $this->js();
 ?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	//are we trying to send newsletter
-	if (pressbutton == 'dosendnewsletter')
-	{
-		//check to make sure we all set to go
-		if (!HUB.Administrator.Newsletter.sendNewsletterCheck())
-		{
-			return;
-		}
-
-		//double check with user
-		if (!HUB.Administrator.Newsletter.sendNewsletterDoubleCheck())
-		{
-			return;
-		}
-	}
-
-	//submit form
-	submitform( pressbutton );
-}
-</script>
-
 <?php
 	if ($this->getError())
 	{
@@ -78,8 +29,8 @@ function submitbutton(pressbutton)
 	}
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm">
-	<div class="col width-100">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+	<div class="col span12">
 		<?php if ($this->newsletter->id != null) : ?>
 			<a name="distribution"></a>
 			<fieldset class="adminform">
@@ -90,7 +41,7 @@ function submitbutton(pressbutton)
 							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER'); ?>:</th>
 							<td>
 								<?php echo $this->newsletter->name; ?>
-								<input type="hidden" name="newsletter-name" id="newsletter-name" value="<?php echo $this->newsletter->name; ?>" />
+								<input type="hidden" name="newsletter-name" id="newsletter-name" value="<?php echo $this->escape($this->newsletter->name); ?>" />
 							</td>
 						</tr>
 						<tr>
@@ -139,16 +90,17 @@ function submitbutton(pressbutton)
 
 									<div id="scheduler-alt">
 										<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_DATE'); ?>
-										<input type="text" name="scheduler_date" id="scheduler_date" style="width:auto;" />
+										<input type="text" name="scheduler_date" id="scheduler_date" class="width-auto" />
+
 										<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_TIME'); ?>
-										<select name="scheduler_date_hour" id="scheduler_date_hour" style="width:auto;">
+										<select name="scheduler_date_hour" id="scheduler_date_hour" class="width-auto">
 											<option value=""><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_NULL'); ?></option>
 											<?php for ($i = 1, $n = 13; $i < $n; $i++) : ?>
 												<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
 											<?php endfor; ?>
 										</select>
 
-										<select name="scheduler_date_minute" id="scheduler_date_minute" style="width:auto;">
+										<select name="scheduler_date_minute" id="scheduler_date_minute" class="width-auto">
 											<option value=""><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_NULL'); ?></option>
 											<?php for ($i = 0, $n = 60; $i < $n; $i+=5) : ?>
 												<?php
@@ -166,7 +118,7 @@ function submitbutton(pressbutton)
 											<?php endfor; ?>
 										</select>
 
-										<select name="scheduler_date_meridian" id="scheduler_date_meridian" style="width:auto;">
+										<select name="scheduler_date_meridian" id="scheduler_date_meridian" class="width-auto">
 											<option value=""><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_NULL'); ?></option>
 											<option value="am"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_AM'); ?></option>
 											<option value="pm"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_PM'); ?></option>

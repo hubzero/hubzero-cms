@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero.cms.site
- * @subpackage  com_dataviewer
- *
- * @author      Sudheera R. Fernando srf@xconsole.org
- * @copyright   Copyright 2010-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT or later; see LICENSE.txt
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -285,9 +282,15 @@ function view($dd = false)
 				<div id="dv_charts_control_panel" style="padding: 0 5px; ">
 				<?php if (isset($dd['charts_list'])): ?>
 				<select id="dv_chart_name" style="width: 100%;">
-					<?php $pd_id = 0; foreach ($dd['charts_list'] as $cl): ?>
+					<?php 
+						$pd_id = 0;
+						foreach ($dd['charts_list'] as $cl):
+					?>
 					<option value="<?php print $pd_id?>"><?php print $cl['title']; ?></option>
-					<?php $pd_id++; endforeach; ?>
+					<?php 
+						$pd_id++;
+						endforeach;
+					?>
 				</select>
 
 				<div id="dv_chart_desc" class=" ui-widget-content ui-corner-all" style="margin-top: 10px; font-size: 0.9em; border-style: inset; padding: 2px; overflow: auto; height: 340px;"></div>
@@ -323,7 +326,7 @@ function view($dd = false)
 		<?php
 			$full_list = '';
 			$selected = '';
-			foreach ($dd['cols'] as $id=>$prop) {
+			foreach ($dd['cols'] as $id => $prop) {
 				if (!isset($prop['hide']) || (isset($prop['hide']) && $prop['hide'] != 'hide')) {
 					if (!isset($prop['label'])) {
 						$prop['label'] = $id;
@@ -454,7 +457,7 @@ function view($dd = false)
 				}
 			}
 
-			$colid++ ;
+			$colid++;
 		}
 		print '</tr></tfoot>';
 	?>

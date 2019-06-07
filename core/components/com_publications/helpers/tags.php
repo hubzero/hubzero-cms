@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Publications\Helpers;
@@ -82,7 +57,7 @@ class Tags extends \Hubzero\Base\Obj
 	/**
 	 * Constructor
 	 *
-	 * @param      object $db     JDatabase
+	 * @param      object $db     Database
 	 * @param      array  $config Optional configurations
 	 * @return     void
 	 */
@@ -208,8 +183,8 @@ class Tags extends \Hubzero\Base\Obj
 				AND t.admin=0
 				AND o.objectid=r.id
 				AND V.state=1
-				AND (V.publish_up = '0000-00-00 00:00:00' OR V.publish_up <= '$now')
-				AND (V.publish_down = '0000-00-00 00:00:00' OR V.publish_down >= '$now') ";
+				AND (V.publish_up IS NULL OR V.publish_up = '0000-00-00 00:00:00' OR V.publish_up <= '$now')
+				AND (V.publish_down IS NULL OR V.publish_down = '0000-00-00 00:00:00' OR V.publish_down >= '$now') ";
 		if ($category)
 		{
 			$sql .= "AND r.category=" . $category . " ";
@@ -519,8 +494,8 @@ class Tags extends \Hubzero\Base\Obj
 		if ($category) {
 			$query .= "AND C.category=" . $category . " ";
 		}
-		$query .= "AND (V.published_up = '0000-00-00 00:00:00' OR V.published_up <= '" . $now . "') ";
-		$query .= "AND (V.published_down = '0000-00-00 00:00:00' OR V.published_down >= '" . $now . "') AND ";
+		$query .= "AND (V.published_up IS NULL OR V.published_up = '0000-00-00 00:00:00' OR V.published_up <= '" . $now . "') ";
+		$query .= "AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00' OR V.published_down >= '" . $now . "') AND ";
 
 		$query .= (!User::isGuest())
 			   ? "(C.access=0 OR C.access=1) "
@@ -773,8 +748,8 @@ class Tags extends \Hubzero\Base\Obj
 		$sql .= "AND tj.tbl=" . $this->_db->quote($this->_tbl) . " ";
 		$sql .= "AND V.state=1 AND V.main=1 AND V.access!=4 ";
 		$sql .= "AND V.published_up < " . $this->_db->quote(Date::toSql()) . " ";
-		$sql .= "AND (V.published_down = '0000-00-00 00:00:00' OR V.published_down > " . $this->_db->quote(Date::toSql()) . ") ";
-		$sql .= "GROUP BY tagid ";
+		$sql .= "AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00' OR V.published_down > " . $this->_db->quote(Date::toSql()) . ") ";
+		$sql .= "GROUP BY tj.tagid, tj.objectid ";
 		$sql .= "ORDER BY tcount DESC ";
 		$sql .= "LIMIT $limit";
 
@@ -903,7 +878,7 @@ class Tags extends \Hubzero\Base\Obj
 				if ($showsizes == 1)
 				{
 					$size = $min_font_size + ($tag->count - $min_qty) * $step;
-					$tll[$tag->tag] = "\t".'<li' . $class . '><span style="font-size: ' . round($size, 1) . 'em"><a class="tag' . ($tag->admin ? ' admin' : '') . '" href="' . Route::url('index.php?option=com_publications&task=browse&tag=' . implode(',', $lsst)) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
+					$tll[$tag->tag] = "\t".'<li' . $class . '><span data-size="' . round($size, 1) . 'em"><a class="tag' . ($tag->admin ? ' admin' : '') . '" href="' . Route::url('index.php?option=com_publications&task=browse&tag=' . implode(',', $lsst)) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
 				}
 				else
 				{

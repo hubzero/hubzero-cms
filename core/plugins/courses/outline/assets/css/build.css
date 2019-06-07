@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_courses/assets/css/editoutline.css
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 /* Main outline styles */
@@ -250,6 +249,9 @@
 }
 .aux-attachments a.attach-wiki:before {
 	content: "\f02a";
+}
+.aux-attachments a.attach-tool:before {
+	content: "\f0ad";
 }
 .aux-attachments a.attach-object:before {
 	content: "\f0c3";
@@ -528,7 +530,6 @@ ul {
 	padding: 10px;
 	border: 1px dotted #AAA;
 
-	background-image: url("/core/assets/images/light-stripes.png");
 	background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(0,0,0, .065)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(0,0,0, .065)), color-stop(.75, rgba(0,0,0, .065)), color-stop(.75, transparent), to(transparent));
 	background-image: -webkit-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
 	background-image: -moz-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
@@ -704,7 +705,6 @@ ul {
 	margin-top: -10px;
 }
 .asset-group .unpublished {
-	background-image: url("/core/assets/images/light-stripes.png");
 	background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(0,0,0, .065)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(0,0,0, .065)), color-stop(.75, rgba(0,0,0, .065)), color-stop(.75, transparent), to(transparent));
 	background-image: -webkit-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
 	background-image: -moz-linear-gradient(-45deg, rgba(0,0,0, .065) 25%, transparent 25%, transparent 50%, rgba(0,0,0, .065) 50%, rgba(0,0,0, .065) 75%, transparent 75%, transparent);
@@ -725,7 +725,7 @@ ul {
 	display: none;
 }
 .asset-group-item-container {
-	margin: 10px 210px 10px 10px;
+	margin: 10px 240px 10px 10px;
 }
 .uploadfiles {
 	position: absolute;
@@ -736,7 +736,7 @@ ul {
 	top: 0;
 	bottom: 0;
 	right: 0;
-	width: 180px;
+	width: 210px;
 }
 .uploadfiles p {
 	margin: 0;
@@ -841,7 +841,7 @@ ul {
 	content: "\f03d";
 }
 .tool:after {
-	content: "\f0c3";
+	content: "\f0ad";
 }
 
 .asset-group-item .checker {
@@ -862,7 +862,6 @@ ul {
 	font-weight: bold;
 	zoom: 1;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
-	background-image: url("/core/assets/images/light-stripes.png");
 	background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .065)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .065)), color-stop(.75, rgba(255, 255, 255, .065)), color-stop(.75, transparent), to(transparent));
 	background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
 	background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .065) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .065) 50%, rgba(255, 255, 255, .065) 75%, transparent 75%, transparent);
@@ -1066,7 +1065,8 @@ ul {
 /* Styles for popup edit pages */
 .edit-asset,
 .edit-assetgroup,
-.wiki-edit {
+.wiki-edit,
+.tool-edit {
 	margin: 0 20px;
 }
 .edit-asset h3,

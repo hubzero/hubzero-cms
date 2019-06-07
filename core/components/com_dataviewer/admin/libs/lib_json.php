@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero.cms.admin
- * @subpackage  com_dataviewer
- *
- * @author      Sudheera R. Fernando sudheera@xconsole.org
- * @copyright   Copyright 2010-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT or later; see LICENSE.txt
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -21,7 +18,9 @@ function json_format($json)
 	$json_obj = json_decode($json);
 
 	if ($json_obj === false)
+	{
 		return false;
+	}
 
 	$json = json_encode($json_obj);
 	$len = strlen($json);
@@ -31,38 +30,51 @@ function json_format($json)
 		switch ($char) {
 			case '{':
 			case '[':
-				if (!$in_string) {
+				if (!$in_string)
+	{
 					$new_json .= $char . "\n" . str_repeat($tab, $indent_level+1);
 					$indent_level++;
-				} else {
+				}
+				else
+				{
 					$new_json .= $char;
 				}
 				break;
 			case '}':
 			case ']':
-				if (!$in_string) {
+				if (!$in_string)
+	{
 					$indent_level--;
 					$new_json .= "\n" . str_repeat($tab, $indent_level) . $char;
-				} else {
+				}
+				else
+				{
 					$new_json .= $char;
 				}
 				break;
 			case ',':
-				if (!$in_string) {
+				if (!$in_string)
+	{
 					$new_json .= ",\n" . str_repeat($tab, $indent_level);
-				} else {
+				}
+				else
+				{
 					$new_json .= $char;
 				}
 				break;
 			case ':':
-				if (!$in_string) {
+				if (!$in_string)
+	{
 					$new_json .= ": ";
-				} else {
+				}
+				else
+				{
 					$new_json .= $char;
 				}
 				break;
 			case '"':
-				if ($c > 0 && $json[$c-1] != '\\') {
+				if ($c > 0 && $json[$c-1] != '\\')
+	{
 					$in_string = !$in_string;
 				}
 			default:
@@ -73,4 +85,3 @@ function json_format($json)
 
 	return $new_json;
 }
-?>

@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Projects\Admin\Controllers;
@@ -128,12 +103,18 @@ class Projects extends AdminController
 				'filterby',
 				''
 			),
-			'private' => Request::getState(
+			'access' => Request::getState(
+				$this->_option . '.projects.access',
+				'access',
+				0,
+				'int'
+			),
+			/*'private' => Request::getState(
 				$this->_option . '.projects.private',
 				'private',
 				-1,
 				'int'
-			),
+			),*/
 			'sortby' => Request::getState(
 				$this->_option . '.projects.sort',
 				'filter_order',
@@ -408,7 +389,8 @@ class Projects extends AdminController
 		$model->set('type', $type);
 		$model->set('modified', Date::toSql());
 		$model->set('modified_by', User::get('id'));
-		$model->set('private', Request::getInt('private', 0));
+		$model->set('private', Request::getInt('private', $this->config->get('private', 1)));
+		$model->set('access', Request::getInt('access', $this->config->get('access', 5)));
 
 		$this->_message = Lang::txt('COM_PROJECTS_SUCCESS_SAVED');
 
@@ -677,7 +659,7 @@ class Projects extends AdminController
 		}
 
 		// Incoming
-		$private = ($this->getTask() == 'accesspublic' ? 0 : 1); //Request::getInt('private', 0);
+		$private = ($this->getTask() == 'accesspublic' ? 0 : 1);
 		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
@@ -702,6 +684,7 @@ class Projects extends AdminController
 			}
 
 			$model->set('private', $private);
+			$model->set('access', ($private ? 5 : 4));
 
 			if (!$model->store())
 			{

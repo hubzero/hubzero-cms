@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -59,14 +34,14 @@ $this->css();
 
 			if ($item->status == 7) {
 				$status = 'outstanding';
-			} else if (isset($item->ranked) && !$item->ranked && $item->status !=1 && $item->status !=3 && $item->status !=4 && ($this->admin == 2 or $this->admin == 3))  {
+			} else if (isset($item->ranked) && !$item->ranked && $item->status !=1 && $item->status !=3 && $item->status !=4 && ($this->admin == 2 or $this->admin == 3)) {
 				$status = 'unranked';
 			} else {
 				$status = 'outstanding';
 			}
 
-			$state  = (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? 'new' : '' ;
-			$state .= ($item->private) ? ' private' : '' ;
+			$state  = (isset($item->ranked) && !$item->ranked && $item->status!=1 && ($this->admin==2 or $this->admin==3)) ? 'new' : '';
+			$state .= ($item->private) ? ' private' : '';
 			switch ($item->status)
 			{
 				case 3:
@@ -88,7 +63,7 @@ $this->css();
 				break;
 			}
 
-			$name = Lang::txt('COM_WISHLIST_ANONYMOUS');
+			$name = Lang::txt('JANONYMOUS');
 			if (!$item->anonymous) {
 				$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $item->proposed_by) . '">' . $this->escape($item->proposer->get('name')) . '</a>';
 			}
@@ -162,8 +137,14 @@ $this->css();
 								}
 								else if (isset($item->ranked) && $item->ranked)
 								{
+									$this->css('
+										.priority-level-base .priority-level-' . $item->id . ' {
+											width: ' . (($item->ranking/50)*100) . '%;
+										}
+									');
+
 									$html .= '<span class="priority-level-base">
-										<span class="priority-level" style="width: ' . (($item->ranking/50)*100) . '%">
+										<span class="priority-level priority-level-' . $item->id . '">
 											<span>' . Lang::txt('COM_WISHLIST_WISH_PRIORITY') . ': ' . $item->ranking . '</span>
 										</span>
 									</span>';

@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -124,14 +100,15 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 						{
 							continue;
 						}
+						$children = $row->children($filters)->rows();
 						?>
 						<li>
 							<a <?php if ($this->catid == $row->get('id')) { echo 'class="active" '; } ?> href="<?php echo Route::url($row->link()); ?>">
 								<?php echo $this->escape(stripslashes($row->get('title'))); ?> <span class="item-count"><?php echo $row->get('articles', 0); ?></span>
 							</a>
-							<?php if ($this->catid == $row->get('id') && count($row->children($filters)) > 0) { ?>
+							<?php if ($this->catid == $row->get('id') && count($children) > 0) { ?>
 								<ul class="categories">
-								<?php foreach ($row->children() as $cat) { ?>
+								<?php foreach ($children as $cat) { ?>
 									<li>
 										<a <?php if ($this->category->get('id') == $cat->get('id')) { echo 'class="active" '; } ?> href="<?php echo Route::url($cat->link()); ?>">
 											<?php echo $this->escape(stripslashes($cat->get('title'))); ?> <span class="item-count"><?php echo $cat->get('articles', 0); ?></span>
@@ -148,7 +125,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 	</div><!-- / .section-inner -->
 </section><!-- / .main section -->
 
-<?php if ($this->article->param('allow_comments')) { ?>
+<?php //if ($this->article->param('allow_comments')) { ?>
 <section class="below section" id="comments">
 	<div class="section-inner hz-layout-with-aside">
 		<div class="subject">
@@ -197,6 +174,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 					<img src="<?php echo User::picture(!User::isGuest() ? 0 : 1); ?>" alt="" />
 				</p>
 				<fieldset>
+					<legend><?php echo Lang::txt('COM_KB_POST_COMMENT'); ?></legend>
 					<?php
 					$replyto = \Components\Kb\Models\Comment::oneOrNew(Request::getInt('replyto'));
 
@@ -204,7 +182,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 					{
 						if (!$replyto->isNew())
 						{
-							$name = Lang::txt('COM_KB_ANONYMOUS');
+							$name = Lang::txt('JANONYMOUS');
 							if (!$replyto->get('anonymous'))
 							{
 								$name = $this->escape(stripslashes($replyto->creator->get('name')));
@@ -232,27 +210,31 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 					?>
 
 					<?php if ($this->article->commentsOpen()) { ?>
-						<label for="commentcontent">
-							<?php echo Lang::txt('COM_KB_YOUR_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-							<?php
-							if (!User::isGuest()) {
-								echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal'));
-							} else {
-								$rtrn = Route::url($this->article->link() . '#post-comment', false, true);
-								?>
-								<p class="warning">
-									<?php echo Lang::txt('COM_KB_MUST_LOG_IN', Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)); ?>
-								</p>
+						<div class="form-group">
+							<label for="commentcontent">
+								<?php echo Lang::txt('COM_KB_YOUR_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 								<?php
-							}
-							?>
-						</label>
+								if (!User::isGuest()) {
+									echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal'));
+								} else {
+									$rtrn = Route::url($this->article->link() . '#post-comment', false, true);
+									?>
+									<p class="warning">
+										<?php echo Lang::txt('COM_KB_MUST_LOG_IN', Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)); ?>
+									</p>
+									<?php
+								}
+								?>
+							</label>
+						</div>
 
 						<?php if (!User::isGuest()) { ?>
-							<label id="comment-anonymous-label" for="comment-anonymous">
-								<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
-								<?php echo Lang::txt('COM_KB_FIELD_ANONYMOUS'); ?>
-							</label>
+							<div class="form-group">
+								<label id="comment-anonymous-label" for="comment-anonymous">
+									<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+									<?php echo Lang::txt('COM_KB_FIELD_ANONYMOUS'); ?>
+								</label>
+							</div>
 
 							<p class="submit">
 								<input type="submit" name="submit" value="<?php echo Lang::txt('COM_KB_SUBMIT'); ?>" />
@@ -287,4 +269,4 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 	</div><!-- / .section-inner -->
 </section><!-- / .below -->
 
-<?php } // if ($this->config->get('allow_comments')) ?>
+<?php //}

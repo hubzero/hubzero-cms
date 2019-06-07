@@ -1,0 +1,42 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+.auth .twitter:before {
+	content: "";
+	width: 50px;
+	height: 50px;
+	background-image: url('../img/twitter-sign.svg');
+	background-repeat: no-repeat;
+	background-size: 50px 50px;
+	top: 0;
+	left: -5px;
+}
+.auth .twitter {
+	background: #55ACEE;
+}
+.auth .twitter .signin {
+	margin-left: 55px;
+}
+
+/* Others */
+.others .twitter:before {
+	content: "\f011";
+}
+.others .twitter {
+	color: #55ACEE;
+}
+
+/* Primary */
+.primary .upper.twitter:before {
+	content: "Twitter";
+}
+
+.primary .twitter:before {
+	content: "";
+}
+.primary .twitter {
+	background-color: #55ACEE;
+}

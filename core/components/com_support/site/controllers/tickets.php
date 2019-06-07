@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Support\Site\Controllers;
@@ -47,6 +22,7 @@ use Hubzero\Component\SiteController;
 use Hubzero\Browser\Detector;
 use Hubzero\Content\Server;
 use Hubzero\Utility\Validate;
+use Hubzero\Utility\Arr;
 use Filesystem;
 use Exception;
 use Request;
@@ -297,7 +273,7 @@ class Tickets extends SiteController
 			}
 		}
 
-		$this->view->end   = Request::getString('end', '');
+		$this->view->end = Request::getString('end', '');
 
 		$endmonth = $month;
 		$endyear = date("Y");
@@ -788,7 +764,12 @@ class Tickets extends SiteController
 
 			if ($referrer = Request::getString('referrer'))
 			{
-				$row->set('referrer', base64_encode($referrer));
+				// Rough test to see if it's already base64 encoded
+				if (!Utilities::isBase64($referrer))
+				{
+					$referrer = base64_encode($referrer);
+				}
+				$row->set('referrer', $referrer);
 			}
 
 			if (!User::isGuest())
@@ -888,6 +869,22 @@ class Tickets extends SiteController
 		}
 		$reporter = Request::getArray('reporter', array(), 'post');
 		$problem  = Request::getArray('problem', array(), 'post');
+
+		foreach ($reporter as $key => $field)
+		{
+			if (is_array($field))
+			{
+				$reporter[$key] = Arr::toString($field);
+			}
+		}
+
+		foreach ($problem as $key => $field)
+		{
+			if (is_array($field))
+			{
+				$problem[$key] = Arr::toString($field);
+			}
+		}
 
 		$reporter = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $reporter);
 
@@ -1050,7 +1047,7 @@ class Tickets extends SiteController
 		{
 			if (!$incoming['target_date'])
 			{
-				$row->set('target_date', '0000-00-00 00:00:00');
+				$row->set('target_date', null);
 			}
 			else
 			{
@@ -1083,7 +1080,7 @@ class Tickets extends SiteController
 		$attachment = $this->uploadTask($row->get('id'));
 
 		// Save tags
-		$row->tag(Request::getString('tags', '', 'post'), User::get('id'), 1);
+		$row->tag(Request::getString('tags', '', 'post'), User::get('id'));
 
 		// Get any set emails that should be notified of ticket submission
 		$defs = explode(',', $this->config->get('emails', '{config.mailfrom}'));
@@ -1145,7 +1142,7 @@ class Tickets extends SiteController
 			{
 				$def = trim($def);
 
-				// Check if the address should come from Joomla config
+				// Check if the address should come from site config
 				if ($def == '{config.mailfrom}')
 				{
 					$def = Config::get('mailfrom');
@@ -1698,7 +1695,7 @@ class Tickets extends SiteController
 		{
 			if (!$incoming['target_date'])
 			{
-				$incoming['target_date'] = '0000-00-00 00:00:00';
+				$incoming['target_date'] = null;
 			}
 			else
 			{
@@ -1765,7 +1762,7 @@ class Tickets extends SiteController
 		}
 
 		// Save the tags
-		$row->tag(Request::getString('tags', '', 'post'), User::get('id'), 1);
+		$row->tag(Request::getString('tags', '', 'post'), User::get('id'));
 		$row->set('tags', $row->tags('string'));
 
 		// Create a new support comment object and populate it
@@ -2290,7 +2287,7 @@ class Tickets extends SiteController
 				return;
 			}
 
-			$row->tag($incoming['tags'], User::get('id'), 1);
+			$row->tag($incoming['tags'], User::get('id'));
 
 			$this->uploadTask($row->get('id'));
 
@@ -2448,10 +2445,30 @@ class Tickets extends SiteController
 			}
 		}
 
+		$mediaConfig = Component::params('com_media');
+
+		$sizeLimit = $this->config->get('maxAllowed');
+		if (!$sizeLimit)
+		{
+			// Size limit is in MB, so we need to turn it into just B
+			$sizeLimit = $mediaConfig->get('upload_maxsize');
+			$sizeLimit = $sizeLimit * 1024 * 1024;
+		}
+
+		$exts = $this->config->get('file_ext');
+		$exts = $exts ?: $mediaConfig->get('upload_extensions');
+		$allowed = array_values(array_filter(explode(',', $exts)));
+
 		foreach ($file['name'] as $i => $name)
 		{
 			if (!trim($name))
 			{
+				continue;
+			}
+
+			if ($file['size'][$i] > $sizeLimit)
+			{
+				$this->setError(Lang::txt('File is too large. Max file upload size is %s', Number::formatBytes($sizeLimit)));
 				continue;
 			}
 
@@ -2460,10 +2477,11 @@ class Tickets extends SiteController
 			$name = str_replace(' ', '_', $name);
 			$ext = strtolower(Filesystem::extension($name));
 
-			//make sure that file is acceptable type
-			if (!in_array($ext, explode(',', $this->config->get('file_ext'))))
+			// Make sure that file is acceptable type
+			if (!in_array($ext, $allowed))
 			{
 				$this->setError(Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE'));
+				continue;
 				//return Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE');
 			}
 

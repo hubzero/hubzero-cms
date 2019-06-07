@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Blog\Models;
@@ -34,6 +10,7 @@ namespace Components\Blog\Models;
 use Hubzero\Database\Relational;
 use Lang;
 use Date;
+use User;
 
 /**
  * Blog model for a comment
@@ -87,6 +64,19 @@ class Comment extends Relational
 	);
 
 	/**
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 */
+	public $always = array(
+		'parent',
+		'anonymous',
+		'state',
+		'modified',
+		'modified_by'
+	);
+
+	/**
 	 * Fields to be parsed
 	 *
 	 * @var  array
@@ -94,6 +84,73 @@ class Comment extends Relational
 	protected $parsed = array(
 		'content'
 	);
+
+	/**
+	 * Generates automatic state field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticState($data)
+	{
+		if (!isset($data['state']))
+		{
+			$data['state'] = self::STATE_PUBLISHED;
+		}
+		return (int)$data['state'];
+	}
+
+	/**
+	 * Generates automatic state field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticAnonymous($data)
+	{
+		if (!isset($data['anonymous']))
+		{
+			$data['anonymous'] = 0;
+		}
+		return (int)$data['anonymous'];
+	}
+
+	/**
+	 * Generates automatic state field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticParent($data)
+	{
+		if (!isset($data['parent']))
+		{
+			$data['parent'] = 0;
+		}
+		return (int)$data['parent'];
+	}
+
+	/**
+	 * Generates automatic created field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticModified($data)
+	{
+		return (isset($data['id']) && $data['id'] ? Date::of('now')->toSql() : null);
+	}
+
+	/**
+	 * Generates automatic created by field value
+	 *
+	 * @param   array  $data
+	 * @return  int
+	 */
+	public function automaticModifiedBy($data)
+	{
+		return (isset($data['id']) && $data['id'] ? User::get('id') : 0);
+	}
 
 	/**
 	 * Parses content string as directed
@@ -131,14 +188,12 @@ class Comment extends Relational
 	 */
 	public function created($as='')
 	{
-		$as = strtolower($as);
-
-		if ($as == 'date')
+		if (strtolower($as) == 'date')
 		{
 			return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
 
-		if ($as == 'time')
+		if (strtolower($as) == 'time')
 		{
 			return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 		}
@@ -159,14 +214,12 @@ class Comment extends Relational
 	 */
 	public function modified($as='')
 	{
-		$as = strtolower($as);
-
-		if ($as == 'date')
+		if (strtolower($as) == 'date')
 		{
 			return Date::of($this->get('modified'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 		}
 
-		if ($as == 'time')
+		if (strtolower($as) == 'time')
 		{
 			return Date::of($this->get('modified'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
 		}

@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -39,7 +14,7 @@ defined('_HZEXEC_') or die();
 		$cls .= ' author';
 	}
 
-	$name = Lang::txt('COM_WISHLIST_ANONYMOUS');
+	$name = Lang::txt('JANONYMOUS');
 	if (!$this->comment->get('anonymous'))
 	{
 		$name = $this->escape(stripslashes($this->comment->creator->get('name', $name)));
@@ -93,27 +68,39 @@ defined('_HZEXEC_') or die();
 
 						$link = $attachment->link('download');
 
-						if ($attachment->isImage())
+						if ($attachment->exists())
 						{
-							if ($attachment->width() > 400)
+							if ($attachment->isImage())
 							{
-								$html = '<p><a href="' . Route::url($link) . '"><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+								if ($attachment->width() > 400)
+								{
+									$html = '<p><a href="' . Route::url($link) . '"><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+								}
+								else
+								{
+									$html = '<p><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+								}
 							}
 							else
 							{
-								$html = '<p><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+								$html  = '<a class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">';
+								$html .= '<p class="attachment-description">' . $this->escape($attachment->get('description')) . '</p>';
+								$html .= '<p class="attachment-meta">';
+								$html .= '<span class="attachment-size">' . Hubzero\Utility\Number::formatBytes($attachment->size()) . '</span>';
+								$html .= '<span class="attachment-action">' . Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD') . '</span>';
+								$html .= '</p>';
+								$html .= '</a>';
 							}
 						}
 						else
 						{
-							//$html = '<p class="attachment"><a href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">' . $attachment->get('description') . '</a></p>';
-							$html  = '<a class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">';
-							$html .= '<p class="attachment-description">' . $attachment->get('description') . '</p>';
+							$html  = '<div class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" title="' . $this->escape($attachment->get('description')) . '">';
+							$html .= '<p class="attachment-description">' . $this->escape($attachment->get('description')) . '</p>';
 							$html .= '<p class="attachment-meta">';
-							$html .= '<span class="attachment-size">' . Hubzero\Utility\Number::formatBytes($attachment->size()) . '</span>';
-							$html .= '<span class="attachment-action">' . Lang::txt('Click to download') . '</span>';
+							$html .= '<span class="attachment-size">' . $this->escape($attachment->get('filename')) . '</span>';
+							$html .= '<span class="attachment-action">' . Lang::txt('JLIB_HTML_ERROR_FILE_NOT_FOUND') . '</span>';
 							$html .= '</p>';
-							$html .= '</a>';
+							$html .= '</div>';
 						}
 
 						echo $html;
@@ -138,11 +125,11 @@ defined('_HZEXEC_') or die();
 			<?php if (!$this->comment->isReported()) { ?>
 				<?php if ($this->depth < $this->wish->config()->get('comments_depth', 3)) { ?>
 					<?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
-					<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('COM_WISHLIST_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_WISHLIST_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
-					--><?php echo Lang::txt('COM_WISHLIST_CANCEL'); ?><!--
+					<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_WISHLIST_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo Lang::txt('JCANCEL'); ?><!--
 				--></a>
 					<?php } else { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('COM_WISHLIST_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_WISHLIST_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_WISHLIST_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
 					--><?php echo Lang::txt('COM_WISHLIST_REPLY'); ?><!--
 				--></a>
 					<?php } ?>
@@ -162,7 +149,7 @@ defined('_HZEXEC_') or die();
 				<?php } else { ?>
 				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->wish->link()); ?>" method="post" enctype="multipart/form-data">
 					<fieldset>
-						<legend><span><?php echo Lang::txt('COM_WISHLIST_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('COM_WISHLIST_ANONYMOUS'))); ?></span></legend>
+						<legend><span><?php echo Lang::txt('COM_WISHLIST_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="comment[item_type]" value="<?php echo $this->comment->get('item_type') ?>" />
 						<input type="hidden" name="comment[item_id]" value="<?php echo $this->comment->get('item_id'); ?>" />
@@ -177,20 +164,24 @@ defined('_HZEXEC_') or die();
 
 						<?php echo Html::input('token'); ?>
 
-						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
-							<span class="label-text"><?php echo Lang::txt('COM_WISHLIST_ENTER_COMMENTS'); ?></span>
-							<?php
-							echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
-							?>
-						</label>
+						<div class="form-group">
+							<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
+								<span class="label-text"><?php echo Lang::txt('COM_WISHLIST_ENTER_COMMENTS'); ?></span>
+								<?php
+								echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'form-control minimal no-footer'));
+								?>
+							</label>
+						</div>
 
-						<label class="comment-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
-							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
-							<?php echo Lang::txt('COM_WISHLIST_POST_COMMENT_ANONYMOUSLY'); ?>
-						</label>
+						<div class="form-group form-check">
+							<label class="comment-anonymous-label form-check-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
+								<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
+								<?php echo Lang::txt('COM_WISHLIST_POST_COMMENT_ANONYMOUSLY'); ?>
+							</label>
+						</div>
 
 						<p class="submit">
-							<input type="submit" value="<?php echo Lang::txt('COM_WISHLIST_SUBMIT'); ?>" />
+							<input type="submit" class="btn" value="<?php echo Lang::txt('COM_WISHLIST_SUBMIT'); ?>" />
 						</p>
 					</fieldset>
 				</form>

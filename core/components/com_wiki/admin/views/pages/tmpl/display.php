@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -50,7 +26,7 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.delete'))
 {
-	Toolbar::deleteList();
+	Toolbar::deleteList('COM_WIKI_CONFIRM_DELETE');
 }
 Toolbar::spacer();
 Toolbar::help('pages');
@@ -61,14 +37,14 @@ Toolbar::help('pages');
 		<div class="grid">
 			<div class="col span5">
 				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_WIKI_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+				<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_WIKI_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
 				<input type="submit" value="<?php echo Lang::txt('COM_WIKI_GO'); ?>" />
-				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span7">
 				<label for="filter_scope"><?php echo Lang::txt('COM_WIKI_FILTER_SCOPE'); ?>:</label>
-				<select name="scope" id="filter_scope" onchange="document.adminForm.submit( );">
+				<select name="scope" id="filter_scope" class="filter filter-submit">
 					<option value=""><?php echo Lang::txt('COM_WIKI_FILTER_SCOPE_SELECT'); ?></option>
 					<?php foreach ($this->scopes as $scope) {
 						$val = $scope->get('scope') . ':' . $scope->get('scope_id');
@@ -78,7 +54,7 @@ Toolbar::help('pages');
 				</select>
 
 				<label for="filter_namespace"><?php echo Lang::txt('COM_WIKI_FILTER_NAMESPACE'); ?>:</label>
-				<select name="namespace" id="filter_namespace" onchange="document.adminForm.submit( );">
+				<select name="namespace" id="filter_namespace" class="filter filter-submit">
 					<option value=""><?php echo Lang::txt('COM_WIKI_FILTER_NAMESPACE_SELECT'); ?></option>
 					<?php foreach ($this->namespaces as $nspace) {
 						if (!trim($nspace->get('namespace')))
@@ -96,7 +72,7 @@ Toolbar::help('pages');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_WIKI_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_WIKI_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_WIKI_COL_MODE'); ?></th>
@@ -146,7 +122,7 @@ Toolbar::help('pages');
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="Joomla.isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
 				</td>
 				<td class="priority-5">
 					<?php echo $row->get('id'); ?>
@@ -162,8 +138,8 @@ Toolbar::help('pages');
 						</span>
 					<?php } ?>
 					<br />
-					<span style="color: #999; font-size: 90%">/wiki/</span> &nbsp;
-					<span style="color: #999; font-size: 90%"><?php echo ($row->get('path') ? $row->get('path') . '/' : '') . $this->escape(stripslashes($row->get('pagename'))); ?></span>
+					<span class="smallsub">/wiki/</span> &nbsp;
+					<span class="smallsub"><?php echo ($row->get('path') ? $row->get('path') . '/' : '') . $this->escape(stripslashes($row->get('pagename'))); ?></span>
 				</td>
 				<td class="priority-4">
 					<?php echo $this->escape($row->param('mode')); ?>

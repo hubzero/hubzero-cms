@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -111,7 +86,7 @@ $yearlystats = $this->yearlystats;
 $cls = 'even';
 $tot = 0;
 $rows = array();
-foreach ($yearlystats as $year=>$amt)
+foreach ($yearlystats as $year => $amt)
 {
 	$cls = ($cls == 'even') ? 'odd' : 'even';
 
@@ -138,7 +113,7 @@ $html .= "\t\t\t".'<th scope="col" class="numerical-data">'.Lang::txt('COM_CITAT
 $html .= "\t\t".'</tr>'."\n";
 $html .= "\t".'</thead>'."\n";
 $html .= "\t".'<tbody>'."\n";
-$html .= implode('',$rows);
+$html .= implode('', $rows);
 $html .= "\t".'</tbody>'."\n";
 $html .= "\t".'<tfoot>'."\n";
 $html .= "\t\t".'<tr class="summary">'."\n";
@@ -185,32 +160,49 @@ for ($i=0, $n=count($data_arr['text']); $i < $n; $i++)
 {
 	$text =& $data_arr['text'][$i];
 	$hits =& $data_arr['hits'][$i];
-	if ($maxval > 0 && $sumval > 0) {
-		$width = ceil( $hits*$polls_graphwidth/$maxval);
-		$percent = round( 100*$hits/$sumval, 1);
-	} else {
+	if ($maxval > 0 && $sumval > 0)
+	{
+		$width = ceil($hits*$polls_graphwidth/$maxval);
+		$percent = round(100*$hits/$sumval, 1);
+	}
+	else
+	{
 		$width = 0;
 		$percent = 0;
 	}
-	$tdclass='';
-	if ($polls_barcolor==0) {
-		if ($colorx < $polls_maxcolors) {
+
+	$tdclass = '';
+
+	if ($polls_barcolor==0)
+	{
+		if ($colorx < $polls_maxcolors)
+		{
 			$colorx = ++$colorx;
-		} else {
+		}
+		else
+		{
 			$colorx = 1;
 		}
-		$tdclass = 'color'.$colorx;
-	} else {
-		$tdclass = 'color'.$polls_barcolor;
+		$tdclass = 'color' . $colorx;
+	}
+	else
+	{
+		$tdclass = 'color' . $polls_barcolor;
 	}
 
 	$cls = ($cls == 'even') ? 'odd' : 'even';
+
+	$this->css('
+		.graph .bar' . $i . ' {
+			width: '.$percent.'%;
+		}
+	');
 
 	$tr  = "\t\t".'<tr class="'.$cls.'">'."\n";
 	$tr .= "\t\t\t".'<th class="textual-data">'.$text.'</th>'."\n";
 	$tr .= "\t\t\t".'<td class="numerical-data">'."\n";
 	$tr .= "\t\t\t\t".'<div class="graph">'."\n";
-	$tr .= "\t\t\t\t\t".'<strong class="bar '.$tdclass.'" style="width: '.$percent.'%;"><span>'.$percent.'%</span></strong>'."\n";
+	$tr .= "\t\t\t\t\t".'<strong class="bar bar' . $i . ' '.$tdclass.'" title="'.$percent.'%"><span>'.$percent.'%</span></strong>'."\n";
 	$tr .= "\t\t\t\t".'</div>'."\n";
 	$tr .= "\t\t\t".'</td>'."\n";
 	$tr .= "\t\t\t".'<td class="numerical-data">'.$hits.'</td>'."\n";
@@ -231,7 +223,7 @@ $html .= "\t\t\t".'<th scope="col" class="numerical-data">'.Lang::txt('COM_CITAT
 $html .= "\t\t".'</tr>'."\n";
 $html .= "\t".'</thead>'."\n";
 $html .= "\t".'<tbody>'."\n";
-$html .= implode('',$rows);
+$html .= implode('', $rows);
 $html .= "\t".'</tbody>'."\n";
 $html .= "\t".'<tfoot>'."\n";
 $html .= "\t\t".'<tr class="summary">'."\n";

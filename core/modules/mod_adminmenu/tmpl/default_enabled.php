@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 use Modules\AdminMenu\Node;
@@ -37,21 +12,23 @@ defined('_HZEXEC_') or die;
 $shownew = (boolean) $params->get('shownew', 1);
 $lang = Lang::getRoot();
 
+$active = Request::getCmd('option');
+
 //
 // Site SubMenu
 //
 $menu->addChild(
-	new Node(Lang::txt('JSITE'), '#'), true
+	new Node(Lang::txt('JSITE'), '#', 'class:site', in_array($active, ['com_system', 'com_cpanel', 'com_config', 'com_checkin', 'com_cache', 'com_redirect'])), true
 );
 $menu->addChild(
-	new Node(Lang::txt('MOD_MENU_CONTROL_PANEL'), 'index.php', 'class:cpanel')
+	new Node(Lang::txt('MOD_MENU_CONTROL_PANEL'), 'index.php', 'class:cpanel', ($active == 'com_cpanel'))
 );
 
 $menu->addSeparator();
 
 if (User::authorise('core.admin'))
 {
-	$menu->addChild(new Node(Lang::txt('MOD_MENU_CONFIGURATION'), 'index.php?option=com_config', 'class:config'));
+	$menu->addChild(new Node(Lang::txt('MOD_MENU_CONFIGURATION'), 'index.php?option=com_config', 'class:config', ($active == 'com_config')));
 	$menu->addSeparator();
 }
 
@@ -61,31 +38,25 @@ $cam = User::authorise('core.manage', 'com_cache');
 if ($chm || $cam)
 {
 	$menu->addChild(
-		new Node(Lang::txt('MOD_MENU_MAINTENANCE'), 'index.php?option=com_checkin', 'class:maintenance'), true
+		new Node(Lang::txt('MOD_MENU_MAINTENANCE'), 'index.php?option=com_checkin', 'class:maintenance', ($active == 'com_checkin')), true
 	);
 
 	if ($chm)
 	{
-		$menu->addChild(new Node(Lang::txt('MOD_MENU_GLOBAL_CHECKIN'), 'index.php?option=com_checkin', 'class:checkin'));
+		$menu->addChild(new Node(Lang::txt('MOD_MENU_GLOBAL_CHECKIN'), 'index.php?option=com_checkin', 'class:checkin', ($active == 'com_checkin')));
 		$menu->addSeparator();
 	}
 	if ($cam)
 	{
-		$menu->addChild(new Node(Lang::txt('MOD_MENU_CLEAR_CACHE'), 'index.php?option=com_cache', 'class:clear'));
-		$menu->addChild(new Node(Lang::txt('MOD_MENU_PURGE_EXPIRED_CACHE'), 'index.php?option=com_cache&view=purge', 'class:purge'));
+		$menu->addChild(new Node(Lang::txt('MOD_MENU_CLEAR_CACHE'), 'index.php?option=com_cache', 'class:clear', ($active == 'com_cache')));
+		$menu->addChild(new Node(Lang::txt('MOD_MENU_PURGE_EXPIRED_CACHE'), 'index.php?option=com_cache&view=purge', 'class:purge', ($active == 'com_cache')));
 		$menu->addSeparator();
 	}
 
-	/*if (User::authorise('core.admin'))
-	{
-		$menu->addChild(new Node(Lang::txt('MOD_MENU_UPDATE'), 'index.php?option=com_update', 'class:update'));
-	}*/
-
-	$menu->addChild(new Node(Lang::txt('MOD_MENU_SYS_LDAP'), 'index.php?option=com_system&controller=ldap', 'class:ldap'));
-	$menu->addChild(new Node(Lang::txt('MOD_MENU_SYS_GEO'), 'index.php?option=com_system&controller=geodb', 'class:geo'));
-	$menu->addChild(new Node(Lang::txt('MOD_MENU_SYS_APC'), 'index.php?option=com_system&controller=apc', 'class:apc'));
-	//$menu->addChild(new Node(Lang::txt('MOD_MENU_SYS_SCRIPTS'), 'index.php?option=com_system&controller=scripts', 'class:scripts'));
-	$menu->addChild(new Node(Lang::txt('MOD_MENU_SYS_ROUTES'), 'index.php?option=com_redirect', 'class:routes'));
+	$menu->addChild(new Node(Lang::txt('MOD_MENU_SYS_LDAP'), 'index.php?option=com_system&controller=ldap', 'class:ldap', ($active == 'com_system')));
+	$menu->addChild(new Node(Lang::txt('MOD_MENU_SYS_GEO'), 'index.php?option=com_system&controller=geodb', 'class:geo', ($active == 'com_system')));
+	$menu->addChild(new Node(Lang::txt('MOD_MENU_SYS_APC'), 'index.php?option=com_system&controller=apc', 'class:apc', ($active == 'com_system')));
+	$menu->addChild(new Node(Lang::txt('MOD_MENU_SYS_ROUTES'), 'index.php?option=com_redirect', 'class:routes', ($active == 'com_redirect')));
 
 	$menu->getParent();
 }
@@ -94,7 +65,7 @@ $menu->addSeparator();
 if (User::authorise('core.admin'))
 {
 	$menu->addChild(
-		new Node(Lang::txt('MOD_MENU_SYSTEM_INFORMATION'), 'index.php?option=com_system&controller=info', 'class:info')
+		new Node(Lang::txt('MOD_MENU_SYSTEM_INFORMATION'), 'index.php?option=com_system&controller=info', 'class:info', ($active == 'com_system'))
 	);
 	$menu->addSeparator();
 }
@@ -111,25 +82,13 @@ $menu->getParent();
 if (User::authorise('core.manage', 'com_members'))
 {
 	$menu->addChild(
-		new Node(Lang::txt('MOD_MENU_COM_USERS_USERS'), '#'), true
+		new Node(Lang::txt('MOD_MENU_COM_USERS_USERS'), '#', 'class:users', ($active == 'com_members' || $active == 'com_groups')), true
 	);
 	$createUser = $shownew && User::authorise('core.create', 'com_members');
 	$createGrp  = User::authorise('core.admin', 'com_members');
 
-	/*$menu->addChild(
-		new Node(Lang::txt('MOD_MENU_COM_USERS_USER_MANAGER'), 'index.php?option=com_users&view=users', 'class:user') //, $createUser
-	);
-
-	if ($createUser)
-	{
-		$menu->addChild(
-			new Node(Lang::txt('MOD_MENU_COM_USERS_ADD_USER'), 'index.php?option=com_users&task=user.add', 'class:newarticle')
-		);
-		$menu->getParent();
-	}*/
-
 	$menu->addChild(
-		new Node(Lang::txt('MOD_MENU_COM_MEMBERS'), 'index.php?option=com_members', 'class:members'), $createUser
+		new Node(Lang::txt('MOD_MENU_COM_MEMBERS'), 'index.php?option=com_members', 'class:members', ($active == 'com_members')), $createUser
 	);
 	if ($createUser)
 	{
@@ -142,7 +101,7 @@ if (User::authorise('core.manage', 'com_members'))
 	if (User::authorise('core.manage', 'com_groups'))
 	{
 		$menu->addChild(
-			new Node(Lang::txt('MOD_MENU_COM_GROUPS'), 'index.php?option=com_groups', 'class:groups')
+			new Node(Lang::txt('MOD_MENU_COM_GROUPS'), 'index.php?option=com_groups', 'class:groups', ($active == 'com_groups'))
 		);
 	}
 
@@ -187,14 +146,14 @@ if (User::authorise('core.manage', 'com_members'))
 	}
 
 	$menu->addChild(
-		new Node(Lang::txt('MOD_MENU_COM_USERS_NOTE_CATEGORIES'), 'index.php?option=com_categories&view=categories&extension=com_users', 'class:category'),
+		new Node(Lang::txt('MOD_MENU_COM_USERS_NOTE_CATEGORIES'), 'index.php?option=com_categories&view=categories&extension=com_members', 'class:category'),
 		$createUser
 	);
 
 	if ($createUser)
 	{
 		$menu->addChild(
-			new Node(Lang::txt('MOD_MENU_COM_CONTENT_NEW_CATEGORY'), 'index.php?option=com_categories&task=category.add&extension=com_users', 'class:newarticle')
+			new Node(Lang::txt('MOD_MENU_COM_CONTENT_NEW_CATEGORY'), 'index.php?option=com_categories&task=category.add&extension=com_members', 'class:newarticle')
 		);
 		$menu->getParent();
 	}
@@ -213,7 +172,7 @@ if (User::authorise('core.manage', 'com_members'))
 if (User::authorise('core.manage', 'com_menus'))
 {
 	$menu->addChild(
-		new Node(Lang::txt('MOD_MENU_MENUS'), '#'), true
+		new Node(Lang::txt('MOD_MENU_MENUS'), '#', 'class:menus', ($active == 'com_menus')), true
 	);
 	$createMenu = $shownew && User::authorise('core.create', 'com_menus');
 
@@ -223,7 +182,7 @@ if (User::authorise('core.manage', 'com_menus'))
 	if ($createMenu)
 	{
 		$menu->addChild(
-			new Node(Lang::txt('MOD_MENU_MENU_MANAGER_NEW_MENU'), 'index.php?option=com_menus&view=menu&layout=edit', 'class:newarticle')
+			new Node(Lang::txt('MOD_MENU_MENU_MANAGER_NEW_MENU'), 'index.php?option=com_menus&view=menu&layout=edit', 'class:newmenu')
 		);
 		$menu->getParent();
 	}
@@ -270,11 +229,11 @@ if (User::authorise('core.manage', 'com_menus'))
 if (User::authorise('core.manage', 'com_content'))
 {
 	$menu->addChild(
-		new Node(Lang::txt('MOD_MENU_COM_CONTENT'), '#'), true
+		new Node(Lang::txt('MOD_MENU_COM_CONTENT'), '#', 'class:articles', in_array($active, ['com_content', 'com_categories', 'com_media'])), true
 	);
 	$createContent = $shownew && User::authorise('core.create', 'com_content');
 	$menu->addChild(
-		new Node(Lang::txt('MOD_MENU_COM_CONTENT_ARTICLE_MANAGER'), 'index.php?option=com_content', 'class:article'), $createContent
+		new Node(Lang::txt('MOD_MENU_COM_CONTENT_ARTICLE_MANAGER'), 'index.php?option=com_content', 'class:article', ($active == 'com_content')), $createContent
 	);
 	if ($createContent)
 	{
@@ -301,7 +260,7 @@ if (User::authorise('core.manage', 'com_content'))
 	if (User::authorise('core.manage', 'com_media'))
 	{
 		$menu->addSeparator();
-		$menu->addChild(new Node(Lang::txt('MOD_MENU_MEDIA_MANAGER'), 'index.php?option=com_media', 'class:media'));
+		$menu->addChild(new Node(Lang::txt('MOD_MENU_MEDIA_MANAGER'), 'index.php?option=com_media', 'class:media', ($active == 'com_media')));
 	}
 
 	$menu->getParent();
@@ -317,9 +276,19 @@ $components = $this->getComponents(true);
 // Check if there are any components, otherwise, don't render the menu
 if ($components)
 {
-	$menu->addChild(new Node(Lang::txt('MOD_MENU_COMPONENTS'), '#'), true);
+	$actives = array();
+	foreach ($components as $component)
+	{
+		if (in_array($component->element, array('com_members', 'com_groups', 'com_system')))
+		{
+			continue;
+		}
+		$actives[] = $component->element;
+	}
 
-	foreach ($components as &$component)
+	$menu->addChild(new Node(Lang::txt('MOD_MENU_COMPONENTS'), '#', 'class:components', in_array($active, $actives)), true);
+
+	foreach ($components as $component)
 	{
 		if (in_array($component->element, array('com_members', 'com_groups', 'com_system')))
 		{
@@ -337,7 +306,7 @@ if ($components)
 		}
 		else
 		{
-			$menu->addChild(new Node($component->text, $component->link, $component->img));
+			$menu->addChild(new Node($component->text, $component->link, $component->img, ($active == $component->element)));
 		}
 	}
 	$menu->getParent();
@@ -354,32 +323,32 @@ $lm = User::authorise('core.manage', 'com_languages');
 
 if ($im || $mm || $pm || $tm || $lm)
 {
-	$menu->addChild(new Node(Lang::txt('MOD_MENU_EXTENSIONS_EXTENSIONS'), '#'), true);
+	$menu->addChild(new Node(Lang::txt('MOD_MENU_EXTENSIONS_EXTENSIONS'), '#', 'class:extensions', in_array($active, ['com_installer', 'com_modules', 'com_plugins', 'com_templates', 'com_languages'])), true);
 
 	if ($im)
 	{
-		$menu->addChild(new Node(Lang::txt('MOD_MENU_EXTENSIONS_EXTENSION_MANAGER'), 'index.php?option=com_installer', 'class:install'));
+		$menu->addChild(new Node(Lang::txt('MOD_MENU_EXTENSIONS_EXTENSION_MANAGER'), 'index.php?option=com_installer', 'class:install', ($active == 'com_installer')));
 		$menu->addSeparator();
 	}
 
 	if ($mm)
 	{
-		$menu->addChild(new Node(Lang::txt('MOD_MENU_EXTENSIONS_MODULE_MANAGER'), 'index.php?option=com_modules', 'class:module'));
+		$menu->addChild(new Node(Lang::txt('MOD_MENU_EXTENSIONS_MODULE_MANAGER'), 'index.php?option=com_modules', 'class:module', ($active == 'com_modules')));
 	}
 
 	if ($pm)
 	{
-		$menu->addChild(new Node(Lang::txt('MOD_MENU_EXTENSIONS_PLUGIN_MANAGER'), 'index.php?option=com_plugins', 'class:plugin'));
+		$menu->addChild(new Node(Lang::txt('MOD_MENU_EXTENSIONS_PLUGIN_MANAGER'), 'index.php?option=com_plugins', 'class:plugin', ($active == 'com_plugins')));
 	}
 
 	if ($tm)
 	{
-		$menu->addChild(new Node(Lang::txt('MOD_MENU_EXTENSIONS_TEMPLATE_MANAGER'), 'index.php?option=com_templates', 'class:themes'));
+		$menu->addChild(new Node(Lang::txt('MOD_MENU_EXTENSIONS_TEMPLATE_MANAGER'), 'index.php?option=com_templates', 'class:themes', ($active == 'com_templates')));
 	}
 
 	if ($lm)
 	{
-		$menu->addChild(new Node(Lang::txt('MOD_MENU_EXTENSIONS_LANGUAGE_MANAGER'), 'index.php?option=com_languages', 'class:language'));
+		$menu->addChild(new Node(Lang::txt('MOD_MENU_EXTENSIONS_LANGUAGE_MANAGER'), 'index.php?option=com_languages', 'class:language', ($active == 'com_languages')));
 	}
 	$menu->getParent();
 }
@@ -390,7 +359,7 @@ if ($im || $mm || $pm || $tm || $lm)
 if ($params->get('showhelp', 0) == 1)
 {
 	$menu->addChild(
-		new Node(Lang::txt('MOD_MENU_HELP'), '#'), true
+		new Node(Lang::txt('MOD_MENU_HELP'), '#', 'class:help', ($active == 'com_help')), true
 	);
 	$menu->addChild(
 		new Node(Lang::txt('MOD_MENU_HELP_PAGES'), 'index.php?option=com_help', 'class:help')

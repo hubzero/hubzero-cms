@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -22,12 +27,12 @@ class Migration20170901000000PlgCoursesAnnouncements extends Base
 			  `offering_id` int(11) NOT NULL DEFAULT '0',
 			  `content` text,
 			  `priority` tinyint(2) NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
 			  `section_id` int(11) NOT NULL DEFAULT '0',
 			  `state` tinyint(2) NOT NULL DEFAULT '0',
-			  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `publish_up` datetime DEFAULT NULL,
+			  `publish_down` datetime DEFAULT NULL,
 			  `sticky` tinyint(2) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`id`),
 			  KEY `idx_offering_id` (`offering_id`),

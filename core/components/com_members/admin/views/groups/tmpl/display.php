@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -52,7 +28,7 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
 							<input type="hidden" name="task" value="add" />
 							<?php echo Html::input('token'); ?>
 
-							<select name="gid" style="max-width: 15em;">
+							<select name="gid">
 								<option value=""><?php echo Lang::txt('COM_MEMBERS_SELECT'); ?></option>
 								<?php
 								foreach ($this->rows as $row)
@@ -93,9 +69,9 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
 				$managers   = \Hubzero\User\Helper::getGroups($this->id, 'managers');
 
 				$applicants = (is_array($applicants)) ? $applicants : array();
-				$invitees   = (is_array($invitees))   ? $invitees   : array();
-				$members    = (is_array($members))    ? $members    : array();
-				$managers   = (is_array($managers))   ? $managers   : array();
+				$invitees   = (is_array($invitees)) ? $invitees : array();
+				$members    = (is_array($members)) ? $members : array();
+				$managers   = (is_array($managers)) ? $managers : array();
 
 				$groups = array_merge($applicants, $invitees);
 				$managerids = array();
@@ -106,7 +82,7 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
 				}
 				foreach ($members as $mem)
 				{
-					if (!in_array($mem->cn,$managerids))
+					if (!in_array($mem->cn, $managerids))
 					{
 						$groups[] = $mem;
 					}
@@ -136,7 +112,7 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
 									foreach ($options as $option)
 									{
 										?>
-										<div style="padding-left:1em;">
+										<div class="input-wrap">
 											<label for="memberoption-<?php echo $this->escape($option->id); ?>"><?php echo $this->escape($option->optionname); ?></label>
 											<input name="memberoption[<?php echo $this->escape($option->id); ?>]" id="memberoption-<?php echo $this->escape($option->id); ?>" size="3" value="<?php echo $this->escape($option->optionvalue); ?>" />
 											<input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_UPDATE'); ?>" />

@@ -1,7 +1,6 @@
 /**
  * @package    hubzero-cms
- * @file       components/com_tools/assets/css/sessions.js
- * @copyright  Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 

@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Modules\Models;
@@ -90,6 +66,59 @@ class Module extends Relational
 	);
 
 	/**
+	 * Automatically fillable fields
+	 *
+	 * @var  array
+	 */
+	public $always = array(
+		'publish_up',
+		'publish_down'
+	);
+
+	/**
+	 * The path to the installed files
+	 *
+	 * @var  string
+	 */
+	protected $path = null;
+
+	/**
+	 * Generates automatic publish_up field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticPublishUp($data)
+	{
+		if (!isset($data['publish_up'])
+		 || !$data['publish_up']
+		 || $data['publish_up'] == '0000-00-00 00:00:00')
+		{
+			$data['publish_up'] = null;
+		}
+
+		return $data['publish_up'];
+	}
+
+	/**
+	 * Generates automatic publish_down field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticPublishDown($data)
+	{
+		if (!isset($data['publish_down'])
+		 || !$data['publish_down']
+		 || $data['publish_down'] == '0000-00-00 00:00:00')
+		{
+			$data['publish_down'] = null;
+		}
+
+		return $data['publish_down'];
+	}
+
+	/**
 	 * Get the XML maniest
 	 *
 	 * @return  mixed  XML object or null
@@ -98,21 +127,23 @@ class Module extends Relational
 	{
 		if (is_null($this->manifest))
 		{
-			$path = DS . 'modules' . DS . $this->get('module') . DS . $this->get('module') . '.xml';
+			$paths = array();
 
-			$paths = array(
-				'app'  => Filesystem::cleanPath(PATH_APP . $path),
-				'core' => Filesystem::cleanPath(PATH_CORE . $path)
-			);
-
-			foreach ($paths as $p)
+			if (substr($this->get('module'), 0, 4) == 'mod_')
 			{
-				if (file_exists($p))
+				$paths[] = $this->path() . DS . substr($this->get('module'), 4) . '.xml';
+			}
+
+			$paths[] = $this->path() . DS . $this->get('module') . '.xml';
+
+			foreach ($paths as $file)
+			{
+				if (file_exists($file))
 				{
 					// Disable libxml errors and allow to fetch error information as needed
 					libxml_use_internal_errors(true);
 
-					$this->manifest = simplexml_load_file($p);
+					$this->manifest = simplexml_load_file($file);
 					break;
 				}
 			}
@@ -145,31 +176,7 @@ class Module extends Relational
 	{
 		$file = $this->get('module') . ($system ? '.sys' : '');
 
-		$paths = array();
-
-		if (substr($this->get('module'), 0, 4) == 'mod_')
-		{
-			$path = '/modules/' . substr($this->get('module'), 4);
-
-			$paths[] = PATH_APP . $path;
-			$paths[] = PATH_CORE . $path;
-		}
-
-		$path = '/modules/' . $this->get('module');
-
-		$paths[] = PATH_APP . $path;
-		$paths[] = PATH_CORE . $path;
-
-		foreach ($paths as $p)
-		{
-			if (Lang::load($file, $p, null, false, true))
-			{
-				return true;
-			}
-		}
-
-		//return (Lang::load($file, PATH_APP . $path, null, false, true) || Lang::load($file, PATH_CORE . $path, null, false, true));
-		return false;
+		return Lang::load($file, $this->path(), null, false, true);
 	}
 
 	/**
@@ -207,18 +214,14 @@ class Module extends Relational
 
 		$paths = array();
 
+		$paths[] = $this->path() . DS . 'config' . DS . 'config.xml';
+
 		if (substr($this->get('module'), 0, 4) == 'mod_')
 		{
-			$path = '/modules/' . substr($this->get('module'), 4) . '/' . substr($this->get('module'), 4) . '.xml';
-
-			$paths[] = PATH_APP . $path;
-			$paths[] = PATH_CORE . $path;
+			$paths[] = $this->path() . DS . substr($this->get('module'), 4) . '.xml';
 		}
 
-		$path = '/modules/' . $this->get('module') . '/' . $this->get('module') . '.xml';
-
-		$paths[] = PATH_APP . $path;
-		$paths[] = PATH_CORE . $path;
+		$paths[] = $this->path() . DS . $this->get('module') . '.xml';
 
 		foreach ($paths as $file)
 		{
@@ -353,6 +356,48 @@ class Module extends Relational
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Get the installed path
+	 *
+	 * @return  string
+	 */
+	public function path()
+	{
+		if (is_null($this->path))
+		{
+			$this->path = '';
+
+			if ($module = $this->get('module'))
+			{
+				$paths = array();
+
+				if (substr($module, 0, 4) == 'mod_')
+				{
+					$path = '/modules/' . substr($module, 4) . '/' . substr($module, 4) . '.php';
+
+					$paths[] = PATH_APP . $path;
+					$paths[] = PATH_CORE . $path;
+				}
+
+				$path = '/modules/' . $module . '/' . $module . '.php';
+
+				$paths[] = PATH_APP . $path;
+				$paths[] = PATH_CORE . $path;
+
+				foreach ($paths as $file)
+				{
+					if (file_exists($file))
+					{
+						$this->path = dirname($file);
+						break;
+					}
+				}
+			}
+		}
+
+		return $this->path;
 	}
 
 	/**
@@ -658,5 +703,20 @@ class Module extends Relational
 		}
 
 		return true;
+	}
+
+	/**
+	 * Checks back in the current model
+	 *
+	 * @return  void
+	 **/
+	public function checkin()
+	{
+		if (!$this->isNew())
+		{
+			$this->set('checked_out', 0)
+			     ->set('checked_out_time', null)
+			     ->save();
+		}
 	}
 }

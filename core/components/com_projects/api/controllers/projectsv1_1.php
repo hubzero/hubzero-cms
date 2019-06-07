@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2011-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Projects\Api\Controllers;
@@ -147,8 +122,7 @@ class Projectsv1_1 extends ApiController
 						$obj->owner[] = $member->userid;
 					}
 
-					$privacy = $entry->get('private');
-					if ($privacy == 0 && $entry->isProvisioned())
+					if ($entry->isPublic() && $entry->isProvisioned())
 					{
 						$obj->access_level = 'public';
 					}
@@ -171,6 +145,7 @@ class Projectsv1_1 extends ApiController
 					//$obj->userRole      = $entry->member()->role;
 					$obj->thumbUrl      = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('thumb')), '/'));
 					$obj->privacy       = $entry->get('private');
+					$obj->access        = $entry->get('access');
 					$obj->provisioned   = $entry->isProvisioned();
 					$obj->groupOwnerId  = $entry->groupOwner('id');
 					$obj->userOwnerId   = $entry->owner('id');
@@ -201,7 +176,7 @@ class Projectsv1_1 extends ApiController
 						}
 
 						// Privacy
-						$obj->privacy = $entry->get('private') == 1 ? Lang::txt('private') : Lang::txt('public');
+						$obj->privacy = $entry->isPrivate() ? Lang::txt('private') : Lang::txt('public');
 
 						// Team role
 						switch ($obj->userRole)
@@ -271,6 +246,7 @@ class Projectsv1_1 extends ApiController
 		$obj->title         = $this->model->get('title');
 		$obj->description   = $this->model->get('about');
 		$obj->private       = $this->model->get('private');
+		$obj->access        = $this->model->get('access');
 		$obj->owner         = $this->model->owner('name');
 		$obj->created       = $this->model->get('created');
 		$obj->groupOwnerId  = $this->model->groupOwner('id');

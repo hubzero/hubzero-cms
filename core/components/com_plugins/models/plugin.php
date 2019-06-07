@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Plugins\Models;
@@ -199,9 +175,14 @@ class Plugin extends Relational
 	public function loadLanguage($system = false)
 	{
 		$file = 'plg_' . $this->get('folder') . '_' . $this->get('element') . ($system ? '.sys' : '');
-		$path = '/plugins/' . $this->get('folder') . '/' . $this->get('element');
+		$path = $this->path();
 
-		return (Lang::load($file, PATH_APP . $path, null, false, true) || Lang::load($file, PATH_CORE . $path, null, false, true));
+		if ($path)
+		{
+			return Lang::load($file, $path, null, false, true);
+		}
+
+		return false;
 	}
 
 	/**
@@ -216,6 +197,20 @@ class Plugin extends Relational
 			$this->paramsRegistry = new Registry($this->get('params'));
 		}
 		return $this->paramsRegistry;
+	}
+
+	/**
+	 * Get the installed path
+	 *
+	 * @return  string
+	 */
+	public function path()
+	{
+		if (!$this->get('folder') || !$this->get('element'))
+		{
+			return '';
+		}
+		return \Plugin::path($this->get('folder'), $this->get('element'));
 	}
 
 	/**
@@ -237,12 +232,9 @@ class Plugin extends Relational
 			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
 		}
 
-		$path = '/plugins/' . $this->get('folder') . '/' . $this->get('element') . '/' . $this->get('element') . '.xml';
-
-		$paths = array(
-			PATH_APP . $path,
-			PATH_CORE . $path
-		);
+		$paths   = array();
+		$paths[] = $this->path() . '/config/config.xml';
+		$paths[] = $this->path() . '/' . $this->get('element') . '.xml';
 
 		foreach ($paths as $file)
 		{

@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -45,6 +20,8 @@ if ($canDo->get('core.edit'))
 Toolbar::custom('export', 'export', '', 'COM_NEWSLETTER_TOOLBAR_EXPORT', false);
 Toolbar::spacer();
 Toolbar::cancel();
+
+$this->js();
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
@@ -57,22 +34,18 @@ Toolbar::cancel();
 			<option value="unsubscribed" <?php if ($this->filters['status'] == 'unsubscribed') { echo 'selected="selected"'; } ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_UNSUBSCRIBED'); ?></option>
 			<option value="inactive" <?php if ($this->filters['status'] == 'inactive') { echo 'selected="selected"'; } ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_INACTIVE'); ?></option>
 		</select>
-		<input type="submit" value="<?php echo Lang::txt('Go'); ?>" onclick="javascript:submitbutton('manage');" />
+		<input type="submit" value="<?php echo Lang::txt('Go'); ?>" id="btn-manage" />
 	</fieldset>
 
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
-				<th>
-					<?php echo Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
-				</th>
-				<th><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS'); ?></th>
-				<th><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_CONFIRMED'); ?></th>
-				<th>
-					<?php echo Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_ADDED', 'date_added', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
-				</th>
-				<th>
+				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_CONFIRMED'); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_ADDED', 'date_added', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col">
 					<?php echo Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_CONFIRMED', 'date_confirmed', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 				</th>
 			</tr>
@@ -92,7 +65,7 @@ Toolbar::cancel();
 				<?php foreach ($this->list_emails as $le) { ?>
 					<tr>
 						<td width="30">
-							<input type="checkbox" name="email_id[]" id="cb<?php echo $k;?>" value="<?php echo $le->id; ?>" onclick="Joomla.isChecked(this.checked);" />
+							<input type="checkbox" name="email_id[]" id="cb<?php echo $k;?>" value="<?php echo $le->id; ?>" class="checkbox-toggle" />
 						</td>
 						<td>
 							<a href="mailto:<?php echo $le->email; ?>"><?php echo $this->escape($le->email); ?></a>
@@ -120,13 +93,13 @@ Toolbar::cancel();
 							?>
 						</td>
 						<td>
-							<?php echo Date::of($le->date_added)->format('l, F d, Y @ g:ia'); ?>
+							<time datetime="<?php echo $le->date_added; ?>"><?php echo Date::of($le->date_added)->format('l, F d, Y @ g:ia'); ?></time>
 						</td>
 						<td>
 							<?php
 								if ($le->date_confirmed && $le->date_confirmed != '0000-00-00 00:00:00')
 								{
-									echo Date::of($le->date_confirmed)->format('l, F d, Y @ g:ia');
+									echo '<time datetime="' . $le->date_confirmed . '">' . Date::of($le->date_confirmed)->format('l, F d, Y @ g:ia') . '</time>';
 								}
 								else
 								{
@@ -139,7 +112,7 @@ Toolbar::cancel();
 			<?php } else { ?>
 				<tr>
 					<td colspan="6">
-						<?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_NO_EMAILS',"javascript:submitbutton('addemail');"); ?>
+						<?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_NO_EMAILS', "javascript:submitbutton('addemail');"); ?>
 					</td>
 				</tr>
 			<?php } ?>

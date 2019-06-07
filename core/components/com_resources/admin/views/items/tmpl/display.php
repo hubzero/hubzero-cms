@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -76,14 +52,14 @@ $this->css();
 		<div class="grid">
 			<div class="col span6">
 				<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>: </label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_RESOURCES_SEARCH_PLACEHOLDER'); ?>" />
+				<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_RESOURCES_SEARCH_PLACEHOLDER'); ?>" />
 
 				<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_RESOURCES_GO'); ?>" />
-				<button type="button" onclick="$('#filter_search').val('');$('#filter-status').val('all');$('#type').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span6">
 				<label for="filter-status"><?php echo Lang::txt('COM_RESOURCES_FILTER_STATUS'); ?>:</label>
-				<select name="status" id="filter-status" onchange="this.form.submit();">
+				<select name="status" id="filter-status" class="filter filter-submit">
 					<option value="all"<?php echo ($this->filters['status'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_FILTER_STATUS_ALL'); ?></option>
 					<option value="2"<?php echo ($this->filters['status'] == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL'); ?></option>
 					<option value="5"<?php echo ($this->filters['status'] == 5) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_DRAFT_INTERNAL'); ?></option>
@@ -94,7 +70,7 @@ $this->css();
 				</select>
 
 				<label for="filter-license"><?php echo Lang::txt('COM_RESOURCES_FILTER_LICENSE'); ?>:</label>
-				<select name="license" id="filter-license" onchange="this.form.submit();">
+				<select name="license" id="filter-license" class="filter filter-submit">
 					<option value="all"<?php echo ($this->filters['license'] == 'all') ? 'selected="selected"' : '';?>><?php echo Lang::txt('COM_RESOURCES_FILTER_LICENSE_ALL'); ?></option>
 					<?php foreach ($this->licenses as $license) { ?>
 						<option value="<?php echo $license->get('name'); ?>"<?php echo ($this->filters['license'] == $license->get('name')) ? 'selected="selected"' : ''; ?>><?php echo $license->get('title'); ?></option>
@@ -102,7 +78,7 @@ $this->css();
 				</select>
 
 				<label for="filter-type"><?php echo Lang::txt('COM_RESOURCES_FILTER_TYPE'); ?>:</label>
-				<select name="type" id="filter-type" onchange="this.form.submit();">
+				<select name="type" id="filter-type" class="filter filter-submit">
 					<option value=""><?php echo Lang::txt('COM_RESOURCES_FILTER_TYPE_ALL'); ?></option>
 					<?php foreach ($this->types as $type) { ?>
 						<option value="<?php echo $type->id; ?>"<?php echo ($this->filters['type'] == $type->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape($type->type); ?></option>
@@ -115,7 +91,7 @@ $this->css();
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_STATUS', 'published', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
@@ -165,7 +141,7 @@ $this->css();
 						$class = 'pending';
 						$task  = 'unpublish';
 					}
-					else if ($now <= $row->publish_down || $row->publish_down == '0000-00-00 00:00:00')
+					else if ($now <= $row->publish_down || !$row->publish_down || $row->publish_down == '0000-00-00 00:00:00')
 					{
 						$alt   = Lang::txt('JPUBLISHED');
 						$class = 'published';
@@ -240,7 +216,7 @@ $this->css();
 			$tags = count($row->tags());
 
 			// See if it's checked out or not
-			if (($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')) // && $row->checked_out != User::get('id'))
+			if ($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')) // && $row->checked_out != User::get('id'))
 			{
 				$date = Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_LC1'));
 				$time = Date::of($row->checked_out_time)->toLocal('H:i');
@@ -250,7 +226,7 @@ $this->css();
 				$checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::' . $this->escape($editor->get('name')) . '<br />' . $date . '<br />' . $time . '">';
 				$checked .= '<span class="checkedout"></span>' . '</span>';
 
-				$info .= ($row->checked_out_time != '0000-00-00 00:00:00')
+				$info .= ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
 						 ? Lang::txt('COM_RESOURCES_CHECKED_OUT') . ': ' . Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />'
 						 : '';
 
@@ -286,22 +262,22 @@ $this->css();
 						<span><?php echo $this->escape(Lang::txt($row->groupname)); ?></span>
 					</a>
 				</td>
-				<td class="priority-4" style="white-space: nowrap">
-					<?php if ($row->modified == '0000-00-00 00:00:00') { ?>
+				<td class="priority-4">
+					<?php if (!$row->modified || $row->modified == '0000-00-00 00:00:00') { ?>
 						<?php echo Lang::txt('COM_RESOURCES_NOT_MODIFIED'); ?>
 					<?php } else { ?>
-						<time datetime="<?php echo ($row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created); ?>">
-							<?php echo Date::of($row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>
+						<time datetime="<?php echo ($row->modified && $row->modified != '0000-00-00 00:00:00') ? $row->modified : $row->created; ?>">
+							<?php echo Date::of($row->modified && $row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>
 						</time>
 					<?php } ?>
 				</td>
 				<td class="priority-5">
 					<?php echo $this->escape(stripslashes($license)); ?>
 				</td>
-				<td class="priority-2" style="white-space: nowrap">
+				<td class="priority-2">
 					<?php echo $this->escape(stripslashes($row->type->type)); ?>
 				</td>
-				<td style="white-space: nowrap">
+				<td>
 					<?php if ($row->children()->total() > 0) { ?>
 						<a class="glyph menulist" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=children&pid=' . $row->id); ?>">
 							<span><?php echo $row->children()->total(); ?></span>
@@ -312,7 +288,7 @@ $this->css();
 						</a>
 					<?php } ?>
 				</td>
-				<td style="white-space: nowrap">
+				<td>
 					<?php if ($tags > 0) { ?>
 						<a class="glyph tag" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=tags&id=' . $row->id); ?>">
 							<span><?php echo $tags; ?></span>

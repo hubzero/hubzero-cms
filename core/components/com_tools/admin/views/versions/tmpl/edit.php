@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -41,22 +16,13 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('version');
 
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
 Html::behavior('modal');
 Html::behavior('switcher', 'submenu');
-?>
 
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('item-form');
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-	// do field validation
-	submitform(pressbutton);
-}
-</script>
+$this->js();
+?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<nav role="navigation" class="sub-navigation">
@@ -64,8 +30,8 @@ function submitbutton(pressbutton)
 			<div class="submenu-box">
 				<div class="submenu-pad">
 					<ul id="submenu">
-						<li><a href="#" onclick="return false;" id="details" class="active"><?php echo Lang::txt('JDETAILS'); ?></a></li>
-						<li><a href="#" onclick="return false;" id="zones"><?php echo Lang::txt('COM_TOOLS_FIELDSET_ZONES'); ?></a></li>
+						<li><a href="#page-details" id="details" class="active"><?php echo Lang::txt('JDETAILS'); ?></a></li>
+						<li><a href="#page-zones" id="zones"><?php echo Lang::txt('COM_TOOLS_FIELDSET_ZONES'); ?></a></li>
 					</ul>
 					<div class="clr"></div>
 				</div>
@@ -109,6 +75,47 @@ function submitbutton(pressbutton)
 							<textarea name="fields[params]" id="field-params" cols="50" rows="10"><?php echo $this->escape(stripslashes($this->row->params));?></textarea>
 						</div>
 					</fieldset>
+
+					<?php if ($this->doi): ?>
+						<fieldset class="adminform">
+							<legend><span><?php echo Lang::txt('COM_TOOLS_FIELD_VERSION_DOI'); ?></span></legend>
+
+							<?php if ($err = $this->doi->getError()): ?>
+								<div class="input-wrap">
+									<p class="warning"><?php echo $err; ?></p>
+								</div>
+							<?php else: ?>
+								<div class="grid">
+									<div class="col span5">
+										<div class="input-wrap">
+											<label for="field-doi_shoulder"><?php echo Lang::txt('COM_TOOLS_FIELD_DOI_SHOULDER'); ?>:</label><br />
+											<input type="text" name="doi[doi_shoulder]" id="field-doi_shoulder" value="<?php echo $this->escape($this->doi->doi_shoulder); ?>" />
+										</div>
+									</div>
+									<div class="col span2">
+										&nbsp;<br />/
+									</div>
+									<div class="col span5">
+										<div class="input-wrap">
+											<label for="field-doi"><?php echo Lang::txt('COM_TOOLS_FIELD_DOI_DOI'); ?>:</label><br />
+											<input type="text" name="doi[doi]" id="field-doi" value="<?php echo $this->escape($this->doi->doi); ?>" />
+										</div>
+									</div>
+								</div>
+
+								<div class="input-wrap">
+									<label for="field-doi_label"><?php echo Lang::txt('COM_TOOLS_FIELD_DOI_LABEL'); ?>:</label><br />
+									<input type="text" name="doi[doi_label]" id="field-doi_label" value="<?php echo $this->escape($this->doi->doi_label); ?>" />
+								</div>
+
+								<input type="hidden" name="doi[id]" value="<?php echo $this->escape($this->doi->id); ?>" />
+								<input type="hidden" name="doi[rid]" value="<?php echo $this->escape($this->doi->rid); ?>" />
+								<input type="hidden" name="doi[local_revision]" value="<?php echo $this->escape($this->row->revision); ?>" />
+								<input type="hidden" name="doi[versionid]" value="<?php echo $this->escape($this->row->id); ?>" />
+								<input type="hidden" name="doi[alias]" value="<?php echo $this->escape($this->row->toolname); ?>" />
+							<?php endif; ?>
+						</fieldset>
+					<?php endif; ?>
 				</div>
 				<div class="col span5">
 					<table class="meta">

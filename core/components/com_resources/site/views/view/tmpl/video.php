@@ -1,34 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- * All rights reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -50,24 +24,14 @@ $presentation = $this->manifest->presentation;
 //determine height and width
 $width  = (isset($presentation->width) && $presentation->width != 0) ? $presentation->width . 'px' : 'auto';
 $height = (isset($presentation->height) && $presentation->height != 0) ? $presentation->height . 'px' : 'auto';
-?>
 
-<script>
-/* Bug fix for Firefox bug. */
-/* Firefox fails to update the readyState and does not call the canplay and canplaythrough */
-/* Some background information: http://stackoverflow.com/questions/10235919/the-canplay-canplaythrough-events-for-an-html5-video-are-not-called-on-firefox */
-if (navigator.userAgent.indexOf("Mozilla") > -1)
-{
-	setInterval(function(){ 
-		var vid = document.getElementById('video-player');
-		if (vid.readyState >= 2)
-			{
-				HUB.Video.doneLoading();
-				HUB.Video.locationHash();
-			};
-	}, 2000);
+$this->css('
+#video-flowplayer {
+	width: ' . $width . ';
+	height: ' . $height . ';
 }
-</script>
+');
+?>
 
 <div id="video-container">
 	<?php if (count($presentation->media) > 0) : ?>
@@ -114,7 +78,6 @@ if (navigator.userAgent.indexOf("Mozilla") > -1)
 
 			<a href="<?php echo $mp4; ?>"
 				id="video-flowplayer"
-				style="<?php echo "width:{$width};height:{$height};"; ?>"
 				data-mediaid="<?php echo $this->resource->id; ?>"></a>
 
 			<?php if (count($presentation->subtitles) > 0) : ?>
@@ -212,7 +175,7 @@ if (navigator.userAgent.indexOf("Mozilla") > -1)
 									<label for="font-color">Font Color:</label>
 								</div>
 								<div class="col span6 omega input">
-									<div id="font-color" data-color="FFF" style="background-color: #FFF;"></div>
+									<div id="font-color" data-color="FFF"></div>
 								</div>
 							</div>
 							<div class="grid">
@@ -220,13 +183,13 @@ if (navigator.userAgent.indexOf("Mozilla") > -1)
 									<label for="background-color">Background:</label>
 								</div>
 								<div class="col span6 omega input">
-									<div id="background-color" data-color="000" style="background-color: #000;"></div>
+									<div id="background-color" data-color="000"></div>
 								</div>
 							</div>
 							<div class="grid">
 								<div class="col span12 omega subtitle-settings-preview-container">
 									<div class="subtitle-settings-preview">
-										<div class="test" style="font-family:arial; background-color: #000; color: #FFF; font-size:18px;">This is an Example</div>
+										<div class="test">This is an Example</div>
 									</div>
 								</div>
 							</div>
@@ -285,7 +248,7 @@ if (navigator.userAgent.indexOf("Mozilla") > -1)
 						</div>
 					</div>
 				</a>
-				<a id="full-screen" class="tooltips control" href="javascript:void(0);" title="View Video Fullscreen">Fullscreen</a>
+				<!-- <a id="full-screen" class="tooltips control" href="javascript:void(0);" title="View Video Fullscreen">Fullscreen</a> -->
 			</div>
 		</div>
 	</div><!-- /#control-box -->

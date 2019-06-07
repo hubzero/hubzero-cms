@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -133,10 +108,8 @@ class FileMacro extends WikiMacro
 		{
 			$this->config->set('filepath', $this->filepath);
 		}
-		$imgs = explode(',', $this->config->get('img_ext', 'jpg, jpeg, jpe, gif, png'));
-		$imgs = array_map('trim', $imgs);
-		$imgs = array_map('strtolower', $imgs);
-		$this->imgs = $imgs;
+
+		$this->imgs = array('jpg', 'jpeg', 'jpe', 'bmp', 'tif', 'tiff', 'png', 'gif', 'jpeg2', 'jpe2', 'jp2', 'jpg2', 'svg');
 
 		$ret = false;
 		// Is it numeric?
@@ -543,26 +516,16 @@ class FileMacro extends WikiMacro
 
 				$rand = rand(0, 100000);
 
-				$html  = '<script type="text/javascript" src="' . (\Request::scheme() == 'https' ? 'https://ssl-' : 'http://') . 'webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject2.js"></script>' . "\n";
-				$html .= '<div id="unityPlayer' . $rand . '">
+				$$html  = '<div id="unityPlayer' . $rand . '" class="unityPlayer_macro" data-width="'.intval($attr['width']).'" data-height="'.intval($attr['height']).'" data-href="'.$attr['href'].'">
 							<div class="missing">
 								<a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now!">
 									<img alt="Unity Web Player. Install now!" src="' . (\Request::scheme() == 'https' ? 'https://ssl-' : 'http://') . 'webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
 								</a>
 							</div>
 						</div>' . "\n";
-				$html .= '<script type="text/javascript">' . "\n";
-				$html .= '<!--
-							var config = {
-								width: '.intval($attr['width']).',
-								height: '.intval($attr['height']).',
-								params: { enableDebugging:"0" }
-							}
-							var u = new UnityObject2(config);
-							var unityObject = $("#unityPlayer'.$rand.'");
-							u.initPlugin(unityObject, "'.$attr['href'].'");
-							-->' . "\n";
-				$html .= '</script>' . "\n";
+
+				\Document::addScript(\Request::scheme() . '://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject2.js');
+				\Document::addScript(\Request::root() . 'core/plugins/wiki/parserdefault/macros/macro-assets/file/file.js?t=' . filemtime(__DIR__ . '/macro-assets/file/file.js'));
 			break;
 
 			case 'cdf':
@@ -593,20 +556,14 @@ class FileMacro extends WikiMacro
 				}
 				else
 				{
-					$attr['alt'] = '<div class="embedded-plugin" style="width: ' . intval($attr['width']) . 'px; height: ' . intval($attr['height']) . 'px;"><a class="missing-plugin" href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!"><img alt="CDF Web Player. Install now!" src="' . \Request::scheme() . '://www.wolfram.com/cdf/images/cdf-player-black.png" width="187" height="41" /></a></div>';
+					$attr['alt']  = '<a class="missing-plugin" href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!">';
+					$attr['alt'] .= '<img alt="CDF Web Player. Install now!" src="' . \Request::scheme() . '://www.wolfram.com/cdf/images/cdf-player-black.png" width="187" height="41" />';
+					$attr['alt'] .= '</a>';
 				}
 
-				$html  = '<script type="text/javascript" src="' . \Request::scheme() . '://www.wolfram.com/cdf-player/plugin/v2.1/cdfplugin.js"></script>';
-				$html .= '<script type="text/javascript">';
-				//$html .= '<!--';
-				$html .= '	var cdf = new cdfplugin();';
-				$html .= "var defaultContent = '" . $attr['alt'] . "';";
-				$html .= '	if (defaultContent!= "") {';
-				$html .= '		cdf.setDefaultContent(defaultContent);';
-				$html .= '	}';
-				$html .= '	cdf.embed(\'' . $attr['href'] . '\', ' . intval($attr['width']) . ', ' . intval($attr['height']) . ');';
-				//$html .= ' -->';
-				$html .= '</script>' . "\n";
+				\Document::addScript(\Request::scheme() . '://www.wolfram.com/cdf-player/plugin/v2.1/cdfplugin.js');
+				\Document::addScript(\Request::root() . 'core/plugins/content/formathtml/macros/macro-assets/file/file.js?t=' . filemtime(__DIR__ . '/macro-assets/file/file.js'));
+
 				$html .= '<noscript>';
 				$html .= '<div class="embedded-plugin" style="width: ' . intval($attr['width']) . 'px; height: ' . intval($attr['height']) . ';">';
 				$html .= $attr['alt'];

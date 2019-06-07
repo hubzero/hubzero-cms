@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Plugins\Antispam\Babajispam;
@@ -93,19 +68,22 @@ class Detector implements DetectorInterface
 
 		foreach ($baba as $b)
 		{
-			if ( (($b{0} == '/') && preg_match($b, $context)) || (($b[0] != '/') && strpos($context,$b) !== false))
+			if ((($b{0} == '/') && preg_match($b, $context))
+			 || (($b[0] != '/') && strpos($context, $b) !== false))
 			{
 				$spam += 10;
 				$reason |= 2;
 			}
 
-			if ( (($b[0] == '/') && preg_match($b, $email)) || (($b[0] != '/') && strpos($email,$b) !== false))
+			if ((($b[0] == '/') && preg_match($b, $email))
+			 || (($b[0] != '/') && strpos($email, $b) !== false))
 			{
 				$spam += 10;
 				$reason |= 4;
 			}
 
-			if ( (($b[0] == '/') && preg_match($b, $username)) || (($b[0] != '/') && strpos($username,$b) !== false))
+			if ((($b[0] == '/') && preg_match($b, $username))
+			 || (($b[0] != '/') && strpos($username, $b) !== false))
 			{
 				$spam += 10;
 				$reason |= 8;
@@ -121,17 +99,20 @@ class Detector implements DetectorInterface
 
 		foreach ($keywords as $k)
 		{
-			if ( (($k[0] == '/') && preg_match($k, $context)) || (($k[0] != '/') && strpos($context,$k) !== false))
+			if ((($k[0] == '/') && preg_match($k, $context))
+			 || (($k[0] != '/') && strpos($context, $k) !== false))
 			{
 				$spam += 10;
 				$reason |= 16;
 			}
-			if ( (($k[0] == '/') && preg_match($k, $email)) || (($k[0] != '/') && strpos($email,$k) !== false))
+			if ((($k[0] == '/') && preg_match($k, $email))
+			 || (($k[0] != '/') && strpos($email, $k) !== false))
 			{
 				$spam += 10;
 				$reason |= 32;
 			}
-			if ( (($k[0] == '/') && preg_match($k, $username)) || (($k[0] != '/') && strpos($username,$k) !== false))
+			if ((($k[0] == '/') && preg_match($k, $username))
+			 || (($k[0] != '/') && strpos($username, $k) !== false))
 			{
 				$spam += 10;
 				$reason |= 64;

@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        plugins/courses/progress/gradebook.jquery.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 //-----------------------------------------------------------
@@ -1137,8 +1136,6 @@ HUB.Plugins.CoursesProgress = {
 			r = $('.reports-container');
 
 		$(window).unbind('resize').unbind('scroll');
-
-		//$('.checkbox input').uniform();
 
 		// Remove margins if coming from gradebook tab and margins were present
 		$('.main-container').css({

@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -34,7 +10,7 @@ defined('_HZEXEC_') or die();
 	$this->comment->set('section', $this->filters['section']);
 	$this->comment->set('category', $this->category->get('alias'));
 
-	$name = Lang::txt('COM_FORUM_ANONYMOUS');
+	$name = Lang::txt('JANONYMOUS');
 	if (!$this->comment->get('anonymous'))
 	{
 		$name = $this->escape(stripslashes($this->comment->creator->get('name', $name)));
@@ -88,36 +64,48 @@ defined('_HZEXEC_') or die();
 						$attachment->set('description', $attachment->get('filename'));
 					}
 
-					$link = $this->comment->link() . '&post=' . $attachment->get('post_id') . '&file=' . $attachment->get('filename');
-
-					if ($attachment->isImage())
+					if ($attachment->exists())
 					{
-						if ($attachment->width() > 400)
+						$link = $attachment->link(); //$this->comment->link() . '&post=' . $attachment->get('post_id') . '&file=' . $attachment->get('filename');
+
+						if ($attachment->isImage())
 						{
-							$html = '<p><a href="' . Route::url($link) . '" rel="external"><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+							if ($attachment->width() > 400)
+							{
+								$html = '<p><a href="' . Route::url($link) . '" rel="external"><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+							}
+							else
+							{
+								$html = '<p><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+							}
 						}
 						else
 						{
-							$html = '<p><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+							$html  = '<a class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">';
+							$html .= '<p class="attachment-description">' . $attachment->get('description') . '</p>';
+							$html .= '<p class="attachment-meta">';
+							$html .= '<span class="attachment-size">' . Hubzero\Utility\Number::formatBytes($attachment->size()) . '</span>';
+							$html .= '<span class="attachment-action">' . Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD') . '</span>';
+							$html .= '</p>';
+							$html .= '</a>';
 						}
 					}
 					else
 					{
-						$html  = '<a class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">';
+						$html  = '<div class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" title="' . $this->escape($attachment->get('description')) . '">';
 						$html .= '<p class="attachment-description">' . $attachment->get('description') . '</p>';
 						$html .= '<p class="attachment-meta">';
-						$html .= '<span class="attachment-size">' . Hubzero\Utility\Number::formatBytes($attachment->size()) . '</span>';
-						$html .= '<span class="attachment-action">' . Lang::txt('COM_FORUM_CLICK_TO_DOWNLOAD') . '</span>';
+						$html .= '<span class="attachment-size">' . $attachment->get('filename') . '</span>';
+						$html .= '<span class="attachment-action">' . Lang::txt('JLIB_HTML_ERROR_FILE_NOT_FOUND') . '</span>';
 						$html .= '</p>';
-						$html .= '</a>';
+						$html .= '</div>';
 					}
 
 					echo $html;
 				}
 				?>
 			</div><!-- / .comment-attachments -->
-			<?php if (
-						$this->config->get('access-manage-thread')
+			<?php if ($this->config->get('access-manage-thread')
 						||
 						(!$this->comment->get('parent') && $this->comment->get('created_by') == User::get('id') &&
 							(
@@ -167,7 +155,7 @@ defined('_HZEXEC_') or die();
 				<div class="addcomment comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
 					<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->thread->link()); ?>" method="post" enctype="multipart/form-data">
 						<fieldset>
-							<legend><span><?php echo Lang::txt('COM_FORUM_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('COM_FORUM_ANONYMOUS'))); ?></span></legend>
+							<legend><span><?php echo Lang::txt('COM_FORUM_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
 
 							<input type="hidden" name="fields[id]" value="0" />
 							<input type="hidden" name="fields[state]" value="1" />
@@ -188,27 +176,35 @@ defined('_HZEXEC_') or die();
 
 							<?php echo Html::input('token'); ?>
 
-							<label for="field_<?php echo $this->comment->get('id'); ?>_comment">
-								<span class="label-text"><?php echo Lang::txt('COM_FORUM_FIELD_COMMENTS'); ?></span>
-								<?php
-								echo $this->editor('fields[comment]', '', 35, 4, 'field_' . $this->comment->get('id') . '_comment', array('class' => 'minimal no-footer'));
-								?>
-							</label>
+							<div class="form-group">
+								<label for="field_<?php echo $this->comment->get('id'); ?>_comment">
+									<span class="label-text"><?php echo Lang::txt('COM_FORUM_FIELD_COMMENTS'); ?></span>
+									<?php
+									echo $this->editor('fields[comment]', '', 35, 4, 'field_' . $this->comment->get('id') . '_comment', array('class' => 'form-control minimal no-footer'));
+									?>
+								</label>
+							</div>
 
-							<label class="upload-label" for="comment-<?php echo $this->comment->get('id'); ?>-file">
-								<span class="label-text"><?php echo Lang::txt('COM_FORUM_ATTACH_FILE'); ?>:</span>
-								<input type="file" name="upload" id="comment-<?php echo $this->comment->get('id'); ?>-file" />
-							</label>
+							<div class="form-group">
+								<label class="upload-label" for="comment-<?php echo $this->comment->get('id'); ?>-file">
+									<span class="label-text"><?php echo Lang::txt('COM_FORUM_ATTACH_FILE'); ?>:</span>
+									<input type="file" class="form-control-file" name="upload" id="comment-<?php echo $this->comment->get('id'); ?>-file" />
+								</label>
+							</div>
 
 							<?php if ($this->config->get('allow_anonymous')) { ?>
-								<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
-									<input class="option" type="checkbox" name="fields[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
-									<?php echo Lang::txt('COM_FORUM_FIELD_ANONYMOUS'); ?>
-								</label>
+								<div class="form-group">
+									<div class="form-check">
+										<label class="form-check-label reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
+											<input class="option form-check-input" type="checkbox" name="fields[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
+											<?php echo Lang::txt('COM_FORUM_FIELD_ANONYMOUS'); ?>
+										</label>
+									</div>
+								</div>
 							<?php } ?>
 
 							<p class="submit">
-								<input type="submit" value="<?php echo Lang::txt('JSUBMIT'); ?>" />
+								<input type="submit" class="btn" value="<?php echo Lang::txt('JSUBMIT'); ?>" />
 							</p>
 						</fieldset>
 					</form>

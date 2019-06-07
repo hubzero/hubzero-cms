@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -32,16 +37,16 @@ class Migration20170901000000ComCategories extends Base
 			  `description` mediumtext NOT NULL,
 			  `published` tinyint(1) NOT NULL DEFAULT '0',
 			  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
-			  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `checked_out_time` datetime DEFAULT NULL,
 			  `access` int(10) unsigned NOT NULL DEFAULT '0',
 			  `params` text NOT NULL,
 			  `metadesc` varchar(1024) NOT NULL COMMENT 'The meta description for the page.',
 			  `metakey` varchar(1024) NOT NULL COMMENT 'The meta keywords for the page.',
 			  `metadata` varchar(2048) NOT NULL COMMENT 'JSON encoded metadata properties.',
 			  `created_user_id` int(10) unsigned NOT NULL DEFAULT '0',
-			  `created_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created_time` datetime DEFAULT NULL,
 			  `modified_user_id` int(10) unsigned NOT NULL DEFAULT '0',
-			  `modified_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `modified_time` datetime DEFAULT NULL,
 			  `hits` int(10) unsigned NOT NULL DEFAULT '0',
 			  `language` char(7) NOT NULL,
 			  PRIMARY KEY (`id`),
@@ -53,6 +58,41 @@ class Migration20170901000000ComCategories extends Base
 			  KEY `idx_alias` (`alias`),
 			  KEY `idx_language` (`language`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+
+			$this->db->setQuery($query);
+			$this->db->query();
+
+			$dt = new \Hubzero\Utility\Date();
+
+			$query = "INSERT INTO `#__categories`
+					VALUES (
+						1,
+						0,
+						0,
+						0,
+						1,
+						0,
+						'',
+						'system',
+						'ROOT',
+						'root',
+						'',
+						'',
+						1,
+						0,
+						null,
+						1,
+						'{}',
+						'',
+						'',
+						'',
+						0,
+						" . $this->db->quote($dt->toSql()) . ",
+						0,
+						null,
+						0,
+						'*'
+					)";
 
 			$this->db->setQuery($query);
 			$this->db->query();

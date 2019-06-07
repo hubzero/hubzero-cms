@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        media/hubzero/css/notifications.css
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 /* Environment */
@@ -106,8 +105,6 @@
 		-o-border-radius: 0.27em;
 		border-radius: 0.27em;
 		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
-		/*z-index: 1;*/
-		background-image: url("/core/assets/images/light-stripes.png");
 		background-image: -webkit-gradient(linear, 0 0, 100% 100%,
 											color-stop(.25, rgba(255, 255, 255, .065)), color-stop(.25, transparent),
 											color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .065)),
@@ -132,7 +129,7 @@
 		-moz-background-size: 30px 30px;
 		-ms-background-size: 30px 30px;
 		-o-background-size: 30px 30px;
-		background-size: 30px 30px; /* Controls the size of the stripes */
+		background-size: 30px 30px;
 	}
 	.help,
 	.info,
@@ -256,72 +253,3 @@
 		content: "\f05a";
 		left: 0.71803399em;
 	}
-
-/* [!] HACKS - IE 7 and older */
-	.help,
-	#system-message dd.help { 
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="systemmessage-before">&#xf059;&nbsp;</span>' + this.innerHTML);
-	}
-	.info,
-	#system-message dd.info { 
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="systemmessage-before">&#xf05a;&nbsp;</span>' + this.innerHTML);
-	}
-	.warning,
-	#system-message dd.warning { 
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="systemmessage-before">&#x26A0;&nbsp;</span>' + this.innerHTML);
-	}
-	.error,
-	#system-message dd.error { 
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="systemmessage-before">&#xf094;&nbsp;</span>' + this.innerHTML);
-	}
-	.passed,
-	#system-message dd.passed { 
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<span class="systemmessage-before">&#x2714;&nbsp;</span>' + this.innerHTML);
-	}
-
-/* [!] HACKS - Firefox 3.4 and older */
-@-moz-document url-prefix() {
-	html.firefox3 .passed:before,
-	html.firefox3 #system-message dd.message:before,
-	html.firefox3 .help:before,
-	html.firefox3 #system-message dd.help:before,
-	html.firefox3 .error:before,
-	html.firefox3 #system-message dd.error:before,
-	html.firefox3 .warning:before,
-	html.firefox3 #system-message dd.warning:before,
-	html.firefox3 .info:before,
-	html.firefox3 #system-message dd.info:before {
-		content: "";
-		display: none;
-	}
-	html.firefox3 .help,
-	html.firefox3 #system-message dd.help { 
-		background-image: url("/core/assets/images/help.png");
-		background-position: 10px 10px;
-		background-repeat: no-repeat;
-	}
-	html.firefox3 .info,
-	html.firefox3 #system-message dd.info { 
-		background-image: url("/core/assets/images/information.png");
-		background-position: 10px 10px;
-		background-repeat: no-repeat;
-	}
-	html.firefox3 .warning,
-	html.firefox3 #system-message dd.warning { 
-		background-image: url("/core/assets/images/warning.png");
-		background-position: 10px 10px;
-		background-repeat: no-repeat;
-	}
-	html.firefox3 .error,
-	html.firefox3 #system-message dd.error { 
-		background-image: url("/core/assets/images/error.png");
-		background-position: 10px 10px;
-		background-repeat: no-repeat;
-	}
-	html.firefox3 .passed,
-	html.firefox3 #system-message dd.passed { 
-		background-image: url("/core/assets/images/accept.png");
-		background-position: 10px 10px;
-		background-repeat: no-repeat;
-	}
-}

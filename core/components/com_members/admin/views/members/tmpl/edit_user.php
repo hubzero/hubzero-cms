@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -71,12 +47,12 @@ if (substr($this->profile->get('email'), -8) == '@invalid')
 
 			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_FIELD_USERNAME_HINT'); ?>">
 				<label id="field_username-lbl" for="field_username" class="required"><?php echo Lang::txt('COM_MEMBERS_FIELD_USERNAME'); ?> <span class="required star"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<input type="text" name="fields[username]" id="field_username" value="<?php echo $this->escape($this->profile->get('username')); ?>" class="required<?php if ($this->profile->get('id')) { echo ' readonly" readonly="readonly'; } ?>" />
+				<input type="text" name="fields[username]" id="field_username" class="required" value="<?php echo $this->escape($this->profile->get('username')); ?>" class="required<?php if ($this->profile->get('id')) { echo ' readonly" readonly="readonly'; } ?>" />
 			</div>
 
 			<div class="input-wrap">
 				<label id="field_email-lbl" for="field_email" class="required"><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL'); ?> <span class="required star"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<input type="text" name="fields[email]" class="validate-email required" id="field_email" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
+				<input type="email" name="fields[email]" class="validate-email required" id="field_email" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
 			</div>
 
 			<fieldset>
@@ -170,28 +146,28 @@ if (substr($this->profile->get('email'), -8) == '@invalid')
 				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_MEMBERS_FIELD_REGISTERIP'); ?></th>
-					<th><?php echo $this->profile->get('registerIP'); ?></th>
+					<td><?php echo $this->profile->get('registerIP'); ?></td>
 				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_MEMBERS_FIELD_REGISTERDATE'); ?></th>
-					<th><?php echo $this->profile->get('registerDate'); ?></th>
+					<td><?php echo $this->profile->get('registerDate'); ?></td>
 				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_MEMBERS_FIELD_LASTVISITDATE'); ?></th>
-					<th><?php echo (!$this->profile->get('lastvisitDate') || $this->profile->get('lastvisitDate') == '0000-00-00 00:00:00' ? Lang::txt('COM_MEMBERS_NEVER') : $this->profile->get('lastvisitDate')); ?></th>
+					<td><?php echo !$this->profile->get('lastvisitDate') || $this->profile->get('lastvisitDate') == '0000-00-00 00:00:00' ? Lang::txt('COM_MEMBERS_NEVER') : $this->profile->get('lastvisitDate'); ?></td>
 				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_MEMBERS_FIELD_MODIFIED'); ?></th>
-					<th><?php echo (!$this->profile->get('modifiedDate') || $this->profile->get('modifiedDate') == '0000-00-00 00:00:00' ? Lang::txt('COM_MEMBERS_NEVER') : $this->profile->get('modifiedDate')); ?></th>
+					<td><?php echo !$this->profile->get('modifiedDate') || $this->profile->get('modifiedDate') == '0000-00-00 00:00:00' ? Lang::txt('COM_MEMBERS_NEVER') : $this->profile->get('modifiedDate'); ?></td>
 				</tr>
 				<?php if ($incomplete) : ?>
 					<tr>
 						<th><?php echo Lang::txt('COM_MEMBERS_AUTHENTICATOR'); ?></th>
-						<th><?php echo $authenticator; ?></th>
+						<td><?php echo $authenticator; ?></td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_MEMBERS_AUTHENTICATOR_STATUS'); ?></th>
-						<th><?php echo Lang::txt('COM_MEMBERS_INCOMPLETE'); ?></th>
+						<td><?php echo Lang::txt('COM_MEMBERS_INCOMPLETE'); ?></td>
 					</tr>
 				<?php endif; ?>
 			</tbody>
@@ -284,7 +260,7 @@ if (substr($this->profile->get('email'), -8) == '@invalid')
 					echo $confirmed;
 					?>
 				<?php else: ?>
-					<span style="color:#c00;"><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_NONE_ON_FILE'); ?></span><br />
+					<span class="error"><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_NONE_ON_FILE'); ?></span><br />
 					<input type="checkbox" name="activation" id="activation" value="1" />
 					<label for="activation"><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRM'); ?></label>
 				<?php endif; ?>
@@ -298,7 +274,7 @@ if (substr($this->profile->get('email'), -8) == '@invalid')
 							<input type="text" name="spam_count" id="field-reputation" value="<?php echo $this->escape($this->profile->reputation->get('spam_count', 0)); ?>" />
 						</span>
 						<span class="input-cell">
-							<a class="button" href="#field-reputation" onclick="document.getElementById('field-reputation').value='0';Joomla.submitbutton('apply');"><?php echo Lang::txt('COM_MEMBERS_RESET'); ?></a>
+							<a class="button" href="#field-reputation" onclick="document.getElementById('field-reputation').value='0';Hubzero.submitbutton('apply');"><?php echo Lang::txt('COM_MEMBERS_RESET'); ?></a>
 						</span>
 					</div>
 					<?php if ($this->profile->reputation->get('spam_count', 0) > Plugin::params('system', 'spamjail')->get('user_count', 10)) : ?>

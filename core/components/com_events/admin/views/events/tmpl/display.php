@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -54,7 +30,7 @@ Html::behavior('tooltip');
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo Lang::txt('COM_EVENTS_SEARCH'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_EVENTS_SEARCH_PLACEHOLDER'); ?>" />
+		<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_EVENTS_SEARCH_PLACEHOLDER'); ?>" />
 
 		<?php echo $this->clist; ?>
 		<?php echo $this->glist; ?>
@@ -66,7 +42,7 @@ Html::behavior('tooltip');
 		<thead>
 			<tr>
 				<th scope="col" class="priority-5"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ID'); ?></th>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_TITLE'); ?></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_STATE'); ?></th>
@@ -107,7 +83,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php if ($row->checked_out && $row->checked_out != User::get('id')) { ?>
 						&nbsp;
 					<?php } else { ?>
-						<input type="checkbox" id="cb<?php echo $i;?>" name="id[]" value="<?php echo $row->id; ?>" onclick="Joomla.isChecked(this.checked);" />
+						<input type="checkbox" id="cb<?php echo $i; ?>" name="id[]" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
 					<?php } ?>
 				</td>
 				<td>
@@ -132,7 +108,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					$alt = Lang::txt('COM_EVENTS_EVENT_UNPUBLISHED');
 					if ($now <= $row->publish_up && $row->state == "1") {
 						$alt = Lang::txt('COM_EVENTS_EVENT_PENDING');
-					} else if (($now <= $row->publish_down || $row->publish_down == "0000-00-00 00:00:00") && $row->state == "1") {
+					} else if (($now <= $row->publish_down || !$row->publish_down || $row->publish_down == "0000-00-00 00:00:00") && $row->state == "1") {
 						$alt = Lang::txt('COM_EVENTS_EVENT_PUBLISHED');
 					} else if ($now > $row->publish_down && $row->state == "1") {
 						$alt = Lang::txt('COM_EVENTS_EVENT_EXPIRED');
@@ -142,14 +118,14 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 					$times = '';
 					if (isset($row->publish_up)) {
-						if ($row->publish_up == '0000-00-00 00:00:00') {
+						if (!$row->publish_up || $row->publish_up == '0000-00-00 00:00:00') {
 							$times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM') . ' : ' . Lang::txt('COM_EVENTS_CAL_LANG_ALWAYS').'<br />';
 						} else {
 							$times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM') . ' : ' . date('Y-m-d H:i:s', strtotime($row->publish_up)) . '<br />';
 						}
 					}
 					if (isset($row->publish_down)) {
-						if ($row->publish_down == '0000-00-00 00:00:00') {
+						if (!$row->publish_down || $row->publish_down == '0000-00-00 00:00:00') {
 							$times .= Lang::txt('COM_EVENTS_CAL_LANG_TO') . ' : ' . Lang::txt('COM_EVENTS_CAL_LANG_NEVER').'<br />';
 						} else {
 							$times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM') . ' : ' . date('Y-m-d H:i:s', strtotime($row->publish_down)) . '<br />';
@@ -165,7 +141,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						</a>
 					<?php } ?>
 				</td>
-				<td class="priority-4" style="white-space: nowrap;">
+				<td class="priority-4">
 					<?php echo $times; ?>
 				</td>
 				<td class="priority-5">
@@ -187,7 +163,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						</span>
 					<?php endif; ?>
 				</td>
-				<td style="white-space: nowrap;">
+				<td>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pages&event_id=' . $row->id); ?>">
 						<?php echo Lang::txt('COM_EVENTS_EVENT_NUMBER_OF_PAGES', $pages); ?>
 					</a>

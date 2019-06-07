@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -71,34 +47,18 @@ $display_system_users = $gparams->get('display_system_users', 'global');
 $comments             = $gparams->get('page_comments', $params->get('page_comments', 0));
 $author               = $gparams->get('page_author', $params->get('page_author', 0));
 $trusted              = $gparams->get('page_trusted', $params->get('page_trusted', 0));
+
+Html::behavior('formvalidation');
+Html::behavior('keepalive');
+
+$this->js();
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.getElementById('item-form');
 
-	if (pressbutton == 'cancel') {
-		submitform(pressbutton);
-		return;
-	}
-
-	<?php echo $this->editor()->save('text'); ?>
-
-	// form field validation
-	if ($('#field-type').val() == '') {
-		alert('<?php echo Lang::txt('COM_GROUPS_ERROR_MISSING_TYPE'); ?>');
-	} else if ($('#field-cn').val() == '') {
-		alert('<?php echo Lang::txt('COM_GROUPS_ERROR_MISSING_CN'); ?>');
-	} else {
-		submitform(pressbutton);
-	}
-}
-</script>
 <?php if ($this->getErrors()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<div id="item-form">
-	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm">
+<div id="item-form-wrap">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 		<nav role="navigation" class="sub-navigation">
 			<div id="submenu-box">
 				<div class="submenu-box">
@@ -130,7 +90,7 @@ function submitbutton(pressbutton)
 
 							<div class="input-wrap">
 								<label for="field-type"><?php echo Lang::txt('COM_GROUPS_TYPE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-								<select name="group[type]" id="field-type">
+								<select name="group[type]" id="field-type" class="required">
 									<option value="1"<?php echo ($this->group->type == '1') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_TYPE_HUB'); ?></option>
 									<option value="3"<?php echo ($this->group->type == '3') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_TYPE_SUPER'); ?></option>
 									<?php if ($canDo->get('core.admin')) { ?>
@@ -163,9 +123,10 @@ function submitbutton(pressbutton)
 								</div>
 							</div>
 
-							<div class="input-wrap">
+							<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_GROUPS_CN_HINT'); ?>">
 								<label for="field-cn"><?php echo Lang::txt('COM_GROUPS_CN'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-								<input type="text" name="group[cn]" id="field-cn" value="<?php echo $this->escape(stripslashes($this->group->cn)); ?>" />
+								<input type="text" name="group[cn]" id="field-cn" class="required" value="<?php echo $this->escape(stripslashes($this->group->cn)); ?>" />
+								<span class="hint"><?php echo Lang::txt('COM_GROUPS_CN_HINT'); ?></span>
 							</div>
 							<div class="input-wrap">
 								<label for="field-description"><?php echo Lang::txt('COM_GROUPS_TITLE'); ?>:</label><br />
@@ -260,26 +221,26 @@ function submitbutton(pressbutton)
 						<table class="meta">
 							<tbody>
 								<tr>
-									<th><?php echo Lang::txt('COM_GROUPS_ID'); ?></th>
+									<th scope="row"><?php echo Lang::txt('COM_GROUPS_ID'); ?></th>
 									<td><?php echo $this->escape($this->group->gidNumber); ?></td>
 								</tr>
 								<tr>
-									<th><?php echo Lang::txt('COM_GROUPS_PUBLISHED'); ?></th>
+									<th scope="row"><?php echo Lang::txt('COM_GROUPS_PUBLISHED'); ?></th>
 									<td><?php echo ($this->group->published) ? 'Yes' : 'No'; ?></td>
 								</tr>
 								<tr>
-									<th><?php echo Lang::txt('COM_GROUPS_APPROVED'); ?></th>
+									<th scope="row"><?php echo Lang::txt('COM_GROUPS_APPROVED'); ?></th>
 									<td><?php echo ($this->group->approved) ? 'Yes' : 'No'; ?></td>
 								</tr>
 								<?php if ($this->group->created) { ?>
 									<tr>
-										<th><?php echo Lang::txt('COM_GROUPS_CREATED'); ?></th>
+										<th scope="row"><?php echo Lang::txt('COM_GROUPS_CREATED'); ?></th>
 										<td><?php echo $this->escape(date("l F d, Y @ g:ia", strtotime($this->group->created))); ?></td>
 									</tr>
 								<?php } ?>
 								<?php if ($this->group->created_by) { ?>
 									<tr>
-										<th><?php echo Lang::txt('COM_GROUPS_CREATED_BY'); ?></th>
+										<th scope="row"><?php echo Lang::txt('COM_GROUPS_CREATED_BY'); ?></th>
 										<td><?php
 										$creator = User::getInstance($this->group->created_by);
 										echo $this->escape($creator->get('name')); ?></td>
@@ -371,7 +332,7 @@ function submitbutton(pressbutton)
 		</div>
 
 		<?php /*if ($canDo->get('core.admin')): ?>
-		<div class="col width-100 fltlft">
+		<div class="col span12">
 			<fieldset class="panelform">
 				<legend><span><?php echo Lang::txt('COM_GROUPS_FIELDSET_RULES'); ?></span></legend>
 				<?php echo $this->form->getLabel('rules'); ?>

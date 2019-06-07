@@ -1,39 +1,15 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
 
 $cls = isset($this->cls) ? $this->cls : 'odd';
 
-$name = Lang::txt('COM_BLOG_ANONYMOUS');
+$name = Lang::txt('JANONYMOUS');
 if (!$this->comment->get('anonymous'))
 {
 	$name = $this->escape(stripslashes($this->comment->creator->get('name', $name)));
@@ -92,20 +68,26 @@ else
 
 					<?php echo Html::input('token'); ?>
 
-					<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
-						<span class="label-text"><?php echo Lang::txt('COM_BLOG_FIELD_COMMENTS'); ?></span>
-						<?php
-						echo $this->editor('comment[content]', $this->comment->get('content'), 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
-						?>
-					</label>
+					<div class="form-group">
+						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
+							<span class="label-text"><?php echo Lang::txt('COM_BLOG_FIELD_COMMENTS'); ?></span>
+							<?php
+							echo $this->editor('comment[content]', $this->comment->get('content'), 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'form-control minimal no-footer'));
+							?>
+						</label>
+					</div>
 
-					<label class="comment-anonymous" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
-						<input class="option" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" <?php if ($this->comment->get('anonymous')) { echo ' checked="checked"'; } ?> />
-						<?php echo Lang::txt('COM_BLOG_POST_ANONYMOUS'); ?>
-					</label>
+					<div class="form-group">
+						<div class="form-check">
+							<label class="form-check-label comment-anonymous" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
+								<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" <?php if ($this->comment->get('anonymous')) { echo ' checked="checked"'; } ?> />
+								<?php echo Lang::txt('COM_BLOG_POST_ANONYMOUS'); ?>
+							</label>
+						</div>
+					</div>
 
 					<p class="submit">
-						<input type="submit" value="<?php echo Lang::txt('COM_BLOG_SUBMIT'); ?>" />
+						<input type="submit" class="btn" value="<?php echo Lang::txt('JSUBMIT'); ?>" />
 					</p>
 				</fieldset>
 			</form>
@@ -148,7 +130,7 @@ else
 			<div class="addcomment comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
 				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
 					<fieldset>
-						<legend><span><?php echo Lang::txt('COM_BLOG_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('COM_BLOG_ANONYMOUS'))); ?></span></legend>
+						<legend><span><?php echo Lang::txt('COM_BLOG_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="comment[id]" value="0" />
 						<input type="hidden" name="comment[entry_id]" value="<?php echo $this->comment->get('entry_id'); ?>" />
@@ -161,20 +143,26 @@ else
 
 						<?php echo Html::input('token'); ?>
 
-						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
-							<span class="label-text"><?php echo Lang::txt('COM_BLOG_FIELD_COMMENTS'); ?></span>
-							<?php
-							echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
-							?>
-						</label>
+						<div class="form-group">
+							<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
+								<span class="label-text"><?php echo Lang::txt('COM_BLOG_FIELD_COMMENTS'); ?></span>
+								<?php
+								echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'form-control minimal no-footer'));
+								?>
+							</label>
+						</div>
 
-						<label id="comment-anonymous-label" for="comment-anonymous">
-							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
-							<?php echo Lang::txt('COM_BLOG_POST_ANONYMOUS'); ?>
-						</label>
+						<div class="form-group">
+							<div class="form-check">
+								<label class="form-check-label" id="comment-anonymous-label" for="comment-anonymous">
+									<input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+									<?php echo Lang::txt('COM_BLOG_POST_ANONYMOUS'); ?>
+								</label>
+							</div>
+						</div>
 
 						<p class="submit">
-							<input type="submit" value="<?php echo Lang::txt('JSUBMIT'); ?>" />
+							<input type="submit" class="btn" value="<?php echo Lang::txt('JSUBMIT'); ?>" />
 						</p>
 					</fieldset>
 				</form>

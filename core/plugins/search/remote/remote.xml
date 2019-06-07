@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.7" type="plugin" group="search">
+	<name>Search - Solr</name>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>Search plugin for remote</description>
+	<files>
+		<filename plugin="solr">remote.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_search_remote.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="connection" label="Connection Info">
+				<field name="app_url" type="text" default="" label="PLG_SEARCH_SOLR_REMOTE_URL_LABEL" description="PLG_SEARCH_SOLR_REMOTE_URL_DESC" />
+				<field name="app_token" type="text" default="" label="PLG_SEARCH_SOLR_REMOTE_TOKEN_LABEL" description="PLG_SEARCH_SOLR_REMOTE_TOKEN_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
+

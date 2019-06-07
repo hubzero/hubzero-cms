@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -98,15 +74,21 @@ $version = $record['summary']['version'];
 			<?php
 			if (isset($layout[$idx - 1])):
 				$qidx = 0;
-				foreach ($layout[$idx - 1] as $qid=>$group):
-					foreach ($group['answers'] as $aidx=>$ans):
+				foreach ($layout[$idx - 1] as $qid => $group):
+					foreach ($group['answers'] as $aidx => $ans):
+						\Document::addstyleDeclaration('
+							#question-'.$qid.'-marker {
+								top: '.($ans['top'] - 4).'px;
+								left: '.$ans['left'].'px;
+							}
+						');
 						if (!isset($record['detail'][$qid]) || $record['detail'][$qid]['answer_id'] == 0) :
-							echo '<div class="no-answer" style="top: '.($ans['top'] - 4).'px; left: '.$ans['left'].'px">No answer provided</div>';
+							echo '<div class="no-answer" id="question-'.$qid.'-marker">No answer provided</div>';
 							continue 2;
 						elseif ($record['detail'][$qid]['correct_answer_id'] == $ans['id']):
-							echo '<div name="question-'.$qid.'" value="'.$ans['id'].'" class="answer-marker correct" type="radio" style="top: '.($ans['top'] - 4).'px; left: '.$ans['left'].'px">&#10004;</div>';
+							echo '<div name="question-'.$qid.'" id="question-'.$qid.'-marker" value="'.$ans['id'].'" class="answer-marker correct" type="radio">&#10004;</div>';
 						elseif ($record['detail'][$qid]['answer_id'] == $ans['id']):
-							echo '<div name="question-'.$qid.'" value="'.$ans['id'].'" class="answer-marker incorrect" type="radio" style="top: '.($ans['top'] - 4).'px; left: '.$ans['left'].'px">&#10008;</div>';
+							echo '<div name="question-'.$qid.'" id="question-'.$qid.'-marker" value="'.$ans['id'].'" class="answer-marker incorrect" type="radio">&#10008;</div>';
 						endif;
 					endforeach;
 					++$qidx;

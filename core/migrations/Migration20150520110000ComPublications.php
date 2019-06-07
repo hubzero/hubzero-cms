@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -52,7 +57,7 @@ class Migration20150520110000ComPublications extends Base
 				$query .= "JOIN `#__publication_master_types` AS t ON t.id = p.master_type ";
 				$query .= "WHERE v.curation IS NOT NULL ";
 				$query .= "AND v.curation != '' ";
-				$query .= "AND v.accepted !='" . $this->db->getNullDate() . "' ";
+				$query .= "AND v.accepted IS NOT NULL AND v.accepted !=" . $this->db->quote($this->db->getNullDate()) . " ";
 				$query .= "ORDER BY v.accepted ASC";
 
 				$this->db->setQuery($query);
@@ -61,7 +66,7 @@ class Migration20150520110000ComPublications extends Base
 				if ($results && count($results) > 0)
 				{
 					$path = PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'curation.version.php';
-					include_once($path);
+					include_once $path;
 
 					foreach ($results as $result)
 					{

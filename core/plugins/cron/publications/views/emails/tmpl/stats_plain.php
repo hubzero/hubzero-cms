@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -41,7 +16,7 @@ $baseView   = 'publications';
 $base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
 
 $mconfig = Component::params('com_members');
-$pPath   = trim($mconfig->get('webpath'), DS);
+$pPath   = trim($mconfig->get('webpath'), '/');
 $profileThumb = null;
 
 $append = '?from=' . $this->user->get('email');
@@ -60,12 +35,12 @@ for ($a = 0; $a < count($this->pubstats); $a++)
 
 	$stat = $this->pubstats[$a];
 
-	$sefManage = $baseManage . DS . $stat->publication_id . $append;
-	$sefView   = $baseView . DS . $stat->publication_id . $append;
+	$sefManage = $baseManage . '/' . $stat->publication_id . $append;
+	$sefView   = $baseView . '/' . $stat->publication_id . $append;
 
 	$message .= 'Publication #' . $stat->publication_id . ' "' . stripslashes($stat->title) . '"' . "\n";
-	$message .= 'View publication:          ' . $base . DS . trim($sefView, DS) . "\n";
-	$message .= 'Manage publication:        ' . $base . DS . trim($sefManage, DS) . "\n\n";
+	$message .= 'View publication:          ' . $base . '/' . trim($sefView, '/') . "\n";
+	$message .= 'Manage publication:        ' . $base . '/' . trim($sefManage, '/') . "\n\n";
 
 	$message .= 'Usage in the past month... ' . "\n";
 	$message .= 'Page views:                ' . $stat->monthly_views. "\n";

@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Forum\Site\Controllers;
@@ -374,6 +350,10 @@ class Threads extends SiteController
 		}
 
 		// Bind data
+		if (!$fields['id'])
+		{
+			$fields['id'] = null;
+		}
 		$post->set($fields);
 
 		// Make sure the thread exists and is accepting new posts
@@ -706,7 +686,7 @@ class Threads extends SiteController
 		}
 
 		// Incoming file
-		$file = Request::getArray('upload', '', 'files');
+		$file = Request::getArray('upload', array(), 'files');
 		if (!$file || !isset($file['name']) || !$file['name'])
 		{
 			if ($attachment->get('id'))
@@ -721,16 +701,45 @@ class Threads extends SiteController
 			return true;
 		}
 
+		// Get media config
+		$mediaConfig = \Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
+
+		if ($file['size'] > $sizeLimit)
+		{
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+
+			$this->setError(Lang::txt('COM_FORUM_ERROR_UPLOADING_FILE_TOO_BIG', $max));
+			return false;
+		}
+
+		// Ensure file names fit.
+		$ext = \Filesystem::extension($file['name']);
+
+		// Check that the file type is allowed
+		$allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
+
+		if (!empty($allowed) && !in_array(strtolower($ext), $allowed))
+		{
+			$this->setError(Lang::txt('COM_FORUM_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
+			return false;
+		}
+
 		// Upload file
 		if (!$attachment->upload($file['name'], $file['tmp_name']))
 		{
 			$this->setError($attachment->getError());
 		}
-
-		// Save entry
-		if (!$attachment->save())
+		else
 		{
-			$this->setError($attachment->getError());
+			// Save entry
+			if (!$attachment->save())
+			{
+				$this->setError($attachment->getError());
+			}
 		}
 
 		return true;

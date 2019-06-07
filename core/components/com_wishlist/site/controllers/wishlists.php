@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Wishlist\Site\Controllers;
@@ -626,7 +601,7 @@ class Wishlists extends SiteController
 
 		// Do we have a due date?
 		$wish->set('urgent', 0);
-		if ($wish->get('due') != '0000-00-00 00:00:00')
+		if ($wish->get('due') && $wish->get('due') != '0000-00-00 00:00:00')
 		{
 			$delivery = $this->convertTime($wish->get('average_effort'));
 			if ($wish->get('due') < $delivery['warning'])
@@ -904,7 +879,7 @@ class Wishlists extends SiteController
 
 		$new_assignee = ($assignedto && $objWish->get('assigned') != $assignedto) ? 1 : 0;
 
-		$objWish->set('due', ($due ? $due : '0000-00-00 00:00:00'));
+		$objWish->set('due', ($due ? $due : null));
 		$objWish->set('assigned', ($assignedto ? $assignedto : 0));
 
 		// store our due date
@@ -1202,8 +1177,8 @@ class Wishlists extends SiteController
 
 			if ($row->get('anonymous'))
 			{
-				$name  = Lang::txt('COM_WISHLIST_ANONYMOUS');
-				$login = Lang::txt('COM_WISHLIST_ANONYMOUS');
+				$name  = Lang::txt('JANONYMOUS');
+				$login = Lang::txt('JANONYMOUS');
 			}
 
 			$this->_list_title = $wishlist->get('title');
@@ -1547,7 +1522,7 @@ class Wishlists extends SiteController
 				$wish->set('wishlist', $newlist->get('id'));
 				$wish->set('assigned', 0); // moved wish is not assigned to anyone yet
 				$wish->set('ranking', 0); // zero ranking
-				$wish->set('due', '0000-00-00 00:00:00');
+				$wish->set('due', null);
 
 				// renew state if option chosen
 				if (!$options['keepstatus'])
@@ -1604,7 +1579,7 @@ class Wishlists extends SiteController
 
 				if ($wish->get('anonymous'))
 				{
-					$name = Lang::txt('COM_WISHLIST_ANONYMOUS');
+					$name = Lang::txt('JANONYMOUS');
 				}
 
 				$subject1 = Lang::txt(strtoupper($this->_option)).', '.Lang::txt('COM_WISHLIST_NEW_WISH').' '.Lang::txt('COM_WISHLIST_FOR').' '.$newtitle.' '.Lang::txt('COM_WISHLIST_FROM').' '.$name.' - '.Lang::txt('COM_WISHLIST_TRANSFERRED');
@@ -2472,18 +2447,33 @@ class Wishlists extends SiteController
 		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
-		//make sure that file is acceptable type
+		// Create an attachment entry
 		$attachment = Attachment::blank()->set(array(
 			'description' => Request::getString('description', ''),
 			'wish'        => $listdir,
 			'filename'    => $file['name']
 		));
 
-		// make sure that file is acceptable type
+		// Get media config
+		$mediaConfig = \Component::params('com_media');
+
+		// Size limit is in MB, so we need to turn it into just B
+		$sizeLimit = $mediaConfig->get('upload_maxsize', 10);
+		$sizeLimit = $sizeLimit * 1024 * 1024;
+
+		if ($file['size'] > $sizeLimit)
+		{
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+
+			$this->setError(Lang::txt('COM_WISHLIST_ERROR_UPLOADING_FILE_TOO_BIG', $max));
+			return $this->getError();
+		}
+
+		// Make sure that file is acceptable type
 		if (!$attachment->isAllowedType())
 		{
-			$this->setError(Lang::txt('ATTACHMENT: Incorrect file type.'));
-			return Lang::txt('ATTACHMENT: Incorrect file type.');
+			$this->setError($attachment->getError());
+			return $this->getError();
 		}
 
 		$path = $attachment->link('dir');
@@ -2494,7 +2484,7 @@ class Wishlists extends SiteController
 			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_WISHLIST_UNABLE_TO_CREATE_UPLOAD_PATH'));
-				return 'ATTACHMENT: ' . Lang::txt('COM_WISHLIST_UNABLE_TO_CREATE_UPLOAD_PATH');
+				return 'ATTACHMENT: ' . $this->getError();
 			}
 		}
 
@@ -2502,7 +2492,7 @@ class Wishlists extends SiteController
 		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
 			$this->setError(Lang::txt('COM_WISHLIST_ERROR_UPLOADING'));
-			return 'ATTACHMENT: ' . Lang::txt('COM_WISHLIST_ERROR_UPLOADING');
+			return 'ATTACHMENT: ' . $this->getError();
 		}
 		else
 		{
@@ -2513,8 +2503,8 @@ class Wishlists extends SiteController
 			{
 				if (Filesystem::delete($path))
 				{
-					$this->setError(Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.'));
-					return Lang::txt('ATTACHMENT: File rejected because the anti-virus scan failed.');
+					$this->setError(Lang::txt('COM_WISHLIST_ERROR_UPLOADING_VIRUS_SCAN'));
+					return $this->getError();
 				}
 			}
 

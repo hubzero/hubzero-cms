@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Courses\Site\Controllers;
@@ -298,7 +273,8 @@ class Course extends SiteController
 		}
 
 		// Incoming
-		$data = Request::getArray('course', array(), 'post');
+		$data   = Request::getArray('course', array(), 'post');
+		$params = Request::getArray('params', array(), 'post');
 
 		$course = Models\Course::getInstance($data['id']);
 
@@ -329,6 +305,10 @@ class Course extends SiteController
 		{
 			$course->set('state', 3);
 		}
+
+		$p = new \Hubzero\Config\Registry($params);
+
+		$course->set('params', $p->toString());
 
 		// Push back into edit mode if any errors
 		if (!$course->store(true))
@@ -444,7 +424,7 @@ class Course extends SiteController
 	/**
 	 * Show a form for editing a course
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function newofferingTask($offering=null)
 	{
@@ -476,7 +456,7 @@ class Course extends SiteController
 	/**
 	 * Show a form for editing a course
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveofferingTask()
 	{
@@ -852,7 +832,7 @@ class Course extends SiteController
 	 * @param   object  $course  CoursesCourse
 	 * @return  string
 	 */
-	private function courseAvailability($course = null)
+	public function courseavailabilityTask($course = null)
 	{
 		//get the course
 		$course = (!is_null($course)) ? $course : Request::getString('course', '');
@@ -908,7 +888,7 @@ class Course extends SiteController
 	}
 
 	/**
-	 * Download a wiki file
+	 * Download a page file
 	 *
 	 * @return  void
 	 */
@@ -973,5 +953,179 @@ class Course extends SiteController
 		}
 
 		exit;
+	}
+
+	/**
+	 * Show a form for providing copy title
+	 *
+	 * @return  void
+	 */
+	public function copyTask()
+	{
+		// Ensure we found the course info
+		if (!$this->course->exists())
+		{
+			App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+		}
+
+		$rtrn = Request::getString('return');
+
+		$this->view
+			->set('course', $this->course)
+			->set('return', $rtrn)
+			->display();
+	}
+
+	/**
+	 * Copy an entry and all associated data
+	 *
+	 * @return  void
+	 */
+	public function docopyTask()
+	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		// Ensure we found the course info
+		if (!$this->course->exists())
+		{
+			App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+		}
+
+		// Incoming
+		$rtrn = Request::getString('return', '', 'post');
+		if ($rtrn)
+		{
+			$rtrn = base64_decode($rtrn);
+		}
+
+		$fields = Request::getArray('fields', array('title' => '', 'alias' => ''), 'post');
+
+		// Copy the course
+		if (!$this->course->copy(true, $fields['title'], $fields['alias']))
+		{
+			Notify::error(Lang::txt('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $this->course->getError());
+
+			if (!$rtrn)
+			{
+				$rtrn = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false);
+			}
+
+			App::redirect($rtrn);
+		}
+
+		if (!$rtrn)
+		{
+			$rtrn = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $fields['alias'], false);
+		}
+
+		// Success
+		Notify::success(Lang::txt('COM_COURSES_ITEM_COPIED'));
+
+		App::redirect($rtrn);
+	}
+
+	/**
+	 * Show a form for providing formed title
+	 *
+	 * @return  void
+	 */
+	public function forkTask()
+	{
+		// Ensure we found the course info
+		if (!$this->course->exists())
+		{
+			App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+		}
+
+		if (!$this->course->config('allow_forks'))
+		{
+			App::abort(403, Lang::txt('COM_COURSES_ERROR_FORK_DIASABLED'));
+		}
+
+		$rtrn = Request::getString('return');
+
+		$this->view
+			->set('course', $this->course)
+			->set('return', $rtrn)
+			->display();
+	}
+
+	/**
+	 * Copy an entry and all associated data
+	 *
+	 * @return  void
+	 */
+	public function doforkTask()
+	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		// Ensure we found the course info
+		if (!$this->course->exists())
+		{
+			App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+		}
+
+		if (!$this->course->isPublished() && !$this->course->isDraft())
+		{
+			App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+		}
+
+		if (!$this->course->config('allow_forks'))
+		{
+			App::abort(403, Lang::txt('COM_COURSES_ERROR_FORK_DIASABLED'));
+		}
+
+		// Incoming
+		$rtrn = Request::getString('return', '', 'post');
+		if ($rtrn)
+		{
+			$rtrn = base64_decode($rtrn);
+		}
+
+		$fields = Request::getArray('fields', array('title' => '', 'alias' => ''), 'post');
+
+		$original = $this->course->get('id');
+
+		// Copy the course
+		if (!$this->course->copy(true, $fields['title'], $fields['alias']))
+		{
+			Notify::error(Lang::txt('COM_COURSES_ERROR_FORK_FAILED') . ': ' . $this->course->getError());
+
+			if (!$rtrn)
+			{
+				$rtrn = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false);
+			}
+
+			App::redirect($rtrn);
+		}
+
+		// Remove all the managers
+		foreach ($this->course->managers() as $manager)
+		{
+			if (!$manager->delete())
+			{
+				Notify::error($manager->getError());
+			}
+		}
+
+		// Set the current user as a manager
+		$role_id = 2;
+		$this->course->add(User::get('id'), $role_id);
+
+		// Note where the course was forked from
+		$this->course->set('forked_from', $original);
+		$this->course->store();
+
+		if (!$rtrn)
+		{
+			$rtrn = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $fields['alias'], false);
+		}
+
+		// Success
+		Notify::success(Lang::txt('COM_COURSES_ITEM_FORKED'));
+
+		App::redirect($rtrn);
 	}
 }

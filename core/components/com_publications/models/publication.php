@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <aliasa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Publications\Models;
@@ -44,31 +19,31 @@ use Date;
 use Lang;
 
 // Include table classes
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'publication.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'version.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'access.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'audience.level.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'audience.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'author.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'license.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'master.type.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'screenshot.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'logs.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'publication.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'version.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'access.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'audience.level.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'audience.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'author.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'license.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'category.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'master.type.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'screenshot.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'logs.php';
 
 // Projects
 require_once \Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 require_once \Component::path('com_projects') . DS . 'models' . DS . 'repo.php';
 
 // Common models
-require_once(__DIR__ . DS . 'curation.php');
-require_once(__DIR__ . DS . 'doi.php');
+require_once __DIR__ . DS . 'curation.php';
+require_once __DIR__ . DS . 'doi.php';
 
 // Helpers
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php');
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
 
 /**
  * Information retrieval for items/info linked to a publication
@@ -1210,7 +1185,7 @@ class Publication extends Obj
 			return;
 		}
 
-		// Check if they're a site admin (from Joomla)
+		// Check if they're a site admin
 		$this->params->set('access-admin-publication', User::authorise('core.admin', null));
 		$this->params->set('access-manage-publication', User::authorise('core.manage', null));
 

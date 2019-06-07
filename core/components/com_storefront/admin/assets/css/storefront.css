@@ -1,3 +1,9 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 .assets:before {
 	content: "\f08c";
 	font-family: "Fontcons";
@@ -18,6 +24,9 @@
 }
 #img-delete {
 	white-space: nowrap;
+}
+.uploader-wrap {
+	padding-top: 2.5em;
 }
 /* Drag and drop file upload */
 .qq-uploading {

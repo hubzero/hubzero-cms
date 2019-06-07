@@ -1,3 +1,9 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
 $(document).ready(function(){
 
 	SF.PRODUCT.deselectAll();
@@ -45,10 +51,10 @@ $(document).ready(function(){
 /* ---------------------------------------------------------------------------------------------------------------------------*/
 
 (function($) {
-    // declare var in global scope
-    window.SF = {};
+	// declare var in global scope
+	window.SF = {};
 
-    SF.PRODUCT = {
+	SF.PRODUCT = {
 
 		selectedOptions: [],
 		skus: null,
@@ -247,8 +253,7 @@ $(document).ready(function(){
 
 			return(returnArray);
 		}
-
-    }
+	}
 
 })(jQuery);
 
@@ -261,5 +266,5 @@ jQuery.fn.isUnavailable = function(obj) {
 
 Number.prototype.formatMoney = function(c, d, t){
 var n = this, c = isNaN(c = Math.abs(c)) ? 2 : c, d = d == undefined ? "," : d, t = t == undefined ? "." : t, s = n < 0 ? "-" : "", i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", j = (j = i.length) > 3 ? j % 3 : 0;
-   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
- };
+	return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+};

@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Tools\Tables;
@@ -544,7 +519,7 @@ class Tool extends Table
 		$status = array(
 			'resourceid'    => isset($toolinfo[0]->rid) ? $toolinfo[0]->rid : 0,
 			'resource_created' => isset($toolinfo[0]->rcreated) ? $toolinfo[0]->rcreated : '',
-			'resource_modified' => (isset($toolinfo[0]) && isset($toolinfo[0]->rmodified)
+			'resource_modified' => (isset($toolinfo[0]) && isset($toolinfo[0]->rmodified) && $toolinfo[0]->rmodified
 				&& $toolinfo[0]->rmodified !='0000-00-00 00:00:00' && isset($version[0]) && $version[0]->fulltxt != '') ? 1 : 0,
 			'fulltxt'      => isset($version[0]->fulltxt) ? $version[0]->fulltxt : $toolinfo[0]->rfulltxt,
 			'toolname'      => isset($toolinfo[0]->toolname) ? $toolinfo[0]->toolname : '',
@@ -570,7 +545,7 @@ class Tool extends Table
 			'ntoolsdev'     => isset($toolinfo[0]->ntoolsdev) ? $toolinfo[0]->ntoolsdev : 0,
 			'ntools_published' => isset($toolinfo[0]->ntoolspublished) ? $toolinfo[0]->ntoolspublished : 0,
 			'newmessages'   => isset($toolinfo[0]->comments) ? $toolinfo[0]->comments : 0,
-			'changed'       => (isset($toolinfo[0]->state_changed) && $toolinfo[0]->state_changed!='0000-00-00 00:00:00') ? $toolinfo[0]->state_changed : $toolinfo[0]->registered,
+			'changed'       => (isset($toolinfo[0]->state_changed) && $toolinfo[0]->state_changed && $toolinfo[0]->state_changed!='0000-00-00 00:00:00') ? $toolinfo[0]->state_changed : $toolinfo[0]->registered,
 			'registered_by' => isset($toolinfo[0]->registered_by) ? $toolinfo[0]->registered_by : '',
 			'registered'    => isset($toolinfo[0]->registered) ? $toolinfo[0]->registered : '',
 			'ticketid'      => isset($toolinfo[0]->ticketid) ? $toolinfo[0]->ticketid : '',
@@ -580,9 +555,22 @@ class Tool extends Table
 			'license'       => isset($version[0]->license) ? $version[0]->license : '',
 			'hostreq'       => (isset($version[0]->hostreq) ? implode(', ', $version[0]->hostreq) : $hostreq),
 			'params'        => isset($version[0]->params) ? $version[0]->params : '',
+			'repohost'      => $params->get('repohost'),
 			'github'        => $params->get('github'),
 			'publishType'   => ($params->get('publishType') == 'weber=') ? 'jupyter' : 'standard'
 		);
+
+		if (is_null($status['repohost']))
+		{
+			if (empty($status['github']))
+			{
+				$status['repohost'] = 'svnLocal';
+			}
+			else
+			{
+				$status['repohost'] = 'gitExternal';
+			}
+		}
 
 		list($status['vncGeometryX'], $status['vncGeometryY']) = preg_split('#[x]#', $status['vncGeometry']);
 

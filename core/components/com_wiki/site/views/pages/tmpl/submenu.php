@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
@@ -40,11 +16,11 @@ if (!isset($this->controller))
 }
 
 if ($tmpl != 'component' && $this->sub) { ?>
-	<div id="<?php echo ($this->sub) ? 'sub-content-header-extra' : 'content-header-extra'; ?>">
-		<ul id="<?php echo ($this->sub) ? 'page_options' : 'useroptions'; ?>">
+	<div id="sub-content-header-extra">
+		<ul id="page_options">
 			<?php if (!User::isGuest() && $this->page->access('create')) { ?>
 				<li class="page-new">
-					<a class="icon-add add btn tooltips" title="<?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>" href="<?php echo Route::url($this->page->link('base') . '&' . ($this->sub ? 'action' : 'task') . '=new'); ?>">
+					<a class="icon-add add btn tooltips" title="<?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>" href="<?php echo Route::url($this->page->link('base') . '&action=new'); ?>">
 						<?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>
 					</a>
 				</li>
@@ -82,7 +58,7 @@ if ($tmpl != 'component' && $this->sub) { ?>
 		</a>
 	</li>
 	<?php if ($tmpl != 'component') { ?>
-		<?php if ($this->page->exists() && !$this->page->isDeleted() && $this->page->get('namespace') != 'Special') { ?>
+		<?php if ($this->page->exists() && !$this->page->isDeleted() && $this->page->getNamespace() != 'special') { ?>
 			<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('edit'))) { ?>
 				<li class="page-edit<?php if ($this->controller == 'pages' && in_array($this->task, array('edit', 'preview', 'save'))) { echo ' active'; } ?>">
 					<a href="<?php echo Route::url($this->page->link('edit')); ?>" title="<?php echo Lang::txt('COM_WIKI_TAB_EDIT'); ?>">
@@ -90,7 +66,7 @@ if ($tmpl != 'component' && $this->sub) { ?>
 					</a>
 				</li>
 			<?php } ?>
-			<?php if ($this->page->access('view', 'comment')) { ?>
+			<?php if ($this->page->config('comments', 1) && $this->page->access('view', 'comment')) { ?>
 				<li class="page-comments<?php if ($this->controller == 'comments') { echo ' active'; } ?>">
 					<a href="<?php echo Route::url($this->page->link('comments')); ?>" title="<?php echo Lang::txt('COM_WIKI_TAB_COMMENTS'); ?>">
 						<span class="icon-comments"><?php echo Lang::txt('COM_WIKI_TAB_COMMENTS'); ?></span>
@@ -102,7 +78,7 @@ if ($tmpl != 'component' && $this->sub) { ?>
 						<span class="icon-clock"><?php echo Lang::txt('COM_WIKI_TAB_HISTORY'); ?></span>
 					</a>
 				</li>
-			<?php if ($this->sub) {  ?>
+			<?php if ($this->page->get('scope') != 'site') { ?>
 				<li class="page-pdf">
 					<a href="<?php echo Route::url($this->page->link('pdf')); ?>" title="<?php echo Lang::txt('COM_WIKI_TAB_PDF'); ?>">
 						<span class="icon-download-alt"><?php echo Lang::txt('COM_WIKI_TAB_PDF'); ?></span>

@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero.cms.admin
- * @subpackage  com_dataviewer
- *
- * @author      Sudheera R. Fernando sudheera@xconsole.org
- * @copyright   Copyright 2010-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT or later; see LICENSE.txt
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 defined('_HZEXEC_') or die();
@@ -22,7 +19,7 @@ function dv_dataview_list()
 	$db_conf_file = $base . DS . $db_id . DS . 'database.json';
 	$db_conf = json_decode(file_get_contents($db_conf_file), true);
 
-	$jdb =  JDatabase::getInstance($db_conf['database_ro']);
+	$jdb = Hubzero\Database\Driver::getInstance($db_conf['database_ro']);
 
 	Toolbar::title($db_conf['name'] . ' >> <small> The list of Dataviews</small>', 'databases');
 
@@ -177,4 +174,3 @@ function dv_dataview_list()
 	</div>
 <?php
 }
-?>

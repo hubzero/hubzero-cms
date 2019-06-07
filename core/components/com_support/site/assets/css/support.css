@@ -1,8 +1,7 @@
 /**
- * @package     hubzero-cms
- * @file        components/com_support/assets/css/support.css
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license     http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 /*
@@ -171,6 +170,54 @@
 	}
 	#hubForm label#fbBotcheck-label {
 		display: none;
+	}
+	#component-body #content-header h2 {
+		line-height: 1;
+		font-size: 1.1em;
+		font-weight: 400;
+		letter-spacing: .1em;
+		text-transform: uppercase;
+		margin: 0;
+		padding: 1em 1.618em;
+		color: #fff;
+		-webkit-box-shadow: 0 2px 0 rgba(0,0,0,0.06);
+		   -moz-box-shadow: 0 2px 0 rgba(0,0,0,0.06);
+		    -ms-box-shadow: 0 2px 0 rgba(0,0,0,0.06);
+		     -o-box-shadow: 0 2px 0 rgba(0,0,0,0.06);
+		        box-shadow: 0 2px 0 rgba(0,0,0,0.06);
+		background-color: #e84c3d;
+		background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
+		background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
+		background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
+		background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
+		background-image: linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
+		-webkit-background-size: 30px 30px;
+		   -moz-background-size: 30px 30px;
+		    -ms-background-size: 30px 30px;
+		     -o-background-size: 30px 30px;
+		        background-size: 30px 30px;
+	}
+	#component-body #hubForm fieldset {
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		padding: 1em;
+		margin: 1em 0;
+	}
+	#component-body #hubForm .form-group {
+		margin: 0 0 1em 0;
+	}
+	#component-body #hubForm .submit {
+		text-align: center;
+	}
+	#component-body #hubForm input[type=email],
+	#component-body #hubForm input[type=text],
+	#component-body #hubForm textarea,
+	#component-body #hubForm select {
+		width: 100%;
+	}
+	#component-body label span.required {
+		text-transform: uppercase;
+		font-size: xx-small;
+		color: red;
 	}
 
 /* Columns */
@@ -1162,6 +1209,25 @@
 		padding: 0.2em;
 		background: transparent;
 		border: none;
+	}
+	.stats-pie-chart {
+		min-width: 270px;
+		height: 270px;
+	}
+	.stats-user-chart {
+		min-width: 200px;
+		height: 100px;
+	}
+	.stats-tickets-chart {
+		min-width: 400px;
+		height: 200px;
+		margin: 0 auto;
+	}
+	.chart-label {
+		font-size:8pt;
+		text-align:center;
+		padding:2px;
+		color:white;
 	}
 	#flotTip {
 		-webkit-border-radius: 0.25em;

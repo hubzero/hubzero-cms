@@ -1,9 +1,8 @@
-//
-// @package     hubzero-cms
-// @file        media/system/less/comments.less
-// @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
-// @license     http://opensource.org/licenses/MIT MIT
-//
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 //
 // Comments
@@ -369,6 +368,18 @@
 			border: 1px solid @commentFormBorderColor;
 			padding: 0.61803399em 1.61803399em 0 1.61803399em;
 			.box-shadow(@commentShadow);
+
+			&>legend {
+				border: 0;
+				clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+				clip: rect(1px, 1px, 1px, 1px);
+				height: 1px;
+				margin: -1px;
+				overflow: hidden;
+				padding: 0;
+				position: absolute;
+				width: 1px;
+			}
 
 			fieldset {
 				border: 1px solid #ddd;

@@ -1,41 +1,18 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access.
 defined('_HZEXEC_') or die();
 
 // Menu items
-Toolbar::title(Lang::txt('COM_SYSTEM_APC_HOST'), 'config.png');
+Toolbar::title(Lang::txt('COM_SYSTEM_APC_HOST'), 'config');
 
-$this->css('apc.css');
+$this->css('apc.css')
+	->js();
 
 $time = $this->time;
 
@@ -45,20 +22,8 @@ $time = $this->time;
 	$this->view('_submenu')->display();
 ?>
 
-<script type="text/javascript">
-jQuery(document).ready(function($){
-	$('#clearcache').on('click', function(e) {
-		var mes = confirm('<?php echo Lang::txt('COM_SYSTEM_APC_CONFIRM'); ?>');
-		if (!mes) {
-			e.preventDefault();
-		}
-		return res;
-	});
-});
-</script>
-
 <div id="clearcache">
-	<a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=clrcache'); ?>">Clear <?php echo $this->cache_mode; ?> cache</a>
+	<a class="button" data-confirm="<?php echo Lang::txt('COM_SYSTEM_APC_CONFIRM'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=clrcache'); ?>">Clear <?php echo $this->cache_mode; ?> cache</a>
 </div>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
@@ -166,13 +131,13 @@ jQuery(document).ready(function($){
 						$j = 0;
 						foreach (ini_get_all('apc') as $k => $v)
 						{
-							echo "<tr class=\"row$j\"><th>",$k,"</th><td>",str_replace(',',',<br />',$v['local_value']),"</td></tr>\n";
+							echo "<tr class=\"row$j\"><th>",$k,"</th><td>",str_replace(',', ',<br />', $v['local_value']),"</td></tr>\n";
 							$j = 1 - $j;
 						}
 
 						if ($this->mem['num_seg'] > 1 || $this->mem['num_seg'] == 1 && count($this->mem['block_lists'][0]) > 1)
 						{
-							$mem_note = 'Memory Usage<br /><span style="font-size: 0.85em">(multiple slices indicate fragments)</span>';
+							$mem_note = 'Memory Usage<br /><span class="smallsub">(multiple slices indicate fragments)</span>';
 						}
 						else
 						{
@@ -255,7 +220,8 @@ jQuery(document).ready(function($){
 								}
 								$ptr = $block['offset'] + $block['size'];
 								// Only consider blocks <5M for the fragmentation %
-								if ($block['size'] < (5*1024*1024)) $fragsize+=$block['size'];
+								if ($block['size'] < (5*1024*1024)) { $fragsize+=$block['size'];
+								}
 								$freetotal+=$block['size'];
 							}
 							$freeseg += count($this->mem['block_lists'][$i]);
@@ -280,11 +246,13 @@ jQuery(document).ready(function($){
 						echo "</tr>";
 						if (isset($this->mem['adist']))
 						{
-							foreach ($this->mem['adist'] as $i=>$v)
+							foreach ($this->mem['adist'] as $i => $v)
 							{
-								$cur = pow(2,$i); $nxt = pow(2,$i+1)-1;
-								if ($i==0) $range = "1";
-								else $range = "$cur - $nxt";
+								$cur = pow(2, $i);
+$nxt = pow(2, $i+1)-1;
+								if ($i==0) { $range = "1";
+								} else { $range = "$cur - $nxt";
+								}
 								echo "<tr><th>$range</th><td>$v</td></tr>\n";
 							}
 						}

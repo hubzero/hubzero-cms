@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -120,11 +95,18 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 			$view->cluster_users   = $cluster['users'];
 			$view->cluster_schools = $cluster['schools'];
 
+			$access = array(0, 3);
+
+			if (!User::isGuest())
+			{
+				$access[] = 1;
+			}
+
 			$sql = 'SELECT DISTINCT r.id, r.type AS type_id, r.title, DATE_FORMAT(r.publish_up, "%d %b %Y") AS publish_up, rt.type
 					FROM `#__resources` AS r
 					LEFT JOIN `#__resource_types` AS rt ON r.TYPE=rt.id
 					LEFT JOIN `#__author_assoc` AS aa ON aa.subid=r.id AND aa.subtable="resources"
-					WHERE r.standalone=1 AND r.published=1 AND r.type=7 AND (aa.authorid="'.intval($member->get('id')).'") AND (r.access=0 OR r.access=3)
+					WHERE r.standalone=1 AND r.published=1 AND r.type=7 AND (aa.authorid="'.intval($member->get('id')).'") AND r.access IN (' . implode(',', $access) . ')
 					ORDER BY r.publish_up DESC';
 
 			$database->setQuery($sql);
@@ -136,7 +118,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 					FROM `#__resources` AS r
 					LEFT JOIN `#__resource_types` AS rt ON r.TYPE=rt.id
 					LEFT JOIN `#__author_assoc` AS aa ON aa.subid=r.id AND aa.subtable='resources'
-					WHERE r.standalone=1 AND r.published=1 AND r.type<>7 AND aa.authorid=" . $database->quote(intval($member->get('id'))) . " AND aa.role!='submitter' AND (r.access=0 OR r.access=3)
+					WHERE r.standalone=1 AND r.published=1 AND r.type<>7 AND aa.authorid=" . $database->quote(intval($member->get('id'))) . " AND aa.role!='submitter' AND r.access IN (" . implode(',', $access) . ")
 					ORDER BY r.publish_up DESC";
 
 			$database->setQuery($sql);

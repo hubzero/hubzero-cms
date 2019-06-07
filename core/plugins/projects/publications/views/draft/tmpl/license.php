@@ -1,31 +1,8 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Alissa Nedossekina <alisa@purdue.edu>
- * @copyright	Copyright 2005-2009 HUBzero Foundation, LLC.
- * @license		http://opensource.org/licenses/MIT MIT
- *
- * Copyright 2005-2009 HUBzero Foundation, LLC.
- * All rights reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -42,8 +19,19 @@ $selectUrl = Route::url( $this->pub->link('editversionid') . '&active=publicatio
 $elName = "licensePick";
 
 // Get version params and extract agreement
+$versionParams = array_filter(explode(PHP_EOL, $this->pub->version->params));
+$versionParams = array_reduce($versionParams, function($carry, $item){
+	$keyValueSplit = explode('=', $item);
+	$key = trim(array_shift($keyValueSplit));
+	$value = trim(array_shift($keyValueSplit));
+	if ($key && $value)
+	{
+		$carry[$key] = $value;
+		return $carry;
+	}
+});
 $agreed = $this->pub->params->get('licenseagreement', 0);
-
+$agreed = !$agreed && isset($versionParams['licenseagreement']) ? $versionParams['licenseagreement'] : $agreed;
 // Get curator status
 $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->step, 0, 'author');
 
@@ -53,8 +41,14 @@ $text = $this->pub->get('license_text', $defaultText);
 ?>
 
 <!-- Load content selection browser //-->
-<div id="<?php echo $elName; ?>" class="blockelement<?php echo $required ? ' el-required' : ' el-optional';
-echo $complete == 1 ? ' el-complete' : ' el-incomplete'; echo ($complete == 0 && $this->license) ? ' el-partial' : ''; ?> <?php echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $curatorStatus->updated && $curatorStatus->status != 2 ? ' el-updated' : ''; ?>">
+<div id="<?php echo $elName; ?>" class="blockelement<?php
+	echo $required ? ' el-required' : ' el-optional';
+	echo $complete == 1 ? ' el-complete' : ' el-incomplete';
+	echo ($complete == 0 && $this->license) ? ' el-partial' : '';
+	echo $curatorStatus->status == 1 ? ' el-passed' : '';
+	echo $curatorStatus->status == 0 ? ' el-failed' : '';
+	echo $curatorStatus->updated && $curatorStatus->status != 2 ? ' el-updated' : '';
+	?>">
 	<div class="element_editing">
 		<div class="pane-wrapper">
 			<span class="checker">&nbsp;</span>
@@ -116,10 +110,12 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; echo ($complete == 0 &&
 								$subs = array_unique($substitutes[1]);
 								foreach ($subs as $sub)
 								{
+									$customKey = 'licensecustom' . strtolower($sub);
+									$customValue = isset($versionParams[$customKey]) ? $versionParams[$customKey] : '';
 									?>
 									<label>
 										[<?php echo $sub; ?>]<span class="required"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REQUIRED'); ?></span>
-										<input name="substitute[<?php echo $sub; ?>]" type="text" value="<?php echo $this->pub->params->get('licensecustom' . strtolower($sub), ''); ?>" class="customfield" />
+										<input name="substitute[<?php echo $sub; ?>]" type="text" value="<?php echo $customValue; ?>" class="customfield" />
 									</label>
 									<?php
 									$i++;

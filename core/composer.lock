@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f930e2b3c13869c58dc79f4e84474d79",
-    "content-hash": "6cce950f3345a03a53880cf0498290bc",
+    "hash": "b95424827661ed747a9db1fe4272663c",
+    "content-hash": "88eb3ec199b7bdbb49b84b52cb3a86e4",
     "packages": [
         {
             "name": "authy/php",
@@ -1166,12 +1166,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "abc9b187f74d1959b16784707c5f23879efdf785"
+                "reference": "bd2603a9967abde3f962d82f75ebf6849272d473"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/abc9b187f74d1959b16784707c5f23879efdf785",
-                "reference": "abc9b187f74d1959b16784707c5f23879efdf785",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/bd2603a9967abde3f962d82f75ebf6849272d473",
+                "reference": "bd2603a9967abde3f962d82f75ebf6849272d473",
                 "shasum": ""
             },
             "require": {
@@ -1206,7 +1206,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2018-12-02 15:23:57"
+            "time": "2019-06-04 11:20:43"
         },
         {
             "name": "hubzero/orcid-php",
@@ -4045,5 +4045,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "platform-overrides": {
+        "php": "5.6.1"
+    }
 }

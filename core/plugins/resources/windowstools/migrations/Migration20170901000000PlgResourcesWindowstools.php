@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 use Hubzero\Content\Migration\Base;
 
@@ -23,9 +28,9 @@ class Migration20170901000000PlgResourcesWindowstools extends Base
 			  `alias` varchar(255) NOT NULL DEFAULT '',
 			  `content` text NOT NULL,
 			  `plugin` varchar(255) NOT NULL DEFAULT '',
-			  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
-			  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `modified` datetime DEFAULT NULL,
 			  `modified_by` int(11) unsigned NOT NULL DEFAULT '0',
 			  `state` tinyint(3) NOT NULL DEFAULT '0',
 			  `access` tinyint(3) NOT NULL DEFAULT '0',

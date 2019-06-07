@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -65,8 +40,8 @@ foreach ($subs as $k => $subtitle)
 foreach ($this->items->findAllWithExtension(['srt', 'SRT']) as $k => $subtitle)
 {
 	$info     = pathinfo($subtitle);
-	$name     = str_replace('-auto','', $info['filename']);
-	$autoplay = (strstr($info['filename'],'-auto')) ? 1 : 0;
+	$name     = str_replace('-auto', '', $info['filename']);
+	$autoplay = (strstr($info['filename'], '-auto')) ? 1 : 0;
 	$source   = $rel_content_folder . DS . $subtitle;
 
 	// Add each subtitle
@@ -225,7 +200,7 @@ if (isset($this->entityId) && isset($this->entityType))
 											<label for="font-color"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_COLOR'); ?>:</label>
 										</div>
 										<div class="col span6 omega input">
-											<div id="font-color" data-color="FFF" style="background-color: #FFF;"></div>
+											<div id="font-color" data-color="FFF"></div>
 										</div>
 									</div>
 									<div class="grid">
@@ -233,13 +208,13 @@ if (isset($this->entityId) && isset($this->entityType))
 											<label for="background-color"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_BACKGROUND'); ?>:</label>
 										</div>
 										<div class="col span6 omega input">
-											<div id="background-color" data-color="000" style="background-color: #000;"></div>
+											<div id="background-color" data-color="000"></div>
 										</div>
 									</div>
 									<div class="grid">
 										<div class="col span12 omega subtitle-settings-preview-container">
 											<div class="subtitle-settings-preview">
-												<div class="test" style="font-family:arial; background-color: #000; color: #FFF; font-size:18px;"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_EXAMPLE'); ?></div>
+												<div class="test"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_EXAMPLE'); ?></div>
 											</div>
 										</div>
 									</div>
@@ -309,18 +284,24 @@ if (isset($this->entityId) && isset($this->entityType))
 		<div id="presenter-right">
 			<div id="media" class="<?php echo $cls; ?>">
 				<?php if (strtolower($presentation->type) == 'video') : ?>
-					<video id="player" preload="auto" controls="controls" data-mediaid="<?php echo (isset($this->entityId) ? $this->entityId : 0); ?>" data-mediatype="<?php echo (isset($this->entityType) ? $this->entityType : ''); ?>">
+					<video id="player" preload="auto" controls="controls" data-mediaid="<?php echo (isset($this->entityId)) ? $this->entityId : 0; ?>" data-mediatype="<?php echo (isset($this->entityType)) ? $this->entityType : ''; ?>">
 						<?php foreach ($presentation->media as $source): ?>
 							<?php
 								switch (strtolower($source->type))
 								{
 									case 'm4v':
-									case 'mp4':  $type = 'video/mp4;';  break;
-									case 'ogv':  $type = 'video/ogg;';  break;
-									case 'webm': $type = 'video/webm;'; break;
+									case 'mp4':
+										$type = 'video/mp4;';
+										break;
+									case 'ogv':
+										$type = 'video/ogg;';
+										break;
+									case 'webm':
+										$type = 'video/webm;';
+										break;
 								}
 							?>
-							<source src="<?php echo with(new Moderator($content_folder . DS . $source->source))->getUrl(); ?>" type='<?php echo $type; ?>'>
+							<source src="<?php echo with(new Moderator($content_folder . DS . $source->source))->getUrl(); ?>" type="<?php echo $type; ?>">
 						<?php endforeach; ?>
 						<a href="<?php echo with(new Moderator($content_folder . DS . $presentation->media[0]->source))->getUrl(); ?>" id="flowplayer"></a>
 
@@ -330,7 +311,7 @@ if (isset($this->entityId) && isset($this->entityType))
 									data-autoplay="<?php echo $sub->autoplay; ?>"
 									data-type="subtitle"
 									data-lang="<?php echo $sub->name; ?>"
-									data-src="<?php echo $sub->source; ?>?v=<?php echo filemtime( $sub->source ); ?>"></div>
+									data-src="<?php echo $sub->source; ?>?v=<?php echo filemtime($sub->source); ?>"></div>
 							<?php endforeach; ?>
 						<?php endif; ?>
 
@@ -347,7 +328,11 @@ if (isset($this->entityId) && isset($this->entityType))
 			</div>
 			<div id="list">
 				<ul id="list_items">
-					<?php $num = 0; $counter = 0; $last_slide_id = 0; ?>
+					<?php
+					$num = 0;
+					$counter = 0;
+					$last_slide_id = 0;
+					?>
 					<?php foreach ($presentation->slides as $slide) : ?>
 						<?php if ((int)$slide->slide != $last_slide_id) : ?>
 							<li id="list_<?php echo $counter; ?>">
@@ -363,7 +348,7 @@ if (isset($this->entityId) && isset($this->entityType))
 										$thumb = $content_folder . DS . $slide->media;
 									}
 								?>
-								<img src="<?php echo with(new Moderator($thumb))->getUrl(); ?>" alt="<?php echo $slide->title; ?>" />
+								<img src="<?php echo with(new Moderator($thumb))->getUrl(); ?>" alt="<?php echo $this->escape($slide->title); ?>" />
 								<span>
 									<?php
 										$num++;
@@ -373,7 +358,9 @@ if (isset($this->entityId) && isset($this->entityType))
 										echo substr($slide->title, 0, $max);
 
 										if (strlen($slide->title) > $max)
+										{
 											echo $elipsis;
+										}
 									?>
 								</span>
 								<span class="time"><?php echo $slide->time; ?></span>

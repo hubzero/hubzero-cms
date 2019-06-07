@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // no direct access
@@ -43,7 +18,7 @@ $this->js();
 
 $base = rtrim(Request::base(true), '/');
 ?>
-<div class="<?php echo $this->params->get('moduleclass_sfx',''); ?> session-list <?php if (!$this->params->get('show_storage', 1)) { echo 'without-storage'; } ?>">
+<div class="<?php echo $this->module->module . ' ' . $this->params->get('moduleclass_sfx', ''); ?> session-list <?php if (!$this->params->get('show_storage', 1)) { echo 'without-storage'; } ?>">
 	<ul>
 		<?php if (count($this->sessions) > 0) : ?>
 			<?php foreach ($this->sessions as $k => $session) : ?>
@@ -51,9 +26,9 @@ $base = rtrim(Request::base(true), '/');
 					$cls = ($k == 0) ? 'active' : 'not-active';
 
 					//get the appname
-					$bits = explode('_',$session->appname);
+					$bits = explode('_', $session->appname);
 					$bit = (count($bits) > 1) ? array_pop($bits) : '';
-					$appname = implode('_',$bits);
+					$appname = implode('_', $bits);
 
 					$resumeLink = Route::url('index.php?option=com_tools&task=session&sess=' . $session->sessnum . '&app=' . $appname);
 
@@ -158,7 +133,7 @@ $base = rtrim(Request::base(true), '/');
 				echo '<p class="error">' . Lang::txt('MOD_MYSESSIONS_ERROR_RETRIEVING_STORAGE') . '</p></div>';
 				return;
 			}
-			else if (isset($diskUsage['softspace']) && $diskUsage['softspace'] == 0)
+			elseif (isset($diskUsage['softspace']) && $diskUsage['softspace'] == 0)
 			{
 				echo '<p class="info">' . Lang::txt('MOD_MYSESSIONS_NO_QUOTA') . '</p></div>';
 				return;
@@ -178,11 +153,16 @@ $base = rtrim(Request::base(true), '/');
 				//show different colored bar
 				$cls = ($percent < 50) ? 'storage-low' : 'storage-high';
 			}
+
+			if ($amount > 0)
+			{
+				$this->css('.' . $this->module->module . ' .session-storage .storage-meter-percent { width: ' . $percent . '%; }');
+			}
 		?>
 
 		<div class="storage-meter <?php echo $cls; ?>">
 			<?php if ($amount > 0) : ?>
-				<span class="storage-meter-percent" style="width:<?php echo $percent; ?>%"></span>
+				<span class="storage-meter-percent" title="<?php echo $percent; ?>%"></span>
 			<?php endif; ?>
 			<span class="storage-meter-amount"><?php echo $amount . '% of ' . $total . 'GB'; ?></span>
 		</div>
@@ -199,4 +179,4 @@ $base = rtrim(Request::base(true), '/');
 			</p>
 		<?php endif; ?>
 	</div>
-<?php endif; ?>
+<?php endif;

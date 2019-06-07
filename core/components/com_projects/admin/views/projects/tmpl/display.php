@@ -1,32 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -74,27 +50,32 @@ if (substr($base, -13) == 'administrator')
 		<div class="grid">
 			<div class="col span6">
 				<label for="filter_search"><?php echo Lang::txt('COM_PROJECTS_SEARCH'); ?>:</label>
-				<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_PROJECTS_SEARCH'); ?>" />
+				<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_PROJECTS_SEARCH'); ?>" />
 
 				<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_PROJECTS_GO'); ?>" />
 			</div>
 			<div class="col span6">
 				<label for="filter-filterby"><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS'); ?>:</label>
-				<select name="filterby" id="filter-filterby" onchange="document.adminForm.submit();">
+				<select name="filterby" id="filter-filterby" class="filter filter-submit">
 					<option value=""<?php echo ($this->filters['filterby'] == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS_ALL'); ?></option>
 					<option value="active"<?php echo ($this->filters['filterby'] == 'active') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS_ACTIVE'); ?></option>
 					<option value="archived"<?php echo ($this->filters['filterby'] == 'archived') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS_ARCHIVED'); ?></option>
 				</select>
 
-				<label for="filter-private"><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY'); ?>:</label>
-				<select name="private" id="filter-private" onchange="document.adminForm.submit();">
+				<?php /*<label for="filter-private"><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY'); ?>:</label>
+				<select name="private" id="filter-private" class="filter filter-submit">
 					<option value="-1"<?php echo ($this->filters['private'] == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY_ALL'); ?></option>
 					<option value="1"<?php echo ($this->filters['private'] == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY_PRIVATE'); ?></option>
 					<option value="0"<?php echo ($this->filters['private'] == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY_PUBLIC'); ?></option>
+				</select>*/ ?>
+				<label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
+				<select name="access" id="filter-access" class="filter filter-submit">
+					<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
+					<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
 				</select>
 
 				<label for="filter-quota"><?php echo Lang::txt('COM_PROJECTS_FILTER_QUOTA'); ?>:</label>
-				<select name="quota" id="filter-quota" onchange="document.adminForm.submit();">
+				<select name="quota" id="filter-quota" class="filter filter-submit">
 					<option value="all"<?php echo ($this->filters['quota'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_QUOTA_ALL'); ?></option>
 					<option value="regular"<?php echo ($this->filters['quota'] == 'regular') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_QUOTA_REGULAR'); ?></option>
 					<option value="premium"<?php echo ($this->filters['quota'] == 'premium') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_QUOTA_PREMIUM'); ?></option>
@@ -106,7 +87,7 @@ if (substr($base, -13) == 'administrator')
 	<table class="adminlist" id="projects-admin">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th class="priority-5" scope="col"><?php echo Html::grid('sort', 'ID', 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th class="priority-5" scope="col"> </th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_TITLE', 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
@@ -121,7 +102,7 @@ if (substr($base, -13) == 'administrator')
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="10"><?php 
+				<td colspan="11"><?php 
 				// Initiate paging
 				echo $this->pagination(
 					$this->total,
@@ -147,7 +128,7 @@ if (substr($base, -13) == 'administrator')
 						$row->groupname = '<span class="italic pale">' . Lang::txt('COM_PROJECTS_INFO_DELETED_GROUP') . '</span>';
 					}
 					$owner = ($row->owned_by_group) ? $row->groupname . '<br /><span class="block prominent">' . $row->groupcn . '</span>' : $row->authorname;
-					$owner = $owner ? $owner : '<span class="unknown" style="color: #bbb;">' . Lang::txt('(unknown)') . '</span>';
+					$owner = $owner ? $owner : '<span class="unknown" class="smallsub">' . Lang::txt('(unknown)') . '</span>';
 					$ownerclass = ($row->owned_by_group) ? 'group' : 'user';
 
 					// Determine status
@@ -184,13 +165,15 @@ if (substr($base, -13) == 'administrator')
 					$quota  = $params->get('quota', $this->defaultQuota);
 					$quota  = \Components\Projects\Helpers\Html::convertSize($quota, 'b', 'GB', 2);
 
-					$cls  = 'public';
+					$access = Hubzero\Access\Viewlevel::oneOrNew($row->access);
+					$cls = preg_replace('/[^a-z0-9-\_]/', '', strtolower($access->title));
+					/*$cls  = 'public';
 					$task = 'accessprivate';
 					if ($row->private > 0)
 					{
 						$cls  = 'private';
 						$task = 'accesspublic';
-					}
+					}*/
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td>
@@ -242,15 +225,15 @@ if (substr($base, -13) == 'administrator')
 							<?php echo $status; ?>
 						</td>
 						<td class="priority-4">
-							<?php if (User::authorise('core.edit.state', $this->option)) { ?>
+							<?php /*if (User::authorise('core.edit.state', $this->option)) { ?>
 								<a class="privacy <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_TOGGLE_PRIVACY'); ?>">
 									<span><?php echo Lang::txt('COM_PROJECTS_FLAG_' . strtoupper($cls)); ?></span>
 								</a>
-							<?php } else { ?>
+							<?php } else {*/ ?>
 								<span class="privacy <?php echo $cls; ?>">
-									<span><?php echo Lang::txt('COM_PROJECTS_FLAG_' . strtoupper($cls)); ?></span>
+									<span><?php echo $this->escape($access->title); ?></span>
 								</span>
-							<?php } ?>
+							<?php //} ?>
 						</td>
 						<td class="priority-4">
 							<?php echo $quota . 'GB'; ?>
@@ -265,7 +248,7 @@ if (substr($base, -13) == 'administrator')
 					$k = 1 - $k;
 				}
 			} else { ?>
-				<tr><td colspan="10"><?php echo Lang::txt('COM_PROJECTS_NO_RESULTS'); ?></td></tr>
+				<tr><td colspan="11"><?php echo Lang::txt('COM_PROJECTS_NO_RESULTS'); ?></td></tr>
 		<?php } ?>
 		</tbody>
 	</table>
