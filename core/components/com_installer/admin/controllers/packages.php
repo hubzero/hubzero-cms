@@ -64,6 +64,17 @@ class Packages extends AdminController
 				'limitstart',
 				0,
 				'int'
+			),
+			// Sorting
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'created'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
 			)
 		);
 
