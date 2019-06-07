@@ -29,7 +29,7 @@
 	}
 
 /* Item listing */
-	.com_publications .container .container-block {
+	/*.com_publications .container .container-block {
 		margin: 0;
 		padding: 0;
 	}
@@ -51,7 +51,7 @@
 	}
 	.com_publications .filter-options {
 		width: 60%;
-	}
+	}*/
 
 /* Publication category icons */
 	.com_publications div.extracontent li a:before {
