@@ -181,11 +181,50 @@ class Repositories extends AdminController
 	 */
 	public function removeTask()
 	{
-		$alias = Request::getString('alias', null);
+		// Check for request forgeries
+		Request::checkToken();
 
-		ComposerHelper::removeRepository($alias);
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
-		Notify::success('Successfully deleted repository, packages will remain until uninstalled.');
+		// Incoming aliases as repos
+		$repos = Request::getArray('repositories', array());
+		$repos = (!is_array($repos) ? array($repos) : $repos);
+
+		if (count($repos) <= 0)
+		{
+			return $this->cancelTask();
+		}
+
+		$success = 0;
+		foreach ($repos as $repo)
+		{
+			
+			// // Load the record
+			// $aq = Question::oneOrFail(intval($id));
+
+			// // Delete the question
+			// if (!$aq->destroy())
+			// {
+			// 	Notify::error($aq->getError());
+			// 	continue;
+			// }
+
+			// Trigger after delete event
+			//Event::trigger('onQuestionAfterDelete', array($id));
+
+			//$alias = Request::getString('alias', null);
+			ComposerHelper::removeRepository($repo);
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			Notify::success(Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY_ITEMS_REMOVED', $success));
+		}
 
 		$this->cancelTask();
 	}
