@@ -9,8 +9,8 @@
 defined('_HZEXEC_') or die();
 
 $database = \App::get('db');
-switch ($this->filters['sortby'])
-{
+
+switch ($this->filters['sortby']):
 	case 'date_created':
 		$show_date = 1;
 		break;
@@ -21,52 +21,48 @@ switch ($this->filters['sortby'])
 	default:
 		$show_date = 3;
 		break;
-}
+endswitch;
 
 // Get version authors
-$pa = new \Components\Publications\Tables\Author( $database );
+$pa = new \Components\Publications\Tables\Author($database);
 ?>
 
 <ol class="results" id="publications">
-<?php
+	<?php
+	foreach ($this->results as $line):
+		// Get parameters
+		$params = clone($this->config);
+		$rparams = new \Hubzero\Config\Registry($line->params);
+		$params->merge($rparams);
 
-foreach ($this->results as $line)
-{
+		// Set the display date
+		switch ($show_date):
+			case 0:
+				$thedate = '';
+				break;
+			case 1:
+				$thedate = $line->created();
+				break;
+			case 2:
+				$thedate = $line->modified();
+				break;
+			case 3:
+				$thedate = $line->published();
+				break;
+		endswitch;
 
-	$authors = $pa->getAuthors($line->version_id);
+		$authors = $pa->getAuthors($line->version_id);
 
-	// Get parameters
-	$params = clone($this->config);
-	$rparams = new \Hubzero\Config\Registry( $line->params );
-	$params->merge( $rparams );
-
-	// Set the display date
-	switch ($show_date)
-	{
-		case 0:
-			$thedate = '';
-			break;
-		case 1:
-			$thedate = $line->created();
-			break;
-		case 2:
-			$thedate = $line->modified();
-			break;
-		case 3:
-			$thedate = $line->published();
-			break;
-	}
-
-	// Display List of items
-	$this->view('item')
-	     ->set('option', 'com_publications')
-	     ->set('filters', $this->filters)
-	     ->set('config', $this->config)
-	     ->set('authors', $authors)
-	     ->set('line', $line)
-	     ->set('thedate', $thedate)
-	     ->set('params', $params)
-	     ->display();
-}
-?>
+		// Display List of items
+		$this->view('item')
+		     ->set('option', 'com_publications')
+		     ->set('filters', $this->filters)
+		     ->set('config', $this->config)
+		     ->set('authors', $authors)
+		     ->set('line', $line)
+		     ->set('thedate', $thedate)
+		     ->set('params', $params)
+		     ->display();
+	endforeach;
+	?>
 </ol>
