@@ -53,8 +53,10 @@ class Sql extends SearchResult
 			{
 				throw new Exception('Invalid SQL in ' . $this->sql . ': ' . $error);
 			}
-			return new Blank();
+
+			$rows = array();
 		}
+
 		return new AssocList($rows, $this->get_plugin());
 	}
 }
