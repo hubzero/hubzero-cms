@@ -15,7 +15,8 @@ defined('_HZEXEC_') or die();
 	<?php if ($awardPer): ?>
 		<p>We'll award you with <strong><?php echo $awardPer; ?></strong> points for each question you answer. You can use these points towards items in the site <a href="/store">store</a>, or to place bounties on <a href="/answers">questions</a> and <a href="/wishlist">wishes</a>.</p>
 	<?php endif; ?>
-	<form action="" method="post">
+	<form action="<?php echo Request::current(); ?>" method="post">
+		<input type="hidden" name="option" value="<?php echo Request::getCmd('option'); ?>" />
 		<ol>
 				<?php if (isset($row['orgtype'])): ?>
 				<li>
@@ -25,18 +26,15 @@ defined('_HZEXEC_') or die();
 						<p class="warning">Please select your organizational affiliation</p>
 					<?php endif; ?>
 					<select id="orgtype" name="orgtype">
+						<?php $val = Request::getString('orgtype', '', 'post'); ?>
 						<option selected="selected" value="">(select from list)</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'universityundergraduate') { echo 'selected="selected" ';} ?>value="universityundergraduate">University / College Undergraduate</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'universitygraduate') { echo 'selected="selected" ';} ?>value="universitygraduate">University / College Graduate Student</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'universityfaculty') { echo 'selected="selected" ';} ?>value="universityfaculty">University / College Faculty</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'universitystaff') { echo 'selected="selected" ';} ?>value="universitystaff">University / College Staff</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'precollegestudent') { echo 'selected="selected" ';} ?>value="precollegestudent">K-12 (Pre-College) Student</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'precollegefacultystaff') { echo 'selected="selected" ';} ?>value="precollegefacultystaff">K-12 (Pre-College) Faculty/Staff</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'nationallab') { echo 'selected="selected" ';} ?>value="nationallab">National Laboratory</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'industry') { echo 'selected="selected" ';} ?>value="industry">Industry / Private Company</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'government') { echo 'selected="selected" ';} ?>value="government">Government Agency</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'military') { echo 'selected="selected" ';} ?>value="military">Military</option>
-						<option <?php if (isset($_POST['orgtype']) && $_POST['orgtype'] == 'unemployed') { echo 'selected="selected" ';} ?>value="unemployed">Retired / Unemployed</option>
+						<?php
+						$dbh->setQuery("SELECT o.value, o.label FROM `#__user_profile_options` AS o INNER JOIN `#__user_profile_fields` AS f ON f.id=o.field_id WHERE f.name='orgtype' ORDER BY o.label ASC");
+						foreach ($dbh->loadObjectList() as $opt)
+						{
+							echo '<option value="'.$opt->value.'"'.($val === $opt->value ? ' selected="selected"' : '').'>'.$opt->label.'</option>';
+						}
+						?>
 					</select>
 					</div>
 				</li>
@@ -49,12 +47,13 @@ defined('_HZEXEC_') or die();
 						<p class="warning">Please select an organization or enter one in the provided "other" field</p>
 					<?php endif; ?>
 					<select id="org" name="org">
+						<?php $val = Request::getString('organization', '', 'post'); ?>
 						<option value="">(select from list or enter other)</option>
 						<?php
-						$dbh->setQuery("SELECT o.label FROM `#__user_profile_options` AS o INNER JOIN `#__user_profile_fields` AS f ON f.id=o.field_id WHERE f.name='organization' ORDER BY o.label ASC");
-						foreach ($dbh->loadAssocList() as $org)
+						$dbh->setQuery("SELECT o.value, o.label FROM `#__user_profile_options` AS o INNER JOIN `#__user_profile_fields` AS f ON f.id=o.field_id WHERE f.name='organization' ORDER BY o.label ASC");
+						foreach ($dbh->loadObjectList() as $opt)
 						{
-							echo '<option value="'.$org['organization'].'"'.(isset($_POST['org']) && $_POST['org'] === $org['organization'] ? ' selected="selected"' : '').'>'.$org['organization'].'</option>';
+							echo '<option value="'.$opt->value.'"'.($val === $opt->value ? ' selected="selected"' : '').'>'.$opt->label.'</option>';
 						}
 						?>
 					</select>
@@ -72,15 +71,15 @@ defined('_HZEXEC_') or die();
 						<p class="warning">Please select the reason for your account or enter one in the provided "other" field</p>
 					<?php endif; ?>
 					<select id="reason" name="reason">
-						<?php $val = isset($_POST['reason']) ? $_POST['reason'] : ''; ?>
+						<?php $val = Request::getString('reason', '', 'post'); ?>
 						<option value="">(select from list or enter other)</option>
-						<option <?php if ($val === 'Required for class') { echo 'selected="selected" ';} ?>value="Required for class">Required for class</option>
-						<option <?php if ($val === 'Developing a new course') { echo 'selected="selected" ';} ?>value="Developing a new course">Developing a new course</option>
-						<option <?php if ($val === 'Using in an existing course') { echo 'selected="selected" ';} ?>value="Using in an existing course">Using in an existing course</option>
-						<option <?php if ($val === 'Using simulation tools for research') { echo 'selected="selected" ';} ?>value="Using simulation tools for research">Using simulation tools for research</option>
-						<option <?php if ($val === 'Using as background for my research') { echo 'selected="selected" ';} ?>value="Using as background for my research">Using as background for my research</option>
-						<option <?php if ($val === 'Learning about subject matter') { echo 'selected="selected" ';} ?>value="Learning about subject matter">Learning about subject matter</option>
-						<option <?php if ($val === 'Keeping current in subject matter') { echo 'selected="selected" ';} ?>value="Keeping current in subject matter">Keeping current in subject matter</option>
+						<?php
+						$dbh->setQuery("SELECT o.value, o.label FROM `#__user_profile_options` AS o INNER JOIN `#__user_profile_fields` AS f ON f.id=o.field_id WHERE f.name='reason' ORDER BY o.label ASC");
+						foreach ($dbh->loadObjectList() as $opt)
+						{
+							echo '<option value="'.$opt->value.'"'.($val === $opt->value ? ' selected="selected"' : '').'>'.$opt->label.'</option>';
+						}
+						?>
 					</select>
 					<br />
 					<label for="reason-other">Have a different reason? </label><br />
@@ -96,21 +95,21 @@ defined('_HZEXEC_') or die();
 					<?php endif; ?>
 					<ol id="name-inp">
 						<li>
-							<label>
+							<label for="inc_name-first">
 								<span>First:</span>
-								<input type="text" value="<?php if (isset($_POST['name']['first'])) { echo str_replace('"', '&quot;', $_POST['name']['first']);} ?>" name="name[first]">
+								<input type="text" id="inc_name-first" value="<?php if (isset($_POST['name']['first'])) { echo str_replace('"', '&quot;', $_POST['name']['first']);} ?>" name="name[first]">
 							</label>
 						</li>
 						<li>
-							<label>
+							<label for="inc_name-middle">
 								<span>Middle:</span>
-								<input type="text" value="<?php if (isset($_POST['name']['middle'])) { echo str_replace('"', '&quot;', $_POST['name']['middle']);} ?>" name="name[middle]">
+								<input type="text" id="inc_name-middle" value="<?php if (isset($_POST['name']['middle'])) { echo str_replace('"', '&quot;', $_POST['name']['middle']);} ?>" name="name[middle]">
 							</label>
 						</li>
 						<li>
-							<label>
+							<label for="inc_name-last">
 								<span>Last:</span>
-								<input type="text" value="<?php if (isset($_POST['name']['last'])) { echo str_replace('"', '&quot;', $_POST['name']['last']);} ?>" name="name[last]">
+								<input type="text" id="inc_name-last" value="<?php if (isset($_POST['name']['last'])) { echo str_replace('"', '&quot;', $_POST['name']['last']);} ?>" name="name[last]">
 							</label>
 					</li>
 					</ol>
@@ -123,9 +122,10 @@ defined('_HZEXEC_') or die();
 							<?php if (isset($errors['gender'])): ?>
 								<p class="warning">Please select your gender, or choose not to reveal it</p>
 							<?php endif; ?>
-							<label><input <?php if (isset($_POST['gender']) && $_POST['gender'] == 'male') { echo 'checked="checked" ';} ?>type="radio" class="option" value="male" name="gender"> Male</label>
-							<label><input <?php if (isset($_POST['gender']) && $_POST['gender'] == 'female') { echo 'checked="checked" ';} ?>type="radio" class="option" value="female" name="gender"> Female</label>
-							<label><input <?php if (isset($_POST['gender']) && $_POST['gender'] == 'refused') { echo 'checked="checked" ';} ?>type="radio" class="option" value="refused" name="gender"> Do not wish to reveal</label>
+							<?php $gender = Request::getString('gender', '', 'post'); ?>
+							<label><input <?php if ($gender == 'male') { echo 'checked="checked" ';} ?>type="radio" class="option" value="male" name="gender"> Male</label>
+							<label><input <?php if ($gender == 'female') { echo 'checked="checked" ';} ?>type="radio" class="option" value="female" name="gender"> Female</label>
+							<label><input <?php if ($gender == 'refused') { echo 'checked="checked" ';} ?>type="radio" class="option" value="refused" name="gender"> Do not wish to reveal</label>
 						</div>
 					</li>
 				<?php endif; ?>
@@ -136,7 +136,7 @@ defined('_HZEXEC_') or die();
 							<?php if (isset($errors['url'])): ?>
 								<p class="warning">Please enter your web site URL</p>
 							<?php endif; ?>
-							<input type="text" id="url" name="url" value="<?php if (isset($_POST['url'])) { echo str_replace('"', '&quot;', $_POST['url']);} ?>" />
+							<input type="text" id="url" name="url" value="<?php echo $this->escape(Request::getString('url', '', 'post')); ?>" />
 						</div>
 					</li>
 				<?php endif; ?>
@@ -147,7 +147,7 @@ defined('_HZEXEC_') or die();
 							<?php if (isset($errors['phone'])): ?>
 								<p class="warning">Please enter your phone number</p>
 							<?php endif; ?>
-							<input type="text" id="phone" name="phone" value="<?php if (isset($_POST['phone'])) { echo str_replace('"', '&quot;', $_POST['phone']);} ?>" />
+							<input type="text" id="phone" name="phone" value="<?php echo $this->escape(Request::getString('phone', '', 'post')); ?>" />
 						</div>
 					</li>
 				<?php endif; ?>
