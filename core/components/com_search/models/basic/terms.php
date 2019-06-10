@@ -326,7 +326,10 @@ class Terms extends Obj
 		usort($chunks, function($a, $b) {
 			$al = strlen($a);
 			$bl = strlen($b);
-			if ($al == $bl) return 0;
+			if ($al == $bl)
+			{
+				return 0;
+			}
 			return $al > $bl ? -1 : 1;
 		});
 		return '(' . join('|', array_map('preg_quote', $chunks)) . '[[:alpha:]]*)';
