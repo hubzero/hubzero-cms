@@ -178,22 +178,4 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 
 		$this->view->title = 'Build Outline';
 	}
-
-	/**
-	 * Set redirect and message
-	 *
-	 * @param   string  $url   URL to redirect to
-	 * @param   string  $msg   Message to send
-	 * @param   string  $type  Message type (message, error, warning, info)
-	 * @return  void
-	 */
-	public function setRedirect($url, $msg=null, $type='message')
-	{
-		if ($msg !== null)
-		{
-			$this->addPluginMessage($msg, $type);
-		}
-
-		App::redirect($url);
-	}
 }
