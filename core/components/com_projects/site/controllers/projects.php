@@ -122,17 +122,21 @@ class Projects extends Base
 			App::redirect($redirectUrl);
 		}
 
-		if (!$this->model->member())
+		$existingMember = $this->model->member();
+
+		if (!$existingMember || $existingMember->status == 2)
 		{
 			if ($this->model->exists())
 			{
 				$userId = User::getInstance()->get('id');
-				$member = \Components\Projects\Models\Orm\Owner::blank();
+				$memberId = $existingMember ? $existingMember->id : null;
+				$member = \Components\Projects\Models\Orm\Owner::oneOrNew($memberId);
 				$member->set('projectid', $this->model->get('id'));
 				$member->set('userid', $userId);
 				$member->set('status', 3);
 				$currentTime = Date::of()->toSql();
 				$member->set('added', $currentTime);
+
 				if ($member->save())
 				{
 					$managers = \Components\Projects\Models\Orm\Owner::getProjectManagers($this->model->get('id'));
