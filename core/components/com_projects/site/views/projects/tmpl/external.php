@@ -65,7 +65,7 @@ $this->css('theme' . $theme . '.css');
 			<?php $member = $this->model->member(); ?>
 			<?php $link = Route::url('index.php?option=com_projects&task=requestaccess&alias=' . $this->model->get('alias') . '&' . Session::getFormToken() . '=1'); ?>
 			<?php if ($this->model->allowMembershipRequest()): ?>
-				<?php if (!$member): ?>
+				<?php if (!$member || $member->status == 2): ?>
 					<div class="btn-container tooltips span4">
 						<a href="<?php echo $link;?>" class="tooltips btn btn-success"><?php echo Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP');?></a>
 					</div>
@@ -74,13 +74,13 @@ $this->css('theme' . $theme . '.css');
 						<a href="<?php echo $link; ?>" class="tooltips btn btn-success" disabled><?php echo Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP');?></a>
 					</div>
 				<?php elseif ($member->get('status') == 4): ?>
-					<?php 
+					<?php
 						$params = new Hubzero\Config\Registry($member->get('params'));
 						$denyMessage = 'Membership has been denied. <br/>';
 						$denyMessage .= 'Reason: <br/>';
 						$denyMessage .= $params->get('denyMessage');
 					?>
-					
+
 					<div class="btn-container tooltips span4" title="<?php echo $denyMessage;?>">
 						<a href="<?php echo $link; ?>" class="btn btn-success" disabled><?php echo Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP');?></a>
 					</div>
