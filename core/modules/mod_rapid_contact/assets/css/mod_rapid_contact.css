@@ -21,12 +21,20 @@
 		border: none;
 	}
 	.mod_rapid_contact fieldset legend {
-		display: none;
+		border: 0;
+		clip: rect(1px 1px 1px 1px);
+		clip: rect(1px, 1px, 1px, 1px);
+		height: 1px;
+		margin: -1px;
+		overflow: hidden;
+		padding: 0;
+		position: absolute;
+		width: 1px;
 	}
 	.mod_rapid_contact fieldset label {
 		display: block;
 	}
-	.mod_rapid_contact fieldset .input-wrap {
+	.mod_rapid_contact fieldset .form-group {
 		margin: 0 0 1.5em 0;
 	}
 	.mod_rapid_contact fieldset label span.required {
