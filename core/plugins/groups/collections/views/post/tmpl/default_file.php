@@ -118,7 +118,7 @@ if ($assets->total() > 0)
 		<ul class="file-list">
 			<?php foreach ($files as $asset) { ?>
 				<li class="type-<?php echo $asset->get('type'); ?>">
-					<a href="<?php echo ($asset->isLink()) ? $asset->get('filename') : $asset->link(); ?>" <?php echo ($asset->isLink()) ? ' rel="external nofollow"' : ''; ?>>
+					<a href="<?php echo ($asset->isLink()) ? $asset->get('filename') : $asset->link(); ?>" <?php echo ($asset->isLink()) ? ' rel="external nofollow noreferrer"' : ''; ?>>
 						<?php echo $asset->get('filename'); ?>
 					</a>
 					<span class="file-meta">
