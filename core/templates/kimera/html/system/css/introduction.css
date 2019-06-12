@@ -51,12 +51,6 @@
 		padding: 0;
 		border: none;
 	}
-	/*#introduction ul.token-input-list-act {
-		background: transparent;
-		padding: 3px 3px 2px 3px;
-		border: 1px solid #ddd;
-		border: 1px solid rgba(0, 0, 0, 0.175);
-	}*/
 	#introduction li {
 		margin: 0;
 		padding: 0 0 0 5px;
@@ -77,9 +71,6 @@
 	#introduction .col p:last-child {
 		margin-bottom: 0;
 	}
-	/*#introduction .omega {
-		text-align: right;
-	}*/
 
 	#introduction + .section {
 		padding: 30px;
@@ -88,12 +79,3 @@
 		margin: 0;
 		padding: 0;
 	}
-
-@media (min-width: 70em) {
-	#introduction {
-		padding: 60px;
-	}
-	#introduction + .section {
-		padding: 60px;
-	}
-}
