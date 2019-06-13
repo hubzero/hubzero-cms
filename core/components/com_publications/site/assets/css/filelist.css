@@ -41,6 +41,9 @@
 	padding: 0;
 	list-style: none;
 }
+.filelist .file-type {
+	height: 1.2em;
+}
 .filelist img {
 	margin-right: 0.5em;
 	display: inline-block;
@@ -78,106 +81,3 @@
 	margin-right: 2em;
 	margin-left: 0.2em;
 }
-
-/*
-.item-icon {
-	width: 1em;
-	height: 1em;
-	display: inline-block;
-	cursor: pointer;
-	color: #333;
-	white-space: nowrap;
-	overflow: hidden;
-	line-height: 1;
-	cursor: default;
-	margin-right: 0.4em;
-}
-.item-extension {
-	width: 1em;
-	height: 1em;
-	font-size: 1.2em;
-	display: inline-block;
-}
-.item-extension:before {
-	line-height: 1;
-	content: '\f0f5';
-	font-family: 'Fontcons';
-	color: rgba(0, 0, 0, 0.4);
-}
-._drive:before {
-	content: '\f0a0';
-	color: #333;
-}
-._dir:before {
-	content: '\f114';
-	color: orange;
-}
-._pdf:before,
-._rtf:before,
-._txt:before {
-	content: '\f0f6';
-}
-._js:before,
-._css:before,
-._xml:before,
-._html:before,
-._htm:before,
-._py:before,
-._rb:before,
-._cc:before,
-._php:before {
-	content: '\f07e';
-}
-._keynote:before,
-._ppt:before,
-._pps:before,
-._pptx:before {
-	content: "\f000";
-}
-._pages:before,
-._doc:before,
-._docx:before {
-	content: '\f0f5';
-}
-._xsl:before,
-._csv:before,
-._xslx:before {
-	content: '\f0ce';
-}
-._mpg:before,
-._mpeg:before,
-._mov:before,
-._wmv:before,
-._asf:before,
-._asx:before,
-._ra:before,
-._rm:before,
-._avi:before,
-._qt:before,
-._mp4:before,
-._m4v:before {
-	content: '\f008';
-}
-._mp3:before,
-._aiff:before,
-._wav:before,
-._m4a:before {
-	content: '\266B';
-}
-._tar:before,
-._zip:before,
-._gz:before {
-	content: '\f005';
-}
-._gif:before,
-._png:before,
-._bmp:before,
-._tif:before,
-._tiff:before,
-._jpg:before,
-._jpe:before,
-._jpeg:before {
-	content: '\f03e';
-	color: #337ab7;
-}
-*/
