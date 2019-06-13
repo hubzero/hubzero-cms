@@ -10,7 +10,7 @@
 	-- -- -- -- -- -- --
 */
 
-	.com_publications .aside  {
+	/*.com_publications .aside  {
 		border: none;
 	}
 	.com_publications .aside li {
@@ -26,7 +26,7 @@
 	}
 	.com_publications .aside li a:hover {
 		color: #000;
-	}
+	}*/
 
 /* Item listing */
 	/*.com_publications .container .container-block {
