@@ -375,7 +375,8 @@ class Newsletter extends Relational
 				$campaignPrimaryStories .= $pStory->title;
 				$campaignPrimaryStories .= '</span>';
 				$campaignPrimaryStories .= '<span style="display:block;page-break-inside:avoid;'.$primaryTextColor.'">';
-				$campaignPrimaryStories .= $pStory->story;
+				$sanitizedStory = preg_replace('/<script[^>]*>.*?<\/script>/is', '', $pStory->story);
+				$campaignPrimaryStories .= $sanitizedStory;
 
 				//do we have a readmore link
 				if ($pStory->readmore_link)
