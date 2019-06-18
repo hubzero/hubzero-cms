@@ -28,7 +28,6 @@ Toolbar::help('packages');
 Html::behavior('tooltip');
 
 $this->css();
-$filterstring = "";
 ?>
 
 <nav role="navigation" class="sub sub-navigation">
@@ -67,19 +66,21 @@ $filterstring = "";
 		</tfoot>
 		<tbody>
 			<?php foreach ($this->packages as $i => $package) : ?>
-				<?php
-				?>
 				<tr>
 					<td>
 						<input type="checkbox" name="packages[]" id="cb<?php echo $i; ?>" value="<?php echo $package->getPrettyName(); ?>" class="checkbox-toggle" />
 					</td>
 					<td> 
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&packageName=' . $package->getName() . $filterstring); ?>">
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&packageName=' . $package->getName()); ?>">
 							<strong><?php echo $package->getPrettyName() ?></strong>
 						</a>
 					</td>
-					<td> <?php echo $package->getFullPrettyVersion(); ?> </td>
-					<td> <?php echo $package->getDescription(); ?> </td>
+					<td>
+						<?php echo $package->getFullPrettyVersion(); ?>
+					</td>
+					<td>
+						<?php echo $package->getDescription(); ?>
+					</td>
 				</tr>
 			<?php endforeach; ?>
 		</tbody>

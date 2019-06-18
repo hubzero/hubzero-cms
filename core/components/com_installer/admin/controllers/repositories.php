@@ -12,6 +12,7 @@ use Hubzero\Utility\Composer as ComposerHelper;
 use Request;
 use Config;
 use Notify;
+use Event;
 use StdClass;
 use Route;
 use App;
@@ -149,13 +150,13 @@ class Repositories extends AdminController
 		Request::checkToken();
 
 		$temp = new StdClass;
-		$alias             = Request::getString('alias', null);
-		$oldAlias          = Request::getString('oldAlias', null);
-		$isNew             = Request::getString('isNew', null);
-		$temp->name        = Request::getString('name', null);
-		$temp->description = Request::getString('description', null);
-		$temp->url         = Request::getString('url', null);
-		$temp->type        = Request::getString('type', null);
+		$alias             = Request::getString('alias', '', 'post');
+		$oldAlias          = Request::getString('oldAlias', '', 'post');
+		$isNew             = Request::getString('isNew', '', 'post');
+		$temp->name        = Request::getString('name', '', 'post');
+		$temp->description = Request::getString('description', '', 'post');
+		$temp->url         = Request::getString('url', '', 'post');
+		$temp->type        = Request::getString('type', '', 'post');
 
 		$json = json_encode($temp);
 
@@ -201,22 +202,10 @@ class Repositories extends AdminController
 		$success = 0;
 		foreach ($repos as $repo)
 		{
-			
-			// // Load the record
-			// $aq = Question::oneOrFail(intval($id));
-
-			// // Delete the question
-			// if (!$aq->destroy())
-			// {
-			// 	Notify::error($aq->getError());
-			// 	continue;
-			// }
+			ComposerHelper::removeRepository($repo);
 
 			// Trigger after delete event
-			//Event::trigger('onQuestionAfterDelete', array($id));
-
-			//$alias = Request::getString('alias', null);
-			ComposerHelper::removeRepository($repo);
+			Event::trigger('onRepositoryAfterDelete', array($repo));
 
 			$success++;
 		}
