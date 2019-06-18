@@ -12,7 +12,7 @@ use Hubzero\Utility\Arr;
 
 Toolbar::title(Lang::txt('COM_INSTALLER_TITLE_REPOSITORIES'));
 
-$canDo = \Components\Installer\Admin\Helpers\Installer::getActions();
+$canDo = Components\Installer\Admin\Helpers\Installer::getActions();
 if ($canDo->get('core.admin'))
 {
 	Toolbar::preferences('com_installer');
@@ -21,7 +21,7 @@ if ($canDo->get('core.admin'))
 if ($canDo->get('core.create'))
 {
 	Toolbar::addNew();
- }
+}
 if ($canDo->get('core.delete'))
 {
 	Toolbar::deleteList();
@@ -29,10 +29,10 @@ if ($canDo->get('core.delete'))
 }
 
 Toolbar::help('repositories');
+
 Html::behavior('tooltip');
 
 $this->css();
-$filterstring = "";
 ?>
 
 <nav role="navigation" class="sub sub-navigation">
@@ -50,7 +50,7 @@ $filterstring = "";
 	<table id="tktlist" class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_INSTALLER_COL_REPO', 'repo', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_INSTALLER_COL_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_INSTALLER_COL_DESCRIPTION', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -67,27 +67,35 @@ $filterstring = "";
 			</tr>
 		</tfoot>
 		<tbody>
-			<?php $id=1 ?>
+			<?php $id = 1; ?>
 			<?php foreach ($this->repositories as $alias => $config) : ?>
 				<?php
-					if ($alias == 'hz-installer' or $alias == 'packagist.org'){
-						continue;
-					}
+				if ($alias == 'hz-installer' || $alias == 'packagist.org'):
+					continue;
+				endif;
 				?>
 				<tr>
 					<td>
-						<input type="checkbox" name="repositories[]" id="cb<?php echo $id; $id++;?>" value="<?php echo $alias; ?>" onClick="Joomla.isChecked(this.checked);">
+						<input type="checkbox" name="repositories[]" id="cb<?php echo $id; ?>" value="<?php echo $alias; ?>" class="checkbox-toggle" />
 					</td>
 					<td> 
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&alias=' . $alias); ?>">
 							<?php echo Arr::getValue($config, 'name', ''); ?>
-						</a><br>
-							<strong><?php echo $alias; ?></strong>
+						</a>
+						<br />
+						<strong><?php echo $alias; ?></strong>
 					</td>
-					<td> <?php echo Arr::getValue($config, 'type', ''); ?></td>
-					<td> <?php echo Arr::getValue($config, 'description', ''); ?></td>
-					<td> <?php echo Arr::getValue($config, 'url', ''); ?></td>
+					<td>
+						<?php echo Arr::getValue($config, 'type', ''); ?>
+					</td>
+					<td>
+						<?php echo Arr::getValue($config, 'description', ''); ?>
+					</td>
+					<td>
+						<?php echo Arr::getValue($config, 'url', ''); ?>
+					</td>
 				</tr>
+				<?php $id++; ?>
 			<?php endforeach; ?>
 		</tbody>
 	</table>
