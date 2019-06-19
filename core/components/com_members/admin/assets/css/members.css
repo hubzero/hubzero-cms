@@ -12,6 +12,178 @@
 
 */
 
+	/* Base styles for dropdown menu */
+	.btn {
+		display: inline-block;
+		padding: 0.7em;
+		margin-bottom: 0;
+		font-size: 1em;
+		line-height: 1;
+		outline: 0;
+		text-align: center;
+		white-space: nowrap;
+		word-wrap: normal;
+		vertical-align: middle;
+		cursor: pointer;
+		position: relative;
+		background: transparent;
+		-webkit-background-clip: padding-box;
+		-moz-background-clip: padding-box;
+		background-clip: padding-box;
+	}
+	.btn-group {
+		position: relative;
+		display: inline-block;
+		vertical-align: middle;
+		white-space: nowrap;
+	}
+	.btn-group + .btn-group {
+		margin-left: 0.2em;
+	}
+	.btn-group > .btn {
+		position: relative;
+	}
+	.btn-group > .btn:first-child {
+		margin-left: 0;
+	}
+	.btn-group > .btn:hover,
+	.btn-group > .btn:focus,
+	.btn-group > .btn:active,
+	.btn-group > .btn.active {
+		z-index: 2;
+	}
+	.btn-group .dropdown-toggle:active,
+	.btn-group.open .dropdown-toggle {
+		outline: 0;
+	}
+	.btn-group > .btn + .dropdown-toggle {
+		margin-left: -0.4em;
+	}
+	.btn-group span.dropdown-toggle:before,
+	.btn .caret {
+		margin-top: 0.4em;
+		margin-left: 0;
+		display: inline-block;
+		width: 0;
+		height: 0;
+		vertical-align: top;
+		border-top: 4px solid #333;
+		border-right: 4px solid transparent;
+		border-left: 4px solid transparent;
+		content: "";
+	}
+	.btn-group span.dropdown-toggle:hover {
+		background: #fff;
+	}
+	.btn-group .dropdown-menu {
+		position: absolute;
+		top: 100%;
+		left: -1px;
+		z-index: 1000;
+		display: none;
+		float: left;
+		text-align: left;
+		min-width: 160px;
+		padding: 0;
+		margin: 0;
+		list-style: none;
+		background-color: #fff;
+	}
+	.btn-group .dropdown-toggle:hover + .dropdown-menu,
+	.btn-group:hover .dropdown-menu,
+	.open > .dropdown-menu {
+		display: block;
+	}
+	.btn-group > .btn:first-child:hover .dropdown-menu,
+	.btn-group:hover > .btn:first-child:hover + .dropdown-toggle + .dropdown-menu {
+		display: none;
+	}
+	.dropdown-menu .divider {
+		height: 1px;
+		margin: 0 1em;
+		overflow: hidden;
+		background-color: rgba(0, 0, 0, 0.1);
+	}
+	.dropdown-menu > li > a {
+		display: block;
+		padding: 0.5em 1em;
+		clear: both;
+	}
+
+	/* Account states */
+	.user-state .dropdown-menu,
+	.user-state {
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		border-radius: 0.25em;
+	}
+	.user-state .btn {
+		font-size: 85%;
+		font-weight: bold;
+	}
+	.user-state .dropdown-toggle {
+		border-radius: 0.25em 0.25em 0 0;
+	}
+
+	.enabled {
+		background-color: #f2fbf3;
+		color: #01945d;
+	}
+	.enabled span.dropdown-toggle:before {
+		border-top-color: #01945d;
+	}
+	.enabled .dropdown-menu {
+		background-color: #f2fbf3;
+	}
+	.incomplete .dropdown-menu,
+	.incomplete {
+		background-color: #feecf7;
+		color: #f546b4;
+	}
+	.unconfrmed .dropdown-menu,
+	.unconfrmed {
+		background-color: #eaf6ff;
+		color: #2faafd;
+	}
+	.unconfrmed span.dropdown-toggle:before {
+		border-top-color: #2faafd;
+	}
+	.unapproved .dropdown-menu,
+	.unapproved {
+		background-color: #fff3eb;
+		color: #fb893e;
+	}
+	.unapproved span.dropdown-toggle:before {
+		border-top-color: #fb893e;
+	}
+	.blocked .dropdown-menu,
+	.blocked {
+		background-color: #ffeeee;
+		color: #dd5555;
+	}
+	.blocked span.dropdown-toggle:before {
+		border-top-color: #dd5555;
+	}
+	.icon-resend:before {
+		font-family: "Fontcons";
+		content: "\f03f";
+	}
+	.icon-unapprove:before {
+		font-family: "Fontcons";
+		content: "\f088";
+	}
+	.icon-approve:before {
+		font-family: "Fontcons";
+		content: "\f087";
+	}
+	.icon-ban:before {
+		font-family: "Fontcons";
+		content: "\f057";
+	}
+	.icon-unban:before {
+		font-family: "Fontcons";
+		content: "\f058";
+	}
+
 	.toolbar-box .icon-32-buildprofile:before {
 		content: "\f007";
 	}
@@ -39,7 +211,7 @@
 		border-color: red;
 	}
 	.never {
-		color:#bbb;
+		color: #bbb;
 	}
 	.unconfirmed {
 		display: block;

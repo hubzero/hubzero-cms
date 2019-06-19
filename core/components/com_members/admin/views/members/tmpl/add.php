@@ -8,9 +8,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$canDo = \Components\Members\Helpers\Permissions::getActions('component');
+$canDo = Components\Members\Helpers\Permissions::getActions('component');
 
-Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('JACTION_CREATE'), 'user.png');
+Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('JACTION_CREATE'), 'user');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::save('new');
@@ -18,25 +18,11 @@ if ($canDo->get('core.edit'))
 Toolbar::cancel();
 
 ?>
-<script type="text/javascript">
-	function submitbutton(pressbutton)
-	{
-		var form = document.adminForm;
-
-		if (pressbutton == 'cancel') {
-			submitform(pressbutton);
-			return;
-		}
-
-		// do field validation
-		submitform(pressbutton);
-	}
-</script>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
-	<?php if ($this->getError()) { ?>
+	<?php if ($this->getError()): ?>
 		<p class="error"><?php echo implode('<br />', (array)$this->getError()); ?></p>
-	<?php } ?>
+	<?php endif; ?>
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
