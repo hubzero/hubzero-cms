@@ -11,39 +11,38 @@ defined('_HZEXEC_') or die();
 $canDo = Components\Members\Helpers\Admin::getActions('component');
 
 Toolbar::title(Lang::txt('COM_MEMBERS'));
-if ($canDo->get('core.admin'))
-{
+
+if ($canDo->get('core.admin')):
 	Toolbar::preferences($this->option);
 	Toolbar::getRoot()->appendButton('Link', 'buildprofile', 'COM_MEMBERS_PROFILE', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=profile'));
 	Toolbar::spacer();
 	$export = 'index.php?option=' . $this->option . '&controller=exports&task=run';
-	foreach ($this->filters as $key => $value)
-	{
+	foreach ($this->filters as $key => $value):
 		$export .= '&' . $key . '=' . $value;
-	}
+	endforeach;
 	Toolbar::getRoot()->appendButton('Link', 'download', 'COM_MEMBERS_MENU_EXPORT', Route::url($export));
 	Toolbar::spacer();
-}
-if ($canDo->get('core.edit.state'))
-{
-	//Toolbar::confirm('COM_MEMBERS_CONFIRMATION_WARNING', 'remove', 'COM_MEMBERS_CLEAR_TERMS', 'clearTerms');
+endif;
+
+if ($canDo->get('core.edit.state')):
 	Toolbar::custom('clearTerms', 'remove', '', 'COM_MEMBERS_CLEAR_TERMS', false);
 	Toolbar::publishList('confirm', 'COM_MEMBERS_CONFIRM');
 	Toolbar::unpublishList('unconfirm', 'COM_MEMBERS_UNCONFIRM');
 	Toolbar::spacer();
-}
-if ($canDo->get('core.create'))
-{
+endif;
+
+if ($canDo->get('core.create')):
 	Toolbar::addNew();
-}
-if ($canDo->get('core.edit'))
-{
+endif;
+
+if ($canDo->get('core.edit')):
 	Toolbar::editList();
-}
-if ($canDo->get('core.delete'))
-{
+endif;
+
+if ($canDo->get('core.delete')):
 	Toolbar::deleteList('COM_MEMBERS_CONFIRMATION_WARNING');
-}
+endif;
+
 Toolbar::spacer();
 Toolbar::help('users');
 
@@ -112,15 +111,14 @@ $this->css()
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_MEMBERS_COL_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-6"><?php echo Html::grid('sort', 'COM_MEMBERS_COL_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3 nowrap"><?php echo Lang::txt('COM_MEMBERS_COL_GROUPS'); ?></th>
-				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_MEMBERS_HEADING_ENABLED', 'block', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="nowrap"><?php echo Html::grid('sort', 'COM_MEMBERS_HEADING_APPROVED', 'approved', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3" colspan="2"><?php echo Html::grid('sort', 'COM_MEMBERS_COL_REGISTERED', 'registerDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_MEMBERS_STATUS'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_MEMBERS_COL_REGISTERED', 'registerDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-6"><?php echo Html::grid('sort', 'COM_MEMBERS_COL_LAST_VISIT', 'lastvisitDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="11">
+				<td colspan="9">
 					<?php
 					// Initiate paging
 					echo $this->rows->pagination;
@@ -132,37 +130,33 @@ $this->css()
 		<?php
 		$k = 0;
 		$i = 0;
-		foreach ($this->rows as $row)
-		{
+		foreach ($this->rows as $row):
 			$canEdit   = $canDo->get('core.edit');
 			$canChange = User::authorise('core.edit.state', $this->option);
 
 			// If this group is super admin and this user is not super admin, $canEdit is false
-			if ((!User::authorise('core.admin')) && Hubzero\Access\Access::check($row->get('id'), 'core.admin'))
-			{
+			if ((!User::authorise('core.admin')) && Hubzero\Access\Access::check($row->get('id'), 'core.admin')):
 				$canEdit   = false;
 				$canChange = false;
-			}
+			endif;
 
-			if (!$row->get('surname') && !$row->get('givenName'))
-			{
+			if (!$row->get('surname') && !$row->get('givenName')):
 				$bits = explode(' ', $row->get('name'));
 
 				$row->set('surname', array_pop($bits));
 
-				if (count($bits) >= 1)
-				{
+				if (count($bits) >= 1):
 					$row->set('givenName', array_shift($bits));
-				}
-				if (count($bits) >= 1)
-				{
+				endif;
+
+				if (count($bits) >= 1):
 					$row->set('middleName', implode(' ', $bits));
-				}
-			}
+				endif;
+			endif;
+
 			$row->set('name', $row->get('surname', Lang::txt('COM_MEMBERS_UNDEFINED')) . ', ' . $row->get('givenName', Lang::txt('COM_MEMBERS_UNDEFINED')) . ' ' . $row->get('middleName'));
 
-			switch ($row->get('activation'))
-			{
+			switch ($row->get('activation')):
 				case '1':
 					$task = 'unconfirm';
 					$img = 'publish_g.png';
@@ -181,27 +175,24 @@ $this->css()
 					$alt = Lang::txt('JNO');
 					$state = 'unpublish';
 					break;
-			}
+			endswitch;
 
 			$groups = array();
-			foreach ($row->accessgroups as $agroup)
-			{
+			foreach ($row->accessgroups as $agroup):
 				$groups[] = $this->accessgroups->seek($agroup->get('group_id'))->get('title');
-			}
+			endforeach;
 			$row->set('group_names', implode('<br />', $groups));
 
 			$incomplete = false;
 			$authenticator = 'hub';
-			if (substr($row->get('email'), -8) == '@invalid')
-			{
+			if (substr($row->get('email'), -8) == '@invalid'):
 				$authenticator = Lang::txt('COM_MEMBERS_UNKNOWN');
-				if ($lnk = Hubzero\Auth\Link::find_by_id(abs($row->get('username'))))
-				{
+				if ($lnk = Hubzero\Auth\Link::find_by_id(abs($row->get('username')))):
 					$domain = Hubzero\Auth\Domain::find_by_id($lnk->auth_domain_id);
 					$authenticator = $domain->authenticator;
-				}
+				endif;
 				$incomplete = true;
-			}
+			endif;
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -239,21 +230,12 @@ $this->css()
 						</a>
 					<?php endif; ?>
 				</td>
-				<?php if ($incomplete) : ?>
-					<td class="priority-5">
-						<?php echo Lang::txt('COM_MEMBERS_AUTHENTICATOR'); ?>: <span class="authenticator"><?php echo $authenticator; ?></span>
-					</td>
-					<td class="priority-6">
-						<?php echo Lang::txt('COM_MEMBERS_AUTHENTICATOR_STATUS'); ?>: <span class="authenticator-status"><?php echo Lang::txt('COM_MEMBERS_INCOMPLETE'); ?></span>
-					</td>
-				<?php else : ?>
-					<td class="priority-5">
-						<?php echo $this->escape($row->get('username')); ?>
-					</td>
-					<td class="priority-6">
-						<?php echo $this->escape($row->get('email')); ?>
-					</td>
-				<?php endif; ?>
+				<td class="priority-5">
+					<?php echo $incomplete ? '--' : $this->escape($row->get('username')); ?>
+				</td>
+				<td class="priority-6">
+					<?php echo $incomplete ? '--' : $this->escape($row->get('email')); ?>
+				</td>
 				<td class="center priority-3">
 					<?php if (substr_count($row->get('group_names'), "\n") > 1) : ?>
 						<span class="hasTip" title="<?php echo Lang::txt('COM_MEMBERS_HEADING_GROUPS') . '::' . $row->get('group_names'); ?>"><?php echo Lang::txt('COM_MEMBERS_MULTIPLE_GROUPS'); ?></span>
@@ -262,49 +244,103 @@ $this->css()
 					<?php endif; ?>
 				</td>
 				<td class="center priority-4">
-					<?php if ($canChange) : ?>
-						<?php if (User::get('id') != $row->get('id')) : ?>
-							<?php echo Html::grid('boolean', $i, !$row->get('block'), 'unblock', 'block'); ?>
-						<?php else : ?>
-							<?php echo Html::grid('boolean', $i, !$row->get('block'), 'block', null); ?>
+					<?php if ($row->get('block')): ?>
+						<div class="btn-group dropdown user-state blocked">
+							<span class="btn hasTip" title="<?php echo Lang::txt('COM_MEMBERS_STATUS_BLOCKED_DESC'); ?>">
+								<?php echo Lang::txt('COM_MEMBERS_STATUS_BLOCKED'); ?>
+							</span>
+							<?php if ($canChange) : ?>
+								<span class="btn dropdown-toggle"></span>
+								<ul class="dropdown-menu">
+									<li>
+										<a class="grid-action grid-boolean icon-unban" data-id="cb<?php echo $i; ?>" data-task="unblock" href="#toggle"><?php echo Lang::txt('COM_MEMBERS_ACTION_UNBLOCK'); ?></a>
+									</li>
+								</ul>
+							<?php endif; ?>
+						</div>
+					<?php else : ?>
+						<?php if ($incomplete): ?>
+							<div class="btn-group dropdown user-state incomplete">
+								<span class="btn hasTip" title="<?php echo Lang::txt('COM_MEMBERS_STATUS_INCOMPLETE_DESC'); ?>">
+									<?php echo Lang::txt('COM_MEMBERS_STATUS_INCOMPLETE', $authenticator); ?>
+								</span>
+							</div>
+							<!-- <span class="authenticator"><?php echo $authenticator; ?></span> -->
+						<?php elseif ($row->get('activation') <= 0): ?>
+							<div class="btn-group dropdown user-state unconfrmed">
+								<span class="btn hasTip" title="<?php echo Lang::txt('COM_MEMBERS_STATUS_UNCONFIRMED_DESC'); ?>">
+									<?php echo Lang::txt('COM_MEMBERS_STATUS_UNCONFIRMED'); ?>
+								</span>
+								<?php if ($canChange) : ?>
+									<span class="btn dropdown-toggle"></span>
+									<ul class="dropdown-menu">
+										<li>
+											<a class="grid-action grid-boolean icon-success" data-id="cb<?php echo $i; ?>" data-task="confirm" href="#toggle"><?php echo Lang::txt('COM_MEMBERS_ACTION_CONFIRM'); ?></a>
+										</li>
+										<li>
+											<a class="grid-action grid-boolean icon-resend" data-id="cb<?php echo $i; ?>" data-task="resendConfirm" href="#toggle"><?php echo Lang::txt('COM_MEMBERS_ACTION_RESEND'); ?></a>
+										</li>
+										<li class="divider"></li>
+										<li>
+											<a class="grid-action grid-boolean icon-ban" data-id="cb<?php echo $i; ?>" data-task="block" href="#toggle"><?php echo Lang::txt('COM_MEMBERS_ACTION_BLOCK'); ?></a>
+										</li>
+									</ul>
+								<?php endif; ?>
+							</div>
+						<?php elseif (!$row->get('approved')): ?>
+							<div class="btn-group dropdown user-state confirmed unapproved">
+								<span class="btn hasTip" title="<?php echo Lang::txt('COM_MEMBERS_STATUS_UNAPPROVED_DESC'); ?>">
+									<?php echo Lang::txt('COM_MEMBERS_STATUS_UNAPPROVED'); ?>
+								</span>
+								<?php if ($canChange) : ?>
+									<span class="btn dropdown-toggle"></span>
+									<ul class="dropdown-menu">
+										<li>
+											<a class="grid-action grid-boolean icon-approve" data-id="cb<?php echo $i; ?>" data-task="approve" href="#toggle"><?php echo Lang::txt('COM_MEMBERS_ACTION_APPROVE'); ?></a>
+										</li>
+										<li class="divider"></li>
+										<li>
+											<a class="grid-action grid-boolean icon-ban" data-id="cb<?php echo $i; ?>" data-task="block" href="#toggle"><?php echo Lang::txt('COM_MEMBERS_ACTION_BLOCK'); ?></a>
+										</li>
+									</ul>
+								<?php endif; ?>
+							</div>
+						<?php else: ?>
+							<div class="btn-group dropdown user-state confirmed approved enabled">
+								<span class="btn hasTip" title="<?php echo Lang::txt('COM_MEMBERS_STATUS_APPROVED_DESC'); ?>">
+									<?php echo Lang::txt('COM_MEMBERS_STATUS_APPROVED'); ?>
+								</span>
+								<?php if ($canChange) : ?>
+									<span class="btn dropdown-toggle"></span>
+									<ul class="dropdown-menu">
+										<li>
+											<a class="grid-action grid-boolean icon-unapprove" data-id="cb<?php echo $i; ?>" data-task="disapprove" href="#toggle"><?php echo Lang::txt('COM_MEMBERS_ACTION_UNAPPROVE'); ?></a>
+										</li>
+										<li class="divider"></li>
+										<li>
+											<a class="grid-action grid-boolean icon-ban" data-id="cb<?php echo $i; ?>" data-task="block" href="#toggle"><?php echo Lang::txt('COM_MEMBERS_ACTION_BLOCK'); ?></a>
+										</li>
+									</ul>
+								<?php endif; ?>
+							</div>
 						<?php endif; ?>
-					<?php else : ?>
-						<span class="state <?php echo Lang::txt($row->get('block') ? 'no' : 'yes'); ?>"><span><?php echo Lang::txt($row->get('block') ? 'JNO' : 'JYES'); ?></span></span>
-					<?php endif; ?>
-				</td>
-				<td class="center">
-					<?php if ($canChange) : ?>
-						<?php echo Html::grid('boolean', $i, $row->get('approved'), 'approve', 'disapprove'); ?>
-					<?php else : ?>
-						<?php echo Html::grid('boolean', $i, $row->get('approved'), null, null); ?>
 					<?php endif; ?>
 				</td>
 				<td class="priority-3">
-					<?php if ($canChange) : ?>
-						<a class="state <?php echo $state; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_MEMBERS_SET_TASK', $task); ?>">
-							<span class="text"><?php echo $alt; ?></span>
-						</a>
-					<?php else : ?>
-						<span class="state <?php echo $state; ?>">
-							<span class="text"><?php echo $alt; ?></span>
-						</span>
-					<?php endif; ?>
-				</td>
-				<td class="priority-3">
-					<time datetime="<?php echo Date::of($row->get('registerDate'))->format('Y-m-dTh:i:s'); ?>"><?php echo Date::of($row->get('registerDate'))->toLocal('Y-m-d H:i:s'); ?></time>
+					<time datetime="<?php echo Date::of($row->get('registerDate'))->format('Y-m-dTh:i:s'); ?>"><?php echo Date::of($row->get('registerDate'))->toLocal('Y-m-d'); ?></time>
 				</td>
 				<td class="priority-6">
 					<?php if (!$row->get('lastvisitDate') || $row->get('lastvisitDate') == '0000-00-00 00:00:00') : ?>
 						<span class="never"><?php echo Lang::txt('COM_MEMBERS_NEVER'); ?></span>
 					<?php else: ?>
-						<time datetime="<?php echo Date::of($row->get('lastvisitDate'))->format('Y-m-dTh:i:s'); ?>"><?php echo Date::of($row->get('lastvisitDate'))->toLocal('Y-m-d H:i:s'); ?></time>
+						<time datetime="<?php echo Date::of($row->get('lastvisitDate'))->format('Y-m-dTh:i:s'); ?>"><?php echo Date::of($row->get('lastvisitDate'))->toLocal('Y-m-d'); ?></time>
 					<?php endif; ?>
 				</td>
 			</tr>
 			<?php
 			$i++;
 			$k = 1 - $k;
-		}
+		endforeach;
 		?>
 		</tbody>
 	</table>
