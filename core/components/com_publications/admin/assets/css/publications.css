@@ -206,7 +206,7 @@
 		color: #666;
 		border: none;
 	}
-	.hasassoc,
+	/*.hasassoc,
 	.noassoc {
 		padding: 0;
 		margin: 0;
@@ -224,7 +224,7 @@
 	.hasassoc:hover,
 	.noassoc:hover {
 		border: none;
-	}
+	}*/
 
 	.key {
 		margin: 0;
@@ -357,9 +357,9 @@
 		color: #999;
 		margin-top: 0.5em;
 	}
-	.required {
+	/*.required {
 		color: red;
-	}
+	}*/
 	.archival-package {
 		text-align: center;
 	}
