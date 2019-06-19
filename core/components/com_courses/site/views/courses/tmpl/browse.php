@@ -68,29 +68,37 @@ $this->css('browse.css');
 				<?php } ?>
 			</div><!-- / .container -->
 
-			<?php if ($this->filters['group']) { ?>
-				<div class="course-group">
-					<?php
-					$group = \Hubzero\User\Group::getInstance($this->filters['group']);
+			<?php
+			if ($this->filters['group'])
+			{
+				$group = Hubzero\User\Group::getInstance($this->filters['group']);
 
-					list($width, $height) = $group->getLogo('size');
-					$atts = ($width > $height ? 'height="50"' : 'width="50"');
+				if ($group)
+				{
 					?>
-					<p class="course-group-img">
-						<a href="<?php echo Route::url('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
-							<img src="<?php echo $group->getLogo(); ?>" <?php echo $atts; ?> alt="<?php echo $this->escape($group->get('description')); ?>" />
-						</a>
-					</p>
-					<p class="course-group-description">
-						<?php echo Lang::txt('COM_COURSES_BROUGHT_BY_GROUP'); ?>
-					</p>
-					<h3 class="course-group-title">
-						<a href="<?php echo Route::url('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
-							<?php echo $this->escape($group->get('description')); ?>
-						</a>
-					</h3>
-				</div>
-			<?php } ?>
+					<div class="course-group">
+						<?php
+						list($width, $height) = $group->getLogo('size');
+						$atts = ($width > $height ? 'height="50"' : 'width="50"');
+						?>
+						<p class="course-group-img">
+							<a href="<?php echo Route::url('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
+								<img src="<?php echo $group->getLogo(); ?>" <?php echo $atts; ?> alt="<?php echo $this->escape($group->get('description')); ?>" />
+							</a>
+						</p>
+						<p class="course-group-description">
+							<?php echo Lang::txt('COM_COURSES_BROUGHT_BY_GROUP'); ?>
+						</p>
+						<h3 class="course-group-title">
+							<a href="<?php echo Route::url('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
+								<?php echo $this->escape($group->get('description')); ?>
+							</a>
+						</h3>
+					</div>
+					<?php
+				}
+			}
+			?>
 
 			<div class="container">
 				<nav class="entries-filters">
