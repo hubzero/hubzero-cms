@@ -142,7 +142,7 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 		// Make sure 0 is not the %
 		$title_match = ($title_match == 0) ? $default_title_match : $title_match;
 
-		$existingCitations = Citation::all();
+		$existingCitations = Citation::all()->purgeCache()->disableCaching();
 		if (!empty($scope))
 		{
 			$existingCitations->whereEquals('scope', $scope);
@@ -161,7 +161,7 @@ class plgCitationBibtex extends \Hubzero\Plugin\Plugin
 		}
 
 		// Loop through all current citations
-		foreach ($existingCitations->rows() as $r)
+		foreach ($existingCitations->rows()->toObject() as $r)
 		{
 			$id    = $r->id;
 			$title = $r->title;
