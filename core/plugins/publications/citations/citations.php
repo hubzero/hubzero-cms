@@ -82,7 +82,7 @@ class plgPublicationsCitations extends \Hubzero\Plugin\Plugin
 		// Get citations for this publication
 		$c = \Components\Citations\Models\Association::all()
 			->whereEquals('tbl', 'publication')
-			->whereEquals('oid', $publication->id)
+			->whereEquals('oid', $publication->version->id)
 			->including('citation')
 			->rows();
 		$citations = array();
