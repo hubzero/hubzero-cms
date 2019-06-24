@@ -716,14 +716,32 @@ class Version extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
+	 * Get tag cloud
+	 *
+	 * @return  array
+	 */
+	public function tags()
+	{
+		include_once \Component::path('com_tags') . '/models/cloud.php';
+
+		$cloud = new \Components\Tags\Models\Cloud();
+
+		$filters = array(
+			'scope'    => 'publications',
+			'scope_id' => $this->id
+		);
+
+		return $cloud->tags('list', $filters);
+	}
+
+	/**
 	 * Namespace used for solr Search
 	 *
 	 * @return  string
 	 */
 	public static function searchNamespace()
 	{
-		$searchNamespace = 'publication';
-		return $searchNamespace;
+		return 'publication';
 	}
 
 	/**
@@ -733,8 +751,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function searchId()
 	{
-		$searchId = self::searchNamespace() . '-' . $this->publication->id;
-		return $searchId;
+		return self::searchNamespace() . '-' . $this->publication->id;
 	}
 
 	/**
@@ -763,7 +780,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
 		$obj->url = rtrim(Request::root(), '/') . Route::urlForClient('site', $this->link());
 		$obj->doi = $this->get('doi');
 
-		$tags = $this->publication->tags();
+		$tags = $this->tags();
 		if (count($tags) > 0)
 		{
 			$obj->tags = array();
@@ -822,20 +839,26 @@ class Version extends Relational implements \Hubzero\Search\Searchable
 
 	/**
 	 * Get total number of records that will be indexed by Solr.
-	 * @return integer
+	 *
+	 * @return  integer
 	 */
 	public static function searchTotal()
 	{
-		$total = self::all()->total();
-		return $total;
+		return self::all()->total();
 	}
 
 	/**
 	 * Get records to be included in solr index
-	 * @return Hubzero\Database\Rows
+	 *
+	 * @param   integer  $limit
+	 * @param   integer  $offset
+	 * @return  object   Hubzero\Database\Rows
 	 */
 	public static function searchResults($limit, $offset = 0)
 	{
-		return self::all()->start($offset)->limit($limit)->rows();
+		return self::all()
+			->start($offset)
+			->limit($limit)
+			->rows();
 	}
 }
