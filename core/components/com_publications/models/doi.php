@@ -453,7 +453,7 @@ class Doi extends Obj
 	}
 
 	/**
-	 * Run cURL to register metadata. When input $doi is null, it is going to create DOI on DataCite. Otherwise, the function is to update DOI state to public.
+	 * Run cURL to register metadata. When input $doi is null, it is going to create DOI on DataCite.
 	 *
 	 * @param	string	$url
 	 * @param	array	$postVals
@@ -469,7 +469,7 @@ class Doi extends Obj
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($postvals)));
 		curl_setopt($ch, CURLOPT_FAILONERROR, true);
-		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
 
 		$response = curl_exec($ch);
 

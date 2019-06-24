@@ -356,6 +356,8 @@ class Citations extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		Plugin::import('citation');
+
 		if (!User::authorise('core.edit', $this->_option)
 		 && !User::authorise('core.create', $this->_option))
 		{
