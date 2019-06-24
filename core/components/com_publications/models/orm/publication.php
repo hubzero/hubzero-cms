@@ -206,11 +206,13 @@ class Publication extends Relational
 	 */
 	public function tags()
 	{
+		include_once \Component::path('com_tags') . '/models/cloud.php';
+
 		$cloud = new \Components\Tags\Models\Cloud();
 
 		$filters = array(
 			'scope'    => 'publications',
-			'scope_id' => $this->id
+			'scope_id' => $this->getActiveVersion()->id
 		);
 
 		return $cloud->tags('list', $filters);

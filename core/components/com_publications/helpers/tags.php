@@ -176,12 +176,12 @@ class Tags extends \Hubzero\Base\Obj
 		}
 
 		$sql = "SELECT t.id, t.tag, t.raw_tag, r.id AS rid, 0 AS ucount, NULL AS rids
-				FROM $this->_tag_tbl AS t, $this->_obj_tbl AS o, #__publications AS r
-				JOIN #__publication_versions as V ON V.publication_id = r.id AND V.main = 1
+				FROM $this->_tag_tbl AS t, $this->_obj_tbl AS o, `#__publications` AS r
+				JOIN `#__publication_versions` as V ON V.publication_id = r.id AND V.main = 1
 				WHERE o.tbl='$this->_tbl'
 				AND o.tagid=t.id
 				AND t.admin=0
-				AND o.objectid=r.id
+				AND o.objectid=V.id
 				AND V.state=1
 				AND (V.publish_up IS NULL OR V.publish_up = '0000-00-00 00:00:00' OR V.publish_up <= '$now')
 				AND (V.publish_down IS NULL OR V.publish_down = '0000-00-00 00:00:00' OR V.publish_down >= '$now') ";
@@ -743,7 +743,7 @@ class Tags extends \Hubzero\Base\Obj
 		$sql  = "SELECT t.tag, t.raw_tag, t.admin, tj.tagid, tj.objectid, COUNT(tj.tagid) AS tcount ";
 		$sql .= "FROM #__tags AS t  ";
 		$sql .= "JOIN " . $tj->getTableName() . " AS tj ON t.id=tj.tagid ";
-		$sql .= "LEFT JOIN #__publication_versions AS V ON V.publication_id=tj.objectid AND tj.tbl='publications' ";
+		$sql .= "LEFT JOIN #__publication_versions AS V ON V.id=tj.objectid AND tj.tbl='publications' ";
 		$sql .= "WHERE t.id=tj.tagid AND t.admin=0 ";
 		$sql .= "AND tj.tbl=" . $this->_db->quote($this->_tbl) . " ";
 		$sql .= "AND V.state=1 AND V.main=1 AND V.access!=4 ";
