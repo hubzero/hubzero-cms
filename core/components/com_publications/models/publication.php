@@ -84,6 +84,13 @@ class Publication extends Obj
 	private $_data = array();
 
 	/**
+	 * Is this publication of type tool?
+	 *
+	 * @var  boolean
+	 */
+	private $isTool = null;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   integer  $oid      Publication ID or alias
@@ -148,7 +155,7 @@ class Publication extends Obj
 			}
 			$this->version_id        = $this->version->id;
 			$this->id                = $this->publication->id;
-			$this->base 	         = $this->_type->alias;
+			$this->base              = $this->_type->alias;
 			$this->curatorgroup      = $this->_type->curatorgroup;
 
 			// Map master values
@@ -1468,7 +1475,6 @@ class Publication extends Obj
 						&$config
 					));
 
-
 					$this->set('release_notes.parsed', (string) $this->get('release_notes', ''));
 					$this->set('release_notes', $content);
 
@@ -1710,7 +1716,7 @@ class Publication extends Obj
 
 			$this->lastCitationDate = $cc
 				->join($a, $a . '.cid', $c . '.id', 'inner')
-				->whereEquals($c . '.published', 1)
+				->whereEquals($c . '.published', self::STATE_PUBLISHED)
 				->whereEquals($a . '.tbl', 'publication')
 				->whereEquals($a . '.oid', $this->get('id'))
 				->order($c . '.created', 'desc')
@@ -1842,12 +1848,12 @@ class Publication extends Obj
 			$date = $date ? $date : $this->published();
 
 			$query .= ", (SELECT v.pagetext FROM #__wiki_versions as v WHERE v.page_id=p.id AND ";
-			$query .= $versionid ? " v.id=" . $versionid : " v.created <= '" . $date . "'";
+			$query .= $versionid ? " v.id=" . $versionid : " v.created <= " . $this->_db->quote($date);
 			$query .= " ORDER BY v.created DESC LIMIT 1) as pagetext ";
 		}
 
-		$query .= " FROM #__wiki_pages as p WHERE p.scope LIKE '" . $masterscope . "%' ";
-		$query .=  is_numeric($pageid) ? " AND p.id='$pageid' " : " AND p.pagename='$pageid' ";
+		$query .= " FROM #__wiki_pages as p WHERE p.scope LIKE " . $this->_db->quote($masterscope . '%') . " ";
+		$query .=  is_numeric($pageid) ? " AND p.id=" . $this->_db->quote($pageid) . " " : " AND p.pagename=" . $this->_db->quote($pageid) . " ";
 		$query .= " LIMIT 1";
 
 		$this->_db->setQuery($query);
@@ -1899,7 +1905,7 @@ class Publication extends Obj
 	/**
 	 * Check if this entry has an image
 	 *
-	 * @param   string  $type	The type of image
+	 * @param   string  $type  The type of image
 	 * @return  boolean
 	 */
 	public function hasImage($type = 'thumb')
@@ -2081,6 +2087,7 @@ class Publication extends Obj
 		{
 			return false;
 		}
+
 		if (!$param || !$value)
 		{
 			return false;
@@ -2091,6 +2098,7 @@ class Publication extends Obj
 			trim($param),
 			htmlentities($value)
 		);
+
 		return $value;
 	}
 
@@ -2105,7 +2113,7 @@ class Publication extends Obj
 		// Only logging access for published
 		if (!$this->isPublished())
 		{
-			return false;
+			return;
 		}
 
 		if (!isset($this->_tblLog))
@@ -2145,15 +2153,18 @@ class Publication extends Obj
 		{
 			return false;
 		}
+
 		if (!isset($this->_groupOwner) || !($this->_groupOwner instanceof \Hubzero\User\Group))
 		{
 			$this->_groupOwner = \Hubzero\User\Group::getInstance($this->get('group_owner'));
 		}
+
 		if ($property)
 		{
 			$property = ($property == 'id' ? 'gidNumber' : $property);
 			return $this->_groupOwner ? $this->_groupOwner->get($property) : null;
 		}
+
 		return $this->_groupOwner;
 	}
 
@@ -2172,11 +2183,9 @@ class Publication extends Obj
 			$this->_tbl = new Tables\Publication($this->_db);
 		}
 
-		switch (strtolower($rtrn))
+		if (strtolower($rtrn) == 'count')
 		{
-			case 'count':
-				return (int) $this->_tbl->getCount($filters, $admin);
-			break;
+			return (int) $this->_tbl->getCount($filters, $admin);
 		}
 
 		if ($results = $this->_tbl->getRecords($filters, $admin))
@@ -2197,19 +2206,17 @@ class Publication extends Obj
 	 */
 	public function isTool()
 	{
-		static $isTool;
-
-		if (!isset($isTool))
+		if (is_null($this->isTool))
 		{
-			$isTool = false;
+			$this->isTool = false;
 
 			if ($this->category()->alias == 'tool')
 			{
-				$isTool = true;
+				$this->isTool = true;
 			}
 		}
 
-		return $isTool;
+		return $this->isTool;
 	}
 
 	/**
