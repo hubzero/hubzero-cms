@@ -307,12 +307,12 @@ class Application extends Obj
 			}
 
 			$temp = Config::getRoot();
-			$temp->set('ftp.ftp_enable', $data['ftp']['ftp_enable']);
-			$temp->set('ftp.ftp_host', $data['ftp']['ftp_host']);
-			$temp->set('ftp.ftp_port', $data['ftp']['ftp_port']);
-			$temp->set('ftp.ftp_user', $data['ftp']['ftp_user']);
-			$temp->set('ftp.ftp_pass', $data['ftp']['ftp_pass']);
-			$temp->set('ftp.ftp_root', $data['ftp']['ftp_root']);
+			$temp->set('ftp.ftp_enable', isset($data['ftp']['ftp_enable']) ? $data['ftp']['ftp_enable'] : 0);
+			$temp->set('ftp.ftp_host', isset($data['ftp']['ftp_host']) ? $data['ftp']['ftp_host'] : '');
+			$temp->set('ftp.ftp_port', isset($data['ftp']['ftp_port']) ? $data['ftp']['ftp_port'] : '');
+			$temp->set('ftp.ftp_user', isset($data['ftp']['ftp_user']) ? $data['ftp']['ftp_user'] : '');
+			$temp->set('ftp.ftp_pass', isset($data['ftp']['ftp_pass']) ? $data['ftp']['ftp_pass'] : '');
+			$temp->set('ftp.ftp_root', isset($data['ftp']['ftp_root']) ? $data['ftp']['ftp_root'] : '');
 		}
 
 		// Clear cache of com_config component.
