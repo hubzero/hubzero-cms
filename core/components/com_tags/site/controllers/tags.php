@@ -615,17 +615,20 @@ class Tags extends SiteController
 			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
-				''
+				'',
+				'string'
 			)),
 			'sort' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'sort',
-				'raw_tag'
+				'raw_tag',
+				'string'
 			)),
 			'sort_Dir' => strtolower(Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort_Dir',
 				'sortdir',
-				'asc'
+				'asc',
+				'string'
 			))
 		);
 
