@@ -71,9 +71,9 @@ class Systemv1_0 extends ApiController
 			'dbversion'   => App::get('db')->getVersion(),
 			'dbcollation' => App::get('db')->getCollation(),
 			'phpversion'  => phpversion(),
-			'server'      => $sf,
-			'last_update' => null, //$commit,
-			'last_core_update' => null,
+			//'server'      => $sf,
+			//'last_update' => null, //$commit,
+			//'last_core_update' => null,
 			'environment' => Config::get('application_env', 'production')
 		);
 
