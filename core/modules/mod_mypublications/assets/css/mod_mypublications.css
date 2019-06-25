@@ -1,0 +1,102 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_mypublications
+	-- -- -- -- -- -- --
+
+*/
+
+	div.draggable .expandedlist li.publication:before {
+		content: "\f0f5";
+		font-family: "Fontcons";
+		position: absolute;
+		top: 0.6em;
+		left: 0.6em;
+		font-size: 1.2em;
+		line-height: 1;
+		color: #ccc;
+	}
+/* Tabs */
+	.mod_mypublications .tab_panel {
+		display: none;
+		position: relative;
+		padding: 0;
+		margin: 0;
+	}
+	.mod_mypublications .tab_panel ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		background: #fff;
+		overflow: auto;
+		position: relative; /* fix IE 6,7 - quirky support for overflow:auto, this line fixes it */
+	}
+	.mod_mypublications .tab_panel li {
+		border: none;
+		border-bottom: 1px solid #ddd;
+		margin: 0;
+		padding: 0.6em 0.6em 0.6em 2.2em;
+		position: relative;
+		background-image: none;
+	}
+	.mod_mypublications .tab_panel li.group:before {
+		content: "\f042";
+		font-family: "Fontcons";
+		position: absolute;
+		top: 0.6em;
+		left: 0.6em;
+		font-size: 1.2em;
+		line-height: 1;
+		color: #ccc;
+	}
+	.mod_mypublications .tab_panel li.group:hover:before {
+		color: #999;
+	}
+	.mod_mypublications .tab_panel li.archived:before {
+		content: "\f005";
+	}
+	.mod_mypublications .tab_panel p {
+		margin: 0.5em;
+		padding: 0;
+		font-size: 90%;
+		color: #999;
+	}
+	.mod_mypublications .tab_panel.active {
+		display: block;
+	}
+	.mod_mypublications .tab_titles {
+		list-style-image: none;
+		list-style-type: none;
+		margin: 0px;
+		padding: 0.5em 0 0 0;
+		background: #333;
+	}
+	.mod_mypublications .tab_titles:after {
+		content: "";
+		display: table;
+		line-height: 0;
+		clear: left;
+	}
+	.mod_mypublications .tab_titles li {
+		float: left;
+		background-color: #656565;
+		padding: 0.5em 0;
+		margin: 0 1%;
+		cursor: pointer;
+		line-height: 1;
+		width: 48%;
+		text-align: center;
+		color: #fff;
+		font-weight: bold;
+		background-image: none;
+	}
+	.mod_mypublications .tab_titles li.active {
+		background-color: #fff;
+		color: #333;
+	}
