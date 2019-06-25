@@ -134,6 +134,8 @@ class Publication extends Relational
 	 */
 	public function project()
 	{
+		require_once \Component::path('com_projects') . '/models/orm/project.php';
+
 		return $this->belongsToOne('Components\Projects\Models\Orm\Project', 'project_id');
 	}
 
