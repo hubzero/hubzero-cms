@@ -243,6 +243,12 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 			}
 		}
 
+		if (!$module)
+		{
+			echo json_encode(array('html' => Lang::txt('Module (ID #%s) not found.', $moduleId), 'assets' => array()));
+			exit();
+		}
+
 		// create view object
 		$view = $this->view('module', 'display');
 
