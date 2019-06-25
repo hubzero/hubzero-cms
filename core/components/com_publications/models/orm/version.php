@@ -147,6 +147,16 @@ class Version extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
+	 * Establish relationship to project
+	 *
+	 * @return  object
+	 */
+	public function project()
+	{
+		return $this->publication->project;
+	}
+
+	/**
 	 * Establish relationship to parent publication
 	 *
 	 * @return  object
@@ -677,27 +687,27 @@ class Version extends Relational implements \Hubzero\Search\Searchable
 			break;
 
 			case 'edit':
-				$link = $this->get('publication_id') ? $this->_editBase . '&pid=' . $this->get('publication_id') : $this->_editBase;
+				$link = $this->get('publication_id') ? $base . '&pid=' . $this->get('publication_id') : $base;
 			break;
 
 			case 'editversion':
-				$link = $this->_editBase . '&pid=' . $this->get('publication_id') . '&version=' . $this->get('version_number');
+				$link = $base . '&pid=' . $this->get('publication_id') . '&version=' . $this->get('version_number');
 			break;
 
 			case 'editdev':
-				$link = $this->_editBase . '&pid=' . $this->get('publication_id') . '&version=dev';
+				$link = $base . '&pid=' . $this->get('publication_id') . '&version=dev';
 			break;
 
 			case 'editdefault':
-				$link = $this->_editBase . '&pid=' . $this->get('publication_id') . '&version=default';
+				$link = $base . '&pid=' . $this->get('publication_id') . '&version=default';
 			break;
 
 			case 'editversionid':
-				$link = $this->_editBase . '&pid=' . $this->get('publication_id') . '&vid=' . $this->get('id');
+				$link = $base . '&pid=' . $this->get('publication_id') . '&vid=' . $this->get('id');
 			break;
 
 			case 'editbase':
-				$link = $this->_editBase;
+				$link = $base;
 			break;
 
 			case 'project':
