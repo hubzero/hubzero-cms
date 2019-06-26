@@ -91,7 +91,7 @@ if (!empty($this->item->pagination) && $this->item->pagination && !$this->item->
 				<dd class="parent-category-name">
 					<?php
 					$title = $this->escape($this->item->parent_title);
-					$url = '<a href="' . Route::url(Component\Content\Site\Helpers\Route::getCategoryRoute($this->item->parent_slug)) . '">' . $title . '</a>';
+					$url = '<a href="' . Route::url(Components\Content\Site\Helpers\Route::getCategoryRoute($this->item->parent_slug)) . '">' . $title . '</a>';
 					?>
 					<?php if ($params->get('link_parent_category') && $this->item->parent_slug) : ?>
 						<?php echo Lang::txt('COM_CONTENT_PARENT', $url); ?>
@@ -104,7 +104,7 @@ if (!empty($this->item->pagination) && $this->item->pagination && !$this->item->
 				<dd class="category-name">
 					<?php
 					$title = $this->escape($this->item->category_title);
-					$url = '<a href="' . Route::url(Component\Content\Site\Helpers\Route::getCategoryRoute($this->item->catslug)) . '">' . $title . '</a>';
+					$url = '<a href="' . Route::url(Components\Content\Site\Helpers\Route::getCategoryRoute($this->item->catslug)) . '">' . $title . '</a>';
 					?>
 					<?php if ($params->get('link_category') && $this->item->catslug) : ?>
 						<?php echo Lang::txt('COM_CONTENT_CATEGORY', $url); ?>
