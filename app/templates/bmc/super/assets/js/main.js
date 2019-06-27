@@ -74,6 +74,7 @@ jQuery(document).ready(function(jq) {
 	var $moreMenu = $('.more-menu');
 	var $sidebarNav = $('.sidebar-nav');
 	var $moreLinks = $('.more-links');
+	var $scontainerHeight = 0;
 
 	// Make sure content is at least as large as sidebar size.
 	$contentWrap.css("min-height", $sidebarWrap.outerHeight(true) + "px");
@@ -160,7 +161,13 @@ jQuery(document).ready(function(jq) {
 
 		// Negative padding on $menuWrap is a headache!
 		// Fix sidebar directly under menu after announcements
-		if (windowTop < bannerHeight + $scontainer.height() && $moreMenu.is(":hidden")) {
+		if ($scontainer.length) {
+			$scontainerHeight = $scontainer.height();
+		} else {
+			// do nothing
+		}
+		if (windowTop < bannerHeight + $scontainerHeight && $moreMenu.is(":hidden")) {
+			console.log($scontainerHeight);
 			$sidebarWrap.css("top","");
 			$sidebarWrap.removeClass();
 		} else {
