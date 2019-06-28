@@ -111,7 +111,7 @@ jQuery(document).ready(function($){
 	$('#new-folder').on('click', function(e) {
 		e.preventDefault();
 
-		var title = prompt('<?php echo Lang::txt('Folder name'); ?>');
+		var title = prompt($(this).attr('data-prompt'));
 		if (title) {
 			if (_DEBUG) {
 				window.console && console.log('Calling: ' + $(this).attr('data-href').nohtml() + '&fields[title]=' + title);
