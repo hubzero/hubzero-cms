@@ -14,6 +14,7 @@ Toolbar::spacer();
 Toolbar::help('acl');
 
 Html::behavior('framework');
+Html::behavior('formvalidation');
 
 $this->js('edit.js');
 ?>
