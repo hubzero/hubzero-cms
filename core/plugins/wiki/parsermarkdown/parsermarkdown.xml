@@ -16,7 +16,7 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field type="style" name="type" default="Markdown" label="PLG_WIKI_PARSERMARKDOWN_STYLE_LABEL" description="PLG_WIKI_PARSERMARKDOWN_STYLE_DESC">
+				<field type="list" name="style" default="Markdown" label="PLG_WIKI_PARSERMARKDOWN_STYLE_LABEL" description="PLG_WIKI_PARSERMARKDOWN_STYLE_DESC">
 					<option value="Markdown">Markdown</option>
 					<option value="GithubMarkdown">Github Markdown</option>
 					<option value="MarkdownExtra">Markdown Extra</option>
