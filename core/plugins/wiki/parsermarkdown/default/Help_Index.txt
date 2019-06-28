@@ -1,0 +1,5 @@
+Wiki Pages are meant to be user-created, community-editable pages covering a specific topic or topics. Similar to a [http://en.wikipedia.org/wiki/Wiki wiki], topic pages allow users to share their knowledge.
+
+Article creation uses a wiki syntax for markup and conversion to HTML. Below, you can find several pages detailing how to use not only the basic markup syntax but more advance features such as macros and embedding math formulas.
+
+[[TitleIndex(Help)]]

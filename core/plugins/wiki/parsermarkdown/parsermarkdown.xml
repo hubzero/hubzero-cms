@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.5" type="plugin" group="wiki">
+	<name>Wiki - Markdown Parser</name>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>PLG_WIKI_PARSERMARKDOWN_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="parsermarkdown">parsermarkdown.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_wiki_parsermarkdown.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field type="list" name="style" default="Markdown" label="PLG_WIKI_PARSERMARKDOWN_STYLE_LABEL" description="PLG_WIKI_PARSERMARKDOWN_STYLE_DESC">
+					<option value="Markdown">Markdown</option>
+					<option value="GithubMarkdown">Github Markdown</option>
+					<option value="MarkdownExtra">Markdown Extra</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
