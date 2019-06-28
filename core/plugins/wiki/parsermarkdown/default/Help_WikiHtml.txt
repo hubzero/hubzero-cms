@@ -1,0 +1,14 @@
+The wiki supports inserting HTML into any wiki context.
+
+HTML support is built-in, and does not require installing any additional packages.
+
+## How to Use HTML
+Nothing need be done to inform the wiki engine that a block of text should be treated as HTML. Simply enter the desired HTML as-is.
+
+This example should explain:
+```
+&lt;h1 style="text-align: right; color: blue"&gt;HTML Test&lt;/h1&gt;`
+```
+
+Results in:
+<h1 style="text-align: right; color: blue">HTML Test</h1>
