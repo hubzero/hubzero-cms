@@ -1434,7 +1434,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	private function _loginTask()
 	{
 		App::redirect(
-			Route::url('index.php?option=com_login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . DS . $this->group->get('cn') . DS. $this->_name .'&action=' . $this->action, false, true))),
+			Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . DS . $this->group->get('cn') . DS. $this->_name .'&action=' . $this->action, false, true))),
 			Lang::txt('PLG_GROUPS_CITATIONS_NOT_LOGGEDIN'),
 			'warning'
 		);

@@ -26,6 +26,7 @@ if ($thedate == '0000-00-00 00:00:00')
 $this->model->introtext = stripslashes($this->model->introtext);
 $this->model->fulltxt = stripslashes($this->model->fulltxt);
 $this->model->fulltxt = ($this->model->fulltxt) ? trim($this->model->fulltxt) : trim($this->model->introtext);
+$this->model->fulltxt = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $this->model->fulltxt);
 
 // Parse for <nb:field> tags
 $type = $this->model->type;
@@ -39,9 +40,9 @@ if (count($matches) > 0)
 		$data[$match[1]] = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $match[2]);
 	}
 }
-$this->model->fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->model->fulltxt);
-$this->model->fulltxt = trim($this->model->fulltxt);
-$this->model->fulltxt = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $this->model->fulltxt);
+//$fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $fulltxt);
+//$fulltxt = trim($fulltxt);
+//$fulltxt = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $fulltxt);
 
 include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
 $elements = new \Components\Resources\Models\Elements($data, $this->model->type->customFields);

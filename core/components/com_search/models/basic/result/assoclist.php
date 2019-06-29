@@ -8,12 +8,13 @@
 namespace Components\Search\Models\Basic\Result;
 
 use Components\Search\Models\Basic\Result as SearchResult;
+use Countable;
 use Iterator;
 
 /**
  * Associative list
  */
-class AssocList extends Assoc implements Iterator
+class AssocList extends Assoc implements Iterator, Countable
 {
 	/**
 	 * Description for 'rows'
@@ -30,11 +31,9 @@ class AssocList extends Assoc implements Iterator
 	private $pos = 0;
 
 	/**
-	 * Short description for 'is_scalar'
+	 * Is this scalar?
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     boolean Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function is_scalar()
 	{
@@ -42,13 +41,11 @@ class AssocList extends Assoc implements Iterator
 	}
 
 	/**
-	 * Short description for 'set_plugin'
+	 * Set the plugin on the list of items
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $plugin Parameter description (if any) ...
-	 * @param      boolean $skip_cleanup Parameter description (if any) ...
-	 * @return     void
+	 * @param   string   $plugin
+	 * @param   boolean  $skip_cleanup
+	 * @return  void
 	 */
 	public function set_plugin($plugin, $skip_cleanup = false)
 	{
@@ -59,13 +56,11 @@ class AssocList extends Assoc implements Iterator
 	}
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $rows Parameter description (if any) ...
-	 * @param      unknown $plugin Parameter description (if any) ...
-	 * @return     void
+	 * @param   array   $rows
+	 * @param   string  $plugin
+	 * @return  void
 	 */
 	public function __construct($rows, $plugin = null)
 	{
@@ -92,12 +87,10 @@ class AssocList extends Assoc implements Iterator
 	}
 
 	/**
-	 * Short description for 'at'
+	 * Get an item at the selected position
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $idx Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param   integer  $idx
+	 * @return  mixed
 	 */
 	public function &at($idx)
 	{
@@ -105,11 +98,9 @@ class AssocList extends Assoc implements Iterator
 	}
 
 	/**
-	 * Short description for 'to_associative'
+	 * Get a list of items as an AssocList object
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  object
 	 */
 	public function to_associative()
 	{
@@ -117,11 +108,9 @@ class AssocList extends Assoc implements Iterator
 	}
 
 	/**
-	 * Short description for 'get_items'
+	 * Get items
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     array Return description (if any) ...
+	 * @return  array
 	 */
 	public function get_items()
 	{
@@ -129,11 +118,9 @@ class AssocList extends Assoc implements Iterator
 	}
 
 	/**
-	 * Short description for 'rewind'
+	 * Reset position
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function rewind()
 	{
@@ -141,11 +128,9 @@ class AssocList extends Assoc implements Iterator
 	}
 
 	/**
-	 * Short description for 'current'
+	 * Get item for current position
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     array Return description (if any) ...
+	 * @return  mixed
 	 */
 	public function current()
 	{
@@ -153,11 +138,9 @@ class AssocList extends Assoc implements Iterator
 	}
 
 	/**
-	 * Short description for 'key'
+	 * Get current position key
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  integer
 	 */
 	public function key()
 	{
@@ -165,11 +148,9 @@ class AssocList extends Assoc implements Iterator
 	}
 
 	/**
-	 * Short description for 'next'
+	 * Get next position
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function next()
 	{
@@ -177,14 +158,22 @@ class AssocList extends Assoc implements Iterator
 	}
 
 	/**
-	 * Short description for 'valid'
+	 * Is current position valid?
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     array Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function valid()
 	{
 		return isset($this->rows[$this->pos]);
+	}
+
+	/**
+	 * Get a record count
+	 *
+	 * @return  integer
+	 */
+	public function count()
+	{
+		return count($this->rows);
 	}
 }

@@ -369,7 +369,7 @@ $first = $this->archive->entries(array(
 					<input type="hidden" name="comment[content]" id="commentcontent" value="" />
 
 					<p class="warning">
-						<?php echo Lang::txt('COM_BLOG_MUST_LOG_IN', '<a href="' . Route::url('index.php?option=com_login&return=' . base64_encode(Route::url($this->row->link() . '#post-comment', false, true))) . '">' . Lang::txt('COM_BLOG_LOG_IN') . '</a>'); ?>
+						<?php echo Lang::txt('COM_BLOG_MUST_LOG_IN', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->row->link() . '#post-comment', false, true))) . '">' . Lang::txt('COM_BLOG_LOG_IN') . '</a>'); ?>
 					</p>
 					<?php } ?>
 

@@ -8,106 +8,101 @@
 
 <config>
 	<fieldset name="basic">
-		<field name="component_on" type="list" default="1" label="Component ON/OFF" description="Enable projects component">
-			<option value="0">OFF</option>
-			<option value="1">ON</option>
-		</field>
-		<field name="suggest_feature" type="list" default="1" label="Allow Feature Suggestion?" description="Display links on the Features page for suggesting new features. Note: This requires the Wishlist component be enabled.">
+		<field name="suggest_feature" type="list" default="1" label="COM_PROJECTS_CONFIG_SUGGEST_FEATURE_LABEL" description="COM_PROJECTS_CONFIG_SUGGEST_FEATURE_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="min_name_length" type="text" menu="hide" default="6" label="Minimum characters in name" description="Min number of characters a project alias name can contain" />
-		<field name="max_name_length" type="text" menu="hide" default="25" label="Maximum characters in name" description="Max number of characters a project alias name can contain" />
-		<field name="reserved_names" type="text" menu="hide" default="clone, temp, test" label="Reserved project names" description="Words that cannot be used as project names" />
-		<field name="imagepath" type="text" menu="hide" default="/site/projects" label="Image path" description="File path to project images (thumbnails)" />
-		<field name="defaultpic" type="text" menu="hide" default="/components/com_projects/site/assets/img/project.png" label="Default picture" description="Default placeholder image for project pictures" />
+		<field name="min_name_length" type="text" menu="hide" default="6" label="COM_PROJECTS_CONFIG_MIN_NAME_LENGTH_LABEL" description="COM_PROJECTS_CONFIG_MIN_NAME_LENGTH_DESC" />
+		<field name="max_name_length" type="text" menu="hide" default="25" label="COM_PROJECTS_CONFIG_MAX_NAME_LENGTH_LABEL" description="COM_PROJECTS_CONFIG_MAX_NAME_LENGTH_DESC" />
+		<field name="reserved_names" type="text" menu="hide" default="clone, temp, test" label="COM_PROJECTS_CONFIG_RESERVED_NAMES_LABEL" description="COM_PROJECTS_CONFIG_RESERVED_NAMES_DESC" />
+		<field name="imagepath" type="text" menu="hide" default="/site/projects" label="COM_PROJECTS_CONFIG_IMAGEPATH_LABEL" description="COM_PROJECTS_CONFIG_IMAGEPATH_DESC" />
+		<field name="defaultpic" type="text" menu="hide" default="/components/com_projects/site/assets/img/project.png" label="COM_PROJECTS_CONFIG_DEFAULTPIC_LABEL" description="COM_PROJECTS_CONFIG_DEFAULTPIC_DESC" />
 		<field name="showthumbemail" type="list" default="0" label="Show project thumb in emails" description="Show project thumbnail in html emails (must be OFF for firewalled hubs)">
-			<option value="0">hide</option>
-			<option value="1">show</option>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
 		</field>
-		<field name="logging" type="list" default="0" label="Log activity" description="Enable detailed activity logging">
-			<option value="0">Do not log</option>
-			<option value="1">Log all activity except for AJAX calls</option>
-			<option value="2">Log all activity</option>
+		<field name="logging" type="list" default="0" label="COM_PROJECTS_CONFIG_LOGGING_LABEL" description="COM_PROJECTS_CONFIG_LOGGING_DESC">
+			<option value="0">COM_PROJECTS_CONFIG_LOGGING_NONE</option>
+			<option value="1">COM_PROJECTS_CONFIG_LOGGING_ALL_NO_AJAX</option>
+			<option value="2">COM_PROJECTS_CONFIG_LOGGING_ALL</option>
 		</field>
-		<field name="messaging" type="list" default="0" label="Messaging" description="Enable hub messaging">
-			<option value="0">OFF</option>
-			<option value="1">ON</option>
+		<field name="messaging" type="list" default="0" label="COM_PROJECTS_CONFIG_MESSAGING_LABEL" description="COM_PROJECTS_CONFIG_MESSAGING_DESC">
+			<option value="0">JOFF</option>
+			<option value="1">JON</option>
 		</field>
-		<field name="accesslevel" type="accesslevel" default="5" label="Default access" description="Set the default access level for new projects" />
-		<field name="layout" type="list" default="standard" label="Default project page layout" description="Set the default project page layout for team members">
-			<option value="standard">Standard (left side menu)</option>
-			<option value="extended">New (top menu)</option>
+		<field name="accesslevel" type="accesslevel" default="5" label="COM_PROJECTS_CONFIG_ACCESSLEVEL_LABEL" description="COM_PROJECTS_CONFIG_ACCESSLEVEL_DESC" />
+		<field name="layout" type="list" default="standard" label="COM_PROJECTS_CONFIG_LAYOUT_LABEL" description="COM_PROJECTS_CONFIG_LAYOUT_DESC">
+			<option value="standard">COM_PROJECTS_CONFIG_LAYOUT_STANDARD</option>
+			<option value="extended">COM_PROJECTS_CONFIG_LAYOUT_EXTENDED</option>
 		</field>
-		<field name="limit" type="text" menu="hide" default="25" label="Browse paging limit" description="Number of projects per page on Browse." />
-		<field name="sidebox_limit" type="text" menu="hide" default="3" label="Side module item limit" description="Number of items per box in project page side modules" />
-		<field name="group_prefix" type="text" menu="hide" default="pr-" label="Project group prefix" description="Prefix for project group name (system group provisioned for each project to handle permissions)" />
-		<field name="documentation" type="text" menu="hide" default="/projects/features" label="URL to documentation" description="URL to a page with the user guide" />
+		<field name="sidebox_limit" type="text" menu="hide" default="3" label="COM_PROJECTS_CONFIG_SIDEBOX_LIMIT_LABEL" description="COM_PROJECTS_CONFIG_SIDEBOX_LIMIT_DESC" />
+		<field name="group_prefix" type="text" menu="hide" default="pr-" label="COM_PROJECTS_CONFIG_GROUP_PREFIX_LABEL" description="COM_PROJECTS_CONFIG_GROUP_PREFIX_DESC" />
+		<field name="documentation" type="text" menu="hide" default="/projects/features" label="COM_PROJECTS_CONFIG_DOCUMENTATION_LABEL" description="COM_PROJECTS_CONFIG_DOCUMENTATION_DESC" />
 	</fieldset>
 	<fieldset name="PROJECTSETUP">
-		<field name="grantinfo" type="list" default="0" label="Collect grant info at setup?" description="Ask project creator for grant information, e.g. [NSF] grant id, title, PI">
+		<field name="grantinfo" type="list" default="0" label="COM_PROJECTS_CONFIG_GRANTINFO_LABEL" description="COM_PROJECTS_CONFIG_GRANTINFO_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="confirm_step" type="list" default="0" label="Setup - 'Agree to Terms' screen" description="Enable 'Agree to Terms' step during setup">
-			<option value="0">OFF</option>
-			<option value="1">ON</option>
+		<field name="confirm_step" type="list" default="0" label="COM_PROJECTS_CONFIG_CONFIRM_STEP_LABEL" description="COM_PROJECTS_CONFIG_CONFIRM_STEP_DESC">
+			<option value="0">JOFF</option>
+			<option value="1">JON</option>
 		</field>
-		<field name="edit_settings" type="list" default="0" label="Allow project settings editing?" description="Enable a screen to edit project settings after project setup">
+		<field name="edit_settings" type="list" default="0" label="COM_PROJECTS_CONFIG_EDIT_SETTINGS_LABEL" description="COM_PROJECTS_CONFIG_EDIT_SETTINGS_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="edit_description" type="list" default="0" label="Collaborators can edit description?" description="Allow collaborators/authors to edit the project description?">
+		<field name="edit_description" type="list" default="0" label="COM_PROJECTS_CONFIG_EDIT_DESCRIPTION_LABEL" description="COM_PROJECTS_CONFIG_EDIT_DESCRIPTION_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYes</option>
 		</field>
-		<field name="custom_profile" type="list" default="0" label="Use custom profile description template?" description="Allows administrators to define project info fields">
-			<option value="0">NO</option>
+		<field name="custom_profile" type="list" default="0" label="COM_PROJECTS_CONFIG_CUSTOM_PROFILE_LABEL" description="COM_PROJECTS_CONFIG_CUSTOM_PROFILE_DESC">
+			<option value="0">JNO</option>
 			<option value="custom">COM_PROJECTS_USE_TEMPLATE</option>
 		</field>
-		<field name="restricted_data" type="list" default="0" label="Ask about sensitive data?" description="Include a question about sensitive data (HIPAA/FERPA/Export Control)">
+		<field name="restricted_data" type="list" default="0" label="COM_PROJECTS_CONFIG_RESTRICTED_DATA_LABEL" description="COM_PROJECTS_CONFIG_RESTRICTED_DATA_DESC">
 			<option value="0">JNO</option>
-			<option value="2">YES, with one general question</option>
-			<option value="1">YES, with HIPAA/FERPA etc. options</option>
+			<option value="2">COM_PROJECTS_CONFIG_RESTRICTED_DATA_YES_GENERAL</option>
+			<option value="1">COM_PROJECTS_CONFIG_RESTRICTED_DATA_YES_SPECIFIC</option>
 		</field>
-		<field name="approve_restricted" type="list" default="0" label="Must approve sensitive data projects?" description="Require approval for sensitive data projects?">
+		<field name="approve_restricted" type="list" default="0" label="COM_PROJECTS_CONFIG_APPROVE_RESTRICTED_LABEL" description="COM_PROJECTS_CONFIG_APPROVE_RESTRICTED_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="init_team" type="list" default="0" label="Setup - Managers" description="This determines who is auto-added as a project manager when creating a new project. Note: This assignment happens before the project creator is given the choice of syncing group membership or having selective members.">
-			<option value="0">Only project creator</option>
-			<option value="1">Group managers (if owned by a group)</option>
+		<field name="init_team" type="list" default="0" label="COM_PROJECTS_CONFIG_INIT_TEAM_LABEL" description="COM_PROJECTS_CONFIG_INIT_TEAM_DESC">
+			<option value="0">COM_PROJECTS_CONFIG_INIT_TEAM_ONLY_CREATOR</option>
+			<option value="1">COM_PROJECTS_CONFIG_INIT_TEAM_GROUP_MANAGERS</option>
 		</field>
-		<field name="sync_behavior" type="list" default="1" label="Members - Group syncing" description="This determines if group-owned projects default to auto-syncing all membership with the group or default to selective membership.">
-			<option value="0">Selective membership</option>
-			<option value="1">Sync with group</option>
+		<field name="sync_behavior" type="list" default="1" label="COM_PROJECTS_CONFIG_SYNC_BEHAVIOR_LABEL" description="COM_PROJECTS_CONFIG_SYNC_BEHAVIOR_DESC">
+			<option value="0">COM_PROJECTS_CONFIG_SYNC_BEHAVIOR_SELECT</option>
+			<option value="1">COM_PROJECTS_CONFIG_SYNC_BEHAVIOR_GROUP</option>
 		</field>
-		<field name="privacylink" type="text" menu="hide" default="/legal/privacy" label="URL to Privacy Terms" description="URL to Privacy Terms" />
-		<field name="HIPAAlink" type="text" menu="hide" default="/legal/privacy" label="URL to HIPAA information" description="URL to to HIPAA information" />
-		<field name="FERPAlink" type="text" menu="hide" default="/legal/privacy" label="URL to FERPA information" description="URL to to FERPA information" />
+		<field name="privacylink" type="text" menu="hide" default="/legal/privacy" label="COM_PROJECTS_CONFIG_PRIVACYLINK_LABEL" description="COM_PROJECTS_CONFIG_PRIVACYLINK_DESC" />
+		<field name="HIPAAlink" type="text" menu="hide" default="/legal/privacy" label="COM_PROJECTS_CONFIG_HIPAALINK_LABEL" description="COM_PROJECTS_CONFIG_HIPAALINK_DESC" />
+		<field name="FERPAlink" type="text" menu="hide" default="/legal/privacy" label="COM_PROJECTS_CONFIG_FERPALINK_LABEL" description="COM_PROJECTS_CONFIG_FERPALINK_DESC" />
 	</fieldset>
 	<fieldset name="ADMINGROUPS">
-		<field name="creatorgroup" type="text" menu="hide" default="" label="Restrict project creation to group" description="Alias of a group that can create projects (optional, will restrict all others!)" />
-		<field name="admingroup" type="text" menu="hide" default="" label="Admin group" description="Alias of an administrative group that gets notified when a new project is created or over quota" />
-		<field name="sdata_group" type="text" menu="hide" default="" label="Sensitive data reviewers group" description="Alias of an administrative group that can access a special project listing to review info on HIPAA/FERPA/export control" />
-		<field name="ginfo_group" type="text" menu="hide" default="" label="Sponsored projects reviewers group" description="Alias of an administrative group that can access a special project listing to review and edit sponsored project information and bump up quota" />
-		<field name="reportgroup" type="text" menu="hide" default="" label="Report access group" description="Alias of an administrative group that has access to custom reports" />
+		<field name="creatorgroup" type="text" menu="hide" default="" label="COM_PROJECTS_CONFIG_CREATORGROUP_LABEL" description="COM_PROJECTS_CONFIG_CREATORGROUP_DESC" />
+		<field name="admingroup" type="text" menu="hide" default="" label="COM_PROJECTS_CONFIG_ADMINGROUP_LABEL" description="COM_PROJECTS_CONFIG_ADMINGROUP_DESC" />
+		<field name="sdata_group" type="text" menu="hide" default="" label="COM_PROJECTS_CONFIG_SDATA_GROUP_LABEL" description="COM_PROJECTS_CONFIG_SDATA_GROUP_DESC" />
+		<field name="ginfo_group" type="text" menu="hide" default="" label="COM_PROJECTS_CONFIG_GINFO_GROUP_LABEL" description="COM_PROJECTS_CONFIG_GINFO_GROUP_DESC" />
+		<field name="reportgroup" type="text" menu="hide" default="" label="COM_PROJECTS_CONFIG_REPORTGROUP_LABEL" description="COM_PROJECTS_CONFIG_REPORTGROUP_DESC" />
 	</fieldset>
 	<fieldset name="FILEREPO">
-		<field name="webpath" type="text" menu="hide" default="/srv/projects" label="Files Git repo path" description="Master path for storing project file repos" />
-		<field name="offroot" type="list" default="1" label="Files repo path is..." description="Did you specify files Git repo path relative to web root?">
-			<option value="0">relative to web root</option>
-			<option value="1">absolute</option>
+		<field name="webpath" type="text" menu="hide" default="/srv/projects" label="COM_PROJECTS_CONFIG_WEBPATH_LABEL" description="COM_PROJECTS_CONFIG_WEBPATH_DESC" />
+		<field name="offroot" type="list" default="1" label="COM_PROJECTS_CONFIG_OFFROOT_LABEL" description="COM_PROJECTS_CONFIG_OFFROOT_DESC">
+			<option value="0">COM_PROJECTS_CONFIG_OFFROOT_RELATIVE</option>
+			<option value="1">COM_PROJECTS_CONFIG_OFFROOT_ABSOLUTE</option>
 		</field>
-		<field name="gitpath" type="text" menu="hide" default="/opt/local/bin/git" label="Git path" description="Path to Git" />
-		<field name="defaultQuota" type="text" menu="hide" default="5" label="Default quota (GB)" description="Default disk quota for project files in gigabytes" />
-		<field name="premiumQuota" type="text" menu="hide" default="30" label="Premium quota (GB)" description="Premium disk quota for project files in gigabytes" />
-		<field name="approachingQuota" type="text" menu="hide" default="90" label="Quota warning at (%)" description="Issue disk quota warning when disk space is used at a certain percentage amount of the given quota" />
-		<field name="pubQuota" type="text" menu="hide" default="1" label="Publication quota (GB)" description="Default disk quota for published files in gigabytes" />
-		<field name="premiumPubQuota" type="text" menu="hide" default="30" label="Premium publication quota (GB)" description="Premium disk quota for published files in gigabytes" />
-		<field name="simpleSizeReporting" type="list" default="0" label="Simple Size Reporting" description="Simple size reporting ignores version history and bundle size of published content when reporting disk usage">
-			<option value="0">Off</option>
-			<option value="1">On</option>
+		<field name="gitpath" type="text" menu="hide" default="/opt/local/bin/git" label="COM_PROJECTS_CONFIG_GITPATH_LABEL" description="COM_PROJECTS_CONFIG_GITPATH_DESC" />
+		<field name="defaultQuota" type="text" menu="hide" default="5" label="COM_PROJECTS_CONFIG_DEFAULTQUOTA_LABEL" description="COM_PROJECTS_CONFIG_DEFAULTQUOTA_DESC" />
+		<field name="premiumQuota" type="text" menu="hide" default="30" label="COM_PROJECTS_CONFIG_PREMIUMQUOTA_LABEL" description="COM_PROJECTS_CONFIG_PREMIUMQUOTA_DESC" />
+		<field name="approachingQuota" type="text" menu="hide" default="90" label="COM_PROJECTS_CONFIG_APPROACHINGQUOTA_LABEL" description="COM_PROJECTS_CONFIG_APPROACHINGQUOTA_DESC" />
+		<field name="pubQuota" type="text" menu="hide" default="1" label="COM_PROJECTS_CONFIG_PUBQUOTA_LABEL" description="COM_PROJECTS_CONFIG_PUBQUOTA_DESC" />
+		<field name="premiumPubQuota" type="text" menu="hide" default="30" label="COM_PROJECTS_CONFIG_PREMIUMPUBQUOTA_LABEL" description="COM_PROJECTS_CONFIG_PREMIUMPUBQUOTA_DESC" />
+		<field name="simpleSizeReporting" type="list" default="0" label="COM_PROJECTS_CONFIG_SAMPLESIZEREPORTING_LABEL" description="COM_PROJECTS_CONFIG_SAMPLESIZEREPORTING_DESC">
+			<option value="0">JOff</option>
+			<option value="1">JOn</option>
 		</field>
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">

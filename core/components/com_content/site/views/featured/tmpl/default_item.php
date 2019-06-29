@@ -21,7 +21,7 @@ $canEdit = $this->item->params->get('access-edit');
 <?php if ($params->get('show_title')) : ?>
 	<h2>
 		<?php if ($params->get('link_titles') && $params->get('access-view')) : ?>
-			<a href="<?php echo Route::url(Component\Content\Site\Helpers\Route::getArticleRoute($this->item->slug, $this->item->catid, $this->item->language)); ?>">
+			<a href="<?php echo Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($this->item->slug, $this->item->catid, $this->item->language)); ?>">
 				<?php echo $this->escape($this->item->title); ?>
 			</a>
 		<?php else : ?>
@@ -66,7 +66,7 @@ $canEdit = $this->item->params->get('access-edit');
 		<dd class="parent-category-name">
 			<?php
 			$title = $this->escape($this->item->parent_title);
-			$url = '<a href="' . Route::url(Component\Content\Site\Helpers\Route::getCategoryRoute($this->item->parent_slug)) . '">' . $title . '</a>';
+			$url = '<a href="' . Route::url(Components\Content\Site\Helpers\Route::getCategoryRoute($this->item->parent_slug)) . '">' . $title . '</a>';
 			?>
 			<?php if ($params->get('link_parent_category') and $this->item->parent_slug) : ?>
 				<?php echo Lang::txt('COM_CONTENT_PARENT', $url); ?>
@@ -79,7 +79,7 @@ $canEdit = $this->item->params->get('access-edit');
 		<dd class="category-name">
 			<?php
 			$title = $this->escape($this->item->category_title);
-			$url = '<a href="' . Route::url(Component\Content\Site\Helpers\Route::getCategoryRoute($this->item->catslug)) . '">' . $title . '</a>';
+			$url = '<a href="' . Route::url(Components\Content\Site\Helpers\Route::getCategoryRoute($this->item->catslug)) . '">' . $title . '</a>';
 			?>
 			<?php if ($params->get('link_category') and $this->item->catslug) : ?>
 				<?php echo Lang::txt('COM_CONTENT_CATEGORY', $url); ?>
@@ -140,13 +140,13 @@ $canEdit = $this->item->params->get('access-edit');
 <?php if ($params->get('show_readmore') && $this->item->readmore): ?>
 	<?php
 	if ($params->get('access-view')) :
-		$link = Route::url(Component\Content\Site\Helpers\Route::getArticleRoute($this->item->slug, $this->item->catid, $this->item->language));
+		$link = Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($this->item->slug, $this->item->catid, $this->item->language));
 	else :
 		$menu = App::get('menu');
 		$active = $menu->getActive();
 		$itemId = $active->id;
-		$link1 = Route::url('index.php?option=com_login&Itemid=' . $itemId);
-		$returnURL = Route::url(Component\Content\Site\Helpers\Route::getArticleRoute($this->item->slug, $this->item->catid, $this->item->language));
+		$link1 = Route::url('index.php?option=com_users&view=login&Itemid=' . $itemId);
+		$returnURL = Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($this->item->slug, $this->item->catid, $this->item->language));
 		$link = new Hubzero\Utility\Uri($link1);
 		$link->setVar('return', base64_encode(urlencode($returnURL)));
 	endif;

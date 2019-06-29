@@ -106,9 +106,9 @@ class Helper extends Module
 		}
 
 		// Get and add the js and extra css to the page
-		$this->css('login.css', 'com_members');
-		$this->css('providers.css', 'com_members');
-		$this->js('login', 'com_members');
+		$this->css('login.css', 'com_login');
+		$this->css('providers.css', 'com_login');
+		$this->js('login', 'com_login');
 
 		$this->js('jquery.hoverIntent', 'system');
 

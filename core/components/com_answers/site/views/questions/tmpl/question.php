@@ -363,7 +363,7 @@ if ($this->question->isDeleted() or !$this->question->get('id'))
 							</form>
 						<?php } else { ?>
 							<p>
-								<?php echo Lang::txt('COM_ANSWERS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_login&return=' . base64_encode(Route::url($this->question->link('answer'), false, true))) . '">' . Lang::txt('COM_ANSWERS_LOGIN') . '</a>'); ?>
+								<?php echo Lang::txt('COM_ANSWERS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->question->link('answer'), false, true))) . '">' . Lang::txt('COM_ANSWERS_LOGIN') . '</a>'); ?>
 							</p>
 						<?php } ?>
 					</div><!-- / .subject -->
@@ -461,7 +461,7 @@ if ($this->question->isDeleted() or !$this->question->get('id'))
 						<div class="container">
 							<p><a class="icon-add add btn" href="<?php
 							$route = Route::url($this->question->link('answer'), false, true);
-							echo (User::isGuest()) ? Route::url('index.php?option=com_login&return=' . base64_encode($route)) : $route;
+							echo (User::isGuest()) ? Route::url('index.php?option=com_users&view=login&return=' . base64_encode($route)) : $route;
 							?>"><?php echo Lang::txt('COM_ANSWERS_ANSWER_THIS'); ?></a></p>
 						</div><!-- / .container -->
 					<?php } ?>

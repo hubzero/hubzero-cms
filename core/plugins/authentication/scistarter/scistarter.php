@@ -76,7 +76,7 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
 		{
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode('/members/myaccount')),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode('/members/myaccount')),
 				Lang::txt('PLG_AUTHENTICATION_SCISTARTER_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
 				'error'
 			);
@@ -263,7 +263,7 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
 		{
 			// User didn't authorize our app or clicked cancel
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode('/members/myaccount')),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode('/members/myaccount')),
 				Lang::txt('PLG_AUTHENTICATION_SCISTARTER_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
 				'error'
 			);

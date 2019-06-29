@@ -33,15 +33,8 @@ class Base extends SiteController
 	 */
 	public function execute()
 	{
-		// Is component on?
-		if (!$this->config->get('component_on', 0))
-		{
-			App::redirect('/');
-			return;
-		}
-
 		// Publishing enabled?
-		$this->_publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
+		$this->_publishing = \Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 
 		// Setup complete?
 		$this->_setupComplete = $this->config->get('confirm_step', 0) ? 3 : 2;
@@ -151,7 +144,7 @@ class Base extends SiteController
 		$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $task), 'server');
 
 		App::redirect(
-			Route::url('index.php?option=com_login&return=' . base64_encode($rtrn)),
+			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 			$this->_msg,
 			'warning'
 		);
@@ -239,7 +232,7 @@ class Base extends SiteController
 				break;
 		}
 
-		Document::setTitle($this->title);
+		\Document::setTitle($this->title);
 
 		return $this->title;
 	}

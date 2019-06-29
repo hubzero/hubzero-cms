@@ -144,7 +144,7 @@ class Offering extends SiteController
 	public function loginTask($message = '')
 	{
 		$rtrn = base64_encode(Route::url($this->course->offering()->link() . '&task=' . $this->_task, false, true));
-		$link = str_replace('&amp;', '&', Route::url('index.php?option=com_login&return=' . $rtrn));
+		$link = str_replace('&amp;', '&', Route::url('index.php?option=com_users&view=login&return=' . $rtrn));
 		App::redirect(
 			$link,
 			Lang::txt($message),

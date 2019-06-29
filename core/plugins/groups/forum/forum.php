@@ -137,7 +137,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			{
 				$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true), 'server'));
 				App::redirect(
-					Route::url('index.php?option=com_login&return=' . $return, false),
+					Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active_real)),
 					'warning'
 				);
@@ -392,23 +392,6 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		return $path;
-	}
-
-	/**
-	 * Set redirect and message
-	 *
-	 * @param   string  $url   URL to redirect to
-	 * @param   string  $msg   Message to send
-	 * @param   string  $type  Message type (message, error, warning, info)
-	 * @return  void
-	 */
-	public function setRedirect($url, $msg=null, $type='message')
-	{
-		if ($msg !== null)
-		{
-			$this->addPluginMessage($msg, $type);
-		}
-		App::redirect($url);
 	}
 
 	/**
@@ -676,7 +659,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		/*if (User::isGuest())
 		{
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode(Route::url($this->base))),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base))),
 				Lang::txt('PLG_GROUPS_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
@@ -959,7 +942,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		{
 			$return = Route::url($this->base);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}*/
@@ -1269,7 +1252,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		{
 			$return = Route::url($this->base, false, true);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 		}
 
@@ -1323,7 +1306,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				$return = Route::url($this->base . '&scope=' . $sectionAlias . '/' . $category . '/' . $id . '/edit', false, true);
 			}
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}*/
@@ -1392,7 +1375,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		/*if (User::isGuest())
 		{
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode(Route::url($this->base, false, true)))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true)))
 			);
 			return;
 		}*/
@@ -1987,7 +1970,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		{
 			$return = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category . '/' . $thread . '/' . $post . '/' . $file);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}*/

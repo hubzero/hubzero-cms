@@ -485,7 +485,7 @@ class Citations extends SiteController
 	public function loginTask()
 	{
 		App::redirect(
-			Route::url('index.php?option=com_login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true))),
+			Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true))),
 			Lang::txt('COM_CITATIONS_NOT_LOGGEDIN'),
 			'warning'
 		);

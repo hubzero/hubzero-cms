@@ -20,35 +20,39 @@ class Tags extends Base
 	/**
 	 * Block name
 	 *
-	 * @var		string
+	 * @var  string
 	 */
 	protected $_name = 'tags';
 
 	/**
 	 * Parent block name
 	 *
-	 * @var		string
+	 * @var  string
 	 */
 	protected $_parentname = null;
 
 	/**
 	 * Default manifest
 	 *
-	 * @var		string
+	 * @var  string
 	 */
 	protected $_manifest = null;
 
 	/**
 	 * Numeric block ID
 	 *
-	 * @var		integer
+	 * @var  integer
 	 */
 	protected $_blockId = 0;
 
 	/**
 	 * Display block content
 	 *
-	 * @return  string  HTML
+	 * @param   object   $pub
+	 * @param   object   $manifest
+	 * @param   string   $viewname
+	 * @param   integer  $blockId
+	 * @return  string   HTML
 	 */
 	public function display($pub = null, $manifest = null, $viewname = 'edit', $blockId = 0)
 	{
@@ -66,8 +70,8 @@ class Tags extends Base
 			// Output HTML
 			$view = new \Hubzero\Component\View(
 				array(
-					'name'		=> 'curation',
-					'layout'	=> 'block'
+					'name'   => 'curation',
+					'layout' => 'block'
 				)
 			);
 		}
@@ -78,20 +82,20 @@ class Tags extends Base
 			// Output HTML
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'	=> 'projects',
-					'element'	=> 'publications',
-					'name'		=> $name,
-					'layout'	=> 'wrapper'
+					'folder'  => 'projects',
+					'element' => 'publications',
+					'name'    => $name,
+					'layout'  => 'wrapper'
 				)
 			);
 		}
 
-		$view->manifest 	= $this->_manifest;
-		$view->content 		= self::buildContent($pub, $viewname);
-		$view->pub			= $pub;
-		$view->active		= $this->_name;
-		$view->step			= $blockId;
-		$view->showControls	= 4;
+		$view->manifest     = $this->_manifest;
+		$view->content      = self::buildContent($pub, $viewname);
+		$view->pub          = $pub;
+		$view->active       = $this->_name;
+		$view->step         = $blockId;
+		$view->showControls = 4;
 
 		if ($this->getError())
 		{
@@ -103,6 +107,8 @@ class Tags extends Base
 	/**
 	 * Build panel content
 	 *
+	 * @param   object  $pub
+	 * @param   string  $viewname
 	 * @return  string  HTML
 	 */
 	public function buildContent($pub = null, $viewname = 'edit')
@@ -112,16 +118,16 @@ class Tags extends Base
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'	=> 'projects',
-				'element'	=> 'publications',
-				'name'		=> $name,
-				'layout'	=> 'tags'
+				'folder'  => 'projects',
+				'element' => 'publications',
+				'name'    => $name,
+				'layout'  => 'tags'
 			)
 		);
 
-		$view->pub		= $pub;
+		$view->pub      = $pub;
 		$view->manifest = $this->_manifest;
-		$view->step		= $this->_blockId;
+		$view->step     = $this->_blockId;
 
 		// Get categories
 		$view->categories = $pub->category()->getContribCategories();
@@ -136,7 +142,12 @@ class Tags extends Base
 	/**
 	 * Save block content
 	 *
-	 * @return  string  HTML
+	 * @param   object   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @return  string   HTML
 	 */
 	public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
 	{
@@ -163,7 +174,7 @@ class Tags extends Base
 
 		$tagsHelper = new \Components\Publications\Helpers\Tags($this->_parent->_db);
 		$tags = trim(Request::getString('tags', '', 'post'));
-		$tagsHelper->tag_object($actor, $pub->id, $tags, 1);
+		$tagsHelper->tag_object($actor, $pub->version->id, $tags, 1);
 
 		// Reflect the update in curation record
 		$this->_parent->set('_update', 1);
@@ -182,6 +193,9 @@ class Tags extends Base
 	/**
 	 * Check completion status
 	 *
+	 * @param   object   $pub
+	 * @param   object   $manifest
+	 * @param   integer  $elementId
 	 * @return  object
 	 */
 	public function getStatus($pub = null, $manifest = null, $elementId = null)
@@ -193,7 +207,7 @@ class Tags extends Base
 
 		// Required?
 		$required = $manifest->params->required;
-		$count = $tagsHelper->countTags($pub->id);
+		$count = $tagsHelper->countTags($pub->version->id);
 		$status->status = $required && $count == 0 ? 0 : 1;
 		$status->status = !$required && $count == 0 ? 2 : $status->status;
 
@@ -203,7 +217,8 @@ class Tags extends Base
 	/**
 	 * Get default manifest for the block
 	 *
-	 * @return  void
+	 * @param   bool  $new
+	 * @return  object
 	 */
 	public function getManifest($new = false)
 	{
@@ -215,15 +230,18 @@ class Tags extends Base
 		if (!$manifest)
 		{
 			$manifest = array(
-				'name' 			=> 'tags',
-				'label' 		=> 'Tags',
-				'title' 		=> 'Publication Tags',
-				'draftHeading' 	=> 'Add tags',
-				'draftTagline'	=> 'Make your publication more discoverable:',
-				'about'			=> 'Tags help users find your publication. Before adding your own tags, try finding good matches in existing tag library.',
-				'adminTips'		=> '',
-				'elements' 		=> array(),
-				'params'		=> array('required' => 1, 'published_editing' => 0)
+				'name'         => 'tags',
+				'label'        => 'Tags',
+				'title'        => 'Publication Tags',
+				'draftHeading' => 'Add tags',
+				'draftTagline' => 'Make your publication more discoverable:',
+				'about'        => 'Tags help users find your publication. Before adding your own tags, try finding good matches in existing tag library.',
+				'adminTips'    => '',
+				'elements'     => array(),
+				'params'       => array(
+					'required' => 1,
+					'published_editing' => 0
+				)
 			);
 
 			return json_decode(json_encode($manifest), false);

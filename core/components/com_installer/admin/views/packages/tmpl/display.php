@@ -24,11 +24,12 @@ if ($canDo->get('core.delete'))
 
 Toolbar::addNew();
 
+Toolbar::help('packages');
 Html::behavior('tooltip');
 
 $this->css();
-$filterstring = "";
 ?>
+
 <nav role="navigation" class="sub sub-navigation">
 	<ul>
 		<li>
@@ -65,19 +66,21 @@ $filterstring = "";
 		</tfoot>
 		<tbody>
 			<?php foreach ($this->packages as $i => $package) : ?>
-				<?php
-				?>
 				<tr>
 					<td>
 						<input type="checkbox" name="packages[]" id="cb<?php echo $i; ?>" value="<?php echo $package->getPrettyName(); ?>" class="checkbox-toggle" />
 					</td>
 					<td> 
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&packageName=' . $package->getName() . $filterstring); ?>">
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&packageName=' . $package->getName()); ?>">
 							<strong><?php echo $package->getPrettyName() ?></strong>
 						</a>
 					</td>
-					<td> <?php echo $package->getFullPrettyVersion(); ?> </td>
-					<td> <?php echo $package->getDescription(); ?> </td>
+					<td>
+						<?php echo $package->getFullPrettyVersion(); ?>
+					</td>
+					<td>
+						<?php echo $package->getDescription(); ?>
+					</td>
 				</tr>
 			<?php endforeach; ?>
 		</tbody>
@@ -87,6 +90,8 @@ $filterstring = "";
 	<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

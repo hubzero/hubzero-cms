@@ -22,7 +22,10 @@
 			step="1"
 			default="6"
 			/>
-
+		<field name="gittype" type="list" default="github" label="COM_INSTALLER_GITTYPE_LABEL" description="COM_INSTALLER_GITTYPE_DESC">
+			<option value="github">Github</option>
+			<option value="gitlab">Gitlab</option>
+		</field>
 		<field name="system_user" type="text" menu="hide" default="hubadmin" label="COM_INSTALLER_MUSE_USER_LABEL" description="COM_INSTALLER_MUSE_USER_DESC" size="50" />
 	</fieldset>
 	<fieldset

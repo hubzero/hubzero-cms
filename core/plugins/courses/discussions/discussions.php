@@ -1829,7 +1829,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			$return = Route::url($this->base . '&unit=manage');
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -2132,7 +2132,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			$return = Route::url($this->base, false, true);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -2220,7 +2220,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				$return = Route::url($this->offering->link() . '&active=' . $this->_name . '&unit=' . $section . '&b=' . $category . '&c=' . $id . '/edit');
 			}
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -2283,7 +2283,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		if (User::isGuest())
 		{
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode(Route::url($this->base, false, true)))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true)))
 			);
 			return;
 		}
@@ -2561,7 +2561,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			$return = Route::url($this->offering->link() . '&active=' . $this->_name . '&unit=download&b=' . $thread . '&file=' . $file);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}

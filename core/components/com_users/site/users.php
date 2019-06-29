@@ -5,6 +5,15 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+// Maintian backwards compatibility
+if ($view = Request::getCmd('view'))
+{
+	if ($view != 'login')
+	{
+		Request::setVar('task', $view);
+	}
+}
+
 $task = Request::getCmd('task');
 
 if (strstr($task, '.'))
@@ -37,27 +46,16 @@ switch ($task)
 	case 'link':
 	case 'endsinglesignon':
 	case 'spamjail':
-		//$uri->setVar('option', 'com_login');
-		//$uri->setVar('task', $task);
-		Request::setVar('option', 'com_login');
+	case 'login':
 		Request::setVar('task', $task);
 	break;
 
 	default:
-		//$uri->setVar('option', 'com_login');
-		//$uri->delVar('task');
-		Request::setVar('option', 'com_login');
 		Request::setVar('task', '');
 	break;
 }
-/*$url = $uri->toString();
 
-$redirect = new Hubzero\Http\RedirectResponse($url, 301);
-$redirect->setRequest(App::get('request'));
-$redirect->send();*/
-Lang::load('com_login', Component::path('com_login') . '/site');
+require_once __DIR__ . '/controllers/auth.php';
 
-require_once Component::path('com_login') . '/site/controllers/auth.php';
-
-$controller = new Components\Login\Site\controllers\Auth();
+$controller = new Components\Users\Site\Controllers\Auth();
 $controller->execute();

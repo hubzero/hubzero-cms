@@ -221,7 +221,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		{
 			$return = Route::url($this->view->offering->link() . '&active=' . $this->_name, false, true);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . $return, false)
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -246,7 +246,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		{
 			$this->view->model =  new \Components\Courses\Models\Page($page);
 		}
-		$this->view->notifications = $this->getPluginMessage();
+		$this->view->notifications = array();
 
 		if ($this->view->model->exists())
 		{
@@ -290,7 +290,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		{
 			$return = Route::url($this->view->offering->link() . '&active=' . $this->_name, false, true);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . $return, false)
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -308,7 +308,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 		if (!$model->bind($page))
 		{
-			$this->addPluginMessage($model->getError(), 'error');
+			Notify::error($model->getError());
 			return $this->_edit($model);
 		}
 
@@ -320,7 +320,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 		if (!$model->store(true))
 		{
-			$this->addPluginMessage($model->getError(), 'error');
+			Notify::error($model->getError());
 			return $this->_edit($model);
 		}
 
@@ -340,7 +340,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		{
 			$return = Route::url($this->view->offering->link() . '&active=' . $this->_name, false, true);
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . $return, false)
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
 		}
@@ -357,7 +357,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 			if (!$model->store(true))
 			{
-				$this->addPluginMessage($model->getError(), 'error');
+				Notify::error($model->getError());
 			}
 		}
 

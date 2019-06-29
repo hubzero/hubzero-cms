@@ -39,8 +39,8 @@ class plgSystemUserconsent extends \Hubzero\Plugin\Plugin
 
 				if (in_array($current, $pages) && !$granted)
 				{
-					Request::setVar('option', 'com_login');
-					Request::setVar('task', 'userconsent');
+					Request::setVar('option', 'com_users');
+					Request::setVar('view', 'userconsent');
 				}
 			}
 			else if (App::isAdmin())

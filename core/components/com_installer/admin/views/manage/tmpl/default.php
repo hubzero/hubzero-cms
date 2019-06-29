@@ -109,7 +109,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 					</td>
 					<td class="center">
 						<?php if (!$item->get('element')) : ?>
-						<strong>X</strong>
+							<strong>X</strong>
 						<?php else : ?>
 							<?php echo Html::manage('state', $item->get('enabled'), $i, $item->get('enabled') == 1, 'cb'); ?>
 						<?php endif; ?>

@@ -26,8 +26,8 @@ use App;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description' . DS . 'field.php';
+require_once dirname(dirname(__DIR__)) . '/models/orm/owner.php';
 require_once dirname(dirname(__DIR__)) . '/helpers/accessHelper.php';
-require_once Component::path('com_projects') . '/models/orm/owner.php';
 
 /**
  * Primary component controller
@@ -118,21 +118,25 @@ class Projects extends Base
 		$return = Route::url('index.php?option=com_projects&alias=' . $project, false);
 		if (User::isGuest())
 		{
-			$redirectUrl = Route::url('index.php?option=com_login&return=' . base64_encode($return), false);
+			$redirectUrl = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return), false);
 			App::redirect($redirectUrl);
 		}
 
-		if (!$this->model->member())
+		$existingMember = $this->model->member();
+
+		if (!$existingMember || $existingMember->status == 2)
 		{
 			if ($this->model->exists())
 			{
 				$userId = User::getInstance()->get('id');
-				$member = \Components\Projects\Models\Orm\Owner::blank();
+				$memberId = $existingMember ? $existingMember->id : null;
+				$member = \Components\Projects\Models\Orm\Owner::oneOrNew($memberId);
 				$member->set('projectid', $this->model->get('id'));
 				$member->set('userid', $userId);
 				$member->set('status', 3);
 				$currentTime = Date::of()->toSql();
 				$member->set('added', $currentTime);
+
 				if ($member->save())
 				{
 					$managers = \Components\Projects\Models\Orm\Owner::getProjectManagers($this->model->get('id'));
@@ -282,7 +286,7 @@ class Projects extends Base
 		$this->view->filters = array();
 		$this->view->filters['limit'] = Request::getInt(
 			'limit',
-			intval($this->config->get('limit', 25)),
+			intval(\Config::get('list_limit', 25)),
 			'request'
 		);
 		$this->view->filters['start']    = Request::getInt('limitstart', 0, 'get');
@@ -514,7 +518,7 @@ class Projects extends Base
 			}
 			elseif ($match && $this->model->_tblOwner->load($match))
 			{
-				if (User::get('email') == $email)
+				if (strtolower(User::get('email')) == strtolower($email))
 				{
 					// Confirm user
 					$this->model->_tblOwner->status = 1;

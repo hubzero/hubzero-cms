@@ -1029,7 +1029,7 @@ class Resources extends SiteController
 		{
 			$return = base64_encode(Request::getString('REQUEST_URI', Route::url($model->link(), false, true), 'server'));
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . $return, false),
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
 				'warning'
 			);
@@ -1304,7 +1304,7 @@ class Resources extends SiteController
 		{
 			$return = base64_encode(Request::getString('REQUEST_URI', Route::url($this->model->link(), false, true), 'server'));
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . $return, false),
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
 				'warning'
 			);
@@ -2222,7 +2222,7 @@ class Resources extends SiteController
 			//App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
 			$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&id=' . $this->id . '&d=' . $d, false, true), 'server'));
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . $return, false),
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
 				'warning'
 			);
@@ -2236,7 +2236,7 @@ class Resources extends SiteController
 			{
 				$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&id=' . $this->id . '&d=' . $d, false, true), 'server'));
 				App::redirect(
-					Route::url('index.php?option=com_login&return=' . $return, false),
+					Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 					Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
 					'warning'
 				);

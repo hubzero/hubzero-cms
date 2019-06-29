@@ -24,8 +24,10 @@ class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
 		{
 			$exceptions = [
 				'com_login.logout',
+				'com_login.logout.login',
 				'com_users.logout',
 				'com_users.userlogout',
+				'com_users.logout.login',
 				'com_support.tickets.save.index',
 				'com_support.tickets.new.index',
 				'com_members.media.download.profiles',
@@ -88,8 +90,8 @@ class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
 
 					if (Session::get('linkaccount', true) && !$simpleRegistration)
 					{
-						Request::setVar('option', 'com_login');
-						Request::setVar('task', 'link');
+						Request::setVar('option', 'com_users');
+						Request::setVar('view', 'link');
 					}
 					else
 					{

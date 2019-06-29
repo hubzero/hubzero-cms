@@ -14,12 +14,12 @@ $content = $this->row->description('parsed');
 $content = ($content ?: $item->description('parsed'));
 ?>
 		<p class="link">
-			<a href="<?php echo stripslashes($item->get('url')); ?>" rel="external">
+			<a href="<?php echo stripslashes($item->get('url')); ?>" rel="external nofollow noreferrer">
 				<?php echo $this->escape(stripslashes($item->get('title', $item->get('url')))); ?>
 			</a>
 		</p>
-<?php if ($content) { ?>
+<?php if ($content): ?>
 		<div class="description">
 			<?php echo $content; ?>
 		</div>
-<?php } 
+<?php endif;

@@ -683,7 +683,7 @@ $this->css()
 					$link = Route::url($this->wish->link('comment'));
 					if (User::isGuest())
 					{
-						$link = Route::url('index.php?option=com_login&return=' . base64_encode($link));
+						$link = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($link));
 					}
 				?>
 				<a class="icon-add add btn" href="<?php echo $link;?>">

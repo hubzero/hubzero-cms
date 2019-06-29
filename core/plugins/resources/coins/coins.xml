@@ -13,4 +13,17 @@
 	<languages>
 		<language tag="en-GB">en-GB.plg_resources_coins.ini</language>
 	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="payload_url" type="radio" default="0" label="PLG_RESOURCES_COINS_PAYLOAD_LABEL" description="PLG_RESOURCES_COINS_PAYLOAD_DESC">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
+				</field>
+			</fieldset>
+			<fieldset name="metadata" addfieldpath="/core/plugins/resources/coins/fields">
+				<field name="type" type="resourcetype" default="" label="PLG_RESOURCES_COINS_TYPE_LABEL" description="PLG_RESOURCES_COINS_TYPE_DESC"/>
+			</fieldset>
+		</fields>
+	</config>
 </extension>

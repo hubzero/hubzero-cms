@@ -41,7 +41,7 @@ class Import extends SiteController
 		if (User::isGuest())
 		{
 			App::redirect(
-				Route::url('index.php?option=com_login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=import', false, true))),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=import', false, true))),
 				Lang::txt('COM_CITATIONS_NOT_LOGGEDIN'),
 				'warning'
 			);
@@ -187,8 +187,8 @@ class Import extends SiteController
 		if (!isset($citations[0]['no_attention']))
 		{
 			$citations[0]['no_attention'] = '';
-
 		}
+
 		if (!$this->importer->writeRequiresAttention($citations[0]['attention']))
 		{
 			Notify::error(Lang::txt('Unable to write temporary file.'));

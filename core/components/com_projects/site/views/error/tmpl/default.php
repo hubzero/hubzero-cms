@@ -15,4 +15,3 @@ defined('_HZEXEC_') or die();
 <section class="main section">
 	<p class="error"><?php echo $this->error; ?></p>
 </section><!-- / .section -->
-

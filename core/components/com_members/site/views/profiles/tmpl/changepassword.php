@@ -32,7 +32,7 @@ $this->css()
 		<form action="<?php echo Route::url($this->profile->link() . '&task=changepassword', true); ?>" method="post" id="hubForm">
 			<!--div class="explaination">
 				<p><?php echo Lang::txt('COM_MEMBERS_CHANGEPASSWORD_EXPLANATION'); ?></p>
-				<p><?php echo Lang::txt('COM_MEMBERS_PASSWORD_IF_FORGOTTEN_RESET', Route::url('index.php?option=com_login&task=logout&return=' . base64_encode('/users/reset'))); ?></p>
+				<p><?php echo Lang::txt('COM_MEMBERS_PASSWORD_IF_FORGOTTEN_RESET', Route::url('index.php?option=com_users&view=login&task=logout&return=' . base64_encode('/users/reset'))); ?></p>
 			</div-->
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_MEMBERS_CHANGEPASSWORD_CHOOSE'); ?></legend>

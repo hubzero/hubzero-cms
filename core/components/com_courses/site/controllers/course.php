@@ -112,7 +112,7 @@ class Course extends SiteController
 		$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&gid=' . $this->course->get('id') . '&task=' . $this->_task, false, true));
 
 		App::redirect(
-			Route::url('index.php?option=com_login&return=' . $return, false),
+			Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 			$message,
 			'warning'
 		);

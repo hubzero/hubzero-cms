@@ -13,6 +13,7 @@ use Components\Installer\Admin\Helpers\Cli;
 use Request;
 use Config;
 use Notify;
+use Event;
 use Route;
 use App;
 
@@ -64,6 +65,17 @@ class Packages extends AdminController
 				'limitstart',
 				0,
 				'int'
+			),
+			// Sorting
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'created'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
 			)
 		);
 
@@ -93,9 +105,9 @@ class Packages extends AdminController
 	public function editTask()
 	{
 		if (!User::authorise('core.edit', $this->_option)
-		&& !User::authorise('core.create', $this->_option))
+		 && !User::authorise('core.create', $this->_option))
 		{
-			App::abort(403, "Unauthorized");
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
 		Request::setVar('hidemainmenu', 1);
@@ -148,6 +160,12 @@ class Packages extends AdminController
 	 */
 	public function addTask()
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		Request::setVar('hidemainmenu', 1);
 
 		try
@@ -176,11 +194,18 @@ class Packages extends AdminController
 	{
 		Request::checkToken();
 
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$packages = Request::getArray('packages', array());
 
 		foreach ($packages as $package)
 		{
 			Cli::removePackage($package);
+
+			Event::trigger('onPackageAfterDelete', array($package));
 		}
 
 		$this->cancelTask();
