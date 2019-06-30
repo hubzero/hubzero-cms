@@ -22,7 +22,7 @@ include_once \Component::path('com_publications') . DS . 'helpers' . DS . 'recom
 
 // Get focus areas - this may be redundant: check $recommended->get_focus_area_properties();
 $db = \App::get('db');
-$recommended = new \Components\Publications\Helpers\RecommendedTags($this->pub->id, 0, $db = $db);
+$recommended = new \Components\Publications\Helpers\RecommendedTags($this->pub->id, $this->pub->version->id, 0, $db = $db);
 $fas = $recommended->loadFocusAreas();
 $focusareas = array();
 foreach ($fas as $tag => $fa)
