@@ -309,6 +309,10 @@
 		float: left;
 		margin-right: 0.3em;
 	}
+	.item-title img,
+	.item-wrap img {
+		height: 1.3em;
+	}
 	.citation-formatted p {
 		font-size: 85%;
 		font-style: italic;
@@ -768,38 +772,21 @@
 
 /* Notice from authors form
 --------------------------------------------- */
-
 	.addnotice {
-		padding: 1em;
 		width: 500px;
 		height: 300px;
 	}
-	.addnotice h5 {
-		margin: 0 0 1.5em 0;
-		padding: 0 0 0.3em 0;
-		border-bottom: 1px dotted black;
-	}
+	.fancybox-wrap fieldset .notice-item,
 	.notice-item {
 		background: #e0f0f3;
 		padding: 0.3em 0.8em;
 	}
-	.addnotice label {
-		text-align: left !important;
-	}
-	.addnotice input[type="text"], .addnotice textarea {
-		display: block;
-		height: 100px;
-		width: 100%;
-		float: none;
-		margin: 0.5em 0;
-		background: none;
-	}
-	.addnotice .submitarea {
+	.submitarea {
 		text-align: center;
 	}
+
 /*
 --------------------------------------------- */
-
 	.pick-more {
 		padding: 0.5em 1em;
 		background: #f8ffff;
