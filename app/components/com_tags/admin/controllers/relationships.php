@@ -318,7 +318,9 @@ class Relationships extends AdminController
 			$this->database->execute();
 			$tag = $this->get_tag($tid);
 			$preload = $tag['raw_tag'];
-			$normalize = create_function('$a', 'return preg_replace(\'/[^a-zA-Z0-9]/\', \'\', strtolower($a));');
+			$normalize = function($a) {
+				return preg_replace('/[^a-zA-Z0-9]/', '', strtolower($a));
+			};
 			$update_child_query = 'UPDATE `#__tags_object` SET ordering = %d WHERE tbl = \'tags\' AND label = \'parent\' AND tagid = %d AND objectid = %d';
 			// reconcile post data with what we already know about a tag's relationships
 			foreach (array(
