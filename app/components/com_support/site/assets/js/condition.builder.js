@@ -182,11 +182,12 @@ var Conditions = {
 		elem.find('select.fld').on('change', function () {
 			var options = $(this).siblings('select.op').find('option').remove().end();
 			var val = null;
+
 			$.each(Conditions.option[$(this).val()].operators, function() {
 				if (this.sel) {
 					val = this.val;
 				}
-			    options.append($("<option />").val(this.val).text(this.label));
+				options.append($("<option />").val(this.val).text(this.label));
 			});
 			options.val(val);
 
@@ -305,7 +306,7 @@ var Conditions = {
 };
 
 jQuery(document).ready(function($){
-	var cdata = $('#conditions-data');
+	/*var cdata = $('#conditions-data');
 
 	if (cdata.length) {
 		var data = JSON.parse(cdata.html());
@@ -313,7 +314,7 @@ jQuery(document).ready(function($){
 		Conditions.option = data.conditions;
 	}
 
-	Conditions.addqueryroot('.query', true);
+	Conditions.addqueryroot('.query', true);*/
 
 	$('#btn-apply').on('click', function (e){
 		var query = {};
