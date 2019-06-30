@@ -46,7 +46,7 @@ class RecommendedTags extends \Hubzero\Base\Obj
 	const ENDORSED_TAG = 2;
 	const REGULAR_TAG  = 1;
 
-	public function __construct($pid, $existing, $db, $opts = array())
+	public function __construct($pid, $vid, $existing, $db, $opts = array())
 	{
 		$opts = array_merge(array(
 			'min_len' => 4,
@@ -76,13 +76,13 @@ class RecommendedTags extends \Hubzero\Base\Obj
     // Make sure recommended tags are updated in the tags object table with the proper label.
     // Note that this SHOULD be done globally after removing or adding a focus area in com_tags,
     // but I'm being lazy now.
-    $this->_updateTags($pid);
+    $this->_updateTags($vid);
 
 		$this->_db->setQuery(
 			'SELECT t.id, raw_tag, (label IS NOT NULL AND label != "") AS is_focus_area, label
 			FROM #__tags_object to1
 			INNER JOIN #__tags t ON t.id = to1.tagid
-			WHERE to1.tbl = \'publications\' AND to1.objectid = '.$pid
+			WHERE to1.tbl = \'publications\' AND to1.objectid = '.$vid
 		);
 		if (!$existing)
 		{
@@ -193,12 +193,12 @@ class RecommendedTags extends \Hubzero\Base\Obj
   // but I'm being lazy now.
   //
   // REFACTOR:  Add in error handling for db query.
-  private function _updateTags($pid)
+  private function _updateTags($vid)
   {
     // First, do a global remove of label on pub tags
     $query = 'UPDATE #__tags_object
               SET label = \'\'
-              WHERE objectid = ' . $pid . '
+              WHERE objectid = ' . $vid . '
               AND tbl = \'publications\'';
     $this->_db->setQuery($query);
     $this->_db->query();
@@ -212,7 +212,7 @@ class RecommendedTags extends \Hubzero\Base\Obj
         {
         $query = 'UPDATE #__tags_object
                   SET label = ' . $this->_db->quote($focus_area) . '
-                  WHERE objectid = ' . $pid . '
+                  WHERE objectid = ' . $vid . '
                   AND tbl = \'publications\'
                   AND tagid IN (' . implode(',', $rtags) .')';
 
@@ -297,7 +297,7 @@ class RecommendedTags extends \Hubzero\Base\Obj
     return $flattened;
   }
 
-  public function checkStatus($pid)
+  public function checkStatus()
   {
     if ($this->has_focus_area) {
       $map = $this->get_existing_focus_areas_map();
@@ -375,7 +375,7 @@ class RecommendedTags extends \Hubzero\Base\Obj
    *
    * See: com_resources/controllers/create.php::step_tags_process()
    */
-  public function processTags($pid)
+  public function processTags($pid, $vid)
   {
 		$tags = preg_split('/,\s*/', $_POST['tags']);
 		$push = array();
@@ -501,8 +501,8 @@ class RecommendedTags extends \Hubzero\Base\Obj
 
     // Going to manually do this like in Resources by deleting and then re-adding.
     // NOTE: This changes the time stamp!  Refactor:  Modify com_tags/models/cloud::setTags
-    $rt = new \Components\Tags\Models\Cloud($pid, 'publications');
-    $this->_db->setQuery('DELETE FROM `#__tags_object` WHERE tbl = \'publications\' AND objectid = ' . $pid);
+    $rt = new \Components\Tags\Models\Cloud($vid, 'publications');
+    $this->_db->setQuery('DELETE FROM `#__tags_object` WHERE tbl = \'publications\' AND objectid = ' . $vid);
     $this->_db->execute();
     foreach ($push as $tag)
 		{

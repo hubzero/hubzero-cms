@@ -1567,7 +1567,9 @@ class Curation extends Obj
 		if ($status->updated && isset($reviewStatus->updated_by) && $reviewStatus->updated_by)
 		{
 			$profile = User::getInstance($reviewStatus->updated_by);
-			$by = ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('name');
+			$name = $profile->get('name');
+			$name = $name ?: Lang::txt('JUNKNOWN');
+			$by = ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_BY', $name);
 
 			if ($status->status != 3)
 			{
@@ -1596,7 +1598,7 @@ class Curation extends Obj
 		if ($viewer == 'curator')
 		{
 			?>
-			<span class="edit-notice">[<a href="#">edit</a>]</span>
+			<span class="edit-notice">[<a href="#"><?php echo Lang::txt('JACTION_EDIT'); ?></a>]</span>
 			<?php
 		}
 

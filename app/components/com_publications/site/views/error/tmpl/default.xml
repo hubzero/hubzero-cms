@@ -7,15 +7,9 @@
 -->
 
 <metadata>
-	<layout title="Standard Publications Error Layout">
+	<layout title="Publications Error">
 		<message>
-			<![CDATA[STANDARD PUBLICATIONS ERROR LAYOUT DESC]]>
+			<![CDATA[Publications Error]]>
 		</message>
 	</layout>
-	<state>
-		<name>Standard Publications Error Layout</name>
-		<description>STANDARD PUBLICATIONS ERROR LAYOUT DESC</description>
-		<params>
-		</params>
-	</state>
 </metadata>
