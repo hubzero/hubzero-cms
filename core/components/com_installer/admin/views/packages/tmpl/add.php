@@ -13,7 +13,8 @@ Toolbar::title(Lang::txt('COM_INSTALLER_PACKAGES_PACKAGE') . ': ' . 'ADD NEW PAC
 $canDo = Components\Installer\Admin\Helpers\Installer::getActions();
 if ($canDo->get('core.create'))
 {
-	Toolbar::save();
+	//Toolbar::save();
+	Toolbar::custom('download', 'download', 'COM_INSTALLER_INSTALL_BUTTON', 'install', false);
 	Toolbar::spacer();
 }
 Toolbar::cancel();
