@@ -17,7 +17,7 @@ class Migration20170309162652PlgWikiParsermarkdown extends Base
 	 **/
 	public function up()
 	{
-		$this->addPluginEntry('wiki', 'parsermarkdown');
+		$this->addPluginEntry('wiki', 'parsermarkdown', 0);
 	}
 
 	/**
