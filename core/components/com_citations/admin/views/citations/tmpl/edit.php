@@ -330,8 +330,8 @@ $journal = (!preg_match('!\S!u', $journal)) ? utf8_encode($journal) : $journal;
 								<td>
 									<select name="assocs[<?php echo $i; ?>][type]" class="noUniform">
 										<option value=""<?php echo ($assocs[$i]->type == '') ? ' selected="selected"': ''; ?>><?php echo Lang::txt('SELECT'); ?></option>
-										<option value="References"<?php echo ($assocs[$i]->type == 'References') ? ' selected="selected"': ''; ?> ><?php echo Lang::txt('COM_CITATIONS_CONTEXT_REFERENCES'); ?></option>
-										<option value="IsReferencedBy"<?php echo ($assocs[$i]->type == 'IsReferencedBy') ? ' selected="selected"': ''; ?>><?php echo Lang::txt('COM_CITATIONS_CONTEXT_REFERENCEDBY'); ?></option>
+										<option value="references"<?php echo ($assocs[$i]->type == 'references') ? ' selected="selected"': ''; ?>><?php echo Lang::txt('COM_CITATIONS_CONTEXT_REFERENCES'); ?></option>
+										<option value="referencedby"<?php echo ($assocs[$i]->type == 'referencedby') ? ' selected="selected"': ''; ?>><?php echo Lang::txt('COM_CITATIONS_CONTEXT_REFERENCEDBY'); ?></option>
 									</select>
 								</td>
 							</tr>

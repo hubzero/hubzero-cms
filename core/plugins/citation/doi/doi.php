@@ -82,7 +82,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 
 			foreach ($assocParams as $assocParam)
 			{
-				if (!empty($assocParam))
+				if (count(array_unique($assocParam)) != 1)
 				{
 					if ($assocParam['tbl'] == 'publication' && !empty($assocParam['oid']) && !empty($assocParam['type']))
 					{
