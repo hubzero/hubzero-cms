@@ -33,6 +33,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 require_once Component::path('com_publications') . DS . 'tables' . DS . 'version.php';
+require_once Component::path('com_publications') . DS . 'models' . DS . 'doi.php';
 
 /**
  * Citation Plugin class for doi
@@ -52,15 +53,6 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 	 * @var object
 	 */
 	public $_configs = null;
-
-	/**
-	 * DataCite and EZID switch options
-	 *
-	 * @const
-	 */
-	const SWITCH_OPTION_NONE = 0;
-	const SWITCH_OPTION_EZID = 1;
-	const SWITCH_OPTION_DATACITE = 2;
 
 	/**
 	 * Update DOI metadata record with citation included
@@ -216,7 +208,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _getDoiXML($doi)
 	{
-		if ($this->_configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE)
+		if ($this->_configs->dataciteEZIDSwitch == \Components\Publications\Models\Doi::SWITCH_OPTION_DATACITE)
 		{
 			$url = rtrim($this->_configs->dataciteServiceURL, '/') . '/metadata/' . $doi;
 
