@@ -69,7 +69,7 @@ class plgSupportMarkdown extends \Hubzero\Plugin\Plugin
 			include_once __DIR__ . '/markdown/MarkdownExtra.php';
 			include_once __DIR__ . '/markdown/GithubMarkdown.php';
 
-			$cls = '\\cebe\\markdown\\' . $this->params->get('style', 'Markdown');
+			$cls = '\\cebe\\markdown\\' . $this->params->get('type', 'Markdown');
 
 			self::$parser = new $cls();
 			self::$parser->html5 = true;
@@ -77,7 +77,7 @@ class plgSupportMarkdown extends \Hubzero\Plugin\Plugin
 			//self::$parser->enableNewlines = true;
 		}
 
-		$text = preg_replace("/<br\s?\/>/i", "\n", $text);
+		$text = preg_replace("/<br\s?\/>/i", '', $text);
 		$text = rtrim($text);
 
 		$result = self::$parser->parse($text);

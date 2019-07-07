@@ -24,7 +24,7 @@ $widgetSettings .= ($this->params->get('displayHeader') == 'no') ? ' noheader' :
 $widgetSettings .= ($this->params->get('displayFooter') == 'no') ? ' nofooter' : '';
 $widgetSettings .= ($this->params->get('displayBorders') == 'no') ? ' noborders' : '';
 
-$this->js();
+$this->js('https://platform.twitter.com/widgets.js');
 ?>
 <div class="<?php echo $this->module->module; ?> <?php echo $this->params->get('moduleclass_sfx', ''); ?>">
 	<?php if ($this->params->get('moduleTitle', '') != '') : ?>
@@ -33,9 +33,7 @@ $this->js();
 		</h3>
 	<?php endif; ?>
 
-	<a class="twitter-timeline" href="https://twitter.com/"
-		data-widget-id="346714310770302976"
-		data-screen-name="<?php echo $screenName; ?>"
+	<a class="twitter-timeline" href="https://twitter.com/<?php echo $screenName; ?>"
 		data-tweet-limit="<?php echo $count; ?>"
 		data-chrome="<?php echo trim($widgetSettings); ?>"><?php echo Lang::txt('MOD_TWITTERFEED_LOADING'); ?></a>
 </div>
