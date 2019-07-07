@@ -1,37 +1,13 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2019 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Hubzero
- * @copyright Copyright 2005-2019 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
 defined('_HZEXEC_') or die();
+
 require_once Component::path('com_publications') . DS . 'tables' . DS . 'version.php';
 require_once Component::path('com_publications') . DS . 'models' . DS . 'doi.php';
 
@@ -57,9 +33,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 	/**
 	 * Update DOI metadata record with citation included
 	 *
-	 * @param      	null
-	 *
-	 * @return		null
+	 * @return  void
 	 */
 	public function onCitationAfterSave()
 	{
@@ -157,9 +131,8 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get citation metadata from original citation
 	 *
-	 * @param      array    $citation
-	 *
-	 * @return     array    $citationArr
+	 * @param   array  $citation
+	 * @return  array  $citationArr
 	 */
 	protected function _getCitationInfo($citation)
 	{
@@ -203,8 +176,8 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get DOI metadata XML from DataCite
 	 *
-	 * @param      array	$doi
-	 * @return     string  	XML or false
+	 * @param   array   $doi
+	 * @return  mixed   XML or false
 	 */
 	protected function _getDoiXML($doi)
 	{
@@ -214,7 +187,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 
 			$ch = curl_init($url);
 			$options = array(
-				CURLOPT_URL  			=> $url,
+				CURLOPT_URL             => $url,
 				CURLOPT_USERPWD         => $this->_configs->dataciteUserPW,
 				CURLOPT_RETURNTRANSFER  => true,
 				CURLOPT_HTTPHEADER      => array('Content-Type:text/plain;charset=UTF-8')
@@ -236,20 +209,17 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 				return false;
 			}
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}
 
 	/**
 	 * Check if the DOI metadata record already has the citation
 	 *
-	 * @param      string		$xml
-	 * @param      array		$citation
-	 * @param      string       $relationType
-	 *
-	 * @return     boolean
+	 * @param   string   $xml
+	 * @param   array    $citation
+	 * @param   string   $relationType
+	 * @return  boolean
 	 */
 	protected function isCitationIncluded($xml, $citation, $relationType)
 	{
@@ -264,9 +234,9 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 			foreach ($relatedIdentifierNodeList as $relatedIdentifier)
 			{
 				if (!empty($relatedIdentifier->getAttribute("relationType"))
-					&& ($relatedIdentifier->getAttribute("relationType") == $relationType)
-					&& ($relatedIdentifier->getAttribute("relatedIdentifierType") == $key)
-					&& ($relatedIdentifier->nodeValue == $val))
+				 && ($relatedIdentifier->getAttribute("relationType") == $relationType)
+				 && ($relatedIdentifier->getAttribute("relatedIdentifierType") == $key)
+				 && ($relatedIdentifier->nodeValue == $val))
 				{
 					return true;
 				}
@@ -279,17 +249,18 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 	/**
 	 * Check if the citation exists and relationType is set to the given relationType.
 	 *
-	 * @param      string		$xml
-	 * @param      array		$citation
-	 * @param      string       $relationType
-	 *
-	 * @return     boolean
+	 * @param   string   $xml
+	 * @param   array    $citation
+	 * @param   string   $relationType
+	 * @return  boolean
 	 */
 	protected function _isCitationUpdated($xml, $citation, $relationType)
 	{
 		$dom = new \DomDocument();
 		$dom->loadXML($xml);
+
 		$relatedIdentifierNodeList = $dom->getElementsByTagName("relatedIdentifier");
+
 		$key = key($citation);
 		$val = current($citation);
 
@@ -313,11 +284,10 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 	/**
 	 * Update citation record in DOI metadata xml on DataCite
 	 *
-	 * @param      string		$xml
-	 * @param      array		$citationInfo
-	 * @param      string       $relationType
-	 *
-	 * @return     boolean
+	 * @param   string   $xml
+	 * @param   array    $citationInfo
+	 * @param   string   $relationType
+	 * @return  boolean
 	 */
 	public function updateDoiMetadataXML($xml, $citationInfo, $relationType)
 	{
@@ -327,8 +297,10 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 
 		$dom = new \DomDocument();
 		$dom->loadXML($xml);
+
 		$xpath = new DOMXPath($dom);
 		$xpath->registerNamespace('ns', "http://datacite.org/schema/kernel-4");
+
 		$query = "//ns:relatedIdentifier[text()=" . "'" . $val . "'" . " and @relatedIdentifierType=" . "'" . $key . "'" . "]";
 		$nodeList = $xpath->query($query);
 		$nodeList->item(0)->setAttribute("relationType", $relationType);
@@ -342,11 +314,10 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 	/**
 	 * Include citation and update DOI metadata record on DataCite
 	 *
-	 * @param      string		$xml
-	 * @param      array		$citationInfo
-	 * @param      string       $relationType
-	 *
-	 * @return     boolean
+	 * @param   string   $xml
+	 * @param   array    $citationInfo
+	 * @param   string   $relationType
+	 * @return  boolean
 	 */
 	public function incCitationInDoiMetadataXML($xml, $citationInfo, $relationType)
 	{
@@ -434,8 +405,8 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get DOI service information from publication component configuration
 	 *
-	 * @param      $xml    the DOI metadata xml file
-	 * @return     $code   curl command response code
+	 * @param   string  $xml  the DOI metadata xml file
+	 * @return  bool    curl command response code
 	 */
 	protected function _regMetadata($xml)
 	{
@@ -459,8 +430,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get DOI service information from publication component configuration
 	 *
-	 * @param      null
-	 * @return     stdClass object
+	 * @return  void
 	 */
 	public function getPubConfig()
 	{
