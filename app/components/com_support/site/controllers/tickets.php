@@ -1764,7 +1764,7 @@ class Tickets extends SiteController
 		$access = Request::getInt('access', 0);
 
 		$rowc->set('ticket', $id);
-		$rowc->set('comment', nl2br($comment));
+		$rowc->set('comment', $comment);
 		$rowc->set('created', Date::toSql());
 		$rowc->set('created_by', User::get('id'));
 		$rowc->set('access', $access);

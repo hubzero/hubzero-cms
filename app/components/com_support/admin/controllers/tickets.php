@@ -554,7 +554,7 @@ class Tickets extends AdminController
 
 		//$comment = new Comment();
 		$comment->set('ticket', $ticket->get('id'));
-		$comment->set('comment', nl2br($text));
+		$comment->set('comment', $text);
 		$comment->set('created', Date::toSql());
 		$comment->set('created_by', User::get('id'));
 		$comment->set('access', $access);
