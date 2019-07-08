@@ -824,7 +824,7 @@ class Items extends AdminController
 
 		// Save the tags
 		$rt = new Helpers\Tags($this->database);
-		$rt->tag_object(User::get('id'), $id, $tags, 1, true);
+		$rt->tag_object(User::get('id'), $this->model->version->id, $tags, 1, true);
 
 		// Email config
 		$pubtitle = \Hubzero\Utility\Str::truncate($this->model->version->title, 100);
