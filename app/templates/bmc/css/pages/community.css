@@ -38,7 +38,7 @@
   display: block;
   position: absolute;
   bottom: 0;
-  background-image: linear-gradient(to bottom, transparent 0%, transparent 50%, black 100%);
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, black 100%);
   height: 100%;
   width: 100%;
 }
@@ -116,7 +116,7 @@
 }
 
 .module-feature .billboard .billboard-tag {
-  background-color: #84bf41;
+  background-color: #8CC540;
   bottom: 5em;
   font-size: .8em;
   font-weight: bold;
@@ -156,7 +156,7 @@
 }
 
 .module-feature .resource .partner-tag {
-  background-color: #84bf41;
+  background-color: #8CC540;
   bottom: 5em;
   font-size: .8em;
   font-weight: bold;
@@ -196,7 +196,7 @@
 }
 
 .module-feature .group .group-tag {
-  background-color: #84bf41;
+  background-color: #8CC540;
   bottom: 5em;
   font-size: .8em;
   font-weight: bold;
@@ -284,7 +284,7 @@
 }
 
 .module-feature .newsletter .newsletter-tag {
-  background-color: #84bf41;
+  background-color: #8CC540;
   bottom: 5em;
   font-size: .8em;
   font-weight: bold;
@@ -328,7 +328,7 @@
 }
 
 .module-feature .fmn .fmn-tag {
-  background-color: #84bf41;
+  background-color: #8CC540;
   bottom: 5em;
   font-size: .8em;
   font-weight: bold;
@@ -433,7 +433,7 @@
 }
 
 .page-body .content .search input[type='submit'] {
-  background-color: #84bf41;
+  background-color: #8CC540;
   color: #fff;
 }
 
@@ -526,7 +526,7 @@
 }
 
 .one .module-fmn .billboard .billboard-tag {
-  background-color: #84bf41;
+  background-color: #8CC540;
   bottom: 5em;
   font-size: .8em;
   font-weight: bold;
@@ -575,7 +575,7 @@
 }
 
 .one .module-fmn .fmn .fmn-img {
-  border-right: 5px solid #84bf41;
+  border-right: 5px solid #8CC540;
   height: 100%;
   overflow: hidden;
   width: 12.5rem;
@@ -619,7 +619,7 @@
 }
 
 .one .module-fmn .fmn .fmn-tag {
-  background-color: #84bf41;
+  background-color: #8CC540;
   bottom: 0;
   font-size: .8em;
   font-weight: bold;
@@ -745,7 +745,7 @@
 }
 
 .two .module-workshops .billboard .billboard-tag {
-  background-color: #84bf41;
+  background-color: #8CC540;
   bottom: 5em;
   font-size: .8em;
   font-weight: bold;
@@ -780,6 +780,24 @@
   color: #fff;
 }
 
+.no-webp .three .horizonal,
+.no-jpeg2000 .three .horizontal,
+.no-jpegxr .three .horizontal {
+  background: url("/app/site/media/images/workgroup.jpg");
+}
+
+.webp .three .horizontal {
+  background: url("/app/site/media/images/workgroup.webp");
+}
+
+.jpeg2000 .three .horizontal {
+  background: url("/app/site/media/images/workgroup.jp2");
+}
+
+.jpeg2xr .three .horizontal {
+  background: url("/app/site/media/images/workgroup.jxr");
+}
+
 .three {
   display: flex;
   flex-wrap: wrap;
@@ -787,14 +805,13 @@
 }
 
 .three .horizontal {
-  background: url("/app/site/media/images/climate-kic-350836.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
   height: 20rem;
   width: 100%;
 }
 
-@media only screen and (min-width: 901px) {
+@media only screen and (min-width: 56.3125em) {
   .three .horizontal {
     width: 50%;
   }
@@ -807,19 +824,44 @@
   width: 100%;
 }
 
-@media only screen and (min-width: 901px) {
+@media only screen and (min-width: 56.3125em) {
   .three .classrooms {
     order: 1;
     width: 50%;
   }
 }
 
-.four {
-  background: url("/app/site/media/images/stefan-stefancik-257625.jpg");
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/stefan-stefancik-257625.jpg");
+.no-webp .four,
+.no-jpeg2000 .four,
+.no-jpegxr .four {
+  background: url("/app/site/media/images/workgroup-tech.jpg");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/workgroup-tech.jpg");
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: #222b37;
+}
+
+.webp .four {
+  background: url("/app/site/media/images/workgroup-tech.webp");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/workgroup-tech.webp");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.jpeg2000 .four {
+  background: url("/app/site/media/images/workgroup-tech.jp2");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/workgroup-tech.jp2");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.jpeg2xr .four {
+  background: url("/app/site/media/images/workgroup-tech.jxr");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/workgroup-tech.jxr");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.four {
   color: #fff;
   padding: 2.5em;
   text-align: center;
@@ -841,7 +883,7 @@
   width: 100%;
 }
 
-@media only screen and (min-width: 1100px) {
+@media only screen and (min-width: 68.75em) {
   .five .sites {
     width: 50%;
   }
@@ -854,7 +896,7 @@
   width: 100%;
 }
 
-@media only screen and (min-width: 1100px) {
+@media only screen and (min-width: 68.75em) {
   .five .module-sites {
     width: 50%;
   }
@@ -871,7 +913,7 @@
 }
 
 .five .module-sites .group .group-tag {
-  background-color: #84bf41;
+  background-color: #8CC540;
   bottom: 5em;
   font-size: .8em;
   font-weight: bold;

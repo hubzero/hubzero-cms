@@ -433,23 +433,52 @@
 }
 
 //Classrooms
+.no-webp .three .horizonal,
+.no-jpeg2000 .three .horizontal,
+.no-jpegxr .three .horizontal {
+  background: url('/app/site/media/images/workgroup.jpg');
+}
+
+.webp {
+  .three {
+    .horizontal {
+      background: url('/app/site/media/images/workgroup.webp');
+    }
+  }
+}
+
+.jpeg2000 {
+  .three {
+    .horizontal {
+      background: url('/app/site/media/images/workgroup.jp2');
+    }
+  }
+}
+
+.jpeg2xr {
+  .three {
+    .horizontal {
+      background: url('/app/site/media/images/workgroup.jxr');
+    }
+  }
+}
+
 .three {
   @include flexbox(wrap);
   margin-bottom: 4em;
 
   .horizontal {
-    @include respond-at(901px) {
+    @include respond-at(56.3125em) {
       width: 50%;
     }
-    background: url('/app/site/media/images/climate-kic-350836.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
     height: 20rem;
     width: 100%;
   }
 
   .classrooms {
-    @include respond-at(901px) {
+    @include respond-at(56.3125em) {
       order: 1;
       width: 50%;
     }
@@ -461,9 +490,31 @@
 }
 
 //Collaborative Publishing
+.no-webp .four,
+.no-jpeg2000 .four,
+.no-jpegxr .four {
+  @include bcg-img('/app/site/media/images/workgroup-tech.jpg');
+}
+
+.webp {
+  .four {
+    @include bcg-img('/app/site/media/images/workgroup-tech.webp');
+  }
+}
+
+.jpeg2000 {
+  .four {
+    @include bcg-img('/app/site/media/images/workgroup-tech.jp2');
+  }
+}
+
+.jpeg2xr {
+  .four {
+    @include bcg-img('/app/site/media/images/workgroup-tech.jxr');
+  }
+}
+
 .four {
-  @include bcg-img('/app/site/media/images/stefan-stefancik-257625.jpg');
-  background-color: $dark-blue;
   color: $white;
   padding: 2.5em;
   text-align: center;
@@ -479,7 +530,7 @@
   margin: 4em 0;
 
   .sites {
-    @include respond-at(1100px) {
+    @include respond-at(68.75em) {
       width: 50%;
     }
     align-self: center;
@@ -488,7 +539,7 @@
   }
 
   .module-sites {
-    @include respond-at(1100px) {
+    @include respond-at(68.75em) {
       width: 50%;
     }
     @include flexbox(wrap);

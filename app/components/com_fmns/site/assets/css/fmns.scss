@@ -59,17 +59,40 @@ body {
       display: none;
     }
   }
+}
 
+.no-webp .bcg-fmn,
+.no-jpeg2000 .bcg-fmn,
+.no-jpegxr .bcg-fmn {
+  @include bcg-img('/app/components/com_fmns/site/assets/img/art-board-network.jpg');
+}
+
+.webp {
   .bcg-fmn {
-    @include bcg-img('/app/components/com_fmns/site/assets/img/art-board-network.jpg');
-    height: 140%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    visibility: hidden;
-    width: 100%;
-    z-index: -1;
+    @include bcg-img('/app/components/com_fmns/site/assets/img/art-board-network.webp');
   }
+}
+
+.jpeg2000 {
+  .bcg-fmn {
+    @include bcg-img('/app/components/com_fmns/site/assets/img/art-board-network.jp2');
+  }
+}
+
+.jpegxr {
+  .bcg-fmn {
+    @include bcg-img('/app/components/com_fmns/site/assets/img/art-board-network.jxr');
+  }
+}
+
+.bcg-fmn {
+  height: 140%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  visibility: hidden;
+  width: 100%;
+  z-index: -1;
 }
 
 // Anchor Links
@@ -297,6 +320,7 @@ body {
     }
     justify-content: center;
 
+    picture,
     img {
       @include respond-at(34.0625em) {
         height: 28rem;
@@ -308,7 +332,11 @@ body {
     }
 
     .oer {
+      @include respond-at(59.375em) {
+        width: 50%;
+      }
       align-self: center;
+      width: 100%;
     }
   }
 

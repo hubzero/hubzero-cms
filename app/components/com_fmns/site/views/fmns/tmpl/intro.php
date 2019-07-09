@@ -86,7 +86,12 @@ Pathway::append(
     <h2 id="benefits">What might I actually <span class="emphasis">do</span> in a Faculty Mentoring Network?</h2>
     <div class="benefits-wrapper">
       <div class="map-wrapper">
-        <img src="/app/components/com_fmns/site/assets/img/art-board-network.jpg" alt="Institutional Map">
+				<picture>
+					<source type="image/webp" srcset="/app/components/com_fmns/site/assets/img/art-board-network.webp">
+          <source type="image/jp2" srcset="/app/components/com_fmns/site/assets/img/art-board-network.jp2">
+          <source type="image/vnd.ms-photo" srcset="/app/components/com_fmns/site/assets/img/art-board-network.jxr">
+          <img src="/app/components/com_fmns/site/assets/img/art-board-network.jpg" alt="image of networking">
+				</picture>
       </div>
       <ul>
         <li>Discover new activities, lab modules, or educational resources</li>
@@ -115,7 +120,11 @@ Pathway::append(
         <p>Faculty mentoring networks are built around scholarly teaching practices, including Open Education Resources (OER). OER fosters scholarly teaching through access to infrastructure and community where faculty can find, customize, and share high quality teaching resources and strategies.</p>
         <p>For example, many FMNs lead to teaching materials that provide several options for how to approach a single lesson. This multiplies the potential value of the original educational resource – faculty may more easily find a version they can implement given their unique classroom situation.</p>
       </div>
-      <img src="/app/components/com_fmns/site/assets/img/oer-lifecycle.png" alt="Graphic of OER Lifecycle">
+			<picture>
+				<source type="image/webp" srcset="/app/components/com_fmns/site/assets/img/oer-lifecycle.webp">
+				<source type="image/jp2" srcset="/app/components/com_fmns/site/assets/img/oer-lifecycle.jp2">
+				<img src="/app/components/com_fmns/site/assets/img/oer-lifecycle.png" alt="Graphic of OER Lifecycle">
+			</picture>
     </div>
 
   </section>

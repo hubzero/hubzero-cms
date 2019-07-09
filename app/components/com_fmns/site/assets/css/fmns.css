@@ -20,7 +20,7 @@
   display: block;
   position: absolute;
   bottom: 0;
-  background-image: linear-gradient(to bottom, transparent 0%, transparent 50%, black 100%);
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, black 100%);
   height: 100%;
   width: 100%;
 }
@@ -124,11 +124,37 @@ body {
   display: none;
 }
 
-.header .bcg-fmn {
+.no-webp .bcg-fmn,
+.no-jpeg2000 .bcg-fmn,
+.no-jpegxr .bcg-fmn {
   background: url("/app/components/com_fmns/site/assets/img/art-board-network.jpg");
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/components/com_fmns/site/assets/img/art-board-network.jpg");
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.webp .bcg-fmn {
+  background: url("/app/components/com_fmns/site/assets/img/art-board-network.webp");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/components/com_fmns/site/assets/img/art-board-network.webp");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.jpeg2000 .bcg-fmn {
+  background: url("/app/components/com_fmns/site/assets/img/art-board-network.jp2");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/components/com_fmns/site/assets/img/art-board-network.jp2");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.jpegxr .bcg-fmn {
+  background: url("/app/components/com_fmns/site/assets/img/art-board-network.jxr");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/components/com_fmns/site/assets/img/art-board-network.jxr");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.bcg-fmn {
   height: 140%;
   left: 0;
   position: absolute;
@@ -175,7 +201,7 @@ body {
 }
 
 .new .billboard-image {
-  border-right: 5px solid #84bf41;
+  border-right: 5px solid #8CC540;
   height: 100%;
   width: 12.5rem;
   overflow: hidden;
@@ -206,7 +232,7 @@ body {
   font-weight: bold;
   font-size: .8em;
   padding: .5em .8em;
-  background-color: #84bf41;
+  background-color: #8CC540;
 }
 
 .new .billboard .billboard-tag a {
@@ -235,7 +261,7 @@ body {
 }
 
 .new .fmn-img {
-  border-right: 5px solid #84bf41;
+  border-right: 5px solid #8CC540;
   height: 100%;
   width: 12.5rem;
   overflow: hidden;
@@ -288,7 +314,7 @@ body {
   font-size: .8em;
   left: 0;
   padding: .5em .8em;
-  background-color: #84bf41;
+  background-color: #8CC540;
 }
 
 .new .fmn .fmn-tag span {
@@ -380,7 +406,7 @@ body {
 
 .products h2 {
   bottom: -.76em;
-  color: #84bf41;
+  color: #8CC540;
   position: relative;
 }
 
@@ -404,17 +430,20 @@ body {
   }
 }
 
+.products .oer-wrap picture,
 .products .oer-wrap img {
   height: 22rem;
 }
 
 @media only screen and (min-width: 34.0625em) {
+  .products .oer-wrap picture,
   .products .oer-wrap img {
     height: 28rem;
   }
 }
 
 @media only screen and (min-width: 43.75em) {
+  .products .oer-wrap picture,
   .products .oer-wrap img {
     height: 35rem;
   }
@@ -422,12 +451,19 @@ body {
 
 .products .oer-wrap .oer {
   align-self: center;
+  width: 100%;
+}
+
+@media only screen and (min-width: 59.375em) {
+  .products .oer-wrap .oer {
+    width: 50%;
+  }
 }
 
 .products .product-wrap {
   display: flex;
   flex-wrap: wrap;
-  border: 1px solid #84bf41;
+  border: 1px solid #8CC540;
   border-radius: 6px;
   padding: 1em;
 }

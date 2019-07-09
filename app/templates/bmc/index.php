@@ -15,6 +15,7 @@ Html::behavior('modal');
 $this->addStylesheet($this->baseurl . '/templates/' . $this->template . '/css/site.css');
 $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/vendor/hammer.js');
 $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js?v=' . filemtime(__DIR__ . '/js/hub.js'));
+$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/modernizr-custom.js?v=' . filemtime(__DIR__ . '/js/modernizr-custom.js'));
 
 $menu = App::get('menu');
 $isFrontPage = ($menu->getActive() == $menu->getDefault());

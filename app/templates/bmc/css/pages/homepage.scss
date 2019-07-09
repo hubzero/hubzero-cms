@@ -31,8 +31,31 @@
   }
 }
 
+.no-webp .intro,
+.no-jpeg2000 .intro,
+.no-jpegxr .intro {
+  @include bcg-img('/app/site/media/images/idea-2000.jpg');
+}
+
+.webp {
+  .intro {
+    @include bcg-img('/app/site/media/images/idea-2000.webp');
+  }
+}
+
+.jpeg2000 {
+  .intro {
+    @include bcg-img('/app/site/media/images/idea-2000.jp2');
+  }
+}
+
+.jpegxr {
+  .intro {
+    @include bcg-img('/app/site/media/images/idea-2000.jxr');
+  }
+}
+
 .intro {
-  @include bcg-img('/app/site/media/images/pexels-photo-355988.jpg');
   @include bcg($black, $white);
   color: $white;
   flex-direction: column;
@@ -70,6 +93,13 @@
   @include flexbox;
   justify-content: space-around;
   margin-top: 2em;
+}
+
+.anchor-link {
+  .link {
+    @include btn-border-drawing($white, $orange, 1px, bottom, right);
+    border-radius: 2px;
+  }
 }
 
 .latest-tweet {
@@ -166,11 +196,11 @@
 
       a {
         @include showcase-header(1em, 1.2, 4);
-        color: $body-color;
+        color: $body;
       }
 
       span {
-        color: $body-color;
+        color: $body;
       }
     }
   }

@@ -46,14 +46,39 @@
   font-family: 'Martel', serif;
 }
 
+.no-webp .service-header,
+.no-jpeg2000 .service-header,
+.no-jpegxr .service-header {
+  background: url("/app/site/media/images/workdesk.jpg");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/workdesk.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.webp .service-header {
+  background: url("/app/site/media/images/workdesk.webp");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/workdesk.webp");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.jpeg2000 .service-header {
+  background: url("/app/site/media/images/workdesk.jp2");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/workdesk.jp2");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.jpegxr .service-header {
+  background: url("/app/site/media/images/workdesk.jxr");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/workdesk.jxr");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .service-header {
   display: flex;
   flex-wrap: nowrap;
-  background: url("/app/site/media/images/jeff-sheldon-3231.jpg");
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/jeff-sheldon-3231.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-color: #000;
   color: #fff;
   text-align: center;
 }
@@ -200,6 +225,40 @@
   transition-delay: 0s, 0.25s, 0s;
 }
 
+.no-webp .two .big, .no-webp .three .big, .no-webp .four .big,
+.no-jpeg2000 .two .big,
+.no-jpeg2000 .three .big,
+.no-jpeg2000 .four .big,
+.no-jpegxr .two .big,
+.no-jpegxr .three .big,
+.no-jpegxr .four .big {
+  background: url("/app/site/media/images/workplace.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.webp .two .big, .webp .three .big, .webp .four .big {
+  background: url("/app/site/media/images/workplace.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.jpeg2000 .two .big, .jpeg2000 .three .big, .jpeg2000 .four .big {
+  background: url("/app/site/media/images/workplace.jp2");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.jpegxr .two .big, .jpegxr .three .big, .jpegxr .four .big {
+  background: url("/app/site/media/images/workplace.jxr");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .two, .three, .four {
   display: flex;
   flex-wrap: wrap;
@@ -218,10 +277,6 @@
 }
 
 .two .big, .three .big, .four .big {
-  background: url("/app/site/media/images/workplace-1245776_1920.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
   height: 20rem;
   width: 100%;
 }
@@ -283,6 +338,36 @@
   transition-delay: 0s, 0.25s, 0s;
 }
 
+.no-webp .three .big,
+.no-jpeg2000 .three .big,
+.no-jpegxr .three .big {
+  background: url("/app/site/media/images/workdesk-rule.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.webp .three .big {
+  background: url("/app/site/media/images/workdesk-rule.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.jpeg2000 .three .big {
+  background: url("/app/site/media/images/workdesk-rule.jp2");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.jpegxr .three .big {
+  background: url("/app/site/media/images/workdesk-rule.jxr");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .three .workshop {
   order: -1;
 }
@@ -294,15 +379,34 @@
 }
 
 .three .big {
-  background: url("/app/site/media/images/javier-quesada-222120.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
   height: 20rem;
 }
 
-.four .big {
-  background: url("/app/site/media/images/pexels-photo-392018.jpg");
+.no-webp .four .big,
+.no-jpeg2000 .four .big,
+.no-jpegxr .four .big {
+  background: url("/app/site/media/images/workdesk-mouse.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.webp .four .big {
+  background: url("/app/site/media/images/workdesk-mouse.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.jpeg2000 .four .big {
+  background: url("/app/site/media/images/workdesk-mouse.jp2");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.jpegxr .four .big {
+  background: url("/app/site/media/images/workdesk-mouse.jxr");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

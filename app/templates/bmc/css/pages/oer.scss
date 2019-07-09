@@ -28,9 +28,31 @@
 }
 
 //Header
+.no-webp .oer-header,
+.no-jpeg2000 .oer-header,
+.no-jpegxr .oer-header {
+  @include bcg-img('/app/site/media/images/library.jpg');
+}
+
+.webp {
+  .oer-header {
+    @include bcg-img('/app/site/media/images/library.webp');
+  }
+}
+
+.jpeg2000 {
+  .oer-header {
+    @include bcg-img('/app/site/media/images/library.jp2');
+  }
+}
+
+.jpegxr {
+  .oer-header {
+    @include bcg-img('/app/site/media/images/library.jxr');
+  }
+}
 .oer-header {
   @include flexbox;
-  @include bcg-img('/app/site/media/images/pexels-photo-590493.jpg');
   background-color: $black;
   color: $white;
   height: 25rem;

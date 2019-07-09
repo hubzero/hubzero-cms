@@ -109,13 +109,39 @@
   transition-delay: 0s, 0.25s, 0s;
 }
 
+.no-webp .oer-header,
+.no-jpeg2000 .oer-header,
+.no-jpegxr .oer-header {
+  background: url("/app/site/media/images/library.jpg");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/library.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.webp .oer-header {
+  background: url("/app/site/media/images/library.webp");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/library.webp");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.jpeg2000 .oer-header {
+  background: url("/app/site/media/images/library.jp2");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/library.jp2");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.jpegxr .oer-header {
+  background: url("/app/site/media/images/library.jxr");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/library.jxr");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .oer-header {
   display: flex;
   flex-wrap: nowrap;
-  background: url("/app/site/media/images/pexels-photo-590493.jpg");
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), url("/app/site/media/images/pexels-photo-590493.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
   background-color: #000;
   color: #fff;
   height: 25rem;

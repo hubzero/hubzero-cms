@@ -75,17 +75,6 @@ html {
   position: relative;
   transition: 1s ease-out;
 
-  .bcg-mission {
-    @include bcg-img('/app/site/media/images/mikael-kristenson-242070-unsplash.jpg');
-    height: 140%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    visibility: hidden;
-    width: 100%;
-    z-index: -1;
-  }
-
   h2 {
     color: $white;
     font-size: 1.5rem;
@@ -95,6 +84,40 @@ html {
   @include respond-at(701px) {
     padding: 7em;
   }
+}
+
+.no-webp .bcg-mission,
+.no-jpeg2000 .bcg-mission,
+.no-jpegxr .bcg-mission {
+  @include bcg-img('/app/site/media/images/conference.jpg');
+}
+
+.webp {
+  .bcg-mission {
+    @include bcg-img('/app/site/media/images/conference.webp');
+  }
+}
+
+.jpeg2000 {
+  .bcg-mission {
+    @include bcg-img('/app/site/media/images/conference.jp2');
+  }
+}
+
+.jpegxr {
+  .bcg-mission {
+    @include bcg-img('/app/site/media/images/conference.jxr');
+  }
+}
+
+.bcg-mission {
+  height: 140%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  visibility: hidden;
+  width: 100%;
+  z-index: -1;
 }
 
 .mission-statement {
@@ -208,23 +231,26 @@ html {
   background-color: $light-gray;
 }
 
-//Citations
-.citations {
-  padding: 7em 0;
-
+//Citations & Funder
+.citations,
+.funders {
   h2 {
     text-align: center;
   }
 
+  p {
+    margin: 1em auto;
+    max-width: 55rem;
+    text-align: center;
+  }
+}
+
+.citations {
+  padding: 7em 0;
+
   h4 {
     font-family: 'Martel', serif;
     margin-top: 2em;
-    text-align: center;
-  }
-
-  p {
-    margin: 0 auto;
-    max-width: 55rem;
     text-align: center;
   }
 
