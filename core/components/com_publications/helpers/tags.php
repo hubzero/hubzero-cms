@@ -749,7 +749,7 @@ class Tags extends \Hubzero\Base\Obj
 		$sql .= "AND V.state=1 AND V.main=1 AND V.access!=4 ";
 		$sql .= "AND V.published_up < " . $this->_db->quote(Date::toSql()) . " ";
 		$sql .= "AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00' OR V.published_down > " . $this->_db->quote(Date::toSql()) . ") ";
-		$sql .= "GROUP BY tj.tagid, tj.objectid ";
+		$sql .= "GROUP BY tj.tagid ";
 		$sql .= "ORDER BY tcount DESC ";
 		$sql .= "LIMIT $limit";
 
