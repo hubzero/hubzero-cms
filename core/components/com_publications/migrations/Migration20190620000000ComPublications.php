@@ -35,17 +35,55 @@ class Migration20190620000000ComPublications extends Base
 			$this->db->setQuery($query);
 			$publications = $this->db->loadColumn();
 
+			$pubtags = array();
+			foreach ($publications as $publication)
+			{
+				$query = "SELECT * FROM `$table` WHERE `tbl`='publications' AND `objectid`=" . $publication;
+				$this->db->setQuery($query);
+
+				$pubtags[$publication] = $this->db->loadObjectList();
+			}
+
 			foreach ($publications as $publication)
 			{
 				$query = "SELECT id, publication_id FROM `#__publication_versions` WHERE `publication_id`=" . $this->db->quote($publication);
 				$this->db->setQuery($query);
 				$versions = $this->db->loadObjectList();
 
+				if (count($versions) <= 0)
+				{
+					foreach ($pubtags[$publication] as $tag)
+					{
+						$query = "DELETE FROM `$table` WHERE id=" . $tag->id;
+						$this->db->setQuery($query);
+						if (!$this->db->query())
+						{
+							$this->log('Query failed: ' . $query, 'error');
+						}
+						else
+						{
+							$this->log(sprintf('Deleting tags from publication ID %s', $publication));
+						}
+					}
+
+					continue;
+				}
+
+				if (!isset($pubtags[$publication]) || count($pubtags[$publication]) <= 0)
+				{
+					continue;
+				}
+
 				foreach ($versions as $i => $version)
 				{
 					if ($i == 0)
 					{
-						$query = "UPDATE `$table` SET `objectid`=" . $this->db->quote($version->id) . " WHERE `tbl`='publications' AND `objectid`=" . $this->db->quote($publication);
+						$ids = array();
+						foreach ($pubtags[$publication] as $tag)
+						{
+							$ids[] = $tag->id;
+						}
+						$query = "UPDATE `$table` SET `objectid`=" . $this->db->quote($version->id) . " WHERE `id` IN (" . implode(',', $ids) . ")";
 
 						$this->db->setQuery($query);
 						if (!$this->db->query())
@@ -59,11 +97,7 @@ class Migration20190620000000ComPublications extends Base
 					}
 					else
 					{
-						$query = "SELECT * FROM `$table` WHERE `tbl`='publications' AND `objectid`=" . $publication;
-						$this->db->setQuery($query);
-						$tags = $this->db->loadObjectList();
-
-						foreach ($tags as $tag)
+						foreach ($pubtags[$publication] as $tag)
 						{
 							$query = "INSERT INTO `$table` (`tagid`, `objectid`, `strength`, `taggerid`, `taggedon`, `tbl`, `label`) VALUES (" . $this->db->quote($tag->tagid) . ", " . $this->db->quote($version->id) . ", 1, " . $this->db->quote($tag->taggerid) . ", " . $this->db->quote($tag->taggedon) . ", 'publications', '')";
 
@@ -79,6 +113,8 @@ class Migration20190620000000ComPublications extends Base
 						}
 					}
 				}
+
+				unset($pubtags[$publication]);
 			}
 		}
 	}
