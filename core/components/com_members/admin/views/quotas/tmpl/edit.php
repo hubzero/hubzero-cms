@@ -46,11 +46,22 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 
 				<?php if (!$this->row->get('user_id')) : ?>
 					<div class="input-wrap">
-						<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/assets/js/autocompleter.js"></script>
-						<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/assets/css/autocompleter.css";</script>
-
 						<label for="field-user_id"><?php echo Lang::txt('COM_MEMBERS_QUOTA_USER'); ?>:</label>
-						<input type="text" name="fields[user_id]" id="field-user_id" data-options="members,multi," id="acmembers" class="autocomplete" value="" autocomplete="off" data-css="" data-script="<?php echo $base; ?>/administrator/index.php" />
+						<?php
+						$mc = Event::trigger('hubzero.onGetMultiEntry', array(
+							array(
+								'members',   // The component to call
+								'fields[user_id]',        // Name of the input field
+								'field-user_id', // ID of the input field
+								'',          // CSS class(es) for the input field
+								''  // The value of the input field
+							)
+						));
+						if (count($mc) > 0) {
+							echo implode("\n", $mc);
+						} else { ?>
+							<input type="text" name="fields[user_id]" id="field-user_id" value="" />
+						<?php } ?>
 						<span><?php echo Lang::txt('COM_MEMBERS_QUOTA_USER_HINT'); ?></span>
 					</div>
 				<?php else : ?>
