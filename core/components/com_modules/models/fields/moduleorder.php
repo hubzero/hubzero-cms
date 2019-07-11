@@ -42,15 +42,19 @@ class ModuleOrder extends Field
 		// Initialize JavaScript field attributes.
 		$attr .= $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
 
-		$html[] = '<script type="text/javascript">';
+		$html[] = '<script type="application/json" id="moduleorder">';
 
 		$ordering = $this->form->getValue('ordering');
 		$position = $this->form->getValue('position');
 		$clientId = $this->form->getValue('client_id');
 
-		$html[] = 'var originalOrder = "'.$ordering.'";';
-		$html[] = 'var originalPos = "'.$position.'";';
-		$html[] = 'var orders = new Array();';
+		$data = new \stdClass;
+		$data->originalOrder = $ordering;
+		$data->originalPos = $position;
+		$data->orders = array();
+		$data->name = $this->name;
+		$data->id = $this->id;
+		$data->attr = $attr;
 
 		$db = App::get('db');
 		$query = $db->getQuery()
@@ -79,10 +83,10 @@ class ModuleOrder extends Field
 			$ord = $orders2[$orders[$i]->position];
 			$title = Lang::txt('COM_MODULES_OPTION_ORDER_POSITION', $ord, addslashes($orders[$i]->title));
 
-			$html[] = 'orders['.$i.'] =  new Array("'.$orders[$i]->position.'","'.$ord.'","'.$title.'");';
+			$data->orders[$i] = array($orders[$i]->position, $ord, $title);
 		}
 
-		$html[] = 'writeDynaList(\'name="'.$this->name.'" id="'.$this->id.'"'.$attr.'\', orders, originalPos, originalPos, originalOrder);';
+		$html[] = json_encode($data);
 		$html[] = '</script>';
 
 		return implode("\n", $html);
