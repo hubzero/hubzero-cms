@@ -547,7 +547,7 @@ class Publications extends Macro
 		}
 
 		if ($tags) {
-			$sql .= ' AND (C.id IN (SELECT DISTINCT(objectid) FROM #__tags_object O WHERE O.tagid IN (SELECT T.id FROM #__tags T WHERE T.tag IN (' . $tags . ')) AND O.tbl="publications"))';
+			$sql .= ' AND (V.id IN (SELECT DISTINCT(objectid) FROM #__tags_object O WHERE O.tagid IN (SELECT T.id FROM #__tags T WHERE T.tag IN (' . $tags . ')) AND O.tbl="publications"))';
 		}
 
 		$sql .= ' AND V.state != 2 GROUP BY C.id ORDER BY';
