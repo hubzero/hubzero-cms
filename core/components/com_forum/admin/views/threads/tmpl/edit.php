@@ -30,7 +30,7 @@ Html::behavior('keepalive');
 $this->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>" enctype="multipart/form-data">
 	<div class="grid">
 		<div class="col span7">
 			<fieldset class="adminform">
@@ -122,25 +122,31 @@ $this->js();
 			<fieldset class="adminform">
 				<legend><span><?php echo Lang::txt('COM_FORUM_LEGEND_ATTACHMENTS'); ?></span></legend>
 
-				<?php $attachment = $this->row->attachments()->row(); ?>
+				<?php /*foreach ($this->row->attachments()->rows() as $attachment): ?>
+					<div class="input-wrap attachment">
+						<div class="attachment-file">
+							<?php echo $this->escape(stripslashes($attachment->get('filename'))); ?>
+						</div>
+						<div class="attachment-options">
+							<a href=""></a>
+						</div>
+					</div>
+				<?php endforeach;*/ ?>
+				<?php if ($this->row->get('id')) { ?>
+					<iframe width="100%" height="200" name="media" id="media" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=media&tmpl=component&id=' . $this->row->get('id') . '&t=' . Date::toUnix()); ?>"></iframe>
+				<?php } ?>
 
 				<div class="input-wrap">
-					<label for="upload"><?php echo Lang::txt('COM_FORUM_FIELD_FILE'); ?> <?php if ($attachment->get('filename')) { echo '<strong>' . $this->escape(stripslashes($attachment->get('filename'))) . '</strong>'; } ?></label><br />
-					<input type="file" name="upload" id="upload<" />
+					<label for="upload"><?php echo Lang::txt('COM_FORUM_FIELD_FILE'); ?></label><br />
+					<input type="file" name="upload" id="upload" />
 				</div>
 
 				<div class="input-wrap">
 					<label for="field-attach-descritpion"><?php echo Lang::txt('COM_FORUM_FIELD_DESCRIPTION'); ?></label><br />
-					<input type="text" name="description" id="field-attach-descritpion" value="<?php echo $this->escape(stripslashes($attachment->get('description'))); ?>" />
-					<input type="hidden" name="attachment" value="<?php echo $this->escape($attachment->get('id')); ?>" />
+					<input type="text" name="description" id="field-attach-descritpion" value="" />
 				</div>
-
-				<?php if ($attachment->get('id')) { ?>
-					<p class="warning">
-						<?php echo Lang::txt('COM_FORUM_FIELD_FILE_WARNING'); ?>
-					</p>
-				<?php } ?>
 			</fieldset>
+
 		</div>
 		<div class="col span5">
 			<table class="meta">
