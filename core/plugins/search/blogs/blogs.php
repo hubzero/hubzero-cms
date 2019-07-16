@@ -85,25 +85,28 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 			$id_map[$row->get('id')] = $idx;
 		}
 
-		$comments = new \Components\Search\Models\Basic\Result\Sql(
-			"SELECT
-		 	CASE WHEN bc.anonymous THEN 'Anonymous Comment' ELSE concat('Comment by ', u.name) END AS title,
-			bc.content AS description,
-			concat('index.php?option=com_members&id=', be.created_by, '&active=blog&task=', extract(year from be.created), '/', extract(month from be.created), '/', be.alias) AS link,
-			bc.created AS date,
-			'Comments' AS section,
-			bc.entry_id
-			FROM `#__blog_comments` bc
-			INNER JOIN `#__blog_entries` be
-				ON be.id = bc.entry_id
-			INNER JOIN `#__users` u
-				ON u.id = bc.created_by
-			WHERE bc.entry_id IN (" . implode(',', array_keys($id_map)) . ")
-			ORDER BY bc.created"
-		);
-		foreach ($comments->to_associative() as $comment)
+		if (!empty($id_map))
 		{
-			$rows->at($id_map[$comment->get('entry_id')])->add_child($comment);
+			$comments = new \Components\Search\Models\Basic\Result\Sql(
+				"SELECT
+				CASE WHEN bc.anonymous THEN 'Anonymous Comment' ELSE concat('Comment by ', u.name) END AS title,
+				bc.content AS description,
+				concat('index.php?option=com_members&id=', be.created_by, '&active=blog&task=', extract(year from be.created), '/', extract(month from be.created), '/', be.alias) AS link,
+				bc.created AS date,
+				'Comments' AS section,
+				bc.entry_id
+				FROM `#__blog_comments` bc
+				INNER JOIN `#__blog_entries` be
+					ON be.id = bc.entry_id
+				INNER JOIN `#__users` u
+					ON u.id = bc.created_by
+				WHERE bc.entry_id IN (" . implode(',', array_keys($id_map)) . ")
+				ORDER BY bc.created"
+			);
+			foreach ($comments->to_associative() as $comment)
+			{
+				$rows->at($id_map[$comment->get('entry_id')])->add_child($comment);
+			}
 		}
 
 		$results->add($rows);
