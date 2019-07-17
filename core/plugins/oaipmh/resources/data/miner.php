@@ -341,7 +341,7 @@ class Miner extends Obj implements Provider
 				WHERE a.rid=" . $this->database->quote($id) . " AND v.revision=" . $this->database->quote($revision) . "
 				LIMIT 1"*/
 			$this->database->setQuery(
-				"SELECT a.`doi`
+				"SELECT a.*
 				FROM `#__doi_mapping` AS a
 				WHERE a.rid=" . $this->database->quote($id) . " AND a.local_revision=" . $this->database->quote($revision) . "
 				LIMIT 1"
@@ -350,13 +350,13 @@ class Miner extends Obj implements Provider
 		else
 		{
 			$this->database->setQuery(
-				"SELECT a.`doi`
+				"SELECT a.*
 				FROM `#__doi_mapping` AS a
 				WHERE a.rid=" . $this->database->quote($id) . "
 				ORDER BY `versionid` DESC LIMIT 1"
 			);
 		}
-		$record->identifier = $this->identifier($id, $this->database->loadResult(), $revision);
+		$record->identifier = $this->identifier($id, $this->database->loadObject(), $revision);
 
 		$this->database->setQuery(
 			"SELECT DISTINCT t.raw_tag
@@ -401,11 +401,11 @@ class Miner extends Obj implements Provider
 		}
 
 		$this->database->setQuery(
-			"SELECT DISTINCT r.id
+			"SELECT DISTINCT a.parent_id
 			FROM `#__resources` AS r
 			INNER JOIN `#__resource_assoc` AS a ON r.id=a.parent_id
 			WHERE r.published=1 AND a.child_id=" . $this->database->quote($id) . "
-			ORDER BY a.ordering, a.grouping"
+			ORDER BY a.parent_id"
 		);
 		if ($parents = $this->database->loadObjectList())
 		{
@@ -413,7 +413,7 @@ class Miner extends Obj implements Provider
 			{
 				$record->relation[] = array(
 					'type'  => 'isPartOf',
-					'value' => $this->identifier($parent->id, 0)
+					'value' => $this->identifier($parent->parent_id, 0)
 				);
 			}
 		}
@@ -460,7 +460,7 @@ class Miner extends Obj implements Provider
 
 				$record->relation[] = array(
 					'type'  => 'hasVersion',
-					'value' => $this->identifier($id, $v->doi, $v->revision)
+					'value' => $this->identifier($id, $v, $v->revision)
 				);
 			}
 		}
@@ -556,7 +556,16 @@ class Miner extends Obj implements Provider
 	{
 		if ($doi)
 		{
-			$identifier = $this->doiResolver() . $doi;
+			if (is_object($doi))
+			{
+				$identifier = rtrim(Component::params('com_tools')->get('doi_resolve', 'https://doi.org/'), '/') . '/';
+				$identifier .= ($doi->doi_shoulder ? $doi->doi_shoulder : Component::params('com_tools')->get('doi_shoulder')) . '/';
+				$identifier .= $doi->doi;
+			}
+			else
+			{
+				$identifier = $this->doiResolver() . $doi;
+			}
 		}
 		else
 		{
