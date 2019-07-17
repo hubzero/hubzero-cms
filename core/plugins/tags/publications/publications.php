@@ -208,7 +208,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 		if (isset($filters['tags']))
 		{
 			$ids = implode(',', $filters['tags']);
-			$query .= "AND t.objectid=r.id AND t.tbl='publications' AND t.tagid IN (" . $ids . ") ";
+			$query .= "AND t.objectid=V.id AND t.tbl='publications' AND t.tagid IN (" . $ids . ") ";
 		}
 		if (isset($filters['category']) && $filters['category'] != '') {
 			$query .= "AND r.category=" . $filters['category'] . " ";
