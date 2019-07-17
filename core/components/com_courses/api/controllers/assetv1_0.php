@@ -59,7 +59,28 @@ class Assetv1_0 extends base
 		$handlers = $assetHandler->getHandlers();
 
 		// Also check the PHP max post and upload values
-		$max_upload = min((int)(ini_get('upload_max_filesize')), (int)(ini_get('post_max_size')));
+		$max = array(
+			'upload' => ini_get('upload_max_filesize'),
+			'post'   => ini_get('post_max_size')
+		);
+
+		$max = array_map(
+			function($v)
+			{
+				if (stristr($v, 'G'))
+				{
+					$v = intval($v) * 1024;
+				}
+				elseif (stristr($v, 'K'))
+				{
+					$v = intval($v) / 1024;
+				}
+				return $v;
+			},
+			$max
+		);
+
+		$max_upload = min((int)$max['upload'], (int)$max['post']);
 
 		// Return message
 		$this->send(['ext' => $ext, 'handlers' => $handlers, 'max_upload' => $max_upload]);
