@@ -13,10 +13,10 @@ if ($msg = App::get('request')->getString('msg'))
 }
 $config  = isset($config) ?: App::get('config');
 
-foreach ($config->getLoader()->getErrors() as $err)
+/*foreach ($config->getLoader()->getErrors() as $err)
 {
 	$errors[] = $err;
-}
+}*/
 ?>
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr" class="nojs">
