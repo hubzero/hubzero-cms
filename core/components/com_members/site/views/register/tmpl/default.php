@@ -20,6 +20,11 @@ if ($form_redirect = Request::getString('return', '', 'get'))
 	// urldecode is due to round trip XSS protection added to this field, see ticket 1411
 	$form_redirect = urldecode($form_redirect);
 }
+$current = Request::path();
+if (!$form_redirect && !in_array($current, array('/register/update', '/members/update', '/members/register/update')))
+{
+	$form_redirect = Request::current();
+}
 ?>
 <header id="content-header">
 	<h2><?php echo Lang::txt('COM_MEMBERS_REGISTER_'.strtoupper($this->task)); ?></h2>
