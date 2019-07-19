@@ -606,7 +606,11 @@ class Register extends SiteController
 
 			if (!$updateEmail)
 			{
-				$suri = Request::getString('REQUEST_URI', '/', 'server');
+				$suri = urldecode(Request::getString('return', ''));
+				if (!$suri)
+				{
+					$suri = Request::getString('REQUEST_URI', '/', 'server');
+				}
 
 				if ($suri == '/register/update' || $suri == '/members/update' || $suri == '/members/register/update')
 				{
