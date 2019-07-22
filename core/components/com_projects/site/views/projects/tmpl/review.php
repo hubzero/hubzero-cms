@@ -140,7 +140,7 @@ if ($this->getError()) {
 	</div>
 	<p class="submitarea">
 		<input type="submit" value="<?php echo $b_action; ?>" class="btn" />
-		<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt(JCANCEL); ?>" />
+		<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
 	</p>
 	<div id="admincommentbox">
 	<h4><?php echo ucfirst(Lang::txt('COM_PROJECTS_REVIEWER_COMMENTS')); ?> <span class="hint"> <?php echo ucfirst(Lang::txt('COM_PROJECTS_REVIEWER_COMMENTS_LATEST_FIRST')); ?></span></h4>
