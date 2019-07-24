@@ -1,0 +1,3 @@
+Templates make it easier for users to add new pages. Instead of requiring that each bit of new information be added by hand, templates have some text and structure already filled in.
+
+Templates are standard wiki pages except that they follow a convention that the name is prefixed with "Template:", assigning it to that namespace; besides this, you can create them like any other wiki page.

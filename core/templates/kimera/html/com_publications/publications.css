@@ -10,7 +10,7 @@
 	-- -- -- -- -- -- --
 */
 
-	.com_publications .aside  {
+	/*.com_publications .aside  {
 		border: none;
 	}
 	.com_publications .aside li {
@@ -26,7 +26,7 @@
 	}
 	.com_publications .aside li a:hover {
 		color: #000;
-	}
+	}*/
 
 	.com_publications #content-header .metadata .share,
 	.com_publications #content-header .metadata p,
@@ -71,7 +71,7 @@
 	} */
 
 /* Item listing */
-	.com_publications .container .container-block {
+	/*.com_publications .container .container-block {
 		margin: 0;
 		padding: 0;
 	}
@@ -93,7 +93,7 @@
 	}
 	.com_publications .filter-options {
 		width: 60%;
-	}
+	}*/
 
 /* Publication category icons */
 	.com_publications div.extracontent li a:before {
@@ -333,7 +333,7 @@
 		display: block;
 	}
 	.devversion {
-		background: url("/core/components/com_publications/site/assets/img/bgdev.gif") 0 0 repeat-x;
+		background: url("../../../../../core/components/com_publications/site/assets/img/bgdev.gif") 0 0 repeat-x;
 		border: 1px solid #e5d5b0;
 		padding: 0.2em;
 		padding-left: 0.5em;
@@ -394,7 +394,7 @@
 		font-size: 85%;
 	}
 	.metaplaceholder {
-		background: #FFFFFF url("/core/components/com_publications/site/assets/img/metaplaceholder.gif") 0 0 no-repeat;
+		background: #FFFFFF url("../../../../../core/components/com_publications/site/assets/img/metaplaceholder.gif") 0 0 no-repeat;
 		padding: 1em 3em 1em 3.5em;
 		border: 1px dashed #bbb;
 		margin: 1em 0 0 0;
@@ -405,7 +405,7 @@
 		padding: 0;
 	}
 	.guide {
-		background: url("/core/components/com_publications/site/assets/img/compass.gif") 0 0 no-repeat;
+		background: url("../../../../../core/components/com_publications/site/assets/img/compass.gif") 0 0 no-repeat;
 		padding-left: 20px;
 	}
 	.archive {
@@ -442,10 +442,9 @@
 		padding-bottom: 0.5em;
 	}
 	.viewalldocs {
-		margin-top: -1em;
 		font-size: 85%;
 		padding: 0 0 0.8em 30px;
-		background: url("/core/components/com_publications/site/assets/img/childlink.gif") 10px 0 no-repeat;
+		background: url("../../../../../core/components/com_publications/site/assets/img/childlink.gif") 10px 0 no-repeat;
 	}
 	ul.supdocln {
 		list-style: none;
@@ -454,7 +453,7 @@
 		color: #8d7a62;
 		margin: -0.5em -0.2em 1.5em -0.2em;
 		padding: 0 0 0.8em 30px;
-		background: url("/core/components/com_publications/site/assets/img/childlink.gif") 10px 0 no-repeat;
+		background: url("../../../../../core/components/com_publications/site/assets/img/childlink.gif") 10px 0 no-repeat;
 		width: auto;
 	}
 	ul.supdocln li {
@@ -639,7 +638,7 @@
 /* Metadata container */
 	.metadata {
 		border: 1px solid #fff;
-		border: 1px solid rgba(255, 255, 255, 0.5);
+		border: 1px dashed rgba(0, 0, 0, 0.2);
 		background: rgba(255, 255, 255, 0.1);
 		margin: 0;
 		padding: 0.5em;
@@ -903,20 +902,20 @@
 		line-height: 1em;
 	}
 	.opensource {
-		background: url("/core/components/com_publications/site/assets/img/logos/opensource.gif") 0 0 no-repeat !important;
+		background: url("../../../../../core/components/com_publications/site/assets/img/logos/opensource.gif") 0 0 no-repeat !important;
 	}
 	.closedsource {
-		background: url("/core/components/com_publications/site/assets/img/logos/closedsource.gif") 0 0 no-repeat !important;
+		background: url("../../../../../core/components/com_publications/site/assets/img/logos/closedsource.gif") 0 0 no-repeat !important;
 	}
 	.cc {
-		background: url("/core/components/com_publications/site/assets/img/logos/cc.gif") -0.5em 0.5em no-repeat !important;
+		background: url("../../../../../core/components/com_publications/site/assets/img/logos/cc.gif") -0.5em 0.5em no-repeat !important;
 	}
 	.com_publications .custom,
 	.standard {
-		background: url("/core/components/com_publications/site/assets/img/logos/license.gif") -0.5em 0.5em no-repeat;
+		background: url("../../../../../core/components/com_publications/site/assets/img/logos/license.gif") -0.5em 0.5em no-repeat;
 	}
 	.gpl {
-		background: url("/core/components/com_publications/site/assets/img/logos/gnu.gif") -0.5em 0.5em no-repeat !important;
+		background: url("../../../../../core/components/com_publications/site/assets/img/logos/gnu.gif") -0.5em 0.5em no-repeat !important;
 	}
 	.license-terms:before {
 		width: 16px;
@@ -950,7 +949,7 @@
 		padding-left: 10px !important;
 		margin-left:-1px;
 		border: none;
-		background: url("/core/components/com_publications/site/assets/img/circlerating.gif") 0 2px no-repeat !important;
+		background: url("../../../../../core/components/com_publications/site/assets/img/circlerating.gif") 0 2px no-repeat !important;
 	}
 	.audiencelevel li span,
 	#c-browser .audiencelevel li span,
@@ -1375,7 +1374,7 @@
 		background-size: cover;
 		background-repeat: no-repeat;
 		overflow: hidden;
-		background-image: url('/core/components/com_publications/site/assets/img/master.png');
+		background-image: url('../../../../../core/components/com_publications/site/assets/img/master.png');
 	}
 	.launcher-inside-wrap {
 		padding: 1.5em 2.5em;
@@ -1520,7 +1519,7 @@
 	}
 	.launch-wrap .version-info p.license {
 		margin-top: -0.5em;
-		background: url("/core/components/com_publications/site/assets/img/logos/license.gif") -0.5em 0.5em no-repeat;
+		background: url("../../../../../core/components/com_publications/site/assets/img/logos/license.gif") -0.5em 0.5em no-repeat;
 		margin-left: 1.2em;
 		padding-left: 2em;
 		text-align: left;

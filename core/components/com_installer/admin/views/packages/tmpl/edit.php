@@ -10,6 +10,12 @@ defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_INSTALLER_PACKAGES_PACKAGE') . ': ' . $this->packageName, 'packages');
 
+$canDo = Components\Installer\Admin\Helpers\Installer::getActions();
+if ($canDo->get('core.edit'))
+{
+	Toolbar::custom('install', 'download', 'download', 'COM_INSTALLER_INSTALL_BUTTON', false);
+	Toolbar::spacer();
+}
 Toolbar::cancel();
 
 $authors = array();
@@ -24,9 +30,6 @@ if ($this->installedPackage)
 		}
 	}
 }
-// Determine status & options
-$status = '';
-
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=install'); ?>" method="post" name="adminForm" id="item-form">
@@ -41,16 +44,12 @@ $status = '';
 					<legend><span><?php echo Lang::txt('COM_INSTALLER_PACKAGES_BASIC_INFO'); ?></span></legend>
 
 					<div class="input-wrap">
-						<label for="version"><?php echo Lang::txt('COM_INSTALLER_PACKAGES_AVAILABLE_VERSIONS'); ?>:</label>
-						<select name='packageVersion'>
+						<label for="field-version"><?php echo Lang::txt('COM_INSTALLER_PACKAGES_AVAILABLE_VERSIONS'); ?>:</label>
+						<select name="packageVersion" id="field-version">
 							<?php foreach ($this->versions as $version): ?>
 								<option value="<?php echo $this->escape($version->getVersion()); ?>" <?php echo ($this->installedPackage->getVersion() == $version->getVersion()) ? 'selected="true"' : '';?>><?php echo $this->escape($version->getFullPrettyVersion()); ?></option>
 							<?php endforeach; ?>
 						</select>
-					</div>
-
-					<div class="input-wrap">
-						<input type="submit" value="<?php echo Lang::txt('COM_INSTALLER_PACKAGES_INSTALL_VERSION'); ?>">
 					</div>
 				</fieldset>
 			</div>
@@ -58,19 +57,19 @@ $status = '';
 				<table class="meta">
 					<tbody>
 						<tr>
-							<th><?php echo Lang::txt('COM_INSTALLER_PACKAGES_INSTALLED_VERSION'); ?>:</th>
+							<th scope="row"><?php echo Lang::txt('COM_INSTALLER_PACKAGES_INSTALLED_VERSION'); ?>:</th>
 							<td><?php echo $this->installedPackage->getFullPrettyVersion(); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_INSTALLER_PACKAGES_RELEASE_DATE'); ?>:</th>
+							<th scope="row"><?php echo Lang::txt('COM_INSTALLER_PACKAGES_RELEASE_DATE'); ?>:</th>
 							<td><?php echo $this->installedPackage->getReleaseDate()->format("Y-m-d H:i:s"); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_INSTALLER_PACKAGES_TYPE'); ?>:</th>
+							<th scope="row"><?php echo Lang::txt('COM_INSTALLER_PACKAGES_TYPE'); ?>:</th>
 							<td><?php echo $this->installedPackage->getType(); ?></td>
 						</tr>
 						<tr>
-							<th><?php echo Lang::txt('COM_INSTALLER_PACKAGES_AUTHORS'); ?>:</th>
+							<th scope="row"><?php echo Lang::txt('COM_INSTALLER_PACKAGES_AUTHORS'); ?>:</th>
 							<td><?php echo implode(', ', $authors); ?></td>
 						</tr>
 					</tbody>

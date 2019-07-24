@@ -277,13 +277,10 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$view->option        = $this->option;
 		$view->member        = $this->member;
 		$view->params        = $this->params;
-		$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
+		$view->notifications = array();
 
 		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+		$view->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -302,10 +299,10 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Make sure they're logged in
 		if ($this->user->isGuest())
 		{
+			Notify::warning(Lang::txt('You must be logged in to access this area.'));
+
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=sendtoken', false)), false),
-				Lang::txt('You must be logged in to access this area.'),
-				'warning'
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=sendtoken', false)), false)
 			);
 			return;
 		}
@@ -328,10 +325,10 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$this->sendEmail($token);
 
 		// Redirect user to confirm token view page
+		Notify::warning(Lang::txt('Please check the email associated with this account (' . $this->member->get('email') . ') for your confirmation token!'));
+
 		App::redirect(
-			Route::url($this->member->link() . '&active=account&task=confirmtoken'),
-			Lang::txt('Please check the email associated with this account (' . $this->member->get('email') . ') for your confirmation token!'),
-			'warning'
+			Route::url($this->member->link() . '&active=account&task=confirmtoken', false)
 		);
 
 		return;
@@ -347,11 +344,11 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Check if they're logged in
 		if ($this->user->isGuest())
 		{
+			Notify::warning(Lang::txt('You must be logged in to access this area.'));
+
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' .
-					base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=confirmtoken'))),
-				Lang::txt('You must be logged in to access this area.'),
-				'warning'
+					base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=confirmtoken')), false)
 			);
 			return;
 		}
@@ -375,7 +372,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Blank form request (no data submitted)
 		if (empty($change))
 		{
-			$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
+			$view->notifications =array();
 			return $view->loadTemplate();
 		}
 
@@ -387,8 +384,12 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (strlen($token) != 32)
 		{
 			// Oops, token wasn't the correct length (probably a copy/paste error)
-			$this->addPluginMessage(Lang::txt('Invalid token length, please re-input token'), 'error');
-			$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
+			$view->notifications = array(
+				array(
+					'type' => 'error',
+					'message' => Lang::txt('Invalid token length, please re-input token')
+				)
+			);
 			return $view->loadTemplate();
 		}
 		*/
@@ -397,8 +398,13 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (!$row = $this->getToken())
 		{
 			// Oops, user doesn't have a token set in the db (or their account is blocked)
-			$this->addPluginMessage(Lang::txt('Invalid token.  You don\'t appear to have a token active, or your account is blocked.'), 'error');
-			$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
+			$view->notifications = array(
+				array(
+					'type' => 'error',
+					'message' => Lang::txt('You must be logged in to access this area.')
+				)
+			);
+
 			return $view->loadTemplate();
 		}
 
@@ -420,8 +426,12 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (!($crypt == $testcrypt))
 		{
 			// Oops, user tokens don't match
-			$this->addPluginMessage(Lang::txt('Invalid token.  Please try re-entering your token'), 'error');
-			$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
+			$view->notifications = array(
+				array(
+					'type' => 'error',
+					'message' => Lang::txt('Invalid token.  Please try re-entering your token')
+				)
+			);
 			return $view->loadTemplate();
 		}
 		*/
@@ -431,10 +441,10 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		User::setState($this->option . 'token', $token);
 
 		// Redirect user to set local password view
+		Notify::warning(Lang::txt('Please provide a new password'));
+
 		App::redirect(
-			Route::url($this->member->link() . '&active=account&task=setlocalpass'),
-			Lang::txt('Please provide a new password'),
-			'warning'
+			Route::url($this->member->link() . '&active=account&task=setlocalpass', false)
 		);
 
 		return;
@@ -450,11 +460,11 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Logged in?
 		if ($this->user->isGuest())
 		{
+			Notify::warning(Lang::txt('You must be logged in to access this area.'));
+
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' .
-					base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=setlocalpass'))),
-				Lang::txt('You must be logged in to access this area.'),
-				'warning'
+					base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=setlocalpass')), false)
 			);
 			return;
 		}
@@ -466,10 +476,10 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (is_null($token))
 		{
 			// Tsk tsk, no sneaky business
+			Notify::error(Lang::txt('You must first verify your email address by inputting the token.'));
+
 			App::redirect(
-				Route::url('index.php?option=' . $this->option . '&id=' . $this->user->get('id') . '&active=account&task=sendtoken'),
-				Lang::txt('You must first verify your email address by inputting the token.'),
-				'error'
+				Route::url('index.php?option=' . $this->option . '&id=' . $this->user->get('id') . '&active=account&task=sendtoken', false)
 			);
 			return;
 		}
@@ -511,7 +521,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Blank form request (no data submitted)
 		if (empty($change))
 		{
-			$view->notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
+			$view->notifications = array();
 			return $view->loadTemplate();
 		}
 
@@ -565,7 +575,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$view->setError( $this->getError() );
+				$view->setErrors($this->getErrors());
 				return $view->loadTemplate();
 			}
 		}
@@ -600,10 +610,10 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		else
 		{
 			// Redirect user to confirm view page
+			Notify::success(Lang::txt('Password reset successful'));
+
 			App::redirect(
-				Route::url($this->member->link() . '&active=account'),
-				Lang::txt('Password reset successful'),
-				'passed'
+				Route::url($this->member->link() . '&active=account', false)
 			);
 		}
 
@@ -625,10 +635,10 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$hzup = \Hubzero\User\Password::getInstance($this->member->get('id'));
 		if (empty($hzup->passhash) && count(\Hubzero\Auth\Link::find_by_user_id($this->member->get('id'))) <= 1)
 		{
+			Notify::warning(Lang::txt('PLG_MEMBERS_ACCOUNT_CANT_REMOVE_ONLY_ACCESS'));
+
 			App::redirect(
-				Route::url($this->member->link() . '&active=account'),
-				Lang::txt('PLG_MEMBERS_ACCOUNT_CANT_REMOVE_ONLY_ACCESS'),
-				'warning'
+				Route::url($this->member->link() . '&active=account', false)
 			);
 		}
 
@@ -648,10 +658,10 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set the redirect
+		Notify::success(Lang::txt('PLG_MEMBERS_ACCOUNT_UNLINKED'));
+
 		App::redirect(
-			Route::url($this->member->link() . '&active=account'),
-			Lang::txt('PLG_MEMBERS_ACCOUNT_UNLINKED'),
-			'passed'
+			Route::url($this->member->link() . '&active=account', false)
 		);
 	}
 
@@ -752,10 +762,10 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		Filesystem::setPermissions($base . $user . $ssh . $auth, '0600');
 
 		// Set the redirect
+		Notify::success(Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_SUCCESSFUL'));
+
 		App::redirect(
-			Route::url($this->member->link() . '&active=account'),
-			Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_SUCCESSFUL'),
-			'passed'
+			Route::url($this->member->link() . '&active=account', false)
 		);
 	}
 
@@ -823,23 +833,6 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		$key = Filesystem::read($base . $user . $ssh . $auth);
 
 		return $key;
-	}
-
-	/**
-	 * Set redirect
-	 *
-	 * @param   string  $url
-	 * @param   string  $msg
-	 * @param   string  $type
-	 * @return  void
-	 */
-	private function setRedirect($url, $msg=null, $type='message')
-	{
-		if ($msg !== null)
-		{
-			$this->addPluginMessage($msg, $type);
-		}
-		$this->redirect($url);
 	}
 
 	/**

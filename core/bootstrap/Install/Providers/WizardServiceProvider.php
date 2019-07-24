@@ -55,6 +55,9 @@ class WizardServiceProvider extends Middleware
 					$config->set('database.' . $key, $value);
 				}
 
+				$config->set('app.log_path', PATH_ROOT . '/app/logs');
+				$config->set('app.tmp_path', PATH_ROOT . '/app/tmp');
+
 				$data = $config->toArray();
 				$path = PATH_APP . '/config';
 				$format = 'php';

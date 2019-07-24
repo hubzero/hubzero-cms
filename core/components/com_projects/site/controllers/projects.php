@@ -107,7 +107,7 @@ class Projects extends Base
 	 */
 	public function requestAccessTask()
 	{
-		Request::checkToken('get');
+		//Request::checkToken('get');
 		if (!$this->model->allowMembershipRequest())
 		{
 			App::abort(404, 'Invalid request');
@@ -115,24 +115,28 @@ class Projects extends Base
 
 		$project = Request::getString('alias');
 		$task = $this->_task;
-		$return = Route::url('index.php?option=com_projects&alias=' . $project, false);
+		$return = Route::url('index.php?option=com_projects&task=requestaccess&alias=' . $project . '&' . Session::getFormToken() . '=1', false);
 		if (User::isGuest())
 		{
 			$redirectUrl = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return), false);
 			App::redirect($redirectUrl);
 		}
 
-		if (!$this->model->member())
+		$existingMember = $this->model->member();
+
+		if (!$existingMember || $existingMember->status == 2)
 		{
 			if ($this->model->exists())
 			{
 				$userId = User::getInstance()->get('id');
-				$member = \Components\Projects\Models\Orm\Owner::blank();
+				$memberId = $existingMember ? $existingMember->id : null;
+				$member = \Components\Projects\Models\Orm\Owner::oneOrNew($memberId);
 				$member->set('projectid', $this->model->get('id'));
 				$member->set('userid', $userId);
 				$member->set('status', 3);
 				$currentTime = Date::of()->toSql();
 				$member->set('added', $currentTime);
+
 				if ($member->save())
 				{
 					$managers = \Components\Projects\Models\Orm\Owner::getProjectManagers($this->model->get('id'));
@@ -514,7 +518,7 @@ class Projects extends Base
 			}
 			elseif ($match && $this->model->_tblOwner->load($match))
 			{
-				if (User::get('email') == $email)
+				if (strtolower(User::get('email')) == strtolower($email))
 				{
 					// Confirm user
 					$this->model->_tblOwner->status = 1;

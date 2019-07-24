@@ -165,7 +165,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 				)
 			);
 
-			$notifications = ($this->getPluginMessage()) ? $this->getPluginMessage() : array();
+			$notifications = array(); //Notify::messages('plg_' . $this->_type . '_' . $this->_name);
 
 			$view = $this->view('default', 'default')
 				->set('option', $option)
@@ -589,14 +589,15 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 					continue;
 				}
 			}
-			$this->addPluginMessage("You have successfully moved <b><u>" . count($mids) . "</u></b> message(s) to your archive.", "passed");
+
+			Notify::success(Lang::txt('You have successfully moved <b><u>%s</u></b> message(s) to your archive.', count($mids)));
 		}
 		else
 		{
-			$this->addPluginMessage("No messages selected.", "warning");
+			Notify::warning(Lang::txt('No messages selected.'));
 		}
 
-		return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'archive') . '&start=' . $start . '&limit=' . $limit));
+		return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'archive') . '&start=' . $start . '&limit=' . $limit, false));
 	}
 
 	/**
@@ -630,14 +631,15 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 					$this->setError($recipient->getError());
 				}
 			}
-			$this->addPluginMessage("You have successfully moved <b><u>" . count($mids) . "</u></b> message(s) to your inbox.", "passed");
+
+			Notify::success(Lang::txt('You have successfully moved <b><u>%s</u></b> message(s) to your inbox.', count($mids)));
 		}
 		else
 		{
-			$this->addPluginMessage("No messages selected.", "warning");
+			Notify::warning(Lang::txt('No messages selected.'));
 		}
 
-		return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
+		return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit, false));
 	}
 
 	/**
@@ -679,14 +681,15 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 					continue;
 				}
 			}
-			$this->addPluginMessage("You have successfully moved <b><u>" . count($mids) . "</u></b> message(s) to your trash.", "passed");
+
+			Notify::success(Lang::txt('You have successfully moved <b><u>%s</u></b> message(s) to your trash.', count($mids)));
 		}
 		else
 		{
-			$this->addPluginMessage("No messages selected.", "warning");
+			Notify::warning(Lang::txt('No messages selected.'));
 		}
 
-		return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'trash') . '&start=' . $start . '&limit=' . $limit));
+		return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'trash') . '&start=' . $start . '&limit=' . $limit, false));
 	}
 
 	/**
@@ -742,14 +745,15 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 					$this->setError($recipient->getError());
 				}
 			}
-			$this->addPluginMessage('You have successfully deleted <b><u>' . count($mids) . '</u></b> message(s).', 'passed');
+
+			Notify::success(Lang::txt('You have successfully deleted <b><u>%s</u></b> message(s).', count($mids)));
 		}
 		else
 		{
-			$this->addPluginMessage("No messages selected.", "warning");
+			Notify::warning(Lang::txt('No messages selected.'));
 		}
 
-		return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
+		return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit, false));
 	}
 
 	/**
@@ -786,14 +790,15 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 					continue;
 				}
 			}
-			$this->addPluginMessage('You have successfully marked <b><u>' . count($ids) . '</u></b> message(s) as read.', 'passed');
+
+			Notify::success(Lang::txt('You have successfully marked <b><u>%s</u></b> message(s) as read.', count($ids)));
 		}
 		else
 		{
-			$this->addPluginMessage("No messages selected.", "warning");
+			Notify::warning(Lang::txt('No messages selected.'));
 		}
 
-		return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
+		return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit, false));
 	}
 
 	/**
@@ -825,14 +830,15 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 					continue;
 				}
 			}
-			$this->addPluginMessage('You have successfully marked <b><u>' . count($ids) . '</u></b> message(s) as unread.', 'passed');
+
+			Notify::success(Lang::txt('You have successfully marked <b><u>%s</u></b> message(s) as unread.', count($ids)));
 		}
 		else
 		{
-			$this->addPluginMessage("No messages selected.", "warning");
+			Notify::warning(Lang::txt('No messages selected.'));
 		}
 
-		return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
+		return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit, false));
 	}
 
 	/**
@@ -937,9 +943,9 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		}
 
 		// Push through to the settings view
-		$this->addPluginMessage(Lang::txt('You have successfully saved your message settings.'), 'passed');
+		Notify::success(Lang::txt('You have successfully saved your message settings.'));
 
-		return App::redirect(Route::url($member->link() . '&active=messages&action=settings'));
+		return App::redirect(Route::url($member->link() . '&active=messages&action=settings', false));
 	}
 
 	/**
@@ -967,7 +973,6 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		//array to hold members
 		$email_users = array();
 
-		//
 		foreach ($mbrs as $mbr)
 		{
 			// User ID
@@ -1013,8 +1018,8 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		{
 			if (!$no_html)
 			{
-				$this->addPluginMessage(Lang::txt('You must select a message recipient and enter a message.'), 'error');
-				return $this->redirect(Route::url($member->link() . '&active=messages&action=new'));
+				Notify::error(Lang::txt('You must select a message recipient and enter a message.'));
+				return App::redirect(Route::url($member->link() . '&active=messages&action=new', false));
 			}
 			return App::abort(500, Lang::txt('You must select a message recipient and enter a message.'));
 		}
@@ -1034,8 +1039,8 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		// (if no - this is an AJAX call)
 		if (!$no_html)
 		{
-			$this->addPluginMessage(Lang::txt('You have successfully sent a message.'), 'passed');
-			return App::redirect(Route::url($member->link() . '&active=messages&task=inbox'));
+			Notify::success(Lang::txt('You have successfully sent a message.'));
+			return App::redirect(Route::url($member->link() . '&active=messages&task=inbox', false));
 		}
 	}
 

@@ -12,6 +12,7 @@ use Hubzero\Utility\Composer as ComposerHelper;
 use Request;
 use Config;
 use Notify;
+use Event;
 use StdClass;
 use Route;
 use App;
@@ -64,6 +65,17 @@ class Repositories extends AdminController
 				'limitstart',
 				0,
 				'int'
+			),
+			// Sorting
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'created'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
 			)
 		);
 
@@ -138,13 +150,13 @@ class Repositories extends AdminController
 		Request::checkToken();
 
 		$temp = new StdClass;
-		$alias             = Request::getString('alias', null);
-		$oldAlias          = Request::getString('oldAlias', null);
-		$isNew             = Request::getString('isNew', null);
-		$temp->name        = Request::getString('name', null);
-		$temp->description = Request::getString('description', null);
-		$temp->url         = Request::getString('url', null);
-		$temp->type        = Request::getString('type', null);
+		$alias             = Request::getString('alias', '', 'post');
+		$oldAlias          = Request::getString('oldAlias', '', 'post');
+		$isNew             = Request::getString('isNew', '', 'post');
+		$temp->name        = Request::getString('name', '', 'post');
+		$temp->description = Request::getString('description', '', 'post');
+		$temp->url         = Request::getString('url', '', 'post');
+		$temp->type        = Request::getString('type', '', 'post');
 
 		$json = json_encode($temp);
 
@@ -170,11 +182,38 @@ class Repositories extends AdminController
 	 */
 	public function removeTask()
 	{
-		$alias = Request::getString('alias', null);
+		// Check for request forgeries
+		Request::checkToken();
 
-		ComposerHelper::removeRepository($alias);
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
-		Notify::success('Successfully deleted repository, packages will remain until uninstalled.');
+		// Incoming aliases as repos
+		$repos = Request::getArray('repositories', array());
+		$repos = (!is_array($repos) ? array($repos) : $repos);
+
+		if (count($repos) <= 0)
+		{
+			return $this->cancelTask();
+		}
+
+		$success = 0;
+		foreach ($repos as $repo)
+		{
+			ComposerHelper::removeRepository($repo);
+
+			// Trigger after delete event
+			Event::trigger('onRepositoryAfterDelete', array($repo));
+
+			$success++;
+		}
+
+		if ($success)
+		{
+			Notify::success(Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY_ITEMS_REMOVED', $success));
+		}
 
 		$this->cancelTask();
 	}

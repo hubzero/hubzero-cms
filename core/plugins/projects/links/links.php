@@ -166,13 +166,13 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$version = Request::getString('version', 'dev');
 		$pid     = Request::getInt('pid', 0);
 
-		if (!$cid || !$pid)
+		if (!$cid || !$vid)
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_LINKS_ERROR_CITATION_DELETE'));
 		}
 
 		// Make sure this publication belongs to this project
-		$objP = new \Components\Publications\Tables\Publication($this->_database);
+		$objP = new Components\Publications\Tables\Publication($this->_database);
 		if (!$objP->load($pid) || $objP->project_id != $this->model->get('id'))
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_LINKS_ERROR_CITATION_DELETE'));
@@ -182,16 +182,16 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		if (!$this->getError())
 		{
 			// Unattach citation
-			if ($this->unattachCitation($pid, $cid))
+			if ($this->unattachCitation($vid, $cid))
 			{
-				\Notify::message(Lang::txt('PLG_PROJECTS_LINKS_CITATION_DELETED'), 'success', 'projects');
+				Notify::success(Lang::txt('PLG_PROJECTS_LINKS_CITATION_DELETED'), 'projects');
 			}
 		}
 
 		// Pass success or error message
 		if ($this->getError())
 		{
-			\Notify::message($this->getError(), 'error', 'projects');
+			Notify::error($this->getError(), 'projects');
 		}
 
 		// Build pub url
@@ -199,7 +199,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			? 'index.php?option=com_publications&task=submit'
 			: 'index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=publications';
 
-		$url = Route::url($route . '&pid=' . $pid . ($vid ? '&vid=' . $vid : '&version=' . $version) . '&section=citations');
+		$url = Route::url($route . '&pid=' . $pid . ($vid ? '&vid=' . $vid : '&version=' . $version) . '&section=citations', false);
 
 		App::redirect($url);
 		return;
@@ -219,7 +219,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$version = Request::getString('version', 'dev');
 		$pid     = Request::getInt('pid', 0);
 
-		if (!$url || !$pid)
+		if (!$url || !$vid)
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_LINKS_NO_DOI'));
 		}
@@ -229,15 +229,15 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$format = $this->_pubconfig->get('citation_format', 'apa');
 
 		// Attach citation
-		if ($this->attachCitation($pid, $doi, $format, $this->_uid))
+		if ($this->attachCitation($vid, $doi, $format, $this->_uid))
 		{
-			\Notify::message(Lang::txt('PLG_PROJECTS_LINKS_CITATION_SAVED'), 'success', 'projects');
+			Notify::success(Lang::txt('PLG_PROJECTS_LINKS_CITATION_SAVED'), 'projects');
 		}
 
 		// Pass success or error message
 		if ($this->getError())
 		{
-			\Notify::message($this->getError(), 'error', 'projects');
+			Notify::error($this->getError(), 'projects');
 		}
 
 		// Build pub url
@@ -245,7 +245,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			? 'index.php?option=com_publications&task=submit'
 			: 'index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=publications';
 
-		App::redirect(Route::url($route .'&pid=' . $pid . ($vid ? '&vid=' . $vid : '&version=' . $version) . '&section=citations'));
+		App::redirect(Route::url($route .'&pid=' . $pid . ($vid ? '&vid=' . $vid : '&version=' . $version) . '&section=citations', false));
 		return;
 	}
 
@@ -264,15 +264,15 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		$new  = $cite['id'] ? false : true;
 
-		include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
+		include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
-		if (!$pid || !$cite['type'] || !$cite['title'])
+		if (!$vid || !$cite['type'] || !$cite['title'])
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_MISSING_REQUIRED'));
 		}
 		else
 		{
-			$citation = \Components\Citations\Models\Citation::blank()->set($cite);
+			$citation = Components\Citations\Models\Citation::blank()->set($cite);
 			$citation->set('created', $new == true ? Date::toSql() : $citation->get('created'));
 			$citation->set('uid', $new == true ? $this->_uid : $citation->get('uid'));
 			$citation->set('published', 1);
@@ -287,7 +287,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			if (!$this->getError() && $new == true && $citation->get('id'))
 			{
 				$assoc = \Components\Citations\Models\Association::blank();
-				$assoc->set('oid', $pid);
+				$assoc->set('oid', $vid);
 				$assoc->set('tbl', 'publication');
 				$assoc->set('type', 'owner');
 				$assoc->set('cid', $citation->get('id'));
@@ -313,7 +313,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			? 'index.php?option=com_publications&task=submit'
 			: 'index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=publications';
 
-		App::redirect(Route::url($route .'&pid=' . $pid . ($vid ? '&vid=' . $vid : '&version=' . $version) . '&section=citations'));
+		App::redirect(Route::url($route .'&pid=' . $pid . ($vid ? '&vid=' . $vid : '&version=' . $version) . '&section=citations', false));
 		return;
 	}
 
@@ -325,12 +325,12 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 * @param   boolean  $returnStatus
 	 * @return  boolean
 	 */
-	public function unattachCitation($pid = 0, $cid = 0, $returnStatus = false)
+	public function unattachCitation($vid = 0, $cid = 0, $returnStatus = false)
 	{
-		include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
-		include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
+		include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
+		include_once Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
-		if (!$cid || !$pid)
+		if (!$cid || !$vid)
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_LINKS_NO_DOI'));
 
@@ -359,7 +359,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		// Remove association
 		foreach ($aPubs as $aPub)
 		{
-			if ($aPub->oid == $pid && $aPub->tbl = 'publication')
+			if ($aPub->oid == $vid && $aPub->tbl = 'publication')
 			{
 				$aPub->destroy();
 			}
@@ -384,15 +384,15 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 * @param   boolean  $returnStatus
 	 * @return  boolean
 	 */
-	public function attachCitation($pid = 0, $doi = null, $format = 'apa', $actor = 0, $returnStatus = false)
+	public function attachCitation($vid = 0, $doi = null, $format = 'apa', $actor = 0, $returnStatus = false)
 	{
-		$componentPath = \Component::path('com_citations');
+		$componentPath = Component::path('com_citations');
 		include_once "$componentPath/models/citation.php";
 		include_once "$componentPath/helpers/format.php";
 
 		$out = ['error' => null, 'success' => null];
 
-		if (!$doi || !$pid)
+		if (!$doi || !$vid)
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_LINKS_NO_DOI'));
 
@@ -413,7 +413,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			->join($citationsTable, $citationsTable. '.id', $citationAssociationsTable. '.cid', 'inner')
 			->whereEquals($citationAssociationsTable . '.tbl', 'publication')
 			->whereEquals($citationsTable . '.doi', $doi)
-			->whereEquals($citationAssociationsTable . '.oid', $pid)
+			->whereEquals($citationAssociationsTable . '.oid', $vid)
 			->row();
 
 		if (!$citationAssociation->isNew())
@@ -484,7 +484,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 					$citation->set('pages', $data->page);
 
 					// Get type ID
-					$types = \Components\Citations\Models\Type::all()->rows()->toArray();
+					$types = Components\Citations\Models\Type::all()->rows()->toArray();
 					$dType = isset($data->type) ? $data->type : 'article';
 
 					// Hub types don't match library types
@@ -538,8 +538,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 				// Create association
 				if ($citation->get('id'))
 				{
-					$assoc = \Components\Citations\Models\Association::blank();
-					$assoc->set('oid', $pid);
+					$assoc = Components\Citations\Models\Association::blank();
+					$assoc->set('oid', $vid);
 					$assoc->set('tbl', 'publication');
 					$assoc->set('type', 'owner');
 					$assoc->set('cid', $citation->get('id'));
@@ -604,7 +604,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$layout = $this->_task == 'newcite' ? 'edit' : 'default';
 
 		// Output HTML
-		$view = new \Hubzero\Plugin\View(
+		$view = new Hubzero\Plugin\View(
 			array(
 				'folder'  =>'projects',
 				'element' =>'links',
@@ -613,13 +613,13 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
+		$view->publication = new Components\Publications\Models\Publication($pid, null, $vid);
 
 		// On error
 		if (!$view->publication->exists())
 		{
 			// Output error
-			$view = new \Hubzero\Plugin\View(
+			$view = new Hubzero\Plugin\View(
 				array(
 					'folder'  =>'projects',
 					'element' =>'files',
@@ -648,7 +648,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		// Add css?
 		if (!$ajax)
 		{
-			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'selector');
+			Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'selector');
 		}
 
 		if ($this->_task == 'newcite')
@@ -656,13 +656,13 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			// Incoming
 			$cid    = Request::getInt('cid', 0);
 
-			include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
+			include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
 			// Load the object
-			$view->row = \Components\Citations\Models\Citation::oneOrNew($cid);
+			$view->row = Components\Citations\Models\Citation::oneOrNew($cid);
 
 			// get the citation types
-			$view->types = \Components\Citations\Models\Type::all()->rows()->toArray();
+			$view->types = Components\Citations\Models\Type::all()->rows()->toArray();
 		}
 
 		$view->option   = $this->_option;
@@ -678,10 +678,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$view->filter   = $filter;
 
 		// Get messages	and errors
-		if ($this->getError())
-		{
-			$view->setError($this->getError());
-		}
+		$view->setErrors($this->getErrors());
+
 		return $view->loadTemplate();
 	}
 
@@ -698,7 +696,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$vid = Request::getInt('vid', 0);
 
 		// Output HTML
-		$view = new \Hubzero\Plugin\View(
+		$view = new Hubzero\Plugin\View(
 			array(
 				'folder'  =>'projects',
 				'element' =>'links',
@@ -708,8 +706,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		);
 
 		// Load classes
-		$objP = new \Components\Publications\Tables\Publication($this->_database);
-		$view->version = new \Components\Publications\Tables\Version($this->_database);
+		$objP = new Components\Publications\Tables\Publication($this->_database);
+		$view->version = new Components\Publications\Tables\Version($this->_database);
 
 		// Load publication version
 		$view->version->load($vid);
@@ -744,13 +742,13 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
-		include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
+		include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
 		// Load the object
-		$view->row = \Components\Citations\Models\Citation::oneOrNew($cid);
+		$view->row = Components\Citations\Models\Citation::oneOrNew($cid);
 
 		// get the citation types
-		$view->types = \Components\Citations\Models\Type::all()->rows()->toArray();
+		$view->types = Components\Citations\Models\Type::all()->rows()->toArray();
 
 		$view->option   = $this->_option;
 		$view->database = $this->_database;
@@ -760,10 +758,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$view->ajax     = Request::getInt('ajax', 0);
 
 		// Get messages	and errors
-		if ($this->getError())
-		{
-			$view->setError($this->getError());
-		}
+		$view->setErrors($this->getErrors());
+
 		return $view->loadTemplate();
 	}
 
@@ -785,7 +781,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		}
 
 		// Output HTML
-		$view = new \Hubzero\Plugin\View(
+		$view = new Hubzero\Plugin\View(
 			array(
 				'folder'  =>'projects',
 				'element' =>'links',
@@ -794,7 +790,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get current attachments
-		$pContent = new \Components\Publications\Tables\Attachment($this->_database);
+		$pContent = new Components\Publications\Tables\Attachment($this->_database);
 		$role  = $primary ? '1' : '0';
 		$other = $primary ? '0' : '1';
 
@@ -810,10 +806,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$view->versionid = $versionid;
 
 		// Get messages	and errors
-		if ($this->getError())
-		{
-			$view->setError($this->getError());
-		}
+		$view->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
 	}
@@ -829,7 +822,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$url = Request::getString('url', '');
 
 		// Is this a DOI?
-		$parts = explode("doi:", $url);
+		$parts = explode('doi:', $url);
 		$doi   = count($parts) > 1 ? $url : 'doi:' . $url;
 
 		// Get format from config
@@ -1030,8 +1023,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 				}
 
 				$out .= $description
-						? stripslashes('<p>' . \Hubzero\Utility\Str::truncate(addslashes($description), 200) . '</p>')
-						: '<p>' . \Hubzero\Utility\Str::truncate(addslashes($finalUrl), 200) . '</p>';
+						? stripslashes('<p>' . Hubzero\Utility\Str::truncate(addslashes($description), 200) . '</p>')
+						: '<p>' . Hubzero\Utility\Str::truncate(addslashes($finalUrl), 200) . '</p>';
 
 				if ($images)
 				{
@@ -1216,9 +1209,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 */
 	public function getImgSrc($imgSrc)
 	{
-		$imgSrc = str_replace("../", "", $imgSrc);
-		$imgSrc = str_replace("./", "", $imgSrc);
-		$imgSrc = str_replace(" ", "%20", $imgSrc);
+		$imgSrc = str_replace('../', '', $imgSrc);
+		$imgSrc = str_replace('./', '', $imgSrc);
+		$imgSrc = str_replace(' ', "%20", $imgSrc);
 
 		return $imgSrc;
 	}
@@ -1233,6 +1226,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function getImageUrl($pathCounter, $url)
 	{
 		$src = '';
+
 		if ($pathCounter > 0)
 		{
 			$urlBreaker = explode('/', $url);
@@ -1242,13 +1236,13 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 				{
 					$src .= $urlBreaker[$j] . '/';
 				}
-
 			}
 		}
 		else
 		{
 			$src = $url;
 		}
+
 		return $src;
 	}
 
@@ -1261,18 +1255,19 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 */
 	public function getLink($imgSrc, $referer)
 	{
-		if (strpos($imgSrc, "//") === 0)
+		if (strpos($imgSrc, '//') === 0)
 		{
-			$imgSrc = "https:" . $imgSrc;
+			$imgSrc = 'https:' . $imgSrc;
 		}
-		elseif (strpos($imgSrc, "/") === 0)
+		elseif (strpos($imgSrc, '/') === 0)
 		{
-			$imgSrc = "https://" . $this->getPage($referer) . $imgSrc;
+			$imgSrc = 'https://' . $this->getPage($referer) . $imgSrc;
 		}
 		else
 		{
-			$imgSrc = "https://" . $this->getPage($referer) . '/' . $imgSrc;
+			$imgSrc = 'https://' . $this->getPage($referer) . '/' . $imgSrc;
 		}
+
 		return $imgSrc;
 	}
 
@@ -1284,10 +1279,11 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 */
 	public function getPage($url)
 	{
-		$cannonical = "";
+		$cannonical = '';
 
-		if (substr_count($url, 'http://') > 1 || substr_count($url, 'https://') > 1
-			|| (strpos($url, 'http://') !== false && strpos($url, 'https://') !== false))
+		if (substr_count($url, 'http://') > 1
+		 || substr_count($url, 'https://') > 1
+		 || (strpos($url, 'http://') !== false && strpos($url, 'https://') !== false))
 		{
 			return $url;
 		}

@@ -229,7 +229,7 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 				u.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ") AND " . join(' AND ', $addtl_where)
 		);
 		$assoc = $sql->to_associative();
-		if (!count($assoc))
+		if (!($assoc instanceof Countable) || !count($assoc))
 		{
 			return false;
 		}

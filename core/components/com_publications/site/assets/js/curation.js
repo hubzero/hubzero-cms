@@ -14,66 +14,31 @@ if (!HUB) {
 //----------------------------------------------------------
 // Project Publication Curation Manager JS
 //----------------------------------------------------------
-if (!jq) {
-	var jq = $;
-}
 
 HUB.PublicationsCuration = {
-	jQuery: jq,
 	timer: '',
 	doneTypingInterval: 1000,
 	completeness: 0,
-	
-	initialize: function() 
-	{
-		var $ = this.jQuery;
-		
-		// Show 'more' link for extensive side text 
-		HUB.PublicationsCuration.showMoreText();
-		
-		// Enable submit buttons
-		HUB.PublicationsCuration.enableButtons();
-		
-		// Enable checkers
-		HUB.PublicationsCuration.enableCheckers();
-		
-		// Enable checkers
-		HUB.PublicationsCuration.allowEdits();
-	},
-	
+
 	// Allow to edit notices
 	allowEdits: function()
 	{
-		var $ = this.jQuery;
-				
 		// Allow editing of notices
-		var edits = $('.edit-notice a');		
-		if (edits.length)
-		{
-			edits.each(function(i, item) 
-			{
-				$(item).on('click', function(e) 
-				{
-					e.preventDefault();
-					
-					var element = $(item).parent().parent().parent().parent().find('.block-checker')[0];
-					
-					// Load box to ask why
-					if ($(element).length)
-					{
-						HUB.PublicationsCuration.drawFailBox($(element));
-					}
-					
-				});
-			});
-		}		
+		$('.edit-notice a').on('click', function(e) {
+			e.preventDefault();
+
+			var element = $(this).parent().parent().parent().parent().find('.block-checker')[0];
+
+			// Load box to ask why
+			if ($(element).length) {
+				HUB.PublicationsCuration.drawFailBox($(element));
+			}
+		});
 	},
-	
+
 	// Enable checkers
 	enableCheckers: function()
 	{
-		var $ = this.jQuery;
-		
 		var checkers = $(".block-checker span");
 		
 		if (!checkers.length)
@@ -106,345 +71,298 @@ HUB.PublicationsCuration = {
 						HUB.PublicationsCuration.changeStatus($(item).parent(), $(item), 'pass');
 					}
 				}
-				
+
 				// Enable submit buttons
 				HUB.PublicationsCuration.enableButtons();
-				
 			});
 		});	
 	},
-	
+
 	// Change status of curation item
 	changeStatus: function(element, item, action)
 	{
-		var $ = this.jQuery;
-		
-		if (!element.length || ! item.length)
-		{
+		if (!element.length || ! item.length) {
 			return false;
 		}
 		var prop = element.attr('id');
 		var pid  = $('#pid').length ? $('#pid').val() : 0;
 		var vid  = $('#vid').length ? $('#vid').val() : 0;
-		
-		var url  = '/publications/curation/' + pid + '/save/?vid=' + vid ;
-		url 	 = url + '&p=' + prop;
-		url 	 = url + '&no_html=1&ajax=1';
-		
-		if (action == 'pass')
-		{
+
+		var url  = $('#pid').attr('data-route');
+		url += (url.indexOf('?') == -1 ? '?' : '&') + 'vid=' + vid;
+		url += '&p=' + prop;
+		url += '&no_html=1&ajax=1';
+
+		if (action == 'pass') {
 			url = url + '&pass=1';
 
 			// Ajax call to get current status of a block
 			$.post(url, {}, 
 				function (response) {
 				response = $.parseJSON(response);
-				
-				if (response.success)
-				{
-					HUB.PublicationsCuration.markChecker(element, 'pass');	
+
+				if (response.success) {
+					HUB.PublicationsCuration.markChecker(element, 'pass');
 				}
-				if (response.error)
-				{
+				if (response.error) {
 					// TBD
+					console.log(response.error);
 				}
-				
+
 				// Enable submit buttons
 				HUB.PublicationsCuration.enableButtons();
-				
-			});					
+			});
 		}
 	},
-	
+
 	// Mark element as passed
 	markChecker: function(element, action)
 	{
-		var $ = this.jQuery;
-		
-		if (!element.length)
-		{
+		if (!element.length) {
 			return false;
 		}
-		
-		var checkers = $(element).find('span');
-		
-		checkers.each(function(i, item) 
-		{
-			var blockelement = $(element).parent().parent();
-			if (action == 'pass')
-			{
-				if ($(item).hasClass('checker-pass'))
-				{
-					$(item).addClass('picked');
-					$(item).removeClass('updated');
+
+		$(element).find('span').each(function(i, item) {
+			var blockelement = $($(element).parent().parent());
+			var el = $(item);
+
+			if (action == 'pass') {
+				if (el.hasClass('checker-pass')) {
+					el
+						.addClass('picked')
+						.removeClass('updated');
+				} else if (el.hasClass('picked')) {
+					el
+						.removeClass('picked')
+						.removeClass('updated');
 				}
-				else if ($(item).hasClass('picked'))
-				{
-					$(item).removeClass('picked');
-					$(item).removeClass('updated');
+
+				blockelement
+					.addClass('el-passed')
+					.removeClass('el-failed')
+					.removeClass('el-updated');
+			} else if (action == 'fail') {
+				if (el.hasClass('checker-fail')) {
+					el
+						.addClass('picked')
+						.removeClass('updated');
+				} else if (el.hasClass('picked')) {
+					el
+						.removeClass('picked')
+						.removeClass('updated');
 				}
-				
-				$(blockelement).addClass('el-passed');
-				$(blockelement).removeClass('el-failed');
-				$(blockelement).removeClass('el-updated');
+
+				blockelement
+					.addClass('el-failed')
+					.removeClass('el-passed')
+					.removeClass('el-updated');
 			}
-			else if (action == 'fail')
-			{
-				if ($(item).hasClass('checker-fail'))
-				{
-					$(item).addClass('picked');
-					$(item).removeClass('updated');
-				}
-				else if ($(item).hasClass('picked'))
-				{
-					$(item).removeClass('picked');
-					$(item).removeClass('updated');
-				}
-				
-				$(blockelement).addClass('el-failed');
-				$(blockelement).removeClass('el-passed');
-				$(blockelement).removeClass('el-updated');
-			}			
-		});		
+		});
 	},
-	
-	drawFailBox: function (element) 
-	{	
-		var $ 		= this.jQuery;
-		var review 	= $('#notice-review');
-		var submit 	= $('#notice-submit');
-		var form 	= $('#notice-form');
-		
-		if (!review.length || !$('#addnotice').length || !element.length) 
-		{
+
+	drawFailBox: function (element)
+	{
+		var review = $('#notice-review');
+
+		if (!review.length
+		 || !$('#addnotice').length
+		 || !element.length) {
 			return false;
 		}
-		
-		var notice 	 = $(element).parent().find('.notice-text')[0];
-		var text 	 = $(notice).html();
-		
+
+		var submit = $('#notice-submit');
+		var form   = $('#notice-form');
+		var notice = $(element).parent().find('.notice-text')[0];
+		var text   = $(notice).html();
+
 		// Write title
-		var title = element.attr('rel');		
+		var title = element.attr('rel');
 		$('#notice-item').html('<strong>Curation Item:</strong> ' + title);
-		
-		$(review).val('');
-		if ($(notice).length)
-		{
-			$(review).val(text);
+
+		review.val('');
+		if ($(notice).length) {
+			review.val(text);
 		}
-		
+
 		// Reload prop value
 		$('#props').val('');
 		var value = $(element).attr('id');
 		$('#props').val(value);
-		
+
 		// Open form in fancybox
 		$.fancybox( [$('#addnotice')] );
-		
-		$(form).unbind(); 		
-		
+
+		form.unbind();
+
 		// Submit form
-		$(form).on('submit', function(e) 
-		{
+		form.on('submit', function(e) {
 			var url = form.attr('action');
 			var formData = new FormData($(this)[0]);
-		    
+
 			// Ajax request
 			$.ajax({
-		           type: "POST",
-		           url: url,
-		           data: formData,
-				   contentType: false,
-				   processData: false,
-		           success: function(response)
-		           {		                						
-						if (response)
-						{
-						    try {
-						        response = $.parseJSON(response);
-								if (response.error || response.error != false)
-								{
-									// error
-								}
-								else
-								{										
-									HUB.PublicationsCuration.markChecker(element, 'fail');
-									var note 	 = $(element).parent().find('.notice-text')[0];
-									$(note).html(response.notice);
-																		
-									// Enable submit buttons
-									HUB.PublicationsCuration.enableButtons();
-									
-									HUB.PublicationsCuration.allowEdits();									
-								}								
-						    } 
-							catch (e) 
-							{
+				type: "POST",
+				url: url,
+				data: formData,
+				contentType: false,
+				processData: false,
+				success: function(response) {
+					if (response) {
+						try {
+							response = $.parseJSON(response);
+							if (response.error || response.error != false) {
 								// error
-						    }
-						}
-						
-						$.fancybox.close(); 				
-		           }
-		    });
+							} else {
+								HUB.PublicationsCuration.markChecker(element, 'fail');
 
-		    return false;
-		
+								var note = $(element).parent().find('.notice-text')[0];
+								$(note).html(response.notice);
+
+								// Enable submit buttons
+								HUB.PublicationsCuration.enableButtons();
+
+								HUB.PublicationsCuration.allowEdits();
+							}
+						} catch (e) {
+							// error
+						}
+					}
+
+					$.fancybox.close();
+				}
+			});
+
+			return false;
 		});
-		
-		// Submit only if reason is entered	
-		$(submit).on('click', function(e) 
-		{
+
+		// Submit only if reason is entered
+		submit.on('click', function(e) {
 			e.preventDefault();
-			
-			if ($(review).val() && $(review).val() != '')
-			{	
-				$(form).submit();
+
+			if (review.val() && review.val() != '') {
+				form.submit();
 			}
 		});
+	},
 
-	},
-	
-	// Show 'more' link for extensive side text 
-	showMoreText: function()
-	{
-		var $ = this.jQuery;
-		$(".more-content").fancybox();
-		
-		var fb = $(".fancybox");
-		
-		$('.fancybox').each(function(i, item) {
-			$(item).on('click', function(e) {
-				e.preventDefault();
-				$.fancybox(this,{
-					type: 'ajax',
-					width: 700,
-					height: 'auto',
-					autoSize: false,
-					fitToView: false,
-				});
-			});
-		});
-	
-	},
-	
 	// Enable submit buttons
 	enableButtons: function()
 	{
-		var $ = this.jQuery;
-		
 		var btns = $(".btn-curate");
-		
-		if (!btns.length)
-		{
+
+		if (!btns.length) {
 			return false;
 		}
-		
+
 		var complete = HUB.PublicationsCuration.checkCompleteness();
 		var approved = HUB.PublicationsCuration.checkApproved();
-		
-		btns.each(function(i, item) 
-		{
-			if (complete)
-			{			
-				if (($(item).hasClass('curate-save') && approved) || ($(item).hasClass('curate-kickback') && !approved))
-				{
-					$(item).removeClass('disabled');
-					$(item).parent().parent().parent().addClass('active');
+
+		btns.each(function(i, item) {
+			var el = $(item);
+
+			if (complete) {
+				if ((el.hasClass('curate-save') && approved)
+				 || (el.hasClass('curate-kickback') && !approved)) {
+					el.removeClass('disabled');
+					el.parent().parent().parent().addClass('active');
+				} else if (!el.hasClass('disabled')) {
+					el.addClass('disabled');
 				}
-				else if (!$(item).hasClass('disabled'))
-				{
-					$(item).addClass('disabled');
-				}			
+			} else {
+				el.addClass('disabled');
+				el.parent().parent().parent().removeClass('active');
 			}
-			else
-			{
-				$(item).addClass('disabled');
-				$(item).parent().parent().parent().removeClass('active');
-			}
-			
-			var action = $(item).hasClass('curate-save') ? 'approve' : 'kickback';
-			
+
+			var action = el.hasClass('curate-save') ? 'approve' : 'kickback';
+
 			// Submit form
-			$(item).on('click', function(e) 
-			{
+			el.on('click', function(e) {
 				e.preventDefault();
-				
-				if (!$(item).hasClass('disabled')) 
-				{ 
-					if ($('#curation-form').length) 
-					{	
+
+				if (!el.hasClass('disabled')) {
+					if ($('#curation-form').length) {
 						$('#task').val(action);
 						$('#curation-form').submit();
 					}
 				}
-			});			
+			});
 		});
 	},
-	
+
 	// Check completion
 	checkCompleteness: function()
 	{
-		var $ = this.jQuery;
-		var complete = 0;
-		
 		var checkers = $(".block-checker span");
-		
-		if (!checkers.length)
-		{
+
+		if (!checkers.length) {
 			return false;
 		}
-		
-		var checked = 0;
-		checkers.each(function(i, item) 
-		{
-			if ($(item).hasClass('picked') && !$(item).hasClass('updated'))
-			{
+
+		var complete = 0,
+			checked = 0;
+
+		checkers.each(function(i, item) {
+			if ($(item).hasClass('picked')
+			 && !$(item).hasClass('updated')) {
 				checked = checked + 1;
 			}
 		});
-		
-		if (checked == checkers.length/2)
-		{
+
+		if (checked == checkers.length/2) {
 			complete = 1;
 		}
-		
+
 		return complete;
 	},
-	
+
 	// Check for items requiring changes
 	checkApproved: function()
 	{
-		var $ = this.jQuery;
-		var complete = 0;
-		
 		var checkers = $(".block-checker span");
-		var approved = $(".block-checker span.checker-pass");
-		
-		if (!checkers.length)
-		{
+
+		if (!checkers.length) {
 			return false;
 		}
-		var required = checkers.length/2;
-		var checked  = 0;
-		
-		approved.each(function(i, item) 
-		{
-			if ($(item).hasClass('picked') && !$(item).hasClass('updated'))
-			{
+
+		var complete = 0,
+			checked  = 0,
+			required = checkers.length/2,
+			approved = $(".block-checker span.checker-pass");
+
+		approved.each(function(i, item) {
+			if ($(item).hasClass('picked')
+			 && !$(item).hasClass('updated')) {
 				checked = checked + 1;
 			}
 		});
-		
-		if (checked == required)
-		{
+
+		if (checked == required) {
 			complete = 1;
 		}
-		
+
 		return complete;
 	}
 }
 
 jQuery(document).ready(function($){
-	HUB.PublicationsCuration.initialize();
-});	
+	// Show 'more' link for extensive side text 
+	$(".more-content").fancybox();
+
+	// Enable modals
+	$('.fancybox').fancybox({
+		type: 'ajax',
+		width: 700,
+		height: 'auto',
+		autoSize: false,
+		fitToView: false,
+	});
+
+	// Enable submit buttons
+	HUB.PublicationsCuration.enableButtons();
+
+	// Enable checkers
+	HUB.PublicationsCuration.enableCheckers();
+
+	// Enable checkers
+	HUB.PublicationsCuration.allowEdits();
+});

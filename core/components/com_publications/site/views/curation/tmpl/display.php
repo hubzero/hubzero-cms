@@ -37,8 +37,16 @@ $this->css()
 	<div class="container">
 		<nav class="entries-filters">
 			<ul class="entries-menu filter-options">
-				<li><a<?php echo ($this->filters['curator'] != 'owner') ? ' class="active"' : ''; ?> href="<?php echo Route::url($route); ?>" title="All">All</a></li>
-				<li><a<?php echo ($this->filters['curator'] == 'owner') ? ' class="active"' : ''; ?> href="<?php echo Route::url($route . '&assigned=1'); ?>" title="Assigned to me">Assigned to me</a></li>
+				<li>
+					<a<?php echo ($this->filters['curator'] != 'owner') ? ' class="active"' : ''; ?> href="<?php echo Route::url($route); ?>">
+						<?php echo Lang::txt('All'); ?>
+					</a>
+				</li>
+				<li>
+					<a<?php echo ($this->filters['curator'] == 'owner') ? ' class="active"' : ''; ?> href="<?php echo Route::url($route . '&assigned=1'); ?>">
+						<?php echo Lang::txt('Assigned to me'); ?>
+					</a>
+				</li>
 			</ul>
 		</nav>
 
@@ -48,13 +56,33 @@ $this->css()
 					<table class="listing">
 						<thead>
 							<tr>
-								<th class="thtype<?php if ($this->filters['sortby'] == 'id') { echo ' activesort'; } ?>"><a href="<?php echo Route::url($route . '&t_sortby=id&t_sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_ID'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ID'); ?></a></th>
+								<th class="thtype<?php if ($this->filters['sortby'] == 'id') { echo ' activesort'; } ?>">
+									<a href="<?php echo Route::url($route . '&t_sortby=id&t_sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_ID'); ?>">
+										<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ID'); ?>
+									</a>
+								</th>
 								<th></th>
-								<th<?php if ($this->filters['sortby'] == 'title') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url($route . '&t_sortby=title&t_sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_TITLE'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_TITLE'); ?></a></th>
+								<th<?php if ($this->filters['sortby'] == 'title') { echo ' class="activesort"'; } ?>>
+									<a href="<?php echo Route::url($route . '&t_sortby=title&t_sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_TITLE'); ?>">
+										<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_TITLE'); ?>
+									</a>
+								</th>
 								<th></th>
-								<th class="thtype<?php if ($this->filters['sortby'] == 'type') { echo ' activesort'; } ?>"><a href="<?php echo Route::url($route . '&t_sortby=type&t_sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_CONTENT_TYPE'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_CONTENT_TYPE'); ?></a></th>
-								<th<?php if ($this->filters['sortby'] == 'submitted') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url($route . '&t_sortby=submitted&t_sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED'); ?></a></th>
-								<th<?php if ($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url($route . '&t_sortby=status&t_sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_STATUS'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_STATUS'); ?></a></th>
+								<th class="thtype<?php if ($this->filters['sortby'] == 'type') { echo ' activesort'; } ?>">
+									<a href="<?php echo Route::url($route . '&t_sortby=type&t_sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_CONTENT_TYPE'); ?>">
+										<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_CONTENT_TYPE'); ?>
+									</a>
+								</th>
+								<th<?php if ($this->filters['sortby'] == 'submitted') { echo ' class="activesort"'; } ?>>
+									<a href="<?php echo Route::url($route . '&t_sortby=submitted&t_sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED'); ?>">
+										<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED'); ?>
+									</a>
+								</th>
+								<th<?php if ($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?>>
+									<a href="<?php echo Route::url($route . '&t_sortby=status&t_sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_STATUS'); ?>">
+										<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_STATUS'); ?>
+									</a>
+								</th>
 								<th></th>
 								<th></th>
 							</tr>
@@ -70,14 +98,17 @@ $this->css()
 
 									// Get submitter
 									$submitter  = $pa->getSubmitter($row->version_id, $row->created_by);
-									$submitted .= ' <span class="block">' . Lang::txt('COM_PUBLICATIONS_CURATION_BY') . ' ' . $submitter->name . '</span>';
+									$submitter->name = $submitter->name ?: Lang::txt('JUNKNOWN');
+									$submitted .= ' <span class="block">' . Lang::txt('COM_PUBLICATIONS_CURATION_BY', $submitter->name) . '</span>';
 
 									if ($row->state == 7)
 									{
 										$reviewed  = strtolower(Lang::txt('COM_PUBLICATIONS_CURATION_REVIEWED')) . ' <span class="prominent">' . Date::of($row->reviewed)->toLocal('M d, Y') . '</span> ';
 
 										$reviewer  = User::getInstance($row->reviewed_by);
-										$reviewed .= $reviewer ? ' <span class="block">' . Lang::txt('COM_PUBLICATIONS_CURATION_BY') . ' ' . $reviewer->get('name') . '</span>' : null;
+										$name = $reviewer->get('name');
+										$name = $name ?: Lang::txt('JUNKNOWN');
+										$reviewed .= $reviewer ? ' <span class="block">' . Lang::txt('COM_PUBLICATIONS_CURATION_BY', $name) . '</span>' : '';
 									}
 
 									$class = $row->state == 5 ? 'status-pending' : 'status-wip';
@@ -88,19 +119,38 @@ $this->css()
 									$assign = ($this->authorized == 'curator' || $this->authorized == 'admin' || ($this->authorized == 'limited' && in_array($row->master_type, $this->filters['master_type']))) ? true : false;
 									?>
 									<tr class="mline mini faded" id="tr_<?php echo $row->id; ?>">
-										<td><?php echo $row->id; ?></td>
-										<td class="pub-image"><img width="30" height="30" src="<?php echo Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id) . '/Image:thumb'; ?>" alt="" /></td>
-										<td><?php if ($row->state == 5) { ?><a href="<?php echo Route::url($route . '&id=' . $row->id); ?>" <?php if ($abstract) { echo 'title="' . $abstract . '"'; } ?>><?php } ?><?php echo $row->title; ?><?php if ($row->state == 5) { ?></a><?php } ?></td>
-										<td>v.<?php echo $row->version_label; ?></td>
-										<td><span class="icon <?php echo $row->base; ?>">&nbsp;</span><?php echo $row->base; ?></td>
+										<td>
+											<?php echo $row->id; ?>
+										</td>
+										<td class="pub-image">
+											<img width="30" height="30" src="<?php echo Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id) . '/Image:thumb'; ?>" alt="" />
+										</td>
+										<td>
+											<?php if ($row->state == 5) { ?>
+												<a href="<?php echo Route::url($route . '&id=' . $row->id); ?>" <?php if ($abstract) { echo 'title="' . $this->escape($abstract) . '"'; } ?>>
+											<?php } ?>
+											<?php echo $this->escape($row->title); ?>
+											<?php if ($row->state == 5) { ?>
+												</a>
+											<?php } ?>
+										</td>
+										<td>
+											v.<?php echo $row->version_label; ?>
+										</td>
+										<td>
+											<span class="icon <?php echo $row->base; ?>">&nbsp;</span><?php echo $row->base; ?>
+										</td>
 										<td>
 											<span class="block"><?php echo $submitted; ?></span>
 											<?php if ($row->reviewed && $row->state == 5) { ?>
 												<span class="item-updated"></span>
 											<?php } ?>
 										</td>
-										<td><span class="status-icon <?php echo $class; ?>"></span> <span class="status-label"><?php echo $row->state == 5 ? Lang::txt('COM_PUBLICATIONS_CURATION_STATUS_PENDING') : Lang::txt('COM_PUBLICATIONS_CURATION_PENDING_AUTHOR_CHANGES'); ?></span></td>
-										<td><?php
+										<td>
+											<span class="status-icon <?php echo $class; ?>"></span> <span class="status-label"><?php echo $row->state == 5 ? Lang::txt('COM_PUBLICATIONS_CURATION_STATUS_PENDING') : Lang::txt('COM_PUBLICATIONS_CURATION_PENDING_AUTHOR_CHANGES'); ?></span>
+										</td>
+										<td>
+											<?php
 											$owner = $row->curator ? User::getInstance($row->curator) : null;
 											if ($owner)
 											{
@@ -109,7 +159,7 @@ $this->css()
 												<?php if ($assign) { ?>
 													<a href="<?php echo Route::url($route . '&id=' . $row->id . '&task=assign&vid=' . $row->version_id . '&ajax=1&no_html=1'); ?>" class="fancybox" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_CHANGE_ASSIGNMENT'); ?>">
 												<?php } ?>
-												<?php echo $owner->get('name'); ?>
+												<?php echo $this->escape($owner->get('name')); ?>
 												<?php if ($assign) { ?>
 													</a>
 												<?php } ?>
@@ -121,7 +171,7 @@ $this->css()
 												<a href="<?php echo Route::url($route . '&id=' . $row->id . '&task=assign&vid=' . $row->version_id . '&ajax=1&no_html=1'); ?>" class="btn icon-assign btn-secondary fancybox" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN'); ?></a>
 												<?php
 											}
-										?>
+											?>
 										</td>
 										<td class="nowrap">
 											<?php if ($row->state == 5) : ?>

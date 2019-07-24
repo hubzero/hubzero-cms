@@ -18,12 +18,8 @@
 	}
 	.curation-wrap {
 		margin: 0 2em 0.5em 2em;
-		background: #FFFFFF;
-		padding-bottom: 4em;
 	}
-	/*.com_publications .inner {
-		background: #FFFFFF;
-	}*/
+
 	.curation-blocks {
 		border-top: 4px solid #E2E2E2;
 		border-bottom: 4px solid #E2E2E2;
@@ -39,12 +35,7 @@
 		font-size: 130%;
 		margin-bottom: 0;
 	}
-	.curation .listing {
-		border-top: 4px solid #E2E2E2;
-	}
-	.curation .listing td {
-		padding: 1.5em 0.5em;
-	}
+
 	.pubtitle {
 		background: #eef0eb;
 	}
@@ -53,63 +44,48 @@
 		font-size: 120%;
 	}
 	.submit-curation {
-		margin: 0 0 0 -5em;
-		padding: 0;
-		padding-bottom: 1em;
-		height: 90px;
+		margin: 0;
+		padding: 0 0 1em 0;
 		background: #cbefe0;
-		width: 120%;
 		position: fixed;
 		bottom: 0;
+		left: 0;
+		right: 0;
 		z-index: 5000;
-		border-top: 4px solid #666;
 		background: #CCC;
+		background: rgba(0, 0, 0, 0.8);
 		box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+		text-align: center;
 	}
 	.submit-curation.active {
-		border-top: 4px solid #7be1fa;
+		border-color: #7be1fa;
 		background: #bef1fd;
 	}
-	.submit-curation span {
-		/*float: right;*/
-	}
-	.submit-curation input {
-		border: 1px solid #999 !important;
-		margin-right: 0.5em;
-		color: #000;
-		-moz-border-radius: 10px;
-		border-radius: 10px;
-		background: #FFFFFF;
-	}
+
 	.curation-controls {
 		width: 200px;
 		display: block;
 	}
-	.submit-curation p {
-		padding: 0.5em 0;
-		margin: 1em 0 0 0;
-		width: 50%;
-		text-align: right;
-	}
-	.icon-apply:before    {
+
+	.icon-apply:before {
 		content: "\2714";
 		color: white !important;
 	}
-	.icon-kickback:before    {
+	.icon-kickback:before {
 		content: "\21BB";
 		color: white !important;
 	}
-	.icon-assign:before    {
+	.icon-assign:before {
 		content: "\f08d";
 	}
 	span.pubimage {
 		float: left;
 		margin-right: 1em;
 	}
-	.pubimage img {
+	/*.pubimage img {
 		width: 50px;
 		height: 50px;
-	}
+	}*/
 	p.instruct {
 		padding: 1em 0;
 	}
@@ -142,9 +118,6 @@
 
 /*
 ------------------------------- */
-	.block-subject {
-
-	}
 	.block-check {
 		position: absolute;
 	}
@@ -192,7 +165,6 @@
 
 /* Checker
 ------------------------------- */
-
 	.block-checker span {
 		position: absolute;
 		margin: 0 -2.5em;
@@ -233,7 +205,6 @@
 	.block-checker .checker-fail.picked a:before {
 		color: red;
 	}
-	/*.block-checker .checker-pass.updated a:hover:before,*/
 	.block-checker .checker-pass.picked.updated a:before,
 	.block-checker .checker-fail.picked.updated a:before {
 		color: orange;
@@ -425,58 +396,21 @@
 
 /* Notice to authors form
 --------------------------------------------- */
-
 	.addnotice {
-		padding: 1em;
 		width: 500px;
 		height: 300px;
 	}
-	.addnotice h5 {
-		margin: 0 0 1.5em 0;
-		padding: 0 0 0.3em 0;
-		border-bottom: 1px dotted black;
-	}
+	.fancybox-wrap fieldset .notice-item,
 	.notice-item {
 		background: #e0f0f3;
 		padding: 0.3em 0.8em;
 	}
-	.addnotice label {
-		text-align: left !important;
-	}
-	.addnotice input[type="text"], .addnotice textarea {
-		display: block;
-		height: 100px;
-		width: 100%;
-		float: none;
-		margin: 0.5em 0;
-		background: none;
-	}
-	.addnotice .submitarea {
+	.submitarea {
 		text-align: center;
 	}
 
 /* Curation Listing
 --------------------------------------------- */
-
-	.pub-image img {
-		width: 30px;
-		height: 30px;
-	}
-	.pub-image {
-		width: 30px;
-	}
-	.publist {
-		margin-bottom: 3em;
-	}
-	.publist thead tr {
-		background: #f1f7f8;
-	}
-	.publist thead tr a {
-		border: none;
-	}
-	.publist tbody tr td:last-child {
-		padding-right: 2em;
-	}
 	.activesort a {
 		color: #666;
 	}
@@ -529,7 +463,7 @@
 
 /* Misc
 --------------------------------------------- */
-	#abox-content {
+	/*#abox-content {
 		padding: 0;
 		margin: 0;
 		background: #FFFFFF;
@@ -541,10 +475,9 @@
 		background: #FFFFFF;
 		color: black;
 		border-bottom: 1px dotted #000;
-	}
+	}*/
 	.curation-history {
 		padding: 1em;
-		line-height: 1.2em;
 	}
 	.history-blocks {
 		font-size: 85%;

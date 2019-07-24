@@ -33,12 +33,12 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
 		$database = App::get('db');
 
 		$groups = array_map(array($database, 'escape'), $authz->get_group_names());
-		$viewlevels = implode(',', User::getAuthorisedViewLevels());
+		$viewlevels = implode(',', (User::isGuest() ? array(0, 3) : array(0, 1, 3)));//implode(',', User::getAuthorisedViewLevels());
 
 		if ($groups)
 		{
 			$group_list = '(\'' . join('\', \'', $groups) . '\')';
-			$access = '(access IN (0,' . $viewlevels . ') OR ((access = 4 OR access = 5) AND r.group_owner IN ' . $group_list . '))';
+			$access = '(access IN (0,' . $viewlevels . ') OR ((access = 3 OR access = 4) AND r.group_owner IN ' . $group_list . '))';
 		}
 		else
 		{
@@ -207,7 +207,10 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		usort($rows, create_function('$a, $b', 'return (($res = $a->get_weight() - $b->get_weight()) == 0 ? 0 : $res > 0 ? -1 : 1);'));
+		usort($rows, function($a, $b) {
+			$res = $a->get_weight() - $b->get_weight();
+			return $res == 0 ? 0 : $res > 0 ? -1 : 1;
+		});
 		foreach ($rows as $row)
 		{
 			$results->add($row);

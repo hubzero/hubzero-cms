@@ -582,7 +582,8 @@ class Threads extends AdminController
 		}
 
 		// Incoming file
-		$file = Request::getArray('upload', '', 'files');
+		$file = Request::getArray('upload', array(), 'files');
+
 		if (!$file || !isset($file['name']) || !$file['name'])
 		{
 			if ($attachment->get('id'))
