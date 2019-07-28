@@ -45,6 +45,14 @@
 	.com_resources #content-header .upperpane h2 {
 		padding: 0 0 0.5em 0;
 	}
+	.upperpane p a {
+		display: unset;
+		font-family: 'open_sansregular', Helvetica Neue, Helvetica, sans-serif;
+		font-weight: normal;
+	}
+	.upperpane p a::after {
+		display: none;
+	}
 
 /* Item listing */
 	.com_publications .container .container-block {
@@ -863,6 +871,13 @@
 	#publications li .separator {
 		color: transparent;
 	}
+	#publications .title a {
+		display: unset;
+		font-family: 'open_sansregular', Helvetica Neue, Helvetica, sans-serif;
+	}
+	#publications .title a::after {
+		display: none;
+	}
 
 /* Licenses */
 	.license {
@@ -1087,6 +1102,14 @@
 	}
 	.details span.state_archive {
 		color: #666;
+	}
+	.details a {
+		display: unset;
+		font-family: 'open_sansregular', Helvetica Neue, Helvetica, sans-serif;
+		font-weight: normal;
+	}
+	.details a::after {
+		display: none;
 	}
 
 /* 'No results' display

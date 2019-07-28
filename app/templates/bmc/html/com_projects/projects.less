@@ -133,3 +133,34 @@ ol.steps li {
 		padding-bottom: 2em;
 	}
 }
+ //Remove link stylings
+#manage_assets,
+.welcome,
+.side-content,
+.actionlink,
+.editing,
+.groupowner,
+.viewallstats,
+.s-notes,
+.s-todo,
+.addnew,
+.newauthor-question {
+  a {
+    display: unset;
+    font-family: inherit;
+    font-weight: normal;
+
+    &::after {
+      display: none;
+    }
+  }
+}
+
+#project-wrap a {
+  font-family: @fontSimple;
+  font-weight: normal;
+
+  &::after {
+    display: none;
+  }
+}

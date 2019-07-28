@@ -29,7 +29,7 @@ a,
 a:active,
 a:visited {
   text-decoration: none;
-  color: #6E9C39;
+  color: #597F2F;
 }
 p {
   margin: 1em 0;
@@ -476,6 +476,14 @@ body.panel-open .hub-overlay {
 }
 .super-group-content-wrap {
   margin-bottom: 25px !important;
+}
+p a {
+  display: unset;
+  font-family: inherit;
+  font-weight: normal;
+}
+p a::after {
+  display: none;
 }
 /* END: Supergroup template fixes */
 @keyframes colorWheel {

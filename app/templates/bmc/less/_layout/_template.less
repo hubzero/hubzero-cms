@@ -449,6 +449,16 @@ footer.global {
 		& > nav {
 			flex-grow: 1;
 
+			h2 {
+				color: @colorLight;
+			}
+
+			h4 {
+				a {
+					color: @colorLight;
+				}
+			}
+
 			ul,
 			li {
 				margin: 0;
@@ -566,6 +576,16 @@ footer.global {
 				opacity: 0.9;
 				margin-bottom: 0.6rem;
 			}
+
+			.copy {
+				a {
+					color: @colorLight;
+
+					&::after {
+						background-color: @colorLight;
+					}
+				}
+			}
 		}
 
 		& > .legal {
@@ -604,6 +624,16 @@ footer.global {
 				opacity: 0.9;
 				margin-bottom: 0.6rem;
 				//margin-left: auto;
+			}
+
+			.copy {
+				a {
+					color: @colorLight;
+
+					&::after {
+						background-color: @colorLight;
+					}
+				}
 			}
 		}
 	}

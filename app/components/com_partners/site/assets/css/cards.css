@@ -154,7 +154,12 @@
   max-height: 80%;
 }
 .card .card-link {
+  color: #fff;
   margin-right: 20px;
+}
+
+.card .card-link:hover {
+  color: #8cc540;
 }
 
 .card .social {
@@ -168,6 +173,10 @@
 
 a.social-icon {
   color: #fff;
+}
+
+a.social-icon:hover {
+  color: #8cc540;
 }
 
 .card.is-collapsed .card__inner:after {

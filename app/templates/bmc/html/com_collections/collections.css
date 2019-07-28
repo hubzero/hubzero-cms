@@ -53,3 +53,11 @@ section.main {
 #posts {
   margin: 0 -10px;
 }
+.convo p a {
+  display: unset;
+  font-family: inherit;
+  font-weight: normal;
+}
+.convo p a::after {
+  display: none;
+}

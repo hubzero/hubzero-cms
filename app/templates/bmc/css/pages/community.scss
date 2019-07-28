@@ -5,155 +5,51 @@
   display: none;
 }
 
-.wrapper {
-  h3,
-  h4,
-  h5 {
-    font-family: 'Martel', serif;
-  }
-}
-
 //Feature
 .module-feature {
   @include flexbox(wrap);
-  @include grid-template(repeat(auto-fit, minmax(12.5rem, 1fr)), null, 5px);
+  @include grid-template(repeat(auto-fit, minmax(12.5rem, 1fr)), null, .625em);
   grid-auto-flow: dense;
   grid-auto-rows: 12.5rem;
+  margin: 1em;
 
-  .billboard-image {
-    @extend %showcase-img;
-  }
-
-  .billboard {
-    position: relative;
-
-    .billboard-tag {
-      @include showcase-tag($green, $white);
-    }
-
-    .billboard-header {
-      bottom: 0;
-      padding: 10px;
-      position: absolute;
-
-      a {
-        @include showcase-header(1em, 1, 2);
-      }
-    }
-  }
-
-  .resource {
-    position: relative;
-
-    .partner-img {
-      @extend %showcase-group;
-    }
-
-    .partner-tag {
-      @include showcase-tag($green, $white);
-    }
-
-    .partner-title {
-      bottom: 0;
-      padding: 10px;
-      position: absolute;
-
-      a {
-        @include showcase-header(1em, 1, 2);
-      }
-    }
-  }
-
-  .group {
-    position: relative;
-
-    .group-img {
-      @extend %showcase-group;
-    }
-
-    .group-tag {
-      @include showcase-tag($green, $white);
-    }
-
-    .group-description {
-      bottom: 0;
-      padding: 10px;
-      position: absolute;
-
-      a {
-        @include showcase-header(1em, 1, 2);
-      }
-    }
-  }
-
-  .blog {
-    position: relative;
-  }
-
-  .blog-img {
-    @extend %showcase-img;
-  }
-
-  .blog-title {
-    bottom: 0;
-    padding: 10px;
-    position: absolute;
-
-    a {
-      @include showcase-header(1em, 1, 2);
-    }
-  }
-
-  .newsletter-img {
-    @extend %showcase-img;
-  }
-
-  .newsletter {
-    position: relative;
-
-    .newsletter-title {
-      bottom: 0;
-      padding: 10px;
-      position: absolute;
-
-      a {
-        @include showcase-header(1.1rem, 1.3, 2);
-      }
-    }
-
-    .newsletter-tag {
-      @include showcase-tag($green, $white);
-
-      span {
-        color: $white;
-      }
-    }
-  }
-
+  .billboard-image,
+  .blog-img,
+  .newsletter-img,
   .fmn-img {
     @extend %showcase-img;
   }
 
+  .billboard,
+  .resource,
+  .group,
+  .blog,
+  .newsletter,
   .fmn {
     position: relative;
+  }
 
-    .fmn-title {
-      bottom: 0;
-      padding: 10px;
-      position: absolute;
+  .billboard-header,
+  .partner-title,
+  .group-description,
+  .blog-title,
+  .newsletter-title,
+  .fmn-title {
+    @include showcase-header(1em, 1.1, 2);
+  }
 
-      a {
-        @include showcase-header(1.1rem, 1.3, 2);
-      }
-    }
+  .billboard-tag,
+  .partner-tag,
+  .group-tag,
+  .blog-tag,
+  .newsletter-tag,
+  .fmn-tag {
+    @include showcase-tag($color-accent2, $white);
+  }
 
-    .fmn-tag {
-      @include showcase-tag($green, $white);
-
-      span {
-        color: $white;
-      }
-    }
+  .partner-img,
+  .group-img {
+    @extend %showcase-group;
   }
 
   .big {
@@ -162,21 +58,21 @@
       margin: 0;
       width: auto;
     }
-    @include respond-at(1240px) {
+    @include respond-at(77.5em) {
       @include grid(null, span 1);
     }
     @include grid(span 2, span 2);
     flex: 1 1 20rem;
     height: 15rem;
-    margin: 2.5px;
+    margin: .15625em;
   }
 
   .flex {
     @extend .big;
-    @include respond-at(1035px) {
+    @include respond-at(64.6875em) {
       @include grid(span 3, span 1);
     }
-    @include respond-at(1445px) {
+    @include respond-at(90.3125em) {
       @include grid(null, span 1);
     }
   }
@@ -187,13 +83,13 @@
       margin: 0;
       width: auto;
     }
-    @include respond-at(625px) {
+    @include respond-at(39.0625em) {
       @include grid(span 3, null);
     }
     @include grid(span 2, null);
     flex: 1 1 20rem;
     height: 15rem;
-    margin: 2.5px;
+    margin: .15625em;
   }
 
   .regular {
@@ -204,7 +100,7 @@
     }
     flex: 1 1 20rem;
     height: 15rem;
-    margin: 2.5px;
+    margin: .15625em;
   }
 }
 
@@ -229,7 +125,7 @@
   .content {
     .search {
       input[type='submit'] {
-        background-color: $green;
+        background-color: $color-link;
         color: $white;
       }
     }
@@ -238,7 +134,7 @@
 
 //Explore
 .explore {
-  @include respond-at(590px) {
+  @include respond-at(36.875em) {
     padding: 2.5em;
   }
   padding: 1em;
@@ -254,7 +150,7 @@
 
 //Faculty Mentoring Network
 .one {
-  background-color: $light-gray;
+  background-color: $white-smoke;
 
   p {
     margin: 1em 0;
@@ -265,8 +161,7 @@
     text-align: center;
 
     .link {
-      @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
-      border-radius: 2px;
+      @include btn-border-drawing($color-link, $color-link-hover, 1px, bottom, right);
     }
   }
 
@@ -276,85 +171,26 @@
     grid-auto-rows: 8rem;
     justify-content: center;
 
-    .billboard-image {
-      @extend %showcase-img;
-    }
-
-    .billboard {
-      position: relative;
-
-      .billboard-tag {
-        @include showcase-tag($green, $white);
-      }
-
-      .billboard-header {
-        bottom: 0;
-        padding: 10px;
-        position: absolute;
-
-        a {
-          @include showcase-header(1em, 1, 2);
-        }
-      }
-    }
-
     .fmn {
       @include grid-support {
         margin: 0;
       }
-      @include flexbox;
-      margin: 1em .75em;
-      position: relative;
+      @extend %showcase-horizontal;
+    }
 
-      .fmn-img {
-        border-right: 5px solid $green;
-        height: 100%;
-        overflow: hidden;
-        width: 12.5rem;
+    .fmn-img {
+      @include showcase-horizontal-img(100%, 12.5rem);
+    }
 
-        img {
-          position: relative;
-          top: 50%;
-          transform: translateY(-50%);
-          transition: 3s ease-in-out;
-        }
-
-        &:hover {
-          img {
-            transform: translateY(-50%) scale(1.1);
-          }
-        }
-
-        &::after {
-          visibility: hidden;
-        }
+    .fmn-title {
+      @extend %showcase-horizontal-title;
+      a {
+        @include truncate(1rem, 1.4, 5);
       }
+    }
 
-      .fmn-title {
-        @include truncate(1rem, 1.6, 5);
-        font-family: 'Martel', serif;
-        margin-left: .5em;
-        position: static;
-
-        a {
-          color: $dark-blue;
-        }
-      }
-
-      .fmn-tag {
-        background-color: $green;
-        bottom: 0;
-        font-size: .8em;
-        font-weight: bold;
-        left: 0;
-        padding: .5em .8em;
-        position: absolute;
-        text-transform: uppercase;
-
-        span {
-          color: $white;
-        }
-      }
+    .fmn-tag {
+      @include showcase-horizontal-tag($color-accent2, $white);
     }
 
     .regular {
@@ -372,8 +208,7 @@
     text-align: center;
 
     .link {
-      @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
-      border-radius: 2px;
+      @include btn-border-drawing($color-link, $color-link-hover, 1px, bottom, right);
       margin-top: 3em;
     }
   }
@@ -386,7 +221,7 @@
   margin: 4em 0;
 
   .workshops {
-    @include respond-at(1100px) {
+    @include respond-at(68.75em) {
       width: 50%;
     }
     align-self: center;
@@ -395,7 +230,7 @@
   }
 
   .module-workshops {
-    @include respond-at(1100px) {
+    @include respond-at(68.75em) {
       width: 50%;
     }
     @include flexbox(wrap);
@@ -405,7 +240,7 @@
     .regular {
       flex: 1 1 15rem;
       height: 15rem;
-      margin: 2.5px;
+      margin: .15625em;
     }
 
     .billboard-image {
@@ -416,17 +251,11 @@
       position: relative;
 
       .billboard-tag {
-        @include showcase-tag($green, $white);
+        @include showcase-tag($color-accent2, $white);
       }
 
       .billboard-header {
-        bottom: 0;
-        padding: 10px;
-        position: absolute;
-
-        a {
-          @include showcase-header(1em, 1, 2);
-        }
+        @include showcase-header(1em, 1.1, 2);
       }
     }
   }
@@ -549,7 +378,7 @@
     .regular {
       flex: 1 1 15rem;
       height: 15rem;
-      margin: 2.5px;
+      margin: .15625em;
     }
 
     .group {
@@ -560,17 +389,11 @@
       }
 
       .group-tag {
-        @include showcase-tag($green, $white);
+        @include showcase-tag($color-accent2, $white);
       }
 
       .group-description {
-        bottom: 0;
-        padding: 10px;
-        position: absolute;
-
-        a {
-          @include showcase-header(1em, 1, 2);
-        }
+        @include showcase-header(1em, 1.1, 2)
       }
     }
   }
@@ -579,12 +402,11 @@
 // Private Working Groups
 .c-six {
   @include flexbox;
-  background-color: $light-gray;
+  background-color: $white-smoke;
   padding: 2.5em;
   text-align: center;
 
   .link {
-    @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
-    border-radius: 2px;
+    @include btn-border-drawing($color-link, $color-link-hover, 1px, bottom, right);
   }
 }

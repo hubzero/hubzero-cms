@@ -10,19 +10,19 @@
   grid-column: col/span 3;
   grid-row: row;
   display: grid;
+  grid-gap: 1rem;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, auto);
-  grid-gap: 1rem;
   visibility: hidden;
 }
 
 .one .postdoc-intro {
   grid-column: 1/span 3;
   grid-row: 1;
-  padding: 0 10px;
+  padding: 0 .625em;
 }
 
-@media only screen and (min-width: 801px) {
+@media only screen and (min-width: 50.0625em) {
   .one .postdoc-intro {
     grid-column: 1/span 2;
   }
@@ -31,33 +31,36 @@
 .one .current-postdocs {
   grid-column: 1/span 3;
   grid-row: 2;
-  border: 1px solid #84bf41;
-  border-radius: 6px;
-  padding: 0 18px 0 10px;
+  padding: 0 1.125em 0 .625em;
   position: relative;
 }
 
 .one .current-postdocs .postdoc-title {
+  background-image: linear-gradient(30deg, #8cc540 0%, #fff 100%);
+  background-position: 0 88%;
+  background-repeat: no-repeat;
+  background-size: 100% .1em;
+  padding: 0 3px;
   left: 0;
   position: absolute;
   text-align: left;
   top: -1em;
 }
 
-@media only screen and (min-width: 801px) {
+@media only screen and (min-width: 50.0625em) {
   .one .current-postdocs {
     grid-column: 3/span 1;
     grid-row: 1;
   }
 }
 
-@media only screen and (min-width: 801px) {
+@media only screen and (min-width: 50.0625em) {
   .one {
     display: flex;
     flex-wrap: nowrap;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
     grid-gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
     padding: 2.5em;
   }
 }
@@ -68,10 +71,10 @@
   grid-column: col/span 3;
   grid-row: row 2;
   display: grid;
+  grid-gap: 1rem;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, auto);
-  grid-gap: 1rem;
-  background-color: #F1F2F2;
+  background-color: #f1f1f1;
   padding: 2.5em;
 }
 
@@ -85,7 +88,7 @@
   grid-row: 2;
 }
 
-@media only screen and (min-width: 801px) {
+@media only screen and (min-width: 50.0625em) {
   .two .postdoc-activities {
     grid-column: 1/span 2;
     grid-row: 2;
@@ -104,7 +107,7 @@
   transform: translateY(-50%);
 }
 
-@media only screen and (min-width: 801px) {
+@media only screen and (min-width: 50.0625em) {
   .two .img-container {
     grid-column: 3/span 1;
     grid-row: 2;
@@ -118,14 +121,14 @@
   }
 }
 
-@media only screen and (min-width: 801px) {
+@media only screen and (min-width: 50.0625em) {
   .two {
     display: flex;
     flex-wrap: nowrap;
     display: grid;
+    grid-gap: 1rem;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, auto);
-    grid-gap: 1rem;
   }
 }
 
@@ -135,19 +138,19 @@
   grid-column: col/span 3;
   grid-row: row 3;
   display: grid;
+  grid-gap: 1rem;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, auto);
-  grid-gap: 1rem;
   padding: 2.5em;
 }
 
 .three .img-container {
   grid-column: 1/span 3;
   grid-row: 2;
-  padding: 0 10px;
+  padding: 0 .625em;
 }
 
-@media only screen and (min-width: 801px) {
+@media only screen and (min-width: 50.0625em) {
   .three .img-container {
     grid-column: 1/span 1;
     grid-row: 1;
@@ -161,20 +164,20 @@
   padding: 0 10px;
 }
 
-@media only screen and (min-width: 801px) {
+@media only screen and (min-width: 50.0625em) {
   .three .postdoc-activities {
     grid-column: 2/span 2;
     order: 1;
   }
 }
 
-@media only screen and (min-width: 801px) {
+@media only screen and (min-width: 50.0625em) {
   .three {
     display: flex;
     flex-wrap: nowrap;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
     grid-gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -184,10 +187,10 @@
   grid-column: col/span 3;
   grid-row: row 4;
   display: grid;
+  grid-gap: 1rem;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, auto);
-  grid-gap: 1rem;
-  background-color: #F1F2F2;
+  background-color: #f1f1f1;
   padding: 2.5em;
 }
 
@@ -195,10 +198,10 @@
   grid-column: 1/span 3;
   grid-row: 1;
   align-self: center;
-  padding: 0 10px;
+  padding: 0 .625em;
 }
 
-@media only screen and (min-width: 701px) {
+@media only screen and (min-width: 43.8125em) {
   .four .postdoc-activities {
     grid-column: 1/span 2;
   }
@@ -210,20 +213,20 @@
   padding: 0 10px;
 }
 
-@media only screen and (min-width: 801px) {
+@media only screen and (min-width: 50.0625em) {
   .four .img-container {
     grid-column: 3/span 1;
     grid-row: 1;
   }
 }
 
-@media only screen and (min-width: 801px) {
+@media only screen and (min-width: 50.0625em) {
   .four {
     display: flex;
     flex-wrap: nowrap;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
     grid-gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -232,7 +235,7 @@
   grid-row: row 5;
 }
 
-@media only screen and (min-width: 801px) {
+@media only screen and (min-width: 50.0625em) {
   .five {
     padding: 2.5em;
   }
@@ -240,25 +243,25 @@
 
 .past-postdocs {
   display: grid;
-  grid-template-columns: 300px;
-  grid-gap: 50px;
-  grid-auto-rows: 350px;
+  grid-gap: 3.125em;
+  grid-template-columns: 18.75rem;
+  grid-auto-rows: 21.875rem;
   justify-content: center;
 }
 
-@media only screen and (min-width: 680px) {
+@media only screen and (min-width: 42.5em) {
   .past-postdocs {
     display: grid;
-    grid-template-columns: repeat(2, 300px);
-    grid-gap: 50px;
+    grid-gap: 3.125em;
+    grid-template-columns: repeat(2, 18.75rem);
   }
 }
 
-@media only screen and (min-width: 1310px) {
+@media only screen and (min-width: 81.875em) {
   .past-postdocs {
     display: grid;
-    grid-template-columns: repeat(3, 300px);
-    grid-gap: 50px;
+    grid-gap: 3.125em;
+    grid-template-columns: repeat(3, 18.75rem);
   }
 }
 
@@ -272,7 +275,7 @@ ul.postdoc-list {
 
 #postdoc-pos1 {
   display: none;
-  padding: 15px;
+  padding: 0.9375em;
 }
 
 .type-em {
@@ -359,7 +362,7 @@ ul.postdoc-list {
 .card {
   height: 0;
   margin-bottom: 6.6em;
-  padding-bottom: calc(100% - 16px);
+  padding-bottom: calc(100% - 1em);
   position: relative;
 }
 
@@ -369,9 +372,9 @@ ul.postdoc-list {
   left: 0;
   line-height: 1.6em;
   margin: 0;
-  padding: 10px 16px;
+  padding: .625em 1em;
   position: absolute;
-  top: calc(100% - 16px);
+  top: calc(100% - 1em);
   transition: .3s;
   width: 100%;
   z-index: 10;
@@ -383,7 +386,6 @@ ul.postdoc-list {
 
 .card h2 strong {
   display: block;
-  font-family: 'Martel', serif;
   font-size: 1.03rem;
   font-weight: 400;
 }
@@ -393,7 +395,7 @@ ul.postdoc-list {
   content: '';
   left: 0;
   position: absolute;
-  top: -16px;
+  top: -.7em;
   transition: .3s;
   width: 0;
 }
@@ -403,7 +405,7 @@ ul.postdoc-list {
   top: auto;
 }
 
-@media only screen and (min-width: 767px) {
+@media only screen and (min-width: 47.9375em) {
   .card.active {
     height: auto;
     padding-bottom: 0;
@@ -411,8 +413,38 @@ ul.postdoc-list {
 }
 
 .card.active h2 {
-  padding: 10px 16px 10px 90px;
+  padding: .5em 1em .5em 4em;
   top: 0;
+}
+
+.card.active h2 span {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: 2em;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1em;
+  line-height: 1;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card.active h2 strong {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: 1.28em;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 0.8em;
+  line-height: 1.6;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .card.active h2:before {
@@ -420,13 +452,23 @@ ul.postdoc-list {
 }
 
 .card.active h2:after {
-  bottom: -16px;
+  bottom: -.7em;
+}
+
+.card.focus {
+  transition: .5s;
+}
+
+.card.unfocus {
+  opacity: .4 !important;
+  transform: scale(0.9) !important;
+  transition: .5s;
 }
 
 .card .card-content {
-  bottom: 16px;
-  height: 350px;
-  left: 16px;
+  bottom: 1em;
+  height: 21.875rem;
+  left: 1em;
   position: absolute;
   right: 0;
   top: 0;
@@ -437,13 +479,13 @@ ul.postdoc-list {
   border: 5px solid;
   border-radius: 50%;
   color: #fff;
-  height: 54px;
+  height: 3.375rem;
   position: absolute;
-  right: 16px;
+  right: 1em;
   text-align: center;
-  top: 15px;
+  top: 0.9375em;
   transition: .3s;
-  width: 54px;
+  width: 3.375rem;
   z-index: 20;
 }
 
@@ -452,16 +494,16 @@ ul.postdoc-list {
 }
 
 .card.active .btn-action {
-  top: 62px;
+  top: 3.875em;
 }
 
 .card .description {
-  bottom: 54px;
-  left: 30px;
+  bottom: 3.375em;
+  left: 1.875em;
   opacity: 0;
   overflow: hidden;
   position: absolute;
-  right: 30px;
+  right: 1.875em;
   top: 100%;
   transition: 1.2s;
 }
@@ -497,14 +539,14 @@ ul.postdoc-list {
   content: '\f007';
   font-family: 'Fontcons';
   font-style: normal;
-  padding: 0 13.5px;
+  padding: 0 .5em;
 }
 
 .card .contact:before {
   content: '\2709';
   font-family: 'Fontcons';
   font-style: normal;
-  padding: 0 13.5px;
+  padding: 0 .5em;
 }
 
 .card .card-footer {
@@ -517,15 +559,15 @@ ul.postdoc-list {
   color: #fff;
   display: block;
   float: left;
-  font-size: 28px;
-  height: 53px;
-  line-height: 52px;
-  margin-bottom: 15px;
-  margin-left: 5px;
+  font-size: 1.75rem;
+  height: 3.3125rem;
+  line-height: 3.25rem;
+  margin-bottom: .9375em;
+  margin-left: .3125em;
   position: relative;
   text-decoration: none;
   top: 200px;
-  width: 52px;
+  width: 3.25rem;
 }
 
 .card .card-footer a:nth-child(1) {
@@ -549,10 +591,10 @@ ul.postdoc-list {
 
 .card.active .img-container {
   border-radius: 50%;
-  height: 60px;
+  height: 3.75rem;
   left: 0;
-  top: 12px;
-  width: 60px;
+  top: .75em;
+  width: 3.75rem;
   z-index: 20;
 }
 
@@ -562,7 +604,7 @@ ul.postdoc-list {
 
 @media only screen and (min-width: 767px) {
   .card.active .card-content {
-    margin-right: 16px;
+    margin-right: 1em;
     position: relative;
   }
 }
@@ -570,18 +612,18 @@ ul.postdoc-list {
 .card.active .description {
   opacity: 1;
   padding-top: 5em;
-  top: 50px;
+  top: 3.125em;
 }
 
 .card.active .card-footer {
-  height: 82px;
-  left: 16px;
+  height: 5.125rem;
+  left: 1em;
   overflow: visible;
-  padding-left: 25px;
-  padding-top: 15px;
+  padding-left: 1.5625em;
+  padding-top: .9375em;
   position: absolute;
   right: 0;
-  top: calc(100% - 16px);
+  top: calc(100% - 5em);
 }
 
 .card.active .card-footer a {
@@ -589,51 +631,51 @@ ul.postdoc-list {
 }
 
 .green h2 {
-  background-color: #6E9C39;
+  background-color: #248232;
 }
 
 .green h2:after {
   border-bottom-color: transparent;
   border-left-color: transparent;
-  border-right-color: #6E9C39;
-  border-top-color: #6E9C39;
+  border-right-color: #248232;
+  border-top-color: #248232;
 }
 
 .green h2:before {
-  border-bottom-color: #1f2c10;
+  border-bottom-color: #030a04;
   border-left-color: transparent;
-  border-right-color: #1f2c10;
+  border-right-color: #030a04;
   border-top-color: transparent;
 }
 
 .green.active h2:before {
-  border-bottom-color: #6E9C39;
+  border-bottom-color: #248232;
   border-left-color: transparent;
-  border-right-color: #6E9C39;
+  border-right-color: #248232;
   border-top-color: transparent;
 }
 
 .green.active h2:after {
   border-bottom-color: transparent;
   border-left-color: transparent;
-  border-right-color: #1f2c10;
-  border-top-color: #1f2c10;
+  border-right-color: #030a04;
+  border-top-color: #030a04;
 }
 
 .green .btn-action {
-  background-color: #6E9C39;
+  background-color: #248232;
 }
 
 .green .btn-action:hover {
-  background-color: #39511e;
+  background-color: #0e3213;
 }
 
 .green .card-footer h4 {
-  color: #1f2c10;
+  color: #030a04;
 }
 
 .green .card-footer a {
-  background-color: #39511e;
+  background-color: #0e3213;
   color: #fff;
 }
 
@@ -642,11 +684,11 @@ ul.postdoc-list {
 }
 
 .green.active .card-content {
-  background-color: #f7fbf3;
+  background-color: #cdf1d3;
 }
 
 .green.active .card-footer {
-  background-color: #88bd4b;
+  background-color: #2faa41;
 }
 
 .dark-blue h2 {
@@ -716,5 +758,9 @@ ul.postdoc-list {
 }
 
 .past-postdocs .card.active .description {
-  padding-top: 7em;
+  padding-top: 5em;
+}
+
+.past-postdocs .card.active .card-footer {
+  top: calc(100% - 1em);
 }

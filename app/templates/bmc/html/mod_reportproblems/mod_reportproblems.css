@@ -15,8 +15,8 @@
 /* Help Pane */
 	#help-pane {
 		background: #000;
-		overflow: hidden; 
-		clear: both; 
+		overflow: hidden;
+		clear: both;
 		position: relative;
 		text-align: center;
 		width: 100%;
@@ -37,7 +37,7 @@
 	}
 	#help-container a {
 		color: #D0C7B1;
-		border-bottom: 1px solid #726545; 
+		border-bottom: 1px solid #726545;
 	}
 	#help-container a:hover {
 		color: #DAC887;
@@ -165,8 +165,8 @@
 		padding: 0.2em;
 		background-color: #333;
 	}
-	#help-container input, 
-	#help-container select, 
+	#help-container input,
+	#help-container select,
 	#help-container textarea {
 		margin-top: 0.25em;
 		width: 100%;
@@ -184,7 +184,7 @@
 		margin: 0.5em -0.5em 0.5em 0;
 		padding: 0.2em 0 0 0;
 		text-align: right;
-		border-top: 1px solid #333; 
+		border-top: 1px solid #333;
 	}
 	#help-container .submit input,
 	#help-container .option {
@@ -235,7 +235,7 @@
 		from {
 			-webkit-transform: rotate(0deg);
 		}
-		to { 
+		to {
 			-webkit-transform: rotate(360deg);
 		}
 	}
@@ -243,7 +243,7 @@
 		from {
 			transform: rotate(0deg);
 		}
-		to { 
+		to {
 			transform: rotate(360deg);
 		}
 	}
@@ -330,14 +330,14 @@
 	#tab.active {
 		background: #000;
 	}
-	#tab a { 
+	#tab a {
 		padding: 0;
 		color: #fff;
 		height: 3em;
 		display: block;
 		border: none;
 	}
-	#tab a span { 
+	#tab a span {
 		padding: 1em 0 0 0;
 		color: #fff;
 		height: 2em;
@@ -357,7 +357,7 @@
 	#tab a:hover span {
 		color: #d7c2ef;
 	}
-	
+
 #help-pane {
 	width: 100%;
 	margin: 0;
@@ -527,6 +527,11 @@
 	background: none;
 	background-color: none;
 	border: none;
+	font-family: inherit;
+	font-weight: normal;
+}
+.help a::after {
+	display: none;
 }
 #help a span {
 	padding: 0;

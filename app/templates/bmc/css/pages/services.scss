@@ -5,13 +5,6 @@
   display: none;
 }
 
-.wrapper {
-  h3,
-  h4 {
-    font-family: 'Martel', serif;
-  }
-}
-
 //Header
 
 .no-webp .service-header,
@@ -50,8 +43,7 @@
     width: 75%;
 
     .link {
-      @include btn-border-drawing($white, $orange, 1px, bottom, right);
-      border-radius: 2px;
+      @include btn-border-drawing($white, $color-accent, 1px, bottom, right);
     }
   }
 
@@ -79,17 +71,16 @@
   @include flexbox;
 
   .community {
-    background-color: $light-gray;
+    background-color: $white-smoke;
     padding: 2.5em;
     text-align: center;
     width: 100%;
 
     .link {
-      @include respond-at(670px) {
+      @include respond-at(41.875em) {
         display: initial;
       }
-      @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
-      border-radius: 2px;
+      @include btn-border-drawing($color-link, $color-link-hover, 1px, bottom, right);
       display: block;
     }
   }
@@ -130,7 +121,7 @@
   @include flexbox(wrap);
 
   .mentor {
-    @include respond-at(901px) {
+    @include respond-at(56.3125em) {
       width: 50%;
     }
     align-self: center;
@@ -139,7 +130,7 @@
   }
 
   .big {
-    @include respond-at(901px) {
+    @include respond-at(56.3125em) {
       width: 50%;
     }
     height: 20rem;
@@ -147,8 +138,7 @@
   }
 
   .link {
-    @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
-    border-radius: 2px;
+    @include btn-border-drawing($color-link, $color-link-hover, 1px, bottom, right);
   }
 }
 
@@ -247,7 +237,7 @@
 //Contact
 .five {
   @include flexbox;
-  background-color: $light-gray;
+  background-color: $white-smoke;
   padding: 2.5em;
 
   .contact-qubes {
@@ -256,8 +246,7 @@
     text-align: center;
 
     .link {
-      @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
-      border-radius: 2px;
+      @include btn-border-drawing($color-link, $color-link-hover, 1px, bottom, right);
     }
   }
 }

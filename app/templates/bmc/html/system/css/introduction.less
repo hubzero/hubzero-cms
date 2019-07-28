@@ -1,3 +1,5 @@
+// out: introduction.css
+
 @import "../../../less/_mixins/mixins";
 @import "../../../less/_vars/vars";
 
@@ -10,5 +12,17 @@
 	// Remove the icon that is being added by some components
 	&:after {
 		content: '' !important;
+	}
+
+	p {
+		a.popup {
+			display: unset;
+			font-family: 'open_sansregular', Helvetica Neue, Helvetica, sans-serif;
+			font-weight: normal;
+
+			&::after {
+				display: none;
+			}
+		}
 	}
 }

@@ -13,30 +13,30 @@
 
 	.postdoc-intro {
 		@include grid(1 / span 3, 1);
-		@include respond-at(801px) {
+		@include respond-at(50.0625em) {
 			@include grid(1 / span 2, null);
 		}
-		padding: 0 10px;
+		padding: 0 .625em;
 	}
 
 	.current-postdocs {
 		@include grid(1 / span 3, 2);
-		border: 1px solid $green;
-		border-radius: 6px;
-		padding: 0 18px 0 10px;
+		padding: 0 1.125em 0 .625em;
 		position: relative;
 
 		.postdoc-title {
+			@include gradient-header($color-accent, $white);
 			left: 0;
 			position: absolute;
 			text-align: left;
 			top: -1em;
 		}
-		@include respond-at(801px) {
+
+		@include respond-at(50.0625em) {
 			@include grid(3 / span 1, 1);
 		}
 	}
-	@include respond-at(801px) {
+	@include respond-at(50.0625em) {
 		@include flexbox;
 		@include grid-template(repeat(3, 1fr), null, 1rem);
 		padding: 2.5em;
@@ -47,7 +47,7 @@
 	@include flexbox(wrap);
 	@include grid(col / span 3, row 2);
 	@include grid-template(repeat(3, 1fr), repeat(3, auto), 1rem);
-	background-color: $light-gray;
+	background-color: $white-smoke;
 	padding: 2.5em;
 
 	h2 {
@@ -56,7 +56,7 @@
 
 	.postdoc-activities {
 		@include grid(1 / span 3, 2);
-		@include respond-at(801px) {
+		@include respond-at(50.0625em) {
 			@include grid(1 / span 2, 2);
 		}
 	}
@@ -71,7 +71,7 @@
 			transform: translateY(-50%);
 		}
 
-		@include respond-at(801px) {
+		@include respond-at(50.0625em) {
 			@include grid(3 / span 1, 2);
 			width: 50%;
 		}
@@ -81,7 +81,7 @@
 		}
 	}
 
-	@include respond-at(801px) {
+	@include respond-at(50.0625em) {
 		@include flexbox;
 		@include grid-template(repeat(3, 1fr), repeat(2, auto), 1rem);
 	}
@@ -95,15 +95,15 @@
 
 	.img-container {
 		@include grid(1 / span 3, 2);
-		@include respond-at(801px) {
+		@include respond-at(50.0625em) {
 			@include grid(1 / span 1, 1);
 		}
-		padding: 0 10px;
+		padding: 0 .625em;
 	}
 
 	.postdoc-activities {
 		@include grid(1 / span 3, null);
-		@include respond-at(801px) {
+		@include respond-at(50.0625em) {
 			@include grid(2 / span 2, null);
 			order: 1;
 		}
@@ -112,7 +112,7 @@
 		padding: 0 10px;
 	}
 
-	@include respond-at(801px) {
+	@include respond-at(50.0625em) {
 		@include flexbox;
 		@include grid-template(repeat(3, 1fr), null, 1rem);
 	}
@@ -122,26 +122,26 @@
 	@include flexbox(wrap);
 	@include grid(col / span 3, row 4);
 	@include grid-template(repeat(3, 1fr), repeat(2, auto), 1rem);
-	background-color: $light-gray;
+	background-color: $white-smoke;
 	padding: 2.5em;
 
 	.postdoc-activities {
 		@include grid(1 / span 3, 1);
-		@include respond-at(701px) {
+		@include respond-at(43.8125em) {
 			@include grid(1 / span 2, null);
 		}
 		align-self: center;
-		padding: 0 10px;
+		padding: 0 .625em;
 	}
 
 	.img-container {
 		@include grid(1 / span 3, 2);
-		@include respond-at(801px) {
+		@include respond-at(50.0625em) {
 			@include grid(3 / span 1, 1);
 		}
 		padding: 0 10px;
 	}
-	@include respond-at(801px) {
+	@include respond-at(50.0625em) {
 		@include flexbox;
 		@include grid-template(repeat(3, 1fr), null, 1rem);
 	}
@@ -149,20 +149,20 @@
 
 .five {
 	@include grid(col / span 3, row 5);
-	@include respond-at(801px) {
+	@include respond-at(50.0625em) {
 		padding: 2.5em;
 	}
 }
 
 .past-postdocs {
-	@include grid-template(300px, null, 50px);
-	@include respond-at(680px) {
-		@include grid-template(repeat(2, 300px), null, 50px);
+	@include grid-template(18.75rem, null, 3.125em);
+	@include respond-at(42.5em) {
+		@include grid-template(repeat(2, 18.75rem), null, 3.125em);
 	}
-	@include respond-at(1310px) {
-		@include grid-template(repeat(3, 300px), null, 50px);
+	@include respond-at(81.875em) {
+		@include grid-template(repeat(3, 18.75rem), null, 3.125em);
 	}
-	grid-auto-rows: 350px;
+	grid-auto-rows: 21.875rem;
 	justify-content: center;
 }
 
@@ -177,7 +177,7 @@ ul.postdoc-list {
 
 #postdoc-pos1 {
 	display: none;
-	padding: 15px;
+	padding: 0.9375em;
 }
 
 .type-em {
@@ -267,7 +267,7 @@ ul.postdoc-list {
 .card {
   height: 0;
   margin-bottom: 6.6em;
-  padding-bottom: calc(100% - 16px);
+  padding-bottom: calc(100% - 1em);
   position: relative;
 
   h2 {
@@ -276,9 +276,9 @@ ul.postdoc-list {
     left: 0;
     line-height: 1.6em;
     margin: 0;
-    padding: 10px 16px;
+    padding: .625em 1em;
     position: absolute;
-    top: calc(100% - 16px);
+    top: calc(100% - 1em);
     transition: .3s;
     width: 100%;
     z-index: 10;
@@ -289,7 +289,6 @@ ul.postdoc-list {
 
     strong {
       display: block;
-      font-family: 'Martel', serif;
       font-size: 1.03rem;
       font-weight: 400;
     }
@@ -300,7 +299,7 @@ ul.postdoc-list {
       content: '';
       left: 0;
       position: absolute;
-      top: -16px;
+      top: -.7em;
       transition: .3s;
       width: 0;
     }
@@ -312,29 +311,48 @@ ul.postdoc-list {
   }
 
   &.active {
-    @include respond-at(767px) {
+    @include respond-at(47.9375em) {
       height: auto;
       padding-bottom: 0;
     }
 
     h2 {
-      padding: 10px 16px 10px 90px;
+      padding: .5em 1em .5em 4em;
       top: 0;
+
+      span {
+        @include truncate(1em, 1, 2);
+      }
+
+      strong {
+        @include truncate(.8em, 1.6, 1);
+      }
 
       &:before {
         top: 0;
       }
 
       &:after {
-        bottom: -16px;
+        bottom: -.7em;
       }
     }
   }
 
+  &.focus {
+    // transform: scale(1.1);
+    transition: .5s;
+  }
+
+  &.unfocus {
+    opacity: .4 !important;
+    transform: scale(.9) !important;
+    transition: .5s;
+  }
+
   .card-content {
-    bottom: 16px;
-    height: 350px;
-    left: 16px;
+    bottom: 1em;
+    height: 21.875rem;
+    left: 1em;
     position: absolute;
     right: 0;
     top: 0;
@@ -345,14 +363,14 @@ ul.postdoc-list {
     border: 5px solid;
     border-radius: 50%;
     color: $white;
-    height: 54px;
+    height: 3.375rem;
     // line-height: 44px;
     position: absolute;
-    right: 16px;
+    right: 1em;
     text-align: center;
-    top: 15px;
+    top: 0.9375em;
     transition: .3s;
-    width: 54px;
+    width: 3.375rem;
     z-index: 20;
 
     i {
@@ -361,16 +379,16 @@ ul.postdoc-list {
   }
 
   &.active .btn-action {
-    top: 62px;
+    top: 3.875em;
   }
 
   .description {
-    bottom: 54px;
-    left: 30px;
+    bottom: 3.375em;
+    left: 1.875em;
     opacity: 0;
     overflow: hidden;
     position: absolute;
-    right: 30px;
+    right: 1.875em;
     top: 100%;
     transition: 1.2s;
 
@@ -395,14 +413,14 @@ ul.postdoc-list {
     content: '\f007';
     font-family: 'Fontcons';
     font-style: normal;
-    padding: 0 13.5px;
+    padding: 0 .5em;
   }
 
   .contact:before {
     content: '\2709';
     font-family: 'Fontcons';
     font-style: normal;
-    padding: 0 13.5px;
+    padding: 0 .5em;
   }
 
   .card-footer {
@@ -414,15 +432,15 @@ ul.postdoc-list {
       color: $white;
       display: block;
       float: left;
-      font-size: 28px;
-      height: 53px;
-      line-height: 52px;
-      margin-bottom: 15px;
-      margin-left: 5px;
+      font-size: 1.75rem;
+      height: 3.3125rem;
+      line-height: 3.25rem;
+      margin-bottom: .9375em;
+      margin-left: .3125em;
       position: relative;
       text-decoration: none;
       top: 200px;
-      width: 52px;
+      width: 3.25rem;
 
       &:nth-child(1) {
         transition: .5s;
@@ -444,20 +462,24 @@ ul.postdoc-list {
     width: 100%;
     z-index: 3;
   }
-
+  // .team-member {
+  //   min-height: 284px;
+  //   width: 100%;
+  //   object-fit: cover;
+  // }
   &.active {
     .img-container {
       border-radius: 50%;
-      height: 60px;
+      height: 3.75rem;
       left: 0;
-      top: 12px;
-      width: 60px;
+      top: .75em;
+      width: 3.75rem;
       z-index: 20;
     }
 
     .card-content {
       @include respond-at(767px) {
-        margin-right: 16px;
+        margin-right: 1em;
         position: relative;
       }
       padding-top: 5.6em;
@@ -466,18 +488,26 @@ ul.postdoc-list {
     .description {
       opacity: 1;
       padding-top: 5em;
-      top: 50px;
+      top: 3.125em;
+      // @include respond-at(767px) {
+      //   position: relative;
+      //   top: auto;
+      //   right: auto;
+      //   left: auto;
+      //   padding: 30px 30px 70px 30px;
+      //   bottom: 0;
+      // }
     }
 
     .card-footer {
-      height: 82px;
-      left: 16px;
+      height: 5.125rem;
+      left: 1em;
       overflow: visible;
-      padding-left: 25px;
-      padding-top: 15px;
+      padding-left: 1.5625em;
+      padding-top: .9375em;
       position: absolute;
       right: 0;
-      top: calc(100% - 16px);
+      top: calc(100% - 5em);
 
       a {
         top: 0;
@@ -554,11 +584,11 @@ ul.postdoc-list {
 }
 
 .green {
-  @include card-color($link-color);
+  @include card-color($color-accent2);
 }
 
 .dark-blue {
-  @include card-color($dark-blue);
+  @include card-color($midnight);
 }
 
 // Card adjustments for Past Postdocs section
@@ -569,7 +599,11 @@ ul.postdoc-list {
 
 		&.active {
 			.description {
-				padding-top: 7em;
+				padding-top: 5em;
+			}
+
+			.card-footer {
+				top: calc(100% - 1em);
 			}
 		}
 	}

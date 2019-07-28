@@ -43,7 +43,7 @@ Pathway::append(
 
 <p>Have another idea? For more information and with any questions, Contact QUBES!</p>
 
-<p class="center"><span class="helpme"><a class="link" href="/support/">Contact Us</a></span></p>
+<p class="center"><span class="helpme link"><a href="/support/">Contact Us</a></span></p>
 </div>
 </div>
 

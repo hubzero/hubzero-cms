@@ -49,7 +49,7 @@
     color: $white;
     visibility: hidden;
   }
-  @include respond-at(901px) {
+  @include respond-at(56.3125em) {
     @include grid-template(repeat(4, 1fr), 1fr);
   }
   @include grid-support {
@@ -59,7 +59,7 @@
 
 .intro {
   @include grid(1 / span 4, null);
-  @include respond-at(901px) {
+  @include respond-at(56.3125em) {
     @include grid(2 / span 2, null);
     width: 50%;
   }
@@ -95,15 +95,15 @@
   @include flexbox(wrap);
   @include grid(col / span 4, 3);
   @include grid-template(repeat(2, 1fr), 1.5fr 1fr);
-  @include respond-at(901px) {
+  @include respond-at(56.3125em) {
     @include grid-template(repeat(2, 1fr), 1fr);
   }
-  background-color: $light-gray;
+  background-color: $white-smoke;
 }
 
 .big {
   @include grid(span 2, 2);
-  @include respond-at(901px) {
+  @include respond-at(56.3125em) {
     @include grid(2 / span 1, 1);
     width: 50%;
   }
@@ -132,12 +132,12 @@
         text-decoration: underline;
 
         &:hover {
-          color: $orange;
+          color: $color-link-hover;
         }
       }
     }
   }
-  @include respond-at(901px) {
+  @include respond-at(56.3125em) {
     @include grid(1 / span 1, 1);
     width: 50%;
   }
@@ -147,29 +147,20 @@
 }
 
 .link {
-  @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
-  border-radius: 2px;
-}
-.center {
-  text-align: center;
+  @include btn-border-drawing($color-link, $color-link-hover, 1px, bottom, right);
 }
 
-//Apply
-.apply {
-  @include grid(col / span 4, 4);
-  padding: 2.5em;
+span.link {
+  a {
+    font-family: $font-body;
+    font-weight: normal;
 
-  .emphasis {
-    color: $dark-blue;
-    font-weight: bold;
-  }
-
-  .link {
-    margin-top: 4em;
-    text-align: center;
-
-    a {
-      @include btn-border-drawing($teal, $orange, 2px, bottom, right);
+    &::after {
+      display: none;
     }
   }
+}
+
+.center {
+  text-align: center;
 }

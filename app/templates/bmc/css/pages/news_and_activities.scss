@@ -9,18 +9,14 @@
   @include grid-template(repeat(4, 1fr), 7rem auto);
 
   hr {
-    background-color: $dark-blue;
+    background-color: $midnight;
     margin: 0 0 1em;
     width: 45%;
-  }
-
-  h2 {
-    margin-bottom: 0;
   }
 }
 
 .header {
-  @include respond-at(921px) {
+  @include respond-at(57.5625em) {
     @include grid(1 / span 3, 1);
   }
   @include grid(1 / span 4, 1);
@@ -35,20 +31,17 @@
   }
 
   h1 {
-    border-bottom: 3px solid $green;
-    color: $dark-blue;
-    font-family: 'montserratultra_light', Helvetica Neue, Helvetica, sans-serif;
+    border-bottom: 3px solid $color-accent;
     margin: 1rem 0;
   }
 
   h4 {
-    font-family: 'Martel', serif;
     text-align: right;
   }
 }
 
 .twitter-wrapper {
-  @include respond-at(921px) {
+  @include respond-at(57.5625em) {
     @include grid(4 / span 1, 1 / span 2);
     margin-left: 1.5em;
   }
@@ -56,14 +49,14 @@
 }
 
 .activities-wrapper {
-  @include respond-at(921px) {
+  @include respond-at(57.5625em) {
     @include grid(1 / span 3, 2);
   }
   @include grid(1 / span 4, 2);
 }
 
 .row {
-  background-color: $light-gray;
+  background-color: $white-smoke;
   height: fit-content;
   margin-top: 3em;
   padding: 1em;
@@ -74,6 +67,10 @@
     height: auto;
     margin: 0 .75em .75em;
     width: 12rem;
+  }
+
+  h2 {
+    @include gradient-header($color-accent, transparent);
   }
 }
 
@@ -108,12 +105,12 @@
 }
 
 .newsletters {
-  border: 1px solid $green;
+  border: 1px solid $midnight;
   border-radius: 6px;
   padding: 1em;
 
   h2 {
-    color: $green;
+    color: $midnight;
     margin-bottom: .6em;
     text-align: center;
   }
@@ -128,22 +125,29 @@
   @include flexbox(wrap);
   justify-content: center;
 
+  .newsletter {
+    margin: .5em;
+  }
+
   .newsletter-img {
+    border: 1px solid $white-smoke;
     img {
       object-fit: contain;
     }
   }
 
   .newsletter-title {
+    @include showcase-header(1em, 1.2, 2);
+    position: static;
+
     a {
-      @include showcase-header(1em, 1.2, 2);
-      color: $body;
       margin: .3em 0;
     }
   }
 
   div:first-of-type {
     width: 100%;
+
     .newsletter-img {
       display: block;
       border: none;
@@ -178,37 +182,14 @@
 }
 
 .blog-img {
-  background-color: $white;
-  border-right: 3px solid $green;
-  height: 5rem;
-  overflow: hidden;
-  transition: 3s ease-in-out;
-  width: 5rem;
-
-  img {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: 3s ease-in-out;
-  }
-
-  &:hover {
-    img {
-      transform: translateY(-50%) scale(1.1)
-    }
-  }
+  @include showcase-horizontal-img(5rem, 5rem);
 }
 
 .blog-title {
-  margin-left: .5em;
+  @extend %showcase-horizontal-title;
 
   a {
-    @include showcase-header(1em, 1.2, 4);
-    color: $body;
-  }
-
-  span {
-    color: $body;
+    @include truncate(1rem, 1.2, 3);
   }
 }
 
@@ -243,18 +224,18 @@
   font-weight: bold;
   font-size: .8em;
   padding: .5em .8em;
-  background-color: $green;
+  background-color: $color-accent;
   a {
     color: $white;
   }
 }
 
 .newsletter-title {
-  border-bottom: 2px solid $green;
+  @include showcase-header(1em, 1.2, 4);
+  border-bottom: 2px solid $color-accent;
+  position: static;
 
   a {
-    @include showcase-header(1em, 1.2, 4);
-    color: $body;
     margin: .3em 0;
   }
 }

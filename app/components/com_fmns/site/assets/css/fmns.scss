@@ -10,11 +10,6 @@ body {
 }
 
 .wrapper {
-  h3,
-  h4 {
-    font-family: 'Martel', serif;
-  }
-
   p {
     font-size: 1rem;
   }
@@ -103,6 +98,20 @@ body {
   .anchor-wrap {
     @extend %anchor;
     visibility: hidden;
+
+    h4 {
+      color: $color-link;
+    }
+
+    p {
+      color: $color-text-body;
+    }
+
+    &:hover {
+      h4 {
+        color: $color-link-hover;
+      }
+    }
   }
 }
 
@@ -111,6 +120,8 @@ body {
   padding: 0 2.5em;
 
   h2 {
+    @include gradient-header($color-accent, $white);
+    display: inline-block;
     margin-bottom: 0;
   }
 
@@ -119,116 +130,30 @@ body {
     text-align: center;
   }
 
-  hr {
-    background: $dark-blue;
-    margin: 0 0 1em;
-    width: 45%;
-  }
-
   .new-wrap {
     @include flexbox(wrap);
     justify-content: space-between;
     padding: 1em 2em;
   }
 
-  .billboard-image {
-    border-right: 5px solid $green;
-    height: 100%;
-    width: 12.5rem;
-    overflow: hidden;
-
-    img {
-      position: relative;
-      top: 50%;
-      transform: translateY(-50%);
-      transition: 3s ease-in-out;
-    }
-
-    &:hover {
-      img {
-        transform: translateY(-50%) scale(1.1);
-      }
-    }
-  }
-
-  .billboard {
-    @include flexbox;
-    margin: 1em .75em;
-    position: relative;
-
-    .billboard-tag {
-      position: absolute;
-      bottom: 0;
-      text-transform: uppercase;
-      font-weight: bold;
-      font-size: .8em;
-      padding: .5em .8em;
-      background-color: $green;
-      a {
-        color: $white;
-      }
-    }
-
-    .billboard-header {
-      @include truncate(1rem, 1.6, 5);
-      font-family: 'Martel', serif;
-      margin-left: .5em;
-
-      a {
-        color: $dark-blue;
-      }
-    }
-  }
-
   .fmn-img {
-    border-right: 5px solid $green;
-    height: 100%;
-    width: 12.5rem;
-    overflow: hidden;
-
-    img {
-      position: relative;
-      top: 50%;
-      transform: translateY(-50%);
-      transition: 3s ease-in-out;
-    }
-
-    &:hover {
-      img {
-        transform: translateY(-50%) scale(1.1);
-      }
-    }
+    @include showcase-horizontal-img(100%, 12.5rem);
   }
 
   .fmn {
-    @include flexbox;
-    margin: 1em .75em;
-    position: relative;
+    @extend %showcase-horizontal;
+  }
 
-    .fmn-title {
+  .fmn-title {
+    @extend %showcase-horizontal-title;
+
+    a {
       @include truncate(1rem, 1.6, 5);
-      font-family: 'Martel', serif;
-      margin-left: .5em;
-
-      a {
-        color: $dark-blue;
-      }
     }
+  }
 
-    .fmn-tag {
-      position: absolute;
-      bottom: 0;
-      text-transform: uppercase;
-      font-weight: bold;
-      font-size: .8em;
-      left: 0;
-      padding: .5em .8em;
-      background-color: $green;
-
-      span {
-        color: $white;
-      }
-    }
+  .fmn-tag {
+    @include showcase-horizontal-tag($color-accent2, $white);
   }
 
   .regular {
@@ -239,7 +164,7 @@ body {
 
 // Benefits of Participation
 .benefits {
-  background-color: $light-gray;
+  background-color: $white-smoke;
   padding: 1.5em 2.5em;
 
   h2 {
@@ -302,7 +227,6 @@ body {
 
   h2 {
     bottom: -.76em;
-    color: $green;
     position: relative;
   }
 
@@ -342,7 +266,7 @@ body {
 
   .product-wrap {
     @include flexbox(wrap);
-    border: 1px solid $green;
+    border: 1px solid $midnight;
     border-radius: 6px;
     padding: 1em;
   }
@@ -359,17 +283,11 @@ body {
   position: relative;
 
   .resource-tag {
-    @include showcase-tag($dark-blue, $white);
+    @include showcase-tag($color-accent2, $white);
   }
 
   .resource-title {
-    bottom: 0;
-    padding: 10px;
-    position: absolute;
-
-    a {
-      @include showcase-header(1em, 1, 2);
-    }
+    @include showcase-header(1em, 1, 2);
   }
 }
 
@@ -407,8 +325,7 @@ body {
     }
 
     .link {
-      @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
-      border-radius: 2px;
+      @include btn-border-drawing($color-link, $color-link-hover, 1px, bottom, right);
     }
     @include respond-at(40em) {
       flex-direction: row;
@@ -429,7 +346,6 @@ body {
   text-align: left;
 
   p {
-    font-family: 'Martel', serif;
     font-size: 1.1rem;
   }
 
@@ -441,7 +357,7 @@ body {
 
 // Benefits for Projects
 .projects {
-  background-color: $light-gray;
+  background-color: $white-smoke;
   padding: 2.5em;
 
   h2,
@@ -471,7 +387,7 @@ body {
     @include respond-at(42.5625em) {
       @include grid-template(repeat(2, 1fr), repeat(2, 1fr));
     }
-    background-color: $dark-blue;
+    background-color: $midnight;
     justify-content: center;
     margin-top: 2em;
   }

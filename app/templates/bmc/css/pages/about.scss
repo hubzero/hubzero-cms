@@ -4,18 +4,18 @@
 //Mixin for AoF Buttons
 @mixin aof-btn($color) {
   background-color: $white;
-  border: 2px solid $color;
+  border: 1px solid $color;
   color: $color;
 
   &:hover {
-    background-color: $link-hover;
-    border: 2px solid $link-hover;
+    background-color: $color-link-hover;
+    border: 1px solid $color-link-hover;
     color: $white;
   }
 
   &.focus {
-    background-color: $link-hover;
-    border: 2px solid $link-hover;
+    background-color: $color-link-hover;
+    border: 1px solid $color-link-hover;
     color: $white;
   }
 }
@@ -49,13 +49,9 @@ html {
 .contact-us {
   text-align: center;
 
-  .btn {
-    font-family: 'montserratregular', Helvetica Neue, Helvetica, sans-serif !important;
-  }
-}
-
-.aside {
-  padding: 0 20px 0 30px !important;
+  // .btn {
+  //   font-family: 'montserratregular', Helvetica Neue, Helvetica, sans-serif !important;
+  // }
 }
 
 .content-header {
@@ -63,8 +59,18 @@ html {
 }
 
 .link {
-  @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
-  border-radius: 2px;
+  @include btn-border-drawing($color-link, $color-link-hover, 1px, bottom, right);
+}
+
+span.link {
+  a {
+    font-family: $font-body;
+    font-weight: normal;
+
+    &::after {
+      display: none;
+    }
+  }
 }
 
 //Mission Statement
@@ -81,7 +87,7 @@ html {
     text-align: center;
     text-transform: uppercase;
   }
-  @include respond-at(701px) {
+  @include respond-at(43.8125em) {
     padding: 7em;
   }
 }
@@ -130,11 +136,11 @@ html {
   z-index: 2;
 
   h4 {
-    @include respond-at(701px) {
+    @include respond-at(43.8125em) {
       padding: 3em;
     }
     color: $white;
-    font-family: 'Martel', serif;
+
     margin: 0 auto;
     padding: 1em;
     text-align: center;
@@ -144,16 +150,16 @@ html {
 
 //About
 .about {
-  background-color: $light-gray;
+  background-color: $white-smoke;
 
   .pane-1 {
     padding: 1em;
 
     h6 {
-      @include respond-at(701px) {
+      @include respond-at(43.8125em) {
         padding: 3em;
       }
-      font-family: 'Martel', serif;
+
       font-size: 1.2rem;
       line-height: 1.5;
       margin: 0 auto;
@@ -204,12 +210,12 @@ html {
     padding: 0 3em;
 
     .img-container {
-      @include respond-at(1001px) {
+      @include respond-at(62.5625em) {
         order: 1;
       }
       order: -1;
     }
-    @include respond-at(701px) {
+    @include respond-at(43.8125em) {
       padding: 7em 3em;
     }
   }
@@ -228,7 +234,7 @@ html {
 }
 
 .contact-us {
-  background-color: $light-gray;
+  background-color: $white-smoke;
 }
 
 //Citations & Funder
@@ -249,7 +255,7 @@ html {
   padding: 7em 0;
 
   h4 {
-    font-family: 'Martel', serif;
+
     margin-top: 2em;
     text-align: center;
   }
@@ -270,7 +276,7 @@ html {
     @include flexbox(wrap);
 
     .billboard {
-      border: 1px solid $link-color;
+      border: 1px solid $color-link;
       border-radius: 5px;
       flex: 1 1 21.875em;
       margin: .635em;
@@ -294,7 +300,7 @@ html {
       }
 
       .billboard-content {
-        border-top: 1px solid $med-gray;
+        border-top: 1px solid $mine-shaft;
         display: block;
         margin-top: .5em;
       }
@@ -305,14 +311,6 @@ html {
 //Meet the Team and Board of Advisors
 .team {
   padding-top: 3em;
-
-  h5 {
-    font-family: 'Martel', serif;
-  }
-
-  .btn {
-    font-family: 'montserratregular', Helvetica Neue, Helvetica, sans-serif !important;
-  }
 }
 
 .advisors {
@@ -341,7 +339,7 @@ html {
   }
 
   .aof-btn {
-    @include aof-btn($link-color);
+    @include aof-btn($color-link);
   }
 
   .aof-description-wrapper {
@@ -416,7 +414,7 @@ html {
 .card {
   height: 0;
   margin-bottom: 6.6em;
-  padding-bottom: calc(100% - 16px);
+  padding-bottom: calc(100% - 1em);
   position: relative;
 
   h2 {
@@ -425,9 +423,9 @@ html {
     left: 0;
     line-height: 1.6em;
     margin: 0;
-    padding: 10px 16px;
+    padding: .625em 1em;
     position: absolute;
-    top: calc(100% - 16px);
+    top: calc(100% - 1em);
     transition: .3s;
     width: 100%;
     z-index: 10;
@@ -438,7 +436,6 @@ html {
 
     strong {
       display: block;
-      font-family: 'Martel', serif;
       font-size: 1.03rem;
       font-weight: 400;
     }
@@ -449,7 +446,7 @@ html {
       content: '';
       left: 0;
       position: absolute;
-      top: -16px;
+      top: -.7em;
       transition: .3s;
       width: 0;
     }
@@ -461,21 +458,29 @@ html {
   }
 
   &.active {
-    @include respond-at(767px) {
+    @include respond-at(47.9375em) {
       height: auto;
       padding-bottom: 0;
     }
 
     h2 {
-      padding: 10px 16px 10px 90px;
+      padding: .5em 1em .5em 4em;
       top: 0;
+
+      span {
+        @include truncate(1em, 1, 2);
+      }
+
+      strong {
+        @include truncate(.8em, 1.6, 1);
+      }
 
       &:before {
         top: 0;
       }
 
       &:after {
-        bottom: -16px;
+        bottom: -.7em;
       }
     }
   }
@@ -492,9 +497,9 @@ html {
   }
 
   .card-content {
-    bottom: 16px;
-    height: 350px;
-    left: 16px;
+    bottom: 1em;
+    height: 21.875rem;
+    left: 1em;
     position: absolute;
     right: 0;
     top: 0;
@@ -505,14 +510,14 @@ html {
     border: 5px solid;
     border-radius: 50%;
     color: $white;
-    height: 54px;
+    height: 3.375rem;
     // line-height: 44px;
     position: absolute;
-    right: 16px;
+    right: 1em;
     text-align: center;
-    top: 15px;
+    top: 0.9375em;
     transition: .3s;
-    width: 54px;
+    width: 3.375rem;
     z-index: 20;
 
     i {
@@ -521,16 +526,16 @@ html {
   }
 
   &.active .btn-action {
-    top: 62px;
+    top: 3.875em;
   }
 
   .description {
-    bottom: 54px;
-    left: 30px;
+    bottom: 3.375em;
+    left: 1.875em;
     opacity: 0;
     overflow: hidden;
     position: absolute;
-    right: 30px;
+    right: 1.875em;
     top: 100%;
     transition: 1.2s;
 
@@ -555,14 +560,14 @@ html {
     content: '\f007';
     font-family: 'Fontcons';
     font-style: normal;
-    padding: 0 13.5px;
+    padding: 0 .5em;
   }
 
   .contact:before {
     content: '\2709';
     font-family: 'Fontcons';
     font-style: normal;
-    padding: 0 13.5px;
+    padding: 0 .5em;
   }
 
   .card-footer {
@@ -574,15 +579,15 @@ html {
       color: $white;
       display: block;
       float: left;
-      font-size: 28px;
-      height: 53px;
-      line-height: 52px;
-      margin-bottom: 15px;
-      margin-left: 5px;
+      font-size: 1.75rem;
+      height: 3.3125rem;
+      line-height: 3.25rem;
+      margin-bottom: .9375em;
+      margin-left: .3125em;
       position: relative;
       text-decoration: none;
       top: 200px;
-      width: 52px;
+      width: 3.25rem;
 
       &:nth-child(1) {
         transition: .5s;
@@ -612,16 +617,16 @@ html {
   &.active {
     .img-container {
       border-radius: 50%;
-      height: 60px;
+      height: 3.75rem;
       left: 0;
-      top: 12px;
-      width: 60px;
+      top: .75em;
+      width: 3.75rem;
       z-index: 20;
     }
 
     .card-content {
       @include respond-at(767px) {
-        margin-right: 16px;
+        margin-right: 1em;
         position: relative;
       }
       padding-top: 5.6em;
@@ -630,7 +635,7 @@ html {
     .description {
       opacity: 1;
       padding-top: 5em;
-      top: 50px;
+      top: 3.125em;
       // @include respond-at(767px) {
       //   position: relative;
       //   top: auto;
@@ -642,14 +647,14 @@ html {
     }
 
     .card-footer {
-      height: 82px;
-      left: 16px;
+      height: 5.125rem;
+      left: 1em;
       overflow: visible;
-      padding-left: 25px;
-      padding-top: 15px;
+      padding-left: 1.5625em;
+      padding-top: .9375em;
       position: absolute;
       right: 0;
-      top: calc(100% - -16px);
+      top: calc(100% - -2em);
 
       a {
         top: 0;
@@ -725,9 +730,9 @@ html {
 }
 
 .green {
-  @include card-color($link-color);
+  @include card-color($color-accent2);
 }
 
 .dark-blue {
-  @include card-color($dark-blue);
+  @include card-color($midnight);
 }
