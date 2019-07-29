@@ -107,7 +107,7 @@ class Projects extends Base
 	 */
 	public function requestAccessTask()
 	{
-		Request::checkToken('get');
+		//Request::checkToken('get');
 		if (!$this->model->allowMembershipRequest())
 		{
 			App::abort(404, 'Invalid request');
@@ -115,7 +115,7 @@ class Projects extends Base
 
 		$project = Request::getString('alias');
 		$task = $this->_task;
-		$return = Route::url('index.php?option=com_projects&alias=' . $project, false);
+		$return = Route::url('index.php?option=com_projects&task=requestaccess&alias=' . $project . '&' . Session::getFormToken() . '=1', false);
 		if (User::isGuest())
 		{
 			$redirectUrl = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return), false);

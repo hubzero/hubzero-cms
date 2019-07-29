@@ -19,43 +19,9 @@ if ($canDo->get('core.edit'))
 	Toolbar::custom('restoreDefault', 'restore', 'restore', 'COM_MEMBERS_DEFAULT');
 }
 
-$this->css('quotas.css');
+$this->css('quotas.css')
+	->js('quotas.js');
 ?>
-
-<script type="text/javascript">
-	jQuery(document).ready(function ( $ ) {
-		setTimeout(doWork, 10);
-
-		function doWork() {
-			var rows = $('.quota-row');
-
-			rows.each(function ( i, el ) {
-				var id = $(el).find('.row-id').val();
-				var usage = $(el).find('.usage-outer');
-
-				$.ajax({
-					url      : '<?php echo Route::url('index.php?option=com_members&controller=quotas&task=getQuotaUsage', false); ?>',
-					dataType : 'JSON',
-					type     : 'GET',
-					data     : {"id":id},
-					success  : function ( data, textStatus, jqXHR ) {
-						if (data.percent > 100) {
-							data.percent = 100;
-							usage.find('.usage-inner').addClass('max');
-						}
-						usage.prev('.usage-calculating').hide();
-						usage.fadeIn();
-						usage.find('.usage-inner').css('width', data.percent+"%");
-					},
-					error : function ( ) {
-						usage.prev('.usage-calculating').hide();
-						usage.next('.usage-unavailable').show();
-					}
-				});
-			});
-		};
-	});
-</script>
 
 <?php
 	$this->view('_submenu')
@@ -115,7 +81,7 @@ $this->css('quotas.css');
 		foreach ($this->rows as $row)
 		{
 			?>
-			<tr class="<?php echo "row$k quota-row"; ?>">
+			<tr class="<?php echo "row$k quota-row"; ?>" data-quota="<?php echo Route::url('index.php?option=com_members&controller=quotas&task=getQuotaUsage&id=' . $row->get('id'), false); ?>">
 				<td>
 					<input class="row-id" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
 				</td>

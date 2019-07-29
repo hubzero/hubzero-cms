@@ -48,6 +48,34 @@ jQuery(document).ready(function($){
 			$('#batch-access').val('');
 			$('#batch-language-id').val('');
 		});
+
+	if ($('#moduleorder').length) {
+		data = $('#moduleorder');
+
+		if (data.length) {
+			modorders = JSON.parse(data.html());
+
+			var html = '\n	<select name="' + modorders.name + '" id="' + modorders.id + '"' + modorders.attr + '>';
+			var i = 0,
+				key = modorders.originalPos,
+				orig_key = modorders.originalPos,
+				orig_val = modorders.originalOrder;
+			for (x in modorders.orders) {
+				if (modorders.orders[x][0] == key) {
+					var selected = '';
+					if ((orig_key == key && orig_val == modorders.orders[x][1])
+					 || (i == 0 && orig_key != key)) {
+						selected = 'selected="selected"';
+					}
+					html += '\n		<option value="' + modorders.orders[x][1] + '" ' + selected + '>' + modorders.orders[x][2] + '</option>';
+				}
+				i++;
+			}
+			html += '\n	</select>';
+
+			$('#moduleorder').after(html);
+		}
+	}
 });
 
 function validate(){

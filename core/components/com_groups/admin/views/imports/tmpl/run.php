@@ -16,18 +16,6 @@ $this->js('import')
      ->js('handlebars', 'system')
      ->css('import');
 ?>
-<script type="text/javascript">
-function submitbutton(pressbutton)
-{
-	var form = document.adminForm;
-	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
-		return;
-	}
-	// do field validation
-	submitform( pressbutton );
-}
-</script>
 
 <nav role="navigation" class="sub sub-navigation">
 	<ul>
