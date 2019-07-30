@@ -87,6 +87,11 @@ class Router extends Base
 					$vars['controller'] = $segments[0];
 				break;
 
+				case 'status':
+					$vars['task'] = $segments[0];
+					$vars['controller'] = 'status';
+				break;
+
 				case 'pipeline':
 				case 'create':
 					$vars['task'] = $segments[0];
