@@ -71,7 +71,6 @@ class Status extends SiteController
 		$this->view->ready_displays = $obj->getReadyDisplayCount();
 		$this->view->absent_displays = $obj->getAbsentDisplayCount();
 		$this->view->broken_displays = $obj->getBrokenDisplayCount();
-		
 		$this->view->config = $this->config;
 		$this->view->admin = $this->config->get('access-admin-component');
 
