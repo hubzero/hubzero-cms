@@ -569,7 +569,7 @@
 		font-weight: normal;
 		cursor: pointer;
 		white-space: nowrap;
-		-webkit-box-sizing: border-box; 
+		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 	}
@@ -698,7 +698,7 @@
 		background: transparent;
 	}
 	#tktlist tbody tr td.tkt-severity,
-	#tktlist tbody tr th:last-child, 
+	#tktlist tbody tr th:last-child,
 	#tktlist tbody tr td:last-child {
 		padding-right: 0;
 		padding-top: 0;
@@ -743,6 +743,12 @@
 		font-weight: bold;
 		color: #666;
 	}
+	#tktlist .ticket-author a {
+		font-family: 'open_sansregular', Helvetica Neue, Helvetica, sans-serif;
+	}
+	#tktlist .ticket-author a::after {
+		display: none;
+	}
 	#tktlist .ticket-id {
 		color: #666;
 		font-size: 1.2em;
@@ -763,6 +769,13 @@
 	#tktlist .ticket-content:hover {
 		color: #333;
 		border-bottom: 1px solid #333;
+	}
+	#tktlist .ticket-content {
+		font-family: 'open_sansregular', Helvetica Neue, Helvetica, sans-serif;
+		font-weight: normal;
+	}
+	#tktlist .ticket-content::after {
+		disn
 	}
 	#tktlist td p:first-child {
 		margin-top: 0;
@@ -979,7 +992,7 @@
 		padding: .61803399em 2em;
 		white-space: pre-wrap;
 	}
-	.ticket .time:before, 
+	.ticket .time:before,
 	.ticket .date:before {
 		content: "";
 		font-family: "Fontcons";
@@ -1002,12 +1015,12 @@
 		font-size: 1.2em;
 		padding: 0.5em;
 		text-align: center;
-		border: 5px solid #fff; 
+		border: 5px solid #fff;
 		background: #fff;
 	}
 	.ticket-status .open {
 		color: #c00;
-		border-color: #EFCCC2; 
+		border-color: #EFCCC2;
 		background: #FFF2EF;
 	}
 	.ticket-status .closed {
@@ -1044,7 +1057,7 @@
 		     -o-border-radius: 0 0 0.27em 0.27em;
 		        border-radius: 0 0 0.27em 0.27em;
 	}
-	ol.comments .comment-changelog ul, 
+	ol.comments .comment-changelog ul,
 	ol.comments .comment-changelog li {
 		list-style: none;
 		margin: 0;
@@ -1063,7 +1076,7 @@
 	}
 	ol.comments .comment-changelog li.changelog-before,
 	ol.comments .comment-changelog li.changelog-after,
-	ol.comments .comment-changelog ul:before, 
+	ol.comments .comment-changelog ul:before,
 	ol.comments .comment-changelog ul:after {
 		content: "";
 		position: absolute;
@@ -1091,10 +1104,10 @@
 
 /* Abuse Item */
 	.abuseitem {
-		padding: 10px 10px 10px 50px; 
+		padding: 10px 10px 10px 50px;
 		margin: 5em 0 3em 0;
 		text-align: left;
-		border: 1px solid #EFCCC2; 
+		border: 1px solid #EFCCC2;
 		background: #FFF2EF;
 		position: relative;
 	}
@@ -1123,7 +1136,7 @@
 		color: #666666;
 		font-weight: normal;
 	}
-	#hubForm .abuseitem.field-wrap p, 
+	#hubForm .abuseitem.field-wrap p,
 	#hubForm .abuseitem p,
 	.abuseitem p {
 		margin: 0.5em 0 0.5em 0;

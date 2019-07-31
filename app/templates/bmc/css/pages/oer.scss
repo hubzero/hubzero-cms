@@ -11,20 +11,8 @@
   }
 }
 
-.wrapper {
-  h3,
-  h4 {
-    font-family: 'Martel', serif;
-  }
-
-  p {
-    font-size: 1rem;
-  }
-}
-
 .link {
-  @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
-  border-radius: 2px;
+  @include btn-border-drawing($color-link, $color-link-hover, 1px, bottom, right);
 }
 
 //Header
@@ -65,8 +53,7 @@
     padding: 2.5em;
 
     .link {
-      @include btn-border-drawing($white, $orange, 1px, bottom, right);
-      border-radius: 2px;
+      @include btn-border-drawing($white, $color-accent, 1px, bottom, right);
     }
   }
 
@@ -100,11 +87,11 @@
 
 //Sharing on QUBES
 #one {
-  background-color: $light-gray;
+  background-color: $white-smoke;
   padding: 0 2em;
 
   .sharing {
-    @include respond-at(981px) {
+    @include respond-at(61.3125em) {
       @include flexbox;
     }
     @include flexbox(wrap);
@@ -122,7 +109,7 @@
   }
 
   .sharing-wrap {
-    @include respond-at(981px) {
+    @include respond-at(61.3125em) {
       margin-bottom: 0;
       margin-right: 2em;
     }
@@ -160,7 +147,7 @@
 }
 
 .projects-wrap {
-  @include respond-at(781px) {
+  @include respond-at(48.8125em) {
     @include flexbox;
   }
   @include flexbox(wrap);
@@ -174,7 +161,6 @@
   margin: 1em;
 
   h6 {
-    font-family: 'Martel', serif;
     margin-top: .5em;
     text-align: left;
   }
@@ -182,7 +168,7 @@
 
 //OER Culture
 #three {
-  @include respond-at(981px) {
+  @include respond-at(61.3125em) {
     @include flexbox;
   }
   @include flexbox(wrap);
