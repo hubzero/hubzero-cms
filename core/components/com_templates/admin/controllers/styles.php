@@ -464,7 +464,7 @@ class Styles extends AdminController
 
 			$i++;
 		}
-
+		Notify::success(Lang::txt('COM_TEMPLATES_SUCCESS_DUPLICATED'));
 		if ($i)
 		{
 			// Clean the cache.
