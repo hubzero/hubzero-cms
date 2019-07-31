@@ -3,7 +3,7 @@ status=0
 php_args=`echo $@ | grep \.php$`
 if [ -z "$php_args" ]; then exit 0; fi
 
-vendor/squizlabs/php_codesniffer/scripts/phpcs -np --standard=~/build/standards/Php/ruleset.xml --ignore=*/tests/*,/core/libraries/* $php_args
+vendor/squizlabs/php_codesniffer/scripts/phpcs -np --standard=~/build/standards/Php/ruleset.xml --ignore=*/tests/*,/core/libraries/*,/core/bin/* $php_args
 update_status $?
 for file in $php_args; do
 	php -l $file 2>&1 1>temp
