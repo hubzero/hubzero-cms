@@ -1393,7 +1393,7 @@ class Groups extends Base
 		}
 
 		// Clean up file, strip double "uploads" & trim directory sep
-		$file = str_replace(DS . 'uploads', '', $file);
+		$file = str_replace(DS . 'uploads' . DS, '', $file);
 		$file = ltrim($file, DS);
 
 		// Get extension
