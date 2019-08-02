@@ -215,7 +215,7 @@ class Media extends Base
 
 		// Sort the tree by name
 		$name = array_column($tree, 'name');
-		array_multisort($name,SORT_ASC, $tree);
+		array_multisort($name, SORT_ASC, $tree);
 
 		$base = substr(PATH_APP, strlen(PATH_ROOT));
 
