@@ -213,6 +213,10 @@ class Media extends Base
 		//load group object
 		$hubzeroGroup = Group::getInstance($this->cn);
 
+		// Sort the tree by name
+		$name = array_column($tree, 'name');
+		array_multisort($name, SORT_ASC, $tree);
+
 		$base = substr(PATH_APP, strlen(PATH_ROOT));
 
 		$html = '<ul>';
