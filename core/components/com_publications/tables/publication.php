@@ -1,8 +1,33 @@
 <?php
 /**
- * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
- * @license    http://opensource.org/licenses/MIT MIT
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 HUBzero Foundation, LLC.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Publications\Tables;
@@ -104,7 +129,7 @@ class Publication extends Table
 		$groupby = '';
 		if (!isset($filters['all_versions']) || !$filters['all_versions'])
 		{
-			$groupby = ' GROUP BY C.id, V.id ';
+			$groupby = ' GROUP BY C.id ';
 		}
 
 		$project  = isset($filters['project']) && intval($filters['project']) ? $filters['project'] : "";
@@ -114,23 +139,26 @@ class Publication extends Table
 		$featured = isset($filters['featured']) && $filters['featured'] ? 1 : 0;
 		$sortby   = isset($filters['sortby']) ? $filters['sortby'] : 'title';
 
-		$query  = "FROM ";
+		$query  = " FROM 
+					#__publication_versions V
+					LEFT JOIN $this->_tbl C ON V.publication_id = C.id
+					LEFT JOIN #__projects PP ON PP.id = C.project_id 
+					LEFT JOIN #__publication_master_types MT ON MT.id = C.master_type
+					LEFT JOIN #__publication_categories AS t ON t.id = C.category
+					";
+
 		if (isset($filters['tag']) && $filters['tag'] != '')
 		{
-			$query .= "#__tags_object AS RTA ";
-			$query .= "INNER JOIN #__tags AS TA ON RTA.tagid = TA.id AND RTA.tbl='publications', ";
+			$query .= "LEFT JOIN #__tags_object RTA ON RTA.objectid = V.id ";
+			$query .= "LEFT JOIN #__tags TA ON RTA.tagid = TA.id";
 		}
 
-		$query .= " #__publication_versions as V, #__projects as PP,
-				  #__publication_master_types AS MT";
 		if (isset($filters['author']) && intval($filters['author']))
 		{
-			$query .= ", #__publication_authors as A ";
+			$query .= "LEFT JOIN #__publication_authors A ON A.publication_version_id = V.id";
 		}
-		$query .= ", $this->_tbl AS C ";
 
-		$query .= "LEFT JOIN #__publication_categories AS t ON t.id=C.category ";
-		$query .= " WHERE V.publication_id=C.id AND MT.id=C.master_type AND PP.id = C.project_id ";
+		$query .= " WHERE 1 ";
 
 		if ($featured)
 		{
@@ -229,7 +257,7 @@ class Publication extends Table
 		}
 		if (isset($filters['author']) && intval($filters['author']))
 		{
-			$query .= " AND A.publication_version_id=V.id AND A.user_id=" . $filters['author'];
+			$query .= " AND A.user_id=" . $filters['author'];
 			$query .= " AND A.status=1 AND (A.role IS NULL OR A.role!='submitter') ";
 		}
 
@@ -267,7 +295,7 @@ class Publication extends Table
 		}
 		if (!$dev)
 		{
-			$query .= " AND (V.published_up IS NULL OR V.published_up = '0000-00-00 00:00:00' OR V.published_up <= '" . $now . "') ";
+			$query .= " AND (V.published_up = '0000-00-00 00:00:00' OR V.published_up <= '" . $now . "') ";
 			$query .= " AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00' OR V.published_down >= '".$now."') ";
 		}
 		if (isset($filters['startdate']))
@@ -314,8 +342,9 @@ class Publication extends Table
 			$tagging = new \Components\Publications\Helpers\Tags($this->_db);
 			$tags = $tagging->_parse_tags($filters['tag']);
 
-			$query .= "AND RTA.objectid=C.id AND TA.tag IN ('" . implode("','", $tags) . "')";
-			$groupby = " GROUP BY V.id, C.id HAVING uniques=".count($tags);
+			$query .= "AND RTA.tbl='publications' ";
+			$query .= "AND TA.tag IN ('" . implode("','", $tags) . "')";
+			$groupby = " GROUP BY C.id HAVING uniques=".count($tags);
 		}
 
 		$query .= $groupby;
