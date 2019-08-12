@@ -201,7 +201,7 @@ class Entries extends AdminController
 		$row->set('admin', 0);
 		if (isset($fields['admin']) && $fields['admin'])
 		{
-			$row->set('admin', 1);
+			$row->set('admin', $fields['admin']);
 		}
 
 		// Trigger before save event
