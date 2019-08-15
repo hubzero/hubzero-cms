@@ -30,8 +30,6 @@ Html::behavior('keepalive');
 $this->js();
 ?>
 
-<h1><?php var_dump($this->tag->get('admin')) ?></h1>
-
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 	<div class="grid">
 	<div class="col span7">

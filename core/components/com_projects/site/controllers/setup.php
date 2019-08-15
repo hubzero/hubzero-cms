@@ -1115,7 +1115,6 @@ class Setup extends Base
 	 */
 	public function verifyTask()
 	{
-		
 		// Incoming
 		$name = isset($this->_text) ? $this->_text : trim(Request::getString('text', ''));
 		$id   = $this->_identifier  ? $this->_identifier: trim(Request::getInt('pid', 0));
