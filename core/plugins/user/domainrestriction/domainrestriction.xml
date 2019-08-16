@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.2" type="plugin" group="user" method="upgrade">
+	<name>plg_user_domainrestriction</name>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<version>1.0.0</version>
+	<description>PLG_USER_DOMAINRESTRICTION_XML_DESCRIPTION</description>
+	<files>
+		<folder>fields</folder>
+		<filename plugin="domainrestriction">domainrestriction.php</filename>
+		<filename>helpers/IPv6Net.php</filename>
+		<filename>helpers/simplecidr.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages folder="language">
+		<language tag="en-GB">en-GB.plg_user_domainrestriction.ini</language>
+		<language tag="en-GB">en-GB.plg_user_domainrestriction.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="ipsecurity" addfieldpath="/core/plugins/user/domainrestriction/fields">
+				<field class="ipsecurity" type="textarea" name="whitelist" default="0.0.0.0/32" label="PLG_USER_DOMAINRESTRICTION_WHITELIST_LABEL" description="PLG_USER_DOMAINRESTRICTION_WHITELIST_DESC"/>
+				<field class="ipsecurity" type="textarea" name="blacklist" default="0.0.0.0/32" label="PLG_USER_DOMAINRESTRICTION_BLACKLIST_LABEL" description="PLG_USER_DOMAINRESTRICTION_BLACKLIST_DESC"/>
+			</fieldset>
+			<fieldset name="disallowed" addfieldpath="/core/plugins/user/domainrestriction/fields">
+				<field name="badtld" type="textarea" description="PLG_USER_DOMAINRESTRICTION_BADTLDS_DESC" label="PLG_USER_DOMAINRESTRICTION_BADTLDS_LABEL" />
+				<field name="baddomain" type="textarea" description="PLG_USER_DOMAINRESTRICTION_BADDOMAINS_DESC" label="PLG_USER_DOMAINRESTRICTION_BADDOMAINS_LABEL"/>
+				<field name="bademail" type="emails" description="PLG_USER_DOMAINRESTRICTION_BADEMAILS_DESC" label="PLG_USER_DOMAINRESTRICTION_BADEMAILS_LABEL"/>
+			</fieldset>
+            <fieldset name="allowed">
+                <field name="domain" type="textarea" description="PLG_USER_DOMAINRESTRICTION_DOMAINS_DESC" label="PLG_USER_DOMAINRESTRICTION_DOMAINS_LABEL"/>
+                <field name="email" type="textarea" description="PLG_USER_DOMAINRESTRICTION_EMAILS_DESC" label="PLG_USER_DOMAINRESTRICTION_EMAILS_LABEL"/>
+            </fieldset>
+		</fields>
+	</config>
+</extension>
