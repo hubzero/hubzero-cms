@@ -39,7 +39,7 @@ class Widget extends Field
 		$html[] = '</li>';
 		$html[] = '</ul>';
 
-		return implode("\n",$html);
+		return implode("\n", $html);
 	}
 
 	/**

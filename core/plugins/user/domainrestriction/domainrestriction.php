@@ -92,12 +92,14 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
 		$this->_allowed = true;
 
 		// Check if top level domain is disallowed
-		if (in_array($this->_tld, $this->_badtlds)) {
+		if (in_array($this->_tld, $this->_badtlds))
+		{
 			$this->_allowed = false;
 		}
 
 		// Check if domain is disallowed
-		if (in_array($this->_domain, $this->_baddomains)) {
+		if (in_array($this->_domain, $this->_baddomains))
+		{
 			$this->_allowed = false;
 		}
 
@@ -107,17 +109,20 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
 		}
 
 		// Check if email is disallowed
-		if (in_array($this->_email, $this->_bademails)) {
+		if (in_array($this->_email, $this->_bademails))
+		{
 			$this->_allowed = false;
 		}
 
 		// Check if email is allowed
-		if (in_array($this->_email, $this->_emails)) {
+		if (in_array($this->_email, $this->_emails))
+		{
 			$this->_allowed = true;
 		}
 
 		// Check for affiliated registration and let it go
-		if($this->_domain == 'invalid') {
+		if ($this->_domain == 'invalid')
+		{
 			$this->_allowed = true;
 		}
 
@@ -386,7 +391,7 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
 		}
 
 		$emailuser = $this->_parseEmail($user->email);
-		$excluded = json_decode(str_replace('*',$emailuser,base64_decode($this->params->get('excludeauto', 'W10K'))));
+		$excluded = json_decode(str_replace('*', $emailuser, base64_decode($this->params->get('excludeauto', 'W10K'))));
 
 		if (count($excluded) && in_array(strtolower($user->email), $excluded))
 		{
