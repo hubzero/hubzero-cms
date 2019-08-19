@@ -97,7 +97,6 @@ provides: [String.toBase64, String.decodeBase64]
 			return utftext;
 		},
 
-
 		_utf8_decode : function (utftext) {
 			var string = "";
 			var i = 0;
