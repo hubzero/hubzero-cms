@@ -24,18 +24,21 @@ class JFormFieldAETextarea extends JFormFieldTextarea
 	{
 		$return = parent::setup($element, $value, $group);
 		if($return) {
-			if(version_compare(JVERSION,3,'>='))
+			if (version_compare(JVERSION, 3, '>='))
 			{
-				error_log('j3');
+				//error_log('j3');
 				$td = ($this->getAttribute('translate_default') == 'true')?true:false;
 				$default = ($this->value == $this->default)?$this->default:false;
-			} else {
-				error_log('j2');
+			}
+			else
+			{
+				//error_log('j2');
 				$td = ($element->attributes()->translate_default == 'true')?true:false;
 				$default = ($this->value == $element->attributes()->default)?$element->attributes()->default:false;
 			}
-			if($td && $default) {
-				$this->value = Lang::txt($default);   
+			if ($td && $default)
+			{
+				$this->value = Lang::txt($default);
 			}
 		}
 		return $return;
