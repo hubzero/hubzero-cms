@@ -226,7 +226,15 @@ class Cloud extends \Hubzero\Base\Obj
 
 		if (isset($filters['admin']) && $filters['admin'] !== null)
 		{
-			$results->whereEquals('admin', (int) $filters['admin']);
+			if ($filters['admin'] == 0)
+			{
+				// Filter out admin tags - JBG
+				$results->whereNotIn('admin', [1]);
+			}
+			else
+			{
+				$results->whereEquals('admin', (int) $filters['admin']);
+			}
 		}
 		if (isset($filters['created_by']) && $filters['created_by'] > 0)
 		{
