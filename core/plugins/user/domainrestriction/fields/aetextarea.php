@@ -23,7 +23,7 @@ class JFormFieldAETextarea extends JFormFieldTextarea
 	public function setup(SimpleXMLElement $element, $value, $group = null)
 	{
 		$return = parent::setup($element, $value, $group);
-		if($return) {
+		if ($return) {
 			if (version_compare(JVERSION, 3, '>='))
 			{
 				//error_log('j3');
