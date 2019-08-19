@@ -43,7 +43,7 @@
  * Represents an IPv6 subnet
  *
  * the IPv6Net class is used to describe a subnet based on an ip-address and a netmask.
-*/
+ */
 class IPv6Net
 {
 	private $net_addr; //!< a binary representation of the network
@@ -147,14 +147,14 @@ class IPv6Net
 		if (self::isIPv4($addr))
 		{
 			$addr = '::'.$addr;
-		} 
+		}
 		$net_addr = @inet_pton($addr);
 		if ($net_addr == false)
 		{
 			throw new Exception("invalid ip address {$addr}");
 		}
 		$net_addr_long = self::inet_ntogmp($net_addr);
-		return 	self::inet_gmptofull($net_addr_long);
+		return self::inet_gmptofull($net_addr_long);
 	}
 
 	/**
@@ -420,7 +420,7 @@ class IPv6Net
 		$rStep = gmp_pow(2, 128-$iNetMaskBits);
 		$rCurr = gmp_add($this->net_addr_long, gmp_mul($iStartAt, $rStep));
 
-		for ($i=0;$i<$iMaxValues; $i++)
+		for ($i=0; $i<$iMaxValues; $i++)
 		{
 			if (gmp_cmp($rCurr, $this->net_broadcast_long) > 0)
 			{
