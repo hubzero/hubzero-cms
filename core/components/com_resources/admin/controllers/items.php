@@ -812,6 +812,9 @@ class Items extends AdminController
 			{
 				$row->set('created_by', $row->created_by ? $row->created_by : $created_by_id);
 			}
+
+			// update access
+			$row->set('access', Request::getInt('access', 0));
 		}
 
 		// publish up
