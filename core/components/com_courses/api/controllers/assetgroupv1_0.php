@@ -10,12 +10,14 @@ namespace Components\Courses\Api\Controllers;
 use Hubzero\Config\Registry;
 use Components\Courses\Models\Assets\Handler;
 use Components\Courses\Models\Assetgroup;
+use Components\Courses\Models\Assets\Tool;
 use App;
 use Request;
 use Date;
 
 require_once __DIR__ . DS . 'base.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assetgroup.php';
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assets' . DS . 'tool.php';
 
 /**
  * API controller for the course asset groups
@@ -177,7 +179,8 @@ class Assetgroupv1_0 extends base
 				'assetgroup_state' => (int) $assetGroup->get('state'),
 				'assetgroup_style' => 'display:none',
 				'course_id'        => $this->course_id,
-				'offering_alias'   => $this->offering_alias
+				'offering_alias'   => $this->offering_alias,
+				'allow_tools'      => Tool::getToolDirectory()
 			], ($id ? 200 : 201)
 		);
 	}
