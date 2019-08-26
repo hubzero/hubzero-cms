@@ -20,7 +20,7 @@ function console_log( $data ){
 ?>
 
 <div class="super-group-footer-wrap">
-	<div class="super-group-footer">
+	<footer class="super-group-footer">
 		<?php console_log($this); ?>
 		<div class="grid break3">
 			<div class="col span8">
@@ -34,5 +34,5 @@ function console_log( $data ){
 				<p>QUBES is supported by the <a href="http://www.nsf.gov/" target="_blank">National Science Foundation</a> and&nbsp;<a href="/community/partners">other&nbsp;funding&nbsp;agencies</a></p>
 			</div>
 		</div>
-	</div>
+	</footer>
 </div>

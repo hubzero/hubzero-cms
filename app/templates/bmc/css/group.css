@@ -172,6 +172,9 @@ ul li {
   -moz-opacity: 0;
   opacity: 0;
 }
+.account-details button:focus {
+  outline: -webkit-focus-ring-color auto 5px;
+}
 .group-dash {
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
@@ -341,6 +344,21 @@ body.panel-open .hub-overlay {
 .super-group-bar .content {
   padding: 0.6rem 20px;
   text-align: left;
+}
+.super-group-bar .content .skip-nav a {
+  background-color: #8cc540;
+  color: #222b37;
+  display: inline-block;
+  font-size: 1rem;
+  left: 0;
+  line-height: 44px;
+  padding: 0 .5em;
+  position: absolute;
+  top: -44px;
+  transition: top 0.3s ease-out;
+}
+.super-group-bar .content .skip-nav a:focus {
+  top: 0;
 }
 .super-group-bar .content .branding .poweredby {
   display: block;

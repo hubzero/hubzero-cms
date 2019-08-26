@@ -23,7 +23,7 @@ $community = substr($something, $pos3);	// Cut off string up to this point
 
 <ul class="sidebar-nav nav-pills nav-stacked js" id="page-menu">
   <!-- Hamburger menu for mobile -->
-  <button class="more-menu"></button>
+  <button class="more-menu" aria-label="mobile secondary navigation" aria-haspopup="true" aria-expanded="false"></button>
 <?php echo $community; ?>
   <!-- Menu for additional group links for mobile -->
   <ul class="more-links"></ul>

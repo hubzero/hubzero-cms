@@ -268,10 +268,12 @@ jQuery(document).ready(function(jq) {
 	$moreMenu.on('click', function() {
 		$moreLinks.toggleClass('links-visible');
 		if ($moreLinks.hasClass('links-visible')) {
+			$moreMenu.attr('aria-expanded', 'true');
 			$sidebarWrap.addClass('fullscreen');
 			$sidebarNav.addClass('more-menu-expanded');
 			$('body, html').addClass('no-scroll');
 		} else {
+			$moreMenu.attr('aria-expanded', 'false');
 			$sidebarWrap.removeClass('fullscreen');
 			$sidebarNav.removeClass('more-menu-expanded');
 			$('body, html').removeClass('no-scroll');
@@ -379,12 +381,28 @@ jQuery(document).ready(function(jq) {
 
 	$btn.click(function() {
 		$hlinks.toggleClass('hidden');
+		if ($hlinks.hasClass('hidden')) {
+			$btn.attr('aria-expanded', 'false');
+		} else {
+			$btn.attr('aria-expanded', 'true');
+		}
+	});
+
+	// Close hidden list on escape
+	$(document).keyup(function(e) {
+		if (e.keyCode == 27) {
+			if (!($hlinks.hasClass('hidden'))) {
+				$hlinks.toggleClass('hidden');
+				$btn.attr('aria-expanded', 'false');
+			}
+		}
 	});
 
 	// Close hidden list when clicking somewhere else
   $('body').click(function(e) {
     if($(e.target).closest('.super-group-menu').length === 0) {
       $hlinks.addClass('hidden');
+			$btn.attr('aria-expanded', 'false');
     }
   });
 

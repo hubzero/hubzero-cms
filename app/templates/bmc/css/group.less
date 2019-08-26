@@ -111,6 +111,10 @@ ul li {
 		.closeButton(40px);
 		top: @padContain;
 		right: @padContain;
+		
+		&:focus {
+			outline: -webkit-focus-ring-color auto 5px;
+		}
 	}
 }
 
@@ -237,6 +241,26 @@ body.panel-open {
 	.content {
 		padding: 0.6rem 20px;
 		text-align: left;
+
+		.skip-nav {
+
+			a {
+				background-color: #8cc540;
+				color: #222b37;
+				display: inline-block;
+				font-size: 1rem;
+				left: 0;
+				line-height: 44px;
+				padding: 0 .5em;
+				position: absolute;
+				top: -44px;
+				transition: top .3s ease-out;
+
+				&:focus {
+					top: 0;
+				}
+			}
+		}
 
 		.branding {
 

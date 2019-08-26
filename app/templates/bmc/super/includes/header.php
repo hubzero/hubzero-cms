@@ -36,7 +36,7 @@ if ($this->group->get('logo') == NULL) {
 	</div>
 </div>
 
-<div class="super-group-header-overlay-wrap" onclick="location.href='<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>';" style="cursor: pointer;">
+<header class="super-group-header-overlay-wrap" onclick="location.href='<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>';" style="cursor: pointer;">
 	<div class="super-group-header-overlay">
 		<h1 class="header-id">
 			<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>" title="<?php echo $this->group->get('description'); ?> Home">
@@ -47,16 +47,16 @@ if ($this->group->get('logo') == NULL) {
 			</a>
 		</h1>
 	</div>
-</div>
+</header>
 
 <div class="super-group-menu-wrap">
-	<div class="super-group-menu">
-    <button>
-      <div class="hamburger"></div>
-    </button>
+	<nav class="super-group-menu" aria-label="main navigation">
 		<!-- ###  Start Menu Include  ### -->
 		<?php include_once dirname(__DIR__) . DS . 'helpers' . DS . 'menu.php'; ?>
-    <ul class="hidden-links hidden"></ul>
 		<!-- ###  End Menu Include  ### -->
-	</div>
+		<button aria-label="more main menu items" aria-haspopup="true" aria-expanded="false">
+      <div class="hamburger"></div>
+    </button>
+		<ul class="hidden-links hidden"></ul>
+	</nav>
 </div>
