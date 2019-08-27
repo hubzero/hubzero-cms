@@ -15,19 +15,8 @@ Toolbar::preferences($this->option, '550');
 $this->css('solr');
 $option = $this->option;
 
-Submenu::addEntry(
-	Lang::txt('Overview'),
-	\Route::url('index.php?option='.$option.'&task=configure'),
-	true
-);
-Submenu::addEntry(
-	Lang::txt('Searchable Components'),
-	\Route::url('index.php?option='.$option.'&task=display&controller=searchable')
-);
-Submenu::addEntry(
-	Lang::txt('Index Blacklist'),
-	\Route::url('index.php?option='.$option.'&task=manageBlacklist')
-);
+$this->view('_submenu', 'shared')
+	->display();
 ?>
 <div id="widget-container" class="com_search">
 	<div class="widget">
