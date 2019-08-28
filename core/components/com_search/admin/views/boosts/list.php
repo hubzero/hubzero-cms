@@ -9,7 +9,7 @@
 defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('COM_SEARCH_HEADING_BOOSTS'));
-Toolbar::addNew();
+Toolbar::addNew('new');
 Toolbar::deleteList();
 Toolbar::spacer();
 Toolbar::preferences($this->option, '550');
@@ -19,6 +19,21 @@ $boosts = $this->boosts;
 $this->view('_submenu', 'shared')
 	->display();
 
-$this->view('_boosts_list')
-	->set('boosts', $boosts)
-	->display();
+?>
+
+<form action="<?php echo "index.php?option=$this->option&controller=$this->controller"; ?>"
+	method="post"
+	name="adminForm"
+	id="adminForm">
+
+	<?php
+		$this->view('_boosts_list')
+			->set('boosts', $boosts)
+			->display();
+	?>
+
+	<input type="hidden" name="option" value="com_search" />
+	<input type="hidden" name="controller" value="boosts" />
+	<input type="hidden" name="task" value="list" />
+	<input type="hidden" name="boxchecked" value="0" />
+</form>
