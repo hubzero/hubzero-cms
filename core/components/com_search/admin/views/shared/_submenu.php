@@ -35,6 +35,14 @@ $entries = [
 			"task" => "manageBlacklist",
 			"controller" => "solr"
 		]
+	],
+	[
+		"text" => Lang::txt('COM_SEARCH_SUBMENU_BOOSTS'),
+		"queryParams" => [
+			"option" => $option,
+			"task" => "list",
+			"controller" => "boosts"
+		]
 	]
 ];
 
