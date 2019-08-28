@@ -17,8 +17,9 @@ $strength = $boost->getStrength();
 
 <tr>
 	<td>
-		<input class="record-checkbox"
-			type="checkbox" name="boostIds[]"
+		<input class="checkbox-toggle"
+			type="checkbox"
+			name="boostIds[]"
 			id="cb<?php echo $order; ?>"
 			value="<?php echo $id; ?>" />
 	</td>

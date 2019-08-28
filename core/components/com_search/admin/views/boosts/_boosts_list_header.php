@@ -13,7 +13,7 @@ defined('_HZEXEC_') or die();
 <thead>
 	<tr>
 		<th>
-			<input type="checkbox" name="toggle" value="" />
+			<input type="checkbox" class="checkbox-toggle toggle-all" value="" />
 		</th>
 
 		<th scope="col" class="priority-5">
