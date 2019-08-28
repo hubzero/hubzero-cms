@@ -301,7 +301,7 @@ class Solr extends SiteController
 			// Event for special formatting
 			$override = Event::trigger('search.onFormatResult', array($result['hubtype'], &$result, $terms, $highlightOptions));
 
-			// Only allow one override per result 
+			// Only allow one override per result
 			if (count($override) == 1)
 			{
 				$override = $override[0];
@@ -328,7 +328,7 @@ class Solr extends SiteController
 					}
 				}
 
-				// Do some filtering 
+				// Do some filtering
 				$snippet = str_replace("\n", '', $snippet);
 				$snippet = str_replace("\r", '', $snippet);
 				$snippet = str_replace("<br/>", '', $snippet);
