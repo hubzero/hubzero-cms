@@ -16,6 +16,12 @@ use Hubzero\Database\Relational;
  */
 class Boost extends Relational
 {
+	public $initiate = ['created'];
+
+	protected $rules = [
+		'field' => 'notempty',
+		'field_value' => 'notempty'
+	];
 
 	protected $table = '#__solr_search_boosts';
 
@@ -24,7 +30,28 @@ class Boost extends Relational
 		return $this->get('id');
 	}
 
-	public function getType()
+	public function getField()
+	{
+		return $this->get('field');
+	}
+
+	public function getFormattedFieldValue()
+	{
+		$fieldValue = $this->getFieldValue();
+
+		switch ($fieldValue)
+		{
+			case 'citation':
+				$formattedFieldValue = Lang::txt('COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION');
+				break;
+			default:
+				$formattedFieldValue = $fieldValue;
+		}
+
+		return $formattedFieldValue;
+	}
+
+	public function getFieldValue()
 	{
 		return $this->get('field_value');
 	}
@@ -32,6 +59,16 @@ class Boost extends Relational
 	public function getStrength()
 	{
 		return $this->get('strength');
+	}
+
+	public function getCreated()
+	{
+		return $this->get('created');
+	}
+
+	public function getCreatedBy()
+	{
+		return $this->get('created_by');
 	}
 
 }
