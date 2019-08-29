@@ -7,6 +7,11 @@
 
 namespace Components\Search\Models\Solr;
 
+$componentPath = Component::path('com_search');
+
+require_once "$componentPath/traits/isUnique.php";
+
+use Components\Search\Traits\isUnique;
 use Hubzero\Database\Relational;
 
 /**
@@ -16,6 +21,10 @@ use Hubzero\Database\Relational;
  */
 class Boost extends Relational
 {
+	use isUnique;
+
+	protected static $uniqueKeys = [['field', 'field_value']];
+
 	public $initiate = ['created'];
 
 	protected $rules = [
@@ -69,6 +78,22 @@ class Boost extends Relational
 	public function getCreatedBy()
 	{
 		return $this->get('created_by');
+	}
+
+	public function save()
+	{
+		if ($this->isNew() && !$this->isUnique())
+		{
+			$documentType = $this->getFormattedFieldValue();
+			$this->addError(Lang::txt('COM_SEARCH_BOOST_ERROR_NON_UNIQUE', $documentType));
+			$saved = false;
+		}
+		else
+		{
+			$saved = parent::save();
+		}
+
+		return $saved;
 	}
 
 }
