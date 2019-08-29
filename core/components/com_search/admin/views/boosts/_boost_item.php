@@ -11,7 +11,7 @@ defined('_HZEXEC_') or die();
 $order = $this->order;
 $boost = $this->boost;
 $id = $boost->getId();
-$type = $boost->getType();
+$type = $boost->getFieldValue();
 $strength = $boost->getStrength();
 ?>
 
