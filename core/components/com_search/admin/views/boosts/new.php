@@ -8,9 +8,17 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_SEARCH_HEADING_BOOST_NEW'));
-Toolbar::apply('create');
-Toolbar::cancel('list');
+$toolbarElements = [
+	'title' => [Lang::txt('COM_SEARCH_HEADING_BOOST_NEW')],
+	'apply' => ['create'],
+	'cancel' => ['list'],
+	'spacer' => [],
+	'help' => ['boost']
+];
+
+$this->view('_toolbar', 'shared')
+	->set('elements', $toolbarElements)
+	->display();
 
 $action = "index.php?option=$this->option&controller=$this->controller";
 $boost = $this->boost;
@@ -21,7 +29,7 @@ sort($typeOptions);
 <form action="<?php echo $action; ?>"
 	method="post"
 	name="adminForm"
-	id="adminForm">
+	id="item-form">
 
 	<div class="grid">
 		<div class="col span7">
