@@ -8,17 +8,22 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_SEARCH_HEADING_BOOSTS'));
-Toolbar::addNew('new');
-Toolbar::deleteList();
-Toolbar::spacer();
-Toolbar::preferences($this->option, '550');
+$toolbarElements = [
+	'title' => [Lang::txt('COM_SEARCH_HEADING_BOOSTS')],
+	'addNew' => ['new'],
+	'deleteList' => [],
+	'spacer' => [],
+	'preferences' => [$this->option, '550']
+];
+
+$this->view('_toolbar', 'shared')
+	->set('elements', $toolbarElements)
+	->display();
 
 $boosts = $this->boosts;
 
 $this->view('_submenu', 'shared')
 	->display();
-
 ?>
 
 <form action="<?php echo "index.php?option=$this->option&controller=$this->controller"; ?>"
