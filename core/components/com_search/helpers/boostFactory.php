@@ -9,9 +9,11 @@ namespace Components\Search\Helpers;
 
 $componentPath = Component::path('com_search');
 
+require_once "$componentPath/helpers/boostDocumentTypeMap.php";
 require_once "$componentPath/helpers/mockProxy.php";
 require_once "$componentPath/models/solr/boost.php";
 
+use Components\Search\Helpers\BoostDocumentTypeMap as Map;
 use Components\Search\Helpers\MockProxy;
 use Components\Search\Models\Solr\Boost;
 use Hubzero\Utility\Arr;
@@ -21,6 +23,7 @@ class BoostFactory
 
 	public function __construct($args = [])
 	{
+		$this->_map = Arr::getValue($args, 'map', new Map());
 		$this->_userHelper = Arr::getValue(
 			$args, 'user', new MockProxy(['class' => 'User'])
 		);
@@ -39,30 +42,12 @@ class BoostFactory
 	protected function _formData($boostData)
 	{
 		$documentType = $boostData['document_type'];
-		$documentProperties = $this->_generateDocumentProperties($documentType);
+		$documentProperties = $this->_map->documentTypeToFieldData($documentType);
 		$creationProperties = $this->_generateCreationProperties();
 
 		$formedData = array_merge($boostData, $documentProperties, $creationProperties);
 
 		return $formedData;
-	}
-
-	protected function _generateDocumentProperties($documentType)
-	{
-		switch($documentType)
-		{
-			case Lang::txt('COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION'):
-				$field = 'hubtype';
-				$fieldValue = 'citation';
-				break;
-			default:
-				$field = 'type';
-				$fieldValue = $documentType;
-		}
-
-		return [
-			'field' => $field,
-		 	'field_value' => $fieldValue];
 	}
 
 	protected function _generateCreationProperties()
