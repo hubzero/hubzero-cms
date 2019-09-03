@@ -9,10 +9,13 @@ namespace Components\Search\Models\Solr;
 
 $componentPath = Component::path('com_search');
 
+require_once "$componentPath/helpers/mockProxy.php";
 require_once "$componentPath/traits/isUnique.php";
 
+use Components\Search\Helpers\MockProxy;
 use Components\Search\Traits\isUnique;
 use Hubzero\Database\Relational;
+use Hubzero\Utility\Arr;
 
 /**
  * Database model for Solr Boost
@@ -34,6 +37,15 @@ class Boost extends Relational
 
 	protected $table = '#__solr_search_boosts';
 
+	public function __construct($args = [])
+	{
+		$this->_lang = Arr::getValue(
+			$args, 'lang', new MockProxy(['class' => 'Lang'])
+		);
+
+		parent::__construct();
+	}
+
 	public function getId()
 	{
 		return $this->get('id');
@@ -51,13 +63,14 @@ class Boost extends Relational
 		switch ($fieldValue)
 		{
 			case 'citation':
-				$formattedFieldValue = Lang::txt('COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION');
+				$langKey = 'COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION';
+				$formattedValue = $this->_lang->txt($langKey);
 				break;
 			default:
-				$formattedFieldValue = $fieldValue;
+				$formattedValue = $fieldValue;
 		}
 
-		return $formattedFieldValue;
+		return $formattedValue;
 	}
 
 	public function getFieldValue()

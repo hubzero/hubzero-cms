@@ -21,7 +21,9 @@ class BoostFactory
 
 	public function __construct($args = [])
 	{
-		$this->_userHelper = Arr::getValue($args, 'user', new MockProxy(['class' => 'User']));
+		$this->_userHelper = Arr::getValue(
+			$args, 'user', new MockProxy(['class' => 'User'])
+		);
 	}
 
 	public function one($boostData)
