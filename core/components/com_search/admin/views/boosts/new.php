@@ -24,25 +24,10 @@ $action = "index.php?option=$this->option&controller=$this->controller";
 $boost = $this->boost;
 $typeOptions = $this->typeOptions;
 sort($typeOptions);
-?>
 
-<form action="<?php echo $action; ?>"
-	method="post"
-	name="adminForm"
-	id="item-form">
-
-	<div class="grid">
-		<div class="col span7">
-			<?php
-				$this->view('_boost_details_form')
-					->set('boost', $boost)
-					->set('typeOptions', $typeOptions)
-					->display();
-			?>
-		</div>
-	</div>
-
-	<input type="hidden" name="option" value="com_search" />
-	<input type="hidden" name="controller" value="boosts" />
-	<input type="hidden" name="task" value="new" />
-</form>
+$this->view('_boost_form')
+	->set('action', $action)
+	->set('boost', $boost)
+	->set('task', 'new')
+	->set('typeOptions', $typeOptions)
+	->display();
