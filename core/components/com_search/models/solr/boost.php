@@ -9,9 +9,11 @@ namespace Components\Search\Models\Solr;
 
 $componentPath = Component::path('com_search');
 
+require_once "$componentPath/helpers/boostDocumentTypeMap.php";
 require_once "$componentPath/helpers/mockProxy.php";
 require_once "$componentPath/traits/isUnique.php";
 
+use Components\Search\Helpers\BoostDocumentTypeMap as Map;
 use Components\Search\Helpers\MockProxy;
 use Components\Search\Traits\isUnique;
 use Hubzero\Database\Relational;
@@ -42,6 +44,7 @@ class Boost extends Relational
 		$this->_lang = Arr::getValue(
 			$args, 'lang', new MockProxy(['class' => 'Lang'])
 		);
+		$this->_map = Arr::getValue($args, 'map', new Map());
 
 		parent::__construct();
 	}
@@ -60,17 +63,7 @@ class Boost extends Relational
 	{
 		$fieldValue = $this->getFieldValue();
 
-		switch ($fieldValue)
-		{
-			case 'citation':
-				$langKey = 'COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION';
-				$formattedValue = $this->_lang->txt($langKey);
-				break;
-			default:
-				$formattedValue = $fieldValue;
-		}
-
-		return $formattedValue;
+		return $this->_map->getFormattedFieldValue($fieldValue);
 	}
 
 	public function getFieldValue()

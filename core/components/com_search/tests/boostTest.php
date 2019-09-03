@@ -44,14 +44,16 @@ class BoostTest extends Basic
 
 	public function testGetFormattedFieldValueReturnsCorrectValueForCitations()
 	{
-		$langMock = $this->mock(['class' => 'Lang', 'methods' => ['txt']]);
-		$boost = new Boost(['lang' => $langMock]);
+		$mapMock = $this->mock([
+			'class' => 'Map',
+			'methods' => ['getFormattedFieldValue']
+		]);
+		$boost = new Boost(['map' => $mapMock]);
 
 		$boost->set('field_value', 'citation');
 
-		$langMock->expects($this->once())
-			->method('txt')
-			->with('COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION');
+		$mapMock->expects($this->once())
+			->method('getFormattedFieldValue');
 
 		$boost->getFormattedFieldValue();
 	}
