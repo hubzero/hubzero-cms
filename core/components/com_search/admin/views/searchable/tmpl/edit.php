@@ -17,19 +17,10 @@ Toolbar::custom('searchindex', 'cancel', 'cancel', 'JCANCEL', false);
 Toolbar::spacer();
 
 $option = $this->option;
-Submenu::addEntry(
-	Lang::txt('Overview'),
-	'index.php?option='.$option.'&task=configure'
-);
-Submenu::addEntry(
-	Lang::txt('Searchable Components'),
-	'index.php?option='.$option.'&task=display&controller=searchable',
-	true
-);
-Submenu::addEntry(
-	Lang::txt('Index Blacklist'),
-	'index.php?option='.$option.'&task=manageBlacklist'
-);
+
+$this->view('_submenu', 'shared')
+	->display();
+
 $this->css('edit')
 	->css('jquery.timepicker.css', 'system')
 	->js('jquery.timepicker', 'system')
