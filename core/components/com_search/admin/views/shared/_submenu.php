@@ -50,12 +50,10 @@ foreach ($entries as $entry)
 {
 	$text = $entry['text'];
 	$params = $entry['queryParams'];
-
-	ksort($params);
-
 	$queryString = http_build_query($params);
 	$url = "index.php?$queryString";
-	$active = $params == $receivedQuery;
+
+	$active = $params['controller'] == $receivedQuery['controller'];
 
 	Submenu::addEntry($text, $url, $active);
 }
