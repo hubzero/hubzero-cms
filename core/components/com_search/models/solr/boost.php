@@ -39,13 +39,13 @@ class Boost extends Relational
 
 	protected $table = '#__solr_search_boosts';
 
+	protected $map,
+		$userHelper;
+
 	public function __construct($args = [])
 	{
-		$this->_lang = Arr::getValue(
-			$args, 'lang', new MockProxy(['class' => 'Lang'])
-		);
-		$this->_map = Arr::getValue($args, 'map', new Map());
-		$this->_userHelper = Arr::getValue(
+		$this->map = Arr::getValue($args, 'map', new Map());
+		$this->userHelper = Arr::getValue(
 			$args, 'user', new MockProxy(['class' => 'User'])
 		);
 
@@ -66,7 +66,7 @@ class Boost extends Relational
 	{
 		$fieldValue = $this->getFieldValue();
 
-		return $this->_map->getFormattedFieldValue($fieldValue);
+		return $this->map->getFormattedFieldValue($fieldValue);
 	}
 
 	public function getFieldValue()
@@ -93,7 +93,7 @@ class Boost extends Relational
 	{
 		$createdBy = $this->getCreatedBy();
 
-		return $this->_userHelper->one($createdBy);
+		return $this->userHelper->one($createdBy);
 	}
 
 	public function save()

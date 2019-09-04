@@ -23,8 +23,8 @@ class BoostFactory
 
 	public function __construct($args = [])
 	{
-		$this->_map = Arr::getValue($args, 'map', new Map());
-		$this->_userHelper = Arr::getValue(
+		$this->map = Arr::getValue($args, 'map', new Map());
+		$this->userHelper = Arr::getValue(
 			$args, 'user', new MockProxy(['class' => 'User'])
 		);
 	}
@@ -33,26 +33,26 @@ class BoostFactory
 	{
 		$boost = Boost::blank();
 
-		$formedData = $this->_formData($boostData);
+		$formedData = $this->formData($boostData);
 		$boost->set($formedData);
 
 		return $boost;
 	}
 
-	protected function _formData($boostData)
+	protected function formData($boostData)
 	{
 		$documentType = $boostData['document_type'];
-		$documentProperties = $this->_map->documentTypeToFieldData($documentType);
-		$creationProperties = $this->_generateCreationProperties();
+		$documentProperties = $this->map->documentTypeToFieldData($documentType);
+		$creationProperties = $this->generateCreationProperties();
 
 		$formedData = array_merge($boostData, $documentProperties, $creationProperties);
 
 		return $formedData;
 	}
 
-	protected function _generateCreationProperties()
+	protected function generateCreationProperties()
 	{
-		$userId = $this->_userHelper->get('id');
+		$userId = $this->userHelper->get('id');
 		$now = Date::toSql();
 
 		return [

@@ -23,17 +23,21 @@ use Hubzero\Component\AdminController;
 class Boosts extends AdminController
 {
 
+	protected $crudHelper,
+		$factory,
+		$typeHelper;
+
 	protected $_taskMap = [
 		'__default' => 'list'
 	];
 
 	public function execute()
 	{
-		$this->_crudHelper = new RecordProcessingHelper([
+		$this->crudHelper = new RecordProcessingHelper([
 			'controller' => $this
 		]);
-		$this->_factory = new BoostFactory();
-		$this->_typeOptionsHelper = new TypeOptionsHelper();
+		$this->factory = new BoostFactory();
+		$this->typeHelper = new TypeOptionsHelper();
 
 		parent::execute();
 	}
@@ -50,7 +54,7 @@ class Boosts extends AdminController
 	public function newTask($boost = null)
 	{
 		$boost = $boost ? $boost : Boost::blank();
-		$typeOptions = $this->_typeOptionsHelper->getAllSorted();
+		$typeOptions = $this->typeHelper->getAllSorted();
 
 		$this->view
 			->set('boost', $boost)
@@ -61,17 +65,17 @@ class Boosts extends AdminController
 	public function createTask()
 	{
 		$boostArray = Request::getArray('boost');
-		$boost = $this->_factory->one($boostArray);
+		$boost = $this->factory->one($boostArray);
 
 		if ($boost->save())
 		{
 			$message = Lang::txt('COM_SEARCH_CRUD_MESSAGES_BOOST_CREATE_SUCCESS');
 			$redirectUrl = '/administrator/index.php?option=com_search&controller=boosts';
-			$this->_crudHelper->handleSaveSuccess($message, $redirectUrl);
+			$this->crudHelper->handleSaveSuccess($message, $redirectUrl);
 		}
 		else
 		{
-			$this->_crudHelper->handleSaveFail($boost);
+			$this->crudHelper->handleSaveFail($boost);
 		}
 	}
 
@@ -79,7 +83,7 @@ class Boosts extends AdminController
 	{
 		$id = Request::getInt('id');
 		$boost = $boost ? $boost : Boost::oneOrFail($id);
-		$typeOptions = $this->_typeOptionsHelper->getAllSorted();
+		$typeOptions = $this->typeHelper->getAllSorted();
 
 		$this->view
 			->set('boost', $boost)
@@ -99,11 +103,11 @@ class Boosts extends AdminController
 		{
 			$message = Lang::txt('COM_SEARCH_CRUD_MESSAGES_BOOST_UPDATE_SUCCESS');
 			$redirectUrl = '/administrator/index.php?option=com_search&controller=boosts';
-			$this->_crudHelper->handleUpdateSuccess($message, $redirectUrl);
+			$this->crudHelper->handleUpdateSuccess($message, $redirectUrl);
 		}
 		else
 		{
-			$this->_crudHelper->handleUpdateFail($boost);
+			$this->crudHelper->handleUpdateFail($boost);
 		}
 	}
 

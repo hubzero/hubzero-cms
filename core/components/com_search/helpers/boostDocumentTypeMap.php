@@ -17,9 +17,11 @@ use Hubzero\Utility\Arr;
 class BoostDocumentTypeMap
 {
 
+	protected $lang;
+
 	public function __construct($args = [])
 	{
-		$this->_lang = Arr::getValue(
+		$this->lang = Arr::getValue(
 			$args, 'lang', new MockProxy(['class' => 'Lang'])
 		);
 	}
@@ -61,7 +63,7 @@ class BoostDocumentTypeMap
 	{
 		$langKey = 'COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION';
 
-		return $this->_lang->txt($langKey);
+		return $this->lang->txt($langKey);
 	}
 
 }
