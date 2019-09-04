@@ -7,16 +7,11 @@
 
 // No direct access.
 defined('_HZEXEC_') or die();
-
 ?>
 
 <thead>
 	<tr>
-		<th>
-			<input type="checkbox" class="checkbox-toggle toggle-all" value="" />
-		</th>
-
-		<th scope="col" class="priority-5">
+		<th scope="col" class="priority-5" width="5%">
 			<?php echo Html::grid('sort', Lang::txt('COM_SEARCH_COL_ID'), 'id', $sortDirection, $sortCriteria); ?>
 		</th>
 

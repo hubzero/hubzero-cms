@@ -20,14 +20,6 @@ $strength = $boost->getStrength();
 
 <tr>
 	<td>
-		<input class="checkbox-toggle"
-			type="checkbox"
-			name="boostIds[]"
-			id="cb<?php echo $order; ?>"
-			value="<?php echo $id; ?>" />
-	</td>
-
-	<td>
 		<a href="<?php echo $boostEditUrl; ?>">
 			<?php echo $id; ?>
 		</a>

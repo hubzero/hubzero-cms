@@ -11,7 +11,6 @@ defined('_HZEXEC_') or die();
 $toolbarElements = [
 	'title' => [Lang::txt('COM_SEARCH_HEADING_BOOSTS')],
 	'addNew' => ['new'],
-	'deleteList' => [],
 	'spacer' => [],
 	'preferences' => [$this->option, '550']
 ];
@@ -40,5 +39,4 @@ $this->view('_submenu', 'shared')
 	<input type="hidden" name="option" value="com_search" />
 	<input type="hidden" name="controller" value="boosts" />
 	<input type="hidden" name="task" value="list" />
-	<input type="hidden" name="boxchecked" value="0" />
 </form>
