@@ -111,4 +111,23 @@ class Boosts extends AdminController
 		}
 	}
 
+	public function destroyTask()
+	{
+		$id = Request::getInt('id');
+		$boost = Boost::oneOrFail($id);
+
+		if ($boost->destroy())
+		{
+			$message = Lang::txt('COM_SEARCH_CRUD_MESSAGES_BOOST_DESTROY_SUCCESS');
+			$redirectUrl = '/administrator/index.php?option=com_search&controller=boosts';
+			$this->crudHelper->handleDestroySuccess($message, $redirectUrl);
+		}
+		else
+		{
+			$message = Lang::txt('COM_SEARCH_CRUD_MESSAGES_BOOST_DESTROY_FAIL');
+			$redirectUrl = "/administrator/index.php?option=com_search&controller=boosts&task=edit&id=$id";
+			$this->crudHelper->handleDestroyFail($message, $redirectUrl);
+		}
+	}
+
 }
