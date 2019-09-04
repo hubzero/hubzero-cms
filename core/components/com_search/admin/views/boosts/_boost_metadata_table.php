@@ -9,6 +9,8 @@
 defined('_HZEXEC_') or die();
 
 $boost = $this->boost;
+$created = $boost->getCreated();
+$createdLocal = Date::of($created)->toLocal();
 $author = $boost->getAuthor();
 ?>
 
@@ -34,7 +36,7 @@ $author = $boost->getAuthor();
 		<tr>
 			<th><?php echo Lang::txt('COM_SEARCH_LABEL_CREATED'); ?>:</th>
 			<td>
-				<?php echo $boost->getCreated(); ?>
+				<?php echo $createdLocal; ?>
 			</td>
 		</tr>
 	</tbody>
