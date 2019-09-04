@@ -10,19 +10,20 @@ namespace Components\Search\Helpers;
 class ErrorMessageHelper
 {
 
+	protected $breaks;
+
 	public function __construct()
 	{
-		$this->_breaks = '<br/><br/>';
+		$this->breaks = '<br/><br/>';
 	}
 
 	public function generateErrorMessage($errors)
 	{
-		$errorList = implode($this->_breaks . '• ', $errors);
+		$errorList = implode($this->breaks . '• ', $errors);
 
 		$errorMessage = "• $errorList";
 
-		return rtrim($errorMessage, $this->_breaks);
+		return rtrim($errorMessage, $this->breaks);
 	}
-
 
 }

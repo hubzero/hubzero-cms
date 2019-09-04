@@ -19,7 +19,7 @@ class TypeOptionsHelper
 
 	public function __construct($args = [])
 	{
-		$this->_typeHelper = Arr::getValue(
+		$this->typeHelper = Arr::getValue(
 			$args, 'type', new MockProxy([
 				'class' => 'Components\Resources\Models\Type'
 			])
@@ -37,7 +37,7 @@ class TypeOptionsHelper
 
 	public function getAll()
 	{
-		$resourceTypes = $this->_typeHelper->all()
+		$resourceTypes = $this->typeHelper->all()
 			->rows()
 			->fieldsByKey('type');
 

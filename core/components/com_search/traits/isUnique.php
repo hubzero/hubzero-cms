@@ -16,7 +16,7 @@ trait isUnique
 
 		foreach (self::$uniqueKeys as $fields)
 		{
-			if ($this->_duplicatesExist($fields))
+			if ($this->duplicatesExist($fields))
 			{
 				$isUnique = false;
 				break;
@@ -26,14 +26,14 @@ trait isUnique
 		return $isUnique;
 	}
 
-	protected function _duplicatesExist($fields)
+	protected function duplicatesExist($fields)
 	{
-		$duplicates = $this->_findDuplicates($fields);
+		$duplicates = $this->findDuplicates($fields);
 
 		return $duplicates->count() > 0;
 	}
 
-	protected function _findDuplicates($fields)
+	protected function findDuplicates($fields)
 	{
 		$savedRecords = self::all();
 

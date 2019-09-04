@@ -10,16 +10,16 @@ namespace Components\Search\Helpers;
 class MockProxy
 {
 
-	protected $_class;
+	protected $class;
 
 	public function __construct($args = [])
 	{
-		$this->_class = $args['class'];
+		$this->class = $args['class'];
 	}
 
 	public function __call($name, $args)
 	{
-		$class = $this->_class;
+		$class = $this->class;
 
 		$result = $class::$name(...$args);
 
