@@ -11,6 +11,9 @@ defined('_HZEXEC_') or die();
 $order = $this->order;
 $boost = $this->boost;
 $id = $boost->getId();
+$boostEditUrl = Route::url(
+	"index.php?option=$this->option&controller=boosts&task=edit&id=$id"
+);
 $type = $boost->getFormattedFieldValue();
 $strength = $boost->getStrength();
 ?>
@@ -25,7 +28,9 @@ $strength = $boost->getStrength();
 	</td>
 
 	<td>
-		<?php echo $id; ?>
+		<a href="<?php echo $boostEditUrl; ?>">
+			<?php echo $id; ?>
+		</a>
 	</td>
 
 	<td>

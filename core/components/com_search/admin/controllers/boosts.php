@@ -76,4 +76,16 @@ class Boosts extends AdminController
 		}
 	}
 
+	public function editTask()
+	{
+		$id = Request::getInt('id');
+		$boost = Boost::oneOrFail($id);
+		$typeOptions = $this->_typeOptionsHelper->getAllSorted();
+
+		$this->view
+			->set('boost', $boost)
+			->set('typeOptions', $typeOptions)
+			->display();
+	}
+
 }
