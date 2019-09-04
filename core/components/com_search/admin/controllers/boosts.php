@@ -10,12 +10,12 @@ namespace Components\Search\Admin\Controllers;
 $componentPath = Component::path('com_search');
 
 require_once "$componentPath/helpers/boostFactory.php";
-require_once "$componentPath/helpers/errorMessageHelper.php";
+require_once "$componentPath/helpers/recordProcessingHelper.php";
 require_once "$componentPath/helpers/typeOptionsHelper.php";
 require_once "$componentPath/models/solr/boost.php";
 
 use Components\Search\Helpers\BoostFactory;
-use Components\Search\Helpers\ErrorMessageHelper;
+use Components\Search\Helpers\RecordProcessingHelper;
 use Components\Search\Helpers\TypeOptionsHelper;
 use Components\Search\Models\Solr\Boost;
 use Hubzero\Component\AdminController;
@@ -29,8 +29,10 @@ class Boosts extends AdminController
 
 	public function execute()
 	{
+		$this->_crudHelper = new RecordProcessingHelper([
+			'controller' => $this
+		]);
 		$this->_factory = new BoostFactory();
-		$this->_errorMessageHelper = new ErrorMessageHelper();
 		$this->_typeOptionsHelper = new TypeOptionsHelper();
 
 		parent::execute();
@@ -63,16 +65,13 @@ class Boosts extends AdminController
 
 		if ($boost->save())
 		{
-			Notify::success('Boost created');
-			App::redirect('/administrator/index.php?option=com_search&controller=boosts');
+			$message = Lang::txt('COM_SEARCH_CRUD_MESSAGES_BOOST_CREATE_SUCCESS');
+			$redirectUrl = '/administrator/index.php?option=com_search&controller=boosts';
+			$this->_crudHelper->handleSaveSuccess($message, $redirectUrl);
 		}
 		else
 		{
-			$errors = $boost->getErrors();
-			$errorMessage = $this->_errorMessageHelper->generateErrorMessage($errors);
-			Notify::error($errorMessage);
-			$this->setView($this->name, 'new');
-			$this->newTask($boost);
+			$this->_crudHelper->handleSaveFail($boost);
 		}
 	}
 
@@ -98,16 +97,13 @@ class Boosts extends AdminController
 
 		if ($boost->save())
 		{
-			Notify::success('Boost updated');
-			App::redirect('/administrator/index.php?option=com_search&controller=boosts');
+			$message = Lang::txt('COM_SEARCH_CRUD_MESSAGES_BOOST_UPDATE_SUCCESS');
+			$redirectUrl = '/administrator/index.php?option=com_search&controller=boosts';
+			$this->_crudHelper->handleUpdateSuccess($message, $redirectUrl);
 		}
 		else
 		{
-			$errors = $boost->getErrors();
-			$errorMessage = $this->_errorMessageHelper->generateErrorMessage($errors);
-			Notify::error($errorMessage);
-			$this->setView($this->name, 'edit');
-			$this->editTask($boost);
+			$this->_crudHelper->handleUpdateFail($boost);
 		}
 	}
 
