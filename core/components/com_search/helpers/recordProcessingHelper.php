@@ -37,34 +37,34 @@ class RecordProcessingHelper
 		);
 	}
 
-	public function handleSaveSuccess($message, $redirectUrl)
+	public function handleSaveSuccess($message, $url)
 	{
-		$this->handleSuccess($message, $redirectUrl);
+		$this->handleSuccess($message, $url);
 	}
 
 	public function handleSaveFail($record)
 	{
-		$this->notifyOfErrors($record);
+		$this->generateErrorNotification($record);
 		$this->controller->setView($this->controller->name, 'new');
 		$this->controller->newTask($record);
 	}
 
-	public function handleUpdateSuccess($message, $redirectUrl)
+	public function handleUpdateSuccess($message, $url)
 	{
-		$this->handleSuccess($message, $redirectUrl);
+		$this->handleSuccess($message, $url);
 	}
 
 	public function handleUpdateFail($record)
 	{
-		$this->notifyOfErrors($record);
+		$this->generateErrorNotification($record);
 		$this->controller->setView($this->controller->name, 'edit');
 		$this->controller->editTask($record);
 	}
 
-	protected function handleSuccess($message, $redirectUrl)
+	protected function handleSuccess($message, $url)
 	{
 		$this->notifyOfSuccess($message);
-		$this->redirectTo($redirectUrl);
+		$this->redirectTo($url);
 	}
 
 	protected function notifyOfSuccess($message)
@@ -72,16 +72,21 @@ class RecordProcessingHelper
 		$this->notify->success($message);
 	}
 
-	protected function redirectTo($redirectUrl)
+	protected function redirectTo($url)
 	{
-		$this->app->redirect($redirectUrl);
+		$this->app->redirect($url);
 	}
 
-	protected function notifyOfErrors($record)
+	protected function generateErrorNotification($record)
 	{
 		$errors = $record->getErrors();
-		$errorMessage = $this->errorMessageHelper->generateErrorMessage($errors);
-		$this->notify->error($errorMessage);
+		$message = $this->errorMessageHelper->generateErrorMessage($errors);
+		$this->notifyOfError($message);
+	}
+
+	protected function notifyOfError($message)
+	{
+		$this->notify->error($message);
 	}
 
 }
