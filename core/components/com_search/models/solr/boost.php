@@ -45,6 +45,9 @@ class Boost extends Relational
 			$args, 'lang', new MockProxy(['class' => 'Lang'])
 		);
 		$this->_map = Arr::getValue($args, 'map', new Map());
+		$this->_userHelper = Arr::getValue(
+			$args, 'user', new MockProxy(['class' => 'User'])
+		);
 
 		parent::__construct();
 	}
@@ -84,6 +87,13 @@ class Boost extends Relational
 	public function getCreatedBy()
 	{
 		return $this->get('created_by');
+	}
+
+	public function getAuthor()
+	{
+		$createdBy = $this->getCreatedBy();
+
+		return $this->_userHelper->one($createdBy);
 	}
 
 	public function save()
