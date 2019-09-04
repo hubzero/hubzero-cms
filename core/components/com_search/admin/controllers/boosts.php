@@ -7,17 +7,16 @@
 
 namespace Components\Search\Admin\Controllers;
 
-$resourceComponentPath = Component::path('com_resources');
 $componentPath = Component::path('com_search');
 
-require_once "$resourceComponentPath/models/type.php";
 require_once "$componentPath/helpers/boostFactory.php";
 require_once "$componentPath/helpers/errorMessageHelper.php";
+require_once "$componentPath/helpers/typeOptionsHelper.php";
 require_once "$componentPath/models/solr/boost.php";
 
-use Components\Resources\Models\Type;
 use Components\Search\Helpers\BoostFactory;
 use Components\Search\Helpers\ErrorMessageHelper;
+use Components\Search\Helpers\TypeOptionsHelper;
 use Components\Search\Models\Solr\Boost;
 use Hubzero\Component\AdminController;
 
@@ -32,6 +31,7 @@ class Boosts extends AdminController
 	{
 		$this->_factory = new BoostFactory();
 		$this->_errorMessageHelper = new ErrorMessageHelper();
+		$this->_typeOptionsHelper = new TypeOptionsHelper();
 
 		parent::execute();
 	}
@@ -48,14 +48,7 @@ class Boosts extends AdminController
 	public function newTask($boost = null)
 	{
 		$boost = $boost ? $boost : Boost::blank();
-		$resourceTypes = Type::all()
-			->rows()
-			->fieldsByKey('type');
-		$supplementaryDocumentTypes = [
-			Lang::txt('COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION')
-		];
-
-		$typeOptions = array_merge($resourceTypes, $supplementaryDocumentTypes);
+		$typeOptions = $this->_typeOptionsHelper->getAllSorted();
 
 		$this->view
 			->set('boost', $boost)

@@ -20,10 +20,8 @@ $this->view('_toolbar', 'shared')
 	->set('elements', $toolbarElements)
 	->display();
 
-$action = "index.php?option=$this->option&controller=$this->controller";
 $boost = $this->boost;
 $typeOptions = $this->typeOptions;
-sort($typeOptions);
 
 $this->view('_boost_form')
 	->set('action', $action)
