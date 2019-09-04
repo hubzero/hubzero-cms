@@ -8,6 +8,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+$action = Route::url("index.php?option=$this->option&controller=$this->controller");
 $boost = $this->boost;
 $task = $this->task;
 $typeOptions = $this->typeOptions;

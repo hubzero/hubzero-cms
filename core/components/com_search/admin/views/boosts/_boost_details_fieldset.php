@@ -9,6 +9,7 @@
 defined('_HZEXEC_') or die();
 
 $boost = $this->boost;
+$disableType = $this->disableType;
 $typeOptions = $this->typeOptions;
 $typeSelectLabel = Lang::txt('COM_SEARCH_FIELDS_BOOST_TYPE');
 ?>
@@ -22,11 +23,16 @@ $typeSelectLabel = Lang::txt('COM_SEARCH_FIELDS_BOOST_TYPE');
 		<label>
 			<?php
 				echo "$typeSelectLabel:";
-
-				$this->view('_boost_document_type_select')
-					->set('boost', $boost)
-					->set('typeOptions', $typeOptions)
-					->display();
+				if ($disableType): ?>
+					<input type="text"
+						value="<?php echo $boost->getFormattedFieldValue(); ?>"
+						disabled>
+			<?php	else:
+					$this->view('_boost_document_type_select')
+						->set('boost', $boost)
+						->set('typeOptions', $typeOptions)
+						->display();
+				endif;
 			?>
 		</label>
 	</div>
