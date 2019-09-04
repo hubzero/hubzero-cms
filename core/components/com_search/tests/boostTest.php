@@ -102,4 +102,21 @@ class BoostTest extends Basic
 		$this->assertEquals($createdBy, $boostCreatedBy);
 	}
 
+	public function testGetAuthorInvokesOne()
+	{
+		$userId = 987;
+		$userMock = $this->mock([
+			'class' => 'User',
+			'methods' => ['one']
+		]);
+		$boost = new Boost(['user' => $userMock]);
+		$boost->set('created_by', $userId);
+
+		$userMock->expects($this->once())
+			->method('one')
+			->with($userId);
+
+		$boost->getAuthor();
+	}
+
 }
