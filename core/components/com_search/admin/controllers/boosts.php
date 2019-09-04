@@ -76,16 +76,39 @@ class Boosts extends AdminController
 		}
 	}
 
-	public function editTask()
+	public function editTask($boost = null)
 	{
 		$id = Request::getInt('id');
-		$boost = Boost::oneOrFail($id);
+		$boost = $boost ? $boost : Boost::oneOrFail($id);
 		$typeOptions = $this->_typeOptionsHelper->getAllSorted();
 
 		$this->view
 			->set('boost', $boost)
 			->set('typeOptions', $typeOptions)
 			->display();
+	}
+
+	public function updateTask()
+	{
+		$id = Request::getInt('id');
+		$boost = Boost::oneOrFail($id);
+		$params = Request::getArray('boost');
+
+		$boost->set($params);
+
+		if ($boost->save())
+		{
+			Notify::success('Boost updated');
+			App::redirect('/administrator/index.php?option=com_search&controller=boosts');
+		}
+		else
+		{
+			$errors = $boost->getErrors();
+			$errorMessage = $this->_errorMessageHelper->generateErrorMessage($errors);
+			Notify::error($errorMessage);
+			$this->setView($this->name, 'edit');
+			$this->editTask($boost);
+		}
 	}
 
 }

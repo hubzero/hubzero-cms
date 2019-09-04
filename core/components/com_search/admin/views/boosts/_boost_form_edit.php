@@ -38,6 +38,7 @@ $typeOptions = $this->typeOptions;
 		</div>
 	</div>
 
+	<input type="hidden" name="id" value="<?php echo $boost->getId(); ?>" />
 	<input type="hidden" name="option" value="com_search" />
 	<input type="hidden" name="controller" value="boosts" />
 	<input type="hidden" name="task" value="<?php echo $task; ?>" />
