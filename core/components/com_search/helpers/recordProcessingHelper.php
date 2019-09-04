@@ -61,6 +61,17 @@ class RecordProcessingHelper
 		$this->controller->editTask($record);
 	}
 
+	public function handleDestroySuccess($message, $url)
+	{
+		$this->handleSuccess($message, $url);
+	}
+
+	public function handleDestroyFail($message, $url)
+	{
+		$this->notifyOfError($message);
+		$this->redirectTo($url);
+	}
+
 	protected function handleSuccess($message, $url)
 	{
 		$this->notifyOfSuccess($message);

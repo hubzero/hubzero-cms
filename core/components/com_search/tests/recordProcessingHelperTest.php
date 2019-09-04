@@ -240,4 +240,92 @@ class RecordProcessingHelperTest extends Basic
 		$helper->handleUpdateFail($recordMock);
 	}
 
+	public function testHandleDestroySuccessInvokesNotifySuccess()
+	{
+		$message = 'test';
+		$appMock = $this->mock([
+			'class' => 'App', 'methods' => ['redirect']
+		]);
+		$notifyMock = $this->mock([
+			'class' => 'Notify', 'methods' => ['success']
+		]);
+		$helper = new Helper([
+			'controller' => 0,
+			'app' => $appMock,
+			'notify' => $notifyMock
+		]);
+
+		$notifyMock->expects($this->once())
+			->method('success')
+			->with($message);
+
+		$helper->handleDestroySuccess($message, '');
+	}
+
+	public function testHandleDestroySuccessInvokesAppRedirect()
+	{
+		$url = 'test';
+		$appMock = $this->mock([
+			'class' => 'App', 'methods' => ['redirect']
+		]);
+		$notifyMock = $this->mock([
+			'class' => 'Notify', 'methods' => ['success']
+		]);
+		$helper = new Helper([
+			'controller' => 0,
+			'app' => $appMock,
+		 	'notify' => $notifyMock
+		]);
+
+		$appMock->expects($this->once())
+			->method('redirect')
+			->with($url);
+
+		$helper->handleDestroySuccess('', $url);
+	}
+
+	public function testHandleDestroyFailInvokesNotifyError()
+	{
+		$message = 'test';
+		$appMock = $this->mock([
+			'class' => 'App', 'methods' => ['redirect']
+		]);
+		$notifyMock = $this->mock([
+			'class' => 'Notify', 'methods' => ['error']
+		]);
+		$helper = new Helper([
+			'controller' => 0,
+			'app' => $appMock,
+			'notify' => $notifyMock
+		]);
+
+		$notifyMock->expects($this->once())
+			->method('error')
+			->with($message);
+
+		$helper->handleDestroyFail($message, '');
+	}
+
+	public function testHandleDestroyFailInvokesAppRedirect()
+	{
+		$url = 'test';
+		$appMock = $this->mock([
+			'class' => 'App', 'methods' => ['redirect']
+		]);
+		$notifyMock = $this->mock([
+			'class' => 'Notify', 'methods' => ['error']
+		]);
+		$helper = new Helper([
+			'controller' => 0,
+			'app' => $appMock,
+		 	'notify' => $notifyMock
+		]);
+
+		$appMock->expects($this->once())
+			->method('redirect')
+			->with($url);
+
+		$helper->handleDestroyFail('', $url);
+	}
+
 }
