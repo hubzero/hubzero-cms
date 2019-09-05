@@ -19,10 +19,12 @@ $this->view('_toolbar', 'shared')
 	->set('elements', $toolbarElements)
 	->display();
 
-$boosts = $this->boosts;
-
 $this->view('_submenu', 'shared')
 	->display();
+
+$boosts = $this->boosts;
+$sortField = $this->sortField;
+$sortDirection = $this->sortDirection;
 ?>
 
 <form action="<?php echo "index.php?option=$this->option&controller=$this->controller"; ?>"
@@ -33,10 +35,14 @@ $this->view('_submenu', 'shared')
 	<?php
 		$this->view('_boosts_list')
 			->set('boosts', $boosts)
+			->set('sortField', $sortField)
+			->set('sortDirection', $sortDirection)
 			->display();
 	?>
 
 	<input type="hidden" name="option" value="com_search" />
 	<input type="hidden" name="controller" value="boosts" />
 	<input type="hidden" name="task" value="list" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($sortField); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($sortDirection); ?>" />
 </form>
