@@ -56,12 +56,7 @@ class Results extends SiteController
 		$endDate = Request::getInt('selectedPeriod', 0, 'post');
 		$noHtml = Request::getInt('no_html', 0);
 
-		// Establish a connection to the usage database
-		$udb = Helper::getUDBO();
-		if (!is_object($udb))
-		{
-			throw new Exception(Lang::txt('COM_USAGE_ERROR_CONNECTING_TO_DATABASE'), 500);
-		}
+		$usageDbConnection = $this->connectToUsageDb();
 
 		// Trigger the functions that return the areas we'll be using
 		$this->view->cats = Event::trigger('usage.onUsageAreas');
@@ -93,15 +88,14 @@ class Results extends SiteController
 		}
 
 		// Get the sections
-		$this->view->sections = Event::trigger('usage.onUsageDisplay', array(
+		$this->view->sections = Event::trigger('usage.onUsageDisplay', [
 				$this->_option,
 				$this->_task,
-				$udb,
+				$usageDbConnection,
 				$months,
 				$monthsReverse,
 				$endDate
-			)
-		);
+		]);
 
 		// Build the page title
 		$this->view->title  = Lang::txt(strtoupper($this->_option));
@@ -117,4 +111,17 @@ class Results extends SiteController
 			->setErrors($this->getErrors())
 			->display();
 	}
+
+	protected function connectToUsageDb()
+	{
+		$usageDbConnection = Helper::getUDBO();
+
+		if (!is_object($usageDbConnection))
+		{
+			throw new Exception(Lang::txt('COM_USAGE_ERROR_CONNECTING_TO_DATABASE'), 500);
+		}
+
+		return $usageDbConnection;
+	}
+
 }
