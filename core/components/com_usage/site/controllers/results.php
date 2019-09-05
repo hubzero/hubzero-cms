@@ -7,8 +7,14 @@
 
 namespace Components\Usage\Site\Controllers;
 
+$componentPath = Component::path('com_usage');
+
+require_once "$componentPath/helpers/helper.php";
+require_once "$componentPath/helpers/monthsHelper.php";
+
 use Hubzero\Component\SiteController;
 use Components\Usage\Helpers\Helper;
+use Components\Usage\Helpers\MonthsHelper;
 use Exception;
 use Document;
 use Pathway;
@@ -16,13 +22,14 @@ use Request;
 use Event;
 use Lang;
 
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php';
-
 /**
  * Usage controller class for results
  */
 class Results extends SiteController
 {
+
+	protected $monthsHelper;
+
 	/**
 	 * Execute a task
 	 *
@@ -31,6 +38,7 @@ class Results extends SiteController
 	public function execute()
 	{
 		$this->registerTask('__default', 'default');
+		$this->monthsHelper = new MonthsHelper();
 
 		parent::execute();
 	}
@@ -42,21 +50,8 @@ class Results extends SiteController
 	 */
 	public function defaultTask()
 	{
-		$months = array(
-			'01' => 'Jan',
-			'02' => 'Feb',
-			'03' => 'Mar',
-			'04' => 'Apr',
-			'05' => 'May',
-			'06' => 'Jun',
-			'07' => 'Jul',
-			'08' => 'Aug',
-			'09' => 'Sep',
-			'10' => 'Oct',
-			'11' => 'Nov',
-			'12' => 'Dec'
-		);
-		$monthsReverse = array_reverse($months, true);
+		$months = $this->monthsHelper->getAbbreviationMap();
+		$monthsReverse = $this->monthsHelper->getAbbreviationMapReversed();
 
 		// Incoming
 		$enddate = Request::getInt('selectedPeriod', 0, 'post');
