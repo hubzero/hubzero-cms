@@ -28,7 +28,7 @@ class BoostDocumentTypeMap
 
 	public function documentTypeToFieldData($documentType)
 	{
-		switch($documentType)
+		switch ($documentType)
 		{
 			case $this->getFormattedCitationType():
 				$field = 'hubtype';

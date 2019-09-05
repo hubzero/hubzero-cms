@@ -10,6 +10,9 @@ use Hubzero\Content\Migration\Base;
 // no direct access
 defined('_HZEXEC_') or die();
 
+/*
+ * Create solr_search_boosts table
+ */
 class Migration20190827163711ComSearchCreateBoostsTable extends Base
 {
 
