@@ -60,12 +60,9 @@ class Results extends SiteController
 
 		$areas = Event::trigger('usage.onUsageAreas');
 
-		if (is_array($areas))
+		if (is_array($areas) && (!$this->_task || $this->_task == 'default'))
 		{
-			if (!$this->_task || $this->_task == 'default')
-			{
-				$this->_task = (isset($areas[0]) && is_array($areas[0])) ? key($areas[0]) : 'overview';
-			}
+			$this->_task = (isset($areas[0]) && is_array($areas[0])) ? key($areas[0]) : 'overview';
 		}
 
 		$this->_task = ($this->_task) ? $this->_task : 'overview';
