@@ -58,18 +58,17 @@ class Results extends SiteController
 
 		$usageDbConnection = $this->connectToUsageDb();
 
-		// Trigger the functions that return the areas we'll be using
-		$this->view->cats = Event::trigger('usage.onUsageAreas');
+		$areas = Event::trigger('usage.onUsageAreas');
 
-		if (is_array($this->view->cats))
+		if (is_array($areas))
 		{
 			if (!$this->_task || $this->_task == 'default')
 			{
-				$this->_task = (isset($this->view->cats[0]) && is_array($this->view->cats[0])) ? key($this->view->cats[0]) : 'overview';
+				$this->_task = (isset($areas[0]) && is_array($areas[0])) ? key($areas[0]) : 'overview';
 			}
 		}
+
 		$this->_task = ($this->_task) ? $this->_task : 'overview';
-		$this->view->task = $this->_task;
 
 		// Set the pathway
 		if (Pathway::count() <= 0)
@@ -79,6 +78,7 @@ class Results extends SiteController
 				'index.php?option=' . $this->_option
 			);
 		}
+
 		if ($this->_task)
 		{
 			Pathway::append(
@@ -97,15 +97,14 @@ class Results extends SiteController
 				$endDate
 		]);
 
-		// Build the page title
+		$this->view->cats = $areas;
+		$this->view->task = $this->_task;
 		$this->view->title  = Lang::txt(strtoupper($this->_option));
 		$this->view->title .= ($this->_task) ? ': ' . Lang::txt('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)) : '';
 		$this->view->no_html = $noHtml;
 
-		// Set the page title
 		Document::setTitle($this->view->title);
 
-		// Output HTML
 		$this->view
 			->setLayout('default')
 			->setErrors($this->getErrors())
