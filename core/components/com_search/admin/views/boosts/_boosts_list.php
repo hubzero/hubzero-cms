@@ -9,12 +9,16 @@
 defined('_HZEXEC_') or die();
 
 $boosts = $this->boosts;
+$sortField = $this->sortField;
+$sortDirection = $this->sortDirection;
 ?>
 
 <table class="adminlist">
 
 	<?php
 		$this->view('_boosts_list_header')
+			->set('sortField', $sortField)
+			->set('sortDirection', $sortDirection)
 			->display();
 	?>
 
@@ -30,4 +34,12 @@ $boosts = $this->boosts;
 			endforeach;
 		?>
 	</tbody>
+
+	<tfoot>
+		<tr>
+			<td colspan="9">
+				<?php	echo $boosts->pagination ?>
+			</td>
+		</tr>
+	</tfoot>
 </table>

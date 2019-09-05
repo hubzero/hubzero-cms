@@ -44,10 +44,26 @@ class Boosts extends AdminController
 
 	public function listTask()
 	{
-		$boosts = Boost::all();
+		$sortField = Request::getState(
+			"$this->_option.$this->_controller.sort",
+			'filter_order',
+			'id'
+		);
+		$sortDirection = Request::getState(
+			"$this->_option.$this->_controller.sortdir",
+			'filter_order_Dir',
+			'ASC'
+		);
+
+		$boosts = Boost::all()
+			->order($sortField, $sortDirection)
+			->paginated('limitstart', 'limit')
+			->rows();
 
 		$this->view
 			->set('boosts', $boosts)
+			->set('sortField', $sortField)
+			->set('sortDirection', $sortDirection)
 			->display();
 	}
 
