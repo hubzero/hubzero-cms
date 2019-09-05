@@ -55,8 +55,9 @@ class Results extends SiteController
 		$areas = Event::trigger('usage.onUsageAreas');
 
 		$this->setTaskWhenDefaultTask();
-
 		$this->setPathwayWhenDefaultTask();
+
+		$viewTitle = $this->generateViewTitleWhenDefaultTask();
 
 		$sections = $this->getSectionsWhenDefaultTask();
 
@@ -64,10 +65,9 @@ class Results extends SiteController
 		$this->view->no_html = $noHtml;
 		$this->view->sections = $sections;
 		$this->view->task = $this->_task;
-		$this->view->title  = Lang::txt(strtoupper($this->_option));
-		$this->view->title .= ($this->_task) ? ': ' . Lang::txt('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)) : '';
+		$this->view->title  = $viewTitle;
 
-		Document::setTitle($this->view->title);
+		Document::setTitle($viewTitle);
 
 		$this->view
 			->setLayout('default')
@@ -134,6 +134,22 @@ class Results extends SiteController
 		{
 			Pathway::append(...$element);
 		}
+	}
+
+
+	protected function generateViewTitleWhenDefaultTask()
+	{
+		$componentName = strtoupper($this->_name);
+		$task = strtoupper($this->_task);
+		$usageTabTitle = Lang::txt("PLG_{$componentName}_{$task}");
+		$title = Lang::txt(strtoupper($this->_option));
+
+		if ($this->_task)
+		{
+			$title .=  ": $usageTabTitle";
+		}
+
+		return $title;
 	}
 
 	protected function getSectionsWhenDefaultTask()
