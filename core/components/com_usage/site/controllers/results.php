@@ -50,15 +50,15 @@ class Results extends SiteController
 	 */
 	public function defaultTask()
 	{
+		// functions must execute in the given order
 		$noHtml = Request::getInt('no_html', 0);
 
-		$areas = Event::trigger('usage.onUsageAreas');
+		$areas = $this->getAreasWhenDefaultTask();
 
 		$this->setTaskWhenDefaultTask();
 		$this->setPathwayWhenDefaultTask();
 
 		$viewTitle = $this->generateViewTitleWhenDefaultTask();
-
 		$sections = $this->getSectionsWhenDefaultTask();
 
 		$this->view->cats = $areas;
@@ -75,16 +75,9 @@ class Results extends SiteController
 			->display();
 	}
 
-	protected function connectToUsageDb()
+	protected function getAreasWhenDefaultTask()
 	{
-		$usageDbConnection = Helper::getUDBO();
-
-		if (!is_object($usageDbConnection))
-		{
-			throw new Exception(Lang::txt('COM_USAGE_ERROR_CONNECTING_TO_DATABASE'), 500);
-		}
-
-		return $usageDbConnection;
+		return Event::trigger('usage.onUsageAreas');
 	}
 
 	protected function setTaskWhenDefaultTask()
@@ -120,7 +113,7 @@ class Results extends SiteController
 		if ($this->_task)
 		{
 			$pathwayElements[] = [
-				Lang::txt('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)),
+				$this->generateUsageTabTitleWhenDefaultTask(),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			];
 		}
@@ -136,20 +129,27 @@ class Results extends SiteController
 		}
 	}
 
-
 	protected function generateViewTitleWhenDefaultTask()
 	{
-		$componentName = strtoupper($this->_name);
-		$task = strtoupper($this->_task);
-		$usageTabTitle = Lang::txt("PLG_{$componentName}_{$task}");
 		$title = Lang::txt(strtoupper($this->_option));
 
 		if ($this->_task)
 		{
+			$usageTabTitle = $this->generateUsageTabTitleWhenDefaultTask();
 			$title .=  ": $usageTabTitle";
 		}
 
 		return $title;
+	}
+
+	protected function generateUsageTabTitleWhenDefaultTask()
+	{
+		$componentName = strtoupper($this->_name);
+		$task = strtoupper($this->_task);
+
+		$usageTabTitle = Lang::txt("PLG_{$componentName}_{$task}");
+
+		return $usageTabTitle;
 	}
 
 	protected function getSectionsWhenDefaultTask()
@@ -169,6 +169,18 @@ class Results extends SiteController
 		]);
 
 		return $sections;
+	}
+
+	protected function connectToUsageDb()
+	{
+		$usageDbConnection = Helper::getUDBO();
+
+		if (!is_object($usageDbConnection))
+		{
+			throw new Exception(Lang::txt('COM_USAGE_ERROR_CONNECTING_TO_DATABASE'), 500);
+		}
+
+		return $usageDbConnection;
 	}
 
 }
