@@ -62,22 +62,7 @@ class Results extends SiteController
 
 		$this->setTaskWhenDefaultTask();
 
-		// Set the pathway
-		if (Pathway::count() <= 0)
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_option)),
-				'index.php?option=' . $this->_option
-			);
-		}
-
-		if ($this->_task)
-		{
-			Pathway::append(
-				Lang::txt('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)),
-				'index.php?option=' . $this->_option . '&task=' . $this->_task
-			);
-		}
+		$this->setPathwayWhenDefaultTask();
 
 		// Get the sections
 		$this->view->sections = Event::trigger('usage.onUsageDisplay', [
@@ -124,6 +109,44 @@ class Results extends SiteController
 		}
 
 		$this->_task = ($this->_task) ? $this->_task : 'overview';
+	}
+
+	protected function setPathwayWhenDefaultTask()
+	{
+		$pathwayElements = $this->getPathwayElementsWhenDefaultTask();
+
+		$this->setPathwayElements($pathwayElements);
+	}
+
+	protected function getPathwayElementsWhenDefaultTask()
+	{
+		$pathwayElements = [];
+
+		if (Pathway::count() <= 0)
+		{
+			$pathwayElements[] = [
+				Lang::txt(strtoupper($this->_option)),
+				'index.php?option=' . $this->_option
+			];
+		}
+
+		if ($this->_task)
+		{
+			$pathwayElements[] = [
+				Lang::txt('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)),
+				'index.php?option=' . $this->_option . '&task=' . $this->_task
+			];
+		}
+
+		return $pathwayElements;
+	}
+
+	protected function setPathwayElements($pathwayElements)
+	{
+		foreach ($pathwayElements as $element)
+		{
+			Pathway::append(...$element);
+		}
 	}
 
 }
