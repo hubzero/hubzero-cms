@@ -53,8 +53,8 @@ class Results extends SiteController
 		$months = $this->monthsHelper->getAbbreviationMap();
 		$monthsReverse = $this->monthsHelper->getAbbreviationMapReversed();
 
-		// Incoming
-		$enddate = Request::getInt('selectedPeriod', 0, 'post');
+		$endDate = Request::getInt('selectedPeriod', 0, 'post');
+		$noHtml = Request::getInt('no_html', 0);
 
 		// Establish a connection to the usage database
 		$udb = Helper::getUDBO();
@@ -62,8 +62,6 @@ class Results extends SiteController
 		{
 			throw new Exception(Lang::txt('COM_USAGE_ERROR_CONNECTING_TO_DATABASE'), 500);
 		}
-
-		$this->view->no_html = Request::getInt('no_html', 0);
 
 		// Trigger the functions that return the areas we'll be using
 		$this->view->cats = Event::trigger('usage.onUsageAreas');
@@ -101,13 +99,14 @@ class Results extends SiteController
 				$udb,
 				$months,
 				$monthsReverse,
-				$enddate
+				$endDate
 			)
 		);
 
 		// Build the page title
 		$this->view->title  = Lang::txt(strtoupper($this->_option));
 		$this->view->title .= ($this->_task) ? ': ' . Lang::txt('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)) : '';
+		$this->view->no_html = $noHtml;
 
 		// Set the page title
 		Document::setTitle($this->view->title);
