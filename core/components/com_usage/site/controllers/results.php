@@ -42,8 +42,6 @@ class Results extends SiteController
 	 */
 	public function defaultTask()
 	{
-		// Set some common variables
-		$thisyear = date("Y");
 		$months = array(
 			'01' => 'Jan',
 			'02' => 'Feb',
