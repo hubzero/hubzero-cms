@@ -50,13 +50,7 @@ class Results extends SiteController
 	 */
 	public function defaultTask()
 	{
-		$months = $this->monthsHelper->getAbbreviationMap();
-		$monthsReverse = $this->monthsHelper->getAbbreviationMapReversed();
-
-		$endDate = Request::getInt('selectedPeriod', 0, 'post');
 		$noHtml = Request::getInt('no_html', 0);
-
-		$usageDbConnection = $this->connectToUsageDb();
 
 		$areas = Event::trigger('usage.onUsageAreas');
 
@@ -64,21 +58,14 @@ class Results extends SiteController
 
 		$this->setPathwayWhenDefaultTask();
 
-		// Get the sections
-		$this->view->sections = Event::trigger('usage.onUsageDisplay', [
-				$this->_option,
-				$this->_task,
-				$usageDbConnection,
-				$months,
-				$monthsReverse,
-				$endDate
-		]);
+		$sections = $this->getSectionsWhenDefaultTask();
 
 		$this->view->cats = $areas;
+		$this->view->no_html = $noHtml;
+		$this->view->sections = $sections;
 		$this->view->task = $this->_task;
 		$this->view->title  = Lang::txt(strtoupper($this->_option));
 		$this->view->title .= ($this->_task) ? ': ' . Lang::txt('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)) : '';
-		$this->view->no_html = $noHtml;
 
 		Document::setTitle($this->view->title);
 
@@ -147,6 +134,25 @@ class Results extends SiteController
 		{
 			Pathway::append(...$element);
 		}
+	}
+
+	protected function getSectionsWhenDefaultTask()
+	{
+		$endDate = Request::getInt('selectedPeriod', 0, 'post');
+		$months = $this->monthsHelper->getAbbreviationMap();
+		$monthsReverse = $this->monthsHelper->getAbbreviationMapReversed();
+		$usageDbConnection = $this->connectToUsageDb();
+
+		$sections = Event::trigger('usage.onUsageDisplay', [
+				$this->_option,
+				$this->_task,
+				$usageDbConnection,
+				$months,
+				$monthsReverse,
+				$endDate
+		]);
+
+		return $sections;
 	}
 
 }
