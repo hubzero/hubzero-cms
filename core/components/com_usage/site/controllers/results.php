@@ -60,12 +60,7 @@ class Results extends SiteController
 
 		$areas = Event::trigger('usage.onUsageAreas');
 
-		if (is_array($areas) && (!$this->_task || $this->_task == 'default'))
-		{
-			$this->_task = (isset($areas[0]) && is_array($areas[0])) ? key($areas[0]) : 'overview';
-		}
-
-		$this->_task = ($this->_task) ? $this->_task : 'overview';
+		$this->setTaskWhenDefaultTask();
 
 		// Set the pathway
 		if (Pathway::count() <= 0)
@@ -118,6 +113,17 @@ class Results extends SiteController
 		}
 
 		return $usageDbConnection;
+	}
+
+	protected function setTaskWhenDefaultTask()
+	{
+		if (is_array($areas) && (!$this->_task || $this->_task == 'default'))
+		{
+			$areasFirstEntryIsArray = isset($areas[0]) && is_array($areas[0]);
+			$this->_task = ($areasFirstEntryIsArray ) ? key($areas[0]) : 'overview';
+		}
+
+		$this->_task = ($this->_task) ? $this->_task : 'overview';
 	}
 
 }
