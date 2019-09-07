@@ -151,21 +151,9 @@ class Tags extends Base
 	 */
 	public function transferData($manifest, $pub, $oldVersion, $newVersion)
 	{
-		$tagsHelper = new \Components\Publications\Helpers\Tags($this->_parent->_db);
-		$tags = $tagsHelper->getTags($oldVersion->id);
-		
-		// Build tags string
-		$tagstr = '';
-		$i = 0;
-		foreach($tags as $tagid => $tagobj)
-		{
-			$i++;
-			$tagstr .= trim($tagobj->tag);
-			$tagstr .= $i == count($tags) ? '' : ',';
-		}
-
-		// Add tags
-		$tagsHelper->tag_object(User::get('id'), $newVersion->id, $tagstr, 1);
+		$tagsHelper = new \Components\Publications\Helpers\Tags($this->_parent->_db);		
+		$tags = $tagsHelper->get_tag_string($oldVersion->id);
+		$tagsHelper->tag_object(User::get('id'), $newVersion->id, $tags, 1);
 		
 		return true;
 	}

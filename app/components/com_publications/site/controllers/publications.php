@@ -1616,9 +1616,9 @@ class Publications extends SiteController
 		include_once dirname(dirname(__DIR__))  . DS . 'helpers' . DS . 'tags.php';
 
 		$rt = new Helpers\Tags($this->database);
-		if ($tags = $rt->get_tag_string($pub_id))
+		if ($tags = $rt->get_tag_string($vid))
 		{
-			$rt->tag_object(User::get('id'), $version->get('publication_id'), $tags, 1);
+			$rt->tag_object(User::get('id'), $version->get('id'), $tags, 1);
 		}
 
 		// Copy citations
