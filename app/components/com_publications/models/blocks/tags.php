@@ -30,7 +30,7 @@ class Tags extends Base
 	 *
 	 * @var  string
 	 */
-	protected $_parentname = null;
+	protected $_parentname = 'tags';
 
 	/**
 	 * Default manifest
@@ -138,6 +138,36 @@ class Tags extends Base
 			$view->setError($this->getError());
 		}
 		return $view->loadTemplate();
+	}
+
+	/**
+	 * Transfer data from one version to another
+	 *
+	 * @param   object   $manifest
+	 * @param   object   $pub
+	 * @param   object   $oldVersion
+	 * @param   object   $newVersion
+	 * @return  boolean
+	 */
+	public function transferData($manifest, $pub, $oldVersion, $newVersion)
+	{
+		$tagsHelper = new \Components\Publications\Helpers\Tags($this->_parent->_db);
+		$tags = $tagsHelper->getTags($oldVersion->id);
+		
+		// Build tags string
+		$tagstr = '';
+		$i = 0;
+		foreach($tags as $tagid => $tagobj)
+		{
+			$i++;
+			$tagstr .= trim($tagobj->tag);
+			$tagstr .= $i == count($tags) ? '' : ',';
+		}
+
+		// Add tags
+		$tagsHelper->tag_object(User::get('id'), $newVersion->id, $tagstr, 1);
+		
+		return true;
 	}
 
 	/**

@@ -2567,7 +2567,7 @@ class Curation extends Obj
 		{
 			$parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
 
-			if (in_array($parentBlock, array('content', 'authors')))
+			if (in_array($parentBlock, array('content', 'authors', 'tags')))
 			{
 				$blocksModel->transferData($parentBlock, $block->manifest, $pub, $old, $new);
 			}

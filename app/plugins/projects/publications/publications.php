@@ -1762,7 +1762,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 * @return     string
 	 */
 	public function newVersion()
-	{
+	{		
 		// Incoming
 		$pid   = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
 		$ajax  = Request::getInt('ajax', 0);
@@ -2620,6 +2620,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$pa = new \Components\Publications\Tables\Author($this->_database);
 					$authors = $pa->deleteAssociations($vid);
 
+					// Delete $tags 
+					$tagsHelper = new \Components\Publications\Helpers\Tags($this->_database);
+					$tagsHelper->remove_all_tags($vid);
+					
 					// Delete attachments
 					$pContent = new \Components\Publications\Tables\Attachment($this->_database);
 					$pContent->deleteAttachments($vid);
