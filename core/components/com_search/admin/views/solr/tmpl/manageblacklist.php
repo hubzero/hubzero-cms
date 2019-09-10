@@ -12,22 +12,11 @@ Toolbar::title(Lang::txt('Solr Search: Index Blacklist'));
 Toolbar::preferences($this->option, '550');
 $this->css('solr');
 $option = $this->option;
-
-Submenu::addEntry(
-	Lang::txt('Overview'),
-	'index.php?option='.$option.'&task=configure'
-);
-Submenu::addEntry(
-	Lang::txt('Searchable Components'),
-	'index.php?option='.$option.'&task=display&controller=searchable'
-);
-Submenu::addEntry(
-	Lang::txt('Index Blacklist'),
-	'index.php?option='.$option.'&task=manageBlacklist',
-	true
-);
 $header = clone $this->blacklist;
 $header = $header->toArray();
+
+$this->view('_submenu', 'shared')
+	->display();
 ?>
 
 <?php if (($this->blacklist->count() > 0)): ?>
@@ -63,4 +52,4 @@ $header = $header->toArray();
 	</table>
 <?php else: ?>
 	<div class="warning message"><?php echo Lang::txt('COM_SEARCH_NO_BLACKLIST_ENTRIES'); ?></div>
-<?php endif; 
+<?php endif;
