@@ -196,10 +196,22 @@ class Objct extends Relational
 
 		foreach ($items as $item)
 		{
-			$item->set('tagid', $newtagid);
-			$item->save();
-
-			$entries[] = $item->toArray();
+			// Find if there is already a database row with the same object and tag. Delete the item then.
+			$duplicates = self::all()
+				->whereEquals('tbl', $item->get('tbl'))
+				->whereEquals('tagid', $newtagid)
+				->whereEquals('objectid', $item->get('objectid'))
+				->rows();
+			if ($duplicates->count())
+			{
+				$item->destroy();
+			}
+			else
+			{
+				$item->set('tagid', $newtagid);
+				$item->save();
+				$entries[] = $item->toArray();
+			}
 		}
 
 		$data = new stdClass;
