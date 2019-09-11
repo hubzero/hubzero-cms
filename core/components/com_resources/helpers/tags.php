@@ -65,7 +65,7 @@ class Tags extends Cloud
 				FROM `#__tags` AS t, `#__tags_object` AS o, `#__resources` AS r
 				WHERE o.tbl=" . $this->_db->quote($this->_scope) . "
 				AND o.tagid=t.id
-				AND t.admin=0
+				AND t.admin <> 1 
 				AND o.objectid=r.id
 				AND r.published=1
 				AND r.standalone=1
