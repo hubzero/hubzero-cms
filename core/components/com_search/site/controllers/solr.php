@@ -7,7 +7,19 @@
 
 namespace Components\Search\Site\Controllers;
 
+$componentPath = Component::path('com_search');
+$resourcesPath = Component::path('com_resources');
+$tagsPath = Component::path('com_tags');
+
+require_once "$componentPath/models/solr/facet.php";
+require_once "$componentPath/models/solr/searchcomponent.php";
+require_once "$componentPath/helpers/boostQueryHelper.php";
+require_once "$componentPath/helpers/urlqueryhelper.php";
+require_once "$resourcesPath/models/entry.php";
+require_once "$tagsPath/models/tag.php";
+
 use Hubzero\Component\SiteController;
+use Components\Search\Helpers\BoostQueryHelper;
 use Components\Search\Models\Solr\Facet;
 use Components\Search\Models\Solr\SearchComponent;
 use Components\Tags\Models\Tag as Tag;
@@ -19,12 +31,6 @@ use Config;
 use Lang;
 use stdClass;
 use Components\Resources\Models\Entry;
-
-require_once \Component::path('com_search') . '/models/solr/facet.php';
-require_once \Component::path('com_search') . '/models/solr/searchcomponent.php';
-require_once \Component::path('com_search') . '/helpers/urlqueryhelper.php';
-require_once \Component::path('com_resources') . '/models/entry.php';
-require_once \Component::path('com_tags') . '/models/tag.php';
 
 /**
  * Search controller class
@@ -41,6 +47,7 @@ class Solr extends SiteController
 	{
 		$config = Component::params('com_search');
 		$query = new \Hubzero\Search\Query($config);
+		$boostQueryHelper = new BoostQueryHelper();
 
 		$childTerms = Request::getArray('childTerms', array());
 		$terms = Request::getString('terms', '');
@@ -181,6 +188,11 @@ class Solr extends SiteController
 		$urlQuery .= '&limit=' . $limit;
 		$urlQuery .= '&start=' . $start;
 
+		$boostQueries = $boostQueryHelper->getAllQueries();
+		$boostQueriesAsArray = $boostQueries->toArray();
+		$edismax = $query->adapter->query->getEDisMax();
+		$edismax->addBoostQueries($boostQueriesAsArray);
+
 		// Perform the query
 		try
 		{
@@ -301,7 +313,7 @@ class Solr extends SiteController
 			// Event for special formatting
 			$override = Event::trigger('search.onFormatResult', array($result['hubtype'], &$result, $terms, $highlightOptions));
 
-			// Only allow one override per result 
+			// Only allow one override per result
 			if (count($override) == 1)
 			{
 				$override = $override[0];
@@ -328,7 +340,7 @@ class Solr extends SiteController
 					}
 				}
 
-				// Do some filtering 
+				// Do some filtering
 				$snippet = str_replace("\n", '', $snippet);
 				$snippet = str_replace("\r", '', $snippet);
 				$snippet = str_replace("<br/>", '', $snippet);

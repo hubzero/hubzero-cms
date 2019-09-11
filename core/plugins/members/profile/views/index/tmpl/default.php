@@ -695,7 +695,7 @@ $legacy = array(
 						// If the type is a block of text, parse for macros
 						if ($field->get('type') == 'textarea')
 						{
-							$value = Html::content('prepare', $value);
+							$value = nl2br(Html::content('prepare', $value));
 						}
 						// IF the type is a URL, link it
 						if ($field->get('type') == 'url')

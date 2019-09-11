@@ -19,7 +19,7 @@ defined('_HZEXEC_') or die();
 		<p>or</p>
 		<div class="aux-attachments">
 			<form action="<?php echo Request::base(true); ?>/api/courses/asset/new" class="aux-attachments-form attach-link">
-				<label for"content" class="aux-attachments-content-label">Attach a link:</label>
+				<label for="content" class="aux-attachments-content-label">Attach a link:</label>
 				<textarea class="input-content" name="content" placeholder="" rows="5"></textarea>
 				<input class="input-type" type="hidden" name="type" value="link" />
 				<input class="aux-attachments-submit" type="submit" value="Add" />

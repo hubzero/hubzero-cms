@@ -21,19 +21,8 @@ $this->css();
 $this->js('searchable');
 $option = $this->option;
 
-Submenu::addEntry(
-	Lang::txt('Overview'),
-	'index.php?option='.$option.'&task=configure'
-);
-Submenu::addEntry(
-	Lang::txt('Searchable Components'),
-	'index.php?option='.$option.'&task=display&controller=searchable',
-	true
-);
-Submenu::addEntry(
-	Lang::txt('Index Blacklist'),
-	'index.php?option='.$option.'&task=manageBlacklist'
-);
+$this->view('_submenu', 'shared')
+	->display();
 
 $sort_dir = Request::getString('filter_order_Dir', 'asc');
 $sort = Request::getString('filter_order', 'id');
@@ -68,7 +57,7 @@ $sort = Request::getString('filter_order', 'id');
 					<?php echo '<a href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $component->get('id')) . '">' . $component->title . '</a>'; ?>
 				</td>
 				<td>
-					<?php 
+					<?php
 						if ($component->get('state') == $component::STATE_INDEXED)
 						{
 							$alt  = 'Indexed';
@@ -88,7 +77,7 @@ $sort = Request::getString('filter_order', 'id');
 					</a>
 				</td>
 				<td class="total">
-					<?php 
+					<?php
 						$componentName = $component->getQueryName();
 						$componentQuery = $component->getSearchQuery('hubtype');
 						$componentCount = !empty($this->componentCounts[$componentName]) ? $this->componentCounts[$componentName] : 0;

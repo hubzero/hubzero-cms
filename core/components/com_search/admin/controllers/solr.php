@@ -39,7 +39,7 @@ class Solr extends AdminController
 {
 	/**
 	 * Determine task and execute it
-	 * 
+	 *
 	 * @return void
 	 */
 	public function execute()
@@ -90,8 +90,8 @@ class Solr extends AdminController
 
 
 	/**
-	 * configure - Adds solr index user and creates json file 
-	 * 
+	 * configure - Adds solr index user and creates json file
+	 *
 	 * @return  void
 	 */
 	private function configure()
@@ -231,7 +231,7 @@ class Solr extends AdminController
 
 	/**
 	 * Manage blacklist
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function manageBlacklistTask()
@@ -242,7 +242,7 @@ class Solr extends AdminController
 
 	/**
 	 * Makes a database entry and removes from index
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function addToBlacklistTask()
@@ -279,7 +279,7 @@ class Solr extends AdminController
 
 	/**
 	 * Remove a blacklist entry
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function removeBlacklistEntryTask()
