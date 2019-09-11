@@ -432,7 +432,6 @@
 	#primary-document .caption {
 		font-size: 80%;
 		font-weight: normal;
-		color: #CCC;
 	}
 
 /* Resources listing */
@@ -450,7 +449,6 @@
 		margin: 0.2em 0;
 		padding: 0;
 		font-size: 90%;
-		color: #999;
 	}
 	.metadata p:before {
 		font-family: 'Fontcons';
@@ -818,7 +816,6 @@
 	#tagbrowser h3 {
 		padding: 0;
 		margin: 1em 0 0.5em 0;
-		color: #999;
 		font-size: 1.4em;
 		font-weight: bold;
 		display: block;
