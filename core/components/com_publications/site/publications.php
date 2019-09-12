@@ -8,19 +8,25 @@
 namespace Components\Publications\Site;
 
 // Include publication model
-require_once dirname(__DIR__) . DS . 'models' . DS . 'publication.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'logs.php';
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'usage.php';
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'resourceMapGenerator.php';
+$componentPath = Component::path('com_publications');
+$sitePath = "$componentPath/site";
 
-$view = \Request::getCmd('view', 'publications');
-$controllerName = \Request::getCmd('controller', $view);
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
+require_once "$componentPath/models/publication.php";
+require_once "$componentPath/tables/logs.php";
+require_once "$componentPath/helpers/usage.php";
+require_once "$componentPath/helpers/resourceMapGenerator.php";
+
+$view = Request::getCmd('view', 'publications');
+$controllerName = Request::getCmd('controller', $view);
+$task = Request::getCmd('task', $view);
+
+if (!file_exists("$sitePath/controllers/$controllerName.php"))
 {
 	$controllerName = 'publications';
-	\Request::setVar('task', \Request::getCmd('task', $view));
+	Request::setVar('task', $task);
 }
-require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
+
+require_once "$sitePath/controllers/$controllerName.php";
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
