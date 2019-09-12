@@ -102,6 +102,7 @@ class Publication extends Table
 	{
 		$now = Date::toSql();
 		$groupby = '';
+
 		if (!isset($filters['all_versions']) || !$filters['all_versions'])
 		{
 			$groupby = ' GROUP BY C.id ';
@@ -114,10 +115,10 @@ class Publication extends Table
 		$featured = isset($filters['featured']) && $filters['featured'] ? 1 : 0;
 		$sortby   = isset($filters['sortby']) ? $filters['sortby'] : 'title';
 
-		$query  = " FROM 
+		$query  = " FROM
 					#__publication_versions V
 					LEFT JOIN $this->_tbl C ON V.publication_id = C.id
-					LEFT JOIN #__projects PP ON PP.id = C.project_id 
+					LEFT JOIN #__projects PP ON PP.id = C.project_id
 					LEFT JOIN #__publication_master_types MT ON MT.id = C.master_type
 					LEFT JOIN #__publication_categories AS t ON t.id = C.category
 					";
