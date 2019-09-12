@@ -284,6 +284,7 @@ class Publication extends Table
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
+				$componentParams = Component::params('com_publications');
 				$words = array();
 				$ws = explode(' ', $filters['search']);
 				foreach ($ws as $w)
@@ -300,6 +301,12 @@ class Publication extends Table
 
 				$query .= " AND ((MATCH(V.title) AGAINST ('+$text -\"$text2\"') > 0) OR"
 						 . " (MATCH(V.abstract,V.description) AGAINST ('+$text -\"$text2\"') > 0)) ";
+
+				if ($componentParams->get('include_author_name_in_search'))
+				{
+					$query .= " OR (V.id in (SELECT publication_version_id"
+						.	" from jos_publication_authors as A where lower(A.name) like '%$text%'))";
+				}
 		}
 
 		// Do not show deleted
