@@ -304,7 +304,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 															}
 															else if ($a->get('type') == 'file' || $a->get('type') == 'url')
 															{
-																$target = ' rel="nofollow" target="_blank"';
+																$target = ' rel="noopener noreferrer" target="_blank"';
 															}
 
 															$link = '<a class="' . $cls . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a>';
@@ -452,7 +452,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 														}
 														else if ($a->get('type') == 'file' || $a->get('type') == 'url' || $a->get('type') == 'tool')
 														{
-															$target = ' rel="nofollow" target="_blank"';
+															$target = ' rel="noopener noreferrer" target="_blank"';
 														}
 														echo '<li><a class="asset-primary ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 													}
@@ -496,7 +496,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 										}
 										else if ($a->get('type') == 'file' || $a->get('type') == 'url')
 										{
-											$target = ' rel="nofollow" target="_blank"';
+											$target = ' rel="noopener noreferrer" target="_blank"';
 										}
 										echo '<li><a class="asset ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 										$k++;
