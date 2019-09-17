@@ -47,9 +47,10 @@ defined('_HZEXEC_') or die();
 		{
 			case 1:
 				$class = ' class=" admin"';
+				break;
 			case 2:
 				$class = ' class=" core"';
-			break;
+				break;
 		}
 
 		if ($this->config->get('show_sizes', 0) == 2)
@@ -68,11 +69,12 @@ defined('_HZEXEC_') or die();
 			$link_class = '';
 			switch ($tag->get('admin'))
 			{
-				   case 1:
-					   $link_class = ' admin';
-				   case 2:
-					   $link_class = ' core';
-				   break;
+				case 1:
+					$link_class = ' admin';
+					break;
+				case 2:
+					$link_class = ' core';
+					break;
 			}
 			$tll[$tag->get('tag')] .= '<a class="tag' . $link_class . '" href="' . Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag')));
 			if ($this->config->get('show_tag_count', 0))
