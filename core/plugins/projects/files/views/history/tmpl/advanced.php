@@ -125,7 +125,7 @@ if ($this->getError()) {
 					if ($this->connected && $last == true)
 					{
 						$action  = '<a href="' . $url . '" class="open_file" title="'
-							. Lang::txt('PLG_PROJECTS_FILES_REMOTE_OPEN') . '" target="_blank" rel="nofollow external">&nbsp;</a>';
+							. Lang::txt('PLG_PROJECTS_FILES_REMOTE_OPEN') . '" target="_blank" rel="noopener noreferrer external">&nbsp;</a>';
 					}
 					else
 					{
