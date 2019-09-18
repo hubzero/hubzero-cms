@@ -664,7 +664,9 @@ HUB.Plugins.CoursesForum = {
 					thread.hide();
 					thread.get(0).innerHTML = data.thread.html;
 					thread.find('script').each(function(){
-						eval($(this).html());
+						if($(this).attr('type') == 'text/javascript') {
+							eval($(this).html());
+						}
 					});
 					thread.fadeIn();
 
