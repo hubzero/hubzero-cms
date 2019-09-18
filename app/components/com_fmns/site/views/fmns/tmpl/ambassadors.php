@@ -16,38 +16,72 @@ Pathway::append(
 <div class="intro">
 <h2>QUBES Ambassadors</h2>
 
-<p>Are you interested in sharing what you learned in your QUBES FMN with a wider audience? Are you interested in spreading the word about QUBES to new possible participants? Become a QUBES Ambassador!</p>
+<p>Are you interested in sharing what you learned in an FMN with your colleagues? Are you interested in spreading the word about QUBES resources? Become a QUBES Ambassador!</p>
 </div>
 </header>
 
 <div class="ambassador">
-<p>QUBES Ambassadors are an integral part of promoting professional development opportunities available through QUBES to new audiences. As a QUBES Ambassador, you will present and share information on the Faculty Mentoring Network (FMN) in which you participated. In doing so, you will recruit colleagues to participate in an FMN and/or the QUBES community as a whole, ensure the continued enhancement of their own teaching practices, and share the resources you have created during your FMN.</p>
+<p>QUBES Ambassadors are an integral part of promoting opportunities available through QUBES to new audiences. As a QUBES Ambassador, you will share information about your experience with QUBES to invite your colleagues to participate in the QUBES community. For example, you could share your experience participating in or leading a Faculty Mentoring Network (FMN) professional development experience.</p>
 
-<p>The QUBES Ambassadors program represents formal recognition of your service within the QUBES community and in addition to receiving funding to assist in extending the reach of QUBES, this award may be listed on your CV or tenure and promotion documentations.</p>
+<p>The QUBES Ambassadors are formally recognized for their service within the QUBES community, and we encourage Ambassadors to include this award on their CV and within tenure and promotion documentation. QUBES may be able to provide financial support for Ambassadors to assist in extending the reach of QUBES.</p>
 </div>
 
 <div class="participate-wrapper">
-<div class="big">&nbsp;</div>
+	<div class="big">&nbsp;</div>
 
-<div class="participate">
-<p>There are many ways that you can pursue a QUBES Ambassadorship. Here are a few examples, though these are not the only options.</p>
+	<div class="participate">
+		<p>There are many ways that you can pursue a QUBES Ambassadorship. Here are a few examples, though these are not the only options.</p>
 
-<ul>
-	<li>Present at a discipline-specific conference (ESA, BSA, SVP, ASBMB) mini-grant for registration (up to $250)</li>
-	<li>Present at an education conference (NABT, local science teacher conference) mini-grant for registration (up to $250)</li>
-	<li>Present a local workshop for colleagues</li>
-	<li>Present a local workshop for postdoctoral researchers and graduate students</li>
-	<li>Present a local workshop for K-12 teachers</li>
-	<li>Help defer costs of publications</li>
-</ul>
+		<ul>
+			<li>Present at a professional scientific or educational conference within your discipline or beyond</li>
+			<li>Present a local workshop for faculty colleagues</li>
+			<li>Present a local workshop for postdoctoral researchers and graduate students</li>
+			<li>Present a local workshop for K-12 teachers</li>
+			<li>Help defer costs of publications</li>
+		</ul>
 
-<p>Have another idea? For more information and with any questions, Contact QUBES!</p>
+		<p>Have another idea? For more information and with any questions, Contact QUBES!</p>
 
-<p class="center"><span class="helpme link"><a href="/support/">Contact Us</a></span></p>
+		<p class="center"><span class="helpme link"><a href="/support/">Contact Us</a></span></p>
+	</div>
 </div>
+
+<div class="current">
+	<h2>Current and Former QUBES Ambassadors</h2>
+	<p><a href="https://qubeshub.org/community/groups/ambassadors/updates">See all updates and presentation materials!</a> Check out the <a href="https://qubeshub.org/community/groups/ambassadors/blog">ambassador blog</a>!</p>
+
+	<div class="current-ambassador-wrap">
+		<div class="current-ambassador">
+			<img src="https://qubeshub.org/files/MTRjZGIzZDFkMzI4NjdhNjg4ZDFjM2E4OGFiYzIyMDMxM2VkYWMzMTk3OThiODFkYTUwNTIwNTEwNTQwMzU1Mjovd3d3L3F1YmVzL2FwcC9zaXRlL21lbWJlcnMvMDY4NzkvcHJvZmlsZS5wbmc=" alt="Image of Maryann Herman">
+			<div>
+				<a href="https://qubeshub.org/community/members/6879">Maryann Hermann</a><br>
+				St. John Fisher College
+			</div>
+		</div>
+
+		<div class="current-ambassador">
+			<img src="https://qubeshub.org/files/MTRjZGIzZDFkMzI4NjdhNjg4ZDFjM2E4OGFiYzIyMDMxM2VkYWMzMTk3OThiODFkYTUwNTIwNTEwNTQwMzU1Mjovd3d3L3F1YmVzL2FwcC9zaXRlL21lbWJlcnMvMDMxNjMvcHJvZmlsZS5wbmc=" alt="Image of Megan Jones">
+			<div>
+				<a href="https://qubeshub.org/community/members/3163">Megan Jones</a><br>
+				NEON
+			</div>
+		</div>
+
+		<div class="current-ambassador">
+			<img src="https://qubeshub.org/files/MTRjZGIzZDFkMzI4NjdhNjg4ZDFjM2E4OGFiYzIyMDMxM2VkYWMzMTk3OThiODFkYTUwNTIwNTEwNTQwMzU1Mjovd3d3L3F1YmVzL2FwcC9zaXRlL21lbWJlcnMvMDU5NzIvcHJvZmlsZS5wbmc=" alt="Image of Rachel Hartnett">
+			<div>
+				<a href="https://qubeshub.org/community/members/5972">Rachel Hartnett</a><br>
+				University of Oklahoma
+			</div>
+		</div>
+
+		<div class="current-ambassador">
+			<img src="https://qubeshub.org/files/MTRjZGIzZDFkMzI4NjdhNjg4ZDFjM2E4OGFiYzIyMDMxM2VkYWMzMTk3OThiODFkYTUwNTIwNTEwNTQwMzU1Mjovd3d3L3F1YmVzL2FwcC9zaXRlL21lbWJlcnMvMDY5OTEvcHJvZmlsZS5wbmc=" alt="Image of Kusum Naithani">
+			<div>
+				<a href="https://qubeshub.org/community/members/6991">Kusum Naithani</a><br>
+				University of Arkansas
+			</div>
+		</div>
+	</div>
 </div>
-
-<!-- <div class="apply">
-
-</div> -->
 </main>

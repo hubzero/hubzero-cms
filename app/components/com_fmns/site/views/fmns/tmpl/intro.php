@@ -134,8 +134,8 @@ Pathway::append(
     <h2 id="bridge">Become a Mentor or Ambassador</h2>
     <div class="bridge-wrapper">
       <div class="bridge-wrap">
-        <h4>Mentor Bridge Program</h4>
-        <p class="bridge-text">Do you have a quantitative biology education project or classroom materials that other faculty would find valuable? The QUBES Faculty Mentoring Fellows Program recognizes emerging and established leaders in quantitative biology education, and provides support to help disseminate their work. Are you interested in working with faculty from around the country to discover, adopt, adapt, and implement your project or classroom materials? If so, contact us!</p>
+        <h4>Mentor Program</h4>
+        <p class="bridge-text">Do you have a quantitative biology education project or classroom materials that other faculty would find valuable? Are you interested in working with faculty from around the country to discover, adopt, adapt, and implement your project or classroom materials?</p>
         <span class="helpme"><a class="link" href="/support/">Contact Us</a></span>
         <!-- <div class="participant-wrap">
           <div class="participant">

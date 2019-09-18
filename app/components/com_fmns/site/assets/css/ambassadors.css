@@ -255,3 +255,32 @@ span.link a::after {
 .center {
   text-align: center;
 }
+
+.current {
+  grid-column: 1/span 4;
+  padding: 2.5em;
+}
+
+.current-ambassador-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.current-ambassador {
+  margin: 1em 1.5em;
+  width: 9rem;
+}
+
+.current-ambassador img {
+  border-radius: 100%;
+  height: 9rem;
+  margin-bottom: .5em;
+  object-fit: cover;
+  width: 9rem;
+}
+
+.current-ambassador p {
+  margin: 0;
+  text-align: left;
+}
