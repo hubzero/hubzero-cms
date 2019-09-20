@@ -905,12 +905,14 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		else
 		{
 			$ch = curl_init($url);
+			$userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36';
+
 			$options = array(
 				CURLOPT_RETURNTRANSFER => true,     // return web page
 				CURLOPT_HEADER         => false,    // don't return headers
 				CURLOPT_FOLLOWLOCATION => true,     // follow redirects
 				CURLOPT_ENCODING       => '',       // handle all encodings
-				CURLOPT_USERAGENT      => '',       // who am i
+				CURLOPT_USERAGENT      => $userAgent,       // who am i
 				CURLOPT_AUTOREFERER    => true,     // set referer on redirect
 				CURLOPT_CONNECTTIMEOUT => 5,        // timeout on connect
 				CURLOPT_TIMEOUT        => 5,        // timeout on response
