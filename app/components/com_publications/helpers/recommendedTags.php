@@ -412,7 +412,7 @@ class RecommendedTags extends \Hubzero\Base\Obj
 				$this->_db->setQuery(
 					'SELECT t2.raw_tag AS fa, t2.id AS label_id, t.id
 					FROM `#__tags` t
-					INNER JOIN `#__tags_object` to1 ON to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.objectid = t.id
+					INNER JOIN `#__tags_object` to1 ON to1.tbl = \'tags\' AND to1.label IN (\'label\', \'parent\') AND to1.objectid = t.id
 					INNER JOIN `#__tags` t2 ON t2.id = to1.tagid
 					INNER JOIN `#__focus_areas` fa ON fa.tag_id = to1.tagid
 					WHERE t.tag = ' . $this->_db->quote($norm_tag)
