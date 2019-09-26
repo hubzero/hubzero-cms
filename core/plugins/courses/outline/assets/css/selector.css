@@ -73,6 +73,9 @@
 		max-height: 300px;
 		overflow: auto;
 	}
+	.file-type {
+		font-size: 1em;
+	}
 	.content-selector {
 		margin: 1em 0;
 		border-bottom: 4px solid #f7f7fa;

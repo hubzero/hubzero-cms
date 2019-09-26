@@ -254,6 +254,16 @@ class Data extends Base
 		);
 		$newConfigs->servePath = Route::url('index.php?option=com_publications&id=' . $pub->id) . '/?vid=' . $newVersion->id . '&amp;task=serve';
 
+		// Create new version path
+		if (!is_dir($newConfigs->dataPath))
+		{
+			if (!Filesystem::makeDirectory($newConfigs->dataPath, 0755, true, true))
+			{
+				$this->_parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
+				return false;
+			}
+		}
+
 		// Loop through attachments
 		foreach ($attachments as $att)
 		{

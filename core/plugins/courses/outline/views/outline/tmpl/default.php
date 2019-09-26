@@ -452,7 +452,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 														{
 															$href = Route::url($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
 														}
-														else if ($a->get('type') == 'file' || $a->get('type') == 'url')
+														else if ($a->get('type') == 'file' || $a->get('type') == 'url' || $a->get('type') == 'tool')
 														{
 															$target = ' rel="nofollow" target="_blank"';
 														}

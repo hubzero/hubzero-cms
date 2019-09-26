@@ -85,42 +85,40 @@ class Jobs extends SiteController
 		$output = new stdClass;
 		$output->jobs = array();
 
-		if ($results)
+		foreach ($results as $job)
 		{
-			foreach ($results as $job)
+			if ($job->get('active') || !$job->isAvailable())
 			{
-				if ($job->get('active') || !$job->isAvailable())
+				continue;
+			}
+
+			// Set it as active in case there were multiple plugins called on
+			// the event. This is to ensure ALL processes finished.
+			$job->set('active', 1);
+			$job->save();
+
+			// Show related content
+			$job->mark('start_run');
+
+			$res = Event::trigger('cron.' . $job->get('event'), array($job));
+
+			if ($res && is_array($res))
+			{
+				foreach ($res as $result)
 				{
-					continue;
-				}
-
-				// Show related content
-				$job->mark('start_run');
-
-				$results = Event::trigger('cron.' . $job->get('event'), array($job));
-				if ($results && is_array($results))
-				{
-					// Set it as active in case there were multiple plugins called on
-					// the event. This is to ensure ALL processes finished.
-					$job->set('active', 1);
-					$job->save();
-
-					foreach ($results as $result)
+					if ($result)
 					{
-						if ($result)
-						{
-							$job->set('active', 0);
-						}
+						$job->set('active', 0);
 					}
 				}
-
-				$job->mark('end_run');
-				$job->set('last_run', Date::toSql());
-				$job->set('next_run', $job->nextRun());
-				$job->save();
-
-				$output->jobs[] = $job->toArray();
 			}
+
+			$job->mark('end_run');
+			$job->set('last_run', Date::toSql());
+			$job->set('next_run', $job->nextRun());
+			$job->save();
+
+			$output->jobs[] = $job->toArray();
 		}
 
 		// Output any data from the jobs that ran

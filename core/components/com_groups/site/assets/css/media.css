@@ -85,7 +85,7 @@
 		width: 100%;
 	}
 	.foldertree ul {
-		margin: 0 0 0 20px;
+		margin: 0;
 		padding: 0;
 		list-style: none;
 		display: none;
@@ -96,7 +96,9 @@
 	}
 	.foldertree ul li {
 		margin: 0;
-		padding: 0;
+		padding: 0 0 5px 10px;
+		position: relative;
+		line-height: 1.6em;
 	}
 	.foldertree .tree-folder-toggle,
 	.foldertree .tree-folder-toggle-spacer {
@@ -104,7 +106,10 @@
 		width: 10px;
 		height: 10px;
 		border: none;
-		position: relative;
+		position: absolute;
+		left: 0;
+		top: 0.8em;
+		transform: translate(0, -50%);
 	}
 	.foldertree .tree-folder-toggle:before {
 		content: '+';

@@ -41,7 +41,6 @@
 		padding: 0.5em 0.7em;
 		border-top: 1px solid #eee;
 		font-size: 90%;
-		color: #aaa;
 		background-color: #f4f4f4;
 		text-align: left;
 	}
@@ -856,7 +855,6 @@
 	}
 
 	.com_wiki .wiki .modified-date {
-		color: #aaa;
 		font-size: 90%;
 	}
 	.wikipage hr {
