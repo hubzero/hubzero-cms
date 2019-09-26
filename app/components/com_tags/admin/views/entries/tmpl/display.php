@@ -62,7 +62,7 @@ Toolbar::help('entries');
 				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_TAGS_COL_RAW_TAG', 'raw_tag', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_TAGS_COL_TAG', 'tag', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_TAGS_COL_ADMIN', 'admin', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_TAGS_COL_TYPE', 'admin', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TAGS_COL_NUMBER_TAGGED', 'objects', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TAGS_COL_ALIAS', 'substitutes', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_TAGS_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -82,6 +82,7 @@ Toolbar::help('entries');
 		$i = 0;
 		foreach ($this->rows as $row)
 		{
+			/*
 			if ($row->get('admin'))
 			{
 				$calt = Lang::txt('JYES');
@@ -94,6 +95,8 @@ Toolbar::help('entries');
 				$cls2 = 'no';
 				$state = 1;
 			}
+			*/
+			$calt = array("User", "Admin", "Core")[$row->get('admin')];
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -124,9 +127,7 @@ Toolbar::help('entries');
 					<?php } ?>
 				</td>
 				<td class="priority-2">
-					<span class="state <?php echo $cls2; ?>">
-						<span><?php echo $calt; ?></span>
-					</span>
+					<span><?php echo $calt ?></span>
 				</td>
 				<td class="priority-3">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=tagged&tag=' . $row->get('id')); ?>">
