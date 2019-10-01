@@ -77,11 +77,9 @@ function getMarkers(div)
 	}
 	request.send(null);
 }*/
+var map;
 
 document.addEventListener('DOMContentLoaded', function() {
-	var infowindow;
-	var map;
-
 	var div = document.getElementById('div_map');
 
 	var myLatlng = new google.maps.LatLng(div.getAttribute('data-lat'), div.getAttribute('data-long'));
@@ -89,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		zoom: parseInt(div.getAttribute('data-zoom')),
 		center: myLatlng,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
-	}
+	};
 
 	map = new google.maps.Map(div, myOptions);
 
@@ -105,6 +103,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function createMarker(info, latlng) {
+	var infowindow;
+
 	info = info.replace(/_br_/g, '<br/>');
 	info = info.replace(/_hr_/g, '<hr/>');
 	info = info.replace(/_b_/g, '<b>');
