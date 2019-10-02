@@ -49,7 +49,7 @@ defined('_HZEXEC_') or die();
 			case 1:
 				$class = ' class="admin"';
 			case 2:
-                    $class = ' class=" core"';
+				$class = ' class=" core"';
 			break;
 		}
 		$link_class = '';
