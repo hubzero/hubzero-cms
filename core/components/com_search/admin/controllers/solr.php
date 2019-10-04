@@ -220,6 +220,8 @@ class Solr extends AdminController
 		$this->view->setName('solr');
 		$this->view->option = $this->_option;
 
+		$this->view->controller = $this;
+		$this->view->task = 'display';
 		$this->view->mechanism = $config->get('engine');
 		$this->view->status = $status;
 		$this->view->logs = $logs;
