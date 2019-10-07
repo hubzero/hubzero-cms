@@ -9,7 +9,7 @@
 defined('_HZEXEC_') or die();
 
 $boost = $this->boost;
-$disableType = $this->disableType;
+$disableType = isset($this->disableType) ? $this->disableType : false;
 $typeOptions = $this->typeOptions;
 $typeSelectLabel = Lang::txt('COM_SEARCH_FIELDS_BOOST_TYPE');
 ?>
