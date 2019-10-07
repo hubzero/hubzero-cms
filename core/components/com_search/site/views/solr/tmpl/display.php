@@ -15,8 +15,7 @@ $this->js('solr')
 
 $terms = isset($this->terms) ? $this->terms : '';
 $noResult = count($this->results) > 0 ? false : true;
-$searchParams = Component::params('com_search');
-$tagSearch = ($searchParams->get('solr_tagsearch', 0) == 1) ? true : false;
+$tagSearchEnabled = $this->tagSearchEnabled;
 
 if ($this->section == 'map'):
 	$this->css('../js/OpenLayers-2.13.1/theme/default/style.css');
@@ -41,7 +40,7 @@ endif;
 			<input type="hidden" name="type" value="<?php echo !empty($this->type) ? $this->type : ''; ?>" />
 		</fieldset>
 		<?php
-		if ($tagSearch)
+		if ($tagSearchEnabled)
 		{
 			$tags_list = Event::trigger(
 				'hubzero.onGetMultiEntry',
@@ -114,7 +113,7 @@ endif;
 					<div class="container">
 						<div class="results list"><!-- add "tiled" to class for tiled view -->
 							<?php foreach ($this->results as $result): ?>
-								<?php 
+								<?php
 									$hubType = isset($result['hubtype']) ? strtolower($result['hubtype']) : '';
 									$templateOverride = '';
 									if (!empty($this->viewOverrides[$hubType]))
@@ -122,7 +121,7 @@ endif;
 										$overrideView = new \Hubzero\View\View($this->viewOverrides[$hubType]);
 										$overrideView->set('result', $result)
 											->set('terms', $this->terms)
-											->set('tagSearch', $tagSearch)
+											->set('tagSearch', $tagSearchEnabled)
 											->display();
 									}
 									else
@@ -131,7 +130,7 @@ endif;
 											->setName('solr')
 											->set('result', $result)
 											->set('terms', $terms)
-											->set('tagSearch', $tagSearch)
+											->set('tagSearch', $tagSearchEnabled)
 											->display();
 									}
 								?>
