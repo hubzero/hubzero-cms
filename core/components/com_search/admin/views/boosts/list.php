@@ -8,6 +8,8 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+$this->css('boostsList');
+
 $toolbarElements = [
 	'title' => [Lang::txt('COM_SEARCH_HEADING_BOOSTS')],
 	'addNew' => ['new'],
@@ -25,6 +27,9 @@ $this->view('_submenu', 'shared')
 $boosts = $this->boosts;
 $sortField = $this->sortField;
 $sortDirection = $this->sortDirection;
+
+$this->view('_tag_search_notice')
+	->display();
 ?>
 
 <form action="<?php echo "index.php?option=$this->option&controller=$this->controller"; ?>"
