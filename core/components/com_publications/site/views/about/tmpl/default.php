@@ -261,7 +261,7 @@ $schema = $metaElements->getSchema();
 			<p><?php echo Lang::txt('COM_PUBLICATIONS_IS_PART_OF_SERIES'); ?></p>
 			<ul class="element-list">
 			<?php
-				foreach($seriesArr as $series)
+				foreach ($seriesArr as $series)
 				{
 					echo $series;
 				}
