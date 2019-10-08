@@ -1251,4 +1251,28 @@ class Html
 
 		return true;
 	}
+	
+	/**
+	 * Generate series for a publication
+	 *
+	 * @param   object  $seriesObj       Series object
+	 * @return  string  HTML
+	 */
+	public static function series($seriesObj)
+	{
+		if (!empty($seriesObj))
+		{
+			$html  = '<li>';
+			$url = '<a href="' . "/publications/$seriesObj->publication_id/$seriesObj->version_number" . '" rel="noopener" target="_blank">' . '<u>' . $seriesObj->title . '</u>' . '</a>' . "\n";
+			$abstract = '<p>' . "$seriesObj->abstract" . '</p>' . "\n";
+			$html .= $url . $abstract;
+			$html .= '</li>';
+			
+			return $html;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
