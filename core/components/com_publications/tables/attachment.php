@@ -913,6 +913,6 @@ class Attachment extends Table
 		else
 		{
 			return false;
-		}	
+		}
 	}
 }
