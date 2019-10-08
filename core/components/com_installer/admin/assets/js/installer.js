@@ -20,13 +20,13 @@ Hubzero.submitbutton = function(task) {
 	if (frm) {
 		if (task == 'cancel' || document.formvalidator.isValid(frm)) {
 			if (task != 'cancel') {
-				if (document.getElementById('alias').value == 'hz-installer'
-				 || document.getElementById('alias').value == 'packagist.org') {
+				if (document.getElementById('field-alias').value == 'hz-installer'
+				 || document.getElementById('field-alias').value == 'packagist.org') {
 					alert(frm.getAttribute('data-invalid-msg'));
 					return;
 				}
 
-				if (!validURL(document.getElementById('url').value)) {
+				if (!validURL(document.getElementById('field-url').value)) {
 					alert(frm.getAttribute('data-invalid-msg'));
 					return;
 				}
