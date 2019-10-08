@@ -875,12 +875,12 @@ class Attachment extends Table
 
 		return true;
 	}
-	
+
 	/**
-	 * Get array of series that the publication belongs to 
+	 * Get array of series that the publication belongs to
 	 *
 	 * @param   integer  $verID  Pub version ID
-	 * 
+	 *
 	 * @return  mixed    series  or false
 	 */
 	public function getSeries($verID)
@@ -891,12 +891,12 @@ class Attachment extends Table
 		}
 
 		$seriesObjArr = [];
-		
+
 		// Get publication version id of series
 		$sql = "SELECT publication_version_id FROM `$this->_tbl` WHERE object_id=$verID";
 		$this->_db->setQuery($sql);
 		$pubVerIdObjArr = $this->_db->loadObjectList();
-		
+
 		// Get title, abstract, pub version id, version number
 		if (!empty($pubVerIdObjArr))
 		{
@@ -907,7 +907,7 @@ class Attachment extends Table
 				$seriesObj = $this->_db->loadObject();
 				$seriesObjArr[] = $seriesObj;
 			}
-			
+
 			return $seriesObjArr;
 		}
 		else
