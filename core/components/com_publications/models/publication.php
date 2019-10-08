@@ -2390,7 +2390,7 @@ class Publication extends Obj
 			{
 				$seriesStr = Helpers\Html::series($seriesObj);
 				
-				if($seriesStr)
+				if ($seriesStr)
 				{
 					$seriesHtmlArr[] = $seriesStr;
 				}
