@@ -10,6 +10,7 @@ defined('_HZEXEC_') or die();
 
 $this->css()
      ->js();
+
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
