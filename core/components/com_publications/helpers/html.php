@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Publications\Helpers;
@@ -1115,7 +1090,7 @@ class Html
 			{
 				$path = DS . $base . DS . \Hubzero\Utility\Str::pad($row->id);
 				// For simple reporting, we only count the current version's raw content size
-				// This does not count the bundle or previous versions of each publication	
+				// This does not count the bundle or previous versions of each publication
 				if ($simple)
 				{
 					if (!($row instanceof \Components\Publications\Models\Publication))
@@ -1275,5 +1250,29 @@ class Html
 		}
 
 		return true;
+	}
+
+	/**
+	 * Generate series for a publication
+	 *
+	 * @param   object  $seriesObj       Series object
+	 * @return  string  HTML
+	 */
+	public static function series($seriesObj)
+	{
+		if (!empty($seriesObj))
+		{
+			$html  = '<li>';
+			$url = '<a href="' . "/publications/$seriesObj->publication_id/$seriesObj->version_number" . '" rel="noopener" target="_blank">' . '<u>' . $seriesObj->title . '</u>' . '</a>' . "\n";
+			$abstract = '<p>' . "$seriesObj->abstract" . '</p>' . "\n";
+			$html .= $url . $abstract;
+			$html .= '</li>';
+
+			return $html;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }

@@ -1,33 +1,8 @@
 <?php
 /**
- * HUBzero CMS
- *
- * Copyright 2005-2015 HUBzero Foundation, LLC.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <aliasa@purdue.edu>
- * @copyright Copyright 2005-2015 HUBzero Foundation, LLC.
- * @license   http://opensource.org/licenses/MIT MIT
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Publications\Models;
@@ -44,37 +19,49 @@ use Date;
 use Lang;
 
 // Include table classes
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'publication.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'version.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'access.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'audience.level.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'audience.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'author.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'license.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'master.type.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'screenshot.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'logs.php');
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'publication.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'version.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'access.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'audience.level.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'audience.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'author.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'license.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'category.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'master.type.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'screenshot.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'logs.php';
 
 // Projects
 require_once \Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 require_once \Component::path('com_projects') . DS . 'models' . DS . 'repo.php';
 
 // Common models
-require_once(__DIR__ . DS . 'curation.php');
-require_once(__DIR__ . DS . 'doi.php');
+require_once __DIR__ . DS . 'curation.php';
+require_once __DIR__ . DS . 'doi.php';
 
 // Helpers
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php');
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
 
 /**
  * Information retrieval for items/info linked to a publication
  */
 class Publication extends Obj
 {
+	/**
+	 * Database state constants
+	 **/
+	const STATE_UNPUBLISHED = 0;
+	const STATE_PUBLISHED   = 1;
+	const STATE_DELETED     = 2;
+	const STATE_DRAFT       = 3;
+	const STATE_POSTED      = 4;  // Posted for review
+	const STATE_PENDING     = 5;  // Pending publishing
+	const STATE_ARCHIVED    = 6;
+	const STATE_WORKED      = 7;  // Pending author changes
+
 	/**
 	 * Authorized
 	 *
@@ -95,6 +82,13 @@ class Publication extends Obj
 	 * @var  array
 	 */
 	private $_data = array();
+
+	/**
+	 * Is this publication of type tool?
+	 *
+	 * @var  boolean
+	 */
+	private $isTool = null;
 
 	/**
 	 * Constructor
@@ -161,7 +155,7 @@ class Publication extends Obj
 			}
 			$this->version_id        = $this->version->id;
 			$this->id                = $this->publication->id;
-			$this->base 	         = $this->_type->alias;
+			$this->base              = $this->_type->alias;
 			$this->curatorgroup      = $this->_type->curatorgroup;
 
 			// Map master values
@@ -259,6 +253,8 @@ class Publication extends Obj
 		{
 			return $this->_data[$property];
 		}
+
+		return null;
 	}
 
 	/**
@@ -1038,11 +1034,7 @@ class Publication extends Obj
 	 */
 	public function isDeleted()
 	{
-		if ($this->get('state') == 2)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('state') == self::STATE_DELETED);
 	}
 
 	/**
@@ -1052,11 +1044,7 @@ class Publication extends Obj
 	 */
 	public function isReady()
 	{
-		if ($this->get('state') == 4)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('state') == self::STATE_POSTED);
 	}
 
 	/**
@@ -1066,11 +1054,7 @@ class Publication extends Obj
 	 */
 	public function isPending()
 	{
-		if ($this->get('state') == 5)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('state') == self::STATE_PENDING);
 	}
 
 	/**
@@ -1080,11 +1064,7 @@ class Publication extends Obj
 	 */
 	public function isWorked()
 	{
-		if ($this->get('state') == 7)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('state') == self::STATE_WORKED);
 	}
 
 	/**
@@ -1094,11 +1074,7 @@ class Publication extends Obj
 	 */
 	public function isUnpublished()
 	{
-		if ($this->get('state') == 0)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('state') == self::STATE_UNPUBLISHED);
 	}
 
 	/**
@@ -1108,11 +1084,7 @@ class Publication extends Obj
 	 */
 	public function isMain()
 	{
-		if ($this->get('main') == 1)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('main') == 1);
 	}
 
 	/**
@@ -1122,11 +1094,7 @@ class Publication extends Obj
 	 */
 	public function isCurrent()
 	{
-		if ($this->get('main') == 1 && $this->get('state') == 1)
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('main') == 1 && $this->get('state') == self::STATE_PUBLISHED);
 	}
 
 	/**
@@ -1136,11 +1104,7 @@ class Publication extends Obj
 	 */
 	public function isDev()
 	{
-		if ($this->get('state') == 3 || $this->versionAlias == 'dev')
-		{
-			return true;
-		}
-		return false;
+		return ($this->get('state') == self::STATE_DRAFT || $this->versionAlias == 'dev');
 	}
 
 	/**
@@ -1150,11 +1114,7 @@ class Publication extends Obj
 	 */
 	public function isDown()
 	{
-		if ($this->unpublished() && Date::of($this->get('published_down'))->toUnix() < Date::toUnix())
-		{
-			return true;
-		}
-		return false;
+		return ($this->unpublished() && Date::of($this->get('published_down'))->toUnix() < Date::toUnix());
 	}
 
 	/**
@@ -1169,7 +1129,7 @@ class Publication extends Obj
 			return false;
 		}
 
-		if (in_array($this->get('state'), array(0, 2, 3, 4, 5, 6, 7)))
+		if ($this->get('state') != self::STATE_PUBLISHED)
 		{
 			return false;
 		}
@@ -1178,6 +1138,7 @@ class Publication extends Obj
 		{
 			return false;
 		}
+
 		if ($this->isDown())
 		{
 			return false;
@@ -1210,7 +1171,7 @@ class Publication extends Obj
 			return;
 		}
 
-		// Check if they're a site admin (from Joomla)
+		// Check if they're a site admin
 		$this->params->set('access-admin-publication', User::authorise('core.admin', null));
 		$this->params->set('access-manage-publication', User::authorise('core.manage', null));
 
@@ -1514,7 +1475,6 @@ class Publication extends Obj
 						&$config
 					));
 
-
 					$this->set('release_notes.parsed', (string) $this->get('release_notes', ''));
 					$this->set('release_notes', $content);
 
@@ -1711,7 +1671,7 @@ class Publication extends Obj
 
 			$this->_citations = $cc
 				->join($a, $a . '.cid', $c . '.id', 'inner')
-				->whereEquals($c . '.published', 1)
+				->whereEquals($c . '.published', self::STATE_PUBLISHED)
 				->whereEquals($a . '.tbl', 'publication')
 				->whereEquals($a . '.oid', $this->get('id'))
 				->order($c . '.affiliated', 'asc')
@@ -1756,7 +1716,7 @@ class Publication extends Obj
 
 			$this->lastCitationDate = $cc
 				->join($a, $a . '.cid', $c . '.id', 'inner')
-				->whereEquals($c . '.published', 1)
+				->whereEquals($c . '.published', self::STATE_PUBLISHED)
 				->whereEquals($a . '.tbl', 'publication')
 				->whereEquals($a . '.oid', $this->get('id'))
 				->order($c . '.created', 'desc')
@@ -1786,7 +1746,7 @@ class Publication extends Obj
 			include_once dirname(__DIR__)  . DS . 'helpers' . DS . 'tags.php';
 
 			$rt = new Helpers\Tags($this->_db);
-			$this->_tags = $rt->get_tags_on_object($this->get('id'), 0, 0, $tagger_id, $strength, $admin);
+			$this->_tags = $rt->get_tags_on_object($this->version->get('id'), 0, 0, $tagger_id, $strength, $admin);
 		}
 
 		return $this->_tags;
@@ -1810,7 +1770,7 @@ class Publication extends Obj
 		include_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
 
 		$rt = new Helpers\Tags($this->_db);
-		$this->_tagsForEditing = $rt->get_tag_string($this->get('id'), 0, 0, $tagger_id, $strength, $admin);
+		$this->_tagsForEditing = $rt->get_tag_string($this->version->get('id'), 0, 0, $tagger_id, $strength, $admin);
 		return $this->_tagsForEditing;
 	}
 
@@ -1832,7 +1792,7 @@ class Publication extends Obj
 			include_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
 
 			$rt = new Helpers\Tags($this->_db);
-			$this->_tagCloud = $rt->get_tag_cloud(0, $admin, $this->get('id'));
+			$this->_tagCloud = $rt->get_tag_cloud(0, $admin, $this->version->get('id'));
 		}
 
 		return $this->_tagCloud;
@@ -1876,7 +1836,7 @@ class Publication extends Obj
 		}
 
 		$query = "SELECT p.* ";
-		if ($this->get('state') == 3)
+		if ($this->get('state') == self::STATUS_DRAFT)
 		{
 			// Draft - load latest version
 			$query .= ", (SELECT v.pagetext FROM #__wiki_versions as v WHERE v.page_id=p.id
@@ -1888,12 +1848,12 @@ class Publication extends Obj
 			$date = $date ? $date : $this->published();
 
 			$query .= ", (SELECT v.pagetext FROM #__wiki_versions as v WHERE v.page_id=p.id AND ";
-			$query .= $versionid ? " v.id=" . $versionid : " v.created <= '" . $date . "'";
+			$query .= $versionid ? " v.id=" . $versionid : " v.created <= " . $this->_db->quote($date);
 			$query .= " ORDER BY v.created DESC LIMIT 1) as pagetext ";
 		}
 
-		$query .= " FROM #__wiki_pages as p WHERE p.scope LIKE '" . $masterscope . "%' ";
-		$query .=  is_numeric($pageid) ? " AND p.id='$pageid' " : " AND p.pagename='$pageid' ";
+		$query .= " FROM #__wiki_pages as p WHERE p.scope LIKE " . $this->_db->quote($masterscope . '%') . " ";
+		$query .=  is_numeric($pageid) ? " AND p.id=" . $this->_db->quote($pageid) . " " : " AND p.pagename=" . $this->_db->quote($pageid) . " ";
 		$query .= " LIMIT 1";
 
 		$this->_db->setQuery($query);
@@ -1945,7 +1905,7 @@ class Publication extends Obj
 	/**
 	 * Check if this entry has an image
 	 *
-	 * @param   string  $type	The type of image
+	 * @param   string  $type  The type of image
 	 * @return  boolean
 	 */
 	public function hasImage($type = 'thumb')
@@ -2029,7 +1989,9 @@ class Publication extends Obj
 			break;
 
 			case 'thumb':
-				$link = 'index.php?option=com_publications&id=' . $this->get('id') . '&v=' . $this->get('version_id') . '&media=Image:thumb';
+				//$link = 'index.php?option=com_publications&id=' . $this->get('id') . '&v=' . $this->get('version_id') . '&media=Image:thumb';
+				$src = Helpers\Html::getThumb($this->get('id'), $this->get('version_id'), $this->config());
+				$link = with(new \Hubzero\Content\Moderator($src, 'public'))->getUrl();
 			break;
 
 			case 'masterimage':
@@ -2125,6 +2087,7 @@ class Publication extends Obj
 		{
 			return false;
 		}
+
 		if (!$param || !$value)
 		{
 			return false;
@@ -2135,6 +2098,7 @@ class Publication extends Obj
 			trim($param),
 			htmlentities($value)
 		);
+
 		return $value;
 	}
 
@@ -2149,7 +2113,7 @@ class Publication extends Obj
 		// Only logging access for published
 		if (!$this->isPublished())
 		{
-			return false;
+			return;
 		}
 
 		if (!isset($this->_tblLog))
@@ -2189,15 +2153,18 @@ class Publication extends Obj
 		{
 			return false;
 		}
+
 		if (!isset($this->_groupOwner) || !($this->_groupOwner instanceof \Hubzero\User\Group))
 		{
 			$this->_groupOwner = \Hubzero\User\Group::getInstance($this->get('group_owner'));
 		}
+
 		if ($property)
 		{
 			$property = ($property == 'id' ? 'gidNumber' : $property);
 			return $this->_groupOwner ? $this->_groupOwner->get($property) : null;
 		}
+
 		return $this->_groupOwner;
 	}
 
@@ -2216,11 +2183,9 @@ class Publication extends Obj
 			$this->_tbl = new Tables\Publication($this->_db);
 		}
 
-		switch (strtolower($rtrn))
+		if (strtolower($rtrn) == 'count')
 		{
-			case 'count':
-				return (int) $this->_tbl->getCount($filters, $admin);
-			break;
+			return (int) $this->_tbl->getCount($filters, $admin);
 		}
 
 		if ($results = $this->_tbl->getRecords($filters, $admin))
@@ -2241,19 +2206,17 @@ class Publication extends Obj
 	 */
 	public function isTool()
 	{
-		static $isTool;
-
-		if (!isset($isTool))
+		if (is_null($this->isTool))
 		{
-			$isTool = false;
+			$this->isTool = false;
 
 			if ($this->category()->alias == 'tool')
 			{
-				$isTool = true;
+				$this->isTool = true;
 			}
 		}
 
-		return $isTool;
+		return $this->isTool;
 	}
 
 	/**
@@ -2286,29 +2249,29 @@ class Publication extends Obj
 
 		switch ($status)
 		{
-			case 0:
+			case self::STATE_UNPUBLISHED:
 				$name = Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED');
 				break;
 
-			case 1:
+			case self::STATE_PUBLISHED:
 				$name = Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED');
 				break;
 
-			case 3:
-			default:
-				$name = Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT');
-				break;
-
-			case 4:
+			case self::STATE_POSTED:
 				$name = Lang::txt('COM_PUBLICATIONS_VERSION_READY');
 				break;
 
-			case 5:
+			case self::STATE_PENDING:
 				$name = Lang::txt('COM_PUBLICATIONS_VERSION_PENDING');
 				break;
 
-			case 7:
+			case self::STATE_WORKED:
 				$name = Lang::txt('COM_PUBLICATIONS_VERSION_WIP');
+				break;
+
+			case self::STATE_DRAFT:
+			default:
+				$name = Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT');
 				break;
 		}
 
@@ -2330,29 +2293,29 @@ class Publication extends Obj
 
 		switch ($status)
 		{
-			case 0:
+			case self::STATE_UNPUBLISHED:
 				$name = 'unpublished';
 				break;
 
-			case 1:
+			case self::STATE_PUBLISHED:
 				$name = 'published';
 				break;
 
-			case 3:
-			default:
-				$name = 'draft';
-				break;
-
-			case 4:
+			case self::STATE_POSTED:
 				$name = 'ready';
 				break;
 
-			case 5:
+			case self::STATE_PENDING:
 				$name = 'pending';
 				break;
 
-			case 7:
+			case self::STATE_WORKED:
 				$name = 'wip';
+				break;
+
+			case self::STATE_DRAFT:
+			default:
+				$name = 'draft';
 				break;
 		}
 
@@ -2375,27 +2338,65 @@ class Publication extends Obj
 
 		switch ($status)
 		{
-			case 0:
+			case self::STATE_UNPUBLISHED:
 				$date = strtolower(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED')) . ' ' . Date::of($row->published_down)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 				break;
 
-			case 1:
+			case self::STATE_PUBLISHED:
 				$date  = (Date::of($row->published_up)->toUnix() > Date::toUnix()) ? Lang::txt('to be') . ' ' : '';
 				$date .= strtolower(Lang::txt('COM_PUBLICATIONS_RELEASED')) . ' ' . Date::of($row->published_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 				break;
 
-			case 3:
-			case 4:
+			case self::STATE_DRAFT:
+			case self::STATE_POSTED:
 			default:
 				$date = strtolower(Lang::txt('COM_PUBLICATIONS_STARTED')) . ' ' . Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 				break;
 
-			case 5:
-			case 7:
+			case self::STATE_PENDING:
+			case self::STATE_WORKED:
 				$date = strtolower(Lang::txt('COM_PUBLICATIONS_SUBMITTED')) . ' ' . Date::of($row->submitted)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 				break;
 		}
 
 		return $date;
+	}
+
+	/**
+	 * Get series that the publication belongs to
+	 *
+	 * @return  string  HTML or false
+	 */
+	public function getSeries()
+	{
+		// Check whether the version exists
+		if (!$this->exists())
+		{
+			return false;
+		}
+
+		// Query the series that the publication belongs to
+		$this->_tblAttachment = new Tables\Attachment($this->_db);
+		$seriesObjectArr = $this->_tblAttachment->getSeries($this->version->id);
+		$seriesHtmlArr = [];
+
+		if (!$seriesObjectArr || empty($seriesObjectArr))
+		{
+			return false;
+		}
+		else
+		{
+			foreach ($seriesObjectArr as $seriesObj)
+			{
+				$seriesStr = Helpers\Html::series($seriesObj);
+
+				if ($seriesStr)
+				{
+					$seriesHtmlArr[] = $seriesStr;
+				}
+			}
+
+			return $seriesHtmlArr;
+		}
 	}
 }
