@@ -905,12 +905,13 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		else
 		{
 			$ch = curl_init($url);
+
 			$options = array(
 				CURLOPT_RETURNTRANSFER => true,     // return web page
 				CURLOPT_HEADER         => false,    // don't return headers
 				CURLOPT_FOLLOWLOCATION => true,     // follow redirects
 				CURLOPT_ENCODING       => '',       // handle all encodings
-				CURLOPT_USERAGENT      => '',       // who am i
+				CURLOPT_USERAGENT      => 'HUBzero',// I am HUBzero
 				CURLOPT_AUTOREFERER    => true,     // set referer on redirect
 				CURLOPT_CONNECTTIMEOUT => 5,        // timeout on connect
 				CURLOPT_TIMEOUT        => 5,        // timeout on response

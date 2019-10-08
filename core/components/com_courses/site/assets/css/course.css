@@ -155,16 +155,14 @@
 /* Offering info */
 	.course-summary {
 		margin: 30px 0 30px 0;
-		background: #333;
+		background: #f7f7f7;
 		padding: 0.27em;
-		color: #bbb;
 		-webkit-border-radius: 0.27em;
 		   -moz-border-radius: 0.27em;
 		    -ms-border-radius: 0.27em;
 		     -o-border-radius: 0.27em;
 		        border-radius: 0.27em;
 		zoom: 1;
-		text-shadow: 0 1px 0 #1d1212;
 		-webkit-transition: all ease-in-out 0.2s;
 		   -moz-transition: all ease-in-out 0.2s;
 		    -ms-transition: all ease-in-out 0.2s;
@@ -175,13 +173,6 @@
 		    -ms-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.15);
 		     -o-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.15);
 		        box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.15);
-	}
-	.course-summary:hover {
-		-webkit-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.2), inset 0 0 46.97em rgba(0, 0, 0, 0.5);
-		   -moz-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.2), inset 0 0 46.97em rgba(0, 0, 0, 0.5);
-		    -ms-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.2), inset 0 0 46.97em rgba(0, 0, 0, 0.5);
-		     -o-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.2), inset 0 0 46.97em rgba(0, 0, 0, 0.5);
-		        box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.2), inset 0 0 46.97em rgba(0, 0, 0, 0.5);
 	}
 	form.course-summary {
 		padding: 1em;
@@ -220,37 +211,6 @@
 		     -o-box-sizing: border-box;
 		        box-sizing: border-box;
 	}
-	.course-summary .btn-group .btn,
-	.course-summary .btn.enroll {
-		border-color: #fee9aa #b98a37 #b98a37 #fee9aa;
-		color: #996633;
-		text-shadow: 0px 1px 0px #fedd9b;
-		background: #feda71;
-		background: -webkit-gradient(linear, left top, left bottom, from(#feda71), to(#febe4d));
-		background: -webkit-linear-gradient(#feda71, #febe4d);
-		background: -moz-linear-gradient(center top, #feda71 0%, #febe4d 100%);
-		background: -moz-gradient(center top, #feda71 0%, #febe4d 100%);
-		background: -ms-linear-gradient(#feda71, #febe4d);
-		background: -o-linear-gradient(#feda71, #febe4d);
-		background: linear-gradient(#feda71, #febe4d);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#feda71,endColorstr=#febe4d);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#feda71, endColorstr=#febe4d)";
-	}
-	.course-summary .btn.preview {
-		border-color: #c6edf9 #64b3cc #64b3cc #c6edf9;
-		color: #41788c;
-		text-shadow: 0px 1px 0px #bfeafb;
-		background: #73d0f1;
-		background: -webkit-gradient(linear, left top, left bottom, from(#aae5f7), to(#73d0f1));
-		background: -webkit-linear-gradient(#aae5f7, #73d0f1);
-		background: -moz-linear-gradient(center top, #aae5f7 0%, #73d0f1 100%);
-		background: -moz-gradient(center top, #aae5f7 0%, #73d0f1 100%);
-		background: -ms-linear-gradient(#aae5f7, #73d0f1);
-		background: -o-linear-gradient(#aae5f7, #73d0f1);
-		background: linear-gradient(#aae5f7, #73d0f1);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#aae5f7,endColorstr=#73d0f1);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#aae5f7, endColorstr=#73d0f1)";
-	}
 	.course-summary .btn.preview,
 	.course-summary .btn.enroll,
 	.course-summary .btn.access {
@@ -266,7 +226,6 @@
 	}
 	.course-summary .btn-group .btn.dropdown-toggle {
 		width: 20%;
-		border-left-color: #996633;
 	}
 	.btn-group .dropdown-menu {
 		right: 0;
@@ -279,35 +238,6 @@
 	}
 	.btn-group .dropdown-menu li a:before {
 		display: none;
-	}
-	.course-summary .btn-group .btn:hover,
-	.course-summary .btn.enroll:hover {
-		border-color: #fee9aa #b98a37 #b98a37 #fee9aa;
-		color: #996633;
-		background: #febe4d;
-		background: -webkit-gradient(linear, left top, left bottom, from(#febe4d), to(#feda71));
-		background: -webkit-linear-gradient(#febe4d, #feda71);
-		background: -moz-linear-gradient(center top, #febe4d 0%, #feda71 100%);
-		background: -moz-gradient(center top, #febe4d 0%, #feda71 100%);
-		background: -ms-linear-gradient(#febe4d, #feda71);
-		background: -o-linear-gradient(#febe4d, #feda71);
-		background: linear-gradient(#febe4d, #feda71);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#febe4d,endColorstr=#feda71);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#febe4d, endColorstr=#feda71)";
-	}
-	.course-summary .btn.preview:hover {
-		border-color: #c6edf9 #64b3cc #64b3cc #c6edf9;
-		color: #41788c;
-		background: #73d0f1;
-		background: -webkit-gradient(linear, left top, left bottom, from(#73d0f1), to(#aae5f7));
-		background: -webkit-linear-gradient(#73d0f1, #aae5f7);
-		background: -moz-linear-gradient(center top, #73d0f1 0%, #aae5f7 100%);
-		background: -moz-gradient(center top, #73d0f1 0%, #aae5f7 100%);
-		background: -ms-linear-gradient(#73d0f1, #aae5f7);
-		background: -o-linear-gradient(#73d0f1, #aae5f7);
-		background: linear-gradient(#73d0f1, #aae5f7);
-		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#73d0f1,endColorstr=#aae5f7);
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#73d0f1, endColorstr=#aae5f7)";
 	}
 	.course-summary strong {
 		font-size: 2em;
