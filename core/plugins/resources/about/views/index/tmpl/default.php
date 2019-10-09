@@ -273,7 +273,7 @@ $maintext = $this->model->description;
 			</div>
 		<?php } ?>
 
-		<?php if ($this->model->params->get('show_assocs')): ?>
+			<?php if ($this->model->params->get('show_assocs')): ?>
 			<?php if ($this->tags->count()): ?>
 				<h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_TAGS'); ?></h4>
 				<div class="resource-content">
