@@ -879,40 +879,35 @@ class Attachment extends Table
 	/**
 	 * Get array of series that the publication belongs to
 	 *
-	 * @param   integer  $verID  Pub version ID
+	 * @param   integer  $versionID  Publication version ID
 	 *
 	 * @return  mixed    series  or false
 	 */
-	public function getSeries($verID)
+	public function getSeries($versionId)
 	{
-		if ($verID === null)
+		if ($versionId === null)
 		{
 			return false;
 		}
 
-		$seriesObjArr = [];
-
 		// Get publication version id of series
-		$sql = "SELECT publication_version_id FROM `$this->_tbl` WHERE object_id=$verID";
-		$this->_db->setQuery($sql);
-		$pubVerIdObjArr = $this->_db->loadObjectList();
+		$query = "SELECT publication_version_id FROM `$this->_tbl` WHERE object_id=$versionId";
+		$this->_db->setQuery($query);
+		$publicationVersionIds = $this->_db->loadColumn();
 
-		// Get title, abstract, pub version id, version number
-		if (!empty($pubVerIdObjArr))
-		{
-			foreach ($pubVerIdObjArr as $pubVerIdObj)
-			{
-				$seriesQuery = "SELECT publication_id, title, abstract, version_number FROM `#__publication_versions` WHERE id = $pubVerIdObj->publication_version_id";
-				$this->_db->setQuery($seriesQuery);
-				$seriesObj = $this->_db->loadObject();
-				$seriesObjArr[] = $seriesObj;
-			}
-
-			return $seriesObjArr;
+		if (!empty($publicationVersionIds)) {
+			$versionIdSqlArray = '(' . implode($publicationVersionIds, ',') . ')';
+			$seriesQuery = "SELECT publication_id, title, abstract, version_number"
+			. " FROM `#__publication_versions`"
+			. " WHERE id in $versionIdSqlArray";
+			$this->_db->setQuery($seriesQuery);
+			$series = $this->_db->loadObjectList();
 		}
 		else
 		{
-			return false;
+			$series = [];
 		}
+
+		return $series;
 	}
 }
