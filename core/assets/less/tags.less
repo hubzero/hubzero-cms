@@ -29,7 +29,8 @@
 		border: 0;
 		line-height: 1 !important;
 		margin: 0 0 0 1.2em !important;
-		background: @tagBackground !important;
+		//background: @tagBackground !important;
+		background: #f00 !important;
 		color: @tagColor !important;
 		padding: 0.6em 0.5em 0.7em 0.5em !important;
 		.border-radius(~"@{tagBorderRadius}");
@@ -103,3 +104,19 @@
 			border-color: transparent @tagAdminBackgroundHover transparent transparent !important;
 		}
 	}
+	.tags li.core a,
+	.tag.core {
+		color: @tagCoreColor !important;
+		background: @tagCoreBackground !important;
+		&:hover {
+			color: @tagCoreColorHover !important;
+			background: @tagCoreBackgroundHover !important;
+		}
+		&:before {
+			border-color: transparent @tagCoreBackground transparent transparent !important;
+		}
+		&:hover:before {
+				border-color: transparent @tagCoreBackgroundHover transparent transparent !important;
+		}
+	}
+

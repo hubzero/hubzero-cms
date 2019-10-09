@@ -127,7 +127,7 @@ class Tags extends SiteController
 				continue;
 			}
 
-			if ($tagobj->get('admin') && !User::authorise('core.manage', $this->_option))
+			if ($tagobj->get('admin') == 1 && !User::authorise('core.manage', $this->_option))
 			{
 				continue;
 			}
