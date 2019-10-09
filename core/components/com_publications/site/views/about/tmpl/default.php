@@ -252,24 +252,15 @@ $schema = $metaElements->getSchema();
 		</div>
 	<?php } ?>
 <?php } ?>
-<?php if ($this->publication->params->get('show_series')) {
-	$seriesArr = $this->publication->getSeries();
-	?>
-	<?php if ($seriesArr) { ?>
-		<h4><?php echo Lang::txt('COM_PUBLICATIONS_SERIES'); ?></h4>
-		<div class="pub-content">
-			<p><?php echo Lang::txt('COM_PUBLICATIONS_IS_PART_OF_SERIES'); ?></p>
-			<ul class="element-list">
-			<?php
-				foreach ($seriesArr as $series)
-				{
-					echo $series;
-				}
-			?>
-			</ul>
-		</div>
-	<?php } ?>
-<?php } ?>
+<?php
+	if ($this->publication->params->get('show_series')):
+		if ($series = $this->publication->getSeries()):
+			$this->view('_series_list')
+				->set('series', $series)
+				->display();
+		endif;
+	endif;
+?>
 <?php
 // Show version notes
 if (($this->publication->params->get('show_notes')) && $this->publication->get('release_notes'))
