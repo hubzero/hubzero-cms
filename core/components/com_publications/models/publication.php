@@ -2377,26 +2377,8 @@ class Publication extends Obj
 
 		// Query the series that the publication belongs to
 		$this->_tblAttachment = new Tables\Attachment($this->_db);
-		$seriesObjectArr = $this->_tblAttachment->getSeries($this->version->id);
-		$seriesHtmlArr = [];
+		$series = $this->_tblAttachment->getSeries($this->version->id);
 
-		if (!$seriesObjectArr || empty($seriesObjectArr))
-		{
-			return false;
-		}
-		else
-		{
-			foreach ($seriesObjectArr as $seriesObj)
-			{
-				$seriesStr = Helpers\Html::series($seriesObj);
-
-				if ($seriesStr)
-				{
-					$seriesHtmlArr[] = $seriesStr;
-				}
-			}
-
-			return $seriesHtmlArr;
-		}
+		return $series;
 	}
 }
