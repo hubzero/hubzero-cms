@@ -25,4 +25,4 @@ $url = "/publications/$publicationId/$versionNumber";
 			<?php echo $abstract; ?>
 		</p>
 	</li>
-<?php endif; ?>
+<?php endif;
