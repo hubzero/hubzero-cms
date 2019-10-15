@@ -1185,7 +1185,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			$db->setQuery($sql);
 			$res = $db->query();
 
-			while ($row = $res->fetch_array(MYSQLI_NUM))
+			while ($row = $res->loadRow(MYSQLI_NUM))
 			{
 				fputcsv($fp, $row);
 			}
