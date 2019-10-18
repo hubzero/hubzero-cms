@@ -737,9 +737,7 @@ class Doi extends Obj
 
 		if ($success === 201 || $success === 200)
 		{
-			$resArray = explode('_', $response);
-			$doiStr = reset($resArray);
-			$out = explode('/', $doiStr);
+			$out = explode('/', $response);
 			$handle = trim(end($out));
 			if ($handle)
 			{
