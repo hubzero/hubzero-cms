@@ -1540,5 +1540,4 @@ class Sessionsv1_0 extends ApiController
 		}
 		$this->send($object);
 	}
-
 }
