@@ -137,9 +137,6 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 			$margin   = 100 - $complete;
 			$done     = ($complete == 100) ? ' complete' : '';
 
-		<div class="unit<?php echo ($i == 0) ? ' active' : ''; ?>
-			unit-<?php echo ($i + 1);
-			echo $cls; ?>">
 			$this->css('
 				.unit-fill .unit-fill-inner' . $unit->get('id') . ' {
 					height: ' . $complete . '%;
