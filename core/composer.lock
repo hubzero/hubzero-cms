@@ -4,19 +4,19 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "62525198787b8e3df5b979b6f060a55c",
+    "content-hash": "8c2065bbbcfd9337b0271bbd60231b89",
     "packages": [
         {
             "name": "authy/php",
             "version": "v2.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/authy/authy-php.git",
+                "url": "https://github.com/twilio/authy-php.git",
                 "reference": "20923450907a10c446bbc595d35dd4df9f059560"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/authy/authy-php/zipball/20923450907a10c446bbc595d35dd4df9f059560",
+                "url": "https://api.github.com/repos/twilio/authy-php/zipball/20923450907a10c446bbc595d35dd4df9f059560",
                 "reference": "20923450907a10c446bbc595d35dd4df9f059560",
                 "shasum": ""
             },
@@ -550,12 +550,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "v4.5.0"
+                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/v4.5.0",
-                "reference": "v4.5.0",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d516e2f8de435ea78cc6152abc425d3ff2c4d289",
+                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289",
                 "shasum": ""
             },
             "require": {
@@ -679,13 +679,13 @@
             "authors": [
                 {
                     "name": "Neuman Vong",
-                    "role": "Developer",
-                    "email": "neuman+pear@twilio.com"
+                    "email": "neuman+pear@twilio.com",
+                    "role": "Developer"
                 },
                 {
                     "name": "Anant Narayanan",
-                    "role": "Developer",
-                    "email": "anant@php.net"
+                    "email": "anant@php.net",
+                    "role": "Developer"
                 }
             ],
             "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
@@ -1181,16 +1181,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "15a51e05d318647d7e9f1c75c5cf16cda2139914"
+                "reference": "3419c59338d17fda756bfb4e1bc8030d61920c0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/15a51e05d318647d7e9f1c75c5cf16cda2139914",
-                "reference": "15a51e05d318647d7e9f1c75c5cf16cda2139914",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/3419c59338d17fda756bfb4e1bc8030d61920c0e",
+                "reference": "3419c59338d17fda756bfb4e1bc8030d61920c0e",
                 "shasum": ""
             },
             "require": {
                 "composer/composer": "1.6.3",
+                "firebase/php-jwt": "5.0.0",
                 "php": ">=5.4.0",
                 "phpoffice/phpspreadsheet": "1.4.1",
                 "symfony/http-foundation": "2.5.5",
@@ -1221,7 +1222,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2019-07-11T16:44:38+00:00"
+            "time": "2019-01-30T16:14:50+00:00"
         },
         {
             "name": "hubzero/orcid-php",
@@ -3210,7 +3211,9 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Chris Corbyn"
@@ -3887,7 +3890,7 @@
             ],
             "authors": [
                 {
-                    "name": "William Durand",
+                    "name": "William DURAND",
                     "email": "william.durand1@gmail.com"
                 }
             ],
@@ -4173,5 +4176,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "platform-overrides": {
+        "php": "5.6.1"
+    }
 }
