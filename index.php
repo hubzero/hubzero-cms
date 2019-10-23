@@ -27,23 +27,28 @@ define('DS', DIRECTORY_SEPARATOR);
 */
 
 // Define the root. Typically, this is the current directory.
-$root = __DIR__;
+
 if (isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'])
 {
-	$root = $_SERVER['DOCUMENT_ROOT'];
+	define('PATH_ROOT', $_SERVER['DOCUMENT_ROOT']);
+}
+else
+{
+	define('PATH_ROOT', __DIR__);
 }
 
-define('PATH_ROOT', $root);
 
 // Define core. Typically, this is a directory under root but can be
 // changed via an environment variable.
-$core = PATH_ROOT . '/core';
+
 if (isset($_ENV['PATH_CORE']) && $_ENV['PATH_CORE'])
 {
-	$core = $_ENV['PATH_CORE'];
+	define('PATH_CORE', $_ENV['PATH_CORE']);
 }
-
-define('PATH_CORE', $core);
+else
+{
+	define('PATH_CORE', PATH_ROOT . DS . 'core');
+}
 
 require_once PATH_CORE . DS . 'bootstrap' . DS . 'paths.php';
 
