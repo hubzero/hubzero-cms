@@ -104,7 +104,10 @@ class Project extends Model
 
 		foreach ($splitParams as $param)
 		{
-			if (empty($param)) continue;
+			if (empty($param))
+			{
+				continue;
+			}
 			$pair = explode('=', $param);
 			$key = $pair[0];
 			$value = $pair[1];
