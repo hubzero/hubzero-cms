@@ -1,0 +1,130 @@
+.resource-wrapper {
+  border: 1px solid;
+  margin: 1em 0;
+  padding: 1em;
+}
+
+.resource-info-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.resource-info-wrapper img {
+  height: 9.375em;
+  object-fit: cover;
+  margin-bottom: 1em;
+  margin-right: 1em;
+  width: 10.9375em;
+}
+
+@media only screen and (min-width: 68.8125em) {
+  .resource-info-wrapper img {
+    margin-bottom: 0;
+  }
+}
+
+@media only screen and (min-width: 68.8125em) {
+  .resource-info-wrapper {
+    flex-wrap: nowrap;
+  }
+}
+
+.resource-info {
+  flex: 2 2 auto;
+  margin-right: 1em;
+}
+
+.resource-info .author {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: 2.4rem;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1rem;
+  line-height: 1.2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.resource-info .version {
+  border: none;
+}
+
+.resource-info .version,
+.resource-info .adaptations {
+  font-size: .85rem;
+}
+
+.resource-info h3 {
+  font-family: 'Martel', sans-serif;
+  font-size: 1.24rem;
+}
+
+.resource-info p {
+  margin: 0;
+}
+
+.meta-wrap {
+  width: 100%;
+}
+
+.meta-wrap .date {
+  font-size: .85rem;
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
+.meta-wrap .pub-date {
+  font-family: 'Martel', sans-serif;
+}
+
+@media only screen and (min-width: 43.75em) {
+  .meta-wrap {
+    width: auto;
+  }
+}
+
+.meta {
+  display: flex;
+  justify-content: space-around;
+}
+
+.meta .views,
+.meta .downloads,
+.meta .forks {
+  display: flex;
+  flex-direction: column;
+  margin: 0 .5em;
+  text-align: center;
+}
+
+.meta .count {
+  font-family: 'Martel', sans-serif;
+  font-size: 1rem;
+}
+
+.meta .meta-descripter {
+  font-size: .85rem;
+}
+
+.meta .ic {
+  width: 1.0em;
+  margin: 0 auto;
+  display: block;
+}
+
+.tags-wrapper {
+  margin-top: .5em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 1.0rem;
+}
+
+.tags {
+  font-family: 'Martel', sans-serif;
+  font-size: .85rem !important;
+}

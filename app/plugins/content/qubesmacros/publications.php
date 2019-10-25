@@ -49,6 +49,8 @@ class Publications extends Macro
 	 */
 	protected $_db = null;
 
+	public $limit, $sponsors, $group, $project, $pubid, $focusTags, $fascheme, $sponsorbgcol, $mastertype, $tags, $style, $sortby, $sortdir, $items, $base;
+
 	/**
 	 * Returns description of macro, use, and accepted arguments
 	 *
@@ -61,6 +63,7 @@ class Publications extends Macro
 		$txt['html'] .= '<p>Examples:</p>
 							<ul>
 								<li><code>[[Publications()]]</code> - Shows all publications.</li>
+								<li><code>[[Publications(view=list)]]</code> - Display publications in list format (default is "card").</li>
 								<li><code>[[Publications(limit=5, style=legacy)]]</code> - Show the 5 most recent publications using the legacy style.</li>
 								<li><code>[[Publications(sponsor=mygroup, sponsorbgcol=cb48b7)]]</code> - Display a sponsor ribbon with each publication, linking to Group "mygroup" (multiple sponsors are allowed if separated by a semicolon).  Background color of ribbon is given in hexidecimal without # (default is cb48b7).</li>
 								<li><code>[[Publications(group=mygroup1;mygroup2, project=myproject, id=2;6;8)]]</code> - Display all publications from Groups "mygroup1" and "mygroup2", Project "myproject", and Publications with ids 2, 6, and 8.</li>
@@ -87,61 +90,70 @@ class Publications extends Macro
 	 *
 	 * @return  string
 	 */
+
 	public function render()
 	{
 		// Get args
-		$args = $this->getArgs();
+	  $args = $this->getArgs();
 
 		// Database
 		$this->_db = App::get('db');
 
 		// Get details
-		$limit = $this->_getLimit($args);
-		$sponsors = $this->_getSponsor($args);
-		$group = $this->_getGroup($args);
-		$project = $this->_getProject($args);
-		$pubid = $this->_getId($args);
-		$focusTags = $this->_getFocusTags($args);
-		$fascheme = $this->_getFaScheme($args);
-		$sponsorbgcol = $this->_getSponsorBGCol($args);
-		$mastertype = $this->_getMasterType($args);
-		$tags = $this->_getTags($args);
-		$style = $this->_getStyle($args);
-		$sortby = $this->_getSortBy($args);
-		$sortdir = $this->_getSortDir($args);
+		$this->limit = $this->_getLimit($args);
+		$this->sponsors = $this->_getSponsor($args);
+		$this->group = $this->_getGroup($args);
+		$this->project = $this->_getProject($args);
+		$this->pubid = $this->_getId($args);
+		$this->focusTags = $this->_getFocusTags($args);
+		$this->fascheme = $this->_getFaScheme($args);
+		$this->sponsorbgcol = $this->_getSponsorBGCol($args);
+		$this->mastertype = $this->_getMasterType($args);
+		$this->tags = $this->_getTags($args);
+		$this->style = $this->_getStyle($args);
+		$this->sortby = $this->_getSortBy($args);
+		$this->sortdir = $this->_getSortDir($args);
+
+		$this->items = $this->_getPublications();
+		$this->base = rtrim(str_replace(PATH_ROOT, '', __DIR__));
+		
+		$view = $this->_getView($args);
+    if($view =='card') {
+      return $this->_getCardView();
+		} else {
+			return $this->_getListView();
+		}
 
 		// 2.2 should take care of not needed to import?  i.e. the "use" command above should handle this
-		include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
+		// include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
 
 		// Get publications
-		$items = $this->_getPublications($mastertype, $group, $project, $pubid, $tags, $limit, $sortby, $sortdir);
+	}
 
-		$base = rtrim(str_replace(PATH_ROOT, '', __DIR__));
-
-		\Document::addStyleSheet($base . DS . 'assets' . DS . 'publications' . DS . 'css' . DS . 'pubcards.css');
-		\Document::addStyleSheet($base . DS . 'assets' . DS . 'publications' . DS . 'css' . DS . 'colorbrewer.css');
-		\Document::addScript($base . DS . 'assets' . DS . 'publications' . DS . 'js' . DS . 'pubcards.js');
-
+	public function _getCardView() {
+		\Document::addStyleSheet($this->base . DS . 'assets' . DS . 'publications' . DS . 'css' . DS . 'colorbrewer.css');
+		\Document::addScript($this->base . DS . 'assets' . DS . 'publications' . DS . 'js' . DS . 'pubcards.js');
+	  \Document::addStyleSheet($this->base . DS . 'assets' . DS . 'publications' . DS . 'css' . DS . 'pubcards.css');
+		
 		$html = '<style>';
 		$html .= '  .ribbon-alt {';
-		$html .= '    background-color: #' . $sponsorbgcol . ';';
-		$html .= '    color: ' . $this->getContrastYIQ($sponsorbgcol) . ';';
+		$html .= '    background-color: #' . $this->sponsorbgcol . ';';
+		$html .= '    color: ' . $this->getContrastYIQ($this->sponsorbgcol) . ';';
 		$html .= '  }';
 		$html .= '  .ribbon-alt:before {';
-		$html .= '    border-color: transparent ' . $this->sass_darken($sponsorbgcol, 20) . ' transparent transparent;';
+		$html .= '    border-color: transparent ' . $this->sass_darken($this->sponsorbgcol, 20) . ' transparent transparent;';
 		$html .= '  }';
 		$html .= '</style>';
 		$html .= '<div class="card-container">';
-		if ($style == 'legacy') {
-			foreach ($items as $pub)
+		if ($this->style == 'legacy') {
+			foreach ($this->items as $pub)
 			{
-				$html .= '<div class="demo-two-card">';
 
 				// Sponsors
-				if ($sponsors) {
+				if ($this->sponsors) {
 					$html .= '  <div class="ribbon-alt">';
 					$html .= '    Sponsored by <br>';
-					foreach ($sponsors as $sponsor)
+					foreach ($this->sponsors as $sponsor)
 					{
 						$logo = 'app' . DS . 'site' . DS . 'groups' . DS . $sponsor->get('gidNumber') . DS . 'uploads' . DS . $sponsor->get('logo');
 						$html .= '    <a href=' . \Route::url('index.php?option=com_groups&cn=' . $sponsor->get('cn')) . ' title="' . $sponsor->get('description') . ' Home"><img src="' . \Route::url($logo) . '" alt="Sponsor Logo"></a>';
@@ -186,15 +198,15 @@ class Publications extends Macro
 	      $html .= '  <div class="demo-two-content">';
 
 	  		// Focus Tags
-	  		if ($focusTags) {
+	  		if ($this->focusTags) {
 	  			// http://colorbrewer2.org/#type=qualitative&scheme=Dark2
 	  			// Dark2 has a maximum of 8 colors
-	  			$ncolors = count($focusTags);
+	  			$ncolors = count($this->focusTags);
 	  			foreach ($pub->getTags() as $tag) {
-	  				if (!$tag->admin && (($ind = array_search($tag->raw_tag, $focusTags)) !== false)) {
+	  				if (!$tag->admin && (($ind = array_search($tag->raw_tag, $this->focusTags)) !== false)) {
 	  					$html .= '    <div class="categories">';
 	  					$html .= '      <a href="' . $tag->link() . '">';
-							$html .= '        <span class="primary cat ' . $fascheme . ' q' . $ind % $ncolors . '-' . min($ncolors, 8) . '">' . $tag->raw_tag . '</span>';
+							$html .= '        <span class="primary cat ' . $this->fascheme . ' q' . $ind % $ncolors . '-' . min($ncolors, 8) . '">' . $tag->raw_tag . '</span>';
 							$html .= '      </a>';
 	  					$html .= '    </div>';
 	  				}
@@ -293,10 +305,10 @@ class Publications extends Macro
 				$html .= '</div>';
 			}
 		} else {
-			foreach ($items as $pub)
+			foreach ($this->items as $pub)
 			{
 				$html .= '  <div class="card" style="background-image: url(' . $this->_db->quote(Route::url($pub->link('masterimage'))) . ');">';
-				
+
 				// Featured ROW
 				// For some reason, featured is not stored in model so we need to grab it
 				$this->_db->setQuery(
@@ -305,7 +317,7 @@ class Publications extends Macro
 					WHERE `id`=" . $this->_db->quote($pub->id)
 				);
 				$featured = (int) $this->_db->loadResult();
-				
+
 				if ($featured) {
 					$html .= '	<div class="featured">';
 					$html .= '    <a aria-label="Featured ROW" title="Featured Resouce of the Week" href="' . Route::url('/news/newsletter/row') . '">';
@@ -315,9 +327,9 @@ class Publications extends Macro
 				}
 
 				// Sponsors
-				if ($sponsors) {
+				if ($this->sponsors) {
 					$html .= '    <div class="logo-wrap">';
-					foreach ($sponsors as $sponsor)
+					foreach ($this->sponsors as $sponsor)
 					{
 						$logo = 'app' . DS . 'site' . DS . 'groups' . DS . $sponsor->get('gidNumber') . DS . 'uploads' . DS . $sponsor->get('logo');
 						$html .= '    <a href=' . \Route::url('index.php?option=com_groups&cn=' . $sponsor->get('cn')) . ' title="' . $sponsor->get('description') . ' Home"><img src="' . \Route::url($logo) . '" alt="Sponsor Logo" class="logo"></a>';
@@ -326,14 +338,14 @@ class Publications extends Macro
 				}
 
 				// Focus Tags
-				if ($focusTags) {
+				if ($this->focusTags) {
 					// http://colorbrewer2.org/#type=qualitative&scheme=Dark2
 					// Dark2 has a maximum of 8 colors
-					$ncolors = count($focusTags);
+					$ncolors = count($this->focusTags);
 					foreach ($pub->getTags() as $tag) {
-						if (!$tag->admin && (($ind = array_search($tag->raw_tag, $focusTags)) !== false)) {
+						if (!$tag->admin && (($ind = array_search($tag->raw_tag, $this->focusTags)) !== false)) {
 							$html .= '    <a href="' . $tag->link() . '">';
-							$html .= '      <span class="featured-tag primary cat ' . $fascheme . ' q' . $ind % $ncolors . '-' . min($ncolors, 8) . '">';
+							$html .= '      <span class="featured-tag primary cat ' . $this->fascheme . ' q' . $ind % $ncolors . '-' . min($ncolors, 8) . '">';
 							$html .= '        ' . $tag->raw_tag;
 							$html .= '      </span>';
 							$html .= '    </a>';
@@ -424,8 +436,8 @@ class Publications extends Macro
 		    $html .= '    </button>';
 
 				// Meta
-				$tags = $pub->getTags()->toArray();
-				$nonAdminTags = array_filter(array_map(function ($tag) {return (!$tag['admin'] ? $tag['raw_tag'] : NULL); }, $tags), 'strlen');
+				$this->tags = $pub->getTags()->toArray();
+				$nonAdminTags = array_filter(array_map(function ($tag) {return (!$tag['admin'] ? $tag['raw_tag'] : NULL); }, $this->tags), 'strlen');
 				$tagsTitle = implode(', ', $nonAdminTags);
 				$html .= '    <div class="meta">';
 				$html .= '      <div aria-label="Tags" title= "' . $tagsTitle . '" class="tag-wrap">';
@@ -505,7 +517,201 @@ class Publications extends Macro
 		return $html;
 	}
 
-	private function _getPublications($mastertype, $group, $project, $id, $tags, $limit, $sortby, $sortdir)
+  public function _getListView() {
+		\Document::addStyleSheet($this->base . DS . 'assets' . DS . 'publications' . DS . 'css' . DS . 'list_view.css');
+	  //\Document::addStyleSheet($this->base . DS . 'assets' . DS . 'publications' . DS . 'css' . DS . 'colorbrewer.css');
+
+		$html = '<main class="main section">';
+		$html .= ' <div class="resource_contents">';
+		$html .= '  <div class="resource_content">';
+
+		foreach ($this->items as $pub)
+		{
+			// Featured ROW
+			// For some reason, featured is not stored in model so we need to grab it
+			$this->_db->setQuery(
+				"SELECT `featured`
+				FROM `#__publications`
+				WHERE `id`=" . $this->_db->quote($pub->id)
+			);
+			$featured = (int) $this->_db->loadResult();
+
+			if ($featured) {
+				$html .= '	<div class="featured">';
+				$html .= '    <a aria-label="Featured ROW" title="Featured Resouce of the Week" href="' . Route::url('/news/newsletter/row') . '">';
+				$html .= '	    <span>Featured Resource of the Week</span>';
+				$html .= '    </a>';
+				$html .= '  </div>'; // End feature ribbon
+			}
+
+			// Sponsors
+			if ($this->sponsors) {
+				$html .= '    <div class="logo-wrap">';
+				foreach ($this->sponsors as $sponsor)
+				{
+					$logo = 'app' . DS . 'site' . DS . 'groups' . DS . $sponsor->get('gidNumber') . DS . 'uploads' . DS . $sponsor->get('logo');
+					$html .= '    <a href=' . \Route::url('index.php?option=com_groups&cn=' . $sponsor->get('cn')) . ' title="' . $sponsor->get('description') . ' Home"><img src="' . \Route::url($logo) . '" alt="Sponsor Logo" class="logo"></a>';
+				}
+				$html .= '    </div>';
+			}
+
+			// Focus Tags
+			if ($this->focusTags) {
+				// http://colorbrewer2.org/#type=qualitative&scheme=Dark2
+				// Dark2 has a maximum of 8 colors
+				$ncolors = count($this->focusTags);
+				foreach ($pub->getTags() as $tag) {
+					if (!$tag->admin && (($ind = array_search($tag->raw_tag, $this->focusTags)) !== false)) {
+						$html .= '    <a href="' . $tag->link() . '">';
+						$html .= '      <span class="featured-tag primary cat ' . $this->fascheme . ' q' . $ind % $ncolors . '-' . min($ncolors, 8) . '">';
+						$html .= '        ' . $tag->raw_tag;
+						$html .= '      </span>';
+						$html .= '    </a>';
+					}
+				}
+			}
+
+			// Citation info
+			$html .= '	 <div class="resource-wrapper">';
+			$html .= '	  <div class="resource-info-wrapper">';
+			$html .= '	   <div class="resource-info">';
+
+			// Title
+			$html .= '      <h3>';
+			$html .= '        <a href="' . $pub->link() . '">' . $pub->get('title') . '</a>';
+			$html .= '      </h3>';
+
+			// Authors
+			$authors = implode(', ', array_map(function ($author) {return $author->name; }, $pub->authors()));
+			$html .= '      <p class="author" title= "' . $authors . '">';
+			$html .= '        ' . $authors;
+			$html .= '      </p>';
+
+			// Version info
+			$html .= '      <p class="hist">';
+			$html .= '        <span class="version">';
+			$html .= '          Version: ' . $pub->version->get('version_label');
+			$html .= '        </span>';
+			if ($v = $pub->forked_from) {
+				// Get forked ancestor
+				// Code pulled from: com_publications/site/views/view/tmpl/default.php
+				$this->_db->setQuery("SELECT publication_id FROM `#__publication_versions` WHERE `id`=" . $this->_db->quote($v));
+				$p = $this->_db->loadResult();
+				$ancestor = new \Components\Publications\Models\Publication($p, 'default', $v);
+
+				$html .= '        <span class="adaptations">';
+				$html .= '          Adapted From: <a href="' . $ancestor->link('version') . '">' . $ancestor->version->get('title') . '</a> v' . $ancestor->version->get('version_label');
+				$html .= '        </span>';
+			}
+			$html .= '      </p>';
+			$html .= '      <div class="abstract">';
+			$html .= '        ' . $pub->get('abstract');
+			$html .= '      </div>';
+			$html .= '    </div>'; // End resource-info
+
+			// Watch
+			// Code pulled from: plugins/publications/watch
+			// Bug in watching code - Waiting for fix (see https://qubeshub.org/support/tickets/990)
+			$watching = \Hubzero\Item\Watch::isWatching(
+				$pub->get('id'),
+				'publication',
+				User::get('id')
+			);
+
+			// Meta
+
+			// Publish Date
+			$html .= '    <div class="meta-wrap">';
+
+			$html .= '     <div class="date">';
+			$html .= '  Published on <span class="pub-date" aria-label="Publish Date" title= "Publish Date">';
+			$html .= '         ' . Date::of($pub->version->get('published_up'))->toLocal('m.d.Y');
+			$html .= '        </span>';
+			$html .= '     </div>'; // End publish date
+
+			$html .= '     <div class="meta">';
+
+			// Views Information
+			// Code pulled from: plugins/publications/usage/usage.php (onPublication)
+			$this->_db->setQuery(
+				"SELECT SUM(page_views)
+				FROM `#__publication_logs`
+				WHERE `publication_id`=" . $this->_db->quote($pub->id) . " AND `publication_version_id`=" . $this->_db->quote($pub->version->id) . "
+				ORDER BY `year` ASC, `month` ASC"
+			);
+
+			$views = (int) $this->_db->loadResult();
+
+			$html .= '      <div class="views">';
+			$html .= '        <span aria-label="Views" title= "Views">';
+			$html .= '          <span class="count">' . $views . '</span>';
+			$html .= '          <span class="ic eye-icon">' . file_get_contents("core/assets/icons/eye-open.svg") . '</span>';
+		  $html .= '          <span class="meta-descripter">Views</span';
+			$html .= '        </span>';
+			$html .= '      </div>'; // End views
+
+			// Download information
+			// Code pulled from: plugins/publications/usage/usage.php (onPublication)
+			$this->_db->setQuery(
+				"SELECT SUM(primary_accesses)
+				FROM `#__publication_logs`
+				WHERE `publication_id`=" . $this->_db->quote($pub->id) . " AND `publication_version_id`=" . $this->_db->quote($pub->version->id) . "
+				ORDER BY `year` ASC, `month` ASC"
+			);
+			$downloads = (int) $this->_db->loadResult();
+
+			$html .= '      <div class="downloads">';
+			$html .= '        <span aria-label="Downloads" title= "Downloads">';
+			$html .= '          <span class="count">' . $downloads . '</span>';
+			$html .= '          <span class="ic download-icon">' . file_get_contents("core/assets/icons/download-alt.svg") . '</span>';
+		  $html .= '          <span class="meta-descripter">Downloads</span';
+			$html .= '        </span>';
+			$html .= '      </div>'; // End downloads
+
+			// Adaptation information
+			$this->_db->setQuery(
+				"SELECT COUNT(id)
+				FROM `#__publication_versions`
+				WHERE `forked_from`
+				IN (" . $this->_db->quote($pub->version->id) . ")");
+			$forks = (int) $this->_db->loadResult();
+
+			$html .= '      <div class="forks">';
+			$html .= '        <span aria-label="Adaptations" title= "Adaptations">';
+			$html .= '          <span class="count">' . $forks . '</span>';
+			$html .= '          <span class="ic fork-icon">' . file_get_contents("core/assets/icons/code-fork.svg") . '</span>';
+			$html .= '          <span class="meta-descripter">Adaptations</span';
+			$html .= '        </span>';
+			$html .= '      </div>'; // End adaptations
+
+			$html .= '     </div>'; // End meta
+			$html .= '    </div>'; // End meta-wrap
+			$html .= '   </div>';  // End resource-info-wrapper
+
+			$this->tags = $pub->getTags()->toArray();
+			$nonAdminTags = array_filter(array_map(function ($tag) {return (!$tag['admin'] ? $tag['raw_tag'] : NULL); }, $this->tags), 'strlen');
+			$tagsTitle = implode(', ', $nonAdminTags);
+
+			$html .= '      <div aria-label="Tags" title= "' . $tagsTitle . '" class="tags-wrapper">';
+			$html .= '        <span class="icons">' . file_get_contents("core/assets/icons/tags.svg") . '</span>';
+			$html .= '        <span>';
+			if ($nonAdminTags) {
+				$html .= '          <span class="tags">' . implode(', </span><span class="tags">', $nonAdminTags);
+			}
+			$html .= '        </span>';
+			$html .= '      </div>'; // End tags
+
+			$html .= '  </div>'; // End resource-wrapper
+		}
+
+		$html .= '  </div>'; //End resource_content
+		$html .= ' </div>';  //End resource_contents
+		$html .= '</main>'; //End main section
+
+		return $html;
+	}
+
+	private function _getPublications()
 	{
 		// Get publication model
 		//
@@ -524,51 +730,51 @@ class Publications extends Macro
 		$sql = 'SELECT V.*, C.id as id, C.category, C.project_id, C.access as master_access, C.checked_out, C.checked_out_time, C.rating as master_rating, C.group_owner, (SELECT G.cn FROM #__xgroups as G WHERE G.gidNumber=C.group_owner) AS group_cn, (SELECT G.cn FROM #__xgroups as G WHERE G.gidNumber=PP.owned_by_group) AS project_group_cn, C.master_type, C.master_doi, C.ranking as master_ranking, C.times_rated as master_times_rated, C.alias, V.id as version_id, t.name AS cat_name, t.alias as cat_alias, t.url_alias as cat_url, PP.alias as project_alias, PP.title as project_title, PP.state as project_status, PP.private as project_private, PP.provisioned as project_provisioned, MT.alias as base, MT.params as type_params, (SELECT vv.version_label FROM #__publication_versions as vv WHERE vv.publication_id=C.id AND vv.state=3 ORDER BY ID DESC LIMIT 1) AS dev_version_label , (SELECT COUNT(*) FROM #__publication_versions WHERE publication_id=C.id AND state!=3) AS versions FROM #__publication_versions as V, #__projects as PP, #__publication_master_types AS MT, #__publications AS C LEFT JOIN #__publication_categories AS t ON t.id=C.category WHERE V.publication_id=C.id AND MT.id=C.master_type AND PP.id = C.project_id AND V.id = (SELECT MAX(wv2.id) FROM #__publication_versions AS wv2 WHERE wv2.publication_id = C.id AND state!=3)';
 
 		// Add master type
-		if ($mastertype) {
+		if ($this->mastertype) {
 			$sql .= ' AND (MT.alias = ' . $mastertype . ')';
 		}
 
 		$args = array();
-		if ($group)
+		if ($this->group)
 		{
-			array_push($args, '((SELECT G.cn FROM #__xgroups as G WHERE G.gidNumber=C.group_owner) IN (' . $group . ') OR (SELECT G.cn FROM #__xgroups as G WHERE G.gidNumber=PP.owned_by_group) IN (' . $group . '))');
+			array_push($args, '((SELECT G.cn FROM #__xgroups as G WHERE G.gidNumber=C.group_owner) IN (' . $this->group . ') OR (SELECT G.cn FROM #__xgroups as G WHERE G.gidNumber=PP.owned_by_group) IN (' . $this->group . '))');
 		}
-		if ($project)
+		if ($this->project)
 		{
-			array_push($args, '(PP.alias IN (' . $project . '))');
+			array_push($args, '(PP.alias IN (' . $this->project . '))');
 		}
-		if ($id)
+		if ($this->id)
 		{
-			array_push($args, '(C.id IN (' . $id . '))');
+			array_push($args, '(C.id IN (' . $this->id . '))');
 		}
 		if ($nargs = count($args)) {
 			$sql_args = implode(' OR ', $args);
 			$sql .= ' AND ' . ($nargs == 1 ? $sql_args : '(' . $sql_args . ')');
 		}
 
-		if ($tags) {
-			$sql .= ' AND (V.id IN (SELECT DISTINCT(objectid) FROM #__tags_object O WHERE O.tagid IN (SELECT T.id FROM #__tags T WHERE T.tag IN (' . $tags . ')) AND O.tbl="publications"))';
+		if ($this->tags) {
+			$sql .= ' AND (V.id IN (SELECT DISTINCT(objectid) FROM #__tags_object O WHERE O.tagid IN (SELECT T.id FROM #__tags T WHERE T.tag IN (' . $this->tags . ')) AND O.tbl="publications"))';
 		}
 
 		$sql .= ' AND V.state != 2 GROUP BY C.id ORDER BY';
 		
 		// Sorting
-		if ($sortby == 'id') {
-			if ($sortdir == 'none') {
-				$sql .= ' FIELD(C.id, ' . $id . ')';
+		if ($this->sortby == 'id') {
+			if ($this->sortdir == 'none') {
+				$sql .= ' FIELD(C.id, ' . $this->id . ')';
 			} else {
 				$sql .= ' C.id';
 			}
 		} else {
 			$sql .= ' V.published_up';
 		}
-		if ($sortdir != 'none') {
-			$sql .= ($sortdir == 'asc' ? ' ASC' : ' DESC');
+		if ($this->sortdir != 'none') {
+			$sql .= ($this->sortdir == 'asc' ? ' ASC' : ' DESC');
 		}
 
-		if ($limit)
+		if ($this->limit)
 		{
-			$sql .= ' LIMIT 0, ' . $limit;
+			$sql .= ' LIMIT 0, ' . $this->limit;
 		}
 
 		$this->_db->setQuery($sql);
@@ -890,6 +1096,22 @@ class Publications extends Macro
 			$color .= str_pad(dechex($primary_colors[$i]), 2, '0', STR_PAD_LEFT);
 		}
 		return $color;
+	}
+
+
+	private function _getView(&$args, $default = "card")
+	{
+		foreach ($args as $k => $arg)
+		{
+			if (preg_match('/view=(\blist\b)/i', $arg, $matches))
+			{
+				$view = (isset($matches[1]) ? $matches[1] : '');
+				unset($args[$k]);
+				return $view;
+			}
+		}
+
+		return $default;
 	}
 
 	/**
