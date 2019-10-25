@@ -104,7 +104,7 @@ class Publications extends Macro
 		$this->sponsors = $this->_getSponsor($args);
 		$this->group = $this->_getGroup($args);
 		$this->project = $this->_getProject($args);
-		$this->pubid = $this->_getId($args);
+		$this->id = $this->_getId($args);
 		$this->focusTags = $this->_getFocusTags($args);
 		$this->fascheme = $this->_getFaScheme($args);
 		$this->sponsorbgcol = $this->_getSponsorBGCol($args);
