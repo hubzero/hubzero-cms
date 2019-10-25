@@ -49,7 +49,8 @@ class Publications extends Macro
 	 */
 	protected $_db = null;
 
-	public $limit, $sponsors, $group, $project, $pubid, $focusTags, $fascheme, $sponsorbgcol, $mastertype, $tags, $style, $sortby, $sortdir, $items, $base;
+  // Not sure we need this
+	public $limit, $sponsors, $group, $project, $id, $focusTags, $fascheme, $sponsorbgcol, $mastertype, $tags, $style, $sortby, $sortdir, $items, $base;
 
 	/**
 	 * Returns description of macro, use, and accepted arguments
@@ -93,6 +94,8 @@ class Publications extends Macro
 
 	public function render()
 	{
+		include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
+
 		// Get args
 	  $args = $this->getArgs();
 
@@ -123,11 +126,6 @@ class Publications extends Macro
 		} else {
 			return $this->_getListView();
 		}
-
-		// 2.2 should take care of not needed to import?  i.e. the "use" command above should handle this
-		// include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
-
-		// Get publications
 	}
 
 	public function _getCardView() {
