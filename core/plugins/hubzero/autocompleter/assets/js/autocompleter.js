@@ -559,6 +559,7 @@ $.TokenList = function (input, url_or_data, settings) {
 
 		// Insert the new tokens
 		if (settings.tokenLimit == null || token_count < settings.tokenLimit) {
+			item.name = item.name.replace(',', ' ');
 			insert_token(item);
 			checkTokenLimit();
 		}
