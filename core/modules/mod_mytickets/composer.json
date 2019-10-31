@@ -1,0 +1,22 @@
+{
+	"name": "hubzero/mod_mytickets",
+	"description": "This module will display a list of active support tickets submitted by the user in the HUBzero CMS",
+	"type": "hubzero-module",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4",
+		"hubzero/com_tools": "dev-master"
+	}
+}

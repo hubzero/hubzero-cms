@@ -1,0 +1,25 @@
+{
+	"name": "hubzero/plg_citation_default",
+	"description": "Default plugin for the Citations component for the HUBzero CMS",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4",
+		"hubzero/com_citation": "dev-master"
+	},
+	"extra": {
+		"install-directory": "/plugins/citation/default/"
+	}
+}

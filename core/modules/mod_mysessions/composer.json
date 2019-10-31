@@ -1,0 +1,22 @@
+{
+	"name": "hubzero/mod_mysessions",
+	"description": "This module shows a list of the user's active tool sessions in the HUBzero CMS",
+	"type": "hubzero-module",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4",
+		"hubzero/com_tools": "dev-master"
+	}
+}

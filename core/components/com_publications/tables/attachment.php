@@ -875,4 +875,39 @@ class Attachment extends Table
 
 		return true;
 	}
+
+	/**
+	 * Get array of series that the publication belongs to
+	 *
+	 * @param   integer  $versionID  Publication version ID
+	 *
+	 * @return  mixed    series  or false
+	 */
+	public function getSeries($versionId)
+	{
+		if ($versionId === null)
+		{
+			return false;
+		}
+
+		// Get publication version id of series
+		$query = "SELECT publication_version_id FROM `$this->_tbl` WHERE object_id=$versionId";
+		$this->_db->setQuery($query);
+		$publicationVersionIds = $this->_db->loadColumn();
+
+		if (!empty($publicationVersionIds)) {
+			$versionIdSqlArray = '(' . implode($publicationVersionIds, ',') . ')';
+			$seriesQuery = "SELECT publication_id, title, abstract, version_number"
+			. " FROM `#__publication_versions`"
+			. " WHERE id in $versionIdSqlArray";
+			$this->_db->setQuery($seriesQuery);
+			$series = $this->_db->loadObjectList();
+		}
+		else
+		{
+			$series = [];
+		}
+
+		return $series;
+	}
 }

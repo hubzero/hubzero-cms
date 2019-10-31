@@ -1,0 +1,24 @@
+{
+	"name": "hubzero/plg_system_memberhome",
+	"description": "This plugin redirects your members to a pre-defined homepage for the HUBzero CMS if they are logged in.",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4"
+	},
+	"extra": {
+		"install-directory": "/plugins/system/memberhome/"
+	}
+}

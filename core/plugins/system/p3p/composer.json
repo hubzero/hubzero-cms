@@ -1,0 +1,24 @@
+{
+	"name": "hubzero/plg_system_p3p",
+	"description": "The system P3P policy plugin allows for sending a customised string of P3P policy tags in the HTTP header for the HUBzero CMS.",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4"
+	},
+	"extra": {
+		"install-directory": "/plugins/system/p3p/"
+	}
+}

@@ -1,0 +1,22 @@
+{
+	"name": "hubzero/mod_quicktips",
+	"description": "This module shows a quick 'tip of the day' or 'did you know...' feature in the HUBzero CMS",
+	"type": "hubzero-module",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4",
+		"hubzero/com_content": "dev-master"
+	}
+}

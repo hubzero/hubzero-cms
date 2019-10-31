@@ -1,0 +1,25 @@
+{
+	"name": "hubzero/plg_authentication_orcid",
+	"description": "ORCID authentication plugin for the HUBzero CMS",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4",
+		"hubzero/orcid-php": "0.*"
+	},
+	"extra": {
+		"install-directory": "/plugins/authentication/orcid/"
+	}
+}

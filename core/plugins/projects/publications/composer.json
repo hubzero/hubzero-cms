@@ -1,0 +1,27 @@
+{
+	"name": "hubzero/plg_projects_publications",
+	"description": "Publications plugin for the Projects component for the HUBzero CMS",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4",
+		"hubzero/com_projects": "dev-master",
+		"hubzero/com_publications": "dev-master",
+		"hubzero/plg_projects_files": "dev-master"
+	},
+	"extra": {
+		"install-directory": "/plugins/projects/publications/"
+	}
+}

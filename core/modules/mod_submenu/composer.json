@@ -1,0 +1,21 @@
+{
+	"name": "hubzero/mod_submenu",
+	"description": "This Module shows the sub-Menu Navigation Module in the HUBzero CMS",
+	"type": "hubzero-module",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4"
+	}
+}

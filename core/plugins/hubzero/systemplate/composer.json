@@ -1,0 +1,25 @@
+{
+	"name": "hubzero/plg_hubzero_systemplate",
+	"description": "Systemplate (template info) plugin for the HUBzero CMS",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4",
+		"hubzero/com_system": "dev-master"
+	},
+	"extra": {
+		"install-directory": "/plugins/hubzero/systemplate/"
+	}
+}

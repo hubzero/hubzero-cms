@@ -1,0 +1,22 @@
+{
+	"name": "hubzero/mod_polltitle",
+	"description": "This module displays the title of the current active poll in the HUBzero CMS",
+	"type": "hubzero-module",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4",
+		"hubzero/com_poll": "dev-master"
+	}
+}

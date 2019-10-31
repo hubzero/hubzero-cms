@@ -1,0 +1,25 @@
+{
+	"name": "hubzero/plg_geocode_ipinfodb",
+	"description": "IP Info Db geocoding plugin for the HUBzero CMS.",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4",
+		"willdurand/geocoder": "2.8.*"
+	},
+	"extra": {
+		"install-directory": "/plugins/geocode/ipinfodb/"
+	}
+}

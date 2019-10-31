@@ -950,7 +950,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			$db->query();
 		}
 
-		$sql = "CREATE TABLE `" . $table['name'] . "` ";
+		$sql = "CREATE TABLE IF NOT EXISTS `" . $table['name'] . "` ";
 
 		$table['cols'][] = '__ds_rec_id int(11) NOT NULL AUTO_INCREMENT NOT NULL';
 
@@ -1185,7 +1185,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			$db->setQuery($sql);
 			$res = $db->query();
 
-			while ($row = $res->fetch_array(MYSQLI_NUM))
+			while ($row = $res->loadNextRow(MYSQLI_NUM))
 			{
 				fputcsv($fp, $row);
 			}
