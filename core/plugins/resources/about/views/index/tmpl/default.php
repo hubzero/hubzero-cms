@@ -40,10 +40,14 @@ $sef = Route::url('index.php?option=' . $this->option . '&' . ($this->model->res
 // Set the display date
 switch ($this->model->params->get('show_date'))
 {
-	case 0: $thedate = ''; break;
-	case 1: $thedate = $this->model->resource->created; break;
-	case 2: $thedate = ($this->model->resource->modified && $this->model->resource->modified != '0000-00-00 00:00:00' ? $this->model->resource->modified : $this->model->resource->created);   break;
-	case 3: $thedate = ($this->model->resource->publish_up && $this->model->resource->publish_up != '0000-00-00 00:00:00' ? $this->model->resource->publish_up : $this->model->resource->created); break;
+	case 0:
+		$thedate = ''; break;
+	case 1:
+		$thedate = $this->model->resource->created; break;
+	case 2:
+		$thedate = ($this->model->resource->modified && $this->model->resource->modified != '0000-00-00 00:00:00' ? $this->model->resource->modified : $this->model->resource->created);   break;
+	case 3:
+		$thedate = ($this->model->resource->publish_up && $this->model->resource->publish_up != '0000-00-00 00:00:00' ? $this->model->resource->publish_up : $this->model->resource->created); break;
 }
 if ($this->model->isTool() && $this->model->curtool)
 {
@@ -240,15 +244,15 @@ $maintext = $this->model->description('parsed');
 				?>
 
 				<?php if ($this->model->params->get('show_citation') == 3): ?>
-				<h4 id="citethis"><?php echo (isset($citations) && ($citations != NULL || $citations != '') ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS') : ''); ?></h4>
+				<h4 id="citethis"><?php echo isset($citations) && ($citations != null || $citations != '') ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS') : ''; ?></h4>
 
 				<div class="resource-content">
-					<?php echo (isset($citations) && ($citations != NULL || $citations != '') ? $citeinstruct : ''); ?>
+					<?php echo isset($citations) && ($citations != null || $citations != '') ? $citeinstruct : ''; ?>
 				</div>
 				<?php else: ?>
-					<h4 id="citethis"><?php echo (isset($cite) && ($cite != NULL || $cite != '') ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS') : ''); ?></h4>
+					<h4 id="citethis"><?php echo isset($cite) && ($cite != null || $cite != '') ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS') : ''; ?></h4>
 					<div class="resource-content">
-						<?php echo (isset($cite) && ($cite != NULL || $cite != '') ? $citeinstruct : ''); ?>
+						<?php echo isset($cite) && ($cite != null || $cite != '') ? $citeinstruct : ''; ?>
 					</div>
 				<?php endif; ?>
 			<?php } ?>
