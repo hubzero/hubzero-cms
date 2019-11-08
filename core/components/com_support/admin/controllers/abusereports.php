@@ -339,25 +339,29 @@ class Abusereports extends AdminController
 			// HTML
 			$eview->setLayout('abuse_html');
 
-			$html = $eview->loadTemplate();
-			$html = str_replace("\n", "\r\n", $html);
+			try {
+				$html = $eview->loadTemplate();
+				$html = str_replace("\n", "\r\n", $html);
 
-			// Build message
-			$message = new Message();
-			$message->setSubject($subject)
-			        ->addFrom($from['email'], $from['name'])
-			        ->addTo($user->get('email'), $user->get('name'))
-			        ->addHeader('X-Component', 'com_support')
-			        ->addHeader('X-Component-Object', 'abuse_item_removal');
+				// Build message
+				$message = new Message();
+				$message->setSubject($subject)
+					->addFrom($from['email'], $from['name'])
+					->addTo($user->get('email'), $user->get('name'))
+					->addHeader('X-Component', 'com_support')
+					->addHeader('X-Component-Object', 'abuse_item_removal');
 
-			$message->addPart($plain, 'text/plain');
+				$message->addPart($plain, 'text/plain');
 
-			$message->addPart($html, 'text/html');
+				$message->addPart($html, 'text/html');
 
-			// Send the email
-			if (Utilities::checkValidEmail($user->get('email')))
-			{
-				$message->send();
+				// Send the email
+				if (Utilities::checkValidEmail($user->get('email'))) {
+					$message->send();
+				}
+			}
+			catch (Exception $e) {
+				// just ignore mailing if there is an exception or bad email address
 			}
 		}
 
