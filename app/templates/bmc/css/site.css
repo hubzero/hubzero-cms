@@ -37,8 +37,8 @@ button {
 }
 input[type="submit"]:hover,
 button:hover {
-  background: #eb6546;
-  border-color: #eb6546;
+  background: #008099;
+  border-color: #008099;
 }
 .mobile-panel.show.menu .subpanel.search .label,
 .mobile-panel .subpanel.search .label {
