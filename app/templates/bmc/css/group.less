@@ -111,7 +111,7 @@ ul li {
 		.closeButton(40px);
 		top: @padContain;
 		right: @padContain;
-		
+
 		&:focus {
 			outline: -webkit-focus-ring-color auto 5px;
 		}
@@ -440,16 +440,10 @@ body.panel-open {
 	margin-bottom: 25px !important;
 }
 
-p {
-	a {
-		display: unset;
-		font-family: inherit;
-		font-weight: normal;
-
-		&::after {
-			display: none;
-		}
-	}
+a,
+a:active,
+a:visited {
+	font-family: inherit;
 }
 /* END: Supergroup template fixes */
 

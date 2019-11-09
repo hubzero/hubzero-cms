@@ -527,11 +527,6 @@
 	background: none;
 	background-color: none;
 	border: none;
-	font-family: inherit;
-	font-weight: normal;
-}
-.help a::after {
-	display: none;
 }
 #help a span {
 	padding: 0;

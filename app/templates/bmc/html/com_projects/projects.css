@@ -94,38 +94,3 @@ ol.steps li {
   margin: 2em 1em;
   padding-bottom: 2em;
 }
-#manage_assets a,
-.welcome a,
-.side-content a,
-.actionlink a,
-.editing a,
-.groupowner a,
-.viewallstats a,
-.s-notes a,
-.s-todo a,
-.addnew a,
-.newauthor-question a {
-  display: unset;
-  font-family: inherit;
-  font-weight: normal;
-}
-#manage_assets a::after,
-.welcome a::after,
-.side-content a::after,
-.actionlink a::after,
-.editing a::after,
-.groupowner a::after,
-.viewallstats a::after,
-.s-notes a::after,
-.s-todo a::after,
-.addnew a::after,
-.newauthor-question a::after {
-  display: none;
-}
-#project-wrap a {
-  font-family: 'open_sansregular', Helvetica Neue, Helvetica, sans-serif;
-  font-weight: normal;
-}
-#project-wrap a::after {
-  display: none;
-}

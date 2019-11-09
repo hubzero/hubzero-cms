@@ -8,11 +8,3 @@
   left: -0.1em;
   top: 0;
 }
-.convo p a {
-  display: unset;
-  font-family: inherit;
-  font-weight: normal;
-}
-.convo p a::after {
-  display: none;
-}

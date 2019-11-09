@@ -743,12 +743,6 @@
 		font-weight: bold;
 		color: #666;
 	}
-	#tktlist .ticket-author a {
-		font-family: 'open_sansregular', Helvetica Neue, Helvetica, sans-serif;
-	}
-	#tktlist .ticket-author a::after {
-		display: none;
-	}
 	#tktlist .ticket-id {
 		color: #666;
 		font-size: 1.2em;
@@ -769,13 +763,6 @@
 	#tktlist .ticket-content:hover {
 		color: #333;
 		border-bottom: 1px solid #333;
-	}
-	#tktlist .ticket-content {
-		font-family: 'open_sansregular', Helvetica Neue, Helvetica, sans-serif;
-		font-weight: normal;
-	}
-	#tktlist .ticket-content::after {
-		display: none;
 	}
 	#tktlist td p:first-child {
 		margin-top: 0;

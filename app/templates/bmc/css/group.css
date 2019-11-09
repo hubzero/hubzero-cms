@@ -495,13 +495,10 @@ body.panel-open .hub-overlay {
 .super-group-content-wrap {
   margin-bottom: 25px !important;
 }
-p a {
-  display: unset;
+a,
+a:active,
+a:visited {
   font-family: inherit;
-  font-weight: normal;
-}
-p a::after {
-  display: none;
 }
 /* END: Supergroup template fixes */
 @keyframes colorWheel {

@@ -3,26 +3,14 @@
 @import url('/core/plugins/publications/groups/assets/css/groups.css');
 @import '../../less/_vars/_colors';
 
-.group-img {
-  a::after {
-    display: none;
-  }
-}
+
 
 .group-withlogo {
   a {
     color: @colorLight;
 
-    &::after {
-      background-color: @colorLight;
-    }
-
     &:hover {
       color: @colorTheme;
-    }
-
-    &:hover::after {
-      background-color: @colorTheme;
     }
   }
 }

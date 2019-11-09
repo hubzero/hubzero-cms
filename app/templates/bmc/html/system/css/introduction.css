@@ -15,11 +15,3 @@
 #introduction:after {
   content: '' !important;
 }
-#introduction p a.popup {
-  display: unset;
-  font-family: 'open_sansregular', Helvetica Neue, Helvetica, sans-serif;
-  font-weight: normal;
-}
-#introduction p a.popup::after {
-  display: none;
-}

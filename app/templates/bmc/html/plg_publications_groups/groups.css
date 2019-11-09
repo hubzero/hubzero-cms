@@ -1,16 +1,7 @@
 @import url('/core/plugins/publications/groups/assets/css/groups.css');
-.group-img a::after {
-  display: none;
-}
 .group-withlogo a {
   color: #fff;
 }
-.group-withlogo a::after {
-  background-color: #fff;
-}
 .group-withlogo a:hover {
   color: #8cc540;
-}
-.group-withlogo a:hover::after {
-  background-color: #8cc540;
 }
