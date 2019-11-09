@@ -81,48 +81,12 @@ a:active,
 a:visited {
 	text-decoration: none;
 	color: @colorLink;
+	font-family: @fontGeometric;
 	.transition();
 }
 
 a:hover {
 	color: @colorLinkHover;
-}
-
-p {
-	a {
-		color: @colorLink;
-		display: inline-block;
-		font-family: @fontGeometric;
-		font-weight: bold;
-		position: relative;
-
-		&::after {
-			background-color: @colorLink;
-			content: '';
-			display: block;
-			height: 2px;
-			left: 0;
-			margin: 0 auto;
-			opacity: .5;
-			position: absolute;
-			top: 100%;
-			transform: scaleX(.7);
-			-webkit-transform: scaleX(.7);
-			width: 100%;
-			transition: .3s ease;
-		}
-
-		&:hover {
-			color: @colorLinkHover;
-		}
-
-		&:hover::after {
-			background-color: @colorLinkHover;
-			opacity: 1;
-			transform: scaleX(1);
-			-webkit-transform: scaleX(1);
-		}
-	}
 }
 
 /* ********************************************

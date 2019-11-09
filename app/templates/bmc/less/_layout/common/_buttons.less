@@ -9,14 +9,12 @@
 // Buttons
 // --------------------------------------------------
 
-
 // Base styles
 .btn() {
 	display: inline-block;
 	background: @colorLink;
 	color: #fff;
-	font-family: @fontSimple;
-	font-weight: normal;
+	font-family: @fontGeometric; // Keep input buttons in same font family
 	//padding: 0.4rem 1rem;
 	padding: 0.7em 0.91em;
 	border: none;
@@ -40,7 +38,7 @@
 	&:focus,
 	&:visited:hover {
 		color: #fff;
-		background: @colorTextDark;
+		background: @colorAccent;
 		text-decoration: none;
 		.transition(all .1s linear);
 	}
@@ -67,11 +65,6 @@
 		background: #efefef;
 		border: 1px solid #979797;
 		color: #979797;
-	}
-
-	// Remove underline
-	&::after {
-		display: none;
 	}
 
 	&[class^="icon-"],
