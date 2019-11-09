@@ -363,17 +363,11 @@
   p {
     a {
       color: $color-text-body;
-      display: unset;
       font-family: $font-body;
-      font-weight: normal;
 
       &:hover,
       &:visited {
         color: $color-text-body;
-      }
-
-      &::after {
-        display: none;
       }
     }
   }

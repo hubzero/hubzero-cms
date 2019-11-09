@@ -36,6 +36,26 @@
 			@include grid(3 / span 1, 1);
 		}
 	}
+
+	.box-accent-wrapper {
+	  position: relative;
+	}
+
+	.box-accent {
+	  border: 1px solid $midnight;
+	  padding: 1em 1em 1em 4em;
+	  position: relative;
+	}
+
+	.arrow-right {
+	  border-bottom: 60px solid transparent;
+	  border-left: 60px solid $android-green;
+	  border-top: 60px solid transparent;
+	  height: 0;
+	  left: -.5em;
+	  position: absolute;
+	  width: 0;
+	}
 	@include respond-at(50.0625em) {
 		@include flexbox;
 		@include grid-template(repeat(3, 1fr), null, 1rem);

@@ -17,26 +17,20 @@
 }
 
 .service p a {
-  color: #4c4c4c;
-  display: unset;
+  color: #2b2b2b;
   font-family: "open_sansregular", Helvetica Neue, Helvetica, sans-serif;
-  font-weight: normal;
 }
 
 .service p a:hover, .service p a:visited {
-  color: #4c4c4c;
-}
-
-.service p a::after {
-  display: none;
+  color: #2b2b2b;
 }
 
 .service:hover {
-  border-left: 4px solid #393c3d;
+  border-left: 4px solid #008099;
 }
 
 .service:hover hr {
-  background-color: #393c3d;
+  background-color: #008099;
   width: 65%;
 }
 
@@ -45,7 +39,7 @@
 }
 
 .service:hover h4 a {
-  color: #393c3d;
+  color: #008099;
 }
 
 .content-header {
@@ -214,11 +208,11 @@
 }
 
 .one .community .link:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .one .community .link:hover::before, .one .community .link:hover::after {
-  border-color: #393c3d;
+  border-color: #008099;
   border-radius: 2px;
   height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;
@@ -328,11 +322,11 @@
 }
 
 .two .link:hover, .three .link:hover, .four .link:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .two .link:hover::before, .three .link:hover::before, .four .link:hover::before, .two .link:hover::after, .three .link:hover::after, .four .link:hover::after {
-  border-color: #393c3d;
+  border-color: #008099;
   border-radius: 2px;
   height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;
@@ -471,11 +465,11 @@
 }
 
 .five .contact-qubes .link:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .five .contact-qubes .link:hover::before, .five .contact-qubes .link:hover::after {
-  border-color: #393c3d;
+  border-color: #008099;
   border-radius: 2px;
   height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;

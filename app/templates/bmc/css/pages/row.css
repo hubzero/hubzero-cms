@@ -1,4 +1,5 @@
 .newsletter-img {
+  border: 1px #f1f1f1 solid;
   height: 100%;
   overflow: hidden;
   width: 100%;
@@ -13,16 +14,6 @@
 
 .newsletter-img:hover img {
   transform: scale(1.1);
-}
-
-.newsletter-img::after {
-  content: '';
-  display: block;
-  position: absolute;
-  bottom: 0;
-  background-image: linear-gradient(to bottom, transparent 0%, transparent 50%, black 100%);
-  height: 100%;
-  width: 100%;
 }
 
 .header-logo img {
@@ -75,11 +66,12 @@
 }
 
 .wrapper .description .link {
-  box-shadow: inset 0 0 0 1px #6E9C39;
-  color: #6E9C39;
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px #597f2f;
+  color: #597f2f;
   padding: .25em .75em;
   position: relative;
-  text-transform: uppercase;
+  text-transform: capitalize;
   transition: color 0.25s 0.08333s;
   border-radius: 2px;
   display: block;
@@ -115,11 +107,12 @@
 }
 
 .wrapper .description .link:hover {
-  color: #cca231;
+  color: #008099;
 }
 
 .wrapper .description .link:hover::before, .wrapper .description .link:hover::after {
-  border-color: #cca231;
+  border-color: #008099;
+  border-radius: 2px;
   height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;
   width: 100%;
@@ -142,13 +135,13 @@
 }
 
 .wrapper .most-recent h2 {
-  color: #84bf41;
+  color: #8cc540;
   position: relative;
   top: .75em;
 }
 
 .module-recent {
-  border: 1px solid #84bf41;
+  border: 1px solid #8cc540;
   border-radius: 6px;
   padding: 1em;
 }
@@ -228,11 +221,22 @@
 }
 
 .newsletter .newsletter-title a {
+  background-color: #fff;
+  border: 1px solid #f1f1f1;
+  bottom: 0;
+  opacity: .95;
+  padding: .625em;
+  position: absolute;
+  width: 100%;
+}
+
+.newsletter .newsletter-title a a {
   display: block;
   /* Fallback for non-webkit */
   display: -webkit-box;
   height: 2.86rem;
   /* Fallback for non-webkit */
+  font-family: "montserratregular", Helvetica Neue, Helvetica, sans-serif;
   margin: 0 auto;
   font-size: 1.1rem;
   line-height: 1.3;
@@ -240,5 +244,9 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #fff;
+  color: #597f2f;
+}
+
+.newsletter .newsletter-title a a:hover {
+  color: #008099;
 }

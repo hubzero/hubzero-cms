@@ -402,11 +402,11 @@
 }
 
 .link:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .link:hover::before, .link:hover::after {
-  border-color: #393c3d;
+  border-color: #008099;
   border-radius: 2px;
   height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;
@@ -499,11 +499,11 @@
 }
 
 .resources .oer .link:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .resources .oer .link:hover::before, .resources .oer .link:hover::after {
-  border-color: #393c3d;
+  border-color: #008099;
   border-radius: 2px;
   height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;
@@ -606,7 +606,7 @@
 }
 
 .resources .module-left .resource .resource-title a:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 @supports (display: grid) {
@@ -701,11 +701,11 @@
 }
 
 .software .left .link:hover, .software .network .right .link:hover, .network .software .right .link:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .software .left .link:hover::before, .software .network .right .link:hover::before, .network .software .right .link:hover::before, .software .left .link:hover::after, .software .network .right .link:hover::after, .network .software .right .link:hover::after {
-  border-color: #393c3d;
+  border-color: #008099;
   border-radius: 2px;
   height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;
@@ -904,11 +904,11 @@
 }
 
 .network .link:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .network .link:hover::before, .network .link:hover::after {
-  border-color: #393c3d;
+  border-color: #008099;
   border-radius: 2px;
   height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;
@@ -1021,11 +1021,11 @@
 }
 
 .community .left .button a:hover, .community .network .right .button a:hover, .network .community .right .button a:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .community .left .button a:hover::before, .community .network .right .button a:hover::before, .network .community .right .button a:hover::before, .community .left .button a:hover::after, .community .network .right .button a:hover::after, .network .community .right .button a:hover::after {
-  border-color: #393c3d;
+  border-color: #008099;
   border-radius: 2px;
   height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;
@@ -1243,7 +1243,7 @@
 .community .module-right .blog-title a:hover,
 .community .module-right .newsletter-title a:hover,
 .community .module-right .fmn-title a:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .community .module-right .blog {
@@ -1360,11 +1360,11 @@
 }
 
 .three .service .link:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .three .service .link:hover::before, .three .service .link:hover::after {
-  border-color: #393c3d;
+  border-color: #008099;
   border-radius: 2px;
   height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;

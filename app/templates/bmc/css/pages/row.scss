@@ -44,7 +44,7 @@
       @include respond-at(1256px) {
         display: inline;
       }
-      @include btn-border-drawing($link-color, $orange, 1px, bottom, right);
+      @include btn-border-drawing($color-link, $color-link-hover, 1px, bottom, right);
       border-radius: 2px;
       display: block;
       margin: 1em;
@@ -59,7 +59,7 @@
     flex: 1 1 25rem;
 
     h2 {
-      color: $green;
+      color: $android-green;
       position: relative;
       top: .75em;
     }
@@ -67,7 +67,7 @@
 }
 
 .module-recent {
-  border: 1px solid $green;
+  border: 1px solid $android-green;
   border-radius: 6px;
   padding: 1em;
 }
@@ -76,7 +76,7 @@
   margin-top: 2em;
 
   h2 {
-    border-bottom: 1px solid $dark-blue;
+    border-bottom: 1px solid $midnight;
     position: relative;
 
     &:after {

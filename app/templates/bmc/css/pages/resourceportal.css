@@ -35,26 +35,20 @@
 }
 
 .resources p a {
-  color: #4c4c4c;
-  display: unset;
+  color: #2b2b2b;
   font-family: "open_sansregular", Helvetica Neue, Helvetica, sans-serif;
-  font-weight: normal;
 }
 
 .resources p a:hover, .resources p a:visited {
-  color: #4c4c4c;
-}
-
-.resources p a::after {
-  display: none;
+  color: #2b2b2b;
 }
 
 .resources:hover {
-  border-left: 4px solid #393c3d;
+  border-left: 4px solid #008099;
 }
 
 .resources:hover hr {
-  background-color: #393c3d;
+  background-color: #008099;
   width: 65%;
 }
 
@@ -63,7 +57,7 @@
 }
 
 .resources:hover h4 a {
-  color: #393c3d;
+  color: #008099;
 }
 
 .feature .module-feature {
@@ -110,7 +104,10 @@
 .feature .resource .resource-title {
   background-color: #fff;
   border: 1px solid #f1f1f1;
+  bottom: 0;
   opacity: .95;
+  padding: .625em;
+  position: absolute;
   width: 100%;
   bottom: 0;
   padding: .625em;
@@ -135,7 +132,7 @@
 }
 
 .feature .resource .resource-title a:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .discover {
@@ -194,11 +191,11 @@
 }
 
 .resources .link:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .resources .link:hover::before, .resources .link:hover::after {
-  border-color: #393c3d;
+  border-color: #008099;
   border-radius: 2px;
   height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;
@@ -263,11 +260,11 @@
 }
 
 .resource-oer .link:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .resource-oer .link:hover::before, .resource-oer .link:hover::after {
-  border-color: #393c3d;
+  border-color: #008099;
   border-radius: 2px;
   height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;
@@ -341,7 +338,10 @@
 .resource-fmn .resource .resource-title, .resource-partner .resource .resource-title {
   background-color: #fff;
   border: 1px solid #f1f1f1;
+  bottom: 0;
   opacity: .95;
+  padding: .625em;
+  position: absolute;
   width: 100%;
   bottom: 0;
   padding: 10px;
@@ -366,7 +366,7 @@
 }
 
 .resource-fmn .resource .resource-title a:hover, .resource-partner .resource .resource-title a:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .resource-fmn .fmn, .resource-partner .fmn, .resource-partner .partner {
@@ -451,7 +451,10 @@
 .newsletter .newsletter-title {
   background-color: #fff;
   border: 1px solid #f1f1f1;
+  bottom: 0;
   opacity: .95;
+  padding: .625em;
+  position: absolute;
   width: 100%;
   bottom: 0;
   padding: 10px;
@@ -476,7 +479,7 @@
 }
 
 .newsletter .newsletter-title a:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .browse {
@@ -519,11 +522,11 @@
 }
 
 .browse .link:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .browse .link:hover::before, .browse .link:hover::after {
-  border-color: #393c3d;
+  border-color: #008099;
   border-radius: 2px;
   height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;
@@ -607,11 +610,11 @@
 }
 
 .two .collections .link:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .two .collections .link:hover::before, .two .collections .link:hover::after {
-  border-color: #393c3d;
+  border-color: #008099;
   border-radius: 2px;
   height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;
@@ -679,11 +682,11 @@
 }
 
 .three .software .link:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .three .software .link:hover::before, .three .software .link:hover::after {
-  border-color: #393c3d;
+  border-color: #008099;
   border-radius: 2px;
   height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;
@@ -749,5 +752,5 @@
 }
 
 .three .software-logos .logo-wrap:hover a {
-  color: #393c3d;
+  color: #008099;
 }

@@ -17,26 +17,20 @@
 }
 
 .oer p a {
-  color: #4c4c4c;
-  display: unset;
+  color: #2b2b2b;
   font-family: "open_sansregular", Helvetica Neue, Helvetica, sans-serif;
-  font-weight: normal;
 }
 
 .oer p a:hover, .oer p a:visited {
-  color: #4c4c4c;
-}
-
-.oer p a::after {
-  display: none;
+  color: #2b2b2b;
 }
 
 .oer:hover {
-  border-left: 4px solid #393c3d;
+  border-left: 4px solid #008099;
 }
 
 .oer:hover hr {
-  background-color: #393c3d;
+  background-color: #008099;
   width: 65%;
 }
 
@@ -45,7 +39,7 @@
 }
 
 .oer:hover h4 a {
-  color: #393c3d;
+  color: #008099;
 }
 
 .link-anchor {
@@ -93,11 +87,11 @@
 }
 
 .link:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .link:hover::before, .link:hover::after {
-  border-color: #393c3d;
+  border-color: #008099;
   border-radius: 2px;
   height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;

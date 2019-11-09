@@ -81,26 +81,20 @@
 }
 
 .communities p a {
-  color: #4c4c4c;
-  display: unset;
+  color: #2b2b2b;
   font-family: "open_sansregular", Helvetica Neue, Helvetica, sans-serif;
-  font-weight: normal;
 }
 
 .communities p a:hover, .communities p a:visited {
-  color: #4c4c4c;
-}
-
-.communities p a::after {
-  display: none;
+  color: #2b2b2b;
 }
 
 .communities:hover {
-  border-left: 4px solid #393c3d;
+  border-left: 4px solid #008099;
 }
 
 .communities:hover hr {
-  background-color: #393c3d;
+  background-color: #008099;
   width: 65%;
 }
 
@@ -109,7 +103,7 @@
 }
 
 .communities:hover h4 a {
-  color: #393c3d;
+  color: #008099;
 }
 
 .content-header {
@@ -179,7 +173,7 @@
 .module-feature .blog-title a:hover,
 .module-feature .newsletter-title a:hover,
 .module-feature .fmn-title a:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .module-feature .billboard-tag,
@@ -373,11 +367,11 @@
 }
 
 .one .fmn-intro .link:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .one .fmn-intro .link:hover::before, .one .fmn-intro .link:hover::after {
-  border-color: #393c3d;
+  border-color: #008099;
   border-radius: 2px;
   height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;
@@ -525,11 +519,11 @@
 }
 
 .one .ambassador .link:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .one .ambassador .link:hover::before, .one .ambassador .link:hover::after {
-  border-color: #393c3d;
+  border-color: #008099;
   border-radius: 2px;
   height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;
@@ -642,25 +636,7 @@
 }
 
 .two .module-workshops .billboard .billboard-header a:hover {
-  color: #393c3d;
-}
-
-.no-webp .three .horizonal,
-.no-jpeg2000 .three .horizontal,
-.no-jpegxr .three .horizontal {
-  background: url("/app/site/media/images/workgroup.jpg");
-}
-
-.webp .three .horizontal {
-  background: url("/app/site/media/images/workgroup.webp");
-}
-
-.jpeg2000 .three .horizontal {
-  background: url("/app/site/media/images/workgroup.jp2");
-}
-
-.jpeg2xr .three .horizontal {
-  background: url("/app/site/media/images/workgroup.jxr");
+  color: #008099;
 }
 
 .no-webp .three .horizonal,
@@ -851,7 +827,7 @@
 }
 
 .five .module-sites .group .group-description a:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .c-six {
@@ -895,11 +871,11 @@
 }
 
 .c-six .link:hover {
-  color: #393c3d;
+  color: #008099;
 }
 
 .c-six .link:hover::before, .c-six .link:hover::after {
-  border-color: #393c3d;
+  border-color: #008099;
   border-radius: 2px;
   height: 100%;
   transition: border-color 0s, width 0.25s, height 0.25s;

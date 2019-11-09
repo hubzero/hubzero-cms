@@ -62,17 +62,6 @@ html {
   @include btn-border-drawing($color-link, $color-link-hover, 1px, bottom, right);
 }
 
-span.link {
-  a {
-    font-family: $font-body;
-    font-weight: normal;
-
-    &::after {
-      display: none;
-    }
-  }
-}
-
 //Mission Statement
 .mission {
   color: $white;

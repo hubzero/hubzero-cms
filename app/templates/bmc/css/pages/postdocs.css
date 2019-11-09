@@ -54,6 +54,26 @@
   }
 }
 
+.one .box-accent-wrapper {
+  position: relative;
+}
+
+.one .box-accent {
+  border: 1px solid #222b37;
+  padding: 1em 1em 1em 4em;
+  position: relative;
+}
+
+.one .arrow-right {
+  border-bottom: 60px solid transparent;
+  border-left: 60px solid #8cc540;
+  border-top: 60px solid transparent;
+  height: 0;
+  left: -.5em;
+  position: absolute;
+  width: 0;
+}
+
 @media only screen and (min-width: 50.0625em) {
   .one {
     display: flex;
