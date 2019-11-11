@@ -64,7 +64,7 @@ $tiTotalAmount = $this->transaction->tInfo->tiSubtotal + $this->transaction->tIn
 			{
 				if ($info->available)
 				{
-					$action = '<a href="' . Route::url('index.php?option=com_cart') . 'download/' . $this->transaction->tInfo->tId . '/' . $info->sId;
+					$action = '<a href="' . Route::url('index.php?option=com_cart') . 'download/' . $this->transaction->tInfo->tId . '/' . $info->sId . '/direct';
 					$action .= '" target="_blank" download="download" rel="noopener">Download</a>';
 				}
 				else
