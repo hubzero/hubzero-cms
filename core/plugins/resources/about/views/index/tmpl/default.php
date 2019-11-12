@@ -41,13 +41,17 @@ $sef = Route::url('index.php?option=' . $this->option . '&' . ($this->model->res
 switch ($this->model->params->get('show_date'))
 {
 	case 0:
-		$thedate = ''; break;
+		$thedate = '';
+		break;
 	case 1:
-		$thedate = $this->model->resource->created; break;
+		$thedate = $this->model->resource->created;
+		break;
 	case 2:
-		$thedate = ($this->model->resource->modified && $this->model->resource->modified != '0000-00-00 00:00:00' ? $this->model->resource->modified : $this->model->resource->created);   break;
+		$thedate = ($this->model->resource->modified && $this->model->resource->modified != '0000-00-00 00:00:00' ? $this->model->resource->modified : $this->model->resource->created);
+		break;
 	case 3:
-		$thedate = ($this->model->resource->publish_up && $this->model->resource->publish_up != '0000-00-00 00:00:00' ? $this->model->resource->publish_up : $this->model->resource->created); break;
+		$thedate = ($this->model->resource->publish_up && $this->model->resource->publish_up != '0000-00-00 00:00:00' ? $this->model->resource->publish_up : $this->model->resource->created);
+		break;
 }
 if ($this->model->isTool() && $this->model->curtool)
 {
