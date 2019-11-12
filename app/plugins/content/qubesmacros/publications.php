@@ -729,7 +729,7 @@ class Publications extends Macro
 
 		// Add master type
 		if ($this->mastertype) {
-			$sql .= ' AND (MT.alias = ' . $mastertype . ')';
+			$sql .= ' AND (MT.alias = ' . $this->mastertype . ')';
 		}
 
 		$args = array();
