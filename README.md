@@ -9,10 +9,6 @@ For more information about HUBzero, visit https://hubzero.org.
 
 ## Installation
 
-### Virtual Machine
-
-Preconfigured virtual machine images that contain the full version of the HUBzero platform can be found at https://hubzero.org/download. See the Quick Start file inside the package for a step-by-step method to get the virtual machine up and running.
-
 ### Packages
 
 Instructions for installing the HUBzero platform from packages can be found at https://help.hubzero.org/documentation/current/installation.
