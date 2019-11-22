@@ -34,7 +34,7 @@ class plgTagsCourses extends \Hubzero\Plugin\Plugin
 	{
 		$response = array(
 			'name'    => $this->_name,
-			'title'   => Lang::txt('PLG_TAGS_BLOGS'),
+			'title'   => Lang::txt('PLG_TAGS_COURSES'),
 			'total'   => 0,
 			'results' => null,
 			'sql'     => ''

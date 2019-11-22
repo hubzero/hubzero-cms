@@ -251,7 +251,7 @@ class Tags extends SiteController
 					{
 						//$this->view->total += $response['total'];
 
-						if (is_array($response['results']))
+						if (is_array($response['results']) && !empty($response['results']))
 						{
 							$this->view->results = $response['results'];
 							break;
@@ -263,7 +263,7 @@ class Tags extends SiteController
 							{
 								//$this->view->total += $sresponse['total'];
 
-								if (is_array($sresponse['results']))
+								if (is_array($sresponse['results']) && !empty($sresponse['results']))
 								{
 									$this->view->results = $sresponse['results'];
 									break 2;
