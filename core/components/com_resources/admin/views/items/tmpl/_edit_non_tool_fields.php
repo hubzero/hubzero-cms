@@ -96,7 +96,7 @@ $time = $this->time;
 	</div>
 <?php } ?>
 <div class="input-wrap">
-	<label for="field-introtext"><?php echo Lang::txt('COM_RESOURCES_FIELD_INTRO_TEXT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+	<label for="field-introtext"><?php echo Lang::txt('COM_RESOURCES_FIELD_ABSTRACT_DESCRIPTION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 	<?php
 	echo $this->editor('fields[introtext]', $this->escape(stripslashes($this->row->get('introtext'))), 45, 5, 'field-introtext', array('buttons' => false));
 	?>
