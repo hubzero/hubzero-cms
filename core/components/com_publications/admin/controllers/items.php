@@ -1591,6 +1591,9 @@ class Items extends AdminController
 		// Produce archival package
 		if (!$pub->_curationModel->package(true))
 		{
+			// Create symlink
+			$pub->_curationModel->createSymLink();
+
 			// Checkin the resource
 			$pub->publication->checkin();
 
