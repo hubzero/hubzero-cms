@@ -16,6 +16,7 @@ defined('_HZEXEC_') or die();
 <input type="hidden" name="task" value="save" />
 <input type="hidden" name="setup" id="insetup" value="<?php echo $this->model->inSetup() ? 1 : 0; ?>" />
 <input type="hidden" name="active" value="<?php echo $this->section; ?>" />
+<input type="hidden" name="access" value="<?php echo $this->model->get('access'); ?>" />
 <input type="hidden" name="step" id="step" value="<?php echo $this->step; ?>" />
 <input type="hidden" name="gid" value="<?php echo $this->model->get('owned_by_group') ? $this->model->get('owned_by_group') : 0; ?>" />
 
