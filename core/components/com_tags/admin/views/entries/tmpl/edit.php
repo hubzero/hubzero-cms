@@ -33,6 +33,7 @@ Html::behavior('keepalive');
 $this->js()
 	->js('api')
 	->js('tagActivityLog')
+	->js('tagLogListItem')
 	->js('tagLogsFetcher');
 ?>
 
