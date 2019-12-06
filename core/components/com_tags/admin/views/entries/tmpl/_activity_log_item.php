@@ -23,4 +23,4 @@ if ($parsedLog->activityDescription): ?>
 			<?php echo $parsedLog->activityDescription; ?>
 		</span>
 	</li>
-<?php endif; ?>
+<?php endif;
