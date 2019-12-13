@@ -41,7 +41,7 @@ foreach ($item_groups as $grp)
 	$path = PATH_APP . '/site/groups/' . $group->get('gidNumber') . '/uploads/' . $group->get('logo');
 
 	if ($group->get('logo') && is_file($path)) {
-		echo '  <a href="' . Route::url('index.php?option=com_groups&cn='. $group->get('cn')) . '">';
+		echo '  <a href="' . Route::url('index.php?option=com_groups&cn='. $group->get('cn')) . '" aria-hidden="true" tabindex="-1">';
 		echo '    <div class="group-img">';
 		echo '      <img src="' . with(new Hubzero\Content\Moderator($path))->getUrl() . '" alt="' . $this->escape(stripslashes($group->get('description'))) . '" />';
 		echo '    </div>';

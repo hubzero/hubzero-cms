@@ -77,11 +77,11 @@ foreach ($item_boards as $board) { ?>
 		<?php
 		if (!empty($board->learn_more_target))
 		{
-			echo '<a href="' . $board->learn_more_target . '">';
+			echo '<a href="' . $board->learn_more_target . '" aria-hidden="true" tabindex="-1">';
 		}
 		?>
 		<div class="billboard-image">
-			<img src="<?php echo $this->image_location; ?><?php echo $board->background_img; ?>"/>
+			<img src="<?php echo $this->image_location; ?><?php echo $board->background_img; ?>" alt=""/>
 		</div>
 		<?php
 		if (!empty($board->learn_more_target))

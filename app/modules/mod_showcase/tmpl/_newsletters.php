@@ -52,10 +52,10 @@ foreach ($item_newsletters as $newsletter)
 	} else {
 		$img_link = '';
 	}
-		
+
 	echo '<div class="' . $item['class'] . ' newsletter' . ($item["featured"] ? ' featured' : '') . '">
 ';
-  echo '  <a href="' . Route::url('index.php?option=com_newsletter&id=' . $newsletter->id) . '">';
+  echo '  <a href="' . Route::url('index.php?option=com_newsletter&id=' . $newsletter->id) . '" aria-hidden="true" tabindex="-1">';
   echo '    <div class="newsletter-img">';
 	echo '      <img src="' . $img_link . '" alt="">';
 	echo '    </div>';

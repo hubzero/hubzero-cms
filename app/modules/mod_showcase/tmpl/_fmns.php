@@ -38,7 +38,7 @@ foreach ($item_fmns as $fmn)
 	$group = Hubzero\User\Group::getInstance($fmn->group_cn);
 	$path = PATH_APP . '/site/groups/' . $group->get('gidNumber') . '/uploads/' . $group->get('logo');
 	$logo = ($group->get('logo') ? with(new Hubzero\Content\Moderator($path))->getUrl() : '');
-	
+
 	// Get status of fmn and set as class for element
 	// Also set tag if autotagging and not overriden by user
 	$tag = $item["tag"];
@@ -57,31 +57,24 @@ foreach ($item_fmns as $fmn)
 	} else {
 		$cls = '';
 	}
-	
+
 	echo '<div class="' . $item['class'] . ' fmn' . $cls . '">
 ';
-  echo '  <a href="' . Route::url('groups' . DS . $fmn->group_cn) . '">';
+  echo '  <a href="' . Route::url('groups' . DS . $fmn->group_cn) . '" aria-hidden="true" tabindex="-1">';
   echo '    <div class="fmn-img">';
 	if ($logo) {
 		echo '      <img src="' . $logo . '" alt="' . $fmn->name . '" />';
 	}
 	echo '    </div>';
 	echo '  </a>';
-	
+
 	if ($tag) {
-		if ($item['tag-target'])
-		{
-			echo '  <a href="' . $item['tag-target'] . '">';
-		}
+
 		echo '    <div class="fmn-tag">';
 		echo '      <span>' . $tag . '</span>';
 		echo '    </div>';
-		if ($item['tag-target'])
-		{
-			echo '  </a>';
-		}
 	}
-	
+
 	echo '  <div class="fmn-title">';
 	echo '    <a href="' . Route::url('groups' . DS . $fmn->group_cn) . '">';
 	echo '      <span>' . $fmn->name . '</span>';

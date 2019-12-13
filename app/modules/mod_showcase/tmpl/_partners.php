@@ -36,7 +36,7 @@ foreach ($item_partners as $partner)
 {
 	echo '<div class="' . $item['class'] . ' resource' . ($item["featured"] ? ' featured' : '') . '">
 ';
-  echo '  <a href="' . Route::url('groups' . DS . $partner->groups_cn) . '">';
+  echo '  <a href="' . Route::url('groups' . DS . $partner->groups_cn) . '" aria-hidden="true" tabindex="-1">';
   echo '    <div class="partner-img">';
 	echo '      <img src="app/site/media/images/partners/' . $partner->logo_img . '" alt="">';
 	echo '    </div>';
