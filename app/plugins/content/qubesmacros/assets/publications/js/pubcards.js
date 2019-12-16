@@ -30,13 +30,18 @@ $(document).ready(function(){
   // Open and close card on click
   $('.card > .btn-action').click(function() {
     var $card = $(this).parent('.card'),
-        $icon = $(this).children('i');
+        $icon = $(this).children('i'),
+        $links = $card.find('.sub-menu a'),
+        $content = $card.find('.card-content');
 
     $icon.addClass('icon-spinner');
 
     if($card.hasClass('active')) {
 
       $card.removeClass('active');
+      $links.attr('aria-hidden', 'true');
+      $links.attr('tabindex', '-1');
+      $content.attr('tabindex', '-1');
 
       window.setTimeout(function() {
 
@@ -46,6 +51,10 @@ $(document).ready(function(){
     } else {
 
       $card.addClass('active');
+      $links.attr('aria-hidden', 'false');
+      $links.attr('tabindex', '0');
+      $content.attr('tabindex', '0');
+      $content.focus();
 
       window.setTimeout(function() {
         $icon.removeClass('menu').removeClass('icon-spinner').addClass('arrow-left');

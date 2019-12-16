@@ -119,7 +119,7 @@ class Publications extends Macro
 
 		$this->items = $this->_getPublications();
 		$this->base = rtrim(str_replace(PATH_ROOT, '', __DIR__));
-		
+
 		$view = $this->_getView($args);
     if($view =='card') {
       return $this->_getCardView();
@@ -132,7 +132,7 @@ class Publications extends Macro
 		\Document::addStyleSheet($this->base . DS . 'assets' . DS . 'publications' . DS . 'css' . DS . 'colorbrewer.css');
 		\Document::addScript($this->base . DS . 'assets' . DS . 'publications' . DS . 'js' . DS . 'pubcards.js');
 	  \Document::addStyleSheet($this->base . DS . 'assets' . DS . 'publications' . DS . 'css' . DS . 'pubcards.css');
-		
+
 		$html = '<style>';
 		$html .= '  .ribbon-alt {';
 		$html .= '    background-color: #' . $this->sponsorbgcol . ';';
@@ -146,6 +146,7 @@ class Publications extends Macro
 		if ($this->style == 'legacy') {
 			foreach ($this->items as $pub)
 			{
+				$html .= '<div class="demo-two-card">';
 
 				// Sponsors
 				if ($this->sponsors) {
@@ -258,7 +259,6 @@ class Publications extends Macro
 
 	  		// Description
 	  		$html .= '      <div class="description">';
-	  		$html .= '        <div class="abstract">' . $pub->get('abstract') . '</div>';
 
 	  		// Version info
 	  		$html .= '        <div class="resource-meta">';
@@ -299,7 +299,6 @@ class Publications extends Macro
 	    	// Comments
 	    	// $html .= '    <a href="#"><i class="comments tooltips fa fa-comment-o" title="Comment" aria-hidden="true"></i></a><a href="#">0 comments</a>';
 	  		$html .= '  </div>';
-
 				$html .= '</div>';
 			}
 		} else {
@@ -324,16 +323,7 @@ class Publications extends Macro
 					$html .= '  </div>'; // End feature ribbon
 				}
 
-				// Sponsors
-				if ($this->sponsors) {
-					$html .= '    <div class="logo-wrap">';
-					foreach ($this->sponsors as $sponsor)
-					{
-						$logo = 'app' . DS . 'site' . DS . 'groups' . DS . $sponsor->get('gidNumber') . DS . 'uploads' . DS . $sponsor->get('logo');
-						$html .= '    <a href=' . \Route::url('index.php?option=com_groups&cn=' . $sponsor->get('cn')) . ' title="' . $sponsor->get('description') . ' Home"><img src="' . \Route::url($logo) . '" alt="Sponsor Logo" class="logo"></a>';
-					}
-					$html .= '    </div>';
-				}
+
 
 				// Focus Tags
 				if ($this->focusTags) {
@@ -352,7 +342,7 @@ class Publications extends Macro
 				}
 
 				// Content
-				$html .= '    <div class="card-content">';
+				$html .= '    <div class="card-content" tabindex="-1">';
 				// $html .= '      <div class="img-wrap">';
 				// $html .= '        <img src="' . Route::url($pub->link('masterimage')) . '" alt="Resource Image">';
 				// $html .= '      </div>';
@@ -404,29 +394,40 @@ class Publications extends Macro
 
 				// Sub-menu
 				$html .= '    <div class="sub-menu">';
-				$html .= '      <a aria-label="Full Record" title= "Full Record" href="' . $pub->link() . '">';
-		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/arrow-right.svg") . '</span>';
+				$html .= '      <a aria-label="Full Record" title= "Full Record" href="' . $pub->link() . '" aria-hidden="true" tabindex="-1">';
+		    $html .= '        <span class="menu-icon">' . file_get_contents(PATH_ROOT . DS . "core/assets/icons/arrow-right.svg") . '</span>';
 		    $html .= '        Full Record';
 		    $html .= '      </a>';
-		    $html .= '      <a aria-label="Download" title= "Download" href="' . $pub->link('serve') . '?render=archive">';
-		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/download-alt.svg") . '</span>';
+		    $html .= '      <a aria-label="Download" title= "Download" href="' . $pub->link('serve') . '?render=archive" aria-hidden="true" tabindex="-1">';
+		    $html .= '        <span class="menu-icon">' . file_get_contents(PATH_ROOT . DS . "core/assets/icons/download-alt.svg") . '</span>';
 		    $html .= '      </a>';
 
 				$url = $pub->link() . '/forks/' . $pub->version->get('version_number') . '?action=fork';
-				$html .= '      <a aria-label="Adapt" title= "Adapt" href="' . $url . '">';
-		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/code-fork.svg") . '</span>';
+				$html .= '      <a aria-label="Adapt" title= "Adapt" href="' . $url . '" aria-hidden="true" tabindex="-1">';
+		    $html .= '        <span class="menu-icon">' . file_get_contents(PATH_ROOT . DS . "core/assets/icons/code-fork.svg") . '</span>';
 		    $html .= '      </a>';
 				if ($watching) {
-  		    $html .= '      <a aria-label="Watch" title= "Click to unsubscribe from this resource\'s notifications" href="' . \Route::url($pub->link()) . DS . 'watch' . DS . $pub->version->get('version_number') . '?confirm=1&action=unsubscribe">';
+  		    $html .= '      <a aria-label="Watch" title= "Click to unsubscribe from this resource\'s notifications" href="' . \Route::url($pub->link()) . DS . 'watch' . DS . $pub->version->get('version_number') . '?confirm=1&action=unsubscribe" aria-hidden="true" tabindex="-1">';
   		    $html .= '        <span class="menu-icon">' . file_get_contents("app/plugins/content/qubesmacros/assets/icons/feed-off.svg") . '</span>';
   		    $html .= '      </a>';
 				} else {
-					$html .= '      <a aria-label="Watch" title= "Click to receive notifications when a new version is released" href="' . \Route::url($pub->link()) . DS . 'watch' . DS . $pub->version->get('version_number') . '?confirm=1&action=subscribe">';
-  		    $html .= '        <span class="menu-icon">' . file_get_contents("core/assets/icons/feed.svg") . '</span>';
+					$html .= '      <a aria-label="Watch" title= "Click to receive notifications when a new version is released" href="' . \Route::url($pub->link()) . DS . 'watch' . DS . $pub->version->get('version_number') . '?confirm=1&action=subscribe" aria-hidden="true" tabindex="-1">';
+  		    $html .= '        <span class="menu-icon">' . file_get_contents(PATH_ROOT . DS . "core/assets/icons/feed.svg") . '</span>';
   		    $html .= '      </a>';
 				}
 		    $html .= '    </div>'; // End sub-menu
 				$html .= '    </div>'; // End content
+
+				// Sponsors
+				if ($this->sponsors) {
+					$html .= '    <div class="logo-wrap">';
+					foreach ($this->sponsors as $sponsor)
+					{
+						$logo = 'app' . DS . 'site' . DS . 'groups' . DS . $sponsor->get('gidNumber') . DS . 'uploads' . DS . $sponsor->get('logo');
+						$html .= '    <a href=' . \Route::url('index.php?option=com_groups&cn=' . $sponsor->get('cn')) . ' title="Sponsored by ' . $sponsor->get('description') . ' Home"><img src="' . \Route::url($logo) . '" alt="Sponsor Logo" class="logo"></a>';
+					}
+					$html .= '    </div>';
+				}
 
 				// More information button
 				$html .= '    <button aria-label="More Information" title="More Information" href="#" class="btn-action">';
@@ -439,7 +440,7 @@ class Publications extends Macro
 				$tagsTitle = implode(', ', $nonAdminTags);
 				$html .= '    <div class="meta">';
 				$html .= '      <div aria-label="Tags" title= "' . $tagsTitle . '" class="tag-wrap">';
-	      $html .= '        <span class="icons">' . file_get_contents("core/assets/icons/tags.svg") . '</span>';
+	      $html .= '        <span class="icons">' . file_get_contents(PATH_ROOT . DS . "core/assets/icons/tags.svg") . '</span>';
 				$html .= '        <span>';
 				if ($nonAdminTags) {
 					$html .= '          <span class="tags">' . implode(', </span><span class="tags">', $nonAdminTags);
@@ -459,7 +460,7 @@ class Publications extends Macro
 
 				$html .= '      <div class="views">';
 				$html .= '        <span aria-label="Views" title= "Views">';
-				$html .= '          <span class="icons">' . file_get_contents("core/assets/icons/eye-open.svg") . '</span>';
+				$html .= '          <span class="icons">' . file_get_contents(PATH_ROOT . DS . "core/assets/icons/eye-open.svg") . '</span>';
 				$html .= '          ' . $views;
 				$html .= '        </span>';
 				$html .= '      </div>'; // End views
@@ -476,7 +477,7 @@ class Publications extends Macro
 
 				$html .= '      <div class="downloads">';
 				$html .= '        <span aria-label="Downloads" title= "Downloads">';
-				$html .= '          <span class="icons">' . file_get_contents("core/assets/icons/download-alt.svg") . '</span>';
+				$html .= '          <span class="icons">' . file_get_contents(PATH_ROOT . DS . "core/assets/icons/download-alt.svg") . '</span>';
 				$html .= '          ' . $downloads;
 				$html .= '        </span>';
 				$html .= '      </div>'; // End downloads
@@ -491,7 +492,7 @@ class Publications extends Macro
 
 				$html .= '      <div class="forks">';
 				$html .= '        <span aria-label="Adaptations" title= "Adaptations">';
-				$html .= '          <span class="icons">' . file_get_contents("core/assets/icons/code-fork.svg") . '</span>';
+				$html .= '          <span class="icons">' . file_get_contents(PATH_ROOT . DS . "core/assets/icons/code-fork.svg") . '</span>';
 				$html .= '          ' . $forks;
 				$html .= '        </span>';
 				$html .= '      </div>'; // End adaptations
@@ -499,7 +500,7 @@ class Publications extends Macro
 				// Publish Date
 				$html .= '      <div class="date">';
 	      $html .= '        <span aria-label="Publish Date" title= "Publish Date">';
-	      $html .= '          <span class="icons">' . file_get_contents("core/assets/icons/calendar-alt.svg") . '</span>';
+	      $html .= '          <span class="icons">' . file_get_contents(PATH_ROOT . DS . "core/assets/icons/calendar-alt.svg") . '</span>';
 	      $html .= '         ' . Date::of($pub->version->get('published_up'))->toLocal('m.d.Y');
 	      $html .= '        </span>';
 	      $html .= '      </div>'; // End publish date
@@ -643,7 +644,7 @@ class Publications extends Macro
 			$html .= '      <div class="views">';
 			$html .= '        <span aria-label="Views" title= "Views">';
 			$html .= '          <span class="count">' . $views . '</span>';
-			$html .= '          <span class="ic eye-icon">' . file_get_contents("core/assets/icons/eye-open.svg") . '</span>';
+			$html .= '          <span class="ic eye-icon">' . file_get_contents(PATH_ROOT . DS . "core/assets/icons/eye-open.svg") . '</span>';
 		  $html .= '          <span class="meta-descripter">Views</span';
 			$html .= '        </span>';
 			$html .= '      </div>'; // End views
@@ -661,7 +662,7 @@ class Publications extends Macro
 			$html .= '      <div class="downloads">';
 			$html .= '        <span aria-label="Downloads" title= "Downloads">';
 			$html .= '          <span class="count">' . $downloads . '</span>';
-			$html .= '          <span class="ic download-icon">' . file_get_contents("core/assets/icons/download-alt.svg") . '</span>';
+			$html .= '          <span class="ic download-icon">' . file_get_contents(PATH_ROOT . DS . "core/assets/icons/download-alt.svg") . '</span>';
 		  $html .= '          <span class="meta-descripter">Downloads</span';
 			$html .= '        </span>';
 			$html .= '      </div>'; // End downloads
@@ -677,7 +678,7 @@ class Publications extends Macro
 			$html .= '      <div class="forks">';
 			$html .= '        <span aria-label="Adaptations" title= "Adaptations">';
 			$html .= '          <span class="count">' . $forks . '</span>';
-			$html .= '          <span class="ic fork-icon">' . file_get_contents("core/assets/icons/code-fork.svg") . '</span>';
+			$html .= '          <span class="ic fork-icon">' . file_get_contents(PATH_ROOT . DS . "core/assets/icons/code-fork.svg") . '</span>';
 			$html .= '          <span class="meta-descripter">Adaptations</span';
 			$html .= '        </span>';
 			$html .= '      </div>'; // End adaptations
@@ -691,7 +692,7 @@ class Publications extends Macro
 			$tagsTitle = implode(', ', $nonAdminTags);
 
 			$html .= '      <div aria-label="Tags" title= "' . $tagsTitle . '" class="tags-wrapper">';
-			$html .= '        <span class="icons">' . file_get_contents("core/assets/icons/tags.svg") . '</span>';
+			$html .= '        <span class="icons">' . file_get_contents(PATH_ROOT . DS . "core/assets/icons/tags.svg") . '</span>';
 			$html .= '        <span>';
 			if ($nonAdminTags) {
 				$html .= '          <span class="tags">' . implode(', </span><span class="tags">', $nonAdminTags);
@@ -755,7 +756,7 @@ class Publications extends Macro
 		}
 
 		$sql .= ' AND V.state != 2 GROUP BY C.id ORDER BY';
-		
+
 		// Sorting
 		if ($this->sortby == 'id') {
 			if ($this->sortdir == 'none') {
@@ -1032,7 +1033,7 @@ class Publications extends Macro
 
 		return false;
 	}
-	
+
 	/**
 	 * Get sort by argument
 	 *
@@ -1053,7 +1054,7 @@ class Publications extends Macro
 
 		return false;
 	}
-	
+
 	/**
 	 * Get sort direction argument
 	 *

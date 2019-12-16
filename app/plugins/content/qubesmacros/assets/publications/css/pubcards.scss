@@ -29,11 +29,10 @@
   background-size: cover;
   margin: .5em;
   position: relative;
-  
+
   .meta {
     @include flexbox;
     bottom: 0;
-    font-family: 'Martel', serif;
     font-size: 0.8125rem;
     justify-content: space-between;
     left: 0;
@@ -125,7 +124,6 @@
 
   h3 {
     @include truncate(1.125rem, 1.2, 2);
-    font-family: 'Martel', serif;
     margin: inherit;
     margin-bottom: .2em;
   }
@@ -141,7 +139,6 @@
   background-color: $teal;
   bottom: 6.75rem;
   color: $white !important;
-  font-family: 'Martel', sans-serif;
   font-size: .8rem;
   height: auto;
   left: 0;
@@ -234,7 +231,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 9.6875rem;
-  
+
   .tags {
     font-size: 0.75rem !important;
   }
@@ -286,9 +283,9 @@
 
 // Original resource cards
 
-a {
-  border: none;
-}
+// a {
+//   border: none;
+// }
 img {
   max-width: none;
 }
@@ -545,7 +542,7 @@ img {
       height: 150px;
       padding: 10px 0;
       overflow: hidden;
-      .abstract {
+      .legacy-abstract {
         @include truncate(.9em, 1.4, 4);
         height: auto;
       }

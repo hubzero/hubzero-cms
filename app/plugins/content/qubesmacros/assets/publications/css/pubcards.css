@@ -29,7 +29,6 @@
   display: flex;
   flex-wrap: nowrap;
   bottom: 0;
-  font-family: 'Martel', serif;
   font-size: 0.8125rem;
   justify-content: space-between;
   left: 0;
@@ -129,7 +128,6 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-family: 'Martel', serif;
   margin: inherit;
   margin-bottom: .2em;
 }
@@ -144,7 +142,6 @@
   background-color: #007991;
   bottom: 6.75rem;
   color: #fff !important;
-  font-family: 'Martel', sans-serif;
   font-size: .8rem;
   height: auto;
   left: 0;
@@ -297,10 +294,6 @@
 
 .btn-action:hover {
   border: 5px solid #fff;
-}
-
-a {
-  border: none;
 }
 
 img {
@@ -487,7 +480,7 @@ img {
 .resource-img::after {
   display: block;
   position: relative;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, transparent 20%, transparent 50%, transparent 80%, rgba(0, 0, 0, 0.6) 100%);
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0.6) 100%);
   margin-top: -275px;
   right: -50%;
   height: 220px;
@@ -637,7 +630,7 @@ img {
   overflow: hidden;
 }
 
-.demo-two-card .demo-two-content .description .abstract {
+.demo-two-card .demo-two-content .description .legacy-abstract {
   display: block;
   /* Fallback for non-webkit */
   display: -webkit-box;
