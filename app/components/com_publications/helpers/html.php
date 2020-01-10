@@ -1089,7 +1089,7 @@ class Html
 			{
 				$path = DS . $base . DS . \Hubzero\Utility\Str::pad($row->id);
 				// For simple reporting, we only count the current version's raw content size
-				// This does not count the bundle or previous versions of each publication	
+				// This does not count the bundle or previous versions of each publication
 				if ($simple)
 				{
 					if (!($row instanceof \Components\Publications\Models\Publication))
@@ -1250,4 +1250,5 @@ class Html
 
 		return true;
 	}
+
 }
