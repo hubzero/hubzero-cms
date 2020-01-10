@@ -11,8 +11,6 @@ use Exception;
 use App;
 use stdClass;
 
-require_once "Predis/Autoloader.php";
-
 /**
  * Usage verb class
  */

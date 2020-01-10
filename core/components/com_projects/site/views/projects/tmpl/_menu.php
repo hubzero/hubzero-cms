@@ -97,3 +97,12 @@ $counts = $this->model->get('counts');
 	}
 	?>
 </ul>
+<ul>
+	<?php
+		$integrations = Event::trigger('projects.onProjectIntegrationList', array($this->model));
+		$integrations = array_filter($integrations);
+	?>
+	<?php foreach ($integrations as $integration): ?>
+		<li><?php echo $integration; ?></li>
+	<?php endforeach; ?>
+</ul>

@@ -48,9 +48,20 @@ defined('_HZEXEC_') or die();
 		{
 			case 1:
 				$class = ' class="admin"';
+			case 2:
+				$class = ' class=" core"';
 			break;
 		}
-
+		$link_class = '';
+		switch ($tag->get('admin'))
+		{
+			case 1:
+				$link_class = ' admin';
+				break;
+			case 2:
+				$link_class = ' core';
+				break;
+		}
 		if ($this->config->get('show_sizes', 0) == 2)
 		{
 			$tll[$tag->get('tag')] = '<li' . $class . '><a href="' . Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')) . '" data-tag="' . $this->escape($tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' <span>' . $tag->get('count') . '</span></a></li>';
@@ -70,9 +81,8 @@ defined('_HZEXEC_') or die();
 			{
 				$append .= '&search=' . $this->filters['search'];
 			}
-
-			$tll[$tag->get('tag')]  = '<li' . $class . '>';
-			$tll[$tag->get('tag')] .= '<a class="tag' . ($tag->get('admin') ? ' admin' : '') . '" href="' . Route::url($this->base . $append) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . '</a>';
+						$tll[$tag->get('tag')]  = '<li' . $class . '>';
+			$tll[$tag->get('tag')] .= '<a class="tag' . $link_class . '" href="' . Route::url($this->base . $append) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . '</a>';
 			$tll[$tag->get('tag')] .= '</li>';
 		}
 		else
@@ -84,7 +94,7 @@ defined('_HZEXEC_') or die();
 
 				$tll[$tag->get('tag')] .= '<span data-size="' . round($size, 1) . 'em">';
 			}
-			$tll[$tag->get('tag')] .= '<a class="tag' . ($tag->get('admin') ? ' admin' : '') . '" href="' . Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag')));
+			$tll[$tag->get('tag')] .= '<a class="tag' . $link_class . '" href="' . Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag')));
 			if ($this->config->get('show_tag_count', 0))
 			{
 				$tll[$tag->get('tag')] .= ' <span>' . $tag->get('count') . '</span>';

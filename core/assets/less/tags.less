@@ -103,3 +103,19 @@
 			border-color: transparent @tagAdminBackgroundHover transparent transparent !important;
 		}
 	}
+	.tags li.core a,
+	.tag.core {
+		color: @tagCoreColor !important;
+		background: @tagCoreBackground !important;
+		&:hover {
+			color: @tagCoreColorHover !important;
+			background: @tagCoreBackgroundHover !important;
+		}
+		&:before {
+			border-color: transparent @tagCoreBackground transparent transparent !important;
+		}
+		&:hover:before {
+				border-color: transparent @tagCoreBackgroundHover transparent transparent !important;
+		}
+	}
+

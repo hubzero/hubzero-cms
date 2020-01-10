@@ -90,7 +90,7 @@ class plgResourcesAbout extends \Hubzero\Plugin\Plugin
 
 			if (!$model->access('edit'))
 			{
-				$query->whereEquals($t . '.admin', 0);
+				$query->whereNotIn($t . '.admin', [1]);
 			}
 
 			$tags = $query->rows();

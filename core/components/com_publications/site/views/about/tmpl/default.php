@@ -228,6 +228,15 @@ $schema = $metaElements->getSchema();
 	<?php } ?>
 <?php } ?>
 <?php
+	if ($this->publication->params->get('show_series')):
+		if ($series = $this->publication->getSeries()):
+			$this->view('_series_list')
+				->set('series', $series)
+				->display();
+		endif;
+	endif;
+?>
+<?php
 // Show version notes
 if (($this->publication->params->get('show_notes')) && $this->publication->get('release_notes'))
 {

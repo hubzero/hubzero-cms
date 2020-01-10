@@ -1,0 +1,26 @@
+{
+	"name": "hubzero/plg_whatsnew_resources",
+	"description": "Resources plugin for the What's New component for the HUBzero CMS",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4",
+		"hubzero/com_whatsnew": "dev-master",
+		"hubzero/com_resources": "dev-master"
+	},
+	"extra": {
+		"install-directory": "/plugins/whatsnew/resources/"
+	}
+}

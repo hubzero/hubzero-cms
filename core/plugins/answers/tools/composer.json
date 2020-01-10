@@ -1,0 +1,26 @@
+{
+	"name": "hubzero/plg_answers_tools",
+	"description": "Tools plugin for the Answers component for the HUBzero CMS",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4",
+		"hubzero/com_answers": "dev-master",
+		"hubzero/com_tools": "dev-master"
+	},
+	"extra": {
+		"install-directory": "/plugins/answers/tools/"
+	}
+}

@@ -1,0 +1,26 @@
+{
+	"name": "hubzero/plg_publications_citations",
+	"description": "Citations plugin for the Publications component for the HUBzero CMS",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4",
+		"hubzero/com_publications": "dev-master",
+		"hubzero/com_citations": "dev-master"
+	},
+	"extra": {
+		"install-directory": "/plugins/publications/citations/"
+	}
+}

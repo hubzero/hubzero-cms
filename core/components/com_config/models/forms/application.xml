@@ -130,6 +130,40 @@
 
 		</fieldset>
 	</fields>
+	<fields name="messagequeue">
+		<fieldset name="messagequeue" label="CONFIG_MQ_SETTINGS_LABEL">
+			<field
+				name="mq_host"
+				type="text"
+				label="COM_CONFIG_FIELD_MQ_HOST_LABEL"
+				description="COM_CONFIG_FIELD_MQ_HOST_DESC"
+				filter="string"
+				size="30" />
+			<field
+				name="mq_port"
+				type="text"
+				label="COM_CONFIG_FIELD_MQ_PORT_LABEL"
+				description="COM_CONFIG_FIELD_MQ_PORT_DESC"
+				filter="string"
+				size="8" />
+
+			<field
+				name="mq_user"
+				type="text"
+				label="COM_CONFIG_FIELD_MQ_USERNAME_LABEL"
+				description="COM_CONFIG_FIELD_MQ_USERNAME_DESC"
+				filter="string"
+				size="30" />
+
+			<field
+				name="mq_password"
+				type="password"
+				label="COM_CONFIG_FIELD_MQ_PASSWORD_LABEL"
+				description="COM_CONFIG_FIELD_MQ_PASSWORD_DESC"
+				filter="string"
+				size="30" />
+		</fieldset>
+	</fields>
 	<fields name="ftp">
 		<fieldset
 			name="ftp"
@@ -593,6 +627,8 @@
 				filter="cmd">
 				<option
 					value="production">COM_CONFIG_FIELD_VALUE_ENVIRONMENT_PRODUCTION</option>
+				<option
+					value="production_cloud">COM_CONFIG_FIELD_VALUE_ENVIRONMENT_PRODUCTION_CLOUD</option>
 				<option
 					value="staging">COM_CONFIG_FIELD_VALUE_ENVIRONMENT_STAGING</option>
 				<option

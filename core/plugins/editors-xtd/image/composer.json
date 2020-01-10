@@ -1,0 +1,25 @@
+{
+	"name": "hubzero/plg_editors-xtd_image",
+	"description": "Image extended editor plugin for the HUBzero CMS. Displays a button to make it possible to insert images into an Article.",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"support": {
+		"email": "support@hubzero.org",
+		"issues": "https://help.hubzero.org"
+	},
+	"require": {
+		"php" : "^5.4",
+		"hubzero/com_content": "dev-master"
+	},
+	"extra": {
+		"install-directory": "/plugins/editors-xtd/image/"
+	}
+}

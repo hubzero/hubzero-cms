@@ -308,7 +308,7 @@ class Miner extends Obj implements Provider
 		$this->database->setQuery(
 			"SELECT DISTINCT t.raw_tag
 			FROM `#__tags` t, `#__tags_object` tos
-			WHERE t.id = tos.tagid AND tos.objectid=" . $this->database->quote($id) . " AND tos.tbl='publications' AND t.admin=0
+			WHERE t.id = tos.tagid AND tos.objectid=" . $this->database->quote($record->version_id) . " AND tos.tbl='publications' AND t.admin=0
 			ORDER BY t.raw_tag"
 		);
 		$record->subject = $this->database->loadColumn();

@@ -2361,4 +2361,24 @@ class Publication extends Obj
 
 		return $date;
 	}
+
+	/**
+	 * Get series that the publication belongs to
+	 *
+	 * @return  string  HTML or false
+	 */
+	public function getSeries()
+	{
+		// Check whether the version exists
+		if (!$this->exists())
+		{
+			return false;
+		}
+
+		// Query the series that the publication belongs to
+		$this->_tblAttachment = new Tables\Attachment($this->_db);
+		$series = $this->_tblAttachment->getSeries($this->version->id);
+
+		return $series;
+	}
 }

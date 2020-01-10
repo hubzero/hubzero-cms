@@ -88,7 +88,7 @@ Toolbar::help('import');
 							</td>
 							<td>
 								<?php echo $hook->get('file'); ?> &mdash;
-								<a rel="noopener" target="_blank" href="<?php echo Route::url('index.php?option=com_resources&controller=importhooks&task=raw&id=' . $hook->get('id')); ?>">
+								<a rel="noopener" target="_blank" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=raw&id=' . $hook->get('id')); ?>">
 									<?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_DISPLAY_FILE_VIEWRAW'); ?>
 								</a>
 							</td>

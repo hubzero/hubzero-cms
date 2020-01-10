@@ -23,7 +23,7 @@ class Helper extends Module
 	public function display()
 	{
 		$this->environment = strtolower(Config::get('application_env', 'production'));
-		if ($this->environment == 'production')
+		if (substr($this->environment, 0, 10) == 'production')
 		{
 			return;
 		}

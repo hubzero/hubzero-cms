@@ -72,7 +72,7 @@ $this->js();
 						if ($this->hook->get('file'))
 						{
 							echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_SCRIPT_CURRENT', $this->hook->get('file'));
-							echo ' &mdash; <a rel="noopener" target="_blank" href="' . Route::url('index.php?option=com_resources&controller=importhooks&task=raw&id='.$this->hook->get('id')) . '">'.Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_SCRIPT_VIEWRAW').'</a><br />';
+							echo ' &mdash; <a rel="noopener" target="_blank" href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=raw&id='.$this->hook->get('id')) . '">'.Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_SCRIPT_VIEWRAW').'</a><br />';
 						}
 					?>
 					<input type="file" name="file" />

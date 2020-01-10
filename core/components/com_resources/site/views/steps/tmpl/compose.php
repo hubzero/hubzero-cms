@@ -77,6 +77,7 @@ $this->css('create.css')
 
 			<label for="field-fulltxt">
 				<?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_ABSTRACT'); ?>:
+				<span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
 				<?php echo $this->editor('fields[fulltxt]', $this->escape(stripslashes($this->row->fulltxt)), 50, 20, 'field-fulltxt'); ?>
 			</label>
 
