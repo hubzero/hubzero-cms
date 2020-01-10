@@ -458,7 +458,11 @@ class Events extends AdminController
 				{
 					if ($f[0] == $param && end($f) == 1)
 					{
-						echo Html::alert(Lang::txt('EVENTS_REQUIRED_FIELD_CHECK', $f[1]));
+						App::redirect(
+							Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+							Lang::txt('COM_EVENTS_REQUIRED_FIELD_CHECK', $f[1]),
+							'error'
+						);
 						exit();
 					}
 				}

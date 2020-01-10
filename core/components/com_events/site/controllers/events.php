@@ -1823,7 +1823,10 @@ class Events extends SiteController
 					{
 						if ($f[0] == $param && end($f) == 1)
 						{
-							throw new Exception(Lang::txt('EVENTS_REQUIRED_FIELD_CHECK', $f[1]), 500);
+							//throw new Exception(Lang::txt('EVENTS_REQUIRED_FIELD_CHECK', $f[1]), 500);
+							$this->setError(Lang::txt('EVENTS_REQUIRED_FIELD_CHECK', $f[1]));
+							$this->editTask($row);
+							return;
 						}
 					}
 				}
