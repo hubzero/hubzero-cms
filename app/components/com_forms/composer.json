@@ -1,0 +1,34 @@
+{
+	"name": "qubeshub/com_forms",
+	"description": "Forms component for QUBES",
+	"type": "hubzero-component",
+	"keywords": ["hubzero", "qubeshub"],
+	"homepage": ["https://hubzero.org", "https://qubeshub.org"],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		},
+		{
+			"name": "QUBESHub",
+			"email": "qubeshub@gmail.com"
+		}
+	],
+	"support": [
+		{
+			"email": "support@hubzero.org",
+			"issues": "https://help.hubzero.org"
+		},
+		{
+			"email": "qubeshub@gmail.com",
+			"issues": "https://github.com/qubeshub/hubzero-cms/issues"
+		}
+	],
+	"require": {
+		"php" : "^5.4"
+	},
+	"extra": {
+	    "install-directory": "/components/com_forms"
+	}
+}

@@ -1,0 +1,75 @@
+/*
+ * Edit nav
+ */
+.ul-nav {
+	margin: 0 0 2em 0;
+}
+
+/*
+ * Fontcon styling
+ */
+.fontcon {
+	font-family: 'Fontcons';
+}
+
+/*
+ * No pages notice
+ */
+.none-notice {
+	display: flex;
+	justify-content: center;
+	margin: 0 0 8em 0;
+}
+
+/*
+ * Link row
+ */
+.link-row {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.link-row > * {
+	font-size: 1.5em;
+	margin: 0 0 0 1em;
+}
+
+/*
+ * Page list styles
+ */
+.page-list .page-item {
+	border: 2px solid #d6d6d6;
+	box-shadow: 1px 1px 5px rgba(0,0,0,0.09);
+	font-size: 1.25em;
+	line-height: 3em;
+	overflow: hidden;
+	padding: 0 0 0 1em;
+	white-space: nowrap;
+}
+
+.page-list .page-item * {
+	color: inherit;
+}
+
+.page-item a:hover {
+	border: none;
+	text-decoration: none;
+}
+
+.page-item input,
+.page-item select {
+	padding: 0 0 0 .5em;
+	width: 100%;
+}
+
+
+/*
+ * Item CRUD buttons styles
+ */
+.page-item .crud-buttons > span {
+	margin: 0 0 0 2em;
+}
+
+.destroy-button:hover {
+	cursor: pointer;
+}

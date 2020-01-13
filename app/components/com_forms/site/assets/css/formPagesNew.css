@@ -1,0 +1,14 @@
+/*
+ * Page form
+ */
+#hubForm input[type=number] {
+	background-color: rgba(200,200,200,0.15);
+	border: 1px solid rgba(0,0,0,0.15);
+	font-family: 'OpenSans','Helvetica Neue',Helvetica,Arial,sans-serif;
+	font-size: 1em;
+	line-height: 1.61803399em;
+	margin-top: .25em;
+	max-width: 100%;
+	outline: none;
+	padding: .6045085em;
+}

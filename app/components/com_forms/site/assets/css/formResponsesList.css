@@ -1,0 +1,74 @@
+/*
+ * Response list styles
+ */
+.responses-list {
+	list-style: none;
+	font-size: 1.5em;
+}
+
+.responses-list .response-item:first-child {
+	margin-top: 0;
+}
+
+.responses-list .response-item {
+	border: 2px solid #d6d6d6;
+	box-shadow: 1px 1px 5px rgba(0,0,0,0.09);
+	font-size: 1.25em;
+	line-height: 3em;
+	overflow: hidden;
+	padding: 0 0 0 1em;
+	white-space: nowrap;
+}
+
+.form-list .form-item * {
+	color: inherit;
+}
+
+.feed-comments {
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	font-size: 1.5em;
+	height: 100%;
+	margin: 0 0 1em 0;
+	max-height: 50vh;
+	padding: 1em 1em .5em 1em;
+	overflow-y: scroll;
+}
+
+.empty-feed-notice {
+	margin: 1em;
+}
+
+.feed-item {
+	margin: 0 0 2.5em 0;
+}
+
+.feed-item:last-child {
+	margin-bottom: 1em;
+}
+
+.feed-item .form-name {
+	margin: .5em 0 0 0;
+}
+
+.feed-item .comment-content {
+	margin: .35em 0 0 0;
+}
+
+.feed-item span:first-child {
+	margin: 0 .5em 0 0;
+}
+
+.feed-item span:first-child > a {
+	font-weight: 500;
+	text-decoration: underline;
+}
+
+.feed-item span:first-child > a:hover {
+	border: none;
+	text-decoration: none;
+}
+
+.feed-item .date {
+	color: #a1a1a1;
+	font-size: 1em;
+}

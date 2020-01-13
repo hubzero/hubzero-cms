@@ -1,0 +1,59 @@
+
+fieldset label {
+	display: inline !important;
+}
+
+.field-wrap {
+	padding: 1em 0 0 0;
+}
+
+label.list-item {
+	margin: 0 1.25em 0 0;
+}
+
+label.block {
+	display: block !important;
+}
+
+label.block:first-child {
+	padding-top: 0 !important;
+}
+
+input[type=color],
+input[type=email],
+input[type=password],
+input[type=tel],
+input[type=text]
+{
+	width: auto;
+}
+
+.header h1 {
+	font-size: 2em;
+}
+
+.paragraph {
+	font-size: 1.25em;
+}
+
+.fontcon {
+	font-family: 'Fontcons';
+}
+
+#hubForm fieldset {
+	margin: 0 0 0 0;
+}
+
+.button-container {
+	display: flex;
+	padding: 1em 0 0 0;
+	justify-content: flex-end;
+}
+
+.pagination-container {
+	text-align: center;
+}
+
+.current-position {
+	font-weight: bold;
+}

@@ -1,0 +1,42 @@
+
+.button-container {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.button-container > div {
+	margin: 0 0 0 0 !important;
+}
+
+.radios-container {
+	display: flex;
+	align-items: center;
+	padding: 1.25em 0 0 0;
+}
+
+.radios-container > .inline-radio:first-child {
+	margin: 0 1.15em 0 0;
+}
+
+.datetime-container {
+	display: flex;
+	align-items: center;
+	padding: 1.25em 0 0 0;
+}
+
+.datetimes-container {
+	display: flex !important;
+	justify-content: space-between;
+}
+
+.datetimes-container > * {
+	display: inline;
+}
+
+input[type=datetime-local] {
+	border: 1px solid rgba(0,0,0,0.15);
+	background-color: rgba(200,200,200,0.15);
+	font-family: 'OpenSans','Helvetica Neue', Arial, sans-serif;
+	font-size: .95em;
+	line-height: 1.61803399em;
+}

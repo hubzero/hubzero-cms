@@ -1,0 +1,42 @@
+/*
+ * Edit steps nav
+ */
+.ul-nav {
+	display: flex;
+	font-size: 1.35em;
+	justify-content:center;
+	list-style: none;
+	padding: 1em 0 1em 0;
+}
+
+.ul-nav li {
+	border-right: 2px solid black;
+	display: inline-block;
+	height: 100%;
+	margin: 0 0 0 0;
+}
+
+.ul-nav li:last-child {
+	border-right: 0;
+}
+
+.ul-nav a {
+	color: inherit !important;
+	padding: .75em;
+	text-decoration: none;
+}
+
+.ul-nav a:hover {
+	text-decoration: none;
+	border: 0;
+}
+
+.ul-nav .current {
+	pointer-events: none;
+	font-weight: bolder;
+}
+
+.ul-nav li:first-child {
+	margin-left: 0;
+}
+

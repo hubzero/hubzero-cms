@@ -1,0 +1,45 @@
+/*
+ * No responses notice
+ */
+.none-notice {
+	display: flex;
+	justify-content: center;
+	margin: 4em 0 4em 0;
+}
+
+.nav {
+	margin: 0 0 2em 0;
+}
+
+thead td {
+	font-weight: bold;
+}
+
+#response-list {
+	margin: 0 0 3em 0;
+}
+
+#response-list td {
+  padding-left: 0;
+}
+
+.hidden {
+	display: none;
+}
+
+.fontcon {
+	font-family: 'Fontcons';
+}
+
+.list-actions {
+  font-size: 1.35em;
+  margin: 0 0 1em 0;
+}
+
+.list-actions > * {
+  margin: 0 2.5em 0 0;
+}
+
+.list-actions * {
+  display: inline;
+}

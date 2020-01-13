@@ -1,0 +1,48 @@
+
+h2 {
+	font-weight: bold;
+}
+
+h3 {
+	font-size: 1.5em;
+	text-decoration: underline;
+}
+
+.form-overview {
+	font-size: 1.5em;
+}
+
+ol {
+	margin: 0 0 0 1em;
+}
+
+.row:nth-child(2) {
+	margin: 0 0 2em 0;
+}
+
+.row:nth-child(n+3) {
+	margin: 0 0 4em 0;
+}
+
+.form-response-link .start {
+	font-size: 2em;
+	font-weight: bold;
+}
+
+.page-number {
+	margin: 0 0 0 .5em;
+}
+
+.notice {
+	font-size: 1.5em;
+}
+
+.user-response-link {
+	font-size: 1.5em;
+	font-weight: 500;
+}
+
+.edit-link-container {
+	font-size: 1.5em;
+	margin: 2em 0 0 0;
+}

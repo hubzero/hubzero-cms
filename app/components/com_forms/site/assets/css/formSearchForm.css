@@ -1,0 +1,11 @@
+
+.fontcon {
+	font-family: 'Fontcons';
+}
+
+.required {
+  color: #f00;
+  font-size: x-small;
+  text-transform: uppercase;
+}
+

@@ -1,0 +1,68 @@
+/*
+ * Sidebar styles
+ */
+.link-container {
+	font-size: 1.5em;
+	text-align: center;
+}
+
+.landing-sidebar > .row:not(:first-child) {
+	margin-top: 1.5em;
+}
+
+/*
+ * Search form styles
+ */
+.search-form input[type=text], input[type=submit] {
+	width: 100%;
+}
+
+.search-form .header {
+	display: flex;
+	justify-content: flex-end;
+	width: 100%;
+}
+
+.search-form .collapsible-field-header {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.search-form .content {
+	padding: 0 0 1em 0;
+}
+
+.search-form .inline-radio {
+	margin: 0 1.25em 0 0;
+}
+
+.search-form .relative-date-fields div:first-child {
+	margin: 0 0 20px 0;
+}
+
+.search-form .caret:hover, .master-caret:hover {
+	cursor: pointer;
+}
+
+/*
+ * Form list styles
+ */
+.form-list {
+	list-style: none;
+	font-size: 1.5em;
+}
+
+.form-list .form-item {
+	border: 2px solid #d6d6d6;
+	box-shadow: 1px 1px 5px rgba(0,0,0,0.09);
+	font-size: 1.25em;
+	line-height: 3em;
+	overflow: hidden;
+	padding: 0 0 0 1em;
+	white-space: nowrap;
+}
+
+.form-list .form-item * {
+	color: inherit;
+}

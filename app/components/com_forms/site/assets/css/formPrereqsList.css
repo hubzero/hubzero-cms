@@ -1,0 +1,62 @@
+/*
+ * Edit nav
+ */
+.ul-nav {
+	margin: 0 0 2em 0;
+}
+
+/*
+ * Fontcon styling
+ */
+.fontcon {
+	font-family: 'Fontcons';
+}
+
+/*
+ * No prereqs notice
+ */
+.none-notice {
+	display: flex;
+	justify-content: center;
+	margin: 0 0 8em 0;
+}
+
+/*
+ * Add prereq link
+ */
+.link-row {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.link-row > * {
+	font-size: 1.5em;
+	margin: 0 0 0 1em;
+}
+
+/*
+ * Prereq list styles
+ */
+.prereq-list .prereq-item {
+	border: 2px solid #d6d6d6;
+	box-shadow: 1px 1px 5px rgba(0,0,0,0.09);
+	font-size: 1.25em;
+	line-height: 3em;
+	overflow: hidden;
+	padding: 0 0 0 1em;
+	white-space: nowrap;
+}
+
+.prereq-list .prereq-item * {
+	color: inherit;
+}
+
+.prereq-item input,
+.prereq-item select {
+	padding: 0 0 0 .5em;
+	width: 100%;
+}
+
+.destroy-button:hover {
+	cursor: pointer;
+}

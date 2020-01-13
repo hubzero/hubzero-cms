@@ -1,0 +1,9 @@
+
+#hubForm fieldset {
+	padding-top: 0;
+}
+
+#hubForm input[type="submit"] {
+	float: right;
+	margin: 1em 0 0 0;
+}
