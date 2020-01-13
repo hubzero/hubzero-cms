@@ -2,7 +2,35 @@
 	"name": "qubeshub/group-publications-plugin",
 	"description": "Group publications plugin",
 	"type": "hubzero-plugin",
-  	"extra": {
+	"keywords": ["hubzero", "qubeshub"],
+	"homepage": ["https://hubzero.org", "https://qubeshub.org"],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		},
+		{
+			"name": "QUBESHub",
+			"email": "qubeshub@gmail.com"
+		}
+	],
+	"support": [
+		{
+			"email": "support@hubzero.org",
+			"issues": "https://help.hubzero.org"
+		},
+		{
+			"email": "qubeshub@gmail.com",
+			"issues": "https://github.com/qubeshub/hubzero-cms/issues"
+		}
+	],
+	"require": {
+		"php" : "^5.4",
+		"hubzero/com_groups": "dev-master",
+		"hubzero/com_publications": "dev-master"
+	},
+	"extra": {
 	    "install-directory": "/plugins/groups/publications"
 	}
 }

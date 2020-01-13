@@ -2,9 +2,6 @@
 	"name": "qubeshub/com_support",
 	"description": "**Override** of HubZero support component.",
 	"type": "hubzero-component",
-	"extra": {
-	    "install-directory": "/components/com_support"
-	},
 	"keywords": ["hubzero", "qubeshub"],
 	"homepage": ["https://hubzero.org", "https://qubeshub.org"],
 	"license": "MIT",
@@ -30,5 +27,8 @@
 	],
 	"require": {
 		"php" : "^5.4"
+	},
+	"extra": {
+	    "install-directory": "/components/com_support"
 	}
 }

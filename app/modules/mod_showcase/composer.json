@@ -1,7 +1,7 @@
 {
-	"name": "qubeshub/tpl_bmc",
-	"description": "QUBES template (2018)",
-	"type": "hubzero-template",
+	"name": "qubeshub/mod_showcase",
+	"description": "Showcase billboards of content in grid format.",
+	"type": "hubzero-module",
 	"keywords": ["hubzero", "qubeshub"],
 	"homepage": ["https://hubzero.org", "https://qubeshub.org"],
 	"license": "MIT",
@@ -29,6 +29,6 @@
 		"php" : "^5.4"
 	},
 	"extra": {
-	    "install-directory": "/templates/bmc"
+	    "install-directory": "/modules/mod_showcase"
 	}
 }

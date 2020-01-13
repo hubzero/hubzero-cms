@@ -1,7 +1,7 @@
 {
-	"name": "qubeshub/tpl_bmc",
-	"description": "QUBES template (2018)",
-	"type": "hubzero-template",
+	"name": "qubeshub/plg_system_subnav",
+	"description": "System plugin to handle sub-navigation menu.",
+	"type": "hubzero-plugin",
 	"keywords": ["hubzero", "qubeshub"],
 	"homepage": ["https://hubzero.org", "https://qubeshub.org"],
 	"license": "MIT",
@@ -26,9 +26,10 @@
 		}
 	],
 	"require": {
-		"php" : "^5.4"
+		"php" : "^5.4",
+		"qubeshub/tpl_bmc": "dev-master"
 	},
-	"extra": {
-	    "install-directory": "/templates/bmc"
+  "extra": {
+	    "install-directory": "/plugins/system/subnav"
 	}
 }

@@ -2,9 +2,6 @@
 	"name": "qubeshub/com_publications",
 	"description": "**Override** of HubZero publications component.",
 	"type": "hubzero-component",
-	"extra": {
-	    "install-directory": "/components/com_publications"
-	},
 	"keywords": ["hubzero", "qubeshub"],
 	"homepage": ["https://hubzero.org", "https://qubeshub.org"],
 	"license": "MIT",
@@ -31,5 +28,8 @@
 	"require": {
 		"php" : "^5.4",
 		"hubzero/com_projects": "dev-master"
+	},
+	"extra": {
+	    "install-directory": "/components/com_publications"
 	}
 }
