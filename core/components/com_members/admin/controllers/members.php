@@ -441,15 +441,17 @@ class Members extends AdminController
 			$user->set('registerDate', Date::toSql());
 		}
 
-		// Set the new info
-		$user->set('givenName', preg_replace('/\s+/', ' ', trim($fields['givenName'])));
-		$user->set('middleName', preg_replace('/\s+/', ' ', trim($fields['middleName'])));
-		$user->set('surname', preg_replace('/\s+/', ' ', trim($fields['surname'])));
+		$givenTrimmed = preg_replace('/\s+/', ' ', trim($fields['givenName']));
+		$middleTrimmed = preg_replace('/\s+/', ' ', trim($fields['middleName']));
+		$surTrimmed = preg_replace('/\s+/', ' ', trim($fields['surname']));
 
+		$user->set('givenName', $givenTrimmed);
+		$user->set('middleName', $middleTrimmed);
+		$user->set('surname', $surTrimmed);
 		$name = array(
-			$user->get('givenName'),
-			$user->get('middleName'),
-			$user->get('surname')
+			$givenTrimmed,
+			$middleTrimmed,
+			$surTrimmed
 		);
 		$name = implode(' ', $name);
 		$name = preg_replace('/\s+/', ' ', $name);
