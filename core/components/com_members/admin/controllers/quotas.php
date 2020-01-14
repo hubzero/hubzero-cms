@@ -241,36 +241,96 @@ class Quotas extends AdminController
 	 *
 	 * @return  void
 	 */
-	public function restoreDefaultTask()
+	// public function restoreDefaultTask()
+	// {
+	// 	// Check for request forgeries
+	// 	Request::checkToken();
+
+	// 	// Incoming
+	// 	$ids = Request::getArray('id', array());
+	// 	$ids = (!is_array($ids) ? array($ids) : $ids);
+
+	// 	// Do we have any IDs?
+	// 	if (!empty($ids))
+	// 	{
+	// 		if (!Quota::setDefaultClass($ids))
+	// 		{
+	// 			Notify::error(Lang::txt('COM_MEMBERS_QUOTA_MISSING_DEFAULT_CLASS'));
+	// 		}
+	// 		else
+	// 		{
+	// 			Notify::success(Lang::txt('COM_MEMBERS_QUOTA_SET_TO_DEFAULT'));
+	// 		}
+	// 	}
+	// 	else // no rows were selected
+	// 	{
+	// 		// Output message and redirect
+	// 		Notify::warning(Lang::txt('COM_MEMBERS_QUOTA_DELETE_NO_ROWS'));
+	// 	}
+
+	// 	// Redirect
+	// 	$this->cancelTask();
+	// }
+
+	/**
+	 * Sync selected user quotas to system-side (Linux host)
+	 *
+	 * @return  void
+	 */
+	public function syncQuotasToSystemTask()
 	{
-		// Check for request forgeries
-		Request::checkToken();
-
-		// Incoming
-		$ids = Request::getArray('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
-
-		// Do we have any IDs?
-		if (!empty($ids))
 		{
-			if (!Quota::setDefaultClass($ids))
+			// Check for request forgeries
+			Request::checkToken();
+	
+			// Incoming
+			$ids = Request::getArray('id', array());
+			$ids = (!is_array($ids) ? array($ids) : $ids);
+			$i = 0;
+			
+			// Do we have any IDs?
+			if (!empty($ids))
 			{
-				Notify::error(Lang::txt('COM_MEMBERS_QUOTA_MISSING_DEFAULT_CLASS'));
-			}
-			else
-			{
-				Notify::success(Lang::txt('COM_MEMBERS_QUOTA_SET_TO_DEFAULT'));
-			}
-		}
-		else // no rows were selected
-		{
-			// Output message and redirect
-			Notify::warning(Lang::txt('COM_MEMBERS_QUOTA_DELETE_NO_ROWS'));
-		}
+				// Loop through each ID and delete the necessary items
+				foreach ($ids as $id)
+				{
+					$id = intval($id);
 
-		// Redirect
-		$this->cancelTask();
+					$quota_data = Quota::all()
+						->whereEquals('user_id', $id)
+						->row();
+					
+					$quota_data->set('user_id', $quota_data->get('user_id'));
+					$quota_data->set('class_id', $quota_data->get('class_id'));
+					$quota_data->set('soft_blocks', $quota_data->get('soft_blocks'));
+					$quota_data->set('hard_blocks', $quota_data->get('hard_blocks'));
+					$quota_data->set('soft_files', $quota_data->get('soft_files'));
+					$quota_data->set('hard_files', $quota_data->get('hard_files'));
+					$quota_data->save();
+
+					if ($i == 100)
+					{
+						Notify::error(Lang::txt('Sync limit exceeded. Please select less than 100 users.'));
+						return $this->cancelTask();
+					}
+
+					$i++;
+					
+				}
+			}
+			else // no rows were selected
+			{
+				// Output message and redirect
+				Notify::warning(Lang::txt('No Quotas Synced'));
+				return $this->cancelTask();
+			}
+	
+			// Output messsage and redirect
+			Notify::success(Lang::txt('Quotas Successfully Synced to System'));
+			return $this->cancelTask();
+		}
 	}
+	
 
 	/* ------------- */
 	/* Classes tasks */
