@@ -169,7 +169,7 @@ class Tool extends Content
 				$targetPath = rtrim($uploadDirectory, '/') . '/' . $identifier;
 				if (Filesystem::copy($filePath, $targetPath))
 				{
-					$lastPos = strrpos($identifier, '/') + 1;
+					$lastPos = strrpos($identifier, '/') ? strrpos($identifier, '/') + 1 : 0;
 					$name = empty($name) ? substr($identifier, $lastPos) : $name;
 					$return['projectFiles'][] = array('name' => $name);
 				}
@@ -227,10 +227,14 @@ class Tool extends Content
 
 				// Create file objects
 				$conFile = Entity::fromPath($identifier, $connection->adapter());
+				/*
 				if (!$conFile->isLocal())
 				{
 					return $conFile;
 				}
+				*/
+				// It it doesn't have to be local (iData storage): https://mygeohub.org/support/ticket/1536#c9499
+				return $conFile;
 			}
 		}
 		return false;
