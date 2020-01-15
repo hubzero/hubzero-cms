@@ -261,7 +261,7 @@ class Auth extends SiteController
 
 		// if authenticator is specified call plugin display method, otherwise (or if method does not exist) use default
 		$authenticator = Request::getString('authenticator', '');
-
+		
 		Plugin::import('authentication');
 
 		$status = array();
@@ -365,7 +365,7 @@ class Auth extends SiteController
 		}
 
 		$authenticator = Request::getString('authenticator', '');
-
+		
 		// If a specific authenticator is specified try to call the login method for that plugin
 		if (!empty($authenticator))
 		{
@@ -607,15 +607,23 @@ class Auth extends SiteController
 	{
 		$user = User::getInstance();
 
-		// If this is an auth_link account update, carry on, otherwise raise an error
 		if ($user->isGuest()
-		 || !$user->hasAttribute('auth_link_id')
-		 || !is_numeric($user->get('username'))
-		 || !$user->get('username') < 0)
-		{
-			App::abort(405, 'Method not allowed');
-		}
+		|| !$user->hasAttribute('auth_link_id')
+		|| !is_numeric($user->get('username'))
+		|| !$user->get('username') < 0)
+	   {
+		   $this->linkaccountsTask();
+	   }
 
+		// If this is an auth_link account update, carry on, otherwise raise an error
+		// if ($user->isGuest()
+		//  || !$user->hasAttribute('auth_link_id')
+		//  || !is_numeric($user->get('username'))
+		//  || !$user->get('username') < 0)
+		// {
+		// 	App::abort(405, 'Method not allowed');
+		// }
+		
 		// Look up a few things
 		$hzal    = \Hubzero\Auth\Link::find_by_id($user->get('auth_link_id'));
 		$hzad    = \Hubzero\Auth\Domain::find_by_id($hzal->auth_domain_id);
@@ -651,7 +659,7 @@ class Auth extends SiteController
 				);
 			}
 		}
-
+		
 		if ($link_conflicts)
 		{
 			foreach ($link_conflicts as $l)
@@ -672,7 +680,7 @@ class Auth extends SiteController
 
 		// Get the site name
 		$sitename = Config::get('sitename');
-
+		
 		// Assign variables to the view
 		$this->view
 			->set('hzal', $hzal)
@@ -844,20 +852,20 @@ class Auth extends SiteController
 
 			// Set page title
 			Document::setTitle($title);
-
+			
 			// Build logout image if enabled
 			if ($params->get('image_' . $type) != -1)
 			{
 				$image = '/images/stories/'.$params->get('image_' . $type);
 				$image = '<img src="'. $image  .'" align="'. $params->get('image_'.$type.'_align') .'" hspace="10" alt="" />';
 			}
-
+			
 			// Get the return URL
 			if (!$url = Request::getString('return', ''))
 			{
 				$url = base64_encode($params->get($type));
 			}
-
+			
 			$this->view->set('image', $image);
 			$this->view->set('type', $type);
 			$this->view->set('return', $url);
@@ -865,9 +873,9 @@ class Auth extends SiteController
 			$this->view->setName('logout');
 			$this->view->setLayout('default');
 			$this->view->display();
-			return;
+			//return;
 		}
-
+		
 		$app = App::get('app');
 		$user = User::getInstance();
 
@@ -886,7 +894,7 @@ class Auth extends SiteController
 				$authenticator = null;
 			}
 		}
-
+		
 		// If a specific authenticator is specified try to call the logout method for that plugin
 		if (!empty($authenticator))
 		{
@@ -911,34 +919,34 @@ class Auth extends SiteController
 
 						// Redirect to user third party signout view
 						// Only do this for PUCAS for the time being (it's the one that doesn't lose session info after hub logout)
-						if ($authenticator == 'pucas')
-						{
-							// Get plugin params
-							$plugin = Plugin::byType('authentication', $authenticator);
+						// if ($authenticator == 'pucas')
+						// {
+						// 	// Get plugin params
+						// 	$plugin = Plugin::byType('authentication', $authenticator);
 
-							$pparams = new Registry($plugin->params);
-							$auto_logoff = $pparams->get('auto_logoff', false);
+						// 	$pparams = new Registry($plugin->params);
+						// 	$auto_logoff = $pparams->get('auto_logoff', false);
 
-							if ($auto_logoff || $singleSignOn == 'all')
-							{
-								$result = $myplugin->logout();
-								break;
-							}
-							elseif ($singleSignOn === false)
-							{
-								App::redirect(Route::url('index.php?option=com_users&view=endsinglesignon&authenticator=' . $authenticator, false));
-								return;
-							}
-							else
-							{
-								break;
-							}
-						} // End PUCAS check
-						else
-						{
-							$result = $myplugin->logout();
-							break;
-						} // Normal path
+						// 	if ($auto_logoff || $singleSignOn == 'all')
+						// 	{
+						// 		$result = $myplugin->logout();
+						// 		break;
+						// 	}
+						// 	elseif ($singleSignOn === false)
+						// 	{
+						// 		App::redirect(Route::url('index.php?option=com_users&view=endsinglesignon&authenticator=' . $authenticator, false));
+						// 		return;
+						// 	}
+						// 	else
+						// 	{
+						// 		break;
+						// 	}
+						// } // End PUCAS check
+						// else
+						// {
+						// 	$result = $myplugin->logout();
+						// 	break;
+						// } // Normal path
 					} // End verification of logout() method
 				} // End plugin check
 			} // End foreach
@@ -948,7 +956,7 @@ class Auth extends SiteController
 		//$error = $app->logout();
 		// Get a user object from the Application.
 		//$user = User::getInstance();
-
+		
 		// Build the credentials array.
 		$parameters = array();
 		$parameters['username'] = $user->get('username');
@@ -1049,10 +1057,10 @@ class Auth extends SiteController
 		}
 
 		// Try to prevent nasty redirect loops
-		/*if ($return == '/logout' || $return == '/index.php?option=com_users&task=user.logout')
-		{
-			$return = '/';
-		}*/
+		// if ($return == '/logout' || $return == '/index.php?option=com_users&task=user.logout')
+		// {
+		// 	$return = '/';
+		// }
 
 		$return = Route::url($return, false);
 
