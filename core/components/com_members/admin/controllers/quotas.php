@@ -237,42 +237,6 @@ class Quotas extends AdminController
 	}
 
 	/**
-	 * Restore member to default quota class
-	 *
-	 * @return  void
-	 */
-	// public function restoreDefaultTask()
-	// {
-	// 	// Check for request forgeries
-	// 	Request::checkToken();
-
-	// 	// Incoming
-	// 	$ids = Request::getArray('id', array());
-	// 	$ids = (!is_array($ids) ? array($ids) : $ids);
-
-	// 	// Do we have any IDs?
-	// 	if (!empty($ids))
-	// 	{
-	// 		if (!Quota::setDefaultClass($ids))
-	// 		{
-	// 			Notify::error(Lang::txt('COM_MEMBERS_QUOTA_MISSING_DEFAULT_CLASS'));
-	// 		}
-	// 		else
-	// 		{
-	// 			Notify::success(Lang::txt('COM_MEMBERS_QUOTA_SET_TO_DEFAULT'));
-	// 		}
-	// 	}
-	// 	else // no rows were selected
-	// 	{
-	// 		// Output message and redirect
-	// 		Notify::warning(Lang::txt('COM_MEMBERS_QUOTA_DELETE_NO_ROWS'));
-	// 	}
-
-	// 	// Redirect
-	// 	$this->cancelTask();
-	// }
-
-	/**
 	 * Sync selected user quotas to system-side (Linux host)
 	 *
 	 * @return  void
