@@ -261,7 +261,7 @@ class Auth extends SiteController
 
 		// if authenticator is specified call plugin display method, otherwise (or if method does not exist) use default
 		$authenticator = Request::getString('authenticator', '');
-		
+
 		Plugin::import('authentication');
 
 		$status = array();
@@ -365,7 +365,7 @@ class Auth extends SiteController
 		}
 
 		$authenticator = Request::getString('authenticator', '');
-		
+
 		// If a specific authenticator is specified try to call the login method for that plugin
 		if (!empty($authenticator))
 		{
@@ -623,7 +623,7 @@ class Auth extends SiteController
 		// {
 		// 	App::abort(405, 'Method not allowed');
 		// }
-		
+
 		// Look up a few things
 		$hzal    = \Hubzero\Auth\Link::find_by_id($user->get('auth_link_id'));
 		$hzad    = \Hubzero\Auth\Domain::find_by_id($hzal->auth_domain_id);
@@ -659,7 +659,7 @@ class Auth extends SiteController
 				);
 			}
 		}
-		
+
 		if ($link_conflicts)
 		{
 			foreach ($link_conflicts as $l)
@@ -680,7 +680,7 @@ class Auth extends SiteController
 
 		// Get the site name
 		$sitename = Config::get('sitename');
-		
+
 		// Assign variables to the view
 		$this->view
 			->set('hzal', $hzal)
@@ -852,20 +852,20 @@ class Auth extends SiteController
 
 			// Set page title
 			Document::setTitle($title);
-			
+
 			// Build logout image if enabled
 			if ($params->get('image_' . $type) != -1)
 			{
 				$image = '/images/stories/'.$params->get('image_' . $type);
 				$image = '<img src="'. $image  .'" align="'. $params->get('image_'.$type.'_align') .'" hspace="10" alt="" />';
 			}
-			
+
 			// Get the return URL
 			if (!$url = Request::getString('return', ''))
 			{
 				$url = base64_encode($params->get($type));
 			}
-			
+
 			$this->view->set('image', $image);
 			$this->view->set('type', $type);
 			$this->view->set('return', $url);
@@ -875,7 +875,7 @@ class Auth extends SiteController
 			$this->view->display();
 			//return;
 		}
-		
+
 		$app = App::get('app');
 		$user = User::getInstance();
 
@@ -894,7 +894,7 @@ class Auth extends SiteController
 				$authenticator = null;
 			}
 		}
-		
+
 		// If a specific authenticator is specified try to call the logout method for that plugin
 		if (!empty($authenticator))
 		{
@@ -956,7 +956,7 @@ class Auth extends SiteController
 		//$error = $app->logout();
 		// Get a user object from the Application.
 		//$user = User::getInstance();
-		
+
 		// Build the credentials array.
 		$parameters = array();
 		$parameters['username'] = $user->get('username');
