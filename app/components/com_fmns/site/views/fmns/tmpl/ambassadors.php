@@ -50,9 +50,14 @@ Pathway::append(
 	<h2>Current and Former QUBES Ambassadors</h2>
 	<p><a href="https://qubeshub.org/community/groups/ambassadors/updates">See all updates and presentation materials!</a> Check out the <a href="https://qubeshub.org/community/groups/ambassadors/blog">ambassador blog</a>!</p>
 
+	// Testing php image pathing
 	<div class="current-ambassador-wrap">
 		<div class="current-ambassador">
-			<img src="https://qubeshub.org/files/MTRjZGIzZDFkMzI4NjdhNjg4ZDFjM2E4OGFiYzIyMDMxM2VkYWMzMTk3OThiODFkYTUwNTIwNTEwNTQwMzU1MjovdmFyL3d3dy9xdWJlc2h1Yi9hcHAvc2l0ZS9tZW1iZXJzLzA2ODc5L3Byb2ZpbGUucG5n" alt="Image of Maryann Herman">
+			<?php
+				$u = $u = User::getInstance(6879);
+				$pic = $u->picture(0, false);
+				echo "<img src=' $pic ' alt='Image of Maryann Herman'>";
+			 ?>
 			<div>
 				<a href="https://qubeshub.org/community/members/6879">Maryann Hermann</a><br>
 				St. John Fisher College
@@ -60,7 +65,11 @@ Pathway::append(
 		</div>
 
 		<div class="current-ambassador">
-			<img src="https://qubeshub.org/files/MTRjZGIzZDFkMzI4NjdhNjg4ZDFjM2E4OGFiYzIyMDMxM2VkYWMzMTk3OThiODFkYTUwNTIwNTEwNTQwMzU1MjovdmFyL3d3dy9xdWJlc2h1Yi9hcHAvc2l0ZS9tZW1iZXJzLzAzMTYzL3Byb2ZpbGUucG5n" alt="Image of Megan Jones">
+			<?php
+				$u = $u = User::getInstance(3163);
+				$pic = $u->picture(0, false);
+				echo "<img src=' $pic ' alt='Image of Megan Jones'>";
+			 ?>
 			<div>
 				<a href="https://qubeshub.org/community/members/3163">Megan Jones</a><br>
 				NEON
@@ -68,7 +77,11 @@ Pathway::append(
 		</div>
 
 		<div class="current-ambassador">
-			<img src="https://qubeshub.org/files/MTRjZGIzZDFkMzI4NjdhNjg4ZDFjM2E4OGFiYzIyMDMxM2VkYWMzMTk3OThiODFkYTUwNTIwNTEwNTQwMzU1MjovdmFyL3d3dy9xdWJlc2h1Yi9hcHAvc2l0ZS9tZW1iZXJzLzA1OTcyL3Byb2ZpbGUucG5n" alt="Image of Rachel Hartnett">
+			<?php
+				$u = $u = User::getInstance(5972);
+				$pic = $u->picture(0, false);
+				echo "<img src=' $pic ' alt='Image of Rachel Hartnett'>";
+			 ?>
 			<div>
 				<a href="https://qubeshub.org/community/members/5972">Rachel Hartnett</a><br>
 				University of Oklahoma
@@ -76,7 +89,11 @@ Pathway::append(
 		</div>
 
 		<div class="current-ambassador">
-			<img src="https://qubeshub.org/files/MTRjZGIzZDFkMzI4NjdhNjg4ZDFjM2E4OGFiYzIyMDMxM2VkYWMzMTk3OThiODFkYTUwNTIwNTEwNTQwMzU1MjovdmFyL3d3dy9xdWJlc2h1Yi9hcHAvc2l0ZS9tZW1iZXJzLzA2OTkxL3Byb2ZpbGUucG5n" alt="Image of Kusum Naithani">
+			<?php
+				$u = $u = User::getInstance(6991);
+				$pic = $u->picture(0, false);
+				echo "<img src=' $pic ' alt='Image of Kusum Naithani'>";
+			 ?>
 			<div>
 				<a href="https://qubeshub.org/community/members/6991">Kusum Naithani</a><br>
 				University of Arkansas
