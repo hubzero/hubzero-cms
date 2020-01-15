@@ -52,7 +52,7 @@ Pathway::append(
 
 	<div class="current-ambassador-wrap">
 		<div class="current-ambassador">
-			<img src="https://qubeshub.org/files/MTRjZGIzZDFkMzI4NjdhNjg4ZDFjM2E4OGFiYzIyMDMxM2VkYWMzMTk3OThiODFkYTUwNTIwNTEwNTQwMzU1Mjovd3d3L3F1YmVzL2FwcC9zaXRlL21lbWJlcnMvMDY4NzkvcHJvZmlsZS5wbmc=" alt="Image of Maryann Herman">
+			<img src="https://qubeshub.org/files/MTRjZGIzZDFkMzI4NjdhNjg4ZDFjM2E4OGFiYzIyMDMxM2VkYWMzMTk3OThiODFkYTUwNTIwNTEwNTQwMzU1MjovdmFyL3d3dy9xdWJlc2h1Yi9hcHAvc2l0ZS9tZW1iZXJzLzA2ODc5L3Byb2ZpbGUucG5n" alt="Image of Maryann Herman">
 			<div>
 				<a href="https://qubeshub.org/community/members/6879">Maryann Hermann</a><br>
 				St. John Fisher College
@@ -60,7 +60,7 @@ Pathway::append(
 		</div>
 
 		<div class="current-ambassador">
-			<img src="https://qubeshub.org/files/MTRjZGIzZDFkMzI4NjdhNjg4ZDFjM2E4OGFiYzIyMDMxM2VkYWMzMTk3OThiODFkYTUwNTIwNTEwNTQwMzU1Mjovd3d3L3F1YmVzL2FwcC9zaXRlL21lbWJlcnMvMDMxNjMvcHJvZmlsZS5wbmc=" alt="Image of Megan Jones">
+			<img src="https://qubeshub.org/files/MTRjZGIzZDFkMzI4NjdhNjg4ZDFjM2E4OGFiYzIyMDMxM2VkYWMzMTk3OThiODFkYTUwNTIwNTEwNTQwMzU1MjovdmFyL3d3dy9xdWJlc2h1Yi9hcHAvc2l0ZS9tZW1iZXJzLzAzMTYzL3Byb2ZpbGUucG5n" alt="Image of Megan Jones">
 			<div>
 				<a href="https://qubeshub.org/community/members/3163">Megan Jones</a><br>
 				NEON
@@ -68,7 +68,7 @@ Pathway::append(
 		</div>
 
 		<div class="current-ambassador">
-			<img src="https://qubeshub.org/files/MTRjZGIzZDFkMzI4NjdhNjg4ZDFjM2E4OGFiYzIyMDMxM2VkYWMzMTk3OThiODFkYTUwNTIwNTEwNTQwMzU1Mjovd3d3L3F1YmVzL2FwcC9zaXRlL21lbWJlcnMvMDU5NzIvcHJvZmlsZS5wbmc=" alt="Image of Rachel Hartnett">
+			<img src="https://qubeshub.org/files/MTRjZGIzZDFkMzI4NjdhNjg4ZDFjM2E4OGFiYzIyMDMxM2VkYWMzMTk3OThiODFkYTUwNTIwNTEwNTQwMzU1MjovdmFyL3d3dy9xdWJlc2h1Yi9hcHAvc2l0ZS9tZW1iZXJzLzA1OTcyL3Byb2ZpbGUucG5n" alt="Image of Rachel Hartnett">
 			<div>
 				<a href="https://qubeshub.org/community/members/5972">Rachel Hartnett</a><br>
 				University of Oklahoma
@@ -76,7 +76,7 @@ Pathway::append(
 		</div>
 
 		<div class="current-ambassador">
-			<img src="https://qubeshub.org/files/MTRjZGIzZDFkMzI4NjdhNjg4ZDFjM2E4OGFiYzIyMDMxM2VkYWMzMTk3OThiODFkYTUwNTIwNTEwNTQwMzU1Mjovd3d3L3F1YmVzL2FwcC9zaXRlL21lbWJlcnMvMDY5OTEvcHJvZmlsZS5wbmc=" alt="Image of Kusum Naithani">
+			<img src="https://qubeshub.org/files/MTRjZGIzZDFkMzI4NjdhNjg4ZDFjM2E4OGFiYzIyMDMxM2VkYWMzMTk3OThiODFkYTUwNTIwNTEwNTQwMzU1MjovdmFyL3d3dy9xdWJlc2h1Yi9hcHAvc2l0ZS9tZW1iZXJzLzA2OTkxL3Byb2ZpbGUucG5n" alt="Image of Kusum Naithani">
 			<div>
 				<a href="https://qubeshub.org/community/members/6991">Kusum Naithani</a><br>
 				University of Arkansas
