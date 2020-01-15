@@ -54,7 +54,7 @@ Pathway::append(
 	<div class="current-ambassador-wrap">
 		<div class="current-ambassador">
 			<?php
-				$u = $u = User::getInstance(6879);
+				$u = User::getInstance(6879);
 				$pic = $u->picture(0, false);
 				echo "<img src=' $pic ' alt='Image of Maryann Herman'>";
 			 ?>
@@ -66,7 +66,7 @@ Pathway::append(
 
 		<div class="current-ambassador">
 			<?php
-				$u = $u = User::getInstance(3163);
+				$u = User::getInstance(3163);
 				$pic = $u->picture(0, false);
 				echo "<img src=' $pic ' alt='Image of Megan Jones'>";
 			 ?>
@@ -78,7 +78,7 @@ Pathway::append(
 
 		<div class="current-ambassador">
 			<?php
-				$u = $u = User::getInstance(5972);
+				$u = User::getInstance(5972);
 				$pic = $u->picture(0, false);
 				echo "<img src=' $pic ' alt='Image of Rachel Hartnett'>";
 			 ?>
@@ -90,7 +90,7 @@ Pathway::append(
 
 		<div class="current-ambassador">
 			<?php
-				$u = $u = User::getInstance(6991);
+				$u = User::getInstance(6991);
 				$pic = $u->picture(0, false);
 				echo "<img src=' $pic ' alt='Image of Kusum Naithani'>";
 			 ?>
