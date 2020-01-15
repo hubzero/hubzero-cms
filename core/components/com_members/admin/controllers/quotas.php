@@ -282,12 +282,12 @@ class Quotas extends AdminController
 		{
 			// Check for request forgeries
 			Request::checkToken();
-	
+
 			// Incoming
 			$ids = Request::getArray('id', array());
 			$ids = (!is_array($ids) ? array($ids) : $ids);
 			$i = 0;
-			
+
 			// Do we have any IDs?
 			if (!empty($ids))
 			{
@@ -299,7 +299,7 @@ class Quotas extends AdminController
 					$quota_data = Quota::all()
 						->whereEquals('user_id', $id)
 						->row();
-					
+
 					$quota_data->set('user_id', $quota_data->get('user_id'));
 					$quota_data->set('class_id', $quota_data->get('class_id'));
 					$quota_data->set('soft_blocks', $quota_data->get('soft_blocks'));
@@ -315,7 +315,7 @@ class Quotas extends AdminController
 					}
 
 					$i++;
-					
+
 				}
 			}
 			else // no rows were selected
@@ -324,13 +324,12 @@ class Quotas extends AdminController
 				Notify::warning(Lang::txt('No Quotas Synced'));
 				return $this->cancelTask();
 			}
-	
+
 			// Output messsage and redirect
 			Notify::success(Lang::txt('Quotas Successfully Synced to System'));
 			return $this->cancelTask();
 		}
 	}
-	
 
 	/* ------------- */
 	/* Classes tasks */
