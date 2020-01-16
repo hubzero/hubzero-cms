@@ -398,7 +398,8 @@
 --------------------------------------------- */
 	.addnotice {
 		width: 500px;
-		height: 300px;
+		min-height: 300px;
+		height: 20%;
 	}
 	.fancybox-wrap fieldset .notice-item,
 	.notice-item {
@@ -530,4 +531,18 @@
 	.public-page:before {
 		padding-top: 0.3em;
 		position: absolute;
+	}
+	#notice-form .form-group > label {
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	#notice-form .form-group > label > span {
+		width: 60%;
+	}
+
+	#notice-form .form-group > label > textarea {
+		width: 80%;
 	}
