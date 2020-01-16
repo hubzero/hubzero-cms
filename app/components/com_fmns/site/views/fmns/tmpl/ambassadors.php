@@ -50,7 +50,6 @@ Pathway::append(
 	<h2>Current and Former QUBES Ambassadors</h2>
 	<p><a href="https://qubeshub.org/community/groups/ambassadors/updates">See all updates and presentation materials!</a> Check out the <a href="https://qubeshub.org/community/groups/ambassadors/blog">ambassador blog</a>!</p>
 
-	// Testing php image pathing
 	<div class="current-ambassador-wrap">
 		<div class="current-ambassador">
 			<?php
