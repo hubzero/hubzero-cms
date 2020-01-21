@@ -611,9 +611,9 @@ class Auth extends SiteController
 		|| !$user->hasAttribute('auth_link_id')
 		|| !is_numeric($user->get('username'))
 		|| !$user->get('username') < 0)
-	   {
-		   $this->linkaccountsTask();
-	   }
+		{
+			$this->linkaccountsTask();
+		}
 
 		// Look up a few things
 		$hzal    = \Hubzero\Auth\Link::find_by_id($user->get('auth_link_id'));
