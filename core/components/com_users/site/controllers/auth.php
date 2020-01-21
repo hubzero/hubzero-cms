@@ -615,15 +615,6 @@ class Auth extends SiteController
 		   $this->linkaccountsTask();
 	   }
 
-		// If this is an auth_link account update, carry on, otherwise raise an error
-		// if ($user->isGuest()
-		//  || !$user->hasAttribute('auth_link_id')
-		//  || !is_numeric($user->get('username'))
-		//  || !$user->get('username') < 0)
-		// {
-		// 	App::abort(405, 'Method not allowed');
-		// }
-
 		// Look up a few things
 		$hzal    = \Hubzero\Auth\Link::find_by_id($user->get('auth_link_id'));
 		$hzad    = \Hubzero\Auth\Domain::find_by_id($hzal->auth_domain_id);
@@ -873,7 +864,6 @@ class Auth extends SiteController
 			$this->view->setName('logout');
 			$this->view->setLayout('default');
 			$this->view->display();
-			//return;
 		}
 
 		$app = App::get('app');
@@ -916,46 +906,10 @@ class Auth extends SiteController
 					if (method_exists($className, 'logout'))
 					{
 						$myplugin = new $className($this, (array)$plugin);
-
-						// Redirect to user third party signout view
-						// Only do this for PUCAS for the time being (it's the one that doesn't lose session info after hub logout)
-						// if ($authenticator == 'pucas')
-						// {
-						// 	// Get plugin params
-						// 	$plugin = Plugin::byType('authentication', $authenticator);
-
-						// 	$pparams = new Registry($plugin->params);
-						// 	$auto_logoff = $pparams->get('auto_logoff', false);
-
-						// 	if ($auto_logoff || $singleSignOn == 'all')
-						// 	{
-						// 		$result = $myplugin->logout();
-						// 		break;
-						// 	}
-						// 	elseif ($singleSignOn === false)
-						// 	{
-						// 		App::redirect(Route::url('index.php?option=com_users&view=endsinglesignon&authenticator=' . $authenticator, false));
-						// 		return;
-						// 	}
-						// 	else
-						// 	{
-						// 		break;
-						// 	}
-						// } // End PUCAS check
-						// else
-						// {
-						// 	$result = $myplugin->logout();
-						// 	break;
-						// } // Normal path
 					} // End verification of logout() method
 				} // End plugin check
 			} // End foreach
 		} // End check for specified authenticator
-
-		// Perform the log out
-		//$error = $app->logout();
-		// Get a user object from the Application.
-		//$user = User::getInstance();
 
 		// Build the credentials array.
 		$parameters = array();
@@ -964,11 +918,6 @@ class Auth extends SiteController
 
 		$options = array('clientid' => App::get('client')->id);
 
-		// Set clientid in the options array if it hasn't been set already.
-		//if (!isset($options['clientid']))
-		//{
-			//$options['clientid'] = App::get('client')->id;
-		//}
 		$error = false;
 
 		// OK, the credentials are built. Lets fire the onLogout event.
@@ -1055,12 +1004,6 @@ class Auth extends SiteController
 		{
 			$return = 'index.php?option=com_users&view=login';
 		}
-
-		// Try to prevent nasty redirect loops
-		// if ($return == '/logout' || $return == '/index.php?option=com_users&task=user.logout')
-		// {
-		// 	$return = '/';
-		// }
 
 		$return = Route::url($return, false);
 
