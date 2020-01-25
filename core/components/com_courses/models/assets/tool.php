@@ -73,6 +73,8 @@ class Tool extends Content
 			{
 				return array('error' => 'Server error. Unable to create upload directory');
 			}
+			// Set the right permissions on the folder for the tools to access
+			\Filesystem::setPermissions($uploadDirectory, '0664', '02775');
 		}
 		if (!is_writable($uploadDirectory))
 		{
@@ -138,6 +140,8 @@ class Tool extends Content
 				{
 					return array('error' => 'Move file failed');
 				}
+				// Set the file permissions for the tool to be able to access it
+				chmod($target_path, 0664);
 			}
 		}
 		$projectId = Request::getInt('project_id', 0);
