@@ -54,7 +54,7 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 
 		// Build the query that checks topic pages
 		$sql1 = "SELECT DISTINCT w.id, w.title, w.pagename AS alias, v.pagetext AS introtext,
-						NULL AS type, NULL AS published, NULL AS publish_up, w.scope,
+						NULL AS type, NULL AS published, NULL AS publish_up, w.scope, w.scope_id,
 						w.rating, w.times_rated, w.ranking, 'Topic' AS section
 				FROM `#__wiki_pages` AS w
 				INNER JOIN `#__wiki_versions` AS v ON w.version_id=v.id
@@ -101,7 +101,7 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 
 		// Build the query that checks resource parents
 		$sql2 = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext, r.type, r.published, r.publish_up,
-				NULL AS scope, r.rating, r.times_rated, r.ranking, rt.type AS section
+				NULL AS scope, NULL AS scope_id, r.rating, r.times_rated, r.ranking, rt.type AS section
 				FROM `#__resource_types` AS rt, `#__resources` AS r
 				JOIN `#__resource_assoc` AS a ON r.id=a.parent_id
 				LEFT JOIN `#__resource_types` AS t ON r.logical_type=t.id
