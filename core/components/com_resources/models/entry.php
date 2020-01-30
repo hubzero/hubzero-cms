@@ -50,7 +50,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	protected $namespace = '';
 
 	/**
-	 * The table name, non-standard naming 
+	 * The table name, non-standard naming
 	 *
 	 * @var  string
 	 */
@@ -355,9 +355,11 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 
 		if ($idx == 'tool')
 		{
-			// UUUGGGGHHHHHHHHHH
-			// @TODO: Rewrite this
-			if ($this->isTool())
+			if ($this->isTool() && $this->revision == 'dev')
+			{
+				$contributors = $this->authors()->rows();
+			}
+			else if ($this->isTool())
 			{
 				$db = App::get('db');
 				$sql = "SELECT n.id, t.name AS name, n.name AS xname, NULL AS xorg, n.givenName, n.givenName AS firstname, n.middleName, n.middleName AS middlename, n.surname, n.surname AS lastname, t.organization, t.*, a.role"
