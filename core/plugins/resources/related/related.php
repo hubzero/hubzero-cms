@@ -59,45 +59,7 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 				FROM `#__wiki_pages` AS w
 				INNER JOIN `#__wiki_versions` AS v ON w.version_id=v.id
 				INNER JOIN `#__wiki_links` AS wl ON wl.page_id=w.id
-				WHERE v.approved=1 AND wl.scope='resource' AND wl.scope_id=" . $database->quote($resource->id);
-
-		if (!User::isGuest())
-		{
-			if (User::authorize('com_resources', 'manage')
-			 || User::authorize('com_groups', 'manage'))
-			{
-				$sql1 .= '';
-			}
-			else
-			{
-				$ugs = \Hubzero\User\Helper::getGroups(User::get('id'), 'members');
-				$groups = array();
-				$cns = array();
-				if ($ugs && count($ugs) > 0)
-				{
-					foreach ($ugs as $ug)
-					{
-						$cns[] = $database->quote($ug->cn);
-						$groups[] = $database->quote($ug->gidNumber);
-					}
-				}
-				$g = implode(",", $groups);
-				$c = implode(",", $cns);
-
-				$x = "";
-				if (count($groups))
-				{
-					$x = "(w.scope=" . $database->quote('group') . " AND w.scope_id IN ($g)) OR";
-				}
-
-				$sql1 .= "AND (w.access!=1 OR (w.access=1 AND ($x w.created_by=" . $database->quote(User::get('id')) . "))) ";
-			}
-		}
-		else
-		{
-			$sql1 .= "AND w.access!=1 ";
-		}
-		$sql1 .= "GROUP BY w.id, v.pagetext ORDER BY ranking DESC, title LIMIT 10";
+				WHERE v.approved=1 AND wl.scope='resource' AND w.scope !='group' AND wl.scope_id=" . $database->quote($resource->id);
 
 		// Build the query that checks resource parents
 		$sql2 = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext, r.type, r.published, r.publish_up,
@@ -106,15 +68,42 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 				JOIN `#__resource_assoc` AS a ON r.id=a.parent_id
 				LEFT JOIN `#__resource_types` AS t ON r.logical_type=t.id
 				WHERE r.published=1 AND a.child_id=" . $database->quote($resource->id) . " AND r.type=rt.id AND r.type!=8 ";
+
+		$sql3 = "";
+
 		if (!User::isGuest())
 		{
+			$groups = [];
+			$cns = [];
+			$ugs = \Hubzero\User\Helper::getGroups(User::get('id'), 'members');
+
+			if ($ugs && count($ugs) > 0)
+			{
+				foreach ($ugs as $ug)
+				{
+					$cns[] = $database->quote($ug->cn);
+					$groups[] = $database->quote($ug->gidNumber);
+				}
+			}
+			$g = implode(",", $groups);
+			$c = implode(",", $cns);
+
 			if (User::authorize('com_resources', 'manage')
 			 || User::authorize('com_groups', 'manage'))
 			{
+				$sql1 .= '';
 				$sql2 .= '';
 			}
 			else
 			{
+				$x = "";
+				if (count($groups))
+				{
+					$x = "(w.scope=" . $database->quote('group') . " AND w.scope_id IN ($g)) OR";
+				}
+
+				$sql1 .= "AND (w.access!=1 OR (w.access=1 AND ($x w.created_by=" . $database->quote(User::get('id')) . "))) ";
+
 				$x = "";
 				if (count($groups))
 				{
@@ -123,15 +112,32 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 
 				$sql2 .= "AND (r.access!=1 OR (r.access=1 AND ($x r.created_by=" . $database->quote(User::get('id')) . "))) ";
 			}
+
+			$sql3 .= "SELECT DISTINCT w.id, w.title, w.pagename AS alias, v.pagetext AS introtext,
+					NULL AS type, NULL AS published, NULL AS publish_up, w.scope, w.scope_id,	w.rating, w.times_rated, w.ranking, 'Topic' AS section
+					FROM `#__wiki_pages` AS w
+					INNER JOIN `#__wiki_versions` AS v ON w.version_id=v.id
+					INNER JOIN `#__wiki_links` AS wl ON wl.page_id=w.id
+					WHERE v.approved=1 AND wl.scope='resource' AND w.scope ='group' AND wl.scope_id=" . $database->quote($resource->id) .
+					"AND w.scope_id in ($g)";
 		}
 		else
 		{
+			$sql1 .= "AND w.access!=1 ";
 			$sql2 .= "AND r.access=0 ";
 		}
+		$sql1 .= "GROUP BY w.id, v.pagetext ORDER BY ranking DESC, title LIMIT 10";
 		$sql2 .= "ORDER BY r.ranking LIMIT 10";
 
 		// Build the final query
-		$query = "SELECT k.* FROM (($sql1) UNION ($sql2)) AS k ORDER BY ranking DESC LIMIT 10";
+		if (!User::isGuest())
+		{
+			$query = "SELECT k.* FROM (($sql1) UNION ($sql2) UNION ($sql3)) AS k ORDER BY ranking DESC LIMIT 10";
+		}
+		else
+		{
+			$query = "SELECT k.* FROM (($sql1) UNION ($sql2)) AS k ORDER BY ranking DESC LIMIT 10";
+		}
 
 		// Execute the query
 		$database->setQuery($query);
