@@ -42,8 +42,9 @@ define('DS', DIRECTORY_SEPARATOR);
 */
 
 define('PATH_ROOT', __DIR__);
+define('PATH_CORE', PATH_ROOT . '/core');
 
-require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'paths.php';
+require_once PATH_CORE . DS . 'bootstrap' . DS . 'paths.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -56,7 +57,7 @@ require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'paths.php';
 |
 */
 
-require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'version.php';
+require_once PATH_CORE . DS . 'bootstrap' . DS . 'version.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -69,7 +70,7 @@ require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'version.php';
 |
 */
 
-require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'autoload.php';
+require_once PATH_CORE . DS . 'bootstrap' . DS . 'autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -82,7 +83,7 @@ require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'autoload.php';
 |
 */
 
-$muse = require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'Cli' . DS . 'shim.php';
+$app = require_once PATH_CORE . DS . 'bootstrap' . DS . 'start.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -95,15 +96,4 @@ $muse = require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'Cli' . D
 |
 */
 
-$muse->run();
-
-/*
-|--------------------------------------------------------------------------
-| Exit
-|--------------------------------------------------------------------------
-|
-| We're all done!  Go home...call it a day.
-|
-*/
-
-exit();
+$app->run();

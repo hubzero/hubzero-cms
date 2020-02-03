@@ -24,11 +24,8 @@ class DatabaseServiceProvider extends ServiceProvider
 	{
 		$this->app['db'] = function($app)
 		{
-			// @FIXME: this isn't pretty, but it will shim the removal of the old mysql_* calls from php
-			$driver = ($app['config']->get('dbtype') == 'mysql') ? 'pdo' : $app['config']->get('dbtype');
-
 			$options = [
-				'driver'   => $driver,
+				'driver'   => $app['config']->get('dbtype'),
 				'host'     => $app['config']->get('host'),
 				'user'     => $app['config']->get('user'),
 				'password' => $app['config']->get('password'),
