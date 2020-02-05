@@ -113,13 +113,16 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 				$sql2 .= "AND (r.access!=1 OR (r.access=1 AND ($x r.created_by=" . $database->quote(User::get('id')) . "))) ";
 			}
 
-			$sql3 .= "SELECT DISTINCT w.id, w.title, w.pagename AS alias, v.pagetext AS introtext,
-					NULL AS type, NULL AS published, NULL AS publish_up, w.scope, w.scope_id,	w.rating, w.times_rated, w.ranking, 'Topic' AS section
-					FROM `#__wiki_pages` AS w
-					INNER JOIN `#__wiki_versions` AS v ON w.version_id=v.id
-					INNER JOIN `#__wiki_links` AS wl ON wl.page_id=w.id
-					WHERE v.approved=1 AND wl.scope='resource' AND w.scope ='group' AND wl.scope_id=" . $database->quote($resource->id) .
-					"AND w.scope_id in ($g)";
+			if (!!$g)
+			{
+				$sql3 .= " UNION (SELECT DISTINCT w.id, w.title, w.pagename AS alias, v.pagetext AS introtext,
+						NULL AS type, NULL AS published, NULL AS publish_up, w.scope, w.scope_id,	w.rating, w.times_rated, w.ranking, 'Topic' AS section
+						FROM `#__wiki_pages` AS w
+						INNER JOIN `#__wiki_versions` AS v ON w.version_id=v.id
+						INNER JOIN `#__wiki_links` AS wl ON wl.page_id=w.id
+						WHERE v.approved=1 AND wl.scope='resource' AND w.scope ='group' AND wl.scope_id=" . $database->quote($resource->id) .
+						"AND w.scope_id in ($g))";
+			}
 		}
 		else
 		{
@@ -132,7 +135,7 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 		// Build the final query
 		if (!User::isGuest())
 		{
-			$query = "SELECT k.* FROM (($sql1) UNION ($sql2) UNION ($sql3)) AS k ORDER BY ranking DESC LIMIT 10";
+			$query = "SELECT k.* FROM (($sql1) UNION ($sql2)$sql3) AS k ORDER BY ranking DESC LIMIT 10";
 		}
 		else
 		{
