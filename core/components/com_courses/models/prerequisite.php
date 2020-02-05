@@ -168,25 +168,23 @@ class Prerequisite extends Base
 					{
 						$asset = new Asset($prerequisite['scope_id']);
 
-						switch ($asset->get('type'))
+						if ($asset->get('type') == 'form')
 						{
-							case 'form':
-								if (!isset($this->grades[$prerequisite['scope_id']]))
-								{
-									$return = false;
-									continue;
-								}
-								break;
-
-							default:
-								if (!isset($this->views[$this->member_id])
-								 || !is_array($this->views[$this->member_id])
-								 || !in_array($prerequisite['scope_id'], $this->views[$this->member_id]))
-								{
-									$return = false;
-									continue;
-								}
-								break;
+							if (!isset($this->grades[$prerequisite['scope_id']]))
+							{
+								$return = false;
+								continue;
+							}
+						}
+						else
+						{
+							if (!isset($this->views[$this->member_id])
+							 || !is_array($this->views[$this->member_id])
+							 || !in_array($prerequisite['scope_id'], $this->views[$this->member_id]))
+							{
+								$return = false;
+								continue;
+							}
 						}
 					}
 				}
