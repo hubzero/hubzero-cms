@@ -21,8 +21,38 @@
 .card {
   background-position: center;
   background-size: cover;
+  border: 1px solid #f1f1f1;
   margin: .5em;
   position: relative;
+}
+
+.card .featured {
+  position: absolute;
+  top: -0.9375em;
+  left: -0.5em;
+  z-index: 5;
+}
+
+.card .featured span {
+  padding: .5em .75em;
+  display: block;
+  position: relative;
+  background-color: #248232;
+  color: #fff;
+  font-size: .8rem;
+  font-weight: bold;
+}
+
+.card .featured span::before {
+  content: '';
+  height: 0;
+  width: 0;
+  display: block;
+  position: absolute;
+  bottom: -0.7em;
+  left: 0;
+  border-top: 10px solid #13461b;
+  border-left: 10px solid transparent;
 }
 
 .card .meta {
@@ -37,6 +67,25 @@
   transition: .2s;
   width: 100%;
   z-index: 99;
+}
+
+.card .abstract {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: 6rem;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 1rem;
+  line-height: 1.2;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 14em .5em .5em .5em;
+  position: absolute;
+  top: 6.5rem;
+  transition: .4s;
 }
 
 .card.active .title {
@@ -91,7 +140,7 @@
 
 .title {
   background-color: rgba(255, 255, 255, 0.95);
-  border: 1px solid #F1F2F2;
+  border: 1px solid #f1f1f1;
   bottom: 0;
   height: 6.75rem;
   width: 100%;
@@ -139,7 +188,7 @@
 }
 
 .featured-tag {
-  background-color: #007991;
+  background-color: #008099;
   bottom: 6.75rem;
   color: #fff !important;
   font-size: .8rem;
@@ -148,54 +197,6 @@
   padding: .25em .5em;
   position: absolute;
   transition: .6s;
-}
-
-.featured {
-  position: absolute;
-  top: -0.9375em;
-  left: -0.625em;
-  z-index: 5;
-}
-
-.featured span {
-  padding: .5em .75em;
-  display: block;
-  position: relative;
-  background-color: #84bf41;
-  color: #fff;
-  font-size: .8rem;
-  font-weight: bold;
-}
-
-.featured span::before {
-  content: '';
-  height: 0;
-  width: 0;
-  display: block;
-  position: absolute;
-  bottom: -0.625em;
-  left: 0;
-  border-top: 10px solid #6E9C39;
-  border-left: 10px solid transparent;
-}
-
-.abstract {
-  display: block;
-  /* Fallback for non-webkit */
-  display: -webkit-box;
-  height: 6rem;
-  /* Fallback for non-webkit */
-  margin: 0 auto;
-  font-size: 1rem;
-  line-height: 1.2;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin: 14em .5em .5em .5em;
-  position: absolute;
-  top: 6.5rem;
-  transition: .4s;
 }
 
 .hist {
@@ -254,7 +255,7 @@
 .sub-menu {
   display: flex;
   flex-wrap: nowrap;
-  background-color: #84bf41;
+  background-color: #8cc540;
   font-size: 0.875rem;
   justify-content: flex-end;
   margin-top: 5em;
@@ -276,7 +277,7 @@
 }
 
 .btn-action {
-  background-color: #84bf41;
+  background-color: #8cc540;
   border: 5px solid #fff;
   border-radius: 50%;
   color: #fff;
@@ -307,7 +308,7 @@ img {
 
 .thumbnail {
   position: relative;
-  background-color: #000;
+  background-color: #f1f1f1;
   width: 325px;
   height: 275px;
   overflow: hidden;
@@ -532,18 +533,18 @@ img {
 }
 
 .demo-two-card .demo-two-content .categories .cat {
-  background-color: #afd584;
+  background-color: #a4d167;
   color: #fff;
   padding: 10px 15px;
 }
 
 .demo-two-card .demo-two-content .categories .primary {
-  background-color: #84bf41;
+  background-color: #8cc540;
   color: #fff;
 }
 
 .demo-two-card .demo-two-content .cat:hover {
-  background-color: #337357;
+  background-color: #71a131;
 }
 
 .demo-two-card .demo-two-content .demo-two-title {
@@ -654,15 +655,16 @@ img {
 .demo-two-card .demo-two-content .description .secondary-tag {
   display: inline-block;
   font-size: 11px;
-  background-color: #afd584;
-  color: #337357;
+  background-color: #fff;
+  border-radius: 2px;
+  color: #248232;
   padding: 0 6px;
-  border: 1px solid #337357;
+  border: 1px solid #248232;
   overflow-x: inherit;
 }
 
 .demo-two-card .demo-two-content .description .secondary-tag:hover {
-  background-color: #337357;
+  background-color: #248232;
   color: #fff;
 }
 

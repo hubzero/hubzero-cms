@@ -526,6 +526,9 @@ class Publications extends Macro
 
 		foreach ($this->items as $pub)
 		{
+			// Citation info
+			$html .= '	 <div class="resource-wrapper">';
+
 			// Featured ROW
 			// For some reason, featured is not stored in model so we need to grab it
 			$this->_db->setQuery(
@@ -569,9 +572,7 @@ class Publications extends Macro
 					}
 				}
 			}
-
-			// Citation info
-			$html .= '	 <div class="resource-wrapper">';
+			
 			$html .= '	  <div class="resource-info-wrapper">';
 			$html .= '	   <div class="resource-info">';
 

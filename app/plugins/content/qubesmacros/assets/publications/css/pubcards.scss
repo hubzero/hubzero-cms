@@ -1,5 +1,5 @@
-@import "variables.scss";
-@import "mixins.scss";
+@import '../../../../../../templates/bmc/css/pages/variables';
+@import '../../../../../../templates/bmc/css/pages/mixins';
 
 // New resource cards as of 10/2018
 
@@ -27,8 +27,38 @@
 .card {
   background-position: center;
   background-size: cover;
+  border: 1px solid $white-smoke;
   margin: .5em;
   position: relative;
+
+  .featured {
+    position: absolute;
+    top: -0.9375em;
+    left: -0.5em;
+    z-index: 5;
+
+    span {
+      padding: .5em .75em;
+      display: block;
+      position: relative;
+      background-color: $color-accent2;
+      color: $white;
+      font-size: .8rem;
+      font-weight: bold;
+
+      &::before {
+        content: '';
+        height: 0;
+        width: 0;
+        display: block;
+        position: absolute;
+        bottom: -0.7em;
+        left: 0;
+        border-top: 10px solid darken($color-accent2, 15%);
+        border-left: 10px solid transparent;
+      }
+    }
+  }
 
   .meta {
     @include flexbox;
@@ -41,6 +71,14 @@
     transition: .2s;
     width: 100%;
     z-index: 99;
+  }
+
+  .abstract {
+    @include truncate(1rem, 1.2, 5);
+    margin: 14em .5em .5em .5em;
+    position: absolute;
+    top: 6.5rem;
+    transition: .4s;
   }
 
   &.active {
@@ -110,7 +148,7 @@
 
 .title {
   background-color: rgba($white, .95);
-  border: 1px solid $light-gray;
+  border: 1px solid $white-smoke;
   bottom: 0;
   height: 6.75rem;
   width: 100%;
@@ -136,7 +174,7 @@
 }
 
 .featured-tag {
-  background-color: $teal;
+  background-color: $sea-blue;
   bottom: 6.75rem;
   color: $white !important;
   font-size: .8rem;
@@ -145,44 +183,6 @@
   padding: .25em .5em;
   position: absolute;
   transition: .6s;
-}
-
-.featured {
-  position: absolute;
-  top: -0.9375em;
-  left: -0.625em;
-  z-index: 5;
-
-  span {
-    padding: .5em .75em;
-    display: block;
-    position: relative;
-    background-color: $green;
-    color: $white;
-    font-size: .8rem;
-    font-weight: bold;
-
-    &::before {
-      content: '';
-      height: 0;
-      width: 0;
-      display: block;
-      position: absolute;
-      bottom: -0.625em;
-      left: 0;
-      border-top: 10px solid $link-color;
-      border-left: 10px solid transparent;
-    }
-  }
-
-}
-
-.abstract {
-  @include truncate(1rem, 1.2, 5);
-  margin: 14em .5em .5em .5em;
-  position: absolute;
-  top: 6.5rem;
-  transition: .4s;
 }
 
 .hist {
@@ -239,7 +239,7 @@
 
 .sub-menu {
   @include flexbox;
-  background-color: $green;
+  background-color: $color-accent;
   font-size: 0.875rem;
   justify-content: flex-end;
   margin-top: 5em;
@@ -261,7 +261,7 @@
 }
 
 .btn-action {
-  background-color: $green;
+  background-color: $color-accent;
   border: 5px solid $white;
   border-radius: 50%;
   color: $white;
@@ -295,7 +295,7 @@ img {
 }
 .thumbnail {
   position: relative;
-  background-color: $black;
+  background-color: $white-smoke;
   width: 325px;
   height: 275px;
   overflow: hidden;
@@ -393,7 +393,7 @@ img {
 }
 
 .ribbon-alt {
-  background-color: $pink;
+  background-color: $fushsia;
   text-align: center;
   font-size: 10px;
   color: $white;
@@ -486,17 +486,17 @@ img {
       top: -29px;
       left: 0;
       .cat {
-        background-color: $light-green;
+        background-color: lighten($color-accent, 10%);
         color: $white;
         padding: 10px 15px;
       }
       .primary {
-        background-color: $green;
+        background-color: $color-accent;
         color: $white;
       }
     }
     .cat:hover {
-      background-color: $dark-green;
+      background-color: darken($color-accent, 10%);
     }
     .demo-two-title {
       padding-top: .5em;
@@ -553,13 +553,14 @@ img {
       .secondary-tag {
         display: inline-block;
         font-size: 11px;
-        background-color: $light-green;
-        color: $dark-green;
+        background-color: $white;
+        border-radius: 2px;
+        color: $color-accent2;
         padding: 0 6px;
-        border: 1px solid $dark-green;
+        border: 1px solid $color-accent2;
         overflow-x: inherit;
         &:hover {
-          background-color: $dark-green;
+          background-color: $color-accent2;
           color: $white;
         }
       }

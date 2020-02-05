@@ -2,9 +2,40 @@
 @import '../../../../../../templates/bmc/css/pages/mixins';
 
 .resource-wrapper {
-  border: 1px solid;
+  border: 1px solid $midnight;
+  border-radius: 3px;
   margin: 1em 0;
   padding: 1em;
+  position: relative;
+
+  .featured {
+    position: absolute;
+    top: -0.9375em;
+    left: -0.5em;
+    z-index: 5;
+
+    span {
+      padding: .5em .75em;
+      display: block;
+      position: relative;
+      background-color: $color-accent2;
+      color: $white;
+      font-size: .8rem;
+      font-weight: bold;
+
+      &::before {
+        content: '';
+        height: 0;
+        width: 0;
+        display: block;
+        position: absolute;
+        bottom: -0.7em;
+        left: 0;
+        border-top: 10px solid darken($color-accent2, 15%);
+        border-left: 10px solid transparent;
+      }
+    }
+  }
 }
 
 .resource-info-wrapper {
@@ -27,6 +58,34 @@
   @include respond-at(68.8125em) {
     flex-wrap: nowrap;
   }
+
+  .meta {
+    display: flex;
+    justify-content: space-around;
+
+    .views,
+    .downloads,
+    .forks {
+      display: flex;
+      flex-direction: column;
+      margin: 0 .5em;
+      text-align: center;
+    }
+
+    .count {
+      font-size: 1rem;
+    }
+
+    .meta-descripter {
+      font-size: .85rem;
+    }
+
+    .ic {
+       width: 1.0em;
+       margin: 0 auto;
+       display: block;
+    }
+  }
 }
 
 .resource-info {
@@ -46,8 +105,11 @@
     font-size: .85rem;
   }
 
+  .abstract {
+    @include truncate(1rem, 1.2, 4);
+  }
+
   h3 {
-    font-family: 'Martel', sans-serif;
     font-size: 1.24rem;
   }
 
@@ -65,52 +127,16 @@
     margin-bottom: 5px;
   }
 
-  .pub-date {
-    font-family: 'Martel', sans-serif;
-  }
-
   @include respond-at(43.75em) {
     width: auto;
   }
 }
 
-.meta {
-  display: flex;
-  justify-content: space-around;
-
-  .views,
-  .downloads,
-  .forks {
-    display: flex;
-    flex-direction: column;
-    margin: 0 .5em;
-    text-align: center;
-  }
-
-  .count {
-    font-family: 'Martel', sans-serif;
-    font-size: 1rem;
-  }
-
-  .meta-descripter {
-    font-size: .85rem;
-  }
-
-  .ic {
-     width: 1.0em;
-     margin: 0 auto;
-     display: block;
-}
-
-}
-
-.tags-wrapper {
-  margin-top: .5em;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 1.0rem;
-}
+// .tags-wrapper {
+//   text-overflow: ellipsis;
+//   white-space: nowrap;
+//   width: 1.0rem;
+// }
 .tags {
-  font-family: 'Martel', sans-serif;
   font-size: .85rem !important;
 }
