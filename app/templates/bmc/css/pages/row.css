@@ -215,12 +215,6 @@
 }
 
 .newsletter .newsletter-title {
-  bottom: 0;
-  padding: 10px;
-  position: absolute;
-}
-
-.newsletter .newsletter-title a {
   background-color: #fff;
   border: 1px solid #f1f1f1;
   bottom: 0;
@@ -230,7 +224,7 @@
   width: 100%;
 }
 
-.newsletter .newsletter-title a a {
+.newsletter .newsletter-title a {
   display: block;
   /* Fallback for non-webkit */
   display: -webkit-box;
@@ -247,6 +241,6 @@
   color: #597f2f;
 }
 
-.newsletter .newsletter-title a a:hover {
+.newsletter .newsletter-title a:hover {
   color: #008099;
 }
