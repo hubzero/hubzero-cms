@@ -141,6 +141,11 @@
   margin: 0;
 }
 
+.icons {
+  display: inline-block;
+  width: .75rem;
+}
+
 .meta-wrap {
   width: 100%;
 }
