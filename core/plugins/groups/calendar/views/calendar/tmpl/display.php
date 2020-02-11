@@ -7,6 +7,9 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+$userLocalizer = new UserLocalizer();
+$timezone = $userLocalizer->getTimezone();
 ?>
 
 <?php if ($this->getError()) { ?>
@@ -67,16 +70,24 @@ defined('_HZEXEC_') or die();
 							</dd>
 							<?php if ($event->get('publish_down') && $event->get('publish_down') != '0000-00-00 00:00:00') : ?>
 								<dd class="start-and-end">
-									<?php echo Date::of($event->get('publish_up'))->toLocal('l, F d, Y @ g:i a', $ignoreDst); ?>
+									<?php
+										echo Date::of($event->get('publish_up'))->toTimezone($timezone, 'l, F d, Y @ g:i a', $ignoreDst);
+									?>
 									&mdash;
-									<?php echo Date::of($event->get('publish_down'))->toLocal('l, F d, Y @ g:i a', $ignoreDst); ?>
+									<?php
+										echo Date::of($event->get('publish_down'))->toTimezone($timezone, 'l, F d, Y @ g:i a', $ignoreDst);
+									?>
 								</dd>
 							<?php else : ?>
 								<dd class="date">
-									<?php echo Date::of($event->get('publish_up'))->toLocal('l, F d, Y', $ignoreDst); ?>
+									<?php
+										echo Date::of($event->get('publish_up'))->toTimezone($timezone, 'l, F d, Y @ g:i a', $ignoreDst);
+									?>
 								<dd>
 								<dd class="time">
-									<?php echo Date::of($event->get('publish_up'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'), $ignoreDst); ?>
+									<?php
+										echo Date::of($event->get('publish_up'))->toTimezone($timezone, 'l, F d, Y @ g:i a', $ignoreDst);
+									?>
 								<dd>
 							<?php endif; ?>
 						</dl>
