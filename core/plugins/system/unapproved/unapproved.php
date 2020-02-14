@@ -29,7 +29,9 @@ class plgSystemUnapproved extends \Hubzero\Plugin\Plugin
 				'com_users.userlogout',
 				'com_users.logout.login',
 				'com_support.tickets.save.index',
+				'com_support.tickets.save',
 				'com_support.tickets.new.index',
+				'com_support.tickets.new',
 				'com_members.media.download.profiles'
 			];
 
