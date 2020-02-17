@@ -43,7 +43,6 @@
   @include flexbox;
   background-color: $black;
   color: $white;
-  height: 25rem;
   text-align: center;
   visibility: hidden;
 
@@ -54,6 +53,7 @@
 
     .link {
       @include btn-border-drawing($white, $color-accent, 1px, bottom, right);
+      text-decoration: none;
     }
   }
 
@@ -62,10 +62,27 @@
     visibility: hidden;
   }
 
-  p {
-    margin: 2em auto;
-    max-width: 65%;
+  h3 {
+    color: $white;
     visibility: hidden;
+  }
+
+  p {
+    @include respond-at(62.5625em) {
+      text-align: center;
+    }
+    margin: 2em auto;
+    text-align: left;
+    visibility: hidden;
+  }
+
+  a {
+    color: $white;
+    text-decoration: underline;
+
+    &:hover {
+      color: $color-accent;
+    }
   }
 }
 

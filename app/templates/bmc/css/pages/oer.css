@@ -141,7 +141,6 @@
   flex-wrap: nowrap;
   background-color: #000;
   color: #fff;
-  height: 25rem;
   text-align: center;
   visibility: hidden;
 }
@@ -160,6 +159,7 @@
   position: relative;
   text-transform: capitalize;
   transition: color 0.25s 0.08333s;
+  text-decoration: none;
 }
 
 .oer-header .intro .link::before, .oer-header .intro .link::after {
@@ -209,10 +209,30 @@
   visibility: hidden;
 }
 
+.oer-header h3 {
+  color: #fff;
+  visibility: hidden;
+}
+
 .oer-header p {
   margin: 2em auto;
-  max-width: 65%;
+  text-align: left;
   visibility: hidden;
+}
+
+@media only screen and (min-width: 62.5625em) {
+  .oer-header p {
+    text-align: center;
+  }
+}
+
+.oer-header a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.oer-header a:hover {
+  color: #8cc540;
 }
 
 .learn {
