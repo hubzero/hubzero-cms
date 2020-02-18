@@ -7,9 +7,13 @@
 
 namespace Components\Publications\Site\Controllers;
 
-require_once Component::path('com_publications') . '/models/bundle.php';
+$componentPath = Component::path('com_publications');
+
+require_once "$componentPath/models/bundle.php";
 
 use Hubzero\Component\SiteController;
+use Hubzero\Pagination\Paginator;
+use Components\Projects\Tables\Project;
 use Components\Publications\Tables;
 use Components\Publications\Models\Bundle;
 use Components\Publications\Models;
@@ -401,23 +405,24 @@ class Publications extends SiteController
 	{
 		// Set the default sort
 		$default_sort = 'date';
+
 		if ($this->config->get('show_ranking'))
 		{
 			$default_sort = 'ranking';
 		}
 
 		// Incoming
-		$filters = array(
+		$filters = [
 			'category'    => Request::getString('category', ''),
 			'sortby'      => Request::getCmd('sortby', $default_sort),
 			'limit'       => Request::getInt('limit', Config::get('list_limit')),
 			'start'       => Request::getInt('limitstart', 0),
 			'search'      => Request::getString('search', ''),
 			'tag'         => trim(Request::getString('tag', '', 'request')),
-			'tag_ignored' => array()
-		);
+			'tag_ignored' => []
+		];
 
-		if (!in_array($filters['sortby'], array('date', 'title', 'id', 'rating', 'ranking', 'popularity')))
+		if (!in_array($filters['sortby'], ['date', 'title', 'id', 'rating', 'ranking', 'popularity']))
 		{
 			$filters['sortby'] = $default_sort;
 		}
@@ -425,25 +430,26 @@ class Publications extends SiteController
 		// Get projects user has access to
 		if (!User::isGuest())
 		{
-			$obj = new \Components\Projects\Tables\Project($this->database);
+			$obj = new Project($this->database);
 			$filters['projects'] = $obj->getUserProjectIds(User::get('id'));
 		}
 
 		// Get major types
-		$t = new Tables\Category($this->database);
-		$categories = $t->getCategories();
+		$categoriesTable = new Tables\Category($this->database);
+		$categories = $categoriesTable->getCategories();
 
 		if (is_numeric($filters['category']))
 		{
 			$filters['category'] = (int)$filters['category'];
 		}
+
 		if (!is_int($filters['category']))
 		{
-			foreach ($categories as $cat)
+			foreach ($categories as $category)
 			{
-				if (trim($filters['category']) == $cat->url_alias)
+				if (trim($filters['category']) == $category->url_alias)
 				{
-					$filters['category'] = (int)$cat->id;
+					$filters['category'] = (int)$category->id;
 					break;
 				}
 			}
@@ -464,7 +470,7 @@ class Publications extends SiteController
 		$results = $model->entries('list', $filters);
 
 		// Initiate paging
-		$pageNav = new \Hubzero\Pagination\Paginator(
+		$pageNav = new Paginator(
 			$total,
 			$filters['start'],
 			$filters['limit']
@@ -475,9 +481,9 @@ class Publications extends SiteController
 		$this->_title = 'Resources: ';
 		if ($filters['category'] != '')
 		{
-			$t->load($filters['category']);
-			$this->_title .= $t->name;
-			$this->_task_title = $t->name;
+			$categoriesTable->load($filters['category']);
+			$this->_title .= $categoriesTable->name;
+			$this->_task_title = $categoriesTable->name;
 		}
 		else
 		{

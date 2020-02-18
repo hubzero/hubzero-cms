@@ -49,7 +49,12 @@ else
 							</div>
 						<?php }	?>
 
-						<p class="ataglance"><?php echo $this->publication->abstract ? \Hubzero\Utility\Str::truncate(stripslashes($this->publication->abstract), 250) : ''; ?></p>
+				<p class="ataglance">
+					<?php
+						$abstractSnippet = \Hubzero\Utility\Str::truncate(stripslashes(strip_tags($this->publication->abstract), 250));
+						echo $this->publication->abstract ?  $abstractSnippet : '';
+					?>
+				</p>
 
 						<?php echo \Components\Publications\Helpers\Html::showSubInfo($this->publication); // Show published date and category ?>
 					</div><!-- / .overviewcontainer -->
