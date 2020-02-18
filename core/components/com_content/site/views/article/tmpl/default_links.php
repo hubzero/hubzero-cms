@@ -46,7 +46,7 @@ if ($urls && (!empty($urls->urla) || !empty($urls->urlb) || !empty($urls->urlc))
 					{
 						case 1:
 							// open in a new window
-							echo '<a href="' . htmlspecialchars($link) . '" target="_blank" rel="nofollow">' . htmlspecialchars($label) . '</a>';
+							echo '<a href="' . htmlspecialchars($link) . '" target="_blank" rel="noopener noreferrer">' . htmlspecialchars($label) . '</a>';
 							break;
 
 						case 2:

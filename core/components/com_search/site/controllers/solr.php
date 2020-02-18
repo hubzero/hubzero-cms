@@ -57,9 +57,11 @@ class Solr extends SiteController
 		$sortDir = Request::getString('sortDir', '');
 		$type = Request::getInt('type', null);
 		$section = Request::getString('section', 'content');
+		$tagSearchEnabled = !!$config->get('solr_tagsearch', 0);
 		$tagString = Request::getString('tags', '');
 		$filters = Request::getArray('filters', '');
 		$tags = null;
+
 		if ($tagString)
 		{
 			$tagsquery = Tag::all();
@@ -188,10 +190,13 @@ class Solr extends SiteController
 		$urlQuery .= '&limit=' . $limit;
 		$urlQuery .= '&start=' . $start;
 
-		$boostQueries = $boostQueryHelper->getAllQueries();
-		$boostQueriesAsArray = $boostQueries->toArray();
-		$edismax = $query->adapter->query->getEDisMax();
-		$edismax->addBoostQueries($boostQueriesAsArray);
+		if (!$tagSearchEnabled)
+		{
+			$boostQueries = $boostQueryHelper->getAllQueries();
+			$boostQueriesAsArray = $boostQueries->toArray();
+			$edismax = $query->adapter->query->getEDisMax();
+			$edismax->addBoostQueries($boostQueriesAsArray);
+		}
 
 		// Perform the query
 		try
@@ -282,6 +287,7 @@ class Solr extends SiteController
 		$this->view->type = $type;
 		$this->view->filters = $filters;
 		$this->view->searchComponent = $typeComponent;
+		$this->view->tagSearchEnabled = $tagSearchEnabled;
 		$this->view->viewOverrides = $viewOverrides;
 		$this->view->section = $section;
 		$this->view->setLayout('display');

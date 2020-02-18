@@ -14,10 +14,18 @@ $canDo = Components\Members\Helpers\Admin::getActions('component');
 Toolbar::title(Lang::txt('COM_MEMBERS_QUOTAS'), 'user');
 if ($canDo->get('core.edit'))
 {
-	Toolbar::addNew();
-	Toolbar::editList();
-	Toolbar::custom('restoreDefault', 'restore', 'restore', 'COM_MEMBERS_DEFAULT');
+	Toolbar::custom('syncQuotasToSystem', 'refresh', 'refresh', 'Sync Selected User Quotas');
+	Toolbar::spacer();
 }
+
+if ($canDo->get('core.create'))
+{
+	Toolbar::addNew();
+	Toolbar::spacer();
+}
+
+Toolbar::help('quotas');
+
 
 $this->css('quotas.css')
 	->js('quotas.js');
@@ -57,6 +65,7 @@ $this->css('quotas.css')
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<!-- <th class="priority-6"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
 				<th class="priority-5"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_USER_ID', 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th class="priority-4"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -83,10 +92,10 @@ $this->css('quotas.css')
 			?>
 			<tr class="<?php echo "row$k quota-row"; ?>" data-quota="<?php echo Route::url('index.php?option=com_members&controller=quotas&task=getQuotaUsage&id=' . $row->get('id'), false); ?>">
 				<td>
-					<input class="row-id" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('user_id'); ?>" class="checkbox-toggle" />
 				</td>
 				<td class="priority-5">
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('user_id')); ?>">
 						<?php echo $this->escape($row->get('user_id')); ?>
 					</a>
 				</td>
