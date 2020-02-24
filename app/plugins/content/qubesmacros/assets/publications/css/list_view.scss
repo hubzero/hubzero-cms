@@ -1,6 +1,12 @@
 @import '../../../../../../templates/bmc/css/pages/variables';
 @import '../../../../../../templates/bmc/css/pages/mixins';
 
+.resource_content {
+  margin: 0 auto;
+  max-width: 69.65rem;
+  width: 100%;
+}
+
 .resource-wrapper {
   border: 1px solid $midnight;
   border-radius: 3px;
@@ -90,6 +96,7 @@
 
 .resource-info {
   flex: 2 2 auto;
+  margin-bottom: .5em;
   margin-right: 1em;
 
   .author {

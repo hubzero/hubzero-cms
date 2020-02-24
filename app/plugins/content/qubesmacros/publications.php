@@ -520,8 +520,7 @@ class Publications extends Macro
 		\Document::addStyleSheet($this->base . DS . 'assets' . DS . 'publications' . DS . 'css' . DS . 'list_view.css');
 	  //\Document::addStyleSheet($this->base . DS . 'assets' . DS . 'publications' . DS . 'css' . DS . 'colorbrewer.css');
 
-		$html = '<main class="main section">';
-		$html .= ' <div class="resource_contents">';
+		$html = ' <div class="resource_contents">';
 		$html .= '  <div class="resource_content">';
 
 		foreach ($this->items as $pub)
@@ -572,7 +571,7 @@ class Publications extends Macro
 					}
 				}
 			}
-			
+
 			$html .= '	  <div class="resource-info-wrapper">';
 			$html .= '	   <div class="resource-info">';
 
@@ -706,7 +705,6 @@ class Publications extends Macro
 
 		$html .= '  </div>'; //End resource_content
 		$html .= ' </div>';  //End resource_contents
-		$html .= '</main>'; //End main section
 
 		return $html;
 	}

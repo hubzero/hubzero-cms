@@ -1,3 +1,9 @@
+.resource_content {
+  margin: 0 auto;
+  max-width: 69.65rem;
+  width: 100%;
+}
+
 .resource-wrapper {
   border: 1px solid #222b37;
   border-radius: 3px;
@@ -91,6 +97,7 @@
 
 .resource-info {
   flex: 2 2 auto;
+  margin-bottom: .5em;
   margin-right: 1em;
 }
 

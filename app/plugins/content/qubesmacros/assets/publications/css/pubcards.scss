@@ -22,6 +22,9 @@
 .card-container {
   display: flex;
   flex-wrap: wrap;
+  margin: 0 auto;
+  max-width: 69.65rem;
+  width: 100%;
 }
 
 .card {
@@ -138,11 +141,15 @@
 // }
 
 .card-content {
+  @include respond-at(31.25em) {
+    height: 17.1875rem;
+    width: 21.875rem;
+  }
   height: 17.1875rem;
   overflow: hidden;
   position: relative;
-  width: 21.875rem;
   transition: .4s;
+  width: 19rem;
   z-index: 3;
 }
 
@@ -227,10 +234,13 @@
 }
 
 .tag-wrap {
+  @include respond-at(31.25em) {
+    width: 9.6875rem;
+  }
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 9.6875rem;
+  width: 7.6875rem;
 
   .tags {
     font-size: 0.75rem !important;
