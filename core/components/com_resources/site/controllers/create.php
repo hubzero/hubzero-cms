@@ -1203,6 +1203,15 @@ class Create extends SiteController
 		return $removedTagAssociations;
 	}
 
+	private static function flattenTagAssociations($el)
+	{
+		if (is_array($el) && !empty($el['tag']))
+		{
+			return $el['tag'];
+		}
+		return $el;
+	}
+
 	/*
 	 * Determines which data should be used to create new tag associations
 	 *
@@ -1221,6 +1230,9 @@ class Create extends SiteController
 			->whereEquals('objectid', $resourceId)
 			->where('#__tags_object.label', '!=', 'badge')
 			->rows()->toArray();
+
+		// Flatten the array of arrays tags into just an array of tags
+		$currentTagNames = array_map(array($this, 'flattenTagAssociations'), $currentTagNames);
 
 		foreach ($tagNames as $i => $tagName)
 		{
