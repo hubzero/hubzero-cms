@@ -131,23 +131,7 @@ class Citations extends Base
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files', 'selector');
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'selector');
 
-		if (!isset($pub->_citations))
-		{
-			// Get citations for this publication
-			$cc = \Components\Citations\Models\Citation::all();
-
-			$a = \Components\Citations\Models\Association::blank()->getTableName();
-			$c = $cc->getTableName();
-
-			$pub->_citations = $cc
-				->join($a, $a . '.cid', $c . '.id', 'inner')
-				->whereEquals($c . '.published', 1)
-				->whereEquals($a . '.tbl', 'publication')
-				->whereEquals($a . '.oid', $pub->id)
-				->order($c . '.affiliated', 'asc')
-				->order($c . '.year', 'desc')
-				->rows();
-		}
+		$pub->getCitations();
 
 		$view->pub      = $pub;
 		$view->manifest = $this->_manifest;
@@ -193,23 +177,7 @@ class Citations extends Base
 			return false;
 		}
 
-		if (!isset($pub->_citations))
-		{
-			// Get citations for this publication
-			$cc = \Components\Citations\Models\Citation::all();
-
-			$a = \Components\Citations\Models\Association::blank()->getTableName();
-			$c = $cc->getTableName();
-
-			$pub->_citations = $cc
-				->join($a, $a . '.cid', $c . '.id', 'inner')
-				->whereEquals($c . '.published', 1)
-				->whereEquals($a . '.tbl', 'publication')
-				->whereEquals($a . '.oid', $pub->id)
-				->order($c . '.affiliated', 'asc')
-				->order($c . '.year', 'desc')
-				->rows();
-		}
+		$pub->getCitations();
 
 		// Incoming
 		$url = Request::getString('citation-doi', '');
@@ -225,7 +193,7 @@ class Citations extends Base
 
 		// Plugin params
 		$plugin_params = array(
-			$pub->id,
+			$pub->version->id,
 			$doi,
 			$citationFormat,
 			$actor,
@@ -349,7 +317,7 @@ class Citations extends Base
 
 		// Plugin params
 		$plugin_params = array(
-			$pub->id,
+			$pub->version->id,
 			$cid,
 			true
 		);
@@ -395,23 +363,7 @@ class Citations extends Base
 	{
 		$status = new \Components\Publications\Models\Status();
 
-		if (!isset($pub->_citations))
-		{
-			// Get citations for this publication
-			$cc = \Components\Citations\Models\Citation::all();
-
-			$a = \Components\Citations\Models\Association::blank()->getTableName();
-			$c = $cc->getTableName();
-
-			$pub->_citations = $cc
-				->join($a, $a . '.cid', $c . '.id', 'inner')
-				->whereEquals($c . '.published', 1)
-				->whereEquals($a . '.tbl', 'publication')
-				->whereEquals($a . '.oid', $pub->id)
-				->order($c . '.affiliated', 'asc')
-				->order($c . '.year', 'desc')
-				->rows();
-		}
+		$pub->getCitations();
 
 		// Required?
 		$required = $manifest->params->required;
