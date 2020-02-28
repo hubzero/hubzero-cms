@@ -34,34 +34,36 @@ $settingsHtml = trim($view->loadTemplate());
 ?>
 
 <div class="module <?php echo strtolower($this->module->module) . ' ' . $params->get('moduleclass_sfx'); ?>  draggable sortable"
-	data-row="<?php echo $this->module->positioning->row; ?>"
-	data-col="<?php echo $this->module->positioning->col; ?>"
-	data-sizex="<?php echo $this->module->positioning->size_x; ?>"
-	data-sizey="<?php echo $this->module->positioning->size_y; ?>"
-	data-moduleid="<?php echo $this->module->id; ?>">
+	 data-row="<?php echo $this->module->positioning->row; ?>"
+	 data-col="<?php echo $this->module->positioning->col; ?>"
+	 data-sizex="<?php echo $this->module->positioning->size_x; ?>"
+	 data-sizey="<?php echo $this->module->positioning->size_y; ?>"
+	 data-moduleid="<?php echo $this->module->id; ?>">
 
-	<div class="module-title">
-		<h3><?php echo $this->escape($this->module->title); ?></h3>
-		<ul class="module-links">
-			<?php if ($settingsHtml != '') : ?>
+	<div class="inner">
+
+		<div class="module-title">
+			<h3><?php echo $this->escape($this->module->title); ?></h3>
+			<ul class="module-links">
+				<?php if ($settingsHtml != '') : ?>
+					<li>
+						<a class="settings" title="Module Settings" href="javascript:void(0);">
+							<span><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_MODULE_SETTINGS'); ?></span>
+						</a>
+					</li>
+				<?php endif; ?>
 				<li>
-					<a class="settings" title="Module Settings" href="javascript:void(0);">
-						<span><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_MODULE_SETTINGS'); ?></span>
+					<a class="remove" title="Remove Module" href="javascript:void(0);">
+						<span><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_MODULE_REMOVE'); ?></span>
 					</a>
 				</li>
-			<?php endif; ?>
-			<li>
-				<a class="remove" title="Remove Module" href="javascript:void(0);">
-					<span><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_MODULE_REMOVE'); ?></span>
-				</a>
-			</li>
-		</ul>
-	</div>
+			</ul>
+		</div>
 
-	<div class="module-main">
-		<?php echo $settingsHtml; ?>
-		<div class="module-content">
-			<?php
+		<div class="module-main">
+			<?php echo $settingsHtml; ?>
+			<div class="module-content">
+				<?php
 				if ($this->admin)
 				{
 					echo '<div class="custom">' . Lang::txt('PLG_MEMBERS_DASHBOARD_MODULE_ADMIN_CONTENT') . '</div>';
@@ -75,7 +77,8 @@ $settingsHtml = trim($view->loadTemplate());
 					$this->module->user = false;
 					echo $module;
 				}
-			?>
-		</div>
-	</div><!-- /.module-main -->
+				?>
+			</div>
+		</div><!-- /.module-main -->
+	</div>
 </div>
