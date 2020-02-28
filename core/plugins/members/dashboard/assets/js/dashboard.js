@@ -27,8 +27,8 @@ HUB.Plugins.MemberDashboard = {
 
 	settings: {
 		max_cols: 3,
-		col_margin_vert: 10,
-		col_margin_horz: 10,
+		col_margin_vert: 0,
+		col_margin_horz: 0,
 		col_width: 300,
 		col_height: 150,
 		remove_timeout: 4000
@@ -82,7 +82,7 @@ HUB.Plugins.MemberDashboard = {
 				});
 
 				// return module id, col, row, and sizes
-				return { 
+				return {
 					module: $(element).data('moduleid'),
 					col: specs.col,
 					row: specs.row,
@@ -99,7 +99,7 @@ HUB.Plugins.MemberDashboard = {
 				}
 			},
 			resize: {
-				enabled: true, 
+				enabled: true,
 				stop: function (event, ui, widget) {
 					dashboard.save();
 				}
@@ -131,7 +131,7 @@ HUB.Plugins.MemberDashboard = {
 			width: 800,
 			height: 'auto',
 			autoSize: false,
-			fitToView: false,  
+			fitToView: false,
 			titleShow: false,
 			tpl: {
 				wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
@@ -178,7 +178,7 @@ HUB.Plugins.MemberDashboard = {
 
 		$.ajax({
 			type: 'post',
-			url: 'index.php?option=com_members&id=' + userid + '&active=dashboard&action=module', 
+			url: 'index.php?option=com_members&id=' + userid + '&active=dashboard&action=module',
 			dataType: 'json',
 			data: {
 				moduleid: moduleid
@@ -204,7 +204,7 @@ HUB.Plugins.MemberDashboard = {
 
 		$.ajax({
 			type: 'post',
-			url: 'index.php?option=com_members&id=' + userid + '&active=dashboard&action=module', 
+			url: 'index.php?option=com_members&id=' + userid + '&active=dashboard&action=module',
 			dataType: 'json',
 			data: {
 				moduleid: moduleid
@@ -227,11 +227,11 @@ HUB.Plugins.MemberDashboard = {
 	addModule: function( moduleHtml )
 	{
 		var $         = this.jQuery
-			dashboard = this;
+		dashboard = this;
 
 		// calculate column to add module to
 		var colRow = dashboard._calculateColumnRow();
-		
+
 		// close fancybox
 		$.fancybox.close();
 
@@ -261,10 +261,10 @@ HUB.Plugins.MemberDashboard = {
 		});
 	},
 
-	removeModule: function( module ) 
+	removeModule: function( module )
 	{
 		var $         = this.jQuery
-			dashboard = this;
+		dashboard = this;
 
 		dashboard.modules.remove_widget(module, function() {
 			dashboard.save();
@@ -275,7 +275,7 @@ HUB.Plugins.MemberDashboard = {
 	windowResize: function()
 	{
 		var $         = this.jQuery
-			dashboard = this;
+		dashboard = this;
 
 		// on window resize end
 		// resizeEnd event provided with 3rd party extension
@@ -448,8 +448,13 @@ HUB.Plugins.MemberDashboard = {
 	{
 		var $                = this.jQuery,
 			moduleBaseWidth  = 0,
-			moduleBaseHeight = 0,
-			innerWrapWidth   = $('.modules-container').innerWidth();
+			moduleBaseHeight = 0;
+
+		$('.modules').hide();
+
+		var	innerWrapWidth   = $('.modules-container').innerWidth();
+
+		$('.modules').show();
 
 		// get module width
 		moduleBaseWidth = parseInt(innerWrapWidth / this.settings.max_cols);
@@ -458,7 +463,7 @@ HUB.Plugins.MemberDashboard = {
 		moduleBaseWidth -= (this.settings.col_margin_horz * 2);
 
 		// module height
-		moduleBaseHeight = parseInt(moduleBaseWidth / 2);
+		moduleBaseHeight = parseInt(moduleBaseWidth);
 
 		// set our col width & height
 		this.settings.col_width  = moduleBaseWidth;
