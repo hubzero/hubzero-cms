@@ -399,6 +399,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			)
 		);
 
+
 		// Instantiate a publication object
 		$view->pub = new \Components\Publications\Models\Publication();
 
@@ -417,6 +418,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Get used space
 		$view->dirsize = \Components\Publications\Helpers\Html::getDiskUsage($allRows, false);
 		$view->params  = $this->model->params;
+		$view->new_pubs = $this->params->get('new_pubs');
 		$view->quota   = $view->params->get('pubQuota')
 						? $view->params->get('pubQuota')
 						: \Components\Projects\Helpers\Html::convertSize(floatval($this->model->config()->get('pubQuota', '1')), 'GB', 'b');
