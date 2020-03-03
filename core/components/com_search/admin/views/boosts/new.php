@@ -24,7 +24,6 @@ $boost = $this->boost;
 $typeOptions = $this->typeOptions;
 
 $this->view('_boost_form')
-	->set('action', $action)
 	->set('boost', $boost)
 	->set('task', 'new')
 	->set('typeOptions', $typeOptions)

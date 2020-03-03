@@ -86,8 +86,35 @@ class Project extends Model
 			}
 		}
 
-		$this->params = new \Hubzero\Config\Registry($this->_tbl->get('params'));
+		$paramsRegistry = new \Hubzero\Config\Registry($this->_tbl->get('params'));
 
+		if (empty($paramsRegistry->toArray()))
+		{
+			$parsedParams = $this->_getParsedParams();
+			$paramsRegistry = new \Hubzero\Config\Registry($parsedParams);
+		}
+
+		$this->params = $paramsRegistry;
+	}
+
+	protected function _getParsedParams()
+	{
+		$parsedParams = [];
+		$splitParams = explode("\n", $this->_tbl->get('params'));
+
+		foreach ($splitParams as $param)
+		{
+			if (empty($param))
+			{
+				continue;
+			}
+			$pair = explode('=', $param);
+			$key = $pair[0];
+			$value = $pair[1];
+			$parsedParams[$key] = $value;
+		}
+
+		return $parsedParams;
 	}
 
 	/**

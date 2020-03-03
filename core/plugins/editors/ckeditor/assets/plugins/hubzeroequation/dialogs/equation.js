@@ -27,7 +27,7 @@ CKEDITOR.dialog.add( 'hubzeroEquationDialog', function( editor ) {
 					},
 					{
 						type: 'html',
-						html: '<a target="_blank" href="http://web.ift.uib.no/Teori/KURS/WRK/TeX/symALL.html">LaTex Help</a><br /><br />'
+						html: '<a rel="noopener noreferrer" target="_blank" href="http://web.ift.uib.no/Teori/KURS/WRK/TeX/symALL.html">LaTex Help</a><br /><br />'
 					},
 					{
 						type: 'html',
@@ -53,23 +53,23 @@ CKEDITOR.dialog.add( 'hubzeroEquationDialog', function( editor ) {
 					var source = image.getAttribute('src');
 					equation = decodeURIComponent(source);
 				}
-				
+
 				equationTextarea.val(equation);
 				equationPreview.attr('src', image.getAttribute('src'));
 			} else {
 				//we're making a new equation
 				var equation = '';
 				var source = '';
-				
+
 				equationTextarea.val(equation);
 				equationPreview.attr('src', image.getAttribute('src'));
 			}
-			
+
 			// show preview
 			$('#' + equationElement.domId).on('keyup', 'textarea', function(event) {
 				equationChanged = true;
 			});
-			
+
 			equationLimiter = setInterval( function() {
 				if (equationChanged) {
 					var equation = $('#' + equationElement.domId).find('textarea').val();
@@ -86,7 +86,7 @@ CKEDITOR.dialog.add( 'hubzeroEquationDialog', function( editor ) {
 								//there was an error, display an error icon
 								equationPreview.attr('src', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABsUlEQVQ4T62UzytEURTHv+c+jadkjxT5ce9b2Pk7/ChM0mSjFEX8HxQiCwtZSBjK32GnzH0ZDMJeMn7Mu0fvlmnMeM9g7vKecz7nfM+95xC+OVft7e6L6yYBDBBzHzM3h25E9MBEJ0x01JDP73fkci/l4VR+kVFqDMYsQggLiToGuHeY55Xv75X6FIEMOFqpNQBTcaCKipjXpe/PEhBYFZ8OGaU2omBOb691C05Pv81FzOvK92eKQCsT2ImqrOn42Joe+/sjiyfmZCif7AMkEpdxPasGaIC7RKHQSRmlJgBsxfWtGqCVy5wKgYcAhmoBNECatJQ3TNRWCyCMuaZMT887hKirEfCt9sBqJDdubloBT5OTsX/eALmqHuUXk3NAZ56XIubtuKCfJqUkdtx+7GfXvRBAyz8n5dYJgm47y2eelyTm3Shgw9ycNeWXl+OEDHtap4vLQUu5xkTTv+hXqeuqp/Xsl20Tri9fypU/QFeU1gsV6+sznZZyNCBaEkBrXLXEfMtE86HMUr+KjR0az7u66gPHGQmIBoUxfQDs9jZC3AvgBMBRXaGQ7s5mX8uTfgDCabpOjteIBgAAAABJRU5ErkJggg==');
 							}
-							
+
 						}
 					});
 					equationChanged = false;

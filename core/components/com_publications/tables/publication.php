@@ -102,6 +102,7 @@ class Publication extends Table
 	{
 		$now = Date::toSql();
 		$groupby = '';
+
 		if (!isset($filters['all_versions']) || !$filters['all_versions'])
 		{
 			$groupby = ' GROUP BY C.id ';
@@ -114,10 +115,10 @@ class Publication extends Table
 		$featured = isset($filters['featured']) && $filters['featured'] ? 1 : 0;
 		$sortby   = isset($filters['sortby']) ? $filters['sortby'] : 'title';
 
-		$query  = " FROM 
+		$query  = " FROM
 					#__publication_versions V
 					LEFT JOIN $this->_tbl C ON V.publication_id = C.id
-					LEFT JOIN #__projects PP ON PP.id = C.project_id 
+					LEFT JOIN #__projects PP ON PP.id = C.project_id
 					LEFT JOIN #__publication_master_types MT ON MT.id = C.master_type
 					LEFT JOIN #__publication_categories AS t ON t.id = C.category
 					";
@@ -283,6 +284,7 @@ class Publication extends Table
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
+				$componentParams = Component::params('com_publications');
 				$words = array();
 				$ws = explode(' ', $filters['search']);
 				foreach ($ws as $w)
@@ -299,6 +301,12 @@ class Publication extends Table
 
 				$query .= " AND ((MATCH(V.title) AGAINST ('+$text -\"$text2\"') > 0) OR"
 						 . " (MATCH(V.abstract,V.description) AGAINST ('+$text -\"$text2\"') > 0)) ";
+
+				if ($componentParams->get('include_author_name_in_search'))
+				{
+					$query .= " OR (V.id in (SELECT publication_version_id"
+						.	" from jos_publication_authors as A where lower(A.name) like '%$text%'))";
+				}
 		}
 
 		// Do not show deleted

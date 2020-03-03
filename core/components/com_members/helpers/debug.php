@@ -88,7 +88,7 @@ class Debug
 		// Use default actions from configuration if no component selected or component doesn't have actions
 		if (empty($actions))
 		{
-			$filename = Component::path('com_config') . '/admin/models/forms/application.xml';
+			$filename = Component::path('com_config') . '/models/forms/application.xml';
 
 			if (is_file($filename))
 			{

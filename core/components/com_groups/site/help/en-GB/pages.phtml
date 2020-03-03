@@ -91,7 +91,7 @@ $groupCname = Request::getVar('cn', '');
 			<li>This popup should look familiar, its the same popup for uploading assets. As you can see, you can also upload assets here.</li>
 			<li>Find the image/file you want to use, located in the "uploads" folder. Click on the row for that image/file. You should see a number of buttons, the "Insert File" button will close the popup and update the url field with the file chosen. You should also see a preview of the image if thats what your inserting.</li>
 			<li>Now just click "Ok" and you should see it appear in the editor.</li>
-			
+
 		</ol>
 
 		<h4>Editing Assets</h4>
@@ -154,9 +154,9 @@ $groupCname = Request::getVar('cn', '');
 		<h3>Group Home Page</h3>
 		<p>It is now possible to override the default group overview page shown below, with any group page.</p>
 		<ol>
-			<li>Navigate to the page manager. 
+			<li>Navigate to the page manager.
 				<?php if ($groupCname != '') : ?>
-					<a target="_blank" onclick="window.opener.location=this.href;return false;" href="<?php echo Route::url('index.php?option=com_groups&cn='.$groupCname.'&task=pages'); ?>">Open the group page manager</a>
+					<a rel="noopener noreferrer" target="_blank" onclick="window.opener.location=this.href;return false;" href="<?php echo Route::url('index.php?option=com_groups&cn='.$groupCname.'&task=pages'); ?>">Open the group page manager</a>
 				<?php endif; ?>
 			</li>
 			<li>You can set or unset the group home page directly from the page manager, by clicking the home icon. When the icon is yellow, that means that page is set as the home page.</li>
