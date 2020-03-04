@@ -486,6 +486,8 @@ class Profilesv1_0 extends ApiController
 		// Validate the password
 		if (!empty($pw))
 		{
+			$username = Request::getString('username', '');
+			$userid = !$userid ? $username : $userid;
 			$msg = \Hubzero\Password\Rule::verify($pw, $password_rules, $userid);
 		}
 		else

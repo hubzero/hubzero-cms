@@ -336,7 +336,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 		// Set multi-value fields
 		//
-		// This will split a string based on delimiter(s) and turn the 
+		// This will split a string based on delimiter(s) and turn the
 		// values into an array.
 		foreach (array('disability', 'race', 'hispanic') as $key)
 		{
@@ -580,6 +580,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			$eview->registerDate = $this->record->entry->get('registerDate');
 			$eview->confirm      = $this->record->entry->get('activation');
 			$eview->baseURL      = Request::base();
+			$eview->email        = $this->record->entry->get('email');
 
 			$msg = new \Hubzero\Mail\Message();
 			$msg->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION'))

@@ -27,7 +27,7 @@ defined('_HZEXEC_') or die();
 				<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
 				<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
 				<input type="hidden" name="scope_id" value="<?php echo $this->ag->get('id'); ?>" />
-				<a href="<?php echo Request::base(true); ?>/help/courses/builder" rel="noopener" target="_blank" class="help-info">help</a>
+				<a href="<?php echo Request::base(true); ?>/help/courses/builder" rel="noopener noreferrer" target="_blank" class="help-info">help</a>
 			</form>
 			<a href="#" title="Attach a link" class="attach-link"></a>
 			<a href="#" title="Embed a Kaltura or YouTube Video" class="attach-object"></a>

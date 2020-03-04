@@ -10,15 +10,20 @@ defined('_HZEXEC_') or die();
 
 $option = $this->option;
 $receivedQuery = Request::query();
-ksort($receivedQuery);
+
+if (!isset($receivedQuery['controller']))
+{
+	$receivedQuery['controller'] = null;
+}
 
 $entries = [
 	[
 		"text" => Lang::txt('COM_SEARCH_SUBMENU_OVERVIEW'),
 		"queryParams" => [
 			"option" => $option,
-			"task" => "configure"
-			]
+			"task" => "configure",
+			"controller" => null
+		]
 	],
 	[
 		"text" => Lang::txt('COM_SEARCH_SUBMENU_COMPONENTS'),

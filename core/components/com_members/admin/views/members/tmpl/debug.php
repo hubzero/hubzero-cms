@@ -55,9 +55,9 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 		<caption>
 			<?php echo Lang::txt('COM_MEMBERS_DEBUG_LEGEND'); ?>
 			<span class="swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_NO_CHECK', '-');?></span>
-			<span class="check-0 swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_IMPLICIT_DENY', '-');?></span>
-			<span class="check-a swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_EXPLICIT_ALLOW', '&#10003;');?></span>
-			<span class="check-d swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_EXPLICIT_DENY', '&#10007;');?></span>
+			<span class="check-0 swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_IMPLICIT_DENY', '<span class="state no"><span>-</span></span>');?></span>
+			<span class="check-a swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_EXPLICIT_ALLOW', '<span class="state yes"><span>&#10003;</span></span>');?></span>
+			<span class="check-d swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_EXPLICIT_DENY', '<span class="state no"><span>&#10007;</span></span>');?></span>
 		</caption>
 		<thead>
 			<tr>
@@ -111,7 +111,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 						$text  = '<span class="state no"><span>&#10007;</span></span>';
 					elseif ($check === null) :
 						$class = 'check-0';
-						$text  = '-';
+						$text  = '<span class="state no"><span>-</span></span>';
 					else :
 						$class = '';
 						$text  = '&#160;';
@@ -133,7 +133,8 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 		</tbody>
 	</table>
 
-	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="id" value="<?php echo $this->user->get('id'); ?>" />
+	<input type="hidden" name="task" value="debug" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
