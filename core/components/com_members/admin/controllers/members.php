@@ -995,7 +995,7 @@ class Members extends AdminController
 
 			// Load user password object
 			$passinfo = \Hubzero\User\Password::getInstance($user->get('id'));
-			
+
 			// If blocking
 			if ($state == 1)
 			{
@@ -1008,7 +1008,7 @@ class Members extends AdminController
 			elseif ($state == 0)
 			{
 				// Set user Shadow Expiration to a past date.  This disabled the account in LDAP.  "10957" is the number of days to January 1, 2000 from epoch start
-				$passinfo->set('shadowExpire', NULL);
+				$passinfo->set('shadowExpire', null);
 			}
 			$passinfo->update();
 
