@@ -53,6 +53,7 @@ class Members extends AdminController
 		$this->registerTask('unconfirm', 'state');
 		$this->registerTask('applyprofile', 'saveprofile');
 		$this->registerTask('unblock', 'block');
+		$this->registerTask('block', 'block');
 		$this->registerTask('disapprove', 'approve');
 
 		parent::execute();
@@ -989,7 +990,27 @@ class Members extends AdminController
 		{
 			// Load the profile
 			$user = Member::oneOrFail(intval($id));
+			// Block user
 			$user->set('block', $state);
+
+			// Load user password object
+			$passinfo = \Hubzero\User\Password::getInstance($user->get('id'));
+			
+			// If blocking
+			if ($state == 1)
+			{
+				// Set user Shadow Expiration to a past date.  This disabled the account in LDAP.  "10957" is the number of days to January 1, 2000 from epoch start
+				$passinfo->set('shadowExpire', "10957");
+				// Randomize and Save password
+				$newrandompass = \Components\Members\Helpers\Utility::userpassgen(16);
+				\Hubzero\User\Password::changePassword($user->get('username'), $newrandompass);
+			}
+			elseif ($state == 0)
+			{
+				// Set user Shadow Expiration to a past date.  This disabled the account in LDAP.  "10957" is the number of days to January 1, 2000 from epoch start
+				$passinfo->set('shadowExpire', NULL);
+			}
+			$passinfo->update();
 
 			if (!$user->save())
 			{
