@@ -30,8 +30,8 @@ if ($canDo->get('core.edit.state')):
 	Toolbar::publishList('confirm', 'COM_MEMBERS_CONFIRM');
 	Toolbar::unpublishList('unconfirm', 'COM_MEMBERS_UNCONFIRM');
 	Toolbar::divider();
-	Toolbar::custom('block','cancel', '', 'COM_MEMBERS_BLOCK', true);
-	Toolbar::custom('unblock','restore', '', 'COM_MEMBERS_UNBLOCK', true);
+	Toolbar::custom('block', 'cancel', '', 'COM_MEMBERS_BLOCK', true);
+	Toolbar::custom('unblock', 'restore', '', 'COM_MEMBERS_UNBLOCK', true);
 	Toolbar::spacer();
 endif;
 
