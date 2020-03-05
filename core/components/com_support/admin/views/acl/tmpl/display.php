@@ -235,7 +235,7 @@ foreach ($this->rows as $row)
 						$cls = 'publish';
 					}
 					?>
-					<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&id=' . $data['tickets']['id'] . '&action=create&value=' . ($data['private_comments']['create'] ? '0' : '1') . '&' . Session::getFormToken() . '=1'); ?>">
+					<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&id=' . $data['private_comments']['id'] . '&action=create&value=' . ($data['private_comments']['create'] ? '0' : '1') . '&' . Session::getFormToken() . '=1'); ?>">
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
@@ -249,7 +249,7 @@ foreach ($this->rows as $row)
 						$cls = 'publish';
 					}
 					?>
-					<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&id=' . $data['tickets']['id'] . '&action=read&value=' . ($data['private_comments']['read'] ? '0' : '1') . '&' . Session::getFormToken() . '=1'); ?>">
+					<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&id=' . $data['private_comments']['id'] . '&action=read&value=' . ($data['private_comments']['read'] ? '0' : '1') . '&' . Session::getFormToken() . '=1'); ?>">
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
