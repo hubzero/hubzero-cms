@@ -147,115 +147,13 @@ foreach ($this->rows as $row)
 		$data[$line->aco_model]['update'] = $line->action_update;
 		$data[$line->aco_model]['delete'] = $line->action_delete;
 	}
-?>
-			<tr>
-				<td class="align-center"><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" class="checkbox-toggle" /></td>
-				<td class="align-center"><?php echo $row->id; ?></td>
-				<td><?php echo $row->alias; ?> (<?php echo $row->foreign_key; ?>)</td>
-				<td><?php echo $row->model; ?></td>
-				<td class="align-center">
-					<?php
-					$calt = Lang::txt('JNO');
-					$cls = 'unpublish';
-					if ($data['tickets']['read'])
-					{
-						$calt = Lang::txt('JYES');
-						$cls = 'publish';
-					}
-					?>
-					<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&id=' . $data['tickets']['id'] . '&action=read&value=' . ($data['tickets']['read'] ? '0' : '1') . '&' . Session::getFormToken() . '=1'); ?>">
-						<span><?php echo $calt; ?></span>
-					</a>
-				</td>
-				<td class="align-center">
-					<?php
-					$calt = Lang::txt('JNO');
-					$cls = 'unpublish';
-					if ($data['tickets']['update'])
-					{
-						$calt = Lang::txt('JYES');
-						$cls = 'publish';
-					}
-					?>
-					<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&id=' . $data['tickets']['id'] . '&action=update&value=' . ($data['tickets']['update'] ? '0' : '1') . '&' . Session::getFormToken() . '=1'); ?>">
-						<span><?php echo $calt; ?></span>
-					</a>
-				</td>
-				<td class="align-center">
-					<?php
-					$calt = Lang::txt('JNO');
-					$cls = 'unpublish';
-					if ($data['tickets']['delete'])
-					{
-						$calt = Lang::txt('JYES');
-						$cls = 'publish';
-					}
-					?>
-					<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&id=' . $data['tickets']['id'] . '&action=delete&value=' . ($data['tickets']['delete'] ? '0' : '1') . '&' . Session::getFormToken() . '=1'); ?>">
-						<span><?php echo $calt; ?></span>
-					</a>
-				</td>
 
-				<td class="align-center">
-					<?php
-					$calt = Lang::txt('JNO');
-					$cls = 'unpublish';
-					if ($data['comments']['create'])
-					{
-						$calt = Lang::txt('JYES');
-						$cls = 'publish';
-					}
-					?>
-					<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&id=' . $data['tickets']['id'] . '&action=create&value=' . ($data['comments']['create'] ? '0' : '1') . '&' . Session::getFormToken() . '=1'); ?>">
-						<span><?php echo $calt; ?></span>
-					</a>
-				</td>
-				<td class="align-center">
-					<?php
-					$calt = Lang::txt('JNO');
-					$cls = 'unpublish';
-					if ($data['comments']['read'])
-					{
-						$calt = Lang::txt('JYES');
-						$cls = 'publish';
-					}
-					?>
-					<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&id=' . $data['tickets']['id'] . '&action=read&value=' . ($data['comments']['read'] ? '0' : '1') . '&' . Session::getFormToken() . '=1'); ?>">
-						<span><?php echo $calt; ?></span>
-					</a>
-				</td>
+	$this->view('_acl_aro_row')
+		->set('i', $i)
+		->set('data', $data)
+		->set('row', $row)
+		->display();
 
-				<td class="align-center">
-					<?php
-					$calt = Lang::txt('JNO');
-					$cls = 'unpublish';
-					if ($data['private_comments']['create'])
-					{
-						$calt = Lang::txt('JYES');
-						$cls = 'publish';
-					}
-					?>
-					<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&id=' . $data['private_comments']['id'] . '&action=create&value=' . ($data['private_comments']['create'] ? '0' : '1') . '&' . Session::getFormToken() . '=1'); ?>">
-						<span><?php echo $calt; ?></span>
-					</a>
-				</td>
-				<td class="align-center">
-					<?php
-					$calt = Lang::txt('JNO');
-					$cls = 'unpublish';
-					if ($data['private_comments']['read'])
-					{
-						$calt = Lang::txt('JYES');
-						$cls = 'publish';
-					}
-					?>
-					<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&id=' . $data['private_comments']['id'] . '&action=read&value=' . ($data['private_comments']['read'] ? '0' : '1') . '&' . Session::getFormToken() . '=1'); ?>">
-						<span><?php echo $calt; ?></span>
-					</a>
-				</td>
-				<td> </td>
-			</tr>
-<?php
 	$i++;
 	$k = 1 - $k;
 }
