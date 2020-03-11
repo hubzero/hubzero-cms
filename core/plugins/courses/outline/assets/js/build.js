@@ -375,7 +375,11 @@ HUB.CoursesOutline = {
 				statusCode: {
 					// 200 OK
 					200: function ( data, textStatus, jqXHR ) {
-						var assetName = data.options.scope !== 'undefined' ? data.options.scope : 'Asset';
+						if(typeof  data.options === 'undefined') {
+							data.options = {};
+						}
+
+						var assetName = typeof data.options.scope !== 'undefined' ? data.options.scope : 'Asset';
 						switch ( data.type ) {
 							case 'js' :
 								eval(data.value);
@@ -985,7 +989,7 @@ HUB.CoursesOutline = {
 			});
 		},
 
-		/* 
+		/*
 		 * Submit file upload
 		 */
 		submit: function ( fileupload, data, counter, assetslist, form ) {
@@ -1384,7 +1388,7 @@ HUB.CoursesOutline = {
 		},
 
 		/*
-		 * Refresh the asset group 
+		 * Refresh the asset group
 		 * (i.e. anything that would happen every time a new asset group is added)
 		 */
 		refresh: function ( e, selector ) {
@@ -1672,7 +1676,7 @@ HUB.CoursesOutline = {
 								'<input type="hidden" name="course_id" value="<%= course_id %>" />',
 								'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
 								'<input type="hidden" name="scope_id" value="<%= assetgroup_id %>" />',
-								'<a href="/help/courses/builder" target="_blank" class="help-info">help</a>',
+								'<a href="/help/courses/builder" rel="noopener noreferrer" target="_blank" class="help-info">help</a>',
 							'</form>',
 							'<a href="#" title="Attach a link" class="attach-link"></a>',
 							'<a href="#" title="Embed a Kaltura or YouTube Video" class="attach-object"></a>',

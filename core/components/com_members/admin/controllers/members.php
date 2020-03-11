@@ -441,15 +441,17 @@ class Members extends AdminController
 			$user->set('registerDate', Date::toSql());
 		}
 
-		// Set the new info
-		$user->set('givenName', preg_replace('/\s+/', ' ', trim($fields['givenName'])));
-		$user->set('middleName', preg_replace('/\s+/', ' ', trim($fields['middleName'])));
-		$user->set('surname', preg_replace('/\s+/', ' ', trim($fields['surname'])));
+		$givenTrimmed = preg_replace('/\s+/', ' ', trim($fields['givenName']));
+		$middleTrimmed = preg_replace('/\s+/', ' ', trim($fields['middleName']));
+		$surTrimmed = preg_replace('/\s+/', ' ', trim($fields['surname']));
 
+		$user->set('givenName', $givenTrimmed);
+		$user->set('middleName', $middleTrimmed);
+		$user->set('surname', $surTrimmed);
 		$name = array(
-			$user->get('givenName'),
-			$user->get('middleName'),
-			$user->get('surname')
+			$givenTrimmed,
+			$middleTrimmed,
+			$surTrimmed
 		);
 		$name = implode(' ', $name);
 		$name = preg_replace('/\s+/', ' ', $name);
@@ -1154,41 +1156,41 @@ class Members extends AdminController
 	 *
 	 * @return  void
 	 */
-	public function debuguserTask()
+	public function debugTask()
 	{
 		include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'debug.php';
 
 		// Get filters
 		$filters = array(
 			'search' => urldecode(Request::getState(
-				$this->_option . '.' . $this->_controller . '.search',
+				$this->_option . '.' . $this->_controller . '.debug.search',
 				'search',
 				''
 			)),
 			'sort' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sort',
+				$this->_option . '.' . $this->_controller . '.debug.sort',
 				'filter_order',
 				'lft'
 			),
 			'sort_Dir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortdir',
+				$this->_option . '.' . $this->_controller . '.debug.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
 			'level_start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.filter_level_start',
+				$this->_option . '.' . $this->_controller . '.debug.filter_level_start',
 				'filter_level_start',
 				0,
 				'int'
 			),
 			'level_end' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.filter_level_end',
+				$this->_option . '.' . $this->_controller . '.debug.filter_level_end',
 				'filter_level_end',
 				0,
 				'int'
 			),
 			'component' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.filter_component',
+				$this->_option . '.' . $this->_controller . '.debug.filter_component',
 				'filter_component',
 				''
 			)
@@ -1233,7 +1235,7 @@ class Members extends AdminController
 
 		$assets = $entries
 			->order($filters['sort'], $filters['sort_Dir'])
-			->paginated()
+			->paginated('limitstart', 'limit')
 			->rows();
 
 		$actions = \Components\Members\Helpers\Debug::getActions($filters['component']);
@@ -1251,10 +1253,10 @@ class Members extends AdminController
 				$level = $action[1];
 
 				// Check that we check this action for the level of the asset.
-				if ($action[1] === null || $action[1] >= $asset->get('level'))
+				if ($level === null || $level >= $asset->get('level'))
 				{
 					// We need to test this action.
-					$checks[$name] = Access::check($id, $action[0], $asset->get('name'));
+					$checks[$name] = Access::check($id, $name, $asset->get('name'));
 				}
 				else
 				{

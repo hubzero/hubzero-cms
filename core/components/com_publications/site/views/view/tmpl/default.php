@@ -66,7 +66,10 @@ else
 				<?php } ?>
 
 				<p class="ataglance">
-					<?php echo $this->publication->abstract ? \Hubzero\Utility\Str::truncate(stripslashes($this->publication->abstract), 250) : ''; ?>
+					<?php
+						$abstractSnippet = \Hubzero\Utility\Str::truncate(stripslashes(strip_tags($this->publication->abstract)), 250);
+						echo $this->publication->abstract ?  $abstractSnippet : '';
+					?>
 				</p>
 
 				<?php

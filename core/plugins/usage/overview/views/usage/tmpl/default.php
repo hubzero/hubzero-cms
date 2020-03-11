@@ -56,7 +56,7 @@ if ($this->message) { ?>
 
 	$sql = "SELECT value, valfmt, datetime
 			FROM `summary_user_vals`
-			WHERE rowid=" . $db->quote($id) . " AND period=" . $db->quote($period) . " AND datetime<=" . $db->quote($datetime) . " AND colid=" . $db->quote($id) . "
+			WHERE rowid=" . $db->quote($id) . " AND period=" . $db->quote($period) . " AND datetime<=" . $db->quote($datetime . '-00') . " AND colid=" . $db->quote($id) . "
 			ORDER BY datetime ASC";
 	$db->setQuery($sql);
 	$results = $db->loadObjectList();
@@ -85,7 +85,7 @@ if ($this->message) { ?>
 
 	$sql = "SELECT value, valfmt, datetime
 			FROM `summary_user_vals`
-			WHERE rowid=" . $db->quote($id) . " AND period=" . $db->quote($period) . " AND datetime<=" . $db->quote($datetime) . " AND colid=" . $db->quote(1) . "
+			WHERE rowid=" . $db->quote($id) . " AND period=" . $db->quote($period) . " AND datetime<=" . $db->quote($datetime . '-00') . " AND colid=" . $db->quote(1) . "
 			ORDER BY datetime ASC";
 	$db->setQuery($sql);
 	$results = $db->loadObjectList();

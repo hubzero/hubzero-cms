@@ -8,8 +8,11 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$canDo = Components\Tags\Helpers\Permissions::getActions();
+$componentPath = Component::path('com_tags');
 
+require_once "$componentPath/helpers/activityLogPresenter.php";
+
+$canDo = Components\Tags\Helpers\Permissions::getActions();
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
 Toolbar::title(Lang::txt('COM_TAGS') . ': ' . $text, 'tags');
@@ -27,7 +30,11 @@ Html::behavior('framework');
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
-$this->js();
+$this->js()
+	->js('api')
+	->js('tagActivityLog')
+	->js('tagLogListItem')
+	->js('tagLogsFetcher');
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
@@ -143,95 +150,13 @@ $this->js();
 			{
 					?>
 					<h4><?php echo Lang::txt('COM_TAGS_LOG'); ?></h4>
-					<ul class="entry-log">
+					<ul class="entry-log" id="entry-log">
 						<?php
-						foreach ($this->tag->logs()->ordered()->rows() as $log)
+						foreach ($this->tag->logs()->ordered()->limit(100)->rows() as $log)
 						{
-							$actor = $this->escape(stripslashes($log->actor->get('name')));
-							$actor = $actor ?: Lang::txt('JUNKNOWN');
-
-							$s = null;
-							$c = '';
-
-							if ($log->get('comments'))
-							{
-								$data = json_decode($log->get('comments'));
-								if (!is_object($data))
-								{
-									$data = new stdClass;
-								}
-								if (!isset($data->entries))
-								{
-									$data->entries = 0;
-								}
-								switch ($log->get('action'))
-								{
-									case 'substitute_created':
-										$c = 'created';
-										$s = Lang::txt('COM_TAGS_LOG_ALIAS_CREATED', (isset($data->raw_tag) ? $data->raw_tag : ''), $log->get('timestamp'), $actor);
-									break;
-
-									case 'substitute_edited':
-										$c = 'edited';
-										$s = Lang::txt('COM_TAGS_LOG_ALIAS_EDITED', (isset($data->raw_tag) ? $data->raw_tag : ''), $log->get('timestamp'), $actor);
-									break;
-
-									case 'substitute_deleted':
-										$c = 'deleted';
-										$s = Lang::txt('COM_TAGS_LOG_ALIAS_DELETED', (isset($data->raw_tag) ? $data->raw_tag : ''), $log->get('timestamp'), $actor);
-									break;
-
-									case 'substitute_moved':
-										$c = 'moved';
-										$s = Lang::txt('COM_TAGS_LOG_ALIAS_MOVED', count($data->entries), $data->old_id, $log->get('timestamp'), $actor);
-									break;
-
-									case 'tags_removed':
-										$c = 'deleted';
-										$s = Lang::txt('COM_TAGS_LOG_ASSOC_DELETED', count($data->entries), $data->tbl, $data->objectid, $log->get('timestamp'), $actor);
-									break;
-
-									case 'objects_copied':
-										$c = 'copied';
-										$s = Lang::txt('COM_TAGS_LOG_ASSOC_COPIED', count($data->entries), $data->old_id, $log->get('timestamp'), $actor);
-									break;
-
-									case 'objects_moved':
-										$c = 'moved';
-										$s = Lang::txt('COM_TAGS_LOG_ASSOC_MOVED', count($data->entries), $data->old_id, $log->get('timestamp'), $actor);
-									break;
-
-									case 'objects_removed':
-										$c = 'deleted';
-										if ($data->objectid || $data->tbl)
-										{
-											$s = Lang::txt('COM_TAGS_LOG_OBJ_DELETED', count($data->entries), $data->tbl, $data->objectid, $log->get('timestamp'), $actor);
-										}
-										else
-										{
-											$s = Lang::txt('COM_TAGS_LOG_OBJ_REMOVED', count($data->entries), $data->tagid, $log->get('timestamp'), $actor);
-										}
-									break;
-
-									default:
-										$c = 'edited';
-										$s = Lang::txt('COM_TAGS_LOG_TAG_EDITED', str_replace('_', ' ', $log->get('action')), $log->get('timestamp'), $actor);
-									break;
-								}
-							}
-							else
-							{
-								$c = 'edited';
-								$s = Lang::txt('COM_TAGS_LOG_TAG_EDITED', str_replace('_', ' ', $log->get('action')), $log->get('timestamp'), $actor);
-							}
-							if ($s)
-							{
-								?>
-								<li class="<?php echo $c; ?>">
-									<span class="entry-log-data"><?php echo $s; ?></span>
-								</li>
-								<?php
-							}
+							$this->view('_activity_log_item')
+								->set('log', $log)
+								->display();
 						}
 						?>
 					</ul>

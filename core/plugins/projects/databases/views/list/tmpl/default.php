@@ -103,7 +103,7 @@ $this->css();
 		?>
 			<tr class="mini faded">
 				<td title="<?php echo $this->escape($r['description']); ?>" data-db-title="<?php echo $this->escape($r['title']); ?>" data-db-id="<?php echo $r['id']; ?>">
-					<a rel="noopener" target="_blank" href="/<?php echo $this->dataviewer; ?>/view/<?php echo $this->model->get('alias'); ?>:dsl/<?php echo $r['database_name']; ?>/"><?php echo $this->escape($r['title']); ?></a>
+					<a rel="noopener noreferrer" target="_blank" href="/<?php echo $this->dataviewer; ?>/view/<?php echo $this->model->get('alias'); ?>:dsl/<?php echo $r['database_name']; ?>/"><?php echo $this->escape($r['title']); ?></a>
 					<?php if ($this->model->access('content')) { ?>
 					<span class="db-update" title="<?php echo Lang::txt('PLG_PROJECTS_DATABASES_CLICK_TO_EDIT'); ?>"></span>
 					<?php } ?>
