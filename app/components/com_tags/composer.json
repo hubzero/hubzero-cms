@@ -15,13 +15,6 @@
 			"email": "qubeshub@gmail.com"
 		}
 	],
-	"support": {
-			"email": "qubeshub@gmail.com",
-			"issues": "https://github.com/qubeshub/hubzero-cms/issues"
-	},
-	"require": {
-		"php" : "^5.4"
-	},
 	"extra": {
 	    "install-directory": "/components/com_tags"
 	}
