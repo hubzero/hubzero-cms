@@ -310,6 +310,16 @@ class Pages extends SiteController
 			);
 		}
 
+		// make help pages noneditable
+		if ($this->page->getNamespace() == 'help')
+		{
+			App::redirect(
+				Route::url($this->page->link()),
+				Lang::txt('COM_WIKI_WARNING_NO_EDIT'),
+				'warning'
+			);
+		}
+
 		// Check if the page is locked and the user is authorized
 		if ($this->page->isLocked() && !$this->page->access('manage'))
 		{
