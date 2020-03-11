@@ -35,19 +35,9 @@ class UserLocalizer
 
 	protected function _getUserTimezone()
 	{
-		$userParams = $this->_getUserParams();
+		$userParams = json_decode(User::get('params'), 1);
 
 		return Arr::getValue($userParams, 'timezone', $this->systemTimezone);
-	}
-
-	protected function _getUserParams()
-	{
-		$userId = User::get('id');
-		$query = "SELECT params from jos_users where id = $userId;";
-		$this->db->setQuery($query);
-		$result = $this->db->loadResult();
-
-		return json_decode($result, 1);
 	}
 
 }
