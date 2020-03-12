@@ -3,7 +3,7 @@
 	"description": "**Override** of HubZero project publications plugin.",
 	"type": "hubzero-plugin",
 	"keywords": ["hubzero", "qubeshub"],
-	"homepage": ["https://hubzero.org", "https://qubeshub.org"],
+	"homepage": "https://qubeshub.org",
 	"license": "MIT",
 	"authors": [
 		{
@@ -15,22 +15,6 @@
 			"email": "qubeshub@gmail.com"
 		}
 	],
-	"support": [
-		{
-			"email": "support@hubzero.org",
-			"issues": "https://help.hubzero.org"
-		},
-		{
-			"email": "qubeshub@gmail.com",
-			"issues": "https://github.com/qubeshub/hubzero-cms/issues"
-		}
-	],
-	"require": {
-		"php" : "^5.4",
-		"hubzero/com_projects": "dev-master",
-		"hubzero/com_publications": "dev-master",
-		"hubzero/plg_projects_files": "dev-master"
-	},
   "extra": {
 	    "install-directory": "/plugins/projects/publications"
 	}

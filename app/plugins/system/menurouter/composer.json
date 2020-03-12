@@ -3,7 +3,7 @@
 	"description": "System plugin to re-route urls to match menu and breadcrumbs.",
 	"type": "hubzero-plugin",
 	"keywords": ["hubzero", "qubeshub"],
-	"homepage": ["https://hubzero.org", "https://qubeshub.org"],
+	"homepage": "https://qubeshub.org",
 	"license": "MIT",
 	"authors": [
 		{
@@ -15,20 +15,6 @@
 			"email": "qubeshub@gmail.com"
 		}
 	],
-	"support": [
-		{
-			"email": "support@hubzero.org",
-			"issues": "https://help.hubzero.org"
-		},
-		{
-			"email": "qubeshub@gmail.com",
-			"issues": "https://github.com/qubeshub/hubzero-cms/issues"
-		}
-	],
-	"require": {
-		"php" : "^5.4",
-		"qubeshub/tpl_bmc": "dev-master"
-	},
   "extra": {
 	    "install-directory": "/plugins/system/menurouter"
 	}
