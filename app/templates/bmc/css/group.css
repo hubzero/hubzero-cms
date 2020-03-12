@@ -505,6 +505,9 @@ a.btn:active,
 a.bth:visited {
   font-family: 'montserratregular', Helvetica Neue, Helvetica, sans-serif;
 }
+.group-page-toolbar {
+  bottom: auto;
+}
 /* END: Supergroup template fixes */
 @keyframes colorWheel {
   0% {
