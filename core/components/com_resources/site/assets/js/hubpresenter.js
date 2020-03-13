@@ -70,7 +70,7 @@ HUB.Presenter = {
 		
 		//play video
 		if(!flash) {
-			jQ('#player').get(0).play();
+			//jQ('#player').get(0).play();
 		}
 	
 		// video preview
@@ -313,7 +313,7 @@ HUB.Presenter = {
 		HUB.Presenter.slideListProgressUpdate( HUB.Presenter.activeSlide );
 
 		//projess bar set position
-		jQ('#progress-bar').slider( "value", total_progress );
+		//jQ('#progress-bar').slider( "value", total_progress );
 
 		//loop through all slides and get max slide based on current time
 		jQ('#slides ul li').each(function( index, element ) {
@@ -2024,7 +2024,7 @@ HUB.Presenter = {
 //	Start HUBpresenter When Document is Ready
 //---------------------------------------------------------
 
-var jQ = jQuery.noConflict();
+var jQ = $;
 
 jQ(document).ready(function(e) {
 	if( jQ("#presenter-header").length )
