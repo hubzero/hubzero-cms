@@ -1176,8 +1176,8 @@
             "require": {
                 "composer/composer": "1.6.3",
                 "php": ">=5.4.0",
-                "phpoffice/phpspreadsheet": "1.4.1",
-                "symfony/http-foundation": "2.5.5",
+                "phpoffice/phpspreadsheet": "1.8.0",
+                "symfony/http-foundation": "2.8.52",
                 "symfony/yaml": "2.5.*"
             },
             "require-dev": {
