@@ -1572,20 +1572,28 @@ class Tool
 		}
 
 		// check member groups
-		foreach (array_map('trim', explode(',', $tool['membergroups'])) as $k => $groupName)
+		if (!empty($tool['membergroups']))
 		{
-			$grp = Group::getInstance($groupName);
-			if (!is_object($grp) || !$grp->get('gidNumber')) {
-				$err['membergroups' . $k] = 'Group name ' . $groupName . ' is not valid';
+			foreach (array_map('trim', explode(',', $tool['membergroups'])) as $k => $groupName)
+			{
+				$grp = Group::getInstance($groupName);
+				if (!is_object($grp) || !$grp->get('gidNumber'))
+				{
+					$err['membergroups' . $k] = 'Group name ' . $groupName . ' is not valid';
+				}
 			}
 		}
 
 		// check developers
-		foreach (array_map('trim', explode(',', $tool['developers'])) as $k => $developerName)
+		if (!empty($tool['developers']))
 		{
-			$dev = User::getInstance($developerName);
-			if (!$dev->get('id')) {
-				$err['developers' . $k] = 'Developer username ' . $developerName . ' is not valid';
+			foreach (array_map('trim', explode(',', $tool['developers'])) as $k => $developerName)
+			{
+				$dev = User::getInstance($developerName);
+				if (!$dev->get('id'))
+				{
+					$err['developers' . $k] = 'Developer username ' . $developerName . ' is not valid';
+				}
 			}
 		}
 
