@@ -20,7 +20,7 @@ $trClass = $this->i % 2 == 0 ? ' even' : ' odd';
 ?>
 <tr class="mini faded mline<?php echo $trClass; ?>" id="tr_<?php echo $row->get('id'); ?>">
 <td class="pub-image"><img src="<?php echo Route::url($row->link('thumb')); ?>" alt="" /></td>
-<td><a href="<?php echo Route::url($this->project->link('publications') . '&pid=' . $row->get('id') ); ?>" <?php if ($row->get('abstract')) { echo 'title="' . $this->escape($row->get('abstract')) . '"'; } ?>><?php echo $row->get('title'); ?></a> v.<?php echo $row->get('version_label'); ?><?php if ($this->get('new_pubs')) { ?> <a href="/pubs/#/pubs/<?php echo $row->get('version_id'); ?>">(edit as new)</a> <?php } ?>
+<td><a href="<?php echo Route::url($this->project->link('publications') . '&pid=' . $row->get('id') ); ?>" <?php if ($row->get('abstract')) { echo 'title="' . $this->escape($row->get('abstract')) . '"'; } ?>><?php echo $row->get('title'); ?></a> v.<?php echo $row->get('version_label'); ?><?php if ($this->get('new_pubs')) { ?> <a href="/pubs/#/pubs/<?php echo $row->get('publication_id'); ?>/v/<?php echo $row->get('version_id'); ?>">(edit as new)</a> <?php } ?>
 
 </td>
 <td><?php echo $row->get('id'); ?></td>
