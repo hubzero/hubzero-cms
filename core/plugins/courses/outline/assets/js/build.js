@@ -375,7 +375,11 @@ HUB.CoursesOutline = {
 				statusCode: {
 					// 200 OK
 					200: function ( data, textStatus, jqXHR ) {
-						var assetName = data.options.scope !== 'undefined' ? data.options.scope : 'Asset';
+						if(typeof  data.options === 'undefined') {
+							data.options = {};
+						}
+
+						var assetName = typeof data.options.scope !== 'undefined' ? data.options.scope : 'Asset';
 						switch ( data.type ) {
 							case 'js' :
 								eval(data.value);

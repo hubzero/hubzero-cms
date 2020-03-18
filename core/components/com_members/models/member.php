@@ -609,7 +609,10 @@ class Member extends User implements \Hubzero\Search\Searchable
 		$obj->url = rtrim(Request::root(), '/') . Route::urlForClient('site', 'index.php?option=com_members' . '&id=' . $this->get('id'));
 
 		// @TODO: Add more fields to the SOLR core.
-		$fields = $this->profiles()->rows()->toObject();
+		$fields = $this->profiles()
+		  ->whereIn('profile_key', ['organization', 'bio'])
+		  ->rows()
+		  ->toObject();
 		$description = '';
 		foreach ($fields as $field)
 		{

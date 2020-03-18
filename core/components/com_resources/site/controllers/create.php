@@ -1214,13 +1214,15 @@ class Create extends SiteController
 	protected function _calculateNewTagAssociations($resourceId, $tagNames, $associationData)
 	{
 		$newTags = [];
-		$currentTagNames = Objct::all()
-			->select('#__tags.tag')
-			->join('#__tags', 'tagid', '#__tags.id')
-			->whereEquals('tbl', 'resources')
-			->whereEquals('objectid', $resourceId)
-			->where('#__tags_object.label', '!=', 'badge')
-			->rows()->toArray();
+
+		$currentTagNames = App::get('db')
+			->setQuery("select tag.tag
+				from jos_tags as tag
+				left join jos_tags_object as assoc
+				on tag.id = assoc.tagid
+				where tbl = 'resources'
+				and objectid = $resourceId;")
+			->loadColumn();
 
 		foreach ($tagNames as $i => $tagName)
 		{
