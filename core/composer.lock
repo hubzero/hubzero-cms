@@ -11,12 +11,12 @@
             "version": "v2.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/twilio/authy-php.git",
+                "url": "https://github.com/authy/authy-php.git",
                 "reference": "20923450907a10c446bbc595d35dd4df9f059560"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twilio/authy-php/zipball/20923450907a10c446bbc595d35dd4df9f059560",
+                "url": "https://api.github.com/repos/authy/authy-php/zipball/20923450907a10c446bbc595d35dd4df9f059560",
                 "reference": "20923450907a10c446bbc595d35dd4df9f059560",
                 "shasum": ""
             },
@@ -539,12 +539,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289"
+                "reference": "v4.5.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d516e2f8de435ea78cc6152abc425d3ff2c4d289",
-                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/v4.5.0",
+                "reference": "v4.5.0",
                 "shasum": ""
             },
             "require": {
@@ -1165,12 +1165,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/framework.git",
-                "reference": "c31d1e6e44b659b5deab81a268c19cff21262019"
+                "reference": "15a51e05d318647d7e9f1c75c5cf16cda2139914"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/c31d1e6e44b659b5deab81a268c19cff21262019",
-                "reference": "c31d1e6e44b659b5deab81a268c19cff21262019",
+                "url": "https://api.github.com/repos/hubzero/framework/zipball/15a51e05d318647d7e9f1c75c5cf16cda2139914",
+                "reference": "15a51e05d318647d7e9f1c75c5cf16cda2139914",
                 "shasum": ""
             },
             "require": {
@@ -1205,7 +1205,7 @@
                 "hubzero",
                 "php"
             ],
-            "time": "2019-10-22T17:48:23+00:00"
+            "time": "2019-07-11T16:44:38+00:00"
         },
         {
             "name": "hubzero/orcid-php",
@@ -2223,7 +2223,7 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "1.4.1",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
@@ -3140,9 +3140,7 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
+                    "email": "fabien@symfony.com"
                 },
                 {
                     "name": "Chris Corbyn"
@@ -3441,7 +3439,7 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.5.5",
+            "version": "v2.8.52",
             "target-dir": "Symfony/Component/HttpFoundation",
             "source": {
                 "type": "git",
@@ -3760,7 +3758,7 @@
             ],
             "authors": [
                 {
-                    "name": "William DURAND",
+                    "name": "William Durand",
                     "email": "william.durand1@gmail.com"
                 }
             ],
