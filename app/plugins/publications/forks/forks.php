@@ -148,7 +148,7 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
 		$forks = 0;
 		if (count($sources))
 		{
-			$db->setQuery("SELECT COUNT(id) FROM `#__publication_versions` WHERE `forked_from` IN (" . implode(',', $sources) . ")");
+			$db->setQuery("SELECT COUNT(id) FROM `#__publication_versions` WHERE `forked_from` IN (" . implode(',', $sources) . ") AND `state`=1");
 
 			$forks = $db->loadResult();
 		}
@@ -197,7 +197,7 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
 		foreach ($versions as $version)
 		{
 			// Now find all the forks for each version
-			$db->setQuery("SELECT id, publication_id FROM `#__publication_versions` WHERE `forked_from`=" . $db->quote($version->id) . " ORDER BY `created` DESC");
+			$db->setQuery("SELECT id, publication_id FROM `#__publication_versions` WHERE `forked_from`=" . $db->quote($version->id) . " AND `state`=1 ORDER BY `created` DESC");
 
 			$forked = $db->loadObjectList();
 
