@@ -487,7 +487,8 @@ class Publications extends Macro
 					"SELECT COUNT(id)
 					FROM `#__publication_versions`
 					WHERE `forked_from`
-					IN (" . $this->_db->quote($pub->version->id) . ")");
+					IN (" . $this->_db->quote($pub->version->id) . ")
+					AND `state`=1");
 				$forks = (int) $this->_db->loadResult();
 
 				$html .= '      <div class="forks">';
@@ -672,7 +673,8 @@ class Publications extends Macro
 				"SELECT COUNT(id)
 				FROM `#__publication_versions`
 				WHERE `forked_from`
-				IN (" . $this->_db->quote($pub->version->id) . ")");
+				IN (" . $this->_db->quote($pub->version->id) . ")
+				AND `state`=1");
 			$forks = (int) $this->_db->loadResult();
 
 			$html .= '      <div class="forks">';
