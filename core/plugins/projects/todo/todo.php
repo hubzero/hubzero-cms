@@ -11,6 +11,8 @@ defined('_HZEXEC_') or die();
 // Include model
 include_once \Component::path('com_projects') . DS . 'models' . DS . 'todo.php';
 
+use Hubzero\Utility\Arr;
+
 /**
  * Projects todo's
  */
@@ -485,7 +487,12 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 						}
 						if (checkdate($month, $day, $year))
 						{
-							$objTD->duedate = Date::of(mktime(0, 0, 0, $month, $day, $year))->toSql();
+							$serverTimezone = Config::get('offset');
+							$userParams = json_decode(User::get('params'), 1);
+							$timezone  = Arr::getValue($userParams, 'timezone', $serverTimezone);
+
+							$date = Date::of("$year-$month-$day", $timezone);
+							$objTD->duedate = $date->toSql();
 						}
 					}
 				}
