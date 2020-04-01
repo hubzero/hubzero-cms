@@ -9,6 +9,7 @@ namespace Components\Resources\Admin\Controllers;
 
 require_once Component::path('com_resources') . '/helpers/badges.php';
 
+use Components\Members\Models\Member;
 use Components\Resources\Models\Entry;
 use Components\Resources\Models\Type;
 use Components\Resources\Models\Association;
@@ -1718,7 +1719,14 @@ class Items extends AdminController
 		$rid  = Request::getInt('rid', 0);
 
 		// Get the member's info
-		$profile = User::getInstance($id);
+		if (is_numeric($id))
+		{
+			$profile = Member::oneOrNew(intval($id));
+		}
+		else
+		{
+			$profile = Member::oneByUsername((string)$id);
+		}
 
 		if (!is_object($profile) || !$profile->get('id'))
 		{
