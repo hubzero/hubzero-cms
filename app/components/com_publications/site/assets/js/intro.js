@@ -1,77 +1,38 @@
 jQuery(document).ready(function() {
 
+  String.prototype.nohtml = function () {
+  	return this + (this.indexOf('?') == -1 ? '?' : '&') + 'no_html=1';
+  };
+
+
   $("a.modal-link").fancybox({
     maxWidth : 450
   });
 
-  // Filter Panel
-   var $chevronDown = 'core/assets/icons/chevron-down.svg',
-      $chevronUp = 'core/assets/icons/chevron-up.svg',
-      $filterIcon = $('.filter-icon'),
-      $filterHeader = $('.filter-wrapper legend'),
-      $filterPanel = $('.filter-panel');
+  // Load browse as default
+  var $liveUpdate = $('#live-update-wrapper')
+  $(window).on('load', function() {
 
-  $filterHeader.click(function() {
-    $(this).next('.filter-panel').toggleClass('collapsed');
-
-    if ($(this).attr('aria-expanded') === 'true') {
-      $(this).attr('aria-expanded', 'false');
-      $(this).find('.filter-icon').attr('data', $chevronDown);
-    } else {
-      $(this).attr('aria-expanded', 'true');
-      $(this).find('.filter-icon').attr('data', $chevronUp);
+    if ($('.browse-link').hasClass('active')) {
+      $.get($('.browse-link').attr('href').nohtml(), function(result) {
+        $liveUpdate.html(result);
+      });
     }
   });
 
-  // Set headers and subheaders to equal heights
-  var $headers = $('.header'),
-      $subHeaders = $('.sub-header');
+  // Update live area via ajax
+  $('.nav-page-link').on('click', function(e) {
+    e.preventDefault();
 
-  const setHeaderHeight = (header, height) => {
-    // reset to auto or else we can't check height
-    $(header).css({'height': 'auto'});
+    var container = $($(this).attr('data-target'));
 
-    // get highest value
-    $(header).each(function(i, obj) {
-      height = Math.max(height, $(obj).outerHeight())
-    });
+    if (container.length) {
+      $.get($(this).attr('href').nohtml(), function(result) {
+        container.html(result);
+      });
 
-    // set the height
-    $(header).css({'height': height + 'px'});
-  }
-
-  $(window).on('resize', function() {
-    setHeaderHeight($headers, 0);
-    setHeaderHeight($subHeaders, 0);
-  });
-
-  setHeaderHeight($headers, 0);
-  setHeaderHeight($subHeaders, 0);
-
-  var $browsePage = $('.browse-resources-wrapper'),
-      $oerPage = $('.oer-wrapper'),
-      $submitPage = $('.submit-resource-wrap');
-
-  $('.nav-page li a').on('click', function() {
-    $(this).addClass('active');
-    $('.nav-page li a').not($(this)).removeClass('active');
-
-    if ($(this).hasClass('oer-link')) {
-      $oerPage.css({'display': 'block'});
-      $browsePage.css({'display': 'none'});
-      $submitPage.css({'display': 'none'});
-    }
-
-    if ($(this).hasClass('submit-link')) {
-      $oerPage.css({'display': 'none'});
-      $browsePage.css({'display': 'none'});
-      $submitPage.css({'display': 'flex'});
-    }
-
-    if ($(this).hasClass('browse-link')) {
-      $oerPage.css({'display': 'none'});
-      $browsePage.css({'display': 'flex'});
-      $submitPage.css({'display': 'none'});
+      $(this).addClass('active');
+      $('.nav-page-link').not($(this)).removeClass('active');
     }
   });
 
@@ -90,6 +51,7 @@ jQuery(document).ready(function() {
   $('.mobile-filter').click(function() {
     $('.page-filter').toggleClass('collapsed');
   });
+
 
   //Sticky nav for Mobile
   const $navBar = $('.nav-page');
