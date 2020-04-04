@@ -55,7 +55,7 @@
 .page-header {
   display: flex;
   flex-wrap: wrap;
-  background-image: url("/app/components/com_publications/site/assets/img/qubes_background.png");
+  background-image: url("/app/site/media/images/qubes_background.png");
   background-repeat: no-repeat;
   background-size: cover;
   height: auto;
@@ -218,24 +218,6 @@
   position: -webkit-sticky;
   /* Safari */
   width: 100%;
-}
-
-.live-update-wrapper {
-  position: relative;
-  z-index: 95;
-}
-
-@media only screen and (min-width: 44.0625em) {
-  .live-update-wrapper {
-    padding-top: 3.2em;
-    top: -6.25em;
-  }
-}
-
-@media only screen and (min-width: 53.75em) {
-  .live-update-wrapper {
-    padding-top: 6em;
-  }
 }
 
 .browse-resources-wrapper {
