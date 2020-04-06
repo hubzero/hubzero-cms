@@ -1,0 +1,301 @@
+
+// @import '../../../../../../../../../../../templates/bmc/css/pages/variables';
+// @import '../../../../../../templates/bmc/css/pages/mixins';
+
+// Colors
+$matterhorn: #2b2b2b;
+$mine-shaft: #393c3d;
+$sap-green: #597f2f;
+$android-green: #8cc540;
+$forest-green: #248232;
+$midnight: #222b37;
+$white-smoke: #f1f1f1;
+$sea-blue: #008099;
+$fushsia: #cb48b7;
+$purple-navy: #5f5980;
+$silver: #c1c1c1;
+$black: #000;
+$white: #fff;
+
+/* Menu */
+.super-group-menu-wrap {
+	background: #597f2f;
+	box-shadow: 0 2px 3px rgba(0, 0, 0, .4);
+	font-size: 1.19em;
+	height: 41px;
+	padding: 0 20px;
+	position: relative;
+	z-index: 150;
+	/* margin-bottom: -40px; */  /* Set this with javascript, as should be height of menu */
+}
+
+.super-group-menu {
+	display: flex;
+	margin: 0;
+	min-width: 15.625rem;
+	position: relative;
+	width: 100%;
+
+  ul {
+		display: flex;
+		// flex: 1;
+		list-style: none;
+		// max-height: 0;
+    margin: 0;
+		overflow: hidden;
+  	padding: 0;
+
+    li {
+			flex: none;
+      // float: left;
+    	margin: 0;
+    	padding: 0;
+
+      a {
+				border: none;
+				color: $white;
+        display: block;
+      	padding: 10px 15px;
+
+        &:hover {
+          background: rgba(0, 0, 0, .15);
+        }
+      }
+    }
+
+    .hasmeta { /* menu items with counters need to be shifted a bit */
+      a {
+        padding-right: 35px !important;
+      }
+    }
+
+    .meta { /* .meta is the menu item counter */
+			background: rgba(0,0,0,0.15);
+			border-radius: 0.2em;
+			color: rgba(255, 255, 255, .5);
+			font-size: 0.9%;
+			padding: 0 0.4em;
+      position: absolute;
+			right: 1em;
+    	top: 1em;
+    }
+
+    .alrt {
+      display: none;
+    }
+
+    .protected {
+      span {
+				border: none;
+				color: $white;
+				color: rgba(255,255,255,0.5);
+        display: block;
+      	padding: 10px 15px;
+
+        &:hover {
+          cursor: not-allowed;
+        }
+      }
+    }
+
+    .menuItem {
+      button {
+				background-color: transparent;
+				border: none;
+				color: $white;
+        display: block;
+      	padding: 10px 15px;
+
+        &::after {
+          content: '\2304';
+        	font-family: 'Fontcons';
+					font-size: 10px;
+        	margin-left: 5px;
+        }
+      }
+    }
+
+    .active {
+      > a {
+        background: rgba(0, 0, 0, .3);
+      }
+
+			> button {
+				background: rgba(0, 0, 0, .3) !important;
+			}
+
+      .meta {
+        color: rgba(255, 255, 255, .8);
+      }
+    }
+
+    .group-icon { /* Getting ready for group activity icon */
+      content: '\f042';
+    	font-family: 'Fontcons';
+    	font-size: 40px;
+    }
+
+		.subMenuExpand {
+			max-height: 60rem;
+		}
+
+    ul {
+			background: $sap-green;
+			display: none;
+			max-height: 0;
+      position: absolute;
+    	top: 100%;
+			z-index: 555;
+
+      li {
+        a {
+					color: #efefef;
+					font-size: 0.9em;	/* Slightly smaller for dropdown */
+          padding: 5px 15px;
+
+          &:hover {
+            background: rgba(0,0,0,0.4);
+          }
+        }
+
+        .hover-effect {
+          background: rgba(0,0,0,0.4);
+        }
+      }
+
+      ul {
+        padding-left: 1em;
+
+				li {
+					a {
+						position: relative;
+
+						&::before {
+							background: $white-smoke;
+							content: '';
+							display: block;
+							height: 1px;
+							left: 0;
+							position: absolute;
+							top: 50%;
+							width: .5rem;
+						}
+					}
+				}
+      }
+
+      .subMenuExpand {
+				max-height: 60rem;
+        position: relative;
+      }
+    }
+  }
+
+  li.hover-effect { /* Use touch for mobile */
+    ul {
+      left: 0px;
+    }
+  }
+
+  a {
+    transition: background .1s ease-in-out;
+  }
+
+  .subMenuExpand {
+    display: block;
+  }
+
+	.hidden {
+		visibility: hidden;
+	}
+
+	.hidden-menu {
+		background-color: transparent;
+		border-color: transparent;
+	}
+
+	.hamburger {
+		background-color: $white;
+		border-radius: 10px;
+		height: .25rem;
+		margin: auto;
+		position: relative;
+		width: 2rem;
+
+		&::before,
+		&::after {
+			background-color: #fff;
+			border-radius: 10px;
+			content: '';
+			height: .25rem;
+			left: 0;
+			position: absolute;
+			width: 2rem;
+		}
+
+		&::before {
+			top: -.5rem;
+		}
+
+		&::after {
+			bottom: -.5rem;
+		}
+	}
+}
+
+
+.menuExpand {
+	bottom: 0;
+  height: 100%;
+  left: 0;
+  overflow: scroll;
+  position: fixed;
+	right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 1002;
+
+  .super-group-menu {
+    justify-content: space-between;
+
+    .hidden-menu {
+      height: 50px;
+			margin-top: 20px;
+    }
+  }
+
+  .visible-links {
+    display: flex;
+    flex-direction: column;
+		margin: 3em 0;
+    position: relative;
+
+    ul {
+      background-color: darken($sap-green, 10%);
+
+      ul {
+        top: 0 !important;
+      }
+    }
+
+    li {
+      a {
+        color: $white !important;
+        padding: 0.9375em 1.25em !important;
+      }
+    }
+
+    .menuItem {
+      button {
+        padding: 0.7em 1.25em !important;
+				text-align: left;
+      }
+    }
+  }
+}
+
+.super-group-menu-scrolled {
+	position: fixed;	/* Same as .super-group-header-wrap */
+	top: 44px;			/* Same as .super-group-header-wrap */
+	width: 100%;		/* Same as .super-group-header-wrap */
+}

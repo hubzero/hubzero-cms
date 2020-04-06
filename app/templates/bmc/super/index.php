@@ -18,9 +18,8 @@ $no_html = Request::getInt('no_html', 0);
 
 // add stylesheets and scripts
 Document::addStyleSheet("https://fonts.googleapis.com/css?family=Martel:200");
-Document::addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+Document::addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css');
 Document::addStyleSheet($base . '/assets/css/main.css?v=' . filemtime(__DIR__ . '/assets/css/main.css'));
-Document::addStyleSheet($base . '/assets/css/sidebar.css?v=' . filemtime(__DIR__ . '/assets/css/sidebar.css'));
 Document::addScript($base . '/assets/js/main.js?v=' . filemtime(__DIR__ . '/assets/js/main.js'));
 Document::addScript($base . '/assets/js/sidebar.js?v=' . filemtime(__DIR__ . '/assets/js/sidebar.js'));
 Document::addScript($base . '/assets/js/ResizeSensor.js');

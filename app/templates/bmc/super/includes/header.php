@@ -54,9 +54,8 @@ if ($this->group->get('logo') == NULL) {
 		<!-- ###  Start Menu Include  ### -->
 		<?php include_once dirname(__DIR__) . DS . 'helpers' . DS . 'menu.php'; ?>
 		<!-- ###  End Menu Include  ### -->
-		<button aria-label="more main menu items" aria-haspopup="true" aria-expanded="false">
+		<button class="hidden-menu" aria-label="more main menu items" aria-haspopup="true" aria-expanded="false">
       <div class="hamburger"></div>
     </button>
-		<ul class="hidden-links hidden"></ul>
 	</nav>
 </div>

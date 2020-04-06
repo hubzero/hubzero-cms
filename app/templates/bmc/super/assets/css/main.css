@@ -8,360 +8,944 @@
  * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-#group-body {
-	background: #45611F;
-	min-width: inherit;
-}
 /**
  * BEGIN header buttons
  * The next two are for the Getting Started buttons in upper left
  **/
 #page_options .btn {
-	background: #3f8dc6;
-	color: #fff;
-	font-size: 1.0em;
+  background: #3f8dc6;
+  color: #fff;
+  font-size: 1.0em;
 }
+
 #page_options .btn:hover {
-	background: #32709e;
+  background: #32709e;
 }
+
 /**
  * END header buttons
  **/
-.super-group-body-wrap {
-	font-family: 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
-}
-.super-group-body {
-	background: #FFF;
-}
-
 /* Header */
 .super-group-header-wrap {
-	margin-top: 0px;
-	height: 150px;
-	background-image: none;	/* Changed within index.php to point to banner.jpg or banner.png */
-	background-repeat: no-repeat;
-	background-attachment: scroll;
-	background-position: center center;
-	background-size: cover;
+  margin-top: 0px;
+  height: 150px;
+  background-image: none;
+  /* Changed within index.php to point to banner.jpg or banner.png */
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: center center;
+  background-size: cover;
 }
+
 .super-group-header {
-	margin: 0;
-	width: 100%;
-	position: relative;
+  margin: 0;
+  width: 100%;
+  position: relative;
 }
+
 .super-group-header-overlay-wrap {
-	/* height: 150px; */
-	position: absolute;
-	width:100%;
-	top: -150px;
+  /* height: 150px; */
+  position: absolute;
+  width: 100%;
+  top: -150px;
 }
+
 .super-group-header-overlay {
-	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0+0,0.3+100 */ /* FF3.6-15 */ /* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.6) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#4d000000',GradientType=0 ); /* IE6-9 */
-	height: 150px;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0+0,0.3+100 */
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#4d000000',GradientType=0 );
+  /* IE6-9 */
+  height: 150px;
 }
+
 .super-group-header-overlay h1 {
-	position: absolute;
-	top: 80px;
-	left: 20px;
-	margin: 0.5em 0;
-	padding: 0;
-	width: calc(100% - 40px);
-	z-index: 1000;
+  position: absolute;
+  top: 80px;
+  left: 20px;
+  margin: 0.5em 0;
+  padding: 0;
+  width: calc(100% - 40px);
+  z-index: 1000;
 }
+
 .super-group-header-overlay h1 a {
-	display: block;
-	/* font-weight: 100;
-	font-size: 30px;
-	line-height: 36px; */
-	font-size: 1.1em;
-	line-height: 1.1em;
-	color: #FFF;
-	font-family: 'Martel', 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
-	border: none !important;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+  display: block;
+  /* font-weight: 100;
+    	font-size: 30px;
+    	line-height: 36px; */
+  font-size: 1.1em;
+  line-height: 1.1em;
+  color: #FFF;
+  font-family: 'Martel', 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+  border: none !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.super-group-header-overlay h1 a span {
-	position: relative;
-	left: 4px;
-}
+
 .super-group-header-overlay h1 a:hover {
-	border: none !important;
+  border: none !important;
 }
 
-
-/* Menu */
-.super-group-menu-wrap {
-	background: #628a2c;
-	padding: 0 20px;
-	font-size: 1.19em;
-	height: 41px;
-}
-.super-group-menu {
-	margin: 0;
-	width: 100%;
-}
-.super-group-menu ul {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-.super-group-menu a {
-	transition: background 0.1s ease-in-out;
-}
-.super-group-menu > ul li {
-	float: left;
-	margin: 0;
-	padding: 0;
-	position: relative;
-}
-.super-group-menu > ul li.hasmeta a {	/* menu items with counters need to be shifted a bit */
-	padding-right: 35px !important;
-}
-.super-group-menu > ul li .meta {	/* .meta is the menu item counter */
-	position: absolute;
-	top: 1em;
-	right: 1em;
-	color: rgba(255,255,255,0.5);
-	background: rgba(0,0,0,0.15);
-	padding: 0 0.4em;
-	font-size: 0.9%;
-	border-radius: 0.2em;
-}
-.super-group-menu > ul li .alrt {
-	display: none;
-}
-.super-group-menu > ul li a,
-.super-group-menu > ul li.protected span {
-	display: block;
-	padding: 10px 15px;
-	color: #fff;
-	border: none;
-}
-.super-group-menu > ul li.protected span {
-	color: rgba(255,255,255,0.5);
-}
-.super-group-menu > ul li.protected span:hover {
-	cursor: not-allowed;
-}
-.super-group-menu > ul > li >  a:hover {
-	background: rgba(0,0,0,0.15);
-}
-.super-group-menu > ul > li.active > a {
-	background: rgba(0,0,0,0.3);
-}
-.super-group-menu > ul li.active .meta {
-	color: rgba(255,255,255,0.8);
-}
-.super-group-menu ul ul {
-	position: absolute;
-	top: 100%;
-	left: -9999px;
-	min-width: 150px;
-	max-width: 250px;
-	z-index: 555;
-	background: #628a2c;
-	padding: 10px 0;
-}
-.super-group-menu ul ul ul {
-	margin-left: 100%;
-	top: 0px;
-}
-.super-group-menu li:hover > ul {
-	left: 0px;
-}
-.super-group-menu li:focus-within > ul {
-	left: 0px;
-}
-/* Use touch for mobile */
-.super-group-menu li.hover-effect > ul {
-	left: 0px;
-}
-.super-group-menu ul ul li {
-	display: block !important; /* Override display: table-cell for submenus on greedy nav */
-	float: none;
-	white-space: normal !important; /* Allow submenu items to wrap */
-}
-.super-group-menu ul ul li a {
-	padding: 5px 15px;
-	font-size: 12px;
-	color: #efefef;
-	font-size: 0.9em;	/* Slightly smaller for dropdown */
+.super-group-header-overlay h1 a span {
+  position: relative;
+  left: 4px;
 }
 
-/* Getting ready for group activity icon */
-.super-group-menu ul .group-icon {
-	content: '\f042';
-	font-family: 'Fontcons';
-	font-size: 40px;
+.header-id {
+  transition: transform .2s ease-in-out;
+  transform-origin: 0 50%;
 }
 
-/*** BEGIN SUBMENU ARROWS ***/
-/* https://css-tricks.com/targetting-menu-elements-submenus-navigation-bar/ */
-.super-group-menu li a:first-child:nth-last-child(2):after {
-	content: '\2304';
-	font-family: 'Fontcons';
-	margin-left: 5px;
-	font-size: 10px;
+.header-id-scrolled {
+  position: fixed !important;
+  top: -9px !important;
+  transform: scale(0.75);
+  transform-origin: 0 50%;
 }
 
-.super-group-menu li li a:first-child:nth-last-child(2):after {
-	content: '\203A';
-	font-family: 'Fontcons';
-	float: right;
-	font-size: 10px;
-}
-/*** END SUBMENU ARROWS ***/
-
-.super-group-menu ul ul li a:hover {
-	background: rgba(0,0,0,0.4);
+.header-id-logo {
+  position: relative;
+  height: 36px;
+  bottom: 2px;
 }
 
-.super-group-menu ul ul li a.hover-effect {
-	background: rgba(0,0,0,0.4);
+/* Bar needs to be at top */
+.super-group-bar {
+  top: 0;
+}
+
+/* Offset by height of bar, and make sure in the back */
+.super-group-header-wrap {
+  top: 44px;
+  z-index: -100;
+}
+
+/* Fixed at top */
+.super-group-header-wrap,
+.super-group-bar {
+  position: fixed;
+  width: 100%;
 }
 
 /* Toolbar */
 .super-group-toolbar {
-	position: absolute;
-	top: 18px;
-	right: 0;
+  position: absolute;
+  top: 18px;
+  right: 0;
 }
-.super-group-toolbar > ul {
-	margin: 0 !important;
+
+.super-group-toolbar ul {
+  margin: 0 !important;
 }
-.super-group-toolbar .btn-group > a,
-.super-group-toolbar .btn-group > .dropdown-toggle {
-	border-color: #555 !important;
-	-webkit-transition: border-color 0.6s ease-in-out;
+
+.super-group-toolbar .btn-group a,
+.super-group-toolbar .btn-group .dropdown-toggle {
+  border-color: #555 !important;
+  -webkit-transition: border-color 0.6s ease-in-out;
 }
-.super-group-toolbar:hover .btn-group > a,
-.super-group-toolbar:hover .btn-group > .dropdown-toggle {
-	border-color: #000 !important;
+
+.super-group-toolbar:hover a,
+.super-group-toolbar:hover .dropdown-toggle {
+  border-color: #000 !important;
 }
-.super-group-toolbar ul.dropdown-menu {
-	left: auto !important;
-	right: 0 !important;
-	font-size: 12px !important;
+
+.super-group-toolbar .dropdown-menu {
+  left: auto !important;
+  right: 0 !important;
+  font-size: 12px !important;
+}
+
+@media (min-width: 340px) and (max-width: 640px) {
+  .header-id {
+    z-index: 1001 !important;
+  }
+}
+
+/* Menu */
+.super-group-menu-wrap {
+  background: #597f2f;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
+  font-size: 1.19em;
+  height: 41px;
+  padding: 0 20px;
+  position: relative;
+  z-index: 150;
+  /* margin-bottom: -40px; */
+  /* Set this with javascript, as should be height of menu */
+}
+
+.super-group-menu {
+  display: flex;
+  margin: 0;
+  min-width: 15.625rem;
+  position: relative;
+  width: 100%;
+}
+
+.super-group-menu ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.super-group-menu ul li {
+  flex: none;
+  margin: 0;
+  padding: 0;
+}
+
+.super-group-menu ul li a {
+  border: none;
+  color: #fff;
+  display: block;
+  padding: 10px 15px;
+}
+
+.super-group-menu ul li a:hover {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.super-group-menu ul .hasmeta {
+  /* menu items with counters need to be shifted a bit */
+}
+
+.super-group-menu ul .hasmeta a {
+  padding-right: 35px !important;
+}
+
+.super-group-menu ul .meta {
+  /* .meta is the menu item counter */
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 0.2em;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9%;
+  padding: 0 0.4em;
+  position: absolute;
+  right: 1em;
+  top: 1em;
+}
+
+.super-group-menu ul .alrt {
+  display: none;
+}
+
+.super-group-menu ul .protected span {
+  border: none;
+  color: #fff;
+  color: rgba(255, 255, 255, 0.5);
+  display: block;
+  padding: 10px 15px;
+}
+
+.super-group-menu ul .protected span:hover {
+  cursor: not-allowed;
+}
+
+.super-group-menu ul .menuItem button {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  display: block;
+  padding: 10px 15px;
+}
+
+.super-group-menu ul .menuItem button::after {
+  content: '\2304';
+  font-family: 'Fontcons';
+  font-size: 10px;
+  margin-left: 5px;
+}
+
+.super-group-menu ul .active > a {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.super-group-menu ul .active > button {
+  background: rgba(0, 0, 0, 0.3) !important;
+}
+
+.super-group-menu ul .active .meta {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.super-group-menu ul .group-icon {
+  /* Getting ready for group activity icon */
+  content: '\f042';
+  font-family: 'Fontcons';
+  font-size: 40px;
+}
+
+.super-group-menu ul .subMenuExpand {
+  max-height: 60rem;
+}
+
+.super-group-menu ul ul {
+  background: #597f2f;
+  display: none;
+  max-height: 0;
+  position: absolute;
+  top: 100%;
+  z-index: 555;
+}
+
+.super-group-menu ul ul li a {
+  color: #efefef;
+  font-size: 0.9em;
+  /* Slightly smaller for dropdown */
+  padding: 5px 15px;
+}
+
+.super-group-menu ul ul li a:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.super-group-menu ul ul li .hover-effect {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.super-group-menu ul ul ul {
+  padding-left: 1em;
+}
+
+.super-group-menu ul ul ul li a {
+  position: relative;
+}
+
+.super-group-menu ul ul ul li a::before {
+  background: #f1f1f1;
+  content: '';
+  display: block;
+  height: 1px;
+  left: 0;
+  position: absolute;
+  top: 50%;
+  width: .5rem;
+}
+
+.super-group-menu ul ul .subMenuExpand {
+  max-height: 60rem;
+  position: relative;
+}
+
+.super-group-menu li.hover-effect {
+  /* Use touch for mobile */
+}
+
+.super-group-menu li.hover-effect ul {
+  left: 0px;
+}
+
+.super-group-menu a {
+  transition: background .1s ease-in-out;
+}
+
+.super-group-menu .subMenuExpand {
+  display: block;
+}
+
+.super-group-menu .hidden {
+  visibility: hidden;
+}
+
+.super-group-menu .hidden-menu {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.super-group-menu .hamburger {
+  background-color: #fff;
+  border-radius: 10px;
+  height: .25rem;
+  margin: auto;
+  position: relative;
+  width: 2rem;
+}
+
+.super-group-menu .hamburger::before, .super-group-menu .hamburger::after {
+  background-color: #fff;
+  border-radius: 10px;
+  content: '';
+  height: .25rem;
+  left: 0;
+  position: absolute;
+  width: 2rem;
+}
+
+.super-group-menu .hamburger::before {
+  top: -.5rem;
+}
+
+.super-group-menu .hamburger::after {
+  bottom: -.5rem;
+}
+
+.menuExpand {
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  overflow: scroll;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 1002;
+}
+
+.menuExpand .super-group-menu {
+  justify-content: space-between;
+}
+
+.menuExpand .super-group-menu .hidden-menu {
+  height: 50px;
+  margin-top: 20px;
+}
+
+.menuExpand .visible-links {
+  display: flex;
+  flex-direction: column;
+  margin: 3em 0;
+  position: relative;
+}
+
+.menuExpand .visible-links ul {
+  background-color: #3f5a21;
+}
+
+.menuExpand .visible-links ul ul {
+  top: 0 !important;
+}
+
+.menuExpand .visible-links li a {
+  color: #fff !important;
+  padding: 0.9375em 1.25em !important;
+}
+
+.menuExpand .visible-links .menuItem button {
+  padding: 0.7em 1.25em !important;
+  text-align: left;
+}
+
+.super-group-menu-scrolled {
+  position: fixed;
+  /* Same as .super-group-header-wrap */
+  top: 44px;
+  /* Same as .super-group-header-wrap */
+  width: 100%;
+  /* Same as .super-group-header-wrap */
+}
+
+/**
+ * Sidebar CSS
+ *
+ * @author     M. Drew LaMar, http://seegatesite.com/create-simple-cool-sidebar-menu-with-bootstrap-3/
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+#wrapper {
+  overflow: hidden;
+  padding-left: 0;
+  transition: all .5s ease;
+}
+
+#sidebar-wrapper {
+  background: #000;
+  margin-bottom: 1.5625em;
+  margin-left: -1.25em;
+  margin-top: 1.5625em;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  position: absolute;
+  transition: width .5s ease;
+  width: 3.125rem;
+  z-index: 149;
+  /* Place below .super-group-menu-wrap */
+}
+
+#sidebar-wrapper ul li .alrt {
+  display: none;
+}
+
+#sidebar-wrapper:hover {
+  width: 15.625rem;
+}
+
+/* Need the !important on the initial arguments, but not sure about everything else */
+.sidebar-wrapper-fixed-top {
+  bottom: initial !important;
+  position: fixed !important;
+  top: 5.3125em !important;
+}
+
+.sidebar-wrapper-fixed-bottom {
+  bottom: 1.5625em !important;
+  /* Set to margin-bottom of sidebar-wrapper */
+  position: fixed !important;
+  top: initial !important;
+}
+
+.sidebar-wrapper-footer {
+  bottom: 0 !important;
+  top: initial !important;
+}
+
+#page-content-wrapper {
+  overflow-x: hidden;
+  padding: .9375em;
+  position: absolute;
+  width: 100%;
+}
+
+/* Make sure dropdown hover menu is above sidebar */
+.super-group-menu li:hover ul {
+  z-index: 1001;
+}
+
+/* Sidebar Styles */
+.sidebar-nav {
+  list-style: none;
+  margin: 0 4px;
+  padding: 0;
+  position: relative;
+  width: 250px;
+}
+
+.sidebar-nav a,
+.sidebar-nav a:active {
+  border-bottom: none;
+}
+
+.sidebar-nav .active a {
+  background: rgba(255, 255, 255, 0.2);
+  border-left: #628a2c 2px solid;
+  color: #fff;
+  text-decoration: none;
+}
+
+.sidebar-nav li,
+.more-links li {
+  line-height: 40px;
+  margin: 0;
+  position: relative;
+  text-indent: 15px;
+}
+
+.sidebar-nav li a,
+.sidebar-nav li span,
+.more-links li a,
+.more-links li span {
+  color: #999999;
+  display: block;
+  position: relative;
+  text-decoration: none;
+}
+
+.sidebar-nav li a::before, .sidebar-nav li a::after,
+.sidebar-nav li span::before,
+.sidebar-nav li span::after,
+.more-links li a::before,
+.more-links li a::after,
+.more-links li span::before,
+.more-links li span::after {
+  content: "";
+  background: none;
+  -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: alpha(opacity=100);
+  font-family: 'Fontcons';
+  font-size: 1.5em;
+  font-style: normal;
+  font-weight: normal;
+  height: 1em;
+  left: 1.6em;
+  opacity: 1;
+  speak: none;
+  top: .4em;
+  width: 1em;
+}
+
+.sidebar-nav li a::before,
+.sidebar-nav li span::before,
+.more-links li a::before,
+.more-links li span::before {
+  content: attr(data-icon);
+  display: inline-block;
+  margin-left: -.7em;
+  margin-right: 1.2em;
+  margin-top: -1em;
+  vertical-align: middle;
+}
+
+.sidebar-nav li a:hover, .sidebar-nav li a:focus,
+.more-links li a:hover,
+.more-links li a:focus {
+  background: rgba(255, 255, 255, 0.2);
+  border-left: #628a2c 2px solid;
+  color: #fff;
+  text-decoration: none;
+}
+
+.sidebar-nav li span::before,
+.more-links li span::before {
+  opacity: .5;
+}
+
+.sidebar-nav .protected::after,
+.more-links .protected::after {
+  content: "\f023";
+  background: none;
+  color: #999;
+  -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=90)";
+  filter: alpha(opacity=90);
+  font-family: 'Fontcons';
+  font-size: 1.2em;
+  height: 1em;
+  margin-top: -2.25em;
+  opacity: .9;
+  padding: 0;
+  position: absolute;
+  right: 1.5em;
+  width: 1em;
+}
+
+#page-menu li .meta {
+  margin-top: -2.85em;
+  padding: 0;
+  position: absolute;
+  right: .5em;
+}
+
+.more-links {
+  list-style-type: none;
+}
+
+.more-links li .meta {
+  margin-top: -2.85em;
+  padding: 0;
+  position: absolute;
+  right: 2.5em;
+}
+
+.more-links .active a {
+  border-left: #628a2c 2px solid;
+}
+
+#page-menu li .count,
+.more-links li .count {
+  background: rgba(200, 0, 0, 0.5);
+  border-radius: 1em;
+  display: inline-block;
+  font-size: .9em;
+  line-height: 1.2;
+  padding: 0 1.2em .2em 0;
+  text-align: center;
+}
+
+#page-menu li .count::before,
+.more-links li .count::before {
+  left: .5em;
+  margin: 0;
+  width: 0;
+}
+
+#page-menu li .count::after,
+.more-links li .count::after {
+  left: .1em;
+  top: inherit;
+  width: 0;
+}
+
+/* Responsiveness */
+.more-menu {
+  background-color: #000;
+  border: none;
+  display: none;
+  height: 5rem;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: calc(100% / 5);
+  z-index: 200;
+}
+
+.more-menu:before {
+  color: #999999;
+  content: '\22EF';
+  font-family: 'Fontcons';
+  font-size: 1.5em;
+}
+
+.more-links {
+  display: none;
+  height: calc(100% - 80px);
+  left: 0;
+  margin: 0;
+  overflow-y: scroll;
+  padding: 2em;
+  width: 100%;
+}
+
+.links-visible {
+  display: block;
+}
+
+.fullscreen {
+  height: calc(100%);
+  transition: height .66s ease-out !important;
+  z-index: 2000 !important;
+  /* Go fullscreen */
+}
+
+.more-menu-expanded {
+  bottom: 0;
+  left: 0;
+  position: fixed;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+.hide {
+  display: none;
+}
+
+@media (min-width: 20em) and (max-width: 30em) {
+  .more-menu {
+    display: block;
+  }
+  #sidebar-wrapper {
+    bottom: 0 !important;
+    left: 0;
+    margin: 0;
+    position: fixed !important;
+    top: initial !important;
+    width: 100%;
+  }
+  #sidebar-wrapper:hover {
+    width: 100%;
+  }
+  .sidebar-nav {
+    display: flex;
+    flex-direction: row;
+    height: 80px;
+    overflow: hidden;
+    text-align: center;
+    width: 100%;
+  }
+  .sidebar-nav li {
+    display: inline-block;
+    position: relative;
+    width: calc(100% / 5);
+  }
+  .sidebar-nav li a,
+  .sidebar-nav li span {
+    overflow: hidden;
+    text-align: center;
+    white-space: normal;
+  }
+  .sidebar-nav li span {
+    padding-top: 1.5em;
+  }
+  .sidebar-nav li span::before {
+    margin-left: -.2em;
+    margin-top: -1.5em !important;
+  }
+  .sidebar-nav li a::before {
+    height: 2em;
+    margin-left: 0;
+    margin-right: 1.5em;
+    vertical-align: -50%;
+  }
+  .sidebar-nav li a:hover, .sidebar-nav li a:active {
+    border: none;
+  }
+  .sidebar-nav .active a {
+    border: none;
+  }
+  #page-menu li .meta {
+    height: 24px;
+    left: 2.3em;
+    margin-top: -7.5em !important;
+    right: auto;
+    top: 9.5em;
+    width: 38px;
+  }
+  #page-menu li .meta .count {
+    font-size: .7em;
+    line-height: .7;
+    padding: 0 .2em;
+    position: relative;
+    top: -4.2em;
+  }
+  #page-menu .protected::after {
+    margin-top: -3.5em;
+    right: .7em;
+  }
+  .more-links .protected::after {
+    right: 3.5em;
+  }
+}
+
+/* Sticky navbar */
+/* https://teamtreehouse.com/community/forum-tip-create-a-sticky-navigation-with-css-and-jquery-2 */
+#group-body {
+  background: #45611F;
+  min-width: inherit;
+  padding-top: 194px;
+}
+
+.super-group-body-wrap {
+  font-family: 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+  position: relative;
+}
+
+.super-group-body {
+  background: #fff;
+}
+
+a:hover {
+  border: none;
 }
 
 /* Content */
 .super-group-content-wrap {
-	position: relative;
-	margin: 0;	/* margin-top will be changed by javascript to height of scontainer */
-	font-size: 1.2em;
-	min-height: 300px;
-	padding: 41px 20px 41px 20px !important;
-}
-.super-group-content {
-	margin: 0;
-	padding: 0;
-	width: 100%;
-	position: relative;
-}
-.super-group-content .btn { /* Larger white text for green buttons */
-	color: #fff;
-	font-size: 1.0em;
-}
-.super-group-content > h2 {
-	padding: 0;
-	margin: 20px 0 10px 0;
-}
-.super-group-content #page_options {
-	right: 0;
-	top: 0px;
-}
-.super-group-content h3.heading,
-.super-group-content .section-header {
-	display: none;
-}
-.super-group-content .section {
-	padding: 0 !important;
-	margin: 20px 0 !important;
+  font-size: 1.2em;
+  position: relative;
+  margin: 0;
+  /* margin-top will be changed by javascript to height of scontainer */
+  min-height: 300px;
+  padding: 41px 20px !important;
 }
 
-a:hover {
-	border: none;
+.super-group-content {
+  margin-left: 4.375em;
+  margin-right: .625em;
+  padding: 0;
+  position: relative;
+  width: auto;
+}
+
+.super-group-content h2 {
+  margin: 20px 0 10px;
+  padding: 0;
+}
+
+.super-group-content .heading,
+.super-group-content .section-header {
+  display: none;
+}
+
+.super-group-content #page_options {
+  right: 0;
+  top: 0;
+}
+
+.super-group-content .btn {
+  /* Larger white text for green buttons */
+  color: #fff;
+  font-size: 1em;
+}
+
+.super-group-content .section {
+  padding: 0 !important;
+  margin: 20px 0 !important;
 }
 
 /* Footer */
 .super-group-footer-wrap {
-	background: #45611F;
-	padding: 0 20px;
+  background: #45611F;
+  padding: 0 20px;
 }
+
 .super-group-footer {
-	margin: 0;
-	width: 100%;
-	padding: 20px 0 40px 0;
-	font-size: 11px;
-	color: #FFF;
+  color: #fff;
+  font-size: 11px;
+  margin: 0;
+  padding: 20px 0 40px;
+  width: 100%;
 }
+
 .super-group-footer a {
-	color: #8bc240;
+  color: #8bc240;
 }
 
 /* Home Page */
 .group_overview {
-	margin-top: 20px !important;
+  margin-top: 20px !important;
 }
-.group_overview > h2 {
-	display: none;
+
+.group_overview h2 {
+  display: none;
 }
+
 /* Member Adjustments */
 .group_members .aside .roles li {
-	overflow: hidden;
+  overflow: hidden;
 }
+
 /* Wiki Adjustments */
-.group_wiki > h2 {
-	display: none;
+.group_wiki h2 {
+  display: none;
 }
+
 /* Collections Adjustments */
-.group_collections p.overview,
-.group_collections fieldset.filters,
+.group_collections .overview,
+.group_collections .filters,
 .group_collections .sub-menu {
-	margin-top: 0 !important;
+  margin-top: 0 !important;
 }
+
 /* Collections: Pop-up post content when commenting */
 #post-content {
-	font-size: 1.15em;
+  font-size: 1.15em;
 }
+
 /* Calendar Adjustments */
 .fs-dropdown {
-	font-size: 1.0em;
+  font-size: 1em;
 }
+
 /* Forms adjustment */
 #field-section_id {
-	font-size: 1.5em;
+  font-size: 1.5em;
 }
+
 /* Pagination */
-.list-footer li, .pagenav {
-	font-size: 0.9em !important;
+.list-footer li,
+.list-footer .pagenav {
+  font-size: .9em !important;
 }
+
 /* Login */
-.group_login > h2:first-child {
-	display: none;
+.group_login h2:first-child {
+  display: none;
 }
+
 /* System messages */
 /* #sitenotice contains site notices from mod_notices */
 /* #system-message-container contains site messages - right now, I'm okay if they overlap
 as most (if not all) messages are temporary */
-#sitenotice, #system-message-container {
-	position: absolute;
-    /* top: 44px; */
-    z-index: 1;
-    width: 100%;
+#sitenotice,
+#system-message-container {
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  /* top: 44px; */
 }
 
 /* Fixing issue where notice banner becomes > 100% */
 .modnotices {
-	padding: 0.61803399em 0 0.61803399em 0 !important;
+  padding: .61803399em 0 !important;
 }
+
 .modnotices p {
-    padding-left: 3em !important;
+  padding-left: 3em !important;
 }
 
 /* Group announcements */
@@ -370,224 +954,72 @@ height of this element, as we are specifying that .scontainer be below menu but 
 Also note that utilizing javascript is the only way I know how to move this around given it's
 automatic element placement by the Hub. */
 .scontainer {
-	position: absolute;
-	/* margin-top: 40px; */	/* Relative to .super-group-menu-wrap - javascript will change this */
-	width: 100%;
+  position: absolute;
+  /* margin-top: 40px; */
+  /* Relative to .super-group-menu-wrap - javascript will change this */
+  width: 100%;
 }
 
-/* Sticky navbar */
-/* https://teamtreehouse.com/community/forum-tip-create-a-sticky-navigation-with-css-and-jquery-2 */
-#group-body {
-	padding-top: 194px;
-}
-/* Bar needs to be at top */
-.super-group-bar {
-	top: 0;
-}
-/* Offset by height of bar, and make sure in the back */
-.super-group-header-wrap {
-	top: 44px;
-	z-index: -100;
-}
-/* Fixed at top */
-.super-group-header-wrap,
-.super-group-bar {
-	position: fixed;
-	width: 100%;
-}
-.super-group-menu-wrap,
-.super-group-body-wrap {
-	position: relative;
-}
-.super-group-menu-wrap {
-	z-index: 150;
-	box-shadow: 0 2px 3px rgba(0,0,0,0.4);
-	/* margin-bottom: -40px; */  /* Set this with javascript, as should be height of menu */
-}
-.super-group-menu-scrolled {
-	position: fixed;	/* Same as .super-group-header-wrap */
-	top: 44px;			/* Same as .super-group-header-wrap */
-	width: 100%;		/* Same as .super-group-header-wrap */
-}
-.header-id {
- transition: transform .2s ease-in-out;
-	transform-origin: 0 50%;
-}
-.header-id-scrolled {
-	position: fixed !important;
-	top: -9px !important;
- 	transform: scale(0.75);
-	transform-origin: 0 50%;
-}
-.header-id-logo {
-	position: relative;
-	height: 36px;
-	bottom: 2px;
-}
 /* Need to take care of group-info */
 #group-info {
-	top: 44px;
-	position: fixed;
-	width: 100%;
-	z-index: 1001;
+  position: fixed;
+  top: 44px;
+  width: 100%;
+  z-index: 1001;
 }
 
 /* Anchors need to adjust position to accomodate header */
 /* Source:  http://stackoverflow.com/questions/4086107/html-positionfixed-page-header-and-in-page-anchors */
 /* Note:  Should use javascript, as header can change size depending on zoom level */
 :target:before {
-  content:"";
-  display:block;
-  height: 90px; /* fixed header height*/
-  margin: -90px 0 0; /* negative fixed header height */
+  content: "";
+  display: block;
+  height: 90px;
+  /* fixed header height*/
+  margin: -90px 0 0;
+  /* negative fixed header height */
 }
 
-/* Responsive */
-/* .super-group-menu>ul li.option-select {
-	padding: 1em 0;
-	float: none;
-}
-.super-group-menu>ul.js li {
-	display: none;
-}
-.super-group-menu>ul.js li.option-select,
-.super-group-menu>ul.js li.option-select select {
-	display: block;
-}
-.super-group-menu>ul.js li.option-select select {
-	width: 100%;
-} */
-
-/* Greedy Nav (Priority+ navigation) - lukejacksonn https://codepen.io/lukejacksonn/pen/PwmwWV */
-.super-group-menu {
-	position: relative;
-	min-width: 15.625rem;
-}
-.super-group-menu button {
-	position: absolute;
-	height: 100%;
-	right: 0;
-	padding: 0 0.9375em;
-	border: 0;
-	outline: none;
-	background-color: #628a2c;
-	color: #fff;
-	cursor: pointer;
-	transition: 0.1s ease-in-out;
-}
-.super-group-menu button:hover {
-	background-color: rgba(0,0,0,0.15);
-}
-.super-group-menu button:focus {
-	outline: -webkit-focus-ring-color auto 5px;
-}
-.super-group-menu button::after {
-	content: attr(count);
-	position: absolute;
-	width: 1.875rem;
-	height: 1.875rem;
-	left: -.5rem;
-	top: .3rem;
-	text-align: center;
-	background-color: #628a2c;
-	color: #fff;
-	font-size: 0.7rem;
-	line-height: 1.5rem;
-	border-radius: 50%;
-	border: 3px solid #fff;
-	font-weight: bold;
-}
-.super-group-menu .hamburger {
-	position: relative;
-	width: 2rem;
-	height: .25rem;
-	background-color: #fff;
-	margin: auto;
-}
-.super-group-menu .hamburger:before,
-.super-group-menu .hamburger:after {
-	content: '';
-	position: absolute;
-	left: 0;
-	width: 2rem;
-	height: .25rem;
-	background-color: #fff;
-}
-.super-group-menu .hamburger:before {
-	top: -.5rem;
-}
-.super-group-menu .hamburger:after {
-	bottom: -.5rem;
-}
-.super-group-menu .visible-links {
-	display: inline-table;
-}
-.super-group-menu .visible-links li {
-	display: table-cell;
-	float: none;
-	white-space: nowrap;
-}
-.super-group-menu .hidden-links {
-	position: absolute;
-	right: 0;
-	top: 100%;
-	left: auto;
-	background-color: #628a2c;
-}
-.super-group-menu .hidden-links li {
-	display: block;
-	float: none;
-}
-.super-group-menu .hidden {
-	visibility: hidden;
-}
-
-/* Responsiveness */
 @media (min-width: 340px) and (max-width: 520px) {
-	.super-group-bar .content {
-		position: relative;
-	}
-	.super-group-bar .content .branding {
+  .super-group-bar .content {
+    position: relative;
+  }
+  .super-group-bar .content .branding {
     float: left;
-	}
-	.super-group-bar .content .subnav {
-		position: absolute;
-		right: 0;
-	}
-	.super-group-bar .content .branding .poweredby {
-		display: inline-block;
-	}
-	.super-group-bar .content .subnav > li > a {
-		line-height: 0;
-	}
-	.super-group-bar .content .subnav > li > a.icon.user-account-link:before {
-		line-height: 0;
-	}
-}
-@media (min-width: 340px) and (max-width: 640px) {
-	.header-id {
-		z-index: 1001 !important;
-	}
+  }
+  .super-group-bar .content .subnav {
+    position: absolute;
+    right: 0;
+  }
+  .super-group-bar .content .branding .poweredby {
+    display: inline-block;
+  }
+  .super-group-bar .content .subnav > li > a {
+    line-height: 0;
+  }
+  .super-group-bar .content .subnav > li > a.icon.user-account-link:before {
+    line-height: 0;
+  }
 }
 
 @media (min-width: 320px) and (max-width: 339px) {
-.super-group-bar .content {
-	display: flex;
-	height: 100%;
-}
-	.super-group-bar .content .subnav {
-		display: flex;
-		height: 100%;
-		margin: 0;
-	}
-	.super-group-bar .content .subnav > li > a {
-		font-size: .6rem;
-	}
+  .super-group-bar .content {
+    display: flex;
+    height: 100%;
+  }
+  .super-group-bar .content .subnav {
+    display: flex;
+    height: 100%;
+    margin: 0;
+  }
+  .super-group-bar .content .subnav > li > a {
+    font-size: .6rem;
+  }
 }
 
 @media (min-width: 320px) and (max-width: 480px) {
-	.super-group-content {
-		margin-left: 0 !important;
-		margin-right: 0 !important;
-	}
+  .super-group-content {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
 }

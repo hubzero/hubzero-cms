@@ -1,0 +1,266 @@
+
+// @import '../../../../../../templates/bmc/css/pages/variables';
+// @import '../../../../../../templates/bmc/css/pages/mixins';
+
+// Colors
+$matterhorn: #2b2b2b;
+$mine-shaft: #393c3d;
+$sap-green: #597f2f;
+$android-green: #8cc540;
+$forest-green: #248232;
+$midnight: #222b37;
+$white-smoke: #f1f1f1;
+$sea-blue: #008099;
+$fushsia: #cb48b7;
+$purple-navy: #5f5980;
+$silver: #c1c1c1;
+$black: #000;
+$white: #fff;
+
+/* Sticky navbar */
+/* https://teamtreehouse.com/community/forum-tip-create-a-sticky-navigation-with-css-and-jquery-2 */
+#group-body {
+	background: #45611F;
+	min-width: inherit;
+	padding-top: 194px;
+}
+
+.super-group-body-wrap {
+	font-family: 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+  position: relative;
+}
+
+.super-group-body {
+	background: $white;
+}
+
+a:hover {
+	border: none;
+}
+
+/* Content */
+.super-group-content-wrap {
+	font-size: 1.2em;
+	position: relative;
+	margin: 0;	/* margin-top will be changed by javascript to height of scontainer */
+	min-height: 300px;
+	padding: 41px 20px !important;
+}
+
+.super-group-content {
+	margin-left: 4.375em;
+  margin-right: .625em;
+	padding: 0;
+	position: relative;
+	width: auto;
+
+  h2 {
+		margin: 20px 0 10px;
+		padding: 0;
+  }
+
+  .heading,
+  .section-header {
+    display: none;
+  }
+
+  #page_options {
+    right: 0;
+		top: 0;
+  }
+
+  .btn {
+    /* Larger white text for green buttons */
+    color: $white;
+    font-size: 1em;
+  }
+
+  .section {
+		padding: 0 !important;
+		margin: 20px 0 !important;
+  }
+}
+
+/* Footer */
+.super-group-footer-wrap {
+	background: #45611F;
+	padding: 0 20px;
+}
+
+.super-group-footer {
+	color: $white;
+	font-size: 11px;
+	margin: 0;
+	padding: 20px 0 40px;
+	width: 100%;
+}
+
+.super-group-footer {
+  a {
+    color: #8bc240;
+  }
+}
+
+/* Home Page */
+.group_overview {
+	margin-top: 20px !important;
+
+  h2 {
+    display: none;
+  }
+}
+
+/* Member Adjustments */
+.group_members {
+  .aside {
+    .roles {
+      li {
+        overflow: hidden;
+      }
+    }
+  }
+}
+
+/* Wiki Adjustments */
+.group_wiki {
+  h2 {
+    display: none;
+  }
+}
+
+/* Collections Adjustments */
+.group_collections {
+  .overview,
+  .filters,
+  .sub-menu {
+    margin-top: 0 !important;
+  }
+}
+
+/* Collections: Pop-up post content when commenting */
+#post-content {
+	font-size: 1.15em;
+}
+
+/* Calendar Adjustments */
+.fs-dropdown {
+	font-size: 1em;
+}
+
+/* Forms adjustment */
+#field-section_id {
+	font-size: 1.5em;
+}
+
+/* Pagination */
+.list-footer {
+  li,
+  .pagenav {
+    font-size: .9em !important;
+  }
+}
+
+/* Login */
+.group_login {
+  h2:first-child {
+    display: none;
+  }
+}
+
+/* System messages */
+/* #sitenotice contains site notices from mod_notices */
+/* #system-message-container contains site messages - right now, I'm okay if they overlap
+as most (if not all) messages are temporary */
+#sitenotice,
+#system-message-container {
+	position: absolute;
+	width: 100%;
+	z-index: 1;
+  /* top: 44px; */
+}
+
+/* Fixing issue where notice banner becomes > 100% */
+.modnotices {
+	padding: .61803399em 0 !important;
+
+  p {
+    padding-left: 3em !important;
+  }
+}
+
+/* Group announcements */
+/* Note that javascript in main.js needs to move .super-group-content-wrap down by the vertical
+height of this element, as we are specifying that .scontainer be below menu but above content.
+Also note that utilizing javascript is the only way I know how to move this around given it's
+automatic element placement by the Hub. */
+.scontainer {
+	position: absolute;
+	/* margin-top: 40px; */	/* Relative to .super-group-menu-wrap - javascript will change this */
+	width: 100%;
+}
+
+
+/* Need to take care of group-info */
+#group-info {
+	position: fixed;
+	top: 44px;
+	width: 100%;
+	z-index: 1001;
+}
+
+/* Anchors need to adjust position to accomodate header */
+/* Source:  http://stackoverflow.com/questions/4086107/html-positionfixed-page-header-and-in-page-anchors */
+/* Note:  Should use javascript, as header can change size depending on zoom level */
+:target:before {
+  content: "";
+  display: block;
+  height: 90px; /* fixed header height*/
+  margin: -90px 0 0; /* negative fixed header height */
+}
+
+// Responsiveness
+@media (min-width: 340px) and (max-width: 520px) {
+	.super-group-bar .content {
+		position: relative;
+	}
+	.super-group-bar .content .branding {
+    float: left;
+	}
+	.super-group-bar .content .subnav {
+		position: absolute;
+		right: 0;
+	}
+	.super-group-bar .content .branding .poweredby {
+		display: inline-block;
+	}
+	.super-group-bar .content .subnav > li > a {
+		line-height: 0;
+	}
+	.super-group-bar .content .subnav > li > a.icon.user-account-link:before {
+		line-height: 0;
+	}
+}
+
+@media (min-width: 320px) and (max-width: 339px) {
+.super-group-bar .content {
+	display: flex;
+	height: 100%;
+}
+
+	.super-group-bar .content .subnav {
+		display: flex;
+		height: 100%;
+		margin: 0;
+	}
+
+	.super-group-bar .content .subnav > li > a {
+		font-size: .6rem;
+	}
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+	.super-group-content {
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+	}
+}

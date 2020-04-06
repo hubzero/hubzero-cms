@@ -217,31 +217,36 @@ jQuery(document).ready(function(jq) {
 	});
 
 	// Sidebar responsiveness
+	// Copy each link to the mobile menu
+	$('.sidebar-nav > li').each(function() {
+		$(this).clone().appendTo('.more-links');
+	});
+
 	function mobileNav() {
 		// Media query triggered and window is mobile width
 		if ($moreMenu.is(':visible')) {
 
-			// Move remaining links to the more menu
-			$('.sidebar-nav > li:nth-child(5)').nextAll().prependTo('.more-links');
+			// Only show first 4 links for the bottom nav
+			if ($sidebarNav.children().length > 5) {
+				$sidebarNav.children(':nth-child(4)').nextAll().addClass('hide');
+			}
 
 		// Not mobile width
 		} else {
-			if ($moreLinks.children().length > 0) {
-				$moreLinks.children().appendTo($sidebarNav);
-			}
+			$sidebarNav.children(':nth-child(4)').nextAll().removeClass('hide');
+
 			if ($sidebarNav.hasClass('more-menu-expanded')) {
 				$sidebarNav.removeClass('more-menu-expanded');
 			}
 		}
-		if ($sidebarWrap.hasClass('sidebar-wrapper-fixed-top') && ($moreLinks.children().length > 0)) {
-			$moreLinks.children().appendTo($sidebarNav);
-		}
+		// if ($sidebarWrap.hasClass('sidebar-wrapper-fixed-top') && ($moreLinks.children().length > 0)) {
+		// 	$sidebarNav.children(':nth-child(4)').nextAll().removeClass('hide');
+		// }
 		if ($moreLinks.hasClass('links-visible') && $moreMenu.is(':hidden')) {
 			$moreLinks.removeClass('links-visible');
 			$sidebarNav.removeClass('more-menu-expanded');
 			$sidebarWrap.removeClass('fullscreen');
 			$('body, html').removeClass('no-scroll');
-			console.log('hamburger is hidden');
 		}
 	}
 
@@ -267,12 +272,15 @@ jQuery(document).ready(function(jq) {
 	// Mobile menu button
 	$moreMenu.on('click', function() {
 		$moreLinks.toggleClass('links-visible');
+
 		if ($moreLinks.hasClass('links-visible')) {
+			$moreLinks.removeClass('hide');
 			$moreMenu.attr('aria-expanded', 'true');
 			$sidebarWrap.addClass('fullscreen');
 			$sidebarNav.addClass('more-menu-expanded');
 			$('body, html').addClass('no-scroll');
 		} else {
+			$moreLinks.addClass('hide');
 			$moreMenu.attr('aria-expanded', 'false');
 			$sidebarWrap.removeClass('fullscreen');
 			$sidebarNav.removeClass('more-menu-expanded');
@@ -308,147 +316,138 @@ jQuery(document).ready(function(jq) {
 	// Add class to the main navigation and remove the select dropdown
 	$('.super-group-menu > ul.cf.js').addClass('visible-links');
 	$('.visible-links .option-select').remove();
-	$('.hidden-links .option-select').remove();
+	$('.mobile-menu .option-select').remove();
 
 	var $nav = $('.super-group-menu');
-	var $btn = $('.super-group-menu button');
+	var $btn = $('.super-group-menu .hidden-menu');
 	var $vlinks = $('.super-group-menu .visible-links');
-	var $hlinks = $('.super-group-menu .hidden-links');
-	var $alinks = $vlinks.children(); + $hlinks.children();
-	var breaks = [];
+	var $totalMenuWidth = 0;
+
+	// Get total width of menu before resizing
+	$vlinks.children().each(function() {
+		$totalMenuWidth +=$(this).outerWidth(true);
+	});
 
 	function updateNav() {
+		var $availableSpace;
 
-		var availableSpace = $btn.hasClass('hidden') ? $nav.width() : $nav.width() - $btn.width() - 30;
-		// console.log('Visible link children is ' + $vlinks.children().length);
-		// console.log('All links is ' + $alinks.length);
-			// The visible list is overflowing the nav
-			if ($vlinks.width() > availableSpace) {
+		// Get measurements
+		$availableSpace = $nav.width() - 40;
+		$menuWidth = 0;
 
-				// Record the width of the list
-				breaks.push($vlinks.width());
+		$vlinks.children().each(function() {
+			$menuWidth += $(this).outerWidth(true);
+		});
 
-				//Move item to the hidden list
-				$vlinks.children().last().prependTo($hlinks);
+		// Make sure mobile menu is not open
+		if (!$('.super-group-menu-wrap').hasClass('menuExpand')) {
 
-
-				//Show the dropdown btn
-				if ($btn.hasClass('hidden')) {
-					$btn.removeClass('hidden');
-				}
-
-			// The visible list is not overflowing
+			// If menu overflows the available space, change to mobile menu
+			if ($menuWidth > $availableSpace) {
+				$vlinks.addClass('hidden');
+				$btn.removeClass('hidden');
+				$nav.css('overflow', 'hidden');
 			} else {
-
-				//There is space for another item in the nav
-				if (availableSpace > breaks[breaks.length-1]) {
-
-					// Move the item to the visible list
-					$hlinks.children().first().appendTo($vlinks);
-					breaks.pop();
-				}
-
-				// Hide the dropdown btn if hidden list is empty
-				if (breaks.length < 1) {
-					$btn.addClass('hidden');
-					$hlinks.addClass('hidden');
-				}
+				$vlinks.removeClass('hidden');
+				$btn.addClass('hidden');
+				$nav.css('overflow', 'initial');
 			}
+		} else {
 
-		// Keep counter updated
-		$btn.attr("count", breaks.length);
-
-		// Recur if the visibile list is still overflowing the nav
-		if ($vlinks.width() > availableSpace) {
-			updateNav();
+			// Go back to fullsize if menu fits in the window
+			if ($totalMenuWidth < $(window).width()) {
+				$vlinks.removeClass('hidden');
+				$btn.addClass('hidden');
+				$nav.css('overflow', 'initial');
+				$('.super-group-menu-wrap').removeClass('menuExpand');
+			}
 		}
 
-		// Rerun function if visible links < total links
-		if ($vlinks.children().length < $alinks.length) {
-			timer = setTimeout(updateNav, 1000);
+		if (!$('.super-group-menu-wrap').hasClass('menuExpand')) {
+			$('body, html').removeClass('no-scroll');
 		}
 	}
 	updateNav();
 
 	// Window listeners
-	var priorityNav = debounce(function() {
+	// var priorityNav = debounce(function() {
+	//
+	// 	updateNav();
+	//
+	// }, 100);
 
-		updateNav();
+	$(window).on('resize', updateNav);
 
-	}, 100);
-
-	$(window).on('resize', priorityNav);
-
-	$btn.click(function() {
-		$hlinks.toggleClass('hidden');
-		if ($hlinks.hasClass('hidden')) {
-			$btn.attr('aria-expanded', 'false');
+	$('.super-group-menu > button').click(function() {
+		$('.visible-links').toggleClass('hidden');
+		$('.super-group-menu-wrap').toggleClass('menuExpand');
+		if ($('.super-group-menu-wrap').hasClass('menuExpand')) {
+			$('.super-group-menu').css({'overflow': ''});
+			$('.super-group-menu > button').attr('aria-expanded', 'true');
+			$('.visible-links').find('ul').addClass('subMenuExpand');
+			$('body, html').addClass('no-scroll');
 		} else {
-			$btn.attr('aria-expanded', 'true');
+			$('.super-group-menu').css({'overflow': 'hidden'});
+			$('.super-group-menu > button').attr('aria-expanded', 'false');
+			$('.visible-links').find('ul').removeClass('subMenuExpand');
+			$('body, html').removeClass('no-scroll');
 		}
 	});
 
-	// Close hidden list on escape
-	$(document).keyup(function(e) {
-		if (e.keyCode == 27) {
-			if (!($hlinks.hasClass('hidden'))) {
-				$hlinks.toggleClass('hidden');
-				$btn.attr('aria-expanded', 'false');
+	// Make parent menu item as the first menu item in the submenu
+	$('.visible-links > li').each(function() {
+		if ($(this).children('ul').length) {
+			var $subMenu = $(this).find('ul'),
+					$parentLinkText = $(this).children('a').text();
+
+			$subMenu.prepend('<li></li>');
+			$(this).children('a').prependTo($subMenu.children().first('li'));
+			$(this).addClass('menuItem').prepend('<button aria-label="menu" aria-haspopup="true" aria-expanded="false">' + $parentLinkText + '</button');
+
+			if ($(this).hasClass('active')) {
+				var $subMenu = $(this).find('ul');
+				$subMenu.children().first('li').addClass('active');
 			}
 		}
 	});
 
-	// Close hidden list when clicking somewhere else
-  $('body').click(function(e) {
-    if($(e.target).closest('.super-group-menu').length === 0) {
-      $hlinks.addClass('hidden');
-			$btn.attr('aria-expanded', 'false');
-    }
-  });
+	$('.menuItem > button').click(function(e) {
+		var $menuItem = $(this).parent(),
+				$menuBtn = $(this);
+		$menuItem.find('ul').toggleClass('subMenuExpand');
+		$menuBtn.attr('aria-expanded', 'true');
+		$('.menuItem').not($menuItem).find('ul').removeClass('subMenuExpand');
+		$('.menuItem > button').not($menuBtn).attr('aria-expanded', 'false');
 
-	// Change hover to tap for touchscreen for main navbar
-	//https://stackoverflow.com/questions/42066301/hover-menu//-is-not-working-on-touch-device-because-link-gets-trigg//ered
-	window.USER_IS_TOUCHING = false;
-	window.addEventListener('touchstart', function onFirstTouch() {
-    window.USER_IS_TOUCHING = true;
-	 	// we only need to know once that a human touched the screen, so we can stop listening now
-  	window.removeEventListener('touchstart', onFirstTouch, false);
-	}, false);
+		if ($('.super-group-menu-wrap').hasClass('menuExpand')) {
+			$('.subMenuExpand').css({'position': 'static'});
+		} else {
+			$('.subMenuExpand').css({'position': ''});
+		}
+		e.stopPropagation();
+	});
 
-  function is_touch_device() {
-    return 'ontouchstart' in window        // works on most browsers
-        || navigator.maxTouchPoints;       // works on IE10/11 and Surface
-  };
-  $('ul > li > a').click(function(e){
-      var target = $(e.target);
-      var parent = target.parent(); // the li
-      if(is_touch_device() || window.USER_IS_TOUCHING){
-          if(target.hasClass("hover-effect")){
-              //run default action of the link
-          }
-          else{
-              e.preventDefault();
-              //remove class active from all links
-              $('ul > li > a.hover-effect').removeClass('hover-effect');
+	$('.visible-links li').each(function() {
+		if ($(this).hasClass('active')) {
+			$(this).closest('.menuItem').addClass('active');
+		}
+	});
 
-              //set class active to current link
-              target.addClass("hover-effect");
-              parent.addClass("hover-effect");
-          }
-      }
-  });
-  $('ul > li').click(function(e){
-    //remove class active from all links if li was clicked
-    if (e.target == this){
-      $(".hover-effect").removeClass('hover-effect');
-    }
-  });
 
-	// Close dropdown menu if tap on body
-	$('body').click(function(e) {
-    if($(e.target).closest('.super-group-menu').length === 0) {
-      $('ul > li').removeClass('hover-effect');
-    }
-  });
+	//Close submenu when clicking elsewhere
+	$(document).click(function(e) {
+		if ($(e.target).closest('a').length === 0) {
+			$('.menuItem ul').removeClass('subMenuExpand');
+			$('.menuItem > button').attr('aria-expanded', 'false');
+		}
+	});
+
+	//Close submenu on escape
+	$(document).keyup(function(e) {
+		if (e.which == 27) {
+			$(document).click();
+			$('.menuItem').children().blur();
+		}
+	});
 
 });

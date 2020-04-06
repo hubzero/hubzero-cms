@@ -1,0 +1,164 @@
+
+/**
+ * BEGIN header buttons
+ * The next two are for the Getting Started buttons in upper left
+ **/
+ #page_options {
+   .btn {
+     background: #3f8dc6;
+   	color: #fff;
+   	font-size: 1.0em;
+
+    &:hover {
+      background: #32709e;
+    }
+   }
+ }
+/**
+ * END header buttons
+ **/
+
+
+/* Header */
+.super-group-header-wrap {
+	margin-top: 0px;
+	height: 150px;
+	background-image: none;	/* Changed within index.php to point to banner.jpg or banner.png */
+	background-repeat: no-repeat;
+	background-attachment: scroll;
+	background-position: center center;
+	background-size: cover;
+}
+
+.super-group-header {
+	margin: 0;
+	width: 100%;
+	position: relative;
+}
+
+.super-group-header-overlay-wrap {
+	/* height: 150px; */
+	position: absolute;
+	width:100%;
+	top: -150px;
+}
+
+.super-group-header-overlay {
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0+0,0.3+100 */ /* FF3.6-15 */ /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.6) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#4d000000',GradientType=0 ); /* IE6-9 */
+	height: 150px;
+}
+
+.super-group-header-overlay {
+  h1 {
+    position: absolute;
+  	top: 80px;
+  	left: 20px;
+  	margin: 0.5em 0;
+  	padding: 0;
+  	width: calc(100% - 40px);
+  	z-index: 1000;
+
+    a {
+      display: block;
+    	/* font-weight: 100;
+    	font-size: 30px;
+    	line-height: 36px; */
+    	font-size: 1.1em;
+    	line-height: 1.1em;
+    	color: #FFF;
+    	font-family: 'Martel', 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+    	border: none !important;
+    	white-space: nowrap;
+    	overflow: hidden;
+    	text-overflow: ellipsis;
+
+      &:hover {
+        border: none !important;
+      }
+
+      span {
+        position: relative;
+      	left: 4px;
+      }
+    }
+  }
+}
+
+.header-id {
+  transition: transform .2s ease-in-out;
+  transform-origin: 0 50%;
+}
+
+.header-id-scrolled {
+	position: fixed !important;
+	top: -9px !important;
+ 	transform: scale(0.75);
+	transform-origin: 0 50%;
+}
+
+.header-id-logo {
+	position: relative;
+	height: 36px;
+	bottom: 2px;
+}
+
+/* Bar needs to be at top */
+.super-group-bar {
+	top: 0;
+}
+
+/* Offset by height of bar, and make sure in the back */
+.super-group-header-wrap {
+	top: 44px;
+	z-index: -100;
+}
+
+/* Fixed at top */
+.super-group-header-wrap,
+.super-group-bar {
+	position: fixed;
+	width: 100%;
+}
+
+/* Toolbar */
+.super-group-toolbar {
+	position: absolute;
+	top: 18px;
+	right: 0;
+
+  ul {
+    margin: 0 !important;
+  }
+}
+
+.super-group-toolbar {
+  .btn-group {
+    a,
+    .dropdown-toggle {
+      border-color: #555 !important;
+    	-webkit-transition: border-color 0.6s ease-in-out;
+    }
+  }
+
+  &:hover {
+    a,
+    .dropdown-toggle {
+      border-color: #000 !important;
+    }
+  }
+
+  .dropdown-menu {
+    left: auto !important;
+  	right: 0 !important;
+  	font-size: 12px !important;
+  }
+}
+
+// Responsiveness
+@media (min-width: 340px) and (max-width: 640px) {
+	.header-id {
+		z-index: 1001 !important;
+	}
+}
