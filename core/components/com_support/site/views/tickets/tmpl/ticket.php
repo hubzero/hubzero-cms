@@ -11,12 +11,15 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->css('jquery.ui.css', 'system')
      ->js('jquery.timepicker.js', 'system')
+	->js('ticket.js')
      ->js();
 
 $status = $this->row->status->get('title');
 
 $unknown  = 1;
 $usertype = Lang::txt('COM_SUPPORT_UNKNOWN');
+
+$protocol = $_SERVER['HTTPS'] == '' ? 'http://' : 'https://';
 
 if ($this->row->get('login'))
 {
@@ -51,7 +54,6 @@ $cc = array();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-
 	<div id="content-header-extra">
 		<ul id="useroptions">
 		<?php if ($prev) { ?>
@@ -259,13 +261,25 @@ $cc = array();
 							<strong>
 								<?php echo $name; ?>
 							</strong>
-							<a class="permalink" href="<?php echo Route::url($comment->link()); ?>" title="<?php echo Lang::txt('COM_SUPPORT_PERMALINK'); ?>">
-								<span class="comment-date-at"><?php echo Lang::txt('COM_SUPPORT_AT'); ?></span>
-								<span class="time"><time datetime="<?php echo $this->escape($comment->created()); ?>"><?php echo $comment->created('time'); ?></time></span>
-								<span class="comment-date-on"><?php echo Lang::txt('COM_SUPPORT_ON'); ?></span>
-								<span class="date"><time datetime="<?php echo $this->escape($comment->created()); ?>"><?php echo $comment->created('date'); ?></time></span>
+							<div class="comment-meta">
+								<a class="permalink" href="<?php echo Route::url($comment->link()); ?>" title="<?php echo Lang::txt('COM_SUPPORT_PERMALINK'); ?>">
+									<span class="comment-date-at"><?php echo Lang::txt('COM_SUPPORT_AT'); ?></span>
+									<span class="time"><time datetime="<?php echo $this->escape($comment->created()); ?>"><?php echo $comment->created('time'); ?></time></span>
+									<span class="comment-date-on"><?php echo Lang::txt('COM_SUPPORT_ON'); ?></span>
+									<span class="date"><time datetime="<?php echo $this->escape($comment->created()); ?>"><?php echo $comment->created('date'); ?></time></span>
+								</a>
+							<a class="copy-link show-hover-target cond-svg-icons-defs" href="<?php echo $protocol . $_SERVER['HTTP_HOST'] . Route::url($comment->link()); ?>">
+								<span class="show-hover-child">Copy link</span>
+								<div class="icon-def">
+									<svg>
+										<use xlink:href="#icon-clipboard"></use>
+									</svg>
+								</div>
 							</a>
+
+							</div>
 						</p><!-- / .comment-head -->
+
 					<?php if ($content = $comment->comment) { ?>
 						<div class="comment-body">
 							<p><?php echo $content; ?></p>

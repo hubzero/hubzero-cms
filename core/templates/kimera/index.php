@@ -61,6 +61,11 @@ if ($this->getTitle() != Config::get('sitename'))
 		<![endif]-->
 	</head>
 	<body>
+	<?php
+	// Icons SVG definitions
+	include('img/icon-svg-defs.php');
+	?>
+
 		<div id="outer-wrap">
 			<jdoc:include type="modules" name="helppane" />
 

@@ -83,3 +83,20 @@
 		.border-radius(@baseBorderRadius);
 	}
 }
+
+// Show on hover, almost tooltip.
+.show-hover-target {
+
+	.show-hover-child {
+		transition: all 0.2s ease-in-out;
+		opacity: 0;
+	}
+
+	&.show-hover,
+	&:hover {
+
+		.show-hover-child {
+			opacity: 1;
+		}
+	}
+}
