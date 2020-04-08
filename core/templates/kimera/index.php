@@ -62,8 +62,8 @@ if ($this->getTitle() != Config::get('sitename'))
 	</head>
 	<body>
 	<?php
-	// Icons SVG definitions
-	include('img/icon-svg-defs.php');
+	// Icons SVG definitions (core, can be custom, template-specific)
+	echo file_get_contents(PATH_CORE . '/assets/images/icons/svg-icon-definitions.svg');
 	?>
 
 		<div id="outer-wrap">

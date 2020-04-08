@@ -1,7 +1,4 @@
 jQuery(document).ready(function($) {
-	var copyBobBtn = document.querySelector('.js-copy-bob-btn'),
-		copyJaneBtn = document.querySelector('.js-copy-jane-btn');
-
 	$('.copy-link').click(function(e) {
 		var me = $(this);
 		e.preventDefault();
@@ -16,18 +13,16 @@ jQuery(document).ready(function($) {
 function fallbackCopyTextToClipboard(text) {
 	var textArea = document.createElement("textarea");
 	textArea.value = text;
-
-	// Avoid scrolling to bottom
 	textArea.style.position = "fixed";
 	textArea.style.dispaly = "none";
-
 	document.body.appendChild(textArea);
 	textArea.focus();
 	textArea.select();
 
 	try {
 		document.execCommand('copy');
-	} catch (err) {
+	}
+	catch (err) {
 	}
 
 	document.body.removeChild(textArea);
