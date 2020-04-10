@@ -61,11 +61,6 @@ if ($this->getTitle() != Config::get('sitename'))
 		<![endif]-->
 	</head>
 	<body>
-	<?php
-	// Icons SVG definitions (core, can be custom, template-specific)
-	echo file_get_contents(PATH_CORE . '/assets/images/icons/svg-icon-definitions.svg');
-	?>
-
 		<div id="outer-wrap">
 			<jdoc:include type="modules" name="helppane" />
 
