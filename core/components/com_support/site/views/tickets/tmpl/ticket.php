@@ -268,13 +268,9 @@ $cc = array();
 									<span class="comment-date-on"><?php echo Lang::txt('COM_SUPPORT_ON'); ?></span>
 									<span class="date"><time datetime="<?php echo $this->escape($comment->created()); ?>"><?php echo $comment->created('date'); ?></time></span>
 								</a>
-							<a class="copy-link show-hover-target cond-svg-icons-defs" href="<?php echo $protocol . $_SERVER['HTTP_HOST'] . Route::url($comment->link()); ?>">
-								<span class="show-hover-child">Copy link</span>
-								<div class="icon-def">
-									<svg>
-										<use xlink:href="#icon-clipboard"></use>
-									</svg>
-								</div>
+							<a class="copy-link show-hover-target" href="<?php echo $protocol . $_SERVER['HTTP_HOST'] . Route::url($comment->link()); ?>">
+								<span class="lbl show-hover-child">Copy link</span>
+								<?php echo Html::asset('icon', 'link'); ?>
 							</a>
 
 							</div>

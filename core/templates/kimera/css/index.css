@@ -4236,7 +4236,6 @@ a.fancybox-next,
   border-radius: 0.25em;
 }
 .show-hover-target .show-hover-child {
-  transition: all 0.2s ease-in-out;
   opacity: 0;
 }
 .show-hover-target.show-hover .show-hover-child,
@@ -4559,11 +4558,11 @@ ol.comments .comment-meta .copy-link {
   display: flex;
   color: #bfbfbf;
 }
-ol.comments .comment-meta .copy-link .icon-def {
+ol.comments .comment-meta .copy-link .icn {
   margin-left: 0.3rem;
   line-height: 0;
 }
-ol.comments .comment-meta .copy-link .icon-def svg {
+ol.comments .comment-meta .copy-link .icn svg {
   height: 1.2rem;
   width: 1.2rem;
   fill: #bfbfbf;
@@ -4572,7 +4571,7 @@ ol.comments .comment-meta .copy-link:hover {
   border: 0;
   color: #000;
 }
-ol.comments .comment-meta .copy-link:hover .icon-def svg {
+ol.comments .comment-meta .copy-link:hover .icn svg {
   fill: #000;
 }
 ol.comments .comment-voting {
@@ -6144,12 +6143,6 @@ img.align-left {
   height: 1em;
   width: 1em;
   fill: currentColor;
-}
-.cond-svg-icons-defs {
-  display: none;
-}
-.cond-svg-icons-defs {
-  display: flex;
 }
 /**
  * @package    hubzero-cms

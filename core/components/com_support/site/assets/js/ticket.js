@@ -5,8 +5,8 @@ jQuery(document).ready(function($) {
 		copyTextToClipboard(me.attr('href'));
 
 		$('.copy-link').removeClass('show-hover');
-		$('.copy-link span').html('Copy link');
-		me.addClass('show-hover').find('span').html('Copied');
+		$('.copy-link span.lbl').html('Copy link');
+		me.addClass('show-hover').find('span.lbl').html('Copied');
 	});
 });
 
