@@ -274,7 +274,7 @@ else
 		?>
 
 		<?php
-			if (sizeof($displayedDocs) > 0)
+			if (count($displayedDocs) > 0)
 			{
 				echo '<ul>';
 				foreach ($displayedDocs as $doc)
