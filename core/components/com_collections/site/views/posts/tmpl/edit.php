@@ -48,7 +48,7 @@ if (!$dir)
 
 	<div id="content-header-extra">
 		<p>
-			<a class="icon-info btn popup" href="<?php echo Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'); ?>">
+			<a class="icon-info popup" href="<?php echo Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'); ?>">
 				<span><?php echo Lang::txt('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
 			</a>
 		</p>

@@ -15,14 +15,6 @@ $base = 'index.php?option=' . $this->option;
 ?>
 <header id="content-header">
 	<h2><?php echo Lang::txt('COM_COLLECTIONS'); ?></h2>
-
-	<div id="content-header-extra">
-		<p>
-			<a class="icon-info btn popup" href="<?php echo Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'); ?>">
-				<span><?php echo Lang::txt('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
-			</a>
-		</p>
-	</div>
 </header>
 
 <form method="get" action="<?php echo Route::url($base . '&controller=' . $this->controller . '&task=posts'); ?>" id="collections">
