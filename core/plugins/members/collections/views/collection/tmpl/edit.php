@@ -20,6 +20,7 @@ else
 }
 
 $this->css();
+
 ?>
 
 <?php if ($this->getError()) { ?>
@@ -29,14 +30,19 @@ $this->css();
 	<fieldset>
 		<legend><?php echo Lang::txt($legend); ?></legend>
 
-		<div class="form-group">
-			<label for="field-access">
-				<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_PRIVACY'); ?>
-				<select name="fields[access]" id="field-access" class="form-control">
-					<option value="0"<?php if ($this->entry->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_PRIVACY_PUBLIC'); ?></option>
-					<option value="1"<?php if ($this->entry->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_PRIVACY_REGISTERED'); ?></option>
-					<option value="4"<?php if ($this->entry->get('access') == 4) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_PRIVACY_PRIVATE'); ?></option>
-				</select>
+		<div class="form-group hubform-control">
+			<div class="hubform-control-label"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_PRIVACY'); ?></div>
+			<label class="radio">
+				<input type="radio" name="fields[access]" class="form-control" value="4" <?php if ($this->entry->get('access') == 4 || !$this->entry->get('id')) { echo ' checked'; } ?>>
+				<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_PRIVACY_PRIVATE'); ?></span>
+			</label>
+			<label class="radio">
+				<input type="radio" name="fields[access]" class="form-control" value="0" <?php if ($this->entry->get('access') == 0 && $this->entry->get('id')) { echo ' checked'; } ?>>
+				<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_PRIVACY_PUBLIC'); ?></span>
+			</label>
+			<label class="radio">
+				<input type="radio" name="fields[access]" class="form-control" value="1" <?php if ($this->entry->get('access') == 1) { echo ' checked'; } ?>>
+				<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_PRIVACY_REGISTERED'); ?></span>
 			</label>
 		</div>
 
