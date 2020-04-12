@@ -1571,6 +1571,32 @@ class Tool
 			}
 		}
 
+		// check member groups
+		if (!empty($tool['membergroups']))
+		{
+			foreach (array_map('trim', explode(',', $tool['membergroups'])) as $k => $groupName)
+			{
+				$grp = Group::getInstance($groupName);
+				if (!is_object($grp) || !$grp->get('gidNumber'))
+				{
+					$err['membergroups' . $k] = 'Group name ' . $groupName . ' is not valid';
+				}
+			}
+		}
+
+		// check developers
+		if (!empty($tool['developers']))
+		{
+			foreach (array_map('trim', explode(',', $tool['developers'])) as $k => $developerName)
+			{
+				$dev = User::getInstance($developerName);
+				if (!$dev->get('id'))
+				{
+					$err['developers' . $k] = 'Developer username ' . $developerName . ' is not valid';
+				}
+			}
+		}
+
 		if (count($err) > 0)
 		{
 			return false;

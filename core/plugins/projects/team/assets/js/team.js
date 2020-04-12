@@ -319,16 +319,6 @@ jQuery(document).ready(function($){
 		$syncRoleSelector.show()
 	}
 
-	var go = $('.group-options');
-	if (go.length) {
-		go.on('click', 'input[type=radio]', function(e) {
-			$(this).closest('form').submit();
-		});
-		go.on('change', '#sync-role-selector', function(e) {
-			$(this).closest('form').submit();
-		});
-	}
-
 	$('#choosemember').fancybox({
 		type: 'ajax',
 		width: 600,

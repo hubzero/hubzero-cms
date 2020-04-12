@@ -15,6 +15,10 @@ Hubzero.submitbutton = function(task) {
 	var frm = document.getElementById('item-form');
 
 	if (frm) {
+		if (!frm.task) {
+			frm.task = {}
+		}
+
 		$(document).trigger('editorSave');
 
 		if (task == 'markscanned') {

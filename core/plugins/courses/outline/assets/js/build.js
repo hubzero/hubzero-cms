@@ -375,7 +375,11 @@ HUB.CoursesOutline = {
 				statusCode: {
 					// 200 OK
 					200: function ( data, textStatus, jqXHR ) {
-						var assetName = data.options.scope !== 'undefined' ? data.options.scope : 'Asset';
+						if(typeof  data.options === 'undefined') {
+							data.options = {};
+						}
+
+						var assetName = typeof data.options.scope !== 'undefined' ? data.options.scope : 'Asset';
 						switch ( data.type ) {
 							case 'js' :
 								eval(data.value);
@@ -398,7 +402,9 @@ HUB.CoursesOutline = {
 										});
 
 										content.find('.edit-form').submit(function ( e ) {
-											e.preventDefault();
+											if (typeof CKEDITOR !== 'undefined') {
+												$(this).find('#content').html($(this).find('.cke_wysiwyg_frame').contents().find('body').html());
+											}
 
 											// Create ajax call to change info in the database
 											$.ajax({
@@ -421,6 +427,8 @@ HUB.CoursesOutline = {
 													}
 												}
 											});
+
+											e.preventDefault();
 										});
 									}
 								});
@@ -1250,7 +1258,9 @@ HUB.CoursesOutline = {
 					});
 
 					content.find('.edit-form').submit(function ( e ) {
-						e.preventDefault();
+						if (typeof CKEDITOR !== 'undefined') {
+							$(this).find('#content').html($(this).find('.cke_wysiwyg_frame').contents().find('body').html());
+						}
 
 						// Create ajax call to change info in the database
 						$.ajax({
@@ -1265,6 +1275,7 @@ HUB.CoursesOutline = {
 								}
 							}
 						});
+						e.preventDefault();
 					});
 				}
 			});
@@ -1506,6 +1517,7 @@ HUB.CoursesOutline = {
 					});
 
 					content.find('.edit-form').submit(function (e) {
+
 						e.preventDefault();
 
 						// Create ajax call post save

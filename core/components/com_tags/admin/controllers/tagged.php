@@ -42,12 +42,7 @@ class Tagged extends AdminController
 	{
 		// Incoming
 		$filters = array(
-			'tagid' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.tag',
-				'tag',
-				0,
-				'int'
-			),
+			'tagid'   => Request::getInt('tag', 0),
 			'tbl'     => Request::getState(
 				$this->_option . '.' . $this->_controller . '.tbl',
 				'tbl',

@@ -8,6 +8,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+$pluginDirectory = __DIR__;
+
+require_once "$pluginDirectory/helpers/userLocalizer.php";
+
 /**
  * Groups Plugin class for calendar
  */
@@ -407,6 +411,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$start = Date::of($start . ' 00:00:00');
 		$end   = Date::of($end . ' 00:00:00');
 		$end->modify('-1 second');
+		$userLocalizer = new UserLocalizer();
 
 		// get calendar events
 		$eventsCalendar = \Components\Events\Models\Calendar::getInstance();
@@ -434,6 +439,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// merge events with repeating events
 		$rawEvents = $rawEvents->merge($rawEventsRepeating);
 
+		$timezone = $userLocalizer->getTimezone();
+
 		// loop through each event to return it
 		foreach ($rawEvents as $rawEvent)
 		{
@@ -449,7 +456,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$event->title     = $rawEvent->get('title');
 			$event->allDay    = $rawEvent->get('allday') == 1;
 			$event->url       = $rawEvent->link();
-			$event->start     = ($event->allDay == 1) ? $up->setTimezone('UTC')->format($timeFormat, true) : $up->toLocal($timeFormat, $ignoreDst);
+			$event->start     = ($event->allDay == 1) ? $up->setTimezone('UTC')->format($timeFormat, true) : $up->toTimezone($timezone, $timeFormat, $ignoreDst);
 			$event->className = ($rawEvent->get('calendar_id')) ? 'calendar-' . $rawEvent->get('calendar_id') : 'calendar-0';
 			if ($rawEvent->get('publish_down') && $rawEvent->get('publish_down') != '0000-00-00 00:00:00')
 			{

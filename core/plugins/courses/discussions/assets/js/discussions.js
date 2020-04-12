@@ -357,7 +357,9 @@ HUB.Plugins.CoursesForum = {
 
 								// find all scripts in this html and eval them
 								thread.find('script').each(function(){
-									eval($(this).html());
+									if($(this).attr('type') == 'text/javascript') {
+										eval($(this).html());
+									}
 								});
 
 								// fade in
