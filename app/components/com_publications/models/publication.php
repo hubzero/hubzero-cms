@@ -1673,7 +1673,7 @@ class Publication extends Obj
 				->join($a, $a . '.cid', $c . '.id', 'inner')
 				->whereEquals($c . '.published', self::STATE_PUBLISHED)
 				->whereEquals($a . '.tbl', 'publication')
-				->whereEquals($a . '.oid', $this->get('id'))
+				->whereEquals($a . '.oid', $this->version->id)
 				->order($c . '.affiliated', 'asc')
 				->order($c . '.year', 'desc')
 				->rows();
