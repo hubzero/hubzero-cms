@@ -24,7 +24,12 @@
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
-				<field name="restricted" type="text" menu="hide" default="" label="Restricted to projects" description="Comma-separated aliases of projects that have databases plugin enabled (empty field means NO RESTRICTIONS)" />
+                                <field name="restricted" type="text" menu="hide" default="" label="Restricted to projects" description="Comma-separated aliases of projects that have databases plugin enabled (empty field means NO RESTRICTIONS)" />
+
+                                <field name="new_pubs" type="radio" menu="hide" default="0" label="New publications" description="Enable new publications UI elements." >
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+                                </field>
 			</fieldset>
 		</fields>
 	</config>
