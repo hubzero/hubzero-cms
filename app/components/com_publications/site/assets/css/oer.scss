@@ -1,0 +1,56 @@
+@import '../../../../../templates/bmc/css/pages/variables';
+@import '../../../../../templates/bmc/css/pages/mixins';
+
+//Why OER
+.oer-wrapper {
+  display: none;
+}
+
+.philosophy-wrapper {
+  padding: 2em;
+}
+
+.oer-on-qubes {
+  @include flexbox(wrap);
+  padding: 2em;
+
+  h3 {
+    width: 100%;
+  }
+
+  img {
+    @include respond-at(840px) {
+      width: 25%;
+    }
+    width: 100%;
+  }
+
+  ul {
+    @include respond-at(840px) {
+      width: 60%;
+    }
+    align-self: center;
+    margin-left: 2em;
+    width: 100%;
+  }
+}
+
+
+.share-your-oer {
+  margin-left: 1.5em;
+}
+
+.contribute-descriptor {
+  @include flexbox;
+
+  img {
+    border-radius: 50%;
+    height: 6.25rem;
+    margin: 0 2em 1em;
+    width: 6.25rem;
+  }
+
+  li {
+    list-style-type: none;
+  }
+}

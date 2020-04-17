@@ -397,6 +397,28 @@ class Publications extends SiteController
 	}
 
 	/**
+	 * Open Educational Resources Page
+	 *
+	 * @return  void
+	 */
+	public function oerTask()
+	{
+		// echo 'Hello World';
+		// die;
+
+		// Set page title
+		// $this->_buildTitle();
+
+		// Set the pathway
+		$this->_buildPathway();
+
+		$this->view
+			->set('name', 'oer')
+			->setLayout('oer')
+			->display();
+	}
+
+	/**
 	 * Browse publications
 	 *
 	 * @return  void

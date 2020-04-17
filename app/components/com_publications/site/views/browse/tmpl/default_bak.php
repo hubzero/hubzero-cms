@@ -13,8 +13,11 @@ $database = App::get('db');
 $this->css()
      ->js();
 ?>
+<header id="content-header">
+	<h2><?php echo $this->title; ?></h2>
+</header><!-- / #content-header -->
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" id="resourcesform" method="get" data-target="#results-container">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" id="resourcesform" method="get">
 	<section class="main section">
 		<div class="section-inner hz-layout-with-aside">
 			<div class="subject">
@@ -80,7 +83,7 @@ $this->css()
 					</div>
 				<?php } ?>
 
-				<div class="container" id="results-container">
+				<div class="container">
 					<nav class="entries-filters">
 						<?php
 						$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
@@ -133,6 +136,16 @@ $this->css()
 					<div class="clearfix"></div>
 				</div><!-- / .container -->
 			</div><!-- / .subject -->
+			<div class="aside">
+				<div class="container">
+					<h3><?php echo Lang::txt('Popular Tags'); ?></h3>
+					<?php
+					$rt = new Components\Publications\Helpers\Tags($database);
+					echo $rt->getTopTagCloud(20, $this->filters['tag']);
+					?>
+					<p><?php echo Lang::txt('Click a tag to see only publications with that tag.'); ?></p>
+				</div>
+			</div><!-- / .aside -->
 		</div>
 	</section><!-- / .main section -->
 </form>
