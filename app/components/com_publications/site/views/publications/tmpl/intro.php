@@ -44,7 +44,7 @@ $this->css()
   <nav class="nav-page">
     <ul>
       <li><a class="nav-page-link browse-link active" data-target="#live-update-wrapper" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>">Browse Resources</a> <span class="nav-descriptor">Browse Resources</span></li>
-      <li><a class="nav-page-link oer-link" href="#">Why OER?</a> <span class="nav-descriptor">Learn the benefits of using and sharing OER</span></li>
+      <li><a class="nav-page-link oer-link" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=oer'); ?>">Why OER?</a> <span class="nav-descriptor">Learn the benefits of using and sharing OER</span></li>
       <li><a class="nav-page-link submit-link" data-target="#live-update-wrapper" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=submit'); ?>">Submit a Resource</a> <span class="nav-descriptor">Submit a Resource</span></li>
     </ul>
   </nav>
