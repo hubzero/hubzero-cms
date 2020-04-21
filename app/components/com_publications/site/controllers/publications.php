@@ -403,18 +403,15 @@ class Publications extends SiteController
 	 */
 	public function oerTask()
 	{
-		// echo 'Hello World';
-		// die;
-
 		// Set page title
-		// $this->_buildTitle();
+		$this->_buildTitle();
 
 		// Set the pathway
 		$this->_buildPathway();
 
 		$this->view
-			->set('name', 'oer')
-			->setLayout('oer')
+		  ->set('title', $this->_title)
+		  ->set('option', 'oer')
 			->display();
 	}
 
