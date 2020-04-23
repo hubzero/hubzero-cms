@@ -8,6 +8,7 @@
 defined('_HZEXEC_') or die();
 
 $this->css()
+     ->css('intro');
 ?>
 
 <div class="oer-wrapper">

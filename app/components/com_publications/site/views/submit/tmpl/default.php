@@ -10,6 +10,7 @@ defined('_HZEXEC_') or die();
 
 $this->css()
      ->css('jquery.fancybox.css', 'system')
+     ->css('intro')
      ->js();
 
 // Add projects stylesheet
@@ -20,9 +21,47 @@ $this->css()
 \Hubzero\Document\Assets::addPluginScript('projects', 'files', 'jquery.queueuploader.js');
 
 ?>
-<header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
-</header><!-- / #content-header -->
+
+<div class="submit-resource-wrap">
+  <aside>
+    <div class="software-instructions-wrapper">
+      <div class="arrow-right"></div>
+      <div class="software-instructions">
+        <h4>Got a Shiny App?</h4>
+        <p>Please read these <a href="#">special instructions</a>. For other types of software, <a href="#">contact us</a> for help.</p>
+      </div>
+    </div>
+
+    <div class="kb-links">
+      <h5>Related Articles</h5>
+      <ul>
+        <li>[Article] <a href="#">How to submit a resource</a></li>
+        <li>[Article] <a href=""></a>Author's notes</li>
+      </ul>
+    </div>
+  </aside>
+
+  <div class="submit-a-resource-wrap">
+    <h3>Quick and Easy. Get started today!</h3>
+    <a href="#" class="btn submit-resource-btn">Submit a Resource</a>
+  </div>
+
+  <div class="submit-partner-resource-wrap">
+    <h5>Submit a Partner Resource</h5>
+    <p>Possibly a quick description of what partner resources are or...</p>
+    <p>Possibly a mini-advertisement of offering up specialized curation/publication services that can link to services?</p>
+
+    <div class="resource-type-wrap">
+      <div class="resource-type">
+        <img src="/app/site/media/images/partners/NIBLSEGraphic.png" alt="Partner logo" class="partner-resource-logo">
+      </div>
+
+      <div class="resource-type">
+        <img src="http://192.168.33.10/app/site/media/images/partners/math_modeling_hub_logotype.png" alt="Partner logo" class="partner-resource-logo">
+      </div>
+    </div>
+  </div>
+</div>
 
 <?php if ($this->pid && !empty($this->project) && $this->project->get('created_by_user') == User::get('id')) { ?>
 	<p class="contrib-options">
