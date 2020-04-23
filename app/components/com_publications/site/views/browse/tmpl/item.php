@@ -75,7 +75,7 @@ $extras = Event::trigger('publications.onPublicationsList', array($this->line));
 				}
 			');
 			?>
-			<div class="metadata">
+			<!-- <div class="metadata">
 				<dl class="rankinfo">
 					<dt class="ranking">
 						<span class="rank">
@@ -87,7 +87,7 @@ $extras = Event::trigger('publications.onPublicationsList', array($this->line));
 						<div></div>
 					</dd>
 				</dl>
-			</div>
+			</div> -->
 			<?php
 		elseif ($this->params->get('show_rating') && $this->config->get('show_rating')):
 			switch ($this->line->get('master_rating')):
