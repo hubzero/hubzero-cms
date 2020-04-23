@@ -11,6 +11,7 @@ defined('_HZEXEC_') or die();
 $database = App::get('db');
 
 $this->css()
+     ->css('intro')
      ->js();
 ?>
 
