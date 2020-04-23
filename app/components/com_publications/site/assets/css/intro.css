@@ -478,6 +478,62 @@
   margin: 1em;
 }
 
+.philosophy-wrapper {
+  padding: 2em;
+}
+
+.oer-on-qubes {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 2em;
+}
+
+.oer-on-qubes h3 {
+  width: 100%;
+}
+
+.oer-on-qubes img {
+  width: 100%;
+}
+
+@media only screen and (min-width: 840px) {
+  .oer-on-qubes img {
+    width: 25%;
+  }
+}
+
+.oer-on-qubes ul {
+  align-self: center;
+  margin-left: 2em;
+  width: 100%;
+}
+
+@media only screen and (min-width: 840px) {
+  .oer-on-qubes ul {
+    width: 60%;
+  }
+}
+
+.share-your-oer {
+  margin-left: 1.5em;
+}
+
+.contribute-descriptor {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.contribute-descriptor img {
+  border-radius: 50%;
+  height: 6.25rem;
+  margin: 0 2em 1em;
+  width: 6.25rem;
+}
+
+.contribute-descriptor li {
+  list-style-type: none;
+}
+
 .submit-resource-wrap {
   display: flex;
   flex-wrap: wrap;

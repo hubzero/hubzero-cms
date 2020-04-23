@@ -8,8 +8,6 @@
 defined('_HZEXEC_') or die();
 
 $this->css()
-  ->css('oer')
-  ->js();
 ?>
 
 <div class="oer-wrapper">
