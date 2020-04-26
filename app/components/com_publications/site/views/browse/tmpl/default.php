@@ -15,9 +15,9 @@ $this->css()
      ->js();
 ?>
 
-<div class="container browse-resources-wrapper">
-  <div class="page-filter-wrapper">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" id="resourcesform" method="get" data-target="#results-container">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" id="resourcesform" method="get" data-target="#results-container">
+  <div class="container browse-resources-wrapper">
+    <div class="page-filter-wrapper">
       <div class="search-input-wrapper">
         <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('Search'); ?>" />
         <fieldset class="entry-search">
@@ -26,32 +26,32 @@ $this->css()
           <input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('Enter keyword or phrase'); ?>" />
         </fieldset>
       </div>
-    </form>
+    </div>
+
+    <div class="container" id="results-container" aria-live="polite">
+
+      <?php
+      if ($this->results && $this->results->count() > 0)
+      {
+        // Display List of items
+        $this->view('_list')
+           ->set('results', $this->results)
+           ->set('filters', $this->filters)
+           ->set('config', $this->config)
+           ->display();
+
+        $this->pageNav->setAdditionalUrlParam('tag', $this->filters['tag']);
+        $this->pageNav->setAdditionalUrlParam('category', $this->filters['category']);
+        $this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+
+        echo $this->pageNav->render();
+
+        echo '<div class="clear"></div>';
+      } else { ?>
+        <p class="warning"><?php echo Lang::txt('COM_PUBLICATIONS_NO_RESULTS'); ?></p>
+      <?php } ?>
+
+      <div class="clearfix"></div>
+    </div><!-- / .container -->
   </div>
-
-  <div class="container" id="results-container" aria-live="polite">
-
-    <?php
-    if ($this->results && $this->results->count() > 0)
-    {
-      // Display List of items
-      $this->view('_list')
-         ->set('results', $this->results)
-         ->set('filters', $this->filters)
-         ->set('config', $this->config)
-         ->display();
-
-      $this->pageNav->setAdditionalUrlParam('tag', $this->filters['tag']);
-      $this->pageNav->setAdditionalUrlParam('category', $this->filters['category']);
-      $this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-
-      echo $this->pageNav->render();
-
-      echo '<div class="clear"></div>';
-    } else { ?>
-      <p class="warning"><?php echo Lang::txt('COM_PUBLICATIONS_NO_RESULTS'); ?></p>
-    <?php } ?>
-
-    <div class="clearfix"></div>
-  </div><!-- / .container -->
-</div>
+</form>
