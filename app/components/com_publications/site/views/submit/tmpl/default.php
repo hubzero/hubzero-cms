@@ -52,13 +52,13 @@ $this->css()
     <p>Possibly a mini-advertisement of offering up specialized curation/publication services that can link to services?</p>
 
     <div class="resource-type-wrap">
-      <div class="resource-type">
+      <a href="/qubesresources/publications/submit?action=publication&base=niblseresource" class="resource-type">
         <img src="/app/site/media/images/partners/NIBLSEGraphic.png" alt="Partner logo" class="partner-resource-logo">
-      </div>
+      </a>
 
-      <div class="resource-type">
+      <a href="/qubesresources/publications/submit?action=publication&base=mmhubresource" class="resource-type">
         <img src="http://192.168.33.10/app/site/media/images/partners/math_modeling_hub_logotype.png" alt="Partner logo" class="partner-resource-logo">
-      </div>
+      </a>
     </div>
   </div>
 </div>
