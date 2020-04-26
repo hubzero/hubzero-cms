@@ -270,6 +270,10 @@
   padding-top: 1em;
 }
 
+.entry-search-submit {
+  margin-top: 1em;
+}
+
 .page-filter {
   max-height: calc(100vh - 160px);
   overflow-y: scroll;
@@ -492,12 +496,12 @@
   width: 100%;
 }
 
-.oer-on-qubes img {
+.oer-on-qubes .img-wrap {
   width: 100%;
 }
 
 @media only screen and (min-width: 840px) {
-  .oer-on-qubes img {
+  .oer-on-qubes .img-wrap {
     width: 25%;
   }
 }

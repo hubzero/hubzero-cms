@@ -11,7 +11,7 @@ defined('_HZEXEC_') or die();
 $pubconfig = Component::params('com_publications');
 ?>
 <div class="grid contribute">
-	<div class="col span4">
+	<!-- <div class="col span4">
 		<h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHERE_TO_START'); ?></h3>
 		<div class="contrib-start">
 			<p><span class="project-icon"></span><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTRIB_FROM_PROJECTS'); ?></p>
@@ -54,8 +54,10 @@ $pubconfig = Component::params('com_publications');
 			?>
 		</div>
 <?php } ?>
-	</div>
-	<div class="col span8 omega">
+	</div> -->
+	
+	<!-- Removed class "col span8 omega" -->
+	<div>
 		<?php if (User::isGuest())
 		{
 			$this->view('intro')

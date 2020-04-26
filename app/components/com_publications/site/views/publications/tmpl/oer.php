@@ -21,7 +21,14 @@ $this->css()
 
   <div class="oer-on-qubes">
       <h3>OER on QUBES</h3>
-      <img src="https://loremflickr.com/300/150/kitty" />
+      <div class="img-wrap">
+				<picture>
+					<source type="image/webp" srcset="/app/site/media/images/laptop.webp">
+					<source type="image/jp2" srcset="/app/site/media/images/laptop.jp2">
+					<source type="image/vnd.ms-photo" srcset="/app/site/media/images/laptop.jxr">
+					<img src="/app/site/media/images/laptop.jpg" alt="Image of man working on a laptop">
+				</picture>
+			</div>
       <ul>
         <li>With 1000 user submitted educational resources, QUBES shares diverse materials that can be adapted to fit your classroom. </li>
         <li>New resources are added regularly and cover many topics in biology, mathematics, and data science.</li>
@@ -36,7 +43,7 @@ $this->css()
 
     <h5>Get credit for your teaching scholarship</h5>
     <div class="contribute-descriptor">
-      <img src="https://loremflickr.com/100/100/kitty" />
+      <img src="app/components/com_publications/site/assets/img/chart.png" />
       <div>
         <p>Participating in OER is valuable work that you should receive credit for! QUBES resources provide multiple ways to document your contributions and track your impact:</p>
         <ul>
@@ -49,7 +56,7 @@ $this->css()
 
     <h5>Share, Improve, Broaden Impact of Visibility and Engagement</h5>
     <div class="contribute-descriptor">
-      <img src="https://loremflickr.com/100/100/kitty" />
+      <img src="app/components/com_publications/site/assets/img/orbit2.png" />
       <p><a href="https://qubeshub.org/community/partners">Many educational projects and professional societies</a> collaborate with QUBES to further broaden the impacts of their work. Our <a href="https://qubeshub.org/community/fmns">Faculty Mentoring Networks</a> (FMNs) provide partners with an opportunity to share and improve their materials with faculty who implement these resources in their classrooms - providing valuable real-time feedback. When you share on QUBES, you are also searchable in the <a href="https://mason.deepwebaccess.com/mason__MasonLibrariesOpenEducationResources_5f4/desktop/en/search.html">Mason Open Metafinder</a> database.</p>
     </div>
   </div>

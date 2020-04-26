@@ -214,6 +214,10 @@
   }
 }
 
+.entry-search-submit {
+  margin-top: 1em;
+}
+
 .page-filter {
   @include grid-support {
     width: auto;
@@ -381,7 +385,7 @@
     width: 100%;
   }
 
-  img {
+  .img-wrap {
     @include respond-at(840px) {
       width: 25%;
     }
