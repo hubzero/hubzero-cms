@@ -28,15 +28,13 @@ $this->css()
       <div class="arrow-right"></div>
       <div class="software-instructions">
         <h4>Got a Shiny App?</h4>
-        <p>Please read these <a href="#">special instructions</a>. For other types of software, <a href="#">contact us</a> for help.</p>
-      </div>
+        <p>Please read these <a href="https://docs.google.com/document/d/1TtRbOhlUfkD2a-Ii35py-55mlYsNhHzyexSJ9FsA70M/edit?usp=sharing" target="_blank">special instructions</a>. For other types of software, <span class="helpme"><a href="/support/">contact us</a></span> for help.</p>
     </div>
 
     <div class="kb-links">
       <h5>Related Articles</h5>
       <ul>
-        <li>[Article] <a href="#">How to submit a resource</a></li>
-        <li>[Article] <a href=""></a>Author's notes</li>
+        <li>[Article] <a href="/kb/resources/postresource">Using Publications to Post Resources on QUBES</a></li>
       </ul>
     </div>
   </aside>
@@ -48,8 +46,6 @@ $this->css()
 
   <div class="submit-partner-resource-wrap">
     <h5>Submit a Partner Resource</h5>
-    <p>Possibly a quick description of what partner resources are or...</p>
-    <p>Possibly a mini-advertisement of offering up specialized curation/publication services that can link to services?</p>
 
     <div class="resource-type-wrap">
       <a href="/qubesresources/publications/submit?action=publication&base=niblseresource" class="resource-type">
