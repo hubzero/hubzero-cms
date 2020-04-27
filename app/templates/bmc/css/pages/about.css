@@ -260,6 +260,40 @@ html {
   text-align: center;
 }
 
+.funder-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  margin: 0;
+}
+
+@media only screen and (min-width: 60em) {
+  .funder-wrapper {
+    margin: 0 2em;
+  }
+}
+
+.funder-info {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  padding: 1.5em;
+  width: 50%;
+}
+
+.funder-info .funder-logo {
+  display: flex;
+  flex-wrap: nowrap;
+  height: 9.375em;
+  object-fit: contain;
+}
+
+.funder-info .funder-logo img {
+  align-self: center;
+  display: block;
+  margin: 0 auto;
+  max-height: 100%;
+}
+
 .citations {
   padding: 7em 0;
 }

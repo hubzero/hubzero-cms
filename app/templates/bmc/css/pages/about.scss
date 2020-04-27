@@ -240,6 +240,34 @@ html {
   }
 }
 
+.funder-wrapper {
+  @include respond-at(60em) {
+    margin: 0 2em;
+  }
+  @include flexbox;
+  margin: 0;
+}
+
+.funder-info {
+  @include flexbox;
+  flex-direction: column;
+  padding: 1.5em;
+  width: 50%;
+
+  .funder-logo {
+    @include flexbox;
+    height: 9.375em;
+    object-fit: contain;
+
+    img {
+      align-self: center;
+      display: block;
+      margin: 0 auto;
+      max-height: 100%;
+    }
+  }
+}
+
 .citations {
   padding: 7em 0;
 
