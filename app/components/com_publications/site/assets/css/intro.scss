@@ -292,7 +292,7 @@
   width: 100%;
 }
 
-.filter-results {
+#results-container {
   @include respond-at(44.0625em) {
     padding-left: 1.875em;
   }
@@ -302,6 +302,14 @@
   @include grid(1 / span 2, 2);
   @include grid-template(repeat(3, 1fr), auto, 1em);
   padding: 0 2.5em;
+}
+
+#publications {
+  @include grid(1 / span 3, auto);
+}
+
+.pagination {
+  @include grid(1 / span 3, auto);
 }
 
 //Showcases

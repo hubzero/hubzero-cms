@@ -358,7 +358,7 @@
   }
 }
 
-.filter-results {
+#results-container {
   grid-column: 1/span 2;
   grid-row: 2;
   display: grid;
@@ -369,16 +369,26 @@
 }
 
 @media only screen and (min-width: 44.0625em) {
-  .filter-results {
+  #results-container {
     padding-left: 1.875em;
   }
 }
 
 @media only screen and (min-width: 53.75em) {
-  .filter-results {
+  #results-container {
     grid-column: 2/span 1;
     grid-row: auto;
   }
+}
+
+#publications {
+  grid-column: 1/span 3;
+  grid-row: auto;
+}
+
+.pagination {
+  grid-column: 1/span 3;
+  grid-row: auto;
 }
 
 .regular {

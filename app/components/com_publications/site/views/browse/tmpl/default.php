@@ -18,14 +18,16 @@ $this->css()
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" id="resourcesform" method="get" data-target="#results-container">
   <div class="container browse-resources-wrapper">
     <div class="page-filter-wrapper">
-      <div class="search-input-wrapper">
-        <fieldset class="entry-search">
-          <legend><?php echo Lang::txt('Search'); ?></legend>
-          <label for="entry-search-field"><?php echo Lang::txt('Enter keyword or phrase'); ?></label>
-          <input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('Enter keyword or phrase'); ?>" />
-        </fieldset>
-        <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('Search'); ?>" />
-      </div>
+      <header class="page-filter">
+        <div class="search-input-wrapper">
+          <fieldset class="entry-search">
+            <legend><?php echo Lang::txt('Search'); ?></legend>
+            <label for="entry-search-field"><?php echo Lang::txt('Enter keyword or phrase'); ?></label>
+            <input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('Enter keyword or phrase'); ?>" />
+          </fieldset>
+          <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('Search'); ?>" />
+        </div>
+      </header>
     </div>
 
     <div class="container" id="results-container" aria-live="polite">
