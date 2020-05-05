@@ -16,7 +16,7 @@ jQuery(document).ready(function() {
     if ($('.browse-link').hasClass('active')) {
       $.get($('.browse-link').attr('href').nohtml(), function(result) {
         $liveUpdate.html(result);
-        $.getScript('app/components/com_publications/site/assets/js/search.js');
+        $.getScript('../app/components/com_publications/site/assets/js/search.js');
       });
     }
   });
@@ -30,7 +30,7 @@ jQuery(document).ready(function() {
     if (container.length) {
       $.get($(this).attr('href').nohtml(), function(result) {
         container.html(result);
-        $.getScript('app/components/com_publications/site/assets/js/search.js');
+        $.getScript('../app/components/com_publications/site/assets/js/search.js');
       });
 
       $(this).addClass('active');
