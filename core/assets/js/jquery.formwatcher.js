@@ -1,8 +1,6 @@
 /*
  *  jQuery Form Watcher - v1.0.0
  *
- *  Made by Christopher Smoak
- *  Under LGPLv3 License
  */
 ;(function( $ ) {
     $.fn.formWatcher = function( options )
@@ -107,3 +105,4 @@
         return this;
     };
 }(jQuery));
+
