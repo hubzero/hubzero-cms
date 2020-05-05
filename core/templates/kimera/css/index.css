@@ -1,16 +1,16 @@
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 .hide-text {
@@ -57,7 +57,7 @@
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 html,
@@ -271,7 +271,7 @@ textarea {
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 @font-face {
@@ -348,7 +348,7 @@ textarea {
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 @font-face {
@@ -361,7 +361,7 @@ textarea {
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 *[class^="icon-"]:before,
@@ -1253,7 +1253,7 @@ textarea {
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 .grid {
@@ -1682,7 +1682,7 @@ table th {
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 #masthead {
@@ -1914,7 +1914,7 @@ table th {
 }*/
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 #nav {
@@ -2110,7 +2110,7 @@ table th {
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 .searchform {
@@ -2157,7 +2157,7 @@ table th {
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 #top {
@@ -2322,7 +2322,7 @@ header.content-header ul li,
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 #footer {
@@ -2419,7 +2419,7 @@ header.content-header ul li,
 }*/
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 input,
@@ -2724,7 +2724,7 @@ form.search fieldset input {
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 .aside {
@@ -3082,7 +3082,7 @@ section.section {
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 .btn {
@@ -3482,7 +3482,7 @@ header .btn:focus,
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 #system-message {
@@ -3694,7 +3694,7 @@ span.message {
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 ul.sub-menu {
@@ -3750,7 +3750,7 @@ ul.sub-menu li.active a:hover {
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 .list-footer {
@@ -3859,7 +3859,7 @@ ul.sub-menu li.active a:hover {
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 .fancybox-wrap,
@@ -4156,12 +4156,12 @@ a.fancybox-next,
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 .tooltip {
@@ -4305,7 +4305,7 @@ a.fancybox-next,
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 .tags {
@@ -4369,7 +4369,7 @@ a.fancybox-next,
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 .voting {
@@ -4456,12 +4456,12 @@ a.fancybox-next,
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 ol.comments {
@@ -5520,7 +5520,7 @@ ol.comments .time {
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 .container > *:first-child {
@@ -6019,7 +6019,7 @@ table.entries {
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 .article_separator {
@@ -6146,7 +6146,7 @@ img.align-left {
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 .dark #masthead {
@@ -6172,7 +6172,7 @@ img.align-left {
 }
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright 2005-2019 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 @media print {
