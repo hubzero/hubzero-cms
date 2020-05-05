@@ -8,7 +8,6 @@
 //
 //	Video Plugin
 //
-//	Author: 	Christopher Smoak
 //	Version: 	1.0
 //	Required: 	jQuery	
 //

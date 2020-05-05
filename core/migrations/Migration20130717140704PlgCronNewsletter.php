@@ -24,8 +24,6 @@ class Migration20130717140704PlgCronNewsletter extends Base
 		 * Forgot to re-add migration script after adding it to git
 		 * staging and making further changes. this will make sure
 		 * newsletter cron jobs exits.
-		 *
-		 * @author    Christopher Smoak
 		 */
 		$query = "";
 
