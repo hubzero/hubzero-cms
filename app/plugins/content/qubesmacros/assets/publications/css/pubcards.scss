@@ -235,7 +235,7 @@
 
 .tag-wrap {
   @include respond-at(31.25em) {
-    width: 9.56rem;
+    width: 9rem;
   }
   overflow: hidden;
   text-overflow: ellipsis;
