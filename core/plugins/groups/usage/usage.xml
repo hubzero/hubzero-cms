@@ -5,7 +5,7 @@
 	<author>HUBzero</author>
 	<authorUrl>hubzero.org</authorUrl>
 	<authorEmail>support@hubzero.org</authorEmail>
-	<copyright>Copyright 2005-2019 The Regents of the University of California.</copyright>
+	<copyright>Copyright (c) 2005-2020 The Regents of the University of California.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
 	<version>1.5</version>
 	<description>Display usage information for a group</description>
