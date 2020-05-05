@@ -294,6 +294,9 @@ class Publications extends Macro
 					ORDER BY `year` ASC, `month` ASC"
 				);
 				$downloads = (int) $this->_db->loadResult();
+				$downloads = number_format_short($downloads);
+
+
 	    	$html .= '    <a href="' . $pub->link('serve') . '?render=archive"><i class="downloads tooltips icon-download" title="Download" aria-hidden="true"></i></a><a href="' . $pub->link() . '/usage?v=' . $pub->version->version_number . '">' . $downloads . ' downloads</a>';
 
 	    	// Comments
@@ -457,6 +460,7 @@ class Publications extends Macro
 					ORDER BY `year` ASC, `month` ASC"
 				);
 				$views = (int) $this->_db->loadResult();
+				$views = number_format_short( $views );
 
 				$html .= '      <div class="views">';
 				$html .= '        <span aria-label="Views" title= "Views">';
@@ -474,6 +478,8 @@ class Publications extends Macro
 					ORDER BY `year` ASC, `month` ASC"
 				);
 				$downloads = (int) $this->_db->loadResult();
+				$downloads = number_format_short($downloads);
+
 
 				$html .= '      <div class="downloads">';
 				$html .= '        <span aria-label="Downloads" title= "Downloads">';
@@ -490,6 +496,7 @@ class Publications extends Macro
 					IN (" . $this->_db->quote($pub->version->id) . ")
 					AND `state`=1");
 				$forks = (int) $this->_db->loadResult();
+				$forks = number_format_short($forks);
 
 				$html .= '      <div class="forks">';
 				$html .= '        <span aria-label="Adaptations" title= "Adaptations">';
@@ -502,7 +509,7 @@ class Publications extends Macro
 				$html .= '      <div class="date">';
 	      $html .= '        <span aria-label="Publish Date" title= "Publish Date">';
 	      $html .= '          <span class="icons">' . file_get_contents(PATH_ROOT . DS . "core/assets/icons/calendar-alt.svg") . '</span>';
-	      $html .= '         ' . Date::of($pub->version->get('published_up'))->toLocal('m.d.Y');
+	      $html .= '         ' . Date::of($pub->version->get('published_up'))->toLocal('m.Y');
 	      $html .= '        </span>';
 	      $html .= '      </div>'; // End publish date
 
@@ -625,7 +632,7 @@ class Publications extends Macro
 
 			$html .= '     <div class="date">';
 			$html .= '  Published on <span class="pub-date" aria-label="Publish Date" title= "Publish Date">';
-			$html .= '         ' . Date::of($pub->version->get('published_up'))->toLocal('m.d.Y');
+			$html .= '         ' . Date::of($pub->version->get('published_up'))->toLocal('m.Y');
 			$html .= '        </span>';
 			$html .= '     </div>'; // End publish date
 
@@ -641,6 +648,7 @@ class Publications extends Macro
 			);
 
 			$views = (int) $this->_db->loadResult();
+			$views = number_format_short($views);
 
 			$html .= '      <div class="views">';
 			$html .= '        <span aria-label="Views" title= "Views">';
@@ -659,6 +667,8 @@ class Publications extends Macro
 				ORDER BY `year` ASC, `month` ASC"
 			);
 			$downloads = (int) $this->_db->loadResult();
+			$downloads = number_format_short($downloads);
+
 
 			$html .= '      <div class="downloads">';
 			$html .= '        <span aria-label="Downloads" title= "Downloads">';
@@ -676,6 +686,7 @@ class Publications extends Macro
 				IN (" . $this->_db->quote($pub->version->id) . ")
 				AND `state`=1");
 			$forks = (int) $this->_db->loadResult();
+			$forks = number_format_short($forks);
 
 			$html .= '      <div class="forks">';
 			$html .= '        <span aria-label="Adaptations" title= "Adaptations">';
@@ -1127,4 +1138,44 @@ class Publications extends Macro
 		$yiq = 1 - (($r*299)+($g*587)+($b*114))/255;
 		return ($yiq < 0.5) ? 'black' : 'white';
 	}
+}
+
+/**
+ * Use to abbreviate large positive numbers in to short form https://stackoverflow.com/questions/21521114/format-number-to-abbreviated-number
+ * @param $n number
+ * @param $precision (decimal places)
+ * @return string
+ */
+ // function formatValue($size, $precision = 1)
+ // {
+ //     static $suffixes = array('', 'k', 'm');
+ //     $base = log($size) / log(1000);
+ //
+ //     return round(pow(1000, $base - floor($base)), $precision) . $suffixes[floor($base)];
+ // }
+
+ function number_format_short( $n, $precision = 1 ) {
+	if ($n >= 0 && $n < 1000) {
+		// 1 - 999
+		$n_format = $n;
+		$suffix = '';
+	} else if ($n >= 1000 && $n < 1000000) {
+		// 1k-999k
+		$n_format = number_format($n / 1000, $precision);
+		$suffix = 'K';
+	} else if ($n >= 1000000 && $n < 1000000000) {
+		// 1m-999m
+		$n_format = number_format($n / 1000000, $precision);
+		$suffix = 'M';
+	} else if ($n >= 1000000000 && $n < 1000000000000) {
+		// 1b-999b
+		$n_format = number_format($n / 1000000000, $precision);
+		$suffix = 'B';
+	} else if ($n >= 1000000000000) {
+		// 1t+
+		$n_format = number_format($n / 1000000000000, $precision);
+		$suffix = 'T';
+	}
+
+	return !empty($n_format . $suffix) ? $n_format . $suffix : 0;
 }
