@@ -1,27 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="1.7" type="plugin" group="resources">
-	<name>Resource - Collections</name>
+<extension version="1.7" type="plugin" group="publications">
+	<name>Publications - Collections</name>
 	<author>HUBzero</author>
 	<authorUrl>hubzero.org</authorUrl>
 	<authorEmail>support@hubzero.org</authorEmail>
 	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Allows Resource to be added to a Series/Collection</description>
+	<description>Allows Publication to be added to a Series/Collection</description>
 	<files>
 		<filename plugin="collections">collections.php</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.plg_resources_collections.ini</language>
+		<language tag="en-GB">en-GB.plg_publications_collections.ini</language>
 	</languages>
-	<config>
-		<fields name="params">
-			<fieldset name="basic">
-				<field name="collection_alias" type="text" size="5" default="50" label="PLG_RESOURCES_COLLECTIONS_ALIAS_LABEL" description="PLG_RESOURCES_COLLECTIONS_ALIAS_DESC"/>
-				<field name="collection_afterpublished" type="radio" default="0" label="PLG_RESOURCES_COLLECTIONS_AFTER_PUBLISHED_LABEL" description="PLG_RESOURCES_COLLECTIONS_AFTER_PUBLISHED_DESC">
-					<option value="1">Yes</option>
-					<option value="0">No</option>
-				</field>
-			</fieldset>
-		</fields>
-	</config>
 </extension>

@@ -12,7 +12,7 @@ $(function(){
 		{
 			$('#new-series-add').hide();
 			$('#new-series-add').prev('.col').find('.or').hide();
-			$('input[name="resource-title"]').val('');
+			$('input[name="publication-title"]').val('');
 		}		
 		else
 		{
