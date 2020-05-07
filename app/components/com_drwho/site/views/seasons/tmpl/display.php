@@ -38,7 +38,6 @@ $this->js()
 	</ul>
 
 	<div id="section-content">
-		<p>Click a link above to load the data</p>
 	</div>
 
 	<script id="new-row" type="text/x-handlebars-template">
