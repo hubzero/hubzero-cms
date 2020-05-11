@@ -102,7 +102,6 @@ class Attachments extends Obj
 			$status = $type->getStatus($element, $attachments);
 		}
 
-		// Return status
 		return $status;
 	}
 
@@ -559,12 +558,6 @@ class Attachments extends Obj
 
 		foreach ($elements as $element)
 		{
-			// File?
-			if ($element->manifest->params->type != 'file')
-			{
-			//	continue;
-			}
-
 			// Load attachment type
 			$type = $this->loadAttach($element->manifest->params->type);
 
@@ -609,12 +602,6 @@ class Attachments extends Obj
 		$contents = null;
 		foreach ($elements as $element)
 		{
-			// File?
-			if ($element->manifest->params->type != 'file')
-			{
-			//	continue;
-			}
-
 			// Load attachment type
 			$type = $this->loadAttach($element->manifest->params->type);
 
