@@ -30,13 +30,12 @@ jQuery(document).ready(function() {
     e.preventDefault();
 
     var container = $($(this).attr('data-target'));
-    var url = $(this).attr('href').nohtml();
-
-    console.log(url);
 
     if (container.length) {
-      container.load(url + ' #live-update-content');
-      $.getScript('../app/components/com_publications/site/assets/js/search.js');
+      $.get($(this).attr('href').nohtml(), function(result) {
+        container.html(result);
+        $.getScript('../app/components/com_publications/site/assets/js/search.js');
+      });
 
       $(this).addClass('active');
       $('.nav-page-link').not($(this)).removeClass('active');

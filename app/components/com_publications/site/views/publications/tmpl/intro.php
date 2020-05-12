@@ -4,6 +4,9 @@
 * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
 * @license    http://opensource.org/licenses/MIT MIT
 */
+
+$no_html = Request::getInt('no_html');
+
 // no direct access
 defined('_HZEXEC_') or die();
 
@@ -49,8 +52,13 @@ $this->css()
     </ul>
   </nav>
 
-  <section class="live-update">
-    <div aria-live="polite" id="live-update-wrapper">
+  <?php
+    if (strpos($_SERVER['REQUEST_URI'], 'browse') == false && strpos($_SERVER['REQUEST_URI'], 'oer') == false && strpos($_SERVER['REQUEST_URI'], 'submit') == false && !$no_html)
+    {
+      echo '<section class="live-update">',
+             '<div aria-live="polite" id="live-update-wrapper">',
 
-    </div> <!-- .live-update-wrapper -->
-  </section>
+             '</div> <!-- .live-update-wrapper -->',
+           '</section>';
+    }
+   ?>
