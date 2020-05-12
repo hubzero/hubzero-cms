@@ -42,13 +42,24 @@ class Seasons extends SiteController
 	 */
 	protected function _buildPathway()
 	{
-		if (Pathway::count() <= 0)
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_option)),
-				'index.php?option='.$this->_option
-			);
-		}
+		Pathway::append(
+			Lang::txt(strtoupper($this->_option)),
+			'index.php?option='.$this->_option
+		);
+		
+		Pathway::append(
+			Lang::txt(strtoupper($this->_task)),
+			'index.php?option=' . $this->_options . '&task=' . $this->_task
+		);
+		
+		$output = \Hubzero\Module\Helper::renderModule('breadcrumbs');
+		$output = str_replace("\n", "", $output);
+		$output = str_replace("\r", "", $output);
+		$url = Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task);
+		echo '<script type="text/javascript">',
+				 "  $('.crumbs-wrap').html('" . $output . "');",
+				 "  window.history.pushState('object or string', '', '" . $url . "');",
+				 '</script>';
 	}
 	
 	/**
@@ -58,9 +69,6 @@ class Seasons extends SiteController
 	 */
 	public function displayTask()
 	{
-		// Set the pathway
-		$this->_buildPathway();
-		
 		$this->view
 			->display();
 
@@ -84,6 +92,9 @@ class Seasons extends SiteController
 	 */
 	public function oneTask()
 	{
+		// Set the pathway
+		$this->_buildPathway();
+
 		// Output the view
 		$this->view
 			->display();
@@ -96,6 +107,9 @@ class Seasons extends SiteController
 	 */
 	public function twoTask()
 	{
+		// Set the pathway
+		$this->_buildPathway();
+		
 		$this->view
 			->display();
 	}
@@ -107,6 +121,9 @@ class Seasons extends SiteController
 	 */
 	public function threeTask()
 	{
+		// Set the pathway
+		$this->_buildPathway();
+		
 		$this->view
 			->display();
 	}
@@ -118,6 +135,9 @@ class Seasons extends SiteController
 	 */
 	public function fourTask()
 	{
+		// Set the pathway
+		$this->_buildPathway();
+		
 		$this->view
 			->display();
 	}
