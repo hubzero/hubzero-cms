@@ -9,29 +9,34 @@ jQuery(document).ready(function() {
     maxWidth : 450
   });
 
-  // Load browse as default
-  var $liveUpdate = $('#live-update-wrapper')
-  $(window).on('load', function() {
-
-    if ($('.browse-link').hasClass('active')) {
-      $.get($('.browse-link').attr('href').nohtml(), function(result) {
-        $liveUpdate.html(result);
-        $.getScript('../app/components/com_publications/site/assets/js/search.js');
-      });
-    }
-  });
-
   // Update live area via ajax
+  // $('.nav-page-link').on('click', function(e) {
+  //   e.preventDefault();
+  //
+  //   var container = $($(this).attr('data-target'));
+  //
+  //   if (container.length) {
+  //     $.get($(this).attr('href').nohtml(), function(result) {
+  //       container.html(result);
+  //       $.getScript('../app/components/com_publications/site/assets/js/search.js');
+  //     });
+  //
+  //     $(this).addClass('active');
+  //     $('.nav-page-link').not($(this)).removeClass('active');
+  //   }
+  // });
+
   $('.nav-page-link').on('click', function(e) {
     e.preventDefault();
 
     var container = $($(this).attr('data-target'));
+    var url = $(this).attr('href').nohtml();
+
+    console.log(url);
 
     if (container.length) {
-      $.get($(this).attr('href').nohtml(), function(result) {
-        container.html(result);
-        $.getScript('../app/components/com_publications/site/assets/js/search.js');
-      });
+      container.load(url + ' #live-update-content');
+      $.getScript('../app/components/com_publications/site/assets/js/search.js');
 
       $(this).addClass('active');
       $('.nav-page-link').not($(this)).removeClass('active');
