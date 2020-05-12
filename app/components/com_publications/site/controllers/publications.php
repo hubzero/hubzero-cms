@@ -411,7 +411,9 @@ class Publications extends SiteController
 
 		$this->view
 		  ->set('title', $this->_title)
-		  ->set('option', 'oer')
+		  ->set('option', $this->_option)
+			->setName('oer')
+			->setLayout('oer')
 			->display();
 	}
 
