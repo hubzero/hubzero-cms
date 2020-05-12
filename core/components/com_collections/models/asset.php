@@ -237,10 +237,12 @@ class Asset extends Base
 	 */
 	public function link($size = 'original')
 	{
-		$path  = $this->filespace() . DS . $this->get('item_id') . DS;
+		$base = Request::base();
+		Log::debug($base);
+		$path  = $base . 'app/site/collections/' . $this->get('item_id') . DS;
 		$path .= ltrim($this->file($size), DS);
 
-		return with(new \Hubzero\Content\Moderator($path, 'public'))->getUrl();
+		return $path;
 	}
 
 	/**
