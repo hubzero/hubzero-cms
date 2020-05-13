@@ -300,7 +300,7 @@
     @include grid(2 / span 1, auto);
   }
   @include grid(1 / span 2, 2);
-  @include grid-template(repeat(3, 1fr), auto, 1em);
+  // @include grid-template(repeat(3, 1fr), auto, 1em);
   padding: 0 2.5em;
 }
 
