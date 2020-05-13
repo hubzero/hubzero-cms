@@ -27,6 +27,7 @@ $(document).ready(function() {
 
     if (container.length && inputTerms.length) {
       container.load(urlToFetch + ' #results-container', removeOnchange);
+      window.history.pushState({href: urlToFetch}, '', urlToFetch);
       return urlToFetch;
     }
   });
@@ -39,9 +40,11 @@ $(document).ready(function() {
     if (urlToFetch === null) {
       urlToFetch = `${url}${queryParams}${sortbyParams}${limitParams}`;
       container.load(urlToFetch + ' #results-container', removeOnchange);
+      window.history.pushState({href: urlToFetch}, '', urlToFetch);
     } else {
       urlToFetch = urlToFetch.replace(/limit=.+&limitstart=0/, 'limit=' + newLimit + '&limitstart=0');
       container.load(urlToFetch + ' #results-container', removeOnchange);
+      window.history.pushState({href: urlToFetch}, '', urlToFetch);
     }
   });
 
@@ -51,5 +54,12 @@ $(document).ready(function() {
     var page = $(this).attr('href');
 
     container.load(page + ' #results-container', removeOnchange);
+    window.history.pushState({href: page}, '', page);
+  });
+
+  window.addEventListener('popstate', function(e) {
+    if (e.state) {
+      openURL(e.state.href);
+    }
   });
 });

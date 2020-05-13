@@ -4,12 +4,39 @@ jQuery(document).ready(function() {
   	return this + (this.indexOf('?') == -1 ? '?' : '&') + 'no_html=1';
   };
 
-
+  // Informational button
   $("a.modal-link").fancybox({
     maxWidth : 450
   });
 
-  // Update live area via ajax
+  const openURL = (href) => {
+    var link = href;
+    var container = $('#live-update-wrapper');
+
+    $.get(link.nohtml(), function(result) {
+      container.html(result);
+      $.getScript('../app/components/com_publications/site/assets/js/search.js');
+    })
+    window.history.pushState({href: href}, '', href);
+  }
+
+  // Check the url to see which nav button to show as active
+  $(window).on('load', function() {
+    var $liveUpdate = $('#live-update-wrapper');
+
+    if (window.location.href.indexOf('browse') > -1) {
+      $('.browse-link').addClass('active');
+    } else if (window.location.href.indexOf('oer') > -1) {
+      $('.oer-link').addClass('active');
+    } else if(window.location.href.indexOf('submit') > -1) {
+      $('.submit-link').addClass('active');
+    } else {
+      $('.browse-link').addClass('active');
+      openURL($('.browse-link').attr('href'));
+    }
+  });
+
+  // Load pages via ajax
   // $('.nav-page-link').on('click', function(e) {
   //   e.preventDefault();
   //
@@ -21,6 +48,8 @@ jQuery(document).ready(function() {
   //       $.getScript('../app/components/com_publications/site/assets/js/search.js');
   //     });
   //
+  //     window.history.pushState({href: $(this).attr('href')}, '', $(this).attr('href'));
+  //
   //     $(this).addClass('active');
   //     $('.nav-page-link').not($(this)).removeClass('active');
   //   }
@@ -28,17 +57,16 @@ jQuery(document).ready(function() {
 
   $('.nav-page-link').on('click', function(e) {
     e.preventDefault();
+    
+    openURL($(this).attr('href'));
 
-    var container = $($(this).attr('data-target'));
+    $(this).addClass('active');
+    $('.nav-page-link').not($(this)).removeClass('active');
+  });
 
-    if (container.length) {
-      $.get($(this).attr('href').nohtml(), function(result) {
-        container.html(result);
-        $.getScript('../app/components/com_publications/site/assets/js/search.js');
-      });
-
-      $(this).addClass('active');
-      $('.nav-page-link').not($(this)).removeClass('active');
+  window.addEventListener('popstate', function(e) {
+    if (e.state) {
+      openURL(e.state.href);
     }
   });
 
