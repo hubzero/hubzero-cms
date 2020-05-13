@@ -250,7 +250,10 @@ HUB.ProjectFilesFileUpload = {
 
 	_formatIsAccepted: function(file)
 	{
-		HUB.ProjectFilesFileUpload.acceptedFormats = HUB.ProjectFilesFileUpload.acceptedFormats || {};
+		if(typeof HUB.ProjectFilesFileUpload.acceptedFormats === 'undefined') {
+			// accept file if there is no acceptedFormats lookup
+			return true;
+		}
 		var match = file.name.match(/\.(.*$)/);
 		var format = match ? match[1] : '';
 		format = format.toLowerCase();
