@@ -238,7 +238,6 @@ class Asset extends Base
 	public function link($size = 'original')
 	{
 		$base = Request::base();
-		Log::debug($base);
 		$path  = $base . 'app/site/collections/' . $this->get('item_id') . DS;
 		$path .= ltrim($this->file($size), DS);
 
