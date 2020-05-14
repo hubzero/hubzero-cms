@@ -38,7 +38,7 @@ foreach ($item_pubs as $pub_info)
 
 	echo '<div class="' . $item['class'] . ' resource' . ($item["featured"] ? ' featured' : '') . '">
 ';
-	echo '  <a href="' . $pub->link() . '" aria-hidden="true" tabindex="-1">';
+	echo '  <a href="' . $pub->link('versionid') . '" aria-hidden="true" tabindex="-1">';
 	echo '    <div class="resource-img">';
 	echo '      <img src="' . Route::url($pub->link('masterimage')) . '" alt="">';
 	echo '    </div>';
@@ -57,7 +57,7 @@ foreach ($item_pubs as $pub_info)
 		}
 	}
 	echo '  <div class="resource-title">';
-	echo '    <a href="' . $pub->link() . '">';
+	echo '    <a href="' . $pub->link('versionid') . '">';
 	echo '      <span>' . $pub->get('title') . '</span>';
 	echo '    </a>';
 	echo '  </div>';
