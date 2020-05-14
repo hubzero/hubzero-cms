@@ -34,8 +34,7 @@ defined('_HZEXEC_') or die();
 
 foreach ($item_pubs as $pub_info)
 {
-	// $pub = \Components\Publications\Models\Publication($result);
-	$pub = Components\Publications\Models\Publication::getInstance($pub_info->id);
+	$pub = new Components\Publications\Models\Publication(null, 'default', $pub_info->version_id);
 
 	echo '<div class="' . $item['class'] . ' resource' . ($item["featured"] ? ' featured' : '') . '">
 ';
