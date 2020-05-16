@@ -441,6 +441,7 @@
   @include flexbox(wrap);
   display: none;
   padding-top: 2em;
+  padding-bottom: 2em;
 
   aside {
     @include respond-at(53.75em) {
@@ -452,6 +453,10 @@
     padding: 0 2em;
     width: 100%;
   }
+}
+
+#contrib-section {
+  padding-top: 0;
 }
 
 .submit-a-resource-wrap {
@@ -506,7 +511,7 @@
   border-left: 60px solid $android-green;
   border-top: 60px solid transparent;
   height: 0;
-  left: -.5em;
+  left: .5em;
   position: absolute;
   top: 1em;
   width: 0;

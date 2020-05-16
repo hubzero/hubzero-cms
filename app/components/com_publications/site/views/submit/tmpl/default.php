@@ -39,42 +39,7 @@ if (User::isGuest())
 <?php } ?>
 
       <div id="live-update-content">
-        <div class="submit-resource-wrap">
-          <aside>
-            <div class="software-instructions-wrapper">
-              <div class="arrow-right"></div>
-              <div class="software-instructions">
-                <h4>Got a Shiny App?</h4>
-                <p>Please read these <a href="https://docs.google.com/document/d/1TtRbOhlUfkD2a-Ii35py-55mlYsNhHzyexSJ9FsA70M/edit?usp=sharing" target="_blank">special instructions</a>. For other types of software, <span class="helpme"><a href="/support/">contact us</a></span> for help.</p>
-            </div>
-
-            <div class="kb-links">
-              <h5>Related Articles</h5>
-              <ul>
-                <li>[Article] <a href="/kb/resources/postresource">Using Publications to Post Resources on QUBES</a></li>
-              </ul>
-            </div>
-          </aside>
-
-          <div class="submit-a-resource-wrap">
-            <h3>Quick and Easy. Get started today!</h3>
-            <a id="submit-resource" href="<?php echo $submit_url;?>" class="btn submit-resource-btn">Submit a Resource</a>
-          </div>
-
-          <div class="submit-partner-resource-wrap">
-            <h5>Submit a Partner Resource</h5>
-
-            <div class="resource-type-wrap">
-              <a href="/qubesresources/publications/submit?action=publication&base=niblseresource" class="resource-type">
-                <img src="/app/site/media/images/partners/NIBLSEGraphic.png" alt="Partner logo" class="partner-resource-logo">
-              </a>
-
-              <a href="/qubesresources/publications/submit?action=publication&base=mmhubresource" class="resource-type">
-                <img src="http://192.168.33.10/app/site/media/images/partners/math_modeling_hub_logotype.png" alt="Partner logo" class="partner-resource-logo">
-              </a>
-            </div>
-          </div>
-        </div>
+        
 
         <?php if ($this->pid && !empty($this->project) && $this->project->get('created_by_user') == User::get('id')) { ?>
         	<p class="contrib-options">
