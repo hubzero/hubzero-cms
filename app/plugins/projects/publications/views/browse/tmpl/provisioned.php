@@ -10,53 +10,43 @@ defined('_HZEXEC_') or die();
 
 $pubconfig = Component::params('com_publications');
 ?>
-<div class="grid contribute">
-	<!-- <div class="col span4">
-		<h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHERE_TO_START'); ?></h3>
-		<div class="contrib-start">
-			<p><span class="project-icon"></span><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTRIB_FROM_PROJECTS'); ?></p>
-			<p class="submitarea">
-				<span><a href="/projects/start" class="btn btn-success"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PROJECT'); ?></a></span>
-				<span><a href="/members/myaccount/projects" class="btn"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_PROJECTS'); ?></a></span>
-			</p>
+<div class="contribute">
+	<div class="submit-resource-wrap">
+		<aside>
+			<div class="software-instructions-wrapper">
+				<div class="arrow-right"></div>
+				<div class="software-instructions">
+					<h4>Got a Shiny App?</h4>
+					<p>Please read these <a href="https://docs.google.com/document/d/1TtRbOhlUfkD2a-Ii35py-55mlYsNhHzyexSJ9FsA70M/edit?usp=sharing" target="_blank">special instructions</a>. For other types of software, <span class="helpme"><a href="/support/">contact us</a></span> for help.</p>
+			</div>
+
+			<div class="kb-links">
+				<h5>Related Articles</h5>
+				<ul>
+					<li>[Article] <a href="/kb/resources/postresource">Using Publications to Post Resources on QUBES</a></li>
+				</ul>
+			</div>
+		</aside>
+
+		<div class="submit-a-resource-wrap">
+			<h3>Quick and Easy. Get started today!</h3>
+			<a id="submit-resource" href="#" class="btn submit-resource-btn">Submit a Resource</a>
 		</div>
-<?php if ($pubconfig->get('contribute', 0)) { ?>
-		<div class="contrib-start simple">
-			<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTRIB_FROM_OUTSIDE'); ?></p>
-			<?php
-			if (count($this->choices) > 0)
-			{
-				foreach ($this->choices as $current)
-				{
-					?>
-					<p class="submitarea">
-						<span>
-							<a class="btn btn-primary<?php echo ($current->description) ? ' tooltips" title="' . $this->escape($current->description) . '"' : ''; ?>" href="<?php echo Route::url('index.php?option=com_publications&task=submit&action=publication&base=' . $current->alias); ?>">
-								<?php echo $this->escape($current->type); ?>
-							</a>
-						</span>
-					</p>
-					<?php
-				}
-			}
-			else
-			{
-				?>
-				<p class="submitarea">
-					<span>
-						<a class="btn btn-primary" href="<?php echo Route::url('index.php?option=com_publications&task=submit&action=publication&base=files'); ?>">
-							<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLISH_FILES'); ?>
-						</a>
-					</span>
-				</p>
-				<?php
-			}
-			?>
+
+		<div class="submit-partner-resource-wrap">
+			<h5>Submit a Partner Resource</h5>
+
+			<div class="resource-type-wrap">
+				<a href="/qubesresources/publications/submit?action=publication&base=niblseresource" class="resource-type">
+					<img src="/app/site/media/images/partners/NIBLSEGraphic.png" alt="Partner logo" class="partner-resource-logo">
+				</a>
+
+				<a href="/qubesresources/publications/submit?action=publication&base=mmhubresource" class="resource-type">
+					<img src="http://192.168.33.10/app/site/media/images/partners/math_modeling_hub_logotype.png" alt="Partner logo" class="partner-resource-logo">
+				</a>
+			</div>
 		</div>
-<?php } ?>
-	</div> -->
-	
-	<!-- Removed class "col span8 omega" -->
+	</div>
 	<div>
 		<?php if (User::isGuest())
 		{
