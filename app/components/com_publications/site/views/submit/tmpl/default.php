@@ -39,7 +39,7 @@ if (User::isGuest())
 <?php } ?>
 
       <div id="live-update-content">
-        
+
 
         <?php if ($this->pid && !empty($this->project) && $this->project->get('created_by_user') == User::get('id')) { ?>
         	<p class="contrib-options">
