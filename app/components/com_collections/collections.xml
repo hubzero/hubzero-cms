@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5" method="upgrade">
+	<name>Collections</name>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>A Pintrest style collection of files</description>
+	<files>
+		<filename>router.php</filename>
+		<filename>controllers/collections.php</filename>
+		<filename>collections.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.com_collections.ini</language>
+	</languages>
+	<install>
+	</install>
+	<uninstall>
+	</uninstall>
+	<administration>
+		<menu>Collections</menu>
+		<files>
+			<filename>controller.php</filename>
+			<filename>collections.php</filename>
+			<filename>controllers/collections.php</filename>
+			<filename>views/collections/tmpl/default.php</filename>
+		</files>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.com_collections.ini</language>
+			<language tag="en-GB">en-GB.com_collections.sys.ini</language>
+		</languages>
+	</administration>
+</extension>
