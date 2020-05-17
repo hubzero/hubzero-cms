@@ -1,21 +1,21 @@
 {
-	"name": "hubzero/com_collections",
-	"description": "Collections manager component for the HUBzero CMS",
+	"name": "qubeshub/com_collections",
+	"description": "**Override** of HubZero collections component.",
 	"type": "hubzero-component",
-	"keywords": ["hubzero"],
-	"homepage": "https://hubzero.org",
+	"keywords": ["hubzero", "qubeshub"],
+	"homepage": "https://qubeshub.org",
 	"license": "MIT",
 	"authors": [
 		{
 			"name": "HUBzero",
 			"email": "support@hubzero.org"
+		},
+		{
+			"name": "QUBESHub",
+			"email": "qubeshub@gmail.com"
 		}
 	],
-	"support": {
-		"email": "support@hubzero.org",
-		"issues": "https://help.hubzero.org"
-	},
-	"require": {
-		"php" : "^5.4"
+	"extra": {
+	    "install-directory": "/components/com_collections"
 	}
 }
