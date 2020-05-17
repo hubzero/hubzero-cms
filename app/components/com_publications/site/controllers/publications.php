@@ -1273,12 +1273,75 @@ class Publications extends SiteController
 		$allowed = array('team', 'files', 'notes', 'databases', 'publications', 'links');
 		$plugin  = in_array($active, $allowed) ? $active : 'publications';
 
-		if (User::isGuest() && ($action == 'login' || $action == 'start' || $action == 'publication'))
+		if (User::isGuest() && ($action == 'login' || $action == 'start' || $action == 'publication' || $action == 'choose'))
 		{
 			$this->_msg = $this->_task == 'start'
 						? Lang::txt('COM_PUBLICATIONS_LOGIN_TO_START')
 						: Lang::txt('COM_PUBLICATIONS_LOGIN_TO_VIEW_SUBMISSIONS');
 			$this->_login();
+			return;
+		}
+
+		// Call chooser for submission
+		if ($action == 'choose')
+		{
+			// Load classes
+			require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
+
+			// Model
+			$model = new \Components\Projects\Models\Project();
+
+			// Set filters
+			$filters = array(
+				'mine' => 1,
+				'updates' => 1,
+				'getowner' => 1,
+				'sortby' => 'title',
+				'sortdir' => 'ASC',
+				'filterby' => 'active',
+				'uid' => User::get('id')
+			);
+
+			$projects = array();
+
+			// Get owned
+			$filters['which'] = 'owned';
+			$owned = $model->entries('list', $filters);
+
+			// Push the projects to the primary list
+			//
+			// Note: we do it this way so we can combine with
+			// the "other" list and sort everything by title
+			foreach ($owned as $own)
+			{
+				// If not a 1 = manager, 0 = callaborator, or 2 = author, 5 = reviewer, skip
+				if (!in_array($own->get('role'), array(0, 1, 2, 3)))
+				{
+					continue;
+				}
+				$projects[$own->get('title')] = $own;
+			}
+
+			// Get other projects
+			$filters['which'] = 'other';
+			$other = $model->entries('list', $filters);
+
+			foreach ($other as $own)
+			{
+				// If not a 1 = manager, 0 = collaborator, or 2 = author, 5 = reviewer, skip
+				if (!in_array($own->get('role'), array(0, 1, 2, 3)))
+				{
+					continue;
+				}
+				$projects[$own->get('title')] = $own;
+			}
+
+			ksort($projects);
+
+			// Return the output
+			$this->view->setLayout('_choose')
+						->set('projects', $projects)
+						->display();
 			return;
 		}
 

@@ -30,7 +30,7 @@ $pubconfig = Component::params('com_publications');
 
 		<div class="submit-a-resource-wrap">
 			<h3>Quick and Easy. Get started today!</h3>
-			<a id="submit-resource" href="#" class="btn submit-resource-btn">Submit a Resource</a>
+			<a id="submit-resource" href="<?php echo $submit_url;?>" class="btn submit-resource-btn">Submit a Resource</a>
 		</div>
 
 		<div class="submit-partner-resource-wrap">
