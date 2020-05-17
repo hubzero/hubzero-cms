@@ -9,6 +9,13 @@
 defined('_HZEXEC_') or die();
 
 $pubconfig = Component::params('com_publications');
+
+$submit_url = Route::url('index.php?option=com_publications&task=submit&action=choose');
+if (User::isGuest())
+{
+  // Could be a problem here - imagining possible issue with this
+	$submit_url = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($submit_url));
+}
 ?>
 <div class="contribute">
 	<div class="submit-resource-wrap">
