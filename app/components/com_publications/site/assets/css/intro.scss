@@ -554,3 +554,61 @@
     }
   }
 }
+
+// Submit Modal
+.fancybox-inner .submit-options h3 {
+	background: #333;
+	color: #fff;
+	line-height: 1;
+	margin: 0;
+	padding: 0.7em 1em;
+}
+.submit-options .submit-new {
+	text-align: center;
+	padding-top: 4em;
+	padding-left: 3%;
+}
+.submit-options,
+.submit-options .grid,
+.submit-options .col {
+	height: 100%;
+}
+.submit-options h4 {
+	font-weight: bold;
+}
+.submit-options .submit-to-project {
+	border-left: 1px solid #ddd;
+}
+.submit-options .submit-to-project h4 {
+	line-height: 1;
+	margin: 0;
+	padding: 1em;
+	border-bottom: 1px solid #ddd;
+}
+.submit-options ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	overflow: scroll;
+	max-height: 80%;
+}
+.submit-options li {
+	margin: 0;
+	padding: 1em 1em;
+	position: relative;
+}
+.submit-options li .btn {
+	display: none;
+	position: absolute;
+	right: 1em;
+	top: 0.75em;
+}
+.submit-options li:hover {
+	background-color: rgba(0, 0, 0, 0.1);
+}
+.submit-options li:hover .btn {
+	display: inline-block;
+}
+.project-title {
+	margin-left: 0.5em;
+}
