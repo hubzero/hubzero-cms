@@ -9,6 +9,7 @@ jQuery(document).ready(function() {
     maxWidth : 450
   });
 
+  // Load pages via ajax
   const openURL = (href) => {
     var link = href;
     var container = $('#live-update-wrapper');
@@ -19,6 +20,21 @@ jQuery(document).ready(function() {
     })
     window.history.pushState({href: href}, '', href);
   }
+
+  $('.nav-page-link').on('click', function(e) {
+    e.preventDefault();
+
+    openURL($(this).attr('href'));
+
+    $(this).addClass('active');
+    $('.nav-page-link').not($(this)).removeClass('active');
+  });
+
+  window.addEventListener('popstate', function(e) {
+    if (e.state) {
+      openURL(e.state.href);
+    }
+  });
 
   // Check the url to see which nav button to show as active
   $(window).on('load', function() {
@@ -35,41 +51,6 @@ jQuery(document).ready(function() {
       openURL($('.browse-link').attr('href'));
     }
   });
-
-  // Load pages via ajax
-  // $('.nav-page-link').on('click', function(e) {
-  //   e.preventDefault();
-  //
-  //   var container = $($(this).attr('data-target'));
-  //
-  //   if (container.length) {
-  //     $.get($(this).attr('href').nohtml(), function(result) {
-  //       container.html(result);
-  //       $.getScript('../app/components/com_publications/site/assets/js/search.js');
-  //     });
-  //
-  //     window.history.pushState({href: $(this).attr('href')}, '', $(this).attr('href'));
-  //
-  //     $(this).addClass('active');
-  //     $('.nav-page-link').not($(this)).removeClass('active');
-  //   }
-  // });
-
-  $('.nav-page-link').on('click', function(e) {
-    e.preventDefault();
-    
-    openURL($(this).attr('href'));
-
-    $(this).addClass('active');
-    $('.nav-page-link').not($(this)).removeClass('active');
-  });
-
-  window.addEventListener('popstate', function(e) {
-    if (e.state) {
-      openURL(e.state.href);
-    }
-  });
-
 
   // Mobile filtering
   var $mobileFilter = $('.mobile-filter'),
