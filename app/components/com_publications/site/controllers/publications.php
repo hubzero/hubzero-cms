@@ -643,6 +643,14 @@ class Publications extends SiteController
 			$extended)
 		);
 
+		// Add collect module to sections
+		array_push($sections,
+			array(
+				"name" => "collect",
+				"html" => "",
+				"metadata" => \Hubzero\Module\Helper::renderModule('mod_collect')
+		));
+
 		$available = array('play');
 		foreach ($cats as $cat)
 		{

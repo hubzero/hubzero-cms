@@ -1,0 +1,5 @@
+@import url('/core/modules/mod_collect/assets/css/mod_collect.css');
+body.page-com_publications div.metadata p.collector {
+    position: unset;
+    margin: 10px 0 0 20px;
+}
