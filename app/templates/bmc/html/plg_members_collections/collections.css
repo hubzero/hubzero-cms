@@ -8,3 +8,6 @@
   left: -0.1em;
   top: 0;
 }
+.publication .content:after {
+  content: "\f02d";
+}

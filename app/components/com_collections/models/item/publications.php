@@ -8,7 +8,9 @@
 namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
+use Components\Collections\Models\Asset;
 use Components\Publications\Models\Publication;
+use Components\Publications\Helpers;
 use Request;
 use Route;
 use Lang;
@@ -66,6 +68,78 @@ class Publications extends GenericItem
 	}
 
 	/**
+	 * Add publication image as an asset
+	 * 
+	 * @param object  $resource  Publication model
+	 * @return string
+	 */
+	private function addImage($resource)
+	{
+		// Get the image if exists
+		$source = $resource->hasImage('master');
+
+		// Default image
+		if (!$source)
+		{
+			$source = PATH_APP . DS . trim($resource->config('masterimage', 'components/com_publications/site/assets/img/master.png'), DS);
+		}
+
+		$filename = basename($source);
+		
+		// Save publication image as asset
+		// - Borrowing code from app/components/com_collections/site/controllers/media.php, ajaxUploadTask
+		$asset = new Asset();
+		
+		// Define upload directory and make sure its writable
+		$destination = $asset->filespace() . DS . $this->get('id');
+		if (!is_dir($destination))
+		{
+			if (!Filesystem::makeDirectory($destination))
+			{
+				echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_COLLECT_PUBLICATION')));
+				return;
+			}
+		}
+
+		if (!is_writable($destination))
+		{
+			echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_COLLECT_PUBLICATION')));
+			return;
+		}
+
+		$destination = $destination . DS . $filename;
+		if (!copy($source, $destination))
+		{
+			echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_COLLECT_PUBLICATION')));
+			return;
+		}
+
+		// Create database entry
+		$asset->set('item_id', $this->get('id'));
+		$asset->set('filename', $filename);
+		if ($asset->image())
+		{
+			$hi = new \Hubzero\Image\Processor($destination);
+			if (count($hi->getErrors()) == 0)
+			{
+				$hi->autoRotate();
+				$hi->save();
+			}
+		}
+		$asset->set('description', '');
+		$asset->set('state', 1);
+		$asset->set('type', 'file');
+
+		if (!$asset->store())
+		{
+			echo json_encode(array(
+				'error' => $asset->getError()
+			));
+			return;
+		}
+	}
+
+	/**
 	 * Create an item entry for a publication
 	 *
 	 * @param   integer  $id  Optional ID to use
@@ -116,6 +190,8 @@ class Publications extends GenericItem
 		{
 			return false;
 		}
+
+		$this->addImage($resource);
 
 		return true;
 	}

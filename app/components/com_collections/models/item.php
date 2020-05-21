@@ -761,7 +761,7 @@ class Item extends Base
 			}
 		}
 
-		if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'link')))
+		if (!in_array($type, array('publication', 'collection', 'deleted', 'image', 'file', 'text', 'link')))
 		{
 			$type = 'link';
 		}
