@@ -10,16 +10,17 @@ defined('_HZEXEC_') or die();
 
 $item = $this->row->item();
 
+include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
+$resource = new \Components\Publications\Models\Publication(null, null, $item->get('object_id'));
+$imgPath = $resource->hasImage('master');
+
+$url = Route::url($resource->link('version'));
+
 $content = $this->row->description('parsed');
-$content = ($content ?: $item->description('parsed'));
+$content = ($content ?: '<p>' . $resource->get('abstract') . '</p>');
 
-$path = $item->filespace() . DS . $item->get('id');
-$asset = $item->assets()[0];
-
-if ($asset)
+if ($imgPath)
 {
-	$imgPath = $path . DS . $asset->file('thumbnail');
-
 	list($originalWidth, $originalHeight) = getimagesize($imgPath);
 	$ratio = $originalWidth / $originalHeight;
 
@@ -27,23 +28,19 @@ if ($asset)
 			? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP)
 			: $originalHeight;
 
-	$alt = $this->escape(stripslashes($asset->get('description', '')));
+	$alt = $this->escape(stripslashes($resource->get('title', '')));
 }
 ?>
-<p class="publication">
-	<a href="<?php echo stripslashes($item->get('url')); ?>" rel="external nofollow noreferrer">
-		<?php echo $this->escape(stripslashes($item->get('title', $item->get('url')))); ?>
+<h4>
+	<a href="<?php echo $url; ?>" rel="external nofollow noreferrer">
+		<?php echo $this->escape(stripslashes($resource->get('title', $url))); ?>
 	</a>
-</p>
+</h4>
 
-<?php if ($asset): ?>
+<?php if ($imgPath): ?>
 <div class="holder">
-	<a class="img-link"
-		href="<?php echo $asset->link('original'); ?>"
-		data-rel="post<?php echo $this->row->get('id'); ?>"
-		data-download="<?php echo $asset->link('original'); ?>"
-		data-downloadtext="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DOWNLOAD'); ?>">
-		<img src="<?php echo $asset->link('thumb'); ?>" alt="<?php echo $alt; ?>" class="img" height="<?php echo $height; ?>" />
+	<a href="<?php echo $url; ?>" rel="external nofollow noreferrer">
+		<img src="<?php echo Route::url($resource->link('masterimage')); ?>" alt="<?php echo $alt; ?>" class="img" height="<?php echo $height; ?>" />
 	</a>
 </div>
 <?php endif; ?>
