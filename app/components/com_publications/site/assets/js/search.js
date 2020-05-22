@@ -16,8 +16,6 @@ $(document).ready(function() {
     $('#limit').removeAttr('onchange');
   }
 
-  removeOnchange();
-
   $('#resourcesform').on('submit', function(e) {
     e.preventDefault();
 

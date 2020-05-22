@@ -429,7 +429,9 @@
     list-style-type: none;
   }
 }
-
+ .contrib-options {
+   margin-top: -2em;
+ }
 
 
 //Submit a Resource
@@ -511,7 +513,7 @@
   border-left: 60px solid $android-green;
   border-top: 60px solid transparent;
   height: 0;
-  left: .5em;
+  left: -.5em;
   position: absolute;
   top: 1em;
   width: 0;
