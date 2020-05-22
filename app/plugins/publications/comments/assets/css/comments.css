@@ -1,0 +1,41 @@
+/**
+ * Copyright 2005-2009 HUBzero Foundation, LLC.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Comments CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Comments */
+	/* Header */
+	h3.comments-title {
+		position: relative;
+	}
+	h3.comments-title .feed {
+		display: block;
+		width: 1em;
+		height: 1em;
+		overflow: hidden;
+		text-indent: -55em;
+		position: absolute;
+		top: 5px;
+		right: 0;
+		margin: 0;
+		padding: 0;
+	}
+
+	ol.comments .marked>.comment-content {
+		border-color: #222;
+	}
+	ol.comments .marked>.comment-content:before {
+		border-color: transparent #222 transparent transparent;
+	}
