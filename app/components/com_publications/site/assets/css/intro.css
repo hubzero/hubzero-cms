@@ -544,6 +544,10 @@
   list-style-type: none;
 }
 
+.contrib-options {
+  margin-top: -2em;
+}
+
 .submit-resource-wrap {
   display: flex;
   flex-wrap: wrap;
@@ -642,7 +646,7 @@
   border-left: 60px solid #8cc540;
   border-top: 60px solid transparent;
   height: 0;
-  left: .5em;
+  left: -.5em;
   position: absolute;
   top: 1em;
   width: 0;

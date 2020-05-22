@@ -21,18 +21,39 @@ jQuery(document).ready(function() {
     window.history.pushState({href: href}, '', href);
   }
 
+  // Remove onchange function for pagination
+  const removeOnchange = () => {
+    $('#limit').removeAttr('onchange');
+  }
+
   $('.nav-page-link').on('click', function(e) {
     e.preventDefault();
 
     openURL($(this).attr('href'));
 
     $(this).addClass('active');
+    var $activeLink = localStorage.setItem('linkState', 'active')
     $('.nav-page-link').not($(this)).removeClass('active');
   });
 
   window.addEventListener('popstate', function(e) {
     if (e.state) {
       openURL(e.state.href);
+
+      if (window.location.href.indexOf('browse') > -1) {
+        $('.browse-link').addClass('active');
+        $('.oer-link').removeClass('active');
+        $('.submit-link').removeClass('active');
+        removeOnchange();
+      } else if (window.location.href.indexOf('oer') > -1) {
+        $('.oer-link').addClass('active');
+        $('.browse-link').removeClass('active');
+        $('.submit-link').removeClass('active');
+      } else if(window.location.href.indexOf('submit') > -1) {
+        $('.submit-link').addClass('active');
+        $('.browse-link').removeClass('active');
+        $('.oer-link').removeClass('active');
+      }
     }
   });
 
@@ -42,6 +63,7 @@ jQuery(document).ready(function() {
 
     if (window.location.href.indexOf('browse') > -1) {
       $('.browse-link').addClass('active');
+      removeOnchange();
     } else if (window.location.href.indexOf('oer') > -1) {
       $('.oer-link').addClass('active');
     } else if(window.location.href.indexOf('submit') > -1) {
@@ -49,6 +71,7 @@ jQuery(document).ready(function() {
     } else {
       $('.browse-link').addClass('active');
       openURL($('.browse-link').attr('href'));
+      removeOnchange();
     }
   });
 
