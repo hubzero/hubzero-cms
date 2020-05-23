@@ -84,13 +84,13 @@ defined('_HZEXEC_') or die();
 								<?php echo $this->escape(stripslashes($this->comment->creator->get('name'))); ?>
 							<?php } ?>
 						<?php } else { ?>
-							<?php echo Lang::txt('PLG_RESOURCES_COMMENTS_ANONYMOUS'); ?>
+							<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_ANONYMOUS'); ?>
 						<?php } ?>
 					</strong>
-					<a class="permalink" href="<?php echo $this->comment->link(); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_COMMENTS_PERMALINK'); ?>">
-						<span class="comment-date-at"><?php echo Lang::txt('PLG_RESOURCES_COMMENTS_AT'); ?></span>
+					<a class="permalink" href="<?php echo $this->comment->link(); ?>" title="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_PERMALINK'); ?>">
+						<span class="comment-date-at"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_AT'); ?></span>
 						<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
-						<span class="comment-date-on"><?php echo Lang::txt('PLG_RESOURCES_COMMENTS_ON'); ?></span>
+						<span class="comment-date-on"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_ON'); ?></span>
 						<span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
 					</a>
 				</p>
@@ -99,7 +99,7 @@ defined('_HZEXEC_') or die();
 					<?php
 					if ($this->comment->isReported())
 					{
-						echo '<p class="warning">' . Lang::txt('PLG_RESOURCES_COMMENTS_REPORTED_AS_ABUSIVE') . '</p>';
+						echo '<p class="warning">' . Lang::txt('PLG_PUBLICATIONS_COMMENTS_REPORTED_AS_ABUSIVE') . '</p>';
 					}
 					else
 					{
@@ -143,22 +143,22 @@ defined('_HZEXEC_') or die();
 				<?php if (!$this->comment->isReported()) { ?>
 					<p class="comment-options">
 						<?php if (($this->params->get('access-delete-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
-							<a class="icon-delete delete" href="<?php echo Route::url($this->comment->link('delete')); ?>" data-txt-confirm="<?php echo Lang::txt('PLG_RESOURCES_COMMENTS_CONFIRM'); ?>"><!--
-								--><?php echo Lang::txt('PLG_RESOURCES_COMMENTS_DELETE'); ?><!--
+							<a class="icon-delete delete" href="<?php echo Route::url($this->comment->link('delete')); ?>" data-txt-confirm="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_CONFIRM'); ?>"><!--
+								--><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_DELETE'); ?><!--
 							--></a>
 						<?php } ?>
 						<?php if (($this->params->get('access-edit-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
 							<a class="icon-edit edit" href="<?php echo Route::url($this->comment->link('edit')); ?>"><!--
-								--><?php echo Lang::txt('PLG_RESOURCES_COMMENTS_EDIT'); ?><!--
+								--><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_EDIT'); ?><!--
 							--></a>
 						<?php } ?>
 						<?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
-							<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('PLG_RESOURCES_COMMENTS_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_RESOURCES_COMMENTS_REPLY'); ?>"href="<?php echo Route::url($this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
-								--><?php echo Lang::txt('PLG_RESOURCES_COMMENTS_REPLY'); ?><!--
+							<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_REPLY'); ?>"href="<?php echo Route::url($this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+								--><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_REPLY'); ?><!--
 							--></a>
 						<?php } ?>
-							<a class="icon-abuse abuse" data-txt-flagged="<?php echo Lang::txt('PLG_RESOURCES_COMMENTS_REPORTED_AS_ABUSIVE'); ?>" href="<?php echo Route::url($this->comment->link('report')); ?>"><!--
-								--><?php echo Lang::txt('PLG_RESOURCES_COMMENTS_REPORT_ABUSE'); ?><!--
+							<a class="icon-abuse abuse" data-txt-flagged="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_REPORTED_AS_ABUSIVE'); ?>" href="<?php echo Route::url($this->comment->link('report')); ?>"><!--
+								--><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_REPORT_ABUSE'); ?><!--
 							--></a>
 					</p><!-- / .comment-options -->
 				<?php } ?>
@@ -167,7 +167,7 @@ defined('_HZEXEC_') or die();
 						<form action="<?php echo Route::url($this->comment->link('base')); ?>" method="post" enctype="multipart/form-data">
 							<fieldset>
 								<legend>
-									<span><?php echo Lang::txt('PLG_RESOURCES_COMMENTS_REPLYING_TO', (!$this->comment->get('anonymous') ? $this->comment->get('name') : Lang::txt('PLG_RESOURCES_COMMENTS_ANONYMOUS'))); ?></span>
+									<span><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_REPLYING_TO', (!$this->comment->get('anonymous') ? $this->comment->get('name') : Lang::txt('PLG_PUBLICATIONS_COMMENTS_ANONYMOUS'))); ?></span>
 								</legend>
 
 								<input type="hidden" name="comment[id]" value="0" />
@@ -179,31 +179,32 @@ defined('_HZEXEC_') or die();
 								<input type="hidden" name="comment[state]" value="1" />
 								<input type="hidden" name="comment[access]" value="1" />
 								<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
-								<input type="hidden" name="id" value="<?php echo $this->obj_id; ?>" />
+								<input type="hidden" name="id" value="<?php echo $this->obj->get('id'); ?>" />
+								<input type="hidden" name="v" value="<?php echo $this->obj->get('version_number'); ?>" />
 								<input type="hidden" name="active" value="comments" />
 								<input type="hidden" name="action" value="commentsave" />
 
 								<?php echo Html::input('token'); ?>
 
 								<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
-									<span class="label-text"><?php echo Lang::txt('PLG_RESOURCES_COMMENTS_ENTER_COMMENTS'); ?></span>
+									<span class="label-text"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_ENTER_COMMENTS'); ?></span>
 									<?php
 									echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
 									?>
 								</label>
 
 								<label class="comment-<?php echo $this->comment->get('id'); ?>-file" for="comment-<?php echo $this->comment->get('id'); ?>-file">
-									<span class="label-text"><?php echo Lang::txt('PLG_RESOURCES_COMMENTS_ATTACH_FILE'); ?>:</span>
+									<span class="label-text"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_ATTACH_FILE'); ?>:</span>
 									<input type="file" name="comment_file" id="comment-<?php echo $this->comment->get('id'); ?>-file" />
 								</label>
 
 								<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
 									<input class="option" type="checkbox" name="comment[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
-									<?php echo Lang::txt('PLG_RESOURCES_COMMENTS_POST_COMMENT_ANONYMOUSLY'); ?>
+									<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_POST_COMMENT_ANONYMOUSLY'); ?>
 								</label>
 
 								<p class="submit">
-									<input type="submit" value="<?php echo Lang::txt('PLG_RESOURCES_COMMENTS_POST_COMMENT'); ?>" />
+									<input type="submit" value="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_POST_COMMENT'); ?>" />
 								</p>
 							</fieldset>
 						</form>
@@ -216,8 +217,8 @@ defined('_HZEXEC_') or die();
 			{
 				$replies = $this->comment->replies()
 					->whereIn('state', array(
-						Plugins\Resources\Comments\Models\Comment::STATE_PUBLISHED,
-						Plugins\Resources\Comments\Models\Comment::STATE_FLAGGED
+						Plugins\Publications\Comments\Models\Comment::STATE_PUBLISHED,
+						Plugins\Publications\Comments\Models\Comment::STATE_FLAGGED
 					))
 					->whereIn('access', User::getAuthorisedViewLevels())
 					->ordered()

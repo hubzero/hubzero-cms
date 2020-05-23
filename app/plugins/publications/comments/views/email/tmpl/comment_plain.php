@@ -34,13 +34,13 @@
 defined('_HZEXEC_') or die();
 
 $base = rtrim(Request::base(), '/');
-$sef  = Route::url('index.php?option=' . $this->option . '&id=' . $this->comment->get('item_id') . '&active=comments#c' . $this->comment->get('id'));
+$sef  = Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->get('id') . '&v=' . $this->publication->get('version_number') . '&active=comments#c' . $this->comment->get('id'));
 $link = $base . '/' . trim($sef, '/');
 
 // Build message
 $message = '';
-$message .= ($this->comment->get('anonymous')) ? Lang::txt('PLG_RESOURCES_COMMENTS_ANONYMOUS') : $this->comment->creator->get('name') . ' (' . $this->comment->creator->get('username') . ')';
-$message .= ' wrote (in ' . $this->resource->title . '):';
+$message .= ($this->comment->get('anonymous')) ? Lang::txt('PLG_PUBLICATIONS_COMMENTS_ANONYMOUS') : $this->comment->creator->get('name') . ' (' . $this->comment->creator->get('username') . ')';
+$message .= ' wrote (in ' . $this->publication->title . '):';
 
 $output = html_entity_decode(strip_tags($this->comment->content), ENT_COMPAT, 'UTF-8');
 $output = preg_replace_callback(

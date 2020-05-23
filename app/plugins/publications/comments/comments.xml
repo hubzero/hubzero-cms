@@ -18,50 +18,50 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 
-<extension version="1.7" type="plugin" group="resources">
-	<name>Resources - Comments</name>
+<extension version="1.7" type="plugin" group="publications">
+	<name>Publications - Comments</name>
 	<author>HUBzero</author>
 	<creationDate>September 2016</creationDate>
 	<copyright>Copyright 2005-2015 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Comments for Resources</description>
+	<description>Comments for Publications</description>
 	<files>
 		<filename plugin="comments">comments.php</filename>
 	</files>
 	<languages folder="lang">
-		<language tag="en-GB">en-GB.plg_resources_comments.ini</language>
+		<language tag="en-GB">en-GB.plg_publications_comments.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="comments_depth" type="text" size="3" default="3" label="PLG_RESOURCES_COMMENTS_DEPTH_LABEL" description="PLG_RESOURCES_COMMENTS_DEPTH_DESC"/>
-				<field name="comments_limit" type="text" size="5" default="25" label="PLG_RESOURCES_COMMENTS_LIMIT_LABEL" description="PLG_RESOURCES_COMMENTS_LIMIT_DESC"/>
-				<field name="comments_viewable" type="list" default="0" label="PLG_RESOURCES_COMMENTS_VIEWABLE_LABEL" description="PLG_RESOURCES_COMMENTS_VIEWABLE_DESC">
+				<field name="comments_depth" type="text" size="3" default="3" label="PLG_PUBLICATIONS_COMMENTS_DEPTH_LABEL" description="PLG_PUBLICATIONS_COMMENTS_DEPTH_DESC"/>
+				<field name="comments_limit" type="text" size="5" default="25" label="PLG_PUBLICATIONS_COMMENTS_LIMIT_LABEL" description="PLG_PUBLICATIONS_COMMENTS_LIMIT_DESC"/>
+				<field name="comments_viewable" type="list" default="0" label="PLG_PUBLICATIONS_COMMENTS_VIEWABLE_LABEL" description="PLG_PUBLICATIONS_COMMENTS_VIEWABLE_DESC">
 					<option value="0">Anyone</option>
 					<option value="1">Logged-in users</option>
 				</field>
-				<field name="comments_editable" type="list" default="1" label="PLG_RESOURCES_COMMENTS_EDITABLE_LABEL" description="PLG_RESOURCES_COMMENTS_EDITABLE_DESC">
+				<field name="comments_editable" type="list" default="1" label="PLG_PUBLICATIONS_COMMENTS_EDITABLE_LABEL" description="PLG_PUBLICATIONS_COMMENTS_EDITABLE_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="comments_deletable" type="list" default="0" label="PLG_RESOURCES_COMMENTS_DELETABLE_LABEL" description="PLG_RESOURCES_COMMENTS_DELETABLE_DESC">
+				<field name="comments_deletable" type="list" default="0" label="PLG_PUBLICATIONS_COMMENTS_DELETABLE_LABEL" description="PLG_PUBLICATIONS_COMMENTS_DELETABLE_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="comments_votable" type="list" default="1" label="PLG_RESOURCES_COMMENTS_VOTABLE_LABEL" description="PLG_RESOURCES_COMMENTS_VOTABLE_DESC">
+				<field name="comments_votable" type="list" default="1" label="PLG_PUBLICATIONS_COMMENTS_VOTABLE_LABEL" description="PLG_PUBLICATIONS_COMMENTS_VOTABLE_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="comments_close" type="list" default="year" label="PLG_RESOURCES_COMMENTS_CLOSE_LABEL" description="PLG_RESOURCES_COMMENTS_CLOSE_DESC">
-					<option value="never">PLG_RESOURCES_COMMENTS_CLOSE_NEVER</option>
-					<option value="now">PLG_RESOURCES_COMMENTS_CLOSE_NOW</option>
-					<option value="day">PLG_RESOURCES_COMMENTS_CLOSE_DAY</option>
-					<option value="week">PLG_RESOURCES_COMMENTS_CLOSE_WEEK</option>
-					<option value="month">PLG_RESOURCES_COMMENTS_CLOSE_MONTH</option>
-					<option value="6months">PLG_RESOURCES_COMMENTS_CLOSE_6MONTHS</option>
-					<option value="year">PLG_RESOURCES_COMMENTS_CLOSE_YEAR</option>
+				<field name="comments_close" type="list" default="year" label="PLG_PUBLICATIONS_COMMENTS_CLOSE_LABEL" description="PLG_PUBLICATIONS_COMMENTS_CLOSE_DESC">
+					<option value="never">PLG_PUBLICATIONS_COMMENTS_CLOSE_NEVER</option>
+					<option value="now">PLG_PUBLICATIONS_COMMENTS_CLOSE_NOW</option>
+					<option value="day">PLG_PUBLICATIONS_COMMENTS_CLOSE_DAY</option>
+					<option value="week">PLG_PUBLICATIONS_COMMENTS_CLOSE_WEEK</option>
+					<option value="month">PLG_PUBLICATIONS_COMMENTS_CLOSE_MONTH</option>
+					<option value="6months">PLG_PUBLICATIONS_COMMENTS_CLOSE_6MONTHS</option>
+					<option value="year">PLG_PUBLICATIONS_COMMENTS_CLOSE_YEAR</option>
 				</field>
-				<field name="comments_email" type="list" default="1" label="PLG_RESOURCES_COMMENTS_EMAIL_LABEL" description="PLG_RESOURCES_COMMENTS_EMAIL_DESC">
+				<field name="comments_email" type="list" default="1" label="PLG_PUBLICATIONS_COMMENTS_EMAIL_LABEL" description="PLG_PUBLICATIONS_COMMENTS_EMAIL_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>

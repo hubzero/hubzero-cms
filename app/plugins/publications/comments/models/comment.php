@@ -29,7 +29,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Plugins\Resources\Comments\Models;
+namespace Plugins\Publications\Comments\Models;
 
 use Hubzero\Item\Comment as ItemComment;
 
@@ -61,7 +61,7 @@ class Comment extends ItemComment
 	 */
 	public function files()
 	{
-		return $this->oneToMany('Plugins\Resources\Comments\Models\File', 'comment_id');
+		return $this->oneToMany('Plugins\Publications\Comments\Models\File', 'comment_id');
 	}
 
 	/**

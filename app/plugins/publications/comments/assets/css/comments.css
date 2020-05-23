@@ -20,6 +20,9 @@
 	h3.comments-title {
 		position: relative;
 	}
+	h3.post-comment-title {
+		margin-top: 20px;
+	}
 	h3.comments-title .feed {
 		display: block;
 		width: 1em;

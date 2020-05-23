@@ -34,9 +34,9 @@
 defined('_HZEXEC_') or die();
 
 /**
- * Resources plugin class for displaying comments
+ * Publications plugin class for displaying comments
  */
-class plgResourcesComments extends \Hubzero\Plugin\Plugin
+class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -55,34 +55,37 @@ class plgResourcesComments extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @param      object $resource Current resource
-	 * @return     array
+	 * @param   object   $publication  Current publication
+	 * @param   string   $version      Version name
+	 * @param   boolean  $extended     Whether or not to show panel
+	 * @return  array
 	 */
-	public function &onResourcesAreas($model)
+	public function &onPublicationAreas($publication, $version = 'default', $extended = true) // $model)
 	{
 		$areas = array();
 
-		if ($model->type->params->get('plg_comments') && $model->access('view-all'))
+		if ($publication->_category->_params->get('plg_comments') && $extended)
 		{
-			$areas['comments'] = Lang::txt('PLG_RESOURCES_COMMENTS');
+			$areas['comments'] = Lang::txt('PLG_PUBLICATIONS_COMMENTS');
 		}
 
 		return $areas;
 	}
 
 	/**
-	 * Return data on a resource view (this will be some form of HTML)
+	 * Return data on a publication view (this will be some form of HTML)
 	 *
-	 * @param   object  $resource  Current resource
-	 * @param   string  $option    Name of the component
-	 * @param   array   $areas     Active area(s)
-	 * @param   string  $rtrn      Data to be returned
+	 * @param   object   $publication  Current publication
+	 * @param   string   $option       Name of the component
+	 * @param   array    $areas        Active area(s)
+	 * @param   string   $rtrn         Data to be returned
+	 * @param   string   $version      Version name
+	 * @param   boolean  $extended     Whether or not to show panel
 	 * @return  array
 	 */
-	public function onResources($model, $option, $areas, $rtrn='all')
+	public function onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true) // $model, $option, $areas, $rtrn='all')
 	{
 		$arr = array(
-			'area'     => $this->_name,
 			'html'     => '',
 			'metadata' => ''
 		);
@@ -90,43 +93,39 @@ class plgResourcesComments extends \Hubzero\Plugin\Plugin
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas))
 		{
-			if (!array_intersect($areas, $this->onResourcesAreas($model))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model))))
+			if (!array_intersect($areas, $this->onPublicationAreas($publication))
+			 && !array_intersect($areas, array_keys($this->onPublicationAreas($publication))))
 			{
 				$rtrn = 'metadata';
 			}
 		}
-		if (!$model->type->params->get('plg_comments'))
+		if (!$publication->_category->_params->get('plg_comments') || !$extended)
 		{
 			return $arr;
 		}
 
-		$ar = $this->onResourcesAreas($model);
-		if (empty($ar))
-		{
-			$rtrn = '';
-		}
+		$this->publication = $publication;
 
 		include_once __DIR__ . '/models/comment.php';
+
+		$arr['name']  = 'comments';
 
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
-			$this->model = $model;
-
-			$url = $model->link() . '&active=' . $this->_name;	
+			$url = $publication->link('version') . '&active=' . $this->_name;
 
 			$this->view = $this->view('default', 'view');
 			$this->view->option   = $this->option   = $option;
-			$this->view->obj      = $this->obj      = $model;
-			$this->view->obj_id   = $this->obj_id   = $model->id;
+			$this->view->obj      = $this->obj      = $publication;
+			$this->view->obj_id   = $this->obj_id   = $publication->version->id;
 			$this->view->obj_type = $this->obj_type = substr($option, 4);
 			$this->view->url      = $this->url      = $url;
 			$this->view->depth    = 0;
 
 			$this->_authorize();
 
-			$this->comment = new Plugins\Resources\Comments\Models\Comment();
+			$this->comment = new Plugins\Publications\Comments\Models\Comment();
 
 			$this->view->params   = $this->params;
 			$this->view->task     = $this->task    = Request::getVar('action', '');
@@ -266,7 +265,7 @@ class plgResourcesComments extends \Hubzero\Plugin\Plugin
 	{
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->url, false, true))),
-			Lang::txt('PLG_RESOURCES_COMMENTS_LOGIN_NOTICE'),
+			Lang::txt('PLG_PUBLICATIONS_COMMENTS_LOGIN_NOTICE'),
 			'warning'
 		);
 	}
@@ -296,7 +295,7 @@ class plgResourcesComments extends \Hubzero\Plugin\Plugin
 			$how = -1;
 		}
 
-		$item = Plugins\Resources\Comments\Models\Comment::oneOrFail($item_id);
+		$item = Plugins\Publications\Comments\Models\Comment::oneOrFail($item_id);
 
 		if (!$item->vote($how))
 		{
@@ -311,7 +310,7 @@ class plgResourcesComments extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				Notify::success(Lang::txt('PLG_RESOURCES_COMMENTS_VOTE_SAVED'));
+				Notify::success(Lang::txt('PLG_PUBLICATIONS_COMMENTS_VOTE_SAVED'));
 			}
 
 			App::redirect(
@@ -338,13 +337,13 @@ class plgResourcesComments extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _view()
 	{
-		$comments = Plugins\Resources\Comments\Models\Comment::all()
+		$comments = Plugins\Publications\Comments\Models\Comment::all()
 			->whereEquals('item_type', $this->obj_type)
 			->whereEquals('item_id', $this->obj_id)
 			->whereEquals('parent', 0)
 			->whereIn('state', array(
-				Plugins\Resources\Comments\Models\Comment::STATE_PUBLISHED,
-				Plugins\Resources\Comments\Models\Comment::STATE_FLAGGED
+				Plugins\Publications\Comments\Models\Comment::STATE_PUBLISHED,
+				Plugins\Publications\Comments\Models\Comment::STATE_FLAGGED
 			))
 			->whereIn('access', User::getAuthorisedViewLevels())
 			->limit($this->params->get('display_limit', 25))
@@ -376,13 +375,13 @@ class plgResourcesComments extends \Hubzero\Plugin\Plugin
 		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object
-		$row = Plugins\Resources\Comments\Models\Comment::oneOrNew($comment['id'])->set($comment);
+		$row = Plugins\Publications\Comments\Models\Comment::oneOrNew($comment['id'])->set($comment);
 
 		if ($row->get('id') && !$this->params->get('access-edit-comment'))
 		{
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->url, false, true))),
-				Lang::txt('PLG_RESOURCES_COMMENTS_NOTAUTH'),
+				Lang::txt('PLG_PUBLICATIONS_COMMENTS_NOTAUTH'),
 				'warning'
 			);
 		}
@@ -408,10 +407,10 @@ class plgResourcesComments extends \Hubzero\Plugin\Plugin
 		{
 			if ($upload['error'])
 			{
-				$this->setError(\Lang::txt('PLG_RESOURCES_COMMENTS_ERROR_UPLOADING_FILE'));
+				$this->setError(\Lang::txt('PLG_PUBLICATIONS_COMMENTS_ERROR_UPLOADING_FILE'));
 			}
 
-			$file = new Plugins\Resources\Comments\Models\File();
+			$file = new Plugins\Publications\Comments\Models\File();
 			$file->set('comment_id', $row->get('id'));
 			$file->setUploadDir($this->params->get('comments_uploadpath', '/site/comments'));
 
@@ -430,13 +429,13 @@ class plgResourcesComments extends \Hubzero\Plugin\Plugin
 
 		// Record the activity
 		$recipients = array(
-			['resource', $row->get('item_id')]//,
+			['publication', $row->get('item_id')]//,
 			//['user', $row->get('created_by')]
 		);
 		$users = array();
-		foreach ($this->model->contributors('!submitter') as $contributor)
+		foreach ($this->publication->authors() as $author)
 		{
-			$profile = User::getInstance($contributor->id);
+			$profile = User::getInstance($author->id);
 			if ($profile->get('id'))
 			{
 				$users[] = $profile->get('id');
@@ -454,16 +453,16 @@ class plgResourcesComments extends \Hubzero\Plugin\Plugin
 			$recipients[] = ['user', $row->parent()->get('created_by')];
 		}
 
-		$url = Route::url('index.php?option=' . $this->option . '&id=' . $row->get('item_id') . '&active=comments#c' . $row->get('id'));
+		$url = Route::url('index.php?option=' . $this->option . '&id=' . $this->obj->get('id') . '&v=' . $this->obj->get('version_number') . '&active=comments#c' . $row->get('id'));
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
 				'action'      => ($comment['id'] ? 'updated' : 'created'),
-				'scope'       => 'resource.comment',
+				'scope'       => 'publication.comment',
 				'scope_id'    => $row->get('id'),
 				'anonymous'   => $row->get('anonymous', 0),
 				'description' => Lang::txt(
-					'PLG_RESOURCES_COMMENTS_' . ($comment['id'] ? 'UPDATED' : 'CREATED'),
+					'PLG_PUBLICATIONS_COMMENTS_' . ($comment['id'] ? 'UPDATED' : 'CREATED'),
 					$row->get('id'),
 					'<a href="' . Route::url($url) . '">' . $this->obj->title . '</a>'
 				),
@@ -481,7 +480,7 @@ class plgResourcesComments extends \Hubzero\Plugin\Plugin
 		if ($this->params->get('comments_email', 1))
 		{
 			$from = array(
-				'name'  => (!$row->get('anonymous') ? $row->creator->get('name', Lang::txt('PLG_RESOURCES_COMMENTS_UNKNOWN')) : Lang::txt('PLG_RESOURCES_COMMENTS_ANONYMOUS')) . ' @ ' . Config::get('sitename'),
+				'name'  => (!$row->get('anonymous') ? $row->creator->get('name', Lang::txt('PLG_PUBLICATIONS_COMMENTS_UNKNOWN')) : Lang::txt('PLG_PUBLICATIONS_COMMENTS_ANONYMOUS')) . ' @ ' . Config::get('sitename'),
 				'email' => Config::get('mailfrom'),
 				'replytoname'  => Config::get('sitename'),
 				'replytoemail' => Config::get('mailfrom')
@@ -499,7 +498,7 @@ class plgResourcesComments extends \Hubzero\Plugin\Plugin
 			$eview
 				->set('option', $this->option)
 				->set('comment', $row)
-				->set('resource', $this->obj);
+				->set('publication', $this->obj);
 
 			$plain = $eview->loadTemplate(false);
 			$msg['plaintext'] = str_replace("\n", "\r\n", $plain);
@@ -509,18 +508,18 @@ class plgResourcesComments extends \Hubzero\Plugin\Plugin
 			$html = $eview->loadTemplate();
 			$msg['multipart'] = str_replace("\n", "\r\n", $html);
 
-			$subject = Lang::txt('PLG_RESOURCES_COMMENTS') . ': ' . $this->obj->title;
+			$subject = Lang::txt('PLG_PUBLICATIONS_COMMENTS') . ': ' . $this->obj->title;
 
-			if (!Event::trigger('xmessage.onSendMessage', array('resources_new_comment', $subject, $msg, $from, $users, $this->option)))
+			if (!Event::trigger('xmessage.onSendMessage', array('publications_new_comment', $subject, $msg, $from, $users, $this->option)))
 			{
-				Notify::error(Lang::txt('PLG_RESOURCES_COMMENTS_ERROR_EMAIL_MEMBERS_FAILED'));
+				Notify::error(Lang::txt('PLG_PUBLICATIONS_COMMENTS_ERROR_EMAIL_MEMBERS_FAILED'));
 			}
 		}
 
 		// Redirect
 		App::redirect(
 			Route::url($this->url),
-			Lang::txt('PLG_RESOURCES_COMMENTS_SAVED'),
+			Lang::txt('PLG_PUBLICATIONS_COMMENTS_SAVED'),
 			'message'
 		);
 	}
@@ -549,7 +548,7 @@ class plgResourcesComments extends \Hubzero\Plugin\Plugin
 		}
 
 		// Initiate a blog comment object
-		$comment = Plugins\Resources\Comments\Models\Comment::oneOrFail($id);
+		$comment = Plugins\Publications\Comments\Models\Comment::oneOrFail($id);
 
 		if (User::get('id') != $comment->get('created_by')
 		 && !$this->params->get('access-delete-comment'))
@@ -559,7 +558,7 @@ class plgResourcesComments extends \Hubzero\Plugin\Plugin
 			);
 		}
 
-		$comment->set('state', Plugins\Resources\Comments\Models\Comment::STATE_DELETED);
+		$comment->set('state', Plugins\Publications\Comments\Models\Comment::STATE_DELETED);
 
 		// Delete the entry itself
 		if (!$comment->save())
@@ -570,7 +569,7 @@ class plgResourcesComments extends \Hubzero\Plugin\Plugin
 		{
 			// Record the activity
 			$recipients = array(
-				['resource', $comment->get('item_id')],
+				['publication', $comment->get('item_id')],
 				['user', $comment->get('created_by')]
 			);
 			if ($comment->get('created_by') != $this->obj->created_by)
@@ -583,10 +582,10 @@ class plgResourcesComments extends \Hubzero\Plugin\Plugin
 			Event::trigger('system.logActivity', [
 				'activity' => [
 					'action'      => 'deleted',
-					'scope'       => 'resource.comment',
+					'scope'       => 'publication.comment',
 					'scope_id'    => $comment->get('id'),
 					'description' => Lang::txt(
-						'PLG_RESOURCES_COMMENTS_DELETED',
+						'PLG_PUBLICATIONS_COMMENTS_DELETED',
 						$comment->get('id'),
 						'<a href="' . Route::url($url) . '">' . $this->obj->title . '</a>'
 					),
@@ -603,7 +602,7 @@ class plgResourcesComments extends \Hubzero\Plugin\Plugin
 
 		App::redirect(
 			Route::url($this->url),
-			Lang::txt('PLG_RESOURCES_COMMENTS_REMOVED'),
+			Lang::txt('PLG_PUBLICATIONS_COMMENTS_REMOVED'),
 			'message'
 		);
 	}

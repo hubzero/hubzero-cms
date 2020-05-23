@@ -42,7 +42,7 @@ $this->css()
 
 				<?php if ($this->params->get('access-create-comment')) { ?>
 					<h3 class="post-comment-title" id="post-comment">
-						<?php echo Lang::txt('PLG_RESOURCES_COMMENTS_POST_A_COMMENT'); ?>
+						<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_POST_A_COMMENT'); ?>
 					</h3>
 					<form method="post" action="<?php echo Route::url($this->url); ?>" id="commentform" enctype="multipart/form-data">
 						<p class="comment-member-photo">
@@ -55,12 +55,12 @@ $this->css()
 							}
 
 							// Load the comment
-							$comment = Plugins\Resources\Comments\Models\Comment::oneOrNew($edit);
+							$comment = Plugins\Publications\Comments\Models\Comment::oneOrNew($edit);
 							// If the comment exists and the editor is NOT the creator and the editor is NOT a manager...
 							if ($comment->get('id') && $comment->get('created_by') != User::get('id') && !$this->params->get('access-manage-comment'))
 							{
 								// Disallow editing
-								$comment = Plugins\Resources\Comments\Models\Comment::blank();
+								$comment = Plugins\Publications\Comments\Models\Comment::blank();
 							}
 
 							if ($comment->isNew())
@@ -78,9 +78,9 @@ $this->css()
 							{
 								if ($replyto = Request::getInt('commentreply', 0))
 								{
-									$reply = Plugins\Resources\Comments\Models\Comment::oneOrNew($replyto);
+									$reply = Plugins\Publications\Comments\Models\Comment::oneOrNew($replyto);
 
-									$name = Lang::txt('PLG_RESOURCES_COMMENTS_ANONYMOUS');
+									$name = Lang::txt('PLG_PUBLICATIONS_COMMENTS_ANONYMOUS');
 									if (!$reply->get('anonymous'))
 									{
 										$name = $this->escape(stripslashes($repy->creator->get('name')));
@@ -105,7 +105,7 @@ $this->css()
 							}
 							?>
 							<label for="commentcontent">
-								<?php echo Lang::txt('PLG_RESOURCES_COMMENTS_YOUR_COMMENTS'); ?>:
+								<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_YOUR_COMMENTS'); ?>:
 								<?php
 								if (!User::isGuest())
 								{
@@ -115,17 +115,17 @@ $this->css()
 							</label>
 
 							<label for="comment_file">
-								<?php echo Lang::txt('PLG_RESOURCES_COMMENTS_ATTACH_FILE'); ?>
+								<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_ATTACH_FILE'); ?>
 								<input type="file" name="comment_file" id="comment_file" />
 							</label>
 
 							<label id="comment-anonymous-label">
 								<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($comment->get('anonymous')) { echo ' checked="checked"'; } ?> />
-								<?php echo Lang::txt('PLG_RESOURCES_COMMENTS_POST_ANONYMOUSLY'); ?>
+								<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_POST_ANONYMOUSLY'); ?>
 							</label>
 
 							<p class="submit">
-								<input type="submit" class="btn btn-success" name="submit" value="<?php echo Lang::txt('PLG_RESOURCES_COMMENTS_POST_COMMENT'); ?>" />
+								<input type="submit" class="btn btn-success" name="submit" value="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_POST_COMMENT'); ?>" />
 							</p>
 
 							<input type="hidden" name="comment[id]" value="<?php echo $comment->get('id'); ?>" />
@@ -136,7 +136,8 @@ $this->css()
 							<input type="hidden" name="comment[state]" value="<?php echo $comment->get('state', 1); ?>" />
 							<input type="hidden" name="comment[access]" value="<?php echo $comment->get('access', 1); ?>" />
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-							<input type="hidden" name="id" value="<?php echo $this->obj_id; ?>" />
+							<input type="hidden" name="id" value="<?php echo $this->obj->get('id'); ?>" />
+							<input type="hidden" name="v" value="<?php echo $this->obj->get('version_number'); ?>" />
 							<input type="hidden" name="active" value="comments" />
 							<input type="hidden" name="action" value="commentsave" />
 
@@ -144,7 +145,7 @@ $this->css()
 
 							<div class="sidenote">
 								<p>
-									<strong><?php echo Lang::txt('PLG_RESOURCES_COMMENTS_KEEP_RELEVANT'); ?></strong>
+									<strong><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_KEEP_RELEVANT'); ?></strong>
 								</p>
 							</div>
 						</fieldset>
@@ -152,11 +153,11 @@ $this->css()
 				<?php } ?>
 
 				<?php if ($this->params->get('comments_locked', 0) == 1) { ?>
-					<p class="info"><?php echo Lang::txt('PLG_RESOURCES_COMMENTS_LOCKED'); ?></p>
+					<p class="info"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_LOCKED'); ?></p>
 				<?php } ?>
 
 				<h3 class="post-comment-title">
-					<?php echo Lang::txt('PLG_RESOURCES_COMMENTS'); ?>
+					<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS'); ?>
 				</h3>
 				<?php if ($this->comments->count()) {
 					$this->view('list')
@@ -170,10 +171,10 @@ $this->css()
 						->set('url', $this->url)
 						->set('cls', 'odd')
 						->display();
-				} else ($this->depth <= 1) { ?>
+				} elseif ($this->depth <= 1) { ?>
 					<div class="results-none">
 						<p class="no-comments">
-							<?php echo Lang::txt('PLG_RESOURCES_COMMENTS_NO_COMMENTS'); ?>
+							<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_NO_COMMENTS'); ?>
 						</p>
 					</div>
 				<?php } ?>
@@ -183,6 +184,6 @@ $this->css()
 	</section><!-- / .below section -->
 <?php } else { ?>
 	<p class="warning">
-		<?php echo Lang::txt('PLG_RESOURCES_COMMENTS_MUST_BE_LOGGED_IN'); ?>
+		<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_MUST_BE_LOGGED_IN'); ?>
 	</p>
 <?php } ?>
