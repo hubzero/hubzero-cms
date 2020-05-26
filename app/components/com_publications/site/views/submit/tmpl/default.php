@@ -42,13 +42,13 @@ if (User::isGuest())
       <div id="live-update-content">
 
 
-        <?php if ($this->pid && !empty($this->project) && $this->project->get('created_by_user') == User::get('id')) { ?>
+        <!-- <?php if ($this->pid && !empty($this->project) && $this->project->get('created_by_user') == User::get('id')) { ?>
         	<p class="contrib-options">
         		<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEED_A_PROJECT'); ?>
         		<a href="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->project->get('alias') . '&action=activate'); ?>">
         		<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LEARN_MORE'); ?> &raquo;</a>
         	</p>
-        <?php } ?>
+        <?php } ?> -->
 
         <?php
         	// Display status message
