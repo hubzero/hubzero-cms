@@ -12,9 +12,9 @@ $(document).ready(function() {
   var urlToFetch = null;
 
   // Remove onchange function for pagination
-  const removeOnchange = () => {
-    $('#limit').removeAttr('onchange');
-  }
+  // const removeOnchange = () => {
+  //   $('#limit').removeAttr('onchange');
+  // }
 
   $('#resourcesform').on('submit', function(e) {
     e.preventDefault();
@@ -24,24 +24,24 @@ $(document).ready(function() {
     urlToFetch = `${url}${queryParams}${encodedTerms}${sortbyParams}${limitParams}`;
 
     if (container.length && inputTerms.length) {
-      container.load(urlToFetch + ' #results-container', removeOnchange);
+      container.load(urlToFetch + ' #results-container');
       return urlToFetch;
     }
   });
 
-  $('body').on('change', '#limit', function() {
-    console.log('limit change detected');
-    var newLimit = $('#limit').val();
-    limitParams = `&limit=${newLimit}&limitstart=0`;
-
-    if (urlToFetch === null) {
-      urlToFetch = `${url}${queryParams}${sortbyParams}${limitParams}`;
-      container.load(urlToFetch + ' #results-container', removeOnchange);
-    } else {
-      urlToFetch = urlToFetch.replace(/limit=.+&limitstart=0/, 'limit=' + newLimit + '&limitstart=0');
-      container.load(urlToFetch + ' #results-container', removeOnchange);
-    }
-  });
+  // $('body').on('change', '#limit', function() {
+  //   console.log('limit change detected');
+  //   var newLimit = $('#limit').val();
+  //   limitParams = `&limit=${newLimit}&limitstart=0`;
+  //
+  //   if (urlToFetch === null) {
+  //     urlToFetch = `${url}${queryParams}${sortbyParams}${limitParams}`;
+  //     container.load(urlToFetch + ' #results-container');
+  //   } else {
+  //     urlToFetch = urlToFetch.replace(/limit=.+&limitstart=0/, 'limit=' + newLimit + '&limitstart=0');
+  //     container.load(urlToFetch + ' #results-container');
+  //   }
+  // });
 
   $('body').on('click', '.pagination li a', function(e) {
     e.preventDefault();

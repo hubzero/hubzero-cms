@@ -21,11 +21,6 @@ jQuery(document).ready(function() {
     window.history.pushState({href: href}, '', href);
   }
 
-  // Remove onchange function for pagination
-  const removeOnchange = () => {
-    $('#limit').removeAttr('onchange');
-  }
-
   $('.nav-page-link').on('click', function(e) {
     e.preventDefault();
 
@@ -44,7 +39,6 @@ jQuery(document).ready(function() {
         $('.browse-link').addClass('active');
         $('.oer-link').removeClass('active');
         $('.submit-link').removeClass('active');
-        removeOnchange();
       } else if (window.location.href.indexOf('oer') > -1) {
         $('.oer-link').addClass('active');
         $('.browse-link').removeClass('active');
@@ -63,7 +57,6 @@ jQuery(document).ready(function() {
 
     if (window.location.href.indexOf('browse') > -1) {
       $('.browse-link').addClass('active');
-      removeOnchange();
     } else if (window.location.href.indexOf('oer') > -1) {
       $('.oer-link').addClass('active');
     } else if(window.location.href.indexOf('submit') > -1) {
@@ -71,7 +64,6 @@ jQuery(document).ready(function() {
     } else {
       $('.browse-link').addClass('active');
       openURL($('.browse-link').attr('href'));
-      removeOnchange();
     }
   });
 
