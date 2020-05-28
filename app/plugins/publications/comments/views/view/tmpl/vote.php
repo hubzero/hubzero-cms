@@ -102,17 +102,6 @@ if (!$no_html) { ?>
 			</a>
 		<?php } ?>
 	</span>
-	<span class="vote-dislike<?php echo $dcls; ?>">
-		<?php if ($this->item->get('vote') || User::get('id') == $this->item->get('created_by')) { ?>
-			<span class="vote-button <?php echo ($this->item->get('negative', 0) > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" title="<?php echo $dislike_title; ?>">
-				<?php echo $this->item->get('negative', 0); ?><span> <?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_VOTE_DISLIKE'); ?></span>
-			</span>
-		<?php } else { ?>
-			<a class="vote-button <?php echo ($this->item->get('negative', 0) > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" href="<?php echo Route::url($this->url . 'action=commentvote&votedown=' . $this->item->get('id')); ?>" title="<?php echo $dislike_title; ?>">
-				<?php echo $this->item->get('negative', 0); ?><span> <?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_VOTE_DISLIKE'); ?></span>
-			</a>
-		<?php } ?>
-	</span>
 <?php if (!$no_html) { ?>
 </p>
 <?php } ?>

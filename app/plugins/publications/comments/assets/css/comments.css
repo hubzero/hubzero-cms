@@ -42,3 +42,7 @@
 	ol.comments .marked>.comment-content:before {
 		border-color: transparent #222 transparent transparent;
 	}
+
+	ol.comments li.comment span.vote-like span::after {
+		top: 6px;
+	}
