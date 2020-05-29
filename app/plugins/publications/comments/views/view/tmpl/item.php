@@ -220,10 +220,15 @@ defined('_HZEXEC_') or die();
 						Plugins\Publications\Comments\Models\Comment::STATE_PUBLISHED,
 						Plugins\Publications\Comments\Models\Comment::STATE_FLAGGED
 					))
-					->whereIn('access', User::getAuthorisedViewLevels())
-					->ordered()
-					->rows();
-
+					->whereIn('access', User::getAuthorisedViewLevels());
+				
+				if ($this->sortby == 'likes') {
+					$replies = $replies->order('positive', 'desc');
+				}
+					
+				$replies = $replies->order('created', 'desc')
+								   ->rows();
+				
 				if ($replies->count())
 				{
 					$this->view('list')
@@ -234,6 +239,7 @@ defined('_HZEXEC_') or die();
 						->set('obj', $this->obj)
 						->set('params', $this->params)
 						->set('depth', $this->depth)
+						->set('sortby', $this->sortby)
 						->set('url', $this->url)
 						->set('cls', $cls)
 						->display();

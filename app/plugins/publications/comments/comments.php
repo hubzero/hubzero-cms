@@ -121,6 +121,7 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 			$this->view->obj_id   = $this->obj_id   = $publication->version->id;
 			$this->view->obj_type = $this->obj_type = substr($option, 4);
 			$this->view->url      = $this->url      = $url;
+			$this->view->sortby   = $this->sortby   = Request::getVar('sortby', 'created');	
 			$this->view->depth    = 0;
 
 			$this->_authorize();
@@ -337,6 +338,8 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _view()
 	{
+		$no_html = Request::getInt('no_html', 0);
+
 		$comments = Plugins\Publications\Comments\Models\Comment::all()
 			->whereEquals('item_type', $this->obj_type)
 			->whereEquals('item_id', $this->obj_id)
@@ -345,14 +348,27 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 				Plugins\Publications\Comments\Models\Comment::STATE_PUBLISHED,
 				Plugins\Publications\Comments\Models\Comment::STATE_FLAGGED
 			))
-			->whereIn('access', User::getAuthorisedViewLevels())
-			->limit($this->params->get('display_limit', 25))
-			->ordered()
-			->paginated();
+			->whereIn('access', User::getAuthorisedViewLevels()); 			// ->limit($this->params->get('display_limit', 25))
+
+		if ($this->sortby == 'likes') {
+			$comments = $comments->order('positive', 'desc');
+		}
+		
+		$comments = $comments->order('created', 'desc');
 
 		$this->view
 			->set('comments', $comments)
 			->setErrors($this->getErrors());
+
+		if (!$no_html) {
+			return $this->view;
+		} else {
+			// Ugly brute force method of cleaning output
+			ob_clean();
+			$this->view->setLayout('list');
+			echo $this->view->loadTemplate();
+			exit();
+		}
 	}
 
 	/**

@@ -54,6 +54,18 @@ jQuery(document).ready(function(jq){
 			$.get(el.attr('href').nohtml(), {}, function(data) {
 				$(el.parent().parent()).html(data);
 			});
+		})
+		.on('click', 'ul.order-options li a:not(.active)', function(e) {
+			e.preventDefault();
+
+			var el = $(this);
+
+			thread.find('ul.order-options li a.active').removeClass('active');
+			el.addClass('active');
+			
+			$.get(el.attr('data-url').nohtml(), {}, function(data) {
+				thread.children('ol').replaceWith(data);
+			});
 		});
 
 	$('a.abuse').fancybox({

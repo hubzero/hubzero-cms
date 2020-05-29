@@ -156,9 +156,17 @@ $this->css()
 					<p class="info"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_LOCKED'); ?></p>
 				<?php } ?>
 
-				<h3 class="post-comment-title">
-					<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS'); ?>
-				</h3>
+				<div class="container">
+					<h3 class="post-comment-title">
+						<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS'); ?>
+					</h3>
+					<nav class="entries-filters">
+						<ul class="entries-menu order-options">
+							<li><a<?php echo ($this->sortby == 'likes') ? ' class="active"' : ''; ?> data-url="<?php echo Route::url($this->obj->link('comments')) . '?sortby=likes'; ?>" title="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_SORT_BY_LIKES'); ?>"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_SORT_BY_LIKES'); ?></a></li>
+							<li><a<?php echo ($this->sortby == 'created') ? ' class="active"' : ''; ?> data-url="<?php echo Route::url($this->obj->link('comments')) . '?sortby=created'; ?>"  title="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_SORT_BY_DATE'); ?>"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_SORT_BY_DATE'); ?></a></li>
+						</ul>
+					</nav>
+				</div>
 				<?php if ($this->comments->count()) {
 					$this->view('list')
 						->set('option', $this->option)
@@ -168,6 +176,7 @@ $this->css()
 						->set('obj', $this->obj)
 						->set('params', $this->params)
 						->set('depth', $this->depth)
+						->set('sortby', $this->sortby)
 						->set('url', $this->url)
 						->set('cls', 'odd')
 						->display();

@@ -46,3 +46,12 @@
 	ol.comments li.comment span.vote-like span::after {
 		top: 6px;
 	}
+
+	.order-options a:before {
+		content: "\2193";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
+	}
+	.order-options a.desc:before {
+		content: "\2191";
+	}
