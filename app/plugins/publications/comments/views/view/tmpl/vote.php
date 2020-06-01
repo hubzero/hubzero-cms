@@ -35,6 +35,7 @@ defined('_HZEXEC_') or die();
 
 $dcls = '';
 $lcls = '';
+$no_html = $this->get('no_html', 0);
 $this->url = preg_replace('/\#[^\#]*$/', '', $this->url);
 if (!strstr($this->url, '?'))
 {
@@ -85,8 +86,6 @@ else
 	$dislike_title = Lang::txt('PLG_PUBLICATIONS_COMMENTS_VOTE_DOWN_LOGIN');
 	$cls = ' tooltips';
 }
-
-$no_html = Request::getInt('no_html', 0);
 
 if (!$no_html) { ?>
 <p class="comment-voting voting">

@@ -321,9 +321,10 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 
 		$item->set('vote', $how);
 
-		$this->view->setLayout('vote');
-		$this->view->set('item', $item);
-		$this->view->setErrors($this->getErrors());
+		$this->view->set('item', $item)
+				   ->set('no_html', $no_html)
+				   ->setLayout('vote')
+				   ->setErrors($this->getErrors());
 
 		// Ugly brute force method of cleaning output
 		ob_clean();
