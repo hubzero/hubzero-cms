@@ -13,6 +13,50 @@ String.prototype.nohtml = function () {
 	return this + (this.indexOf('?') == -1 ? '?' : '&') + 'no_html=1';
 };
 
+fancybox_config = {
+	type: 'ajax',
+	width: 500,
+	height: 'auto',
+	autoSize: false,
+	fitToView: false,
+	titleShow: false,
+	tpl: {
+		wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
+	},
+	beforeLoad: function() {
+		href = $(this).attr('href');
+		$(this).attr('href', href.nohtml());
+	},
+	afterShow: function() {
+		var frm = $('#hubForm-ajax'),
+			self = $(this.element[0]);
+
+		if (frm.length) {
+			frm.on('submit', function(e) {
+				e.preventDefault();
+				$.post($(this).attr('action'), $(this).serialize(), function(data) {
+					var response = jQuery.parseJSON(data);
+
+					if (!response.success) {
+						frm.prepend('<p class="error">' + response.message + '</p>');
+						return;
+					} else {
+						$('#sbox-content').html('<p class="passed">' + response.message + '</p>');
+						$('#c' + response.id)
+							.find('.comment-body')
+							.first()
+							.html('<p class="warning">' + self.attr('data-txt-flagged') + '</p>');
+					}
+
+					setTimeout(function(){
+						$.fancybox.close();
+					}, 2 * 1000);
+				});
+			});
+		}
+	}
+};
+
 jQuery(document).ready(function(jq){
 	var $ = jq,
 		thread = $('div.thread');
@@ -65,50 +109,11 @@ jQuery(document).ready(function(jq){
 			
 			$.get(el.attr('data-url').nohtml(), {}, function(data) {
 				thread.children('ol').replaceWith(data);
+				// Not sure why $(this) doesn't work here
+				$('div.thread li.comment .ckeditor-content').ckeditor(JSON.parse($('div.thread li.comment .ckeditor-content').siblings('script').html()));
+				$('a.abuse').fancybox(fancybox_config);
 			});
 		});
 
-	$('a.abuse').fancybox({
-		type: 'ajax',
-		width: 500,
-		height: 'auto',
-		autoSize: false,
-		fitToView: false,
-		titleShow: false,
-		tpl: {
-			wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
-		},
-		beforeLoad: function() {
-			href = $(this).attr('href');
-			$(this).attr('href', href.nohtml());
-		},
-		afterShow: function() {
-			var frm = $('#hubForm-ajax'),
-				self = $(this.element[0]);
-
-			if (frm.length) {
-				frm.on('submit', function(e) {
-					e.preventDefault();
-					$.post($(this).attr('action'), $(this).serialize(), function(data) {
-						var response = jQuery.parseJSON(data);
-
-						if (!response.success) {
-							frm.prepend('<p class="error">' + response.message + '</p>');
-							return;
-						} else {
-							$('#sbox-content').html('<p class="passed">' + response.message + '</p>');
-							$('#c' + response.id)
-								.find('.comment-body')
-								.first()
-								.html('<p class="warning">' + self.attr('data-txt-flagged') + '</p>');
-						}
-
-						setTimeout(function(){
-							$.fancybox.close();
-						}, 2 * 1000);
-					});
-				});
-			}
-		}
-	});
+	$('a.abuse').fancybox(fancybox_config);
 });
