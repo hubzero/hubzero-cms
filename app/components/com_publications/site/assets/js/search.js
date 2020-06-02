@@ -25,6 +25,8 @@ $(document).ready(function() {
 
     if (container.length && inputTerms.length) {
       container.load(urlToFetch + ' #results-container');
+      window.history.pushState({href: urlToFetch}, '', urlToFetch);
+
       return urlToFetch;
     }
   });
@@ -53,8 +55,6 @@ $(document).ready(function() {
     }  else {
       $('#contrib-section').load(page + ' #contrib-section');
     }
-
-
   });
 
 });
