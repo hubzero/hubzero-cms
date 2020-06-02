@@ -31,6 +31,7 @@ if (User::isGuest())
 				<h5>Related Articles</h5>
 				<ul>
 					<li>[Article] <a href="/kb/resources/postresource">Using Publications to Post Resources on QUBES</a></li>
+					<li>[Article] <a href="/authorinfo">Information for Authors and Submitters</a></li>
 				</ul>
 			</div>
 		</aside>
