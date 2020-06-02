@@ -276,7 +276,7 @@ class Items extends AdminController
 				$entry = Item::oneOrFail(intval($id));
 
 				// Delete the entry
-				if (!$entry->delete())
+				if (!$entry->destroy())
 				{
 					Notify::error($entry->getError());
 					continue;
