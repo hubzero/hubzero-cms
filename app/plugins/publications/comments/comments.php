@@ -345,12 +345,14 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 			->whereEquals('parent', 0)
 			->whereIn('state', array(
 				Plugins\Publications\Comments\Models\Comment::STATE_PUBLISHED,
-				Plugins\Publications\Comments\Models\Comment::STATE_FLAGGED
+				Plugins\Publications\Comments\Models\Comment::STATE_FLAGGED,
+				Plugins\Publications\Comments\Models\Comment::STATE_DELETED
 			))
 			->whereIn('access', User::getAuthorisedViewLevels()); 			// ->limit($this->params->get('display_limit', 25))
 
 		if ($this->sortby == 'likes') {
-			$comments = $comments->order('positive', 'desc');
+			$comments = $comments->order('state', 'asc')
+			                     ->order('positive', 'desc');
 		}
 		
 		$comments = $comments->order('created', 'desc');
@@ -615,10 +617,6 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 			]);
 		}
 
-		App::redirect(
-			Route::url($this->url),
-			Lang::txt('PLG_PUBLICATIONS_COMMENTS_REMOVED'),
-			'message'
-		);
+		$this->_view();
 	}
 }

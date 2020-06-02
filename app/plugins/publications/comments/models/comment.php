@@ -125,4 +125,15 @@ class Comment extends ItemComment
 
 		return $link;
 	}
+
+	/**
+	 * Saves the current model to the database (override so don't save state to replies)
+	 *
+	 * @return  bool
+	 */
+	public function save()
+	{
+		// Need to skip save method from parent which saves state to replies
+		return call_user_func(array(get_parent_class(get_parent_class($this)), 'save'));
+	}
 }

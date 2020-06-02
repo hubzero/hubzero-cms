@@ -84,11 +84,18 @@ jQuery(document).ready(function(jq){
 			}
 		})// Add confirm dialog to delete links
 		.on('click', 'a.delete', function (e) {
-			var res = confirm($(this).attr('data-txt-confirm'));
-			if (!res) {
-				e.preventDefault();
+			e.preventDefault();
+
+			if (confirm($(this).attr('data-txt-confirm'))) {
+				var el = $(this);
+				var sortby = ($('ul.order-options a.active').attr('title') === "Date" ? "created" : "likes");
+				$.get(el.attr('href').nohtml() + '&sortby=' + sortby, {}, function(data) {
+					thread.children('ol').replaceWith(data);
+					// Not sure why $(this) doesn't work here
+					$('div.thread li.comment .ckeditor-content').ckeditor(JSON.parse($('div.thread li.comment .ckeditor-content').siblings('script').html()));
+					$('a.abuse').fancybox(fancybox_config);
+				});
 			}
-			return res;
 		})
 		.on('click', 'a.vote-button', function(e) {
 			e.preventDefault();

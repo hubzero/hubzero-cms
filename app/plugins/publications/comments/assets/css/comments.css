@@ -72,3 +72,11 @@
 	span.vote-button {
 		cursor: default !important;
 	}
+
+	/* https://stackoverflow.com/questions/4086107/fixed-page-header-overlaps-in-page-anchors */
+	:target::before {
+		content: "";
+		display: block !important;
+		height: 60px; /* fixed header height*/
+		margin: -60px 0 0; /* negative fixed header height */
+	  }

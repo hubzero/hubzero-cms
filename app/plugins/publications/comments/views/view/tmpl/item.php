@@ -55,15 +55,35 @@ if ($mark = $this->params->get('onCommentMark'))
 $rtrn = $this->url ? $this->url : Request::getVar('REQUEST_URI', 'index.php?option=' . $this->option . '&id=' . $this->obj_id . '&active=comments', 'server');
 
 $this->comment->set('url', $rtrn);
+
+// Get replies
+$replies = $this->comment->replies()
+	->whereIn('state', array(
+		Plugins\Publications\Comments\Models\Comment::STATE_PUBLISHED,
+		Plugins\Publications\Comments\Models\Comment::STATE_FLAGGED,
+		Plugins\Publications\Comments\Models\Comment::STATE_DELETED
+	))
+	->whereIn('access', User::getAuthorisedViewLevels());
+
+if ($this->sortby == 'likes') {
+	$replies = $replies->order('state', 'asc')
+	                   ->order('positive', 'desc');
+}
+	
+$replies = $replies->order('created', 'desc')
+					->rows();
+
+$deleted = ($this->comment->get('state') == Plugins\Publications\Comments\Models\Comment::STATE_DELETED);
+$author_modified = ($this->comment->get('modified_by') == $this->comment->get('created_by'));
 ?>
 
 <li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 	<p class="comment-member-photo">
-		<img src="<?php echo $this->comment->creator->picture($this->comment->get('anonymous')); ?>" alt="" />
+		<img src="<?php echo $this->comment->creator->picture($deleted || $this->comment->get('anonymous')); ?>" alt="" />
 	</p>
 	<div class="comment-content">
 		<?php
-		if ($this->params->get('comments_votable', 1))
+		if (!$deleted && $this->params->get('comments_votable', 1))
 		{
 			$this->view('vote')
 				->set('option', $this->option)
@@ -74,9 +94,13 @@ $this->comment->set('url', $rtrn);
 		}
 		?>
 
+		<?php $action = 'created'; ?>
 		<p class="comment-title">
-			<strong>
-				<?php if (!$this->comment->get('anonymous')) { ?>
+			<?php echo (!$deleted ? '<strong>' : '<em>'); ?>
+				<?php if ($deleted) {
+					echo ($author_modified ? Lang::txt('PLG_PUBLICATIONS_COMMENTS_DELETED_AUTHOR') : Lang::txt('PLG_PUBLICATIONS_COMMENTS_DELETED_ADMIN'));
+					$action = 'modified';
+				} elseif (!$this->comment->get('anonymous')) { ?>
 					<?php if (in_array($this->comment->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
 						<a href="<?php echo Route::url($this->comment->creator->link()); ?>"><!--
 							--><?php echo $this->escape(stripslashes($this->comment->creator->get('name'))); ?><!--
@@ -87,29 +111,32 @@ $this->comment->set('url', $rtrn);
 				<?php } else { ?>
 					<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_ANONYMOUS'); ?>
 				<?php } ?>
-			</strong>
+			<?php echo (!$deleted ? '</strong>' : '</em>'); ?>
+
 			<a class="permalink" href="<?php echo $this->comment->link(); ?>" title="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_PERMALINK'); ?>">
 				<span class="comment-date-at"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_AT'); ?></span>
-				<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
+				<span class="time"><time datetime="<?php echo call_user_func(array($this->comment, $action)); ?>"><?php echo call_user_func_array(array($this->comment, $action), array('time')); ?></time></span>
 				<span class="comment-date-on"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_ON'); ?></span>
-				<span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
+				<span class="date"><time datetime="<?php echo call_user_func(array($this->comment, $action)); ?>"><?php echo call_user_func_array(array($this->comment, $action), array('date')); ?></time></span>
 			</a>
 		</p>
 
-		<div class="comment-body">
-			<?php
-			if ($this->comment->isReported())
-			{
-				echo '<p class="warning">' . Lang::txt('PLG_PUBLICATIONS_COMMENTS_REPORTED_AS_ABUSIVE') . '</p>';
-			}
-			else
-			{
-				echo $this->comment->content;
-			}
-			?>
-		</div><!-- / .comment-body -->
+		<?php if (!$deleted): ?>
+			<div class="comment-body">
+				<?php
+				if ($this->comment->isReported())
+				{
+					echo '<p class="warning">' . Lang::txt('PLG_PUBLICATIONS_COMMENTS_REPORTED_AS_ABUSIVE') . '</p>';
+				}
+				else
+				{
+					echo $this->comment->content;
+				}
+				?>
+			</div><!-- / .comment-body -->
+		<?php endif; ?>
 
-		<?php //if (!$this->comment->isReported() && $this->comment->files()->count()) { ?>
+		<?php if (!$this->comment->isReported() && !$deleted) { ?>
 			<div class="comment-attachments">
 				<?php
 				foreach ($this->comment->files()->rows() as $attachment)
@@ -139,9 +166,9 @@ $this->comment->set('url', $rtrn);
 				}
 				?>
 			</div><!-- / .comment-attachments -->
-		<?php //} ?>
+		<?php } ?>
 
-		<?php if (!$this->comment->isReported()) { ?>
+		<?php if (!$this->comment->isReported() && !$deleted) { ?>
 			<p class="comment-options">
 				<?php if (($this->params->get('access-delete-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
 					<a class="icon-delete delete" href="<?php echo Route::url($this->comment->link('delete')); ?>" data-txt-confirm="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_CONFIRM'); ?>"><!--
@@ -214,37 +241,20 @@ $this->comment->set('url', $rtrn);
 	</div><!-- / .comment-content -->
 
 	<?php
-	if ($this->depth < $this->params->get('comments_depth', 3))
-	{
-		$replies = $this->comment->replies()
-			->whereIn('state', array(
-				Plugins\Publications\Comments\Models\Comment::STATE_PUBLISHED,
-				Plugins\Publications\Comments\Models\Comment::STATE_FLAGGED
-			))
-			->whereIn('access', User::getAuthorisedViewLevels());
-		
-		if ($this->sortby == 'likes') {
-			$replies = $replies->order('positive', 'desc');
-		}
-			
-		$replies = $replies->order('created', 'desc')
-							->rows();
-		
-		if ($replies->count())
-		{
-			$this->view('list')
-				->set('option', $this->option)
-				->set('comments', $replies)
-				->set('obj_type', $this->obj_type)
-				->set('obj_id', $this->obj_id)
-				->set('obj', $this->obj)
-				->set('params', $this->params)
-				->set('depth', $this->depth)
-				->set('sortby', $this->sortby)
-				->set('url', $this->url)
-				->set('cls', $cls)
-				->display();
-		}
+	if (($this->depth < $this->params->get('comments_depth', 3)) && $replies->count())
+	{	
+		$this->view('list')
+			->set('option', $this->option)
+			->set('comments', $replies)
+			->set('obj_type', $this->obj_type)
+			->set('obj_id', $this->obj_id)
+			->set('obj', $this->obj)
+			->set('params', $this->params)
+			->set('depth', $this->depth)
+			->set('sortby', $this->sortby)
+			->set('url', $this->url)
+			->set('cls', $cls)
+			->display();
 	}
 	?>
 </li>
