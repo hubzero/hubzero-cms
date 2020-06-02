@@ -382,9 +382,14 @@
   grid-row: auto;
 }
 
+#publications .publication::before {
+  content: none;
+}
+
 .pagination {
   grid-column: 1/span 3;
   grid-row: auto;
+  height: auto;
 }
 
 .regular {

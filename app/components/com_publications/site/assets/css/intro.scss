@@ -306,10 +306,17 @@
 
 #publications {
   @include grid(1 / span 3, auto);
+
+  .publication {
+    &::before {
+      content: none;
+    }
+  }
 }
 
 .pagination {
   @include grid(1 / span 3, auto);
+  height: auto;
 }
 
 //Showcases
