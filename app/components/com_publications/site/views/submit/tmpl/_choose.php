@@ -7,6 +7,8 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+\Hubzero\Document\Assets::addPluginStylesheet('publications', 'forks', 'forks');
 ?>
 <form class="submit-options" method="post" action=""> <?php // echo Route::url($this->publication->link() . '&active=fork&action=fork'); ?>
 	<h3><?php echo Lang::txt('COM_PUBLICATIONS_ADD_NEW_PUB'); ?></h3>

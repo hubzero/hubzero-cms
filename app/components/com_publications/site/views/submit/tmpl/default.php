@@ -23,12 +23,6 @@ $this->css()
 \Hubzero\Document\Assets::addPluginScript('projects', 'files', 'jquery.fileuploader.js');
 \Hubzero\Document\Assets::addPluginScript('projects', 'files', 'jquery.queueuploader.js');
 
-$submit_url = Route::url('index.php?option=com_publications&task=submit&action=choose');
-if (User::isGuest())
-{
-  // Could be a problem here - imagining possible issue with this
-	$submit_url = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($submit_url));
-}
 ?>
 
 <?php if (!$no_html) { ?>
