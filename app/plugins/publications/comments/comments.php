@@ -319,8 +319,6 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 			);
 		}
 
-		$item->set('vote', $how);
-
 		$this->view->set('item', $item)
 				   ->set('no_html', $no_html)
 				   ->setLayout('vote')

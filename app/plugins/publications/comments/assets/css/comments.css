@@ -16,6 +16,7 @@
 */
 
 /* Comments */
+
 	/* Header */
 	h3.comments-title {
 		position: relative;
@@ -54,4 +55,20 @@
 	}
 	.order-options a.desc:before {
 		content: "\2191";
+	}
+
+	.comment-content .voting .like:hover {
+		background-color: #cbcbcb;
+	}	
+	
+	.comment-content .voting .vote-like.chosen .like {
+		background-color: #99ca78;
+	}
+
+	ol.comments li.comment span.vote-like.chosen:hover span::after {
+		content: "\2716";
+	}
+
+	span.vote-button {
+		cursor: default !important;
 	}
