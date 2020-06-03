@@ -643,21 +643,22 @@
   position: relative;
 }
 
-.software-instructions {
-  border: 1px solid #222b37;
-  padding: 1em 1em 1em 4em;
-  position: relative;
-}
-
-.arrow-right {
+.software-instructions-wrapper .arrow-right {
   border-bottom: 60px solid transparent;
   border-left: 60px solid #8cc540;
   border-top: 60px solid transparent;
   height: 0;
   left: -.5em;
+  margin: 0;
   position: absolute;
   top: 1em;
   width: 0;
+}
+
+.software-instructions {
+  border: 1px solid #222b37;
+  padding: 1em 1em 1em 4em;
+  position: relative;
 }
 
 .kb-links {

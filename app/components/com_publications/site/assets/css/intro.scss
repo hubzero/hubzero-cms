@@ -510,23 +510,24 @@
 
 .software-instructions-wrapper {
   position: relative;
+
+  .arrow-right {
+    border-bottom: 60px solid transparent;
+    border-left: 60px solid $android-green;
+    border-top: 60px solid transparent;
+    height: 0;
+    left: -.5em;
+    margin: 0;
+    position: absolute;
+    top: 1em;
+    width: 0;
+  }
 }
 
 .software-instructions {
   border: 1px solid $midnight;
   padding: 1em 1em 1em 4em;
   position: relative;
-}
-
-.arrow-right {
-  border-bottom: 60px solid transparent;
-  border-left: 60px solid $android-green;
-  border-top: 60px solid transparent;
-  height: 0;
-  left: -.5em;
-  position: absolute;
-  top: 1em;
-  width: 0;
 }
 
 .kb-links {

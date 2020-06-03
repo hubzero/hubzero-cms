@@ -20,9 +20,9 @@ jQuery(document).ready(function() {
 
       $('#submit-resource').fancybox({
       		type: 'ajax',
-      		scrolling: false,
-      		autoSize: true,
-      		fitToView: false,
+      		scrolling: true,
+      		autoSize: false,
+      		fitToView: true,
       		titleShow: false,
       		tpl: {
       			wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'

@@ -14,6 +14,8 @@ $this->css()
 ->css('intro')
 ->js()
 ->js('intro');
+
+\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'publications');
 ?>
 
 <div class="page-header">
