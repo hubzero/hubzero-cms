@@ -20,10 +20,8 @@ jQuery(document).ready(function() {
 
       $('#submit-resource').fancybox({
       		type: 'ajax',
-      		width: 600,
-      		height: 400,
       		scrolling: false,
-      		autoSize: false,
+      		autoSize: true,
       		fitToView: false,
       		titleShow: false,
       		tpl: {

@@ -493,6 +493,10 @@
   margin: 1em;
 }
 
+.oer-wrapper {
+  padding-bottom: 3.75em;
+}
+
 .philosophy-wrapper {
   padding: 2em;
 }
@@ -556,7 +560,6 @@
 .submit-resource-wrap {
   display: flex;
   flex-wrap: wrap;
-  display: none;
   padding-top: 2em;
   padding-bottom: 2em;
 }

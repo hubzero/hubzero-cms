@@ -388,6 +388,10 @@
 }
 
 //Why OER
+.oer-wrapper {
+  padding-bottom: 3.75em;
+}
+
 .philosophy-wrapper {
   padding: 2em;
 }
@@ -448,7 +452,6 @@
     padding-top: 0;
   }
   @include flexbox(wrap);
-  display: none;
   padding-top: 2em;
   padding-bottom: 2em;
 
