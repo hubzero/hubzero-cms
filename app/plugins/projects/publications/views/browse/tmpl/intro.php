@@ -11,7 +11,7 @@ defined('_HZEXEC_') or die();
 
 <div id="pubintro">
 	<h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_HOW_IT_WORKS'); ?> <?php if ($this->pub->config('documentation')) { ?>
-	<span class="learnmore"><a href="<?php echo $this->pub->config('documentation'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LEARN_MORE'); ?> &raquo;</a></span>
+	<span class="learnmore"><a href="/kb/resources/postresource"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LEARN_MORE'); ?> &raquo;</a></span>
 	<?php } ?></h3>
 
 	<div class="grid">
