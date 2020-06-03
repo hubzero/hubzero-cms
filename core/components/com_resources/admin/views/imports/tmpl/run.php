@@ -105,7 +105,7 @@ $this->css('import');
 
 											<h4><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_CONTRIBUTORS'); ?></h4>
 											<table>
-												{{#each record.contributors}}
+												{{#each raw.contributors}}
 													<tr>
 														<td>
 															<span class="contributor-name">{{{ name }}}</span>
