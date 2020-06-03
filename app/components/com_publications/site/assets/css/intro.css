@@ -750,10 +750,10 @@
 }
 
 .submit-options li .btn {
-  display: none;
   position: absolute;
   right: 1em;
   top: 0.75em;
+  padding: 1.15em 1.08em;
 }
 
 .submit-options li:hover {
