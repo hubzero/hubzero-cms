@@ -26,7 +26,6 @@ if (typeof(jQuery) !== "undefined") {
 		}
 	}
 	function jInitEditors() {
-		console.log($('.ckeditor-content'));
 		$('.ckeditor-content').each(function(i, el){
 			var cfg = $('#' + $(el).attr('id') + '-ckeconfig'),
 				config = null;
