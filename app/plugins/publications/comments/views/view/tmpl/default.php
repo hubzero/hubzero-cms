@@ -140,6 +140,7 @@ $this->css()
 							<input type="hidden" name="v" value="<?php echo $this->obj->get('version_number'); ?>" />
 							<input type="hidden" name="active" value="comments" />
 							<input type="hidden" name="action" value="commentsave" />
+							<input type="hidden" name="no_html" value="1" />
 
 							<?php echo Html::input('token'); ?>
 

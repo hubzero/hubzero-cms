@@ -91,8 +91,9 @@ jQuery(document).ready(function(jq){
 				var sortby = ($('ul.order-options a.active').attr('title') === "Date" ? "created" : "likes");
 				$.get(el.attr('href').nohtml() + '&sortby=' + sortby, {}, function(data) {
 					thread.children('ol').replaceWith(data);
-					// Not sure why $(this) doesn't work here
-					$('div.thread li.comment .ckeditor-content').ckeditor(JSON.parse($('div.thread li.comment .ckeditor-content').siblings('script').html()));
+					$('div.thread li.comment .ckeditor-content').each(function () { 
+						$(this).ckeditor(JSON.parse($(this).siblings('script').html()));
+					});
 					$('a.abuse').fancybox(fancybox_config);
 				});
 			}
@@ -116,9 +117,37 @@ jQuery(document).ready(function(jq){
 			
 			$.get(el.attr('data-url').nohtml(), {}, function(data) {
 				thread.children('ol').replaceWith(data);
-				// Not sure why $(this) doesn't work here
-				$('div.thread li.comment .ckeditor-content').ckeditor(JSON.parse($('div.thread li.comment .ckeditor-content').siblings('script').html()));
+				$('div.thread li.comment .ckeditor-content').each(function () { 
+					$(this).ckeditor(JSON.parse($(this).siblings('script').html()));
+				});
 				$('a.abuse').fancybox(fancybox_config);
+			});
+		})
+		.on('submit', 'form', function(e) {
+			e.preventDefault();
+
+			var el = $(this);
+			var formData = new FormData(this);
+			formData.append('sortby', $('ul.order-options a.active').attr('title') === "Date" ? "created" : "likes");
+			// console.log(...formData); // https://stackoverflow.com/questions/25040479/formdata-created-from-an-existing-form-seems-empty-when-i-log-it
+ 			$.ajax({
+				method: 'POST',
+				url: $(this).attr('action'),
+				data: formData,
+				processData: false,
+				contentType: false,
+				success: function(data) {
+					$('div.thread').children('div.results-none').replaceWith('<ol class="comments"></ol>');
+					thread.children('ol').replaceWith(data);
+					$('div.thread li.comment .ckeditor-content').each(function () { 
+						$(this).ckeditor(JSON.parse($(this).siblings('script').html()));
+					});
+					$('a.abuse').fancybox(fancybox_config);
+
+					// Reset form
+					el.trigger('reset');
+					el.first().find('textarea.ckeditor-content').val('');
+				}
 			});
 		});
 

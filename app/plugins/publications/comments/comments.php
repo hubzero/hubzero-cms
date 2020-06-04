@@ -533,12 +533,7 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Redirect
-		App::redirect(
-			Route::url($this->url),
-			Lang::txt('PLG_PUBLICATIONS_COMMENTS_SAVED'),
-			'message'
-		);
+		$this->_view();
 	}
 
 	/**
