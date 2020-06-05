@@ -216,16 +216,19 @@ $author_modified = ($this->comment->get('modified_by') == $this->comment->get('c
 						<?php echo Html::input('token'); ?>
 
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
-							<span class="label-text"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_ENTER_COMMENTS'); ?></span>
+							<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_YOUR_REPLY'); ?>:
 							<?php
 							echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
 							?>
 						</label>
 
-						<label class="comment-<?php echo $this->comment->get('id'); ?>-file" for="comment-<?php echo $this->comment->get('id'); ?>-file">
-							<span class="label-text"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_ATTACH_FILE'); ?>:</span>
-							<input type="file" name="comment_file" id="comment-<?php echo $this->comment->get('id'); ?>-file" />
-						</label>
+						<div class="file-inputs">
+							<label class="comment-<?php echo $this->comment->get('id'); ?>-file" for="comment-<?php echo $this->comment->get('id'); ?>-file">
+								<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_ATTACH_FILE'); ?>
+								<input type="file" name="comment_file" id="comment-<?php echo $this->comment->get('id'); ?>-file" />
+							</label>
+							<a href="#" class="detach_file" style="display: none;"></a>
+						</div>
 
 						<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
 							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />

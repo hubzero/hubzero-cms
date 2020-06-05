@@ -80,3 +80,40 @@
 		height: 60px; /* fixed header height*/
 		margin: -60px 0 0; /* negative fixed header height */
 	  }
+
+	  ol.comments .addcomment label {
+		  padding-top: 1em;
+	  }
+
+	  div.thread ol.comments .addcomment {
+		  padding-top: 0;
+	  }
+
+	  div.file-inputs {
+		  display: flex;
+		  justify-content: left;
+		  align-items: flex-end;
+	  }
+
+	  div.file-inputs > label {
+		  flex: 0 1 auto;
+		  margin-right: 1em;
+	  }
+	  div.file-inputs > a.detach_file {
+		  flex: 0 1 auto;
+	  }
+
+	  div.addcomment div.file-inputs > a.detach_file {
+		  padding-bottom: 0.5em;
+	  }
+
+	  div.file-inputs a.detach_file:before {
+		content: "\2716";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
+	  }
+
+	  div.file-inputs input {
+		  display: block;
+		  width: auto;
+	  }

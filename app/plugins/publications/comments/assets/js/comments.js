@@ -147,8 +147,21 @@ jQuery(document).ready(function(jq){
 					// Reset form
 					el.trigger('reset');
 					el.first().find('textarea.ckeditor-content').val('');
+					el.find('div.file-inputs input').val(''); // Reset doesn't trickle down to this
+					el.find('div.file-inputs input').trigger('change');
 				}
 			});
+		})
+		.on('change', 'div.file-inputs input', function(e) {
+			if ($(this).val().length) {
+				$(this).parent().siblings('a.detach_file').show();
+			} else {
+				$(this).parent().siblings('a.detach_file').hide();
+			}
+		})
+		.on('click', 'div.file-inputs a.detach_file', function(e) {
+			$(this).parent().find('input').val('');
+			$(this).parent().find('input').trigger('change');
 		});
 
 	$('a.abuse').fancybox(fancybox_config);
