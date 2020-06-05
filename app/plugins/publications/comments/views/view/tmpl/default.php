@@ -65,7 +65,7 @@ $this->css()
 
 							if ($comment->isNew())
 							{
-								$comment->set('parent', Request::getInt('commentreply', 0));
+								$comment->set('parent', 0);
 								$comment->set('created_by', (!User::isGuest() ? User::get('id') : 0));
 								$comment->set('anonymous', (!User::isGuest() ? 0 : 1));
 							}
@@ -73,37 +73,6 @@ $this->css()
 							<img src="<?php echo $comment->creator->picture($comment->get('anonymous')); ?>" alt="" />
 						</p>
 						<fieldset>
-							<?php
-							if (!User::isGuest())
-							{
-								if ($replyto = Request::getInt('commentreply', 0))
-								{
-									$reply = Plugins\Publications\Comments\Models\Comment::oneOrNew($replyto);
-
-									$name = Lang::txt('PLG_PUBLICATIONS_COMMENTS_ANONYMOUS');
-									if (!$reply->get('anonymous'))
-									{
-										$name = $this->escape(stripslashes($repy->creator->get('name')));
-										if (in_array($reply->creator->get('access'), User::getAuthorisedViewLevels()))
-										{
-											$name = '<a href="' . Route::url($reply->creator->link()) . '">' . $name . '</a>';
-										}
-									}
-									?>
-									<blockquote cite="c<?php echo $reply->get('id'); ?>">
-										<p>
-											<strong><?php echo $name; ?></strong>
-											<span class="comment-date-at"><?php echo Lang::txt('COM_ANSWERS_AT'); ?></span>
-											<span class="time"><time datetime="<?php echo $reply->created(); ?>"><?php echo $reply->created('time'); ?></time></span>
-											<span class="comment-date-on"><?php echo Lang::txt('COM_ANSWERS_ON'); ?></span>
-											<span class="date"><time datetime="<?php echo $reply->created(); ?>"><?php echo $reply->created('date'); ?></time></span>
-										</p>
-										<p><?php echo $reply->content; ?></p>
-									</blockquote>
-									<?php
-								}
-							}
-							?>
 							<label for="commentcontent">
 								<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_YOUR_COMMENTS'); ?>:
 								<?php

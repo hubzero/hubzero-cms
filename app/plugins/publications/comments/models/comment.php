@@ -108,10 +108,6 @@ class Comment extends ItemComment
 				$link .= $s . 'action=commentdelete&comment=' . $this->get('id') . $slug;
 			break;
 
-			case 'reply':
-				$link .= $s . 'commentreply=' . $this->get('id') . '#c' . $this->get('id');
-			break;
-
 			case 'abuse':
 			case 'report':
 				$link = 'index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->get('id') . '&parent=' . $this->get('parent');

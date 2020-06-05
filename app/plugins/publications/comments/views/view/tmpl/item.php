@@ -181,7 +181,7 @@ $author_modified = ($this->comment->get('modified_by') == $this->comment->get('c
 					--></a>
 				<?php } ?>
 				<?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_REPLY'); ?>"href="<?php echo Route::url($this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_REPLY'); ?>" href="#" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
 						--><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_REPLY'); ?><!--
 					--></a>
 				<?php } ?>
