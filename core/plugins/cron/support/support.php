@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -484,6 +484,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 		$database->setQuery($sql);
 		if (!($results = $database->loadObjectList()))
 		{
+			Log::error('CRON query failed: ' . $database->getErrorMsg());
 			return true;
 		}
 
@@ -515,10 +516,24 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 			{
 				$tickets[$result->owner][$result->severity][] = $result;
 			}
-			/*else
+
+			if (isset($result->status))
 			{
-				$tickets[$result->owner]['unknown'][] = $result;
-			}*/
+				if ($result->status == 0)
+				{
+					$result->status = "New";
+					continue;
+				}
+
+			        $this_status_sql = "SELECT title FROM `#__support_statuses` WHERE `id`=" . $result->status ;
+			        $database->setQuery($this_status_sql);
+			        if (!($this_result = $database->loadResult()))  
+			        {
+						Log::error('CRON query failed: ' . $database->getErrorMsg());
+			        	return true;
+			        }
+			        $result->status = $this_result;
+			}
 		}
 
 		$from = array(
@@ -613,7 +628,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 		Lang::load('com_support') ||
 		Lang::load('com_support', Component::path('com_support') . DS . 'site');
 
-		$sql = "SELECT t.*, o.`name` AS owner_name FROM `#__support_tickets` AS t LEFT JOIN `#__users` AS o ON o.`id`=t.`owner`";
+		$sql = "SELECT t.*, o.`name` AS owner_name, s.`title` as status_title FROM `#__support_tickets` AS t LEFT JOIN `#__users` AS o ON o.`id`=t.`owner` LEFT JOIN `#__support_statuses` AS s ON s.`id`=t.`status`";
 
 		$where = array();
 
@@ -898,6 +913,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 		$database->setQuery($sql);
 		if (!($results = $database->loadObjectList()))
 		{
+			Log::error('CRON query failed: ' . $database->getErrorMsg());
 			return true;
 		}
 

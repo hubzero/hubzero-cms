@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -59,7 +59,7 @@ if ($tmpl != 'component' && $this->sub) { ?>
 	</li>
 	<?php if ($tmpl != 'component') { ?>
 		<?php if ($this->page->exists() && !$this->page->isDeleted() && $this->page->getNamespace() != 'special') { ?>
-			<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('edit'))) { ?>
+			<?php if ((($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('edit'))) && $this->page->getNamespace() != 'help') { ?>
 				<li class="page-edit<?php if ($this->controller == 'pages' && in_array($this->task, array('edit', 'preview', 'save'))) { echo ' active'; } ?>">
 					<a href="<?php echo Route::url($this->page->link('edit')); ?>" title="<?php echo Lang::txt('COM_WIKI_TAB_EDIT'); ?>">
 						<span class="icon-pencil"><?php echo Lang::txt('COM_WIKI_TAB_EDIT'); ?></span>

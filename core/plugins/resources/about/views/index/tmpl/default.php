@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -207,7 +207,7 @@ $maintext = $this->model->description;
 				?>
 
 				<?php if ($this->model->params->get('show_citation') == 3): ?>
-				<h4><?php echo (isset($citations) && ($citations != null || $citations != '')) ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS') : ''; ?></h4>
+				<h4 id="citethis"><?php echo (isset($citations) && ($citations != null || $citations != '')) ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS') : ''; ?></h4>
 
 				<div class="resource-content">
 					<?php echo (isset($citations) && ($citations != null || $citations != '')) ? $citeinstruct : ''; ?>

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -23,9 +23,18 @@ $this->js();
 
 // page version content
 $content = $this->page->version()->get('content');
+$action = Route::url(
+	"index.php?option=$this->option&controller=$this->controller&gid=$this->group->cn&task=markscanned"
+);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-confirm="<?php echo Lang::txt('COM_GROUPS_PAGES_MARK_SCANNED_CONFIRM'); ?>" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<form action="<?php echo $action; ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-confirm="<?php echo Lang::txt('COM_GROUPS_PAGES_MARK_SCANNED_CONFIRM'); ?>" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+	<input type="hidden" name="page[id]" value="<?php echo $this->page->get('id'); ?>">
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
+	<input type="hidden" name="task" value="save" />
+	<?php echo Html::input('token'); ?>
 
 	<?php
 		unset($this->issues->count);
@@ -82,10 +91,4 @@ $content = $this->page->version()->get('content');
 	<h3><?php echo Lang::txt('COM_GROUPS_PAGES_UPDATE_CONTENT'); ?></h3>
 	<textarea name="page[content]" rows="40"><?php echo $content; ?></textarea>
 
-	<input type="hidden" name="page[id]" value="<?php echo $this->page->get('id'); ?>">
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="gid" value="<?php echo $this->group->get('cn'); ?>" />
-	<input type="hidden" name="task" value="save" />
-	<?php echo Html::input('token'); ?>
 </form>

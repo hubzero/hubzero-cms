@@ -1,6 +1,6 @@
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -81,5 +81,21 @@
 	}
 	img {
 		.border-radius(@baseBorderRadius);
+	}
+}
+
+// Show on hover, almost tooltip.
+.show-hover-target {
+
+	.show-hover-child {
+		opacity: 0;
+	}
+
+	&.show-hover,
+	&:hover {
+
+		.show-hover-child {
+			opacity: 1;
+		}
 	}
 }

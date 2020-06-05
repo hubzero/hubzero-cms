@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -307,6 +307,16 @@ class Pages extends SiteController
 			$url = Request::getString('REQUEST_URI', '', 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
+			);
+		}
+
+		// make help pages noneditable
+		if ($this->page->getNamespace() == 'help')
+		{
+			App::redirect(
+				Route::url($this->page->link()),
+				Lang::txt('COM_WIKI_WARNING_NO_EDIT'),
+				'warning'
 			);
 		}
 

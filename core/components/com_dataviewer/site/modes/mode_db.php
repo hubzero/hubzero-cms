@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -33,6 +33,11 @@ function get_conf($db_id)
 		} if (isset($db_dv_conf['settings'])) {
 			$db_dv_conf['settings'] = array_merge($dv_conf['settings'], $db_dv_conf['settings']);
 		}
+	}
+
+	if (!isset($dv_conf['base_path']))
+	{
+		$dv_conf['base_path'] = '';
 	}
 
 	$dv_conf = array_merge($dv_conf, $db_dv_conf);

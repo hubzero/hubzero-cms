@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -102,7 +102,6 @@ class Attachments extends Obj
 			$status = $type->getStatus($element, $attachments);
 		}
 
-		// Return status
 		return $status;
 	}
 
@@ -559,12 +558,6 @@ class Attachments extends Obj
 
 		foreach ($elements as $element)
 		{
-			// File?
-			if ($element->manifest->params->type != 'file')
-			{
-			//	continue;
-			}
-
 			// Load attachment type
 			$type = $this->loadAttach($element->manifest->params->type);
 
@@ -609,12 +602,6 @@ class Attachments extends Obj
 		$contents = null;
 		foreach ($elements as $element)
 		{
-			// File?
-			if ($element->manifest->params->type != 'file')
-			{
-			//	continue;
-			}
-
 			// Load attachment type
 			$type = $this->loadAttach($element->manifest->params->type);
 

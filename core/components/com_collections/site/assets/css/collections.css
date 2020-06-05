@@ -1,6 +1,6 @@
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -230,20 +230,19 @@ html.opera .post.full,
 }
 /* Actions */
 .post .actions {
-	position: absolute;
 	z-index: 3;
 	top: 0;
 	left: 0;
 	right: 0;
 	bottom: 1px;
-	display: none;
 	text-align: center;
 	background-color: #f0f0f0;
+	padding: 0.7em 1.4em;
+	border-bottom: 1px solid #d4d4d4;
 }
 .post .actions>span,
 .post .actions a {
 	padding: 0.5em .7em;
-	margin: 0.5em 0.2em 0 0.2em;
 }
 .post .actions>span:before,
 .post .actions a:before {
@@ -416,10 +415,6 @@ html.opera .post.full,
 	width: 50px;
 	height: 50px;
 	border-radius: 0.25em;
-}
-
-.post:hover .actions {
-	display: block;
 }
 .post .stats .comments {
 	border: none;

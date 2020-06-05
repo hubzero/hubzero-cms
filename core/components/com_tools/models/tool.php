@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -1568,6 +1568,32 @@ class Tool
 			if (!filter_var($tool['github'], FILTER_VALIDATE_URL))
 			{
 				$err['github'] = Lang::txt('invalid Github URL');
+			}
+		}
+
+		// check member groups
+		if (!empty($tool['membergroups']))
+		{
+			foreach (array_map('trim', explode(',', $tool['membergroups'])) as $k => $groupName)
+			{
+				$grp = Group::getInstance($groupName);
+				if (!is_object($grp) || !$grp->get('gidNumber'))
+				{
+					$err['membergroups' . $k] = 'Group name ' . $groupName . ' is not valid';
+				}
+			}
+		}
+
+		// check developers
+		if (!empty($tool['developers']))
+		{
+			foreach (array_map('trim', explode(',', $tool['developers'])) as $k => $developerName)
+			{
+				$dev = User::getInstance($developerName);
+				if (!$dev->get('id'))
+				{
+					$err['developers' . $k] = 'Developer username ' . $developerName . ' is not valid';
+				}
 			}
 		}
 

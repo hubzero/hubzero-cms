@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -62,36 +62,16 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
 		<ul class="pinboard allow-sort" id="pinboard">
 			<?php if (count($rows) > 0) { ?>
 				<?php
-				$order = 1;
-				foreach ($rows as $row)
-				{
-					$color = $row->get('color');
-					$class = $color ? 'pin_' . $color : 'pin_grey';
-
-					$overdue = $row->isOverdue();
-					$oNote = $overdue ? ' ('.Lang::txt('PLG_PROJECTS_TODO_OVERDUE').')' : '';
-					?>
-					<li class="<?php echo $class; ?> droptarget <?php echo $row->isComplete() ? 'tdclosed' : ''; ?>" id="todo-<?php echo $row->get('id'); ?>">
-						<div id="td-<?php echo $row->get('id'); ?>">
-							<span class="pin handle">&nbsp;</span>
-							<?php if ($row->isComplete()) { ?>
-								<span class="complete">&nbsp;</span>
-							<?php } ?>
-							<span class="todo-content" id="td-content-<?php echo $row->get('id'); ?>"><?php echo \Hubzero\Utility\Str::truncate($row->get('content'), 150); ?></span>
-							<span class="todo-options" id="td-options-<?php echo $row->get('id'); ?>">
-							<?php if ($row->isComplete()) { ?>
-								<span class="todo-assigned"> <?php echo $row->closer('name'); ?></span> <?php if ($row->isComplete()) { echo '<span class="todo-due">' . Lang::txt('PLG_PROJECTS_TODO_CHECKED_OFF') . ' ' . $row->closed('date') . '</span>'; } ?>
-							<?php } else { ?>
-								<?php echo '<span class="todo-assigned" id="td-assigned-' . $row->get('id') . '">' . $row->owner('name') . '</span>'; ?> <?php if ($row->due()) { echo '<span class="todo-due" id="td-due-' . $row->get('id') . '">' . Lang::txt('PLG_PROJECTS_TODO_DUE') . ' ' . $row->due('date') . $oNote . '</span>'; } ?>
-							<?php } ?>
-							</span>
-							<input type="hidden" name="order" id="order-<?php echo $row->get('id'); ?>" value="<?php echo $order; ?>" />
-							<span class="comment-blurb"><a href="<?php echo Route::url($url . '&action=view').'/?todoid=' . $row->get('id'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT'); ?>"><?php echo $row->comments('count'); ?>&nbsp;&raquo;</a></span>
-						</div>
-					</li>
-					<?php
+					$order = 1;
+					foreach ($rows as $row)
+					{
+						$this->view('_todo_pin')
+							->set('order', $order)
+							->set('todo', $row)
+							->set('url', $url)
+							->display();
+					}
 					$order++;
-				}
 				?>
 			<?php } elseif (!$this->filters['state'] && $this->model->access('content')) { ?>
 				<li class="todo-add">

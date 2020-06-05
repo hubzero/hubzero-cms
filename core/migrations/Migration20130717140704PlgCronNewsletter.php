@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -24,8 +24,6 @@ class Migration20130717140704PlgCronNewsletter extends Base
 		 * Forgot to re-add migration script after adding it to git
 		 * staging and making further changes. this will make sure
 		 * newsletter cron jobs exits.
-		 *
-		 * @author    Christopher Smoak
 		 */
 		$query = "";
 

@@ -1,6 +1,6 @@
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -317,16 +317,6 @@ jQuery(document).ready(function($){
 
 	if (membersSynced) {
 		$syncRoleSelector.show()
-	}
-
-	var go = $('.group-options');
-	if (go.length) {
-		go.on('click', 'input[type=radio]', function(e) {
-			$(this).closest('form').submit();
-		});
-		go.on('change', '#sync-role-selector', function(e) {
-			$(this).closest('form').submit();
-		});
 	}
 
 	$('#choosemember').fancybox({

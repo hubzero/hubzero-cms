@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -288,7 +288,7 @@ class Nogit extends Models\Adapter
 			return false;
 		}
 
-		$this->_nogit->call("mv " . escapeshellarg($fromFile->get('localPath')) . " " . escapeshellarg($toFile->get('localPath')));
+		$this->_nogit->call("mv ./" . escapeshellarg($fromFile->get('localPath')) . " ./" . escapeshellarg($toFile->get('localPath')));
 		return true;
 	}
 
@@ -364,7 +364,7 @@ class Nogit extends Models\Adapter
 			return false;
 		}
 
-		$this->_nogit->call("rm " . escapeshellarg($file->get('localPath')));
+		$this->_nogit->call("rm ./" . escapeshellarg($file->get('localPath')));
 
 		return true;
 	}

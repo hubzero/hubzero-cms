@@ -1,6 +1,6 @@
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -98,6 +98,48 @@
 
 			&:hover .comment-options {
 				visibility: visible;
+			}
+		}
+
+		.comment-head {
+			margin-bottom: 0.3rem;
+		}
+
+		.comment-meta {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			.permalink {
+				color: @commentPermalinkColor;
+			}
+
+			.copy-link {
+				display: flex;
+				color: @commentPermalinkColor;
+
+				.icn {
+					margin-left: 0.3rem;
+					line-height: 0;
+
+					svg {
+						height: 1.2rem;
+						width: 1.2rem;
+						fill: @commentPermalinkColor;
+					}
+				}
+
+				&:hover {
+					border: 0;
+					color: @black;
+
+					.icn {
+
+						svg {
+							fill: @black;
+						}
+					}
+				}
 			}
 		}
 
@@ -351,7 +393,7 @@
 	#commentform .time,
 	ol.comments .date,
 	ol.comments .time {
-		margin-left: 0.7em;
+		margin-right: 0.7em;
 	}
 
 /* Comment form */
@@ -368,18 +410,6 @@
 			border: 1px solid @commentFormBorderColor;
 			padding: 0.61803399em 1.61803399em 0 1.61803399em;
 			.box-shadow(@commentShadow);
-
-			&>legend {
-				border: 0;
-				clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-				clip: rect(1px, 1px, 1px, 1px);
-				height: 1px;
-				margin: -1px;
-				overflow: hidden;
-				padding: 0;
-				position: absolute;
-				width: 1px;
-			}
 
 			fieldset {
 				border: 1px solid #ddd;

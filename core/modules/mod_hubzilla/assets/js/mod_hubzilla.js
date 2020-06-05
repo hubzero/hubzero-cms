@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2009 HUBzero Foundation, LLC.
+ * Copyright (c) 2005-2020 The Regents of the University of California.
  * All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy

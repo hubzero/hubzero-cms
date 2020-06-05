@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -11,13 +11,15 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->css('jquery.ui.css', 'system')
      ->js('jquery.timepicker.js', 'system')
+	->js('ticket.js')
      ->js();
 
 $status = $this->row->status->get('title');
 
 $unknown  = 1;
-//$name     = Lang::txt('COM_SUPPORT_UNKNOWN');
 $usertype = Lang::txt('COM_SUPPORT_UNKNOWN');
+
+$protocol = $_SERVER['HTTPS'] == '' ? 'http://' : 'https://';
 
 if ($this->row->get('login'))
 {
@@ -48,38 +50,10 @@ else
 
 $prev = null;
 $next = null;
-/*
-$sq = \Components\Support\Models\Query::oneOrNew($this->filters['show']);
-if ($sq->conditions)
-{
-	$this->filters['sort']    = $sq->sort;
-	$this->filters['sortdir'] = $sq->sort_dir;
-	if ($rows = \Components\Support\Models\Ticket::allWithQuery($sq, $this->filters))
-	{
-		foreach ($rows as $key => $row)
-		{
-			if ($row->id == $this->row->get('id'))
-			{
-				if (isset($rows[$key - 1]))
-				{
-					$next = $rows[$key - 1];
-				}
-				if (isset($rows[$key + 1]))
-				{
-					$prev = $rows[$key + 1];
-				}
-				break;
-			}
-		}
-		unset($rows);
-	}
-}
-*/
 $cc = array();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-
 	<div id="content-header-extra">
 		<ul id="useroptions">
 		<?php if ($prev) { ?>
@@ -213,9 +187,6 @@ $cc = array();
 			<p class="<?php echo (!$this->row->isOpen()) ? 'closed' : 'open'; ?>">
 				<strong><?php echo (!$this->row->isOpen()) ? Lang::txt('COM_SUPPORT_TICKET_STATUS_CLOSED_TICKET') : Lang::txt('COM_SUPPORT_TICKET_STATUS_OPEN_TICKET'); ?></strong>
 			</p>
-			<?php if (!$this->row->isOpen()) { ?>
-				<p><?php echo Lang::txt('COM_SUPPORT_NOTE_TO_REOPEN'); ?></p>
-			<?php } ?>
 		</div><!-- / .entry-status -->
 
 		<div class="ticket-watch">
@@ -250,16 +221,13 @@ $cc = array();
 				{
 					$cc = $comment->changelog()->get('cc');
 				}
-				// Is the comment private?
-				// If so, does the user have access to read private comments?
-				//   If not, skip it
+
 				if (!$this->row->access('read', 'private_comments') && $comment->isPrivate())
 				{
 					continue;
 				}
 				$i++;
 
-				// Set the CSS class
 				if ($comment->isPrivate())
 				{
 					$access = 'private';
@@ -293,13 +261,21 @@ $cc = array();
 							<strong>
 								<?php echo $name; ?>
 							</strong>
-							<a class="permalink" href="<?php echo Route::url($comment->link()); ?>" title="<?php echo Lang::txt('COM_SUPPORT_PERMALINK'); ?>">
-								<span class="comment-date-at"><?php echo Lang::txt('COM_SUPPORT_AT'); ?></span>
-								<span class="time"><time datetime="<?php echo $this->escape($comment->created()); ?>"><?php echo $comment->created('time'); ?></time></span>
-								<span class="comment-date-on"><?php echo Lang::txt('COM_SUPPORT_ON'); ?></span>
-								<span class="date"><time datetime="<?php echo $this->escape($comment->created()); ?>"><?php echo $comment->created('date'); ?></time></span>
+							<div class="comment-meta">
+								<a class="permalink" href="<?php echo Route::url($comment->link()); ?>" title="<?php echo Lang::txt('COM_SUPPORT_PERMALINK'); ?>">
+									<span class="comment-date-at"><?php echo Lang::txt('COM_SUPPORT_AT'); ?></span>
+									<span class="time"><time datetime="<?php echo $this->escape($comment->created()); ?>"><?php echo $comment->created('time'); ?></time></span>
+									<span class="comment-date-on"><?php echo Lang::txt('COM_SUPPORT_ON'); ?></span>
+									<span class="date"><time datetime="<?php echo $this->escape($comment->created()); ?>"><?php echo $comment->created('date'); ?></time></span>
+								</a>
+							<a class="copy-link show-hover-target" href="<?php echo $protocol . $_SERVER['HTTP_HOST'] . Route::url($comment->link()); ?>">
+								<span class="lbl show-hover-child">Copy link</span>
+								<?php echo Html::asset('icon', 'link'); ?>
 							</a>
+
+							</div>
 						</p><!-- / .comment-head -->
+
 					<?php if ($content = $comment->comment) { ?>
 						<div class="comment-body">
 							<p><?php echo $content; ?></p>

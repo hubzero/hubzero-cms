@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -66,6 +66,7 @@ $site = rtrim(Request::base(), '/');
 				<th style="text-align: left; padding: 0.7em; font-weight: bold; white-space: nowrap; border-left: 1px solid #fff;" align="left">Creator</th>
 				<th style="text-align: left; padding: 0.7em; font-weight: bold; white-space: nowrap; border-left: 1px solid #fff;" align="left">Assigned</th>
 				<th style="text-align: left; padding: 0.7em; font-weight: bold; white-space: nowrap; border-left: 1px solid #fff;" align="left">Severity</th>
+				<th style="text-align: left; padding: 0.7em; font-weight: bold; white-space: nowrap; border-left: 1px solid #fff;" align="left">Status</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -105,6 +106,7 @@ $site = rtrim(Request::base(), '/');
 					<td style="text-align: left; padding: 0.7em; white-space: nowrap; border-left: 1px solid <?php echo $bdcolor[$ticket->severity]; ?>;" align="left"><?php echo $ticket->name ? $this->escape($ticket->name) : 'Unknown'; ?> <?php echo $ticket->login ? '(' . $this->escape($ticket->login) . ')' : ''; ?></td>
 					<td style="text-align: left; padding: 0.7em; white-space: nowrap; border-left: 1px solid <?php echo $bdcolor[$ticket->severity]; ?>;" align="left"><?php echo $ticket->owner ? $this->escape($ticket->owner_name) : '--'; ?> <?php echo $ticket->owner ? '(' . $this->escape($ticket->owner) . ')' : ''; ?></td>
 					<td style="text-align: left; padding: 0.7em; white-space: nowrap; border-left: 1px solid <?php echo $bdcolor[$ticket->severity]; ?>;" align="left"><?php echo $this->escape($ticket->severity); ?></td>
+					<td style="text-align: left; padding: 0.7em; white-space: nowrap; border-left: 1px solid <?php echo $bdcolor[$ticket->severity]; ?>;" align="left"><?php echo $this->escape($ticket->status_title); ?></td>
 				</tr>
 				<?php
 			}

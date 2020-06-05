@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
  * @file        components/com_support/scripts/excanvas/excanvas.original.js
- * @copyright   Copyright 2005-2015 HUBzero Foundation, LLC.
+ * @copyright   Copyright (c) 2005-2020 The Regents of the University of California.
  * @license     http://opensource.org/licenses/MIT MIT
  */
 

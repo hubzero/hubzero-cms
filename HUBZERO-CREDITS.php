@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     hubzero-cms
- * @copyright   Copyright (c) 2005-2015 HUBzero Foundation, LLC.
+ * @copyright   Copyright (c) 2005-2020 The Regents of the University of California.
  * @copyright   Copyright (C) 2005-2014 Open Source Matters, Inc.
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  */

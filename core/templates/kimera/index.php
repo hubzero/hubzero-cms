@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -19,6 +19,9 @@ $opacity  = $this->params->get('colorPrimaryOpacity', '');
 $color2   = str_replace('#', '', $this->params->get('colorSecondary', '2f8dc9'));
 $opacity2 = $this->params->get('colorSecondaryOpacity', '');
 $bground  = $this->params->get('backgroundImage', $this->params->get('background', 'delauney'));
+
+// Current page (used by the login link)
+$url = Request::getString('REQUEST_URI', '', 'server');
 
 $styles = include_once __DIR__ . '/css/theme.php';
 if ($styles)
@@ -111,7 +114,7 @@ if ($this->getTitle() != Config::get('sitename'))
 									</li>
 								<?php } else { ?>
 									<li class="user-account loggedout">
-										<a class="icon-login" href="<?php echo Route::url('index.php?option=com_users&view=login'); ?>" title="<?php echo Lang::txt('TPL_KIMERA_LOGIN'); ?>"><?php echo Lang::txt('TPL_KIMERA_LOGIN'); ?></a>
+										<a class="icon-login" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false); ?>" title="<?php echo Lang::txt('TPL_KIMERA_LOGIN'); ?>"><?php echo Lang::txt('TPL_KIMERA_LOGIN'); ?></a>
 									</li>
 									<?php if ($this->params->get('registerLink') && Component::params('com_members')->get('allowUserRegistration')) : ?>
 										<li class="user-account-create">

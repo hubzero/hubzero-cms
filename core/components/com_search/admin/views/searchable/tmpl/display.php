@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -10,9 +10,8 @@ defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('Solr Search: Components'));
 Toolbar::addNew();
-Toolbar::custom('activateIndex', 'publish', 'activateindex', 'COM_SEARCH_ADD_FACET', false);
-Toolbar::custom('deleteIndex', 'unpublish', 'deactivateindex', 'COM_SEARCH_DELETE_FACET', true);
-Toolbar::custom('trashIndex', 'trash', 'trashindex', 'COM_SEARCH_DELETE_FACET', true);
+Toolbar::custom('deleteIndex', 'unpublish', 'deactivateindex', 'COM_SEARCH_DELETE_COMPONENT_RESULTS', true);
+Toolbar::custom('trashIndex', 'trash', 'trashindex', 'COM_SEARCH_DELETE_COMPONENT_ENTRY', true);
 Toolbar::spacer();
 Toolbar::custom('discover', 'refresh', 'refresh', 'COM_SEARCH_SOLR_DISCOVER', false);
 Toolbar::spacer();

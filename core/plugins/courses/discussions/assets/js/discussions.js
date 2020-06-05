@@ -1,6 +1,6 @@
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -357,7 +357,9 @@ HUB.Plugins.CoursesForum = {
 
 								// find all scripts in this html and eval them
 								thread.find('script').each(function(){
-									eval($(this).html());
+									if($(this).attr('type') == 'text/javascript') {
+										eval($(this).html());
+									}
 								});
 
 								// fade in

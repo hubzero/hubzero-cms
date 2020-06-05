@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -26,8 +26,12 @@ endif;
 
 if ($canDo->get('core.edit.state')):
 	Toolbar::custom('clearTerms', 'remove', '', 'COM_MEMBERS_CLEAR_TERMS', false);
+	Toolbar::spacer();
 	Toolbar::publishList('confirm', 'COM_MEMBERS_CONFIRM');
 	Toolbar::unpublishList('unconfirm', 'COM_MEMBERS_UNCONFIRM');
+	Toolbar::divider();
+	Toolbar::custom('block', 'cancel', '', 'COM_MEMBERS_BLOCK', true);
+	Toolbar::custom('unblock', 'restore', '', 'COM_MEMBERS_UNBLOCK', true);
 	Toolbar::spacer();
 endif;
 

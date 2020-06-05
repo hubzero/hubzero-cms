@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -304,9 +304,9 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 																$hasPrimaryVideo = true;
 																$href = Route::url($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
 															}
-															else if ($a->get('type') == 'file' || $a->get('type') == 'url')
+															else if ($a->get('type') == 'file' || $a->get('type') == 'url' || $a->get('subtype') == 'tool')
 															{
-																$target = ' rel="noopener noreferrer" target="_blank"';
+																$target = ' rel="nofollow" target="_blank"';
 															}
 
 															$link = '<a class="' . $cls . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a>';
@@ -454,7 +454,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 														}
 														else if ($a->get('type') == 'file' || $a->get('type') == 'url' || $a->get('type') == 'tool')
 														{
-															$target = ' rel="noopener noreferrer" target="_blank"';
+															$target = ' rel="nofollow" target="_blank"';
 														}
 														echo '<li><a class="asset-primary ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 													}
@@ -498,7 +498,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 										}
 										else if ($a->get('type') == 'file' || $a->get('type') == 'url')
 										{
-											$target = ' rel="noopener noreferrer" target="_blank"';
+											$target = ' rel="nofollow" target="_blank"';
 										}
 										echo '<li><a class="asset ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
 										$k++;

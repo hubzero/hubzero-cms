@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -188,10 +188,25 @@ class MarkdownParser
 		// Remove any trailing whitespace
 		$text = rtrim($text);
 
+		// Replace $$ with math for parsing
+		$pattern = '/\$\$(.+?)\$\$/';
+		$replacement = '<math>${1}</math>';
+		$text = preg_replace($pattern, $replacement, $text);
+
 		$cls = '\\cebe\\markdown\\' . $this->get('style', 'Markdown');
 
 		$parser = new $cls();
 		$text = $parser->parse($text);
+
+		// parse local images
+		$pattern = '@src="Image\(([^"]+)\)"@';
+
+		$page = \Components\Wiki\Models\Page::oneOrFail($this->get('pageid'));
+		$link = $page->link();
+
+		$text = preg_replace_callback($pattern, function ($matches) use($link) {
+			return 'src="' . Route::url($link . '/Image:' . $matches[1]) . '"';
+		}, $text);
 
 		// If full parse and we have a page ID (i.e., this is a *wiki* page) and link logging is turned on...
 		/*if ($this->get('fullparse') && $this->get('pageid') && $this->get('loglinks'))
@@ -199,6 +214,14 @@ class MarkdownParser
 			$links = \Components\Wiki\Models\Link::blank();
 			$links->updateLinks($this->get('pageid'), $this->_data['links']);
 		}*/
+
+		// Process LaTeX math forumlas and strip out
+		// This will return either simple HTML or an image
+		// We'll put this back after other processes
+		$text = $this->math($text);
+
+		// Put back removed blocks <pre>, <code>, <a>, <math>
+		$text = $this->unstrip($text);
 
 		$this->_data['output'] = $text;
 
@@ -209,5 +232,107 @@ class MarkdownParser
 		}
 
 		return $this->_data['output'];
+	}
+
+	/**
+	 * Convert math forumlas
+	 *
+	 * @param   string  $text  Wiki markup
+	 * @return  string  Parsed wiki content
+	 */
+	private function math($text)
+	{
+		Html::behavior('math');
+		return preg_replace_callback('/<math>(.*?)<\/math>/s', array(&$this, '_stripMath'), $text);
+	}
+
+	/**
+	 * Wrap an older math formula in $$ delimiters for MathJax to render
+	 *
+	 * @param	array	$matches	Wiki markup matching a <math>formula</math>
+	 * @return	string
+	 */
+	private function _stripMath($matches)
+	{
+		return $this->_dataPush(array(
+			$matches[0],
+			'math',
+			$this->_randomString(),
+			'$$' . $matches[1] . '$$'
+		));
+	}
+
+	/**
+	 * Format math output before injecting back into primary text
+	 *
+	 * @param   string  $txt  Math output
+	 * @return  string
+	 */
+	private function _restoreMath($txt)
+	{
+		return '<span class="asciimath">' . $txt . '</span>';
+	}
+
+	/**
+	 * Put <pre> blocks back into the main content flow
+	 *
+	 * @param      string  $text Wiki markup
+	 * @param      boolean $html Escape HTML?
+	 * @return     string
+	 */
+	private function unstrip($text, $html=true)
+	{
+		$this->set('wikitohtml', $html);
+
+		if (!empty($this->_tokens))
+		{
+			foreach ($this->_tokens as $tag => $vals)
+			{
+				$text = preg_replace_callback('/<(' . $tag . ') (.+?)>(.*)<\/(\1) \2>/si', array(&$this, '_dataPull'), $text);
+				$this->_tokens[$tag] = array();
+			}
+		}
+
+		return $text;
+	}
+
+	/**
+	 * Store an item in the shelf
+	 * Returns a unique ID as a placeholder for content retrieval later on
+	 *
+	 * @param      array   $matches Content to store
+	 * @return     integer Unique ID
+	 */
+	private function _dataPush($matches)
+	{
+		$tag = $matches[1];
+		$key = $matches[2];
+		$val = $matches[3];
+
+		$this->_tokens[$tag][$key] = $val;
+		return '<' . $tag . ' ' . $key . '></' . $tag . ' ' . $key . '>';
+	}
+
+	/**
+	 * Store an item in the shelf
+	 * Returns a unique ID as a placeholder for content retrieval later on
+	 *
+	 * @param      string  $matches Content to store
+	 * @return     integer Unique ID
+	 */
+	private function _dataPull($matches)
+	{
+		$tag = $matches[1];
+		$key = $matches[2];
+
+		if (isset($this->_tokens[$tag]) && isset($this->_tokens[$tag][$key]))
+		{
+			return $this->{'_restore' . ucfirst($tag)}($this->_tokens[$tag][$key]);
+		}
+		if ($tag == 'macro')
+		{
+			return '';
+		}
+		return $matches[0];
 	}
 }

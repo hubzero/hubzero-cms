@@ -1,6 +1,6 @@
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -402,7 +402,9 @@ HUB.CoursesOutline = {
 										});
 
 										content.find('.edit-form').submit(function ( e ) {
-											e.preventDefault();
+											if (typeof CKEDITOR !== 'undefined') {
+												$(this).find('#content').html($(this).find('.cke_wysiwyg_frame').contents().find('body').html());
+											}
 
 											// Create ajax call to change info in the database
 											$.ajax({
@@ -425,6 +427,8 @@ HUB.CoursesOutline = {
 													}
 												}
 											});
+
+											e.preventDefault();
 										});
 									}
 								});
@@ -1254,7 +1258,9 @@ HUB.CoursesOutline = {
 					});
 
 					content.find('.edit-form').submit(function ( e ) {
-						e.preventDefault();
+						if (typeof CKEDITOR !== 'undefined') {
+							$(this).find('#content').html($(this).find('.cke_wysiwyg_frame').contents().find('body').html());
+						}
 
 						// Create ajax call to change info in the database
 						$.ajax({
@@ -1269,6 +1275,7 @@ HUB.CoursesOutline = {
 								}
 							}
 						});
+						e.preventDefault();
 					});
 				}
 			});
@@ -1510,6 +1517,7 @@ HUB.CoursesOutline = {
 					});
 
 					content.find('.edit-form').submit(function (e) {
+
 						e.preventDefault();
 
 						// Create ajax call post save

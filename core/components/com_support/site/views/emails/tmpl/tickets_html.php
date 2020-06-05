@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -158,6 +158,10 @@ $site = rtrim(Request::base(), '/');
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
 										<td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
 									</tr>
+									<tr>
+										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>
+										<td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?php echo $ticket->status; ?></td>
+									</tr>
 								</tbody>
 							</table>
 						</td>
@@ -221,7 +225,7 @@ $site = rtrim(Request::base(), '/');
 				background-size: 30px 30px;">
 				<thead>
 					<tr>
-						<th colspan="2" style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor['major']; ?>; padding: 8px; text-align: left" align="left">
+						<th colspan="2" style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor['critical']; ?>; padding: 8px; text-align: left" align="left">
 							<?php echo $this->escape($ticket->summary); ?>
 						</th>
 					</tr>
@@ -232,14 +236,14 @@ $site = rtrim(Request::base(), '/');
 							#<?php echo $ticket->id; ?>
 						</td>
 						<td width="75%" style="padding: 8px;">
-							<table style="border-collapse: collapse;" cellpadding="0" cellspacing="0" border="0">
+							<table style="border-collapse: collapse;" width="100%" cellpadding="0" cellspacing="0" border="0">
 								<tbody>
 								<?php if (!$this->config->get('email_terse')) { ?>
 									<tr>
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
 										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $ticket->created; ?></td>
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Last activity:</th>
-										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo '0000-00-00 00:00:00'; ?></td>
+										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo '--'; ?></td>
 									</tr>
 									<tr>
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
@@ -255,6 +259,10 @@ $site = rtrim(Request::base(), '/');
 									<tr>
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
 										<td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
+									</tr>
+									<tr>
+										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>
+										<td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?php echo $ticket->status; ?></td>
 									</tr>
 								</tbody>
 							</table>
@@ -339,6 +347,8 @@ $site = rtrim(Request::base(), '/');
 			}
 			$link = $site . '/' . trim($sef, '/');
 			$link = str_replace('/administrator', '', $link);
+			$st = new \Components\Support\Models\Tags($ticket->id);
+			$tags = $st->render('string');
 			?>
 			<table id="ticket-info" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?php echo $bdcolor[$severity]; ?>; background: <?php echo $bgcolor[$severity]; ?>; font-size: 0.9em; line-height: 1.6em;
 				background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)), color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent), to(transparent));
@@ -350,19 +360,49 @@ $site = rtrim(Request::base(), '/');
 				-webkit-background-size: 30px 30px;
 				-moz-background-size: 30px 30px;
 				background-size: 30px 30px;">
+				<thead>
+					<tr>
+						<th colspan="2" style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor['critical']; ?>; padding: 8px; text-align: left" align="left">
+							<?php echo $this->escape($ticket->summary); ?>
+						</th>
+					</tr>
+				</thead>
 				<tbody>
 					<tr>
-						<td width="25%" rowspan="2" style="padding: 8px; font-size: 2em; font-weight: bold; text-align: center; vertical-align: middle; padding: 8px 30px;" valign="middle" align="center">
+						<td width="25%" style="padding: 8px; font-size: 2em; font-weight: bold; text-align: center; vertical-align: middle; padding: 8px 30px;" valign="middle" align="center">
 							#<?php echo $ticket->id; ?>
 						</td>
-						<td width="75%" colspan="2" style="font-weight: normal; padding: 8px 8px 0 8px; text-align: left;" align="left">
-							<?php echo !$this->config->get('email_terse') ? $this->escape($ticket->summary) : Lang::txt('COM_SUPPORT_TICKET'); ?>
-						</td>
-					</tr>
-					<tr>
-						<th style="font-weight: normal; padding: 0 8px 8px 8px; text-align: left; font-weight: bold;" align="left">Link:</th>
-						<td style="font-weight: normal; padding: 0 8px 8px 8px; text-align: left;" width="100%" align="left">
-							<a href="<?php echo $link; ?>"><?php echo $link; ?></a>
+						<td width="75%" style="padding: 8px;">
+							<table style="border-collapse: collapse;" width="100%" cellpadding="0" cellspacing="0" border="0">
+								<tbody>
+								<?php if (!$this->config->get('email_terse')) { ?>
+									<tr>
+										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
+										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $ticket->created; ?></td>
+										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Last activity:</th>
+										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo '--'; ?></td>
+									</tr>
+									<tr>
+										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
+										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $ticket->name ? $ticket->name : 'Unknown'; ?> <?php echo $ticket->login ? '(' . $ticket->login . ')' : ''; ?></td>
+										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Severity:</th>
+										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $ticket->severity; ?></td>
+									</tr>
+									<tr>
+										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Tags:</th>
+										<td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?php echo $tags ? $tags : '--'; ?></td>
+									</tr>
+								<?php } ?>
+									<tr>
+										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
+										<td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
+									</tr>
+									<tr>
+										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>
+										<td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?php echo $ticket->status; ?></td>
+									</tr>
+								</tbody>
+							</table>
 						</td>
 					</tr>
 				</tbody>
