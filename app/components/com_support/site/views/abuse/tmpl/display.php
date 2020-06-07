@@ -73,10 +73,6 @@ if (!$no_html)
 							<input type="radio" class="option form-check-input" name="subject" id="subject1" value="<?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_OFFENSIVE'); ?>" checked="checked" />
 							<?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_OFFENSIVE'); ?>
 						</label>
-						<label class="option form-check-label" for="subject2">
-							<input type="radio" class="option form-check-input" name="subject" id="subject2" value="<?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_STUPID'); ?>" />
-							<?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_STUPID'); ?>
-						</label>
 						<label class="option form-check-label" for="subject3">
 							<input type="radio" class="option form-check-input" name="subject" id="subject3" value="<?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_SPAM'); ?>" />
 							<?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_SPAM'); ?>

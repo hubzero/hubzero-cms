@@ -29,7 +29,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Plugins\Resources\Comments\Models;
+namespace Plugins\Publications\Comments\Models;
 
 use Hubzero\Item\Comment\File as ItemFile;
 use Request;

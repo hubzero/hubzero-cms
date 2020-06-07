@@ -54,6 +54,7 @@ if ($this->comments) { ?>
 				->set('obj', $this->obj)
 				->set('params', $this->params)
 				->set('depth', $this->depth)
+				->set('sortby', $this->sortby)
 				->set('cls', $cls)
 				->set('url', $this->url)
 				->display();

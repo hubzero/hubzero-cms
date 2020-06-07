@@ -2026,6 +2026,7 @@ class Publication extends Obj
 			case 'versions':
 			case 'supportingdocs':
 			case 'reviews':
+			case 'comments':
 			case 'wishlist':
 			case 'citations':
 				$link = $this->_base . '&v=' . $this->get('version_number') . '&active=' . strtolower($type);

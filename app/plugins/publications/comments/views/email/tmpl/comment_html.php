@@ -34,7 +34,7 @@
 defined('_HZEXEC_') or die();
 
 $base = rtrim(Request::base(), '/');
-$sef  = Route::url('index.php?option=' . $this->option . '&id=' . $this->comment->get('item_id') . '&active=comments#c' . $this->comment->get('id'));
+$sef  = Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->get('id') . '&v=' . $this->publication->get('version_number') . '&active=comments#c' . $this->comment->get('id'));
 $link = $base . '/' . trim($sef, '/');
 
 $bgcolor = '#f1f1f1';
@@ -104,11 +104,11 @@ $bdcolor = '#e1e1e1';
 					<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
 						<tbody>
 							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('PLG_RESOURCES_COMMENTS_DETAILS_RESOURCE'); ?>:</th>
-								<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->resource->title); ?></td>
+								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_DETAILS_PUBLICATION'); ?>:</th>
+								<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->publication->title); ?></td>
 							</tr>
 							<tr>
-								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('PLG_RESOURCES_COMMENTS_DETAILS_LINK'); ?>:</th>
+								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_DETAILS_LINK'); ?>:</th>
 								<td style="text-align: left; padding: 0 0.5em;" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
 							</tr>
 						</tbody>
@@ -121,8 +121,8 @@ $bdcolor = '#e1e1e1';
 	<table width="100%" id="ticket-comments" style="border-collapse: collapse; margin: 2em 0 0 0; padding: 0" cellpadding="0" cellspacing="0" border="0">
 		<tbody>
 			<tr>
-				<th style="text-align: left;" align="left"><?php echo (!$this->comment->get('anonymous') ? $this->comment->creator->get('name') : Lang::txt('PLG_RESOURCES_COMMENTS_ANONYMOUS')); ?></th>
-				<th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide"><?php echo Lang::txt('PLG_RESOURCES_COMMENTS_CREATED_TIMESTAMP', $this->comment->created('time'), $this->comment->created('date')); ?></span></th>
+				<th style="text-align: left;" align="left"><?php echo (!$this->comment->get('anonymous') ? $this->comment->creator->get('name') : Lang::txt('PLG_PUBLICATIONS_COMMENTS_ANONYMOUS')); ?></th>
+				<th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_CREATED_TIMESTAMP', $this->comment->created('time'), $this->comment->created('date')); ?></span></th>
 			</tr>
 			<tr>
 				<td colspan="2" style="padding: 0 2em;">
@@ -147,7 +147,7 @@ $bdcolor = '#e1e1e1';
 		<tbody>
 			<tr>
 				<td align="left" valign="bottom">
-					<span><?php echo Lang::txt('PLG_RESOURCES_COMMENTS_EMAIL_WHY_NOTFIED', Config::get('sitename'), $link, Lang::txt('PLG_RESOURCES_COMMENTS_DETAILS_RESOURCES_TITLE', $this->resource->title), $base, $base); ?></span>
+					<span><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_EMAIL_WHY_NOTFIED', Config::get('sitename'), $link, Lang::txt('PLG_PUBLICATIONS_COMMENTS_DETAILS_PUBLICATIONS_TITLE', $this->publication->title), $base, $base); ?></span>
 				</td>
 			</tr>
 		</tbody>
