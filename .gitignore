@@ -4,5 +4,6 @@ app/config/**
 app/site/**
 app/tmp/**
 core/vendor/**
+.vscode/**
 *.sublime-*
 .DS_Store
