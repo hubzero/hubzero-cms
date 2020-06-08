@@ -18,12 +18,11 @@ $date   = $row->getStatusDate();
 $trClass = $this->i % 2 == 0 ? ' even' : ' odd';
 
 $pubUrl = '';
-if ($this->get('new_pubs')) { 
-  $pubUrl = 'pubs/#/pubs/' . $row->get('publication_id') . '/v/' . $row->get('version_id') . '/edit';
+if ($this->get('new_pubs')) {
+	$pubUrl = 'pubs/#/pubs/' . $row->get('publication_id') . '/v/' . $row->get('version_id') . '/edit';
 } else {
-  $pubUrl = Route::url($this->project->link('publications')) . '&pid=' . $row->get('id') . '&action=continue&version=dev'; 
+	$pubUrl = Route::url($this->project->link('publications')) . '&pid=' . $row->get('id') . '&action=continue&version=dev';
 }
-
 
 ?>
 <tr class="mini faded mline<?php echo $trClass; ?>" id="tr_<?php echo $row->get('id'); ?>">
