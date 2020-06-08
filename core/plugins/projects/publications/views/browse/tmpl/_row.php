@@ -53,7 +53,7 @@ if ($this->get('new_pubs')) {
 elseif ($row->isDev() && $this->project->access('content'))
 {
 
-	if ($this->get('new_pubs')) { 
+	if ($this->get('new_pubs')) {
 		echo ' <span><a href="pubs/#/pubs/' . $row->get('publication_id') . '/v/' . $row->get('version_id') . '/edit" class="btn mini icon-next">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE')  . '</a></span>';
 	} else {
 		echo ' <span><a href="' . Route::url($this->project->link('publications') . '&pid=' . $row->get('id') . '&action=continue&version=dev') . '" class="btn mini icon-next">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE')  . '</a></span>';
