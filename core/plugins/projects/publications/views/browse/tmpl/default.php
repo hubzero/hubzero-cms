@@ -38,18 +38,19 @@ $i = 1;
 
 <?php if ($this->project->access('content')) { ?>
 	<ul id="page_options" class="pluginOptions">
-		<li>
-			<a class="icon-add btn" href="<?php echo Route::url($this->project->link('publications') . '&action=start'); ?>">
-				<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUB_CLASSIC'); ?>
-			</a>
-                </li>
-                <?php if ($this->new_pubs) { ?>
-                <li>
-                        <a class="icon-add btn" href="/pubs/#/prjs/<?php echo $this->project->get('id'); ?>">
-                                <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_TRY_NEW_PUB'); ?>
-                        </a>
-                </li>
-                <?php } ?>
+			<?php if ($this->new_pubs) { ?>
+				<li>
+						<a class="icon-add btn" href="/pubs/#/prjs/<?php echo $this->project->get('id'); ?>">
+				 		<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'); ?>
+					</a>
+				</li>
+			<?php } else { ?>
+				<li>
+					<a class="icon-add btn" href="<?php echo Route::url($this->project->link('publications') . '&action=start'); ?>">
+				<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'); ?>
+					</a>
+                	</li>
+			<?php } ?>
 	</ul>
 <?php } ?>
 
