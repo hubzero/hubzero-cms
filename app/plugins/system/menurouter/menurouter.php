@@ -82,14 +82,6 @@ class plgSystemMenurouter extends \Hubzero\Plugin\Plugin
 				$active = true;
 			}
 
-			// Resources menu
-			if (isset($segments[0]) && in_array($segments[0], array('publications', 'collections')))
-			{
-				array_unshift($segments, 'qubesresources');
-				$name = 'Resources';
-				$active = true;
-			}
-
 			// News menu
 			if (isset($segments[0]) && in_array($segments[0], array('blog', 'newsletter', 'events')))
 			{
@@ -157,10 +149,13 @@ class plgSystemMenurouter extends \Hubzero\Plugin\Plugin
 			App::redirect($uri);
 		}
 
-		// Resources menu
-		if (in_array($segment, array('publications', 'collections')))
+		// Legacy redirect: Remove qubesresources from all URLs
+		//   Components affected: publications, collections, software
+		//   VERY important to keep this code around for a bit for DOIs.
+		//   Eventually update DOI urls through the DOI service.
+		if (in_array($segment, array('qubesresources')))
 		{
-			$uri = str_replace('/' . $segment, '/qubesresources/' . $segment, $request->current(true));
+			$uri = str_replace('/' . $segment, '', $request->current(true));
 			App::redirect($uri);
 		}
 
