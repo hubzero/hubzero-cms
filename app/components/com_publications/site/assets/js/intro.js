@@ -44,6 +44,14 @@ jQuery(document).ready(function() {
     $(this).addClass('active');
     var $activeLink = localStorage.setItem('linkState', 'active')
     $('.nav-page-link').not($(this)).removeClass('active');
+
+    // Adjust breadcrumbs
+    $('span.breadcrumbs.pathway span:last-child').html($(this).html());
+
+    // Change subnav menu
+    var activeIndex = $('main nav.nav-page ul li a.active').parent().index()+1;
+    $('div.sub nav ul li.active').removeClass('active');
+    $('div.sub nav ul li:nth-child(' + activeIndex + ')').addClass('active');
   });
 
   window.addEventListener('popstate', function(e) {
