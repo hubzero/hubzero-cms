@@ -3,7 +3,7 @@ $(document).ready(function() {
   	return this + (this.indexOf('?') == -1 ? '?' : '&') + 'no_html=1';
   };
 
-  var url = '/qubesresources/publications/browse';
+  var url = '/publications/browse';
   var limit = $('#limit').val();
   var queryParams = '?search=';
   var sortbyParams = '&sortby=date';
