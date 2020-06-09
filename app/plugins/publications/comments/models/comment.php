@@ -29,7 +29,7 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-namespace Plugins\Resources\Comments\Models;
+namespace Plugins\Publications\Comments\Models;
 
 use Hubzero\Item\Comment as ItemComment;
 
@@ -61,7 +61,7 @@ class Comment extends ItemComment
 	 */
 	public function files()
 	{
-		return $this->oneToMany('Plugins\Resources\Comments\Models\File', 'comment_id');
+		return $this->oneToMany('Plugins\Publications\Comments\Models\File', 'comment_id');
 	}
 
 	/**
@@ -108,10 +108,6 @@ class Comment extends ItemComment
 				$link .= $s . 'action=commentdelete&comment=' . $this->get('id') . $slug;
 			break;
 
-			case 'reply':
-				$link .= $s . 'commentreply=' . $this->get('id') . '#c' . $this->get('id');
-			break;
-
 			case 'abuse':
 			case 'report':
 				$link = 'index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->get('id') . '&parent=' . $this->get('parent');
@@ -124,5 +120,16 @@ class Comment extends ItemComment
 		}
 
 		return $link;
+	}
+
+	/**
+	 * Saves the current model to the database (override so don't save state to replies)
+	 *
+	 * @return  bool
+	 */
+	public function save()
+	{
+		// Need to skip save method from parent which saves state to replies
+		return call_user_func(array(get_parent_class(get_parent_class($this)), 'save'));
 	}
 }
