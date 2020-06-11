@@ -42,6 +42,10 @@ if ($this->obj->get('created_by') == $this->comment->get('created_by'))
 {
 	$cls .= ' author';
 }
+if ($this->comment->get('anonymous'))
+{
+	$cls .= ' anonymous';
+}
 
 if ($mark = $this->params->get('onCommentMark'))
 {
@@ -176,12 +180,12 @@ $author_modified = ($this->comment->get('modified_by') == $this->comment->get('c
 					--></a>
 				<?php } ?>
 				<?php if (($this->params->get('access-edit-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
-					<a class="icon-edit edit" href="<?php echo Route::url($this->comment->link('edit')); ?>"><!--
+					<a class="icon-edit edit" data-txt-active="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_EDIT'); ?>" href="#" rel="edit-form<?php echo $this->comment->get('id'); ?>"><!--
 						--><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_EDIT'); ?><!--
 					--></a>
 				<?php } ?>
 				<?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_REPLY'); ?>" href="#" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_REPLY'); ?>" href="#" rel="reply-form<?php echo $this->comment->get('id'); ?>"><!--
 						--><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_REPLY'); ?><!--
 					--></a>
 				<?php } ?>
@@ -190,58 +194,21 @@ $author_modified = ($this->comment->get('modified_by') == $this->comment->get('c
 					--></a>
 			</p><!-- / .comment-options -->
 		<?php } ?>
-		<?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
-			<div class="addcomment hide" id="comment-form<?php echo $this->comment->get('id'); ?>">
-				<form action="<?php echo Route::url($this->comment->link('base')); ?>" method="post" enctype="multipart/form-data">
-					<fieldset>
-						<legend>
-							<span><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_REPLYING_TO', (!$this->comment->get('anonymous') ? $this->comment->get('name') : Lang::txt('PLG_PUBLICATIONS_COMMENTS_ANONYMOUS'))); ?></span>
-						</legend>
-
-						<input type="hidden" name="comment[id]" value="0" />
-						<input type="hidden" name="comment[item_id]" value="<?php echo $this->escape($this->comment->get('item_id')); ?>" />
-						<input type="hidden" name="comment[item_type]" value="<?php echo $this->escape($this->comment->get('item_type')); ?>" />
-						<input type="hidden" name="comment[parent]" value="<?php echo $this->comment->get('id'); ?>" />
-						<input type="hidden" name="comment[created]" value="" />
-						<input type="hidden" name="comment[created_by]" value="<?php echo $this->escape(User::get('id')); ?>" />
-						<input type="hidden" name="comment[state]" value="1" />
-						<input type="hidden" name="comment[access]" value="1" />
-						<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
-						<input type="hidden" name="id" value="<?php echo $this->obj->get('id'); ?>" />
-						<input type="hidden" name="v" value="<?php echo $this->obj->get('version_number'); ?>" />
-						<input type="hidden" name="active" value="comments" />
-						<input type="hidden" name="action" value="commentsave" />
-						<input type="hidden" name="no_html" value="1" />
-
-						<?php echo Html::input('token'); ?>
-
-						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
-							<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_YOUR_REPLY'); ?>:
-							<?php
-							echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
-							?>
-						</label>
-
-						<div class="file-inputs">
-							<label class="comment-<?php echo $this->comment->get('id'); ?>-file" for="comment-<?php echo $this->comment->get('id'); ?>-file">
-								<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_ATTACH_FILE'); ?>
-								<input type="file" name="comment_file" id="comment-<?php echo $this->comment->get('id'); ?>-file" />
-							</label>
-							<a href="#" class="detach_file" style="display: none;"></a>
-						</div>
-
-						<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
-							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
-							<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_POST_COMMENT_ANONYMOUSLY'); ?>
-						</label>
-
-						<p class="submit">
-							<input type="submit" value="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_POST_COMMENT'); ?>" />
-						</p>
-					</fieldset>
-				</form>
-			</div><!-- / .addcomment -->
-		<?php } ?>
+		<?php if ($this->depth < $this->params->get('comments_depth', 3)) {
+			$this->view('commentform')
+				 ->set('context', 'reply')
+				 ->set('option', $this->option)
+				 ->set('comment', $this->comment)
+				 ->set('obj', $this->obj)
+				 ->display();
+		}
+		$this->view('commentform')
+			 ->set('context', 'edit')
+			 ->set('option', $this->option)
+			 ->set('comment', $this->comment)
+			 ->set('obj', $this->obj)
+			 ->display(); 
+		?>
 	</div><!-- / .comment-content -->
 
 	<?php

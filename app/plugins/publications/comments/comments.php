@@ -134,23 +134,19 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 			switch ($this->task)
 			{
 				// Feeds
-				case 'feed.rss': $this->_feed();   break;
-				case 'feed':     $this->_feed();   break;
+				case 'feed.rss':   $this->_feed();   break;
+				case 'feed':       $this->_feed();   break;
 
 				// Entries
 				case 'commentsave':
-				case 'save':     $this->_save();   break;
-				//case 'new':      $this->_view();   break;
-				case 'commentnew':
-				case 'commentedit':
-				case 'edit':     $this->_view();   break;
+				case 'save':       $this->_save();   break;
 				case 'commentdelete':
-				case 'delete':   $this->_delete(); break;
-				case 'view':     $this->_view();   break;
+				case 'delete':     $this->_delete(); break;
+				case 'view':       $this->_view();   break;
 				case 'commentvote':
-				case 'vote':     $this->_vote();   break;
+				case 'vote':       $this->_vote();   break;
 
-				default:         $this->_view();   break;
+				default:           $this->_view();   break;
 			}
 
 			foreach ($this->getErrors() as $error)
@@ -390,8 +386,7 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
-
-		// Instantiate a new comment object
+		$comment['anonymous'] = (array_key_exists('anonymous', $comment) && $comment['anonymous'] ? 1 : 0);
 		$row = Plugins\Publications\Comments\Models\Comment::oneOrNew($comment['id'])->set($comment);
 
 		if ($row->get('id') && !$this->params->get('access-edit-comment'))

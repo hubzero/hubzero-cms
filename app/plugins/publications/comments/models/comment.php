@@ -100,10 +100,6 @@ class Comment extends ItemComment
 				$link .= $slug;
 			break;
 
-			case 'edit':
-				$link .= $s . 'commentedit=' . $this->get('id') . $slug;
-			break;
-
 			case 'delete':
 				$link .= $s . 'action=commentdelete&comment=' . $this->get('id') . $slug;
 			break;
