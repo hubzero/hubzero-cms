@@ -631,6 +631,9 @@
 	.metadata p.review:before {
 		content: "\2605";
 	}
+	.metadata p.comment:before {
+		content: "\f0e6";
+	}
 	.metadata p.citation:before {
 		content: "\275D";
 	}

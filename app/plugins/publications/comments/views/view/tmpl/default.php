@@ -54,7 +54,7 @@ $this->css()
 					<p class="info"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_LOCKED'); ?></p>
 				<?php } ?>
 
-				<div class="container">
+				<div class="container" id="comments">
 					<h3 class="post-comment-title">
 						<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS'); ?>
 					</h3>

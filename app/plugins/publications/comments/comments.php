@@ -104,23 +104,37 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		$this->publication = $publication;
+		// Initialize the bits
+		$this->obj = $publication;
+		$this->option = $option;
+		$this->obj_id   = $publication->version->id;
+		$this->obj_type = substr($option, 4);
+		$this->url = $publication->link('version') . '&active=' . $this->_name;
 
 		include_once __DIR__ . '/models/comment.php';
 
 		$arr['name']  = 'comments';
+		$arr['count'] = $this->_countComments();
+
+		// Are we returning metadata?
+		if ($rtrn == 'all' || $rtrn == 'metadata')
+		{
+			$arr['metadata'] = $this->view('default', 'metadata')
+				->set('url', Route::url($this->url . '#comments'))
+				->set('url_action', Route::url($this->url . '#commentform'))
+				->set('comments', $arr['count'])
+				->loadTemplate();
+		}
 
 		// Are we returning any HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
-			$url = $publication->link('version') . '&active=' . $this->_name;
-
 			$this->view = $this->view('default', 'view');
-			$this->view->option   = $this->option   = $option;
-			$this->view->obj      = $this->obj      = $publication;
-			$this->view->obj_id   = $this->obj_id   = $publication->version->id;
-			$this->view->obj_type = $this->obj_type = substr($option, 4);
-			$this->view->url      = $this->url      = $url;
+			$this->view->option   = $this->option;
+			$this->view->obj      = $this->obj;
+			$this->view->obj_id   = $this->obj_id;
+			$this->view->obj_type = $this->obj_type;
+			$this->view->url      = $this->url;
 			$this->view->sortby   = $this->sortby   = Request::getVar('sortby', 'created');	
 			$this->view->depth    = 0;
 
@@ -327,6 +341,20 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 		exit();
 	}
 
+	protected function _countComments()
+	{
+		return Plugins\Publications\Comments\Models\Comment::all()
+			->whereEquals('item_type', $this->obj_type)
+			->whereEquals('item_id', $this->obj_id)
+			->whereIn('state', array(
+				Plugins\Publications\Comments\Models\Comment::STATE_PUBLISHED,
+				Plugins\Publications\Comments\Models\Comment::STATE_FLAGGED,
+				Plugins\Publications\Comments\Models\Comment::STATE_DELETED
+			))
+			->whereIn('access', User::getAuthorisedViewLevels())
+			->count();
+	}
+
 	/**
 	 * Show a list of comments
 	 *
@@ -464,7 +492,7 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 			//['user', $row->get('created_by')]
 		);
 		$users = array();
-		foreach ($this->publication->authors() as $author)
+		foreach ($this->obj->authors() as $author)
 		{
 			$profile = User::getInstance($author->id);
 			if ($profile->get('id'))
