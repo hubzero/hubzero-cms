@@ -197,16 +197,14 @@ $author_modified = ($this->comment->get('modified_by') == $this->comment->get('c
 		<?php if ($this->depth < $this->params->get('comments_depth', 3)) {
 			$this->view('commentform')
 				 ->set('context', 'reply')
-				 ->set('option', $this->option)
+				 ->set('url', Route::url($this->comment->link('base')))
 				 ->set('comment', $this->comment)
-				 ->set('obj', $this->obj)
 				 ->display();
 		}
 		$this->view('commentform')
 			 ->set('context', 'edit')
-			 ->set('option', $this->option)
+			 ->set('url', Route::url($this->comment->link('base')))
 			 ->set('comment', $this->comment)
-			 ->set('obj', $this->obj)
 			 ->display(); 
 		?>
 	</div><!-- / .comment-content -->

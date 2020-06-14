@@ -138,8 +138,9 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 				case 'feed':       $this->_feed();   break;
 
 				// Entries
-				case 'commentsave':
-				case 'save':       $this->_save();   break;
+				case 'new':
+				case 'reply':
+				case 'edit':       $this->_save();   break;
 				case 'commentdelete':
 				case 'delete':     $this->_delete(); break;
 				case 'view':       $this->_view();   break;
@@ -369,6 +370,23 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Validate a submitted entry
+	 * TODO: Put in code to check that comment id (if exists) belongs to correct publication
+	 *   and parent is correct.
+	 * 
+	 * @return  void
+	 */
+	protected function _validate(&$comment, $row)
+	{
+		$comment['item_id'] = $this->obj_id;
+		$comment['item_type'] = $this->obj_type;
+		$comment['state'] = 1;
+		$comment['access'] = 1;
+		$comment['created_by'] = ($this->task != 'edit' ? User::get('id') : $row->get('created_by'));
+		$comment['anonymous'] = (array_key_exists('anonymous', $comment) && $comment['anonymous'] ? 1 : 0);
+	}
+
+	/**
 	 * Save an entry
 	 *
 	 * @return  void
@@ -386,8 +404,9 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
-		$comment['anonymous'] = (array_key_exists('anonymous', $comment) && $comment['anonymous'] ? 1 : 0);
-		$row = Plugins\Publications\Comments\Models\Comment::oneOrNew($comment['id'])->set($comment);
+		$row = Plugins\Publications\Comments\Models\Comment::oneOrNew($comment['id']);
+		$this->_validate($comment, $row);
+		$row->set($comment);
 
 		if ($row->get('id') && !$this->params->get('access-edit-comment'))
 		{

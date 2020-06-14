@@ -41,64 +41,13 @@ $this->css()
 			<div class="thread">
 
 				<?php if ($this->params->get('access-create-comment')) { ?>
-					<h3 class="post-comment-title" id="post-comment">
-						<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_POST_A_COMMENT'); ?>
-					</h3>
-					<form method="post" action="<?php echo Route::url($this->url); ?>" id="commentform" enctype="multipart/form-data">
-						<p class="comment-member-photo">
-							<img src="<?php echo User::picture(); ?>" alt="" />
-						</p>
-						<fieldset>
-							<label for="commentcontent">
-								<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_YOUR_COMMENTS'); ?>:
-								<?php
-								if (!User::isGuest())
-								{
-									echo $this->editor('comment[content]', '', 35, 5, 'commentcontent', array('class' => 'minimal no-footer'));
-								}
-								?>
-							</label>
-
-							<div class="file-inputs">
-								<label for="comment_file">
-									<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_ATTACH_FILE'); ?>
-									<input type="file" name="comment_file" id="comment_file" />
-								</label>
-								<a href="#" class="detach_file" style="display: none;"></a>
-							</div>
-
-							<label id="comment-anonymous-label">
-								<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
-								<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_POST_ANONYMOUSLY'); ?>
-							</label>
-
-							<p class="submit">
-								<input type="submit" class="btn btn-success" name="submit" value="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_POST_COMMENT'); ?>" />
-							</p>
-
-							<input type="hidden" name="comment[id]" value />
-							<input type="hidden" name="comment[item_id]" value="<?php echo $this->obj_id; ?>" />
-							<input type="hidden" name="comment[item_type]" value="<?php echo $this->obj_type; ?>" />
-							<input type="hidden" name="comment[parent]" value="0" />
-							<input type="hidden" name="comment[created_by]" value="<?php echo $this->escape(User::get('id')); ?>" />
-							<input type="hidden" name="comment[state]" value="1" />
-							<input type="hidden" name="comment[access]" value="1" />
-							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-							<input type="hidden" name="id" value="<?php echo $this->obj->get('id'); ?>" />
-							<input type="hidden" name="v" value="<?php echo $this->obj->get('version_number'); ?>" />
-							<input type="hidden" name="active" value="comments" />
-							<input type="hidden" name="action" value="commentsave" />
-							<input type="hidden" name="no_html" value="1" />
-
-							<?php echo Html::input('token'); ?>
-
-							<div class="sidenote">
-								<p>
-									<strong><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_KEEP_RELEVANT'); ?></strong>
-								</p>
-							</div>
-						</fieldset>
-					</form>
+					<?php
+					$this->view('commentform')
+						 ->set('context', 'new')
+						 ->set('url', Route::url($this->url))
+						 ->set('comment', null)
+						 ->display();
+					?>					
 				<?php } ?>
 
 				<?php if ($this->params->get('comments_locked', 0) == 1) { ?>

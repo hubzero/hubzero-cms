@@ -149,9 +149,9 @@ jQuery(document).ready(function(jq){
 				data: formData,
 				processData: false,
 				contentType: false,
-				success: function(data) {
+				success: function(response, status, xhr) {
 					$('div.thread').children('div.results-none').replaceWith('<ol class="comments"></ol>');
-					thread.children('ol').replaceWith(data);
+					thread.children('ol').replaceWith(response);
 					$('div.thread li.comment .ckeditor-content').each(function () { 
 						$(this).ckeditor(JSON.parse($(this).siblings('script').html()));
 					});
@@ -162,6 +162,8 @@ jQuery(document).ready(function(jq){
 					el.first().find('textarea.ckeditor-content').val('');
 					el.find('div.file-inputs input').val(''); // Reset doesn't trickle down to this
 					el.find('div.file-inputs input').trigger('change');
+				},
+				error: function(xhr, status, error) {
 				}
 			});
 		})
