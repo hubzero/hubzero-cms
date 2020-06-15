@@ -18,6 +18,7 @@ jQuery(document).ready(function() {
       container.html(result);
       $.getScript('../app/components/com_publications/site/assets/js/search.js');
 
+      // Reinitialize fancybox when using ajax
       $('#submit-resource').fancybox({
       		type: 'ajax',
       		scrolling: true,
@@ -38,7 +39,7 @@ jQuery(document).ready(function() {
 
   $('.nav-page-link').on('click', function(e) {
     e.preventDefault();
-
+    console.log('clicked');
     openURL($(this).attr('href'));
 
     $(this).addClass('active');
@@ -90,6 +91,8 @@ jQuery(document).ready(function() {
     }
   });
 
+  
+
   // Mobile filtering
   var $mobileFilter = $('.mobile-filter'),
       $filterWrap = $('.page-filter');
@@ -106,6 +109,20 @@ jQuery(document).ready(function() {
     $('.page-filter').toggleClass('collapsed');
   });
 
+  $('#submit-resource').fancybox({
+    type: 'ajax',
+    scrolling: true,
+    autoSize: false,
+    fitToView: true,
+    titleShow: false,
+    tpl: {
+      wrap: '<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
+    },
+    beforeLoad: function () {
+      href = $(this).attr('href');
+      $(this).attr('href', href.nohtml());
+    }
+  });
 
   //Sticky nav for Mobile
   const $navBar = $('.nav-page');
