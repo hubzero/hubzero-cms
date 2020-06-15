@@ -426,7 +426,7 @@ class Tag extends Relational
 			$log = Log::blank();
 			$log->set('tag_id', $this->get('id'));
 			$log->set('action', 'tag_removed');
-			$log->set('comments', $arr);
+			$log->set('comments', json_encode($arr));
 			$log->save();
 		}
 
