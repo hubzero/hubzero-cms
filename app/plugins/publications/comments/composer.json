@@ -1,0 +1,21 @@
+{
+	"name": "hubzero/plg_publications_comments",
+	"description": "Publications comments plugin (modified from SIMIODE)",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero", "qubeshub"],
+	"homepage": "https://qubeshub.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		},
+		{
+			"name": "QUBESHub",
+			"email": "qubeshub@gmail.com"
+		}
+	],
+	"extra": {
+		"install-directory": "/plugins/publications/comments/"
+	}
+}
