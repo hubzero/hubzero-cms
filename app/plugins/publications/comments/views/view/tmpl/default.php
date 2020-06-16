@@ -45,6 +45,7 @@ $this->css()
 					$this->view('commentform')
 						 ->set('context', 'new')
 						 ->set('url', Route::url($this->url))
+						 ->set('file', '')
 						 ->set('comment', null)
 						 ->display();
 					?>					

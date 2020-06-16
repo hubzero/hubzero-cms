@@ -142,6 +142,7 @@ jQuery(document).ready(function(jq){
 			var el = $(this);
 			var formData = new FormData(this);
 			formData.append('sortby', $('ul.order-options a.active').attr('title') === "Date" ? "created" : "likes");
+			formData.append('comment[filename]', (el.find('div.file-inputs span').html() == 'No attachment' ? '' : el.find('div.file-inputs span').html()));
 			// console.log(...formData); // https://stackoverflow.com/questions/25040479/formdata-created-from-an-existing-form-seems-empty-when-i-log-it
  			$.ajax({
 				method: 'POST',
@@ -169,14 +170,21 @@ jQuery(document).ready(function(jq){
 		})
 		.on('change', 'div.file-inputs input', function(e) {
 			if ($(this).val().length) {
-				$(this).parent().siblings('a.detach_file').show();
+				$(this).siblings('span').html(e.target.files[0].name);
 			} else {
-				$(this).parent().siblings('a.detach_file').hide();
+				$(this).siblings('span').html('No attachment');
 			}
+			$(this).siblings('button').toggleClass("attach-file detach-file");
 		})
-		.on('click', 'div.file-inputs a.detach_file', function(e) {
-			$(this).parent().find('input').val('');
-			$(this).parent().find('input').trigger('change');
+		.on('click', 'div.file-inputs button.attach-file', function(e) {
+			e.preventDefault();
+			$(this).siblings('input').click();
+			return false;
+		})
+		.on('click', 'div.file-inputs button.detach-file', function(e) {
+			e.preventDefault();
+			$(this).siblings('input').val('');
+			$(this).siblings('input').trigger('change');
 		});
 
 	$('a.abuse').fancybox(fancybox_config);

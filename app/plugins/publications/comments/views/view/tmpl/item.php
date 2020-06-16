@@ -198,12 +198,15 @@ $author_modified = ($this->comment->get('modified_by') == $this->comment->get('c
 			$this->view('commentform')
 				 ->set('context', 'reply')
 				 ->set('url', Route::url($this->comment->link('base')))
+				 ->set('file', '')
 				 ->set('comment', $this->comment)
 				 ->display();
 		}
+		$files = $this->comment->files()->rows();
 		$this->view('commentform')
 			 ->set('context', 'edit')
 			 ->set('url', Route::url($this->comment->link('base')))
+			 ->set('file', ($files->count() ? $files->first()->get('filename') : ''))
 			 ->set('comment', $this->comment)
 			 ->display(); 
 		?>

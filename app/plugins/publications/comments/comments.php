@@ -341,6 +341,11 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 		exit();
 	}
 
+	/**
+	 * Get number of comments
+	 * 
+	 * @return	integer
+	 */
 	protected function _countComments()
 	{
 		return Plugins\Publications\Comments\Models\Comment::all()
@@ -461,7 +466,7 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 		}
 
 		$upload = Request::getVar('comment_file', '', 'files', 'array');
-
+		$file_exists = $row->files()->rows();
 		if (!empty($upload) && $upload['name'])
 		{
 			if ($upload['error'])
@@ -482,7 +487,17 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
+				// Replace file
+				if ($file_exists->count()) {
+					// Delete file on server
+					$file_exists->first()->destroy();
+				}
 				$file->save();
+			}
+		} else {
+			// Remove file
+			if ($file_exists->count() && ($comment['filename'] == '')) {
+				$file_exists->first()->destroy();
 			}
 		}
 

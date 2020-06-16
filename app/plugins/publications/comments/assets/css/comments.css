@@ -96,30 +96,27 @@
 	  div.file-inputs {
 		  display: flex;
 		  justify-content: left;
-		  align-items: flex-end;
+		  align-items: center;
+		  padding-top: 1em;
 	  }
-
-	  div.file-inputs > label {
-		  flex: 0 1 auto;
-		  margin-right: 1em;
+	  div.file-inputs > button.attach-file:after {
+		  content: "Attach file";
 	  }
-	  div.file-inputs > a.detach_file {
-		  flex: 0 1 auto;
+	  div.file-inputs > button.detach-file:after {
+		content: "Detach file";
 	  }
-
-	  div.addcomment div.file-inputs > a.detach_file {
-		  padding-bottom: 0.5em;
+	  div.file-inputs > button.attach-file:before {
+		  content: "\f092";
+		  font-family: "Fontcons";
+		  margin-right: 0.3em;
 	  }
-
-	  div.file-inputs a.detach_file:before {
-		content: "\2716";
+	  div.file-inputs > button.detach-file:before {
+		content: "\2298";
 		font-family: "Fontcons";
-		margin-right: 0.2em;
+		margin-right: 0.3em;
 	  }
-
-	  div.file-inputs input {
-		  display: block;
-		  width: auto;
+	  div.file-inputs > span {
+		  padding-left: 0.5em;
 	  }
 
 	  /* Report Abuse */

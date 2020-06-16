@@ -66,11 +66,9 @@ $this->id = ($this->comment ? $this->comment->get('id') : 0);
             </label>
 
             <div class="file-inputs">
-                <label class="<?php echo $this->context; ?>-<?php echo $this->id; ?>-file" for="<?php echo $this->context; ?>-<?php echo $this->id; ?>-file">
-                    <?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_ATTACH_FILE'); ?>
-                    <input type="file" name="comment_file" id="<?php echo $this->context; ?>-<?php echo $this->id; ?>-file" />
-                </label>
-                <a href="#" class="detach_file" style="display: none;"></a>
+                <button class="btn <?php echo ($this->file ? 'detach-file' : 'attach-file')?>"></button>
+                <input type="file" name="comment_file" id="<?php echo $this->context; ?>-<?php echo $this->id; ?>-file" style="display:none;" />
+                <span><?php echo ($this->file ? $this->file : 'No attachment')?></span>
             </div>
 
             <label class="comment-anonymous-label" for="<?php echo $this->context; ?>-<?php echo $this->id; ?>-anonymous">
