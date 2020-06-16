@@ -288,7 +288,8 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		$defaultSorting = $this->params->get('comments_sorting');
 
 		// Make sure we have a valid value
-		if($defaultSorting != 'desc') {
+		if ($defaultSorting != 'desc')
+		{
 			$defaultSorting = 'asc';
 		}
 
