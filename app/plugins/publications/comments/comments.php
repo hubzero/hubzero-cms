@@ -504,28 +504,29 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 		// Record the activity
 		$recipients = array(
 			['publication', $row->get('item_id')]//,
-			//['user', $row->get('created_by')]
 		);
 		$users = array();
 		foreach ($this->obj->authors() as $author)
 		{
-			$profile = User::getInstance($author->id);
-			if ($profile->get('id'))
+			$profile = User::getInstance($author->user_id);
+			if ($profile->get('id') && !in_array($profile->get('id'), $users))
 			{
 				$users[] = $profile->get('id');
-				$recipients[] = array('user', $profile->get('id'));
+				$recipients[] = ['user', $profile->get('id')];
 			}
 		}
-		if ($row->get('created_by') != $this->obj->created_by)
+		if (($row->get('created_by') != $this->obj->created_by) && !in_array($this->obj->created_by, $users))
 		{
 			$users[] = $this->obj->created_by;
 			$recipients[] = ['user', $this->obj->created_by];
 		}
-		if ($row->get('parent'))
+		if ($row->get('parent') && !in_array($row->parent()->get('created_by'), $users))
 		{
 			$users[] = $row->parent()->get('created_by');
 			$recipients[] = ['user', $row->parent()->get('created_by')];
 		}
+		// Don't message yourself (although can send to activity feed/log file)
+		$users = array_diff($users, [User::get('id')]);
 
 		$url = Route::url('index.php?option=' . $this->option . '&id=' . $this->obj->get('id') . '&v=' . $this->obj->get('version_number') . '&active=comments#c' . $row->get('id'));
 
