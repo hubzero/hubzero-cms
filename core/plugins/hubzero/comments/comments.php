@@ -284,8 +284,17 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _view()
 	{
-		$comments = \Plugins\Hubzero\Comments\Models\Comment::all()
-			->whereEquals('item_type', $this->obj_type)
+		// Get the plugin parameter for the default sorting (Newest first vs Oldest first)
+		$defaultSorting = $this->params->get('comments_sorting');
+
+		// Make sure we have a valid value
+		if($defaultSorting != 'desc') {
+			$defaultSorting = 'asc';
+		}
+
+		$comments = \Plugins\Hubzero\Comments\Models\Comment::all();
+		$comments->orderDir = $defaultSorting;
+		$comments->whereEquals('item_type', $this->obj_type)
 			->whereEquals('item_id', $this->obj_id)
 			->whereEquals('parent', 0)
 			->whereIn('state', array(
