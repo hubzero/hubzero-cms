@@ -14,7 +14,7 @@ $this->css()
 <?php if ($this->params->get('access-view-comment')) { ?>
 	<section class="below section">
 		<div class="section-inner">
-			<div class="subject thread">
+			<div class="subject thread container">
 
 				<?php if ($this->params->get('access-create-comment')) { ?>
 					<h3 class="post-comment-title" id="post-comment">
@@ -132,12 +132,31 @@ $this->css()
 				<?php } ?>
 
 				<?php if ($this->params->get('comments_locked', 0) == 1) { ?>
-					<p class="info"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_LOCKED'); ?></p>
+					<p class="info"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_SORTING_ASC'); ?></p>
 				<?php } ?>
 
 				<h3 class="post-comment-title">
 					<?php echo Lang::txt('PLG_HUBZERO_COMMENTS'); ?>
 				</h3>
+
+				<?php
+				if ($this->comments->count() > 1) :
+				$currentOrderDir = \User::getState('Plugins.Hubzero.Comments.Models.Comment.orderdir', \Plugins\Hubzero\Comments\Models\Comment::blank()->orderDir); // State or default
+				?>
+				<nav class="entries-filters">
+					<form method="post" action="<?php echo Route::url($this->url); ?>" id="commentformcomments">
+					<ul class="entries-menu sort-options">
+						<?php if ($currentOrderDir == 'asc') : ?>
+							<li><button type="submit" name="orderdir" value="desc" class="as-link"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_SHOW') . ' ' . Lang::txt('PLG_HUBZERO_COMMENTS_SORTING_DESC'); ?></button></li>
+						<?php else : ?>
+							<li><button type="submit" name="orderdir" value="asc" class="as-link"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_SHOW') . ' ' . Lang::txt('PLG_HUBZERO_COMMENTS_SORTING_ASC'); ?></button></li>
+						<?php endif; ?>
+					</ul>
+					</form>
+				</nav>
+
+				<?php endif; ?>
+
 				<?php if ($this->comments->count()) {
 					$this->view('list')
 					     ->set('option', $this->option)
