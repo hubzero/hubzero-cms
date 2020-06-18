@@ -46,6 +46,7 @@ $this->css()
 						 ->set('context', 'new')
 						 ->set('url', Route::url($this->url))
 						 ->set('file', '')
+						 ->set('params', $this->params)
 						 ->set('comment', null)
 						 ->display();
 					?>					

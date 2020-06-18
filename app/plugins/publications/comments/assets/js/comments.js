@@ -119,6 +119,10 @@ jQuery(document).ready(function(jq){
 				$(el.parent().parent()).html(data);
 			});
 		})
+		.on('click', 'a.copy', function(e) {
+			$(this).find('.js-copytextarea').focus().select();
+			document.execCommand('copy');
+		})
 		.on('click', 'ul.order-options li a:not(.active)', function(e) {
 			// Change order by of results (date vs. likes)
 			e.preventDefault();

@@ -66,15 +66,17 @@ $this->id = ($this->comment ? $this->comment->get('id') : 0);
             </label>
 
             <div class="file-inputs">
-                <button class="btn <?php echo ($this->file ? 'detach-file' : 'attach-file')?>"></button>
+                <button class="btn btn-secondary <?php echo ($this->file ? 'detach-file' : 'attach-file')?>"></button>
                 <input type="file" name="comment_file" id="<?php echo $this->context; ?>-<?php echo $this->id; ?>-file" style="display:none;" />
                 <span><?php echo ($this->file ? $this->file : 'No attachment')?></span>
             </div>
 
+            <?php if ($this->params->get('comments_anonymous')): ?>
             <label class="comment-anonymous-label" for="<?php echo $this->context; ?>-<?php echo $this->id; ?>-anonymous">
                 <input class="option" type="checkbox" name="comment[anonymous]" id="<?php echo $this->context; ?>-<?php echo $this->id; ?>-anonymous" value="1" <?php echo (($this->context == 'edit') && $this->comment->get('anonymous') ? 'checked' : ''); ?>/>
                 <?php echo ($this->context != 'edit' ? Lang::txt('PLG_PUBLICATIONS_COMMENTS_POST_COMMENT_ANONYMOUSLY') : Lang::txt('PLG_PUBLICATIONS_COMMENTS_MAKE_COMMENT_ANONYMOUS')); ?>
             </label>
+            <?php endif; ?>
 
             <p class="submit">
                 <input type="submit" value="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_POST_' . strtoupper($this->context)); ?>" />

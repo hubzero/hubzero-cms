@@ -389,6 +389,7 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 
 		$this->view
 			->set('comments', $comments)
+			->set('params', $this->params)
 			->setErrors($this->getErrors());
 
 		if (!$no_html) {

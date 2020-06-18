@@ -117,12 +117,21 @@ $author_modified = ($this->comment->get('modified_by') == $this->comment->get('c
 				<?php } ?>
 			<?php echo (!$deleted ? '</strong>' : '</em>'); ?>
 
-			<a class="permalink" href="<?php echo $this->comment->link(); ?>" title="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_PERMALINK'); ?>">
+			<span class="permalink">
 				<span class="comment-date-at"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_AT'); ?></span>
 				<span class="time"><time datetime="<?php echo call_user_func(array($this->comment, $action)); ?>"><?php echo call_user_func_array(array($this->comment, $action), array('time')); ?></time></span>
 				<span class="comment-date-on"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_ON'); ?></span>
 				<span class="date"><time datetime="<?php echo call_user_func(array($this->comment, $action)); ?>"><?php echo call_user_func_array(array($this->comment, $action), array('date')); ?></time></span>
-			</a>
+				<?php if ($this->comment->modified > $this->comment->created): ?>
+					<span>&nbsp;</span>
+					<span>(Edited:</span>
+					<?php $action = 'modified'; ?>
+					<span class="comment-date-at"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_AT'); ?></span>
+					<span class="time"><time datetime="<?php echo call_user_func(array($this->comment, $action)); ?>"><?php echo call_user_func_array(array($this->comment, $action), array('time')); ?></time></span>
+					<span class="comment-date-on"><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_ON'); ?></span>
+					<span class="date"><time datetime="<?php echo call_user_func(array($this->comment, $action)); ?>"><?php echo call_user_func_array(array($this->comment, $action), array('date')); ?></time>)</span>
+				<?php endif; ?>
+			</span>
 		</p>
 
 		<?php if (!$deleted): ?>
@@ -189,6 +198,10 @@ $author_modified = ($this->comment->get('modified_by') == $this->comment->get('c
 						--><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_REPLY'); ?><!--
 					--></a>
 				<?php } ?>
+					<a class="icon-copy copy" href="#">
+						<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_COPY_LINK'); ?>
+						<textarea class="js-copytextarea"><?php echo rtrim(Request::base(), '/') . Route::url($this->comment->link()); ?></textarea>
+					</a>
 					<a class="icon-abuse abuse" data-txt-flagged="<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_REPORTED_AS_ABUSIVE'); ?>" href="<?php echo Route::url($this->comment->link('report')); ?>"><!--
 						--><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_REPORT_ABUSE'); ?><!--
 					--></a>
@@ -199,6 +212,7 @@ $author_modified = ($this->comment->get('modified_by') == $this->comment->get('c
 				 ->set('context', 'reply')
 				 ->set('url', Route::url($this->comment->link('base')))
 				 ->set('file', '')
+				 ->set('params', $this->params)
 				 ->set('comment', $this->comment)
 				 ->display();
 		}
@@ -207,6 +221,7 @@ $author_modified = ($this->comment->get('modified_by') == $this->comment->get('c
 			 ->set('context', 'edit')
 			 ->set('url', Route::url($this->comment->link('base')))
 			 ->set('file', ($files->count() ? $files->first()->get('filename') : ''))
+			 ->set('params', $this->params)
 			 ->set('comment', $this->comment)
 			 ->display(); 
 		?>

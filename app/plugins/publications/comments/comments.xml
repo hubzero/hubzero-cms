@@ -40,6 +40,10 @@
 					<option value="0">Anyone</option>
 					<option value="1">Logged-in users</option>
 				</field>
+				<field name="comments_anonymous" type="list" default="1" label="PLG_PUBLICATIONS_COMMENTS_ANONYMOUS_LABEL" description="PLG_PUBLICATIONS_COMMENTS_ANONYMOUS_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
 				<field name="comments_editable" type="list" default="1" label="PLG_PUBLICATIONS_COMMENTS_EDITABLE_LABEL" description="PLG_PUBLICATIONS_COMMENTS_EDITABLE_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>

@@ -93,6 +93,18 @@
 		  top: 0.1em;
 	  }
 
+	  div.thread ol.comments .comment-options a.icon-copy:before {
+		  margin-right: 0.1em;
+		  content: "\f0ea";
+	  }
+
+	  div.thread ol.comments .comment-options a.icon-copy textarea {
+		  opacity: 0.01;
+		  height:0;
+		  position:absolute;
+		  z-index: -1;
+	  }
+
 	  div.file-inputs {
 		  display: flex;
 		  justify-content: left;
