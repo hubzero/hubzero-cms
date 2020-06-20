@@ -10,7 +10,7 @@ jQuery(document).ready(function() {
   });
 
   // Load pages via ajax
-  const openURL = (href) => {
+  const openURL = (href, savestate = true) => {
     var link = href;
     var container = $('#live-update-wrapper');
 
@@ -34,30 +34,36 @@ jQuery(document).ready(function() {
       		}
     	});
     });
-    window.history.pushState({href: href}, '', href);
+    if (savestate) {
+      window.history.pushState({href: href}, '', href);
+    }
+  }
+
+  const updateSubnav = () => {
+    var activeIndex = $('main nav.nav-page ul li a.active').parent().index()+1;
+
+    // Update subnav menu
+    $('div.sub nav ul li.active').removeClass('active');
+    $('div.sub nav ul li:nth-child(' + activeIndex + ')').addClass('active');
+
+    // Update breadcrumbs
+    $('span.breadcrumbs.pathway span:last-child').html($('.nav-page-link.active').html());
   }
 
   $('.nav-page-link').on('click', function(e) {
     e.preventDefault();
-    console.log('clicked');
     openURL($(this).attr('href'));
 
     $(this).addClass('active');
     var $activeLink = localStorage.setItem('linkState', 'active')
     $('.nav-page-link').not($(this)).removeClass('active');
 
-    // Adjust breadcrumbs
-    $('span.breadcrumbs.pathway span:last-child').html($(this).html());
-
-    // Change subnav menu
-    var activeIndex = $('main nav.nav-page ul li a.active').parent().index()+1;
-    $('div.sub nav ul li.active').removeClass('active');
-    $('div.sub nav ul li:nth-child(' + activeIndex + ')').addClass('active');
+    updateSubnav();
   });
 
   window.addEventListener('popstate', function(e) {
     if (e.state) {
-      openURL(e.state.href);
+      openURL(e.state.href, false);
 
       if (window.location.href.indexOf('browse') > -1) {
         $('.browse-link').addClass('active');
@@ -72,6 +78,8 @@ jQuery(document).ready(function() {
         $('.browse-link').removeClass('active');
         $('.oer-link').removeClass('active');
       }
+      
+      updateSubnav();
     }
   });
 
@@ -90,8 +98,6 @@ jQuery(document).ready(function() {
       openURL($('.browse-link').attr('href'));
     }
   });
-
-  
 
   // Mobile filtering
   var $mobileFilter = $('.mobile-filter'),
