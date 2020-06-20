@@ -48,7 +48,7 @@ button:hover {
   font-size: 3rem;
 }
 .sub #system-message-container {
-  margin: 0 -40px;
+  margin: 0 -50px;
 }
 #system-message button.close {
   position: absolute;
