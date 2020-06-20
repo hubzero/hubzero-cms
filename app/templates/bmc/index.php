@@ -166,7 +166,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 							</div>
 						</div>
 					</div>
-					<?php if ($menu->getActive() != $menu->getDefault()) : ?>
+					<?php if ($menu->getActive() != $menu->getDefault()) { ?>
 					<div class="sub">
 						<nav aria-label="submenu"></nav>
 						<div class="breadcrumbs-wrap">
@@ -182,20 +182,16 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 								</div>
 							</div>
 						</div>
+						<jdoc:include type="message" />
 					</div>
-					<?php endif; ?>
+					<?php } else { ?>
+						<jdoc:include type="message" />
+					<?php } ?>
 				</header>
 
 				<div class="page-body">
 
 					<main id="maincontent" class="content">
-
-						<?php if ($this->getBuffer('message') && $this->getBuffer('message') != '<div id="system-message-container">
-</div>') : ?>
-						<section class="section">
-							<jdoc:include type="message" />
-						</section>
-						<?php endif; ?>
 
 						<?php if ($this->countModules('left or right')) : ?>
 						<div class="inner withmenu">

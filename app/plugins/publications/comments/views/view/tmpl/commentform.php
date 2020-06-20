@@ -37,7 +37,7 @@ $this->id = ($this->comment ? $this->comment->get('id') : 0);
 <?php if ($this->context != 'new'):?>
 <div class="addcomment hide" id="<?php echo $this->context; ?>-form<?php echo $this->id; ?>">
 <?php endif;?>
-    <form action="<?php echo $this->url; ?>" method="post" id="<?php echo ($this->context == 'new' ? 'commentform' : '')?>" enctype="multipart/form-data">
+    <form action="<?php echo $this->url; ?>" method="post" <?php echo ($this->context == 'new' ? 'id="commentform"' : ''); ?> enctype="multipart/form-data">
         <?php if ($this->context == 'new'): ?>
         <p class="comment-member-photo">
 			<img src="<?php echo User::picture(); ?>" alt="" />

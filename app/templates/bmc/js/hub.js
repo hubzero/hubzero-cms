@@ -612,6 +612,86 @@ if (!jq) {
 		lastScrollVal = scrollVal;
 	};
 
+	/**
+	 * Render messages send via JSON
+	 *
+	 * @param   object  messages  JavaScript object containing the messages to render
+	 * @return  void
+	 */
+	TPL.renderMessages = function(messages, $container = $('#system-message-container')) {
+		messages = (Array.isArray(messages) ? messages : [messages]);
+		var messages = ['error', 'success', 'info', 'warning']
+			.map(function(type) { return {type: type, messages: messages.filter(msg => msg.type == type)} });
+
+		var $dl = ($container.children('dl').length ?
+				   $container.children('dl') :
+				   $('<dl>')
+					 .attr('id', 'system-message')
+					 .attr('role', 'alert')
+					 .appendTo($container));
+	
+		$.each(messages, function (ind, item) {
+			// Add descriptor
+			if ($dl.children('dt.' + item['type']).length) {
+				var $list = $dl.children('dd.' + item['type']).children('ul');
+			} else if (item['messages'].length) {
+				$('<dt>')
+					.addClass(item['type'])
+					.html(item['type'].charAt(0).toUpperCase() + item['type'].slice(1))
+					.appendTo($dl);
+				var $dd = $('<dd>')
+					.addClass(item['type'])
+					.addClass('message')
+					.appendTo($dl);
+				var $list = $('<ul>').appendTo($dd);
+			}
+
+			$.each(item['messages'], function (ind, item) {
+				$('<li>')
+					.html(item['message'])
+					.appendTo($list);
+			});
+		});
+	
+		$(document).trigger('renderMessages');
+	};
+
+	/**
+	 * Remove messages
+	 *
+	 * @return  void
+	 */
+	TPL.removeMessages = function($container = $('#system-message-container')) {
+		$container.children('dl').remove();
+	}
+
+	/**
+	 * Set message durations (click to close for most; success messages fade away)
+	 */
+	TPL.setMessageDurations = function($container = $('#system-message-container')) {
+		if ($container.children('dl').children().length) {
+			var $keep = $container.find('dd.error, dd.warning, dd.info');
+			$('<button>')
+				.addClass('close')
+				.appendTo($keep);
+
+			$container.find('dd.success').each(function(i, el) {
+				var tm = Math.max(($(el).text().length * 10) + 500, 4000);
+				clearTimeout($(el).data('fade'));
+				$(el).data('fade', setTimeout(function() {
+					$(el).removeData('fade');
+					$(el).fadeOut(500);
+				}, tm));
+				clearTimeout($(el).data('out'));
+				$(el).data('out', setTimeout(function() {
+					$(el).removeData('out');
+					$(el).siblings('dt.success').remove();
+					$(el).remove();
+				}, tm+500));
+			});
+		}
+	}
+
 }( window.TPL = window.TPL || {}, jQuery ));
 
 // Let's get down to business...
@@ -733,6 +813,18 @@ jQuery(document).ready(function(jq) {
 			});
 		});
 	}
+
+	TPL.setMessageDurations();
+	$(document).on("renderMessages", function() {
+		TPL.setMessageDurations();
+	});
+
+	$(document).on('click', 'dd.message button.close', function(el) {
+		el.preventDefault();
+
+		$(this).parent().prev().remove();
+		$(this).parent().remove();
+	});
 
 	// ******************************************************************************************************
 	// Template

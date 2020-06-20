@@ -81,6 +81,10 @@
 		margin: -60px 0 0; /* negative fixed header height */
 	  }
 
+	  p.comment-options a {
+		cursor: pointer;
+	  }
+
 	  ol.comments .addcomment label {
 		  padding-top: 1em;
 	  }

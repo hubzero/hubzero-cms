@@ -19,16 +19,16 @@
 input[type="submit"],
 button {
   line-height: 1.61803399em;
-  padding: 0.4045084975em 1em;
+  padding: 0.4045085em 1em;
   border: none;
-  background: #628d29;
+  background: #597f2f;
   color: #fff;
-  border: 1px solid #628d29;
-  -webkit-border-radius: .25em;
-  -moz-border-radius: .25em;
-  -ms-border-radius: .25em;
-  -o-border-radius: .25em;
-  border-radius: .25em;
+  border: 1px solid #597f2f;
+  -webkit-border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  -ms-border-radius: 0.25em;
+  -o-border-radius: 0.25em;
+  border-radius: 0.25em;
   -webkit-transition: all 0.2s ease-out;
   -moz-transition: all 0.2s ease-out;
   -ms-transition: all 0.2s ease-out;
@@ -46,4 +46,28 @@ button:hover {
 }
 .mobile-panel .subpanel.search .label {
   font-size: 3rem;
+}
+.sub #system-message-container {
+  margin: 0 -40px;
+}
+#system-message button.close {
+  position: absolute;
+  right: 1em;
+  top: 0.2em;
+  background: unset;
+  border: unset;
+  width: 0.5em;
+}
+#system-message button.close:before {
+  font-family: 'Fontcons';
+  content: "\f057";
+}
+#system-message dd:before {
+  margin-top: 0.2em;
+}
+#system-message dd.success:before {
+  content: "\f087";
+}
+#system-message dd.error:before {
+  content: "\f088";
 }

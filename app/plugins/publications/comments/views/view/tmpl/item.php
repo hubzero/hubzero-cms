@@ -163,11 +163,11 @@ $author_modified = ($this->comment->get('modified_by') == $this->comment->get('c
 					{
 						if ($attachment->width() > 400)
 						{
-							$html = '<p><a href="' . Route::url($attachment->link()) . '"><img src="' . Route::url($attachment->link()) . '" alt="' . $attachment->get('description') . '" width="400" /></a></p>';
+							$html = '<p><a href="' . Route::url($attachment->link()) . '" rel="lightbox"><img src="' . Route::url($attachment->link()) . '" alt="' . $attachment->get('description') . '" width="400" /></a></p>';
 						}
 						else
 						{
-							$html = '<p><img src="' . Route::url($attachment->link()) . '" alt="' . $attachment->get('description') . '" /></p>';
+							$html = '<p><img src="' . Route::url($attachment->link()) . '" rel="lightbox" alt="' . $attachment->get('description') . '" /></p>';
 						}
 					}
 					else
@@ -198,7 +198,7 @@ $author_modified = ($this->comment->get('modified_by') == $this->comment->get('c
 						--><?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_REPLY'); ?><!--
 					--></a>
 				<?php } ?>
-					<a class="icon-copy copy" href="#">
+					<a class="icon-copy copy">
 						<?php echo Lang::txt('PLG_PUBLICATIONS_COMMENTS_COPY_LINK'); ?>
 						<textarea class="js-copytextarea"><?php echo rtrim(Request::base(), '/') . Route::url($this->comment->link()); ?></textarea>
 					</a>

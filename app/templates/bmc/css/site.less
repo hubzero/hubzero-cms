@@ -55,3 +55,35 @@ button {
 .mobile-panel .subpanel.search .label {
   font-size: 3rem;
 }
+
+// Notifications
+.sub #system-message-container {
+  margin: 0 -40px;
+}
+
+#system-message button.close {
+  position: absolute;
+  right: 1em;
+  top: 0.2em;
+  background: unset;
+  border: unset;
+  width: 0.5em;
+}
+
+#system-message button.close:before {
+  font-family: 'Fontcons';
+  content: "\f057";
+}
+
+#system-message dd:before {
+  margin-top: 0.2em;
+}
+
+#system-message dd.success:before {
+  content: "\f087";
+}
+
+#system-message dd.error:before {
+  content: "\f088";
+}
+ 

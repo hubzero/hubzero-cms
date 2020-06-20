@@ -66,6 +66,9 @@ jQuery(document).ready(function(jq){
 		return;
 	}
 
+	// Set overlays for lightboxed elements
+	$('a[rel=lightbox]').fancybox();
+
 	thread
 		.on('click', 'a.reply, a.edit', function (e) {
 			// Reply to comment
@@ -121,7 +124,11 @@ jQuery(document).ready(function(jq){
 		})
 		.on('click', 'a.copy', function(e) {
 			$(this).find('.js-copytextarea').focus().select();
-			document.execCommand('copy');
+			if (document.execCommand('copy')) {
+				TPL.renderMessages({type: 'success', message: 'Copied permalink for comment #' + $(this).parents('li.comment').attr('id').substr(1) + ' to clipboard!'});
+			} else {
+				TPL.renderMessages({type: 'error', message: 'Error: Unable to copy permalink for comment #' + $(this).parents('li.comment').attr('id').substr(1) + ' to clipboard.'});
+			}			
 		})
 		.on('click', 'ul.order-options li a:not(.active)', function(e) {
 			// Change order by of results (date vs. likes)
