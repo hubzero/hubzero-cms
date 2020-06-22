@@ -93,6 +93,9 @@ jQuery(document).ready(function() {
       $('.oer-link').addClass('active');
     } else if(window.location.href.indexOf('submit') > -1) {
       $('.submit-link').addClass('active');
+    } else if (window.location.href.indexOf('#') > -1) {
+      // If user clicks to log in
+      window.location = '/login';
     } else {
       $('.browse-link').addClass('active');
       openURL($('.browse-link').attr('href'));
