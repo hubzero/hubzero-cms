@@ -103,12 +103,17 @@ jQuery(document).ready(function(jq){
 			if (confirm($(this).attr('data-txt-confirm'))) {
 				var el = $(this);
 				var sortby = ($('ul.order-options a.active').attr('title') === "Date" ? "created" : "likes");
-				$.get(el.attr('href').nohtml() + '&sortby=' + sortby, {}, function(data) {
-					thread.children('ol').replaceWith(data);
+				$.get(el.attr('href').nohtml() + '&sortby=' + sortby, {}, function(response) {
+					response = $.parseJSON(response);
+					thread.children('ol').replaceWith(response.html);
 					$('div.thread li.comment .ckeditor-content').each(function () { 
 						$(this).ckeditor(JSON.parse($(this).siblings('script').html()));
 					});
 					$('a.abuse').fancybox(fancybox_config);
+
+					if (response.status.length) {
+						TPL.renderMessages(response.status);
+					}
 				});
 			}
 		})
@@ -138,9 +143,9 @@ jQuery(document).ready(function(jq){
 
 			thread.find('ul.order-options li a.active').removeClass('active');
 			el.addClass('active');
-			
+
 			$.get(el.attr('data-url').nohtml(), {}, function(data) {
-				thread.children('ol').replaceWith(data);
+				thread.children('ol').replaceWith($.parseJSON(data).html);
 				$('div.thread li.comment .ckeditor-content').each(function () { 
 					$(this).ckeditor(JSON.parse($(this).siblings('script').html()));
 				});
@@ -161,9 +166,10 @@ jQuery(document).ready(function(jq){
 				data: formData,
 				processData: false,
 				contentType: false,
+				dataType: "json",
 				success: function(response, status, xhr) {
 					$('div.thread').children('div.results-none').replaceWith('<ol class="comments"></ol>');
-					thread.children('ol').replaceWith(response);
+					thread.children('ol').replaceWith(response.html);
 					$('div.thread li.comment .ckeditor-content').each(function () { 
 						$(this).ckeditor(JSON.parse($(this).siblings('script').html()));
 					});
@@ -174,6 +180,10 @@ jQuery(document).ready(function(jq){
 					el.first().find('textarea.ckeditor-content').val('');
 					el.find('div.file-inputs input').val(''); // Reset doesn't trickle down to this
 					el.find('div.file-inputs input').trigger('change');
+
+					if (response.status.length) {
+						TPL.renderMessages(response.status, 7000); // Little longer for permalink to display
+					}
 				},
 				error: function(xhr, status, error) {
 				}

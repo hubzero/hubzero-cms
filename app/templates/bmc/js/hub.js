@@ -618,7 +618,7 @@ if (!jq) {
 	 * @param   object  messages  JavaScript object containing the messages to render
 	 * @return  void
 	 */
-	TPL.renderMessages = function(messages, $container = $('#system-message-container')) {
+	TPL.renderMessages = function(messages, success_duration = 4000, $container = $('#system-message-container')) {
 		messages = (Array.isArray(messages) ? messages : [messages]);
 		var messages = ['error', 'success', 'info', 'warning']
 			.map(function(type) { return {type: type, messages: messages.filter(msg => msg.type == type)} });
@@ -642,6 +642,7 @@ if (!jq) {
 				var $dd = $('<dd>')
 					.addClass(item['type'])
 					.addClass('message')
+					.attr('data-duration', (item['type'] == 'success' ? success_duration : Infinity))
 					.appendTo($dl);
 				var $list = $('<ul>').appendTo($dd);
 			}
@@ -670,24 +671,30 @@ if (!jq) {
 	 */
 	TPL.setMessageDurations = function($container = $('#system-message-container')) {
 		if ($container.children('dl').children().length) {
-			var $keep = $container.find('dd.error, dd.warning, dd.info');
-			$('<button>')
-				.addClass('close')
-				.appendTo($keep);
-
-			$container.find('dd.success').each(function(i, el) {
-				var tm = Math.max(($(el).text().length * 10) + 500, 4000);
-				clearTimeout($(el).data('fade'));
-				$(el).data('fade', setTimeout(function() {
-					$(el).removeData('fade');
-					$(el).fadeOut(500);
-				}, tm));
-				clearTimeout($(el).data('out'));
-				$(el).data('out', setTimeout(function() {
-					$(el).removeData('out');
-					$(el).siblings('dt.success').remove();
-					$(el).remove();
-				}, tm+500));
+			$container.find('dd').each(function(i, el) {
+				var duration = $(el).data('duration');
+				if (!duration) {
+					// Set to defaults
+					duration = ($(el).hasClass('success') ? 4000 : Infinity);
+				}
+				if (duration === Infinity) {
+					$('<button>')
+					.addClass('close')
+					.appendTo($(el));
+				} else {
+					var tm = Math.max(($(el).text().length * 10) + 500, duration);
+					clearTimeout($(el).data('fade'));
+					$(el).data('fade', setTimeout(function() {
+						$(el).removeData('fade');
+						$(el).fadeOut(500);
+					}, tm));
+					clearTimeout($(el).data('out'));
+					$(el).data('out', setTimeout(function() {
+						$(el).removeData('out');
+						$(el).siblings('dt.success').remove();
+						$(el).remove();
+					}, tm+500));
+				}
 			});
 		}
 	}

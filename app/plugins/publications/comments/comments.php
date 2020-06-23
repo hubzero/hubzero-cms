@@ -398,7 +398,11 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 			// Ugly brute force method of cleaning output
 			ob_clean();
 			$this->view->setLayout('list');
-			echo $this->view->loadTemplate();
+			$response = Array(
+				'status' => \App::get('notification')->messages(),
+				'html' => $this->view->loadTemplate()
+			);
+			echo json_encode($response);
 			exit();
 		}
 	}
@@ -464,6 +468,9 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 				$row->getError(),
 				'error'
 			);
+		} else {
+			$url = Route::url('index.php?option=' . $this->option . '&id=' . $this->obj->get('id') . '&v=' . $this->obj->get('version_number') . '&active=comments#c' . $row->get('id'));
+			Notify::success("Successfully saved commment #" . $row->get('id') . ". <a href='" . $url . "'>Go to comment</a>");
 		}
 
 		$upload = Request::getVar('comment_file', '', 'files', 'array');
@@ -634,10 +641,12 @@ class plgPublicationsComments extends \Hubzero\Plugin\Plugin
 		// Delete the entry itself
 		if (!$comment->save())
 		{
-			$this->setError($comment->getError());
+			Notify::error($comment->getError());
 		}
 		else
 		{
+			Notify::success('Successfully deleted comment.');
+			
 			// Record the activity
 			$recipients = array(
 				['publication', $comment->get('item_id')],
