@@ -1,0 +1,162 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+.ui-tabs {
+	position: relative;/* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
+	padding: 0;
+}
+.ui-tabs .ui-tabs-nav {
+	margin: 0;
+	padding: 0;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+.ui-tabs .ui-tabs-nav:before,
+.ui-tabs .ui-tabs-nav:after {
+	display: table;
+	content: "";
+	line-height: 0;
+}
+.ui-tabs .ui-tabs-nav:after {
+	clear: both;
+}
+.ui-tabs .ui-tabs-nav li {
+	list-style: none;
+	float: left;
+	display: block;
+	position: relative;
+	top: 0;
+	margin: 0 0 -1px 0;
+	padding: 0;
+	white-space: nowrap;
+}
+.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+	display: block;
+	padding: .61803399em 1em;
+	text-decoration: none;
+	border: 1px solid transparent;
+	border-bottom: none;
+	margin: 0;
+	-webkit-border-radius: .25em .25em 0 0;
+	-moz-border-radius: .25em .25em 0 0;
+	border-radius: .25em .25em 0 0
+}
+/*.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+	margin-bottom: -1px;
+	padding-bottom: 1px;
+}*/
+.ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
+	color: #424242;
+	font-weight: bold;
+	background: #f9f9f9;
+	border-color: #d6d6d6;
+	border-color: rgba(0, 0, 0, 0.25);
+	border-bottom: none
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor,
+.ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor,
+.ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor {
+	cursor: text;
+}
+.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
+	cursor: pointer;
+}
+.ui-tabs .ui-tabs-panel {
+	display: block;
+	border-width: 0;
+	padding: 1.4em 0;
+	background: none;
+}
+
+.form-page-header {
+	background-color: #e7f2ff;
+	position: relative;
+}
+.form-page-header .input-wrap {
+	padding: 12px;
+}
+.form-page-header .fieldset-actions {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+.form-page-header .fieldset-actions a:hover {
+	cursor: pointer;
+}
+
+#item-form .form-wrap.form-builder .frmb li {
+	padding: 12px;
+}
+#item-form .form-wrap.form-builder .delete:before {
+	content: "";
+}
+#toolbar-box [class^=icon-]:before {
+	margin-left: 0;
+}
+#item-form .form-wrap.form-builder .frmb .scale-values li {
+	padding: 12px 0;
+	display: block;
+	float: left;
+	background-color: rgba(0, 0, 0, 0.05);
+	text-align: center;
+	clear: none;
+}
+#item-form .form-wrap.form-builder .frmb .scale-values li label {
+	display: block;
+}
+#item-form .form-wrap.form-builder .goals-strategies {
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 0.25em;
+	padding: 1em;
+}
+
+.form-group .input-wrap select.fld-access {
+	outline: 0;
+	font-size: 1em;
+	line-height: 1.618em;
+	//font-weight: 700;
+	color: #777;
+	border: 1px solid #CCC;
+	border-color: rgba(0, 0, 0, 0.13);
+	border-radius: 0.25em;
+	background: none;
+	background-color: #F0F0F0;
+	background-color: rgba(0, 0, 0, 0.039);
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	margin-bottom: 0;
+	padding: 0.4045084975em 2.01em 0.4045084975em 0.91em;
+	-webkit-box-shadow: inset 0 0 1px #fff;
+	-moz-box-shadow: inset 0 0 1px #fff;
+	box-shadow: inset 0 0 1px #fff;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	background-clip: padding-box;
+	cursor:pointer;
+	background-image: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' width='64px' height='48px' viewBox='0 0 64 48' enable-background='new 0 0 64 48' xml:space='preserve'><path fill='rgb(120, 120, 120)' d='M13.5,18.4c0,0.6,0.2,1.2,0.7,1.7c0.4,0.5,1,0.7,1.6,0.7H48c0.6,0,1.2-0.2,1.6-0.7c0.4-0.5,0.7-1,0.7-1.6 c0-0.7-0.2-1.3-0.6-1.7l-16.1-16c-0.5-0.5-1-0.7-1.7-0.7c-0.7,0-1.2,0.2-1.6,0.7l-16.1,16C13.7,17.2,13.5,17.8,13.5,18.4L13.5,18.4z M13.5,29.5c0,0.7,0.2,1.3,0.6,1.7l16.1,16c0.5,0.5,1,0.7,1.7,0.7s1.2-0.2,1.7-0.7l16.1-16.1c0.4-0.4,0.6-1,0.6-1.7 c0-0.6-0.2-1.1-0.7-1.6c-0.4-0.5-1-0.7-1.6-0.7H15.7c-0.6,0-1.1,0.2-1.6,0.7C13.7,28.3,13.5,28.8,13.5,29.5L13.5,29.5z'/></svg>");
+	background-repeat: no-repeat;
+	background-position: right center;
+	background-position: (100% - 4.8em) 50%;
+	background-position: ~"calc(100% - 0.6em)" 50%;
+	background-size: 1.1em auto;
+}
+.form-group .input-wrap select:focus,
+.form-group .input-wrap select:active,
+.form-group .input-wrap select:hover {
+	outline: none;
+	border-color: #aaaaaa;
+	border-color: rgba(0, 0, 0, 0.26);
+	box-shadow: inset 0 0 1px #fff, 0 0 2px rgba(0, 0, 0, 0.35);
+}
+.form-group .input-wrap select:focus,
+.form-group .input-wrap select:active {
+	background-color: #f8f8f8;
+	color: #444;
+}
+.form-group .input-wrap select::-ms-expand { /* for IE 11 */
+	display: none;
+}

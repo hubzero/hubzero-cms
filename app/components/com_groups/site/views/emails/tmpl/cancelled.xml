@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package      hubzero-cms
+@copyright    Copyright 2005-2019 HUBzero Foundation, LLC.
+@license      http://opensource.org/licenses/MIT MIT
+-->
+
+<metadata>
+	<layout title="Standard Groups Cancel Message Layout">
+		<message>
+			<![CDATA[STANDARD GROUPS CANCEL MESSAGE LAYOUT DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>Standard Groups Cancel Message Layout</name>
+		<description>STANDARD GROUPS CANCEL MESSAGE LAYOUT DESC</description>
+		<params>
+		</params>
+	</state>
+</metadata>

@@ -1,0 +1,202 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Members Groups plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+/* Group member status */
+	.adminlist tbody .status {
+		font-size: 85%;
+		font-weight: bold;
+		display: inline-block;
+		background-color: #6a0;
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		-ms-border-radius: 0.25em;
+		-o-border-radius: 0.25em;
+		border-radius: 0.25em;
+		margin: 0;
+		padding: 0em 0.4em;
+		color: #fff;
+		white-space: nowrap;
+		text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.2);
+	}
+	.adminlist tbody .status.member {
+		background-color: #66AA00;
+	}
+	.adminlist tbody .status.member:before {
+		content: "";
+		display: none;
+	}
+	.adminlist tbody .status.manager {
+		background-color: #ff1177;
+	}
+	.adminlist tbody .status.pending {
+		background-color: #AA3300;
+	}
+	.adminlist tbody .status.invitee,
+	.adminlist tbody .status.inviteemail {
+		background-color: #aaaaaa;
+	}
+
+/* Icons */
+	.toolbar-box .icon-32-promote:before,
+	.state.promote:before {
+		content: "\2191";
+	}
+	.state.promote:hover:before {
+		color: #7F913C;
+	}
+	.toolbar-box .icon-32-demote:before,
+	.state.demote:before {
+		content: "\2193";
+	}
+	.state.demote:hover:before {
+		color: #c55500;
+	}
+	.state.archive:before {
+		content: "\f005";
+	}
+	.state.archive:hover:before {
+		color: #7F913C;
+	}
+
+	table.adminlist.attention {
+		border: 1px solid rgba(255,0,0,0.3);
+		background: #fae8e8;
+	}
+	table.adminlist.attention thead th {
+		color: #e55454;
+		border-bottom: 1px solid rgba(255,0,0,0.3);
+	}
+
+	.group-type {
+		display: inline-block;
+		line-height: 1;
+		margin: 0;
+		padding: 0.4em 0.5em 0.5em 0.5em;
+		overflow: hidden;
+		vertical-align: bottom;
+		white-space: nowrap;
+		background-color: #eee;
+		-webkit-border-radius: 0.25em;
+		-moze-border-radius: 0.25em;
+		border-radius: 0.25em;
+		color: #eee;
+		color: rgba(0, 0, 0, 0.4);
+	}
+	.group-type.system {
+		background-color: #f9e4e4;
+		color: #dd5555;
+	}
+	.group-type.project {
+		background-color: #fff0db;
+		color: #ffa44c;
+	}
+	.group-type.super {
+		background-color: #e7f2ff;
+		color: #5da6fb;
+	}
+
+/* Needs attention */
+	.attention-view,
+	.attention-actions {
+		margin: 0 0 0 0px;
+		padding: 0;
+		list-style: none;
+	}
+	.attention-view li,
+	.attention-actions li {
+		margin: 2px 0;
+	}
+	.attention-view li:before,
+	.attention-actions li:before {
+		content: '\f0a1';
+		font-family: 'Fontcons';
+		margin-right: 3px;
+	}
+	.attention-actions li.completed,
+	.attention-actions li.completed a {
+		color:#259603;
+	}
+	.attention-actions li.completed:before {
+		content: '\2611';
+	}
+	.attention-actions li.approve:before {
+		content: '\2192';
+	}
+	.attention-view li.edit:before {
+		content: '\270E';
+	}
+	.attention-view li.raw:before {
+		content: '\f121';
+	}
+	.attention-view li.preview:before {
+		content: '\f002';
+	}
+
+	.code table {
+		border:2px solid #ccc;
+	}
+	.code table td.lines {
+		background: #efefef;
+		color: #333;
+		width: 30px;
+		text-align: right;
+	}
+	.code table td.code {
+		background: #FFF;
+	}
+
+	.adminlist.success th {
+		background: #def6e2;
+	}
+	.adminlist.failed th {
+		background: #f6dede;
+	}
+	.adminlist.success pre {
+		font-size: 12px;
+		line-height: 16px;
+	}
+
+	.merge-success {
+		position: relative;
+	}
+	label.merge {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		outline: 3px solid #efefef;
+		border: 1px solid #ccc;
+		border-radius: 2px;
+		padding: 5px 10px;
+	}
+	.icon-32-merge:before {
+		content: '\f16b' !important;
+	}
+
+	.role {
+		display: inline-block;
+		font-size: 0.8em;
+		line-height: 1;
+		background-color: rgba(0, 0, 0, 0.07);
+		-webkit-border-radius: 0.25em;
+		-moz-border-radius: 0.25em;
+		border-radius: 0.25em;
+		padding: 0.4em 0.5em;
+	}
+	.role a {
+		font-weight: bold;
+		margin-left: 0.5em;
+		color: #999;
+	}
+	.role a:hover {
+		color: #c00;
+	}

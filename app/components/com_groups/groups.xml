@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="1.5">
+	<name>Groups</name>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright 2005-2019 HUBzero Foundation, LLC.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<files>
+		<filename>groups.tags.php</filename>
+		<filename>controller.php</filename>
+		<filename>groups.php</filename>
+		<filename>groups.log.php</filename>
+		<filename>groups.html.php</filename>
+		<filename>router.php</filename>
+		<filename>groups.css</filename>
+		<filename>groups.js</filename>
+		<filename>groups.reason.php</filename>
+		<filename>views/index.html</filename>
+		<filename>views/intro/tmpl/default.php</filename>
+		<filename>views/intro/tmpl/default.xml</filename>
+		<filename>views/intro/tmpl/index.html</filename>
+		<filename>images/message.gif</filename>
+		<filename>images/groups-large.gif</filename>
+		<filename>images/extlink.gif</filename>
+		<filename>images/missinglink.gif</filename>
+		<filename>images/1.gif</filename>
+		<filename>images/cite.gif</filename>
+		<filename>images/group.gif</filename>
+		<filename>images/qanda.gif</filename>
+		<filename>images/resource.gif</filename>
+		<filename>images/stats.gif</filename>
+		<filename>images/topic.gif</filename>
+		<filename>images/author.gif</filename>
+		<filename>images/calendar-next.png</filename>
+		<filename>images/calendar-previous.png</filename>
+		<filename>images/comment.gif</filename>
+		<filename>images/draft.gif</filename>
+		<filename>images/icons/asf.png</filename>
+		<filename>images/icons/asx.png</filename>
+		<filename>images/icons/avi.png</filename>
+		<filename>images/icons/dmg.png</filename>
+		<filename>images/icons/doc.png</filename>
+		<filename>images/icons/folder.gif</filename>
+		<filename>images/icons/gif.png</filename>
+		<filename>images/icons/html.png</filename>
+		<filename>images/icons/jpg.png</filename>
+		<filename>images/icons/mov.png</filename>
+		<filename>images/icons/pdf.png</filename>
+		<filename>images/icons/pps.png</filename>
+		<filename>images/icons/ppt.png</filename>
+		<filename>images/icons/rar.png</filename>
+		<filename>images/icons/swf.png</filename>
+		<filename>images/icons/tiff.png</filename>
+		<filename>images/icons/trash.gif</filename>
+		<filename>images/icons/txt.png</filename>
+		<filename>images/icons/unknown.png</filename>
+		<filename>images/icons/wmv.png</filename>
+		<filename>images/icons/xls.png</filename>
+		<filename>images/icons/zip.png</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.com_groups.ini</language>
+	</languages>
+	<administration>
+		<menu>Groups</menu>
+		<files>
+			<filename>config.xml</filename>
+			<filename>admin.controller.php</filename>
+			<filename>admin.groups.html.php</filename>
+			<filename>admin.groups.php</filename>
+			<filename>toolbar.groups.html.php</filename>
+			<filename>toolbar.groups.php</filename>
+		</files>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.com_groups.ini</language>
+		</languages>
+	</administration>
+</extension>

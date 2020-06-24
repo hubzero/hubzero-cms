@@ -1,0 +1,275 @@
+/**
+ * Basic Template - Main Styles
+ *
+ * Template used for Special Groups. Will now be auto-created 
+ * when admin switches group from type HUB to type Special.
+ */
+
+#group-body {
+	background: #666;
+	min-width: inherit;
+}
+.super-group-body-wrap {
+	font-family: 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+}
+.super-group-body {
+	background: #FFF;
+}
+
+/* Header */
+.super-group-header-wrap {
+	background: #444;
+	border-top: 1px solid #555;
+	/*height: 75px;*/
+	padding: 0 20px;
+}
+.super-group-header {
+	margin: 0;
+	width: 100%;
+	position: relative;
+}
+.super-group-header h1 {
+	/*position: absolute;
+	top: 18px;
+	left: 0;*/
+	margin: 0.5em 0;
+	padding: 0;
+}
+.super-group-header h1 a {
+	display: block;
+	font-weight: 100;
+	/*font-size: 30px;
+	line-height: 36px;*/
+	font-size: 1.2em;
+	line-height: 1.2em;
+	color: #FFF;
+	font-family: 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+	border: none !important;
+}
+.super-group-header h1 a span {
+	color: #777;
+}
+.super-group-header h1 a:hover {
+	border: none !important;
+}
+
+
+/* Menu */
+.super-group-menu-wrap {
+	background: #0397A7;
+	padding: 0 20px;
+}
+.super-group-menu {
+	margin: 0;
+	width: 100%;
+}
+.super-group-menu ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.super-group-menu a {
+	-webkit-transition: background 0.1s ease-in-out;
+	   -moz-transition: background 0.1s ease-in-out;
+	    -ms-transition: background 0.1s ease-in-out;
+	     -o-transition: background 0.1s ease-in-out;
+	        transition: background 0.1s ease-in-out;
+}
+.super-group-menu > ul li {
+	float: left;
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+.super-group-menu > ul li.hasmeta a {
+	padding-right: 35px !important;
+}
+.super-group-menu > ul li .meta {
+	position: absolute;
+	top: 1em;
+	right: 1em;
+	color: rgba(255,255,255,0.5);
+	background: rgba(0,0,0,0.15);
+	padding: 0 0.4em;
+	font-size: 0.9%;
+	border-radius: 0.2em;
+}
+.super-group-menu > ul li .alrt {
+	display: none;
+}
+.super-group-menu > ul li a,
+.super-group-menu > ul li.protected span {
+	display: block;
+	padding: 10px 15px;
+	color: #fff;
+	border: none;
+}
+.super-group-menu > ul li.protected span {
+	color: rgba(255,255,255,0.5);
+}
+.super-group-menu > ul li.protected span:hover {
+	cursor: not-allowed;
+}
+.super-group-menu > ul > li >  a:hover {
+	background: rgba(0,0,0,0.15);
+}
+.super-group-menu > ul > li.active > a {
+	background: rgba(0,0,0,0.3);
+}
+.super-group-menu > ul li.active .meta {
+	color: rgba(255,255,255,0.8);
+}
+.super-group-menu ul ul {
+	position: absolute;
+	top: 100%;
+	left: -9999px;
+	min-width: 150px;
+	max-width: 250px;
+	z-index: 555;
+	background: #0397A7;
+	padding: 10px 0;
+}
+.super-group-menu ul ul ul {
+	margin-left: 100%;
+	top: 0px;
+}
+.super-group-menu li:hover > ul {
+	left: 0px;
+}
+.super-group-menu ul ul li {
+	float: none;
+}
+.super-group-menu ul ul li a {
+	padding: 5px 15px;
+	font-size: 12px;
+	color: #efefef;
+}
+.super-group-menu ul ul li a:before {
+	content: '\203A';
+	font-family: 'Fontcons';
+	margin-right: 5px;
+	font-size: 10px;
+}
+.super-group-menu ul ul li a:hover {
+	background: rgba(0,0,0,0.4);
+}
+
+/* Toolbar */
+.super-group-toolbar {
+	position: absolute;
+	top: 18px;
+	right: 0;
+}
+.super-group-toolbar > ul {
+	margin: 0 !important;
+}
+.super-group-toolbar .btn-group > a,
+.super-group-toolbar .btn-group > .dropdown-toggle {
+	border-color: #555 !important;
+	-webkit-transition: border-color 0.6s ease-in-out;
+}
+.super-group-toolbar:hover .btn-group > a,
+.super-group-toolbar:hover .btn-group > .dropdown-toggle {
+	border-color: #000 !important;
+}
+.super-group-toolbar ul.dropdown-menu {
+	left: auto !important; 
+	right: 0 !important;
+	font-size: 12px !important;
+}
+
+/* Content */
+.super-group-content-wrap {
+	margin: 0;
+	padding: 0;
+	min-height: 300px;
+	padding: 0 20px 40px 20px !important;
+}
+.super-group-content {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	position: relative;
+}
+.super-group-content > h2 {
+	padding: 0;
+	margin: 20px 0 10px 0;
+}
+.super-group-content #page_options {
+	right: 0;
+	top: 0px;
+}
+.super-group-content h3.heading,
+.super-group-content .section-header {
+	display: none;
+}
+.super-group-content .section {
+	padding: 0 !important;
+	margin: 20px 0 !important;
+}
+
+/* Footer */
+.super-group-footer-wrap {
+	background: #666;
+	padding: 0 20px;
+}
+.super-group-footer {
+	margin: 0;
+	width: 100%;
+	padding: 20px 0 40px 0;
+	font-size: 11px;
+	color: #999;
+}
+
+
+
+/* Home Page */
+.group_overview {
+	margin-top: 20px !important;
+}
+.group_overview > h2 {
+	display: none;
+}
+/* Member Adjustments */
+.group_members .aside .roles li {
+	overflow: hidden;
+}
+/* Wiki Adjustments */
+.group_wiki > h2 {
+	display: none;
+}
+/* Collections Adjustments */
+.group_collections p.overview,
+.group_collections fieldset.filters,
+.group_collections .sub-menu {
+	margin-top: 0 !important;
+}
+/* Login */
+.group_login > h2:first-child {
+	display: none;
+}
+
+/* Responsive */
+.super-group-menu>ul li.option-select {
+	padding: 1em 0;
+	float: none;
+}
+.super-group-menu>ul.js li {
+	display: none;
+}
+.super-group-menu>ul.js li.option-select,
+.super-group-menu>ul.js li.option-select select {
+	display: block;
+}
+.super-group-menu>ul.js li.option-select select {
+	width: 100%;
+}
+
+@media (min-width: 40em) {
+	.super-group-menu>ul.js li {
+		display: block;
+	}
+	.super-group-menu>ul.js li.option-select {
+		display: none;
+	}
+}
