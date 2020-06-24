@@ -630,7 +630,6 @@ class Setup extends Base
 
 		// Incoming
 		$access  = Request::getInt('access', $this->model->get('access', 5));
-		$private = Request::getInt('private', $this->model->get('private', 1));
 		$private = $access == 5 ? 1 : 0;
 
 		// Save section

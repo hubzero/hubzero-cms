@@ -114,22 +114,22 @@ $this->view('_title')
 							<?php echo $this->editor('about', $this->escape($this->model->about('raw')), 35, 25, 'field-about', array('class' => 'form-control minimal no-footer')); ?>
 						</label>
 					</div>
+				</fieldset>
 
-					<fieldset>
-						<legend><?php echo Lang::txt('COM_PROJECTS_SETTING_APPEAR_IN_SEARCH'); ?></legend>
+				<fieldset>
+					<legend><?php echo Lang::txt('COM_PROJECTS_SETTING_APPEAR_IN_SEARCH'); ?></legend>
 
-						<div class="form-group form-check">
-							<label for="privacy-private" class="form-check-label">
-								<input class="option form-check-input" name="private" id="privacy-private" type="radio" value="1" <?php echo !$this->model->isPublic() ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PRIVATE'); ?>
-							</label>
-						</div>
+					<div class="form-group form-check">
+						<label>
+							<input class="option" name="access" type="radio" value="5" <?php echo $this->model->get('access') == 5 ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PRIVATE'); ?>
+						</label>
+					</div>
 
-						<div class="form-group form-check">
-							<label for="privacy-public" class="form-check-label">
-								<input class="option form-check-input" name="private" id="privacy-public" type="radio" value="0" <?php echo $this->model->isPublic() ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PUBLIC'); ?>
-							</label>
-						</div>
-					</fieldset>
+					<div class="form-group form-check">
+						<label>
+							<input class="option" name="access" type="radio" value="1" <?php echo $this->model->get('access') != 5 ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PUBLIC'); ?>
+						</label>
+					</div>
 				</fieldset>
 
 				<?php if ($this->model->get('id')): ?>
