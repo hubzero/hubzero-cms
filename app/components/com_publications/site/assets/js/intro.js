@@ -41,13 +41,16 @@ jQuery(document).ready(function() {
 
   const updateSubnav = () => {
     var activeIndex = $('main nav.nav-page ul li a.active').parent().index()+1;
-
-    // Update subnav menu
-    $('div.sub nav ul li.active').removeClass('active');
-    $('div.sub nav ul li:nth-child(' + activeIndex + ')').addClass('active');
+    var $current = $('div.sub nav ul li.active');
+    var $new = $('div.sub nav ul li:nth-child(' + activeIndex + ')');
 
     // Update breadcrumbs
-    $('span.breadcrumbs.pathway span:last-child').html($('.nav-page-link.active').html());
+    $('span.breadcrumbs.pathway span:nth-of-type(3)').nextUntil().remove();
+    $('<span>').attr('aria-current', 'page').text($new.text()).appendTo($('span.breadcrumbs.pathway'))
+
+    // Update subnav menu
+    $current.removeClass('active');
+    $new.addClass('active');
   }
 
   $('.nav-page-link').on('click', function(e) {
