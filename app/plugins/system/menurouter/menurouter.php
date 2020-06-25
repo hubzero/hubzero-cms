@@ -82,11 +82,12 @@ class plgSystemMenurouter extends \Hubzero\Plugin\Plugin
 				$active = true;
 			}
 
-			// Resources menu
-			if (isset($segments[0]) && in_array($segments[0], array('publications', 'collections')))
-			{
-				array_unshift($segments, 'qubesresources');
-				$name = 'Resources';
+			if (isset($segments[0]) && ($segments[0] == 'publications') &&
+			    isset($segments[1]) && ($segments[1] == 'submit')) {
+				array_splice($segments, 1, 0, array('submitresource'));
+
+				$name = 'Submit a Resource';
+
 				$active = true;
 			}
 
@@ -157,11 +158,27 @@ class plgSystemMenurouter extends \Hubzero\Plugin\Plugin
 			App::redirect($uri);
 		}
 
-		// Resources menu
-		if (in_array($segment, array('publications', 'collections')))
+		// Resource menu
+		// Legacy redirect: Remove qubesresources from all URLs
+		//   Components affected: publications, collections, software
+		//   VERY important to keep this code around for a bit for DOIs.
+		//   Eventually update DOI urls through the DOI service.
+		if (in_array($segment, array('qubesresources')))
 		{
-			$uri = str_replace('/' . $segment, '/qubesresources/' . $segment, $request->current(true));
+			$uri = str_replace('/' . $segment, '', $request->current(true));
 			App::redirect($uri);
+		}
+		// Inject "Submit a Resource" page if action is submit
+		$segment_next = $request->segment(2);
+		if ($segment == 'publications') {
+			if ($segment_next == 'submit') {
+				$uri = str_replace('/publications/submit', '/publications/submitresource/submit', $request->current(true));
+				App::redirect($uri);
+			}
+			if ($segment_next == null) {
+				$uri = str_replace('/publications', '/publications/browse', $request->current(true));
+				App::redirect($uri);
+			}
 		}
 
 		// News menu

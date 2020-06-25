@@ -52,7 +52,7 @@ $extras = Event::trigger('publications.onPublicationsList', array($this->line));
 ?>
 <li class="<?php echo implode(' ', $cls); ?>">
 	<div class="pub-thumb<?php echo $moreClasses; ?>">
-		<img src="<?php echo Route::url($this->line->link('thumb')); ?>" alt="<?php echo $this->escape($this->line->title); ?>" />
+		<img src="<?php echo Route::url($this->line->link('masterimage')); ?>" alt="<?php echo $this->escape($this->line->title); ?>" />
 	</div>
 	<div class="pub-details">
 		<p class="title">
@@ -75,7 +75,7 @@ $extras = Event::trigger('publications.onPublicationsList', array($this->line));
 				}
 			');
 			?>
-			<div class="metadata">
+			<!-- <div class="metadata">
 				<dl class="rankinfo">
 					<dt class="ranking">
 						<span class="rank">
@@ -87,7 +87,7 @@ $extras = Event::trigger('publications.onPublicationsList', array($this->line));
 						<div></div>
 					</dd>
 				</dl>
-			</div>
+			</div> -->
 			<?php
 		elseif ($this->params->get('show_rating') && $this->config->get('show_rating')):
 			switch ($this->line->get('master_rating')):
