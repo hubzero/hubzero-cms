@@ -52,7 +52,7 @@ $extras = Event::trigger('publications.onPublicationsList', array($this->line));
 ?>
 <li class="<?php echo implode(' ', $cls); ?>">
 	<div class="pub-thumb<?php echo $moreClasses; ?>">
-		<img src="<?php echo Route::url($this->line->link('thumb')); ?>" alt="<?php echo $this->escape($this->line->title); ?>" />
+		<img src="<?php echo Route::url($this->line->link('masterimage')); ?>" alt="<?php echo $this->escape($this->line->title); ?>" />
 	</div>
 	<div class="pub-details">
 		<p class="title">

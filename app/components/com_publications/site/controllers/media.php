@@ -86,7 +86,8 @@ class Media extends SiteController
 				// Default image
 				if (!$source)
 				{
-					$source = PATH_CORE . DS . trim($this->config->get('masterimage', 'components/com_publications/site/assets/img/master.png'), DS);
+					$random = rand(1,6);
+					$source = PATH_APP . DS . trim($this->config->get('masterimage', 'components/com_publications/site/assets/img/master_' . $random . '.png'), DS);
 				}
 			}
 			else
