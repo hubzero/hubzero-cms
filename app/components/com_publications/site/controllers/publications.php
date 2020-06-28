@@ -1897,6 +1897,10 @@ class Publications extends SiteController
 				$file2 = Filesystem::name($file) . '-' . $oldid . '.' . Filesystem::extension($file);
 				$file2new = Filesystem::name($file) . '-' . $attachment->get('id') . '.' . Filesystem::extension($file);
 
+				$from3 = $pubfilespace . DS;
+				$file3 = \Components\Projects\Helpers\Html::fixFileName(basename($attachment->get('path')), '-' . $oldid);
+				$file3new = \Components\Projects\Helpers\Html::fixFileName(basename($attachment->get('path')), '-' . $attachment->get('id'));
+
 				$from   = $pubfilespace . '/' . ($path ? $path . '/' : ''); // . $file;
 				$toProj = $prjfilespace . '/' . ($path ? $path . '/' : ''); // . $file;
 				$toPub  = $newpubfilespace . '/' . ($path ? $path . '/' : ''); // . $file;
@@ -1910,6 +1914,13 @@ class Publications extends SiteController
 						$file = $file2;
 						$filenew = $file2new;
 					}
+					elseif (file_exists($from3 . $file3))
+					{
+						$from = $from3;
+						$file = $file3;
+						$filenew = $file3new;
+						$toPub  = $newpubfilespace . DS;
+					}
 					else
 					{
 						// OK, maybe it's in the gallery
@@ -1921,8 +1932,18 @@ class Publications extends SiteController
 							// Let's try an alternate file name
 							if (!file_exists($from . $file2))
 							{
-								Notify::error(Lang::txt('File does not exist: %s', $from . $file2));
-								continue;
+								if (!file_exists(dirname($pubfilespace) . DS . $galleryParams['directory'] . DS . $file3))
+								{
+									Notify::error(Lang::txt('File does not exist: %s', $from . $file2));
+									continue;
+								}
+								else
+								{
+									$from = dirname($pubfilespace) . DS . $galleryParams['directory'] . DS;
+									$file = $file3;
+									$filenew = $file3new;
+									$toPub  = $newpubfilespace . DS . $galleryParams['directory'] . DS;
+								}
 							}
 							// Found it
 							else
