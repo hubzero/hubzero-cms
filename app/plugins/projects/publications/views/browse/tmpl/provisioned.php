@@ -50,7 +50,7 @@ if (User::isGuest())
 				</a>
 
 				<a href="/qubesresources/publications/submit?action=publication&base=mmhubresource" class="resource-type">
-					<img src="http://192.168.33.10/app/site/media/images/partners/math_modeling_hub_logotype.png" alt="Partner logo" class="partner-resource-logo">
+					<img src="/app/site/media/images/partners/math_modeling_hub_logotype.png" alt="Partner logo" class="partner-resource-logo">
 				</a>
 			</div>
 		</div>
