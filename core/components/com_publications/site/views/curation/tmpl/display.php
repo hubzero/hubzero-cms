@@ -103,12 +103,17 @@ $this->css()
 
 									if ($row->state == 7)
 									{
-										$reviewed  = strtolower(Lang::txt('COM_PUBLICATIONS_CURATION_REVIEWED')) . ' <span class="prominent">' . Date::of($row->reviewed)->toLocal('M d, Y') . '</span> ';
+										$reviewed = '';
 
-										$reviewer  = User::getInstance($row->reviewed_by);
-										$name = $reviewer->get('name');
-										$name = $name ?: Lang::txt('JUNKNOWN');
-										$reviewed .= $reviewer ? ' <span class="block">' . Lang::txt('COM_PUBLICATIONS_CURATION_BY', $name) . '</span>' : '';
+										if (!empty($row->reviewed_by) && !empty($row->reviewed_by))
+										{
+											$reviewed = strtolower(Lang::txt('COM_PUBLICATIONS_CURATION_REVIEWED')) . ' <span class="prominent">' . Date::of($row->reviewed)->toLocal('M d, Y') . '</span> ';
+
+											$reviewer = User::getInstance($row->reviewed_by);
+											$name = $reviewer->get('name');
+											$name = $name ?: Lang::txt('JUNKNOWN');
+											$reviewed .= $reviewer ? ' <span class="block">' . Lang::txt('COM_PUBLICATIONS_CURATION_BY', $name) . '</span>' : '';
+										}
 									}
 
 									$class = $row->state == 5 ? 'status-pending' : 'status-wip';
