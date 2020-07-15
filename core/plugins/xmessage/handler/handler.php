@@ -77,7 +77,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 	 * @param   string   $subject            Message subject
 	 * @param   string   $message            Message to send
 	 * @param   array    $from               Message 'from' data (e.g., name, address)
-	 * @param   array    $to                 List of user IDs
+	 * @param   array    $to		 List of user IDs
 	 * @param   string   $component          Component name
 	 * @param   integer  $element            ID of object that needs an action item
 	 * @param   string   $description        Action item description
@@ -142,14 +142,38 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
 		// Store the message in the database
 		$xmessage->set('message', (is_array($message) && isset($message['plaintext'])) ? $message['plaintext'] : $message);
 
-		// Do we have a subject line? If not, create it from the message
-		if (!$subject && $xmessage->get('message'))
+		// Outlook 2016 Windows 10 Desktop client fails to parse some
+		// encoded multi-line subject fields. In particular with the
+		// line ending of CRLF (or its a bug in Swiftmailer's encoding,
+		// not actually certain). To address this and other potential
+		// problems with the subject field we add additional logic
+		// here to ensure a valid subject field.
+		//
+		// If no subject passed use the message text as the subject
+		// Truncate subject to 70 characters
+		// Append ellipse (...) if truncated
+		// Replace any CRLF with LF
+		//
+		// *njk*
+
+		$subject = trim($subject);
+
+		if (!$subject)
 		{
-			$subject = substr($xmessage->get('message'), 0, 70);
-			if (strlen($subject) >= 70)
-			{
-				$subject .= '...';
-			}
+			$subject = trim($xmessage->get('message'));
+		}
+
+		if (strlen($subject) >= 70)
+		{
+			$subject = trim(substr($subject, 0, 70));
+			$subject .= '...';
+		}
+
+		$subject = trim(str_replace("\r\n", "\n", $subject));
+
+		if (!$subject)
+		{
+			$subject = "[No Subject]";
 		}
 
 		$xmessage->set('subject', $subject);
