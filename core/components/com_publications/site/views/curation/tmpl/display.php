@@ -105,7 +105,7 @@ $this->css()
 									{
 										$reviewed = '';
 
-										if (!empty($row->reviewed_by) && !empty($row->reviewed_by))
+										if (!empty($row->reviewed_by))
 										{
 											$reviewed = strtolower(Lang::txt('COM_PUBLICATIONS_CURATION_REVIEWED')) . ' <span class="prominent">' . Date::of($row->reviewed)->toLocal('M d, Y') . '</span> ';
 
