@@ -275,19 +275,30 @@ class Resources extends SiteController
 			}
 		}
 
-		$query = Entry::all();
-			/*->including(['type', function ($type){
-				$type->select('*');
-			}]);*/
+		$query = Entry::all()
+			->select('#__resources.id')
+			->select('title')
+			->select('params')
+			->select('access')
+			->select('ranking')
+			->select('type')
+			->select('rating')
+			->select('#__resources.created')
+			->select('#__resources.modified')
+			->select('publish_up')
+			->select('introtext')
+			->select('fulltxt');
 
 		$r = $query->getTableName();
-		//$t = Type::blank()->getTableName();
 
 		$query->whereEquals($r . '.standalone', 1);
 		$query->whereIn($r . '.access', $filters['access']);
 
 		if ($filters['tag'] != '')
 		{
+			// Aliased to avoid ID collisions
+			$query->select('#__tags.id', 'tag_id');
+
 			$to = \Components\Tags\Models\Objct::blank()->getTableName();
 			$tg = \Components\Tags\Models\Tag::blank()->getTableName();
 
