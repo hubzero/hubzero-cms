@@ -70,7 +70,7 @@ $this->css();
 					<td>
 						<input type="checkbox" name="packages[]" id="cb<?php echo $i; ?>" value="<?php echo $package->getPrettyName(); ?>" class="checkbox-toggle" />
 					</td>
-					<td> 
+					<td>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&packageName=' . $package->getName()); ?>">
 							<strong><?php echo $package->getPrettyName() ?></strong>
 						</a>

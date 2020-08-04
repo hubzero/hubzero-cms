@@ -59,8 +59,8 @@ class Customexts extends AdminController
 			'limitstart',
 			0,
 			'int'
-		);        
-        
+		);
+
 		$filters = array(
 			'search' => urldecode(Request::getState(
 				$this->_option . '.' . $this->_controller . '.search',
@@ -77,13 +77,13 @@ class Customexts extends AdminController
 				'filter_status',
 				'',
 				''
-			),            
+			),
 			'type' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.type',
 				'filter_type',
 				'',
 				''
-			),            
+			),
 			'group' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.group',
 				'filter_group',
@@ -101,15 +101,15 @@ class Customexts extends AdminController
 				'filter_order_Dir',
 				'ASC'
 			)
-		);        
-        
+		);
+
 		$entries = Custom_extensions::all();
 
 		$e = $entries->getTableName();
 
 		$entries
-			->select($e . '.*');        
-        
+			->select($e . '.*');
+
 		// Filter by search in id
 		if (!empty($filters['search']))
 		{
@@ -123,8 +123,8 @@ class Customexts extends AdminController
 					->orWhereLike($e . '.folder', $filters['search'], 1)
 					->resetDepth();
 			}
-		}        
-        
+		}
+
 		if (isset($filters['client_id']) && $filters['client_id'] != '')
 		{
 			$entries->whereEquals('client_id', (int)$filters['client_id']);
@@ -142,12 +142,12 @@ class Customexts extends AdminController
 			}
 		}
 
-        
+
 		if (isset($filters['type']) && $filters['type'] != '')
 		{
 			$entries->whereEquals('type', $filters['type']);
 		}
-        
+
 		if (isset($filters['group']) && $filters['group'])
 		{
 			$entries->whereEquals('folder', $filters['group']);
@@ -230,7 +230,7 @@ class Customexts extends AdminController
 
 	/**
 	 * Edit or create
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function editTask($row=null)
@@ -250,8 +250,8 @@ class Customexts extends AdminController
 		{
 			// Grab the incoming ID and load the record for editing
 			//
-			// IDs can come arrive in two formts: single integer or 
-			// an array of integers. If it's the latter, we'll only take 
+			// IDs can come arrive in two formts: single integer or
+			// an array of integers. If it's the latter, we'll only take
 			// the first ID in the list.
 			$id = Request::getArray('id', array(0));
 			if (is_array($id) && !empty($id))
@@ -304,9 +304,9 @@ class Customexts extends AdminController
 
 		// Get parameters
 		$params = Request::getArray('params', array(), 'post');
-        
+
 		$p = $model->params;
-        
+
 		if (is_array($params))
 		{
 			foreach ($params as $k => $v)
@@ -341,10 +341,10 @@ class Customexts extends AdminController
                 break;
             case "template":
                 $path_type = "templates";
-                break;               
+                break;
         }
-        
-        // Set path 
+
+        // Set path
         if ($model->folder)
 		{
             $model->set('path', PATH_APP . "/" . $path_type . "/" . $model->folder . "/"  . $model->name);
@@ -352,7 +352,7 @@ class Customexts extends AdminController
         else {
             $model->set('path', PATH_APP . "/" . $path_type . "/"  . $model->name);
         }
-        
+
 		// Validate and save the data
 		if (!$model->save())
 		{
@@ -368,7 +368,7 @@ class Customexts extends AdminController
 		}
 
 		$this->cancelTask();
-	}    
+	}
 
 	/**
 	 * Enable/Disable an extension
@@ -397,19 +397,19 @@ class Customexts extends AdminController
 			foreach ($ids as $id)
 			{
 				$model = Custom_extensions::oneOrFail($id);
-                
+
 				if ($value)
 				{
                     $pieces = explode("/", $model->path);
                     $repodir = array_pop($pieces);
-                    $extdir = implode("/", $pieces);               
+                    $extdir = implode("/", $pieces);
 
                     if (is_dir($extdir . '/__' . $repodir))
                     {
                         if (!isset($user))
                         {
                             $user = Component::params('com_installer')->get('system_user', 'hubadmin');
-                        }                
+                        }
                         // The tasks and command to be perofmred
                         $task = 'repository';
                         $museCmd = 'renameRepo currPath=' . $extdir . '/__' . $repodir . ' targetPath=' . $model->path;
@@ -423,7 +423,7 @@ class Customexts extends AdminController
                         // execute command
                         $output = shell_exec($cmd);
                     }
-                    
+
 					if (!$model->publish())
 					{
 						Notify::error($model->getError());
@@ -431,7 +431,7 @@ class Customexts extends AdminController
 					}
 				}
 				else
-				{   
+				{
                     if (is_dir($model->path))
                     {
                         $pieces = explode("/", $model->path);
@@ -441,7 +441,7 @@ class Customexts extends AdminController
                         if (!isset($user))
                         {
                             $user = Component::params('com_installer')->get('system_user', 'hubadmin');
-                        }                
+                        }
                         // The tasks and command to be perofmred
                         $task = 'repository';
                         $museCmd = 'renameRepo currPath=' . $model->path . ' targetPath=' . $extdir . '/__' . $repoPath;
@@ -465,7 +465,7 @@ class Customexts extends AdminController
 
 				$success++;
 			}
-            
+
 			// Change the state of the records.
 			if ($success)
 			{
@@ -482,14 +482,14 @@ class Customexts extends AdminController
                 {
                     return;
                 }
-                
+
              Notify::success(Lang::txts($ntext, $success));
 			}
 		}
 
 		$this->cancelTask();
 	}
-    
+
 	/**
 	 * Fetch from Git
 	 *
@@ -499,7 +499,7 @@ class Customexts extends AdminController
 	{
         // Check for request forgeries
 		Request::checkToken();
-        
+
 		// Incoming
 		$ids = Request::getArray('cid', array());
 
@@ -517,7 +517,7 @@ class Customexts extends AdminController
 
         // Publish extnetion if not to prevent cloning a new dir.
         $this->publishTask();
-        
+
 		// vars to hold results of pull
 		$success = array();
 		$failed  = array();
@@ -533,7 +533,7 @@ class Customexts extends AdminController
                 if (!isset($user))
                 {
                     $user = Component::params('com_installer')->get('system_user', 'hubadmin');
-                }                
+                }
                 // The tasks and command to be perofmred
                 $task = 'repository';
                 $museCmd = 'cloneRepo repoPath=' . $extension->path . ' sourceUrl=' . $extension->get('url');
@@ -542,8 +542,8 @@ class Customexts extends AdminController
                 $sudo =  '/usr/bin/sudo -u ' . $user . ' ';
 
                 // Determines the path to muse and run the extension update muse command
-                $cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';                
-                
+                $cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+
 				// execute command
 				$output = shell_exec($cmd);
 			}
@@ -589,9 +589,9 @@ class Customexts extends AdminController
 			->set('failed', $failed)
 			->setLayout('fetched')
 			->display();
-	}    
+	}
 
-    
+
 	/**
 	 * doUpdateTask
 	 *
@@ -670,11 +670,11 @@ class Customexts extends AdminController
 			->set('success', $success)
 			->set('failed', $failed)
 			->display();
-	}        
+	}
 
 	/**
-	 * removeTask 
-	 * 
+	 * removeTask
+	 *
 	 * @return  void
 	 */
 	public function removeTask()
@@ -685,7 +685,7 @@ class Customexts extends AdminController
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
-        
+
 		// Incoming
 		$ids = Request::getArray('cid', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
@@ -734,14 +734,14 @@ class Customexts extends AdminController
                         'message' => $output
                     );
                 }
-                
+
 			}  // If enextion is disabled
 			else if ($extension->enabled == 0)
 			{
-                
+
                 $pieces = explode("/", $extension->path);
                 $repodir = array_pop($pieces);
-                $extdir = implode("/", $pieces);               
+                $extdir = implode("/", $pieces);
 
                 // The tasks and command to be perofmred
                 $task = 'repository';
@@ -775,7 +775,7 @@ class Customexts extends AdminController
                 }
 
 			}
-            
+
 			// Load the record
 			$model = Custom_extensions::oneOrFail(intval($id));
 
@@ -792,8 +792,8 @@ class Customexts extends AdminController
 		{
 			// Set the success message
 			Notify::success(Lang::txt('COM_INSTALLER_CUSTOMEXTS_N_ITEMS_DELETED', $success));
-		}        
-        
+		}
+
 		$this->cancelTask();
 	}
 }

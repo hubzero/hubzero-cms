@@ -41,7 +41,7 @@ $this->js();
 					<label for="field-url"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_EDIT_URL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 					<input type="text" name="fields[url]" id="field-url" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('url'))); ?>" />
 				</div>
-                
+
 				<div class="input-wrap">
 					<label for="field-name"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_EDIT_NAME'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 					<input type="text" name="fields[name]" id="field-name" maxlength="250" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('name'))); ?>" />
@@ -50,7 +50,7 @@ $this->js();
 					<label for="field-alias"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_EDIT_ALIAS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 					<input type="text" name="fields[alias]" id="field-alias" maxlength="250" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
 				</div>
-                
+
 				<div class="input-wrap">
 					<label for="field-type"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_EDIT_TYPE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
                     <select name="fields[type]" class="required" id="field-type">
@@ -65,19 +65,19 @@ $this->js();
                         <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_CLIENT_SELECT');?></option>
                         <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::LocationOptions(), 'value', 'text', $this->row['client_id'], true);?>
 					</select>
-				</div>                
+				</div>
 				<div class="input-wrap">
 					<label for="field-folder"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_EDIT_FOLDER'); ?>: </label><br />
-					<select name="fields[folder]" id="field-folder">                        
+					<select name="fields[folder]" id="field-folder">
                         <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_FOLDER_SELECT');?></option>
                         <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::GroupOptions(), 'value', 'text', $this->row['group']);?>
 					</select>
 				</div>
-              
+
   				<div class="input-wrap">
 					<label for="field-description"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_HEADING_DESCRIPTION'); ?>: </label>
 					<textarea name="fields[description]" id="field-description" rows="10"><?php echo $this->escape($this->row->get('description')); ?></textarea>
-				</div>  
+				</div>
 
 <!--
 				<div class="input-wrap">
@@ -87,9 +87,9 @@ $this->js();
 -->
 
 			</fieldset>
-		</div>      
+		</div>
         <div class="col span5">
-        
+
         <table class="meta">
             <tbody>
 
@@ -115,7 +115,7 @@ $this->js();
                             ?>
                         </td>
                     </tr>
-                <?php endif; ?>                    
+                <?php endif; ?>
 
 
                 <?php if ($this->row->modified && $this->row->modified != '0000-00-00 00:00:00') : ?>
@@ -143,7 +143,7 @@ $this->js();
                 <?php endif; ?>
             </tbody>
         </table>
-            
+
     </div>
     </div>
 	<input type="hidden" name="fields[extension_id]" value="<?php echo $this->row->get('extension_id'); ?>" />

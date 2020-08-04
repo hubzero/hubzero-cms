@@ -78,7 +78,7 @@ $this->css();
 					<td>
 						<input type="checkbox" name="repositories[]" id="cb<?php echo $id; ?>" value="<?php echo $alias; ?>" class="checkbox-toggle" />
 					</td>
-					<td> 
+					<td>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&alias=' . $alias); ?>">
 							<?php echo Arr::getValue($config, 'name', ''); ?>
 						</a>
