@@ -16,7 +16,7 @@ class Helper
 {
 	/**
 	 * Get Session storage class
-	 * 
+	 *
 	 * @return  object
 	 */
 	public static function storage()
@@ -33,7 +33,7 @@ class Helper
 
 	/**
 	 * Get Session by id
-	 * 
+	 *
 	 * @param   integer  $id  Session ID
 	 * @return  object
 	 */
@@ -44,7 +44,7 @@ class Helper
 
 	/**
 	 * Get Session by User Id
-	 * 
+	 *
 	 * @param   integer  $id  User ID
 	 * @return  mixed
 	 */
@@ -71,7 +71,7 @@ class Helper
 
 	/**
 	 * Get list of all sessions
-	 * 
+	 *
 	 * @param   array  $filters  Filters to apply
 	 * @return  array
 	 */

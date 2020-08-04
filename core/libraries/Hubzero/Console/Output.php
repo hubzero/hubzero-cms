@@ -249,7 +249,7 @@ class Output
 
 	/**
 	 * Helper method to add an associative array to the output buffer.
-	 * 
+	 *
 	 * @param array $lines The lines to add
 	 * @return void
 	 **/

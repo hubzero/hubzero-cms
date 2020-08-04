@@ -147,7 +147,7 @@ abstract class Model extends Obj
 
 	/**
 	 * Method to get the database connection.
-	 * 
+	 *
 	 * If detected that the code is being run in a super group
 	 * component, it will return the super group DB connection
 	 * instead of the site connection.
@@ -580,7 +580,7 @@ abstract class Model extends Obj
 
 	/**
 	 * Method to return model values in array format
-	 * 
+	 *
 	 * @param  boolean $verbose Include prefixed "__" vars in output
 	 * @return array            Array of model values.
 	 */

@@ -47,7 +47,7 @@ class ArgumentsServiceProvider extends Middleware
 
 	/**
 	 * Handle request in stack
-	 * 
+	 *
 	 * @param   object  $request  Request
 	 * @return  mixed
 	 */

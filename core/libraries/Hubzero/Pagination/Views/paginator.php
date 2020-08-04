@@ -66,7 +66,7 @@ if (!function_exists('paginator_item_active'))
 			?>
 		</li>
 		<li class="limit">
-			<label for="<?php echo $this->prefix; ?>limit"><?php echo Lang::txt('JGLOBAL_DISPLAY_NUM'); ?></label> 
+			<label for="<?php echo $this->prefix; ?>limit"><?php echo Lang::txt('JGLOBAL_DISPLAY_NUM'); ?></label>
 			<?php
 			// Build the select list.
 			$selected = $this->viewall ? 0 : $this->limit;

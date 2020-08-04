@@ -12,7 +12,7 @@ use Hubzero\Html\Builder\Grid;
 
 /**
  * Pagination Class
- * 
+ *
  * Provides a common interface for content pagination for the platform.
  */
 class Paginator extends Obj

@@ -83,7 +83,7 @@ class Redis extends Store
 
 	/**
 	 * Read session hash for Id
-	 * 
+	 *
 	 * @param   string  $session_id  Session Id
 	 * @return  mixed   Session Data
 	 */
@@ -124,8 +124,8 @@ class Redis extends Store
 
 	/**
 	 * Delete session hash
-	 * 
-	 * @param  string  $session_id  Session Id 
+	 *
+	 * @param  string  $session_id  Session Id
 	 * @return boolean              Destroyed or not
 	 */
 	public function destroy($session_id)
@@ -150,8 +150,8 @@ class Redis extends Store
 
 	/**
 	 * Get single session data as an object
-	 * 
-	 * @param   integer  $session_id  Session Id 
+	 *
+	 * @param   integer  $session_id  Session Id
 	 * @return  object
 	 */
 	public function session($session_id)
@@ -161,7 +161,7 @@ class Redis extends Store
 
 	/**
 	 * Get list of all sessions
-	 * 
+	 *
 	 * @param   array  $filters
 	 * @return  array
 	 */
@@ -216,7 +216,7 @@ class Redis extends Store
 					$beforeTime  = $distinct[$client][$userid]->time;
 					$currentTime = $sessions[$k]->time;
 
-					// is this sessions time greater then the 
+					// is this sessions time greater then the
 					// previous one saved for this user for this client?
 					if ($currentTime < $beforeTime)
 					{
@@ -251,8 +251,8 @@ class Redis extends Store
 
 	/**
 	 * Test to see if Predis Library exists
-	 * 
-	 * @return  boolean 
+	 *
+	 * @return  boolean
 	 */
 	public static function isAvailable()
 	{

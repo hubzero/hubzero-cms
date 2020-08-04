@@ -18,7 +18,7 @@ class RateLimitService extends Middleware
 {
 	/**
 	 * Load Service
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function register()
@@ -40,7 +40,7 @@ class RateLimitService extends Middleware
 
 	/**
 	 * Handle request in HTTP stack
-	 * 
+	 *
 	 * @param   object  $request  HTTP Request
 	 * @return  mixed
 	 */

@@ -77,7 +77,7 @@ class Guard
 		// Validate request via oauth
 		$oauthServer->verifyResourceRequest($oauthRequest, $oauthResponse);
 
-		// Store our token locally 
+		// Store our token locally
 		$this->token = $oauthServer->getAccessTokenData($oauthRequest);
 
 		// See if we have a valid user

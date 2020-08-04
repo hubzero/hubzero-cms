@@ -42,7 +42,7 @@ class Css extends Base implements CommandInterface
 
 	/**
 	 * Clear Site.css & Site.less.cache files
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function clear()

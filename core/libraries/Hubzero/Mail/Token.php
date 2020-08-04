@@ -151,7 +151,7 @@ class Token
 
 	/**
 	 * Function to decrypt email token
-	 * 
+	 *
 	 * @param   string  $t  Email token
 	 * @return  array   Email token details
 	 */
@@ -172,7 +172,7 @@ class Token
 		mcrypt_generic_init($cipher, $this->_key, $this->_iv);
 		$decrypted = mdecrypt_generic($cipher, $encrypted);
 
-		// unpack the original values, no need to strip padding or hash 
+		// unpack the original values, no need to strip padding or hash
 		// we'll just unpack what we need
 		$arr = unpack("N3", $decrypted);
 		return array($arr[1], $arr[2], $arr[3]);

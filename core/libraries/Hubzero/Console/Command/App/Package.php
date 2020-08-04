@@ -33,7 +33,7 @@ class Package extends Base implements CommandInterface
 
 	/**
 	 * Show packages
-	 * 
+	 *
 	 * @museDescription Shows a list of active packages
 	 *
 	 * @return  void
@@ -55,9 +55,9 @@ class Package extends Base implements CommandInterface
 
 	/**
 	 * Show available packages
-	 * 
+	 *
 	 * @museDescription Shows a list of available remote packages
-	 * 
+	 *
 	 * @return void
 	 **/
 	public function available()
@@ -77,7 +77,7 @@ class Package extends Base implements CommandInterface
 
 	/**
 	 * Add a package
-	 * 
+	 *
 	 * @museDescription Installs a package
 	 *
 	 * @return  void
@@ -110,9 +110,9 @@ class Package extends Base implements CommandInterface
 
 	/**
 	 * Update a package
-	 * 
+	 *
 	 * @museDescription Updates a package according to version constraints
-	 * 
+	 *
 	 * @return void
 	 **/
 	public function update()
@@ -129,7 +129,7 @@ class Package extends Base implements CommandInterface
 
 	/**
 	 * Remove a package
-	 * 
+	 *
 	 * @museDescription Removes a package
 	 *
 	 * @return  void

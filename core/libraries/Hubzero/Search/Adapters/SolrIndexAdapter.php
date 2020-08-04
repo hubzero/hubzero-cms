@@ -12,15 +12,15 @@ use Solarium;
 
 /**
  * SolrIndexAdapter - Index adapter for Solr using the Solarium library
- * 
+ *
  * @uses IndexInterface
- * @uses Solarium 
+ * @uses Solarium
  */
 class SolrIndexAdapter implements IndexInterface
 {
 	/**
 	 * __construct - Constructor for adapter, sets config and established connection
-	 * 
+	 *
 	 * @param mixed $config - Configuration object
 	 * @access public
 	 * @return void
@@ -55,7 +55,7 @@ class SolrIndexAdapter implements IndexInterface
 
 	/**
 	 * getLogs - Returns an array of search engine query log entries
-	 * 
+	 *
 	 * @access public
 	 * @return void
 	 */
@@ -77,7 +77,7 @@ class SolrIndexAdapter implements IndexInterface
 
 	/**
 	 * lastInsert - Returns the timestamp of the last document indexed
-	 * 
+	 *
 	 * @access public
 	 * @return void
 	 */
@@ -102,7 +102,7 @@ class SolrIndexAdapter implements IndexInterface
 	}
 
 	/**
-	 * status - Checks whether or not the search engine is responding 
+	 * status - Checks whether or not the search engine is responding
 	 *
 	 * @access public
 	 * @return void
@@ -130,8 +130,8 @@ class SolrIndexAdapter implements IndexInterface
 
 	/**
 	 * index - Stores a document within an index
-	 * 
-	 * @param mixed $document 
+	 *
+	 * @param mixed $document
 	 * @access public
 	 * @return void
 	 */
@@ -143,7 +143,7 @@ class SolrIndexAdapter implements IndexInterface
 
 	/**
 	 * optimize - Defragment the index
-	 * 
+	 *
 	 * @access public
 	 * @return Solarium\QueryType\Update\Result
 	 */
@@ -169,10 +169,10 @@ class SolrIndexAdapter implements IndexInterface
 			$this->commitWithin = $commitWithin;
 			$this->overwrite = $overwrite;
 
-			// When Solarium updates with the ability to preset commitWithin and Overwrite, 
+			// When Solarium updates with the ability to preset commitWithin and Overwrite,
 			// 	this buffer increase won't be necessary.
-			// This prevents the automatically flushing in the event there are more records than the batch size, 
-			// since the automatically flushing doesn't set the commitWithin or overwrite values 
+			// This prevents the automatically flushing in the event there are more records than the batch size,
+			// since the automatically flushing doesn't set the commitWithin or overwrite values
 			// for the records flushed.
 
 			$buffer++;

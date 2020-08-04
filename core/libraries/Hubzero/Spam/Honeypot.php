@@ -39,7 +39,7 @@ class Honeypot
 
 	/**
 	 * Validate honeypot
-	 * 
+	 *
 	 * @param   mixed    $value
 	 * @param   mixed    $tme
 	 * @param   integer  $delay
@@ -52,7 +52,7 @@ class Honeypot
 
 	/**
 	 * Validate pot is empty
-	 * 
+	 *
 	 * @param   mixed  $value
 	 * @return  boolean
 	 */
@@ -63,7 +63,7 @@ class Honeypot
 
 	/**
 	 * Validate time was within the time limit
-	 * 
+	 *
 	 * @param   mixed    $value
 	 * @param   integer  $delay
 	 * @return  boolean
@@ -79,7 +79,7 @@ class Honeypot
 
 	/**
 	 * Get a unique form name
-	 * 
+	 *
 	 * @return  string
 	 */
 	public static function getName()
@@ -89,7 +89,7 @@ class Honeypot
 
 	/**
 	 * Get the encrypter
-	 * 
+	 *
 	 * @return  object
 	 */
 	protected static function getEncrypter()

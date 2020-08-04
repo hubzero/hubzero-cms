@@ -146,7 +146,7 @@ class Comment extends Relational
 
 	/**
 	 * Determine if record was modified
-	 * 
+	 *
 	 * @return  boolean  True if modified, false if not
 	 */
 	public function wasModified()

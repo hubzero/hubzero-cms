@@ -34,9 +34,9 @@ class plgSearch%=plugin_name+ucf=% extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * onGetModel 
-	 * 
-	 * @param string $type 
+	 * onGetModel
+	 *
+	 * @param string $type
 	 * @access public
 	 * @return void
 	 */
@@ -51,7 +51,7 @@ class plgSearch%=plugin_name+ucf=% extends \Hubzero\Plugin\Plugin
 	/**
 	 * onProcessFields - Set SearchDocument fields which have conditional processing
 	 *
-	 * @param mixed $type 
+	 * @param mixed $type
 	 * @param mixed $row
 	 * @access public
 	 * @return void
@@ -73,13 +73,13 @@ class plgSearch%=plugin_name+ucf=% extends \Hubzero\Plugin\Plugin
 			$fields->title = $title;
 
 			/**
-			 * Each entity should have an owner. 
+			 * Each entity should have an owner.
 			 * Owner type can be a user or a group,
 			 * where the owner is the ID of the user or group
 			 **/
 			$fields->owner_type = 'user';
 			$fields->owner = $owners;
-			
+
 			/**
 			 * A document should have an access level.
 			 * This value can be:
@@ -87,7 +87,7 @@ class plgSearch%=plugin_name+ucf=% extends \Hubzero\Plugin\Plugin
 			 *  registered - only registered users can view
 			 *  private - only owners (set above) can view
 			 **/
-			$fields->access_level = ''; 
+			$fields->access_level = '';
 
 			// The URL this document is accessible through
 			$fields->url = '';

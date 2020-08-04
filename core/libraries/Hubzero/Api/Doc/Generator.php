@@ -18,21 +18,21 @@ class Generator
 {
 	/**
 	 * Cache results?
-	 * 
+	 *
 	 * @var  bool
 	 */
 	private $cache = true;
 
 	/**
 	 * Var to hold sections
-	 * 
+	 *
 	 * @var  array
 	 */
 	private $sections = array();
 
 	/**
 	 * Var to hold output
-	 * 
+	 *
 	 * @var  array
 	 */
 	private $output = array();
@@ -61,7 +61,7 @@ class Generator
 
 	/**
 	 * Return documentation
-	 * 
+	 *
 	 * @param   string  $format  Output format
 	 * @param   bool    $format  Force new version
 	 * @return  string
@@ -92,7 +92,7 @@ class Generator
 
 	/**
 	 * Load from cache
-	 * 
+	 *
 	 * @return  boolean
 	 */
 	private function cache()
@@ -116,7 +116,7 @@ class Generator
 		// cache file
 		$cacheFile = PATH_APP . DS . 'cache' . DS . 'api' . DS . 'documentation.json';
 
-		// check if we have a cache file 
+		// check if we have a cache file
 		if (file_exists($cacheFile))
 		{
 			// check if its still valid
@@ -133,7 +133,7 @@ class Generator
 
 	/**
 	 * Generate Doc
-	 * 
+	 *
 	 * @return  void
 	 */
 	private function generate()
@@ -164,7 +164,7 @@ class Generator
 
 	/**
 	 * Load api controller files and group by component
-	 * 
+	 *
 	 * @return  void
 	 */
 	private function discoverComponentSections()
@@ -198,9 +198,9 @@ class Generator
 		}
 	}
 
-	/** 
+	/**
 	 * Process sections
-	 * 
+	 *
 	 * @param   array  $sections  All the component api controllers grouped by component
 	 * @return  array
 	 */
@@ -235,7 +235,7 @@ class Generator
 
 	/**
 	 * Process an individual file
-	 * 
+	 *
 	 * @param   string  $file  File path
 	 * @return  array   Processed endpoints
 	 */
@@ -274,7 +274,7 @@ class Generator
 				continue;
 			}
 
-			// Skip method in the parent class (already processed), 
+			// Skip method in the parent class (already processed),
 			if ($className != $method->getDeclaringClass()->getName())
 			{
 				//continue;
@@ -369,7 +369,7 @@ class Generator
 
 	/**
 	 * Get class name based on file
-	 * 
+	 *
 	 * @param   string  $file           File path
 	 * @param   bool    $returnAsParts  Return as parts?
 	 * @return  mixed

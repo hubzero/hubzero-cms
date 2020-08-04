@@ -26,21 +26,21 @@ class ToolSessionToken implements GrantTypeInterface, ClientAssertionTypeInterfa
 {
 	/**
 	 * Store object
-	 * 
+	 *
 	 * @var  object
 	 */
 	private $storage;
 
 	/**
 	 * Array to hold authenticated user data
-	 * 
+	 *
 	 * @var  array
 	 */
 	private $userInfo = array();
 
 	/**
 	 * Define identifier for this type of grant
-	 * 
+	 *
 	 * @return  string  identifier
 	 */
 	public function getQuerystringIdentifier()
@@ -50,7 +50,7 @@ class ToolSessionToken implements GrantTypeInterface, ClientAssertionTypeInterfa
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param   object  $storage  Storage object
 	 * @param   array   $config   Config array
 	 * @return  void
@@ -64,7 +64,7 @@ class ToolSessionToken implements GrantTypeInterface, ClientAssertionTypeInterfa
 	 * Validate request via session data
 	 *
 	 * This is used for internal requests via ajax
-	 * 
+	 *
 	 * @param   object  $request   Request object
 	 * @param   object  $response  Response object
 	 * @return  bool    Result of auth
@@ -95,7 +95,7 @@ class ToolSessionToken implements GrantTypeInterface, ClientAssertionTypeInterfa
 
 	/**
 	 * Get client id
-	 * 
+	 *
 	 * @return  null
 	 */
 	public function getClientId()
@@ -109,7 +109,7 @@ class ToolSessionToken implements GrantTypeInterface, ClientAssertionTypeInterfa
 
 	/**
 	 * Get user id
-	 * 
+	 *
 	 * @return  int  User identifier
 	 */
 	public function getUserId()
@@ -119,7 +119,7 @@ class ToolSessionToken implements GrantTypeInterface, ClientAssertionTypeInterfa
 
 	/**
 	 * Get scope
-	 * 
+	 *
 	 * @return  string  Scope
 	 */
 	public function getScope()
@@ -129,7 +129,7 @@ class ToolSessionToken implements GrantTypeInterface, ClientAssertionTypeInterfa
 
 	/**
 	 * Create access token
-	 * 
+	 *
 	 * @param   object  $accessToken  Access token object
 	 * @param   string  $client_id    Authorized client
 	 * @param   string  $user_id      User identifier

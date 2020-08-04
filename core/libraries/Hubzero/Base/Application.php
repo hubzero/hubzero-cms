@@ -127,7 +127,7 @@ class Application extends Container
 
 	/**
 	 * Register facades with the autoloader
-	 * 
+	 *
 	 * @param   array  $aliases
 	 * @return  void
 	 */
@@ -281,7 +281,7 @@ class Application extends Container
 
 	/**
 	 * Redirect current request to new request (sub requests)
-	 * 
+	 *
 	 * @param   string  $url      Url to redirect to
 	 * @param   string  $message  Message to display on redirect.
 	 * @param   array   $type     Message type.
@@ -359,7 +359,7 @@ class Application extends Container
 
 	/**
 	 * Get only runnable services
-	 * 
+	 *
 	 * @param   array  $layers  Unfiltered services
 	 * @return  array  Filtered runnable services
 	 */
@@ -373,7 +373,7 @@ class Application extends Container
 
 	/**
 	 * Application layer is responsible for dispatching request
-	 * 
+	 *
 	 * @param   object  $request  Request object
 	 * @return  object  Response object
 	 */

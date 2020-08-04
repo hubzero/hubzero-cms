@@ -36,7 +36,7 @@ class Mysql
 {
 	/**
 	 * Get Access token data
-	 * 
+	 *
 	 * @param   string  $access_token  Access token
 	 * @return  array   Access token data
 	 */
@@ -70,7 +70,7 @@ class Mysql
 
 	/**
 	 * Store access token data
-	 * 
+	 *
 	 * @param   string  $access_token  Access token
 	 * @param   string  $client_id     Client Id
 	 * @param   string  $user_id       User identifier
@@ -99,7 +99,7 @@ class Mysql
 
 	/**
 	 * Get client details by client id
-	 * 
+	 *
 	 * @param   string  $client_id  Load client details via client id.
 	 * @return  void
 	 */
@@ -126,7 +126,7 @@ class Mysql
 
 	/**
 	 * Get client details by id
-	 * 
+	 *
 	 * @param   int   $id  Client mysql row auto-incrementing id
 	 * @return  array
 	 */
@@ -142,7 +142,7 @@ class Mysql
 
 	/**
 	 * Get client scope
-	 * 
+	 *
 	 * @param   string  $client_id  Client id
 	 * @return  null
 	 */
@@ -153,7 +153,7 @@ class Mysql
 
 	/**
 	 * Check grant type against client id
-	 * 
+	 *
 	 * @param   string  $client_id   Client id
 	 * @param   string  $grant_type  Grant type
 	 * @return  bool    Result of test
@@ -175,7 +175,7 @@ class Mysql
 
 	/**
 	 * Verify client credentials
-	 * 
+	 *
 	 * @param   string  $client_id      Client id
 	 * @param   string  $client_secret  Client secret
 	 * @return  bool    Result of test
@@ -200,7 +200,7 @@ class Mysql
 
 	/**
 	 * Is client public
-	 * 
+	 *
 	 * @param   integer  $client_id
 	 * @return  boolean
 	 */
@@ -215,7 +215,7 @@ class Mysql
 
 	/**
 	 * Get authorization code details by code
-	 * 
+	 *
 	 * @param   string  $code  Authorization code
 	 * @return  array   Code details
 	 */
@@ -243,7 +243,7 @@ class Mysql
 
 	/**
 	 * Create new authorization code
-	 * 
+	 *
 	 * @param   string  $code          Authorization code
 	 * @param   string  $client_id     Client id
 	 * @param   int     $user_id       User identifier
@@ -260,7 +260,7 @@ class Mysql
 		// get the id for th client
 		$client = $this->getClientDetails($client_id);
 
-		// create authorization code 
+		// create authorization code
 		$model = new \Components\Developer\Models\Authorizationcode();
 		$model->set('application_id', $client['id']);
 		$model->set('authorization_code', $code);
@@ -272,7 +272,7 @@ class Mysql
 
 	/**
 	 * Remove invalid authorization code
-	 * 
+	 *
 	 * @param   string  $code  Authorization code
 	 * @return  void
 	 */
@@ -292,7 +292,7 @@ class Mysql
 
 	/**
 	 * Check user credentials
-	 * 
+	 *
 	 * @param   string  $username  User's username
 	 * @param   string  $password  User's password
 	 * @return  bool    Result of username/password check
@@ -314,7 +314,7 @@ class Mysql
 
 	/**
 	 * Get user information
-	 * 
+	 *
 	 * @param   string  $username  User's username
 	 * @return  array   User info
 	 */
@@ -340,7 +340,7 @@ class Mysql
 
 	/**
 	 * Get username from email address
-	 * 
+	 *
 	 * @param   string  $enteredUsername  Email address
 	 * @return  string  User's username
 	 */
@@ -360,7 +360,7 @@ class Mysql
 
 	/**
 	 * Load refresh token details by token
-	 * 
+	 *
 	 * @param   string  $refresh_token  Refresh token
 	 * @return  array   Refresh token details
 	 */
@@ -394,7 +394,7 @@ class Mysql
 
 	/**
 	 * Create a refresh token
-	 * 
+	 *
 	 * @param   string  $refresh_token  Refresh Token
 	 * @param   string  $client_id      Client id
 	 * @param   int     $user_id        User identifier
@@ -423,7 +423,7 @@ class Mysql
 
 	/**
 	 * Remove refresh token
-	 * 
+	 *
 	 * @param   string  $refresh_token  Refresh Token
 	 * @return  void
 	 */
@@ -446,7 +446,7 @@ class Mysql
 	 * Get session id from cookie
 	 *
 	 * [!] This will determine if the user has an active session via browser
-	 * 
+	 *
 	 * @return  mixed  Result of test
 	 */
 	public function getSessionIdFromCookie()
@@ -479,7 +479,7 @@ class Mysql
 
 	/**
 	 * Get user id via session id
-	 * 
+	 *
 	 * @param   string  $sessionId  Session identifier
 	 * @return  int     User identifier
 	 */
@@ -491,7 +491,7 @@ class Mysql
 		$timeout = \App::get('config')->get('timeout');
 
 		// load user from session table
-		$sql = "SELECT userid 
+		$sql = "SELECT userid
 				  FROM `#__session`
 				  WHERE `session_id`=" . $database->quote($sessionId) . "
 				  AND time + " . (int) $timeout . " <= NOW();";
@@ -502,7 +502,7 @@ class Mysql
 
 	/**
 	 * Get tool data from request
-	 * 
+	 *
 	 * @return  bool  Result of test
 	 */
 	public function getToolSessionDataFromRequest(RequestInterface $request)
@@ -524,7 +524,7 @@ class Mysql
 
 	/**
 	 * Validate tool session data
-	 * 
+	 *
 	 * @param   string  $toolSessionId     Tool session id
 	 * @param   string  $toolSessionToken  Tool session token
 	 * @return  bool    Result of test
@@ -538,9 +538,9 @@ class Mysql
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// attempt to load session from db
-		$query = "SELECT * 
+		$query = "SELECT *
 				  FROM `session`
-				  WHERE `sessnum`= " . $mwdb->quote($toolSessionId) . " 
+				  WHERE `sessnum`= " . $mwdb->quote($toolSessionId) . "
 				  AND `sesstoken`=" . $mwdb->quote($toolSessionToken);
 		$mwdb->setQuery($query);
 
@@ -557,7 +557,7 @@ class Mysql
 
 	/**
 	 * Get internal client
-	 * 
+	 *
 	 * @return  mixed
 	 */
 	public function getInternalRequestClient()
@@ -579,7 +579,7 @@ class Mysql
 	 * Find Internal Client
 	 *
 	 * In separate function so we can call it multiple times.
-	 * 
+	 *
 	 * @return  array  Client detials
 	 */
 	private function findInternalClient()
@@ -589,7 +589,7 @@ class Mysql
 			->whereEquals('hub_account', 1)
 			->row();
 
-		// make sure we have at least one 
+		// make sure we have at least one
 		// although it should always only be one
 		if (!$application->get('id'))
 		{
@@ -602,7 +602,7 @@ class Mysql
 
 	/**
 	 * Create internal client
-	 * 
+	 *
 	 * @return  bool
 	 */
 	public function createInternalRequestClient()

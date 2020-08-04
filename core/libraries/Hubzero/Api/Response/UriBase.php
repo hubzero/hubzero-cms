@@ -18,7 +18,7 @@ class UriBase extends Middleware
 	/**
 	 * Array that normalizes all the different keys we use for
 	 * the different objects
-	 * 
+	 *
 	 * @var  array
 	 */
 	private $keys = array(
@@ -28,7 +28,7 @@ class UriBase extends Middleware
 
 	/**
 	 * Handle request in HTTP stack
-	 * 
+	 *
 	 * @param   objct  $request  HTTP Request
 	 * @return  mixes
 	 */
@@ -48,7 +48,7 @@ class UriBase extends Middleware
 
 	/**
 	 * Look for keys in data and convert found values
-	 * 
+	 *
 	 * @param   object  $request
 	 * @param   mixed   $data
 	 * @return  mixed
@@ -75,7 +75,7 @@ class UriBase extends Middleware
 
 	/**
 	 * Convert a URI
-	 * 
+	 *
 	 * @param   object  $request
 	 * @param   string  $key
 	 * @param   mixed   $value

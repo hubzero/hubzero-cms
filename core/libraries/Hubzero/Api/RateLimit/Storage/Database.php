@@ -14,7 +14,7 @@ class Database implements StorageInterface
 {
 	/**
 	 * Database object
-	 * 
+	 *
 	 * @var  object
 	 */
 	private $db;
@@ -32,14 +32,14 @@ class Database implements StorageInterface
 
 	/**
 	 * Get record by application & user is
-	 * 
+	 *
 	 * @param   int   $applicationId  Application id
 	 * @param   int   $userId         User identifier
 	 * @return  void
 	 */
 	public function getRateLimitData($applicationId, $userId)
 	{
-		$sql = "SELECT * FROM `#__developer_rate_limit` 
+		$sql = "SELECT * FROM `#__developer_rate_limit`
 				WHERE `application_id` = " . $this->db->quote($applicationId) . "
 				AND `uidNumber` = " . $this->db->quote($userId) . "
 				ORDER BY `created` LIMIT 1";
@@ -49,7 +49,7 @@ class Database implements StorageInterface
 
 	/**
 	 * Create initial rate limit record
-	 * 
+	 *
 	 * @param   int     $applicationId  Application id
 	 * @param   int     $userId         User identifier
 	 * @param   string  $ip             IP address
@@ -74,7 +74,7 @@ class Database implements StorageInterface
 
 	/**
 	 * Increment rate limit record
-	 * 
+	 *
 	 * @param   int   $id         Rate limit record id
 	 * @param   int   $increment  Increment amount
 	 * @return  void
@@ -91,7 +91,7 @@ class Database implements StorageInterface
 
 	/**
 	 * Reset short count & expiration
-	 * 
+	 *
 	 * @param   int     $id       Rate limit record id
 	 * @param   int     $toCount  Reset count
 	 * @param   string  $toDate   Reset date string
@@ -109,7 +109,7 @@ class Database implements StorageInterface
 
 	/**
 	 * Reset long count & expiration
-	 * 
+	 *
 	 * @param   int     $id       Rate limit record id
 	 * @param   int     $toCount  Reset count
 	 * @param   string  $toDate   Reset date string

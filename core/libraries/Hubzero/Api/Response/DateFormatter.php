@@ -18,14 +18,14 @@ class DateFormatter extends Middleware
 {
 	/**
 	 * Keys we want to swap out for properly formatted dates
-	 * 
+	 *
 	 * @var  array
 	 */
 	private $dateKeys = array('created', 'modified');
 
 	/**
 	 * Handle request in HTTP stack
-	 * 
+	 *
 	 * @param   objct  $request  HTTP Request
 	 * @return  mixes
 	 */
@@ -73,7 +73,7 @@ class DateFormatter extends Middleware
 
 	/**
 	 * Convert dates from SQL format to ISO 8601
-	 *  
+	 *
 	 * @param   mixed  $object  Convert date keys
 	 * @return  mixed  Converted object
 	 */

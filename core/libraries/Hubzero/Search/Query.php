@@ -16,7 +16,7 @@ class Query
 {
 	/**
 	 * Set the adapter
-	 * 
+	 *
 	 * @param   object  $config  Configuration object
 	 * @return  void
 	 */
@@ -64,8 +64,8 @@ class Query
 
 	/**
 	 * Sets the query string
-	 * 
-	 * @param   mixed   $terms 
+	 *
+	 * @param   mixed   $terms
 	 * @return  object
 	 */
 	public function query($terms)
@@ -76,8 +76,8 @@ class Query
 
 	/**
 	 * Sets the fields to be returned by the query.
-	 * 
-	 * @param   array  $fields 
+	 *
+	 * @param   array  $fields
 	 * @return  object
 	 */
 	public function fields($fields)
@@ -88,8 +88,8 @@ class Query
 
 	/**
 	 * Adds a filter to the query
-	 * 
-	 * @param   mixed   $name 
+	 *
+	 * @param   mixed   $name
 	 * @param   array   $query
 	 * @param   string  $tag
 	 * @return  object
@@ -102,9 +102,9 @@ class Query
 
 	/**
 	 * Adds a facet to the query object.
-	 * 
+	 *
 	 * @param   string  $name   Used to identify facet when result is returned.
-	 * @param   array   $query  The query array with a indexes of name, operator, and value 
+	 * @param   array   $query  The query array with a indexes of name, operator, and value
 	 * @return  object
 	 */
 	public function addFacet($name, $query = array())
@@ -115,7 +115,7 @@ class Query
 
 	/**
 	 * Returns an integer value of a defined facet.
-	 * 
+	 *
 	 * @param   mixed  $name
 	 * @return  int
 	 */
@@ -126,8 +126,8 @@ class Query
 
 	/**
 	 * limit - Set the number of results to be returned
-	 * 
-	 * @param   int     $limit 
+	 *
+	 * @param   int     $limit
 	 * @return  object
 	 */
 	public function limit($limit)
@@ -138,7 +138,7 @@ class Query
 
 	/**
 	 * Executes the query and returns an array of results.
-	 * 
+	 *
 	 * @return  array
 	 */
 	public function getResults()
@@ -148,7 +148,7 @@ class Query
 
 	/**
 	 * Returns the total number of matching results, even outside of limit.
-	 * 
+	 *
 	 * @return  integer
 	 */
 	public function getNumFound()
@@ -158,8 +158,8 @@ class Query
 
 	/**
 	 * Offset of search index results. Warning: non-deterministic.
-	 * 
-	 * @param   mixed   $start 
+	 *
+	 * @param   mixed   $start
 	 * @return  object
 	 */
 	public function start($start)
@@ -170,7 +170,7 @@ class Query
 
 	/**
 	 * Order results by a field in a given direction.
-	 * 
+	 *
 	 * @param   mixed  $field      name of a field
 	 * @param   mixed  $direction  (ASC or DESC)
 	 * @return  object
@@ -183,7 +183,7 @@ class Query
 
 	/**
 	 * Performs the query, does not return results.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function run()
@@ -193,7 +193,7 @@ class Query
 
 	/**
 	 * Applies CMS permissions for the current user.
-	 * 
+	 *
 	 * @return  object
 	 */
 	public function restrictAccess()

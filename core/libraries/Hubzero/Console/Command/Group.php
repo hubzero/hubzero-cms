@@ -110,7 +110,7 @@ class Group extends Base implements CommandInterface
 
 	/**
 	 * Run super groups migration
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function migrate()
@@ -122,7 +122,7 @@ class Group extends Base implements CommandInterface
 
 	/**
 	 * Update super group code
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function update()

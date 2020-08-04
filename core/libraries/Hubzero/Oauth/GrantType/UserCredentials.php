@@ -14,27 +14,27 @@ use OAuth2\Storage\UserCredentialsInterface;
 use OAuth2\ResponseType\AccessTokenInterface;
 
 /**
- * User credentials grant type 
+ * User credentials grant type
  */
 class UserCredentials implements GrantTypeInterface
 {
 	/**
 	 * Store object
-	 * 
+	 *
 	 * @var  object
 	 */
 	private $storage;
 
 	/**
 	 * Array to hold authenticated user data
-	 * 
+	 *
 	 * @var  array
 	 */
 	private $userInfo = [];
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param   object  $storage  Storage object
 	 * @param   array   $config   Config array
 	 * @return  void
@@ -46,7 +46,7 @@ class UserCredentials implements GrantTypeInterface
 
 	/**
 	 * Define identifier for this type of grant
-	 * 
+	 *
 	 * @return  string  identifier
 	 */
 	public function getQuerystringIdentifier()
@@ -58,7 +58,7 @@ class UserCredentials implements GrantTypeInterface
   * Validate request via session data
   *
   * This is used for internal requests via ajax
-  * 
+  *
   * @param   object  $request   Request object
   * @param   object  $response  Response object
   * @return  bool    Result of auth
@@ -104,7 +104,7 @@ class UserCredentials implements GrantTypeInterface
 
 	/**
 	 * Get client id
-	 * 
+	 *
 	 * @return  null
 	 */
 	public function getClientId()
@@ -114,7 +114,7 @@ class UserCredentials implements GrantTypeInterface
 
 	/**
 	 * Get user id
-	 * 
+	 *
 	 * @return  int  User identifier
 	 */
 	public function getUserId()
@@ -124,7 +124,7 @@ class UserCredentials implements GrantTypeInterface
 
 	/**
 	 * Get scope
-	 * 
+	 *
 	 * @return  string  Scope
 	 */
 	public function getScope()
@@ -134,7 +134,7 @@ class UserCredentials implements GrantTypeInterface
 
 	/**
 	 * Create access token
-	 * 
+	 *
 	 * @param   object  $accessToken  Access token object
 	 * @param   string  $client_id    Authorized client
 	 * @param   string  $user_id      User identifier

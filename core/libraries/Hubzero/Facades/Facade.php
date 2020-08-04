@@ -110,7 +110,7 @@ abstract class Facade
 			return class_alias($aliases[$class], $class);
 		}
 
-		// Allow calling facade in namespaced class 
+		// Allow calling facade in namespaced class
 		// without resetting to the root namespace
 		$classPieces = explode('\\', $class);
 		$classAlt    = array_pop($classPieces);

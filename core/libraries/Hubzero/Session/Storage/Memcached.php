@@ -196,8 +196,8 @@ class Memcached extends Store
 
 	/**
 	 * Get single session data as an object
-	 * 
-	 * @param   integer  $session_id  Session Id 
+	 *
+	 * @param   integer  $session_id  Session Id
 	 * @return  object
 	 */
 	public function session($session_id)
@@ -211,7 +211,7 @@ class Memcached extends Store
 
 	/**
 	 * Get list of all sessions
-	 * 
+	 *
 	 * @param   array  $filters
 	 * @return  array
 	 */

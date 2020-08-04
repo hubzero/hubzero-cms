@@ -17,21 +17,21 @@ class RateLimiter
 {
 	/**
 	 * Storage object
-	 * 
+	 *
 	 * @var  object
 	 */
 	private $storage;
 
 	/**
 	 * Configuration
-	 * 
+	 *
 	 * @var  array
 	 */
 	private $config;
 
 	/**
 	 * New rate limiter instance
-	 * 
+	 *
 	 * @param   object  $storage  Storage object
 	 * @param   array   $config   Options
 	 * @return  void
@@ -53,7 +53,7 @@ class RateLimiter
 
 	/**
 	 * Rate limit for application & user
-	 * 
+	 *
 	 * @param   int    $applicationId  Application identifier
 	 * @param   int    $userId         User identifier
 	 * @return  array  Array of rate limit data
@@ -104,7 +104,7 @@ class RateLimiter
 
 	/**
 	 * Create initial limit data
-	 * 
+	 *
 	 * @param   int    $applicationId  Application identifier
 	 * @param   int    $userId         User identifier
 	 * @return  array  Array of rate limit data
@@ -138,7 +138,7 @@ class RateLimiter
 
 	/**
 	 * Get new expires date string
-	 * 
+	 *
 	 * @param   string  $type  Short or long period
 	 * @return  string  Date string
 	 */

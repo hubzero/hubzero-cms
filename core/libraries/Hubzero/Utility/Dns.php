@@ -14,7 +14,7 @@ class Dns
 {
 	/**
 	 * Get FQDN from the config
-	 * 
+	 *
 	 * @return string
 	 */
 	private static function _getConfig()
@@ -24,7 +24,7 @@ class Dns
 
 	/**
 	 * Get array of domains of FQDN
-	 * 
+	 *
 	 * @return array
 	 */
 	private static function _getConfigArray()
@@ -34,7 +34,7 @@ class Dns
 
 	/**
 	 * Get hostname from FQDN
-	 * 
+	 *
 	 * @return string
 	 */
 	public static function hostname()
@@ -49,7 +49,7 @@ class Dns
 
 	/**
 	 * Get top level domain
-	 * 
+	 *
 	 * @return string
 	 */
 	public static function tld()
@@ -65,7 +65,7 @@ class Dns
 
 	/**
 	 * Get FQDN
-	 * 
+	 *
 	 * @return string
 	 */
 	public static function fqdn()
@@ -75,7 +75,7 @@ class Dns
 
 	/**
 	 * Get parent domain
-	 * 
+	 *
 	 * @return string
 	 */
 	public static function domain()
@@ -93,7 +93,7 @@ class Dns
 
 	/**
 	 * Get subdomains *excluding* the hostname and TLD
-	 * 
+	 *
 	 * @return array
 	 */
 	public static function subdomains()

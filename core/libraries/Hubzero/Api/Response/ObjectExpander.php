@@ -20,7 +20,7 @@ class ObjectExpander extends Middleware
 	/**
 	 * Array that normalizes all the different keys we use for
 	 * the different objects
-	 * 
+	 *
 	 * @var  array
 	 */
 	private $acceptedKeys = array(
@@ -76,7 +76,7 @@ class ObjectExpander extends Middleware
 
 	/**
 	 * Handle request in HTTP stack
-	 * 
+	 *
 	 * @param   objct  $request  HTTP Request
 	 * @return  mixes
 	 */
@@ -127,7 +127,7 @@ class ObjectExpander extends Middleware
 
 	/**
 	 * Normalize expand keys
-	 * 
+	 *
 	 * @param   array  $expandKeys  Raw expand keys
 	 * @return  array  Normalized expand keys
 	 */
@@ -153,7 +153,7 @@ class ObjectExpander extends Middleware
 
 	/**
 	 * Convert keys in object
-	 * 
+	 *
 	 * @param   array  $expandKeys
 	 * @param   mixed  $object
 	 * @return  object
@@ -184,8 +184,8 @@ class ObjectExpander extends Middleware
 	}
 
 	/**
-	 * Function to return profile object 
-	 * 
+	 * Function to return profile object
+	 *
 	 * @param   integer  $user_id  User identifier
 	 * @return  object   User object
 	 */
@@ -195,8 +195,8 @@ class ObjectExpander extends Middleware
 	}
 
 	/**
-	 * Function to return group object 
-	 * 
+	 * Function to return group object
+	 *
 	 * @param   integer  $gidNumber  Group identifier
 	 * @return  object   Group object
 	 */

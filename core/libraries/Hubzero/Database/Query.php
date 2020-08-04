@@ -267,7 +267,7 @@ class Query
 	}
 
 	/**
-	 * Defines a table join to be performed for the query using a raw expression 
+	 * Defines a table join to be performed for the query using a raw expression
 	 *
 	 * @param   string  $table  The table join
 	 * @param   string  $raw    The join clause (anything after the ON keyword)
