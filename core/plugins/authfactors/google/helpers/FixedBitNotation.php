@@ -23,38 +23,38 @@ namespace Sonata\GoogleAuthenticator;
 class FixedBitNotation
 {
 	/**
-	* @var string
-	*/
+	 * @var string
+	 */
 	private $chars;
 
 	/**
-	* @var int
-	*/
+	 * @var int
+	 */
 	private $bitsPerCharacter;
 
 	/**
-	* @var int
-	*/
+	 * @var int
+	 */
 	private $radix;
 
 	/**
-	* @var bool
-	*/
+	 * @var bool
+	 */
 	private $rightPadFinalBits;
 
 	/**
-	* @var bool
-	*/
+	 * @var bool
+	 */
 	private $padFinalGroup;
 
 	/**
-	* @var string
-	*/
+	 * @var string
+	 */
 	private $padCharacter;
 
 	/**
-	* @var string[]
-	*/
+	 * @var string[]
+	 */
 	private $charmap;
 
 	/**
