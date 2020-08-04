@@ -165,7 +165,7 @@ class Repository extends Base implements CommandInterface
 
 	/**
 	 * Repository log
-	 * 
+	 *
 	 * @museDescription  Shows the past and pending changelog for the repository
 	 *
 	 * @return  void
@@ -236,7 +236,7 @@ class Repository extends Base implements CommandInterface
 	{
 		$mode = $this->output->getMode();
 
-		if ($this->arguments->getOpt('f'))
+        if ($this->arguments->getOpt('f'))
 		{
 			if ($mode != 'minimal')
 			{
@@ -263,6 +263,7 @@ class Repository extends Base implements CommandInterface
 
 			// Now do the update
 			$response = $this->mechanism->update(false, $allowNonFf);
+
 			if ($response['status'] == 'success')
 			{
 				// Now, check to see whether or not we need to go ahead and push this merge elsewhere
@@ -619,45 +620,61 @@ class Repository extends Base implements CommandInterface
 		}
 	}
 
-	/**
-	 * Call composer
-	 *
-	 * @return void
-	 **/
-	public function makeDirectory()
-	{
-		$path = $this->arguments->getOpt('path');
-
-		$newdir = new Local();
-		return $newdir->makeDirectory($path, $mode = 0755, $recursive = false, $force = false);
-	}
 
 	/**
-	 * Call composer
-	 *
-	 * @return void
-	 **/
-	public function rename()
-	{
-		$currPath = $this->arguments->getOpt('currPath');
-		$targetPath = $this->arguments->getOpt('targetPath');
-
-		$moveme = new Local();
-		return $moveme->rename($currPath, $targetPath);
-	}
-
-	/**
-	 * Call composer
+	 * Call cloneRepo
 	 *
 	 * @return void
 	 **/
 	public function cloneRepo()
 	{
 		$sourceUrl = $this->arguments->getOpt('sourceUrl');
-		$uploadPath = $this->arguments->getOpt('uploadPath');
+		$repoPath = $this->arguments->getOpt('repoPath');
 
-		$newgit = new Git($uploadPath, $sourceUrl);
-		return $newgit->cloneRepo($sourceUrl);
+        $command  = "git clone" . " " . $sourceUrl . " " . $repoPath . ' 2>&1';
+        $response = shell_exec($command);
+
+		return $response;
 	}
 
+	/**
+	 * Call cloneremoveRepoRepo
+	 *
+	 * @return void
+	 **/
+	public function removeRepo()
+	{
+        $directory = $this->arguments->getOpt('path');
+        $local = new Local();
+
+        $response = $local->deleteDirectory($directory);
+		return $response;
+	}
+
+	/**
+	 * Call renameRepo
+	 *
+	 * @return void
+	 **/
+	public function renameRepo()
+    {
+        $currPath = $this->arguments->getOpt('currPath');
+        $targetPath = $this->arguments->getOpt('targetPath');
+
+        $local = new Local();
+        return $local->rename($currPath, $targetPath);
+    }
+
+	/**
+	 * Call updateRepo
+	 *
+	 * @return  void
+	 */
+	public function updateRepo()
+	{
+		// Set our directory & call update
+		$this->arguments->setOpt('r', $repoPath );
+
+        \App::get('client')->call('repository', 'update', $this->arguments, $this->output);
+	}
 }

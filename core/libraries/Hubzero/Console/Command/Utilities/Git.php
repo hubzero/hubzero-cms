@@ -257,7 +257,7 @@ class Git
 			}
 		}
 
-		return $response;
+        return $response;
 	}
 
 	/**
@@ -309,11 +309,11 @@ class Git
 	 **/
 	public function update($dryRun = true, $allowNonFf = false, $source = null)
 	{
+
 		if (!$dryRun)
 		{
 			// Move to the working tree dir (git 1.8.5 has a built in option for this...but we're still generally running 1.7.x)
 			chdir($this->workTree);
-
 			$arguments = array();
 
 			if (isset($source))
@@ -408,7 +408,7 @@ class Git
 			}
 		}
 
-		return $return;
+        return $return;
 	}
 
 	/**
@@ -605,18 +605,6 @@ class Git
 	}
 
 	/**
-	 * Clone Repo
-	 *
-	 * @return
-	 **/
-	public function cloneRepo($source)
-	{
-		$response = $this->call('clone', array($source));
-		ddie($response);
-		return $response;
-	}
-
-	/**
 	 * Call a git command
 	 *
 	 * @param   string  $cmd   Git command being called
@@ -625,8 +613,8 @@ class Git
 	 **/
 	private function call($cmd, $arguments = array())
 	{
-		$command = "{$this->baseCmd} {$cmd}" . ((!empty($arguments)) ? ' ' . implode(' ', $arguments) : '') . ' 2>&1';
-		$response = shell_exec($command);
+		$command  = "{$this->baseCmd} {$cmd}" . ((!empty($arguments)) ? ' ' . implode(' ', $arguments) : '') . ' 2>&1';
+        $response = shell_exec($command);
 
 		return $response;
 	}
