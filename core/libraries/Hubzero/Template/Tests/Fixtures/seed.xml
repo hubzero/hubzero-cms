@@ -1,0 +1,93 @@
+<?xml version="1.0" ?>
+<dataset>
+	<table name="extensions">
+		<column>extension_id</column>
+		<column>name</column>
+		<column>type</column>
+		<column>element</column>
+		<column>client_id</column>
+		<column>enabled</column>
+		<column>access</column>
+		<column>protected</column>
+		<row>
+			<value>1</value>
+			<value>Admin Foo</value>
+			<value>template</value>
+			<value>adminfoo</value>
+			<value>1</value>
+			<value>1</value>
+			<value>1</value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>Admin Bar</value>
+			<value>template</value>
+			<value>adminbar</value>
+			<value>1</value>
+			<value>1</value>
+			<value>1</value>
+			<value>0</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>Site Foo</value>
+			<value>template</value>
+			<value>sitefoo</value>
+			<value>0</value>
+			<value>1</value>
+			<value>1</value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>4</value>
+			<value>Site Bar</value>
+			<value>template</value>
+			<value>sitebar</value>
+			<value>0</value>
+			<value>1</value>
+			<value>1</value>
+			<value>0</value>
+		</row>
+	</table>
+	<table name="template_styles">
+		<column>id</column>
+		<column>template</column>
+		<column>client_id</column>
+		<column>home</column>
+		<column>title</column>
+		<column>params</column>
+		<row>
+			<value>1</value>
+			<value>adminfoo</value>
+			<value>1</value>
+			<value>1</value>
+			<value>Admin Foo</value>
+			<value>{"one":"lorem","two":"ipsum"}</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>adminbar</value>
+			<value>1</value>
+			<value>0</value>
+			<value>Admin Bar</value>
+			<value>{"one":"nullum","two":"crimia"}</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>sitefoo</value>
+			<value>0</value>
+			<value>1</value>
+			<value>Site Foo</value>
+			<value>{"one":"vestibu","two":"ligula"}</value>
+		</row>
+		<row>
+			<value>4</value>
+			<value>sitebar</value>
+			<value>0</value>
+			<value>0</value>
+			<value>Site Bar</value>
+			<value>{"one":"fusce","two":"cursus"}</value>
+		</row>
+	</table>
+</dataset>

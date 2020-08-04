@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<dataset>
+    <discussions
+        id="2"
+        user_id="3"
+        title="Let's chat"
+        content="Let’s chat about things that matter"
+        parent_id="1"
+        level="1"
+        lft="3"
+        rgt="4"
+        alias="letschat"
+    />
+</dataset>

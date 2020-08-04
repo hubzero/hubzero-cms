@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<dataset>
+    <discussions
+        id="1"
+        user_id="3"
+        title="My first discussion"
+        content="Tell me everything!"
+        lft="0"
+        rgt="7"
+        parent_id="0"
+        level="0"
+        scope="group"
+        scope_id="1"
+    />
+    <discussions
+        id="2"
+        user_id="3"
+        title="Confused"
+        content="Is this really a good idea?"
+        lft="1"
+        rgt="2"
+        parent_id="1"
+        level="1"
+        scope="group"
+        scope_id="1"
+    />
+    <discussions
+        id="3"
+        user_id="3"
+        title="Testing Stuff"
+        content="This is a test additional child node"
+        lft="3"
+        rgt="6"
+        parent_id="1"
+        level="1"
+        scope="group"
+        scope_id="1"
+    />
+    <discussions
+        id="4"
+        user_id="3"
+        title="More Testing"
+        content="This is a node added by parent id"
+        lft="4"
+        rgt="5"
+        parent_id="3"
+        level="2"
+        scope="group"
+        scope_id="1"
+    />
+    <discussions
+        id="6"
+        user_id="3"
+        title="This is a new discussion"
+        content="Tell me about life"
+        lft="0"
+        rgt="1"
+        parent_id="0"
+        level="0"
+        scope="group"
+        scope_id="2"
+    />
+</dataset>
