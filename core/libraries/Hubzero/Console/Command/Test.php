@@ -212,7 +212,7 @@ class Test extends Base implements CommandInterface
 		$this
 			->output
 			->addOverview(
-				'A custom PHPUnit testing wrapper. This helps with setting up the 
+				'A custom PHPUnit testing wrapper. This helps with setting up the
 				environment and allowing for specialized options related to testing.'
 			)
 			->addTasks($this)

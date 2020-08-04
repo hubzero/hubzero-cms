@@ -134,7 +134,7 @@ abstract class AbstractCacheTest extends Basic
 	}
 
 	/**
-	 * Test has() with expired data 
+	 * Test has() with expired data
 	 *
 	 * @return  void
 	 */

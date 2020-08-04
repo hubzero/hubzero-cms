@@ -30,7 +30,7 @@ class OneToMany extends Relationship
 	 *
 	 * Because this is a one to many relationship, we could be setting either one
 	 * or many items on the related side at a given time.  We must then be prepared
-	 * to loop over the items.  
+	 * to loop over the items.
 	 *
 	 * @param   object|array   $models    A single model or array of models to associate
 	 * @param   closure        $callback  A callback to potentially append additional data

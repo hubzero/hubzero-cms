@@ -9,14 +9,14 @@ namespace Hubzero\Search;
 
 /**
  * QueryInterface - Interface for Query Adapters
- * 
+ *
  */
 interface QueryInterface
 {
 	/**
 	 * getSuggestions  - Returns an array of suggested terms given terms
-	 * 
-	 * @param mixed $terms 
+	 *
+	 * @param mixed $terms
 	 * @access public
 	 * @return void
 	 */
@@ -24,8 +24,8 @@ interface QueryInterface
 
 	/**
 	 * query - Sets the query string
-	 * 
-	 * @param mixed $terms 
+	 *
+	 * @param mixed $terms
 	 * @access public
 	 * @return void
 	 */
@@ -33,8 +33,8 @@ interface QueryInterface
 
 	/**
 	 * fields - Sets the fields to be returned by the query.
-	 * 
-	 * @param  array $fields 
+	 *
+	 * @param  array $fields
 	 * @access public
 	 * @return void
 	 */
@@ -42,9 +42,9 @@ interface QueryInterface
 
 	/**
 	 * addFilter - Adds a filter to the query
-	 * 
-	 * @param mixed $name 
-	 * @param array $query 
+	 *
+	 * @param mixed $name
+	 * @param array $query
 	 * @access public
 	 * @return void
 	 */
@@ -52,17 +52,17 @@ interface QueryInterface
 
 	/**
 	 * addFacet - Adds a facet to the query object.
-	 * 
+	 *
 	 * @param string $name - Used to identify facet when result is returned.
-	 * @param array $query - The query array with a indexes of name, operator, and value 
+	 * @param array $query - The query array with a indexes of name, operator, and value
 	 * @access public
 	 * @return void
 	 */
 	public function addFacet($name, $query = array());
 
 	/**
-	 * getFacetCount 
-	 * 
+	 * getFacetCount
+	 *
 	 * @param mixed $name - Returns an integer value of a defined facet.
 	 * @access public
 	 * @return void
@@ -71,8 +71,8 @@ interface QueryInterface
 
 	/**
 	 * limit - Set the number of results to be returned
-	 * 
-	 * @param int $limit 
+	 *
+	 * @param int $limit
 	 * @access public
 	 * @return void
 	 */
@@ -80,7 +80,7 @@ interface QueryInterface
 
 	/**
 	 * getResults  - Executes the query and returns an array of results.
-	 * 
+	 *
 	 * @access public
 	 * @return void
 	 */
@@ -88,7 +88,7 @@ interface QueryInterface
 
 	/**
 	 * getNumFound - Returns the total number of matching results, even outside of limit.
-	 * 
+	 *
 	 * @access public
 	 * @return void
 	 */
@@ -96,8 +96,8 @@ interface QueryInterface
 
 	/**
 	 * start - Offset of search index results. Warning: non-deterministic.
-	 * 
-	 * @param mixed $start 
+	 *
+	 * @param mixed $start
 	 * @access public
 	 * @return void
 	 */
@@ -105,7 +105,7 @@ interface QueryInterface
 
 	/**
 	 * sortBy - Order results by a field in a given direction.
-	 * 
+	 *
 	 * @param mixed $field  name of a field
 	 * @param mixed $direction  (ASC or DESC)
 	 * @access public
@@ -115,7 +115,7 @@ interface QueryInterface
 
 	/**
 	 * run  - Performs the query, does not return results.
-	 * 
+	 *
 	 * @access public
 	 * @return void
 	 */
@@ -123,7 +123,7 @@ interface QueryInterface
 
 	/**
 	 * restrictAccess - Applies CMS permissions for the current user.
-	 * 
+	 *
 	 * @access public
 	 * @return void
 	 */

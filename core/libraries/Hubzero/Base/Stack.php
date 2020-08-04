@@ -19,28 +19,28 @@ class Stack
 {
 	/**
 	 * Current position in stack
-	 * 
+	 *
 	 * @var  integer
 	 */
 	protected $position;
 
 	/**
 	 * Layers to run though
-	 * 
+	 *
 	 * @var  array
 	 */
 	protected $layers;
 
 	/**
 	 * Object to pass through layers
-	 * 
+	 *
 	 * @var  object
 	 */
 	protected $request;
 
 	/**
 	 * Create stack with first layer as core
-	 * 
+	 *
 	 * @param   object  $core  Core service
 	 * @return  void
 	 */
@@ -52,7 +52,7 @@ class Stack
 
 	/**
 	 * Send request through stack
-	 * 
+	 *
 	 * @param   object  $request  Request object
 	 * @return  object
 	 */
@@ -65,7 +65,7 @@ class Stack
 
 	/**
 	 * Set layers on stack
-	 * 
+	 *
 	 * @param   array   $layers  Array of services
 	 * @return  object
 	 */
@@ -84,7 +84,7 @@ class Stack
 
 	/**
 	 * Add something to the stack
-	 * 
+	 *
 	 * @param   mixed   $layer
 	 * @return  object
 	 */
@@ -97,7 +97,7 @@ class Stack
 
 	/**
 	 * Final callback
-	 * 
+	 *
 	 * @param   object  $callback  Callback after stack is run
 	 * @return  void    Result of callback
 	 */
@@ -110,7 +110,7 @@ class Stack
 
 	/**
 	 * Call next layer in stack
-	 * 
+	 *
 	 * @param   object  $request  Request object
 	 * @return  object
 	 */

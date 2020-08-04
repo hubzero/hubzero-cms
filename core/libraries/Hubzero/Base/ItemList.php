@@ -334,7 +334,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 
 	/**
 	 * Reverse data order.
-	 * 
+	 *
 	 * @return  object  ItemList
 	 */
 	public function reverse()

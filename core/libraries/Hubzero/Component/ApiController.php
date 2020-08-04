@@ -88,35 +88,35 @@ class ApiController implements ControllerInterface
 
 	/**
 	 * Response object
-	 * 
+	 *
 	 * @var  object
 	 */
 	public $response = null;
 
 	/**
 	 * Methods needing Auth
-	 * 
+	 *
 	 * @var  array
 	 */
 	public $authenticated = array('all');
 
 	/**
 	 * Methods skipping Auth
-	 * 
+	 *
 	 * @var  array
 	 */
 	public $unauthenticated = array();
 
 	/**
 	 * Methods needing rate limiting
-	 * 
+	 *
 	 * @var  array
 	 */
 	public $rateLimited = array();
 
 	/**
 	 * Methods skipping rate limiting
-	 * 
+	 *
 	 * @var  array
 	 */
 	public $notRateLimited = array('all');
@@ -335,7 +335,7 @@ class ApiController implements ControllerInterface
 				continue;
 			}
 
-			// skip method in the parent class (already processed), 
+			// skip method in the parent class (already processed),
 			/*if ($className != $method->getDeclaringClass()->getName())
 			{
 				//continue;

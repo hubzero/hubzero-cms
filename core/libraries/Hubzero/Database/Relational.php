@@ -161,7 +161,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess, \Serializable
 	 * The table namespace
 	 *
 	 * This is likely just the component name, and will most likely
-	 * be set by all subclasses. This follows the convention of 
+	 * be set by all subclasses. This follows the convention of
 	 * prefixing/namespacing database tables with #__componentname_*.
 	 *
 	 * @FIXME: could we infer this once our models are properly namespaced?
@@ -2040,7 +2040,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess, \Serializable
 	/**
 	 * Retrieves a one shifts to many model relationship
 	 *
-	 * This is very similar to a one to many relationship, except that we also need to 
+	 * This is very similar to a one to many relationship, except that we also need to
 	 * constrain by a scope type.  Additionally, the related key is actually most likely
 	 * static (scope_id), rather than dynamic based on the model name.
 	 *
@@ -2147,7 +2147,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess, \Serializable
 		$related = $this->resolve($model);
 		$through = $this->resolve($through);
 
-		// Keys 
+		// Keys
 		$localKey   = $localKey   ?: strtolower($this->getModelName()) . '_id';
 		$relatedKey = $relatedKey ?: strtolower($through->getModelName()) . '_id';
 

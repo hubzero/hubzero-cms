@@ -17,7 +17,7 @@ class JsonpCallable extends Middleware
 {
 	/**
 	 * Handle request in HTTP stack
-	 * 
+	 *
 	 * @param   objct  $request  HTTP Request
 	 * @return  mixes
 	 */
@@ -27,7 +27,7 @@ class JsonpCallable extends Middleware
 		$response = $this->next($request);
 
 		// check for presence of callback param
-		// if we have one lets replace response content with a function executing the 
+		// if we have one lets replace response content with a function executing the
 		// current response content
 		if ($callback = $request->getVar('callback', null))
 		{

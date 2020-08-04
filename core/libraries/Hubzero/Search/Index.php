@@ -11,13 +11,13 @@ use Hubzero\Search\Adapters;
 
 /**
  * Index - For indexing operations
- * 
+ *
  */
 class Index
 {
 	/**
-	 * __construct 
-	 * 
+	 * __construct
+	 *
 	 * @param mixed $config - Configuration object
 	 * @access public
 	 * @return void
@@ -35,7 +35,7 @@ class Index
 
 	/**
 	 * getLogs - Returns an array of search engine query log entries
-	 * 
+	 *
 	 * @access public
 	 * @return void
 	 */
@@ -57,7 +57,7 @@ class Index
 
 	/**
 	 * lastInsert - Returns the timestamp of the last document indexed
-	 * 
+	 *
 	 * @access public
 	 * @return void
 	 */
@@ -68,7 +68,7 @@ class Index
 	}
 
 	/**
-	 * status - Checks whether or not the search engine is responding 
+	 * status - Checks whether or not the search engine is responding
 	 *
 	 * @access public
 	 * @return void
@@ -80,8 +80,8 @@ class Index
 
 	/**
 	 * index - Stores a document within an index
-	 * 
-	 * @param mixed $document 
+	 *
+	 * @param mixed $document
 	 * @access public
 	 * @return void
 	 */
@@ -92,8 +92,8 @@ class Index
 
 	/**
 	 * updateIndex - Update existing index item
-	 * 
-	 * @param mixed $document 
+	 *
+	 * @param mixed $document
 	 * @access public
 	 * @return void
 	 */
@@ -104,8 +104,8 @@ class Index
 
 	/**
 	 * delete - Deletes a document from the index
-	 * 
-	 * @param string $id 
+	 *
+	 * @param string $id
 	 * @access public
 	 * @return void
 	 */

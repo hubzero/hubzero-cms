@@ -996,7 +996,7 @@ class Detector
 						{
 							$this->platformVersion = 10;
 						}
-						// this is a crude test for os x, since safari, camino, ie 5.2, & moz >= rv 1.3 
+						// this is a crude test for os x, since safari, camino, ie 5.2, & moz >= rv 1.3
 						// are only made for os x
 						/*elseif (($browser == 'safari') || ($browser == 'camino') || ($browser == 'shiira') ||
 							(($browser == 'mozilla') && ($browser_ver >= 1.3)) ||
@@ -1011,7 +1011,7 @@ class Detector
 				}
 				break;
 			}
-			// check that it's an array, check it's the second to last item 
+			// check that it's an array, check it's the second to last item
 			// in the main os array, the unix one that is
 			elseif (is_array($s_os) && ($i == (count($a_os) - 2)))
 			{
@@ -1025,7 +1025,7 @@ class Detector
 					}
 				}
 			}
-			// check that it's an array, check it's the last item 
+			// check that it's an array, check it's the last item
 			// in the main os array, the linux one that is
 			elseif (is_array($s_os) && ($i == (count($a_os) - 1)))
 			{

@@ -13,7 +13,7 @@ use Hubzero\Spam\Honeypot;
 use App;
 
 /**
- * Request handler replaces the default PHP global variables 
+ * Request handler replaces the default PHP global variables
  * and functions by an object-oriented layer.
  *
  * A number of methods are inspired by or follow Joomla
@@ -26,7 +26,7 @@ class Request extends BaseRequest
 {
 	/**
 	 * Array of filters
-	 * 
+	 *
 	 * @var  array
 	 */
 	static $filters = array(
@@ -104,7 +104,7 @@ class Request extends BaseRequest
 
 	/**
 	 * Get var
-	 * 
+	 *
 	 * @param   string   $key      Request key
 	 * @param   mixed    $default  Default value
 	 * @param   string   $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
@@ -179,7 +179,7 @@ class Request extends BaseRequest
 
 	/**
 	 * Get integer
-	 * 
+	 *
 	 * @param   string   $key      Request key
 	 * @param   mixed    $default  Default value
 	 * @param   string   $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
@@ -196,7 +196,7 @@ class Request extends BaseRequest
 
 	/**
 	 * Get unsigned integer
-	 * 
+	 *
 	 * @param   string   $key      Request key
 	 * @param   mixed    $default  Default value
 	 * @param   string   $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
@@ -210,7 +210,7 @@ class Request extends BaseRequest
 
 	/**
 	 * Get float
-	 * 
+	 *
 	 * @param   string   $key      Request key
 	 * @param   mixed    $default  Default value
 	 * @param   string   $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
@@ -239,7 +239,7 @@ class Request extends BaseRequest
 
 	/**
 	 * Get word
-	 * 
+	 *
 	 * @param   string  $key      Request key
 	 * @param   mixed   $default  Default value
 	 * @param   string  $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)

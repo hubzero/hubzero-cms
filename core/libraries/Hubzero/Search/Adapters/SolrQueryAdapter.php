@@ -13,17 +13,17 @@ use GuzzleHttp\Client;
 
 /**
  * SolrQueryAdapter - Adapter for Solr Querying
- * 
+ *
  * @uses QueryInterface
- * @uses Solarium 
- * @uses GuzzleHttp\Client 
+ * @uses Solarium
+ * @uses GuzzleHttp\Client
  */
 class SolrQueryAdapter implements QueryInterface
 {
 	/**
-	 * __construct 
-	 * 
-	 * @param mixed $config 
+	 * __construct
+	 *
+	 * @param mixed $config
 	 * @access public
 	 * @return void
 	 */
@@ -61,11 +61,11 @@ class SolrQueryAdapter implements QueryInterface
 		$this->query = $this->connection->createSelect();
 	}
 
-	/**		
-	 * Get MoreLikeThis		
-	 * 		
-	 * @access public		
-	 * @return SolariumQuery		
+	/**
+	 * Get MoreLikeThis
+	 *
+	 * @access public
+	 * @return SolariumQuery
 	 */
 	public function getMoreLikeThis($terms)
 	{
@@ -84,7 +84,7 @@ class SolrQueryAdapter implements QueryInterface
 
 	/**
 	 * spellCheck Returns terms suggestions
-	 * 
+	 *
 	 * @param mixed $terms
 	 * @access public
 	 * @return dictionary
@@ -105,10 +105,10 @@ class SolrQueryAdapter implements QueryInterface
 
 	/**
 	 * getSuggestions Returns indexed terms
-	 * 
-	 * @param mixed $terms 
+	 *
+	 * @param mixed $terms
 	 * @access public
-	 * @return array 
+	 * @return array
 	 */
 	public function getSuggestions($terms)
 	{
@@ -179,9 +179,9 @@ class SolrQueryAdapter implements QueryInterface
 	}
 
 	/**
-	 * query 
-	 * 
-	 * @param mixed $terms 
+	 * query
+	 *
+	 * @param mixed $terms
 	 * @access public
 	 * @return void
 	 */
@@ -192,8 +192,8 @@ class SolrQueryAdapter implements QueryInterface
 	}
 
 	/**
-	 * run 
-	 * 
+	 * run
+	 *
 	 * @access public
 	 * @return void
 	 */
@@ -207,8 +207,8 @@ class SolrQueryAdapter implements QueryInterface
 	}
 
 	/**
-	 * getNumFound 
-	 * 
+	 * getNumFound
+	 *
 	 * @access public
 	 * @return void
 	 */
@@ -218,9 +218,9 @@ class SolrQueryAdapter implements QueryInterface
 	}
 
 	/**
-	 * getFacetCount 
-	 * 
-	 * @param mixed $name 
+	 * getFacetCount
+	 *
+	 * @param mixed $name
 	 * @access public
 	 * @return void
 	 */
@@ -244,10 +244,10 @@ class SolrQueryAdapter implements QueryInterface
 	}
 
 	/**
-	 * addFacet 
-	 * 
-	 * @param mixed $name 
-	 * @param array $query 
+	 * addFacet
+	 *
+	 * @param mixed $name
+	 * @param array $query
 	 * @access public
 	 * @return void
 	 */
@@ -262,9 +262,9 @@ class SolrQueryAdapter implements QueryInterface
 	}
 
 	/**
-	 * addFilter 
-	 * 
-	 * @param mixed $name 
+	 * addFilter
+	 *
+	 * @param mixed $name
 	 * @param mixed $query
 	 * @access public
 	 * @return void
@@ -296,9 +296,9 @@ class SolrQueryAdapter implements QueryInterface
 	}
 
 	/**
-	 * fields 
-	 * 
-	 * @param mixed $fieldArray 
+	 * fields
+	 *
+	 * @param mixed $fieldArray
 	 * @access public
 	 * @return void
 	 */
@@ -309,10 +309,10 @@ class SolrQueryAdapter implements QueryInterface
 	}
 
 	/**
-	 * sortBy 
-	 * 
-	 * @param mixed $field 
-	 * @param mixed $direction 
+	 * sortBy
+	 *
+	 * @param mixed $field
+	 * @param mixed $direction
 	 * @access public
 	 * @return void
 	 */
@@ -323,9 +323,9 @@ class SolrQueryAdapter implements QueryInterface
 	}
 
 	/**
-	 * limit 
-	 * 
-	 * @param mixed $limit 
+	 * limit
+	 *
+	 * @param mixed $limit
 	 * @access public
 	 * @return void
 	 */
@@ -336,9 +336,9 @@ class SolrQueryAdapter implements QueryInterface
 	}
 
 	/**
-	 * start 
-	 * 
-	 * @param mixed $offset 
+	 * start
+	 *
+	 * @param mixed $offset
 	 * @access public
 	 * @return void
 	 */
@@ -349,8 +349,8 @@ class SolrQueryAdapter implements QueryInterface
 	}
 
 	/**
-	 * restrictAccess 
-	 * 
+	 * restrictAccess
+	 *
 	 * @access public
 	 * @return void
 	 */
@@ -399,8 +399,8 @@ class SolrQueryAdapter implements QueryInterface
 	}
 
 	/**
-	 * getResults 
-	 * 
+	 * getResults
+	 *
 	 * @access public
 	 * @return void
 	 */
@@ -426,9 +426,9 @@ class SolrQueryAdapter implements QueryInterface
 	}
 
 	/**
-	 * makeQueryString 
-	 * 
-	 * @param array $query 
+	 * makeQueryString
+	 *
+	 * @param array $query
 	 * @access private
 	 * @return void
 	 */

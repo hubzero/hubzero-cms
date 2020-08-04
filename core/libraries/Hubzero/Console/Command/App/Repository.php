@@ -33,7 +33,7 @@ class Repository extends Base implements CommandInterface
 
 	/**
 	 * Show packages
-	 * 
+	 *
 	 * @museDescription Shows a list of active repositories
 	 *
 	 * @return  void
@@ -46,7 +46,7 @@ class Repository extends Base implements CommandInterface
 
 	/**
 	 * Add a repository
-	 * 
+	 *
 	 * @museDescription Adds a repository
 	 *
 	 * @return  void
@@ -58,7 +58,7 @@ class Repository extends Base implements CommandInterface
 
 	/**
 	 * Remove a repository
-	 * 
+	 *
 	 * @museDescription Removes a repository
 	 *
 	 * @return  void

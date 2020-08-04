@@ -14,34 +14,34 @@ use OAuth2\Storage\RefreshTokenInterface;
 use OAuth2\ResponseType\AccessTokenInterface;
 
 /**
- * Refesh token grant type 
+ * Refesh token grant type
  */
 class RefreshToken implements GrantTypeInterface
 {
 	/**
 	 * Store object
-	 * 
+	 *
 	 * @var  object
 	 */
 	private $storage;
 
 	/**
 	 * Array to hold config
-	 * 
+	 *
 	 * @var  array
 	 */
 	private $config = [];
 
 	/**
 	 * Array to hold token data
-	 * 
+	 *
 	 * @var  array
 	 */
 	private $refreshToken = [];
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param   object  $storage  Storage object
 	 * @param   array   $config   Config array
 	 * @return  void
@@ -56,7 +56,7 @@ class RefreshToken implements GrantTypeInterface
 
 	/**
 	 * Define identifier for this type of grant
-	 * 
+	 *
 	 * @return  string  identifier
 	 */
 	public function getQuerystringIdentifier()
@@ -66,7 +66,7 @@ class RefreshToken implements GrantTypeInterface
 
 	/**
   * Exchange refresh token or new access token
-  * 
+  *
   * @param   object  $request   Request object
   * @param   object  $response  Response object
   * @return  bool    Result of auth
@@ -101,7 +101,7 @@ class RefreshToken implements GrantTypeInterface
 
 	/**
 	 * Get client id
-	 * 
+	 *
 	 * @return  null
 	 */
 	public function getClientId()
@@ -111,7 +111,7 @@ class RefreshToken implements GrantTypeInterface
 
 	/**
 	 * Get user id
-	 * 
+	 *
 	 * @return  int  User identifier
 	 */
 	public function getUserId()
@@ -121,7 +121,7 @@ class RefreshToken implements GrantTypeInterface
 
 	/**
 	 * Get scope
-	 * 
+	 *
 	 * @return  string  Scope
 	 */
 	public function getScope()
@@ -131,7 +131,7 @@ class RefreshToken implements GrantTypeInterface
 
 	/**
 	 * Create access token
-	 * 
+	 *
 	 * @param   object  $accessToken  Access token object
 	 * @param   string  $client_id    Authorized client
 	 * @param   string  $user_id      User identifier

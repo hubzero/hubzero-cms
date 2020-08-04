@@ -14,7 +14,7 @@ interface StorageInterface
 {
 	/**
 	 * Get record by application & user is
-	 * 
+	 *
 	 * @param   int   $applicationId  Application id
 	 * @param   int   $userId         User identifier
 	 * @return  void
@@ -23,7 +23,7 @@ interface StorageInterface
 
 	/**
 	 * Create initial rate limit record
-	 * 
+	 *
 	 * @param   int     $applicationId  Application id
 	 * @param   int     $userId         User identifier
 	 * @param   string  $ip             IP address
@@ -40,7 +40,7 @@ interface StorageInterface
 
 	/**
 	 * Increment rate limit record
-	 * 
+	 *
 	 * @param   int   $id         Rate limit record id
 	 * @param   int   $increment  Increment amount
 	 * @return  void
@@ -49,7 +49,7 @@ interface StorageInterface
 
 	/**
 	 * Reset short count & expiration
-	 * 
+	 *
 	 * @param   int     $id       Rate limit record id
 	 * @param   int     $toCount  Reset count
 	 * @param   string  $toDate   Reset date string
@@ -59,7 +59,7 @@ interface StorageInterface
 
 	/**
 	 * Reset long count & expiration
-	 * 
+	 *
 	 * @param   int     $id       Rate limit record id
 	 * @param   int     $toCount  Reset count
 	 * @param   string  $toDate   Reset date string

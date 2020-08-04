@@ -20,28 +20,28 @@ class AuthorizationCode implements GrantTypeInterface
 {
 	/**
 	 * Store object
-	 * 
+	 *
 	 * @var  object
 	 */
 	private $storage;
 
 	/**
 	 * Array to hold config
-	 * 
+	 *
 	 * @var  array
 	 */
 	private $config = [];
 
 	/**
 	 * Array to hold client data
-	 * 
+	 *
 	 * @var  array
 	 */
 	private $authorizationCode;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param   object  $storage  Storage object
 	 * @param   array   $config   Config array
 	 * @return  void
@@ -53,7 +53,7 @@ class AuthorizationCode implements GrantTypeInterface
 
 	/**
 	 * Define identifier for this type of grant
-	 * 
+	 *
 	 * @return  string  identifier
 	 */
 	public function getQuerystringIdentifier()
@@ -63,7 +63,7 @@ class AuthorizationCode implements GrantTypeInterface
 
 	/**
 	 * Validate request via client
-	 * 
+	 *
 	 * @param   object  $request   Request object
 	 * @param   object  $response  Response object
 	 * @return  bool    Result of auth
@@ -120,7 +120,7 @@ class AuthorizationCode implements GrantTypeInterface
 
 	/**
 	 * Get client id
-	 * 
+	 *
 	 * @return  null
 	 */
 	public function getClientId()
@@ -130,7 +130,7 @@ class AuthorizationCode implements GrantTypeInterface
 
 	/**
 	 * Get user id
-	 * 
+	 *
 	 * @return  int  User identifier
 	 */
 	public function getUserId()
@@ -140,7 +140,7 @@ class AuthorizationCode implements GrantTypeInterface
 
 	/**
 	 * Get scope
-	 * 
+	 *
 	 * @return  string  Scope
 	 */
 	public function getScope()
@@ -150,7 +150,7 @@ class AuthorizationCode implements GrantTypeInterface
 
 	/**
 	 * Create access token
-	 * 
+	 *
 	 * @param   object  $accessToken  Access token object
 	 * @param   string  $client_id    Authorized client
 	 * @param   string  $user_id      User identifier

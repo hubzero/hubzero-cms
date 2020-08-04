@@ -192,9 +192,9 @@ class Behavior
 				extensions: ["tex2jax.js"],
 				jax: ["input/TeX", "output/HTML-CSS"],
 				"HTML-CSS": {
-						preferredFont: "TeX", 
-						availableFonts: ["STIX","TeX"], 
-						linebreaks: { automatic:true }, 
+						preferredFont: "TeX",
+						availableFonts: ["STIX","TeX"],
+						linebreaks: { automatic:true },
 						EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
 				},
 				tex2jax:{

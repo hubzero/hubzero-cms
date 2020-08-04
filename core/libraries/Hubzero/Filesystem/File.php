@@ -183,7 +183,7 @@ class File extends Entity
 
 	/**
 	 * Creates the file pointer resource to this file.
-	 * 
+	 *
 	 * @return handle
 	 **/
 	public function readStream()

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,63 +22,63 @@ class Composer
 {
 	/**
 	 * Composer\Composer object
-	 * 
+	 *
 	 * @var object
 	 */
 	private static $composer = null;
 
 	/**
 	 * Composer\Factory object
-	 * 
+	 *
 	 * @var object
 	 */
 	private static $factory = null;
 
 	/**
 	 * Composer\Repository\RepositoryManager object
-	 * 
+	 *
 	 * @var object
 	 */
 	private static $repositoryManager = null;
 
 	/**
 	 * Composer\Repository\WriteableRepositoryInterface object
-	 * 
+	 *
 	 * @var object
 	 */
 	private static $localRepository = null;
 
 	/**
 	 * Array of repositories not including the local repo
-	 * 
+	 *
 	 * @var array
 	 */
 	private static $remoteRepositories = null;
 
 	/**
 	 * Composer\IO\BaseIO object needed to interact with composer
-	 * 
+	 *
 	 * @var object
 	 */
 	private static $io = null;
 
 	/**
 	 * Composer\Installer object to perform installation operations
-	 * 
+	 *
 	 * @var object
 	 */
 	private static $installer = null;
 
 	/**
 	 * Composer\EventDispatcher\EventDispatcher object to dispatch messages to composer
-	 * 
+	 *
 	 * @var object
 	 */
 	private static $dispatcher = null;
 
 	/**
 	 * Composer\Json\JsonFile object to hold a few pieces of information about the composer.json file
-	 * 
+	 *
 	 * @var object
 	 */
 	private static $json = null;
@@ -86,7 +86,7 @@ class Composer
 	/**
 	 * Initialize a composer object and set the environment so composer can find its configuration
 	 * We currently assume PATH_APP for all composer operations
-	 * 
+	 *
 	 * @return	void
 	 **/
 	private static function _init()
@@ -122,7 +122,7 @@ class Composer
 
 	/**
 	 * Return the factory, ensuring Composer was set up already
-	 * 
+	 *
 	 * @return	object	Composer\Factory object in use
 	 */
 	private static function _getFactory()
@@ -133,7 +133,7 @@ class Composer
 
 	/**
 	 * Return composer object, ensuring it has been set up
-	 * 
+	 *
 	 * @return	object	Composer\Composer object representing this composer instance
 	 */
 	private static function _getComposer()
@@ -145,7 +145,7 @@ class Composer
 	/**
 	 * Reset and reinitialize Composer.
 	 * This is required for doing most update and remove operations
-	 * 
+	 *
 	 * @return	boolean	Indicates success or failure
 	 */
 	private static function _resetComposer()
@@ -163,7 +163,7 @@ class Composer
 
 	/**
 	 * Return the IO object to interact with composer
-	 * 
+	 *
 	 * @return	object	Composer\IO object in use
 	 */
 	private static function _getIO()
@@ -174,7 +174,7 @@ class Composer
 
 	/**
 	 * Return the repository manager
-	 * 
+	 *
 	 * @return	object	Composer\Repository\RepositoryManager in use
 	 */
 	private static function _getRepositoryManager()
@@ -189,7 +189,7 @@ class Composer
 
 	/**
 	 * Return the local(installed) repository
-	 * 
+	 *
 	 * @return	object	Composer\Repository\RepositoryInterface containing the local repository
 	 */
 	private static function _getLocalRepository()
@@ -204,7 +204,7 @@ class Composer
 
 	/**
 	 * Return an array of repositories containing remote packages
-	 * 
+	 *
 	 * @return	array	Array of Composer\Repository\RepositoryInterfaces containing remote packages
 	 */
 	private static function _getRemoteRepositories()
@@ -219,7 +219,7 @@ class Composer
 
 	/**
 	 * Return the installer after ensuring Composer is set up
-	 * 
+	 *
 	 * @return	object	Composer\Installer object in use
 	 */
 	private static function _getInstaller()
@@ -234,7 +234,7 @@ class Composer
 
 	/**
 	 * Return the dispatcher in use by composer
-	 * 
+	 *
 	 * @return	object	Composer\EventDispatcher\EventDispatcher in use
 	 */
 	private static function _getDispatcher()
@@ -249,7 +249,7 @@ class Composer
 
 	/**
 	 * Return the JSON file object representing the composer.json file in use
-	 * 
+	 *
 	 * @return	object	Composer\Json\JsonFile in use
 	 */
 	private static function _getComposerJson()
@@ -265,7 +265,7 @@ class Composer
 
 	/**
 	 * Dispatch an event to composer
-	 * 
+	 *
 	 * @param	string	$command	Command message being dispatched
 	 * @return	void
 	 */
@@ -278,7 +278,7 @@ class Composer
 
 	/**
 	 * Require a package/version by manipulating the composer.json file
-	 * 
+	 *
 	 * @param		string	$packageName	The package name in the form of vendor/package
 	 * @param		string	$constraint		The version constraint string - see https://getcomposer.org/doc/articles/versions.md
 	 * @return	boolean	Indicates if the operation succeeded
@@ -303,7 +303,7 @@ class Composer
 
 	/**
 	 * Unrequire a package by manipulating the composer.json file
-	 * 
+	 *
 	 * @param		string	$apackageName	The package name in the form of vendor/pacakage
 	 * @return	boolean	Indicates if the operation succeeded
 	 */
@@ -328,7 +328,7 @@ class Composer
 
 	/**
 	 * Update a package or list of packages
-	 * 
+	 *
 	 * @param		array	$packages	List of packages to be updated
 	 * @return	boolean	Indicates success or failure
 	 */
@@ -357,7 +357,7 @@ class Composer
 
 	/**
 	 * Return Composer's configuration
-	 * 
+	 *
 	 * @return	object	Composer\Config object in use by composer
 	 */
 	private static function _getConfig()
@@ -368,7 +368,7 @@ class Composer
 
 	/**
 	 * Updates all packages according to their version contraints
-	 * 
+	 *
 	 * @return	boolean	Indicates success or failure
 	 */
 	public static function updatePackages()
@@ -379,7 +379,7 @@ class Composer
 
 	/**
 	 * Install a package as a specific version
-	 * 
+	 *
 	 * @param		string	$packageName	Name of the package to install
 	 * @param		string	$constraint		Version constraint string - see https://getcomposer.org/doc/articles/versions.md
 	 * @return	boolean	Indicates success or frailure
@@ -396,7 +396,7 @@ class Composer
 
 	/**
 	 * Remove a package
-	 * 
+	 *
 	 * @param		string	$packageName	Name of the package to remove
 	 * @return	boolean	Indicates success or failure
 	 */
@@ -412,7 +412,7 @@ class Composer
 
 	/**
 	 * Get a list of packages that are installed
-	 * 
+	 *
 	 * @return	array	Array of Composer\Package\PackageInterface representing locally installed packages
 	 */
 	public static function getLocalPackages()
@@ -423,7 +423,7 @@ class Composer
 
 	/**
 	 * Get a list of remote packages
-	 * 
+	 *
 	 * @return	array	Array of Composer\Package\PackageInterface representing packages from remote repositories
 	 */
 	public static function getRemotePackages()
@@ -450,7 +450,7 @@ class Composer
 
 	/**
 	 * Get a list of available packages
-	 * 
+	 *
 	 * @return	array	Array of packages that are available in remote repositories but have no locally installed version
 	 */
 	public static function getAvailablePackages()
@@ -466,7 +466,7 @@ class Composer
 
 	/**
 	 * Get list of remote repositories
-	 * 
+	 *
 	 * @return	array	Array of Composer\Repository\PackageRepository that composer can use
 	 */
 	public static function getRepositories()
@@ -477,7 +477,7 @@ class Composer
 
 	/**
 	 * Get a single repository by URL
-	 * 
+	 *
 	 * @param		string	$url	URL of the repository to find
 	 * @return	mixed		The Composer\Repository\PackageRepository with a URL matching the parameter, or null
 	 */
@@ -497,7 +497,7 @@ class Composer
 
 	/**
 	 * Return the configuration of a repository by its alias
-	 * 
+	 *
 	 * @param		string	$alias	Alias of the repository, as found in the composer.json
 	 * @return	mixed		The Composer\Repository\PackageRepository that matches, or null
 	 */
@@ -514,7 +514,7 @@ class Composer
 
 	/**
 	 * Get repository configurations
-	 * 
+	 *
 	 * @return	array	Array of configurations for repositories
 	 */
 	public static function getRepositoryConfigs()
@@ -526,7 +526,7 @@ class Composer
 
 	/**
 	 * Find available packages matching the given constraints
-	 * 
+	 *
 	 * @param		string	$packageName	Name of the package to be found
 	 * @param		string	$versionConstraint	Version constraint for package - see https://getcomposer.org/doc/articles/versions.md
 	 * @return	mixed		Composer\Package\PackageInterface or null
@@ -539,7 +539,7 @@ class Composer
 
 	/**
 	 * Find an installed package matching given the constraints
-	 * 
+	 *
 	 * @param		string	$packageName	Name of the package to be found
 	 * @param		string	$versionConstraint	Version constraint for package - see https://getcomposer.org/doc/articles/versions.md
 	 * @return	mixed		Composer\Package\PackageInterface or null
@@ -552,7 +552,7 @@ class Composer
 
 	/**
 	 * Find an installed package by name alone
-	 * 
+	 *
 	 * @param		string	$packageName	Name of the package to be found
 	 * @return	mixed		Composer\Package\PackageInterface or null
 	 */
@@ -564,7 +564,7 @@ class Composer
 
 	/**
 	 * Add a repository to the composer.json file
-	 * 
+	 *
 	 * @param		string	$alias	The alias for the new repository
 	 * @param		string	$json		The JSON representing the new repository
 	 * @return	void
@@ -579,7 +579,7 @@ class Composer
 
 	/**
 	 * Remove a repository from the composer.json file
-	 * 
+	 *
 	 * @param		string	$alias	The alias of the repository to remove
 	 * @return	void
 	 */

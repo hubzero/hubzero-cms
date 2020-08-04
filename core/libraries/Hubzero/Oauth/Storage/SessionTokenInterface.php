@@ -14,14 +14,14 @@ interface SessionTokenInterface
 {
 	/**
 	 * Get session id from cookie
-	 * 
+	 *
 	 * @return  bool  Result of test
 	 */
 	public function getSessionIdFromCookie();
 
 	/**
 	 * Get user id via session id
-	 * 
+	 *
 	 * @param   string  $session_id  Session identifier
 	 * @return  int     User identifier
 	 */
@@ -29,16 +29,16 @@ interface SessionTokenInterface
 
 	/**
 	 * Loads client needed for internal requests
-	 * 
+	 *
 	 * @return  mixed
 	 */
 	public function getInternalRequestClient();
 
 	/**
-	 * Create internal client. This avoids the issue if the client wasnt 
-	 * created or was accidentally delete resulted in both session 
+	 * Create internal client. This avoids the issue if the client wasnt
+	 * created or was accidentally delete resulted in both session
 	 * and tool requests failing
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function createInternalRequestClient();

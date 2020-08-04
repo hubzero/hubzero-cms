@@ -208,7 +208,7 @@ class Migration extends Scaffolding
 			->addArgument(
 				'--install-dir: installation directory',
 				'Installation/base directory within which the migration will be installed.
-				By default, this will be PATH_CORE. The command will then look for a 
+				By default, this will be PATH_CORE. The command will then look for a
 				directory named "migrations" within the provided installation directory.',
 				'Example: --install-dir=/www/myhub'
 			)

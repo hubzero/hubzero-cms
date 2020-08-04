@@ -44,7 +44,7 @@ class Terms extends Base implements CommandInterface
 
 	/**
 	 * Clear terms of use agreements
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function clear()

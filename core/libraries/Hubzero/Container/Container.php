@@ -82,7 +82,7 @@ class Container implements ArrayAccess
 			throw new InvalidArgumentException(sprintf('Identifier "%s" is not defined.', $id));
 		}
 
-		// If an instance of the type is currently being managed as a raw value, 
+		// If an instance of the type is currently being managed as a raw value,
 		// protected value, or is a parameter.
 		if (isset($this->raw[$id])
 			|| !is_object($this->values[$id])

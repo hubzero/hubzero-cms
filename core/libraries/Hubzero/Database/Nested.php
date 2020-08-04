@@ -226,7 +226,7 @@ class Nested extends Relational
 
 			// We have to decrement our internal reference to right here
 			// so that we ultimately resolve trailing below based on the
-			// properly updated value, otherwise anything upstream of 
+			// properly updated value, otherwise anything upstream of
 			// what we're destroying won't be properly updated
 			$this->rgt -= 2;
 		}

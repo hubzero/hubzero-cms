@@ -102,7 +102,7 @@ class Notify extends Relational
 
 	/**
 	 * Delete notifications for action
-	 * 
+	 *
 	 * @param   string   $type
 	 * @return  boolean  True on success, False on error
 	 */

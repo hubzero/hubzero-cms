@@ -164,7 +164,7 @@ class Reader implements Iterator
 
 	/**
 	 * Move to the first node that matches our key
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function rewind()

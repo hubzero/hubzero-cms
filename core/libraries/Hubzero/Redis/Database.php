@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,14 +23,14 @@ class Database
 
 	/**
 	 * Hold server vars
-	 * 
+	 *
 	 * @var  array
 	 */
 	protected $servers;
 
 	/**
 	 * Hold Client options
-	 * 
+	 *
 	 * @var  array
 	 */
 	protected $options;

@@ -122,7 +122,7 @@ class Config
 	 * Merge multiple arrays into one, recursively
 	 *
 	 * Dear future developer who comes in and says, "Why, there's a PHP function for that!
-	 * It's called array_merge_recursive".  Don't do it!  This function works slightly 
+	 * It's called array_merge_recursive".  Don't do it!  This function works slightly
 	 * differently.  Namely, if a nested array is not associative, we want it to append items
 	 * to it, rather than completely overwrite the value of the nested element.
 	 *

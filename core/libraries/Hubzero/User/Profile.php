@@ -1333,7 +1333,7 @@ class Profile extends Obj
 	}
 
 	/**
-	 * Returns a property of the Params object or 
+	 * Returns a property of the Params object or
 	 * the default value if the property is not set.
 	 *
 	 * @param   string   $key      The name of the property.

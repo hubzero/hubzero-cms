@@ -93,8 +93,8 @@ class Eaccelerator extends Store
 
 	/**
 	 * Get single session data as an object
-	 * 
-	 * @param   integer  $session_id  Session Id 
+	 *
+	 * @param   integer  $session_id  Session Id
 	 * @return  object
 	 */
 	public function session($session_id)
@@ -108,7 +108,7 @@ class Eaccelerator extends Store
 
 	/**
 	 * Get list of all sessions
-	 * 
+	 *
 	 * @param   array  $filters
 	 * @return  array
 	 */

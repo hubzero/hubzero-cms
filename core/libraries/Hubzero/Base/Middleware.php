@@ -26,7 +26,7 @@ abstract class Middleware extends ServiceProvider
 	 * object holds onto the current position it is within the stack so
 	 * each service doesnt have to know anything about what comes before
 	 * or after it.
-	 * 
+	 *
 	 * @param   object  $request  Request object
 	 * @return  mixed   Result of next runnable service
 	 */
@@ -40,7 +40,7 @@ abstract class Middleware extends ServiceProvider
 	 *
 	 * Each runnable service must implement this method and do what it wants
 	 * and then MUST pass the request along to the next service after its done.
-	 * 
+	 *
 	 * @param   object  $request  Request object
 	 * @return  mixed   Result
 	 */

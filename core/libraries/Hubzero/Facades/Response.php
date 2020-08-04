@@ -16,7 +16,7 @@ class Response extends Facade
 {
 	/**
 	 * Get the registered name.
-	 * 
+	 *
 	 * @return  string
 	 */
 	protected static function getAccessor()

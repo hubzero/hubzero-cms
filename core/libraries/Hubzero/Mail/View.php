@@ -16,7 +16,7 @@ class View extends AbstractView
 {
 	/**
 	 * Mail template object
-	 * 
+	 *
 	 * @var  object  Hubzero\Mail\Template
 	 */
 	private $_mailTemplate;
@@ -25,13 +25,13 @@ class View extends AbstractView
 	 * Constructor
 	 *
 	 * [!] Override to create instance of mail template
-	 * 
+	 *
 	 * @param   array  $config  A named configuration array for object construction.
 	 * @return  void
 	 */
 	public function __construct($config = array())
 	{
-		// create new mail template, loading email.php 
+		// create new mail template, loading email.php
 		// in active template falling back to system email.php
 		$this->_mailTemplate = new Template();
 
@@ -43,7 +43,7 @@ class View extends AbstractView
 	 * Load a template file -- first look in the templates folder for an override
 	 *
 	 * [!] Override to wrap html view in mail template
-	 * 
+	 *
 	 * @param   string  $tpl  The name of the template source file; automatically searches the template paths and compiles as needed.
 	 * @return  string  The output of the the template script.
 	 */
@@ -71,7 +71,7 @@ class View extends AbstractView
 
 	/**
 	 * Include CSS declaration in document head
-	 * 
+	 *
 	 * @param   string  $css  CSS string
 	 * @return  void
 	 */

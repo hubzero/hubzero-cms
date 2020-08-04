@@ -51,7 +51,7 @@ class Server extends Obj
 
 	/**
 	 * Content Type
-	 * 
+	 *
 	 * @var  string
 	 */
 	private static $_contentType;
@@ -203,7 +203,7 @@ class Server extends Obj
 
 	/**
 	 * Set Content Type
-	 * 
+	 *
 	 * @param  string  $contentType
 	 */
 	public function setContentType($contentType = null)

@@ -364,7 +364,7 @@ class Date extends DateTime
 
 	/**
 	 * Add to the date
-	 * 
+	 *
 	 * @param   string  $modifier
 	 * @return  object
 	 */
@@ -374,8 +374,8 @@ class Date extends DateTime
 	}
 
 	/**
-	 * Subtract from the date 
-	 * 
+	 * Subtract from the date
+	 *
 	 * @param   string  $modifier
 	 * @return  object
 	 */
@@ -457,7 +457,7 @@ class Date extends DateTime
 
 	/**
 	 * Function to explicitly convert a date to the timezone and format provided.
-	 * @param   mixed  $timeZone The numeric key on the Date static offsets array (a short list of common timezones) 
+	 * @param   mixed  $timeZone The numeric key on the Date static offsets array (a short list of common timezones)
 	 * 		or a timezone string accepted by the TimeZone PHP object (see {@link PHP_MANUAL#timezones})
 	 * @param   string  $format  The date format specification string (see {@link PHP_MANUAL#date})
 	 * @return  string
