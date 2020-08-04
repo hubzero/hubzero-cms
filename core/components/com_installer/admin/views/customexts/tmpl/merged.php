@@ -30,7 +30,7 @@ Html::behavior('tooltip');
 					<tr>
 						<td>
 							<?php
-                                echo '<strong> Extension:  ' . $success['extension'] . '</strong>';
+							echo '<strong> Extension:  ' . $success['extension'] . '</strong>';
 							?>
 							<br />
 							<br />
@@ -55,7 +55,7 @@ Html::behavior('tooltip');
 					<tr>
 						<td>
 							<?php
-                                echo '<strong> Extension:  ' . $success['extension'] . '</strong>';
+							echo '<strong> Extension:  ' . $success['extension'] . '</strong>';
 							?>
 							<br />
 							<br />

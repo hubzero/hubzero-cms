@@ -158,17 +158,17 @@
 	color: #5da6fb;
 }
 .merge-success {
-    position: relative;
+	position: relative;
 }
 label.merge {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    outline: 3px solid #efefef;
-    border: 1px solid #ccc;
-    border-radius: 2px;
-    padding: 5px 10px;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	outline: 3px solid #efefef;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+	padding: 5px 10px;
 }
 .icon-32-merge:before {
-    content: '\f16b' !important;
+	content: '\f16b' !important;
 }

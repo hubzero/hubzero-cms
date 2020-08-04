@@ -80,9 +80,8 @@ class Custom_extensions extends Relational
 	 */
 	protected $rules = array(
 		'name'    => 'notempty',
-        'alias'  => 'notempty',
+		'alias'  => 'notempty',
 		'type' => 'notempty'
-//        'giturl'  => 'notempty'
 	);
 
 	/**
@@ -91,10 +90,10 @@ class Custom_extensions extends Relational
 	 * @var  array
 	 **/
 	public $always = array(
-        'path',
+		'path',
 		'modified',
 		'modified_by',
-        'created',
+		'created',
 		'created_by'
 	);
 
@@ -155,50 +154,6 @@ class Custom_extensions extends Relational
 	}
 
 	/**
-	 * Get a form
-	 *
-	 * @return  object
-	 */
-//	public function getForm()
-//	{
-//		$file = __DIR__ . '/forms/plugin.xml';
-//		$file = Filesystem::cleanPath($file);
-//
-//		Form::addFieldPath(__DIR__ . '/fields');
-//
-//		$form = new Form('plugin', array('control' => 'fields'));
-//
-//		if (!$form->loadFile($file, false, '//form'))
-//		{
-//			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
-//		}
-//
-//		$paths   = array();
-//		$paths[] = $this->path() . '/config/config.xml';
-//		$paths[] = $this->path() . '/' . $this->get('element') . '.xml';
-//
-//		foreach ($paths as $file)
-//		{
-//			if (file_exists($file))
-//			{
-//				// Get the plugin form.
-//				if (!$form->loadFile($file, false, '//config'))
-//				{
-//					$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
-//				}
-//				break;
-//			}
-//		}
-//
-//		$data = $this->toArray();
-////		$data['params'] = $this->params->toArray();
-//
-//		$form->bind($data);
-//
-//		return $form;
-//	}
-
-	/**
 	 * Get params as a Registry object
 	 *
 	 * @return  object
@@ -211,20 +166,6 @@ class Custom_extensions extends Relational
 		}
 		return $this->paramsRegistry;
 	}
-
-	/**
-	 * Get the installed path
-	 *
-	 * @return  string
-	 */
-//	public function path()
-//	{
-//		if (!$this->get('folder') || !$this->get('element'))
-//		{
-//			return '';
-//		}
-//		return \Plugin::path($this->get('folder'), $this->get('element'));
-//	}
 
 	/**
 	 * Generates automatic modified field value

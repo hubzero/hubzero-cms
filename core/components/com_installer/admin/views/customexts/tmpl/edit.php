@@ -53,99 +53,92 @@ $this->js();
 
 				<div class="input-wrap">
 					<label for="field-type"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_EDIT_TYPE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <select name="fields[type]" class="required" id="field-type">
-                        <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_TYPE_SELECT');?></option>
-                        <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::TypeOptions(), 'value', 'text', $this->row['type'], true);?>
-                    </select>
+					<select name="fields[type]" class="required" id="field-type">
+						<option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_TYPE_SELECT');?></option>
+						<?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::TypeOptions(), 'value', 'text', $this->row['type'], true);?>
+					</select>
 				</div>
 
-   				<div class="input-wrap">
+				<div class="input-wrap">
 					<label for="field-client_id"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_EDIT_CLIENT_ID'); ?>: </label><br />
 					<select name="fields[client_id]" id="field-client_id">
-                        <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_CLIENT_SELECT');?></option>
-                        <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::LocationOptions(), 'value', 'text', $this->row['client_id'], true);?>
+						<option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_CLIENT_SELECT');?></option>
+						<?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::LocationOptions(), 'value', 'text', $this->row['client_id'], true);?>
 					</select>
 				</div>
 				<div class="input-wrap">
 					<label for="field-folder"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_EDIT_FOLDER'); ?>: </label><br />
 					<select name="fields[folder]" id="field-folder">
-                        <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_FOLDER_SELECT');?></option>
-                        <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::GroupOptions(), 'value', 'text', $this->row['group']);?>
+						<option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_FOLDER_SELECT');?></option>
+						<?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::GroupOptions(), 'value', 'text', $this->row['group']);?>
 					</select>
 				</div>
 
-  				<div class="input-wrap">
+				<div class="input-wrap">
 					<label for="field-description"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_HEADING_DESCRIPTION'); ?>: </label>
 					<textarea name="fields[description]" id="field-description" rows="10"><?php echo $this->escape($this->row->get('description')); ?></textarea>
 				</div>
 
-<!--
-				<div class="input-wrap">
-					<label for="field-apikey"><?php //echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_EDIT_REPO_APIKEY'); ?>: </label><br />
-					<input type="text" name="fields[apikey]" id="field-apikey" maxlength="250" value="<?php //echo $this->escape(stripslashes($this->row->get('apikey'))); ?>" />
-				</div>
--->
-
 			</fieldset>
 		</div>
-        <div class="col span5">
+		<div class="col span5">
 
-        <table class="meta">
-            <tbody>
+			<table class="meta">
+				<tbody>
 
-                <?php if ($this->row->created && $this->row->created != '0000-00-00 00:00:00') : ?>
-                    <tr>
-                        <th>
-                            <?php echo Lang::txt('JGLOBAL_FIELD_CREATED_LABEL'); ?>
-                        </th>
-                        <td>
-                            <time datetime="<?php echo $this->escape($this->row->created); ?>"><?php echo $this->escape(Date::of($this->row->created)->toLocal()); ?></time>
-                        </td>
-                    </tr>
-                <?php endif; ?>
-                <?php if ($this->row->created_by) : ?>
-                    <tr>
-                        <th>
-                            <?php echo Lang::txt('JGLOBAL_FIELD_CREATED_BY_LABEL'); ?>
-                        </th>
-                        <td>
-                            <?php
-                            $modifier = User::getInstance($this->row->created_by);
-                            echo $this->escape($modifier->get('name', Lang::txt('COM_PLUGINS_UNKNOWN')) . ' (' . $this->row->created_by . ')');
-                            ?>
-                        </td>
-                    </tr>
-                <?php endif; ?>
+					<?php if ($this->row->created && $this->row->created != '0000-00-00 00:00:00') : ?>
+					<tr>
+						<th>
+							<?php echo Lang::txt('JGLOBAL_FIELD_CREATED_LABEL'); ?>
+						</th>
+						<td>
+							<time datetime="<?php echo $this->escape($this->row->created); ?>"><?php echo $this->escape(Date::of($this->row->created)->toLocal()); ?></time>
+						</td>
+					</tr>
+					<?php endif; ?>
+					<?php if ($this->row->created_by) : ?>
+					<tr>
+						<th>
+							<?php echo Lang::txt('JGLOBAL_FIELD_CREATED_BY_LABEL'); ?>
+						</th>
+						<td>
+							<?php
+							$modifier = User::getInstance($this->row->created_by);
+							echo $this->escape($modifier->get('name', Lang::txt('COM_PLUGINS_UNKNOWN')) . ' (' . $this->row->created_by . ')');
+							?>
+						</td>
+					</tr>
+					<?php endif; ?>
 
 
-                <?php if ($this->row->modified && $this->row->modified != '0000-00-00 00:00:00') : ?>
-                    <tr>
-                        <th>
-                            <?php echo Lang::txt('JGLOBAL_FIELD_MODIFIED_LABEL'); ?>
-                        </th>
-                        <td>
-                            <time datetime="<?php echo $this->escape($this->row->modified); ?>"><?php echo $this->escape(Date::of($this->row->modified)->toLocal()); ?></time>
-                        </td>
-                    </tr>
-                <?php endif; ?>
-                <?php if ($this->row->modified_by) : ?>
-                    <tr>
-                        <th>
-                            <?php echo Lang::txt('JGLOBAL_FIELD_MODIFIED_BY_LABEL'); ?>
-                        </th>
-                        <td>
-                            <?php
-                            $modifier = User::getInstance($this->row->modified_by);
-                            echo $this->escape($modifier->get('name', Lang::txt('COM_PLUGINS_UNKNOWN')) . ' (' . $this->row->modified_by . ')');
-                            ?>
-                        </td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+					<?php if ($this->row->modified && $this->row->modified != '0000-00-00 00:00:00') : ?>
+					<tr>
+						<th>
+							<?php echo Lang::txt('JGLOBAL_FIELD_MODIFIED_LABEL'); ?>
+						</th>
+						<td>
+							<time datetime="<?php echo $this->escape($this->row->modified); ?>"><?php echo $this->escape(Date::of($this->row->modified)->toLocal()); ?></time>
+						</td>
+					</tr>
+					<?php endif; ?>
+					<?php if ($this->row->modified_by) : ?>
+					<tr>
+						<th>
+							<?php echo Lang::txt('JGLOBAL_FIELD_MODIFIED_BY_LABEL'); ?>
+						</th>
+						<td>
+							<?php
+							$modifier = User::getInstance($this->row->modified_by);
+							echo $this->escape($modifier->get('name', Lang::txt('COM_PLUGINS_UNKNOWN')) . ' (' . $this->row->modified_by . ')');
+							?>
+						</td>
+					</tr>
+					<?php endif; ?>
+				</tbody>
+			</table>
 
-    </div>
-    </div>
+		</div>
+	</div>
 	<input type="hidden" name="fields[extension_id]" value="<?php echo $this->row->get('extension_id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

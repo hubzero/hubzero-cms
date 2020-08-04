@@ -58,39 +58,39 @@ $saveOrder = $listOrder == 'ordering';
 <div id="installer-customexts">
 	<form action="<?php echo Route::url('index.php?option=com_installer&controller=customexts');?>" method="post" name="adminForm" id="adminForm">
 
-        <fieldset id="filter-bar">
+		<fieldset id="filter-bar">
 
-            <div class="filter-search fltlft">
-                <label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-                <input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" />
-                <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-                <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-            </div>
+			<div class="filter-search fltlft">
+				<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
+				<input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" />
+				<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
+				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
 
-            <div class="filter-select fltrt">
+			<div class="filter-select fltrt">
 
-               <select name="filter_location" class="inputbox filter filter-submit" onchange="this.form.submit()">
-                    <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_CLIENT_SELECT');?></option>
-                    <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::LocationOptions(), 'value', 'text', $this->filters['client_id'], true);?>
-                </select>
+				<select name="filter_location" class="inputbox filter filter-submit" onchange="this.form.submit()">
+					<option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_CLIENT_SELECT');?></option>
+					<?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::LocationOptions(), 'value', 'text', $this->filters['client_id'], true);?>
+				</select>
 
-                <select name="filter_status" class="inputbox filter filter-submit" onchange="this.form.submit()">
-                    <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_STATE_SELECT');?></option>
-                    <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::StatusOptions(), 'value', 'text', $this->filters['status'], true);?>
-                </select>
+				<select name="filter_status" class="inputbox filter filter-submit" onchange="this.form.submit()">
+					<option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_STATE_SELECT');?></option>
+					<?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::StatusOptions(), 'value', 'text', $this->filters['status'], true);?>
+				</select>
 
-                <select name="filter_type" class="inputbox filter filter-submit" onchange="this.form.submit()">
-                    <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_TYPE_SELECT');?></option>
-                    <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::TypeOptions(), 'value', 'text', $this->filters['type']);?>
-                </select>
+				<select name="filter_type" class="inputbox filter filter-submit" onchange="this.form.submit()">
+					<option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_TYPE_SELECT');?></option>
+					<?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::TypeOptions(), 'value', 'text', $this->filters['type']);?>
+				</select>
 
-                <select name="filter_group" class="inputbox filter filter-submit" onchange="this.form.submit()">
-                    <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_FOLDER_SELECT');?></option>
-                    <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::GroupOptions(), 'value', 'text', $this->filters['group']);?>
-                </select>
+				<select name="filter_group" class="inputbox filter filter-submit" onchange="this.form.submit()">
+					<option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_FOLDER_SELECT');?></option>
+					<?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::GroupOptions(), 'value', 'text', $this->filters['group']);?>
+				</select>
 
-            </div>
-        </fieldset>
+			</div>
+		</fieldset>
 
 
 		<?php if (count($this->rows)) : ?>
@@ -138,50 +138,50 @@ $saveOrder = $listOrder == 'ordering';
 			$i = 0;
 			foreach ($this->rows as $item):
 
-                $ordering   = ($listOrder == 'ordering');
-                $canChange  = User::authorise('core.edit.state', 'com_installer');
+				$ordering   = ($listOrder == 'ordering');
+				$canChange  = User::authorise('core.edit.state', 'com_installer');
 
-                $cls = $i%2;
+				$cls = $i%2;
 				?>
 				<tr class="row<?php echo $cls; ?>">
 					<td>
 						<?php echo Html::grid('id', $i, $item->get('extension_id')); ?>
 					</td>
-                    <td>
-                        <?php if ($canDo->get('core.edit')) { ?>
-                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $item->get('extension_id')); ?>">
-                                <?php echo $this->escape(stripslashes($item->get('name'))); ?>
-                            </a>
-                        <?php } else { ?>
-                            <span>
-                                <?php echo $this->escape(stripslashes($item->get('name'))); ?>
-                            </span>
-                        <?php } ?>
-                    </td>
+					<td>
+						<?php if ($canDo->get('core.edit')) { ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $item->get('extension_id')); ?>">
+							<?php echo $this->escape(stripslashes($item->get('name'))); ?>
+						</a>
+						<?php } else { ?>
+						<span>
+							<?php echo $this->escape(stripslashes($item->get('name'))); ?>
+						</span>
+						<?php } ?>
+					</td>
 					<td class="center">
 						<?php if (!$item->get('alias')) : ?>
 							<strong>X</strong>
 						<?php else : ?>
-                            <?php echo Html::grid('published', $item->enabled, $i, '', $canChange); ?>
+						<?php echo Html::grid('published', $item->enabled, $i, '', $canChange); ?>
 						<?php endif; ?>
 					</td>
 					<td class="priority-2 center">
-                        <?php echo ($item->get('client_id') == 1) ? Lang::txt('JADMINISTRATOR') : Lang::txt('JSITE'); ?>
+						<?php echo ($item->get('client_id') == 1) ? Lang::txt('JADMINISTRATOR') : Lang::txt('JSITE'); ?>
 					</td>
 					<td class="priority-3 center">
 						<?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_TYPE_' . $item->get('type')); ?>
 					</td>
 					<td class="priority-4 center">
-                        <?php echo ($item->get('folder') != '') ? $item->get('folder') : '&#160;'; ?>
+						<?php echo ($item->get('folder') != '') ? $item->get('folder') : '&#160;'; ?>
 					</td>
 					<td class="priority-5 center">
 						<?php echo ($item->get('modified') != '') ? $item->get('modified') : '&#160;'; ?>
 					</td>
 					<td class="priority-5 center">
-                        <?php
-                            $modifier = User::getInstance($item->get('modified_by'));
-                            echo $this->escape($modifier->get('name', Lang::txt('COM_INSTALLER_CUSTOMEXTS_UNKNOWN')) . ' (' . $item->get('modified_by') . ')');
-                        ?>
+						<?php
+						$modifier = User::getInstance($item->get('modified_by'));
+						echo $this->escape($modifier->get('name', Lang::txt('COM_INSTALLER_CUSTOMEXTS_UNKNOWN')) . ' (' . $item->get('modified_by') . ')');
+						?>
 					</td>
 					<td class="priority-4">
 						<?php echo $item->get('extension_id'); ?>

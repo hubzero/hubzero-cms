@@ -213,11 +213,11 @@ class Customexts extends AdminController
 			$form->bind($data);
 		}
 
-      // Check if there are no matching items
-        if (!count($rows))
-        {
-                Notify::warning(Lang::txt('COM_INSTALLER_CUSTOMEXTS_MSG_MANAGE_NO_EXTENSIONS'));
-        }
+		// Check if there are no matching items
+		if (!count($rows))
+		{
+			Notify::warning(Lang::txt('COM_INSTALLER_CUSTOMEXTS_MSG_MANAGE_NO_EXTENSIONS'));
+		}
 
 		// Output the HTML
 		$this->view
@@ -236,7 +236,7 @@ class Customexts extends AdminController
 	public function editTask($row=null)
 	{
 		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
+		&& !User::authorise('core.create', $this->_option))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
@@ -271,7 +271,7 @@ class Customexts extends AdminController
 
 		$row->set('modified_by', User::get('id'));
 		$row->set('modified', Date::of('now')->toSql());
-        $row->set('modified', NULL);
+		$row->set('modified', NULL);
 
 		// Output the view
 		$this->view
@@ -316,42 +316,42 @@ class Customexts extends AdminController
 			$model->set('params', $p->toString());
 		}
 
-        // pluralize types
-        switch ($model->type) {
-            case "component":
-                $path_type = "components";
-                break;
-            case "file":
-                $path_type = "files";
-                break;
-            case "language":
-                $path_type = "languages";
-                break;
-            case "library":
-                $path_type = "libraries";
-                break;
-            case "module":
-                $path_type = "modules";
-                break;
-            case "package":
-                $path_type = "packages";
-                break;
-            case "plugin":
-                $path_type = "plugins";
-                break;
-            case "template":
-                $path_type = "templates";
-                break;
-        }
+		// pluralize types
+		switch ($model->type) {
+			case "component":
+				$path_type = "components";
+				break;
+			case "file":
+				$path_type = "files";
+				break;
+			case "language":
+				$path_type = "languages";
+				break;
+			case "library":
+				$path_type = "libraries";
+				break;
+			case "module":
+				$path_type = "modules";
+				break;
+			case "package":
+				$path_type = "packages";
+				break;
+			case "plugin":
+				$path_type = "plugins";
+				break;
+			case "template":
+				$path_type = "templates";
+				break;
+		}
 
-        // Set path
-        if ($model->folder)
+		// Set path
+		if ($model->folder)
 		{
-            $model->set('path', PATH_APP . "/" . $path_type . "/" . $model->folder . "/"  . $model->name);
-        }
-        else {
-            $model->set('path', PATH_APP . "/" . $path_type . "/"  . $model->name);
-        }
+			$model->set('path', PATH_APP . "/" . $path_type . "/" . $model->folder . "/"  . $model->name);
+		}
+		else {
+			$model->set('path', PATH_APP . "/" . $path_type . "/"  . $model->name);
+		}
 
 		// Validate and save the data
 		if (!$model->save())
@@ -400,29 +400,29 @@ class Customexts extends AdminController
 
 				if ($value)
 				{
-                    $pieces = explode("/", $model->path);
-                    $repodir = array_pop($pieces);
-                    $extdir = implode("/", $pieces);
+					$pieces = explode("/", $model->path);
+					$repodir = array_pop($pieces);
+					$extdir = implode("/", $pieces);
 
-                    if (is_dir($extdir . '/__' . $repodir))
-                    {
-                        if (!isset($user))
-                        {
-                            $user = Component::params('com_installer')->get('system_user', 'hubadmin');
-                        }
-                        // The tasks and command to be perofmred
-                        $task = 'repository';
-                        $museCmd = 'renameRepo currPath=' . $extdir . '/__' . $repodir . ' targetPath=' . $model->path;
+					if (is_dir($extdir . '/__' . $repodir))
+					{
+						if (!isset($user))
+						{
+							$user = Component::params('com_installer')->get('system_user', 'hubadmin');
+						}
+						// The tasks and command to be perofmred
+						$task = 'repository';
+						$museCmd = 'renameRepo currPath=' . $extdir . '/__' . $repodir . ' targetPath=' . $model->path;
 
-                        // Run as (hubadmin)
-                        $sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+						// Run as (hubadmin)
+						$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
 
-                        // Determines the path to muse and run the extension update muse command
-                        $cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+						// Determines the path to muse and run the extension update muse command
+						$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
 
-                        // execute command
-                        $output = shell_exec($cmd);
-                    }
+						// execute command
+						$output = shell_exec($cmd);
+					}
 
 					if (!$model->publish())
 					{
@@ -432,31 +432,31 @@ class Customexts extends AdminController
 				}
 				else
 				{
-                    if (is_dir($model->path))
-                    {
-                        $pieces = explode("/", $model->path);
-                        $repoPath = array_pop($pieces);
-                        $extdir = implode("/", $pieces);
+					if (is_dir($model->path))
+					{
+						$pieces = explode("/", $model->path);
+						$repoPath = array_pop($pieces);
+						$extdir = implode("/", $pieces);
 
-                        if (!isset($user))
-                        {
-                            $user = Component::params('com_installer')->get('system_user', 'hubadmin');
-                        }
-                        // The tasks and command to be perofmred
-                        $task = 'repository';
-                        $museCmd = 'renameRepo currPath=' . $model->path . ' targetPath=' . $extdir . '/__' . $repoPath;
+						if (!isset($user))
+						{
+							$user = Component::params('com_installer')->get('system_user', 'hubadmin');
+						}
+						// The tasks and command to be perofmred
+						$task = 'repository';
+						$museCmd = 'renameRepo currPath=' . $model->path . ' targetPath=' . $extdir . '/__' . $repoPath;
 
-                        // Run as (hubadmin)
-                        $sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+						// Run as (hubadmin)
+						$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
 
-                        // Determines the path to muse and run the extension update muse command
-                        $cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+						// Determines the path to muse and run the extension update muse command
+						$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
 
-                        // execute command
-                        $output = shell_exec($cmd);
-                    }
+						// execute command
+						$output = shell_exec($cmd);
+					}
 
-                    if (!$model->unpublish())
+					if (!$model->unpublish())
 					{
 						Notify::error($model->getError());
 						continue;
@@ -478,12 +478,12 @@ class Customexts extends AdminController
 					$ntext = 'COM_INSTALLER_CUSTOMEXTS_N_EXTENSIONS_UNPUBLISHED';
 				}
 
-                if ($incomingtask == "update")
-                {
-                    return;
-                }
+				if ($incomingtask == "update")
+				{
+					return;
+				}
 
-             Notify::success(Lang::txts($ntext, $success));
+				Notify::success(Lang::txts($ntext, $success));
 			}
 		}
 
@@ -497,7 +497,7 @@ class Customexts extends AdminController
 	 */
 	public function updateTask()
 	{
-        // Check for request forgeries
+		// Check for request forgeries
 		Request::checkToken();
 
 		// Incoming
@@ -509,14 +509,14 @@ class Customexts extends AdminController
 			$ids = array($ids);
 		}
 
-        // empty list?
+		// empty list?
 		if (empty($ids))
 		{
 			return $this->cancelTask();
 		}
 
-        // Publish extnetion if not to prevent cloning a new dir.
-        $this->publishTask();
+		// Publish extnetion if not to prevent cloning a new dir.
+		$this->publishTask();
 
 		// vars to hold results of pull
 		$success = array();
@@ -525,24 +525,24 @@ class Customexts extends AdminController
 		// loop through each extension and pull code from repos
 		foreach ($ids as $id)
 		{
-            $extension = Custom_extensions::oneOrNew($id);
+			$extension = Custom_extensions::oneOrNew($id);
 
 			// make sure we have a git repo
 			if (!is_dir($extension->path . DS . '.git'))
 			{
-                if (!isset($user))
-                {
-                    $user = Component::params('com_installer')->get('system_user', 'hubadmin');
-                }
-                // The tasks and command to be perofmred
-                $task = 'repository';
-                $museCmd = 'cloneRepo repoPath=' . $extension->path . ' sourceUrl=' . $extension->get('url');
+				if (!isset($user))
+				{
+					$user = Component::params('com_installer')->get('system_user', 'hubadmin');
+				}
+				// The tasks and command to be perofmred
+				$task = 'repository';
+				$museCmd = 'cloneRepo repoPath=' . $extension->path . ' sourceUrl=' . $extension->get('url');
 
-                // Run as (hubadmin)
-                $sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+				// Run as (hubadmin)
+				$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
 
-                // Determines the path to muse and run the extension update muse command
-                $cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+				// Determines the path to muse and run the extension update muse command
+				$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
 
 				// execute command
 				$output = shell_exec($cmd);
@@ -555,7 +555,7 @@ class Customexts extends AdminController
 
 			// The tasks and command to be perofmred
 			$task = 'repository';
-            $museCmd = 'update -r=' . $extension->path;
+			$museCmd = 'update -r=' . $extension->path;
 
 			// Run as (hubadmin)
 			$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
@@ -625,7 +625,7 @@ class Customexts extends AdminController
 		// loop through each extension and pull code from repos
 		foreach ($ids as $id)
 		{
-            $extension = Custom_extensions::oneOrNew($id);
+			$extension = Custom_extensions::oneOrNew($id);
 
 			if (!isset($user))
 			{
@@ -694,85 +694,85 @@ class Customexts extends AdminController
 
 		foreach ($ids as $id)
 		{
-            $extension = Custom_extensions::oneOrNew($id);
+			$extension = Custom_extensions::oneOrNew($id);
 
 			if (!isset($user))
 			{
 				$user = Component::params('com_installer')->get('system_user', 'hubadmin');
 			}
 
-            // If enextion is enabled
+			// If enextion is enabled
 			if ($extension->enabled == 1)
 			{
-                // The tasks and command to be perofmred
-                $task = 'repository';
-                $museCmd = 'removeRepo -path=' . $extension->path;
+				// The tasks and command to be perofmred
+				$task = 'repository';
+				$museCmd = 'removeRepo -path=' . $extension->path;
 
-                // Run as (hubadmin)
-                $sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+				// Run as (hubadmin)
+				$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
 
-                // Determines the path to muse and run the extension update muse command
-                $cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
+				// Determines the path to muse and run the extension update muse command
+				$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
 
-                // this will run a "git pull --rebase origin master"
-                $output = shell_exec($cmd);
+				// this will run a "git pull --rebase origin master"
+				$output = shell_exec($cmd);
 
-                // did we succeed
-                if (preg_match("/Updating the repository.../uis", $output))
-                {
-                    // add success message
-                    $success[] = array(
-                        'extension'   => $extension->get('name'),
-                        'message' => $output
-                    );
-                }
-                else
-                {
-                    // add failed message
-                    $failed[] = array(
-                        'extension'   => $extension->get('name'),
-                        'message' => $output
-                    );
-                }
+				// did we succeed
+				if (preg_match("/Updating the repository.../uis", $output))
+				{
+					// add success message
+					$success[] = array(
+						'extension'   => $extension->get('name'),
+						'message' => $output
+					);
+				}
+				else
+				{
+					// add failed message
+					$failed[] = array(
+						'extension'   => $extension->get('name'),
+						'message' => $output
+					);
+				}
 
 			}  // If enextion is disabled
 			else if ($extension->enabled == 0)
 			{
 
-                $pieces = explode("/", $extension->path);
-                $repodir = array_pop($pieces);
-                $extdir = implode("/", $pieces);
+				$pieces = explode("/", $extension->path);
+				$repodir = array_pop($pieces);
+				$extdir = implode("/", $pieces);
 
-                // The tasks and command to be perofmred
-                $task = 'repository';
-                $museCmd = 'removeRepo -path=' . $extdir . '/__' . $repodir;
+				// The tasks and command to be perofmred
+				$task = 'repository';
+				$museCmd = 'removeRepo -path=' . $extdir . '/__' . $repodir;
 
-                // Run as (hubadmin)
-                $sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+				// Run as (hubadmin)
+				$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
 
-                // Determines the path to muse and run the extension update muse command
-                $cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
+				// Determines the path to muse and run the extension update muse command
+				$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
 
-                // this will run a "git pull --rebase origin master"
-                $output = shell_exec($cmd);
+				// this will run a "git pull --rebase origin master"
+				$output = shell_exec($cmd);
 
-                // did we succeed
-                if (preg_match("/Updating the repository.../uis", $output))
-                {
-                    // add success message
-                    $success[] = array(
-                        'extension'   => $extension->get('name'),
-                        'message' => $output
-                    );
-                }
-                else
-                {
-                    // add failed message
-                    $failed[] = array(
-                        'extension'   => $extension->get('name'),
-                        'message' => $output
-                    );
-                }
+				// did we succeed
+				if (preg_match("/Updating the repository.../uis", $output))
+				{
+					// add success message
+					$success[] = array(
+						'extension'   => $extension->get('name'),
+						'message' => $output
+					);
+				}
+				else
+				{
+					// add failed message
+					$failed[] = array(
+						'extension'   => $extension->get('name'),
+						'message' => $output
+					);
+				}
 
 			}
 

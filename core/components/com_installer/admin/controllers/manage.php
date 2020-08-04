@@ -214,11 +214,11 @@ class Manage extends AdminController
 			$form->bind($data);
 		}
 
-      // Check if there are no matching items
-        if (!count($rows))
-        {
-                Notify::warning(Lang::txt('COM_INSTALLER_CUSTOMEXTS_MSG_MANAGE_NO_EXTENSIONS'));
-        }
+		// Check if there are no matching items
+		if (!count($rows))
+		{
+			Notify::warning(Lang::txt('COM_INSTALLER_CUSTOMEXTS_MSG_MANAGE_NO_EXTENSIONS'));
+		}
 
 		// Output the HTML
 		$this->view
