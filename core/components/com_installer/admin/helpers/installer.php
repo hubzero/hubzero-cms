@@ -11,6 +11,14 @@ use Submenu;
 use Route;
 use Lang;
 use User;
+use Hubzero\Base\Obj;
+use Hubzero\Access\Access;
+use Hubzero\Form\Field;
+use Filesystem;
+use Html;
+use App;
+use Components\Installer\Admin\Models\Extension;
+
 
 /**
  * Installer helper.
@@ -23,28 +31,18 @@ class Installer
 	 * @param   string  $vName  The name of the active view.
 	 * @return  void
 	 */
-	public static function addSubmenu($vName = 'install')
+	public static function addSubmenu($vName = 'manage')
 	{
 		Submenu::addEntry(
-			Lang::txt('COM_INSTALLER_SUBMENU_MANAGE'),
+			Lang::txt('COM_INSTALLER_SUBMENU_CORE'),
 			Route::url('index.php?option=com_installer&controller=manage'),
-			$vName == 'manage'
+			($vName == 'manage' || $vName == 'migrations')
 		);
 		Submenu::addEntry(
-			Lang::txt('COM_INSTALLER_SUBMENU_PACKAGES'),
-			Route::url('index.php?option=com_installer&controller=packages'),
-			($vName == 'packages' || $vName == 'repositories')
+			Lang::txt('COM_INSTALLER_CUSTOMEXTS_SUBMENU'),
+			Route::url('index.php?option=com_installer&controller=customexts'),
+			$vName == 'customexts'
 		);
-		Submenu::addEntry(
-			Lang::txt('COM_INSTALLER_SUBMENU_MIGRATIONS'),
-			Route::url('index.php?option=com_installer&controller=migrations'),
-			$vName == 'migrations'
-		);
-		/*Submenu::addEntry(
-			Lang::txt('COM_INSTALLER_SUBMENU_LANGUAGES'),
-			Route::url('index.php?option=com_installer&controller=languages'),
-			$vName == 'languages'
-		);*/
 		Submenu::addEntry(
 			Lang::txt('COM_INSTALLER_SUBMENU_WARNINGS'),
 			Route::url('index.php?option=com_installer&controller=warnings'),
@@ -72,4 +70,104 @@ class Installer
 
 		return $result;
 	}
+
+	/**
+	 * Returns an array of standard published state filter options.
+	 *
+	 * @return  array
+	 */
+	public static function LocationOptions()
+	{
+		// Build the active state filter options.
+		$options = array();
+        $options[] = Html::select('option', '0', 'JSITE');
+		$options[] = Html::select('option', '1', 'JADMINISTRATOR');
+
+		return $options;
+	}
+
+	/**
+	 * Returns an array of standard published state filter options.
+	 *
+	 * @return  array
+	 */
+	public static function StatusOptions()
+	{
+		// Build the active state filter options.
+		$options = array();
+        $options[] = Html::select('option', '1', 'JENABLED');
+        $options[] = Html::select('option', '0', 'JDISABLED');
+        $options[] = Html::select('option', '2', 'JPROTECTED');
+
+		return $options;
+	}
+
+	/**
+	 * Returns an array of standard published state filter options.
+	 *
+	 * @return  array
+	 */
+	public static function TypeOptions()
+	{
+		$db = App::get('db');
+
+		$query = $db->getQuery()
+			->select('DISTINCT(type)', 'value')
+			->select('type', 'text')
+			->from('#__extensions')
+			->order('type', 'asc');
+
+		$db->setQuery($query->toString());
+		$options = $db->loadObjectList();
+
+		if ($error = $db->getErrorMsg())
+		{
+			App::abort(500, $error);
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Returns an array of standard published state filter options.
+	 *
+	 * @return  array
+	 */
+	public static function GroupOptions()
+	{
+		$db = App::get('db');
+
+		$query = $db->getQuery()
+			->select('DISTINCT(folder)', 'value')
+			->select('folder', 'text')
+			->from('#__extensions')
+            ->where('folder', '!=', '')
+			->order('folder', 'asc');
+
+		$db->setQuery($query->toString());
+		$options = $db->loadObjectList();
+
+		if ($error = $db->getErrorMsg())
+		{
+			App::abort(500, $error);
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Returns an array of standard published state filter options.
+	 *
+	 * @return  array
+	 */
+	public static function VersionOptions()
+	{
+		// Build the active state filter options.
+		$options = array();
+        $options[] = Html::select('option', '0', 'Current');
+        $options[] = Html::select('option', '1', 'Previous');
+
+		return $options;
+	}
+
 }
