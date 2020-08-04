@@ -46,17 +46,6 @@ class Manage extends AdminController
 		// Include the component HTML helpers.
 		Html::addIncludePath(dirname(__DIR__) . '/helpers/html');
 
-		$filters = Request::getArray('filters');
-		if (empty($filters))
-		{
-			$data = User::getState($this->_option . '.data');
-			$filters = $data['filters'];
-		}
-		else
-		{
-			User::setState($this->_option . '.data', array('filters' => $filters));
-		}
-
 		$limit = Request::getState(
 			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
@@ -70,15 +59,46 @@ class Manage extends AdminController
 			'int'
 		);
 
-		$filters['sort'] = Request::getState(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'name'
-		);
-		$filters['sort_Dir'] = Request::getState(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
+		$filters = array(
+			'search' => urldecode(Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'filter_search',
+				''
+			)),
+			'client_id' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.client_id',
+				'filter_location',
+				''
+			),
+			'status' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.status',
+				'filter_status',
+				'',
+				''
+			),
+			'type' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.type',
+				'filter_type',
+				'',
+				''
+			),
+			'group' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.group',
+				'filter_group',
+				'',
+				''
+			),
+			// Get sorting variables
+			'sort' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'name'
+			),
+			'sort_Dir' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
 		);
 
 		$entries = Extension::all();
@@ -90,22 +110,19 @@ class Manage extends AdminController
 			->select($e . '.*')
 			->whereEquals('state', 0);
 
-		if (isset($filters['search']) && $filters['search'])
+		// Filter by search in id
+		if (!empty($filters['search']))
 		{
-			$filters['search'] = str_replace('/', ' ', $filters['search']);
-			if (stripos($filters['search'], 'id:') !== 0)
+			if (stripos($filters['search'], 'id:') === 0)
 			{
-				$entries->whereEquals('extension_id', str_replace('id:', '', $filters['search']));
+				$entries->whereEquals($e . '.extension_id', (int) substr($filters['search'], 3));
 			}
 			else
 			{
-				$entries->whereLike('name', strtolower((string)$filters['search']));
+				$entries->whereLike($e . '.name', $filters['search'], 1)
+					->orWhereLike($e . '.folder', $filters['search'], 1)
+					->resetDepth();
 			}
-		}
-
-		if (isset($filters['type']) && $filters['type'])
-		{
-			$entries->whereEquals('type', $filters['type']);
 		}
 
 		if (isset($filters['client_id']) && $filters['client_id'] != '')
@@ -125,9 +142,14 @@ class Manage extends AdminController
 			}
 		}
 
+		if (isset($filters['type']) && $filters['type'] != '')
+		{
+			$entries->whereEquals('type', $filters['type']);
+		}
+
 		if (isset($filters['group']) && $filters['group'])
 		{
-			$entries->whereEquals('folder', (int)$filters['group']);
+			$entries->whereEquals('folder', $filters['group']);
 		}
 
 		// Get records
@@ -192,6 +214,12 @@ class Manage extends AdminController
 			$form->bind($data);
 		}
 
+      // Check if there are no matching items
+        if (!count($rows))
+        {
+                Notify::warning(Lang::txt('COM_INSTALLER_CUSTOMEXTS_MSG_MANAGE_NO_EXTENSIONS'));
+        }
+
 		// Output the HTML
 		$this->view
 			->set('rows', $rows)
@@ -219,7 +247,7 @@ class Manage extends AdminController
 
 		if (empty($ids))
 		{
-			App::abort(500, Lang::txt('COM_INSTALLER_ERROR_NO_EXTENSIONS_SELECTED'));
+			App::abort(500, Lang::txt('COM_INSTALLER_CUSTOMEXTS_ERROR_NO_EXTENSIONS_SELECTED'));
 		}
 		else
 		{
@@ -254,11 +282,11 @@ class Manage extends AdminController
 			{
 				if ($value == 1)
 				{
-					$ntext = 'COM_INSTALLER_N_EXTENSIONS_PUBLISHED';
+					$ntext = 'COM_INSTALLER_CUSTOMEXTS_N_EXTENSIONS_PUBLISHED';
 				}
 				elseif ($value == 0)
 				{
-					$ntext = 'COM_INSTALLER_N_EXTENSIONS_UNPUBLISHED';
+					$ntext = 'COM_INSTALLER_CUSTOMEXTS_N_EXTENSIONS_UNPUBLISHED';
 				}
 
 				Notify::success(Lang::txts($ntext, $success));
@@ -303,7 +331,7 @@ class Manage extends AdminController
 
 		if ($success)
 		{
-			Notify::success(Lang::txt('COM_INSTALLER_UNINSTALL_SUCCESS', $success));
+			Notify::success(Lang::txt('COM_INSTALLER_CUSTOMEXTS_UNINSTALL_SUCCESS', $success));
 		}
 
 		$this->cancelTask();
@@ -338,33 +366,33 @@ class Manage extends AdminController
 		$this->cancelTask();
 	}
 
-	/**
-	 * Creates the content for the tooltip which shows compatibility information
-	 *
-	 * @param   string  $system_data  System_data information
-	 * @return  string  Content for tooltip
-	 */
-	protected function createCompatibilityInfo($system_data)
-	{
-		$system_data = json_decode($system_data);
-
-		if (empty($system_data->compatibility))
-		{
-			return '';
-		}
-
-		$compatibility = $system_data->compatibility;
-
-		$info = Lang::txt('COM_INSTALLER_COMPATIBILITY_TOOLTIP_INSTALLED',
-					$compatibility->installed->version,
-					implode(', ', $compatibility->installed->value)
-				)
-				. '<br />'
-				. Lang::txt('COM_INSTALLER_COMPATIBILITY_TOOLTIP_AVAILABLE',
-					$compatibility->available->version,
-					implode(', ', $compatibility->available->value)
-				);
-
-		return $info;
-	}
+//	/**
+//	 * Creates the content for the tooltip which shows compatibility information
+//	 *
+//	 * @param   string  $system_data  System_data information
+//	 * @return  string  Content for tooltip
+//	 */
+//	protected function createCompatibilityInfo($system_data)
+//	{
+//		$system_data = json_decode($system_data);
+//
+//		if (empty($system_data->compatibility))
+//		{
+//			return '';
+//		}
+//
+//		$compatibility = $system_data->compatibility;
+//
+//		$info = Lang::txt('COM_INSTALLER_COMPATIBILITY_TOOLTIP_INSTALLED',
+//					$compatibility->installed->version,
+//					implode(', ', $compatibility->installed->value)
+//				)
+//				. '<br />'
+//				. Lang::txt('COM_INSTALLER_COMPATIBILITY_TOOLTIP_AVAILABLE',
+//					$compatibility->available->version,
+//					implode(', ', $compatibility->available->value)
+//				);
+//
+//		return $info;
+//	}
 }

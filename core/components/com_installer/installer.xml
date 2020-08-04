@@ -9,9 +9,9 @@
 <extension type="component" version="2.5" method="upgrade">
 	<name>com_installer</name>
 	<author>HUBzero</author>
-	<copyright>Copyright (c) 2005-2020 The Regents of the University of California.</copyright>
+	<copyright>Copyright 2005-2020 HUBzero Foundation, LLC.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<creationDate>December 2018</creationDate>
+	<creationDate>July 2020</creationDate>
 	<authorEmail>support@hubzero.org</authorEmail>
 	<authorUrl>hubzero.org</authorUrl>
 	<version>2.5.0</version>

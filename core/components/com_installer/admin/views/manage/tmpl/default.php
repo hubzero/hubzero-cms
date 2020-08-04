@@ -5,6 +5,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+// No direct access.
+defined('_HZEXEC_') or die();
+
 $canDo = Components\Installer\Admin\Helpers\Installer::getActions();
 
 Document::setTitle(Lang::txt('COM_INSTALLER_HEADER_' . $this->controller));
@@ -35,10 +38,57 @@ Html::behavior('tooltip');
 
 $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);
+$canOrder  = User::authorise('core.edit.state', 'com_plugins');
+$saveOrder = $listOrder == 'ordering';
+
 ?>
+
+<nav role="navigation" class="sub sub-navigation">
+	<ul>
+		<li>
+			<a<?php if ($this->controller == 'manage') { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=manage'); ?>"><?php echo Lang::txt('COM_INSTALLER_SUBMENU_CORE'); ?></a>
+		</li>
+		<li>
+			<a<?php if ($this->controller == 'migrations') { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=migrations'); ?>"><?php echo Lang::txt('COM_INSTALLER_SUBMENU_MIGRATIONS'); ?></a>
+		</li>
+	</ul>
+</nav>
+
 <div id="installer-manage">
 	<form action="<?php echo Route::url('index.php?option=com_installer&controller=manage');?>" method="post" name="adminForm" id="adminForm">
-		<?php echo $this->loadTemplate('filter'); ?>
+
+        <fieldset id="filter-bar">
+            <div class="filter-search fltlft">
+                <label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
+                <input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" />
+                <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
+                <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+            </div>
+
+            <div class="filter-select fltrt">
+
+               <select name="filter_location" class="inputbox filter filter-submit" onchange="this.form.submit()">
+                    <option value=""><?php echo Lang::txt('COM_INSTALLER_VALUE_CLIENT_SELECT');?></option>
+                    <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::LocationOptions(), 'value', 'text', $this->filters['client_id'], true);?>
+                </select>
+
+                <select name="filter_status" class="inputbox filter filter-submit" onchange="this.form.submit()">
+                    <option value=""><?php echo Lang::txt('COM_INSTALLER_VALUE_STATE_SELECT');?></option>
+                    <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::StatusOptions(), 'value', 'text', $this->filters['status'], true);?>
+                </select>
+
+                <select name="filter_type" class="inputbox filter filter-submit" onchange="this.form.submit()">
+                    <option value=""><?php echo Lang::txt('COM_INSTALLER_VALUE_TYPE_SELECT');?></option>
+                    <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::TypeOptions(), 'value', 'text', $this->filters['type']);?>
+                </select>
+
+                <select name="filter_group" class="inputbox filter filter-submit" onchange="this.form.submit()">
+                    <option value=""><?php echo Lang::txt('COM_INSTALLER_VALUE_FOLDER_SELECT');?></option>
+                    <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::GroupOptions(), 'value', 'text', $this->filters['group']);?>
+                </select>
+
+            </div>
+        </fieldset>
 
 		<?php if (count($this->rows)) : ?>
 		<table class="adminlist">
@@ -89,6 +139,10 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 			foreach ($this->rows as $item):
 				$item->translate();
 
+                $ordering   = ($listOrder == 'ordering');
+				$canCheckin = User::authorise('core.manage', 'com_checkin') || $item->checked_out==User::get('id') || $item->checked_out==0;
+				$canChange  = User::authorise('core.edit.state', 'com_installer') && $canCheckin;
+
 				$cls = $i%2;
 				if ($item->get('status') == 2)
 				{
@@ -111,7 +165,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 						<?php if (!$item->get('element')) : ?>
 							<strong>X</strong>
 						<?php else : ?>
-							<?php echo Html::manage('state', $item->get('enabled'), $i, $item->get('enabled') == 1, 'cb'); ?>
+                            <?php echo Html::grid('published', $item->enabled, $i, '', $canChange); ?>
 						<?php endif; ?>
 					</td>
 					<td class="priority-3 center">
