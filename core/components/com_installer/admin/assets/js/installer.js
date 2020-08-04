@@ -74,4 +74,3 @@ jQuery(document).ready(function($){
 		Hubzero.submitbutton('cancel');
 	});
 });
-

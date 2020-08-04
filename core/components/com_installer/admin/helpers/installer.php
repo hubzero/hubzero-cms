@@ -80,7 +80,7 @@ class Installer
 	{
 		// Build the active state filter options.
 		$options = array();
-        $options[] = Html::select('option', '0', 'JSITE');
+		$options[] = Html::select('option', '0', 'JSITE');
 		$options[] = Html::select('option', '1', 'JADMINISTRATOR');
 
 		return $options;
@@ -95,9 +95,9 @@ class Installer
 	{
 		// Build the active state filter options.
 		$options = array();
-        $options[] = Html::select('option', '1', 'JENABLED');
-        $options[] = Html::select('option', '0', 'JDISABLED');
-        $options[] = Html::select('option', '2', 'JPROTECTED');
+		$options[] = Html::select('option', '1', 'JENABLED');
+		$options[] = Html::select('option', '0', 'JDISABLED');
+		$options[] = Html::select('option', '2', 'JPROTECTED');
 
 		return $options;
 	}
@@ -141,7 +141,7 @@ class Installer
 			->select('DISTINCT(folder)', 'value')
 			->select('folder', 'text')
 			->from('#__extensions')
-            ->where('folder', '!=', '')
+			->where('folder', '!=', '')
 			->order('folder', 'asc');
 
 		$db->setQuery($query->toString());
@@ -164,8 +164,8 @@ class Installer
 	{
 		// Build the active state filter options.
 		$options = array();
-        $options[] = Html::select('option', '0', 'Current');
-        $options[] = Html::select('option', '1', 'Previous');
+		$options[] = Html::select('option', '0', 'Current');
+		$options[] = Html::select('option', '1', 'Previous');
 
 		return $options;
 	}

@@ -9,39 +9,39 @@
 <form>
 	<fieldset>
 
-        <field
-            type="list"
-            name="client_id"
-            hidden="true" >
-            <option value="">COM_INSTALLER_VALUE_CLIENT_SELECT</option>
-            <option value="0">JSITE</option>
-            <option value="1">JADMINISTRATOR</option>
-        </field>
+		<field
+			   type="list"
+			   name="client_id"
+			   hidden="true" >
+			<option value="">COM_INSTALLER_VALUE_CLIENT_SELECT</option>
+			<option value="0">JSITE</option>
+			<option value="1">JADMINISTRATOR</option>
+		</field>
 
-        <field
-            name="status"
+		<field
+			   name="status"
 			type="list"
 			label="JSTATUS" >
-            <option value="">COM_INSTALLER_VALUE_STATE_SELECT</option>
-            <option value="0">JDISABLED</option>
-            <option value="1">JENABLED</option>
-            <option value="2">JPROTECTED</option>
-        </field>
+			<option value="">COM_INSTALLER_VALUE_STATE_SELECT</option>
+			<option value="0">JDISABLED</option>
+			<option value="1">JENABLED</option>
+			<option value="2">JPROTECTED</option>
+		</field>
 
-        <field
-            type="type"
-            name="type"
-            hidden="true" >
-            <option value="">COM_INSTALLER_VALUE_TYPE_SELECT</option>
-        </field>
+		<field
+			   type="type"
+			   name="type"
+			   hidden="true" >
+			<option value="">COM_INSTALLER_VALUE_TYPE_SELECT</option>
+		</field>
 
-        <field
-            type="group"
-            name="group"
-            hidden="true" >
-            <option value="">COM_INSTALLER_VALUE_FOLDER_SELECT</option>
-            <option value="*">COM_INSTALLER_VALUE_FOLDER_NONAPPLICABLE</option>
-        </field>
+		<field
+			   type="group"
+			   name="group"
+			   hidden="true" >
+			<option value="">COM_INSTALLER_VALUE_FOLDER_SELECT</option>
+			<option value="*">COM_INSTALLER_VALUE_FOLDER_NONAPPLICABLE</option>
+		</field>
 
 	</fieldset>
 </form>
