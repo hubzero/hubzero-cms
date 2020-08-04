@@ -1,0 +1,49 @@
+{
+	"cache_handler": "none",
+	"cachebase": "./cache",
+	"hash": "a667603a206b376ac2b26bf54b716971",
+	"apc": {
+		"cachebase": "./cache",
+		"hash": "a667603a206b376ac2b26bf54b716971"
+	},
+	"cachelite": {
+		"cachebase": "./cache",
+		"hash": "a667603a206b376ac2b26bf54b716971"
+	},
+	"eaccelerator": {
+		"cachebase": "./cache",
+		"hash": "a667603a206b376ac2b26bf54b716971"
+	},
+	"file": {
+		"cachebase": "./cache",
+		"hash": "a667603a206b376ac2b26bf54b716971"
+	},
+	"memcache": {
+		"cachebase": "./cache",
+		"hash": "a667603a206b376ac2b26bf54b716971",
+		"host": "127.0.0.1",
+		"port": "11211"
+	},
+	"memcached": {
+		"cachebase": "./cache",
+		"hash": "a667603a206b376ac2b26bf54b716971",
+		"host": "127.0.0.1",
+		"port": "11211"
+	},
+	"memory": {
+		"cachebase": "./cache",
+		"hash": "a667603a206b376ac2b26bf54b716971"
+	},
+	"none": {
+		"cachebase": "./cache",
+		"hash": "a667603a206b376ac2b26bf54b716971"
+	},
+	"wincache": {
+		"cachebase": "./cache",
+		"hash": "a667603a206b376ac2b26bf54b716971"
+	},
+	"xcache": {
+		"cachebase": "./cache",
+		"hash": "a667603a206b376ac2b26bf54b716971"
+	}
+}

@@ -1,0 +1,24 @@
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+namespace Components\%=component_name+ucf=%\Admin;
+
+$option = Request::getCmd('option', '%=option=%');
+
+$controllerName = Request::getCmd('controller', '%=component_name=%');
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = '%=component_name=%';
+}
+
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+
+// Instantiate controller
+$controller = new $controllerName();
+$controller->execute();
+$controller->redirect();

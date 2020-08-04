@@ -1107,7 +1107,9 @@
             },
             "require-dev": {
                 "php": ">=5.5",
+                "hubzero/standards": "dev-master",
                 "phpunit/phpunit": "^4.7.7",
+                "phpunit/dbunit": "~1.4",
                 "satooshi/php-coveralls": "^0.6.1",
                 "scrutinizer/ocular": "^1.1",
                 "whatthejeff/nyancat-phpunit-resultprinter": "^1.2"
@@ -1158,54 +1160,6 @@
                 "source": "https://github.com/hubzero/flysystem-github/tree/develop"
             },
             "time": "2017-07-24T19:58:42+00:00"
-        },
-        {
-            "name": "hubzero/framework",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/hubzero/framework.git",
-                "reference": "c31d1e6e44b659b5deab81a268c19cff21262019"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/framework/zipball/c31d1e6e44b659b5deab81a268c19cff21262019",
-                "reference": "c31d1e6e44b659b5deab81a268c19cff21262019",
-                "shasum": ""
-            },
-            "require": {
-                "composer/composer": "1.6.3",
-                "php": ">=5.4.0",
-                "phpoffice/phpspreadsheet": "1.4.1",
-                "symfony/http-foundation": "2.5.5",
-                "symfony/yaml": "2.5.*"
-            },
-            "require-dev": {
-                "hubzero/standards": "dev-master",
-                "jakub-onderka/php-parallel-lint": "0.9.*",
-                "mockery/mockery": "0.9.*",
-                "phpunit/dbunit": "1.4.*",
-                "phpunit/phpunit": "4.*",
-                "satooshi/php-coveralls": "1.0.*",
-                "squizlabs/php_codesniffer": "2.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Hubzero\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "The HUBzero PHP framework",
-            "keywords": [
-                "framework",
-                "hubzero",
-                "php"
-            ],
-            "time": "2019-10-22T17:48:23+00:00"
         },
         {
             "name": "hubzero/orcid-php",
@@ -4039,7 +3993,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "pelago/emogrifier": 20,
-        "hubzero/framework": 20,
         "hubzero/flysystem-github": 20,
         "mockery/mockery": 20
     },

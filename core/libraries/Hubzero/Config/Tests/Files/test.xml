@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config>
+	<setting name="app" type="object">
+		<setting name="application_env" type="string">development</setting>
+		<setting name="editor" type="string">ckeditor</setting>
+		<setting name="list_limit" type="integer">25</setting>
+		<setting name="helpurl" type="string">English (GB) - HUBzero help</setting>
+		<setting name="debug" type="integer">1</setting>
+		<setting name="debug_lang" type="integer">0</setting>
+		<setting name="sef" type="integer">1</setting>
+		<setting name="sef_rewrite" type="integer">1</setting>
+		<setting name="sef_suffix" type="integer">0</setting>
+		<setting name="sef_groups" type="integer">0</setting>
+		<setting name="feed_limit" type="integer">10</setting>
+		<setting name="feed_email" type="string">author</setting>
+		<setting name="ratelimit" type="array">
+			<setting name="short" type="double">500.1</setting>
+			<setting name="long" type="double">5000.7</setting>
+		</setting>
+	</setting>
+	<setting name="seo" type="object">
+		<setting name="sef" type="integer">1</setting>
+		<setting name="sef_groups" type="integer">0</setting>
+		<setting name="sef_rewrite" type="integer">1</setting>
+		<setting name="sef_suffix" type="integer">0</setting>
+		<setting name="unicodeslugs" type="integer">0</setting>
+		<setting name="sitename_pagetitles" type="integer">0</setting>
+	</setting>
+</config>

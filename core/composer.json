@@ -45,7 +45,6 @@
         "pear/net_dns2": "1.4.*",
         "hubzero/orcid-php": "0.*",
         "league/flysystem": "1.0.*",
-        "hubzero/framework": "dev-master",
         "hubzero/flysystem-github": "dev-develop",
         "nao-pon/flysystem-google-drive": "~1.1",
         "php-amqplib/php-amqplib": "2.5.*",
@@ -60,6 +59,7 @@
         "mockery/mockery": "dev-master"
     },
     "autoload": {
+        "psr-0": { "Hubzero": "libraries/" },
         "psr-4": { "Bootstrap\\": "bootstrap/"},
         "classmap": [ "libraries/joomla" ]
     },

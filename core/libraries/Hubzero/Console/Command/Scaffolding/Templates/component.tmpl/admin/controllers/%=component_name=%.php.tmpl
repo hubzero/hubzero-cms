@@ -1,0 +1,33 @@
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+namespace Components\%=component_name+ucf=%\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+
+/**
+ * Controller class for %=component_name=%
+ */
+class %=component_name+ucf=% extends AdminController
+{
+	/**
+	 * Display primary page
+	 *
+	 * @return  void
+	 */
+	public function displayTask()
+	{
+		// Set any errors
+		foreach ($this->getErrors() as $error)
+		{
+			$this->view->setError($error);
+		}
+
+		// Output the HTML
+		$this->view->display();
+	}
+}
