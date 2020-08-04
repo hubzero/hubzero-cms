@@ -36,7 +36,7 @@ Toolbar::cancel();
 							<?php foreach ($this->availablePackages as $package): ?>
 								<option name="<?php echo $this->escape($package->getName()); ?>"value="<?php echo $this->escape($package->getName()); ?>"><?php echo $this->escape($package->getPrettyName()); ?></option>
 							<?php endforeach; ?>
-						</select> 
+						</select>
 					</div>
 				</fieldset>
 			</div>

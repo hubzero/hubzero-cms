@@ -20,8 +20,8 @@ use Date;
  */
 class Custom_extensions extends Relational
 {
-    
-    
+
+
 	/**
 	 * The table namespace
 	 *
@@ -39,7 +39,7 @@ class Custom_extensions extends Relational
 	protected $pk = 'extension_id';
 
 	/**
-	 * The table name, non-standard naming 
+	 * The table name, non-standard naming
 	 *
 	 * @var  string
 	 */
@@ -96,12 +96,12 @@ class Custom_extensions extends Relational
 		'modified_by',
         'created',
 		'created_by'
-	);    
+	);
 
 
 	/**
 	 * Delete the existing/current model
-	 * 
+	 *
 	 * @return  bool
 	 */
 	public function destroy()
@@ -112,7 +112,7 @@ class Custom_extensions extends Relational
 
 	/**
 	 * Publsh an entry
-	 * 
+	 *
 	 * @return  bool
 	 */
 	public function publish()
@@ -124,7 +124,7 @@ class Custom_extensions extends Relational
 
 	/**
 	 * Unpublish an entry
-	 * 
+	 *
 	 * @return  bool
 	 */
 	public function unpublish()
@@ -153,7 +153,7 @@ class Custom_extensions extends Relational
 
 		return $this->save();
 	}
-    
+
 	/**
 	 * Get a form
 	 *
@@ -196,7 +196,7 @@ class Custom_extensions extends Relational
 //		$form->bind($data);
 //
 //		return $form;
-//	}    
+//	}
 
 	/**
 	 * Get params as a Registry object
@@ -224,8 +224,8 @@ class Custom_extensions extends Relational
 //			return '';
 //		}
 //		return \Plugin::path($this->get('folder'), $this->get('element'));
-//	}  
-    
+//	}
+
 	/**
 	 * Generates automatic modified field value
 	 *
@@ -255,8 +255,8 @@ class Custom_extensions extends Relational
 			$data['modified_by'] = User::get('id');
 		}
 		return $data['modified_by'];
-	}   
-    
+	}
+
 	/**
 	 * Generates automatic modified by field value
 	 *
@@ -269,6 +269,6 @@ class Custom_extensions extends Relational
 			$data['path'] = 'Unknown';
 		}
 		return $data['path'];
-	}      
-    
+	}
+
 }

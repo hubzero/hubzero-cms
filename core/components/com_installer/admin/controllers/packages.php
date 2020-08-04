@@ -99,7 +99,7 @@ class Packages extends AdminController
 
 	/**
 	 * Edit or create a new package
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function editTask()
@@ -155,7 +155,7 @@ class Packages extends AdminController
 
 	/**
 	 * Add a package to track
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function addTask()
@@ -187,7 +187,7 @@ class Packages extends AdminController
 
 	/**
 	 * Remove a package
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function removeTask()

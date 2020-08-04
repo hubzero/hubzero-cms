@@ -99,7 +99,7 @@ class Repositories extends AdminController
 
 	/**
 	 * Edit or create a new repository
-	 * 
+	 *
 	 * @return void
 	 */
 	public function editTask()
@@ -177,7 +177,7 @@ class Repositories extends AdminController
 
 	/**
 	 * Delete a repository
-	 * 
+	 *
 	 * @return void
 	 */
 	public function removeTask()

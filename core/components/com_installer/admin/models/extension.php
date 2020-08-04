@@ -48,7 +48,7 @@ class Extension extends Relational
 
 	/**
 	 * Delete the existing/current model
-	 * 
+	 *
 	 * @return  bool
 	 */
 	public function destroy()
@@ -152,7 +152,7 @@ class Extension extends Relational
 
 	/**
 	 * Publsh an entry
-	 * 
+	 *
 	 * @return  bool
 	 */
 	public function publish()
@@ -164,7 +164,7 @@ class Extension extends Relational
 
 	/**
 	 * Unpublish an entry
-	 * 
+	 *
 	 * @return  bool
 	 */
 	public function unpublish()

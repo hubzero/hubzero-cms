@@ -34,7 +34,7 @@ Html::behavior('tooltip');
 							<?php
 								echo '<strong>Extension: ' . $success['extension'] . '</strong>';
 								echo '<p>' . Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_SUCCESS_DESC') . '</p>';
-							?>                            
+							?>
 							<hr />
 							<code><?php echo implode('<br>', $success['message']); ?></code>
 

@@ -59,21 +59,21 @@ $saveOrder = $listOrder == 'ordering';
 	<form action="<?php echo Route::url('index.php?option=com_installer&controller=customexts');?>" method="post" name="adminForm" id="adminForm">
 
         <fieldset id="filter-bar">
-        
+
             <div class="filter-search fltlft">
                 <label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
                 <input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" />
                 <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
             </div>
-            
+
             <div class="filter-select fltrt">
-                
+
                <select name="filter_location" class="inputbox filter filter-submit" onchange="this.form.submit()">
                     <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_CLIENT_SELECT');?></option>
                     <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::LocationOptions(), 'value', 'text', $this->filters['client_id'], true);?>
                 </select>
-                
+
                 <select name="filter_status" class="inputbox filter filter-submit" onchange="this.form.submit()">
                     <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_STATE_SELECT');?></option>
                     <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::StatusOptions(), 'value', 'text', $this->filters['status'], true);?>
@@ -83,16 +83,16 @@ $saveOrder = $listOrder == 'ordering';
                     <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_TYPE_SELECT');?></option>
                     <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::TypeOptions(), 'value', 'text', $this->filters['type']);?>
                 </select>
-                
+
                 <select name="filter_group" class="inputbox filter filter-submit" onchange="this.form.submit()">
                     <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_FOLDER_SELECT');?></option>
                     <?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::GroupOptions(), 'value', 'text', $this->filters['group']);?>
                 </select>
-                
+
             </div>
         </fieldset>
 
-        
+
 		<?php if (count($this->rows)) : ?>
 		<table class="adminlist">
 			<thead>
@@ -105,7 +105,7 @@ $saveOrder = $listOrder == 'ordering';
 					</th>
 					<th class="center">
 						<?php echo Html::grid('sort', 'COM_INSTALLER_CUSTOMEXTS_HEADING_STATUS', 'status', $listDirn, $listOrder); ?>
-					</th>                       
+					</th>
 					<th class="priority-2">
 						<?php echo Html::grid('sort', 'COM_INSTALLER_CUSTOMEXTS_HEADING_LOCATION', 'client_id', $listDirn, $listOrder); ?>
 					</th>
@@ -161,13 +161,13 @@ $saveOrder = $listOrder == 'ordering';
 					<td class="center">
 						<?php if (!$item->get('alias')) : ?>
 							<strong>X</strong>
-						<?php else : ?>            
-                            <?php echo Html::grid('published', $item->enabled, $i, '', $canChange); ?>                
+						<?php else : ?>
+                            <?php echo Html::grid('published', $item->enabled, $i, '', $canChange); ?>
 						<?php endif; ?>
 					</td>
 					<td class="priority-2 center">
                         <?php echo ($item->get('client_id') == 1) ? Lang::txt('JADMINISTRATOR') : Lang::txt('JSITE'); ?>
-					</td>                    
+					</td>
 					<td class="priority-3 center">
 						<?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_TYPE_' . $item->get('type')); ?>
 					</td>
