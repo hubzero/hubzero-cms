@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.7" type="plugin" group="authfactors">
+	<name>Authfactors - Google</name>
+	<creationDate>August 2020</creationDate>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright (c) 2005-2020 The Regents of the University of California.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<version>1.5</version>
+	<description>Handles using the Google Auth service as a secondary auth factor.</description>
+	<files>
+		<filename plugin="google">google.php</filename>
+	</files>
+	<config>
+		<fields name="params">
+		</fields>
+	</config>
+</extension>
