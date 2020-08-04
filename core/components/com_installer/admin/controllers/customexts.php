@@ -271,7 +271,7 @@ class Customexts extends AdminController
 
 		$row->set('modified_by', User::get('id'));
 		$row->set('modified', Date::of('now')->toSql());
-		$row->set('modified', NULL);
+		$row->set('modified', null);
 
 		// Output the view
 		$this->view
