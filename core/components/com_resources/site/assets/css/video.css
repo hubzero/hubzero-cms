@@ -390,6 +390,7 @@
 		opacity: 0;
 		-webkit-transition: opacity 0.2s;
 		-webkit-backface-visibility: hidden;
+		pointer-events: none;
 	}
 	.preview.visible {
 		-webkit-transition-delay: 0.25s;
