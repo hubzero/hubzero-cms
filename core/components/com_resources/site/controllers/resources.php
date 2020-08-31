@@ -212,7 +212,7 @@ class Resources extends SiteController
 			'search' => Request::getString('search', ''),
 			'tag'    => trim(Request::getString('tag', '', 'request', 'none', 2)),
 			'tag_ignored' => array(),
-			'access' => array(0)
+			'access' => [0, 3]
 		);
 		if (!in_array($filters['sortby'], array('date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random')))
 		{
