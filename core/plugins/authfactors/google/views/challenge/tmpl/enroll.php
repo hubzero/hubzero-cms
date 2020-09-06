@@ -23,7 +23,7 @@ use phpseclib\Crypt\Hash;
 	   // Setup Google Authenticator, call the google_authentictor script
 	   $username = User::get('username');
 	   $user_id = User::get('id');
-	   $cmd = 'sudo /usr/share/adm/scripts/google-authenticator-setup.sh ' . $username . ' ' . $user_id;
+	   $cmd = '/usr/share/adm/scripts/google-authenticator-setup.sh ' . $username . ' ' . $user_id;
 	   exec($cmd, $exec_response);
 
 	   $data = json_decode(Factor::currentOrFailByDomain('google')->data);
