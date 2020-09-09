@@ -38,16 +38,6 @@ class Cart extends ComponentController
 	}
 
 	/**
-	 * Dump post
-	 *
-	 * @return     void
-	 */
-	public function huiTask()
-	{
-		ddie($_POST);
-	}
-
-	/**
 	 * Display default page
 	 *
 	 * @return     void
