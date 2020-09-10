@@ -25,13 +25,14 @@ class Migration20200804000000PlgAuthfactorsGoogle extends Base
 		if (!$this->db->tableExists('#__auth_factors'))
 		{
 			$query = "CREATE TABLE `#__auth_factors` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`user_id` int(11) NOT NULL DEFAULT '0',
-				`domain` varchar(255) DEFAULT NULL,
-				`factor_id` int(11) DEFAULT NULL,
-				`data` varchar(255) DEFAULT NULL,
-				PRIMARY KEY (`user_id`),
-				UNIQUE KEY `id` (`id`)
+                                `id` int(11) NOT NULL AUTO_INCREMENT,
+                                `user_id` int(11) NOT NULL DEFAULT '0',
+                                `enrolled` tinyint(1) DEFAULT NULL,
+                                `domain` varchar(255) DEFAULT NULL,
+                                `factor_id` int(11) DEFAULT NULL,
+                                `data` varchar(255) DEFAULT NULL,
+                                PRIMARY KEY (`user_id`),
+                                UNIQUE KEY `id` (`id`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 			$this->db->setQuery($query);
