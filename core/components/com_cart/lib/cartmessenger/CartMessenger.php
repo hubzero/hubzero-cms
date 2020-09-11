@@ -5,10 +5,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die('Restricted access');
+namespace Components\Cart\Lib;
 
 include_once __DIR__ . '/LoggingLevel.php';
+
+// No direct access
+defined('_HZEXEC_') or die('Restricted access');
 
 /**
  * Logs cart activity and sends emails out as necessary

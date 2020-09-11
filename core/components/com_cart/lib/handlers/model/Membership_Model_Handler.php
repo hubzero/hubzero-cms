@@ -38,7 +38,9 @@ class Membership_Model_Handler extends Model_Handler
 		$currentExpiration = $subscription->getExpiration();
 
 		// No current subscription, no expiration
-		return true;
+		if(!$currentExpiration) {
+			return true;
+		}
 
 		// Calculate new expiration
 		$newExpires = Components\Storefront\Models\Memberships::calculateNewExpiration($currentExpiration, $this->item);
