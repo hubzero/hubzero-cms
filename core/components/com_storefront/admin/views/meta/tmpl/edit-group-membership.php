@@ -27,10 +27,10 @@ Toolbar::help('category');
 	<div class="grid">
 	<div class="col span7">
 		<fieldset class="adminform">
-			<legend><span><?php echo 'Group Membership Options'; ?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_STOREFRONT_GROUP_MEMBERSHIP_OPTIONS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-groupId"><?php echo 'Group ID\'s (comma separated)'; ?>:</label><br />
+				<label for="field-groupId"><?php echo Lang::txt('COM_STOREFRONT_GROUP_IDS'); ?>:</label><br />
 				<input type="text" name="fields[groupId]" id="field-groupId" size="30" maxlength="100" value="<?php echo $this->meta->groupId; ?>" />
 			</div>
 		</fieldset>
