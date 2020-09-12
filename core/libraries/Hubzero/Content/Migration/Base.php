@@ -205,10 +205,10 @@ class Base
 	 **/
 	private function getRootCredentials()
 	{
-		$secrets   = DIRECTORY_SEPARATOR . 'etc'  . DIRECTORY_SEPARATOR . 'hubzero.secrets';
+		//$secrets   = DIRECTORY_SEPARATOR . 'etc'  . DIRECTORY_SEPARATOR . 'hubzero.secrets';
 		$conf_file = DIRECTORY_SEPARATOR . 'root' . DIRECTORY_SEPARATOR . '.my.cnf';
-		$hub_maint = DIRECTORY_SEPARATOR . 'etc'  . DIRECTORY_SEPARATOR . 'mysql' . DIRECTORY_SEPARATOR . 'hubmaint.cnf';
-		$deb_maint = DIRECTORY_SEPARATOR . 'etc'  . DIRECTORY_SEPARATOR . 'mysql' . DIRECTORY_SEPARATOR . 'debian.cnf';
+		//$hub_maint = DIRECTORY_SEPARATOR . 'etc'  . DIRECTORY_SEPARATOR . 'mysql' . DIRECTORY_SEPARATOR . 'hubmaint.cnf';
+		//$deb_maint = DIRECTORY_SEPARATOR . 'etc'  . DIRECTORY_SEPARATOR . 'mysql' . DIRECTORY_SEPARATOR . 'debian.cnf';
 
 		if (is_file($secrets) && is_readable($secrets))
 		{
