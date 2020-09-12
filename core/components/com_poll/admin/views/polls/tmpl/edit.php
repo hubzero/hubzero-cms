@@ -79,7 +79,6 @@ $this->js();
 					<?php echo Html::select('booleanlist', 'fields[open]', 'class="inputbox"', $this->poll->get('open')); ?>
 				</div>
 			</fieldset>
-			<p class="warning"><?php echo Lang::txt('COM_POLL_WARNING'); ?></p>
 		</div>
 		<div class="col span6">
 			<fieldset class="adminform">
