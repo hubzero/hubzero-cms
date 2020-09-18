@@ -5,7 +5,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Components\Cart\Lib;
+namespace Components\Cart\Lib\Cartmessenger;
 
 include_once __DIR__ . '/LoggingLevel.php';
 
