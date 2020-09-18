@@ -1432,6 +1432,34 @@ class Warehouse extends \Hubzero\Base\Obj
 	}
 
 	/**
+	 * Get group-related product
+	 *
+	 * @param	int     group ID
+	 * @return	array 	product info
+	 */
+	public function getGroup($gId)
+	{
+		if(!is_numeric($gId))
+		{
+			return false;
+		}
+
+		$sql = "SELECT sId, sPrice FROM `#__storefront_products` p
+				LEFT JOIN `#__storefront_skus` s ON s.`pId` = p.`pId`
+				LEFT JOIN `#__storefront_product_meta` pm ON p.`pId` = pm.`pId`
+				LEFT JOIN `#__storefront_product_types` pt ON pt.`ptId` = p.`ptId`
+				WHERE pt.`ptName` = 'Group Membership'
+				AND pm.`pmKey` = 'groupId'
+				AND `sActive` = 1
+				AND pm.`pmValue` = " . $this->_db->quote($gId) . "
+				LIMIT 1";
+
+		$this->_db->setQuery($sql);
+		$this->_db->query();
+		return $this->_db->loadObject();
+	}
+
+	/**
 	 * Add product coupon
 	 *
 	 * @param	StorefrontModelCoupon 	Instance of a coupon to add
