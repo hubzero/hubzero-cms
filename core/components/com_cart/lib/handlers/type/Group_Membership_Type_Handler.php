@@ -10,7 +10,7 @@ require_once dirname(dirname(dirname(__DIR__))) . DS . 'models' . DS . 'Cart.php
 require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Product.php';
 
 use Hubzero\User\Group;
-use \Components\Cart\Lib\CartMessenger as CartMessenger;
+use Components\Cart\Lib\CartMessenger\CartMessenger as CartMessenger;
 use \Components\Cart\Models\Cart as Cart;
 use \Components\Storefront\Models\Product as Product;
 
