@@ -186,7 +186,6 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 		{
 			if (!$stats->users)
 			{
-				$stats->users = 0;
 				$statsUpdating = true;
 				$month = (int) date('m');
 				$year = (int) date('Y');
@@ -220,6 +219,12 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 				$clusters = \Components\Resources\Models\Stat\Cluster::all()
 				            ->whereEquals('resid', $model->id)
 				            ->row();
+
+				if (!$stats->users)
+				{
+					$stats->users = 0;
+					$statsUpdating = false;
+				}
 			}
 			if ($model->isTool())
 			{
