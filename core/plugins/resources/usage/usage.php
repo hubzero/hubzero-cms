@@ -55,6 +55,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 			'html'     => '',
 			'metadata' => ''
 		);
+		$statsUpdating = false;
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas))
@@ -186,14 +187,64 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 			if (!$stats->users)
 			{
 				$stats->users = 0;
+				$statsUpdating = true;
+				$month = (int) date('m');
+				$year = (int) date('Y');
+
+				if ($month == 1)
+				{
+					$year -= 1;
+					$month = '12';
+				}
+				else {
+					$month -= 1;
+				}
+
+				$previousDate = "$year-" . str_pad($month, 2, '0', STR_PAD_LEFT);
+
+				if ($model->isTool())
+				{
+					$query = \Components\Resources\Models\Stat\Tool::all();
+				}
+				else
+				{
+					$query = \Components\Resources\Models\Stat::all();
+				}
+
+				$stats = $query->whereEquals('resid', $model->id)
+				               ->whereEquals('period', $period)
+				               ->whereLike('datetime', $previousDate . '-%')
+				               ->row();
+
+				$clusters = \Components\Resources\Models\Stat\Cluster::all()
+				            ->whereEquals('resid', $model->id)
+				            ->row();
 			}
 			if ($model->isTool())
 			{
-				$arr['metadata'] = '<p class="usage"><a href="' . $url . '">' . Lang::txt('PLG_RESOURCES_USAGE_NUM_USERS_DETAILED', $stats->users) . '</a></p>';
+				if ($statsUpdating)
+				{
+					$langKey = 'PLG_RESOURCES_USAGE_NUM_USERS_DETAILED_UPDATING';
+				}
+				else
+				{
+					$langKey = 'PLG_RESOURCES_USAGE_NUM_USERS_DETAILED';
+				}
+
+				$arr['metadata'] = '<p class="usage"><a href="' . $url . '">' . Lang::txt($langKey, $stats->users) . '</a></p>';
 			}
 			else
 			{
-				$arr['metadata'] = '<p class="usage">' . Lang::txt('PLG_RESOURCES_USAGE_NUM_USERS', $stats->users) . '</p>';
+				if ($statsUpdating)
+				{
+					$langKey = 'PLG_RESOURCES_USAGE_NUM_USERS_UPDATING';
+				}
+				else
+				{
+					$langKey = 'PLG_RESOURCES_USAGE_NUM_USERS';
+				}
+
+				$arr['metadata'] = '<p class="usage">' . Lang::txt($langKey, $stats->users) . '</p>';
 			}
 			if (isset($clusters->users) && $clusters->users && isset($clusters->classes) && $clusters->classes)
 			{
