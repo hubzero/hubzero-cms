@@ -196,7 +196,8 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 					$year -= 1;
 					$month = '12';
 				}
-				else {
+				else
+				{
 					$month -= 1;
 				}
 
