@@ -194,9 +194,6 @@ class Sections extends AdminController
 	 */
 	public function saveTask($redirect=true)
 	{
-		// Check for request forgeries
-		Request::checkToken();
-
 		// Incoming
 		$fields = Request::getArray('fields', array(), 'post');
 
