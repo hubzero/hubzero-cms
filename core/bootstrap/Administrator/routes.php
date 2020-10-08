@@ -24,8 +24,15 @@ $router->rules('build')->append('base', function ($uri)
 	// Get the path data
 	$route = $uri->getPath();
 
+	$base = \App::get('request')->base(true);
+	if (substr($base, -strlen(\App::get('client')->name)) != \App::get('client')->name
+	 && substr($base, -strlen(\App::get('client')->url)) != \App::get('client')->url)
+	{
+		$base .= '/' . \App::get('client')->name;
+	}
+
 	// Add basepath to the uri
-	$uri->setPath(\App::get('request')->base(true) . '/' . $route);
+	$uri->setPath($base . '/' . $route);
 
 	return $uri;
 });
