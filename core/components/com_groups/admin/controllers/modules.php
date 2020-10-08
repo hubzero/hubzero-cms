@@ -209,7 +209,7 @@ class Modules extends AdminController
 
 		// if this is new module or were changing position,
 		// get next order possible for position
-		if (!isset($module['id']) || ($module['id'] == '')
+		if (!isset($module['id']) || !$module['id']
 			|| ($module['position'] != $this->module->get('position')))
 		{
 			$ordering = null;
