@@ -217,7 +217,7 @@ class Modules extends AdminController
 		}
 
 		// bind request vars to module model
-		if (!$this->module->bind( $module ))
+		if (!$this->module->bind($module))
 		{
 			Notify::error($this->module->getError());
 			return $this->editTask();
