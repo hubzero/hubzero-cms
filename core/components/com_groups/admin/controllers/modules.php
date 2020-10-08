@@ -194,6 +194,7 @@ class Modules extends AdminController
 		// clean title & position
 		$module['title']    = preg_replace("/[^-_ a-zA-Z0-9]+/", '', $module['title']);
 		$module['position'] = preg_replace("/[^-_a-zA-Z0-9]+/", '', $module['position']);
+		$module['id']       = isset($module['id']) && $module['id'] ? intval($module['id']) : null;
 
 		// get the category object
 		$this->module = new Module($module['id']);
