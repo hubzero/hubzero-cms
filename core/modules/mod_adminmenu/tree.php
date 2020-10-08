@@ -188,14 +188,26 @@ class Tree extends \Hubzero\Base\Obj
 		if ($this->_current->link != null && $this->_current->target != null)
 		{
 			echo '<a' . $linkClass . ' href="' . $this->_current->link . '" rel="noopener" target="' . $this->_current->target . '">' . $this->_current->title . '</a>';
+			if ($this->_current->hasChildren())
+			{
+				echo '<span class="toggler" aria-hidden="true"></span>';
+			}
 		}
 		elseif ($this->_current->link != null && $this->_current->target == null)
 		{
 			echo '<a' . $linkClass . ' href="' . $this->_current->link . '">' . $this->_current->title . '</a>';
+			if ($this->_current->hasChildren())
+			{
+				echo '<span class="toggler" aria-hidden="true"></span>';
+			}
 		}
 		elseif ($this->_current->title != null)
 		{
 			echo '<a' . $linkClass . '>' . $this->_current->title . '</a>';
+			if ($this->_current->hasChildren())
+			{
+				echo '<span class="toggler" aria-hidden="true"></span>';
+			}
 		}
 		else
 		{
