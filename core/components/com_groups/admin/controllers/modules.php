@@ -308,11 +308,15 @@ class Modules extends AdminController
 			// load modules
 			$module = new Module($moduleid);
 
+			// Disable content checks
+			// We're only changing state, so it's unnecessary processing
+			$module->set('page_trusted', 1);
+
 			//set to deleted state
 			$module->set('state', $module::APP_STATE_DELETED);
 
 			// save module
-			if (!$module->store(true))
+			if (!$module->store(true, true))
 			{
 				App::redirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid, false),
