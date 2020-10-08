@@ -6,10 +6,13 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for adding indexes to the #__auth_domain table.
+ * Migration script for adding indexes to the `#__auth_domain` table.
  **/
-class Migration202000171000000AuthDomainIndex extends Base
+class Migration20200917100000AuthDomainIndex extends Base
 {
+	/**
+	 * Up
+	 **/
 	public function up()
 	{
 		if ($this->db->tableExists('#__auth_domain') &&
@@ -21,6 +24,9 @@ class Migration202000171000000AuthDomainIndex extends Base
 		}
 	}
 
+	/**
+	 * Down
+	 **/
 	public function down()
 	{
 		if ($this->db->tableExists('#__auth_domain') &&
@@ -31,5 +37,4 @@ class Migration202000171000000AuthDomainIndex extends Base
 			$this->db->query();
 		}
 	}
-
 }
