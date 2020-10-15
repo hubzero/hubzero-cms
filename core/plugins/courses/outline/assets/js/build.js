@@ -395,15 +395,19 @@ HUB.CoursesOutline = {
 								$.contentBox({
 									src         : src,
 									title       : 'Edit ' + assetName.charAt(0).toUpperCase() + assetName.substr(1),
-									onAfterLoad : function( content ) {
+									onAfterLoad : function( content, objects ) {
 										content.find('.cancel').click(function () {
 											// Close the content box
 											$.contentBox('close');
 										});
 
 										content.find('.edit-form').submit(function ( e ) {
-											if (typeof CKEDITOR !== 'undefined') {
-												$(this).find('#content').html($(this).find('.cke_wysiwyg_frame').contents().find('body').html());
+											// Run the CKEditor
+											var ckEditor = objects.iframe.CKEDITOR;
+											if(ckEditor) {
+												for(var instanceName in ckEditor.instances) {
+													ckEditor.instances[instanceName].updateElement();
+												}
 											}
 
 											// Create ajax call to change info in the database
@@ -1239,7 +1243,7 @@ HUB.CoursesOutline = {
 			$.contentBox({
 				src         : src,
 				title       : 'Create a wiki page',
-				onAfterLoad : function( content ) {
+				onAfterLoad : function( content, objects ) {
 					var t = $(this);
 					content.find('.cancel').click(function(e) {
 						e.preventDefault();
@@ -1258,8 +1262,12 @@ HUB.CoursesOutline = {
 					});
 
 					content.find('.edit-form').submit(function ( e ) {
-						if (typeof CKEDITOR !== 'undefined') {
-							$(this).find('#content').html($(this).find('.cke_wysiwyg_frame').contents().find('body').html());
+						// Run the CKEditor
+						var ckEditor = objects.iframe.CKEDITOR;
+						if(ckEditor) {
+							for(var instanceName in ckEditor.instances) {
+								ckEditor.instances[instanceName].updateElement();
+							}
 						}
 
 						// Create ajax call to change info in the database
