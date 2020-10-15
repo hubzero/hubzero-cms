@@ -26,7 +26,7 @@ class SessionServiceProvider extends ServiceProvider
 	{
 		$this->app['session'] = function($app)
 		{
-			$handler = $app['config']->get('session_handler', 'none');
+			$handler = 'none';
 
 			$options = array(
 				'skipWrites'    => true,  // Skip session writes on command line calls
