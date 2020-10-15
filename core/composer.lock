@@ -1873,16 +1873,16 @@
         },
         {
             "name": "nao-pon/flysystem-google-drive",
-            "version": "1.1.3",
+            "version": "1.1.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nao-pon/flysystem-google-drive.git",
-                "reference": "160924abaedc5c2b39b1e873f5c66d34daf64b91"
+                "reference": "bb812339ecf06540ed096f71403f10fcbcc590f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nao-pon/flysystem-google-drive/zipball/160924abaedc5c2b39b1e873f5c66d34daf64b91",
-                "reference": "160924abaedc5c2b39b1e873f5c66d34daf64b91",
+                "url": "https://api.github.com/repos/nao-pon/flysystem-google-drive/zipball/bb812339ecf06540ed096f71403f10fcbcc590f3",
+                "reference": "bb812339ecf06540ed096f71403f10fcbcc590f3",
                 "shasum": ""
             },
             "require": {
@@ -1918,7 +1918,7 @@
                 }
             ],
             "description": "Flysystem adapter for Google Drive",
-            "time": "2016-09-23T02:36:58+00:00"
+            "time": "2020-07-30 01:26:26"
         },
         {
             "name": "paragonie/random_compat",
