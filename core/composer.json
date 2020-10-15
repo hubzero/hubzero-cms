@@ -28,7 +28,7 @@
         "facebook/graph-sdk": "^5.0",
         "tecnickcom/tcpdf": "6.0.017",
         "leafo/lessphp": "0.5.0",
-        "swiftmailer/swiftmailer": "v5.0.2",
+        "swiftmailer/swiftmailer": "~v5.4.12",
         "monolog/monolog": "1.17.0",
         "willdurand/geocoder": "2.8.*",
         "predis/predis": "0.8.6",
