@@ -409,6 +409,11 @@ HUB.CoursesOutline = {
 													ckEditor.instances[instanceName].updateElement();
 												}
 											}
+											else if (typeof CKEDITOR !== 'undefined') {
+												for(var instanceName in CKEDITOR.instances) {
+													CKEDITOR.instances[instanceName].updateElement();
+												}
+											}
 
 											// Create ajax call to change info in the database
 											$.ajax({
@@ -1267,6 +1272,11 @@ HUB.CoursesOutline = {
 						if(ckEditor) {
 							for(var instanceName in ckEditor.instances) {
 								ckEditor.instances[instanceName].updateElement();
+							}
+						}
+						else if (typeof CKEDITOR !== 'undefined') {
+							for(var instanceName in CKEDITOR.instances) {
+								CKEDITOR.instances[instanceName].updateElement();
 							}
 						}
 
