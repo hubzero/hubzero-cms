@@ -1439,7 +1439,7 @@ class Warehouse extends \Hubzero\Base\Obj
 	 */
 	public function getGroup($gId)
 	{
-		if(!is_numeric($gId))
+		if (!is_numeric($gId))
 		{
 			return false;
 		}
