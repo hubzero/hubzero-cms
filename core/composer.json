@@ -59,7 +59,6 @@
     },
     "require-dev": {
         "mockery/mockery": "dev-master",
-	"hubzero/standards": "dev-master",
 	"jakub-onderka/php-parallel-lint": "0.9.*",
 	"phpunit/dbunit": "1.4.*",
 	"phpunit/phpunit": "4.*",
