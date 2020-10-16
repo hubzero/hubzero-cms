@@ -37,6 +37,7 @@
 		overflow: hidden;
 	}
 	#video-player {
+		position: relative;
 		z-index: 886;
 		display: block;
 		margin: 0 auto;
@@ -429,12 +430,20 @@
 		filter: alpha(opacity = 95);
 		background:rgba(0,0,0,0.95);
 		text-align:left;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding: 10px;
 	}
+
+	#replay > * {
+		margin: 0 auto;
+		max-width: 760px;
+	}
+
+
 	#replay #replay-details {
-		position:absolute;
-		top:25%;
-		left:15%;
-		width:70%;
+		width: 100%;
 	}
 	#replay-details #title {
 		font-size:24px;
@@ -448,7 +457,7 @@
 	#replay-details #replay-link {
 		width:100%;
 		font-size:16px;
-		padding:3px;
+		padding:3px 70px 3px 3px;
 		outline:none;
 		border:1px solid #000;
 		background:#FFF;
@@ -496,9 +505,6 @@
 		color:#444444;
 	}
 	#replay-now {
-		position:absolute;
-		top:250px;
-		right:15%;
 		background-image: -webkit-gradient(linear, left top, left bottom, from(#41697e), );
 		background-image: -webkit-linear-gradient(#688b9d, #41697e);
 		background-image: -moz-linear-gradient(#688b9d, #41697e);
@@ -507,10 +513,7 @@
 		background-image:linear-gradient(#688b9d, #41697e);
 		border:2px solid #3b6479;
 		color:#ffffff;
-	}
-	#replay-now:before {
-		content: url("../img/hubpresenter/replay.png");
-		padding:0 10px 0 0;
+		margin-top: 5px;
 	}
 	#replay-back,
 	#replay-now {
