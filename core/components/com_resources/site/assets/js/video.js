@@ -610,49 +610,9 @@ HUB.Video = {
 			// use timeout to allow media to load
 			setTimeout(function()
 			{
-				HUB.Video.playPause(true);
+				HUB.Video.getPlayer().play();
 			}, 250);
 			return;
-		}
-
-		if (!$jQ("#video-container #resume").length)
-		{
-			//video container must be position relatively 
-			//$jQ("#video-container").css('position', 'relative');
-		
-			//build replay content
-			var resume = "<div id=\"resume\"> \
-							<div id=\"resume-details\"> \
-								<h2>Resume Playback?</h2> \
-								<p>Would you like to resume video playback where you left off last time?</p> \
-								<div id=\"time\">" + time + "</div> \
-							</div> \
-							<a class=\"btn icon-restart\" id=\"restart-video\" href=\"#\">Play from the Beginning</a> \
-							<a class=\"btn btn-info icon-play\" id=\"resume-video\" href=\"#\">Resume Video</a> \
-						  </div>";
-					
-			//add replay to video container
-			$jQ( resume ).hide().appendTo("#video-container").fadeIn("slow");
-		
-			//restart video button
-			$jQ("#restart-video").on('click',function(event){
-				event.preventDefault();
-				HUB.Video.doReplay("#resume");
-			});
-		
-			//resume video button
-			$jQ("#resume-video").on('click',function(event){
-				event.preventDefault();
-				HUB.Video.doResume();
-			});
-		
-			//stop clicks on resume
-			$jQ("#resume").on('click',function(event){
-				if(event.srcElement.id != 'restart-video' && event.srcElement.id != 'resume-video')
-				{
-					event.preventDefault();
-				}
-			});
 		}
 	},
 	
@@ -1476,6 +1436,19 @@ HUB.Video = {
 
 //------------------------------------------------------
 
+function iOS() {
+	return [
+			'iPad Simulator',
+			'iPhone Simulator',
+			'iPod Simulator',
+			'iPad',
+			'iPhone',
+			'iPod'
+		].includes(navigator.platform)
+		// iPad on iOS 13 detection
+		|| (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+};
+
 var $jQ = jQuery.noConflict();
 
 $jQ(document).ready(function() {
@@ -1493,6 +1466,16 @@ $jQ(document).ready(function() {
 				HUB.Video.locationHash();
 			};
 		}, 2000);
+	}
+
+	if(iOS()) {
+		var video = document.getElementById('video-player');
+
+		// iOS needs it
+		video.addEventListener("loadedmetadata", function () {
+			HUB.Video.doneLoading();
+			HUB.Video.locationHash();
+		})
 	}
 });
 

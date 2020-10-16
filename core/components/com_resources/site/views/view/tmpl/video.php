@@ -33,9 +33,9 @@ $this->css('
 ');
 ?>
 
-<div id="video-container">
+<div id="video-container" class="paused">
 	<?php if (count($presentation->media) > 0) : ?>
-		<video controls="controls" id="video-player" data-mediaid="<?php echo $this->resource->id; ?>">
+		<video webkit-playsinline playsinline controls="controls" id="video-player" data-mediaid="<?php echo $this->resource->id; ?>">
 			<?php foreach ($presentation->media as $video) : ?>
 				<?php
 					switch ($video->type)
@@ -112,7 +112,7 @@ $this->css('
 		<div id="progress-bar"></div>
 		<div id="control-buttons">
 			<div id="control-buttons-left" class="cf">
-				<a id="play-pause" class="tooltips control" href="javascript:void(0);" title="Play Presentation">Pause</a>
+				<a id="play-pause" class="tooltips control paused" href="javascript:void(0);" title="Play Presentation">Pause</a>
 				<div id="media-progress"></div>
 			</div>
 			<div id="control-buttons-right" class="cf">
