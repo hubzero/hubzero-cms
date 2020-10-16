@@ -55,7 +55,7 @@
         "srmklive/flysystem-dropbox-v2": "^1.0",
         "stevenmaguire/oauth2-dropbox": "^2.0.0",
 	"composer/composer": "1.6.3",
-	"phpoffice/phpspreadsheet": "1.4.1"
+	"phpoffice/phpspreadsheet": "~1.8.2"
     },
     "require-dev": {
         "mockery/mockery": "dev-master",
