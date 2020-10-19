@@ -689,7 +689,6 @@ class Items extends AdminController
 		$title          = trim(Request::getString('title', '', 'post'));
 		$title          = htmlspecialchars($title);
 		$abstract       = trim(Request::getString('abstract', '', 'post'));
-		$abstract       = htmlspecialchars(\Hubzero\Utility\Sanitize::clean($abstract));
 		$description    = trim(Request::getString('description', '', 'post'));
 		$release_notes  = stripslashes(trim(Request::getString('release_notes', '', 'post')));
 		$group_owner    = Request::getInt('group_owner', 0, 'post');
@@ -699,6 +698,18 @@ class Items extends AdminController
 		$featured       = Request::getInt('featured', 0);
 		$metadata       = '';
 		$activity       = '';
+
+		$db = \App::get('db');
+		$db->setQuery("select params
+		               from #__extensions
+                   where name = 'Projects - Publications'");
+		$result = $db->loadRow();
+		$params = isset($result[0]) ? json_decode($result[0]) : null;
+
+		if (!!$params && isset($params->new_pubs) && !$params->new_pubs)
+		{
+		  $abstract     = htmlspecialchars(\Hubzero\Utility\Sanitize::clean($abstract));
+		}
 
 		// Save publication record
 		$this->model->publication->alias    = trim(Request::getString('alias', '', 'post'));
