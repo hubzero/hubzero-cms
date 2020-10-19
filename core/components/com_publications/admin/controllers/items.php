@@ -702,7 +702,7 @@ class Items extends AdminController
 		$db = \App::get('db');
 		$db->setQuery("select params
 		               from #__extensions
-                   where name = 'Projects - Publications'");
+		               where name = 'Projects - Publications'");
 		$result = $db->loadRow();
 		$params = isset($result[0]) ? json_decode($result[0]) : null;
 
