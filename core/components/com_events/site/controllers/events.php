@@ -1123,7 +1123,6 @@ class Events extends SiteController
 		$arrival    = Request::getArray('arrival', null, 'post');
 		$departure  = Request::getArray('departure', null, 'post');
 		$dietary    = Request::getArray('dietary', null, 'post');
-		$bos        = Request::getString('bos', null, 'post');
 		$dinner     = Request::getString('dinner', null, 'post');
 		$disability = Request::getArray('disability', null, 'post');
 		$race       = Request::getArray('race', null, 'post');
@@ -1177,7 +1176,6 @@ class Events extends SiteController
 			$eview->arrival = $arrival;
 			$eview->departure = $departure;
 			$eview->dinner = $dinner;
-			$eview->bos = $bos;
 			$message = $eview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
 
