@@ -1176,6 +1176,14 @@ class Events extends SiteController
 			$eview->arrival = $arrival;
 			$eview->departure = $departure;
 			$eview->dinner = $dinner;
+			$eview->params = new \Hubzero\Config\Registry($event->params);
+
+			$tz = \User::getParam('timezone', \Config::get('offset'));
+			$format = 'l, Y-m-d H:i T';
+			$eview->eventStart = Date::of($event->get('publish_up'))->toTimezone($tz, $format);
+			$eview->eventEnd = Date::of($event->get('publish_down'))->toTimezone($tz, $format);
+			$eview->eventTitle = $event->title;
+
 			$message = $eview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
 
