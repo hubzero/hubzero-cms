@@ -1285,32 +1285,34 @@ class Events extends SiteController
 							$reg['position'] ? $reg['position'] : $reg['position_other']
 						)
 						: 'null';
-				break;
+					break;
 				case 'gender':
 					$rv[] = (isset($reg['sex']) && ($reg['sex'] == 'male' || $reg['sex'] == 'female'))
 						? '\'' . substr($reg['sex'], 0, 1) . '\''
 						: 'null';
-				break;
+					break;
 				case 'dinner':
 					$dinner = Request::getString('dinner', null, 'post');
 					$rv[] = is_null($dinner) ? 'null' : $dinner ? '1' : '0';
-				break;
+					break;
 				case 'dietary':
 					$rv[] = (($dietary = Request::getArray('dietary', null, 'post')))
 						? $this->database->quote($dietary['specific'])
 						: 'null';
-				break;
-				case 'arrival': case 'departure':
+					break;
+				case 'arrival':
+				case 'departure':
 					$rv[] = ($date = Request::getArray($val, null, 'post'))
 						? $this->database->quote($date['day'] . ' ' . $date['time'])
 						: 'null';
-				break;
+					break;
 				case 'disability':
 					$disability = Request::getString('disability', null, 'post');
 					$rv[] = ($disability) ? '1' : '0';
-				break;
+					break;
 				default:
 					$rv[] = array_key_exists($val, $reg) && isset($reg[$val]) ? $this->database->quote($reg[$val]) : 'null';
+					break;
 			}
 		}
 		return implode($rv, ',');
