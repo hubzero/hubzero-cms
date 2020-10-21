@@ -1132,7 +1132,7 @@ class Events extends SiteController
 			$register = array_map('trim', $register);
 			$register = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $register);
 
-			$validemail = $this->_validEmail($register['email']);
+			$validEmail = $this->_validEmail($register['email']);
 		}
 		if ($arrival)
 		{
@@ -1154,10 +1154,10 @@ class Events extends SiteController
 		if (Respondent::checkUniqueEmailForEvent($register['email'], $event->id) > 0)
 		{
 			$this->setError(Lang::txt('EVENTS_EVENT_REGISTRATION_PREVIOUS'));
-			$validemail = 0;
+			$validEmail = false;
 		}
 
-		if ($register['firstname'] && $register['lastname'] && ($validemail == 1))
+		if ($register['firstname'] && $register['lastname'] && $validEmail)
 		{
 			$email = $event->email;
 			$subject = Lang::txt('EVENTS_EVENT_REGISTRATION') . ': ' . $event->title;
@@ -2088,12 +2088,7 @@ class Events extends SiteController
 	 */
 	private function _validEmail($email)
 	{
-		if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $email))
-		{
-			return 1;
-		}
-
-		return 0;
+		return !!preg_match("/^[_\+\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,63}$/", $email);
 	}
 
 	/**
