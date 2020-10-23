@@ -1199,8 +1199,8 @@ class Events extends SiteController
 			}
 
 			$format = 'l, F d, Y \a\t g:i a ';
-			$eview->eventStart = Date::of($event->get('publish_up'), $tz)->toLocal($format) . $tzStart;
-			$eview->eventEnd = Date::of($event->get('publish_up'), $tz)->toLocal($format) . $tzEnd;
+			$eview->eventStart = Date::of($start, $tz)->toLocal($format) . $tzStart;
+			$eview->eventEnd = Date::of($end, $tz)->toLocal($format) . $tzEnd;
 			$eview->eventTitle = $event->title;
 
 			$message = $eview->loadTemplate();
