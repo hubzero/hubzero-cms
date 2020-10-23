@@ -1178,10 +1178,29 @@ class Events extends SiteController
 			$eview->dinner = $dinner;
 			$eview->params = new \Hubzero\Config\Registry($event->params);
 
-			$tz = \User::getParam('timezone', \Config::get('offset'));
-			$format = 'l, Y-m-d H:i T';
-			$eview->eventStart = Date::of($event->get('publish_up'))->toTimezone($tz, $format);
-			$eview->eventEnd = Date::of($event->get('publish_down'))->toTimezone($tz, $format);
+			$start = $event->get('publish_up');
+			$end = $event->get('publish_down');
+			$tz = $event->get('time_zone');
+			if (date('Y-m-d', strtotime($start)) === date('Y-m-d', strtotime($end)))
+			{
+				// Start/end are on same day
+				// NOTE: This matches logic used in 'details' view where timezones are rendered
+				$tzStart = $tzEnd = Date::of($end, $tz)->format('T', true);
+			}
+			else
+			{
+				// Start/end are on different day
+				if (empty($tz))
+				{
+					$tz = \Config::get('offset');
+				}
+				$tzStart = Date::of($start, $tz)->format('T', true);
+				$tzEnd = Date::of($end, $tz)->format('T', true);
+			}
+
+			$format = 'l, F d, Y \a\t g:i a ';
+			$eview->eventStart = Date::of($event->get('publish_up'), $tz)->toLocal($format) . $tzStart;
+			$eview->eventEnd = Date::of($event->get('publish_up'), $tz)->toLocal($format) . $tzEnd;
 			$eview->eventTitle = $event->title;
 
 			$message = $eview->loadTemplate();
