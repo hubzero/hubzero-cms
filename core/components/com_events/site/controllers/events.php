@@ -2096,7 +2096,7 @@ class Events extends SiteController
 	 */
 	private function _validEmail($email)
 	{
-		return !!preg_match("/^[_\+\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,63}$/", $email);
+		return !!filter_var($email, FILTER_VALIDATE_EMAIL);
 	}
 
 	/**
