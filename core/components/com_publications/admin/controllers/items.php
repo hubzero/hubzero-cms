@@ -758,11 +758,11 @@ class Items extends AdminController
 		if (!!$params && isset($params->new_pubs) && !$params->new_pubs)
 		{
 			$abstract = htmlspecialchars(\Hubzero\Utility\Sanitize::clean($abstract));
-			$this->model->version->abstract = \Hubzero\Utility\Str::truncate($abstract, 250);
 		}
 
 		// Save incoming
 		$this->model->version->title        = $title;
+		$this->model->version->abstract     = \Hubzero\Utility\Str::truncate($abstract, 64000);
 		$this->model->version->description  = $description;
 		$this->model->version->metadata     = $metadata;
 		$this->model->version->release_notes= $release_notes;
