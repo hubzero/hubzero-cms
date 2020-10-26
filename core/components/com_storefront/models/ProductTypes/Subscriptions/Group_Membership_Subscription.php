@@ -7,7 +7,7 @@
 
 require_once __DIR__ . '/BaseSubscription.php';
 
-class Access_Group_Membership_Subscription extends BaseSubscription
+class Group_Membership_Subscription extends BaseSubscription
 {
 	/**
 	 * Constructor

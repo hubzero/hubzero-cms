@@ -442,6 +442,7 @@ class View
 		$view->user       = User::getInstance();
 		$view->classOrId  = $classOrId;
 		$view->logoutLink = $displayLogoutLink;
+		$view->toolbarOptions  = self::getToolbarOptions($group);
 
 		// return template
 		return $view->loadTemplate();
@@ -887,5 +888,17 @@ class View
 
 		$view->content = $phpPageContent;
 		return $view->loadTemplate();
+	}
+
+	/**
+	 * Get group plugins toolbar options
+	 *
+	 * @param   object  $group
+	 * @return  array
+	 */
+	public static function getToolbarOptions($group)
+	{
+		$options = Event::trigger('groups.onGroupOptions', array($group));
+		return $options;
 	}
 }

@@ -37,4 +37,32 @@ class Factor extends Relational
 
 		return ($factor->isNew()) ? false : $factor;
 	}
+
+        /**
+         * Gets one result or fails by user_id
+         *
+         * @return  mixed   static|bool
+         */
+        public static function currentOrFailByEnrolled()
+        {
+                $enrolled = static::all()->whereEquals('user_id', User::get('id'))
+                                       ->whereEquals('enrolled', '1')
+                                       ->row();
+
+                return ($enrolled->isNew()) ? false : $enrolled;
+        }
+
+        /**
+         * Sets Enrolled bit by user_id
+         *
+         * @return  null
+         */
+        public static function registerUserAsEnrolled()
+        {
+                $factor = static::all()->whereEquals('user_id', User::get('id'))
+                                       ->row();
+
+		$factor->set('enrolled', '1');
+		$factor->save();
+        }
 }

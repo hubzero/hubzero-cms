@@ -168,9 +168,8 @@ jQuery(document).ready(function($){
 		e.preventDefault();
 	});
 
-	$('.main-navigation li.node>a').on('click', function(e){
+	$('.main-navigation li.node>.toggler').on('click', function(e){
 		$(this).parent().toggleClass('active');
-		e.preventDefault();
 	});
 
 	// Display system messages in Growl-like way

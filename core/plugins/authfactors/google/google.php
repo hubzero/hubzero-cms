@@ -5,7 +5,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// use Authy\AuthyApi;
 use Hubzero\Auth\Factor;
 use Hubzero\Utility\Validate;
 require_once Plugin::path('authfactors', 'google') . DS . 'helpers' . DS . 'GoogleAuthenticator.php';
@@ -24,11 +23,10 @@ class plgAuthfactorsGoogle extends \Hubzero\Plugin\Plugin
 	{
 		// Setup our response
 		$response = new \Hubzero\Base\Obj;
-
 		// Route based on an action
 		switch (Request::getWord('action', ''))
 		{
-			case 'register':
+			case 'registered':
 				$this->register();
 				break;
 			case 'verify':
@@ -47,15 +45,14 @@ class plgAuthfactorsGoogle extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Displays the appropriate page for user input, based on whether
-	 * or not we know the user's account number
+	 * Displays the appropriate page for user input
 	 *
 	 * @return void
 	 **/
 	private function display()
 	{
 		// If we have a user id, go to verify page
-		if (Factor::currentOrFailByDomain('google'))
+		if (Factor::currentOrFailByEnrolled())
 		{
 			$this->view = $this->view('verify', 'challenge');
 		}
@@ -73,6 +70,7 @@ class plgAuthfactorsGoogle extends \Hubzero\Plugin\Plugin
 	 **/
 	private function register()
 	{
+		Factor::registerUserAsEnrolled();
 		// Redirect for verification process to occur
 		App::redirect(Request::current());
 	}

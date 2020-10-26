@@ -34,6 +34,7 @@
 				padding: 0;
 				border: none;
 				color: #fff;
+				position: relative;
 
 				&:hover,
 				&:focus {
@@ -98,6 +99,20 @@
 						overflow: hidden;
 					}
 				}
+			}
+			li.node>.toggler {
+				width: 1em;
+				display: block;
+				position: absolute;
+				top: 0.5em;
+				right: 1em;
+				text-align: center;
+			}
+			li.node>.toggler:before {
+				content: "›";
+			}
+			&>li.node>.toggler {
+				display: none;
 			}
 
 			&>li:hover,
@@ -209,11 +224,10 @@
 				padding-bottom: 0.61803399em;
 				.border-radius(0 0 0.25em 0.25em);
 			}
-			ul li.node>a:after {
-				content: "›";
-				position: absolute;
-				right: 1em;
+			ul li.node .toggler {
+				display: block;
 			}
+
 			&.disabled li a,
 			&.disabled>li:hover > a,
 			&.disabled>li:focus > a,
@@ -247,13 +261,23 @@
 		left: -200px;
 
 		ul#menu {
-			li.node>a:after {
-				content: "\2304";
-				font-family: "Fontcons";
+			&>li.node>.toggler {
+				display: block;
+			}
+			li.node>.toggler {
+				display: block;
 				position: absolute;
 				right: 1em;
+				top: 1em;
+				padding: 0.25em 0.5em;
+				background-color: rgba(0, 0, 0, 0.2);
+				cursor: pointer;
 			}
-			li.active.node>a:after {
+			li.node>.toggler:before {
+				content: "\2304";
+				font-family: "Fontcons";
+			}
+			li.active.node>.toggler:before {
 				content: "\2303";
 			}
 		}

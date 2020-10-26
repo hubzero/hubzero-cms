@@ -5,6 +5,7 @@
 (function( $ ) {
 
 	var settings = {},
+		objects = {},
 		methods  = {
 			init : function ( options ) {
 				// Create some defaults, extending them with any options that were provided
@@ -24,7 +25,7 @@
 								'</div>',
 							'</div>'
 						].join('\n'),
-					onAfterLoad : function ( content ) {}
+					onAfterLoad : function ( content, objects ) {}
 				}, options);
 
 				// Add close on escape
@@ -61,7 +62,7 @@
 				{
 					callback();
 				}
-			}, 
+			},
 			show : function () {
 				$('.content-box-header span').html(settings.title);
 				settings.element.find('.loading-bar').show();
@@ -81,8 +82,12 @@
 							}
 						});
 
+						// Save the reference to the iframe's content window to expose it to the code creating the content box
+						var iFrameWindow = iFrame[0].contentWindow? iFrame[0].contentWindow : iFrame[0].contentDocument.defaultView;
+						objects.iframe = iFrameWindow;
+
 						settings.element.find('.loading-bar').hide();
-						settings.onAfterLoad( content );
+						settings.onAfterLoad( content, objects );
 					});
 				});
 			},
