@@ -762,7 +762,7 @@ class Items extends AdminController
 
 		// Save incoming
 		$this->model->version->title        = $title;
-		$this->model->version->abstract     = \Hubzero\Utility\Str::truncate($abstract, 64000);
+		$this->model->version->abstract     = \Hubzero\Utility\Str::truncate($abstract, 64000, ["html" => true]);
 		$this->model->version->description  = $description;
 		$this->model->version->metadata     = $metadata;
 		$this->model->version->release_notes= $release_notes;
