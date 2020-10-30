@@ -1123,7 +1123,6 @@ class Events extends SiteController
 		$arrival    = Request::getArray('arrival', null, 'post');
 		$departure  = Request::getArray('departure', null, 'post');
 		$dietary    = Request::getArray('dietary', null, 'post');
-		$bos        = Request::getString('bos', null, 'post');
 		$dinner     = Request::getString('dinner', null, 'post');
 		$disability = Request::getArray('disability', null, 'post');
 		$race       = Request::getArray('race', null, 'post');
@@ -1133,7 +1132,7 @@ class Events extends SiteController
 			$register = array_map('trim', $register);
 			$register = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $register);
 
-			$validemail = $this->_validEmail($register['email']);
+			$validEmail = $this->_validEmail($register['email']);
 		}
 		if ($arrival)
 		{
@@ -1155,10 +1154,10 @@ class Events extends SiteController
 		if (Respondent::checkUniqueEmailForEvent($register['email'], $event->id) > 0)
 		{
 			$this->setError(Lang::txt('EVENTS_EVENT_REGISTRATION_PREVIOUS'));
-			$validemail = 0;
+			$validEmail = false;
 		}
 
-		if ($register['firstname'] && $register['lastname'] && ($validemail == 1))
+		if ($register['firstname'] && $register['lastname'] && $validEmail)
 		{
 			$email = $event->email;
 			$subject = Lang::txt('EVENTS_EVENT_REGISTRATION') . ': ' . $event->title;
@@ -1177,7 +1176,33 @@ class Events extends SiteController
 			$eview->arrival = $arrival;
 			$eview->departure = $departure;
 			$eview->dinner = $dinner;
-			$eview->bos = $bos;
+			$eview->params = new \Hubzero\Config\Registry($event->params);
+
+			$start = $event->get('publish_up');
+			$end = $event->get('publish_down');
+			$tz = $event->get('time_zone');
+			if (date('Y-m-d', strtotime($start)) === date('Y-m-d', strtotime($end)))
+			{
+				// Start/end are on same day
+				// NOTE: This matches logic used in 'details' view where timezones are rendered
+				$tzStart = $tzEnd = Date::of($end, $tz)->format('T', true);
+			}
+			else
+			{
+				// Start/end are on different day
+				if (empty($tz))
+				{
+					$tz = \Config::get('offset');
+				}
+				$tzStart = Date::of($start, $tz)->format('T', true);
+				$tzEnd = Date::of($end, $tz)->format('T', true);
+			}
+
+			$format = 'l, F d, Y \a\t g:i a ';
+			$eview->eventStart = Date::of($start, $tz)->toLocal($format) . $tzStart;
+			$eview->eventEnd = Date::of($end, $tz)->toLocal($format) . $tzEnd;
+			$eview->eventTitle = $event->title;
+
 			$message = $eview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
 
@@ -1287,32 +1312,34 @@ class Events extends SiteController
 							$reg['position'] ? $reg['position'] : $reg['position_other']
 						)
 						: 'null';
-				break;
+					break;
 				case 'gender':
 					$rv[] = (isset($reg['sex']) && ($reg['sex'] == 'male' || $reg['sex'] == 'female'))
 						? '\'' . substr($reg['sex'], 0, 1) . '\''
 						: 'null';
-				break;
+					break;
 				case 'dinner':
 					$dinner = Request::getString('dinner', null, 'post');
 					$rv[] = is_null($dinner) ? 'null' : $dinner ? '1' : '0';
-				break;
+					break;
 				case 'dietary':
 					$rv[] = (($dietary = Request::getArray('dietary', null, 'post')))
 						? $this->database->quote($dietary['specific'])
 						: 'null';
-				break;
-				case 'arrival': case 'departure':
+					break;
+				case 'arrival':
+				case 'departure':
 					$rv[] = ($date = Request::getArray($val, null, 'post'))
 						? $this->database->quote($date['day'] . ' ' . $date['time'])
 						: 'null';
-				break;
+					break;
 				case 'disability':
 					$disability = Request::getString('disability', null, 'post');
 					$rv[] = ($disability) ? '1' : '0';
-				break;
+					break;
 				default:
 					$rv[] = array_key_exists($val, $reg) && isset($reg[$val]) ? $this->database->quote($reg[$val]) : 'null';
+					break;
 			}
 		}
 		return implode($rv, ',');
@@ -2088,12 +2115,7 @@ class Events extends SiteController
 	 */
 	private function _validEmail($email)
 	{
-		if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $email))
-		{
-			return 1;
-		}
-
-		return 0;
+		return !!filter_var($email, FILTER_VALIDATE_EMAIL);
 	}
 
 	/**

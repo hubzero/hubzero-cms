@@ -283,17 +283,6 @@ $this->css()
 		</fieldset>
 	<?php } ?>
 
-		<!-- <fieldset>
-			<h3>Break Out Session</h3>
-			<p>Please indicate which Break Out Session you would like to attend (please choose 3): <span class="required">required</span></p>
-			<label><input type="checkbox" class="option" name="bos[]" value="Computational Research Tools" /> Computational Research Tools</label>
-			<label><input type="checkbox" class="option" name="bos[]" value="Computational Learning Tools" /> Computational Learning Tools</label>
-			<label><input type="checkbox" class="option" name="bos[]" value="Community Wiki" /> Community Wiki</label>
-			<label><input type="checkbox" class="option" name="bos[]" value="Online Lectures and Tutorials" /> Online Lectures and Tutorials</label>
-			<label><input type="checkbox" class="option" name="bos[]" value="Experimental Properties and Databases" /> Experimental Properties and Databases</label>
-			<label><input type="checkbox" class="option" name="bos[]" value="Industrial Partnerships" /> Industrial Partnerships</label>
-			<label><input type="checkbox" class="option" name="bos[]" value="International Partnerships" /> International Partnerships</label>
-		</fieldset> -->
 		<?php if ($params->get('show_abstract')) { ?>
 		<fieldset>
 			<legend><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELDSET_ABSTRACT'); ?></legend>
