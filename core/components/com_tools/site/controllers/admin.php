@@ -167,7 +167,7 @@ class Admin extends SiteController
 				}
 			}
 		}
-
+		
 		$this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_PROJECT_AREA_CREATED'));
 
 		// Set errors to view
