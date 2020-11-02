@@ -664,6 +664,14 @@
 	.hidden {
 		display: none;
 	}
+
+    #replacer input {
+        width: 100%;
+    }
+
+    #replacer > div {
+        margin-bottom: 0.6rem;
+    }
 	
 /* License screen: Open/closed source */
 	#closed-source {

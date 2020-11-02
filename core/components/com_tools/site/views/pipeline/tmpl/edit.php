@@ -263,7 +263,7 @@ $this->css('pipeline.css')
 					<div class="form-group form-check">
 						<label for="tool_publishType_standard" class="form-check-label">
 							<input type="radio" name="tool[publishType]" id="tool_publishType_standard" value="standard" <?php if (!$this->defaults['publishType'] || $this->defaults['publishType'] == 'standard') { echo 'checked="checked"'; } ?> class="option form-check-input" />
-							<?php echo Lang::txt('Publish as a standard hub tool'); ?>
+							<?php echo Lang::txt('Rappture or Linux-GUI based tool'); ?>
 						</label>
 					</div>
 
@@ -273,6 +273,20 @@ $this->css('pipeline.css')
 							<?php echo Lang::txt('Publish as a Jupyter Notebook'); ?>
 						</label>
 					</div>
+
+					<?php
+					if (is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) :
+					?>
+					<div class="form-group form-check">
+						<label for="tool_publishType_simtool"  class="form-check-label">
+							<input type="radio" name="tool[publishType]" id="tool_publishType_simtool" value="simtool" <?php if ($this->defaults['publishType'] == 'simtool') { echo 'checked="checked"'; } ?> class="option form-check-input" />
+							<?php echo Lang::txt('SimTool'); ?>
+						</label>
+					</div>
+					<?php
+					endif;
+					?>
+
 				</fieldset>
 			<?php } ?>
 

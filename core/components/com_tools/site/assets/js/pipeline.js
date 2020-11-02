@@ -336,3 +336,15 @@ jQuery(document).ready(function($){
 	}
 });
 
+function hideGitExternal()
+{
+    $('#gitExternalInput').hide();
+    $('#gitExternalExplanation').hide();
+}
+
+function showGitExternal()
+{
+    $('#gitExternalInput').show();
+    $('#gitExternalExplanation').show();
+}
+

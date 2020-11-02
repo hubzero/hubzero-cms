@@ -82,7 +82,7 @@ $this->css('pipeline.css')
 						<div class="licinput">
 							<label>
 								<?php echo Lang::txt('COM_TOOLS_LICENSE_TEXT'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-								<textarea name="license" cols="50" rows="15" id="license" placeholder="<?php echo Lang::txt('COM_TOOLS_ENTER_LICENSE_TEXT'); ?>"> <?php echo $this->escape(stripslashes($this->license_choice['text'])); ?></textarea>
+								<textarea name="license" cols="50" rows="15" id="license" placeholder="<?php echo Lang::txt('COM_TOOLS_ENTER_LICENSE_TEXT'); ?>"><?php echo $this->escape(stripslashes($this->license_choice['text'])); ?></textarea>
 							</label>
 							<?php
 							if ($this->licenses)
@@ -107,11 +107,11 @@ $this->css('pipeline.css')
 							<h3><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_LICENSE_TEMPLATE_CHOICE'); ?></h3>
 							<p>
 								<?php echo Lang::txt('COM_TOOLS_LICENSE_TEMPLATE_TIP'); ?>:
-								<br />[<?php echo strtoupper(Lang::txt('COM_TOOLS_YEAR')); ?>]
-								<br />[<?php echo strtoupper(Lang::txt('COM_TOOLS_OWNER')); ?>]
-								<br />[<?php echo strtoupper(Lang::txt('COM_TOOLS_ORGANIZATION')); ?>]
-								<br />[<?php echo strtoupper(Lang::txt('COM_TOOLS_ONE_LINE_DESCRIPTION')); ?>]
-								<br />[<?php echo strtoupper(Lang::txt('COM_TOOLS_URL')); ?>]
+								[<?php echo strtoupper(Lang::txt('COM_TOOLS_YEAR')); ?>]
+								, [<?php echo strtoupper(Lang::txt('COM_TOOLS_OWNER')); ?>]
+								, [<?php echo strtoupper(Lang::txt('COM_TOOLS_ORGANIZATION')); ?>]
+								, [<?php echo strtoupper(Lang::txt('COM_TOOLS_ONE_LINE_DESCRIPTION')); ?>]
+								, [<?php echo strtoupper(Lang::txt('COM_TOOLS_URL')); ?>]
 							</p>
 						</div>
 						<label for="field-authorize">
