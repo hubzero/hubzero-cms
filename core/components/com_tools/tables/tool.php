@@ -516,6 +516,16 @@ class Tool extends Table
 		$params = new \Hubzero\Config\Registry($version[0]->params);
 
 		// build status array
+		$pubType = trim($params->get('publishType'));
+		if ($pubType == 'weber=')
+		{
+			$pubType = 'jupyter';
+		}
+		elseif ($pubType == '')
+		{
+			$pubType = 'standard';
+		}
+
 		$status = array(
 			'resourceid'    => isset($toolinfo[0]->rid) ? $toolinfo[0]->rid : 0,
 			'resource_created' => isset($toolinfo[0]->rcreated) ? $toolinfo[0]->rcreated : '',
@@ -557,7 +567,7 @@ class Tool extends Table
 			'params'        => isset($version[0]->params) ? $version[0]->params : '',
 			'repohost'      => $params->get('repohost'),
 			'github'        => $params->get('github'),
-			'publishType'   => ($params->get('publishType') == 'weber=') ? 'jupyter' : 'standard'
+			'publishType'   => $pubType
 		);
 
 		if (is_null($status['repohost']))
