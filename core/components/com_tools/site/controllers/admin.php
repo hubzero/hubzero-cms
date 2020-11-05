@@ -166,7 +166,7 @@ class Admin extends SiteController
 					$command .= ' --gitURL ' . $status['github'];
 				}
 			}
-			if(is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) {
+			if (is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) {
 				$command .= ' --publishOption ' . $status['publishType'];
 			}
 		}
@@ -304,7 +304,7 @@ class Admin extends SiteController
 			}
 			$commitHashRequired = true;
 
-			if(is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) {
+			if (is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) {
 				$command .= ' --publishOption ' . $status['publishType'];
 			}
 		}
@@ -871,7 +871,7 @@ class Admin extends SiteController
 				$command .=       ' --license ' . $fname;
 				$command .=       ' --project ' . $status['toolname'];
 
-				if(is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) {
+				if (is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) {
 					$command .= ' --publishOption ' . $status['publishType'];
 				}
 			}
