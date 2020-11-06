@@ -1773,7 +1773,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$section  = Request::getString('section', '');
 		$category = Request::getString('category', '');
 
-		$redirect = Route::url($this->base . '&scope=' . $section . '/' . $category);
+		$redirect = Route::url($this->base . '&scope=' . $section . '/' . $category)  . '?' . $_SERVER['QUERY_STRING'];
 
 		// Is the user logged in?
 		// Login check is handled in the onGroup() method
@@ -1821,7 +1821,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		if (!$post->save())
 		{
-			Notify::error($forum->getError());
+			Notify::error($post->getError());
 		}
 		else
 		{

@@ -29,6 +29,14 @@ if (!function_exists('sortDir'))
 	}
 }
 
+// prepare the URL parameters for the delete URLS to retain the sorting
+$sortingValues = (object) ['sortdir' => $this->filters['sort_Dir'], 'sortby' => $this->filters['sortby'], 'start' => $this->filters['start'], 'limit' => $this->filters['limit']];
+$sortingQueryString = '';
+if (!empty($sortingValues->sortby) || !empty($sortingValues->start || !empty($sortingValues->limit)))
+{
+	$sortingQueryString = '?' . http_build_query($sortingValues);
+}
+
 $this->category->set('section_alias', $this->filters['section']);
 
 $this->css()
@@ -219,7 +227,7 @@ $this->css()
 												</a>
 											<?php } ?>
 											<?php if ($this->config->get('access-delete-thread')) { ?>
-												<a class="icon-delete delete" href="<?php echo Route::url($base . '/' . $row->get('id') . '/delete'); ?>">
+												<a class="icon-delete delete" href="<?php echo Route::url($base . '/' . $row->get('id') . '/delete')  . $sortingQueryString; ?>">
 													<?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?>
 												</a>
 											<?php } ?>
