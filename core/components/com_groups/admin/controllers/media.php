@@ -47,7 +47,7 @@ class Media extends AdminController
 	}
 
 	/**
-	 * Upload a file
+	 * Download a file
 	 *
 	 * @return  void
 	 */
@@ -60,7 +60,7 @@ class Media extends AdminController
 
 		if (!file_exists(PATH_ROOT . DS . $file))
 		{
-			App::abort(404, Lang::txt('COM_GROUPS_ERROR_FILE_NOT_FOUND') . ' ' . PATH_ROOT . DS . $file);
+			App::abort(404, Lang::txt('COM_GROUPS_ERROR_FILE_NOT_FOUND'));
 		}
 
 		$extension = Filesystem::extension($file);
