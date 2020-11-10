@@ -17,6 +17,7 @@ use Route;
 use Lang;
 use User;
 use App;
+use Hubzero\User\Group;
 
 include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';
 include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
@@ -547,8 +548,22 @@ class Pipeline extends SiteController
 
 		$hztv = \Components\Tools\Helpers\Version::getDevelopmentToolVersion($id);
 
+		// Replace the default values
+		$license = Request::getString('license', '');
+		$matches = Request::getArray('matches', array(), 'post');
+
+		if (!empty($matches) && count($matches) > 0)
+		{
+			foreach ($matches as $key => $match)
+			{
+				if ($match !== '') {
+					$license = str_replace('[' . $key . ']', $match, $license);
+				}
+			}
+		}
+
 		$this->license_choice = array(
-			'text'      => Request::getString('license', ''),
+			'text'      => $license,
 			'template'  => Request::getString('templates', 'c1'),
 			'authorize' => Request::getInt('authorize', 0)
 		);
@@ -1010,8 +1025,18 @@ class Pipeline extends SiteController
 			$txt->set('repohost', $tool['repohost']);
 		}
 
-		$ptype = (empty($tool['publishType']) || $tool['publishType'] == 'standard') ? 'standard': 'weber=';
+		//$ptype = (empty($tool['publishType']) || $tool['publishType'] == 'standard') ? 'standard': 'weber=';
+		$ptype = $tool['publishType'];
+		$displayProxyType = 'weber=';
+
+		if (empty($ptype) || $ptype == 'standard')
+		{
+			$ptype = 'standard';
+			$displayProxyType = 'VNC=';
+		}
+
 		$txt->set('publishType', $ptype);
+		$txt->set('displayProxyType', $displayProxyType);
 		$params = $txt->toString();
 
 		if ($editversion == 'dev')
@@ -1139,7 +1164,8 @@ class Pipeline extends SiteController
 				'title'       => $tool['title'],
 				'description' => $tool['description'],
 				'repohost'    => (isset($tool['repohost']) ? $tool['repohost'] : ''),
-				'github'      => $tool['github']
+				'github'      => $tool['github'],
+				'publishType' => $tool['publishType']
 			));
 			if ($output['class'] != 'error')
 			{
@@ -1253,6 +1279,10 @@ class Pipeline extends SiteController
 					{
 						$command .= ' --gitURL ' . $toolinfo['github'];
 					}
+				}
+
+				if (is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) {
+					$command .= ' --publishOption ' . $toolinfo['publishType'];
 				}
 			}
 

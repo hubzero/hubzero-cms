@@ -166,6 +166,9 @@ class Admin extends SiteController
 					$command .= ' --gitURL ' . $status['github'];
 				}
 			}
+			if (is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) {
+				$command .= ' --publishOption ' . $status['publishType'];
+			}
 		}
 
 		$this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_PROJECT_AREA_CREATED'));
@@ -300,6 +303,10 @@ class Admin extends SiteController
 				}
 			}
 			$commitHashRequired = true;
+
+			if (is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) {
+				$command .= ' --publishOption ' . $status['publishType'];
+			}
 		}
 
 		// Invoke the script
@@ -863,6 +870,10 @@ class Admin extends SiteController
 				$command .=       ' --version ' . escapeshellarg($status['version']);
 				$command .=       ' --license ' . $fname;
 				$command .=       ' --project ' . $status['toolname'];
+
+				if (is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) {
+					$command .= ' --publishOption ' . $status['publishType'];
+				}
 			}
 
 			Log::debug("finalizeTool(): checkpoint 3: $command");
