@@ -563,7 +563,7 @@ class Pipeline extends SiteController
 		}
 
 		$this->license_choice = array(
-			'text'      => $license,
+			'text'      => Request::getString('license', ''),
 			'template'  => Request::getString('templates', 'c1'),
 			'authorize' => Request::getInt('authorize', 0)
 		);
