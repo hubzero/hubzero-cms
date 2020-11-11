@@ -157,7 +157,7 @@ $this->css('pipeline.css')
 			</fieldset>
 
 			<?php if ($this->id) { ?>
-				<fieldset id="gitExternalInput">
+				<fieldset class="hidden">
 					<legend><?php echo Lang::txt('Repository Host'); ?>:</legend>
 	
 					<div class="form-group form-check">
@@ -175,13 +175,15 @@ $this->css('pipeline.css')
 							</label>
 						</div>
 					<?php } ?>
-	
-					<div class="form-group form-check">
-						<label for="tool_repohost_gitexternal" class="form-check-label">
-							<input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?php echo ($this->defaults['repohost'] == 'gitExternal') ? 'checked="checked"' : "disabled"; ?> class="option form-check-input" />
-							<?php echo Lang::txt('Host GIT repository on GitHUB'); ?>
-						</label>
-					</div>
+
+					<?php if ($this->config->get('github', 1)) { ?>
+						<div class="form-group form-check">
+							<label for="tool_repohost_gitexternal" class="form-check-label">
+								<input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?php echo ($this->defaults['repohost'] == 'gitExternal') ? 'checked="checked"' : "disabled"; ?> class="option form-check-input" />
+								<?php echo Lang::txt('Host GIT repository on GitHUB'); ?>
+							</label>
+						</div>
+					<?php } ?>
 				</fieldset>
 	
 				<?php if ($this->config->get('github', 1)) { ?>
@@ -192,7 +194,7 @@ $this->css('pipeline.css')
 							<p><?php echo Lang::txt('You can optionally provide a URL for your public Github repository with the tool code (https://github.com/[reponame]), and we will grab code from this repository when installing your tool.'); ?></p>
 						<?php } ?>
 					</div>
-					<fieldset>
+					<fieldset class="hidden">
 						<legend><?php echo Lang::txt('Git Repository URL'); ?>:</legend>
 						<label for="github">
 							<?php echo Lang::txt('Git Repository for Source Code') ?>: 
@@ -205,8 +207,34 @@ $this->css('pipeline.css')
 						<?php } ?>
 					</fieldset>
 				<?php } ?>
+				<fieldset>
+					<legend><?php echo Lang::txt('Publishing Option'); ?>:</legend>
+					<div class="form-group form-check">
+						<label for="tool_publishType_standard" class="form-check-label">
+							<input type="radio" name="tool[publishType]" id="tool_publishType_standard" value="standard" <?php if (!$this->defaults['publishType'] || $this->defaults['publishType'] == 'standard') { echo 'checked="checked"'; } ?> class="option form-check-input" />
+							<?php echo Lang::txt('Rappture or Linux-GUI based tool'); ?>
+						</label>
+					</div>
+					<?php if ($this->config->get('jupyter', 1)) { ?>
+						<div class="form-group form-check">
+							<label for="tool_publishType_jupyter"  class="form-check-label">
+								<input type="radio" name="tool[publishType]" id="tool_publishType_jupyter" value="jupyter" <?php if ($this->defaults['publishType'] == 'jupyter') { echo 'checked="checked"'; } ?> class="option form-check-input" />
+								<?php echo Lang::txt('Jupyter notebook'); ?>
+							</label>
+					</div>
+					<?php } ?>
+
+					<?php if ($this->config->get('simtool', 1) && is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) { ?>
+					<div class="form-group form-check">
+						<label for="tool_publishType_simtool"  class="form-check-label">
+							<input type="radio" name="tool[publishType]" id="tool_publishType_simtool" value="simtool" <?php if ($this->defaults['publishType'] == 'simtool') { echo 'checked="checked"'; } ?> class="option form-check-input" />
+							<?php echo Lang::txt('SimTool'); ?>
+						</label>
+					</div>
+					<?php } ?>
+				</fieldset>
 			<?php } else { ?>
-				<fieldset id="gitExternalInput">
+				<fieldset>
 					<legend><?php echo Lang::txt('Repository Host'); ?>:</legend>
 	
 					<div class="form-group form-check">
@@ -224,19 +252,21 @@ $this->css('pipeline.css')
 							</label>
 						</div>
 					<?php } ?>
-	
-					<div class="form-group form-check">
-						<label for="tool_repohost_gitexternal" class="form-check-label">
-							<input type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?php if ($this->defaults['repohost'] == 'gitExternal') { echo 'checked="checked"'; } ?> class="option form-check-input" />
-							<?php echo Lang::txt('Host GIT repository on GitHUB'); ?>
-						</label>
-					</div>
+
+					<?php if ($this->config->get('github', 1)) { ?>
+						<div class="form-group form-check">
+							<label for="tool_repohost_gitexternal" class="form-check-label">
+								<input type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?php if ($this->defaults['repohost'] == 'gitExternal') { echo 'checked="checked"'; } ?> class="option form-check-input" />
+								<?php echo Lang::txt('Host GIT repository on GitHUB'); ?>
+							</label>
+						</div>
+					<?php } ?>
 				</fieldset>
 	
 				<?php if ($this->config->get('github', 1)) { ?>
 					<div id="gitExternalExplanation" class="explaination">
 						<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
-							<p><?php echo Lang::txt('You can optionally provide a URL for your Git repository containing the tool code, and we will grab code from this repository when installing your tool.  Public repositories should be specified as https://git@github.com/[reponame] while private repositories should be specified as ssh://git@github.com/[reponame]'); ?></p>
+							<p><?php echo Lang::txt('You can optionally provide a URL for your Git repository containing the tool code, and we will grab code from this repository when installing your tool.  Public repositories should be specified as https://github.com/[reponame] while private repositories should be specified as ssh://github.com/[reponame]'); ?></p>
 						<?php } else { ?>
 							<p><?php echo Lang::txt('You can optionally provide a URL for your public Github repository with the tool code (https://github.com/[reponame]), and we will grab code from this repository when installing your tool.'); ?></p>
 						<?php } ?>
@@ -248,47 +278,43 @@ $this->css('pipeline.css')
 							<input type="text" name="tool[github]" id="github" placeholder="<?php echo Lang::txt('Paste the URL of the source code repository.'); ?>" value="<?php echo $this->defaults['github']; ?>" />
 						</label>
 						<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
-							<p class="hint"><?php echo Lang::txt('Public URL: https://git@github.com/yourgithubrepo<br />Private URL: ssh://git@github.com/yourgithubrepo'); ?></p>
+							<p class="hint"><?php echo Lang::txt('Public URL: https://github.com/yourgithubrepo<br />Private URL: ssh://github.com/yourgithubrepo'); ?></p>
 						<?php } else { ?>
-							<p class="hint"><?php echo Lang::txt('Public URL: https://git@github.com/yourgithubrepo'); ?></p>
+							<p class="hint"><?php echo Lang::txt('Public URL: https://github.com/yourgithubrepo'); ?></p>
 						<?php } ?>
 					</fieldset>
 				<?php } ?>
-			<?php } ?>
 
-			<?php if ($this->config->get('jupyter', 1)) { ?>
 				<fieldset>
 					<legend><?php echo Lang::txt('Publishing Option'); ?>:</legend>
-
 					<div class="form-group form-check">
 						<label for="tool_publishType_standard" class="form-check-label">
 							<input type="radio" name="tool[publishType]" id="tool_publishType_standard" value="standard" <?php if (!$this->defaults['publishType'] || $this->defaults['publishType'] == 'standard') { echo 'checked="checked"'; } ?> class="option form-check-input" />
 							<?php echo Lang::txt('Rappture or Linux-GUI based tool'); ?>
 						</label>
 					</div>
-
-					<div class="form-group form-check">
-						<label for="tool_publishType_jupyter"  class="form-check-label">
-							<input type="radio" name="tool[publishType]" id="tool_publishType_jupyter" value="jupyter" <?php if ($this->defaults['publishType'] == 'jupyter') { echo 'checked="checked"'; } ?> class="option form-check-input" />
-							<?php echo Lang::txt('Publish as a Jupyter Notebook'); ?>
-						</label>
+					
+					<?php if ($this->config->get('jupyter', 1)) { ?>
+						<div class="form-group form-check">
+							<label for="tool_publishType_jupyter"  class="form-check-label">
+								<input type="radio" name="tool[publishType]" id="tool_publishType_jupyter" value="jupyter" <?php if ($this->defaults['publishType'] == 'jupyter') { echo 'checked="checked"'; } ?> class="option form-check-input" />
+								<?php echo Lang::txt('Jupyter notebook'); ?>
+							</label>
 					</div>
+					<?php } ?>
 
-					<?php
-					if (is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) :
-					?>
+					<?php if ($this->config->get('simtool', 1) && is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) { ?>
 					<div class="form-group form-check">
 						<label for="tool_publishType_simtool"  class="form-check-label">
 							<input type="radio" name="tool[publishType]" id="tool_publishType_simtool" value="simtool" <?php if ($this->defaults['publishType'] == 'simtool') { echo 'checked="checked"'; } ?> class="option form-check-input" />
 							<?php echo Lang::txt('SimTool'); ?>
 						</label>
 					</div>
-					<?php
-					endif;
-					?>
-
+					<?php } ?>
 				</fieldset>
 			<?php } ?>
+
+
 
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_TOOLS_LEGEND_ACCESS'); ?>:</legend>
