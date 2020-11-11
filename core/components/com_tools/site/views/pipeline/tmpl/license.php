@@ -133,6 +133,9 @@ $this->css('pipeline.css')
 			<p class="closedsource">
 				<strong><?php echo ucfirst(Lang::txt('COM_TOOLS_CLOSED_SOURCE')); ?></strong><br /><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_LICENSE_CLOSED_TXT'); ?>
 			</p>
+
+			<h4>Need help selecting a license?</h4>
+			<p>Find more information at: <a href="https://choosealicense.com">https://choosealicense.com</a></p>
 		</div><!-- / .col span-half -->
 	</div><!-- / .grid -->
 </section><!-- / .main section -->
