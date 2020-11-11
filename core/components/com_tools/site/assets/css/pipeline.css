@@ -657,9 +657,6 @@
 	}
 	#legendnotes p {
 		font-size: 85%;
-		padding: 1em;
-		border: 1px solid #CCC;
-		background: #f6f6f6;
 	}
 	.hidden {
 		display: none;
