@@ -552,11 +552,11 @@ class Pipeline extends SiteController
 		$license = Request::getString('license', '');
 		$matches = Request::getArray('matches', array(), 'post');
 
-		if (!empty($matches) && sizeof($matches) > 0)
+		if (!empty($matches) && count($matches) > 0)
 		{
-			foreach($matches as $key => $match)
+			foreach ($matches as $key => $match)
 			{
-				if($match !== '') {
+				if ($match !== '') {
 					$license = str_replace('[' . $key . ']', $match, $license);
 				}
 			}
@@ -1281,7 +1281,7 @@ class Pipeline extends SiteController
 					}
 				}
 
-				if(is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) {
+				if (is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) {
 					$command .= ' --publishOption ' . $toolinfo['publishType'];
 				}
 			}
