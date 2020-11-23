@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package      hubzero-cms
+@copyright    Copyright (c) 2005-2020 The Regents of the University of California.
+@license      http://opensource.org/licenses/MIT MIT
+-->
+
+<form>
+	<fieldset>
+		<field
+			name="url"
+			type="text"
+			label="COM_INSTALLER_CUSTOMEXTS_EDIT_URL"
+			description ="COM_INSTALLER_CUSTOMEXTS_EDIT_URL_TIP"
+			required="true"
+		/>
+
+		<field
+			name="name"
+			type="text"
+			label="COM_INSTALLER_CUSTOMEXTS_EDIT_NAME"
+			description="COM_INSTALLER_CUSTOMEXTS_EDIT_NAME_TIP"
+			required="true"
+		/>
+
+		<field
+			name="alias"
+			type="text"
+			label="COM_INSTALLER_CUSTOMEXTS_EDIT_ALIAS"
+			description="COM_INSTALLER_CUSTOMEXTS_EDIT_ALIAS_TIP"
+			required="true"
+		/>
+
+		<field
+			name="type"
+			type="text"
+			label="COM_INSTALLER_CUSTOMEXTS_EDIT_TYPE"
+			description="COM_INSTALLER_CUSTOMEXTS_EDIT_TYPE_TIP"
+			required="true"
+		/>
+
+		<field
+			name="client_id"
+			type="text"
+			label="COM_INSTALLER_CUSTOMEXTS_EDIT_CLIENT_ID"
+			description="COM_INSTALLER_CUSTOMEXTS_EDIT_CLIENT_ID_TIP"
+		/>
+
+		<field
+			name="folder"
+			type="text"
+			label="COM_INSTALLER_CUSTOMEXTS_EDIT_FOLDER"
+			description="COM_INSTALLER_CUSTOMEXTS_EDIT_FOLDER_TIP"
+		/>
+
+		<field
+			name="description"
+			type="text"
+			label="COM_INSTALLER_CUSTOMEXTS_EDIT_DESCRIPTION"
+			description ="COM_INSTALLER_CUSTOMEXTS_EDIT_DESCRIPTION_TIP"
+		/>
+
+	</fieldset>
+</form>

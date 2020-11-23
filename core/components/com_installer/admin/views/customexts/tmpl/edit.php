@@ -24,6 +24,7 @@ Toolbar::cancel();
 
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
+Html::behavior('tooltip');
 
 $this->js();
 ?>
@@ -38,21 +39,21 @@ $this->js();
 				<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
 				<div class="input-wrap">
-					<label for="field-url"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_EDIT_URL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[url]" id="field-url" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('url'))); ?>" />
+					<?php echo $this->form->getLabel('url'); ?><br />
+					<input type="text" name="fields[url]" id="field-url" maxlength="250" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('url'))); ?>" />
 				</div>
 
 				<div class="input-wrap">
-					<label for="field-name"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_EDIT_NAME'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<?php echo $this->form->getLabel('name'); ?><br />
 					<input type="text" name="fields[name]" id="field-name" maxlength="250" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('name'))); ?>" />
 				</div>
 				<div class="input-wrap">
-					<label for="field-alias"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_EDIT_ALIAS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<?php echo $this->form->getLabel('alias'); ?><br />
 					<input type="text" name="fields[alias]" id="field-alias" maxlength="250" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
 				</div>
 
 				<div class="input-wrap">
-					<label for="field-type"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_EDIT_TYPE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+					<?php echo $this->form->getLabel('type'); ?><br />
 					<select name="fields[type]" class="required" id="field-type">
 						<option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_TYPE_SELECT');?></option>
 						<?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::TypeOptions(), 'value', 'text', $this->row['type'], true);?>
@@ -60,14 +61,14 @@ $this->js();
 				</div>
 
 				<div class="input-wrap">
-					<label for="field-client_id"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_EDIT_CLIENT_ID'); ?>: </label><br />
+					<?php echo $this->form->getLabel('client_id'); ?><br />
 					<select name="fields[client_id]" id="field-client_id">
 						<option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_CLIENT_SELECT');?></option>
 						<?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::LocationOptions(), 'value', 'text', $this->row['client_id'], true);?>
 					</select>
 				</div>
 				<div class="input-wrap">
-					<label for="field-folder"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_EDIT_FOLDER'); ?>: </label><br />
+					<?php echo $this->form->getLabel('folder'); ?><br />
 					<select name="fields[folder]" id="field-folder">
 						<option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_FOLDER_SELECT');?></option>
 						<?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::GroupOptions(), 'value', 'text', $this->row['group']);?>
@@ -75,7 +76,7 @@ $this->js();
 				</div>
 
 				<div class="input-wrap">
-					<label for="field-description"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_HEADING_DESCRIPTION'); ?>: </label>
+					<?php echo $this->form->getLabel('description'); ?><br />
 					<textarea name="fields[description]" id="field-description" rows="10"><?php echo $this->escape($this->row->get('description')); ?></textarea>
 				</div>
 
