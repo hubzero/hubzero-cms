@@ -61,5 +61,12 @@
 			description ="COM_INSTALLER_CUSTOMEXTS_EDIT_DESCRIPTION_TIP"
 		/>
 
+		<field
+			name="apikey"
+			type="text"
+			label="COM_INSTALLER_CUSTOMEXTS_EDIT_REPO_APIKEY"
+			description ="COM_INSTALLER_CUSTOMEXTS_EDIT_REPO_APIKEY_TIP"
+		/>
+
 	</fieldset>
 </form>

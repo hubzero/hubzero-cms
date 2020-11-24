@@ -80,6 +80,11 @@ $this->js();
 					<textarea name="fields[description]" id="field-description" rows="10"><?php echo $this->escape($this->row->get('description')); ?></textarea>
 				</div>
 
+				<div class="input-wrap">
+					<?php echo $this->form->getLabel('apikey'); ?><br />
+					<input type="text" name="fields[apikey]" id="field-apikey" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('apikey'))); ?>" />
+				</div>
+
 			</fieldset>
 		</div>
 		<div class="col span5">

@@ -405,7 +405,7 @@ class Customexts extends AdminController
 					$pieces = explode("/", $model->path);
 					$repodir = array_pop($pieces);
 					$extdir = implode("/", $pieces);
-ddie($repodir);
+
 					if (is_dir($extdir . '/__' . $repodir))
 					{
 						if (!isset($user))
@@ -536,9 +536,19 @@ ddie($repodir);
 				{
 					$user = Component::params('com_installer')->get('system_user', 'hubadmin');
 				}
+
 				// The tasks and command to be perofmred
 				$task = 'repository';
-				$museCmd = 'cloneRepo repoPath=' . $extension->path . ' sourceUrl=' . $extension->get('url');
+
+				if ($extension->get('apikey'))
+				{
+					$newURL = "https://oauth2:" . $extension->get('apikey') . "@" . parse_url($extension->get('url'),PHP_URL_HOST) . parse_url($extension->get('url'),PHP_URL_PATH);
+					$museCmd = 'cloneRepo repoPath=' . $extension->path . ' sourceUrl=' . $newURL;
+				}
+				else
+				{
+					$museCmd = 'cloneRepo repoPath=' . $extension->path . ' sourceUrl=' . $extension->get('url');
+				}
 
 				// Run as (hubadmin)
 				$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
@@ -548,6 +558,7 @@ ddie($repodir);
 
 				// execute command
 				$output = shell_exec($cmd);
+
 			}
 
 			if (!isset($user))
@@ -557,7 +568,15 @@ ddie($repodir);
 
 			// The tasks and command to be perofmred
 			$task = 'repository';
-			$museCmd = 'update -r=' . $extension->path;
+
+			if ($extension->get('apikey'))
+			{
+				$museCmd = 'update -r=' . $extension->path . ' apikey=' . $extension->get('apikey');
+			}
+			else
+			{
+				$museCmd = 'update -r=' . $extension->path;
+			}
 
 			// Run as (hubadmin)
 			$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
