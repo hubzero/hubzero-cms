@@ -172,16 +172,20 @@ class plgContentExternalhref extends \Hubzero\Plugin\Plugin
 				if ($target == 0 && !isset($list['target']))
 				{
 					$list['target'] = '_blank';
-					$list['rel'] = (isset($list['rel']) ? $list['rel'] . ' ' : '') . 'noreferrer';
+					$list['rel'] = (isset($list['rel']) ? $list['rel'] . ' ' : '') . 'noopener noreferrer';
 				}
 				else if ($target == 1)
 				{
 					$list['target'] = '_blank';
-					$list['rel'] = (isset($list['rel']) ? $list['rel'] . ' ' : '') . 'noreferrer';
+					$list['rel'] = (isset($list['rel']) ? $list['rel'] . ' ' : '') . 'noopener noreferrer';
 				}
 				else if ($target == 2)
 				{
 					$list['target'] = '_parent';
+				}
+				else if ($list['target'] == '_blank')
+				{
+					$list['rel'] = (isset($list['rel']) ? $list['rel'] . ' ' : '') . 'noopener noreferrer';
 				}
 
 				$ahref = "<$tag ";
