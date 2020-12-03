@@ -1283,23 +1283,30 @@ class Groups extends Base
 	 */
 	public function memberslistTask()
 	{
+		// Check if they're logged in
+		if (User::isGuest())
+		{
+			return $this->loginTask();
+		}
+		
 		// Fetch results
 		$filters = array();
 		$filters['cn'] = trim(Request::getString('group', ''));
 
+		// Limit number of returned rows because PHP runs out of memory and the hub fails with large numbers
 		if ($filters['cn'])
 		{
 			$query = "SELECT u.username, u.name
 						FROM `#__users` AS u, `#__xgroups_members` AS m, `#__xgroups` AS g
 						WHERE g.cn=" . $this->database->quote($filters['cn']) . " AND g.gidNumber=m.gidNumber AND m.uidNumber=u.id AND u.block = '0'
-						ORDER BY u.name ASC";
+						ORDER BY u.name ASC LIMIT 10000";
 		}
 		else
 		{
 			$query = "SELECT a.username, a.name
 						FROM `#__users` AS a
-						WHERE a.block = '0' AND g.id=25
-						ORDER BY a.name";
+						WHERE a.block = '0'
+						ORDER BY a.name LIMIT 10000";
 		}
 
 		$this->database->setQuery($query);
