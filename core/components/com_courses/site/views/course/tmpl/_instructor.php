@@ -43,6 +43,7 @@ $name = $this->escape(stripslashes($this->instructor->get('name')));
 		{
 			$bio = $this->instructor->get('biography');
 		}
+		$bio = Html::content('prepare', $bio);
 	?>
 	<div class="course-instructor-bio">
 		<?php if ($bio) { ?>
