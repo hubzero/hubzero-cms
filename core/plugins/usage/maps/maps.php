@@ -268,7 +268,9 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 			$zoom = '4';
 		}
 
-		$type = Request::getString('type', 'online');
+		// type input validation, used below in path construction and also part of error message so be careful...  Don't use getString!
+		// type can contain underscores and dashes, so use getCmd
+		$type = Request::getCmd('type', 'online');
 		$no_html = Request::getInt('no_html', 0);
 
 		$type = str_replace(':', '-', $type);
@@ -305,7 +307,8 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
-					App::abort(500, Lang::txt('PLG_USAGE_MAPS_TYPE_NOT_FOUND', $type));
+					// type is provided by client and could be anything, consider this part of input validation and not a 500 application error
+					App::abort(404, Lang::txt('PLG_USAGE_MAPS_TYPE_NOT_FOUND', $type));
 				}
 
 				return $html;
