@@ -120,13 +120,13 @@ $html = '';
 			{
 				$height = '100%';
 			}
-			$html .= '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,65,0" width="100%" height="'.$height.'" id="SlideContent" VIEWASTEXT>'."\n";
+			$html .= '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="https://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,65,0" width="100%" height="'.$height.'" id="SlideContent" VIEWASTEXT>'."\n";
 			$html .= ' <param name="movie" value="'. $url .'" />'."\n";
 			$html .= ' <param name="quality" value="high" />'."\n";
 			$html .= ' <param name="menu" value="false" />'."\n";
 			$html .= ' <param name="loop" value="false" />'."\n";
 			$html .= ' <param name="scale" value="showall" />'."\n";
-			$html .= ' <embed src="'. $url .'" menu="false" quality="best" loop="false" width="100%" height="'.$height.'" scale="showall" name="SlideContent" align="" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" swLiveConnect="true"></embed>'."\n";
+			$html .= ' <embed src="'. $url .'" menu="false" quality="best" loop="false" width="100%" height="'.$height.'" scale="showall" name="SlideContent" align="" type="application/x-shockwave-flash" pluginspage="https://www.macromedia.com/go/getflashplayer" swLiveConnect="true"></embed>'."\n";
 			$html .= '</object>'."\n";
 		}
 		else if (in_array(strtolower($type), $images))
