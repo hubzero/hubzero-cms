@@ -13,6 +13,10 @@ $base = $this->member->link() . '&active=' . $this->name;
 
 $this->css()
      ->js();
+
+// Get the comments config value
+$allow_comments = Component::params('com_collections')->get('allow_comments');
+$allow_comments;
 ?>
 
 <div class="post full <?php echo $item->type(); ?>" id="b<?php echo $this->post->get('id'); ?>" data-id="<?php echo $this->post->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&task=post/' . $this->post->get('id')); ?>" data-width="600" data-height="350">
@@ -69,9 +73,14 @@ $this->css()
 				<span class="likes">
 					<?php echo Lang::txt('%s likes', $item->get('positive', 0)); ?>
 				</span>
+				<?php
+				// Display comments count only if enabled
+				if ($allow_comments):
+				?>
 				<span class="comments">
 					<?php echo Lang::txt('%s comments', $item->get('comments', 0)); ?>
 				</span>
+				<?php endif; ?>
 				<span class="reposts">
 					<?php echo Lang::txt('%s reposts', $item->get('reposts', 0)); ?>
 				</span>
@@ -104,7 +113,7 @@ $this->css()
 		</div><!-- / .attribution -->
 
 	<?php
-	if ($item->get('comments'))
+	if ($item->get('comments') && $allow_comments)
 	{
 		?>
 		<div class="commnts">
@@ -137,7 +146,7 @@ $this->css()
 		<?php
 	}
 
-	if (!User::isGuest())
+	if (!User::isGuest() && $allow_comments)
 	{
 		$now = Date::of('now');
 		?>
