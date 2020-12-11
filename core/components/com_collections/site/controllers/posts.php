@@ -268,6 +268,12 @@ class Posts extends SiteController
 	 */
 	public function savecommentTask()
 	{
+		// Error if comments are not allowed
+		if (!$this->config->get('allow_comments'))
+		{
+			App::abort(404, Lang::txt('COM_COLLECTIONS_ERROR_COMMENTS_DISALLOWED'));
+		}
+
 		// Check for request forgeries
 		Request::checkToken();
 
@@ -339,6 +345,12 @@ class Posts extends SiteController
 	 */
 	public function deletecommentTask()
 	{
+		// Error if comments are not allowed
+		if (!$this->config->get('allow_comments'))
+		{
+			App::abort(404, Lang::txt('COM_COLLECTIONS_ERROR_COMMENTS_DISALLOWED'));
+		}
+
 		// Ensure the user is logged in
 		if (User::isGuest())
 		{

@@ -9,6 +9,11 @@
 <config>
 	<fieldset name="component">
 		<field name="filepath" type="text" menu="hide" default="/site/collections" label="COM_COLLECTIONS_CONFIG_FILEPATH_LABEL" description="COM_COLLECTIONS_CONFIG_FILEPATH_DESC" />
+
+        <field name="allow_comments" type="radio" default="1" label="COM_COLLECTIONS_CONFIG_ALLOW_COMMENTS_LABEL" description="COM_COLLECTIONS_CONFIG_ALLOW_COMMENTS_DESC">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
 		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_collections" section="component" />

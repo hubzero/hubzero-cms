@@ -92,9 +92,14 @@ $this->css()
 									<span class="likes">
 										<?php echo Lang::txt('COM_COLLECTIONS_NUM_LIKES', $item->get('positive', 0)); ?>
 									</span>
+									<?php
+									// Display comments count only if enabled
+									if ($this->config->get('allow_comments')):
+									?>
 									<span class="comments">
 										<?php echo Lang::txt('COM_COLLECTIONS_NUM_COMMENTS', $item->get('comments', 0)); ?>
 									</span>
+									<?php endif; ?>
 									<span class="reposts">
 										<?php echo Lang::txt('COM_COLLECTIONS_NUM_REPOSTS', $item->get('reposts', 0)); ?>
 									</span>
@@ -110,9 +115,14 @@ $this->css()
 												<span><?php echo ($item->get('voted')) ? Lang::txt('COM_COLLECTIONS_UNLIKE') : Lang::txt('COM_COLLECTIONS_LIKE'); ?></span>
 											</a>
 										<?php } ?>
+										<?php
+										// Display comment button only if enabled
+										if ($this->config->get('allow_comments')):
+										?>
 											<a class="btn comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=comment'); ?>">
 												<span><?php echo Lang::txt('COM_COLLECTIONS_COMMENT'); ?></span>
 											</a>
+										<?php endif; ?>
 											<a class="btn repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=collect'); ?>">
 												<span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
 											</a>
@@ -120,9 +130,14 @@ $this->css()
 											<a class="btn vote like tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&controller=' . $this->controller . '&task=' . $this->task, false, true)), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_LIKE'); ?>">
 												<span><?php echo Lang::txt('COM_COLLECTIONS_LIKE'); ?></span>
 											</a>
+											<?php
+											// Display comment button only if enabled
+											if ($this->config->get('allow_comments')):
+											?>
 											<a class="btn comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=comment'); ?>">
 												<span><?php echo Lang::txt('COM_COLLECTIONS_COMMENT'); ?></span>
 											</a>
+											<?php endif; ?>
 											<a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&controller=' . $this->controller . '&task=' . $this->task, false, true)), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
 												<span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
 											</a>

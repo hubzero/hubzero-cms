@@ -84,9 +84,14 @@ if (!$no_html) {
 							<span class="likes">
 								<?php echo Lang::txt('COM_COLLECTIONS_NUM_LIKES', $item->get('positive', 0)); ?>
 							</span>
+							<?php
+							// Display comments count only if enabled
+							if ($this->config->get('allow_comments')):
+							?>
 							<span class="comments">
 								<?php echo Lang::txt('COM_COLLECTIONS_NUM_COMMENTS', $item->get('comments', 0)); ?>
 							</span>
+							<?php endif; ?>
 							<span class="reposts">
 								<?php echo Lang::txt('COM_COLLECTIONS_NUM_REPOSTS', $item->get('reposts', 0)); ?>
 							</span>
@@ -129,6 +134,10 @@ if (!$no_html) {
 				</div><!-- / .content -->
 			</div><!-- / .post -->
 
+			<?php
+			// Display comments only if enabled
+			if ($this->config->get('allow_comments')):
+			?>
 			<div class="post-comments">
 				<?php if ($item->get('comments')) { ?>
 					<ol class="comments">
@@ -221,6 +230,7 @@ if (!$no_html) {
 					</form>
 				<?php } ?>
 			</div>
+			<?php endif; ?>
 
 		</div>
 		<div class="col span4 omega">
