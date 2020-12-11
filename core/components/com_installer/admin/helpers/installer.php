@@ -114,7 +114,7 @@ class Installer
 		$query = $db->getQuery()
 			->select('DISTINCT(type)', 'value')
 			->select('type', 'text')
-			->from('#__extensions')
+			->from('#__extension_types')
 			->order('type', 'asc');
 
 		$db->setQuery($query->toString());

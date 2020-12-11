@@ -21,7 +21,7 @@ include_once dirname(__DIR__) . '/helpers/cli.php';
 include_once dirname(__DIR__) . DS . 'models' . DS . 'custom_extensions.php';
 
 /**
- * Packages Controller
+ * Custom Exentions Controller
  */
 class Customexts extends AdminController
 {
@@ -335,9 +335,6 @@ class Customexts extends AdminController
 			case "module":
 				$path_type = "modules";
 				break;
-			case "package":
-				$path_type = "packages";
-				break;
 			case "plugin":
 				$path_type = "plugins";
 				break;
@@ -350,6 +347,10 @@ class Customexts extends AdminController
 		if ($model->folder)
 		{
 			$model->set('path', PATH_APP . "/" . $path_type . "/" . $model->folder . "/"  . $model->alias);
+		}
+		else if ($model->type == "non-standard")
+		{
+			$model->set('path', PATH_APP . "/" . $model->alias);
 		}
 		else {
 			$model->set('path', PATH_APP . "/" . $path_type . "/"  . $model->alias);
