@@ -26,7 +26,7 @@ class Migration20201209000000ComInstaller extends Base
 					`id` int(11) NOT NULL AUTO_INCREMENT,
 					`type` varchar(150) NOT NULL DEFAULT '',
 					PRIMARY KEY (`id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 				$this->db->setQuery($query);
 				$this->db->query();
@@ -39,7 +39,7 @@ class Migration20201209000000ComInstaller extends Base
 					(4,'module'),
 					(5,'plugin'),
 					(6,'template'),
-					(7,'non-standard');"
+					(7,'non-standard');";
 
 				$this->db->setQuery($query);
 				$this->db->query();
