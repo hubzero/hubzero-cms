@@ -61,13 +61,6 @@ $this->js();
 				</div>
 
 				<div class="input-wrap">
-					<?php echo $this->form->getLabel('client_id'); ?><br />
-					<select name="fields[client_id]" id="field-client_id">
-						<option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_CLIENT_SELECT');?></option>
-						<?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::LocationOptions(), 'value', 'text', $this->row['client_id'], true);?>
-					</select>
-				</div>
-				<div class="input-wrap">
 					<?php echo $this->form->getLabel('folder'); ?><br />
 					<select name="fields[folder]" id="field-folder">
 						<option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_FOLDER_SELECT');?></option>
@@ -77,12 +70,20 @@ $this->js();
 
 				<div class="input-wrap">
 					<?php echo $this->form->getLabel('description'); ?><br />
-					<textarea name="fields[description]" id="field-description" rows="10"><?php echo $this->escape($this->row->get('description')); ?></textarea>
+					<textarea name="fields[description]" id="field-description" rows="5"><?php echo $this->escape($this->row->get('description')); ?></textarea>
 				</div>
 
 				<div class="input-wrap">
 					<?php echo $this->form->getLabel('apikey'); ?><br />
 					<input type="text" name="fields[apikey]" id="field-apikey" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('apikey'))); ?>" />
+				</div>
+
+				<div class="input-wrap">
+					<?php echo $this->form->getLabel('client_id'); ?><br />
+					<select name="fields[client_id]" id="field-client_id">
+						<option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_CLIENT_SELECT');?></option>
+						<?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::LocationOptions(), 'value', 'text', $this->row['client_id'], true);?>
+					</select>
 				</div>
 
 			</fieldset>
