@@ -9,6 +9,7 @@
 defined('_HZEXEC_') or die();
 
 // Check to see if the timezone is set by the event.
+// $this->row->time_zone is the event timezone
 if (!isset($this->row->time_zone) || $this->row->time_zone == '')
 {
 	// Get the timezone preferred by the USER, if not use HUB's
@@ -28,13 +29,13 @@ if (!isset($this->row->time_zone) || $this->row->time_zone == '')
 		//$this->row->publish_down = $publish_down;
 	}
 }
-elseif (isset($this->row->time_zone))
+else
 {
 	// else use the one provided by the event
 	$timezone = timezone_name_from_abbr('', $this->row->time_zone*3600, null);
 }
 
-// If not timezone is found or cannot be acertained from above
+// If not timezone is found or cannot be ascertained from above
 if ($timezone === false)
 {
 	$timezone = null;
@@ -70,9 +71,9 @@ if (!empty($this->fields)) {
 	$this->row->content = trim($this->row->content);
 }
 
-$start_date = Date::of($this->row->publish_up, $timezone)->toLocal('d M Y');
-$stop_date  = Date::of($this->row->publish_down, $timezone)->toLocal('d M Y');
-$current_date = Date::of();
+$start_date = Date::of($this->row->publish_up, $timezone)->toLocal();
+$stop_date  = Date::of($this->row->publish_down, $timezone)->toLocal();
+$current_date = Date::of()->toLocal();
 
 //determine if the event is in the past or not
 if (strtotime($stop_date) - strtotime($current_date) < 0)
