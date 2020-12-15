@@ -65,6 +65,7 @@ if (count($this->notifications) > 0)
 			<div class="popularcourses">
 				<?php
 				$count = 0;
+				$index = 0;
 				foreach ($this->popularcourses as $course)
 				{
 					if ($count == 0)
@@ -85,6 +86,23 @@ if (count($this->notifications) > 0)
 					else
 					{
 						$count++;
+					}
+					$index++;
+					if ($index >= 12)
+					{
+						echo ' more courses</a>';
+						echo '<div class="grid">
+						        <div class="col span4"></div>
+							<div class="col span4">
+							  <p>
+							    <a class="hyper-button" href="/courses/browse">';
+						echo 'See ' . (count($this->popularcourses) - $index) . ' more courses »
+							    </a>
+							  </span></p>
+						        </div>
+						        <div class="col span4 omega"></div>
+						      </div>';
+						break;
 					}
 				}
 				?>
