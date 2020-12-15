@@ -109,7 +109,6 @@ class Courses extends SiteController
 		$model = Models\Courses::getInstance();
 
 		$this->view->popularcourses = $model->courses(array(
-			'limit' => 12,
 			'sort'  => 'students',
 			'state' => 1
 		), true);
