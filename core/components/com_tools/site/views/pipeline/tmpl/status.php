@@ -397,7 +397,6 @@ $this->css('pipeline.css')
 					<?php if (!empty($rappture_url)) { ?>
 						<li><?php echo Lang::txt('COM_TOOLS_LEARN_MORE'); ?> <?php echo Lang::txt('COM_TOOLS_ABOUT'); ?> <?php echo Lang::txt('COM_TOOLS_THE'); ?> <a href="<?php echo $rappture_url; ?>">Rappture toolkit</a>.</li>
 					<?php } ?>
-						<li>Learn about nanoHUB’s <a href="/whypublish/whypublishdevenv">software development environment</a></li>
 						<li><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_WHEN_READY'); ?>, <a class="developer-wiki" href="<?php echo $developer_url . $project_path . $this->status['toolname']; ?>/wiki/GettingStarted"><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_FOLLOW_THESE_INSTRUCTIONS'); ?></a> <?php echo Lang::txt('COM_TOOLS_WHATSNEXT_TO_ACCESS_CODE'); ?>.</li>
 					</ul>
 					<h2><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_WE_ARE_WAITING'); ?></h2>
