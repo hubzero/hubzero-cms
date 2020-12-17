@@ -1025,7 +1025,6 @@ class Pipeline extends SiteController
 			$txt->set('repohost', $tool['repohost']);
 		}
 
-		//$ptype = (empty($tool['publishType']) || $tool['publishType'] == 'standard') ? 'standard': 'weber=';
 		$ptype = $tool['publishType'];
 		$displayProxyType = 'weber=';
 
