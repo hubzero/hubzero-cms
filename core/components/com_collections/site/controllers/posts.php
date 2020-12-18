@@ -271,7 +271,7 @@ class Posts extends SiteController
 		// Error if comments are not allowed
 		if (!$this->config->get('allow_comments'))
 		{
-			App::abort(404, Lang::txt('COM_COLLECTIONS_ERROR_COMMENTS_DISALLOWED'));
+			App::abort(404, Lang::txt('COM_COLLECTIONS_ERROR_PAGE_NOT_FOUND'));
 		}
 
 		// Check for request forgeries
@@ -348,7 +348,7 @@ class Posts extends SiteController
 		// Error if comments are not allowed
 		if (!$this->config->get('allow_comments'))
 		{
-			App::abort(404, Lang::txt('COM_COLLECTIONS_ERROR_COMMENTS_DISALLOWED'));
+			App::abort(404, Lang::txt('COM_COLLECTIONS_ERROR_PAGE_NOT_FOUND'));
 		}
 
 		// Ensure the user is logged in
