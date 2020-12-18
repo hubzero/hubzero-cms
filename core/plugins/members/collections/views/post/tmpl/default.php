@@ -16,7 +16,6 @@ $this->css()
 
 // Get the comments config value
 $allow_comments = Component::params('com_collections')->get('allow_comments');
-$allow_comments;
 ?>
 
 <div class="post full <?php echo $item->type(); ?>" id="b<?php echo $this->post->get('id'); ?>" data-id="<?php echo $this->post->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&task=post/' . $this->post->get('id')); ?>" data-width="600" data-height="350">
