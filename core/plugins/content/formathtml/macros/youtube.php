@@ -24,11 +24,11 @@ class Youtube extends Macro
 		$txt = array();
 		$txt['wiki'] = 'Embeds a Youtube Video into the Page';
 		$txt['html'] = '<p>Embeds a Youtube Video into the Page. Accepts either full Youtube video URL or just Youtube Video ID (highlighted below).</p>
-						<p><strong>Youtube URL:</strong> http://www.youtube.com/watch?v=<span class="highlight">FgfGOEpZEOw</span></p>
+						<p><strong>Youtube URL:</strong> https://www.youtube.com/watch?v=<span class="highlight">FgfGOEpZEOw</span></p>
 						<p>Examples:</p>
 						<ul>
 							<li><code>[[Youtube(FgfGOEpZEOw)]]</code></li>
-							<li><code>[[Youtube(http://www.youtube.com/watch?v=FgfGOEpZEOw)]]</code></li>
+							<li><code>[[Youtube(https://www.youtube.com/watch?v=FgfGOEpZEOw)]]</code></li>
 							<li><code>[[Youtube(FgfGOEpZEOw, 640, 380)]] - width 640px, height 380px</code></li>
 							<li><code>[[Youtube(FgfGOEpZEOw, 100%)]] - width of 100%</code></li>
 						</ul>
