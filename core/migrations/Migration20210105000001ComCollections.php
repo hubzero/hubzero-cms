@@ -31,20 +31,6 @@ class Migration20210105000001ComCollections extends Base
 
 	public function down()
 	{
-		if ($this->db->tableExists('#__extensions'))
-		{
-			// Get the current params
-			$params = Component::params('com_collections');
-			$allow_comments = $params->get('allow_comments');
-
-			// If the comments param is set, remove it
-			if (isset($allow_comments) && method_exists($params, 'remove'))
-			{
-				$params->remove('allow_comments');
-				$query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($params->toString()) . " WHERE `name`= 'com_collections' AND `element` = 'com_collections'";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
+		// No need to do anything, just leave the unused param.
 	}
 }
