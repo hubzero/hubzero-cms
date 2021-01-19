@@ -65,12 +65,11 @@ if (count($this->notifications) > 0)
 			<div class="popularcourses">
 				<?php
 				$count = 0;
-				$index = 0;
 				foreach ($this->popularcourses as $course)
 				{
 					if ($count == 0)
 					{
-						echo '<div class="grid">';
+							echo '<div class="grid">';
 					}
 					$this->view('_course')
 					     ->set('count', $count)
@@ -80,32 +79,26 @@ if (count($this->notifications) > 0)
 
 					if ($count == 2)
 					{
-						$count = 0;
-						echo '</div>';
+							$count = 0;
+							echo '</div>';
 					}
 					else
 					{
-						$count++;
-					}
-					$index++;
-					if ($index >= 12)
-					{
-						echo ' more courses</a>';
-						echo '<div class="grid">
-						        <div class="col span4"></div>
-							<div class="col span4">
-							  <p>
-							    <a class="hyper-button" href="/courses/browse">';
-						echo 'See ' . (count($this->popularcourses) - $index) . ' more courses »
-							    </a>
-							  </span></p>
-						        </div>
-						        <div class="col span4 omega"></div>
-						      </div>';
-						break;
+							$count++;
 					}
 				}
 				?>
+			<?php if ($this->more_courses): ?>
+				<div class="grid">
+					<div class="col span4"></div>
+					<div class="col span4">
+							<p>
+								<a class="btn" href="/courses/browse">More courses »</a>
+							</p>
+					</div>
+					<div class="col span4 omega"></div>
+				</div>
+			<?php endif ?>
 			</div><!-- / .popularcourses clearfix top -->
 		<?php } else { ?>
 			<p class="info"><?php echo Lang::txt('COM_COURSES_NO_POPULAR_COURSES'); ?></p>

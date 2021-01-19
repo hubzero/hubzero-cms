@@ -21,6 +21,10 @@ use App;
  */
 class Courses extends SiteController
 {
+
+	// Max number of courses to return to the Intro view
+	const INTRO_COURSE_LIMIT = 12;
+
 	/**
 	 * Execute a task
 	 *
@@ -108,12 +112,21 @@ class Courses extends SiteController
 		// Push some needed scripts to the template
 		$model = Models\Courses::getInstance();
 
+		// Get all courses
+		$all_courses = $model->courses(array(
+			'sort'  => 'students',
+			'state' => 1
+		), true);
+
+		// Get first 12 courses
 		$this->view->popularcourses = $model->courses(array(
+			'limit' => self::INTRO_COURSE_LIMIT,
 			'sort'  => 'students',
 			'state' => 1
 		), true);
 
 		// Output HTML
+		$this->view->more_courses = (count($all_courses) > count($this->view->popularcourses));
 		$this->view->config   = $this->config;
 		$this->view->database = $this->database;
 		$this->view->title    = $this->_title;
