@@ -88,10 +88,3 @@
 		font-family: "Fontcons";
 		font-weight: normal;
 	}
-        /* See More Button */
-        .hyper-button {
-                font-size: 1.2em;
-                background: linear-gradient(#ebebeb, #f1f1f1);
-                padding: 4px 10px;
-                border-radius: 6px;
-        }
