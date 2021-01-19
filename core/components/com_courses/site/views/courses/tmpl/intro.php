@@ -69,7 +69,7 @@ if (count($this->notifications) > 0)
 				{
 					if ($count == 0)
 					{
-							echo '<div class="grid">';
+						echo '<div class="grid">';
 					}
 					$this->view('_course')
 					     ->set('count', $count)
@@ -79,12 +79,12 @@ if (count($this->notifications) > 0)
 
 					if ($count == 2)
 					{
-							$count = 0;
-							echo '</div>';
+						$count = 0;
+						echo '</div>';
 					}
 					else
 					{
-							$count++;
+						$count++;
 					}
 				}
 				?>
@@ -92,9 +92,9 @@ if (count($this->notifications) > 0)
 				<div class="grid">
 					<div class="col span4"></div>
 					<div class="col span4">
-							<p>
-								<a class="btn" href="/courses/browse">More courses »</a>
-							</p>
+						<p>
+							<a class="btn" href="/courses/browse">More courses »</a>
+						</p>
 					</div>
 					<div class="col span4 omega"></div>
 				</div>
