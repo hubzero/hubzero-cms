@@ -62,7 +62,7 @@ class Pages extends AdminController
 			'sort' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sort',
 				'filter_order',
-				'title'
+				'ordering'
 			),
 			'sort_Dir' => Request::getState(
 				$this->_option . '.' . $this->_controller . '.sortdir',
@@ -272,7 +272,7 @@ class Pages extends AdminController
 		// Incoming
 		$id = Request::getArray('id', array(0));
 		$id = $id[0];
-		$pid = Request::getInt('event', 0);
+		$pid = Request::getInt('event_id', 0);
 
 		// Ensure we have an ID to work with
 		if (!$id)
