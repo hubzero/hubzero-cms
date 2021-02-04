@@ -275,7 +275,7 @@ class Pages extends AdminController
 		$pid = Request::getInt('event_id', 0);
 
 		// Ensure we have an ID to work with
-		if (!$id)
+		if (!$id || !is_int($id))
 		{
 			Notify::warning(Lang::txt('COM_EVENTS_PAGE_NO_ID'));
 			return $this->cancelTask();
