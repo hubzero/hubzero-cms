@@ -960,7 +960,7 @@ class Sessionsv1_0 extends ApiController
 		if ($finished)
 		{
 			$count = count($parsed);
-			preg_match('/\[status\] output saved in [a-zA-Z0-9\/]*\/(run[0-9]*\.xml)/', $parsed[($count-2)], $matches);
+			preg_match('/\[status\] output saved in [a-zA-Z0-9\/].*\/(run[0-9]*\.xml)/', $parsed[($count-2)], $matches);
 			$runFile = (isset($matches[1])) ? $matches[1] : '';
 		}
 
