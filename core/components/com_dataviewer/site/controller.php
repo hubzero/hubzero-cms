@@ -38,24 +38,7 @@ function controller()
 	}
 }
 
-function task_file($db_id)
-{
-	$view = 'file';
-	$file = (__DIR__.DS."view".DS."$view.php");
-
-	if (file_exists($file)) {
-		require_once ($file);
-		view();
-	}
-}
-
-
-function task_stream_file($db_id)
-{
-	$hash = Request::getString('hash');
-	stream_file($hash);
-	exit;
-}
+/* functions task_file and task_stream_file removed 2/8/2021 due to multitude of severe vulnerabilities */
 
 function task_view($db_id)
 {
