@@ -103,7 +103,7 @@ class AddTemplateEntry extends Macro
 					}
 
 					$query = $this->db->getQuery()
-						->insert('#__extensions')
+						->insert('#__template_styles')
 						->values(array(
 							'template'  => $element,
 							'client_id' => $client,
