@@ -25,7 +25,7 @@ class DatabaseServiceProvider extends ServiceProvider
 		$this->app['db'] = function($app)
 		{
 			$options = [
-				'driver'   => $app['config']->get('dbtype'),
+				'driver'   => ($app['config']->get('dbtype') == 'mysql') ? 'pdo' : $app['config']->get('dbtype'),
 				'host'     => $app['config']->get('host'),
 				'user'     => $app['config']->get('user'),
 				'password' => $app['config']->get('password'),
