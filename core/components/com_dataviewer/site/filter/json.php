@@ -230,7 +230,7 @@ function filter($res, $dd)
 						$dd['cols'][$key]['ds-repo-path'] = "/file_repo/{$dd['table']}/$key";
 					}
 
-					if ($dd['cols'][$key]['type_extra'] == 'multi') {
+					if (isset($dd['cols'][$key]['type_extra']) && $dd['cols'][$key]['type_extra'] == 'multi') {
 						$list = explode('|#|', $val);
 						$val = array();
 						foreach ($list as $l) {
