@@ -11,7 +11,8 @@ defined('_HZEXEC_') or die();
 $name       = stripslashes($this->profile->get('name'));
 $surname    = stripslashes($this->profile->get('surname'));
 $givenName  = stripslashes($this->profile->get('givenName'));
-$middleName = stripslashes($this->profile->get('middleName'));
+$middleName = stripslashes($this->profile->middleName);
+
 
 if (!$surname)
 {
