@@ -391,9 +391,20 @@ class Doi extends Obj
 				$name        .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';
 				$xmlfile .='<creator>';
 				$xmlfile .='	<creatorName>' . $name . '</creatorName>';
+				
 				if (isset($author->orcid) && !empty($author->orcid))
 				{
 					$xmlfile.='	<nameIdentifier nameIdentifierScheme="ORCID">' . $author->orcid . '</nameIdentifier>';
+				}
+				
+				if (isset($author->organization) && !empty($author->organization))
+				{
+					$id = $this->queryRORID($author->organization);
+					
+					if ($id)
+					{
+						$xmlfile.='	<affiliation  affiliationIdentifier="' .  $id . '" affiliationIdentifierScheme="ROR">' . $author->organization . '</affiliation >';
+					}
 				}
 				$xmlfile.='</creator>';
 			}
@@ -448,6 +459,9 @@ class Doi extends Obj
 		$xmlfile.= '</description>
 			</descriptions>
 		</resource>';
+		
+
+		//file_put_contents("/var/log/xml", print_r($xmlfile, true));
 
 		return $xmlfile;
 	}
@@ -1115,5 +1129,61 @@ class Doi extends Obj
 			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_NO_DOI_SERVICE_ACTIVATED'));
 			return false;
 		}
+	}
+	
+	/**
+	 * Query the Research Organization ID by organization name in Research Organization Registry
+	 *
+	 * @param   string    $organization
+	 *
+	 * @return string  organization id, or false if the organization is not found
+	 */
+	public function queryRORID($organization)
+	{
+		if (strpos(trim($organization), " ") != false)
+		{
+			$orgStr = str_replace(' ', '+', trim($organization));
+			$queryURL = "http://api.ror.org/organizations" . "?query=" . $orgStr;
+		}
+		else
+		{
+			$queryURL = "http://api.ror.org/organizations" . "?query=" . trim($organization);
+		}
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $queryURL);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		$result = curl_exec($ch);
+		
+		if (!$result)
+		{
+			return false;
+		}
+		
+		$info = curl_getinfo($ch);
+		
+		$code = $info['http_code'];
+		
+		if (($code != 201) && ($code != 200))
+		{
+			return false;
+		}
+		
+		$resultObj = json_decode($result);
+		
+		foreach ($resultObj->items as $orgObj)
+		{
+			if (trim($organization) == $orgObj->name)
+			{
+				return $orgObj->id;
+			}
+			else
+			{
+				continue;
+			}
+		}
+		
+		return false;
 	}
 }
