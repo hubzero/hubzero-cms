@@ -155,7 +155,7 @@ HUB.Mw = {
 			else {
 				actionurl = action.slice(4);
 			}
-			document.open(actionurl, '_blank', 'width=600,height=600,toolbar=no,menubar=no,scrollbars=yes,resizable=yes');
+			document.open(actionurl, '_blank', 'noopener,noreferrer,width=600,height=600,toolbar=no,menubar=no,scrollbars=yes,resizable=yes');
 		} else if (action.slice(0,6) == "alert ") {
 			alert(action.slice(6));
 		} else {
