@@ -700,7 +700,7 @@ HUB.CoursesOutline = {
 							break;
 
 							default :
-								var attribs = 'height=' + ($(window).height())*5/6 + ',width=' + ($(window).width())*5/6;
+								var attribs = 'noopener,noreferrer,height=' + ($(window).height())*5/6 + ',width=' + ($(window).width())*5/6;
 								window.open(t.attr('href'), '_blank', attribs).focus();
 							break;
 						}
@@ -1131,7 +1131,7 @@ HUB.CoursesOutline = {
 		 */
 		auxAttachmentHelp: function ( e ) {
 			var $ = HUB.CoursesOutline.jQuery,
-			specs = 'width=800,height=600,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=20,top=20';
+			specs = 'noopener,noreferrer,width=800,height=600,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=20,top=20';
 
 			e.preventDefault();
 			window.open($(this).attr('href'), '_blank', specs);
