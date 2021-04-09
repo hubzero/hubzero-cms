@@ -57,6 +57,7 @@ HUB.Newsletter = {
 				
 				//make links open in new window
 				$iframe.contents().find('a').attr('target', '_blank');
+				$iframe.contents().find('a').attr('rel', 'noopener noreferrer');
 				
 				//hide view in browser link meant for email
 				$iframe.contents().find('.display-browser').hide();
