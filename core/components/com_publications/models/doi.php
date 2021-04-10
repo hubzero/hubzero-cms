@@ -459,9 +459,6 @@ class Doi extends Obj
 		$xmlfile.= '</description>
 			</descriptions>
 		</resource>';
-		
-
-		//file_put_contents("/var/log/xml", print_r($xmlfile, true));
 
 		return $xmlfile;
 	}
