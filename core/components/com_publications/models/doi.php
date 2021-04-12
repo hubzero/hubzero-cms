@@ -1155,6 +1155,7 @@ class Doi extends Obj
 		
 		if (!$result)
 		{
+			curl_close($ch);
 			return false;
 		}
 		
@@ -1164,6 +1165,7 @@ class Doi extends Obj
 		
 		if (($code != 201) && ($code != 200))
 		{
+			curl_close($ch);
 			return false;
 		}
 		
@@ -1175,11 +1177,9 @@ class Doi extends Obj
 			{
 				return $orgObj->id;
 			}
-			else
-			{
-				continue;
-			}
 		}
+		
+		curl_close($ch);
 		
 		return false;
 	}
