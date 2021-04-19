@@ -1575,8 +1575,10 @@ class Tool
 		// check member groups
 		if (!empty($tool['membergroups']))
 		{
+			$tool['membergroups'] = trim($tool['membergroups'],",");
 			foreach (array_map('trim', explode(',', $tool['membergroups'])) as $k => $groupName)
 			{
+				Log::debug("-----" . $groupName);
 				$grp = Group::getInstance($groupName);
 				if (!is_object($grp) || !$grp->get('gidNumber'))
 				{
@@ -1588,6 +1590,7 @@ class Tool
 		// check developers
 		if (!empty($tool['developers']))
 		{
+			$tool['developers'] = trim($tool['developers'],",");
 			foreach (array_map('trim', explode(',', $tool['developers'])) as $k => $developerName)
 			{
 				$dev = User::getInstance($developerName);
