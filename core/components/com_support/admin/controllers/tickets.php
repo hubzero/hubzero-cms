@@ -542,11 +542,9 @@ class Tickets extends AdminController
 		// Incoming comment
 		if ($text)
 		{
-			// If a comment was posted by the ticket submitter to a "waiting user response" ticket, change status.
-			if ($ticket->isWaiting() && User::get('username') == $ticket->get('login'))
-			{
-				$ticket->open();
-			}
+			// If a comment was posted always change status to open.  This is the typical expected behavior. 
+			// Preventing new comments from re-opening a ticket can result in comments that are never responded to.
+			$ticket->open();
 		}
 
 		// Create a new support comment object and populate it
