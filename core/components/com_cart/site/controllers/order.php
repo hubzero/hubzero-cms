@@ -18,7 +18,7 @@ use Route;
 use Event;
 use Lang;
 use App;
-use Components\Cart\Lib\CartMessenger\Cartmessenger as CartMessenger;
+use \Components\Cart\Lib\CartMessenger as CartMessenger;
 
 /**
  * Cart order controller class
