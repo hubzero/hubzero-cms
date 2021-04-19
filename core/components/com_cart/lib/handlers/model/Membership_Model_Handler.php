@@ -38,8 +38,7 @@ class Membership_Model_Handler extends Model_Handler
 		$currentExpiration = $subscription->getExpiration();
 
 		// No current subscription, no expiration
-		if (!$currentExpiration)
-		{
+		if(!$currentExpiration) {
 			return true;
 		}
 
