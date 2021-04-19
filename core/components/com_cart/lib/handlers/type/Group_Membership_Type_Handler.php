@@ -5,15 +5,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-require_once dirname(dirname(__DIR__)) . DS . 'cartmessenger' . DS . 'CartMessenger.php';
-require_once dirname(dirname(dirname(__DIR__))) . DS . 'models' . DS . 'Cart.php';
-require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Product.php';
-
 use Hubzero\User\Group;
-use \Components\Cart\Lib\CartMessenger as CartMessenger;
-use \Components\Cart\Models\Cart as Cart;
-use \Components\Storefront\Models\Product as Product;
-
+require_once dirname(dirname(__DIR__)) . DS . 'cartmessenger' . DS . 'CartMessenger.php';
 
 class Group_Membership_Type_Handler extends Type_Handler
 {
@@ -40,9 +33,11 @@ class Group_Membership_Type_Handler extends Type_Handler
 		try
 		{
 			// Get user ID for the cart
-			$userId = Cart::getCartUser($this->crtId);
+			require_once dirname(dirname(dirname(__DIR__))) . DS . 'models' . DS . 'Cart.php';
+			$userId = \Components\Cart\Models\Cart::getCartUser($this->crtId);
 			// Get the group ID to set the user to (from meta)
-			$groupIds = Product::getMetaValue($this->item['info']->pId, 'groupId');
+			require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Product.php';
+			$groupIds = \Components\Storefront\Models\Product::getMetaValue($this->item['info']->pId, 'groupId');
 			$groupIds = explode(',', $groupIds);
 
 			foreach ($groupIds as $groupId) {
@@ -54,7 +49,7 @@ class Group_Membership_Type_Handler extends Type_Handler
 		}
 		catch (Exception $e)
 		{
-			$logger = new CartMessenger('Group Membership Type Handler');
+			$logger = new \CartMessenger('Group Membership Type Handler');
 			$logger->setMessage('Group(s) assignment failed.');
 			$logger->log(\LoggingLevel::ERROR);
 

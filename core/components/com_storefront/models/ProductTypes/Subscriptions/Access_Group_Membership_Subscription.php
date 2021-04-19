@@ -20,4 +20,16 @@ class Access_Group_Membership_Subscription extends BaseSubscription
 	{
 		parent::__construct($pId, $uId);
 	}
+
+	/**
+	 * Get expiration info.
+	 *
+	 * @return  void
+	 * @throws  Exception
+	 */
+	public function _getExpiration()
+	{
+		// This will get expiration from the correct place
+		throw new Exception('not implemented');
+	}
 }
