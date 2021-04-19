@@ -68,8 +68,10 @@ class CartProductHandler
 			$modelHandler->handle();
 		}
 
+
 		// TYPE HANDLER
 		$typeHandlerClass = str_replace(' ', '_', ucwords(strtolower($ptIdTypeInfo['ptName']))) . '_Type_Handler';
+		//print_r($typeHandlerClass); die;
 		if (file_exists($handlersPath . DS . 'type' . DS . $typeHandlerClass . '.php'))
 		{
 			// Include the parent class
@@ -81,6 +83,7 @@ class CartProductHandler
 			$typeHandler = new $typeHandlerClass($this->item, $this->crtId);
 			$typeHandler->handle();
 		}
+
 
 		// CUSTOM HANDLERS (if any)
 		if (!empty($this->item['meta']['customHandler']))
