@@ -153,7 +153,7 @@ $html = '';
 
 			$sef = Route::url('index.php?option=com_resources&id='.$this->activechild->id.'&task=download&file='.basename($this->activechild->path).'&token='.$token . '&' . Session::getFormToken() . '=1');
 
-			$html .= '<iframe src="https://docs.google.com/viewer?url=' . urlencode(Request::base() . ltrim($sef, '/')).'&amp;embedded=true#:0.page.0" width="100%" height="500" name="file_resource" frameborder="0" bgcolor="white"></iframe>'."\n";
+			$html .= '<iframe sandbox="allow-scripts allow-same-origin allow-popups" src="https://docs.google.com/viewer?url=' . urlencode(Request::base() . ltrim($sef, '/')).'&amp;embedded=true#:0.page.0" width="100%" height="500" name="file_resource" frameborder="0" bgcolor="white"></iframe>'."\n";
 		}
 		else
 		{
