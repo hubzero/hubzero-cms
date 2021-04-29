@@ -544,7 +544,10 @@ class Tickets extends AdminController
 		{
 			// If a comment was posted always change status to open.  This is the typical expected behavior. 
 			// Preventing new comments from re-opening a ticket can result in comments that are never responded to.
-			$ticket->open();
+			if ((!$ticket->isOpen()) && $ticket->get('open') == $old->get('open') || $ticket->isWaiting() && User::get('username') == $ticket->get('login'))
+			{
+				$ticket->open();
+			}
 		}
 
 		// Create a new support comment object and populate it
