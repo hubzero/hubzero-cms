@@ -132,7 +132,7 @@ class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
 					  <div class="g-recaptcha-ns">
 					    <div class="g-recaptcha-inner">
 					      <div class="g-recaptcha-challenge">
-					        <iframe src="' . static::$_jsFallbackUrl . $this->params->get('public') . '" frameborder="0" scrolling="no" title="' . Lang::txt('PLG_CAPTCHA_RECAPTCHA_TITLE') . '">
+					        <iframe sandbox="allow-scripts allow-same-origin allow-popups" src="' . static::$_jsFallbackUrl . $this->params->get('public') . '" frameborder="0" scrolling="no" title="' . Lang::txt('PLG_CAPTCHA_RECAPTCHA_TITLE') . '">
 					        </iframe>
 					      </div>
 					      <div class="g-recaptcha-response-wrap">
