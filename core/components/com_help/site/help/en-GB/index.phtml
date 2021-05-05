@@ -1,0 +1,36 @@
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2021 HUBzero Foundation, LLC.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+?>
+<article>
+        <h1 class="page-title">Help</h1>
+
+        <section>
+                <h2>Getting Started</h2>
+
+                <p>The Users' Guide is a user manual for a Hub. It progresses step-by-step through the features of the site and how a user can accomplish various tasks:</p>
+
+                <ul>
+                        <li><a href="https://help.hubzero.org/documentation/current/users">Hub Users</a></li>
+                </ul>
+        </section>
+
+        <section>
+                <h2>Creating or Modifying Help Pages for Hub Components</h2>
+                <p>Each component may have its own help pages, maintained independently.</p>
+                <p>Help pages are stored in a "help" subdirectory of a component, e.g., com_help/site/help/en-GB/sample.phtml.  This is a sample help page:</p>
+                <a href="<?php echo Route::url('index.php?option=com_help&component=help&page=sample'); ?>">Sample Help</a></p>
+                <p>Instead of managing individual help pages directly in HTML, consider using the <a href="https://help.hubzero.org/documentation/">documentation facility</a></p>
+        </section>
+
+        <section>
+                <h2>Further Information</h2>
+                <ul>
+                        <li><a href="https://help.hubzero.org/documentation">Hubzero Documentation</a></li>
+                        <li><a href="https://help.hubzero.org/support">Hubzero Support</a></li>
+                </ul>
+        </section>
+</article>
