@@ -29,7 +29,6 @@ foreach ($this->pages as $component)
 			// $name = str_replace('.' . $this->layoutExt, '', $page);
 			// default value is .phtml; use that for now so links work
 			$name = str_replace('.phtml', '', $page);
-			
 			$content .= '<li><a href="' . Route::url('index.php?option=com_help&component=' . str_replace('com_', '', $component['option']) . '&page=' . $name) . '">' . ucwords(str_replace('_', ' ', $name)) .'</a></li>';
 		}
 		$content .= '</ul>';
