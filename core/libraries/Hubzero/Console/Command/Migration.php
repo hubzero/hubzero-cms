@@ -137,9 +137,9 @@ class Migration extends Base implements CommandInterface
 		$extension = null;
 		if ($this->arguments->getOpt('e'))
 		{
-			if (!preg_match('/^com_[[:alnum:]]+$|^mod_[[:alnum:]]+$|^plg_[[:alnum:]]+_[[:alnum:]]+$|^core$/i', $this->arguments->getOpt('e')))
+			if (!preg_match('/^com_[[:alnum:]]+$|^mod_[[:alnum:]]+$|^plg_[[:alnum:]]+_[[:alnum:]]+$|^tpl_[[:alnum:]]+$|^core$/i', $this->arguments->getOpt('e')))
 			{
-				$this->output->error('Error: extension should match the pattern of com_*, mod_*, plg_*_*, or core');
+				$this->output->error('Error: extension should match the pattern of com_*, mod_*, tpl_*, plg_*_*, or core');
 			}
 			else
 			{
@@ -414,7 +414,7 @@ class Migration extends Base implements CommandInterface
 			->addArgument(
 				'-e: extension',
 				'Explicity give the extension on which the migration should be run.
-				This could be one of "com_componentname", "mod_modulename",
+				This could be one of "com_componentname", "mod_modulename", "tpl_templatename",
 				or "plg_plugingroup_pluginname". This option is required
 				when using the force (--force) option and the log only option (-m).',
 				'Example: -e=com_courses, -e=plg_members_dashboard'
