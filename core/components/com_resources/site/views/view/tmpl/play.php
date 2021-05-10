@@ -90,19 +90,19 @@ $html = '';
 				}
 				$url = 'https://www.youtube.com/embed/' . $video_id . '?wmode=transparent';
 			}
-			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" allowfullscreen></iframe>';
+			$html .= '<iframe sandbox="allow-scripts allow-same-origin" width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" allowfullscreen></iframe>';
 		}
 		else if (stristr($parsed['host'], 'vimeo'))
 		{
-			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+			$html .= '<iframe sandbox="allow-scripts allow-same-origin" width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
 		else if (stristr($parsed['host'], 'blip'))
 		{
-			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+			$html .= '<iframe sandbox="allow-scripts allow-same-origin" width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
 		else
 		{
-			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+			$html .= '<iframe sandbox="allow-scripts allow-same-origin" width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
 	}
 	else if (is_file(PATH_APP . $url))
