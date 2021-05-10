@@ -250,7 +250,7 @@ class VideoMacro extends WikiMacro
 		// External
 		else
 		{
-			$html = '<iframe id="movie' . rand(0, 1000) . '" src="' . $video_url . '" width="' . $width . '" height="' . $height . '" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+			$html = '<iframe sandbox="allow-scripts allow-same-origin" id="movie' . rand(0, 1000) . '" src="' . $video_url . '" width="' . $width . '" height="' . $height . '" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
 
 		// Return the emdeded youtube video
