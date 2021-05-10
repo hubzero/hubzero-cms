@@ -47,6 +47,7 @@ $this->js();
 					<?php echo $this->form->getLabel('name'); ?><br />
 					<input type="text" name="fields[name]" id="field-name" maxlength="250" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('name'))); ?>" />
 				</div>
+
 				<div class="input-wrap">
 					<?php echo $this->form->getLabel('alias'); ?><br />
 					<input type="text" name="fields[alias]" id="field-alias" maxlength="250" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
@@ -77,6 +78,16 @@ $this->js();
 					<?php echo $this->form->getLabel('apikey'); ?><br />
 					<input type="text" name="fields[apikey]" id="field-apikey" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('apikey'))); ?>" />
 				</div>
+
+				<div class="input-wrap">
+					<?php echo $this->form->getLabel('git_branch'); ?><br />
+					<input type="text" name="fields[git_branch]" id="field-git_branch" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('git_branch'))); ?>" />
+				</div>
+
+				<!-- <div class="input-wrap">
+					<?php //echo $this->form->getLabel('git_tag'); ?><br />
+					<input type="text" name="fields[git_tag]" id="field-git_tag" maxlength="250" value="<?php //echo $this->escape(stripslashes($this->row->get('git_tag'))); ?>" />
+				</div> -->
 
 				<div class="input-wrap">
 					<?php echo $this->form->getLabel('client_id'); ?><br />
