@@ -543,7 +543,7 @@ class Customexts extends AdminController
 
 				if ($extension->get('apikey'))
 				{
-					$newURL = "https://oauth2:" . $extension->get('apikey') . "@" . parse_url($extension->get('url'),PHP_URL_HOST) . parse_url($extension->get('url'),PHP_URL_PATH);
+					$newURL = "https://oauth2:" . $extension->get('apikey') . "@" . parse_url($extension->get('url'), PHP_URL_HOST) . parse_url($extension->get('url'), PHP_URL_PATH);
 					$museCmd = 'cloneRepo repoPath=' . $extension->path . ' sourceUrl=' . $newURL;
 				}
 				else
@@ -571,7 +571,7 @@ class Customexts extends AdminController
 			// Determines the path to muse and run the extension update muse command
 			$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
 
-            // Execute and format the output
+			// Execute and format the output
 			$output = shell_exec($cmd);
 			$output = json_decode($output);
 
@@ -587,11 +587,10 @@ class Customexts extends AdminController
 			// 	$museCmd = 'update -r=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' source=' . $extension->get('git_branch') : '') . ((!empty($extension->get('git_tag'))) ? ' source_tag=' . $extension->get('git_tag') : '');
 			// }
 
-
 			// Determines the path to muse and run the extension update muse command
 			$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
 
-            // Execute and format the output
+			// Execute and format the output
 			$output = shell_exec($cmd);
 			$output = json_decode($output);
 
