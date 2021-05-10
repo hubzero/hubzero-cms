@@ -304,12 +304,6 @@ class Repository extends Base implements CommandInterface
 						);
 					}
 				}
-
-				// Also check to see if we need to update packages
-				if ($this->arguments->getOpt('install-packages', false))
-				{
-					App::get('client')->call('repository:package', 'install', new Arguments([]), $this->output);
-				}
 			}
 			else if ($response['status'] == 'fatal')
 			{
@@ -599,29 +593,6 @@ class Repository extends Base implements CommandInterface
 	}
 
 	/**
-	 * Call composer
-	 *
-	 * @return void
-	 **/
-	public function composer()
-	{
-		$option = $this->arguments->getOpt('option');
-		$task = $this->arguments->getOpt('task');
-		$valid_tasks = array("show", "available", "install", "update", "remove", "add");
-		if ($option == 'package' && in_array($task, $valid_tasks))
-		{
-			$newCommand = new \Hubzero\Console\Command\App\Package($this->output, $this->arguments);
-			$newCommand->$task();
-		}
-		if ($option == 'repository' && in_array($task, $valid_tasks))
-		{
-			$newCommand = new \Hubzero\Console\Command\App\Repository($this->output, $this->arguments);
-			$newCommand->$task();
-		}
-	}
-
-
-	/**
 	 * Call cloneRepo
 	 *
 	 * @return void
@@ -638,7 +609,33 @@ class Repository extends Base implements CommandInterface
 	}
 
 	/**
-	 * Call cloneremoveRepoRepo
+	 * Call checkoutRepoBranch
+	 * Future: https://git-scm.com/docs/git-switch
+	 * 
+	 * @return void
+	 **/
+	public function checkoutRepoBranch()
+	{
+		$git_branch_arr = explode("/", $this->arguments->getOpt('git_branch'));
+		$git_branch = $git_branch_arr[1];
+		$repoPath = $this->arguments->getOpt('repoPath');
+
+		$cur_branch = "git rev-parse --abbrev-ref HEAD";
+		$command  = "cd " . $repoPath . " && git rev-parse --abbrev-ref HEAD";
+        $cur_branch = shell_exec($command);
+
+		// If the current branch doesn't match the specified branch, the checkout the specified branch
+		if ($cur_branch != $git_branch)
+		{
+			$command  = "cd " . $repoPath . " && git stash -q && git checkout " . $git_branch . " -q";
+			$response = shell_exec($command);
+		}
+		
+		return $response;
+	}
+
+	/**
+	 * Call removeRepo
 	 *
 	 * @return void
 	 **/
