@@ -33,7 +33,7 @@ class Youtube extends Macro
 							<li><code>[[Youtube(FgfGOEpZEOw, 100%)]] - width of 100%</code></li>
 						</ul>
 						<p>Displays:</p>
-						<iframe src="https://youtube.com/embed/FgfGOEpZEOw" width="640px" height="390px" border="0" title="YouTube video"></iframe>';
+						<iframe sandbox="allow-scripts allow-same-origin" src="https://youtube.com/embed/FgfGOEpZEOw" width="640px" height="390px" border="0" title="YouTube video"></iframe>';
 
 		return $txt['html'];
 	}
@@ -103,6 +103,6 @@ class Youtube extends Macro
 		$youtube_url .= '?wmode=transparent';
 
 		// return the emdeded youtube video
-		return '<iframe src="' . $youtube_url . '" width="' . $width . '" height="' . $height . '" title="YouTube video"></iframe>';
+		return '<iframe sandbox="allow-scripts allow-same-origin" src="' . $youtube_url . '" width="' . $width . '" height="' . $height . '" title="YouTube video"></iframe>';
 	}
 }
