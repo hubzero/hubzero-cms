@@ -15,6 +15,7 @@ core/vendor/**
 administrator/cache/**
 logs/**
 js_apps/**
+google*.html
 bans
 configuration.php
 hubconfiguration.php
