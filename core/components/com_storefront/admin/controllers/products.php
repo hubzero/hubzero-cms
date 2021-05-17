@@ -307,6 +307,18 @@ class Products extends AdminController
 			{
 				$product->setAllowMultiple($fields['pAllowMultiple']);
 			}
+			if (isset($fields['pExternalCheckoutURL']))
+			{
+				$product->setExternalCheckoutURL($fields['pExternalCheckoutURL']);
+			}
+			if (isset($fields['pExternalCheckoutProvider']))
+			{
+				$product->setExternalCheckoutProvider($fields['pExternalCheckoutProvider']);
+			}
+			if (isset($fields['pExternalCheckoutID']))
+			{
+				$product->setExternalCheckoutID($fields['pExternalCheckoutID']);
+			}
 
 			if (isset($fields['pQtyTxt']))
 			{

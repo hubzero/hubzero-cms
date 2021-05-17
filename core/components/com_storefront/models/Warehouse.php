@@ -587,6 +587,13 @@ class Warehouse extends \Hubzero\Base\Obj
 			$whiteListSql .= $addToSql;
 		}
 
+		if (isset($filters['pExternalCheckoutProvider']))
+		{
+			$addToSql =  " AND p.`pExternalCheckoutProvider`=" .  $this->_db->quote($filters['pExternalCheckoutProvider']);
+			$sql .= $addToSql;
+			$whiteListSql .= $addToSql;
+		}
+
 		if (!isset($filters['sort']))
 		{
 			$filters['sort'] = 'title';
@@ -731,6 +738,9 @@ class Warehouse extends \Hubzero\Base\Obj
 		$productInfo->pFeatures = $product->getFeatures();
 		$productInfo->pActive = $product->getActiveStatus();
 		$productInfo->pAllowMultiple = $product->getAllowMultiple();
+		$productInfo->pExternalCheckoutURL = $product->getExternalCheckoutURL();
+		$productInfo->pExternalCheckoutProvider = $product->getExternalCheckoutProvider();
+		$productInfo->pExternalCheckoutID = $product->getExternalCheckoutID();
 		$productInfo->access = $product->getAccessLevel();
 		$productInfo->publish_up = $product->getPublishTime()->publish_up;
 		$productInfo->publish_down = $product->getPublishTime()->publish_down;
@@ -1444,7 +1454,7 @@ class Warehouse extends \Hubzero\Base\Obj
 			return false;
 		}
 
-		$sql = "SELECT sId, sPrice FROM `#__storefront_products` p
+		$sql = "SELECT sId, sPrice, p.pExternalCheckoutURL FROM `#__storefront_products` p
 				LEFT JOIN `#__storefront_skus` s ON s.`pId` = p.`pId`
 				LEFT JOIN `#__storefront_product_meta` pm ON p.`pId` = pm.`pId`
 				LEFT JOIN `#__storefront_product_types` pt ON pt.`ptId` = p.`ptId`

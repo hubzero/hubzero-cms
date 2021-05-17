@@ -88,6 +88,9 @@ class Product
 		$this->setAccessLevel($productInfo->access);
 		$this->setAllowMultiple($productInfo->pAllowMultiple);
 		$this->setPublishTime($productInfo->publish_up, $productInfo->publish_down, $productInfo->pPublishedNow);
+		$this->setExternalCheckoutURL($productInfo->pExternalCheckoutURL);
+		$this->setExternalCheckoutProvider($productInfo->pExternalCheckoutProvider);
+		$this->setExternalCheckoutID($productInfo->pExternalCheckoutID);
 	}
 
 	/**
@@ -738,6 +741,89 @@ class Product
 	}
 
 	/**
+	 * Set product external checkout URL
+	 *
+	 * @param   string
+	 * @return  bool
+	 */
+	public function setExternalCheckoutURL($externalCheckoutURL)
+	{
+		if (!empty($externalCheckoutURL) && filter_var($externalCheckoutURL, FILTER_VALIDATE_URL)  === FALSE)
+		{
+			$this->addMessage('The external URL is not valid.');
+			return false;
+		}
+		$this->data->pExternalCheckoutURL = $externalCheckoutURL;
+		return true;
+	}
+
+	/**
+	 * Get product external checkout URL
+	 *
+	 * @return  String  Product external checkout URL
+	 */
+	public function getExternalCheckoutURL()
+	{
+		if (empty($this->data->pExternalCheckoutURL))
+		{
+			return null;
+		}
+		return $this->data->pExternalCheckoutURL;
+	}
+
+	/**
+	 * Set product external checkout provider
+	 *
+	 * @param   string
+	 * @return  bool
+	 */
+	public function setExternalCheckoutProvider($externalCheckoutProvider)
+	{
+		$this->data->pExternalCheckoutProvider = $externalCheckoutProvider;
+		return true;
+	}
+
+	/**
+	 * Get product external checkout provider
+	 *
+	 * @return  String  Product checkout provider
+	 */
+	public function getExternalCheckoutProvider()
+	{
+		if (empty($this->data->pExternalCheckoutProvider))
+		{
+			return null;
+		}
+		return $this->data->pExternalCheckoutProvider;
+	}
+
+	/**
+	 * Set product external checkout id
+	 *
+	 * @param   int
+	 * @return  bool
+	 */
+	public function setExternalCheckoutID($externalCheckoutID)
+	{
+		$this->data->pExternalCheckoutID = $externalCheckoutID;
+		return true;
+	}
+
+	/**
+	 * Get product external checkout id
+	 *
+	 * @return  int  Product external checkout ID
+	 */
+	public function getExternalCheckoutID()
+	{
+		if (empty($this->data->pExternalCheckoutID))
+		{
+			return null;
+		}
+		return $this->data->pExternalCheckoutID;
+	}
+
+	/**
 	 * Set product multiple flag
 	 *
 	 * @param   int   $productAllowMiltiple  Allow multiple
@@ -983,6 +1069,9 @@ class Product
 				`pDescription` = " . $db->quote($this->getDescription()) . ",
 				`pFeatures` = " . $db->quote($this->getFeatures()) . ",
 				`pAllowMultiple` = " . $db->quote($this->getAllowMultiple()) . ",
+				`pExternalCheckoutURL` = " . $db->quote($this->getExternalCheckoutURL()) . ",
+				`pExternalCheckoutProvider` = " . $db->quote($this->getExternalCheckoutProvider()) . ",
+				`pExternalCheckoutID` = " . $db->quote($this->getExternalCheckoutID()) . ",
 				`pActive` = " . $db->quote($this->getActiveStatus()) . ",
 				`publish_up` = " . $db->quote($this->getPublishTime()->publish_up) . ",
 				`publish_down` = " . $db->quote($this->getPublishTime()->publish_down) . ",
