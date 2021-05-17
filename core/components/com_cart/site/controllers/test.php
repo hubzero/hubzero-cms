@@ -374,8 +374,16 @@ class Test extends ComponentController
 				}
 			}
 
+			//echo Request::root() . 'cart/order/postback'; die;
+
+			//print_r($req); die;
+
+			// OMG!!! Ok, there was no way I could cURL post to the hub, so I post to the external server that in turn posts back to the hub. I KNOW!!!!!
+
 			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, Request::root() . 'cart/order/postback');
+			//curl_setopt($ch, CURLOPT_URL, 'https://shunko.aws.hubzero.org/cart/order/postback');
+			curl_setopt($ch, CURLOPT_URL, 'http://shunko.com/test/post.php');
+			//curl_setopt($ch, CURLOPT_URL, Request::root() . 'cart/order/postback');
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
@@ -391,6 +399,9 @@ class Test extends ComponentController
 			curl_close($ch);
 
 			//echo Route::url('index.php?option=' . 'com_cart') . 'order/complete?' . $req; die;
+
+			//print_r($curl_err);
+			//print_r($curl_result); die;
 
 			// Redirect to confirmation page
 			App::redirect(

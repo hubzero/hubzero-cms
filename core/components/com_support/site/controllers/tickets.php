@@ -1746,14 +1746,16 @@ class Tickets extends SiteController
 		}
 
 		// Incoming comment
-		/*if ($comment)
+		if ($comment)
 		{
+			// If a comment was posted always change status to open.  This is the typical expected behavior. 
+			// Preventing new comments from re-opening a ticket can result in comments that are never responded to.
 			// If a comment was posted by the ticket submitter to a "waiting user response" ticket, change status.
-			if ($row->isWaiting() && User::get('username') == $row->get('login'))
+			if ((!$row->isOpen()) && $row->get('open') == $old->get('open') || $row->isWaiting() && User::get('username') == $row->get('login'))
 			{
 				$row->open();
 			}
-		}*/
+		}
 
 		// Store new content
 		if (!$row->save())

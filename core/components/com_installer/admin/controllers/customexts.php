@@ -530,20 +530,20 @@ class Customexts extends AdminController
 		{
 			$extension = Custom_extensions::oneOrNew($id);
 
-			// make sure we have a git repo
+			if (!isset($user))
+			{
+				$user = Component::params('com_installer')->get('system_user', 'hubadmin');
+			}
+
+			// Do we have a git repo?  If not clone the stated repo.
 			if (!is_dir($extension->path . DS . '.git'))
 			{
-				if (!isset($user))
-				{
-					$user = Component::params('com_installer')->get('system_user', 'hubadmin');
-				}
-
 				// The tasks and command to be perofmred
 				$task = 'repository';
 
 				if ($extension->get('apikey'))
 				{
-					$newURL = "https://oauth2:" . $extension->get('apikey') . "@" . parse_url($extension->get('url'),PHP_URL_HOST) . parse_url($extension->get('url'),PHP_URL_PATH);
+					$newURL = "https://oauth2:" . $extension->get('apikey') . "@" . parse_url($extension->get('url'), PHP_URL_HOST) . parse_url($extension->get('url'), PHP_URL_PATH);
 					$museCmd = 'cloneRepo repoPath=' . $extension->path . ' sourceUrl=' . $newURL;
 				}
 				else
@@ -559,28 +559,33 @@ class Customexts extends AdminController
 
 				// execute command
 				$output = shell_exec($cmd);
-
 			}
 
-			if (!isset($user))
-			{
-				$user = Component::params('com_installer')->get('system_user', 'hubadmin');
-			}
-
-			// The tasks and command to be perofmred
+			// Set Muse Task
 			$task = 'repository';
-
-			if ($extension->get('apikey'))
-			{
-				$museCmd = 'update -r=' . $extension->path . ' apikey=' . $extension->get('apikey');
-			}
-			else
-			{
-				$museCmd = 'update -r=' . $extension->path;
-			}
-
 			// Run as (hubadmin)
 			$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+
+			// Check if specified branch is being used.  If not checkout out specified branch
+			$museCmd = 'checkoutRepoBranch repoPath=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' git_branch=' . $extension->get('git_branch') : '');
+			// Determines the path to muse and run the extension update muse command
+			$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+
+			// Execute and format the output
+			$output = shell_exec($cmd);
+			$output = json_decode($output);
+
+			// Check for updates in remote branch
+			$museCmd = 'update -r=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' source=' . $extension->get('git_branch') : '');
+
+			// if ($extension->get('apikey'))
+			// {
+			// 	$museCmd = 'update -r=' . $extension->path . ' apikey=' . $extension->get('apikey') . ((!empty($extension->get('git_branch'))) ? ' source=' . $extension->get('git_branch') : '') . ((!empty($extension->get('git_tag'))) ? ' source_tag=' . $extension->get('git_tag') : '');
+			// }
+			// else
+			// {
+			// 	$museCmd = 'update -r=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' source=' . $extension->get('git_branch') : '') . ((!empty($extension->get('git_tag'))) ? ' source_tag=' . $extension->get('git_tag') : '');
+			// }
 
 			// Determines the path to muse and run the extension update muse command
 			$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
@@ -588,6 +593,10 @@ class Customexts extends AdminController
 			// Execute and format the output
 			$output = shell_exec($cmd);
 			$output = json_decode($output);
+
+			// Run migrations
+			$migrations_response = Cli::migration($dryRun=false, $ignoreDates=true, $file=null, $dir='up', $folder=$extension->path);
+			$migrations_response = json_decode($migrations_response);
 
 			// did we succeed
 			if ($output == '' || json_last_error() == JSON_ERROR_NONE)
@@ -636,7 +645,7 @@ class Customexts extends AdminController
 		// empty list?
 		if (empty($ids))
 		{
-			Notify::warning(Lang::txt('There are no eligible merge requests.'));
+			Notify::warning(Lang::txt('There are no eligible commits to merge.'));
 			return $this->cancelTask();
 		}
 
@@ -663,7 +672,7 @@ class Customexts extends AdminController
 
 			// Determines the path to muse and run the extension update muse command
 			$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
-
+			Log::debug("------- cmd: ". $cmd);
 			// this will run a "git pull --rebase origin master"
 			$output = shell_exec($cmd);
 

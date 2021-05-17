@@ -314,13 +314,13 @@ $presentation->subtitles = array_values($presentation->subtitles);
 								</div>
 							</div>
 						</a>
-						<a id="volume" class="tooltips control " href="javascript:void(0);">
+						<a id="volume" class="control" href="javascript:void(0);">
 							Volume
 							<div class="control-container volume-controls">
 								<div id="volume-bar"></div>
 							</div>
 						</a>
-						<a id="settings" class="tooltips control" href="javascript:void(0);" title="Adjust Settings for Playback">
+						<a id="settings" class="control" href="javascript:void(0);" title="Adjust Settings for Playback">
 							Settings
 							<div class="control-container settings-controls">
 								<h3>Settings</h3>
@@ -339,19 +339,9 @@ $presentation->subtitles = array_values($presentation->subtitles);
 										</select>
 									</div>
 								</div>
-								<!-- <div class="grid">
-									<div class="col span6 label">
-										<label for="theme">Player Theme:</label>
-									</div>
-									<div class="col span6 omega input">
-										<select id="theme">
-											<option value="dark">Dark (default)</option>
-										</select>
-									</div>
-								</div> -->
 							</div>
 						</a>
-						<a id="link" class="tooltips control" href="javascript:void(0);" title="Link to this Spot in Presentation">
+						<a id="link" class="control" href="javascript:void(0);" title="Link to this Spot in Presentation">
 							Link
 							<div class="control-container link-controls">
 								<h3>Link to Video <span>- at current position</span></h3>
@@ -523,7 +513,6 @@ $last_slide_id = 0; ?>
 		<div id="transcripts"></div>
 	</div>
 	<div class="bottom-controls">
-		<a href="javascript:void(0);" class="btn btn-secondardy icon-fullscreen embed-fullscreen">Fullscreen</a>
 		<a href="javascript:void(0);" class="btn btn-secondardy icon-popout embed-popout">Pop Out</a>
 	</div>
 </div>

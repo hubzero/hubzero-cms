@@ -231,24 +231,6 @@ class Objct extends Relational
 	}
 
 	/**
-	 * Checks if a particular objct has a tag
-	 *
-	 * @param   integer  $tagid  ID of tag to check
-	 * @return  boolean  True if Objct has tag
-	 */
-	public static function associationExists($tagAssocData)
-	{
-		$matchingTagsCount = self::all()
-		  ->whereEquals('tbl', $tagAssocData['tbl'])
-		  ->whereEquals('objectid', $tagAssocData['objectid'])
-		  ->whereEquals('tagid', $tagAssocData['tagid'])
-		  ->rows()
-		  ->count();
-
-		return (bool) $matchingTagsCount;
-	}
-
-	/**
 	 * Copy all tags on an object to another object
 	 *
 	 * @param   integer  $oldtagid  ID of tag to be copied
@@ -273,12 +255,8 @@ class Objct extends Relational
 			foreach ($rows as $row)
 			{
 				$row->set('id', null)
-					->set('tagid', $newtagid);
-
-				if (!self::associationExists($row->toArray()))
-				{
-						$row->save();
-				}
+					->set('tagid', $newtagid)
+					->save();
 
 				$entries[] = $row->get('id');
 			}
