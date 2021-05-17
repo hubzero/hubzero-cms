@@ -84,6 +84,147 @@ if (empty($this->meta->qtyTxt))
 				<?php echo $this->editor('fields[pFeatures]', $this->escape(stripslashes($this->row->getFeatures())), 50, 10, 'field-features', array('buttons' => false)); ?>
 			</div>
 		</fieldset>
+
+		<fieldset class="adminform">
+			<legend><span><?php echo Lang::txt('Image'); ?></span></legend>
+
+			<?php
+			if ($this->row->getId()) {
+				$img = $this->row->getImage();
+				if (!empty($img))
+				{
+					$image = stripslashes($img->imgName);
+					$pics = explode(DS, $image);
+					$file = end($pics);
+				}
+				else {
+					$image = false;
+					$file = false;
+					$img = new \stdClass();
+					$img->imgId = null;
+				}
+				?>
+				<div class="uploader-wrap">
+					<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&task=upload&type=product&id=' . $this->row->getId() . '&no_html=1&' . Session::getFormToken() . '=1'); ?>">
+						<noscript>
+							<iframe height="350" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&tmpl=component&file=' . $file . '&type=product&id=' . $this->row->getId()); ?>"></iframe>
+						</noscript>
+					</div>
+				</div>
+			<?php
+			$width = 0;
+			$height = 0;
+			$this_size = 0;
+			$pathl = DS . trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS . $this->row->getId();
+
+			if ($image && file_exists(PATH_APP . $pathl . DS . $file))
+			{
+				$this_size = filesize(PATH_APP . $pathl . DS . $file);
+				list($width, $height, $type, $attr) = getimagesize(PATH_APP . $pathl . DS . $file);
+				$pic  = $file;
+				$path = '/app/' . $pathl;
+			}
+			else
+			{
+				$image = false;
+				$pic = 'noimage.png';
+				$path = dirname(dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__))))) . '/site/assets/img' . DS;
+			}
+			?>
+				<div id="img-container">
+					<img id="img-display" src="<?php echo $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_STOREFRONT_PRODUCT_IMAGE'); ?>" />
+					<input type="hidden" name="currentfile" id="currentfile" value="<?php echo $img->imgId; ?>" />
+				</div>
+
+				<table class="formed">
+					<tbody>
+					<tr>
+						<th><?php echo Lang::txt('COM_STOREFRONT_FILE'); ?>:</th>
+						<td>
+							<span id="img-name"><?php echo $image; ?></span>
+						</td>
+						<td>
+							<a id="img-delete <?php echo $image ? '' : 'hide'; ?>"
+							   href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&tmpl=component&task=remove&type=product&id=' . $this->row->getId() . '&' . Session::getFormToken() . '=1'); ?>"
+							   title="<?php echo Lang::txt('Delete'); ?>">[ x ]</a>
+						</td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_STOREFRONT_PICTURE_SIZE'); ?>:</th>
+						<td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></span></td>
+						<td></td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_STOREFRONT_PICTURE_WIDTH'); ?>:</th>
+						<td><span id="img-width"><?php echo $width; ?></span> px</td>
+						<td></td>
+					</tr>
+					<tr>
+						<th><?php echo Lang::txt('COM_STOREFRONT_PICTURE_HEIGHT'); ?>:</th>
+						<td><span id="img-height"><?php echo $height; ?></span> px</td>
+						<td></td>
+					</tr>
+					</tbody>
+				</table>
+
+				<script type="text/javascript" src="<?php echo rtrim(Request::root(true), '/'); ?>/core/assets/js/jquery.fileuploader.js"></script>
+				<script type="text/javascript">
+					String.prototype.nohtml = function () {
+						if (this.indexOf('?') == -1) {
+							return this + '?no_html=1';
+						} else {
+							return this + '&no_html=1';
+						}
+					};
+					jQuery(document).ready(function($){
+						if ($("#ajax-uploader").length) {
+							var uploader = new qq.FileUploader({
+								element: $("#ajax-uploader")[0],
+								action: $("#ajax-uploader").attr("data-action"),
+								multiple: true,
+								debug: true,
+								template: '<div class="qq-uploader">' +
+									'<div class="qq-upload-button"><span><?php echo Lang::txt('COM_STOREFRONT_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
+									'<div class="qq-upload-drop-area"><span><?php echo Lang::txt('COM_STOREFRONT_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
+									'<ul class="qq-upload-list"></ul>' +
+									'</div>',
+								onComplete: function(id, file, response) {
+									if (response.success) {
+										$('#img-display').attr('src', '..' + response.directory + '/' + response.file);
+										$('#img-name').text(response.file);
+										$('#img-size').text(response.size);
+										$('#img-width').text(response.width);
+										$('#img-height').text(response.height);
+										$('#currentfile').val(response.imgId);
+
+										$('#img-delete').show();
+									}
+								}
+							});
+						}
+						$('#img-delete').on('click', function (e) {
+							e.preventDefault();
+							var el = $(this);
+							var currentfileVal = $('#currentfile').val();
+							$.getJSON(el.attr('href').nohtml(), {currentfile: currentfileVal}, function(response) {
+								if (response.success) {
+									$('#img-display').attr('src', '<?php echo rtrim(Request::root(true), '/'); ?>/core/components/com_storefront/site/assets/img/noimage.png');
+									$('#img-name').text('[ none ]');
+									$('#img-size').text('0');
+									$('#img-width').text('0');
+									$('#img-height').text('0');
+								}
+								el.hide();
+							});
+						});
+					});
+				</script>
+				<?php
+			} else {
+				echo '<p class="warning">'.Lang::txt('COM_STOREFRONT_PICTURE_ADDED_LATER').'</p>';
+			}
+			?>
+		</fieldset>
 	</div>
 	<div class="col span5">
 		<table class="meta">
@@ -264,6 +405,23 @@ if (empty($this->meta->qtyTxt))
 		}
 		?>
 
+		<fieldset class="adminform">
+			<legend><span>External checkout</span></legend>
+
+			<div class="input-wrap">
+				<label for="pExternalCheckoutURL">External checkout URL:</label>
+				<input type="text" name="fields[pExternalCheckoutURL]" id="pExternalCheckoutURL" size="30" maxlength="500" value="<?php echo $this->escape(stripslashes($this->row->getExternalCheckoutURL())); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="pExternalCheckoutURL">External checkout provider:</label>
+				<input type="text" name="fields[pExternalCheckoutProvider]" id="pExternalCheckoutProvider" size="30" maxlength="500" value="<?php echo $this->escape(stripslashes($this->row->getExternalCheckoutProvider())); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="pExternalCheckoutURL">External checkout ID:</label>
+				<input type="text" name="fields[pExternalCheckoutID]" id="pExternalCheckoutID" size="30" maxlength="500" value="<?php echo $this->escape(stripslashes($this->row->getExternalCheckoutID())); ?>" />
+			</div>
+		</fieldset>
+
 		<?php
 		if ($this->optionGroups->total())
 		{
@@ -304,147 +462,6 @@ if (empty($this->meta->qtyTxt))
 			<?php
 		}
 		?>
-
-		<fieldset class="adminform">
-			<legend><span><?php echo Lang::txt('Image'); ?></span></legend>
-
-			<?php
-			if ($this->row->getId()) {
-				$img = $this->row->getImage();
-				if (!empty($img))
-				{
-					$image = stripslashes($img->imgName);
-					$pics = explode(DS, $image);
-					$file = end($pics);
-				}
-				else {
-					$image = false;
-					$file = false;
-					$img = new \stdClass();
-					$img->imgId = null;
-				}
-				?>
-				<div class="uploader-wrap">
-					<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&task=upload&type=product&id=' . $this->row->getId() . '&no_html=1&' . Session::getFormToken() . '=1'); ?>">
-						<noscript>
-							<iframe height="350" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&tmpl=component&file=' . $file . '&type=product&id=' . $this->row->getId()); ?>"></iframe>
-						</noscript>
-					</div>
-				</div>
-			<?php
-			$width = 0;
-			$height = 0;
-			$this_size = 0;
-			$pathl = DS . trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS . $this->row->getId();
-
-			if ($image && file_exists(PATH_APP . $pathl . DS . $file))
-			{
-				$this_size = filesize(PATH_APP . $pathl . DS . $file);
-				list($width, $height, $type, $attr) = getimagesize(PATH_APP . $pathl . DS . $file);
-				$pic  = $file;
-				$path = '/app/' . $pathl;
-			}
-			else
-			{
-				$image = false;
-				$pic = 'noimage.png';
-				$path = dirname(dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__))))) . '/site/assets/img' . DS;
-			}
-			?>
-				<div id="img-container">
-					<img id="img-display" src="<?php echo $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_STOREFRONT_PRODUCT_IMAGE'); ?>" />
-					<input type="hidden" name="currentfile" id="currentfile" value="<?php echo $img->imgId; ?>" />
-				</div>
-
-				<table class="formed">
-					<tbody>
-					<tr>
-						<th><?php echo Lang::txt('COM_STOREFRONT_FILE'); ?>:</th>
-						<td>
-							<span id="img-name"><?php echo $image; ?></span>
-						</td>
-						<td>
-							<a id="img-delete <?php echo $image ? '' : 'hide'; ?>"
-							   href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&tmpl=component&task=remove&type=product&id=' . $this->row->getId() . '&' . Session::getFormToken() . '=1'); ?>"
-							   title="<?php echo Lang::txt('Delete'); ?>">[ x ]</a>
-						</td>
-					</tr>
-					<tr>
-						<th><?php echo Lang::txt('COM_STOREFRONT_PICTURE_SIZE'); ?>:</th>
-						<td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></span></td>
-						<td></td>
-					</tr>
-					<tr>
-						<th><?php echo Lang::txt('COM_STOREFRONT_PICTURE_WIDTH'); ?>:</th>
-						<td><span id="img-width"><?php echo $width; ?></span> px</td>
-						<td></td>
-					</tr>
-					<tr>
-						<th><?php echo Lang::txt('COM_STOREFRONT_PICTURE_HEIGHT'); ?>:</th>
-						<td><span id="img-height"><?php echo $height; ?></span> px</td>
-						<td></td>
-					</tr>
-					</tbody>
-				</table>
-
-				<script type="text/javascript" src="<?php echo rtrim(Request::root(true), '/'); ?>/core/assets/js/jquery.fileuploader.js"></script>
-				<script type="text/javascript">
-					String.prototype.nohtml = function () {
-						if (this.indexOf('?') == -1) {
-							return this + '?no_html=1';
-						} else {
-							return this + '&no_html=1';
-						}
-					};
-					jQuery(document).ready(function($){
-						if ($("#ajax-uploader").length) {
-							var uploader = new qq.FileUploader({
-								element: $("#ajax-uploader")[0],
-								action: $("#ajax-uploader").attr("data-action"),
-								multiple: true,
-								debug: true,
-								template: '<div class="qq-uploader">' +
-								'<div class="qq-upload-button"><span><?php echo Lang::txt('COM_STOREFRONT_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
-								'<div class="qq-upload-drop-area"><span><?php echo Lang::txt('COM_STOREFRONT_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
-								'<ul class="qq-upload-list"></ul>' +
-								'</div>',
-								onComplete: function(id, file, response) {
-									if (response.success) {
-										$('#img-display').attr('src', '..' + response.directory + '/' + response.file);
-										$('#img-name').text(response.file);
-										$('#img-size').text(response.size);
-										$('#img-width').text(response.width);
-										$('#img-height').text(response.height);
-										$('#currentfile').val(response.imgId);
-
-										$('#img-delete').show();
-									}
-								}
-							});
-						}
-						$('#img-delete').on('click', function (e) {
-							e.preventDefault();
-							var el = $(this);
-							var currentfileVal = $('#currentfile').val();
-							$.getJSON(el.attr('href').nohtml(), {currentfile: currentfileVal}, function(response) {
-								if (response.success) {
-									$('#img-display').attr('src', '<?php echo rtrim(Request::root(true), '/'); ?>/core/components/com_storefront/site/assets/img/noimage.png');
-									$('#img-name').text('[ none ]');
-									$('#img-size').text('0');
-									$('#img-width').text('0');
-									$('#img-height').text('0');
-								}
-								el.hide();
-							});
-						});
-					});
-				</script>
-				<?php
-			} else {
-				echo '<p class="warning">'.Lang::txt('COM_STOREFRONT_PICTURE_ADDED_LATER').'</p>';
-			}
-			?>
-		</fieldset>
 
 	</div>
 	</div>
