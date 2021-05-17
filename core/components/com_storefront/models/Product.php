@@ -748,7 +748,7 @@ class Product
 	 */
 	public function setExternalCheckoutURL($externalCheckoutURL)
 	{
-		if (!empty($externalCheckoutURL) && filter_var($externalCheckoutURL, FILTER_VALIDATE_URL)  === FALSE)
+		if (!empty($externalCheckoutURL) && filter_var($externalCheckoutURL, FILTER_VALIDATE_URL) === false)
 		{
 			$this->addMessage('The external URL is not valid.');
 			return false;
