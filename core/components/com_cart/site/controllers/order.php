@@ -7,9 +7,6 @@
 
 namespace Components\Cart\Site\Controllers;
 
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'CurrentCart.php';
-require_once dirname(dirname(__DIR__)) . DS . 'lib' . DS . 'cartmessenger' . DS . 'CartMessenger.php';
-
 use Components\Cart\Models\Cart;
 use Components\Cart\Models\CurrentCart;
 use Filesystem;
@@ -18,7 +15,9 @@ use Route;
 use Event;
 use Lang;
 use App;
-use Components\Cart\Lib\CartMessenger\Cartmessenger as CartMessenger;
+
+require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'CurrentCart.php';
+require_once dirname(dirname(__DIR__)) . DS . 'lib' . DS . 'cartmessenger' . DS . 'CartMessenger.php';
 
 /**
  * Cart order controller class
@@ -211,7 +210,7 @@ class Order extends ComponentController
 		}
 
 		// Initialize logger
-		$logger = new CartMessenger('Payment Postback');
+		$logger = new \CartMessenger('Payment Postback');
 
 		// Get the plugins working
 		$pay = Event::trigger('cart.onPostback', array($_POST, User::getRoot()));
@@ -258,7 +257,7 @@ class Order extends ComponentController
 		Cart::completeTransaction($tInfo, $paymentInfo);
 
 		// Send emails to customer and admin
-		$logger = new CartMessenger('Complete order');
+		$logger = new \CartMessenger('Complete order');
 		$logger->emailOrderComplete($tInfo);
 
 		return true;

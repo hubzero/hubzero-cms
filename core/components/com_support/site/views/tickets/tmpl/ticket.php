@@ -17,6 +17,7 @@ $this->css()
 $status = $this->row->status->get('title');
 
 $unknown  = 1;
+//$name     = Lang::txt('COM_SUPPORT_UNKNOWN');
 $usertype = Lang::txt('COM_SUPPORT_UNKNOWN');
 
 $protocol = $_SERVER['HTTPS'] == '' ? 'http://' : 'https://';
@@ -50,6 +51,33 @@ else
 
 $prev = null;
 $next = null;
+/*
+$sq = \Components\Support\Models\Query::oneOrNew($this->filters['show']);
+if ($sq->conditions)
+{
+	$this->filters['sort']    = $sq->sort;
+	$this->filters['sortdir'] = $sq->sort_dir;
+	if ($rows = \Components\Support\Models\Ticket::allWithQuery($sq, $this->filters))
+	{
+		foreach ($rows as $key => $row)
+		{
+			if ($row->id == $this->row->get('id'))
+			{
+				if (isset($rows[$key - 1]))
+				{
+					$next = $rows[$key - 1];
+				}
+				if (isset($rows[$key + 1]))
+				{
+					$prev = $rows[$key + 1];
+				}
+				break;
+			}
+		}
+		unset($rows);
+	}
+}
+*/
 $cc = array();
 ?>
 <header id="content-header">
@@ -187,6 +215,9 @@ $cc = array();
 			<p class="<?php echo (!$this->row->isOpen()) ? 'closed' : 'open'; ?>">
 				<strong><?php echo (!$this->row->isOpen()) ? Lang::txt('COM_SUPPORT_TICKET_STATUS_CLOSED_TICKET') : Lang::txt('COM_SUPPORT_TICKET_STATUS_OPEN_TICKET'); ?></strong>
 			</p>
+			<?php if (!$this->row->isOpen()) { ?>
+				<p><?php echo Lang::txt('COM_SUPPORT_NOTE_TO_REOPEN'); ?></p>
+			<?php } ?>
 		</div><!-- / .entry-status -->
 
 		<div class="ticket-watch">
@@ -221,13 +252,16 @@ $cc = array();
 				{
 					$cc = $comment->changelog()->get('cc');
 				}
-
+				// Is the comment private?
+				// If so, does the user have access to read private comments?
+				//   If not, skip it
 				if (!$this->row->access('read', 'private_comments') && $comment->isPrivate())
 				{
 					continue;
 				}
 				$i++;
 
+				// Set the CSS class
 				if ($comment->isPrivate())
 				{
 					$access = 'private';

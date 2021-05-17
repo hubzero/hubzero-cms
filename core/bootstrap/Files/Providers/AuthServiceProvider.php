@@ -42,7 +42,8 @@ class AuthServiceProvider extends Middleware
 
 		if (!$moderator->validateToken())
 		{
-			header('HTTP/1.1 401 You don\'t have permission to do this');
+			header('HTTP/1.1 403 Forbidden');
+			print "<h2>Forbidden</h2>Your request is missing credentials or has bad credentials.";
 			exit();
 		}
 

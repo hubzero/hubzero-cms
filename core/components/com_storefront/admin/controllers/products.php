@@ -203,7 +203,7 @@ class Products extends AdminController
 			$pType = $this->view->row->getTypeInfo()->name;
 		}
 		$this->view->metaNeeded = false;
-
+		// Only software needs meta
 		if ($pType == 'Software Download')
 		{
 			$this->view->metaNeeded = true;
@@ -211,10 +211,6 @@ class Products extends AdminController
 			// Get number of downloads
 			$downloaded = CartDownload::countProductDownloads($id);
 			$this->view->downloaded = $downloaded;
-		}
-		elseif ($pType == 'Group Membership')
-		{
-			$this->view->metaNeeded = true;
 		}
 
 		// Get meta

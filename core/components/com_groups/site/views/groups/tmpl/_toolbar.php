@@ -32,11 +32,6 @@ if ($this->group->isSuperGroup())
 ?>
 
 <ul <?php echo $this->classOrId; ?>>
-	<?php foreach ($this->toolbarOptions as $k => $toolbarOption) : ?>
-		<li>
-			<?php echo $toolbarOption['html']; ?>
-		</li>
-	<?php endforeach; ?>
 	<?php if (User::isGuest() == 1) : ?>
 		<li>
 			<a class="login btn" href="<?php echo $loginLink; ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_LOGIN'); ?></a>

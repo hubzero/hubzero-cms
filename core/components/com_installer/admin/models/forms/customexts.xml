@@ -25,6 +25,20 @@
 		/>
 
 		<field
+			name="git_branch"
+			type="text"
+			label="COM_INSTALLER_CUSTOMEXTS_EDIT_GIT_BRANCH"
+			description="COM_INSTALLER_CUSTOMEXTS_EDIT_GIT_BRANCH_TIP"
+		/>
+
+		<field
+			name="git_tag"
+			type="text"
+			label="COM_INSTALLER_CUSTOMEXTS_EDIT_GIT_TAG"
+			description="COM_INSTALLER_CUSTOMEXTS_EDIT_GIT_TAG_TIP"
+		/>
+
+		<field
 			name="alias"
 			type="text"
 			label="COM_INSTALLER_CUSTOMEXTS_EDIT_ALIAS"

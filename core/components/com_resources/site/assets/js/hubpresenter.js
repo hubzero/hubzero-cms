@@ -19,7 +19,6 @@ HUB.Presenter = {
 
 	loading: function()
 	{
-		flash = false;
 		seeking = false;
 		mouseover = false;
 		track = null;
@@ -38,18 +37,12 @@ HUB.Presenter = {
 		jQ('<div id="overlayer"></div>').appendTo(document.body);
 
 		//can we play HTML5 video
-		flash = (!!document.createElement('video').canPlayType) ? false : true;
-
-		//is flash installed
-		flash_installed = (FlashDetect.installed) ? true : false;
+		if(!document.createElement('video').canPlayType) {
+			HUB.Presenter.updateBrowser();
+		}
 
 		//is this audio
 		audio = (jQ("#player").get(0).tagName == 'AUDIO') ? true : false;
-
-		//if we are using flash and its an audio clip get the duration
-		if(flash && audio) {
-			flash_audio_duration = jQ("#flowplayer").attr("duration");
-		}
 
 		//start presentation
 		HUB.Presenter.init();
@@ -68,10 +61,7 @@ HUB.Presenter = {
 		//remove the overlay
 		jQ('#overlayer').remove();
 
-		//play video
-		if(!flash) {
-			HUB.Presenter.playPause(false);
-		}
+		HUB.Presenter.playPause(false);
 
 		// video preview
 		HUB.Presenter.previews();
@@ -96,16 +86,8 @@ HUB.Presenter = {
 		//player
 		HUB.Presenter.player();
 
-		//slide Player
-		HUB.Presenter.slidePlayer();
-
 		//control bar
 		HUB.Presenter.controlBar();
-
-		//show download link for those who dont have flash
-		if(!flash_installed && flash) {
-			HUB.Presenter.noFlash();
-		}
 
 		//set the volume to 3/4 initially
 		HUB.Presenter.setVolume(0.75);
@@ -130,97 +112,40 @@ HUB.Presenter = {
 
 	player: function()
 	{
-		//start media tracking if not flash (start for flash after load)
-		if(!flash)
-		{
-			HUB.Presenter.startMediaTracking();
-		}
+		//start media tracking
+		HUB.Presenter.startMediaTracking();
 
-		if(!flash) {
-			jQ('#player').bind({
-				timeupdate: function() {
-					if(!seeking)
-					{
-						HUB.Presenter.syncSlides();
-						HUB.Presenter.updateMediaTracking();
-					}
-				},
-				volumechange: function( e ) {
-					HUB.Presenter.syncVolume();
-				},
-				canplay: function( e ) {
-					HUB.Presenter.doneLoading();
-					HUB.Presenter.locationHash();
-				},
-				seeked: function( e ) {
-					seeking = true;
-					var timeout = setTimeout("seeking=false;", 1000);
-				},
-				ended: function( e ) {
-					HUB.Presenter.endMediaTracking();
-					HUB.Presenter.replay();
-				},
-				error: function(e) {
-					throw "An error occurred while trying to load the media.";
-				},
-				stalled: function(e) {
-					throw "For some reason the player stalled while trying to load the media. Verify the media location.";
+		jQ('#player').bind({
+			timeupdate: function() {
+				if(!seeking)
+				{
+					HUB.Presenter.syncSlides();
+					HUB.Presenter.updateMediaTracking();
 				}
-			});
-		} else {
-			//flash fallback stuff
-			if (audio) {
-				flowplayer("flowplayer", {src: "/core/components/com_resources/site/assets/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, {
-					clip: {
-						duration: flash_audio_duration
-					},
-					plugins: {
-						controls: null
-					},
-					onStart: function() {
-						HUB.Presenter.doneLoading();
-						HUB.Presenter.flashSyncSlides();
-						HUB.Presenter.syncVolume();
-						HUB.Video.startMediaTracking();
-					},
-					onFinish: function() {
-						HUB.Presenter.endMediaTracking();
-						HUB.Presenter.replay();
-					}
-				});
-			} else {
-				flowplayer("flowplayer", {src: "/core/components/com_resources/site/assets/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, {
-					plugins: {
-						controls: null
-					},
-					onStart: function() {
-						HUB.Presenter.doneLoading();
-						HUB.Presenter.syncVolume();
-						HUB.Presenter.flashSyncSlides();
-						HUB.Video.startMediaTracking();
-					},
-					onFinish: function() {
-						HUB.Presenter.endMediaTracking();
-						HUB.Presenter.replay();
-					}
-				});
-			}
-
-		}
-	},
-
-	//-----
-
-	slidePlayer: function()
-	{
-		flowplayer(".flowplayer_slide", {src: "/core/components/com_resources/site/assets/swf/flowplayer-3.2.7.swf", wmode: "transparent"}, {
-			plugins: {
-				controls: null
+			},
+			volumechange: function( e ) {
+				HUB.Presenter.syncVolume();
+			},
+			canplay: function( e ) {
+				HUB.Presenter.doneLoading();
+				HUB.Presenter.locationHash();
+			},
+			seeked: function( e ) {
+				seeking = true;
+				var timeout = setTimeout("seeking=false;", 1000);
+			},
+			ended: function( e ) {
+				HUB.Presenter.endMediaTracking();
+				HUB.Presenter.replay();
+			},
+			error: function(e) {
+				throw "An error occurred while trying to load the media.";
+			},
+			stalled: function(e) {
+				throw "For some reason the player stalled while trying to load the media. Verify the media location.";
 			}
 		});
 	},
-
-	//-----
 
 	showSlide: function( slide )
 	{
@@ -251,13 +176,11 @@ HUB.Presenter = {
 
 		//if the slide is video play video
 		if(slide_child_type == 'VIDEO') {
-			if(!flash) {
-				// get slide video
-				// restart video & play
-				var videoSlide = slide_child.first().get(0);
-				videoSlide.currentTime = 0;
-				videoSlide.play();
-			}
+			// get slide video
+			// restart video & play
+			var videoSlide = slide_child.first().get(0);
+			videoSlide.currentTime = 0;
+			videoSlide.play();
 		}
 
 		//get the list item we want to go to
@@ -363,16 +286,6 @@ HUB.Presenter = {
 				}
 			}
 		}
-	},
-
-	//-----
-
-	flashSyncSlides: function()
-	{
-		var flashSyncSlides = setInterval(function() {
-			HUB.Presenter.syncSlides();
-			HUB.Presenter.updateMediaTracking();
-		}, 1000);
 	},
 
 	//----------------------------------------
@@ -527,7 +440,7 @@ HUB.Presenter = {
 		});
 
 		//if we have audio only dont display switch button
-		if(audio || flash) {
+		if(audio) {
 			jQ("#switch").css("display","none");
 		}
 
@@ -538,7 +451,7 @@ HUB.Presenter = {
 		});
 
 		// link video
-		jQ('#link').bind('hover', function(e) {
+		jQ('#link').on('mouseover', function(e) {
 			e.preventDefault();
 			HUB.Presenter.linkVideo();
 		});
@@ -677,13 +590,15 @@ HUB.Presenter = {
 		if( paused ) {
 			jQ("#play-pause").removeClass('playing').addClass('paused');
 			jQ('#presenter-content').addClass('paused');
-			if( clicking )
+			if( clicking ) {
 				player.play();
+			}
 		} else {
 			jQ("#play-pause").removeClass('paused').addClass('playing');
 			jQ('#presenter-content').removeClass('paused');
-			if( clicking )
+			if( clicking ) {
 				player.pause();
+			}
 		}
 
 		// pause play slide videos
@@ -775,7 +690,21 @@ HUB.Presenter = {
 
 	//-----
 
-	linkVideo: function(input)
+	linkVideo: function()
+	{
+		var url = HUB.Presenter.getTimestampUrl();
+
+		// set val and select
+		jQ('.link-controls input')
+			.val(url)
+			.on('click', function(event){
+				jQ(this).select();
+			});
+	},
+
+	//-----
+
+	getTimestampUrl: function()
 	{
 		var time_hash,
 			url = window.location.href,
@@ -799,12 +728,7 @@ HUB.Presenter = {
 		url = url.replace(/&time=\d{2}:\d{2}:\d{2}/, '');
 		url = url + time_hash;
 
-		// set val and select
-		jQ('.link-controls input')
-			.val(url)
-			.on('click', function(event){
-				jQ(this).select();
-			});
+		return url;
 	},
 
 	//-----
@@ -814,8 +738,10 @@ HUB.Presenter = {
 		if (parent.HUB.Resources)
 		{
 			jQ('.embed-popout').css('display', 'inline-block').on('click', function() {
-				var current = HUB.Presenter.formatTime(HUB.Presenter.getCurrent());
-				parent.HUB.Resources.popoutInlineHubpresnter(current);
+				var url = HUB.Presenter.getTimestampUrl();
+
+				window.open(url + '&auto-resume=true&tmpl=component', 'name', 'height=800,width=1100');
+				HUB.Presenter.getPlayer().pause();
 			});
 		}
 	},
@@ -858,8 +784,7 @@ HUB.Presenter = {
 		});
 
 		//sync the volume slider and player
-		if(!flash)
-			HUB.Presenter.syncVolume();
+		HUB.Presenter.syncVolume();
 	},
 
 	//----------------------------------------
@@ -1017,7 +942,7 @@ HUB.Presenter = {
 
 	//-----
 
-	noFlash: function()
+	updateBrowser: function()
 	{
 		//remove the overlay
 		jQ("#overlayer").remove();
@@ -1025,35 +950,26 @@ HUB.Presenter = {
 		jQ("#presenter-container").css("position","relative");
 
 		var noFlash = "<div id=\"no-flash\"> \
-					       <h2>You Must Install the Flash Plugin</h2> \
-						   <p><a id=\"download\" title=\"Download Flash Player\" rel=\"external\" href=\"http://get.adobe.com/flashplayer\">1. Download Flash Here</a></p> \
-						   <p><a id=\"refresh\" title=\"Refresh the Player\" href=\"#\">2. Refresh The Player</a></p> \
+					       <h2>Please upgrade your browser</h2> \
+						   <p>This browser does not support video playback.</p> \
+						   <p>Please consider upgrading your browser to the latest version or getting a new modern browser: <a href='https://www.mozilla.org/en-US/firefox/' target='_blank' rel='noopener noreferrer'>Firefox</a>, <a href='https://www.google.com/chrome/' target='_blank' rel='noopener noreferrer'>Chrome</a></p> \
 						</div>";
 
 		jQ( noFlash ).hide().appendTo("#presenter-container").fadeIn("slow");
-
-		jQ("#refresh").live("click", function(e) {
-			window.location = window.location;
-			jQ("#no-flash").remove();
-			jQ("#presenter-container").css("position","static");
-			e.preventDefault();
-		});
-
-
 	},
 
 	//-----
 
 	getPlayer: function()
 	{
-		return (!flash) ? jQ("#player").get(0) : flowplayer("flowplayer");
+		return jQ("#player").get(0);
 	},
 
 	//-----
 
 	isPaused: function()
 	{
-		return (!flash) ? jQ("#player").get(0).paused : flowplayer("flowplayer").isPaused();
+		return jQ("#player").get(0).paused;
 	},
 
 	//-----
@@ -1076,27 +992,22 @@ HUB.Presenter = {
 
 	getCurrent: function()
 	{
-		return current = (!flash) ? jQ("#player").get(0).currentTime : flowplayer("flowplayer").getTime();
+		return current = jQ("#player").get(0).currentTime;
 	},
 
 	//-----
 
 	getDuration: function()
 	{
-		return duration = (!flash) ? jQ("#player").get(0).duration : flowplayer("flowplayer").getClip().duration;
+		return duration = jQ("#player").get(0).duration;
 	},
 
 	//-----
 
 	seek: function( time )
 	{
-		if(!flash) {
-			jQ('#player').get(0).currentTime = time;
-			HUB.Presenter.syncSlides();
-		} else {
-			flowplayer("flowplayer").seek(time);
-			HUB.Presenter.flashSyncSlides();
-		}
+		jQ('#player').get(0).currentTime = time;
+		HUB.Presenter.syncSlides();
 	},
 
 	//-----
@@ -1159,18 +1070,14 @@ HUB.Presenter = {
 
 	setVolume: function( level )
 	{
-		if(!flash) {
-			jQ('#player').get(0).volume = level;
-		} else {
-			flowplayer("flowplayer").setVolume( level * 100 );
-		}
+		jQ('#player').get(0).volume = level;
 	},
 
 	//-----
 
 	getVolume: function()
 	{
-		return (!flash) ? jQ('#player').get(0).volume : flowplayer("flowplayer").getVolume() / 100;
+		return jQ('#player').get(0).volume;
 	},
 
 	//-----
@@ -1179,21 +1086,25 @@ HUB.Presenter = {
 	{
 		var icon = jQ('#volume');
 
-		if(volume == 0)
+		if(volume == 0) {
 			icon.removeClass('low medium high')
-				.addClass('none');
+				.addClass('mute');
+		}
 
-		if( volume > 0 && volume < 33)
-			icon.removeClass('zero medium high')
+		if( volume > 0 && volume < 33) {
+			icon.removeClass('mute medium high')
 				.addClass('low');
+		}
 
-		if( volume > 33 && volume < 66)
-			icon.removeClass('zero low high')
+		if( volume > 33 && volume < 66) {
+			icon.removeClass('mute low high')
 				.addClass('medium');
+		}
 
-		if( volume > 66)
-			icon.removeClass('zero low medium')
+		if( volume > 66) {
+			icon.removeClass('mute low medium')
 				.addClass('high');
+		}
 	},
 
 	locationHash: function()
@@ -1299,7 +1210,7 @@ HUB.Presenter = {
 
 			//stop clicks on resume
 			jQ("#resume").on('click',function(event){
-				if(event.srcElement.id != 'restart-video' && event.srcElement.id != 'resume-video')
+				if(event.target.id != 'restart-video' && event.target.id != 'resume-video')
 				{
 					event.preventDefault();
 				}
@@ -1364,18 +1275,10 @@ HUB.Presenter = {
 
 			//get the resource ID and current player time
 			var resourceId, playerTime, playerDuration;
-			if(!flash)
-			{
-				resourceId = jQ(HUB.Presenter.getPlayer()).attr('data-mediaid');
-				playerTime = HUB.Presenter.getCurrent();
-				playerDuration = HUB.Presenter.getDuration();
-			}
-			else
-			{
-				resourceId = jQ("#"+HUB.Presenter.getPlayer().id()).attr('data-mediaid');
-				playerTime = HUB.Presenter.getCurrent();
-				playerDuration = HUB.Presenter.getDuration();
-			}
+
+			resourceId = jQ(HUB.Presenter.getPlayer()).attr('data-mediaid');
+			playerTime = HUB.Presenter.getCurrent();
+			playerDuration = HUB.Presenter.getDuration();
 
 			//craft post url
 			var component = 'resources';
@@ -1518,8 +1421,9 @@ HUB.Presenter = {
 			submit: 1,
 			onChange: function(hsb,hex,rgb,fromSetColor)
 			{
-				if(!fromSetColor)
+				if(!fromSetColor) {
 					jQ('.subtitle-settings-preview .test').css('color', '#' + hex);
+				}
 			},
 			onSubmit: function(hsb,hex,rgb,fromSetColor)
 			{
@@ -1537,8 +1441,9 @@ HUB.Presenter = {
 			submit: 1,
 			onChange: function(hsb,hex,rgb,fromSetColor)
 			{
-				if(!fromSetColor)
+				if(!fromSetColor) {
 					jQ('.subtitle-settings-preview .test').css('background-color', '#' + hex);
+				}
 			},
 			onSubmit: function(hsb,hex,rgb,fromSetColor)
 			{
@@ -1706,7 +1611,7 @@ HUB.Presenter = {
 
 			//get the sub text
 			if(parts.length > 3) {
-				for(i=2,text="";i<parts.length;i++) {
+				for(i=2,text=""; i<parts.length; i++) {
 					text += parts[i] + "\n";
 				}
 			} else {
@@ -1975,7 +1880,7 @@ HUB.Presenter = {
 		if( time ) {
 			parts = time.split(':');
 
-			for( i=0; i < parts.length; i++ ) {
+			for(i=0; i < parts.length; i++) {
 				seconds = seconds * 60 + parseFloat(parts[i].replace(',', '.'))
 			}
 		}
@@ -1990,7 +1895,7 @@ HUB.Presenter = {
 		var first = string.substr(0, 1);
 		return first.toUpperCase() + string.substr(1);
 	}
-};
+}
 
 //---------------------------------------------------------
 //	Start HUBpresenter When Document is Ready
@@ -1999,8 +1904,9 @@ HUB.Presenter = {
 var jQ = $;
 
 jQ(document).ready(function(e) {
-	if( jQ("#presenter-header").length )
+	if( jQ("#presenter-header").length ) {
 		HUB.Presenter.loading();
+	}
 });
 
 //-----
@@ -2025,4 +1931,4 @@ Johann Burkard
 <http://johannburkard.de>
 <mailto:jb@eaio.com>
 */
-jQuery.fn.highlight=function(e){function t(e,n){var r=0;if(e.nodeType==3){var i=e.data.toUpperCase().indexOf(n);if(i>=0){var s=document.createElement("span");s.className="highlight";var o=e.splitText(i);var u=o.splitText(n.length);var a=o.cloneNode(true);s.appendChild(a);o.parentNode.replaceChild(s,o);r=1}}else if(e.nodeType==1&&e.childNodes&&!/(script|style)/i.test(e.tagName)){for(var f=0;f<e.childNodes.length;++f){f+=t(e.childNodes[f],n)}}return r}return this.length&&e&&e.length?this.each(function(){t(this,e.toUpperCase())}):this};jQuery.fn.removeHighlight=function(){return this.find("span.highlight").each(function(){this.parentNode.firstChild.nodeName;with(this.parentNode){replaceChild(this.firstChild,this);normalize()}}).end()}
+jQuery.fn.highlight=function(e){function t(e,n){var r=0;if(e.nodeType==3){var i=e.data.toUpperCase().indexOf(n);if(i>=0){var s=document.createElement("span");s.className="highlight";var o=e.splitText(i);var u=o.splitText(n.length);var a=o.cloneNode(true);s.appendChild(a);o.parentNode.replaceChild(s,o);r=1}}else if(e.nodeType==1&&e.childNodes&&!/(script|style)/i.test(e.tagName)){for(var f=0; f<e.childNodes.length; ++f){f+=t(e.childNodes[f],n)}}return r}return this.length&&e&&e.length?this.each(function(){t(this,e.toUpperCase())}):this};jQuery.fn.removeHighlight=function(){return this.find("span.highlight").each(function(){this.parentNode.firstChild.nodeName;with(this.parentNode){replaceChild(this.firstChild,this);normalize()}}).end()}

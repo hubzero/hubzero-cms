@@ -46,7 +46,7 @@ class plgSystemCache extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		if (Notify::any() || !App::has('cache'))
+		if (!App::has('cache'))
 		{
 			return;
 		}

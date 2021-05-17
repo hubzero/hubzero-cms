@@ -10,8 +10,8 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-Toolbar::title(Lang::txt('COM_GROUPS'), 'groups.png');
-Toolbar::custom('display', 'back', 'back', 'COM_GROUPS_BACK', false);
+Toolbar::title(Lang::txt('COM_INSTALLER'), 'groups.png');
+Toolbar::custom('display', 'back', 'back', 'COM_INSTALLER_CUSTOMEXTS_BACK', false);
 
 Html::behavior('tooltip');
 ?>

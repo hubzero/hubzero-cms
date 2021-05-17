@@ -1312,7 +1312,7 @@ class connections
 		$metadata = Event::trigger('metadata.onMetadataGet', [$entity]);
 
 		$view->item     = $entity;
-		$view->metadata = $metadata[0];
+		$view->metadata = isset($metadata[0]) ? $metadata[0] : array();
 		$view->option   = $this->_option;
 		$view->model    = $this->model;
 		$view->ajax     = 1;
