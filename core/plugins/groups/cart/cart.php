@@ -62,13 +62,13 @@ class plgGroupsCart extends \Hubzero\Plugin\Plugin
 		$warehouse = new Warehouse();
 		$product = $warehouse->getGroupProduct($group->get('gidNumber'));
 
-		if($product && !$isManager &!$isMember)
+		if ($product && !$isManager &!$isMember)
 		{
 			if (User::isGuest())
 			{
 				$arr['html'] = 'Get access for ' . $product->sPrice;
 			}
-			elseif(empty($product->externalCheckoutURL))
+			elseif (empty($product->externalCheckoutURL))
 			{
 				$arr['html'] = '<form action="/cart/" id="frm" method="post">
 				<input type="hidden" name="controller" value="cart">
@@ -83,4 +83,3 @@ class plgGroupsCart extends \Hubzero\Plugin\Plugin
 	}
 
 }
-
