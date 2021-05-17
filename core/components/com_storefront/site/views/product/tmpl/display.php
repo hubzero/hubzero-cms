@@ -143,13 +143,21 @@ if (!empty($this->notifications))
 						?>
 					</div>
 
-					<?php if ($this->inStock && $this->productAvailable) { ?>
+					<?php
+					$externalCheckoutURL = $this->product->pExternalCheckoutURL;
+					?>
+
+					<?php if ($this->inStock && $this->productAvailable && empty($externalCheckoutURL)): ?>
 						<p class="submit">
 							<input type="submit" value="Add to cart"
 								   class="btn <?php  echo $addToCartEnabled ? 'enabled' : 'disabled'; ?>"
 								   name="addToCart" id="addToCart" />
 						</p>
-					<?php } ?>
+					<?php elseif ($this->inStock && $this->productAvailable && !empty($externalCheckoutURL)): ?>
+						<p class="submit">
+							<a class="btn" target="_blank" rel="noopener noreferrer" href="<?php echo $externalCheckoutURL; ?>">Purchase at <?php echo parse_url($externalCheckoutURL, PHP_URL_HOST); ?></a>
+						</p>
+					<?php endif; ?>
 				</form>
 
 				<h3><?php echo $this->product->pTagline; ?></h3>
