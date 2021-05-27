@@ -44,8 +44,6 @@ class Migration20180516000000ComNewsletter extends Base
 		if ($this->db->tableExists('#__newsletter_mailinglists') &&
 		    $this->db->tableHasField('#__newsletter_mailinglists', 'guest'))
 		{
-			$query = "DROP TABLE IF EXISTS `#__newsletter_mailinglists`;";
-
 			$query = "DELETE FROM `#__newsletter_mailinglists` WHERE `guest`='1';";
 			$this->db->setQuery($query);
 			$this->db->query();
