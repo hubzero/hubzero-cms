@@ -165,7 +165,6 @@ jQuery(document).ready(function($){
 	// Mobile device fix
 	$('#toolbar ul').on('click', function(e){
 		$(this).toggleClass('active');
-		e.preventDefault();
 	});
 
 	$('.main-navigation li.node>.toggler').on('click', function(e){
