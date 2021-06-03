@@ -2384,7 +2384,7 @@ class WikiParser
 
 		for ($i = 0; $i < $shorter; ++$i)
 		{
-			if ($st1{$i} != $st2{$i})
+			if ($st1[$i] != $st2[$i])
 			{
 				break;
 			}
@@ -2748,7 +2748,7 @@ class WikiParser
 				}
 				else if (!$inBlockElem && !$this->mInPre)
 				{
-					if (isset($t{0}) && ' ' == $t{0} and ($this->mLastSection == 'pre' or trim($t) != ''))
+					if (isset($t[0]) && ' ' == $t[0] and ($this->mLastSection == 'pre' or trim($t) != ''))
 					{
 						// pre
 						if ($this->mLastSection != 'pre')

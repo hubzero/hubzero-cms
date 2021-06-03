@@ -68,7 +68,7 @@ class Detector implements DetectorInterface
 
 		foreach ($baba as $b)
 		{
-			if ((($b{0} == '/') && preg_match($b, $context))
+			if ((($b[0] == '/') && preg_match($b, $context))
 			 || (($b[0] != '/') && strpos($context, $b) !== false))
 			{
 				$spam += 10;
