@@ -181,16 +181,6 @@ class JApi extends JApplication
 	 */
 	public function unregister_long_arrays()
 	{
-		if (ini_get('register_long_arrays'))
-		{
-			unset($GLOBALS['HTTP_ENV_VARS']);
-			unset($GLOBALS['HTTP_POST_VARS']);
-			unset($GLOBALS['HTTP_GET_VARS']);
-			unset($GLOBALS['HTTP_COOKIE_VARS']);
-			unset($GLOBALS['HTTP_SERVER_VARS']);
-			unset($GLOBALS['HTTP_POST_FILES']);
-			unset($GLOBALS['HTTP_SESSION_VARS']);
-		}
 	}
 
 	/**
@@ -200,51 +190,6 @@ class JApi extends JApplication
 	 */
 	public function unregister_globals()
 	{
-		if (ini_get('register_globals'))
-		{
-			$variables_order = ini_get('variables_order');
-
-			if (stripos($variables_order, "E") !== false)
-			{
-				foreach ($_ENV as $key => $value)
-				{
-					unset($GLOBALS[$key]);
-				}
-			}
-
-			if (stripos($variables_order, "G") !== false)
-			{
-				foreach ($_GET as $key => $value)
-				{
-					unset($GLOBALS[$key]);
-				}
-			}
-
-			if (stripos($variables_order, "P") !== false)
-			{
-				foreach ($_POST as $key => $value)
-				{
-					unset($GLOBALS[$key]);
-				}
-			}
-
-			if (stripos($variables_order, "C") !== false)
-			{
-				foreach ($_COOKIE as $key => $value)
-				{
-					unset($GLOBALS[$key]);
-				}
-			}
-
-			if (stripos($variables_order, "S") !== false)
-			{
-				foreach ($_SERVER as $key => $value)
-				{
-					unset($GLOBALS[$key]);
-				}
-
-			}
-		}
 	}
 
 	/**
