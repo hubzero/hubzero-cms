@@ -110,7 +110,7 @@ class INI extends Base
 			$line = trim($line);
 
 			// Ignore empty lines and comments.
-			if (empty($line) || ($line{0} == ';'))
+			if (empty($line) || ($line[0] == ';'))
 			{
 				continue;
 			}
@@ -127,7 +127,7 @@ class INI extends Base
 					continue;
 				}
 			}
-			else if ($line{0} == '[')
+			else if ($line[0] == '[')
 			{
 				continue;
 			}

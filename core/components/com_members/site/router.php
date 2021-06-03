@@ -157,7 +157,7 @@ class Router extends Base
 					$vars['task'] = 'browse';
 				break;
 				default:
-					if (isset($segments[0]{0}) && $segments[0]{0} == 'n')
+					if (isset($segments[0][0]) && $segments[0][0] == 'n')
 					{
 						$vars['id'] = '-' . substr($segments[0], 1);
 					}

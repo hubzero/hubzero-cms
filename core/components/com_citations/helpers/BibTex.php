@@ -512,7 +512,7 @@ class Structures_BibTex
 			$arr = preg_split('#{#', $entry);
 			$ret['cite'] = trim($arr[1]);
 			$ret['type'] = strtolower(trim($arr[0]));
-			if ('@' == $ret['type']{0})
+			if ('@' == $ret['type'][0])
 			{
 				$ret['type'] = substr($ret['type'], 1);
 			}
@@ -574,10 +574,10 @@ class Structures_BibTex
 		if ($ret)
 		{
 			$entrycopy = trim($entry);
-			$lastchar  = $entrycopy{strlen($entrycopy)-1};
+			$lastchar  = $entrycopy[strlen($entrycopy)-1];
 			if (',' == $lastchar)
 			{
-				$lastchar = $entrycopy{strlen($entrycopy)-2};
+				$lastchar = $entrycopy[strlen($entrycopy)-2];
 			}
 			if ('"' == $lastchar)
 			{
