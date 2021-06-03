@@ -956,7 +956,7 @@ class JInstaller extends JAdapter
 				{
 					$query = trim($query);
 
-					if ($query != '' && $query{0} != '#')
+					if ($query != '' && $query[0] != '#')
 					{
 						$db->setQuery($query);
 
@@ -1138,7 +1138,7 @@ class JInstaller extends JAdapter
 								foreach ($queries as $query)
 								{
 									$query = trim($query);
-									if ($query != '' && $query{0} != '#')
+									if ($query != '' && $query[0] != '#')
 									{
 										$db->setQuery($query);
 

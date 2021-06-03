@@ -394,7 +394,7 @@ class JURI extends JObject
 		//$uri .= in_array('path', $parts) ? $this->_path : '';
 		if (in_array('path', $parts))
 		{
-			$uri .= (empty($uri) || (!empty($this->_path) && ($this->_path{0} == '/'))) ? $this->_path : '/'.$this->_path;
+			$uri .= (empty($uri) || (!empty($this->_path) && ($this->_path[0] == '/'))) ? $this->_path : '/'.$this->_path;
 		}
 		/* END: HUBzero [I forget why we have this] Related to WIP for special group handling */
 		$uri .= in_array('query', $parts) ? (!empty($query) ? '?' . $query : '') : '';

@@ -263,7 +263,7 @@ class JUtility
 		JLog::add('JUtility::return_bytes() is deprecated.', JLog::WARNING, 'deprecated');
 
 		$val = trim($val);
-		$last = strtolower($val{strlen($val) - 1});
+		$last = strtolower($val[strlen($val) - 1]);
 
 		switch ($last)
 		{

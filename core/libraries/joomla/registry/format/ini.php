@@ -114,7 +114,7 @@ class JRegistryFormatINI extends JRegistryFormat
 			$line = trim($line);
 
 			// Ignore empty lines and comments.
-			if (empty($line) || ($line{0} == ';'))
+			if (empty($line) || ($line[0] == ';'))
 			{
 				continue;
 			}
@@ -131,7 +131,7 @@ class JRegistryFormatINI extends JRegistryFormat
 					continue;
 				}
 			}
-			elseif ($line{0} == '[')
+			elseif ($line[0] == '[')
 			{
 				continue;
 			}

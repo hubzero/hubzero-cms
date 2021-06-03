@@ -61,7 +61,7 @@ class CharacterClass
 			$char = chr(0);
 		}
 
-		$char = $char{0};
+		$char = $char[0];
 
 		foreach (self::$classes as $class)
 		{

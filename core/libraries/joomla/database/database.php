@@ -1390,7 +1390,7 @@ abstract class JDatabase implements JDatabaseInterface
 			}
 			else
 			{
-				$parts[] = $q{0} . $part . $q{1};
+				$parts[] = $q[0] . $part . $q[1];
 			}
 		}
 
@@ -1464,7 +1464,7 @@ abstract class JDatabase implements JDatabaseInterface
 					break;
 				}
 				$l = $k - 1;
-				while ($l >= 0 && $sql{$l} == '\\')
+				while ($l >= 0 && $sql[$l] == '\\')
 				{
 					$l--;
 					$escaped = !$escaped;

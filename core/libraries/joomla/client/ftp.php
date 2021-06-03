@@ -1388,7 +1388,7 @@ class JFTP
 				$tmp_array = null;
 				if (@preg_match($regexp, $file, $regs))
 				{
-					$fType = (int) strpos("-dl", $regs[1]{0});
+					$fType = (int) strpos("-dl", $regs[1][0]);
 					//$tmp_array['line'] = $regs[0];
 					$tmp_array['type'] = $fType;
 					$tmp_array['rights'] = $regs[1];
@@ -1423,7 +1423,7 @@ class JFTP
 				$tmp_array = null;
 				if (@preg_match($regexp, $file, $regs))
 				{
-					$fType = (int) strpos("-dl", $regs[1]{0});
+					$fType = (int) strpos("-dl", $regs[1][0]);
 					//$tmp_array['line'] = $regs[0];
 					$tmp_array['type'] = $fType;
 					$tmp_array['rights'] = $regs[1];

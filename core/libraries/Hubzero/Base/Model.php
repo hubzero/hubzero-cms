@@ -535,7 +535,7 @@ abstract class Model extends Obj
 			{
 				if (is_array($ignore) && !in_array($key, $ignore, 1))
 				{
-					if ($key{0} == "\0")
+					if ($key[0] == "\0")
 					{
 						$keyParts = explode("\0", $key);
 						if (is_array($ignore) && in_array($keyParts[2], $ignore, 1))

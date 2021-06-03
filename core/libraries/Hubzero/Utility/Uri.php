@@ -286,7 +286,7 @@ class Uri
 		//$uri .= in_array('path', $parts) ? $this->path : '';
 		if (in_array('path', $parts))
 		{
-			$uri .= (empty($uri) || (!empty($this->path) && ($this->path{0} == '/'))) ? $this->path : '/' . $this->path;
+			$uri .= (empty($uri) || (!empty($this->path) && ($this->path[0] == '/'))) ? $this->path : '/' . $this->path;
 		}
 
 		$uri .= in_array('query', $parts) ? (!empty($query) ? '?' . $query : '') : '';
