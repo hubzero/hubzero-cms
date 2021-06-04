@@ -38,9 +38,7 @@ abstract class JInstallerHelper
 		$config = JFactory::getConfig();
 
 		// Capture PHP errors
-		$php_errormsg = 'Error Unknown';
-		$track_errors = ini_get('track_errors');
-		ini_set('track_errors', true);
+		error_clear_last();
 
 		// Set user agent
 		$version = new JVersion;
@@ -78,7 +76,11 @@ abstract class JInstallerHelper
 		{
 			if ($response->body === '')
 			{
-				$response->body = $php_errormsg;
+				$last_error = error_get_last();
+
+				$errormsg = is_array($last_error) ? $last_error['message'] : '';
+
+				$response->body = $errormsg;
 			}
 
 			JError::raiseWarning(42, JText::sprintf('JLIB_INSTALLER_ERROR_DOWNLOAD_SERVER_CONNECT', $response->body));
@@ -105,9 +107,6 @@ abstract class JInstallerHelper
 
 		// Write buffer to file
 		JFile::write($target, $response->body);
-
-		// Restore error tracking to what it was before
-		ini_set('track_errors', $track_errors);
 
 		// bump the max execution time because not using built in php zip libs are slow
 		@set_time_limit(ini_get('max_execution_time'));
