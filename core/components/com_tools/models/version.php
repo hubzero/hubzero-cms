@@ -875,7 +875,7 @@ class Version
 					$list[$key] = $db->Quote($value);
 				}
 
-				$valuelist = implode($list, ",");
+				$valuelist = implode(",", $list);
 
 				if (empty($valuelist))
 				{

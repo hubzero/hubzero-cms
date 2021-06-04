@@ -1342,7 +1342,7 @@ class Events extends SiteController
 					break;
 			}
 		}
-		return implode($rv, ',');
+		return implode(',', $rv);
 	}
 
 	/**
