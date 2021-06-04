@@ -9,9 +9,3 @@ namespace Components\Tags\Models;
 
 require_once __DIR__ . DS . 'objct.php';
 
-/**
- * Stub class for PHP 7 compatibility
- */
-class Object extends Objct
-{
-}
