@@ -60,7 +60,6 @@ class Info extends Obj
 			$this->php_settings['display_errors']     = ini_get('display_errors') == '1';
 			$this->php_settings['short_open_tag']     = ini_get('short_open_tag') == '1';
 			$this->php_settings['file_uploads']       = ini_get('file_uploads') == '1';
-			$this->php_settings['magic_quotes_gpc']   = false;
 			$this->php_settings['register_globals']   = false;
 			$this->php_settings['output_buffering']   = (bool) ini_get('output_buffering');
 			$this->php_settings['open_basedir']       = ini_get('open_basedir');
