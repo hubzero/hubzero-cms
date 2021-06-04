@@ -896,7 +896,7 @@ class Attachment extends Table
 		$publicationVersionIds = $this->_db->loadColumn();
 
 		if (!empty($publicationVersionIds)) {
-			$versionIdSqlArray = '(' . implode($publicationVersionIds, ',') . ')';
+			$versionIdSqlArray = '(' . implode(',', $publicationVersionIds) . ')';
 			$seriesQuery = "SELECT publication_id, title, abstract, version_number"
 			. " FROM `#__publication_versions`"
 			. " WHERE id in $versionIdSqlArray";

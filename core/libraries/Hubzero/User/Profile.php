@@ -967,7 +967,7 @@ class Profile extends Obj
 					$list[$key] = $db->quote($value);
 				}
 
-				$valuelist = implode($list, ",");
+				$valuelist = implode(",", $list);
 
 				if (empty($valuelist))
 				{
