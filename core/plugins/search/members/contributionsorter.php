@@ -33,7 +33,7 @@ class ContributionSorter
 		}
 		$a_ord = $a->get('ordering');
 		$b_ord = $b->get('ordering');
-		return $a_ord == $b_ord ? 0 : $a_ord < $b_ord ? -1 : 1;
+		return $a_ord == $b_ord ? 0 : ($a_ord < $b_ord ? -1 : 1);
 	}
 
 	/**

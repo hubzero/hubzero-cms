@@ -209,7 +209,7 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
 
 		usort($rows, function($a, $b) {
 			$res = $a->get_weight() - $b->get_weight();
-			return $res == 0 ? 0 : $res > 0 ? -1 : 1;
+			return $res == 0 ? 0 : ($res > 0 ? -1 : 1);
 		});
 		foreach ($rows as $row)
 		{

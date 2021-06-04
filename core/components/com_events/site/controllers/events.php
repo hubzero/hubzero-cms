@@ -1320,7 +1320,7 @@ class Events extends SiteController
 					break;
 				case 'dinner':
 					$dinner = Request::getString('dinner', null, 'post');
-					$rv[] = is_null($dinner) ? 'null' : $dinner ? '1' : '0';
+					$rv[] = is_null($dinner) ? 'null' : ($dinner ? '1' : '0');
 					break;
 				case 'dietary':
 					$rv[] = (($dietary = Request::getArray('dietary', null, 'post')))
