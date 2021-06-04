@@ -319,10 +319,11 @@ class Html extends Base
 	 */
 	public function setBuffer($content, $options = array())
 	{
+		$args = func_get_args();
+
 		// The following code is just for backward compatibility.
-		if (func_num_args() > 1 && !is_array($options))
+		if (!is_array($args[1]) && func_num_args() > 1)
 		{
-			$args = func_get_args();
 			$options = array();
 			$options['type'] = $args[1];
 			$options['name'] = (isset($args[2])) ? $args[2] : null;

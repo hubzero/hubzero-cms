@@ -54,14 +54,14 @@ class Cli implements ClientInterface
 	 */
 	public function call($class, $task, Arguments $arguments, Output $output)
 	{
-		// Namespace class
-		$class = Arguments::routeCommand($class);
-
 		// Say no to infinite nesting!
 		$backtrace = debug_backtrace();
 		$previous  = $backtrace[1];
 		$prevClass = $previous['class'];
 		$prevTask  = $previous['function'];
+
+		// Namespace class
+		$class = Arguments::routeCommand($class);
 
 		if ($prevClass == $class && $prevTask == $task)
 		{
