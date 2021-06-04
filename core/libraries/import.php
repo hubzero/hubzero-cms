@@ -67,12 +67,6 @@ JLoader::import('joomla.error.exception');
 if (isset($_SERVER['HTTP_HOST']))
 {
 	JLoader::register('JRequest', JPATH_PLATFORM . '/joomla/environment/request.php');
-
-	// If an application flags it doesn't want this, adhere to that.
-	if (!defined('_JREQUEST_NO_CLEAN') && (bool) ini_get('register_globals'))
-	{
-		JRequest::clean();
-	}
 }
 
 // Import the base object library.
