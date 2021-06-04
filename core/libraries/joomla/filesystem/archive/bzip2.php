@@ -156,14 +156,6 @@ class JArchiveBzip2 extends JObject
 		// Is bz2 extension loaded?  If not try to load it
 		if (!extension_loaded('bz2'))
 		{
-			if (JPATH_ISWIN)
-			{
-				@ dl('php_bz2.dll');
-			}
-			else
-			{
-				@ dl('bz2.so');
-			}
 		}
 	}
 }
