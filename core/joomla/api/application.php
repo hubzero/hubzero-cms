@@ -87,14 +87,6 @@ class JApi extends JApplication
 
 		$config['clientId'] = 4;
 
-		/*$this->unregister_long_arrays();
-		$this->unregister_globals();
-		$this->fix_http_headers();
-
-		$this->request = new \Hubzero\Api\Request();
-		$this->response = new \Hubzero\Api\Response();
-		$this->output = '';*/
-
 		parent::__construct($config);
 	}
 
@@ -106,7 +98,6 @@ class JApi extends JApplication
 	public function reset()
 	{
 		$this->unregister_long_arrays();
-		$this->unregister_globals();
 		$this->fix_http_headers();
 		$this->handle_method_override();
 
@@ -180,15 +171,6 @@ class JApi extends JApplication
 	 * @return     void
 	 */
 	public function unregister_long_arrays()
-	{
-	}
-
-	/**
-	 * Unset 'magic' global variables if using a PHP installation that has these enabled
-	 *
-	 * @return     void
-	 */
-	public function unregister_globals()
 	{
 	}
 
