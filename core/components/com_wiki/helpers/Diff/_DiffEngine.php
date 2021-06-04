@@ -264,7 +264,7 @@ class _DiffEngine
 				}
 				$matches = $ymatches[$line];
 				reset($matches);
-				while (list ($junk, $y) = each($matches))
+				while ($y = current($matches))
 				{
 					if (empty($this->in_seq[$y]))
 					{
@@ -273,8 +273,10 @@ class _DiffEngine
 						$ymids[$k] = $ymids[$k-1];
 						break;
 					}
+					next($matches);
+
 				}
-				while (list (/* $junk */, $y) = each($matches))
+			        while ($y = current($matches))
 				{
 					if ($y > $this->seq[$k-1])
 					{
@@ -291,6 +293,7 @@ class _DiffEngine
 						USE_ASSERTS && assert($k > 0);
 						$ymids[$k] = $ymids[$k-1];
 					}
+					next($matches);
 				}
 			}
 		}
