@@ -59,6 +59,6 @@ class ResourceChildSorter
 		}
 		$a_ord = $this->order[$a_id];
 		$b_ord = $this->order[$b_id];
-		return $a_ord == $b_ord ? 0 : $a_ord < $b_ord ? -1 : 1;
+		return $a_ord == $b_ord ? 0 : ($a_ord < $b_ord ? -1 : 1);
 	}
 }

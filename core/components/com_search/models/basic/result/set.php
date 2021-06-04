@@ -668,7 +668,7 @@ class Set extends Obj implements Iterator
 		}
 
 		$diff = $weight['a'] - $weight['b'];
-		return $diff == 0 ? 0 : $diff > 0 ? -1 : 1;
+		return $diff == 0 ? 0 : ($diff > 0 ? -1 : 1);
 	}
 
 	/**
