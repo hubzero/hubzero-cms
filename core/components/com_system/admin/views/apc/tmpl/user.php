@@ -274,7 +274,7 @@ $this->css('apc.css');
 
 	if ($list && $i < count($list))
 	{
-		echo "<a href=\"$this->MY_SELF&amp;OB=".$this->MYREQUEST['OB']."&amp;COUNT=0\"><i>".count($list)-$i.' more available...</i></a>';
+		echo "<a href=\"$this->MY_SELF&amp;OB=".$this->MYREQUEST['OB']."&amp;COUNT=0\"><i>".(count($list)-$i).' more available...</i></a>';
 	}
 
 ?>

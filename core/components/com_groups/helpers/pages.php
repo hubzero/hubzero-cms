@@ -465,7 +465,7 @@ class Pages
 					'ftp_',
 					'ini_',
 					'inject_code',
-					'mysql_',
+					'mysqli_',
 					'php_uname',
 					'phpAds_',
 					'system',
