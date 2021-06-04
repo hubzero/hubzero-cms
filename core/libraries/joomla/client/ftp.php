@@ -37,25 +37,6 @@ if (!defined("FTP_ASCII"))
 {
 	define("FTP_ASCII", 0);
 }
-
-// Is FTP extension loaded?  If not try to load it
-if (!extension_loaded('ftp'))
-{
-	if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
-	{
-		if ( function_exists( 'dl'))
-		{
-   			@ dl('php_ftp.dll');
-   		}
-	}
-	else
-	{
-		if ( function_exists( 'dl'))
-		{
-			@ dl('ftp.so');
-		}
-	}
-}
 if (!defined('FTP_NATIVE'))
 {
 	define('FTP_NATIVE', (function_exists('ftp_connect')) ? 1 : 0);
