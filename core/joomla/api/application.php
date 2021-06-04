@@ -97,7 +97,6 @@ class JApi extends JApplication
 	 */
 	public function reset()
 	{
-		$this->unregister_long_arrays();
 		$this->fix_http_headers();
 		$this->handle_method_override();
 
@@ -163,15 +162,6 @@ class JApi extends JApplication
 		{
 			$_SERVER['HTTP_X_POWERED_BY'] = 'PHP';
 		}
-	}
-
-	/**
-	 * Unset HTTP_* global variables if using a PHP installation that has these enabled
-	 *
-	 * @return     void
-	 */
-	public function unregister_long_arrays()
-	{
 	}
 
 	/**
