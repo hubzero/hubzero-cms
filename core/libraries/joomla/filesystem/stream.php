@@ -229,10 +229,7 @@ class JStream extends JObject
 			}
 		}
 
-		// Capture PHP errors
-		$php_errormsg = 'Error Unknown whilst opening a file';
-		$track_errors = ini_get('track_errors');
-		ini_set('track_errors', true);
+		error_clear_last();
 
 		// Decide which context to use:
 		switch ($this->processingmethod)
@@ -270,15 +267,16 @@ class JStream extends JObject
 
 		if (!$this->_fh)
 		{
-			$this->setError($php_errormsg);
+			$last_error = error_get_last();
+
+			$errormsg = is_array($last_error) ? $last_error['message'] : 'Error Unknown whilst opening a file';
+
+			$this->setError($errormsg);
 		}
 		else
 		{
 			$retval = true;
 		}
-
-		// Restore error tracking to what it was before
-		ini_set('track_errors', $track_errors);
 
 		// Return the result
 		return $retval;
@@ -303,10 +301,7 @@ class JStream extends JObject
 		}
 
 		$retval = false;
-		// Capture PHP errors
-		$php_errormsg = 'Error Unknown';
-		$track_errors = ini_get('track_errors');
-		ini_set('track_errors', true);
+		error_clear_last();
 
 		switch ($this->processingmethod)
 		{
@@ -326,7 +321,11 @@ class JStream extends JObject
 
 		if (!$res)
 		{
-			$this->setError($php_errormsg);
+			$last_error = error_get_last();
+
+			$errormsg = is_array($last_error) ? $last_error['message'] : 'Error Unknown';
+
+			$this->setError($errormsg);
 		}
 		else
 		{
@@ -340,9 +339,6 @@ class JStream extends JObject
 		{
 			$this->chmod();
 		}
-
-		// Restore error tracking to what it was before
-		ini_set('track_errors', $track_errors);
 
 		// Return the result
 		return $retval;
@@ -364,10 +360,7 @@ class JStream extends JObject
 			return false;
 		}
 
-		// Capture PHP errors
-		$php_errormsg = '';
-		$track_errors = ini_get('track_errors');
-		ini_set('track_errors', true);
+		error_clear_last();
 
 		switch ($this->processingmethod)
 		{
@@ -382,13 +375,12 @@ class JStream extends JObject
 				break;
 		}
 
-		if ($php_errormsg)
-		{
-			$this->setError($php_errormsg);
-		}
+		$last_error = error_get_last();
 
-		// Restore error tracking to what it was before
-		ini_set('track_errors', $track_errors);
+		if (is_array($last_error))
+		{
+			$this->setError($last_error['message']);
+		}
 
 		// Return the result
 		return $res;
@@ -411,21 +403,18 @@ class JStream extends JObject
 		}
 
 		$retval = false;
-		// Capture PHP errors
-		$php_errormsg = '';
-		$track_errors = ini_get('track_errors');
-		ini_set('track_errors', true);
+		error_clear_last();
 		$res = @filesize($this->filename);
 
 		if (!$res)
 		{
-			$tmp_error = '';
+			$tmp_error = error_get_last();
 
-			if ($php_errormsg)
+			if (is_array($tmp_error))
 			{
 				// Something went wrong.
 				// Store the error in case we need it.
-				$tmp_error = $php_errormsg;
+				$tmp_error = $tmp_error['message'];
 			}
 
 			$res = JFilesystemHelper::remotefsize($this->filename);
@@ -434,7 +423,7 @@ class JStream extends JObject
 			{
 				if ($tmp_error)
 				{
-					// Use the php_errormsg from before
+					// Use the error message from before
 					$this->setError($tmp_error);
 				}
 				else
@@ -454,9 +443,6 @@ class JStream extends JObject
 			$this->_filesize = $res;
 			$retval = $res;
 		}
-
-		// Restore error tracking to what it was before.
-		ini_set('track_errors', $track_errors);
 
 		// return the result
 		return $retval;
@@ -481,10 +467,7 @@ class JStream extends JObject
 		}
 
 		$retval = false;
-		// Capture PHP errors
-		$php_errormsg = 'Error Unknown';
-		$track_errors = ini_get('track_errors');
-		ini_set('track_errors', true);
+		error_clear_last();
 
 		switch ($this->processingmethod)
 		{
@@ -501,15 +484,16 @@ class JStream extends JObject
 
 		if (!$res)
 		{
-			$this->setError($php_errormsg);
+			$last_error = error_get_last();
+
+			$errormsg = is_array($last_error) ? $last_error['message'] : 'Error Unknown';
+
+			$this->setError($errormsg);
 		}
 		else
 		{
 			$retval = $res;
 		}
-
-		// Restore error tracking to what it was before
-		ini_set('track_errors', $track_errors);
 
 		// return the result
 		return $retval;
@@ -553,10 +537,7 @@ class JStream extends JObject
 		}
 
 		$retval = false;
-		// Capture PHP errors
-		$php_errormsg = 'Error Unknown';
-		$track_errors = ini_get('track_errors');
-		ini_set('track_errors', true);
+		error_clear_last();
 		$remaining = $length;
 
 		do
@@ -580,7 +561,12 @@ class JStream extends JObject
 
 			if (!$res)
 			{
-				$this->setError($php_errormsg);
+				$last_error = error_get_last();
+
+				$errormsg = is_array($last_error) ? $last_error['message'] : 'Error Unknown';
+
+				$this->setError($errormsg);
+
 				$remaining = 0; // jump from the loop
 			}
 			else
@@ -606,9 +592,6 @@ class JStream extends JObject
 			}
 		}
 		while ($remaining || !$length);
-
-		// Restore error tracking to what it was before
-		ini_set('track_errors', $track_errors);
 
 		// Return the result
 		return $retval;
@@ -637,10 +620,7 @@ class JStream extends JObject
 		}
 
 		$retval = false;
-		// Capture PHP errors
-		$php_errormsg = '';
-		$track_errors = ini_get('track_errors');
-		ini_set('track_errors', true);
+		error_clear_last();
 
 		switch ($this->processingmethod)
 		{
@@ -658,15 +638,16 @@ class JStream extends JObject
 		// Seek, interestingly, returns 0 on success or -1 on failure.
 		if ($res == -1)
 		{
-			$this->setError($php_errormsg);
+			$last_error = error_get_last();
+
+			$errormsg = is_array($last_error) ? $last_error['message'] : '';
+
+			$this->setError($errormsg);
 		}
 		else
 		{
 			$retval = true;
 		}
-
-		// Restore error tracking to what it was before
-		ini_set('track_errors', $track_errors);
 
 		// Return the result
 		return $retval;
@@ -689,10 +670,7 @@ class JStream extends JObject
 		}
 
 		$res = false;
-		// Capture PHP errors
-		$php_errormsg = '';
-		$track_errors = ini_get('track_errors');
-		ini_set('track_errors', true);
+		error_clear_last();
 
 		switch ($this->processingmethod)
 		{
@@ -710,11 +688,12 @@ class JStream extends JObject
 		// May return 0 so check if it's really false
 		if ($res === false)
 		{
-			$this->setError($php_errormsg);
-		}
+			$last_error = error_get_last();
 
-		// Restore error tracking to what it was before
-		ini_set('track_errors', $track_errors);
+			$errormsg = is_array($last_error) ? $last_error['message'] : '';
+
+			$this->setError($errormsg);
+		}
 
 		// Return the result
 		return $res;
@@ -762,10 +741,7 @@ class JStream extends JObject
 		}
 
 		$retval = true;
-		// Capture PHP errors
-		$php_errormsg = '';
-		$track_errors = ini_get('track_errors');
-		ini_set('track_errors', true);
+		error_clear_last();
 		$remaining = $length;
 
 		do
@@ -778,7 +754,11 @@ class JStream extends JObject
 			if ($res === false)
 			{
 				// Returned error
-				$this->setError($php_errormsg);
+				$last_error = error_get_last();
+
+				$errormsg = is_array($last_error) ? $last_error['message'] : '';
+
+				$this->setError($errormsg);
 				$retval = false;
 				$remaining = 0;
 			}
@@ -795,9 +775,6 @@ class JStream extends JObject
 			}
 		}
 		while ($remaining);
-
-		// Restore error tracking to what it was before.
-		ini_set('track_errors', $track_errors);
 
 		// Return the result
 		return $retval;
@@ -834,10 +811,7 @@ class JStream extends JObject
 		}
 
 		$retval = false;
-		// Capture PHP errors
-		$php_errormsg = '';
-		$track_errors = ini_get('track_errors');
-		ini_set('track_errors', true);
+		error_clear_last();
 		$sch = parse_url($filename, PHP_URL_SCHEME);
 
 		// Scheme specific options; ftp's chmod support is fun.
@@ -856,15 +830,16 @@ class JStream extends JObject
 		// Seek, interestingly, returns 0 on success or -1 on failure
 		if (!$res)
 		{
-			$this->setError($php_errormsg);
+			$last_error = error_get_last();
+
+			$errormsg = is_array($last_error) ? $last_error['message'] : '';
+
+			$this->setError($errormsg);
 		}
 		else
 		{
 			$retval = true;
 		}
-
-		// Restore error tracking to what it was before.
-		ini_set('track_errors', $track_errors);
 
 		// Return the result
 		return $retval;
@@ -998,19 +973,17 @@ class JStream extends JObject
 
 		if ($this->_fh)
 		{
-			// Capture PHP errors
-			$php_errormsg = 'Unknown error setting context option';
-			$track_errors = ini_get('track_errors');
-			ini_set('track_errors', true);
+			error_clear_last();
 			$retval = @stream_context_set_option($this->_fh, $this->_contextOptions);
 
 			if (!$retval)
 			{
-				$this->setError($php_errormsg);
-			}
+				$last_error = error_get_last();
 
-			// restore error tracking to what it was before
-			ini_set('track_errors', $track_errors);
+				$errormsg = is_array($last_error) ? $last_error['message'] : 'Unknown error setting context option';
+
+				$this->setError($errormsg);
+			}
 		}
 
 		return $retval;
@@ -1035,24 +1008,22 @@ class JStream extends JObject
 
 		if ($this->_fh)
 		{
-			// Capture PHP errors
-			$php_errormsg = '';
-			$track_errors = ini_get('track_errors');
-			ini_set('track_errors', true);
+			error_clear_last();
 
 			$res = @stream_filter_append($this->_fh, $filtername, $read_write, $params);
 
-			if (!$res && $php_errormsg)
+			$last_error = error_get_last();
+
+			if (!$res && is_array($last_error))
 			{
-				$this->setError($php_errormsg);
+				$errormsg = is_array($last_error) ? $last_error['message'] : '';
+
+				$this->setError($errormsg);
 			}
 			else
 			{
 				$this->filters[] = &$res;
 			}
-
-			// Restore error tracking to what it was before.
-			ini_set('track_errors', $track_errors);
 		}
 
 		return $res;
@@ -1076,24 +1047,22 @@ class JStream extends JObject
 
 		if ($this->_fh)
 		{
-			// Capture PHP errors
-			$php_errormsg = '';
-			$track_errors = ini_get('track_errors');
-			ini_set('track_errors', true);
+			error_clear_last();
 			$res = @stream_filter_prepend($this->_fh, $filtername, $read_write, $params);
 
-			if (!$res && $php_errormsg)
+			$last_error = error_get_last();
+
+			if (!$res && is_array($last_error))
 			{
-				$this->setError($php_errormsg); // set the error msg
+				$errormsg = is_array($last_error) ? $last_error['message'] : 'Unknown error setting context option';
+
+				$this->setError($errormsg);
 			}
 			else
 			{
 				array_unshift($res, '');
 				$res[0] = &$this->filters;
 			}
-
-			// Restore error tracking to what it was before.
-			ini_set('track_errors', $track_errors);
 		}
 
 		return $res;
@@ -1113,10 +1082,7 @@ class JStream extends JObject
 	public function removeFilter(&$resource, $byindex = false)
 	{
 		$res = false;
-		// Capture PHP errors
-		$php_errormsg = '';
-		$track_errors = ini_get('track_errors');
-		ini_set('track_errors', true);
+		error_clear_last();
 
 		if ($byindex)
 		{
@@ -1127,13 +1093,15 @@ class JStream extends JObject
 			$res = stream_filter_remove($resource);
 		}
 
-		if ($res && $php_errormsg)
-		{
-			$this->setError($php_errormsg);
-		}
+		$last_error = error_get_last();
 
-		// Restore error tracking to what it was before.
-		ini_set('track_errors', $track_errors);
+		if ($res && is_array($last_error))
+		{
+
+			$errormsg = is_array($last_error) ? $last_error['message'] : '';
+
+			$this->setError($errormsg);
+		}
 
 		return $res;
 	}
@@ -1156,9 +1124,8 @@ class JStream extends JObject
 		$res = false;
 
 		// Capture PHP errors
-		$php_errormsg = '';
-		$track_errors = ini_get('track_errors');
-		ini_set('track_errors', true);
+		$errormsg = '';
+		error_clear_last();
 
 		$chmodDest = $this->_getFilename($dest, 'w', $use_prefix, $relative);
 		$exists = file_exists($dest);
@@ -1182,21 +1149,26 @@ class JStream extends JObject
 				if ($res)
 				{
 					$res = stream_copy_to_stream($reader, $this->_fh);
-					$tmperror = $php_errormsg; // save this in case fclose throws an error
+					$last_error = error_get_last();
+					$tmperror = is_array($last_error) ? $last_error['message'] : '';
 					@fclose($reader);
-					$php_errormsg = $tmperror; // restore after fclose
+					$errormsg = $tmperror; // restore after fclose
 				}
 				else
 				{
 					@fclose($reader); // close the reader off
-					$php_errormsg = JText::sprintf('JLIB_FILESYSTEM_ERROR_STREAMS_FAILED_TO_OPEN_WRITER', $this->getError());
+					$errormsg = JText::sprintf('JLIB_FILESYSTEM_ERROR_STREAMS_FAILED_TO_OPEN_WRITER', $this->getError());
 				}
 			}
 			else
 			{
-				if (!$php_errormsg)
+				$last_error = error_get_last();
+
+				$errormsg = is_array($last_error) ? $last_error['message'] : '';
+
+				if (!$errormsg)
 				{
-					$php_errormsg = JText::sprintf('JLIB_FILESYSTEM_ERROR_STREAMS_FAILED_TO_OPEN_READER', $this->getError());
+					$errormsg = JText::sprintf('JLIB_FILESYSTEM_ERROR_STREAMS_FAILED_TO_OPEN_READER', $this->getError());
 				}
 			}
 		}
@@ -1222,19 +1194,20 @@ class JStream extends JObject
 				// Don't use any context
 				$res = @copy($src, $dest);
 			}
+
+			$last_error = error_get_last();
+
+			$errormsg = is_array($last_error) ? $last_error['message'] : '';
 		}
 
-		if (!$res && $php_errormsg)
+		if (!$res && $errormsg)
 		{
-			$this->setError($php_errormsg);
+			$this->setError($errormsg);
 		}
 		else
 		{
 			$this->chmod($chmodDest);
 		}
-
-		// Restore error tracking to what it was before
-		ini_set('track_errors', $track_errors);
 
 		return $res;
 	}
@@ -1256,10 +1229,7 @@ class JStream extends JObject
 	{
 		$res = false;
 
-		// Capture PHP errors
-		$php_errormsg = '';
-		$track_errors = ini_get('track_errors');
-		ini_set('track_errors', true);
+		error_clear_last();
 
 		$src = $this->_getFilename($src, 'w', $use_prefix, $relative);
 		$dest = $this->_getFilename($dest, 'w', $use_prefix, $relative);
@@ -1280,15 +1250,16 @@ class JStream extends JObject
 			$res = @rename($src, $dest);
 		}
 
-		if (!$res && $php_errormsg)
+		$last_error = error_get_last();
+
+		if (!$res && is_array($last_error))
 		{
-			$this->setError($php_errormsg());
+			$errormsg = is_array($last_error) ? $last_error['message'] : '';
+
+			$this->setError($errormsg);
 		}
 
 		$this->chmod($dest);
-
-		// Restore error tracking to what it was before
-		ini_set('track_errors', $track_errors);
 
 		return $res;
 	}
@@ -1309,10 +1280,7 @@ class JStream extends JObject
 	{
 		$res = false;
 
-		// Capture PHP errors
-		$php_errormsg = '';
-		$track_errors = ini_get('track_errors');
-		ini_set('track_errors', true);
+		error_clear_last();
 
 		$filename = $this->_getFilename($filename, 'w', $use_prefix, $relative);
 
@@ -1332,13 +1300,14 @@ class JStream extends JObject
 			$res = @unlink($filename);
 		}
 
-		if (!$res && $php_errormsg)
-		{
-			$this->setError($php_errormsg());
-		}
+		$last_error = error_get_last();
 
-		// Restore error tracking to what it was before.
-		ini_set('track_errors', $track_errors);
+		if (!$res && is_array($last_error))
+		{
+			$errormsg = is_array($last_error) ? $last_error['message'] : '';
+
+			$this->setError($errormsg);
+		}
 
 		return $res;
 	}
