@@ -40,7 +40,7 @@ $base = $this->member->link() . '&active=citations';
 					<div class="col span6 omega">
 						<p>
 							<strong><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_ACCEPTABLE'); ?></strong><br />
-							<?php echo implode($this->accepted_files, '<br />'); ?>
+							<?php echo implode('<br />', $this->accepted_files); ?>
 						</p>
 					</div>
 				</div>

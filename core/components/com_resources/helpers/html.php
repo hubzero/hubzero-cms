@@ -100,7 +100,7 @@ class Html
 					}
 				}
 
-				$replacement = trim(implode($properties, '; '));
+				$replacement = trim(implode('; ', $properties));
 
 				return str_replace($match[1], $replacement, $match[0]);
 			},

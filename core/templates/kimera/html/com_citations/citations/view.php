@@ -539,7 +539,7 @@ $area = Request::getString('area', 'about');
 			<p><?php echo Lang::txt('COM_CITATIONS_CITED_DESC'); ?></p>
 			<ul class="">
 				<li>
-					<?php echo implode($associationLinks, '</li><li>'); ?>
+					<?php echo implode('</li><li>', $associationLinks); ?>
 				</li>
 			</ul>
 		<?php else : ?>

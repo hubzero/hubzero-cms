@@ -30,7 +30,7 @@ $this->css()
 		<form id="hubForm" enctype="multipart/form-data" method="post" action="<?php echo Route::url('index.php?option='. $this->option . '&task=import_upload'); ?>">
 			<p class="explaination">
 				<strong><u><?php echo Lang::txt('COM_CITATIONS_IMPORT_ACCEPTABLE'); ?></u></strong><br />
-				<?php echo implode($this->accepted_files, "<br />"); ?>
+				<?php echo implode("<br />", $this->accepted_files); ?>
 			</p>
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_CITATIONS_IMPORT_UPLOAD'); ?>:</legend>

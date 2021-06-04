@@ -555,7 +555,7 @@ class Course extends Base
 			return $userids;
 		}
 
-		$this->_db->setQuery("SELECT id FROM `#__users` WHERE username IN (" . implode($usernames, ",") . ");");
+		$this->_db->setQuery("SELECT id FROM `#__users` WHERE username IN (" . implode(",", $usernames) . ");");
 
 		if (!($result = $this->_db->loadColumn()))
 		{
