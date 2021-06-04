@@ -9,33 +9,7 @@
 
 defined('JPATH_PLATFORM') or die;
 
-//
-// PHP mbstring and iconv local configuration
-//
-// Check if mbstring extension is loaded and attempt to load it if not present except for windows
-if (extension_loaded('mbstring') || ((!strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' && dl('mbstring.so'))))
-{
-	// Make sure to suppress the output in case ini_set is disabled
-	@ini_set('mbstring.internal_encoding', 'UTF-8');
-	@ini_set('mbstring.http_input', 'UTF-8');
-	@ini_set('mbstring.http_output', 'UTF-8');
-}
-
-// Same for iconv
-if (function_exists('iconv') || ((!strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' && dl('iconv.so'))))
-{
-	// These are settings that can be set inside code
-	if (version_compare(PHP_VERSION, '5.6', '>='))
-	{
-		@ini_set('default_charset', 'UTF-8');
-	}
-	else
-	{
-		iconv_set_encoding("internal_encoding", "UTF-8");
-		iconv_set_encoding("input_encoding", "UTF-8");
-		iconv_set_encoding("output_encoding", "UTF-8");
-	}
-}
+@ini_set('default_charset', 'UTF-8');
 
 /**
  * Include the utf8 package

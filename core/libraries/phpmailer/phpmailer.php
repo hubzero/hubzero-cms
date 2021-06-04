@@ -741,7 +741,7 @@ class PHPMailer {
     } else {
       $params = sprintf("-oi -f %s", $this->Sender);
     }
-    if ($this->Sender != '' and !ini_get('safe_mode')) {
+    if ($this->Sender != '') {
       $old_from = ini_get('sendmail_from');
       ini_set('sendmail_from', $this->Sender);
       if ($this->SingleTo === true && count($toArr) > 1) {
@@ -1633,28 +1633,8 @@ class PHPMailer {
       if (!is_readable($path)) {
         throw new phpmailerException($this->Lang('file_open') . $path, self::STOP_CONTINUE);
       }
-      if (function_exists('get_magic_quotes')) {
-        function get_magic_quotes() {
-          return false;
-        }
-      }
-	  $magic_quotes = get_magic_quotes_runtime();
-	  if ($magic_quotes) {
-        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-          set_magic_quotes_runtime(0);
-        } else {
-		  ini_set('magic_quotes_runtime', 0);
-		}
-	  }
       $file_buffer  = file_get_contents($path);
       $file_buffer  = $this->EncodeString($file_buffer, $encoding);
-	  if ($magic_quotes) {
-        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-          set_magic_quotes_runtime($magic_quotes);
-        } else {
-		  ini_set('magic_quotes_runtime', $magic_quotes);
-	    }
-	  }
       return $file_buffer;
     } catch (Exception $e) {
       $this->SetError($e->getMessage());
