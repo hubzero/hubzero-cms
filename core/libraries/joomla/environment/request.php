@@ -216,12 +216,6 @@ class JRequest
 				// Get the variable from the input hash and clean it
 				$var = self::_cleanVar($input[$name], $mask, $type);
 
-				// Handle magic quotes compatibility
-				if (get_magic_quotes_gpc() && ($var != $default) && ($hash != 'FILES'))
-				{
-					$var = self::_stripSlashesRecursive($var);
-				}
-
 				$GLOBALS['_JREQUEST'][$name][$sig] = $var;
 			}
 			elseif ($default !== null)
@@ -539,12 +533,6 @@ class JRequest
 		}
 
 		$result = self::_cleanVar($input, $mask);
-
-		// Handle magic quotes compatibility
-		if (get_magic_quotes_gpc() && ($hash != 'FILES'))
-		{
-			$result = self::_stripSlashesRecursive($result);
-		}
 
 		return $result;
 	}
