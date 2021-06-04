@@ -263,13 +263,13 @@ class Tool
 	}
 
 	/**
-	 * Short description for '_mysql_create'
+	 * Short description for '_sql_create'
 	 *
 	 * Long description (if any) ...
 	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
-	public function _mysql_create()
+	public function _sql_create()
 	{
 		$db = \App::get('db');
 
@@ -335,7 +335,7 @@ class Tool
 
 		if (true)
 		{
-			$result = $this->_mysql_create();
+			$result = $this->_sql_create();
 
 			if ($result === false)
 			{
@@ -351,7 +351,7 @@ class Tool
 	 *
 	 * @return  boolean
 	 */
-	private function _mysql_read()
+	private function _sql_read()
 	{
 		$db = \App::get('db');
 		$lazyloading = false;
@@ -434,7 +434,7 @@ class Tool
 			$this->clear();
 			$this->toolname = $toolname;
 
-			$result = $this->_mysql_read();
+			$result = $this->_sql_read();
 
 			if ($result === false)
 			{
@@ -446,14 +446,14 @@ class Tool
 	}
 
 	/**
-	 * Short description for '_mysql_update'
+	 * Short description for '_sql_update'
 	 *
 	 * Long description (if any) ...
 	 *
 	 * @param	  boolean $all Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
 	 */
-	public function _mysql_update($all = false)
+	public function _sql_update($all = false)
 	{
 		$db = \App::get('db');
 
@@ -643,7 +643,7 @@ class Tool
 
 		if (true)
 		{
-			$result = $this->_mysql_update($this->_updateAll);
+			$result = $this->_sql_update($this->_updateAll);
 
 			if ($result === false)
 			{
@@ -656,13 +656,13 @@ class Tool
 	}
 
 	/**
-	 * Short description for '_mysql_delete'
+	 * Short description for '_sql_delete'
 	 *
 	 * Long description (if any) ...
 	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
-	public function _mysql_delete()
+	public function _sql_delete()
 	{
 		if (!isset($this->toolname) && !isset($this->id))
 		{
@@ -715,7 +715,7 @@ class Tool
 
 		if (true)
 		{
-			$result = $this->_mysql_delete();
+			$result = $this->_sql_delete();
 
 			if ($result === false)
 			{
