@@ -13,7 +13,7 @@ use Components\Resources\Models\Entry;
 /**
  * Wiki macro class that will insert a linked title to a resource
  */
-class Resource extends Macro
+class Resources extends Macro
 {
 	/**
 	 * Allow macro in partial parsing?
