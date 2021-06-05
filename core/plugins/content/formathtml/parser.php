@@ -435,6 +435,24 @@ class Parser
 						include_once $path . $file;
 						break;
 					}
+					else
+					{
+						// Try to pluralize macroname to find class (Resource class in particular was renamed Resources
+						// to not conflict with PHP 7+ reserved names).
+
+						$lngth = count($macroPieces);
+						$macroPieces[$lngth - 1] = \Hubzero\Utility\Inflector::pluralize($macroPieces[$lngth - 1]);
+						$macroname = __NAMESPACE__ . '\\Macros\\' . implode('\\', array_map('ucfirst', $macroPieces));
+						$file = DS . implode(DS, array_map('strtolower', $macroPieces)) . '.php';
+
+						if (is_file($path . $file))
+						{
+							$found = true;
+
+							include_once $path . $file;
+							break;
+						}
+					}
 				}
 
 				if (!$found)
