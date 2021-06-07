@@ -138,10 +138,7 @@ class Token
 		$binaryString .= str_repeat(chr($pad), $pad);
 
 		// Do the encryption
-		$cipher = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', 'cbc', '');
-		mcrypt_generic_init($cipher, $this->_key, $this->_iv);
-		$encrypted = mcrypt_generic($cipher, $binaryString);
-		mcrypt_generic_deinit($cipher);
+		$encrypted = openssl_encrypt($binaryString, 'AES-256-CBC', $this->_key, OPENSSL_RAW_DATA , $this->_iv);
 
 		// Prepend an unencrypted version byte and action byte (in base16)
 		$rv = bin2hex(pack("C", $version)) . bin2hex(pack("C", $action)) .  bin2hex($encrypted);
@@ -168,9 +165,7 @@ class Token
 		$encrypted = hex2bin($rawtoken);
 
 		// Do the decryption
-		$cipher = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', 'cbc', '');
-		mcrypt_generic_init($cipher, $this->_key, $this->_iv);
-		$decrypted = mdecrypt_generic($cipher, $encrypted);
+		$decrypted = openssl_decrypt($encrypted, 'AES-256-CBC', $this->_key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $this->_iv);
 
 		// unpack the original values, no need to strip padding or hash
 		// we'll just unpack what we need
