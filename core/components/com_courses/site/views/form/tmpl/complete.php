@@ -60,24 +60,22 @@ if ($this->resp->getStartTime())
 					$qidx = 0;
 					foreach ($layout[$idx - 1] as $qid => $group):
 						foreach ($group['answers'] as $aidx => $ans):
-							// @codingStandardsIgnoreStart
+							// phpcs: ignore PHPCompatibility.FunctionDeclarations.NewClosure.ThisFoundOutsideClass
 							$this->css('
 								#question-'.$qid.'-'.$aidx.' {
 									top: '.$ans['top'].'px;
 									left: '.$ans['left'].'px;
 								}
 							');
-							// @codingStandardsIgnoreEnd
 							echo '<input name="question-'.$qid.'" id="question-'.$qid.'-'.$aidx.'" value="'.$ans['id'].'" '.((isset($_POST['question-'.$qid]) && $_POST['question-'.$qid] == $ans['id']) || (!isset($_POST['question-'.$qid]) && isset($progress[$qid]) && $progress[$qid]['answer_id'] == $ans['id']) ? ' checked="checked" ' : '').'class="placeholder" type="radio" />';
 							if (isset($incomplete[$qid])):
-								// @codingStandardsIgnoreStart
+								// phpcs: ignore PHPCompatibility.FunctionDeclarations.NewClosure.ThisFoundOutsideClass
 								$this->css('
 									#question-'.$qid.'-incomplete-marker {
 										top: '.$ans['top'].'px;
 										left: '.($ans['left'] - 20).'px;
 									}
 								');
-								// @codingStandardsIgnoreEnd
 								echo '<div class="incomplete-marker" id="question-'.$qid.'-incomplete-marker">*</div>';
 							endif;
 						endforeach;
