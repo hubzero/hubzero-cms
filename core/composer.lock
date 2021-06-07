@@ -1245,6 +1245,63 @@
             "time": "2014-11-20T16:49:30+00:00"
         },
         {
+            "name": "jasig/phpcas",
+            "version": "1.3.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/apereo/phpCAS.git",
+                "reference": "7325865c4cfb5005ed4e4c5cf01823be1726a2a0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/apereo/phpCAS/zipball/7325865c4cfb5005ed4e4c5cf01823be1726a2a0",
+                "reference": "7325865c4cfb5005ed4e4c5cf01823be1726a2a0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.4.0",
+                "psr/log": "^1.0.0"
+            },
+            "require-dev": {
+                "monolog/monolog": "^1.0.0",
+                "phpunit/phpunit": ">=4.8.35 <8"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.3.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "source/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Joachim Fritschi",
+                    "homepage": "https://wiki.jasig.org/display/~fritschi"
+                },
+                {
+                    "name": "Adam Franco",
+                    "homepage": "https://wiki.jasig.org/display/~adamfranco"
+                }
+            ],
+            "description": "Provides a simple API for authenticating users against a CAS server",
+            "homepage": "https://wiki.jasig.org/display/CASC/phpCAS",
+            "keywords": [
+                "apereo",
+                "cas",
+                "jasig"
+            ],
+            "time": "2021-01-31T21:13:59+00:00"
+        },
+        {
             "name": "justinrainbow/json-schema",
             "version": "5.2.7",
             "source": {
