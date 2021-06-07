@@ -24,6 +24,7 @@
         }
     ],
     "require": {
+        "jasig/phpcas": "1.3.*",
         "ezyang/htmlpurifier": "4.5.0",
         "facebook/graph-sdk": "^5.0",
         "tecnickcom/tcpdf": "6.0.017",
