@@ -55,16 +55,19 @@ class Helper extends Module
 			->rows()
 			->fieldsByKey('id');
 
-		$id = array_rand($rows);
+                if (!empty($rows))
+                {
+		    $id = array_rand($rows);
 
-		$row = Entry::oneOrNew((isset($rows[$id]) ? $rows[$id] : 0));
+		    $row = Entry::oneOrNew((isset($rows[$id]) ? $rows[$id] : 0));
+                }
 
 		$this->cls = trim($this->params->get('moduleclass_sfx'));
 		$this->txt_length = trim($this->params->get('txt_length'));
 		$this->thumb = '';
 
 		// Did we get any results?
-		if ($row->get('id'))
+		if (isset($row) && $row->get('id'))
 		{
 			$config = Component::params('com_resources');
 
@@ -104,6 +107,10 @@ class Helper extends Module
 			$this->id    = $id;
 			$this->thumb = $thumb;
 		}
+                else
+                {
+                    $row = '';
+                }
 
 		$this->row = $row;
 
