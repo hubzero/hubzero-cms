@@ -101,16 +101,11 @@ class Encrypter
 	{
 		$sslStr = '';
 
-		// if a secure randomness generator exists and we don't
-		// have a buggy PHP version use it.
-		if (function_exists('openssl_random_pseudo_bytes')
-			&& (version_compare(PHP_VERSION, '5.3.4') >= 0 || IS_WIN))
+		$sslStr = openssl_random_pseudo_bytes($length, $strong);
+
+		if ($strong)
 		{
-			$sslStr = openssl_random_pseudo_bytes($length, $strong);
-			if ($strong)
-			{
-				return $sslStr;
-			}
+			return $sslStr;
 		}
 
 		// Collect any entropy available in the system along with a number
