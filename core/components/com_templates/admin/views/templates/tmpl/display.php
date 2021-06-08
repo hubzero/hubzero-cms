@@ -53,7 +53,7 @@ Html::behavior('multiselect');
 					<?php echo Html::grid('sort', 'JCLIENT', 'a.client_id', $this->filters['sort_Dir'], $this->filters['sort']); ?>
 				</th>
 				<th scope="col" class="priority-4">
-					<?php echo Lang::txt('JVERSION'); ?>
+					<?php echo Lang::txt('HVERSION'); ?>
 				</th>
 				<th scope="col" class="priority-5">
 					<?php echo Lang::txt('JDATE'); ?>
