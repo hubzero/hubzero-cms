@@ -59,7 +59,7 @@ $pagination = $this->rows->pagination;
 					<?php echo Lang::txt('COM_LANGUAGES_HEADING_DEFAULT'); ?>
 				</th>
 				<th scope="col" class="priority-5">
-					<?php echo Lang::txt('JVERSION'); ?>
+					<?php echo Lang::txt('HVERSION'); ?>
 				</th>
 				<th scope="col" class="priority-6">
 					<?php echo Lang::txt('JDATE'); ?>

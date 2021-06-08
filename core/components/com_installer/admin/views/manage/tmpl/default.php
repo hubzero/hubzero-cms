@@ -110,7 +110,7 @@ $saveOrder = $listOrder == 'ordering';
 						<?php echo Html::grid('sort', 'COM_INSTALLER_HEADING_TYPE', 'type', $listDirn, $listOrder); ?>
 					</th>
 					<th class="priority-4 center">
-						<?php echo Lang::txt('JVERSION'); ?>
+						<?php echo Lang::txt('HVERSION'); ?>
 					</th>
 					<th class="priority-5">
 						<?php echo Lang::txt('JDATE'); ?>
