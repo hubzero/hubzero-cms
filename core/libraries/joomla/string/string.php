@@ -699,7 +699,7 @@ abstract class JString
 	 */
 	public static function ucfirst($str, $delimiter = null, $newDelimiter = null)
 	{
-		if ($delimiter !=== null)
+		if ($delimiter !== null)
 		{
 			if ($newDelimiter === null)
 			{
