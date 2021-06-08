@@ -9,8 +9,6 @@
 
 defined('JPATH_PLATFORM') or die;
 
-jimport('phpmailer.phpmailer');
-
 /**
  * Email Class.  Provides a common interface to send email from the Joomla! Platform
  *
@@ -31,15 +29,6 @@ class JMail extends PHPMailer
 	 * @since  11.1
 	 */
 	public $CharSet = 'utf-8';
-
-	/**
-	 * Constructor
-	 */
-	public function __construct()
-	{
-		// PHPMailer has an issue using the relative path for its language files
-		$this->SetLanguage('joomla', JPATH_PLATFORM . '/phpmailer/language/');
-	}
 
 	/**
 	 * Returns the global email object, only creating it
