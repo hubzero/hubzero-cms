@@ -2182,20 +2182,23 @@
         },
         {
             "name": "pear/net_dns2",
-            "version": "v1.4.2",
+            "version": "v1.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikepultz/netdns2.git",
-                "reference": "81026bab8e84cf21bb59b54a00e98b6fa0692eb5"
+                "reference": "d5dbae0b0c0567923d25b3ae5e2bf1e9cbcedf76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikepultz/netdns2/zipball/81026bab8e84cf21bb59b54a00e98b6fa0692eb5",
-                "reference": "81026bab8e84cf21bb59b54a00e98b6fa0692eb5",
+                "url": "https://api.github.com/repos/mikepultz/netdns2/zipball/d5dbae0b0c0567923d25b3ae5e2bf1e9cbcedf76",
+                "reference": "d5dbae0b0c0567923d25b3ae5e2bf1e9cbcedf76",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.1.2"
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9"
             },
             "type": "library",
             "autoload": {
@@ -2211,18 +2214,18 @@
                 {
                     "name": "Mike Pultz",
                     "email": "mike@mikepultz.com",
-                    "homepage": "http://mikepultz.com/",
-                    "role": "Developer"
+                    "homepage": "https://mikepultz.com/",
+                    "role": "lead"
                 }
             ],
-            "description": "Native PHP5 DNS Resolver and Updater Library",
-            "homepage": "http://netdns2.com/",
+            "description": "Native PHP DNS Resolver and Updater Library",
+            "homepage": "https://netdns2.com/",
             "keywords": [
                 "PEAR",
                 "dns",
                 "network"
             ],
-            "time": "2016-08-23T03:59:55+00:00"
+            "time": "2020-10-11T17:33:54+00:00"
         },
         {
             "name": "pelago/emogrifier",
