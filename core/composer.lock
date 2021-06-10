@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aa5b84b38b9e2147083f52794a463e42",
+    "content-hash": "3697b5f25c3a8381f72e6f4bc5f78613",
     "packages": [
         {
             "name": "authy/php",
@@ -2765,20 +2765,23 @@
         },
         {
             "name": "pear/net_dns2",
-            "version": "v1.4.4",
+            "version": "v1.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikepultz/netdns2.git",
-                "reference": "9596a781b4358ee7c1ee0d6b884667c6c4d9a204"
+                "reference": "dc8053772132a855b8bb6193422a959995f3a773"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikepultz/netdns2/zipball/9596a781b4358ee7c1ee0d6b884667c6c4d9a204",
-                "reference": "9596a781b4358ee7c1ee0d6b884667c6c4d9a204",
+                "url": "https://api.github.com/repos/mikepultz/netdns2/zipball/dc8053772132a855b8bb6193422a959995f3a773",
+                "reference": "dc8053772132a855b8bb6193422a959995f3a773",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.1.2"
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9"
             },
             "type": "library",
             "autoload": {
@@ -2795,10 +2798,10 @@
                     "name": "Mike Pultz",
                     "email": "mike@mikepultz.com",
                     "homepage": "https://mikepultz.com/",
-                    "role": "Developer"
+                    "role": "lead"
                 }
             ],
-            "description": "Native PHP5 DNS Resolver and Updater Library",
+            "description": "Native PHP DNS Resolver and Updater Library",
             "homepage": "https://netdns2.com/",
             "keywords": [
                 "PEAR",
@@ -2809,7 +2812,7 @@
                 "issues": "https://github.com/mikepultz/netdns2/issues",
                 "source": "https://github.com/mikepultz/netdns2"
             },
-            "time": "2018-02-13T03:07:54+00:00"
+            "time": "2022-11-28T19:16:31+00:00"
         },
         {
             "name": "pelago/emogrifier",
