@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aa5b84b38b9e2147083f52794a463e42",
+    "content-hash": "3697b5f25c3a8381f72e6f4bc5f78613",
     "packages": [
         {
             "name": "apereo/phpcas",
@@ -7991,15 +7991,11 @@
                     "name": "symfony/polyfill"
                 },
                 "branch-alias": {
-<<<<<<< HEAD
-                    "dev-main": "1.19-dev"
-=======
                     "dev-main": "1.27-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
->>>>>>> 7d8bdcabd2 ([composer] platform php 7.4.33)
                 }
             },
             "autoload": {
@@ -8080,15 +8076,11 @@
                     "name": "symfony/polyfill"
                 },
                 "branch-alias": {
-<<<<<<< HEAD
-                    "dev-main": "1.19-dev"
-=======
                     "dev-main": "1.27-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
->>>>>>> 7d8bdcabd2 ([composer] platform php 7.4.33)
                 }
             },
             "autoload": {
@@ -8173,15 +8165,11 @@
                     "name": "symfony/polyfill"
                 },
                 "branch-alias": {
-<<<<<<< HEAD
-                    "dev-main": "1.19-dev"
-=======
                     "dev-main": "1.27-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
->>>>>>> 7d8bdcabd2 ([composer] platform php 7.4.33)
                 }
             },
             "autoload": {
@@ -8268,15 +8256,11 @@
                     "name": "symfony/polyfill"
                 },
                 "branch-alias": {
-<<<<<<< HEAD
-                    "dev-main": "1.19-dev"
-=======
                     "dev-main": "1.27-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
->>>>>>> 7d8bdcabd2 ([composer] platform php 7.4.33)
                 }
             },
             "autoload": {
@@ -8353,15 +8337,11 @@
                     "name": "symfony/polyfill"
                 },
                 "branch-alias": {
-<<<<<<< HEAD
-                    "dev-main": "1.19-dev"
-=======
                     "dev-main": "1.20-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
->>>>>>> 7d8bdcabd2 ([composer] platform php 7.4.33)
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -8429,15 +8409,11 @@
                     "name": "symfony/polyfill"
                 },
                 "branch-alias": {
-<<<<<<< HEAD
-                    "dev-main": "1.19-dev"
-=======
                     "dev-main": "1.20-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
->>>>>>> 7d8bdcabd2 ([composer] platform php 7.4.33)
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -8505,15 +8481,11 @@
                     "name": "symfony/polyfill"
                 },
                 "branch-alias": {
-<<<<<<< HEAD
-                    "dev-main": "1.19-dev"
-=======
                     "dev-main": "1.27-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
->>>>>>> 7d8bdcabd2 ([composer] platform php 7.4.33)
                 }
             },
             "autoload": {
@@ -8589,15 +8561,11 @@
                     "name": "symfony/polyfill"
                 },
                 "branch-alias": {
-<<<<<<< HEAD
-                    "dev-main": "1.19-dev"
-=======
                     "dev-main": "1.27-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
                     "url": "https://github.com/symfony/polyfill"
->>>>>>> 7d8bdcabd2 ([composer] platform php 7.4.33)
                 }
             },
             "autoload": {
@@ -9298,23 +9266,6 @@
         },
         {
             "name": "webmozart/assert",
-<<<<<<< HEAD
-            "version": "1.9.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webmozarts/assert.git",
-                "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webmozarts/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
-                "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.3.3 || ^7.0 || ^8.0",
-                "symfony/polyfill-ctype": "^1.8"
-=======
             "version": "1.11.0",
             "source": {
                 "type": "git",
@@ -9334,7 +9285,6 @@
             "conflict": {
                 "phpstan/phpstan": "<0.12.20",
                 "vimeo/psalm": "<4.6.1 || 4.6.2"
->>>>>>> 7d8bdcabd2 ([composer] platform php 7.4.33)
             },
             "conflict": {
                 "phpstan/phpstan": "<0.12.20",
@@ -9344,14 +9294,11 @@
                 "phpunit/phpunit": "^8.5.13"
             },
             "type": "library",
-<<<<<<< HEAD
-=======
             "extra": {
                 "branch-alias": {
                     "dev-master": "1.10-dev"
                 }
             },
->>>>>>> 7d8bdcabd2 ([composer] platform php 7.4.33)
             "autoload": {
                 "psr-4": {
                     "Webmozart\\Assert\\": "src/"
@@ -9375,15 +9322,9 @@
             ],
             "support": {
                 "issues": "https://github.com/webmozarts/assert/issues",
-<<<<<<< HEAD
-                "source": "https://github.com/webmozarts/assert/tree/1.9.1"
-            },
-            "time": "2020-07-08T17:02:28+00:00"
-=======
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
->>>>>>> 7d8bdcabd2 ([composer] platform php 7.4.33)
         },
         {
             "name": "whitehat101/apr1-md5",
