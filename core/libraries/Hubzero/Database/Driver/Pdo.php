@@ -503,7 +503,7 @@ class Pdo extends Driver
 	}
 
 	/**
-	 * Checks for the existance of a table
+	 * Checks for the existence of a table
 	 *
 	 * @param   string  $table  The table we're looking for
 	 * @return  bool
@@ -751,64 +751,3 @@ class Pdo extends Driver
 	 * @since   2.0.0
 	 */
 	public function getVersion()
-	{
-		return $this->connection->query("SHOW VARIABLES LIKE '%version%'")->fetchAll()[3]['Value'];
-	}
-
-	/**
-	 * Selects a database for use
-	 *
-	 * @param   string  $database  The name of the database to select for use
-	 * @return  bool
-	 * @since   2.0.0
-	 */
-	public function select($database)
-	{
-		if (empty($database))
-		{
-			return false;
-		}
-
-		$this->connection->exec('USE ' . $this->quoteName($database));
-
-		$this->database = $database;
-
-		return true;
-	}
-
-	/**
-	 * Sets the connection to use UTF-8 character encoding
-	 *
-	 * This is already happening in the initial database connection for PDO.
-	 *
-	 * @return  bool
-	 * @since   2.0.0
-	 */
-	public function setUTF()
-	{
-		return false;
-	}
-
-	/**
-	 * Grabs the number of returned rows for the previous executed SQL statement
-	 *
-	 * @return  int
-	 * @since   2.0.0
-	 */
-	public function getNumRows()
-	{
-		// @FIXME: this isn't guaranteed to work on select statements in mysql
-		return $this->statement->rowCount();
-	}
-
-	/**
-	 * Detects the driver syntax
-	 *
-	 * @return  string
-	 * @since   2.0.0
-	 **/
-	protected function detectSyntax()
-	{
-		return $this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME);
-	}
-}

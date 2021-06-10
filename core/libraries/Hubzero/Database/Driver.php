@@ -1442,7 +1442,7 @@ abstract class Driver
 	abstract public function getNumRows();
 
 	/**
-	 * Checks for the existance of a table
+	 * Checks for the existence of a table
 	 *
 	 * @param   string  $table  The table we're looking for
 	 * @return  bool

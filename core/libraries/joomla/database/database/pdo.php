@@ -920,7 +920,7 @@ class JDatabasePDO extends JDatabase
 	}
 
 	/**
-	 * Check for the existance of a table
+	 * Check for the existence of a table
 	 *
 	 * @access	public
 	 * @param 	string $table - table we're looking for

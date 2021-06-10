@@ -199,7 +199,7 @@ class Migration extends Scaffolding
 			->addArgument(
 				'-i: ignore validity check',
 				'Normally, migrations scaffolding tries to check the validity of the provided
-				extension name by checking for the existance of a corresponding
+				extension name by checking for the existence of a corresponding
 				directory within the framework. Occasionally, migrations need to be
 				written for non-existent extensions. This option will override the
 				validity check and allow you to create the migration anyways.',

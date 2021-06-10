@@ -226,7 +226,7 @@ class Migration
 			return false;
 		}
 
-		// Check for the existance of the migrations table
+		// Check for the existence of the migrations table
 		$tables = $db->getTableList();
 		$prefix = $db->getPrefix();
 		$tableset = false;
