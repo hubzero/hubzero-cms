@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e90eba3f414bedf8a649baeaebe300e6",
+    "content-hash": "7c3d7a7290de48b27dc11f10fa1f12e3",
     "packages": [
         {
             "name": "apereo/phpcas",
@@ -1144,6 +1144,9 @@
                 "ext-bcmath": "Used for unit conversion and imagecrash protection",
                 "ext-iconv": "Converts text to and from non-UTF-8 encodings",
                 "ext-tidy": "Used for pretty-printing HTML"
+            },
+            "require-dev": {
+                "simpletest/simpletest": "dev-master#72de02a7b80c6bb8864ef9bf66d41d2f58f826bd"
             },
             "type": "library",
             "autoload": {
