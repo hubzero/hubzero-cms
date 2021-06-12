@@ -31,7 +31,7 @@
         "ezyang/htmlpurifier": "4.13.*",
         "facebook/graph-sdk": "^5.0",
         "tecnickcom/tcpdf": "6.*",
-        "leafo/lessphp": "0.5.0",
+        "marfrelen/lessphp": "0.5.*",
         "swiftmailer/swiftmailer": "~v5.4.12",
         "monolog/monolog": "1.17.0",
         "willdurand/geocoder": "2.8.*",
