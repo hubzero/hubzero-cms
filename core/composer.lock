@@ -686,33 +686,36 @@
         },
         {
             "name": "ezyang/htmlpurifier",
-            "version": "v4.5.0",
+            "version": "v4.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289"
+                "reference": "08e27c97e4c6ed02f37c5b2b20488046c8d90d75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d516e2f8de435ea78cc6152abc425d3ff2c4d289",
-                "reference": "d516e2f8de435ea78cc6152abc425d3ff2c4d289",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/08e27c97e4c6ed02f37c5b2b20488046c8d90d75",
+                "reference": "08e27c97e4c6ed02f37c5b2b20488046c8d90d75",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2"
+            },
+            "require-dev": {
+                "simpletest/simpletest": "dev-master#72de02a7b80c6bb8864ef9bf66d41d2f58f826bd"
             },
             "type": "library",
             "autoload": {
                 "files": [
                     "library/HTMLPurifier.composer.php"
                 ],
-                "psr-0": {
-                    "HTMLPurifier": "library/"
-                }
+                "exclude-from-classmap": [
+                    "/library/HTMLPurifier/Language/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "LGPL"
+                "LGPL-2.1-or-later"
             ],
             "authors": [
                 {
@@ -726,7 +729,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2013-02-18T00:04:08+00:00"
+            "time": "2020-06-29T00:56:53+00:00"
         },
         {
             "name": "facebook/graph-sdk",
