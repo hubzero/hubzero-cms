@@ -37,7 +37,7 @@
         "simshaun/recurr": "0.3.2",
         "pelago/emogrifier": "dev-master",
         "google/apiclient": "2.1.*",
-        "guzzlehttp/guzzle": "^6.0",
+        "guzzlehttp/guzzle": "6.5.*",
         "authy/php": "2.*",
         "mandrill/mandrill": "1.0.*",
         "phpdocumentor/reflection-docblock": "2.0.4",
