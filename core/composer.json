@@ -36,7 +36,7 @@
         "symfony/http-foundation": "~v2.8.52",
         "simshaun/recurr": "0.3.2",
         "pelago/emogrifier": "dev-master",
-        "google/apiclient": "^2.0",
+        "google/apiclient": "2.1.*",
         "guzzlehttp/guzzle": "^6.0",
         "authy/php": "2.*",
         "mandrill/mandrill": "1.0.*",
