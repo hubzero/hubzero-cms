@@ -239,16 +239,16 @@
         },
         {
             "name": "cilogon/oauth2-cilogon",
-            "version": "1.1.1",
+            "version": "1.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cilogon/oauth2-cilogon.git",
-                "reference": "a9ffaec5f6d0a6136399db01e40fd3c980711f23"
+                "reference": "6dee6c3c535439f954ec7c788d1eb4814d18c30b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cilogon/oauth2-cilogon/zipball/a9ffaec5f6d0a6136399db01e40fd3c980711f23",
-                "reference": "a9ffaec5f6d0a6136399db01e40fd3c980711f23",
+                "url": "https://api.github.com/repos/cilogon/oauth2-cilogon/zipball/6dee6c3c535439f954ec7c788d1eb4814d18c30b",
+                "reference": "6dee6c3c535439f954ec7c788d1eb4814d18c30b",
                 "shasum": ""
             },
             "require": {
@@ -287,7 +287,7 @@
                 "oauth",
                 "oauth2"
             ],
-            "time": "2017-05-25T17:36:46+00:00"
+            "time": "2021-04-13T11:09:48+00:00"
         },
         {
             "name": "composer/ca-bundle",
