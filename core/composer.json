@@ -38,7 +38,7 @@
         "symfony/yaml": "3.4.*",
         "symfony/http-foundation": "~v2.8.52",
         "simshaun/recurr": "0.3.2",
-        "pelago/emogrifier": "dev-master",
+        "pelago/emogrifier": "3.1.*",
         "google/apiclient": "2.1.*",
         "guzzlehttp/guzzle": "^6.0",
         "authy/php": "2.*",
