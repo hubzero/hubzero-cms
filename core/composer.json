@@ -43,7 +43,7 @@
         "guzzlehttp/guzzle": "~6.5.6",
         "authy/php": "2.*",
         "mandrill/mandrill": "1.0.*",
-        "phpdocumentor/reflection-docblock": "2.0.4",
+        "phpdocumentor/reflection-docblock": "2.0.*",
         "bshaffer/oauth2-server-php": "v1.4",
         "pear/net_dns2": "1.5.*",
         "hubzero/orcid-php": "0.*",
