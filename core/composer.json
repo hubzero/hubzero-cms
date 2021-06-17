@@ -56,7 +56,7 @@
         "simplepie/simplepie": "1.5",
         "solarium/solarium" : "3.8.1",
         "cilogon/oauth2-cilogon": "1.1.*",
-        "srmklive/flysystem-dropbox-v2": "^1.0",
+        "srmklive/flysystem-dropbox-v2": "1.0.*",
         "stevenmaguire/oauth2-dropbox": "^2.0.0",
 	"composer/composer": "~1.10.26",
 	"phpoffice/phpspreadsheet": "1.16.*"
