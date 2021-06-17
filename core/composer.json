@@ -49,7 +49,7 @@
         "hubzero/orcid-php": "0.3.*",
         "league/flysystem": "1.0.*",
         "hubzero/flysystem-github": "dev-develop",
-        "nao-pon/flysystem-google-drive": "~1.1.13",
+        "nao-pon/flysystem-google-drive": "1.1.*",
         "php-amqplib/php-amqplib": "2.5.*",
         "league/flysystem-aws-s3-v3": "1.0.*",
         "simplepie/simplepie": "1.5",

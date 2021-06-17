@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "410dccfda6ae637d7b2b10e0d7799f09",
+    "content-hash": "c4e360638da3ccb635d8ae404e02bc58",
     "packages": [
         {
             "name": "authy/php",
