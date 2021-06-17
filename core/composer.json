@@ -36,7 +36,7 @@
         "willdurand/geocoder": "2.8.*",
         "predis/predis": "0.8.*",
         "symfony/yaml": "3.4.*",
-        "symfony/http-foundation": "~v2.8.52",
+        "symfony/http-foundation": "v2.8.*",
         "simshaun/recurr": "0.3.2",
         "pelago/emogrifier": "~3.1.0",
         "google/apiclient": "2.1.*",
