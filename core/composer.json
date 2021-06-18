@@ -48,7 +48,7 @@
         "pear/net_dns2": "1.5.*",
         "hubzero/orcid-php": "0.3.*",
         "league/flysystem": "1.0.*",
-        "potherca/flysystem-github": "dev-develop",
+        "potherca/flysystem-github": "v0.2.2",
         "nao-pon/flysystem-google-drive": "~1.1.13",
         "php-amqplib/php-amqplib": "2.5.*",
         "league/flysystem-aws-s3-v3": "1.0.*",
@@ -59,7 +59,8 @@
         "stevenmaguire/oauth2-dropbox": "2.0.*",
 	"composer/composer": "^2.0.0",
 	"phpoffice/phpspreadsheet": "1.16.*",
-	"simplesamlphp/simplesamlphp": "1.18.*"
+	"simplesamlphp/simplesamlphp": "1.18.*",
+        "php-http/guzzle6-adapter": "^1.1"
     },
     "require-dev": {
         "mockery/mockery": "~1.3.5",
