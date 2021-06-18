@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "55b788825275dd6d80b10f96ed15e9f6",
+    "content-hash": "d3df434f25f78116d17b2e9756e7f977",
     "packages": [
         {
             "name": "apereo/phpcas",
@@ -10019,6 +10019,11 @@
                 "bin/php-coveralls"
             ],
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "PhpCoveralls\\": "src/"
