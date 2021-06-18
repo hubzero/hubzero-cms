@@ -19,11 +19,13 @@
     },
     "repositories": [
         {
-            "type": "vcs",
-            "url": "https://github.com/hubzero/flysystem-github"
+            "type": "path",
+            "url": "libraries/flysystem-github",
+            "options": { "symlink": false, "versions": { "hubzero/flysystem-github": "0.2.2" } }
         }
     ],
     "require": {
+	"php-http/guzzle6-adapter": "*",
 	"phpmailer/phpmailer": "6.4.*",
         "hautelook/phpass": "1.1.*",
         "jasig/phpcas": "1.3.*",
@@ -48,7 +50,7 @@
         "pear/net_dns2": "1.5.*",
         "hubzero/orcid-php": "0.3.*",
         "league/flysystem": "1.0.*",
-        "hubzero/flysystem-github": "dev-develop",
+        "hubzero/flysystem-github": "0.2.2",
         "nao-pon/flysystem-google-drive": "1.1.*",
         "php-amqplib/php-amqplib": "2.5.*",
         "league/flysystem-aws-s3-v3": "1.0.*",
