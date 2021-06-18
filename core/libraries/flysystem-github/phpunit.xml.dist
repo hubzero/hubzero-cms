@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.7/phpunit.xsd"
+
+    backupGlobals="false"
+    beStrictAboutChangesToGlobalState="true"
+    beStrictAboutOutputDuringTests="true"
+    beStrictAboutTestSize="true"
+    beStrictAboutTestsThatDoNotTestAnything="true"
+    beStrictAboutTodoAnnotatedTests="true"
+    bootstrap="vendor/autoload.php"
+    checkForUnintentionallyCoveredCode="true"
+    colors="true"
+    forceCoversAnnotation="true"
+    verbose="true"
+
+    printerFile="vendor/whatthejeff/nyancat-phpunit-resultprinter/src/NyanCat/PHPUnit/ResultPrinter.php"
+    printerClass="NyanCat\PHPUnit\ResultPrinter"
+>
+    <testsuites>
+        <testsuite name="Flysystem Github Adapter Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src/</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="testdox-text" target="php://stdout"/>
+        <log type="coverage-clover" showUncoveredFiles="true" target="build/logs/clover.xml"/>
+        <log type="coverage-text" showUncoveredFiles="true" target="php://stdout"/>
+        <log type="coverage-html" showUncoveredFiles="true" target="build/coverage" charset="UTF-8" yui="true" highlight="true"/>
+    </logging>
+</phpunit>

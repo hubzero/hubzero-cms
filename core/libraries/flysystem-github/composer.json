@@ -1,0 +1,52 @@
+{
+    "name": "hubzero/flysystem-github",
+    "description": "Flysystem adapter for Github",
+    "keywords": [
+        "potherca",
+        "flysystem-github",
+        "flysystem-adapter",
+        "flysystem",
+        "github",
+        "adapter"
+    ],
+    "homepage": "https://github.com/potherca/flysystem-github",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Potherca",
+            "email": "potherca@gmail.com",
+            "homepage": "http://pother.ca/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php" : ">=5.4",
+        "knplabs/github-api": "^1.4",
+        "league/flysystem": "^1.0"
+    },
+    "require-dev": {
+        "php" : ">=5.5",
+        "phpunit/phpunit" : "^4.7.7",
+        "satooshi/php-coveralls": "^0.6.1",
+        "scrutinizer/ocular": "^1.1",
+        "whatthejeff/nyancat-phpunit-resultprinter": "^1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Potherca\\Flysystem\\Github\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Potherca\\Flysystem\\Github\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.2.0-dev"
+        }
+    },
+    "scripts": {
+        "test" : "phpunit"
+    }
+}
