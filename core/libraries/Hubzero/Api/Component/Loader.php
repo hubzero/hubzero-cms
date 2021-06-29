@@ -25,13 +25,13 @@ class Loader extends Base
 	{
 		$lang = $this->app['language'];
 
+		$option = $this->canonical($option);
+		
 		if (empty($option))
 		{
 			// Throw 404 if no component
 			$this->app->abort(404, $lang->translate('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND'));
 		}
-
-		$option = $this->canonical($option);
 
 		// Record the scope
 		$scope = $this->app->has('scope') ? $this->app->get('scope') : null;
