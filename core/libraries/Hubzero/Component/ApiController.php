@@ -1011,8 +1011,15 @@ class ApiController implements ControllerInterface
 			$file = strtolower(end($file));
 
 			$path = \Component::path($this->_option) . '/models/' . $file . '.php';
-
-			require_once $path;
+			$can_path = realpath($path);
+			if ($can_path != $path) {
+				App::abort(404, Lang::txt('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND', $model));
+			}
+			if (is_readable($path)) {
+				require_once $path;
+			} else {
+				App::abort(500, 'Required file is not readable', $model));
+			}
 
 			if (!class_exists($model))
 			{
