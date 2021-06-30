@@ -129,11 +129,21 @@ class Loader
 		}
 		// do not allow dots in component name to avoid directory traversal issues
 		$option = preg_replace('/[^A-Z0-9_-]/i', '', $option);
-		// prepend com_ to the name if it doesn't start with com_
 		// if option became empty due to the filtering, return an empty string
-		if ((strlen($option) > 0) && (substr($option, 0, strlen('com_')) != 'com_'))
+		if (strlen($option) > 0) 
 		{
-			$option = 'com_' . $option;
+			if (substr($option, 0, strlen('com_')) == 'com_')
+			{
+				// if option is just the prefix, make it empty because it's invalid
+				if ($option == 'com_')
+				{
+					$option = '';
+				}
+				// else it's presumably a good name and return that
+			} else {
+				// prepend com_ to the name if it doesn't start with com_
+				$option = 'com_' . $option;
+			}
 		}
 		return $option;
 	}
