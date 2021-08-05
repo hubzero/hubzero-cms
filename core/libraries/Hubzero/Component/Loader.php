@@ -200,6 +200,7 @@ class Loader
 		$path      = PATH_COMPONENT . DIRECTORY_SEPARATOR . $file . '.php';
 		$namespace = '\\Components\\' . ucfirst(substr($option, 4)) . '\\' . ucfirst($client) . '\\Bootstrap';
 		$found     = false;
+		$react_path = PATH_COMPONENT . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'react' . DIRECTORY_SEPARATOR . $file;
 
 		// Make sure the component is enabled
 		if ($this->isEnabled($option))
@@ -218,9 +219,17 @@ class Loader
 				// Load local language files
 				$lang->load($option, $local, null, false, true);
 			}
-			else if (file_exists($path))
+			else if (is_file($path))
 			{
 				$found = true;
+
+				// Load local language files
+				$lang->load($option, PATH_COMPONENT, null, false, true);
+			}
+			else if (is_dir($react_path))
+			{
+				$found = true;
+				$path = $react_path;
 
 				// Load local language files
 				$lang->load($option, PATH_COMPONENT, null, false, true);
@@ -259,9 +268,13 @@ class Loader
 	{
 		ob_start();
 
-		if (file_exists($path))
+		if (is_file($path))
 		{
 			$this->executePath($path);
+		}
+		else if (is_dir($path))
+		{
+			$this->executeReactApp($path);
 		}
 		else
 		{
@@ -294,6 +307,83 @@ class Loader
 	protected function executeBootstrap($namespace)
 	{
 		with(new $namespace)->start();
+	}
+
+	/**
+	 * Execute the component from a React App
+	 *
+	 * @param   string  $path  The path to the react app
+	 * @return  void
+	 */
+	protected function executeReactApp($path)
+	{
+		$index = file_get_contents($path . DS . 'build' . DS . 'index.html' );
+
+		$dom = new \DOMDocument();
+		$dom->loadHTML($index);
+
+		$bodies = $dom->getElementsByTagName('body');
+
+		assert($bodies->length === 1);
+
+		$heads = $dom->getElementsByTagName('head');
+
+		assert($heads->length === 1);
+
+		$body = $bodies->item(0);
+		$head = $heads->item(0);
+
+		foreach($head->childNodes as $node) 
+		{
+			if ($node->nodeName == 'meta') 
+			{
+
+				if ( $node->hasAttribute('charset')  )
+				{
+					Document::setCharset( $node->getAttribute('charset') );
+					// Doesn't seem to change anything
+				}
+				else if ( $node->hasAttribute('name') )
+				{
+					Document::setMetaData($node->getAttribute('name'), $node->getAttribute('content'));
+				}
+				else if ( $node->hasAttribute('http-equiv') ) 
+				{
+					Document::setMetaData($node->getAttribute('http-equiv'), $node->getAttribute('content'), true);
+				}
+				else if ( $node->hasAttribute('itemprop') ) 
+				{
+					// Not supported
+				}
+			}
+
+			if ($node->nodeName == 'title') 
+			{
+				Document::setTitle( $node->nodeValue );
+				// Oddly concatenated titles
+			}
+
+			if ($node->nodeName == 'link') 
+			{
+				$rel = $node->getAttribute('rel');
+				$href = $node->getAttribute('href');
+
+				if ($rel == 'stylesheet')
+				{
+					Document::addStyleSheet($href);
+				}
+				else if ($rel == 'script')
+				{
+					Document::addScript($href);
+				}
+				else
+				{
+					Document::addHeadLink($href, $rel);
+				}
+			}
+		}
+
+		echo substr($dom->saveHtml($body), 6, -7); // remove <body></body>
 	}
 
 	/**
