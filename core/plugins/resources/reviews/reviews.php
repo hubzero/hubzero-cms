@@ -187,7 +187,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 				->set('reviews', $reviews)
 				->set('isAuthor', $isAuthor)
 				->set('url', Route::url($url))
-				->set('url2', Route::url($url . '&action=addreview#reviewform'));
+				->set('url2', Route::url($url . '&action=addreview#commentform'));
 
 			$arr['metadata'] = $view->loadTemplate();
 		}
