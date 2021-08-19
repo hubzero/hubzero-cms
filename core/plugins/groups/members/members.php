@@ -225,7 +225,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				{
 					$view->filter = '';
 				}
-				$view->role_filter = Request::getString('role_filter', '');
+				$view->role_filter = Request::getInt('role_filter', '');
 
 				if ($view->authorized != 'manager' && $view->authorized != 'admin')
 				{
