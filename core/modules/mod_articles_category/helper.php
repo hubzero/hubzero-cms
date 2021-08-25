@@ -160,7 +160,7 @@ class Helper extends Module
 								{
 									// Get an instance of the generic article model
 									$article = Article::all();
-									$article->whereEquals('published', Article::STATE_PUBLISHED);
+									$article->whereEquals('state', Article::STATE_PUBLISHED);
 									$article->whereEquals('id', (int) $article_id);
 
 									$item = $article->row();
@@ -257,7 +257,8 @@ class Helper extends Module
 			$query->whereEquals('featured', 1);
 		}
 
-		if ($creator = $params->get('created_by', ''))
+		$creator = $params->get('created_by', '');
+		if (count($creator) > 0 && implode(',', $creator) != '')
 		{
 			$query->whereEquals('created_by', $creator);
 		}
@@ -265,24 +266,30 @@ class Helper extends Module
 		if ($excluded_articles = $params->get('excluded_articles', ''))
 		{
 			$excluded_articles = explode("\r\n", $excluded_articles);
-			$query->whereRaw('id', 'NOT IN(' . implode(',', $excluded_articles) . ')');
+			$query->whereRaw('id NOT IN(' . implode(',', $excluded_articles) . ')');
 		}
 
 		$date_filtering = $params->get('date_filtering', 'off');
-		if ($date_filtering !== 'off')
+		if ($date_filtering == 'range')
 		{
 			$fld = str_replace('a.', '', $params->get('date_field', 'a.created'));
 
 			$query->where($fld, '>=', $params->get('start_date_range', '1000-01-01 00:00:00'));
 			$query->where($fld, '<', $params->get('end_date_range', '9999-12-31 23:59:59'));
+		} 
+		elseif ($date_filtering == 'relative')
+		{
+			$fld = str_replace('a.', '`#__content`.`', $params->get('date_field', 'a.created')) . '`';
 			if ($relativeDate = $params->get('relative_date', 30))
 			{
-				$query->whereRaw($fld, '>= DATE_SUB(' . Date::toSql() . ', INTERVAL ' . $relativeDate . ' DAY)');
+				$query->whereRaw($fld . " >= DATE_SUB('" . Date::toSql() . "', INTERVAL " . $relativeDate . " DAY)");
 			}
 		}
 
 		// Filter by language
-		$query->whereEquals('language', App::get('language.filter'));
+		if (App::get('language.filter') != '') {
+			$query->whereEquals('language', App::get('language.filter'));
+		}
 
 		$query->start(0)
 			->limit((int) $params->get('count', 5));
@@ -312,11 +319,28 @@ class Helper extends Module
 			$active_article_id = 0;
 		}
 
+		$access = !Component::params('com_content')->get('show_noauth');
+		$authorised = User::getAuthorisedViewLevels();
 		// Prepare data for display using display options
 		foreach ($items as $item)
 		{
 			$item->slug    = $item->id . ':' . $item->alias;
-			$item->catslug = $item->catid ? $item->catid . ':' . $item->category_alias : $item->catid;
+			if ($item->catid) 
+			{
+
+				$categories = Category::all();
+				$categories->whereEquals('id', $item->catid);
+				$category = $categories->rows()->first();
+				$item->catslug = $item->catid . ':' . $category->alias;
+				$item->displayCategoryLink  = Route::url(\Components\Content\Site\Helpers\Route::getCategoryRoute($item->catid));
+				$item->displayCategoryTitle = $show_category ? '<a href="' . $item->displayCategoryLink . '">' . $category->title . '</a>' : '';
+			}
+			else 
+			{
+				$item->catslug = '';
+				$item->displayCategoryTitle = '';
+			}
+			Log::debug("item->catslug: " . $item->catslug);
 
 			if ($access || in_array($item->access, $authorised))
 			{
@@ -348,16 +372,6 @@ class Helper extends Module
 			if ($show_date)
 			{
 				$item->displayDate = Date::of($item->$show_date_field)->toLocal($show_date_format);
-			}
-
-			if ($item->catid)
-			{
-				$item->displayCategoryLink  = Route::url(\Components\Content\Site\Helpers\Route::getCategoryRoute($item->catid));
-				$item->displayCategoryTitle = $show_category ? '<a href="' . $item->displayCategoryLink . '">' . $item->category_title . '</a>' : '';
-			}
-			else
-			{
-				$item->displayCategoryTitle = $show_category ? $item->category_title : '';
 			}
 
 			$item->displayHits = $show_hits ? $item->hits : '';
