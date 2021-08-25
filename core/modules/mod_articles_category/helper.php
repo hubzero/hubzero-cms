@@ -340,8 +340,7 @@ class Helper extends Module
 				$item->catslug = '';
 				$item->displayCategoryTitle = '';
 			}
-			Log::debug("item->catslug: " . $item->catslug);
-
+			
 			if ($access || in_array($item->access, $authorised))
 			{
 				// We know that user has the privilege to view the article
