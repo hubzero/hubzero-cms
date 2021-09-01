@@ -65,7 +65,7 @@ $this->js();
 					<?php echo $this->form->getLabel('folder'); ?><br />
 					<select name="fields[folder]" id="field-folder">
 						<option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_FOLDER_SELECT');?></option>
-						<?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::GroupOptions(), 'value', 'text', $this->row['group']);?>
+						<?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::GroupOptions(), 'value', 'text', $this->row['folder']);?>
 					</select>
 				</div>
 
