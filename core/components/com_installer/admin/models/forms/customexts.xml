@@ -78,8 +78,8 @@
 		<field
 			name="apikey"
 			type="text"
-			label="COM_INSTALLER_CUSTOMEXTS_EDIT_REPO_APIKEY"
-			description ="COM_INSTALLER_CUSTOMEXTS_EDIT_REPO_APIKEY_TIP"
+			label="COM_INSTALLER_CUSTOMEXTS_EDIT_REPO_TOKEN"
+			description ="COM_INSTALLER_CUSTOMEXTS_EDIT_REPO_TOKEN_TIP"
 		/>
 
 	</fieldset>
