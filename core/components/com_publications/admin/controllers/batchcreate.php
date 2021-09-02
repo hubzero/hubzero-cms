@@ -328,6 +328,7 @@ class Batchcreate extends AdminController
 				$item['errors']   = array();
 				$item['tags']     = array();
 				$item['authors']  = array();
+				$item['metadata'] = array();
 
 				// Publication properties
 				$item['publication'] = new Tables\Publication($this->database);
@@ -417,6 +418,15 @@ class Batchcreate extends AdminController
 					}
 				}
 
+				// Metadata
+				if ($node->metadata)
+				{
+					foreach ($node->metadata->metadatum as $metadatum)
+					{
+						$item['metadata'][(string)$metadatum->alias] = $metadatum->text;
+					}
+				}
+
 				// Set general process error
 				if (count($item['errors']) > 0)
 				{
@@ -497,6 +507,13 @@ class Batchcreate extends AdminController
 		$item['version']->access         = 0;
 		$item['version']->main           = 1;
 		$item['version']->state          = 3;
+
+		// Metadata
+		$item['version']->metadata		 = '';
+		foreach ($item['metadata'] as $alias => $text)
+		{
+			$item['version']->metadata .= "\n".'<nb:' . $alias . '>' . $text . '</nb:' . $alias . '>' . "\n";
+		}
 
 		if (!$item['version']->store())
 		{
