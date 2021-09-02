@@ -18,6 +18,14 @@
 	            <xs:attribute name="uid" type="xs:int"></xs:attribute>
 	      </xs:complexType>
 	</xs:element>
+      <xs:element name="metadatum">
+            <xs:complexType>
+                  <xs:sequence>
+                        <xs:element name="alias" type="xs:string"></xs:element>
+                        <xs:element name="text" type="xs:string"></xs:element>
+                  </xs:sequence>
+            </xs:complexType>
+      </xs:element>
 	<xs:element name="publications">
 		<xs:complexType>
                   <xs:sequence>
@@ -28,7 +36,7 @@
                                           <xs:element name="synopsis" type="xs:string"></xs:element>
                                           <xs:element name="abstract" type="xs:string"></xs:element>
                                           <xs:element name="version" type="xs:string" minOccurs="0"></xs:element>
-										  <xs:element name="category" type="xs:string" minOccurs="0"></xs:element>
+							<xs:element name="category" type="xs:string" minOccurs="0"></xs:element>
                                           <xs:element name="notes" minOccurs="0" type="xs:string"></xs:element>
                                           <xs:element name="content">
                                                 <xs:complexType>
@@ -72,6 +80,13 @@
                                                             <xs:element name="citation" maxOccurs="unbounded"></xs:element>
                                                       </xs:sequence>
                                                 </xs:complexType>
+                                          </xs:element>
+                                          <xs:element name="metadata" minOccurs="0">
+                                                <xs:complexType>
+                                                      <xs:sequence>
+                                                            <xs:element ref="metadatum" maxOccurs="unbounded"/>
+                                                      </xs:sequence>
+                                                </xs:complexType>  
                                           </xs:element>
                                     </xs:sequence>
                               </xs:complexType>

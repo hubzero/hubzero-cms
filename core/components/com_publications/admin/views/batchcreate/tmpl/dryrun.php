@@ -102,6 +102,29 @@ $skipFields = array('license_type', 'state', 'main', 'secret', 'access');
 						</table>
 					</td>
 				</tr>
+				<tr>
+					<td class="key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_METADATA'); ?></td>
+					<td>
+						<table class="filelist">
+							<thead>
+							<tr>
+								<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ALIAS'); ?></th>
+								<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TEXT'); ?></th>
+							</tr>
+							</thead>
+							<tbody>
+							<?php if (!empty($item['metadata'])) { ?>
+								<?php foreach ($item['metadata'] as $alias => $text) { ?>
+									<tr>
+										<td><?php echo $alias; ?></td>
+										<td><?php echo $text; ?></td>
+									</tr>
+								<?php } ?>
+							<?php } ?>
+							</tbody>
+						</table>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 	</li>
