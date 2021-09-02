@@ -553,7 +553,9 @@ class Curation extends SiteController
 		// Get DOI service
 		$doiService = new \Components\Publications\Models\Doi($this->_pub);
 
-		if ($this->_pub->version->doi)
+		$updateDoiMetadata = ($this->_pub->version->doi ? preg_match("/" . $doiService->configs()->shoulder . "/", $this->_pub->version->doi) : false);
+
+		if ($updateDoiMetadata)
 		{
 			$doiService->update($this->_pub->version->doi, true);
 
