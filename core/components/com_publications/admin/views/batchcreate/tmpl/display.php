@@ -30,6 +30,16 @@ $this->js('batchcreate');
 					     ->set('projects', $this->projects)
 					     ->display(); ?>
 				</div>
+				<div class="input-wrap">
+					<label for="mastertypeid">
+						<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_MASTER_TYPE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+					</label>
+					<?php 
+					// Draw master type list
+					$this->view('_selectmastertypes')
+					     ->set('mastertypes', $this->mastertypes)
+					     ->display(); ?>
+				</div>
 				<div class="input-wrap file-import" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ATTACH_HINT'); ?>">
 					<label for="field-file">
 						<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DATA'); ?><span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
