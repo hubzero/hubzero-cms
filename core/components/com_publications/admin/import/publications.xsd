@@ -6,6 +6,7 @@
 	              <xs:element name="path" type="xs:string"></xs:element>
 	              <xs:element name="title" type="xs:string"></xs:element>
 	        </xs:sequence>
+              <xs:attribute name="type" type="xs:string"></xs:attribute>
 	  </xs:complexType>
 	</xs:element>
 	<xs:element name="author">
@@ -36,6 +37,7 @@
                                           <xs:element name="synopsis" type="xs:string"></xs:element>
                                           <xs:element name="abstract" type="xs:string"></xs:element>
                                           <xs:element name="version" type="xs:string" minOccurs="0"></xs:element>
+                                          <xs:element name="doi" type="xs:string" minOccurs="0"></xs:element>
 							<xs:element name="category" type="xs:string" minOccurs="0"></xs:element>
                                           <xs:element name="notes" minOccurs="0" type="xs:string"></xs:element>
                                           <xs:element name="content">
@@ -48,7 +50,7 @@
                                           <xs:element name="supportingmaterials" minOccurs="0">
                                                 <xs:complexType>
                                                       <xs:sequence>
-                                                            <xs:element ref="file" maxOccurs="unbounded"/>
+                                                            <xs:element ref="file" minOccurs="0" maxOccurs="unbounded"/>
                                                       </xs:sequence>
                                                 </xs:complexType>
                                           </xs:element>
