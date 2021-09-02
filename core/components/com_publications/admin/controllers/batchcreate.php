@@ -147,6 +147,7 @@ class Batchcreate extends AdminController
 		$mtid = Request::getInt('mastertypeid', 0);
 		$file = Request::getArray('file', array(), 'FILES');
 		$dryRun = Request::getInt('dryrun', 1);
+		$api = Request::getInt('api', 0);
 
 		$this->data = null;
 
@@ -159,7 +160,7 @@ class Batchcreate extends AdminController
 				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_PROJECT_ID'),
 				'records' => null
 			));
-			exit();
+			if (!$api) { exit(); } else { return; };
 		}
 
 		// Master type ID must be supplied
@@ -169,7 +170,7 @@ class Batchcreate extends AdminController
 				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_MASTER_TYPE_ID'),
 				'records' => null
 			));
-			exit();
+			if (!$api) { exit(); } else { return; };
 		}
 		$mt = new Tables\MasterType($this->database);
 		$this->mastertype = $mt->getType($mtid);
@@ -182,7 +183,7 @@ class Batchcreate extends AdminController
 				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_FILE'),
 				'records' => null
 			));
-			exit();
+			if (!$api) { exit(); } else { return; };
 		}
 
 		// Check for correct type
@@ -193,11 +194,11 @@ class Batchcreate extends AdminController
 				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_WRONG_FORMAT'),
 				'records' => null
 			));
-			exit();
+			if (!$api) { exit(); } else { return; };
 		}
 
 		// Get data from XML file
-		if (is_uploaded_file($file['tmp_name']))
+		if ($api || is_uploaded_file($file['tmp_name']))
 		{
 			$this->data = file_get_contents($file['tmp_name']);
 		}
@@ -208,7 +209,7 @@ class Batchcreate extends AdminController
 				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_DATA'),
 				'records' => null
 			));
-			exit();
+			if (!$api) { exit(); } else { return; };
 		}
 		// Load reader
 		libxml_use_internal_errors(true);
@@ -222,7 +223,7 @@ class Batchcreate extends AdminController
 				'error'   => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_XML_VALIDATION_FAILED'),
 				'records' => null
 			));
-			exit();
+			if (!$api) { exit(); } else { return; };
 		}
 
 		// Set schema
@@ -237,7 +238,7 @@ class Batchcreate extends AdminController
 		// Parse data if passed validations
 		if (!$this->getError())
 		{
-			$outputData = $this->parse($dryRun);
+			$outputData = $this->parse($dryRun, $api);
 		}
 
 		// Parsing errors
@@ -249,7 +250,7 @@ class Batchcreate extends AdminController
 				'records' => $outputData,
 				'dryrun'  => $dryRun
 			));
-			exit();
+			if (!$api) { exit(); } else { return; };
 		}
 
 		// return results to user
@@ -259,7 +260,7 @@ class Batchcreate extends AdminController
 			'records' => $outputData,
 			'dryrun'  => $dryRun
 		));
-		exit();
+		if (!$api) { exit(); } else { return; };
 	}
 
 	/**
@@ -269,8 +270,11 @@ class Batchcreate extends AdminController
 	 * @param   string   $output
 	 * @return  string
 	 */
-	public function parse($dryRun = 1, $output = null)
+	public function parse($dryRun = 1, $api = 0)
 	{
+		// Initialize output
+		$output = null;
+		
 		// Set common props
 		$this->_uid = User::get('id');
 
@@ -346,6 +350,7 @@ class Batchcreate extends AdminController
 				$item['version']->description   = isset($node->abstract) ? trim($node->abstract) : '';
 				$item['version']->version_label = isset($node->version) ? trim($node->version) : '1.0';
 				$item['version']->release_notes = isset($node->notes) ? trim($node->notes) : '';
+				$item['version']->doi           = isset($node->doi) ? trim($node->doi) : null;
 
 				// Check license
 				$license = isset($node->license) ? $node->license : '';
@@ -441,13 +446,15 @@ class Batchcreate extends AdminController
 		// Show what you'll get
 		if ($dryRun == 1)
 		{
-			$eview = new \Hubzero\Component\View(array(
-				'name'   =>'batchcreate',
-				'layout' => 'dryrun'
-			));
-			$eview->option = $this->_option;
-			$eview->items  = $items;
-			$output       .= $eview->loadTemplate();
+			if (!$api) {
+				$eview = new \Hubzero\Component\View(array(
+					'name'   =>'batchcreate',
+					'layout' => 'dryrun'
+				));
+				$eview->option = $this->_option;
+				$eview->items  = $items;
+				$output       .= $eview->loadTemplate();
+			}
 		}
 		elseif ($dryRun == 2)
 		{
@@ -593,6 +600,10 @@ class Batchcreate extends AdminController
 
 		$error = null;
 
+		// Get attribute
+		$attributes = $file->attributes();
+		$subtype = $attributes['type'];
+
 		// Start new attachment record
 		$attach = new Tables\Attachment($this->database);
 		$attach->path       = trim($file->path, DS);
@@ -624,6 +635,7 @@ class Batchcreate extends AdminController
 		// Add file record
 		$fileRecord = array(
 			'type'        => $type,
+			'subtype'     => $subtype,
 			'attachment'  => $attach,
 			'projectPath' => $filePath,
 			'error'       => $error
@@ -702,6 +714,14 @@ class Batchcreate extends AdminController
 
 			// Copy file into the right spot
 			$fileAttach->publishAttachment($attachment, $pub, $configs);
+
+			// Take care of thumbnail, if appropriate
+			if ($fileRecord['subtype'] == 'thumbnail' && 
+			    $configs->handler && 
+				$configs->handler->getName() == 'imageviewer' &&
+				!$attachment->getDefault($pub->version_id)) {
+					$configs->handler->makeDefault($attachment, $pub, $configs);
+			}
 		}
 	}
 
