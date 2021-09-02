@@ -154,8 +154,14 @@ class Helper extends Module
 							if ($params->get('show_on_article_page', 1))
 							{
 								$article_id = Request::getInt('id');
-								$catid      = Request::getInt('catid');
 
+								$catid      = $params->get('catid', NULL);
+								if (empty(implode($catid)))
+								{
+									$catid = false;
+								}
+
+								$catids = $catid;
 								if (!$catid)
 								{
 									// Get an instance of the generic article model
@@ -165,11 +171,10 @@ class Helper extends Module
 
 									$item = $article->row();
 
-									$catids = array($item->catid);
-								}
-								else
-								{
-									$catids = array($catid);
+									if ($item->catid)
+									{
+										$catids = array($item->catid);
+									}
 								}
 							}
 							else
@@ -196,6 +201,12 @@ class Helper extends Module
 			case 'normal':
 			default:
 				$catids = $params->get('catid');
+
+				if (is_array($catids) && empty(implode($catids)))
+				{
+					$catids = false;
+				}
+
 				break;
 		}
 
@@ -276,7 +287,7 @@ class Helper extends Module
 
 			$query->where($fld, '>=', $params->get('start_date_range', '1000-01-01 00:00:00'));
 			$query->where($fld, '<', $params->get('end_date_range', '9999-12-31 23:59:59'));
-		} 
+		}
 		elseif ($date_filtering == 'relative')
 		{
 			$fld = str_replace('a.', '`#__content`.`', $params->get('date_field', 'a.created')) . '`';
@@ -325,7 +336,7 @@ class Helper extends Module
 		foreach ($items as $item)
 		{
 			$item->slug    = $item->id . ':' . $item->alias;
-			if ($item->catid) 
+			if ($item->catid)
 			{
 
 				$categories = Category::all();
@@ -335,12 +346,12 @@ class Helper extends Module
 				$item->displayCategoryLink  = Route::url(\Components\Content\Site\Helpers\Route::getCategoryRoute($item->catid));
 				$item->displayCategoryTitle = $show_category ? '<a href="' . $item->displayCategoryLink . '">' . $category->title . '</a>' : '';
 			}
-			else 
+			else
 			{
 				$item->catslug = '';
 				$item->displayCategoryTitle = '';
 			}
-			
+
 			if ($access || in_array($item->access, $authorised))
 			{
 				// We know that user has the privilege to view the article
