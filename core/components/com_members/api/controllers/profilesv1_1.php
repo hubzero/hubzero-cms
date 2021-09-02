@@ -366,7 +366,23 @@ class Profilesv1_1 extends ApiController
 	 */
 	public function readTask()
 	{
-		$userid = Request::getInt('id', 0);
+		$id = Request::getCmd('id', '');
+
+		if (($id == 'currentuser'))
+		{
+			$user = User::getInstance();
+
+			if ($user->isGuest())
+			{
+	                        throw new Exception(Lang::txt('Not authorized'), 403);
+			}
+
+			$userid = $user->get('id');
+		}
+		else
+		{
+			$userid = Request::getInt('id', 0);
+		}
 
 		$result = Member::oneOrFail($userid);
 
