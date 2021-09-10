@@ -215,37 +215,24 @@ class Helper extends Module
 		{
 			if ($params->get('show_child_category_articles', 0) && (int) $params->get('levels', 0) > 0)
 			{
-				require_once Component::path('com_category') . '/models/category.php';
+				$levels = $params->get('levels', 1);
 
-				// Get an instance of the generic categories model
-				$categories = Category::all();
-				$levels = $params->get('levels', 1) ? $params->get('levels', 1) : 9999;
-				$categories->where('level', '<=', $levels);
-				$categories->whereEquals('published', Category::STATE_PUBLISHED);
-				if (!Component::params('com_content')->get('show_noauth'))
-				{
-					$categories->whereIn('access', User::getAuthorisedViewLevels());
-				}
 				$additional_catids = array();
 
 				foreach ($catids as $catid)
 				{
-					$catgories = clone $categories;
-					$catgories->whereEquals('parent_id', $catid);
+					$db = App::get('db');
 
-					$items = $catgories->rows();
+					// For each category find children up to needed depth
+					$sql = "SELECT id FROM jos_categories, (SELECT @pID := ?) varInit
+							WHERE FIND_IN_SET(parent_id, @pID)
+							AND level <= ? 
+							AND @pID := CONCAT(@pID, ',', id)";
 
-					if ($items)
-					{
-						foreach ($items as $category)
-						{
-							$condition = (($category->level - $categories->getParent()->level) <= $levels);
-							if ($condition)
-							{
-								$additional_catids[] = $category->id;
-							}
-						}
-					}
+					$vars = array($catid, $levels);
+
+					$db->prepare($sql)->bind($vars);
+					$additional_catids = array_merge($db->loadColumn(), $additional_catids);
 				}
 
 				$catids = array_unique(array_merge($catids, $additional_catids));
@@ -351,6 +338,7 @@ class Helper extends Module
 				$item->catslug = '';
 				$item->displayCategoryTitle = '';
 			}
+			Log::debug("item->catslug: " . $item->catslug);
 
 			if ($access || in_array($item->access, $authorised))
 			{
