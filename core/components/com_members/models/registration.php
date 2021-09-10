@@ -184,13 +184,8 @@ class Registration
 		$this->_registration['confirmEmail'] = Request::getString('email2', null, 'post');
 		$this->_registration['password'] = Request::getString('password', null, 'post');
 		$this->_registration['confirmPassword'] = Request::getString('password2', null, 'post');
-		$this->_registration['usageAgreement'] = Request::getString('usageAgreement', null, 'post');
+		$this->_registration['usageAgreement'] = Request::getInt('usageAgreement', 0, 'post');
 		$this->_registration['sendEmail'] = Request::getString('sendEmail', '0', 'post');
-
-		if ($this->_registration['usageAgreement'] !== null)
-		{
-			$this->_registration['usageAgreement'] = ($this->_registration['usageAgreement'] === 'unset') ? false : true;
-		}
 
 		// Incoming profile edits
 		$profile = Request::getArray('profile', array(), 'post', 'none', 2);
