@@ -173,6 +173,7 @@ class Tools extends SiteController
 			if (file_exists($path))
 			{
 				$image = $path;
+				break;
 			}
 		}
 
