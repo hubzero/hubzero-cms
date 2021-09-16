@@ -213,7 +213,7 @@ class Helper extends Module
 		// Category filter
 		if ($catids)
 		{
-			if ($params->get('show_child_category_articles', 0) && (int) $params->get('levels', 0) > 0)
+			if ($params->get('show_child_category_articles', 0))
 			{
 				$levels = $params->get('levels', 1);
 
@@ -223,13 +223,17 @@ class Helper extends Module
 				{
 					$db = App::get('db');
 
-					// For each category find children up to needed depth
-					$sql = "SELECT id FROM jos_categories, (SELECT @pID := ?) varInit
-							WHERE FIND_IN_SET(parent_id, @pID)
-							AND level <= ? 
-							AND @pID := CONCAT(@pID, ',', id)";
+					$vars = array($catid, implode(',', User::getAuthorisedViewLevels()));
 
-					$vars = array($catid, $levels);
+					// For each category find children up to needed depth
+					$sql = "SELECT id FROM (SELECT * FROM #__categories ORDER BY parent_id, id) cats, (SELECT @pID := ?) varInit
+							WHERE `access` IN (?) AND FIND_IN_SET(parent_id, @pID)";
+					if ($levels)
+					{
+						$sql .= " AND level <= ?";
+						$vars[] = $levels;
+					}
+					$sql .= " AND @pID := CONCAT(@pID, ',', id)";
 
 					$db->prepare($sql)->bind($vars);
 					$additional_catids = array_merge($db->loadColumn(), $additional_catids);
@@ -338,7 +342,6 @@ class Helper extends Module
 				$item->catslug = '';
 				$item->displayCategoryTitle = '';
 			}
-			Log::debug("item->catslug: " . $item->catslug);
 
 			if ($access || in_array($item->access, $authorised))
 			{
