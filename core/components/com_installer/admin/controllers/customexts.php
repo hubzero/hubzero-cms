@@ -412,17 +412,29 @@ class Customexts extends AdminController
 						if (!isset($user))
 						{
 							$user = Component::params('com_installer')->get('system_user', 'hubadmin');
+							// Check this user exists on host, if not set user to apache
+							if (shell_exec('getent passwd ' . $user . ' | wc -l') == 0)
+							{
+								$user = 'apache';
+							}
 						}
 						// The tasks and command to be performed
 						$task = 'repository';
 						$museCmd = 'renameRepo currPath=' . $extdir . '/__' . $repodir . ' targetPath=' . $model->path;
-
-						// Run as (hubadmin)
-						$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
-
-						// Determines the path to muse and run the extension update muse command
-						$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
-
+						
+						if ($user == 'apache')
+						{
+							// Determines the path to muse and run the extension update muse command
+							$cmd = PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+						}
+						else
+						{
+							// Run as (muse user)
+							$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+							// Determines the path to muse and run the extension update muse command
+							$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+						}
+						
 						// execute command
 						$output = shell_exec($cmd);
 					}
@@ -444,16 +456,28 @@ class Customexts extends AdminController
 						if (!isset($user))
 						{
 							$user = Component::params('com_installer')->get('system_user', 'hubadmin');
+							// Check this user exists on host, if not set user to apache
+							if (shell_exec('getent passwd ' . $user . ' | wc -l') == 0)
+							{
+								$user = 'apache';
+							}
 						}
 						// The tasks and command to be perofmred
 						$task = 'repository';
 						$museCmd = 'renameRepo currPath=' . $model->path . ' targetPath=' . $extdir . '/__' . $repoPath;
 
-						// Run as (hubadmin)
-						$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
-
-						// Determines the path to muse and run the extension update muse command
-						$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+						if ($user == 'apache')
+						{
+							// Determines the path to muse and run the extension update muse command
+							$cmd = PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+						}
+						else
+						{
+							// Run as (muse user)
+							$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+							// Determines the path to muse and run the extension update muse command
+							$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+						}
 
 						// execute command
 						$output = shell_exec($cmd);
@@ -533,6 +557,11 @@ class Customexts extends AdminController
 			if (!isset($user))
 			{
 				$user = Component::params('com_installer')->get('system_user', 'hubadmin');
+				// Check this user exists on host, if not set user to apache
+				if (shell_exec('getent passwd ' . $user . ' | wc -l') == 0)
+				{
+					$user = 'apache';
+				}
 			}
 
 			// Do we have a git repo?  If not clone the stated repo.
@@ -551,11 +580,19 @@ class Customexts extends AdminController
 					$museCmd = 'cloneRepo repoPath=' . $extension->path . ' sourceUrl=' . $extension->get('url');
 				}
 
-				// Run as (hubadmin)
-				$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+				if ($user == 'apache')
+				{
+					// Determines the path to muse and run the extension update muse command
+					$cmd = PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+				}
+				else
+				{
+					// Run as (muse user)
+					$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+					// Determines the path to muse and run the extension update muse command
+					$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+				}
 
-				// Determines the path to muse and run the extension update muse command
-				$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
 
 				// execute command
 				$output = shell_exec($cmd);
@@ -563,7 +600,7 @@ class Customexts extends AdminController
 
 			// Set Muse Task
 			$task = 'repository';
-			// Run as (hubadmin)
+			// Run as (muse user)
 			$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
 
 			// Check if specified branch is being used.  If not checkout out specified branch
@@ -661,18 +698,30 @@ class Customexts extends AdminController
 			if (!isset($user))
 			{
 				$user = Component::params('com_installer')->get('system_user', 'hubadmin');
+				// Check this user exists on host, if not set user to apache
+				if (shell_exec('getent passwd ' . $user . ' | wc -l') == 0)
+				{
+					$user = 'apache';
+				}
 			}
 
 			// The tasks and command to be perofmred
 			$task = 'repository';
 			$museCmd = 'update -r=' . $extension->path;
 
-			// Run as (hubadmin)
-			$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+			if ($user == 'apache')
+			{
+				// Determines the path to muse and run the extension update muse command
+				$cmd = PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+			}
+			else
+			{
+				// Run as (muse user)
+				$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+				// Determines the path to muse and run the extension update muse command
+				$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+			}
 
-			// Determines the path to muse and run the extension update muse command
-			$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
-			Log::debug("------- cmd: ". $cmd);
 			// this will run a "git pull --rebase origin master"
 			$output = shell_exec($cmd);
 
@@ -730,6 +779,11 @@ class Customexts extends AdminController
 			if (!isset($user))
 			{
 				$user = Component::params('com_installer')->get('system_user', 'hubadmin');
+				// Check this user exists on host, if not set user to apache
+				if (shell_exec('getent passwd ' . $user . ' | wc -l') == 0)
+				{
+					$user = 'apache';
+				}
 			}
 
 			// If enextion is enabled
@@ -739,11 +793,18 @@ class Customexts extends AdminController
 				$task = 'repository';
 				$museCmd = 'removeRepo -path=' . $extension->path;
 
-				// Run as (hubadmin)
-				$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
-
-				// Determines the path to muse and run the extension update muse command
-				$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
+				if ($user == 'apache')
+				{
+					// Determines the path to muse and run the extension update muse command
+					$cmd = PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+				}
+				else
+				{
+					// Run as (muse user)
+					$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+					// Determines the path to muse and run the extension update muse command
+					$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+				}
 
 				// this will run a "git pull --rebase origin master"
 				$output = shell_exec($cmd);
@@ -778,7 +839,7 @@ class Customexts extends AdminController
 				$task = 'repository';
 				$museCmd = 'removeRepo -path=' . $extdir . '/__' . $repodir;
 
-				// Run as (hubadmin)
+				// Run as (muse user)
 				$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
 
 				// Determines the path to muse and run the extension update muse command

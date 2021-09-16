@@ -204,6 +204,11 @@ class Cli
 		if (!isset($user))
 		{
 			$user = \Component::params('com_installer')->get('system_user', 'hubadmin');
+			// Check this user exists on host, if not set user to apache
+			if (shell_exec('getent passwd ' . $user . ' | wc -l') == 0)
+			{
+				$user = 'apache';
+			}
 		}
 
 		if (!isset($processUser))
@@ -213,9 +218,15 @@ class Cli
 			$processUser = $processUser['name'];
 		}
 
-		$sudo = ($processUser != $user) ? '/usr/bin/sudo -u ' . $user . ' ' : '';
-
-		$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', $args) : '') . ' --format=json';
+		if ($user == 'apache')
+		{
+			$cmd = PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', $args) : '') . ' --format=json';
+		}
+		else
+		{
+			$sudo = ($processUser != $user) ? '/usr/bin/sudo -u ' . $user . ' ' : '';
+			$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', $args) : '') . ' --format=json';
+		}
 
 		return shell_exec($cmd);
 	}
