@@ -1819,7 +1819,7 @@ class Tickets extends SiteController
 				if (!$rowc->isPrivate())
 				{
 					# Users can submit a ticket while not logged in and without a username, that has to be handled differently
-					if (empty($row->login) && (is_string($row->login) && strlen($row->login) == 0))
+					if (is_string($row->login) && strlen($row->login) == 0)
 					{
 						$rowc->addTo($row->email);
 					}
