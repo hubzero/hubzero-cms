@@ -1818,12 +1818,20 @@ class Tickets extends SiteController
 				// submitter regardless of the above setting
 				if (!$rowc->isPrivate())
 				{
-					$rowc->addTo(array(
-						'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_SUBMITTER'),
-						'name'  => $row->submitter->get('name'),
-						'email' => $row->submitter->get('email'),
-						'id'    => $row->submitter->get('id')
-					));
+					# Users can submit a ticket while not logged in and without a username, that has to be handled differently
+					if (empty($row->login) && (is_string($row->login) && strlen($row->login) == 0))
+					{
+						$rowc->addTo($row->email);
+					}
+					else 
+					{
+						$rowc->addTo(array(
+							'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_SUBMITTER'),
+							'name'  => $row->submitter->get('name'),
+							'email' => $row->submitter->get('email'),
+							'id'    => $row->submitter->get('id')
+						));
+					}
 				}
 			}
 
