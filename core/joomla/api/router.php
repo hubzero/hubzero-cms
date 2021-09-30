@@ -114,14 +114,9 @@ class JRouterApi extends JRouter
 					/*
 					$vars['option'] = 'com_members';
 					$vars['controller'] = 'register';
-
-					if ($juser->get('tmp_user'))
-						$vars['task'] = 'create';
-					else
-						$vars['task'] = 'update';
-
+					$vars['task'] = 'update';
 					$vars['act'] = '';
-                    */
+                    			*/
 
 					$vars['option'] = 'com_members';
 					$vars['id'] = $juser->get("id");

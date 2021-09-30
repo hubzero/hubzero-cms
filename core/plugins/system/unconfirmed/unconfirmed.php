@@ -49,18 +49,19 @@ class plgSystemUnconfirmed extends \Hubzero\Plugin\Plugin
 			$current .= ($view       = Request::getWord('view', false)) ? '.' . $view : '';
 
 			$id = User::get('id');
-			$activation = User::one($id)->get('activation');
 
-			if (User::get('id')
-			&& ($activation != 1)
-			&& ($activation != 3)
-			&& !in_array($current, $exceptions))
+			if ($id) // hmm id shouldn't be 0 if isGuest is false, something isn't right earlier
 			{
-				Request::setVar('option', 'com_members');
-				Request::setVar('controller', 'register');
-				Request::setVar('task', 'unconfirmed');
+				$activation = User::one($id)->get('activation');
 
-				$this->event->stop();
+				if (($activation != 1) && ($activation != 3) && !in_array($current, $exceptions))
+				{
+					Request::setVar('option', 'com_members');
+					Request::setVar('controller', 'register');
+					Request::setVar('task', 'unconfirmed');
+
+					$this->event->stop();
+				}
 			}
 		}
 	}
