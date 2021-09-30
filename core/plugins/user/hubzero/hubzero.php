@@ -179,6 +179,64 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 		}
 	}
 
+
+	/**
+	 * This method should handle any authorization logic and report back to the subject
+	 *
+	 * @param   array    $response     holds the response data
+	 * @param   array    $options  array holding options
+	 * @return  int      Status::DENIED
+	 */
+
+	public function onUserAuthorisation($response, $options = array())
+	{	
+                $autoregister = isset($options['autoregister']) ? $options['autoregister'] : $this->params->get('autoregister', 1);
+		$result = new stdClass();
+		$result->status = \Hubzero\Auth\Status::SUCCESS;
+
+		// If this was not a hubzero authentication, and the authentication is not linked to
+		// to an existing hubzero account  and autoregister is set to false then
+		// deny the authorisation to use the hub (since there is no hubzero account to use)
+
+		if ($response->type != 'hubzero')
+		{
+			if (isset($response->auth_link_id))
+			{
+				$hzal = \Hubzero\Auth\Link::find_by_id($response->auth_link_id);
+			}
+			else if (is_object($response->auth_link))
+			{
+				$hzal = $response->auth_link;
+			}
+
+			if (isset($hzal))
+			{
+				if ($hzal->get('user_id') == '')
+				{
+					if (!$autoregister)
+					{
+						$result->status = \Hubzero\Auth\Status::DENIED;
+					}
+					else
+					{
+					}
+				}
+				else
+				{
+				}
+			}
+			else
+			{
+				$result->status = \Hubzero\Auth\Status::DENIED;
+			}
+		}
+		else
+		{
+		}
+
+		return $result;
+	}
+
 	/**
 	 * This method should handle any login logic and report back to the subject
 	 *
@@ -191,8 +249,13 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 		$instance = $this->_getUser($user, $options);
 
 		// If _getUser returned an error, then pass it back.
-		if ($instance instanceof Exception)
+		if (($instance instanceof Exception) or ($instance === false))
 		{
+			// Save authentication data for registration component
+
+			Session::set('authn', $user);
+
+			App::redirect(Route::url('index.php?option=com_members&view=register', false));
 			return false;
 		}
 
@@ -329,7 +392,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 		$my = User::getInstance();
 
 		// Make sure we're a valid user first
-		if ($user['id'] == 0 && !$my->get('tmp_user'))
+		if ($user['id'] == 0)
 		{
 			return true;
 		}
@@ -372,76 +435,109 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 
 		if ($id = intval($instance->get('id')))
 		{
+			if (isset($user['authoritative']) && $user['authoritative'])
+			{
+				$save = false;
+
+				if (isset($user['email']) && ($user['email'] != $instance->get('email')))
+				{
+					$instance->set('email', $user['email']);
+					$save = true;
+				}
+
+				if (isset($user['fullname']) && ($user['fullname'] != $instance->get('name')))
+				{
+					$instance->set('name', $user['fullname']);
+					$save = true;
+				}
+
+				$instance->save();
+			}
+
+
+
 			return $instance;
 		}
 
-		//TODO : move this out of the plugin
-		$config = Component::params('com_members');
-
-		// Default to Registered.
-		$defaultUserGroup = $config->get('new_usertype', 2);
-
-		$instance->set('id', 0);
-		$instance->set('name', $user['fullname']);
-		$instance->set('username', $user['username']);
-		//$instance->set('password_clear', ((isset($user['password_clear'])) ? $user['password_clear'] : ''));
-		$instance->set('email', $user['email']);  // Result should contain an email (check)
-		$instance->set('usertype', 'deprecated');
-		$instance->set('accessgroups', array($defaultUserGroup));
-		$instance->set('activation', 1);
-		$instance->set('loginShell', '/bin/bash');
-		$instance->set('ftpShell', '/usr/lib/sftp-server');
-
-		// Check user activation setting
-		// 0 = automatically confirmed
-		// 1 = require email confirmation (the norm)
-		// 2 = require admin confirmation
-		$useractivation = $config->get('useractivation', 1);
-
-		// If requiring admin approval, set user to not approved
-		if ($useractivation == 2)
-		{
-			$instance->set('approved', 0);
-		}
-		else // Automatically approved
-		{
-			$instance->set('approved', 2);
-		}
-
-		// Now, also check to see if user came in via an auth plugin, as that may affect their approval status
-		if (isset($user['auth_link']))
-		{
-			$domain = Hubzero\Auth\Domain::find_by_id($user['auth_link']->auth_domain_id);
-
-			if ($domain && is_object($domain))
-			{
-				$params = Plugin::params('authentication', $domain->authenticator);
-
-				if ($params && is_object($params) && $params->get('auto_approve', false))
-				{
-					$instance->set('approved', 2);
-				}
-			}
-		}
-
-		// If autoregister is set let's register the user
 		$autoregister = isset($options['autoregister']) ? $options['autoregister'] : $this->params->get('autoregister', 1);
 
 		if ($autoregister)
 		{
+			//TODO : move this out of the plugin
+			$config = Component::params('com_members');
+
+			// Default to Registered.
+			$defaultUserGroup = $config->get('new_usertype', 2);
+
+			$instance->set('id', 0);
+			$instance->set('name', $user['fullname']);
+			$instance->set('username', $user['username']);
+			//$instance->set('password_clear', ((isset($user['password_clear'])) ? $user['password_clear'] : ''));
+			$instance->set('email', $user['email']);  // Result should contain an email (check)
+			$instance->set('usertype', 'deprecated');
+			$instance->set('accessgroups', array($defaultUserGroup));
+			$instance->set('activation', 1);
+			$instance->set('loginShell', '/bin/bash');
+			$instance->set('ftpShell', '/usr/lib/sftp-server');
+
+			// Check user activation setting
+			// 0 = automatically confirmed
+			// 1 = require email confirmation (the norm)
+			// 2 = require admin confirmation
+			$useractivation = $config->get('useractivation', 1);
+
+			// If requiring admin approval, set user to not approved
+			if ($useractivation == 2)
+			{
+				$instance->set('approved', 0);
+			}
+			else // Automatically approved
+			{
+				$instance->set('approved', 2);
+			}
+
+			if (isset($user['auth_link_id']))
+			{
+				$hzal = \Hubzero\Auth\Link::find_by_id($user['auth_link_id']);
+			}
+			else if (isset($user['auth_link']) && is_object($user['auth_link']))
+			{
+				$hzal = $user['auth_link'];
+			}
+
+			// Now, also check to see if user came in via an auth plugin, as that may affect their approval status
+			if (isset($hzal))
+			{
+				$domain = Hubzero\Auth\Domain::find_by_id($hzal->auth_domain_id);
+
+				if ($domain && is_object($domain))
+				{
+					$params = Plugin::params('authentication', $domain->authenticator);
+
+					if ($params && is_object($params) && $params->get('auto_approve', false))
+					{
+						$instance->set('approved', 2);
+					}	
+				}
+			}
+
 			if (!$instance->save())
 			{
+
 				return new Exception($instance->getError());
 			}
+
+			$instance->set('password_clear', (isset($user['password_clear']) ? $user['password_clear'] : ''));
+
+			return $instance;
 		}
 		else
 		{
 			// No existing user and autoregister off, this is a temporary user.
-			$instance->set('tmp_user', true);
+			// @TODO: this edge case probably needs to be handled better
 		}
 
-		$instance->set('password_clear', (isset($user['password_clear']) ? $user['password_clear'] : ''));
 
-		return $instance;
+		return false;
 	}
 }
