@@ -73,17 +73,9 @@ class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
 					return;
 				}
 
-				// Tmp users
-				if (User::get('tmp_user'))
-				{
-					Request::setVar('option', 'com_members');
-					Request::setVar('controller', 'register');
-					Request::setVar('task', 'create');
-					Request::setVar('act', '');
+				$authn = Session::get('authn');
 
-					$this->event->stop();
-				}
-				else if (substr(User::get('email'), -8) == '@invalid') // force auth_link users to registration update page
+				if ($authn) // force auth_link users to registration update page
 				{
 					$usersConfig        = Component::params('com_members');
 					$simpleRegistration = $usersConfig->get('simple_registration', false);
