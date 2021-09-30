@@ -986,7 +986,7 @@ class Register extends SiteController
 		{
 			$authn = Session::get('authn', false);
 
-			if (!isset($authn['auth_link']))
+			if (!isset($authn['auth_link']) && !isset($authn['auth_link_id']))
 			{
 				$showAuthLinks = true;
 			}
