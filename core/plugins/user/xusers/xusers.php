@@ -48,11 +48,11 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 	 */
 	public function onLoginUser($user, $options = array())
 	{
-		$xuser = User::getInstance(); // get user from session (might be tmp_user, can't fetch from db)
+		$xuser = User::getInstance(); // get user from session 
 
 		if ($xuser->isGuest())
 		{
-			// user plugin hasn't run or something went very badly
+			// hubzero user plugin hasn't run or something went very badly
 
 			$plugins = Plugin::byType('user');
 			$xuser_order = false;
@@ -189,35 +189,6 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 		else
 		{
 			$hzal = null;
-		}
-
-		if ($xuser->get('tmp_user'))
-		{
-			$email = $xuser->get('email');
-
-			if ($username[0] == '-')
-			{
-				$username = trim($username, '-');
-
-				if ($hzal)
-				{
-					$xuser->set('username', 'guest;' . $username);
-					$xuser->set('email', $hzal->email);
-				}
-			}
-		}
-		else
-		{
-			if ($username[0] == '-')
-			{
-				$username = trim($username, '-');
-
-				if ($hzal)
-				{
-					$hzal->set('user_id', $xuser->get('id'));
-					$hzal->update();
-				}
-			}
 		}
 
 		if ($hzal)
