@@ -8,9 +8,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-use Orcid\Profile;
-use Orcid\Oauth;
-
 class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 {
 	/**
@@ -86,13 +83,29 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 	public function display($view, $tpl)
 	{
 		// Set up the config for the ORCID api instance
-		$oauth = new Oauth;
+		$oauth = new Orcid\Oauth;
+
+		if ($this->params->get('use_sandbox', false))
+		{
+                	$oauth->useSandboxEnvironment();
+		}
+
+		if ($this->params->get('use_member_api', false))
+		{
+                	$oauth->useMembersApi()
+			      ->setScope('/authenticate%20/read-limited');
+		}
+		else
+		{
+                	$oauth->usePublicApi()
+			      ->setScope('/authenticate');
+		}
+
 		$oauth->setClientId($this->params->get('client_id'))
-		      ->setScope('/authenticate')
 		      ->setState($view->return)
 		      ->showLogin()
 		      ->setRedirectUri(self::getRedirectUri('orcid'));
-
+                 
 		// If we're linking an account, set any info that we might already know
 		if (!User::isGuest())
 		{
@@ -116,7 +129,23 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
 		// Set up the config for the ORCID api instance
-		$oauth = new Oauth;
+		$oauth = new Orcid\Oauth;
+
+		if ($this->params->get('use_sandbox', false))
+		{
+                	$oauth->useSandboxEnvironment();
+		}
+		if ($this->params->get('use_member_api', false))
+		{
+                	$oauth->useMembersApi()
+			      ->setScope('/authenticate%20/read-limited');
+		}
+		else
+		{
+                	$oauth->usePublicApi()
+			      ->setScope('/authenticate');
+		}
+
 		$oauth->setClientId($this->params->get('client_id'))
 		      ->setClientSecret($this->params->get('client_secret'))
 		      ->setRedirectUri(self::getRedirectUri('orcid'));
@@ -127,56 +156,54 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 		// Check for successful authentication
 		if ($oauth->isAuthenticated())
 		{
-			$orcid = new Profile($oauth);
+			$orcid = new Orcid\Profile($oauth);
+
+			if (($this->params->get("email_required", false) && $orcid->email() == null))
+			{
+				$response->status = \Hubzero\Auth\Status::FAILURE;
+				$response->error_message = Lang::txt('PLG_AUTHENTICATION_ORCID_EMAIL_REQUIRED');
+				return;
+			}
+
+			if (($this->params->get("name_required", false) && $orcid->fullName() == null))
+			{
+				$response->status = \Hubzero\Auth\Status::FAILURE;
+				$response->error_message = Lang::txt('PLG_AUTHENTICATION_ORCID_NAME_REQUIRED');
+				return;
+			}
 
 			// Set username to ORCID iD
 			$username = $orcid->id();
 
 			// Create the hubzero auth link
-			$method = (Component::params('com_members')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
-			$hzal = \Hubzero\Auth\Link::$method('authentication', 'orcid', null, $username);
+			$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'orcid', null, $username);
 
 			if ($hzal === false)
 			{
 				$response->status = \Hubzero\Auth\Status::FAILURE;
-				$response->error_message = Lang::txt('PLG_AUTHENTICATION_ORCID_UNKNOWN_USER');
+				$response->error_message = Lang::txt('PLG_AUTHENTICATION_ORCID_HZAL_ERROR');
 				return;
 			}
 
-			$hzal->set('email', $orcid->email() ? $orcid->email() : null);
+			$hzal->set('email', $orcid->email());
+			$hzal->update();
 
 			// Set response variables
-			$response->auth_link = $hzal;
-			$response->type      = 'orcid';
-			$response->status    = \Hubzero\Auth\Status::SUCCESS;
-			$response->fullname  = $orcid->fullName();
+			$response->auth_link_id  = $hzal->id;
+			$response->type          = 'orcid';
+			$response->status        = \Hubzero\Auth\Status::SUCCESS;
+			$response->fullname      = $orcid->fullName();
+			$response->authoritative = $this->params->get('authoritative', false);
+			$response->username      = str_replace('-','_','u' . $username);
+			$response->email         = $orcid->email();
+			$response->orcid         = $orcid->id();
 
 			if ($hzal->user_id)
 			{
-				$user = User::getInstance($hzal->user_id);
-
-				$response->username = $user->username;
-				$response->email    = $user->email;
-				$response->fullname = $user->name;
-			}
-			else
-			{
-				$response->username = '-' . $hzal->id;
-				$response->email    = $response->username . '@invalid';
-
-				// Also set a suggested username for their hub account
-				Session::set('auth_link.tmp_username', str_replace(' ', '', strtolower($response->fullname)));
-				Session::set('auth_link.tmp_orcid', $username);
-			}
-
-			$hzal->update();
-
-			// If we have a real user, drop the authenticator cookie
-			if (isset($user) && is_object($user))
-			{
+				// If we have a real user, drop the authenticator cookie
 				// Set cookie with login preference info
 				$prefs = array(
-					'user_id'       => $user->get('id'),
+					'user_id'       => $hzal->user_id,
 					'user_img'      => null,
 					'authenticator' => 'orcid'
 				);
@@ -203,7 +230,24 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 	public function link($options=array())
 	{
 		// Set up the config for the ORCID api instance
-		$oauth = new Oauth;
+		$oauth = new Orcid\Oauth;
+
+		if ($this->params->get('use_sandbox', false))
+		{
+                	$oauth->useSandboxEnvironment();
+		}
+
+		if ($this->params->get('use_member_api', false))
+		{
+                	$oauth->useMembersApi()
+			      ->setScope('/authenticate%20/read-limited');
+		}
+		else
+		{
+                	$oauth->usePublicApi()
+			      ->setScope('/authenticate');
+		}
+
 		$oauth->setClientId($this->params->get('client_id'))
 		      ->setClientSecret($this->params->get('client_secret'))
 		      ->setRedirectUri(self::getRedirectUri('orcid'));
@@ -225,7 +269,7 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 		// Check for successful authentication
 		if ($oauth->isAuthenticated())
 		{
-			$orcid = new Profile($oauth);
+			$orcid = new Orcid\Profile($oauth);
 
 			// Set username to ORCID iD
 			$username = $orcid->id();
@@ -246,10 +290,7 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 			{
 				// Create the hubzero auth link
 				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'orcid', null, $username);
-				// if `$hzal` === false, then either:
-				//    the authenticator Domain couldn't be found,
-				//    no username was provided,
-				//    or the Link record failed to be created
+
 				if ($hzal)
 				{
 					$hzal->set('user_id', User::get('id'));
@@ -284,9 +325,9 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 		Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/orcid/assets/css/orcid.css');
 
 		$html = '<a class="orcid account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=orcid' . $return) . '">';
-			$html .= '<div class="signin">';
-				$html .= Lang::txt('PLG_AUTHENTICATION_ORCID_SIGN_IN');
-			$html .= '</div>';
+		$html .= '<div class="signin">';
+		$html .= Lang::txt('PLG_AUTHENTICATION_ORCID_SIGN_IN');
+		$html .= '</div>';
 		$html .= '</a>';
 
 		return $html;

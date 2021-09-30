@@ -15,6 +15,18 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
+				<field name="authoritative" type="radio" label="PLG_AUTHENTICATION_ORCID_PARAM_AUTHORITATIVE_LABEL" default="0" description="PLG_AUTHENTICATION_ORCID_PARAM_AUTHORITATIVE_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+				<field name="use_sandbox" type="radio" label="PLG_AUTHENTICATION_ORCID_PARAM_USE_SANDBOX_LABEL" default="0" description="PLG_AUTHENTICATION_ORCID_PARAM_USE_SANDBOX_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+				<field name="use_member_api" type="radio" label="PLG_AUTHENTICATION_ORCID_PARAM_USE_MEMBER_API_LABEL" default="0" description="PLG_AUTHENTICATION_ORCID_PARAM_USE_MEMBER_API_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
 				<field name="client_id"     type="text" size="20" label="PLG_AUTHENTICATION_ORCID_PARAM_KEY_LABEL"    description="PLG_AUTHENTICATION_ORCID_PARAM_KEY_DESC" />
 				<field name="client_secret" type="text" size="32" label="PLG_AUTHENTICATION_ORCID_PARAM_SECRET_LABEL" description="PLG_AUTHENTICATION_ORCID_PARAM_SECRET_DESC" />
 				<field name="display_name"  type="text" size="32" label="PLG_AUTHENTICATION_ORCID_PARAM_NAME_LABEL"   description="PLG_AUTHENTICATION_ORCID_PARAM_NAME_DESC" default="ORCID" />
@@ -27,6 +39,14 @@
 					<option value="1">JYes</option>
 				</field>
 				<field name="auto_approve" type="radio" label="PLG_AUTHENTICATION_ORCID_PARAM_AUTO_APPROVE_LABEL" default="0" description="PLG_AUTHENTICATION_ORCID_PARAM_AUTO_APPROVE_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+				<field name="name_required" type="radio" label="PLG_AUTHENTICATION_ORCID_PARAM_NAME_REQUIRED_LABEL" default="0" description="PLG_AUTHENTICATION_ORCID_PARAM_NAME_REQUIRED_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+				<field name="email_required" type="radio" label="PLG_AUTHENTICATION_ORCID_PARAM_EMAIL_REQUIRED_LABEL" default="0" description="PLG_AUTHENTICATION_ORCID_PARAM_EMAIL_REQUIRED_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
