@@ -111,19 +111,22 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 
 			// There are third party plugins, so show them on the registration form
 			$provider_html = "";
-			foreach ($authenticators as $a)
+			if ($this->showAuthLinks) 
 			{
-				$refl = new ReflectionClass('plgauthentication'.$a['name']);
-				if ($refl->hasMethod('onRenderOption'))
+				foreach ($authenticators as $a)
 				{
-					$html = $refl->getMethod('onRenderOption')->invoke(null);
-					$provider_html .= is_array($html) ? implode("\n", $html) : $html;
-				}
-				else
-				{
-					$provider_html .= '<a class="' . $a['name'] . ' account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=' . $a['name']) . '">';
-					$provider_html .= '<div class="signin">' . Lang::txt('COM_MEMBERS_LOGIN_SIGN_IN_WITH_METHOD', $a['display']) . '</div>';
-					$provider_html .= '</a>';
+					$refl = new ReflectionClass('plgauthentication'.$a['name']);
+					if ($refl->hasMethod('onRenderOption'))
+					{
+						$html = $refl->getMethod('onRenderOption')->invoke(null);
+						$provider_html .= is_array($html) ? implode("\n", $html) : $html;
+					}
+					else
+					{
+						$provider_html .= '<a class="' . $a['name'] . ' account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=' . $a['name']) . '">';
+						$provider_html .= '<div class="signin">' . Lang::txt('COM_MEMBERS_LOGIN_SIGN_IN_WITH_METHOD', $a['display']) . '</div>';
+						$provider_html .= '</a>';
+					}
 				}
 			}
 
