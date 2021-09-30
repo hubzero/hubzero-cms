@@ -526,7 +526,7 @@ class Auth extends SiteController
 			}
 
 			$error = ($result) ? $result->getMessage() : Lang::txt('An unknown error has occurred');
-
+			User::setState('login.error', $error);
 			// If no_html is set, return json response
 			if (Request::getInt('no_html', 0))
 			{
