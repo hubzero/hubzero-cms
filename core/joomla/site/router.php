@@ -125,14 +125,7 @@ class JRouterSite extends JRouter
 					$originalVars = $vars;
 					$vars = array();
 
-					if ($juser->get('tmp_user')) // joomla tmp users
-					{
-						$vars['option'] = 'com_members';
-						$vars['controller']	= 'register';
-						$vars['task']	= 'create';
-						$vars['act']	= '';
-					}
-					else if (substr($juser->get('email'), -8) == '@invalid') // force auth_link users to registration update page
+					if (substr($juser->get('email'), -8) == '@invalid') // force auth_link users to registration update page
 					{
 						// First, allow ticket creation
 						if ($originalVars['option'] == 'com_support' && $originalVars['controller'] == 'tickets' && $originalVars['task'] == 'save')
