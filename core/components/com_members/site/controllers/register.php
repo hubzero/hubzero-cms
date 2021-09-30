@@ -648,7 +648,7 @@ class Register extends SiteController
 	 */
 	public function createTask()
 	{
-		if (!User::isGuest() && !User::get('tmp_user'))
+		if (!User::isGuest())
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=myaccount'),
@@ -940,7 +940,6 @@ class Register extends SiteController
 					}
 
 					User::set('auth_link_id', null);
-					User::set('tmp_user', null);
 					User::set('username', $xregistration->get('login'));
 					User::set('email', $xregistration->get('email'));
 					User::set('id', $user->get('id'));
@@ -952,18 +951,14 @@ class Register extends SiteController
 
 		if (Request::method() == 'GET')
 		{
-			if (User::get('tmp_user'))
-			{
-				$xregistration->loadAccount(User::getInstance());
+			$authn =  Session::get('authn',false);
 
-				$username = $xregistration->get('login');
-				$email = $xregistration->get('email');
-				if (is_object($hzal))
-				{
-					$xregistration->set('login', $hzal->username);
-					$xregistration->set('email', $hzal->email);
-					$xregistration->set('confirmEmail', $hzal->email);
-				}
+			\Log::debug("com_users::createTask() authn = " . var_export($authn, true));
+			\Log::debug("com_users::createTask() authn = " . var_export($authn['email'], true));
+
+			if ($authn)
+			{	
+				$xregistration->set('email', $authn['email']);
 			}
 		}
 
@@ -985,6 +980,18 @@ class Register extends SiteController
 	 */
 	private function _show_registration_form(&$xregistration=null, $task='create')
 	{
+		$showAuthLinks = false;
+
+		if ($task == 'create')
+		{
+			$authn = Session::get('authn', false);
+
+			if (!isset($authn['auth_link']))
+			{
+				$showAuthLinks = true;
+			}
+		}
+
 		$username = Request::getString('username', User::get('username'), 'get');
 		$isSelf = (User::get('username') == $username);
 
@@ -1069,6 +1076,7 @@ class Register extends SiteController
 			->set('password_rules', $password_rules)
 			->set('xregistration', $xregistration)
 			->set('registration', $xregistration->_registration)
+  			->set('showAuthLinks', $showAuthLinks)
 			->setLayout('default')
 			->setErrors($this->getErrors())
 			->display();
