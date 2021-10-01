@@ -55,7 +55,7 @@ Html::behavior('tooltip');
 					<tr>
 						<td>
 							<?php
-							echo '<strong> Extension:  ' . $success['extension'] . '</strong>';
+							echo '<strong> Extension:  ' . $failed['extension'] . '</strong>';
 							?>
 							<br />
 							<br />
