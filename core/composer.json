@@ -26,6 +26,7 @@
     ],
     "require": {
         "bordoni/phpass": "~0.3.5",
+        "theiconic/name-parser": "1.2.*",
 	"php-http/guzzle6-adapter": "*",
 	"phpmailer/phpmailer": "6.4.*",
         "jasig/phpcas": "1.3.*",
