@@ -25,6 +25,7 @@
         }
     ],
     "require": {
+        "theiconic/name-parser": "1.2.*",
 	"php-http/guzzle6-adapter": "*",
 	"phpmailer/phpmailer": "6.4.*",
         "bordoni/phpass": "0.3.*",
