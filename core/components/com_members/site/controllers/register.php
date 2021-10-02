@@ -751,6 +751,8 @@ class Register extends SiteController
 			// Passed validation?
 			if ($result)
 			{
+				$authn =  Session::get('authn',false);
+
 				// Get required system objects
 				$user = clone(User::getInstance());
 
@@ -765,6 +767,48 @@ class Register extends SiteController
 						->whereEquals('title', 'Registered');
 					$db->setQuery($query->toString());
 					$newUsertype = $db->loadResult();
+				}
+
+				$username = $xregistration->get('login', null);
+
+				if (($username === null) && isset($authn['username']))
+				{
+					$xregistration->set('login', $authn['username']);
+				}
+
+				$givenName = $xregistration->get('givenName', null);
+
+				if (($givenName === null) && isset($authn['firstName']))
+				{
+					$xregistration->set('givenName', $authn['firstName']);
+				}
+
+				$middleName = $xregistration->get('middleName', null);
+
+				if (($middleName === null) && isset($authn['middleName']))
+				{
+					$xregistration->set('middleName', $authn['middleName']);
+				}
+
+				$surname = $xregistration->get('surname', null);
+
+				if (($surname === null) && isset($authn['lastName']))
+				{
+					$xregistration->set('surname', $authn['lastName']);
+				}
+
+				$name = $xregistration->get('name', null);
+
+				if (($name === null) && isset($authn['fullname']))
+				{
+					$xregistration->set('name', $authn['fullname']);
+				}
+
+				$email = $xregistration->get('email', null);
+
+				if (($email === null) && isset($authn['email']))
+				{
+					$xregistration->set('email', $authn['email']);
 				}
 
 				$user->set('username', $xregistration->get('login', ''));
@@ -953,12 +997,37 @@ class Register extends SiteController
 		{
 			$authn =  Session::get('authn',false);
 
-			\Log::debug("com_users::createTask() authn = " . var_export($authn, true));
-			\Log::debug("com_users::createTask() authn = " . var_export($authn['email'], true));
-
 			if ($authn)
 			{	
-				$xregistration->set('email', $authn['email']);
+				if (isset($authn['firstName']))
+				{
+					$xregistration->set('givenName', $authn['firstName']);
+				}
+
+				if (isset($authn['middleName']))
+				{
+					$xregistration->set('middleName', $authn['middleName']);
+				}
+
+				if (isset($authn['lastName']))
+				{
+					$xregistration->set('surname', $authn['lastName']);
+				}
+
+				if (isset($authn['fullName']))
+				{
+					$xregistration->set('fullname', $authn['fullName']);
+				}
+
+				if (isset($authn['username']))
+				{
+					$xregistration->set('login', $authn['username']);
+				}
+
+				if (isset($authn['email']))
+				{
+					$xregistration->set('email', $authn['email']);
+				}
 			}
 		}
 
