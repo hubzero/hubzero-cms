@@ -25,6 +25,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 {
 	$form_redirect = Request::current();
 }
+
 ?>
 <header id="content-header">
 	<h2><?php echo Lang::txt('COM_MEMBERS_REGISTER_'.strtoupper($this->task)); ?></h2>
@@ -194,15 +195,14 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_MEMBERS_REGISTER_LOGIN_INFORMATION'); ?></legend>
 
-					<?php if ($this->registrationUsername == Field::STATE_READONLY) { ?>
+					<?php if ($this->registrationUsername == Field::STATE_READONLY): ?>
 						<div class="form-group">
 							<label for="userlogin">
 								<?php Lang::txt('COM_MEMBERS_REGISTER_USER_LOGIN'); ?><br />
 								<?php echo $this->escape($this->registration['login']); ?>
-								<input name="login" id="userlogin" class="form-control" type="hidden" value="<?php echo $this->escape($this->registration['login']); ?>" />
 							</label>
 						</div>
-					<?php } else if ($this->registrationUsername != Field::STATE_HIDDEN) { ?>
+					<?php elseif ($this->registrationUsername != Field::STATE_HIDDEN): ?>
 						<div class="form-group">
 							<label for="userlogin" <?php echo !empty($this->xregistration->_invalid['login']) ? 'class="fieldWithErrors"' : ''; ?>>
 								<?php echo Lang::txt('COM_MEMBERS_REGISTER_USER_LOGIN'); ?> <?php echo $this->registrationUsername == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
@@ -211,7 +211,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 								<?php echo !empty($this->xregistration->_invalid['login']) ? '<span class="error">' . $this->xregistration->_invalid['login'] . '</span>' : ''; ?>
 							</label>
 						</div>
-					<?php } ?>
+					<?php endif ?>
 
 				<?php if ($this->registrationPassword != Field::STATE_HIDDEN) { ?>
 						<div class="grid">
@@ -276,7 +276,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 			<div class="clear"></div>
 		<?php } ?>
 
-		<?php if ($this->registrationFullname != Field::STATE_HIDDEN) { ?>
+		<?php if ($this->registrationFullname != Field::STATE_HIDDEN || $this->registrationEmail != Field::STATE_HIDDEN || $this->registrationConfirmEmail != Field::STATE_HIDDEN) { ?>
 			<div class="explaination">
 				<?php if ($this->task == 'create') { ?>
 					<p><?php echo Lang::txt('COM_MEMBERS_REGISTER_ACTIVATION_EMAIL_HINT'); ?></p>
@@ -287,7 +287,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_MEMBERS_REGISTER_CONTACT_INFORMATION'); ?></legend>
 
-				<?php if ($this->registrationFullname != Field::STATE_HIDDEN) { ?>
+				<?php if ($this->registrationFullname != Field::STATE_HIDDEN): ?>
 					<?php
 					$required = ($this->registrationFullname == Field::STATE_REQUIRED) ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '';
 					$message = (!empty($this->xregistration->_invalid['name'])) ? '<p class="error">' . $this->xregistration->_invalid['name'] . '</p>' : '';
@@ -307,6 +307,11 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 					{
 						$middleName = implode(' ', $bits);
 					}
+
+					$givenName = $this->registration['givenName'];
+					$middleName = $this->registration['middleName'];
+					$surname = $this->registration['surname'];
+
 					?>
 					<div class="grid">
 						<div class="col span4">
@@ -335,7 +340,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 						</div>
 					</div>
 					<?php echo ($message) ? $message . "\n" : ''; ?>
-				<?php } ?>
+				<?php endif ?>
 
 				<?php if ($this->registrationEmail != Field::STATE_HIDDEN || $this->registrationConfirmEmail != Field::STATE_HIDDEN) { ?>
 					<div class="grid">
@@ -603,7 +608,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 			<?php } ?>
 		<?php } ?>
 
-		<?php if ($this->registrationTOU != Field::STATE_HIDDEN) { ?>
+		<?php if ($this->registrationTOU != Field::STATE_HIDDEN): ?>
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_MEMBERS_REGISTER_TERMS_AND_CONDITIONS'); ?></legend>
 
@@ -618,10 +623,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 				</div>
 			</fieldset>
 			<div class="clear"></div>
-		<?php } else if ($this->registration['usageAgreement']) { ?>
-			<input name="usageAgreement" type="hidden" id="usageAgreement" value="checked" />
-			<div class="clear"></div>
-		<?php } ?>
+		<?php endif ?>
 
 		<p class="submit">
 			<input type="submit" class="btn btn-success" name="<?php echo $this->task; ?>" value="<?php echo Lang::txt('COM_MEMBERS_REGISTER_BUTTON_' . strtoupper($this->task)); ?>" />
