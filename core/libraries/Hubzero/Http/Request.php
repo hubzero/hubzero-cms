@@ -291,8 +291,15 @@ class Request extends BaseRequest
 	 */
 	public function getString($name, $default = null, $hash = 'input')
 	{
-		$result = $this->getVar($name, $default, $hash);
+		$result = $this->getVar($name, null, $hash);
+
 		$result = is_array($result) ? self::_flatten('', $result) : $result;
+
+		if ($result === null)
+		{
+			return $default;
+		}
+
 		return (string) $result;
 	}
 
