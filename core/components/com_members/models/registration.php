@@ -157,29 +157,44 @@ class Registration
 		// note that a value of null means the field doesn't exist
 		// we use this to detect when to delete data when
 		// merging registrations with profile data
-		//
-		// TODO: more cleanup
 
-		$name = Request::getArray('name', array(), 'post');
-		if (!is_array($name))
+		$name = Request::getArray('name', null, 'post');
+
+		if ($name !== null)
 		{
-			$name = array();
-		}
-		if ($name)
-		{
-			$name['first']  = preg_replace('/\s+/', ' ', trim($name['first']));
-			$name['middle'] = preg_replace('/\s+/', ' ', trim($name['middle']));
-			$name['last']   = preg_replace('/\s+/', ' ', trim($name['last']));
-			$nm  = trim($name['first']);
-			$nm .= (isset($name['middle']) && trim($name['middle']) != '') ? ' '.$name['middle'] : '';
-			$nm .= ' '.trim($name['last']);
-			$this->_registration['name'] = $nm;
-			$this->_registration['givenName'] = $name['first'];
-			$this->_registration['middleName'] = $name['middle'];
-			$this->_registration['surname'] = $name['last'];
+			if (isset($name['first']))
+			{
+				$name['first']  = preg_replace('/\s+/', ' ', trim($name['first']));
+			}
+
+			if (isset($name['middle']))
+			{
+				$name['middle'] = preg_replace('/\s+/', ' ', trim($name['middle']));
+			}
+
+			if (isset($name['last']))
+			{
+				$name['last']   = preg_replace('/\s+/', ' ', trim($name['last']));
+			}
+
+			if (isset($name['name']))
+			{
+				$name['name']   = preg_replace('/\s+/', ' ', trim($name['name']));
+			}
+
+			$this->_registration['name'] = isset($name['name']) ? $name['name'] : null;
+			$this->_registration['givenName'] = isset($name['first']) ? $name['first'] : null;
+			$this->_registration['middleName'] = isset($name['middle']) ? $name['middle'] : null;
+			$this->_registration['surname'] = isset($name['last']) ? $name['last'] : null;
 		}
 
-		$this->_registration['login'] = strtolower(Request::getString('login', null, 'post'));
+		$this->_registration['login'] = Request::getString('login', null, 'post');
+
+		if ($this->_registration['login'] !== null)
+		{
+			$this->_registration['login'] = strtolower($this->_registration['login']);
+		}
+
 		$this->_registration['email'] = Request::getString('email', null, 'post');
 		$this->_registration['confirmEmail'] = Request::getString('email2', null, 'post');
 		$this->_registration['password'] = Request::getString('password', null, 'post');
