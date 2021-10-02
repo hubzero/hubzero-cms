@@ -188,7 +188,19 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 			$hzal->set('email', $orcid->email());
 			$hzal->update();
 
+			$parser = new TheIconic\NameParser\Parser();
+
+			$name = $parser->parse($orcid->fullName());
+
 			// Set response variables
+			$response->salutation    = $name->getSalutation();
+			$response->firstName     = $name->getFirstname();
+			$response->lastName      = $name->getLastname();
+			$response->middleName    = $name->getMiddlename();
+			$response->nickName      = $name->getNickname();
+			$response->initials      = $name->getInitials();
+			$response->suffix        = $name->getSuffix();
+
 			$response->auth_link_id  = $hzal->id;
 			$response->type          = 'orcid';
 			$response->status        = \Hubzero\Auth\Status::SUCCESS;
