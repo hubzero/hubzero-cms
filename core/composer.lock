@@ -100,16 +100,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.196.0",
+            "version": "3.196.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "3128df6b0b68b1c4704321777332473642b749e0"
+                "reference": "2845899d05c66a00d88eabbf7cf5d3dbae2da58a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3128df6b0b68b1c4704321777332473642b749e0",
-                "reference": "3128df6b0b68b1c4704321777332473642b749e0",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2845899d05c66a00d88eabbf7cf5d3dbae2da58a",
+                "reference": "2845899d05c66a00d88eabbf7cf5d3dbae2da58a",
                 "shasum": ""
             },
             "require": {
@@ -182,7 +182,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2021-09-30T18:15:45+00:00"
+            "time": "2021-10-01T18:23:06+00:00"
         },
         {
             "name": "bordoni/phpass",
@@ -1386,16 +1386,16 @@
         },
         {
             "name": "hubzero/orcid-php",
-            "version": "0.3.1",
+            "version": "0.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hubzero/orcid-php.git",
-                "reference": "2b9a31bd3932af0e18d4b80029901c8ec84a0861"
+                "reference": "ca8b6939e914c2af1f3ce9606e681048f3dac06d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/2b9a31bd3932af0e18d4b80029901c8ec84a0861",
-                "reference": "2b9a31bd3932af0e18d4b80029901c8ec84a0861",
+                "url": "https://api.github.com/repos/hubzero/orcid-php/zipball/ca8b6939e914c2af1f3ce9606e681048f3dac06d",
+                "reference": "ca8b6939e914c2af1f3ce9606e681048f3dac06d",
                 "shasum": ""
             },
             "require": {
@@ -1423,7 +1423,7 @@
                 "orcid",
                 "php"
             ],
-            "time": "2018-10-22T19:14:21+00:00"
+            "time": "2021-10-03T21:16:38+00:00"
         },
         {
             "name": "jasig/phpcas",
