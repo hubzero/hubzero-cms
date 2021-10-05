@@ -712,14 +712,14 @@ class Customexts extends AdminController
 			if ($user == 'apache')
 			{
 				// Determines the path to muse and run the extension update muse command
-				$cmd = PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+				$cmd = PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
 			}
 			else
 			{
 				// Run as (muse user)
 				$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
 				// Determines the path to muse and run the extension update muse command
-				$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+				$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
 			}
 
 			// this will run a "git pull --rebase origin master"
@@ -796,14 +796,14 @@ class Customexts extends AdminController
 				if ($user == 'apache')
 				{
 					// Determines the path to muse and run the extension update muse command
-					$cmd = PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+					$cmd = PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
 				}
 				else
 				{
 					// Run as (muse user)
 					$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
 					// Determines the path to muse and run the extension update muse command
-					$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+					$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
 				}
 
 				// this will run a "git pull --rebase origin master"
