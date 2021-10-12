@@ -915,8 +915,8 @@ class Items extends AdminController
 		$order = Request::getArray('order', array(), 'post');
 
 		// Sanitize the input
-		Arr::toInteger($pks);
-		Arr::toInteger($order);
+		\Hubzero\Utility\Arr::toInteger($pks);
+		\Hubzero\Utility\Arr::toInteger($order);
 
 		// Save the ordering
 		$return = Item::saveorder($pks, $order);
