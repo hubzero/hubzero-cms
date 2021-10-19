@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die;
 				<li>
 					<h<?php echo $item_heading+1; ?>>
 						<?php if ($params->get('link_titles') == 1) : ?>
-							<a class="mod-articles-category-title <?php echo $item->active; ?>" href="<?php echo $item->link; ?>">
+							<a class="mod-articles-category-title <?php echo $item->active; ?>" href="\<?php echo $item->link; ?>">
 							<?php echo $item->title; ?>
 							<?php if ($item->displayHits) :?>
 								<span class="mod-articles-category-hits">(<?php echo $item->displayHits; ?>)</span>
@@ -52,7 +52,7 @@ defined('_HZEXEC_') or die;
 
 					<?php if ($params->get('show_readmore')) :?>
 						<p class="mod-articles-category-readmore">
-							<a class="mod-articles-category-title <?php echo $item->active; ?>" href="<?php echo $item->link; ?>">
+							<a class="mod-articles-category-title <?php echo $item->active; ?>" href="\<?php echo $item->link; ?>">
 							<?php if ($item->params->get('access-view') == false) :
 									echo Lang::txt('MOD_ARTICLES_CATEGORY_REGISTER_TO_READ_MORE');
 								elseif ($readmore = $item->alternative_readmore) :
@@ -81,7 +81,7 @@ defined('_HZEXEC_') or die;
 	<li>
 		<h<?php echo $item_heading; ?>>
 		<?php if ($params->get('link_titles') == 1) : ?>
-			<a class="mod-articles-category-title <?php echo $item->active; ?>" href="<?php echo $item->link; ?>">
+			<a class="mod-articles-category-title <?php echo $item->active; ?>" href="\<?php echo $item->link; ?>">
 				<?php echo $item->title; ?>
 				<?php if ($item->displayHits) :?>
 					<span class="mod-articles-category-hits">(<?php echo $item->displayHits; ?>)</span>
@@ -116,7 +116,7 @@ defined('_HZEXEC_') or die;
 
 		<?php if ($params->get('show_readmore')) :?>
 			<p class="mod-articles-category-readmore">
-				<a class="mod-articles-category-title <?php echo $item->active; ?>" href="<?php echo $item->link; ?>">
+				<a class="mod-articles-category-title <?php echo $item->active; ?>" href="\<?php echo $item->link; ?>">
 					<?php if ($item->params->get('access-view') == false) :
 						echo Lang::txt('MOD_ARTICLES_CATEGORY_REGISTER_TO_READ_MORE');
 					elseif ($readmore = $item->alternative_readmore) :
