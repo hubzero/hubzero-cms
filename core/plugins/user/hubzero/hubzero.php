@@ -529,6 +529,12 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 
 			$instance->set('password_clear', (isset($user['password_clear']) ? $user['password_clear'] : ''));
 
+			if (isset($hzal))
+			{
+				$hzal->set('user_id', $instance->get('id'));
+				$hzal->update();
+			}
+
 			return $instance;
 		}
 		else
