@@ -235,7 +235,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (!empty($hzup->passhash))
 		{
 			// A password has already been set, now check if they're logged in with a linked account
-			if (array_key_exists('auth_link_id', $this->user))
+			if (isset($this->user->auth_link_id))
 			{
 				// Logged in with linked account
 				$view->passtype = 'changelocal';
