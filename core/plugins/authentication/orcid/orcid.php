@@ -206,7 +206,7 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 			$response->status        = \Hubzero\Auth\Status::SUCCESS;
 			$response->fullname      = $orcid->fullName();
 			$response->authoritative = $this->params->get('authoritative', false);
-			$response->username      = str_replace('-','_','u' . $username);
+			$response->username      = strtolower( str_replace('-','_','u' . $username));
 			$response->email         = $orcid->email();
 			$response->orcid         = $orcid->id();
 
