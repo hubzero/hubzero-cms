@@ -683,10 +683,16 @@ class Register extends SiteController
 			return App::abort(404, Lang::txt('JGLOBAL_RESOURCE_NOT_FOUND'));
 		}
 
+		$authn = Session::get('authn');
+
 		$hzal = null;
 		if (User::get('auth_link_id'))
 		{
 			$hzal = \Hubzero\Auth\Link::find_by_id(User::get('auth_link_id'));
+		}
+		else if (isset($authn['auth_link_id']))
+		{
+			$hzal = \Hubzero\Auth\Link::find_by_id($authn['auth_link_id']);
 		}
 
 		// Instantiate a new registration object
@@ -935,6 +941,12 @@ class Register extends SiteController
 				// If we managed to create a user
 				if ($user->save())
 				{
+					if (isset($hzal))
+					{
+						$hzal->set('user_id', $user->get('id'));
+						$hzal->update();
+					}
+
 					$access = array();
 					foreach ($fields as $field)
 					{
