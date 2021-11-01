@@ -598,56 +598,73 @@ class Customexts extends AdminController
 				$output = shell_exec($cmd);
 			}
 
-			// Set Muse Task
-			$task = 'repository';
-			// Run as (muse user)
-			$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
-
-			// Check if specified branch is being used.  If not checkout out specified branch
-			$museCmd = 'checkoutRepoBranch repoPath=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' git_branch=' . $extension->get('git_branch') : '');
-			// Determines the path to muse and run the extension update muse command
-			$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
-
-			// Execute and format the output
-			$output = shell_exec($cmd);
-			$output = json_decode($output);
-
-			// Check for updates in remote branch
-			$museCmd = 'update -r=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' source=' . $extension->get('git_branch') : '');
-
-			// if ($extension->get('apikey'))
-			// {
-			// 	$museCmd = 'update -r=' . $extension->path . ' apikey=' . $extension->get('apikey') . ((!empty($extension->get('git_branch'))) ? ' source=' . $extension->get('git_branch') : '') . ((!empty($extension->get('git_tag'))) ? ' source_tag=' . $extension->get('git_tag') : '');
-			// }
-			// else
-			// {
-			// 	$museCmd = 'update -r=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' source=' . $extension->get('git_branch') : '') . ((!empty($extension->get('git_tag'))) ? ' source_tag=' . $extension->get('git_tag') : '');
-			// }
-
-			// Determines the path to muse and run the extension update muse command
-			$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
-
-			// Execute and format the output
-			$output = shell_exec($cmd);
-			$output = json_decode($output);
-
-			// Run migrations
-			$migrations_response = Cli::migration($dryRun=false, $ignoreDates=true, $file=null, $dir='up', $folder=$extension->path);
-			$migrations_response = json_decode($migrations_response);
-
-			// did we succeed
-			if ($output == '' || json_last_error() == JSON_ERROR_NONE)
+			// Did we clone an empty repo
+			if (isset($output) && preg_match("/cloned an empty repository.../uis", $output))
 			{
-				// code is up to date
-				$output = ($output == '') ? array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')) : $output;
-
-				// add success message
-				$success[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+				$output = array("You appear to have cloned an empty repository.  Please add a master branch.");
+				if ($output == '' || json_last_error() == JSON_ERROR_NONE)
+				{
+					// code is up to date
+					$output = ($output == '') ? array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')) : $output;
+	
+					// add success message
+					$success[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+				}
+				else
+				{
+					// add failed message
+					$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+				}
 			}
-			else
+			else 
 			{
-				// add failed message
-				$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+				// Set Muse Task
+				$task = 'repository';
+				// Run as (muse user)
+				$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+
+				// Check if specified branch is being used.  If not checkout out specified branch
+				$museCmd = 'checkoutRepoBranch repoPath=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' git_branch=' . $extension->get('git_branch') : '');
+				// Determines the path to muse and run the extension update muse command
+				$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+
+				// Execute and format the output
+				$output = shell_exec($cmd);
+				$output = json_decode($output);
+
+				// Check for updates in remote branch
+				$museCmd = 'update -r=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' source=' . $extension->get('git_branch') : '');
+
+				// Determines the path to muse and run the extension update muse command
+				$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+
+				// Execute and format the output
+				$output = shell_exec($cmd);
+				$output = json_decode($output);
+
+				// Run migrations
+				$migrations_response = Cli::migration($dryRun=false, $ignoreDates=true, $file=null, $dir='up', $folder=$extension->path);
+				$migrations_response = json_decode($migrations_response);
+
+				if (preg_match("/command not found/uis", $output[0]))
+				{
+					$output = array("You may have an empty repository with no master branch.  Please add a master branch and try again.");
+				}
+
+				// did we succeed
+				if ($output == '' || json_last_error() == JSON_ERROR_NONE)
+				{
+					// code is up to date
+					$output = ($output == '') ? array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')) : $output;
+
+					// add success message
+					$success[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+				}
+				else
+				{
+					// add failed message
+					$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+				}
 			}
 		}
 
