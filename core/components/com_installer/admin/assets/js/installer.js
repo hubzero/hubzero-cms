@@ -5,12 +5,17 @@
  */
 
 function validURL(str) {
-	var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-		'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
-		'((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-		'(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-		'(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-		'(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+	var pattern = new RegExp('^(https)(:\/\/)(.+).git$');
+	return !!pattern.test(str);
+}
+
+function NoChars(str) {
+	var pattern = new RegExp('^(?!_)[_A-z0-9]*$');
+	return !!pattern.test(str);
+}
+
+function validBranch(str) {
+	var pattern = new RegExp('^(origin)(\/)[_A-z0-9]*$');
 	return !!pattern.test(str);
 }
 
@@ -18,23 +23,40 @@ Hubzero.submitbutton = function(task) {
 	var frm = document.getElementById('item-form');
 
 	if (frm) {
-		if (task == 'cancel' || document.formvalidator.isValid(frm)) {
-			if (task != 'cancel') {
-				if (document.getElementById('field-alias').value == 'hz-installer'
-				 || document.getElementById('field-alias').value == 'packagist.org') {
-					alert(frm.getAttribute('data-invalid-msg'));
-					return;
-				}
+		if (task == 'cancel') {
+			Hubzero.submitform(task, frm);
+		}
+		else if (task != 'cancel')
+		{
+			document.formvalidator.isValid(frm);
 
-				if (!validURL(document.getElementById('field-url').value)) {
-					alert(frm.getAttribute('data-invalid-msg'));
+			if (!validURL(document.getElementById('field-url').value)) {
+				alert('Please enter a valid HTTPS GIT URL with a ".git" at the end.');
+				return;
+			}
+
+			if (!NoChars(document.getElementById('field-name').value)) {
+				alert('Please enter a valid Extension Name. This can be used as a Title of the Custom Extension to help you find it in the list. NO characters or spaces expected for underscores but not at the beginning of the string.');
+				return;
+			}
+
+			if (!NoChars(document.getElementById('field-alias').value)) {
+				alert('Please enter a valid Alias.  NO characters or spaces expected for underscores but not at the beginning of the string.');
+				return;
+			}
+
+			if (!document.getElementById('field-type').value) {
+				alert('Please select an Extension Type.');
+				return;
+			}
+
+			if (document.getElementById('field-git_branch').value) {
+				if (!validBranch(document.getElementById('field-git_branch').value)) {
+					alert('Please enter a valid GIT Branch in the form of "origin/branchname". NO characters allowed. If nothing is entered "origin/master" is used.');
 					return;
 				}
 			}
-
 			Hubzero.submitform(task, frm);
-		} else {
-			alert(frm.getAttribute('data-invalid-msg'));
 		}
 	}
 }
