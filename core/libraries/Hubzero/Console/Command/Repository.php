@@ -595,6 +595,8 @@ class Repository extends Base implements CommandInterface
 	/**
 	 * Call cloneRepo
 	 *
+	 * @museDescription  Clones the specified repository.
+	 *
 	 * @return void
 	 **/
 	public function cloneRepo()
@@ -602,16 +604,18 @@ class Repository extends Base implements CommandInterface
 		$sourceUrl = $this->arguments->getOpt('sourceUrl');
 		$repoPath = $this->arguments->getOpt('repoPath');
 
-        $command  = "git clone" . " " . $sourceUrl . " " . $repoPath . ' 2>&1';
-        $response = shell_exec($command);
+		$command  = "git clone" . " " . $sourceUrl . " " . $repoPath . ' 2>&1';
+		$response = shell_exec($command);
 
-		return $response;
+		$this->output->addLine($response);
 	}
 
 	/**
 	 * Call checkoutRepoBranch
 	 * Future: https://git-scm.com/docs/git-switch
 	 * 
+	 * @museDescription  Checks out the specified branch of the specified repository.
+	 *
 	 * @return void
 	 **/
 	public function checkoutRepoBranch()
@@ -622,7 +626,7 @@ class Repository extends Base implements CommandInterface
 
 		$cur_branch = "git rev-parse --abbrev-ref HEAD";
 		$command  = "cd " . $repoPath . " && git rev-parse --abbrev-ref HEAD";
-        $cur_branch = shell_exec($command);
+		$cur_branch = shell_exec($command);
 
 		// If the current branch doesn't match the specified branch, the checkout the specified branch
 		if ($cur_branch != $git_branch)
@@ -630,40 +634,45 @@ class Repository extends Base implements CommandInterface
 			$command  = "cd " . $repoPath . " && git stash -q && git checkout " . $git_branch . " -q";
 			$response = shell_exec($command);
 		}
-		
-		return $response;
+		$this->output->addLine($response);
 	}
 
 	/**
 	 * Call removeRepo
 	 *
+	 * @museDescription  Removes the specified Custom Extension repository directory.
+	 *
 	 * @return void
 	 **/
 	public function removeRepo()
 	{
-        $directory = $this->arguments->getOpt('path');
-        $local = new Local();
+		$directory = $this->arguments->getOpt('path');
+		$local = new Local();
 
-        $response = $local->deleteDirectory($directory);
-		return $response;
+		$response = $local->deleteDirectory($directory);
+		$this->output->addLine($response);
 	}
 
 	/**
 	 * Call renameRepo
 	 *
+	 * @museDescription  Renames the specified Custom Extension repository directory.
+	 *
 	 * @return void
 	 **/
 	public function renameRepo()
-    {
-        $currPath = $this->arguments->getOpt('currPath');
-        $targetPath = $this->arguments->getOpt('targetPath');
+	{
+		$currPath = $this->arguments->getOpt('currPath');
+		$targetPath = $this->arguments->getOpt('targetPath');
 
-        $local = new Local();
-        return $local->rename($currPath, $targetPath);
-    }
+		$local = new Local();
+		$this->output->addLine($local->rename($currPath, $targetPath));
+	}
 
 	/**
 	 * Call updateRepo
+	 *
+	 * @museDescription  Updates the specified Custom Extension repository directory.
 	 *
 	 * @return  void
 	 */
@@ -672,6 +681,6 @@ class Repository extends Base implements CommandInterface
 		// Set our directory & call update
 		$this->arguments->setOpt('r', $repoPath );
 
-        \App::get('client')->call('repository', 'update', $this->arguments, $this->output);
+		\App::get('client')->call('repository', 'update', $this->arguments, $this->output);
 	}
 }
