@@ -46,7 +46,7 @@ class Repository extends Base implements CommandInterface
 			}
 			else
 			{
-				$this->output->error('Error: Provided directory is not valid');
+				$this->output->error('Repository Error: Provided directory is not valid');
 			}
 		}
 

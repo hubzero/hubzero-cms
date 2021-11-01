@@ -58,7 +58,7 @@ class Migration extends Base implements CommandInterface
 			}
 			else
 			{
-				$this->output->error('Error: Provided directory is not valid');
+				$this->output->error('Migration Error: Provided directory is not valid');
 			}
 		}
 
