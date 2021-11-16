@@ -45,7 +45,15 @@ class Migration20150202134839PlgAntispam extends Base
 			$params = $this->db->loadResult();
 		}
 
-		$this->addPluginEntry('antispam', 'blacklist', 0, $params);
+		if ($params)
+		{
+			$this->addPluginEntry('antispam', 'blacklist', 0, $params);
+		}
+		else
+		{
+			$this->addPluginEntry('antispam', 'blacklist', 0);
+		}
+
 		$this->addPluginEntry('antispam', 'linkrife', 0);
 		$this->addPluginEntry('antispam', 'bayesian', 0);
 
