@@ -62,7 +62,7 @@ if ($this_datetime > $first_event_time) {
 	$prev_text = Lang::txt('EVENTS_CAL_LANG_PREVIOUSMONTH');
 } else {
 	$prev = "javascript:void(0);";
-	$prev_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_PREVIOUSMONTH');
+	$prev_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . '&nbsp;' . Lang::txt('EVENTS_CAL_LANG_PREVIOUSMONTH');
 }
 //get a DateTime for one month after currently viewed and disable URL if required
 $this_datetime->add(new DateInterval("P1M"));
@@ -71,7 +71,7 @@ if ($this_datetime <= $last_event_time) {
 	$next_text = Lang::txt('EVENTS_CAL_LANG_NEXTMONTH');
 } else {
 	$next = "javascript:void(0);";
-	$next_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_NEXTMONTH');
+	$next_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . '&nbsp;' . Lang::txt('EVENTS_CAL_LANG_NEXTMONTH');
 }
 
 $content  = '<table class="ecalendar">'."\n";

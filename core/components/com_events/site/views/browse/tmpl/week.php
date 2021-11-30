@@ -97,7 +97,7 @@ $this->css();
 		?>
 		</ul>
 	<?php } else { ?>
-		<p class="warning"><?php echo Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR').' <strong>'.\Components\Events\Helpers\Html::getDateFormat($this->year, $this->month, '', 3).'</strong>'; ?></p>
+		<p class="warning"><?php echo Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR').'&nbsp;<strong>'.\Components\Events\Helpers\Html::getDateFormat($this->year, $this->month, '', 3).'</strong>'; ?></p>
 	<?php } ?>
 		</div><!-- / .subject -->
 		<div class="aside">
@@ -148,7 +148,7 @@ $this->css();
 						$prev_text = Lang::txt('EVENTS_CAL_LANG_PREVIOUSYEAR');
 					} else {
 						$prev = "javascript:void(0);";
-						$prev_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_PREVIOUSYEAR');
+						$prev_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . '&nbsp;' . Lang::txt('EVENTS_CAL_LANG_PREVIOUSYEAR');
 					}
 					//get a DateTime for the first day of the next year and see if there's an event after
 					$this_datetime->add(new DateInterval("P1Y"));
@@ -157,7 +157,7 @@ $this->css();
 						$next_text = Lang::txt('EVENTS_CAL_LANG_NEXTYEAR');
 					} else {
 						$next = "javascript:void(0);";
-						$next_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_NEXTYEAR');
+						$next_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . '&nbsp;' . Lang::txt('EVENTS_CAL_LANG_NEXTYEAR');
 					}
 
 					?>
