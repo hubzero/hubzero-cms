@@ -30,13 +30,18 @@ class Link extends Button
 	 * @param   string  $url   The link url
 	 * @return  string  HTML string for the button
 	 */
-	public function fetchButton($type = 'Link', $name = 'back', $text = '', $url = null)
+	public function fetchButton($type = 'Link', $name = 'back', $text = '', $url = null, $target = null)
 	{
 		$text   = \Lang::txt($text);
 		$class  = $this->fetchIconClass($name);
 		$doTask = $this->_getCommand($url);
 
-		$html  = "<a data-title=\"$text\" href=\"$doTask\">\n";
+		$html  = "<a data-title=\"$text\" href=\"$doTask\"";
+		if ($target)
+		{
+			$html .= " target=\"$target\"";
+		}
+		$html .= ">\n";
 		$html .= "<span class=\"$class\">\n";
 		$html .= "$text\n";
 		$html .= "</span>\n";
