@@ -30,8 +30,8 @@ class RedirectMacro extends WikiMacro
 		return '<p>Redirects to a URL with an optional delay (in seconds).</p>
 				<p>Examples:</p>
 					<ul>
-						<li><code>[[Redirect(http://google.com)]]</code></li>
-						<li><code>[[Redirect(http://google.com, 5)]]</code> - Wait 5 seconds before redirecting.</li>
+						<li><code>[[Redirect(https://google.com)]]</code></li>
+						<li><code>[[Redirect(https://google.com, 5)]]</code> - Wait 5 seconds before redirecting.</li>
 					</ul>';
 	}
 
