@@ -49,7 +49,7 @@ class Entriesv1_0 extends ApiController
 	 * 		"default":       25
 	 * }
 	 * @apiParameter {
-	 * 		"name":          "start",
+	 * 		"name":          "limitstart",
 	 * 		"description":   "Number of where to start returning results.",
 	 * 		"type":          "integer",
 	 * 		"required":      false,
@@ -71,7 +71,7 @@ class Entriesv1_0 extends ApiController
 	 * 		"allowedValues": "created, id, tag, raw_tag"
 	 * }
 	 * @apiParameter {
-	 * 		"name":          "sort_Dir",
+	 * 		"name":          "sortDir",
 	 * 		"description":   "Direction to sort results by.",
 	 * 		"type":          "string",
 	 * 		"required":      false,
@@ -93,7 +93,7 @@ class Entriesv1_0 extends ApiController
 	 * 		"default":       0
 	 * }
 	 * @apiParameter {
-	 * 		"name":          "taggerid",
+	 * 		"name":          "tagger",
 	 * 		"description":   "ID of user that tagged items.",
 	 * 		"type":          "integer",
 	 * 		"required":      false,
