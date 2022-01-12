@@ -244,13 +244,15 @@ class Access
 	 * by the user.
 	 *
 	 * @param   integer  $userId     Id of the user for which to get the list of groups.
-	 * @param   boolean  $recursive  True to include inherited user groups.
-	 * @return  array    List of user group ids to which the user is mapped.
+	 * @param   boolean  $recursive  True to include inherited accessgroups.
+	 * @param   boolean  $titles     True to return array of accessgroup titles
+	 * @param   boolean  $all        True to return associative array containing both ids and titles
+	 * @return  array    Array of accessgroups to which the user is mapped.
 	 */
-	public static function getGroupsByUser($userId, $recursive = true)
+	public static function getGroupsByUser($userId, $recursive = true, $titles = false, $all = false)
 	{
 		// Creates a simple unique string for each parameter combination:
-		$storeId = $userId . ':' . (int) $recursive;
+		$storeId = $userId . ':' . (int) $recursive . ':' . (int) $titles . ':' . (int) $all;
 
 		if (!isset(self::$groupsByUser[$storeId]))
 		{
@@ -266,7 +268,9 @@ class Access
 
 				// Build the database query to get the rules for the asset.
 				$query = $db->getQuery();
-				$query->select($recursive ? 'b.id' : 'a.id');
+
+				$query->select( $recursive ? 'b.id, b.title' : 'a.id, a.title' );
+
 				if (empty($userId))
 				{
 					$query->from('#__usergroups', 'a')
@@ -287,18 +291,33 @@ class Access
 
 				// Execute the query and load the rules from the result.
 				$db->setQuery($query->toString());
-				$result = $db->loadColumn();
 
-				// Clean up any NULL or duplicate values, just in case
-				Arr::toInteger($result);
-
-				if (empty($result))
+				if (!$all)
 				{
-					$result = array('1');
+					$result = $db->loadColumn($titles ? 1 : 0);
+
+					if (empty($result))
+					{
+						$result = array($titles ? 'Public' : '1');
+					}
+					else
+					{
+						$result = array_unique($result);
+					}
 				}
 				else
 				{
-					$result = array_unique($result);
+					$result = $db->loadAssocList();
+
+					if (empty($result))
+					{
+						$result = array( array('1','Public') );
+					}
+					else
+					{
+						$result = array_unique($result, SORT_REGULAR);
+					}
+
 				}
 			}
 
