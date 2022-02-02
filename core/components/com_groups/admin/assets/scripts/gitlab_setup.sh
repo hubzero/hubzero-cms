@@ -11,6 +11,11 @@ git config --add branch.master.remote origin
 git config --add branch.master.merge refs/heads/master
 
 # add items for git to ignore
+if [[ ! -e .git/info/ ]]; then
+    mkdir .git/info/
+    touch .git/info/exclude
+fi
+
 echo '.DS_Store' >> .git/info/exclude
 echo 'uploads/*' >> .git/info/exclude
 echo 'config/db.php' >> .git/info/exclude
@@ -26,3 +31,4 @@ git remote add origin $3
 
 # push changes
 git push -u origin master
+
