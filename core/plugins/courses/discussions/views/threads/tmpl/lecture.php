@@ -11,6 +11,9 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js('discussions.lecture.js');
 
+if ($this->threads === null)
+	$this->threads = [];
+
 $base = $this->course->offering()->link();
 ?>
 <div id="comments-container" data-action="<?php echo Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>">

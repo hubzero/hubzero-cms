@@ -48,6 +48,7 @@ class RateLimitService extends Middleware
 	{
 		// Get response
 		$response = $this->next($request);
+		return($response); /* Temporary fix */
 
 		// Get authentication
 		$token = $this->app['auth']->token();

@@ -4,6 +4,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+debugger;
+
 if (!jq) {
 	var jq = $;
 }
@@ -256,6 +258,7 @@ HUB.Plugins.CoursesForum = {
 						iframe: true,
 						processData: false,
 						dataType: 'json',
+						async: !$.browser.safari
 						success: function(response, status) {
 							if (typeof response === "string" ) {
 								//data = JSON.parse(response.responseText);

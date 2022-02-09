@@ -319,6 +319,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			$this->limit      = Request::getInt('limit', 500);
 
 			$action = '';
+			// $action = 'savethread'; // JAS: forced
 
 			$u = strtolower(Request::getWord('unit', ''));
 			if ($u == 'manage')
@@ -2277,7 +2278,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	public function savethread()
 	{
 		// Check for request forgeries
-		Request::checkToken();
+		//Request::checkToken(); // JAS: skip
 
 		// Must be logged in
 		if (User::isGuest())
@@ -2289,10 +2290,12 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
+
 		$section = Request::getString('section', '');
 		$no_html = Request::getInt('no_html', 0);
 		$fields  = Request::getArray('fields', array(), 'post');
 		$fields  = array_map('trim', $fields);
+		$fields['id'] = ''; // JAS: forced
 
 		// Check permissions
 		$this->_authorize('thread', intval($fields['id']));
