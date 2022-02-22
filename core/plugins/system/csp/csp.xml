@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="system">
+	<name>plg_system_csp</name>
+	<creationDate>February 2022</creationDate>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright (c) 2005-2020 The Regents of the University of California.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<version>2.5.0</version>
+	<description>PLG_SYSTEM_CSP_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="csp">csp.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_system_csp.ini</language>
+		<language tag="en-GB">en-GB.plg_system_csp.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="mode" type="list" default="0" label="PLG_SYSTEM_CSP_MODE_LABEL" description="PLG_SYSTEM_CSP_MODE_DESC">
+					<option value="0">PLG_SYSTEM_CSP_MODE_REPORTONLY</option>
+					<option value="1">PLG_SYSTEM_CSP_MODE_ENFORCE</option>
+					<option value="2">PLG_SYSTEM_CSP_MODE_ENFORCE_REPORT</option>
+				</field>
+				<field name="report-uri" type="text" default="https://{host}/api/csp/cms" label="PLG_SYSTEM_CSP_BASEURI_LABEL" description="PLG_SYSTEM_CSP_BASEURI_DESC" />
+			</fieldset>
+			<fieldset name="policy">
+				<field name="base-uri" type="textarea" default="'self'" label="PLG_SYSTEM_CSP_BASEURI_LABEL" description="PLG_SYSTEM_CSP_BASEURI_DESC" />
+				<field name="object-src" type="textarea" default="'self' https://fpdownload.adobe.com" label="PLG_SYSTEM_CSP_OBJECTSRC_LABEL" description="PLG_SYSTEM_CSP_OBJECTSRC_DESC" />
+				<field name="child-src" type="textarea" default="'self' https://*.youtube.com" label="PLG_SYSTEM_CSP_CHILDSRC_LABEL" description="PLG_SYSTEM_CSP_CHILDSRC_DESC" />
+				<field name="connect-src" type="textarea" default="'self' wss://*.{host}.org wss://{host}.org https://www.google-analytics.com https://stats.g.doubleclick.net https://www.dropbox.com https://graph.facebook.com" label="PLG_SYSTEM_CSP_CONNECTSRC_LABEL" description="PLG_SYSTEM_CSP_CONNECTSRC_DESC" />
+				<field name="default-src" type="textarea" default="'self' https://*.{host}.org" label="PLG_SYSTEM_CSP_DEFAULTSRC_LABEL" description="PLG_SYSTEM_CSP_DEFAULTSRC_DESC" />
+				<field name="font-src" type="textarea" default="'self' https://fonts.gstatic.com data: safari-extension: chrome-extension: https://maxcdn.bootstrapcdn.com" label="PLG_SYSTEM_CSP_FONTSRC_LABEL" description="PLG_SYSTEM_CSP_FONTSRC_DESC" />
+				<field name="form-action" type="textarea" default="'self' https://platform.twitter.com https://syndication.twitter.com" label="PLG_SYSTEM_CSP_FORMACTION_LABEL" description="PLG_SYSTEM_CSP_FORMACTION_DESC" />
+				<field name="frame-src" type="textarea" default="'self' https://*.{host}.org https://*.google.com https://*.youtube.com https://content.googleapis.com https://*.facebook.com https://*.twitter.com" label="PLG_SYSTEM_CSP_FRAMESRC_LABEL" description="PLG_SYSTEM_CSP_FRAMESRC_DESC" />
+				<field name="img-src" type="textarea" default="* data: image:" label="PLG_SYSTEM_CSP_IMGSRC_LABEL" description="PLG_SYSTEM_CSP_IMGSRC_DESC" />
+				<field name="script-src" type="textarea" default="'self' 'unsafe-eval' 'unsafe-inline' https://*.google-analytics.com https://*.google.com https://connect.facebook.net https://www.linkedin.com https://platform.twitter.com https://cdn.syndication.twimg.com https://www.gstatic.com https://*.googleapis.com https://platform.linkedin.com https://cdnjs.cloudflare.com https://*.cloudfront.net" label="PLG_SYSTEM_CSP_SCRIPTSRC_LABEL" description="PLG_SYSTEM_CSP_SCRIPTSRC_DESC" />
+				<field name="style-src" type="textarea" default="'self' 'unsafe-inline' https://platform.twitter.com https://ton.twimg.com https://*.googleapis.com https://www.google.com https://maxcdn.bootstrapcdn.com https://cdnjs.cloudflare.com" label="PLG_SYSTEM_CSP_STYLESRC_LABEL" description="PLG_SYSTEM_CSP_STYLESRC_DESC" />
+			</fieldset>
+			<fieldset name="report">
+				<field name="report-base-uri" type="textarea" default="" label="PLG_SYSTEM_CSP_BASEURI_LABEL" description="PLG_SYSTEM_CSP_BASEURI_DESC" />
+				<field name="report-object-src" type="textarea" default="" label="PLG_SYSTEM_CSP_OBJECTSRC_LABEL" description="PLG_SYSTEM_CSP_OBJECTSRC_DESC" />
+				<field name="report-child-src" type="textarea" default="" label="PLG_SYSTEM_CSP_CHILDSRC_LABEL" description="PLG_SYSTEM_CSP_CHILDSRC_DESC" />
+				<field name="report-connect-src" type="textarea" default="" label="PLG_SYSTEM_CSP_CONNECTSRC_LABEL" description="PLG_SYSTEM_CSP_CONNECTSRC_DESC" />
+				<field name="report-default-src" type="textarea" default="" label="PLG_SYSTEM_CSP_DEFAULTSRC_LABEL" description="PLG_SYSTEM_CSP_DEFAULTSRC_DESC" />
+				<field name="report-font-src" type="textarea" default="" label="PLG_SYSTEM_CSP_FONTSRC_LABEL" description="PLG_SYSTEM_CSP_FONTSRC_DESC" />
+				<field name="report-form-action" type="textarea" default="" label="PLG_SYSTEM_CSP_FORMACTION_LABEL" description="PLG_SYSTEM_CSP_FORMACTION_DESC" />
+				<field name="report-frame-src" type="textarea" default="" label="PLG_SYSTEM_CSP_FRAMESRC_LABEL" description="PLG_SYSTEM_CSP_FRAMESRC_DESC" />
+				<field name="report-img-src" type="textarea" default="" label="PLG_SYSTEM_CSP_IMGSRC_LABEL" description="PLG_SYSTEM_CSP_IMGSRC_DESC" />
+				<field name="report-script-src" type="textarea" default="" label="PLG_SYSTEM_CSP_SCRIPTSRC_LABEL" description="PLG_SYSTEM_CSP_SCRIPTSRC_DESC" />
+				<field name="report-style-src" type="textarea" default="" label="PLG_SYSTEM_CSP_STYLESRC_LABEL" description="PLG_SYSTEM_CSP_STYLESRC_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
