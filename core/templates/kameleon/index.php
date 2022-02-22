@@ -51,8 +51,7 @@ $cls = array(
 			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css?v=<?php echo filemtime(__DIR__ . '/css/browser/ie9.css'); ?>" />
 		<![endif]-->
 	</head>
-	<body>
-		<div id="minwidth-body">
+	<body id="minwidth-body">
 		<jdoc:include type="modules" name="notices" />
 
 		<header id="header" role="banner">
@@ -88,13 +87,13 @@ $cls = array(
 		</header><!-- / #header -->
 
 		<div id="wrap">
-			<nav class="main-navigation" aria-label="Main menu">
+			<nav role="navigation" class="main-navigation">
 				<div class="inner-wrap">
 					<jdoc:include type="modules" name="menu" />
 				</div>
 			</nav><!-- / .main-navigation -->
 
-			<main id="component-content">
+			<section id="component-content">
 				<div id="toolbar-box" class="toolbar-box">
 					<jdoc:include type="modules" name="title" />
 					<jdoc:include type="modules" name="toolbar" />
@@ -105,12 +104,12 @@ $cls = array(
 				<!-- Notifications ends -->
 
 				<?php if (!$hideLinks && $this->countModules('submenu')): ?>
-					<nav class="sub-navigation" aria-label="Component menu">
+					<nav role="navigation" class="sub-navigation">
 						<jdoc:include type="modules" name="submenu" />
 					</nav><!-- / .sub-navigation -->
 				<?php endif; ?>
 
-				<div id="main" class="<?php echo Request::getCmd('option', ''); ?>">
+				<section id="main" class="<?php echo Request::getCmd('option', ''); ?>">
 					<!-- Content begins -->
 					<jdoc:include type="component" />
 					<!-- Content ends -->
@@ -118,20 +117,19 @@ $cls = array(
 					<noscript>
 						<?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT') ?>
 					</noscript>
-				</div><!-- / #main -->
-			</main><!-- / #component-content -->
+				</section><!-- / #main -->
+			</section><!-- / #component-content -->
 		</div><!-- / #wrap -->
 
 		<footer id="footer">
-			<div class="basement">
+			<section class="basement">
 				<p class="copyright">
 					<?php echo Lang::txt('TPL_KAMELEON_COPYRIGHT', Request::root(), Config::get('sitename'), Date::of('now')->format("Y")); ?>
 				</p>
 				<p class="promotion">
 					<?php echo Lang::txt('TPL_KAMELEON_POWERED_BY', HVERSION); ?>
 				</p>
-			</div><!-- / .basement -->
+			</section><!-- / .basement -->
 		</footer><!-- / #footer -->
-		</div>
 	</body>
 </html>
