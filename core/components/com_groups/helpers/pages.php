@@ -164,7 +164,7 @@ class Pages
 		}
 
 		// get path segments & clean up
-		$segments = array_filter($segments);
+		$segments = array_values(array_filter($segments));
 
 		// return path segments
 		return $segments;
