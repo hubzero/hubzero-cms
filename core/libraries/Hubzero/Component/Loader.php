@@ -381,6 +381,15 @@ class Loader
 					Document::addHeadLink($href, $rel);
 				}
 			}
+
+			if ($node->nodeName == 'script')
+			{
+				$defer = $node->getAttribute('defer');
+				$async = $node->getAttribute('async');
+				$src = $node->getAttribute('src');
+
+				Document::addScript($src, "text/javascript", ($defer=='defer'), ($async=='async'));
+			}
 		}
 
 		echo substr($dom->saveHtml($body), 6, -7); // remove <body></body>
