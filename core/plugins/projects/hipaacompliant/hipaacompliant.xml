@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.7" type="plugin" group="projects">
+	<name>Projects - HIPAA Compliant</name>
+	<author>HUBzero</author>
+	<copyright>Copyright (c) 2005-2020 The Regents of the University of California.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>Save HIPAA Compliance checkbox</description>
+	<files>
+		<filename plugin="hipaacompliant">hipaacompliant.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_projects_hipaacompliant.ini</language>
+	</languages>
+</extension>
