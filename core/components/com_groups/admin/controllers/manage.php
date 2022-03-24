@@ -703,15 +703,33 @@ class Manage extends AdminController
 				'snippets_enabled'       => true,
 			));
 		}
-		elseif (count($gitLabProject) > 1)
-		{  // If search returns more than one match return with error.
-			Notify::error(Lang::txt('COM_GROUPS_GITLAB_PROJECTS_MORE_THAN_ONE' . $projectName));
-			return;
-		}
-		elseif (count($gitLabProject) == 1)
-		{
-			// Grab first element of array
-			$gitLabProject = $gitLabProject[0];
+		elseif ($gitLabProject)
+		{  // search result must match hub group name to gitlab project name exactly or create new gitlab project
+			foreach ($gitLabProject as $glproj)
+			{
+				if ($glproj['name'] == $projectName)
+				{
+					$gitLabProject = $glproj;
+					break;
+				}
+				else
+				{
+					$gitLabProject = null;
+				}
+			}
+			// create project if doesnt exist
+			if ($gitLabProject == null)
+			{
+				$gitLabProject = $client->createProject(array(
+					'namespace_id'           => $gitLabGroup['id'],
+					'name'                   => $projectName,
+					'description'            => $group->get('description'),
+					'issues_enabled'         => true,
+					'merge_requests_enabled' => true,
+					'wiki_enabled'           => true,
+					'snippets_enabled'       => true,
+				));
+			}
 		}
 		else
 		{
