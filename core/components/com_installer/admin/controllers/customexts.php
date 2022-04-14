@@ -409,34 +409,11 @@ class Customexts extends AdminController
 
 					if (is_dir($extdir . '/__' . $repodir))
 					{
-						if (!isset($user))
-						{
-							$user = Component::params('com_installer')->get('system_user', 'hubadmin');
-							// Check this user exists on host, if not set user to apache
-							if (shell_exec('getent passwd ' . $user . ' | wc -l') == 0)
-							{
-								$user = 'apache';
-							}
-						}
 						// The tasks and command to be performed
-						$task = 'repository';
 						$museCmd = 'renameRepo currPath=' . $extdir . '/__' . $repodir . ' targetPath=' . $model->path;
-						
-						if ($user == 'apache')
-						{
-							// Determines the path to muse and run the extension update muse command
-							$cmd = PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
-						}
-						else
-						{
-							// Run as (muse user)
-							$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
-							// Determines the path to muse and run the extension update muse command
-							$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
-						}
-						
-						// execute command
-						$output = shell_exec($cmd);
+
+						$rename_response = Cli::call($museCmd, $task='repository');
+						$rename_response = json_decode($rename_response);
 					}
 
 					if (!$model->publish())
@@ -453,34 +430,11 @@ class Customexts extends AdminController
 						$repoPath = array_pop($pieces);
 						$extdir = implode("/", $pieces);
 
-						if (!isset($user))
-						{
-							$user = Component::params('com_installer')->get('system_user', 'hubadmin');
-							// Check this user exists on host, if not set user to apache
-							if (shell_exec('getent passwd ' . $user . ' | wc -l') == 0)
-							{
-								$user = 'apache';
-							}
-						}
-						// The tasks and command to be perofmred
-						$task = 'repository';
+						// The tasks and command to be performed
 						$museCmd = 'renameRepo currPath=' . $model->path . ' targetPath=' . $extdir . '/__' . $repoPath;
 
-						if ($user == 'apache')
-						{
-							// Determines the path to muse and run the extension update muse command
-							$cmd = PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
-						}
-						else
-						{
-							// Run as (muse user)
-							$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
-							// Determines the path to muse and run the extension update muse command
-							$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
-						}
-
-						// execute command
-						$output = shell_exec($cmd);
+						$rename_response = Cli::call($museCmd, $task='repository');
+						$rename_response = json_decode($rename_response);
 					}
 
 					if (!$model->unpublish())
@@ -554,16 +508,6 @@ class Customexts extends AdminController
 		{
 			$extension = Custom_extensions::oneOrNew($id);
 
-			if (!isset($user))
-			{
-				$user = Component::params('com_installer')->get('system_user', 'hubadmin');
-				// Check this user exists on host, if not set user to apache
-				if (shell_exec('getent passwd ' . $user . ' | wc -l') == 0)
-				{
-					$user = 'apache';
-				}
-			}
-
 			// Do we have a git repo?  If not clone the stated repo.
 			if (!is_dir($extension->path . DS . '.git'))
 			{
@@ -580,32 +524,18 @@ class Customexts extends AdminController
 					$museCmd = 'cloneRepo repoPath=' . $extension->path . ' sourceUrl=' . $extension->get('url');
 				}
 
-				if ($user == 'apache')
-				{
-					// Determines the path to muse and run the extension update muse command
-					$cmd = PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
-				}
-				else
-				{
-					// Run as (muse user)
-					$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
-					// Determines the path to muse and run the extension update muse command
-					$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
-				}
-
-
-				// execute command
-				$output = shell_exec($cmd);
+				$clone_response = Cli::call($museCmd, $task='repository');
+				$clone_response = json_decode($clone_response);
 			}
 
 			// Did we clone an empty repo
-			if (isset($output) && preg_match("/cloned an empty repository.../uis", $output))
+			if (isset($clone_response) && preg_grep("/cloned an empty repository.../uis", $clone_response))
 			{
 				$output = array("You appear to have cloned an empty repository.  Please add a master branch.");
 				if ($output == '' || json_last_error() == JSON_ERROR_NONE)
 				{
 					// code is up to date
-					$output = ($output == '') ? array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')) : $output;
+					$output = ($output == '') ? array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')) : $clone_response;
 	
 					// add success message
 					$success[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
@@ -613,49 +543,41 @@ class Customexts extends AdminController
 				else
 				{
 					// add failed message
-					$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+					$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $clone_response);
 				}
 			}
 			else 
 			{
-				// Set Muse Task
-				$task = 'repository';
-				// Run as (muse user)
-				$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
 
 				// Check if specified branch is being used.  If not checkout out specified branch
 				$museCmd = 'checkoutRepoBranch repoPath=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' git_branch=' . $extension->get('git_branch') : '');
-				// Determines the path to muse and run the extension update muse command
-				$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
 
-				// Execute and format the output
-				$output = shell_exec($cmd);
-				$output = json_decode($output);
+				$checkoutRepoBranch_response = Cli::call($museCmd, $task='repository');
+				$checkoutRepoBranch_response = json_decode($checkoutRepoBranch_response);
+
+
 
 				// Check for updates in remote branch
 				$museCmd = 'update -r=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' source=' . $extension->get('git_branch') : '');
 
-				// Determines the path to muse and run the extension update muse command
-				$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
+				$fetch_response = Cli::call($museCmd, $task='repository');
+				$fetch_response = json_decode($fetch_response);
 
-				// Execute and format the output
-				$output = shell_exec($cmd);
-				$output = json_decode($output);
 
 				// Run migrations
 				$migrations_response = Cli::migration($dryRun=false, $ignoreDates=true, $file=null, $dir='up', $folder=$extension->path);
 				$migrations_response = json_decode($migrations_response);
 
-				if (preg_match("/command not found/uis", $output[0]))
+				if (preg_match("/command not found/uis", $fetch_response[0]))
 				{
 					$output = array("You may have an empty repository with no master branch.  Please add a master branch and try again.");
 				}
 
 				// did we succeed
-				if ($output == '' || json_last_error() == JSON_ERROR_NONE)
+				if ($fetch_response == '' || json_last_error() == JSON_ERROR_NONE)
 				{
 					// code is up to date
-					$output = ($output == '') ? array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')) : $output;
+					$output = ($fetch_response == '') ? array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')) : $fetch_response;
 
 					// add success message
 					$success[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
@@ -663,7 +585,7 @@ class Customexts extends AdminController
 				else
 				{
 					// add failed message
-					$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+					$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $fetch_response);
 				}
 			}
 		}
@@ -712,38 +634,14 @@ class Customexts extends AdminController
 		{
 			$extension = Custom_extensions::oneOrNew($id);
 
-			if (!isset($user))
-			{
-				$user = Component::params('com_installer')->get('system_user', 'hubadmin');
-				// Check this user exists on host, if not set user to apache
-				if (shell_exec('getent passwd ' . $user . ' | wc -l') == 0)
-				{
-					$user = 'apache';
-				}
-			}
+			$museCmd = 'update -r=' . $extension->path . ' -f --no-colors';
 
-			// The tasks and command to be perofmred
-			$task = 'repository';
-			$museCmd = 'update -r=' . $extension->path;
+			$update_response = Cli::call($museCmd, $task='repository');
+			$update_response = json_decode($update_response);
 
-			if ($user == 'apache')
-			{
-				// Determines the path to muse and run the extension update muse command
-				$cmd = PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
-			}
-			else
-			{
-				// Run as (muse user)
-				$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
-				// Determines the path to muse and run the extension update muse command
-				$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
-			}
-
-			// this will run a "git pull --rebase origin master"
-			$output = shell_exec($cmd);
 
 			// did we succeed
-			if (preg_match("/Updating the repository.../uis", $output))
+			if (preg_grep("/Updating the repository.../uis", $output))
 			{
 				// add success message
 				$success[] = array(
@@ -793,46 +691,22 @@ class Customexts extends AdminController
 		{
 			$extension = Custom_extensions::oneOrNew($id);
 
-			if (!isset($user))
-			{
-				$user = Component::params('com_installer')->get('system_user', 'hubadmin');
-				// Check this user exists on host, if not set user to apache
-				if (shell_exec('getent passwd ' . $user . ' | wc -l') == 0)
-				{
-					$user = 'apache';
-				}
-			}
-
 			// If enextion is enabled
 			if ($extension->enabled == 1)
 			{
-				// The tasks and command to be perofmred
-				$task = 'repository';
-				$museCmd = 'removeRepo -path=' . $extension->path;
 
-				if ($user == 'apache')
-				{
-					// Determines the path to muse and run the extension update muse command
-					$cmd = PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
-				}
-				else
-				{
-					// Run as (muse user)
-					$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
-					// Determines the path to muse and run the extension update muse command
-					$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
-				}
+				$museCmd = 'removeRepo -path=' . $extension->path . ' -f --no-colors';
 
-				// this will run a "git pull --rebase origin master"
-				$output = shell_exec($cmd);
+				$remove_response = Cli::call($museCmd, $task='repository');
+				$remove_response = json_decode($remove_response);
 
 				// did we succeed
-				if (preg_match("/Updating the repository.../uis", $output))
+				if (preg_grep("/Updating the repository.../uis", $remove_response))
 				{
 					// add success message
 					$success[] = array(
 						'extension'   => $extension->get('name'),
-						'message' => $output
+						'message' => $remove_response
 					);
 				}
 				else
@@ -840,7 +714,7 @@ class Customexts extends AdminController
 					// add failed message
 					$failed[] = array(
 						'extension'   => $extension->get('name'),
-						'message' => $output
+						'message' => $remove_response
 					);
 				}
 
@@ -852,26 +726,18 @@ class Customexts extends AdminController
 				$repodir = array_pop($pieces);
 				$extdir = implode("/", $pieces);
 
-				// The tasks and command to be perofmred
-				$task = 'repository';
 				$museCmd = 'removeRepo -path=' . $extdir . '/__' . $repodir;
 
-				// Run as (muse user)
-				$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
-
-				// Determines the path to muse and run the extension update muse command
-				$cmd = $sudo . PATH_ROOT . DS . 'muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
-
-				// this will run a "git pull --rebase origin master"
-				$output = shell_exec($cmd);
+				$remove_response = Cli::call($museCmd, $task='repository');
+				$remove_response = json_decode($remove_response);
 
 				// did we succeed
-				if (preg_match("/Updating the repository.../uis", $output))
+				if (preg_grep("/Updating the repository.../uis", $remove_response))
 				{
 					// add success message
 					$success[] = array(
 						'extension'   => $extension->get('name'),
-						'message' => $output
+						'message' => $remove_response
 					);
 				}
 				else
@@ -879,7 +745,7 @@ class Customexts extends AdminController
 					// add failed message
 					$failed[] = array(
 						'extension'   => $extension->get('name'),
-						'message' => $output
+						'message' => $remove_response
 					);
 				}
 
