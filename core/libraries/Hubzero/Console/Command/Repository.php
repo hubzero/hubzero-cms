@@ -604,7 +604,7 @@ class Repository extends Base implements CommandInterface
 		$sourceUrl = $this->arguments->getOpt('sourceUrl');
 		$repoPath = $this->arguments->getOpt('repoPath');
 
-		$command  = "git clone" . " " . $sourceUrl . " " . $repoPath . ' 2>&1';
+		$command  = "umask 0002 && git clone" . " " . $sourceUrl . " " . $repoPath . ' 2>&1';
 		$response = shell_exec($command);
 
 		$this->output->addLine($response);
@@ -631,7 +631,7 @@ class Repository extends Base implements CommandInterface
 		// If the current branch doesn't match the specified branch, the checkout the specified branch
 		if ($cur_branch != $git_branch)
 		{
-			$command  = "cd " . $repoPath . " && git stash -q && git checkout " . $git_branch . " -q";
+			$command  = "umask 0002 && cd " . $repoPath . " && git stash -q && git checkout " . $git_branch . " -q";
 			$response = shell_exec($command);
 		}
 		$this->output->addLine($response);
