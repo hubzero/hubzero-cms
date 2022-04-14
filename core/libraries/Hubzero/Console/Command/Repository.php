@@ -611,6 +611,33 @@ class Repository extends Base implements CommandInterface
 	}
 
 	/**
+	 * Call updateGitURLconf
+	 *
+	 * @museDescription  Updates the specified remote origin of the specified repository.
+	 *
+	 * @return void
+	 **/
+	public function updateGitURLconf()
+	{
+		$newsourceUrl = $this->arguments->getOpt('newsourceUrl');
+		$repoPath = $this->arguments->getOpt('repoPath');
+
+		$newsourceUrl_command  = "cd " . $repoPath . " && git remote set-url origin " . $newsourceUrl . ' 2>&1';
+		$newsourceUrl_command_response = shell_exec($newsourceUrl_command);
+		$this->output->addLine($newsourceUrl_command_response);
+
+		//check if new token is valid.
+		$lsremote_command  = "cd " . $repoPath . " && git ls-remote" . ' 2>&1';
+		$lsremote_command_response = shell_exec($lsremote_command);
+
+		if (preg_match("/fatal: Authentication failed.../uis", $lsremote_command_response))
+		{
+			$output = array(Lang::txt("Authentication failure. Please check the specified Access Token has access to this extension's repository."));
+			$this->output->addLine($output);
+		}
+	}
+
+	/**
 	 * Call checkoutRepoBranch
 	 * Future: https://git-scm.com/docs/git-switch
 	 * 
