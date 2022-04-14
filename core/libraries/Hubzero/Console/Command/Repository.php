@@ -620,18 +620,31 @@ class Repository extends Base implements CommandInterface
 	 **/
 	public function checkoutRepoBranch()
 	{
-		$git_branch_arr = explode("/", $this->arguments->getOpt('git_branch'));
-		$git_branch = $git_branch_arr[1];
 		$repoPath = $this->arguments->getOpt('repoPath');
 
+		if ($this->arguments->getOpt('git_branch'))
+		{
+		$git_branch_arr = explode("/", $this->arguments->getOpt('git_branch'));
+		$git_branch = $git_branch_arr[1];
+	}
+	else
+	{
+		// get default remote
+		$default_remote = shell_exec("umask 0002 && cd " . $repoPath . " && git remote show");
+		// get remote default branch
+		$default_remote_branch_cmd = "git remote show " . trim($default_remote) . " | grep 'HEAD branch' | cut -d ':' -f 2";
+		$git_branch = shell_exec("umask 0002 && cd " . $repoPath . " && ". $default_remote_branch_cmd);
+	}
+
 		$cur_branch = "git rev-parse --abbrev-ref HEAD";
-		$command  = "cd " . $repoPath . " && git rev-parse --abbrev-ref HEAD";
+		// Get current branch
+		$command  = "umask 0002 && cd " . $repoPath . " && git rev-parse --abbrev-ref HEAD";
 		$cur_branch = shell_exec($command);
 
 		// If the current branch doesn't match the specified branch, the checkout the specified branch
 		if ($cur_branch != $git_branch)
 		{
-			$command  = "umask 0002 && cd " . $repoPath . " && git stash -q && git checkout " . $git_branch . " -q";
+			$command  = "umask 0002 && cd " . $repoPath . " && git stash -q && git checkout " . $git_branch;
 			$response = shell_exec($command);
 		}
 		$this->output->addLine($response);
