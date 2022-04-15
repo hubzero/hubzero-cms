@@ -508,12 +508,9 @@ class Customexts extends AdminController
 		{
 			$extension = Custom_extensions::oneOrNew($id);
 
-			// Do we have a git repo?  If not clone the stated repo.
+			// Do we have a git repo?  If not clone the specified repo.
 			if (!is_dir($extension->path . DS . '.git'))
 			{
-				// The tasks and command to be perofmred
-				$task = 'repository';
-
 				if ($extension->get('apikey'))
 				{
 					$newURL = "https://oauth2:" . $extension->get('apikey') . "@" . parse_url($extension->get('url'), PHP_URL_HOST) . parse_url($extension->get('url'), PHP_URL_PATH);
@@ -528,21 +525,38 @@ class Customexts extends AdminController
 				$clone_response = json_decode($clone_response);
 			}
 
-			// Did we clone an empty repo
-			if (isset($clone_response) && preg_grep("/cloned an empty repository.../uis", $clone_response))
+			// Display clone error if errors
+			if (isset($clone_response))
 			{
-				$output = array("You appear to have cloned an empty repository.  Please add a master branch.");
-				if ($output == '' || json_last_error() == JSON_ERROR_NONE)
+				// was an empty repo cloned?
+				if (preg_grep("/cloned an empty repository.../uis", $clone_response))
 				{
-					// code is up to date
-					$output = ($output == '') ? array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')) : $clone_response;
-	
-					// add success message
-					$success[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+					$output = array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_CLONE_EMPTY_BRANCH'));
+					$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
 				}
-				else
+				else if (preg_grep("/could not read Username.../uis", $clone_response))
 				{
-					// add failed message
+					$output = array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_MISSING_TOKEN'));
+					$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+				}
+				else if (preg_grep("/fatal: Authentication failed.../uis", $clone_response))
+				{
+					$output = array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_TOKEN_FAILURE'));
+					$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+				}
+				// Try and determine a successful clone.  The string "cloning into" is always in the ouptut message.
+				// Ex: Cloning into '/var/www/dev/app/modules/mod_home_hero_stats'... 
+				else if (preg_grep("/Cloning into '" . preg_quote($extension->path, '/') . "'.../uis", $clone_response))
+				{
+					$output = array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_CLONE_SUCCESSFUL'));
+					$success[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+
+					// Run migrations
+					$migrations_response = Cli::migration($dryRun=false, $ignoreDates=true, $file=null, $dir='up', $folder=$extension->path);
+					$migrations_response = json_decode($migrations_response);
+				}
+				else {
+					// Try and catch other errors.  If other errors are found, it's best to add them above.
 					$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $clone_response);
 				}
 			}
@@ -639,14 +653,13 @@ class Customexts extends AdminController
 			$update_response = Cli::call($museCmd, $task='repository');
 			$update_response = json_decode($update_response);
 
-
 			// did we succeed
-			if (preg_grep("/Updating the repository.../uis", $output))
+			if (preg_grep("/Updating the repository.../uis", $update_response))
 			{
 				// add success message
 				$success[] = array(
 					'extension'   => $extension->get('name'),
-					'message' => $output
+					'message' => $update_response
 				);
 			}
 			else
@@ -654,9 +667,14 @@ class Customexts extends AdminController
 				// add failed message
 				$failed[] = array(
 					'extension'   => $extension->get('name'),
-					'message' => $output
+					'message' => $update_response
 				);
 			}
+
+			// Run migrations
+			$migrations_response = Cli::migration($dryRun=false, $ignoreDates=true, $file=null, $dir='up', $folder=$extension->path);
+			$migrations_response = json_decode($migrations_response);
+
 		}
 
 		// display view
@@ -694,61 +712,40 @@ class Customexts extends AdminController
 			// If enextion is enabled
 			if ($extension->enabled == 1)
 			{
-
-				$museCmd = 'removeRepo -path=' . $extension->path . ' -f --no-colors';
-
-				$remove_response = Cli::call($museCmd, $task='repository');
-				$remove_response = json_decode($remove_response);
-
-				// did we succeed
-				if (preg_grep("/Updating the repository.../uis", $remove_response))
-				{
-					// add success message
-					$success[] = array(
-						'extension'   => $extension->get('name'),
-						'message' => $remove_response
-					);
-				}
-				else
-				{
-					// add failed message
-					$failed[] = array(
-						'extension'   => $extension->get('name'),
-						'message' => $remove_response
-					);
-				}
-
+				$museCmd = 'removeRepo -path=' . $extension->path;
 			}  // If enextion is disabled
 			else if ($extension->enabled == 0)
 			{
-
 				$pieces = explode("/", $extension->path);
 				$repodir = array_pop($pieces);
 				$extdir = implode("/", $pieces);
 
 				$museCmd = 'removeRepo -path=' . $extdir . '/__' . $repodir;
+			}
 
-				$remove_response = Cli::call($museCmd, $task='repository');
-				$remove_response = json_decode($remove_response);
+			// Run migrations
+			$migrations_response = Cli::migration($dryRun=false, $ignoreDates=true, $file=null, $dir='down', $folder=$extension->path);
+			$migrations_response = json_decode($migrations_response);
 
-				// did we succeed
-				if (preg_grep("/Updating the repository.../uis", $remove_response))
-				{
-					// add success message
-					$success[] = array(
-						'extension'   => $extension->get('name'),
-						'message' => $remove_response
-					);
-				}
-				else
-				{
-					// add failed message
-					$failed[] = array(
-						'extension'   => $extension->get('name'),
-						'message' => $remove_response
-					);
-				}
+			$remove_response = Cli::call($museCmd, $task='repository');
+			$remove_response = json_decode($remove_response);
 
+			// did we succeed
+			if (preg_grep("/Updating the repository.../uis", $remove_response))
+			{
+				// add success message
+				$success[] = array(
+					'extension'   => $extension->get('name'),
+					'message' => $remove_response
+				);
+			}
+			else
+			{
+				// add failed message
+				$failed[] = array(
+					'extension'   => $extension->get('name'),
+					'message' => $remove_response
+				);
 			}
 
 			// Load the record
