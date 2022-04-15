@@ -35,10 +35,16 @@ Html::behavior('tooltip');
 								echo '<strong>Extension: ' . $success['extension'] . '</strong>';
 								echo '<p>' . Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_SUCCESS_DESC') . '</p>';
 							?>
+							<?php if ($success['message'][0] != Lang::txt('COM_INSTALLER_CUSTOMEXTS_CLONE_SUCCESSFUL')
+										&& $success['message'][0] != Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')
+										&& !preg_match('/ineligible/', $success['message'][0])) : ?>
+									<?php echo '<p>' . Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_SUCCESS_DESC') . '</p>'; ?>
+							<?php endif; ?>
 							<hr />
 							<code><?php echo implode('<br>', $success['message']); ?></code>
 
-							<?php if ($success['message'][0] != Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')
+							<?php if ($success['message'][0] != Lang::txt('COM_INSTALLER_CUSTOMEXTS_CLONE_SUCCESSFUL')
+										&& $success['message'][0] != Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')
 										&& !preg_match('/ineligible/', $success['message'][0])) : ?>
 								<label class="merge">
 									<?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_MERGE'); ?>

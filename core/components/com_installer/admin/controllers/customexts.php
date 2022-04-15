@@ -596,10 +596,10 @@ class Customexts extends AdminController
 					// add success message
 					$success[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
 				}
-				else
+				else if (preg_grep("/command not found/uis", $fetch_response))
 				{
-					// add failed message
-					$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $fetch_response);
+					$output = array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_CLONE_EMPTY_BRANCH2'));
+					$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
 				}
 			}
 		}
@@ -635,7 +635,7 @@ class Customexts extends AdminController
 		// empty list?
 		if (empty($ids))
 		{
-			Notify::warning(Lang::txt('There are no eligible commits to merge.'));
+			Notify::warning(Lang::txt('COM_INSTALLER_CUSTOMEXTS_NO_ELIGIBLE_COMMITS'));
 			return $this->cancelTask();
 		}
 
