@@ -575,13 +575,25 @@ class Customexts extends AdminController
 				$updateGitURLconf_response = Cli::call($museCmd, $task='repository');
 				$updateGitURLconf_response = json_decode($updateGitURLconf_response);
 
+				// did we fail
+				if ($updateGitURLconf_response[0] != '' || json_last_error() != JSON_ERROR_NONE)
+				{
+					// add failed message
+					$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $updateGitURLconf_response);
+				}
+
 				// Check if specified branch is being used.  If not checkout out specified branch
 				$museCmd = 'checkoutRepoBranch repoPath=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' git_branch=' . $extension->get('git_branch') : '');
 
 				$checkoutRepoBranch_response = Cli::call($museCmd, $task='repository');
 				$checkoutRepoBranch_response = json_decode($checkoutRepoBranch_response);
 
-
+				// did we fail
+				if (preg_grep("/command not found/uis", $checkoutRepoBranch_response))
+				{
+					// add failed message
+					$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $checkoutRepoBranch_response);
+				}
 
 				// Check for updates in remote branch
 				$museCmd = 'update -r=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' source=' . $extension->get('git_branch') : '');
