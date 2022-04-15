@@ -69,13 +69,12 @@ Html::behavior('tooltip');
 			<tbody>
 				<?php foreach ($this->failed as $failed) : ?>
 					<tr>
-						<td>
+					<td class="merge-fail">
 							<?php
-								echo '<strong>Extension: ' . $success['extension'] . '</strong>';
+								echo '<strong>Extension: ' . $failed['extension'] . '</strong>';
 							?>
-							<br />
-							<br />
-							<pre><?php echo $failed['message']; ?></pre>
+							<hr />
+							<pre><?php echo implode('<br>', $failed['message']); ?></pre>
 						</td>
 					</tr>
 				<?php endforeach; ?>
