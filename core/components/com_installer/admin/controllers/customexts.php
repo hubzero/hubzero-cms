@@ -409,7 +409,6 @@ class Customexts extends AdminController
 
 					if (is_dir($extdir . '/__' . $repodir))
 					{
-						// The tasks and command to be performed
 						$museCmd = 'renameRepo currPath=' . $extdir . '/__' . $repodir . ' targetPath=' . $model->path;
 
 						$rename_response = Cli::call($museCmd, $task='repository');
@@ -430,7 +429,6 @@ class Customexts extends AdminController
 						$repoPath = array_pop($pieces);
 						$extdir = implode("/", $pieces);
 
-						// The tasks and command to be performed
 						$museCmd = 'renameRepo currPath=' . $model->path . ' targetPath=' . $extdir . '/__' . $repoPath;
 
 						$rename_response = Cli::call($museCmd, $task='repository');
@@ -562,6 +560,20 @@ class Customexts extends AdminController
 			}
 			else 
 			{
+				// If  have a cloned repo, let's check for incoming form changes.
+				// Update the repo to the specified Access token.
+				if ($extension->get('apikey'))
+				{
+					$newURL = "https://oauth2:" . $extension->get('apikey') . "@" . parse_url($extension->get('url'), PHP_URL_HOST) . parse_url($extension->get('url'), PHP_URL_PATH);
+				}
+				else
+				{
+					$newURL = $extension->get('url');
+				}
+
+				$museCmd = 'updateGitURLconf repoPath=' . $extension->path . ' newsourceUrl=' . $newURL;
+				$updateGitURLconf_response = Cli::call($museCmd, $task='repository');
+				$updateGitURLconf_response = json_decode($updateGitURLconf_response);
 
 				// Check if specified branch is being used.  If not checkout out specified branch
 				$museCmd = 'checkoutRepoBranch repoPath=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' git_branch=' . $extension->get('git_branch') : '');
