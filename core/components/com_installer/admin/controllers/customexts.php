@@ -581,49 +581,47 @@ class Customexts extends AdminController
 					// add failed message
 					$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $updateGitURLconf_response);
 				}
-
-				// Check if specified branch is being used.  If not checkout out specified branch
-				$museCmd = 'checkoutRepoBranch repoPath=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' git_branch=' . $extension->get('git_branch') : '');
-
-				$checkoutRepoBranch_response = Cli::call($museCmd, $task='repository');
-				$checkoutRepoBranch_response = json_decode($checkoutRepoBranch_response);
-
-				// did we fail
-				if (preg_grep("/command not found/uis", $checkoutRepoBranch_response))
+				else
 				{
-					// add failed message
-					$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $checkoutRepoBranch_response);
-				}
+					// Check if specified branch is being used.  If not checkout out specified branch
+					$museCmd = 'checkoutRepoBranch repoPath=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' git_branch=' . $extension->get('git_branch') : '');
 
-				// Check for updates in remote branch
-				$museCmd = 'update -r=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' source=' . $extension->get('git_branch') : '');
+					$checkoutRepoBranch_response = Cli::call($museCmd, $task='repository');
+					$checkoutRepoBranch_response = json_decode($checkoutRepoBranch_response);
 
-				$fetch_response = Cli::call($museCmd, $task='repository');
-				$fetch_response = json_decode($fetch_response);
+					// did we fail
+					if (preg_grep("/command not found/uis", $checkoutRepoBranch_response))
+					{
+						// add failed message
+						$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $checkoutRepoBranch_response);
+					}
+					else
+					{
+						// Check for updates in remote branch
+						$museCmd = 'update -r=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' source=' . $extension->get('git_branch') : '');
 
+						$fetch_response = Cli::call($museCmd, $task='repository');
+						$fetch_response = json_decode($fetch_response);
 
-				// Run migrations
-				$migrations_response = Cli::migration($dryRun=false, $ignoreDates=true, $file=null, $dir='up', $folder=$extension->path);
-				$migrations_response = json_decode($migrations_response);
+						// did we succeed
+						if ($fetch_response == '' || json_last_error() == JSON_ERROR_NONE)
+						{
+							// Run migrations
+							$migrations_response = Cli::migration($dryRun=false, $ignoreDates=true, $file=null, $dir='up', $folder=$extension->path);
+							$migrations_response = json_decode($migrations_response);
 
-				if (preg_match("/command not found/uis", $fetch_response[0]))
-				{
-					$output = array("You may have an empty repository with no master branch.  Please add a master branch and try again.");
-				}
+							// code is up to date
+							$output = ($fetch_response == '') ? array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')) : $fetch_response;
 
-				// did we succeed
-				if ($fetch_response == '' || json_last_error() == JSON_ERROR_NONE)
-				{
-					// code is up to date
-					$output = ($fetch_response == '') ? array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')) : $fetch_response;
-
-					// add success message
-					$success[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
-				}
-				else if (preg_grep("/command not found/uis", $fetch_response))
-				{
-					$output = array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_CLONE_EMPTY_BRANCH2'));
-					$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+							// add success message
+							$success[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+						}
+						else if (preg_grep("/command not found/uis", $fetch_response))
+						{
+							$output = array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_CLONE_EMPTY_BRANCH2'));
+							$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+						}
+					}
 				}
 			}
 		}
