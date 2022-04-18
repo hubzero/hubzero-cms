@@ -239,7 +239,7 @@ $countries = array(
 		array('code' => 'SE', 'name' => 'Sweden', 'continent' => 'EU'),
 		array('code' => 'CH', 'name' => 'Switzerland', 'continent' => 'EU'),
 		array('code' => 'SY', 'name' => 'Syrian Arab Republic', 'continent' => 'AS'),
-		array('code' => 'TW', 'name' => 'Taiwan, Province of China', 'continent' => 'AS'),
+		array('code' => 'TW', 'name' => 'Taiwan', 'continent' => 'AS'),
 		array('code' => 'TJ', 'name' => 'Tajikistan', 'continent' => 'AS'),
 		array('code' => 'TZ', 'name' => 'Tanzania, United Republic of', 'continent' => 'AF'),
 		array('code' => 'TH', 'name' => 'Thailand', 'continent' => 'AS'),

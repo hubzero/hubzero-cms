@@ -230,7 +230,7 @@ class LocalProvider extends AbstractProvider implements ProviderInterface
 		array('code' => 'SE', 'name' => 'Sweden', 'continent' => 'Europe'),
 		array('code' => 'CH', 'name' => 'Switzerland', 'continent' => 'Europe'),
 		array('code' => 'SY', 'name' => 'Syrian Arab Republic', 'continent' => 'Asia'),
-		array('code' => 'TW', 'name' => 'Taiwan, Province of China', 'continent' => 'Asia'),
+		array('code' => 'TW', 'name' => 'Taiwan', 'continent' => 'Asia'),
 		array('code' => 'TJ', 'name' => 'Tajikistan', 'continent' => 'Asia'),
 		array('code' => 'TZ', 'name' => 'Tanzania, United Republic of', 'continent' => 'Africa'),
 		array('code' => 'TH', 'name' => 'Thailand', 'continent' => 'Asia'),
