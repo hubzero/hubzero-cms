@@ -604,7 +604,7 @@ class Customexts extends AdminController
 						$fetch_response = json_decode($fetch_response);
 
 						// did we succeed
-						if ($fetch_response == '' || json_last_error() == JSON_ERROR_NONE)
+						if ($fetch_response == '')
 						{
 							// Run migrations
 							$migrations_response = Cli::migration($dryRun=false, $ignoreDates=true, $file=null, $dir='up', $folder=$extension->path);
@@ -619,6 +619,11 @@ class Customexts extends AdminController
 						else if (preg_grep("/command not found/uis", $fetch_response))
 						{
 							$output = array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_CLONE_EMPTY_BRANCH2'));
+							$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+						}
+						else if (preg_grep("/unknown revision or path not in the working tree/uis", $fetch_response))
+						{
+							$output = array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_UNKNOWN_BRANCH'));
 							$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
 						}
 					}
