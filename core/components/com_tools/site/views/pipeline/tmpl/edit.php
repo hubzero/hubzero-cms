@@ -59,8 +59,6 @@ $this->css('pipeline.css')
 		<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm" enctype="multipart/form-data">
 			<div class="explaination">
 				<?php if (!$this->id) { ?>
-					<h3><?php echo Lang::txt('COM_TOOLS_SIDE_HOW_CONTRIBUTE'); ?></h3>
-					<p><?php echo Lang::txt('COM_TOOLS_SIDE_EASY_PROCESS').' '.Lang::txt('COM_TOOLS_VIEW').' <a href="' . Route::url('index.php?option=com_tools') . '">'.Lang::txt('COM_TOOLS_RESOURCES').'</a> '.Lang::txt('COM_TOOLS_EXPLAINING_CONTRIBUTION').'.'; ?></p>
 					<h3><?php echo Lang::txt('COM_TOOLS_SIDE_WHAT_TOOLNAME'); ?></h3>
 					<p><?php echo Lang::txt('COM_TOOLS_SIDE_TIPS_TOOLNAME'); ?></p>
 				<?php } else { ?>
