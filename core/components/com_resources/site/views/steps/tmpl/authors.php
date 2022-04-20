@@ -60,7 +60,7 @@ $this->css('create.css')
 								foreach ($this->groups as $group)
 								{
 								?>
-								<option value="<?php echo $this->escape($group->cn); ?>"<?php if ($this->row->group_owner == $group->cn) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($group->description)); ?></option>
+								<option value="<?php echo $this->escape($group->cn); ?>"<?php if ($this->row->group_owner->get('cn') == $group->cn) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($group->description)); ?></option>
 								<?php
 								}
 							}
