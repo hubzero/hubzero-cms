@@ -46,33 +46,36 @@ $this->css()
 				$html .= '<a class="delete" href="'. Route::url('index.php?option='.$this->option.'&task=delete&id='.$this->row->id) .'" title="'.Lang::txt('JACTION_DELETE').'">'.strtolower(Lang::txt('JACTION_DELETE')).'</a>'."\n";
 			}
 			$html .= '</h3>'."\n";
-			if ($this->row->registerby && $this->row->registerby != '0000-00-00 00:00:00') {
-				$html .= '<div id="sub-sub-menu">'."\n";
-				$html .= '<ul>'."\n";
-				$html .= "\t".'<li';
-				if ($this->page->alias == '') {
-					$html .= ' class="active"';
-				}
-				$html .= '><a class="tab" href="'. Route::url('index.php?option='.$this->option.'&task=details&id='.$this->row->id) .'"><span>'.Lang::txt('EVENTS_OVERVIEW').'</span></a></li>'."\n";
-				if ($this->pages) {
-					foreach ($this->pages as $p)
-					{
-						$html .= "\t".'<li';
-						if ($this->page->alias == $p->alias) {
-							$html .= ' class="active"';
-						}
-						$html .= '><a class="tab" href="'. Route::url('index.php?option='.$this->option.'&task=details&id='.$this->row->id.'&page='.$p->alias) .'"><span>'.trim(stripslashes($p->title)).'</span></a></li>'."\n";
+
+			$html .= '<div id="sub-sub-menu">'."\n";
+			$html .= '<ul>'."\n";
+			$html .= "\t".'<li';
+			if ($this->page->alias == '') {
+				$html .= ' class="active"';
+			}
+			$html .= '><a class="tab" href="'. Route::url('index.php?option='.$this->option.'&task=details&id='.$this->row->id) .'"><span>'.Lang::txt('EVENTS_OVERVIEW').'</span></a></li>'."\n";
+			if ($this->pages) {
+				foreach ($this->pages as $p)
+				{
+					$html .= "\t".'<li';
+					if ($this->page->alias == $p->alias) {
+						$html .= ' class="active"';
 					}
+					$html .= '><a class="tab" href="'. Route::url('index.php?option='.$this->option.'&task=details&id='.$this->row->id.'&page='.$p->alias) .'"><span>'.trim(stripslashes($p->title)).'</span></a></li>'."\n";
 				}
-				$html .= "\t".'<li';
+			}
+			$html .= "\t".'<li';
+
+			if ($this->row->registerby && $this->row->registerby != '0000-00-00 00:00:00' && strtotime($this->row->registerby) >= time()) {
 				if ($this->page->alias == 'register') {
 					$html .= ' class="active"';
 				}
 				$html .= '><a class="tab" href="'. Route::url('index.php?option='.$this->option.'&task=details&id='.$this->row->id.'&page=register') .'"><span>'.Lang::txt('EVENTS_REGISTER').'</span></a></li>'."\n";
-				$html .= '</ul>'."\n";
-				$html .= '<div class="clear"></div>'."\n";
-				$html .= '</div>'."\n";
+
 			}
+			$html .= '</ul>'."\n";
+			$html .= '<div class="clear"></div>'."\n";
+			$html .= '</div>'."\n";
 
 			if ($this->page->alias != '') {
 				$html .= (trim($this->page->pagetext)) ? stripslashes($this->page->pagetext) : '<p class="warning">'. Lang::txt('EVENTS_NO_INFO_AVAILABLE') .'</p>';
