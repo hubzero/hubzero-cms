@@ -449,7 +449,7 @@ class Html
 				$html = '<p class="' . $rl->name . ' license">Licensed';
 				if ($rl->url)
 				{
-					$html .= ' according to <a rel="license" href="' . $rl->url . '" title="' . $rl->title . '">this deed</a>';
+					$html .= ' under <a rel="license" href="' . $rl->url . '" title="' . $rl->title . '">' . $rl->title . '</a>';
 				}
 				else
 				{
@@ -459,7 +459,7 @@ class Html
 			}
 			else
 			{
-				$html = '<p class="' . $rl->name . ' license">Licensed according to <a rel="license" class="popup" href="' . Route::url('index.php?option=com_resources&task=license&resource=' . substr($rl->name, 6) . '&no_html=1') . '">this deed</a>.</p>';
+				$html = '<p class="' . $rl->name . ' license">Licensed under <a rel="license" class="popup" href="' . Route::url('index.php?option=com_resources&task=license&resource=' . substr($rl->name, 6) . '&no_html=1') . '">' . $rl->title . '</a>.</p>';
 			}
 		}
 		return $html;
@@ -703,6 +703,7 @@ class Html
 
 		switch ($resource->get('type'))
 		{
+			# Tools
 			case 7:
 				$authorized = User::authorise('core.manage', 'com_tools.' . $resource->id);
 
@@ -825,15 +826,14 @@ class Html
 			break;
 
 			case 6:
-			case 8:
+				$mesg  = Lang::txt('COM_RESOURCES_VIEW') . ' Course Lectures';
+				$html .= self::primaryButton('download', Route::url($resource->link()) . '#courselecture', $mesg, '', $mesg, '');
 			case 31:
-			case 2:
-				// do nothing
-				$mesg  = Lang::txt('COM_RESOURCES_VIEW') . ' ';
-				$mesg .= $resource->get('type') == 6 ? 'Course Lectures' : '';
-				$mesg .= $resource->get('type') == 2 ? 'Workshop ' : '';
-				$mesg .= $resource->get('type') == 6 ? '' : 'Series';
+				$mesg  = Lang::txt('COM_RESOURCES_VIEW') . ' Series';
 				$html .= self::primaryButton('download', Route::url($resource->link()) . '#series', $mesg, '', $mesg, '');
+			case 2:
+				$mesg  = Lang::txt('COM_RESOURCES_VIEW') . ' Workshop ';
+				$html .= self::primaryButton('download', Route::url($resource->link()) . '#workshop', $mesg, '', $mesg, '');
 			break;
 
 			default:
