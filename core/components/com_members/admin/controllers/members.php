@@ -665,7 +665,7 @@ class Members extends AdminController
 	public function resendConfirmTask()
 	{
 		// Check for request forgeries
-		Request::checkToken('get');
+		Request::checkToken(['get', 'post']);
 
 		// Check for permission to perform this aciton
 		if (!User::authorise('core.manage', $this->_option)
@@ -697,7 +697,19 @@ class Members extends AdminController
 			Notify::error(Lang::txt('COM_MEMBERS_RESEND_CONFIRM_ERROR'));
 		}
 
-		return $this->editTask($user);
+		$return = base64_decode(Request::getString('return', ''));
+		if ($return)
+		{
+			// return $this->editTask($user);
+			App::redirect(
+				Route::url($return, false)
+			);
+		}
+		else
+		{
+			$this->cancelTask();
+		}
+
 	}
 
 	/**
