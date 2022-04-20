@@ -64,3 +64,48 @@ if (!User::isGuest())
 		     ->display();
 	}
 }
+?>
+
+<div class="customfields">
+	<?php
+		// Parse for <nb:field> tags
+		$type = $this->model->type;
+
+		$data = array();
+		preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->model->fulltxt, $matches, PREG_SET_ORDER);
+		if (count($matches) > 0)
+		{
+			foreach ($matches as $match)
+			{
+				$data[$match[1]] = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $match[2]);
+			}
+		}
+		include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
+		$elements = new \Components\Resources\Models\Elements($data, $this->model->type->customFields);
+		$schema = $elements->getSchema();
+		$tab = Request::getCmd('active', 'reviews');  // The active tab (section)
+
+		if (is_object($schema))
+		{
+			if (!isset($schema->fields) || !is_array($schema->fields))
+			{
+				$schema->fields = array();
+			}
+			foreach ($schema->fields as $field)
+			{
+				if (isset($data[$field->name]))
+				{
+					if ($elements->display($field->type, $data[$field->name]) && $field->display == $tab )
+					{
+						?>
+						<h4><?php echo $field->label; ?></h4>
+						<div class="resource-content">
+						<?php echo $elements->display($field->type, $data[$field->name]); ?>
+						</div>
+						<?php
+					}
+				}
+			}
+		}
+	?>
+</div><!-- / .customfields -->
