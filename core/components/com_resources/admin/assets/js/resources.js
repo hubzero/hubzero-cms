@@ -63,7 +63,7 @@ jQuery(document).ready(function($){
 		fields
 			.on('change', 'select', function (e){
 				var i = $(this).attr('name').replace(/^fields\[(\d+)\]\[type\]/g, "$1");
-				$.get($(this).attr('data-href') + '&type=' + this.value + '&name=' + i, {}, function (response) {
+				$.get(document.getElementById("fields").getAttribute('data-href') + '&type=' + this.value + '&name=' + i, {}, function (response) {
 					$('#fields-' + i + '-options').html(response);
 				});
 			})

@@ -76,7 +76,7 @@ if ($canDo->get('core.delete'))
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<?php if ($canDo->get('core.edit') && $row->id != 7) { ?>
+					<?php if ($canDo->get('core.edit') && $row->id != 7 && $row->id != 1 && $row->id != 2 && $row->id != 3 && $row->id != 6 && $row->id != 31) { ?>
 						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
 					<?php } ?>
 				</td>

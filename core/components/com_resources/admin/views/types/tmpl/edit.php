@@ -41,7 +41,7 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
 				</div>
 				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS_HINT'); ?>">
 					<label for="field-alias"><?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS'); ?>:</label><br />
-					<input type="text" name="type[alias]" id="field-alias" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" /><br />
+					<input type="text" name="type[alias]" <?php if ($this->row->id == 7 || $this->row->id == 1 || $this->row->id == 2 || $this->row->id == 3 || $this->row->id == 6 || $this->row->id == 31) { echo ' readonly="readonly"'; } ?> id="field-alias" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" /><br />
 					<span class="hint"><?php echo Lang::txt('COM_RESOURCES_FIELD_ALIAS_HINT'); ?></span>
 				</div>
 				<div class="input-wrap">
@@ -156,6 +156,7 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
 					<th scope="col"><?php echo Lang::txt('COM_RESOURCES_TYPES_REORDER'); ?></th>
 					<th scope="col"><?php echo Lang::txt('COM_RESOURCES_TYPES_FIELD'); ?></th>
 					<th scope="col"><?php echo Lang::txt('COM_RESOURCES_TYPES_TYPE'); ?></th>
+					<th scope="col"><?php echo Lang::txt('Display in'); ?></th>
 					<th scope="col"><?php echo Lang::txt('COM_RESOURCES_TYPES_REQUIRED'); ?></th>
 					<th scope="col"><?php echo Lang::txt('COM_RESOURCES_TYPES_OPTIONS'); ?></th>
 				</tr>
@@ -229,6 +230,32 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
 								<option value="geo"<?php echo ($field->type == 'geo') ? ' selected="selected"':''; ?>><?php echo Lang::txt('COM_RESOURCES_FIELD_PREDEFINED_GEO'); ?></option>
 								<option value="languages"<?php echo ($field->type == 'languages') ? ' selected="selected"':''; ?>><?php echo Lang::txt('COM_RESOURCES_FIELD_PREDEFINED_LANG'); ?></option>
 							</optgroup>
+						</select>
+					</td>
+					<td>
+						<select name="fields[<?php echo $i; ?>][display]" id="fields-<?php echo $i; ?>-display">
+							<?php foreach ($plugins as $plugin)	{
+								if ($plugin->element == 'groups' || $plugin->element == 'coins' || $plugin->element == 'collections' 
+								|| $plugin->element == 'dublincore' || $plugin->element == 'findthistext' || $plugin->element == 'googlescholar'
+								|| $plugin->element == 'groups' || $plugin->element == 'opengraph' || $plugin->element == 'watch'
+								|| $plugin->element == 'windowstools' || $plugin->element == 'citations' || $plugin->element == 'questions'
+								|| $plugin->element == 'recommendations' || $plugin->element == 'reviews' || $plugin->element == 'share' 
+								|| $plugin->element == 'sponsors' || $plugin->element == 'usage' || $plugin->element == 'versions'
+								|| $plugin->element == 'wishlist')
+								{
+									continue;
+								}
+								?>
+								<option value=<?php
+								echo $plugin->element;
+								if (isset($field->display)) {
+									echo ($field->display == $plugin->element) ? ' selected="selected"':'';
+								}
+								?>
+								><?php echo Lang::txt($plugin->name); ?></option>
+							<?php
+							}
+							?>
 						</select>
 					</td>
 					<td>
