@@ -637,13 +637,6 @@ class Publication extends Table
 			$id = $this->id;
 		}
 
-		// Delete tag associations
-		$this->_db->setQuery("DELETE FROM `#__tags_object` WHERE tbl='publications' AND objectid=". $this->_db->quote($id));
-		if (!$this->_db->query())
-		{
-			echo $this->_db->getErrorMsg();
-			exit;
-		}
 		// Delete ratings
 		$this->_db->setQuery("DELETE FROM `#__publication_ratings` WHERE publication_id=" . $this->_db->quote($id));
 		if (!$this->_db->query())
