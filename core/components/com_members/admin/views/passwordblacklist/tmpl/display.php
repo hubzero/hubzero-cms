@@ -42,7 +42,10 @@ if ($canDo->get('core.delete'))
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th>
+					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+				</th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_MEMBERS_PASSWORD_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_MEMBERS_PASSWORD_WORD', 'word', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
@@ -68,6 +71,7 @@ if ($canDo->get('core.delete'))
 				<td>
 					<?php if ($canDo->get('core.edit')) : ?>
 						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
+						<label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
 					<?php endif; ?>
 				</td>
 				<td>

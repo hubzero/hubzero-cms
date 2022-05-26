@@ -87,7 +87,10 @@ if (substr($base, -13) == 'administrator')
 	<table class="adminlist" id="projects-admin">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th>
+					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+				</th>
 				<th class="priority-5" scope="col"><?php echo Html::grid('sort', 'ID', 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th class="priority-5" scope="col"> </th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_TITLE', 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>

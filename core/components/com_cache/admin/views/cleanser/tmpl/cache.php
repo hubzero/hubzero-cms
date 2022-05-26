@@ -40,7 +40,8 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					<?php echo Lang::txt('COM_CACHE_NUM'); ?>
 				</th>
 				<th scope="col">
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
+					<input type="checkbox" name="toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
 				</th>
 				<th scope="col" class="title nowrap">
 					<?php echo Html::grid('sort', 'COM_CACHE_GROUP', 'group', $listDirn, $listOrder); ?>
@@ -70,6 +71,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					</td>
 					<td>
 						<input type="checkbox" id="cb<?php echo $i; ?>" name="cid[]" value="<?php echo $item->group; ?>" class="checkbox-toggle" />
+						<label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $item->group; ?></label>
 					</td>
 					<td>
 						<strong><?php echo $item->group; ?></strong>

@@ -35,7 +35,10 @@ $sort = Request::getString('filter_order', 'id');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th scope="col">
+					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+				</th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'ID', 'id', $sort_dir, $sort); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'Title', 'title', $sort_dir, $sort); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'Active?', 'state', $sort_dir, $sort); ?></th>
@@ -47,7 +50,8 @@ $sort = Request::getString('filter_order', 'id');
 			<?php foreach ($this->components as $component): ?>
 			<tr class="row0">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $component->get('id') ?>" class="checkbox-toggle" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $component->get('id'); ?>" class="checkbox-toggle" />
+					<label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $component->get('id'); ?></label>
 				</td>
 				<td class="priority-5">
 					<?php echo $component->id; ?>
