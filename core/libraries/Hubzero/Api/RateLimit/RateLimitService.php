@@ -52,6 +52,18 @@ class RateLimitService extends Middleware
 		// Get authentication
 		$token = $this->app['auth']->token();
 
+		/* @FIXME This makes PHP 7.4 have same result as PHP 5.6.
+		   However ultimately this may not be what we intended.
+		   All session cookie authenticated users get lumped into
+		   the same RateLimit bucket for application_id=0, user_id=0.
+		*/
+
+		if (!isset($token))
+		{
+			$token['application_id'] = 0;
+			$token['uidNumber'] = 0;
+		}
+
 		// Rate limit application/user id and get data
 		$rateLimitData = $this->app['ratelimiter']->rateLimit($token['application_id'], $token['uidNumber']);
 
