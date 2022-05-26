@@ -182,18 +182,22 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
 		$username = $xuser->get('username');
 
-		if (isset($user['auth_link']) && is_object($user['auth_link']))
+		if (isset($user['auth_link_id']))
 		{
-			$hzal = $user['auth_link'];
+			$auth_link_id = $user['auth_link_id'];
+		}
+		else if (isset($user['auth_link']) && is_object($user['auth_link']))
+		{
+			$auth_link_id =  $user['auth_link']->id;
 		}
 		else
 		{
-			$hzal = null;
+			$auth_link_id = null;
 		}
 
-		if ($hzal)
+		if ($auth_link_id)
 		{
-			$xuser->set('auth_link_id', $hzal->id);
+			$xuser->set('auth_link_id', $auth_link_id);
 			$session->set('linkaccount', true);
 		}
 
