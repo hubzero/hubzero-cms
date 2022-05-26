@@ -14,7 +14,7 @@ $this->js('solr')
 	->js('jquery.datetimepicker', 'system');
 
 $terms = isset($this->terms) ? $this->terms : '';
-$noResult = count($this->results) > 0 ? false : true;
+$noResult = ($this->results && count($this->results)) > 0 ? false : true;
 $tagSearchEnabled = $this->tagSearchEnabled;
 
 if ($this->section == 'map'):
