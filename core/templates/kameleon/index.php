@@ -86,8 +86,8 @@ $cls = array(
 			</ul>
 		</header><!-- / #header -->
 
-		<div id="wrap">
-			<nav role="navigation" class="main-navigation">
+		<main id="wrap">
+			<nav role="navigation" class="main-navigation" aria-label="<?php echo Lang::txt('TPL_KAMELEON_MAIN_NAV'); ?>">
 				<div class="inner-wrap">
 					<jdoc:include type="modules" name="menu" />
 				</div>
@@ -104,7 +104,7 @@ $cls = array(
 				<!-- Notifications ends -->
 
 				<?php if (!$hideLinks && $this->countModules('submenu')): ?>
-					<nav role="navigation" class="sub-navigation">
+					<nav role="navigation" class="sub-navigation" aria-label="<?php echo Lang::txt('TPL_KAMELEON_COMPONENT_NAV'); ?>">
 						<jdoc:include type="modules" name="submenu" />
 					</nav><!-- / .sub-navigation -->
 				<?php endif; ?>
@@ -119,7 +119,7 @@ $cls = array(
 					</noscript>
 				</section><!-- / #main -->
 			</section><!-- / #component-content -->
-		</div><!-- / #wrap -->
+		</main><!-- / #wrap -->
 
 		<footer id="footer">
 			<section class="basement">
