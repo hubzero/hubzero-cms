@@ -40,7 +40,10 @@ $this->js();
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th>
+					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+				</th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_CONFIRMED'); ?></th>
@@ -66,6 +69,7 @@ $this->js();
 					<tr>
 						<td width="30">
 							<input type="checkbox" name="email_id[]" id="cb<?php echo $k;?>" value="<?php echo $le->id; ?>" class="checkbox-toggle" />
+							<label for="cb<?php echo $k; ?>" class="sr-only visually-hidden"><?php echo $le->id; ?></label>
 						</td>
 						<td>
 							<a href="mailto:<?php echo $le->email; ?>"><?php echo $this->escape($le->email); ?></a>

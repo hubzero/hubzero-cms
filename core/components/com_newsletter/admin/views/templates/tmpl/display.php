@@ -44,7 +44,10 @@ if ($canDo->get('core.admin'))
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th scope="col">
+					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+				</th>
 				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE'); ?></th>
 			</tr>
 		</thead>
@@ -58,6 +61,7 @@ if ($canDo->get('core.admin'))
 					<tr>
 						<td>
 							<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $template->id; ?>" class="checkbox-toggle" />
+							<label for="cb<?php echo $k; ?>" class="sr-only visually-hidden"><?php echo $template->id; ?></label>
 						</td>
 						<td>
 							<?php if (!$template->editable) : ?>

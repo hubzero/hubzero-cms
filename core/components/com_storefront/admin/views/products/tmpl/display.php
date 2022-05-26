@@ -49,7 +49,7 @@ Toolbar::help('products');
 			</div>
 			<div class="col span7">
 				<label for="filter-type"><?php echo Lang::txt('COM_STOREFRONT_TYPE'); ?>:</label>
-				<select id="filter-type" name="type" onchange="this.form.submit()">
+				<select id="filter-type" name="type" class="filter filter-submit">
 					<option value="-1"<?php if ($this->filters['type'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_STOREFRONT_FILTER_TYPE'); ?></option>
 					<?php foreach ($this->types as $type) { ?>
 						<option value="<?php echo $type->ptId; ?>"<?php if ($this->filters['type'] == $type->ptId) { echo ' selected="selected"'; } ?>><?php echo $type->ptName; ?></option>
@@ -62,7 +62,10 @@ Toolbar::help('products');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th scope="col">
+					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+				</th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_STOREFRONT_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'Alias', 'pAlias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_STOREFRONT_PRODUCT_TYPE', 'ptName', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -133,6 +136,7 @@ foreach ($this->rows as $row)
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->pId; ?>" class="checkbox-toggle" />
+					<label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->pId; ?></label>
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>

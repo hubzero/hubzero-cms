@@ -69,22 +69,26 @@ $saveOrder = $listOrder == 'ordering';
 
 			<div class="filter-select fltrt">
 
-				<select name="filter_location" class="inputbox filter filter-submit" onchange="this.form.submit()">
+				<label for="filter_location"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_CLIENT_SELECT');?></label>
+				<select name="filter_location" id="filter_location" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_CLIENT_SELECT');?></option>
 					<?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::LocationOptions(), 'value', 'text', $this->filters['client_id'], true);?>
 				</select>
 
-				<select name="filter_status" class="inputbox filter filter-submit" onchange="this.form.submit()">
+				<label for="filter_status"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_STATE_SELECT');?></label>
+				<select name="filter_status" id="filter_status" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_STATE_SELECT');?></option>
 					<?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::StatusOptions(), 'value', 'text', $this->filters['status'], true);?>
 				</select>
 
-				<select name="filter_type" class="inputbox filter filter-submit" onchange="this.form.submit()">
+				<label for="filter_type"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_TYPE_SELECT');?></label>
+				<select name="filter_type" id="filter_type" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_TYPE_SELECT');?></option>
 					<?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::TypeOptions(), 'value', 'text', $this->filters['type']);?>
 				</select>
 
-				<select name="filter_group" class="inputbox filter filter-submit" onchange="this.form.submit()">
+				<label for="filter_group"><?php echo Lang::txt('COM_INSTALLER_VALUE_FOLDER_SELECT');?></label>
+				<select name="filter_group" id="filter_group" class="inputbox filter filter-submit">
 					<option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_FOLDER_SELECT');?></option>
 					<?php echo Html::select('options', Components\Installer\Admin\Helpers\Installer::GroupOptions(), 'value', 'text', $this->filters['group']);?>
 				</select>
@@ -98,7 +102,8 @@ $saveOrder = $listOrder == 'ordering';
 			<thead>
 				<tr>
 					<th>
-						<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
+						<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
+						<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
 					</th>
 					<th class="nowrap">
 						<?php echo Html::grid('sort', 'COM_INSTALLER_CUSTOMEXTS_HEADING_NAME', 'name', $listDirn, $listOrder); ?>

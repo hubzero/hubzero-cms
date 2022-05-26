@@ -78,7 +78,10 @@ Toolbar::help('thread');
 		<?php } ?>
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th>
+					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+				</th>
 				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_FORUM_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_FORUM_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_FORUM_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -124,6 +127,7 @@ Toolbar::help('thread');
 				<tr class="<?php echo "row$k"; ?>">
 					<td>
 						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
+						<label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
 					</td>
 					<td class="priority-5">
 						<?php echo $row->get('id'); ?>

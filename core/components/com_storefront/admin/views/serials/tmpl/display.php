@@ -34,7 +34,10 @@ Toolbar::cancel();
 				</th>
 			</tr>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th scope="col">
+					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+				</th>
 				<th scope="col"><?php echo Html::grid('sort', 'ID', 'srId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'Serial Number', 'srNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'Status', 'srStatus', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -64,6 +67,7 @@ Toolbar::cancel();
 				<td>
 					<?php if ($row->srStatus == 'available') { ?>
 						<input type="checkbox" name="srId[]" id="cb<?php echo $i; ?>" value="<?php echo $row->srId; ?>" class="checkbox-toggle" />
+						<label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->srId; ?></label>
 					<?php } ?>
 				</td>
 				<td>

@@ -34,7 +34,10 @@ $this->js();
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th scope="col">
+					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+				</th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER', 'subject', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_NEWSLETTER_MAILING_DATE', 'date', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_NEWSLETTER_MAILING_PERCENT_COMPLETE'); ?></th>
@@ -57,6 +60,7 @@ $this->js();
 					<tr>
 						<td>
 							<input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $mailing->id; ?>" class="checkbox-toggle" />
+							<label for="cb<?php echo $k; ?>" class="sr-only visually-hidden"><?php echo $mailing->id; ?></label>
 						</td>
 						<td>
 							<?php echo $mailing->newsletter->get('name', Lang::txt('COM_NEWSLETTER_UNKNOWN')); ?>

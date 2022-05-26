@@ -33,7 +33,10 @@ $this->css('import');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th scope="col">
+					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+				</th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_NUMRECORDS', 'count', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_CREATED', 'created_at', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
@@ -56,6 +59,7 @@ $this->css('import');
 						<td>
 							<?php if ($canDo->get('core.create')): ?>
 								<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $import->get('id'); ?>" class="checkbox-toggle" />
+								<label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $import->get('id'); ?></label>
 							<?php endif; ?>
 						</td>
 						<td>

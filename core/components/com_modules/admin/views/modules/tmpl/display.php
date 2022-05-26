@@ -77,31 +77,37 @@ $saveOrder = $listOrder == 'ordering';
 			<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="filter-select fltrt">
-			<select name="filter_client_id" class="inputbox filter filter-submit">
+			<label for="filter_client_id"><?php echo Lang::txt('COM_MODULES_CLIENT');?></label>
+			<select name="filter_client_id" id="filter_client_id" class="inputbox filter filter-submit">
 				<?php echo Html::select('options', Components\Modules\Helpers\Modules::getClientOptions(), 'value', 'text', $this->filters['client_id']); ?>
 			</select>
 
-			<select name="filter_state" class="inputbox filter filter-submit">
+			<label for="filter_state"><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></label>
+			<select name="filter_state" id="filter_state" class="inputbox filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php echo Html::select('options', Components\Modules\Helpers\Modules::getStateOptions(), 'value', 'text', $this->filters['state']); ?>
 			</select>
 
-			<select name="filter_position" class="inputbox filter filter-submit">
+			<label for="filter_position"><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_POSITION');?></label>
+			<select name="filter_position" id="filter_position" class="inputbox filter filter-submit">
 				<option value=""><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_POSITION');?></option>
 				<?php echo Html::select('options', Components\Modules\Helpers\Modules::getPositions($this->filters['client_id']), 'value', 'text', $this->filters['position']); ?>
 			</select>
 
-			<select name="filter_module" class="inputbox filter filter-submit">
+			<label for="filter_module"><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_MODULE');?></label>
+			<select name="filter_module" id="filter_module" class="inputbox filter filter-submit">
 				<option value=""><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_MODULE');?></option>
 				<?php echo Html::select('options', Components\Modules\Helpers\Modules::getModules($this->filters['client_id']), 'value', 'text', $this->filters['module']); ?>
 			</select>
 
-			<select name="filter_access" class="inputbox filter filter-submit">
+			<label for="filter_access"><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></label>
+			<select name="filter_access" id="filter_access" class="inputbox filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
 				<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
 			</select>
 
-			<select name="filter_language" class="inputbox filter filter-submit">
+			<label for="filter_language"><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></label>
+			<select name="filter_language" id="filter_language" class="inputbox filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
 				<?php echo Html::select('options', Html::contentlanguage('existing', true, true), 'value', 'text', $this->filters['language']); ?>
 			</select>
@@ -112,7 +118,8 @@ $saveOrder = $listOrder == 'ordering';
 		<thead>
 			<tr>
 				<th>
-					<input type="checkbox" name="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JOPTION_CHECKALL');?></label>
 				</th>
 				<th scope="col" class="title">
 					<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'title', $listDirn, $listOrder); ?>

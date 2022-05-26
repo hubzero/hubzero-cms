@@ -33,7 +33,10 @@ $this->js('edit.js');
 				<th> </th>
 			</tr>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th>
+					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+				</th>
 				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_ID'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_OBJECT'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_MODEL'); ?></th>

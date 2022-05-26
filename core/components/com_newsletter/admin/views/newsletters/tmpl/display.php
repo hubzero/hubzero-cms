@@ -79,11 +79,14 @@ $this->js();
 				</select>
 			</div>
 		</div>
-</fieldset>
+	</fieldset>
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th scope="col">
+					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+				</th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_FORMAT', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_TEMPLATE', 'template_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -108,6 +111,7 @@ $this->js();
 					<tr>
 						<td>
 							<input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $newsletter->id; ?>" class="checkbox-toggle" />
+							<label for="cb<?php echo $k; ?>" class="sr-only visually-hidden"><?php echo $newsletter->id; ?></label>
 						</td>
 						<td>
 							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $newsletter->id); ?>">

@@ -42,7 +42,10 @@ Html::behavior('tooltip');
 		<thead>
 			<tr>
 				<th scope="col" class="priority-5"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ID'); ?></th>
-				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th scope="col">
+					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+				</th>
 				<th scope="col"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_TITLE'); ?></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_STATE'); ?></th>
@@ -84,6 +87,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						&nbsp;
 					<?php } else { ?>
 						<input type="checkbox" id="cb<?php echo $i; ?>" name="id[]" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
+						<label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
 					<?php } ?>
 				</td>
 				<td>
