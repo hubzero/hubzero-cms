@@ -50,7 +50,7 @@ $editAuthorized = User::authorise('core.manage', 'com_members');
 	<table class="adminlist whosonline-list">
 		<thead>
 			<tr>
-				<th scope="col"><?php echo Lang::txt('MOD_WHOSONLINE_COL_USER'); ?></td>
+				<th scope="col"><?php echo Lang::txt('MOD_WHOSONLINE_COL_USER'); ?></th>
 				<th scope="col"><?php echo Lang::txt('MOD_WHOSONLINE_COL_LOCATION'); ?></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('MOD_WHOSONLINE_COL_ACTIVITY'); ?></th>
 				<?php if ($editAuthorized): ?>
