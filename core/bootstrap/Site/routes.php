@@ -514,7 +514,10 @@ $router->rules('parse')->append('content', function ($uri)
 		$vars['id']     = $segments[0];
 		$vars['view']   = 'article';
 
-		$item->query['view'] = 'article';
+		if (isset($item))
+		{
+			$item->query['view'] = 'article';
+		}
 	}
 	// Count 1 - we're either looking for an article alias that matches and is in the uncategorised category,
 	// or, an article alias and category series that are all the same (ex: about/about/about - supported for legacy reasons)
@@ -542,7 +545,11 @@ $router->rules('parse')->append('content', function ($uri)
 			$vars['id']     = $result->id;
 			$vars['view']   = 'article';
 
-			$item->query['view'] = 'article';
+			if (isset($item))
+			{
+				$item->query['view'] = 'article';
+			}
+
 		}
 		else
 		{
@@ -568,7 +575,10 @@ $router->rules('parse')->append('content', function ($uri)
 				$vars['id']     = $result->id;
 				$vars['view']   = 'article';
 
-				$item->query['view'] = 'article';
+				if (isset($item))
+				{
+					$item->query['view'] = 'article';
+				}
 			}
 		}
 	}
@@ -599,7 +609,10 @@ $router->rules('parse')->append('content', function ($uri)
 			$vars['id']     = $result;
 			$vars['view']   = 'article';
 
-			$item->query['view'] = 'article';
+			if (isset($item))
+			{
+				$item->query['view'] = 'article';
+			}
 		}
 	}
 
