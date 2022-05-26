@@ -607,10 +607,7 @@ class Auth extends SiteController
 	{
 		$user = User::getInstance();
 
-		if ($user->isGuest()
-		|| !$user->hasAttribute('auth_link_id')
-		|| !is_numeric($user->get('username'))
-		|| !$user->get('username') < 0)
+		if ($user->isGuest() || !$user->hasAttribute('auth_link_id'))
 		{
 			$this->linkaccountsTask();
 		}

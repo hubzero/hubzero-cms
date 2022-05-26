@@ -673,9 +673,10 @@ class Register extends SiteController
 		$authn = Session::get('authn');
 
 		$hzal = null;
+
 		if (User::get('auth_link_id'))
 		{
-			$hzal = \Hubzero\Auth\Link::find_by_id(User::get('auth_link_id'));
+			$hzal = \Hubzero\Auth\Link::find_by_id($authn['auth_link_id']);
 		}
 		else if (isset($authn['auth_link_id']))
 		{
@@ -894,7 +895,7 @@ class Register extends SiteController
 				$user->set('access', 5);
 				$user->set('activation', -rand(1, pow(2, 31)-1));
 
-				if (is_object($hzal))
+				if (isset($hzal) && isset($hzal->email))
 				{
 					if ($user->get('email') == $hzal->email)
 					{

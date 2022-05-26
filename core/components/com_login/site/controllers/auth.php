@@ -608,10 +608,7 @@ class Auth extends SiteController
 		$user = User::getInstance();
 
 		// If this is an auth_link account update, carry on, otherwise raise an error
-		if ($user->isGuest()
-		 || !$user->hasAttribute('auth_link_id')
-		 || !is_numeric($user->get('username'))
-		 || !$user->get('username') < 0)
+		if ($user->isGuest() || !$user->hasAttribute('auth_link_id'))
 		{
 			App::abort(405, 'Method not allowed');
 		}
