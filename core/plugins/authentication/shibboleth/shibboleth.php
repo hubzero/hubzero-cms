@@ -225,8 +225,8 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 
 		// if we couldn't figure out where they want to go to log in, we can't really help, so we redirect them with ?reset to get the full log-in provider list
 		list($service, $com_user, $task) = self::getLoginParams();
-		self::log('no eid context, redirect', $service.'/index.php?reset=1&option='.$com_user.'&task=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
-		App::redirect($service.'/index.php?reset=1&option='.$com_user.'&task=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
+		self::log('no eid context, redirect', $service.'/index.php?reset=1&option='.$com_user.'&view=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
+		App::redirect($service.'/index.php?reset=1&option='.$com_user.'&view=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
 	}
 
 	private static function htmlify()
@@ -425,17 +425,17 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 				self::log('wayf passthru', $_COOKIE['shib-entity-id']);
 				App::redirect($_GET['return'].'&entityID='.$_COOKIE['shib-entity-id']);
 			}
-			self::log('failed wayf', $service.'/index.php?option='.$com_user.'&task=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
+			self::log('failed wayf', $service.'/index.php?option='.$com_user.'&view=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
 			// Invalid request, back to the login page with you
-			App::redirect($service.'/index.php?option='.$com_user.'&task=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
+			App::redirect($service.'/index.php?option='.$com_user.'&view=login'.(isset($_COOKIE['shib-return']) ? '&return='.$_COOKIE['shib-return'] : $return));
 		}
 
 		// Invalid idp in request, send back to login landing
 		$eid = isset($_GET['idp']) ? $_GET['idp'] : (isset($_COOKIE['shib-entity-id']) ? $_COOKIE['shib-entity-id'] : null);
 		if (!isset($eid) || !self::getInstitutionByEntityId($eid))
 		{
-			self::log('failed to look up entity id, redirect', array('eid' => $eid, 'url' => $service.'/index.php?option='.$com_user.'&task=login'.$return));
-			App::redirect($service.'/index.php?option='.$com_user.'&task=login'.$return);
+			self::log('failed to look up entity id, redirect', array('eid' => $eid, 'url' => $service.'/index.php?option='.$com_user.'&view=login'.$return));
+			App::redirect($service.'/index.php?option='.$com_user.'&view=login'.$return);
 		}
 
 		// We're about to do at least a few redirects, some of which are out of our
