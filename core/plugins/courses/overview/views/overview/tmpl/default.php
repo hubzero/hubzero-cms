@@ -47,7 +47,7 @@ else
 		?>
 		<div class="manager-options">
 			<a class="icon-edit btn btn-secondary" href="<?php echo Route::url($this->course->link() . '&task=edit&field=description'); ?>">
-				<?php echo Lang::txt('COM_COURSES_EDIT'); ?>
+				<?php echo Lang::txt('COM_COURSES_EDIT_COURSE'); ?>
 			</a>
 			<span><strong><?php echo Lang::txt('COM_COURSES_LONG_DESCRIPTION'); ?></strong></span>
 		</div>
