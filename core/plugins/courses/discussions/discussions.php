@@ -739,6 +739,11 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			$data = $this->_thread($post, $filters);
 		}
 
+		if ($threads == NULL)
+		{
+			$threads = [];
+		}
+
 		$view = $this->view('lecture', 'threads')
 			->set('course', $course)
 			->set('unit', $unit)
