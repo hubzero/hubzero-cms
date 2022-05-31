@@ -60,7 +60,7 @@ class Helper extends Module
 			->group('created_month');
 
 		// Filter by language
-		if (App::get('languag.filter'))
+		if (App::get('language.filter'))
 		{
 			$query->whereIn('language', array(Lang::getTag(), '*'));
 		}
