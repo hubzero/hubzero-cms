@@ -96,7 +96,7 @@ class Unityv1_0 extends base
 
 	        $data = base64_decode($data);
 		$iv_size = openssl_cipher_iv_length('AES-256-CBC');
-		$iv = substr($data 0, $iv_size);
+		$iv = substr($data, 0, $iv_size);
 		$data = substr($data, $iv_size);
 		$message = openssl_decrypt($data, 'AES-256-CBC', $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv);
 
