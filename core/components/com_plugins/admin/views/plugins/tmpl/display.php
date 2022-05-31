@@ -165,7 +165,8 @@ $saveOrder = $listOrder == 'ordering';
 								<?php endif; ?>
 							<?php endif; ?>
 							<?php $disabled = $saveOrder ? '' : 'disabled="disabled"'; ?>
-							<input type="text" name="order[]" size="5" value="<?php echo $item->ordering; ?>" <?php echo $disabled ?> class="text-area-order" />
+							<input type="text" name="order[]" id="order<?php echo $i; ?>" size="5" value="<?php echo $item->ordering; ?>" <?php echo $disabled ?> class="text-area-order" />
+							<label for="order<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $item->ordering; ?></label>
 						<?php else : ?>
 							<?php echo $item->ordering; ?>
 						<?php endif; ?>
