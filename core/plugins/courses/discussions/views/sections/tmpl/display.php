@@ -7,7 +7,7 @@
 
 defined('_HZEXEC_') or die();
 
-$ct = $this->sections ? count($this->sections) : 0;
+$ct = $this->sections->count();
 
 $base = $this->offering->link() . '&active=discussions&unit=manage';
 ?>
