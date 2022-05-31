@@ -172,7 +172,7 @@ class Assetgroups extends AdminController
 
 				$list[$id] = $v;
 				$list[$id]->treename = "$indent$txt";
-				$list[$id]->children = count(@$children[$id]);
+				$list[$id]->children = (@children[$id]) ? count(@$children[$id]) : 0;
 				$list = $this->treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level+1, $type);
 			}
 		}
