@@ -17,23 +17,6 @@
 		position: relative;
 		overflow: hidden;
 	}
-	#introduction:after {
-		content: "";
-		display: block;
-		margin: 0;
-		padding: 0;
-		position: absolute;
-		z-index: 1;
-		line-height: 1;
-		font-family: 'Fontcons';
-		font-size: 300px;
-		color: #f6f6f6;
-		text-shadow: none;
-		top: 60px;
-		left: auto;
-		right: 60px;
-		text-align: right;
-	}
 	#introduction .grid,
 	#introduction .aside,
 	#introduction .subject {
