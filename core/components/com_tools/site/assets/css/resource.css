@@ -15,8 +15,6 @@
 		content: "\f056";
 	}
 	.steps-nav {
-		float:left;
-		width:70%;
 		padding:1em 0 1em 0;
 	}
 	.steps-nav:after {
