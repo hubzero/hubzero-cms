@@ -79,7 +79,7 @@ if ($this->application->get('id'))
 						<label>
 							<?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_CURRENT_TEAM'); ?>:
 							<?php
-								$team = $this->application->team();
+								$team = $this->application->team()->rows();
 								echo $this->view('_team')
 										  ->set('members', $team)
 										  ->display();
