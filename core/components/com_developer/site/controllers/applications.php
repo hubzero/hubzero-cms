@@ -55,10 +55,22 @@ class Applications extends SiteController
 			return;
 		}
 
+		$memberships = Member::all()
+			->whereEquals('uidNumber', User::get('id'))
+			->rows();
+
+		$apps = array();
+		foreach ($memberships as $membership)
+		{
+			$apps[] = $membership->application_id;
+		}
+
 		// get developers apps
 		$applications = Application::all()
-			->whereEquals('created_by', User::get('id'))
-			->whereIn('state', array(0,1))
+			->whereEquals('created_by', User::get('id'), 1)
+			->orWhereIn('id', $apps, 1)
+			->resetDepth()
+			->whereIn('state', array(0, 1))
 			->rows();
 
 		// get developers authorized apps

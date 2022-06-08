@@ -36,7 +36,7 @@ defined('_HZEXEC_') or die();
 	<hr />
 	<h3><?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TEAM_MEMBERS'); ?></h3>
 	<?php
-		$team = $this->application->team();
+		$team = $this->application->team()->rows();
 		echo $this->view('_team')
 			->set('members', $team)
 			->set('cls', 'compact')

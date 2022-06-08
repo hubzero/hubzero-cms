@@ -114,7 +114,7 @@ $this->js();
 						<?php
 						// get team and format for autocompletor
 						$currentTeam = array();
-						foreach ($this->row->team() as $member)
+						foreach ($this->row->team()->rows() as $member)
 						{
 							$profile = \Hubzero\User\User::oneOrNew($member->get('uidNumber'));
 
