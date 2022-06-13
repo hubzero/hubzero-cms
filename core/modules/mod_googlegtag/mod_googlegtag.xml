@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.0.0" client="site" type="module">
+	<name>mod_googlegtag</name>
+	<creationDate>June 2022</creationDate>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright (c) 2005-2022 The Regents of the University of California.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<version>1.0.0</version>
+	<description>MOD_GOOGLEGTAG_XML_DESCRIPTION</description>
+	<files>
+		<filename module="mod_googleanalytics">mod_googlegtag.php</filename>
+		<filename>tmpl/default.php</filename>
+		<filename>tmpl/index.html</filename>
+		<filename>index.html</filename>
+	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="trackingID" type="text" default="" label="MOD_GOOGLEGTAG_PARAM_API_LABEL" description="MOD_GOOGLEGTAG_PARAM_API_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+	<languages>
+		<language tag="en-GB">en-GB.mod_googlegtag.ini</language>
+	</languages>
+</extension>
