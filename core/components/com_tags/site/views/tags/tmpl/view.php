@@ -50,7 +50,8 @@ foreach ($cats as $cat)
 
 	// Is this the active category?
 	$a = '';
-	if ($cat['name'] == $this->active)
+	
+	if ($cat['name'] == $this->active && !$this->parent)
 	{
 		$a = ' class="active"';
 
@@ -76,10 +77,12 @@ foreach ($cats as $cat)
 			{
 				// If we have a specific category, prepend it to the search term
 				$blob = ($subcat['name'] ? $subcat['name'] : '');
+				
+				$parent = $cat['name'];
 
 				// Is this the active category?
 				$a = '';
-				if ($subcat['name'] == $this->active)
+				if ($subcat['name'] == $this->active && isset($this->parent) && $this->parent == $parent)
 				{
 					$a = ' class="active"';
 
@@ -90,7 +93,7 @@ foreach ($cats as $cat)
 				}
 
 				// Build the HTML
-				$k[] = "\t\t\t".'<li><a' . $a . ' href="' . Route::url($here . '&area='. stripslashes($blob)) . '">' . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">' . $subcat['total'] . '</span></a></li>';
+				$k[] = "\t\t\t".'<li><a' . $a . ' href="' . Route::url($here . '&parent=' . $parent . '&area='. stripslashes($blob)) . '">' . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">' . $subcat['total'] . '</span></a></li>';
 			}
 		}
 		// Do we actually have any links?
@@ -243,6 +246,7 @@ foreach ($cats as $cat)
 					// No - nothing to output
 					$html = '';
 				}
+				$html .= "\t" . '<input type="hidden" name="parent" value="' . $this->escape($this->parent) . '" />' . "\n";
 				$html .= "\t" . '<input type="hidden" name="area" value="' . $this->escape($this->active) . '" />' . "\n";
 				$html .= "\t" . '<input type="hidden" name="sort" value="' . $this->escape($this->filters['sort']) . '" />' . "\n";
 
