@@ -161,6 +161,9 @@ class Tags extends SiteController
 			App::abort(404, Lang::txt('Invalid sort value of "%s".', $this->view->filters));
 		}
 
+		$parent = Request::getString('parent', '');
+		$this->view->parent = $parent;
+
 		// Get the active category
 		$area = Request::getString('area', '');
 
@@ -178,7 +181,7 @@ class Tags extends SiteController
 				$this->view->filters['sort'],
 				$area
 			));
-
+			
 			if (!$area)
 			{
 				$query = '';
@@ -251,19 +254,19 @@ class Tags extends SiteController
 					{
 						//$this->view->total += $response['total'];
 
-						if (is_array($response['results']) && !empty($response['results']))
+						if (is_array($response['results']) && !empty($response['results']) && !$parent)
 						{
 							$this->view->results = $response['results'];
 							break;
 						}
 
-						if (isset($response['children']))
+						if (isset($response['children']) && $parent)
 						{
 							foreach ($response['children'] as $sresponse)
 							{
 								//$this->view->total += $sresponse['total'];
 
-								if (is_array($sresponse['results']) && !empty($sresponse['results']))
+								if (is_array($sresponse['results']) && !empty($sresponse['results']) && ($parent == $response['name']))
 								{
 									$this->view->results = $sresponse['results'];
 									break 2;
