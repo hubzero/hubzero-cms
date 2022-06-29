@@ -360,7 +360,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 				'id' => $sid,
 				'idp' => isset($_SERVER['REDIRECT_Shib-Identity-Provider']) ? $_SERVER['REDIRECT_Shib-Identity-Provider'] : $_SERVER['Shib-Identity-Provider']
 			);
-			foreach (array('email', 'eppn', 'displayName', 'givenName', 'sn', 'mail') as $key)
+			foreach (array('email', 'eppn', 'displayName', 'givenName', 'sn', 'mail', 'middleName', 'lastName', 'userPrincipalName') as $key)
 			{
 				if (isset($_SERVER[$key]))
 				{
@@ -377,6 +377,10 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 				unset($attrs['mail']);
 			}
 			// Normalize things a bit
+			if (!isset($attrs['eppn']))
+			{
+				$attrs['eppn'] = attrs['userPrincipalName'];
+			}
 			if (!isset($attrs['username']) && isset($attrs['eppn']))
 			{
 				$attrs['username'] = preg_replace('/@.*$/', '', $attrs['eppn']);
@@ -386,9 +390,22 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 			{
 				$attrs['email'] = $attrs['eppn'];
 			}
-			if (!isset($attrs['displayName']) && isset($attrs['givenName']) && $attrs['sn'])
+			if (!isset($attrs['displayName']) && isset($attrs['givenName']) && isset($attrs['sn']))
 			{
 				$attrs['displayName'] = $attrs['givenName'].' '.$attrs['sn'];
+			}
+			if (!isset($attrs['displayName']) && isset($attrs['givenName']) && isset($attrs['lastName']))
+			{
+				if (isset($attrs['middleName']))
+				{
+					$attrs['displayName'] = $attrs['givenName'].' '.$attrs['middleName'].' '.$attrs['lastName'];
+				} else {
+					$attrs['displayName'] = $attrs['givenName'].' '.$attrs['lastName'];
+				}
+			}
+			if (!isset($attrs['sn']) && isset($attrs['lastName']))
+			{
+				$attrs['sn'] = $attrs['lastName'];
 			}
 			$options['shibboleth'] = $attrs;
 			self::log('session attributes: ', $attrs);
@@ -542,11 +559,32 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 
 			if ($hzal->user_id)
 			{
+				// @TODO: try to detect invalid links before getting here, so some meaningful message can be presented to the user
+				// These values could be undefined if the account link setup in table jos_auth_link points to a deleted or inexistent account
+				// Possible causes:  ldap failure causing an account to be incompletely setup, Shibboleth missing attributes needed for account creation, or interrupted account creation
 				$user = User::getInstance($hzal->user_id); // Bring this in line with the rest of the system
-
-				$response->username = $user->username;
-				$response->email    = $user->email;
-				$response->fullname = $user->name;
+				if ($user->username == '')
+				{
+					self::log('INTEGRITY ERROR username not set;  account link setup in table jos_auth_link could point to an invalid account');
+					$response->username = $options['shibboleth']['username'];
+				} else {
+					self::log('username', $user->username);
+					$response->username = $user->username;
+				}
+				if ($user->email == '') {
+					self::log('INTEGRITY ERROR email not set;  account link setup in table jos_auth_link could point to an invalid account');
+					$response->email    = $options['shibboleth']['email'];
+				} else {
+					self::log('email', $user->email);
+					$response->email    = $user->email;
+				}
+				if ($user->name == '') {
+					self::log('INTEGRITY ERROR name not set;  account link setup in table jos_auth_link could point to an invalid account');
+					$response->fullname = $options['shibboleth']['displayName'];
+				} else {
+					self::log('name', $user->name);
+					$response->fullname = $user->name;
+				}
 			}
 			else
 			{
