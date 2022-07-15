@@ -29,6 +29,6 @@ jQuery(document).ready(function(jq){
 		var date = new Date();
 		date.setTime(date.getTime()+(days*24*60*60*1000));
 
-		document.cookie = id + '=closed; expires=' + date.toGMTString() + ';';
+		document.cookie = id + '=closed; expires=' + date.toGMTString() + '; secure;';
 	});
 });
