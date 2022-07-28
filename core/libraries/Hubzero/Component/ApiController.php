@@ -1018,7 +1018,7 @@ class ApiController implements ControllerInterface
 			if (is_readable($path)) {
 				require_once $path;
 			} else {
-				App::abort(500, 'Required file is not readable', $model));
+				App::abort(500, 'Required file is not readable', $model);
 			}
 
 			if (!class_exists($model))
