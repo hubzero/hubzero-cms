@@ -136,7 +136,7 @@ $maintext = $this->model->description;
 						{
 							$citations = $data[$field->name];
 						}
-						else if ($elements->display($field->type, $data[$field->name]) && $field->display == $tab )
+						else if ($elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab )
 						{
 							?>
 							<h4><?php echo $field->label; ?></h4>
