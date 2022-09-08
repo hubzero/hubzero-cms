@@ -1730,9 +1730,10 @@ class Tool
 	{
 		$db = \App::get('db');
 
-		$query  = "SELECT m.uidNumber FROM `#__tool_groups` AS g ";
+		$query  = "SELECT m.uidNumber, u.username FROM `#__tool_groups` AS g ";
 		$query .= "JOIN `#__xgroups` AS xg ON g.cn=xg.cn ";
 		$query .= "JOIN `#__xgroups_members` AS m ON xg.gidNumber=m.gidNumber ";
+                $query .= "JOIN `#__users` AS u ON u.id=m.uidNumber ";
 		$query .= "WHERE g.toolid = " . $db->quote($toolid) . " AND g.role=1";
 
 		$db->setQuery($query);
