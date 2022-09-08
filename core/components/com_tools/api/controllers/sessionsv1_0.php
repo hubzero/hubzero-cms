@@ -180,6 +180,10 @@ class Sessionsv1_0 extends ApiController
 		$object = new stdClass();
 		$object->tool = $tool_info;
 
+		$hzt = new \Components\Tools\Tables\Tool($this->database);
+		$developers = $hzt->getToolDevelopers($tool_info->id);
+		$object->tool->developers = $developers;
+
 		$this->send($object);
 	}
 
