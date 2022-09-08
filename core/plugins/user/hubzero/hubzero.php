@@ -391,6 +391,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 		$instance->set('activation', 1);
 		$instance->set('loginShell', '/bin/bash');
 		$instance->set('ftpShell', '/usr/lib/sftp-server');
+		$instance->set('sendEmail', -1);
 
 		// Check user activation setting
 		// 0 = automatically confirmed
