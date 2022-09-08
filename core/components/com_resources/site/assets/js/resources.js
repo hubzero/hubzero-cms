@@ -60,6 +60,20 @@ HUB.Resources = {
 		{
 			$('.video').trigger('click');
 		}
+	},
+	fullscreenHubpresenter: function()
+	{
+		var iframe = $('#presenter-container').get(0);
+
+        if (!document.fullscreenElement) {
+            iframe.requestFullscreen()
+        } else {
+            iframe.exitFullscreen();
+        }
+	},
+	exitFullscreenHubpresenter: function()
+	{
+        document.exitFullscreen();
 	}
 };
 
@@ -154,6 +168,50 @@ jQuery(document).ready(function($){
 				$('#primary-document_pop').hide();
 			});
 	}
+
+	//HUBpresenter open window
+	$('.com_resources').on('click', '.hubpresenter', function(event) {
+	    // To avoid opening videos that require user to be logged in, just go to the video page and let the code check the permissions
+        return;
+
+		event.preventDefault();
+		if ($('.embedded-hubpresenter').length)
+		{
+			// remove embedded content
+			$('.embedded-hubpresenter').animate({
+				height: 0
+			}, 400, function(){
+				$('.embedded-hubpresenter').remove();
+			});
+
+			// change bbb text
+			$(this).text('View Presentation');
+		}
+		else
+		{
+			var source = $(this).attr('href').tmplComponent();
+			var content = '<section class="embedded-hubpresenter"><iframe src="' + source + '"  webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></section>';
+			$('section.upperpane').after(content);
+			$('.embedded-hubpresenter iframe').on('load', function(event){
+				var height = $(this).contents().height();
+				
+				// make embed area height of iframe
+				$('.embedded-hubpresenter').animate({
+					height: height
+				}, 800, function() {
+					$(this).addClass('loaded');
+				});
+
+				// scroll to embedded media
+				$('body').animate({
+					scrollTop: $('.embedded-hubpresenter').offset().top
+				}, 1000);
+			});
+
+			// change bbb text
+			$(this).text('Hide Presentation');
+		}
+	});
 	
 	//html5 video open
 	$(".com_resources, #tagbrowser").on('click', '.video', function(event) {
