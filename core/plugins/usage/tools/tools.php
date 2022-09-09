@@ -433,7 +433,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 							$nextmonth = $arrayMonths[floor(array_search($month, $arrayMonths))+1];
 						}
 						$value = $i . '-' . $key;
-						if ($this->check_for_data($value, 12))
+						if ($this->check_for_data($value, 12) && (intval($key) < $cur_month || $i < $cur_year))
 						{
 							$html .= '<option value="' . $value . '"';
 							if ($value == $dthis)
@@ -662,7 +662,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 				foreach ($monthsReverse as $key => $month)
 				{
 					$value = $i . '-' . $key;
-					if ($this->check_for_data($value, $period))
+					if ($this->check_for_data($value, $period) && (intval($key) < $cur_month || $i < $cur_year))
 					{
 						$dthis = $value;
 						break;
