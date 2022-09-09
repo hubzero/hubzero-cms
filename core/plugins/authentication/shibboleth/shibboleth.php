@@ -237,7 +237,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		);
 	}
 
-	public static function onRenderOption($return = null, $title = 'With an affiliated institution:')
+	public static function onRenderOption($return = null, $title = 'With Institutional Credentials')
 	{
 		// Hide the login box if the plugin is in "debug mode" and the special key is not set in the request
 		$params = Plugin::params('authentication', 'shibboleth');
@@ -273,12 +273,13 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 
 		// Make a dropdown/button combo that (hopefully) gets prettied up client-side into a bootstrap dropdown
 		$html = ['<div class="shibboleth account incommon-color" data-placeholder="'.$a($title).'">'];
-		$html[] = '<h3>Select an affiliated institution</h3>';
+		$html[] = '<h3>Select Institutional Credentials</h3>';
 		$html[] = '<ol>';
 		$html = array_merge($html, array_map(function($idp) use($h, $a) {
 			return '<li data-entityid="'.$a($idp['entity_id']).'" data-content="'.(isset($idp['logo_data']) ? $a($idp['logo_data']) : '').' '.$h($idp['label']).'"><a href="'.Route::url('index.php?option=com_users&view=login&authenticator=shibboleth&idp='.$a($idp['entity_id'])).'">'.$h($idp['label']).'</a></li>';
 		}, self::getInstitutions()));
 		$html[] = '</ol></div>';
+		$html[] = '<div class="noorg" ><a href="/support/ticket/new">Don\'t see your organization listed?  Let us know!</a></div>';
 		return $html;
 	}
 
