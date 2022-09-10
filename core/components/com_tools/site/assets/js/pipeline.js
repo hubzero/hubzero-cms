@@ -242,7 +242,6 @@ jQuery(document).ready(function($){
             hideGitExternal();
         }
     });
-    hideGitExternal();
 
     /*$('script').each(function(i, s) {
         if (s.src && s.src.match(/hub\.jquery\.js(\?.*)?$/)) {
