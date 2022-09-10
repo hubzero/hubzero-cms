@@ -1704,6 +1704,27 @@ class Tool
 	}
 
 	/**
+	 * Get all tools
+	 *
+	 * @return  array
+	 */
+	public static function getAllTools()
+	{
+		$db = \App::get('db');
+		$sql = "SELECT r.alias, r.published, v.toolaccess AS access, GROUP_CONCAT(v.revision SEPARATOR ',') AS versions
+				FROM `#__resources` AS r LEFT OUTER JOIN  `#__tool_version` AS v 
+				ON
+				r.alias=v.toolname
+				WHERE
+				r.type=7
+				AND r.standalone=1
+				GROUP BY v.toolname";
+
+		$db->setQuery($sql);
+		return $db->loadObjectList();
+	}
+
+	/**
 	 * Get tool ID based on tool name
 	 *
 	 * @param   string  $toolname
