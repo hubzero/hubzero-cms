@@ -154,7 +154,7 @@ class Sessionsv1_0 extends ApiController
 	 * 		"default":       ""
 	 * }
 	 * @apiParameter {
-	 * 		"name":          "version",
+	 * 		"name":          "tool_version",
 	 * 		"description":   "Tool version",
 	 * 		"type":          "string",
 	 * 		"required":      true,
@@ -167,7 +167,7 @@ class Sessionsv1_0 extends ApiController
 		$database = \App::get('db');
 
 		$tool    = Request::getString('tool', '');
-		$version = Request::getString('version', 'current');
+		$version = Request::getString('tool_version', 'current');
 
 		//we need a tool to continue
 		if ($tool == '')
