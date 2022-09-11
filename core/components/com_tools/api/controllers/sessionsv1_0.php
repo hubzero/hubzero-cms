@@ -242,23 +242,9 @@ class Sessionsv1_0 extends ApiController
 		$tool_info->supported = (in_array($tool_info->alias, $supportedtagusage)) ? 1 : 0;
 
 		//get screenshots
-		include_once Component::path('com_resources') . DS . 'tables' . DS . 'screenshot.php';
 		include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
-		$ts = new \Components\Resources\Tables\Screenshot($database);
 		$tv = new \Components\Tools\Tables\Version($database);
 		$vid   = $tv->getVersionIdFromResource($tool_info->id, $version);
-		$shots = $ts->getScreenshots($tool_info->id, $vid);
-
-		//get base path
-		$path = \Components\Tools\Helpers\Utils::getResourcePath($tool_info->created, $tool_info->id, $vid);
-
-		//add full path to screenshot
-		$s = array();
-		foreach ($shots as $shot)
-		{
-			$s[] = $path . DS . $shot->filename;
-		}
-		$tool_info->screenshots = $s;
 
 		$object = new stdClass();
 		$object->tool = $tool_info;
