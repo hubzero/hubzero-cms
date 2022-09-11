@@ -246,6 +246,26 @@ class Sessionsv1_0 extends ApiController
 		$object = new stdClass();
 		$object->tool = $tool_info;
 
+		// get tool status
+		include_once Component::path('com_tools') . DS . 'tables' . DS . 'tool.php';
+		include_once Component::path('com_tools') . DS . 'tables' . DS . 'author.php';
+		$hztt = new \Components\Tools\Tables\Tool($database);
+		$status = array();
+		$hztt->getToolStatus($tool_info->toolid, $this->_option, $status, $version);
+		if (!isset($status['hostreq']))
+		{
+			$hostreq = array();
+		}
+		else
+		{
+			$hostreq = trim($status['hostreq']);
+
+			$hostreq = explode(',',$hostreq);
+			$hostreq = array_map( function($item) { return trim($item); }, $hostreq);
+		}
+
+		$object->tool->hostreq = $hostreq;
+
 		$hzt = new \Components\Tools\Tables\Tool($this->database);
 		$developers = $hzt->getToolDevelopers($tool_info->id);
 		$object->tool->developers = $developers;
