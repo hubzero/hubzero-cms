@@ -7,14 +7,14 @@
 -->
 
 <metadata>
-	<layout title="COM_LOGIN_LOGOUT_VIEW_DEFAULT_TITLE">
+	<layout title="COM_USERS_LOGOUT_VIEW_DEFAULT_TITLE">
 		<message>
-			<![CDATA[COM_LOGIN_LOGOUT_VIEW_DEFAULT_DESC]]>
+			<![CDATA[COM_USERS_LOGOUT_VIEW_DEFAULT_DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>COM_LOGIN_LOGOUT_VIEW_DEFAULT_TITLE</name>
-		<description>COM_LOGIN_LOGOUT_VIEW_DEFAULT_DESC</description>
+		<name>COM_USERS_LOGOUT_VIEW_DEFAULT_TITLE</name>
+		<description>COM_USERS_LOGOUT_VIEW_DEFAULT_DESC</description>
 		<params>
 			<param name="show_login_title" type="radio" default="1" label="Show Login Page Title" description="Show/Hide the Login Page Title">
 				<option value="0">Hide</option>
