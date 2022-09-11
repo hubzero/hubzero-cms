@@ -279,7 +279,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 			return '<li data-entityid="'.$a($idp['entity_id']).'" data-content="'.(isset($idp['logo_data']) ? $a($idp['logo_data']) : '').' '.$h($idp['label']).'"><a href="'.Route::url('index.php?option=com_users&view=login&authenticator=shibboleth&idp='.$a($idp['entity_id'])).'">'.$h($idp['label']).'</a></li>';
 		}, self::getInstitutions()));
 		$html[] = '</ol></div>';
-		$html[] = '<div class="noorg" ><a href="/support/ticket/new">Don\'t see your organization listed?  Let us know!</a></div>';
+		$html[] = '<div class="noorg" ><a href="/support/ticket/new">If your US institution is not listed in the dropdown but is part of InCommon, ask us to add it! Otherwise, use one of the other options below.</a></div>';
 		return $html;
 	}
 
