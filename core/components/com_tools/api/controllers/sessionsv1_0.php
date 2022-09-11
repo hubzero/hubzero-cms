@@ -175,6 +175,19 @@ class Sessionsv1_0 extends ApiController
 			throw new Exception(Lang::txt('Tool Alias Required.'), 400);
 		}
 
+
+                $hzt = \Components\Tools\Models\Tool::getInstance($tool);
+                $hztv_dev = $hzt->getRevision('development');
+                $hztv_current = $hzt->getRevision('current');
+		if ($version == 'current')
+		{
+			$version = $hztv_current->revision;
+		}
+		else if ($version == 'dev')
+                {
+                        $version = $hztv_dev->revision;
+                }
+
 		//poll database for tool matching alias
 		$sql = "SELECT r.id, r.alias, tv.toolname, tv.title, tv.description, tv.toolaccess as access, tv.mw, tv.instance, tv.revision, r.fulltxt as abstract, r.created
 				FROM `#__resources` as r, `#__tool_version` as tv
