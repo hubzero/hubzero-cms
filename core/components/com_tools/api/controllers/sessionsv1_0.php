@@ -30,6 +30,59 @@ class Sessionsv1_0 extends ApiController
 	 * Method to get list of tools
 	 *
 	 * @apiMethod GET
+	 * @apiUri    /tools/listAll
+	 * @return    void
+	 */
+	public function listAllTask()
+	{
+		//instantiate database object
+		$database = \App::get('db');
+
+		//get list of tools
+		$tools = \Components\Tools\Models\Tool::getAllTools();
+
+		//get the supported tag
+		$rconfig = Component::params('com_resources');
+		$supportedtag = $rconfig->get('supportedtag', '');
+
+		//get supportedtag usage
+		include_once Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php';
+		$resource_tags = new \Components\Resources\Helpers\Tags(0);
+		$supportedtagusage = $resource_tags->getTagUsage($supportedtag, 'alias');
+
+		//create list of tools
+		$t = array();
+		foreach ($tools as $k => $tool)
+		{
+			$t[$tool->alias]['alias']       = $tool->alias;
+			$t[$tool->alias]['published']       = $tool->published;
+			$t[$tool->alias]['access'] = $tool->access;
+			$versions = trim($tool->versions);
+			if ($versions == '')
+			{
+				$versions = array();
+			}
+			else
+			{
+				$versions = explode(',',$versions);
+				$versions = array_map( function($item) { return intval($item); }, $versions);
+				//$versions = array_unique( $versions, SORT_NUMERIC );
+				$versions = array_keys(array_flip($versions));
+			}
+			$t[$tool->alias]['versions']    = $versions;
+			$t[$tool->alias]['supported']   = (in_array($tool->alias, $supportedtagusage)) ? 1 : 0;
+		}
+
+		//encode and return result
+		$object = new stdClass();
+		$object->tools = array_values($t);
+
+		$this->send($object);
+	}
+	/**
+	 * Method to get list of tools
+	 *
+	 * @apiMethod GET
 	 * @apiUri    /tools/list
 	 * @apiParameter {
 	 * 		"name":          "user_id",
