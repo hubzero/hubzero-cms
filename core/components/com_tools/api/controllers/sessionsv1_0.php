@@ -246,6 +246,16 @@ class Sessionsv1_0 extends ApiController
 		$object = new stdClass();
 		$object->tool = $tool_info;
 
+ 		$info = $tv->getVersionInfo($vid, $version);
+
+		$registry = new \Hubzero\Config\Registry($info[0]->params);
+		$publishType = $registry->get('publishType',"normal");
+		if ($publishType == 'weber=')
+		{
+			$publishType = 'jupyter';
+		}
+		$object->tool->publishType = $publishType;
+
 		// get tool status
 		include_once Component::path('com_tools') . DS . 'tables' . DS . 'tool.php';
 		include_once Component::path('com_tools') . DS . 'tables' . DS . 'author.php';
