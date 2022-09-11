@@ -438,12 +438,12 @@ class Version extends Table
 	 * Get tool version information
 	 *
 	 * @param   integer  $id
-	 * @param   string   $version
+	 * @param   string   $revision
 	 * @param   string   $toolname
 	 * @param   string   $instance
 	 * @return  object
 	 */
-	public function getVersionInfo($id, $version='', $toolname='', $instance='')
+	public function getVersionInfo($id, $revision='', $toolname='', $instance='')
 	{
 		// data comes from mysql
 		$query  = "SELECT v.*, d.local_revision, d.doi_label, d.rid, d.alias, d.versionid, d.doi, d.doi_shoulder ";
@@ -452,21 +452,25 @@ class Version extends Table
 		{
 			$query .= "WHERE v.id = " . $this->_db->quote($id) . " ";
 		}
-		else if ($version && $toolname)
+		else if (($revision || $revision === NULL) && $toolname)
 		{
 			$query.= "WHERE v.toolname=" . $this->_db->quote($toolname) . " ";
-			if ($version=='current')
+			if ($revision=='current')
 			{
 				// Adding state=0 to account for retired tools
 				$query .= "AND v.state IN (1, 0) ORDER BY v.state DESC, v.revision DESC LIMIT 1 ";
 			}
-			else if ($version=='dev')
+			else if ($revision=='dev')
 			{
 				$query .= "AND v.state=3 LIMIT 1";
 			}
+			else if ($revision===NULL)
+			{
+				$query .= "AND v.revision IS NULL ";
+			}
 			else
 			{
-				$query .= "AND v.version = " . $this->_db->quote($version) . " ";
+				$query .= "AND v.revision = " . $this->_db->quote($revision) . " ";
 			}
 		}
 		else if ($instance)
