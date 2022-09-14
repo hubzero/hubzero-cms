@@ -92,10 +92,6 @@
 		top: 20px;
 		bottom: 40px;
 	}
-	#questions strong {
-		padding-left: 17px;
-		background: url('/core/components/com_store/site/assets/img/coin.gif') no-repeat top left;
-	}
 	#questions ol {
 		background: #fafafa;
 		border-radius: 10px;
