@@ -35,7 +35,7 @@ class Helper extends Module
 		);
 
 		// Get quotes
-		$sq = Quote::all()->whereEquals('notable_quote', 1);
+		$sq = Quote::all()->whereEquals('notable_quote', 1)->where('quote', 'IS NOT', null)->order('date', 'desc');
 		if ($this->filters['id'])
 		{
 			$sq->whereEquals('id', $this->filters['id']);
