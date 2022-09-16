@@ -312,7 +312,7 @@ class Format
 						$coins_data[] = 'rft.au=' . trim(preg_replace('/\{\{\d+\}\}/', '', trim($author)));
 					}
 
-					$replace_values[$v] = implode(", ", $a);
+					$replace_values[$v] = implode("; ", $a);
 				}
 
 				if ($k == 'title')
