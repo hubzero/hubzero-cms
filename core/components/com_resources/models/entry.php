@@ -571,7 +571,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		}
 
 		// Make sure the resource is published and standalone
-		if (in_array($this->get('published'), array(self::STATE_UNPUBLISHED, self::STATE_DRAFT, self::STATE_TRASHED, self::STATE_DRAFT_INTERNAL)))
+		if (in_array($this->get('published'), array(self::STATE_UNPUBLISHED, self::STATE_PENDING, self::STATE_DRAFT, self::STATE_TRASHED, self::STATE_DRAFT_INTERNAL)))
 		{
 			return false;
 		}
