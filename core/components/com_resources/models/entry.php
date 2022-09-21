@@ -1592,7 +1592,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 
 		if ($this->standalone == 1 && $this->isPublished())
 		{
-			switch ($this->access)
+			switch ($this->get('access'))
 			{
 				case 0:
 					$accessLevel = 'public';
@@ -1690,7 +1690,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		$obj->author = $this
 			->authorsList(true);
 
-		$obj->access_level = $this->access_level;
+		$obj->access_level = $this->transformAccessLevel();
 		$groups = $this->getGroups();
 		$tags = $this->tags(false);
 
