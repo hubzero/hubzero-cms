@@ -13,6 +13,8 @@ use Hubzero\Search\Index;
 use Components\Search\Models\Solr\QueueDB;
 use Components\Search\Models\Solr\SearchComponent as SearchComponent;
 
+require_once Component::path('com_search') . '/models/solr/searchcomponent.php';
+
 /**
  * Cron plugin for Search indexing
  */
@@ -47,13 +49,14 @@ class plgCronSearch extends \Hubzero\Plugin\Plugin
 
 	public function runFullIndex()
 	{
+		$offset = 0;
 		$components = SearchComponent::all()
 			->where('indexed', 'IS', null)
 			->where('state', 'IS', null)
 			->orWhereEquals('state', 0)
 			->rows();
 		$component = $components->first();
-		$recordsIndexed = $component->indexSearchResults();
+		$recordsIndexed = $component->indexSearchResults($offset);
 		if (!$recordsIndexed)
 		{
 			$component->set('state', 1);
