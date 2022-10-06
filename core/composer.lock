@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8c1564504acd83399d0517e25586e647",
+    "content-hash": "424d2755d21ef41987c4894c30f747a3",
     "packages": [
         {
             "name": "authy/php",
@@ -687,12 +687,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Facebook\\": "src/Facebook/"
-                },
                 "files": [
                     "src/Facebook/polyfills.php"
-                ]
+                ],
+                "psr-4": {
+                    "Facebook\\": "src/Facebook/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -4494,16 +4494,16 @@
         },
         {
             "name": "tecnickcom/tcpdf",
-            "version": "6.0.017",
+            "version": "6.2.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "bb21d56f9416cb72e62f4dac2ed0f92b96e24b8d"
+                "reference": "ac6e92fccc7d9383dfd787056831349621b1aca2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/bb21d56f9416cb72e62f4dac2ed0f92b96e24b8d",
-                "reference": "bb21d56f9416cb72e62f4dac2ed0f92b96e24b8d",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/ac6e92fccc7d9383dfd787056831349621b1aca2",
+                "reference": "ac6e92fccc7d9383dfd787056831349621b1aca2",
                 "shasum": ""
             },
             "require": {
@@ -4512,7 +4512,6 @@
             "type": "library",
             "autoload": {
                 "classmap": [
-                    "fonts",
                     "config",
                     "include",
                     "tcpdf.php",
@@ -4533,16 +4532,16 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "LGPLv3"
+                "LGPL-3.0"
             ],
             "authors": [
                 {
                     "name": "Nicola Asuni",
                     "email": "info@tecnick.com",
-                    "homepage": "http://nicolaasuni.tecnick.com"
+                    "role": "lead"
                 }
             ],
-            "description": "TCPDF is a PHP class for generating PDF documents.",
+            "description": "TCPDF is a PHP class for generating PDF documents and barcodes.",
             "homepage": "http://www.tcpdf.org/",
             "keywords": [
                 "PDFD32000-2008",
@@ -4553,7 +4552,7 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2013-05-16T16:17:45+00:00"
+            "time": "2018-09-14T15:26:29+00:00"
         },
         {
             "name": "willdurand/geocoder",
