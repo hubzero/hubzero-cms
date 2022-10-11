@@ -71,10 +71,10 @@ if (!User::isGuest())
 		if (isset($this->model))
 		{
 			// Parse for <nb:field> tags
-			$type = $this->model->type;
+			$type = $this->resource->type;
 
 			$data = array();
-			preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->model->fulltxt, $matches, PREG_SET_ORDER);
+			preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->resource->fulltxt, $matches, PREG_SET_ORDER);
 			if (count($matches) > 0)
 			{
 				foreach ($matches as $match)
@@ -83,7 +83,7 @@ if (!User::isGuest())
 				}
 			}
 			include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
-			$elements = new \Components\Resources\Models\Elements($data, $this->model->type->customFields);
+			$elements = new \Components\Resources\Models\Elements($data, $this->resource->type->customFields);
 			$schema = $elements->getSchema();
 			$tab = Request::getCmd('active', 'reviews');  // The active tab (section)
 
@@ -97,7 +97,7 @@ if (!User::isGuest())
 			{
 					if (isset($data[$field->name]))
 					{
-						if ($elements->display($field->type, $data[$field->name]) && $field->display == $tab )
+						if ($elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab )
 						{
 							?>
 							<h4><?php echo $field->label; ?></h4>
