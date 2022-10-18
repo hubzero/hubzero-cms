@@ -1507,7 +1507,7 @@ class Groups extends Base
 		if ($group->isSuperGroup())
 		{
 			// do not serve gitignore or PHP files
-			if ($file != 'gitignore' && strpos($file, '.php') === false)
+			if ($file != '.gitignore' && strpos($file, '.php') === false)
 			{
 				// do not allow serving anything from config or .git directory
 				$replace_base = ['/uploads', '/config', '/.git'];
