@@ -124,7 +124,7 @@ if ($this->wishlist->get('id'))
 						</div><!-- / .container data-entry -->
 
 						<div class="container">
-							<nav class="entries-filters">
+							<nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
 								<ul class="entries-menu order-options" data-label="<?php echo Lang::txt('COM_WISHLIST_SORT'); ?>">
 									<?php if ($this->wishlist->get('admin')) { ?>
 										<li><a class="icon-arrow-down sort-ranking<?php if ($this->filters['sortby'] == 'ranking') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby='.$this->filters['filterby'].'&sortby=ranking&tags='.$this->filters['tag']); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SORT_RANKING_TITLE'); ?>"><?php echo Lang::txt('COM_WISHLIST_SORT_RANKING'); ?></a></li>

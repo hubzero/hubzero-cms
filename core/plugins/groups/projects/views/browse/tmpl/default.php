@@ -39,7 +39,7 @@ $view = $this->view('submenu', 'partials')
 
 <section class="main section" id="s-projects">
 	<div class="container">
-		<nav class="entries-filters">
+		<nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
 			<ul class="entries-menu filter-options">
 				<li>
 					<a<?php echo (!$this->filters['filterby'] || $this->filters['filterby'] == 'active') ? ' class="active"' : ''; ?> data-status="all" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=all'); ?>">

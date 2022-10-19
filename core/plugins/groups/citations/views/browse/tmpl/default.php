@@ -51,7 +51,7 @@ if (isset($this->messages))
 
 				<div class="container"> <!-- .container for citation type (aff, nonaff, all) -->
 					<?php if ($this->config->get('display') != "group"): ?>
-					<nav class="entries-filters">
+					<nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
 						<ul class="entries-menu filter-options">
 							<?php
 								$queryString = "";

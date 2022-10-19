@@ -35,7 +35,7 @@ $this->css()
 	<p><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_LIST_INSTRUCT'); ?></p>
 
 	<div class="container">
-		<nav class="entries-filters">
+		<nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
 			<ul class="entries-menu filter-options">
 				<li>
 					<a<?php echo ($this->filters['curator'] != 'owner') ? ' class="active"' : ''; ?> href="<?php echo Route::url($route); ?>">
