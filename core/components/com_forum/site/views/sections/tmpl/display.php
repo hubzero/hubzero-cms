@@ -52,8 +52,7 @@ $this->css()
 					<table class="entries categories">
 						<caption>
 							<?php if ($this->config->get('access-edit-section') && $this->edit == $section->get('alias') && $section->get('id')) { ?>
-								<a name="s<?php echo $section->get('id'); ?>"></a>
-								<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post">
+								<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="s<?php echo $section->get('id'); ?>">
 									<input type="text" name="fields[title]" value="<?php echo $this->escape(stripslashes($section->get('title'))); ?>" />
 									<input type="submit" value="<?php echo Lang::txt('JSUBMIT'); ?>" />
 									<input type="hidden" name="fields[id]" value="<?php echo $section->get('id'); ?>" />

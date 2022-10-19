@@ -132,7 +132,7 @@ $this->css('create.css')
 					</ul>
 				</div>
 				<div class="entry-content">
-					<h4><a name="unknowntype"></a>What if I want to contribute a type not listed here?</h4>
+					<h4 id="unknowntype">What if I want to contribute a type not listed here?</h4>
 					<p>If you feel your contribution does not fit into any of our predefined types, please <a href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=new'); ?>">contact us</a> with details of</p>
 					<ol>
 						<li>what you wish to contribute, including a description and file types</li>
@@ -141,7 +141,7 @@ $this->css('create.css')
 					<p>We will try to accommodate you or provide another suggestion.</p>
 				</div>
 				<div class="entry-content">
-					<h4><a name="drafts"></a>What if I don't have all the materials right now?</h4>
+					<h4 id="drafts">What if I don't have all the materials right now?</h4>
 					<p>This is perfectly fine. When you start a new contribution, it remains in a "draft" state until you decide to submit it for publication. You may work on portions of it at your leisure and return to a step at any time.</p>
 					<p>You can find a list of your drafts through a variety of methods:</p>
 					<ul>
@@ -151,11 +151,11 @@ $this->css('create.css')
 					</ul>
 				</div>
 				<div class="entry-content">
-					<h4><a name="submission"></a>What happens after submission?</h4>
+					<h4 id="submission">What happens after submission?</h4>
 					<p>After submitting your contribution, it will be reviewed for completeness. If all appears satisfactory, the contribution will be approved and immediately appear in the <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>">resources listing</a>.</p>
 				</div>
 				<div class="entry-content">
-					<h4><a name="retract"></a>Ooops! I missed something and/or submitted too early!</h4>
+					<h4 id="retract">Ooops! I missed something and/or submitted too early!</h4>
 					<p>No worries! You can retract a submission by following these steps:</p>
 					<ul>
 						<li>Visit the <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new'); ?>">new contribution</a> page.</li>
