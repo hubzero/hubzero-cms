@@ -60,7 +60,7 @@ $this->category->set('section_alias', $this->filters['section']);
 				</div><!-- / .container -->
 
 				<div class="container">
-					<nav class="entries-filters">
+					<nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
 						<ul class="entries-menu order-options">
 							<li>
 								<a class="<?php echo ($this->filters['sortby'] == 'created') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down'; ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=created&sortdir=' . sortDir($this->filters, 'created'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_CREATED'); ?>">

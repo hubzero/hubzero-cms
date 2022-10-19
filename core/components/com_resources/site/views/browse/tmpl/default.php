@@ -99,7 +99,7 @@ $this->css()
 				<?php } ?>
 
 				<div class="container">
-					<nav class="entries-filters">
+					<nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
 						<?php
 						$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
 						$qs .= ($this->filters['type']   ? '&type=' . $this->escape($this->filters['type'])     : '');
@@ -122,6 +122,7 @@ $this->css()
 						<?php if (count($this->types) > 0) { ?>
 							<ul class="entries-menu filter-options">
 								<li>
+									<label for="filter-type" class="sr-only visibliy-hidden"><?php echo Lang::txt('COM_RESOURCES_TYPE'); ?></label>
 									<select name="type" id="filter-type">
 										<option value="" <?php echo (!$this->filters['type']) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_ALL_TYPES'); ?></option>
 										<?php foreach ($this->types as $item) { ?>

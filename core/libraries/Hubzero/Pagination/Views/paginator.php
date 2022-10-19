@@ -38,7 +38,7 @@ if (!function_exists('paginator_item_active'))
 	}
 }
 ?>
-<nav class="pagination">
+<nav class="pagination" aria-label="<?php echo Lang::txt('JGLOBAL_PAGINATION_LABEL'); ?>">
 	<ul class="list-footer">
 		<li class="counter">
 			<?php

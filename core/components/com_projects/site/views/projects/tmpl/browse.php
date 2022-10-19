@@ -49,7 +49,7 @@ $total = $this->model->entries('count', $this->filters);
 			</fieldset>
 		</div>
 		<div class="container">
-			<nav class="entries-filters">
+			<nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
 				<?php
 				$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search'])    : '');
 				$qs .= ($this->filters['start']  ? '&limitstart=' . $this->escape($this->filters['start']) : '');

@@ -88,7 +88,7 @@ if ($this->cats)
 		<input type="hidden" name="area" value="<?php echo $this->escape($this->active); ?>" />
 
 		<div class="container">
-			<nav class="entries-filters">
+			<nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
 				<ul class="entries-menu filter-options">
 					<?php if (count($links) > 0) { ?>
 						<li class="filter-categories">

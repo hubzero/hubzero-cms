@@ -84,7 +84,7 @@ $this->css()
 				<?php } ?>
 
 				<div class="container">
-					<nav class="entries-filters">
+					<nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
 						<?php
 						$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
 						$qs .= ($this->filters['category']   ? '&category=' . $this->escape($this->filters['category'])     : '');
