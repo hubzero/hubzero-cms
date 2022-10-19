@@ -17,7 +17,7 @@ class Migration20190902000001ComTags extends Base
 	{
 		if ($this->db->tableExists('#__tags_object'))
 		{
-			$query = "ALTER IGNORE TABLE `#__tags_object` ADD UNIQUE INDEX unique_tag_per_obj (objectid, tagid, tbl)";
+			$query = "ALTER TABLE `#__tags_object` ADD UNIQUE INDEX unique_tag_per_obj (objectid, tagid, tbl)";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
