@@ -183,7 +183,7 @@ function view($dd = false)
 			}
 		}
 	?>
-	<a name="dv_top"></a>
+	<span id="dv_top"></span>
 	<div id="dv-spreadsheet">
 
 	<?php if (!Request::getString('show_table_only', false)): ?>

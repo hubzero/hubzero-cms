@@ -282,8 +282,7 @@ if ($secondaries->count() > 0)
 					</div>
 				</fieldset>
 			<?php else : ?>
-				<a name="primary-stories"></a>
-				<fieldset class="adminform">
+				<fieldset class="adminform" id="primary-stories">
 					<legend>
 						<?php if ($this->newsletter->autogen == 0): ?>
 							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_PRIMARY_STORIES'); ?>
@@ -354,8 +353,7 @@ if ($secondaries->count() > 0)
 					// Hide secondary story if AutoGen
 					if ($this->newsletter->autogen == 0):
 				?>
-					<a name="secondary-stories"></a>
-					<fieldset class="adminform">
+					<fieldset class="adminform" id="secondary-stories">
 						<legend>
 							<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SECONDARY_STORIES'); ?>
 							<a class="fltrt add-story" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid='.$this->newsletter->id.'&task=add&type=secondary'); ?>">

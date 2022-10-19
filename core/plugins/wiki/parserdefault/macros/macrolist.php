@@ -70,7 +70,7 @@ class MacrolistMacro extends WikiMacro
 				$macro = new $macroname();
 
 				$macroname = substr($macroname, 0, (strlen($macroname) - 5));
-				$m[strtolower($macroname)] = '<dt><a name="' . strtolower($macroname) . '"></a><code>&#91;&#91;' . $macroname . '(args)&#93;&#93;</code></dt><dd>' . $macro->description() . '</dd>';
+				$m[strtolower($macroname)] = '<dt id="' . strtolower($macroname) . '"><code>&#91;&#91;' . $macroname . '(args)&#93;&#93;</code></dt><dd>' . $macro->description() . '</dd>';
 			}
 		}
 		asort($m);
