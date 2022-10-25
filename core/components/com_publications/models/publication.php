@@ -848,10 +848,10 @@ class Publication extends Obj
 						$contributor->firstName = array_shift($parts);
 						$contributor->middleName = implode(' ', $parts);
 					}
-					$name .= ', ' . substr(stripslashes($contributor->firstName), 0, 1) . '.';
+					$name .= ', ' . mb_substr(stripslashes($contributor->firstName), 0, 1) . '.';
 					if ($contributor->middleName)
 					{
-						$name .= ' ' . substr(stripslashes($contributor->middleName), 0, 1) . '.';
+						$name .= ' ' . mb_substr(stripslashes($contributor->middleName), 0, 1) . '.';
 					}
 				}
 				else
