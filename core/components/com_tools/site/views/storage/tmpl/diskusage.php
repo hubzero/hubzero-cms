@@ -24,7 +24,7 @@ else
 
 $this->css('
 #du-amount .du-amount-bar {
-	width: '.$this->amt.'%;
+	width: '.$this->amt.'% !important;
 }
 ');
 
