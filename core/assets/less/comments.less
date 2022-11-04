@@ -31,7 +31,7 @@
 				margin: 0;
 				padding: 0;
 
-				& > li {
+				li {
 					padding-left: 30px;
 				}
 			}
@@ -50,7 +50,6 @@
 
 			a {
 				margin-right: 1em;
-				color: @commentOptionColor;
 				border: none;
 
 				&:before {
@@ -98,48 +97,6 @@
 
 			&:hover .comment-options {
 				visibility: visible;
-			}
-		}
-
-		.comment-head {
-			margin-bottom: 0.3rem;
-		}
-
-		.comment-meta {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-
-			.permalink {
-				color: @commentPermalinkColor;
-			}
-
-			.copy-link {
-				display: flex;
-				color: @commentPermalinkColor;
-
-				.icn {
-					margin-left: 0.3rem;
-					line-height: 0;
-
-					svg {
-						height: 1.2rem;
-						width: 1.2rem;
-						fill: @commentPermalinkColor;
-					}
-				}
-
-				&:hover {
-					border: 0;
-					color: @black;
-
-					.icn {
-
-						svg {
-							fill: @black;
-						}
-					}
-				}
 			}
 		}
 
@@ -277,7 +234,9 @@
 				width: 50%;
 			}
 		}
+	}
 
+	.comment-attachments {
 		.attachment {
 			margin: 1em 0;
 			padding: 1em 1em 1em 4em;
@@ -393,7 +352,7 @@
 	#commentform .time,
 	ol.comments .date,
 	ol.comments .time {
-		margin-right: 0.7em;
+		margin-left: 0.7em;
 	}
 
 /* Comment form */
@@ -522,7 +481,7 @@
 		li {
 			ol.comments {
 
-				& > li {
+				li {
 					padding-left: 70px;
 				}
 			}
