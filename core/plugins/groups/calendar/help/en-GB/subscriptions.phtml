@@ -14,8 +14,7 @@ defined('_HZEXEC_') or die('Restricted access');
 	<li><strong><a href="#subscribe">Subscribe:</a></strong> They use a calendar application such as iCal or Outlook to subscribe to the group calendar.</li>
 </ol>
 
-<a name="download"></a>
-<h2>Downloading the Group Calendar</h2>
+<h2 id="download">Downloading the Group Calendar</h2>
 <p>To download a group calendar, navigate to a group's calendar tab. If you scroll down, under the calendar of events you should see a box titled "Subscribe", which looks like the image below</p>
 <p>
 	<img src="<?php echo substr(__DIR__, strlen(PATH_ROOT)); ?>/subscribe.png" alt="Subscribe" />
@@ -27,18 +26,15 @@ defined('_HZEXEC_') or die('Restricted access');
 	</a>
 </p>
 
-<a name="subscribe"></a>
-<h2>Subscribing to the Group Calendar</h2>
+<h2 id="subscribe">Subscribing to the Group Calendar</h2>
 <p>Subscribing to a group calendar has 1 major benefit over downloading a group calendar; changes made to the group events on the HUB are reflected in the subscribers calendar.</p>
 <p>To subscribe to group calendar follow the same steps described above to download a calendar but instead click the <u><em>Subscribe</em></u> button. This will open the default calendar application on your calendar with a dialog box asking if you would like to subscribe to this calendar. If the groups calendar access setting is restricted to Registered HUB Users or Group Members, you will also be prompted for you HUB login and password.</p>
 
-<a name="faqs"></a>
-<h2>Subscription FAQs</h2>
+<h2 id="faqs">Subscription FAQs</h2>
 <ul class="unstyled">
 	<li><a href="#faqs-google-calendar">Can I subscribe with Google Calendar?</a></li>
 </ul>
 
-<a name="faqs-google-calendar"></a>
-<h4>1. Can I subscribe with Google Calendar?</h4>
+<h4 id="faqs-google-calendar">1. Can I subscribe with Google Calendar?</h4>
 <p>Currently Google Calendar doesn't support private or authenticated calendar subscriptions, which is good for the security of your data, but bad if you like having all you calendars in one place. Only if a group's calendar access setting is set to <u><em>Any HUB Visitor</em></u> will users be able to subscribe with their Google Calendar. This setting can be changed at anytime by any group manager, in the group customize interface.</p>
 <p>An alternative for Google Calendar users is that they download and import a group calendar following the steps described above.</p>

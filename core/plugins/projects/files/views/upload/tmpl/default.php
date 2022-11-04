@@ -66,8 +66,10 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
 					<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/jquery.queueuploader.js"></script>
 					<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/fileupload.jquery.js"></script>
 					<?php
-						if (file_exists(PATH_CORE . '/plugins/projects/files/assets/js/acceptedFormats.js')): ?>
-						<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/acceptedFormats.js"></script>
+						/* @TODO: this needs to be handle in a more standard site configuration way */
+						$acceptedFormatsJS = PATH_APP  . '/acceptedFormats.js';
+						if (file_exists($acceptedFormatsJS)): ?>
+						<script src="<?php echo rtrim(Request::base(true), '/'); ?>/app/site/acceptedFormats.js">"></script>
 					<?php endif; ?>
 		<?php } else { ?>
 				<label class="addnew">

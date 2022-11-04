@@ -79,7 +79,7 @@ class Helper
 	 * @param   integer  $id  Module ID
 	 * @return  object
 	 */
-	public function getParams($id)
+	public static function getParams($id)
 	{
 		return \Module::params($id);
 	}

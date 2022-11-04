@@ -28,8 +28,7 @@ $rows = $database->loadObjectList();
 $base = $this->offering->link();
 ?>
 
-	<h3 class="heading">
-		<a name="dashboard"></a>
+	<h3 class="heading" id="dashboard">
 		<?php echo Lang::txt('PLG_COURSES_DASHBOARD'); ?>
 	</h3>
 

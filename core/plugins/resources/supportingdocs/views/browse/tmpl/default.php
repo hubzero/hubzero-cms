@@ -317,7 +317,7 @@ else
 					{
 						if (isset($data[$field->name]))
 						{
-							if ($elements->display($field->type, $data[$field->name]) && $field->display == $tab )
+							if ($elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab )
 							{
 								?>
 								<h4><?php echo $field->label; ?></h4>

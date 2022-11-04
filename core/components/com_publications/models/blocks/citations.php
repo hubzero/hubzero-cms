@@ -266,7 +266,7 @@ class Citations extends Base
 		if ($new == true && $citation->get('id'))
 		{
 			$assoc = \Components\Citations\Models\Association::blank();
-			$assoc->set('oid', $pub->id);
+			$assoc->set('oid', $pub->version->id);
 			$assoc->set('tbl', 'publication');
 			$assoc->set('type', 'owner');
 			$assoc->set('cid', $citation->get('id'));

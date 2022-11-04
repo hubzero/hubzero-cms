@@ -26,10 +26,14 @@ $strength = $boost->getStrength();
 	</td>
 
 	<td>
-		<?php echo $type; ?>
+		<a href="<?php echo $boostEditUrl; ?>">
+			<?php echo $type; ?>
+		</a>
 	</td>
 
 	<td>
-		<?php echo $strength; ?>
+		<a href="<?php echo $boostEditUrl; ?>">
+			<?php echo $strength; ?>
+		</a>
 	</td>
 </tr>

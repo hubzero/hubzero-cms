@@ -22,7 +22,7 @@ $rows = $this->todo->entries('list', $this->filters);
 ?>
 
 <div class="list-menu">
-	<nav class="entries-filters">
+	<nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
 		<ul class="entries-menu order-options">
 			<li>
 				<a class="sort-content<?php if ($this->filters['sortby'] == 'content') { echo ' active'; } ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=content'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_SORTBY_CONTENT'); ?>">

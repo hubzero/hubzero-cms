@@ -201,12 +201,15 @@ class MarkdownParser
 		// parse local images
 		$pattern = '@src="Image\(([^"]+)\)"@';
 
-		$page = \Components\Wiki\Models\Page::oneOrFail($this->get('pageid'));
-		$link = $page->link();
+		if ($this->get('pageid')) // Only valid on actual wiki pages (not to-do comments, etc)
+		{
+			$page = \Components\Wiki\Models\Page::oneOrFail($this->get('pageid'));
+			$link = $page->link();
 
-		$text = preg_replace_callback($pattern, function ($matches) use($link) {
-			return 'src="' . Route::url($link . '/Image:' . $matches[1]) . '"';
-		}, $text);
+			$text = preg_replace_callback($pattern, function ($matches) use($link) {
+				return 'src="' . Route::url($link . '/Image:' . $matches[1]) . '"';
+			}, $text);
+		}
 
 		// If full parse and we have a page ID (i.e., this is a *wiki* page) and link logging is turned on...
 		/*if ($this->get('fullparse') && $this->get('pageid') && $this->get('loglinks'))

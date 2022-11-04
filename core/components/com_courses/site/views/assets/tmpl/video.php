@@ -182,6 +182,25 @@ elseif ($type == 'html5')
 	// Determine height and width
 	$width  = (isset($presentation->width) && $presentation->width != 0) ? $presentation->width . 'px' : 'auto';
 	$height = (isset($presentation->height) && $presentation->height != 0) ? $presentation->height . 'px' : 'auto';
+
+	$this->css('
+	#video-flowplayer {
+		width: '. $width . ';
+		height: ' . $height . ';
+	}
+	#font-color {
+		background-color: #FFF;
+	}
+	#background-color {
+		background-color: #000;
+	}
+	.test {
+		font-family:arial;
+		background-color: #000;
+		color: #FFF;
+		font-size:18px;
+	}
+	');
 }
 
 if ($type == 'hubpresenter' || $type == 'html5')
@@ -217,24 +236,6 @@ if ($type == 'hubpresenter' || $type == 'html5')
 	}
 }
 
-$this->css('
-	#video-flowplayer {
-		width: '. $width . ';
-		height: ' . $height . ';
-	}
-	#font-color {
-		background-color: #FFF;
-	}
-	#background-color {
-		background-color: #000;
-	}
-	.test {
-		font-family:arial;
-		background-color: #000;
-		color: #FFF;
-		font-size:18px;
-	}
-');
 ?>
 <?php if ($type == 'html5') : ?>
 	<div id="video-container">
@@ -782,3 +783,4 @@ $last_slide_id = 0; ?>
 <?php else : ?>
 	<p class="warning"><?php echo (isset($error)) ? $error : Lang::txt('COM_COURSES_VIDEO_ERROR_NO_PLAYABLE_ASSETS'); ?></p>
 <?php endif; 
+

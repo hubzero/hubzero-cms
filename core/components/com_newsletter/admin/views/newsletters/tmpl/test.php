@@ -19,8 +19,7 @@ Toolbar::cancel();
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm">
 	<div class="col span12">
 		<?php if ($this->newsletter->id != null) : ?>
-			<a name="distribution"></a>
-			<fieldset class="adminform">
+			<fieldset class="adminform" id="distribution">
 				<legend><?php echo Lang::txt('COM_NEWSLETTER_TEST_SENDING'); ?></legend>
 				<table class="admintable">
 					<tbody>

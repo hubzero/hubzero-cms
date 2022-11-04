@@ -60,6 +60,9 @@ class Solr extends SiteController
 		$tagSearchEnabled = !!$config->get('solr_tagsearch', 0);
 		$tagString = Request::getString('tags', '');
 		$filters = Request::getArray('filters', '');
+		$queryFields = $config->get('solr_queryfields', 'url^10 title^5 description fulltext author');
+		$phraseFields = $config->get('solr_phrasefields', 'title^5 description fulltext author');
+		$phraseSlop = $config->get('solr_phraseslop', '10');
 		$tags = null;
 
 		if ($tagString)
@@ -196,6 +199,9 @@ class Solr extends SiteController
 			$boostQueriesAsArray = $boostQueries->toArray();
 			$edismax = $query->adapter->query->getEDisMax();
 			$edismax->addBoostQueries($boostQueriesAsArray);
+			$edismax->setQueryFields($queryFields);
+			$edismax->setPhraseFields($phraseFields);
+			$edismax->setPhraseSlop($phraseSlop);
 		}
 
 		// Perform the query
