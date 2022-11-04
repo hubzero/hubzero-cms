@@ -290,6 +290,15 @@ class Pages extends SiteController
 	 */
 	public function newTask()
 	{
+		if (!$this->page->access('create') && !$this->page->access('manage'))
+		{
+			App::redirect(
+				Route::url($this->page->link()),
+				Lang::txt('COM_WIKI_ERROR_NOTAUTH'),
+				'error'
+			);
+		}
+		
 		$this->editTask();
 	}
 
@@ -307,6 +316,17 @@ class Pages extends SiteController
 			$url = Request::getString('REQUEST_URI', '', 'server');
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
+			);
+		}
+
+		// Check if the page can be edited
+		if ((!$this->page->access('edit') || ($this->page->created_by && $this->page->created_by != User::get('id')))
+			&& !$this->page->access('manage'))
+		{
+			App::redirect(
+				Route::url($this->page->link()),
+				Lang::txt('COM_WIKI_ERROR_NOTAUTH'),
+				'error'
 			);
 		}
 
@@ -329,6 +349,10 @@ class Pages extends SiteController
 				'warning'
 			);
 		}
+		
+		//var_dump($this->page->created_by);
+		
+		//die;
 
 		// Check if the page is restricted and the user is authorized
 		if (!$this->page->access('edit') && !$this->page->access('modify'))
@@ -622,7 +646,7 @@ class Pages extends SiteController
 			$revision->set('approved', 0);
 			// If an author or the original page creator, set to approved
 			if ($this->page->get('created_by') == User::get('id')
-			 || $this->page->isAuthor(User::get('id')))
+			|| $this->page->isAuthor(User::get('id')))
 			{
 				$revision->set('approved', 1);
 			}
@@ -732,12 +756,12 @@ class Pages extends SiteController
 				'error'
 			);
 		}
-
 		// Make sure they're authorized to delete
-		if (!$this->page->access('delete'))
+		if ((!$this->page->access('delete') || ($this->page->created_by && $this->page->created_by != User::get('id')))
+			&& !$this->page->access('manage'))
 		{
 			App::redirect(
-				Route::url($this->page->link('base')),
+				Route::url($this->page->link()),
 				Lang::txt('COM_WIKI_ERROR_NOTAUTH'),
 				'error'
 			);
@@ -786,7 +810,7 @@ class Pages extends SiteController
 					],
 					'recipients' => $recipients
 				]);
-			break;
+				break;
 
 			default:
 				// Set the page's <title> tag
@@ -838,7 +862,7 @@ class Pages extends SiteController
 					->setErrors($this->getErrors())
 					->display();
 				return;
-			break;
+				break;
 		}
 
 		App::redirect(
