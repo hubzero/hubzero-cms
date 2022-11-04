@@ -920,7 +920,7 @@ $legacy = array(
 							{
 								$access  = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>';
 								$access .= Lang::txt('PLG_MEMBERS_PROFILE_ACCESS_MUST_BE_PUBLIC');
-								$access .= '<input type="hidden" name="sendEmail" value="' . $this->params->get('access_optin') . '" />';
+								$access .= '<input type="hidden" name="access[sendEmail]" value="' . $this->params->get('access_optin') . '" />';
 							}
 							else
 							{

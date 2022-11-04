@@ -21,7 +21,7 @@ $this->css();
 
 	<div class="container" id="courses-container">
 		<form method="get" action="<?php echo Route::url($base); ?>">
-			<nav class="entries-filters">
+			<nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
 
 				<?php if ($this->roles && $this->hasRoles > 1) { ?>
 					<ul class="entries-menu user-options">

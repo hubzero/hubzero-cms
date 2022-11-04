@@ -1522,6 +1522,8 @@ class Resources extends SiteController
 					'name'   => 'view',
 					'layout' => 'watch_error'
 				));
+				$this->view->controller = $this->_controller;
+				$this->view->task = $this->_task;
 				$this->view->setErrors($errors);
 				$body = $this->view->loadTemplate();
 			}

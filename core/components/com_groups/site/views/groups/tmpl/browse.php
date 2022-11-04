@@ -51,7 +51,7 @@ $this->css()
 				</div><!-- / .container -->
 
 				<div class="container">
-					<nav class="entries-filters">
+					<nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
 						<?php
 							$fltrs  = ($this->filters['index'])  ? '&index=' . $this->escape($this->filters['index'])   : '';
 							$fltrs .= ($this->filters['policy']) ? '&policy=' . $this->escape($this->filters['policy']) : '';

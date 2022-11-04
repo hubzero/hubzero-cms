@@ -25,6 +25,9 @@
 			<option value="1">On</option>
 			<option value="0">Off</option>
 		</field>
+		<field name="solr_queryfields" type="text" menu="hide" default="url^10 title^5 description fulltext author" label="COM_SEARCH_PARAM_SOLR_QUERYFIELDS" description="COM_SEARCH_PARAM_SOLR_QUERYFIELDS_LABEL" />
+		<field name="solr_phrasefields" type="text" menu="hide" default="title^5 description fulltext author" label="COM_SEARCH_PARAM_SOLR_PHRASEFIELDS" description="COM_SEARCH_PARAM_SOLR_PHRASEFIELDS_LABEL" />
+		<field name="solr_phraseslop" type="text" menu="hide" default="10" label="COM_SEARCH_PARAM_SOLR_PHRASESLOP" description="COM_SEARCH_PARAM_SOLR_PHRASESLOP_LABEL" />
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
 		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" validate="rules" component="com_search" section="component">
