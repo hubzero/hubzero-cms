@@ -207,6 +207,20 @@ class SolrQueryAdapter implements QueryInterface
 	}
 
 	/**
+	 * getDebug
+	 *
+	 * returns Solarium query debug object
+	 *
+	 * @access public
+	 * @return Solarium\QueryType\Select\Query\Component\Debug
+	 */
+	public function getDebug()
+	{
+		$debug = $this->query->getDebug();
+		return $debug;
+	}
+
+	/**
 	 * getNumFound
 	 *
 	 * @access public
