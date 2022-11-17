@@ -203,6 +203,7 @@ class SolrQueryAdapter implements QueryInterface
 		$this->numFound = $this->resultset->getNumFound();
 		$this->results = $this->getResults();
 		$this->resultsFacetSet = $this->resultset->getFacetSet();
+		$this->debug = $this->query->getDebug();
 		return $this;
 	}
 
@@ -216,8 +217,9 @@ class SolrQueryAdapter implements QueryInterface
 	 */
 	public function getDebug()
 	{
-		$debug = $this->query->getDebug();
-		return $debug;
+		if (isset($this->debug)) {
+			return $this->debug;
+		}
 	}
 
 	/**
