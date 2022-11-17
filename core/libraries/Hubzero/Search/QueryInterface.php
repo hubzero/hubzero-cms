@@ -122,6 +122,14 @@ interface QueryInterface
 	public function run();
 
 	/**
+	 * getDebug - returns Solarium query debug object
+	 *
+	 * @access public
+	 * @return Solarium\QueryType\Select\Query\Component\Debug
+	 */
+	public function getDebug();
+
+	/**
 	 * restrictAccess - Applies CMS permissions for the current user.
 	 *
 	 * @access public
