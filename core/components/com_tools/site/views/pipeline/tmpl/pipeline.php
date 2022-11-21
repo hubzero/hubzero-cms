@@ -58,7 +58,7 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 		</div><!-- / .container data-entry -->
 
 		<div class="container cf">
-			<nav class="entries-filters">
+			<nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
 				<ul class="entries-menu order-options" data-label="<?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY'); ?>">
 					<?php if ($this->admin) { ?>
 					<li>

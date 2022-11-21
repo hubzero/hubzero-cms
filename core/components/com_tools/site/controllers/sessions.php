@@ -1962,7 +1962,6 @@ class Sessions extends SiteController
 			$admin = true;
 		}
 
-		$exportAllowed = $this->_getToolExportControl($tv->exportControl);
 		$tisPublished = ($tv->state == 1);
 		$tisDev = ($tv->state == 3);
 		$tisGroupControlled = ($tv->toolaccess == '@GROUP');
@@ -1988,6 +1987,7 @@ class Sessions extends SiteController
 		}
 		else if ($tisPublished)
 		{
+			$exportAllowed = $this->_getToolExportControl($tv->exportControl);
 			if ($tisGroupControlled)
 			{
 				if ($ingroup)

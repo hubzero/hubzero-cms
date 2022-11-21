@@ -134,3 +134,10 @@
 p.create {
 	margin-bottom: 200px;
 }
+
+.noorg {
+	font-style: italic;
+	font-size: 12px;
+	text-align: center;
+	margin-top: -15px;
+}

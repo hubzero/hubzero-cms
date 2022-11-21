@@ -125,8 +125,7 @@ defined('_HZEXEC_') or die();
 			<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 				<div class="comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
 					<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->comment->link('base')); ?>" method="post" enctype="multipart/form-data">
-						<a name="commentform<?php echo $this->comment->get('id'); ?>"></a>
-						<fieldset>
+						<fieldset id="commentform<?php echo $this->comment->get('id'); ?>">
 							<legend><span><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
 
 							<input type="hidden" name="fields[id]" value="0" />

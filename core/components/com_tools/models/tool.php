@@ -1704,6 +1704,27 @@ class Tool
 	}
 
 	/**
+	 * Get all tools
+	 *
+	 * @return  array
+	 */
+	public static function getAllTools()
+	{
+		$db = \App::get('db');
+		$sql = "SELECT r.alias, r.published, v.toolaccess AS access, GROUP_CONCAT(v.revision SEPARATOR ',') AS versions
+				FROM `#__resources` AS r LEFT OUTER JOIN  `#__tool_version` AS v 
+				ON
+				r.alias=v.toolname
+				WHERE
+				r.type=7
+				AND r.standalone=1
+				GROUP BY v.toolname";
+
+		$db->setQuery($sql);
+		return $db->loadObjectList();
+	}
+
+	/**
 	 * Get tool ID based on tool name
 	 *
 	 * @param   string  $toolname
@@ -1730,9 +1751,10 @@ class Tool
 	{
 		$db = \App::get('db');
 
-		$query  = "SELECT m.uidNumber FROM `#__tool_groups` AS g ";
+		$query  = "SELECT m.uidNumber, u.username FROM `#__tool_groups` AS g ";
 		$query .= "JOIN `#__xgroups` AS xg ON g.cn=xg.cn ";
 		$query .= "JOIN `#__xgroups_members` AS m ON xg.gidNumber=m.gidNumber ";
+                $query .= "JOIN `#__users` AS u ON u.id=m.uidNumber ";
 		$query .= "WHERE g.toolid = " . $db->quote($toolid) . " AND g.role=1";
 
 		$db->setQuery($query);

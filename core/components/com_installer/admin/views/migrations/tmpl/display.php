@@ -43,7 +43,10 @@ $this->css();
 	<table id="tktlist" class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th scope="col">
+					<input type="checkbox" name="toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+				</th>
 				<th scope="col"><?php echo Lang::txt('COM_INSTALLER_HEADING_EXTENSION'); ?></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('JDATE'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_INSTALLER_HEADING_FILENAME'); ?></th>

@@ -30,21 +30,20 @@ $type      = $this->filters['type'];
 				<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" size="30" placeholder="<?php echo Lang::txt('COM_MODULES_FILTER_SEARCH_DESC'); ?>" />
 
 				<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-				<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span7">
-				<select name="filter_state" class="inputbox" onchange="this.form.submit()">
-					<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
+				<select name="filter_state" class="inputbox filter filter-submit">
+					<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?></option>
 					<?php echo Html::select('options', Components\Modules\Helpers\Modules::templateStates(), 'value', 'text', $state, true);?>
 				</select>
 
-				<select name="filter_type" class="inputbox" onchange="this.form.submit()">
-					<option value=""><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_TYPE');?></option>
+				<select name="filter_type" class="inputbox filter filter-submit">
+					<option value=""><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_TYPE'); ?></option>
 					<?php echo Html::select('options', Components\Modules\Helpers\Modules::types(), 'value', 'text', $type, true);?>
 				</select>
 
-				<select name="filter_template" class="inputbox" onchange="this.form.submit()">
-					<option value=""><?php echo Lang::txt('JOPTION_SELECT_TEMPLATE');?></option>
+				<select name="filter_template" class="inputbox filter filter-submit">
+					<option value=""><?php echo Lang::txt('JOPTION_SELECT_TEMPLATE'); ?></option>
 					<?php echo Html::select('options', Components\Modules\Helpers\Modules::templates($clientId), 'value', 'text', $template, true);?>
 				</select>
 			</div>
@@ -54,10 +53,10 @@ $type      = $this->filters['type'];
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th class="title">
+				<th scope="col" class="title">
 					<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'value', $direction, $ordering); ?>
 				</th>
-				<th>
+				<th scope="col">
 					<?php echo Html::grid('sort', 'COM_MODULES_HEADING_TEMPLATES', 'templates', $direction, $ordering); ?>
 				</th>
 			</tr>
@@ -78,7 +77,7 @@ $type      = $this->filters['type'];
 		</tfoot>
 		<tbody>
 		<?php $i=1; foreach ($this->items as $value => $templates) : ?>
-			<tr class="row<?php echo $i=1-$i;?>">
+			<tr class="row<?php echo $i=1-$i; ?>">
 				<td>
 					<a class="pointer" onclick="if (window.parent) window.parent.<?php echo $function;?>('<?php echo $value; ?>');"><?php echo $this->escape($value); ?></a>
 				</td>
@@ -98,7 +97,9 @@ $type      = $this->filters['type'];
 		</tbody>
 	</table>
 
-	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="task" value="positions" />
+	<input type="hidden" name="tmpl" value="component" />
+	<input type="hidden" name="client_id" value="<?php echo $clientId; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $ordering; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $direction; ?>" />

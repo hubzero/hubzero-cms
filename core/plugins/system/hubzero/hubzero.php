@@ -168,9 +168,14 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 	 */
 	public function onUserLoginFailure($response)
 	{
+		$post_username = isset($_POST['username']) ? $_POST['username'] : '';
+		$input_username = is_array($post_username) ? self::_flatten('', $post_username) : $post_username;
+		$filter = '/[^A-Z0-9_\.-]/i';
+		$filtered_username = (string) preg_replace($filter, '', $input_username);
+		$log_username = empty($filtered_username) ? '[unknown]' : $filtered_username;
 		App::get('log')
 			->logger('auth')
-			->info((isset($_POST['username']) ? $_POST['username'] : '[unknown]') . ' ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . ' invalid');
+			->info( $log_username . ' ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '') . ' invalid');
 
 		if (strpos(php_sapi_name(), 'apache') !== false && function_exists('apache_note'))
 		{

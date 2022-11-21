@@ -65,32 +65,38 @@ $saveOrder = $listOrder == 'ordering';
 			<button type="button" class="btn filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="filter-select fltrt">
-			<select name="filter_published" class="filter filter-submit">
+			<label for="filter_published"><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></label>
+			<select name="filter_published" id="filter_published" class="filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php echo Html::select('options', Html::grid('publishedOptions'), 'value', 'text', $this->filters['published'], true);?>
 			</select>
 
-			<select name="filter_category_id" class="filter filter-submit">
+			<label for="filter_category_id"><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></label>
+			<select name="filter_category_id" id="filter_category_id" class="filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
 				<?php echo Html::select('options', Html::category('options', 'com_content'), 'value', 'text', $this->filters['category_id']); ?>
 			</select>
 
-			<select name="filter_level" class="filter filter-submit">
+			<label for="filter_level"><?php echo Lang::txt('JOPTION_SELECT_MAX_LEVELS');?></label>
+			<select name="filter_level" id="filter_level" class="filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_MAX_LEVELS');?></option>
 				<?php echo Html::select('options', $this->f_levels, 'value', 'text', $this->filters['level']); ?>
 			</select>
 
-			<select name="filter_access" class="filter filter-submit">
+			<label for="filter_access"><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></label>
+			<select name="filter_access" id="filter_access" class="filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
 				<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
 			</select>
 
-			<select name="filter_author_id" class="filter filter-submit">
+			<label for="filter_author_id"><?php echo Lang::txt('JOPTION_SELECT_AUTHOR');?></label>
+			<select name="filter_author_id" id="filter_author_id" class="filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_AUTHOR');?></option>
 				<?php echo Html::select('options', $this->authors, 'value', 'text', $this->filters['author_id']); ?>
 			</select>
 
-			<select name="filter_language" class="filter filter-submit">
+			<label for="filter_language"><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></label>
+			<select name="filter_language" id="filter_language" class="filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
 				<?php echo Html::select('options', Html::contentlanguage('existing', true, true), 'value', 'text', $this->filters['language']); ?>
 			</select>
@@ -101,7 +107,8 @@ $saveOrder = $listOrder == 'ordering';
 		<thead>
 			<tr>
 				<th>
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
+					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
 				</th>
 				<th>
 					<?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'title', $listDirn, $listOrder); ?>

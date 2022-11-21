@@ -322,7 +322,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 		$calculated = \Components\Resources\Reviews\Models\Review::averageByResource($this->resource->get('id'));
 
 		// Recalculate the average rating for the parent resource
-		$this->resource->set('rating', $calculated['newrating']);
+		$this->resource->set('rating', $calculated['rating']);
 		$this->resource->set('times_rated', $calculated['times_rated']);
 		$this->resource->save();
 

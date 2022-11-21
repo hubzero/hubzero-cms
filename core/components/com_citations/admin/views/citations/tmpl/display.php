@@ -69,7 +69,10 @@ $this->setEscape("htmlentities");
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th>
+					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+				</th>
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Lang::txt('TITLE'); ?> / <?php echo Lang::txt('AUTHORS'); ?></th>
@@ -109,7 +112,10 @@ $this->setEscape("htmlentities");
 			endif;
 			?>
 			<tr class="<?php echo "row$k"; ?>">
-				<td><input type="checkbox" name="id[]" id="cb<?php echo $row->id; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" /></td>
+				<td>
+					<input type="checkbox" name="id[]" id="cb<?php echo $row->id; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
+					<label for="cb<?php echo $row->id; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
+				</td>
 				<td class="priority-4">
 					<?php echo $row->get('id'); ?>
 				</td>

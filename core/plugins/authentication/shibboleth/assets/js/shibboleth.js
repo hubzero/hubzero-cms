@@ -1,6 +1,6 @@
 jQuery(function($) {
 	var sa = $('.shibboleth.account'),
-		sel = $('<select name="idp"">').attr('title', sa.data('placeholder'));
+		sel = $('<select>').attr('name', 'idp').attr('title', sa.data('placeholder'));
 
 	sel.append($('<option class="placeholder">').text(sa.data('placeholder')));
 	sa.find('li').each(function(_, li) {

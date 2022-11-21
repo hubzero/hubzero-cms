@@ -64,7 +64,10 @@ $this->css('quotas.css')
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th>
+					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+				</th>
 				<!-- <th class="priority-6"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
 				<th class="priority-5"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_USER_ID', 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th class="priority-4"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -93,6 +96,7 @@ $this->css('quotas.css')
 			<tr class="<?php echo "row$k quota-row"; ?>" data-quota="<?php echo Route::url('index.php?option=com_members&controller=quotas&task=getQuotaUsage&id=' . $row->get('id'), false); ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('user_id'); ?>" class="checkbox-toggle" />
+					<label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('user_id'); ?></label>
 				</td>
 				<td class="priority-5">
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('user_id')); ?>">

@@ -30,6 +30,59 @@ class Sessionsv1_0 extends ApiController
 	 * Method to get list of tools
 	 *
 	 * @apiMethod GET
+	 * @apiUri    /tools/listAll
+	 * @return    void
+	 */
+	public function listAllTask()
+	{
+		//instantiate database object
+		$database = \App::get('db');
+
+		//get list of tools
+		$tools = \Components\Tools\Models\Tool::getAllTools();
+
+		//get the supported tag
+		$rconfig = Component::params('com_resources');
+		$supportedtag = $rconfig->get('supportedtag', '');
+
+		//get supportedtag usage
+		include_once Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php';
+		$resource_tags = new \Components\Resources\Helpers\Tags(0);
+		$supportedtagusage = $resource_tags->getTagUsage($supportedtag, 'alias');
+
+		//create list of tools
+		$t = array();
+		foreach ($tools as $k => $tool)
+		{
+			$t[$tool->alias]['alias']       = $tool->alias;
+			$t[$tool->alias]['published']       = $tool->published;
+			$t[$tool->alias]['access'] = $tool->access;
+			$versions = trim($tool->versions);
+			if ($versions == '')
+			{
+				$versions = array();
+			}
+			else
+			{
+				$versions = explode(',',$versions);
+				$versions = array_map( function($item) { return intval($item); }, $versions);
+				//$versions = array_unique( $versions, SORT_NUMERIC );
+				$versions = array_keys(array_flip($versions));
+			}
+			$t[$tool->alias]['versions']    = $versions;
+			$t[$tool->alias]['supported']   = (in_array($tool->alias, $supportedtagusage)) ? 1 : 0;
+		}
+
+		//encode and return result
+		$object = new stdClass();
+		$object->tools = array_values($t);
+
+		$this->send($object);
+	}
+	/**
+	 * Method to get list of tools
+	 *
+	 * @apiMethod GET
 	 * @apiUri    /tools/list
 	 * @apiParameter {
 	 * 		"name":          "user_id",
@@ -101,7 +154,7 @@ class Sessionsv1_0 extends ApiController
 	 * 		"default":       ""
 	 * }
 	 * @apiParameter {
-	 * 		"name":          "version",
+	 * 		"name":          "tool_version",
 	 * 		"description":   "Tool version",
 	 * 		"type":          "string",
 	 * 		"required":      true,
@@ -114,7 +167,7 @@ class Sessionsv1_0 extends ApiController
 		$database = \App::get('db');
 
 		$tool    = Request::getString('tool', '');
-		$version = Request::getString('version', 'current');
+		$version = Request::getString('tool_version', 'current');
 
 		//we need a tool to continue
 		if ($tool == '')
@@ -122,17 +175,47 @@ class Sessionsv1_0 extends ApiController
 			throw new Exception(Lang::txt('Tool Alias Required.'), 400);
 		}
 
+
+                $hzt = \Components\Tools\Models\Tool::getInstance($tool);
+                $hztv_dev = $hzt->getRevision('development');
+                $hztv_current = $hzt->getRevision('current');
+		if ($version == 'current')
+		{
+			$version = $hztv_current->revision;
+		}
+		else if ($version == 'dev')
+                {
+                        $version = $hztv_dev->revision;
+                }
+
 		//poll database for tool matching alias
-		$sql = "SELECT r.id, r.alias, tv.toolname, tv.title, tv.description, tv.toolaccess as access, tv.mw, tv.instance, tv.revision, r.fulltxt as abstract, r.created
+		if ($version !== 0)
+		{
+			if ($version === NULL)
+			{
+				$sql = "SELECT 0 AS id, tv.toolname AS alias, tv.toolname, tv.title, tv.description, tv.toolaccess as access, tv.mw, tv.instance, tv.revision, tv.fulltxt as abstract, '0000-00-00 00:00:00' AS created, tv.toolid, tv.id
+					FROM `#__tool_version` as tv
+					WHERE
+					tv.toolname='{$tool}'
+				        AND tv.revision IS NULL";
+			}
+			else
+			{
+				$sql = "SELECT r.id, r.alias, tv.toolname, tv.title, tv.description, tv.toolaccess as access, tv.mw, tv.instance, tv.revision, r.fulltxt as abstract, r.created, tv.toolid, tv.id
 				FROM `#__resources` as r, `#__tool_version` as tv
-				WHERE r.published=1
-				AND r.type=7
+				WHERE 
+				r.type=7
 				AND r.standalone=1
-				AND r.access!=4
 				AND r.alias=tv.toolname
-				AND tv.state=1
-				AND r.alias='{$tool}'
-				ORDER BY revision DESC";
+				AND r.alias='{$tool}' 
+				AND tv.revision='{$version}'";
+			}
+		}
+		else
+		{
+			$sql = "SELECT 0 AS id, t.toolname AS alias, t.toolname, t.title, t.description, t.toolaccess as access, t.mw, CONCAT(t.toolname,'_dev') AS instance, 'dev' AS revision, t.fulltxt as abstract, '0000-00-00 00:00:00' AS created, t.id AS toolid, 0 AS id FROM `#__tool` as t
+				WHERE t.toolname='{$tool}'";
+		}
 		$database->setQuery($sql);
 		$tool_info = $database->loadObject();
 
@@ -159,26 +242,46 @@ class Sessionsv1_0 extends ApiController
 		$tool_info->supported = (in_array($tool_info->alias, $supportedtagusage)) ? 1 : 0;
 
 		//get screenshots
-		include_once Component::path('com_resources') . DS . 'tables' . DS . 'screenshot.php';
 		include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
-		$ts = new \Components\Resources\Tables\Screenshot($database);
 		$tv = new \Components\Tools\Tables\Version($database);
 		$vid   = $tv->getVersionIdFromResource($tool_info->id, $version);
-		$shots = $ts->getScreenshots($tool_info->id, $vid);
-
-		//get base path
-		$path = \Components\Tools\Helpers\Utils::getResourcePath($tool_info->created, $tool_info->id, $vid);
-
-		//add full path to screenshot
-		$s = array();
-		foreach ($shots as $shot)
-		{
-			$s[] = $path . DS . $shot->filename;
-		}
-		$tool_info->screenshots = $s;
 
 		$object = new stdClass();
 		$object->tool = $tool_info;
+
+ 		$info = $tv->getVersionInfo($vid, $version);
+
+		$registry = new \Hubzero\Config\Registry($info[0]->params);
+		$publishType = $registry->get('publishType',"normal");
+		if ($publishType == 'weber=')
+		{
+			$publishType = 'jupyter';
+		}
+		$object->tool->publishType = $publishType;
+
+		// get tool status
+		include_once Component::path('com_tools') . DS . 'tables' . DS . 'tool.php';
+		include_once Component::path('com_tools') . DS . 'tables' . DS . 'author.php';
+		$hztt = new \Components\Tools\Tables\Tool($database);
+		$status = array();
+		$hztt->getToolStatus($tool_info->toolid, $this->_option, $status, $version);
+		if (!isset($status['hostreq']))
+		{
+			$hostreq = array();
+		}
+		else
+		{
+			$hostreq = trim($status['hostreq']);
+
+			$hostreq = explode(',',$hostreq);
+			$hostreq = array_map( function($item) { return trim($item); }, $hostreq);
+		}
+
+		$object->tool->hostreq = $hostreq;
+
+		$hzt = new \Components\Tools\Tables\Tool($this->database);
+		$developers = $hzt->getToolDevelopers($tool_info->id);
+		$object->tool->developers = $developers;
 
 		$this->send($object);
 	}

@@ -50,12 +50,14 @@ Html::behavior('multiselect');
 			<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="filter-select fltrt">
-			<select name="filter_template" class="inputbox filter filter-submit">
+			<label for="filter_template"><?php echo Lang::txt('COM_TEMPLATES_FILTER_TEMPLATE'); ?></label>
+			<select name="filter_template" id="filter_template" class="inputbox filter filter-submit">
 				<option value="0"><?php echo Lang::txt('COM_TEMPLATES_FILTER_TEMPLATE'); ?></option>
 				<?php echo Html::select('options', \Components\Templates\Helpers\Utilities::getTemplateOptions($this->filters['client_id']), 'value', 'text', $this->filters['template']); ?>
 			</select>
 
-			<select name="filter_client_id" class="inputbox filter filter-submit">
+			<label for="filter_client_id"><?php echo Lang::txt('JGLOBAL_FILTER_CLIENT'); ?></label>
+			<select name="filter_client_id" id="filter_client_id" class="inputbox filter filter-submit">
 				<option value="*"><?php echo Lang::txt('JGLOBAL_FILTER_CLIENT'); ?></option>
 				<?php echo Html::select('options', \Components\Templates\Helpers\Utilities::getClientOptions(), 'value', 'text', $this->filters['client_id']); ?>
 			</select>

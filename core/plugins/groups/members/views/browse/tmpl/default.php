@@ -78,7 +78,7 @@ $option = 'com_groups';
 			</div><!-- / .container -->
 
 			<div class="container">
-				<nav class="entries-filters">
+				<nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
 					<?php if (($this->authorized == 'manager' || $this->authorized == 'admin') && count($this->groupusers) > 0) { ?>
 						<ul class="entries-menu message-options">
 							<li>

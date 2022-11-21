@@ -51,17 +51,20 @@ $saveOrder = $listOrder == 'ordering';
 		</div>
 
 		<div class="filter-select fltrt">
-			<select name="filter_state" class="inputbox filter filter-submit" onchange="this.form.submit()">
+			<label for="filter_state"><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?></label>
+			<select name="filter_state" id="filter_state" class="inputbox filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php echo Html::select('options', \Components\Plugins\Helpers\Plugins::stateOptions(), 'value', 'text', $this->filters['state'], true);?>
 			</select>
 
-			<select name="filter_folder" class="inputbox filter filter-submit" onchange="this.form.submit()">
+			<label for="filter_folder"><?php echo Lang::txt('COM_PLUGINS_OPTION_FOLDER'); ?></label>
+			<select name="filter_folder" id="filter_folder" class="inputbox filter filter-submit">
 				<option value=""><?php echo Lang::txt('COM_PLUGINS_OPTION_FOLDER');?></option>
 				<?php echo Html::select('options', \Components\Plugins\Helpers\Plugins::folderOptions(), 'value', 'text', $this->filters['folder']);?>
 			</select>
 
-			<select name="filter_access" class="inputbox filter filter-submit" onchange="this.form.submit()">
+			<label for="filter_access"><?php echo Lang::txt('JOPTION_SELECT_ACCESS'); ?></label>
+			<select name="filter_access" id="filter_access" class="inputbox filter filter-submit">
 				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
 				<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
 			</select>
@@ -72,7 +75,8 @@ $saveOrder = $listOrder == 'ordering';
 		<thead>
 			<tr>
 				<th>
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
+					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
 				</th>
 				<th scope="col" class="title">
 					<?php echo Html::grid('sort', 'COM_PLUGINS_NAME_HEADING', 'name', $listDirn, $listOrder); ?>
@@ -161,7 +165,8 @@ $saveOrder = $listOrder == 'ordering';
 								<?php endif; ?>
 							<?php endif; ?>
 							<?php $disabled = $saveOrder ? '' : 'disabled="disabled"'; ?>
-							<input type="text" name="order[]" size="5" value="<?php echo $item->ordering; ?>" <?php echo $disabled ?> class="text-area-order" />
+							<input type="text" name="order[]" id="order<?php echo $i; ?>" size="5" value="<?php echo $item->ordering; ?>" <?php echo $disabled ?> class="text-area-order" />
+							<label for="order<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $item->ordering; ?></label>
 						<?php else : ?>
 							<?php echo $item->ordering; ?>
 						<?php endif; ?>

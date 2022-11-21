@@ -7,11 +7,11 @@
 -->
 
 <metadata>
-	<layout title="com_login_login_view_default_title" option="com_login_login_view_default_option">
+	<layout title="com_users_login_view_default_title" option="com_users_login_view_default_option">
 		<help
 			key = "JHELP_MENUS_MENU_ITEM_USER_LOGIN"
 		/>		<message>
-			<![CDATA[COM_LOGIN_LOGIN_VIEW_DEFAULT_DESC]]>
+			<![CDATA[COM_USERS_LOGIN_VIEW_DEFAULT_DESC]]>
 		</message>
 	</layout>
 

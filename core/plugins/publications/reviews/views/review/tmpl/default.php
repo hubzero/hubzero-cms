@@ -21,9 +21,8 @@ else
 
 ?>
 
-<div class="below section">
+<div class="below section" id="reviewform">
 	<h3 id="reviewform-title">
-		<a name="reviewform"></a>
 		<?php echo $title; ?>
 	</h3>
 	<form action="<?php echo Route::url($this->publication->link('reviews')); ?>" method="post" id="commentform">

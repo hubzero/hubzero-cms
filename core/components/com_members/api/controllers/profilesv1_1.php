@@ -75,6 +75,8 @@ class Profilesv1_1 extends ApiController
 	 */
 	public function listTask()
 	{
+		$this->requiresAuthentication();
+
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
@@ -366,6 +368,8 @@ class Profilesv1_1 extends ApiController
 	 */
 	public function readTask()
 	{
+		$this->requiresAuthentication();
+
 		$id = Request::getCmd('id', '');
 
 		if (($id == 'currentuser'))

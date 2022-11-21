@@ -58,6 +58,7 @@ if (!$no_html) {
 		</fieldset>
 	</form>
 
+	<?php if (in_array(User::get('id'), $this->group->get('managers'))) { ?>
 	<?php if ($this->group->published == 1) { ?>
 		<form action="<?php echo Route::url($base . '&active=activity'); ?>" method="post" id="commentform" enctype="multipart/form-data">
 			<p class="comment-member-photo">
@@ -106,6 +107,7 @@ if (!$no_html) {
 				</p>
 			</fieldset>
 		</form>
+	<?php } ?>
 	<?php } ?>
 <?php } ?>
 

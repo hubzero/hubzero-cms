@@ -149,8 +149,7 @@ $this->comment->set('category', 'answercomment');
 				</p>
 				<?php } else { ?>
 				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->page->link('comments')); ?>" method="post" enctype="multipart/form-data">
-					<a name="commentform<?php echo $this->comment->get('id'); ?>"></a>
-					<fieldset>
+					<fieldset id="commentform<?php echo $this->comment->get('id'); ?>">
 						<legend><span><?php echo Lang::txt('COM_WIKI_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="comment[id]" value="0" />

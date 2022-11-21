@@ -123,7 +123,10 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+				<th>
+					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+				</th>
 				<th scope="col"><?php echo Lang::txt('COM_GROUPS_PAGES_TITLE'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_GROUPS_PAGES_STATE'); ?></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_GROUPS_PAGES_HOME'); ?></th>
@@ -136,6 +139,7 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
 			<tr>
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $page->get('id'); ?>" class="checkbox-toggle" />
+					<label for="cb<?php echo $k;?>" class="sr-only visually-hidden"><?php echo $page->get('id'); ?></label>
 				</td>
 				<td>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&gid=' . $this->group->cn . '&id=' . $page->get('id')); ?>">

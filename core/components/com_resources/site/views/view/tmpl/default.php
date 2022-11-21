@@ -82,7 +82,7 @@ if ($mode != 'preview')
 						?>
 							<p class="warning">
 								<?php if (User::isGuest()): ?>
-									<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN', base64_encode(Request::path())); ?>
+									<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN', base64_encode(Request::current(true))); ?>
 								<?php else: ?>
 									<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
 								<?php endif; ?>

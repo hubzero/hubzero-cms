@@ -46,7 +46,7 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 				<table class="entries categories">
 					<caption>
 						<?php if ($this->config->get('access-edit-section') && $this->edit == $section->get('alias') && $section->get('id')) { ?>
-								<!-- <a name="s<?php echo $section->get('id'); ?>"></a> [!] This seems to cause some serious display issues -->
+								<!-- <span id="s<?php echo $section->get('id'); ?>"></span> [!] This seems to cause some serious display issues -->
 								<input type="text" name="fields[title]" value="<?php echo $this->escape(stripslashes($section->get('title'))); ?>" />
 								<input type="submit" value="<?php echo Lang::txt('Save'); ?>" />
 								<input type="hidden" name="fields[id]" value="<?php echo $section->get('id'); ?>" />

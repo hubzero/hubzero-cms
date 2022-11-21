@@ -23,13 +23,13 @@
 
 		<h3>Linux/Unix</h3>
 		<p>If you use the KDE graphical desktop environment, you can access your hub storage with the Konqueror browser by typing the special URL webdavs://webdav.<?php echo $_SERVER['HTTP_HOST']; ?>/ into the Location field of the browser. It will prompt you for your hub login and password. Thereafter, you traverse your home directory by clicking on folders and you can drag and drop files to your desktop.</p>
-		<p><a rel="nofollow noopener noreferrer" target="_blank" href="http://www.webdav.org/cadaver/">Cadaver</a> is a text-mode WebDAV browser. It can be used if it is compiled with SSL support. Invoke it with the command cadaver https://webdav.HUBADDRESS/ and it will prompt you for your hub login and password. You can then use it in a manner similar to FTP.
-		If you are using Linux, you can use the <a rel="nofollow noopener noreferrer" target="_blank" href="http://dav.sourceforge.net/">davfs</a> kernel module to mount your hub storage area as a local filesystem.</p>
+		<p><a rel="noopener noreferrer external" target="_blank" href="http://www.webdav.org/cadaver/">Cadaver</a> is a text-mode WebDAV browser. It can be used if it is compiled with SSL support. Invoke it with the command cadaver https://webdav.HUBADDRESS/ and it will prompt you for your hub login and password. You can then use it in a manner similar to FTP.
+			If you are using Linux, you can use the <a rel="noopener noreferrer external" target="_blank" href="http://dav.sourceforge.net/">davfs</a> kernel module to mount your hub storage area as a local filesystem.</p>
 
 
 		<h3>Mac OSX</h3>
 		<p>MacOS versions 10.4 and higher support HTTPS transport for WebDAV using the Finder. To access your nanoHUB directory, select the Go menu in the Finder and choose "Connect to Network Server". Enter the URL http://webdav.<?php echo $_SERVER['HTTP_HOST']; ?>/webdav into the address field. You will be prompted for your nanoHUB login and password.
-		MacOS versions lower than 10.4 do not have support for HTTPS, but a free client exists. Download Goliath and install it on your system. Invoke it and use http://webdav.<?php echo $_SERVER['HTTP_HOST']; ?>/webdav as the address to connect to. Note that you may also use Goliath on newer MacOS platforms as well.</p>
+			MacOS versions lower than 10.4 do not have support for HTTPS, but a free client exists. Download Goliath and install it on your system. Invoke it and use http://webdav.<?php echo $_SERVER['HTTP_HOST']; ?>/webdav as the address to connect to. Note that you may also use Goliath on newer MacOS platforms as well.</p>
 
 
 		<h3>Windows</h3>
@@ -61,12 +61,12 @@
 
 
 		<h4>Windows Vista users cannot access secure WebDAV</h4>
-		<p>A default and up to date installation of Windows Vista has no support for secure WebDAV. You'll need to install the following <a rel="nofollow noopener noreferrer" target="_blank" href="http://support.microsoft.com/kb/907306">patch</a>.</p>
+		<p>A default and up to date installation of Windows Vista has no support for secure WebDAV. You'll need to install the following <a rel="noopener noreferrer external" target="_blank" href="http://support.microsoft.com/kb/907306">patch</a>.</p>
 
 
 		<h4>Windows XP users cannot change credentials for WebDAV authentication.</h4>
 		<p>To clear previously entered authentication data from the credential cache, use the following menu selection:
-		Start -> Settings -> Control Panel -> User Accounts -> Change an Account
-		Then select the User account for which you wish to clear the stored password. Click on 'Manage My Network Passwords', highlight the mapped drive or WebDAV account and click 'Remove'.</p>
+			Start -> Settings -> Control Panel -> User Accounts -> Change an Account
+			Then select the User account for which you wish to clear the stored password. Click on 'Manage My Network Passwords', highlight the mapped drive or WebDAV account and click 'Remove'.</p>
 	</section>
 </article>

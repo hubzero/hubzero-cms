@@ -321,6 +321,8 @@ class Authors extends Base
 		}
 
 		$this->set('_message', Lang::txt('New author order saved'));
+		// Reflect the update in curation record
+		$this->_parent->set('_update', 1);
 
 		return true;
 	}

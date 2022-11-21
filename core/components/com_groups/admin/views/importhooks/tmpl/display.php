@@ -40,7 +40,10 @@ Toolbar::help('import');
 		<table class="admintable">
 			<thead>
 				<tr>
-					<th scope="col"><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
+					<th scope="col">
+						<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+						<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+					</th>
 					<th scope="col" class="priority-3"><?php echo Lang::txt('COM_GROUPS_IMPORTHOOK_DISPLAY_FIELD_NAME'); ?></th>
 					<th scope="col" class="priority-2"><?php echo Lang::txt('COM_GROUPS_IMPORTHOOK_DISPLAY_FIELD_TYPE'); ?></th>
 					<th scope="col"><?php echo Lang::txt('COM_GROUPS_IMPORTHOOK_DISPLAY_FIELD_FILE'); ?></th>
@@ -62,6 +65,7 @@ Toolbar::help('import');
 						<tr>
 							<td>
 								<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $hook->get('id'); ?>" class="checkbox-toggle" />
+								<label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $hook->get('id'); ?></label>
 							</td>
 							<td class="priority-3">
 								<?php echo $this->escape($hook->get('name')); ?> <br />
