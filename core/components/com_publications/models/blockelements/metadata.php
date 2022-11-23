@@ -35,6 +35,10 @@ class Metadata extends Base
 		$required = $manifest->params->required;
 		$key 	  = $manifest->params->aliasmap;
 		$default  = isset($manifest->params->default) ? $manifest->params->default : null;
+		if (isset($pub->curation()->_manifest->params->default_title))
+		{
+			$default = $pub->curation()->_manifest->params->default_title;
+		}
 		$value	  = isset($pub->$key) ? $pub->$key : null;
 
 		$incomplete = 0;
