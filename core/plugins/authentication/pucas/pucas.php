@@ -378,7 +378,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
 		}
 
-		phpCAS::setNoCasServerValidation();
+		phpCAS::setCasServerCACert("/etc/ssl/certs/PuCAS_CA.crt");
 	}
 
 	/**
