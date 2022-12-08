@@ -176,6 +176,6 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 		// Setup view
 		$this->view->setLayout('build');
 
-		$this->view->title = 'Build Outline';
+		$this->view->title = 'Edit Outline';
 	}
 }
