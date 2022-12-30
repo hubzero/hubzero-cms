@@ -586,18 +586,42 @@ $router->rules('parse')->append('content', function ($uri)
 	{
 		// Build the path
 		$path = array();
+		$isCategory = false;
 		for ($i=0; $i < ($count-1); $i++)
 		{
+			// Skip "/content/article" prefix in path if present
+			if ($segments[$i] == 'content' || $segments[$i] == 'article')
+			{
+				continue;
+			}
+			if ($segments[$i] == 'category')
+			{
+				$isCategory = true;
+				continue;
+			}
 			$path[] = $segments[$i];
 		}
 
+		if ($isCategory)
+		{
+			$path[] = $segments[$count-1];
+		}
 		$path = implode('/', $path);
 
-		// Now, do query (path is all but last segment, and last segment is article alias)
-		$query  = "SELECT con.`id` FROM `#__content` AS con";
-		$query .= " LEFT JOIN `#__categories` AS cat ON con.catid = cat.id";
-		$query .= " WHERE con.state=1 AND con.`alias` = " . $db->quote(strtolower($segments[$count-1]));
-		$query .= " AND cat.`path` = " . $db->quote(strtolower($path));
+		if ($isCategory)
+		{
+			// Do category query using path as category
+			$query  = "SELECT cat.`id` FROM `#__categories` AS cat";
+			$query .= " WHERE cat.`extension`='com_content' AND cat.`path` = " . $db->quote(strtolower($path));
+		}
+		else
+		{
+			// Do article query (path for category is all but last segment, and last segment is article alias)
+			$query  = "SELECT con.`id` FROM `#__content` AS con";
+			$query .= " LEFT JOIN `#__categories` AS cat ON con.catid = cat.id";
+			$query .= " WHERE con.state=1 AND con.`alias` = " . $db->quote(strtolower($segments[$count-1]));
+			$query .= " AND cat.`path` = " . $db->quote(strtolower($path));
+		}
 		$db->setQuery($query);
 
 		if ($result = $db->loadResult())
@@ -607,9 +631,20 @@ $router->rules('parse')->append('content', function ($uri)
 
 			$vars['option'] = 'com_content';
 			$vars['id']     = $result;
-			$vars['view']   = 'article';
-
-			if (isset($item))
+			if ($isCategory)
+			{
+				$vars['view'] = 'category';
+			}
+			else
+			{
+				$vars['view'] = 'article';
+			}
+	
+			if (isset($item) && $isCategory)
+			{
+				$item->query['view'] = 'category';
+			}
+			else if (isset($item))
 			{
 				$item->query['view'] = 'article';
 			}
