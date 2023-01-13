@@ -1391,14 +1391,6 @@ class Repo extends Obj
 				}
 			}
 
-			// Strips out temporary path
-			if (strpos($safeName, 'tmp/') !== false)
-			{
-				$parts = explode('/', $safeName);
-				$safeName = str_replace($parts[0].'/', '', $safeName);
-				$safeName = str_replace($parts[1].'/', '', $safeName);
-			}
-
 			// Copy file into project
 			if (Filesystem::copy($e, $target . DS . $safeName))
 			{
