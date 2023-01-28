@@ -32,7 +32,7 @@
 			<option value="1">JYes</option>
 			<option value="0">JNo</option>
 		</field>
-		<field name="simtool" type="list" default="1" label="Enable Simtool" description="Offer an option to publish as a Simtool.">
+		<field name="simtool" type="list" default="1" label="Enable Sim2L" description="Offer an option to publish as a Sim2L.">
 			<option value="1">JYes</option>
 			<option value="0">JNo</option>
 		</field>
