@@ -39,11 +39,10 @@
 	}
 /* Within File Browser */
 	.upload-browser {
-		display: table-row;
+		display: flex;
 	}
 	.upload-browser-col {
 		position: relative;
-		display: table-cell;
 		vertical-align: top;
 		border: 1px solid #CCC;
 		background: #FFF;
@@ -51,17 +50,27 @@
 	.upload-browser-col.left {
 		width: 250px;
 		min-width: 250px;
-		padding-top: 7em;
 		border-right: 2px solid #eee;
 		overflow-y: auto;
+		display: flex;
+		flex-direction: column;
+		padding: 10px;
 	}
+	.upload-browser-col.left > * {
+		order: 2;
+	}
+	
+	.upload-browser-col.left > form {
+		order: 1;
+	}
+	
 	.upload-browser-col.right {
 		/*padding-left: 30px;*/
 		border-left: 2px solid #eee;
 		width: 100%;
 	}
 	.upload-browser-col .toolbar {
-		margin: 10px;
+		margin: 10px 0;
 		padding: 0 0 5px 0;
 		border-bottom: 1px solid #ddd;
 		font-weight: 200;
@@ -78,16 +87,9 @@
 		float: right;
 	}
 	.upload-browser-filelist-iframe {
-		position: absolute;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		/*background: #FFF;
-		border: 1px solid #CCC;*/
 		width: 100%;
-		height: 100%;
-		min-height: 100%;
+		height: 100vh;
+		border: 0;
 	}
 	*::-ms-backdrop, .upload-browser-filelist-iframe {
 		height: 50em;
@@ -98,11 +100,10 @@
 		}
 	}
 	.upload-browser-uploader {
-		position: absolute;
-		top: 10px;
-		left: 10px;
-		right: 10px;
 		display: block;
+	}
+	.upload-browser-uploader fieldset {
+		padding: 0;
 	}
 	.action-addfolder {
 		display: inline-block;
@@ -121,11 +122,6 @@
 /* Folder Tree List */
 	.foldertree {
 		overflow-y: scroll;
-		position: absolute;
-		top: 11em;
-		left: 10px;
-		right: 10px;
-		bottom: 10px;
 	}
 	.foldertree-list {
 		display: none;
@@ -464,19 +460,18 @@
 	}
 	.qq-upload-button span,
 	.qq-upload-drop-area span {
-		position: relative;
-		padding-left: 1.5em;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 	.qq-upload-button span:before,
 	.qq-upload-drop-area span:before {
 		display: block;
-		position: absolute;
-		top: -0.1em;
 		font-family: "Fontcons";
 		font-size: 1.5em;
 		line-height: 1;
 		content: "\f016";
-		left: 0;
+		margin-right: 0.5rem;
 	}
 	.qq-upload-button:hover,
 	.qq-upload-drop-area:hover,
