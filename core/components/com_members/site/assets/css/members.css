@@ -381,22 +381,20 @@
 
 /* Page header */
 	#page_header {
-		display: block;
+		display: flex;
+		align-items: center;
 		padding: 25px 20px 5px 20px;
 		margin-bottom: 5px;
 		overflow: hidden;
-		position:relative;
 	}
 	#page_options + #page_header {
 		margin-right: 11em;
 	}
 	#page_header h2 {
-		float: left;
 		color: #444;
 		margin: 0px;
 		border-bottom: 0px;
 		line-height: 1em;
-		padding: 0 0 0 35px;
 	}
 	#page_header h2 a {
 		border-bottom: 1px solid #f8f8f8;
@@ -406,13 +404,11 @@
 		border-bottom: 1px solid #aaa;
 	}
 	#page_header span {
-		float: left;
 		color: #777;
 		border: none;
 		padding: 3px 15px 0 15px;
 	}
 	#page_header h3 {
-		float: left;
 		margin: 0;
 		padding: 3px 0 0 0;
 		color: #999;
@@ -422,9 +418,6 @@
 
 	#page_header #profile-privacy {
 		color: transparent;
-		position: absolute;
-		top: 25px;
-		left: 20px;
 		width: 30px;
 		height: 30px;
 		line-height: 1;
