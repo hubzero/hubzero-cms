@@ -794,13 +794,13 @@
 	}
 	/* Page header */
 	#page_header {
-		display: block;
+		display: flex;
+		align-items: center;
 		padding: 25px 20px 5px 20px;
 		margin-bottom: 5px;
 		overflow: hidden;
 	}
 	#page_header h2 {
-		float: left;
 		color: #444;
 		margin: 0px;
 		border-bottom: 0px;
@@ -808,23 +808,15 @@
 		padding: 0;
 	}
 	#page_header h2 a {
-		border-bottom: 1px solid #f8f8f8;
 		color: #444;
 	}
-	#page_header h2 a:hover {
-		border-bottom: 1px solid #aaa;
-	}
 	#page_header .divider {
-		float: left;
 		color: #777;
 		border: none;
-		padding: 3px 15px 0 15px;
+		padding: 0 15px;
 	}
 	#page_header h3 {
-		float: left;
 		margin: 0;
-		padding: 3px 0 0 0;
-		color: #999;
 		font-size: 16px;
 		font-weight: 400;
 	}
