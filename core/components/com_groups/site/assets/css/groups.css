@@ -879,11 +879,12 @@
 		color: #A30;
 	}*/
 	#group_options .btn-group {
-		display: block;
 		text-align: left;
+		display: flex;
+		align-items: center;
 	}
 	#group_options .btn-group > a {
-		width: 83%;
+		flex-grow: 1;
 	}
 	#group_options .btn-group > .btn {
 		border-color: #000;
