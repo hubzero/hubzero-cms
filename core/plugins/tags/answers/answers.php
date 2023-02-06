@@ -109,7 +109,7 @@ class plgTagsAnswers extends \Hubzero\Plugin\Plugin
 
 		$html  = "\t" . '<li class="answer">' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . strip_tags(stripslashes($row->title)) . '</a></p>' . "\n";
-		$html .= "\t\t" . '<p class="details">';
+		$html .= "\t\t" . '<p class="details"><strong class="type">Q&A</strong><span>|</span>';
 		if ($row->state == 1)
 		{
 			$html .= Lang::txt('PLG_TAGS_ANSWERS_OPEN');
