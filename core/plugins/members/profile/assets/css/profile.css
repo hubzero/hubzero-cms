@@ -201,7 +201,8 @@
 		content: "\f070";
 		position: absolute;
 		left: -20px;
-		top: 0px;
+		top: 50%;
+		transform: translate(0, -50%);
 		width: 18px;
 		height: 18px;
 		font-size: 14px;
@@ -241,7 +242,8 @@
 		content: "\f023";
 		position: absolute;
 		left: -20px;
-		top: 0px;
+		top: 50%;
+		transform: translate(0, -50%);
 		width: 18px;
 		height: 18px;
 		font-size: 14px;
