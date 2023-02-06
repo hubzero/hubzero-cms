@@ -188,8 +188,8 @@
 		right: 0;
 		content: "\f042";
 		font-family: "Fontcons";
-		font-size: 7em;
-		line-height: 1.3em;
+		font-size: 100px;
+		line-height: 1em;
 		color: #e1e1e1;
 	}
 	.groups-container .group-alias {
@@ -273,6 +273,7 @@
 		color: #ccc;
 		background: transparent;
 		padding: 0;
+		line-height: 1em;
 	}
 	.groups-container .user-actions a:hover {
 		color: #333;
