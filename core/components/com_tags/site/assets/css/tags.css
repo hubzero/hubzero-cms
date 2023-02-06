@@ -101,3 +101,9 @@
 	#children li {
 		float: right;
 	}
+
+.order-options a:before {
+	content: "\2193";
+	font-family: "Fontcons";
+	margin-right: 0.2em;
+}

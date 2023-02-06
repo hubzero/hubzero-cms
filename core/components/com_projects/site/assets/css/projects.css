@@ -1162,21 +1162,16 @@
 /* Table listing of items with management options
 --------------------------------------------- */
 	.list-editing {
-		padding: 0.2em 0 0.5em 0;
-		height: 30px;
 		color: #666;
 		background: #f3f3f3;
-		text-align: right;
 	}
 	#cbody .list-editing {
 		background: #e3e5e2;
 		padding: 0;
 	}
 	.list-editing p {
-		text-align: left;
 		font-size: 85%;
 		margin: 0;
-		padding: 0 0.5em;
 	}
 	.manage {
 		padding: 0.1em 0.3em;
@@ -1559,24 +1554,26 @@
 		display: block;
 		float: left;
 		margin: 0;
-		padding: 4px 15px;
-		height: 24px;
+		padding: 0.4em 0.8em;
 		position: relative;
-		padding-left: 2em;
+		font-size: 1em;
+		line-height: 1em;
+		padding-left: 1.2em;
 	}
 	ol.steps li:first-child {
 		margin-left: 0;
-		padding-left: 1em;
+		padding-left: 0.8rem;
 	}
 	ol.steps li:after {
 		content: "";
 		width: 0;
 		height: 0;
-		border-top: 16px solid transparent;
-		border-bottom: 16px solid transparent;
-		border-left: 16px solid #20a2c8;
+		border-top: 0.9em solid transparent;
+		border-bottom: 0.9em solid transparent;
+		border-left: 0.7em solid #20a2c8;
 		position: absolute;
-		margin: -4px 0 0 13px;
+		left: 100%;
+		top: 0;
 		z-index: 1;
 	}
 	ol.steps li a {

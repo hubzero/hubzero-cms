@@ -13,6 +13,8 @@ defined('_HZEXEC_') or die();
 		<a href="<?php echo Route::url($this->entry->link()); ?>"><?php echo $this->escape(stripslashes($this->entry->get('title'))); ?></a>
 	</p>
 	<p class="details">
+		<strong class="type">Blog</strong>
+		<span>|</span>
 		<?php echo $this->entry->published('date'); ?>
 		<span>|</span>
 		<?php echo Lang::txt('PLG_TAGS_BLOGS_POSTED_BY', '<cite><a href="' . Route::url('index.php?option=com_members&id=' . $this->entry->get('created_by')) . '">' . $this->escape(stripslashes($this->entry->creator->get('name'))) . '</a></cite>'); ?>
