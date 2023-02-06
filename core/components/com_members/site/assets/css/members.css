@@ -88,7 +88,7 @@
 		border-top: 1px solid #eee;
 	} 
 	#page_menu li a {
-		color: #aaa;
+		color: #000;
 		position: relative;
 		display: block;
 		background-image: none;
@@ -100,10 +100,9 @@
 		content: "";
 		position: absolute;
 		left: 1.6em;
-		top: 0.4em;
+		top: 50%;
+		transform: translate(0, -50%);
 		width: 1em;
-		height: 1em;
-		font-size: 1.2em;
 		font-family: 'Fontcons';
 		-ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=100)";
 		filter: alpha(opacity=100);
@@ -139,17 +138,6 @@
 	}
 	#page_menu li.active>a:hover {
 		border: none;
-	}
-	#page_menu li.active:after {
-		content: "";
-		position: absolute;
-		top: 0px;
-		right: -0.9em;
-		z-index: 444;
-		border-top: 1.175em solid transparent;
-		border-right: none;
-		border-bottom: 1.175em solid transparent;
-		border-left: 1em solid #555;
 	}
 	#page_menu li .meta {
 		position: absolute;
