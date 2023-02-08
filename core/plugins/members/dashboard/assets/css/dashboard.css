@@ -224,8 +224,9 @@
 }
 .module-links a:before {
 	position: absolute;
-	top: 5px;
-	left: 15px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 	font-family: 'Fontcons';
 }
 .module-links .remove.confirm,
