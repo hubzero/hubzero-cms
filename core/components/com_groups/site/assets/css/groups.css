@@ -1347,7 +1347,6 @@ body.group-page-preview {
  	Group Edit Availability
 ===========================================*/
 #hubForm .group_cn_label input  {
-	width: 75%;
 	display: block;
 }
 .group_cn_label {
