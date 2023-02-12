@@ -742,8 +742,24 @@
 	.suggestions {
 		background: #f8ffff !important;
 	}
+	.suggestions > div {
+		position: relative;
+	}
 	.suggestions h4 {
 		padding-left: 10px !important;
+	}
+	.suggestions a:before {
+		content: "";
+		width: 1em;
+		height: 1em;
+		font-size: 1em;
+		line-height: 1em;
+		font-family: 'Fontcons';
+		display: block;
+		position: absolute;
+		margin-left: -1.2em;
+		top: 50%;
+		transform: translate(0, -50%);
 	}
 	.sidebox.suggestions p {
 		margin: 0.3em 0.5em;
@@ -752,25 +768,26 @@
 		padding-left: 60px;
 	}
 @media (min-width: 40em) {
-	.suggestions div {
-		max-width: 31%;
-		min-width: 25%;
-	}
 	.suggestions a:before {
 		content: "";
-		width: 32px;
-		height: 32px;
-		font-size: 32px;
-		font-family: 'Fontcons';
+		width: 1.3em;
+		height: 1.3em;
+		font-size: 1.3em;
+		line-height: 1.3em;
 		color: #CCC;
 		display: block;
 		position: absolute;
 		margin-left: -1.2em;
-		margin-top: 0.2em;
 	}
 	.suggestions p,
 	.content-feed .sidebox .suggestions p {
 		padding-left: 60px;
+	}
+}
+
+@media (min-width: 990px) {
+	.suggestions div {
+		max-width: 31%;
 	}
 }
 
@@ -1210,8 +1227,12 @@
 --------------------------------------------- */
 
 	.list-menu {
-		height: 20px;
+		display: flex;
+		align-items: center;
 		padding: 0 0.5em 1em 0.5em;
+	}
+	.order-options {
+		order: 3;
 	}
 	.view-options {
 		float: left;
@@ -1250,6 +1271,9 @@
 	}
 	.view-options li.view-list a:before {
 		content: "\f03a";
+	}
+	.list-selector {
+		flex-grow: 1;
 	}
 	.container .entries-menu.view-options a:hover {
 		background-color: transparent;

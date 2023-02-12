@@ -121,7 +121,6 @@
 	}
 	.main-menu ul.projecttools li>a:before,
 	.main-menu ul.projecttools li.assets>span:before {
-		position: absolute;
 		margin-left: -20px;
 	}
 	.addnew:before {
@@ -219,3 +218,13 @@
 		content: "\f08c";
 		color: #48704c;
 	}
+
+@media (min-width: 50em) {
+	.main-menu ul.projecttools li > a:before,
+	.main-menu ul.projecttools li.assets > span:before {
+		margin-left: -20px;
+		position: absolute;
+		top: 50%;
+		transform: translate(0, -50%);
+	}
+}
