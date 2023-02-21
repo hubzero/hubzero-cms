@@ -220,6 +220,11 @@ Toolbar::help('threads');
 						$task_access  = '0';
 						$row->groupname = Lang::txt('COM_FORUM_ACCESS_PRIVATE');
 						break;
+					default:
+						$color_access = 'public';
+						$task_access  = $row->access;
+						$row->groupname = Lang::txt('COM_FORUM_ACCESS_OTHER');
+						break;
 				}
 				?>
 				<tr class="<?php echo "row$k" . ($row->state ==2 ? ' archived' : ''); ?>">
