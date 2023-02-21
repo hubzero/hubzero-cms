@@ -177,6 +177,11 @@ Toolbar::help('sections');
 						$task_access  = '0';
 						$row->set('access_level', Lang::txt('COM_FORUM_ACCESS_PRIVATE'));
 						break;
+					default:
+						$color_access = 'public';
+						$task_access  = $row->get('access');
+						$row->set('access_level', Lang::txt('COM_FORUM_ACCESS_OTHER'));
+						break;
 				}
 
 				$cat = $row->categories->count();
