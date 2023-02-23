@@ -585,7 +585,6 @@ class Customexts extends AdminController
 				{
 					// Check if specified branch is being used.  If not checkout out specified branch
 					$museCmd = 'checkoutRepoBranch repoPath=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' git_branch=' . $extension->get('git_branch') : '');
-
 					$checkoutRepoBranch_response = Cli::call($museCmd, $task='repository');
 					$checkoutRepoBranch_response = json_decode($checkoutRepoBranch_response);
 
@@ -603,7 +602,7 @@ class Customexts extends AdminController
 						$fetch_response = Cli::call($museCmd, $task='repository');
 						$fetch_response = json_decode($fetch_response);
 
-						// did we succeed
+						// no upstream changes to get
 						if ($fetch_response == '')
 						{
 							// Run migrations
@@ -625,6 +624,11 @@ class Customexts extends AdminController
 						{
 							$output = array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_UNKNOWN_BRANCH'));
 							$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+						}
+						else
+						{
+							// There were upstream changes that have not yet been merged with the local branch, display commits
+							$success[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $fetch_response);
 						}
 					}
 				}
@@ -680,8 +684,16 @@ class Customexts extends AdminController
 			$update_response = Cli::call($museCmd, $task='repository');
 			$update_response = json_decode($update_response);
 
-			// did we succeed
-			if (preg_grep("/Updating the repository.../uis", $update_response))
+			// did we succeed?
+			if ($update_response && preg_grep("/Updating the repository.../uis", $update_response))
+			{
+				// add success message
+				$success[] = array(
+					'extension'   => $extension->get('name'),
+					'message' => $update_response
+				);
+			}
+			else if ($update_response == "")
 			{
 				// add success message
 				$success[] = array(

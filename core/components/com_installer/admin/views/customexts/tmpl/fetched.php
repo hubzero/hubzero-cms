@@ -31,10 +31,6 @@ Html::behavior('tooltip');
 				<?php foreach ($this->success as $success) : ?>
 					<tr>
 						<td class="merge-success">
-							<?php
-								echo '<strong>Extension: ' . $success['extension'] . '</strong>';
-								echo '<p>' . Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_SUCCESS_DESC') . '</p>';
-							?>
 							<?php if ($success['message'][0] != Lang::txt('COM_INSTALLER_CUSTOMEXTS_CLONE_SUCCESSFUL')
 										&& $success['message'][0] != Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')
 										&& !preg_match('/ineligible/', $success['message'][0])) : ?>
