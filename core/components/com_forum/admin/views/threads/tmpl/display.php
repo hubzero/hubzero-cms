@@ -217,12 +217,12 @@ Toolbar::help('threads');
 						break;
 					case 5:
 						$color_access = 'private';
-						$task_access  = '0';
+						$task_access  = '5';
 						$row->groupname = Lang::txt('COM_FORUM_ACCESS_PRIVATE');
 						break;
 					default:
-						$color_access = 'public';
-						$task_access  = $row->access;
+						$color_access = 'other';
+						$task_access  = (string) $row->access;
 						$row->groupname = Lang::txt('COM_FORUM_ACCESS_OTHER');
 						break;
 				}

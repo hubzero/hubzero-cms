@@ -164,6 +164,11 @@ Toolbar::help('categories');
 
 				switch ($row->access)
 				{
+					case 1:
+						$color_access = 'public';
+						$task_access  = '1';
+						$row->groupname = Lang::txt('COM_FORUM_ACCESS_PUBLIC');
+						break;
 					case 2:
 						$color_access = 'registered';
 						$task_access  = '2';
@@ -184,11 +189,10 @@ Toolbar::help('categories');
 						$task_access  = '5';
 						$row->groupname = Lang::txt('COM_FORUM_ACCESS_PRIVATE');
 						break;
-					case 1:
 					default:
-						$color_access = 'public';
-						$task_access  = '1';
-						$row->groupname = Lang::txt('COM_FORUM_ACCESS_PUBLIC');
+						$color_access = 'other';
+						$task_access  = (string) $row->access;
+						$row->groupname = Lang::txt('COM_FORUM_ACCESS_OTHER');
 						break;
 				}
 
