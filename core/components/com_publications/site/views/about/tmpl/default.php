@@ -216,7 +216,7 @@ $schema = $metaElements->getSchema();
 	</div>
 <?php } ?>
 <?php if ($this->publication->params->get('show_tags')) {
-	$this->publication->getTagCloud( $this->authorized );
+	$this->publication->getTagCloud(User::authorise('core.admin')?1:0);
 	?>
 	<?php if ($this->publication->_tagCloud) { ?>
 		<h4><?php echo Lang::txt('COM_PUBLICATIONS_TAGS'); ?></h4>

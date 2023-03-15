@@ -351,7 +351,7 @@ class Tags extends \Hubzero\Base\Obj
 	public function get_tag_cloud($showsizes=0, $admin=0, $objectid=null)
 	{
 		$cloud = new Cloud($objectid, $this->_tbl);
-		return $cloud->render();
+		return $cloud->render('html', array('admin' => $admin), 1 );
 	}
 
 	/**
