@@ -231,10 +231,7 @@ class Cloud extends \Hubzero\Base\Obj
 				// Filter out admin tags - JBG
 				$results->whereNotIn('admin', [1]);
 			}
-			else
-			{
-				$results->whereEquals('admin', (int) $filters['admin']);
-			}
+
 		}
 		if (isset($filters['created_by']) && $filters['created_by'] > 0)
 		{
