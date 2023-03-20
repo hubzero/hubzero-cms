@@ -58,13 +58,13 @@ HUB.ProjectTeamSelect = {
 		var url = link.attr('href');
 		var url = url + '&ajax=1&no_html=1';
 
-		link.on('click', function(e) 
+		link.on('click', function(e)
 		{
 			e.preventDefault();
 
 			// Ajax call to get current status of a block
-			$.post(url, {}, 
-			function (response) 
+			$.post(url, {},
+			function (response)
 			{
 				if (response)
 				{
@@ -90,7 +90,7 @@ HUB.ProjectTeamSelect = {
 		}
 
 		// Send data
-		btn.on('click', function(e) 
+		btn.on('click', function(e)
 		{
 			e.preventDefault();
 
@@ -168,7 +168,7 @@ HUB.ProjectTeamSelect = {
 		}
 
 		// Send data
-		btn.on('click', function(e) 
+		btn.on('click', function(e)
 		{
 			e.preventDefault();
 
@@ -250,9 +250,9 @@ HUB.ProjectTeamSelect = {
 		$('#team-selector').selectable({
 			filter: ".allowed",
 			cancel: ".collapsor",
-			selected: function (event, ui) 
+			selected: function (event, ui)
 			{
-				if ($(ui.selected).hasClass('selectedfilter')) 
+				if ($(ui.selected).hasClass('selectedfilter'))
 				{
 					$(ui.selected).removeClass('selectedfilter');
 					// do unselected stuff
@@ -264,7 +264,7 @@ HUB.ProjectTeamSelect = {
 
 				HUB.ProjectTeamSelect.enableButton();
 			},
-			unselected: function (event, ui) 
+			unselected: function (event, ui)
 			{
 				$(ui.selected).removeClass('selectedfilter');
 				HUB.ProjectTeamSelect.enableButton();
@@ -279,7 +279,7 @@ HUB.ProjectTeamSelect = {
 		var selections 	= new Array();
 		var selString = '';
 
-		if (items.length > 0) 
+		if (items.length > 0)
 		{
 			items.each(function(i, item)
 			{
@@ -287,8 +287,8 @@ HUB.ProjectTeamSelect = {
 
 				var idx = HUB.Projects.getArrayIndex(id, selections);
 
-				// Add 
-				if (idx == -1) 
+				// Add
+				if (idx == -1)
 				{
 					selections.push(id);
 					selString = selString + id + ',';
@@ -306,3 +306,38 @@ jQuery(document).ready(function($){
 
 // Register the event
 jQuery(document).on('ajaxLoad', HUB.ProjectTeamSelect.initialize);
+
+$(function(){
+	$("#organization").autocomplete({
+		source: function(req, resp){
+			var rorURL = "index.php?option=com_members&controller=profiles&task=getOrganizations&term=";
+
+			var terms = $("#organization").val();
+
+			if (terms.indexOf(" "))
+			{
+				rorURL = rorURL + terms.split(" ").join("+");
+			}
+			else
+			{
+				rorURL = rorURL + terms;
+			}
+
+			$.ajax({
+				url: rorURL,
+				data: null,
+				dataType: "json",
+				success:function(result){
+					resp(result);
+				},
+				error:function(jqXHR, textStatus, errorThrown){
+					console.log(textStatus);
+					console.log(errorThrown);
+					console.log(jqXHR.responseText);
+				}
+			});
+		},
+
+		appendTo: '#autocomplete-organization',
+	});
+});

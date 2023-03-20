@@ -124,7 +124,7 @@ jQuery(document).ready(function($){
 			} else if (metawidth < 20 && metawidth != 0) {
 				alrt.css("right", 33-(20-metawidth));
 			}
-		} 
+		}
 	});*/
 
 	$("#member-stats-graph").fancybox({
@@ -132,6 +132,39 @@ jQuery(document).ready(function($){
 		title:'',
 		beforeShow: function() {
 			$(".fancybox-inner img").css("width","100%");
+		}
+	});
+});
+
+$(function(){
+	$("#profile_organization").autocomplete({
+		source: function(req, resp){
+			var rorURL = "index.php?option=com_members&controller=profiles&task=getOrganizations&term=";
+
+			var terms = $("#profile_organization").val();
+
+			if (terms.indexOf(" "))
+			{
+				rorURL = rorURL + terms.split(" ").join("+");
+			}
+			else
+			{
+				rorURL = rorURL + terms;
+			}
+
+			$.ajax({
+				url: rorURL,
+				data: null,
+				dataType: "json",
+				success:function(result){
+					resp(result);
+				},
+				error:function(jqXHR, textStatus, errorThrown){
+					console.log(textStatus);
+					console.log(errorThrown);
+					console.log(jqXHR.responseText);
+				}
+			});
 		}
 	});
 });

@@ -223,3 +223,21 @@
 		border-radius: 0.25em;
 		margin: 0 0 0.5em 0;
 	}
+
+/*Organization normalization*/
+.ui-autocomplete {
+	position: absolute;
+	max-height: 300px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        z-index:1000 !important;
+}
+
+ul[id^='ui-id-'] {
+	list-style-type: none;
+	background: white;
+}
+
+ul[id^='ui-id-'] li {
+	padding-left: 0.5rem;
+}
