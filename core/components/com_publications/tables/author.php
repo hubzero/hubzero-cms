@@ -312,6 +312,12 @@ class Author extends Table
 					$res->surname = $user->get('surname');
 					$res->orcid = $user->get('orcid');
 				}
+
+				if ($res->user_id)
+				{
+					$res->organization = $user->get('organization');
+					$res->orgid = $user->get('orgid');
+				}
 			}
 		}
 
