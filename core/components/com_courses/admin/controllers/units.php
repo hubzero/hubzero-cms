@@ -229,7 +229,7 @@ class Units extends AdminController
 	public function copyTask()
 	{
 		// Incoming
-		$ids = Request::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Get the single ID we're working with
 		if (is_array($id))
