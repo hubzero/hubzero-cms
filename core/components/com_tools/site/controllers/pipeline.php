@@ -700,7 +700,7 @@ class Pipeline extends SiteController
 			'vncGeometryY' => $vncGeometryY,
 			'team'         => User::get('username'),
 			'hostreq'      => $this->config->get('default_hostreq', 'sessions'),
-			'repohost'     => 'svnLocal',
+			'repohost'     => $this->config->get('github', 1) ? "gitExternal" : "svnLocal",
 			'github'       => '',
 			'publishType'  => 'standard'
 		);

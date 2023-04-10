@@ -24,7 +24,7 @@
 		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="params_whitelist" type="text" menu="hide" label="Directory Parameter Whitelist" default="/home" description="White-list of directories acceptable to include in tool parameter passing feature" />
-		<field name="github" type="list" default="1" label="External Github Repo" description="Offer an option to pull code from a remote Github repository.">
+		<field name="github" type="list" default="1" label="External GitHub Repo" description="Offer an option to pull code from a remote GitHub repository.">
 			<option value="1">JYes</option>
 			<option value="0">JNo</option>
 		</field>
@@ -117,7 +117,7 @@
 		<field name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="First part of DOI namespace (what goes right after doi: and before /, e.g. 10.5072 )" />
 		<field name="doi_newprefix" type="text" menu="hide" default="" label="DOI handle prefix" description="Hub-specific DOI namespace end (usually 2-3 characters going after /, e.g. F2K)" />
 		<field name="doi_xmlschema" type="text" menu="hide" default="" label="DOI XML Schema" description="URL of XML schema to validate against" />
-		<field name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (use full HUB name) for DOI service" />
+		<field name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (use full site name) for DOI service" />
 		<field name="doi_resolve" type="text" menu="hide" default="https://doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />
 		<field name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="DOI verify url" description="URL for verifying DOIs" />
 	</fieldset>

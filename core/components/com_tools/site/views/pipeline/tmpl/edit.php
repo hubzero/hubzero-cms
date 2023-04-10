@@ -158,13 +158,15 @@ $this->css('pipeline.css')
 				<fieldset class="hidden">
 					<legend><?php echo Lang::txt('COM_TOOLS_EDIT_REPO_HOST'); ?>:</legend>
 	
-					<div class="form-group form-check">
-						<label for="tool_repohost_svnlocal" class="form-check-label">
-							<input readonly type="radio" name="tool[repohost]" id="tool_repohost_svnlocal" value="svnLocal" <?php echo (!$this->defaults['repohost'] || $this->defaults['repohost'] == 'svnLocal') ? 'checked="checked"' :  "disabled"; ?> class="option form-check-input" />
-							<?php echo Lang::txt('COM_TOOLS_EDIT_LOCAL_SUBVERSION'); ?>
-						</label>
-					</div>
-	
+					<?php if ($this->config->get('github', 1)) { ?>
+						<div class="form-group form-check">
+							<label for="tool_repohost_gitexternal" class="form-check-label">
+								<input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?php echo (!$this->defaults['repohost'] || $this->defaults['repohost'] == 'gitExternal') ? 'checked="checked"' : "disabled"; ?> class="option form-check-input" />
+								<?php echo Lang::txt('COM_TOOLS_EDIT_EXT_GIT'); ?>
+							</label>
+						</div>
+					<?php } ?>
+
 					<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
 						<div class="form-group form-check">
 							<label for="tool_repohost_gitlocal" class="form-check-label">
@@ -174,14 +176,13 @@ $this->css('pipeline.css')
 						</div>
 					<?php } ?>
 
-					<?php if ($this->config->get('github', 1)) { ?>
-						<div class="form-group form-check">
-							<label for="tool_repohost_gitexternal" class="form-check-label">
-								<input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?php echo ($this->defaults['repohost'] == 'gitExternal') ? 'checked="checked"' : "disabled"; ?> class="option form-check-input" />
-								<?php echo Lang::txt('COM_TOOLS_EDIT_EXT_GIT'); ?>
-							</label>
-						</div>
-					<?php } ?>
+					<div class="form-group form-check">
+						<label for="tool_repohost_svnlocal" class="form-check-label">
+							<input readonly type="radio" name="tool[repohost]" id="tool_repohost_svnlocal" value="svnLocal" <?php echo ($this->defaults['repohost'] == 'svnLocal') ? 'checked="checked"' :  "disabled"; ?> class="option form-check-input" />
+							<?php echo Lang::txt('COM_TOOLS_EDIT_LOCAL_SUBVERSION'); ?>
+						</label>
+					</div>
+	
 				</fieldset>
 	
 				<?php if ($this->config->get('github', 1)) { ?>
@@ -235,13 +236,15 @@ $this->css('pipeline.css')
 				<fieldset>
 					<legend><?php echo Lang::txt('COM_TOOLS_EDIT_REPO_HOST'); ?>:</legend>
 	
-					<div class="form-group form-check">
-						<label for="tool_repohost_svnlocal" class="form-check-label">
-							<input type="radio" name="tool[repohost]" id="tool_repohost_svnlocal" value="svnLocal" <?php if (!$this->defaults['repohost'] || $this->defaults['repohost'] == 'svnLocal') { echo 'checked="checked"'; } ?> class="option form-check-input" />
-							<?php echo Lang::txt('COM_TOOLS_EDIT_LOCAL_SUBVERSION'); ?>
-						</label>
-					</div>
-	
+					<?php if ($this->config->get('github', 1)) { ?>
+						<div class="form-group form-check">
+							<label for="tool_repohost_gitexternal" class="form-check-label">
+								<input type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?php if (!$this->defaults['repohost'] || $this->defaults['repohost'] == 'gitExternal') { echo 'checked="checked"'; } ?> class="option form-check-input" />
+								<?php echo Lang::txt('COM_TOOLS_EDIT_EXT_GIT'); ?>
+							</label>
+						</div>
+					<?php } ?>
+
 					<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
 						<div class="form-group form-check">
 							<label for="tool_repohost_gitlocal" class="form-check-label">
@@ -251,14 +254,13 @@ $this->css('pipeline.css')
 						</div>
 					<?php } ?>
 
-					<?php if ($this->config->get('github', 1)) { ?>
-						<div class="form-group form-check">
-							<label for="tool_repohost_gitexternal" class="form-check-label">
-								<input type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?php if ($this->defaults['repohost'] == 'gitExternal') { echo 'checked="checked"'; } ?> class="option form-check-input" />
-								<?php echo Lang::txt('COM_TOOLS_EDIT_EXT_GIT'); ?>
-							</label>
-						</div>
-					<?php } ?>
+					<div class="form-group form-check">
+						<label for="tool_repohost_svnlocal" class="form-check-label">
+							<input type="radio" name="tool[repohost]" id="tool_repohost_svnlocal" value="svnLocal" <?php if ($this->defaults['repohost'] == 'svnLocal') { echo 'checked="checked"'; } ?> class="option form-check-input" />
+							<?php echo Lang::txt('COM_TOOLS_EDIT_LOCAL_SUBVERSION'); ?>
+						</label>
+					</div>
+	
 				</fieldset>
 	
 				<?php if ($this->config->get('github', 1)) { ?>
