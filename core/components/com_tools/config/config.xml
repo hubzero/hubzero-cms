@@ -77,7 +77,7 @@
 		<field name="default_vnc" type="text" menu="hide" default="780x600" label="Default VNC Size" description="Default VNC geometry values" />
 		<field name="default_hostreq" type="text" menu="hide" default="sessions" label="Default Required Host Types" description="Default required session host types for new tools (comma seperated)" />
 		<field name="developer_site" type="text" menu="hide" default="FORGE" label="Developer Site" description="Name of project development site" />
-		<field name="project_path" type="text" menu="hide" default="/tools/" label="Path to Projects" description="Path to projects on development site (usually followed by the tool name)" />
+		<field name="project_path" type="text" menu="hide" default="/tools/" label="Path to Projects" description="Path to projects on development site (usually followed by the tool alias)" />
 		<field name="invokescript_dir" type="text" menu="hide" default="/apps" label="Invoke Script Dir" description="Directory for invoke script" />
 		<field name="dev_suffix" type="text" menu="hide" default="_dev" label="Dev Tool Suffix" description="Suffix indicating the development instance of a tool (e.g. _dev for toolname_dev) " />
 		<field name="group_prefix" type="text" menu="hide" default="app-" label="Dev group prefix" description="Prefix to name of development group (e.g. app-) " />
