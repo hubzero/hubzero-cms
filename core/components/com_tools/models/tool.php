@@ -1568,7 +1568,7 @@ class Tool
 		{
 			if (!filter_var($tool['github'], FILTER_VALIDATE_URL))
 			{
-				$err['github'] = Lang::txt('invalid Github URL');
+				$err['github'] = Lang::txt('invalid GitHub URL');
 			}
 		}
 
