@@ -28,7 +28,7 @@ $this->css('status.css')
 							<div >Username: <?php echo $this->lastsession->username; ?></div>
 							<div >Started: <?php echo $this->lastsession->start; ?></div>
 							<div >Last Accessed: <?php echo $this->lastsession->accesstime; ?></div>
-							<div >Tool Name: <?php echo $this->lastsession->sessname; ?></div>
+							<div >Tool Alias: <?php echo $this->lastsession->sessname; ?></div>
 							<div >Tool Revision: <?php echo $this->lastsession->appname; ?></div>
 						</div>
 					</div>
