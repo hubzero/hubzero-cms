@@ -49,6 +49,13 @@ jQuery(document).ready(function(jq){
 		shrbtn.on('click', function(event){
 			event.preventDefault();
 
+			var shareConfirm = $('#confirm-share');
+
+			if (!shareConfirm.attr('value')) {
+				alert('Please check the acknowledgement checkbox indicating your acceptance of the fact that shared sessions may be altered and controlled by the users or groups you share the session with.');
+				return;
+			}
+
 			// disable button
 			$(this).attr('disabled', 'disabled');
 
@@ -86,6 +93,9 @@ jQuery(document).ready(function(jq){
 
 						// uncheck readonly 
 						$("#readonly").removeAttr('checked');
+
+						// uncheck readonly 
+						$("#confirm-share").removeAttr('checked');
 					});
 				},
 				success: function(data, status, jqXHR) {
