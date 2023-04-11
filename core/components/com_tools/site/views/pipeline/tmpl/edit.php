@@ -354,7 +354,7 @@ $this->css('pipeline.css')
 					<label for="t_team">
 						<?php echo Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
 						<input type="text" name="tool[developers]" id="t_team" class="form-control" value="<?php echo \Components\Tools\Helpers\Html::getDevTeam($this->defaults['developers'], $this->id);  ?>" />
-						<span class="hint"><?php echo Config::get('sitename') . ' ' . Lang::txt('COM_TOOLS_HINT_TEAM'); ?></span>
+						<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_TEAM'); ?></span>
 					</label>
 				</div>
 			</fieldset>
