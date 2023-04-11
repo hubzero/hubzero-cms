@@ -820,6 +820,7 @@ class Sessions extends SiteController
 		$sess     = Request::getString('sess', '');
 		$username = trim(Request::getString('username', ''));
 		$group    = Request::getInt('group', 0);
+		$confirm = Request::getString('confirm', '');
 		$readonly = Request::getString('readonly', '');
 		$no_html  = Request::getInt('no_html', 0);
 
@@ -883,6 +884,12 @@ class Sessions extends SiteController
 		if (count($rows) != 1)
 		{
 			App::abort(404, Lang::txt('COM_TOOLS_ERROR_UNABLE_TO_GET_ENTRY_FOR', $sess, $owner));
+			return;
+		}
+
+		if ($confirm != 'Yes')
+		{
+			App::abort(404, Lang::txt('COM_TOOLS_ERROR_SHARE_NO_CONFIRM'));
 			return;
 		}
 
