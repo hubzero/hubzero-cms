@@ -432,6 +432,18 @@ class Articles extends AdminController
 		$newTasks = array('save2new', 'save2copy');
 		$task = in_array($this->_task, $newTasks) ? 'add' : $this->_task;
 
+		// Upon "saving to copy" or "save to new", need to make alias unique, update created and published date to current date
+		$currentAlias = $article->get('alias');
+        if (in_array($this->_task, $newTasks)) {
+            $article->set('created', Date::of('now')->toSql());
+            $article->set('publish_up', Date::of('now')->toSql());
+            if (!empty($currentAlias)) {
+                $article->set('alias', $currentAlias . uniqid());
+            }
+
+            $article->save();
+        }
+
 		$this->view
 			->set('task', $task)
 			->set('item', $article)
