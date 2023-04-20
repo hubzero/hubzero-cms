@@ -61,6 +61,11 @@ class plgTagsGroups extends \Hubzero\Plugin\Plugin
 			$from = " JOIN #__xgroups_members AS m ON m.gidNumber=a.gidNumber AND m.uidNumber=" . (int)User::get('id', 0);
 		}
 
+		// Allow tag to be visible to public visitors, previously tag was visible only for registered and logged in users
+        if (User::isGuest()) {
+            $from = '';
+        }
+
 		// Build the query
 		$f_count = "SELECT COUNT(f.gidNumber) FROM (SELECT a.gidNumber, COUNT(DISTINCT t.tagid) AS uniques ";
 
