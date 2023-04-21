@@ -155,7 +155,7 @@ endif;
 					<tr>
 						<th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_CREATED_LABEL');?></th>
 						<td>
-							<time datetime="<?php echo $this->item->created; ?>"><?php echo Date::of($this->item->created)->toLocal(); ?></time>
+							<time datetime="<?php echo $this->item->created; ?>"><?php echo Date::of($this->item->created); ?></time>
 						</td>
 					</tr>
 					<?php if ($this->item->get('modified_by', false)): ?>
@@ -169,7 +169,7 @@ endif;
 						<tr>
 							<th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_MODIFIED_LABEL');?></th>
 							<td>
-								<time datetime="<?php echo $this->item->modified; ?>"><?php echo Date::of($this->item->modified)->toLocal(); ?></time>
+								<time datetime="<?php echo $this->item->modified; ?>"><?php echo Date::of($this->item->modified); ?></time>
 							</td>
 						</tr>
 					<?php endif; ?>

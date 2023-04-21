@@ -76,12 +76,12 @@
 		<field name="publish_up" type="calendar"
 			label="COM_CONTENT_FIELD_PUBLISH_UP_LABEL" description="COM_CONTENT_FIELD_PUBLISH_UP_DESC"
 			 format="%Y-%m-%d %H:%M:%S" size="22"
-			filter="user_utc" />
+			filter="only_utc" />
 
 		<field name="publish_down" type="calendar"
 			label="COM_CONTENT_FIELD_PUBLISH_DOWN_LABEL" description="COM_CONTENT_FIELD_PUBLISH_DOWN_DESC"
 			 format="%Y-%m-%d %H:%M:%S" size="22"
-			filter="user_utc" />
+			filter="only_utc" />
 
 		<field name="version" type="text" 
 			label="COM_CONTENT_FIELD_VERSION_LABEL" size="6" description="COM_CONTENT_FIELD_VERSION_DESC"
