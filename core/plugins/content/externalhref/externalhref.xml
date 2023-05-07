@@ -32,6 +32,10 @@
 					<option value="2">PLG_CONTENT_EXTERNALHREF_PARAM_TARGET_PARENT</option>
 					<option value="3">PLG_CONTENT_EXTERNALHREF_PARAM_TARGET_NOCHANGE</option>
 				</field>
+				<field name="allow_dashes" type="list" default="1" label="PLG_CONTENT_EXTERNALHREF_PARAM_ALLOWDASHES_LABEL" description="PLG_CONTENT_EXTERNALHREF_PARAM_ALLOWDASHES_DESC">
+					<option value="0">PLG_CONTENT_EXTERNALHREF_PARAM_ALLOWDASHES_NO</option>
+					<option value="1">PLG_CONTENT_EXTERNALHREF_PARAM_ALLOWDASHES_YES</option>
+				</field>
 				<field name="classes" type="textarea" default="" label="PLG_CONTENT_EXTERNALHREF_PARAM_CSS_LABEL" description="PLG_CONTENT_EXTERNALHREF_PARAM_CSS_DESC" rows="10" cols="25" />
 			</fieldset>
 		</fields>

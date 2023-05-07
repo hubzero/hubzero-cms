@@ -80,6 +80,7 @@ class plgContentExternalhref extends \Hubzero\Plugin\Plugin
 
 		$mode   = $this->params->get('mode');
 		$target = $this->params->get('target');
+		$allow_dashes = $this->params->get('allow_dashes');
 		$classes = array();
 
 		if ($cls = $this->params->get('classes'))
@@ -102,7 +103,14 @@ class plgContentExternalhref extends \Hubzero\Plugin\Plugin
 			foreach ($links as $link)
 			{
 				// Get attributes
-				$pattern = "/(\w+)(\s*=\s*(?:\".*?\"|'.*?'|[^'\">\s]+))?/i";
+				if ($allow_dashes)
+				{
+					$pattern = "/([a-zA-Z_-]+)(\s*=\s*(?:\".*?\"|'.*?'|[^'\">\s]+))?/i";
+				}
+				else
+				{
+					$pattern = "/(\w+)(\s*=\s*(?:\".*?\"|'.*?'|[^'\">\s]+))?/i";
+				}
 				$attribs = array();
 				preg_match_all($pattern, $link[1], $attribs, PREG_SET_ORDER);
 
