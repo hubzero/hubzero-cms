@@ -185,4 +185,139 @@ class Review extends Base
 
 		return $manifest;
 	}
+	
+	/**
+	 * Update author record
+	 *
+	 * @param   object   $manifest
+	 * @param   integer  $blockId
+	 * @param   object   $pub
+	 * @param   integer  $actor
+	 * @param   integer  $elementId
+	 * @param   integer  $aid
+	 * @return  void
+	 */
+	public function saveItem($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $aid = 0)
+	{
+		$aid = $aid ? $aid : Request::getInt('aid', 0);
+
+		// Load classes
+		$row  = new \Components\Publications\Tables\Author($this->_parent->_db);
+		$objO = new \Components\Projects\Tables\Owner($this->_parent->_db);
+
+		// We need attachment record
+		if (!$aid || !$row->load($aid) || $row->publication_version_id != $pub->version_id)
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_LOAD_AUTHOR'));
+			return false;
+		}
+
+		// Instantiate a new registration object
+		include_once \Component::path('com_members') . DS . 'models' . DS . 'registration.php';
+		$xregistration = new \Components\Members\Models\Registration();
+
+		// Get current owners
+		$owners = $objO->getIds($pub->_project->get('id'), 'all', 1);
+
+		$config = Component::params('com_publications');
+
+		$emailConfig = $config->get('email');
+		$email      = Request::getString('email', '', 'post');
+		$firstName  = Request::getString('firstName', '', 'post');
+		$lastName   = Request::getString('lastName', '', 'post');
+		$org        = Request::getString('organization', '', 'post');
+		$credit     = Request::getString('credit', '', 'post');
+		$sendInvite = 0;
+		$code       = \Components\Projects\Helpers\Html::generateCode();
+		$uid        = Request::getInt('uid', 0, 'post');
+
+		$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
+		$email = preg_match($regex, $email) ? $email : '';
+
+		if (!$firstName || !$lastName)
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_MISSING_REQUIRED'));
+			return false;
+		}
+
+		$row->organization  = $org;
+		$row->firstName     = $firstName;
+		$row->lastName      = $lastName;
+		$row->name          = $row->firstName . ' ' . $row->lastName;
+		$row->credit        = $credit;
+		$row->modified_by   = $actor;
+		$row->modified      = Date::toSql();
+
+		// Check that profile exists
+		if ($uid)
+		{
+			$profile = User::getInstance($uid);
+			$uid = $profile->get('id') ? $uid : 0;
+		}
+
+		// Tying author to a user account?
+		if ($uid && !$row->user_id)
+		{
+			// Do we have an owner with this user id?
+			$owner = $objO->getOwnerId($pub->_project->get('id'), $uid);
+
+			if ($owner)
+			{
+				// Update owner assoc
+				$row->project_owner_id = $owner;
+			}
+			else
+			{
+				// Update associated project owner account
+				if ($objO->load($row->project_owner_id) && !$objO->userid)
+				{
+					$objO->userid = $uid;
+					$objO->status = 1;
+					$objO->store();
+				}
+			}
+		}
+		$row->user_id = $uid;
+
+		if ($row->store())
+		{
+			$this->set('_message', Lang::txt('Author record saved'));
+
+			// Reflect the update in curation record
+			$this->_parent->set('_update', 1);
+		}
+		else
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_SAVING_AUTHOR_INFO'));
+			return false;
+		}
+
+		// Update project owner (invited)
+		if ($email && !$row->user_id && $objO->load($row->project_owner_id))
+		{
+			$invitee = $objO->checkInvited($pub->_project->get('id'), $email);
+
+			// Do we have a registered user with this email?
+			$user = $xregistration->getEmailId($email);
+
+			if ($invitee && $invitee != $row->project_owner_id)
+			{
+				// Stop, must have owner record
+			}
+			elseif (in_array($user, $owners))
+			{
+				// Stop, already in team
+			}
+			elseif ($email != $objO->invited_email)
+			{
+				$objO->invited_email = $email;
+				$objO->invited_name  = $row->name;
+				$objO->userid        = $row->user_id;
+				$objO->invited_code  = $code;
+				$objO->store();
+			}
+		}
+
+		return true;
+	}
 }

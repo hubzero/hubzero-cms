@@ -311,6 +311,7 @@ class Author extends Table
 					$res->middleName = $user->get('middleName');
 					$res->surname = $user->get('surname');
 					$res->orcid = $user->get('orcid');
+					$res->p_email = $user->get('email');
 				}
 			}
 		}

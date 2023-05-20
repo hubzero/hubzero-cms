@@ -1234,3 +1234,10 @@
 		min-height: 400px;
 		background: #ecf7f8;
 	}
+/* Draft review page */
+	.item-msg {
+		padding-right: 6em;
+		margin-left: 0;
+		padding-left: 0;
+		color: red;
+	}
