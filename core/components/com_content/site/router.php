@@ -278,7 +278,10 @@ class Router extends Base
 
 		for ($i = 0; $i < $count; $i++)
 		{
-			$segments[$i] = preg_replace('/-/', ':', $segments[$i], 1);
+			if (is_numeric($segments[$i][0]))
+			{
+				$segments[$i] = preg_replace('/-/', ':', $segments[$i], 1);
+			}
 		}
 
 		// Standard routing for articles.  If we don't pick up an Itemid then we get the view from the segments
@@ -286,7 +289,27 @@ class Router extends Base
 		if (!isset($item))
 		{
 			$vars['view'] = $segments[0];
-			$vars['id']   = $segments[$count - 1];
+			$id = $segments[$count - 1];
+			//if ($id+0 == 0) // check if an alias, not an integer id
+			if (preg_match('#[^0-9]#',$id))
+			{
+				if($vars['view'] == 'article')
+				{
+					$query = 'SELECT id FROM `#__content` WHERE alias = ' . $db->Quote($id);
+				}
+				else if($vars['view'] == 'category')
+				{
+					$query = 'SELECT id FROM `#__categories` WHERE alias = ' . $db->Quote($id);
+				}
+				else
+				{
+					$vars['id'] = (int)$id;
+					return $vars;
+				}
+				$db->setQuery($query);
+				$id = $db->loadResult();;
+			}
+			$vars['id'] = (int)$id;
 
 			return $vars;
 		}
@@ -300,7 +323,15 @@ class Router extends Base
 			if (strpos($segments[0], ':') === false)
 			{
 				$vars['view'] = 'article';
-				$vars['id']   = (int)$segments[0];
+				$id   = $segments[0];
+				//if ($id+0 == 0) // check if an alias, not an integer id
+				if (preg_match('#[^0-9]#',$id))
+				{
+					$query = 'SELECT id FROM `#__content` WHERE alias = ' . $db->Quote($id);
+					$db->setQuery($query);
+					$id = $db->loadResult();;
+				}
+				$vars['id'] = (int)$id;
 				return $vars;
 			}
 
