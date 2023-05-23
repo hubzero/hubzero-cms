@@ -32,6 +32,13 @@ if ($canDo->get('core.delete'))
 }
 Toolbar::spacer();
 Toolbar::help('categories');
+$db = App::get('db');
+$query = $db->getQuery()
+	->select('id')
+	->select('title')
+	->from('#__viewlevels');
+$db->setQuery($query->toString());
+$access_levels = $db->loadAssocList();
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
@@ -167,34 +174,29 @@ Toolbar::help('categories');
 					case 1:
 						$color_access = 'public';
 						$task_access  = '1';
-						$row->groupname = Lang::txt('COM_FORUM_ACCESS_PUBLIC');
 						break;
 					case 2:
 						$color_access = 'registered';
 						$task_access  = '2';
-						$row->groupname = Lang::txt('COM_FORUM_ACCESS_REGISTERED');
 						break;
 					case 3:
 						$color_access = 'special';
 						$task_access  = '3';
-						$row->groupname = Lang::txt('COM_FORUM_ACCESS_SPECIAL');
 						break;
 					case 4:
 						$color_access = 'protected';
 						$task_access  = '4';
-						$row->groupname = Lang::txt('COM_FORUM_ACCESS_PROTECTED');
 						break;
 					case 5:
 						$color_access = 'private';
 						$task_access  = '5';
-						$row->groupname = Lang::txt('COM_FORUM_ACCESS_PRIVATE');
 						break;
 					default:
 						$color_access = 'other';
 						$task_access  = (string) $row->access;
-						$row->groupname = Lang::txt('COM_FORUM_ACCESS_OTHER');
 						break;
 				}
+				$row->access_level = $access_levels[$row->access-1]['title'];
 
 				$row->threads = $row->threads()->total();
 				$row->posts   = $row->posts->count();
@@ -231,7 +233,7 @@ Toolbar::help('categories');
 					</td>
 					<td class="priority-4">
 						<span class="access <?php echo $color_access; ?>">
-							<span><?php echo $row->groupname; ?></span>
+							<span><?php echo $row->access_level; ?></span>
 						</span>
 					</td>
 					<td class="priority-3">

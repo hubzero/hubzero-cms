@@ -490,7 +490,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'state'      => Section::STATE_PUBLISHED,
 			'access'     => array(1),
 			'sort'       => 'ordering',
-			'sort_Dir'   => 'ASC'
+			'sort_Dir'   => 'ASC',
+			'access'	 => User::getAuthorisedViewLevels()
 		);
 
 		if (!User::isGuest())
@@ -750,7 +751,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'scope_id'   => $this->forum->get('scope_id'),
 			'state'      => 1,
 			'parent'     => 0,
-			'access'     => array(1)
+			'access'     => User::getAuthorisedViewLevels()
 		);
 		if (!User::isGuest())
 		{
@@ -863,7 +864,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'scope'      => $this->forum->get('scope'),
 			'scope_id'   => $this->forum->get('scope_id'),
 			'state'      => 1,
-			'access'     => array(1)
+			'access'     => User::getAuthorisedViewLevels()
 		);
 		if (!$filters['search'])
 		{
@@ -1182,7 +1183,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'scope'    => $this->forum->get('scope'),
 			'scope_id' => $this->forum->get('scope_id'),
 			'state'    => Post::STATE_PUBLISHED,
-			'access'   => array(1)
+			'access'   => User::getAuthorisedViewLevels()
 		);
 		if (!User::isGuest())
 		{
