@@ -11,7 +11,7 @@ if ($this->isUser) : ?>
 			<p class="notice warning"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_READONLY', $this->title); ?></p>
 		<?php else : ?>
 			<div class="section-edit-content">
-				<form action="<?php echo Route::url('index.php?option=com_members'); ?>" method="post" data-section-registation="<?php echo $this->registration_field; ?>" data-section-profile="<?php echo $this->profile_field; ?>">
+				<form action="<?php echo Route::url('index.php?option=com_members'); ?>" method="post" data-section-registration="<?php echo $this->registration_field; ?>" data-section-profile="<?php echo $this->profile_field; ?>">
 					<span class="section-edit-errors"></span>
 
 					<div class="input-wrap">

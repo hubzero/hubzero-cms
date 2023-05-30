@@ -367,7 +367,7 @@ $legacy = array(
 						<br class="clear" />
 						<div class="section-edit-container">
 							<div class="section-edit-content">
-								<form action="<?php echo Route::url('index.php?option=com_members'); ?>" method="post" data-section-registation="password" data-section-profile="password">
+								<form action="<?php echo Route::url('index.php?option=com_members'); ?>" method="post" data-section-registration="password" data-section-profile="password">
 									<span class="section-edit-errors"></span>
 									<?php if ($passtype == 'changelocal' || $passtype == 'changehub'): ?>
 										<div class="input-wrap">
