@@ -158,7 +158,7 @@ HUB.Members.Profile = {
 
 		//get the needed vars
 		var form = submit_button.parents("form"),
-			registration_field = form.attr("data-section-registation"),
+			registration_field = form.attr("data-section-registration"),
 			profile_field = form.attr("data-section-profile");
 
 		//disable submit button and show saving graphic
