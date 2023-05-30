@@ -148,9 +148,9 @@
 	}
 	.groups-container .group-details {
 		padding: 1em;
-		height: 6.7em;
 		text-align: center;
 		overflow: hidden;
+		flex-grow: 1;
 	}
 	.firefox .groups-container .group-details {
 		height: 6.9em;
@@ -202,7 +202,7 @@
 		display: block;
 		font-size: 0.9rem;
 		line-height: 1.2rem;
-		height: 3.6rem;
+		padding-bottom: 1rem;
 		overflow: hidden;
 		border: none;
 	}
@@ -250,6 +250,10 @@
 	.group-meta span {
 		color: #666;
 		display: block;
+	}
+	
+	.group-meta .join-group {
+		margin-top: 1rem;
 	}
 /* User actions */
 	.groups-container .user-actions {
