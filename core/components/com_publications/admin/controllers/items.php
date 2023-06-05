@@ -953,6 +953,11 @@ class Items extends AdminController
 							$this->model->version->archived = Date::toSql();
 						}
 					}
+					
+					if ($action == 'republish')
+					{
+						$this->model->version->accepted = Date::toSql();
+					}
 
 					if (!$this->getError())
 					{
