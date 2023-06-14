@@ -50,7 +50,7 @@
 			type="spacer" />
 		<field name="created" type="calendar" label="COM_CONTENT_FIELD_CREATED_LABEL"
 			description="COM_CONTENT_FIELD_CREATED_DESC" size="22"
-			readonly="true" format="%Y-%m-%d %H:%M:%S" filter="server_utc" />
+			readonly="true" format="%Y-%m-%d %H:%M:%S" filter="user_utc" />
 
 		<field name="created_by" type="text"
 			label="COM_CONTENT_FIELD_CREATED_BY_LABEL" description="COM_CONTENT_FIELD_CREATED_BY_DESC" />
@@ -61,7 +61,7 @@
 
 		<field name="modified" type="calendar"
 			label="JGLOBAL_FIELD_MODIFIED_LABEL" description="COM_CONTENT_FIELD_MODIFIED_DESC"
-			size="22" readonly="true" format="%Y-%m-%d %H:%M:%S" filter="server_utc" />
+			size="22" readonly="true" format="%Y-%m-%d %H:%M:%S" filter="user_utc" />
 
 		<field name="modified_by" type="text"
 		label="JGLOBAL_FIELD_MODIFIED_BY_LABEL"
@@ -76,12 +76,12 @@
 		<field name="publish_up" type="calendar"
 			label="COM_CONTENT_FIELD_PUBLISH_UP_LABEL" description="COM_CONTENT_FIELD_PUBLISH_UP_DESC"
 			 format="%Y-%m-%d %H:%M:%S" size="22"
-			filter="server_utc" />
+			filter="user_utc" />
 
 		<field name="publish_down" type="calendar"
 			label="COM_CONTENT_FIELD_PUBLISH_DOWN_LABEL" description="COM_CONTENT_FIELD_PUBLISH_DOWN_DESC"
 			 format="%Y-%m-%d %H:%M:%S" size="22"
-			filter="server_utc" />
+			filter="user_utc" />
 
 		<field name="version" type="text" 
 			label="COM_CONTENT_FIELD_VERSION_LABEL" size="6" description="COM_CONTENT_FIELD_VERSION_DESC"
