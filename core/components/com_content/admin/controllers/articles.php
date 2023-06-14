@@ -416,12 +416,9 @@ class Articles extends AdminController
 				}
 			}
 
-			// Need to offset publish up date with server timezone
-			$publish_up_date = $article->get('publish_up');
-			$publish_up_date_with_offset = Date::of($publish_up_date, Config::get('offset'))->toSql();
-            $article->set('publish_up', $publish_up_date_with_offset);
-
-			// Should do this for publish down date? 
+			// Need to offset publish up date with user timezone
+            $userTimezone = App::get('user')->getParam('timezone', App::get('config')->get('offset'));
+            $article->set('publish_up', Date::of($article->get('publish_up'), $userTimezone)->toSql());
 
 			$article->set('checked_out', User::getInstance()->get('id'));
 			$article->set('checked_out_time', Date::of('now')->toSql());
