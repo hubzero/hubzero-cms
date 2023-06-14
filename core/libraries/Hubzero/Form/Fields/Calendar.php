@@ -77,15 +77,6 @@ class Calendar extends Field
 		// If a known filter is given use it.
 		switch (strtoupper((string) $this->element['filter']))
 		{
-			case 'ONLY_UTC':
-                // Take the date that is set UTC from database, return as is.
-                if (intval($this->value)) {
-                    // Get a date object based on the correct timezone, transform the date string
-                    $date = new Date($this->value, 'UTC');
-                    $this->value = $date->format('Y-m-d H:i:s', true, false);
-                }
-                break;
-
 			case 'SERVER_UTC':
 				// Convert a date to UTC based on the server timezone.
 				if (intval($this->value))
