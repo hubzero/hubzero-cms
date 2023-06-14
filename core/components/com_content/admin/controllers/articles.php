@@ -443,8 +443,6 @@ class Articles extends AdminController
             $article->set('publish_up', Date::of('now')->toSql());
 			$article->set('publish_down', null);
 			$article->set('alias', null);
-
-            $article->save();
         }
 
 		$this->view
