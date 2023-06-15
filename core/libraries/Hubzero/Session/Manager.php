@@ -582,7 +582,17 @@ class Manager extends Obj
 
 		return true;
 	}
-
+	
+	/**
+	 * Register session handlers
+	 *
+	 * @return  void
+	 */
+	public function reregister()
+	{
+		$this->store->register();
+	}
+	
 	/**
 	 * Restart an expired or locked session.
 	 *
