@@ -57,6 +57,7 @@ class Profiles extends SiteController
 
 		//$this->registerTask('__default', 'browse');
 		$this->registerTask('promo-opt-out', 'incremOptOut');
+		$this->registerTask('queryorganization', 'getOrganizations');
 
 		parent::execute();
 	}
@@ -1595,6 +1596,12 @@ class Profiles extends SiteController
 		$profile = Request::getArray('profile', array(), 'post');
 		$field_to_check = Request::getArray('field_to_check', array());
 
+		// Querying the organization id on ror.org
+		if (isset($profile['organization']) && !empty($profile['organization'])){
+			$id = $this->getOrganizationId($profile['organization']);
+			$profile['orgid'] = $id;
+		}
+
 		$old = Profile::collect($member->profiles);
 		$profile = array_merge($old, $profile);
 
@@ -1960,4 +1967,101 @@ class Profiles extends SiteController
 
 		$this->view->display();
 	}
+
+	/**
+	 * Perform querying of research organization based on the input value
+	 *
+	 * @return  array   matched research organization names
+	 */
+	public function getOrganizationsTask() {
+		$term = trim(Request::getString('term', ''));
+
+		if (strpos($term, ' ') !== false){
+			$term = str_replace(' ', '+', $term);
+		}
+
+		$queryURL = 'https://api.ror.org/organizations?query=' . $term;
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $queryURL);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+		$result = curl_exec($ch);
+
+		if (!$result){
+			return false;
+		}
+
+		$info = curl_getinfo($ch);
+
+		$code = $info['http_code'];
+
+		if (($code != 201) && ($code != 200)){
+			return false;
+		}
+
+		$organizations = [];
+
+		$resultObj = json_decode($result);
+
+		foreach ($resultObj->items as $orgObj){
+			$organizations[] = $orgObj->name;
+		}
+
+		curl_close($ch);
+
+		echo json_encode($organizations);
+		exit();
+	}
+
+	/**
+	 * Perform querying of research organization id on ror.org
+	 * @param   string   $organization
+	 *
+	 * @return  string   organization id
+	 */
+	public function getOrganizationId($organization){
+		$org = trim($organization);
+		$id = "none";
+
+		if (strpos($org, ' ') !== false){
+			$org = str_replace(' ', '+', $org);
+		}
+
+		$queryURL = "https://api.ror.org/organizations?query=" . $org;
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $queryURL);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+		$result = curl_exec($ch);
+
+		if (!$result){
+			return false;
+		}
+
+		$info = curl_getinfo($ch);
+
+		$code = $info['http_code'];
+
+		if (($code != 201) && ($code != 200)){
+			return false;
+		}
+
+		$resultObj = json_decode($result);
+
+		$org = str_replace('+', ' ', $org);
+
+		foreach ($resultObj->items as $orgObj){
+			if ($org == $orgObj->name){
+				$id = $orgObj->id;
+				break;
+			}
+		}
+
+		curl_close($ch);
+
+		return $id;
+	}
+
 }
