@@ -467,8 +467,12 @@ class Authors extends Base
 		$pAuthor->organization = $org;
 
 		// Get organization id on ror.org
-		$orgid = $this->getOrganizationId($org);
-		$pAuthor->orgid        = $orgid;
+		// If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
+		$useRorApi = \Component::params('com_members')->get('rorApi');
+		if ($useRorApi){
+			$orgid = $this->getOrganizationId($org);
+			$pAuthor->orgid = $orgid;
+		}
 
 		if (!$pAuthor->store())
 		{
@@ -566,8 +570,12 @@ class Authors extends Base
 		}
 
 		// Get organization id on ror.org
-		$orgid = $this->getOrganizationId($org);
-		$row->orgid         = $orgid;
+		// If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
+		$useRorApi = \Component::params('com_members')->get('rorApi');
+		if ($useRorApi){
+			$orgid = $this->getOrganizationId($org);
+			$row->orgid = $orgid;
+		}
 
 		$row->organization  = $org;
 		$row->firstName     = $firstName;

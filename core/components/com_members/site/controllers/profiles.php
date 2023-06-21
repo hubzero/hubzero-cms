@@ -1597,7 +1597,9 @@ class Profiles extends SiteController
 		$field_to_check = Request::getArray('field_to_check', array());
 
 		// Querying the organization id on ror.org
-		if (isset($profile['organization']) && !empty($profile['organization'])){
+		// If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
+        $useRorApi = \Component::params('com_members')->get('rorApi');
+		if (isset($profile['organization']) && !empty($profile['organization']) && $useRorApi){
 			$id = $this->getOrganizationId($profile['organization']);
 			$profile['orgid'] = $id;
 		}
