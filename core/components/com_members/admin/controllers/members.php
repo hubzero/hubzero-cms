@@ -515,8 +515,10 @@ class Members extends AdminController
 		$profile = Request::getArray('profile', array(), 'post');
 		$access  = Request::getArray('profileaccess', array(), 'post');
 
-		// Querying the organization id on ror.org
-        if (isset($profile['organization']) && !empty($profile['organization'])){
+        // Querying the organization id on ror.org. 
+		// If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
+        $useRorApi = \Component::params('com_members')->get('rorApi');
+        if (isset($profile['organization']) && !empty($profile['organization']) && $useRorApi) {
             $id = $this->getOrganizationId($profile['organization']);
             $profile['orgid'] = $id;
         }
