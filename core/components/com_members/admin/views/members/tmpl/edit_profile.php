@@ -76,7 +76,7 @@ $rorApi = \Component::params('com_members')->get('rorApi');
 								echo '<span class="hint">' . $field->description . '</span>';
 							}
 							// Condition for autocomplete for Ror: need the field name be 'organization' and type be 'text'                           
-							if ($field->fieldname == "organization" && $field->type == "text") {
+							if (strtolower($field->fieldname) == "organization" && strtolower($field->type) == "text") {
                                 echo $rorApi ? "<span class='hidden rorApiAvailable'/>" : null;
                             }
 						}
