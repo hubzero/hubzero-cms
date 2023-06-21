@@ -41,6 +41,7 @@ $firstname = $author->firstName ? htmlspecialchars($author->firstName) : $firstn
 $lastname = $author->lastName ? htmlspecialchars($author->lastName) : $lastname;
 
 ?>
+<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/publications/assets/js/editauthor.js"></script>
 <div id="abox-content">
 <h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_EDIT_AUTHOR'); ?></h3>
 	<form id="hubForm-ajax" method="post" action="">
@@ -79,6 +80,7 @@ $lastname = $author->lastName ? htmlspecialchars($author->lastName) : $lastname;
 					<label for="organization">
 						<span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_ORGANIZATION')); ?>*:</span>
 						<input type="text" name="organization" class="long" value="<?php echo $author->organization ? htmlspecialchars($author->organization) : htmlspecialchars($author->p_organization); ?>" maxlength="255" />
+						<div id="autocomplete-organization"></div>
 					</label>
 					<p class="hint"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_REQUIRED_FIELDS'); ?></p>
 					<div class="clear"></div>

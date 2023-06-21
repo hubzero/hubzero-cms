@@ -693,6 +693,13 @@ class Register extends SiteController
 			// Incoming profile edits
 			$profile = Request::getArray('profile', array(), 'post');
 
+			// Querying the organization id on ror.org
+			if (isset($profile['organization']) && !empty($profile['organization']))
+			{
+				$id = $this->getOrganizationId($profile['organization']);
+				$profile['orgid'] = $id;
+			}
+
 			// Compile profile data
 			foreach ($profile as $key => $data)
 			{
@@ -1651,5 +1658,55 @@ class Register extends SiteController
 			$title = Lang::txt('COM_MEMBERS_REGISTER');
 		}
 		\Document::setTitle($title);
+	}
+
+	/**
+	 * Perform querying of research organization id on ror.org
+	 * @param   string   $organization
+	 *
+	 * @return  string   organization id
+	 */
+	public function getOrganizationId($organization){
+		$org = trim($organization);
+		$id = "none";
+
+		if (strpos($org, ' ') !== false){
+			$org = str_replace(' ', '+', $org);
+		}
+
+		$queryURL = "https://api.ror.org/organizations?query=" . $org;
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $queryURL);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+		$result = curl_exec($ch);
+
+		if (!$result){
+			return false;
+		}
+
+		$info = curl_getinfo($ch);
+
+		$code = $info['http_code'];
+
+		if (($code != 201) && ($code != 200)){
+			return false;
+		}
+
+		$resultObj = json_decode($result);
+
+		$org = str_replace('+', ' ', $org);
+
+		foreach ($resultObj->items as $orgObj){
+			if ($org == $orgObj->name){
+				$id = $orgObj->id;
+				break;
+			}
+		}
+
+		curl_close($ch);
+
+		return $id;
 	}
 }
