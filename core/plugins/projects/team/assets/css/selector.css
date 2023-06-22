@@ -244,3 +244,49 @@
 	#sync-role-selector {
 		max-width: 10%;
 	}
+
+/*Organization normalization*/
+	.ui-autocomplete {
+		position: absolute;
+		max-height: 300px;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
+	ul[id^='ui-id-'] {
+		list-style-type: none;
+		background: white;
+		z-index: 9999;
+		padding-left: 0;
+	}
+
+	ul[id^='ui-id-'] li {
+		padding-left: 6px;
+	}
+
+	#autocomplete-organization {
+		position: absolute;
+	}
+
+	.ui-menu-item-wrapper {
+		text-transform: none !important;
+		font-size: 0.75rem;
+		text-align: left;
+	}
+
+	ul.ui-autocomplete {
+		list-style-type: none;
+		background: white;
+		border: 1px solid #666;
+		margin-top: 5px;
+		width: 400px;
+	}
+	
+	.ui-autocomplete .ui-menu-item {
+		padding: 10px 5px;
+	}
+	
+	.ui-autocomplete .ui-menu-item:hover {
+		background: #f1f1f1;
+		cursor: pointer;
+	}
