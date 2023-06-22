@@ -106,7 +106,5 @@ $(function(){
 				});
 			}
 		});
-	} else {
-		console.warn("Currently RoR Api is turned off, or failed API or key doesn't exist. Autocomplete list of Api will not be retrieved admin/assets/js/members.js.")
 	}
 });
