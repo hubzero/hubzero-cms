@@ -49,7 +49,6 @@ $form->load($xml);
 $form->bind($data);
 
 $fields = $form->getFieldset('basic');
-$rorApi = \Component::params('com_members')->get('rorApi');
 
 ?>
 <div class="grid">
@@ -75,9 +74,11 @@ $rorApi = \Component::params('com_members')->get('rorApi');
 							{
 								echo '<span class="hint">' . $field->description . '</span>';
 							}
-							// Condition for autocomplete for Ror: need the field name be 'organization' and type be 'text'                           
-							if (strtolower($field->fieldname) == "organization" && strtolower($field->type) == "text") {
-                                echo $rorApi ? "<span class='hidden rorApiAvailable'/>" : null;
+
+							// Add in class for JS selector to conditionally retrieve data from RoR Api	
+							$rorApiBoolean = \Component::params('com_members')->get('rorApi');
+							if (strtolower($field->fieldname) == "organization" && strtolower($field->type) == "text" && $rorApiBoolean) {
+                                echo "<span class='hidden rorApiAvailable'></span>";
                             }
 						}
 						if (!isset($access[$field->fieldname]))
