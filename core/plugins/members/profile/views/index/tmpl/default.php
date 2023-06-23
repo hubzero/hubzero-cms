@@ -52,6 +52,9 @@ require_once Component::path('com_members') . '/models/incremental/awards.php';
 require_once Component::path('com_members') . '/models/incremental/groups.php';
 require_once Component::path('com_members') . '/models/incremental/options.php';
 
+use Components\Members\Models\Profile\Field;
+
+
 $uid = (int)$this->profile->get('id');
 $incrOpts = new Components\Members\Models\Incremental\Options;
 $isIncrementalEnabled = $incrOpts->isEnabled($uid);
@@ -281,7 +284,7 @@ $legacy = array(
 	<?php endif; ?>
 
 	<ul id="profile">
-		<?php if ($isUser) : ?>
+		<?php if ($isUser && (Field::state('registrationFullname', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_HIDDEN)) : ?>
 			<li class="profile-name section hidden">
 				<div class="section-content">
 					<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_NAME'); ?></div>
@@ -292,10 +295,12 @@ $legacy = array(
 						$name .= '<label class="side-by-side three">' . Lang::txt('PLG_MEMBERS_PROFILE_MIDDLE_NAME') . ' <input type="text" name="name[middle]" id="middle-name" class="input-text" value="'.$this->escape($this->profile->get('middleName')).'" /></label>';
 						$name .= '<label class="side-by-side three no-padding-right">' . Lang::txt('PLG_MEMBERS_PROFILE_LAST_NAME') . ' <input type="text" name="name[last]" id="last-name" class="input-text" value="'.$this->escape($this->profile->get('surname')).'" /></label>';
 
+						if (Field::state('registrationFullname', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_READONLY)
 						$this->view('default', 'edit')
 						     ->set('registration_field', 'name')
 						     ->set('profile_field', 'name')
 						     ->set('registration', $this->profile->get('name'))
+						     ->set('field_state', Field::state('registrationFullname', 'RRRR', 'edit'))
 						     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_NAME'))
 						     ->set('profile', $this->profile)
 						     ->set('isUser', $isUser)
@@ -304,15 +309,17 @@ $legacy = array(
 						     ->display();
 					?>
 				</div>
+				<?php if ($isUser && Field::state('registrationFullname', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_READONLY): ?>
 				<div class="section-edit">
 					<a class="edit-profile-section" href="#">
 						<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 					</a>
 				</div>
+				<?php endif; ?>
 			</li>
 		<?php endif; ?>
 
-		<?php if ($isUser) : ?>
+		<?php if ($isUser && (Field::state('registrationUsername', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_HIDDEN)) : ?>
 			<li class="profile-name section hidden">
 				<div class="section-content">
 					<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_USERNAME'); ?></div>
@@ -322,7 +329,7 @@ $legacy = array(
 			</li>
 		<?php endif; ?>
 
-		<?php if ($isUser) : ?>
+		<?php if ($isUser && (Field::state('registrationPassword', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_HIDDEN)) : ?>
 			<?php
 			// Determine what type of password change the user needs
 			$hzup = \Hubzero\User\Password::getInstance($this->profile->get('id'));
@@ -400,11 +407,13 @@ $legacy = array(
 							</div>
 						</div>
 					</div>
+					<?php if ($isUser && (Field::state('registrationPassword', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_READONLY)) : ?>
 					<div class="section-edit">
 						<a class="edit-profile-section" href="#">
 							<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 						</a>
 					</div>
+					<?php endif; ?>
 				</li>
 			<?php else: ?>
 				<li class="profile-password section hidden">
@@ -425,16 +434,18 @@ $legacy = array(
 							?>
 						</div>
 					</div>
+					<?php if ($isUser && (Field::state('registrationPassword', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_READONLY)) : ?>
 					<div class="section-edit">
 						<a href="<?php echo Route::url($this->profile->link() . '&active=account'); ?>">
 							<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
 						</a>
 					</div>
+					<?php endif; ?>
 				</li>
 			<?php endif; ?>
 		<?php endif; ?>
 
-		<?php if ($this->profile->get('email')) : ?>
+		<?php if ($this->profile->get('email') && (Field::state('registrationEmail', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_HIDDEN)) : ?>
 			<?php if ($this->params->get('access_email', 2) == 0
 					|| ($this->params->get('access_email', 2) == 1 && $loggedin)
 					|| ($this->params->get('access_email', 2) == 2 && $isUser)
@@ -468,7 +479,7 @@ $legacy = array(
 								<?php echo \Components\Members\Helpers\Html::obfuscate($this->profile->get('email')); ?>
 							</a>
 						</div>
-						<?php if ($isUser) : ?>
+						<?php if ($isUser && Field::state('registrationEmail', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_READONLY): ?>
 							<br class="clear" />
 							<input type="hidden" class="input-text" name="email" id="email" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
 							<?php
@@ -487,6 +498,7 @@ $legacy = array(
 								     ->set('registration_field', 'email')
 								     ->set('profile_field', 'email')
 								     ->set('registration', 1)
+								     ->set('field_state', Field::state('registrationEmail', 'RRRR', 'edit'))
 								     ->set('title', Lang::txt('PLG_MEMBERS_PROFILE_EMAIL'))
 								     ->set('profile', $this->profile)
 								     ->set('isUser', $isUser)
@@ -498,7 +510,7 @@ $legacy = array(
 							?>
 						<?php endif; ?>
 					</div>
-					<?php if ($isUser) : ?>
+					<?php if ($isUser && Field::state('registrationEmail', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_READONLY): ?>
 						<div class="section-edit">
 							<a class="edit-profile-section" href="#">
 								<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
@@ -890,6 +902,7 @@ $legacy = array(
 				}
 				$select .= '</select>' . "\n";
 			?>
+			<?php if ($isUser && (Field::state('registrationOptIn', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_HIDDEN)) : ?>
 			<li class="profile-optin section <?php echo $cls; ?>">
 				<div class="section-content">
 					<div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES'); ?></div>
@@ -940,7 +953,7 @@ $legacy = array(
 						?>
 					<?php endif; ?>
 				</div>
-				<?php if ($isUser) : ?>
+				<?php if ($isUser && (Field::state('registrationOptIn', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_READONLY)) : ?>
 					<div class="section-edit">
 						<a class="edit-profile-section" href="#">
 						<?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
@@ -948,6 +961,7 @@ $legacy = array(
 					</div>
 				<?php endif; ?>
 			</li>
+			<?php endif; ?>
 		<?php endif; ?>
 	</ul>
 </div><!-- /#profile-page-content -->
