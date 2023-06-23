@@ -224,6 +224,15 @@
 		margin: 0 0 0.5em 0;
 	}
 
+	/* De-identified members */
+	.toolbar-list .button a[data-task="deidentify"],
+	.toolbar-list .button a[data-task="deidentify"]:hover {
+		background: #ff6a6a;
+	}
+
+	.toolbar-list .button a[data-task="deidentify"] span:before {
+		color: white;
+	}
 
 	/* Organization Autocomplete */
 	.ui-autocomplete {
