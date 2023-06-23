@@ -274,12 +274,15 @@
 		text-align: left;
 	}
 
+	/*	-------- Specifically for Projects Publications Edit and New Author Modal -------- */
+	/* NOTE: Fancybox-overlay has a z-index of 8010 */
 	ul.ui-autocomplete {
+		z-index: 99;
 		list-style-type: none;
 		background: white;
 		border: 1px solid #666;
 		margin-top: 5px;
-		width: 400px;
+		width: 300px;
 	}
 	
 	.ui-autocomplete .ui-menu-item {

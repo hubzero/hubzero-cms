@@ -118,6 +118,12 @@ if (count($this->authors) > 0)
 					<label for="organization">
 						<span class="formlabel"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ORGANIZATION')); ?>*:</span>
 						<input type="text" class="inputrequired" name="organization" id="organization" value="" maxlength="255" />
+						<?php
+                            // Add in class for JS selector to conditionally retrieve data from RoR Api
+                            if (\Component::params('com_members')->get('rorApi')) {
+                                echo "<div id='autocomplete-organization' class='rorApiAvailable'></div>";
+                            }
+                        ?>
 						<p class="hint"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_HINT'); ?></p>
 					</label>
 				</div>

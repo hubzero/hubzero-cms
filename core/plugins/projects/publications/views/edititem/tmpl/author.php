@@ -72,6 +72,7 @@ $lastname = $author->lastName ? htmlspecialchars($author->lastName) : $lastname;
 						<span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_FIRST_NAME')); ?>*:</span>
 						<input type="text" name="firstName" value="<?php echo $firstname;  ?>" maxlength="255" />
 					</label>
+					<div class="clear"></div>
 					<label class="display_inline">
 						<span class="faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_LAST_NAME')); ?>*:</span>
 						<input type="text" name="lastName" value="<?php echo $lastname;  ?>" maxlength="255" />
@@ -80,8 +81,14 @@ $lastname = $author->lastName ? htmlspecialchars($author->lastName) : $lastname;
 					<label for="organization">
 						<span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_ORGANIZATION')); ?>*:</span>
 						<input type="text" name="organization" class="long" value="<?php echo $author->organization ? htmlspecialchars($author->organization) : htmlspecialchars($author->p_organization); ?>" maxlength="255" />
-						<div id="autocomplete-organization"></div>
+						<?php 
+							// Add in class for JS selector to conditionally retrieve data from RoR Api	
+							if (\Component::params('com_members')->get('rorApi')) {
+								echo "<div id='autocomplete-organization' class='rorApiAvailable'></div>";
+							}
+						?>
 					</label>
+					<div class="clear"></div>
 					<p class="hint"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_REQUIRED_FIELDS'); ?></p>
 					<div class="clear"></div>
 					<?php if (!$author->username) { ?>
@@ -95,6 +102,7 @@ $lastname = $author->lastName ? htmlspecialchars($author->lastName) : $lastname;
 						<span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_CREDIT')); ?>:</span>
 						<input type="text" name="credit"  class="long" value="<?php echo htmlspecialchars($author->credit); ?>" maxlength="255"  /><span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
 					</label>
+					<div class="clear"></div>
 				</div>
 
 				<p class="submitarea">
