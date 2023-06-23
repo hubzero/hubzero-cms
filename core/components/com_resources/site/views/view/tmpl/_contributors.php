@@ -98,7 +98,7 @@ if ($this->contributors)
 
 	if (count($names) > 0)
 	{
-		$html = '<p>' . Lang::txt('COM_RESOURCES_BY_AUTHORS', (count($this->contributors) > 1 ? implode(', ', $names) : implode(', ', $names_s))) . '</p>';
+		$html = '<p>' . Lang::txt('COM_RESOURCES_BY_AUTHORS', (count($this->contributors) > 1 ? implode('; ', $names) : implode('; ', $names_s))) . '</p>';
 	}
 
 	if (count($orgs) > 0)
