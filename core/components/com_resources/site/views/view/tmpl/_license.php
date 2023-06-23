@@ -9,8 +9,10 @@
 defined('_HZEXEC_') or die();
 
 $name = $this->license->name;
-
-if (substr($name, 0, 6) != 'custom')
+if (empty($name))
+{
+}
+else if (substr($name, 0, 6) != 'custom')
 {
 	?>
 		<?php if ($this->license->url) { ?>
