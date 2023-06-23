@@ -982,6 +982,37 @@ class Members extends AdminController
 		return true;
 	}
 
+	
+	public function deidentifyTask() {
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		// Incoming user ID
+		$ids = Request::getArray('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		// Do we have an ID?
+		if (empty($ids)){
+			Notify::warning(Lang::txt('COM_MEMBERS_NO_ID'));
+			return $this->cancelTask();
+		}
+
+		//echo "Ids: " . var_export($ids,1) ."<br>";
+		//echo "Task: " . $this->getTask() . "<br>";
+
+//		Plugin::import('deidentify');
+
+		foreach ($ids as $id) {
+			Event::trigger('deidentify.onUserDeidentify', $id);
+		}
+
+//		die('Sent onUserDeidentify trigger');
+		// Event::trigger('user.onUserDeidentify')
+
+        Notify::success("Deidentified several user id");
+        $this->cancelTask();
+	}
+
 	/**
 	 * Sets the account blocked state of a member
 	 *
