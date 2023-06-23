@@ -619,9 +619,30 @@ class Record extends Obj
 	 */
 	private function _saveTagsData()
 	{
+		$ntags = array();
+		$admintags = array();
+
 		// save tags
 		$resourcesTags = new Tags($this->record->resource->id);
-		$resourcesTags->setTags($this->record->tags, $this->_user->get('id'), 1, 1);
+
+		foreach($this->record->tags as $tag)
+		{
+			if (substr($tag,0,6) == 'admin:')
+			{
+				$admintags[] = substr($tag,6);
+			}
+			else if ($tag[0] == ':')
+			{
+				$ntags[] = substr($tag, 1);
+			}
+			else
+			{
+				$admintags[] = $tag;
+			}
+		}
+
+		$resourcesTags->setTags($admintags, $this->_user->get('id'), 1, 1);
+		$resourcesTags->setTags($ntags, $this->_user->get('id'), 0, 1);
 	}
 
 	/**
