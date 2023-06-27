@@ -106,14 +106,15 @@ $extras = Event::trigger('resources.onResourcesList', array($this->line));
 	<p class="details">
 		<?php
 		$info = array();
+		
+		if ($params->get('show_type'))
+		{
+			$info[] = '<strong class="type">' . stripslashes($this->line->type->get('type')) . '</strong>';
+		}
+
 		if ($thedate = $this->line->date)
 		{
 			$info[] = $thedate;
-		}
-
-		if ($params->get('show_type'))
-		{
-			$info[] = stripslashes($this->line->type->get('type'));
 		}
 
 		if ($this->line->authors->count() && $params->get('show_authors'))
