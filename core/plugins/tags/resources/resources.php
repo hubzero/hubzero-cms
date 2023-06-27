@@ -6,6 +6,8 @@
  */
 
 // No direct access
+use Components\Resources\Models\Entry;
+
 defined('_HZEXEC_') or die();
 
 /**
@@ -434,8 +436,11 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		// Return output
 		return $html;*/
 
-		$row = Components\Resources\Models\Entry::blank()->set($row);
-		$row->set('typetitle', $row->type->get('type'));
+		$query = Entry::all();
+
+		$r = $query->getTableName();
+		$query->whereEquals('id', $row->id);
+		$row = $query->row();
 
 		// Get the component params and merge with resource params
 		$config = Component::params('com_resources');
