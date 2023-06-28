@@ -563,6 +563,12 @@ $legacy = array(
 		$hd = array();
 
 		foreach ($this->fields as $field):
+			// Add in class for JS selector to conditionally retrieve data from RoR Api	
+			$rorApiBoolean = \Component::params('com_members')->get('rorApi');
+			if (strtolower($field->get('name')) == "organization" && strtolower($field->get('type')) == "text" && $rorApiBoolean) {
+                echo "<span class='hidden rorApiAvailable'></span>";
+            }
+
 			// Build scripts for toggling dependent fields
 			if ($isUser && $field->options->count())
 			{
