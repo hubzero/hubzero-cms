@@ -49,6 +49,7 @@ $form->load($xml);
 $form->bind($data);
 
 $fields = $form->getFieldset('basic');
+
 ?>
 <div class="grid">
 	<div class="col span7">
@@ -73,6 +74,12 @@ $fields = $form->getFieldset('basic');
 							{
 								echo '<span class="hint">' . $field->description . '</span>';
 							}
+
+							// Add in class for JS selector to conditionally retrieve data from RoR Api	
+							$rorApiBoolean = \Component::params('com_members')->get('rorApi');
+							if (strtolower($field->fieldname) == "organization" && strtolower($field->type) == "text" && $rorApiBoolean) {
+                                echo "<span class='hidden rorApiAvailable'></span>";
+                            }
 						}
 						if (!isset($access[$field->fieldname]))
 						{

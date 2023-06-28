@@ -466,6 +466,14 @@ class Authors extends Base
 		$pAuthor->lastName     = $lastName;
 		$pAuthor->organization = $org;
 
+		// Get organization id on ror.org
+		// If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
+		$useRorApi = \Component::params('com_members')->get('rorApi');
+		if ($useRorApi){
+			$orgid = $this->getOrganizationId($org);
+			$pAuthor->orgid = $orgid;
+		}
+
 		if (!$pAuthor->store())
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_SAVING_AUTHOR_INFO'));
@@ -559,6 +567,14 @@ class Authors extends Base
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_MISSING_REQUIRED'));
 			return false;
+		}
+
+		// Get organization id on ror.org
+		// If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
+		$useRorApi = \Component::params('com_members')->get('rorApi');
+		if ($useRorApi){
+			$orgid = $this->getOrganizationId($org);
+			$row->orgid = $orgid;
 		}
 
 		$row->organization  = $org;
@@ -826,5 +842,61 @@ class Authors extends Base
 		}
 
 		return $manifest;
+	}
+
+	/**
+	 * Perform querying of research organization id on ror.org
+	 * @param   string   $organization
+	 *
+	 * @return  string   organization id
+	 */
+	public function getOrganizationId($organization)
+	{
+		$org = trim($organization);
+		$id = "none";
+
+		if (strpos($org, ' ') !== false)
+		{
+			$org = str_replace(' ', '+', $org);
+		}
+
+		$queryURL = "https://api.ror.org/organizations?query=" . $org;
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $queryURL);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+		$result = curl_exec($ch);
+
+		if (!$result)
+		{
+			return false;
+		}
+
+		$info = curl_getinfo($ch);
+
+		$code = $info['http_code'];
+
+		if (($code != 201) && ($code != 200))
+		{
+			return false;
+		}
+
+		$resultObj = json_decode($result);
+
+		$org = str_replace('+', ' ', $org);
+
+		foreach ($resultObj->items as $orgObj)
+		{
+			if ($org == $orgObj->name)
+			{
+				$id = $orgObj->id;
+				break;
+			}
+		}
+
+		curl_close($ch);
+
+		return $id;
 	}
 }

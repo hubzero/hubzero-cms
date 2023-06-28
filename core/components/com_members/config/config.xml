@@ -264,6 +264,10 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
+		<field name="rorApi" type="list" default="1" label="Research Organization Registry API" description="Uses ROR API to retrieve list of organizations">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="orcid_service" type="list" default="public" label="ORCID Service" description="Select the service to use for ORCID. Sandbox is for testing and debugging purposes. The Public service only allows for searching records, new ID creation is not allowed.">
 			<option value="public">Public (search only)</option>
