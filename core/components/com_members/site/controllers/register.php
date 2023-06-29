@@ -367,6 +367,19 @@ class Register extends SiteController
 					unset($profile[$key . '_other']);
 				}
 			}
+
+			$emailState = Field::state('registrationEmail', 'RRRR', $this->_task);
+
+			if ($emailState == \Components\Members\Models\Profile\Field::STATE_HIDDEN)
+			{
+				$username = User::get('username');
+			
+				if ($username[0] == '-' && is_object($hzal))
+				{
+					$xregistration->set('email', $hzal->email);
+				}
+			}
+
 		}
 		else
 		{
