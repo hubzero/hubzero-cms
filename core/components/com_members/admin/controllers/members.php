@@ -982,7 +982,10 @@ class Members extends AdminController
 		return true;
 	}
 
-	
+	/**
+	 * Run through SQL statements of deidentifying a member by userId
+	 * Task is ran through the toolbar
+	 */
 	public function deidentifyTask() {
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
@@ -991,25 +994,19 @@ class Members extends AdminController
 		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Do we have an ID?
+		// No Id, throw up a warning
 		if (empty($ids)){
 			Notify::warning(Lang::txt('COM_MEMBERS_NO_ID'));
 			return $this->cancelTask();
 		}
 
-		//echo "Ids: " . var_export($ids,1) ."<br>";
-		//echo "Task: " . $this->getTask() . "<br>";
-
-//		Plugin::import('deidentify');
-
+		// Loop through the array of user Ids
+		// Make sure plugin user/deidentify has been migrated / imported
 		foreach ($ids as $id) {
-			Event::trigger('deidentify.onUserDeidentify', $id);
+			Event::trigger('user.onUserDeidentify', $id);
 		}
 
-//		die('Sent onUserDeidentify trigger');
-		// Event::trigger('user.onUserDeidentify')
-
-        Notify::success("Deidentified several user id");
+		Notify::success("Deidentified several user id: " . implode(" ", $ids));
         $this->cancelTask();
 	}
 
