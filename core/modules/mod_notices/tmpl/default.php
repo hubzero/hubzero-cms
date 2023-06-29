@@ -16,7 +16,9 @@ if ($this->publish)
 	<div id="<?php echo $this->moduleid; ?>" class="modnotices <?php echo $this->alertlevel; ?>">
 		<div class="inner">
 			<div class="notice">
-				<?php echo stripslashes($this->message); ?>
+				<div class="inner">
+					<?php echo stripslashes($this->message); ?>
+				</div>
 			</div>
 			<?php
 			$page = Request::getString('REQUEST_URI', '', 'server');
