@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright (c) 2005-2023 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -9,10 +9,9 @@
 defined('_HZEXEC_') or die();
 
 /**
- * Members Plugin class for wiki pages
+ * User Plugin class for deidentify members
  */
-class plgDeidentifyMembers extends \Hubzero\Plugin\Plugin {
-
+class plgUserDeidentify extends \Hubzero\Plugin\Plugin {
     public function runSelectQuery($query) {
         $db = \App::get('db');
         $db->setQuery($query);
@@ -36,7 +35,6 @@ class plgDeidentifyMembers extends \Hubzero\Plugin\Plugin {
         return $db->query();
     }
 
-
 	public function onUserDeidentify($user_id) {
         $db = \App::get('db');
 
@@ -56,9 +54,8 @@ class plgDeidentifyMembers extends \Hubzero\Plugin\Plugin {
         }
 
         // Creating New Credentials
-        $anonUserId = "anon_user_" . $userId;
-        $anonPassword = "anon_password_" . $userId;
-        $anonUserName = "anon_username_" . $userId;
+        $anonPassword = "anonPassword_" . $userId;
+        $anonUserName = "anonUsername_" . $userId;
 
         // PURPOSE: Find auth link id from jos_auth_link table
         $select_AuthLink_Query = "SELECT id, user_id FROM `#__auth_link` WHERE user_id='" . $user_id . "';";
@@ -67,26 +64,12 @@ class plgDeidentifyMembers extends \Hubzero\Plugin\Plugin {
             $userLinkId = $authLinkJsonObj[0]['id'];
         }
 
-        print_r($userId); // 1005
-        print_r("<br>");
-        print_r($userEmail); // membertest1@gmail.com
-        print_r("<br>");
-        print_r($userName); // membertest1
-        print_r("<br>");
-        print_r($userLinkId);
-        print_r("<br>");
-
-
-        // GENERAL INSERT VARIABLES
-        $insert_userId_Vars = array($user_id);
-
         // ======= Sanitation Queries // deletes, updates, inserts =======
-        // NOTE: Times are set in epoch units
         $delete_UserProfile_Query = "DELETE from `#__user_profiles` where user_id =" . $db->quote($userId) . " AND 'profile_key' !='edulevel' AND profile_key !='gender' AND profile_key !='hispanic' AND profile_key !='organization' AND profile_key !='orgtype' AND profile_key !='race' AND profile_key !='reason'";
         $this->runUpdateOrDeleteQuery($delete_UserProfile_Query);
 
         $insert_UserProfileWithStatus_Query = "INSERT INTO `#__user_profiles` (`user_id`, `profile_key`, `profile_value`) values (?, 'deletion', 'marked')";
-        $this->runInsertQuery($insert_UserProfileWithStatus_Query, $insert_userId_Vars);
+        $this->runInsertQuery($insert_UserProfileWithStatus_Query, array($user_id));
 
         $update_SupportTicketsByEmail_Query = "UPDATE `#__support_tickets` set login='',ip='', email='', hostname='', name='' where email=" . $db->quote($userEmail);
         $this->runUpdateOrDeleteQuery($update_SupportTicketsByEmail_Query);
@@ -218,10 +201,10 @@ class plgDeidentifyMembers extends \Hubzero\Plugin\Plugin {
         $this->runUpdateOrDeleteQuery($update_UsersPointsSubscription_Query);
 
         // ----------- UPDATES TO THE PROFILES AND USERS TABLE, and User Profiles Table  ----------
-        $update_XProfilesByEmail_Query = "UPDATE `#__xprofiles` set name=" . $db->quote($anonUserName) . ", username=" . $db->quote($anonUserName) . ", userPassword=" . $db->quote($anonPassword) . ", url='', phone='', regHost='', regIP='', givenName=" . $db->quote($anonUserName) . ", middleName='', surname='', picture='', public=0, params='', note='', orcid='', homeDirectory='/home/anonymous', email=" . $db->quote($anonUserName . "@example.com") . " where email =" . $db->quote($userEmail);
+        $update_XProfilesByEmail_Query = "UPDATE `#__xprofiles` set name=" . $db->quote($anonUserName) . ", username=" . $db->quote($anonUserName) . ", userPassword=" . $db->quote($anonPassword) . ", url='', phone='', regHost='', regIP='', givenName=" . $db->quote($anonUserName) . ", middleName='', surname='anonSurName', picture='', public=0, params='', note='', orcid='', homeDirectory='/home/anonymous', email=" . $db->quote($anonUserName . "@example.com") . " where email =" . $db->quote($userEmail);
         $this->runUpdateOrDeleteQuery($update_XProfilesByEmail_Query);
 
-        $update_XProfilesById_Query = "UPDATE `#__xprofiles` set name=" . $db->quote($anonUserName) . ", username=" . $db->quote($anonUserName) . ", userPassword=" . $db->quote($anonPassword) . ", url='', phone='', regHost='', regIP='', givenName=" . $db->quote($anonUserName) . ", middleName='', surname='', picture='', public=0, params='', note='', orcid='', homeDirectory='/home/anonymous', email=" . $db->quote($anonUserName . "@example.com") . " where uidNumber =" . $db->quote($userId);
+        $update_XProfilesById_Query = "UPDATE `#__xprofiles` set name=" . $db->quote($anonUserName) . ", username=" . $db->quote($anonUserName) . ", userPassword=" . $db->quote($anonPassword) . ", url='', phone='', regHost='', regIP='', givenName=" . $db->quote($anonUserName) . ", middleName='', surname='anonSurName', picture='', public=0, params='', note='', orcid='', homeDirectory='/home/anonymous', email=" . $db->quote($anonUserName . "@example.com") . " where uidNumber =" . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($update_XProfilesById_Query);
 
         $update_UsersByEmail_Query = "UPDATE `#__users` set name=" . $db->quote($anonUserName) . ", givenName=" . $db->quote($anonUserName) .", middleName='', surname='', username=" . $db->quote($anonUserName) . ", password=" .  $db->quote($anonPassword) . ", block='1', registerIP='', params='', homeDirectory='', email=" .  $db->quote($anonUserName . "@example.com") . " where email =" . $db->quote($userEmail);
@@ -233,7 +216,7 @@ class plgDeidentifyMembers extends \Hubzero\Plugin\Plugin {
         $update_UserProfiles_Query = "UPDATE `#__user_profiles` SET profile_value='sanitized' WHERE user_id=". $db->quote($userId);
         $this->runUpdateOrDeleteQuery($update_UserProfiles_Query);
 
-        // Missing?
+        // TODO: Missing?
         $delete_KbArticles_Query = "DELETE from `#__kb_articles` where created_by='" . $user_id . "'";
         $delete_Content_Query = "DELETE from `#__content` where created_by='" . $user_id . "'";
     }
