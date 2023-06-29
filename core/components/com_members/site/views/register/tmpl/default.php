@@ -273,7 +273,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 			<div class="clear"></div>
 		<?php } ?>
 
-		<?php if ($this->registrationFullname != Field::STATE_HIDDEN) { ?>
+		<?php if ($this->registrationFullname != Field::STATE_HIDDEN || $this->registrationEmail != Field::STATE_HIDDEN) { ?>
 			<div class="explaination">
 				<?php if ($this->task == 'create') { ?>
 					<p><?php echo Lang::txt('COM_MEMBERS_REGISTER_ACTIVATION_EMAIL_HINT'); ?></p>
