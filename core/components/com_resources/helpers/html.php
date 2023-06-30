@@ -818,23 +818,27 @@ class Html
 					$pop   = '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_VERSION_UNPUBLISHED') . '</p>';
 					$html .= self::primaryButton('link_disabled', '', Lang::txt('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
 				}
-			break;
+				break;
 
 			case 4:
 				// write primary button and downloads for a Learning Module
 				$html .= self::primaryButton('', Route::url($resource->link() . '&task=play'), 'Start learning module');
-			break;
+				break;
 
 			case 6:
 				$mesg  = Lang::txt('COM_RESOURCES_VIEW') . ' Course Lectures';
 				$html .= self::primaryButton('download', Route::url($resource->link()) . '#courselecture', $mesg, '', $mesg, '');
+				break;
+
 			case 31:
 				$mesg  = Lang::txt('COM_RESOURCES_VIEW') . ' Series';
 				$html .= self::primaryButton('download', Route::url($resource->link()) . '#series', $mesg, '', $mesg, '');
+				break;
+
 			case 2:
 				$mesg  = Lang::txt('COM_RESOURCES_VIEW') . ' Workshop ';
 				$html .= self::primaryButton('download', Route::url($resource->link()) . '#workshop', $mesg, '', $mesg, '');
-			break;
+				break;
 
 			default:
 				$firstChild->title = str_replace('"', '&quot;', $firstChild->title);
