@@ -65,14 +65,14 @@ class Assetclip extends Relational
 	);
 
 	/**
-	 * Generates automatic owned by field value
+	 * Generates automatic title by field value
 	 *
 	 * @param   array   $data  the data being saved
 	 * @return  string
 	 */
 	public function automaticTitle($data)
 	{
-		$title = (isset($data['title']) && $data['title'] ? $data['title'] : $data['title']);
+		$title = (isset($data['title']) && $data['title'] ? $data['title'] : '');
 		$title = trim($title);
 		if (strlen($title) > 100)
 		{
@@ -81,5 +81,25 @@ class Assetclip extends Relational
 		}
 
 		return $title;
+	}
+
+	/**
+	 * Generates automatic type by field value
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticType($data)
+	{
+		//TODO: check if in list of default asset group types
+		$type = (isset($data['type']) && $data['type'] ? $data['type'] : '');
+		$type = trim($type);
+		if (strlen($type) > 100)
+		{
+			$type = substr($type . ' ', 0, 100);
+			$type = substr($type, 0, strrpos($type, ' '));
+		}
+
+		return $type;
 	}
 }

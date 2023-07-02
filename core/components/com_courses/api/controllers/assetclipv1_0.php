@@ -70,8 +70,6 @@ class Assetclipv1_0 extends base
 
 		// Check for an incoming 'id'
 		$id = Request::getInt('id', null);
-		$scope = Request::getString('scope', 'asset_group');
-		$scope_id = Request::getInt('scope_id', null);
 
 		// Create an asset clip instance
 		$assetClip = new Assetclip($id);
@@ -89,10 +87,15 @@ class Assetclipv1_0 extends base
 		// Set our variables
 		$assetClip->set('title', Request::getString('title', $title));
 
-		// Save the asset clip
 		if (!$assetClip->get('title'))
 		{
 			App::abort(400, 'No title provided');
+		}
+
+		$scope = Request::getString('scope', 'asset_group');
+		if (!is_null($scope))
+		{
+			$assetClip->set('scope', $scope);
 		}
 
 		$scope_id = Request::getInt('scope_id', null);
@@ -101,11 +104,18 @@ class Assetclipv1_0 extends base
 			$assetClip->set('scope_id', $scope_id);
 		}
 
+		$type = Request::getString('type', null);
+		if (!is_null($type))
+		{
+			$assetClip->set('type', $type);
+		}
+
 		// When creating a new asset clip
 		if (!$id)
 		{
 			$assetClip->set('scope', Request::getString('scope', 'asset_group'));
 			$assetClip->set('scope_id', Request::getInt('scope_id', 0));
+			$assetClip->set('type', Request::getString('type', 'Lectures'));
 			$assetClip->set('title', Request::getString('title', 'New asset clip'));
 			$assetClip->set('created', Date::toSql());
 			$assetClip->set('created_by', App::get('authn')['user_id']);
@@ -157,10 +167,12 @@ class Assetclipv1_0 extends base
 		// Return message
 		$this->send(
 			[
-				'assetclip_id'    => $assetClip->get('id'),
-				'assetclip_scope' => $assetClip->get('scope'),
-				'assetclip_title' => $assetClip->get('title'),
-				'assetclip_style' => 'display:none'
+				'assetclip_id'       => $assetClip->get('id'),
+				'assetclip_scope'    => $assetClip->get('scope'),
+				'assetclip_scope_id' => $assetClip->get('scope_id'),
+				'assetclip_title'    => $assetClip->get('title'),
+				'assetclip_type'     => $assetClip->get('type'),
+				'assetclip_style'    => 'display:none'
 			], ($id ? 200 : 201)
 		);
 	}

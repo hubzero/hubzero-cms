@@ -1372,7 +1372,7 @@ HUB.CoursesOutline = {
 				.on('click', '.asset-group-title-cancel', this.toggleEditTitle)
 				.on('click', '.asset-group-title-save', this.saveTitle)
 				.on('click', '.asset-group-edit', this.edit)
-				.on('click', '.asset-group-copy', this.copy)
+				.on('click', '.asset-group-copy', this.clip)
 				.on('click', '.asset-group-item.add-new', this.create)
 				.on('click', '.asset-group-item.paste-copy', this.create)
 				.on('click', ".asset-group-item-title.toggle-editable", this.showTitleQuickEdit)
@@ -1577,7 +1577,7 @@ HUB.CoursesOutline = {
 		/*
 		 * Copy asset group to clipboard
 		 */
-		copy: function ( e ) {
+		clip: function ( e ) {
 			var $ = HUB.CoursesOutline.jQuery,
 			ag    = $(this).parents('.asset-group-item'),
 			form  = ag.find('.assetgroup-title-form');
@@ -1586,7 +1586,7 @@ HUB.CoursesOutline = {
 
 			// Create ajax call to save to clipboard
 			$.ajax({
-				url: '/api/courses/assetclip/save?scope=asset_group&scope_id='+form.find('input[name="id"]').val()+'&title='+form.find('input[name="title"]').val(),
+				url: '/api/courses/assetclip/save?scope=asset_group&scope_id='+form.find('input[name="id"]').val()+'&title='+form.find('input[name="title"]').val()+'&type='+form.find('input[name="type"]').val(),
 				type: 'GET',
 				statusCode: {
 					// 200 OK

@@ -48,6 +48,13 @@ class AssetClip extends Table
 			return false;
 		}
 
+		$this->type = trim($this->type);
+		if (!$this->type)
+		{
+			$this->setError(Lang::txt('Missing type'));
+			return false;
+		}
+
 		$this->title = trim($this->title);
 		if (!$this->title)
 		{
@@ -79,6 +86,11 @@ class AssetClip extends Table
 		{
 			$where[] = "cac.scope=" . $this->_db->quote($filters['scope']);
 		}
+		if (isset($filters['type']) && $filters['type'])
+		{
+			$where[] = "cac.type=" . $this->_db->quote($filters['type']);
+		}
+
 		if (isset($filters['search']) && $filters['search'])
 		{
 			$where[] = "LOWER(cac.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');

@@ -47,6 +47,7 @@ Html::behavior('tooltip');
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_COURSES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_COURSES_COL_ASSET_SCOPE', 'scope', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_COURSES_COL_ASSET_ID', 'scope_id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_COURSES_COL_ASSET_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_TITLE'); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_COURSES_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_COURSES_COL_CREATED_BY', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
@@ -88,6 +89,9 @@ Html::behavior('tooltip');
 				</td>
 				<td class="priority-3">
 					<?php echo $this->escape($row->scope_id); ?>
+				</td>
+				<td class="priority-3">
+					<?php echo $this->escape($row->type); ?>
 				</td>
 				<td>
 					<?php echo $this->escape(stripslashes($row->title)); ?>

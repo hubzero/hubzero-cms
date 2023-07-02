@@ -26,6 +26,7 @@ class Migration20230628000000ComCoursesAddAssetClips extends Base
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `scope` varchar(50) NOT NULL DEFAULT 'asset_group',
 			  `scope_id` int(11) NOT NULL DEFAULT '0',
+			  `type` varchar(100) NOT NULL,
 			  `title` varchar(255) NOT NULL DEFAULT '',
 			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',

@@ -20,17 +20,23 @@ HTML::behavior('core');
 
 $db = App::get('db');
 
+// Get default asset group types
+$config = Component::params('com_courses');
+$asset_group_types = explode(',', $config->get('default_asset_groups', 'Lectures, Activities, Exam'));
+array_map('trim', $asset_group_types);
+
 // Get asset clip items
-//TODO: separate clip arrays for each asset group type (parent alias)
-//      currently - lectures, activities, exams)
-//      but get default asset group types (aliases) from config file
 $clipboard = new \Components\Courses\Tables\Assetclip($db);
-$filters = array(
-	'scope' => 'asset_group',
-	'created' => User::get('id')
-);
-$clips_total = $clipboard->count($filters);
-$clips = $clipboard->find($filters);
+foreach ($asset_group_types as $asset_group_type) {
+	$asset_group_type = ltrim($asset_group_type,' ');
+	$filters = array(
+		'scope' => 'asset_group',
+		'created' => User::get('id'),
+		'type' => $asset_group_type
+	);
+	$clips[$asset_group_type] = $clipboard->find($filters);
+	$clips_total[$asset_group_type] = $clipboard->count($filters);
+}
 
 ?>
 
@@ -154,6 +160,7 @@ $clips = $clipboard->find($filters);
 								<input type="hidden" name="course_id" value="<?php echo $course->get('id') ?>" />
 								<input type="hidden" name="offering" value="<?php echo $offering->get('alias') ?>" />
 								<input type="hidden" name="id" value="<?php echo $agt->get('id') ?>" />
+								<input type="hidden" name="type" value="<?php echo $agt->get('title') ?>" />
 							</form>
 						</div>
 						<div class="asset-group-container">
@@ -181,12 +188,14 @@ $clips = $clipboard->find($filters);
 										->set('ag', $agt)
 										->display();
 								}
+
+								$agt_title = $agt->get('title');
 ?>
 
 								<li class="not-sortable">
 									<div class="asset-group-item add-asset-group-item-container">
 										<div class="asset-group-item add-new sub-item">
-											Add a new <?php echo (substr($agt->get('title'), -3) == 'ies') ? strtolower(preg_replace('/ies$/', 'y', $agt->get('title'))) : strtolower(rtrim($agt->get('title'), 's')); ?>
+											Add a new <?php echo (substr($agt_title, -3) == 'ies') ? strtolower(preg_replace('/ies$/', 'y', $agt_title)) : strtolower(rtrim($agt_title, 's')); ?>
 											<form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save">
 												<input type="hidden" name="course_id" value="<?php echo $course->get('id'); ?>" />
 												<input type="hidden" name="offering" value="<?php echo $offering->alias(); ?>" />
@@ -194,15 +203,15 @@ $clips = $clipboard->find($filters);
 												<input type="hidden" name="parent" value="<?php echo $agt->get('id'); ?>" />
 											</form>
 										</div>
-										<?php if ($clips_total > 0) { ?>
+										<?php if ($clips_total[$agt_title] & ($clips_total[$agt_title] > 0)) { ?>
 										<div class="asset-group-item paste-copy sub-item">
 											<span style="padding-left: 30px;">[ Or</span>
 											<form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save">
 												<input type="submit" id="copy_asset_group" value="Copy" />
-												<span>&nbsp;<?php echo (substr($agt->get('title'), -3) == 'ies') ? strtolower(preg_replace('/ies$/', 'y', $agt->get('title'))) : strtolower(rtrim($agt->get('title'), 's')); ?></span>
+												<span>&nbsp;<?php echo (substr($agt_title, -3) == 'ies') ? strtolower(preg_replace('/ies$/', 'y', $agt_title)) : strtolower(rtrim($agt_title, 's')); ?></span>
 												<select name="id">
 													<?php
-														foreach ($clips as $clip)
+														foreach ($clips[$agt_title] as $clip)
 														{
 															echo "<option value=".$clip->id.">".$clip->title."</option>";
 														}
