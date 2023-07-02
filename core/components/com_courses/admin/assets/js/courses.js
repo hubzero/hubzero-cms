@@ -127,7 +127,7 @@ jQuery(document).ready(function($){
 			changeDynaList(
 				'section_id',
 				offeringsections,
-				document.getElementById('offering_id').options[document.getElementById('offering_id').selectedIndex].value
+				document.getElementById('offering_id').options[document.getElementById('offering_id').selectedIndex].value,
 				0,
 				0
 			);

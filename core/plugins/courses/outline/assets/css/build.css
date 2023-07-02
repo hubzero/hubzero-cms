@@ -375,10 +375,10 @@ ul {
 	overflow: hidden;
 }
 .sortable-handle,
-.asset-group-edit {
+.asset-group-edit,
+.asset-group-copy {
 	position: absolute;
 	top: 0;
-	bottom: 50%;
 	left: 0;
 	background: transparent;
 	background: rgba(0, 0, 0, 0.05);
@@ -390,33 +390,50 @@ ul {
 	cursor: move;
 	cursor: ns-resize;
 }
-.asset-group-edit {
-	top: 50%;
+.sortable-handle {
+	top: 0;
+	bottom: 66%;
+	border-bottom: none;
+	cursor: pointer;
+}.asset-group-edit {
+	top: 33%;
+	bottom: 33%;
+	border-bottom: none;
+	cursor: pointer;
+}
+.asset-group-copy {
+	top: 66%;
 	bottom: 0;
 	border-bottom: none;
 	cursor: pointer;
 }
 .sortable-handle:hover,
-.asset-group-edit:hover {
+.asset-group-edit:hover,
+.asset-group-copy:hover {
 	background: rgba(0, 0, 0, 0.1);
 }
 .sortable-handle:active,
-.asset-group-edit:active {
+.asset-group-edit:active,
+.asset-group-copy:active {
 	box-shadow: inset 0 0 2px rgba(0, 0, 0, .4);
 }
 .sortable-handle:before,
-.asset-group-edit:before {
+.asset-group-edit:before,
+.asset-group-copy:before {
 	position: absolute;
 	font-family: "fontcons";
 	content: '\f0dc';
 	font-size: 20px;
 	color: #999;
 	left: 16px;
-	top: 50%;
+	top: 33%;
 	margin-top: -10px;
 }
 .asset-group-edit:before {
 	content: "\270E";
+}
+.asset-group-copy:before {
+	content: "\f0c5";
 }
 .sortable-assets-handle {
 	position: absolute;
@@ -687,7 +704,7 @@ ul {
 .asset-group-item-title {
 	display: block;
 }
-.asset-group-item {
+.asset-group-item:not(.sub-item) {
 	position: relative;
 	overflow: visible;
 	border: 1px dotted #AAA;
@@ -695,13 +712,28 @@ ul {
 	background-color: #F7F7F7;
 	padding-left: 10px;
 }
-.asset-group-item {
+.asset-group-item:not(.add-asset-group-item-container, .sub-item) {
 	min-height: 115px;
 }
-.asset-group-item.add-new {
+.add-asset-group-item-container {
+	display: flex;
 	min-height: 20px;
 }
-.asset-group-item:not(.add-new):before {
+.paste-copy form {
+	display: inline-flex;
+}
+.paste-copy form input {
+	padding: 0em 1em 0em 1em;
+	line-height: 1em;
+}
+.paste-copy form select {
+	padding: 0em 2em 0em 1em;
+	line-height: 1em;
+}
+.paste-copy span {
+	padding: 0em 0.5em;
+}
+.asset-group-item:not(.sub-item):before {
 	margin-top: -10px;
 }
 .asset-group .unpublished {
@@ -756,13 +788,25 @@ ul {
 .restore {
 	display: none;
 }
-.add-new {
+.add-asset-group-item-container {
 	opacity: .9;
 	padding: 5px 5px 5px 30px;
 	position: relative;
 	border: 1px dotted #AAA;
-	cursor: pointer;
 	margin-bottom: 10px;
+}
+.asset-group-item.add-new {
+	cursor: pointer;
+	padding-left: 20px;
+}
+.add-new.unit-item {
+	opacity: .9;
+	padding: 5px 5px 5px 30px;
+	position: relative;
+	border: 1px dotted #AAA;
+	margin-bottom: 10px;
+	background-color: #F7F7F7;
+	cursor: pointer;
 }
 .add-new:hover {
 	opacity: 1;
@@ -1142,8 +1186,8 @@ ul {
 	border-bottom: 1px solid #e5e5e5;
 	margin: 0 0 1em 0;
 	padding: 0.8em 1em;
-	*padding: 0.8em 0;
-	*text-indent: 2em;
+	padding: 0.8em 0;
+	text-indent: 2em;
 	font-weight: bold;
 	background: #777;
 	text-shadow: 0 -1px 1px #000;

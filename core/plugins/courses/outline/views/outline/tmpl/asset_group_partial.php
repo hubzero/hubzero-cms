@@ -13,6 +13,7 @@ defined('_HZEXEC_') or die();
 	<div class="asset-group-controls">
 		<div class="sortable-handle"></div>
 		<div class="asset-group-edit"></div>
+		<div class="asset-group-copy"></div>
 	</div>
 	<div class="uploadfiles">
 		<p>Drag files here to upload</p>

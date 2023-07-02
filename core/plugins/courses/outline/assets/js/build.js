@@ -1372,7 +1372,9 @@ HUB.CoursesOutline = {
 				.on('click', '.asset-group-title-cancel', this.toggleEditTitle)
 				.on('click', '.asset-group-title-save', this.saveTitle)
 				.on('click', '.asset-group-edit', this.edit)
-				.on('click', '.add-new.asset-group-item', this.create)
+				.on('click', '.asset-group-copy', this.copy)
+				.on('click', '.asset-group-item.add-new', this.create)
+				.on('click', '.asset-group-item.paste-copy', this.create)
 				.on('click', ".asset-group-item-title.toggle-editable", this.showTitleQuickEdit)
 				.on('click', ".assetgroup-title-reset", this.resetTitleQuickEdit)
 				.on('click', '.assetgroup-title-save', this.submitTitleQuickEdit);
@@ -1383,11 +1385,11 @@ HUB.CoursesOutline = {
 		},
 
 		/*
-		 * Add a new asset group to the page
+		 * Add a new asset group to the outline
 		 */
 		create: function ( e ) {
 			var $  = HUB.CoursesOutline.jQuery,
-			addNew = $(this),
+			addNew = $(this).parent().parent(),
 			form   = $(this).find('form');
 
 			// Stop default event and propagation
@@ -1398,12 +1400,22 @@ HUB.CoursesOutline = {
 				url: form.attr('action'),
 				data: form.serialize(),
 				statusCode: {
+					200: function( data ) {
+						// Insert in our HTML (uses "underscore.js")
+						addNew.before(_.template(HUB.CoursesOutline.assetgroup.templates.item, data));
+
+						// Create a variable pointing to the new item just inserted
+						var newAssetGroupItem = addNew.parent('.asset-group').find('.asset-group-item:not(.add-asset-group-item-container,.sub-item):last');
+
+						// Trigger asset group update
+						$('.outline-main').trigger('assetGroupCreate', [newAssetGroupItem[0].id]);
+					},
 					201: function( data ) {
 						// Insert in our HTML (uses "underscore.js")
 						addNew.before(_.template(HUB.CoursesOutline.assetgroup.templates.item, data));
 
 						// Create a variable pointing to the new item just inserted
-						var newAssetGroupItem = addNew.parent('.asset-group').find('.asset-group-item:not(.add-new):last');
+						var newAssetGroupItem = addNew.parent('.asset-group').find('.asset-group-item:not(.add-asset-group-item-container,.sub-item):last');
 
 						// Trigger asset group update
 						$('.outline-main').trigger('assetGroupCreate', [newAssetGroupItem[0].id]);
@@ -1428,7 +1440,7 @@ HUB.CoursesOutline = {
 				selector = "#"+selector;
 				refresh  = true;
 
-				if ($(selector).parents('.asset-group').find('.asset-group-item:not(.add-new)').length <= 1) {
+				if ($(selector).parents('.asset-group').find('.asset-group-item:not(.add-asset-group-item-container, .sub-item)').length <= 1) {
 					// We just added our first asset group item, so we should not refresh
 					refresh = false;
 				}
@@ -1446,7 +1458,7 @@ HUB.CoursesOutline = {
 					revert: false,
 					tolerance: 'pointer',
 					opacity: '0.6',
-					items: 'li:not(.add-new, .asset)',
+					items: 'li:not(.not-sortable, .asset)',
 					axis: 'y',
 					start: function start ( e, ui ) {
 						// Style the placeholdwer based on the size of the item grabbed
@@ -1559,6 +1571,28 @@ HUB.CoursesOutline = {
 							}
 						});
 					});
+				}
+			});
+		},
+		/*
+		 * Copy asset group to clipboard
+		 */
+		copy: function ( e ) {
+			var $ = HUB.CoursesOutline.jQuery,
+			ag    = $(this).parents('.asset-group-item'),
+			form  = ag.find('.assetgroup-title-form');
+
+			e.preventDefault();
+
+			// Create ajax call to save to clipboard
+			$.ajax({
+				url: '/api/courses/assetclip/save?scope=asset_group&scope_id='+form.find('input[name="id"]').val()+'&title='+form.find('input[name="title"]').val(),
+				type: 'GET',
+				statusCode: {
+					// 200 OK
+					200: function ( data ){
+						this.refresh;
+					}
 				}
 			});
 		},
@@ -1688,6 +1722,7 @@ HUB.CoursesOutline = {
 					'<div class="asset-group-controls">',
 						'<div class="sortable-handle"></div>',
 						'<div class="asset-group-edit"></div>',
+						'<div class="asset-group-copy"></div>',
 					'</div>',
 					'<div class="uploadfiles">',
 						'<p>Drag files here to upload</p>',
@@ -2032,21 +2067,47 @@ HUB.CoursesOutline = {
 									'</div>',
 									'<div class="asset-group-container">',
 										'<ul class="asset-group sortable">',
-											'<li class="add-new asset-group-item">',
-												'Add a new ',
-												'<%',
-													'if (assetgroup.assetgroup_title.slice(-3) === "ies") {',
-														'print(assetgroup.assetgroup_title.toLowerCase().replace(/ies$/, "y"));',
-													'} else {',
-														'print(assetgroup.assetgroup_title.toLowerCase().replace(/s$/, ""));',
-													'}',
-												'%>',
-												'<form action="/api/courses/assetgroup/save">',
-													'<input type="hidden" name="course_id" value="<%= course_id %>" />',
-													'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
-													'<input type="hidden" name="unit_id" value="<%= unit_id %>" />',
-													'<input type="hidden" name="parent" value="<%= assetgroup.assetgroup_id %>" />',
-												'</form>',
+											'<li>',
+												'<div class="asset-group-item add-asset-group-item-container">',
+													'<div class="asset-group-item add-new sub-item">',
+														'Add a new ',
+														'<%',
+															'if (assetgroup.assetgroup_title.slice(-3) === "ies") {',
+																'print(assetgroup.assetgroup_title.toLowerCase().replace(/ies$/, "y"));',
+															'} else {',
+																'print(assetgroup.assetgroup_title.toLowerCase().replace(/s$/, ""));',
+															'}',
+														'%>',
+														'<form action="/api/courses/assetgroup/save">',
+															'<input type="hidden" name="course_id" value="<%= course_id %>" />',
+															'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
+															'<input type="hidden" name="unit_id" value="<%= unit_id %>" />',
+															'<input type="hidden" name="parent" value="<%= assetgroup.assetgroup_id %>" />',
+														'</form>',
+													'</div>',
+													'<div class="asset-group-item paste-copy sub-item">',
+														'<span>|| Or</span>',
+														'<form action="/api/courses/assetgroup/save">',
+															'<input type="submit" id="copy_asset_group" value="Copy" />',
+															'<span> ',
+															'<%',
+																'if (assetgroup.assetgroup_title.slice(-3) === "ies") {',
+																	'print(assetgroup.assetgroup_title.toLowerCase().replace(/ies$/, "y"));',
+																'} else {',
+																	'print(assetgroup.assetgroup_title.toLowerCase().replace(/s$/, ""));',
+																'}',
+															'%>',	
+															' </span>',
+															'<select name="id">',
+																'<option value="0">-- Select --</option>',												'<input type="hidden" name="course_id" value="<%= course_id %>" />',
+															'</select>',
+															'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
+															'<input type="hidden" name="unit_id" value="<%= unit_id %>" />',
+															'<input type="hidden" name="parent" value="<%= assetgroup.assetgroup_id %>" />',
+														'</form>',
+														'<span>from the asset clipboard</span>',
+													'</div>',
+												'</div>',
 											'</li>',
 										'</ul>',
 									'</div>',

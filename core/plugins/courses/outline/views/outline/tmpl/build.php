@@ -7,6 +7,7 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+require_once Component::path('com_courses') . DS . 'tables' . DS . 'asset.clip.php';
 
 $base = $this->course->offering()->link();
 $course = $this->course;
@@ -16,6 +17,20 @@ $sectionId = $section->get('id');
 $units = $offering->units();
 
 HTML::behavior('core');
+
+$db = App::get('db');
+
+// Get asset clip items
+//TODO: separate clip arrays for each asset group type (parent alias)
+//      currently - lectures, activities, exams)
+//      but get default asset group types (aliases) from config file
+$clipboard = new \Components\Courses\Tables\Assetclip($db);
+$filters = array(
+	'scope' => 'asset_group',
+	'created' => User::get('id')
+);
+$clips_total = $clipboard->count($filters);
+$clips = $clipboard->find($filters);
 
 ?>
 
@@ -145,37 +160,63 @@ HTML::behavior('core');
 							<ul class="asset-group sortable">
 
 <?php
-				// Loop through our asset groups
-				foreach ($agt->children() as $ag)
-				{
-					$this->view('asset_group_partial')
-					     ->set('base', $base)
-					     ->set('course', $course)
-					     ->set('unit', $unit)
-					     ->set('ag', $ag)
-					     ->display();
-				}
+								// Loop through our asset groups
+								foreach ($agt->children() as $ag)
+								{
+									$this->view('asset_group_partial')
+										->set('base', $base)
+										->set('course', $course)
+										->set('unit', $unit)
+										->set('ag', $ag)
+										->display();
+								}
 
-				// Now display assets directly attached to the asset group type
-				if ($agt->assets()->total())
-				{
-					$this->view('asset_group_partial')
-					     ->set('base', $base)
-					     ->set('course', $course)
-					     ->set('unit', $unit)
-					     ->set('ag', $agt)
-					     ->display();
-				}
+								// Now display assets directly attached to the asset group type
+								if ($agt->assets()->total())
+								{
+									$this->view('asset_group_partial')
+										->set('base', $base)
+										->set('course', $course)
+										->set('unit', $unit)
+										->set('ag', $agt)
+										->display();
+								}
 ?>
 
-								<li class="add-new asset-group-item">
-									Add a new <?php echo (substr($agt->get('title'), -3) == 'ies') ? strtolower(preg_replace('/ies$/', 'y', $agt->get('title'))) : strtolower(rtrim($agt->get('title'), 's')); ?>
-									<form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save">
-										<input type="hidden" name="course_id" value="<?php echo $course->get('id'); ?>" />
-										<input type="hidden" name="offering" value="<?php echo $offering->alias(); ?>" />
-										<input type="hidden" name="unit_id" value="<?php echo $unit->get('id'); ?>" />
-										<input type="hidden" name="parent" value="<?php echo $agt->get('id'); ?>" />
-									</form>
+								<li class="not-sortable">
+									<div class="asset-group-item add-asset-group-item-container">
+										<div class="asset-group-item add-new sub-item">
+											Add a new <?php echo (substr($agt->get('title'), -3) == 'ies') ? strtolower(preg_replace('/ies$/', 'y', $agt->get('title'))) : strtolower(rtrim($agt->get('title'), 's')); ?>
+											<form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save">
+												<input type="hidden" name="course_id" value="<?php echo $course->get('id'); ?>" />
+												<input type="hidden" name="offering" value="<?php echo $offering->alias(); ?>" />
+												<input type="hidden" name="unit_id" value="<?php echo $unit->get('id'); ?>" />
+												<input type="hidden" name="parent" value="<?php echo $agt->get('id'); ?>" />
+											</form>
+										</div>
+										<?php if ($clips_total > 0) { ?>
+										<div class="asset-group-item paste-copy sub-item">
+											<span style="padding-left: 30px;">[ Or</span>
+											<form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save">
+												<input type="submit" id="copy_asset_group" value="Copy" />
+												<span>&nbsp;<?php echo (substr($agt->get('title'), -3) == 'ies') ? strtolower(preg_replace('/ies$/', 'y', $agt->get('title'))) : strtolower(rtrim($agt->get('title'), 's')); ?></span>
+												<select name="id">
+													<?php
+														foreach ($clips as $clip)
+														{
+															echo "<option value=".$clip->id.">".$clip->title."</option>";
+														}
+													?>
+												</select>
+												<input type="hidden" name="course_id" value="<?php echo $course->get('id'); ?>" />
+												<input type="hidden" name="offering" value="<?php echo $offering->alias(); ?>" />
+												<input type="hidden" name="unit_id" value="<?php echo $unit->get('id'); ?>" />
+												<input type="hidden" name="parent" value="<?php echo $agt->get('id'); ?>" />
+											</form>
+											<span>from the asset clipboard ]</span>
+										</div>
+										<?php } ?>
+									</div>
 								</li>
 							</ul>
 						</div>

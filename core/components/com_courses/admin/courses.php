@@ -25,7 +25,7 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 \Submenu::addEntry(
 	\Lang::txt('COM_COURSES_COURSES'),
 	\Route::url('index.php?option=com_courses&controller=courses'),
-	(!in_array($controllerName, array('students', 'roles', 'pages')))
+	(!in_array($controllerName, array('students', 'roles', 'pages', 'assetclips')))
 );
 \Submenu::addEntry(
 	\Lang::txt('COM_COURSES_PAGES'),
@@ -41,6 +41,11 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	\Lang::txt('COM_COURSES_ROLES'),
 	\Route::url('index.php?option=com_courses&controller=roles'),
 	$controllerName == 'roles'
+);
+\Submenu::addEntry(
+	\Lang::txt('COM_COURSES_ASSET_CLIPS'),
+	\Route::url('index.php?option=com_courses&controller=assetclips'),
+	$controllerName == 'assetclips'
 );
 
 require_once \Component::path('com_plugins') . DS . 'helpers' . DS . 'plugins.php';

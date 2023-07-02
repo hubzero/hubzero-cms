@@ -29,31 +29,30 @@ $this->js();
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+	<span>
+		<select name="asset" style="width: 70%;">
+			<option value="0"><?php echo Lang::txt('COM_COURSES_SELECT'); ?></option>
+			<?php if ($this->assets) { ?>
+				<?php
+				foreach ($this->assets as $asset)
+				{
+					if (in_array($asset->id, $ids))
+					{
+						continue;
+					}
+				?>
+				<option value="<?php echo $this->escape(stripslashes($asset->id)); ?>"><?php echo $this->escape(stripslashes($asset->title)); ?> (<?php echo $this->escape(stripslashes($asset->type)); ?>)</option>
+				<?php } ?>
+			<?php } ?>
+		</select>
+		<input type="submit" id="btn-attach" value="<?php echo Lang::txt('COM_COURSES_ATTACH_ASSET'); ?>" />
+	</span>
+	<span style="border: 1px solid gray; padding: 4px;">
+		<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=add&scope=' . $this->filters['asset_scope'] . '&scope_id=' . $this->filters['asset_scope_id'] . '&course_id=' . $this->filters['course_id'] . '&tmpl=' . $this->filters['tmpl']); ?>" class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"><?php echo Lang::txt('COM_COURSES_CREATE_ASSET'); ?></a>
+	</span>
+
 	<table class="adminlist">
 		<thead>
-			<tr>
-				<th colspan="4">
-					<select name="asset">
-						<option value="0"><?php echo Lang::txt('COM_COURSES_SELECT'); ?></option>
-						<?php if ($this->assets) { ?>
-							<?php
-							foreach ($this->assets as $asset)
-							{
-								if (in_array($asset->id, $ids))
-								{
-									continue;
-								}
-							?>
-							<option value="<?php echo $this->escape(stripslashes($asset->id)); ?>"><?php echo $this->escape(stripslashes($asset->title)); ?> (<?php echo $this->escape(stripslashes($asset->type)); ?>)</option>
-							<?php } ?>
-						<?php } ?>
-					</select>
-					<input type="submit" id="btn-attach" value="<?php echo Lang::txt('COM_COURSES_ATTACH_ASSET'); ?>" />
-				</th>
-				<th colspan="4" class="align-right">
-					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=add&scope=' . $this->filters['asset_scope'] . '&scope_id=' . $this->filters['asset_scope_id'] . '&course_id=' . $this->filters['course_id'] . '&tmpl=' . $this->filters['tmpl']); ?>" class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"><?php echo Lang::txt('COM_COURSES_CREATE_ASSET'); ?></a>
-				</th>
-			</tr>
 			<tr>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_TITLE'); ?></th>

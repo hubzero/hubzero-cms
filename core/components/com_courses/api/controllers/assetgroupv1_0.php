@@ -87,9 +87,15 @@ class Assetgroupv1_0 extends base
 
 		// Check for an incoming 'id'
 		$id = Request::getInt('id', null);
-
+		$unit_id = Request::getInt('unit_id', null);
+		
 		// Create an asset group instance
 		$assetGroup = new Assetgroup($id);
+		$assetGroup->copy($unit_id);
+
+		$parent = $assetGroup->get('parent');
+		$parent = (!empty($parent)) ? $parent : 0;
+		$assetGroup->set('parent', Request::getInt('parent',$parent));
 
 		// Check to make sure we have an asset group object
 		if (!is_object($assetGroup))
