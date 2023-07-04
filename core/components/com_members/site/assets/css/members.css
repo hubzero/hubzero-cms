@@ -90,7 +90,7 @@
 		border-top: 1px solid #eee;
 	} 
 	#page_menu li a {
-		color: #aaa;
+		color: #000;
 		position: relative;
 		display: block;
 		background-image: none;
@@ -102,10 +102,9 @@
 		content: "";
 		position: absolute;
 		left: 1.6em;
-		top: 0.4em;
+		top: 50%;
+		transform: translate(0, -50%);
 		width: 1em;
-		height: 1em;
-		font-size: 1.2em;
 		font-family: 'Fontcons';
 		-ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=100)";
 		filter: alpha(opacity=100);
@@ -141,17 +140,6 @@
 	}
 	#page_menu li.active>a:hover {
 		border: none;
-	}
-	#page_menu li.active:after {
-		content: "";
-		position: absolute;
-		top: 0px;
-		right: -0.9em;
-		z-index: 444;
-		border-top: 1.175em solid transparent;
-		border-right: none;
-		border-bottom: 1.175em solid transparent;
-		border-left: 1em solid #555;
 	}
 	#page_menu li .meta {
 		position: absolute;
@@ -381,22 +369,20 @@
 
 /* Page header */
 	#page_header {
-		display: block;
+		display: flex;
+		align-items: center;
 		padding: 25px 20px 5px 20px;
 		margin-bottom: 5px;
 		overflow: hidden;
-		position:relative;
 	}
 	#page_options + #page_header {
 		margin-right: 11em;
 	}
 	#page_header h2 {
-		float: left;
 		color: #444;
 		margin: 0px;
 		border-bottom: 0px;
 		line-height: 1em;
-		padding: 0 0 0 35px;
 	}
 	#page_header h2 a {
 		border-bottom: 1px solid #f8f8f8;
@@ -406,13 +392,11 @@
 		border-bottom: 1px solid #aaa;
 	}
 	#page_header span {
-		float: left;
 		color: #777;
 		border: none;
 		padding: 3px 15px 0 15px;
 	}
 	#page_header h3 {
-		float: left;
 		margin: 0;
 		padding: 3px 0 0 0;
 		color: #999;
@@ -422,9 +406,6 @@
 
 	#page_header #profile-privacy {
 		color: transparent;
-		position: absolute;
-		top: 25px;
-		left: 20px;
 		width: 30px;
 		height: 30px;
 		line-height: 1;
@@ -538,9 +519,6 @@
 	}
 	#page_sidebar .message-member a:hover {
 		border: none;
-	}
-	select.option {
-		padding: 5px;
 	}
 
 /* Entries */
@@ -876,40 +854,4 @@
 	.tiled .result:nth-child(4n) {
 		margin-right: 0;
 	}
-}
-
-/*Organization normalization*/
-.ui-autocomplete {
-	position: absolute;
-	max-height: 300px;
-	overflow-y: auto;
-	overflow-x: hidden;
-	z-index:1000 !important;
-}
-
-ul[id^='ui-id-'] {
-	list-style-type: none;
-	background: white;
-	padding-left: 0;
-}
-
-ul[id^='ui-id-'] li {
-	padding-left: 6px;
-}
-
-ul.ui-autocomplete {
-	list-style-type: none;
-	background: white;
-	border: 1px solid #666;
-	margin-top: 5px;
-	width: 400px;
-}
-
-.ui-autocomplete .ui-menu-item {
-	padding: 10px 5px;
-}
-
-.ui-autocomplete .ui-menu-item:hover {
-	background: #f1f1f1;
-	cursor: pointer;
 }

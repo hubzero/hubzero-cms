@@ -59,10 +59,12 @@ $this->css('introduction.css', 'system')
 				<div class="col span-half">
 					<form action="<?php echo Route::url('index.php?option=com_resources&task=browse'); ?>" method="get" class="search">
 						<fieldset>
-							<p>
+							<p class="hz-v-align">
 								<label for="rsearch"><?php echo Lang::txt('COM_RESOURCES_SEARCH_LABEL'); ?></label>
+								<span class="hz-input-combo">
 								<input type="text" name="search" id="rsearch" value="" />
 								<input type="submit" value="<?php echo Lang::txt('COM_RESOURCES_SEARCH'); ?>" />
+								</span>
 							</p>
 						</fieldset>
 					</form>
