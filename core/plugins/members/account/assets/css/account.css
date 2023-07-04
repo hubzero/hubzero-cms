@@ -113,52 +113,6 @@
 	box-shadow: 0 0 2px #aaa;
 	outline: none;
 }
-#members-account-section input[type=submit],
-#members-account-section #token-button {
-	background: #065EFF;
-	color: white;
-	border: 1px solid #0441B0;
-	border-radius: 3px;
-	color: #FFF;
-	font-weight: bold;
-	font-size: 12px;
-	padding: 7px 20px;
-}
-#members-account-section input[type=submit]:hover,
-#members-account-section #token-button:hover {
-	cursor: pointer;
-	-webkit-box-shadow: inset 0 1px 2px #F2F2F2;
-	-moz-box-shadow: inset 0 1px 2px #F2F2F2;
-	box-shadow: inset 0 1px 2px #F2F2F2;
-}
-#members-account-section input[type=submit]:active,
-#members-account-section #token-button:active {
-	-webkit-box-shadow: inset 0 1px 2px #444;
-	-moz-box-shadow: inset 0 1px 2px #444;
-	box-shadow: inset 0 1px 2px #444;
-}
-#members-account-section p.submit {
-	text-align: center;
-}
-#members-account-section .cancel {
-	font-size: 11px;
-	padding: 7px 20px;
-	background: #FFF;
-	border: 1px solid #CCC;
-	border-radius: 3px;
-	color: #444;
-}
-#members-account-section .cancel:hover {
-	cursor: pointer;
-	-webkit-box-shadow: inset 0 1px 2px #F2F2F2;
-	-moz-box-shadow: inset 0 1px 2px #F2F2F2;
-	box-shadow: inset 0 1px 2px #F2F2F2;
-}
-#members-account-section .cancel:active {
-	-webkit-box-shadow: inset 0 1px 2px #444;
-	-moz-box-shadow: inset 0 1px 2px #444;
-	box-shadow: inset 0 1px 2px #444;
-}
 #members-account-section #token-button {
 	font: -webkit-small-control;
 	float: left;

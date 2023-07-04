@@ -11,11 +11,13 @@ defined('_HZEXEC_') or die();
 <div<?php echo ($this->params->get('cssId')) ? ' id="' . $this->params->get('cssId') . '"' : ''; ?>>
 	<form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get" class="search">
 		<fieldset>
-			<p>
+			<p class="hz-v-align">
 				<label for="rsearchword"><?php echo Lang::txt('MOD_FINDRESOURCES_SEARCH_LABEL'); ?></label>
-				<input type="text" name="terms" id="rsearchword" value="" />
-				<input type="hidden" name="domain" value="resources" />
-				<input type="submit" value="<?php echo Lang::txt('MOD_FINDRESOURCES_SEARCH'); ?>" />
+				<span class="hz-input-combo">
+                    <input type="text" name="terms" id="rsearchword" value="" />
+                    <input type="hidden" name="domain" value="resources" />
+                    <input type="submit" value="<?php echo Lang::txt('MOD_FINDRESOURCES_SEARCH'); ?>" />
+                </span> 
 			</p>
 		</fieldset>
 	</form>
