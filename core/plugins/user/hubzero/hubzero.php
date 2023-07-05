@@ -445,9 +445,4 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 
 		return $instance;
 	}
-
-	// Temporary - Event::trigger
-	public function onUserDeidentify(){
-		die('Hubzero plugin onUserDeidentify');
-	}
 }
