@@ -131,6 +131,9 @@ class plgUserDeidentify extends \Hubzero\Plugin\Plugin {
         $delete_BlogEntries_Query = "DELETE from `#__blog_entries` where created_by=" . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($delete_BlogEntries_Query);
 
+        $delete_BlogComments_Query = "DELETE from `#__blog_comments` where created_by=" . $db->quote($userId);
+        $this->runUpdateOrDeleteQuery($delete_BlogComments_Query);
+
         $delete_AuthLinkData_Query = "DELETE from `#__auth_link_data` where link_id=" . $db->quote($userLinkId);
         $this->runUpdateOrDeleteQuery($delete_AuthLinkData_Query);
 
