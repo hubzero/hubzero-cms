@@ -224,6 +224,42 @@
 		margin: 0 0 0.5em 0;
 	}
 
+
+	/* Organization Autocomplete */
+	.ui-autocomplete {
+		position: absolute;
+		max-height: 300px;
+		overflow-y: auto;
+		overflow-x: hidden;
+		z-index:1000 !important;
+	}
+
+	ul[id^='ui-id-'] {
+		list-style-type: none;
+		background: white;
+	}
+
+	ul[id^='ui-id-'] li {
+		padding-left: 0.5rem;
+	}
+
+	ul.ui-autocomplete {
+		list-style-type: none;
+		background: white;
+		border: 1px solid #666;
+		margin-top: 5px;
+		width: 400px;
+	}
+
+	.ui-autocomplete .ui-menu-item {
+		padding: 10px 5px;
+	}
+
+	.ui-autocomplete .ui-menu-item:hover {
+		background: #f1f1f1;
+		cursor: pointer;
+	}
+
 	/* De-identified members */
 	.toolbar-list .button a[data-task="deidentify"],
 	.toolbar-list .button a[data-task="deidentify"]:hover {
