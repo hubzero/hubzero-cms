@@ -45,7 +45,9 @@ class plgUserDeidentify extends \Hubzero\Plugin\Plugin {
         $userId = $user_id;
         $userEmail = "";
         $userName = "";
-        $userLinkId = "";
+
+        // There could be multiple auth links to a specific user. Will need to loop through this array to delete. 
+        $userLinkIdArray = array();
 
         if ($userJsonObj) {
             $userId = $userJsonObj[0]['id'];
@@ -60,8 +62,12 @@ class plgUserDeidentify extends \Hubzero\Plugin\Plugin {
         // PURPOSE: Find auth link id from jos_auth_link table
         $select_AuthLink_Query = "SELECT id, user_id FROM `#__auth_link` WHERE user_id='" . $user_id . "';";
         $authLinkJsonObj = $this->runSelectQuery($select_AuthLink_Query);
+        
+        // Create an array of link ids
         if ($authLinkJsonObj) {
-            $userLinkId = $authLinkJsonObj[0]['id'];
+            $userLinkIdArray = array_map(function ($el) {
+                return $el['id'];
+            }, $authLinkJsonObj);
         }
 
         // ======= Sanitation Queries // deletes, updates, inserts =======
@@ -134,8 +140,13 @@ class plgUserDeidentify extends \Hubzero\Plugin\Plugin {
         $delete_BlogComments_Query = "DELETE from `#__blog_comments` where created_by=" . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($delete_BlogComments_Query);
 
-        $delete_AuthLinkData_Query = "DELETE from `#__auth_link_data` where link_id=" . $db->quote($userLinkId);
-        $this->runUpdateOrDeleteQuery($delete_AuthLinkData_Query);
+        // Loop through user link id array to delete
+        if(!empty($userLinkIdArray)) {
+            foreach ($userLinkIdArray as $userLinkId) {
+                $delete_AuthLinkData_Query = "DELETE from `#__auth_link_data` where link_id=" . $db->quote($userLinkId);
+                $this->runUpdateOrDeleteQuery($delete_AuthLinkData_Query);
+            }
+        }
 
         $delete_AuthLink_Query = "DELETE from `#__auth_link` where user_id=" . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($delete_AuthLink_Query);
@@ -203,6 +214,17 @@ class plgUserDeidentify extends \Hubzero\Plugin\Plugin {
         $update_UsersPointsSubscription_Query = "UPDATE `#__users_points_subscriptions` set contact=" . $db->quote($anonUserName) . " where uid=" . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($update_UsersPointsSubscription_Query);
 
+        // ----------- DELETE the user's home directory, with the path being /webdav/home/$userName. ----------
+        if ($userName) {
+            // as user Apache, we can't delete the directory so we need to delete all files.
+            $cmd1 = "/bin/rm -rf /webdav/home/" . escapeshellarg($userName) . "/*";
+            system($cmd1, $retval);
+            
+            // delete the files starting with a dot; ignore messages about '.' and '..'
+            $cmd2 = "/bin/rm -rf /webdav/home/" . escapeshellarg($userName) . "/.*";
+            system($cmd2, $retval);
+        }
+
         // ----------- UPDATES TO THE PROFILES AND USERS TABLE, and User Profiles Table  ----------
         $update_XProfilesById_Query = "UPDATE `#__xprofiles` set name=" . $db->quote($anonUserName) . ", username=" . $db->quote($anonUserName) . ", userPassword=" . $db->quote($anonPassword) . ", url='', phone='', regHost='', regIP='', givenName=" . $db->quote($anonUserName) . ", middleName='', surname='anonSurName', picture='', public=0, params='', note='', orcid='', homeDirectory='/home/anonymous', email=" . $db->quote($anonUserName . "@example.com") . " where uidNumber =" . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($update_XProfilesById_Query);
@@ -212,5 +234,7 @@ class plgUserDeidentify extends \Hubzero\Plugin\Plugin {
 
         $update_UserProfiles_Query = "UPDATE `#__user_profiles` SET profile_value='sanitized' WHERE user_id=". $db->quote($userId);
         $this->runUpdateOrDeleteQuery($update_UserProfiles_Query);
+
+        
     }
 }
