@@ -151,24 +151,6 @@ class plgUserDeidentify extends \Hubzero\Plugin\Plugin {
         $delete_AuthLink_Query = "DELETE from `#__auth_link` where user_id=" . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($delete_AuthLink_Query);
 
-        $update_Job_Query = "UPDATE job set username=" . $db->quote($anonUserName) . " where username=" . $db->quote($userName);
-        $this->runUpdateOrDeleteQuery($update_Job_Query);
-
-        $update_FilePerm_Query = "UPDATE fileperm set fileuser=" . $db->quote($anonUserName) . " where fileuser=" . $db->quote($userName);
-        $this->runUpdateOrDeleteQuery($update_FilePerm_Query);
-
-        $update_ViewPerm_Query = "UPDATE viewperm set viewuser=" . $db->quote($anonUserName) . " where viewuser=" . $db->quote($userName);
-        $this->runUpdateOrDeleteQuery($update_ViewPerm_Query);
-
-        $update_ViewLog_Query = "UPDATE viewlog set username=" . $db->quote($anonUserName) . ", remoteip='', remotehost='' where username=" . $db->quote($userName);
-        $this->runUpdateOrDeleteQuery($update_ViewLog_Query);
-
-        $update_SessionLog_Query = "UPDATE sessionlog set username=" . $db->quote($anonUserName) . ", remoteip='', remotehost='' where username=" . $db->quote($userName);
-        $this->runUpdateOrDeleteQuery($update_SessionLog_Query);
-
-        $update_Session_Query = "UPDATE session set username=" . $db->quote($anonUserName) . ", remoteip='' where username=" . $db->quote($userName);
-        $this->runUpdateOrDeleteQuery($update_Session_Query);
-
         $delete_XGroupMember_Query = "DELETE from `#__xgroups_members` where uidNumber=" . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($delete_XGroupMember_Query);
 

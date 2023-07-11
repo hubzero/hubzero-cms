@@ -213,4 +213,63 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 
 		return true;
 	}
+
+
+	public function runSelectQuery($query) {
+        $db = \App::get('db');
+        $db->setQuery($query);
+        $objRows = $db->loadObjectList();
+
+        // json_encode: returns a string containing the JSON representation from the mySQL -> json_decode: Returns the value encoded in json in appropriate PHP type
+        $objString = json_encode($objRows, true);
+        return json_decode($objString, true);
+    }
+
+    public function runUpdateOrDeleteQueryMiddlewareDb($query) {
+        $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
+        $mwdb->setQuery($query);
+        return $mwdb->query();
+    }
+
+	/**
+	 * Update all user related personal information in middleware database table for the given user ID
+	 * Method is called after the deidentify function that deletes and updates in main CMS tables
+	 *
+	 * @param   string   $user_id      User Id
+	 */
+
+    public function onUserDeIdentifyMiddleware($user_id) {
+        // Access from main CMS tables
+        $select_UsersById_Query = "SELECT id, username, email, password FROM `#__users` WHERE id='" . $user_id . "';";
+        $userJsonObj = $this->runSelectQuery($select_UsersById_Query);
+
+        $userId = $user_id;
+        $userName = "";
+        if ($userJsonObj) {
+            $userId = $userJsonObj[0]['id'];
+            $userName = $userJsonObj[0]['username'];
+        }
+        $anonUserName = "anonUsername_" . $userId;
+
+        // Access from different database, pulling from the Middleware Database Object, accessing the tables (jobs, sessions, views)
+        $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
+        $update_Job_Query = "UPDATE job set username=" . $mwdb->quote($anonUserName) . " where username=" . $mwdb->quote($userName);
+        $this->runUpdateOrDeleteQueryMiddlewareDb($update_Job_Query);
+
+        $update_FilePerm_Query = "UPDATE fileperm set fileuser=" . $mwdb->quote($anonUserName) . " where fileuser=" . $mwdb->quote($userName);
+        $this->runUpdateOrDeleteQueryMiddlewareDb($update_FilePerm_Query);
+
+        $update_ViewPerm_Query = "UPDATE viewperm set viewuser=" . $mwdb->quote($anonUserName) . " where viewuser=" . $mwdb->quote($userName);
+        $this->runUpdateOrDeleteQueryMiddlewareDb($update_ViewPerm_Query);
+
+        $update_ViewLog_Query = "UPDATE viewlog set username=" . $mwdb->quote($anonUserName) . ", remoteip='', remotehost='' where username=" . $mwdb->quote($userName);
+        $this->runUpdateOrDeleteQueryMiddlewareDb($update_ViewLog_Query);
+
+        $update_SessionLog_Query = "UPDATE sessionlog set username=" . $mwdb->quote($anonUserName) . ", remoteip='', remotehost='' where username=" . $mwdb->quote($userName);
+        $this->runUpdateOrDeleteQueryMiddlewareDb($update_SessionLog_Query);
+
+        $update_Session_Query = "UPDATE session set username=" . $mwdb->quote($anonUserName) . ", remoteip='' where username=" . $mwdb->quote($userName);
+        $this->runUpdateOrDeleteQueryMiddlewareDb($update_Session_Query);
+
+    }
 }
