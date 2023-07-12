@@ -224,16 +224,10 @@
 		margin: 0 0 0.5em 0;
 	}
 
-	/* De-identified members */
-	.toolbar-list .button a[data-task="deidentify"],
-	.toolbar-list .button a[data-task="deidentify"]:hover {
-		background: #ff6a6a;
+	/* De-identified members, need to override it */
+	.toolbar-box li#toolbar-eye-close a span:before {
+		content: "\f070";
 	}
-
-	.toolbar-list .button a[data-task="deidentify"] span:before {
-		color: white;
-	}
-
 	/* Organization Autocomplete */
 	.ui-autocomplete {
 		position: absolute;
