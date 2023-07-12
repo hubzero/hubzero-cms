@@ -237,8 +237,7 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 	 *
 	 * @param   string   $user_id      User Id
 	 */
-
-    public function onUserDeIdentifyMiddleware($user_id) {
+    public function onUserDeidentify($user_id) {
         // Access from main CMS tables
         $select_UsersById_Query = "SELECT id, username, email, password FROM `#__users` WHERE id='" . $user_id . "';";
         $userJsonObj = $this->runSelectQuery($select_UsersById_Query);
