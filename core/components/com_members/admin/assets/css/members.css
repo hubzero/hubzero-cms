@@ -225,10 +225,10 @@
 	}
 
 	/* De-identified members, need to override it */
+	/* ICON for toolbar de-identify button: EYE CLOSED */
 	.toolbar-box li#toolbar-eye-close a span:before {
-		content: "\f070";
-	}
-	/* Organization Autocomplete */
+		content: "\f070"; 
+	}	/* Organization Autocomplete */
 	.ui-autocomplete {
 		position: absolute;
 		max-height: 300px;
