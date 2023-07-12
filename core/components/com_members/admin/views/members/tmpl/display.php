@@ -45,7 +45,7 @@ endif;
 
 if ($canDo->get('core.delete')):
 	Toolbar::deleteList('COM_MEMBERS_CONFIRMATION_WARNING');
-	Toolbar::custom('deidentify', 'user', '', 'COM_MEMBERS_DEIDENTIFY', true);
+	Toolbar::custom('deidentify', 'eye-close', '', 'COM_MEMBERS_DEIDENTIFY', true);
 endif;
 
 Toolbar::spacer();
