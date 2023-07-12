@@ -1002,10 +1002,9 @@ class Members extends AdminController
 
 		// Loop through the array of user Ids
 		// Make sure plugin user/deidentify has been migrated / imported
-		// Run through main CMS tables, then run through client specific database tables that pertains to jobs, sessions, views
+		// Run through main CMS tables, then run through client specific database tables that pertains to jobs, sessions, views with same trigger name
 		foreach ($ids as $id) {
 			Event::trigger('user.onUserDeidentify', $id);
-			Event::trigger('user.onUserDeIdentifyMiddleware', $id);
 		}
 
 		Notify::success("Deidentified several user id: " . implode(" ", $ids));
