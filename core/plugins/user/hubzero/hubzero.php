@@ -497,6 +497,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
         // Creating New Credentials
         $anonPassword = "anonPassword_" . $userId;
         $anonUserName = "anonUsername_" . $userId;
+		$anonUserNameSpace = "AnonFirst Middle Last" . $userId;
 
         // PURPOSE: Find auth link id from jos_auth_link table
         $select_AuthLink_Query = "SELECT id, user_id FROM `#__auth_link` WHERE user_id='" . $user_id . "';";
@@ -647,10 +648,10 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
         }
 
         // ----------- UPDATES TO THE PROFILES AND USERS TABLE, and User Profiles Table  ----------
-        $update_XProfilesById_Query = "UPDATE `#__xprofiles` set name=" . $db->quote($anonUserName) . ", username=" . $db->quote($anonUserName) . ", userPassword=" . $db->quote($anonPassword) . ", url='', phone='', regHost='', regIP='', givenName=" . $db->quote($anonUserName) . ", middleName='', surname='anonSurName', picture='', public=0, params='', note='', orcid='', homeDirectory='/home/anonymous', email=" . $db->quote($anonUserName . "@example.com") . " where uidNumber =" . $db->quote($userId);
+        $update_XProfilesById_Query = "UPDATE `#__xprofiles` set name=" . $db->quote($anonUserNameSpace) . ", username=" . $db->quote($anonUserName) . ", userPassword=" . $db->quote($anonPassword) . ", url='', phone='', regHost='', regIP='', givenName=" . $db->quote($anonUserName) . ", middleName='', surname='anonSurName', picture='', public=0, params='', note='', orcid='', homeDirectory='/home/anonymous', email=" . $db->quote($anonUserName . "@example.com") . " where uidNumber =" . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($update_XProfilesById_Query);
 
-        $update_UsersById_Query = "UPDATE `#__users` set name=" . $db->quote($anonUserName) . ", givenName=" . $db->quote($anonUserName) .", middleName='', surname='anonSurName', username=" . $db->quote($anonUserName) . ", password=" .  $db->quote($anonPassword) . ", block='1', registerIP='', params='', homeDirectory='', email=" .  $db->quote($anonUserName . "@example.com") . " where id =" . $db->quote($userId);
+        $update_UsersById_Query = "UPDATE `#__users` set name=" . $db->quote($anonUserNameSpace) . ", givenName=" . $db->quote($anonUserName) .", middleName='', surname='anonSurName', username=" . $db->quote($anonUserName) . ", password=" .  $db->quote($anonPassword) . ", block='1', registerIP='', params='', homeDirectory='', email=" .  $db->quote($anonUserName . "@example.com") . " where id =" . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($update_UsersById_Query);
 
         $update_UserProfiles_Query = "UPDATE `#__user_profiles` SET profile_value='sanitized' WHERE user_id=". $db->quote($userId);
