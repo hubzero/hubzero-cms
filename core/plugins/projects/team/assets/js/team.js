@@ -308,6 +308,26 @@ HUB.ProjectTeam = {
 	}
 }
 
+// Sync Groups Radio Buttons. Toggling the sync/custom button between the 2 radio button. 
+$(document).ready(function () {
+	const membershipSyncRadio = $('#membership_sync');
+	const membershipCustomRadio = $('#membership_custom');
+	const syncRoleSelector = $('#sync-role-selector')
+
+	membershipSyncRadio.click(function() {
+		membershipSyncRadio.closest('div[class^="input-wrap"]').addClass('active');
+		membershipCustomRadio.closest('div[class^="input-wrap"]').removeClass('active');
+		syncRoleSelector.show()
+	});
+
+	membershipCustomRadio.click(function() {
+		membershipCustomRadio.closest('div[class^="input-wrap"]').addClass('active');
+		membershipSyncRadio.closest('div[class^="input-wrap"]').removeClass('active');
+		syncRoleSelector.hide()
+	});
+});
+
+
 jQuery(document).ready(function($){
 	HUB.ProjectTeam.initialize();
 
