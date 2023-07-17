@@ -228,7 +228,9 @@
 	/* ICON for toolbar de-identify button: EYE CLOSED */
 	.toolbar-box li#toolbar-eye-close a span:before {
 		content: "\f070"; 
-	}	/* Organization Autocomplete */
+	}
+
+	/* Organization Autocomplete */
 	.ui-autocomplete {
 		position: absolute;
 		max-height: 300px;
@@ -262,3 +264,4 @@
 		background: #f1f1f1;
 		cursor: pointer;
 	}
+
