@@ -651,7 +651,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
         $update_UsersById_Query = "UPDATE `#__users` set name=" . $db->quote($anonUserNameSpace) . ", givenName=" . $db->quote($anonUserName) .", middleName='', surname='anonSurName', username=" . $db->quote($anonUserName) . ", password=" .  $db->quote($anonPassword) . ", block='1', registerIP='', params='', homeDirectory='', email=" .  $db->quote($anonUserName . "@example.com") . " where id =" . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($update_UsersById_Query);
 
-        $update_UserProfiles_Query = "UPDATE `#__user_profiles` SET profile_value='sanitized' WHERE user_id=". $db->quote($userId);
+        $update_UserProfiles_Query = "UPDATE `#__user_profiles` SET profile_value='sanitized' WHERE user_id=" . $db->quote($userId) . " AND profile_key='deletion'";
         $this->runUpdateOrDeleteQuery($update_UserProfiles_Query);
 		return true;
     }
