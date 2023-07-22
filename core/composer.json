@@ -80,7 +80,8 @@
             "php": "5.6.40"
         },
         "allow-plugins": {
-            "simplesamlphp/composer-module-installer": true
+            "simplesamlphp/composer-module-installer": true,
+            "php-http/discovery": true
         }
     }
 }
