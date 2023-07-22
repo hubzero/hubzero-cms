@@ -24,11 +24,11 @@
         }
     ],
     "require": {
+	"firebase/php-jwt": "~6.0.0",
         "bordoni/phpass": "0.3.5",
 	"phpmailer/phpmailer": "6.8.*",
         "jasig/phpcas": "1.3.*",
         "ezyang/htmlpurifier": "4.13.*",
-        "facebook/graph-sdk": "5.7.*",
         "tecnickcom/tcpdf": "6.4.*",
         "marfrelen/lessphp": "0.5.*",
         "swiftmailer/swiftmailer": "v5.4.*",
@@ -36,10 +36,11 @@
         "willdurand/geocoder": "2.8.*",
         "predis/predis": "0.8.*",
         "symfony/yaml": "3.4.*",
-        "symfony/http-foundation": "~4.4.30",
+        "symfony/http-foundation": "~4.4.49",
+        "symfony/http-kernel": "~4.4.50",
         "simshaun/recurr": "~0.3.2",
-        "pelago/emogrifier": "~3.1.0",
-        "google/apiclient": "~2.12.2",
+        "pelago/emogrifier": "7.0.*",
+        "google/apiclient": "2.12.*",
         "guzzlehttp/guzzle": "~6.5.6",
         "authy/php": "2.2.*",
         "mandrill/mandrill": "1.0.*",
@@ -48,26 +49,27 @@
         "pear/net_dns2": "1.5.*",
         "hubzero/orcid-php": "0.3.*",
         "league/flysystem": "~1.1.4",
-        "potherca/flysystem-github": "v0.2.2",
+	"potherca/flysystem-github": "v0.3.0",
         "nao-pon/flysystem-google-drive": "~1.1.13",
         "php-amqplib/php-amqplib": "2.5.*",
         "league/flysystem-aws-s3-v3": "1.0.*",
         "simplepie/simplepie": "1.5.*",
-        "solarium/solarium" : "4.0.*",
+        "solarium/solarium" : "6.1.*",
         "cilogon/oauth2-cilogon": "1.1.*",
         "srmklive/flysystem-dropbox-v2": "1.0.*",
         "stevenmaguire/oauth2-dropbox": "2.0.*",
 	"composer/composer": "^2.0.0",
 	"phpoffice/phpspreadsheet": "1.16.*",
 	"simplesamlphp/simplesamlphp": "1.18.*",
-        "php-http/guzzle6-adapter": "^1.1"
+        "php-http/guzzle6-adapter": "*",
+        "http-interop/http-factory-guzzle": "^1.2"
     },
     "require-dev": {
         "mockery/mockery": "~1.3.5",
 	"php-parallel-lint/php-parallel-lint": "0.9.*",
 	"phpunit/dbunit": "1.4.*",
 	"phpunit/phpunit": "4.8.*",
-	"php-coveralls/php-coveralls": "2.0.*",
+	"php-coveralls/php-coveralls": "2.4.*",
 	"squizlabs/php_codesniffer": "2.9.*"
     },
     "autoload": {
@@ -78,10 +80,10 @@
     "config": {
         "preferred-install": "dist",
         "platform": {
-            "php": "7.4.33"
+            "php": "8.2.8"
         },
         "allow-plugins": {
-            "simplesamlphp/composer-module-installer": true,
+            "simplesamlphp/composer-module-installer": false,
             "php-http/discovery": true
         }
     }
