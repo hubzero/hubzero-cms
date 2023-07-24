@@ -218,7 +218,7 @@ class Articles extends SiteController
 		}
 
 		// Escape strings for HTML output
-		$pageclass_sfx = htmlspecialchars($item->params->get('pageclass_sfx'));
+		$pageclass_sfx = htmlspecialchars($item->params->get('pageclass_sfx',''));
 		$print = Request::getBool('print');
 
 		$title = null;
@@ -649,7 +649,7 @@ class Articles extends SiteController
 		$form->limitField = ''; //$pagination->getLimitBox();
 
 		//Escape strings for HTML output
-		$pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
+		$pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx',''));
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
@@ -873,7 +873,7 @@ class Articles extends SiteController
 		}
 
 		//Escape strings for HTML output
-		$pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
+		$pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx',''));
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
@@ -990,7 +990,7 @@ class Articles extends SiteController
 		$items = array($parent->id => $items);
 
 		//Escape strings for HTML output
-		$pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
+		$pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx',''));
 
 		$maxLevelcat = $params->get('maxLevelcat', -1);
 
@@ -1406,7 +1406,7 @@ class Articles extends SiteController
 		$children = array($category->id => $children);
 
 		// Escape strings for HTML output
-		$pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
+		$pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx',''));
 
 		$maxLevel = $params->get('maxLevel', -1);
 
@@ -1639,7 +1639,7 @@ class Articles extends SiteController
 		}
 
 		// Escape strings for HTML output
-		$pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
+		$pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx',''));
 		$return_page = base64_encode(urlencode($return_page));
 
 		$this->view

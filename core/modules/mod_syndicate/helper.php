@@ -35,7 +35,7 @@ class Helper extends Module
 			return;
 		}
 
-		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx',''));
 
 		$text = htmlspecialchars($params->get('text'));
 

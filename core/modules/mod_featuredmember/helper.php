@@ -57,7 +57,7 @@ class Helper extends Module
 		// Did we have a result to display?
 		if ($this->row)
 		{
-			$this->cls = trim($this->params->get('moduleclass_sfx'));
+			$this->cls = trim($this->params->get('moduleclass_sfx',''));
 			$this->txt_length = trim($this->params->get('txt_length'));
 
 			$config = Component::params('com_members');

@@ -31,7 +31,7 @@ class Helper extends Module
 
 		if ($list->count())
 		{
-			$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+			$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx',''));
 			$startLevel = Category::oneOrNew($list->first()->parent_id)->level;
 			require $this->getLayoutPath($params->get('layout', 'default'));
 		}

@@ -62,7 +62,7 @@ class Helper extends Module
 		    $row = Entry::oneOrNew((isset($rows[$id]) ? $rows[$id] : 0));
                 }
 
-		$this->cls = trim($this->params->get('moduleclass_sfx'));
+		$this->cls = trim($this->params->get('moduleclass_sfx',''));
 		$this->txt_length = trim($this->params->get('txt_length'));
 		$this->thumb = '';
 

@@ -30,7 +30,7 @@ class Helper extends Module
 		$module = $this->module;
 
 		$params->def('count', 10);
-		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx',''));
 		$list = self::getList($params);
 
 		require $this->getLayoutPath($params->get('layout', 'default'));

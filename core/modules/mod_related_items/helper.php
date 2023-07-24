@@ -48,7 +48,7 @@ class Helper extends Module
 			return;
 		}
 
-		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx',''));
 		$showDate = $params->get('showDate', 0);
 
 		require $this->getLayoutPath($params->get('layout', 'default'));
