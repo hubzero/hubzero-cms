@@ -127,7 +127,7 @@ class INI extends Base
 					continue;
 				}
 			}
-			else if ($line{0} == '[')
+			else if ($line[0] == '[')
 			{
 				continue;
 			}
