@@ -39,7 +39,7 @@ class Helper extends Module
 		// Did we have a result to display?
 		if ($row->get('id'))
 		{
-			$this->cls = trim($this->params->get('moduleclass_sfx'));
+			$this->cls = trim($this->params->get('moduleclass_sfx',''));
 			$this->txt_length = trim($this->params->get('txt_length'));
 
 			$this->row = $row;

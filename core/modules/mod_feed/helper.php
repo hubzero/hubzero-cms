@@ -94,7 +94,7 @@ class Helper extends Module
 		}
 
 		$feed = $this->getFeed();
-		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx',''));
 
 		require $this->getLayoutPath($params->get('layout', 'default'));
 	}
