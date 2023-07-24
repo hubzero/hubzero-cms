@@ -14,37 +14,43 @@ $this->css()
 
 <form action="<?php echo Route::url($this->member->link() . '&active=messages'); ?>" method="post">
 	<div id="filters">
-		<input type="hidden" name="inaction" value="inbox" />
-		<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_FROM'); ?>
-		<select class="option" name="filter">
-			<option value=""><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_ALL'); ?></option>
-			<?php
-				if ($this->components)
-				{
-					foreach ($this->components as $component)
+		<div class="hz-v-align">
+			<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_FROM'); ?>
+			<div class="hz-input-combo">
+				<input type="hidden" name="inaction" value="inbox" />
+				<select class="option" name="filter">
+					<option value=""><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_ALL'); ?></option>
+					<?php
+					if ($this->components)
 					{
-						$component = substr($component->component, 4);
-						$sbjt  = '<option value="'.$component.'"';
-						$sbjt .= ($component == $this->filters['filter']) ? ' selected="selected"' : '';
-						$sbjt .= '>'.$component.'</option>'."\n";
-						echo $sbjt;
+						foreach ($this->components as $component)
+						{
+							$component = substr($component->component, 4);
+							$sbjt  = '<option value="'.$component.'"';
+							$sbjt .= ($component == $this->filters['filter']) ? ' selected="selected"' : '';
+							$sbjt .= '>'.$component.'</option>'."\n";
+							echo $sbjt;
+						}
 					}
-				}
-			?>
-		</select>
-		<input class="btn" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_FILTER'); ?>" />
+					?>
+				</select>
+				<input class="btn" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_FILTER'); ?>" />
+			</div>
+		</div>
 	</div>
 
 	<div id="actions">
-		<select class="option" name="action">
-			<option value=""><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_WITH_SELECTED'); ?></option>
-			<option value="markasread"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_MARK_AS_READ'); ?></option>
-			<option value="markasunread"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_MARK_AS_UNREAD'); ?></option>
-			<option value="sendtoarchive"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_ARCHIVE'); ?></option>
-			<option value="sendtotrash"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_TRASH'); ?></option>
-		</select>
-		<input type="hidden"name="activetab" value="inbox" />
-		<input class="btn" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_APPLY'); ?>" />
+		<div class="hz-input-combo">
+			<select class="option" name="action">
+				<option value=""><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_WITH_SELECTED'); ?></option>
+				<option value="markasread"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_MARK_AS_READ'); ?></option>
+				<option value="markasunread"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_MARK_AS_UNREAD'); ?></option>
+				<option value="sendtoarchive"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_ARCHIVE'); ?></option>
+				<option value="sendtotrash"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_TRASH'); ?></option>
+			</select>
+			<input type="hidden"name="activetab" value="inbox" />
+			<input class="btn" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_APPLY'); ?>" />
+		</div>
 	</div>
 	<br class="clear" />
 

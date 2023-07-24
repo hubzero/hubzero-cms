@@ -64,22 +64,6 @@ defined('_HZEXEC_') or die();
 			</tr>
 			<tr>
 				<th scope="row">
-					<?php echo Lang::txt('COM_SYSTEM_INFO_MAGIC_QUOTES'); ?>
-				</th>
-				<td>
-					<?php echo Html::phpsetting('boolean', $this->php_settings['magic_quotes_gpc']); ?>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row">
-					<?php echo Lang::txt('COM_SYSTEM_INFO_REGISTER_GLOBALS'); ?>
-				</th>
-				<td>
-					<?php echo Html::phpsetting('boolean', $this->php_settings['register_globals']); ?>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row">
 					<?php echo Lang::txt('COM_SYSTEM_INFO_OUTPUT_BUFFERING'); ?>
 				</th>
 				<td>

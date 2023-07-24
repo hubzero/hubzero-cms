@@ -100,7 +100,7 @@ class Html
 					}
 				}
 
-				$replacement = trim(implode($properties, '; '));
+				$replacement = trim(implode('; ', $properties));
 
 				return str_replace($match[1], $replacement, $match[0]);
 			},
@@ -818,23 +818,27 @@ class Html
 					$pop   = '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_VERSION_UNPUBLISHED') . '</p>';
 					$html .= self::primaryButton('link_disabled', '', Lang::txt('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
 				}
-			break;
+				break;
 
 			case 4:
 				// write primary button and downloads for a Learning Module
 				$html .= self::primaryButton('', Route::url($resource->link() . '&task=play'), 'Start learning module');
-			break;
+				break;
 
 			case 6:
 				$mesg  = Lang::txt('COM_RESOURCES_VIEW') . ' Course Lectures';
 				$html .= self::primaryButton('download', Route::url($resource->link()) . '#courselecture', $mesg, '', $mesg, '');
+				break;
+
 			case 31:
 				$mesg  = Lang::txt('COM_RESOURCES_VIEW') . ' Series';
 				$html .= self::primaryButton('download', Route::url($resource->link()) . '#series', $mesg, '', $mesg, '');
+				break;
+
 			case 2:
 				$mesg  = Lang::txt('COM_RESOURCES_VIEW') . ' Workshop ';
 				$html .= self::primaryButton('download', Route::url($resource->link()) . '#workshop', $mesg, '', $mesg, '');
-			break;
+				break;
 
 			default:
 				$firstChild->title = str_replace('"', '&quot;', $firstChild->title);
@@ -917,7 +921,11 @@ class Html
 							$class = ''; //'play';
 						}
 
-						if (substr($firstChild->path, 0, 7) == 'http://'
+						if (substr($firstChild->path, 0, 16) == 'https://doi.org/')
+						{
+							$mesg  = substr($firstChild->path,16);
+						}
+						else if (substr($firstChild->path, 0, 7) == 'http://'
 						 || substr($firstChild->path, 0, 8) == 'https://'
 						 || substr($firstChild->path, 0, 6) == 'ftp://'
 						 || substr($firstChild->path, 0, 9) == 'mainto://'
@@ -1123,7 +1131,12 @@ class Html
 			$base_path = DS . trim($base_path, DS);
 		}
 
-		if (preg_match("/(?:https?:|mailto:|ftp:|gopher:|news:|file:)/", $path))
+		if (substr($path, 0, 16) == 'https://doi.org/')
+		{
+			$type = 'DOI';
+			$fs = '';
+		}
+		else if (preg_match("/(?:https?:|mailto:|ftp:|gopher:|news:|file:)/", $path))
 		{
 			$type = 'HTM';
 			$fs = '';

@@ -484,9 +484,6 @@ class JApplicationWeb
 	 */
 	public function redirect($url, $moved = false)
 	{
-		// Import library dependencies.
-		jimport('phputf8.utils.ascii');
-
 		// Check for relative internal links.
 		if (preg_match('#^index\.php#', $url))
 		{
@@ -532,36 +529,9 @@ class JApplicationWeb
 		}
 		else
 		{
-			// We have to use a JavaScript redirect here because MSIE doesn't play nice with utf-8 URLs.
-			if (($this->client->engine == JWebClient::TRIDENT) && !utf8_is_ascii($url))
-			{
-				$html = '<html><head>';
-				$html .= '<meta http-equiv="content-type" content="text/html; charset=' . $this->charSet . '" />';
-				$html .= '<script>document.location.href=\'' . $url . '\';</script>';
-				$html .= '</head><body></body></html>';
-
-				echo $html;
-			}
-			/*
-			 * For WebKit based browsers do not send a 303, as it causes subresource reloading.  You can view the
-			 * bug report at: https://bugs.webkit.org/show_bug.cgi?id=38690
-			 */
-			elseif (!$moved and ($this->client->engine == JWebClient::WEBKIT))
-			{
-				$html = '<html><head>';
-				$html .= '<meta http-equiv="refresh" content="0; url=' . $url . '" />';
-				$html .= '<meta http-equiv="content-type" content="text/html; charset=' . $this->charSet . '" />';
-				$html .= '</head><body></body></html>';
-
-				echo $html;
-			}
-			else
-			{
-				// All other cases use the more efficient HTTP header for redirection.
-				$this->header($moved ? 'HTTP/1.1 301 Moved Permanently' : 'HTTP/1.1 303 See other');
-				$this->header('Location: ' . $url);
-				$this->header('Content-Type: text/html; charset=' . $this->charSet);
-			}
+			$this->header($moved ? 'HTTP/1.1 301 Moved Permanently' : 'HTTP/1.1 303 See other');
+			$this->header('Location: ' . $url);
+			$this->header('Content-Type: text/html; charset=' . $this->charSet);
 		}
 
 		// Close the application after the redirect.

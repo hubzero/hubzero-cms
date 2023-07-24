@@ -46,6 +46,22 @@ if (!$editoroptions):
 	$params['show_urls_images_backend'] = '0';
 	$params['show_urls_images_frontend'] = '0';
 endif;
+
+// Getting server time zones for clarity purposes
+$UTC = new DateTimeZone("UTC");
+$userTZ = new DateTimeZone(App::get('user')->getParam('timezone', App::get('config')->get('offset')));
+
+// Date Created, Time Zone, Date Modified
+$dateCreated = new DateTime( $this->item->created, $UTC );
+$dateCreated->setTimezone( $userTZ );
+$dateCreatedString = $dateCreated->format('Y-m-d H:i:s');
+
+$abbrTimeZone = $dateCreated->format('T');
+$abbrTimeZoneString = $abbrTimeZone ? "(" . $abbrTimeZone . ")" : null;
+
+$dateModified = new DateTime( $this->item->modified, $UTC );
+$dateModified->setTimezone( $userTZ );
+$dateModifiedString = $dateModified->format('Y-m-d H:i:s');
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
@@ -153,9 +169,9 @@ endif;
 						</td> 
 					</tr>
 					<tr>
-						<th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_CREATED_LABEL');?></th>
+						<th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_CREATED_LABEL') . " " . $abbrTimeZoneString;?></th>
 						<td>
-							<time datetime="<?php echo $this->item->created; ?>"><?php echo Date::of($this->item->created)->toLocal(); ?></time>
+							<time datetime="<?php echo $dateCreatedString; ?>"><?php echo $dateCreatedString; ?></time>
 						</td>
 					</tr>
 					<?php if ($this->item->get('modified_by', false)): ?>
@@ -167,10 +183,10 @@ endif;
 							</td> 
 						</tr>
 						<tr>
-							<th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_MODIFIED_LABEL');?></th>
-							<td>
-								<time datetime="<?php echo $this->item->modified; ?>"><?php echo Date::of($this->item->modified)->toLocal(); ?></time>
-							</td>
+							<th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_MODIFIED_LABEL') . " " . $abbrTimeZoneString;?></th>
+                            <td>
+                                <time datetime="<?php echo $dateModifiedString; ?>"><?php echo $dateModifiedString; ?></time>
+                            </td>
 						</tr>
 					<?php endif; ?>
 				</tbody>
@@ -181,12 +197,12 @@ endif;
 				<?php echo Html::sliders('panel', Lang::txt('COM_CONTENT_FIELDSET_PUBLISHING'), 'publishing-details');?>
 				<fieldset class="panelform">
 					<div class="form-group input-wrap">
-						<?php echo $this->form->getLabel('publish_up'); ?>
+						<?php echo $this->form->getLabel('publish_up') . " " . $abbrTimeZoneString; ?>
 						<?php echo $this->form->getInput('publish_up'); ?>
 					</div>
 
 					<div class="form-group input-wrap">
-						<?php echo $this->form->getLabel('publish_down'); ?>
+						<?php echo $this->form->getLabel('publish_down') . " " . $abbrTimeZoneString; ?>
 						<?php echo $this->form->getInput('publish_down'); ?>
 					</div>
 

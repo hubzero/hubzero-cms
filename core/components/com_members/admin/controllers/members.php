@@ -55,6 +55,7 @@ class Members extends AdminController
 		$this->registerTask('unblock', 'block');
 		$this->registerTask('block', 'block');
 		$this->registerTask('disapprove', 'approve');
+		$this->registerTask('queryorganization', 'getOrganizations');
 
 		parent::execute();
 	}
@@ -514,6 +515,14 @@ class Members extends AdminController
 		$profile = Request::getArray('profile', array(), 'post');
 		$access  = Request::getArray('profileaccess', array(), 'post');
 
+        // Querying the organization id on ror.org. 
+		// If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
+        $useRorApi = \Component::params('com_members')->get('rorApi');
+        if (isset($profile['organization']) && !empty($profile['organization']) && $useRorApi) {
+            $id = $this->getOrganizationId($profile['organization']);
+            $profile['orgid'] = $id;
+        }
+
 		foreach ($profile as $key => $data)
 		{
 			if (isset($profile[$key]) && is_array($profile[$key]))
@@ -971,6 +980,35 @@ class Members extends AdminController
 		}
 
 		return true;
+	}
+
+	/**
+	 * Run through SQL statements of deidentifying a member by userId
+	 * Task is ran through the toolbar
+	 */
+	public function deidentifyTask() {
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		// Incoming user ID
+		$ids = Request::getArray('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		// No Id, throw up a warning
+		if (empty($ids)){
+			Notify::warning(Lang::txt('COM_MEMBERS_NO_ID'));
+			return $this->cancelTask();
+		}
+
+		// Loop through the array of user Ids
+		// Make sure plugin user/deidentify has been migrated / imported
+		// Run through main CMS tables, then run through client specific database tables that pertains to jobs, sessions, views with same trigger name
+		foreach ($ids as $id) {
+			Event::trigger('user.onUserDeidentify', $id);
+		}
+
+		Notify::success("Deidentified several user id: " . implode(" ", $ids));
+        $this->cancelTask();
 	}
 
 	/**
@@ -1611,4 +1649,103 @@ class Members extends AdminController
 
 		echo json_encode($object);
 	}
+
+
+	/**
+     * Perform querying of research organization based on the input value
+     *
+     * @return  array   matched research organization names
+     */
+    public function getOrganizationsTask(){
+        $term = trim(Request::getString('term', ''));
+
+        if (strpos($term, ' ') !== false){
+            $term = str_replace(' ', '+', $term);
+        }
+
+        $queryURL = 'https://api.ror.org/organizations?query=' . $term;
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $queryURL);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $result = curl_exec($ch);
+
+        if (!$result){
+            return false;
+        }
+
+        $info = curl_getinfo($ch);
+
+        $code = $info['http_code'];
+
+        if (($code != 201) && ($code != 200)){
+            return false;
+        }
+
+        $organizations = [];
+
+        $resultObj = json_decode($result);
+
+        foreach ($resultObj->items as $orgObj){
+            $organizations[] = $orgObj->name;
+        }
+
+        curl_close($ch);
+
+        echo json_encode($organizations);
+        exit();
+    }
+
+    /**
+     * Perform querying of research organization id on ror.org
+     * @param   string   $organization
+     *
+     * @return  string   organization id
+     */
+    public function getOrganizationId($organization){
+        $org = trim($organization);
+        $id = "none";
+
+        if (strpos($org, ' ') !== false){
+            $org = str_replace(' ', '+', $org);
+        }
+
+        $queryURL = "https://api.ror.org/organizations?query=" . $org;
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $queryURL);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $result = curl_exec($ch);
+
+        if (!$result){
+            return false;
+        }
+
+        $info = curl_getinfo($ch);
+
+        $code = $info['http_code'];
+
+        if (($code != 201) && ($code != 200)){
+            return false;
+        }
+
+        $resultObj = json_decode($result);
+
+        $org = str_replace('+', ' ', $org);
+
+        foreach ($resultObj->items as $orgObj){
+            if ($org == $orgObj->name){
+                $id = $orgObj->id;
+                break;
+            }
+        }
+
+        curl_close($ch);
+
+        return $id;
+    }
+
+
 }

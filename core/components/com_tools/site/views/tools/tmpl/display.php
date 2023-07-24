@@ -25,14 +25,12 @@ $this->css('introduction.css', 'system')
 			</p>
 		</div>
 		<div class="col span3 omega">
+			<?php if (User::isGuest()) { ?>
 			<h3><?php echo Lang::txt('COM_TOOLS_HELP'); ?></h3>
 			<ul>
-			<?php if (User::isGuest()) { ?>
 				<li><a href="<?php echo Route::url('index.php?option=com_members&controller=register'); ?>"><?php echo Lang::txt('COM_TOOLS_SIGN_UP_FREE'); ?></a></li>
-			<?php } ?>
-				<li><a href="http://subversion.tigris.org/" rel="external"><?php echo Lang::txt('COM_TOOLS_LEARN_SUBVERSION'); ?></a></li>
-				<li><a class="popup" href="<?php echo Route::url('index.php?option=com_help&component=tools&page=index'); ?>"><?php echo Lang::txt('COM_TOOLS_NEED_HELP'); ?></a></li>
 			</ul>
+			<?php } ?>
 		</div>
 	</div>
 </section><!-- / #introduction.section -->

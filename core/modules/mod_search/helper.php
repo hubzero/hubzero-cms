@@ -57,7 +57,7 @@ class Helper extends Module
 		$width           = intval($this->params->get('width', 20));
 		$text            = htmlspecialchars($this->params->get('text', Lang::txt('MOD_SEARCH_SEARCHBOX_TEXT')));
 		$label           = htmlspecialchars($this->params->get('label', Lang::txt('MOD_SEARCH_LABEL_TEXT')));
-		$moduleclass_sfx = htmlspecialchars($this->params->get('moduleclass_sfx'));
+		$moduleclass_sfx = htmlspecialchars($this->params->get('moduleclass_sfx',''));
 
 		require $this->getLayoutPath($this->params->get('layout', 'default'));
 	}

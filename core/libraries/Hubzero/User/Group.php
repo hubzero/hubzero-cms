@@ -936,7 +936,7 @@ class Group extends Obj
 			return $userids;
 		}
 
-		$set = implode($usernames, ",");
+		$set = implode(",", $usernames);
 
 		$sql = "SELECT id FROM `#__users` WHERE username IN ($set);";
 

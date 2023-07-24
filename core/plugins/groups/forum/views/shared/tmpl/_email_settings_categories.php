@@ -40,7 +40,7 @@ $currentUserId = User::get('id');
 
 		<?php echo Html::input('token'); ?>
 		<input type="hidden" id="user-id" value="<?php echo $currentUserId; ?>">
-		<input type="hidden" id="preexisting-subscriptions" value="<?php echo implode($preexistingSubscriptionIds, ','); ?>">
+		<input type="hidden" id="preexisting-subscriptions" value="<?php echo implode(',', $preexistingSubscriptionIds); ?>">
 
 		<input class="option" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SAVE'); ?>" />
 	</fieldset>

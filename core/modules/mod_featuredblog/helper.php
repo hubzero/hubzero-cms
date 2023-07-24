@@ -63,7 +63,7 @@ class Helper extends Module
 		if ($row->get('id'))
 		{
 			$this->row = $row;
-			$this->cls = trim($this->params->get('moduleclass_sfx'));
+			$this->cls = trim($this->params->get('moduleclass_sfx',''));
 			$this->txt_length = trim($this->params->get('txt_length'));
 
 			require $this->getLayoutPath();

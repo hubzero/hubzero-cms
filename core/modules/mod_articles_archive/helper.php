@@ -30,7 +30,7 @@ class Helper extends Module
 		$module = $this->module;
 
 		$params->def('count', 10);
-		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx',''));
 		$list = self::getList($params);
 
 		require $this->getLayoutPath($params->get('layout', 'default'));
@@ -60,7 +60,7 @@ class Helper extends Module
 			->group('created_month');
 
 		// Filter by language
-		if (App::get('languag.filter'))
+		if (App::get('language.filter'))
 		{
 			$query->whereIn('language', array(Lang::getTag(), '*'));
 		}

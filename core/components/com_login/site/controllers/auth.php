@@ -86,7 +86,7 @@ class Auth extends SiteController
 		$this->view->setLayout('login');
 
 		// Escape strings for HTML output
-		$pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
+		$pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx',''));
 
 		$login = User::isGuest() ? true : false;
 		$title = null;

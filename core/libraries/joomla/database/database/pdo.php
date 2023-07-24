@@ -124,7 +124,7 @@ class JDatabasePDO extends JDatabase
 		parent::__construct($options);
 
 		// Set sql_mode to non_strict mode
-		// mysql_query("SET @@SESSION.sql_mode = '';", $this->connection);
+		// mysqli_query("SET @@SESSION.sql_mode = '';", $this->connection);
 
 		// If auto-select is enabled select the given database.
 		if ($options['select'] && !empty($options['database']))
@@ -787,7 +787,7 @@ class JDatabasePDO extends JDatabase
 	 */
 	protected function freeResult($cursor = null)
 	{
-		//  mysql_free_result($cursor ? $cursor : $this->cursor);
+		//  mysqli_free_result($cursor ? $cursor : $this->cursor);
 	}
 
 	/**

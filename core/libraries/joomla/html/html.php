@@ -93,11 +93,12 @@ abstract class JHtml
 	 */
 	public static function _($key)
 	{
+		$args = func_get_args();
+
 		list($key, $prefix, $file, $func) = self::extract($key);
 		if (array_key_exists($key, self::$registry))
 		{
 			$function = self::$registry[$key];
-			$args = func_get_args();
 			// Remove function name from arguments
 			array_shift($args);
 			return JHtml::call($function, $args);
@@ -129,7 +130,6 @@ abstract class JHtml
 		if (is_callable($toCall))
 		{
 			JHtml::register($key, $toCall);
-			$args = func_get_args();
 			// Remove function name from arguments
 			array_shift($args);
 			return JHtml::call($toCall, $args);

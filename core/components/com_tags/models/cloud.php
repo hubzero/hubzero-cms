@@ -581,10 +581,6 @@ class Cloud extends \Hubzero\Base\Obj
 			$tag = trim($tag);
 			if ($tag != '')
 			{
-				if (get_magic_quotes_gpc())
-				{
-					$tag = addslashes($tag);
-				}
 				$thistag = $tagArray2[$tag];
 
 				$this->add($thistag, $tagger_id, $admin, $strength, $label);

@@ -141,3 +141,39 @@
 		margin: 0 1em 1em 0;
 		float: left;
 	}
+
+	/*Organization normalization*/
+	.ui-autocomplete {
+		position: absolute;
+		max-height: 300px;
+		overflow-y: auto;
+		overflow-x: hidden;
+		z-index:1000 !important;
+	}
+
+	ul[id^='ui-id-'] {
+		list-style-type: none;
+		background: white;
+		padding-left: 0;
+	}
+
+	ul[id^='ui-id-'] li {
+		padding-left: 6px;
+	}
+
+	ul.ui-autocomplete {
+		list-style-type: none;
+		background: white;
+		border: 1px solid #666;
+		margin-top: 5px;
+		width: 400px;
+	}
+	
+	.ui-autocomplete .ui-menu-item {
+		padding: 10px 5px;
+	}
+	
+	.ui-autocomplete .ui-menu-item:hover {
+		background: #f1f1f1;
+		cursor: pointer;
+	}

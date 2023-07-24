@@ -119,9 +119,9 @@ class JRegistry
 			// Traverse the registry to find the correct node for the result.
 			for ($i = 0, $n = count($nodes); $i < $n; $i++)
 			{
-				if (isset($node->$nodes[$i]))
+				if (isset($node->{$nodes[$i]}))
 				{
-					$node = $node->$nodes[$i];
+					$node = $node->{$nodes[$i]};
 				}
 				else
 				{
@@ -331,11 +331,11 @@ class JRegistry
 			// Traverse the registry to find the correct node for the result.
 			for ($i = 0, $n = count($nodes) - 1; $i < $n; $i++)
 			{
-				if (!isset($node->$nodes[$i]) && ($i != $n))
+				if (!isset($node->{$nodes[$i]}) && ($i != $n))
 				{
-					$node->$nodes[$i] = new stdClass;
+					$node->{$nodes[$i]} = new stdClass;
 				}
-				$node = $node->$nodes[$i];
+				$node = $node->{$nodes[$i]};
 			}
 
 			// Get the old value if exists so we can return it

@@ -60,21 +60,24 @@ $this->css()
 		<form action="<?php echo Route::url('index.php?option='.$this->option.'&year='.$this->year); ?>" method="get" id="event-categories">
 			<fieldset>
 				<label for="event-cateogry"><?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></label>
-				<select name="category" id="event-cateogry">
-					<option value=""><?php echo Lang::txt('EVENTS_ALL_CATEGORIES'); ?></option>
-				<?php
-				if ($this->categories)
-				{
-					foreach ($this->categories as $id => $title)
-					{
-					?>
-						<option value="<?php echo $id; ?>"<?php if ($this->category == $id) { echo ' selected="selected"'; } ?>><?php echo stripslashes($title); ?></option>
+
+				<div class="hz-input-combo">
+					<select name="category" id="event-cateogry">
+						<option value=""><?php echo Lang::txt('EVENTS_ALL_CATEGORIES'); ?></option>
 					<?php
+					if ($this->categories)
+					{
+						foreach ($this->categories as $id => $title)
+						{
+						?>
+							<option value="<?php echo $id; ?>"<?php if ($this->category == $id) { echo ' selected="selected"'; } ?>><?php echo stripslashes($title); ?></option>
+						<?php
+						}
 					}
-				}
-				?>
-				</select>
-				<input type="submit" value="<?php echo Lang::txt('EVENTS_GO'); ?>" />
+					?>
+					</select>
+					<input type="submit" value="<?php echo Lang::txt('EVENTS_GO'); ?>" />
+				</div>
 			</fieldset>
 		</form>
 

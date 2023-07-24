@@ -28,11 +28,13 @@ $this->css('create.css')
 
 <section class="main section">
 	<?php
+		$this->group_cn = Request::getString('group','');
 		$this->view('steps')
 		     ->set('option', $this->option)
 		     ->set('step', $this->step)
 		     ->set('steps', $this->steps)
 		     ->set('id', $this->id)
+			 ->set('group_cn', $this->group_cn)
 		     ->set('resource', $this->row)
 		     ->set('progress', $this->progress)
 		     ->display();
@@ -40,7 +42,7 @@ $this->css('create.css')
 <?php if ($this->getError()) { ?>
 	<p class="warning"><?php echo $this->getError(); ?></p>
 <?php } ?>
-	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&id=' . $this->id); ?>" method="post" id="hubForm">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&group=' . $this->group_cn . '&id=' . $this->id); ?>" method="post" id="hubForm">
 		<div class="explaination">
 			<h4><?php echo Lang::txt('COM_CONTRIBUTE_ATTACH_WHAT_ARE_ATTACHMENTS'); ?></h4>
 			<p><?php echo Lang::txt('COM_CONTRIBUTE_ATTACH_EXPLANATION'); ?></p>

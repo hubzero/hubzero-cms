@@ -249,17 +249,17 @@ class Guard
 			$response->error_message = 'Invalid authenticator';
 		}
 
-		if (empty($response->username))
+		if (empty($response->username) && !empty($credentials['username']))
 		{
 			$response->username = $credentials['username'];
 		}
 
-		if (empty($response->fullname))
+		if (empty($response->fullname) && !empty($credentials['fullname']))
 		{
 			$response->fullname = $credentials['username'];
 		}
 
-		if (empty($response->password))
+		if (empty($response->password) && !empty($credentials['password']))
 		{
 			$response->password = $credentials['password'];
 		}
@@ -279,7 +279,6 @@ class Guard
 		// Get plugins in case they haven't been loaded already
 		$this->app['plugin']->byType('user');
 		$this->app['plugin']->byType('authentication');
-
-		return $this->app['dispatcher']->trigger('onUserAuthorisation', array($response, $options));
+		return $this->app['dispatcher']->trigger('user.onUserAuthorisation', array($response, $options));
 	}
 }

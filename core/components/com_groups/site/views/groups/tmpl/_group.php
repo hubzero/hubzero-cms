@@ -125,8 +125,8 @@ $published = ($group->get('published')) ? true : false;
 					<?php elseif ($status == 'invitee') : ?>
 						<a class="btn btn-success accept tooltips" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=accept'); ?>" title="<?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?></a>
 					<?php else : ?>
-						<div class="grid">
-							<div class="col span6">
+						<div>
+							<div>
 								<?php if ($group->published == 2) : ?>
 									<span><?php echo Lang::txt('COM_GROUPS_BROWSE_STATE_ARCHIVED_HINT'); ?></span>
 									<?php echo Lang::txt('COM_GROUPS_BROWSE_STATE_ARCHIVED'); ?>
@@ -171,7 +171,7 @@ $published = ($group->get('published')) ? true : false;
 									<?php echo Lang::txt('COM_GROUPS_ACTIVITY_LAST'); ?>
 								<?php endif; ?>
 							</div>
-							<div class="col span6 omega">
+							<div>
 								<span><?php echo count($members); ?></span>
 								<?php echo Lang::txt('COM_GROUPS_MEMBERS'); ?>
 							</div>
@@ -182,8 +182,8 @@ $published = ($group->get('published')) ? true : false;
 					<?php echo Lang::txt('COM_GROUPS_BROWSE_STATE_ARCHIVED'); ?>
 				<?php else : ?>
 					<?php if (!$group->get('join_policy') || $group->get('join_policy') == 1) : ?>
-						<div class="grid">
-							<div class="col span6">
+						<div>
+							<div>
 								<?php if (!$group->get('join_policy')) : ?>
 									<span class="open join-policy"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN'); ?></span>
 								<?php elseif ($group->get('join_policy') == 1) : ?>
@@ -191,7 +191,7 @@ $published = ($group->get('published')) ? true : false;
 								<?php endif; ?>
 								<?php echo Lang::txt('COM_GROUPS_INFO_JOIN_POLICY'); ?>
 							</div>
-							<div class="col span6 omega">
+							<div class="join-group">
 								<a class="btn btn-success" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=join'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?></a>
 							</div>
 						</div>

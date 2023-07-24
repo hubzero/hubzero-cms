@@ -515,8 +515,9 @@ class Items extends AdminController
 
 			case 'url':
 				$row->set('component_id', 0);
+				$args = array();
 
-				parse_str(parse_url($row->get('link'), PHP_URL_QUERY));
+				parse_str(parse_url($row->get('link'), PHP_URL_QUERY), $args);
 				break;
 
 			case 'component':

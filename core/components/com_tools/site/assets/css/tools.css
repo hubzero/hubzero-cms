@@ -672,6 +672,12 @@
 		color: #aaa;
 		background-color: #ececec;
 	}
+	#app-share #confirm-share {
+		margin: 0 5px 2px 0;
+	}
+	#app-share label#confirm-share-label {
+		padding: 0 0 0 0;
+	}
 	#app-share label {
 		padding-top: 1em;
 		position: relative;
@@ -697,10 +703,9 @@
 	#app-share .option {
 		width: auto;
 	}
-	#app-share #readonly-label {
+	#app-share #readonly-label #confirm-share-label{
 		width: 70%;
 	}
-
 	#app-share table {
 		border: 2px solid #e9e9e9;
 		border-top: none;

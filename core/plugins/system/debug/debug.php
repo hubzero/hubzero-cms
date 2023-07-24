@@ -970,10 +970,9 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			$key = md5(App::get('config')->get('secret'));
 
 			// Compute needed iv size and random iv
-			$ivSize = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
-			$iv     = mcrypt_create_iv($ivSize, MCRYPT_RAND);
-
-			$ciphertext = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key, $post, MCRYPT_MODE_CBC, $iv);
+			$ivSize = openssl_cipher_iv_length('AES-256-CBC');
+			$iv = openssl_random_pseudo_bytes($ivSize);
+			$ciphertext = openssl_encrypt($post, 'AES-256-CBC', $key, OPENSSL_RAW_DATA , $iv);
 
 			// Prepend iv for decoding later
 			$ciphertext = $iv . $ciphertext;

@@ -275,7 +275,14 @@ class Setup extends Base
 			if ($this->model->exists())
 			{
 				$objO = $this->model->table('Owner');
-				$objO->reconcileGroups($this->model->get('id'), $this->model->get('owned_by_group'), $this->model->get('sync_group'));
+
+				// Based on the sync group radio button. 
+				// If user select specific members radio, the save should pick up the request.
+				$syncGroupFromDb = $this->model->get('sync_group');
+				$syncGroupPostForm = Request::getInt('sync_group', 0, 'post');				
+				$syncGroup = (isset($syncGroupPostForm)) ? $syncGroupPostForm : $syncGroupFromDb;
+
+				$objO->reconcileGroups($this->model->get('id'), $this->model->get('owned_by_group'), $syncGroup);
 			}
 			else
 			{

@@ -731,10 +731,7 @@ class Translator extends Obj
 	{
 		if ($this->debug)
 		{
-			// Capture hidden PHP errors from the parsing.
-			$php_errormsg = null;
-			$track_errors = ini_get('track_errors');
-			ini_set('track_errors', true);
+			error_clear_last();
 		}
 
 		$contents = file_get_contents($filename);
@@ -748,9 +745,6 @@ class Translator extends Obj
 
 		if ($this->debug)
 		{
-			// Restore error tracking to what it was before.
-			ini_set('track_errors', $track_errors);
-
 			// Initialise variables for manually parsing the file for common errors.
 			$blacklist = array('YES', 'NO', 'NULL', 'FALSE', 'ON', 'OFF', 'NONE', 'TRUE');
 			$regex = '/^(|(\[[^\]]*\])|([A-Z][A-Z0-9_\-\.]*\s*=(\s*(("[^"]*")|(_QQ_)))+))\s*(;.*)?$/';
@@ -780,15 +774,19 @@ class Translator extends Obj
 				}
 			}
 
+			$last_error = error_get_last();
+
+			$errormsg = is_array($last_error) ? $last_error['message'] : '';
+
 			// Check if we encountered any errors.
 			if (count($errors))
 			{
 				$this->errorfiles[$filename] = $filename . '&#160;: error(s) in line(s) ' . implode(', ', $errors);
 			}
-			elseif ($php_errormsg)
+			elseif ($errormsg)
 			{
 				// We didn't find any errors but there's probably a parse notice.
-				$this->errorfiles['PHP' . $filename] = 'PHP parser errors :' . $php_errormsg;
+				$this->errorfiles['PHP' . $filename] = 'PHP parser errors :' . $errormsg;
 			}
 
 			$this->debug = true;
