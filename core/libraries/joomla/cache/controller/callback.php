@@ -84,7 +84,7 @@ class JCacheControllerCallback extends JCacheController
 		}
 		elseif (strstr($callback, '->'))
 		{
-			die('If you are using this syntax change your code to use the standard PHP callback array syntax');');');
+			die('If you are using this syntax change your code to use the standard PHP callback array syntax');
 			/*
 			 * This is a really not so smart way of doing this... we provide this for backward compatability but this
 			 * WILL! disappear in a future version.  If you are using this syntax change your code to use the standard
