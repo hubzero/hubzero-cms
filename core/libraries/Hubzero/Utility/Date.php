@@ -79,6 +79,8 @@ class Date extends DateTime
 	 * @return  void
 	 * @throws  Exception
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function __construct($date = 'now', $tz = null, $ignoreDst = false)
 	{
 		// Create the base GMT and server time zone objects.
@@ -301,6 +303,8 @@ class Date extends DateTime
 	 * @param   boolean  $hours  True to return the value in hours.
 	 * @return  float    The time offset from GMT either in hours or in seconds.
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function getOffsetFromGMT($hours = false)
 	{
 		return (float) $hours ? ($this->_tz->getOffset($this) / 3600) : $this->_tz->getOffset($this);
@@ -351,6 +355,8 @@ class Date extends DateTime
 	 * @param   object  $tz  The new DateTimeZone object.
 	 * @return  object  The old DateTimeZone object.
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function setTimezone($tz)
 	{
 		if (!($tz instanceof DateTimeZone))
@@ -369,6 +375,8 @@ class Date extends DateTime
 	 * @param   string  $modifier
 	 * @return  object
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function add($modifier)
 	{
 		return $this->modify('+' . $modifier);
@@ -380,6 +388,8 @@ class Date extends DateTime
 	 * @param   string  $modifier
 	 * @return  object
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function subtract($modifier)
 	{
 		return $this->modify('-' . $modifier);
@@ -626,6 +636,8 @@ class Date extends DateTime
 	 * @param   boolean  $translate  True to translate localised strings
 	 * @return  string   The date string in the specified format format.
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function format($format, $local = false, $translate = true)
 	{
 		if ($format == 'relative')

@@ -86,6 +86,8 @@ class JDate extends DateTime
 	 *
 	 * @throws  JException
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function __construct($date = 'now', $tz = null)
 	{
 		// Create the base GMT and server time zone objects.
@@ -289,6 +291,8 @@ class JDate extends DateTime
 	 *
 	 * @since   11.1
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function format($format, $local = false, $translate = true)
 	{
 		if ($translate)
@@ -350,6 +354,8 @@ class JDate extends DateTime
 	 *
 	 * @since   11.1
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function getOffsetFromGMT($hours = false)
 	{
 		return (float) $hours ? ($this->_tz->getOffset($this) / 3600) : $this->_tz->getOffset($this);
@@ -433,6 +439,8 @@ class JDate extends DateTime
 	 *
 	 * @since   11.1
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function setTimezone($tz)
 	{
 		$this->_tz = $tz;
