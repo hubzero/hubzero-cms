@@ -80,6 +80,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 *
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function rewind()
 	{
 		$this->_pos = 0;
@@ -123,6 +125,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 * @throws  OutOfBoundsException  When the seek position is invalid
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function seek($index)
 	{
 		$this->rewind();
@@ -144,6 +148,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 *
 	 * @return  mixed
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function current()
 	{
 		if ($this->valid())
@@ -200,6 +206,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 *
 	 * @return  mixed
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function key()
 	{
 		return $this->_pos;
@@ -221,6 +229,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 *
 	 * @return  mixed
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function next()
 	{
 		++$this->_pos;
@@ -232,6 +242,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 *
 	 * @return  mixed
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function valid()
 	{
 		return isset($this->_data[$this->_pos]);
