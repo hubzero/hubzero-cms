@@ -172,6 +172,13 @@ abstract class Field
 	protected static $generated_fieldname = '__field';
 
 	/**
+	 * Field placeholder
+	 *
+	 * @var  string
+	 */
+	public $placeholder = '';
+
+	/**
 	 * Method to instantiate the form field object.
 	 *
 	 * @param   object  $form  The form to attach to the form field object.

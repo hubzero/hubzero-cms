@@ -48,6 +48,14 @@ class Plugin extends Obj
 	protected $_type = null;
 
 	/**
+	 * Component this plugin might be associated with
+	 * @TODO: Remove this
+	 *
+	 * @var   string
+	 */
+	public $option = null;
+
+	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
 	 * @var  boolean

@@ -32,6 +32,13 @@ class Database extends Store
 	private $skipWrites = false;
 
 	/**
+	 * Database connection
+	 *
+	 * @var object
+	 */
+	private $connection = null;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   array  $options  Optional parameters.

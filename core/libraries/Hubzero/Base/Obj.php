@@ -16,6 +16,8 @@ use Exception;
  * This class allows for simple but smart objects with get and set methods
  * and an internal error handler.
  */
+
+#[\AllowDynamicProperties]
 class Obj
 {
 	use ErrorBag;
