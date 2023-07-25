@@ -182,6 +182,8 @@ class AssocList extends Assoc implements Iterator, Countable
 	 *
 	 * @return  integer
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function count()
 	{
 		return count($this->rows);

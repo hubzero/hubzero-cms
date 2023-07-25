@@ -226,6 +226,8 @@ class Rules implements Countable, Iterator
 	 *
 	 * @return  integer
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function count()
 	{
 		return count($this->data);

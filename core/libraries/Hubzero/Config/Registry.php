@@ -101,6 +101,8 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	 *
 	 * @return  integer  The custom count as an integer.
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function count()
 	{
 		return count(get_object_vars($this->data));

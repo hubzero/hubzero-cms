@@ -257,6 +257,8 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 *
 	 * @return  integer
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function count()
 	{
 		return count($this->items);

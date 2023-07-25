@@ -181,6 +181,8 @@ class Iterator implements \Countable, \Iterator
 	 *
 	 * @return     integer
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function count()
 	{
 		return $this->_total;

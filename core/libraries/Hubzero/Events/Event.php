@@ -196,6 +196,8 @@ class Event implements ArrayAccess, Serializable, Countable
 	 *
 	 * @return  integer  The number of arguments.
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function count()
 	{
 		return count($this->arguments);

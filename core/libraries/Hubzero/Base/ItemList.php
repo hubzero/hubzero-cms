@@ -174,6 +174,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 *
 	 * @return  integer
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function count()
 	{
 		return $this->_total;

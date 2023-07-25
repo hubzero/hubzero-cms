@@ -378,6 +378,8 @@ class Rows implements Iterator, Countable
 	 * @return  int  number of rows
 	 * @since   2.0.0
 	 **/
+
+	#[\ReturnTypeWillChange]
 	public function count()
 	{
 		return count($this->rows);
