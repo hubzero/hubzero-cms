@@ -1351,7 +1351,7 @@ class Curation extends Obj
 	 * @param   integer  $blockId    Numeric block ID
 	 * @return  object
 	 */
-	public function getElementStatus($name, $elementId = null, $pub, $blockId = 0)
+	public function getElementStatus($name, $elementId, $pub, $blockId)
 	{
 		$pub = $pub ? $pub : $this->_pub;
 
@@ -1926,7 +1926,7 @@ class Curation extends Obj
 	 * @param   integer  $blockId    Numeric block ID
 	 * @return  boolean
 	 */
-	public function saveUpdate($data = null, $elementId, $name, $pub, $blockId)
+	public function saveUpdate($data, $elementId, $name, $pub, $blockId)
 	{
 		if ($data === null)
 		{

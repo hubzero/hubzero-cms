@@ -499,7 +499,7 @@ class Tool extends Table
 	 * @param   string  $option
 	 * @return  array
 	 */
-	public function buildToolStatus($toolinfo, $developers=array(), $authors=array(), $version, &$status, $option)
+	public function buildToolStatus($toolinfo, $developers, $authors, $version, &$status, $option)
 	{
 		// Create a Version object
 		$objV = new Version($this->_db);

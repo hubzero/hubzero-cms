@@ -23,7 +23,7 @@ class Utilities
 	 * @param	int $value	The state value
 	 * @param	int $i
 	 */
-	public static function state($value = 0, $i, $canChange)
+	public static function state($value, $i, $canChange)
 	{
 		// Array of image, task, title, action.
 		$states	= array(

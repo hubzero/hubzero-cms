@@ -275,7 +275,7 @@ class Html
 	 * @param   string   $base  Base path to prepend
 	 * @return  string
 	 */
-	public static function build_path($date='', $id, $base)
+	public static function build_path($date, $id, $base)
 	{
 		$dir_id = self::niceidformat($id);
 
@@ -475,7 +475,7 @@ class Html
 	 * @param   string  $c         Extra classes
 	 * @return  string  HTML
 	 */
-	public static function sections($sections, $cats, $active='about', $h, $c)
+	public static function sections($sections, $cats, $active, $h, $c)
 	{
 		$html = '';
 

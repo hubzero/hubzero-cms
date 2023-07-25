@@ -108,7 +108,7 @@ class Geo extends Base
 	 * @param   string  $text Data
 	 * @return  string
 	 */
-	private function _getValue($tag='lat', $text)
+	private function _getValue($tag, $text)
 	{
 		$pattern = "/<$tag>(.*?)<\/$tag>/i";
 		preg_match($pattern, $text, $matches);

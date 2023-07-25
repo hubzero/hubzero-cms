@@ -380,7 +380,7 @@ class plgProjectsWatch extends \Hubzero\Plugin\Plugin
 	 * @param   string  $subject
 	 * @return  bool
 	 */
-	private function _sendEmail($project, $subscriber, $activities = array(), $subject)
+	private function _sendEmail($project, $subscriber, $activities, $subject)
 	{
 		$name  = Config::get('sitename') . ' ' . Lang::txt('PLG_PROJECTS_WATCH_SUBSCRIBER');
 		$email = $subscriber->get('email');

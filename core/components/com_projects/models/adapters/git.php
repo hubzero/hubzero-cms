@@ -322,7 +322,7 @@ class Git extends Models\Adapter
 	 * @param   array  $timestamps
 	 * @return  bool
 	 */
-	public function history($params = array(), &$versions, &$timestamps)
+	public function history($params, &$versions, &$timestamps)
 	{
 		$file = isset($params['file']) ? $params['file'] : null;
 

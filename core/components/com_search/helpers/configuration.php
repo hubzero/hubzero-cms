@@ -177,7 +177,7 @@ class ConfigHelper
 	 * @access  public
 	 * @return  string
 	 */
-	public function processPaths($type = '', $row)
+	public function processPaths($type, $row)
 	{
 		$config = $this->loadConfig($type);
 		foreach ($config['paths'] as $scope => $path)
@@ -199,7 +199,7 @@ class ConfigHelper
 	 * @access  private
 	 * @return  string
 	 */
-	private function Year($date = '', $row)
+	private function Year($date, $row)
 	{
 		$date = $row->$date;
 		return Date::of(strtotime($date))->toLocal('Y');
@@ -213,7 +213,7 @@ class ConfigHelper
 	 * @access  private
 	 * @return  string
 	 */
-	private function Month($date = '', $row)
+	private function Month($date, $row)
 	{
 		$date = $row->$date;
 		return Date::of(strtotime($date))->toLocal('m');
@@ -227,7 +227,7 @@ class ConfigHelper
 	 * @access  private
 	 * @return  string
 	 */
-	private function Field($argument = '', $row)
+	private function Field($argument, $row)
 	{
 		$argument = $row->$argument;
 		return $argument;

@@ -243,7 +243,7 @@ class Blocks extends Obj
 	 * @param   object   $new
 	 * @return  boolean
 	 */
-	public function transferData($name, $manifest = null, $pub = null, $old, $new)
+	public function transferData($name, $manifest, $pub, $old, $new)
 	{
 		// Load block
 		$block = $this->loadBlock($name);

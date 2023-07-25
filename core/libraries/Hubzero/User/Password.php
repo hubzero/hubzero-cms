@@ -636,7 +636,7 @@ class Password
 	 * @param   string  $password
 	 * @return  bool
 	 */
-	public static function changePassword($user = null, $password)
+	public static function changePassword($user, $password)
 	{
 		$passhash = self::getPasshash($password);
 
@@ -650,7 +650,7 @@ class Password
 	 * @param   string  $password
 	 * @return  bool
 	 */
-	public static function changePasshash($user = null, $passhash)
+	public static function changePasshash($user, $passhash)
 	{
 		// Get config values for min, max, and warning
 		$config        = \Component::params('com_members');
@@ -1026,7 +1026,7 @@ class Password
 	 * @param   bool    $alltables
 	 * @return  bool
 	 */
-	public static function passwordMatches($user = null, $password, $alltables = false)
+	public static function passwordMatches($user, $password, $alltables = false)
 	{
 		$passhash = null;
 

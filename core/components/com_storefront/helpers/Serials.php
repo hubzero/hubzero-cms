@@ -111,7 +111,7 @@ class Serials
 	 * @param   int  SKU id
 	 * @return  object/int
 	 */
-	public static function getSkuSerials($filters = array(), $sId)
+	public static function getSkuSerials($filters, $sId)
 	{
 		if (!isset($filters['sort']))
 		{

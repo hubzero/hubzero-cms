@@ -102,7 +102,7 @@ class Teller extends Obj
 	 * @param   integer  $ref     ID of item transaction references
 	 * @return  void
 	 */
-	public function deposit($amount, $desc='Deposit', $cat, $ref)
+	public function deposit($amount, $desc, $cat, $ref)
 	{
 		$amount = $this->_amountCheck($amount);
 
@@ -130,7 +130,7 @@ class Teller extends Obj
 	 * @param   integer  $ref     ID of item transaction references
 	 * @return  void
 	 */
-	public function withdraw($amount, $desc='Withdraw', $cat, $ref)
+	public function withdraw($amount, $desc, $cat, $ref)
 	{
 		$amount = $this->_amountCheck($amount);
 
@@ -164,7 +164,7 @@ class Teller extends Obj
 	 * @param   integer  $ref     ID of item transaction references
 	 * @return  void
 	 */
-	public function hold($amount, $desc='Hold', $cat, $ref)
+	public function hold($amount, $desc, $cat, $ref)
 	{
 		$amount = $this->_amountCheck($amount);
 

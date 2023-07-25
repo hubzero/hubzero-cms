@@ -117,7 +117,7 @@ class Attachments extends Obj
 	 * @param   object   $newVersion
 	 * @return  void
 	 */
-	public function transferData($name, $element = null, $elementId = 0, $pub = null, $params = null, $oldVersion, $newVersion)
+	public function transferData($name, $element, $elementId, $pub, $params, $oldVersion, $newVersion)
 	{
 		// Load attachment type
 		$type = $this->loadAttach($name);
@@ -549,7 +549,7 @@ class Attachments extends Obj
 	 * @param   string  $bundleDir
 	 * @return  mixed   object or bool
 	 */
-	public function bundleItems($zip = null, $elements = null, $pub = null, &$readme, $bundleDir)
+	public function bundleItems($zip, $elements, $pub, &$readme, $bundleDir)
 	{
 		if ($zip === null || empty($elements) || $pub === null)
 		{

@@ -193,7 +193,7 @@ class Nogit extends Obj
 	 * @param   array   $connections
 	 * @return  array
 	 */
-	public function getChanges($localPath = '', $synced = '', $localDir = '', &$localRenames, $connections)
+	public function getChanges($localPath, $synced, $localDir, &$localRenames, $connections)
 	{
 		//Stub for compatibility
 		return array();

@@ -219,7 +219,7 @@ class Html
 	 * @param   string  $c         Extra classes
 	 * @return  string  HTML
 	 */
-	public static function sections($sections, $cats, $active='about', $h, $c)
+	public static function sections($sections, $cats, $active, $h, $c)
 	{
 		$html = '';
 

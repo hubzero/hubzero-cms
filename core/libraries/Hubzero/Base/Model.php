@@ -348,7 +348,7 @@ abstract class Model extends Obj
 	 * @param   string  $message  Message to log
 	 * @return  void
 	 */
-	protected function _log($type='error', $message)
+	protected function _log($type, $message)
 	{
 		if (!$message)
 		{

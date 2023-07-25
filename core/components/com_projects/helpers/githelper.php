@@ -831,7 +831,7 @@ class Git extends Obj
 	 * @param   array   $connections
 	 * @return  array
 	 */
-	public function getChanges($localPath = '', $synced = '', $localDir = '', &$localRenames, $connections)
+	public function getChanges($localPath, $synced, $localDir, &$localRenames, $connections)
 	{
 		// Collector array
 		$locals = array();

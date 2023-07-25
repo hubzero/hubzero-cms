@@ -90,7 +90,7 @@ class Diff_SequenceMatcher
 	 * @param   array         $options
 	 * @return  void
 	 */
-	public function __construct($a, $b, $junkCallback=null, $options)
+	public function __construct($a, $b, $junkCallback, $options)
 	{
 		$this->a = null;
 		$this->b = null;

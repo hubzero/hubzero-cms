@@ -209,7 +209,7 @@ class Content extends Base
 	 *
 	 * @return  string  HTML
 	 */
-	public function buildContent( $pub = null, $viewname = 'edit', $status, $master )
+	public function buildContent( $pub, $viewname, $status, $master )
 	{
 		$html = '';
 

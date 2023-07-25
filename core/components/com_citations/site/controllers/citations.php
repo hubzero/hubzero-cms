@@ -981,7 +981,7 @@ class Citations extends SiteController
 	 * @param   string   $mime    Mime type
 	 * @return  void
 	 */
-	private function _serveup($inline = false, $p, $f, $mime)
+	private function _serveup($inline, $p, $f, $mime)
 	{
 		// Clean all output buffers (needs PHP > 4.2.0)
 		while (@ob_end_clean())

@@ -62,7 +62,7 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
 	 * @param   array    $areas       Areas to return data for
 	 * @return  array
 	 */
-	public function onMembersContributions($member, $option, $limit=0, $limitstart=0, $sort, $areas=null)
+	public function onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas=null)
 	{
 		if (is_array($areas) && $limit)
 		{

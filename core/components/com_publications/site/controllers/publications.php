@@ -1125,7 +1125,7 @@ class Publications extends SiteController
 	 * @param   string   $mime    Mimetype
 	 * @return  void
 	 */
-	protected function _serveup($inline = false, $p, $f, $mime)
+	protected function _serveup($inline, $p, $f, $mime)
 	{
 		$user_agent = (isset($_SERVER["HTTP_USER_AGENT"]))
 					? $_SERVER["HTTP_USER_AGENT"]

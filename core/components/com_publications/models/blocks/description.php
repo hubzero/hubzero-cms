@@ -274,7 +274,7 @@ class Description extends Base
 	 *
 	 * @return  string  HTML
 	 */
-	public function buildContent($pub = null, $viewname = 'edit', $status, $master)
+	public function buildContent($pub, $viewname, $status, $master)
 	{
 		// Get block element model
 		$elModel = new \Components\Publications\Models\BlockElements($this->_parent->_db);

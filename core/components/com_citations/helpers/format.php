@@ -164,7 +164,7 @@ class Format
 	 * @param   boolean  $coins_only     Only output COINs?
 	 * @return  string   Formatted citation
 	 */
-	public function formatCitation($citation, $highlight = null, $include_coins = true, $config, $coins_only = false)
+	public function formatCitation($citation, $highlight, $include_coins, $config, $coins_only = false)
 	{
 		//get hub specific details
 		$hub_name = \Config::get('sitename');

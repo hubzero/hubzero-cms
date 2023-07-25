@@ -500,7 +500,7 @@ class Version extends Table
 	 * @param   object   $config
 	 * @return  boolean
 	 */
-	public function compileResource($thistool, $curtool='', $resource, $revision, $config)
+	public function compileResource($thistool, $curtool, $resource, $revision, $config)
 	{
 		if ($curtool)
 		{

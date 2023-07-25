@@ -82,7 +82,7 @@ class Google extends Obj
 	 * @param   string   $itemId
 	 * @return  boolean
 	 */
-	public static function clearPermissions($apiService, $shared = array(), $itemId)
+	public static function clearPermissions($apiService, $shared, $itemId)
 	{
 		if (!$itemId || empty($shared))
 		{
@@ -133,7 +133,7 @@ class Google extends Obj
 	 * @param   array   &$metadata   Collector array
 	 * @return  mixed   (id) or false
 	 */
-	public static function patchFile($apiService, $id = '', $title = '', $parentId = '', &$metadata)
+	public static function patchFile($apiService, $id, $title, $parentId, &$metadata)
 	{
 		// Check for what we need
 		if (!$apiService || !$id || (!$title && !$parentId && !$convert))
@@ -538,7 +538,7 @@ class Google extends Obj
 	 * @param   array   &$metadata   Collector array
 	 * @return  mixed   string (new folder id) or false
 	 */
-	public static function createFolder($apiService, $title = '', $parentId = 0, &$metadata)
+	public static function createFolder($apiService, $title, $parentId, &$metadata)
 	{
 		// Check for what we need
 		if (!$apiService || !$title || !$parentId)
@@ -635,7 +635,7 @@ class Google extends Obj
 	 * @param   array   &$duplicates  Collector array for duplicates
 	 * @return  void
 	 */
-	public static function getFolderChange($items, $folderID = 0, &$remotes, &$deletes, $path = '', $connections, &$duplicates)
+	public static function getFolderChange($items, $folderID, &$remotes, &$deletes, $path, $connections, &$duplicates)
 	{
 		$lpath = $path ? $path : '';
 
@@ -810,7 +810,7 @@ class Google extends Obj
 	 * @param   array   &$duplicates  Collector array for duplicates
 	 * @return  string
 	 */
-	public static function buildDuplicatePath($id = 0, $fpath, $format = '', $connections, &$remotes, &$duplicates)
+	public static function buildDuplicatePath($id, $fpath, $format, $connections, &$remotes, &$duplicates)
 	{
 		// Do we have a record with another ID linked to the same path?
 		$pathTaken = isset($connections['paths'][$fpath])
@@ -858,7 +858,7 @@ class Google extends Obj
 	 * @param   string  $path            Path
 	 * @return  mixed
 	 */
-	public static function getFolders($apiService, $folderID = 0, &$remoteFolders, $path = '')
+	public static function getFolders($apiService, $folderID, &$remoteFolders, $path = '')
 	{
 		// Check for what we need
 		if (!$apiService || !$folderID)
@@ -976,7 +976,7 @@ class Google extends Obj
 	 * @param   array   &$duplicates  Collector array for duplicates
 	 * @return  mixed
 	 */
-	public static function getFolderContent($apiService, $folderID = 0, $remotes, $path = '', $since, $connections, &$duplicates)
+	public static function getFolderContent($apiService, $folderID, $remotes, $path, $since, $connections, &$duplicates)
 	{
 		// Check for what we need
 		if (!$apiService || !$folderID)
