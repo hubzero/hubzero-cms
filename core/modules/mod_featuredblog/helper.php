@@ -64,7 +64,7 @@ class Helper extends Module
 		{
 			$this->row = $row;
 			$this->cls = trim($this->params->get('moduleclass_sfx',''));
-			$this->txt_length = trim($this->params->get('txt_length'));
+			$this->txt_length = trim($this->params->get('txt_length',''));
 
 			require $this->getLayoutPath();
 		}

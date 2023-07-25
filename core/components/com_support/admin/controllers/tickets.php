@@ -291,9 +291,9 @@ class Tickets extends AdminController
 		{
 			$lists['owner'] = $this->_userSelectGroup('ticket[owner]', $ticket->get('owner'), 1, '', trim($ticket->get('group_id')));
 		}
-		elseif (trim($this->config->get('group')))
+		elseif (trim($this->config->get('group','')))
 		{
-			$lists['owner'] = $this->_userSelectGroup('ticket[owner]', $ticket->get('owner'), 1, '', trim($this->config->get('group')));
+			$lists['owner'] = $this->_userSelectGroup('ticket[owner]', $ticket->get('owner'), 1, '', trim($this->config->get('group','')));
 		}
 		else
 		{
@@ -436,7 +436,7 @@ class Tickets extends AdminController
 			$base = substr($base, 0, strlen($base)-14);
 		}
 
-		$webpath = trim($this->config->get('webpath'), '/');
+		$webpath = trim($this->config->get('webpath',''), '/');
 
 		$allowEmailResponses = $this->config->get('email_processing');
 
@@ -883,7 +883,7 @@ class Tickets extends AdminController
 			$base = substr($base, 0, strlen($base)-14);
 		}
 
-		$webpath = trim($this->config->get('webpath'), '/');
+		$webpath = trim($this->config->get('webpath',''), '/');
 
 		$allowEmailResponses = $this->config->get('email_processing');
 		if ($allowEmailResponses)

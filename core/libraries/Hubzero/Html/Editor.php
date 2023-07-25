@@ -150,7 +150,7 @@ class Editor extends Obj
 
 		foreach ($results as $result)
 		{
-			if (trim($result))
+			if (trim($result ? $result : ''))
 			{
 				//$return .= $result;
 				$return = $result;

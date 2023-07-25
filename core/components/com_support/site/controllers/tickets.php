@@ -801,14 +801,14 @@ class Tickets extends SiteController
 
 		if ($row->get('verified') && $this->acl->check('update', 'tickets') > 0)
 		{
-			if (trim($this->config->get('group')))
+			if (trim($this->config->get('group','')))
 			{
 				$lists['owner'] = $this->_userSelectGroup(
 					'problem[owner]',
 					'',
 					1,
 					'',
-					trim($this->config->get('group'))
+					trim($this->config->get('group',''))
 				);
 			}
 			else
@@ -1606,14 +1606,14 @@ class Tickets extends SiteController
 				$row->get('group_id')
 			);
 		}
-		elseif (trim($this->config->get('group')))
+		elseif (trim($this->config->get('group','')))
 		{
 			$lists['owner'] = $this->_userSelectGroup(
 				'ticket[owner]',
 				$row->get('owner'),
 				1,
 				'',
-				trim($this->config->get('group'))
+				trim($this->config->get('group',''))
 			);
 		}
 		else

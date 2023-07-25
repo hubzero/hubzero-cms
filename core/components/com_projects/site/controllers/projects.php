@@ -1102,7 +1102,7 @@ class Projects extends Base
 				$rejected       = Request::getInt('rejected', 0);
 
 				// New approval
-				if (trim($params->get('grant_approval')) == '' && trim($grant_approval) != ''
+				if (trim($params->get('grant_approval','')) == '' && trim($grant_approval) != ''
 				&& $params->get('grant_status') != 1 && $rejected != 1)
 				{
 					// Increase

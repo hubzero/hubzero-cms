@@ -516,7 +516,7 @@ class Tool extends Table
 		$params = new \Hubzero\Config\Registry($version[0]->params);
 
 		// build status array
-		$pubType = trim($params->get('publishType'));
+		$pubType = trim($params->get('publishType',''));
 		if ($pubType == 'weber=')
 		{
 			$pubType = 'jupyter';

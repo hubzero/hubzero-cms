@@ -31,8 +31,8 @@ class Helper extends Module
 		$params = $this->params;
 		$module = $this->module;
 
-		$headerText = trim($params->get('header_text'));
-		$footerText = trim($params->get('footer_text'));
+		$headerText = trim($params->get('header_text',''));
+		$footerText = trim($params->get('footer_text',''));
 
 		$list = self::getList($params);
 

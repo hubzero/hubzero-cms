@@ -41,9 +41,9 @@ class Helper extends Module
 	{
 		$database = \App::get('db');
 
-		$catid  = trim($this->params->get('catid'));
-		$secid  = trim($this->params->get('secid'));
-		$method = trim($this->params->get('method'));
+		$catid  = trim($this->params->get('catid',''));
+		$secid  = trim($this->params->get('secid',''));
+		$method = trim($this->params->get('method',''));
 
 		$now = Date::toSql();
 

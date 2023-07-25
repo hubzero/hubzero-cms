@@ -93,7 +93,7 @@ class plgToolsNovnc extends \Hubzero\Plugin\Plugin
 	{
 		$browser = new \Hubzero\Browser\Detector();
 
-		if ($allowed = trim($this->params->get('browsers')))
+		if ($allowed = trim($this->params->get('browsers','')))
 		{
 			$browsers = array();
 
@@ -151,7 +151,7 @@ class plgToolsNovnc extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		if ($regexes = trim($this->params->get('regexes')))
+		if ($regexes = trim($this->params->get('regexes','')))
 		{
 			$regexes = str_replace("\r", '', $regexes);
 			$regexes = str_replace('\n', "\n", $regexes);

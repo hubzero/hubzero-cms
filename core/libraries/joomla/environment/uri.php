@@ -219,7 +219,7 @@ class JURI extends JObject
 		if (empty(self::$base))
 		{
 			$config = JFactory::getConfig();
-			$live_site = $config->get('live_site');
+			$live_site = $config->get('live_site','');
 			if (trim($live_site) != '')
 			{
 				$scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https://" : "http://";

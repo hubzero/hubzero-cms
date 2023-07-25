@@ -39,10 +39,10 @@ class Helper extends Module
 		$filters = array(
 			'limit'      => 1,
 			'start'      => 0,
-			'type'       => trim($this->params->get('type')),
+			'type'       => trim($this->params->get('type','')),
 			'sortby'     => 'random',
-			'minranking' => trim($this->params->get('minranking')),
-			'tag'        => trim($this->params->get('tag')),
+			'minranking' => trim($this->params->get('minranking','')),
+			'tag'        => trim($this->params->get('tag','')),
 			'access'     => 'public',
 			'published'  => 1,
 			'standalone' => 1,
@@ -63,7 +63,7 @@ class Helper extends Module
                 }
 
 		$this->cls = trim($this->params->get('moduleclass_sfx',''));
-		$this->txt_length = trim($this->params->get('txt_length'));
+		$this->txt_length = trim($this->params->get('txt_length',''));
 		$this->thumb = '';
 
 		// Did we get any results?
@@ -95,7 +95,7 @@ class Helper extends Module
 
 			if (!is_file(PATH_APP . $thumb))
 			{
-				$thumb = DS . trim($config->get('defaultpic'));
+				$thumb = DS . trim($config->get('defaultpic',''));
 			}
 
 			$row->typetitle = trim(stripslashes($row->typetitle));
