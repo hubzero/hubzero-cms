@@ -249,7 +249,7 @@ class Request extends BaseRequest
 	{
 		$result = $this->getVar($key, $default, $hash);
 		$result = is_array($result) ? self::_flatten('', $result) : $result;
-		return preg_replace(static::$filters['word'], '', $result);
+		return preg_replace(static::$filters['word'], '', $result ? $result : '');
 	}
 
 	/**
@@ -264,7 +264,7 @@ class Request extends BaseRequest
 	{
 		$result = $this->getVar($key, $default, $hash);
 		$result = is_array($result) ? self::_flatten('', $result) : $result;
-		$result = (string) preg_replace(static::$filters['cmd'], '', $result);
+		$result = (string) preg_replace(static::$filters['cmd'], '', $result ? $result : '');
 		return ltrim($result, '.');
 	}
 
