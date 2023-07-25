@@ -420,7 +420,7 @@ class Arr
 	 * @param   array    &$b  An array of objects
 	 * @return  integer  Comparison status
 	 */
-	protected static function _sortObjects(&$a, &$b)
+	protected static function _sortObjects($a, $b)
 	{
 		$key = self::$sortKey;
 
