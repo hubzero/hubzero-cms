@@ -52,8 +52,8 @@ $sql = "SELECT MIN(publish_up) min, MAX(publish_down) max FROM `#__events` as e
 				AND `approved`=1";
 $database->setQuery($sql);
 $rows = $database->loadObjectList();
-$first_event_time = new DateTime($rows[0]->min);
-$last_event_time = new DateTime($rows[0]->max);
+$first_event_time = new DateTime($rows[0]->min ? $rows[0]->min : '');
+$last_event_time = new DateTime($rows[0]->max ? $rows[0]->max : '');
 $this_datetime = new DateTime($this->year . '-' . $this->month . '-01');
 
 //check for events before the first of this month
