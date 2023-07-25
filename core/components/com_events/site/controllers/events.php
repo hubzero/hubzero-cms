@@ -58,6 +58,8 @@ class Events extends SiteController
 			Request::setVar('task', $this->config->getCfg('startview', 'month'));
 		}
 
+		$this->_task = Request::getString('task');
+
 		$this->registerTask('__default', $this->_task);
 		$this->registerTask('register', 'eventregister');
 		$this->registerTask('add', 'edit');
