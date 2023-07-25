@@ -114,6 +114,8 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	 *
 	 * @return  object
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function jsonSerialize()
 	{
 		return $this->data;
