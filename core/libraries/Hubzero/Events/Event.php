@@ -284,6 +284,8 @@ class Event implements ArrayAccess, Serializable, Countable
 	 * @return  void
 	 * @throws  InvalidArgumentException  If the argument name is null.
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function offsetSet($name, $value)
 	{
 		if (is_null($name))
@@ -300,17 +302,21 @@ class Event implements ArrayAccess, Serializable, Countable
 	 * @param   string  $name  The argument name.
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function offsetUnset($name)
 	{
 		$this->removeArgument($name);
 	}
 
-		/**
-   * Tell if the given event argument exists.
-   *
-   * @param   string  $name  The argument name.
-   * @return  boolean  True if it exists, false otherwise.
-   */
+	/**
+	 * Tell if the given event argument exists.
+	 *
+	 * @param   string  $name  The argument name.
+	 * @return  boolean  True if it exists, false otherwise.
+	 */
+
+	#[\ReturnTypeWillChange]
 	public function offsetExists($name)
 	{
 		return $this->hasArgument($name);
@@ -322,6 +328,8 @@ class Event implements ArrayAccess, Serializable, Countable
 	 * @param   string  $name  The argument name.
 	 * @return  mixed  The argument value or null if not existing.
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function offsetGet($name)
 	{
 		return $this->getArgument($name);

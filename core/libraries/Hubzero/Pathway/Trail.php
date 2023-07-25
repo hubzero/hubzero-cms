@@ -195,6 +195,8 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 * @param   integer  $offset
 	 * @return  boolean
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function offsetExists($offset)
 	{
 		return isset($this->items[$offset]);
@@ -207,6 +209,8 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 * @param   object   $value
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function offsetSet($offset, $value)
 	{
 		$this->items[$offset] = $value;
@@ -218,6 +222,8 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 * @param   integer  $offset
 	 * @return  mixed
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function offsetGet($offset)
 	{
 		return isset($this->items[$offset]) ? $this->items[$offset] : null;
@@ -229,6 +235,8 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 * @param   integer  $offset
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function offsetUnset($offset)
 	{
 		unset($this->items[$offset]);

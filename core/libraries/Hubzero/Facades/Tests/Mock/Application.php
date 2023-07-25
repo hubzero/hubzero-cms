@@ -49,6 +49,8 @@ class Application implements \ArrayAccess
 	 * @param   string  $key
 	 * @return  bool
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function offsetExists($key)
 	{
 		return isset($this->attributes[$key]);
@@ -59,6 +61,8 @@ class Application implements \ArrayAccess
 	 *
 	 * @return  mixed
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function offsetGet($key)
 	{
 		return $this->attributes[$key];
@@ -71,6 +75,8 @@ class Application implements \ArrayAccess
 	 * @param   mixed   $val
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function offsetSet($key, $val)
 	{
 		$this->attributes[$key] = $val;
@@ -82,6 +88,8 @@ class Application implements \ArrayAccess
 	 * @param   string  $key
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function offsetUnset($key)
 	{
 		unset($this->attributes[$key]);

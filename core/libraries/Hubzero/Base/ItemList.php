@@ -243,6 +243,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 * @param   mixed  $offset
 	 * @return  bool
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function offsetExists($offset)
 	{
 		return array_key_exists($offset, $this->_data);
@@ -254,6 +256,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 * @param   mixed  $offset
 	 * @return  mixed
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function offsetGet($offset)
 	{
 		return isset($this->_data[$offset]) ? $this->_data[$offset] : null;
@@ -266,6 +270,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 * @param   mixed  $item
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function offsetSet($offset, $item)
 	{
 		if ($offset === null)
@@ -285,6 +291,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	 * @param   mixed  $offset
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function offsetUnset($offset)
 	{
 		unset($this->_data[$offset]);
