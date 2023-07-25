@@ -89,6 +89,8 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 	 * @return  object  This object represented as an ArrayIterator.
 	 * @see     IteratorAggregate::getIterator()
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function getIterator()
 	{
 		return new \ArrayIterator($this->data);

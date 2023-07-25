@@ -1171,6 +1171,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess, \Serializable
 	 * @return  \Hubzero\Database\Rows
 	 * @since   2.0.0
 	 **/
+
+	#[\ReturnTypeWillChange]
 	public function getIterator()
 	{
 		return $this->copy()->rows();

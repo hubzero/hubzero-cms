@@ -156,6 +156,8 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
 	 *
 	 * @return  object  The inner queue.
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function getIterator()
 	{
 		// SplPriorityQueue queue is a heap.
