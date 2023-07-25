@@ -945,7 +945,7 @@ class Page extends Relational
 	 */
 	public function splitPagename($page)
 	{
-		if (preg_match("/\s/", $page) || !$page)
+		if (!$page || preg_match("/\s/", $page))
 		{
 			// Already split --- don't split any more.
 			return $page;
