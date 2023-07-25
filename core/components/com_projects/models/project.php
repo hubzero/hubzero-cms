@@ -100,7 +100,7 @@ class Project extends Model
 	protected function _getParsedParams()
 	{
 		$parsedParams = [];
-		$splitParams = explode("\n", $this->_tbl->get('params'));
+		$splitParams = explode("\n", $this->_tbl->get('params',''));
 
 		foreach ($splitParams as $param)
 		{
