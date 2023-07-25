@@ -208,6 +208,8 @@ class Event implements ArrayAccess, Serializable, Countable
 	 *
 	 * @return  string  The serialized event.
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function serialize()
 	{
 		return serialize(array($this->name, $this->arguments, $this->stopped));
@@ -219,6 +221,8 @@ class Event implements ArrayAccess, Serializable, Countable
 	 * @param   string  $serialized  The serialized event.
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function unserialize($serialized)
 	{
 		list($this->name, $this->arguments, $this->stopped) = unserialize($serialized);
