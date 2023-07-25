@@ -506,7 +506,7 @@ class Select
 			$label = '';
 			$id    = '';
 			$dataAttributes = '';
-			if (method_exists($element, 'getProperties'))
+			if (is_object($element) && method_exists($element, 'getProperties'))
 			{
 				$elementProperties = $element->getProperties();
 				foreach ($elementProperties as $property => $value)

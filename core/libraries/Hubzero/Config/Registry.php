@@ -364,13 +364,19 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
 
 		// If the source isn't already a Registry
 		// we'll turn it into one
-		if (!($source instanceof Registry) && !method_exists($source, 'toArray'))
+
+		if (!is_array($source))
 		{
-			$source = new self($source);
+			if (!($source instanceof Registry) && !method_exists($source, 'toArray'))
+			{
+				$source = new self($source);
+			}
+
+			$source = $source->toArray();
 		}
 
 		// Load the variables into the registry's default namespace.
-		$this->bind($this->data, $source->toArray(), $recursive, false);
+		$this->bind($this->data, $source, $recursive, false);
 
 		return true;
 	}
