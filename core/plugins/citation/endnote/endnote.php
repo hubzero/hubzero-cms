@@ -120,8 +120,8 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 		for ($i=0, $n=count($raw_citations); $i<$n; $i++)
 		{
 			// Split citation data match % sign followed by char
-			// $citation_data = preg_split('/%.\s{1}/', $raw_citations[$i], null, PREG_SPLIT_OFFSET_CAPTURE);
-			$citation_data = preg_split('/%.{1}/', $raw_citations[$i], null, PREG_SPLIT_OFFSET_CAPTURE);
+			// $citation_data = preg_split('/%.\s{1}/', $raw_citations[$i], -1, PREG_SPLIT_OFFSET_CAPTURE);
+			$citation_data = preg_split('/%.{1}/', $raw_citations[$i], -1, PREG_SPLIT_OFFSET_CAPTURE);
 
 			// Array to hold each citation
 			$citation = array();
