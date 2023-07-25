@@ -31,7 +31,7 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
 							<select name="gid">
 								<option value=""><?php echo Lang::txt('COM_MEMBERS_SELECT'); ?></option>
 								<?php
-								foreach ($this->rows as $row)
+								if ($this->rows) foreach ($this->rows as $row)
 								{
 									echo '<option value="' . $row->gidNumber . '">' . $row->description . ' (' . $row->cn . ')</option>' . "\n";
 								}

@@ -48,6 +48,11 @@ class Rules extends Field
 
 		$actions = Access::getActionsFromFile($comfile, $sectioned);
 
+		if (!$actions)
+		{
+			$actions = array();
+		}
+
 		// Iterate over the children and add to the actions.
 		foreach ($this->element->children() as $el)
 		{
