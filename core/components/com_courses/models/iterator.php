@@ -64,6 +64,8 @@ class Iterator implements \Countable, \Iterator
 	 *
 	 * @return     void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function rewind()
 	{
 		$this->_pos = 0;
@@ -153,6 +155,8 @@ class Iterator implements \Countable, \Iterator
 	 *
 	 * @return     mixed
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function current()
 	{
 		if ($this->valid())
@@ -207,6 +211,8 @@ class Iterator implements \Countable, \Iterator
 	 * @param      integer $idx current cursor position
 	 * @return     mixed
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function key($idx=null)
 	{
 		if ($idx !== null)
@@ -236,6 +242,8 @@ class Iterator implements \Countable, \Iterator
 	 *
 	 * @return     mixed
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function next()
 	{
 		++$this->_pos;
@@ -246,6 +254,8 @@ class Iterator implements \Countable, \Iterator
 	 *
 	 * @return     mixed
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function valid()
 	{
 		return isset($this->_data[$this->_pos]);

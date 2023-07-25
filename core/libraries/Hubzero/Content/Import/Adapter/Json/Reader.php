@@ -54,6 +54,8 @@ class Reader implements Iterator
 	 *
 	 * @return  object  XML node as a stdClass
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function current()
 	{
 		if ($this->valid())
@@ -68,6 +70,8 @@ class Reader implements Iterator
 	 *
 	 * @return  int  Current position
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function key()
 	{
 		return $this->position;
@@ -78,6 +82,8 @@ class Reader implements Iterator
 	 *
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function next()
 	{
 		++$this->position;
@@ -88,6 +94,8 @@ class Reader implements Iterator
 	 *
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function rewind()
 	{
 		$this->position = 0;
@@ -98,6 +106,8 @@ class Reader implements Iterator
 	 *
 	 * @return  bool  Is valid?
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function valid()
 	{
 		return isset($this->file[$this->position]);

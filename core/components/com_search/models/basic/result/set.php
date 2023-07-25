@@ -813,6 +813,8 @@ class Set extends Obj implements Iterator
 	 *
 	 * @return     void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function rewind()
 	{
 		$this->pos = 0;
@@ -825,6 +827,8 @@ class Set extends Obj implements Iterator
 	 *
 	 * @return     array Return description (if any) ...
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function current()
 	{
 		return $this->shown_results[$this->pos];
@@ -837,6 +841,8 @@ class Set extends Obj implements Iterator
 	 *
 	 * @return     unknown Return description (if any) ...
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function key()
 	{
 		return $this->pos;
@@ -849,6 +855,8 @@ class Set extends Obj implements Iterator
 	 *
 	 * @return     void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function next()
 	{
 		++$this->pos;
@@ -861,6 +869,8 @@ class Set extends Obj implements Iterator
 	 *
 	 * @return     array Return description (if any) ...
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function valid()
 	{
 		return isset($this->shown_results[$this->pos]);

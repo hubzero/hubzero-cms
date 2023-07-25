@@ -36,6 +36,8 @@ class Csv implements \Iterator
 	 *
 	 * @return  object  XML node as a stdClass
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function current()
 	{
 		$row = fgetcsv($this->file, self::ROW_LENGTH, $this->delimiter);
@@ -83,6 +85,8 @@ class Csv implements \Iterator
 	 *
 	 * @return  int  Current position
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function key()
 	{
 		return $this->position;
@@ -93,6 +97,8 @@ class Csv implements \Iterator
 	 *
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function next()
 	{
 		return !feof($this->file);
@@ -103,6 +109,8 @@ class Csv implements \Iterator
 	 *
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function rewind()
 	{
 		$this->position = 0;
@@ -114,6 +122,8 @@ class Csv implements \Iterator
 	 *
 	 * @return  bool  Is valid?
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function valid()
 	{
 		if (!$this->next())

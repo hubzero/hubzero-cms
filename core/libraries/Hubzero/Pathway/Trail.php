@@ -144,6 +144,8 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 *
 	 * @return  array
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function rewind()
 	{
 		return reset($this->items);
@@ -154,6 +156,8 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 *
 	 * @return  object
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function current()
 	{
 		return current($this->items);
@@ -164,6 +168,8 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 *
 	 * @return  integer
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function key()
 	{
 		return key($this->items);
@@ -174,6 +180,8 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 *
 	 * @return  object
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function next()
 	{
 		return next($this->items);
@@ -184,6 +192,8 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 *
 	 * @return  voolean
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function valid()
 	{
 		return key($this->items) !== null;

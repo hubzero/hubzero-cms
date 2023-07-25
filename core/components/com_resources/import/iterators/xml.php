@@ -36,6 +36,8 @@ class Xml implements \Iterator
 	 *
 	 * @return  object  XML node as a stdClass
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function current()
 	{
 		$doc = new \DOMDocument();
@@ -48,6 +50,8 @@ class Xml implements \Iterator
 	 *
 	 * @return  int  Current position
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function key()
 	{
 		return $this->position;
@@ -58,6 +62,8 @@ class Xml implements \Iterator
 	 *
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function next()
 	{
 		if ($this->reader->next($this->key))
@@ -71,6 +77,8 @@ class Xml implements \Iterator
 	 *
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function rewind()
 	{
 		// open file with reader
@@ -89,6 +97,8 @@ class Xml implements \Iterator
 	 *
 	 * @return  bool  Is valid?
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function valid()
 	{
 		return $this->reader->name === $this->key;

@@ -122,6 +122,8 @@ class AssocList extends Assoc implements Iterator, Countable
 	 *
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function rewind()
 	{
 		$this->pos = 0;
@@ -132,6 +134,8 @@ class AssocList extends Assoc implements Iterator, Countable
 	 *
 	 * @return  mixed
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function current()
 	{
 		return $this->rows[$this->pos];
@@ -142,6 +146,8 @@ class AssocList extends Assoc implements Iterator, Countable
 	 *
 	 * @return  integer
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function key()
 	{
 		return $this->pos;
@@ -152,6 +158,8 @@ class AssocList extends Assoc implements Iterator, Countable
 	 *
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function next()
 	{
 		++$this->pos;
@@ -162,6 +170,8 @@ class AssocList extends Assoc implements Iterator, Countable
 	 *
 	 * @return  boolean
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function valid()
 	{
 		return isset($this->rows[$this->pos]);

@@ -96,6 +96,8 @@ class Reader implements Iterator
 	 *
 	 * @return  object  Row as a stdClass
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function current()
 	{
 		$row = fgetcsv($this->file, self::ROW_LENGTH, $this->delimiter);
@@ -161,6 +163,8 @@ class Reader implements Iterator
 	 *
 	 * @return  integer  Current position
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function key()
 	{
 		return $this->position;
@@ -171,6 +175,8 @@ class Reader implements Iterator
 	 *
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function next()
 	{
 		return !feof($this->file);
@@ -181,6 +187,8 @@ class Reader implements Iterator
 	 *
 	 * @return  void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function rewind()
 	{
 		$this->position = 0;
@@ -192,6 +200,8 @@ class Reader implements Iterator
 	 *
 	 * @return  boolean  Is valid?
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function valid()
 	{
 		if (!$this->next())

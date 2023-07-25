@@ -210,6 +210,8 @@ class Rows implements Iterator, Countable
 	 * @return  mixed
 	 * @since   2.0.0
 	 **/
+
+	#[\ReturnTypeWillChange]
 	public function current()
 	{
 		return $this->callArrayFunc('current');
@@ -221,6 +223,8 @@ class Rows implements Iterator, Countable
 	 * @return  string
 	 * @since   2.0.0
 	 **/
+
+	#[\ReturnTypeWillChange]
 	public function key()
 	{
 		if (isset($this->rows))
@@ -279,6 +283,8 @@ class Rows implements Iterator, Countable
 	 * @return  mixed
 	 * @since   2.0.0
 	 **/
+
+	#[\ReturnTypeWillChange]
 	public function next()
 	{
 		return $this->callArrayFunc('next');
@@ -290,6 +296,8 @@ class Rows implements Iterator, Countable
 	 * @return  void
 	 * @since   2.0.0
 	 **/
+
+	#[\ReturnTypeWillChange]
 	public function rewind()
 	{
 		if (isset($this->rows))
@@ -349,6 +357,8 @@ class Rows implements Iterator, Countable
 	 * @return  bool
 	 * @since   2.0.0
 	 **/
+
+	#[\ReturnTypeWillChange]
 	public function valid()
 	{
 		$valid = false;
