@@ -88,6 +88,8 @@ abstract class Store extends Obj implements SessionHandlerInterface
 	 * @param   string   $name       The name of the session.
 	 * @return  boolean  True on success, false otherwise.
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function open($save_path, $name)
 	{
 		return true;
@@ -98,6 +100,8 @@ abstract class Store extends Obj implements SessionHandlerInterface
 	 *
 	 * @return  boolean  True on success, false otherwise.
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function close()
 	{
 		return true;
@@ -110,6 +114,8 @@ abstract class Store extends Obj implements SessionHandlerInterface
 	 * @param   string  $id  The session identifier.
 	 * @return  string  The session data.
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function read($session_id)
 	{
 		return;
@@ -122,6 +128,8 @@ abstract class Store extends Obj implements SessionHandlerInterface
 	 * @param   string   $session_data  The session data.
 	 * @return  boolean  True on success, false otherwise.
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function write($session_id, $session_data)
 	{
 		return true;
@@ -134,6 +142,8 @@ abstract class Store extends Obj implements SessionHandlerInterface
 	 * @param   string   $id  The session identifier.
 	 * @return  boolean  True on success, false otherwise.
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function destroy($session_id)
 	{
 		return true;
@@ -145,6 +155,8 @@ abstract class Store extends Obj implements SessionHandlerInterface
 	 * @param   integer  $maxlifetime  The maximum age of a session.
 	 * @return  boolean  True on success, false otherwise.
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function gc($maxlifetime = null)
 	{
 		return true;
