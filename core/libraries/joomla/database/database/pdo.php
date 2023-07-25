@@ -101,7 +101,7 @@ class JDatabasePDO extends JDatabase
 		}
 
 		// Attempt to connect to the server.
-		if (!($this->connection = new PDO("mysql:host=${options['host']}", $options['user'], $options['password'], $extras))) 
+		if (!($this->connection = new PDO("mysql:host={$options['host']}", $options['user'], $options['password'], $extras))) 
 		{
 
 			// Legacy error handling switch based on the JError::$legacy switch.

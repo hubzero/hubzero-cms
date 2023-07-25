@@ -104,7 +104,7 @@ class JInstallerPlugin extends JAdapterInstance
 			}
 			if ($name)
 			{
-				$extension = "plg_${group}_${name}";
+				$extension = "plg_{$group}_{$name}";
 				$lang = JFactory::getLanguage();
 				// [!] Hubzero - Change to install path
 				//     @TODO: Revert this when Hubzeor has its own installer

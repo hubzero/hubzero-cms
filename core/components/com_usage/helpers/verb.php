@@ -196,7 +196,7 @@ class Verb
 
 		// It's all good. Increment the popularity counter and return the cached value.
 
-		$redis->incr('pop_${query}');
+		$redis->incr("pop_{$query}");
 		return $result['value'];
 	}
 

@@ -1001,13 +1001,13 @@ class Page extends Relational
 			{
 				case 'fr':
 				case 'french':
-					$RE[] = "/(?<= |${sep}|^)([�])([[:upper:]][[:lower:]])/";
+					$RE[] = "/(?<= |{$sep}|^)([�])([[:upper:]][[:lower:]])/";
 				break;
 
 				case 'en':
 				case 'english':
 				default:
-					$RE[] = "/(?<= |${sep}|^)([AI])([[:upper:]][[:lower:]])/";
+					$RE[] = "/(?<= |{$sep}|^)([AI])([[:upper:]][[:lower:]])/";
 				break;
 			}
 
@@ -1015,8 +1015,8 @@ class Page extends Relational
 			$RE[] = '/(\d)([[:alpha:]])/';
 
 			// Split at subpage seperators.
-			$RE[] = "/([^${sep}]+)(${sep})/";
-			$RE[] = "/(${sep})([^${sep}]+)/";
+			$RE[] = "/([^{$sep}]+)({$sep})/";
+			$RE[] = "/({$sep})([^{$sep}]+)/";
 
 			foreach ($RE as $key)
 			{
