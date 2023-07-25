@@ -421,10 +421,10 @@ class Newsletter extends Relational
 		$link = 'https://' . $hub . '/newsletter/' . $campaign->alias;
 
 		//replace placeholders in template
-		$campaignParsed = str_replace("{{LINK}}", $link, $campaignTemplate);
-		$campaignParsed = str_replace("{{ALIAS}}", $campaign->alias, $campaignParsed);
-		$campaignParsed = str_replace("{{TITLE}}", $campaign->name, $campaignParsed);
-		$campaignParsed = str_replace("{{ISSUE}}", $campaign->issue, $campaignParsed);
+		$campaignParsed = str_replace("{{LINK}}", $link, $campaignTemplate ? $campaignTemplate : '');
+		$campaignParsed = str_replace("{{ALIAS}}", $campaign->alias ? $campaign->alias : '', $campaignParsed);
+		$campaignParsed = str_replace("{{TITLE}}", $campaign->name ? $campaign->name : '', $campaignParsed);
+		$campaignParsed = str_replace("{{ISSUE}}", $campaign->issue ? $campaign->issue : '', $campaignParsed);
 
 		// Handle the AUTOGEN sections
 		if (preg_match_all("(\\{.*?\\}\\})", $campaignPrimaryStories, $matches) !== false)

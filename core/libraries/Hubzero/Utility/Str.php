@@ -712,7 +712,7 @@ class Str
    */
 	public static function ampReplace($text)
 	{
-		$text = str_replace('&&', '*--*', $text);
+		$text = str_replace('&&', '*--*', $text ? $text : '');
 		$text = str_replace('&#', '*-*', $text);
 		$text = str_replace('&amp;', '&', $text);
 		$text = preg_replace('|&(?![\w]+;)|', '&amp;', $text);
