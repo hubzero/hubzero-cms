@@ -222,7 +222,7 @@ class Translator extends Obj
 				$this->transliterator = array($class, 'transliterate');
 			}
 
-			foreach ($this->callbacks as $callback)
+			foreach ($this->callbacks as $callback => $value)
 			{
 				$method = 'get' . ucfirst($callback);
 
