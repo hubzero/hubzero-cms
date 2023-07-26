@@ -1038,9 +1038,6 @@ class Members extends AdminController
 			$anonUserNameSpace = "AnonFirst Middle Last" . $id;
 
 			// Can't rely on any order the plugins run in. Setting the deletion profile key in controller before calling the plugins 
-			$delete_UserProfile_Query = "DELETE from `#__user_profiles` where user_id =" . $db->quote($id) . " AND 'profile_key' !='edulevel' AND profile_key !='gender' AND profile_key !='hispanic' AND profile_key !='organization' AND profile_key !='orgtype' AND profile_key !='race' AND profile_key !='reason'";
-			$this->runUpdateOrDeleteQuery($delete_UserProfile_Query);
-
 			$insert_UserProfileWithStatus_Query = "INSERT INTO `#__user_profiles` (`user_id`, `profile_key`, `profile_value`) values (?, 'deletion', 'marked')";
 			$this->runInsertQuery($insert_UserProfileWithStatus_Query, array($id));
 
@@ -1049,10 +1046,8 @@ class Members extends AdminController
 
 			if ($result) {
 				// ----------- UPDATES TO THE PROFILES AND USERS TABLE, and User Profiles Table  ----------
-				// Unset the keys and updates the final user records until after all plugins run
-				$update_XProfilesById_Query = "UPDATE `#__xprofiles` set name=" . $db->quote($anonUserNameSpace) . ", username=" . $db->quote($anonUserName) . ", userPassword=" . $db->quote($anonPassword) . ", url='', phone='', regHost='', regIP='', givenName=" . $db->quote($anonUserName) . ", middleName='', surname='anonSurName', picture='', public=0, params='', note='', orcid='', homeDirectory='/home/anonymous', email=" . $db->quote($anonUserName . "@example.com") . " where uidNumber =" . $db->quote($userId);
-				$this->runUpdateOrDeleteQuery($update_XProfilesById_Query);
-
+				// Unset the keys and updates the final user records until after all plugins run. 
+				// If anything fail, jos_users still exist which is enough to re-run deidentification. 
 				$update_UsersById_Query = "UPDATE `#__users` set name=" . $db->quote($anonUserNameSpace) . ", givenName=" . $db->quote($anonUserName) .", middleName='', surname='anonSurName', username=" . $db->quote($anonUserName) . ", password=" .  $db->quote($anonPassword) . ", block='1', registerIP='', params='', homeDirectory='', email=" .  $db->quote($anonUserName . "@example.com") . " where id =" . $db->quote($userId);
 				$this->runUpdateOrDeleteQuery($update_UsersById_Query);
 				

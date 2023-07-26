@@ -511,7 +511,9 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
         }
 
         // ======= Sanitation Queries // deletes, updates, inserts =======
-        // NOTE: moved the deletion (pre deletes) and updated (post deletes) profile key SQL statement to controller com_members/admin/controllers/members.php
+        // NOTE: moved the insert (pre deletes) and updated (post deletes) profile key SQL statement to controller com_members/admin/controllers/members.php
+		$delete_UserProfile_Query = "DELETE from `#__user_profiles` where user_id =" . $db->quote($userId) . " AND 'profile_key' !='edulevel' AND profile_key !='gender' AND profile_key !='hispanic' AND profile_key !='organization' AND profile_key !='orgtype' AND profile_key !='race' AND profile_key !='reason'";
+		$this->runUpdateOrDeleteQuery($delete_UserProfile_Query);
 
         $update_SupportTicketsByEmail_Query = "UPDATE `#__support_tickets` set login='',ip='', email='', hostname='', name='' where email=" . $db->quote($userEmail);
         $this->runUpdateOrDeleteQuery($update_SupportTicketsByEmail_Query);
@@ -642,6 +644,9 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
             $cmd2 = "/bin/rm -rf /webdav/home/" . escapeshellarg($userName) . "/.*";
             system($cmd2, $retval);
         }
+
+		$update_XProfilesById_Query = "UPDATE `#__xprofiles` set name=" . $db->quote($anonUserNameSpace) . ", username=" . $db->quote($anonUserName) . ", userPassword=" . $db->quote($anonPassword) . ", url='', phone='', regHost='', regIP='', givenName=" . $db->quote($anonUserName) . ", middleName='', surname='anonSurName', picture='', public=0, params='', note='', orcid='', homeDirectory='/home/anonymous', email=" . $db->quote($anonUserName . "@example.com") . " where uidNumber =" . $db->quote($userId);
+		$this->runUpdateOrDeleteQuery($update_XProfilesById_Query);
 
 		return true;
     }
