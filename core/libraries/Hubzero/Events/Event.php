@@ -216,6 +216,16 @@ class Event implements ArrayAccess, Serializable, Countable
 	}
 
 	/**
+	 * Serialize the event.
+	 *
+	 * @return  array  The serialized event.
+	 */
+	public function __serialize()
+	{
+		return array($this->name, $this->arguments, $this->stopped);
+	}
+
+	/**
 	 * Unserialize the event.
 	 *
 	 * @param   string  $serialized  The serialized event.
@@ -226,6 +236,17 @@ class Event implements ArrayAccess, Serializable, Countable
 	public function unserialize($serialized)
 	{
 		list($this->name, $this->arguments, $this->stopped) = unserialize($serialized);
+	}
+
+	/**
+	 * Unserialize the event.
+	 *
+	 * @param   array  $serialized  The serialized event.
+	 * @return  void
+	 */
+	public function __unserialize($serialized)
+	{
+		list($this->name, $this->arguments, $this->stopped) = $serialized;
 	}
 
 	/**

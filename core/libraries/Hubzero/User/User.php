@@ -141,6 +141,20 @@ class User extends \Hubzero\Database\Relational
 	}
 
 	/**
+	 * Serializes the model data for storage
+	 *
+	 * @return  array
+	 */
+	public function __serialize()
+	{
+		$attr = $this->getAttributes();
+
+		$attr['guest'] = $this->guest;
+
+		return $attr;
+	}
+
+	/**
 	 * Unserializes the data into a new model
 	 *
 	 * @param   string  $data  The data to build from
@@ -152,6 +166,25 @@ class User extends \Hubzero\Database\Relational
 		$this->__construct();
 
 		$data = unserialize($data);
+
+		if (isset($data['guest']))
+		{
+			$this->guest = $data['guest'];
+			unset($data['guest']);
+		}
+
+		$this->set($data);
+	}
+
+	/**
+	 * Unserializes the data into a new model
+	 *
+	 * @param   array $data  The data to build from
+	 * @return  void
+	 */
+	public function __unserialize($data)
+	{
+		$this->__construct();
 
 		if (isset($data['guest']))
 		{
