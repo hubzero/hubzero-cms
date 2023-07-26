@@ -1044,21 +1044,25 @@ class Members extends AdminController
 			$insert_UserProfileWithStatus_Query = "INSERT INTO `#__user_profiles` (`user_id`, `profile_key`, `profile_value`) values (?, 'deletion', 'marked')";
 			$this->runInsertQuery($insert_UserProfileWithStatus_Query, array($id));
 
-			// Running the plugin
+			// Running the plugin with all deletions
 			$result = Event::trigger('user.onUserDeidentify', $id);
 
-			// ONLY if result is true, then run final updates
-			
-			// ----------- UPDATES TO THE PROFILES AND USERS TABLE, and User Profiles Table  ----------
-			// Unset the keys and updates the final user records until after all plugins run
-			$update_XProfilesById_Query = "UPDATE `#__xprofiles` set name=" . $db->quote($anonUserNameSpace) . ", username=" . $db->quote($anonUserName) . ", userPassword=" . $db->quote($anonPassword) . ", url='', phone='', regHost='', regIP='', givenName=" . $db->quote($anonUserName) . ", middleName='', surname='anonSurName', picture='', public=0, params='', note='', orcid='', homeDirectory='/home/anonymous', email=" . $db->quote($anonUserName . "@example.com") . " where uidNumber =" . $db->quote($userId);
-			$this->runUpdateOrDeleteQuery($update_XProfilesById_Query);
+			if ($result) {
+				// ----------- UPDATES TO THE PROFILES AND USERS TABLE, and User Profiles Table  ----------
+				// Unset the keys and updates the final user records until after all plugins run
+				$update_XProfilesById_Query = "UPDATE `#__xprofiles` set name=" . $db->quote($anonUserNameSpace) . ", username=" . $db->quote($anonUserName) . ", userPassword=" . $db->quote($anonPassword) . ", url='', phone='', regHost='', regIP='', givenName=" . $db->quote($anonUserName) . ", middleName='', surname='anonSurName', picture='', public=0, params='', note='', orcid='', homeDirectory='/home/anonymous', email=" . $db->quote($anonUserName . "@example.com") . " where uidNumber =" . $db->quote($userId);
+				$this->runUpdateOrDeleteQuery($update_XProfilesById_Query);
 
-			$update_UsersById_Query = "UPDATE `#__users` set name=" . $db->quote($anonUserNameSpace) . ", givenName=" . $db->quote($anonUserName) .", middleName='', surname='anonSurName', username=" . $db->quote($anonUserName) . ", password=" .  $db->quote($anonPassword) . ", block='1', registerIP='', params='', homeDirectory='', email=" .  $db->quote($anonUserName . "@example.com") . " where id =" . $db->quote($userId);
-			$this->runUpdateOrDeleteQuery($update_UsersById_Query);
+				$update_UsersById_Query = "UPDATE `#__users` set name=" . $db->quote($anonUserNameSpace) . ", givenName=" . $db->quote($anonUserName) .", middleName='', surname='anonSurName', username=" . $db->quote($anonUserName) . ", password=" .  $db->quote($anonPassword) . ", block='1', registerIP='', params='', homeDirectory='', email=" .  $db->quote($anonUserName . "@example.com") . " where id =" . $db->quote($userId);
+				$this->runUpdateOrDeleteQuery($update_UsersById_Query);
+				
+				$update_UserProfiles_Query = "UPDATE `#__user_profiles` SET profile_value='sanitized' WHERE user_id=" . $db->quote($id) . " AND profile_key='deletion'";
+				$this->runUpdateOrDeleteQuery($update_UserProfiles_Query);
+			} else {
+				Notify::warning("Could not deidentify several user id");
+				return $this->cancelTask();
+			}
 			
-			$update_UserProfiles_Query = "UPDATE `#__user_profiles` SET profile_value='sanitized' WHERE user_id=" . $db->quote($id) . " AND profile_key='deletion'";
-        	$this->runUpdateOrDeleteQuery($update_UserProfiles_Query);
 		}
 
 		Notify::success("Deidentified several user id: " . implode(" ", $ids));

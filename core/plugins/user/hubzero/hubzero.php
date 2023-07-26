@@ -511,7 +511,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
         }
 
         // ======= Sanitation Queries // deletes, updates, inserts =======
-        // NOTE: moved the deletion profile key SQL statement to controller. 
+        // NOTE: moved the deletion (pre deletes) and updated (post deletes) profile key SQL statement to controller com_members/admin/controllers/members.php
 
         $update_SupportTicketsByEmail_Query = "UPDATE `#__support_tickets` set login='',ip='', email='', hostname='', name='' where email=" . $db->quote($userEmail);
         $this->runUpdateOrDeleteQuery($update_SupportTicketsByEmail_Query);
@@ -643,6 +643,6 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
             system($cmd2, $retval);
         }
 
-		// NOTE: moved the update profile key and user SQL statements to controller.        
+		return true;
     }
 }
