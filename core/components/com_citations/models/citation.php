@@ -549,13 +549,23 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
-	 * Defines a one to many relationship with authors
+	 * Defines a one to many relationship with authors for search results
 	 *
 	 * @return  object
 	 */
 	public function relatedAuthors()
 	{
 		return $this->oneToMany('Author', 'cid');
+	}
+
+	/**
+	 * Defines a one to many relationship with authors for resource citations tab
+	 *
+	 * @return  object
+	 */
+	public function relatedAuthorsByCitation()
+	{
+		return $this->oneToMany('Author', 'cid', 'cid');
 	}
 
 	/**
@@ -871,11 +881,14 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 				{
 					$a = array();
 
+					// This is a string of authors from the cite object
 					$auth = html_entity_decode($this->$k);
 					$auth = (!preg_match('!\S!u', $auth)) ? utf8_encode($auth) : $auth;
 
 					// prefer the use of the relational table
-					$authors = $this->relatedAuthors()
+					// Fix for the citation tab of a resource. 
+					// There were mismatch of author names to a citation, reason being it was using the id to match it with cid in table. 
+					$authors = $this->relatedAuthorsByCitation()
 						->order('ordering', 'asc')
 						->order('id', 'asc')
 						->rows();
