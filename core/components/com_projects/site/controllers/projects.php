@@ -1097,6 +1097,7 @@ class Projects extends Base
 				$grant_agency   = Request::getString('grant_agency', '');
 				$grant_title    = Request::getString('grant_title', '');
 				$grant_PI       = Request::getString('grant_PI', '');
+				$award_number = Request::getString('award_number', '');
 				$grant_budget   = Request::getString('grant_budget', '');
 				$grant_approval = Request::getString('grant_approval', '');
 				$rejected       = Request::getInt('rejected', 0);
@@ -1127,6 +1128,7 @@ class Projects extends Base
 				$this->model->saveParam('grant_agency', $grant_agency);
 				$this->model->saveParam('grant_title', $grant_title);
 				$this->model->saveParam('grant_PI', $grant_PI);
+				$this->model->saveParam('award_number', $award_number);
 				$this->model->saveParam('grant_approval', $grant_approval);
 				if ($approve)
 				{
