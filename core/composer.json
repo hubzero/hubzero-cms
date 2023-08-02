@@ -70,7 +70,8 @@
 	"phpunit/dbunit": "1.4.*",
 	"phpunit/phpunit": "4.8.*",
 	"php-coveralls/php-coveralls": "2.4.*",
-	"squizlabs/php_codesniffer": "2.9.*"
+	"squizlabs/php_codesniffer": "*",
+        "phpcompatibility/php-compatibility": " *"
     },
     "autoload": {
         "psr-0": { "Hubzero": "libraries/" },
@@ -86,5 +87,9 @@
             "simplesamlphp/composer-module-installer": false,
             "php-http/discovery": true
         }
+    },
+    "scripts": {
+        "post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility",
+        "post-update-cmd" : "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility"
     }
 }
