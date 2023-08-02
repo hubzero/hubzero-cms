@@ -821,6 +821,7 @@ class Items extends AdminController
 			// Update DOI if locally issued
 			if (preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
 			{
+				$doiService->set('authors', $authors);
 				$doiService->update($this->model->version->doi, true);
 
 				if ($doiService->getError())
@@ -874,6 +875,7 @@ class Items extends AdminController
 						if ($this->model->version->doi
 							&& preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
 						{
+							$doiService->set('authors', $authors);
 							$doiService->update($this->model->version->doi, true);
 
 							if ($doiService->getError())
@@ -981,6 +983,17 @@ class Items extends AdminController
 
 					$output .= ' ' . Lang::txt('COM_PUBLICATIONS_ITEM') . ' ';
 					$output .= Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_UNPUBLISHED');
+					
+					// Update DOI metadata, and set resource URL to tombstone page url.
+					if ($doiService->on())
+					{
+						if ($this->model->version->doi
+							&& preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
+						{
+							$doiService->set('authors', $authors);
+							$doiService->update($this->model->version->doi, true);
+						}
+					}
 					break;
 
 				case 'wip':

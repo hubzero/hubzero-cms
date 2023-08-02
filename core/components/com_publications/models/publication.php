@@ -1003,6 +1003,29 @@ class Publication extends Obj
 
 		return $this->_attachments;
 	}
+	
+	/**
+	 * Get publication attachments count
+	 *
+	 * @return  int
+	 */
+	public function attachmentsCount()
+	{
+		if (!$this->exists())
+		{
+			return array();
+		}
+		if (!isset($this->_tblContent))
+		{
+			$this->_tblContent = new Tables\Attachment($this->_db);
+		}
+		if (!isset($this->_attachmentsCount))
+		{
+			$this->_attachmentsCount = $this->_tblContent->getAttachmentsCount ($this->version->id);
+		}
+
+		return $this->_attachmentsCount;
+	}
 
 	/**
 	 * Get publication license
@@ -2380,5 +2403,47 @@ class Publication extends Obj
 		$series = $this->_tblAttachment->getSeries($this->version->id);
 
 		return $series;
+	}
+	
+	/**
+	 * Get tags that belongs to the publication
+	 *
+	 * @return  array or false
+	 */
+	public function getTagsOfPublication()
+	{
+		// Check whether the version exists
+		if (!$this->exists())
+		{
+			return false;
+		}
+
+		include_once dirname(__DIR__)  . DS . 'helpers' . DS . 'tags.php';
+		
+		$tagsObj = new Helpers\Tags($this->_db);
+		
+		return $tagsObj->getAllTags($this->version->id);
+	}
+	
+	/**
+	 * Get FOS (Field of Science and Technology) tag according the Subject tag id
+	 *
+	 * @param   int  $tagid
+	 *
+	 * @return  object array or false
+	 */
+	public function getFOSTag($tagid)
+	{
+		// Check whether the version exists
+		if (!$this->exists())
+		{
+			return false;
+		}
+
+		include_once dirname(__DIR__)  . DS . 'helpers' . DS . 'tags.php';
+		
+		$tagsObj = new Helpers\Tags($this->_db);
+		
+		return $tagsObj->getFOSTag($tagid);
 	}
 }
