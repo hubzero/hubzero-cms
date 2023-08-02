@@ -312,6 +312,12 @@ class Field extends Relational
 	{
 		$fieldName = $this->get('name');
 		$formAnswers = !empty($answers[$fieldName]) ? $answers[$fieldName] : '';
+
+		if (!is_array($formAnswers))
+		{
+			$formAnswers = array($formAnswers);
+		}
+
 		if ($this->get('option_other'))
 		{
 			$otherName = $fieldName . '_other';

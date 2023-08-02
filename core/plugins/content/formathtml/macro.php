@@ -61,7 +61,7 @@ class Macro
 	/**
 	 * Allow macro in partial parsing?
 	 *
-	 * @var  string
+	 * @var  array
 	 */
 	public $linkLog = array();
 

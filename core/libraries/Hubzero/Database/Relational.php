@@ -122,7 +122,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess, \Serializable
 	/**
 	 * The includes set on the model for eager loading
 	 *
-	 * @var  string
+	 * @var  array
 	 **/
 	private $includes = [];
 

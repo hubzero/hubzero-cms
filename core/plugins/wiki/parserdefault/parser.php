@@ -1753,7 +1753,7 @@ class WikiParser
 	 */
 	private function pba($in, $element = '', $include_id = 1)
 	{
-		$style = '';
+		$style = [];
 		$class = '';
 		$lang = '';
 		$colspan = '';

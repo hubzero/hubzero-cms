@@ -28,7 +28,7 @@ class JSchemaChangeset extends JObject
 	/**
 	 * Array of JSchemaChangeItem objects
 	 *
-	 * @var    string
+	 * @var    array
 	 */
 	protected $changeItems = array();
 

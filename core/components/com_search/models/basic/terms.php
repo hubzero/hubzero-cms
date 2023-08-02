@@ -31,7 +31,7 @@ class Terms extends Obj
 	/**
 	 * Optional chunks
 	 *
-	 * @var  string
+	 * @var  array
 	 */
 	private $optional_chunks = array();
 
