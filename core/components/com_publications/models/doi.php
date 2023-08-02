@@ -222,7 +222,9 @@ class Doi extends Obj
 		$this->set('doi', $pub->version->doi);
 		$this->set('title', htmlspecialchars($pub->version->title));
 		$this->set('version', htmlspecialchars($pub->version->version_label));
-		$this->set('abstract', htmlspecialchars($pub->version->abstract));
+		$this->set('abstract', htmlspecialchars($pub->version->description));
+		$this->set('synopsis', htmlspecialchars($pub->version->abstract));
+		
 		$this->set('url', $this->_configs->livesite . DS . 'publications'. DS . $pub->id . DS . $pub->version->version_number);
 
 		// Set dates
@@ -236,10 +238,17 @@ class Doi extends Obj
 		// Map authors & creator
 		$this->set('authors', $pub->authors());
 		$this->mapUser($pub->version->created_by, $pub->_authors, 'creator');
-
-		// Project creator as contributor
-		$project = $pub->project();
-		$this->mapUser($project->get('owned_by_user'), array(), 'contributor');
+		
+		// Publication contact person as contributor
+		$contactPerson = [];
+		foreach($this->get('authors') as $author)
+		{
+			if ($author->repository_contact == 1)
+			{
+				$contactPerson[] = $author;
+			}
+		}
+		$this->set('contactPerson', $contactPerson);
 
 		// Map resource type
 		$category = $pub->category();
@@ -252,12 +261,158 @@ class Doi extends Obj
 		$license = $pub->license();
 		$licenseTitle = is_object($license) ? $license->title : null;
 		$this->set('license', htmlspecialchars($licenseTitle));
+		
+		$licenseURI = is_object($license) ? $license->url : null;
+		if ($licenseURI != null && !empty($licenseURI))
+		{
+			$this->set('licenseURI', $licenseURI);
+		}
 
 		// Map related identifier
 		$lastPub = $pub->lastPublicRelease();
 		if ($lastPub && $lastPub->doi && $pub->version->version_number > 1)
 		{
 			$this->set('relatedDoi', $lastPub->doi);
+		}
+		
+		// Format
+		$type = $pub->masterType();
+		$this->set('pubType', $type->id);
+		$attachments = $pub->attachments();
+		
+		if ($type->id == 1)
+		{
+			// get the quantity of files of file publication
+			$quantity = $pub->attachmentsCount();
+			
+			// get mime-type for all files
+			$mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes($type->id, $pub->version->publication_id, $pub->version->id, $pub->version->secret, $attachments);
+		}
+		else if($type->id == 5)
+		{
+			// get the quantity of publication in series publication.
+			$quantity = count($attachments[1]);
+		}
+		else if ($type->id == 7)
+		{
+			// get the quantity of the support and gallery files in database publication
+			$quantity = $pub->attachmentsCount();
+			$quantity--;
+			
+			$files = \Components\Publications\Helpers\Html::getdatabaseFiles($pub->version->publication_id, $pub->version->id);
+			
+			if ($files != false && !empty($files))
+			{
+				$quantity += count($files);
+			}
+			
+			// get MIME type for support and gallery file
+			$mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes($type->id, $pub->version->publication_id, $pub->version->id, $pub->version->secret, $attachments);
+			
+			// get MIME type of files in data directory
+			if ($files != false && !empty($files))
+			{
+				foreach ($files as $file)
+				{
+					$mimeType = mime_content_type($file);
+					if ($mimeType && !in_array($mimeType, $mimeTypes))
+					{
+						$mimeTypes[] = $mimeType;
+					}
+				}
+			}
+		}
+		else
+		{
+			$quantity = 0;
+			$mimeTypes = [];
+		}
+		$this->set('fileCount', $quantity);
+		if ($type->id == 1 || $type->id == 7)
+		{
+			$this->set('mimeTypes', $mimeTypes);
+		}
+		
+		// Size
+		$path = \Components\Publications\Helpers\Html::buildPubPath($pub->version->publication_id, $pub->version->id, '', '', 1);
+		$path .= DIRECTORY_SEPARATOR . str_replace(['.', '/'], '_', $pub->version->doi) . ".zip";
+		
+		if ($type->id == 1 && file_exists($path))
+		{
+			$size = filesize($path);
+			if ($size)
+			{
+				$this->set('size', \Hubzero\Utility\Number::formatBytes($size));
+			}
+		}
+		
+		// Project grant info
+		$project = $pub->project();
+		$grantInfo = [];
+		if ($project->params->get('grant_title'))
+		{
+			$grantInfo['grant_title'] = $project->params->get('grant_title');
+		}
+		if ($project->params->get('award_number'))
+		{
+			$grantInfo['award_number'] = $project->params->get('award_number');
+		}
+		if ($project->params->get('grant_agency'))
+		{
+			$grantInfo['grant_agency'] = $project->params->get('grant_agency');
+		}
+		if ($project->params->get('grant_agency_id'))
+		{
+			$grantInfo['grant_agency_id'] = $project->params->get('grant_agency_id');
+		}
+		if (!empty($grantInfo))
+		{
+			$this->set('grantInfo', $grantInfo);
+		}
+		
+		// Get tags
+		$tags = $pub->getTagsOfPublication();
+		$regTags = $subjectTags = $fosTags = [];
+		
+		if ($tags)
+		{
+			foreach ($tags as $tag)
+			{
+				$fosTagObjects = $pub->getFOSTag($tag->id);
+				
+				if (!$fosTagObjects)
+				{
+					$regTags[] = $tag;
+				}
+				else
+				{
+					$subjectTags[] = $tag;
+					
+					foreach ($fosTagObjects as $fosTag)
+					{
+						if (!in_array($fosTag, $fosTags))
+						{
+							$fosTags[] = $fosTag;
+						}
+					}
+					
+				}
+			}
+			
+			if (!empty($regTags))
+			{
+				$this->set('regTags', $regTags);
+			}
+			
+			if (!empty($subjectTags))
+			{
+				$this->set('subjectTags', $subjectTags);
+			}
+			
+			if (!empty($fosTags))
+			{
+				$this->set('fosTags', $fosTags);
+			}
 		}
 	}
 
@@ -376,7 +531,7 @@ class Doi extends Obj
 		}
 
 		// Start XML
-		$xmlfile  = '<?xml version="1.0" encoding="UTF-8"?><resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://datacite.org/schema/kernel-4" xsi:schemaLocation="http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4/metadata.xsd">';
+		$xmlfile  = '<?xml version="1.0" encoding="UTF-8"?><resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://datacite.org/schema/kernel-4" xsi:schemaLocation="http://datacite.org/schema/kernel-4 https://schema.datacite.org/meta/kernel-4/metadata.xsd">';
 		$xmlfile .='<identifier identifierType="DOI">' . $doi . '</identifier>';
 		$xmlfile .='<creators>';
 
@@ -391,10 +546,43 @@ class Doi extends Obj
 				$name        .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';
 				$xmlfile .='<creator>';
 				$xmlfile .='	<creatorName>' . $name . '</creatorName>';
+				
+				if ($author->user_id != 0)
+				{
+					if (!empty($author->givenName))
+					{
+						$xmlfile .='	<givenName>' . $author->givenName . '</givenName>';
+					}
+					
+					if (!empty($author->surname))
+					{
+						$xmlfile .='	<familyName>' . $author->surname . '</familyName>';
+					}
+				}
+				else
+				{
+					if (!empty($author->firstName))
+					{
+						$xmlfile .='	<givenName>' . $author->firstName . '</givenName>';
+					}
+					
+					if (!empty($author->lastName))
+					{
+						$xmlfile .='	<familyName>' . $author->lastName . '</familyName>';
+					}
+				}
+				
 				if (isset($author->orcid) && !empty($author->orcid))
 				{
-					$xmlfile.='	<nameIdentifier nameIdentifierScheme="ORCID">' . $author->orcid . '</nameIdentifier>';
+					$xmlfile.='	<nameIdentifier nameIdentifierScheme="ORCID" schemeURI="https://orcid.org/">' . $author->orcid . '</nameIdentifier>';
 				}
+				
+				if ($author->organization)
+				{
+					$orgidAtr = (isset($author->orgid) && !empty($author->orgid)) ? ' affiliationIdentifier="' . $author->orgid . '"' . ' affiliationIdentifierScheme="ROR" schemeURI="https://ror.org"' : "";
+					$xmlfile .= ' <affiliation' .  $orgidAtr . '>' . $author->organization . '</affiliation>';
+				}
+				
 				$xmlfile.='</creator>';
 			}
 		}
@@ -404,7 +592,7 @@ class Doi extends Obj
 			$xmlfile .='	<creatorName>' . $this->get('creator') . '</creatorName>';
 			if ($this->get('creatorOrcid'))
 			{
-				$xmlfile.='	<nameIdentifier nameIdentifierScheme="ORCID">'.'http://orcid.org/' .  $this->get('creatorOrcid') . '</nameIdentifier>';
+				$xmlfile.='	<nameIdentifier nameIdentifierScheme="ORCID" schemeURI="https://orcid.org/">' .  $this->get('creatorOrcid') . '</nameIdentifier>';
 			}
 			$xmlfile.='</creator>';
 		}
@@ -414,12 +602,32 @@ class Doi extends Obj
 		</titles>
 		<publisher>' . $this->get('publisher') . '</publisher>
 		<publicationYear>' . $this->get('pubYear') . '</publicationYear>';
-		if ($this->get('contributor'))
+		
+		if ($this->get('contactPerson'))
 		{
 			$xmlfile.='<contributors>';
-			$xmlfile.='	<contributor contributorType="ProjectLeader">';
-			$xmlfile.='		<contributorName>' . htmlspecialchars($this->get('contributor')) . '</contributorName>';
-			$xmlfile.='	</contributor>';
+			
+			foreach ($this->get('contactPerson') as $contactPerson)
+			{
+				$xmlfile.='	<contributor contributorType="ContactPerson">';
+				$xmlfile.='		<contributorName nameType="Personal">' . $contactPerson->name . '</contributorName>';
+				$xmlfile.='		<givenName>' . $contactPerson->givenName . '</givenName>';
+				$xmlfile.='		<familyName>' . $contactPerson->surname . '</familyName>';
+				
+				if (isset($contactPerson->orcid) && !empty($contactPerson->orcid))
+				{
+					$xmlfile.='		<nameIdentifier nameIdentifierScheme="ORCID" schemeURI="https://orcid.org/">' .  $contactPerson->orcid . '</nameIdentifier>';
+				}
+				
+				if ($contactPerson->organization)
+				{
+					$orgidAtr = (isset($contactPerson->orgid) && !empty($contactPerson->orgid)) ? ' affiliationIdentifier="' . $contactPerson->orgid . '"' . ' affiliationIdentifierScheme="ROR" schemeURI="https://ror.org"' : "";
+					$xmlfile .= '		<affiliation' .  $orgidAtr . '>' . $author->organization . '</affiliation>';
+				}
+				
+				$xmlfile.='	</contributor>';
+			}
+			
 			$xmlfile.='</contributors>';
 		}
 		$xmlfile.='<dates>
@@ -440,15 +648,123 @@ class Doi extends Obj
 		}
 		if ($this->get('license'))
 		{
-			$xmlfile.='<rightsList><rights>' . htmlspecialchars($this->get('license')) . '</rights></rightsList>';
+			$rightsURI = $this->get('licenseURI') ? ' rightsURI="' . $this->get('licenseURI') . '"' : "";
+			$xmlfile.='<rightsList><rights xml:lang="en-US" schemeURI="https://spdx.org/licenses/" rightsIdentifierScheme="SPDX" rightsIdentifier="CC0 1.0"' . $rightsURI . '>' . htmlspecialchars($this->get('license')) . '</rights></rightsList>';
 		}
+		if ($this->get('grantInfo'))
+		{
+			$grantInfo = $this->get('grantInfo');
+			$xmlfile .= '<fundingReferences>
+				<fundingReference>';
+			
+			if (array_key_exists('grant_agency', $grantInfo))
+			{
+				$xmlfile .= '	<funderName>' . $grantInfo['grant_agency'] . '</funderName>';
+			}
+			
+			if (array_key_exists('grant_agency_id', $grantInfo))
+			{
+				$xmlfile .= '	<funderIdentifier funderIdentifierType="Crossref Funder ID">' . $grantInfo['grant_agency_id'] . '</funderIdentifier>';
+			}
+			
+			if (array_key_exists('award_number', $grantInfo))
+			{
+				$xmlfile .= '	<awardNumber>' . $grantInfo['award_number'] . '</awardNumber>';
+			}
+			
+			if (array_key_exists('grant_title', $grantInfo))
+			{
+				$xmlfile .= '	<awardTitle>' . $grantInfo['grant_title'] . '</awardTitle>';
+			}
+			
+			$xmlfile .= '	</fundingReference>
+			</fundingReferences>';
+		}
+		// Format
+		if ($this->get('pubType') && $this->get('mimeTypes'))
+		{
+			$xmlfile .= '<formats>';
+			$mimeTypes = $this->get('mimeTypes');
+			foreach ($mimeTypes as $mimeType)
+			{
+				$xmlfile .= '	<format>' . $mimeType . '</format>';
+			}
+			$xmlfile .= '</formats>';
+		}
+		//Size
+		if ($this->get('size'))
+		{
+			$xmlfile .= '<sizes>';
+			$pubType = $this->get('pubType');
+			if ($this->get('fileCount'))
+			{
+				$xmlfile .= '	<size>' . $this->get('fileCount') . ($pubType == 5 ? ($this->get('fileCount') == 1 ? " publication" : " publications") : ($this->get('fileCount') == 1 ? " file" : " files")). '</size>';
+			}
+			if ($this->get('size'))
+			{
+				$xmlfile .= '	<size>' . $this->get('size') . '</size>';
+			}
+			$xmlfile .= '</sizes>';
+		}
+		// Subject
+		$xmlfile .= '<subjects>';
+		if ($this->get('regTags'))
+		{
+			foreach ($this->get('regTags') as $regTag)
+			{
+				if (!empty($regTag->description) && preg_match("/^lcsh::/i", trim($regTag->description)))
+				{
+					$url = substr(trim(strip_tags($regTag->description)), 6);
+					$xmlfile .= '<subject subjectScheme="Library of Congress Subject Headings (LCSH)" schemeURI="https://id.loc.gov/authorities/" valueURI="' . $url . '">' . $regTag->raw_tag . '</subject>';
+				}
+				else
+				{
+					$xmlfile .= '	<subject>' . $regTag->raw_tag . '</subject>';
+				}
+			}
+		}
+		if ($this->get('subjectTags'))
+		{
+			$subjectTags = $this->get('subjectTags');
+			
+			foreach ($subjectTags as $subjectTag)
+			{
+				if (!empty($subjectTag->description) && preg_match("/^lcsh::/i", trim($subjectTag->description)))
+				{
+					$url = substr(trim(strip_tags($subjectTag->description)), 6);
+					$xmlfile .= '<subject subjectScheme="Library of Congress Subject Headings (LCSH)" schemeURI="https://id.loc.gov/authorities/" valueURI="' . $url . '">' . $subjectTag->raw_tag . '</subject>';
+				}
+				else
+				{
+					$xmlfile .= '	<subject>' . $subjectTag->raw_tag . '</subject>';
+				}
+			}
+			
+		}
+		if ($this->get('fosTags'))
+		{
+			$fosTags = $this->get('fosTags');
+			
+			foreach($fosTags as $fosTag)
+			{
+				$xmlfile .= '<subject subjectScheme="Fields of Science and Technology (FOS)" schemeURI="http://www.oecd.org/science/inno" valueURI="http://www.oecd.org/science/inno/38235147.pdf">' . $fosTag->raw_tag . '</subject>';
+			}
+		}
+		$xmlfile .= '</subjects>';
+		
 		$xmlfile .='<descriptions>
 			<description descriptionType="Abstract">';
 		$xmlfile.= stripslashes(htmlspecialchars($this->get('abstract')));
-		$xmlfile.= '</description>
+		$xmlfile.= '</description>';
+		
+		if ($this->get('synopsis'))
+		{
+			$xmlfile .= '<description descriptionType="Other">' . stripslashes($this->get('synopsis')) . '</description>';
+		}
+		$xmlfile .= '
 			</descriptions>
 		</resource>';
-
+		
 		return $xmlfile;
 	}
 
