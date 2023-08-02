@@ -107,7 +107,7 @@ class Memcache extends None
 		if ($memcache->get($this->options['hash'] . '-index') === false)
 		{
 			$empty = array();
-			self::$_db->set($this->oprions['hash'] . '-index', $empty, $this->options['compress'], 0);
+			$this->engine->set($this->options['hash'] . '-index', $empty, $this->options['compress'], 0);
 		}
 
 		return $memcache;

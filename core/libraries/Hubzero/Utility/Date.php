@@ -475,7 +475,7 @@ class Date extends DateTime
 	 */
 	public function toTimeZone($timeZone, $format = null, $ignoreDst = false)
 	{
-		$format = $format ?: parent::$format;
+		$format = $format ?: self::$format;
 		$timeZone = self::getTimeZoneObject($timeZone, $ignoreDst);
 		$this->setTimezone($timeZone);
 		return $this->format($format, true);

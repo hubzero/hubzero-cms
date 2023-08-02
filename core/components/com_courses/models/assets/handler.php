@@ -59,6 +59,19 @@ class Handler
 	);
 
 	/**
+	 * Class info
+	 *
+	 * Action message - what the user will see if presented with multiple handlers for this extension
+	 * Responds to    - what extensions this handler responds to
+	 *
+	 * @var array
+	 **/
+	protected static $info = array(
+		'action_message' => '',
+		'responds_to'    => array(''),
+	);
+
+	/**
 	 * Constructor - sets the database object and initializes the file types
 	 *
 	 * @return void
