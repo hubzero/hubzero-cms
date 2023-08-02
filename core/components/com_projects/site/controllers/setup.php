@@ -275,14 +275,7 @@ class Setup extends Base
 			if ($this->model->exists())
 			{
 				$objO = $this->model->table('Owner');
-
-				// Based on the sync group radio button. 
-				// If user select specific members radio, the save should pick up the request.
-				$syncGroupFromDb = $this->model->get('sync_group');
-				$syncGroupPostForm = Request::getInt('sync_group', 0, 'post');				
-				$syncGroup = (isset($syncGroupPostForm)) ? $syncGroupPostForm : $syncGroupFromDb;
-
-				$objO->reconcileGroups($this->model->get('id'), $this->model->get('owned_by_group'), $syncGroup);
+				$objO->reconcileGroups($this->model->get('id'), $this->model->get('owned_by_group'), $this->model->get('sync_group'));
 			}
 			else
 			{
@@ -499,11 +492,13 @@ class Setup extends Base
 				$grant_agency = Request::getString('grant_agency', '');
 				$grant_title  = Request::getString('grant_title', '');
 				$grant_PI     = Request::getString('grant_PI', '');
+				$award_number = Request::getString('award_number', '');
 				$grant_budget = Request::getString('grant_budget', '');
 				$this->model->saveParam('grant_budget', $grant_budget);
 				$this->model->saveParam('grant_agency', $grant_agency);
 				$this->model->saveParam('grant_title', $grant_title);
 				$this->model->saveParam('grant_PI', $grant_PI);
+				$this->model->saveParam('award_number', $award_number);
 				$this->model->saveParam('grant_status', 0);
 			}
 		}
