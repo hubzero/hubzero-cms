@@ -501,11 +501,13 @@ class Setup extends Base
 				
 				$grant_title  = Request::getString('grant_title', '');
 				$grant_PI     = Request::getString('grant_PI', '');
+				$award_number = Request::getString('award_number', '');
 				$grant_budget = Request::getString('grant_budget', '');
 				$this->model->saveParam('grant_budget', $grant_budget);
 				$this->model->saveParam('grant_agency', $grant_agency);
 				$this->model->saveParam('grant_title', $grant_title);
 				$this->model->saveParam('grant_PI', $grant_PI);
+				$this->model->saveParam('award_number', $award_number);
 				$this->model->saveParam('grant_status', 0);
 			}
 		}
