@@ -392,8 +392,8 @@ class Projects extends Base
 					array('name' => 'changeowner', 'layout' => 'default')
 				);
 				$view->project = $this->model;
-				$view->task    = $this->_task;
-				$view->option  = $this->_option;
+				$view->set('task', $this->_task);
+				$view->set('option', $this->_option);
 				$view->display();
 				return;
 			}

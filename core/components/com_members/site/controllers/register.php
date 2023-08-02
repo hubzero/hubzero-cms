@@ -174,8 +174,8 @@ class Register extends SiteController
 					'name'   => 'emails',
 					'layout' => 'update'
 				));
-				$eview->option     = $this->_option;
-				$eview->controller = $this->_controller;
+				$eview->set('option', $this->_option);
+				$eview->set('controller', $this->_controller);
 				$eview->sitename   = Config::get('sitename');
 				$eview->xprofile   = $xprofile;
 				$eview->baseURL    = $this->baseURL;
@@ -203,8 +203,8 @@ class Register extends SiteController
 				'name'   => 'emails',
 				'layout' => 'adminupdate'
 			));
-			$eaview->option     = $this->_option;
-			$eaview->controller = $this->_controller;
+			$eaview->set('option', $this->_option);
+			$eaview->set('controller', $this->_controller);
 			$eaview->sitename   = Config::get('sitename');
 			$eaview->xprofile   = $xprofile;
 			$eaview->baseURL    = $this->baseURL;
@@ -241,8 +241,8 @@ class Register extends SiteController
 					'name'   => 'emails',
 					'layout' => 'updateproxy'
 				));
-				$eview->option     = $this->_option;
-				$eview->controller = $this->_controller;
+				$eview->set('option', $this->_option);
+				$eview->set('controller', $this->_controller);
 				$eview->sitename   = Config::get('sitename');
 				$eview->xprofile   = $xprofile;
 				$eview->baseURL    = $this->baseURL;
@@ -270,8 +270,8 @@ class Register extends SiteController
 				'name'   => 'emails',
 				'layout' => 'adminupdateproxy'
 			));
-			$eaview->option     = $this->_option;
-			$eaview->controller = $this->_controller;
+			$eaview->set('option', $this->_option);
+			$eaview->set('controller', $this->_controller);
 			$eaview->sitename   = Config::get('sitename');
 			$eaview->xprofile   = $xprofile;
 			$eaview->baseURL    = $this->baseURL;
@@ -608,8 +608,8 @@ class Register extends SiteController
 					'name'   => 'emails',
 					'layout' => 'adminupdate'
 				));
-				$eaview->option     = $this->_option;
-				$eaview->controller = $this->_controller;
+				$eaview->set('option', $this->_option);
+				$eaview->set('controller', $this->_controller);
 				$eaview->sitename   = Config::get('sitename');
 				$eaview->xprofile   = $xprofile;
 				$eaview->baseURL    = $this->baseURL;

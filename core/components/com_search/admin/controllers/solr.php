@@ -218,10 +218,10 @@ class Solr extends AdminController
 		// Explicitly set the view since it may be called by another method
 		$this->view->setLayout('overview');
 		$this->view->setName('solr');
-		$this->view->option = $this->_option;
+		$this->view->set('option', $this->_option);
 
-		$this->view->controller = 'solr';
-		$this->view->task = 'display';
+		$this->view->set('controller', 'solr');
+		$this->view->set('task', 'display');
 		$this->view->mechanism = $config->get('engine');
 		$this->view->status = $status;
 		$this->view->logs = $logs;

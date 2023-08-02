@@ -1182,7 +1182,7 @@ class Events extends SiteController
 			);
 
 			$eview = new \Hubzero\Component\View(array('name'=>'register','layout'=>'email'));
-			$eview->option = $this->_option;
+			$eview->set('option', $this->_option);
 			$eview->sitename = Config::get('sitename');
 			$eview->register = $register;
 			$eview->race = $race;
@@ -1761,7 +1761,7 @@ class Events extends SiteController
 			'name'   => 'emails',
 			'layout' => 'deleted'
 		));
-		$eview->option = $this->_option;
+		$eview->set('option', $this->_option);
 		$eview->sitename = Config::get('sitename');
 		$eview->user = User::getInstance();
 		$eview->event = $event;
@@ -2074,7 +2074,7 @@ class Events extends SiteController
 
 			$eview = new View(array('name'=>'emails','layout'=>'edited'));
 		}
-		$eview->option = $this->_option;
+		$eview->set('option', $this->_option);
 		$eview->sitename = Config::get('sitename');
 		$eview->user = User::getInstance();
 		$eview->row = $row;

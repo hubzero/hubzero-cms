@@ -358,9 +358,9 @@ class SiteController extends Obj implements ControllerInterface
 		$this->view = new View($config);
 
 		// Set some commonly used vars
-		$this->view->option     = $this->_option;
-		$this->view->task       = $name;
-		$this->view->controller = $this->_controller;
+		$this->view->set('option', $this->_option);
+		$this->view->set('task', $name);
+		$this->view->set('controller', $this->_controller);
 	}
 
 	/**

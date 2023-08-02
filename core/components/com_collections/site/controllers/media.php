@@ -404,8 +404,8 @@ class Media extends SiteController
 			'layout' => '_asset'
 		));
 		$view->i          = Request::getInt('i', 0);
-		$view->option     = $this->_option;
-		$view->controller = $this->_controller;
+		$view->set('option', $this->_option);
+		$view->set('controller', $this->_controller);
 		$view->asset      = $asset;
 		$view->no_html    = 1;
 

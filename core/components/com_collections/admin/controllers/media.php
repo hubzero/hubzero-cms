@@ -354,10 +354,10 @@ class Media extends AdminController
 			'layout' => '_asset'
 		));
 		$view->i          = Request::getInt('i', 0);
-		$view->option     = $this->_option;
-		$view->controller = $this->_controller;
-		$view->asset      = $asset;
-		$view->no_html    = 1;
+		$view->set('option', $this->_option);
+		$view->set('controller', $this->_controller);
+		$view->set('asset', $asset);
+		$view->set('no_html', 1);
 
 		// Echo result
 		echo json_encode(array(

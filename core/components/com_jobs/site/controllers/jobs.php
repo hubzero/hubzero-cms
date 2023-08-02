@@ -351,7 +351,7 @@ class Jobs extends SiteController
 			$view = new View(array('name' => 'intro'));
 			$view->title       = $this->_title;
 			$view->config      = $this->config;
-			$view->option      = $this->_option;
+			$view->set('option', $this->_option);
 			$view->emp         = $this->_emp;
 			$view->admin       = $this->_admin;
 			$view->pageNav     = $pageNav;
@@ -379,7 +379,7 @@ class Jobs extends SiteController
 			));
 			$view->title            = $this->_title;
 			$view->config           = $this->config;
-			$view->option           = $this->_option;
+			$view->set('option', $this->_option);
 			$view->emp              = $this->_emp;
 			$view->admin            = $this->_admin;
 			$view->total            = $jtotal;
@@ -389,7 +389,7 @@ class Jobs extends SiteController
 			$view->filters          = $filters;
 			$view->subscriptionCode = $subscriptionCode;
 			$view->employer         = $employer;
-			$view->task             = $this->_task;
+			$view->set('task', $this->_task);
 
 			$view->display();
 		}
@@ -1118,8 +1118,8 @@ class Jobs extends SiteController
 		$view->seeker      = $seeker;
 		$view->admin       = $this->_admin;
 		$view->application = $ja;
-		$view->task        = $this->_task;
-		$view->option      = $this->_option;
+		$view->set('task', $this->_task);
+		$view->set('option', $this->_option);
 
 		// Set any errors
 		if ($this->getError())

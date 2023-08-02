@@ -381,8 +381,8 @@ class Pages
 			'layout'    => $type
 		));
 
-		$eview->option     = Request::getCmd('option', 'com_groups');
-		$eview->controller = Request::getCmd('controller', 'groups');
+		$eview->set('option', Request::getCmd('option', 'com_groups'));
+		$eview->set('controller', Request::getCmd('controller', 'groups'));
 		$eview->group      = $group;
 		$eview->object     = $object;
 		$html = $eview->loadTemplate();

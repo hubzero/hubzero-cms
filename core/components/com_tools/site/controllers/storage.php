@@ -161,7 +161,7 @@ class Storage extends SiteController
 				'name'   => $this->_controller,
 				'layout' => 'diskusage'
 			));
-			$view->option    = $this->_option;
+			$view->set('option', $this->_option);
 			$view->amt       = $this->percent;
 			$view->du        = '';
 			$view->percent   = 0;

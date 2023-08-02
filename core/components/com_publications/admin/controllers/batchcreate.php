@@ -451,7 +451,7 @@ class Batchcreate extends AdminController
 					'name'   =>'batchcreate',
 					'layout' => 'dryrun'
 				));
-				$eview->option = $this->_option;
+				$eview->set('option', $this->_option);
 				$eview->items  = $items;
 				$output       .= $eview->loadTemplate();
 			}

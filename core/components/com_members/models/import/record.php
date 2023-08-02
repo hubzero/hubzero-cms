@@ -572,8 +572,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
 				'name'      => 'emails',
 				'layout'    => 'confirm'
 			));
-			$eview->option       = 'com_members';
-			$eview->controller   = 'register';
+			$eview->set('option', 'com_members');
+			$eview->set('controller', 'register');
 			$eview->sitename     = Config::get('sitename');
 			$eview->login        = $this->record->entry->get('username');
 			$eview->name         = $this->record->entry->get('name');

@@ -513,11 +513,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$view->editor = $modelHandler->loadEditor($view->handler, $view->publication, $element);
 		}
 
-		$view->option   = $this->_option;
+		$view->set('option', $this->_option);
 		$view->database = $this->_database;
 		$view->uid      = $this->_uid;
 		$view->ajax     = $ajax;
-		$view->task     = $this->_task;
+		$view->set('task', $this->_task);
 		$view->element  = $element;
 		$view->block    = $block;
 		$view->blockId  = $blockId;

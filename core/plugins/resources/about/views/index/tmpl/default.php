@@ -265,7 +265,7 @@ $maintext = $this->model->description;
 						'name'      => 'view',
 						'layout'    => '_submitters',
 					));
-					$view->option       = $this->option;
+					$view->set('option', $this->option);
 					$view->contributors = $this->model->contributors('submitter');
 					$view->badges       = $this->plugin->get('badges', 0);
 					$view->showorgs     = 1;

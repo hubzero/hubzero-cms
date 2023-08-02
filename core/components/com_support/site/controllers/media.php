@@ -188,8 +188,8 @@ class Media extends SiteController
 			'name'   => 'media',
 			'layout' => '_asset'
 		));
-		$view->option     = $this->_option;
-		$view->controller = $this->_controller;
+		$view->set('option', $this->_option);
+		$view->set('controller', $this->_controller);
 		$view->asset      = $asset;
 		$view->no_html    = 1;
 

@@ -981,7 +981,7 @@ class Resources extends SiteController
 					'name'   => 'view',
 					'layout' => 'watch'
 				));
-				$this->view->option         = $this->_option;
+				$this->view->set('option', $this->_option);
 				$this->view->config         = $this->config;
 				$this->view->database       = $this->database;
 				$this->view->doc            = Document::getRoot();
@@ -1127,7 +1127,7 @@ class Resources extends SiteController
 			'name'   => 'view',
 			'layout' => 'video'
 		));
-		$this->view->option   = $this->_option;
+		$this->view->set('option', $this->_option);
 		$this->view->config   = $this->config;
 		$this->view->database = $this->database;
 		$this->view->resource = $activechild;
@@ -1478,7 +1478,7 @@ class Resources extends SiteController
 				'name'      => 'view',
 				'layout'    => 'play'
 			));
-			$view->option      = $this->_option;
+			$view->set('option', $this->_option);
 			$view->config      = $this->config;
 			$view->tconfig     = $tconfig;
 			$view->resource    = $this->model;
@@ -1522,8 +1522,8 @@ class Resources extends SiteController
 					'name'   => 'view',
 					'layout' => 'watch_error'
 				));
-				$this->view->controller = $this->_controller;
-				$this->view->task = $this->_task;
+				$this->view->set('controller', $this->_controller);
+				$this->view->set('task', $this->_task);
 				$this->view->setErrors($errors);
 				$body = $this->view->loadTemplate();
 			}

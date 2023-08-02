@@ -635,7 +635,7 @@ class Course extends SiteController
 			'name'   => 'emails',
 			'layout' => 'deleted'
 		));
-		$eview->option = $this->_option;
+		$eview->set('option', $this->_option);
 		$eview->sitename = Config::get('sitename');
 		$eview->user = User::getInstance();
 		$eview->gcn = $gcn;

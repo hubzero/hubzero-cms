@@ -352,7 +352,7 @@ class Asset extends Base
 		$view->asset   = $this->_tbl;
 		$view->model   = $this;
 		$view->course  = $course;
-		$view->option  = $option;
+		$view->set('option', $option);
 
 		return $view->loadTemplate();
 	}

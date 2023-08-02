@@ -14,7 +14,7 @@ defined('_HZEXEC_') or die();
 		<?php echo Lang::txt('COM_CONFIG_FTP_DETAILS_TIP'); ?>
 
 		<?php if ($this->ftp instanceof Exception): ?>
-			<p><?php echo Lang::txt($this->ftp->message); ?></p>
+			<p><?php echo Lang::txt($this->ftp->getMessage()); ?></p>
 		<?php endif; ?>
 
 		<div class="input-wrap">

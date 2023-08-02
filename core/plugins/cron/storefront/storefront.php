@@ -240,7 +240,7 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
 			'name'      => 'emails',
 			'layout'    => 'publish_down_notification'
 		));
-		$eview->option   = 'com_storefront';
+		$eview->set('option', 'com_storefront');
 		$eview->skus     = $skusInfo;
 		$eview->products = $productsInfo;
 
