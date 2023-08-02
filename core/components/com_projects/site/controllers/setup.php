@@ -63,6 +63,8 @@ class Setup extends Base
 				'warning'
 			);
 		}
+		
+		$this->registerTask('querygrantagency', 'getGrantAgency');
 
 		parent::execute();
 	}
@@ -275,14 +277,7 @@ class Setup extends Base
 			if ($this->model->exists())
 			{
 				$objO = $this->model->table('Owner');
-
-				// Based on the sync group radio button. 
-				// If user select specific members radio, the save should pick up the request.
-				$syncGroupFromDb = $this->model->get('sync_group');
-				$syncGroupPostForm = Request::getInt('sync_group', 0, 'post');				
-				$syncGroup = (isset($syncGroupPostForm)) ? $syncGroupPostForm : $syncGroupFromDb;
-
-				$objO->reconcileGroups($this->model->get('id'), $this->model->get('owned_by_group'), $syncGroup);
+				$objO->reconcileGroups($this->model->get('id'), $this->model->get('owned_by_group'), $this->model->get('sync_group'));
 			}
 			else
 			{
@@ -497,6 +492,13 @@ class Setup extends Base
 			if ($this->config->get('grantinfo', 0) && Request::getInt('grant_info', 0))
 			{
 				$grant_agency = Request::getString('grant_agency', '');
+				$grant_agency_id = $this->getGrantAgencyId($grant_agency);
+				
+				if ($grant_agency_id != false && !empty($grant_agency_id))
+				{
+					$this->model->saveParam('grant_agency_id', $grant_agency_id);
+				}
+				
 				$grant_title  = Request::getString('grant_title', '');
 				$grant_PI     = Request::getString('grant_PI', '');
 				$grant_budget = Request::getString('grant_budget', '');
@@ -826,6 +828,16 @@ class Setup extends Base
 						{
 							$this->model->saveParam($key, $value);
 							$this->model->params->set($key, $value);
+							
+							if ($key == "grant_agency")
+							{
+								$grant_agency_id = $this->getGrantAgencyId($value);
+								
+								if ($grant_agency_id != false && !empty($grant_agency_id))
+								{
+									$this->model->saveParam("grant_agency_id", $grant_agency_id);
+								}
+							}
 
 							// If grant information changed
 							if ($key == 'grant_status')
@@ -1190,5 +1202,118 @@ class Setup extends Base
 		$text = preg_replace('/<!--.+?-->/', '', $text);
 
 		return $text;
+	}
+	
+	/**
+	 * Querying the grant agency name based on the input value
+	 *
+	 * @return  array   grant agency names that match the input value
+	 */
+	public function getGrantAgencyTask()
+	{
+		$term = trim(Request::getString('term', ''));
+		
+		if (strpos($term, ' ') !== false)
+		{
+			$term = str_replace(' ', '+', $term);
+		}
+		
+		$queryURL = "https://api.crossref.org/funders?query=" . $term . "&rows=1000";
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $queryURL);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		$result = curl_exec($ch);
+		
+		if (!$result)
+		{
+			return false;
+		}
+		
+		$info = curl_getinfo($ch);
+		
+		$code = $info['http_code'];
+		
+		if (($code != 201) && ($code != 200))
+		{
+			return false;
+		}
+		
+		$agencies = [];
+		
+		$resultObj = json_decode($result);
+		
+		if ($resultObj->status != "ok")
+		{
+			return false;
+		}
+		
+		foreach ($resultObj->message->items as $agencyObj)
+		{
+			$agencies[] = $agencyObj->name;
+		}
+		
+		curl_close($ch);
+		
+		echo json_encode($agencies);
+		exit();
+	}
+	
+	/**
+	 * Get the grant agency identifier on CrossRef
+	 * @param   string   $grantAgency
+	 *
+	 * @return  string   grant agency identifier
+	 */
+	public function getGrantAgencyId($grantAgency)
+	{
+		$agency = trim($grantAgency);
+		
+		if (strpos($agency, ' ') !== false)
+		{
+			$agency = str_replace(' ', '+', $agency);
+		}
+		
+		$queryURL = "https://api.crossref.org/funders?query=" . $agency . "&rows=1000";
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $queryURL);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		$result = curl_exec($ch);
+		
+		if (!$result)
+		{
+			return false;
+		}
+		
+		$info = curl_getinfo($ch);
+		
+		$code = $info['http_code'];
+		
+		if (($code != 201) && ($code != 200))
+		{
+			return false;
+		}
+		
+		$resultObj = json_decode($result);
+		
+		$agency = str_replace('+', ' ', $agency);
+		
+		$uri = "";
+		
+		foreach ($resultObj->message->items as $agencyObj)
+		{
+			if ($agency == $agencyObj->name)
+			{
+				$uri = $agencyObj->uri;
+				break;
+			}
+		}
+		
+		curl_close($ch);
+		
+		return $uri;
 	}
 }

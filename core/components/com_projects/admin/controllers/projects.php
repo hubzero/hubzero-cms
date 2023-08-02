@@ -48,6 +48,8 @@ class Projects extends AdminController
 
 		// Include scripts
 		$this->_includeScripts();
+		
+		$this->registerTask('querygrantagency', 'getGrantAgency');
 
 		parent::execute();
 	}
@@ -498,6 +500,16 @@ class Projects extends AdminController
 				{
 					// convert GB to bytes
 					$value = Helpers\Html::convertSize(floatval($value), 'GB', 'b');
+				}
+				
+				if ($key == "grant_agency")
+				{
+					$grant_agency_id = $this->getGrantAgencyId($value);
+					
+					if ($grant_agency_id != false && !empty($grant_agency_id))
+					{
+						$model->saveParam("grant_agency_id", $grant_agency_id);
+					}
 				}
 
 				$model->saveParam($key, $value);
@@ -1348,5 +1360,118 @@ class Projects extends AdminController
 
 		// Redirect
 		$this->cancelTask();
+	}
+	
+	/**
+	 * Querying the grant agency name based on the input value
+	 *
+	 * @return  array   grant agency names that match the input value
+	 */
+	public function getGrantAgencyTask()
+	{
+		$term = trim(Request::getString('term', ''));
+		
+		if (strpos($term, ' ') !== false)
+		{
+			$term = str_replace(' ', '+', $term);
+		}
+		
+		$queryURL = "https://api.crossref.org/funders?query=" . $term . "&rows=1000";
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $queryURL);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		$result = curl_exec($ch);
+		
+		if (!$result)
+		{
+			return false;
+		}
+		
+		$info = curl_getinfo($ch);
+		
+		$code = $info['http_code'];
+		
+		if (($code != 201) && ($code != 200))
+		{
+			return false;
+		}
+		
+		$agencies = [];
+		
+		$resultObj = json_decode($result);
+		
+		if ($resultObj->status != "ok")
+		{
+			return false;
+		}
+		
+		foreach ($resultObj->message->items as $agencyObj)
+		{
+			$agencies[] = $agencyObj->name;
+		}
+		
+		curl_close($ch);
+		
+		echo json_encode($agencies);
+		exit();
+	}
+	
+	/**
+	 * Get the grant agency identifier on CrossRef
+	 * @param   string   $grantAgency
+	 *
+	 * @return  string   grant agency identifier
+	 */
+	public function getGrantAgencyId($grantAgency)
+	{
+		$agency = trim($grantAgency);
+		
+		if (strpos($agency, ' ') !== false)
+		{
+			$agency = str_replace(' ', '+', $agency);
+		}
+		
+		$queryURL = "https://api.crossref.org/funders?query=" . $agency . "&rows=1000";
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $queryURL);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		$result = curl_exec($ch);
+		
+		if (!$result)
+		{
+			return false;
+		}
+		
+		$info = curl_getinfo($ch);
+		
+		$code = $info['http_code'];
+		
+		if (($code != 201) && ($code != 200))
+		{
+			return false;
+		}
+		
+		$resultObj = json_decode($result);
+		
+		$agency = str_replace('+', ' ', $agency);
+		
+		$uri = "";
+		
+		foreach ($resultObj->message->items as $agencyObj)
+		{
+			if ($agency == $agencyObj->name)
+			{
+				$uri = $agencyObj->uri;
+				break;
+			}
+		}
+		
+		curl_close($ch);
+		
+		return $uri;
 	}
 }

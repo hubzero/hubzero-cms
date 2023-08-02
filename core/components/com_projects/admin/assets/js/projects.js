@@ -94,3 +94,36 @@ jQuery(document).ready(function($){
 		Hubzero.submitbutton('suspend');
 	});
 });
+
+$(function(){
+	$("#param-grant_agency").autocomplete({		
+		source: function(req, resp){
+			var rorURL = "index.php?option=com_projects&controller=projects&task=getGrantAgency&term=";
+			
+			var terms = $("#param-grant_agency").val();
+			
+			if (terms.indexOf(" "))
+			{
+				rorURL = rorURL + terms.split(" ").join("+");
+			}
+			else
+			{
+				rorURL = rorURL + terms;
+			}
+			
+			$.ajax({
+				url: rorURL,
+				data: null,
+				dataType: "json",
+				success:function(result){
+					resp(result);
+				},
+				error:function(jqXHR, textStatus, errorThrown){
+					console.log(textStatus);
+					console.log(errorThrown);
+					console.log(jqXHR.responseText);
+				}
+			});
+		}
+	});
+});
