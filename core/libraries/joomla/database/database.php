@@ -455,7 +455,7 @@ abstract class JDatabase implements JDatabaseInterface
 	 *
 	 * @since   11.1
 	 */
-	protected function __construct($options)
+	public function __construct($options)
 	{
 		// Initialise object variables.
 		$this->_database = (isset($options['database'])) ? $options['database'] : '';
