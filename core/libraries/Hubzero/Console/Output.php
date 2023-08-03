@@ -19,7 +19,7 @@ class Output
 	 *
 	 * @var  array
 	 **/
-	private $response = array();
+	protected $response = array();
 
 	/**
 	 * Track default indentation for lines
