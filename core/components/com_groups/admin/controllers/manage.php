@@ -292,7 +292,7 @@ class Manage extends AdminController
 		// Check for any missing info
 		if (!$g['cn'])
 		{
-			$this->setError(Lang::txt('COM_GROUPS_ERROR_MISSING_INFORMATION') . ': ' . Lang::txt('COM_GROUPS_ID'));
+			$this->setError(Lang::txt('COM_GROUPS_ERROR_MISSING_INFORMATION') . ': ' . Lang::txt('COM_GROUPS_CN'));
 		}
 		if (!$g['description'])
 		{
