@@ -8,6 +8,7 @@
 namespace Hubzero\Session\Storage;
 
 use Hubzero\Filesystem\Filesystem;
+use Hubzero\Filesystem\Adapter\Local;
 use Hubzero\Session\Store;
 use Exception;
 
@@ -47,7 +48,8 @@ class File extends Store
 
 		if (!isset($options['filesystem']) || !($options['filesystem'] instanceof Filesystem))
 		{
-			$options['filesystem'] = new Filesystem;
+			$adapter = new Local($app['config']->get('virus_scanner', "clamscan -i --no-summary --block-encrypted"));
+			$options['filesystem'] = new Filesystem($adapter);
 		}
 
 		$this->path  = $this->cleanPath($options['session_path']);
@@ -73,7 +75,7 @@ class File extends Store
 	{
 		if ($this->files->exists($path = $this->path . DS . $id))
 		{
-			return $this->files->get($path);
+			return $this->files->read($path);
 		}
 
 		return '';
@@ -89,7 +91,7 @@ class File extends Store
 	#[\ReturnTypeWillChange]
 	public function write($id, $data)
 	{
-		$this->files->put($this->path . DS . $id, $data, true);
+		$this->files->write($this->path . DS . $id, $data, true);
 	}
 
 	/**
@@ -114,7 +116,7 @@ class File extends Store
 	#[\ReturnTypeWillChange]
 	public function gc($maxlifetime = null)
 	{
-		$files = $this->files->files($this->path);
+		$files = $this->files->listContents($this->path);
 
 		$tm = time() - $maxlifetime;
 
@@ -155,7 +157,7 @@ class File extends Store
 	 */
 	public function all($filters = array())
 	{
-		$files = $this->files->files($this->path);
+		$files = $this->files->listContents($this->path);
 
 		$sessions = array();
 
@@ -168,7 +170,7 @@ class File extends Store
 
 			$session = new Object;
 			$session->session_id = $file->getName();
-			$session->data       = $this->files->get($file->getPathname());
+			$session->data       = $this->files->read($file->getPathname());
 
 			$sessions[] = $session;
 		}
