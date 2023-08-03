@@ -11,7 +11,7 @@ defined('_HZEXEC_') or die;
 /**
  * PageDown Editor Plugin
  **/
-class plgEditorPageDown extends \Hubzer\Plugin\Plugin
+class plgEditorPageDown extends \Hubzero\Plugin\Plugin
 {
 
 	const BUTTON_BAR_ID = 'wmd-button-bar';

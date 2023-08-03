@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use \PHPMailer\PHPMailer\PHPMailer;
+
 /**
  * Email Class.  Provides a common interface to send email from the Joomla! Platform
  *

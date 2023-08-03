@@ -14,7 +14,7 @@ use RuntimeException;
 /**
  * FTP adapter for filesystem.
  */
-class Ftp extends AbstractFtpAdapter
+class Ftp implements AdapterInterface
 {
 	/**
 	 * FTP Transfer mode
