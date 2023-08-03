@@ -213,11 +213,11 @@ abstract class Field
 
 				if ($parts[0] == 'J')
 				{
-					$this->type = ucfirst($parts[count($parts) - 1], '_');
+					$this->type = Str::ucfirst($parts[count($parts) - 1], '_');
 				}
 				else
 				{
-					$this->type = ucfirst($parts[0], '_') . ucfirst($parts[count($parts) - 1], '_');
+					$this->type = Str::ucfirst($parts[0], '_') . Str::ucfirst($parts[count($parts) - 1], '_');
 				}
 			}
 		}

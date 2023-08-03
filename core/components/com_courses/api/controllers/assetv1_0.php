@@ -430,7 +430,7 @@ class Assetv1_0 extends base
 					}
 					else
 					{
-						if (!is_file(PATH_APP . $asset_path . DS . $file[0], $param_path))
+						if (!is_file($param_path))
 						{
 							copy(PATH_APP . $asset_path . DS . $file[0], $param_path);
 						}
