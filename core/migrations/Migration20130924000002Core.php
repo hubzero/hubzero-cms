@@ -283,7 +283,7 @@ class Migration20130924000002Core extends Base
 				if (class_exists('Components\Categories\Models\Category') && method_exists('Components\Categories\Models\Category', 'rebuild'))
 				{
 					$table = Components\Categories\Models\Category::blank();
-					$table->rebuild();
+					$table->rebuild(1);
 				}
 			}
 		}

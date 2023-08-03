@@ -105,10 +105,11 @@ class Helper extends Module
 
 		/*if (isset($filters['tag']) && $filters['tag'])
 		{
+			$database = App::get('db');
 			$to = Components\Tags\Models\Objct::blank()->getTableName();
 			$tg = Components\Tags\Models\Tag::blank()->getTableName();
 
-			$cloud = new Components\Publications\Helpers\Tags();
+			$cloud = new Components\Publications\Helpers\Tags($database);
 			$tags = $cloud->parse($filters['tag']);
 
 			$query->join($to, $to . '.objectid', $r . '.id');

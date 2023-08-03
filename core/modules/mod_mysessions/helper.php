@@ -43,7 +43,7 @@ class Helper extends Module
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		$ms = new \Components\Tools\Tables\Session($mwdb);
-		$remaining = $ms->getTimeout();
+		$remaining = $ms->getTimeout($sess);
 
 		$tl = 'unknown';
 

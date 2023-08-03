@@ -235,7 +235,7 @@ class Items extends AdminController
 
 		if (!$el)
 		{
-			$this->setError();
+			$this->setError('No Element Id');
 		}
 		else
 		{

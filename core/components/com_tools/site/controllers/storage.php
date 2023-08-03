@@ -103,7 +103,7 @@ class Storage extends SiteController
 	 *
 	 * @return  void
 	 */
-	protected function _login($rtrn)
+	protected function _login($rtrn = null)
 	{
 		if (!$rtrn)
 		{

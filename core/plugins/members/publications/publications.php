@@ -218,6 +218,8 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public static function allWithFilters($filters = array())
 	{
+		$database = App::get('db');
+
 		$query = Components\Publications\Models\Orm\Version::all();
 
 		$r = $query->getTableName();
@@ -247,7 +249,7 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
 			$to = Components\Tags\Models\Objct::blank()->getTableName();
 			$tg = Components\Tags\Models\Tag::blank()->getTableName();
 
-			$cloud = new Components\Publications\Helpers\Tags();
+			$cloud = new Components\Publications\Helpers\Tags($database);
 			$tags = $cloud->parse($filters['tag']);
 
 			$query->join($to, $to . '.objectid', $r . '.id');

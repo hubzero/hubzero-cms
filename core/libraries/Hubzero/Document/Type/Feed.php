@@ -253,7 +253,7 @@ class Feed extends Base
 		}
 
 		// Render the feed
-		$data .= $renderer->render();
+		$data .= $renderer->render(null);
 
 		parent::render();
 
