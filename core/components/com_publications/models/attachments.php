@@ -288,7 +288,7 @@ class Attachments extends Obj
 	 * @param   boolean  $authorized
 	 * @return  mixed    object or boolean
 	 */
-	public function drawLauncher($name = null, $pub = null, $element = null, $elements = null, $authorized = true)
+	public function drawLauncher($name = null, $pub = null, $element = null, $elements = null, $authorized = true, $httpsBtn = false)
 	{
 		if ($name === null || $element === null || $pub === null)
 		{
@@ -304,7 +304,7 @@ class Attachments extends Obj
 		}
 
 		// Draw link
-		return $type->drawLauncher($element->manifest, $element->id, $pub, $element->block, $elements, $authorized);
+		return $type->drawLauncher($element->manifest, $element->id, $pub, $element->block, $elements, $authorized, $httpsBtn);
 	}
 
 	/**

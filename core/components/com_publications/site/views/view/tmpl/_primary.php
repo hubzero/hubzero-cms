@@ -29,6 +29,9 @@ if ($this->disabled): ?>
 				<?php endforeach; ?>
 			</ul>
 		</div>
+		<?php if (isset($this->btnType) && !empty($this->btnType) && $this->btnType == "ftp"):?>		
+			<p class="ftpIntro"><a href="<?php echo ($this->ftpDoc) ? $this->ftpDoc : '';?>" target="_blank"><?php echo Lang::txt('FTP download guide');?></a></p>
+		<?php endif; ?>
 	<?php else: ?>
 		<p id="primary-document">
 			<a class="btn btn-primary<?php echo ($this->class)  ? ' ' . $this->class : ''; ?>" <?php
