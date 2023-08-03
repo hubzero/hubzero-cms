@@ -46,7 +46,9 @@ class Media extends SiteController
 
 		if (!($file = Request::getString('file', '')))
 		{
-			$filename = array_pop(explode('/', $_SERVER['REQUEST_URI']));
+			$parts = explode('/', $_SERVER['REQUEST_URI']);
+
+			$filename = array_pop($parts);
 
 			// Get the file name
 			if (substr(strtolower($filename), 0, strlen('image:')) == 'image:')

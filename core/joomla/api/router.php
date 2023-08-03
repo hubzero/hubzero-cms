@@ -416,7 +416,10 @@ class JRouterApi extends JRouter
 
 		if (empty($vars['option']))
 		{
-			$vars = $this->_parseContentRoute(explode('/', ltrim($route, "/")));
+			$parts = explode('/', ltrim($route, "/"));
+
+			$vars = $this->_parseContentRoute($parts);
+
 			if (!empty($vars['option']))
 			{
 				$route = false;

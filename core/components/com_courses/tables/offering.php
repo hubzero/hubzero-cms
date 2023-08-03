@@ -52,7 +52,10 @@ class Offering extends Table
 
 		if (!isset($instances[$alias]))
 		{
-			$inst = new self(\App::get('db'));
+			$db = \App::get('db');
+
+			$inst = new self($db);
+
 			$inst->load($alias);
 
 			$instances[$alias] = $inst;

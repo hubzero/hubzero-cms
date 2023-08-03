@@ -49,7 +49,8 @@ class Section extends Table
 
 		if (!isset($instances[$alias . '_' . $offering_id]))
 		{
-			$inst = new self(\App::get('db'));
+			$db = \App::get('db');
+			$inst = new self($db);
 			$inst->load($alias, $offering_id);
 
 			$instances[$alias . '_' . $offering_id] = $inst;

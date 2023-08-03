@@ -893,7 +893,9 @@ class Tool
 	 */
 	private function _error($message, $level = E_USER_NOTICE)
 	{
-		$caller = next(debug_backtrace());
+		$backtrace = debug_backtrace();
+
+		$caller = next($backtrace);
 
 		switch ($level)
 		{

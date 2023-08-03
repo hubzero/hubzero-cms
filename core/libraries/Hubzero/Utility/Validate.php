@@ -40,7 +40,9 @@ class Validate
 	{
 		if (is_array($check))
 		{
-			extract(self::_defaults($check));
+			$vars = self::_defaults($check);
+
+			extract($vars);
 		}
 
 		if (empty($check) && $check != '0')
@@ -65,7 +67,9 @@ class Validate
 	{
 		if (is_array($check))
 		{
-			extract(self::_defaults($check));
+			$vars = self::_defaults($check);
+
+			extract($vars);
 		}
 
 		if (empty($check) && $check != '0')
@@ -105,8 +109,11 @@ class Validate
 	{
 		if (is_array($check))
 		{
-			extract(self::_defaults($check));
+			$vars = self::_defaults($check);
+
+			extract($vars);
 		}
+
 		return !self::_check($check, '/[^\\s]/');
 	}
 
@@ -533,7 +540,9 @@ class Validate
 	{
 		if (is_array($check))
 		{
-			extract(self::_defaults($check));
+			$vars = self::_defaults($check);
+
+			extract($vars);
 		}
 
 		if ($regex === null)
@@ -617,7 +626,9 @@ class Validate
 	{
 		if (is_array($check))
 		{
-			extract(self::_defaults($check));
+			$vars = self::_defaults($check);
+
+			extract($vars);
 		}
 
 		if ($regex === null)

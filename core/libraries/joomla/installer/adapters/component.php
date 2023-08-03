@@ -1696,7 +1696,9 @@ class JInstallerComponent extends JAdapterInstance
 	 */
 	protected function _rollback_menu($step)
 	{
-		return $this->_removeAdminMenus((object) array('extension_id' => $step['id']));
+		$o = (object) array('extension_id' => $step['id']);
+
+		return $this->_removeAdminMenus($o);
 	}
 
 	/**

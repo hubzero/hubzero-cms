@@ -36,7 +36,8 @@ class Hubpresenter extends Obj
 		{
 			$old_media_parts = explode('\\', $source);
 			$source          = array_pop($old_media_parts);
-			$ext             = array_pop(explode('.', $source));
+			$parts           = explode('.', $source);
+			$ext             = array_pop($parts);
 			$new_media[]     = array(
 				'source' => $source,
 				'type'   => $ext
