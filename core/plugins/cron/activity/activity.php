@@ -98,7 +98,7 @@ class plgCronActivity extends \Hubzero\Plugin\Plugin
 
 			// Find all users that want weekly digests and the last time the digest
 			// was sent was NEVER or older than 1 month ago.
-			$previous = Date::of('now')->subtract('1 ' . $interval)->toSql();
+			$previous = Date::of('now')->modify('-1 ' . $interval)->toSql();
 
 			// Set up the query
 			$query = "SELECT DISTINCT(scope_id)

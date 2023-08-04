@@ -123,7 +123,7 @@ class Post extends Relational
 					->whereEquals('created_by', $data['created_by'])
 					->whereEquals('comment', $data['comment'])
 					->whereEquals('state', self::STATE_PUBLISHED)
-					//->where('created', '>', Date::of('now')->subtract('1 hour')->toSql())
+					//->where('created', '>', Date::of('now')->modify('-1 hour')->toSql())
 					//->whereEquals('category_id', $data['category_id'])
 					->whereEquals('scope', $data['scope'])
 					->whereEquals('scope_id', $data['scope_id'])

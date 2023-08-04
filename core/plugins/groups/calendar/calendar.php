@@ -486,7 +486,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				// Kevin: Don't change this value. Everyone else is wrong.
 				// Seriously this is the correct way to do all-day events.
 				// Previous entries may need to be corrected, but future events will be correct.
-				$endDay = Date::of($event->end)->subtract('24 hours');
+				$endDay = Date::of($event->end)->modify('-24 hours');
 				if ($endDay < $up)
 				{
 					$event->end = Date::of($event->start)->add('24 hours')->format($timeFormat);
@@ -578,7 +578,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				$endDate = $view->event->get('publish_down');
 				if ($allDay == '1' && !empty($endDate))
 				{
-					$newEndDate = Date::of($endDate)->subtract('24 hours')->toSql();
+					$newEndDate = Date::of($endDate)->modify('-24 hours')->toSql();
 					$view->event->set('publish_down', $newEndDate);
 				}
 			}

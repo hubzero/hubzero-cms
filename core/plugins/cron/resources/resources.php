@@ -370,7 +370,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 		$interval = strtoupper($params->get('digest_frequency', '1 month'));
 
 		$now      = Date::of('now')->toSql();
-		$previous = Date::of('now')->subtract($interval)->toSql();
+		$previous = Date::of('now')->modify('-' . $interval)->toSql();
 
 		// Get records that haven't been processed
 		$db = App::get('db');
