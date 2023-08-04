@@ -95,10 +95,12 @@ $isFirst = $this->pub->curation()->getFirstBlock() == $this->step ? true : false
 			<input type="hidden" name="active" value="publications" />
 			<input type="hidden" name="action" value="dispute" />
 			<h5><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_TITLE'); ?></h5>
-			<label>
-				<span class="block"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_LABEL'); ?></span>
-				<textarea name="review" id="notice-review" rows="5" cols="10"></textarea>
-			</label>
+			<div class="form-group">
+				<label>
+					<span class="block"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_LABEL'); ?></span>
+					<textarea name="review" id="notice-review" rows="5" cols="10"></textarea>
+				</label>
+			</div>
 			</fieldset>
 			<p class="submitarea">
 				<input type="submit" id="notice-submit" class="btn" value="<?php echo Lang::txt('COM_PUBLICATIONS_SAVE'); ?>" />
