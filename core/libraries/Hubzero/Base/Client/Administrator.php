@@ -39,4 +39,11 @@ class Administrator implements ClientInterface
 	 * @var  string
 	 */
 	public $url = 'admin';
+
+	/**
+	 * Boostrap filesystem path
+	 *
+	 * @var  string
+	 */
+	public $path = '';
 }

@@ -117,6 +117,34 @@ class WikiParser
 	);
 
 	/**
+	 * List of macros
+	 *
+	 * @var array
+	 */
+	private $macros = array();
+
+	/**
+	 * Flag for list element open/closed state
+	 *
+	 * @var bool
+	 */
+	private $mDTopen;
+
+	/**
+	 * Flag for PRE element open/closed state
+	 *
+	 * @var bool
+	 */
+	private $mInPre;
+
+	/**
+	 * Flag for last section state
+	 *
+	 * @var bool
+	 */
+	private $mLastSection;
+
+	/**
 	 * Constructor
 	 *
 	 * @param      array $config Configuration options

@@ -32,4 +32,11 @@ class Api implements ClientInterface
 	 * @var  string
 	 */
 	public $url = 'api';
+
+	/**
+	 * Boostrap filesystem path
+	 *
+	 * @var  string
+	 */
+	public $path = '';
 }

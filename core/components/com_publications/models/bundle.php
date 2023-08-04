@@ -19,6 +19,27 @@ use Hubzero\Utility\Arr;
 class Bundle
 {
 	/**
+	 * Publication
+	 *
+	 * @var object
+	 */
+	protected $publication;
+
+	/**
+	 * Publication ID
+	 *
+	 * @var int
+	 */
+	protected $publication_id;
+
+	/**
+	 * Publication version ID
+	 *
+	 * @var int
+	 */
+	protected $publication_version_id;
+
+	/**
 	 * Contents of archive
 	 *
 	 * @var  array
