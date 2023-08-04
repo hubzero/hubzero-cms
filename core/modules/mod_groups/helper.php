@@ -66,7 +66,7 @@ class Helper extends Module
 		}
 
 		// Last 24 hours
-		$lastDay = with(new Date('now'))->subtract('1 Day')->toSql();
+		$lastDay = with(new Date('now'))->modify('-1 Day')->toSql();
 
 		$database->setQuery("SELECT count(*) FROM `#__xgroups` WHERE created >= '$lastDay' AND type='$type'");
 		$this->pastDay = $database->loadResult();

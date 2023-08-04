@@ -474,7 +474,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 		include_once Component::path('com_publications') . '/models/publication.php';
 
 		$params = $job->params;
-		$yesterday = !empty($job->params['startdate']) ? $job->params['startdate'] : Date::of()->subtract('1 day')->format('Y-m-d 00:00:00');
+		$yesterday = !empty($job->params['startdate']) ? $job->params['startdate'] : Date::of()->modify('-1 day')->format('Y-m-d 00:00:00');
 		$today = Date::of()->format('Y-m-d 00:00:00');
 
 		$versions = \Components\Publications\Models\Orm\Version::all()

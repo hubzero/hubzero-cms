@@ -97,7 +97,7 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
 					<?php
 						// check to see if its a single date all day event
 						$d1 = Date::of($publish_up);
-						$d2 = Date::of($publish_down)->subtract('24 hours');
+						$d2 = Date::of($publish_down)->modify('-24 hours');
 						if ($d1 == $d2 || !$publish_down || $publish_down == '0000-00-00 00:00:00')
 						{
 							echo $d1->format('l, F d, Y', true);
