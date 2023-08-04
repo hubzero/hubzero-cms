@@ -888,4 +888,20 @@ class Ftp implements AdapterInterface
 	{
 		$this->disconnect();
 	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function copy($path, $target)
+	{
+		return false;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function exists($path)
+	{
+		return false;
+	}
 }
