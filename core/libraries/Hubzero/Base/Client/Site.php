@@ -39,4 +39,11 @@ class Site implements ClientInterface
 	 * @var  string
 	 */
 	public $url = '';
+
+	/**
+	 * Boostrap filesystem path
+	 *
+	 * @var  string
+	 */
+	public $path = '';
 }

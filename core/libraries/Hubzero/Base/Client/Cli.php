@@ -44,6 +44,13 @@ class Cli implements ClientInterface
 	public $url = '';
 
 	/**
+	 * Boostrap filesystem path
+	 *
+	 * @var  string
+	 */
+	public $path = '';
+
+	/**
 	 * Method to call another console command
 	 *
 	 * @param   string  $class      The command to call

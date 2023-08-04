@@ -63,6 +63,13 @@ class Plugin extends Obj
 	protected $_autoloadLanguage = false;
 
 	/**
+	 * The triggered event
+	 *
+	 * @var object
+	 */
+	public $event;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   object  $subject  Event dispatcher

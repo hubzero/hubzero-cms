@@ -10,8 +10,40 @@ defined('_HZEXEC_') or die();
 
 class PublicationUsageHelper
 {
+	/**
+	 * Database connection
+	 *
+	 * @var object
+	 */
+	protected $_db;
 
+	/**
+	 * Publication
+	 *
+	 * @var object
+	 */
+	protected $_publication;
+
+	/**
+	 * Log table
+	 *
+	 * @var string
+	 */
 	protected $_logsTable = '#__publication_logs';
+
+	/**
+	 * Version ID
+	 *
+	 * @var int
+	 */
+	protected $_versionId;
+
+	/**
+	 * Publication ID
+	 *
+	 * @var int
+	 */
+	protected $_publicationId;
 
 	/**
 	 * Instantiates PublicationUsageHelper
@@ -112,5 +144,4 @@ class PublicationUsageHelper
 
 		return $this->_versionId;
 	}
-
 }
