@@ -891,7 +891,7 @@ class Doi extends Obj
 	 *
 	 * @return boolean
 	 */
-	public function registerURL($doi)
+	public function registerURL($doi, $resURL = "")
 	{
 		if (!$this->on())
 		{
@@ -900,10 +900,18 @@ class Doi extends Obj
 		}
 
 		// Register URL
-		$resURL = $this->get('url');
 		$url = $this->_configs->dataciteServiceURL . DS . 'doi' . DS . $doi;
-		$postvals = "doi=" . $doi . "\n" . "url=" . $resURL;
-
+		$postVals = "";
+		
+		if (empty($resURL))
+		{
+			$postvals = "doi=" . $doi . "\n" . "url=" . $this->get('url');
+		}
+		else
+		{
+			$postvals = "doi=" . $doi . "\n" . "url=" . $resURL;
+		}
+		
 		$regResult = $this->regURL($url, $postvals);
 
 		if (!$regResult)
