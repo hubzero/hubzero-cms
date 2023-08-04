@@ -256,6 +256,10 @@ if ($this->question->isDeleted() or !$this->question->get('id'))
 						if (!is_object($tag))
 						{
 							$tag = new \Components\Tags\Models\Tag($tag);
+							if (!$tag->get('id'))
+							{
+								continue;
+							}
 						}
 						if (preg_match('/^tool:/i', $tag->get('raw_tag')))
 						{
