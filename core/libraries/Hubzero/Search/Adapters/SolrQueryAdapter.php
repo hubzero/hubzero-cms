@@ -49,7 +49,10 @@ class SolrQueryAdapter implements QueryInterface
 					);
 
 		// Create the client
-		$this->connection = new Solarium\Client($solrConfig);
+		$adapter = new Solarium\Core\Client\Adapter\Curl();
+		$eventDispatcher = new Symfony\Component\EventDispatcher\EventDispatcher();
+
+		$this->connection = new Solarium\Client($adapter, $eventDispatcher, $options);
 
 		// Add plugin to accept bigger requests
 		$this->connection->getPlugin('postbigrequest');

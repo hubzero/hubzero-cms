@@ -31,7 +31,11 @@ class SolrHelper
 						)
 		);
 
-		$this->connection = new Solarium\Client($solrConfig);
+		$adapter = new Solarium\Core\Client\Adapter\Curl();
+		$eventDispatcher = new Symfony\Component\EventDispatcher\EventDispatcher();
+
+		$this->connection = new Solarium\Client($adapter, $eventDispatcher, $options);
+
 		$this->query = $this->connection->createSelect();
 
 		return $this;

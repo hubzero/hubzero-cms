@@ -47,7 +47,10 @@ class SolrIndexAdapter implements IndexInterface
 					);
 
 		// Create the client
-		$this->connection = new Solarium\Client($solrConfig);
+		$adapter = new Solarium\Core\Client\Adapter\Curl();
+		$eventDispatcher = new Symfony\Component\EventDispatcher\EventDispatcher();
+
+		$this->connection = new Solarium\Client($adapter, $eventDispatcher, $options);
 
 		// Create the Solr Query object
 		$this->query = $this->connection->createSelect();
