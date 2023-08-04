@@ -61,7 +61,7 @@ class UserServiceProvider extends ServiceProvider
 			User::$pictureResolvers[] = new Namedfile($config);
 
 			// Specified resolver
-			if ($resolver = $params->get('picture'))
+			if ($resolver = $params->get('picture', ''))
 			{
 				$cls = 'Hubzero\\User\\Picture\\' . ucfirst($resolver);
 
