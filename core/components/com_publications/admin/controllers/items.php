@@ -981,6 +981,50 @@ class Items extends AdminController
 
 					$output .= ' ' . Lang::txt('COM_PUBLICATIONS_ITEM') . ' ';
 					$output .= Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_UNPUBLISHED');
+					
+					// Save the unpublished reason
+					$selectedReason = Request::getInt('unPubReasonDropdownList', 0);
+					$verTblObj = new Tables\Version($db);
+					
+					if ($selectedReason == 0)
+					{
+						$otherReason = Request::getString('reason', '');
+						$verTblObj->saveUnPubReason($id, $this->model->version->version_number, $selectedReason, $otherReason);
+					}
+					else
+					{
+						if ($selectedReason == 1)
+						{
+							$verTblObj->saveUnPubReason($id, $this->model->version->version_number, Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE'));
+						}
+						else if ($selectedReason == 2)
+						{
+							$verTblObj->saveUnPubReason($id, $this->model->version->version_number, Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR'));
+						}
+					}
+					
+					// Update DOI metadata, and set resource URL to tombstone page url.
+					if ($doiService->on())
+					{
+						if ($this->model->version->doi
+							&& preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
+						{
+							$doiService->update($this->model->version->doi, true);
+							
+							$resURL = $doiService->_configs->livesite . DS . 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tombstone' . '&id=' . $id . '&v=' . $this->model->version->version_number;
+							$result = $doiService->registerURL($doi, $resURL);
+							
+							if (!$result)
+							{
+								$doiService->setError(Lang::txt('COM_PUBLICATIONS_ERROR_REGISTER_NAME_URL'));
+							}
+							
+							if ($doiService->getError())
+							{
+								$this->setError($doiService->getError());
+							}
+						}
+					}
 					break;
 
 				case 'wip':
