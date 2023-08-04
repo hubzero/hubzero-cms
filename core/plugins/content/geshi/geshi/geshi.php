@@ -2755,7 +2755,7 @@ class GeSHi
 											"|\xF0[\x90-\xBF][\x80-\xBF]{2}".
 											"|[\xF1-\xF3][\x80-\xBF]{3}".
 											"|\xF4[\x80-\x8F][\x80-\xBF]{2}/s",
-											$part, $es_char_m, null, $es_pos + 1)) {
+											$part, $es_char_m, 0, $es_pos + 1)) {
 											$es_char_m = $es_char_m[0];
 										} else {
 											$es_char_m = $es_char;

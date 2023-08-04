@@ -683,7 +683,7 @@ class Diff_SequenceMatcher
 		if ($this->fullBCount === null)
 		{
 			$this->fullBCount = array();
-			$bLength = count ($b);
+			$bLength = count($this->b);
 			for ($i = 0; $i < $bLength; ++$i)
 			{
 				$char = $this->b[$i];

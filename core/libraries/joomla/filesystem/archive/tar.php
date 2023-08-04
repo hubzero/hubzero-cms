@@ -72,7 +72,7 @@ class JArchiveTar extends JObject
 	{
 		// Initialise variables.
 		$this->_data = null;
-		$this->_metadata = null;
+		$this->_metadata = array();
 
 		if (!$this->_data = JFile::read($archive))
 		{

@@ -132,7 +132,7 @@ class JResponse
 				if ('status' == strtolower($header['name']))
 				{
 					// 'status' headers indicate an HTTP status, and need to be handled slightly differently
-					header(ucfirst(strtolower($header['name'])) . ': ' . $header['value'], null, (int) $header['value']);
+					header(ucfirst(strtolower($header['name'])) . ': ' . $header['value'], false, (int) $header['value']);
 				}
 				else
 				{

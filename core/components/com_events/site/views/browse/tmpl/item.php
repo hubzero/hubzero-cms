@@ -32,7 +32,7 @@ if (!isset($this->row->time_zone) || $this->row->time_zone == '')
 else
 {
 	// else use the one provided by the event
-	$timezone = timezone_name_from_abbr('', $this->row->time_zone*3600, null);
+	$timezone = timezone_name_from_abbr('', $this->row->time_zone*3600, -1);
 }
 
 // If not timezone is found or cannot be ascertained from above

@@ -1176,6 +1176,7 @@ class Modules extends AdminController
 	public function batchTask()
 	{
 		$commands = Request::getArray('batch', array(), 'post');
+		$pks = Request::getArray('cid', array(), 'post');
 
 		// Sanitize user ids.
 		$pks = array_unique($pks);

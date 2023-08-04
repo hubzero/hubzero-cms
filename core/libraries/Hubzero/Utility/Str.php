@@ -199,7 +199,6 @@ class Str
 			'regex'  => "|%s|iu"
 		);
 		$options = array_merge($default, $options);
-		extract($options);
 
 		if (is_array($phrase))
 		{
@@ -209,12 +208,12 @@ class Str
 			foreach ($phrase as $key => $segment)
 			{
 				$segment = '(' . preg_quote($segment, '|') . ')';
-				if ($html)
+				if ($options['html'])
 				{
 					$segment = "(?![^<]+>)$segment(?![^<]+>)";
 				}
 
-				$with[]    = (is_array($format)) ? $format[$key] : $format;
+				$with[]    = (is_array($options['format'])) ? $options['format'][$key] : $options['format'];
 				$replace[] = sprintf($options['regex'], $segment);
 			}
 
@@ -222,12 +221,12 @@ class Str
 		}
 
 		$phrase = '(' . preg_quote($phrase, '|') . ')';
-		if ($html)
+		if ($options['html'])
 		{
 			$phrase = "(?![^<]+>)$phrase(?![^<]+>)";
 		}
 
-		return preg_replace(sprintf($options['regex'], $phrase), $format, $text);
+		return preg_replace(sprintf($options['regex'], $phrase), $options['format'], $text);
 	}
 
 	/**

@@ -64,6 +64,9 @@ class Helper extends Module
 			->limit((int) $params->get('count', 5));
 
 		// Access filter
+		$access = !Component::params('com_content')->get('show_noauth');
+		$authorised = User::getAuthorisedViewLevels();
+
 		if (!Component::params('com_content')->get('show_noauth'))
 		{
 			$query->whereIn('access', User::getAuthorisedViewLevels());

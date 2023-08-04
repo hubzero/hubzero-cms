@@ -419,7 +419,7 @@ class Scaffolding extends Base implements CommandInterface
 				{
 					// Upper case word
 					case 'uc':
-						$value = strtoupper($v);
+						$newfile = strtoupper($newfile);
 						break;
 					// Upper case first character
 					case 'ucf':
@@ -479,7 +479,7 @@ class Scaffolding extends Base implements CommandInterface
 							{
 								// Upper case word
 								case 'uc':
-									$value = strtoupper($v);
+									$newfile = strtoupper($newfile);
 									break;
 								// Upper case first character
 								case 'ucf':

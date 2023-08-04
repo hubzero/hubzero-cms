@@ -105,7 +105,7 @@ class Ldap
 		{
 			if ($debug)
 			{
-				\Log::debug("getLDO(): ldap_connect($pldap,$port) failed. [" . posix_getpid() . "] " . ldap_error($conn));
+				\Log::debug("getLDO(): ldap_connect($pldap,$port) failed. [" . posix_getpid() . "] ");
 			}
 
 			return false;
@@ -1237,7 +1237,7 @@ class Ldap
 
 				while ($entry !== false)
 				{
-					$attr = ldap_get_attributes($conn, $firstentry);
+					$attr = ldap_get_attributes($conn, $entry);
 
 					$uids[] = $attr['uid'][0];
 

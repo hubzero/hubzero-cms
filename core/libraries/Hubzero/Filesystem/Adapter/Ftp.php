@@ -493,7 +493,7 @@ class Ftp implements AdapterInterface
 	 */
 	public function find($paths, $file)
 	{
-		$paths = is_array($path) ? $path : array($path);
+		$paths = is_array($paths) ? $paths : array($paths);
 
 		foreach ($paths as $path)
 		{
@@ -649,7 +649,7 @@ class Ftp implements AdapterInterface
 	 */
 	public function isFile($file)
 	{
-		$result = @ftp_chdir($this->connection(), $directory);
+		$result = @ftp_chdir($this->connection(), $file);
 		$result = $result ? false : true;
 
 		return $result;

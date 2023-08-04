@@ -408,7 +408,7 @@ class Asset extends Base
 			$file = $this->get('_file');
 
 			// Make the filename safe
-			$file['name'] = urldecode($files['name']);
+			$file['name'] = urldecode($file['name']);
 			$file['name'] = Filesystem::clean($file['name']);
 			$file['name'] = str_replace(' ', '_', $file['name']);
 

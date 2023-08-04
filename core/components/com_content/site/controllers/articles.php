@@ -586,6 +586,8 @@ class Articles extends SiteController
 			else
 			{
 				// If no access filter is set, the layout takes some responsibility for display of limited information.
+				$groups = User::getAuthorisedViewLevels();
+
 				if ($item->catid == 0 || $item->category_access === null)
 				{
 					$item->params->set('access-view', in_array($item->access, $groups));

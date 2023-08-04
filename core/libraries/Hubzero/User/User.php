@@ -485,7 +485,7 @@ class User extends \Hubzero\Database\Relational
 				{
 					if ($jwt->exp < time())
 					{
-						setcookie('jwt', -86400, '', '/', '.' . \Hubzero\Utility\Dns::domain(), true, true);
+						setcookie('jwt', -86400, 0, '/', '.' . \Hubzero\Utility\Dns::domain(), true, true);
 						return $this->guest();
 					}
 					$jwtid = $jwt->id;

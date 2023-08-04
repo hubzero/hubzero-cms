@@ -304,17 +304,12 @@ class JLDAP extends JObject
 			$search_result = @ldap_search($resource, $dn, $search_filter);
 			if ($search_result && ($count = @ldap_count_entries($resource, $search_result)) > 0)
 			{
+				$firstentry = @ldap_first_entry($resource, $search_result);
+
 				for ($i = 0; $i < $count; $i++)
 				{
 					$attributes[$i] = array();
-					if (!$i)
-					{
-						$firstentry = @ldap_first_entry($resource, $search_result);
-					}
-					else
-					{
-						$firstentry = @ldap_next_entry($resource, $firstentry);
-					}
+
 					// Load user-specified attributes
 					$attributes_array = @ldap_get_attributes($resource, $firstentry);
 					// Ldap returns an array of arrays, fit this into attributes result array
@@ -331,6 +326,8 @@ class JLDAP extends JObject
 						}
 					}
 					$attributes[$i]['dn'] = @ldap_get_dn($resource, $firstentry);
+
+					$firstentry = @ldap_next_entry($resource, $firstentry);
 				}
 			}
 		}

@@ -75,7 +75,7 @@ function hexSequenceToUtf8($sequence)
  */
 function utf8ToHexSequence($str)
 {
-	return rtrim(preg_replace(
+	return rtrim(preg_replace_callback(
 		'/(.)/uS',
 		function ($m)
 		{

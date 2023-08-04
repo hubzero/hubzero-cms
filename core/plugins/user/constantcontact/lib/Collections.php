@@ -503,7 +503,7 @@ class LibraryCollection extends Collection
 	{
 		$listXml = $Folder->createXml();
 		$response = $this->CTCTRequest->makeRequest($this->uri.'/folders', 'POST', $listXml);
-		$parsedResponse = simplexml_load_string($response['xml'], null, null, "http://www.w3.org/2005/Atom");
+		$parsedResponse = simplexml_load_string($response['xml'], null, 0, "http://www.w3.org/2005/Atom");
 		return new Folder(Folder::createStruct($parsedResponse));
 	}
 
@@ -517,7 +517,7 @@ class LibraryCollection extends Collection
 		$page = ($page) ? $this->CTCTRequest->baseUri.$page : $this->uri.'/folders';
 		$foldersCollection = array('folders' => array(), 'nextLink' => '');
 		$response = $this->CTCTRequest->makeRequest($page, 'GET');
-		$parsedResponse = simplexml_load_string($response['xml'], null, null, "http://www.w3.org/2005/Atom");
+		$parsedResponse = simplexml_load_string($response['xml'], null, 0, "http://www.w3.org/2005/Atom");
 		foreach ($parsedResponse->entry as $folder) {
 			$foldersCollection['folders'][] = new Folder(Folder::createStruct($folder));
 		}
@@ -534,7 +534,7 @@ class LibraryCollection extends Collection
 	{
 		$response = $this->CTCTRequest->makeRequest($url, 'GET');
 		$imageCollection = array();
-		$parsedResponse = simplexml_load_string($response['xml'], null, null, "http://www.w3.org/2005/Atom");
+		$parsedResponse = simplexml_load_string($response['xml'], null, 0, "http://www.w3.org/2005/Atom");
 		foreach ($parsedResponse->entry as $entry) {
 			$imageCollection[] = new Image(Image::createStruct($entry));
 		}
@@ -549,7 +549,7 @@ class LibraryCollection extends Collection
 	public function getImageDetails($url)
 	{
 		$response = $this->CTCTRequest->makeRequest($url, 'GET');
-		$parsedResponse = simplexml_load_string($response['xml'], null, null, 'http://www.w3.org/2005/Atom');
+		$parsedResponse = simplexml_load_string($response['xml'], null, 0, 'http://www.w3.org/2005/Atom');
 		$image = new Image(Image::createStruct($parsedResponse));
 		return $image;
 	}
@@ -635,7 +635,7 @@ class LibraryCollection extends Collection
 		$data .= "--".$boundary."--\n";
 
 		$response = $this->CTCTRequest->makeRequest($folderUrl.'/images', 'POST', $data, "multipart/form-data; boundary=".$boundary);
-		$parsedResponse = simplexml_load_string($response['xml'], null, null, "http://www.w3.org/2005/Atom");
+		$parsedResponse = simplexml_load_string($response['xml'], null, 0, "http://www.w3.org/2005/Atom");
 		return new Image(Image::createStruct($parsedResponse));
 	}
 
@@ -698,7 +698,7 @@ class EventsCollection extends Collection
 		$url = ($page) ? $this->CTCTRequest->baseUri.$page : $this->uri;
 		$eventsCollection = array('events' => array(), 'nextLink' => '');
 		$response = $this->CTCTRequest->makeRequest($url, 'GET');
-		$parsedResponse = simplexml_load_string($response['xml'], null, null, "http://www.w3.org/2005/Atom");
+		$parsedResponse = simplexml_load_string($response['xml'], null, 0, "http://www.w3.org/2005/Atom");
 		foreach ($parsedResponse->entry as $entry) {
 			$eventsCollection['events'][] = new CCEvent(CCEvent::createStruct($entry));
 		}
@@ -714,7 +714,7 @@ class EventsCollection extends Collection
 	public function getEventDetails($url)
 	{
 		$response = $this->CTCTRequest->makeRequest($url, 'GET');
-		$parsedResponse = simplexml_load_string($response['xml'], null, null, "http://www.w3.org/2005/Atom");
+		$parsedResponse = simplexml_load_string($response['xml'], null, 0, "http://www.w3.org/2005/Atom");
 		return new CCEvent(CCEvent::createStruct($parsedResponse));
 	}
 
@@ -727,7 +727,7 @@ class EventsCollection extends Collection
 	{
 		$response = $this->CTCTRequest->makeRequest($url, 'GET');
 		$registrantsArr = array('registrants' => array(), 'nextLink' => '');
-		$parsedResponse = simplexml_load_string($response['xml'], null, null, "http://www.w3.org/2005/Atom");
+		$parsedResponse = simplexml_load_string($response['xml'], null, 0, "http://www.w3.org/2005/Atom");
 		foreach ($parsedResponse->entry as $reg) {
 			$registrantsArr['registrants'][] = new Registrant(Registrant::createStruct($reg));
 		}
@@ -743,7 +743,7 @@ class EventsCollection extends Collection
 	public function getRegistrantDetails($url)
 	{
 		$response = $this->CTCTRequest->makeRequest($url, 'GET');
-		$parsedResponse = simplexml_load_string($response['xml'], null, null, "http://www.w3.org/2005/Atom");
+		$parsedResponse = simplexml_load_string($response['xml'], null, 0, "http://www.w3.org/2005/Atom");
 		return new Registrant(Registrant::createStruct($parsedResponse));
 	}
 }

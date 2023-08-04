@@ -58,7 +58,7 @@ class ContentLanguage
 			// Detect errors
 			if ($db->getErrorNum())
 			{
-				throw new RuntimeException($db->getErrorMsg(), 500, E_WARNING);
+				throw new RuntimeException($db->getErrorMsg(), 500);
 			}
 		}
 		return self::$items;

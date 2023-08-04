@@ -759,7 +759,7 @@ class Sanitizer
 		$value = $stripped;
 
 		// ... and continue checks
-		$stripped = preg_replace(
+		$stripped = preg_replace_callback(
 			'!\\\\([0-9A-Fa-f]{1,6})[ \\n\\r\\t\\f]?!',
 			function ($m)
 			{
@@ -1524,7 +1524,7 @@ class Sanitizer
 		$url = self::decodeCharReferences($url);
 
 		// Escape any control characters introduced by the above step
-		$url = preg_replace(
+		$url = preg_replace_callback(
 			'/[\][<>"\\x00-\\x20\\x7F]/',
 			function ($m)
 			{

@@ -172,7 +172,7 @@ class SectionDate extends Table
 		{
 			$filters['sort'] = 'sd.publish_up';
 		}
-		if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), 'ASC', 'DESC'))
+		if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
 		{
 			$filters['sort_Dir'] = 'ASC';
 		}

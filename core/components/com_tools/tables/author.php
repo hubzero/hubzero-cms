@@ -204,7 +204,7 @@ class Author extends Table
 		if ($dev_authors && $version == 'dev')
 		{
 			// update
-			$to_delete = array_diff($current_authors, $authors);
+			$to_delete = array_diff($dev_authors, $authors);
 			if ($to_delete)
 			{
 				foreach ($to_delete as $del)

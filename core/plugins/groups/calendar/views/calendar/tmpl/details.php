@@ -74,7 +74,7 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
 <table class="group-event-details">
 	<tbody>
 		<?php
-			$timezone     = timezone_name_from_abbr('', $this->event->get('time_zone')*3600, null);
+			$timezone     = timezone_name_from_abbr('', $this->event->get('time_zone')*3600);
 			$publish_up   = $this->event->get('publish_up');
 			$publish_down = $this->event->get('publish_down');
 			$allday_event = $this->event->get('allday');

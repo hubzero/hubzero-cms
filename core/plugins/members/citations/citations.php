@@ -477,7 +477,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 				* format it properly within the bibilographic format ({LASTNAME},{FIRSTNAME})
 				***/
 				$authorEntry = explode(',', $author);
-				if (count($authorEntry == 2))
+				if (count($authorEntry) == 2)
 				{
 					$author = $authorEntry[1] . ' ' . $authorEntry[0];
 				}

@@ -201,7 +201,7 @@ class JArchiveZip extends JObject
 	{
 		// Initialise variables.
 		$this->_data = null;
-		$this->_metadata = null;
+		$this->_metadata = array();
 
 		if (!extension_loaded('zlib'))
 		{

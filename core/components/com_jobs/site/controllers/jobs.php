@@ -1901,7 +1901,7 @@ class Jobs extends SiteController
 				// get individual filters
 				$col = explode('&amp;', $p->filters);
 
-				if (count($col > 0))
+				if (count($col) > 0)
 				{
 					foreach ($col as $c)
 					{

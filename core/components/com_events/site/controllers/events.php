@@ -1988,7 +1988,7 @@ class Events extends SiteController
 				$tz = 'Pacific/Kiritimati';
 				break;
 			default:
-				$tz = timezone_name_from_abbr('', $row->time_zone * 3600, null);
+				$tz = timezone_name_from_abbr('', $row->time_zone * 3600, -1);
 		}
 
 		// create publish up date time string
