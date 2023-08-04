@@ -271,6 +271,18 @@ $panels = array(
 						<option value="2"<?php echo ($this->model->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_DELETED'); ?></option>
 					</select>
 				</div>
+				<div class="input-wrap" id="unPubReasonDiv">
+					<label for="field-unPubReason"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_UNPUBLISHED_REASON'); ?>:</label><br />
+					<select name="unPubReasonDropdownList" id="field-unPubReason" disabled>
+						<option value="0"<?php echo ($this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') && $this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_OTHERS'); ?></option>
+						<option value="1" <?php echo ($this->model->get('unpublished_reason') == NULL || $this->model->get('unpublished_reason') == Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE')) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE'); ?></option>
+						<option value="2"<?php echo ($this->model->get('unpublished_reason') == Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR'); ?></option>
+					</select>
+				</div>
+				<div class="input-wrap" id="reasonDiv">
+					<label for="reason"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ASK_REASON'); ?>:</label><br />
+					<textarea name="reason" id="reason" rows="5" cols="50" disabled ><?php echo ($this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') && $this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ? $this->model->get('unpublished_reason') : ''; ?></textarea>
+				</div>
 				<div class="input-wrap">
 					<label for="field-featured"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_FEATURED'); ?>:</label><br />
 					<select name="featured" id="field-featured">

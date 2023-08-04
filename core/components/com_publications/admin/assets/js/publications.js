@@ -153,4 +153,27 @@ jQuery(document).ready(function($){
 	$('#do-revert').on('click', function(e){
 		Hubzero.submitbutton('revert');
 	});
+	
+	$('#field-published').on('change', function(){
+		if (this.value == "0")
+		{
+			$('#field-unPubReason').prop('disabled', false);
+		}
+		else
+		{
+			$('#field-unPubReason').prop('disabled', true);
+		}
+	});
+	
+	$('#field-unPubReason').on('change', function(){
+		if (this.value == "0")
+		{
+			$('#reason').prop('disabled', false);
+		}
+		else
+		{
+			$('#reason').val('');
+			$('#reason').prop('disabled', true);
+		}
+	});
 });
