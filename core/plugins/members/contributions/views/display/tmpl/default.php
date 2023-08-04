@@ -214,11 +214,12 @@ foreach ($this->results as $category)
 		$html .= '<ol class="search results">' . "\n";
 		foreach ($category as $row)
 		{
+			$row->href = $row->href ? $row->href : '';
 			$row->href = str_replace('&amp;', '&', $row->href);
 			$row->href = str_replace('&', '&amp;', $row->href);
 
 			// Does this category have a unique output display?
-			$func = 'plgMembers' . ucfirst($row->section) . 'Out';
+			$func = 'plgMembers' . ($row->section ? ucfirst($row->section) : '') . 'Out';
 			// Check if a method exist (using old Plugin style)
 			$obj = 'plgMembers' . ucfirst($this->cats[$k]['category']);
 

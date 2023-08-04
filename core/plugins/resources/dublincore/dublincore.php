@@ -82,7 +82,10 @@ class plgResourcesDublincore extends \Hubzero\Plugin\Plugin
 			{
 				$contributor->org = $contributor->xorg;
 			}
-			$contributor->org = stripslashes(trim($contributor->org));
+			if ($contributor->org)
+			{
+				$contributor->org = stripslashes(trim($contributor->org));
+			}
 
 			Document::setMetaData('dcterms.creator', $view->escape($name . ($contributor->org ? ', ' . $contributor->org : '')));
 		}

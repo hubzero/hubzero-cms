@@ -853,7 +853,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 							$coins_data[] = $this->_coins_keys[$k] . '=' . $jt;
 							break;
 						default:
-							$coins_data[] = $this->_coins_keys[$k] . '=' . $this->$k;
+							$coins_data[] = isset($this->$k) ? $this->_coins_keys[$k] . '=' . $this->$k : '';
 					}
 				}
 
@@ -871,8 +871,12 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 				{
 					$a = array();
 
-					$auth = html_entity_decode($this->$k);
-					$auth = (!preg_match('!\S!u', $auth)) ? utf8_encode($auth) : $auth;
+					$auth = '';
+					if (isset($this->$k) && $this->$k)
+					{
+						$auth = html_entity_decode($this->$k);
+						$auth = (!preg_match('!\S!u', $auth)) ? utf8_encode($auth) : $auth;
+					}
 
 					// prefer the use of the relational table
 					$authors = $this->relatedAuthors()

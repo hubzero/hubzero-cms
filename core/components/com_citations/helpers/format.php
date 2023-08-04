@@ -351,6 +351,8 @@ class Format
 					}
 
 					//prepare url
+					$url = $url ?: '';
+
 					if (strstr($url, "\r\n"))
 					{
 						$url = array_filter(array_values(explode("\r\n", $url)));

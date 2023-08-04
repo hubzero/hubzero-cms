@@ -87,7 +87,7 @@ if (count($matches) > 0)
 					{
 						$query .= $resourceFields['doi'];
 					}
-					elseif ($this->model->resource->title)
+					elseif ($this->model->resource && $this->model->resource->title)
 					{
 						$query .= $this->model->title;
 					}

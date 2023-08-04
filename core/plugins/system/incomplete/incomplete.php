@@ -39,9 +39,9 @@ class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
 				'/legal/terms'
 			];
 
-			if ($allowed = trim($this->params->get('exceptions','')))
+			if ($allowed = $this->params->get('exceptions', ''))
 			{
-				$allowed = str_replace("\r", '', $allowed);
+				$allowed = str_replace("\r", '', trim($allowed));
 				$allowed = str_replace('\n', "\n", $allowed);
 				$allowed = explode("\n", $allowed);
 				$allowed = array_map('trim', $allowed);
