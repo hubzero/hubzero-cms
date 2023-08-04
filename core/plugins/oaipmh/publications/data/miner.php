@@ -272,8 +272,92 @@ class Miner extends Obj implements Provider
 		$record->type = $record->base . ':' . $record->type;
 
 		$record->title .= ' [version ' . $record->version_label . ']';
-		$record->description = strip_tags($record->description);
-		$record->description = trim($record->description);
+		$abstract = trim(strip_tags($record->abstract));
+		$record->description = $abstract;
+		
+		// Size and MIME type
+		$record->format = [];
+		
+		if (file_exists(\Component::path('com_publications') . DS . 'helpers' . DS . 'html.php'))
+		{
+			include_once \Component::path('com_publications') . DS . 'helpers' . DS . 'html.php';
+			
+			$this->database->setQuery("SELECT master_type FROM `#__publications` WHERE id = " . $this->database->quote($record->publication_id));
+			$masterType = $this->database->loadResult();
+			
+			$this->database->setQuery("SELECT * FROM `#__publication_attachments` WHERE publication_version_id = " . $this->database->quote($record->version_id));
+			$results = $this->database->loadObjectList();
+			
+			$path = \Components\Publications\Helpers\Html::buildPubPath($record->publication_id, $record->version_id, '', '', 1);
+			$path .= DIRECTORY_SEPARATOR . str_replace(['.', '/'], '_', $record->identifier) . ".zip";
+			
+			if ($masterType == 1 && file_exists($path))
+			{
+				$size = filesize($path);
+				if ($size)
+				{
+					$record->extent = \Hubzero\Utility\Number::formatBytes($size);
+				}
+			}
+			
+			if ($results)
+			{
+				$attachments = array(
+					'1'        => array(),
+					'2'        => array(),
+					'3'        => array(),
+				);
+
+				foreach ($results as $result)
+				{
+					if ($result->role == 1)
+					{
+						$attachments['1'][] = $result;
+					}
+					elseif ($result->role == 2 || $result->role == 0)
+					{
+						$attachments['2'][] = $result;
+					}
+					else
+					{
+						$attachments['3'][] = $result;
+					}
+				}
+			}
+			
+			if ($masterType == 1)
+			{
+				$mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes($masterType, $record->publication_id, $record->version_id, $record->secret, $attachments);
+			}
+			else if ($masterType == 7)
+			{				
+				$files = \Components\Publications\Helpers\Html::getdatabaseFiles($record->publication_id, $record->version_id);
+				
+				$mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes($masterType, $record->publication_id, $record->version_id, $record->secret, $attachments);
+				
+				if ($files != false && !empty($files))
+				{
+					foreach ($files as $file)
+					{
+						$mimeType = mime_content_type($file);
+						if ($mimeType && !in_array($mimeType, $mimeTypes))
+						{
+							$mimeTypes[] = $mimeType;
+						}
+					}
+				}
+			}
+			else
+			{
+				$mimeTypes = [];
+			}
+			
+			if (!empty($mimeTypes))
+			{
+				$record->format = array_merge($record->format, $mimeTypes);
+			}
+		}
+		
 		$record->identifier  = $this->identifier($id, $record->identifier, $revision);
 
 		$this->database->setQuery(
@@ -298,13 +382,20 @@ class Miner extends Obj implements Provider
 		}
 
 		$this->database->setQuery(
-			"SELECT pa.name
+			"SELECT pa.name, pa.user_id
 			FROM `#__publication_authors` AS pa
 			WHERE (pa.role IS NULL OR pa.role != 'submitter') AND pa.status=1 AND pa.publication_version_id=" . $this->database->quote($record->version_id) . "
 			ORDER BY pa.name"
 		);
-		$record->creator = $this->database->loadColumn();
-
+		$creators = $this->database->loadObjectList();
+		foreach ($creators as $creator)
+		{
+			
+			$this->database->setQuery("SELECT profile_value FROM `#__user_profiles` WHERE user_id = " . $this->database->quote($creator->user_id) . " AND profile_key='orcid'");
+			$orcid = $this->database->loadResult();
+			$record->creator[] = $creator->name . (!empty($orcid) ? ", " . $orcid : "");
+		}
+		
 		$this->database->setQuery(
 			"SELECT DISTINCT t.raw_tag
 			FROM `#__tags` t, `#__tags_object` tos
