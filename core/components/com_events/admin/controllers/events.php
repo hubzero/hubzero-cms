@@ -29,8 +29,10 @@ class Events extends AdminController
 	 */
 	public function execute()
 	{
-		$this->config = new Configs($this->database);
-		$this->config->load();
+		$config = new Configs($this->database);
+		$config->load();
+
+		$this->config = $config;
 
 		$tables = $this->database->getTableList();
 		$table = $this->database->getPrefix() . 'events_respondent_race_rel';
@@ -51,12 +53,12 @@ class Events extends AdminController
 		/**
 		 * Start day
 		 */
-		define('_CAL_CONF_STARDAY', $this->config->getCfg('starday'));
+		define('_CAL_CONF_STARDAY', $config->getCfg('starday'));
 
 		/**
 		 * Nav bar color
 		 */
-		define('_CAL_CONF_DEFCOLOR', $this->config->getCfg('navbarcolor'));
+		define('_CAL_CONF_DEFCOLOR', $config->getCfg('navbarcolor'));
 
 		parent::execute();
 	}
