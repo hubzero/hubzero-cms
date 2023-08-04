@@ -39,10 +39,10 @@ class Helper extends Module
 		$filters = array(
 			'limit'      => 1,
 			'start'      => 0,
-			'type'       => trim($this->params->get('type','')),
+			'type'       => $this->params->get('type', ''),
 			'sortby'     => 'random',
-			'minranking' => trim($this->params->get('minranking','')),
-			'tag'        => trim($this->params->get('tag','')),
+			'minranking' => trim((string)$this->params->get('minranking', '6.0')),
+			'tag'        => trim((string)$this->params->get('tag', '')),
 			'access'     => 'public',
 			'published'  => 1,
 			'standalone' => 1,
@@ -55,12 +55,12 @@ class Helper extends Module
 			->rows()
 			->fieldsByKey('id');
 
-                if (!empty($rows))
-                {
-		    $id = array_rand($rows);
+		if (!empty($rows))
+		{
+			$id = array_rand($rows);
 
-		    $row = Entry::oneOrNew((isset($rows[$id]) ? $rows[$id] : 0));
-                }
+			$row = Entry::oneOrNew((isset($rows[$id]) ? $rows[$id] : 0));
+		}
 
 		$this->cls = trim($this->params->get('moduleclass_sfx',''));
 		$this->txt_length = trim($this->params->get('txt_length',''));
@@ -98,19 +98,22 @@ class Helper extends Module
 				$thumb = DS . trim($config->get('defaultpic',''));
 			}
 
-			$row->typetitle = trim(stripslashes($row->typetitle));
-			if (substr($row->typetitle, -1, 1) == 's' && substr($row->typetitle, -3, 3) != 'ies')
+			if ($row->typetitle)
 			{
-				$row->typetitle = substr($row->typetitle, 0, strlen($row->typetitle) - 1);
+				$row->typetitle = trim($row->typetitle);
+				if (substr($row->typetitle, -1, 1) == 's' && substr($row->typetitle, -3, 3) != 'ies')
+				{
+					$row->typetitle = substr($row->typetitle, 0, strlen($row->typetitle) - 1);
+				}
 			}
 
 			$this->id    = $id;
 			$this->thumb = $thumb;
 		}
-                else
-                {
-                    $row = '';
-                }
+		else
+		{
+			$row = '';
+		}
 
 		$this->row = $row;
 

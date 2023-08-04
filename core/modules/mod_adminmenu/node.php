@@ -84,7 +84,7 @@ class Node extends Obj
 		{
 			$link = \Route::url($link);
 		}
-		$this->link   = \Hubzero\Utility\Str::ampReplace($link);
+		$this->link   = $link ? \Hubzero\Utility\Str::ampReplace($link) : '';
 		$this->class  = $class;
 		$this->active = $active;
 

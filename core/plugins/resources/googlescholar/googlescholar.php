@@ -91,7 +91,10 @@ class plgResourcesGooglescholar extends \Hubzero\Plugin\Plugin
 			{
 				$contributor->org = $contributor->xorg;
 			}
-			$contributor->org = stripslashes(trim($contributor->org));
+			if ($contributor->org)
+			{
+				$contributor->org = stripslashes(trim($contributor->org));
+			}
 
 			Document::setMetaData('citation_author', $view->escape($name));
 			if ($contributor->org)
