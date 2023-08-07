@@ -230,7 +230,7 @@ class Loader implements LoaderInterface
 	 * @param   object   $plugin  The plugin data.
 	 * @return  boolean  True on success.
 	 */
-	protected function init(&$plugin, $autocreate = true, $dispatcher = null)
+	protected function init($plugin, $autocreate = true, $dispatcher = null)
 	{
 		$plugin->type = preg_replace('/[^A-Z0-9_\.-]/i', '', $plugin->type);
 		$plugin->name = preg_replace('/[^A-Z0-9_\.-]/i', '', $plugin->name);
