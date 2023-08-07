@@ -132,7 +132,7 @@ class Iterator implements \Countable, \Iterator
 	/**
 	 * Is the current position the first one?
 	 *
-	 * @return     boolean
+	 * @return     bool
 	 */
 	public function isFirst()
 	{
@@ -142,7 +142,7 @@ class Iterator implements \Countable, \Iterator
 	/**
 	 * Is the current position the last one?
 	 *
-	 * @return     boolean
+	 * @return     bool
 	 */
 	public function isLast()
 	{
@@ -169,7 +169,7 @@ class Iterator implements \Countable, \Iterator
 	/**
 	 * Return the array count
 	 *
-	 * @return     integer
+	 * @return int
 	 */
 	public function total()
 	{
@@ -179,7 +179,7 @@ class Iterator implements \Countable, \Iterator
 	/**
 	 * Return the array count
 	 *
-	 * @return     integer
+	 * @return int
 	 */
 
 	#[\ReturnTypeWillChange]
@@ -191,8 +191,10 @@ class Iterator implements \Countable, \Iterator
 	/**
 	 * Return the first array value
 	 *
-	 * @return     mixed
+	 * @return void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function first()
 	{
 		$this->rewind();
@@ -201,8 +203,9 @@ class Iterator implements \Countable, \Iterator
 	/**
 	 * Return the last array value
 	 *
-	 * @return     mixed
+	 * @return  void
 	 */
+	#[\ReturnTypeWillChange]
 	public function last()
 	{
 		$this->_pos = ($this->_total - 1);
@@ -232,8 +235,10 @@ class Iterator implements \Countable, \Iterator
 	/**
 	 * Set cursor position to previous position and return array value
 	 *
-	 * @return     mixed
+	 * @return void
 	 */
+
+	#[\ReturnTypeWillChange]
 	public function prev()
 	{
 		--$this->_pos;
@@ -242,7 +247,7 @@ class Iterator implements \Countable, \Iterator
 	/**
 	 * Set cursor position to next position and return array value
 	 *
-	 * @return     mixed
+	 * @return void
 	 */
 
 	#[\ReturnTypeWillChange]
@@ -254,7 +259,7 @@ class Iterator implements \Countable, \Iterator
 	/**
 	 * Check if the current cursor position is valid
 	 *
-	 * @return     mixed
+	 * @return bool
 	 */
 
 	#[\ReturnTypeWillChange]

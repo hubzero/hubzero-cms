@@ -74,14 +74,14 @@ class Date extends DateTime
 	/**
 	 * Constructor.
 	 *
-	 * @param   string  $date  String in a format accepted by strtotime(), defaults to "now".
-	 * @param   mixed   $tz    Time zone to be used for the date.
+	 * @param   string  $datetime  String in a format accepted by strtotime(), defaults to "now".
+	 * @param   mixed   $timezone  Time zone to be used for the date.
+	 * @param   bool    $ignoreDst
 	 * @return  void
 	 * @throws  Exception
 	 */
-
 	#[\ReturnTypeWillChange]
-	public function __construct($date = 'now', $tz = null, $ignoreDst = false)
+	public function __construct($datetime = 'now', $timezone = null, $ignoreDst = false)
 	{
 		// Create the base GMT and server time zone objects.
 		if (empty(self::$gmt) || empty(self::$stz))
@@ -90,21 +90,20 @@ class Date extends DateTime
 			self::$stz = new DateTimeZone(@date_default_timezone_get());
 		}
 
-		$tz = self::getTimeZoneObject($tz, $ignoreDst);
-
+		$timezone = self::getTimeZoneObject($timezone, $ignoreDst);
 
 		// If the date is numeric assume a unix timestamp and convert it.
 		date_default_timezone_set('UTC');
-		$date = is_numeric($date) ? date('c', $date) : $date;
+		$datetime = is_numeric($datetime) ? date('c', $datetime) : $datetime;
 
 		// Call the DateTime constructor.
-		parent::__construct($date, $tz);
+		parent::__construct($datetime, $timezone);
 
 		// reset the timezone for 3rd party libraries/extension that does not use Date
 		date_default_timezone_set(self::$stz->getName());
 
 		// Set the timezone object for access later.
-		$this->_tz = $tz;
+		$this->_tz = $timezone;
 	}
 
 	/**
@@ -355,7 +354,6 @@ class Date extends DateTime
 	 * @param   object  $tz  The new DateTimeZone object.
 	 * @return  object  The old DateTimeZone object.
 	 */
-
 	#[\ReturnTypeWillChange]
 	public function setTimezone($tz)
 	{
@@ -374,6 +372,7 @@ class Date extends DateTime
 	 *
 	 * @param   string  $modifier
 	 * @return  object
+	 * @deprecated
 	 */
 
 	#[\ReturnTypeWillChange]
@@ -387,6 +386,7 @@ class Date extends DateTime
 	 *
 	 * @param   string  $modifier
 	 * @return  object
+	 * @deprecated
 	 */
 
 	#[\ReturnTypeWillChange]

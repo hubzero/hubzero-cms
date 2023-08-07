@@ -48,46 +48,49 @@ class Xcache extends Store
 	/**
 	 * Read the data for a particular session identifier from the SessionHandler backend.
 	 *
-	 * @param   string  $session_id  The session identifier.
+	 * @param   string  $id  The session identifier.
 	 * @return  string  The session data.
 	 */
-	public function read($session_id)
+	#[\ReturnTypeWillChange]
+	public function read($id)
 	{
 		// Check if id exists
-		if (!xcache_isset($this->key($session_id)))
+		if (!xcache_isset($this->key($id)))
 		{
 			return;
 		}
 
-		return (string) xcache_get($this->key($session_id));
+		return (string) xcache_get($this->key($id));
 	}
 
 	/**
 	 * Write session data to the SessionHandler backend.
 	 *
-	 * @param   string   $session_id    The session identifier.
-	 * @param   string   $session_data  The session data.
+	 * @param   string   $id    The session identifier.
+	 * @param   string   $data  The session data.
 	 * @return  boolean  True on success, false otherwise.
 	 */
-	public function write($session_id, $session_data)
+	#[\ReturnTypeWillChange]
+	public function write($id, $data)
 	{
-		return xcache_set($this->key($session_id), $session_data, ini_get("session.gc_maxlifetime"));
+		return xcache_set($this->key($id), $data, ini_get("session.gc_maxlifetime"));
 	}
 
 	/**
 	 * Destroy the data for a particular session identifier in the SessionHandler backend.
 	 *
-	 * @param   string   $session_id  The session identifier.
+	 * @param   string   $id  The session identifier.
 	 * @return  boolean  True on success, false otherwise.
 	 */
-	public function destroy($session_id)
+	#[\ReturnTypeWillChange]
+	public function destroy($id)
 	{
-		if (!xcache_isset($this->key($session_id)))
+		if (!xcache_isset($this->key($id)))
 		{
 			return true;
 		}
 
-		return xcache_unset($this->key($session_id));
+		return xcache_unset($this->key($id));
 	}
 
 	/**

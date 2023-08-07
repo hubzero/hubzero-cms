@@ -133,9 +133,7 @@ class User extends \Hubzero\Database\Relational
 	 */
 	public function serialize()
 	{
-		$attr = $this->getAttributes();
-
-		$attr['guest'] = $this->guest;
+		$attr = $this->__serialize();
 
 		return serialize($attr);
 	}
@@ -163,17 +161,8 @@ class User extends \Hubzero\Database\Relational
 	 */
 	public function unserialize($data)
 	{
-		$this->__construct();
-
 		$data = unserialize($data);
-
-		if (isset($data['guest']))
-		{
-			$this->guest = $data['guest'];
-			unset($data['guest']);
-		}
-
-		$this->set($data);
+		$this->__unserialize($data);
 	}
 
 	/**

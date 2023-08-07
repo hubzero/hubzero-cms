@@ -49,24 +49,26 @@ class Apc extends Store
 	 * Read the data for a particular session identifier from the
 	 * SessionHandler backend.
 	 *
-	 * @param   string  $session_id  The session identifier.
+	 * @param   string  $id  The session identifier.
 	 * @return  string  The session data.
 	 */
-	public function read($session_id)
+	#[\ReturnTypeWillChange]
+	public function read($id)
 	{
-		return (string) apc_fetch($this->key($session_id));
+		return (string) apc_fetch($this->key($id));
 	}
 
 	/**
 	 * Write session data to the SessionHandler backend.
 	 *
-	 * @param   string   $session_id    The session identifier.
-	 * @param   string   $session_data  The session data.
+	 * @param   string   $id    The session identifier.
+	 * @param   string   $data  The session data.
 	 * @return  boolean  True on success, false otherwise.
 	 */
-	public function write($session_id, $session_data)
+	#[\ReturnTypeWillChange]
+	public function write($id, $data)
 	{
-		return apc_store($this->key($session_id), $session_data, ini_get("session.gc_maxlifetime"));
+		return apc_store($this->key($id), $data, ini_get("session.gc_maxlifetime"));
 	}
 
 	/**
@@ -75,9 +77,10 @@ class Apc extends Store
 	 * @param   string   $id  The session identifier.
 	 * @return  boolean  True on success, false otherwise.
 	 */
-	public function destroy($session_id)
+	#[\ReturnTypeWillChange]
+	public function destroy($id)
 	{
-		return apc_delete($this->key($session_id));
+		return apc_delete($this->key($id));
 	}
 
 	/**

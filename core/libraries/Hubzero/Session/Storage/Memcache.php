@@ -8,6 +8,7 @@
 namespace Hubzero\Session\Storage;
 
 use Hubzero\Session\Store;
+use Hubzero\Base\Obj;
 
 /**
  * Memcache session storage handler
@@ -33,7 +34,7 @@ class Memcache extends Store
 	/**
 	 * Use compression?
 	 *
-	 * @var  integer
+	 * @var  int
 	 */
 	private $compress = false;
 
@@ -92,6 +93,7 @@ class Memcache extends Store
 	 * @param   string   $name       The name of the session.
 	 * @return  boolean  True on success, false otherwise.
 	 */
+	#[\ReturnTypeWillChange]
 	public function open($save_path, $name)
 	{
 		$this->engine = new \Memcache;
@@ -114,6 +116,7 @@ class Memcache extends Store
 	 *
 	 * @return  boolean  True on success, false otherwise.
 	 */
+	#[\ReturnTypeWillChange]
 	public function close()
 	{
 		return $this->engine->close();
@@ -125,9 +128,10 @@ class Memcache extends Store
 	 * @param   string  $id  The session identifier.
 	 * @return  string  The session data.
 	 */
-	public function read($session_id)
+	#[\ReturnTypeWillChange]
+	public function read($id)
 	{
-		$key = $this->key($session_id);
+		$key = $this->key($id);
 
 		$this->expiration($key);
 
@@ -137,13 +141,14 @@ class Memcache extends Store
 	/**
 	 * Write session data to the SessionHandler backend.
 	 *
-	 * @param   string   $session_id    The session identifier.
-	 * @param   string   $session_data  The session data.
+	 * @param   string   $id    The session identifier.
+	 * @param   string   $data  The session data.
 	 * @return  boolean  True on success, false otherwise.
 	 */
-	public function write($session_id, $session_data)
+	#[\ReturnTypeWillChange]
+	public function write($id, $data)
 	{
-		$key = $this->key($session_id);
+		$key = $this->key($id);
 
 		if ($this->engine->get($key . '_expire'))
 		{
@@ -155,11 +160,11 @@ class Memcache extends Store
 		}
 		if ($this->engine->get($key))
 		{
-			$this->engine->replace($key, $session_data, $this->compress);
+			$this->engine->replace($key, $data, $this->compress);
 		}
 		else
 		{
-			$this->engine->set($key, $session_data, $this->compress);
+			$this->engine->set($key, $data, $this->compress);
 		}
 
 		return;
@@ -168,12 +173,13 @@ class Memcache extends Store
 	/**
 	 * Destroy the data for a particular session identifier in the SessionHandler backend.
 	 *
-	 * @param   string   $session_id  The session identifier.
+	 * @param   string   $id  The session identifier.
 	 * @return  boolean  True on success, false otherwise.
 	 */
-	public function destroy($session_id)
+	#[\ReturnTypeWillChange]
+	public function destroy($id)
 	{
-		$key = $this->key($session_id);
+		$key = $this->key($id);
 
 		$this->engine->delete($key . '_expire');
 
@@ -183,14 +189,14 @@ class Memcache extends Store
 	/**
 	 * Get single session data as an object
 	 *
-	 * @param   integer  $session_id  Session Id
-	 * @return  object
+	 * @param   int  $id  Session Id
+	 * @return  Obj
 	 */
-	public function session($session_id)
+	public function session($id)
 	{
-		$session = new Object;
-		$session->session_id = $session_id;
-		$session->data       = $this->read($session_id);
+		$session = new Obj;
+		$session->session_id = $id;
+		$session->data       = $this->read($id);
 
 		return $session;
 	}
@@ -213,7 +219,7 @@ class Memcache extends Store
 		{
 			if (strpos($value->name, $this->prefix) === 0)
 			{
-				$session = new Object;
+				$session = new Obj;
 				$session->session_id = $value->name;
 				$session->data       = $value;
 
