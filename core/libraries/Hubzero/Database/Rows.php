@@ -65,6 +65,7 @@ class Rows implements Iterator, Countable
 	/**
 	 * Calls the given array function on the rows object and attaches itself to the model
 	 *
+	 * @param   string $function
 	 * @return  mixed
 	 * @since   2.1.0
 	 **/
@@ -101,6 +102,7 @@ class Rows implements Iterator, Countable
 	/**
 	 * Removes model from the stack
 	 *
+	 * @param   int $key
 	 * @return  void
 	 * @since   2.0.0
 	 **/
@@ -123,7 +125,7 @@ class Rows implements Iterator, Countable
 	/**
 	 * Selects a number of randomly selected rows
 	 *
-	 * @param   integer  $n  The number of rows to randomly select
+	 * @param   int  $n  The number of rows to randomly select
 	 * @return  Rows
 	 * @since   2.1.13
 	 **/
@@ -220,7 +222,7 @@ class Rows implements Iterator, Countable
 	/**
 	 * Gets the current key
 	 *
-	 * @return  string
+	 * @return  mixed
 	 * @since   2.0.0
 	 **/
 
@@ -231,6 +233,7 @@ class Rows implements Iterator, Countable
 		{
 			return key($this->rows);
 		}
+		return null;
 	}
 
 	/**
@@ -287,7 +290,7 @@ class Rows implements Iterator, Countable
 	#[\ReturnTypeWillChange]
 	public function next()
 	{
-		return $this->callArrayFunc('next');
+		$this->callArrayFunc('next');
 	}
 
 	/**
@@ -309,7 +312,7 @@ class Rows implements Iterator, Countable
 	/**
 	 * Fast-forwards to the end of the iterable list
 	 *
-	 * @return  mixed
+	 * @return  void
 	 * @since   2.0.0
 	 **/
 	public function last()
@@ -388,17 +391,20 @@ class Rows implements Iterator, Countable
 	/**
 	 * Seeks to the given key
 	 *
+	 * @param   mixed  $offset
 	 * @return  mixed
 	 * @since   2.0.0
 	 **/
-	public function seek($key)
+	public function seek($offset)
 	{
-		return isset($this->rows[$key]) ? $this->rows[$key] : false;
+		return isset($this->rows[$offset]) ? $this->rows[$offset] : false;
 	}
 
 	/**
 	 * Search for the given key/value pair, returning false if not found
 	 *
+	 * @param   mixed $key
+	 * @param   mixed $value
 	 * @return  mixed
 	 * @since   2.0.0
 	 **/
