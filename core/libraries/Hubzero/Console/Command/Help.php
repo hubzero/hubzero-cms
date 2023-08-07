@@ -18,6 +18,13 @@ use Hubzero\Console\Arguments;
 class Help extends Base implements CommandInterface
 {
 	/**
+	 * List of commands
+	 *
+	 * @var array
+	 */
+	protected $_commands = array();
+
+	/**
 	 * Default (required) command
 	 *
 	 * Generates list of available commands and their respective tasks

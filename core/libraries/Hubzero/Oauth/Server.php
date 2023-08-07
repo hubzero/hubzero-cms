@@ -29,6 +29,13 @@ class Server
 	private $server = null;
 
 	/**
+	 * Config values
+	 *
+	 * @var array
+	 */
+	private $config = array();
+
+	/**
 	 * Constructor to setup setup server
 	 *
 	 * @param   object  $storage

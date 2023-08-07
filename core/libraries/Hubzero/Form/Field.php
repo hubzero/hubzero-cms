@@ -151,6 +151,13 @@ abstract class Field
 	protected $value;
 
 	/**
+	 * The input placeholder
+	 *
+	 * @var  string
+	 */
+	protected $placeholder;
+
+	/**
 	 * The label's CSS class of the form field
 	 *
 	 * @var  mixed
@@ -170,13 +177,6 @@ abstract class Field
 	 * @var  integer
 	 */
 	protected static $generated_fieldname = '__field';
-
-	/**
-	 * Field placeholder
-	 *
-	 * @var  string
-	 */
-	public $placeholder = '';
 
 	/**
 	 * Method to instantiate the form field object.
@@ -374,7 +374,7 @@ abstract class Field
 		$this->value = $value;
 
 		// Set the field placeholder
-		$this->placeholder = (string) $element['placeholder'];
+		$this->placeholder = isset($element['placeholder']) ? (string) $element['placeholder'] : '';
 
 		// Set the CSS class of field label
 		$this->labelClass = (string) $element['labelclass'];

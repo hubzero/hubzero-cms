@@ -23,6 +23,34 @@ class View extends AbstractView
 	protected $_layout = 'display';
 
 	/**
+	 * Base URL
+	 *
+	 * @var string
+	 */
+	protected $baseurl;
+
+	/**
+	 * Current component
+	 *
+	 * @var string
+	 */
+	protected $option;
+
+	/**
+	 * Current controller
+	 *
+	 * @var string
+	 */
+	protected $controller;
+
+	/**
+	 * Current task
+	 *
+	 * @var string
+	 */
+	protected $task;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   array  $config  A named configuration array for object construction.<br/>
@@ -50,7 +78,7 @@ class View extends AbstractView
 	 *
 	 * @param   string  $layout  View layout
 	 * @param   string  $name    View name
-	 * @return  object
+	 * @return  View
 	 */
 	public function view($layout, $name=null)
 	{
