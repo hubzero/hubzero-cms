@@ -216,7 +216,7 @@ class Media extends SiteController
 		);
 
 		// Build the file path
-		$folder = $path . DS . $archive->filespace();
+		$folder = $archive->filespace();
 
 		// Delete the folder
 		if (is_dir($folder))

@@ -359,7 +359,7 @@ class Answers extends AdminController
 
 		if (!$model->reset())
 		{
-			Notify::error($ar->getError());
+			Notify::error($model->getError());
 		}
 		else
 		{

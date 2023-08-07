@@ -696,6 +696,8 @@ $router->rules('parse')->append('redirect', function ($uri)
 	// the $uri by adding/removing vars
 	$alturi = new \Hubzero\Utility\Uri($uri->uri());
 
+	$menu  = App::get('menu');
+
 	$db = \App::get('db');
 	$db->setQuery(
 		"SELECT *

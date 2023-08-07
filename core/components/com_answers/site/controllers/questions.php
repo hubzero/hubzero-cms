@@ -688,7 +688,7 @@ class Questions extends SiteController
 		if (in_array(false, $result, true))
 		{
 			Notify::error($row->getError());
-			return $this->newtTask($row);
+			return $this->newTask($row);
 		}
 
 		// Store new content
@@ -903,7 +903,7 @@ class Questions extends SiteController
 			*/
 
 			// Remove hold
-			$transaction->deleteRecords('answers', 'hold', $id);
+			Transaction::deleteRecords('answers', 'hold', $id);
 
 			// Make credit adjustment
 			$teller = new Teller(User::get('id'));

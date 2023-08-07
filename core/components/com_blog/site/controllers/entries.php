@@ -805,6 +805,7 @@ class Entries extends SiteController
 		if (!User::isGuest())
 		{
 			$asset  = $this->_option;
+
 			if ($assetId)
 			{
 				$asset .= ($assetType != 'component') ? '.' . $assetType : '';
@@ -812,15 +813,9 @@ class Entries extends SiteController
 
 				if ($assetType != 'component')
 				{
-					$at .= '.' . $assetType;
+					$at = '.' . $assetType;
 				}
 			}
-
-			$at = '';
-			/*if ($assetType != 'component')
-			{
-				$at .= '.' . $assetType;
-			}*/
 
 			// Admin
 			$this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
