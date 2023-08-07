@@ -39,9 +39,9 @@ $this->css();
 		<?php
 			foreach ($this->rows as $rows)
 			{
-				if ($rows['week']['month'] == strftime( "%m", time()+($this->offset*60*60) )
-				 && $rows['week']['year'] == strftime( "%Y", time()+($this->offset*60*60) )
-				 && $rows['week']['day'] == strftime( "%d", time()+($this->offset*60*60) )) {
+				if ($rows['week']['month'] == date("m", time()+($this->offset*60*60) )
+				 && $rows['week']['year'] == date("Y", time()+($this->offset*60*60) )
+				 && $rows['week']['day'] == date("d", time()+($this->offset*60*60) )) {
 					$cls = ' class="today"';
 				} else {
 					$cls = '';
