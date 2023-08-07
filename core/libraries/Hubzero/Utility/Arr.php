@@ -403,7 +403,10 @@ class Arr
 		self::$sortKey       = (array) $k;
 		self::$sortLocale    = $locale;
 
-		usort($a, array(__CLASS__, '_sortObjects'));
+		usort($a, function($a, $b)
+		{
+			return static::_sortObjects($a, $b);
+		});
 
 		self::$sortCase      = null;
 		self::$sortDirection = null;
