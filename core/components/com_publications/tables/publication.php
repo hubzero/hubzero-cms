@@ -105,7 +105,7 @@ class Publication extends Table
 
 		if (!isset($filters['all_versions']) || !$filters['all_versions'])
 		{
-			$groupby = ' GROUP BY C.id ';
+			$groupby = ' GROUP BY C.id, V.id ';
 		}
 
 		$project  = isset($filters['project']) && intval($filters['project']) ? $filters['project'] : "";
