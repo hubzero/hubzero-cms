@@ -131,7 +131,7 @@ class Loader
 		{
 			if ($modules[$i]->position == $position)
 			{
-				$result[] =& $modules[$i];
+				$result[] = $modules[$i];
 			}
 		}
 

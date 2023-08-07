@@ -108,7 +108,7 @@ class plgSystemSef extends \Hubzero\Plugin\Plugin
 	 * @param   array   $matches  An array of matches (see preg_match_all)
 	 * @return  string
 	 */
-	protected static function route(&$matches)
+	protected static function route($matches)
 	{
 		$url = $matches[1];
 		$url = str_replace('&amp;', '&', $url);
