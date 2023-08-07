@@ -248,7 +248,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 
 					<input type="hidden" name="comment[id]" value="0" />
 					<input type="hidden" name="comment[entry_id]" value="<?php echo $this->escape($this->article->get('id')); ?>" />
-					<input type="hidden" name="comment[parent]" value="<?php echo $this->escape($replyto->get('id')); ?>" />
+					<input type="hidden" name="comment[parent]" value="<?php echo ($replyto->get('id') ? $this->escape($replyto->get('id')) : ''); ?>" />
 					<input type="hidden" name="comment[created]" value="" />
 					<input type="hidden" name="comment[created_by]" value="<?php echo $this->escape(User::get('id')); ?>" />
 					<input type="hidden" name="comment[state]" value="1" />

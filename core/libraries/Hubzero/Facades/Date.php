@@ -41,6 +41,7 @@ class Date extends Facade
 	 */
 	public static function of($date = 'now', $tz = null)
 	{
+		$date = $date ?: 'now';
 		return new \Hubzero\Utility\Date($date, $tz);
 	}
 }

@@ -9,7 +9,7 @@
 defined('_HZEXEC_') or die();
 
 $publication = $this->publication;
-$children    = $publication->_attachments[2];
+$children    = $publication->_attachments ? $publication->_attachments[2] : false;
 $archive     = $publication->bundlePath();
 
 // Set counts

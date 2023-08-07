@@ -12,14 +12,14 @@ $database = \App::get('db');
 
 if ($this->contributors)
 {
-	$html 		= '';
-	$names 		= array();
-	$orgs 		= array();
-	$i 			= 1;
-	$k 			= 0;
-	$orgsln 	= '';
-	$names_s 	= array();
-	$orgsln_s 	= '';
+	$html     = '';
+	$names    = array();
+	$orgs     = array();
+	$i        = 1;
+	$k        = 0;
+	$orgsln   = '';
+	$names_s  = array();
+	$orgsln_s = '';
 
 	foreach ($this->contributors as $contributor)
 	{
@@ -49,7 +49,10 @@ if ($this->contributors)
 		{
 			$contributor->organization = $contributor->p_organization;
 		}
-		$contributor->organization = $this->escape(stripslashes(trim($contributor->organization)));
+		if ($contributor->organization)
+		{
+			$contributor->organization = $this->escape(stripslashes(trim($contributor->organization)));
+		}
 
 		$name = str_replace( '"', '&quot;', $name );
 		if ($contributor->user_id && $contributor->open)
@@ -63,17 +66,17 @@ if ($this->contributors)
 		}
 		$link .= ($contributor->role) ? ' ('.$contributor->role.')' : '';
 
-		if (trim($contributor->organization) != '' && !in_array(trim($contributor->organization), $orgs))
+		if ($contributor->organization && !in_array(trim($contributor->organization), $orgs))
 		{
-			$orgs[$i-1] = trim($contributor->organization);
-			$orgsln 	.= $i. '. ' . trim($contributor->organization) . ' ';
-			$orgsln_s 	.= trim($contributor->organization) . ' ';
+			$orgs[$i-1] = $contributor->organization;
+			$orgsln   .= $i . '. ' . $contributor->organization . ' ';
+			$orgsln_s .= $contributor->organization . ' ';
 			$k = $i;
 			$i++;
 		}
-		else if (trim($contributor->organization) != '')
+		else if ($contributor->organization)
 		{
-			$k = array_search(trim($contributor->organization), $orgs) + 1;
+			$k = array_search($contributor->organization, $orgs) + 1;
 		}
 		else
 		{
@@ -105,7 +108,6 @@ if ($this->contributors)
 	{
 		$html = count($names) > 1  ? implode( ', ', $names ) : implode( ', ', $names_s );
 	}
-
 }
 else
 {

@@ -106,6 +106,10 @@ class Dispatcher implements DispatcherInterface
 
 		foreach ($listeners as $listener)
 		{
+			if (!$listener)
+			{
+				continue;
+			}
 			if (!$this->hasListener($listener))
 			{
 				$this->addListener($listener, $events);

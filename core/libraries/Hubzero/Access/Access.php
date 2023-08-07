@@ -79,7 +79,8 @@ class Access
 		$userId = (int) $userId;
 
 		$action = strtolower(preg_replace('#[\s\-]+#', '.', trim($action)));
-		$asset  = strtolower(preg_replace('#[\s\-]+#', '.', trim($asset)));
+		$asset  = $asset ? $asset : '';
+		$asset  = is_int($asset) ? $asset : strtolower(preg_replace('#[\s\-]+#', '.', trim($asset)));
 
 		// Default to the root asset node.
 		if (empty($asset))
