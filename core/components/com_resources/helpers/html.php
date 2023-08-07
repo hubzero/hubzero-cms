@@ -1097,15 +1097,15 @@ class Html
 			'name'   => 'view',
 			'layout' => '_primary'
 		));
-		$view->option   = 'com_resources';
-		$view->disabled = $disabled;
-		$view->class    = $class;
-		$view->href     = $href;
-		$view->title    = $title;
-		$view->action   = $action;
-		$view->xtra     = $xtra;
-		$view->pop      = $pop;
-		$view->msg      = $msg;
+		$view->set('option', 'com_resources')
+			->set('disabled', $disabled)
+			->set('class', $class)
+			->set('href', $href)
+			->set('title', $title)
+			->set('action', $action)
+			->set('xtra', $xtra)
+			->set('pop', $pop)
+			->set('msg', $msg);
 
 		return $view->loadTemplate();
 	}

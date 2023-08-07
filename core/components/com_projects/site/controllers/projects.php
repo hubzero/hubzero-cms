@@ -185,28 +185,29 @@ class Projects extends Base
 		}
 
 		// Filters
-		$this->view->filters = array();
-		$this->view->filters['mine']    = 1;
-		$this->view->filters['updates'] = 1;
-		$this->view->filters['sortby']  = 'myprojects';
+		$filters = array();
+		$filters['mine']    = 1;
+		$filters['updates'] = 1;
+		$filters['sortby']  = 'myprojects';
+		$this->view->set('filters', $filters);
 
 		// Set the pathway
 		$this->_buildPathway();
 
 		// Set the page title
 		$this->_buildTitle();
-		$this->view->title = $this->title;
+		$this->view->set('title', $this->title);
 
 		// Log activity
 		$this->_logActivity();
 
 		// Output HTML
-		$this->view->option     = $this->_option;
-		$this->view->model      = $this->model;
-		$this->view->publishing = $this->_publishing;
-		$this->view->msg        = isset($this->_msg) && $this->_msg
+		$this->view->set('option', $this->_option);
+		$this->view->set('model', $this->model);
+		$this->view->set('publishing', $this->_publishing);
+		$this->view->set('msg', isset($this->_msg) && $this->_msg
 								? $this->_msg
-								: $this->_getNotifications('success');
+								: $this->_getNotifications('success'));
 
 		if ($this->getError())
 		{
@@ -229,15 +230,15 @@ class Projects extends Base
 
 		// Set the page title
 		$this->_buildTitle();
-		$this->view->title = $this->title;
+		$this->view->set('title', $this->title);
 
 		// Log activity
 		$this->_logActivity();
 
 		// Output HTML
-		$this->view->option     = $this->_option;
-		$this->view->config     = $this->config;
-		$this->view->publishing = $this->_publishing;
+		$this->view->set('option', $this->_option);
+		$this->view->set('config', $this->config);
+		$this->view->set('publishing', $this->_publishing);
 
 		if ($this->getError())
 		{
@@ -283,49 +284,50 @@ class Projects extends Base
 		}
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit'] = Request::getInt(
+		$filters = array();
+		$filters['limit'] = Request::getInt(
 			'limit',
 			intval(\Config::get('list_limit', 25)),
 			'request'
 		);
-		$this->view->filters['start']    = Request::getInt('limitstart', 0, 'get');
-		$this->view->filters['sortby']   = strtolower(Request::getWord('sortby', 'title'));
-		$this->view->filters['search']   = Request::getString('search', '');
-		$this->view->filters['sortdir']  = strtoupper(Request::getWord('sortdir', 'ASC'));
-		$this->view->filters['reviewer'] = $reviewer;
-		$this->view->filters['filterby'] = Request::getWord('filterby', 'all');
+		$filters['start']    = Request::getInt('limitstart', 0, 'get');
+		$filters['sortby']   = strtolower(Request::getWord('sortby', 'title'));
+		$filters['search']   = Request::getString('search', '');
+		$filters['sortdir']  = strtoupper(Request::getWord('sortdir', 'ASC'));
+		$filters['reviewer'] = $reviewer;
+		$filters['filterby'] = Request::getWord('filterby', 'all');
 
 		if (User::isGuest() || (!User::authorise('core.manage', $this->_option) && !$this->model->reviewerAccess($reviewer)))
 		{
-			$this->view->filters['active'] = true;
+			$filters['active'] = true;
 		}
 
-		if (!in_array($this->view->filters['sortby'], array('title', 'id', 'myprojects', 'owner', 'created', 'type', 'role', 'privacy', 'status', 'grant_status')))
+		if (!in_array($filters['sortby'], array('title', 'id', 'myprojects', 'owner', 'created', 'type', 'role', 'privacy', 'status', 'grant_status')))
 		{
-			$this->view->filters['sortby'] = 'title';
+			$filters['sortby'] = 'title';
 		}
 
-		if (!in_array($this->view->filters['sortdir'], array('DESC', 'ASC')))
+		if (!in_array($filters['sortdir'], array('DESC', 'ASC')))
 		{
-			$this->view->filters['sortdir'] = 'ASC';
+			$filters['sortdir'] = 'ASC';
 		}
 
-		if (!in_array($this->view->filters['filterby'], array('all', 'open', 'public', 'archived', 'pending')))
+		if (!in_array($filters['filterby'], array('all', 'open', 'public', 'archived', 'pending')))
 		{
-			$this->view->filters['filterby'] = 'all';
+			$filters['filterby'] = 'all';
 		}
 		// We're filtering by a specific state
 		// Do NOT include all projects the user may have access to as some of them may not be of this state
-		//if (in_array($this->view->filters['filterby'], array('open', 'public')))
+		//if (in_array($filters['filterby'], array('open', 'public')))
 		//{
-		//	$this->view->filters['uid'] = 0;
+		//	$filters['uid'] = 0;
 		//}
 
 		/*if ($reviewer == 'sensitive' || $reviewer == 'sponsored')
 		{
-			$this->view->filters['filterby'] = Request::getWord('filterby', 'pending');
+			$filters['filterby'] = Request::getWord('filterby', 'pending');
 		}*/
+		$this->view->set('filters', $filters);
 
 		// Login for private projects
 		if (User::isGuest() && $action == 'login')
@@ -339,12 +341,12 @@ class Projects extends Base
 		$this->_logActivity(0, 'general', 'browse');
 
 		// Output HTML
-		$this->view->model    = $this->model;
-		$this->view->option   = $this->_option;
-		$this->view->config   = $this->config;
-		$this->view->title    = $this->title;
-		$this->view->reviewer = $reviewer;
-		$this->view->msg      = $this->_getNotifications('success');
+		$this->view->set('model', $this->model);
+		$this->view->set('option', $this->_option);
+		$this->view->set('config', $this->config);
+		$this->view->set('title', $this->title);
+		$this->view->set('reviewer', $reviewer);
+		$this->view->set('msg', $this->_getNotifications('success'));
 		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
@@ -681,24 +683,24 @@ class Projects extends Base
 		$this->_buildTitle();
 
 		// Output HTML
-		$this->view->params   = $this->model->params;
-		$this->view->model    = $this->model;
-		$this->view->reviewer = $reviewer;
-		$this->view->title    = $this->title;
-		$this->view->active   = $this->active;
-		$this->view->task     = $this->_task;
-		$this->view->option   = $this->_option;
-		$this->view->config   = $this->config;
-		$this->view->msg      = $this->_getNotifications('success');
+		$this->view->set('params', $this->model->params);
+		$this->view->set('model', $this->model);
+		$this->view->set('reviewer', $reviewer);
+		$this->view->set('title', $this->title);
+		$this->view->set('active', $this->active);
+		$this->view->set('task', $this->_task);
+		$this->view->set('option', $this->_option);
+		$this->view->set('config', $this->config);
+		$this->view->set('msg', $this->_getNotifications('success'));
 
 		/// Info block moved to info plugin
-		$this->view->info = array();
+		$this->view->set('info', array());
 
 
 		if ($layout == 'invited')
 		{
-			$this->view->confirmcode = $confirmcode;
-			$this->view->email       = $email;
+			$this->view->set('confirmcode', $confirmcode);
+			$this->view->set('email', $email);
 		}
 
 		$error = $this->getError() ? $this->getError() : $this->_getNotifications('error');
@@ -791,21 +793,21 @@ class Projects extends Base
 		if (!$confirm || $this->getError())
 		{
 			$this->view->setLayout('provisioned');
-			$this->view->model = $this->model;
+			$this->view->set('model', $this->model);
 
-			$this->view->team  = $this->model->_tblOwner->getOwnerNames($this->model->get('alias'));
+			$this->view->set('team', $this->model->_tblOwner->getOwnerNames($this->model->get('alias')));
 
 			// Output HTML
-			$this->view->pub        = isset($pub) ? $pub : '';
-			$this->view->suggested  = $name;
-			$this->view->verified   = $verified;
-			$this->view->suggested  = $verified ? $this->view->suggested : '';
-			$this->view->title      = $this->title;
-			$this->view->active     = $this->active;
-			$this->view->task       = $this->_task;
-			$this->view->authorized = 1;
-			$this->view->option     = $this->_option;
-			$this->view->msg        = $this->_getNotifications('success');
+			$this->view->set('pub', isset($pub) ? $pub : '');
+			$this->view->set('suggested', $name);
+			$this->view->set('verified', $verified);
+			$this->view->set('suggested', $verified ? $this->view->suggested : '');
+			$this->view->set('title', $this->title);
+			$this->view->set('active', $this->active);
+			$this->view->set('task', $this->_task);
+			$this->view->set('authorized', 1);
+			$this->view->set('option', $this->_option);
+			$this->view->set('msg', $this->_getNotifications('success'));
 
 			if ($this->getError())
 			{
@@ -1289,18 +1291,18 @@ class Projects extends Base
 			$this->view->setLayout('review');
 
 			// Output HTML
-			$this->view->reviewer = $reviewer;
-			$this->view->ajax     = Request::getInt('ajax', 0);
-			$this->view->title    = $this->title;
-			$this->view->option   = $this->_option;
-			$this->view->model    = $this->model;
-			$this->view->params   = $params;
-			$this->view->config   = $this->config;
-			$this->view->database = $this->database;
-			$this->view->action   = $action;
-			$this->view->filterby = $filterby;
-			$this->view->uid      = User::get('id');
-			$this->view->msg      = $this->_getNotifications('success');
+			$this->view->set('reviewer', $reviewer);
+			$this->view->set('ajax', Request::getInt('ajax', 0));
+			$this->view->set('title', $this->title);
+			$this->view->set('option', $this->_option);
+			$this->view->set('model', $this->model);
+			$this->view->set('params', $params);
+			$this->view->set('config', $this->config);
+			$this->view->set('database', $this->database);
+			$this->view->set('action', $action);
+			$this->view->set('filterby', $filterby);
+			$this->view->set('uid', User::get('id'));
+			$this->view->set('msg', $this->_getNotifications('success'));
 			if ($this->getError())
 			{
 				$this->view->setError($this->getError());
