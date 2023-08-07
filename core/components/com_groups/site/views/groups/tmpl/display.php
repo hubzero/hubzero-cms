@@ -171,14 +171,13 @@ $this->css('introduction.css', 'system')
 					<p><?php echo Lang::txt('COM_GROUPS_BROWSE_NO_GROUPS'); ?></p>
 				</div>
 			<?php else : ?>
-				<?php
-				foreach ($this->featuredgroups as $group)
-				{
+				<div class="groups-container">
+				<?php foreach ($this->featuredgroups as $group) {
 					$this->view('_group')
 						->set('group', $group)
 						->display();
-				}
-				?>
+				} ?>
+				</div>
 			<?php endif; ?>
 		</section><!-- / .featuredgroups -->
 	<?php endif; ?>
