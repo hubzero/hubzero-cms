@@ -325,7 +325,7 @@ class Page extends Model
 		// if we have segments append them
 		if (count($segments) > 0)
 		{
-			$pageLink .= DS . implode($segments, DS);
+			$pageLink .= DS . implode(DS, $segments);
 		}
 
 		// return routed link
