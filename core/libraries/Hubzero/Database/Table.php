@@ -74,6 +74,13 @@ abstract class Table extends Obj
 	protected $_locked = false;
 
 	/**
+	 * Cached table field descriptions
+	 *
+	 * @var array
+	 */
+	private $fieldCache = null;
+
+	/**
 	 * Object constructor to set table and key fields.  In most cases this will
 	 * be overridden by child classes to explicitly set the table and key fields
 	 * for a particular database table.
@@ -124,9 +131,7 @@ abstract class Table extends Obj
 	 */
 	public function getFields()
 	{
-		static $cache = null;
-
-		if ($cache === null)
+		if ($this->fieldCache === null)
 		{
 			// Lookup the fields for this table only once.
 			$name = $this->_tbl;
@@ -138,10 +143,10 @@ abstract class Table extends Obj
 				$this->setError($e);
 				return false;
 			}
-			$cache = $fields;
+			$this->fieldCache = $fields;
 		}
 
-		return $cache;
+		return $this->fieldCache;
 	}
 
 	/**
