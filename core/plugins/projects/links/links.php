@@ -1060,7 +1060,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 * @param   string   $format
 	 * @return  string
 	 */
-	public function getDoiMetadata($doi, $citation = false, &$url, $rawData = false, $format = 'apa')
+	public function getDoiMetadata($doi, $citation, &$url, $rawData = false, $format = 'apa')
 	{
 		// Include metadata model
 		include_once Component::path('com_publications') . DS . 'models' . DS . 'metadata.php';

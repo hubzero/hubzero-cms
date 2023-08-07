@@ -493,7 +493,7 @@ class Helper extends Module
 	 * @param   string  $month_year_format
 	 * @return  array
 	 */
-	public static function groupByDate($list, $type = 'year', $article_grouping_direction, $month_year_format = 'F Y')
+	public static function groupByDate($list, $type, $article_grouping_direction, $month_year_format = 'F Y')
 	{
 		$grouped = array();
 

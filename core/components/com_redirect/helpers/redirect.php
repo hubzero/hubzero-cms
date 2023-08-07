@@ -85,7 +85,7 @@ class Redirect
 	 * @param   boolean  $canChange  An optional setting for access control on the action.
 	 * @return  string
 	 */
-	public static function published($value = 0, $i, $canChange = true)
+	public static function published($value, $i, $canChange = true)
 	{
 		// Array of image, task, title, action
 		$states	= array(

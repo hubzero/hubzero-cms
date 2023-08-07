@@ -93,7 +93,7 @@ class RestrictionsHelper
 	 * @param   array  $options  Options
 	 * @return  mixed
 	 */
-	private static function getSkuUsers($filters = array(), $sId, $options = array())
+	private static function getSkuUsers($filters, $sId, $options = array())
 	{
 		if (!isset($filters['sort']))
 		{

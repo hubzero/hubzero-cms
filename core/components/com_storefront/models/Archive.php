@@ -127,7 +127,7 @@ class Archive extends \Hubzero\Base\Obj
 	 * @param   array   $filters  Filters to apply to data retrieval
 	 * @return  mixed
 	 */
-	public function skus($rtrn='list', $pId, $filters = array())
+	public function skus($rtrn, $pId, $filters = array())
 	{
 		if (!isset($filters['sort']))
 		{
@@ -258,7 +258,7 @@ class Archive extends \Hubzero\Base\Obj
 	 * @param   array   $filters  Filters to apply to data retrieval
 	 * @return  mixed
 	 */
-	public function options($rtrn = 'rows', $ogId, $filters = array())
+	public function options($rtrn, $ogId, $filters = array())
 	{
 		if (!isset($filters['sort']))
 		{

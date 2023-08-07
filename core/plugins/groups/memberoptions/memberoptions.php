@@ -51,7 +51,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 	 * @param   array    $areas       Active area(s)
 	 * @return  array
 	 */
-	public function onGroup($group, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
+	public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas=null)
 	{
 		// The output array we're returning
 		$arr = array(

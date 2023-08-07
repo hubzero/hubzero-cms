@@ -179,7 +179,7 @@ class Google extends Obj
 	 * @param   boolean  $convert     Convert for remote editing?
 	 * @return  string   (id) or false
 	 */
-	public static function insertFile($apiService, $client, $title = '', $localPath = null, $mimeType = null, $parentId = 0, &$metadata, $convert = false)
+	public static function insertFile($apiService, $client, $title, $localPath, $mimeType, $parentId, &$metadata, $convert = false)
 	{
 		// Check for what we need
 		if (!$apiService || !$title || !$parentId || !file_exists($localPath) || !$mimeType)
@@ -297,7 +297,7 @@ class Google extends Obj
 	 * @param   boolean  $convert     Convert for remote editing?
 	 * @return  mixed  string (id) or false
 	 */
-	public static function updateFile($apiService, $client, $id = 0, $title = '', $localPath = null, $mimeType = null, $parentId = 0, &$metadata, $convert = false)
+	public static function updateFile($apiService, $client, $id, $title, $localPath, $mimeType, $parentId, &$metadata, $convert = false)
 	{
 		// Check for what we need
 		if (!$apiService || !$id)

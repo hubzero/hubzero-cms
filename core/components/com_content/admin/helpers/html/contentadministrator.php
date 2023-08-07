@@ -21,7 +21,7 @@ abstract class ContentAdministrator
 	 * @param   bool   $canChange
 	 * @return  string
 	 */
-	static function featured($value = 0, $i, $canChange = true)
+	static function featured($value, $i, $canChange = true)
 	{
 		// Array of image, task, title, action
 		$states	= array(
