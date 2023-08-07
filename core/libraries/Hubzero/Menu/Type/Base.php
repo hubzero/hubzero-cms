@@ -39,6 +39,34 @@ class Base extends Obj
 	protected $_active = 0;
 
 	/**
+	 * Filter by set language
+	 *
+	 * @var string
+	 */
+	protected $language_filter;
+
+	/**
+	 * Default language
+	 *
+	 * @var string
+	 */
+	protected $language;
+
+	/**
+	 * Access level
+	 *
+	 * @var int
+	 */
+	protected $access = 1;
+
+	/**
+	 * Database connection
+	 *
+	 * @var object
+	 */
+	protected $db = null;
+
+	/**
 	 * Menu instances container.
 	 *
 	 * @var  array
