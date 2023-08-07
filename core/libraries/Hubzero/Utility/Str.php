@@ -704,12 +704,12 @@ class Str
 		return false;
 	}
 
-		/**
-   * Replaces &amp; with & for XHTML compliance
-   *
-   * @param   string  $text  Text to process
-   * @return  string  Processed string.
-   */
+	/**
+	 * Replaces &amp; with & for XHTML compliance
+	 *
+	 * @param   string  $text  Text to process
+	 * @return  string  Processed string.
+	 */
 	public static function ampReplace($text)
 	{
 		$text = str_replace('&&', '*--*', $text ? $text : '');
