@@ -224,6 +224,11 @@ class Translator extends Obj
 
 			foreach ($this->callbacks as $callback => $value)
 			{
+				if (!$callback)
+				{
+					continue;
+				}
+
 				$method = 'get' . ucfirst($callback);
 
 				if (method_exists($class, $method))
