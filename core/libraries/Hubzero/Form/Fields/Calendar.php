@@ -71,7 +71,7 @@ class Calendar extends Field
 		// Handle the special case for "now".
 		if (strtoupper($this->value) == 'NOW')
 		{
-			$this->value = strftime($format);
+			$this->value = date($format);
 		}
 
 		// If a known filter is given use it.
