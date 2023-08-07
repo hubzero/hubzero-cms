@@ -33,7 +33,7 @@ class Memcached extends Store
 	/**
 	 * Use compression?
 	 *
-	 * @var  integer
+	 * @var  int
 	 */
 	private $compress = false;
 
@@ -92,6 +92,7 @@ class Memcached extends Store
 	 * @param   string   $name       The name of the session.
 	 * @return  boolean  True on success, false otherwise.
 	 */
+	#[\ReturnTypeWillChange]
 	public function open($save_path, $name)
 	{
 		$this->engine = new \Memcached;
@@ -114,6 +115,7 @@ class Memcached extends Store
 	 *
 	 * @return  boolean  True on success, false otherwise.
 	 */
+	#[\ReturnTypeWillChange]
 	public function close()
 	{
 		// $this->engine->close();
@@ -123,12 +125,13 @@ class Memcached extends Store
 	/**
 	 * Read the data for a particular session identifier from the SessionHandler backend.
 	 *
-	 * @param   string  $session_id  The session identifier.
+	 * @param   string  $id  The session identifier.
 	 * @return  string  The session data.
 	 */
-	public function read($session_id)
+	#[\ReturnTypeWillChange]
+	public function read($id)
 	{
-		$key = $this->key($session_id);
+		$key = $this->key($id);
 
 		$this->expiration($key);
 
@@ -138,13 +141,14 @@ class Memcached extends Store
 	/**
 	 * Write session data to the SessionHandler backend.
 	 *
-	 * @param   string   $session_id    The session identifier.
-	 * @param   string   $session_data  The session data.
+	 * @param   string   $id    The session identifier.
+	 * @param   string   $data  The session data.
 	 * @return  boolean  True on success, false otherwise.
 	 */
-	public function write($session_id, $session_data)
+	#[\ReturnTypeWillChange]
+	public function write($id, $data)
 	{
-		$key = $this->key($session_id);
+		$key = $this->key($id);
 
 		if ($this->engine->get($key . '_expire'))
 		{
@@ -156,11 +160,11 @@ class Memcached extends Store
 		}
 		if ($this->engine->get($key))
 		{
-			$this->engine->replace($key, $session_data);
+			$this->engine->replace($key, $data);
 		}
 		else
 		{
-			$this->engine->set($key, $session_data);
+			$this->engine->set($key, $data);
 		}
 
 		return;
@@ -169,12 +173,13 @@ class Memcached extends Store
 	/**
 	 * Destroy the data for a particular session identifier in the SessionHandler backend.
 	 *
-	 * @param   string   $session_id  The session identifier.
+	 * @param   string   $id  The session identifier.
 	 * @return  boolean  True on success, false otherwise.
 	 */
-	public function destroy($session_id)
+	#[\ReturnTypeWillChange]
+	public function destroy($id)
 	{
-		$key = $this->key($session_id);
+		$key = $this->key($id);
 
 		$this->engine->delete($key . '_expire');
 
@@ -186,9 +191,10 @@ class Memcached extends Store
 	 *
 	 * -- Not Applicable in memcached --
 	 *
-	 * @param   integer  $maxlifetime  The maximum age of a session.
+	 * @param   int  $maxlifetime  The maximum age of a session.
 	 * @return  boolean  True on success, false otherwise.
 	 */
+	#[\ReturnTypeWillChange]
 	public function gc($maxlifetime = null)
 	{
 		return true;
@@ -197,14 +203,14 @@ class Memcached extends Store
 	/**
 	 * Get single session data as an object
 	 *
-	 * @param   integer  $session_id  Session Id
+	 * @param   int  $id  Session Id
 	 * @return  object
 	 */
-	public function session($session_id)
+	public function session($id)
 	{
 		$session = new Object;
-		$session->session_id = $session_id;
-		$session->data       = $this->read($session_id);
+		$session->session_id = $id;
+		$session->data       = $this->read($id);
 
 		return $session;
 	}

@@ -148,7 +148,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	#[\ReturnTypeWillChange]
 	public function rewind()
 	{
-		return reset($this->items);
+		reset($this->items);
 	}
 
 	/**
@@ -184,13 +184,13 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	#[\ReturnTypeWillChange]
 	public function next()
 	{
-		return next($this->items);
+		next($this->items);
 	}
 
 	/**
 	 * Is current position valid?
 	 *
-	 * @return  voolean
+	 * @return  boolean
 	 */
 
 	#[\ReturnTypeWillChange]

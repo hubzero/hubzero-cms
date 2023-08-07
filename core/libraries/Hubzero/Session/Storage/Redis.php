@@ -65,6 +65,7 @@ class Redis extends Store
 	 * @param   string   $name       The name of the session.
 	 * @return  boolean  True on success, false otherwise.
 	 */
+	#[\ReturnTypeWillChange]
 	public function open($save_path, $name)
 	{
 		$this->database = RedisDatabase::connect('default');
@@ -76,6 +77,7 @@ class Redis extends Store
 	 *
 	 * @return  boolean  True on success, false otherwise.
 	 */
+	#[\ReturnTypeWillChange]
 	public function close()
 	{
 		$this->database->disconnect();
@@ -84,13 +86,14 @@ class Redis extends Store
 	/**
 	 * Read session hash for Id
 	 *
-	 * @param   string  $session_id  Session Id
+	 * @param   string  $id  Session Id
 	 * @return  mixed   Session Data
 	 */
-	public function read($session_id)
+	#[\ReturnTypeWillChange]
+	public function read($id)
 	{
 		// get session hash
-		$session = $this->database->hgetall($this->key($session_id));
+		$session = $this->database->hgetall($this->key($id));
 
 		// return session data
 		return (isset($session['data'])) ? $session['data'] : null;
@@ -103,21 +106,22 @@ class Redis extends Store
 	 * @param   string   $data  The session data.
 	 * @return  boolean  True on success, false otherwise.
 	 */
-	public function write($session_id, $session_data)
+	#[\ReturnTypeWillChange]
+	public function write($id, $data)
 	{
 		$data = array(
-			'session_id' => $session_id,
+			'session_id' => $id,
 			'client_id'  => \App::get('client')->id,
 			'guest'      => \User::isGuest(),
 			'time'       => time(),
-			'data'       => $session_data,
+			'data'       => $data,
 			'userid'     => \User::get('id'),
 			'username'   => \User::get('username'),
 			'usertype'   => null,
 			'ip'         => $_SERVER['REMOTE_ADDR']
 		);
 
-		$saved = $this->database->hmset($this->key($session_id), $data);
+		$saved = $this->database->hmset($this->key($id), $data);
 
 		return $saved;
 	}
@@ -125,12 +129,13 @@ class Redis extends Store
 	/**
 	 * Delete session hash
 	 *
-	 * @param  string  $session_id  Session Id
+	 * @param  string  $id  Session Id
 	 * @return boolean              Destroyed or not
 	 */
-	public function destroy($session_id)
+	#[\ReturnTypeWillChange]
+	public function destroy($id)
 	{
-		if (!$this->database->del($this->key($session_id)))
+		if (!$this->database->del($this->key($id)))
 		{
 			return false;
 		}
@@ -140,9 +145,10 @@ class Redis extends Store
 	/**
 	 * Garbage collect stale sessions from the SessionHandler backend.
 	 *
-	 * @param   integer  $maxlifetime  The maximum age of a session.
+	 * @param   int  $maxlifetime  The maximum age of a session.
 	 * @return  boolean  True on success, false otherwise.
 	 */
+	#[\ReturnTypeWillChange]
 	public function gc($maxlifetime = null)
 	{
 		//'redis gc';
@@ -151,12 +157,12 @@ class Redis extends Store
 	/**
 	 * Get single session data as an object
 	 *
-	 * @param   integer  $session_id  Session Id
+	 * @param   int  $id  Session Id
 	 * @return  object
 	 */
-	public function session($session_id)
+	public function session($id)
 	{
-		return (object) $this->database->hgetall($session_id);
+		return (object) $this->database->hgetall($id);
 	}
 
 	/**

@@ -84,13 +84,13 @@ abstract class Store extends Obj implements SessionHandlerInterface
 	/**
 	 * Open the SessionHandler backend.
 	 *
-	 * @param   string   $save_path  The path to the session object.
+	 * @param   string   $path  The path to the session object.
 	 * @param   string   $name       The name of the session.
 	 * @return  boolean  True on success, false otherwise.
 	 */
 
 	#[\ReturnTypeWillChange]
-	public function open($save_path, $name)
+	public function open($path, $name)
 	{
 		return true;
 	}
@@ -111,26 +111,26 @@ abstract class Store extends Obj implements SessionHandlerInterface
 	 * Read the data for a particular session identifier from the
 	 * SessionHandler backend.
 	 *
-	 * @param   string  $id  The session identifier.
+	 * @param   string|false  $id  The session identifier.
 	 * @return  string  The session data.
 	 */
 
 	#[\ReturnTypeWillChange]
-	public function read($session_id)
+	public function read($id)
 	{
-		return;
+		return false;
 	}
 
 	/**
 	 * Write session data to the SessionHandler backend.
 	 *
-	 * @param   string   $session_id    The session identifier.
-	 * @param   string   $session_data  The session data.
+	 * @param   string   $id    The session identifier.
+	 * @param   string   $ata  The session data.
 	 * @return  boolean  True on success, false otherwise.
 	 */
 
 	#[\ReturnTypeWillChange]
-	public function write($session_id, $session_data)
+	public function write($d, $data)
 	{
 		return true;
 	}
@@ -144,7 +144,7 @@ abstract class Store extends Obj implements SessionHandlerInterface
 	 */
 
 	#[\ReturnTypeWillChange]
-	public function destroy($session_id)
+	public function destroy($id)
 	{
 		return true;
 	}
@@ -152,7 +152,7 @@ abstract class Store extends Obj implements SessionHandlerInterface
 	/**
 	 * Garbage collect stale sessions from the SessionHandler backend.
 	 *
-	 * @param   integer  $maxlifetime  The maximum age of a session.
+	 * @param   int  $maxlifetime  The maximum age of a session.
 	 * @return  boolean  True on success, false otherwise.
 	 */
 
@@ -165,13 +165,13 @@ abstract class Store extends Obj implements SessionHandlerInterface
 	/**
 	 * Get single session data as an object
 	 *
-	 * @param   integer  $session_id  Session Id
+	 * @param   int  $id  Session Id
 	 * @return  object
 	 */
-	public function session($session_id)
+	public function session($id)
 	{
-		$session = new Object;
-		$session->id = $session_id;
+		$session = new Obj;
+		$session->id = $id;
 
 		return $session;
 	}

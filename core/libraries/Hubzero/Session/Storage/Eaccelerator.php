@@ -48,24 +48,26 @@ class Eaccelerator extends Store
 	/**
 	 * Read the data for a particular session identifier from the SessionHandler backend.
 	 *
-	 * @param   string  $session_id  The session identifier.
+	 * @param   string  $id  The session identifier.
 	 * @return  string  The session data.
 	 */
-	public function read($session_id)
+	#[\ReturnTypeWillChange]
+	public function read($id)
 	{
-		return (string) eaccelerator_get($this->key($session_id));
+		return (string) eaccelerator_get($this->key($id));
 	}
 
 	/**
 	 * Write session data to the SessionHandler backend.
 	 *
-	 * @param   string   $session_id    The session identifier.
-	 * @param   string   $session_data  The session data.
+	 * @param   string   $id    The session identifier.
+	 * @param   string   $data  The session data.
 	 * @return  boolean  True on success, false otherwise.
 	 */
-	public function write($session_id, $session_data)
+	#[\ReturnTypeWillChange]
+	public function write($id, $data)
 	{
-		return eaccelerator_put($this->key($session_id), $session_data, ini_get("session.gc_maxlifetime"));
+		return eaccelerator_put($this->key($id), $data, ini_get("session.gc_maxlifetime"));
 	}
 
 	/**
@@ -74,17 +76,19 @@ class Eaccelerator extends Store
 	 * @param   string   $id  The session identifier.
 	 * @return  boolean  True on success, false otherwise.
 	 */
-	public function destroy($session_id)
+	#[\ReturnTypeWillChange]
+	public function destroy($id)
 	{
-		return eaccelerator_rm($this->key($session_id));
+		return eaccelerator_rm($this->key($id));
 	}
 
 	/**
 	 * Garbage collect stale sessions from the SessionHandler backend.
 	 *
-	 * @param   integer  $maxlifetime  The maximum age of a session.
+	 * @param   int  $maxlifetime  The maximum age of a session.
 	 * @return  boolean  True on success, false otherwise.
 	 */
+	#[\ReturnTypeWillChange]
 	public function gc($maxlifetime = null)
 	{
 		eaccelerator_gc();
@@ -94,14 +98,14 @@ class Eaccelerator extends Store
 	/**
 	 * Get single session data as an object
 	 *
-	 * @param   integer  $session_id  Session Id
+	 * @param   int  $id  Session Id
 	 * @return  object
 	 */
-	public function session($session_id)
+	public function session($id)
 	{
 		$session = new Object;
-		$session->session_id = $session_id;
-		$session->data       = $this->read($session_id);
+		$session->session_id = $id;
+		$session->data       = $this->read($id);
 
 		return $session;
 	}
