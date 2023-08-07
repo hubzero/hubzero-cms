@@ -97,7 +97,7 @@ class Event implements ArrayAccess, Serializable, Countable
 	 *
 	 * @param   string  $name   The argument name.
 	 * @param   mixed   $value  The argument value.
-	 * @return  object  This method is chainable.
+	 * @return  self
 	 */
 	public function addArgument($name, $value)
 	{
@@ -115,7 +115,7 @@ class Event implements ArrayAccess, Serializable, Countable
 	 *
 	 * @param   string  $name   The argument name.
 	 * @param   mixed   $value  The argument value.
-	 * @return  object  This method is chainable.
+	 * @return  self
 	 */
 	public function setArgument($name, $value)
 	{
@@ -128,7 +128,7 @@ class Event implements ArrayAccess, Serializable, Countable
 	 * Remove an event argument.
 	 *
 	 * @param   string  $name  The argument name.
-	 * @return  object  This method is chainable.
+	 * @return  se;f
 	 */
 	public function removeArgument($name)
 	{
@@ -143,7 +143,7 @@ class Event implements ArrayAccess, Serializable, Countable
 	/**
 	 * Clear all event arguments.
 	 *
-	 * @return  array  The old arguments.
+	 * @return  self
 	 */
 	public function clearArguments()
 	{
@@ -196,7 +196,6 @@ class Event implements ArrayAccess, Serializable, Countable
 	 *
 	 * @return  integer  The number of arguments.
 	 */
-
 	#[\ReturnTypeWillChange]
 	public function count()
 	{
@@ -212,49 +211,48 @@ class Event implements ArrayAccess, Serializable, Countable
 	#[\ReturnTypeWillChange]
 	public function serialize()
 	{
-		return serialize(array($this->name, $this->arguments, $this->stopped));
+		return $this->__serialize();
 	}
 
 	/**
 	 * Serialize the event.
 	 *
-	 * @return  array  The serialized event.
+	 * @return  string  The serialized event.
 	 */
 	public function __serialize()
 	{
-		return array($this->name, $this->arguments, $this->stopped);
+		return serialize(array($this->name, $this->arguments, $this->stopped));
 	}
 
 	/**
 	 * Unserialize the event.
 	 *
-	 * @param   string  $serialized  The serialized event.
-	 * @return  void
+	 * @param   string  $data  The serialized event.
+	 * @return  mixed
 	 */
 
 	#[\ReturnTypeWillChange]
-	public function unserialize($serialized)
+	public function unserialize($data)
 	{
-		list($this->name, $this->arguments, $this->stopped) = unserialize($serialized);
+		$this->__unserialize(unserialize($data));
 	}
 
 	/**
 	 * Unserialize the event.
 	 *
-	 * @param   array  $serialized  The serialized event.
+	 * @param   array  $data The serialized event.
 	 * @return  void
 	 */
-	public function __unserialize($serialized)
+	public function __unserialize($data)
 	{
-		list($this->name, $this->arguments, $this->stopped) = $serialized;
+		list($this->name, $this->arguments, $this->stopped) = $data;
 	}
 
 	/**
 	 * Add an error message.
 	 *
-	 * @param   string  $error  Error message.
-	 * @param   string  $key    Specific key to set the value to
-	 * @return  object  This method is chainable.
+	 * @param   string  $data
+	 * @return  self
 	 */
 	public function addResponse($data)
 	{
@@ -306,59 +304,59 @@ class Event implements ArrayAccess, Serializable, Countable
 	/**
 	 * Set the value of an event argument.
 	 *
-	 * @param   string  $name   The argument name.
+	 * @param   mixed   $offset The argument name.
 	 * @param   mixed   $value  The argument value.
 	 * @return  void
 	 * @throws  InvalidArgumentException  If the argument name is null.
 	 */
 
 	#[\ReturnTypeWillChange]
-	public function offsetSet($name, $value)
+	public function offsetSet($offset, $value)
 	{
-		if (is_null($name))
+		if (is_null($offset))
 		{
 			throw new InvalidArgumentException('The argument name cannot be null.');
 		}
 
-		$this->setArgument($name, $value);
+		$this->setArgument($offset, $value);
 	}
 
 	/**
 	 * Remove an event argument.
 	 *
-	 * @param   string  $name  The argument name.
+	 * @param   mixed  $offset  The argument name.
 	 * @return  void
 	 */
 
 	#[\ReturnTypeWillChange]
-	public function offsetUnset($name)
+	public function offsetUnset($offset)
 	{
-		$this->removeArgument($name);
+		$this->removeArgument($offset);
 	}
 
 	/**
 	 * Tell if the given event argument exists.
 	 *
-	 * @param   string  $name  The argument name.
+	 * @param   mixed  $offset  The argument name.
 	 * @return  boolean  True if it exists, false otherwise.
 	 */
 
 	#[\ReturnTypeWillChange]
-	public function offsetExists($name)
+	public function offsetExists($offset)
 	{
-		return $this->hasArgument($name);
+		return $this->hasArgument($offset);
 	}
 
 	/**
 	 * Get an event argument value.
 	 *
-	 * @param   string  $name  The argument name.
+	 * @param   mixed  $offset  The argument name.
 	 * @return  mixed  The argument value or null if not existing.
 	 */
 
 	#[\ReturnTypeWillChange]
-	public function offsetGet($name)
+	public function offsetGet($offset)
 	{
-		return $this->getArgument($name);
+		return $this->getArgument($offset);
 	}
 }
