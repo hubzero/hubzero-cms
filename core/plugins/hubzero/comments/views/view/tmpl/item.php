@@ -88,7 +88,8 @@ defined('_HZEXEC_') or die();
 					<?php
 					foreach ($this->comment->files()->rows() as $attachment)
 					{
-						if (!trim($attachment->get('description')))
+						if (!$attachment->get('description')
+						 || ($attachment->get('description') && !trim($attachment->get('description'))))
 						{
 							$attachment->set('description', $attachment->get('filename'));
 						}

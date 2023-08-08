@@ -125,7 +125,7 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
 				}
 
 				$formattedFilesize   = \Hubzero\Utility\Number::formatBytes($filesize);
-				$formattedDimensions = $dimensions[0] . 'px &times; ' . $dimensions[1] . 'px';
+				$formattedDimensions = $dimensions ? $dimensions[0] . 'px &times; ' . $dimensions[1] . 'px' : '';
 				$formattedModified   = Date::of($modified)->toLocal('m/d/Y g:ia');
 
 				// is this file an image
