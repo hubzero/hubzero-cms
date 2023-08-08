@@ -189,9 +189,13 @@ class Request extends BaseRequest
 	{
 		$str = $this->getVar($key, $default, $hash);
 		$str = is_array($str) ? self::_flatten('', $str) : $str;
-		preg_match('/-?[0-9]+/', $str, $matches);
-		$result = @ $matches[0];
-		return (!is_null($result) ? (int) $result : $default);
+		if ($str)
+		{
+			preg_match('/-?[0-9]+/', $str, $matches);
+			$result = @ $matches[0];
+			return (!is_null($result) ? (int) $result : $default);
+		}
+		return $default;
 	}
 
 	/**

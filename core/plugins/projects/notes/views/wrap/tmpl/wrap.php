@@ -28,7 +28,7 @@ $notes = $this->note->getNotes();
 
 // Get page parent notes (for breadcrumbs)
 $parentNotes = array(); //$this->note->getParentNotes($this->scope);
-if (trim($page->path))
+if ($page->path && trim($page->path))
 {
 	$parentNotes = explode('/', trim($page->path));
 }

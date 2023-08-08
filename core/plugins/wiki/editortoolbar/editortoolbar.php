@@ -51,7 +51,7 @@ class plgWikiEditortoolbar extends \Hubzero\Plugin\Plugin
 	 */
 	public function onDisplayEditor($name, $id, $content, $cls='wiki-toolbar-content', $col=10, $row=35)
 	{
-		$content = preg_replace('/^((?:<|&lt;)!-- \{FORMAT:(?:.*)\} --(?:>|&gt;))/i', '', $content);
+		$content = $content ? preg_replace('/^((?:<|&lt;)!-- \{FORMAT:(?:.*)\} --(?:>|&gt;))/i', '', $content) : '';
 
 		$cls = ($cls) ? 'wiki-toolbar-content ' . $cls : 'wiki-toolbar-content';
 
