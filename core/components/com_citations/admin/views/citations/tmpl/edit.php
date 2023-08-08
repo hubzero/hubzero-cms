@@ -31,22 +31,21 @@ $this->setEscape("htmlentities");
 
 //need to fix these fields
 $author = html_entity_decode($this->row->getAuthorString());
-$author = (!preg_match('!\S!u', $author)) ? utf8_encode($author) : $author;
-
 $ceditor = html_entity_decode($this->row->editor);
-$ceditor = (!preg_match('!\S!u', $ceditor)) ? utf8_encode($ceditor) : $ceditor;
-
 $title = html_entity_decode($this->row->title);
-$title = (!preg_match('!\S!u', $title)) ? utf8_encode($title) : $title;
-
 $booktitle = html_entity_decode($this->row->booktitle);
-$booktitle = (!preg_match('!\S!u', $booktitle)) ? utf8_encode($booktitle) : $booktitle;
-
 $short_title = html_entity_decode($this->row->short_title);
-$short_title = (!preg_match('!\S!u', $short_title)) ? utf8_encode($short_title) : $short_title;
-
 $journal = html_entity_decode($this->row->journal);
-$journal = (!preg_match('!\S!u', $journal)) ? utf8_encode($journal) : $journal;
+
+if (function_exists('mbstring'))
+{
+	$author = (!preg_match('!\S!u', $author)) ? mbstring($author) : $author;
+	$ceditor = (!preg_match('!\S!u', $ceditor)) ? mbstring($ceditor) : $ceditor;
+	$title = (!preg_match('!\S!u', $title)) ? mbstring($title) : $title;
+	$booktitle = (!preg_match('!\S!u', $booktitle)) ? mbstring($booktitle) : $booktitle;
+	$short_title = (!preg_match('!\S!u', $short_title)) ? mbstring($short_title) : $short_title;
+	$journal = (!preg_match('!\S!u', $journal)) ? mbstring($journal) : $journal;
+}
 ?>
 
 <?php

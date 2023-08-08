@@ -669,7 +669,10 @@ $area = Request::getString('area', 'about');
 
 	//fix title
 	$title = html_entity_decode($citation->title);
-	$title = (!preg_match('!\S!u', $title)) ? utf8_encode($title) : $title;
+	if (function_exists('mbstring'))
+	{
+		$title = (!preg_match('!\S!u', $title)) ? mbstring($title) : $title;
+	}
 
 	//coins data
 	$coinsData = array(

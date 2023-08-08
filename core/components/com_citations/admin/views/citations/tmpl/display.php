@@ -129,14 +129,10 @@ $this->setEscape("htmlentities");
 					<?php
 						$title = html_entity_decode($row->title);
 						$author = html_entity_decode($row->author);
-						if (!preg_match('!\S!u', $title))
+						if (function_exists('mbstring'))
 						{
-							$title = utf8_encode($title);
-						}
-
-						if (!preg_match('!\S!u', $author))
-						{
-							$author = utf8_encode($author);
+							$title = (!preg_match('!\S!u', $title)) ? mbstring($title) : $title;
+							$author = (!preg_match('!\S!u', $author)) ? mbstring($author) : $author;
 						}
 					?>
 					<?php if ($canDo->get('core.edit')) { ?>

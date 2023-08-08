@@ -68,13 +68,13 @@ class Endnote extends Downloadable
 		if ($row->booktitle && !in_array('booktitle', $exclude))
 		{
 			$bt = html_entity_decode($row->booktitle);
-			$bt = (!preg_match('!\S!u', $bt)) ? utf8_encode($bt) : $bt;
+			$bt = $this->toUtf8($bt);
 			$doc .= "%B " . $bt . "\r\n";
 		}
 		if ($row->journal && !in_array('journal', $exclude))
 		{
 			$j = html_entity_decode($row->journal);
-			$j = (!preg_match('!\S!u', $j)) ? utf8_encode($j) : $j;
+			$j = $this->toUtf8($j);
 			$doc .= "%J " . $j . "\r\n";
 		}
 		if ($row->year && !in_array('year', $exclude))
@@ -84,13 +84,13 @@ class Endnote extends Downloadable
 		if ($row->title && !in_array('title', $exclude))
 		{
 			$t = html_entity_decode($row->title);
-			$t = (!preg_match('!\S!u', $t)) ? utf8_encode($t) : $t;
+			$t = $this->toUtf8($t);
 			$doc .= "%T " . $t . "\r\n";
 		}
 		if (!in_array('authors', $exclude))
 		{
 			$author = html_entity_decode($row->author);
-			$author = (!preg_match('!\S!u', $author)) ? utf8_encode($author) : $author;
+			$author = $this->toUtf8($author);
 
 			$author_array = explode(';', stripslashes($author));
 			foreach ($author_array as $auth)
@@ -113,7 +113,7 @@ class Endnote extends Downloadable
 		if ($row->editor && !in_array('editor', $exclude))
 		{
 			$editor = html_entity_decode($row->editor);
-			$editor = (!preg_match('!\S!u', $editor)) ? utf8_encode($editor) : $editor;
+			$editor = $this->toUtf8($editor);
 
 			$author_array = explode(';', stripslashes($editor));
 			foreach ($author_array as $auth)
@@ -124,7 +124,7 @@ class Endnote extends Downloadable
 		if ($row->publisher && !in_array('publisher', $exclude))
 		{
 			$p = html_entity_decode($row->publisher);
-			$p = (!preg_match('!\S!u', $p)) ? utf8_encode($p) : $p;
+			$p = $this->toUtf8($p);
 			$doc .= "%I " . $p . "\r\n";
 		}
 		if ($row->number && !in_array('number', $exclude))
@@ -146,7 +146,7 @@ class Endnote extends Downloadable
 		if ($row->note && !in_array('note', $exclude))
 		{
 			$n = html_entity_decode($row->note);
-			$n = (!preg_match('!\S!u', $n)) ? utf8_encode($n) : $n;
+			$n = $this->toUtf8($n);
 			$doc .= "%Z " . $n . "\r\n";
 		}
 		if ($row->edition && !in_array('edition', $exclude))
@@ -168,43 +168,43 @@ class Endnote extends Downloadable
 		if ($row->keywords && !in_array('keywords', $exclude))
 		{
 			$k = html_entity_decode($row->keywords);
-			$k = (!preg_match('!\S!u', $k)) ? utf8_encode($k) : $k;
+			$k = $this->toUtf8($k);
 			$doc .= "%K " . $k . "\r\n";
 		}
 		if ($row->research_notes && !in_array('research_notes', $exclude))
 		{
 			$rn = html_entity_decode($row->research_notes);
-			$rn = (!preg_match('!\S!u', $rn)) ? utf8_encode($rn) : $rn;
+			$rn = $this->toUtf8($rn);
 			$doc .= "%< " . $rn . "\r\n";
 		}
 		if ($row->abstract && !in_array('abstract', $exclude))
 		{
 			$a = html_entity_decode($row->abstract);
-			$a = (!preg_match('!\S!u', $a)) ? utf8_encode($a) : $a;
+			$a = $this->toUtf8($a);
 			$doc .= "%X " . $a . "\r\n";
 		}
 		if ($row->label && !in_array('label', $exclude))
 		{
 			$l = html_entity_decode($row->label);
-			$l = (!preg_match('!\S!u', $l)) ? utf8_encode($l) : $l;
+			$l = $this->toUtf8($l);
 			$doc .= "%F " . $label . "\r\n";
 		}
 		if ($row->language && !in_array('language', $exclude))
 		{
 			$lan = html_entity_decode($row->language);
-			$lan = (!preg_match('!\S!u', $lan)) ? utf8_encode($lan) : $lan;
+			$lan = $this->toUtf8($lan);
 			$doc .= "%G " . $lan . "\r\n";
 		}
 		if ($row->author_address && !in_array('author_address', $exclude))
 		{
 			$aa = html_entity_decode($row->author_address);
-			$aa = (!preg_match('!\S!u', $aa)) ? utf8_encode($aa) : $aa;
+			$aa = $this->toUtf8($aa);
 			$doc .= "%+ " . $aa . "\r\n";
 		}
 		if ($row->accession_number && !in_array('accession_number', $exclude))
 		{
 			$an = html_entity_decode($row->accession_number);
-			$an = (!preg_match('!\S!u', $an)) ? utf8_encode($an) : $an;
+			$an = $this->toUtf8($an);
 			$doc .= "%M " . trim($an) . "\r\n";
 		}
 		if ($row->call_number && !in_array('callnumber', $exclude))
@@ -214,7 +214,7 @@ class Endnote extends Downloadable
 		if ($row->short_title && !in_array('short_title', $exclude))
 		{
 			$st = html_entity_decode($row->short_title);
-			$st = (!preg_match('!\S!u', $st)) ? utf8_encode($st) : $st;
+			$st = $this->toUtf8($st);
 			$doc .= "%! " . htmlspecialchars_decode(trim($st)) . "\r\n";
 		}
 
@@ -246,5 +246,20 @@ class Endnote extends Downloadable
 
 		$doc .= "\r\n";
 		return $doc;
+	}
+
+	/**
+	 * Convert to UTF8 if needed
+	 *
+	 * @param string
+	 * @return string
+	 */
+	private function toUtf8($str)
+	{
+		if (function_exists('mbstring'))
+		{
+			$str = (!preg_match('!\S!u', $str)) ? mbstring($str) : $str;
+		}
+		return $str;
 	}
 }
