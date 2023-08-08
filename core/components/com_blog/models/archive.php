@@ -18,6 +18,8 @@ require_once __DIR__ . DS . 'entry.php';
 /**
  * Blog archive model class
  */
+
+/** @phpstan-consistent-constructor */
 class Archive extends Obj
 {
 	/**

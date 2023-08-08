@@ -12,6 +12,8 @@ use Hubzero\Base\Obj;
 /**
  * Import archive model
  */
+
+/** @phpstan-consistent-constructor */
 class Archive extends Obj
 {
 	/**

@@ -13,6 +13,8 @@ use Hubzero\Content\Import\Model\Import;
 /**
  * Content Importer class
  */
+
+/** @phpstan-consistent-constructor */
 class Importer
 {
 	/**

@@ -28,6 +28,8 @@ use Closure;
  * @uses  \Hubzero\Error\Exception\BadMethodCallException  to handle calls to undefined methods
  * @uses  \Hubzero\Error\Exception\RuntimeException        to handle scenarios with undefined rows
  */
+
+/** @phpstan-consistent-constructor */
 class Relational implements \IteratorAggregate, \ArrayAccess, \Serializable
 {
 	/*

@@ -12,6 +12,8 @@ use Hubzero\Base\Obj;
 /**
  * Abstract model class for following
  */
+
+/** @phpstan-consistent-constructor */
 abstract class Base extends Obj
 {
 	/**

@@ -27,6 +27,8 @@ use Lang;
 /**
  * Project Tool model
  */
+
+/** @phpstan-consistent-constructor */
 class Tool extends Model
 {
 	/**

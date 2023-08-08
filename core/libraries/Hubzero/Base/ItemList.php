@@ -15,6 +15,8 @@ use Closure;
 /**
  * Iterator class
  */
+
+/** @phpstan-consistent-constructor */
 class ItemList implements SeekableIterator, Countable, ArrayAccess
 {
 	/**
