@@ -396,10 +396,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->types = $ct;
 
 		// OpenURL
-		$openURL = $this->_handleOpenURL();
-		$view->openurl['link'] = $openURL['link'];
-		$view->openurl['text'] = $openURL['text'];
-		$view->openurl['icon'] = $openURL['icon'];
+		$view->openurl = $this->_handleOpenURL();
 
 		// Output HTML
 		foreach ($this->getErrors() as $error)
@@ -1444,7 +1441,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	/**
 	 * Uses URL to determine OpenURL server
 	 *
-	 * @return  object  $openURL
+	 * @return  array  $openURL
 	 */
 	private function _handleOpenURL()
 	{
@@ -1487,7 +1484,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// parse the returned xml
-		$openurl = array(
+		$openURL = array(
 			'link' => '',
 			'text' => '',
 			'icon' => ''
@@ -1507,11 +1504,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$openURL['link'] = $resolver->baseURL;
 			$openURL['text'] = $resolver->linkText;
 			$openURL['icon'] = $resolver->linkIcon;
-
-			return $openURL;
 		}
 
-		return false;
+		return $openURL;
 	}
 
 	/**
