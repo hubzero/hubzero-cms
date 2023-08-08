@@ -995,6 +995,11 @@ class Translator extends Obj
 	 */
 	public function hasKey($string)
 	{
+		if (!$string)
+		{
+			return false;
+		}
+
 		$key = strtoupper($string);
 
 		return isset($this->strings[$key]);

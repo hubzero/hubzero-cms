@@ -9,10 +9,10 @@
 defined('_HZEXEC_') or die();
 
 ?>
-<div class="sidebox<?php if (count($this->files) == 0) { echo ' suggestions'; } ?>">
-		<h4><a href="<?php echo Route::url($this->model->link('files')); ?>" class="hlink"><?php echo (count($this->files) == 0) ? Lang::txt('COM_PROJECTS_FILES') : Lang::txt('PLG_PROJECTS_FILES_RECENTLY_ADDED'); ?></a>
+<div class="sidebox<?php if (!$this->files || count($this->files) == 0) { echo ' suggestions'; } ?>">
+		<h4><a href="<?php echo Route::url($this->model->link('files')); ?>" class="hlink"><?php echo (!$this->files || count($this->files) == 0) ? Lang::txt('COM_PROJECTS_FILES') : Lang::txt('PLG_PROJECTS_FILES_RECENTLY_ADDED'); ?></a>
 </h4>
-<?php if (count($this->files) == 0) { ?>
+<?php if (!$this->files || count($this->files) == 0) { ?>
 	<p class="s-files">
 		<a href="<?php echo Route::url($this->model->link('files')); ?>"><?php echo Lang::txt('COM_PROJECTS_WELCOME_UPLOAD_FILES'); ?></a>
 	</p>
@@ -34,5 +34,6 @@ defined('_HZEXEC_') or die();
 				</span>
 			</li>
 		<?php } ?>
-	</ul><?php } ?>
+	</ul>
+<?php } ?>
 </div>
