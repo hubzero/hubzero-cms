@@ -678,8 +678,12 @@ class Google extends Obj
 					$thumb     = isset($doc['thumbnailLink']) ? $doc['thumbnailLink'] : null;
 
 					$author    = isset($doc['lastModifyingUserName'])
-								? utf8_encode($doc['lastModifyingUserName'])
-								: utf8_encode($doc['ownerNames'][0]);
+								? $doc['lastModifyingUserName']
+								: $doc['ownerNames'][0];
+					if (function_exists('mbstring'))
+					{
+						$author = (!preg_match('!\S!u', $author)) ? mbstring($author) : $author;
+					}
 
 					if (!preg_match("/.folder/", $doc['mimeType']))
 					{
@@ -1023,8 +1027,8 @@ class Google extends Obj
 					$thumb     = $item->getThumbnailLink();
 
 					$author    = null; /*isset($item['lastModifyingUserName'])
-											? utf8_encode($item['lastModifyingUserName'])
-											: utf8_encode($item['ownerNames'][0]);*/
+											? $item['lastModifyingUserName']
+											: $item['ownerNames'][0];*/
 
 					if (!preg_match("/.folder/", $item->getMimeType()))
 					{
@@ -1148,8 +1152,8 @@ class Google extends Obj
 					$thumb     = isset($item['thumbnailLink']) ? $item['thumbnailLink'] : null;
 
 					$author    = isset($item['lastModifyingUserName'])
-											? utf8_encode($item['lastModifyingUserName'])
-											: utf8_encode($item['ownerNames'][0]);
+											? $item['lastModifyingUserName']
+											: $item['ownerNames'][0];
 
 					if (!preg_match("/.folder/", $item['mimeType']))
 					{
