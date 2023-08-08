@@ -257,6 +257,13 @@ class Relational implements \IteratorAggregate, \ArrayAccess, \Serializable
 	private static $classMethods = [];
 
 	/**
+	 * Table schema cache
+	 *
+	 * @var array
+	 */
+	public static $columns = [];
+
+	/**
 	 * Constructs an object instance
 	 *
 	 * @return  void
@@ -1419,19 +1426,17 @@ class Relational implements \IteratorAggregate, \ArrayAccess, \Serializable
 	 **/
 	public function getTableColumns()
 	{
-		static $columns = null;
-
-		if (is_null($columns))
+		if (!isset(self::$columns[$this->table]) || is_null(self::$columns[$this->table]))
 		{
-			$columns = (array)$this->getStructure()->getTableColumns($this->getTableName(), false);
+			self::$columns[$this->table] = (array)$this->getStructure()->getTableColumns($this->getTableName(), false);
 
-			if (empty($columns))
+			if (empty(self::$columns[$this->table]))
 			{
 				throw new Exception(sprintf('Columns not found for table %s', $this->getTableName()));
 			}
 		}
 
-		return $columns;
+		return self::$columns[$this->table];
 	}
 
 	/**
