@@ -4,7 +4,7 @@
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
+ 
 namespace Components\Tools\Models;
 
 use Log;
@@ -749,7 +749,7 @@ class Version
 				continue;
 			}
 
-			if ($property == 'author' || $property == 'xauthor')
+			if ($property == 'author')
 			{
 				$aux_table = '#__tool_authors';
 			}
@@ -777,10 +777,6 @@ class Version
 				{
 					$query = "REPLACE INTO $aux_table (toolname,revision,uid,ordering,version_id) VALUES ";
 				}
-				else if ($property == 'xauthor')
-				{
-					$query = "REPLACE INTO $aux_table (toolname,revision,uid,ordering,version_idi,name,organization) VALUES ";
-				}
 				else if ($property == 'member' || $property == 'owner')
 				{
 					$query = "REPLACE INTO $aux_table (cn,toolid,role) VALUES ";
@@ -806,13 +802,6 @@ class Version
 						$query .= '(' . $db->Quote($this->toolname) . ',' .
 							$db->Quote($this->revision) . ',' . $db->Quote($value) . ',' .
 							$db->Quote($order) . ',' . $db->Quote($this->id) . ')';
-					}
-					else if ($property == 'xauthor')
-					{
-						$query .= '(' . $db->Quote($this->toolname) . ',' .
-							$db->Quote($this->revision) . ',' . $db->Quote($value['uid']) . ',' .
-							$db->Quote($order) . ',' . $db->Quote($this->id) . ',' .
-							$db->Quote($value['name']) . ',' . $db->Quote($value['organization']) . ')';
 					}
 					else if ($property == 'member')
 					{
@@ -851,7 +840,7 @@ class Version
 
 			if (!is_array($list) || count($list) == 0)
 			{
-				if ($property == 'author' || $property == 'xauthor')
+				if ($property == 'author')
 				{
 					$query = "DELETE FROM $aux_table WHERE version_id=" . $db->Quote($this->id) . ";";
 				}
@@ -882,7 +871,7 @@ class Version
 					$valuelist = "''";
 				}
 
-				if ($property == 'author' || $property == 'xauthor')
+				if ($property == 'author')
 				{
 					$query = "DELETE FROM $aux_table WHERE version_id=" . $db->Quote($this->id) .
 						" AND uid NOT IN ($valuelist);";
@@ -1084,11 +1073,6 @@ class Version
 						$query = "SELECT uid FROM #__tool_authors WHERE version_id=" .
 							$db->Quote($this->id) . " ORDER BY ordering ASC;";
 					}
-					else if ($property == 'xauthor')
-					{
-						$query = "SELECT uid,name,organization FROM #__tool_authors WHERE version_id=" .
-							$db->Quote($this->id) . " ORDER BY ordering ASC;";
-					}
 					else if ($property == 'member')
 					{
 						$query = "SELECT cn FROM #__tool_groups WHERE role='0' AND toolid=" .
@@ -1106,13 +1090,7 @@ class Version
 
 					$db->setQuery($query);
 
-					if ($property == 'xauthor')
-					{
-						$result = $db->loadAssocList();
-					}
-					else {
-						$result = $db->loadColumn();
-					}
+					$result = $db->loadColumn();
 
 					if ($result !== false)
 					{
@@ -1162,47 +1140,6 @@ class Version
 		{
 			$this->$property = array_map("strtolower",
 				array_values(array_unique(array_diff((array) $value, array('')))));
-		}
-		else if ($property == 'xauthor')
-		{
-			if (array_key_exists('uid', $value)) {
-				$value = array($value);
-			} else if (is_numeric($value))
-			{
-				$val['uid'] = $value;
-				$value[0] = $val;
-			}
-
-			foreach ($value as $nvalue)
-			{
-				unset($val);
-
-				if (is_numeric($nvalue)) {
-					$val['uid'] = $nvalue;
-				}
-
-				$val['uid'] = isset($nvalue['uid']) ? $nvalue['uid'] : '';
-				$val['name'] = isset($nvalue['name']) ? $nvalue['name'] : '';
-				$val['organization'] = isset($nvalue['organization']) ? $nvalue['organization'] : '';
-
-				if (array_key_exists('uid', $val) && is_numeric($val['uid']))
-				{
-					$found = false;
-
-					foreach ($this->$property as $prop)
-					{
-						if ($prop['uid'] == $val['uid'])
-						{
-							$found = true;
-							break;
-						}
-					}
-
-					if (!$found) {
-						$this->xauthor[] = $val;
-					}
-				}
-			}
 		}
 		else if (in_array($property, $this->_list_keys))
 		{
