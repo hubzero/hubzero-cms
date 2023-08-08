@@ -76,7 +76,7 @@ $this->css()
 					<fieldset class="entry-search">
 						<legend><?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH_LEGEND'); ?></legend>
 						<label for="entry-search-field"><?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH_LABEL'); ?></label>
-						<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape(utf8_encode(stripslashes($this->filters['search']))); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH_PLACEHOLDER'); ?>" />
+						<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape(stripslashes($this->filters['search'])); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH_PLACEHOLDER'); ?>" />
 					</fieldset>
 				</div><!-- / .container -->
 
