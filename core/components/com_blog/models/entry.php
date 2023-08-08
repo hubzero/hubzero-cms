@@ -572,7 +572,6 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 			$scope .= $published->toLocal('m');
 
 			$params = array(
-				'filepath' => $this->adapter()->filespace(),
 				'option'   => $this->adapter()->get('option'),
 				'scope'    => $this->adapter()->get('scope') . '/' . $scope,
 				'pagename' => $this->get('alias'),
