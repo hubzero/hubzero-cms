@@ -26,6 +26,34 @@ use Hubzero\Filesystem\Manager;
 class connections
 {
 	/**
+	 * the plugin that spawned this object
+	 *
+	 * @var object
+	 */
+	public $plugin;
+
+	/**
+	 * the option being used
+	 *
+	 * @var string
+	 */
+	public $_option;
+
+	/**
+	 * the task being called
+	 *
+	 * @var string
+	 */
+	public $_task;
+
+	/**
+	 * the connection id
+	 *
+	 * @var int
+	 */
+	public $connection = null;
+
+	/**
 	 * Constructs a new connections object
 	 *
 	 * @param   object  $plugin      the plugin that spawned this object
@@ -114,9 +142,9 @@ class connections
 		]);
 
 		// Assign vars
-		$view->model       = $this->model;
-		$view->params      = $this->params;
-		$view->connections = Project::oneOrFail($this->model->get('id'))->connections()->thatICanView();
+		$view->set('model', $this->model);
+		$view->set('params', $this->params);
+		$view->set('connections', Project::oneOrFail($this->model->get('id'))->connections()->thatICanView());
 
 		// Load and return view content
 		return $view->loadTemplate();
@@ -171,8 +199,8 @@ class connections
 		]);
 
 		// Assign vars
-		$view->model      = $this->model;
-		$view->connection = $this->connection;
+		$view->set('model', $this->model);
+		$view->set('connection', $this->connection);
 
 		// Load and return view content
 		return $view->loadTemplate();
@@ -311,16 +339,16 @@ class connections
 		$dir = Entity::fromPath($this->subdir, $this->connection->adapter());
 
 		// Assign view vars
-		$view->items      = $dir->listContents()->sort($sortby, $sortasc);
-		$view->title      = $this->_area['title'];
-		$view->option     = $this->_option;
-		$view->sortby     = $sortby;
-		$view->sortdir    = $sortasc;
-		$view->subdir     = $this->subdir;
-		$view->dir        = $dir;
-		$view->model      = $this->model;
-		$view->fileparams = $this->params;
-		$view->connection = $this->connection;
+		$view->set('items', $dir->listContents()->sort($sortby, $sortasc));
+		$view->set('title', $this->_area['title']);
+		$view->set('option', $this->_option);
+		$view->set('sortby', $sortby);
+		$view->set('sortdir', $sortasc);
+		$view->set('subdir', $this->subdir);
+		$view->set('dir', $dir);
+		$view->set('model', $this->model);
+		$view->set('fileparams', $this->params);
+		$view->set('connection', $this->connection);
 
 		// Load and return view content
 		return $view->loadTemplate();
@@ -351,14 +379,14 @@ class connections
 			}
 		}
 
-		$view->items       = $dirs;
-		$view->url         = $this->model->link('files') . '&connection=' . $this->connection->id;
-		$view->option      = $this->_option;
-		$view->parent      = $dir->getParent(true);
-		$view->subdir      = $subdir;
-		$view->current_dir = $dir;
-		$view->model       = $this->model;
-		$view->connection  = $this->connection;
+		$view->set('items', $dirs);
+		$view->set('url', $this->model->link('files') . '&connection=' . $this->connection->id);
+		$view->set('option', $this->_option);
+		$view->set('parent', $dir->getParent(true));
+		$view->set('subdir', $subdir);
+		$view->set('current_dir', $dir);
+		$view->set('model', $this->model);
+		$view->set('connection', $this->connection);
 
 		return $view->loadTemplate();
 	}
@@ -466,9 +494,9 @@ class connections
 
 		$file         = Request::getString('asset');
 		$path         = trim($this->subdir, '/') . '/' . $file;
-		$view->option = $this->_option;
-		$view->model  = $this->model;
-		$view->file   = Entity::fromPath($path, $this->connection->adapter());
+		$view->set('option', $this->_option);
+		$view->set('model', $this->model);
+		$view->set('file', Entity::fromPath($path, $this->connection->adapter()));
 
 		return $view->loadTemplate();
 	}
@@ -498,15 +526,15 @@ class connections
 			'layout'  => 'upload'
 		]);
 
-		$view->url        = $this->model->link('files') . '&connection=' . $this->connection->id;
-		$view->option     = $this->_option;
-		$view->model      = $this->model;
-		$view->subdir     = $this->subdir;
-		$view->ajax       = $ajax;
-		$view->sizelimit  = $this->params->get('maxUpload', '104857600');
-		$view->title      = $this->_area['title'];
-		$view->params     = $this->params;
-		$view->connection = $this->connection;
+		$view->set('url', $this->model->link('files') . '&connection=' . $this->connection->id);
+		$view->set('option', $this->_option);
+		$view->set('model', $this->model);
+		$view->set('subdir', $this->subdir);
+		$view->set('ajax', $ajax);
+		$view->set('sizelimit', $this->params->get('maxUpload', '104857600'));
+		$view->set('title', $this->_area['title']);
+		$view->set('params', $this->params);
+		$view->set('connection', $this->connection);
 
 		return $view->loadTemplate();
 	}
@@ -966,12 +994,12 @@ class connections
 			'layout'  => 'delete'
 		]);
 
-		$view->items  = $this->getCollection();
-		$view->option = $this->_option;
-		$view->model  = $this->model;
-		$view->ajax   = Request::getInt('ajax', 0);
-		$view->subdir = $this->subdir;
-		$view->url    = $this->model->link('files') . '&connection=' . $this->connection->id;
+		$view->set('items', $this->getCollection());
+		$view->set('option', $this->_option);
+		$view->set('model', $this->model);
+		$view->set('ajax', Request::getInt('ajax', 0));
+		$view->set('subdir', $this->subdir);
+		$view->set('url', $this->model->link('files') . '&connection=' . $this->connection->id);
 
 		if (count($view->items) == 0)
 		{
@@ -1049,14 +1077,14 @@ class connections
 		$root = Entity::fromPath('', $this->connection->adapter());
 		$dirs = $root->getSubDirs();
 
-		$view->list       = $dirs;
-		$view->items      = $this->getCollection();
-		$view->option     = $this->_option;
-		$view->model      = $this->model;
-		$view->ajax       = Request::getInt('ajax', 0);
-		$view->subdir     = $this->subdir;
-		$view->url        = $this->model->link('files') . '&connection=' . $this->connection->id;
-		$view->connection = $this->connection;
+		$view->set('list', $dirs);
+		$view->set('items', $this->getCollection());
+		$view->set('option', $this->_option);
+		$view->set('model', $this->model);
+		$view->set('ajax', Request::getInt('ajax', 0));
+		$view->set('subdir', $this->subdir);
+		$view->set('url', $this->model->link('files') . '&connection=' . $this->connection->id);
+		$view->set('connection', $this->connection);
 
 		if (count($view->items) == 0)
 		{
@@ -1162,13 +1190,13 @@ class connections
 			$view->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
 		}
 
-		$view->item        = $items->first();
-		$view->option      = $this->_option;
-		$view->model       = $this->model;
-		$view->ajax        = 1;
-		$view->connection  = $this->connection;
-		$view->subdir      = $this->subdir;
-		$view->url         = $this->model->link('files') . '&connection=' . $this->connection->id;
+		$view->set('item ', $items->first());
+		$view->set('option', $this->_option);
+		$view->set('model', $this->model);
+		$view->set('ajax', 1);
+		$view->set('connection', $this->connection);
+		$view->set('subdir', $this->subdir);
+		$view->set('url', $this->model->link('files') . '&connection=' . $this->connection->id);
 
 		return $view->loadTemplate();
 	}
@@ -1229,12 +1257,12 @@ class connections
 			'layout'  => 'newfolder'
 		]);
 
-		$view->option     = $this->_option;
-		$view->model      = $this->model;
-		$view->ajax       = 1;
-		$view->subdir     = $this->subdir;
-		$view->connection = $this->connection;
-		$view->url        = $this->model->link('files') . '&connection=' . $this->connection->id;
+		$view->set('option', $this->_option);
+		$view->set('model', $this->model);
+		$view->set('ajax', 1);
+		$view->set('subdir', $this->subdir);
+		$view->set('connection', $this->connection);
+		$view->set('url', $this->model->link('files') . '&connection=' . $this->connection->id);
 
 		if ($this->getError())
 		{
@@ -1311,13 +1339,13 @@ class connections
 		$entity   = $items->first();
 		$metadata = Event::trigger('metadata.onMetadataGet', [$entity]);
 
-		$view->item     = $entity;
-		$view->metadata = isset($metadata[0]) ? $metadata[0] : array();
-		$view->option   = $this->_option;
-		$view->model    = $this->model;
-		$view->ajax     = 1;
-		$view->subdir   = $this->subdir;
-		$view->url      = $this->model->link('files') . '&connection=' . $this->connection->id;
+		$view->set('item', $entity);
+		$view->set('metadata', isset($metadata[0]) ? $metadata[0] : array());
+		$view->set('option', $this->_option);
+		$view->set('model', $this->model);
+		$view->set('ajax', 1);
+		$view->set('subdir', $this->subdir);
+		$view->set('url', $this->model->link('files') . '&connection=' . $this->connection->id);
 
 		if ($this->getError())
 		{
@@ -1437,10 +1465,10 @@ class connections
 			$view->handler = $handler;
 		}
 
-		$view->items      = $items;
-		$view->subdir     = $this->subdir;
-		$view->option     = $this->_option;
-		$view->connection = $this->connection;
+		$view->set('items', $items);
+		$view->set('subdir', $this->subdir);
+		$view->set('option', $this->_option);
+		$view->set('connection', $this->connection);
 
 		return $view->loadTemplate();
 	}
