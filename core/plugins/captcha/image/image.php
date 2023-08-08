@@ -293,7 +293,7 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 				{
 					$shift = 1;
 				}
-				imagecopy($img, $font, $x-$shift, $y, $m['start'], 1, $m['end']-$m['start'], $fontfile_height);
+				imagecopy($img, $font, $x-$shift, round($y), $m['start'], 1, $m['end']-$m['start'], $fontfile_height);
 				$x += $m['end']-$m['start']-$shift;
 			}
 		}
@@ -335,6 +335,10 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
+					$sx = round($sx);
+					$sx = $sx >= ($width - 1) ? $sx - 1 : $sx;
+					$sy = round($sy);
+					$sy = $sy >= ($height - 1) ? $sy - 1 : $sy;
 					$color = imagecolorat($img, $sx, $sy) & 0xFF;
 					$color_x = imagecolorat($img, $sx+1, $sy) & 0xFF;
 					$color_y = imagecolorat($img, $sx, $sy+1) & 0xFF;
@@ -347,9 +351,9 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 				}
 				else if ($color==0 && $color_x==0 && $color_y==0 && $color_xy==0)
 				{
-					$newred = $foreground_color[0];
+					$newred   = $foreground_color[0];
 					$newgreen = $foreground_color[1];
-					$newblue = $foreground_color[2];
+					$newblue  = $foreground_color[2];
 				}
 				else
 				{
@@ -372,10 +376,14 @@ class plgCaptchaImage extends \Hubzero\Plugin\Plugin
 					$newcolor = $newcolor/255;
 					$newcolor0 = 1-$newcolor;
 
-					$newred = $newcolor0*$foreground_color[0]+$newcolor*$background_color[0];
+					$newred   = $newcolor0*$foreground_color[0]+$newcolor*$background_color[0];
 					$newgreen = $newcolor0*$foreground_color[1]+$newcolor*$background_color[1];
-					$newblue = $newcolor0*$foreground_color[2]+$newcolor*$background_color[2];
+					$newblue  = $newcolor0*$foreground_color[2]+$newcolor*$background_color[2];
 				}
+
+				$newred   = round($newred);
+				$newgreen = round($newgreen);
+				$newblue  = round($newblue);
 
 				imagesetpixel($img2, $x, $y, imagecolorallocate($img2, $newred, $newgreen, $newblue));
 			}
