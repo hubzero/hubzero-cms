@@ -849,7 +849,10 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 							break;
 						case 'journaltitle':
 							$jt = html_entity_decode($this->$k);
-							$jt = (!preg_match('!\S!u', $jt)) ? utf8_encode($jt) : $jt;
+							if (function_exists('mbstring'))
+							{
+								$jt = (!preg_match('!\S!u', $jt)) ? mbstring($jt) : $jt;
+							}
 							$coins_data[] = $this->_coins_keys[$k] . '=' . $jt;
 							break;
 						default:
@@ -875,7 +878,10 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 					if (isset($this->$k) && $this->$k)
 					{
 						$auth = html_entity_decode($this->$k);
-						$auth = (!preg_match('!\S!u', $auth)) ? utf8_encode($auth) : $auth;
+						if (function_exists('mbstring'))
+						{
+							$auth = (!preg_match('!\S!u', $auth)) ? mbstring($auth) : $auth;
+						}
 					}
 
 					// prefer the use of the relational table
@@ -1001,7 +1007,10 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 					}
 
 					$t = html_entity_decode($this->$k);
-					$t = (!preg_match('!\S!u', $t)) ? utf8_encode($t) : $t;
+					if (function_exists('mbstring'))
+					{
+						$t = (!preg_match('!\S!u', $t)) ? mbstring($t) : $t;
+					}
 
 					$title = ($url != '' && preg_match('/http:|https:/', $url))
 							? '<a rel="external" class="citation-title" href="' . $url . '">' . $t . '</a>'

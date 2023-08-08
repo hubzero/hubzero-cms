@@ -115,7 +115,11 @@ class Helper extends Module
 					$xmlpath.= '.xml';
 
 					$fh = fopen($xmlpath, "w");
-					fwrite($fh, utf8_encode($xml));
+					if (function_exists('mbstring'))
+					{
+						$xml = mbstring($xml);
+					}
+					fwrite($fh, $xml);
 					fclose($fh);
 				}
 			}

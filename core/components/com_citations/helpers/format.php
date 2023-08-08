@@ -256,7 +256,10 @@ class Format
 							break;
 						case 'journaltitle':
 							$jt = html_entity_decode($citation->$k);
-							$jt = (!preg_match('!\S!u', $jt)) ? utf8_encode($jt) : $jt;
+							if (function_exists('mbstring'))
+							{
+								$jt = (!preg_match('!\S!u', $jt)) ? mbstring($jt) : $jt;
+							}
 							$coins_data[] = $this->_coins_keys[$k] . '=' . $jt;
 							break;
 						default:
@@ -279,7 +282,10 @@ class Format
 					$a = array();
 
 					$auth = html_entity_decode($citation->$k);
-					$auth = (!preg_match('!\S!u', $auth)) ? utf8_encode($auth) : $auth;
+					if (function_exists('mbstring'))
+					{
+						$auth = (!preg_match('!\S!u', $auth)) ? mbstring($auth) : $auth;
+					}
 
 					$author_string = $auth;
 					$authors = explode(';', $author_string);
@@ -365,7 +371,10 @@ class Format
 					}
 
 					$t = html_entity_decode($citation->$k);
-					$t = (!preg_match('!\S!u', $t)) ? utf8_encode($t) : $t;
+					if (function_exists('mbstring'))
+					{
+						$t = (!preg_match('!\S!u', $t)) ? mbstring($t) : $t;
+					}
 
 					$title = ($url != '' && preg_match('/http:|https:/', $url))
 							? '<a rel="external" class="citation-title" href="' . $url . '">' . $t . '</a>'

@@ -549,7 +549,7 @@ class Sanitize
 
 			foreach ($trans_tbl as $k => $v)
 			{
-				$ttr[$v] = utf8_encode($k);
+				$ttr[$v] = function_exists('mbstring') ? mbstring($k) : $k;
 			}
 		}
 
@@ -560,7 +560,12 @@ class Sanitize
 			'/&#(\d+);/m',
 			function ($matches)
 			{
-				return utf8_encode(chr($matches[1]));
+				$str = chr($matches[1]);
+				if (function_exists('mbstring'))
+				{
+					$str = mbstring($str);
+				}
+				return $str;
 			},
 			$source
 		);
@@ -570,7 +575,12 @@ class Sanitize
 			'/&#x([a-f0-9]+);/mi',
 			function ($matches)
 			{
-				return utf8_encode(chr('0x' . $matches[1]));
+				$str = chr('0x' . $matches[1]);
+				if (function_exists('mbstring'))
+				{
+					$str = mbstring($str);
+				}
+				return $str;
 			},
 			$source
 		);
