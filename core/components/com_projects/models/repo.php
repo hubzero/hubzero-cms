@@ -107,7 +107,7 @@ class Repo extends Obj
 		{
 			// Use regex to avoid what might be a caching thing with Tables
 			$matches = array();
-			preg_match('/versionTracking=(\d)/', $this->get('project')->get('params'), $matches);
+			preg_match('/versionTracking=(\d)/', $this->get('project')->get('params', ''), $matches);
 			// Only use git adapter if project specifies it - otherwise assume we're not using git
 			if (isset($matches[1]) && $matches[1] == 1)
 			{
@@ -159,7 +159,7 @@ class Repo extends Obj
 			{
 				// Use regex to avoid what might be a caching thing with Tables
 				$matches = array();
-				preg_match('/versionTracking=(\d)/', $this->get('project')->get('params'), $matches);
+				preg_match('/versionTracking=(\d)/', $this->get('project')->get('params', ''), $matches);
 				// Only use git adapter if project specifies it - otherwise assume we're not using git
 				if (isset($matches[1]) && $matches[1] == 1)
 				{
