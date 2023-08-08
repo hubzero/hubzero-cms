@@ -1,5 +1,5 @@
 <?php
-
+ 
 class OAuthRequest
 {
 	protected $parameters;
@@ -282,7 +282,7 @@ class OAuthRequest
 	/**
 	 * util function: current timestamp
 	 */
-	private static function generate_timestamp()
+	public static function generate_timestamp()
 	{
 		return time();
 	}
@@ -290,7 +290,7 @@ class OAuthRequest
 	/**
 	 * util function: current nonce
 	 */
-	private static function generate_nonce()
+	public static function generate_nonce()
 	{
 		$mt = microtime();
 		$rand = mt_rand();
