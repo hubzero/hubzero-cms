@@ -276,7 +276,7 @@ $rows = $this->archive->entries($this->filters)
 							{
 							?>
 								<li>
-									<a<?php if ($this->filters['month'] && $this->filters['month'] == ($k+1)) { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $i . '&month=' . sprintf("%02d", ($k+1), 1)); ?>"><?php echo Lang::txt($m[$k]); ?></a>
+									<a<?php if ($this->filters['month'] && $this->filters['month'] == ($k+1)) { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $i . '&month=' . sprintf("%02d", ($k+1))); ?>"><?php echo Lang::txt($m[$k]); ?></a>
 								</li>
 							<?php
 							}
