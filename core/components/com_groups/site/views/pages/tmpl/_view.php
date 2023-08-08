@@ -184,7 +184,7 @@ if (($pagePrivacy== 'registered' && User::isGuest())
 			$params = new \Hubzero\Config\Registry();
 			$params->set('onCommentMark', function($comment) use ($experts)
 			{
-				if (in_array($comment->creator('id'), $experts))
+				if (in_array($comment->creator->get('id'), $experts))
 				{
 					return 'expert';
 				}
