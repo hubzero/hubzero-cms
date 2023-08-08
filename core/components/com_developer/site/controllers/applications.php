@@ -594,7 +594,7 @@ class Applications extends SiteController
 		// Validate and handle the authorization request
 		if (!$server->validateAuthorizeRequest($request, $response))
 		{
-			throw new Exception($response->getParameter('error_description'), 400);
+			throw new \Exception($response->getParameter('error_description'), 400);
 		}
 		$server->handleAuthorizeRequest($request, $response, true, User::get('id'));
 

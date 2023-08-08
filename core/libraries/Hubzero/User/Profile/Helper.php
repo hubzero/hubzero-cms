@@ -31,7 +31,7 @@ class Helper
 
 		if ($result === false)
 		{
-			throw new Exception('Error retrieving data from xprofiles table: ' . $db->getErrorMsg(), 500);
+			throw new \Exception('Error retrieving data from xprofiles table: ' . $db->getErrorMsg(), 500);
 			return false;
 		}
 

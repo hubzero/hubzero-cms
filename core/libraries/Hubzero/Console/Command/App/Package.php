@@ -101,7 +101,7 @@ class Package extends Base implements CommandInterface
 		{
 			Composer::installPackage($package, $version);
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 
 		}

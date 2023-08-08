@@ -242,7 +242,7 @@ class Select
 			}
 			else
 			{
-				throw new Exception('Invalid group contents.', 1, E_WARNING);
+				throw new \Exception('Invalid group contents.', 1, E_WARNING);
 			}
 
 			if ($noGroup)

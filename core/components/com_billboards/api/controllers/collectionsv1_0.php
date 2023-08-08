@@ -78,7 +78,7 @@ class Collectionsv1_0 extends ApiController
 		// Make sure we found a collection
 		if ($collection->isNew())
 		{
-			throw new Exception(Lang::txt('Collection not found'), 404);
+			throw new \Exception(Lang::txt('Collection not found'), 404);
 		}
 
 		$billboards = $collection->billboards()

@@ -220,7 +220,7 @@ class Media extends SiteController
 				}
 			}
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			// Fail silently.
 		}

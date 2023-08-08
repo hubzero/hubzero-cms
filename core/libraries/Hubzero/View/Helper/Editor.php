@@ -72,7 +72,7 @@ class Editor extends AbstractHelper
 		{
 			$editor = App::get('editor');
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			$editor = \Hubzero\Html\Editor::getInstance('none');
 		}

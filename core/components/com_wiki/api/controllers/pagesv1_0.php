@@ -237,7 +237,7 @@ class Pagesv1_0 extends ApiController
 
 		if (!$page->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_WIKI_ERROR_PAGE_NOT_FOUND'), 404);
+			throw new \Exception(Lang::txt('COM_WIKI_ERROR_PAGE_NOT_FOUND'), 404);
 		}
 
 		$version_id = Request::getInt('revision', $page->get('version_id'));
@@ -248,7 +248,7 @@ class Pagesv1_0 extends ApiController
 
 		if (!$version->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_WIKI_WARNING_NO_REVISION_FOUND', $version_id), 404);
+			throw new \Exception(Lang::txt('COM_WIKI_WARNING_NO_REVISION_FOUND', $version_id), 404);
 		}
 
 		$response = $page->toObject();
@@ -376,19 +376,19 @@ class Pagesv1_0 extends ApiController
 
 		if (!$id)
 		{
-			throw new Exception(Lang::txt('COM_WIKI_ERROR_PAGE_NOT_SPECIFIED'), 422);
+			throw new \Exception(Lang::txt('COM_WIKI_ERROR_PAGE_NOT_SPECIFIED'), 422);
 		}
 
 		$page = Page::oneOrFail($id);
 
 		if (!$page->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_WIKI_ERROR_PAGE_NOT_FOUND'), 404);
+			throw new \Exception(Lang::txt('COM_WIKI_ERROR_PAGE_NOT_FOUND'), 404);
 		}
 
 		if ($page->isLocked() && !$page->access('manage'))
 		{
-			throw new Exception(Lang::txt('COM_WIKI_ERROR_NOTAUTH'), 403);
+			throw new \Exception(Lang::txt('COM_WIKI_ERROR_NOTAUTH'), 403);
 		}
 
 		$revision = $page->version;
@@ -412,13 +412,13 @@ class Pagesv1_0 extends ApiController
 
 		if (!$page->save())
 		{
-			throw new Exception($page->getError(), 500);
+			throw new \Exception($page->getError(), 500);
 		}
 
 		// Set authors
 		if (!Author::setForPage(Request::getString('authors', '', 'post'), $page->get('id')))
 		{
-			throw new Exception(Lang::txt('COM_WIKI_ERROR_SAVING_AUTHORS'), 500);
+			throw new \Exception(Lang::txt('COM_WIKI_ERROR_SAVING_AUTHORS'), 500);
 		}
 
 		$old = $revision->get('pagetext');
@@ -459,7 +459,7 @@ class Pagesv1_0 extends ApiController
 
 			if (!$revision->save())
 			{
-				throw new Exception(Lang::txt('COM_WIKI_ERROR_SAVING_REVISION'), 500);
+				throw new \Exception(Lang::txt('COM_WIKI_ERROR_SAVING_REVISION'), 500);
 			}
 
 			$page->set('version_id', $revision->get('id'));
@@ -469,7 +469,7 @@ class Pagesv1_0 extends ApiController
 		// Store changes
 		if (!$page->save())
 		{
-			throw new Exception($page->getError(), 500);
+			throw new \Exception($page->getError(), 500);
 		}
 
 		// Process tags
@@ -500,19 +500,19 @@ class Pagesv1_0 extends ApiController
 
 		if (!$page->get('id'))
 		{
-			throw new Exception(Lang::txt('COM_WIKI_ERROR_PAGE_NOT_FOUND'), 404);
+			throw new \Exception(Lang::txt('COM_WIKI_ERROR_PAGE_NOT_FOUND'), 404);
 		}
 
 		if (!$page->access('delete'))
 		{
-			throw new Exception(Lang::txt('COM_WIKI_ERROR_NOTAUTH'), 403);
+			throw new \Exception(Lang::txt('COM_WIKI_ERROR_NOTAUTH'), 403);
 		}
 
 		$page->set('state', Page::STATE_DELETED);
 
 		if (!$page->save()) //$page->destroy()
 		{
-			throw new Exception(Lang::txt('COM_WIKI_UNABLE_TO_DELETE'), 500);
+			throw new \Exception(Lang::txt('COM_WIKI_UNABLE_TO_DELETE'), 500);
 		}
 
 		$this->send(null, 202);

@@ -55,7 +55,7 @@ class Memcache extends Store
 	{
 		if (!self::isAvailable())
 		{
-			throw new Exception(\Lang::txt('JLIB_SESSION_MEMCACHE_EXTENSION_NOT_AVAILABLE'));
+			throw new \Exception(\Lang::txt('JLIB_SESSION_MEMCACHE_EXTENSION_NOT_AVAILABLE'));
 		}
 
 		if (isset($options['prefix']))

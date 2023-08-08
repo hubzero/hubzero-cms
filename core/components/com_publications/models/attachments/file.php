@@ -787,7 +787,7 @@ class File extends Base
 				if (!$server->serve())
 				{
 					// Should only get here on error
-					throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_SERVE'), 404);
+					throw new \Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_SERVE'), 404);
 				}
 				else
 				{

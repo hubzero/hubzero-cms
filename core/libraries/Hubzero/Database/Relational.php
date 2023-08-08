@@ -1432,7 +1432,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess, \Serializable
 
 			if (empty(self::$columns[$this->table]))
 			{
-				throw new Exception(sprintf('Columns not found for table %s', $this->getTableName()));
+				throw new \Exception(sprintf('Columns not found for table %s', $this->getTableName()));
 			}
 		}
 

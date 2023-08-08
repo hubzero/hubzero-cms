@@ -54,7 +54,7 @@ class Access
 		// Check for a database error.
 		if ($db->getErrorNum())
 		{
-			throw new Exception($db->getErrorMsg(), 500, E_WARNING);
+			throw new \Exception($db->getErrorMsg(), 500, E_WARNING);
 			return null;
 		}
 
@@ -109,7 +109,7 @@ class Access
 		// Check for a database error.
 		if ($db->getErrorNum())
 		{
-			throw new Exception($db->getErrorMsg(), 500, E_WARNING);
+			throw new \Exception($db->getErrorMsg(), 500, E_WARNING);
 			return null;
 		}
 
@@ -161,7 +161,7 @@ class Access
 		// Check for a database error.
 		if ($db->getErrorNum())
 		{
-			throw new Exception($db->getErrorMsg(), 500, E_WARNING);
+			throw new \Exception($db->getErrorMsg(), 500, E_WARNING);
 			return null;
 		}
 
@@ -279,7 +279,7 @@ class Access
 			// Check for a database error.
 			if ($db->getErrorNum())
 			{
-				throw new Exception($db->getErrorMsg(), 500, E_WARNING);
+				throw new \Exception($db->getErrorMsg(), 500, E_WARNING);
 				return false;
 			}
 		}

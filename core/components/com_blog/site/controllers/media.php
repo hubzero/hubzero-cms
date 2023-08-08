@@ -41,7 +41,7 @@ class Media extends SiteController
 
 		if (!$entry->get('id') || !$entry->access('view'))
 		{
-			throw new Exception(Lang::txt('Access denied.'), 403);
+			throw new \Exception(Lang::txt('Access denied.'), 403);
 		}
 
 		if (!($file = Request::getString('file', '')))

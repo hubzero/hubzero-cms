@@ -613,7 +613,7 @@ class Projects extends AdminController
 
 		if (!$objO->id)
 		{
-			throw new Exception(Lang::txt('Error loading user'), 404);
+			throw new \Exception(Lang::txt('Error loading user'), 404);
 		}
 
 		// Change in individual ownership

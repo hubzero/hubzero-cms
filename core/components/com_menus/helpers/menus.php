@@ -188,7 +188,7 @@ class Menus
 		// Check for a database error.
 		if ($error = $db->getErrorMsg())
 		{
-			throw new Exception($error, 500);
+			throw new \Exception($error, 500);
 			return false;
 		}
 
@@ -273,7 +273,7 @@ class Menus
 		// Check for a database error.
 		if ($error = $db->getErrorMsg())
 		{
-			throw new Exception($error, 500);
+			throw new \Exception($error, 500);
 		}
 
 		foreach ($menuitems as $tag => $item)

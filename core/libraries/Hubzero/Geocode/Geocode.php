@@ -255,7 +255,7 @@ class Geocode
 			}
 		}
 
-		if (!$instance || ($instance instanceof Exception) || !$instance->getConnection())
+		if (!$instance || ($instance instanceof \Exception) || !$instance->getConnection())
 		{
 			return null;
 		}

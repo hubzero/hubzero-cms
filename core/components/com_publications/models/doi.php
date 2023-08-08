@@ -917,7 +917,7 @@ class Doi extends Obj
 		}
 		else
 		{
-			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_STATUS'), 400);
+			throw new \Exception(Lang::txt('COM_PUBLICATIONS_ERROR_UPDATE_STATUS'), 400);
 		}
 	}
 
