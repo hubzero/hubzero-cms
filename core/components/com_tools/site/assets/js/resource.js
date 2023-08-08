@@ -21,11 +21,13 @@ HUB.ToolsResource = {
 	initialize: function() {
 		var $ = this.jQuery;
 
+		// Previous Button on the Tool Edit Description Wizard
 		$('.returntoedit').each(function(i, item) {
 			$(item).on('click', function(e) {
 				e.preventDefault();
 
 				var editform = document.getElementById("hubForm");
+				editform.controller.value = "resources";
 				editform.step.value = editform.step.value-2;
 				editform.task.value = "start";
 				editform.submit();

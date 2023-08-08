@@ -62,7 +62,7 @@ $this->css('resource.css')
 		<input type="hidden" name="toolname" value="<?php echo $this->resource->alias; ?>" />
 
 		<div class="steps-nav">
-			<span class="step-prev"><input type="button" value="&lt; <?php echo ucfirst(Lang::txt('COM_TOOLS_PREVIOUS')); ?>" class="returntoedit" /></span>
+			<span class="step-prev"><input type="button" value="&lt; <?php echo ucfirst(Lang::txt('COM_TOOLS_PREVIOUS')); ?>" class="btn returntoedit" /></span>
 			<span class="step-next"><input type="submit" value="<?php echo ucfirst(Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_FINALIZE')); ?> &gt;" /></span>
 		</div>
 		<div class="clear"></div>
