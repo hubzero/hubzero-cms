@@ -862,7 +862,7 @@ class Format
 	 */
 	public static function keyExistsOrIsNotEmpty($key, $row)
 	{
-		if (isset($row->$key))
+		if (isset($row[$key]))
 		{
 			if ($row->$key != '' && $row->$key != '0' && $row->$key != '0000-00-00 00:00:00')
 			{
