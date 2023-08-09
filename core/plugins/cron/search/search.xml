@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="1.7" type="plugin" group="cron">
-	<name>Cron - Geosearch</name>
+	<name>Cron - Search</name>
 	<author>HUBzero</author>
 	<authorUrl>hubzero.org</authorUrl>
 	<authorEmail>support@hubzero.org</authorEmail>
 	<copyright>Copyright (c) 2005-2020 The Regents of the University of California.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<description>Cron events for geosearch</description>
+	<description>PLG_CRON_SEARCH_XML_DESCRIPTION</description>
 	<files>
-		<filename plugin="groups">geosearch.php</filename>
+		<filename plugin="search">search.php</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.plg_cron_geosearch.ini</language>
+		<language tag="en-GB">en-GB.plg_cron_search.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
