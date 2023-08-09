@@ -109,7 +109,7 @@ class Searchable extends AdminController
 			{
 				$component->set('state', SearchComponent::STATE_INDEXED);
 				$componentLink = Route::url('index.php?option=com_search&controller=' . $this->_controller . '&task=documentListing&facet=hubtype:' . $component->getSearchNamespace());
-				$recordsIndexed['state'] = 1;
+				$recordsIndexed['state'] = SearchComponent::STATE_INDEXED; //1;
 				$recordsIndexed['total'] = '<a href="' . $componentLink . '">' . $component->getSearchCount() . '</a>';
 				$recordsIndexed['link'] = Route::url('index.php?option=' . $this->_option . '&controller=searchable&task=deleteIndex&id=' . $component->get('id'), false);
 			}
@@ -120,8 +120,11 @@ class Searchable extends AdminController
 			}
 			else
 			{
-				$component->set('indexed_records', $recordsIndexed['offset']);
-				$recordsIndexed['state'] = 0;
+				if (isset($recordsIndexed['offset']))
+				{
+					$component->set('indexed_records', $recordsIndexed['offset']);
+				}
+				$recordsIndexed['state'] = SearchComponent::STATE_NOTINDEXED; //0;
 				$recordsIndexed['numprocess'] = empty($numProcess) ? $component->getBatchSize() : $numProcess;
 				$recordsIndexed['numprocess'] .= ' Batches';
 			}
