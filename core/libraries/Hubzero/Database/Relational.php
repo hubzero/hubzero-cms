@@ -431,14 +431,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess, \Serializable
 	}
 
 	/**
-	 * Chevk ig attributes (i.e. field) on the model is set
+	 * Check if attributes (i.e. field) on the model is set
 	 *
-	 * @param   array|string  $key    The key to check if set
+	 * @param   string  $name    The attribute to check if set
 	 * @return  boolean 
 	 */
 	public function __isset($name)
 	{
-		return isset($this->attributes[$name]);
+		return $this->hasAttribute($name);
 	}
 
 	/**
