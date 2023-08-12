@@ -84,7 +84,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 	}
 	?>
 
-	<form action="<?php echo Route::url('index.php?option='.$this->option.'&' . ($this->task == 'create' ? 'return=' . $form_redirect : 'task=' . $this->task)); ?>" method="post" id="hubForm">
+	<form method="post" id="hubForm">
 
 		<?php
 		if ($this->task == 'create' && empty($this->xregistration->_invalid) && empty($this->xregistration->_missing))
