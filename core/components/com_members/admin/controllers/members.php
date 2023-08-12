@@ -637,7 +637,7 @@ class Members extends AdminController
 		}
 
 		// Email the user that their account has been approved
-		if (!$prev->get('approved') && $this->config->get('useractivation_email'))
+		if (!$prev->get('approved') && $user->get('approved') && $this->config->get('useractivation_email'))
 		{
 			if (!$this->emailApprovedUser($user))
 			{
