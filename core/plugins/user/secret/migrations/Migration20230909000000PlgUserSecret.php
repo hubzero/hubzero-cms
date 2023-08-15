@@ -25,7 +25,7 @@ class Migration20230909000000PlgUserSecret extends Base
 
 	// specify column to create
 	static $columnData = 	[ ['name' => 'secret',
-								'type' => 'varchar(64)',
+								'type' => 'char(32)',
 								'restriction' => 'UNIQUE',
 								'default' => 'NULL'],
 							];
