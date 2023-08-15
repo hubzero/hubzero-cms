@@ -14,19 +14,20 @@ defined('_HZEXEC_') or die;
 class plgUserSecret extends \Hubzero\Plugin\Plugin
 {
 
-	/** 
-	* Name of table where user secret column resides.
-    * 
-    * @var  String
-    */  
+	/**
+	 * Name of table where user secret column resides.
+	 * 
+	 * @var  String 
+	 * 
+	 */
 	private $tableName = '#__users';
 
 	/** 
-	* Affects constructor behavior. If true, language files will be loaded automatically. 
-    * 
-    * @var  boolean 
-    */  
-    protected $_autoloadLanguage = true; 
+	 * Affects constructor behavior. If true, language files will be loaded automatically. 
+	 * 
+	 * @var  boolean 
+	 */
+    protected $_autoloadLanguage = true;
 
 	/**
 	 * This method should handle any login logic and report back to the subject
@@ -56,25 +57,25 @@ class plgUserSecret extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * This utility method checks whether current user has a secret set 
+	 * This utility method checks whether current user has a secret set
 	 * in the database, and if not, it generates and saves one.
 	 *
 	 * @param   integer	$userId  Primary key identifying user in jos_users table
-	 * @return  boolean	True if user has secret column populated in database 	
+	 * @return  boolean	True if user has secret column populated in database
 	 */
 	protected function verifyUserSecret($userId)
 	{
 		// create a new user secret if none exists in database:
-		if (!$this->checkForUserSecret($userId)) 
+		if (!$this->checkForUserSecret($userId))
 		{
 			$newSecret = $this->createUserSecret();
-			
+
 			// Attempt to save the new user secret to the database:
 			if (!$this->saveUserSecret($userId, $newSecret))
 			{
 				return false;
 			}
-		}	
+		}
 		// User secret exists in database:
 		return true;
 	}
@@ -83,16 +84,16 @@ class plgUserSecret extends \Hubzero\Plugin\Plugin
 	 * This utility method will return true if current user has a secret set, false otherwise.
 	 *
 	 * @param   integer	$userId    Primary key identifying user in jos_users table
-	 * @return  boolean	$hasSecret True if user has secret column populated in database 	
+	 * @return  boolean	$hasSecret True if user has secret column populated in database
 	 */
 	protected function checkForUserSecret($userId)
 	{
 		$query = new \Hubzero\Database\Query;
 
 		// Determine whether user's secret is different from null
-		$foundSecret = $query->select('*')  
-               		->from($this->tableName)  
-               		->whereEquals('id', $userId)  
+		$foundSecret = $query->select('*')
+               		->from($this->tableName)
+               		->whereEquals('id', $userId)
                		->whereIsNotNull('secret')
                		->fetch();
 
@@ -105,27 +106,27 @@ class plgUserSecret extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * This utility method generates a new user secret. 
+	 * This utility method generates a new user secret.
 	 *
-	 * @return String user secret 
+	 * @return String user secret
 	 */
 	protected function createUserSecret()
 	{
 		// create 32-character secret:
 		$newSecret = shell_exec("head -c 500 /dev/urandom | tr -dc '[:alnum:]' | head -c 32");
 
-		if (!is_null($newSecret)) { 
+		if (!is_null($newSecret)) {
 			return $newSecret;
 		}
 		return false;
 	}
 
 	/**
-	 * This utility method saves a new user secret. 
+	 * This utility method saves a new user secret.
 	 *
 	 * @param   integer	$userId  Primary key identifying user in jos_users table
-	 * @param   String $secret   User secret 
-	 * @return  boolean	True if secret column successfully populated in database 	
+	 * @param   String $secret   User secret
+	 * @return  boolean	True if secret column successfully populated in database
 	 */
 	protected function saveUserSecret($userId, $secret)
 	{
@@ -142,7 +143,7 @@ class plgUserSecret extends \Hubzero\Plugin\Plugin
 
 
 	/**
-	 * Replaces user secret with null. 
+	 * Replaces user secret with null.
 	 *
 	 * @param   integer	$userId  Primary key identifying user in jos_users table
 	 * @return  boolean	True if secret value was overwritten successfully.
@@ -154,7 +155,7 @@ class plgUserSecret extends \Hubzero\Plugin\Plugin
 		// If user exists:
 		$user = User::oneOrFail($userId);
 		if (isset($user))
-		{ 
+		{
 			// NULL out any existing secret for this user:
 			$query->update($this->tableName)
 				->set(['secret' => NULL])

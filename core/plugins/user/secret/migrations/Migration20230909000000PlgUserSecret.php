@@ -12,11 +12,11 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding User - Secret plugin
- * 
- * This migration script creates a jos_users column for the plugin to populate 
+ *
+ * This migration script creates a jos_users column for the plugin to populate
  * with a unique user secret, on user login. On 'down' migration the column
  * is dropped from the table.
- * 
+ *
  **/
 class Migration20230909000000PlgUserSecret extends Base
 {
@@ -27,17 +27,17 @@ class Migration20230909000000PlgUserSecret extends Base
 	static $columnData = 	[ ['name' => 'secret',
 								'type' => 'varchar(64)',
 								'restriction' => 'UNIQUE',
-								'default' => 'NULL'], 
+								'default' => 'NULL'],
 							];
 
 	/**
 	 * Up
-	 * 
+	 *
 	 * Create 'secret' column in jos_users if needed.
-	 * 
+	 *
 	 * Note that we have logging callbacks, per
 	 * https://help.hubzero.org/documentation/22/webdevs/database/migrations
-	 * 
+	 *
 	 **/
 	public function up()
 	{
@@ -67,7 +67,7 @@ class Migration20230909000000PlgUserSecret extends Base
 	 * Down
 	 *
 	 * Drop 'secret' column from jos_users table.
-	 * 
+	 *
 	 **/
 	public function down()
 	{
