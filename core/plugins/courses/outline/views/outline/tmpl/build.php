@@ -31,7 +31,7 @@ foreach ($asset_group_types as $asset_group_type) {
 	$asset_group_type = ltrim($asset_group_type,' ');
 	$filters = array(
 		'scope' => 'asset_group',
-		'created' => User::get('id'),
+		'created_by' => User::get('id'),
 		'type' => $asset_group_type
 	);
 	$clips[$asset_group_type] = $clipboard->find($filters);

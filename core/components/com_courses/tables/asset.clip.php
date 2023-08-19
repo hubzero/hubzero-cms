@@ -79,21 +79,24 @@ class AssetClip extends Table
 	 */
 	private function _buildQuery($filters=array())
 	{
-		$query  = " FROM $this->_tbl AS cac";
+		$query  = " FROM $this->_tbl AS clip";
 		$where = array();
 
 		if (isset($filters['scope']) && $filters['scope'])
 		{
-			$where[] = "cac.scope=" . $this->_db->quote($filters['scope']);
+			$where[] = "clip.scope=" . $this->_db->quote($filters['scope']);
 		}
 		if (isset($filters['type']) && $filters['type'])
 		{
-			$where[] = "cac.type=" . $this->_db->quote($filters['type']);
+			$where[] = "clip.type=" . $this->_db->quote($filters['type']);
 		}
-
+		if (isset($filters['user']) && $filters['user'])
+		{
+			$where[] = "clip.created_by=" . $this->_db->quote($filters['user']);
+		}
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$where[] = "LOWER(cac.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
+			$where[] = "LOWER(clip.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
 		}
 
 		if (count($where) > 0)
@@ -112,7 +115,7 @@ class AssetClip extends Table
 	 */
 	public function count($filters=array())
 	{
-		$query  = "SELECT COUNT(cac.id)";
+		$query  = "SELECT COUNT(clip.id)";
 		$query .= $this->_buildQuery($filters);
 
 		$this->_db->setQuery($query);
@@ -127,7 +130,7 @@ class AssetClip extends Table
 	 */
 	public function find($filters=array())
 	{
-		$query  = "SELECT cac.*";
+		$query  = "SELECT clip.*";
 		$query .= $this->_buildQuery($filters);
 
 		if (!empty($filters['start']) && !empty($filters['limit']))
@@ -135,7 +138,7 @@ class AssetClip extends Table
 			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
-		$query .= " ORDER BY cac.created DESC";
+		$query .= " ORDER BY clip.created DESC";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

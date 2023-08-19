@@ -8,10 +8,12 @@
 namespace Components\Courses\Api\Controllers;
 
 use Hubzero\Config\Registry;
-use Components\Courses\Models\Assetclip;
+use Components\Courses\Models\Assetclip as AssetclipModel;
+use Components\Courses\Tables\Assetclip as AssetclipTable;
 use App;
 use Request;
 use Date;
+use stdClass;
 
 require_once __DIR__ . DS . 'base.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assetclip.php';
@@ -71,8 +73,8 @@ class Assetclipv1_0 extends base
 		// Check for an incoming 'id'
 		$id = Request::getInt('id', null);
 
-		// Create an asset clip instance
-		$assetClip = new Assetclip($id);
+		// Create an asset clip model instance
+		$assetClip = new AssetclipModel($id);
 	
 		// Check to make sure we have an asset group object
 		if (!is_object($assetClip))
@@ -175,5 +177,139 @@ class Assetclipv1_0 extends base
 				'assetclip_style'    => 'display:none'
 			], ($id ? 200 : 201)
 		);
+	}
+	/**
+	 * Lists asset clips
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /courses/assetcip/list
+	 * @apiParameter {
+	 * 		"name":        "limit",
+	 * 		"description": "Number of records to return",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     25 
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "limitstart",
+	 * 		"description": "Offset of Records to return",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     0 
+	 * }
+	 * @return    void
+	 */
+	public function listTask()
+	{
+		$filters = array(
+			'limit' => Request::getInt('limit', 25),
+			'start' => Request::getInt('limitstart', 0)
+		);
+
+		$db = App::get('db');
+		$assetClips = new AssetclipTable($db);
+		$total   = $assetClips->count($filters);
+		$assetClips = $assetClips->find($filters);
+
+		$records = array();
+		foreach ($assetClips as $assetClip)
+		{
+			$entry = new stdClass;
+			$entry->id = $assetClip->id;
+			$entry->scope = $assetClip->scope;
+			$entry->scope_id = $assetClip->scope_id;
+			$entry->type = $assetClip->type;
+			$entry->title = $assetClip->title;
+			array_push($records, $entry);
+		}
+
+		$response = new stdClass;
+		$response->assetClips = $records;
+		$response->total = $total;
+		$response->success = true;
+		$this->send($response);
+	}
+
+	/**
+	 * Search asset clips
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /courses/assetcip/search
+	 * @apiParameter {
+	 * 		"name":        "scope",
+	 * 		"description": "Scope of clip",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     'asset_group' 
+	 * }
+	 * 	 * @apiParameter {
+	 * 		"name":        "type",
+	 * 		"description": "Type of clip",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     none 
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "user",
+	 * 		"description": "Id of user who created clip",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     App::get('authn')['user_id']
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "search",
+	 * 		"description": "word/phrase search for in clip title",
+	 * 		"type":        "string",
+	 * 		"required":    false,
+	 * 		"default":     none
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "limit",
+	 * 		"description": "Number of records to return",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     25 
+	 * }
+	 * @return    void
+	 */
+	public function searchTask()
+	{
+		$user = App::get('authn')['user_id'];
+		$filters = array(
+			'scope' => Request::getString('scope', 'asset_group'),
+			'user' => Request::getInt('user', $user),
+			'limit' => Request::getInt('limit', 25)
+		);
+		$type = Request::getString('type','');
+		if (!empty($type)) {
+			$filters['type'] = $type;
+		}
+		$search = Request::getString('search','');
+		if (!empty($search)) {
+			$filters['search'] = $search;
+		}
+
+		$db = App::get('db');
+		$assetClips = new AssetclipTable($db);
+		$total   = $assetClips->count($filters);
+		$assetClips = $assetClips->find($filters);
+
+		$records = array();
+		foreach ($assetClips as $assetClip)
+		{
+			$entry = new stdClass;
+			$entry->id = $assetClip->id;
+			$entry->scope = $assetClip->scope;
+			$entry->scope_id = $assetClip->scope_id;
+			$entry->type = $assetClip->type;
+			$entry->title = $assetClip->title;
+			array_push($records, $entry);
+		}
+
+		$response = new stdClass;
+		$response->assetClips = $records;
+		$response->total = $total;
+		$response->success = true;
+		$this->send($response);
 	}
 }

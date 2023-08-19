@@ -118,6 +118,8 @@ class Coursesv1_0 extends base
 			else
 			{
 				$entry = new stdClass;
+				$entry->id = $course->id;
+				$entry->alias = $course->alias;
 				$entry->title = $course->title;
 				$entry->description = $course->blurb;
 				array_push($records, $entry);

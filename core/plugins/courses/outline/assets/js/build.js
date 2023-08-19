@@ -123,6 +123,9 @@ jQuery(document).ready(function($) {
 	if (!$('.assets-deleted li').length) {
 		$('.trash').hide();
 	}
+
+	// define glabal clipoptiom set by assetgroup.getclips()
+	var clipoptions = '';
 });
 
 HUB.CoursesOutline = {
@@ -1591,7 +1594,31 @@ HUB.CoursesOutline = {
 				statusCode: {
 					// 200 OK
 					200: function ( data ){
-						this.refresh;
+						this.refresh();
+					}
+				}
+			});
+		},
+
+		/*
+		 * Get asset clips from clipboard as HTML <select> <option>'s
+		 */
+		getclips: function ( agt = 'Lectures') {
+			var $ = HUB.CoursesOutline.jQuery;
+
+			// Create ajax call to get clips
+			$.ajax({
+				url: '/api/courses/assetclip/search?scope=asset_group&type='+agt,
+				type: 'GET',
+				async: false,
+				statusCode: {
+					// 200 OK
+					200: function ( data ){
+						clipoptions = '';
+						for (var key in data.assetClips) {
+							var clip = data.assetClips[key];
+							clipoptions += "<option value="+clip.id+">"+clip.title+"</optiom>\n";
+						}
 					}
 				}
 			});
@@ -2085,8 +2112,10 @@ HUB.CoursesOutline = {
 															'<input type="hidden" name="parent" value="<%= assetgroup.assetgroup_id %>" />',
 														'</form>',
 													'</div>',
+													'<% HUB.CoursesOutline.assetgroup.getclips(assetgroup.assetgroup_title); %>',
+													'<% if (clipoptions.length > 0) { %>',
 													'<div class="asset-group-item paste-copy sub-item">',
-														'<span>|| Or</span>',
+														'<span style="padding-left: 30px;"> [ Or</span>',
 														'<form action="/api/courses/assetgroup/save">',
 															'<input type="submit" id="copy_asset_group" value="Copy" />',
 															'<span> ',
@@ -2099,14 +2128,16 @@ HUB.CoursesOutline = {
 															'%>',	
 															' </span>',
 															'<select name="id">',
-																'<option value="0">-- Select --</option>',												'<input type="hidden" name="course_id" value="<%= course_id %>" />',
+															'<%= clipoptions %>',
 															'</select>',
+															'<input type="hidden" name="course_id" value="<%= course_id %>" />',
 															'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
 															'<input type="hidden" name="unit_id" value="<%= unit_id %>" />',
 															'<input type="hidden" name="parent" value="<%= assetgroup.assetgroup_id %>" />',
 														'</form>',
-														'<span>from the asset clipboard</span>',
+														'<span>from the asset clipboard ]</span>',
 													'</div>',
+													'<% } %>',
 												'</div>',
 											'</li>',
 										'</ul>',

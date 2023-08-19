@@ -11,9 +11,9 @@ defined('_HZEXEC_') or die();
 
 <li class="asset-group-item <?php echo ($this->ag->isPublished()) ? 'published' : 'unpublished' ?>" id="assetgroupitem_<?php echo $this->ag->get('id') ?>">
 	<div class="asset-group-controls">
-		<div class="sortable-handle"></div>
-		<div class="asset-group-edit"></div>
-		<div class="asset-group-copy"></div>
+		<div class="sortable-handle" title="Drag to Re-order"></div>
+		<div class="asset-group-edit" title="Edit Asset Group"></div>
+		<div class="asset-group-copy" title="Copy Asset Group to Clipboard"></div>
 	</div>
 	<div class="uploadfiles">
 		<p>Drag files here to upload</p>
