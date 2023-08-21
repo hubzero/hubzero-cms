@@ -18,6 +18,8 @@ $units = $offering->units();
 
 HTML::behavior('core');
 
+//TODO: Move the following to the controller and attach clips to the view
+
 $db = App::get('db');
 
 // Get default asset group types
@@ -174,6 +176,7 @@ foreach ($asset_group_types as $asset_group_type) {
 										->set('base', $base)
 										->set('course', $course)
 										->set('unit', $unit)
+										->set('agt', $agt)
 										->set('ag', $ag)
 										->display();
 								}
@@ -203,7 +206,7 @@ foreach ($asset_group_types as $asset_group_type) {
 												<input type="hidden" name="parent" value="<?php echo $agt->get('id'); ?>" />
 											</form>
 										</div>
-										<?php if ($clips_total[$agt_title] & ($clips_total[$agt_title] > 0)) { ?>
+										<?php if (array_key_exists($agt_title,$clips) && ($clips_total[$agt_title] > 0)) { ?>
 										<div class="asset-group-item paste-copy sub-item">
 											<span style="padding-left: 30px;">[ Or</span>
 											<form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save">
