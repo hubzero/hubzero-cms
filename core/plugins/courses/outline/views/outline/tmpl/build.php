@@ -17,29 +17,6 @@ $sectionId = $section->get('id');
 $units = $offering->units();
 
 HTML::behavior('core');
-
-//TODO: Move the following to the controller and attach clips to the view
-
-$db = App::get('db');
-
-// Get default asset group types
-$config = Component::params('com_courses');
-$asset_group_types = explode(',', $config->get('default_asset_groups', 'Lectures, Activities, Exam'));
-array_map('trim', $asset_group_types);
-
-// Get asset clip items
-$clipboard = new \Components\Courses\Tables\Assetclip($db);
-foreach ($asset_group_types as $asset_group_type) {
-	$asset_group_type = ltrim($asset_group_type,' ');
-	$filters = array(
-		'scope' => 'asset_group',
-		'created_by' => User::get('id'),
-		'type' => $asset_group_type
-	);
-	$clips[$asset_group_type] = $clipboard->find($filters);
-	$clips_total[$asset_group_type] = $clipboard->count($filters);
-}
-
 ?>
 
 <div class="header">
@@ -131,7 +108,17 @@ foreach ($asset_group_types as $asset_group_type) {
 
 			<ul class="asset-group-type-list">
 
-			<?php foreach ($unit->assetgroups() as $agt) : ?>
+			<?php 
+			$db = App::get('db');
+			$clipboard = new \Components\Courses\Tables\Assetclip($db);
+			foreach ($unit->assetgroups() as $agt) : 
+				$filters = array(
+					'scope' => 'asset_group',
+					'created_by' => User::get('id'),
+					'type' => $agt->get('title'),
+				);
+				$clips = $clipboard->find($filters);				
+			?>
 
 				<li class="asset-group-type-item <?php echo ($agt->get('state') == '1') ? 'published' : 'unpublished' ?>">
 					<div class="asset-group-type-item-container">
@@ -206,7 +193,7 @@ foreach ($asset_group_types as $asset_group_type) {
 												<input type="hidden" name="parent" value="<?php echo $agt->get('id'); ?>" />
 											</form>
 										</div>
-										<?php if (array_key_exists($agt_title,$clips) && ($clips_total[$agt_title] > 0)) { ?>
+										<?php if (count($clips) > 0) { ?>
 										<div class="asset-group-item paste-copy sub-item">
 											<span style="padding-left: 30px;">[ Or</span>
 											<form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save">
@@ -214,7 +201,7 @@ foreach ($asset_group_types as $asset_group_type) {
 												<span>&nbsp;<?php echo (substr($agt_title, -3) == 'ies') ? strtolower(preg_replace('/ies$/', 'y', $agt_title)) : strtolower(rtrim($agt_title, 's')); ?></span>
 												<select name="id">
 													<?php
-														foreach ($clips[$agt_title] as $clip)
+														foreach ($clips as $clip)
 														{
 															echo "<option value=".$clip->id.">".$clip->title."</option>";
 														}
