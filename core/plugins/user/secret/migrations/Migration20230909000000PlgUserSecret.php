@@ -24,11 +24,12 @@ class Migration20230909000000PlgUserSecret extends Base
 	static $tableName = '#__users';
 
 	// specify column to create
-	static $columnData = 	[ ['name' => 'secret',
-								'type' => 'char(32)',
-								'restriction' => 'UNIQUE',
-								'default' => 'NULL'],
-							];
+	static $columnData = 	[ 
+		['name' => 'secret',
+		'type' => 'char(32)',
+		'restriction' => 'UNIQUE',
+		'default' => 'NULL'],
+	];
 
 	/**
 	 * Up
@@ -48,8 +49,8 @@ class Migration20230909000000PlgUserSecret extends Base
 		// If the table exists, add column if it is absent:
 		if ($this->db->tableExists($tableName))
 		{
-
-			if (!$this->db->tableHasField($tableName, $columnData['name'])) {
+			if (!$this->db->tableHasField($tableName, $columnData['name'])) 
+			{
 				$this->log('No column `secret` found in table `jos_users`, creating...', 'info');
 
 				// generate and run query to create column
