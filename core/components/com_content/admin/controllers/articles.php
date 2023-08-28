@@ -440,9 +440,11 @@ class Articles extends AdminController
 		// Upon "saving to copy" or "save to new", blank out alias, update created and published up date to now
         if (in_array($this->_task, $newTasks)) {
             $article->set('created', Date::of('now')->toSql());
+			$article->set('created_by', User::getInstance()->get('id'));
             $article->set('publish_up', Date::of('now')->toSql());
 			$article->set('publish_down', null);
 			$article->set('alias', null);
+			$article->save();
         }
 
 		$this->view
