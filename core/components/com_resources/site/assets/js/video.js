@@ -654,7 +654,7 @@ HUB.Video = {
 							<div id=\"link\"> \
 								<span>Share:</span><input type=\"text\" id=\"replay-link\" value=" + window.location + " /> \
 								<a target='_blank' href=\"http://www.facebook.com/share.php?u=" + window.location + "\" id=\"facebook\" title=\"Share on Facebook\">Facebook</a> \
-								<a target='_blank' href=\"http://twitter.com/home?status=Currently Watching: " + window.location +"\" id=\"twitter\" title=\"Share on Twitter\">Twitter</a> \
+								<a target='_blank' href=\"http://twitter.com/intent/tweet?text=Currently Watching: " + window.location +"\" id=\"twitter\" title=\"Share on Twitter\">Twitter</a> \
 							</div> \
 						</div> \
 						<a id=\"replay-back\" href=\"#\">&laquo; Close Video</a> \
