@@ -147,6 +147,9 @@ class Assetv1_0 extends base
 				case 'tool':
 					$ext = 'tool';
 					break;
+				case 'app':
+					$ext = 'app';
+					break;	
 			}
 		}
 		else
