@@ -8,6 +8,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+use Components\Search\Models\Solr\SearchComponent as SearchComponent;
+require_once Component::path('com_search') . '/models/solr/searchcomponent.php';
+
+// Use SOLR search. Fetch the id for the 'resources' search component; limit search to that component:
+$searchcomponentId = SearchComponent::whereEquals('name','resources')->rows()->key();
+
 $this->css('introduction.css', 'system')
      ->css()
      ->js();
@@ -32,9 +38,7 @@ $this->css('introduction.css', 'system')
 					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('Search'); ?>" />
 					<fieldset class="entry-search">
 						<input type="text" name="terms" value="" placeholder="<?php echo Lang::txt('What are you interested in?'); ?>" />
-						<!-- <input type="hidden" name="option" value="<?php echo $this->option; ?>" /> -->
-						<input type="hidden" name="domains[]" value="resources" />
-						<input type="hidden" name="section" value="resources" />
+						<input type="hidden" name="type" value="<?php echo $searchComponentId; ?>" /> 
 					</fieldset>
 				</form>
 			</div><!-- / .container -->

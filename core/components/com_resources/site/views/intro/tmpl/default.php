@@ -8,6 +8,12 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
+use Components\Search\Models\Solr\SearchComponent as SearchComponent;
+require_once Component::path('com_search') . '/models/solr/searchcomponent.php';
+
+// Use SOLR search. Fetch the id for the 'resources' search component; limit search to that component:
+$searchcomponentId = SearchComponent::whereEquals('name','resources')->rows()->key();
+
 $this->css('introduction.css', 'system')
      ->css()
      ->js();
@@ -57,6 +63,7 @@ $this->css('introduction.css', 'system')
 		<div class="col span9 omega">
 			<div class="grid">
 				<div class="col span-half">
+                                <!--
 					<form action="<?php echo Route::url('index.php?option=com_resources&task=browse'); ?>" method="get" class="search">
 						<fieldset>
 							<p class="hz-v-align">
@@ -68,6 +75,15 @@ $this->css('introduction.css', 'system')
 							</p>
 						</fieldset>
 					</form>
+                                -->
+					<form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get">
+						<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_RESOURCES_SEARCH');?>" />
+           	                                <fieldset class="entry-search">
+							<input type="text" id="solr-search-term" name="terms" value="" placeholder="<?php echo Lang::txt('COM_RESOURCES_SEARCH_LABEL'); ?>" />
+							<input type="hidden" name="type" value="<?php echo $searchcomponentId; ?>" />
+						</fieldset>
+					</form>
+
 				</div><!-- / .col span-half -->
 				<div class="col span-half omega">
 					<div class="browse">
