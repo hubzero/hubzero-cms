@@ -773,6 +773,7 @@ class Items extends AdminController
 		{
 			$this->model->version->version_label = $version_label;
 		}
+		$this->model->version->downloadable = Request::getBool('downloadlink', false, 'post');
 
 		// Get DOI service
 		$doiService = new Models\Doi($this->model);
