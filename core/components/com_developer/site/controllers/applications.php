@@ -166,7 +166,7 @@ class Applications extends SiteController
 		// must be logged in
 		if (User::isGuest())
 		{
-			$return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false, true);
+			$return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit', false, true);
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
