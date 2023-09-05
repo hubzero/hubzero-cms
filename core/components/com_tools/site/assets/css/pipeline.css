@@ -807,6 +807,7 @@
 	.shifted { 
 		position: absolute;
 		left: 200px;
+		max-width: 25%;
 		margin: 0 0 2em 0;
 		font-size: 1em;
 	}
