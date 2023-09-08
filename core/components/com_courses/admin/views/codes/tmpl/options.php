@@ -21,6 +21,7 @@ if ($tmpl != 'component')
 }
 
 Html::behavior('framework', true);
+Html::behavior('formvalidation');
 
 $this->js();
 
