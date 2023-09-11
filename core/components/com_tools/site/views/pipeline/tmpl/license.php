@@ -64,9 +64,13 @@ $this->css('pipeline.css')
 			</h3>
 			<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license&app=' . $this->status['toolname']); ?>" method="post" id="licenseForm" name="licenseForm">
 				<fieldset class="versionfield">
-					<label><?php echo Lang::txt('COM_TOOLS_CODE_ACCESS'); ?>:</label>
+					<div class="label-with-choice-icon">
+						<label><?php echo Lang::txt('COM_TOOLS_CODE_ACCESS'); ?>:</label>
+						<span id="choice-icon">&nbsp;</span>
+					</div>
+					
 					<?php echo \Components\Tools\Helpers\Html::formSelect('t_code', 't_code', $codeChoices, $this->code, 'shifted', ''); ?>
-					<span id="choice-icon">&nbsp;</span>
+					
 					<div id="closed-source">
 						<h4><?php echo Lang::txt('COM_TOOLS_LICENSE_ARE_YOU_SURE'); ?></h4>
 						<div class="why-open"><?php echo Lang::txt('COM_TOOLS_LICENSE_WHY_OPEN_SOURCE'); ?></div>
