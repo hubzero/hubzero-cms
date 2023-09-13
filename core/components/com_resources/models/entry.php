@@ -684,6 +684,9 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	/**
 	 * Transform display date
 	 *
+	 * Return entry date according to component show_date preference
+	 * Result is in Local timezone (unlike the datetime transform below)
+	 *
 	 * @return  string
 	 */
 	public function transformDate()
@@ -709,6 +712,47 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 				break;
 			case 3:
 				$thedate = Date::of($this->get('publish_up'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+				break;
+			case 0:
+			default:
+				$thedate = '';
+				break;
+		}
+
+		return $thedate;
+	}
+
+	/**
+	 * Transform display datetime
+	 *
+	 * Return entry date and time according to component show_date preference
+	 * Result is in UTC (unlike the date transform above)
+	 *
+	 * @return  string
+	 */
+	public function transformDatetime()
+	{
+		if (!$this->get('modified') || $this->get('modified') == '0000-00-00 00:00:00')
+		{
+			$this->set('modified', $this->get('created'));
+		}
+
+		if (!$this->get('publish_up') || $this->get('publish_up') == '0000-00-00 00:00:00')
+		{
+			$this->set('publish_up', $this->get('created'));
+		}
+
+		// Set the display date
+		switch ($this->params->get('show_date'))
+		{
+			case 1:
+				$thedate = Date::of($this->get('created'));
+				break;
+			case 2:
+				$thedate = Date::of($this->get('modified'));
+				break;
+			case 3:
+				$thedate = Date::of($this->get('publish_up'));
 				break;
 			case 0:
 			default:

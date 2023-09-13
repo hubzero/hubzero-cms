@@ -13,7 +13,7 @@ $this->css();
 $sef = Route::url($this->model->link());
 
 // Set the display date
-$thedate = $this->model->date;
+$thedate = $this->model->datetime;
 if ($this->model->isTool() && $this->model->curtool)
 {
 	$thedate = $this->model->curtool->released;
