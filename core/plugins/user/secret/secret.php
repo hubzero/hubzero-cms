@@ -113,7 +113,8 @@ class plgUserSecret extends \Hubzero\Plugin\Plugin
 	protected function createUserSecret()
 	{
 		// create 32-character secret:
-		$newSecret = shell_exec("head -c 500 /dev/urandom | tr -dc '[:alnum:]' | head -c 32");
+		$secretLength = 32;
+		$newSecret = \Hubzero\User\Password::genRandomPassword($secretLength);
 
 		if (!is_null($newSecret)) {
 			return $newSecret;
