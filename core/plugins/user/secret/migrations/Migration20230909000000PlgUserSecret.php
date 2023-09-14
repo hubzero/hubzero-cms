@@ -39,6 +39,9 @@ class Migration20230909000000PlgUserSecret extends Base
 	 * Note that we have logging callbacks, per
 	 * https://help.hubzero.org/documentation/22/webdevs/database/migrations
 	 *
+	 * This so-called logging provides informational output when 'muse' is run
+	 * at up-migration time.
+	 *
 	 **/
 	public function up()
 	{
@@ -56,9 +59,10 @@ class Migration20230909000000PlgUserSecret extends Base
 				// generate and run query to create column
 				$query = $this->_generateSafeAddColumns($tableName, $columnData);
 				$this->_queryIfTableExists($tableName, $query);
+
+				$this->log('Column `secret` created in table `jos_users`', 'info');
 			}
 		}
-		$this->log('Column `secret` created in table `jos_users`', 'info');
 
 		// now add the plugin to the db:
 		$this->addPluginEntry('user', 'secret');
@@ -68,6 +72,9 @@ class Migration20230909000000PlgUserSecret extends Base
 	 * Down
 	 *
 	 * Drop 'secret' column from jos_users table.
+	 *
+	 * The so-called logging here provides informational output when 'muse' is run
+	 * at down-migration time.
 	 *
 	 **/
 	public function down()
