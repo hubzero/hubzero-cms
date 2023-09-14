@@ -1,0 +1,135 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+.wykiwyg {
+	width: auto !important;
+}
+.xapp-edit input[type="text"] {
+	width: 100%;
+}
+.xapp-edit .prerequisites {
+	background: #F1F1F1;
+	margin-bottom: 20px;
+	border: 1px solid #AAAAAA;
+}
+.xapp-edit .xapp-asterisk {
+	font-size: 11px;
+}
+.xapp-edit .required {
+	color: red;
+	font-size: 11px;
+}
+.xapp-edit .title-error {
+	display: none;
+}
+.xapp-edit .xapp-include-assets {
+	margin: 10px 0;
+	width: 100%;
+	height: 250px;
+	border: 1px solid #999;
+	overflow: scroll;
+}
+.xapp-edit .xapp-assets-inner {
+	padding: 15px;
+}
+.xapp-files {
+	border: 1px solid #D9D9D9;
+	background-color: #F0F0F0;
+	background-color: rgba(0, 0, 0, .039);
+	overflow: hidden;
+	color: #777;
+	padding: 20px;
+
+	-webkit-border-bottom-right-radius: 3px;
+	-webkit-border-bottom-left-radius: 3px;
+	-moz-border-radius-bottomright: 3px;
+	-moz-border-radius-bottomleft: 3px;
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+}
+.xapp-files p.hint {
+	margin: 0 0 1em 0;
+	padding: 0;
+}
+.xapp-files p.hint code {
+	background: #fff;
+	color: #333;
+	display: inline-block;
+	padding: 0.1em 0.3em;
+}
+.fileupload {
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	zoom: 1;
+	filter: alpha(opacity = 0);
+	-ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
+}
+.fileupload:hover {
+	cursor: pointer;
+}
+.xapp-files-upload-wrapper,
+.xapp-files-available-wrapper {
+	float: left;
+	width: 49%;
+	position: relative;
+}
+.xapp-files-available-wrapper {
+	margin-left: 2%;
+}
+.xapp-files-upload,
+.xapp-files-available {
+	background-color: #FFF;
+	height: 100px;
+
+	-webkit-border-radius-: 3px;
+	-moz-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-o-border-radius: 3px;
+	border-radius: 3px;
+}
+.xapp-files-upload {
+	border: 3px dotted #CCC;
+	opacity: 0.7;
+}
+.xapp-files-upload p,
+.xapp-files-available p {
+	text-align: center;
+	font-size: 24px;
+	line-height: 100px;
+	margin: 0;
+}
+.xapp-files-upload p:before {
+	font-family: "fontcons";
+	content: "\f046";
+	margin-right: 10px;
+}
+.xapp-files-available {
+	border: 3px solid #E1E1E1;
+	overflow: scroll;
+}
+.xapp-file {
+	display: block;
+	border-bottom: 1px solid #CCC;
+	margin: 5px 10px;
+}
+.xapp-files-filename {
+	margin-right: 20px;
+}
+.xapp-files-delete {
+	position: relative;
+	float: right;
+}
+.xapp-files-delete:before {
+	content: "\f014";
+	font-family: "fontcons";
+}
+.xapp-files-delete:hover {
+	cursor: pointer;
+}

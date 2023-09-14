@@ -147,8 +147,8 @@ class Assetv1_0 extends base
 				case 'tool':
 					$ext = 'tool';
 					break;
-				case 'app':
-					$ext = 'app';
+				case 'xapp':
+					$ext = 'xapp';
 					break;	
 			}
 		}
@@ -446,6 +446,45 @@ class Assetv1_0 extends base
 				}
 			}
 		}
+		// Check to see if the asset should be a link to an external app
+		if ($xapp_param = Request::getInt('xapp_param', false))
+		{
+			$config = Component::params('com_courses');
+
+			// Make sure the external app path parameter is set
+			if ($config->get('xapp_path'))
+			{
+				$xapp_alias = Request::getCmd('xapp_alias');
+				$xapp_path  = DS . trim($config->get('xapp_path'), DS) . DS;
+				$asset_path = DS . trim($config->get('uploadpath'), DS) . DS . $this->course_id . DS . $asset->get('id');
+				$file       = Filesystem::files(PATH_APP . $asset_path);
+
+				// We're assuming there's only one file there...
+				if (isset($file[0]) && !empty($file[0]))
+				{
+					$param_path = $xapp_path . $asset->get('id') . DS . $file[0];
+
+					// See if the file exists, and if not, copy the file there
+					if (!is_dir(dirname($param_path)))
+					{
+						mkdir(dirname($param_path));
+						copy(PATH_APP . $asset_path . DS . $file[0], $param_path);
+					}
+					else
+					{
+						if (!is_file(PATH_APP . $asset_path . DS . $file[0], $param_path))
+						{
+							copy(PATH_APP . $asset_path . DS . $file[0], $param_path);
+						}
+					}
+
+					// Set the type and build the invoke url with file param
+					$asset->set('type', 'url');
+					$asset->set('subtype', 'xapp');
+					$asset->set('url', '/xapps/'.$xapp_alias.'/invoke?params=file:'.$param_path);
+				}
+			}
+		}		
 		else if ($asset->get('type') == 'url' && $asset->get('subtype') == 'tool' && Request::getInt('edit_tool_param', false))
 		{
 			// This is the scenario where it was a tool launch link, but the box was unchecked
@@ -454,6 +493,23 @@ class Assetv1_0 extends base
 			$asset_path = DS . trim($config->get('uploadpath'), DS) . DS . $this->course_id . DS . $asset->get('id');
 			$file       = Filesystem::files(PATH_APP . $asset_path);
 			$param_path = $tool_path . $asset->get('id') . DS . $file[0];
+
+			// Delete the file (it still exists in the site directory)
+			unlink($param_path);
+
+			// Reset type and subtype to file
+			$asset->set('type', 'file');
+			$asset->set('subtype', 'file');
+			$asset->set('url', $file[0]);
+		}
+		else if ($asset->get('type') == 'url' && $asset->get('subtype') == 'xapp' && Request::getInt('edit_xapp_param', false))
+		{
+			// This is the scenario where it was an external app launch link, but the box was unchecked
+			$config     = Component::params('com_courses');
+			$xapp_path  = DS . trim($config->get('xapp_path'), DS) . DS;
+			$asset_path = DS . trim($config->get('uploadpath'), DS) . DS . $this->course_id . DS . $asset->get('id');
+			$file       = Filesystem::files(PATH_APP . $asset_path);
+			$param_path = $xapp_path . $asset->get('id') . DS . $file[0];
 
 			// Delete the file (it still exists in the site directory)
 			unlink($param_path);
@@ -704,16 +760,27 @@ class Assetv1_0 extends base
 			App::abort(500, 'Asset is not a part of this course.');
 		}
 
-		$toolHandler = null;
-		if ($asset->get('type') == 'tool')
+		$fileHandler = null;
+		if ($asset->get('type') == 'tool' || $asset->get('type') == 'xapp')
 		{
-			$toolHandler = $asset->loadHandler();
+			$fileHandler = $asset->loadHandler();
 		}
 
-		$basePath = $toolHandler !== null ? $asset->get('path') . '/' : $asset->path($this->course->get('id'));
+		$basePath = $fileHandler !== null ? $asset->get('path') . '/' : $asset->path($this->course->get('id'));
 		$path     = $basePath . $filename;
 		$dirname  = dirname($path);
-		$corePath = $toolHandler !== null ? $toolHandler::getToolDirectory() : PATH_APP;
+		if ($asset->get('type') == 'tool')
+		{
+			$corePath = $fileHandler !== null ? $fileHandler::getToolDirectory() : PATH_APP;
+		}
+		else if ($asset->get('type') == 'xapp')
+		{
+			$corePath = $fileHandler !== null ? $fileHandler::getXappDirectory() : PATH_APP;
+		}
+		else
+		{
+			$corePath = PATH_APP;
+		}
 
 		if (!is_file($corePath . $path) || $dirname != rtrim($basePath, DS))
 		{

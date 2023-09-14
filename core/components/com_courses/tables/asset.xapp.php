@@ -12,7 +12,7 @@ use Hubzero\Database\Table;
 /**
  * Table class for tracking external app asset results
  */
-class AssetApp extends Table
+class AssetXapp extends Table
 {
 	/**
 	 * Constructor
@@ -22,7 +22,7 @@ class AssetApp extends Table
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('#__courses_asset_app', 'id', $db);
+		parent::__construct('#__courses_asset_xapp', 'id', $db);
 
 		$this->_trackAssets = false;
 	}

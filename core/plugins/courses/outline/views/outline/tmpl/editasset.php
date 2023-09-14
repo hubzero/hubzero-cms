@@ -33,10 +33,16 @@ foreach ($this->course->offering()->units() as $unit) :
 endforeach;
 
 require_once Component::path('com_tools') . DS . 'models' . DS . 'tool.php';
+//require_once Component::path('com_xapps') . DS . 'models' . DS . 'xapp.php';
 
 $tools     = \Components\Tools\Models\Tool::getMyTools();
 $config    = Component::params('com_courses');
 $tool_path = $config->get('tool_path');
+
+//$xapps     = \Components\Xappss\Models\Xapp::getMyXapps();
+$xapps = array();
+$config    = Component::params('com_courses');
+$xapp_path = $config->get('xapp_path');
 ?>
 
 <div class="edit-asset">
@@ -77,6 +83,7 @@ $tool_path = $config->get('tool_path');
 				<option value="wiki"<?php if ($asset->get('subtype') == 'wiki') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Wiki'); ?></option>
 				<option value="link"<?php if ($asset->get('subtype') == 'link') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Link'); ?></option>
 				<option value="tool"<?php if ($asset->get('subtype') == 'tool') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Tool'); ?></option>
+				<option value="xapp"<?php if ($asset->get('subtype') == 'xapp') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('Xapp'); ?></option>
 			</select>
 		</p>
 		<p>
@@ -116,6 +123,26 @@ $tool_path = $config->get('tool_path');
 						<?php preg_match('/\/tools\/([0-9a-z]+)\//', $asset->get('url'), $substr); ?>
 						<?php $selected = ($substr && isset($substr[1]) && $substr[1] == $tool->alias) ? 'selected="selected"' : ''; ?>
 						<option value="<?php echo $tool->alias ?>" <?php echo $selected ?>><?php echo $tool->title ?></option>
+					<?php endforeach; ?>
+				</select>
+			</p>
+		<?php endif; ?>
+
+		<?php if ($xapp_path
+				&& $xapps
+				&& count($xapps) > 0
+				&& (($asset->get('type') == 'file' && $asset->get('subtype') == 'file')
+					|| ($asset->get('type') == 'url' && $asset->get('subtype') == 'xapp'))) : ?>
+			<p>
+				<label for="xapp_param">Launch an external app with this file?</label>
+				<input name="xapp_param" class="xapp-param" type="checkbox" value="1" <?php echo ($asset->get('type') == 'url' && $asset->get('subtype') == 'xapp') ? 'checked="checked"' : ''; ?>/>
+				<input type="hidden" name="edit_xapp_param" value="1" />
+
+				<select class="xapp-list" name="xapp_alias">
+					<?php foreach ($xapps as $xapp) : ?>
+						<?php preg_match('/\/xapps\/([0-9a-z]+)\//', $asset->get('url'), $substr); ?>
+						<?php $selected = ($substr && isset($substr[1]) && $substr[1] == $xapp->alias) ? 'selected="selected"' : ''; ?>
+						<option value="<?php echo $xapp->alias ?>" <?php echo $selected ?>><?php echo $xapp->title ?></option>
 					<?php endforeach; ?>
 				</select>
 			</p>

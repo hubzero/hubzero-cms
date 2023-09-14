@@ -304,7 +304,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 																$hasPrimaryVideo = true;
 																$href = Route::url($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
 															}
-															else if ($a->get('type') == 'file' || $a->get('type') == 'url' || $a->get('subtype') == 'tool')
+															else if ($a->get('type') == 'file' || $a->get('type') == 'url' || $a->get('subtype') == 'tool' || $a->get('subtype') == 'xapp')
 															{
 																$target = ' rel="noopener noreferrer nofollow" target="_blank"';
 															}
@@ -356,6 +356,27 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 																		foreach ($files as $child)
 																		{
 																			$fullFilePath = $handler::getToolDirectory() . $a->get('path') . '/' . $child;
+																			$childHref = $href . '?file=' . urlencode($fullFilePath);
+																			$childLink = '<a class="' . $cls . '" href="' . $childHref . '"' . $target . '>' .
+																				$this->escape(stripslashes($child)) . '</a>';
+																			$children .= '<li>' . $childLink . '</li>';
+																		}
+																		$children .= '</ul>';
+																	}
+																}
+															}
+															else if ($a->get('type') == 'xapp')
+															{
+																$handler = $a->loadHandler();
+																if (method_exists($handler, 'files'))
+																{
+																	$files = $handler->files($a);
+																	if (!empty($files))
+																	{
+																		$children = '<ul>';
+																		foreach ($files as $child)
+																		{
+																			$fullFilePath = $handler::getXappDirectory() . $a->get('path') . '/' . $child;
 																			$childHref = $href . '?file=' . urlencode($fullFilePath);
 																			$childLink = '<a class="' . $cls . '" href="' . $childHref . '"' . $target . '>' .
 																				$this->escape(stripslashes($child)) . '</a>';
@@ -452,7 +473,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 														{
 															$href = Route::url($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
 														}
-														else if ($a->get('type') == 'file' || $a->get('type') == 'url' || $a->get('type') == 'tool')
+														else if ($a->get('type') == 'file' || $a->get('type') == 'url' || $a->get('type') == 'tool' || $a->get('type') == 'xapp')
 														{
 															$target = ' rel="noopener noreferrer nofollow" target="_blank"';
 														}

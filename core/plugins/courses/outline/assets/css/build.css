@@ -253,6 +253,9 @@
 .aux-attachments a.attach-tool:before {
 	content: "\f0ad";
 }
+.aux-attachments a.attach-xapp:before {
+	content: "\f0ad";
+}
 .aux-attachments a.attach-object:before {
 	content: "\f0c3";
 }
@@ -757,7 +760,7 @@ ul {
 	display: none;
 }
 .asset-group-item-container {
-	margin: 10px 240px 10px 10px;
+	margin: 10px 245px 10px 10px;
 }
 .uploadfiles {
 	position: absolute;
@@ -768,7 +771,7 @@ ul {
 	top: 0;
 	bottom: 0;
 	right: 0;
-	width: 210px;
+	width: 245px;
 }
 .uploadfiles p {
 	margin: 0;
@@ -885,6 +888,9 @@ ul {
 	content: "\f03d";
 }
 .tool:after {
+	content: "\f0ad";
+}
+.xapp:after {
 	content: "\f0ad";
 }
 
@@ -1110,7 +1116,8 @@ ul {
 .edit-asset,
 .edit-assetgroup,
 .wiki-edit,
-.tool-edit {
+.tool-edit,
+.xapp-edit {
 	margin: 0 20px;
 }
 .edit-asset h3,

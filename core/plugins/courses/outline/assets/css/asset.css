@@ -5,6 +5,7 @@
  */
 
 .edit-asset .tool-list,
+.edit-asset .xapp-list,
 .edit-asset .fs-dropdown {
 	width: auto;
 	display: none;

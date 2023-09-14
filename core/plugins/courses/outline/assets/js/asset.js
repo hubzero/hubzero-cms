@@ -32,4 +32,17 @@ jQuery(document).ready(function($) {
 	if ($('.tool-param').is(':checked')) {
 		$('.fs-dropdown').show();
 	}
+	$('.xapp-list').HUBfancyselect({
+		'showSearch'         : true,
+		'searchPlaceholder'  : 'Seach for an external app...',
+		'maxHeightWithSearch': 300
+	});
+
+	$('.xapp-param').click(function() {
+		$('.fs-dropdown').toggle();
+	});
+
+	if ($('.xapp-param').is(':checked')) {
+		$('.fs-dropdown').show();
+	}
 });

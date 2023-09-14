@@ -36,6 +36,9 @@ defined('_HZEXEC_') or die();
 			<?php if (Components\Courses\Models\Assets\Tool::getToolDirectory() != false): ?>
 				<a href="#" title="Include a tool" class="attach-tool"></a>
 			<?php endif; ?>
+			<?php if (Components\Courses\Models\Assets\Xapp::getXappDirectory() != false): ?>
+				<a href="#" title="Include an external app" class="attach-xapp"></a>
+			<?php endif; ?>
 			<a href="#" title="Browse for files" class="browse-files"></a>
 		</div>
 		<form action="<?php echo Request::base(true); ?>/api/courses/asset/new" class="uploadfiles-form">
@@ -90,7 +93,7 @@ if ($this->ag->assets()->total())
 			<li class="asset-item asset missing nofiles">
 				No files
 				<span class="next-step-upload">
-					Upload files &rarr;
+					Add assets &rarr;
 				</span>
 			</li>
 <?php
@@ -106,7 +109,7 @@ else // no assets in this asset group
 		<li class="asset-item asset missing nofiles">
 			No files
 			<span class="next-step-upload">
-				Upload files &rarr;
+				Add assets &rarr;
 			</span>
 		</li>
 	</ul>

@@ -157,11 +157,12 @@ HUB.CoursesOutline = {
 				.on('click', '.asset-edit-layout', this.editLayout)
 				.on('click', '.published-checkbox', this.state)
 				.on('click', '.asset-preview', this.preview)
-				.on('click', '.aux-attachments a:not(.browse-files, .attach-wiki, .help-info, .attach-tool)', this.auxAttachmentShow)
+				.on('click', '.aux-attachments a:not(.browse-files, .attach-wiki, .help-info, .attach-tool, .attach-xapp)', this.auxAttachmentShow)
 				.on('click', '.aux-attachments .help-info', this.auxAttachmentHelp)
 				.on('click', '.aux-attachments .aux-attachments-cancel', this.auxAttachmentHide)
 				.on('click', '.aux-attachments a.attach-wiki', this.editWiki)
 				.on('click', '.aux-attachments a.attach-tool', this.editTool)
+				.on('click', '.aux-attachments a.attach-xapp', this.editXapp)
 				.on('click', '.aux-attachments .aux-attachments-submit', this.auxAttachmentSubmit)
 				.on('click', '.browse-files', this.openFileBrowser)
 				.on('click', '.asset-item-title.toggle-editable', this.showTitleQuickEdit)
@@ -1238,6 +1239,59 @@ HUB.CoursesOutline = {
 		},
 
 		/*
+		 * Create/Edit the external app attachment type
+		 */
+		editXapp: function ( e ) {
+			var $ = HUB.CoursesOutline.jQuery,
+			form  = $(this).siblings('.aux-attachments-form'),
+			src   = '/courses/'+form.find('input[name="course_id"]').val()+'/'+form.find('input[name="offering"]').val()+'/outline?action=build';
+			src  += '&scope=xapp&scope_id='+form.find('input[name="scope_id"]').val()+'&tmpl=component';
+
+			e.preventDefault();
+
+			$.contentBox({
+				src         : src,
+				title       : 'Add External App',
+				onAfterLoad : function( content ) {
+					var t = $(this);
+					content.find('.cancel').click(function() {
+						$.contentBox('close');
+
+						// If pushing cancel on a new external app that had been auto-saved, delete the external app
+						if ($(this).data('new') && $(this).siblings('#asset_id').val()) {
+							var data = $(this).parents('.edit-form').serializeArray();
+							data.push({name : 'state', value : 2});
+
+							$.ajax({
+								url: '/api/courses/asset/save',
+								data: data
+							});
+						}
+					});
+
+					content.find('.edit-form').submit(function ( e ) {
+						e.preventDefault();
+
+						// Create ajax call to change info in the database
+						$.ajax({
+							url: $(this).attr('action'),
+							data: $(this).serializeArray(),
+							statusCode: {
+								// 201 created - this is returned by the standard asset upload
+								201: function ( data, textStatus, jqXHR ){
+									// Close box
+									$.contentBox('close');
+									console.log(data);
+									HUB.CoursesOutline.asset.insert(data, $('#assetgroupitem_'+data.assets.assets.scope_id+' .assets-list'));
+								}
+							}
+						});
+					});
+				}
+			});
+		},
+
+		/*
 		 * Create/Edit the wiki auxillary attachment type
 		 */
 		editWiki: function ( e ) {
@@ -1352,7 +1406,7 @@ HUB.CoursesOutline = {
 				'<li class="asset-item asset missing nofiles">',
 					'No files',
 					'<span class="next-step-upload">',
-						'Upload files &rarr;',
+						'Add assets &rarr;',
 					'</span>',
 				'</li>'
 			].join("\n")
@@ -1772,6 +1826,9 @@ HUB.CoursesOutline = {
 							'<% if (allow_tools) { %>',
 								'<a href="#" title="Include a tool" class="attach-tool"></a>',
 							'<% }; %>',
+							'<% if (allow_xapps) { %>',
+								'<a href="#" title="Include an external app" class="attach-xapp"></a>',
+							'<% }; %>',
 							'<a href="#" title="Browse for files" class="browse-files"></a>',
 						'</div>',
 						'<form action="/api/courses/asset/new" class="uploadfiles-form">',
@@ -1797,7 +1854,7 @@ HUB.CoursesOutline = {
 							'<li class="asset-item asset missing nofiles">',
 								'No files',
 								'<span class="next-step-upload">',
-									'Upload files &rarr;',
+									'Add assets &rarr;',
 								'</span>',
 							'</li>',
 						'</ul>',

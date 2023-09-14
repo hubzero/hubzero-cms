@@ -11,9 +11,9 @@ use Component;
 use Request;
 
 /**
- * Externa App asset handler class
+ * External App asset handler class
  */
-class App extends Content
+class Xapp extends Content
 {
 	/**
 	 * Class info
@@ -25,7 +25,7 @@ class App extends Content
 	 **/
 	protected static $info = array(
 		'action_message' => 'External App',
-		'responds_to'    => array('app')
+		'responds_to'    => array('xapp')
 	);
 
 	/**
@@ -36,12 +36,12 @@ class App extends Content
 	public function create()
 	{
 		$title = Request::getString('title', '');
-		$appAlias = Request::getString('app-alias', '');
-		$title = empty($title) ?  $appAlias : $title;
-		$this->asset['app-alias'] = $appAlias;
+		$xappAlias = Request::getString('xapp-alias', '');
+		$title = empty($title) ?  $xappAlias : $title;
+		$this->asset['xapp-alias'] = $xappAlias;
 		$this->asset['title']   = $title;
-		$this->asset['type']    = 'app';
-		$this->asset['subtype'] = 'app';
+		$this->asset['type']    = 'xapp';
+		$this->asset['subtype'] = 'xapp';
 
 		if (!Request::getInt('id', false))
 		{
@@ -59,7 +59,7 @@ class App extends Content
 			$return = parent::save();
 		}
 		$asset = new \Components\Courses\Models\Asset($this->assoc['asset_id']);
-		$uploadDirectory = self::getAppDirectory() . $asset->get('path') . '/';
+		$uploadDirectory = self::getXappDirectory() . $asset->get('path') . '/';
 
 		// Make sure upload directory exists and is writable
 		if (!is_dir($uploadDirectory))
@@ -68,7 +68,7 @@ class App extends Content
 			{
 				return array('error' => 'Server error. Unable to create upload directory');
 			}
-			// Set the right permissions on the folder for the apps to access
+			// Set the right permissions on the folder for the external apps to access
 			\Filesystem::setPermissions($uploadDirectory, '0664', '02775');
 		}
 		if (!is_writable($uploadDirectory))
@@ -135,7 +135,7 @@ class App extends Content
 				{
 					return array('error' => 'Move file failed');
 				}
-				// Set the file permissions for the app to be able to access it
+				// Set the file permissions for the external app to be able to access it
 				chmod($target_path, 0664);
 			}
 		}
@@ -143,19 +143,19 @@ class App extends Content
 	}
 
 	/**
-	 * Check for base app directory
+	 * Check for base external app directory
 	 *
-	 * @return mixed  string of app path or false
+	 * @return mixed  string of external app path or false
 	 */
-	public static function getAppDirectory()
+	public static function getXappDirectory()
 	{
 		$courseParams = Component::params('com_courses');
-		$appPath = $courseParams->get('app_path');
-		$appPath = trim($appPath, '/');
-		$appPath = '/' . $appPath . '/';
-		if (!empty($appPath) && is_writable($appPath))
+		$xappPath = $courseParams->get('xapp_path');
+		$xappPath = trim($xappPath, '/');
+		$xappPath = '/' . $xappPath . '/';
+		if (!empty($xappPath) && is_writable($xappPath))
 		{
-			return $appPath;
+			return $xappPath;
 		}
 		return false;
 	}
@@ -168,7 +168,7 @@ class App extends Content
 	 */
 	public function edit($asset)
 	{
-		$options = array('scope'=>'app');
+		$options = array('scope'=>'xapp');
 		return array('type' => 'default', 'options' => $options);
 	}
 
@@ -180,7 +180,7 @@ class App extends Content
 	 */
 	public function files($asset)
 	{
-		$path = self::getAppDirectory() . $asset->get('path') . '/';
+		$path = self::getXappDirectory() . $asset->get('path') . '/';
 		$files = array();
 		if ($path && is_dir($path))
 		{

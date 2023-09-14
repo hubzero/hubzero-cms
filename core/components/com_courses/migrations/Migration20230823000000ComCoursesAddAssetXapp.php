@@ -11,18 +11,18 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for installing courses tables
+ * Migration script for installing courses external app table
  **/
-class Migration20230823000000ComCoursesAddAssetApp extends Base
+class Migration20230823000000ComCoursesAddAssetXapp extends Base
 {
 	/**
 	 * Up
 	 **/
 	public function up()
 	{
-		if (!$this->db->tableExists('#__courses_asset_app'))
+		if (!$this->db->tableExists('#__courses_asset_xapp'))
 		{
-			$query = "CREATE TABLE `#__courses_asset_app (
+			$query = "CREATE TABLE `#__courses_asset_xapp (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `member_id` int(11) NOT NULL,
 			  `asset_id` int(11) NOT NULL,
@@ -43,9 +43,9 @@ class Migration20230823000000ComCoursesAddAssetApp extends Base
 	 **/
 	public function down()
 	{
-		if ($this->db->tableExists('#__courses_asset_app'))
+		if ($this->db->tableExists('#__courses_asset_xapp'))
 		{
-			$query = "DROP TABLE IF EXISTS `#__courses_asset_app`;";
+			$query = "DROP TABLE IF EXISTS `#__courses_asset_xapp`;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

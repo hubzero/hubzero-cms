@@ -9,17 +9,21 @@ namespace Components\Courses\Api\Controllers;
 
 use Components\Courses\Models\Course;
 use Components\Courses\Models\Member;
+use Components\Courses\Tables\GradeBook;
+use Components\Courses\Tables\AssetXapp;
+
 use Request;
 use App;
 use Date;
 
 require_once __DIR__ . DS . 'base.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.app.php';
 require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'grade.book.php';
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.xapp.php';
+
 
 /**
- * API controller for the courses component
+ * API controller for the courses gradebook
  */
 class Gradebookv1_0 extends base
 {
@@ -29,28 +33,35 @@ class Gradebookv1_0 extends base
 	 * @apiMethod POST
 	 * @apiUri    /courses/gradebook/save
 	 * @apiParameter {
-	 * 		"name":        "asset_id",
-	 * 		"description": "Asset id for external app",
+	 * 		"name":        "asset",
+	 * 		"description": "Asset id associated with external app",
 	 * 		"type":        "int",
 	 * 		"required":    true,
 	 * 		"default":     null
 	 * }
 	 * @apiParameter {
-	 * 		"name":        "course_alias",
+	 * 		"name":        "member",
+	 * 		"description": "Member id",
+	 * 		"type":        "int",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "course",
 	 * 		"description": "Course alias",
 	 * 		"type":        "string",
 	 * 		"required":    true,
 	 * 		"default":     null
 	 * }
 	 * @apiParameter {
-	 * 		"name":        "offering_alias",
+	 * 		"name":        "offering",
 	 * 		"description": "Offering alias",
 	 * 		"type":        "string",
 	 * 		"required":    true,
 	 * 		"default":     null
 	 * }
 	 * @apiParameter {
-	 * 		"name":        "section_alias",
+	 * 		"name":        "section",
 	 * 		"description": "Section alias",
 	 * 		"type":        "string", 
 	 * 		"required":    false,
@@ -58,7 +69,7 @@ class Gradebookv1_0 extends base
 	 * }
 	 * @apiParameter {
 	 * 		"name":        "data",
-	 * 		"description": "Score (passed), details (json format)",
+	 * 		"description": "{passed: int, score: int, details: string}",
 	 * 		"type":        "string", 
 	 * 		"required":    true,
 	 * 		"default":     null
@@ -68,10 +79,9 @@ class Gradebookv1_0 extends base
 	public function saveTask()
 	{
 		// Require authentication and authorization
-		$this->authorizeOrFail();
+		//$this->authorizeOrFail();
 
-		$user_id = App::get('authn')['user_id'];
-		$asset_id   = Request::getInd('asset', '');
+		$asset_id   = Request::getInt('asset', 0);
 
 		if (!$asset_id)
 		{
@@ -99,45 +109,79 @@ class Gradebookv1_0 extends base
 		$course->offering()->section($section_alias);
 		$section_id = $course->offering()->section()->get('id');
 
-		$member = Member::getInstance($user_id, 0, 0, $section_id);
-
-		if (!$member_id = $member->get('id'))
+		$member_id   = Request::getInt('member', 0);
+		if (!$member_id)
 		{
-			App::abort(500, 'Failed to get course member ID');
+			$user_id = App::get('authn')['user_id'];
+
+			if (!$user_id)
+			{
+				App::abort(500, 'No member ID and not logged in');
+			}
+
+			$member = Member::getInstance($user_id, 0, 0, $section_id);
+
+			if (!$member_id = $member->get('id'))
+			{
+				App::abort(500, 'Failed to get course member ID');
+			}
 		}
 
 		$data = Request::getString('data', '');
+		$data = trim($data);
 
-		$dats = trim($data);
-		$message = json_decode($data);
+		if ($data)
+		{
+			$message = json_decode($data,true);
+		}
+		else
+		{
+			$jsondata = file_get_contents('php://input');
+			$post = json_decode($jsondata,true);
+			$message = $post['data'];
+		}
 
-
-		if (!$data)
+		if (!$message)
 		{
 			App::abort(400, 'Missing data');
 		}
+
+		$db    = App::get('db');
 
 		// Get timestamp
 		$now = Date::toSql();
 
 		// Save the external app details
-		$app = new AssetApp($this->db);
-		$app->set('member_id', $member_id);
-		$app->set('asset_id', $asset_id);
-		$app->set('created', $now);
-		$app->set('passed', (($message->passed) ? 1 : 0));
-		$app->set('details', $message->details);
-		if (!$app->store())
+		$xapp = new AssetXapp($db);
+		$xapp->set('member_id', $member_id);
+		$xapp->set('asset_id', $asset_id);
+		$xapp->set('created', $now);
+		$xapp->set('passed', (($message['passed']) ? 1 : 0));
+		$xapp->set('details', $message['details']);
+		if (!$xapp->store())
 		{
-			App::abort(500, $app->getError());
+			App::abort(500, $xapp->getError());
 		}
 
-		// Now set/update the gradebook item
-		$gradebook = new GradeBook($this->db);
+		// Now set/update the gradebook 
+		$gradebook = new GradeBook($db);
 		$gradebook->loadByUserAndAssetId($member_id, $asset_id);
 
-		// Score is either 100 or 0
-		$score = ($message->passed) ? 100 : 0;
+		if (isset($message['score']))
+		{
+			$score = $message['score'];
+		}
+		else
+		{
+			if (isset($message['passed']))
+			{
+				$score = ($message['passed']) ? 100 : 0;
+			}
+			else
+			{
+				$score = 0;
+			}
+		}
 
 		// See if gradebook entry already exists
 		if ($gradebook->get('id'))
@@ -167,6 +211,9 @@ class Gradebookv1_0 extends base
 		}
 
 		// Return message
-		$this->send(['success' => true]);
+		$this->send([
+			'success' => true, 
+			'grade' => $gradebook->get('score')
+		]);
 	}
 }

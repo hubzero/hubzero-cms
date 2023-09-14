@@ -42,6 +42,10 @@ class Content extends Handler
 		{
 			$this->asset['url'] = '/tools/' . $this->asset['tool-alias'] . '/invoke';
 		}
+		if (!empty($this->asset['xapp-alias']))
+		{
+			$this->asset['url'] = '/xapps/' . $this->asset['xapp-alias'] . '/invoke';
+		}
 
 		// Create our asset table object
 		$asset = new \Components\Courses\Models\Asset();
@@ -155,6 +159,18 @@ class Content extends Handler
 			if (!empty($toolAlias))
 			{
 				$asset->set('url', '/tools/' . $toolAlias . '/invoke');
+			}
+			else
+			{
+				$asset->set('url', '');
+			}
+		}
+		if (isset($this->asset['xapp-alias']))
+		{
+			$xappAlias = $this->asset['xapp-alias'];
+			if (!empty($xappAlias))
+			{
+				$asset->set('url', '/xapps/' . $xappAlias . '/invoke');
 			}
 			else
 			{
