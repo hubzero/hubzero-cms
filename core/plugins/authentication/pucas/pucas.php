@@ -8,8 +8,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once PATH_CORE . DS . 'libraries' . DS . 'CAS-1.3.3' . DS . 'CAS.php';
-
 /**
  * Authentication Plugin class for PUCAS
  */
@@ -378,7 +376,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
 		}
 
-		phpCAS::setNoCasServerValidation();
+		phpCAS::setCasServerCACert("/etc/ssl/certs/PuCAS_CA.crt");
 	}
 
 	/**

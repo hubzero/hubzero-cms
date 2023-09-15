@@ -174,8 +174,13 @@ Toolbar::help('sections');
 						break;
 					case 5:
 						$color_access = 'private';
-						$task_access  = '0';
+						$task_access  = '5';
 						$row->set('access_level', Lang::txt('COM_FORUM_ACCESS_PRIVATE'));
+						break;
+					default:
+						$color_access = 'other';
+						$task_access  = (string) $row->get('access');
+						$row->set('access_level', Lang::txt('COM_FORUM_ACCESS_OTHER'));
 						break;
 				}
 

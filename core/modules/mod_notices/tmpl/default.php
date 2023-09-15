@@ -14,8 +14,12 @@ if ($this->publish)
 	     ->js();
 	?>
 	<div id="<?php echo $this->moduleid; ?>" class="modnotices <?php echo $this->alertlevel; ?>">
-		<p>
-			<?php echo stripslashes($this->message); ?>
+		<div class="inner">
+			<div class="notice">
+				<div class="inner">
+					<?php echo stripslashes($this->message); ?>
+				</div>
+			</div>
 			<?php
 			$page = Request::getString('REQUEST_URI', '', 'server');
 			if ($page && $this->params->get('allowClose', 1))
@@ -29,7 +33,7 @@ if ($this->publish)
 				<?php
 			}
 			?>
-		</p>
+		</div>
 	</div>
 	<?php
 }

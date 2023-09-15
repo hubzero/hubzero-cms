@@ -41,7 +41,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
 					<div class="col span6 omega">
 						<p>
 							<strong><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_ACCEPTABLE'); ?></strong><br />
-							<?php echo implode($this->accepted_files, '<br />'); ?>
+							<?php echo implode('<br />', $this->accepted_files); ?>
 						</p>
 					</div>
 				</div>

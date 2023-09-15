@@ -281,11 +281,21 @@ if (!$this->app->sess) {
 							<?php endforeach; } ?>
 						</select>
 					</label>
-					<?php /* https://hubzero.org/support/ticket/9826
+
+					<?php if (0): /* https://hubzero.org/support/ticket/9826 */ ?>
 					<label for="field-readonly" id="readonly-label">
 						<input class="option" type="checkbox" name="readonly" id="readonly" value="Yes" />
 						<?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_READ_ONLY'); ?>
-					</label> */ ?><div>&nbsp;</div>
+					</label>
+					<?php endif; ?>
+
+					<div>&nbsp;</div>
+
+					<label for="confirm-share" id="confirm-share-label">
+						<input class="option" type="checkbox" value="Yes" name="confirm" id="confirm-share">
+						<?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_CONFIRM'); ?>
+					</label>
+					<div>&nbsp;</div>
 
 					<p class="submit">
 						<input type="submit" value="<?php echo Lang::txt('COM_TOOLS_SHARE'); ?>" id="share-btn" />

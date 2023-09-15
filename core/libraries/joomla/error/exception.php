@@ -128,6 +128,7 @@ class JException extends Exception
 
 		if ($backtrace && function_exists('debug_backtrace'))
 		{
+			// phpcs:ignore PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.NeedsInspection
 			$this->backtrace = debug_backtrace();
 
 			for ($i = count($this->backtrace) - 1; $i >= 0; --$i)

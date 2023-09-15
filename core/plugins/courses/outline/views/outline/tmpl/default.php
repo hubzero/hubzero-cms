@@ -58,7 +58,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 
 	<?php if ($course->access('manage')) { ?>
 		<div class="manager-options">
-			<span><strong>Manage the content of the outline here.</strong></span> <a class="btn edit icon-edit" href="<?php echo Route::url($base . '&active=outline&action=build'); ?>">Build outline</a>
+			<span><strong>Manage the content of the outline here.</strong></span> <a class="btn edit icon-edit" href="<?php echo Route::url($base . '&active=outline&action=build'); ?>">Edit outline</a>
 		</div>
 	<?php } ?>
 

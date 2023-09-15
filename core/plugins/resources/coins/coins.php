@@ -39,6 +39,11 @@ class plgResourcesCoins extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+                if (!$model->type->params->get('plg_coins'))
+                {
+                        return;
+                }
+
 		$arr = array(
 			'area'     => '',
 			'html'     => '',

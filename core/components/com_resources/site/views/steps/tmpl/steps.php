@@ -36,6 +36,9 @@ if ($this->resource->get('id'))
 	$authors =  $this->resource->authors()->total();
 	$tags = count($this->resource->tags());
 }
+
+$this->group_cn = (isset($this->group_cn) ? $this->group_cn : Request::getString('group',''));
+
 ?>
 <div class="meta-container">
 	<table class="meta">
@@ -109,7 +112,7 @@ if ($this->resource->get('id'))
 		}
 		elseif ($this->progress[$this->steps[$i]] == 1 || $this->step > $i)
 		{
-			$html .= '<a href="'. Route::url('index.php?option='.$this->option.'&task=draft&step='.$i.'&id='.$this->id) .'">'.Lang::txt('COM_CONTRIBUTE_STEP_'.strtoupper($this->steps[$i])).'</a>';
+			$html .= '<a href="'. Route::url('index.php?option='.$this->option.'&task=draft&step='.$i.'&id='.$this->id.'&group='.$this->group_cn) .'">'.Lang::txt('COM_CONTRIBUTE_STEP_'.strtoupper($this->steps[$i])).'</a>';
 		}
 		else
 		{

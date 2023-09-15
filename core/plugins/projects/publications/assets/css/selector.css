@@ -265,3 +265,40 @@
 		margin: 0;
 		text-align: right;
 	}
+
+
+/*Organization normalization*/
+.ui-autocomplete {
+	position: absolute;
+	max-height: 300px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+ul[id^='ui-id-'] {
+	list-style-type: none;
+	background: white;
+	z-index: 9999;
+	padding: 0;
+}
+
+ul[id^='ui-id-'] li {
+	padding-left: 6px;
+}
+
+ul.ui-autocomplete {
+	list-style-type: none;
+	background: white;
+	border: 1px solid #666;
+	margin-top: 5px;
+	width: 400px;
+}
+
+.ui-autocomplete .ui-menu-item {
+	padding: 10px 5px;
+}
+
+.ui-autocomplete .ui-menu-item:hover {
+	background: #f1f1f1;
+	cursor: pointer;
+}

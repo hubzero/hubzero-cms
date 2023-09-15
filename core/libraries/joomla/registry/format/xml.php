@@ -65,7 +65,7 @@ class JRegistryFormatXML extends JRegistryFormat
 
 		foreach ($xml->children() as $node)
 		{
-			$obj->$node['name'] = $this->getValueFromNode($node);
+			$obj->{$node['name']} = $this->getValueFromNode($node);
 		}
 
 		return $obj;
@@ -110,7 +110,7 @@ class JRegistryFormatXML extends JRegistryFormat
 				$value = new stdClass;
 				foreach ($node->children() as $child)
 				{
-					$value->$child['name'] = $this->getValueFromNode($child);
+					$value->{$child['name']} = $this->getValueFromNode($child);
 				}
 				break;
 		}

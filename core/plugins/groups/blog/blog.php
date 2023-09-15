@@ -434,7 +434,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			'scope_id'   => $this->group->get('gidNumber'),
 			'search'     => Request::getString('search', ''),
 			'created_by' => Request::getInt('author', 0),
-			'state'      => 'public'
+			'state'      => 1
 		);
 
 		$path = Request::path();

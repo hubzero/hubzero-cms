@@ -148,9 +148,9 @@
 	}
 	.groups-container .group-details {
 		padding: 1em;
-		height: 6.7em;
 		text-align: center;
 		overflow: hidden;
+		flex-grow: 1;
 	}
 	.firefox .groups-container .group-details {
 		height: 6.9em;
@@ -188,8 +188,8 @@
 		right: 0;
 		content: "\f042";
 		font-family: "Fontcons";
-		font-size: 7em;
-		line-height: 1.3em;
+		font-size: 100px;
+		line-height: 1em;
 		color: #e1e1e1;
 	}
 	.groups-container .group-alias {
@@ -202,7 +202,7 @@
 		display: block;
 		font-size: 0.9rem;
 		line-height: 1.2rem;
-		height: 3.6rem;
+		padding-bottom: 1rem;
 		overflow: hidden;
 		border: none;
 	}
@@ -251,6 +251,10 @@
 		color: #666;
 		display: block;
 	}
+	
+	.group-meta .join-group {
+		margin-top: 1rem;
+	}
 /* User actions */
 	.groups-container .user-actions {
 		font-size: 1.4em;
@@ -273,6 +277,7 @@
 		color: #ccc;
 		background: transparent;
 		padding: 0;
+		line-height: 1em;
 	}
 	.groups-container .user-actions a:hover {
 		color: #333;
@@ -445,7 +450,6 @@
 	#page_identity a {
 		display: block;
 		min-width: 150px;
-		max-width: 165px;
 		text-align: center;
 		-webkit-border-radius: 0.25em;
 		   -moz-border-radius: 0.25em;
@@ -486,7 +490,7 @@
 	} 
 	#page_menu li a,
 	#page_menu li span {
-		color: #888;
+		color: #000;
 		position: relative;
 		display: block;
 		background-image: none;
@@ -503,10 +507,10 @@
 		content: "";
 		position: absolute;
 		left: 1.6em;
-		top: 0.4em;
+		top: 50%;
 		width: 1em;
-		height: 1em;
-		font-size: 1.2em;
+		transform: translate(0, -50%);
+		font-size: 1em;
 		font-family: 'Fontcons';
 		-ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=100)";
 		filter: alpha(opacity=100);
@@ -563,17 +567,6 @@
 	}
 	#page_menu li.active>a:hover {
 		border: none;
-	}
-	#page_menu li.active:after {
-		content: "";
-		position: absolute;
-		top: 0px;
-		right: -0.9em;
-		z-index: 444;
-		border-top: 1.175em solid transparent;
-		border-right: none;
-		border-bottom: 1.175em solid transparent;
-		border-left: 1em solid #555;
 	}
 	#page_menu li .meta {
 		position: absolute;
@@ -794,13 +787,13 @@
 	}
 	/* Page header */
 	#page_header {
-		display: block;
+		display: flex;
+		align-items: center;
 		padding: 25px 20px 5px 20px;
 		margin-bottom: 5px;
 		overflow: hidden;
 	}
 	#page_header h2 {
-		float: left;
 		color: #444;
 		margin: 0px;
 		border-bottom: 0px;
@@ -808,23 +801,15 @@
 		padding: 0;
 	}
 	#page_header h2 a {
-		border-bottom: 1px solid #f8f8f8;
 		color: #444;
 	}
-	#page_header h2 a:hover {
-		border-bottom: 1px solid #aaa;
-	}
 	#page_header .divider {
-		float: left;
 		color: #777;
 		border: none;
-		padding: 3px 15px 0 15px;
+		padding: 0 15px;
 	}
 	#page_header h3 {
-		float: left;
 		margin: 0;
-		padding: 3px 0 0 0;
-		color: #999;
 		font-size: 16px;
 		font-weight: 400;
 	}
@@ -887,11 +872,12 @@
 		color: #A30;
 	}*/
 	#group_options .btn-group {
-		display: block;
 		text-align: left;
+		display: flex;
+		align-items: center;
 	}
 	#group_options .btn-group > a {
-		width: 83%;
+		flex-grow: 1;
 	}
 	#group_options .btn-group > .btn {
 		border-color: #000;
@@ -1280,8 +1266,8 @@ body.group-page-preview {
 	top: 15px;
 	left: 25px;
 	width: 40px;
-	height: 30px;
-	padding-top: 10px;
+	height: 40px;
+	line-height: 40px;
 	background: #333;
 	border-radius: 20px;
 	text-align: center;
@@ -1294,10 +1280,7 @@ body.group-page-preview {
 #member_browser:after {
 	font-style: normal;
 	font-family: 'Fontcons';
-	font-size: 20px;
 	content: '\f007';
-	padding-top: 12px;
-	height: 28px;
 }
 .member_browser {
 	overflow: hidden;
@@ -1368,7 +1351,6 @@ body.group-page-preview {
  	Group Edit Availability
 ===========================================*/
 #hubForm .group_cn_label input  {
-	width: 75%;
 	display: block;
 }
 .group_cn_label {
@@ -1457,11 +1439,12 @@ body.group-page-preview {
 #hubForm .side-by-side input {
 	width: 5%;
 }
-#access {
+#access,
+#hubForm ul#access {
 	list-style: none;
 	margin: 0px;
 	padding: 10px;
-	background: #efefef url('/core/components/com_groups/site/assets/img/group_menu_preview.jpg') repeat-y top right;
+	background: #efefef;
 }
 .preview #access img {
 	width:auto;

@@ -15,12 +15,14 @@
 /* Files management - file upload
 --------------------------------------------- */
 	#manage_assets {
-		padding: 0;
+		padding: 0.2rem;
 		margin: 0;
-		float: left;
-		display: inline;
+		display: flex;
+		align-items: center;
 		width: auto;
-		margin-top: 0.2em;
+	}
+	#manage_assets > a {
+		display: inline-block;
 	}
 	#manage_upload {
 		float: right;
@@ -707,9 +709,11 @@
 	}
 	#manage_assets a#a-upload  {
 		background: #FFF;
-		padding: 0.3em 0.5em 0.5em 0.5em;
+		padding: 0.3em 0.5em;
 		border: 1px solid #a1bec6;
 		margin-right: 2em;
+		display: flex;
+		align-items: center;
 	}
 	#manage_assets a#a-more {
 		background: #FFF;
@@ -726,6 +730,8 @@
 		border: none;
 		background: none;
 		padding: 0.1em;
+		line-height: 1rem;
+		font-size: 1rem;
 	}
 	#manage_assets a#a-google:before {
 		padding-right: 1em;

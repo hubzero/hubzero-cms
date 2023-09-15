@@ -114,7 +114,7 @@ class Author extends Table
 		{
 			return false;
 		}
-		$uids = "'" . implode($uids, "','") . "'";
+		$uids = "'" . implode("','", $uids) . "'";
 		$query  = "SELECT id FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid) . " AND id IN (" . $uids . ")";
 		$query .= " AND (role != 'submitter')";
 		$query .= " ORDER BY ordering";

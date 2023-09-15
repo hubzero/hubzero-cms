@@ -1351,12 +1351,15 @@ class Repo extends Obj
 			$safe_dir  = trim($safe_dir, DS);
 			$safe_file = Filesystem::clean($file);
 
-			// Strips out temporary path
-			if (strpos($safe_dir, 'tmp/') !== false)
+			// Strips out 'var/www/tmp/xxxxxx' text from beginning of directory path.
+			// Makes directory name cleaner in the project once the files are added.
+			if (strpos($safe_dir, 'var/www/tmp/') !== false)
 			{
 				$parts = explode('/', $safe_dir);
 				$safe_dir = str_replace($parts[0].'/', '', $safe_dir);
 				$safe_dir = str_replace($parts[1].'/', '', $safe_dir);
+				$safe_dir = str_replace($parts[2].'/', '', $safe_dir);
+				$safe_dir = str_replace($parts[3].'/', '', $safe_dir);
 			}
 
 			$skipDir = false;
@@ -1386,14 +1389,6 @@ class Repo extends Obj
 					$this->call('checkin', $params);
 					$z++;
 				}
-			}
-
-			// Strips out temporary path
-			if (strpos($safeName, 'tmp/') !== false)
-			{
-				$parts = explode('/', $safeName);
-				$safeName = str_replace($parts[0].'/', '', $safeName);
-				$safeName = str_replace($parts[1].'/', '', $safeName);
 			}
 
 			// Copy file into project

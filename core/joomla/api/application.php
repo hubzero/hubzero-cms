@@ -87,14 +87,6 @@ class JApi extends JApplication
 
 		$config['clientId'] = 4;
 
-		/*$this->unregister_long_arrays();
-		$this->unregister_globals();
-		$this->fix_http_headers();
-
-		$this->request = new \Hubzero\Api\Request();
-		$this->response = new \Hubzero\Api\Response();
-		$this->output = '';*/
-
 		parent::__construct($config);
 	}
 
@@ -105,8 +97,6 @@ class JApi extends JApplication
 	 */
 	public function reset()
 	{
-		$this->unregister_long_arrays();
-		$this->unregister_globals();
 		$this->fix_http_headers();
 		$this->handle_method_override();
 
@@ -171,79 +161,6 @@ class JApi extends JApplication
 		if (ini_get('expose_php'))
 		{
 			$_SERVER['HTTP_X_POWERED_BY'] = 'PHP';
-		}
-	}
-
-	/**
-	 * Unset HTTP_* global variables if using a PHP installation that has these enabled
-	 *
-	 * @return     void
-	 */
-	public function unregister_long_arrays()
-	{
-		if (ini_get('register_long_arrays'))
-		{
-			unset($GLOBALS['HTTP_ENV_VARS']);
-			unset($GLOBALS['HTTP_POST_VARS']);
-			unset($GLOBALS['HTTP_GET_VARS']);
-			unset($GLOBALS['HTTP_COOKIE_VARS']);
-			unset($GLOBALS['HTTP_SERVER_VARS']);
-			unset($GLOBALS['HTTP_POST_FILES']);
-			unset($GLOBALS['HTTP_SESSION_VARS']);
-		}
-	}
-
-	/**
-	 * Unset 'magic' global variables if using a PHP installation that has these enabled
-	 *
-	 * @return     void
-	 */
-	public function unregister_globals()
-	{
-		if (ini_get('register_globals'))
-		{
-			$variables_order = ini_get('variables_order');
-
-			if (stripos($variables_order, "E") !== false)
-			{
-				foreach ($_ENV as $key => $value)
-				{
-					unset($GLOBALS[$key]);
-				}
-			}
-
-			if (stripos($variables_order, "G") !== false)
-			{
-				foreach ($_GET as $key => $value)
-				{
-					unset($GLOBALS[$key]);
-				}
-			}
-
-			if (stripos($variables_order, "P") !== false)
-			{
-				foreach ($_POST as $key => $value)
-				{
-					unset($GLOBALS[$key]);
-				}
-			}
-
-			if (stripos($variables_order, "C") !== false)
-			{
-				foreach ($_COOKIE as $key => $value)
-				{
-					unset($GLOBALS[$key]);
-				}
-			}
-
-			if (stripos($variables_order, "S") !== false)
-			{
-				foreach ($_SERVER as $key => $value)
-				{
-					unset($GLOBALS[$key]);
-				}
-
-			}
 		}
 	}
 

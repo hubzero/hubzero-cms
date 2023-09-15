@@ -39,7 +39,7 @@ class Helper extends Module
 		}
 
 		$image = self::getRandomImage($params, $images);
-		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx',''));
 
 		require $this->getLayoutPath($params->get('layout', 'default'));
 	}

@@ -853,10 +853,7 @@ class JLanguage extends JObject
 	{
 		$version = phpversion();
 
-		// Capture hidden PHP errors from the parsing.
-		$php_errormsg = null;
-		$track_errors = ini_get('track_errors');
-		ini_set('track_errors', true);
+		error_clear_last();
 
 		if ($version >= '5.3.1')
 		{
@@ -876,9 +873,6 @@ class JLanguage extends JObject
 				}
 			}
 		}
-
-		// Restore error tracking to what it was before.
-		ini_set('track_errors', $track_errors);
 
 		if (!is_array($strings))
 		{
@@ -919,6 +913,10 @@ class JLanguage extends JObject
 
 			$stream->close();
 
+			$last_error = error_get_last();
+
+			$errormsg = is_array($last_error) ? $last_error['message'] : '';
+
 			// Check if we encountered any errors.
 			if (count($errors))
 			{
@@ -931,10 +929,10 @@ class JLanguage extends JObject
 					$this->errorfiles[$filename] = $filename . '&#160;: error(s) in line(s) ' . implode(', ', $errors);
 				}
 			}
-			elseif ($php_errormsg)
+			elseif ($errormsg)
 			{
 				// We didn't find any errors but there's probably a parse notice.
-				$this->errorfiles['PHP' . $filename] = 'PHP parser errors :' . $php_errormsg;
+				$this->errorfiles['PHP' . $filename] = 'PHP parser errors :' . $errormsg;
 			}
 
 			$this->debug = true;

@@ -115,7 +115,7 @@ function query_gen(&$dd)
 		foreach ($dd['cols'] as $id => $prop) {
 			if (isset($col_info[$id])) {
 				if (isset($col_info[$id]['label'])) {
-					$dd['cols'][$id]['label'] = nl2br(strip_tags($col_info[$id]['label'], '<br /><br/><br><hr /><hr/><hr>'));
+					$dd['cols'][$id]['label'] = nl2br(strip_tags($col_info[$id]['label'], '<br><hr>'));
 				}
 
 				if (isset($col_info[$id]['unit'])) {
@@ -155,7 +155,7 @@ function query_gen(&$dd)
 		foreach ($dd['cols'] as $id => $prop) {
 			if (isset($col_info[$id])) {
 				if (isset($col_info[$id]['label']) && !isset($dd['cols'][$id]['label'])) {
-					$dd['cols'][$id]['label'] = nl2br(strip_tags($col_info[$id]['label'], '<br /><br/><br><hr /><hr/><hr>'));
+					$dd['cols'][$id]['label'] = nl2br(strip_tags($col_info[$id]['label'], '<br><hr>'));
 				}
 
 				if (isset($col_info[$id]['unit']) && !isset($dd['cols'][$id]['unit'])) {

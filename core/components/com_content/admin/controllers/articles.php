@@ -415,6 +415,11 @@ class Articles extends AdminController
 					App::abort(403, Lang::txt('COM_CONTENT_NOT_AUTHORIZED'));
 				}
 			}
+
+			// Need to offset publish up date with user timezone
+            $userTimezone = App::get('user')->getParam('timezone', App::get('config')->get('offset'));
+            $article->set('publish_up', Date::of($article->get('publish_up'), $userTimezone)->toSql());
+
 			$article->set('checked_out', User::getInstance()->get('id'));
 			$article->set('checked_out_time', Date::of('now')->toSql());
 			$article->save();
@@ -431,6 +436,14 @@ class Articles extends AdminController
 
 		$newTasks = array('save2new', 'save2copy');
 		$task = in_array($this->_task, $newTasks) ? 'add' : $this->_task;
+
+		// Upon "saving to copy" or "save to new", blank out alias, update created and published up date to now
+        if (in_array($this->_task, $newTasks)) {
+            $article->set('created', Date::of('now')->toSql());
+            $article->set('publish_up', Date::of('now')->toSql());
+			$article->set('publish_down', null);
+			$article->set('alias', null);
+        }
 
 		$this->view
 			->set('task', $task)

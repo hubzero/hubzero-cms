@@ -742,8 +742,24 @@
 	.suggestions {
 		background: #f8ffff !important;
 	}
+	.suggestions > div {
+		position: relative;
+	}
 	.suggestions h4 {
 		padding-left: 10px !important;
+	}
+	.suggestions a:before {
+		content: "";
+		width: 1em;
+		height: 1em;
+		font-size: 1em;
+		line-height: 1em;
+		font-family: 'Fontcons';
+		display: block;
+		position: absolute;
+		margin-left: -1.2em;
+		top: 50%;
+		transform: translate(0, -50%);
 	}
 	.sidebox.suggestions p {
 		margin: 0.3em 0.5em;
@@ -752,25 +768,26 @@
 		padding-left: 60px;
 	}
 @media (min-width: 40em) {
-	.suggestions div {
-		max-width: 31%;
-		min-width: 25%;
-	}
 	.suggestions a:before {
 		content: "";
-		width: 32px;
-		height: 32px;
-		font-size: 32px;
-		font-family: 'Fontcons';
+		width: 1.3em;
+		height: 1.3em;
+		font-size: 1.3em;
+		line-height: 1.3em;
 		color: #CCC;
 		display: block;
 		position: absolute;
 		margin-left: -1.2em;
-		margin-top: 0.2em;
 	}
 	.suggestions p,
 	.content-feed .sidebox .suggestions p {
 		padding-left: 60px;
+	}
+}
+
+@media (min-width: 990px) {
+	.suggestions div {
+		max-width: 31%;
 	}
 }
 
@@ -1162,21 +1179,16 @@
 /* Table listing of items with management options
 --------------------------------------------- */
 	.list-editing {
-		padding: 0.2em 0 0.5em 0;
-		height: 30px;
 		color: #666;
 		background: #f3f3f3;
-		text-align: right;
 	}
 	#cbody .list-editing {
 		background: #e3e5e2;
 		padding: 0;
 	}
 	.list-editing p {
-		text-align: left;
 		font-size: 85%;
 		margin: 0;
-		padding: 0 0.5em;
 	}
 	.manage {
 		padding: 0.1em 0.3em;
@@ -1215,8 +1227,12 @@
 --------------------------------------------- */
 
 	.list-menu {
-		height: 20px;
+		display: flex;
+		align-items: center;
 		padding: 0 0.5em 1em 0.5em;
+	}
+	.order-options {
+		order: 3;
 	}
 	.view-options {
 		float: left;
@@ -1255,6 +1271,9 @@
 	}
 	.view-options li.view-list a:before {
 		content: "\f03a";
+	}
+	.list-selector {
+		flex-grow: 1;
 	}
 	.container .entries-menu.view-options a:hover {
 		background-color: transparent;
@@ -1559,24 +1578,26 @@
 		display: block;
 		float: left;
 		margin: 0;
-		padding: 4px 15px;
-		height: 24px;
+		padding: 0.4em 0.8em;
 		position: relative;
-		padding-left: 2em;
+		font-size: 1em;
+		line-height: 1em;
+		padding-left: 1.2em;
 	}
 	ol.steps li:first-child {
 		margin-left: 0;
-		padding-left: 1em;
+		padding-left: 0.8rem;
 	}
 	ol.steps li:after {
 		content: "";
 		width: 0;
 		height: 0;
-		border-top: 16px solid transparent;
-		border-bottom: 16px solid transparent;
-		border-left: 16px solid #20a2c8;
+		border-top: 0.9em solid transparent;
+		border-bottom: 0.9em solid transparent;
+		border-left: 0.7em solid #20a2c8;
 		position: absolute;
-		margin: -4px 0 0 13px;
+		left: 100%;
+		top: 0;
 		z-index: 1;
 	}
 	ol.steps li a {

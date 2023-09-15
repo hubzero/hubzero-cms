@@ -59,7 +59,7 @@ Html::behavior('tooltip');
 							?>
 							<br />
 							<br />
-							<pre><?php echo $failed['message']; ?></pre>
+							<pre><?php echo implode(",", $failed['message']); ?></pre>
 						</td>
 					</tr>
 				<?php endforeach; ?>

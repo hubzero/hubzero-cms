@@ -1055,7 +1055,7 @@
 		padding: 1em;
 		margin: 0;
 		z-index: 2000;
-		width: 240px;
+		display: flex;
 		-moz-box-shadow: 5px 5px 5px #ebebeb;
 		-webkit-box-shadow: 5px 5px 5px #ebebeb;
 		box-shadow: 5px 5px 5px #ebebeb;
@@ -1071,12 +1071,15 @@
 	div#pinoptions ul li {
 		display: block;
 		margin: 0.2em 0;
-		padding: 0.5em 0 0.8em 0;
 		background: none;
 		border-bottom: 1px solid #ebebeb;
 	}
+
+	div#pinoptions ul li#newcolor {
+		display: flex;
+		align-items: center;
+	}
 	div#pinoptions ul li span:before {
-		float: left;
 		margin: 0;
 	}
 	div#pinoptions ul li a {
@@ -1117,7 +1120,6 @@
 	.newlist-input {
 		padding: 0;
 		width: 150px;
-		margin-left: -0.5em;
 	}
 
 /* Misc

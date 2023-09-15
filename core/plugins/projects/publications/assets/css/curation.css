@@ -773,8 +773,11 @@
 /* Notice from authors form
 --------------------------------------------- */
 	.addnotice {
+		padding: 1rem;
 		width: 500px;
-		height: 300px;
+	}
+	.addnotice label {
+		display: block;
 	}
 	.fancybox-wrap fieldset .notice-item,
 	.notice-item {
@@ -783,6 +786,10 @@
 	}
 	.submitarea {
 		text-align: center;
+	}
+	
+	#notice-review {
+		width: 100%;
 	}
 
 /*

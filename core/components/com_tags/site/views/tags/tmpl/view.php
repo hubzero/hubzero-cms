@@ -148,8 +148,8 @@ foreach ($cats as $cat)
 			<?php } ?>
 
 			<div class="container">
-				<nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
-					<ul class="entries-menu">
+				<nav class="entries-filters">
+					<ul class="entries-menu order-options">
 						<li>
 							<a<?php echo ($this->filters['sort'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&tag=' . $this->tagstring . '&area=' . $this->active . '&sort=title&limit=' . $this->filters['limit'] . '&start=' . $this->filters['start']); ?>" title="<?php echo Lang::txt('COM_TAGS_OPT_SORT_BY_TITLE'); ?>">
 								<?php echo Lang::txt('COM_TAGS_OPT_TITLE'); ?>

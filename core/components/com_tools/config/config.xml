@@ -24,7 +24,7 @@
 		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="params_whitelist" type="text" menu="hide" label="Directory Parameter Whitelist" default="/home" description="White-list of directories acceptable to include in tool parameter passing feature" />
-		<field name="github" type="list" default="1" label="External Github Repo" description="Offer an option to pull code from a remote Github repository.">
+		<field name="github" type="list" default="1" label="External GitHub Repo" description="Offer an option to pull code from a remote GitHub repository.">
 			<option value="1">JYes</option>
 			<option value="0">JNo</option>
 		</field>
@@ -32,7 +32,7 @@
 			<option value="1">JYes</option>
 			<option value="0">JNo</option>
 		</field>
-		<field name="simtool" type="list" default="1" label="Enable Simtool" description="Offer an option to publish as a Simtool.">
+		<field name="simtool" type="list" default="1" label="Enable Sim2L" description="Offer an option to publish as a Sim2L.">
 			<option value="1">JYes</option>
 			<option value="0">JNo</option>
 		</field>
@@ -77,7 +77,7 @@
 		<field name="default_vnc" type="text" menu="hide" default="780x600" label="Default VNC Size" description="Default VNC geometry values" />
 		<field name="default_hostreq" type="text" menu="hide" default="sessions" label="Default Required Host Types" description="Default required session host types for new tools (comma seperated)" />
 		<field name="developer_site" type="text" menu="hide" default="FORGE" label="Developer Site" description="Name of project development site" />
-		<field name="project_path" type="text" menu="hide" default="/tools/" label="Path to Projects" description="Path to projects on development site (usually followed by the tool name)" />
+		<field name="project_path" type="text" menu="hide" default="/tools/" label="Path to Projects" description="Path to projects on development site (usually followed by the tool alias)" />
 		<field name="invokescript_dir" type="text" menu="hide" default="/apps" label="Invoke Script Dir" description="Directory for invoke script" />
 		<field name="dev_suffix" type="text" menu="hide" default="_dev" label="Dev Tool Suffix" description="Suffix indicating the development instance of a tool (e.g. _dev for toolname_dev) " />
 		<field name="group_prefix" type="text" menu="hide" default="app-" label="Dev group prefix" description="Prefix to name of development group (e.g. app-) " />
@@ -117,7 +117,7 @@
 		<field name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="First part of DOI namespace (what goes right after doi: and before /, e.g. 10.5072 )" />
 		<field name="doi_newprefix" type="text" menu="hide" default="" label="DOI handle prefix" description="Hub-specific DOI namespace end (usually 2-3 characters going after /, e.g. F2K)" />
 		<field name="doi_xmlschema" type="text" menu="hide" default="" label="DOI XML Schema" description="URL of XML schema to validate against" />
-		<field name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (use full HUB name) for DOI service" />
+		<field name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (use full site name) for DOI service" />
 		<field name="doi_resolve" type="text" menu="hide" default="https://doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />
 		<field name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="DOI verify url" description="URL for verifying DOIs" />
 	</fieldset>

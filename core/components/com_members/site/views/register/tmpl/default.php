@@ -84,7 +84,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 	}
 	?>
 
-	<form action="<?php echo Route::url('index.php?option='.$this->option.'&' . ($this->task == 'create' ? 'return=' . $form_redirect : 'task=' . $this->task)); ?>" method="post" id="hubForm">
+	<form method="post" id="hubForm">
 
 		<?php
 		if ($this->task == 'create' && empty($this->xregistration->_invalid) && empty($this->xregistration->_missing))
@@ -273,7 +273,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 			<div class="clear"></div>
 		<?php } ?>
 
-		<?php if ($this->registrationFullname != Field::STATE_HIDDEN) { ?>
+		<?php if ($this->registrationFullname != Field::STATE_HIDDEN || $this->registrationEmail != Field::STATE_HIDDEN) { ?>
 			<div class="explaination">
 				<?php if ($this->task == 'create') { ?>
 					<p><?php echo Lang::txt('COM_MEMBERS_REGISTER_ACTIVATION_EMAIL_HINT'); ?></p>
@@ -408,6 +408,13 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 
 				<?php foreach ($this->fields as $field): ?>
 					<?php
+
+                    // Add in class for JS selector to conditionally retrieve data from RoR Api based on members option 'rorApi'
+					$rorApiBoolean = \Component::params('com_members')->get('rorApi');
+					if (strtolower($field->get('name')) == "organization" && strtolower($field->get('type')) == "text" && $rorApiBoolean) {
+						echo "<span class='hidden rorApiAvailable'></span>";
+					}
+
 					$formfield = $form->getField($field->get('name'));
 
 					if ($field->options->count())

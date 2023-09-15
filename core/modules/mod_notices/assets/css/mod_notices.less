@@ -1,0 +1,90 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_notices
+	-- -- -- -- -- -- --
+
+*/
+
+	.modnotices {
+		font-size: 1.125rem;
+		margin: 0;
+		padding: 1rem;
+		color: #fff;
+		position: relative;
+		overflow: hidden;
+		zoom: 1;
+		background: #829356;
+		z-index: 1;
+		
+		& > .inner {
+			display: flex;
+			align-items: center;
+		}
+	}
+
+	.modnotices.low {
+		background-color: #c2571a;
+	}
+	
+	.modnotices.medium {
+		background-color: #107896;
+	}
+	
+	.modnotices.high {
+		background-color: #9a2617;
+	}
+	
+	.modnotices .notice {
+		margin: 0;
+		padding: 0;
+		line-height: 1.25rem;
+		flex-grow: 1;
+		display: flex;
+		align-items: center;
+		
+		a {
+			color: #fff;
+			text-decoration: underline;
+		}
+	}
+	
+	.modnotices .notice span.modnoticep-before,
+	.modnotices .notice:before {
+		@iconSize: 1.5rem;
+		content: "\f095";
+		width: @iconSize;
+		height: @iconSize;
+		font-size: @iconSize;
+		line-height: @iconSize;
+		display: inline-block;
+		font-family: 'Fontcons';
+		margin-right: @iconSize * 0.75;
+	}
+	
+	.modnotices .close {
+		margin-left: 1rem;
+		display: block;
+		text-decoration: none;
+		width: 1.5rem;
+		height: 1.5rem;
+		font-size: 1.5rem;
+		line-height: 1.5rem;
+		overflow: hidden;
+		white-space: nowrap;
+		border: none !important;
+		color: #fff;
+		flex-shrink: 0;
+	}
+	
+	.modnotices .close span.modnoticec-before,
+	.modnotices .close:before {
+		font-family: 'Fontcons';
+		content: "\f057";
+	}

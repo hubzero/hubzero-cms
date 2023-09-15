@@ -9,6 +9,8 @@
 
 defined('JPATH_PLATFORM') or die;
 
+use Hautelook\Phpass\PasswordHash;
+
 /**
  * Authorisation helper class, provides static methods to perform various tasks relevant
  * to the Joomla user and authorisation classes

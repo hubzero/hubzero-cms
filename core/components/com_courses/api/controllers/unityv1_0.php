@@ -93,10 +93,13 @@ class Unityv1_0 extends base
 
 		// Get the key and IV - Trim the first xx characters from the payload for IV
 		$key  = $course->config()->get('unity_key', 0);
-		$iv   = substr($data, 0, 32);
-		$data = substr($data, 32);
 
-		$message = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key, base64_decode($data), MCRYPT_MODE_CBC, $iv);
+	        $data = base64_decode($data);
+		$iv_size = openssl_cipher_iv_length('AES-256-CBC');
+		$iv = substr($data, 0, $iv_size);
+		$data = substr($data, $iv_size);
+		$message = openssl_decrypt($data, 'AES-256-CBC', $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv);
+
 		$message = trim($message);
 		$message = json_decode($message);
 

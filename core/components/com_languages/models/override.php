@@ -308,11 +308,8 @@ class Override extends Obj
 			return array();
 		}
 
-		// Capture hidden PHP errors from the parsing
 		$version      = phpversion();
-		$php_errormsg = null;
-		$track_errors = ini_get('track_errors');
-		ini_set('track_errors', true);
+		error_clear_last();
 
 		if ($version >= '5.3.1')
 		{

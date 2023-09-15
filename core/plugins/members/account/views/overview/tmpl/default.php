@@ -102,7 +102,7 @@ $this->css()
 		<div class="clear"></div>
 		<div class="sub-section-content">
 		<?php if ($this->passtype == 'changelocal' || $this->passtype == 'changehub') { ?>
-			<form action="index.php" method="post" data-section-registation="password" data-section-profile="password">
+			<form action="index.php" method="post" data-section-registration="password" data-section-profile="password">
 				<?php if (is_array($this->passinfo)) { ?>
 					<p class="<?php echo $this->passinfo['message_style']; ?>">
 						<?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_PASSWORD_EXPIRATION_EXPLANATION', $this->passinfo['diff'], $this->passinfo['max']); ?>

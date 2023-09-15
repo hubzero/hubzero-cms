@@ -21,7 +21,7 @@ function modChrome_none($module, &$params, &$attribs)
 function modChrome_table($module, &$params, &$attribs)
 {
 	?>
-	<table class="moduletable<?php echo htmlspecialchars($params->get('moduleclass_sfx')); ?>">
+	<table class="moduletable<?php echo htmlspecialchars($params->get('moduleclass_sfx','')); ?>">
 		<?php if ($module->showtitle != 0) : ?>
 			<thead>
 				<tr>
@@ -49,7 +49,7 @@ function modChrome_xhtml($module, &$params, &$attribs)
 {
 	$content = trim($module->content);
 	if (!empty($module->content)) : ?>
-		<div class="module<?php echo htmlspecialchars($params->get('moduleclass_sfx')); ?>">
+		<div class="module<?php echo htmlspecialchars($params->get('moduleclass_sfx','')); ?>">
 			<?php if ($module->showtitle != 0) : ?>
 				<h3><?php echo $module->title; ?></h3>
 			<?php endif; ?>

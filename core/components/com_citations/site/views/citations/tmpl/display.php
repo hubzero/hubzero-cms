@@ -59,10 +59,12 @@ $this->css('introduction.css', 'system')
 			<div class="col span-half">
 				<form action="<?php echo Route::url('index.php?option='.$this->option.'&task=browse'); ?>" method="get" class="search">
 					<fieldset>
-						<p>
+						<p class="hz-v-align">
 							<label for="csearch"><?php echo Lang::txt('COM_CITATIONS_FIND_CITATION_KEYWORD'); ?></label>
-							<input type="text" name="search" id="csearch" value="" />
-							<input type="submit" value="<?php echo Lang::txt('COM_CITATIONS_SEARCH'); ?>" />
+							<span class="hz-input-combo">
+								<input type="text" name="search" id="csearch" value="" />
+								<input type="submit" value="<?php echo Lang::txt('COM_CITATIONS_SEARCH'); ?>" />
+							</span>
 						</p>
 					</fieldset>
 				</form>

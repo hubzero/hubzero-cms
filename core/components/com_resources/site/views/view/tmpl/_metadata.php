@@ -19,7 +19,7 @@ foreach ($this->sections as $section)
 	$data .= (isset($section['metadata'])) ? $section['metadata'] : '';
 }
 
-if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('show_audience') || $this->model->params->get('supportedtag') || $data)
+if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('show_audience',0) || $this->model->params->get('supportedtag',0) || $data)
 {
 	$database = App::get('db');
 	?>
