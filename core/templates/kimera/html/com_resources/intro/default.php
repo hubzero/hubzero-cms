@@ -12,7 +12,7 @@ use Components\Search\Models\Solr\SearchComponent as SearchComponent;
 require_once Component::path('com_search') . '/models/solr/searchcomponent.php';
 
 // Use SOLR search. Fetch the id for the 'resources' search component; limit search to that component:
-$searchcomponentId = SearchComponent::whereEquals('name','resources')->rows()->key();
+$searchComponentId = SearchComponent::whereEquals('name','resources')->rows()->key();
 
 $this->css('introduction.css', 'system')
      ->css()
