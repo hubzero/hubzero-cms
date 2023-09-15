@@ -5555,7 +5555,7 @@ ol.comments .time {
   width: 1px;
 }
 /* Enable usable Solr search filters in search results if Filters enabled in Admin interface:*/
-.data-entry fieldset label {
+.aside .facet .search-filters label {
   padding: 8px;
   position: inherit;
   height: auto;
