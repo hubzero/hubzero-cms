@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright (c) 2005-2023 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -24,7 +24,8 @@ Html::behavior('tooltip');
 $ignore = array(
 	'app', 'site', 'offline', 'meta', 'seo', 'cookie', 'system',
 	'debug', 'cache', 'session', 'server', 'locale', 'ftp', 'database',
-	'mail', 'api', 'permissions', 'filters', 'rate_limit', 'asset_id'
+	'mail', 'api', 'permissions', 'filters', 'rate_limit', 'asset_id',
+	'hub_secret'
 );
 
 $this->others = array();
@@ -64,6 +65,7 @@ $this->js();
 				<div class="col span6">
 					<?php echo $this->loadTemplate('seo'); ?>
 					<?php echo $this->loadTemplate('cookie'); ?>
+					<?php echo $this->loadTemplate('hub_secret'); ?>
 				</div>
 			</div>
 		</div>
