@@ -897,6 +897,22 @@
 				description="COM_CONFIG_FIELD_OFFLINE_IMAGE_DESC" />
 		</fieldset>
 	</fields>
+	<fields name="hub_secret">
+		<fieldset name="hub_secret">
+			<field
+				name="reset_secret"
+				type="list"
+				default="noop"
+				label="COM_CONFIG_FIELD_HUB_SECRET_LABEL"
+				description="COM_CONFIG_FIELD_HUB_SECRET_DESC"
+				filter="word">
+				<option
+					value="noop">COM_CONFIG_FIELD_HUB_SECRET_NOOP</option>
+				<option
+					value="reset">COM_CONFIG_FIELD_HUB_SECRET_RESET</option>
+			</field>
+		</fieldset>
+	</fields>
 	<fields name="rate_limit">
 		<fields name="short">
 			<fieldset
