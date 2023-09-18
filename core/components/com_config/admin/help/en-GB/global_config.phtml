@@ -104,6 +104,7 @@
 				<li><b>Cookie Path</b>. Path for which the cookie is valid.</li>
 			</ul>
 		</section>
+
 	</section>
 
 	<section id="System">
@@ -116,6 +117,17 @@
 				<li><b>Help Server</b>. The place the CMS looks for help information when you click the <b>Help</b> button (visible in many screens and options of the administration panel).  By default, it uses the CMS' local files.</li>
 			</ul>
 		</section>
+
+		<section>
+			<h3><span class="mw-headline" id="Hub Secret">Hub Secret</span></h3>
+			<p>The Hub Secret is unique to each Hub and is used to help validate user access to Campaigns. Campaigns are managed in the Newsletter component.</p>
+			<dl>
+				<dt>Reset Hub Secret</dt>
+				<dd>This control is used to reset the Hub Secret. Resetting the Hub secret will invalidate any existing Campaigns, making users no longer
+					able to access content with links from those Campaigns.</dd>
+			</dl>
+		</section>
+
 		<section>
 			<h3><span class="mw-headline" id="Debug_Settings">Debug Settings</span></h3>
 			<p>For this debug settings to work the associated <a href="<?php echo Route::url('index.php?option=com_help&component=com_plugins&page=plugins#System_-_Debug'); ?>" title="Extensions Plugin Manager Edit">plugin</a> must be activated (this is enabled by default). You can also customize further what will show in the debug modes in this plugin.</p>
