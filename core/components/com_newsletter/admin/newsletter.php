@@ -16,6 +16,7 @@ if (!\User::authorise('core.manage', 'com_newsletter'))
 require_once dirname(__DIR__) . DS . 'models' . DS . 'newsletter.php';
 require_once dirname(__DIR__) . DS . 'models' . DS . 'mailinglist.php';
 require_once dirname(__DIR__) . DS . 'models' . DS . 'mailing.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'campaign.php';
 
 // Include helpers
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php';
@@ -36,7 +37,8 @@ $menuItems = array(
 	'mailings'     => \Lang::txt('COM_NEWSLETTER_MAILINGS'),
 	'mailinglists' => \Lang::txt('COM_NEWSLETTER_LISTS'),
 	'templates'    => \Lang::txt('COM_NEWSLETTER_TEMPLATES'),
-	'tools'        => \Lang::txt('COM_NEWSLETTER_TOOLS')
+	'tools'        => \Lang::txt('COM_NEWSLETTER_TOOLS'),
+	'campaigns'    => \Lang::txt('COM_NEWSLETTER_CAMPAIGNS')
 );
 
 foreach ($menuItems as $k => $v)
