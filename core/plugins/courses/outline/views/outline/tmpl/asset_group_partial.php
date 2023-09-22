@@ -54,6 +54,7 @@ defined('_HZEXEC_') or die();
 				<input class="assetgroup-title-reset" type="reset" value="Cancel" />
 				<input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
 				<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
+				<input type="hidden" name="unit_id" value="<?php echo $this->unit->get('id'); ?>" />
 				<input type="hidden" name="id" value="<?php echo $this->ag->get('id'); ?>" />
 				<input type="hidden" name="type" value="<?php echo $this->agt->get('title'); ?>" />
 			</form>

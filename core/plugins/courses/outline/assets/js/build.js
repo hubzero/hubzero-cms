@@ -1412,6 +1412,7 @@ HUB.CoursesOutline = {
 
 						// Trigger asset group update
 						$('.outline-main').trigger('assetGroupCreate', [newAssetGroupItem[0].id]);
+						window.location.reload();
 					},
 					201: function( data ) {
 						// Insert in our HTML (uses "underscore.js")
@@ -1422,6 +1423,7 @@ HUB.CoursesOutline = {
 
 						// Trigger asset group update
 						$('.outline-main').trigger('assetGroupCreate', [newAssetGroupItem[0].id]);
+						window.location.reload();
 					}
 				}
 			});
@@ -1594,7 +1596,7 @@ HUB.CoursesOutline = {
 				statusCode: {
 					// 200 OK
 					200: function ( data ){
-						this.refresh();
+						window.location.reload();
 					}
 				}
 			});
@@ -1617,7 +1619,7 @@ HUB.CoursesOutline = {
 						clipoptions = '';
 						for (var key in data.assetClips) {
 							var clip = data.assetClips[key];
-							clipoptions += "<option value="+clip.id+">"+clip.title+"</optiom>\n";
+							clipoptions += "<option value="+clip.scope_id+">"+clip.title+"</optiom>\n";
 						}
 					}
 				}
@@ -2089,6 +2091,7 @@ HUB.CoursesOutline = {
 											'<input class="asset-group-title-cancel" type="reset" value="Cancel" />',
 											'<input type="hidden" name="course_id" value="<%= course_id %>" />',
 											'<input type="hidden" name="offering" value="<%= offering_alias %>" />',
+											'<input type="hidden" name="unit_id" value="<%= unit_id %>" />',
 											'<input type="hidden" name="id" value="<%= assetgroup.assetgroup_id %>" />',
 										'</form>',
 									'</div>',
@@ -2116,7 +2119,7 @@ HUB.CoursesOutline = {
 													'<% if (clipoptions.length > 0) { %>',
 													'<div class="asset-group-item paste-copy sub-item">',
 														'<span style="padding-left: 30px;"> [ Or</span>',
-														'<form action="/api/courses/assetgroup/save">',
+														'<form action="/api/courses/assetgroup/copy">',
 															'<input type="submit" id="copy_asset_group" value="Copy" />',
 															'<span> ',
 															'<%',

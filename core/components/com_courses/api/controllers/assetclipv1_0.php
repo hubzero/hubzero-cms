@@ -175,7 +175,7 @@ class Assetclipv1_0 extends base
 				'assetclip_title'    => $assetClip->get('title'),
 				'assetclip_type'     => $assetClip->get('type'),
 				'assetclip_style'    => 'display:none'
-			], ($id ? 200 : 201)
+			], (200)
 		);
 	}
 	/**

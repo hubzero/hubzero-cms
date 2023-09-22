@@ -87,15 +87,9 @@ class Assetgroupv1_0 extends base
 
 		// Check for an incoming 'id'
 		$id = Request::getInt('id', null);
-		$unit_id = Request::getInt('unit_id', null);
 		
 		// Create an asset group instance
 		$assetGroup = new Assetgroup($id);
-		$assetGroup->copy($unit_id);
-
-		$parent = $assetGroup->get('parent');
-		$parent = (!empty($parent)) ? $parent : 0;
-		$assetGroup->set('parent', Request::getInt('parent',$parent));
 
 		// Check to make sure we have an asset group object
 		if (!is_object($assetGroup))
@@ -175,6 +169,89 @@ class Assetgroupv1_0 extends base
 		if (!$assetGroup->store())
 		{
 			App::abort(500, 'Asset group save failed');
+		}
+
+		// Return message
+		$this->send(
+			[
+				'assetgroup_id'    => $assetGroup->get('id'),
+				'assetgroup_title' => $assetGroup->get('title'),
+				'assetgroup_state' => (int) $assetGroup->get('state'),
+				'assetgroup_style' => 'display:none',
+				'course_id'        => $this->course_id,
+				'offering_alias'   => $this->offering_alias,
+				'allow_tools'      => Tool::getToolDirectory()
+			], ($id ? 200 : 201)
+		);
+	}
+
+	/**
+	 * Copies an asset group
+	 *
+	 * @apiMethod POST
+	 * @apiUri    /courses/assetgroup/copy
+	 * @apiParameter {
+	 * 		"name":        "id",
+	 * 		"description": "Asset group ID to copy",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "unit_id",
+	 * 		"description": "ID of parent unit",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @apiParameter {
+	 * 		"name":        "parent",
+	 * 		"description": "ID of parent asset group",
+	 * 		"type":        "integer",
+	 * 		"required":    false,
+	 * 		"default":     null
+	 * }
+	 * @return    void
+	 */
+	public function copyTask()
+	{
+		// Require authentication and authorization
+		$this->authorizeOrFail();
+
+		// Check for an incoming 'id'
+		$id = Request::getInt('id', null);
+		if (!$id)
+		{
+			App::abort(500, 'No asset group id given to copy');
+		}
+		// Get target unit 
+		$unit_id = Request::getInt('unit_id', null);
+		
+		// Create the asset group instance
+		$assetGroup = new Assetgroup($id);
+		// Copy/save it to target unit
+		if (!$assetGroup->copy($unit_id))
+		{
+			App::abort(500, 'Failed to create copy of asset group');
+		}
+		// Set new parent if given
+		$parent = $assetGroup->get('parent');
+		$parent = (!empty($parent)) ? $parent : 0;
+		$assetGroup->set('parent', Request::getInt('parent',$parent));
+		// Set new creation info
+		$assetGroup->set('created', Date::toSql());
+		$assetGroup->set('created_by', App::get('authn')['user_id']);
+
+		// Check to make sure we have an asset group object
+		if (!is_object($assetGroup))
+		{
+			App::abort(500, 'Failed to create an asset group object');
+		}
+
+		// Save the asset group
+		if (!$assetGroup->store())
+		{
+			App::abort(500, 'Failed to save new asset group');
 		}
 
 		// Return message

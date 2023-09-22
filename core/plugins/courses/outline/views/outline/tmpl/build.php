@@ -148,6 +148,7 @@ HTML::behavior('core');
 								<input class="asset-group-title-cancel" type="reset" value="Cancel" />
 								<input type="hidden" name="course_id" value="<?php echo $course->get('id') ?>" />
 								<input type="hidden" name="offering" value="<?php echo $offering->get('alias') ?>" />
+								<input type="hidden" name="unit_id" value="<?php echo $unit->get('id') ?>" />
 								<input type="hidden" name="id" value="<?php echo $agt->get('id') ?>" />
 								<input type="hidden" name="type" value="<?php echo $agt->get('title') ?>" />
 							</form>
@@ -196,14 +197,14 @@ HTML::behavior('core');
 										<?php if (count($clips) > 0) { ?>
 										<div class="asset-group-item paste-copy sub-item">
 											<span style="padding-left: 30px;">[ Or</span>
-											<form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save">
+											<form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/copy">
 												<input type="submit" id="copy_asset_group" value="Copy" />
 												<span>&nbsp;<?php echo (substr($agt_title, -3) == 'ies') ? strtolower(preg_replace('/ies$/', 'y', $agt_title)) : strtolower(rtrim($agt_title, 's')); ?></span>
 												<select name="id">
 													<?php
 														foreach ($clips as $clip)
 														{
-															echo "<option value=".$clip->id.">".$clip->title."</option>";
+															echo "<option value=".$clip->scope_id.">".$clip->title."</option>";
 														}
 													?>
 												</select>
