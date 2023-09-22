@@ -28,7 +28,10 @@ class Migration20230920000000ComNewsletter extends Base
     			description TEXT,
     			campaign_date DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 				secret CHAR(32) UNIQUE NULL,
-				PRIMARY KEY (id)
+				modified  DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+    			modified_by int(11) DEFAULT NULL,
+				PRIMARY KEY (id),
+				KEY idx_title (title)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 			$this->db->setQuery($query);
