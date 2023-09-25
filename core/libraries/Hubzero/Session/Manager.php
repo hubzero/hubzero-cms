@@ -496,6 +496,11 @@ class Manager extends Obj
 			unset($_SESSION[$namespace][$name]);
 		}
 
+		if (isset($_SESSION[$namespace]) && count($_SESSION[$namespace]) == 0)
+		{
+			unset($_SESSION[$namespace]);
+		}
+
 		return $value;
 	}
 
