@@ -19,29 +19,34 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Stores the initialized Facebook object.
+	 * Stores the initialized OAuth2 provider object.
 	 *
-	 * @var  object  Facebook
+	 * @var  object  Oauth2\Client\Provider
 	 */
-	private $facebook = null;
+	private $provider = null;
 
 	/**
-	 * Get the Facebook object, instantiating it if need be
+	 * Stores the session scope key for session variables
+	 *
+	 * @var  string	Session scope key to store our session variables
+	 */
+	private $name = 'facebook';
+
+	/**
+	 * Get the provider object, instantiating it if need be
 	 *
 	 * @return  object
 	 */
-	protected function facebook()
+	public function __construct($subject, $config)
 	{
-		if (is_null($this->facebook))
-		{
-			$this->facebook = new \Facebook\Facebook([
-				'app_id' => $this->params->get('app_id'),
-				'app_secret' => $this->params->get('app_secret'),
-				'default_graph_version' => $this->params->get('graph_version')
-			]);
-		}
+		parent::__construct($subject, $config);
 
-		return $this->facebook;
+		$this->provider = new \League\OAuth2\Client\Provider\Facebook ([
+			'clientId' => $this->params->get('app_id'),
+			'clientSecret' => $this->params->get('app_secret'),
+			'redirectUri' => $this->getReturnUrl(),
+			'graphApiVersion'   => 'v2.10',
+		]);
 	}
 
 	/**
@@ -57,7 +62,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	}
 
 	/**
-	 * Check login status of current user with regards to facebook
+	 * Check login status of current user with regards to the provider
 	 *
 	 * @return  array  $status
 	 */
@@ -104,8 +109,8 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	}
 
 	/**
-	 * Method to call when redirected back from facebook after authentication
-	 * Grab the return URL if set and handle denial of app privileges from facebook
+	 * Method to call when redirected back from provider after authentication
+	 * Grab the return URL if set and handle denial of app privileges from provider
 	 *
 	 * @param   object  $credentials
 	 * @param   object  $options
@@ -115,9 +120,11 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	{
 		$return = '';
 		$b64dreturn = '';
-		if ($return = Request::getString('return', ''))
+
+		if ($return = Session::get('returnUrl', null, $this->name))
 		{
 			$b64dreturn = base64_decode($return);
+
 			if (!\Hubzero\Utility\Uri::isInternal($b64dreturn))
 			{
 				$b64dreturn = '';
@@ -125,6 +132,8 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 		}
 
 		$options['return'] = $b64dreturn;
+
+		Session::clear('returnUrl', $this->name);
 
 		// Check to make sure they didn't deny our application permissions
 		if (Request::getVar('error', null))
@@ -139,7 +148,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	}
 
 	/**
-	 * Method to setup facebook params and redirect to facebook auth URL
+	 * Method to setup provider params and redirect to provider auth URL
 	 *
 	 * @param   object  $view  view object
 	 * @param   object  $tpl   template object
@@ -147,20 +156,16 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	 */
 	public function display($view, $tpl)
 	{
-		// Set up the config for the facebook sdk instance
-		$config = array(
-			'appId'      => $this->params->get('app_id'),
-			'secret'     => $this->params->get('app_secret'),
-			'fileUpload' => false
-		);
-
 		// Set up params for the login call
 		$params = array(
-			'display'      => 'page',
-			'redirect_uri' => self::getReturnUrl($view->return)
+			'scope' => ['email'],
+			'redirect_uri' => $this->getReturnUrl()
 		);
 
-		$loginUrl = $this->facebook()->getRedirectLoginHelper()->getLoginUrl($params['redirect_uri'], array('email'));
+		$loginUrl = $this->provider->getAuthorizationUrl($params);
+
+		Session::set('oauth2state', $this->provider->getState(), $this->name);
+		Session::set('returnUrl', $view->return, $this->name);
 
 		// Redirect to the login URL
 		App::redirect($loginUrl);
@@ -176,59 +181,53 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	 */
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
-		try
+		$code = Request::getVar('code', null);
+		$state = Request::getVar('state', null);
+
+		if ($code == null)
 		{
-			$session = $this->facebook()->getRedirectLoginHelper()->getAccessToken();
+			$authUrl = $this->provider->getAuthorizationUrl(array('scope' => ['email']));
+
+			Session::set('oauth2state', $this->provider->getState(), $this->name);
+
+			App::redirect($authUrl);
 		}
-		catch (\Facebook\Exceptions\FacebookSDKException $ex)
+		elseif ($state !== Session::get('oauth2state',null,$this->name))
 		{
-			// When Facebook returns an error
-		}
-		catch (\Exception $ex)
-		{
-			// When validation fails or other local issues
+			Session::clear('oauth2state',$this->name);
+
+			$response->status = \Hubzero\Auth\Status::FAILURE;
+			$response->error_message = Lang::txt('PLG_AUTHENTICATION_FACEBOOK_ERROR_RETRIEVING_PROFILE', 'Mismatched state');
+
+			return;
 		}
 
-		// Make sure we have a user_id (facebook returns 0 for a non-logged in user)
-		if ((isset($user_id) && $user_id > 0) || (isset($session) && $session))
+		$token = $this->provider->getAccessToken('authorization_code', array('code' => Request::getString('code')));
+
+		Session::clear('oauth2state',$this->name);
+
+		// Make sure we have a user_id (provider returns 0 for a non-logged in user)
+		if ((isset($user_id) && $user_id > 0) || (isset($token) && $token))
 		{
 			try
-			{
-				// Fields we need
-				$retrieve = array(
-					'email',
-					'name'
-				);
-				// Extra fields we might want to collect
-				$fields = array(
-					'age_range',
-					'gender',
-					'locale',
-					'link',
-					'timezone',
-					'verified',
-					'updated_time'
-				);
-				foreach ($fields as $field)
-				{
-					if ($this->params->get('profile_' . $field))
-					{
-						$retrieve[] = $field;
-					}
-				}
+			{	
+				// We got an access token, let's now get the user's details
+				$owner = $this->provider->getResourceOwner($token);
 
-				$this->facebook()->setDefaultAccessToken($session);
-				$facebookResponse = $this->facebook()->get('/me?fields=' . implode(',', $retrieve));
-				$user_profile = $facebookResponse->getGraphUser();
-
-				$id       = $user_profile->getId();
-				$fullname = $user_profile->getName();
-				$email    = $user_profile->getEmail();
-
-				// Version 5 of the Facebook SDK no longer allows retrival of username
-				// $username = $user_profile->getField('username');
+				$id        = $owner->getId();
+				$firstname = $owner->getFirstName();
+				$lastname  = $owner->getLastName();
+				$fullname  = $owner->getName();
+				$email     = $owner->getEmail();
+				$minage    = $owner->getMinAge();
+				$maxage    = $owner->getMaxAge();
+				$timezone  = $owner->getTimezone();
+				$link      = $owner->getLink();
+				$locale    = $owner->getLocale();
+				$gender    = $owner->getGender();
+				$fullname  = empty($fullname) ? $firstname . ' ' . $lastname : $fullname;
 			}
-			catch (\Facebook\Exceptions\FacebookResponseException $e)
+			catch (\Exception $e)
 			{
 				// Error message?
 				$response->status = \Hubzero\Auth\Status::FAILURE;
@@ -238,7 +237,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 
 			// Create the hubzero auth link
 			$method = (Component::params('com_members')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
-			$hzal = \Hubzero\Auth\Link::$method('authentication', 'facebook', null, $id);
+			$hzal = \Hubzero\Auth\Link::$method('authentication', $this->name, null, $id);
 
 			if ($hzal === false)
 			{
@@ -251,7 +250,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 
 			// Set response variables
 			$response->auth_link = $hzal;
-			$response->type      = 'facebook';
+			$response->type      = $this->name;
 			$response->status    = \Hubzero\Auth\Status::SUCCESS;
 			$response->fullname  = $fullname;
 
@@ -271,37 +270,19 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 				// Also set a suggested username for their hub account
 				$sub_email    = explode('@', $email, 2);
 				$tmp_username = $sub_email[0];
-				App::get('session')->set('auth_link.tmp_username', $tmp_username);
+				Session::set('auth_link.tmp_username', $tmp_username);
 			}
 
 			$hzal->update();
 
-			// Save extra data
-			foreach ($fields as $key)
-			{
-				$val = $user_profile->getField($key);
-
-				if (in_array($key, $retrieve) && $val)
-				{
-					$datum = Hubzero\Auth\Link\Data::oneByLinkAndKey($hzal->id, $key);
-					$datum->set(array(
-						'link_id'      => $hzal->id,
-						'domain_key'   => (string)$key,
-						'domain_value' => (string)$val
-					));
-					$datum->save();
-				}
-			}
-
 			// If we have a real user, drop the authenticator cookie
 			if (isset($user) && is_object($user))
 			{
-				$apiVersion = $this->facebook()->getDefaultGraphVersion();
 				// Set cookie with login preference info
 				$prefs = array(
 					'user_id'       => $user->get('id'),
-					'user_img'      => 'https://graph.facebook.com/' . $apiVersion . '/' . $id . '/picture?type=normal',
-					'authenticator' => 'facebook'
+					'user_img'      => $owner->getPictureUrl(),
+					'authenticator' => $this->name,
 				);
 
 				$namespace = 'authenticator';
@@ -325,34 +306,41 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	 */
 	public function link($options=array())
 	{
-		try
+		$code = Request::getVar('code', null);
+		$state = Request::getVar('state', null);
+
+		if ($code == null)
 		{
-			$session = $this->facebook()->getRedirectLoginHelper()->getAccessToken();
+			$authUrl = $this->provider->getAuthorizationUrl(array('scope' => ['email']));
+
+			Session::set('oauth2state', $this->provider->getState(), $this->name);
+
+			App::redirect($authUrl);
 		}
-		catch (\Facebook\Exceptions\FacebookSDKException $ex)
+		elseif ($state !== Session::get('oauth2state',null,$this->name))
 		{
-			// When Facebook returns an error
-		}
-		catch (\Exception $ex)
-		{
-			// When validation fails or other local issues
+			Session::clear('oauth2state',$this->name);
+
+			$response->status = \Hubzero\Auth\Status::FAILURE;
+			$response->error_message = Lang::txt('PLG_AUTHENTICATION_FACEBOOK_ERROR_RETRIEVING_PROFILE', 'Mismatched state');
+
+			return;
 		}
 
-		// Make sure we have a user_id (facebook returns 0 for a non-logged in user)
-		if ((isset($user_id) && $user_id > 0) || (isset($session) && $session))
+		$token = $this->provider->getAccessToken('authorization_code', array('code' => Request::getString('code')));
+
+		Session::clear('oauth2state',$this->name);
+
+		// Make sure we have a user_id (provider returns 0 for a non-logged in user)
+		if ((isset($user_id) && $user_id > 0) || (isset($token) && $token))
 		{
 			try
 			{
-				$this->facebook()->setDefaultAccessToken($session);
-				$facebookResponse = $this->facebook()->get('/me');
-				$user_profile = $facebookResponse->getGraphUser();
-				$graph_node = $facebookResponse->getGraphNode();
-
-				$id       = $user_profile->getId();
-				$email    = $graph_node->getField('email');
-
+				$owner = $this->provider->getResourceOwner($token);
+				$id       = $owner->getId();
+				$email    = $owner->getEmail();
 			}
-			catch (\Facebook\Exceptions\FacebookRequestException $e)
+			catch (\Exception $e)
 			{
 				// Error message?
 				$response->status = \Hubzero\Auth\Status::FAILURE;
@@ -360,12 +348,12 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 				return;
 			}
 
-			$hzad = \Hubzero\Auth\Domain::getInstance('authentication', 'facebook', '');
+			$hzad = \Hubzero\Auth\Domain::getInstance('authentication', $this->name, '');
 
 			// Create the link
 			if (\Hubzero\Auth\Link::getInstance($hzad->id, $id))
 			{
-				// This facebook account is already linked to another hub account
+				// This account is already linked to another hub account
 				App::redirect(
 					Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
 					Lang::txt('PLG_AUTHENTICATION_FACEBOOK_ACCOUNT_ALREADY_LINKED'),
@@ -374,7 +362,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 			}
 			else
 			{
-				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'facebook', null, $id);
+				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', $this->name, null, $id);
 				// if `$hzal` === false, then either:
 				//    the authenticator Domain couldn't be found,
 				//    no username was provided,
@@ -387,7 +375,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 				}
 				else
 				{
-					Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "facebook", null, %s) returned false', $id));
+					Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", ' . $this->name . ', null, %s) returned false', $id));
 				}
 			}
 		}
@@ -409,7 +397,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 	 * @param   bool    $encode  whether or not to encode return before using
 	 * @return  string  url
 	 */
-	private static function getReturnUrl($return=null, $encode=false)
+	private function getReturnUrl($return=null, $encode=false)
 	{
 		// Get the hub url
 		$service = trim(Request::base(), '/');
@@ -430,7 +418,7 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 			$rtrn = '&return=' . $return;
 		}
 
-		return self::getRedirectUri('facebook') . $rtrn;
+		return self::getRedirectUri($this->name) . $rtrn;
 	}
 
 	/**
