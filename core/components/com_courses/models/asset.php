@@ -271,7 +271,7 @@ class Asset extends Base
 	}
 
 	/**
-	 * Track asset views
+	 * Track views of the course assets, in the jos_courses_asset_views table
 	 *
 	 * @param   object $course \Components\Courses\Models\Course
 	 * @return  mixed
@@ -307,12 +307,13 @@ class Asset extends Base
 		$view->asset_id          = $this->_tbl->id;
 		$view->course_id         = $this->get('course_id');
 		$view->viewed            = Date::toSql();
-		$view->viewed_by         = $member->get('id');
+		$view->viewed_by         = User::get('id');
 		$view->ip                = (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '');
 		$view->url               = (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '');
 		$view->referrer          = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');
 		$view->user_agent_string = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
 		$view->session_id        = App::get('session')->getId();
+		$view->viewed_by_member  = $member->get('id');
 		if (!$view->store())
 		{
 			$this->setError($view->getError());
