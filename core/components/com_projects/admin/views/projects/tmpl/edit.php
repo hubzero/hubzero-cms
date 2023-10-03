@@ -373,7 +373,7 @@ if ($this->model->groupOwner())
 					<?php if ($this->model->isActive()) { ?>
 						<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_SUSPEND'); ?>" class="btn" id="do-suspend" />
 					<?php } else if ($this->model->isInactive() || $this->model->isDeleted()) { ?>
-						<input type="submit" value="<?php echo $this->suspended ? Lang::txt('COM_PROJECTS_OPTION_REINSTATE') : Lang::txt('COM_PROJECTS_OPTION_ACTIVATE'); ?>" class="btn" id="do-reisnate" />
+						<input type="submit" value="<?php echo $this->suspended ? Lang::txt('COM_PROJECTS_OPTION_REINSTATE') : Lang::txt('COM_PROJECTS_OPTION_ACTIVATE'); ?>" class="btn" id="do-reinstate" />
 					<?php } ?>
 					<?php if (!$this->model->isDeleted()) { ?>
 						<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_DELETE'); ?>" class="btn" id="do-delete" />
