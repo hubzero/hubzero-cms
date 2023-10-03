@@ -406,7 +406,7 @@ class Projects extends AdminController
 			$result = $log
 				->join($r, $r . '.log_id', $l . '.id', 'inner')
 				->whereEquals($r . '.scope', 'project')
-				->whereEquals($r . '.scope_id', $this->model->get('id'))
+				->whereEquals($r . '.scope_id', $model->get('id'))
 				->whereEquals($l . '.description', Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'))
 				->order($l . '.created', 'desc')
 				->row();

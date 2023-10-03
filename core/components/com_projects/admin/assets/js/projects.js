@@ -26,7 +26,7 @@ Hubzero.submitbutton = function(task) {
 		}
 
 		if (task == 'reinstate') {
-			form.admin_action.value = 'reinstate';
+			frm.admin_action.value = 'reinstate';
 			Hubzero.submitform('save', frm);
 			return;
 		}
