@@ -277,7 +277,7 @@ class Objct extends Relational
 
 				$assocData = $row->toArray();
 
-				if (!self::associateionExists($assocData))
+				if (!self::associationExists($assocData))
 				{
 					$row->save();
 					$entries[] = $row->get('id');
