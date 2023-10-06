@@ -473,13 +473,13 @@ class Version
 	}
 
 	/**
-	 * Short description for '_mysql_create'
+	 * Short description for '_sql_create'
 	 *
 	 * Long description (if any) ...
 	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
-	private function _mysql_create()
+	private function _sql_create()
 	{
 		$db = \App::get('db');
 
@@ -549,7 +549,7 @@ class Version
 	{
 		if (true)
 		{
-			$result = $this->_mysql_create();
+			$result = $this->_sql_create();
 
 			if ($result === false)
 			{
@@ -561,13 +561,13 @@ class Version
 	}
 
 	/**
-	 * Short description for '_mysql_read'
+	 * Short description for '_sql_read'
 	 *
 	 * Long description (if any) ...
 	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
-	private function _mysql_read()
+	private function _sql_read()
 	{
 		$db = \App::get('db');
 		$lazyloading = false;
@@ -661,7 +661,7 @@ class Version
 			$this->clear();
 			$this->instance = $instance;
 
-			$result = $this->_mysql_read();
+			$result = $this->_sql_read();
 
 			if ($result === false)
 			{
@@ -673,18 +673,18 @@ class Version
 	}
 
 	/**
-	 * Short description for '_mysql_update'
+	 * Short description for '_sql_update'
 	 *
 	 * Long description (if any) ...
 	 *
 	 * @param	  boolean $all Parameter description (if any) ...
 	 * @return	 boolean Return description (if any) ...
 	 */
-	private function _mysql_update($all = false)
+	private function _sql_update($all = false)
 	{
 		$db = \App::get('db');
 
-		Log::debug('_mysql_update() start');
+		Log::debug('_sql_update() start');
 		$query = "UPDATE #__tool_version SET ";
 
 		$classvars = get_class_vars(__CLASS__);
@@ -875,7 +875,7 @@ class Version
 					$list[$key] = $db->Quote($value);
 				}
 
-				$valuelist = implode($list, ",");
+				$valuelist = implode(",", $list);
 
 				if (empty($valuelist))
 				{
@@ -908,7 +908,7 @@ class Version
 
 			if (!$db->query())
 			{
-				Log::debug('_mysql_update_failed');
+				Log::debug('_sql_update_failed');
 				return false;
 			}
 		}
@@ -944,7 +944,7 @@ class Version
 
 		if (true)
 		{
-			$result = $this->_mysql_update($this->_updateAll);
+			$result = $this->_sql_update($this->_updateAll);
 
 			if ($result === false)
 			{
@@ -957,13 +957,13 @@ class Version
 	}
 
 	/**
-	 * Short description for '_mysql_delete'
+	 * Short description for '_sql_delete'
 	 *
 	 * Long description (if any) ...
 	 *
 	 * @return	 boolean Return description (if any) ...
 	 */
-	private function _mysql_delete()
+	private function _sql_delete()
 	{
 		if (!isset($this->instance) && !isset($this->id))
 		{
@@ -1033,7 +1033,7 @@ class Version
 
 		if (true)
 		{
-			$result = $this->_mysql_delete();
+			$result = $this->_sql_delete();
 
 			if ($result === false)
 			{
@@ -1389,7 +1389,7 @@ class Version
 	public static function getVersionInfo($id, $version=null, $toolname=null, $instance=null)
 	{
 		$db = \App::get('db');
-		// data comes from mysql
+		// data comes from db
 		$query  = "SELECT v.*, d.doi_label as doi ";
 		$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
 		if ($id)

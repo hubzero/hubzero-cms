@@ -164,11 +164,6 @@ class Sanitize
 			return $string;
 		}
 
-		if (get_magic_quotes_gpc())
-		{
-			$string = stripslashes($string);
-		}
-
 		// strip out any KL_PHP, script, style, HTML comments
 		$string = preg_replace('/{kl_php}(.*?){\/kl_php}/is', '', $string);
 		$regex =

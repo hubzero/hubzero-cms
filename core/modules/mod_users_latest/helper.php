@@ -28,7 +28,7 @@ class Helper extends Module
 
 		$shownumber = $params->get('shownumber', 5);
 		$linknames  = $params->get('linknames', 0);
-		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx',''));
 
 		$names = self::getUsers($params);
 

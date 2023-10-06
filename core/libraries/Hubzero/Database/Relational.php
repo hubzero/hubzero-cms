@@ -431,6 +431,17 @@ class Relational implements \IteratorAggregate, \ArrayAccess, \Serializable
 	}
 
 	/**
+	 * Check if attributes (i.e. field) on the model is set
+	 *
+	 * @param   string  $name    The attribute to check if set
+	 * @return  boolean 
+	 */
+	public function __isset($name)
+	{
+		return $this->hasAttribute($name);
+	}
+
+	/**
 	 * Sets attributes (i.e. fields) on the model
 	 *
 	 * @param   array|string  $key    The key to set, or array of key/value pairs

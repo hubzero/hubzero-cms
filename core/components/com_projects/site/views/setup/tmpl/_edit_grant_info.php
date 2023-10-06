@@ -70,6 +70,17 @@ if ($this->model->params->get('grant_PI')
 				<?php endif; ?>
 			</label>
 		</div>
+		
+		<div class="form-group">
+			<label for="param-grant_agency" class="terms-label">
+				<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_AWARD_NUMBER'); ?>:
+				<?php if ($approved): ?>
+					<span class="prominent"><?php echo htmlentities(html_entity_decode($this->model->params->get('award_number', 'N/A'))); ?></span>
+				<?php else: ?>
+					<input name="params[award_number]" id="param-award_number" class="form-control" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->model->params->get('award_number'))); ?>" class="long" />
+				<?php endif ?>
+			</label>
+		</div>
 
 		<div class="form-group">
 			<label for="param-grant_agency" class="terms-label">

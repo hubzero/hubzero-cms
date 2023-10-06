@@ -607,7 +607,7 @@ class Sessionsv1_0 extends ApiController
 		//check to make sure we have an app to invoke
 		if (!$app->name)
 		{
-			$this->errorMessage(400, 'You Must Supply a Valid Tool Name to Invoke.');
+			$this->errorMessage(400, 'You Must Supply a Valid Tool Alias to Invoke.');
 			return;
 		}
 
@@ -664,7 +664,7 @@ class Sessionsv1_0 extends ApiController
 		//make sure we have a valid tool
 		if ($app->title == '' || $app->toolname == '')
 		{
-			throw new Exception(Lang::txt('The tool "%s" does not exist on the HUB.', $tool_name), 400);
+			throw new Exception(Lang::txt('The tool "%s" does not exist.', $tool_name), 400);
 		}
 
 		//get tool access
@@ -874,7 +874,7 @@ class Sessionsv1_0 extends ApiController
 		// Make sure we have a valid tool
 		if ($app->title == '' || $app->toolname == '')
 		{
-			throw new Exception(Lang::txt('The tool "%s" does not exist on the HUB.', $tool_name), 404);
+			throw new Exception(Lang::txt('The tool "%s" does not exist.', $tool_name), 404);
 		}
 
 		// Get tool access

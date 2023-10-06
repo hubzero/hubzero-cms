@@ -48,7 +48,7 @@ class Helper extends Module
 			$lineone = $line1;
 		}
 
-		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx',''));
 
 		require $this->getLayoutPath($params->get('layout', 'default'));
 	}

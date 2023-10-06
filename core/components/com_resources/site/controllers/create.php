@@ -1720,7 +1720,7 @@ class Create extends SiteController
 		if ($id)
 		{
 			$resource = Entry::oneOrNew($id);
-			$total = $resource->authors()->total();
+			$contributors = $resource->authors()->total();
 		}
 
 		return $contributors;

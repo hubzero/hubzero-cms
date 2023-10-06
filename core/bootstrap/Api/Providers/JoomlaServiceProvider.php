@@ -34,7 +34,6 @@ class JoomlaServiceProvider extends ServiceProvider
 		}
 
 		require_once PATH_CORE . DS . 'libraries' . DS . 'import.php';
-		require_once PATH_CORE . DS . 'libraries' . DS . 'cms.php';
 
 		jimport('joomla.application.menu');
 		jimport('joomla.environment.uri');

@@ -175,7 +175,8 @@ class QualifiedDC extends DublinCore
 					'temporal'
 				),
 				'language' => null,
-				'source'   => null
+				'source'   => null,
+				'extent' => null
 			);
 
 			// Loop through DC elements

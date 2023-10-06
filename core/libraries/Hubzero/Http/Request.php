@@ -376,6 +376,67 @@ class Request extends BaseRequest
 	 */
 	public function base($pathonly = false)
 	{
+		$basePath = '';
+
+		// @BUGFIX: We try to handle the case where basepath detection is
+		// failing. In combination with unecoded quotes in URL path
+		// detectify was able to trigger a XSS condition.
+		//
+		// GET /index.php/'"/>--></title></style></script%20dt=fy><dtfy>https://example.com/index.php/ HTTP/1.1
+		//
+		// By default the basepath gets detected all the way up to the
+		// second "index.php" since it thinks that is the script
+		// being run. This caused the malformed path to be inserted into
+		// the script elements in the page header.
+		//
+		// This may not be the most general purpose fix, however I believe it
+		// handles how we install hubzero in all cases. There should probably be
+		// a basepath configuration variable to override in the case of
+		// unusual configurations
+
+		// SCRIPT_FILENAME is the full path to the PHP script we are running
+		// DOCUMENT_ROOT is the document root of the web server we are running under
+		// if either of these variables are missing or empty fall back to the default
+		// basepath detection.
+
+		if ($this->server->has('SCRIPT_FILENAME'))
+		{
+			if ($this->server->has('DOCUMENT_ROOT'))
+			{
+				$filename = $this->server->get('SCRIPT_FILENAME');
+				$docroot = $this->server->get('DOCUMENT_ROOT');
+
+				if ($filename && $docroot)
+				{
+					// The script filename should be located in the document
+					// root. If not we fall back to the default basepath detection.
+
+					if (strncmp($filename, $docroot, strlen($docroot)) === 0)
+					{
+						// Remove the document root from the script filename
+						// to get first estimate of basePath.
+						$basePath = substr($filename, strlen($docroot));
+
+						// Extract the base filename (without subdirectories)
+						$basename = basename($filename);
+
+						// basePath should end in basename, we then remove the 
+						// basename and strip seperator from the right.
+						// dirname() might work here but this ensures
+						// the paths are what was expected.
+						
+						if (substr($basePath, -strlen($basename)) === $basename)
+						{
+							$basePath = substr($basePath, 0, -strlen($basename));
+							$basePath = rtrim($basePath, '/'.\DIRECTORY_SEPARATOR);
+						}
+
+						$this->basePath = $basePath;
+					}
+				}
+			}
+		}
+
 		$path = $this->getBasePath();
 
 		if ($pathonly)

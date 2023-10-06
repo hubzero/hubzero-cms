@@ -33,7 +33,7 @@ class Helper extends Module
 			$module->content = Html::content('prepare', $module->content, '', 'mod_custom.content');
 		}
 
-		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx',''));
 
 		require $this->getLayoutPath($params->get('layout', 'default'));
 	}

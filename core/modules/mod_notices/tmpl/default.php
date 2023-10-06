@@ -16,22 +16,23 @@ if ($this->publish)
 	<div id="<?php echo $this->moduleid; ?>" class="modnotices <?php echo $this->alertlevel; ?>">
 		<div class="inner">
 			<div class="notice">
-				<?php echo stripslashes($this->message); ?>
-				<?php
-				$page = Request::getString('REQUEST_URI', '', 'server');
-				if ($page && $this->params->get('allowClose', 1))
-				{
-					$page .= (strstr($page, '?')) ? '&' : '?';
-					$page .= $this->moduleid . '=close';
-					?>
-					
-					<?php
-				}
-				?>
+				<div class="inner">
+					<?php echo stripslashes($this->message); ?>
+				</div>
 			</div>
-			<a class="close" href="<?php echo $page; ?>" data-duration="<?php echo $this->days_left; ?>" title="<?php echo Lang::txt('MOD_NOTICES_CLOSE_TITLE'); ?>">
-				<span><?php echo Lang::txt('MOD_NOTICES_CLOSE'); ?></span>
-			</a>
+			<?php
+			$page = Request::getString('REQUEST_URI', '', 'server');
+			if ($page && $this->params->get('allowClose', 1))
+			{
+				$page .= (strstr($page, '?')) ? '&' : '?';
+				$page .= $this->moduleid . '=close';
+				?>
+				<a class="close" href="<?php echo $page; ?>" data-duration="<?php echo $this->days_left; ?>" title="<?php echo Lang::txt('MOD_NOTICES_CLOSE_TITLE'); ?>">
+					<span><?php echo Lang::txt('MOD_NOTICES_CLOSE'); ?></span>
+				</a>
+				<?php
+			}
+			?>
 		</div>
 	</div>
 	<?php

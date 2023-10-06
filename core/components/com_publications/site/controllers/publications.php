@@ -89,21 +89,26 @@ class Publications extends SiteController
 		$this->registerTask('edit', 'contribute');
 		$this->registerTask('start', 'contribute');
 		$this->registerTask('publication', 'contribute');
+		$this->registerTask('tombstone', '');
 
 		$this->_task = trim(Request::getCmd('task', ''));
-		if (($this->_id || $this->_alias) && !$this->_task)
+		
+		if ($this->_task != 'tombstone')
 		{
-			$this->_task = 'page';
-		}
-		elseif (!$this->_task)
-		{
-			$this->_task = 'intro';
-		}
+			if (($this->_id || $this->_alias) && !$this->_task)
+			{
+				$this->_task = 'page';
+			}
+			elseif (!$this->_task)
+			{
+				$this->_task = 'intro';
+			}
 
-		if (!$this->_id && !$this->_alias && in_array($this->_task, array('view', 'page')))
-		{
-			Request::setVar('task', 'intro');
-			$this->_task = 'intro';
+			if (!$this->_id && !$this->_alias && in_array($this->_task, array('view', 'page')))
+			{
+				Request::setVar('task', 'intro');
+				$this->_task = 'intro';
+			}
 		}
 
 		parent::execute();
@@ -2253,5 +2258,31 @@ class Publications extends SiteController
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option, false)
 		);
+	}
+	
+	/**
+	 * Display the tombstone page of the dataset
+	 *
+	 * @return  void
+	 */
+	public function tombstoneTask()
+	{
+		$this->model = new Models\Publication($this->_identifier, $this->_version);
+		
+		$version = $this->model->version;
+		
+		if ($version->state != 0)
+		{
+			App::redirect(Route::url('index.php?option=' . $this->_option, false));
+		}
+		
+		$this->view  = new \Hubzero\Component\View(array(
+			'name'   => 'tombstone',
+			'layout' => 'default'
+		));
+		
+		$this->view->set('option', $this->_option);
+		$this->view->set('record', $version);
+		$this->view->display();
 	}
 }

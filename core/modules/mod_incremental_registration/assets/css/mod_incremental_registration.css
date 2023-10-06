@@ -24,9 +24,6 @@
 	.indented {
 		margin-left: 4em;
 	}
-	#questions input[type="text"] {
-		width: 400px;
-	}
 /* Page curl */
 	#curl {
 		position: absolute;
@@ -77,7 +74,7 @@
 		z-index: 999;
 	}
 /* Questions */
-	#questions {
+	#overlay #questions {
 		z-index: 1000;
 		position: fixed;
 		background: #fff;
@@ -92,11 +89,14 @@
 		top: 20px;
 		bottom: 40px;
 	}
-	#questions ol {
+	#overlay #questions ol {
 		background: #fafafa;
 		border-radius: 10px;
 		text-align: left;
 		padding: 15px;
 		margin-right: 4em;
 		list-style-position: inside;
+	}
+	#overlay #questions input[type="text"] {
+		width: 400px;
 	}

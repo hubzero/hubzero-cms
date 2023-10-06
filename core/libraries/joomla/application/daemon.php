@@ -493,7 +493,7 @@ class JApplicationDaemon extends JApplicationCli
 		}
 
 		// Reset Process Information
-		$this->safeMode = !!@ ini_get('safe_mode');
+		$this->safeMode = false;
 		$this->processId = 0;
 		$this->running = false;
 

@@ -23,7 +23,7 @@ class DatabaseServiceProvider extends ServiceProvider
 	{
 		$this->app['db'] = function($app)
 		{
-			// @FIXME: this isn't pretty, but it will shim the removal of the old mysql_* calls from php
+			// @FIXME: this isn't pretty, but it will shim the removal of the old mysql library calls from php
 			$driver = (Config::get('dbtype') == 'mysql') ? 'pdo' : Config::get('dbtype');
 
 			$options = [

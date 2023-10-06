@@ -459,19 +459,6 @@ class JArchiveZip extends JObject
 		}
 		elseif ($this->_metadata[$key]['_method'] == 0x12)
 		{
-			// Is bz2 extension loaded?  If not try to load it
-			if (!extension_loaded('bz2'))
-			{
-				if (JPATH_ISWIN)
-				{
-					@dl('php_bz2.dll');
-				}
-				else
-				{
-					@dl('bz2.so');
-				}
-			}
-
 			// If bz2 extension is successfully loaded use it
 			if (extension_loaded('bz2'))
 			{

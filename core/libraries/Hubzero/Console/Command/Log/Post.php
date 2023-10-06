@@ -41,15 +41,15 @@ class Post extends Base
 		$ciphertext = base64_decode($value);
 
 		// Get the IV
-		$ivSize = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
-		$iv     = substr($ciphertext, 0, $ivSize);
+		$ivSize = openssl_cipher_iv_length('AES-256-CBC');
+		$iv = substr($ciphertext, 0, $ivSize);
 
 		// Get just the cipher without the IV
 		$ciphertext = substr($ciphertext, $ivSize);
 
 		// Generate key and decrypt
 		$key       = md5(\App::get('config')->get('secret'));
-		$plaintext = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key, $ciphertext, MCRYPT_MODE_CBC, $iv);
+		$plaintext = openssl_decrypt($ciphertext, 'AES-256-CBC', $key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv);
 
 		return $plaintext;
 	}

@@ -35,7 +35,7 @@ class Helper extends Module
 
 		// Set the default separator
 		$separator = $this->setSeparator($this->params->get('separator'));
-		$moduleclass_sfx = htmlspecialchars($this->params->get('moduleclass_sfx'));
+		$moduleclass_sfx = htmlspecialchars($this->params->get('moduleclass_sfx',''));
 
 		require $this->getLayoutPath($this->params->get('layout', 'default'));
 	}

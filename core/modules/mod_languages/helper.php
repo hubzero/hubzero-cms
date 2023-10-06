@@ -36,7 +36,7 @@ class Helper extends Module
 
 		$list = self::getList($params);
 
-		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx',''));
 
 		require $this->getLayoutPath($params->get('layout', 'default'));
 	}

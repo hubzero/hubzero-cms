@@ -496,6 +496,11 @@ class Manager extends Obj
 			unset($_SESSION[$namespace][$name]);
 		}
 
+		if (isset($_SESSION[$namespace]) && count($_SESSION[$namespace]) == 0)
+		{
+			unset($_SESSION[$namespace]);
+		}
+
 		return $value;
 	}
 
@@ -582,7 +587,17 @@ class Manager extends Obj
 
 		return true;
 	}
-
+	
+	/**
+	 * Register session handlers
+	 *
+	 * @return  void
+	 */
+	public function reregister()
+	{
+		$this->store->register();
+	}
+	
 	/**
 	 * Restart an expired or locked session.
 	 *

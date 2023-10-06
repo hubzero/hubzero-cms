@@ -398,6 +398,25 @@ class Attachment extends Table
 		$this->_db->setQuery($query);
 		return $count ? $this->_db->loadResult() : $this->_db->loadObjectList();
 	}
+	
+	/**
+	 * Get attachments count
+	 *
+	 * @param   integer  $versionid  pub version id
+	 * @return  int
+	 */
+	public function getAttachmentsCount($versionid)
+	{
+		if ($versionid === null)
+		{
+			$versionid = $this->publication_version_id;
+		}
+		
+		$query = "SELECT COUNT(*) FROM $this->_tbl AS a where a.publication_version_id = " . $this->_db->quote($versionid);
+		$this->_db->setQuery($query);
+		
+		return $this->_db->loadResult();
+	}
 
 	/**
 	 * Delete element attachment
@@ -896,7 +915,7 @@ class Attachment extends Table
 		$publicationVersionIds = $this->_db->loadColumn();
 
 		if (!empty($publicationVersionIds)) {
-			$versionIdSqlArray = '(' . implode($publicationVersionIds, ',') . ')';
+			$versionIdSqlArray = '(' . implode(',', $publicationVersionIds) . ')';
 			$seriesQuery = "SELECT publication_id, title, abstract, version_number"
 			. " FROM `#__publication_versions`"
 			. " WHERE id in $versionIdSqlArray";

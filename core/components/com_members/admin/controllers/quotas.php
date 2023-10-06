@@ -690,7 +690,7 @@ class Quotas extends AdminController
 
 					if ($class->get('id') && !$overwrite)
 					{
-						continue;
+						continue 2;
 					}
 
 					$class->set('alias', $args[1]);
@@ -704,13 +704,13 @@ class Quotas extends AdminController
 				case 'user':
 					if ($args[2] == 'ignore')
 					{
-						continue;
+						continue 2;
 					}
 
 					$user = User::getInstance($args[1]);
 					if (!is_object($user) || !is_numeric($user->get('id')))
 					{
-						continue;
+						continue 2;
 					}
 
 					$user_id = $user->get('id');
@@ -721,7 +721,7 @@ class Quotas extends AdminController
 
 					if (!$class->get('id'))
 					{
-						continue;
+						continue 2;
 					}
 
 					$quota = Quota::all()
@@ -730,7 +730,7 @@ class Quotas extends AdminController
 
 					if ($quota->get('id') && !$overwrite)
 					{
-						continue;
+						continue 2;
 					}
 
 					$quota->set('user_id', $user_id);

@@ -413,7 +413,7 @@ class Profile extends Obj
 	 * @param   mixed    $user  Integer (ID) or string (username)
 	 * @return  boolean  True on success, False on error
 	 */
-	private function _mysql_load($user)
+	private function _sql_load($user)
 	{
 		$db = \App::get('db');
 
@@ -480,7 +480,7 @@ class Profile extends Obj
 	 * @param   integer  $authorid  Author ID
 	 * @return  boolean  True on success, False on error
 	 */
-	private function _mysql_author_load($authorid)
+	private function _sql_author_load($authorid)
 	{
 		static $_propertyauthormap = array(
 			'uidNumber'    => 'id',
@@ -645,12 +645,12 @@ class Profile extends Obj
 
 		if ($storage == 'mysql')
 		{
-			return $this->_mysql_load($user);
+			return $this->_sql_load($user);
 		}
 
 		if ($storage == 'author')
 		{
-			return $this->_mysql_load_author($user);
+			return $this->_sql_load_author($user);
 		}
 
 		if ($storage == 'xregistration')
@@ -967,7 +967,7 @@ class Profile extends Obj
 					$list[$key] = $db->quote($value);
 				}
 
-				$valuelist = implode($list, ",");
+				$valuelist = implode(",", $list);
 
 				if (empty($valuelist))
 				{

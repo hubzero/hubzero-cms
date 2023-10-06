@@ -1249,6 +1249,7 @@ a.more-content {
 #notice-form .form-group > label > textarea {
 	width: 80%;
 }
+
 /* Draft review page */
 	.item-msg {
 		padding-right: 6em;
@@ -1256,3 +1257,4 @@ a.more-content {
 		padding-left: 0;
 		color: red;
 	}
+}

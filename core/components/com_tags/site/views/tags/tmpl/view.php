@@ -188,7 +188,7 @@ foreach ($cats as $cat)
 								}
 								else
 								{
-									// @todo accomodate scope (aka) group citations
+									// @todo accommodate scope (aka) group citations
 									if (strstr($row->href, 'index.php'))
 									{
 										$row->href = Route::url($row->href);
@@ -196,6 +196,10 @@ foreach ($cats as $cat)
 
 									$html .= "\t" . '<li>' . "\n";
 									$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . \Hubzero\Utility\Sanitize::clean($row->title) . '</a></p>' . "\n";
+									if($row->section) 
+									{
+										$html .= "\t\t" . '<p class="details"><strong class="type">' . ucfirst($row->section) . "</strong></p>\n";
+									}
 									if ($row->ftext)
 									{
 										$html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(strip_tags($row->ftext), 200) . "</p>\n";

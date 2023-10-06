@@ -292,15 +292,13 @@ class Publication extends Table
 					$w = trim($w);
 					if (strlen($w) > 2)
 					{
-						$words[] = $w;
+						$words[] = $w . '*';
 					}
 				}
-				$text = implode(' +', $words);
-				$text = addslashes($text);
-				$text2 = str_replace('+', '', $text);
+				$text = implode(' ', $words);
 
-				$query .= " AND ((MATCH(V.title) AGAINST ('+$text -\"$text2\"') > 0) OR"
-						 . " (MATCH(V.abstract,V.description) AGAINST ('+$text -\"$text2\"') > 0)) ";
+				$query .= " AND ((MATCH(V.title) AGAINST ('$text' IN BOOLEAN MODE)) OR" 
+				. " (MATCH(V.abstract,V.description) AGAINST ('$text' IN BOOLEAN MODE))) ";
 
 				if ($componentParams->get('include_author_name_in_search'))
 				{

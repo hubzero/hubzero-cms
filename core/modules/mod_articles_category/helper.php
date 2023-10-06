@@ -84,7 +84,7 @@ class Helper extends Module
 			$grouped = false;
 			$article_grouping = $params->get('article_grouping', 'none');
 			$article_grouping_direction = $params->get('article_grouping_direction', 'ksort');
-			$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+			$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx',''));
 			$item_heading = $params->get('item_heading');
 
 			if ($article_grouping !== 'none')
@@ -384,6 +384,26 @@ class Helper extends Module
 			}
 			$item->displayIntrotext = $show_introtext ? self::truncate($item->introtext, $introtext_limit) : '';
 			$item->displayReadmore  = $item->alternative_readmore;
+
+			$item->params = clone $params;
+
+			if ($access || in_array($item->access, $authorised))
+			{
+				// If the access filter has been set, we already know this user can view.
+				$item->params->set('access-view',true);
+			}
+			else
+			{
+				// If no access filter is set, the layout takes some responsibility for display of limited information.
+				if ($item->catid == 0 || $item->category_access === null)
+				{
+					$item->params->set('access-view', in_array($item->access, $authorised));
+				}
+				else
+				{
+					$item->params->set('access-view', in_array($item->access, $authorised) && in_array($item->category_access, $authorised));
+				}
+			}
 		}
 
 		return $items;

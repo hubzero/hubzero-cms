@@ -17,10 +17,6 @@ function dv_data_definition_update()
 	$dd_name = Request::getString('dd', false);
 	$dd_text = $_POST['dd_text'];
 
-	if (get_magic_quotes_gpc()) {
-		$dd_text = stripslashes($dd_text);
-	}
-
 	$db_conf_file = $base . DS . $db_id . DS . 'database.json';
 	$db_conf = json_decode(file_get_contents($db_conf_file), true);
 
