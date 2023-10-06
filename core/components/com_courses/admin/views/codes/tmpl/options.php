@@ -21,8 +21,9 @@ if ($tmpl != 'component')
 }
 
 Html::behavior('framework', true);
+Html::behavior('formvalidation', true);
 
-$this->js();
+$this->js()->js('timepicker.js');
 
 $offset = Config::get('config.offset');
 

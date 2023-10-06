@@ -59,7 +59,7 @@ jQuery(document).ready(function($){
 		$("#btn-generate").on('click', function(e){
 			Hubzero.submitbutton('generate');
 
-			window.top.setTimeout("window.parent.location=" + $(this).attr('data-redirect'), 700);
+			window.top.setTimeout("window.parent.location='" + $(this).attr('data-redirect') + "'", 700);
 		});
 
 		$("#btn-attach").on('click', function(e){
@@ -126,8 +126,8 @@ jQuery(document).ready(function($){
 		offering_id.on('change', function(e){
 			changeDynaList(
 				'section_id',
-				offeringsections,
-				document.getElementById('offering_id').options[document.getElementById('offering_id').selectedIndex].value
+				offeringsections['data'],
+				document.getElementById('offering_id').options[document.getElementById('offering_id').selectedIndex].value,
 				0,
 				0
 			);
