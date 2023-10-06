@@ -1249,3 +1249,12 @@ a.more-content {
 #notice-form .form-group > label > textarea {
 	width: 80%;
 }
+
+/* Draft review page */
+	.item-msg {
+		padding-right: 6em;
+		margin-left: 0;
+		padding-left: 0;
+		color: red;
+	}
+}
