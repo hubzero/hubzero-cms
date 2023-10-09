@@ -78,6 +78,13 @@ else
 				?>
 			</div><!-- / .overviewcontainer -->
 			<div class="aside launcharea">
+				<?php if ($this->publication->version->get('downloadDisabled')): ?>
+						<p>
+							<?php echo Lang::txt('COM_PUBLICATIONS_TO_DOWNLOAD_DATASET');?>
+							<a href="/support/ticket/new" target="_blank"><?php echo Lang::txt('COM_PUBLICATIONS_SUBMIT_TICKET');?></a>
+							<?php echo Lang::txt('COM_PUBLICATIONS_GET_DATASET');?>
+						</p>
+				<?php else: ?>
 				<?php
 				$html = '';
 
@@ -122,6 +129,7 @@ else
 					}
 				}
 				?>
+				<?php endif; ?>
 			</div><!-- / .aside launcharea -->
 			<div class="clear"></div>
 
