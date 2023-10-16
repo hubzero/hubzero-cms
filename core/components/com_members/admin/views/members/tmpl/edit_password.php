@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright (c) 2005-2024 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -76,6 +76,12 @@ defined('_HZEXEC_') or die();
 			<label title="shadowExpire"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_EXPIRE'); ?>:</label>
 			<input type="text" name="shadowExpire" value="<?php echo $this->escape($this->password->get('shadowExpire')); ?>" />
 			<span class="hint"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_EXPIRE_HINT'); ?></span>
+		</div>
+		<!-- Add reset for user secret -->
+		<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_PASSWORD_RESET_SECRET_HINT'); ?>">
+			<label for="cbResetSecret"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_RESET_SECRET'); ?>:</label>
+			<input type="checkbox" name="resetSecret" id="cbResetSecret" value="1" class="checkbox-toggle" />
+			<span class="hint"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_RESET_SECRET_HINT'); ?></span>
 		</div>
 	<?php endif; ?>
 </fieldset>
