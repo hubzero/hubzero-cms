@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright (c) 2005-2023 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -625,6 +625,15 @@ class Members extends AdminController
 
 				$passinfo->update();
 			}
+		}
+
+		// Was a user secret reset requested?
+		$newSecret = trim(Request::getVar('resetSecret', '', 'post'));
+		// set new secret if indicated
+		if (null !== $newSecret && $newSecret == 1)
+		{
+			$user->set('secret', Member::generateSecret(null));
+			$user->save();
 		}
 
 		// Check for spam count
