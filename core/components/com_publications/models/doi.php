@@ -611,8 +611,16 @@ class Doi extends Obj
 			{
 				$xmlfile.='	<contributor contributorType="ContactPerson">';
 				$xmlfile.='		<contributorName nameType="Personal">' . $contactPerson->name . '</contributorName>';
-				$xmlfile.='		<givenName>' . $contactPerson->givenName . '</givenName>';
-				$xmlfile.='		<familyName>' . $contactPerson->surname . '</familyName>';
+				if ($contactPerson->user_id)
+				{
+					$xmlfile.='		<givenName>' . $contactPerson->givenName . '</givenName>';
+					$xmlfile.='		<familyName>' . $contactPerson->surname . '</familyName>';
+				}
+				else
+				{
+					$xmlfile.='		<givenName>' . $contactPerson->firstName . '</givenName>';
+					$xmlfile.='		<familyName>' . $contactPerson->lastName . '</familyName>';
+				}
 				
 				if (isset($contactPerson->orcid) && !empty($contactPerson->orcid))
 				{
