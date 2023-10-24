@@ -39,12 +39,15 @@ $listDirn  = $this->escape($this->filters['direction']);
 					</div><!-- / .container -->
 				<?php endif; ?>
 
-				<?php if ($this->params->get('show_pagination_limit')) : ?>
+				<!-- Params found here /core/components/com_content/config/config.xml-->
+				<?php if ($this->params->get('show_pagination') == '1') { ?>
 					<div class="display-limit">
 						<?php echo Lang::txt('JGLOBAL_DISPLAY_NUM'); ?>&#160;
-						<?php echo $this->pagination->getLimitBox(); ?>
+						<?php 
+							echo $this->pagination->getLimitBox();
+						 ?>
 					</div>
-				<?php endif; ?>
+				<?php } ?>
 
 				<!-- @TODO add hidden inputs -->
 				<input type="hidden" name="filter_order" value="" />
