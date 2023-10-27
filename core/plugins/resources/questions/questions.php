@@ -260,6 +260,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		// Are we banking?
 		$upconfig = Component::params('com_members');
 		$banking = $upconfig->get('bankAccounts');
+		$funds = 0;
 
 		if ($banking)
 		{
@@ -268,9 +269,6 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 
 			$funds = $funds > 0 ?: 0;
 		}
-
-
-		// Probably need to set $funds
 		
 		$view = $this->view('new', 'question')
 			->set('option', $this->option)
