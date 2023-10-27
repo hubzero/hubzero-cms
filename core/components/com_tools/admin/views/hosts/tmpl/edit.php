@@ -30,6 +30,10 @@ Toolbar::help('host');
 					<label for="field-hostname"><?php echo Lang::txt('COM_TOOLS_FIELD_NAME'); ?>:</label><br />
 					<input type="text" name="fields[hostname]" id="field-hostname" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->hostname)); ?>" />
 				</div>
+				<div class="input-wrap">
+					<label for="field-service_host"><?php echo Lang::txt('COM_TOOLS_FIELD_SERVICE_HOST'); ?>:</label><br />
+					<input type="text" name="fields[service_host]" id="field-service_host" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->service_host)); ?>" />
+				</div>
 
 				<div class="input-wrap">
 					<label for="field-hosttype"><?php echo Lang::txt('COM_TOOLS_FIELD_TYPES'); ?>:</label><br />
