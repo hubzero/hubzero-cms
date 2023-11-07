@@ -428,7 +428,11 @@ jQuery(document).ready(function($){
 });
 
 $(function(){
-	$("#param-grant_agency").autocomplete({		
+	$("#param-grant_agency").autocomplete({	
+		open: function() {
+			$("ul.ui-menu").width( $(this).innerWidth() );
+		},
+		
 		source: function(req, resp){
 			var rorURL = "index.php?option=com_projects&controller=setup&task=getGrantAgency&term=";
 			
