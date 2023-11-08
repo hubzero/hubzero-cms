@@ -682,7 +682,7 @@ class Tags extends \Hubzero\Base\Obj
 	 */
 	public function getFOSTag($tagid)
 	{
-		$sql = "SELECT jto.tagid FROM $this->_tag_tbl AS jt LEFT JOIN $this->_obj_tbl AS jto ON jto.objectid = jt.id WHERE jto.tbl =" . '"tags" AND jto.label = "parent" AND jt.id=' . $tagid;
+		$sql = "SELECT jto.tagid FROM $this->_tag_tbl AS jt LEFT JOIN $this->_obj_tbl AS jto ON jto.objectid = jt.id WHERE jto.tbl =" . '"tags" AND jto.label = "parent" AND jt.id=' . $this->_db->quote($tagid);
 		$this->_db->setQuery($sql);
 		$ids = $this->_db->loadColumn();
 		
@@ -691,7 +691,7 @@ class Tags extends \Hubzero\Base\Obj
 			$fosTagObjects = [];
 			foreach ($ids as $id)
 			{
-				$sql = "SELECT jt.* FROM $this->_tag_tbl AS jt WHERE jt.id = $id";
+				$sql = "SELECT jt.* FROM $this->_tag_tbl AS jt WHERE jt.id = " . $this->_db->quote($id);
 				$this->_db->setQuery($sql);
 				$fosTagObj = $this->_db->loadObject();
 				
@@ -758,7 +758,7 @@ class Tags extends \Hubzero\Base\Obj
 			$w = 1;
 			foreach ($keywords as $key)
 			{
-				$sql .= 't.raw_tag LIKE "%'.$this->_db->quote($key).'%"';
+				$sql .= 't.raw_tag LIKE "%'.$this->_db->escape($key).'%"';
 				$sql .= $w == count($keywords) ? '' : ' OR ';
 				$w++;
 			}
