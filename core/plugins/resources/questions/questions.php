@@ -269,6 +269,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 
 			$funds = $funds > 0 ?: 0;
 		}
+		
 		$view = $this->view('new', 'question')
 			->set('option', $this->option)
 			->set('resource', $this->model)
