@@ -235,8 +235,7 @@ class Repository extends Base implements CommandInterface
 	public function update()
 	{
 		$mode = $this->output->getMode();
-
-        if ($this->arguments->getOpt('f'))
+		if ($this->arguments->getOpt('f'))
 		{
 			if ($mode != 'minimal')
 			{
@@ -653,15 +652,15 @@ class Repository extends Base implements CommandInterface
 		{
 		$git_branch_arr = explode("/", $this->arguments->getOpt('git_branch'));
 		$git_branch = $git_branch_arr[1];
-	}
-	else
-	{
-		// get default remote
-		$default_remote = shell_exec("umask 0002 && cd " . $repoPath . " && git remote show");
-		// get remote default branch
-		$default_remote_branch_cmd = "git remote show " . trim($default_remote) . " | grep 'HEAD branch' | cut -d ':' -f 2";
-		$git_branch = shell_exec("umask 0002 && cd " . $repoPath . " && ". $default_remote_branch_cmd);
-	}
+		}
+		else
+		{
+			// get default remote
+			$default_remote = shell_exec("umask 0002 && cd " . $repoPath . " && git remote show");
+			// get remote default branch
+			$default_remote_branch_cmd = "git remote show " . trim($default_remote) . " | grep 'HEAD branch' | cut -d ':' -f 2";
+			$git_branch = shell_exec("umask 0002 && cd " . $repoPath . " && ". $default_remote_branch_cmd);
+		}
 
 		$cur_branch = "git rev-parse --abbrev-ref HEAD";
 		// Get current branch
