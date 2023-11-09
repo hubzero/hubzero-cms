@@ -588,7 +588,7 @@ class Customexts extends AdminController
 					$checkoutRepoBranch_response = Cli::call($museCmd, $task='repository');
 					$checkoutRepoBranch_response = json_decode($checkoutRepoBranch_response);
 
-					// did we fail
+					// check for command not found failure
 					if (preg_grep("/command not found/uis", $checkoutRepoBranch_response))
 					{
 						// add failed message
@@ -602,33 +602,30 @@ class Customexts extends AdminController
 						$fetch_response = Cli::call($museCmd, $task='repository');
 						$fetch_response = json_decode($fetch_response);
 
-						// no upstream changes to get
-						if ($fetch_response == '')
-						{
-							// Run migrations
-							$migrations_response = Cli::migration($dryRun=false, $ignoreDates=true, $file=null, $dir='up', $folder=$extension->path);
-							$migrations_response = json_decode($migrations_response);
-
-							// code is up to date
-							$output = ($fetch_response == '') ? array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')) : $fetch_response;
-
-							// add success message
-							$success[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
-						}
-						else if (preg_grep("/command not found/uis", $fetch_response))
+						// check for several failure scenarios, otherwise consider the muse update sucessful
+						if (!is_null($fetch_response) && preg_grep("/command not found/uis", $fetch_response))
 						{
 							$output = array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_CLONE_EMPTY_BRANCH2'));
 							$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
 						}
-						else if (preg_grep("/unknown revision or path not in the working tree/uis", $fetch_response))
+						else if (!is_null($fetch_response) && preg_grep("/unknown revision or path not in the working tree/uis", $fetch_response))
 						{
 							$output = array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_UNKNOWN_BRANCH'));
 							$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
 						}
 						else
 						{
-							// There were upstream changes that have not yet been merged with the local branch, display commits
-							$success[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $fetch_response);
+							// Run migrations
+							$migrations_response = Cli::migration($dryRun=false, $ignoreDates=true, $file=null, $dir='up', $folder=$extension->path);
+							$migrations_response = json_decode($migrations_response);
+
+							// if the response from the fetch was empty no changes needed, otherwise display error.
+							// Possible the message here is considered an error because we're only testing for several specific 
+							// errors above, but everything else will fall through to here. 
+							$output = ($fetch_response == '') ? array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')) : $fetch_response;
+
+							// add success message
+							$success[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
 						}
 					}
 				}
@@ -671,8 +668,7 @@ class Customexts extends AdminController
 		}
 
 		// vars to hold results of pull
-		$success = array();
-		$failed  = array();
+		$msg = array();
 
 		// loop through each extension and pull code from repos
 		foreach ($ids as $id)
@@ -680,35 +676,14 @@ class Customexts extends AdminController
 			$extension = Custom_extensions::oneOrNew($id);
 
 			$museCmd = 'update -r=' . $extension->path . ' -f --no-colors';
-
 			$update_response = Cli::call($museCmd, $task='repository');
 			$update_response = json_decode($update_response);
 
-			// did we succeed?
-			if ($update_response && preg_grep("/Updating the repository.../uis", $update_response))
-			{
-				// add success message
-				$success[] = array(
-					'extension'   => $extension->get('name'),
-					'message' => $update_response
-				);
-			}
-			else if ($update_response == "")
-			{
-				// add success message
-				$success[] = array(
-					'extension'   => $extension->get('name'),
-					'message' => $update_response
-				);
-			}
-			else
-			{
-				// add failed message
-				$failed[] = array(
-					'extension'   => $extension->get('name'),
-					'message' => $update_response
-				);
-			}
+			// add output message, success or failure, just output.
+			$msg[] = array(
+				'extension'   => $extension->get('name'),
+				'message' => $update_response
+			);
 
 			// Run migrations
 			$migrations_response = Cli::migration($dryRun=false, $ignoreDates=true, $file=null, $dir='up', $folder=$extension->path);
@@ -719,8 +694,7 @@ class Customexts extends AdminController
 		// display view
 		$this->view
 			->setLayout('merged')
-			->set('success', $success)
-			->set('failed', $failed)
+			->set('msg', $msg)
 			->display();
 	}
 
