@@ -80,9 +80,9 @@ else
 			<div class="aside launcharea">
 				<?php if ($this->publication->version->get('downloadDisabled')): ?>
 						<p>
-							<?php echo Lang::txt('COM_PUBLICATIONS_TO_DOWNLOAD_DATASET');?>
+							<?php echo Lang::txt('COM_PUBLICATIONS_TO_DOWNLOAD_DATASET'); echo Lang::txt('COM_PUBLICATIONS_PLEASE')?>
 							<a href="/support/ticket/new" target="_blank"><?php echo Lang::txt('COM_PUBLICATIONS_SUBMIT_TICKET');?></a>
-							<?php echo Lang::txt('COM_PUBLICATIONS_GET_DATASET');?>
+							<?php echo Lang::txt('COM_PUBLICATIONS_TO_US'); echo Lang::txt('COM_PUBLICATIONS_GET_DATASET');?>
 						</p>
 				<?php else: ?>
 				<?php
