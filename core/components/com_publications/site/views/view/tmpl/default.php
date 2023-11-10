@@ -104,6 +104,31 @@ else
 						);
 
 						echo $launcher;
+							// Check if an https download button is needed
+							$path = $this->publication->path('base', true) . DS . $this->publication->_curationModel->getBundleName();
+							
+							if ($path && file_exists($path))
+							{
+								$size = filesize($path);
+
+								// Convert to MB
+								$size = (($size / 1024) / 1024);
+								
+								if ($this->publication->config()->get('sftppath') && $size >= intval($this->publication->config()->get('sftpsize', 5000)))
+								{
+									// Draw https button
+									$launcherHttps = $attModel->drawLauncher(
+										$element->manifest->params->type,
+										$this->publication,
+										$element,
+										$elements,
+										$this->publication->access('view-all'),
+										true
+									);
+
+									echo $launcherHttps;
+								}
+							}
 					}
 				}
 

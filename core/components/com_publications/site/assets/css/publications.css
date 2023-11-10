@@ -549,12 +549,15 @@ div.sample p {
 #primary-document {
 	width: 100%;
 	text-align: left;
+	margin-bottom: 2px;
 }
 #primary-document .btn:first-child {
-	width: calc(100% - (1.5em + 8px));
+	width: calc(100%);
+	padding-left: 8px;
+	padding-right: 8px;
 }
 #primary-document .dropdown-menu {
-	width: 100%;
+	width: calc(100% + 30px);
 }
 #primary-document_pop {
 	display: none;
@@ -1450,6 +1453,19 @@ table.resource {
 .launch-wrap #primary-document {
 	width: 60%;
 	padding-top: 6em;
+}
+.ftpIntro {
+	border: 0;
+	background: none;
+	font-size: 85%;
+	margin-top:0px;
+	margin-bottom:2px;
+	padding-left:7px;
+	padding-bottom:2px;
+}
+p.ftpIntro > a {
+	color: #333333;
+	text-decoration: underline;
 }
 .launch-choices {
 	position: absolute;

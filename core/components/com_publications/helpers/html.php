@@ -850,7 +850,7 @@ class Html
 	 * @param   array    $options
 	 * @return  string
 	 */
-	public static function primaryButton($class, $href, $msg, $xtra = '', $title = '', $action = '', $disabled = false, $pop = '', $options = array())
+	public static function primaryButton($class, $href, $msg, $xtra = '', $title = '', $action = '', $disabled = false, $pop = '', $options = array(), $btnType = '')
 	{
 		$view = new \Hubzero\Component\View(array(
 			'base_path' => dirname(__DIR__) . DS . 'site',
@@ -867,6 +867,14 @@ class Html
 		$view->pop      = $pop;
 		$view->msg      = $msg;
 		$view->options  = $options;
+		
+		if (isset($btnType) && !empty($btnType))
+		{
+			$view->btnType = $btnType;
+			
+			$pubconfig = Component::params('com_publications');
+			$view->ftpDoc = $pubconfig->get('ftp_doc');
+		}
 
 		return $view->loadTemplate();
 	}

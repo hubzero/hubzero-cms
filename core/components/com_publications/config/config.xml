@@ -36,6 +36,7 @@
 		<field name="sftptypeblacklist" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_SFTP_TYPE_BLACKLIST" description="COM_PUBLICATIONS_CONFIG_SFTP_TYPE_BLACKLIST_DESC" />
 		<field name="documentation" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOCUMENTATION_PATH" description="COM_PUBLICATIONS_CONFIG_DOCUMENTATION_PATH_DESC" />
 		<field name="deposit_terms" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_TERMS_URL" description="COM_PUBLICATIONS_CONFIG_TERMS_URL_DESC" />
+		<field name="ftp_doc" type="text" menu="hide" default="https://purr.purdue.edu/kb/projects/access-datasets-using-ftp-client" label="COM_PUBLICATIONS_CONFIG_FTP_DOC" description="COM_PUBLICATIONS_CONFIG_FTP_DOC_DESC" />
 
 		<field name="include_author_name_in_search" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_SEARCH_AUTHOR_NAME" description="COM_PUBLICATIONS_CONFIG_SEARCH_AUTHOR_NAME_DESC">
 			<option value="0">JNO</option>

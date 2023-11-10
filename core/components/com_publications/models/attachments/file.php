@@ -463,7 +463,7 @@ class File extends Base
 	 * @param   boolean  $authorized
 	 * @return  boolean
 	 */
-	public function drawLauncher($element, $elementId, $pub, $blockParams, $elements, $authorized)
+	public function drawLauncher($element, $elementId, $pub, $blockParams, $elements, $authorized, $httpsBtn)
 	{
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
@@ -572,13 +572,29 @@ class File extends Base
 						// Is sFTP enabled and is the file over the threshold?
 						if ($pub->config()->get('sftppath') && $size >= intval($pub->config()->get('sftpsize', 5000)))
 						{
-							$uri = \Hubzero\Utility\Uri::getInstance();
-							$uri->setScheme('ftp');
-							//$uri->setUser('guest');
-							//$uri->setPass('guest');
-							$uri->setPath($pub->_curationModel->getBundleName(true));
+							if ($httpsBtn)
+							{
+								$btnType = "https";
+								$label .= ' ' . Lang::txt('with https');
+								
+								$uri = \Hubzero\Utility\Uri::getInstance();
+								$uri->setScheme('https');
+								$uri->setPath('app' . DS . $pub->config()->get('sftppath') . DS . $pub->_curationModel->getBundleName(true));
+								$url = $uri->toString();
+							}
+							else
+							{
+								$btnType = "ftp";
+								$label .= ' ' . Lang::txt('with ftp');
+								
+								$uri = \Hubzero\Utility\Uri::getInstance();
+								$uri->setScheme('ftp');
+								//$uri->setUser('guest');
+								//$uri->setPass('guest');
+								$uri->setPath($pub->_curationModel->getBundleName(true));
 
-							$url = $uri->toString();
+								$url = $uri->toString();
+							}
 						}
 					}
 
@@ -599,8 +615,15 @@ class File extends Base
 				}
 				$class = 'btn btn-primary active'; //icon-next
 				$class .= $disabled ? ' link_disabled' : '';
-
-				$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null, $title, '', $disabled, $pop, $options);
+				
+				if (isset($btnType))
+				{
+					$html = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null, $title, '', $disabled, $pop, $options, $btnType);
+				}
+				else
+				{
+					$html = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null, $title, '', $disabled, $pop, $options);
+				}
 			}
 		}
 		elseif ($role == 2 && $attachments)
