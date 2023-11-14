@@ -260,6 +260,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		// Are we banking?
 		$upconfig = Component::params('com_members');
 		$banking = $upconfig->get('bankAccounts');
+		$funds = 0;
 
 		if ($banking)
 		{
