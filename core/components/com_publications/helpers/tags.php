@@ -636,7 +636,7 @@ class Tags extends \Hubzero\Base\Obj
 	public function countTags($id)
 	{
 		$sql  = "SELECT COUNT(*) FROM $this->_tag_tbl AS t, ";
-		$sql .= $this->_obj_tbl . " AS rt WHERE rt.objectid=" . $this->_db->quote($id);
+		$sql .= $this->_obj_tbl . " AS rt WHERE rt.objectid=" . $this->_db->quote($id) . " ";
 		$sql .= "AND rt.tbl='$this->_tbl' AND rt.tagid=t.id";
 		
 		$this->_db->setQuery( $sql );
