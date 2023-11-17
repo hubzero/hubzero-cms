@@ -11,7 +11,7 @@ defined('_HZEXEC_') or die();
 /**
  * Authentication Plugin class for PUCAS
  */
-class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
+class plgAuthenticationPUCAS extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Affects constructor behavior.
@@ -21,19 +21,14 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 	 */
 	protected $_autoloadLanguage = true;
 
+
 	/**
 	 * Actions to perform when logging out a user session
 	 *
 	 * @return  void
 	 */
-	public function logout()
+	public function onUserLogout()
 	{
-		if (Config::get('debug'))
-		{
-			$debug_location = $this->params->get('debug_location', '/var/log/apache2/php/phpCAS.log');
-			phpCAS::setDebug($debug_location);
-		}
-
 		$this->initialize();
 
 		$service = rtrim(Request::base(), '/');
@@ -81,6 +76,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 		{
 			$status['username'] = phpCAS::getUser();
 		}
+
 		return $status;
 	}
 
@@ -96,6 +92,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 		if ($return = Request::getString('return', ''))
 		{
 			$return = base64_decode($return);
+
 			if (!\Hubzero\Utility\Uri::isInternal($return))
 			{
 				$return = '';
@@ -114,31 +111,16 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 	 */
 	public function display($view, $tpl)
 	{
-		if (Config::get('debug'))
-		{
-			$debug_location = $this->params->get('debug_location', '/var/log/apache2/php/phpCAS.log');
-			phpCAS::setDebug($debug_location);
-		}
-
 		$this->initialize();
 
 		$return = '';
+
 		if ($view->return)
 		{
 			$return = '&return=' . $view->return;
 		}
 
-		if ($this->isBoilerkeyRequired())
-		{
-			$loginUrl  = 'https://www.purdue.edu/apps/account/cas/login?boilerkeyRequired=true&service=';
-			$loginUrl .= urlencode(self::getRedirectUri('pucas') . $return);
-
-			phpCAS::setServerLoginURL($loginUrl);
-		}
-		else
-		{
-			phpCAS::setFixedServiceURL(self::getRedirectUri('pucas') . $return);
-		}
+		phpCAS::setFixedServiceURL(self::getRedirectUri('pucas') . $return);
 
 		phpCAS::forceAuthentication();
 
@@ -168,12 +150,6 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 	 */
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
-		if (Config::get('debug'))
-		{
-			$debug_location = $this->params->get('debug_location', '/var/log/apache2/php/phpCAS.log');
-			phpCAS::setDebug($debug_location);
-		}
-
 		$this->initialize();
 
 		try
@@ -186,7 +162,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 		}
 
 		$return = (isset($options['return'])) ? $options['return'] : '';
-		if ($authenticated && $this->checkBoilerkey($return))
+		if ($authenticated)
 		{
 			$username = phpCAS::getUser();
 
@@ -309,15 +285,9 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 	 */
 	public function link($options=array())
 	{
-		if (Config::get('debug'))
-		{
-			$debug_location = $this->params->get('debug_location', '/var/log/apache2/php/phpCAS.log');
-			phpCAS::setDebug($debug_location);
-		}
-
 		$this->initialize();
 
-		if (phpCAS::isAuthenticated() && $this->checkBoilerkey())
+		if (phpCAS::isAuthenticated())
 		{
 			// Get unique username
 			$username = phpCAS::getUser();
@@ -370,79 +340,22 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 	 * @return void
 	 **/
 	private function initialize()
-	{
+	{ 
 		if (!phpCAS::isInitialized())
 		{
-			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
-		}
-
-		phpCAS::setCasServerCACert("/etc/ssl/certs/PuCAS_CA.crt");
-	}
-
-	/**
-	 * Checks to see if boilerkey is required
-	 *
-	 * @return bool
-	 **/
-	private function isBoilerkeyRequired()
-	{
-		$boilerkeyRequired = $this->params->get('boilerkey_required', 'none');
-
-		if ($boilerkeyRequired == 'both' || $boilerkeyRequired == App::get('client')->name)
-		{
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Checks to see if boilerkey is required, and if so, is present
-	 *
-	 * @param  string $return the return location
-	 * @return bool
-	 **/
-	private function checkBoilerkey($return='')
-	{
-		// If boilerkey isn't required, just return true for our check
-		if (!$this->isBoilerkeyRequired())
-		{
-			return true;
-		}
-
-		// Check the last auth time for boilerkey
-		$lastAuth = phpCAS::getAttribute('boilerkeyauthtime');
-
-		// If there is a last auth time, we just have to make sure it's not
-		// above the configurable threshold
-		if (isset($lastAuth) && !empty($lastAuth))
-		{
-			$current  = time();
-			$lastAuth = strtotime($lastAuth);
-
-			// Take the absolute value just in case system times are slightly out of sync
-			$diff = abs($current - $lastAuth);
-
-			if (($diff / 60) < $this->params->get('boilerkey_timeout', 15))
+			if (Config::get('debug'))
 			{
-				return true;
+				$debug_location = trim($this->params->get('debug_location', '/var/log/apache2/php/phpCAS.log'));
+
+				if ($debug_location)
+				{
+					phpCAS::setDebug($debug_location);
+				}
 			}
+
+			phpCAS::client(CAS_VERSION_2_0, 'sso.purdue.edu', 443, '/idp/profile/cas', false);
+			phpCAS::setCasServerCACert(__DIR__ . '/assets/PuCAS_CA.crt');
 		}
-
-		// We either don't have a cas session with boilerkey, or it's too old.
-		// So we essentially make them reauth.
-		$return    = (!empty($return)) ? '&return=' . base64_encode($return) : '';
-		$loginUrl  = 'https://www.purdue.edu/apps/account/cas/logout?reauthWithBoilerkeyService=';
-		// Not sure why we need to encode twice.  I think somewhere along the lines, the CAS server
-		// removes the encoding once.
-		$loginUrl .= urlencode(urlencode(self::getRedirectUri('pucas') . $return));
-
-		// Kill the session var holding the CAS ticket, otherwise it will find the old session
-		// and never actually redirect to the CAS server logout/login page
-		unset($_SESSION['phpCAS']);
-
-		phpCAS::setServerLoginURL($loginUrl);
-		phpCAS::forceAuthentication();
 	}
 
 	/**
@@ -463,4 +376,38 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\OauthClient
 
 		return $html;
 	}
+
+        /**
+         * Builds the redirect URI based on the current URI and a few other assumptions
+         *
+         * @param   string  $name  The plugin name
+         * @return  string
+         **/
+        protected static function getRedirectUri($name)
+        {
+                // Get the hub url
+                $service = trim(\Request::base(), '/');
+
+                $task = 'login';
+                $option = 'login';
+
+                if (\App::isSite())
+                {
+                        // Legacy support
+                        if (\App::has('component') && \App::get('component')->isEnabled('com_users'))
+                        {
+                                // If someone is logged in already, then we're linking an account
+                                $task   = (\User::isGuest()) ? 'user.login' : 'user.link';
+                                $option = 'users';
+                        }
+                        else
+                        {
+                                $task   = (\User::isGuest()) ? 'login' : 'link';
+                        }
+                }
+
+                $scope = '/index.php?option=com_' . $option . '&task=' . $task . '&authenticator=' . $name;
+
+                return $service . $scope;
+        }
 }

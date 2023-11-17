@@ -21,13 +21,6 @@
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
-				<field name="boilerkey_required" type="list" default="none" label="PLG_AUTHENTICATION_PUCAS_PARAM_KEY_REQUIRED_LABEL" description="PLG_AUTHENTICATION_PUCAS_PARAM_KEY_REQUIRED_DESC">
-					<option value="none">PLG_AUTHENTICATION_PUCAS_PARAM_KEY_REQUIRED_NONE</option>
-					<option value="administrator">PLG_AUTHENTICATION_PUCAS_PARAM_KEY_REQUIRED_ADMIN</option>
-					<option value="site">PLG_AUTHENTICATION_PUCAS_PARAM_KEY_REQUIRED_SITE</option>
-					<option value="both">PLG_AUTHENTICATION_PUCAS_PARAM_KEY_REQUIRED_BOTH</option>
-				</field>
-				<field name="boilerkey_timeout" type="text" size="4" default="15" label="PLG_AUTHENTICATION_PUCAS_PARAM_KEY_TIMEOUT_LABEL" description="PLG_AUTHENTICATION_PUCAS_PARAM_KEY_TIMEOUT_DESC" />
 				<field name="debug_location" type="text" size="50" default="/var/log/apache2/php/phpCAS.log" label="PLG_AUTHENTICATION_PUCAS_PARAM_DEBUG_LOCATION_LABEL" description="PLG_AUTHENTICATION_PUCAS_PARAM_DEBUG_LOCATION_DESC" />
 				<field name="site_login"  type="radio" label="PLG_AUTHENTICATION_PUCAS_PARAM_SITELOGIN_LABEL" default="1" description="PLG_AUTHENTICATION_PUCAS_PARAM_SITELOGIN_DESC">
 					<option value="0">JNo</option>
