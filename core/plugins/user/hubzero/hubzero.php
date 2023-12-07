@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright (c) 2005-2024 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -310,6 +310,10 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 			$db->setQuery($query->toString());
 			$db->query();
 		}
+
+		// Determine whether user has an existing Secret, and create if needed.
+		$userid = $instance->get('id');
+		$this->verifyUserSecret($userid);
 
 		// Hit the user last visit field
 		$instance->setLastVisit();
@@ -634,6 +638,9 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
         $update_UsersPointsSubscription_Query = "UPDATE `#__users_points_subscriptions` set contact=" . $db->quote($anonUserName) . " where uid=" . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($update_UsersPointsSubscription_Query);
 
+		// replace user secret with null
+		$this->nullifyUserSecret($userId);
+
         // ----------- DELETE the user's home directory, with the path being /webdav/home/$userName. ----------
         if ($userName) {
             // as user Apache, we can't delete the directory so we need to delete all files.
@@ -650,4 +657,114 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 
 		return true;
     }
+
+	/**
+	 * This utility method checks whether current user has a secret set
+	 * in the database, and if not, it generates and saves one.
+	 *
+	 * @param   integer	$userId  Primary key identifying user in jos_users table
+	 * @return  boolean	True if user has secret column populated in database
+	 */
+	protected function verifyUserSecret($userId)
+	{
+		// create a new user secret if none exists in database:
+		if (!$this->checkForUserSecret($userId))
+		{
+			$newSecret = $this->createUserSecret();
+
+			// Attempt to save the new user secret to the database:
+			if (!$this->saveUserSecret($userId, $newSecret))
+			{
+				return false;
+			}
+		}
+		// User secret exists in database:
+		return true;
+	}
+
+	/**
+	 * This utility method will return true if current user has a secret set, false otherwise.
+	 *
+	 * @param   integer	$userId    Primary key identifying user in jos_users table
+	 * @return  boolean	$hasSecret True if user has secret column populated in database
+	 */
+	protected function checkForUserSecret($userId)
+	{
+		$query = new \Hubzero\Database\Query;
+
+		// Determine whether user's secret is different from null
+		$foundSecret = $query->select('*')
+               		->from('#__users')
+               		->whereEquals('id', $userId)
+               		->whereIsNotNull('secret')
+               		->fetch();
+
+		// User has secret set if one row was returned:
+       	if (is_array($foundSecret) && count($foundSecret) == 1)
+       	{
+       		return true;
+       	}
+       	return false;
+	}
+
+	/**
+	 * This utility method generates a new user secret.
+	 *
+	 * @return String user secret
+	 */
+	protected function createUserSecret()
+	{
+		// create 32-character secret:
+		$secretLength = 32;
+		$newSecret = \Hubzero\User\Password::genRandomPassword($secretLength);
+
+		if (!is_null($newSecret)) {
+			return $newSecret;
+		}
+		return false;
+	}
+
+	/**
+	 * This utility method saves a new user secret.
+	 *
+	 * @param   integer	$userId  Primary key identifying user in jos_users table
+	 * @param   String $secret   User secret
+	 * @return  boolean	True if secret column successfully populated in database
+	 */
+	protected function saveUserSecret($userId, $secret)
+	{
+		$query = new \Hubzero\Database\Query;
+
+		// Set the secret generated for this user:
+		$query->update('#__users')
+				->set(['secret' => $secret])
+				->whereEquals('id', $userId)
+				->execute();
+
+		return true;
+	}
+
+	/**
+	 * Replaces user secret with null.
+	 *
+	 * @param   integer	$userId  Primary key identifying user in jos_users table
+	 * @return  boolean	True if secret value was overwritten successfully.
+	 */
+	protected function nullifyUserSecret($userId)
+	{
+		$query = new \Hubzero\Database\Query;
+
+		// If user exists:
+		$user = User::oneOrFail($userId);
+		if (isset($user))
+		{
+			// NULL out any existing secret for this user:
+			$query->update('#__users')
+				->set(['secret' => NULL])
+				->whereEquals('id', $userId)
+				->execute();
+			return true;
+		}
+		return false;
+	}
 }
