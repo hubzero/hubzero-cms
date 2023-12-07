@@ -67,7 +67,6 @@ class Campaign extends Relational
 
 	/**
 	 * Generates automatic current date field value for campaign_date
-	 * TODO: Ensure this is UTC.
 	 *
 	 * @param   array   $data  the data being saved
 	 * @return  string
@@ -116,7 +115,7 @@ class Campaign extends Relational
 	 * @param   array   $data  the data being saved
 	 * @return  string
 	 */
-	public function generateSecret($data)
+	public static function generateSecret($data)
 	{
 		// create 32-character secret:
 		$secretLength = 32;
