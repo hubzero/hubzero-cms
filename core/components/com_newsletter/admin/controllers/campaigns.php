@@ -9,6 +9,7 @@ namespace Components\Newsletter\Admin\Controllers;
 
 use Components\Newsletter\Models\Campaign;
 use Hubzero\Component\AdminController;
+use Hubzero\Database\Query;
 use stdClass;
 use Request;
 use Notify;
@@ -27,14 +28,14 @@ class Campaigns extends AdminController
 	/**
 	 * Execute a task
 	 *
+	 * This appears to be an override?
+	 *
 	 * @return  void
 	 */
 	public function execute()
 	{
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
-		//$this->registerTask('publish', 'state');
-		//$this->registerTask('unpublish', 'state');
 
 		parent::execute();
 	}
@@ -80,7 +81,7 @@ class Campaigns extends AdminController
 		// Output the HTML
 		$this->view
 			->setLayout('display')
-			->set('campaigns', $rows) // was 'campaigns'
+			->set('campaigns', $rows)
 			->set('filters', $filters)
 			->display();
 	}
@@ -169,6 +170,69 @@ class Campaigns extends AdminController
 		{
 			// If we just created campaign go back to edit form so we can add content
 			return $this->editTask($row);
+		}
+
+		// Redirect back to campaigns list
+		$this->cancelTask();
+	}
+
+	/**
+	 * Delete Task
+	 * (Swiped from admin/controllers/templates.php)
+	 *
+	 * This task deletes campaigns from the database, unlike some other functionality in this component,
+	 * which deactivate but retaining items (mailinglists, templates, etc.).
+	 *
+	 * @return 	void
+	 */
+	public function deleteTask()
+	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// get the request vars
+		$ids = Request::getArray('id', array());
+
+		$success = 0;
+
+		//make sure we have ids
+		if (isset($ids) && count($ids) > 0)
+		{
+			foreach ($ids as $id)
+			{
+				// instantiate mailing list object
+				$row = Campaign::oneOrFail($id);
+				if (!$row)
+				{
+					Notify::error(Lang::txt('COM_NEWSLETTER_CAMPAIGN_NOT_FOUND'));
+					continue;
+				}
+
+				// delete the campaign from the table
+				$query = new Query;
+				$deleted = $query->remove('campaign', 'id', $id);
+
+				if (!$deleted)
+				{
+					Notify::error(Lang::txt('COM_NEWSLETTER_CAMPAIGN_DELETE_FAILED'));
+					continue;
+				}
+
+				$success++;
+			}
+		}
+
+		// check that all selected campaigns were deleted, provide feedback to user
+		if ($success == count($ids))
+		{
+			Notify::success(Lang::txt('COM_NEWSLETTER_CAMPAIGN_DELETE_SUCCESS'));
+		} else {
+			Notify::error(Lang::txt('COM_NEWSLETTER_CAMPAIGN_DELETE_FAILED'));
 		}
 
 		// Redirect back to campaigns list

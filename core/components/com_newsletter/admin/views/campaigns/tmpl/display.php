@@ -22,6 +22,12 @@ if ($canDo->get('core.edit'))
 {
 	Toolbar::editList();
 }
+if ($canDo->get('core.delete'))
+{
+	Toolbar::spacer();
+	// TODO: add to language file
+	Toolbar::deleteList('COM_NEWSLETTER_CAMPAIGN_DELETE_CHECK', 'delete');
+}
 Toolbar::spacer();
 Toolbar::help('campaign');
 
