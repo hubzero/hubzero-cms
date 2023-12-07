@@ -59,9 +59,9 @@ $this->js();
 				<th scope="col"><?php echo Lang::txt('Description');?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_NEWSLETTER_CAMPAIGN_DATE', 'campaign_date', 
 					@$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'Date Modified', 'modified', 
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_NEWSLETTER_CAMPAIGN_MOD_DATE', 'modified', 
 					@$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'Modified By', 'modified_by', 
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_NEWSLETTER_CAMPAIGN_MOD_BY', 'modified_by', 
 					@$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead> 
