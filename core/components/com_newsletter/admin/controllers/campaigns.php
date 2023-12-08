@@ -28,7 +28,7 @@ class Campaigns extends AdminController
 	/**
 	 * Execute a task
 	 *
-	 * This appears to be an override?
+	 * This appears to be an override
 	 *
 	 * @return  void
 	 */
@@ -88,6 +88,8 @@ class Campaigns extends AdminController
 
 	/**
 	 * Edit or add Campaigns
+	 *
+	 * Display a form for adding or editing an entry
 	 * (swiped from admin/controllers/newsletters.php)
 	 *
 	 * @return  void
@@ -110,6 +112,10 @@ class Campaigns extends AdminController
 			$id = is_array($id) ? $id[0] : $id;
 
 			$row = Campaign::oneOrNew($id);
+
+			// Campaign expiration date: saved as GMT (see edit.php)
+			$expire_date = Date::of($row->expire_date);
+			$this->view->expire_date = $expire_date;
 		}
 
 		// Output the HTML
@@ -122,6 +128,8 @@ class Campaigns extends AdminController
 
 	/**
 	 * Save campaign task
+	 *
+	 * Save an entry
 	 * (swiped from admin/controllers/newsletters.php)
 	 *
 	 * @return 	void
@@ -142,6 +150,12 @@ class Campaigns extends AdminController
 
 		// Initiate model
 		$row = Campaign::oneOrNew($fields['id'])->set($fields);
+
+        // make sure we have an expire_date, default will be 90 days from current date
+        if (!$row->expire_date)
+        {
+			$row->expire_date = Date::of('+90 days')->setTimezone('GMT')->toSql();
+        }
 
 		// did we have params
 		// if so, it's a request to reset the secret
@@ -178,6 +192,8 @@ class Campaigns extends AdminController
 
 	/**
 	 * Delete Task
+	 *
+	 * Delete an entry
 	 * (Swiped from admin/controllers/templates.php)
 	 *
 	 * This task deletes campaigns from the database, unlike some other functionality in this component,
