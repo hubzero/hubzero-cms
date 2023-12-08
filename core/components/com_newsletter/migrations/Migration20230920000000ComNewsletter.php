@@ -25,11 +25,12 @@ class Migration20230920000000ComNewsletter extends Base
 			$query = "CREATE TABLE IF NOT EXISTS `campaign` (
     			id INT(11) NOT NULL AUTO_INCREMENT,
     			title VARCHAR(50),
-    			description TEXT,
-    			campaign_date DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-				secret CHAR(32) UNIQUE NULL,
+				`description` TEXT,
+				campaign_date DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+				`secret` CHAR(32) UNIQUE NULL,
 				modified  DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-    			modified_by int(11) DEFAULT NULL,
+				expire_date DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+				modified_by int(11) DEFAULT NULL,
 				PRIMARY KEY (id),
 				KEY idx_title (title)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";

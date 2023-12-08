@@ -24,6 +24,8 @@ if ($canDo->get('core.edit'))
 	Toolbar::spacer();
 }
 Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('campaign');
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
 	<fieldset class="adminform">
@@ -32,6 +34,18 @@ Toolbar::cancel();
 		<div class="input-wrap">
 			<label for="campaign-title"><?php echo Lang::txt('Name'); ?>:</label><br />
 			<input type="text" name="campaign[title]" id="campaign-title" value="<?php echo $this->escape($this->campaign->title); ?>" /></td>
+		</div>
+
+		<!-- Campaign expiration date: adapted from com_events/admin/views/events/tmpl/edit.php -->
+		<!-- If a new record, default 90 days; display as GMT -->
+		<?php if (!$this->campaign->expire_date) {
+			$exDate  = Date::of('+90 days', 'GMT');
+		} else {
+			$exDate  = Date::of($this->campaign->expire_date, 'GMT');
+		} ?>
+		<div class="input-wrap">
+			<label for="campaign-expire_date"><?php echo Lang::txt('COM_NEWSLETTER_CAMPAIGN_EXPIRE_DATE_GMT'); ?></label><br />
+			<?php echo Html::input('calendar', 'campaign[expire_date]', $exDate, array('id' => 'campaign-expire_date')); ?>
 		</div>
 
 		<div class="input-wrap">

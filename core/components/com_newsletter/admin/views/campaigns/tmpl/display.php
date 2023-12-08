@@ -25,7 +25,6 @@ if ($canDo->get('core.edit'))
 if ($canDo->get('core.delete'))
 {
 	Toolbar::spacer();
-	// TODO: add to language file
 	Toolbar::deleteList('COM_NEWSLETTER_CAMPAIGN_DELETE_CHECK', 'delete');
 }
 Toolbar::spacer();
@@ -56,7 +55,9 @@ $this->js();
 				</th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_NEWSLETTER_CAMPAIGN', 'title', @$this->filters['sort_Dir'], 
 					@$this->filters['sort']);?></th>
-				<th scope="col"><?php echo Lang::txt('Description');?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_NEWSLETTER_CAMPAIGN_EXPIRE_DATE', 'expire_date',
+					@$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_DESC');?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_NEWSLETTER_CAMPAIGN_DATE', 'campaign_date', 
 					@$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_NEWSLETTER_CAMPAIGN_MOD_DATE', 'modified', 
@@ -85,19 +86,21 @@ $this->js();
 							<label for="cb<?php echo $k; ?>" class="sr-only visually-hidden"><?php echo $campaign->id; ?></label>
 						</td>
 						<td>
-							<?php //echo $campaign->title; ?>
 							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $campaign->id); ?>">
 								<?php echo $this->escape($campaign->title); ?>
 							</a>
 						</td>
 						<td class="priority-3">
+							<?php echo Date::of($campaign->expire_date)->toLocal("Y-m-d h:ma"); ?>
+						</td>
+						<td class="priority-3">
 							<?php echo $campaign->description; ?>
 						</td>
 						<td class="priority-3">
-							<?php echo Date::of($campaign->campaign_date)->toLocal("F d, Y @ g:ia"); ?>
+							<?php echo Date::of($campaign->campaign_date)->toLocal("Y-m-d h:ma"); ?>
 						</td>
 						<td class="priority-3">
-							<?php echo Date::of($campaign->modified)->toLocal("F d, Y @ g:ia"); ?>
+							<?php echo Date::of($campaign->modified)->toLocal("Y-m-d h:ma"); ?>
 						</td>
 						<td class="priority-3">
 							<?php echo User::one($campaign->modified_by)->name; ?>
