@@ -151,11 +151,23 @@ class Campaigns extends AdminController
 		// Initiate model
 		$row = Campaign::oneOrNew($fields['id'])->set($fields);
 
-        // make sure we have an expire_date, default will be 90 days from current date
-        if (!$row->expire_date)
-        {
-			$row->expire_date = Date::of('+90 days')->setTimezone('GMT')->toSql();
-        }
+
+		// make sure we have an expire_date, default will be 90 days from current date
+		if (!$row->expire_date)
+		{
+			$row->expire_date = Date::of('+90 days', 'GMT')->toSql();
+		}
+		else
+		{
+			// If display date changed in the form, save new date: 
+			if ($fields['expire_date_display'] != $fields['expire_date_local'])
+			{
+				// get timezone identifier from user setting
+				$tz = \User::getParam('timezone', \Config::get('offset'));
+				// save the newly changed date, accounting for the user's local time zone, $tz:
+				$row->expire_date = Date::of($fields['expire_date_display'], $tz)->toSql();
+			}
+		}
 
 		// did we have params
 		// if so, it's a request to reset the secret
