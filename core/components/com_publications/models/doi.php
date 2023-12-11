@@ -630,7 +630,7 @@ class Doi extends Obj
 				if ($contactPerson->organization)
 				{
 					$orgidAtr = (isset($contactPerson->orgid) && !empty($contactPerson->orgid)) ? ' affiliationIdentifier="' . $contactPerson->orgid . '"' . ' affiliationIdentifierScheme="ROR" schemeURI="https://ror.org"' : "";
-					$xmlfile .= '		<affiliation' .  $orgidAtr . '>' . $author->organization . '</affiliation>';
+					$xmlfile .= '		<affiliation' .  $orgidAtr . '>' . $contactPerson->organization . '</affiliation>';
 				}
 				
 				$xmlfile.='	</contributor>';
