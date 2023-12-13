@@ -11,10 +11,10 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for adding support for User - Secret 
+ * Migration script for adding User Secret to jos_users table
  *
- * This migration script creates a jos_users column to hold
- * a unique user secret. On 'down' migration the column
+ * This migration script creates a jos_users column to populate
+ * with a unique user secret, on user login. On 'down' migration the column
  * is dropped from the table.
  *
  **/
@@ -48,19 +48,18 @@ class Migration20231016000000ComMembers extends Base
 		// If the table exists, add column if it is absent:
 		if ($this->db->tableExists($tableName))
 		{
-
-			if (!$this->db->tableHasField($tableName, $columnData['name'])) {
+			if (!$this->db->tableHasField($tableName, $columnData['name'])) 
+			{
 				$this->log('No column `secret` found in table `jos_users`, creating...', 'info');
 
 				// generate and run query to create column
 				$query = $this->_generateSafeAddColumns($tableName, $columnData);
 				$this->_queryIfTableExists($tableName, $query);
-			}
-		}
-		$this->log('Column `secret` created in table `jos_users`', 'info');
 
-		// now add the plugin to the db:
-		$this->addPluginEntry('user', 'secret');
+			}
+			// Generate and save user secrets
+			$this->generateUserSecrets();
+		}
 	}
 
 	/**
@@ -81,8 +80,36 @@ class Migration20231016000000ComMembers extends Base
 		$this->_queryIfTableExists($tableName, $query);
 
 		$this->log('Column `secret` dropped from table `jos_users`', 'info');
+	}
 
-		// now remove the plugin from the db:
-		$this->deletePluginEntry('user', 'secret');
+	/**
+	 * generateUserSecrets()
+	 *
+	 * Populate 'secret' column in jos_users table for those users who have
+	 * logged in over the last year, but have no secret set. Each secret is a
+	 * unique, random 32-character string.
+	 *
+	 **/
+	private function generateUserSecrets()
+	{
+		// User secret will have length 32 characters:
+		$secretLength = 32;
+
+		// Criteria: create secrets for users that have logged in during the last year
+		$criteria = 'DATE_SUB(CURDATE(), INTERVAL 1 YEAR';
+
+		// Fetch ids for all such users who have no secret
+		$targetUsers = \Hubzero\User\User::all()
+						->where('lastvisitdate', '>', $criteria)
+						->whereIsNull('secret');
+
+		// Create and save a unique secret for each such user:
+		foreach ($targetUsers as $oneUser)
+		{
+			$newSecret = \Hubzero\User\Password::genRandomPassword($secretLength);
+			$oneUser->set('secret', $newSecret);
+			$oneUser->save();
+		}
+		$this->log('Saved new secrets for target users', 'info');
 	}
 }
