@@ -23,8 +23,8 @@ class Migration20230920000000ComNewsletter extends Base
 		if (!$this->db->tableExists('campaign'))
 		{
 			$query = "CREATE TABLE IF NOT EXISTS `campaign` (
-    			id INT(11) NOT NULL AUTO_INCREMENT,
-    			title VARCHAR(50),
+				id INT(11) NOT NULL AUTO_INCREMENT,
+				title VARCHAR(50),
 				`description` TEXT,
 				campaign_date DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
 				`secret` CHAR(32) UNIQUE NULL,

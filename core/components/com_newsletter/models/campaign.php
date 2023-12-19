@@ -84,7 +84,7 @@ class Campaign extends Relational
 	 */
 	public function automaticModifiedBy($data)
 	{
-		return User::get('id'); 
+		return User::get('id');
 	}
 
 	/**
@@ -110,7 +110,7 @@ class Campaign extends Relational
 	}
 
 	/**
-	 * Generates new secret value 
+	 * Generates new secret value
 	 *
 	 * @param   array   $data  the data being saved
 	 * @return  string
@@ -120,5 +120,15 @@ class Campaign extends Relational
 		// create 32-character secret:
 		$secretLength = 32;
 		return \Hubzero\User\Password::genRandomPassword($secretLength);
+	}
+
+	public function isExpired()
+	{
+		$expiration = $this->get('expire_date');
+
+		$invalidExpiration = empty($expiration);
+		$isExpired = strtotime(Date::of()) > strtotime($expiration);
+
+		return $invalidExpiration || $isExpired;
 	}
 }
