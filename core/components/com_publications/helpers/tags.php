@@ -157,7 +157,11 @@ class Tags extends \Hubzero\Base\Obj
 	 */
 	public function getAllTags($vid)
 	{
-		$sql = "SELECT DISTINCT jt.* FROM $this->_tag_tbl AS jt LEFT JOIN $this->_obj_tbl AS jto ON jt.id = jto.tagid WHERE jto.objectid = $vid";
+		$sql  = "SELECT DISTINCT jt.* ";
+		$sql .= "FROM $this->_tag_tbl AS jt ";
+		$sql .= "LEFT JOIN " . $this->_obj_tbl . " AS jto ON jt.id = jto.tagid "; 
+		$sql .= "WHERE jto.objectid = " . $this->_db->quote($vid);
+		
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
@@ -631,10 +635,10 @@ class Tags extends \Hubzero\Base\Obj
 	 */
 	public function countTags($id)
 	{
-		$sql = "SELECT COUNT(*) FROM $this->_tag_tbl AS t,
-			$this->_obj_tbl AS rt WHERE rt.objectid=$id
-			AND rt.tbl='$this->_tbl' AND rt.tagid=t.id";
-
+		$sql  = "SELECT COUNT(*) FROM $this->_tag_tbl AS t, ";
+		$sql .= $this->_obj_tbl . " AS rt WHERE rt.objectid=" . $this->_db->quote($id);
+		$sql .= "AND rt.tbl='$this->_tbl' AND rt.tagid=t.id";
+		
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadResult();
 	}
@@ -678,7 +682,7 @@ class Tags extends \Hubzero\Base\Obj
 	 */
 	public function getFOSTag($tagid)
 	{
-		$sql = "SELECT jto.tagid FROM $this->_tag_tbl AS jt LEFT JOIN $this->_obj_tbl AS jto ON jto.objectid = jt.id WHERE jto.tbl =" . '"tags" AND jto.label = "parent" AND jt.id=' . $this->_db->quote($tagid);
+		$sql = "SELECT jto.tagid FROM $this->_tag_tbl AS jt LEFT JOIN $this->_obj_tbl AS jto ON jto.objectid = jt.id WHERE jto.tbl =" . '"tags" AND jto.label = "parent" AND jt.id=' . $tagid;
 		$this->_db->setQuery($sql);
 		$ids = $this->_db->loadColumn();
 		
@@ -687,7 +691,7 @@ class Tags extends \Hubzero\Base\Obj
 			$fosTagObjects = [];
 			foreach ($ids as $id)
 			{
-				$sql = "SELECT jt.* FROM $this->_tag_tbl AS jt WHERE jt.id = " . $this->_db->quote($id);
+				$sql = "SELECT jt.* FROM $this->_tag_tbl AS jt WHERE jt.id = $id";
 				$this->_db->setQuery($sql);
 				$fosTagObj = $this->_db->loadObject();
 				
@@ -754,7 +758,7 @@ class Tags extends \Hubzero\Base\Obj
 			$w = 1;
 			foreach ($keywords as $key)
 			{
-				$sql .= 't.raw_tag LIKE "%'.$this->_db->escape($key).'%"';
+				$sql .= 't.raw_tag LIKE "%'.$this->_db->quote($key).'%"';
 				$sql .= $w == count($keywords) ? '' : ' OR ';
 				$w++;
 			}
