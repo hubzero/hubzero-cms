@@ -121,4 +121,14 @@ class Campaign extends Relational
 		$secretLength = 32;
 		return \Hubzero\User\Password::genRandomPassword($secretLength);
 	}
+
+	public function isExpired()
+	{
+		$expiration = $this->get('expire_date');
+
+		$invalidExpiration = empty($expiration);
+		$isExpired = strtotime(Date::of()) > strtotime($expiration);
+
+		return $invalidExpiration || $isExpired;
+	}
 }
