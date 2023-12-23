@@ -17,7 +17,31 @@ use Components\Newsletter\Models\AccessCode;
 class CodeHelper
 {
 
-	public static function validateCode($code, $pageId)
+	public static function validateCode($username, $campaignId, $pageId, $code)
+	{
+		// acquire user info
+		$userId = User::all()->whereEquals('username', $username)->get('id');
+
+		// acquire campaign info
+		$campModel = Campaign::all()->whereEquals('id', $campaignId)->row();
+		$campNotExpired = !$campModel->isExpired();
+
+		// the access_code model contains user/page relationship
+		$codeModel = AccessCode::all()->whereEquals('user_id', $userId)->row();
+		$codeMatchesPage = $codeModel->get('page_id') == $pageId;
+
+		// Calculate and compare hash of hub, user, and campaign secrets to passed code:
+		$database = \App::get('db');
+		$sql = "SELECT hash_access_code($campaignId, $username)";
+		$database->setQuery($sql);
+
+		$hashMatches = ($code == $database->loadResult());
+
+		return ($hashMatches && $campNotExpired && $codeNotExpired && $codeMatchesPage);
+	}
+
+	// TODO: delete
+	public static function oldValidateCode($code, $pageId)
 	{
 		$codeModel = AccessCode::all()->whereEquals('code', $code)->row();
 
@@ -28,6 +52,7 @@ class CodeHelper
 		return $exists && $notExpired && $matchesPage;
 	}
 
+	// TODO: 
 	public static function validateEmailSubscriptionsCode($code)
 	{
 		$emailSubsPageId = CODE_SECRETS['email_subscriptions_page_id'];
