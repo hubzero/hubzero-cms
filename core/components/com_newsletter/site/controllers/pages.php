@@ -21,8 +21,12 @@ class Pages extends SiteController
 	{
 		$code = Request::getString('code');
 		$pageId = Request::getInt('id');
+		// TODO: pass these values
+		$username = Request::getString('user_name');
+		$campaign_id = Request::getInt('campaign_id');
 
-		if (!CodeHelper::validateCode($code, $pageId))
+		//if (!CodeHelper::validateCode($code, $pageId))
+		if (!CodeHelper::validateCode($username, $campaignId, $pageId, $code))
 		{
 			Notify::warning(Lang::txt('AUTH_CODE_INVALID'));
 			App::redirect('/');
