@@ -31,7 +31,7 @@ class Emailsubscriptions extends SiteController
 		$code = Request::getString('code');
 		// TODO: obtain values
 		$username = Request::getString('username');
-		$campaignId = Request::getString('campaignId');
+		$campaignId = Request::getInt('campaignId');
 
 		// Verify that the user-supplied URL enables access:
 		if (!CodeHelper::validateEmailSubscriptionsCode($username, $campaignId, $code))
@@ -57,7 +57,7 @@ class Emailsubscriptions extends SiteController
 		$code = Request::getString('code');
 		// TODO: obtain values
 		$username = Request::getString('username');
-		$campaignId = Request::getString('campaignId');
+		$campaignId = Request::getInt('campaignId');
 
 		// Verify that the user-supplied URL enables access:
 		if (!CodeHelper::validateEmailSubscriptionsCode($username, $campaignId, $code))
