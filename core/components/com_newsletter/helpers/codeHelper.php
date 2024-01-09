@@ -41,31 +41,11 @@ class CodeHelper
 		return ($hashMatches && $campNotExpired && $codeMatchesPage);
 	}
 
-	// TODO: delete
-	public static function oldValidateCode($code, $pageId)
-	{
-		$codeModel = AccessCode::all()->whereEquals('code', $code)->row();
-
-		$exists = !$codeModel->isNew();
-		$notExpired = !$codeModel->isExpired();
-		$matchesPage = $codeModel->get('page_id') == $pageId;
-
-		return $exists && $notExpired && $matchesPage;
-	}
-
 	// Validate code obtained from user's URL, using email subscription page id
 	public static function validateEmailSubscriptionsCode($username, $campaignId, $code)
 	{
 		$emailSubsPageId = CODE_SECRETS['email_subscriptions_page_id'];
 
 		return self::validateCode($username, $campaignId, $emailSubsPageId, $code);
-	}
-
-	// TODO: delete
-	public static function oldValidateEmailSubscriptionsCode($code)
-	{
-		$emailSubsPageId = CODE_SECRETS['email_subscriptions_page_id'];
-
-		return self::oldValidateCode($code, $emailSubsPageId);
 	}
 }
