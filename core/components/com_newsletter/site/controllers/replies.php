@@ -29,8 +29,8 @@ class Replies extends SiteController
 		$pageId = Request::getInt('page_id');
 
 		// TODO: pass these values
-		$username = Request::getString('user_name');
-		$campaign_id = Request::getInt('campaign_id');
+		$username = Request::getString('user');
+		$campaignid = Request::getInt('campaign');
 
 		// TODO: why false?
 		//if (!CodeHelper::validateCode($code, $pageId, false))
@@ -40,7 +40,7 @@ class Replies extends SiteController
 			App::redirect('/');
 		}
 
-		$userId = User::whereEquals('username', $username)->get('id');
+		$userId = User::whereEquals('username', $username)->row()->get('id');
 
 		$reply = Reply::blank();
 		$reply->set([

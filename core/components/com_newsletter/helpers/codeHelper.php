@@ -10,9 +10,11 @@ namespace Components\Newsletter\Helpers;
 $componentPath = Component::path('com_newsletter');
 
 require_once  "$componentPath/models/accessCode.php";
+require_once  "$componentPath/models/campaign.php";
 require_once  "$componentPath/secrets/code.php";
 
 use Components\Newsletter\Models\AccessCode;
+use Components\Newsletter\Models\Campaign;
 
 class CodeHelper
 {
@@ -21,7 +23,7 @@ class CodeHelper
 	public static function validateCode($username, $campaignId, $pageId, $code)
 	{
 		// acquire user info
-		$userId = User::all()->whereEquals('username', $username)->get('id');
+		$userId = User::whereEquals('username', $username)->row()->get('id');
 
 		// acquire campaign info
 		$campModel = Campaign::all()->whereEquals('id', $campaignId)->row();

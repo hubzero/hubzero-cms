@@ -22,8 +22,8 @@ class Pages extends SiteController
 		$code = Request::getString('code');
 		$pageId = Request::getInt('id');
 		// TODO: pass these values
-		$username = Request::getString('user_name');
-		$campaign_id = Request::getInt('campaign_id');
+		$username = Request::getString('user');
+		$campaignId = Request::getInt('campaign');
 
 		//if (!CodeHelper::validateCode($code, $pageId))
 		if (!CodeHelper::validateCode($username, $campaignId, $pageId, $code))

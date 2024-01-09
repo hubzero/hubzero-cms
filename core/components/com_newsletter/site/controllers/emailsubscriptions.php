@@ -29,9 +29,8 @@ class Emailsubscriptions extends SiteController
 	public function displayTask()
 	{
 		$code = Request::getString('code');
-		// TODO: obtain values
-		$username = Request::getString('username');
-		$campaignId = Request::getInt('campaignId');
+		$username = Request::getString('user');
+		$campaignId = Request::getInt('campaign');
 
 		// Verify that the user-supplied URL enables access:
 		if (!CodeHelper::validateEmailSubscriptionsCode($username, $campaignId, $code))
@@ -41,7 +40,10 @@ class Emailsubscriptions extends SiteController
 		}
 
 		$subHelper = new SubscriptionsHelper();
-		$userId = User::whereEquals('username', $username)->get('id');
+
+		// acquire user info
+		$userId = User::whereEquals('username', $username)->row()->get('id');
+
 		$subscriptions = $subHelper->loadSubscriptions($userId);
 
 		$this->view->set('userId', $userId);
@@ -55,9 +57,8 @@ class Emailsubscriptions extends SiteController
 		Request::checkToken();
 
 		$code = Request::getString('code');
-		// TODO: obtain values
-		$username = Request::getString('username');
-		$campaignId = Request::getInt('campaignId');
+		$username = Request::getString('user');
+		$campaignId = Request::getInt('campaign');
 
 		// Verify that the user-supplied URL enables access:
 		if (!CodeHelper::validateEmailSubscriptionsCode($username, $campaignId, $code))
@@ -67,7 +68,8 @@ class Emailsubscriptions extends SiteController
 		}
 
 		// Look up the subscription based on user id:
-		$userId = User::whereEquals('username', $username)->get('id');
+		$user = User::whereEquals('username', $username)->row();
+		$userId = $user->get('id');
 		$updatedSubscriptions = Request::getArray('subscriptions');
 		$subHelper = new SubscriptionsHelper();
 
