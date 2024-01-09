@@ -14,14 +14,4 @@ class AccessCode extends Relational
 	protected $table = '#__reply_access_codes';
 
 	public $initiate = ['created'];
-
-	public function isExpired()
-	{
-		$expiration = $this->get('expiration');
-
-		$invalidExpiration = empty($expiration);
-		$isExpired = strtotime(Date::of()) > strtotime($expiration);
-
-		return $invalidExpiration || $isExpired;
-	}
 }
