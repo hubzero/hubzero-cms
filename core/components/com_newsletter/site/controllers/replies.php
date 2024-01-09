@@ -40,12 +40,13 @@ class Replies extends SiteController
 			App::redirect('/');
 		}
 
-		$codeM = AccessCode::all()->whereEquals('code', $code)->row();
+		$userId = User::whereEquals('username', $username)->get('id');
+
 		$reply = Reply::blank();
 		$reply->set([
 			'input'=> json_encode(Request::getArray('reply')),
-			'page_id' => $codeM->get('page_id'),
-			'user_id' => $codeM->get('user_id'),
+			'page_id' => $pageId,
+			'user_id' => $userId,
 			'created' => Date::toSql()
 		]);
 
