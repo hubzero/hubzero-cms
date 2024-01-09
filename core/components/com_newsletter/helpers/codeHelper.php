@@ -17,6 +17,7 @@ use Components\Newsletter\Models\AccessCode;
 class CodeHelper
 {
 
+	// Validate code passed in user's URL, with user, campaign, and page information.
 	public static function validateCode($username, $campaignId, $pageId, $code)
 	{
 		// acquire user info
@@ -37,7 +38,7 @@ class CodeHelper
 
 		$hashMatches = ($code == $database->loadResult());
 
-		return ($hashMatches && $campNotExpired && $codeNotExpired && $codeMatchesPage);
+		return ($hashMatches && $campNotExpired && $codeMatchesPage);
 	}
 
 	// TODO: delete
@@ -52,12 +53,19 @@ class CodeHelper
 		return $exists && $notExpired && $matchesPage;
 	}
 
-	// TODO: 
-	public static function validateEmailSubscriptionsCode($code)
+	// Validate code obtained from user's URL, using email subscription page id
+	public static function validateEmailSubscriptionsCode($username, $campaignId, $code)
 	{
 		$emailSubsPageId = CODE_SECRETS['email_subscriptions_page_id'];
 
-		return self::validateCode($code, $emailSubsPageId);
+		return self::validateCode($username, $campaignId, $emailSubsPageId, $code);
 	}
 
+	// TODO: delete
+	public static function oldValidateEmailSubscriptionsCode($code)
+	{
+		$emailSubsPageId = CODE_SECRETS['email_subscriptions_page_id'];
+
+		return self::oldValidateCode($code, $emailSubsPageId);
+	}
 }

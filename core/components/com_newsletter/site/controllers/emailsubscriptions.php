@@ -29,16 +29,19 @@ class Emailsubscriptions extends SiteController
 	public function displayTask()
 	{
 		$code = Request::getString('code');
+		// TODO: obtain values
+		$username = Request::getString('username');
+		$campaignId = Request::getString('campaignId');
 
-		if (!CodeHelper::validateEmailSubscriptionsCode($code, false))
+		// Verify that the user-supplied URL enables access:
+		if (!CodeHelper::validateEmailSubscriptionsCode($username, $campaignId, $code))
 		{
 			Notify::warning(Lang::txt('AUTH_CODE_INVALID'));
 			App::redirect('/');
 		}
 
 		$subHelper = new SubscriptionsHelper();
-		$codeM = AccessCode::all()->whereEquals('code', $code)->row();
-		$userId = $codeM->get('user_id');
+		$userId = User::whereEquals('username', $username)->get('id');
 		$subscriptions = $subHelper->loadSubscriptions($userId);
 
 		$this->view->set('userId', $userId);
@@ -52,19 +55,24 @@ class Emailsubscriptions extends SiteController
 		Request::checkToken();
 
 		$code = Request::getString('code');
+		// TODO: obtain values
+		$username = Request::getString('username');
+		$campaignId = Request::getString('campaignId');
 
-		if (!CodeHelper::validateEmailSubscriptionsCode($code, false))
+		// Verify that the user-supplied URL enables access:
+		if (!CodeHelper::validateEmailSubscriptionsCode($username, $campaignId, $code))
 		{
 			Notify::warning(Lang::txt('AUTH_CODE_INVALID'));
 			App::redirect('/');
 		}
 
-		$codeM = AccessCode::all()->whereEquals('code', $code)->row();
+		// Look up the subscription based on user id:
+		$userId = User::whereEquals('username', $username)->get('id');
 		$updatedSubscriptions = Request::getArray('subscriptions');
 		$subHelper = new SubscriptionsHelper();
 
 		$subHelper->updateSubscriptions(
-			$codeM->get('user_id'),
+			$userId,
 			$updatedSubscriptions
 		);
 
