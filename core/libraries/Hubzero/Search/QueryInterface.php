@@ -122,10 +122,10 @@ interface QueryInterface
 	public function run();
 
 	/**
-	 * getDebug - returns Solarium query debug object
+	 * getDebug - returns query debug object
 	 *
 	 * @access public
-	 * @return Solarium\QueryType\Select\Query\Component\Debug
+	 * @return object
 	 */
 	public function getDebug();
 
