@@ -19,7 +19,7 @@ use Components\Newsletter\Models\Campaign;
 class CodeHelper
 {
 
-	// Validate code passed in user's URL, with user, campaign, and page information.
+	// Validate that the user-supplied URL and code are valid:
 	public static function validateCode($username, $campaignId, $pageId, $code)
 	{
 		// acquire user info
@@ -29,9 +29,10 @@ class CodeHelper
 		$campModel = Campaign::all()->whereEquals('id', $campaignId)->row();
 		$campNotExpired = !$campModel->isExpired();
 
-		// the access_code model contains user/page relationship
-		$codeModel = AccessCode::all()->whereEquals('user_id', $userId)->row();
-		$codeMatchesPage = $codeModel->get('page_id') == $pageId;
+		// Does the access_code model contain this user and page:
+		$accessCodeModel = AccessCode::whereEquals('user_id', $userId)->
+								whereEquals('page_id', $pageId)->count();
+		$userHasPageAccess = (bool)(1 == $accessCodeModel);
 
 		// Calculate and compare hash of hub, user, and campaign secrets to passed code:
 		$database = \App::get('db');
@@ -40,14 +41,17 @@ class CodeHelper
 
 		$hashMatches = ($code == $database->loadResult());
 
-		return ($hashMatches && $campNotExpired && $codeMatchesPage);
+		// Is this access valid?
+		return ($hashMatches && $campNotExpired && $userHasPageAccess);
 	}
 
 	// Validate code obtained from user's URL, using email subscription page id
 	public static function validateEmailSubscriptionsCode($username, $campaignId, $code)
 	{
+		// Acquire page Id for email subscription:
 		$emailSubsPageId = CODE_SECRETS['email_subscriptions_page_id'];
 
+		// Validate user-supplied URL and code for this page:
 		return self::validateCode($username, $campaignId, $emailSubsPageId, $code);
 	}
 }

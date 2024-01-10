@@ -32,7 +32,7 @@ class Emailsubscriptions extends SiteController
 		$username = Request::getString('user');
 		$campaignId = Request::getInt('campaign');
 
-		// Verify that the user-supplied URL enables access:
+		// Verify that the user-supplied URL and code are valid:
 		if (!CodeHelper::validateEmailSubscriptionsCode($username, $campaignId, $code))
 		{
 			Notify::warning(Lang::txt('AUTH_CODE_INVALID'));
@@ -60,7 +60,7 @@ class Emailsubscriptions extends SiteController
 		$username = Request::getString('user');
 		$campaignId = Request::getInt('campaign');
 
-		// Verify that the user-supplied URL enables access:
+		// Verify that the user-supplied URL and code are valid:
 		if (!CodeHelper::validateEmailSubscriptionsCode($username, $campaignId, $code))
 		{
 			Notify::warning(Lang::txt('AUTH_CODE_INVALID'));
@@ -68,8 +68,7 @@ class Emailsubscriptions extends SiteController
 		}
 
 		// Look up the subscription based on user id:
-		$user = User::whereEquals('username', $username)->row();
-		$userId = $user->get('id');
+		$userId = User::whereEquals('username', $username)->row()->get('id');
 		$updatedSubscriptions = Request::getArray('subscriptions');
 		$subHelper = new SubscriptionsHelper();
 

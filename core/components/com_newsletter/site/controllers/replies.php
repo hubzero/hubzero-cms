@@ -27,13 +27,10 @@ class Replies extends SiteController
 
 		$code = Request::getString('code');
 		$pageId = Request::getInt('page_id');
-
-		// TODO: pass these values
 		$username = Request::getString('user');
 		$campaignid = Request::getInt('campaign');
 
-		// TODO: why false?
-		//if (!CodeHelper::validateCode($code, $pageId, false))
+		// Validate that the user-supplied URL and code are valid:
 		if (!CodeHelper::validateCode($username, $campaignId, $pageId, $code))
 		{
 			Notify::warning(Lang::txt('AUTH_CODE_INVALID'));
@@ -58,7 +55,7 @@ class Replies extends SiteController
 		else
 		{
 			Notify::error(Lang::txt('REPLY_CREATION_FAILURE'));
-			App::redirect("/newsletter/pages/$pageId?code=$code");
+			App::redirect("/newsletter/pages/$pageId?campaign=$campaignId&user=$username&code=$code");
 		}
 	}
 
