@@ -224,16 +224,20 @@ class Application extends AdminController
 		// If user has opted to reset the Hub secret:
 		if ($hubsecret['reset_secret'] == 'reset')
 		{
-			$tableName = 'campaign_hub';
+			$tableName = 'jos_config';
 
 			// create 32-character secret:
 			$secretLength = 32;
 			$secret = \Hubzero\User\Password::genRandomPassword($secretLength);
+			$updated = Date::of('now')->toSql();
 
 			// Reset the Hub secret:
 			$query = new \Hubzero\Database\Query;
 			$result = $query->update($tableName)
-				->set(['secret' => $secret])
+				->set(['value' => $secret,
+					   'updated' => $updated])
+				->whereEquals('scope', 'hub')
+				->whereEquals('key', 'secret')
 				->execute();
 		}
 		return true;

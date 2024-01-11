@@ -36,6 +36,7 @@ class Migration20230920000000ComConfig extends Base
 				`key` VARCHAR(255) NOT NULL,
 				`value` CHAR(32) UNIQUE NULL,
 				`created` DATETIME NOT NULL,
+				`updated` DATETIME NULL,
 				PRIMARY KEY (`id`),
 				UNIQUE KEY `id_UNIQUE` (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
