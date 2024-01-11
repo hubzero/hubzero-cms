@@ -15,34 +15,63 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20230920000000ComConfig extends Base
 {
+	// TODO: finalize this name
+	static $tableName = "#__config";
+
 	/**
 	 * Up
 	 **/
 	public function up()
 	{
-		// ensure we have the needed database table:
-		if (!$this->db->tableExists('campaign_hub'))
+		$tableName = self::$tableName;
+
+		// Ensure the needed database table exists:
+		if (!$this->db->tableExists($tableName))
 		{
-			$query = "CREATE TABLE IF NOT EXISTS `campaign_hub` (
-				`secret` CHAR(32) UNIQUE NULL
+			$this->log("Table not found, creating...");
+
+			$query = "CREATE TABLE IF NOT EXISTS $tableName (
+				`id` INT(11) NOT NULL AUTO_INCREMENT,
+				`scope` VARCHAR(255) NOT NULL,
+				`key` VARCHAR(255) NOT NULL,
+				`value` CHAR(32) UNIQUE NULL,
+				`created` DATETIME NOT NULL,
+				PRIMARY KEY (`id`),
+				UNIQUE KEY `id_UNIQUE` (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
 
-		// ensure we have a single record in the table:
-		if ($this->db->tableExists('campaign_hub'))
+		// Ensure a hub secret record is in the table:
+		if ($this->db->tableExists($tableName))
 		{
-			$query = "SELECT count(*) FROM `campaign_hub`;";
+			$query = "SELECT count(*) FROM $tableName WHERE `scope`='hub' and `key`='secret';";
 			$this->db->setQuery($query);
 			$count = $this->db->loadResult();
 
 			if ($count == 0)
 			{
-				$query = "INSERT INTO `campaign_hub` (`secret`) VALUES ('A3J8vNM4c38a56ROEdkeJVOI4hld10kD');";
+				$this->log("No Hub Secret record found, inserting...");
+
+				// Create 32-character secret and insert in record:
+				$secretLength = 32;
+				$newSecret = \Hubzero\User\Password::genRandomPassword($secretLength);
+
+				// Timestamp should be saved as UTC:
+				$createDateUtc = Date::of('now')->toSql();
+
+				$query = "INSERT INTO $tableName
+					(`scope`, `key`, `value`, `created`) VALUES
+					('hub', 'secret', '$newSecret', '$createDateUtc');";
 				$this->db->setQuery($query);
 				$this->db->query();
+			}
+			elseif ($count > 0)
+			{
+				// Table should contain only a single hub secret record.
+				$this->log("Warning: more than one Hub Secret found");
 			}
 		}
 	}
@@ -52,9 +81,11 @@ class Migration20230920000000ComConfig extends Base
 	 **/
 	public function down()
 	{
-		if ($this->db->tableExists('campaign_hub'))
+		$tableName = self::$tableName;
+
+		if ($this->db->tableExists($tableName))
 		{
-			$query = "DROP TABLE IF EXISTS `campaign_hub`;";
+			$query = "DROP TABLE IF EXISTS $tableName;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
