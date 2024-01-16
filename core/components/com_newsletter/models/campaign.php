@@ -84,7 +84,7 @@ class Campaign extends Relational
 	 */
 	public function automaticModifiedBy($data)
 	{
-		return User::get('id'); 
+		return User::get('id');
 	}
 
 	/**
@@ -110,7 +110,7 @@ class Campaign extends Relational
 	}
 
 	/**
-	 * Generates new secret value 
+	 * Generates new secret value
 	 *
 	 * @param   array   $data  the data being saved
 	 * @return  string

@@ -123,7 +123,7 @@ class Campaigns extends AdminController
 			->set('campaign', $row)
 			->set('config', $this->config)
 			->setLayout('edit')
-			->display();		
+			->display();
 	}
 
 	/**
@@ -159,7 +159,7 @@ class Campaigns extends AdminController
 		}
 		else
 		{
-			// If display date changed in the form, save new date: 
+			// If display date changed in the form, save new date:
 			if ($fields['expire_date_display'] != $fields['expire_date_local'])
 			{
 				// get timezone identifier from user setting
