@@ -319,12 +319,10 @@ class Offering extends Base
 	}
 
 	/**
-	 * Get a list of units for an offering
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Get a list of sections for an offering
 	 *
-	 * @param      mixed $idx Index value
+	 * @param      array   $filters Filters to build query from
+	 * @param      boolean $clear   Force a new dataset?
 	 * @return     array
 	 */
 	public function sections($filters=array(), $clear=false)
@@ -404,14 +402,13 @@ class Offering extends Base
 
 	/**
 	 * Get a list of units for an offering
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param      array   $filters Filters to build query from
+	 * @param      boolean $clear   Force a new dataset?
+	 * @param      boolean $order   order by unit ordering instead of key (id)
+	 * @return     Iterator
 	 */
-	public function units($filters=array(), $clear=false)
+	public function units($filters=array(), $clear=false, $order=false)
 	{
 		if (!isset($filters['offering_id']))
 		{
@@ -441,7 +438,20 @@ class Offering extends Base
 					{
 						$result->section_id = (int) $this->section()->get('id');
 					}
-					$results[$key] = new Unit($result);
+
+					if ($order)
+					{
+						$unit_order = $result->ordering;
+						$results[$unit_order] = new Unit($result);						
+					}
+					else
+					{
+						$results[$key] = new Unit($result);
+					}
+				}
+				if ($order)
+				{
+					ksort($results, 1);
 				}
 			}
 			else

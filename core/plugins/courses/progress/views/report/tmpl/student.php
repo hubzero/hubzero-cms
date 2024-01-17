@@ -247,7 +247,7 @@ else
 }
 
 // Get the number of units in the course and figure out which is the current one
-$units     = $this->course->offering()->units();
+$units     = $this->course->offering()->units(array(),true);
 $num_units = $units->total();
 $index     = 1;
 $current_i = 0;
@@ -435,7 +435,7 @@ $progress_timeline .= '</div>';
 	</p>
 
 	<div class="units">
-	<?php foreach ($this->course->offering()->units() as $unit) : ?>
+	<?php foreach ($this->course->offering()->units(array(),true) as $unit) : ?>
 
 		<div class="unit-entry">
 			<div class="unit-overview">
