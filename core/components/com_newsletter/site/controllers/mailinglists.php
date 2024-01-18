@@ -99,6 +99,9 @@ class Mailinglists extends SiteController
 	 */
 	public function subscribeTask()
 	{
+		//check to make sure we have a valid token
+		Request::checkToken();
+
 		//get email
 		if (User::isGuest())
 		{
@@ -272,6 +275,9 @@ class Mailinglists extends SiteController
 	 */
 	public function doMultiSubscribeTask()
 	{
+		//check to make sure we have a valid token
+		Request::checkToken();
+
 		//get request vars
 		$lists = Request::getArray('lists', array(), 'post');
 
@@ -427,7 +433,7 @@ class Mailinglists extends SiteController
 					'description' => Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_DEFAULTLIST')
 				));
 		}
-		else
+	else
 		{
 			//load mailing list
 			$mailinglist = Mailinglist::oneOrFail($mailing->lid);
@@ -506,6 +512,9 @@ class Mailinglists extends SiteController
 	 */
 	public function doUnsubscribeTask()
 	{
+		//check to make sure we have a valid token
+		Request::checkToken();
+
 		//get request vars
 		$email      = urldecode(Request::getString('e', ''));
 		$token      = Request::getString('t', '');
