@@ -26,16 +26,16 @@ endif;
 
 <!-- start component output -->
 <header id="content-header">
-	<h2><?php echo Lang::txt('Search'); ?></h2>
+	<h2><?php echo Lang::txt('COM_SEARCH_SEARCH'); ?></h2>
 </header><!-- / #content-header -->
 
 <form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get" class="container data-entry">
 	<section class="options section">
-		<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('Search'); ?>" />
+		<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_SEARCH_SEARCH'); ?>" />
 		<fieldset class="entry-search">
-			<legend><?php echo Lang::txt('Search site'); ?></legend>
-			<label for="terms"><?php echo Lang::txt('Search terms'); ?></label>
-			<input type="text" name="terms" id="terms" value="<?php echo htmlspecialchars($terms); ?>" placeholder="<?php echo Lang::txt('Enter keyword or phrase'); ?>" />
+			<legend><?php echo Lang::txt('COM_SEARCH_SITE'); ?></legend>
+			<label for="terms"><?php echo Lang::txt('COM_SEARCH_TERMS'); ?></label>
+			<input type="text" name="terms" id="terms" value="<?php echo htmlspecialchars($terms); ?>" placeholder="<?php echo Lang::txt('COM_SEARCH_ENTER_PROMPT'); ?>" />
 			<input type="hidden" name="section" value="<?php echo $this->escape($this->section); ?>" />
 			<input type="hidden" name="type" value="<?php echo !empty($this->type) ? $this->type : ''; ?>" />
 		</fieldset>
@@ -91,7 +91,7 @@ endif;
 						<?php if ($this->type == ''): ?>
 							<ul>
 								<li>
-									<a <?php echo ($this->type == '') ? 'class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms); ?>"><?php echo Lang::txt('All Categories'); ?> <span class="item-count">
+									<a <?php echo ($this->type == '') ? 'class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms); ?>"><?php echo Lang::txt('COM_SEARCH_FILTER_ALL'); ?> <span class="item-count">
 										<?php echo $this->total; ?></span>
 									</a>
 								</li>
@@ -102,7 +102,7 @@ endif;
 						<?php else: ?>
 							<ul>
 								<li>
-									<a <?php echo ($this->type == '') ? 'class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms); ?>"><?php echo Lang::txt('&lt; Search All Components'); ?></a>
+									<a <?php echo ($this->type == '') ? 'class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms); ?>"><?php echo Lang::txt('COM_SEARCH_ALL_COMPONENTS'); ?></a>
 								</li>
 								<?php echo $this->searchComponent->formatWithCounts($this->facetCounts, $this->type, $this->terms, $this->childTermsString, $this->filters);?>
 							</ul>

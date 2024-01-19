@@ -35,9 +35,9 @@ $this->css('introduction.css', 'system')
 		<div class="col span8">
 			<div class="container data-entry">
 				<form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get">
-					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('Search'); ?>" />
+					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('TPL_KIMERA_SEARCH'); ?>" />
 					<fieldset class="entry-search">
-						<input type="text" name="terms" value="" placeholder="<?php echo Lang::txt('What are you interested in?'); ?>" />
+						<input type="text" name="terms" value="" placeholder="<?php echo Lang::txt('TPL_KIMERA_SEARCH_PROMPT'); ?>" />
 						<input type="hidden" name="type" value="<?php echo $searchComponentId; ?>" /> 
 					</fieldset>
 				</form>
