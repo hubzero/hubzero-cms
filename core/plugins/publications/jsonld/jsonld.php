@@ -41,7 +41,8 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 		$data['@context'] = 'http://schema.org';
 		$data['@type'] = 'Dataset';
 		$data['name'] = $publication->title;
-		$data['description'] = strip_tags($publication->abstract);
+		$abstract = strip_tags($publication->abstract);
+		$data['description'] = $abstract;
 		
 		$data['url'] = rtrim(Request::root(), '/') . '/' . ltrim(Route::url($publication->link()), '/');
 		
@@ -103,6 +104,8 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 
 			$givenName = $contributor->givenName;
 			$familyName = $contributor->surname;
+			$orcid = $contributor->orcid;
+			$orgid = $contributor->orgid;
 
 			if (!$givenName)
 			{
@@ -135,6 +138,11 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 				'givenName'  => $givenName,
 				'familyName' => $familyName
 			);
+			
+			if ($orcid)
+			{
+				$author['@id'] = "https://orcid.org/" . $orcid;
+			}
 
 			if ($contributor->organization)
 			{
@@ -142,6 +150,11 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 					'@type' => 'Organization',
 					'name'  => $contributor->organization
 				);
+				
+				if ($orgid)
+				{
+					$org['@id'] = $orgid;
+				}
 
 				$author['affiliation'] = $org;
 			}
@@ -171,6 +184,87 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 		}
 		
 		$data['version'] = $publication->version->get('version_number');
+		
+		// Project grant info
+		$project = $publication->project();
+		$funding = ['@type' => 'Grant'];
+		$funder = ['@type' => 'Organization'];
+		
+		if ($project->params->get('award_number'))
+		{
+			$funding['identifier'] = $project->params->get('award_number');
+		}
+		if ($project->params->get('grant_agency'))
+		{
+			$funder['name'] = $project->params->get('grant_agency');
+		}
+		if ($project->params->get('grant_agency_id'))
+		{
+			$funder['identifier'] = $project->params->get('grant_agency_id');
+		}
+		
+		if ($project->params->get('grant_agency'))
+		{
+			$funding['funder'] = $funder;
+			$data['funding'] = $funding;
+		}
+		
+		// Size and format
+		$type = $publication->masterType();
+		$attachments = $publication->attachments();
+		
+		if ($type->id == 1)
+		{
+			$quantity = $publication->attachmentsCount();
+			$mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes($type->id, $publication->version->publication_id, $publication->version->id, $publication->version->secret, $attachments);
+		}
+		else if($type->id == 5)
+		{
+			$quantity = count($attachments[1]);
+		}
+		else if ($type->id == 7)
+		{
+			$quantity = $publication->attachmentsCount();
+			$quantity--;
+			
+			$files = \Components\Publications\Helpers\Html::getdatabaseFiles($publication->version->publication_id, $publication->version->id);
+			
+			if ($files != false && !empty($files))
+			{
+				$quantity += count($files);
+			}
+			
+			$mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes($type->id, $publication->version->publication_id, $publication->version->id, $publication->version->secret, $attachments);
+			
+			if ($files != false && !empty($files))
+			{
+				foreach ($files as $file)
+				{
+					$mimeType = mime_content_type($file);
+					if ($mimeType && !in_array($mimeType, $mimeTypes))
+					{
+						$mimeTypes[] = $mimeType;
+					}
+				}
+			}
+		}
+		
+		if (!empty($quantity))
+		{
+			if ($type->id == 1 || $type->id == 7)
+			{
+				$data['size'] = $quantity == 1 ? $quantity . " file" : $quantity . " files";
+			}
+			else if ($type->id == 5)
+			{
+				$data['size'] = $quantity == 1 ? $quantity . " publication" : $quantity . " publications";
+			}
+		}
+		
+		if (!empty($mimeTypes))
+		{
+			$data['encodingFormat'] = $mimeTypes;
+		}
 		
 		Document::addScriptDeclaration(json_encode($data, JSON_UNESCAPED_SLASHES), 'application/ld+json');
 

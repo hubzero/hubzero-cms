@@ -10,7 +10,8 @@ defined('_HZEXEC_') or die();
 
 $this->css('jquery.datepicker.css', 'system')
 	 ->css('jquery.timepicker.css', 'system')
-	 ->js('jquery.timepicker', 'system');
+	 ->js('jquery.timepicker', 'system')
+	 ->js('review.js', 'projects', 'publications');
 
 $complete = $this->pub->curation('complete');
 $params   = $this->pub->curation('params');
@@ -55,6 +56,7 @@ $autoApprove = isset($this->pub->_curationModel->_manifest->params->auto_approve
 $requestReview = isset($this->pub->_curationModel->_manifest->params->request_review)
 			? $this->pub->_curationModel->_manifest->params->request_review : 0;
 $unsubmitted = $this->pub->version->get('state') == 3;
+$props = $this->pub->curation('blocks', $this->step, 'props');
 ?>
 
 <!-- Load content selection browser //-->
@@ -167,10 +169,20 @@ $unsubmitted = $this->pub->version->get('state') == 3;
 							$name = $author->name ? $author->name : $author->p_name;
 							$name = trim($name) ? $name : $author->invited_name;
 							$name = trim($name) ? $name : $author->invited_email;
+							$email = trim($author->p_email) ? $author->p_email : (trim($author->invited_email) ? trim($author->invited_email) : null);
 							?>
 							<li>
 								<span class="item-order"><input type="checkbox" name="contact[]" value="<?php echo $this->escape($author->id); ?>" <?php if ($author->repository_contact) { echo ' checked="checked"'; } ?>/></span>
 								<span class="item-title"><?php echo $name; ?> <span class="item-subtext"><?php echo $org ? ' - ' . $org : ''; ?></span></span>
+								<?php if(!empty($email)) { ?>
+								<span id=<?php echo $this->escape($author->id) . "_email" ?> class="item-title"><?php echo $email; ?></span>
+								<?php }?>
+								<?php if(empty($email)) { ?>
+								<span hidden id=<?php echo $this->escape($author->id) . "_msg" ?> class="item-msg"><?php echo "The contact is required to have a valid email address. Please " ?>
+								<a href="<?php echo Route::url( $this->pub->link('editversionid') . '&active=publications&action=editauthor&aid=' . $author->id . '&p=' . $props); ?>" class="showinbox item-edit"><?php echo "edit"; ?></a>
+								<?php echo "the author."; ?>
+								</span>
+								<?php }?>
 							</li>
 						<?php } ?>
 						</ul>

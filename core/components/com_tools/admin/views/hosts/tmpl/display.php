@@ -27,6 +27,7 @@ $this->css();
 					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
 				</th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_NAME', 'hostname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_SERVICE_HOST', 'service_host', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_PROVISIONS', 'provisions', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_TOOLS_COL_STATUS', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TOOLS_COL_USES', 'uses', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -73,6 +74,9 @@ if ($this->rows)
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&hostname=' . $row->hostname); ?>">
 						<span><?php echo $this->escape($row->hostname); ?></span>
 					</a>
+				</td>
+				<td>
+					<?php echo $row->service_host; ?></label>
 				</td>
 				<td>
 				<?php

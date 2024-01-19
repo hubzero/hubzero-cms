@@ -27,36 +27,6 @@
 					<option value="1">JYes</option>
 				</field>
 			</fieldset>
-			<fieldset name="profile">
-				<field name="profile_age_range" type="radio" label="PLG_AUTHENTICATION_FACEBOOK_PARAM_AGE_RANGE_LABEL" default="0" description="PLG_AUTHENTICATION_FACEBOOK_PARAM_PROFILE_DESC">
-					<option value="0">JNo</option>
-					<option value="1">JYes</option>
-				</field>
-				<field name="profile_gender" type="radio" label="PLG_AUTHENTICATION_FACEBOOK_PARAM_GENDER_LABEL" default="0" description="PLG_AUTHENTICATION_FACEBOOK_PARAM_PROFILE_DESC">
-					<option value="0">JNo</option>
-					<option value="1">JYes</option>
-				</field>
-				<field name="profile_locale" type="radio" label="PLG_AUTHENTICATION_FACEBOOK_PARAM_LOCALE_LABEL" default="0" description="PLG_AUTHENTICATION_FACEBOOK_PARAM_PROFILE_DESC">
-					<option value="0">JNo</option>
-					<option value="1">JYes</option>
-				</field>
-				<field name="profile_link" type="radio" label="PLG_AUTHENTICATION_FACEBOOK_PARAM_LINK_LABEL" default="0" description="PLG_AUTHENTICATION_FACEBOOK_PARAM_PROFILE_DESC">
-					<option value="0">JNo</option>
-					<option value="1">JYes</option>
-				</field>
-				<field name="profile_timezone" type="radio" label="PLG_AUTHENTICATION_FACEBOOK_PARAM_TIMEZONE_LABEL" default="0" description="PLG_AUTHENTICATION_FACEBOOK_PARAM_PROFILE_DESC">
-					<option value="0">JNo</option>
-					<option value="1">JYes</option>
-				</field>
-				<field name="profile_verified" type="radio" label="PLG_AUTHENTICATION_FACEBOOK_PARAM_VERIFIED_LABEL" default="0" description="PLG_AUTHENTICATION_FACEBOOK_PARAM_PROFILE_DESC">
-					<option value="0">JNo</option>
-					<option value="1">JYes</option>
-				</field>
-				<field name="profile_updated_time" type="radio" label="PLG_AUTHENTICATION_FACEBOOK_PARAM_UPDATED_TIME_LABEL" default="0" description="PLG_AUTHENTICATION_FACEBOOK_PARAM_PROFILE_DESC">
-					<option value="0">JNo</option>
-					<option value="1">JYes</option>
-				</field>
-			</fieldset>
 		</fields>
 	</config>
 </extension>

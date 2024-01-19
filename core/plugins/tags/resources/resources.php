@@ -6,6 +6,8 @@
  */
 
 // No direct access
+use Components\Resources\Models\Entry;
+
 defined('_HZEXEC_') or die();
 
 /**
@@ -278,164 +280,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		$row->published = $row->state;
-		$row->introtext = $row->itext;
-		$row->fulltxt   = $row->ftext;
-		$row->access    = $row->data2;
-		/*include_once Component::path('com_resources') . DS . 'helpers' . DS . 'helper.php';
-
-		if ($row->alias)
-		{
-			$row->href = Route::url('index.php?option=com_resources&alias=' . $row->alias);
-		}
-		else
-		{
-			$row->href = Route::url('index.php?option=com_resources&id=' . $row->id);
-		}
-
-		$database = App::get('db');
-
-		// Instantiate a helper object
-		$helper = new \Components\Resources\Helpers\Helper($row->id, $database);
-		$helper->getContributors();
-
-		// Get the component params and merge with resource params
-		$config = Component::params('com_resources');
-
-		$rparams = new \Hubzero\Config\Registry($row->params);
-
-		$row->rating   = $row->rcount;
-		$row->category = $row->data1;
-		$row->area     = $row->data2;
-		$row->ranking  = $row->data3;
-
-		// Set the display date
-		switch ($config->get('show_date', 3))
-		{
-			case 0:
-				$thedate = '';
-				break;
-			case 1:
-				$thedate = Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-				break;
-			case 2:
-				$thedate = Date::of($row->modified)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-				break;
-			case 3:
-				$thedate = Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-				break;
-		}
-
-		if (strstr($row->href, 'index.php'))
-		{
-			$row->href = Route::url($row->href);
-		}
-
-		// Start building the HTML
-		$html  = "\t".'<li class="resource">' . "\n";
-		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
-		if ($rparams->get('show_ranking', $config->get('show_ranking')))
-		{
-			include_once Component::path('com_resources') . DS . 'helpers' . DS . 'usage.php';
-
-			$helper->getCitationsCount();
-			$helper->getLastCitationDate();
-
-			if ($row->category == 'Tools')
-			{
-				$stats = new \Components\Resources\Helpers\Usage\Tools($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
-			}
-			else
-			{
-				$stats = new \Components\Resources\Helpers\Usage\Andmore($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
-			}
-			$statshtml = $stats->display();
-
-			$row->ranking = round($row->ranking, 1);
-
-			$html .= "\t\t" . '<div class="metadata">' . "\n";
-			$r = (10*$row->ranking);
-			if (intval($r) < 10)
-			{
-				$r = '0' . $r;
-			}
-			$html .= "\t\t\t" . '<dl class="rankinfo">' . "\n";
-			$html .= "\t\t\t\t" . '<dt class="ranking"><span class="rank-' . $r . '">' . Lang::txt('PLG_TAGS_RESOURCES_THIS_HAS') . '</span> ' . number_format($row->ranking, 1) . ' ' . Lang::txt('PLG_TAGS_RESOURCES_RANKING') . '</dt>' . "\n";
-			$html .= "\t\t\t\t" . '<dd>' . "\n";
-			$html .= "\t\t\t\t\t" . '<p>' . Lang::txt('PLG_TAGS_RESOURCES_RANKING_EXPLANATION') . '</p>' . "\n";
-			$html .= "\t\t\t\t\t" . '<div>' . "\n";
-			$html .= $statshtml;
-			$html .= "\t\t\t\t\t" . '</div>' . "\n";
-			$html .= "\t\t\t\t" . '</dd>' . "\n";
-			$html .= "\t\t\t" . '</dl>' . "\n";
-			$html .= "\t\t" . '</div>' . "\n";
-		}
-		elseif ($rparams->get('show_rating', $config->get('show_rating')))
-		{
-			switch ($row->rating)
-			{
-				case 0.5:
-					$class = ' half-stars';
-					break;
-				case 1:
-					$class = ' one-stars';
-					break;
-				case 1.5:
-					$class = ' onehalf-stars';
-					break;
-				case 2:
-					$class = ' two-stars';
-					break;
-				case 2.5:
-					$class = ' twohalf-stars';
-					break;
-				case 3:
-					$class = ' three-stars';
-					break;
-				case 3.5:
-					$class = ' threehalf-stars';
-					break;
-				case 4:
-					$class = ' four-stars';
-					break;
-				case 4.5:
-					$class = ' fourhalf-stars';
-					break;
-				case 5:
-					$class = ' five-stars';
-					break;
-				case 0:
-				default:
-					$class = ' no-stars';
-					break;
-			}
-
-			$html .= "\t\t" . '<div class="metadata">' . "\n";
-			$html .= "\t\t\t" . '<p class="rating"><span class="avgrating' . $class . '"><span>' . Lang::txt('PLG_TAGS_RESOURCES_OUT_OF_5_STARS', $row->rating) . '</span>&nbsp;</span></p>' . "\n";
-			$html .= "\t\t" . '</div>'."\n";
-		}
-		$html .= "\t\t" . '<p class="details">' . $thedate . ' <span>|</span> ' . $row->area;
-		if ($helper->contributors)
-		{
-			$html .= ' <span>|</span> ' . Lang::txt('PLG_TAGS_RESOURCES_CONTRIBUTORS') . ' ' . stripslashes($helper->contributors);
-		}
-		$html .= '</p>' . "\n";
-		if ($row->itext)
-		{
-			$html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(strip_tags(stripslashes($row->itext)), 200) . '</p>' . "\n";
-		}
-		else if ($row->ftext)
-		{
-			$html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(strip_tags(stripslashes($row->ftext)), 200) . '</p>' . "\n";
-		}
-		$html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href, '/') . '</p>' . "\n";
-		$html .= "\t" . '</li>'."\n";
-
-		// Return output
-		return $html;*/
-
-		$row = Components\Resources\Models\Entry::blank()->set($row);
-		$row->set('typetitle', $row->type->get('type'));
+		$row = Entry::all()->whereEquals('id', $row->id)->row();
 
 		// Get the component params and merge with resource params
 		$config = Component::params('com_resources');
@@ -445,6 +290,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 			'name'      => 'browse',
 			'layout'    => 'item'
 		));
+
 		$view->set('line', $row)
 			->set('option', 'com_resources')
 			->set('config', $config)

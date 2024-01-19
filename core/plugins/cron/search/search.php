@@ -39,7 +39,7 @@ class plgCronSearch extends \Hubzero\Plugin\Plugin
 			),
 			array(
 				'name'	 => 'runFullIndex',
-				'label'  => Lang::txt('Run Full Index'),
+				'label'  => Lang::txt('PLG_CRON_SEARCH_RUN_FULL_INDEX'),
 				'params' => ''
 			)
 		);
@@ -47,26 +47,80 @@ class plgCronSearch extends \Hubzero\Plugin\Plugin
 		return $obj;
 	}
 
+	/**
+	 * Fully reindex all currently indexed components
+	 *
+	 * @museDescription  Reindex all indexed components
+	 *
+	 * Modeled on the searchable controller: com_search/admin/controllers/searchable.php:activateIndexTask()
+	 *
+	 * Database table is: jos_solr_search_searchcomponents
+	 *
+	 * Clearly, the admin search view uses solarium, not our db table, for its counts:
+	 * The 'indexed' (datetime) and 'indexed_records' (record count) contents are untrue.
+	 * Do not use the 'custom' db field for arbitrary contents.
+	 *
+	 * Hubzero com_cron expects TRUE returned from this function.
+	 *
+	 * @return  bool
+	 */
 	public function runFullIndex()
 	{
+		// Start indexing at first record:
 		$offset = 0;
+
+		// For all currently indexed Searchable components:
 		$components = SearchComponent::all()
-			->where('indexed', 'IS', null)
-			->where('state', 'IS', null)
-			->orWhereEquals('state', 0)
+			->whereEquals('state', SearchComponent::STATE_INDEXED)
 			->rows();
-		$component = $components->first();
-		$recordsIndexed = $component->indexSearchResults($offset);
-		if (!$recordsIndexed)
+
+		foreach ($components as $component)
 		{
-			$component->set('state', 1);
-			$component->set('indexed', Date::of()->toSql());
+			$componentModel = $component->getSearchableModel();
+			if (class_exists($componentModel))
+			{
+				$recordsIndexed = $component->indexSearchResults($offset);
+			}
+			else
+			{
+				$recordsIndexed = null;
+			}
+
+			// If the indexing process is complete:
+			if (!$recordsIndexed)
+			{
+				// update the solr search table's state field for the component,
+				$component->set('state', SearchComponent::STATE_INDEXED);
+
+				// JMS has added these to hopefully update the db record:
+				// Note: this is unsuccessful, TODO, investigate component.
+				// Also TODO: use local time?
+				$component->set('indexed', Date::of()->toSql());
+				$component->set('indexed_records', $component->getSearchCount());
+			}
+			// If the indexing process threw an error:
+			elseif (isset($recordsIndexed['error']))
+			{
+				// TODO: log me
+				$error = $recordsIndexed['error'];
+			}
+			// If the indexing process returns null, or an in-process count,
+			// or it's still running:
+			else
+			{
+				// as in the searchable controller:
+				if (isset($recordsIndexed['offset']))
+				{
+					$component->set('indexed_records', $recordsIndexed['offset']);
+				}
+
+				// current state of indexing is incomplete:
+				$recordsIndexed['state'] = SearchComponent::STATE_NOTINDEXED;
+			}
+			$component->save();
 		}
-		else
-		{
-			$component->set('indexed_records', $recordsIndexed);
-		}
-		$component->save();
+		// cron expects 'true' retval.
+		return true;
 	}
 
 	/**

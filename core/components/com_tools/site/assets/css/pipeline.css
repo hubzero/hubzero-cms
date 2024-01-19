@@ -696,18 +696,24 @@
 		text-align: left;
 		padding: 0 0 1em 5.5em;
 	}
-	/*.required {
-		float: right;
-		color: red;
-		font-size: 85%;
-		text-transform: uppercase;
-	}*/
+
+	.label-with-choice-icon {
+		display: flex;
+		align-items: center;
+		gap: 20px;
+		padding-bottom: 10px;
+	}
+
+	.label-with-choice-icon label {
+		flex-grow: 1;
+	}
+
 	#choice-icon {
+		flex-basis: 24px;
 		width: 24px;
 		height: 24px;
 		display: inline-block;
-		margin-left: 180px;
-		position: absolute;
+		padding: 0;
 	}
 	#choice-icon.opensource {
 		background: url("/core/components/com_tools/site/assets/img/happyface_sm.png") 0 0 no-repeat;
@@ -804,12 +810,7 @@
 	.hide { 
 		display: none;
 	}
-	.shifted { 
-		position: absolute;
-		left: 200px;
-		margin: 0 0 2em 0;
-		font-size: 1em;
-	}
+
 	#lic { 
 		padding: 1.5em 0 0.5em 0;
 		margin: 0 0 2em 0;

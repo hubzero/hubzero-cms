@@ -114,7 +114,7 @@ class Author extends Table
 		{
 			return false;
 		}
-		$uids = "'" . implode("','", $uids) . "'";
+		$uids = "'" . implode( "','", $uids) . "'";
 		$query  = "SELECT id FROM $this->_tbl WHERE publication_version_id=" . $this->_db->quote($vid) . " AND id IN (" . $uids . ")";
 		$query .= " AND (role != 'submitter')";
 		$query .= " ORDER BY ordering";
@@ -311,6 +311,13 @@ class Author extends Table
 					$res->middleName = $user->get('middleName');
 					$res->surname = $user->get('surname');
 					$res->orcid = $user->get('orcid');
+					$res->p_email = $user->get('email');
+				}
+				
+				if ($res->user_id)
+				{
+					$res->organization = $user->get('organization');
+					$res->orgid = $user->get('orgid');
 				}
 			}
 		}

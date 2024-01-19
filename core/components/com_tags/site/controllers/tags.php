@@ -340,6 +340,8 @@ class Tags extends SiteController
 
 		// Output search results in JSON format
 		$json = array();
+		$exactMatches = array();
+
 		if (count($rows) > 0)
 		{
 			foreach ($rows as $row)
@@ -352,8 +354,13 @@ class Tags extends SiteController
 					'name' => $name
 				);
 
-				// Push exact matches to the front
+				// Find the exact match
 				if ($row->get('tag') == $filters['search'])
+				{
+					$exactMatches[] = $item;
+				}
+				// Prioritize beginning of the string
+				elseif (strpos($row->get('tag'), $filters['search']) === 0)
 				{
 					array_unshift($json, $item);
 				}
@@ -363,6 +370,17 @@ class Tags extends SiteController
 				}
 			}
 		}
+
+		// Push exact matches to the front
+		if (sizeof($exactMatches))
+		{
+			foreach ($exactMatches as $exactMatch)
+			{
+				array_unshift($json, $exactMatch);
+			}
+		}
+
+		$json = array_slice($json, 0, 20);
 
 		echo json_encode($json);
 	}

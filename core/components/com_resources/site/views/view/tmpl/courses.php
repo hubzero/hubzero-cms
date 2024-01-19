@@ -297,6 +297,7 @@ if ($mode != 'preview')
 								$videoi       = '';
 								$breeze       = '';
 								$hubpresenter = '';
+								$youtube      = '';
 								$pdf          = '';
 								$video        = '';
 								$exercises    = '';
@@ -308,6 +309,7 @@ if ($mode != 'preview')
 									$grandchild->set('path', \Components\Resources\Helpers\Html::processPath($this->option, $grandchild, $child->id));
 
 									$alias = $grandchild->type->alias;
+									$logical_alias = Components\Resources\Models\Type::oneOrFail($grandchild->get('logical_type'))->alias;
 
 									switch ($alias)
 									{
@@ -321,17 +323,24 @@ if ($mode != 'preview')
 										case 'hubpresenter':
 											$hubpresenter .= (!$hubpresenter) ? '<a title="View Presentation - HTML5 Version" class="hubpresenter html5" href="'.$grandchild->path.'" title="'.$this->escape(stripslashes($grandchild->title)).'">'.Lang::txt('View HTML').'</a>' : '';
 											break;
+										case 'elink':
+										case 'youtube':
+											if ($logical_alias == 'youtube') // youtube
+											{
+												$youtube .= (!$youtube) ? '<a title="View Presentation - YouTube Version" class="youtube" href="'.$grandchild->path.'" title="'.$this->escape(stripslashes($grandchild->title)).'">'.Lang::txt('View on YouTube').'</a>' : '';
+												break;	
+											}
 										case 'pdf':
 										default:
-											if ($grandchild->get('logical_type') == 14)
+											if ($logical_alias == 'pdf')
 											{
 												$ext = Filesystem::extension($grandchild->path);
 												$ext = (strpos($ext, '?') ? strstr($ext, '?', true) : $ext);
-												$pdf .= '<a href="'.$grandchild->path.'">'.Lang::txt('Notes').' (' . $ext . ')</a>'."\n";
+												$pdf .= '<a href="'.$grandchild->path.'">'.Lang::txt('Notes').' (' . $ext . ')</a><br />'."\n";
 											}
-											elseif ($grandchild->get('logical_type') == 51)
+											elseif ($logical_alias == 'homeworkassignment')
 											{
-												$exercises .= '<a href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a>'."\n";
+												$exercises .= '<a href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a><br />'."\n";
 											}
 											else
 											{
@@ -362,6 +371,10 @@ if ($mode != 'preview')
 								if ($hubpresenter)
 								{
 									$html .= "\t\t\t".'<td>'.$hubpresenter.'<br>'.$breeze.'</td>'."\n";
+								}
+								else if ($youtube)
+								{
+									$html .= "\t\t\t".'<td>'.$youtube.'</td>'."\n";
 								}
 								else
 								{

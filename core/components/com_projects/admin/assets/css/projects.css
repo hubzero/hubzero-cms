@@ -11,85 +11,99 @@
 	-- -- -- -- -- -- --
 
 */
-	.project-tags .tags {
-		list-style: none;
-		margin-top: 1em;
-		margin-bottom: 0;
-		font-size: 85%;
-	}
-	.project-tags .tags li {
-		display: inline;
-		margin: 0 9px 0 0;
-		background: #EFEFEF;
-	}
-	.project-tags .tags li a {
-		font-size: bold;
-	}
-	.project-tags .tags li:before {
-		font-family: 'Fontcons';
-		content: "\f02c";
-		font-weight: normal;
-		padding-right: 0.2em;
-	}
-	.maxitd {
-		width: 50%;
-	}
-	.privacy.private {
-		color: red;
-	}
-	.privacy.public {
-		color: green;
-	}
-	.toolbar-box .icon-32-accessprivate:before {
-		content: "\f070";
-	}
-	.toolbar-box .icon-32-accesspublic:before {
-		content: "\f06e";
-	}
+.project-tags .tags {
+	list-style: none;
+	margin-top: 1em;
+	margin-bottom: 0;
+	font-size: 85%;
+}
+.project-tags .tags li {
+	display: inline;
+	margin: 0 9px 0 0;
+	background: #EFEFEF;
+}
+.project-tags .tags li a {
+	font-size: bold;
+}
+.project-tags .tags li:before {
+	font-family: 'Fontcons';
+	content: "\f02c";
+	font-weight: normal;
+	padding-right: 0.2em;
+}
+.maxitd {
+	width: 50%;
+}
+.privacy.private {
+	color: red;
+}
+.privacy.public {
+	color: green;
+}
+.toolbar-box .icon-32-accessprivate:before {
+	content: "\f070";
+}
+.toolbar-box .icon-32-accesspublic:before {
+	content: "\f06e";
+}
 
-	.inactive {
-		color: #ccc;
-		font-style: italic;
-	}
-	.archived {
-		color: #ccc;
-	}
-	.setup {
-		color: orange;
-	}
+.inactive {
+	color: #ccc;
+	font-style: italic;
+}
+.archived {
+	color: #ccc;
+}
+.setup {
+	color: orange;
+}
 
-	a.state.not-synced,
-	a.state.not-synced:link,
-	a.state.not-synced:active,
-	a.state.not-synced:visited,
-	.state.not-synced {
-		width: 2.4em;
-	}
-	.state.not-synced:before {
-		content: "\f0f1\f0f1";
-		color: #bbb;
-	}
-	.state.synced:before {
-		content: "\f021";
-		color: #bbb;
-	}
-	.state.activity:before {
-		content: "\f056";
-		color: #bbb;
-	}
-	.state.activity:hover:before,
-	.state.not-synced:hover:before,
-	.state.synced:hover:before {
-		color: #333;
-	}
+a.state.not-synced,
+a.state.not-synced:link,
+a.state.not-synced:active,
+a.state.not-synced:visited,
+.state.not-synced {
+	width: 2.4em;
+}
+.state.not-synced:before {
+	content: "\f0f1\f0f1";
+	color: #bbb;
+}
+.state.synced:before {
+	content: "\f021";
+	color: #bbb;
+}
+.state.activity:before {
+	content: "\f056";
+	color: #bbb;
+}
+.state.activity:hover:before,
+.state.not-synced:hover:before,
+.state.synced:hover:before {
+	color: #333;
+}
 
-	.notice {
-		background-color: #fff0db;
-		color: #ffa44c;
-		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-ms-border-radius: 0.25em;
-		-o-border-radius: 0.25em;
-		border-radius: 0.25em;
-		padding: 1em;
-	}
+.notice {
+	background-color: #fff0db;
+	color: #ffa44c;
+	-webkit-border-radius: 0.25em;
+	-moz-border-radius: 0.25em;
+	-ms-border-radius: 0.25em;
+	-o-border-radius: 0.25em;
+	border-radius: 0.25em;
+	padding: 1em;
+}
+
+/*Grant agency name normalization*/
+ul[id^='ui-id-'] {
+list-style-type: none;
+background: white;	
+padding-left: 0;
+overflow-y: scroll;
+overflow-x: scroll;
+max-height: 200px;
+}
+
+ul[id^='ui-id-'] li {
+padding-left: 8px;
+}

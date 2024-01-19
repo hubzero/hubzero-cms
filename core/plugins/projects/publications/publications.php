@@ -2088,6 +2088,16 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					continue;
 				}
 
+				// Prompt error message if an invited author is chosen as contact but the email address is empty
+				$owner = $author->getAuthorByOwnerId($pub->version->id, $author->project_owner_id);
+				
+				if (empty($owner->user_id) && empty($owner->invited_email))
+				{
+					Notify::error(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_EMAIL_ADDRESS_MISSING'), 'projects');
+					App::redirect(Route::url($pub->link('editversion') . '&action=' . $this->_task));
+					return;
+				}
+
 				$author->repository_contact = 1;
 
 				if (!$author->store())

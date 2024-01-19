@@ -54,28 +54,40 @@ class plgTagsGroups extends \Hubzero\Plugin\Plugin
 		}
 		$ids = implode(',', $ids);
 
-		$from = '';
+		// The conditions allows tag search results to show groups in public view, not logged in.
+		if (User::isGuest()) {
+			$from = '';
+			$discoverability = " AND a.discoverability=0 ";
+		} else if (User::authorise('core.view', 'com_groups')) {
+			// user in role that can view all groups (admin)
+			$from = '';
+			$discoverability = "";
+		} else {
+			// @TODO: This produces a result for each member of the group which could grow quite large.
+			// The query reduces this with a GROUP BY a.gidNumber but it might be beneficial
+			// to generate a list of gidNumbers the user is a member of and include it in the
+			// query something like: (a.discoverability=0 OR a.gidNumber IN ($gidNumbers))
 
-		if (!User::authorise('core.view', 'com_groups'))
-		{
-			$from = " JOIN #__xgroups_members AS m ON m.gidNumber=a.gidNumber AND m.uidNumber=" . (int)User::get('id', 0);
+			$from = " JOIN #__xgroups_members AS m ON m.gidNumber=a.gidNumber ";
+			$discoverability = " AND (a.discoverability=0 OR m.uidNumber = " . (int) User::get('id', 0) . ") ";
 		}
 
 		// Build the query
 		$f_count = "SELECT COUNT(f.gidNumber) FROM (SELECT a.gidNumber, COUNT(DISTINCT t.tagid) AS uniques ";
 
 		$f_fields = "SELECT a.gidNumber AS id, a.description AS title, a.cn AS alias, NULL AS itext, a.public_desc AS ftext, a.type AS state, a.created,
-					a.created_by, NULL AS modified, NULL AS publish_up,
-					NULL AS publish_down, CONCAT('index.php?option=com_groups&cn=', a.cn) AS href, 'groups' AS section, COUNT(DISTINCT t.tagid) AS uniques,
-					a.params, NULL AS rcount, NULL AS data1, NULL AS data2, NULL AS data3 ";
+						a.created_by, NULL AS modified, NULL AS publish_up,
+						NULL AS publish_down, CONCAT('index.php?option=com_groups&cn=', a.cn) AS href, 'groups' AS section, COUNT(DISTINCT t.tagid) AS uniques,
+						a.params, NULL AS rcount, NULL AS data1, NULL AS data2, NULL AS data3 ";
 		$f_from = " FROM #__xgroups AS a $from
-					JOIN #__tags_object AS t
-					WHERE (a.type=1 OR a.type=3) AND a.discoverability=0
-					AND a.gidNumber=t.objectid
-					AND t.tbl='groups'
-					AND t.tagid IN ($ids)";
+						JOIN #__tags_object AS t
+						WHERE (a.type=1 OR a.type=3) $discoverability
+						AND a.gidNumber=t.objectid
+						AND t.tbl='groups'
+						AND t.tagid IN ($ids)";
 		$f_from .= " GROUP BY a.gidNumber HAVING uniques=" . count($tags);
 		$order_by  = " ORDER BY ";
+
 		switch ($sort)
 		{
 			case 'title':

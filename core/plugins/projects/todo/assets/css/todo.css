@@ -458,12 +458,13 @@
 		display: block;
 		margin-top: 0;
 	}
+
+	/* Bottom of box with due date and overdue status is cut off  */
+	/* Making different adjustments to fix it being cut off */
 	.todo-due {
-		font-size: 75%;
+		font-size: 60%;
 		padding: 0 0.5em;
-		height: 15px;
 		color: #FFF;
-		display: block;
 		margin-top: 0.5em;
 		padding-bottom: 0.3em;
 		background: #666666;

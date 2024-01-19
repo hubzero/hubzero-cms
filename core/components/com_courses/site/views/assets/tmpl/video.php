@@ -754,8 +754,8 @@ $last_slide_id = 0; ?>
 		$path = DS . trim(substr(PATH_APP, strlen(PATH_ROOT)), DS) . DS . ltrim($path . DS . $this->model->get('url'), DS);
 		$ext  = strtolower(Filesystem::extension(PATH_ROOT . $path));
 
-		Document::addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
-		Document::addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
+		Document::addStyleSheet('//releases.flowplayer.org/6.0.5/skin/minimalist.css');
+		Document::addScript('//releases.flowplayer.org/6.0.5/flowplayer.min.js');
 	?>
 	<div class="flowplayer">
 		<video id="movie<?php echo rand(0, 1000); ?>" preload controls>
