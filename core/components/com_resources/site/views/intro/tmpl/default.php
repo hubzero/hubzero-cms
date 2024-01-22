@@ -11,7 +11,16 @@ defined('_HZEXEC_') or die();
 use Components\Search\Models\Solr\SearchComponent as SearchComponent;
 require_once Component::path('com_search') . '/models/solr/searchcomponent.php';
 
-// Use SOLR search. Fetch the id for the 'resources' search component; limit search to that component:
+// Determine search engine set in the configs:
+$searchConfig = \Component::params('com_search');
+$searchEngine = \Request::getCmd('controller', \Request::getCmd('view', $searchConfig->get('engine', 'basic')));
+
+if ($searchEngine != 'basic')
+{
+	$searchEngine = 'solr';
+}
+
+// For SOLR search: Fetch the id for the 'resources' search component; limit search to that component:
 $searchcomponentId = SearchComponent::whereEquals('name','resources')->rows()->key();
 
 $this->css('introduction.css', 'system')
@@ -63,16 +72,34 @@ $this->css('introduction.css', 'system')
 		<div class="col span9 omega">
 			<div class="grid">
 				<div class="col span-half">
-                                <!-- Use Solr for search: -->
+
+				<?php if ($searchEngine == 'solr') { ?>
+					<!-- Use Solr for search: -->
 					<form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get">
 						<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_RESOURCES_SEARCH');?>" />
-           	                                <fieldset class="entry-search">
+						<fieldset class="entry-search">
 							<input type="text" id="solr-search-term" name="terms" value="" placeholder="<?php echo Lang::txt('COM_RESOURCES_SEARCH_LABEL'); ?>" />
 							<input type="hidden" name="type" value="<?php echo $searchcomponentId; ?>" />
 						</fieldset>
 					</form>
 
+				<!-- Use basic search, $searchEngine = 'basic'; -->
+				<?php } else { ?>
+					<form action="<?php echo Route::url('index.php?option=com_resources&task=browse'); ?>" method="get" class="search">
+						<fieldset>
+							<p class="hz-v-align">
+								<label for="rsearch"><?php echo Lang::txt('COM_RESOURCES_SEARCH_LABEL'); ?></label>
+								<span class="hz-input-combo">
+									<input type="text" name="search" id="rsearch" value="" />
+									<input type="submit" value="<?php echo Lang::txt('COM_RESOURCES_SEARCH'); ?>" />
+								</span>
+							</p>
+						</fieldset>
+					</form>
+				<!-- End If (on $searchEngine) -->
+				<?php } ?>
 				</div><!-- / .col span-half -->
+
 				<div class="col span-half omega">
 					<div class="browse">
 						<p><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo Lang::txt('COM_RESOURCES_BROWSE_LIST'); ?></a></p>
