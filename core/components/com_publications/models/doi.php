@@ -59,6 +59,28 @@ class Doi extends Obj
 	 */
 	const STATE_FROM_PUBLISHED_TO_DRAFTREADY = 0;
 	const STATE_FROM_DRAFTREADY_TO_PUBLISHED = 1;
+	
+	/**
+	 * DataCite
+	 *
+	 * @const
+	 */
+	const DATACITE = "datacite::";
+	
+	/**
+	 * Relation type
+	 *
+	 * @const
+	 */
+	const REFERENCES = "references";
+	const REFERENCEDBY = "referencedby";
+	const ISREFERENCEDBY = "IsReferencedBy";
+	
+	/*
+	* Handle
+	*/
+	const HANDLE = "handle";
+	const HANDLE_DOMAIN_NAME = "hdl.handle.net";
 
 	/**
 	 * Constructor
@@ -232,8 +254,11 @@ class Doi extends Obj
 				? date('Y', strtotime($pub->version->published_up)) : date('Y');
 		$pubDate = $pub->version->published_up && $pub->version->published_up != $this->_db->getNullDate()
 				? date('Y-m-d', strtotime($pub->version->published_up)) : date('Y-m-d');
+		$acceptedDate = $pub->version->accepted && $pub->version->accepted != $this->_db->getNullDate()
+				? date('Y-m-d', strtotime($pub->version->accepted)) : date('Y-m-d');
 		$this->set('pubYear', $pubYear);
 		$this->set('datePublished', $pubDate);
+		$this->set('dateAccepted', $acceptedDate);
 
 		// Map authors & creator
 		$this->set('authors', $pub->authors());
@@ -269,10 +294,22 @@ class Doi extends Obj
 		}
 
 		// Map related identifier
-		$lastPub = $pub->lastPublicRelease();
-		if ($lastPub && $lastPub->doi && $pub->version->version_number > 1)
+		$prevPub = $pub->prevPublication();
+		if ($prevPub && $prevPub->doi)
 		{
-			$this->set('relatedDoi', $lastPub->doi);
+			$this->set('doiOfPrevPub', $prevPub->doi);
+		}
+		
+		$nextPub = $pub->nextPublication();
+		if ($nextPub && $nextPub->doi)
+		{
+			$this->set('doiOfNextPub', $nextPub->doi);
+		}
+		
+		$citations = $pub->getCitationsForMetadataSet();
+		if ($citations)
+		{
+			$this->set('citations', $citations);
 		}
 		
 		// Format
@@ -395,7 +432,6 @@ class Doi extends Obj
 							$fosTags[] = $fosTag;
 						}
 					}
-					
 				}
 			}
 			
@@ -639,25 +675,113 @@ class Doi extends Obj
 			$xmlfile.='</contributors>';
 		}
 		$xmlfile.='<dates>
-			<date dateType="Valid">' . $this->get('datePublished') . '</date>
+			<date dateType="Available">' . $this->get('datePublished') . '</date>
 			<date dateType="Accepted">' . $this->get('dateAccepted') . '</date>
 		</dates>
 		<language>' . $this->get('language') . '</language>
 		<resourceType resourceTypeGeneral="' . $this->get('resourceType') . '">' . $this->get('resourceTypeTitle') . '</resourceType>';
-		if ($this->get('relatedDoi'))
+		
+		$doiOfPrevPub = $this->get('doiOfPrevPub');
+		$doiOfNextPub = $this->get('doiOfNextPub');
+		$citations = $this->get('citations');
+		if ($doiOfPrevPub || $doiOfNextPub || $citations)
 		{
-			$xmlfile.='<relatedIdentifiers>
-				<relatedIdentifier relatedIdentifierType="DOI" relationType="IsNewVersionOf">' . $this->get('relatedDoi') . '</relatedIdentifier>
-			</relatedIdentifiers>';
+			$xmlfile .= '<relatedIdentifiers>';
+			
+			if ($doiOfPrevPub)
+			{
+				$xmlfile .= '	<relatedIdentifier relatedIdentifierType="DOI" relationType="IsNewVersionOf">' . $doiOfPrevPub . '</relatedIdentifier>';
+			}
+			
+			if ($doiOfNextPub)
+			{
+				$xmlfile .= '	<relatedIdentifier relatedIdentifierType="DOI" relationType="IsPreviousVersionOf">' . $doiOfNextPub . '</relatedIdentifier>';
+			}
+			
+			if ($citations)
+			{
+				foreach ($citations as $citation)
+				{
+					$pos = strpos(trim($citation->resourceTypeGeneral), self::DATACITE);
+					
+					if ($pos == 0)
+					{
+						$citation->resourceTypeGeneral = substr(trim($citation->resourceTypeGeneral), $pos + strlen(self::DATACITE));
+					}
+					
+					if (!empty($citation->relationType))
+					{
+						if (preg_match("/" . self::REFERENCES . "/i", $citation->relationType))
+						{
+							$citation->relationType = ucfirst(self::REFERENCES);
+						}
+						else if (preg_match("/" . self::REFERENCEDBY . "/i", $citation->relationType))
+						{
+							$citation->relationType = self::ISREFERENCEDBY;
+						}
+					}
+					
+					if (!empty($citation->relationType) && !empty($citation->resourceTypeGeneral))
+					{
+						if (!empty($citation->relatedIdentifier))
+						{
+							$xmlfile .= '<relatedIdentifier relatedIdentifierType="DOI" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . trim($citation->relatedIdentifier) . '</relatedIdentifier>';
+						}
+						else
+						{
+							if (!empty($citation->url))
+							{
+								if (preg_match("/purl/i", $citation->url))
+								{
+									$xmlfile .= '<relatedIdentifier relatedIdentifierType="PURL" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . trim($citation->url) . '</relatedIdentifier>';
+								}
+								elseif (preg_match("/handle/i", $citation->url))
+								{
+									if (preg_match("/hdl\.handle\.net/i", $citation->url))
+									{
+										$pos = strpos($citation->url, self::HANDLE_DOMAIN_NAME);
+										$val = substr($citation->url, $pos + strlen(self::HANDLE_DOMAIN_NAME) + 1);
+									}
+									else
+									{
+										$pos = strpos($citation->url, self::HANDLE);
+										$val = substr($citation->url, $pos + strlen(self::HANDLE) + 1);
+									}
+									$xmlfile .= '<relatedIdentifier relatedIdentifierType="Handle" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $val . '</relatedIdentifier>';
+								}
+								elseif (preg_match("/ark:/i", $citation->url) && !empty($citation->eprint))
+								{
+									$xmlfile .= '<relatedIdentifier relatedIdentifierType="ARK" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $citation->eprint . '</relatedIdentifier>';
+								}
+								elseif (preg_match("/arxiv/i", $citation->url) && !empty($citation->eprint))
+								{
+									$xmlfile .= '<relatedIdentifier relatedIdentifierType="arXiv" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $citation->eprint . '</relatedIdentifier>';
+								}
+								elseif (preg_match("/urn:/i", $citation->url) && !empty($citation->eprint))
+								{
+									$xmlfile .= '<relatedIdentifier relatedIdentifierType="URN" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $citation->eprint . '</relatedIdentifier>';
+								}
+								else
+								{
+									$xmlfile .= '<relatedIdentifier relatedIdentifierType="URL" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $citation->url . '</relatedIdentifier>';
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			$xmlfile .= '</relatedIdentifiers>';
 		}
+		
 		if ($this->get('version'))
 		{
 			$xmlfile.= '<version>' . $this->get('version') . '</version>';
 		}
 		if ($this->get('license'))
 		{
-			$rightsURI = $this->get('licenseURI') ? ' rightsURI="' . $this->get('licenseURI') . '"' : "";
-			$xmlfile.='<rightsList><rights xml:lang="en-US" schemeURI="https://spdx.org/licenses/" rightsIdentifierScheme="SPDX" rightsIdentifier="CC0 1.0"' . $rightsURI . '>' . htmlspecialchars($this->get('license')) . '</rights></rightsList>';
+			$rightsURI = $this->get('licenseURI') ? 'rightsURI="' . $this->get('licenseURI') . '"' : "";
+			$xmlfile.='<rightsList><rights ' . $rightsURI . '>' . htmlspecialchars($this->get('license')) . '</rights></rightsList>';
 		}
 		if ($this->get('grantInfo'))
 		{
@@ -772,7 +896,6 @@ class Doi extends Obj
 		$xmlfile .= '
 			</descriptions>
 		</resource>';
-		
 		return $xmlfile;
 	}
 
