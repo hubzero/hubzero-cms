@@ -208,7 +208,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
 						$citationArr[self::KEY_HANDLE] = substr($citation['url'], $pos + strlen(self::HANDLE) + 1);
 					}
 				}
-				elseif (preg_match("/ark/i", $citation['url']) && !empty($citation['eprint']))
+				elseif (preg_match("/ark:/i", $citation['url']) && !empty($citation['eprint']))
 				{
 					$citationArr[self::KEY_ARK] = $citation['eprint'];
 				}
