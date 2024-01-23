@@ -393,6 +393,42 @@ class Version extends Table
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
+	
+	/**
+	 * Get previous version publication
+	 *
+	 * @param   integer	$pid	Pub ID
+	 * @param	integer	$verNum	version number
+	 * @return  object
+	 */
+	public function getPrevPublication($pid = null, $version_number)
+	{
+		if ($pid === null || $version_number == 1)
+		{
+			return false;
+		}
+		$query = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND version_number=" . $this->_db->quote(--$version_number) . " AND state = 1";
+		$this->_db->setQuery($query);
+		return $this->_db->loadObject();
+	}
+	
+	/**
+	 * Get next version publication
+	 *
+	 * @param	integer	$pid	Pub ID
+	 * @param	integer	$verNum	version number
+	 * @return  object
+	 */
+	public function getNextPublication($pid = null, $version_number)
+	{
+		if ($pid === null)
+		{
+			return false;
+		}
+		$query = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND version_number=" . $this->_db->quote(++$version_number) . " AND state = 1";
+		$this->_db->setQuery($query);
+		return $this->_db->loadObject();
+	}
 
 	/**
 	 * Remove main flag

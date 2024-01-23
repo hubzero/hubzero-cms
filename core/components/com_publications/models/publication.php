@@ -575,6 +575,38 @@ class Publication extends Obj
 
 		return $this->_lastPublicRelease;
 	}
+	
+	/**
+	 * Get previous version publication
+	 *
+	 * @return  object
+	 */
+	public function prevPublication()
+	{
+		if (!isset($this->_prevPublication))
+		{
+			$pid = empty($this->publication->id) ? $this->version->publication_id : $this->publication->id;
+			$this->_prevPublication = $this->version->getPrevPublication($pid, $this->version->version_number);
+		}
+
+		return $this->_prevPublication;
+	}
+	
+	/**
+	 * Get next version publication
+	 *
+	 * @return  object
+	 */
+	public function nextPublication()
+	{
+		if (!isset($this->_nextPublication))
+		{
+			$pid = empty($this->publication->id) ? $this->version->publication_id : $this->publication->id;
+			$this->_nextPublication = $this->version->getNextPublication($pid, $this->version->version_number);
+		}
+
+		return $this->_nextPublication;
+	}
 
 	/**
 	 * Get the master type of this entry
@@ -1748,6 +1780,45 @@ class Publication extends Obj
 		}
 
 		return $this->_lastCitationDate;
+	}
+	
+	/**
+	 * Get citations for DOI metadata set
+	 *
+	 * @return  mixed
+	 */
+	public function getCitationsForMetadataSet()
+	{
+		if (!$this->exists())
+		{
+			return false;
+		}
+		if (!isset($this->citationsForMetadataSet))
+		{
+			include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
+			include_once Component::path('com_citations') . DS . 'models' . DS . 'association.php';
+			include_once Component::path('com_citations') . DS . 'models' . DS . 'type.php';
+
+			$citations = \Components\Citations\Models\Citation::all();
+			$typesTbl = \Components\Citations\Models\Type::blank()->getTableName();
+			$assocTbl = \Components\Citations\Models\Association::blank()->getTableName();
+			$pubVerTbl = $this->version->getTableName();
+			
+			$this->citationsForMetadataSet = $citations->select('jca.type', 'relationType')
+			->select('jct.type_desc', 'resourceTypeGeneral')
+			->select($citations->getQualifiedFieldName('doi'), 'relatedIdentifier')
+			->select($citations->getQualifiedFieldName('url'))
+			->select($citations->getQualifiedFieldName('eprint'))
+			->join($typesTbl . ' AS jct', $citations->getQualifiedFieldName('type'), 'jct.id', 'left')
+			->join($assocTbl . ' AS jca', $citations->getQualifiedFieldName('id'), 'jca.cid', 'left')
+			->join($pubVerTbl . ' AS jpv', 'jca.oid', 'jpv.id', 'left')
+			->whereEquals('jca.tbl', 'publication')
+			->where('jpv.id', '=', $this->version->id)
+			->where('jpv.state', '=', self::STATE_PUBLISHED)
+			->rows();
+		}
+
+		return $this->citationsForMetadataSet;
 	}
 
 	/**
