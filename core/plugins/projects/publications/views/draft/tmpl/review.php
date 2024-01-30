@@ -178,7 +178,7 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
 								<span id=<?php echo $this->escape($author->id) . "_email" ?> class="item-title"><?php echo $email; ?></span>
 								<?php }?>
 								<?php if(empty($email)) { ?>
-								<span hidden id=<?php echo $this->escape($author->id) . "_msg" ?> class="item-msg"><?php echo "The contact is required to have a valid email address. Please " ?>
+								<span style="display:none" id=<?php echo $this->escape($author->id) . "_msg" ?> class="item-msg"><?php echo "The contact is required to have a valid email address. Please " ?>
 								<a href="<?php echo Route::url( $this->pub->link('editversionid') . '&active=publications&action=editauthor&aid=' . $author->id . '&p=' . $props); ?>" class="showinbox item-edit"><?php echo "edit"; ?></a>
 								<?php echo "the author."; ?>
 								</span>
