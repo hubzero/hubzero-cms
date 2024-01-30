@@ -17,7 +17,6 @@ if (!User::isGuest())
 						AA.subtable, R.created, R.created_by, R.published, R.publish_up, R.standalone,
 						R.rating, R.times_rated, R.alias, R.ranking, rt.type AS typetitle ";
 	$query .= "FROM #__author_assoc AS AA, #__resource_types AS rt, #__resources AS R ";
-	$query .= "LEFT JOIN #__resource_types AS t ON R.logical_type=t.id ";
 	$query .= "WHERE AA.authorid = ". User::get('id') ." ";
 	$query .= "AND R.id = AA.subid ";
 	$query .= "AND AA.subtable = 'resources' ";
