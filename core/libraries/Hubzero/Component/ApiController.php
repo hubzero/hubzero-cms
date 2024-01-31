@@ -162,6 +162,11 @@ class ApiController implements ControllerInterface
 		// If so, we'll need to do some route parsing on the fly
 		if ($r->getName() == 'Hubzero\\Component\\ApiController')
 		{
+			if (!is_subclass_of($this->resolveModel(),'Hubzero\Database\Relational'))
+			{
+				throw new \Exception('Not Found', 404);
+			}
+
 			$this->isDynamic = true;
 
 			$request = App::get('request');
