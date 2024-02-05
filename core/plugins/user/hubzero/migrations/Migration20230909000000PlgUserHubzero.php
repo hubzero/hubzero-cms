@@ -61,7 +61,7 @@ class Migration20230909000000PlgUserHubzero extends Base
 	/**
 	 * Down
 	 *
-	 * Drop 'secret' column from jos_users table.
+	 * No change is made for down migration.
 	 *
 	 **/
 	public function down()
