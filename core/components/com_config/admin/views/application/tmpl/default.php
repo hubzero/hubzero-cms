@@ -65,7 +65,6 @@ $this->js();
 				<div class="col span6">
 					<?php echo $this->loadTemplate('seo'); ?>
 					<?php echo $this->loadTemplate('cookie'); ?>
-					<?php echo $this->loadTemplate('hub_secret'); ?>
 				</div>
 			</div>
 		</div>
@@ -73,6 +72,7 @@ $this->js();
 			<div class="grid noshow">
 				<div class="col span7">
 					<?php echo $this->loadTemplate('system'); ?>
+					<?php echo $this->loadTemplate('hub_secret'); ?>
 				</div>
 				<div class="col span5">
 					<?php echo $this->loadTemplate('debug'); ?>
