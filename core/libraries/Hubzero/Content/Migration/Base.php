@@ -510,7 +510,7 @@ class Base
 	 **/
 	protected function _queryIfTableExists($table, $query)
 	{
-		if ($this->db->tableExists($tableName))
+		if ($this->db->tableExists($table))
 		{
 			$this->db->setQuery($query);
 			$this->db->query();
