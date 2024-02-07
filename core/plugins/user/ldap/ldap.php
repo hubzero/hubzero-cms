@@ -134,4 +134,9 @@ class plgUserLdap extends \Hubzero\Plugin\Plugin
 	{
 		\Hubzero\Utility\Ldap::syncGroup($group->cn);
 	}
+
+	public function onUserDeidentify($user_id)
+	{
+		\Hubzero\Utility\Ldap::syncUser($user_id);
+	}
 }
