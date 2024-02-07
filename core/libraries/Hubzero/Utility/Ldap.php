@@ -209,10 +209,10 @@ class Ldap
 	/**
 	 * Sync a user's info to LDAP
 	 *
-	 * @param   mixed   $user
+	 * @param   integer   $user_id
 	 * @return  boolean
 	 */
-	public static function syncUser($user)
+	public static function syncUser($user_id)
 	{
 		$db = \App::get('db');
 
@@ -236,28 +236,14 @@ class Ldap
 				" pwd.shadowInactive, pwd.shadowExpire, pwd.shadowFlag " .
 				" FROM #__users AS u " .
 				" LEFT JOIN #__users_password AS pwd ON u.id = pwd.user_id " .
-				" LEFT JOIN #__xprofiles AS p ON u.id = p.uidNumber ";
-
-		if (is_numeric($user) && $user >= 0)
-		{
-			$query .= " WHERE u.id = " . $db->quote($user) . " LIMIT 1;";
-		}
-		else
-		{
-			$query .= " WHERE u.username = " . $db->quote($user) . " LIMIT 1;";
-		}
+				" LEFT JOIN #__xprofiles AS p ON u.id = p.uidNumber " .
+				" WHERE u.id = " . $db->quote($user_id) . " LIMIT 1;";
 
 		$db->setQuery($query);
 		$dbinfo = $db->loadAssoc();
 
 		if (!empty($dbinfo))
 		{
-			// Don't sync usernames that are negative numbers (these are auth_link temp accounts)
-			if (is_numeric($dbinfo['uid']) && $dbinfo['uid'] <= 0)
-			{
-				return false;
-			}
-
 			// Make sure we have a name
 			// If one isn't set, make it the same as the username
 			if (!trim($dbinfo['cn']) && $dbinfo['uid'])
@@ -272,20 +258,29 @@ class Ldap
 			$query = "SELECT host FROM `#__xprofiles_host` WHERE uidNumber = " . $db->quote($dbinfo['uidNumber']) . ";";
 			$db->setQuery($query);
 			$dbinfo['host'] = $db->loadColumn();
+
+			// If user has been de-identified or is a temporary auth_link account
+			// treat as if database entry does not exist (eg, delete from LDAP)
+
+			if ( (is_numeric($dbinfo['uid']) && $dbinfo['uid'] <= 0) || (substr( $dbinfo['uid'], 0, 13 ) === "anonUsername_") )
+			{
+				$dbinfo = null;
+			}
+
 		}
 
 		$ldap_params = \Component::params('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn', '');
 
-		if (is_numeric($user) && $user >= 0)
+		$dn = 'ou=users,' . $hubLDAPBaseDN;
+
+		if (!empty($dbinfo))
 		{
-			$dn = 'ou=users,' . $hubLDAPBaseDN;
-			$filter = '(|(uidNumber=' . $user . ')(uid=' . $dbinfo['uid'] . '))';
+			$filter = '(|(uidNumber=' . $user_id . ')(uid=' . $dbinfo['uid'] . '))';
 		}
 		else
 		{
-			$dn = "uid=$user,ou=users," . $hubLDAPBaseDN;
-			$filter = '(objectclass=*)';
+			$filter = '(uidNumber=' . $user_id . ')';
 		}
 
 		$reqattr = array(
