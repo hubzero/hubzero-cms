@@ -40,7 +40,7 @@ $this->css('create.css')
 		     ->display();
 	?>
 <?php if ($this->getError()) { ?>
-	<p class="warning"><?php echo $this->getError(); ?></p>
+	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&group=' . $this->group_cn . '&id=' . $this->id); ?>" method="post" id="hubForm">
 		<div class="explaination">

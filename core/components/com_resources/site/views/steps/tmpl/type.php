@@ -24,7 +24,7 @@ $this->css('create.css')
 </header><!-- / #content-header -->
 
 <?php if ($this->getError()) { ?>
-	<p class="warning"><?php echo $this->getError(); ?></p>
+	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
 <section class="main section">
