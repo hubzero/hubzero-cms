@@ -41,7 +41,7 @@ $this->css('create.css')
 	?>
 
 <?php if ($this->getError()) { ?>
-	<p class="warning"><?php echo implode('<br />', $this->getErrors()); ?></p>
+	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task); ?>" method="post" id="hubForm">
