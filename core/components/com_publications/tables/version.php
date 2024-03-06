@@ -659,4 +659,21 @@ class Version extends Table
 		$this->_db->setQuery($query);
 		$this->_db->query();		
 	}
+	
+	/**
+	 * Get publication version by ID
+	 *
+	 * @param	integer	$vid	Publication Version ID
+	 * @return	object
+	 */
+	public function getPubVersion($vid = null)
+	{
+		if ($vid === null)
+		{
+			return false;
+		}
+		$query = "SELECT * FROM $this->_tbl WHERE id=" . $this->_db->quote($vid) . " AND state = 1";
+		$this->_db->setQuery($query);
+		return $this->_db->loadObject();
+	}
 }
