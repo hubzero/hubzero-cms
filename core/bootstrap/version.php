@@ -16,4 +16,4 @@
 |
 */
 
-define('HVERSION', '2.2.25');
+define('HVERSION', '2.2.27');
