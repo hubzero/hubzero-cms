@@ -13,7 +13,7 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for changing DATETIME fields default to NULL for recent_tools table
  **/
-class Migration20231027134911ComTools.extends Base
+class Migration20231027134911ComTools extends Base
 {
         /**
          * Up
