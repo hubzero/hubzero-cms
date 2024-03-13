@@ -201,6 +201,8 @@ class MimeType
 			'cdr'   => 'application/cdr',
 			'wma'   => 'audio/x-ms-wma',
 			'jar'   => 'application/java-archive',
+			'mbz'   => 'application/x-zip',
+                        'imscc' => 'application/x-zip'
 		);
 	}
 }
