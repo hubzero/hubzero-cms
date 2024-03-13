@@ -60,7 +60,7 @@ $this->css('create.css')
 	?>
 
 	<?php if ($this->getError()) { ?>
-		<p class="warning"><?php echo implode('<br />', $this->getErrors()); ?></p>
+		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 	<?php } ?>
 
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&group=' . $this->group_cn . '&id=' . $this->id); ?>" method="post" id="hubForm" accept-charset="utf-8">

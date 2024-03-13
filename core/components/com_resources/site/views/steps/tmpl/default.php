@@ -17,6 +17,6 @@ $this->css('create.css')
 
 <section class="main section">
 	<?php if ($this->getError()) { ?>
-		<p class="warning"><?php echo $this->getError(); ?></p>
+		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
 </section><!-- / .main section -->
