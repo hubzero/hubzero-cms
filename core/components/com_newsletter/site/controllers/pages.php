@@ -33,6 +33,10 @@ class Pages extends SiteController
 		$this->setView('pages', "page$pageId");
 		$this->view->set('code', $code);
 		$this->view->set('pageId', $pageId);
+		// we need to add user and campaign to send to the replies.php controller
+		$this->view->set('user', $username);
+		$this->view->set('campaign', $campaignId);
+
 		$this->view->display();
 	}
 
