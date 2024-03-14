@@ -26,7 +26,7 @@ class Replies extends SiteController
 		$code = Request::getString('code');
 		$pageId = Request::getInt('page_id');
 		$username = Request::getString('user');
-		$campaignid = Request::getInt('campaign');
+		$campaignId = Request::getInt('campaign_id');
 
 		// Validate that the user-supplied URL and code are valid:
 		if (!CodeHelper::validateCode($username, $campaignId, $pageId, $code))
