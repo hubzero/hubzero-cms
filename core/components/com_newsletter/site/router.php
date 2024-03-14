@@ -29,12 +29,11 @@ class Router extends Base
 		$isReply = false;
 
 		// Accommodate specifics from com_reply
-		//$replyControllers = ['email-subscriptions', 'emailsubscriptions', 'pages', 'replies'];
 		$replyTasks = ['display', 'update', 'create'];
 
-		// TODO validate this assumption:
-		// assumption: com_reply query params will always specify a controller
+		// com_reply query params will almost always specify a controller, and
 		// 		if no reply task is specified, that task will not be picked up
+		// Except: if all instructions are already in the URL, then nothing to build
 		if (!empty($query['controller']))
 		{
 			if (in_array($query['controller'], $this->replyControllers))
@@ -98,9 +97,6 @@ class Router extends Base
 	{
 		$vars = array();
 
-		// Accommodate specifics from com_reply
-		// so is there a dash or not?
-		//$replyControllers = ['email-subscriptions', 'emailsubscriptions', 'pages', 'replies'];
 		$isReply = false;
 
 		if (empty($segments))

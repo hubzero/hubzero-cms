@@ -45,6 +45,7 @@ class Emailsubscriptions extends SiteController
 		$subscriptions = $subHelper->loadSubscriptions($userId);
 
 		$this->view->set('userId', $userId);
+		$this->view->set('campaignId', $campaignId);
 		$this->view->set('subs', $subscriptions);
 		$this->view->set('code', $code);
 		$this->view->display();
@@ -55,7 +56,8 @@ class Emailsubscriptions extends SiteController
 		Request::checkToken();
 
 		$code = Request::getString('code');
-		$username = Request::getString('user');
+		$userId = Request::getString('userId');
+		$username = User::whereEquals('id', $userId)->row()->get('username');
 		$campaignId = Request::getInt('campaign');
 
 		// Verify that the user-supplied URL and code are valid:
@@ -66,7 +68,6 @@ class Emailsubscriptions extends SiteController
 		}
 
 		// Look up the subscription based on user id:
-		$userId = User::whereEquals('username', $username)->row()->get('id');
 		$updatedSubscriptions = Request::getArray('subscriptions');
 		$subHelper = new SubscriptionsHelper();
 

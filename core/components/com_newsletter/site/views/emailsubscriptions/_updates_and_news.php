@@ -12,5 +12,5 @@ $hubname = Config::get('sitename');
 
 <ul>
   <li>news and announcements (e.g new courses, apps, and other opportunities)</li>
-  <li><?echo $hubname;?> newsletter</li>
+  <li><?php echo $hubname;?> newsletter</li>
 </ul>
