@@ -11,11 +11,11 @@ $hubname = Config::get('sitename');
 ?>
 
 <p>
-<?echo $hubname;?> is a government funded resource for the scientific community, and as
-such, we need to demonstrate <?echo $hubname;?> impact to the U.S. National Science
+<?php echo $hubname;?> is a government funded resource for the scientific community, and as
+such, we need to demonstrate <?php echo $hubname;?> impact to the U.S. National Science
 Foundation, our funding agency.  One way we can assess our impact is by asking
-our users to provide us with feedback on how they use <?echo $hubname;?>.   Please help
-us in our effort to keep <?echo $hubname;?> free for a broad user base and let us know:
+our users to provide us with feedback on how they use <?php echo $hubname;?>.   Please help
+us in our effort to keep <?php echo $hubname;?> free for a broad user base and let us know:
 <p>
 
 <div>
@@ -23,9 +23,9 @@ us in our effort to keep <?echo $hubname;?> free for a broad user base and let u
 	<p>Please let us know:</p>
 	<ul>
 		<li>
-			Are you using <?echo $hubname;?> for education? If so how?
+			Are you using <?php echo $hubname;?> for education? If so how?
 			<ul>
-				<li>As part of a formal course? Which course? Which educational institution? How often do you use <?echo $hubname;?> in the course per semester?</li>
+				<li>As part of a formal course? Which course? Which educational institution? How often do you use <?php echo $hubname;?> in the course per semester?</li>
 				<li>Which professor leads the class? Are you the professor?</li>
 			</ul>
 		</li>
@@ -38,9 +38,9 @@ us in our effort to keep <?echo $hubname;?> free for a broad user base and let u
 		</li>
 
 		<li>
-			Are you using <?echo $hubname;?> for research? If so how? Please let us know some details.
+			Are you using <?php echo $hubname;?> for research? If so how? Please let us know some details.
 			<ul>
-				<li>Have you published research results while using <?echo $hubname;?> resources? If so, can you share your research citations with us (just copy and paste the citations below)</li>
+				<li>Have you published research results while using <?php echo $hubname;?> resources? If so, can you share your research citations with us (just copy and paste the citations below)</li>
 				<li>Do you have a Google Scholar, ResearcherID, ScopusID, ORCID, or ResearchGateID?</li>
 			</ul>
 		</li>
@@ -65,10 +65,10 @@ us in our effort to keep <?echo $hubname;?> free for a broad user base and let u
 		<li>Other comments?  Anything else you want to share with us to help our mission?</li>
 	</ul>
 
-	<p>Also, if you have not returned to <?echo $hubname;?> for quite a while, can you help us understand why?</p>
+	<p>Also, if you have not returned to <?php echo $hubname;?> for quite a while, can you help us understand why?</p>
 	<ul>
-		<li>Did the work you did with <?echo $hubname;?> usage finish? Were you satisfied?</li>
-		<li>Were you not able to finish your <?echo $hubname;?> work due to problems? If so, which ones?</li>
+		<li>Did the work you did with <?php echo $hubname;?> usage finish? Were you satisfied?</li>
+		<li>Were you not able to finish your <?php echo $hubname;?> work due to problems? If so, which ones?</li>
 	</ul>
 
 </div>

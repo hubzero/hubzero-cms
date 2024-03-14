@@ -11,6 +11,7 @@ defined('_HZEXEC_') or die();
 $this->css('emailSubscriptionsDisplay');
 
 $code = $this->code;
+$campaign= $this->campaignId;
 $submitText = Lang::txt('INPUT_SUBMIT');
 $breadcrumbs = ['Email Subscriptions' => ''];
 $userId = $this->userId;
@@ -46,7 +47,8 @@ $this->view('_breadcrumbs', 'shared')
 
 				<?php echo Html::input('token'); ?>
 				<input type="hidden" name="code" value="<?php echo $code; ?>">
-
+				<input type="hidden" name="userId" value="<?php echo $userId; ?>">
+				<input type="hidden" name="campaign" value="<?php echo $campaign; ?>">
 				<input type="submit" class="btn btn-success" value="<?php echo $submitText; ?>">
 			</form>
 		</div>
@@ -55,10 +57,10 @@ $this->view('_breadcrumbs', 'shared')
 </section>
 
 <section class="comms-notice">
-	<?echo $hubname;?> is a community-driven, grant-funded project and we continually strive
+	<?php echo $hubname;?> is a community-driven, grant-funded project and we continually strive
 	to improve our services. Additionally, we need to share the impact of our
 	work with our sponsors. We will periodically send you information about
-	outages, terms of usage changes, and <?echo $hubname;?> improvement surveys and
+	outages, terms of usage changes, and <?php echo $hubname;?> improvement surveys and
 	assessment communications. For more information regarding communications from
-	<?echo $hubname;?>, see our <a href="/legal/privacy">privacy policy</a>.
+	<?php echo $hubname;?>, see our <a href="/legal/privacy">privacy policy</a>.
 </section>

@@ -13,7 +13,7 @@ $hubname = Config::get('sitename');
 ?>
 
 <ul>
-  <li>Personalized updates based on your usage and impact on <?echo $hubname;?></li>
+  <li>Personalized updates based on your usage and impact on <?php echo $hubname;?></li>
   <li>Updates about resources you previously used</li>
   <li>Specific information based on your field and interests (please review your
 <a href="<?php echo $profileLink; ?>">profile</a>)</li>
