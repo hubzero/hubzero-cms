@@ -6,18 +6,44 @@
  */
 
 namespace Components\Newsletter\Site;
+use Hubzero\Utility\Arr;
+use Request;
 
 require_once dirname(__DIR__) . DS . 'models' . DS . 'newsletter.php';
 require_once dirname(__DIR__) . DS . 'models' . DS . 'mailinglist.php';
 require_once dirname(__DIR__) . DS . 'models' . DS . 'mailing.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'emailSubscription.php';
+
 
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'codeHelper.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'subscriptionsHelper.php';
 
-//build controller path and name
-$controllerName = \Request::getCmd('controller', 'newsletters');
+// determine the controller to use:
+$defaultController = 'newsletters';
+
+// controllers from the reply functionality
+$controllerNameMap = [
+	'email-subscriptions' => 'emailsubscriptions',
+	'pages' => 'pages',
+	'replies' => 'replies'
+];
+
+// if we had a controller request, set it, otherwise set 'newsletters':
+$requestedController = Request::getString('controller');
+if (!empty($requestedController))
+{
+	// from reply component
+	$controllerName = Arr::getValue($controllerNameMap, $requestedController);
+} else {
+	// from newsletter
+	$controllerName = \Request::getCmd('controller', $defaultController);
+}
+
+//build controller path and require it
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	$controllerName = 'newsletters';
+	$controllerName = $defaultController;
 }
 require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));

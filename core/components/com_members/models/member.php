@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @copyright  Copyright (c) 2005-2024 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -638,5 +638,16 @@ class Member extends User implements \Hubzero\Search\Searchable
 		}
 
 		return $obj;
+	}
+
+	/*
+	 * Generate new user secret value
+	 * @return string
+	 */
+	public static function generateSecret()
+	{
+		// create 32-character secret
+		$secretLength = 32;
+		return \Hubzero\User\Password::genRandomPassword($secretLength);
 	}
 }

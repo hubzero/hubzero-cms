@@ -145,6 +145,14 @@ class Application extends AdminController
 		$other = Request::getArray('hzother', array(), 'post');
 		$data  = array_merge($return, $other);
 
+		// If user specified 'reset', generate and save a new Hub secret:
+		$saveHubSecret = $this->saveHubSecret($data['hub_secret']);
+		// If saving new Hub secret was successful, set config back to no-op:
+		if ($saveHubSecret) 
+		{
+			$data['hub_secret']['reset_secret'] = "noop";
+		} 
+
 		// Attempt to save the configuration.
 		$return = $model->save($data);
 
@@ -204,6 +212,35 @@ class Application extends AdminController
 		User::setState('com_config.config.global.data', null);
 
 		App::redirect(Route::url('index.php', false));
+	}
+
+	/**
+	 * Update the Hub Secret in the database table.
+	 *
+	 * @return  Boolean
+	 */
+	private function saveHubSecret(array $hubsecret)
+	{
+		// If user has opted to reset the Hub secret:
+		if ($hubsecret['reset_secret'] == 'reset')
+		{
+			$tableName = 'jos_config';
+
+			// create 32-character secret:
+			$secretLength = 32;
+			$secret = \Hubzero\User\Password::genRandomPassword($secretLength);
+			$updated = Date::of('now')->toSql();
+
+			// Reset the Hub secret:
+			$query = new \Hubzero\Database\Query;
+			$result = $query->update($tableName)
+				->set(['value' => $secret,
+					   'updated' => $updated])
+				->whereEquals('scope', 'hub')
+				->whereEquals('key', 'secret')
+				->execute();
+		}
+		return true;
 	}
 
 	/**
