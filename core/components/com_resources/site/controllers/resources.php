@@ -210,7 +210,7 @@ class Resources extends SiteController
 			'limit'  => Request::getInt('limit', Config::get('list_limit')),
 			'start'  => Request::getInt('limitstart', 0),
 			'search' => Request::getString('search', ''),
-			'tag'    => trim(Request::getString('tag', '', 'request', 'none', 2)),
+			'tag'    => '',
 			'tag_ignored' => array(),
 			'access' => [0, 3]
 		);
@@ -219,8 +219,10 @@ class Resources extends SiteController
 			App::abort(404, Lang::txt('Invalid sort value of "%s" used.', $filters['sortby']));
 		}
 
+		// Permit only authenticated users to perform tag search
 		if (!User::isGuest())
 		{
+			$filters['tag']    = trim(Request::getString('tag', '', 'request', 'none', 2));
 			$filters['access'][] = 1;
 		}
 
