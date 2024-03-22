@@ -44,11 +44,6 @@ defined('_HZEXEC_') or die();
 			<p class="info">
 				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SETTINGS_CREATE_POSTS_INFO'); ?>
 			</p>
-
-			<input type="hidden" name="settings[id]" value="<?php echo $this->settings->id; ?>" />
-			<input type="hidden" name="settings[object_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
-			<input type="hidden" name="settings[folder]" value="groups" />
-			<input type="hidden" name="settings[element]" value="collections" />
 		</fieldset>
 		<div class="clear"></div>
 

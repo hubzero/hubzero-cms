@@ -50,11 +50,6 @@ $this->css()
 		<p class="help">
 			<?php echo Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_FEED_HELP'); ?>
 		</p>
-
-		<input type="hidden" name="settings[id]" value="<?php echo $this->settings->id; ?>" />
-		<input type="hidden" name="settings[object_id]" value="<?php echo $this->member->get('id'); ?>" />
-		<input type="hidden" name="settings[folder]" value="members" />
-		<input type="hidden" name="settings[element]" value="blog" />
 	</fieldset>
 	<div class="clear"></div>
 

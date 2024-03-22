@@ -1078,19 +1078,12 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			return $this->_browse();
 		}
 
-		$settings = Hubzero\Plugin\Params::oneByPlugin(
-			$this->group->gidNumber,
-			$this->_type,
-			$this->_name
-		);
-
 		// Output HTML
 		$view = $this->view('default', 'settings')
 			->set('option', $this->option)
 			->set('group', $this->group)
 			->set('task', $this->action)
 			->set('config', $this->params)
-			->set('settings', $settings)
 			->set('model', $this->model)
 			->set('authorized', $this->authorized)
 			->setErrors($this->getErrors());
@@ -1120,14 +1113,11 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		Request::checkToken();
 
-		$settings = Request::getArray('settings', array(), 'post');
-
-		$row = Hubzero\Plugin\Params::blank()->set($settings);
+		$row = \Hubzero\Plugin\Params::oneByPluginOrNew($this->group->get('gidNumber'), $this->_type, $this->_name);
 
 		// Get parameters
-		$p = new Hubzero\Config\Registry(Request::getArray('params', array(), 'post'));
-
-		$row->set('params', $p->toString());
+		$params = new \Hubzero\Config\Registry(Request::getArray('params', array(), 'post'));
+		$row->set('params', $params->toString());
 
 		// Store new content
 		if (!$row->save())
