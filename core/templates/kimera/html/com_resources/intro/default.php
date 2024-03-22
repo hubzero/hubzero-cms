@@ -8,6 +8,21 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+use Components\Search\Models\Solr\SearchComponent as SearchComponent;
+require_once Component::path('com_search') . '/models/solr/searchcomponent.php';
+
+// Determine search engine set in the configs, is it 'basic' or 'solr'?
+$searchConfig = \Component::params('com_search');
+$searchEngine = \Request::getCmd('controller', \Request::getCmd('view', $searchConfig->get('engine', 'basic')));
+
+if ($searchEngine != 'basic')
+{
+	$searchEngine = 'solr';
+}
+
+// For SOLR search: Fetch the id for the 'resources' search component; limit search to that component:
+$searchComponentId = SearchComponent::whereEquals('name','resources')->rows()->key();
+
 $this->css('introduction.css', 'system')
      ->css()
      ->js();
@@ -28,15 +43,45 @@ $this->css('introduction.css', 'system')
 	<div class="grid">
 		<div class="col span8">
 			<div class="container data-entry">
-				<form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get">
-					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('Search'); ?>" />
+				<div class="col span-half">
+
+				<?php if ($searchEngine == 'solr') { ?>
+					<!-- Use Solr for search, indicating the searchcomponentId for Resources: -->
+					<form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get">
+						<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('TPL_KIMERA_SEARCH');?>" />
+						<fieldset class="entry-search">
+							<input type="text" id="solr-search-term" name="terms" value="" placeholder="<?php echo Lang::txt('TPL_KIMERA_SEARCH_PROMPT'); ?>" />
+							<input type="hidden" name="type" value="<?php echo $searchComponentId; ?>" />
+						</fieldset>
+					</form>
+
+				<!-- Use basic search, $searchEngine = 'basic'; -->
+				<?php } else { ?>
+					<form action="<?php echo Route::url('index.php?option=com_resources&task=browse'); ?>" method="get" class="search">
+						<fieldset>
+							<p class="hz-v-align">
+								<label for="rsearch"><?php echo Lang::txt('TPL_KIMERA_SEARCH'); ?></label>
+								<span class="hz-input-combo">
+									<input type="text" name="search" id="rsearch" value="" />
+									<input type="submit" value="<?php echo Lang::txt('TPL_KIMERA_SEARCH_PROMPT'); ?>" />
+								</span>
+							</p>
+						</fieldset>
+					</form>
+				<!-- End If (on $searchEngine) -->
+				<?php } ?>
+				</div><!-- / .col span-half -->
+
+				<!--
+				<form action="<?php //echo Route::url('index.php?option=com_search'); ?>" method="get">
+					<input class="entry-search-submit" type="submit" value="<?php //echo Lang::txt('TPL_KIMERA_SEARCH'); ?>" />
 					<fieldset class="entry-search">
-						<input type="text" name="terms" value="" placeholder="<?php echo Lang::txt('What are you interested in?'); ?>" />
-						<!-- <input type="hidden" name="option" value="<?php echo $this->option; ?>" /> -->
-						<input type="hidden" name="domains[]" value="resources" />
-						<input type="hidden" name="section" value="resources" />
+						<input type="text" name="terms" value="" placeholder="<?php //echo Lang::txt('TPL_KIMERA_SEARCH_PROMPT'); ?>" />
+						<input type="hidden" name="type" value="<?php //echo $searchComponentId; ?>" /> 
 					</fieldset>
 				</form>
+				-->
+
 			</div><!-- / .container -->
 			<p>
 				<?php echo Lang::txt('Resources are <strong>user-submitted</strong> pieces of content that range from video presentations to publications to simulation tools.'); ?>

@@ -5554,6 +5554,13 @@ ol.comments .time {
   position: absolute;
   width: 1px;
 }
+/* Enable usable Solr search filters in search results if Filters enabled in Admin interface:*/
+.aside .facet .search-filters label {
+  padding: 8px;
+  position: inherit;
+  height: auto;
+  width: auto;
+}
 .data-entry input.entry-search-submit {
   width: auto;
   float: right;
