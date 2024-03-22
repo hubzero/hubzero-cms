@@ -66,13 +66,21 @@ class Params extends Relational
 	 * @param   string   $element  Plugin name
 	 * @return  boolean  True on success
 	 */
-	public static function oneByPlugin($oid=null, $folder=null, $element=null)
+	public static function oneByPluginOrNew($oid=null, $folder=null, $element=null)
 	{
-		return self::all()
+		$row = self::all()
 			->whereEquals('object_id', (int) $oid)
-			->whereEquals('folder', (int) $folder)
-			->whereEquals('element', (int) $element)
+			->whereEquals('folder', $folder)
+			->whereEquals('element', $element)
 			->row();
+		
+		if ($row->isNew()) {
+			$row->set('object_id', (int) $oid)
+				->set('folder', $folder)
+				->set('element', $element);
+		}
+
+		return $row;
 	}
 
 	/**
@@ -85,7 +93,7 @@ class Params extends Relational
 	 */
 	public static function getCustomParams($oid=null, $folder=null, $element=null)
 	{
-		$result = self::oneByPlugin($oid, $folder, $element);
+		$result = self::oneByPluginOrNew($oid, $folder, $element);
 
 		return new Registry($result->get('params'));
 	}

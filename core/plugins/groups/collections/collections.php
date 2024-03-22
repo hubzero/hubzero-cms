@@ -2080,8 +2080,6 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			App::abort(403, Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
 		}
 
-		$settings = \Hubzero\Plugin\Params::oneByPlugin($this->group->get('gidNumber'), 'groups', $this->_name);
-
 		// Output HTML
 		$view = $this->view('default', 'settings')
 			->set('name', $this->_name)
@@ -2089,7 +2087,6 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			->set('group', $this->group)
 			->set('params', $this->params)
 			->set('action', $this->action)
-			->set('settings', $settings)
 			->set('authorized', $this->authorized);
 
 		return $view
@@ -2119,19 +2116,10 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		Request::checkToken();
 
-		$settings = Request::getArray('settings', array(), 'post');
-
-		$row = \Hubzero\Plugin\Params::oneByPlugin($this->group->get('gidNumber'), $this->_type, $this->_name);
-
-		$row->set('object_id', $this->group->get('gidNumber'));
-		$row->set('folder', $this->_type);
-		$row->set('element', $this->_name);
+		$row = \Hubzero\Plugin\Params::oneByPluginOrNew($this->group->get('gidNumber'), $this->_type, $this->_name);
 
 		// Get parameters
-		$prms = Request::getArray('params', array(), 'post');
-
-		$params = new \Hubzero\Config\Registry($prms);
-
+		$params = new \Hubzero\Config\Registry(Request::getArray('params', array(), 'post'));
 		$row->set('params', $params->toString());
 
 		// Store new content

@@ -70,11 +70,6 @@ $this->css()
 					</label>
 				</div>
 			</fieldset>
-
-			<input type="hidden" name="settings[id]" value="<?php echo $this->settings->get('id'); ?>" />
-			<input type="hidden" name="settings[object_id]" value="<?php echo $this->group->get('gidNumber'); ?>" />
-			<input type="hidden" name="settings[folder]" value="groups" />
-			<input type="hidden" name="settings[element]" value="forum" />
 		</fieldset>
 		<div class="clear"></div>
 
