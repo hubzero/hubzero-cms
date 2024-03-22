@@ -203,7 +203,23 @@ class SolrQueryAdapter implements QueryInterface
 		$this->numFound = $this->resultset->getNumFound();
 		$this->results = $this->getResults();
 		$this->resultsFacetSet = $this->resultset->getFacetSet();
+		$this->debug = $this->query->getDebug();
 		return $this;
+	}
+
+	/**
+	 * getDebug
+	 *
+	 * returns Solarium query debug object
+	 *
+	 * @access public
+	 * @return Solarium\QueryType\Select\Query\Component\Debug
+	 */
+	public function getDebug()
+	{
+		if (isset($this->debug)) {
+			return $this->debug;
+		}
 	}
 
 	/**

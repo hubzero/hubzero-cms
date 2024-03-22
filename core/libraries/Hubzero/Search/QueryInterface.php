@@ -122,6 +122,14 @@ interface QueryInterface
 	public function run();
 
 	/**
+	 * getDebug - returns query debug object
+	 *
+	 * @access public
+	 * @return object
+	 */
+	public function getDebug();
+
+	/**
 	 * restrictAccess - Applies CMS permissions for the current user.
 	 *
 	 * @access public
