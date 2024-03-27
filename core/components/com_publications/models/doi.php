@@ -255,11 +255,14 @@ class Doi extends Obj
 		$pubDate = $pub->version->published_up && $pub->version->published_up != $this->_db->getNullDate()
 				? date('Y-m-d', strtotime($pub->version->published_up)) : date('Y-m-d');
 		$acceptedDate = $pub->version->accepted && $pub->version->accepted != $this->_db->getNullDate()
-				? date('Y-m-d', strtotime($pub->version->accepted)) : date('Y-m-d');
+				? date('Y-m-d', strtotime($pub->version->accepted)) : "0000-00-00";
+		$submittedDate = $pub->version->submitted && $pub->version->submitted != $this->_db->getNullDate()
+				? date('Y-m-d', strtotime($pub->version->submitted)) : "0000-00-00";
 		$this->set('pubYear', $pubYear);
 		$this->set('datePublished', $pubDate);
 		$this->set('dateAccepted', $acceptedDate);
-
+		$this->set('dateSubmitted', $submittedDate);
+		
 		// Map authors & creator
 		$this->set('authors', $pub->authors());
 		$this->mapUser($pub->version->created_by, $pub->_authors, 'creator');
@@ -508,7 +511,6 @@ class Doi extends Obj
 		$this->set('resourceType', 'Dataset');
 		$this->set('resourceTypeTitle', 'Dataset');
 		$this->set('datePublished', date('Y-m-d'));
-		$this->set('dateAccepted', date('Y-m-d'));
 	}
 
 	/**
@@ -567,7 +569,7 @@ class Doi extends Obj
 		}
 
 		// Start XML
-		$xmlfile  = '<?xml version="1.0" encoding="UTF-8"?><resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://datacite.org/schema/kernel-4" xsi:schemaLocation="http://datacite.org/schema/kernel-4 https://schema.datacite.org/meta/kernel-4/metadata.xsd">';
+		$xmlfile  = '<?xml version="1.0" encoding="UTF-8"?><resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://datacite.org/schema/kernel-4" xsi:schemaLocation="http://datacite.org/schema/kernel-4 https://schema.datacite.org/meta/kernel-4.5/metadata.xsd">';
 		$xmlfile .='<identifier identifierType="DOI">' . $doi . '</identifier>';
 		$xmlfile .='<creators>';
 
@@ -674,11 +676,14 @@ class Doi extends Obj
 			
 			$xmlfile.='</contributors>';
 		}
-		$xmlfile.='<dates>
-			<date dateType="Available">' . $this->get('datePublished') . '</date>
-			<date dateType="Accepted">' . $this->get('dateAccepted') . '</date>
-		</dates>
-		<language>' . $this->get('language') . '</language>
+		
+		$xmlfile.='<dates>';
+		$xmlfile .= '<date dateType="Available">' . $this->get('datePublished') . '</date>';
+		$xmlfile .= '<date dateType="Submitted">' . $this->get('dateSubmitted') . '</date>';
+		$xmlfile .= '<date dateType="Accepted">' . $this->get('dateAccepted') . '</date>';
+		$xmlfile .= '</dates>';
+		
+		$xmlfile .= '<language>' . $this->get('language') . '</language>
 		<resourceType resourceTypeGeneral="' . $this->get('resourceType') . '">' . $this->get('resourceTypeTitle') . '</resourceType>';
 		
 		$doiOfPrevPub = $this->get('doiOfPrevPub');
