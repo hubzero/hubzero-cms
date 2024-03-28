@@ -1840,7 +1840,7 @@ class Sessions extends SiteController
 			return false;
 		}
 
-		if (\Hubzero\Geocode\Geocode::is_e1nation(\Hubzero\Geocode\Geocode::ipcountry($ip)))
+		if (\Hubzero\Geocode\Geocode::is_e1nation($country))
 		{
 			$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_E1'));
 			Log::debug("mw::_getToolExportControl($exportcontrol) FAILED E1 export control check");
@@ -1850,7 +1850,7 @@ class Sessions extends SiteController
 		switch ($exportcontrol)
 		{
 			case 'us':
-				if (\Hubzero\Geocode\Geocode::ipcountry($ip) != 'us')
+				if ($country != 'us')
 				{
 					$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_USA_ONLY'));
 					Log::debug("mw::_getToolExportControl($exportcontrol) FAILED US export control check");
@@ -1859,7 +1859,7 @@ class Sessions extends SiteController
 			break;
 
 			case 'd1':
-				if (\Hubzero\Geocode\Geocode::is_d1nation(\Hubzero\Geocode\Geocode::ipcountry($ip)))
+				if (\Hubzero\Geocode\Geocode::is_d1nation($country))
 				{
 					$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_LICENSE'));
 					Log::debug("mw::_getToolExportControl($exportcontrol) FAILED D1 export control check");

@@ -486,7 +486,7 @@ class Utils
 		}
 
 		//if the user is in an E1 nation
-		if (\Hubzero\Geocode\Geocode::is_e1nation(\Hubzero\Geocode\Geocode::ipcountry($ip)))
+		if (\Hubzero\Geocode\Geocode::is_e1nation($country))
 		{
 			$export_access->valid = 0;
 			$export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_E1');
@@ -498,7 +498,7 @@ class Utils
 		switch ($export_control)
 		{
 			case 'us':
-				if (\Hubzero\Geocode\Geocode::ipcountry($ip) != 'us')
+				if ($country != 'us')
 				{
 					$export_access->valid = 0;
 					$export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_USA_ONLY');
@@ -508,7 +508,7 @@ class Utils
 			break;
 
 			case 'd1':
-				if (\Hubzero\Geocode\Geocode::is_d1nation(\Hubzero\Geocode\Geocode::ipcountry($ip)))
+				if (\Hubzero\Geocode\Geocode::is_d1nation($country))
 				{
 					$export_access->valid = 0;
 					$export_access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_LICENSE');
