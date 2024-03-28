@@ -420,7 +420,10 @@ class Geocode
 				return $country;
 			}
 
-			$sql = "SELECT LOWER(countrySHORT) FROM ipcountry WHERE ipFROM <= INET_ATON(" . $gdb->quote($ip) . ") AND ipTO >= INET_ATON(" . $gdb->quote($ip) . ")";
+			// Convert the dotted quad IP address to long:
+			$n_ip = ip2long($ip);
+
+			$sql = "SELECT LOWER(countrySHORT) FROM ipcountry WHERE ipFROM <= " .  $gdb->quote($n_ip) . " AND ipTO >= " . $gdb->quote($n_ip);
 			$gdb->setQuery($sql);
 			$country = stripslashes($gdb->loadResult());
 		}
@@ -443,7 +446,7 @@ class Geocode
 				return $d1nation;
 			}
 
-			$gdb->setQuery("SELECT COUNT(*) FROM countrygroup WHERE LOWER(countrycode) = LOWER(" . $gdb->quote($country) . ") AND countrygroup = 'D1'");
+			$gdb->setQuery("SELECT COUNT(*) FROM countrygroup WHERE LOWER(countrycode) = " . $gdb->quote(strtolower($country)) . " AND countrygroup = 'D1'");
 			$c = $gdb->loadResult();
 			if ($c > 0)
 			{
@@ -469,7 +472,7 @@ class Geocode
 				return $e1nation;
 			}
 
-			$gdb->setQuery("SELECT COUNT(*) FROM countrygroup WHERE LOWER(countrycode) = LOWER(" . $gdb->quote($country) . ") AND countrygroup = 'E1'");
+			$gdb->setQuery("SELECT COUNT(*) FROM countrygroup WHERE LOWER(countrycode) = " . $gdb->quote(strtolower($country)) . " AND countrygroup = 'E1'");
 			$c = $gdb->loadResult();
 			if ($c > 0)
 			{
@@ -496,7 +499,10 @@ class Geocode
 				return $iplocation;
 			}
 
-			$sql = "SELECT COUNT(*) FROM iplocation WHERE ipfrom <= INET_ATON(" . $gdb->quote($ip) . ") AND ipto >= INET_ATON(" . $gdb->quote($ip) . ") AND LOWER(location) = LOWER(" . $gdb->quote($location) . ")";
+			// Convert the dotted quad IP address to long:
+			$n_ip = ip2long($ip);
+
+			$sql = "SELECT COUNT(*) FROM iplocation WHERE ipfrom <= " .  $gdb->quote($n_ip) . " AND ipto >= " . $gdb->quote($n_ip) . " AND LOWER(location) = " .  $gdb->quote(strtolower($location));
 			$gdb->setQuery($sql);
 			$c = $gdb->loadResult();
 			if ($c > 0)
