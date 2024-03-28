@@ -401,6 +401,9 @@
 	.editform input.short {
 		width: 6em;
 	}
+	.editform input[type="checkbox"] {
+		width: 1em;
+	}
 	.editform td {
 		vertical-align: top;
 	}
