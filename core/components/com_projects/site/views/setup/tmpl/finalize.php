@@ -198,6 +198,12 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 						</div>
 						<div class="form-group">
 							<label class="terms-label">
+								<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_AWARD_NUMBER'); ?>:
+								<input name="award_number" maxlength="250" type="text" class="form-control" value="<?php echo $this->model->params->get('award_number'); ?>" class="long" />
+							</label>
+						</div>
+						<div class="form-group">
+							<label class="terms-label">
 								<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:
 								<input name="grant_agency" maxlength="250" type="text" class="form-control" value="<?php echo $this->model->params->get('grant_agency'); ?>" class="long" />
 							</label>

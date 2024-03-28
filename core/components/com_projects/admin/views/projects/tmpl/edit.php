@@ -251,6 +251,10 @@ if ($this->model->groupOwner())
 						<input name="params[grant_PI]" id="param-grant_PI" maxlength="250" type="text" value="<?php echo $this->escape(html_entity_decode($this->params->get( 'grant_PI'))); ?>" class="long" />
 					</div>
 					<div class="input-wrap">
+						<label for="param-award_number"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_AWARD_NUMBER'); ?>:</label>
+						<input name="params[award_number]" id="param-award_number" maxlength="250" type="text" value="<?php echo $this->escape(html_entity_decode($this->params->get('award_number'))); ?>" class="long" />
+					</div>
+					<div class="input-wrap">
 						<label for="param-grant_agency"><?php echo Lang::txt('COM_PROJECTS_TERMS_GRANT_AGENCY'); ?>:</label>
 						<input name="params[grant_agency]" id="param-grant_agency" maxlength="250" type="text" value="<?php echo $this->escape(html_entity_decode($this->params->get( 'grant_agency'))); ?>" class="long" />
 					</div>
