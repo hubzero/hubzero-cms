@@ -164,7 +164,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 
 		$sql = "SELECT COUNT(DISTINCT aa.subid) as contribs, DATE_FORMAT(MIN(res.publish_up), '%d %b %Y') AS first_contrib, DATE_FORMAT(MAX(res.publish_up), '%d %b %Y') AS last_contrib
 				FROM `#__resources` AS res, `#__author_assoc` AS aa, `#__resource_types` AS restypes
-				WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = " . $database->quote($authorid) . " AND aa.role!='submitter'
+				WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = " . $database->quote($authorid) . " AND ((aa.role!='submitter' and res.type!=7) OR res.type=7)
 				AND res.standalone = 1
 				AND res.published = 1
 				AND (res.access=0 OR res.access=3)
