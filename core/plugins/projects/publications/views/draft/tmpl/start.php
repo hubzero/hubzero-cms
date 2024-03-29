@@ -28,8 +28,15 @@ defined('_HZEXEC_') or die();
 			$current = $this->choices[$i];
 			$action = 'publication';
 
-		?>
-		<div class="s-<?php echo $current->alias; ?>"><p><a href="<?php echo Route::url($this->route . '&action=' . $action . '&base=' . $current->alias); ?>"><?php echo $current->type; ?> <span class="block"><?php echo $current->description; ?></span></a></p></div>
+		?>		
+		<div class="s-<?php echo $current->alias; ?>">
+			<p>
+				<a href="<?php echo Route::url($this->route . '&action=' . $action . '&base=' . $current->alias); ?>"><?php echo $current->type; ?> <span class="block"><?php echo $current->description; ?></span></a>
+				<?php if(!empty($this->pubConfig->get('contact_email')) && !empty($this->pubConfig->get('doi_publisher'))) { ?>
+				<span class="pubType"><?php echo ($current->type == Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_FILES') ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_FILES_DESCRIPTION') : ($current->type == Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_DATABASES') ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_DATABASES_DESCRIPTION', $this->pubConfig->get('contact_email'), $this->pubConfig->get('doi_publisher')) : ($current->type == Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_SERIES') ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_SERIES_DESCRIPTION', $this->pubConfig->get('contact_email'), $this->pubConfig->get('doi_publisher')) : ''))); ?></span>
+				<?php } ?>
+			</p>
+		</div>
 		<?php } ?>
 		<div class="clear"></div>
 	</div>
