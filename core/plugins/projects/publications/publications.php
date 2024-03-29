@@ -1122,7 +1122,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->config   = $this->model->config();
 		$view->choices  = $choices;
 		$view->title    = $this->_area['title'];
-
+		$view->pubConfig = $this->_pubconfig;
+		
 		// Get messages	and errors
 		$view->msg = $this->_msg;
 		if ($this->getError())

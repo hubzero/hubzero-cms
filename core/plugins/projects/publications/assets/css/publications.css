@@ -240,6 +240,16 @@
 	#contrib-section .omega p {
 		font-size: 85%;
 	}
+	.pubType {
+		display: block;
+		margin-top: 12px;
+	}
+	.pubType > a:before {
+		content: "" !important;
+	}
+	.pubType > a:hover {
+		text-decoration: underline;
+	}
 
 /* Status bar publication version
 --------------------------------------------- */
