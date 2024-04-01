@@ -119,6 +119,9 @@ class Doi extends Obj
 			$configs->ezidServiceURL = $params->get('ezid_doi_service');
 			$configs->ezidUserPW = $params->get('ezid_doi_userpw');
 			$configs->publisher = $params->get('doi_publisher', Config::get('sitename'));
+			$configs->publisherIdentifier = $params->get('doi_publisher_identifier');
+			$configs->publisherIdentifierScheme = $params->get('doi_publisher_identifier_scheme');
+			$configs->publisherIdentifierSchemeURI = $params->get('doi_publisher_identifier_scheme_uri');
 			$configs->livesite  = trim(Request::root(), DS);
 			$configs->xmlSchema = trim($params->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-4/metadata.xsd'), DS);
 
@@ -508,6 +511,9 @@ class Doi extends Obj
 		$this->set('language', 'en');
 		$this->set('pubYear', date('Y'));
 		$this->set('publisher', htmlspecialchars($this->_configs->publisher));
+		$this->set('publisherIdentifier', htmlspecialchars($this->_configs->publisherIdentifier));
+		$this->set('publisherIdentifierScheme', htmlspecialchars($this->_configs->publisherIdentifierScheme));
+		$this->set('publisherIdentifierSchemeURI', htmlspecialchars($this->_configs->publisherIdentifierSchemeURI));
 		$this->set('resourceType', 'Dataset');
 		$this->set('resourceTypeTitle', 'Dataset');
 		$this->set('datePublished', date('Y-m-d'));
@@ -637,9 +643,17 @@ class Doi extends Obj
 		$xmlfile.='</creators>';
 		$xmlfile.='<titles>
 			<title>' . $this->get('title') . '</title>
-		</titles>
-		<publisher>' . $this->get('publisher') . '</publisher>
-		<publicationYear>' . $this->get('pubYear') . '</publicationYear>';
+		</titles>';
+		
+		if ($this->get('publisher'))
+		{
+			$publisherIdentifier = $this->get('publisherIdentifier') ? ' publisherIdentifier="' . $this->get('publisherIdentifier') . '"' : "";
+			$publisherIdentifierScheme = $this->get('publisherIdentifierScheme') ? ' publisherIdentifierScheme="' . $this->get('publisherIdentifierScheme') . '"' : "";
+			$publisherIdentifierSchemeURI = $this->get('publisherIdentifierSchemeURI') ? ' schemeURI="' . $this->get('publisherIdentifierSchemeURI') . '"' : "";
+			$xmlfile .= ' <publisher xml:lang="en"' . $publisherIdentifier . $publisherIdentifierScheme . $publisherIdentifierSchemeURI . '>' . $this->get('publisher') . '</publisher>';
+		}
+		
+		$xmlfile.= '<publicationYear>' . $this->get('pubYear') . '</publicationYear>';
 		
 		if ($this->get('contactPerson'))
 		{
@@ -884,7 +898,15 @@ class Doi extends Obj
 			
 			foreach($fosTags as $fosTag)
 			{
-				$xmlfile .= '<subject subjectScheme="Fields of Science and Technology (FOS)" schemeURI="http://www.oecd.org/science/inno" valueURI="http://www.oecd.org/science/inno/38235147.pdf">' . $fosTag->raw_tag . '</subject>';
+				$result = explode(PHP_EOL, $fosTag->description);
+				$valArr = explode(" | ", strip_tags($result[0]));
+				
+				if (!empty($valArr) && preg_match("/^fos::/i", trim($valArr[0])) && !empty($valArr[1]))
+				{
+					$classificationCode = substr(trim($valArr[0]), 5);
+					$fosTagVal = trim($valArr[1]);
+					$xmlfile .= '<subject subjectScheme="Fields of Science and Technology (FOS)" schemeURI="https://web-archive.oecd.org/2012-06-15/138575-38235147.pdf" classificationCode="' . $classificationCode . '">' . $fosTagVal . '</subject>';
+				}
 			}
 		}
 		$xmlfile .= '</subjects>';
