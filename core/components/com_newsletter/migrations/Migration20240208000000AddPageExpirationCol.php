@@ -9,7 +9,7 @@ defined('_HZEXEC_') or die();
 
 use Hubzero\Content\Migration\Base;
 
-class Migration20200915135039AddPageExpirationCol extends Base
+class Migration20240208000000AddPageExpirationCol extends Base
 {
 
 	static $tableName = '#__reply_pages';
