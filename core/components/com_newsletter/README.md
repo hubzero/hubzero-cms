@@ -20,14 +20,20 @@ All management of these features is found under the Hub's administrator interfac
 ### Install
 1. Run the migrations e.g. via `muse migration run ...`
 
-### Adding a Page
+### Pages
 It is assumed that all users providing correct credentials will have access to all pages.
 
-To add a form-based page:
-1. Add a record to `jos_reply_pages`
-1. Create a view for the page in `site/views/pages` 
+One page view is provided for use.
 
-### Adding an Email Subscription Option
+To add a new form-based page:
+1. Create a view for the page in `site/views/pages`, using the provided view, `page2.php`, as an example.
+1. The name of the view should be page<PAGEID>.php
+
+### Email Subscription Options
+
+One email subscription option page is provided for use.
+
+To add a new email subscription option:
 1. Create or confirm name of the corresponding profile field
 1. Add a record to `jos_email_subscriptions`
 1. Create a view (content to appear beneath label) if desired 
@@ -42,7 +48,6 @@ To add a form-based page:
     It takes two arguments, `jos_campaign`.`id` and `jos_users`.`username`
 
 ### Component-Specific Tables
-* `jos_reply_pages` - pages for collecting data
 * `jos_reply_replies` - user-submitted responses
 * `jos_email_subscriptions` - email subscription options
 
@@ -59,7 +64,9 @@ The email subscription update functionality integrates with the core user profil
 
 ### Generating Access Codes
 
-The stored procedure `hash_access_code` is used to generate and verify codes for page access. Codes are used in URLs as shown below. 
+The stored procedure `hash_access_code` is used to generate and verify codes for page access. Codes are used in URLs as shown below. To obtain a code for a campaign and user, call the stored procedure from the SQL command line: 
+
+`select hash_access_code(CAMPAIGNID, USERNAME);`
 
 ### Example URLs
 
@@ -67,10 +74,11 @@ Here:
 
 * USERNAME is the user's jos_user.username
 * CAMPAIGNID is campaign.id
+* PAGEID is the integer from the name of the page view in site/views/pages. The provided view is page2.php, giving PAGEID=2.
 
 
 #### pages
-`https://jsperhac.aws.hubzero.org/newsletter/pages/2?campaign=CAMPAIGNID&user=USERNAME&code=CODE_FROM_hash_access_code`
+`https://jsperhac.aws.hubzero.org/newsletter/pages/PAGEID?campaign=CAMPAIGNID&user=USERNAME&code=CODE_FROM_hash_access_code`
 
 #### subscriptions
 `https://jsperhac.aws.hubzero.org/newsletter/email-subscriptions?campaign=CAMPAIGNID&user=USERNAME&code=CODE_FROM_hash_access_code`

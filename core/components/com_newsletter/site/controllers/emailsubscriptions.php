@@ -14,12 +14,10 @@ $componentPath = Component::path('com_newsletter');
 require_once  "$componentPath/helpers/codeHelper.php";
 require_once  "$componentPath/helpers/subscriptionsHelper.php";
 require_once  "$componentPath/models/emailSubscription.php";
-require_once  "$componentPath/models/usersEmailSubscription.php";
 
 use Components\Newsletter\Helpers\CodeHelper;
 use Components\Newsletter\Helpers\SubscriptionsHelper;
 use Components\Newsletter\Models\EmailSubscription;
-use Components\Newsletter\Models\UsersEmailSubscription;
 
 class Emailsubscriptions extends SiteController
 {
