@@ -243,7 +243,7 @@ class Campaigns extends AdminController
 
 				// delete the campaign from the table
 				$query = new Query;
-				$deleted = $query->remove('campaign', 'id', $id);
+				$deleted = $query->remove('#__campaign', 'id', $id);
 
 				if (!$deleted)
 				{

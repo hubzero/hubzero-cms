@@ -15,14 +15,18 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20230920000000ComNewsletter extends Base
 {
+	public static $table = '#__campaign';
+
 	/**
 	 * Up
 	 **/
 	public function up()
 	{
-		if (!$this->db->tableExists('campaign'))
+		$table = self::$table;
+
+		if (!$this->db->tableExists($table))
 		{
-			$query = "CREATE TABLE IF NOT EXISTS `campaign` (
+			$query = "CREATE TABLE IF NOT EXISTS `$table` (
 				id INT(11) NOT NULL AUTO_INCREMENT,
 				title VARCHAR(50),
 				`description` TEXT,
@@ -45,9 +49,11 @@ class Migration20230920000000ComNewsletter extends Base
 	 **/
 	public function down()
 	{
-		if ($this->db->tableExists('campaign'))
+		$table = self::$table;
+
+		if ($this->db->tableExists($table))
 		{
-			$query = "DROP TABLE IF EXISTS `campaign`;";
+			$query = "DROP TABLE IF EXISTS `$table`;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
