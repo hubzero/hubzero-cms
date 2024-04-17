@@ -5,10 +5,10 @@ use Hubzero\Content\Migration\Base;
 // no direct access
 defined('_HZEXEC_') or die();
 
-class Migration20200709062801CreateEmailSubscriptionsTable extends Base
+class Migration20240203000000CreateRepliesTable extends Base
 {
 
-	static $tableName = '#__email_subscriptions';
+	static $tableName = '#__reply_replies';
 
 	public function up()
 	{
@@ -16,13 +16,10 @@ class Migration20200709062801CreateEmailSubscriptionsTable extends Base
 
 		$createTable = "CREATE TABLE $tableName (
 			`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			`description` varchar(255) NOT NULL,
-			`order` int(11) NOT NULL,
-			`view` varchar(255) NULL DEFAULT NULL,
-			`required` tinyint(1) NOT NULL DEFAULT 0,
-			`created` timestamp NULL DEFAULT NULL,
-			`modified` timestamp NULL DEFAULT NULL,
-			`modified_by` int(11) unsigned NULL DEFAULT NULL,
+			`user_id` int(11) unsigned NOT NULL,
+			`page_id` int(11) unsigned NOT NULL,
+			`input` text NOT NULL,
+			`created` timestamp NOT NULL,
 			PRIMARY KEY (`id`)
 		) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
 

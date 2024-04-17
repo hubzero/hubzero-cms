@@ -5,7 +5,7 @@ use Hubzero\Content\Migration\Base;
 // no direct access
 defined('_HZEXEC_') or die();
 
-class Migration20200709072644CreateUsersEmailSubscriptionsTable extends Base
+class Migration20240205000000CreateUsersEmailSubscriptionsTable extends Base
 {
 
 	static $tableName = '#__users_email_subscriptions';

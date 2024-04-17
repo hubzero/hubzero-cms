@@ -5,7 +5,7 @@ use Hubzero\Content\Migration\Base;
 // no direct access
 defined('_HZEXEC_') or die();
 
-class Migration20200707105156CreatePagesTable extends Base
+class Migration20240202000000CreatePagesTable extends Base
 {
 
 	static $tableName = '#__reply_pages';
