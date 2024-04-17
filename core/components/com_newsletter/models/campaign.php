@@ -21,7 +21,7 @@ class Campaign extends Relational
 	 *
 	 * @var  string
 	 */
-	protected $table = 'campaign';
+	protected $table = '#__campaign';
 
 	/**
 	 * Default order by for model

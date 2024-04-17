@@ -39,7 +39,7 @@ To add a form-based page:
 * `jos_user_profile_options` must be populated for the user profile fields. `jos_user_profile_options.field_id` must correspond with id from `jos_user_profile_fields.id`
 * `jos_users` user codes are provided at login time by the core Hubzero members plugin.
 * Hashed access codes are provided by the stored procedure, which can be accessed from the database.
-    It takes two arguments, `campaign`.`id` and `jos_users`.`username`
+    It takes two arguments, `jos_campaign`.`id` and `jos_users`.`username`
 
 ### Component-Specific Tables
 * `jos_reply_pages` - pages for collecting data
@@ -48,7 +48,7 @@ To add a form-based page:
 
 ### Access-Related Tables
 * `jos_users` - contains a `secret` for each user
-* `campaign` - contains a `secret` for each campaign, with expiration date
+* `jos_campaign` - contains a `secret` for each campaign, with expiration date
 * `jos_config` - the `value` column for `scope`='hub' and `key`='secret' contains the overall secret for the Hub
 
 ### Integrations

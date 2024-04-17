@@ -8,14 +8,22 @@ defined('_HZEXEC_') or die();
 class Migration20231222155500CreateHashStoredProc extends Base
 {
 
+	public static $campaign = '#__campaign';
+	public static $config = '#__config';
+	public static $users = '#__users';
+
 	public function up()
 	{
+		$campaign = self::$campaign;
+		$config = self::$config;
+		$users = self::$users;
+
 		$createSP = "CREATE FUNCTION hash_access_code (campaign_id INT(11), user_name VARCHAR(150)) ".
                 "RETURNS CHAR(64) ".
                 "BEGIN ".
-                "    SET @cs = (SELECT secret FROM campaign WHERE id=campaign_id); ".
-                "    SET @hs = (SELECT `value` FROM jos_config WHERE `key`='secret' AND `scope`='hub'); ".
-                "    SET @us = (SELECT secret FROM jos_users WHERE username=user_name); ".
+                "    SET @cs = (SELECT secret FROM `$campaign` WHERE id=campaign_id); ".
+                "    SET @hs = (SELECT `value` FROM `$config` WHERE `key`='secret' AND `scope`='hub'); ".
+                "    SET @us = (SELECT secret FROM `$users` WHERE username=user_name); ".
                 "RETURN SHA2(CONCAT(@cs,@hs,@us), 256); ".
                 "END;";
 
