@@ -18,7 +18,7 @@ defined('_HZEXEC_') or die();
  * is dropped from the table.
  *
  **/
-class Migration20231016000000ComMembers extends Base
+class Migration20230901000000ComMembers extends Base
 {
 	// specify table name
 	static $tableName = '#__users';
