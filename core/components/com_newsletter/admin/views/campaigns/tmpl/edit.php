@@ -31,8 +31,16 @@ Toolbar::help('campaign');
 	<fieldset class="adminform">
 		<legend><span><?php echo $text; ?> <?php echo Lang::txt('COM_NEWSLETTER_CAMPAIGN'); ?></span></legend>
 
+		<!-- Display campaign id, but only if it already exists (we are editing): -->
+		<?php if ($hasSecret) { ?>
+			<div class="input-wrap">
+				<label for="campaign-title"><?php echo Lang::txt('COM_NEWSLETTER_CAMPAIGN_ID'); ?></label><br />
+				<?php echo $this->campaign->id; ?>
+			</div>
+		<?php } ?>
+
 		<div class="input-wrap">
-			<label for="campaign-title"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_NAME'); ?></label><br />
+			<label for="campaign-title"><?php echo Lang::txt('COM_NEWSLETTER_CAMPAIGN_NAME'); ?></label><br />
 			<input type="text" name="campaign[title]" id="campaign-title" value="<?php echo $this->escape($this->campaign->title); ?>" /></td>
 		</div>
 
