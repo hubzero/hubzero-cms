@@ -439,6 +439,8 @@ class Profiles extends SiteController
 			}])
 			->whereEquals($a . '.block', 0)
 			->where($a . '.activation', '>', 0)
+			->where($a . '.sendEmail', '>=', 0)
+			->where($a . '.email', 'NOT LIKE', '%@invalid%')
 			->where($a . '.approved', '>', 0);
 
 		// Tags
