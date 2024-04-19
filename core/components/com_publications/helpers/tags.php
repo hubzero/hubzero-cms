@@ -149,13 +149,13 @@ class Tags extends \Hubzero\Base\Obj
 	}
 	
 	/**
-	 * Get all tags of a publication
+	 * Get all user tags of a publication
 	 *
 	 * @param      integer 		$vid		Publication version ID
 	 *
 	 * @return     array or false
 	 */
-	public function getAllTags($vid)
+	public function getAllUserTags($vid)
 	{
 		$sql = "SELECT DISTINCT jt.* FROM $this->_tag_tbl AS jt LEFT JOIN $this->_obj_tbl AS jto ON jt.id = jto.tagid AND jt.admin = 0 WHERE jto.objectid = $vid";
 		$this->_db->setQuery($sql);

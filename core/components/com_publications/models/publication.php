@@ -2493,7 +2493,7 @@ class Publication extends Obj
 		
 		$tagsObj = new Helpers\Tags($this->_db);
 		
-		return $tagsObj->getAllTags($this->version->id);
+		return $tagsObj->getAllUserTags($this->version->id);
 	}
 	
 	/**
