@@ -84,10 +84,14 @@ class Assets extends AdminController
 		);
 
 		$tbl = new Tables\Asset($this->database);
+		// print_r($this->view->filters);
 
 		$rows = $tbl->find(array(
 			'w' => $this->view->filters
 		));
+
+		// print_r($rows);
+
 		$r = array();
 		if ($rows)
 		{
