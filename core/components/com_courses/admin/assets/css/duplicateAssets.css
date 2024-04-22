@@ -1,0 +1,9 @@
+/* Duplicating Asset - need to override it */
+/* ICON for toolbar duplicating button: STAR */
+.toolbar-box li#toolbar-star a span:before {
+	content: "\f00b"; 
+}
+
+.toolbar-box li#toolbar-star {
+	background-color: rgb(216, 222, 98); 
+}

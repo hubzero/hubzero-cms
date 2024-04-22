@@ -497,6 +497,7 @@ class Assetgroup extends Base
 				foreach ($oldAssetGroupAssets as $asset)
 				{
 					$oldAssetId = $asset->get('id');
+
 					if (!$asset->copy())
 					{
 						$this->setError($asset->getError());
@@ -505,7 +506,10 @@ class Assetgroup extends Base
 					{
 						// Copy asset associations
 						$tbl = new Tables\AssetAssociation($this->_db);
-						foreach ($tbl->find(array('scope_id' => $oldAssetGroupId, 'scope' => 'asset_group', 'asset_id' => $oldAssetId)) as $aa)
+						foreach ($tbl->find(array(
+							'scope_id' => $oldAssetGroupId, 
+							'scope' => 'asset_group', 
+							'asset_id' => $oldAssetId)) as $aa)
 						{
 							$tbl->bind($aa);
 							$tbl->id = 0;
@@ -546,4 +550,62 @@ class Assetgroup extends Base
 
 		return true;
 	}
+
+	public function copyToSelectedAssetGroup(
+		$courseId=null, $offeringId=null, 
+		$unitId=null, $assetGroupParent=null, $deep=true) {
+			
+
+		// Keep a copy of the original asset group for later
+		$startingAssetGroupId     = $this->get('id');
+		$startingAssetGroupAssets = $this->assets();
+
+		// Reset the ID. This will force store() to create a new assetgroup record.
+		$this->set('id', 0);
+		$this->set('unit_id', $unitId);
+		$this->set('parent', $assetGroupParent);
+		$this->set('title', $this->get('title') . ' (duplicate)');
+		$this->set('alias', $this->get('alias') . '_duplicate');
+
+		// Store new assetgroup
+		if (!$this->store()){
+			return false;
+		}
+
+		// Need to work on the parents condition
+		// DEEP COPY 
+		if ($deep){
+			if ($startingAssetGroupAssets){
+				foreach ($startingAssetGroupAssets as $asset){
+					$startingAssetId = $asset->get('id');
+
+					// Duplicate the asset, returning 'true' will copy asset association
+					if (!$asset->duplicate($courseId)){
+						$this->setError($asset->getError());
+					}
+					else {
+						// With the new duplicated asset, find the row with the previous set scope_id, scope, and asset_id to duplicate
+						$tbl = new Tables\AssetAssociation($this->_db);
+						foreach ($tbl->find(array(
+							'scope_id' => $startingAssetGroupId, 
+							'scope' => 'asset_group', 
+							'asset_id' => $startingAssetId)) as $aa) {
+
+								// Take the selected row, adjust scope_id and asset_id
+								$tbl->bind($aa);
+								$tbl->id = 0;
+								$tbl->scope_id = $this->get('id');
+								$tbl->asset_id = $asset->get('id');
+								if (!$tbl->store()) {
+									$this->setError($tbl->getError());
+								}
+						}
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
 }
