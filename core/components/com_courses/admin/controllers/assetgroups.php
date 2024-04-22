@@ -590,17 +590,26 @@ class Assetgroups extends AdminController
 	}
 
 	/**
-	 * Upon saving the duplicate asset form
-	 * Task is ran through the toolbar
+	 * Upon saving the duplicate asset form with button underneath the form
 	 */
 	public function dupassetsTask() {
 		\Log::debug( var_export("---- dupassetsTask SAVE -----", true));
 
+		// Incoming
+		$id = Request::getArray('id', array());
+		$unit_id = Request::getArray('unit_id', array());
 
-		// Redirect back to the courses page
+		// Grab all the select options... will utilize the specific values
+		\Log::debug( var_export(Request::getString('filterCourses'), true));
+		\Log::debug( var_export(Request::getString('filterOfferings'), true));
+		\Log::debug( var_export(Request::getString('filterUnits'), true));
+		\Log::debug( var_export(Request::getString('filterAssetGroups'), true));
+
+
+		// Redirect to the asset groups
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_COURSES_ITEM_COPIED')
+			$message
 		);
 
 	}

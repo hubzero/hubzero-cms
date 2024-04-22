@@ -46,19 +46,19 @@ $this->css('duplicateAssets')
 
 				<div class="input-wrap" id="selectDropdownForAssetGroups">
 					<label for="field-parent">Save to which Asset Group?</label><br />
-					<select id="coursesSelect">
+					<select id="coursesSelect" name="filterCourses">
 						<option selected disabled>Select a Course</option>
 					</select>
 					<br><br>
-					<select id="offeringsSelect">
+					<select id="offeringsSelect" name="filterOfferings">
 						<option selected disabled>Select a Course Offering</option>
 					</select>
 					<br><br>
-					<select id="unitsSelect">
+					<select id="unitsSelect" name="filterUnits">
 						<option selected disabled>Select a Course Unit</option>
 					</select>
 					<br><br>
-					<select id="assetGroupsSelect">
+					<select id="assetGroupsSelect" name="filterAssetGroups">
 						<option selected disabled>Select a Asset Group</option>
 					</select>
 				</div>
