@@ -575,9 +575,6 @@ class Assetgroups extends AdminController
 		$this->view
 			->setLayout('duplicateassets')
 			->display();
-
-		// Get the assets - group
-		// Get all the different asset groups - dropdown
 	}
 
 	/**
@@ -595,16 +592,27 @@ class Assetgroups extends AdminController
 	public function dupassetsTask() {
 		\Log::debug( var_export("---- dupassetsTask SAVE -----", true));
 
-		// Incoming
-		$id = Request::getArray('id', array());
-		$unit_id = Request::getArray('unit_id', array());
+		// (START) Ids of asset groups that will be duplicated
+		$courseIdStart = Request::getString('courseIdToDuplicate');
+		$offeringIdStart = Request::getString('offeringIdToDuplicate');
+		$unitIdStart = Request::getString('unitIdToDuplicate');
+		$assetGroupParentIdStart = Request::getString('assetGroupIdToDuplicate');
 
-		// Grab all the select options... will utilize the specific values
-		\Log::debug( var_export(Request::getString('filterCourses'), true));
-		\Log::debug( var_export(Request::getString('filterOfferings'), true));
-		\Log::debug( var_export(Request::getString('filterUnits'), true));
-		\Log::debug( var_export(Request::getString('filterAssetGroups'), true));
+		// (END) Where the asset group will end up
+		$courseId = Request::getString('filterCourses');
+		$offeringId = Request::getString('filterOfferings');
+		$unitId = Request::getString('filterUnits');
+		$assetGroupParent = Request::getString('filterAssetGroups');
 
+		// $assetgroup = new \Components\Courses\Models\Assetgroup($id);
+
+		$messageSTART = "Dup asset START > courseId: " . $courseIdStart . " | offeringId: " . $offeringIdStart . " | unitId: " . $unitIdStart . " | assetGroupId: " . $assetGroupParentIdStart;
+		$messageEND = "Dup asset END > courseId: " . $courseId . " | offeringId: " . $offeringId . " | unitId: " . $unitId . " | assetGroupId: " . $assetGroupParent;
+
+		$message = "Dup Asset from " . $assetGroupParentIdStart . " to " . $assetGroupParent;
+
+		\Log::debug( var_export($messageSTART, true));
+		\Log::debug( var_export($messageEND, true));
 
 		// Redirect to the asset groups
 		App::redirect(

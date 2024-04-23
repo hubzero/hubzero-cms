@@ -35,9 +35,11 @@ $this->css('duplicateAssets')
 			<fieldset class="adminform">
 				<legend><span>Assets to Duplicate</span></legend>
 				
-				<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
-				<input type="hidden" name="fields[unit_id]" value="<?php echo $this->row->get('unit_id'); ?>" />
-				<input type="hidden" name="unit" value="<?php echo $this->row->get('unit_id'); ?>" />
+				<!-- Ids that will be passed to form -->
+				<input type="hidden" name="assetGroupIdToDuplicate" value="<?php echo $this->row->get('id'); ?>" />
+				<input type="hidden" name="unitIdToDuplicate" value="<?php echo $this->unit->get('id'); ?>" />
+				<input type="hidden" name="offeringIdToDuplicate" value="<?php echo $this->offering->get('id'); ?>" />
+				<input type="hidden" name="courseIdToDuplicate" value="<?php echo $this->course->get('id'); ?>" />
 
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
