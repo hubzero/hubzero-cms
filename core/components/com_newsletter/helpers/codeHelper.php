@@ -10,9 +10,11 @@ namespace Components\Newsletter\Helpers;
 $componentPath = Component::path('com_newsletter');
 
 require_once  "$componentPath/models/campaign.php";
+require_once  "$componentPath/models/page.php";
 require_once  "$componentPath/secrets/code.php";
 
 use Components\Newsletter\Models\Campaign;
+use Components\Newsletter\Models\Page;
 
 class CodeHelper
 {
@@ -28,6 +30,9 @@ class CodeHelper
 		// and ran a cron job that populated a db table to ensure this was the case.
 		// Here rather than maintaining the table we instead just assume that all users have access.
 
+		// check for existence of page
+		$pageExists = (1 == Page::all()->whereEquals('id', $pageId)->total());
+
 		// Calculate and compare hash of hub, user, and campaign secrets to passed code:
 		$database = \App::get('db');
 		$vars = array(
@@ -41,7 +46,7 @@ class CodeHelper
 		$hashMatches = ($code == $database->loadResult());
 
 		// Is this access valid?
-		return ($hashMatches && $campNotExpired);
+		return ($hashMatches && $campNotExpired && $pageExists);
 	}
 
 	// Validate code obtained from user's URL, using email subscription page id
