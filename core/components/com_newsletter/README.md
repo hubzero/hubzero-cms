@@ -22,10 +22,11 @@ All management of these features is found under the Hub's administrator interfac
 ### Install
 1. Run the migrations e.g. via `muse migration run ...`
 
-### Pages
-Pages are not restricted on a by-user basis.
+### Access
 A registered user providing a URL with correct credentials (page id, campaign id, and proper code) will have access to the specified page.
+Pages are not restricted on a by-user basis.
 
+### Pages
 One survey page is provided for use with this feature.
 To use it, the Hub must have at least one Campaign defined, with a valid expiration date.
 
@@ -43,8 +44,8 @@ To add a new email subscription option page:
 1. Create or confirm name of the corresponding profile field
 1. Add a record to `jos_email_subscriptions`
 1. Create a view (content to appear beneath label) if desired 
-1. Set the email page ID in `secrets/code.php`, using `secrets/code_example.php` as a model.
-    * Manually add a record to the table `jos_reply_pages` representing the page, with `jos_reply_pages`.`id` = the email page ID.
+1. Manually add a record to the table `jos_reply_pages` representing the page.
+1. Set the email page ID in `secrets/page_code.php`, so that it is equal to the new `jos_reply_pages`.`id`. 
 
 ### Gotchas
 * `jos_email_subscriptions.profile_field_name` must correspond with a `jos_user_profile_fields.name`
@@ -62,7 +63,7 @@ To add a new email subscription option page:
 * `jos_campaign` - contains a `secret` for each campaign, with expiration date
 * `jos_config` - the `value` column for `scope`='hub' and `key`='secret' contains the overall secret for the Hub
 
-### Integrations
+### Database integrations
 The email subscription update functionality integrates with the core user profile data.
 * `jos_user_profile_fields` - profile fields
 * `jos_user_profile_options` - profile field response options
@@ -70,7 +71,8 @@ The email subscription update functionality integrates with the core user profil
 
 ### Generating Access Codes
 
-The stored procedure `hash_access_code` is used to generate and verify codes for page access. Codes are used in URLs as shown below. To obtain a code for a campaign and user, call the stored procedure from the SQL command line: 
+The stored procedure `hash_access_code` is used to generate and verify codes for page access. Codes are used in URLs as shown below. 
+To obtain a code for a campaign and user, call the stored procedure from the SQL command line: 
 
 `select hash_access_code(CAMPAIGNID, USERNAME);`
 
@@ -80,14 +82,13 @@ The example URLs shown here validate Hub user access to the provided survey page
 
 Here:
 
-* USERNAME is the user's jos_user.username
-* CAMPAIGNID is campaign.id
+* USERNAME is the user's `jos_user`.`username`
+* CAMPAIGNID is `jos_campaign`.`id`
 * HUBNAME is the name of the Hub
 * PAGEID is the integer from the name of the page view in site/views/pages. The provided view is page2.php, giving PAGEID=2.
 
-
-#### pages
+#### Pages URL format
 `https://HUBNAME.org/newsletter/pages/PAGEID?campaign=CAMPAIGNID&user=USERNAME&code=CODE_FROM_hash_access_code`
 
-#### subscriptions
+#### Email subscription options URL format
 `https://HUBNAME.org/newsletter/email-subscriptions?campaign=CAMPAIGNID&user=USERNAME&code=CODE_FROM_hash_access_code`
