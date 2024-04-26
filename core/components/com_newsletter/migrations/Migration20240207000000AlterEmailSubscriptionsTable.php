@@ -22,11 +22,19 @@ class Migration20240207000000AlterEmailSubscriptionsTable extends Base
 
 		if ($this->db->tableExists($tableName))
 		{
-			$this->db->setQuery($renameDescription);
-			$this->db->query();
+			if ($this->db->tableHasField($tableName, 'description')) 
+			{
+				$this->log('Column `description` found in table, renaming...');
+				$this->db->setQuery($renameDescription);
+				$this->db->query();
+			}
 
-			$this->db->setQuery($dropRequired);
-			$this->db->query();
+			if ($this->db->tableHasField($tableName, 'required')) 
+			{
+				$this->log('Column `required` found in table, dropping...');
+				$this->db->setQuery($dropRequired);
+				$this->db->query();
+			}
 
 		}
 	}
@@ -43,11 +51,19 @@ class Migration20240207000000AlterEmailSubscriptionsTable extends Base
 
 		if ($this->db->tableExists($tableName))
 		{
-			$this->db->setQuery($renameDescription);
-			$this->db->query();
+			if ($this->db->tableHasField($tableName, 'profile_field_name')) 
+			{
+				$this->log('Column `profile_field_name` found in table, renaming...');
+				$this->db->setQuery($renameDescription);
+				$this->db->query();
+			}
 
-			$this->db->setQuery($dropRequired);
-			$this->db->query();
+			if (!$this->db->tableHasField($tableName, 'required')) 
+			{
+				$this->log('Column `required` not found in table, creating...');
+				$this->db->setQuery($addRequired);
+				$this->db->query();
+			}
 		}
 	}
 
