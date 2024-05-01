@@ -17,7 +17,7 @@ class Migration20240206000000PopulateStartingEmailSubscriptions extends Base
 		$now = Date::toSql();
 		$auto = $this->db->getAutoIncrement($tableName);
 
-		if ($auto == 1)
+		if ($auto == 0)
 		{
 			// if legacy table schema from com_reply
 			$insertRecords = "INSERT INTO $tableName
