@@ -529,6 +529,7 @@ class Assetgroups extends AdminController
 		$this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->unit->get('offering_id'));
 
 		$scopeId = $this->view->row->get('id');
+		// $parentId = $this->view->row->parent;
 		$courseId = $this->view->offering->get('course_id');
 		$this->view->course = \Components\Courses\Models\Course::getInstance($courseId);
 
@@ -596,7 +597,8 @@ class Assetgroups extends AdminController
 		$courseIdStart = Request::getString('courseIdToDuplicate');
 		$offeringIdStart = Request::getString('offeringIdToDuplicate');
 		$unitIdStart = Request::getString('unitIdToDuplicate');
-		$assetGroupParentIdStart = Request::getString('assetGroupIdToDuplicate');
+		$assetGroupIdStart = Request::getString('assetGroupIdToDuplicate');
+		$assetGroupParentIdStart = Request::getString('assetGroupParentIdToDuplicate');
 
 		// (END) Where the asset group will end up
 		$courseId = Request::getString('filterCourses');
@@ -604,10 +606,19 @@ class Assetgroups extends AdminController
 		$unitId = Request::getString('filterUnits');
 		$assetGroupParent = Request::getString('filterAssetGroups');
 
-		// $assetgroup = new \Components\Courses\Models\Assetgroup($id);
+		$assetgroup = new \Components\Courses\Models\Assetgroup($assetGroupIdStart);
+		if (!$assetgroup->copyToSelectedAssetGroup($courseId, $offeringId, $unitId, $assetGroupParent)){
+			// Redirect back to the courses page
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . $assetgroup->get('unit_id'), false),
+				Lang::txt('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $assetgroup->getError(),
+				'error'
+			);
+			return;
+		}
 
-		$messageSTART = "Dup asset START > courseId: " . $courseIdStart . " | offeringId: " . $offeringIdStart . " | unitId: " . $unitIdStart . " | assetGroupId: " . $assetGroupParentIdStart;
-		$messageEND = "Dup asset END > courseId: " . $courseId . " | offeringId: " . $offeringId . " | unitId: " . $unitId . " | assetGroupId: " . $assetGroupParent;
+		$messageSTART = "Dup asset START > courseId: " . $courseIdStart . " | offeringId: " . $offeringIdStart . " | unitId: " . $unitIdStart . " | assetGroupId: " . $assetGroupIdStart . " | assetGroupParentId: " . $assetGroupParentIdStart;
+		$messageEND = "Dup asset END > courseId: " . $courseId . " | offeringId: " . $offeringId . " | unitId: " . $unitId . " | assetGroupParentId: " . $assetGroupParent;
 
 		$message = "Dup Asset from " . $assetGroupParentIdStart . " to " . $assetGroupParent;
 

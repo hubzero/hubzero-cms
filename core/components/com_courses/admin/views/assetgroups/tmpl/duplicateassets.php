@@ -37,6 +37,7 @@ $this->css('duplicateAssets')
 				
 				<!-- Ids that will be passed to form -->
 				<input type="hidden" name="assetGroupIdToDuplicate" value="<?php echo $this->row->get('id'); ?>" />
+				<input type="hidden" name="assetGroupParentIdToDuplicate" value="<?php echo $this->row->get('parent'); ?>" />
 				<input type="hidden" name="unitIdToDuplicate" value="<?php echo $this->unit->get('id'); ?>" />
 				<input type="hidden" name="offeringIdToDuplicate" value="<?php echo $this->offering->get('id'); ?>" />
 				<input type="hidden" name="courseIdToDuplicate" value="<?php echo $this->course->get('id'); ?>" />
@@ -202,6 +203,11 @@ $this->css('duplicateAssets')
 					<tr>
 						<th scope="row">Asset Group Title</th>
 						<td><?php echo $this->escape($this->row->get('title')); ?></td>
+					</tr>
+					</tr>
+					<tr>
+						<th scope="row">Asset Group PARENT</th>
+						<td><?php echo $this->escape($this->row->get('parent')); ?></td>
 					</tr>
 					<tr>
 						<th scope="row">Asset Group Alias</th>

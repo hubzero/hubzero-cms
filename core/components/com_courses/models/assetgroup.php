@@ -497,6 +497,10 @@ class Assetgroup extends Base
 				foreach ($oldAssetGroupAssets as $asset)
 				{
 					$oldAssetId = $asset->get('id');
+
+					\Log::debug( var_export("---- BEFORE asset->copy() ----", true));
+					\Log::debug( var_export($oldAssetId, true));
+
 					if (!$asset->copy())
 					{
 						$this->setError($asset->getError());
@@ -546,4 +550,60 @@ class Assetgroup extends Base
 
 		return true;
 	}
+
+	// ------ ALWAYS A DEEP COPY ------
+	public function copyToSelectedAssetGroup(
+		$courseId=null, $offeringId=null, 
+		$unitId=null, $assetGroupParent=null, $deep=true) {
+
+		// Keep a copy of the original asset group for later
+		$startingAssetGroupId     = $this->get('id');
+		$startingAssetGroupAssets = $this->assets();
+
+		// Reset the ID. This will force store() to create a new record.
+		$this->set('id', 0);
+
+		$this->set('unit_id', $unitId);
+		$this->set('parent', $assetGroupParent);
+		$this->set('title', $this->get('title') . ' (copy - duplicate)');
+		$this->set('alias', $this->get('alias') . '_copy_duplicate');
+
+
+		\Log::debug( var_export("---- asset group->copyToSelectedAssetGroup() ----", true));
+
+		if (!$this->store()){
+			return false;
+		}
+
+		if ($deep){
+			// Copy assets (grab the assets from the original asset group)
+			if ($startingAssetGroupAssets){
+				foreach ($startingAssetGroupAssets as $asset){
+					$startingAssetId = $asset->get('id');
+
+					// Duplicate the asset
+					if (!$asset->duplicate($courseId)){
+						$this->setError($asset->getError());
+					}
+					else {
+						// Copy asset associations -- 
+						// TODO: FIX - doesn't add to the table at this point
+						$tbl = new Tables\AssetAssociation($this->_db);
+						foreach ($tbl->find(array('scope_id' => $startingAssetId, 'scope' => 'asset_group', 'asset_id' => $startingAssetId)) as $aa) {
+							$tbl->bind($aa);
+							$tbl->id = 0;
+							$tbl->scope_id = $this->get('id');
+							$tbl->asset_id = $asset->get('id');
+							if (!$tbl->store()) {
+								$this->setError($tbl->getError());
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
 }

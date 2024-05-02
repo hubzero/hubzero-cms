@@ -503,6 +503,9 @@ class Asset extends Base
 		// Keep track of the original id
 		$originalId = $this->get('id');
 
+		\Log::debug( var_export("---- asset->copy() ----", true));
+		\Log::debug( var_export($originalId, true));
+
 		// Reset the ID. This will force store() to create a new record.
 		$this->set('id', 0);
 
@@ -529,6 +532,40 @@ class Asset extends Base
 				$this->store();
 			}
 		}
+
+		return true;
+	}
+
+	/**
+	 * Duplicate an asset and it's associated data
+	 *
+	 * @param  bool $forms whether or not to duplicate forms as well
+	 * @return bool
+	 */
+	public function duplicate($courseId){
+		// Keep track of the original id
+		$originalId = $this->get('id');
+
+		// Reset the ID. This will force store() to create a new record.
+		$this->set('id', 0);
+
+		// TODO: FIX -------- NOT the RIGHT WAY TO SET PATH
+		// This path is probably the path to the folder
+		$pathNew = $courseId . '/' . $this->get('id');
+		$this->set('course_id', $courseId);
+		$this->set('path', $pathNew);
+
+		\Log::debug( var_export("---- asset->duplicate() ----", true));
+		\Log::debug( var_export($originalId, true));
+		\Log::debug( var_export($courseId, true));
+		\Log::debug( var_export($pathNew, true));
+
+		if (!$this->store()){
+			return false;
+		}
+
+		// This needs to be a deep copy for type: video, subtype: video
+		// Also file
 
 		return true;
 	}
