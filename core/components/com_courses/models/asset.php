@@ -503,9 +503,6 @@ class Asset extends Base
 		// Keep track of the original id
 		$originalId = $this->get('id');
 
-		\Log::debug( var_export("---- asset->copy() ----", true));
-		\Log::debug( var_export($originalId, true));
-
 		// Reset the ID. This will force store() to create a new record.
 		$this->set('id', 0);
 
@@ -548,24 +545,21 @@ class Asset extends Base
 
 		// Reset the ID. This will force store() to create a new record.
 		$this->set('id', 0);
-
-		// TODO: FIX -------- NOT the RIGHT WAY TO SET PATH
-		// This path is probably the path to the folder
-		$pathNew = $courseId . '/' . $this->get('id');
 		$this->set('course_id', $courseId);
-		$this->set('path', $pathNew);
 
-		\Log::debug( var_export("---- asset->duplicate() ----", true));
-		\Log::debug( var_export($originalId, true));
-		\Log::debug( var_export($courseId, true));
-		\Log::debug( var_export($pathNew, true));
-
+		// Initial storage
 		if (!$this->store()){
 			return false;
 		}
 
+		// Update the path with new asset id, additional store
+		// TODO: how does it create a directory, it's probably from models/assets/url.php
 		// This needs to be a deep copy for type: video, subtype: video
-		// Also file
+		$pathNew = $courseId . '/' . $this->get('id');
+		$this->set('path', $pathNew);
+		if (!$this->store()){
+			return false;
+		}
 
 		return true;
 	}

@@ -591,8 +591,6 @@ class Assetgroups extends AdminController
 	 * Upon saving the duplicate asset form with button underneath the form
 	 */
 	public function dupassetsTask() {
-		\Log::debug( var_export("---- dupassetsTask SAVE -----", true));
-
 		// (START) Ids of asset groups that will be duplicated
 		$courseIdStart = Request::getString('courseIdToDuplicate');
 		$offeringIdStart = Request::getString('offeringIdToDuplicate');
@@ -617,13 +615,8 @@ class Assetgroups extends AdminController
 			return;
 		}
 
-		$messageSTART = "Dup asset START > courseId: " . $courseIdStart . " | offeringId: " . $offeringIdStart . " | unitId: " . $unitIdStart . " | assetGroupId: " . $assetGroupIdStart . " | assetGroupParentId: " . $assetGroupParentIdStart;
-		$messageEND = "Dup asset END > courseId: " . $courseId . " | offeringId: " . $offeringId . " | unitId: " . $unitId . " | assetGroupParentId: " . $assetGroupParent;
-
-		$message = "Dup Asset from " . $assetGroupParentIdStart . " to " . $assetGroupParent;
-
-		\Log::debug( var_export($messageSTART, true));
-		\Log::debug( var_export($messageEND, true));
+		$message = "Duplicated Asset from Asset Group " . $assetGroupIdStart . 
+			" to Asset Group Parent" . $assetGroupParent;
 
 		// Redirect to the asset groups
 		App::redirect(
