@@ -498,9 +498,6 @@ class Assetgroup extends Base
 				{
 					$oldAssetId = $asset->get('id');
 
-					\Log::debug( var_export("---- BEFORE asset->copy() ----", true));
-					\Log::debug( var_export($oldAssetId, true));
-
 					if (!$asset->copy())
 					{
 						$this->setError($asset->getError());
@@ -514,10 +511,6 @@ class Assetgroup extends Base
 							'scope' => 'asset_group', 
 							'asset_id' => $oldAssetId)) as $aa)
 						{
-							\Log::debug( var_export("---- assetgroup AssetAssociation for COPY() ----", true));
-							\Log::debug( var_export($oldAssetGroupId, true));
-							
-							
 							$tbl->bind($aa);
 							$tbl->id = 0;
 							$tbl->scope_id = $this->get('id');
@@ -561,6 +554,7 @@ class Assetgroup extends Base
 	public function copyToSelectedAssetGroup(
 		$courseId=null, $offeringId=null, 
 		$unitId=null, $assetGroupParent=null, $deep=true) {
+			
 
 		// Keep a copy of the original asset group for later
 		$startingAssetGroupId     = $this->get('id');

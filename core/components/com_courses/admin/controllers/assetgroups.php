@@ -256,13 +256,7 @@ class Assetgroups extends AdminController
 
 		// Incoming
 		$fields = Request::getArray('fields', array(), 'post');
-
-		\Log::debug( var_export("---- SAVE TASK -----", true));
-		\Log::debug( var_export($fields, true));
-
 		$task = Request::getArray('task', array(), 'post');
-		\Log::debug( var_export($task, true));
-
 
 		// Instantiate a Course object
 		$model = new \Components\Courses\Models\Assetgroup($fields['id']);
