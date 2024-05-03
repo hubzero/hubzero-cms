@@ -442,14 +442,14 @@ class Parser
 
 						$lngth = count($macroPieces);
 						$macroPieces[$lngth - 1] = \Hubzero\Utility\Inflector::pluralize($macroPieces[$lngth - 1]);
-						$macroname = __NAMESPACE__ . '\\Macros\\' . implode('\\', array_map('ucfirst', $macroPieces));
-						$file = DS . implode(DS, array_map('strtolower', $macroPieces)) . '.php';
+						$altfile = DS . implode(DS, array_map('strtolower', $macroPieces)) . '.php';
 
-						if (is_file($path . $file))
+						if (is_file($path . $altfile))
 						{
 							$found = true;
 
-							include_once $path . $file;
+     							$macroname = __NAMESPACE__ . '\\Macros\\' . implode('\\', array_map('ucfirst', $macroPieces));
+							include_once $path . $altfile;
 							break;
 						}
 					}
