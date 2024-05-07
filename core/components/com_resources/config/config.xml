@@ -79,6 +79,12 @@
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
+		<field name="show_date_search" type="list" default="3" label="COM_RESOURCES_SHOW_DATE_SEARCH_LABEL" description="COM_RESOURCES_SHOW_DATE_SEARCH_DESC">
+			<option value="0">JHIDE</option>
+			<option value="1">COM_RESOURCES_SHOW_DATE_CREATED</option>
+			<option value="2">COM_RESOURCES_SHOW_DATE_MODIFIED</option>
+			<option value="3">COM_RESOURCES_SHOW_DATE_PUBLISHED</option>
+		</field>
 		<field name="show_date" type="list" default="3" label="COM_RESOURCES_SHOW_DATE_LABEL" description="COM_RESOURCES_SHOW_DATE_DESC">
 			<option value="0">JHIDE</option>
 			<option value="1">COM_RESOURCES_SHOW_DATE_CREATED</option>

@@ -106,10 +106,22 @@ $extras = Event::trigger('resources.onResourcesList', array($this->line));
 	<p class="details">
 		<?php
 		$info = array();
-		if ($thedate = $this->line->date)
-		{
-			$info[] = $thedate;
-		}
+ 
+                switch ($params->get('show_date_search', 3))
+                {
+                        case 1:
+                                $info[] = Date::of($this->line->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                                break;
+                        case 2:
+                                $info[] = Date::of($this->line->get('modified'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                                break;
+                        case 3:
+                                $info[] = Date::of($this->line->get('publish_up'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                                break;
+                        case 0:
+                        default:
+                                break;
+                }
 
 		if ($params->get('show_type'))
 		{
