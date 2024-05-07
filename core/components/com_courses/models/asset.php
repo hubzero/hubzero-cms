@@ -540,25 +540,53 @@ class Asset extends Base
 	 * @return bool
 	 */
 	public function duplicate($courseId){
-		// Keep track of the original id
+		// Keep track of the original asset ID, for original directory
 		$originalId = $this->get('id');
 
 		// Reset the ID. This will force store() to create a new record.
 		$this->set('id', 0);
 		$this->set('course_id', $courseId);
-
-		// Initial storage
 		if (!$this->store()){
 			return false;
 		}
 
-		// Update the path with new asset id, additional store
-		// TODO: how does it create a directory, it's probably from models/assets/url.php
-		// This needs to be a deep copy for type: video, subtype: video
-		$pathNew = $courseId . '/' . $this->get('id');
+		// Update the path with new asset id, additional call the store()
+		$assetId = $this->get('id');
+		$pathNew = $courseId . '/' . $assetId;
 		$this->set('path', $pathNew);
 		if (!$this->store()){
 			return false;
+		}
+
+		// Creates a new directory, makes a deep copy for type: video, subtype: video
+		$fileType = $this->get('type');
+		$fileSubtype = $this->get('subtype');
+		if ((($fileType == 'video') && ($fileSubtype == 'video')) || ($fileType == 'file')) {
+			$fileName = $this->get('url');
+			$cconfig = Component::params('com_courses');
+
+			// Build the upload path if it doesn't exist
+			$originalDirectory = PATH_APP . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $courseId . DS . $originalId . DS;
+			$uploadDirectory = PATH_APP . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $courseId . DS . $assetId . DS;
+
+			// Make sure upload directory exists and is writable
+			if (!is_dir($uploadDirectory)){
+				if (!Filesystem::makeDirectory($uploadDirectory, 0755, true)){
+					return array('error' => 'Server error. Unable to create upload directory');
+				}
+			}
+
+			if (!is_writable($uploadDirectory)){
+				return array('error' => 'Server error. Upload directory isn\'t writable');
+			}
+
+			// Get the final file path
+			$original_path = $originalDirectory . $fileName;
+			$target_path = $uploadDirectory . $fileName;
+
+			// Copy the file to the target directory
+			set_time_limit(60);
+			Filesystem::copy($original_path, $target_path);
 		}
 
 		return true;

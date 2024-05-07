@@ -45,6 +45,10 @@ else
 
 Html::behavior('framework', true);
 
+// Default width and height
+$width  = 'auto';
+$height = 'auto';
+
 // If the video type is 'hubpresenter', perform next steps
 if ($type == 'hubpresenter')
 {
