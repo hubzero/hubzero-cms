@@ -919,7 +919,9 @@ class Html
 
 						if (substr($firstChild->path, 0, 16) == 'https://doi.org/')
 						{
-							$mesg  = substr($firstChild->path,16);
+							//$mesg  = substr($firstChild->path,16);
+							$mesg  = Lang::txt('COM_RESOURCES_VIEW_RESOURCE');
+	
 						}
 						else if (substr($firstChild->path, 0, 7) == 'http://'
 						 || substr($firstChild->path, 0, 8) == 'https://'
