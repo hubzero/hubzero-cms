@@ -125,7 +125,7 @@ $this->css('usage', 'com_usage');
 					<td><a href="<?php echo Route::url('index.php?option=com_usage&task=tools&id='.$row->id.'&period=14'); ?>"><?php  echo (is_numeric($user_count_14)) ? number_format($user_count_14) : $user_count_14; ?></a></td>
 					<td><a href="<?php echo Route::url('index.php?option=com_usage&task=tools&id='.$row->id.'&period=14'); ?>"><?php echo (is_numeric($sim_count_14)) ? number_format($sim_count_14) : $sim_count_14; ?></a></td>
 					<td><?php echo plgMembersUsage::get_citationcount($row->id, 0); ?></td>
-					<td><?php echo $row->publish_up; ?></td>
+					<td><?php echo Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 				</tr>
 				<?php
 				$count++;
@@ -245,7 +245,7 @@ $this->css('usage', 'com_usage');
 					<td><?php echo $usercount12; ?></td>
 					<td><?php echo $usercount14; ?></td>
 					<td><?php echo $cites ?></td>
-					<td><?php echo $row->publish_up; ?></td>
+					<td><?php echo Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 				</tr>
 				<?php
 				$count++;
@@ -274,7 +274,7 @@ $this->css('usage', 'com_usage');
 							<td class="highlight"><?php echo $usercount12; ?></td>
 							<td class="highlight"><?php echo $usercount14; ?></td>
 							<td class="highlight"><?php echo $cites ?></td>
-							<td class="highlight"><?php echo $rw->publish_up; ?></td>
+							<td class="highlight"><?php echo Date::of($rw->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 						</tr>
 						<?php
 						$count++;
