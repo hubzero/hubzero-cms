@@ -8,6 +8,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+require_once Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
+
 /**
  * User plugin for updating quotas and session limits
  */
