@@ -413,6 +413,34 @@ class Tags extends Cloud
 		return $this->_db->loadColumn();
 	}
 
+		/**
+		 * Get a tag cloud for an object
+		 * 
+		 * @param   integer  $limit
+		 * @param   string   $tagstring
+		 * @param   integer  $maxTagCount -- max count of tags that can be searched
+		 * @return  string
+		 */
+		public function getTopTagCloud($limit, $tagstring='', $maxTagCount=5)
+		{
+			$tagArray = explode(",", $tagstring);
+
+			// check that we haven't been handed too many tags to search:
+			if (count($tagArray) > $maxTagCount)
+			{
+				// nope, too many, don't search:
+				$retval = null;
+			}
+			else
+			// ok, search for the tags:
+			{
+				$tags = $this->getTopTags($limit);
+				$retval = $this->buildTopCloud($tags, 'alpha', 0, $tagstring);
+			}
+			return $retval;
+		}
+
+
 	/**
 	 * Get a tag cloud for an object
 	 *
