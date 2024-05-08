@@ -1487,6 +1487,11 @@ class Tool
 			$err['title'] = Lang::txt('COM_TOOLS_ERR_TITLE_EXISTS');
 		}
 
+		if ($tool['repohost'] == 'gitExternal' && empty($tool['github']))
+		{
+			$err['repohost'] = Lang::txt('COM_TOOLS_ERR_GITHUB');
+		}
+
 		if (empty($tool['title']))
 		{
 			$err['title'] = Lang::txt('COM_TOOLS_ERR_TITLE');
