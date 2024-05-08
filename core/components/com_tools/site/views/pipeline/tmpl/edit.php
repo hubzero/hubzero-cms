@@ -274,7 +274,7 @@ $this->css('pipeline.css')
 					<fieldset id="gitExternalInput">
 						<legend><?php echo Lang::txt('COM_TOOLS_EDIT_GIT_URL'); ?>:</legend>
 						<label for="github">
-							<?php echo Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE') ?>: 
+							<?php echo Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE') ?>:  <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
 							<input type="text" name="tool[github]" id="github" placeholder="<?php echo Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE_PASTE'); ?>" value="<?php echo $this->defaults['github']; ?>" />
 						</label>
 						<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
