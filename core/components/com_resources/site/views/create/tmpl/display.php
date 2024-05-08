@@ -140,7 +140,7 @@ $this->css('introduction.css', 'system')
 			<div class="grid">
 				<div class="col span6">
 					<h3>Intellectual Property Considerations</h3>
-					<p>All materials contributed must have <strong>clearly defined rights and privileges</strong>. Online presentations and instructional material are normally licensed under <a class="legal creative-commons" href="/legal/cc" title="Learn more about Creative Commons">Creative Commons 3</a>. Read <a class="legal licensing" href="/legal/licensing">more details</a> about our licensing policies.</p>
+					<p>All materials contributed must have <strong>clearly defined rights and privileges</strong>. Online presentations and instructional material are normally licensed under <a class="legal creative-commons" href="/legal/cc" title="Learn more about Creative Commons">Creative Commons 4</a>. Read <a class="legal licensing" href="/legal/licensing">more details</a> about our licensing policies.</p>
 				</div><!-- / .col span6 -->
 				<div class="col span6 omega">
 					<h3>Questions or concerns?</h3>
