@@ -20,6 +20,8 @@ class Migration20231222155500CreateHashStoredProc extends Base
 
 		$createSP = "CREATE FUNCTION hash_access_code (campaign_id INT(11), user_name VARCHAR(150)) ".
                 "RETURNS CHAR(64) ".
+                "DETERMINISTIC ".
+                "READS SQL DATA ".
                 "BEGIN ".
                 "    SET @cs = (SELECT secret FROM `$campaign` WHERE id=campaign_id); ".
                 "    SET @hs = (SELECT `value` FROM `$config` WHERE `key`='secret' AND `scope`='hub'); ".
