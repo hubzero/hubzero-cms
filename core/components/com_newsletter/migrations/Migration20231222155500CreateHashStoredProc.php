@@ -18,7 +18,7 @@ class Migration20231222155500CreateHashStoredProc extends Base
 		$config = self::$config;
 		$users = self::$users;
 
-		$createSP = "CREATE FUNCTION hash_access_code (campaign_id INT(11), user_name VARCHAR(150)) ".
+		$createSP = "CREATE FUNCTION IF NOT EXISTS hash_access_code (campaign_id INT(11), user_name VARCHAR(150)) ".
                 "RETURNS CHAR(64) ".
                 "DETERMINISTIC ".
                 "READS SQL DATA ".
