@@ -10,4 +10,4 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         known_hosts: ${{ secrets.KNOWN_HOSTS }}
     - name: test cmd exec on dev.nanohub.org
-      run: ssh webadmin@dev.nanohub.org "date >> /var/www/dev/drbtest.txt;"
+#      run: ssh webadmin@dev.nanohub.org "date >> /var/www/dev/drbtest.txt;"
