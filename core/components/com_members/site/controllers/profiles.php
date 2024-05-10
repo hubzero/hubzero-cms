@@ -1723,7 +1723,19 @@ class Profiles extends SiteController
 		// Send a new confirmation code AFTER we've successfully saved the changes to the e-mail address
 		if ($email != $oldemail)
 		{
-			$this->_sendConfirmationCode($member->get('username'), $email, $confirm);
+                        $result = \Components\Members\Helpers\Utility::sendConfirmEmail($user, null, false);
+
+			if ($result)
+			{
+				Notify::success('A confirmation email has been sent to "'. htmlentities($email, ENT_COMPAT, 'UTF-8') .'". You must click the link in that email to re-activate your account.');
+			}
+			else
+			{
+				Notify::error('An error occurred emailing "'. htmlentities($email, ENT_COMPAT, 'UTF-8') .'" your confirmation.');
+			}
+
+			//$this->_sendConfirmationCode($member->get('username'), $email, $confirm, $member->get('registerDate'),$member->get('name'));
+
 
 			Event::trigger('onUserAfterChangeEmail', array($member->toArray()));
 		}
@@ -1757,7 +1769,7 @@ class Profiles extends SiteController
 	 * @param   string   $confirm  Confirmation code
 	 * @return  boolean
 	 */
-	private function _sendConfirmationCode($login, $email, $confirm)
+	private function _sendConfirmationCode($login, $email, $confirm, $name, $registerDate)
 	{
 		// Email subject
 		$subject = Config::get('sitename') .' account email confirmation';
@@ -1767,12 +1779,15 @@ class Profiles extends SiteController
 			'name'   => 'emails',
 			'layout' => 'confirm'
 		));
+
 		$eview->set('option', $this->_option)
 			->set('sitename', Config::get('sitename'))
 			->set('login', $login)
 			->set('email', $email)
 			->set('confirm', $confirm)
-			->set('baseURL', Request::base());
+			->set('baseURL', Request::base())
+			->set('registerDate', $registerDate)
+			->set('name', $name);
 
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);

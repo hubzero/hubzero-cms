@@ -199,7 +199,7 @@ class Utility
 	 * @param   object  $xregistration
 	 * @return  bool
 	 */
-	public static function sendConfirmEmail($user, $xregistration)
+	public static function sendConfirmEmail($user, $xregistration, $new = true)
 	{
 		$baseURL = rtrim(Request::root(), '/');
 
@@ -216,6 +216,7 @@ class Utility
 		$eview->xprofile      = $user;
 		$eview->baseURL       = $baseURL;
 		$eview->xregistration = $xregistration;
+		$eview->new           = $new;
 
 		$msg = new \Hubzero\Mail\Message();
 		$msg->setSubject($subject)
