@@ -210,7 +210,7 @@
 	.comment-add label {
 		display: block;
 	}
-	.comment-add label span {
+	.comment-add label span.label-text {
 		display: none;
 	}
 	.comment-add .cancelreply {
