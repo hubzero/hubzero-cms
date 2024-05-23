@@ -309,7 +309,6 @@ if ($mode != 'preview')
 									$grandchild->set('path', \Components\Resources\Helpers\Html::processPath($this->option, $grandchild, $child->id));
 
 									$alias = $grandchild->type->alias;
-									$logical_alias = Components\Resources\Models\Type::oneOrFail($grandchild->get('logical_type'))->alias;
 
 									switch ($alias)
 									{
@@ -325,20 +324,20 @@ if ($mode != 'preview')
 											break;
 										case 'elink':
 										case 'youtube':
-											if ($logical_alias == 'youtube') // youtube
+											if ($grandchild->get('logical_type') == 68) // youtube
 											{
 												$youtube .= (!$youtube) ? '<a title="View Presentation - YouTube Version" class="youtube" href="'.$grandchild->path.'" title="'.$this->escape(stripslashes($grandchild->title)).'">'.Lang::txt('View on YouTube').'</a>' : '';
 												break;	
 											}
 										case 'pdf':
 										default:
-											if ($logical_alias == 'pdf')
+											if ($grandchild->get('logical_type') == 14)
 											{
 												$ext = Filesystem::extension($grandchild->path);
 												$ext = (strpos($ext, '?') ? strstr($ext, '?', true) : $ext);
 												$pdf .= '<a href="'.$grandchild->path.'">'.Lang::txt('Notes').' (' . $ext . ')</a><br />'."\n";
 											}
-											elseif ($logical_alias == 'homeworkassignment')
+											elseif ($grandchild->get('logical_type') == 51)
 											{
 												$exercises .= '<a href="'.$grandchild->path.'">'.stripslashes($grandchild->title).'</a><br />'."\n";
 											}
