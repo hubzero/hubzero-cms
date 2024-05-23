@@ -19,7 +19,7 @@ if ($canDo->get('core.edit'))
 }
 Toolbar::cancel();
 
-
+Html::behavior('formvalidation');
 Html::behavior('switcher', 'submenu');
 Html::behavior('calendar');
 
