@@ -356,11 +356,11 @@ class Tags extends SiteController
 				);
 
 				// Find the exact match
-				if ($row->get('tag') == $filters['search'])
+				if (strtolower($row->get('tag')) == strtolower($filters['search']) || strtolower($name) == strtolower($filters['search']))
 				{
 					$exactMatches[] = $item;
 				}
-				if (stripos($row->get('tag'), $filters['search'] . ' ') === 0 || stripos($name, $filters['search'] . ' ') === 0)
+				elseif (stripos($row->get('tag'), $filters['search'] . ' ') === 0 || stripos($name, $filters['search'] . ' ') === 0)
 				{
 					$beginsWithWord[] = $item;
 				}
