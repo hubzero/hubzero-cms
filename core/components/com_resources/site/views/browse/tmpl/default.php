@@ -45,7 +45,7 @@ $this->css()
 						<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
 						<input type="hidden" name="tag" value="<?php echo $this->escape($this->filters['tag']); ?>" />
 					</fieldset>
-					<?php if ($this->filters['tag']) { ?>
+					<?php if (!User::isGuest() && $this->filters['tag']) { ?>
 						<fieldset class="applied-tags">
 							<ol class="tags">
 							<?php
@@ -185,6 +185,7 @@ $this->css()
 				<h3><?php echo Lang::txt('COM_RESOURCES_FIND_RESOURCE'); ?></h3>
 				<p><?php echo Lang::txt('COM_RESOURCES_FIND_RESOURCE_DETAILS'); ?></p>
 			</div><!-- / .container -->
+			<?php if (!User::isGuest()): ?>
 			<div class="container">
 				<h3><?php echo Lang::txt('COM_RESOURCES_POPULAR_TAGS'); ?></h3>
 				<?php
@@ -193,6 +194,7 @@ $this->css()
 				?>
 				<p><?php echo Lang::txt('COM_RESOURCES_POPULAR_TAGS_HINT'); ?></p>
 			</div>
+			<?php endif ?>
 		</aside><!-- / .aside -->
 		</div>
 	</section><!-- / .main section -->
