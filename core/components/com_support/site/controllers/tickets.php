@@ -1151,7 +1151,9 @@ class Tickets extends SiteController
 				if (Validate::email($def))
 				{
 					// Send e-mail
-					$message->setTo(array($def));
+					// Updated to have protection from data breach, list of users are sent bcc
+                    $message->setTo(Config::get('mailfrom'));
+                    $message->setBcc(array($def));
 					$message->send();
 				}
 			}

@@ -1925,9 +1925,11 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$message = new \Hubzero\Mail\Message();
 
 		// set message details and send
+		// Protection from data breach, list of users are sent bcc
 		$message->setSubject($subject)
 				->addFrom($from['email'], $from['name'])
-				->setTo($to)
+				->setTo($from['email'])
+				->setBcc($to)
 				->addPart($body, 'text/plain')
 				->addHeader('X-Component', 'com_groups')
 				->addHeader('X-Component-Object', 'Group Calendar Event Registration')

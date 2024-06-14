@@ -405,6 +405,7 @@ class Membership extends Base
 			$message = new \Hubzero\Mail\Message();
 
 			// build message object and send
+			// Protection from data breach, list of users are sent bcc
 			$message->setSubject($subject)
 					->addFrom($from['email'], $from['name'])
 					->setTo($from['email'])
@@ -494,6 +495,7 @@ class Membership extends Base
 			$message = new \Hubzero\Mail\Message();
 
 			// build message object and send
+			// Protection from data breach, list of users are sent bcc
 			$message->setSubject($subject)
 					->addFrom($from['email'], $from['name'])
 					->setTo($from['email'])
@@ -744,9 +746,11 @@ class Membership extends Base
 		$message = new \Hubzero\Mail\Message();
 
 		// build message object and send
+		// Protection from data breach, list of users are sent bcc
 		$message->setSubject($subject)
 				->addFrom($from['email'], $from['name'])
-				->setTo($managers)
+				->setTo($from['email'])
+				->setBcc($managers)
 				->addHeader('X-Mailer', 'PHP/' . phpversion())
 				->addHeader('X-Component', 'com_groups')
 				->addHeader('X-Component-Object', 'group_invite_accepted')
@@ -1183,9 +1187,11 @@ class Membership extends Base
 		$message = new \Hubzero\Mail\Message();
 
 		// build message object and send
+		// Protection from data breach, list of users are sent bcc
 		$message->setSubject($subject)
 				->addFrom($from['email'], $from['name'])
-				->setTo($managers)
+				->setTo($from['email'])
+				->setBcc($managers)
 				->addHeader('X-Mailer', 'PHP/' . phpversion())
 				->addHeader('X-Component', 'com_groups')
 				->addHeader('X-Component-Object', 'group_membership_requested')

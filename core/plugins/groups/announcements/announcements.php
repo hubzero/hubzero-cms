@@ -629,10 +629,12 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			$message = new Hubzero\Mail\Message();
 
 			// Set message details and send
+			// Protection from data breach, list of users are sent bcc
 			$message->setSubject($subject)
 					->addReplyTo($from['email'], $from['name'])
 					->addFrom($from['email'], $from['name'])
-					->setTo($email, $name)
+					->setTo($from['email'])
+					->setBcc($email, $name)
 					->addPart($plain, 'text/plain')
 					->addPart($html, 'text/html')
 					->send();

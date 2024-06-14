@@ -852,9 +852,11 @@ class Groups extends Base
 			$message = new \Hubzero\Mail\Message();
 
 			// Build message object and send
+			// Protection from data breach, list of users are sent bcc
 			$message->setSubject($subject)
 					->addFrom($from['email'], $from['name'])
-					->setTo($emailadmin)
+					->setTo($$from['email'])
+					->setBcc($emailadmin)
 					->addHeader('X-Mailer', 'PHP/' . phpversion())
 					->addHeader('X-Component', 'com_groups')
 					->addHeader('X-Component-Object', 'group_pending_approval')
@@ -1142,9 +1144,11 @@ class Groups extends Base
 		$message = new \Hubzero\Mail\Message();
 
 		// Build message object and send
+		// Protection from data breach, list of users are sent bcc
 		$message->setSubject($subject)
 				->addFrom($from['email'], $from['name'])
-				->setTo($groupMembers)
+				->setTo($from['email'])
+				->setBcc($groupMembers)
 				->addHeader('X-Mailer', 'PHP/' . phpversion())
 				->addHeader('X-Component', 'com_groups')
 				->addHeader('X-Component-Object', 'group_deleted')

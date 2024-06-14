@@ -322,9 +322,11 @@ class Pages
 		$message = new \Hubzero\Mail\Message();
 
 		// build message object and send
+		// Protection from data breach, list of users are sent bcc
 		$message->setSubject($subject)
 				->addFrom($from['email'], $from['name'])
-				->setTo($approvers)
+				->setTo($from['email'])
+				->setBcc($approvers)
 				->addHeader('X-Mailer', 'PHP/' . phpversion())
 				->addHeader('X-Component', 'com_groups')
 				->addHeader('X-Component-Object', $type . '_approval')
@@ -392,9 +394,11 @@ class Pages
 		$message = new \Hubzero\Mail\Message();
 
 		// build message object and send
+		// Protection from data breach, list of users are sent bcc
 		$message->setSubject($subject)
 				->addFrom($from['email'], $from['name'])
-				->setTo($managers)
+				->setTo($from['email'])
+				->setBcc($managers)
 				->addHeader('X-Mailer', 'PHP/' . phpversion())
 				->addHeader('X-Component', 'com_groups')
 				->addHeader('X-Component-Object', $type . '_approved')

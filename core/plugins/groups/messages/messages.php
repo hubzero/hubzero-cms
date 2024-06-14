@@ -448,9 +448,10 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 				->setFrom(array($from['email'] => $from['name']))
 				->addPart($plain, 'text/plain');
 
+		// Protection from data breach, list of users are sent bcc
 		foreach ($recipients as $email => $name)
 		{
-			$message->setTo(array($email => $name))->send();
+			$message->setTo(array($from['email'] => $from['name']))->setBcc(array($email => $name))->send();
 		}
 
 		// add invite emails if sending to invitees

@@ -1612,9 +1612,11 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$message = new Hubzero\Mail\Message();
 
 		// set message details and send
+		// Protection from data breach, list of users are sent bcc
 		$message->setSubject($subject)
 				->addFrom($from['email'], $from['name'])
-				->setTo($targetuser->get('email'))
+				->setTo($from['email'])
+				->setBcc($targetuser->get('email'))
 				->addPart($plain, 'text/plain')
 				->send();
 	}
@@ -1662,9 +1664,11 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			$message = new Hubzero\Mail\Message();
 
 			// set message details and send
+			// Protection from data breach, list of users are sent bcc
 			$message->setSubject($subject)
 					->addFrom($from['email'], $from['name'])
-					->setTo($email)
+					->setTo($from['email'])
+					->setBcc($email)
 					->addPart($plain, 'text/plain')
 					->send();
 		}

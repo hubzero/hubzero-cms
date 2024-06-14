@@ -167,7 +167,9 @@ class Mail extends AdminController
 		}
 		else
 		{
-			$mailer->setTo($rows);
+			// Protection from data breach, list of users are sent bcc
+			$mailer->setTo(Config::get('mailfrom'));
+            $mailer->setBcc($rows);
 		}
 
 		// Send the Mail
