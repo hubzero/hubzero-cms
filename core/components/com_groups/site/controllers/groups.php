@@ -855,7 +855,7 @@ class Groups extends Base
 			// Protection from data breach, list of users are sent bcc
 			$message->setSubject($subject)
 					->addFrom($from['email'], $from['name'])
-					->setTo($$from['email'])
+					->setTo($from['email'])
 					->setBcc($emailadmin)
 					->addHeader('X-Mailer', 'PHP/' . phpversion())
 					->addHeader('X-Component', 'com_groups')
