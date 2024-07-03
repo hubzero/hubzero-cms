@@ -20,6 +20,10 @@ $canDo = \Components\Courses\Helpers\Permissions::getActions();
 Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_ASSET_GROUPS'), 'courses');
 if ($canDo->get('core.create'))
 {
+	// NEW FEATURE - [Asset Duplicate] - Pop open a modal window with form
+	Toolbar::custom('assetdup', 'star', '', 'COM_COURSES_ASSET_DUPLICATE', true);
+	Toolbar::spacer();
+	
 	Toolbar::custom('copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
 	Toolbar::spacer();
 	Toolbar::addNew();
@@ -35,7 +39,8 @@ if ($canDo->get('core.delete'))
 Toolbar::spacer();
 Toolbar::help('assetgroups');
 
-$this->css();
+$this->css()
+	->css('duplicateAssets');
 
 Html::behavior('tooltip');
 ?>
@@ -63,7 +68,7 @@ Html::behavior('tooltip');
 		</div>
 	</fieldset>
 
-	<table class="adminlist">
+	<table class="adminlist" id="adminAssetGroupsList">
 		<caption>
 			(<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')); ?>">
 				<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>

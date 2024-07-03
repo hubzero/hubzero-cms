@@ -228,4 +228,111 @@ class Assetgroupv1_0 extends base
 		// Return message
 		$this->send('New order saved');
 	}
+
+	// Creating that hierachy with an API
+	// https://stage.stemedhub.org/api/courses/assetgroup/getAllCourses
+	// COURSES - LEVEL 1
+	public function getAllCoursesTask(){
+		$database = \App::get('db');
+		$query = "SELECT * FROM `#__courses`";
+
+        $database->setQuery($query);
+        $rows = $database->loadObjectList();
+
+        $object = new stdClass();
+        $object->courses = $rows;
+
+        $this->send($object);
+	}
+
+	// COURSE OFFERING - LEVEL 2
+	// https://stage.stemedhub.org/api/courses/assetgroup/getAllCourseOfferings?courseId=8
+	public function getAllCourseOfferingsTask(){
+		$courseId = Request::getInt('courseId', false);
+
+		// Conditional Checks
+		if (!$courseId) {
+			throw new Exception("Course Id is required");
+		}
+
+		$database = \App::get('db');
+		$query = "SELECT * FROM `#__courses_offerings` WHERE `course_id` = " . $courseId;
+
+        $database->setQuery($query);
+        $rows = $database->loadObjectList();
+
+        $object = new stdClass();
+        $object->course_offerings = $rows;
+
+        $this->send($object);
+	}
+
+	// COURSE UNITS - LEVEL 3
+	// https://stage.stemedhub.org/api/courses/assetgroup/getAllCourseUnits?offeringId=8
+	public function getAllCourseUnitsTask(){
+		$offeringId = Request::getInt('offeringId', false);
+
+		// Conditional Checks
+		if (!$offeringId) {
+			throw new Exception("Offering Id is required");
+		}
+
+		$database = \App::get('db');
+		$query = "SELECT * FROM `#__courses_units` WHERE `offering_id` = " . $offeringId;
+
+        $database->setQuery($query);
+        $rows = $database->loadObjectList();
+
+        $object = new stdClass();
+        $object->course_units = $rows;
+
+        $this->send($object);
+	}
+
+	// ASSET GROUPS - LEVEL 4
+	// https://stage.stemedhub.org/api/courses/assetgroup/getAllAssetGroups?unitId=18
+	// https://stackoverflow.com/questions/21021863/creating-a-nested-array-form-a-flat-array-trough-parent-id
+	public function getAllAssetGroupsTask(){
+		$unitId = Request::getInt('unitId', false);
+
+		// Conditional Checks
+		if (!$unitId) {
+			throw new Exception("Unit Id is required");
+		}
+
+		$database = \App::get('db');
+		$query = "SELECT * FROM `#__courses_asset_groups` WHERE `unit_id` = " . $unitId;
+
+		// Recursive
+        $database->setQuery($query);
+        $rows = $database->loadObjectList();
+
+		$jsonArray = array();
+        foreach ($rows as $v) {
+			// Solve Error "Cannot use object of type stdClass as array"
+            $assetGroupArray = (array) json_decode(json_encode($v),true);
+            $jsonArray[] = $assetGroupArray;
+        }
+
+		$tree = $this->convertToTree($jsonArray);
+
+		$object = new stdClass();
+        $object->asset_groups = $tree;
+
+        $this->send($object);
+	}
+
+	// This is a recursive function, needed to happen because levels can vary with depth and location of nodes, it's a tree.
+    public function convertToTree($flat, $idField = 'id', $parentIdField = 'parent', $childNodesField = 'child', $curIdx = 0) {
+        $indexed = array();
+
+        foreach($flat as $row) {
+            if ($row[$parentIdField] == $curIdx) {
+                $indexed[$row[$idField]] = $row;
+                $indexed[$row[$idField]]["child"] = $this->convertToTree($flat, $idField, $parentIdField, $childNodesField, $row[$idField]);
+            }
+        }
+
+        return $indexed;
+    }
 }
