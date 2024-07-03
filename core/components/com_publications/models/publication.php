@@ -31,6 +31,7 @@ require_once dirname(__DIR__) . DS . 'tables' . DS . 'master.type.php';
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'screenshot.php';
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php';
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'logs.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'collaborator.php';
 
 // Projects
 require_once \Component::path('com_projects') . DS . 'models' . DS . 'project.php';
@@ -89,6 +90,18 @@ class Publication extends Obj
 	 * @var  boolean
 	 */
 	private $isTool = null;
+	
+	/**
+	 * ORCID service URLs
+	 *
+	 * @var  array
+	 */
+	protected $orcidServices = array(
+		'public'  => 'pub.orcid.org',
+		'publicsandbox'  => 'pub.sandbox.orcid.org',
+		'members' => 'api.orcid.org',
+		'sandbox' => 'api.sandbox.orcid.org'
+	);
 
 	/**
 	 * Constructor
@@ -2516,5 +2529,252 @@ class Publication extends Obj
 		$tagsObj = new Helpers\Tags($this->_db);
 		
 		return $tagsObj->getFOSTag($tagid);
+	}
+	
+	/**
+	 * Get the data according to ORCID work schema
+	 *
+	 * @param   string  $putCode
+	 *
+	 * @return  boolean or array
+	 */
+	 public function getWorkData($putCode = NULL)
+	 {
+		 if (!$this->exists())
+		 {
+			 return false;
+		 }
+		 
+		 // title
+		 $title = ['title' => $this->version->title];
+		 
+		 // short-description
+		 $description = $this->version->abstract;
+		 
+		 // contributors
+		 $authors = $this->authors();
+		 $contributors['contributor'] = [];
+		 $i = 0;
+		 foreach ($authors as $author)
+		 {
+			 $contributor = [];
+			 
+			 if (!empty($author->orcid))
+			 {
+				 $contributor['contributor-orcid'] = [
+				 'uri' => "https://orcid.org" . DS . $author->orcid,
+				 'path' => $author->orcid,
+				 "host" => "orcid.org"
+				 ];
+			 }
+			 
+			 $contributor['credit-name'] = !empty($author->p_name) ? $author->p_name : $author->name;
+			 
+			 $email = !empty($author->p_email) ? $author->p_email : (!empty($author->invited_email) ? $author->invited_email : '');
+			 if (!empty($email))
+			 {
+				 $contributor['contributor-email'] = $email;
+			 }
+			 
+			 $sequence = $i == 0 ? 'first' : 'additional';
+			 $contributor['contributor-attributes'] = ['contributor-sequence' => $sequence, 'contributor-role' => 'author'];
+			 $contributors['contributor'][] = $contributor;
+			 $i++;
+		 }
+		 
+		 // url
+		 $url = trim(Request::root(), DS) . DS . 'publications'. DS . $this->version->publication_id . DS . $this->version->version_number;
+		 
+		 // citation
+		 $citationType = 'bibtex';
+		 include_once Component::path('com_citations') . DS . 'helpers' . DS . 'BibTex.php';
+		 $bibtex = new \Structures_BibTex();
+		 $arr = [];
+		 $arr['type'] = 'misc';
+		 $arr['cite'] = Config::get('sitename') . $this->version->publication_id;
+		 $arr['title'] = stripslashes($this->version->title);
+		 if ($authors)
+		 {
+			 $i = 0;
+			 foreach ($authors as $author)
+			 {
+				 $name = $author->name ? $author->name : $author->p_name;
+				 $authorArr = explode(',', $name);
+				 $authorArr = array_map('trim', $authorArr);
+				 $arr['author'][$i]['first'] = (isset($authorArr[1])) ? $authorArr[1] : '';
+				 $arr['author'][$i]['last']  = (isset($authorArr[0])) ? $authorArr[0] : '';
+				 $i++;
+			}
+		 }
+		 $arr['month'] = date('m', strtotime($this->version->accepted));
+		 $arr['url']   = $url;
+		 $arr['year']  = date('Y', strtotime($this->version->accepted));
+		 $arr['doi'] = 'doi:' . DS . $this->version->doi;
+		 $bibtex->addEntry($arr);
+		 $citationValue = $bibtex->bibTex();
+		 $citation = ['citation-type' => $citationType, 'citation-value' => $citationValue];
+		 
+		 // type
+		 $type = 'data-set';
+		 
+		 // published Date
+		 $publishedDate = [
+		 'year' => ['value' => date('Y', strtotime($this->version->accepted))], 
+		 'month' => ['value' => date('m', strtotime($this->version->accepted))],
+		 'day' => ['value' => date(('d'), strtotime($this->version->accepted))]
+		 ];
+		 
+		 // external IDs
+		 $externalIDs['external-id'] = [
+		 'external-id-type' => 'doi', 
+		 'external-id-value' => $this->version->doi,
+		 'external-id-url' => ['value' => "https://doi.org" . DS . $this->version->doi],
+		 'external-id-relationship' => 'self'
+		 ];
+		 
+		 $data = ['title' => $title,
+		 'short-description' => $description,
+		 'citation' => $citation,
+		 'type' => $type,
+		 'publication-date' => $publishedDate,
+		 'external-ids' => $externalIDs,
+		 'url' => $url,
+		 'contributors' => $contributors,
+		 'language-code' => 'en',
+		 'country' => ['value' => 'US']
+		 ];
+		 
+		 if (!empty($putCode))
+		 {
+			 $data['put-code'] = $putCode;
+		 }
+		 
+		 return json_encode($data);
+	 }
+	
+	/**
+	 * Add publication to author's ORCID record
+	 *
+	 * @param   string  $orcidID
+	 * @param   string  $accessToken
+	 *
+	 * @return  boolean or string
+	 */
+	 public function addPubToORCID($orcidID, $accessToken)
+	 {
+		 $memberConfig = Component::params('com_members');
+		 $srv = $memberConfig->get('orcid_service', 'members');
+		 $serviceURL = Request::scheme() . '://' . $this->orcidServices[$srv] . '/v3.0/' . $orcidID . '/work';
+		 $header = ['Content-Type: application/vnd.orcid+json', 'Authorization: Bearer ' . $accessToken];
+		 $data = $this->getWorkData();
+		 
+		 $ch = curl_init();
+		 $headers = [];
+		 curl_setopt($ch, CURLOPT_URL, $serviceURL);
+		 curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+		 curl_setopt($ch, CURLOPT_POST, true);
+		 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		 curl_setopt($ch, CURLOPT_HEADER, true);
+		 curl_setopt($ch, CURLOPT_HEADERFUNCTION, function($curl, $header) use (&$headers){
+			 $len = strlen($header);
+			 $header = explode(':', $header, 2);
+			 if (count($header) < 2)
+			 {
+				 return $len;
+			 }
+			 
+			 $headers[strtolower(trim($header[0]))][] = trim($header[1]);
+			 return $len;
+		 });
+		 curl_exec($ch);
+		 curl_close($ch);
+		 
+		 if (!empty($headers['location'][0]))
+		 {
+			 return basename($headers['location'][0]);
+		 }
+		 
+		 return false;
+	 }
+	 
+	 /**
+	 * Update work in author's ORCID record
+	 *
+	 * @param   string  $orcidID
+	 * @param   string  $accessToken
+	 * @param   string  $putCode
+	 *
+	 * @return  boolean
+	 */
+	 public function updateWorkInORCID($orcidID, $accessToken, $putCode)
+	 {
+		 $memberConfig = Component::params('com_members');
+		 $srv = $memberConfig->get('orcid_service', 'members');
+		 $serviceURL = Request::scheme() . '://' . $this->orcidServices[$srv] . '/v3.0/' . $orcidID . '/work/' . $putCode;
+		 $header = ['Content-Type: application/vnd.orcid+json', 'Authorization: Bearer ' . $accessToken];
+		 $data = $this->getWorkData($putCode);
+		 
+		 $ch = curl_init();
+		 curl_setopt($ch, CURLOPT_URL, $serviceURL);
+		 curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+		 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+		 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		 curl_exec($ch);
+		 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		 curl_close($ch);
+		 
+		 return $httpCode == 200 || $httpCode == 201;
+	 }
+	 
+	 /**
+	 * Delete work in author's ORCID record
+	 *
+	 * @param   string  $orcidID
+	 * @param   string  $accessToken
+	 * @param   string  $putCode
+	 *
+	 * @return  boolean
+	 */
+	 public function deleteWorkInORCID($orcidID, $accessToken, $putCode)
+	 {
+		 $memberConfig = Component::params('com_members');
+		 $srv = $memberConfig->get('orcid_service', 'members');
+		 $serviceURL = Request::scheme() . '://' . $this->orcidServices[$srv] . '/v3.0/' . $orcidID . '/work/' . $putCode;
+		 $header = ['Content-Type: application/vnd.orcid+json', 'Authorization: Bearer ' . $accessToken];
+		 
+		 $ch = curl_init();
+		 curl_setopt($ch, CURLOPT_URL, $serviceURL);
+		 curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+		 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+		 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		 curl_exec($ch);
+		 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		 curl_close($ch);
+		 
+		 return $httpCode == 204;
+	 }
+	 
+	/**
+	 * Get the collaborator by name
+	 *
+	 * @param   string  $name
+	 *
+	 * @return  object or false
+	 */
+	public function getCollaboratorByName($name)
+	{
+		if (!$this->exists())
+		{
+			return false;
+		}
+		
+		if (!isset($this->tblCollaborator))
+		{
+			$this->tblCollaborator = new Tables\Collaborator($this->_db);
+		}
+
+		return $this->tblCollaborator->getCollaboratorByName($name);
 	}
 }

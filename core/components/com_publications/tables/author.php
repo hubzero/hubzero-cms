@@ -810,4 +810,25 @@ class Author extends Table
 			return false;
 		}
 	}
+	
+	/**
+	 * Save ORCID work put-code
+	 *
+	 * @param   string  $authorID	Author's id
+	 * @param   string  $putCode	ORCID work put-code
+	 *
+	 * @return  none
+	 */
+	public function saveORCIDPutCode($authorID, $putCode)
+	{
+		$query = "SELECT * FROM $this->_tbl WHERE id=" . $this->_db->quote($authorID);		
+		$this->_db->setQuery($query);
+		if ($result = $this->_db->loadAssoc())
+		{
+			$this->bind($result);
+		}
+		
+		$this->orcid_work_put_code = $putCode;
+		$this->store();
+	}
 }

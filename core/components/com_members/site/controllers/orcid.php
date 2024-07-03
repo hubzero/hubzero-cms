@@ -10,6 +10,7 @@ namespace Components\Members\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Components\Members\Models\Member;
 use Components\Members\Models\Profile;
+use Components\Members\Models\Collaborator;
 use Exception;
 use Request;
 use Lang;
@@ -741,22 +742,49 @@ class Orcid extends SiteController
 			echo "Unexpected response from ORCID";
 		}
 	}
+	
 	/*
 	 * Update or save orcid to #_user_profiles
 	 *
-	 * @param   string   $name, $orcid
+	 * @param   string   $userID
+	 * @param   string   $key
+	 * @param   string   $value
+	 *
 	 * @return  void
 	 */
-	public static function saveORCIDToProfile($userID, $orcid)
+	public static function saveORCIDToProfile($userID, $key, $value)
 	{
-		$row = Profile::oneByKeyAndUser('orcid', $userID);
+		$row = Profile::oneByKeyAndUser($key, $userID);
 
-		// If the record exists, you are just overwriting the existing data.
-		// If the record doesn't exist, your are setting for a new entry.
+		// If the record exists, you are just overwriting the existing data. Otherwise, a new entry is created.
 		$row->set('user_id', $userID);
 		$row->set('access', $row->get('access', 1));
-		$row->set('profile_key', 'orcid');
-		$row->set('profile_value', $orcid);
+		$row->set('profile_key', $key);
+		$row->set('profile_value', $value);
+		if (!$row->save())
+		{
+			\Notify::error($row->getError());
+		}
+	}
+	
+	/*
+	 * Save orcid information to #_publication_collaborators
+	 *
+	 * @param   string   $name
+	 * @param   string   $orcid
+	 * @param   string   $accessToken
+	 *
+	 * @return  void
+	 */
+	public static function saveORCIDToCollaboratorTable($name, $orcid, $accessToken)
+	{
+		require_once \Component::path('com_members') . DS . 'models' . DS . 'collaborator.php';
+		$row = Collaborator::oneByName($name);
+		$row->set('name', $name);
+		$row->set('orcid', $orcid);
+		$row->set('access_token', $accessToken);
+		$row->set('acquisition_date', date('Y-m-d H:i:s'));
+		
 		if (!$row->save())
 		{
 			\Notify::error($row->getError());
@@ -778,10 +806,11 @@ class Orcid extends SiteController
 			* Check if there is such user's id in database. If there is, then save the orcid in #__user_profiles. 
 			* Otherwise save the orcid in session for later use.
 			*/
+			
 			$user_id = User::get('id');
 			if ($user_id != 0)
 			{
-				self::saveORCIDToProfile($user_id, $this->_userOrcidID);
+				self::saveORCIDToProfile($user_id, 'orcid', $this->_userOrcidID);
 			}
 			else
 			{
@@ -792,4 +821,53 @@ class Orcid extends SiteController
 		$view->set('userName', $this->_userName)->set('userORCID', $this->_userOrcidID);
 		$view->display();
 	}
+	
+	/**
+	 * Get orcid id and access token, then save them in user's profile
+	 *
+	 * @return  void
+	 */
+	 public function permissionTask()
+	 {
+		 $code = Request::getString('code');
+		 $view = new \Hubzero\Component\View(array('name' => 'orcid', 'layout' => 'redirect'));
+		 
+		 if ($code)
+		 {
+			$srv = $this->config->get('orcid_service', 'members');
+			$clientID = $this->config->get('orcid_' . $srv . '_client_id');
+			$clientSecret = $this->config->get('orcid_' . $srv . '_token');
+			$oauthToken = $this->_oauthToken[$srv];
+			$permissionURI = $this->config->get('orcid_' . $srv . '_permission_uri');
+			$params = "client_id=" . $clientID . "&client_secret=" . $clientSecret. "&grant_type=authorization_code&code=" . Request::getString('code');
+			
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $oauthToken);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/json', 'Content-Type: application/x-www-form-urlencoded']);
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$result = curl_exec($ch);
+			curl_close($ch);
+			
+			if ($result)
+			{
+				$response = json_decode($result, true);
+				$userID = User::get('id');
+				
+				if (!empty($userID))
+				{
+					self::saveORCIDToProfile($userID, 'orcid', $response['orcid']);
+					self::saveORCIDToProfile($userID, 'access_token', $response['access_token']);
+				}
+				else
+				{
+					self::saveORCIDToCollaboratorTable($response['name'], $response['orcid'], $response['access_token']);
+				}
+				$view->set('permissionGranted', true)->set('userName', $response['name'])->set('userORCID', $response['orcid']);
+			}
+		 }
+		 
+		 $view->display();
+	 }
 }

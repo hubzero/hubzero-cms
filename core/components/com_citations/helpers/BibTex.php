@@ -1219,6 +1219,7 @@ class Structures_BibTex
 			{
 				$author = '';
 			}
+			$author = rtrim($author, ',');
 			$bibtex .= "\tauthor = {".$author."}\n";
 			$bibtex.="}\n\n";
 		}

@@ -280,6 +280,8 @@
 		<field name="orcid_members_token" type="text" menu="hide" default="" label="ORCID Members Token" description="Authorization token for the members ORCID service." />
 		<field name="orcid_sandbox_redirect_uri" type="text" menu="hide" default="" label="ORCID Sandbox Authentication Redirect URI" description="Authorization redirect URI for the sandbox ORCID service." />
 		<field name="orcid_members_redirect_uri" type="text" menu="hide" default="" label="ORCID Members Authentication Redirect URI" description="Authorization redirect URI for the members ORCID service." />
+		<field name="orcid_sandbox_permission_uri" type="text" menu="hide" default="" label="ORCID Sandbox Grant Permission URI" description="Grant ORCID Management Permission URI for the sandbox ORCID service." />
+		<field name="orcid_members_permission_uri" type="text" menu="hide" default="" label="ORCID Members Grant Permission URI" description="Grant ORCID Management Permission URI for the members ORCID service." />
 		<field name="orcid_institution_field_option" type="list" default="0" label="ORCID Institution Option" description="Enable searching by institution name">
 			<option value="0">No</option>
 			<option value="1">Yes</option>

@@ -814,6 +814,81 @@ class Items extends AdminController
 
 			$this->model->version->state = $state;
 		}
+		else
+		{
+			foreach ($authors as $author)
+			{
+				$putCode = $author->orcid_work_put_code;
+				
+				if (!empty($putCode))
+				{
+					// Update the publication information in author's ORCID record
+					if (!empty($author->user_id))
+					{
+						$profile = \Components\Members\Models\Member::oneOrFail($author->user_id);
+					
+						if ($profile)
+						{
+							$orcidID = $profile->get('orcid');
+							$accessToken = $profile->get('access_token');
+						}
+					}
+					else
+					{
+						$collaborator = $this->model->getCollaboratorByName($author->invited_name);
+						
+						if (!empty($collaborator))
+						{
+							$orcidID = $collaborator->orcid;
+							$accessToken = $collaborator->access_token;
+						}
+					}
+					
+					if (!empty($orcidID) && !empty($accessToken))
+					{
+						$this->model->updateWorkInORCID($orcidID, $accessToken, $putCode);
+					}
+				}
+				else
+				{
+					// Add publication to author's ORCID record
+					if ($this->model->version->state == 1)
+					{
+						if (!empty($author->user_id))
+						{
+							$profile = \Components\Members\Models\Member::oneOrFail($author->user_id);
+						
+							if ($profile)
+							{
+								$orcidID = $profile->get('orcid');
+								$accessToken = $profile->get('access_token');
+							}
+						}
+						else
+						{
+							$collaborator = $this->model->getCollaboratorByName($author->invited_name);
+							
+							if (!empty($collaborator))
+							{
+								$orcidID = $collaborator->orcid;
+								$accessToken = $collaborator->access_token;
+							}
+						}
+						
+						if (!empty($orcidID) && !empty($accessToken))
+						{
+							$putCode = $this->model->addPubToORCID($orcidID, $accessToken);
+						
+							if (!empty($putCode))
+							{
+								$authorTbl = new Tables\Author($this->database);
+								$authorTbl->saveORCIDPutCode($author->id, $putCode);
+							}
+						}
+					}
+				}
+			}
+		}
 
 		// Update DOI with latest information
 		if ($this->model->version->doi && !$action)
@@ -960,6 +1035,108 @@ class Items extends AdminController
 					{
 						$this->model->version->accepted = Date::toSql();
 					}
+					
+					// Add publication to author's ORCID record
+					foreach ($authors as $author)
+					{
+						if (!empty($author->user_id))
+						{
+							$profile = \Components\Members\Models\Member::oneOrFail($author->user_id);
+							
+							if ($profile)
+							{
+								$orcidID = $profile->get('orcid');
+								$accessToken = $profile->get('access_token');
+								
+								if (!empty($orcidID) && !empty($accessToken))
+								{
+									$putCode = $this->model->addPubToORCID($orcidID, $accessToken);
+									
+									if ($putCode)
+									{
+										$tblAuthor = new Tables\Author($this->database);
+										$tblAuthor->saveORCIDPutCode($author->id, $putCode);
+									}
+								}
+							}
+						}
+						else
+						{
+							$collaborator = $this->model->getCollaboratorByName($author->invited_name);
+							
+							// Add pub to orcid record when both orcid and access_token are not null. Othewise, send email that includes ORCID management permission link
+							if (!empty($collaborator))
+							{
+								$orcidID = $collaborator->orcid;
+								$accessToken = $collaborator->access_token;
+								
+								if (!empty($orcidID) && !empty($accessToken))
+								{
+									$putCode = $this->model->addPubToORCID($orcidID, $accessToken);
+									
+									if ($putCode)
+									{
+										$authorTbl = new Tables\Author($this->database);
+										$authorTbl->saveORCIDPutCode($author->id, $putCode);
+									}
+								}
+							}
+							else
+							{
+								if (!empty($author->invited_email))
+								{
+									$subjectForPermissionEmail = Lang::txt('COM_PUBLICATIONS_GRANT_ORCID_MANAGEMENT_PERMISSION');
+									$messageForPermissionEmail = Lang::txt('COM_PUBLICATIONS_GRANT_ORCID_EMAIL_MESSAGE');
+									
+									$config = Component::params('com_members');
+									$srv = $config->get('orcid_service', 'members');
+									$clientID = $config->get('orcid_' . $srv . '_client_id', '');
+									$redirectURI = $config->get('orcid_' . $srv . '_permission_uri', '');
+									
+									if (!empty($srv) && !empty($clientID) && !empty($redirectURI))
+									{
+										$permissionURL = "https://";
+										
+										if ($config->get('orcid_service', 'members') == 'sandbox')
+										{
+											$permissionURL .= 'sandbox.';
+										}
+										
+										$permissionURL .= 'orcid.org/oauth/authorize?client_id=' . $clientID . htmlspecialchars('&') . "response_type=code" . htmlspecialchars('&') . "scope=/read-limited%20/activities/update%20/person/update&redirect_uri=" . urlencode($redirectURI);
+										
+										$from = [];
+										$from['name']  = Config::get('sitename') . ' ' . Lang::txt('COM_PUBLICATIONS');
+										$from['email'] = Config::get('mailfrom');
+										
+										$eview = new \Hubzero\Mail\View(array(
+											'base_path' => dirname(__DIR__),
+											'name'      => 'emails',
+											'layout'    => 'admin_html'
+										));
+										
+										$eview->model = $this->model;
+										$eview->project = $this->model->project();
+										$eview->subject = $subjectForPermissionEmail;
+										$eview->message = $messageForPermissionEmail;
+										$eview->permissionURL = $permissionURL;
+										$eview->permissionTxt = Lang::txt('COM_PUBLICATIONS_GRANT_ORCID_MANAGEMENT_PERMISSION');
+
+										$body = [];
+										$body['multipart'] = $eview->loadTemplate();
+										$body['multipart'] = str_replace("\n", "\r\n", $body['multipart']);
+										
+										$mail = new \Hubzero\Mail\Message();
+										$mail->setSubject($subject)
+											->addTo($author->invited_email, $author->invited_name)
+											->addFrom($from['email'], $from['name'])
+											->setPriority('normal')
+											->addPart($body['multipart'], 'text/html');
+										$mail->send();
+									}
+								}
+							}
+						}
+					}
 
 					if (!$this->getError())
 					{
@@ -978,6 +1155,48 @@ class Items extends AdminController
 					$subject .= Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_REVERTED');
 					$output .= ' ' . Lang::txt('COM_PUBLICATIONS_ITEM') . ' ';
 					$output .= Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_REVERTED');
+					
+					// Remove the publication from author's ORCID record
+					foreach ($authors as $author)
+					{
+						$putCode = $author->orcid_work_put_code;
+						
+						if (!empty($putCode))
+						{
+							if (!empty($author->user_id))
+							{
+								$profile = \Components\Members\Models\Member::oneOrFail($author->user_id);
+								
+								if ($profile)
+								{
+									$orcidID = $profile->get('orcid');
+									$accessToken = $profile->get('access_token');
+								}
+							}
+							else
+							{
+								$collaborator = $this->model->getCollaboratorByName($author->invited_name);
+								
+								if (!empty($collaborator))
+								{
+									$orcidID = $collaborator->orcid;
+									$accessToken = $collaborator->access_token;
+								}
+							}
+							
+							if (!empty($orcidID) && !empty($accessToken))
+							{
+								$result = $this->model->deleteWorkInORCID($orcidID, $accessToken, $putCode);
+								
+								if ($result)
+								{
+									$tblAuthor = new Tables\Author($this->database);
+									$tblAuthor->saveORCIDPutCode($author->id, '');
+								}
+							}
+						}
+					}
+					
 					break;
 
 				case 'unpublish':
@@ -1030,6 +1249,47 @@ class Items extends AdminController
 							if ($doiService->getError())
 							{
 								$this->setError($doiService->getError());
+							}
+						}
+					}
+					
+					// Remove the publication from author's ORCID record
+					foreach ($authors as $author)
+					{
+						$putCode = $author->orcid_work_put_code;
+						
+						if (!empty($putCode))
+						{
+							if (!empty($author->user_id))
+							{
+								$profile = \Components\Members\Models\Member::oneOrFail($author->user_id);
+								
+								if ($profile)
+								{
+									$orcidID = $profile->get('orcid');
+									$accessToken = $profile->get('access_token');
+								}
+							}
+							else
+							{
+								$collaborator = $this->model->getCollaboratorByName($author->invited_name);
+								
+								if (!empty($collaborator))
+								{
+									$orcidID = $collaborator->orcid;
+									$accessToken = $collaborator->access_token;
+								}
+							}
+							
+							if (!empty($orcidID) && !empty($accessToken))
+							{
+								$result = $this->model->deleteWorkInORCID($orcidID, $accessToken, $putCode);
+								
+								if ($result)
+								{
+									$tblAuthor = new Tables\Author($this->database);
+									$tblAuthor->saveORCIDPutCode($author->id, '');
+								}
 							}
 						}
 					}
