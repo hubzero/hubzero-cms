@@ -85,6 +85,12 @@ if ($this->contributors)
 		{
 			$link .= '<sup>' . $k . '</sup>';
 		}
+		if ($contributor->orcid)
+		{
+			$orcid = '<a href="https://orcid.org/' . $contributor->orcid . '" target="blank" title="' . $name . '\'s ORCID page"><img alt="ORCID logo" src="https://info.orcid.org/wp-content/uploads/2019/11/orcid_16x16.png" width="16" height="16" /></a>';
+			$link_s .= $orcid;
+			$link .= $orcid;
+		}
 		$names_s[] = $link_s;
 		$names[] = $link;
 	}

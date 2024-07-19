@@ -298,6 +298,12 @@ body #introduction:after {
 	color: #000;
 	font-style: italic;
 }
+#authorslist p > a[href^="https://orcid.org/"] {
+	background-image: none;
+}
+#authorslist p > a > img {
+	margin-bottom: 0.25rem;
+}
 
 /* Launch area content */
 p.curversion,
