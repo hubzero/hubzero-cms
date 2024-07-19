@@ -346,6 +346,7 @@ class Authors extends Base
 		$firstName  = trim(Request::getString('firstName', '', 'post'));
 		$lastName   = trim(Request::getString('lastName', '', 'post'));
 		$org        = trim(Request::getString('organization', '', 'post'));
+		$orcid      = trim(Request::getString('orcid', '', 'post'));
 		$credit     = trim(Request::getString('credit', '', 'post'));
 		$uid        = trim(Request::getInt('uid', 0, 'post'));
 
@@ -465,6 +466,7 @@ class Authors extends Base
 		$pAuthor->firstName    = $firstName;
 		$pAuthor->lastName     = $lastName;
 		$pAuthor->organization = $org;
+		$pAuthor->orcid        = $orcid;
 
 		// Get organization id on ror.org
 		// If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
@@ -555,6 +557,7 @@ class Authors extends Base
 		$firstName  = Request::getString('firstName', '', 'post');
 		$lastName   = Request::getString('lastName', '', 'post');
 		$org        = Request::getString('organization', '', 'post');
+		$orcid      = Request::getString('orcid', '', 'post');
 		$credit     = Request::getString('credit', '', 'post');
 		$sendInvite = 0;
 		$code       = \Components\Projects\Helpers\Html::generateCode();
@@ -584,6 +587,7 @@ class Authors extends Base
 		$row->credit        = $credit;
 		$row->modified_by   = $actor;
 		$row->modified      = Date::toSql();
+		$row->orcid         = $orcid;
 
 		// Check that profile exists
 		if ($uid)
