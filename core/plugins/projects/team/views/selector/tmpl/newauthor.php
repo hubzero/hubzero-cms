@@ -128,6 +128,14 @@ if (count($this->authors) > 0)
 					</label>
 				</div>
 			</div>
+			<div class="block">
+				<div class="block-liner">
+					<label for="orcid">
+						<span class="formlabel"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ORCID'); ?></span>
+						<input type="text" name="orcid" id="orcid" value="" maxlength="255" /><span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
+					</label>
+				</div>
+			</div>
 			<?php if (!$this->model->isProvisioned()) { ?>
 				<div class="block">
 					<p class="invite-question"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_INVITE_TO_TEAM')); ?></p>

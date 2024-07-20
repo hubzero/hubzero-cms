@@ -338,6 +338,13 @@ class Items extends AdminController
 			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_NO_AUTHOR_RECORD'), 404);
 			return;
 		}
+		
+		if (!empty($this->view->author->user_id))
+		{
+			$user = \Components\Members\Models\Member::oneOrNew($this->view->author->user_id);
+			$this->view->author->orcid = $user->get('orcid');
+			$this->view->author->organization = $user->get('organization');
+		}
 
 		// Version ID
 		$vid = Request::getInt('vid', $this->view->author->publication_version_id);

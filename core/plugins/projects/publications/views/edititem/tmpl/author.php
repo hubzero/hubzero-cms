@@ -98,6 +98,11 @@ $lastname = $author->lastName ? htmlspecialchars($author->lastName) : $lastname;
 						</label>
 						<div class="clear"></div>
 					<?php } ?>
+					<label for="orcid">
+						<span class="leftshift faded"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ORCID_ID'); ?>:</span>
+						<input type="text" name="orcid"  class="long" value="<?php echo $author->orcid; ?>" maxlength="255"/><span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
+					</label>
+					<div class="clear"></div>
 					<label for="credit">
 						<span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_CREDIT')); ?>:</span>
 						<input type="text" name="credit"  class="long" value="<?php echo htmlspecialchars($author->credit); ?>" maxlength="255"  /><span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
