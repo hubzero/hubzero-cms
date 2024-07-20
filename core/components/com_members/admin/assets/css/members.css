@@ -264,4 +264,12 @@
 		background: #f1f1f1;
 		cursor: pointer;
 	}
-
+	
+	#profile_orcid-lbl + .grid .span3 {
+		width: 100%;
+		margin: 10px 0 10px 0;
+	}
+	
+	#profile_orcid-lbl + .grid .span3 > p {
+		margin:0 0 0 0;
+	}

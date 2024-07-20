@@ -578,6 +578,118 @@ class Curation extends SiteController
 
 		// On after status change
 		$this->onAfterStatusChange();
+		
+		// Add publication to author's ORCID record
+		$authors = $this->_pub->authors();
+		foreach ($authors as $author)
+		{
+			if (!empty($author->user_id))
+			{
+				$profile = \Components\Members\Models\Member::oneOrFail($author->user_id);
+				
+				if ($profile)
+				{
+					$orcidID = $profile->get('orcid');
+					$accessToken = $profile->get('access_token');
+					
+					if (!empty($orcidID) && !empty($accessToken))
+					{
+						$putCode = $this->_pub->addPubToORCID($orcidID, $accessToken);
+						
+						if ($putCode)
+						{
+							$authorTbl = new Tables\Author($this->database);
+							$authorTbl->saveORCIDPutCode($author->id, $putCode);
+						}
+					}
+				}
+			}
+			else
+			{
+				$collaborator = $this->_pub->getCollaboratorByName($author->invited_name);
+				
+				if (!empty($collaborator))
+				{
+					$orcidID = $collaborator->orcid;
+					$accessToken = $collaborator->access_token;
+					
+					if (!empty($orcidID) && !empty($accessToken))
+					{
+						$putCode = $this->_pub->addPubToORCID($orcidID, $accessToken);
+						
+						if (!empty($putCode))
+						{
+							$authorTbl = new Tables\Author($this->database);
+							$authorTbl->saveORCIDPutCode($author->id, $putCode);
+						}
+					}
+				}
+				else
+				{
+					if (!empty($author->invited_email))
+					{
+						// Send email that includes ORCID permission link to collaborator's email address
+						$subject = Lang::txt('COM_PUBLICATIONS_GRANT_ORCID_MANAGEMENT_PERMISSION');
+						$message = Lang::txt('COM_PUBLICATIONS_GRANT_ORCID_EMAIL_MESSAGE');
+						
+						$config = Component::params('com_members');
+						$srv = $config->get('orcid_service', 'members');
+						$clientID = $config->get('orcid_' . $srv . '_client_id', '');
+						$redirectURI = $config->get('orcid_' . $srv . '_permission_uri', '');
+						
+						if (!empty($srv) && !empty($clientID) && !empty($redirectURI))
+						{
+							$permissionURL = "https://";
+							
+							if ($config->get('orcid_service', 'members') == 'sandbox')
+							{
+								$permissionURL .= 'sandbox.';
+							}
+							
+							$permissionURL .= 'orcid.org/oauth/authorize?client_id=' . $clientID . htmlspecialchars('&') . "response_type=code" . htmlspecialchars('&') . "scope=/read-limited%20/activities/update%20/person/update&redirect_uri=" . urlencode($redirectURI);
+							
+							$params = Component::params('com_publications');
+							$address = $params->get('curatorreplyto');
+							$from = array();
+							$from['name']  = Config::get('sitename') . ' ' . Lang::txt('COM_PUBLICATIONS');
+							
+							if (empty($address))
+							{
+								$from['email'] = Config::get('mailfrom');
+							}
+							else
+							{
+								$from['email'] = $address;
+							}
+							
+							$eview = new \Hubzero\Mail\View(array(
+								'base_path' => dirname(__DIR__),
+								'name'      => 'emails',
+								'layout'    => '_html'
+							));
+
+							$eview->publication = $this->_pub;
+							$eview->message     = $message;
+							$eview->subject     = $subject;
+							$eview->permissionURL = $permissionURL;
+							$eview->permissionTxt = Lang::txt('COM_PUBLICATIONS_GRANT_ORCID_MANAGEMENT_PERMISSION');
+
+							$body = [];
+							$body['multipart'] = $eview->loadTemplate();
+							$body['multipart'] = str_replace("\n", "\r\n", $body['multipart']);
+							
+							$mail = new \Hubzero\Mail\Message();
+							$mail->setSubject($subject)
+								->addTo($author->invited_email, $author->invited_name)
+								->addFrom($from['email'], $from['name'])
+								->setPriority('normal')
+								->addPart($body['multipart'], 'text/html');
+							$mail->send();
+						}
+					}
+				}
+			}
+		}
 
 		if ($err = $this->getError())
 		{

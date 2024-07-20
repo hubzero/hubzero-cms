@@ -11,6 +11,7 @@ use Hubzero\Html\Builder\Behavior;
 use Document;
 use Route;
 use Lang;
+use User;
 
 /**
  * Supports a URL text field
@@ -66,21 +67,55 @@ class Orcid extends Text
 		$html[] = '		<input ' . $attr . ' placeholder="####-####-####-####" />';
 		$html[] = '		<input type="hidden" name="base_uri" id="base_uri" value="' . rtrim(Request::base(true), '/') . '" />';
 		$html[] = '	</div>';
-		$html[] = '	<div class="col span3 omega">';
 		// Build the ORCID Create or Connect hyperlink
 		$config = Component::params('com_members');
 		$srv = $config->get('orcid_service', 'members');
 		$clientID = $config->get('orcid_' . $srv . '_client_id', '');
 		$redirectURI = $config->get('orcid_' . $srv . '_redirect_uri', '');
-		$html[] = '     <a id="create-orcid" class="btn" href="https://';
-		if ($config->get('orcid_service', 'members') == 'sandbox')
+		$userID = User::get('id');
+		if ($userID != 0)
 		{
-			$html[] = 'sandbox.';
+			$profile = \Components\Members\Models\Member::oneOrFail($userID);
 		}
-	    $html[] = 'orcid.org/oauth/authorize?client_id=' . $clientID . htmlspecialchars('&') . 'response_type=code' . htmlspecialchars('&') . 'scope=/authenticate' . htmlspecialchars('&'). 'redirect_uri=' . urlencode($redirectURI)
-		. '" rel="nofollow external">' . '<img src="' . Request::root(true) . 'core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt="iD"/>'
-		. Lang::txt('COM_MEMBERS_PROFILE_ORCID_CREATE_OR_CONNECT') . '</a>';
+		
+		$html[] = '	<div class="col span3 omega">';
+		if ($userID != 0 && !empty($profile->get('orcid')))
+		{
+			$html[] = '<p>' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_ID_AUTHORIZED') . '</p>';
+		}
+		else
+		{
+			$html[] = '     <a id="authorize-orcid" class="btn" href="https://';
+			if ($config->get('orcid_service', 'members') == 'sandbox')
+			{
+				$html[] = 'sandbox.';
+			}
+			$html[] = 'orcid.org/oauth/authorize?client_id=' . $clientID . htmlspecialchars('&') . 'response_type=code' . htmlspecialchars('&') . 'scope=/authenticate' . htmlspecialchars('&'). 'redirect_uri=' . urlencode($redirectURI)
+			. '" rel="nofollow external">' . '<img src="' . Request::root(true) . 'core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt="iD"/>'
+			. Lang::txt('COM_MEMBERS_PROFILE_ORCID_CREATE_OR_CONNECT') . '</a>';
+		}
 		$html[] = '	</div>';
+		
+		// Grant permission to manage ORCID record
+		$permissionURI = $config->get('orcid_' . $srv . '_permission_uri', '');
+		$html[] = '	<div class="col span3 omega">';
+		if ($userID != 0 && !empty($profile->get('orcid')) && !empty($profile->get('access_token')))
+		{
+			$html[] = '<p>' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_PERMISSION_AUTHORIZED') . '</p>';
+		}
+		else
+		{
+			$html[] = '     <a id="grant-orcid-management-permission" class="btn" href="https://';
+			if ($config->get('orcid_service', 'members') == 'sandbox')
+			{
+				$html[] = 'sandbox.';
+			}
+			$html[] = 'orcid.org/oauth/authorize?client_id=' . $clientID . htmlspecialchars('&') . 'response_type=code' . htmlspecialchars('&') . 'scope=/read-limited%20/activities/update%20/person/update' . htmlspecialchars('&'). 'redirect_uri=' . urlencode($permissionURI)
+			. '" rel="nofollow external">' . '<img src="' . Request::root(true) . 'core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt="iD"/>'
+			. Lang::txt('COM_MEMBERS_PROFILE_ORCID_GRANT_PERMISSION') . '</a>';
+		}
+		$html[] = '	</div>';
+		
 		$html[] = '</div>';
 		$html[] = '<p><img src="' . Request::root(true)  . 'core/components/com_members/site/assets/img/orcid-logo.png" width="80" alt="ORCID" /> ' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>';
 

@@ -122,6 +122,9 @@ if ($comment)
 						<tr>
 							<td style="text-align: left; padding: 0 0.5em;" cellpadding="0" cellspacing="0" border="0">
 								<div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $comment; ?></div>
+								<?php if (!empty($this->permissionURL) && !empty($this->permissionTxt)) {?>
+									<a href="<?php echo $this->permissionURL; ?>"><?php echo $this->permissionTxt; ?></a>
+								<?php } ?>
 							</td>
 						</tr>
 					</tbody>
@@ -140,15 +143,3 @@ if ($comment)
 	</tbody>
 </table>
 <!-- End Spacer -->
-
-<!-- Start Footer -->
-<table class="tbl-footer" width="100%" cellpadding="0" cellspacing="0" border="0">
-	<tbody>
-		<tr>
-			<td align="left" valign="bottom">
-				<span><?php echo Config::get('sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo Request::base(); ?>"><?php echo Request::base(); ?></a>. Visit our <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::base(); ?>/support">Support Center</a> if you have any questions.</span>
-			</td>
-		</tr>
-	</tbody>
-</table>
-<!-- End Footer -->
