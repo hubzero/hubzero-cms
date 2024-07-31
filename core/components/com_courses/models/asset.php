@@ -534,6 +534,74 @@ class Asset extends Base
 	}
 
 	/**
+	 * Duplicate an asset and it's associated data
+	 *
+	 * @param  bool $forms whether or not to duplicate forms as well
+	 * @return bool
+	 */
+	public function duplicate($courseId){
+		// Keep track of the original asset ID, for original directory
+		$originalId = $this->get('id');
+		$originalCourseId = $this->get('course_id');
+
+		// Reset the ID. This will force store() to create a new record.
+		$this->set('id', 0);
+		$this->set('course_id', $courseId);
+		if (!$this->store()){
+			return false;
+		}
+
+		// Update the path with new asset id, additional call the store()
+		$assetId = $this->get('id');
+		$pathNew = $courseId . '/' . $assetId;
+		$this->set('path', $pathNew);
+		if (!$this->store()){
+			return false;
+		}
+
+		// Creates a new directory, makes a deep copy for type: video, subtype: video
+		$fileType = $this->get('type');
+		$fileSubtype = $this->get('subtype');
+		if ((($fileType == 'video') && ($fileSubtype == 'video')) || ($fileType == 'file')) {
+			$fileName = $this->get('url');
+			$cconfig = Component::params('com_courses');
+
+			// Build the upload path if it doesn't exist
+			// Need to be the original course Id, NOT the next one
+			$originalDirectory = PATH_APP . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $originalCourseId . DS . $originalId . DS;
+			$uploadDirectory = PATH_APP . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $courseId . DS . $assetId . DS;
+
+			// Figuring out ERROR handling	
+			\Log::debug( var_export($originalDirectory, true) );
+			\Log::debug( var_export($uploadDirectory, true) );
+			\Log::debug( var_export(is_dir($uploadDirectory), true) );
+
+			// Make sure upload directory exists and is writable
+			if (!is_dir($uploadDirectory)){
+				if (!Filesystem::makeDirectory($uploadDirectory, 0755, true)){
+					\Log::debug( var_export('Server error. Unable to create upload directory', true) );
+					return array('error' => 'Server error. Unable to create upload directory');
+				}
+			}
+
+			if (!is_writable($uploadDirectory)){
+				\Log::debug( var_export('Server error. Upload directory is not writable', true) );
+				return array('error' => 'Server error. Upload directory isn\'t writable');
+			}
+
+			// Get the final file path
+			$original_path = $originalDirectory . $fileName;
+			$target_path = $uploadDirectory . $fileName;
+
+			// Copy the file to the target directory
+			set_time_limit(60);
+			Filesystem::copy($original_path, $target_path);
+		}
+
+		return true;
+	}
+
+	/**
 	 * Specific child asset handler object of type
 	 *
 	 * @return object child asset handler

@@ -256,6 +256,7 @@ class Assetgroups extends AdminController
 
 		// Incoming
 		$fields = Request::getArray('fields', array(), 'post');
+		$task = Request::getArray('task', array(), 'post');
 
 		// Instantiate a Course object
 		$model = new \Components\Courses\Models\Assetgroup($fields['id']);
@@ -480,5 +481,142 @@ class Assetgroups extends AdminController
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . Request::getInt('unit', 0), false)
 		);
+	}
+
+
+
+	/**
+	 * Duplicate Asset data / files
+	 *
+	 * @return	void
+	 */
+	public function assetdupTask() {
+
+		Request::setVar('hidemainmenu', 1);
+
+		// Incoming Id
+		$id = Request::getArray('id', array());
+
+		// Get the single ID we're working with
+		if (is_array($id)){
+			$id = (!empty($id)) ? $id[0] : 0;
+		}
+
+		if (!$id){
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . Request::getInt('unit', 0), false),
+				Lang::txt('COM_COURSES_ERROR_NO_ID'),
+				'error'
+			);
+			return;
+		}
+
+		// ------------- ASSET GROUPS BASED ON ID -------------
+		$assetGroup = new \Components\Courses\Models\Assetgroup($id);
+		$this->view->row = $assetGroup;
+
+		if (!$this->view->row->get('unit_id')){
+			$this->view->row->set('unit_id', Request::getInt('unit', 0));
+		}
+
+		$this->view->unit = \Components\Courses\Models\Unit::getInstance($this->view->row->get('unit_id'));
+		$this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->unit->get('offering_id'));
+
+		$scopeId = $this->view->row->get('id');
+		// $parentId = $this->view->row->parent;
+		$courseId = $this->view->offering->get('course_id');
+		$this->view->course = \Components\Courses\Models\Course::getInstance($courseId);
+
+		// ------------- ASSETS -------------
+		$this->view->filters = array(
+			'tmpl' => 'component',
+			'asset_scope' => 'asset_group',
+			'asset_scope_id' => $scopeId,
+			'course_id' => $courseId,
+			'limit' => Config::get('list_limit'),
+			'start' => 0
+		);
+
+		$tbl = new Tables\Asset($this->database);
+		$assetRows = $tbl->find(array(
+			'w' => $this->view->filters
+		));
+
+		$this->view->assetrows = $assetRows;
+		$this->view->assetsCount = count($assetRows);
+
+		// NEED TO GET HIERARCHY OF ALL ASSET GROUPS ---------------
+		// RECURSION FROM THE TOP OF THE CHAIN - all asset groups
+
+		$rows = $this->view->unit->assetgroups();
+
+		// Establish the hierarchy of the menu
+		$children = array(
+			0 => array()
+		);
+
+		$levellimit = 500;
+
+		// 1st pass - collect children
+		foreach ($rows as $v) {
+			$children[0][] = $v;
+			$children[$v->get('id')] = $v->children();
+		}
+
+		// 2nd pass - get an indent list of the items
+		$this->view->assetgroups = $this->treeRecurse(0, '', array(), $children, max(0, $levellimit-1));
+
+		// ------------- OUTPUT TO HTML -------------
+		$this->view
+			->setLayout('duplicateassets')
+			->display();
+	}
+
+	/**
+	 * Upon saving the duplicate asset form
+	 * Task is ran through the toolbar
+	 */
+	public function duplicateassetsTask() {
+		\Log::debug( var_export("---- duplicateassetsTask -----", true));
+		Notify::success("duplicate asset now");
+	}
+
+	/**
+	 * Upon saving the duplicate asset form with button underneath the form
+	 */
+	public function dupassetsTask() {
+		// (START) Ids of asset groups that will be duplicated
+		$courseIdStart = Request::getString('courseIdToDuplicate');
+		$offeringIdStart = Request::getString('offeringIdToDuplicate');
+		$unitIdStart = Request::getString('unitIdToDuplicate');
+		$assetGroupIdStart = Request::getString('assetGroupIdToDuplicate');
+		$assetGroupParentIdStart = Request::getString('assetGroupParentIdToDuplicate');
+
+		// (END) Where the asset group will end up
+		$courseId = Request::getString('filterCourses');
+		$offeringId = Request::getString('filterOfferings');
+		$unitId = Request::getString('filterUnits');
+		$assetGroupParent = Request::getString('filterAssetGroups');
+
+		$assetgroup = new \Components\Courses\Models\Assetgroup($assetGroupIdStart);
+		if (!$assetgroup->copyToSelectedAssetGroup($courseId, $offeringId, $unitId, $assetGroupParent)){
+			// Redirect back to the courses page
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . $assetgroup->get('unit_id'), false),
+				Lang::txt('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $assetgroup->getError(),
+				'error'
+			);
+			return;
+		}
+
+		$message = "Duplicated Asset from Asset Group " . $assetGroupIdStart . 
+			" to Asset Group Parent" . $assetGroupParent;
+
+		// Redirect to the asset groups
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			$message
+		);
+
 	}
 }
