@@ -542,6 +542,7 @@ class Asset extends Base
 	public function duplicate($courseId){
 		// Keep track of the original asset ID, for original directory
 		$originalId = $this->get('id');
+		$originalCourseId = $this->get('course_id');
 
 		// Reset the ID. This will force store() to create a new record.
 		$this->set('id', 0);
@@ -566,17 +567,25 @@ class Asset extends Base
 			$cconfig = Component::params('com_courses');
 
 			// Build the upload path if it doesn't exist
-			$originalDirectory = PATH_APP . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $courseId . DS . $originalId . DS;
+			// Need to be the original course Id, NOT the next one
+			$originalDirectory = PATH_APP . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $originalCourseId . DS . $originalId . DS;
 			$uploadDirectory = PATH_APP . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $courseId . DS . $assetId . DS;
+
+			// Figuring out ERROR handling	
+			\Log::debug( var_export($originalDirectory, true) );
+			\Log::debug( var_export($uploadDirectory, true) );
+			\Log::debug( var_export(is_dir($uploadDirectory), true) );
 
 			// Make sure upload directory exists and is writable
 			if (!is_dir($uploadDirectory)){
 				if (!Filesystem::makeDirectory($uploadDirectory, 0755, true)){
+					\Log::debug( var_export('Server error. Unable to create upload directory', true) );
 					return array('error' => 'Server error. Unable to create upload directory');
 				}
 			}
 
 			if (!is_writable($uploadDirectory)){
+				\Log::debug( var_export('Server error. Upload directory is not writable', true) );
 				return array('error' => 'Server error. Upload directory isn\'t writable');
 			}
 
