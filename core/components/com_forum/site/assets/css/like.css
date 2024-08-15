@@ -1,0 +1,4 @@
+/* Should put this in the comments.less file */
+ol.comments .comment-options a.like {
+    float: right;
+}
