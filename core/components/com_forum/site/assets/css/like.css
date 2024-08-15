@@ -2,3 +2,7 @@
 ol.comments .comment-options a.like {
     float: right;
 }
+
+ol.comments .comment-options a.userLiked {
+    color: red;
+}
