@@ -104,8 +104,6 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 
 			$givenName = $contributor->givenName;
 			$familyName = $contributor->surname;
-			$orcid = $contributor->orcid;
-			$orgid = $contributor->orgid;
 
 			if (!$givenName)
 			{
@@ -139,9 +137,9 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 				'familyName' => $familyName
 			);
 			
-			if ($orcid)
+			if ($contributor->orcid)
 			{
-				$author['@id'] = "https://orcid.org/" . $orcid;
+				$author['@id'] = "https://orcid.org/" . $contributor->orcid;
 			}
 
 			if ($contributor->organization)
@@ -151,9 +149,9 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 					'name'  => $contributor->organization
 				);
 				
-				if ($orgid)
+				if ($contributor->orgid)
 				{
-					$org['@id'] = $orgid;
+					$org['@id'] = $contributor->orgid;
 				}
 
 				$author['affiliation'] = $org;
