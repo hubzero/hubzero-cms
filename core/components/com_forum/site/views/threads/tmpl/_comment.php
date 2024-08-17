@@ -127,7 +127,10 @@ $this->css('like.css')
 				<p class="comment-options">
                     <!-- Like Comments -->
                     <!-- If user has liked it, should be red class="userLiked", if not gray -->
-                    <a class="icon-heart like" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo Route::url($this->comment->link('like')); ?>">
+                    <a class="icon-heart like" href="#"
+                       data-thread="<?php echo $this->thread->get('id'); ?>"
+                       data-post="<?php echo $this->comment->get('id'); ?>"
+                       data-user="<?php echo User::get('id'); ?>" >
                         Like
                     </a>
 					<?php if ((!$this->comment->get('parent') && $this->config->get('access-delete-thread')) || ($this->comment->get('parent') && $this->config->get('access-delete-post'))) { ?>

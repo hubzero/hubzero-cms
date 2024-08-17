@@ -184,6 +184,16 @@ class Threads extends SiteController
 		// Set the pathway
 		$this->buildPathway($section, $category, $thread);
 
+		// Get all the likes of this thread
+        $db = \App::get('db');
+        $queryLikes = "SELECT LIKES.threadId as 'threadId', LIKES.postId as 'postId', 
+                            LIKES.userId as 'userId', USERS.name as 'userName', USERS.email as 'userEmail' 
+                    FROM jos_forum_posts_like as LIKES, jos_users AS USERS
+                    WHERE LIKES.userId = USERS.id AND LIKES.threadId = " . $thread->get('id');
+
+        $db->setQuery($queryLikes);
+        $initialLikesList = $db->loadObjectList();
+
 		// Output the view
 		$this->view
 			->set('config', $this->config)
@@ -192,6 +202,7 @@ class Threads extends SiteController
 			->set('category', $category)
 			->set('thread', $thread)
 			->set('filters', $filters)
+			->set('likes', $initialLikesList)
 			->setErrors($this->getErrors())
 			->display();
 	}

@@ -15,6 +15,8 @@ $this->category->set('section_alias', $this->filters['section']);
 $this->thread->set('section', $this->filters['section']);
 $this->thread->set('category', $this->category->get('alias'));
 
+print_r($this->likes);
+
 $now = Date::of('now')->toSql();
 ?>
 <header id="content-header">
