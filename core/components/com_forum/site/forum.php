@@ -17,6 +17,16 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
+if (!User::authorise('core.access', 'com_forum'))
+{
+    $return = base64_encode(Request::getString('REQUEST_URI', '', 'server'));
+    //$return = base64_encode($_SERVER['REQUEST_URI']);
+    App::redirect( Route::url('index.php?option=com_users&view=login&return=' . $return, false),
+        "Please Log in and then we will redirect you to the forum pages",
+        'warning'
+    );
+}
+
 // Instantiate controller
 $controller = new $controllerName();
 $controller->execute();
