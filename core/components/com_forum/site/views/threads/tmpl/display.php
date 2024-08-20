@@ -15,8 +15,6 @@ $this->category->set('section_alias', $this->filters['section']);
 $this->thread->set('section', $this->filters['section']);
 $this->thread->set('category', $this->category->get('alias'));
 
-print_r($this->likes);
-
 $now = Date::of('now')->toSql();
 ?>
 <header id="content-header">
@@ -62,6 +60,7 @@ $now = Date::of('now')->toSql();
 				     ->set('controller', $this->controller)
 				     ->set('comments', $posts)
 				     ->set('thread', $this->thread)
+					 ->set('likes', $this->likes)
 				     ->set('parent', 0)
 				     ->set('config', $this->config)
 				     ->set('depth', 0)

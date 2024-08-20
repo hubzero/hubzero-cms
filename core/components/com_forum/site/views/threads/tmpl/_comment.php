@@ -10,6 +10,17 @@ defined('_HZEXEC_') or die();
 $this->css('like.css')
     ->js('like.js');
 
+	$likeArray = $this->like;
+    $countLike = count($likeArray);
+    $currentUserId = User::get('id');
+
+    $userLikesComment = false;
+    foreach ( $likeArray as $likeObj ) {
+        if ( $currentUserId == $likeObj->userId ) {
+            $userLikesComment = true;
+        }
+    }
+
 	$this->comment->set('section', $this->filters['section']);
 	$this->comment->set('category', $this->category->get('alias'));
 
@@ -127,11 +138,11 @@ $this->css('like.css')
 				<p class="comment-options">
                     <!-- Like Comments -->
                     <!-- If user has liked it, should be red class="userLiked", if not gray -->
-                    <a class="icon-heart like" href="#"
+                    <a class="icon-heart like <?php if ($userLikesComment) { echo "userLiked"; } ?>" href="#"
                        data-thread="<?php echo $this->thread->get('id'); ?>"
                        data-post="<?php echo $this->comment->get('id'); ?>"
                        data-user="<?php echo User::get('id'); ?>" >
-                        Like
+                        <?php echo ($countLike>0) ? "Like (" . $countLike . ")" : "Like"; ?>
                     </a>
 					<?php if ((!$this->comment->get('parent') && $this->config->get('access-delete-thread')) || ($this->comment->get('parent') && $this->config->get('access-delete-post'))) { ?>
 						<a class="icon-delete delete" data-txt-confirm="<?php echo Lang::txt('COM_FORUM_CONFIRM_DELETE'); ?>" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo Route::url($this->comment->link('delete')); ?>"><!--
