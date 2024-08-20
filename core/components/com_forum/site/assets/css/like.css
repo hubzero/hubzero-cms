@@ -1,8 +1,10 @@
 /* Should put this in the comments.less file */
-ol.comments .comment-options a.like {
+.comment-body a.like {
     float: right;
+    color: gray;
+    margin-bottom: 10px;
 }
 
-ol.comments .comment-options a.userLiked {
+.comment-body a.userLiked {
     color: red;
 }

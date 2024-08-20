@@ -10,16 +10,20 @@ defined('_HZEXEC_') or die();
 $this->css('like.css')
     ->js('like.js');
 
-	$likeArray = $this->like;
+    $likeArray = $this->like;
     $countLike = count($likeArray);
     $currentUserId = User::get('id');
 
     $userLikesComment = false;
+    $userNameLikesArray = "";
     foreach ( $likeArray as $likeObj ) {
         if ( $currentUserId == $likeObj->userId ) {
             $userLikesComment = true;
         }
+
+        $userNameLikesArray .= "/" . ($likeObj->userName);
     }
+    $userNameLikesArray = substr($userNameLikesArray,1);
 
 	$this->comment->set('section', $this->filters['section']);
 	$this->comment->set('category', $this->category->get('alias'));
@@ -68,7 +72,21 @@ $this->css('like.css')
 			</p>
 			<div class="comment-body">
 				<?php echo $comment; ?>
+
+                <!-- Like Button -->
+                <a class="icon-heart like <?php if ($userLikesComment) { echo "userLiked"; } ?>" href="#"
+                   data-thread="<?php echo $this->thread->get('id'); ?>"
+                   data-post="<?php echo $this->comment->get('id'); ?>"
+                   data-user="<?php echo User::get('id'); ?>"
+                   data-user-name="<?php echo User::get('name'); ?>"
+                   data-likes-list="<?php echo $userNameLikesArray; ?>"
+                   data-count="<?php echo $countLike; ?>"
+                >
+                    <?php echo ($countLike>0) ? "Like (" . $countLike . ")" : "Like"; ?>
+                </a>
+                <div class="clear"></div>
 			</div>
+
 			<div class="comment-attachments">
 				<?php
 				foreach ($this->comment->attachments()->whereEquals('state', Components\Forum\Models\Attachment::STATE_PUBLISHED)->rows() as $attachment)
@@ -136,14 +154,6 @@ $this->css('like.css')
 						)
 					) { ?>
 				<p class="comment-options">
-                    <!-- Like Comments -->
-                    <!-- If user has liked it, should be red class="userLiked", if not gray -->
-                    <a class="icon-heart like <?php if ($userLikesComment) { echo "userLiked"; } ?>" href="#"
-                       data-thread="<?php echo $this->thread->get('id'); ?>"
-                       data-post="<?php echo $this->comment->get('id'); ?>"
-                       data-user="<?php echo User::get('id'); ?>" >
-                        <?php echo ($countLike>0) ? "Like (" . $countLike . ")" : "Like"; ?>
-                    </a>
 					<?php if ((!$this->comment->get('parent') && $this->config->get('access-delete-thread')) || ($this->comment->get('parent') && $this->config->get('access-delete-post'))) { ?>
 						<a class="icon-delete delete" data-txt-confirm="<?php echo Lang::txt('COM_FORUM_CONFIRM_DELETE'); ?>" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo Route::url($this->comment->link('delete')); ?>"><!--
 							--><?php echo Lang::txt('JACTION_DELETE'); ?><!--
