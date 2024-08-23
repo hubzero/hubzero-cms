@@ -74,7 +74,7 @@ $this->css('like.css')
 				<?php echo $comment; ?>
 
                 <!-- Like Button -->
-                <a class="icon-heart like <?php if ($userLikesComment) { echo "userLiked"; } ?>" href="#"
+                <a class="elementToHover icon-heart like <?php if ($userLikesComment) { echo "userLiked"; } ?>" href="#"
                    data-thread="<?php echo $this->thread->get('id'); ?>"
                    data-post="<?php echo $this->comment->get('id'); ?>"
                    data-user="<?php echo User::get('id'); ?>"
@@ -83,6 +83,9 @@ $this->css('like.css')
                    data-count="<?php echo $countLike; ?>"
                 >
                     <?php echo ($countLike>0) ? "Like (" . $countLike . ")" : "Like"; ?>
+                    <span class="elementToPopup">
+                        <?php echo $userNameLikesArray; ?>
+                    </span>
                 </a>
                 <div class="clear"></div>
 			</div>

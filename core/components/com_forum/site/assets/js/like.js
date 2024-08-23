@@ -3,8 +3,12 @@ console.log("like on site forum");
 window.addEventListener('DOMContentLoaded', (domEvent) => {
     // Find all the "like" button
     const likeButton = document.querySelectorAll('.comment-body .like')
+    const likePopup = document.querySelectorAll('.comment-body .elementToPopup')
     if (likeButton.length) {
         for(let i = 0; i < likeButton.length;i++) {
+            console.log(likeButton);
+            console.log(likePopup);
+
             likeButton[i].onclick = (e) => {
                 e.preventDefault();
 
@@ -32,6 +36,8 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                             likeButton[i].classList.remove("userLiked");
                             likeButton[i].dataset.likesList = newLikesString;
 
+                            likePopup[i].innerHTML = newLikesString;
+
                             console.warn(`Like removed for forum thread '${threadId}' of post '${postId}' for user ${userId}`);
                         }
                     })
@@ -46,12 +52,22 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                             likeButton[i].classList.add("userLiked");
                             likeButton[i].dataset.likesList = newLikesString;
 
+                            likePopup[i].innerHTML = newLikesString;
+
                             console.log(`Like recorded for forum thread '${threadId}' of post '${postId}' for user ${userId}`);
                         }
                     })
                 }
 
                 return false;
+            };
+
+            likeButton[i].onmouseover = (e) => {
+                likePopup[i].style.display = 'block';
+            };
+
+            likeButton[i].onmouseleave = (e) => {
+                likePopup[i].style.display = 'none';
             };
 
             // https://www.geeksforgeeks.org/how-to-open-a-popup-on-hover-using-javascript/

@@ -8,3 +8,19 @@
 .comment-body a.userLiked {
     color: red;
 }
+
+.elementToHover {
+    display: inline-block;
+    position: relative;
+}
+
+.elementToPopup {
+    /*display: none;*/
+    position: absolute;
+    top: 30px;
+    left: 7px;
+    background-color: #555;
+    color: #fff;
+    padding: 8px;
+    border-radius: 5px;
+}

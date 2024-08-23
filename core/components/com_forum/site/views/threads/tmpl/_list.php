@@ -18,11 +18,12 @@ foreach ($this->likes as $like){
     }
 }
 
+//print_r($hash_map);
+
 ?>
 <ol class="comments" id="t<?php echo $this->parent; ?>">
 <?php
-if ($this->comments)
-{
+if ($this->comments) {
 	$cls = 'odd';
 	if (isset($this->cls))
 	{
@@ -36,16 +37,16 @@ if ($this->comments)
 
 	$this->depth++;
 
-	foreach ($this->comments as $comment)
-	{
-		$postId = $comment->get('id');
-        $likesByPostId = $hash_map[$postId];
-		
+	foreach ($this->comments as $comment) {
+
+        $postId = $comment->get('id');
+        $likesByPostId = isset($hash_map[$postId]) ? $hash_map[$postId] : [];
+
 		$this->view('_comment')
 		     ->set('option', $this->option)
 		     ->set('controller', $this->controller)
 		     ->set('comment', $comment)
-			 ->set('like', $likesByPostId)
+             ->set('like', $likesByPostId)
 		     ->set('thread', $this->thread)
 		     ->set('config', $this->config)
 		     ->set('depth', $this->depth)
