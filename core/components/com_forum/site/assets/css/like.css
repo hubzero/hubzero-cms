@@ -15,12 +15,15 @@
 }
 
 .elementToPopup {
-    /*display: none;*/
+    display: none;
     position: absolute;
     top: 30px;
-    left: 7px;
+    left: -80px;
     background-color: #555;
     color: #fff;
-    padding: 8px;
+    padding: 10px;
     border-radius: 5px;
+    z-index: 1;
+    width: 150px;
+    text-align: right;
 }

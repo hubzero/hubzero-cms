@@ -3,12 +3,8 @@ console.log("like on site forum");
 window.addEventListener('DOMContentLoaded', (domEvent) => {
     // Find all the "like" button
     const likeButton = document.querySelectorAll('.comment-body .like')
-    const likePopup = document.querySelectorAll('.comment-body .elementToPopup')
     if (likeButton.length) {
         for(let i = 0; i < likeButton.length;i++) {
-            console.log(likeButton);
-            console.log(likePopup);
-
             likeButton[i].onclick = (e) => {
                 e.preventDefault();
 
@@ -31,12 +27,16 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                             const newLikeCount = Number(likeCount) - 1;
                             const newLikesString = likesListArray.filter(e => e !== userName).join('/');
 
+                            // Create ELEMENT
+                            const element = document.createElement('span');
+                            element.classList.add("elementToPopup");
+                            element.innerHTML = newLikesString.split("/").join("<br>");
+
                             likeButton[i].dataset.count = `${newLikeCount}`;
                             likeButton[i].innerHTML = (newLikeCount === 0) ? 'Like' : `Like (${newLikeCount})`;
+                            likeButton[i].appendChild(element);
                             likeButton[i].classList.remove("userLiked");
                             likeButton[i].dataset.likesList = newLikesString;
-
-                            likePopup[i].innerHTML = newLikesString;
 
                             console.warn(`Like removed for forum thread '${threadId}' of post '${postId}' for user ${userId}`);
                         }
@@ -47,12 +47,16 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                             const newLikeCount = Number(likeCount) + 1;
                             const newLikesString = [...likesListArray, userName].join('/');
 
+                            // Create ELEMENT
+                            const element = document.createElement('span');
+                            element.classList.add("elementToPopup");
+                            element.innerHTML = newLikesString.split("/").join("<br>");
+
                             likeButton[i].dataset.count = `${newLikeCount}`;
                             likeButton[i].innerHTML = `Like (${newLikeCount})`;
+                            likeButton[i].appendChild(element);
                             likeButton[i].classList.add("userLiked");
                             likeButton[i].dataset.likesList = newLikesString;
-
-                            likePopup[i].innerHTML = newLikesString;
 
                             console.log(`Like recorded for forum thread '${threadId}' of post '${postId}' for user ${userId}`);
                         }
@@ -62,15 +66,14 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                 return false;
             };
 
+            // Hover over and mouse leave
             likeButton[i].onmouseover = (e) => {
-                likePopup[i].style.display = 'block';
+                likeButton[i].getElementsByClassName('elementToPopup')[0].style.display = 'block';
             };
 
             likeButton[i].onmouseleave = (e) => {
-                likePopup[i].style.display = 'none';
+                likeButton[i].getElementsByClassName('elementToPopup')[0].style.display = 'none';
             };
-
-            // https://www.geeksforgeeks.org/how-to-open-a-popup-on-hover-using-javascript/
         }
     }
 });

@@ -84,7 +84,10 @@ $this->css('like.css')
                 >
                     <?php echo ($countLike>0) ? "Like (" . $countLike . ")" : "Like"; ?>
                     <span class="elementToPopup">
-                        <?php echo $userNameLikesArray; ?>
+                        <?php
+                            $nameArray = preg_split("#/#", $userNameLikesArray);
+                            echo join("<br>",$nameArray);
+                        ?>
                     </span>
                 </a>
                 <div class="clear"></div>
