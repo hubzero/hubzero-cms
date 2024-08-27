@@ -1,0 +1,29 @@
+/* Should put this in the comments.less file */
+.comment-body a.like {
+    float: right;
+    color: gray;
+    margin-bottom: 10px;
+}
+
+.comment-body a.userLiked {
+    color: red;
+}
+
+.elementToHover {
+    display: inline-block;
+    position: relative;
+}
+
+.elementToPopup {
+    display: none;
+    position: absolute;
+    top: 30px;
+    left: -80px;
+    background-color: #555;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1;
+    width: 151px;
+    text-align: right;
+}

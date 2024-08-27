@@ -8,6 +8,18 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+$hash_map = array();
+if (isset($this->likes)) {
+    foreach ($this->likes as $like){
+        $postId = $like->postId;
+        if (isset($hash_map[$postId])) {
+            $hash_map[$postId][] = $like;
+        } else {
+            $hash_map[$postId] = array($like);
+        }
+    }
+} 
+
 ?>
 <ol class="comments" id="t<?php echo $this->parent; ?>">
 <?php
@@ -26,12 +38,15 @@ if ($this->comments)
 
 	$this->depth++;
 
-	foreach ($this->comments as $comment)
-	{
+	foreach ($this->comments as $comment) {
+		$postId = $comment->get('id');
+        $likesByPostId = isset($hash_map[$postId]) ? $hash_map[$postId] : [];
+		
 		$this->view('_comment')
 		     ->set('option', $this->option)
 		     ->set('group', $this->group)
 		     ->set('comment', $comment)
+			 ->set('like', $likesByPostId)
 		     ->set('thread', $this->thread)
 		     ->set('config', $this->config)
 		     ->set('depth', $this->depth)

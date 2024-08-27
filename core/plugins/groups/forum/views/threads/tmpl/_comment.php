@@ -7,6 +7,24 @@
 
 defined('_HZEXEC_') or die();
 
+$this->css('like.css')
+	->js('like.js');
+
+	$likeArray = $this->like;
+	$countLike = count($likeArray);
+	$currentUserId = User::get('id');
+
+	$userLikesComment = false;
+	$userNameLikesArray = "";
+	foreach ( $likeArray as $likeObj ) {
+		if ( $currentUserId == $likeObj->userId ) {
+			$userLikesComment = true;
+		}
+
+		$userNameLikesArray .= "/" . ($likeObj->userName);
+	}
+	$userNameLikesArray = substr($userNameLikesArray,1);	
+
 	$this->comment->set('section', $this->filters['section']);
 	$this->comment->set('category', $this->category->get('alias'));
 
@@ -60,6 +78,25 @@ defined('_HZEXEC_') or die();
 			</p>
 			<div class="comment-body">
 				<?php echo $comment; ?>
+
+				<!-- Like Button -->
+                <a class="elementToHover icon-heart like <?php if ($userLikesComment) { echo "userLiked"; } ?>" href="#"
+                   data-thread="<?php echo $this->thread->get('id'); ?>"
+                   data-post="<?php echo $this->comment->get('id'); ?>"
+                   data-user="<?php echo User::get('id'); ?>"
+                   data-user-name="<?php echo User::get('name'); ?>"
+                   data-likes-list="<?php echo $userNameLikesArray; ?>"
+                   data-count="<?php echo $countLike; ?>"
+                >
+                    <?php echo ($countLike>0) ? "Like (" . $countLike . ")" : "Like"; ?>
+                    <span class="elementToPopup">
+                        <?php
+                        $nameArray = preg_split("#/#", $userNameLikesArray);
+                        echo join("<br>",$nameArray);
+                        ?>
+                    </span>
+                </a>
+                <div class="clear"></div>
 			</div>
 			<div class="comment-attachments">
 				<?php
