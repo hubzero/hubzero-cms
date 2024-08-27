@@ -68,7 +68,9 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
 
             // Hover over and mouse leave
             likeButton[i].onmouseover = (e) => {
-                likeButton[i].getElementsByClassName('elementToPopup')[0].style.display = 'block';
+                if (likeButton[i].dataset.count > 0) {
+                    likeButton[i].getElementsByClassName('elementToPopup')[0].style.display = 'block';
+                }   
             };
 
             likeButton[i].onmouseleave = (e) => {
