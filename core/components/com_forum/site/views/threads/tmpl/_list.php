@@ -47,6 +47,7 @@ if ($this->comments) {
 		     ->set('controller', $this->controller)
 		     ->set('comment', $comment)
              ->set('like', $likesByPostId)
+			 ->set('likes', $this->likes)
 		     ->set('thread', $this->thread)
 		     ->set('config', $this->config)
 		     ->set('depth', $this->depth)

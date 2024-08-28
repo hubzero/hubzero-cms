@@ -1,5 +1,3 @@
-console.log("like on site forum");
-
 window.addEventListener('DOMContentLoaded', (domEvent) => {
     // Find all the "like" button
     const likeButton = document.querySelectorAll('.comment-body .like')
@@ -17,7 +15,7 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                 const likesList = likeButton[i].dataset.likesList;
                 const likeCount = likeButton[i].dataset.count;
 
-                console.log(threadId, postId, userId, likeCount, userName, likesList);
+                // console.log(threadId, postId, userId, likeCount, userName, likesList);
 
                 const likesListArray = likesList.split("/");
 
