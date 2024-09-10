@@ -927,7 +927,8 @@ class Doi extends Obj
 	}
 
 	/**
-	 * Run cURL to register metadata. When input $doi is null, it is going to create DOI on DataCite.
+	 * Run cURL to register metadata. When input $doi is null as well as only DOI shoulder is set in $url, 
+	 * it is going to create DOI on DataCite.
 	 *
 	 * @param	string	$url
 	 * @param	array	$postVals
@@ -941,9 +942,9 @@ class Doi extends Obj
 		curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->dataciteUserPW);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postvals);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($postvals)));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/xml;charset=UTF-8'));
 		curl_setopt($ch, CURLOPT_FAILONERROR, true);
-		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 
 		$response = curl_exec($ch);
 
@@ -992,7 +993,7 @@ class Doi extends Obj
 		curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->dataciteUserPW);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postvals);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($postvals)));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8'));
 		curl_setopt($ch, CURLOPT_FAILONERROR, true);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 
@@ -1020,7 +1021,7 @@ class Doi extends Obj
 	/**
 	 * Register DOI metadata. This is the first step to create DOI name and register metadata on DataCite.
 	 *
-	 * @param  string  $doi  - It is null when the function is used for DOI registration. Otherwise, the function is used for updating DOI state on DataCite.
+	 * @param  string  $doi
 	 *
 	 * @return string $doi
 	 */
@@ -1083,7 +1084,7 @@ class Doi extends Obj
 	}
 
 	/**
-	 * Update DOI metadata
+	 * Update DOI metadata on DataCite
 	 *
 	 * @param   string   $doi
 	 *
@@ -1105,16 +1106,16 @@ class Doi extends Obj
 			return false;
 		}
 
-		$metadataURL = $this->_configs->dataciteServiceURL . DS . 'metadata';
+		$metadataURL = $this->_configs->dataciteServiceURL . DS . 'metadata' . DS . $doi;
 		$xml = $this->buildXml($doi);
 
 		$ch = curl_init($metadataURL);
 		curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->dataciteUserPW);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($xml)));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/xml;charset=UTF-8'));
 		curl_setopt($ch, CURLOPT_FAILONERROR, true);
-		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 
 		$response = curl_exec($ch);
 
@@ -1124,6 +1125,7 @@ class Doi extends Obj
 		}
 
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
 
 		curl_close($ch);
 
@@ -1426,7 +1428,7 @@ class Doi extends Obj
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->dataciteUserPW);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8'));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/plain;charset=UTF-8'));
 			curl_setopt($ch, CURLOPT_FAILONERROR, true);
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
 
@@ -1445,10 +1447,8 @@ class Doi extends Obj
 				return false;
 			}
 		}
-		elseif ($stateSwitch == self::STATE_FROM_DRAFTREADY_TO_PUBLISHED)
-		{
-			return $this->registerMetadata($doi);
-		}
+		
+		return true;
 	}
 
 	/**
