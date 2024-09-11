@@ -39,7 +39,7 @@ class IdP
 	 */
 	public function getCertificate()
 	{
-		return \LightSaml\Credential\X509Certificate::fromFile( \Component::path('com_saml') . DS . 'config' . DS . 'certificate.crt');
+		return \LightSaml\Credential\X509Certificate::fromFile("/etc/saml/cert/saml.crt");
   	}
 
 	/**
@@ -49,7 +49,7 @@ class IdP
 	 */
 	public function getPrivateKey()
 	{
-		return \LightSaml\Credential\KeyHelper::createPrivateKey( \Component::path('com_saml') . DS . 'config' . DS . 'certificate.key', '', true);
+		return \LightSaml\Credential\KeyHelper::createPrivateKey("/etc/saml/cert/saml.pem", '', true);
 	}
 
 	/**
