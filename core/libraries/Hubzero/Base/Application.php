@@ -10,6 +10,7 @@ namespace Hubzero\Base;
 use Hubzero\Container\Container;
 use Hubzero\Error\Exception\NotAuthorizedException;
 use Hubzero\Error\Exception\NotFoundException;
+use Hubzero\Error\Exception\MethodNotAllowedException;
 use Hubzero\Error\Exception\RuntimeException;
 use Hubzero\Facades\Facade;
 use Hubzero\Http\RedirectResponse;
@@ -265,6 +266,10 @@ class Application extends Container
 	{
 		switch ($code)
 		{
+			case 405:
+				throw new MethodNotAllowedException($message, $code);
+			break;
+
 			case 404:
 				throw new NotFoundException($message, $code);
 			break;
