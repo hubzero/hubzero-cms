@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package      hubzero-cms
+@copyright    Copyright (c) 2005-2024 The Regents of the University of California.
+@license      http://opensource.org/licenses/MIT MIT
+-->
+
+<config>
+	<fieldset name="IdP">
+		<field
+			name="IdP_enable"
+			type="radio"
+			default="1"
+			label="COM_SAML_CONFIG_FIELD_IDPENABLE_LABEL"
+			description="COM_SAML_CONFIG_FIELD_IDPENABLE_DESC">
+			<option
+				value="0">JNO</option>
+			<option
+				value="1">JYES</option>
+		</field>
+		<field 
+			name="IdP_entityID" 
+			type="text" 
+			menu="hide" 
+			default="" 
+			label="COM_SAML_CONFIG_FIELD_IDPENTITYID_LABEL"
+			description="COM_SAML_CONFIG_FIELD_IDPENTITYID_DESC">
+		</field>
+		<field
+			name="enableIdPMetadataEndpoint"
+			type="radio"
+			default="1"
+			label="COM_SAML_CONFIG_FIELD_ENABLEIDPMETADATAENDPOINT_LABEL"
+			description="COM_SAML_CONFIG_FIELD_ENABLEIDPMETADATAENDPOINT_DESC">
+			<option
+				value="0">JNO</option>
+			<option
+				value="1">JYES</option>
+		</field>
+		<field 
+			name="IdPCertificateFile" 
+			type="text" 
+			menu="hide" 
+			default="" 
+			label="COM_SAML_CONFIG_FIELD_IDPCERTIFICATEFILE_LABEL"
+			description="COM_SAML_CONFIG_FIELD_IDPCERTIFICATEFILE_DESC">
+		</field>
+		<field 
+			name="IdPKeyFile" 
+			type="text" 
+			menu="hide" 
+			default="" 
+			label="COM_SAML_CONFIG_FIELD_IDPKEYFILE_LABEL"
+			description="COM_SAML_CONFIG_FIELD_IDPKEYFILE_DESC">
+		</field>
+
+	</fieldset>
+	<fieldset name="SP">
+		<field
+			name="SP_enable"
+			type="radio"
+			default="1"
+			label="COM_SAML_CONFIG_FIELD_SPENABLE_LABEL"
+			description="COM_SAML_CONFIG_FIELD_SPENABLE_DESC">
+			<option
+				value="0">JNO</option>
+			<option
+				value="1">JYES</option>
+		</field>
+		<field 
+			name="SP_entityID" 
+			type="text" 
+			menu="hide" 
+			default="" 
+			label="COM_SAML_CONFIG_FIELD_SPENTITYID_LABEL"
+			description="COM_SAML_CONFIG_FIELD_SPENTITYID_DESC">
+		</field>
+		<field
+			name="enableSPMetadataEndpoint"
+			type="radio"
+			default="1"
+			label="COM_SAML_CONFIG_FIELD_ENABLESPMETADATAENDPOINT_LABEL"
+			description="COM_SAML_CONFIG_FIELD_ENABLESPMETADATAENDPOINT_DESC">
+			<option
+				value="0">JNO</option>
+			<option
+				value="1">JYES</option>
+		</field>
+		<field 
+			name="SPCertificateFile" 
+			type="text" 
+			menu="hide" 
+			default="" 
+			label="COM_SAML_CONFIG_FIELD_SPCERTIFICATEFILE_LABEL"
+			description="COM_SAML_CONFIG_FIELD_SPCERTIFICATEFILE_DESC">
+		</field>
+		<field 
+			name="SPKeyFile" 
+			type="text" 
+			menu="hide" 
+			default="" 
+			label="COM_SAML_CONFIG_FIELD_SPKEYFILE_LABEL"
+			description="COM_SAML_CONFIG_FIELD_SPKEYFILE_DESC">
+		</field>
+	</fieldset>
+</config>

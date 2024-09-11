@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.1">
+	<name>COM_SAML</name>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright (c) 2005-2024 The Regents of the University of California.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>SAML IdP</description>
+	<languages>
+		<language tag="en-GB">en-GB.com_saml.ini</language>
+	</languages>
+</extension>
