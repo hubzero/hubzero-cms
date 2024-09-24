@@ -896,14 +896,27 @@ class Items extends AdminController
 				}
 			}
 		}
+		
+		// Incoming tags
+		$tags = Request::getString('tags', '', 'post');
+
+		// Save the tags
+		$rt = new Helpers\Tags($this->database);
+		$rt->tag_object(User::get('id'), $this->model->version->id, $tags, 1, true);
 
 		// Update DOI with latest information
 		if ($this->model->version->doi && !$action)
 		{
-			// Update DOI if locally issued
 			if (preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
 			{
 				$doiService->set('authors', $authors);
+				
+				$fosTag = $this->model->getFOSTag();
+				if (!empty($fosTag))
+				{
+					$doiService->set('fosTag', $fosTag);
+				}
+				
 				$doiService->update($this->model->version->doi, true);
 
 				if ($doiService->getError())
@@ -912,13 +925,6 @@ class Items extends AdminController
 				}
 			}
 		}
-
-		// Incoming tags
-		$tags = Request::getString('tags', '', 'post');
-
-		// Save the tags
-		$rt = new Helpers\Tags($this->database);
-		$rt->tag_object(User::get('id'), $this->model->version->id, $tags, 1, true);
 
 		// Email config
 		$pubtitle = \Hubzero\Utility\Str::truncate($this->model->version->title, 100);
