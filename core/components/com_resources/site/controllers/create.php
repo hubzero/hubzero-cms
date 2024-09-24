@@ -1416,7 +1416,9 @@ class Create extends SiteController
 					if (\Hubzero\Utility\Validate::email($def))
 					{
 						// Send e-mail
-						$message->setTo(array($def));
+						// Protection from data breach, list of users are sent bcc
+						$message->setTo(Config::get('mailfrom'));
+						$message->setBcc(array($def));
 						$message->send();
 					}
 				}

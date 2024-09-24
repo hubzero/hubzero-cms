@@ -129,12 +129,14 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 						if (preg_match("/\\\"([^\"]*)\\\"\\s<([^>]*)>/ux", $parts[1], $matches))
 						{
 							$message->setFrom(array($matches[2] => $matches[1]));
+							$message->setTo(array($matches[2] => $matches[1]));
 						}
 						break;
 					case 'Reply-To':
 						if (preg_match("/\\\"([^\"]*)\\\"\\s<([^>]*)>/ux", $parts[1], $matches))
 						{
 							$message->setReplyTo(array($matches[2] => $matches[1]));
+							$message->setTo(array($matches[2] => $matches[1]));
 						}
 						break;
 					case 'Importance':
@@ -152,8 +154,9 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 			}
 
 			// build message object and send
+			// Protection from data breach, list of users are sent bcc
 			$message->setSubject($queuedEmail->subject)
-					->setTo($queuedEmail->email)
+					->setBcc($queuedEmail->email)
 					->setBody($queuedEmail->plain_body, 'text/plain')
 					->addPart($queuedEmail->html_body, 'text/html');
 

@@ -1374,12 +1374,14 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			// Send HUB message
 			$recipient = User::getInstance($uid);
 
+			// Protection from data breach, list of users are sent bcc
 			$email = new \Hubzero\Mail\Message();
 			$email->setSubject($subject)
 				->addFrom($from['email'], $from['name'])
 				->addPart($message['plaintext'], 'text/plain')
 				->addPart($message['multipart'], 'text/html')
-				->setTo($recipient->email, $recipient->name);
+				->setTo($from['email'])
+				->setBcc($recipient->email, $recipient->name);
 
 			if ($email->send())
 			{

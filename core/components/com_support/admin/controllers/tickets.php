@@ -532,7 +532,9 @@ class Tickets extends AdminController
 					if (Validate::email($def))
 					{
 						// Send e-mail
-						$msg->setTo(array($def));
+						// Updated to have protection from data breach, list of users are sent bcc
+						$msg->setTo(Config::get('mailfrom'));
+                        $msg->setBcc(array($def));
 						$msg->send();
 					}
 				}
