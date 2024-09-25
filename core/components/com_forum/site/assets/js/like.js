@@ -1,21 +1,39 @@
 window.addEventListener('DOMContentLoaded', (domEvent) => {
     // Find all the "like" button
-    const likeButton = document.querySelectorAll('.comment-body .like')
-    if (likeButton.length) {
-        for(let i = 0; i < likeButton.length;i++) {
-            likeButton[i].onclick = (e) => {
+    const commentSections = document.querySelectorAll('.comment-body')
+    if (commentSections.length) {
+        for(let i = 0; i < commentSections.length;i++) {
+            let likeButton = commentSections[i].querySelector('.like');
+            let likeStatsLink = commentSections[i].querySelector('.likesStat');
+            let whoLikedPostDiv = commentSections[i].querySelector('.whoLikedPost');
+
+            console.log(whoLikedPostDiv.scrollHeight);
+
+            likeStatsLink.onclick = (e) => {
+                this.__toggle = !this.__toggle;
+                console.log(this.__toggle)
+                if(this.__toggle) {
+                    whoLikedPostDiv.style.height = `${whoLikedPostDiv.scrollHeight}px`;
+                } else {
+                    whoLikedPostDiv.style.height = 0;
+                }
+            }
+
+            likeButton.onclick = (e) => {
                 e.preventDefault();
 
-                let hasHeart = likeButton[i].classList.contains("userLiked");
+                let hasHeart = likeButton.classList.contains("userLiked");
 
-                const threadId = likeButton[i].dataset.thread;
-                const postId = likeButton[i].dataset.post;
-                const userId = likeButton[i].dataset.user;
-                const userName = likeButton[i].dataset.userName;
-                const likesList = likeButton[i].dataset.likesList;
-                const likeCount = likeButton[i].dataset.count;
+                const threadId = likeButton.dataset.thread;
+                const postId = likeButton.dataset.post;
+                const userId = likeButton.dataset.user;
+                const userName = likeButton.dataset.userName;
+                const nameAndId = `${userName}#${userId}`;
 
-                // console.log(threadId, postId, userId, likeCount, userName, likesList);
+                const likesList = likeButton.dataset.likesList;
+                const likeCount = likeButton.dataset.count;
+
+                console.log(threadId, postId, userId, likeCount, userName, likesList);
 
                 const likesListArray = likesList.split("/");
 
@@ -23,18 +41,25 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                     removeLike(threadId, postId, userId).then((res) => {
                         if (res.ok) {
                             const newLikeCount = Number(likeCount) - 1;
-                            const newLikesString = likesListArray.filter(e => e !== userName).join('/');
+                            const newLikesString = likesListArray.filter(e => e !== nameAndId).join('/');
 
-                            // Create ELEMENT
-                            const element = document.createElement('span');
-                            element.classList.add("elementToPopup");
-                            element.innerHTML = newLikesString.split("/").join("<br>");
+                            likeButton.dataset.count = `${newLikeCount}`;
+                            likeButton.classList.remove("userLiked");
+                            likeButton.dataset.likesList = newLikesString;
+                            likeStatsLink.innerHTML = (newLikeCount === 0) ? 'Like' : `Like (${newLikeCount})`;
 
-                            likeButton[i].dataset.count = `${newLikeCount}`;
-                            likeButton[i].innerHTML = (newLikeCount === 0) ? 'Like' : `Like (${newLikeCount})`;
-                            likeButton[i].appendChild(element);
-                            likeButton[i].classList.remove("userLiked");
-                            likeButton[i].dataset.likesList = newLikesString;
+                            let whoLikedArray = [];
+                            const newLikesArray = newLikesString.split("/");
+                            for (let i = 0; i < newLikesArray.length; i++) {
+                                const nameArray = newLikesArray[i].split('#')
+                                const userName = nameArray[0];
+                                const userId =  nameArray[1];
+                                const userProfileUrl = `/members/${userId}/profile`;
+
+                                whoLikedArray.push(`<a href=${userProfileUrl} target='_blank'>${userName}</a>`);
+                            }
+
+                            whoLikedPostDiv.innerHTML = "<div class='names'>" + whoLikedArray.join(', ') + "</div>";
 
                             console.warn(`Like removed for forum thread '${threadId}' of post '${postId}' for user ${userId}`);
                         }
@@ -43,18 +68,25 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                     addLike(threadId, postId, userId).then((res) => {
                         if (res.ok) {
                             const newLikeCount = Number(likeCount) + 1;
-                            const newLikesString = [...likesListArray, userName].join('/');
+                            const newLikesString = [...likesListArray, nameAndId].join('/');
 
-                            // Create ELEMENT
-                            const element = document.createElement('span');
-                            element.classList.add("elementToPopup");
-                            element.innerHTML = newLikesString.split("/").join("<br>");
+                            likeButton.dataset.count = `${newLikeCount}`;
+                            likeButton.classList.add("userLiked");
+                            likeButton.dataset.likesList = newLikesString;
+                            likeStatsLink.innerHTML = `Like (${newLikeCount})`;
 
-                            likeButton[i].dataset.count = `${newLikeCount}`;
-                            likeButton[i].innerHTML = `Like (${newLikeCount})`;
-                            likeButton[i].appendChild(element);
-                            likeButton[i].classList.add("userLiked");
-                            likeButton[i].dataset.likesList = newLikesString;
+                            let whoLikedArray = [];
+                            const newLikesArray = newLikesString.split("/");
+                            for (let i = 0; i < newLikesArray.length; i++) {
+                                const nameArray = newLikesArray[i].split('#')
+                                const userName = nameArray[0];
+                                const userId =  nameArray[1];
+                                const userProfileUrl = `/members/${userId}/profile`;
+
+                                whoLikedArray.push(`<a href=${userProfileUrl} target='_blank'>${userName}</a>`);
+                            }
+
+                            whoLikedPostDiv.innerHTML = "<div class='names'>" + whoLikedArray.join(', ') + "</div>";
 
                             console.log(`Like recorded for forum thread '${threadId}' of post '${postId}' for user ${userId}`);
                         }
@@ -62,17 +94,6 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                 }
 
                 return false;
-            };
-
-            // Hover over and mouse leave
-            likeButton[i].onmouseover = (e) => {
-                if (likeButton[i].dataset.count > 0) {
-                    likeButton[i].getElementsByClassName('elementToPopup')[0].style.display = 'block';
-                }            
-            };
-
-            likeButton[i].onmouseleave = (e) => {
-                likeButton[i].getElementsByClassName('elementToPopup')[0].style.display = 'none';
             };
         }
     }

@@ -1,29 +1,36 @@
 /* Should put this in the comments.less file */
 .comment-body a.like {
-    float: right;
     color: gray;
-    margin-bottom: 10px;
+    margin-right: 5px;
+    font-size:20px;
 }
 
 .comment-body a.userLiked {
     color: red;
 }
 
-.elementToHover {
-    display: inline-block;
-    position: relative;
+.comment-body .likesStat {
+    font-size: 14px;
+    vertical-align:middle;
+    margin-top: 5px;
 }
 
-.elementToPopup {
-    display: none;
-    position: absolute;
-    top: 30px;
-    left: -80px;
-    background-color: #555;
-    color: #fff;
+.elementInline {
+    display: inline-flex;
+    float: right;
+    vertical-align:middle;
+}
+
+.whoLikedPost {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.8s ease;
+}
+
+.names {
     padding: 10px;
+    background-color: #eeeeee;
     border-radius: 5px;
-    z-index: 1;
-    width: 151px;
     text-align: right;
+    font-size: 12px;
 }

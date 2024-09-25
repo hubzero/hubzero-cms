@@ -21,7 +21,7 @@ $this->css('like.css')
             $userLikesComment = true;
         }
 
-        $userNameLikesArray .= "/" . ($likeObj->userName);
+        $userNameLikesArray .= "/" . ($likeObj->userName) . "#" . ($likeObj->userId);
     }
     $userNameLikesArray = substr($userNameLikesArray,1);
 
@@ -73,24 +73,40 @@ $this->css('like.css')
 			<div class="comment-body">
 				<?php echo $comment; ?>
 
-                <!-- Like Button -->
-                <a class="elementToHover icon-heart like <?php if ($userLikesComment) { echo "userLiked"; } ?>" href="#"
-                   data-thread="<?php echo $this->thread->get('id'); ?>"
-                   data-post="<?php echo $this->comment->get('id'); ?>"
-                   data-user="<?php echo User::get('id'); ?>"
-                   data-user-name="<?php echo User::get('name'); ?>"
-                   data-likes-list="<?php echo $userNameLikesArray; ?>"
-                   data-count="<?php echo $countLike; ?>"
-                >
-                    <?php echo ($countLike>0) ? "Like (" . $countLike . ")" : "Like"; ?>
-                    <span class="elementToPopup">
+                <!-- Heart and "Like" link Button -->
+                <div class="elementInline likeContainer">
+                    <a class="icon-heart like <?php if ($userLikesComment) { echo "userLiked"; } ?>" href="#"
+                       data-thread="<?php echo $this->thread->get('id'); ?>"
+                       data-post="<?php echo $this->comment->get('id'); ?>"
+                       data-user="<?php echo User::get('id'); ?>"
+                       data-user-name="<?php echo User::get('name'); ?>"
+                       data-likes-list="<?php echo $userNameLikesArray; ?>"
+                       data-count="<?php echo $countLike; ?>"
+                    ></a>
+                    <span class="likesStat">
+                        <?php echo ($countLike>0) ? "Like (" . $countLike . ")" : "Like"; ?>
+                    </span>
+                </div>
+                <div class="clear"></div>
+
+                <div class="whoLikedPost">
+                    <div class="names">
                         <?php
                             $nameArray = preg_split("#/#", $userNameLikesArray);
-                            echo join("<br>",$nameArray);
+                            $links = array();
+                            foreach ($nameArray as $nameString) {
+                                $nameArray = explode("#", $nameString);
+                                $userName = $nameArray[0];
+                                $userId =  $nameArray[1];
+                                $userProfileUrl = "/members/$userId/profile";
+
+                                $links[] = "<a href=$userProfileUrl target='_blank'>$userName</a>";
+                            }
+                            echo join(", ", $links);
                         ?>
-                    </span>
-                </a>
-                <div class="clear"></div>
+                    </div>
+                </div>
+
 			</div>
 
 			<div class="comment-attachments">
@@ -257,7 +273,6 @@ $this->css('like.css')
 			     ->set('controller', $this->controller)
 			     ->set('comments', $this->comment->get('replies'))
 			     ->set('thread', $this->thread)
-				 ->set('likes', $this->likes)
 			     ->set('parent', $this->comment->get('id'))
 			     ->set('config', $this->config)
 			     ->set('depth', $this->depth)
