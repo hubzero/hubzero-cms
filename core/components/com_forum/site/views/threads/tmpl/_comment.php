@@ -102,7 +102,7 @@ $this->css('like.css')
 
                                 $links[] = "<a href=$userProfileUrl target='_blank'>$userName</a>";
                             }
-                            echo join(", ", $links);
+                            echo join(", ", $links) . " liked this";
                         ?>
                     </div>
                 </div>

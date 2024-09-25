@@ -1,17 +1,14 @@
 window.addEventListener('DOMContentLoaded', (domEvent) => {
-    // Find all the "like" button
-    const commentSections = document.querySelectorAll('.comment-body')
+    // Find all the "like" / stat button
+    const commentSections = document.querySelectorAll('.comment-content')
     if (commentSections.length) {
         for(let i = 0; i < commentSections.length;i++) {
             let likeButton = commentSections[i].querySelector('.like');
             let likeStatsLink = commentSections[i].querySelector('.likesStat');
             let whoLikedPostDiv = commentSections[i].querySelector('.whoLikedPost');
 
-            console.log(whoLikedPostDiv.scrollHeight);
-
             likeStatsLink.onclick = (e) => {
                 this.__toggle = !this.__toggle;
-                console.log(this.__toggle)
                 if(this.__toggle) {
                     whoLikedPostDiv.style.height = `${whoLikedPostDiv.scrollHeight}px`;
                 } else {
@@ -59,7 +56,7 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                                 whoLikedArray.push(`<a href=${userProfileUrl} target='_blank'>${userName}</a>`);
                             }
 
-                            whoLikedPostDiv.innerHTML = "<div class='names'>" + whoLikedArray.join(', ') + "</div>";
+                            whoLikedPostDiv.innerHTML = "<div class='names'>" + whoLikedArray.join(', ') + " liked this</div>";
 
                             console.warn(`Like removed for forum thread '${threadId}' of post '${postId}' for user ${userId}`);
                         }
@@ -86,7 +83,7 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                                 whoLikedArray.push(`<a href=${userProfileUrl} target='_blank'>${userName}</a>`);
                             }
 
-                            whoLikedPostDiv.innerHTML = "<div class='names'>" + whoLikedArray.join(', ') + "</div>";
+                            whoLikedPostDiv.innerHTML = "<div class='names'>" + whoLikedArray.join(', ') + " liked this</div>";
 
                             console.log(`Like recorded for forum thread '${threadId}' of post '${postId}' for user ${userId}`);
                         }

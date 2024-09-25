@@ -15,6 +15,12 @@
     margin-top: 5px;
 }
 
+.comment-body .likesStat:hover {
+    cursor: pointer;
+    color: black;
+    text-decoration: underline;
+}
+
 .elementInline {
     display: inline-flex;
     float: right;
