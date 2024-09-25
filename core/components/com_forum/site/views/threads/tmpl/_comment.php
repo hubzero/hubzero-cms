@@ -90,21 +90,23 @@ $this->css('like.css')
                 <div class="clear"></div>
 
                 <div class="whoLikedPost">
-                    <div class="names">
-                        <?php
-                            $nameArray = preg_split("#/#", $userNameLikesArray);
-                            $links = array();
-                            foreach ($nameArray as $nameString) {
-                                $nameArray = explode("#", $nameString);
-                                $userName = $nameArray[0];
-                                $userId =  $nameArray[1];
-                                $userProfileUrl = "/members/$userId/profile";
+					<?php if (strlen($userNameLikesArray) > 0) { ?>
+                        <div class="names">
+                            <?php
+                                $nameArray = preg_split("#/#", $userNameLikesArray);
+                                $links = array();
+                                foreach ($nameArray as $nameString) {
+                                    $nameArray = explode("#", $nameString);
+                                    $userName = $nameArray[0];
+                                    $userId =  $nameArray[1];
+                                    $userProfileUrl = "/members/$userId/profile";
 
-                                $links[] = "<a href=$userProfileUrl target='_blank'>$userName</a>";
-                            }
-                            echo join(", ", $links) . " liked this";
-                        ?>
-                    </div>
+                                    $links[] = "<a href=$userProfileUrl target='_blank'>$userName</a>";
+                                }
+                                echo join(", ", $links) . " liked this";
+                            ?>
+                        </div>
+                    <?php } ?>
                 </div>
 
 			</div>

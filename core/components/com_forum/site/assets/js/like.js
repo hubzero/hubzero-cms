@@ -45,18 +45,22 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                             likeButton.dataset.likesList = newLikesString;
                             likeStatsLink.innerHTML = (newLikeCount === 0) ? 'Like' : `Like (${newLikeCount})`;
 
-                            let whoLikedArray = [];
-                            const newLikesArray = newLikesString.split("/");
-                            for (let i = 0; i < newLikesArray.length; i++) {
-                                const nameArray = newLikesArray[i].split('#')
-                                const userName = nameArray[0];
-                                const userId =  nameArray[1];
-                                const userProfileUrl = `/members/${userId}/profile`;
+                            if (newLikeCount > 0) {
+                                let whoLikedArray = [];
+                                const newLikesArray = newLikesString.split("/");
+                                for (let i = 0; i < newLikesArray.length; i++) {
+                                    const nameArray = newLikesArray[i].split('#')
+                                    const userName = nameArray[0];
+                                    const userId =  nameArray[1];
+                                    const userProfileUrl = `/members/${userId}/profile`;
 
-                                whoLikedArray.push(`<a href=${userProfileUrl} target='_blank'>${userName}</a>`);
+                                    whoLikedArray.push(`<a href=${userProfileUrl} target='_blank'>${userName}</a>`);
+                                }
+
+                                whoLikedPostDiv.innerHTML = "<div class='names'>" + whoLikedArray.join(', ') + " liked this</div>";
+                            } else {
+                                whoLikedPostDiv.innerHTML = "";
                             }
-
-                            whoLikedPostDiv.innerHTML = "<div class='names'>" + whoLikedArray.join(', ') + " liked this</div>";
 
                             console.warn(`Like removed for forum thread '${threadId}' of post '${postId}' for user ${userId}`);
                         }
