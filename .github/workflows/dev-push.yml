@@ -1,4 +1,4 @@
-name: update-nanohubdev-on-push
+name: update-code-push
 on: [push]
 jobs:
   push-step-1:
@@ -7,8 +7,8 @@ jobs:
     - name: Install SSH Key
       uses: shimataro/ssh-key-action@v2
       with:
-        key: ${{ secrets.SSH_KEY }}
+        key: ${{ secrets.HUBADMIN_KEY }}
         known_hosts: ${{ secrets.KNOWN_HOSTS }}
-    - name: test cmd exec on dev.nanohub.org
+    - name: test cmd exec on stage.cmkc.hubzero.org
       run: echo "test"
-#      run: ssh webadmin@dev.nanohub.org "date >> /var/www/dev/drbtest.txt;"
+      run: ssh -i ~/.ssh/github-workflow-hubadmin-key hubadmin@stage.cmkc.hubzero.org "date >> /var/www/dev/drbtest.txt;"
