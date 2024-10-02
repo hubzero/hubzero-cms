@@ -12,5 +12,5 @@ jobs:
         if_key_exists: replace ### replace|ignore|fail; optional (defaults to fail) 
     - name: dev push to stage.cmkc.hubzero.org
       run: |
-        echo "test"
+        echo "test 712"
         ssh hubadmin@stage.cmkc.hubzero.org "date >> /var/www/dev/drbtest.txt;"
