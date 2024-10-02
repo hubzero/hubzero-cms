@@ -9,8 +9,9 @@ jobs:
       with:
         key: ${{ secrets.HUBADMIN_KEY }}
         known_hosts: ${{ secrets.KNOWN_HOSTS }}
-        if_key_exists: replace ### replace|ignore|fail; optional (defaults to fail) 
+        if_key_exists: replace ### replace|ignore|fail; optional (defaults to fail)
+        known_hosts: unnecessary
     - name: dev push to stage.cmkc.hubzero.org
       run: |
-        echo "test 724"
+        echo "test 726"
         ssh hubadmin@stage.cmkc.hubzero.org "date >> /var/www/stage/drbtest.txt;"
