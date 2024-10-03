@@ -9,7 +9,7 @@ jobs:
       with:
         key: ${{ secrets.HUBADMIN_KEY }}
         if_key_exists: replace ### replace|ignore|fail; optional (defaults to fail)
-        known_hosts: ${{ KNOWN_HOSTS }}
+        known_hosts: ${{ secrets.KNOWN_HOSTS }}
     - name: dev push to stage.cmkc.hubzero.org
       run: |
         echo "test 418"
