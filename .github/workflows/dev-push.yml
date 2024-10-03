@@ -12,5 +12,4 @@ jobs:
         known_hosts: unnecessary
     - name: dev push to stage.cmkc.hubzero.org
       run: |
-        echo "test 330"
-        ssh hubadmin@stage.cmkc.hubzero.org "date >> /var/www/stage/drbtest.txt;"
+        echo "test 341"
