@@ -1246,6 +1246,15 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$this->_authorize('thread', $thread->get('id'));
 		$this->_authorize('post');
 
+		// Get all the likes of this thread
+        $db = \App::get('db');
+        $queryLikes = "SELECT LIKES.threadId as 'threadId', LIKES.postId as 'postId', 
+                            LIKES.userId as 'userId', USERS.name as 'userName', USERS.email as 'userEmail' 
+                    FROM jos_forum_posts_like as LIKES, jos_users AS USERS
+                    WHERE LIKES.userId = USERS.id AND LIKES.threadId = " . $thread->get('id');
+        $db->setQuery($queryLikes);
+        $initialLikesList = $db->loadObjectList();
+
 		// If the access is anything beyond public,
 		// make sure they're logged in.
 		if (User::isGuest() && !in_array($thread->get('access'), User::getAuthorisedViewLevels()))
@@ -1280,6 +1289,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			->set('section', $section)
 			->set('category', $category)
 			->set('thread', $thread)
+			->set('likes', $initialLikesList)
 			->set('filters', $filters)
 			->setErrors($this->getErrors())
 			->loadTemplate();

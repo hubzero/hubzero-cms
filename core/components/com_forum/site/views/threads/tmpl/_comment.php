@@ -7,6 +7,24 @@
 
 defined('_HZEXEC_') or die();
 
+$this->css('like.css')
+    ->js('like.js');
+
+    $likeArray = $this->like;
+    $countLike = count($likeArray);
+    $currentUserId = User::get('id');
+
+    $userLikesComment = false;
+    $userNameLikesArray = "";
+    foreach ( $likeArray as $likeObj ) {
+        if ( $currentUserId == $likeObj->userId ) {
+            $userLikesComment = true;
+        }
+
+        $userNameLikesArray .= "/" . ($likeObj->userName) . "#" . ($likeObj->userId);
+    }
+    $userNameLikesArray = substr($userNameLikesArray,1);
+
 	$this->comment->set('section', $this->filters['section']);
 	$this->comment->set('category', $this->category->get('alias'));
 
@@ -54,7 +72,45 @@ defined('_HZEXEC_') or die();
 			</p>
 			<div class="comment-body">
 				<?php echo $comment; ?>
+
+                <!-- Heart and "Like" link Button -->
+                <div class="elementInline likeContainer">
+                    <a class="icon-heart like <?php if ($userLikesComment) { echo "userLiked"; } ?>" href="#"
+                       data-thread="<?php echo $this->thread->get('id'); ?>"
+                       data-post="<?php echo $this->comment->get('id'); ?>"
+                       data-user="<?php echo User::get('id'); ?>"
+                       data-user-name="<?php echo User::get('name'); ?>"
+                       data-likes-list="<?php echo $userNameLikesArray; ?>"
+                       data-count="<?php echo $countLike; ?>"
+                    ></a>
+                    <span class="likesStat">
+                        <?php echo ($countLike>0) ? "Like (" . $countLike . ")" : "Like"; ?>
+                    </span>
+                </div>
+                <div class="clear"></div>
+
+                <div class="whoLikedPost">
+					<?php if (strlen($userNameLikesArray) > 0) { ?>
+                        <div class="names">
+                            <?php
+                                $nameArray = preg_split("#/#", $userNameLikesArray);
+                                $links = array();
+                                foreach ($nameArray as $nameString) {
+                                    $nameArray = explode("#", $nameString);
+                                    $userName = $nameArray[0];
+                                    $userId =  $nameArray[1];
+                                    $userProfileUrl = "/members/$userId/profile";
+
+                                    $links[] = "<a href=$userProfileUrl target='_blank'>$userName</a>";
+                                }
+                                echo join(", ", $links) . " liked this";
+                            ?>
+                        </div>
+                    <?php } ?>
+                </div>
+
 			</div>
+
 			<div class="comment-attachments">
 				<?php
 				foreach ($this->comment->attachments()->whereEquals('state', Components\Forum\Models\Attachment::STATE_PUBLISHED)->rows() as $attachment)

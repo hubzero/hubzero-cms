@@ -1,0 +1,42 @@
+/* Should put this in the comments.less file */
+.comment-body a.like {
+    color: gray;
+    margin-right: 5px;
+    font-size:20px;
+}
+
+.comment-body a.userLiked {
+    color: red;
+}
+
+.comment-body .likesStat {
+    font-size: 14px;
+    vertical-align:middle;
+    margin-top: 5px;
+}
+
+.comment-body .likesStat:hover {
+    cursor: pointer;
+    color: black;
+    text-decoration: underline;
+}
+
+.elementInline {
+    display: inline-flex;
+    float: right;
+    vertical-align:middle;
+}
+
+.whoLikedPost {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.8s ease;
+}
+
+.names {
+    padding: 10px;
+    background-color: #eeeeee;
+    border-radius: 5px;
+    text-align: right;
+    font-size: 12px;
+}
