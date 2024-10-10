@@ -152,7 +152,7 @@
 		display: inline-block;
 		width: 48%;
 		margin: 0;
-		text-align: right;
+		text-align: left;
 	}
 	#abox-content form.add-author label {
 		width: 100%;
@@ -164,14 +164,14 @@
 		margin: 0.5em 0;
 	}
 	.block-liner {
-		margin-right: 1.5em;
-		text-align: right;
+		margin: 0.5em 0;
+		text-align: left;
 	}
 	.block-liner input {
 		width: 76%;
 	}
 	.invite-question {
-		padding: 1em 3em;
+		padding: 1em 0 0 0;
 		font-weight: bold;
 	}
 	.add-author .token-input-list-acm {
@@ -292,4 +292,10 @@
 	.ui-autocomplete .ui-menu-item:hover {
 		background: #f1f1f1;
 		cursor: pointer;
+	}
+	.quick-add label{
+		text-transform: none;
+	}
+	ul.token-input-list-acm li input {
+		width:auto !important; 
 	}
