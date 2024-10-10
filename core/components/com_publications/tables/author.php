@@ -317,12 +317,12 @@ class Author extends Table
 						$res->orcid = $user->get('orcid');
 					}
 					
-					if (!empty($user->get('organization')))
+					if (empty($res->organization) && !empty($user->get('organization')))
 					{
 						$res->organization = $user->get('organization');
 					}
 					
-					if (!empty($user->get('orgid')))
+					if (empty($res->orgid) && !empty($user->get('orgid')))
 					{
 						$res->orgid = $user->get('orgid');
 					}
