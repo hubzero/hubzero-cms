@@ -414,47 +414,16 @@ class Doi extends Obj
 		}
 		
 		// Get tags
-		$tags = $pub->getTagsOfPublication();
-		$regTags = $subjectTags = $fosTags = [];
-		
-		if ($tags)
+		$regTags = $pub->getTagsOfPublication();
+		if (!empty($regTags))
 		{
-			foreach ($tags as $tag)
-			{
-				$fosTagObjects = $pub->getFOSTag($tag->id);
-				
-				if (!$fosTagObjects)
-				{
-					$regTags[] = $tag;
-				}
-				else
-				{
-					$subjectTags[] = $tag;
-					
-					foreach ($fosTagObjects as $fosTag)
-					{
-						if (!in_array($fosTag, $fosTags))
-						{
-							$fosTags[] = $fosTag;
-						}
-					}
-				}
-			}
-			
-			if (!empty($regTags))
-			{
-				$this->set('regTags', $regTags);
-			}
-			
-			if (!empty($subjectTags))
-			{
-				$this->set('subjectTags', $subjectTags);
-			}
-			
-			if (!empty($fosTags))
-			{
-				$this->set('fosTags', $fosTags);
-			}
+			$this->set('regTags', $regTags);
+		}
+		
+		$fosTag = $pub->getFOSTag();
+		if (!empty($fosTag))
+		{
+			$this->set('fosTag', $fosTag);
 		}
 	}
 
@@ -874,39 +843,18 @@ class Doi extends Obj
 				}
 			}
 		}
-		if ($this->get('subjectTags'))
+		
+		$fosTagObj = $this->get('fosTag');
+		if (!empty($fosTagObj))
 		{
-			$subjectTags = $this->get('subjectTags');
+			$result = explode(PHP_EOL, $fosTagObj->description);
+			$valArr = explode(" | ", strip_tags($result[0]));
 			
-			foreach ($subjectTags as $subjectTag)
+			if (!empty($valArr) && preg_match("/^fos::/i", trim($valArr[0])) && !empty($valArr[1]))
 			{
-				if (!empty($subjectTag->description) && preg_match("/^lcsh::/i", trim($subjectTag->description)))
-				{
-					$url = substr(trim(strip_tags($subjectTag->description)), 6);
-					$xmlfile .= '<subject subjectScheme="Library of Congress Subject Headings (LCSH)" schemeURI="https://id.loc.gov/authorities/" valueURI="' . $url . '">' . $subjectTag->raw_tag . '</subject>';
-				}
-				else
-				{
-					$xmlfile .= '	<subject>' . $subjectTag->raw_tag . '</subject>';
-				}
-			}
-			
-		}
-		if ($this->get('fosTags'))
-		{
-			$fosTags = $this->get('fosTags');
-			
-			foreach($fosTags as $fosTag)
-			{
-				$result = explode(PHP_EOL, $fosTag->description);
-				$valArr = explode(" | ", strip_tags($result[0]));
-				
-				if (!empty($valArr) && preg_match("/^fos::/i", trim($valArr[0])) && !empty($valArr[1]))
-				{
-					$classificationCode = substr(trim($valArr[0]), 5);
-					$fosTagVal = trim($valArr[1]);
-					$xmlfile .= '<subject subjectScheme="Fields of Science and Technology (FOS)" schemeURI="https://web-archive.oecd.org/2012-06-15/138575-38235147.pdf" classificationCode="' . $classificationCode . '">' . $fosTagVal . '</subject>';
-				}
+				$classificationCode = substr(trim($valArr[0]), 5);
+				$fosTagVal = trim($valArr[1]);
+				$xmlfile .= '<subject subjectScheme="Fields of Science and Technology (FOS)" schemeURI="https://web-archive.oecd.org/2012-06-15/138575-38235147.pdf" classificationCode="' . $classificationCode . '">' . $fosTagVal . '</subject>';
 			}
 		}
 		$xmlfile .= '</subjects>';

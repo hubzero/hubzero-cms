@@ -157,7 +157,8 @@ class Tags extends \Hubzero\Base\Obj
 	 */
 	public function getAllUserTags($vid)
 	{
-		$sql = "SELECT DISTINCT jt.* FROM $this->_tag_tbl AS jt LEFT JOIN $this->_obj_tbl AS jto ON jt.id = jto.tagid AND jt.admin = 0 WHERE jto.objectid = $vid";
+		$sql = "SELECT DISTINCT jt.* FROM $this->_tag_tbl AS jt LEFT JOIN $this->_obj_tbl AS jto ON jt.id = jto.tagid 
+		WHERE jt.admin = 0 AND jto.tbl = 'publications' AND jto.objectid = $vid";
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
@@ -670,37 +671,30 @@ class Tags extends \Hubzero\Base\Obj
 	}
 	
 	/**
-	 * Get FOS (Field of Science and Technology) tag according Subject tag id
+	 * Get FOS (Field of Science and Technology) tag according to department tag id
 	 *
-	 * @param      int $tagid
+	 * @param      int $vid	publication version id
 	 *
-	 * @return     object array or false
+	 * @return     object or false
 	 */
-	public function getFOSTag($tagid)
+	public function getFOSTag($vid)
 	{
-		$sql = "SELECT jto.tagid FROM $this->_tag_tbl AS jt LEFT JOIN $this->_obj_tbl AS jto ON jto.objectid = jt.id WHERE jto.tbl =" . '"tags" AND jto.label = "parent" AND jt.id=' . $tagid;
-		$this->_db->setQuery($sql);
-		$ids = $this->_db->loadColumn();
+		// Get department tag id
+		$deptQuery = "SELECT jt.id FROM $this->_tag_tbl AS jt LEFT JOIN $this->_obj_tbl AS jto ON jt.id = jto.tagid 
+		WHERE jt.admin = 1 AND jto.tbl='publications' AND jt.raw_tag LIKE '%(Dept)%' AND jto.objectid = $vid";
+		$this->_db->setQuery($deptQuery);
+		$deptTagID = $this->_db->loadResult();
 		
-		if ($ids)
+		if (!$deptTagID)
 		{
-			$fosTagObjects = [];
-			foreach ($ids as $id)
-			{
-				$sql = "SELECT jt.* FROM $this->_tag_tbl AS jt WHERE jt.id = $id";
-				$this->_db->setQuery($sql);
-				$fosTagObj = $this->_db->loadObject();
-				
-				if ($fosTagObj)
-				{
-					$fosTagObjects[] = $fosTagObj;
-				}
-			}
-			
-			return !empty($fosTagObjects) ? $fosTagObjects : false;
+			return false;
 		}
 		
-		return false;
+		// Get FOS tag by department tag id
+		$fosQuery = "SELECT jt.* FROM $this->_tag_tbl AS jt LEFT JOIN $this->_obj_tbl AS jto ON jt.id = jto.tagid 
+		WHERE jto.tbl = 'tags' AND jto.label = 'parent' AND jto.objectid = $deptTagID";
+		$this->_db->setQuery($fosQuery);
+		return $this->_db->loadObject();
 	}
 
 	/**
