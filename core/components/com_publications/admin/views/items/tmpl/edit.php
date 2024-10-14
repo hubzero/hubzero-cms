@@ -173,6 +173,13 @@ $panels = array(
 					<textarea name="license_text" id="license_text" cols="40" rows="5" class="pubinput"><?php echo preg_replace("/\r\n/", "\r", trim($this->model->get('license_text'))); ?></textarea>
 				</div>
 			</fieldset>
+			<fieldset class="adminform">
+				<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DISABLE_DOWNLOAD_LINK'); ?></span></legend>
+				<div class="input-wrap">
+					<input type="checkbox" name="disabledownloadlink" id="disabledownloadlink" <?php if ($this->model->version->downloadDisabled) {echo "checked";} ?>/>
+					<label for="disabledownloadlink"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DISABLE_DOWNLOAD_DESCRIPTION'); ?></label>
+				</div>
+			</fieldset>
 		</div>
 		<div class="col span5">
 			<table class="meta">
