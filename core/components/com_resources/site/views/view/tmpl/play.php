@@ -128,7 +128,14 @@ $html = '';
 			$html .= ' <param name="scale" value="showall" />'."\n";
 			$html .= ' <embed src="'. $url .'" menu="false" quality="best" loop="false" width="100%" height="'.$height.'" scale="showall" name="SlideContent" align="" type="application/x-shockwave-flash" pluginspage="https://www.macromedia.com/go/getflashplayer" swLiveConnect="true"></embed>'."\n";
 			$html .= '</object>'."\n";
-		}
+            $html .= '<script>'."\n";
+            $html .= ' window.RufflePlayer = window.RufflePlayer || {};'."\n";
+            $html .= ' window.RufflePlayer.config = {'."\n";
+            $html .= '   "publicPath": "/core/components/com_resources/site/assets/js/ruffle",'."\n";
+            $html .= ' }'."\n";
+            $html .= '</script>'."\n";
+            $html .= '<script src="/core/components/com_resources/site/assets/js/ruffle/ruffle.js"></script>'."\n";
+        }
 		else if (in_array(strtolower($type), $images))
 		{
 			$html .= '<img ' . $attributes . ' src="' . $url . '" alt="Image" />'."\n";
