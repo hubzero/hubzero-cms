@@ -48,7 +48,7 @@ class View extends AbstractView
 	 *
 	 * @var string
 	 */
-	protected $task;
+	public $task;
 
 	/**
 	 * Constructor
