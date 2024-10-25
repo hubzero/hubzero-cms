@@ -128,7 +128,7 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 			{
 				$contributor->organization = $contributor->p_organization;
 			}
-			$contributor->organization = stripslashes(trim($contributor->organization));
+			$contributor->organization = stripslashes(trim($contributor->organization ? $contributor->organization : ""));
 
 			$author = array(
 				'@type'      => 'Person',

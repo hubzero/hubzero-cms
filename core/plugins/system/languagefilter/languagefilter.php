@@ -8,7 +8,7 @@
 // no direct access
 defined('_HZEXEC_') or die;
 
-require_once Component::path('com_menus') . '/admin/helpers/menus.php';
+require_once Component::path('com_menus') . '/helpers/menus.php';
 require_once Component::path('com_languages') . '/helpers/multilangstatus.php';
 
 /**
