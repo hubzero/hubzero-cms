@@ -359,7 +359,7 @@ class Grid
 			$prefix   = array_key_exists('prefix', $options)   ? $options['prefix']   : '';
 		}
 
-		$text = addslashes(htmlspecialchars($editorName, ENT_COMPAT, 'UTF-8'));
+		$text = addslashes(htmlspecialchars($editorName ? $editorName : "", ENT_COMPAT, 'UTF-8'));
 		$date = addslashes(htmlspecialchars(with(new Date($time))->toLocal(Lang::txt('DATE_FORMAT_LC')), ENT_COMPAT, 'UTF-8'));
 		$time = addslashes(htmlspecialchars(with(new Date($time))->toLocal('H:i'), ENT_COMPAT, 'UTF-8'));
 
