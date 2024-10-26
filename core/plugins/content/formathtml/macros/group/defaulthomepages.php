@@ -14,7 +14,7 @@ use Plugins\Content\Formathtml\Macros\GroupMacro;
 /**
  * Group events Macro
  */
-class DefaultHomePage extends GroupMacro
+class DefaultHomePages extends GroupMacro
 {
 	/**
 	 * Allow macro in partial parsing?
