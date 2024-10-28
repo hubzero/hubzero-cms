@@ -43,7 +43,7 @@ $this->css()
 
 			<label>
 				<?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_TITLE'); ?>: <span class="required"><?php echo Lang::txt('EVENTS_CAL_LANG_REQUIRED'); ?></span>
-				<input type="text" name="title" maxlength="250" value="<?php echo $this->escape(html_entity_decode(stripslashes($this->row->title))); ?>" />
+				<input type="text" name="title" maxlength="250" value="<?php echo $this->escape(html_entity_decode(stripslashes($this->row->title ? $this->row->title : ''))); ?>" />
 			</label>
 
 			<label>
@@ -53,12 +53,12 @@ $this->css()
 
 			<label>
 				<?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_ADRESSE'); ?>
-				<input type="text" name="adresse_info" maxlength="120" value="<?php echo $this->escape(stripslashes($this->row->adresse_info)); ?>" />
+				<input type="text" name="adresse_info" maxlength="120" value="<?php echo $this->escape(stripslashes($this->row->adresse_info ? $this->row->adresse_info : '')); ?>" />
 			</label>
 
 			<label>
 				<?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_EXTRA'); ?>
-				<input type="text" name="extra_info" maxlength="240" value="<?php echo $this->escape(stripslashes($this->row->extra_info)); ?>" />
+				<input type="text" name="extra_info" maxlength="240" value="<?php echo $this->escape(stripslashes($this->row->extra_info ? $this->row->extra_info : '')); ?>" />
 			</label>
 			<?php
 				if ($this->fields) {
@@ -128,8 +128,8 @@ $this->css()
 			<input type="hidden" name="state" value="<?php echo $this->escape($this->row->state); ?>" />
 		</fieldset><div class="clear"></div>
 
-		<input type="hidden" name="email" value="<?php echo $this->escape(stripslashes($this->row->email)); ?>" />
-		<input type="hidden" name="restricted" value="<?php echo $this->escape(stripslashes($this->row->restricted)); ?>" />
+		<input type="hidden" name="email" value="<?php echo $this->escape(stripslashes($this->row->email ? $this->row->email : '')); ?>" />
+		<input type="hidden" name="restricted" value="<?php echo $this->escape(stripslashes($this->row->restricted ? $this->row->restricted : '')); ?>" />
 		<p class="submit">
 			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('EVENTS_SAVE'); ?>" />
 
