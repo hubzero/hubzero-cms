@@ -120,6 +120,13 @@ class Legacy extends Registry
 	);
 
 	/**
+	 * Path to the configurations.php file
+	 *
+	 * @var  string
+	 */
+	protected $file;
+
+	/**
 	 * Create a new configuration repository.
 	 *
 	 * @param   string  $path
