@@ -22,7 +22,7 @@ $autoEmailResponses  = $params->get('email_member_groupsidcussionemail_autosignu
 
 //default logo
 $default_logo = $this->img('group_default_logo.png');
-$this->group->set('logo', ltrim($this->group->get('logo'), DS));
+$this->group->set('logo', ltrim($this->group->get('logo') ? $this->group->get('logo') : '', DS));
 
 //access levels
 $levels = array(
@@ -98,7 +98,7 @@ endif;
 					<div class="form-group">
 						<label for="field-description">
 							<?php echo Lang::txt('COM_GROUPS_DETAILS_FIELD_DESCRIPTION'); ?> <span class="required"><?php echo Lang::txt('COM_GROUPS_REQUIRED'); ?></span>
-							<input type="text" name="description" id="field-description" size="35" class="form-control" value="<?php echo stripslashes($this->group->get('description')); ?>" />
+							<input type="text" name="description" id="field-description" size="35" class="form-control" value="<?php echo stripslashes($this->group->get('description') ? $this->group->get('description') : ''); ?>" />
 						</label>
 					</div>
 
@@ -189,7 +189,7 @@ endif;
 							<label for="restrict_msg" class="indent">
 								<strong><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_CREDENTIALS'); ?></strong>
 								(<?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_CREDENTIALS_DESC'); ?>) <span class="optional"><?php echo Lang::txt('COM_GROUPS_OPTIONAL'); ?></span>
-								<textarea name="restrict_msg" id="restrict_msg" rows="5" cols="50"><?php echo htmlentities(stripslashes($this->group->get('restrict_msg'))); ?></textarea>
+								<textarea name="restrict_msg" id="restrict_msg" rows="5" cols="50"><?php echo htmlentities(stripslashes($this->group->get('restrict_msg') ? $this->group->get('restrict_msg') : '')); ?></textarea>
 							</label>
 						</div>
 						<div class="form-group form-check">
