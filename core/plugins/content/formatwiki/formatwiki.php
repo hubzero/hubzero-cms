@@ -32,7 +32,7 @@ class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
 
 		$key = $this->_key($context);
 
-		$content = $article->get($key);
+		$content = $article->get($key, '');
 
 		// The content already has a format assigned to it so do nothing
 		if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $content, $matches))
