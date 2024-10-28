@@ -34,7 +34,7 @@ class View extends AbstractView
 	 *
 	 * @var string
 	 */
-	protected $option;
+	public $option;
 
 	/**
 	 * Current controller
