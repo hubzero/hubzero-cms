@@ -615,7 +615,7 @@ class Project extends Model
 		// Allowed to create a project
 		if (!$this->exists())
 		{
-			$cg = $this->config()->get('creatorgroup');
+			$cg = $this->config()->get('creatorgroup', '');
 			$cg = explode(',', $cg);
 			$cg = array_map('trim', $cg);
 
