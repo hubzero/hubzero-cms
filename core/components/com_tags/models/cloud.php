@@ -342,6 +342,7 @@ class Cloud extends \Hubzero\Base\Obj
 				$tag->set('admin', $admin);
 				$tag->set('tag', $tg);
 				$tag->set('raw_tag', $raw);
+				$tag->set('description', '');
 				$tag->set('created', Date::toSql());
 				$tag->set('created_by', $tagger);
 				$tag->save();
