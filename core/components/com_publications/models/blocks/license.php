@@ -338,7 +338,7 @@ class License extends Base
 			if (!$agreement)
 			{
 				// Get version params and extract agreement
-				$versionParams = array_filter(explode(PHP_EOL, $pub->version->params));
+				$versionParams = array_filter(explode(PHP_EOL, $pub->version->params ? $pub->version->params : ''));
 				$versionParams = array_reduce($versionParams, function($carry, $item){
 					$keyValueSplit = explode('=', $item);
 					$key = trim(array_shift($keyValueSplit));
