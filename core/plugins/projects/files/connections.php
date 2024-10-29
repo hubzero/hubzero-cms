@@ -316,7 +316,7 @@ class connections
 	public function browse()
 	{
 		// Set up view
-		$connection_params = json_decode($this->connection->params);
+		$connection_params = json_decode($this->connection->params ? $this->connection->params : "");
 		if (!isset($connection_params->path))
 		{
 			return $this->setup_base_dir();
