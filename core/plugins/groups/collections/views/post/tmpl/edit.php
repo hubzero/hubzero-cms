@@ -124,7 +124,7 @@ $jbase = rtrim(Request::base(true), '/');
 					<div class="form-group">
 						<label for="field-title">
 							<?php echo Lang::txt('Title'); ?>
-							<input type="text" name="fields[title]" id="field-title" class="form-control" size="35" value="<?php echo $this->escape(stripslashes($item->get('title'))); ?>" />
+							<input type="text" name="fields[title]" id="field-title" class="form-control" size="35" value="<?php echo $this->escape(stripslashes($item->get('title', ''))); ?>" />
 						</label>
 					</div>
 					<input type="hidden" name="fields[type]" value="file" />
