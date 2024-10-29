@@ -366,7 +366,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 
 		// Append breadcrumbs
 		Pathway::append(
-			stripslashes(\Hubzero\Utility\Str::truncate($view->row->get('content'), 40)),
+			stripslashes(\Hubzero\Utility\Str::truncate($view->row->get('content', ''), 40)),
 			Route::url($this->model->link('todo') . '&action=view&todoid=' . $todoid)
 		);
 

@@ -55,7 +55,7 @@ $class = $color ? 'pin_' . $color : 'pin_grey';
 			<div id="td-item" class="<?php echo $class; ?>">
 				<span class="pin">&nbsp;</span>
 				<div class="todo-content">
-					<textarea name="content" rows="10" cols="25" placeholder="<?php echo Lang::txt('PLG_PROJECTS_TODO_TYPE_TODO'); ?>"><?php echo $this->row->get('details') ? stripslashes($this->row->get('details')) :  stripslashes($this->row->get('content')); ?></textarea>
+					<textarea name="content" rows="10" cols="25" placeholder="<?php echo Lang::txt('PLG_PROJECTS_TODO_TYPE_TODO'); ?>"><?php echo $this->row->get('details') ? stripslashes($this->row->get('details', '')) :  stripslashes($this->row->get('content', '')); ?></textarea>
 					<div class="todo-edits">
 						<?php if (count($lists) > 0) { ?>
 						<label><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_TODO_CHOOSE_LIST')); ?>:
