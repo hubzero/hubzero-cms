@@ -46,7 +46,7 @@ $this->js()
 			<div class="form-group">
 				<label for="field_content">
 					<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ANNOUNCEMENT'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_REQUIRED'); ?></span>
-					<?php echo $this->editor('fields[content]', $this->escape(stripslashes($this->announcement->get('content'))), 35, 5, 'field_content', array('class' => 'form-control minimal no-footer')); ?>
+					<?php echo $this->editor('fields[content]', $this->escape(stripslashes($this->announcement->get('content', ''))), 35, 5, 'field_content', array('class' => 'form-control minimal no-footer')); ?>
 				</label>
 			</div>
 
