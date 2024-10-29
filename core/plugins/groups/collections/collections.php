@@ -1056,7 +1056,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// Get model
 		$item = new \Components\Collections\Models\Item(intval($fields['id']));
 		$tmp = null;
-		if (substr($item->get('title'), 0, 3) == 'tmp')
+		if (substr($item->get('title', ''), 0, 3) == 'tmp')
 		{
 			$tmp = $item->get('title');
 		}
