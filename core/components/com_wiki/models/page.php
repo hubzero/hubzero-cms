@@ -385,7 +385,7 @@ class Page extends Relational
 	 */
 	public static function oneByPath($path, $scope=null, $scope_id=null)
 	{
-		$path = explode('/', $path);
+		$path = explode('/', $path ? $path : '');
 		$pagename = array_pop($path);
 		$path = implode('/', $path);
 
