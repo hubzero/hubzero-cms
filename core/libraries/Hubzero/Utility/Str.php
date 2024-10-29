@@ -367,7 +367,7 @@ class Str
 		}
 		else
 		{
-			if (mb_strlen($text) <= $length)
+			if (mb_strlen($text ? $text : "") <= $length)
 			{
 				return $text;
 			}
