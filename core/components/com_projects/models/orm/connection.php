@@ -75,7 +75,7 @@ class Connection extends Relational
 	 **/
 	public function adapter($options=[])
 	{
-		$params = (array)json_decode($this->params);
+		$params = (array)json_decode($this->params ? $this->params : "");
 		$params = array_merge($params, $options);
 
 		return Manager::adapter($this->provider->alias, $params);
