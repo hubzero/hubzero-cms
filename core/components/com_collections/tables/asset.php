@@ -54,7 +54,7 @@ class Asset extends Table
 			return false;
 		}
 
-		$this->description = trim($this->description);
+		$this->description = trim($this->description ? $this->description : '');
 
 		$this->type = strtolower(trim($this->type));
 		if (!in_array($this->type, array('file', 'link')))
