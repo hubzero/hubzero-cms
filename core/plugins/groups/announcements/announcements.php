@@ -387,7 +387,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		}
 
 		// Are we creating the announcement?
-		if (!isset($fields['id']) || $fields['id'] == 0)
+		if (!isset($fields['id']) || !$fields['id'])
 		{
 			$fields['id']         = 0;
 			$fields['scope']      = 'group';
