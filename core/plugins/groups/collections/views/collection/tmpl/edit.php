@@ -42,7 +42,7 @@ $default = $this->params->get('access-plugin');
 		<div class="form-group">
 			<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
 				<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-				<input type="text" name="fields[title]" id="field-title" size="35" class="form-control" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
+				<input type="text" name="fields[title]" id="field-title" size="35" class="form-control" value="<?php echo $this->escape(stripslashes($this->entry->get('title', ''))); ?>" />
 			</label>
 		</div>
 
