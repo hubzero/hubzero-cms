@@ -492,7 +492,7 @@ $.TokenList = function (input, url_or_data, settings) {
 		  .addClass(settings.classes.token);
 		for (var key in item)
 		{
-			this_token.attr('data-' + key, item[key].replace('"', '&quot;'));
+			this_token.attr('data-' + key, item[key].toString().replace('"', '&quot;'));
 		}
 		this_token
 		  .insertBefore(input_token);
