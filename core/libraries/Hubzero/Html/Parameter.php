@@ -58,7 +58,7 @@ class Parameter extends Registry
 		// Set base path.
 		$this->_elementPath[] = __DIR__ . DS . 'Parameter' . DS . 'Element';
 
-		if ($data = trim($data))
+		if ($data = trim($data ? $data : ""))
 		{
 			$this->parse($data);
 		}
