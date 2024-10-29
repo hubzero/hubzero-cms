@@ -53,14 +53,14 @@ if ($this->category->get('section_id') == 0)
 			<div class="form-group">
 				<label for="field-title">
 					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_TITLE'); ?>
-					<input type="text" name="fields[title]" id="field-title" class="form-control" value="<?php echo $this->escape(stripslashes($this->category->get('title'))); ?>" />
+					<input type="text" name="fields[title]" id="field-title" class="form-control" value="<?php echo $this->escape(stripslashes($this->category->get('title', ''))); ?>" />
 				</label>
 			</div>
 
 			<div class="form-group">
 				<label for="field-description">
 					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_DESCRIPTION'); ?>
-					<textarea name="fields[description]" id="field-description" class="form-control" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->category->get('description'))); ?></textarea>
+					<textarea name="fields[description]" id="field-description" class="form-control" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->category->get('description', ''))); ?></textarea>
 				</label>
 			</div>
 
