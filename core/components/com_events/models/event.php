@@ -120,7 +120,7 @@ class Event extends Model
 		);
 
 		// split rules
-		$parts = array_map('trim', explode(';', $this->get('repeating_rule')));
+		$parts = array_map('trim', explode(';', $this->get('repeating_rule', '')));
 
 		// loop through each part
 		foreach ($parts as $k => $part)
