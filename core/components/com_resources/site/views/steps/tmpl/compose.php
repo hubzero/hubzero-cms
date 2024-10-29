@@ -8,7 +8,7 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->row->fulltxt = ($this->row->fulltxt) ? stripslashes($this->row->fulltxt): stripslashes($this->row->introtext);
+$this->row->fulltxt = ($this->row->fulltxt) ? stripslashes($this->row->fulltxt ? $this->row->fulltxt : ""): stripslashes($this->row->introtext ? $this->row->introtext : "");
 
 $type = $this->row->type;
 
@@ -74,7 +74,7 @@ $this->css('create.css')
 
 			<label for="field-title">
 				<?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-				<input type="text" name="fields[title]" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+				<input type="text" name="fields[title]" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title ? $this->row->title : "")); ?>" />
 			</label>
 
 			<label for="field-fulltxt">
