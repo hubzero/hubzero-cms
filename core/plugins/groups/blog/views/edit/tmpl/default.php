@@ -40,7 +40,7 @@ $this->css()
 		<div class="form-group">
 			<label<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
 				<?php echo Lang::txt('PLG_GROUPS_BLOG_TITLE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-				<input type="text" class="form-control" name="entry[title]" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
+				<input type="text" class="form-control" name="entry[title]" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title', ''))); ?>" />
 			</label>
 			<?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
 				<p class="error"><?php echo Lang::txt('PLG_GROUPS_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
