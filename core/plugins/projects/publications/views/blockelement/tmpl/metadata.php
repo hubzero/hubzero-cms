@@ -12,7 +12,7 @@ include_once \Component::path('com_publications') . DS . 'models' . DS . 'elemen
 
 // Parse data
 $data = array();
-preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->pub->metadata, $matches, PREG_SET_ORDER);
+preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->pub->metadata ? $this->pub->metadata : '', $matches, PREG_SET_ORDER);
 if (count($matches) > 0)
 {
 	foreach ($matches as $match)
