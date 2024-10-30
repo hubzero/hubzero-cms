@@ -679,7 +679,7 @@ class Pdo extends Driver
 	 */
 	public function escape($text, $extra = false)
 	{
-		$result = substr($this->connection->quote($text), 1, -1);
+		$result = substr($this->connection->quote($text ? $text : ''), 1, -1);
 
 		if ($extra)
 		{
