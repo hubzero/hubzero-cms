@@ -617,6 +617,11 @@ class File extends Obj
 	 */
 	public function getDirLevel($dirPath = '')
 	{
+		// Upgrade for PHP 8.2: Avoid passing null to trim, explode
+		if ($dirPath === null) {
+			$dirPath = '';
+		}
+
 		$dirPath = trim($dirPath);
 		$dirPath = trim($dirPath, '/');
 		if (!$dirPath)
