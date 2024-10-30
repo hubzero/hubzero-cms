@@ -147,7 +147,7 @@ $citationFormat = $this->publication->config('citation_format', 'apa');
 
 			<label for="abstract">
 				<?php echo Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_ABSTRACT'); ?>:
-				<textarea name="cite[abstract]" id="abstract" rows="4" cols="10"><?php echo stripslashes($this->row->abstract); ?></textarea>
+				<textarea name="cite[abstract]" id="abstract" rows="4" cols="10"><?php echo stripslashes($this->row->abstract ? $this->row->abstract : ""); ?></textarea>
 			</label>
 
 			<label for="series">
