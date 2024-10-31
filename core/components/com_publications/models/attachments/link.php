@@ -534,7 +534,7 @@ class Link extends Base
 		$role     = $element->role;
 		$params   = $element->typeParams;
 		$required = $element->required;
-		$counter  = count($attachments);
+		$counter  = count($attachments ?? []);
 		$allowed  = isset($params->accept) ? $params->accept : null;
 
 		if (!$required)
