@@ -107,7 +107,7 @@ class Accesslevels extends AdminController
 			$row = Viewlevel::oneOrNew($id);
 		}
 
-		$row->set('rules', json_decode($row->get('rules')));
+		$row->set('rules', json_decode($row->get('rules', '')));
 
 		$groups = Accessgroup::all()
 			->order('lft', 'asc')
