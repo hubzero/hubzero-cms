@@ -313,7 +313,7 @@ class File extends Base
 				$fPath .= basename($filePath);
 
 				$where = '';
-				if ($configs->directory && strtolower($configs->bundleDirectory) != strtolower($configs->directory))
+				if ($configs->directory && strtolower($configs->bundleDirectory ? $configs->bundleDirectory : '') != strtolower($configs->directory))
 				{
 					$where .= $configs->directory != $pub->secret ? DS . $configs->directory : '';
 				}
