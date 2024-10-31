@@ -52,14 +52,14 @@ $UTC = new DateTimeZone("UTC");
 $userTZ = new DateTimeZone(App::get('user')->getParam('timezone', App::get('config')->get('offset')));
 
 // Date Created, Time Zone, Date Modified
-$dateCreated = new DateTime( $this->item->created, $UTC );
+$dateCreated = new DateTime( $this->item->created ?? 'now', $UTC );
 $dateCreated->setTimezone( $userTZ );
 $dateCreatedString = $dateCreated->format('Y-m-d H:i:s');
 
 $abbrTimeZone = $dateCreated->format('T');
 $abbrTimeZoneString = $abbrTimeZone ? "(" . $abbrTimeZone . ")" : null;
 
-$dateModified = new DateTime( $this->item->modified, $UTC );
+$dateModified = new DateTime( $this->item->modified ?? 'now', $UTC );
 $dateModified->setTimezone( $userTZ );
 $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
 ?>
