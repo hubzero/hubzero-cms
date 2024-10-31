@@ -364,7 +364,7 @@ class simple_html_dom_node
 	protected function parse_selector($selector_string)
 	{
 		// pattern of CSS selectors, modified from mootools
-		$pattern = "/([\w-:\*]*)(?:\#([\w-]+)|\.([\w-]+))?(?:\[(!?[\w-]+)(?:([!*^$]?=)[\"']?(.*?)[\"']?)?\])?([, ]+)/is";
+		$pattern = "/([\w:\-*]*)(?:\#([\w-]+)|\.([\w-]+))?(?:\[(!?[\w-]+)(?:([!*^$]?=)[\"']?(.*?)[\"']?)?\])?([, ]+)/is";
 		preg_match_all($pattern, trim($selector_string).' ', $matches, PREG_SET_ORDER);
 		$selectors = array();
 		$result = array();
@@ -380,7 +380,7 @@ class simple_html_dom_node
 			if (!empty($m[6])) {$val=$m[6];}
 
 			// convert to lowercase
-			if ($this->dom->lowercase) {$tag=strtolower($tag); $key=strtolower($key);}
+			if ($this->dom->lowercase) {$tag=strtolower($tag ?? ''); $key=strtolower($key ?? '');}
 			//elements that do NOT have the specified attribute
 			if (isset($key[0]) && $key[0]==='!') {$key=substr($key, 1); $no_key=true;}
 
@@ -730,8 +730,8 @@ class simple_html_dom
 			return true;
 		}
 
-	   // text
-		if (!preg_match("/^[\w-:]+$/", $tag)) {
+	   	// text
+		if (!preg_match("/^[\w:-]+$/", $tag)) {
 			$node->_[HDOM_INFO_TEXT] = '<' . $tag . $this->copy_until('<>');
 			if ($this->char==='<') {
 				$this->link_nodes($node, false);
@@ -862,7 +862,7 @@ class simple_html_dom
 
 	protected function skip($chars)
 	{
-		$this->pos += strspn($this->doc, $chars, $this->pos);
+		$this->pos += strspn($this->doc, $chars ?? '', $this->pos);
 		$this->char = ($this->pos<$this->size) ? $this->doc[$this->pos] : null; // next
 	}
 
