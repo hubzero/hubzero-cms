@@ -175,7 +175,7 @@ class Tickets extends SiteController
 		$date = new \Hubzero\Utility\Date();
 
 		$year  = Request::getInt('year', $date->toLocal('Y'));
-		$month = strftime("%m", $date->toLocal('m'));
+		$month = $date->format('m');
 
 		$this->view->year = $year;
 		$this->view->opened = array();
