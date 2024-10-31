@@ -92,7 +92,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<?php if ($row->checked_out && $row->checked_out != User::get('id')) { ?>
-						<span class="checkedout hasTip" title="Checked out::<?php echo $this->escape(stripslashes($row->editor)); ?>">
+						<span class="checkedout hasTip" title="Checked out::<?php echo $this->escape(stripslashes($row->editor ?? '')); ?>">
 							<?php echo $this->escape(html_entity_decode(stripslashes($row->title))); ?>
 						</span>
 					<?php } else { ?>
