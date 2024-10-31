@@ -267,7 +267,7 @@ $this->js();
 							</fieldset>
 							<div class="input-wrap">
 								<label for="restrict_msg"><?php echo Lang::txt('COM_GROUPS_EDIT_CREDENTIALS'); ?>:</label><br />
-								<?php echo $this->editor('group[restrict_msg]', $this->escape(stripslashes($this->group->restrict_msg)), 40, 10, 'restrict_msg', array('class' => 'minimal')); ?>
+								<?php echo $this->editor('group[restrict_msg]', $this->escape(stripslashes($this->group->restrict_msg ?? '')), 40, 10, 'restrict_msg', array('class' => 'minimal')); ?>
 							</div>
 						</fieldset>
 						<fieldset class="adminform">
