@@ -51,7 +51,7 @@ $this->js();
 
 				<div class="input-wrap">
 					<label for="field-subject"><?php echo Lang::txt('COM_MEMBERS_FIELD_SUBJECT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-					<input type="text" name="fields[subject]" id="field-subject" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('subject'))); ?>" />
+					<input type="text" name="fields[subject]" id="field-subject" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('subject', ''))); ?>" />
 				</div>
 
 				<div class="input-wrap">
