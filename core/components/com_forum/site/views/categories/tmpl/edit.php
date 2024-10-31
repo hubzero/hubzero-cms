@@ -72,14 +72,14 @@ $this->css();
 				<div class="form-group">
 					<label for="field-title">
 						<?php echo Lang::txt('COM_FORUM_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('COM_FORUM_REQUIRED'); ?></span>
-						<input type="text" class="form-control" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->category->get('title'))); ?>" />
+						<input type="text" class="form-control" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->category->get('title', ''))); ?>" />
 					</label>
 				</div>
 
 				<div class="form-group">
 					<label for="field-description">
 						<?php echo Lang::txt('COM_FORUM_FIELD_DESCRIPTION'); ?>
-						<textarea class="form-control" name="fields[description]" id="field-description" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->category->get('description'))); ?></textarea>
+						<textarea class="form-control" name="fields[description]" id="field-description" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->category->get('description', ''))); ?></textarea>
 					</label>
 				</div>
 			</fieldset>
