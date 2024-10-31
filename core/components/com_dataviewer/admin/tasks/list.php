@@ -19,7 +19,7 @@ function dv_list()
 	$arry = array();
 	$list = `cd $base; ls ./*/database.json`;
 
-	$list = explode("\n", $list);
+	$list = explode("\n", $list ?? '');
 	array_pop($list);
 
 ?>
