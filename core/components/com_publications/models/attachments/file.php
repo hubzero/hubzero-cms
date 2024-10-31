@@ -232,7 +232,7 @@ class File extends Base
 				{
 					$where .= DS . $configs->bundleDirectory;
 				}
-				if ($configs->directory && strtolower($configs->bundleDirectory) != strtolower($configs->directory))
+				if ($configs->directory && strtolower($configs->bundleDirectory ? $configs->bundleDirectory : '') != strtolower($configs->directory))
 				{
 					$where .= $configs->directory != $pub->secret ? DS . $configs->directory : '';
 				}
