@@ -68,7 +68,7 @@ class Componentlayout extends Field
 			$template_style_id = $this->form->getValue('template_style_id');
 		}
 
-		$template_style_id = preg_replace('#\W#', '', $template_style_id);
+		$template_style_id = preg_replace('#\W#', '', $template_style_id ?? '');
 
 		// Get the view.
 		$view = (string) $this->element['view'];
