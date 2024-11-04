@@ -519,8 +519,7 @@ class Members extends AdminController
 		// If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
         $useRorApi = \Component::params('com_members')->get('rorApi');
         if (isset($profile['organization']) && !empty($profile['organization']) && $useRorApi) {
-            $id = $this->getOrganizationId($profile['organization']);
-            $profile['orgid'] = $id;
+            $profile['orgid'] = $this->getOrganizationId($profile['organization']);
         }
 
 		foreach ($profile as $key => $data)
@@ -1716,47 +1715,56 @@ class Members extends AdminController
 	/**
      * Perform querying of research organization based on the input value
      *
-     * @return  array   matched research organization names
+     * @return  array or false  matched research organization names
      */
     public function getOrganizationsTask(){
         $term = trim(Request::getString('term', ''));
+		$term = \Components\Members\Helpers\Utility::escapeSpecialChars($term);
+		
+		$verNum = \Component::params('com_members')->get('rorApiVersion');
+		
+		if (!empty($verNum))
+		{
+			$queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=names.value:" . urlencode($term);
+			
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $queryURL);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        if (strpos($term, ' ') !== false){
-            $term = str_replace(' ', '+', $term);
-        }
+			$result = curl_exec($ch);
 
-        $queryURL = 'https://api.ror.org/organizations?query=' . $term;
+			if (!$result){
+				return false;
+			}
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $queryURL);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$info = curl_getinfo($ch);
 
-        $result = curl_exec($ch);
+			$code = $info['http_code'];
 
-        if (!$result){
-            return false;
-        }
+			if (($code != 201) && ($code != 200)){
+				return false;
+			}
 
-        $info = curl_getinfo($ch);
+			$organizations = [];
 
-        $code = $info['http_code'];
+			$resultObj = json_decode($result);
+			
+			foreach ($resultObj->items as $orgObj)
+			{
+				foreach ($orgObj->names as $nameObj)
+				{
+					if ($nameObj->lang == "en" && !in_array($nameObj->value, $organizations))
+					{
+						$organizations[] = $nameObj->value;
+					}
+				}
+			}
 
-        if (($code != 201) && ($code != 200)){
-            return false;
-        }
+			curl_close($ch);
 
-        $organizations = [];
-
-        $resultObj = json_decode($result);
-
-        foreach ($resultObj->items as $orgObj){
-            $organizations[] = $orgObj->name;
-        }
-
-        curl_close($ch);
-
-        echo json_encode($organizations);
-        exit();
+			echo json_encode($organizations);
+			exit();
+		}
     }
 
     /**
@@ -1767,47 +1775,48 @@ class Members extends AdminController
      */
     public function getOrganizationId($organization){
         $org = trim($organization);
-        $id = "none";
+		$orgQry = \Components\Members\Helpers\Utility::escapeSpecialChars($org);
+		
+		$verNum = \Component::params('com_members')->get('rorApiVersion');
+		
+		if (!empty($verNum))
+		{
+			$queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=names.value:" . urlencode($orgQry);
+			
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $queryURL);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        if (strpos($org, ' ') !== false){
-            $org = str_replace(' ', '+', $org);
-        }
+			$result = curl_exec($ch);
 
-        $queryURL = "https://api.ror.org/organizations?query=" . $org;
+			if (!$result){
+				return false;
+			}
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $queryURL);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$info = curl_getinfo($ch);
 
-        $result = curl_exec($ch);
+			$code = $info['http_code'];
 
-        if (!$result){
-            return false;
-        }
+			if (($code != 201) && ($code != 200)){
+				return false;
+			}
 
-        $info = curl_getinfo($ch);
+			$resultObj = json_decode($result);
 
-        $code = $info['http_code'];
-
-        if (($code != 201) && ($code != 200)){
-            return false;
-        }
-
-        $resultObj = json_decode($result);
-
-        $org = str_replace('+', ' ', $org);
-
-        foreach ($resultObj->items as $orgObj){
-            if ($org == $orgObj->name){
-                $id = $orgObj->id;
-                break;
-            }
-        }
-
-        curl_close($ch);
-
-        return $id;
+			foreach ($resultObj->items as $orgObj)
+			{
+				foreach ($orgObj->names as $nameObj)
+				{
+					if (strcmp($nameObj->value, $org) == 0)
+					{
+						curl_close($ch);
+						return $orgObj->id;
+					}
+				}
+			}
+			
+			curl_close($ch);
+			return "";
+		}
     }
-
-
 }

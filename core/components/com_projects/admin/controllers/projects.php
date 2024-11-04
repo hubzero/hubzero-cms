@@ -1370,52 +1370,54 @@ class Projects extends AdminController
 	public function getGrantAgencyTask()
 	{
 		$term = trim(Request::getString('term', ''));
+		$term = \Components\Members\Helpers\Utility::escapeSpecialChars($term);
 		
-		if (strpos($term, ' ') !== false)
+		$verNum = \Component::params('com_members')->get('rorApiVersion');
+		
+		if (!empty($verNum))
 		{
-			$term = str_replace(' ', '+', $term);
+			$queryURL = "https://api.ror.org/$verNum/organizations?filter=types:funder&query.advanced=names.value:" . urlencode($term);
+			
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $queryURL);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			
+			$result = curl_exec($ch);
+			
+			if (!$result)
+			{
+				return false;
+			}
+			
+			$info = curl_getinfo($ch);
+			
+			$code = $info['http_code'];
+			
+			if (($code != 201) && ($code != 200))
+			{
+				return false;
+			}
+			
+			$agencies = [];
+			
+			$resultObj = json_decode($result);
+			
+			foreach ($resultObj->items as $orgObj)
+			{
+				foreach ($orgObj->names as $nameObj)
+				{
+					if ($nameObj->lang == "en" && !in_array($nameObj->value, $agencies))
+					{
+						$agencies[] = $nameObj->value;
+					}
+				}
+			}
+			
+			curl_close($ch);
+			
+			echo json_encode($agencies);
+			exit();
 		}
-		
-		$queryURL = "https://api.crossref.org/funders?query=" . $term . "&rows=1000";
-		
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $queryURL);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		
-		$result = curl_exec($ch);
-		
-		if (!$result)
-		{
-			return false;
-		}
-		
-		$info = curl_getinfo($ch);
-		
-		$code = $info['http_code'];
-		
-		if (($code != 201) && ($code != 200))
-		{
-			return false;
-		}
-		
-		$agencies = [];
-		
-		$resultObj = json_decode($result);
-		
-		if ($resultObj->status != "ok")
-		{
-			return false;
-		}
-		
-		foreach ($resultObj->message->items as $agencyObj)
-		{
-			$agencies[] = $agencyObj->name;
-		}
-		
-		curl_close($ch);
-		
-		echo json_encode($agencies);
-		exit();
 	}
 	
 	/**
@@ -1427,51 +1429,50 @@ class Projects extends AdminController
 	public function getGrantAgencyId($grantAgency)
 	{
 		$agency = trim($grantAgency);
+		$agencyQry = \Components\Members\Helpers\Utility::escapeSpecialChars($agency);
 		
-		if (strpos($agency, ' ') !== false)
+		$verNum = \Component::params('com_members')->get('rorApiVersion');
+		
+		if (!empty($verNum))
 		{
-			$agency = str_replace(' ', '+', $agency);
-		}
-		
-		$queryURL = "https://api.crossref.org/funders?query=" . $agency . "&rows=1000";
-		
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $queryURL);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		
-		$result = curl_exec($ch);
-		
-		if (!$result)
-		{
-			return false;
-		}
-		
-		$info = curl_getinfo($ch);
-		
-		$code = $info['http_code'];
-		
-		if (($code != 201) && ($code != 200))
-		{
-			return false;
-		}
-		
-		$resultObj = json_decode($result);
-		
-		$agency = str_replace('+', ' ', $agency);
-		
-		$uri = "";
-		
-		foreach ($resultObj->message->items as $agencyObj)
-		{
-			if ($agency == $agencyObj->name)
+			$queryURL = "https://api.ror.org/$verNum/organizations?filter=types:funder&query.advanced=names.value:" . urlencode($agencyQry);
+					
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $queryURL);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			
+			$result = curl_exec($ch);
+			
+			if (!$result)
 			{
-				$uri = $agencyObj->uri;
-				break;
+				return false;
 			}
+			
+			$info = curl_getinfo($ch);
+			
+			$code = $info['http_code'];
+			
+			if (($code != 201) && ($code != 200))
+			{
+				return false;
+			}
+			
+			$resultObj = json_decode($result);
+			
+			foreach ($resultObj->items as $orgObj)
+			{
+				foreach ($orgObj->names as $nameObj)
+				{
+					if (strcmp($nameObj->value, $agency) == 0)
+					{
+						curl_close($ch);
+						return $orgObj->id;
+					}
+				}
+			}
+			
+			curl_close($ch);
+			return "";
 		}
-		
-		curl_close($ch);
-		
-		return $uri;
 	}
 }

@@ -268,6 +268,7 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
+		<field name="rorApiVersion" type="text" menu="hide" default="" label="Research Organization Registry API Version Number" description="The version number of Research Organization Registry API, such as 'v2'." />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="orcid_service" type="list" default="public" label="ORCID Service" description="Select the service to use for ORCID. Sandbox is for testing and debugging purposes. The Public service only allows for searching records, new ID creation is not allowed.">
 			<option value="public">Public (search only)</option>

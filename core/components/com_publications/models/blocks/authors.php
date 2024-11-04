@@ -857,50 +857,50 @@ class Authors extends Base
 	public function getOrganizationId($organization)
 	{
 		$org = trim($organization);
-		$id = "none";
-
-		if (strpos($org, ' ') !== false)
+		$orgQry = \Components\Members\Helpers\Utility::escapeSpecialChars($org);
+		
+		$verNum = \Component::params('com_members')->get('rorApiVersion');
+		
+		if (!empty($verNum))
 		{
-			$org = str_replace(' ', '+', $org);
-		}
+			$queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=names.value:" . urlencode($orgQry);
+			
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $queryURL);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-		$queryURL = "https://api.ror.org/organizations?query=" . $org;
+			$result = curl_exec($ch);
 
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $queryURL);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-		$result = curl_exec($ch);
-
-		if (!$result)
-		{
-			return false;
-		}
-
-		$info = curl_getinfo($ch);
-
-		$code = $info['http_code'];
-
-		if (($code != 201) && ($code != 200))
-		{
-			return false;
-		}
-
-		$resultObj = json_decode($result);
-
-		$org = str_replace('+', ' ', $org);
-
-		foreach ($resultObj->items as $orgObj)
-		{
-			if ($org == $orgObj->name)
+			if (!$result)
 			{
-				$id = $orgObj->id;
-				break;
+				return false;
 			}
+
+			$info = curl_getinfo($ch);
+
+			$code = $info['http_code'];
+
+			if (($code != 201) && ($code != 200))
+			{
+				return false;
+			}
+
+			$resultObj = json_decode($result);
+			
+			foreach ($resultObj->items as $orgObj)
+			{
+				foreach ($orgObj->names as $nameObj)
+				{
+					if (strcmp($nameObj->value, $org) == 0)
+					{
+						curl_close($ch);
+						return $orgObj->id;
+					}
+				}
+			}
+			
+			curl_close($ch);
+			return "";
 		}
-
-		curl_close($ch);
-
-		return $id;
 	}
 }

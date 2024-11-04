@@ -710,8 +710,7 @@ class Register extends SiteController
 			// If RoR Api is turned off because of failed API or if key doesn't exist, don't retrieve list from Api.
 			$useRorApi = \Component::params('com_members')->get('rorApi');
 			if (isset($profile['organization']) && !empty($profile['organization']) && $useRorApi){
-				$id = $this->getOrganizationId($profile['organization']);
-				$profile['orgid'] = $id;
+				$profile['orgid'] = $this->getOrganizationId($profile['organization']);
 			}
 
 			// Compile profile data
@@ -1682,45 +1681,48 @@ class Register extends SiteController
 	 */
 	public function getOrganizationId($organization){
 		$org = trim($organization);
-		$id = "none";
+		$orgQry = \Components\Members\Helpers\Utility::escapeSpecialChars($org);
+		
+		$verNum = \Component::params('com_members')->get('rorApiVersion');
+		
+		if (!empty($verNum))
+		{
+			$queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=names.value:" . urlencode($orgQry);
+			
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $queryURL);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-		if (strpos($org, ' ') !== false){
-			$org = str_replace(' ', '+', $org);
-		}
+			$result = curl_exec($ch);
 
-		$queryURL = "https://api.ror.org/organizations?query=" . $org;
-
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $queryURL);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-		$result = curl_exec($ch);
-
-		if (!$result){
-			return false;
-		}
-
-		$info = curl_getinfo($ch);
-
-		$code = $info['http_code'];
-
-		if (($code != 201) && ($code != 200)){
-			return false;
-		}
-
-		$resultObj = json_decode($result);
-
-		$org = str_replace('+', ' ', $org);
-
-		foreach ($resultObj->items as $orgObj){
-			if ($org == $orgObj->name){
-				$id = $orgObj->id;
-				break;
+			if (!$result){
+				return false;
 			}
+
+			$info = curl_getinfo($ch);
+
+			$code = $info['http_code'];
+
+			if (($code != 201) && ($code != 200)){
+				return false;
+			}
+
+			$resultObj = json_decode($result);
+
+			foreach ($resultObj->items as $orgObj)
+			{
+				foreach ($orgObj->names as $nameObj)
+				{
+					if (strcmp($nameObj->value, $org) == 0)
+					{
+						curl_close($ch);
+						return $orgObj->id;
+					}
+				}
+			}
+			
+			curl_close($ch);
+			return "";
 		}
-
-		curl_close($ch);
-
-		return $id;
 	}
 }

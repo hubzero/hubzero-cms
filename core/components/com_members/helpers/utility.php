@@ -282,4 +282,40 @@ class Utility
 
 		return ($result) ? true : false;
 	}
+	
+	/**
+	 * Escape the special characters that might exist in the organization names on Research Organization Registry 
+	 *
+	 * @param   string  $term
+	 * @return  string
+	 */
+	public static function escapeSpecialChars($term)
+	{
+		$special_chars = [
+			"+" => "\+", 
+			"-" => "\-", 
+			"=" => "\=", 
+			"&&" => "\&&", 
+			"||" => "\||", 
+			">" => "\>", 
+			"<" => "\<", 
+			"!" => "\!", 
+			"(" => "\(", 
+			")" => "\)", 
+			"{" => "\{", 
+			"}" => "\}", 
+			"[" => "\[", 
+			"]" => "\]", 
+			"^" => "\^", 
+			'"' => '\"', 
+			"~" => "\~", 
+			"*" => "\*", 
+			"?" => "\?", 
+			":" => "\:", 
+			"\\" => "\\\\", 
+			"/" => "\/"
+		];
+    
+		return str_replace(array_keys($special_chars), array_values($special_chars), $term);
+	}
 }
