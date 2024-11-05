@@ -8,6 +8,7 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
             let whoLikedPostDiv = commentSections[i].querySelector('.whoLikedPost');
 
             likeStatsLink.onclick = (e) => {
+                e.preventDefault();
                 this.__toggle = !this.__toggle;
                 if(this.__toggle) {
                     whoLikedPostDiv.style.height = `${whoLikedPostDiv.scrollHeight}px`;
