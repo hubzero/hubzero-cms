@@ -31,7 +31,7 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                 const likesList = likeButton.dataset.likesList;
                 const likeCount = likeButton.dataset.count;
 
-                console.log(threadId, postId, userId, likeCount, userName, likesList);
+                // console.log(threadId, postId, userId, likeCount, userName, likesList);
 
                 const likesListArray = likesList.split("/");
 
@@ -65,7 +65,7 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                                 whoLikedPostDiv.innerHTML = "";
                             }
 
-                            console.warn(`Like removed for forum thread '${threadId}' of post '${postId}' for user ${userId}`);
+                            // console.warn(`Like removed for forum thread '${threadId}' of post '${postId}' for user ${userId}`);
                         }
                     })
                 } else {
@@ -93,7 +93,7 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
 
                             whoLikedPostDiv.innerHTML = "<div class='names'>" + whoLikedArray.join(', ') + " liked this</div>";
 
-                            console.log(`Like recorded for forum thread '${threadId}' of post '${postId}' for user ${userId}`);
+                            // console.log(`Like recorded for forum thread '${threadId}' of post '${postId}' for user ${userId}`);
                         }
                     })
                 }
