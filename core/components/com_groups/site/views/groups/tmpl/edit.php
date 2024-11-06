@@ -17,7 +17,7 @@ $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'act
 
 //are we using the email gateway for group forum
 $params =  Component::params('com_groups');
-$allowEmailResponses = $params->get('email_comment_processing', 0);
+$emailForumComments = $params->get('email_forum_comments', 0);
 $autoEmailResponses  = $params->get('email_member_groupsidcussionemail_autosignup', 0);
 
 //default logo
@@ -263,7 +263,7 @@ endif;
 					</fieldset>
 				</fieldset>
 
-				<?php if ($allowEmailResponses) : ?>
+				<?php if (true) : ?>
 					<fieldset>
 						<legend><?php echo Lang::txt('COM_GROUPS_EMAIL_SETTINGS_TITLE'); ?></legend>
 						<p><?php echo Lang::txt('COM_GROUPS_EMAIL_SETTINGS_DESC'); ?></p>

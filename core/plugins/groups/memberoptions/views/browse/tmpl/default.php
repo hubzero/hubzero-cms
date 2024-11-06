@@ -10,11 +10,11 @@ defined('_HZEXEC_') or die();
 
 $params = $params =  Component::params('com_groups');
 
-$allowEmailResponses = $params->get('email_comment_processing');
+$forumCommentEmailNotifications = $params->get('email_forum_comments');
 
 // Be sure to update this if you add more options
 $atLeastOneOption = false;
-if ($allowEmailResponses)
+if ($forumCommentEmailNotifications)
 {
 	$atLeastOneOption = true;
 }
@@ -32,7 +32,7 @@ if ($allowEmailResponses)
 
 	<p><?php echo Lang::txt('GROUP_MEMBEROPTIONS_DESC'); ?></p>
 
-	<?php if ($allowEmailResponses) { ?>
+	<?php if ($forumCommentEmailNotifications) { ?>
 		<div class="input-wrap">
 			<input type="checkbox" id="recvpostemail" value="1" name="recvpostemail" <?php if ($this->recvEmailOptionValue == 1) { echo 'checked="checked"'; } ?> />
 			<label for="recvpostemail"><?php echo Lang::txt('GROUP_RECEIVE_EMAILS_DISCUSSION_POSTS'); ?></label>

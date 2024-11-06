@@ -7,7 +7,7 @@
 
 $base = $this->base;
 
-if (Component::params('com_groups')->get('email_comment_processing') && $this->config->get('access-view-section')) : ?>
+if (Component::params('com_groups')->get('email_forum_comments') && $this->config->get('access-view-section')) : ?>
 
 	<div class="container relative-container">
 		<h3><?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_SETTINGS'); ?></h3>

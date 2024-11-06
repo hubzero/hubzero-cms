@@ -93,7 +93,7 @@ $message .= "\t" . Lang::txt('Access Permissions:') . "\n";
 	$message .= "\n";
 
 $params = Component::params('com_groups');
-if ($params->get('email_comment_processing'))
+if ($params->get('email_forum_comments'))
 {
 	$message .= "\t" . Lang::txt('Discussion Group Emails Autosubscribe:') . ' ' . ($this->group->get('discussion_email_autosubscribe') ? Lang::txt('On') : Lang::txt('Off')) . "\n\n";
 }

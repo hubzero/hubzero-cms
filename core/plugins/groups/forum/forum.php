@@ -1515,7 +1515,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// Email the group and insert email tokens to allow them to respond to group posts via email
 		$params = Component::params('com_groups');
-		if ($params->get('email_comment_processing') && (isset($moving) && $moving == false))
+		if ($params->get('email_forum_comments') && (isset($moving) && $moving == false))
 		{
 			$thread->set('section', $section->get('alias'));
 			$thread->set('category', $category->get('alias'));
@@ -1562,8 +1562,17 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 					$unsubscribeToken = $encryptor->buildEmailToken(1, 3, $userID, $this->group->get('gidNumber'));
 					$unsubscribeLink  = rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') .'&active=forum&action=unsubscribe&t=' . $unsubscribeToken), DS);
 
-					$from['replytoname']  = Lang::txt('PLG_GROUPS_FORUM_REPLYTO') . ' @ ' . Config::get('sitename');
-					$from['replytoemail'] = 'hgm-' . $token . '@' . $_SERVER['HTTP_HOST'];
+
+					if(Component::params('com_groups')->get('email_comment_processing'))
+					{
+						$from['replytoname']  = Lang::txt('PLG_GROUPS_FORUM_REPLYTO') . ' @ ' . Config::get('sitename');
+						$from['replytoemail'] = 'hgm-' . $token . '@' . $_SERVER['HTTP_HOST'];
+					}
+					else
+					{
+						$from['replytoname']  = 'noreply';
+						$from['replytoemail'] = 'noreply@' . $_SERVER['HTTP_HOST'];
+					}
 				}
 
 				$msg = array();

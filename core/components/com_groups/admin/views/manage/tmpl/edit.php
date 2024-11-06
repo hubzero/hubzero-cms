@@ -27,7 +27,7 @@ Html::behavior('switcher', 'submenu');
 
 // are we using the email gateway for group forum
 $params = Component::params('com_groups');
-$allowEmailResponses = $params->get('email_comment_processing', 0);
+$emailForumComments = $params->get('email_forum_comments', 0);
 
 $autoEmailResponses  = $this->group->get('discussion_email_autosubscribe');
 if (is_null($autoEmailResponses))
@@ -300,7 +300,7 @@ $this->js();
 							</div>
 						</fieldset>
 
-						<?php if ($allowEmailResponses) : ?>
+						<?php if ($emailForumComments) : ?>
 							<fieldset class="adminform">
 								<legend><span><?php echo Lang::txt('COM_GROUPS_EMAIL_SETTINGS'); ?></span></legend>
 

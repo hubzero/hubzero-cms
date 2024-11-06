@@ -326,7 +326,7 @@ break;
 							</tr>
 							<?php $params = Component::params('com_groups'); ?>
 
-							<?php if ($params->get('email_comment_processing')) :?>
+							<?php if ($params->get('email_forum_comments')) :?>
 								<tr>
 									<td align="left">&#32;</td>
 								</tr>

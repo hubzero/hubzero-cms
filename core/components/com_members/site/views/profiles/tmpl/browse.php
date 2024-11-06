@@ -237,7 +237,7 @@ foreach ($this->fields as $field)
 				</div>
 			<?php endif; ?>
 
-			<div class="container members-container">
+			<div class="container members-container" id="listOfMembers">
 				<div class="results tiled members">
 					<?php
 					if ($this->rows->count() > 0)
