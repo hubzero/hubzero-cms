@@ -37,4 +37,22 @@ $(function(){
 			appendTo: '#autocomplete-organization',
 		});
 	}
+	
+	$('[name = "orcid"]').on('input', function(){
+		var regex = /^[0-9]{4}-([0-9]{4}-){2}[0-9X]{4}/;
+		var orcidInput = $('[name = "orcid"]').val();
+		
+		if (!regex.test(orcidInput))
+		{
+			$('#orcid-message').addClass("prompt");
+			$('#orcid-message').text('*Invalid ORCID ID. Please enter the 16-digit ORCID ID');
+			$('#orcid-message').show();
+		}
+		else
+		{
+			$('#orcid-message').removeClass("prompt");
+			$('#orcid-message').text('*You have successfully entered a valid 16-digit ORCID ID');
+			$('#orcid-message').show();
+		}
+	})
 });

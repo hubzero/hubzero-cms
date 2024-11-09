@@ -185,6 +185,10 @@
 		display: block;
 		text-align: left;
 	}
+	.add-author .prompt {
+		font-size: 85%;
+		color: red;
+	}
 
 /* Selectable
 ---------------------------- */

@@ -131,7 +131,9 @@ if (count($this->authors) > 0)
 				<div class="block-liner">
 					<label for="orcid">
 						<span class="formlabel"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ORCID'); ?></span>
-						<input type="text" class="long" name="orcid" id="orcid" value="" maxlength="255" /><span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
+						<input type="text" class="long" name="orcid" id="orcid" placeholder="####-####-####-####" value="" maxlength="255" />
+						<p id="orcid-message" class="hint"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ORCID_DESC'); ?></p>
+						<span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
 					</label>
 				</div>
 			</div>

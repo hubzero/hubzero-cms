@@ -1251,6 +1251,10 @@
 		font-size: 85%;
 		padding: 0.5em 0 1em 0;
 	}
+	.author-edit .prompt {
+		font-size: 85%;
+		color: red;
+	}
 	.a-tip {
 		font-size: 75%;
 		padding-left: 20px;

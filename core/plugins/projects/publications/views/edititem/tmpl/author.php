@@ -107,7 +107,9 @@ $lastname = $author->lastName ? htmlspecialchars($author->lastName) : $lastname;
 					<?php } ?>
 					<label for="orcid">
 						<span class="leftshift faded"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ORCID_ID'); ?>:</span>
-						<input type="text" name="orcid"  class="long" value="<?php echo $author->orcid; ?>" maxlength="255"/><span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
+						<input type="text" name="orcid"  class="long" placeholder="####-####-####-####" value="<?php echo $author->orcid; ?>" maxlength="255"/>
+						<p id="orcid-message" class="hint"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ORCID_ID_DESC'); ?></p>
+						<span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
 					</label>
 					<div class="clear"></div>
 					<label for="credit">
