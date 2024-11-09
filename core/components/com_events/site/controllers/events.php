@@ -1826,6 +1826,7 @@ class Events extends SiteController
 		}
 		else
 		{
+			$row->id = null;
 			$state = 'add';
 
 			// New - set created info
