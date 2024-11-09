@@ -676,6 +676,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//if we are updating set modified time and actor
 		if (!isset($event['id']) || !$event['id'])
 		{
+			$event['id']         = null;
 			$event['created']    = Date::toSql();
 			$event['created_by'] = $this->user->get('id');
 		}
@@ -729,6 +730,11 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		{
 			$event['registerby'] = null;
 		}
+
+		// calender_id cannot be an empty string due to database constrain
+        if ($event['calendar_id'] === "") {
+            $event['calendar_id'] = null;
+    	}
 
 		//instantiate new event object
 		$eventsModelEvent = new \Components\Events\Models\Event();
