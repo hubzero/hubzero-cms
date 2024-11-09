@@ -641,6 +641,11 @@ class Page extends Relational
 		} else {
 			// Must set parent as 'parent' field requires an int in the database
 			$this->set('parent', 0);
+                       
+			// Must set a path as 'path' field doesn't have a default in the database
+			if (!$this->get('path')) {
+				$this->set('path', '');
+			}
 		}
 
 		// Save
