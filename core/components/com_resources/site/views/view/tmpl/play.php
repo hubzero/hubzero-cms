@@ -120,6 +120,8 @@ $html = '';
 			{
 				$height = '100%';
 			}
+			$rufle_path =  Component::path('com_resources') . DS . 'site' . DS . 'assets' . DS . 'js' . DS . 'ruffle';
+			$rufle_path = (substr($rufle_path, strlen(PATH_ROOT) + 0));
 			$html .= '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="https://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,65,0" width="100%" height="'.$height.'" id="SlideContent" VIEWASTEXT>'."\n";
 			$html .= ' <param name="movie" value="'. $url .'" />'."\n";
 			$html .= ' <param name="quality" value="high" />'."\n";
@@ -128,13 +130,13 @@ $html = '';
 			$html .= ' <param name="scale" value="showall" />'."\n";
 			$html .= ' <embed src="'. $url .'" menu="false" quality="best" loop="false" width="100%" height="'.$height.'" scale="showall" name="SlideContent" align="" type="application/x-shockwave-flash" pluginspage="https://www.macromedia.com/go/getflashplayer" swLiveConnect="true"></embed>'."\n";
 			$html .= '</object>'."\n";
-            $html .= '<script>'."\n";
-            $html .= ' window.RufflePlayer = window.RufflePlayer || {};'."\n";
-            $html .= ' window.RufflePlayer.config = {'."\n";
-            $html .= '   "publicPath": "/core/components/com_resources/site/assets/js/ruffle",'."\n";
-            $html .= ' }'."\n";
-            $html .= '</script>'."\n";
-            $html .= '<script src="/core/components/com_resources/site/assets/js/ruffle/ruffle.js"></script>'."\n";
+			$html .= '<script>'."\n";
+			$html .= 'window.RufflePlayer = window.RufflePlayer || {};'."\n";
+			$html .= 'window.RufflePlayer.config = {'."\n";
+			$html .= '  "publicPath": "' . $rufle_path. '",'."\n";
+			$html .= '}'."\n";
+			$html .= '</script>'."\n";
+			$html .= '<script src="' . $rufle_path. '/ruffle.js"></script>'."\n";
         }
 		else if (in_array(strtolower($type), $images))
 		{
