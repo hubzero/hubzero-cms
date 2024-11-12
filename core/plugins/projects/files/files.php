@@ -571,7 +571,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			// Set params
 			$used = array();
-			if (!$reuse && $view->publication->_attachments['elements'])
+			if (!$reuse && $view->publication->_attachments && $view->publication->_attachments['elements'])
 			{
 				foreach ($view->publication->_attachments['elements'] as $o => $elms)
 				{
