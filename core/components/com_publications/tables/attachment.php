@@ -213,7 +213,7 @@ class Attachment extends Table
 		$this->_db->setQuery($query);
 		$results = $this->_db->loadObjectList();
 
-		if ($results || (gettype($results) === "array" && count($results) === 0))
+		if ($results)
 		{
 			$attachments = array(
 				'1'        => array(),
