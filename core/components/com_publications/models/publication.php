@@ -2363,6 +2363,10 @@ class Publication extends Obj
 				$name = Lang::txt('COM_PUBLICATIONS_VERSION_WIP');
 				break;
 
+			case self::STATE_DELETED:
+				$name = Lang::txt('COM_PUBLICATIONS_VERSION_DELETED');
+				break;
+			
 			case self::STATE_DRAFT:
 			default:
 				$name = Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT');
@@ -2407,6 +2411,10 @@ class Publication extends Obj
 				$name = 'wip';
 				break;
 
+			case self::STATE_DELETED:
+				$name = 'deleted';
+				break;
+			
 			case self::STATE_DRAFT:
 			default:
 				$name = 'draft';
