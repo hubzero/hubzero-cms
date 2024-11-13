@@ -731,11 +731,11 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$event['registerby'] = null;
 		}
 
-	// calender_id cannot be an empty string due to database constrain
+        // calender_id cannot be an empty string due to database constrain
         if ($event['calendar_id'] === "")
-	{
+        {
             $event['calendar_id'] = null;
-    	}
+        }
 
 		//instantiate new event object
 		$eventsModelEvent = new \Components\Events\Models\Event();
