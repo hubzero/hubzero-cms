@@ -520,7 +520,7 @@ class Item extends Base
 	 */
 	public function store($check=true)
 	{
-        // id cannot be an empty string due to database constrain
+        	// id cannot be an empty string due to database constrain
 		if ($this->get('id') === "") {
 			$this->set('id', null);
 		}
