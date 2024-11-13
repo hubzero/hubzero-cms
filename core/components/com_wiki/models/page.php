@@ -645,7 +645,8 @@ class Page extends Relational
 			$this->set('parent', 0);
                        
 			// Must set a path as 'path' field doesn't have a default in the database
-			if (!$this->get('path')) {
+			if (!$this->get('path'))
+			{
 				$this->set('path', '');
 			}
 		}
