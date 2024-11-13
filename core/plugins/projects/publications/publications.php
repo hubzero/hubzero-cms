@@ -1260,8 +1260,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$row = new \Components\Publications\Tables\Version($this->_database);
 		$row->publication_id = $this->_pid;
 		$row->title          = $row->getDefaultTitle($this->model->get('id'), $title);
-		$row->abstract           = "";
-		$row->description        = "";
+		$row->abstract       = "";
+		$row->description    = "";
 		$row->state          = 3; // dev
 		$row->main           = 1;
 		$row->created_by     = $this->_uid;
