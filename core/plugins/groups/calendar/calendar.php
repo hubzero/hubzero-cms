@@ -733,7 +733,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 	// calender_id cannot be an empty string due to database constrain
         if ($event['calendar_id'] === "")
-		{
+	{
             $event['calendar_id'] = null;
     	}
 
