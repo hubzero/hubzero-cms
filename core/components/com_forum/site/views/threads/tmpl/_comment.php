@@ -99,7 +99,8 @@ defined('_HZEXEC_') or die();
                             <?php
                                 $nameArray = preg_split("#/#", $userNameLikesArray);
                                 $links = array();
-                                foreach ($nameArray as $nameString) {
+				foreach ($nameArray as $nameString) 
+				{
                                     $nameArray = explode("#", $nameString);
                                     $userName = $nameArray[0];
                                     $userId =  $nameArray[1];
@@ -289,3 +290,4 @@ defined('_HZEXEC_') or die();
 		}
 		?>
 	</li>
+

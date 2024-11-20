@@ -27,7 +27,7 @@ foreach ($this->likes as $like)
 ?>
 <ol class="comments" id="t<?php echo $this->parent; ?>">
 <?php
-if ($this->comments) 
+if ($this->comments)
 {
 	$cls = 'odd';
 	if (isset($this->cls))
@@ -42,7 +42,7 @@ if ($this->comments)
 
 	$this->depth++;
 
-	foreach ($this->comments as $comment) 
+	foreach ($this->comments as $comment)
 	{
 		$postId = $comment->get('id');
 		$likesByPostId = isset($hash_map[$postId]) ? $hash_map[$postId] : [];
@@ -64,3 +64,4 @@ if ($this->comments)
 }
 ?>
 </ol>
+

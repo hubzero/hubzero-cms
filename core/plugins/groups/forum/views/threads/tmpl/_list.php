@@ -45,7 +45,7 @@ if ($this->comments)
 
 	$this->depth++;
 
-	foreach ($this->comments as $comment) 
+	foreach ($this->comments as $comment)
 	{
 		$postId = $comment->get('id');
 		$likesByPostId = isset($hash_map[$postId]) ? $hash_map[$postId] : [];
@@ -67,3 +67,4 @@ if ($this->comments)
 }
 ?>
 </ol>
+
