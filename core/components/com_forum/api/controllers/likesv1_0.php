@@ -54,7 +54,7 @@ class Likesv1_0 extends ApiController
 
 		$db = \App::get('db');
 		$insertQuery = "INSERT INTO `#__forum_posts_like` (`threadId`, `postId`, `userId`, `created`)
-			VALUES (?,?,?,?)";
+		  VALUES (?,?,?,?)";
 
 		$insertVars = array($threadId, $postId, $userId, $created);
 		$db->prepare($insertQuery);
@@ -83,3 +83,4 @@ class Likesv1_0 extends ApiController
 		$this->send($deleteResult);
 	}
 }
+

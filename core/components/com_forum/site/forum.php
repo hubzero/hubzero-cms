@@ -22,8 +22,8 @@ if (!User::authorise('core.access', 'com_forum'))
 	$return = base64_encode(Request::getString('REQUEST_URI', '', 'server'));
         //$return = base64_encode($_SERVER['REQUEST_URI']);
 	App::redirect( Route::url('index.php?option=com_users&view=login&return=' . $return, false),
-	    Lang::txt('COM_FORUM_ALERTLOGIN_REQUIRED'),
-	    'warning');
+	  Lang::txt('COM_FORUM_ALERTLOGIN_REQUIRED'),
+	  'warning');
 }
 
 // Instantiate controller
