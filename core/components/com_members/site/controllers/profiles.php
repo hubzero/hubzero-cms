@@ -271,7 +271,7 @@ class Profiles extends SiteController
 	 * @return  void
 	 */
 	public function browseTask()
-	{		
+	{
 		// Get all the fields we can use on this page
 		$fields = Field::all()
 			->whereIn('action_browse', User::getAuthorisedViewLevels())

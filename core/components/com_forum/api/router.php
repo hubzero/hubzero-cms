@@ -30,11 +30,11 @@ class Router extends Base
 			unset($query['controller']);
 		}
 
-        if (!empty($query['id']))
-        {
-            $segments[] = $query['id'];
-            unset($query['id']);
-        }
+		if (!empty($query['id']))
+		{
+			$segments[] = $query['id'];
+			unset($query['id']);
+		}
 
 		if (!empty($query['task']))
 		{
@@ -52,24 +52,24 @@ class Router extends Base
 	 * @return  array  The URL attributes to be used by the application.
 	 */
 	public function parse(&$segments)
-    {
-        $vars = array();
+	{
+		$vars = array();
 
-        if (empty($segments))
-        {
-            return $vars;
-        }
+		if (empty($segments))
+		{
+			return $vars;
+		}
 
-        if (isset($segments[0]))
-        {
-            $vars['id'] = $segments[0];
-        }
+		if (isset($segments[0]))
+		{
+			$vars['id'] = $segments[0];
+		}
 
-        if (isset($segments[1]))
-        {
-            $vars['task'] = $segments[1];
-        }
+		if (isset($segments[1]))
+		{
+			$vars['task'] = $segments[1];
+		}
 
-        return $vars;
-    }
+		return $vars;
+	}
 }

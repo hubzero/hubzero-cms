@@ -70,3 +70,4 @@
 		<action name="core.edit.own" title="JACTION_EDITOWN" description="COM_FORUM_ACCESS_EDITOWN_DESC" />
 	</section>
 </access>
+

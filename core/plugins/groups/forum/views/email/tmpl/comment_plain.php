@@ -18,8 +18,10 @@ if ($this->delimiter)
 {
 	$message .= $this->delimiter . "\n";
 	
-	if(Component::params('com_groups')->get('email_comment_processing'))
+	if (Component::params('com_groups')->get('email_comment_processing'))
+	{
 		$message .= Lang::txt('PLG_GROUPS_FORUM_EMAIL_REPLY_ABOVE') . "\n";
+	}
 
 	$message .= 'Message from ' . $base . ' / ' . Lang::txt('PLG_GROUPS_FORUM_DETAILS_THREAD', $this->thread->get('id')) . "\n";
 }

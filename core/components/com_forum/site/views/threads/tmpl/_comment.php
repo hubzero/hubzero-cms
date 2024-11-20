@@ -7,23 +7,27 @@
 
 defined('_HZEXEC_') or die();
 
-$this->css('like.css')
-    ->js('like.js');
+	$this->css('like.css')
+		->js('like.js');
 
-    $likeArray = $this->like;
-    $countLike = count($likeArray);
-    $currentUserId = User::get('id');
+	$likeArray = $this->like;
+	$countLike = count($likeArray);
+	$currentUserId = User::get('id');
 
-    $userLikesComment = false;
-    $userNameLikesArray = "";
-    foreach ( $likeArray as $likeObj ) {
-        if ( $currentUserId == $likeObj->userId ) {
-            $userLikesComment = true;
-        }
+	$userLikesComment = false;
+	$userNameLikesArray = "";
 
-        $userNameLikesArray .= "/" . ($likeObj->userName) . "#" . ($likeObj->userId);
-    }
-    $userNameLikesArray = substr($userNameLikesArray,1);
+	foreach ( $likeArray as $likeObj ) 
+	{
+		if ( $currentUserId == $likeObj->userId ) 
+		{
+			$userLikesComment = true;
+		}
+
+		$userNameLikesArray .= "/" . ($likeObj->userName) . "#" . ($likeObj->userId);
+	}
+
+	$userNameLikesArray = substr($userNameLikesArray,1);
 
 	$this->comment->set('section', $this->filters['section']);
 	$this->comment->set('category', $this->category->get('alias'));

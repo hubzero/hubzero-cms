@@ -7,25 +7,29 @@
 
 defined('_HZEXEC_') or die();
 
-$this->css('like.css')
-    ->js('like.js');
+	$this->css('like.css')
+		->js('like.js');
 
-    $likeArray = $this->like;
-    $countLike = count($likeArray);
-    $currentUserId = User::get('id');
+	$likeArray = $this->like;
+	$countLike = count($likeArray);
+	$currentUserId = User::get('id');
 
-    $userLikesComment = false;
-    $userNameLikesArray = "";
-    foreach ( $likeArray as $likeObj ) {
-        if ( $currentUserId == $likeObj->userId ) {
-            $userLikesComment = true;
-        }
+	$userLikesComment = false;
+	$userNameLikesArray = "";
 
-        $userNameLikesArray .= "/" . ($likeObj->userName) . "#" . ($likeObj->userId);
-    }
-    $userNameLikesArray = substr($userNameLikesArray,1);
+	foreach ( $likeArray as $likeObj )
+	{
+		if ( $currentUserId == $likeObj->userId )
+		{
+			$userLikesComment = true;
+		}
 
-    $this->comment->set('section', $this->filters['section']);
+		$userNameLikesArray .= "/" . ($likeObj->userName) . "#" . ($likeObj->userId);
+	}
+
+	$userNameLikesArray = substr($userNameLikesArray,1);
+
+	$this->comment->set('section', $this->filters['section']);
 	$this->comment->set('category', $this->category->get('alias'));
 
 	$this->config->set('access-edit-post', false);
@@ -79,42 +83,45 @@ $this->css('like.css')
 			<div class="comment-body">
 				<?php echo $comment; ?>
 
-                <!-- Heart and "Like" link Button -->
-                <div class="elementInline likeContainer">
-                    <a class="icon-heart like <?php if ($userLikesComment) { echo "userLiked"; } ?>" href="#"
-                       data-thread="<?php echo $this->thread->get('id'); ?>"
-                       data-post="<?php echo $this->comment->get('id'); ?>"
-                       data-user="<?php echo User::get('id'); ?>"
-                       data-user-name="<?php echo User::get('name'); ?>"
-                       data-likes-list="<?php echo $userNameLikesArray; ?>"
-                       data-count="<?php echo $countLike; ?>"
-                    ></a>
-                    <span class="likesStat <?php if ($countLike==0) { echo "noLikes"; } ?>">
-                        <?php echo ($countLike>0) ? "View Likes (" . $countLike . ")" : "No Likes"; ?>
-                    </span>
-                </div>
-                <div class="clear"></div>
+				<!-- Heart and "Like" link Button -->
+				<div class="elementInline likeContainer">
+					<a class="icon-heart like <?php if ($userLikesComment) { echo "userLiked"; } ?>" href="#"
+					  data-thread="<?php echo $this->thread->get('id'); ?>"
+					  data-post="<?php echo $this->comment->get('id'); ?>"
+					  data-user="<?php echo User::get('id'); ?>"
+					  data-user-name="<?php echo User::get('name'); ?>"
+					  data-likes-list="<?php echo $userNameLikesArray; ?>"
+					  data-count="<?php echo $countLike; ?>"
+					></a>
+					<span class="likesStat <?php if ($countLike==0) { echo "noLikes"; } ?>">
+						<?php echo ($countLike>0) ? "View Likes (" . $countLike . ")" : "No Likes"; ?>
+					</span>
+				</div>
+
+				<div class="clear"></div>
 
 				<div class="whoLikedPost">
-                    <?php if (strlen($userNameLikesArray) > 0) { ?>
-                        <div class="names">
-                            <?php
-                                $nameArray = preg_split("#/#", $userNameLikesArray);
-                                $links = array();
-                                foreach ($nameArray as $nameString) {
-                                    $nameArray = explode("#", $nameString);
-                                    $userName = $nameArray[0];
-                                    $userId =  isset($nameArray[1]) ? $nameArray[1] : '0';
-                                    $userProfileUrl = "/members/$userId/profile";
+					<?php if (strlen($userNameLikesArray) > 0) { ?>
+					<div class="names">
+					<?php
+						$nameArray = preg_split("#/#", $userNameLikesArray);
+						$links = array();
 
-                                    $links[] = "<a href=$userProfileUrl target='_blank'>$userName</a>";
-                                }
-                                echo join(", ", $links) . " liked this";
-                            ?>
-                        </div>
-                    <?php } ?>
-                </div>
-            </div>
+						foreach ($nameArray as $nameString) 
+						{
+							$nameArray = explode("#", $nameString);
+							$userName = $nameArray[0];
+							$userId =  isset($nameArray[1]) ? $nameArray[1] : '0';
+							$userProfileUrl = "/members/$userId/profile";
+
+							$links[] = "<a href=$userProfileUrl target='_blank'>$userName</a>";
+						}
+						echo join(", ", $links) . " liked this";
+					?>
+					</div>
+					<?php } ?>
+				</div>
+			</div>
 
 			<div class="comment-attachments">
 				<?php
@@ -205,7 +212,7 @@ $this->css('like.css')
 
 			<?php if (!$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
 				<div class="comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
-                    <form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->thread->link()); ?>" method="post" enctype="multipart/form-data">
+			<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->thread->link()); ?>" method="post" enctype="multipart/form-data">
 						<fieldset>
 							<legend><span><?php echo Lang::txt('PLG_GROUPS_FORUM_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
 
@@ -273,8 +280,8 @@ $this->css('like.css')
 			     ->set('option', $this->option)
 			     ->set('group', $this->group)
 			     ->set('comments', $this->comment->get('replies'))
-                 ->set('thread', $this->thread)
-                 ->set('likes', $this->likes)
+			     ->set('thread', $this->thread)
+			     ->set('likes', $this->likes)
 			     ->set('parent', $this->comment->get('id'))
 			     ->set('config', $this->config)
 			     ->set('depth', $this->depth)
