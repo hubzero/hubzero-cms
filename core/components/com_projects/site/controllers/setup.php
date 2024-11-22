@@ -493,11 +493,18 @@ class Setup extends Base
 			if ($this->config->get('grantinfo', 0) && Request::getInt('grant_info', 0))
 			{
 				$grant_agency = Request::getString('grant_agency', '');
-				$grant_agency_id = $this->getGrantAgencyId($grant_agency);
-				
-				if ($grant_agency_id != false && !empty($grant_agency_id))
+				if (empty($grant_agency) && !empty($this->model->params->get('grant_agency_id')))
 				{
-					$this->model->saveParam('grant_agency_id', $grant_agency_id);
+					$this->model->saveParam('grant_agency_id', '');
+				}
+				else
+				{
+					$grant_agency_id = $this->getGrantAgencyId($grant_agency);
+				
+					if ($grant_agency_id != false && !empty($grant_agency_id))
+					{
+						$this->model->saveParam('grant_agency_id', $grant_agency_id);
+					}
 				}
 				
 				$grant_title  = Request::getString('grant_title', '');
@@ -834,11 +841,18 @@ class Setup extends Base
 							
 							if ($key == "grant_agency")
 							{
-								$grant_agency_id = $this->getGrantAgencyId($value);
-								
-								if ($grant_agency_id != false && !empty($grant_agency_id))
+								if (empty($value) && !empty($this->model->params->get('grant_agency_id')))
 								{
-									$this->model->saveParam("grant_agency_id", $grant_agency_id);
+									$this->model->saveParam("grant_agency_id", '');
+								}
+								else
+								{
+									$grant_agency_id = $this->getGrantAgencyId($value);
+								
+									if ($grant_agency_id != false && !empty($grant_agency_id))
+									{
+										$this->model->saveParam("grant_agency_id", $grant_agency_id);
+									}
 								}
 							}
 

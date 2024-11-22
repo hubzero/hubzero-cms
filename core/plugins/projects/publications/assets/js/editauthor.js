@@ -10,14 +10,7 @@ $(function(){
 	if ($(".rorApiAvailable")[0]){
 		$('[name="organization"]').autocomplete({
 			source: function(req, resp){
-				var rorURL = "index.php?option=com_members&controller=profiles&task=getOrganizations&term=";
-				var terms = $('[name="organization"]').val();
-
-				if (terms.indexOf(" ")){
-					rorURL = rorURL + terms.split(" ").join("+");
-				} else {
-					rorURL = rorURL + terms;
-				}
+				var rorURL = "index.php?option=com_members&controller=profiles&task=getOrganizations&term=" + $('[name="organization"]').val();
 
 				$.ajax({
 					url: rorURL,

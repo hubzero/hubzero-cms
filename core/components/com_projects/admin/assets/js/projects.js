@@ -102,18 +102,7 @@ $(function(){
 		},
 		
 		source: function(req, resp){
-			var rorURL = "index.php?option=com_projects&controller=projects&task=getGrantAgency&term=";
-			
-			var terms = $("#param-grant_agency").val();
-			
-			if (terms.indexOf(" "))
-			{
-				rorURL = rorURL + terms.split(" ").join("+");
-			}
-			else
-			{
-				rorURL = rorURL + terms;
-			}
+			var rorURL = "index.php?option=com_projects&controller=projects&task=getGrantAgency&term=" + $("#param-grant_agency").val();
 			
 			$.ajax({
 				url: rorURL,

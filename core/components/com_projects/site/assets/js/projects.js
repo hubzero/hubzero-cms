@@ -428,7 +428,7 @@ jQuery(document).ready(function($){
 });
 
 $(function(){
-	$("#param-grant_agency").autocomplete({	
+	$("#param-grant_agency, input[name='grant_agency']").autocomplete({	
 		open: function() {
 			$("ul.ui-menu").width( $(this).innerWidth() );
 		},
@@ -436,15 +436,13 @@ $(function(){
 		source: function(req, resp){
 			var rorURL = "index.php?option=com_projects&controller=setup&task=getGrantAgency&term=";
 			
-			var terms = $("#param-grant_agency").val();
-			
-			if (terms.indexOf(" "))
+			if ($("#param-grant_agency").length)
 			{
-				rorURL = rorURL + terms.split(" ").join("+");
+				rorURL += $("#param-grant_agency").val();
 			}
-			else
+			else if ($("input[name='grant_agency']").length)
 			{
-				rorURL = rorURL + terms;
+				rorURL += $("input[name='grant_agency']").val();
 			}
 			
 			$.ajax({

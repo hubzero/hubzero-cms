@@ -313,14 +313,7 @@ $(function(){
 	if ($(".rorApiAvailable")[0]){
 		$("#organization").autocomplete({
 			source: function(req, resp){
-				var rorURL = "index.php?option=com_members&controller=profiles&task=getOrganizations&term=";
-				var terms = $("#organization").val();
-
-				if (terms.indexOf(" ")){
-					rorURL = rorURL + terms.split(" ").join("+");
-				} else{
-					rorURL = rorURL + terms;
-				}
+				var rorURL = "index.php?option=com_members&controller=profiles&task=getOrganizations&term=" + $("#organization").val();
 
 				$.ajax({
 					url: rorURL,

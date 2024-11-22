@@ -140,14 +140,7 @@ $(function(){
 	if ($(".rorApiAvailable")[0]){
 		$("#profile_organization").autocomplete({
 			source: function(req, resp){
-				var rorURL = "index.php?option=com_members&controller=profiles&task=getOrganizations&term=";
-				var terms = $("#profile_organization").val();
-
-				if (terms.indexOf(" ")) {
-					rorURL = rorURL + terms.split(" ").join("+");
-				} else {
-					rorURL = rorURL + terms;
-				}
+				var rorURL = "index.php?option=com_members&controller=profiles&task=getOrganizations&term=" + $("#profile_organization").val();
 
 				$.ajax({
 					url: rorURL,

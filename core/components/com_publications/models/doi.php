@@ -774,31 +774,31 @@ class Doi extends Obj
 		if ($this->get('grantInfo'))
 		{
 			$grantInfo = $this->get('grantInfo');
-			$xmlfile .= '<fundingReferences>
-				<fundingReference>';
-			
 			if (array_key_exists('grant_agency', $grantInfo))
 			{
+				$xmlfile .= '<fundingReferences>
+				<fundingReference>';
+				
 				$xmlfile .= '	<funderName>' . $grantInfo['grant_agency'] . '</funderName>';
+				
+				if (array_key_exists('grant_agency_id', $grantInfo))
+				{
+					$xmlfile .= '	<funderIdentifier funderIdentifierType="ROR">' . $grantInfo['grant_agency_id'] . '</funderIdentifier>';
+				}
+				
+				if (array_key_exists('award_number', $grantInfo))
+				{
+					$xmlfile .= '	<awardNumber>' . $grantInfo['award_number'] . '</awardNumber>';
+				}
+				
+				if (array_key_exists('grant_title', $grantInfo))
+				{
+					$xmlfile .= '	<awardTitle>' . $grantInfo['grant_title'] . '</awardTitle>';
+				}
+				
+				$xmlfile .= '	</fundingReference>
+				</fundingReferences>';
 			}
-			
-			if (array_key_exists('grant_agency_id', $grantInfo))
-			{
-				$xmlfile .= '	<funderIdentifier funderIdentifierType="Crossref Funder ID">' . $grantInfo['grant_agency_id'] . '</funderIdentifier>';
-			}
-			
-			if (array_key_exists('award_number', $grantInfo))
-			{
-				$xmlfile .= '	<awardNumber>' . $grantInfo['award_number'] . '</awardNumber>';
-			}
-			
-			if (array_key_exists('grant_title', $grantInfo))
-			{
-				$xmlfile .= '	<awardTitle>' . $grantInfo['grant_title'] . '</awardTitle>';
-			}
-			
-			$xmlfile .= '	</fundingReference>
-			</fundingReferences>';
 		}
 		// Format
 		if ($this->get('pubType') && $this->get('mimeTypes'))
