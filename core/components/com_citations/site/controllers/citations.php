@@ -254,6 +254,7 @@ class Citations extends SiteController
 		// Add some data to our view for form filtering/sorting
 		$this->view->types = Type::all()->rows();
 
+		/*
 		// Get the users id to make lookup
 		$users_ip = Request::ip();
 
@@ -291,14 +292,14 @@ class Citations extends SiteController
 			$r = curl_exec($cURL);
 			curl_close($cURL);
 		}
-
+		*/
 		// Parse the returned xml
 		$this->view->openurl = array(
 			'link' => '',
 			'text' => '',
 			'icon' => ''
 		);
-
+		/*
 		// Parse the return from resolver lookup
 		$resolver = null;
 		$xml = simplexml_load_string($r);
@@ -314,7 +315,7 @@ class Citations extends SiteController
 			$this->view->openurl['text'] = $resolver->linkText;
 			$this->view->openurl['icon'] = $resolver->linkIcon;
 		}
-
+		*/
 		// Set the page title
 		$this->_buildTitle();
 
