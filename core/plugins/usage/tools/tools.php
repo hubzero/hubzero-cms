@@ -564,18 +564,26 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	 */
 	private function check_for_data($yearmonth, $period)
 	{
-		$database = App::get('db');
-
-		$sql = "SELECT COUNT(datetime) FROM `#__stats_topvals` WHERE `datetime`=" . $database->Quote($yearmonth . '-00 00:00:00') . " AND `period`=" . $database->Quote($period);
-		$database->setQuery($sql);
-		$result = $database->loadResult();
-
-		if ($result && $result > 0)
-		{
-			return true;
-		}
-
-		return false;
+                $database = App::get('db');
+                if (!isset($this->totals))
+                {
+                        $sql = "SELECT COUNT(datetime) AS total, DATE_FORMAT(datetime,'%Y-%m') as date FROM `#__stats_topvals` WHERE `period`=" . $database->Quote($period) . "GROUP BY datetime";
+                        $database->setQuery($sql);
+                        $results = $database->loadObjectList();
+                        if ($results)
+                        {
+                                $this->totals = array();
+                                foreach ($results as $row)
+                                {
+                                        $this->totals[$row->date] = $row->total;
+                                }
+                        }
+                }
+                if (isset($this->totals) && isset($this->totals[$yearmonth]) && $this->totals[$yearmonth] > 0)
+                {
+                        return true;
+                }
+                return false;
 	}
 
 	/**
