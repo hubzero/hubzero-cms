@@ -35,12 +35,24 @@ jQuery(document).ready(function(jq){
 			/*$.get('/index.php?option=com_tools&controller=storage&task=diskusage&no_html=1&msgs=0', {}, function(data) {
 				$('#diskusage').html(data);
 			}, 'html');*/
-			$.get($('#diskusage').attr('data-base') + '/api/members/tools/diskusage', {}, function(data) {
+			/*$.get($('#diskusage').attr('data-base') + '/api/members/tools/diskusage', {}, function(data) {
 				if (data && $.type(data.amount) === "number" && $.type(data.total) === "number") {
 					$('#diskusage .du-amount-bar').css('width', data.amount+'%');
 					$('#diskusage .du-amount-text').html(data.amount+'% of '+data.total+'GB');
 				}
-			}, 'JSON');
+			}, 'JSON');*/
+			$.ajax({
+                                url: $('#diskusage').attr('data-base') + '/api/members/tools/diskusage',
+                                data : {}, 
+                                dataType: "json"
+                        }).done(function(data) {
+                                if (data && $.type(data.amount) === "number" && $.type(data.total) === "number") {
+                                        $('#diskusage .du-amount-bar').css('width', data.amount+'%');
+                                        $('#diskusage .du-amount-text').html(data.amount+'% of '+data.total+'GB');
+                                }
+                        }).fail(function(){
+                                clearInterval(holdTheInterval);
+                        });
 		}, 60 * 1000);
 
 	var shrbtn = $('#share-btn');
