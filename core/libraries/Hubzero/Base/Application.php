@@ -55,6 +55,22 @@ class Application extends Container
 	 */
 	public function __construct(Request $request = null, Response $response = null)
 	{
+		// Work around for issues with SCRIPT_NAME and PHP_SELF set incorrectly by php-fpm
+		// GH-12996 https://github.com/php/php-src/issues/12996 fixed in 8.2.16
+		// GH-10869 https://github.com/php/php-src/issues/10869 fixed in 8.1.18
+		// Don't overrite ORIG_SCRIPT_NAME if already set (e.g. between above versions)
+
+		if (PHP_VERSION_ID < 80216 && strpos($_SERVER['PATH_INFO'], '%') !== false)
+		{
+			if (!isset($_SERVER['ORIG_SCRIPT_NAME']))
+			{
+				$_SERVER['ORIG_SCRIPT_NAME'] = $_SERVER['SCRIPT_NAME'];
+			}
+
+			$_SERVER['SCRIPT_NAME'] = str_replace(rawurldecode($_SERVER['PATH_INFO']), '', $_SERVER['SCRIPT_NAME']);
+			$_SERVER['PHP_SELF'] = str_replace(rawurldecode($_SERVER['PATH_INFO']), '', $_SERVER['PHP_SELF']);
+		}
+
 		parent::__construct();
 
 		$this['request']  = ($request  ?: Request::createFromGlobals());
