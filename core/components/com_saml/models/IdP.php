@@ -5,8 +5,37 @@ namespace Components\Saml\Models;
 class IdP 
 {
 	// Defining some trusted Service Providers.
-	private $trusted_sps = [
+	private $trusted_acs = [
     	'http://nanohub.instructure.com/saml2' => 'https://nanohub.instructure.com/login/saml'
+	];
+	private $trusted_slo = [
+    	'http://nanohub.instructure.com/saml2' => 'https://nanohub.instructure.com/login/saml/logout'
+	];
+	private $trusted_signingcert = [
+    	'http://nanohub.instructure.com/saml2' => 
+		'MIIEMDCCAxigAwIBAgIJAPBXgeztn8U2MA0GCSqGSIb3DQEBCwUAMIGsMQswCQYD'.
+		'VQQGEwJVUzENMAsGA1UECAwEVXRhaDEXMBUGA1UEBwwOU2FsdCBMYWtlIENpdHkx'.
+		'GjAYBgNVBAoMEUluc3RydWN0dXJlLCBJbmMuMRMwEQYDVQQLDApPcGVyYXRpb25z'.
+		'MSAwHgYDVQQDDBdDYW52YXMgU0FNTCBDZXJ0aWZpY2F0ZTEiMCAGCSqGSIb3DQEJ'.
+		'ARYTb3BzQGluc3RydWN0dXJlLmNvbTAeFw0xOTAzMjExNTM5MDRaFw0yOTAzMTgx'.
+		'NTM5MDRaMIGsMQswCQYDVQQGEwJVUzENMAsGA1UECAwEVXRhaDEXMBUGA1UEBwwO'.
+		'U2FsdCBMYWtlIENpdHkxGjAYBgNVBAoMEUluc3RydWN0dXJlLCBJbmMuMRMwEQYD'.
+		'VQQLDApPcGVyYXRpb25zMSAwHgYDVQQDDBdDYW52YXMgU0FNTCBDZXJ0aWZpY2F0'.
+		'ZTEiMCAGCSqGSIb3DQEJARYTb3BzQGluc3RydWN0dXJlLmNvbTCCASIwDQYJKoZI'.
+		'hvcNAQEBBQADggEPADCCAQoCggEBAPXoYCW9QPrtfn0+WLX43YtM89gLHrnSM0rR'.
+		'Tc+0DQ9TUZKKrma80XvwOS3K0hjf7k+mAlarYptwXuPOaS6+LMRgxBRx/iWdugKr'.
+		'yWKpwbzZ13v1TnLZ1rc6ThyRuilvKIPD7dP3rv+A1EzYYk9ZGtd5gFSBUtUqFwj1'.
+		'76CUaEjCIN8FaogbbppWi/C1kWtPvPY+UeZ4IBJUpj+ect8rbhdVq5FxDErRdAzH'.
+		'CIi6xSqlLqmV13rqD4srMtE98d+9Ki2hat3yNz3mmb5aZdiLQk6DosfQmHfNy6JS'.
+		'GyVwmAZOPB5ssFuNfQZFK9o6WG5umS/aEN/ssfW/7uM9TDkkKvsCAwEAAaNTMFEw'.
+		'HQYDVR0OBBYEFAraQ0414RyifBPG9LflNTiVFF7fMB8GA1UdIwQYMBaAFAraQ041'.
+		'4RyifBPG9LflNTiVFF7fMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQAD'.
+		'ggEBAA+AaM/dPLidoPNJlKj9zQ9aTvJIF7MQhfrNkeNkMpGmE0igyZFq6z2WuA5u'.
+		'U2cF/f7jNTBqaaFEbnA8BiRlE/FrTLHIIgP5JX2+n1WmakI/aVbnXICvrVRn84Yt'.
+		'5SHdVacI5Whv3RKgRzkpBOb9jgZ+E4keAvtxHUuIMMEtxT/fySwFaRfG0Wit6fxX'.
+		'buDiucMWZ+vEY243lO6ORPTiMeMcZGRqA5prwAWyfLzkXW1X5U3GXhWW7ZRmHxkT'.
+		'8EwppSeosigJnYIjhrXFsiLU7wplnDD9yfe+ho70ZG3mb2MgfG59ZLTzv3l+Anau'.
+		'BN+f6kyYZ9ztdvueX8SUp5T4s40='
 	];
 
 	/**
@@ -17,9 +46,35 @@ class IdP
 	 * @return
 	 *   The Assertion Consumer Service Url.
 	 */
-	public function getServiceProviderAcs($entityId)
+	public function getTrustedServiceProviderSigningCert($entityId)
 	{
-		return $this->trusted_sps[$entityId];
+		return $this->trusted_signingcert[$entityId];
+	}
+
+	/**
+	 * Retrieves the Assertion Consumer Service.
+	 *
+   	 * @param string
+	 *   The Service Provider Entity Id
+	 * @return
+	 *   The Assertion Consumer Service Url.
+	 */
+	public function getTrustedServiceProviderAcs($entityId)
+	{
+		return $this->trusted_acs[$entityId];
+	}
+
+	/**
+	 * Retrieves the Assertion Consumer Service.
+	 *
+   	 * @param string
+	 *   The Service Provider Entity Id
+	 * @return
+	 *   The Assertion Consumer Service Url.
+	 */
+	public function getTrustedServiceProviderSlo($entityId)
+	{
+		return $this->trusted_slo[$entityId];
 	}
 
 	/**
@@ -30,6 +85,26 @@ class IdP
 	public function getEntityID()
 	{
 		return "https://nanohub.org";
+	}
+
+	/**
+	 * Returning the IdP login url.
+	 *
+	 * @return string
+	 */
+	public function getLoginUrl()
+	{
+		return "https://nanohub.org/saml/idp/login";
+	}
+
+	/**
+	 * Returning the IdP login url.
+	 *
+	 * @return string
+	 */
+	public function getLogoutUrl()
+	{
+		return "https://nanohub.org/saml/idp/logout";
 	}
 
 	/**
@@ -67,7 +142,6 @@ class IdP
 		// request.
 		$bindingFactory = new \LightSaml\Binding\BindingFactory();
 		$binding = $bindingFactory->getBindingByRequest($request);
-
 		// We prepare a message context to receive our SAML Request message.
 		$messageContext = new \LightSaml\Context\Profile\MessageContext();
 
@@ -89,17 +163,17 @@ class IdP
 	 */
 	public function createSAMLResponse($user, $issuer, $acsUrl, $id, $session_id)
   	{
-		$destination =  self::getServiceProviderAcs($issuer);
+		$destination =  $this->getTrustedServiceProviderAcs($issuer);
 
-		if ($destination != $acsUrl)
+		if (!$destination)
 		{
 			$response = (new \LightSaml\Model\Protocol\Response())
         		->setStatus(new \LightSaml\Model\Protocol\Status(new \LightSaml\Model\Protocol\StatusCode( \LightSaml\SamlConstants::STATUS_RESPONDER)))
 				->setID(\LightSaml\Helper::generateID())
 				->setIssueInstant(new \DateTime())
-				->setIssuer(new \LightSaml\Model\Assertion\Issuer(self::getEntityId()))
+				->setIssuer(new \LightSaml\Model\Assertion\Issuer($this->getEntityId()))
 				->setDestination( $acsUrl )
-				->setSignature(new \LightSaml\Model\XmlDSig\SignatureWriter(self::getCertificate(), self::getPrivateKey()));
+				->setSignature(new \LightSaml\Model\XmlDSig\SignatureWriter($this->getCertificate(), $this->getPrivateKey()));
 		}
 		else
 		{
@@ -107,14 +181,14 @@ class IdP
 				->setStatus(new \LightSaml\Model\Protocol\Status(new \LightSaml\Model\Protocol\StatusCode( \LightSaml\SamlConstants::STATUS_SUCCESS)))
 				->setID(\LightSaml\Helper::generateID())
 				->setIssueInstant(new \DateTime())
-				->setIssuer(new \LightSaml\Model\Assertion\Issuer(self::getEntityId()))
+				->setIssuer(new \LightSaml\Model\Assertion\Issuer($this->getEntityId()))
 				->setDestination( $acsUrl )
-				->setSignature(new \LightSaml\Model\XmlDSig\SignatureWriter(self::getCertificate(), self::getPrivateKey()))
+				->setSignature(new \LightSaml\Model\XmlDSig\SignatureWriter($this->getCertificate(), $this->getPrivateKey()))
 				->addAssertion((new \LightSaml\Model\Assertion\Assertion())
 					->setId(\LightSaml\Helper::generateID())
 					->setIssueInstant(new \DateTime())
 					->setIssuer((new \LightSaml\Model\Assertion\Issuer())
-						->setValue(self::getEntityId()))
+						->setValue($this->getEntityId()))
 					->setSubject((new \LightSaml\Model\Assertion\Subject())
 					->setNameID((new \LightSaml\Model\Assertion\NameID())
 						->setValue($user->get('username'))
@@ -164,22 +238,50 @@ class IdP
 		return $response;
     }
 
+	/**
+	 * Constructs a SAML Logout Response.
+	 *
+	 * @param \IdpProvider $idpProvider
+	 * @param $sloUrl
+	 * @param $request_id
+	 * @param $status
+	 */
+	public function createSAMLLogoutResponse($sloUrl, $request_id, $status)
+  	{
+		$response = (new \LightSaml\Model\Protocol\LogoutResponse())
+			->setID(\LightSaml\Helper::generateID())
+			->setIssueInstant(new \DateTime())
+			->setDestination( $sloUrl )
+			->setInResponseTo($request_id)
+			->setIssuer(new \LightSaml\Model\Assertion\Issuer($this->getEntityId()))
+			->setStatus(new \LightSaml\Model\Protocol\Status(new \LightSaml\Model\Protocol\StatusCode( $status )))
+			->setSignature(new \LightSaml\Model\XmlDSig\SignatureWriter($this->getCertificate(), $this->getPrivateKey()));
+
+        $serializationContext = new \LightSaml\Model\Context\SerializationContext();
+
+        $response->serialize($serializationContext->getDocument(), $serializationContext);
+        
+		return $response;
+    }
+
 	public function metadataXML()
     {
 		$entityDescriptor = (new \LightSaml\Model\Metadata\EntityDescriptor())
-			->setEntityID(self::getEntityID())
+			->setEntityID($this->getEntityID())
 			->setValidUntil( new \DateTime('+1 DAY') )
 			->addItem( (new \LightSaml\Model\Metadata\IdpSsoDescriptor())
 				->setWantAuthnRequestsSigned(true)
 				->addKeyDescriptor( (new \LightSaml\Model\Metadata\KeyDescriptor())
                     ->setUse(\LightSaml\Model\Metadata\KeyDescriptor::USE_SIGNING)
-                    ->setCertificate(\LightSaml\Credential\X509Certificate::fromFile('/var/www/nanohub/core/components/com_saml/config/certificate.crt'))
+                    ->setCertificate($this->getCertificate())
                 	)
                	->addNameIdFormat(\LightSaml\SamlConstants::NAME_ID_FORMAT_EMAIL)
                	->addSingleSignOnService( (new \LightSaml\Model\Metadata\SingleSignOnService())
                     ->setBinding(\LightSaml\SamlConstants::BINDING_SAML2_HTTP_REDIRECT)
-                    ->setLocation('https://nanohub.org/saml/login')));
-             
+                    ->setLocation($this->getLoginUrl()))
+				->addSingleLogoutService( (new \LightSaml\Model\Metadata\SingleLogoutService())
+                    ->setBinding(\LightSaml\SamlConstants::BINDING_SAML2_HTTP_REDIRECT)
+                    ->setLocation($this->getLogoutUrl())));
 
         $serializationContext = new \LightSaml\Model\Context\SerializationContext();
 
