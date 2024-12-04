@@ -54,13 +54,13 @@ $this->css('usage', 'com_usage');
 				$cls = ($cls == 'even') ? 'odd' : 'even';
 				echo $cls; ?>">
 				<th scope="row"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_CONTRIBUTIONS_FIRST'); ?>:</th>
-				<td><?php echo $this->contribution['first']; ?></td>
+				<td><?php echo Date::of($this->contribution['first'])->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 			</tr>
 			<tr class="<?php
 				$cls = ($cls == 'even') ? 'odd' : 'even';
 				echo $cls; ?>">
 				<th scope="row"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_CONTRIBUTIONS_LAST'); ?>:</th>
-				<td><?php echo $this->contribution['last']; ?></td>
+				<td><?php echo Date::of($this->contribution['last'])->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 			</tr>
 			<tr class="<?php
 				$cls = ($cls == 'even') ? 'odd' : 'even';

@@ -102,7 +102,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 				$access[] = 1;
 			}
 
-			$sql = 'SELECT DISTINCT r.id, r.type AS type_id, r.title, DATE_FORMAT(r.publish_up, "%d %b %Y") AS publish_up, rt.type
+			$sql = 'SELECT DISTINCT r.id, r.type AS type_id, r.title, r.publish_up, rt.type
 					FROM `#__resources` AS r
 					LEFT JOIN `#__resource_types` AS rt ON r.TYPE=rt.id
 					LEFT JOIN `#__author_assoc` AS aa ON aa.subid=r.id AND aa.subtable="resources"
@@ -114,7 +114,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 			$view->tool_total_12 = $this->get_total_stats($member->get('id'), 'tool_users', 12);
 			$view->tool_total_14 = $this->get_total_stats($member->get('id'), 'tool_users', 14);
 
-			$sql = "SELECT DISTINCT r.id, r.type AS type_id, r.title, DATE_FORMAT(r.publish_up, '%d %b %Y') AS publish_up, rt.type
+			$sql = "SELECT DISTINCT r.id, r.type AS type_id, r.title, r.publish_up, rt.type
 					FROM `#__resources` AS r
 					LEFT JOIN `#__resource_types` AS rt ON r.TYPE=rt.id
 					LEFT JOIN `#__author_assoc` AS aa ON aa.subid=r.id AND aa.subtable='resources'
@@ -162,7 +162,7 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 	{
 		$database = App::get('db');
 
-		$sql = "SELECT COUNT(DISTINCT aa.subid) as contribs, DATE_FORMAT(MIN(res.publish_up), '%d %b %Y') AS first_contrib, DATE_FORMAT(MAX(res.publish_up), '%d %b %Y') AS last_contrib
+		$sql = "SELECT COUNT(DISTINCT aa.subid) as contribs, MIN(res.publish_up) AS first_contrib, MAX(res.publish_up) AS last_contrib
 				FROM `#__resources` AS res, `#__author_assoc` AS aa, `#__resource_types` AS restypes
 				WHERE res.id = aa.subid AND res.type = restypes.id AND aa.authorid = " . $database->quote($authorid) . " AND ((aa.role!='submitter' and res.type!=7) OR res.type=7)
 				AND res.standalone = 1
