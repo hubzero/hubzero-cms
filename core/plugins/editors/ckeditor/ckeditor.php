@@ -196,6 +196,10 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 		$atts = array();
 		foreach ($params as $key => $value)
 		{
+			if ($key == 'mentions'){
+				continue;
+			}
+
 			if (is_array($value))
 			{
 				$value = implode(';', $value);

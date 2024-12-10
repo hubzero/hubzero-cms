@@ -118,11 +118,20 @@ $now = Date::of('now')->toSql();
 								</span>
 							</p>
 
-							<label for="fieldcomment">
+							<label for="fieldcomment" id="addNewPostArea">
 								<?php echo Lang::txt('COM_FORUM_FIELD_COMMENTS'); ?>
-								<?php
-								echo $this->editor('fields[comment]', '', 35, 15, 'fieldcomment', array('class' => 'minimal no-footer'));
-								?>
+								<?php echo $this->editor('fields[comment]', '', 35, 15, 'fieldcomment',
+                                        array(
+                                            'class' => 'minimal no-footer',
+                                            'mentions' => array(
+                                                array(
+                                                    'minChars' => 0,
+                                                    'feed' =>  '/api/members/mentions/list?search={encodedQuery}',
+                                                    'itemTemplate' => '<li data-id="{id}"><img class="photo" src="{picture}" /><strong class="username">{username}</strong><span class="fullname">{name}</span></li>',
+                                                    'outputTemplate' => '<a href="mailto:{email}">@{username}</a><span>&nbsp;</span>',
+                                                )
+                                            )
+                                        )); ?>
 							</label>
 
 							<label>

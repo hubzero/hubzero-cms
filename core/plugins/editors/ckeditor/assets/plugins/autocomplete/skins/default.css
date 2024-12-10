@@ -36,3 +36,24 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 {
 	background-color: #EFF0EF;
 }
+
+/* This is for mentions dropdown with avatar, username and fullname */
+ul.cke_autocomplete_panel {
+	width: 250px;
+}
+
+ul.cke_autocomplete_panel .photo {
+	display: inline-block;
+	vertical-align: middle;
+	height: 30px;
+	border-radius: 50%;
+}
+
+.cke_autocomplete_panel .username {
+	padding-left: 5px;
+}
+
+.cke_autocomplete_panel .fullname {
+	padding-left: 5px;
+	color: #b7b7b7;
+}
