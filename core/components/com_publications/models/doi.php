@@ -697,7 +697,7 @@ class Doi extends Obj
 						$citation->resourceTypeGeneral = substr(trim($citation->resourceTypeGeneral), $pos + strlen(self::DATACITE));
 					}
 					
-					if (!empty($citation->relationType))
+					if (!empty($citation->relationType) && (preg_match("/" . self::REFERENCES . "/i", $citation->relationType) || preg_match("/" . self::REFERENCEDBY . "/i", $citation->relationType)))
 					{
 						if (preg_match("/" . self::REFERENCES . "/i", $citation->relationType))
 						{
@@ -707,51 +707,51 @@ class Doi extends Obj
 						{
 							$citation->relationType = self::ISREFERENCEDBY;
 						}
-					}
-					
-					if (!empty($citation->relationType) && !empty($citation->resourceTypeGeneral))
-					{
-						if (!empty($citation->relatedIdentifier))
+						
+						if (!empty($citation->resourceTypeGeneral))
 						{
-							$xmlfile .= '<relatedIdentifier relatedIdentifierType="DOI" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . trim($citation->relatedIdentifier) . '</relatedIdentifier>';
-						}
-						else
-						{
-							if (!empty($citation->url))
+							if (!empty($citation->relatedIdentifier))
 							{
-								if (preg_match("/purl/i", $citation->url))
+								$xmlfile .= '<relatedIdentifier relatedIdentifierType="DOI" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . trim($citation->relatedIdentifier) . '</relatedIdentifier>';
+							}
+							else
+							{
+								if (!empty($citation->url))
 								{
-									$xmlfile .= '<relatedIdentifier relatedIdentifierType="PURL" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . trim($citation->url) . '</relatedIdentifier>';
-								}
-								elseif (preg_match("/handle/i", $citation->url))
-								{
-									if (preg_match("/hdl\.handle\.net/i", $citation->url))
+									if (preg_match("/purl/i", $citation->url))
 									{
-										$pos = strpos($citation->url, self::HANDLE_DOMAIN_NAME);
-										$val = substr($citation->url, $pos + strlen(self::HANDLE_DOMAIN_NAME) + 1);
+										$xmlfile .= '<relatedIdentifier relatedIdentifierType="PURL" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . trim($citation->url) . '</relatedIdentifier>';
+									}
+									elseif (preg_match("/handle/i", $citation->url))
+									{
+										if (preg_match("/hdl\.handle\.net/i", $citation->url))
+										{
+											$pos = strpos($citation->url, self::HANDLE_DOMAIN_NAME);
+											$val = substr($citation->url, $pos + strlen(self::HANDLE_DOMAIN_NAME) + 1);
+										}
+										else
+										{
+											$pos = strpos($citation->url, self::HANDLE);
+											$val = substr($citation->url, $pos + strlen(self::HANDLE) + 1);
+										}
+										$xmlfile .= '<relatedIdentifier relatedIdentifierType="Handle" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $val . '</relatedIdentifier>';
+									}
+									elseif (preg_match("/ark:/i", $citation->url) && !empty($citation->eprint))
+									{
+										$xmlfile .= '<relatedIdentifier relatedIdentifierType="ARK" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $citation->eprint . '</relatedIdentifier>';
+									}
+									elseif (preg_match("/arxiv/i", $citation->url) && !empty($citation->eprint))
+									{
+										$xmlfile .= '<relatedIdentifier relatedIdentifierType="arXiv" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $citation->eprint . '</relatedIdentifier>';
+									}
+									elseif (preg_match("/urn:/i", $citation->url) && !empty($citation->eprint))
+									{
+										$xmlfile .= '<relatedIdentifier relatedIdentifierType="URN" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $citation->eprint . '</relatedIdentifier>';
 									}
 									else
 									{
-										$pos = strpos($citation->url, self::HANDLE);
-										$val = substr($citation->url, $pos + strlen(self::HANDLE) + 1);
+										$xmlfile .= '<relatedIdentifier relatedIdentifierType="URL" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $citation->url . '</relatedIdentifier>';
 									}
-									$xmlfile .= '<relatedIdentifier relatedIdentifierType="Handle" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $val . '</relatedIdentifier>';
-								}
-								elseif (preg_match("/ark:/i", $citation->url) && !empty($citation->eprint))
-								{
-									$xmlfile .= '<relatedIdentifier relatedIdentifierType="ARK" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $citation->eprint . '</relatedIdentifier>';
-								}
-								elseif (preg_match("/arxiv/i", $citation->url) && !empty($citation->eprint))
-								{
-									$xmlfile .= '<relatedIdentifier relatedIdentifierType="arXiv" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $citation->eprint . '</relatedIdentifier>';
-								}
-								elseif (preg_match("/urn:/i", $citation->url) && !empty($citation->eprint))
-								{
-									$xmlfile .= '<relatedIdentifier relatedIdentifierType="URN" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $citation->eprint . '</relatedIdentifier>';
-								}
-								else
-								{
-									$xmlfile .= '<relatedIdentifier relatedIdentifierType="URL" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $citation->url . '</relatedIdentifier>';
 								}
 							}
 						}
