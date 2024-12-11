@@ -151,7 +151,7 @@ class Router extends Base
 					$vars['task'] = 'download';
 					if (isset($segments[2]))
 					{
-						$vars['file'] = $segments[2];
+						$vars['file'] = rawurldecode( implode('/', array_slice($segments,2)) ); 
 					}
 				break;
 				case 'play':
