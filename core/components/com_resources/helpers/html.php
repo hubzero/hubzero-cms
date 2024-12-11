@@ -268,6 +268,20 @@ class Html
 	}
 
 	/**
+	 * Build the url path to resources files from the resource id
+	 *
+	 * @param   integer  $id    Resource ID
+	 * @param   string   $base  Base path to prepend
+	 * @return  string
+	 */
+	public static function build_url($id, $base)
+	{
+		$dir_id = self::niceidformat($id);
+
+		return $base . DS . $dir_id . DS . "download";
+	}
+
+	/**
 	 * Build the path to resources files from the creating date
 	 *
 	 * @param   string   $date  Timestamp (YYYY-MM-DD hh:mm:ss)

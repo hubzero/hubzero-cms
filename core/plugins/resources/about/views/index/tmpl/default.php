@@ -76,7 +76,6 @@ $maintext = $this->model->description;
 			     ->set('id', $this->model->id)
 			     ->set('created', $this->model->created)
 			     ->set('upath', $this->model->params->get('uploadpath'))
-			     ->set('wpath', $this->model->params->get('uploadpath'))
 			     ->set('versionid', $this->model->versionid)
 			     ->set('sinfo', $ss)
 			     ->set('slidebar', 1)

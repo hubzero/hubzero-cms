@@ -8,14 +8,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$base = substr(PATH_APP, strlen(PATH_ROOT));
-
-$upath = $base . (isset($this->upath) ? $this->upath : '');
-$wpath = $base . (isset($this->wpath) ? $this->wpath : '');
+$upath = (isset($this->upath) ? $this->upath : '');
 $sinfo = (isset($this->sinfo) ? $this->sinfo : array());
 $versionid = (isset($this->versionid) ? $this->versionid : 0);
-
 $path = \Components\Resources\Helpers\html::build_path($this->created, $this->id, '');
+$url = \Components\Resources\Helpers\html::build_url($this->id, '');
 
 // Get contribtool parameters
 $tconfig = Component::params('com_tools');
@@ -24,11 +21,11 @@ $allowversions = $tconfig->get('screenshot_edit');
 if ($versionid && $allowversions)
 {
 	// Add version directory
+	$url .= DS . $versionid;
 	$path .= DS . $versionid;
 }
 
-$d = @dir(PATH_ROOT . $upath . $path);
-
+$d = @dir(PATH_APP . $upath . $path);
 $images = array();
 $tns = array();
 $all = array();
@@ -40,7 +37,7 @@ if ($d)
 	while (false !== ($entry = $d->read()))
 	{
 		$img_file = $entry;
-		if (is_file(PATH_ROOT . $upath . $path . DS . $img_file)
+		if (is_file(PATH_APP . $upath . $path . DS . $img_file)
 		 && substr($entry, 0, 1) != '.'
 		 && strtolower($entry) !== 'index.html')
 		{
@@ -108,15 +105,15 @@ for ($i=0, $n=count($images); $i < $n; $i++)
 	$tn = \Components\Resources\Helpers\Html::thumbnail($images[$i]['img']);
 	$els .=  ($this->slidebar && $i==0) ? '<div class="showcase-pane">' . "\n" : '';
 
-	if (is_file(PATH_ROOT . $upath . $path . DS . $tn))
+	if (is_file(PATH_APP . $upath . $path . DS . $tn))
 	{
 		if (strtolower(end($images[$i]['type'])) == 'swf' || strtolower(end($images[$i]['type'])) == 'mov')
 		{
 			$g++;
 			$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title'] : Lang::txt('DEMO') . ' #' . $g;
 			$els .= $this->slidebar ? '' : '<li>';
-			$els .= ' <a class="popup" href="' . $wpath . $path . DS . $images[$i]['img'] . '" title="' . $title . '">';
-			$els .= '<img src="' . $wpath . $path . DS . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
+			$els .= ' <a class="popup" href="/resources' . $url . DS . $images[$i]['img'] . '" title="' . $title . '">';
+			$els .= '<img src="/resources' . $url . DS . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
 			$els .= $this->slidebar ? '' : '</li>' . "\n";
 		}
 		else
@@ -124,8 +121,8 @@ for ($i=0, $n=count($images); $i < $n; $i++)
 			$k++;
 			$title = (isset($images[$i]['title']) && $images[$i]['title']!='')  ? $images[$i]['title']: Lang::txt('SCREENSHOT') . ' #' . $k;
 			$els .= $this->slidebar ? '' : '<li>';
-			$els .= ' <a rel="lightbox" href="' . $wpath . $path . DS . $images[$i]['img'] . '" title="' . $title . '">';
-			$els .= '<img src="' . $wpath . $path . DS . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
+			$els .= ' <a rel="lightbox" href="/resources' . $url . DS . $images[$i]['img'] . '" title="' . $title . '">';
+			$els .= '<img src="/resources' . $url . DS . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
 			$els .= $this->slidebar ? '' : '</li>' . "\n";
 		}
 	}
