@@ -51,6 +51,8 @@ $html = '';
 	$width  = (intval($width) > 0) ? $width : 0;
 	$height = (intval($height) > 0) ? $height : 0;
 
+	$videos = array('mp4');
+	$audios = array('mp3');
 	$images = array('png', 'jpeg', 'jpe', 'jpg', 'gif', 'bmp');
 	$files  = array('pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pages', 'ai', 'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'zip', 'rar', 'svg');
 
@@ -164,7 +166,19 @@ $html = '';
 
 			$html .= '<iframe sandbox="allow-scripts allow-same-origin allow-popups" src="https://docs.google.com/viewer?url=' . urlencode(Request::base() . ltrim($sef, '/')).'&amp;embedded=true#:0.page.0" width="100%" height="500" name="file_resource" frameborder="0" bgcolor="white"></iframe>'."\n";
 		}
-		else
+		else if (in_array(strtolower($type), $videos))
+		{
+			$html .= '<video controls autoplay ' . $attributes . '>' . "\n";
+			$html .= '    <source src="' . $url .  '" type="video/mp4"/>' . "\n";
+			$html .= '</video>' . "\n";
+		}
+		else if (in_array(strtolower($type), $audios))
+		{
+			$html .= '<audio controls autoplay ' . $attributes . '>' . "\n";
+			$html .= '    <source src="' . $url .  '" type="audio/mpeg"/>' . "\n";
+			$html .= '</audio>' . "\n";
+		}
+		else if (strtolower($type) == 'jar')
 		{
 			$html .= '<applet ' . $attributes . ' archive="'. $url .'" width="';
 			$html .= ($width > 0) ? $width : '';
@@ -180,6 +194,10 @@ $html = '';
 				$html .= ' <param name="height" value="'. $height .'" />'."\n";
 			}
 			$html .= '</applet>'."\n";
+		}
+		else
+		{
+			$html .= '<p class="error">'.Lang::txt('COM_RESOURCES_FILE_BAD_TYPE').'</p>'."\n";
 		}
 	}
 	else
