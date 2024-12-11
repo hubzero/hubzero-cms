@@ -23,6 +23,7 @@ use Route;
 use User;
 use Lang;
 use App;
+use DOMDocument;
 
 /**
  * Forum controller class for threads
@@ -348,6 +349,19 @@ class Threads extends SiteController
 			$fields['modified'] = \Date::toSql();
 			$fields['modified_by'] = User::get('id');
 		}
+
+		// WORK IN PROGRESS -- Extracting emails from the new post submitted
+        $domComment = new DOMDocument();
+        $domComment->loadHTML($fields['comment']);
+        $mentionEmails = array();
+        foreach ($domComment->getElementsByTagName('a') as $item) {
+            $hrefLink = $item->getAttribute('href');
+            if (strpos($hrefLink, 'mailto:') !== false) {
+                $mentionEmails[] = str_replace('mailto:', "", $hrefLink);
+            }
+        }
+        print_r($mentionEmails);
+        die;
 
 		// Authorization check
 		$this->_authorize($assetType, intval($fields['id']));
