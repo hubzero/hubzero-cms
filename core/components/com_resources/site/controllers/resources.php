@@ -2293,7 +2293,7 @@ class Resources extends SiteController
 
 		$ext = strtolower(\Filesystem::extension($path));
 
-		if (!in_array($ext, array('jpg', 'jpeg', 'jpe', 'gif', 'png', 'pdf', 'htm', 'html', 'txt', 'json', 'xml')))
+		if (!in_array($ext, array('tiff', 'tif', 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'pdf', 'htm', 'html', 'txt', 'json', 'xml', 'ogv', 'mp4', 'webm', 'ogg', 'mp3')))
 		{
 			$d = 'attachment';
 		}
