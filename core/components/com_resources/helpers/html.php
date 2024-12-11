@@ -669,7 +669,7 @@ class Html
 					}
 					else
 					{
-						if (strstr($item->path, 'http') || substr($item->path, 0, 3) == 'mms')
+						if (strstr($item->path, 'http') || substr($item->path, 0, 3) == 'mms' || substr($item->path,0,1) == '/')
 						{
 							$url = $item->path;
 						}
@@ -937,6 +937,10 @@ class Html
 						{
 							$mesg  = Lang::txt('COM_RESOURCES_VIEW_LINK');
 						}
+						else if (substr($firstChild->path, 0, 1) == '/')
+						{
+							$mesg  = Lang::txt('COM_RESOURCES_VIEW_LINK');
+						}
 					break;
 				}
 
@@ -1134,6 +1138,16 @@ class Html
 		if (substr($path, 0, 16) == 'https://doi.org/')
 		{
 			$type = 'DOI';
+			$fs = '';
+		}
+		else if ((substr($path, 0, 18) == 'https://vimeo.com/') ||  (substr($path, 0, 25) == 'https://player.vimeo.com/'))
+		{
+			$type = 'Vimeo';
+			$fs = '';
+		}
+		else if ((substr($path, 0, 20) == 'https://youtube.com/') ||  (substr($path, 0, 24) == 'https://www.youtube.com/') ||  (substr($path, 0, 17) == 'https://youtu.be/'))
+		{
+			$type = 'YouTube';
 			$fs = '';
 		}
 		else if (preg_match("/(?:https?:|mailto:|ftp:|gopher:|news:|file:)/", $path))
