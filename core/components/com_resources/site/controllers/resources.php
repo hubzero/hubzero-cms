@@ -2304,6 +2304,11 @@ class Resources extends SiteController
 		$xserver->disposition($d);
 		$xserver->acceptranges(false); // @TODO fix byte range support
 
+		if ($ext == 'html' || $ext == 'htm')
+		{
+			$xserver->setContentType('text/html');
+		}
+
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
