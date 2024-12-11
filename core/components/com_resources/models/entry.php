@@ -820,7 +820,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	{
 		$content = stripslashes($this->get('fulltxt'));
 		$content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
-		$content = str_replace(array('="/site/', '="site/'), '="' . str_replace(PATH_ROOT, '', PATH_APP) . '/site/', $content);
+		$content = str_replace(array('="/site/', '="site/'), '="/app/site/', $content);
 
 		$content = \Html::content('prepare', $content);
 
@@ -920,6 +920,46 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		}
 
 		return parent::destroy();
+	}
+
+	/**
+	 * Build and return the base path to resource url
+	 *
+	 * @return  string
+	 */
+	public function baseurl()
+	{
+		if ($this->path == '')
+		{
+			return '';
+		}
+
+		if (preg_match('/^\/*([1|2]\d{3})\/+(0\d|1[012])\/(\d{5})\/*(.*?)\/*$/', $this->path, $matches))
+		{
+			return $matches[1] . '/' . $matches[2] . '/' . $matches[3];
+		}
+
+		return dirname($this->path);
+	}
+
+	/**
+	 * Build and return the relative path to resource url
+	 *
+	 * @return  string
+	 */
+	public function relativeurl()
+	{
+		if ($this->path == '')
+		{
+			return '';
+		}
+
+		if (preg_match('/^\/*([1|2]\d{3})\/+(0\d|1[012])\/(\d{5})\/*(.*?)\/*$/', $this->path, $matches))
+		{
+			return $matches[4];
+		}
+
+		return basename($this->path);
 	}
 
 	/**
