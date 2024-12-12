@@ -2180,6 +2180,7 @@ class Resources extends SiteController
 			$resource = Entry::blank();
 			$resource->set('id', $id);
 			$resource->set('standalone', 1);
+			$resource->set('published', 1);
 			$resource->set('created', Date::of('now')->format('Y-m-d 00:00:00'));
 		}
 		else
@@ -2192,6 +2193,11 @@ class Resources extends SiteController
 			}
 		}
 
+		// Ensure resource is published - stemedhub #472
+		if (($resource->published != 1)  && !User::authorise('core.admin'))
+		{
+			App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND'));
+		}
 		// Check if direct access is restricted. If so, look for a token
 		$activeParams = $resource->params;
 		$typeParams = $resource->type->params;
@@ -2273,13 +2279,6 @@ class Resources extends SiteController
 
 		$path = trim($resource->get('path'));
 		$path = DS . trim($path, DS);
-
-		// Ensure we have a path
-		// Ensure resource is published - stemedhub #472
-		if (!$path && $resource->published != 1)
-		{
-			App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND'));
-		}
 
 		// Get the configured upload path
 		$base_path = $resource->basepath();
