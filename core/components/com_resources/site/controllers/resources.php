@@ -2154,17 +2154,20 @@ class Resources extends SiteController
 	public function downloadTask()
 	{
 		// Incoming
+
 		$id    = Request::getInt('id', 0);
 		$alias = Request::getString('alias', '');
 		$d     = Request::getString('d', 'inline');
 
 		//make sure we have a proper disposition
+
 		if ($d != "inline" && $d != "attachment")
 		{
 			$d = "inline";
 		}
 
 		// Load the resource
+
 		if ($alias)
 		{
 			$resource = Entry::oneByAlias($alias);
@@ -2174,9 +2177,9 @@ class Resources extends SiteController
 				App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 			}
 		}
-		// allow for temp resource uploads
-		elseif (substr($id, 0, 4) == '9999')
+		elseif (substr($id, 0, 4) == '9999') // allow for temp resource uploads
 		{
+
 			$resource = Entry::blank();
 			$resource->set('id', $id);
 			$resource->set('standalone', 1);
@@ -2194,20 +2197,25 @@ class Resources extends SiteController
 		}
 
 		// Ensure resource is published - stemedhub #472
+
 		if (($resource->published != 1)  && !User::authorise('core.admin'))
 		{
 			App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND'));
 		}
+
 		// Check if direct access is restricted. If so, look for a token
+
 		$activeParams = $resource->params;
 		$typeParams = $resource->type->params;
 		$restrictDirectDownload = $activeParams->get('restrict_direct_access') ? $activeParams->get('restrict_direct_access') : $typeParams->get('restrict_direct_access');
+
 		if ($restrictDirectDownload == 2)
 		{
 			Request::checkToken('get');
 		}
 
 		// Check if the resource is for logged-in users only and the user is logged-in
+
 		if (($token = Request::getString('token', '', 'get')))
 		{
 			$token = base64_decode($token);
@@ -2232,6 +2240,7 @@ class Resources extends SiteController
 		}
 
 		// Get parent Access level and use it if it is more restrictive
+
 		if ($resource->standalone != 1)
 		{
 			$parents = $resource->parents;
@@ -2241,11 +2250,13 @@ class Resources extends SiteController
 				$parent = $parents->first();
 			}
 		}
+
 		$accessLevel = (isset($parent) && ($parent->access > $resource->access)) ? $parent->access : $resource->access;
+
 		if ($accessLevel == 1 && $user->isGuest())
 		{
-			//App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
 			$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&id=' . $this->id . '&d=' . $d, false, true), 'server'));
+
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
@@ -2254,6 +2265,7 @@ class Resources extends SiteController
 		}
 
 		// Check if the resource is "private" and the user is allowed to view it
+
 		if ($accessLevel == 4  // private
 		 || ($accessLevel == 3 && !$resource->get('standalone')))  // protected -- We need to allow images from 'protected' resource abstracts to come through
 		{
@@ -2272,31 +2284,90 @@ class Resources extends SiteController
 			}
 		}
 
-		if ($resource->get('standalone') && !$resource->get('path'))
+		$resource_path = $resource->get('path');
+
+		if (preg_match('/^.*:\/\//', $resource_path))
 		{
-			$resource->set('path', $resource->filespace() . DS . 'media' . DS . Request::getString('file'));
+			// Can't serve an external link as a downloadable resource
+
+			App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND'));
 		}
 
-		$path = trim($resource->get('path'));
-		$path = DS . trim($path, DS);
-
-		// Get the configured upload path
-		$base_path = $resource->basepath();
-
-		// Does the beginning of the $resource->path match the config path?
-		if (substr($path, 0, strlen($base_path)) != $base_path)
+		if ($resource_path != '' && $resource_path[0] == '/') 
 		{
-			// No - append it
-			$path = $base_path . $path;
+			// Can't serve an internal link as a downloadable resource
+
+			App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND'));
 		}
+
+		$resource_base = ltrim($resource->relativepath(),'/');
+
+		if (preg_match('/^([1|2]\d{3})\/+(0\d|1[012])\/+(\d{5})\/+(.*)$/', $resource_path, $matches))
+		{
+			if ($resource_base != $matches[1] . "/" . $matches[2] . "/" . $matches[3])
+			{
+				// Can't serve a protected resource belonging
+				// to a different resource
+
+				App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND'));
+			}
+		}
+		else if (strpos($resource_path,'/') !== false)
+		{
+			// Not using a protected directory, we
+			// need the base to be the directory the main 
+			// file is in so we can download supporting peer
+			// files (hubpresenter slides, etc) as well
+			// as the main file.
+
+			$resource_base = rtrim(dirname($resource_path),'/');
+		}
+
+		$resource_file = ltrim(str_replace($resource_base, '', $resource_path),'/');
+
+		$request_file = trim(trim(Request::getString('file','')),'/');
+
+		if ($request_file === '' && $resource_file === '')
+		{
+			// No file was requested and there is no main resource file
+
+			App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND'));
+		}
+
+		if ($request_file == '')
+		{
+			// No file was requested so we use the main resource file
+
+			$request_file = ltrim(str_replace($resource_base, '', $resource->path),'/');
+		}
+		else
+		{
+			// Use the file requested
+
+			$request_file = ltrim(str_replace($resource_base, '', $request_file),'/');
+		}
+
+		// Rebuild the full file path frome site base, resource base and the request file
+
+		$path =  $resource->basepath() . '/' . $resource_base  . '/' . $request_file;
 
 		// Ensure the file exist
+
 		if (!file_exists($path))
 		{
-			App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND') . ' ' . $path);
+			// Look in media subdirectory for the file
+
+			$path = $resource->basepath() . '/' . $resource_base  . '/media/' . $request_file;
+
+			if (!file_exists($path))
+			{
+				App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND') . ' ' . $path);
+			}
 		}
 
 		$ext = strtolower(\Filesystem::extension($path));
+
+		// Set disposition to attachment unless we think the browser can inline the file
 
 		if (!in_array($ext, array('tiff', 'tif', 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'pdf', 'htm', 'html', 'txt', 'json', 'xml', 'ogv', 'mp4', 'webm', 'ogg', 'mp3')))
 		{
@@ -2304,6 +2375,7 @@ class Resources extends SiteController
 		}
 
 		// Initiate a new content server and serve up the file
+
 		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($path);
 		$xserver->disposition($d);
@@ -2317,6 +2389,7 @@ class Resources extends SiteController
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
+
 			App::abort(500, Lang::txt('COM_RESOURCES_SERVER_ERROR'));
 		}
 
