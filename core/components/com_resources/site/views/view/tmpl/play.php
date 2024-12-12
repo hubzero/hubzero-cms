@@ -8,15 +8,10 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$html = '';
+	$html = '';
 
-	$url = $this->activechild->path;
-	$url = DS . ltrim($url, DS);
-
-	if (substr($url, 0, strlen($this->config->get('uploadpath'))) != $this->config->get('uploadpath'))
-	{
-		$url = DS . trim($this->config->get('uploadpath'), DS) . $url;
-	}
+	$source = $this->activechild->basepath() . '/' . $this->activechild->path;
+	$url = '/resources/' . $this->activechild->id . '/download/' . $this->activechild->relativeurl();
 
 	// Get some attributes
 	$attribs = new \Hubzero\Config\Registry($this->activechild->get('attribs'));
@@ -107,14 +102,8 @@ $html = '';
 			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
 	}
-	else if (is_file(PATH_APP . $url))
+	else if (is_file($source))
 	{
-		$base = substr(PATH_APP, strlen(PATH_ROOT));
-		if (substr($url, 0, strlen($base)) != $base)
-		{
-			$url = $base . $url;
-		}
-
 		if (strtolower($type) == 'swf')
 		{
 			$height = '400px';
@@ -139,7 +128,7 @@ $html = '';
 			$html .= '}'."\n";
 			$html .= '</script>'."\n";
 			$html .= '<script src="' . $rufle_path. '/ruffle.js"></script>'."\n";
-        }
+		}
 		else if (in_array(strtolower($type), $images))
 		{
 			$html .= '<img ' . $attributes . ' src="' . $url . '" alt="Image" />'."\n";
@@ -205,4 +194,4 @@ $html = '';
 		$html .= '<p class="error">'.Lang::txt('COM_RESOURCES_FILE_NOT_FOUND').'</p>'."\n";
 	}
 
-echo $html;
+	echo $html;
