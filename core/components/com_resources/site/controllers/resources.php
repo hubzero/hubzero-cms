@@ -812,6 +812,7 @@ class Resources extends SiteController
 			$return = array();
 			$return['errors'] = $this->getErrors();
 			$return['content_folder'] = $path;
+			$return['content_url'] = '/resources/' . $resid . '/download';
 			$return['manifest'] = null;
 			return $return;
 		}
@@ -907,6 +908,7 @@ class Resources extends SiteController
 		$return = array();
 		$return['errors'] = $this->getErrors();
 		$return['content_folder'] = $path;
+		$return['content_url'] = '/resources/' . $resid . '/download';
 		$return['manifest'] = $path . DS . $manifest_path_json;
 
 		return $return;
@@ -961,6 +963,7 @@ class Resources extends SiteController
 
 			//get the content path
 			$content_folder = $pre['content_folder'];
+			$content_url = $pre['content_url'];
 
 			//if we have no errors
 			if (count($errors) > 0)
@@ -987,6 +990,7 @@ class Resources extends SiteController
 				$this->view->doc            = Document::getRoot();
 				$this->view->manifest       = $manifest;
 				$this->view->content_folder = $content_folder;
+				$this->view->content_url    = $content_url;
 				$this->view->pid            = $parent;
 				$this->view->resid          = $child;
 
@@ -1513,6 +1517,7 @@ class Resources extends SiteController
 
 			//get the content path
 			$content_folder = $pre['content_folder'];
+			$content_url = $pre['content_url'];
 
 			//if we have no errors
 			if (count($errors) > 0)
@@ -1540,6 +1545,7 @@ class Resources extends SiteController
 				//$view->database       = $this->database;
 				$view->set('manifest', $manifest);
 				$view->set('content_folder', $content_folder);
+				$view->set('content_url', $content_url);
 				$view->set('pid', $id);
 				$view->set('resid', Request::getInt('resid', ''));
 				$view->set('doc', Document::getRoot());

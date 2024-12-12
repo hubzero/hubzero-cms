@@ -15,10 +15,10 @@ $this->css('hubpresenter.css')
      ->js('jquery.colpick', 'system');
 
 //get the manifest for the presentation
-$contents = file_get_contents(PATH_ROOT . $this->manifest);
-
+$contents = file_get_contents(PATH_APP . DS . $this->manifest);
 //content folder
 $content_folder = $this->content_folder;
+$content_url = $this->content_url;
 
 //decode the json formatted manifest so we can use the information
 $presentation = json_decode($contents);
@@ -130,6 +130,7 @@ foreach ($presentation->subtitles as $k => $subtitle)
 {
 	if (!strpos($subtitle->source, DS))
 	{
+		$subtitle->source_url = $content_url . DS . $subtitle->source;
 		$subtitle->source = $content_folder . DS . $subtitle->source;
 	}
 
@@ -152,6 +153,7 @@ foreach ($localSubtitles as $k => $subtitle)
 	$subtitle->type     = 'SRT';
 	$subtitle->name     = ucfirst($name);
 	$subtitle->source   = $source;
+	$subtitle->source_url = $content_url . $subtitle;
 	$subtitle->autoplay = $autoplay;
 
 	// make sure we dont already have this file.
@@ -206,15 +208,15 @@ $presentation->subtitles = array_values($presentation->subtitles);
 					<?php foreach ($presentation->slides as $slide) : ?>
 						<li id="slide_<?php echo $counter; ?>" title="<?php echo $slide->title; ?>" time="<?php echo $slide->time; ?>">
 							<?php if ($slide->type == 'Image') : ?>
-								<img src="<?php echo $content_folder.DS.$slide->media; ?>" alt="<?php echo $slide->title; ?>" />
+								<img src="<?php echo $content_url.DS.$slide->media; ?>" alt="<?php echo $slide->title; ?>" />
 							<?php else : ?>
 								<video class="slidevideo" preload="metadata" muted>
 									<?php foreach ($slide->media as $source): ?>
-										<source src="<?php echo $content_folder.DS.$source->source; ?>" /> 
+										<source src="<?php echo $content_url.DS.$source->source; ?>" />
 									<?php endforeach; ?>
-									<a href="<?php echo $content_folder.DS.$slide->media[0]->source; ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a> 
+									<a href="<?php echo $content_url.DS.$slide->media[0]->source; ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a>
 								</video>
-								<img src="<?php echo $content_folder.DS.$slide->media[3]->source; ?>" alt="<?php echo $slide->title; ?>" class="imagereplacement">
+								<img src="<?php echo $content_url.DS.$slide->media[3]->source; ?>" alt="<?php echo $slide->title; ?>" class="imagereplacement">
 							<?php endif; ?>
 						</li>
 						<?php $counter++; ?>
@@ -393,10 +395,10 @@ $presentation->subtitles = array_values($presentation->subtitles);
 								//if were playing local files
 								if (substr($media->source, 0, 4) != 'http')
 								{
-									$source = $content_folder . DS . $source;
+									$source = $content_url . DS . $source;
 									if (in_array($media->type, array('mp4','m4v')))
 									{
-										$mp4 = $content_folder . DS . $mp4;
+										$mp4 = $content_url . DS . $mp4;
 									}
 								}
 							?>
@@ -411,12 +413,13 @@ $presentation->subtitles = array_values($presentation->subtitles);
 								<?php
 									//get file modified time
 									$source = $subtitle->source;
+									$source_url = $subtitle->source_url;
 									$auto   = $subtitle->autoplay;
 
 									//if were playing local files
 									if (substr($subtitle->source, 0, 4) != 'http')
 									{
-										$modified = filemtime(PATH_APP . $source);
+										$modified = filemtime(PATH_APP . DS . $source);
 									}
 									else
 									{
@@ -427,7 +430,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 									data-autoplay="<?php echo $auto; ?>"
 									data-type="subtitle"
 									data-lang="<?php echo $subtitle->name; ?>" 
-									data-src="<?php echo $source ?>?v=<?php echo $modified; ?>"></div>
+									data-src="<?php echo $source_url ?>?v=<?php echo $modified; ?>"></div>
 							<?php endforeach; ?>
 						<?php endif; ?>
 					</video>
@@ -446,13 +449,13 @@ $presentation->subtitles = array_values($presentation->subtitles);
 										break;
 								}
 							?>
-							<source src="<?php echo $content_folder.DS.$source->source; ?>" type="<?php echo $type; ?>" />
+							<source src="<?php echo $content_url.DS.$source->source; ?>" type="<?php echo $type; ?>" />
 						<?php endforeach; ?>
-						<a href="<?php echo $content_folder.DS.$presentation->media[0]->source; ?>" id="flowplayer" duration="<?php if ($presentation->duration) { echo $presentation->duration; } ?>" data-mediaid="<?php echo $rr->id; ?>"></a>
+						<a href="<?php echo $content_url.DS.$presentation->media[0]->source; ?>" id="flowplayer" duration="<?php if ($presentation->duration) { echo $presentation->duration; } ?>" data-mediaid="<?php echo $rr->id; ?>"></a>
 					</audio>
 
 					<?php if ($presentation->placeholder) : ?>
-						<img src="<?php echo $content_folder.DS.$presentation->placeholder; ?>" title="" id="placeholder" />
+						<img src="<?php echo $content_url.DS.$presentation->placeholder; ?>" title="" id="placeholder" />
 					<?php endif; ?>
 				<?php endif; ?>
 				<div id="video-subtitles"></div>
@@ -467,10 +470,10 @@ $last_slide_id = 0; ?>
 							<li id="list_<?php echo $counter; ?>">
 								<?php
 									//use thumb if possible
-									$thumb = $content_folder.DS.$slide->media;
-									if (isset($slide->thumb) && $slide->thumb && file_exists(PATH_ROOT . $content_folder.DS.$slide->thumb))
+									$thumb = $content_url.DS.$slide->media;
+									if (isset($slide->thumb) && $slide->thumb && file_exists(PATH_APP . DS . $content_folder.DS.$slide->thumb))
 									{
-										$thumb = $content_folder.DS.$slide->thumb;
+										$thumb = $content_url.DS.$slide->thumb;
 									}
 								?>
 								<img src="<?php echo $thumb; ?>" alt="<?php echo $slide->title; ?>" />
