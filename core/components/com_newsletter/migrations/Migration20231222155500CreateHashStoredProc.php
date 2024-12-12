@@ -18,20 +18,38 @@ class Migration20231222155500CreateHashStoredProc extends Base
 		$config = self::$config;
 		$users = self::$users;
 
-		$createSP = "CREATE FUNCTION hash_access_code (campaign_id INT(11), user_name VARCHAR(150)) ".
-                "RETURNS CHAR(64) ".
-                "DETERMINISTIC ".
-                "READS SQL DATA ".
-                "BEGIN ".
-                "    SET @cs = (SELECT secret FROM `$campaign` WHERE id=campaign_id); ".
-                "    SET @hs = (SELECT `value` FROM `$config` WHERE `key`='secret' AND `scope`='hub'); ".
-                "    SET @us = (SELECT secret FROM `$users` WHERE username=user_name); ".
-                "RETURN SHA2(CONCAT(@cs,@hs,@us), 256); ".
-                "END;";
+                $found = false;
 
+                $this->db->setQuery("SHOW FUNCTION STATUS");
+                $results = $this->db->loadObjectList();
+                if ($results)
+                {
+                        foreach ($results as $result)
+                        {
+                                if ($result->Db == \App::get('config')->get('db') && $result->Name == 'hash_access_code')
+                                {
+                                        $found = true;
+                                        break;
+                                }
+                        }
+                }
 
-		$this->db->setQuery($createSP);
-		$this->db->query();
+		if (!$found)
+		{
+			$createSP = "CREATE FUNCTION hash_access_code (campaign_id INT(11), user_name VARCHAR(150)) ".
+			  "RETURNS CHAR(64) ".
+			  "DETERMINISTIC ".
+			  "READS SQL DATA ".
+			  "BEGIN ".
+			  "    SET @cs = (SELECT secret FROM `$campaign` WHERE id=campaign_id); ".
+			  "    SET @hs = (SELECT `value` FROM `$config` WHERE `key`='secret' AND `scope`='hub'); ".
+			  "    SET @us = (SELECT secret FROM `$users` WHERE username=user_name); ".
+			  "RETURN SHA2(CONCAT(@cs,@hs,@us), 256); ".
+			  "END;";
+
+			$this->db->setQuery($createSP);
+			$this->db->query();
+		}
 	}
 
 	public function down()
