@@ -57,26 +57,19 @@ $this->css('
 					//video source
 					$source = $video->source;
 
-					//is this the mp4 (need for flash)
-					if (in_array($video->type, array('mp4','m4v')))
+					if (preg_match('/^(.*?)(\/+)(app\/+site\/+resources)(\/+)([12]\d\d\d)(\/+)(0\d|1[012])(\/+)(\d{5})\/*(.*)$/m', $source, $matches))
 					{
-						$mp4 = $video->source;
+						$url = '/resources/' . $matches[9] . '/download/' . $matches[10];
 					}
-
-					//if were playing local files
-					if (substr($video->source, 0, 4) != 'http')
+					else
 					{
-						$source = '/resources/' . $this->resource->id . '/download/' . $presentation->title;
-						if (in_array($video->type, array('mp4','m4v')))
-						{
-							$mp4 = $base . $mp4;
-						}
+						$url = $source;
 					}
 				?>
-				<source src="<?php echo $source; ?>" type="<?php echo $type; ?>" />
+				<source src="<?php echo $url; ?>" type="<?php echo $type; ?>" />
 			<?php endforeach; ?>
 
-			<a href="<?php echo $mp4; ?>"
+			<a href="<?php echo $url; ?>"
 				id="video-flowplayer"
 				data-mediaid="<?php echo $this->resource->id; ?>"></a>
 
