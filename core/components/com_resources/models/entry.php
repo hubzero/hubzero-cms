@@ -633,16 +633,6 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	{
 		$path = stripslashes($this->get('path'));
 
-		if (!preg_match("/(?:https?:|mailto:|ftp:|gopher:|news:|file:)/", $path))
-		{
-			$path = DS . ltrim($path, DS);
-
-			/*if (substr($path, 0, strlen($this->params->get('uploadpath'))) != $this->params->get('uploadpath'))
-			{
-				$path = DS . trim($this->params->get('uploadpath'), DS) . $path;
-			}*/
-		}
-
 		return $path;
 	}
 
