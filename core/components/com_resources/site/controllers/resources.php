@@ -2255,7 +2255,7 @@ class Resources extends SiteController
 
 		// Check if the resource is "private" and the user is allowed to view it
 		if ($accessLevel == 4  // private
-		 || ($accessLevel == 3 && $resource->get('path')))  // protected -- We need to allow images in the sbtract to come through
+		 || ($accessLevel == 3 && !$resource->get('standalone')))  // protected -- We need to allow images from 'protected' resource abstracts to come through
 		{
 			if ($user->isGuest())
 			{
