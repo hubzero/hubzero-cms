@@ -729,6 +729,12 @@ class Attachments extends SiteController
 
 		// Load resource info
 		$resource = Entry::oneOrFail($id);
+
+		if (!($resource->access('delete')))
+		{
+			App::abort(403, Lang::txt('COM_CONTRIBUTE_NOT_AUTH'));
+		}
+
 		if ($resource->get('standalone') == 1)
 		{
 			$association = Association::oneByRelationship($pid, $id);
