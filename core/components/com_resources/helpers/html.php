@@ -963,7 +963,7 @@ class Html
 				{
 					// first child is for registered users only and the visitor is not logged in
 					$pop  = '<p class="warning">' . Lang::txt('COM_RESOURCES_LOGIN_REQUIRED_TO_DOWNLOAD') . '</p>' . "\n";
-					$html .= self::primaryButton($class . ' disabled', Route::url('index.php?option=com_login'), $mesg, '', '', '', '', $pop);
+					$html .= self::primaryButton($class . ' disabled', Route::url('index.php?option=com_login&return=') . base64_encode(Request::current()), $mesg, '', '', '', '', $pop);
 				}
 				else
 				{
