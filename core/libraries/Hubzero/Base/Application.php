@@ -60,7 +60,7 @@ class Application extends Container
 		// GH-10869 https://github.com/php/php-src/issues/10869 fixed in 8.1.18
 		// Don't overrite ORIG_SCRIPT_NAME if already set (e.g. between above versions)
 
-		if (PHP_VERSION_ID < 80216 && strpos($_SERVER['PATH_INFO'], '%') !== false)
+		if (PHP_VERSION_ID < 80216 && isset($_SERVER['PATH_INFO']) && strpos($_SERVER['PATH_INFO'], '%') !== false)
 		{
 			if (!isset($_SERVER['ORIG_SCRIPT_NAME']))
 			{
