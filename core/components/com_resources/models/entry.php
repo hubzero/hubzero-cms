@@ -662,7 +662,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		{
 			$params = new Registry($this->get('params'));
 
-			$p = Component::params('com_resources');
+			$p = clone Component::params('com_resources');
 			$p->merge($params);
 
 			$this->paramsRegistry = $p;
