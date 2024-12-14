@@ -266,6 +266,7 @@ class _DiffEngine
 				reset($matches);
 				while ($y = current($matches))
 				{
+					next($matches);
 					if (empty($this->in_seq[$y]))
 					{
 						$k = $this->_lcs_pos($y);
@@ -273,11 +274,11 @@ class _DiffEngine
 						$ymids[$k] = $ymids[$k-1];
 						break;
 					}
-					next($matches);
 
 				}
 			        while ($y = current($matches))
 				{
+					next($matches);
 					if ($y > $this->seq[$k-1])
 					{
 						USE_ASSERTS && assert($y < $this->seq[$k]);
@@ -293,7 +294,6 @@ class _DiffEngine
 						USE_ASSERTS && assert($k > 0);
 						$ymids[$k] = $ymids[$k-1];
 					}
-					next($matches);
 				}
 			}
 		}
