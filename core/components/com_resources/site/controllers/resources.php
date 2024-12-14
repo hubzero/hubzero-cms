@@ -1051,49 +1051,37 @@ class Resources extends SiteController
 		$parent = Request::getInt('id', 0);
 		$child  = Request::getInt('resid', '');
 
-		if (!$parent || !$child)
+		try
+		{
+			$model = Entry::oneOrFail($parent);
+			$activechild = Entry::oneOrFail($child);
+		}
+		catch (Exception $e)
 		{
 			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 		}
 
-		// Load the resource
-		$model = Entry::oneOrFail($parent);
-
-		// Make sure we got a result from the database
-		if ($model->isDeleted())
-		{
-			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
-		}
-
-		// Make sure the resource is published and standalone
-		if (!$model->get('standalone')) // || !$this->model->isPublished())
+		// Make sure the resource is standalone
+		if (!$model->get('standalone') || $activechild->get('standalone'))
 		{
 			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
 		}
 
-		// Is the visitor authorized to view this resource?
-		if (User::isGuest() && ($model->access == 1 || $model->access == 4))
+		if (!$model->access('view-all') || !$activechild->access('view-all'))
 		{
-			$return = base64_encode(Request::getString('REQUEST_URI', Route::url($model->link(), false, true), 'server'));
-			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
-				Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
-				'warning'
-			);
-		}
+			if (User::isGuest())
+			{
+				$return = base64_encode(Request::current(true));
 
-		if ($model->get('group_owner') && !$model->access('view-all'))
-		{
-			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH_GROUP', $model->get('group_owner'), Route::url('index.php?option=com_groups&cn=' . $model->get('group_owner'))));
-		}
+				App::redirect(
+					Route::url('index.php?option=com_users&view=login&return=' . $return, false),
+					Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
+					'warning'
+				);
+			}
 
-		if (!$model->access('view'))
-		{
-			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
+			App::abort(403, Lang::txt('COM_CONTRIBUTE_NOT_AUTH'));
 		}
-
-		// Load resource
-		$activechild = Entry::oneOrFail($child);
 
 		// Check to see if we have a manifest
 		if (!$this->videoManifestExistsForResource($activechild))
