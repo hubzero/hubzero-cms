@@ -924,6 +924,38 @@ class Resources extends SiteController
 		$parent = $this->_id;
 		$child = Request::getInt('resid', '');
 
+		try
+		{
+			$model = Entry::oneOrFail($parent);
+			$activeChild = Entry::oneOrFail($child);
+		}
+		catch (Exception $e)
+		{
+			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+		}
+
+		// Make sure the resource is standalone
+		if (!$model->get('standalone') || $activeChild->get('standalone'))
+		{
+			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
+		}
+
+		if (!$model->access('view-all') || !$activeChild->access('view-all'))
+		{
+			if (User::isGuest())
+			{
+				$return = base64_encode(Request::current(true));
+
+				App::redirect(
+					Route::url('index.php?option=com_users&view=login&return=' . $return, false),
+					Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
+					'warning'
+				);
+			}
+
+			App::abort(403, Lang::txt('COM_CONTRIBUTE_NOT_AUTH'));
+		}
+
 		//media tracking object
 		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'mediatracking.php';
 
