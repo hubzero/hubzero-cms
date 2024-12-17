@@ -1670,12 +1670,14 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
             $createdByUserId = $post->get('created_by');
             $createdByUser = User::getInstance($createdByUserId);
             $createdUserName = $createdByUser->get('name');
+			$groupAlias = $this->group->get('cn');
+            $groupTitle = $this->group->get('description');
 
             $urlExt = 'groups/' . $this->group->get('cn') . '/forum/' . $section->get('alias') . '/' . $category->get('alias') . '/' . $post->get('thread') . '#c' . $post->get('id');
             $host = $_SERVER['HTTP_HOST'];
             $externalUrl = 'https://' . $host . '/' . $urlExt;
 
-            $this->emailToAllMentionedUsers($mentionEmailList, $comment, $externalUrl, $createdUserName);
+            $this->emailToAllMentionedUsersInGroup($mentionEmailList, $comment, $externalUrl, $createdUserName, $groupAlias, $groupTitle);
         }
 
 		Event::trigger('system.logActivity', [
@@ -1702,12 +1704,12 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 	}
 
 	// Email the mentioned user with a PHP template
-    public function emailToAllMentionedUsers($emails, $comment, $url, $postAuthor) {
+    public function emailToAllMentionedUsersInGroup($emails, $comment, $url, $postAuthor, $groupAlias, $groupTitle) {
         $from = array();
         $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name));
         $from['email'] = Config::get('mailfrom');
 
-        $subject = $postAuthor . " mentioned you on forum thread";
+        $subject = $postAuthor . " mentioned you on a group thread from " . $groupTitle;
 
         // BUILDING THE EMAIL TEMPLATE
         $eView = new \Hubzero\Mail\View(array(
@@ -1720,6 +1722,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
         $eView->commentNoTags = strip_tags($comment);
         $eView->postLink = $url;
         $eView->postAuthor = $postAuthor;
+		$eView->groupTitle = $groupTitle;
+        $eView->groupAlias = $groupAlias;
 
         $html = $eView->loadTemplate(false);
         $html = str_replace("\n", "\r\n", $html);

@@ -8,6 +8,9 @@ $commentNoTags = $this->commentNoTags;
 
 $postLink = $this->postLink;
 $postAuthor = $this->postAuthor;
+
+$groupTitle = $this->groupTitle;
+$groupAlias = $this->groupAlias;
 ?>
 
 <!-- Start Spacer -->
@@ -23,7 +26,8 @@ $postAuthor = $this->postAuthor;
 <table id="course-discussions" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
     <tr>
         <td style="font-size: 16px; padding: 10px 0;">
-            <?php echo $postAuthor; ?> mentioned you on a forum thread with the following post:
+			From group <?php echo $groupTitle; ?> (<?php echo $groupAlias; ?>)<br>
+            <?php echo $postAuthor; ?> mentioned you on a group forum thread with the following post:
         </td>
     </tr>
     <tr style="border:1px solid #eaeaea;">
@@ -33,7 +37,7 @@ $postAuthor = $this->postAuthor;
     </tr>
 	<tr>
 		<td style="font-size: 16px; padding: 10px 0;">
-            Please see the comment on this <a href="<?php echo $postLink; ?>" target="_blank">forum thread</a>.
+            Please see the comment on this <a href="<?php echo $postLink; ?>" target="_blank">group forum thread</a>.
 		</td>
 	</tr>
 </table>
