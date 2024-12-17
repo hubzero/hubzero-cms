@@ -11,6 +11,8 @@ use Components\Forum\Models\Category;
 use Components\Forum\Models\Post;
 use Components\Forum\Models\Attachment;
 
+use DOMDocument;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -1432,6 +1434,17 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$fields['modified_by'] = User::get('id');
 		}
 
+		// Extracting emails from the new post submitted
+        $domComment = new DOMDocument();
+        $domComment->loadHTML($fields['comment']);
+        $mentionEmailList = array();
+        foreach ($domComment->getElementsByTagName('a') as $item) {
+            $hrefLink = $item->getAttribute('href');
+            if (strpos($hrefLink, 'mailto:') !== false) {
+                $mentionEmailList[] = str_replace('mailto:', "", $hrefLink);
+            }
+        }
+
 		if (!$this->params->get('access-edit-thread')
 		 && !$this->params->get('access-create-thread'))
 		{
@@ -1651,6 +1664,20 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			}
 		}
 
+		// Email to Users
+        if ($mentionEmailList) {
+            $comment = $fields['comment'];
+            $createdByUserId = $post->get('created_by');
+            $createdByUser = User::getInstance($createdByUserId);
+            $createdUserName = $createdByUser->get('name');
+
+            $urlExt = 'groups/' . $this->group->get('cn') . '/forum/' . $section->get('alias') . '/' . $category->get('alias') . '/' . $post->get('thread') . '#c' . $post->get('id');
+            $host = $_SERVER['HTTP_HOST'];
+            $externalUrl = 'https://' . $host . '/' . $urlExt;
+
+            $this->emailToAllMentionedUsers($mentionEmailList, $comment, $externalUrl, $createdUserName);
+        }
+
 		Event::trigger('system.logActivity', [
 			'activity' => [
 				'action'      => ($fields['id'] ? 'updated' : 'created'),
@@ -1673,6 +1700,41 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'passed'
 		);
 	}
+
+	// Email the mentioned user with a PHP template
+    public function emailToAllMentionedUsers($emails, $comment, $url, $postAuthor) {
+        $from = array();
+        $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name));
+        $from['email'] = Config::get('mailfrom');
+
+        $subject = $postAuthor . " mentioned you on forum thread";
+
+        // BUILDING THE EMAIL TEMPLATE
+        $eView = new \Hubzero\Mail\View(array(
+            'base_path' => __DIR__,
+            'name'      => 'email',
+            'layout'    => 'mentions_html'
+        ));
+
+        $eView->comment = $comment;
+        $eView->commentNoTags = strip_tags($comment);
+        $eView->postLink = $url;
+        $eView->postAuthor = $postAuthor;
+
+        $html = $eView->loadTemplate(false);
+        $html = str_replace("\n", "\r\n", $html);
+
+        // Create NEW message object and send
+        $message = new \Hubzero\Mail\Message();
+        $message->setSubject($subject)
+            ->addFrom($from['email'], $from['name'])
+            ->setTo($from['email'])
+            ->setBcc($emails)
+            ->addPart($html, 'text/html')
+            ->send();
+
+        return true;
+    }
 
 	/**
 	 * Get email recipient IDs

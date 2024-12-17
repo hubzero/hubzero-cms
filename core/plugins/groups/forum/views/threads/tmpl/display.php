@@ -225,11 +225,23 @@ $this->css()
 					</span>
 				</p>
 
-				<label for="field_comment">
+				<label for="field_comment" id="addNewPostAreaGroup">
 					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
 					<?php
-					echo $this->editor('fields[comment]', '', 35, 15, 'fieldcomment', array('class' => 'minimal no-footer'));
-					?>
+                        $gid = $this->group->get('gidNumber');
+                        $feedUrl = '/api/members/mentions/group?gid=' . $gid . '&search={encodedQuery}';
+                        echo $this->editor('fields[comment]', '', 35, 15, 'fieldcomment',
+                            array(
+                                'class' => 'minimal no-footer',
+                                'mentions' => array(
+                                    array(
+                                        'minChars' => 0,
+                                        'feed' =>  $feedUrl,
+                                        'itemTemplate' => '<li data-id="{id}"><img class="photo" src="{picture}" /><strong class="username">{username}</strong><span class="fullname">{name}</span></li>',
+                                        'outputTemplate' => '<a href="mailto:{email}">@{username}</a><span>&nbsp;</span>',
+                                    )
+                                )
+                            )); ?>
 				</label>
 
 				<label>
