@@ -755,4 +755,27 @@ class Validate
 			self::$_pattern['IPv4'] = $pattern;
 		}
 	}
+
+	/**
+	 * Validate a string is a valid proper name. It may not contain:
+	 *
+	 * - Less than sign (<)
+	 * - Greater than sign (>)
+	 * - Ampersand (&) next to a letter or symbol
+	 * - (Unicode) invisible control characters and unused code points.
+	 * - (Unicode) an ASCII or Latin-1 control character: 0x00–0x1F and 0x7F–0x9F.
+	 * - (Unicode) invisible formatting indicator.
+	 * - (Unicode) any code point reserved for private use.
+	 * - (Unicode) one half of a surrogate pair in UTF-16 encoding.
+	 * - (Unicode) any code point to which no character has been assigned.
+	 *
+	 * @param   string  $source  The source string.
+	 * @return  boolean
+	 */
+	public static function properName($source)
+	{
+		return !preg_match(
+			'/(<|>|&\w|\w&|\p{C})/u',
+			$source);
+	}
 }
