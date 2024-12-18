@@ -435,6 +435,11 @@ class User extends \Hubzero\Database\Relational
 			$key = 'id';
 		}
 
+		if (is_string($key) && in_array($key, array('givenName','middleName','surname','name')))
+		{
+			$value = \Hubzero\Utility\Sanitize::cleanProperName($value);
+		}
+
 		return parent::set($key, $value);
 	}
 

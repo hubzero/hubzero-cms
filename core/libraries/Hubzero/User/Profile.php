@@ -1223,6 +1223,11 @@ class Profile extends Obj
 			$this->_password = '';
 		}
 
+		if (is_string($property) && in_array($property, array('givenName','middleName','surname','name')))
+		{
+			$value = \Hubzero\Utility\Sanitize::cleanProperName($value);
+		}
+
 		return true;
 	}
 
