@@ -759,8 +759,11 @@ class Validate
 	/**
 	 * Validate a string is a valid proper name. It may not contain:
 	 *
+	 * - nothing (or be null)
+	 * - only whitespace
 	 * - Less than sign (<)
 	 * - Greater than sign (>)
+	 * - Colon (:)
 	 * - Ampersand (&) next to a letter or symbol
 	 * - (Unicode) invisible control characters and unused code points.
 	 * - (Unicode) an ASCII or Latin-1 control character: 0x00–0x1F and 0x7F–0x9F.
@@ -774,8 +777,18 @@ class Validate
 	 */
 	public static function properName($source)
 	{
+		if ($source === null)
+		{
+			return false;
+		}
+
+		if (preg_match('/^\s*$/', $source)) // all white space or empty
+		{
+			return false;
+		}
+
 		return !preg_match(
-			'/(<|>|&\w|\w&|\p{C})/u',
+			'/(<|>|:|&\w|\w&|\p{C})/u',
 			$source);
 	}
 }

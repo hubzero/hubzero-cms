@@ -593,14 +593,21 @@ class Sanitize
 	 * - Ampersand (&) is replaced with an ampersand with a space on each side ( & )
 	 * - Multiple consecutive whitespace is collapsed to a single space
 	 * - Leading and trailing spaces are removed
+	 * - Colon (:) is converted to dash (-)
 	 *
 	 * @param   string  $source  The source string.
 	 * @return  string  cleaned string
 	 */
 	public static function cleanProperName($source)
 	{
+		if ($source == null)
+		{
+			return '';
+		}
+
 		return preg_replace(
 			array('/[^\P{C}\s]/u',
+				'/:/u',
 				'/</u',
 				'/>/u',
 				'/&/u',
@@ -609,6 +616,7 @@ class Sanitize
 			),
 			array(
 				'',
+				'-',
 				'[',
 				']',
 				' & ',
