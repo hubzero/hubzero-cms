@@ -154,17 +154,11 @@ class Utility
 	 * Validate name
 	 *
 	 * @param   string   $name  the name to validate
-	 * @return  integer  1 = valid, 0 = invalid
+	 * @return  boolean
 	 */
 	public static function validname($name)
 	{
-		// Exclude all non-printable characters and the ':'
-		// ':' can mess up ldap entries
-		if (preg_match("/^[^:\p{C}]*$/u", $name))
-		{
-			return 1;
-		}
-		return 0;
+		return \Hubzero\Utility\Validate::properName($name);
 	}
 
 	/**
