@@ -1509,14 +1509,14 @@ class Profiles extends SiteController
 
 		if ($name && !empty($name))
 		{
-			$member->set('givenName', trim($name['first']));
-			$member->set('middleName', trim($name['middle']));
-			$member->set('surname', trim($name['last']));
+			$member->set('givenName', \Hubzero\Utility\Sanitize::cleanProperName($name['first']));
+			$member->set('middleName', \Hubzero\Utility\Sanitize::cleanProperName($name['middle']));
+			$member->set('surname', \Hubzero\Utility\Sanitize::cleanProperName($name['last']));
 
 			$name = implode(' ', $name);
 			$name = preg_replace('/\s+/', ' ', $name);
 
-			$member->set('name', $name);
+			$member->set('name', \Hubzero\Utility\Sanitize::cleanProperName($name));
 		}
 
 		// Set profile access

@@ -447,17 +447,17 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 					}
 				}
 
-				$firstname = trim($firstname);
+				$firstname = \Hubzero\Utility\Sanitize::cleanProperName($firstname);
 				if ($firstname)
 				{
 					$xprofile->set('givenName', $firstname);
 				}
-				$middlename = trim($middlename);
+				$middlename = \Hubzero\Utility\Sanitize::cleanProperName($middlename);
 				if ($middlename)
 				{
 					$xprofile->set('middleName', $middlename);
 				}
-				$lastname = trim($lastname);
+				$lastname = \Hubzero\Utility\Sanitize::cleanProperName($lastname);
 				if ($lastname)
 				{
 					$xprofile->set('surname', $lastname);

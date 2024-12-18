@@ -443,9 +443,9 @@ class Members extends AdminController
 			$user->set('registerDate', Date::toSql());
 		}
 
-		$givenTrimmed = preg_replace('/\s+/', ' ', trim($fields['givenName']));
-		$middleTrimmed = preg_replace('/\s+/', ' ', trim($fields['middleName']));
-		$surTrimmed = preg_replace('/\s+/', ' ', trim($fields['surname']));
+		$givenTrimmed = \Hubzero\Utility\Sanitize::cleanProperName($fields['givenName']);
+		$middleTrimmed = \Hubzero\Utility\Sanitize::cleanProperName($fields['middleName']);
+		$surTrimmed = \Hubzero\Utility\Sanitize::cleanProperName($fields['surname']);
 
 		$user->set('givenName', $givenTrimmed);
 		$user->set('middleName', $middleTrimmed);
@@ -456,7 +456,7 @@ class Members extends AdminController
 			$surTrimmed
 		);
 		$name = implode(' ', $name);
-		$name = preg_replace('/\s+/', ' ', $name);
+		$name = \Hubzero\Utility\Sanitize::cleanProperName($name);
 
 		$user->set('name', $name);
 		$user->set('modifiedDate', Date::toSql());

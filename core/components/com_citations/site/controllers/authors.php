@@ -83,7 +83,7 @@ class Authors extends SiteController
 			// Make sure the user exists
 			if (!is_object($user) || !$user->get('username'))
 			{
-				$mbr = trim($mbr);
+				$mbr = \Hubzero\Utility\Sanitize::cleanProperName($mbr);
 				$mbr = preg_replace('/\s+/', ' ', $mbr);
 
 				$user = new \Hubzero\User\User;

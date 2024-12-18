@@ -310,7 +310,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 							<div class="form-group">
 								<label for="first-name"<?php echo $fieldclass; ?>>
 									<?php echo Lang::txt('COM_MEMBERS_REGISTER_FIRST_NAME'); ?> <?php echo $required; ?>
-									<input type="text" class="form-control" name="name[first]" id="first-name" value="<?php echo $this->escape(trim($givenName)); ?>" />
+									<input type="text" class="form-control" name="name[first]" id="first-name" value="<?php echo $this->escape(\Hubzero\Utility\Sanitize::cleanProperName($givenName)); ?>" />
 								</label>
 							</div>
 						</div>
@@ -318,7 +318,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 							<div class="form-group">
 								<label for="middle-name">
 									<?php echo Lang::txt('COM_MEMBERS_REGISTER_MIDDLE_NAME'); ?>
-									<input type="text" class="form-control" name="name[middle]" id="middle-name" value="<?php echo $this->escape(trim($middleName)); ?>" />
+									<input type="text" class="form-control" name="name[middle]" id="middle-name" value="<?php echo $this->escape(\Hubzero\Utility\Sanitize::cleanProperName($middleName)); ?>" />
 								</label>
 							</div>
 						</div>
@@ -326,7 +326,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 							<div class="form-group">
 								<label for="last-name"<?php echo $fieldclass; ?>>
 									<?php echo Lang::txt('COM_MEMBERS_REGISTER_LAST_NAME'); ?> <?php echo $required; ?>
-									<input type="text" class="form-control" name="name[last]" id="last-name" value="<?php echo $this->escape(trim($surname)); ?>" />
+									<input type="text" class="form-control" name="name[last]" id="last-name" value="<?php echo $this->escape(\Hubzero\Utility\Sanitize::cleanProperName($surname)); ?>" />
 								</label>
 							</div>
 						</div>
