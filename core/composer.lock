@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "290ddcd601fae512406f548ba60195b3",
+    "content-hash": "dca3cabb9a3a8166ab63df4a46722084",
     "packages": [
         {
             "name": "authy/php",
@@ -7954,6 +7954,50 @@
                 }
             ],
             "time": "2024-03-25T23:56:24+00:00"
+        },
+        {
+            "name": "theiconic/name-parser",
+            "version": "0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/theiconic/name-parser.git",
+                "reference": "c49e66c3fe875f20a93f84876e5b5ce613208eeb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/theiconic/name-parser/zipball/c49e66c3fe875f20a93f84876e5b5ce613208eeb",
+                "reference": "c49e66c3fe875f20a93f84876e5b5ce613208eeb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.4.*",
+                "satooshi/php-coveralls": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TheIconic\\NameParser\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "THE ICONIC ENGINEERING TEAM",
+                    "email": "engineering@theiconic.com.au"
+                }
+            ],
+            "description": "Parse a full name string into a name object for further processing",
+            "support": {
+                "issues": "https://github.com/theiconic/name-parser/issues",
+                "source": "https://github.com/theiconic/name-parser/tree/0.1.1"
+            },
+            "time": "2016-09-12T08:08:55+00:00"
         },
         {
             "name": "twig/extensions",

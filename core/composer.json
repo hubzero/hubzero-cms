@@ -61,7 +61,8 @@
 	"phpoffice/phpspreadsheet": "~1.8.2",
 	"simplesamlphp/simplesamlphp": "1.18.*",
 	"league/oauth2-facebook": "2.0.*",
-        "litesaml/lightsaml": "1.4.1"
+	"litesaml/lightsaml": "1.4.1",
+	"theiconic/name-parser": "0.1.*"
     },
     "require-dev": {
         "mockery/mockery": "~1.3.5",
