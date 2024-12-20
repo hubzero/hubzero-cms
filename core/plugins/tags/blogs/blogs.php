@@ -65,14 +65,40 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 		$e_from  = " FROM #__blog_entries AS e, #__tags_object AS t, #__users AS u";
 		$e_where = " WHERE e.created_by=u.id AND t.objectid=e.id AND t.tbl='blog' AND t.tagid IN ($ids)";
 
+		$e_where .= " AND e.state=1 ";  // blog is published
+
 		if (User::isGuest())
 		{
-			$e_where .= " AND e.state=1";
+			$e_where .= " AND e.access=1 ";
 		}
-		else
+		else if (!User::authorise('core.admin'))
 		{
-			$e_where .= " AND e.state>0";
+			$ugs = \Hubzero\User\Helper::getGroups(User::get('id'), 'members', 1);
+
+			// Generate list of active hub groups we are a member of.
+
+			$gs = array();
+
+			foreach($ugs as $g)
+			{
+				if ($g->published)
+				{
+					$gs[] = $g->gidNumber;
+				}
+			}
+
+			if ($gs)
+			{
+				$gwhere = "OR (e.access IN (5) AND scope='group' and scope_id IN (" . implode(',',$gs) . ") ";
+			}
+			else
+			{
+				$gwhere = '';
+			}
+
+			$e_where .= " AND ( (e.access IN (1,2)) OR (e.access IN (5) AND scope='member' AND scope_id=" . User::get('id') . ") $gwhere )) ";
 		}
+
 		$e_where .= " AND (e.publish_up IS NULL OR e.publish_up <= " . $database->quote($now) . ") ";
 		$e_where .= " AND (e.publish_down IS NULL OR e.publish_down >= " . $database->quote($now) . ") ";
 		$e_where .= " GROUP BY e.id HAVING uniques=" . count($tags);
