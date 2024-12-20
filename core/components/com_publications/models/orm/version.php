@@ -820,7 +820,10 @@ class Version extends Relational implements \Hubzero\Search\Searchable
 		$authors = $this->authors;
 		foreach ($authors as $author)
 		{
-			$obj->author[] = $author->name;
+			if ($author->role != 'submitter')
+			{
+				$obj->author[] = $author->name;
+			}
 		}
 
 		$obj->owner_type = 'user';
