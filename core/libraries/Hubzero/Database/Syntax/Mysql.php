@@ -529,7 +529,12 @@ class Mysql
 
 		foreach ($this->select as $select)
 		{
-			$string = ($select['count']) ? "COUNT({$select['column']})" : $select['column'];
+                        if ($select['count'] == 'distinct')
+                                $string = "COUNT(DISTINCT({$select['column']}))";
+                        else if ($select['count'])
+                                $string = "COUNT({$select['column']})";
+                        else
+                                $string = $select['column'];
 
 			// See if we're including an alias
 			if (isset($select['as']))

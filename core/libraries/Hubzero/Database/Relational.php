@@ -1054,11 +1054,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess, \Serializable
 	/**
 	 * Get total number of rows
 	 *
+         * @param   boolean     $distinct       Count distinct rows (default false, counts all rows)
 	 * @return  int
 	 * @since   2.0.0
 	 **/
-	public function total()
+	public function total($distinct = false)
 	{
+		$count = $distinct ? 'distinct' : true;
+
 		// Note that we do not need to parse includes at this stage, as includes do not effect
 		// the primary result set, and thus do not effect the count. whereRelated() could effect
 		// the count, but that method is not currently in use.
@@ -1067,7 +1070,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess, \Serializable
 		// the 'order by' clause to avoid referenced fields in the aforementioned 'select' clauses
 		// that mgiht have been removed. Neither of these should have any effect on a count.
 		$first = $this->deselect()
-		              ->select($this->getQualifiedFieldName($this->getPrimaryKey()), 'count', true)
+                              ->select($this->getQualifiedFieldName($this->getPrimaryKey()), 'count', $count)
 		              ->unordered()
 		              ->rows(false)
 		              ->first();
