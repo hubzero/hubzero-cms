@@ -249,6 +249,16 @@ $this->view('_edit_script')
 				<?php // } ?>
 			</div>
 		<?php
+			echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_ACL'), 'acl-page');
+		?>
+   			<div class="input-wrap" id="resource-useracl">
+				<?php echo $this->lists['aclusers']; ?>
+			</div>
+			<div class="input-wrap" id="resource-groupacl">
+				<?php echo $this->lists['aclgroups']; ?>
+			</div>
+
+		<?php
 			echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_FILES'), 'file-page');
 		?>
 			<div class="input-wrap">

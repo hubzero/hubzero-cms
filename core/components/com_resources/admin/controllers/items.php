@@ -15,12 +15,15 @@ use Components\Resources\Models\Type;
 use Components\Resources\Models\Association;
 use Components\Resources\Models\Rating;
 use Components\Resources\Models\Author;
+use Components\Resources\Models\AclUser;
+use Components\Resources\Models\AclGroup;
 use Components\Resources\Models\License;
 use Components\Resources\Helpers\Tags;
 use Components\Resources\Helpers\Utilities;
 use Components\Resources\Helpers\Badges;
 use Components\Resources\Helpers\Html;
 use Components\Resources\Helpers\Helper;
+use Hubzero\User\Group;
 use Hubzero\Component\AdminController;
 use Hubzero\Utility\Str;
 use Request;
@@ -752,6 +755,24 @@ class Items extends AdminController
 			$lists['authors'] = $authorslist->loadTemplate();
 		}
 
+		$aclusers = new \Hubzero\Component\View(array(
+			'name'   => $this->_controller,
+			'layout' => 'aclusers'
+		));
+		$aclusers->aclusernames = $row->aclusers();
+		$aclusers->option    = $this->_option;
+
+		$lists['aclusers'] = $aclusers->loadTemplate();
+
+		$aclgroups = new \Hubzero\Component\View(array(
+			'name'   => $this->_controller,
+			'layout' => 'aclgroups'
+		));
+		$aclgroups->aclgroupnames = $row->aclgroups();
+		$aclgroups->option    = $this->_option;
+
+		$lists['aclgroups'] = $aclgroups->loadTemplate();
+
 		$licenses = License::all()
 			->order('text', 'asc')
 			->rows();
@@ -792,7 +813,7 @@ class Items extends AdminController
 		$row->set($fields);
 
 		$isNew = 0;
-		if ($row->get('id') <= 1)
+		if ($row->get('id') < 1)
 		{
 			$isNew = 1;
 		}
@@ -990,6 +1011,30 @@ class Items extends AdminController
 			'scopeId' => $row->get('id')
 		]);
 		$badges->updateBadges($badgeString, User::get('id'), 0);
+
+		$old_aclusers_str = Request::getString('old_aclusers', '', 'post');
+		$new_aclusers_str = Request::getString('new_aclusers', '', 'post');
+
+		$old_aclusers = explode(',', $old_aclusers_str);
+		$new_aclusers = explode(',', $new_aclusers_str);
+
+		$del_aclusers = array_diff($old_aclusers, $new_aclusers);
+		$add_aclusers = array_diff($new_aclusers, $old_aclusers);
+
+		AclUser::addUsers($row->id, $add_aclusers);
+		AclUser::removeUsers($row->id, $del_aclusers);
+
+		$old_aclgroups_str = Request::getString('old_aclgroups', '', 'post');
+		$new_aclgroups_str = Request::getString('new_aclgroups', '', 'post');
+
+		$old_aclgroups = explode(',', $old_aclgroups_str);
+		$new_aclgroups = explode(',', $new_aclgroups_str);
+
+		$del_aclgroups = array_diff($old_aclgroups, $new_aclgroups);
+		$add_aclgroups = array_diff($new_aclgroups, $old_aclgroups);
+
+		AclGroup::addGroups($row->id, $add_aclgroups);
+		AclGroup::removeGroups($row->id, $del_aclgroups);
 
 		// Incoming authors
 		if (!$row->isTool())
@@ -1778,6 +1823,64 @@ class Items extends AdminController
 			->set('roles', $roles)
 			->set('role', $role)
 			->display();
+	}
+
+	/**
+	 * Gets the full name of a user from their ID #
+	 *
+	 * @return  string
+	 */
+	public function acluserTask()
+	{
+		$id   = Request::getString('u', '');
+
+		// Get the member's info
+		if (is_numeric($id))
+		{
+			$profile = Member::oneOrNew(intval($id));
+		}
+		else
+		{
+			$profile = Member::oneByUsername((string)$id);
+		}
+
+		if (!is_object($profile) || !$profile->get('id'))
+		{
+			$profile = User::all()
+				->whereEquals('name', $id)
+				->row();
+		}
+
+		if (is_object($profile) && $profile->get('id'))
+		{
+			$name = $profile->name;
+			$id   = $profile->get('id');
+		}
+		
+		$this->view
+			->set('name', $name)
+			->set('id', $id)
+			->display();
+	}
+
+	/**
+	 * Gets the full name of a user from their ID #
+	 *
+	 * @return  string
+	 */
+	public function aclgroupTask()
+	{
+		$id   = Request::getString('u', '');
+
+		$group = Group::getInstance($id);
+
+		if ($group)
+		{
+			$this->view
+				->set('name', $group->get('cn'))
+				->set('id', $group->get('gidNumber'))
+				->display();
+		}
 	}
 
 	/**

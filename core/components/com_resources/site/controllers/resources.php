@@ -2286,7 +2286,7 @@ class Resources extends SiteController
 		}
 
 		// Ensure the file exist
-		if (!file_exists($path))
+		if (!file_exists($path) || !is_file($path))
 		{
 			App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND') . ' ' . $path);
 		}

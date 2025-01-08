@@ -146,5 +146,11 @@ $extras = Event::trigger('resources.onResourcesList', array($this->line));
 
 		echo \Hubzero\Utility\Str::truncate(strip_tags(\Hubzero\Utility\Sanitize::stripAll(stripslashes($content))), 300);
 		?>
+                <?php
+			$tc = $this->line->tags('cloud');
+			echo $tc->render();
+                ?>
 	</p>
 </li>
+
+

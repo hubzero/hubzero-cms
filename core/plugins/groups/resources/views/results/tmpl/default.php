@@ -118,6 +118,11 @@ if ($this->cats)
 							<?php echo Lang::txt('PLG_GROUPS_RESOURCES_ACCESS_PRIVATE'); ?>
 						</a>
 					</li>
+                                        <li>
+                                                <a<?php echo ($this->access == 'shared') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=resources&area=' . urlencode(stripslashes($this->active)) . '&sort=' . $this->sort . '&access=shared&limit=' . $this->limit); ?>">
+                                                        <?php echo Lang::txt('PLG_GROUPS_RESOURCES_ACCESS_SHARED'); ?>
+                                                </a>
+                                        </li>
 				</ul>
 
 				<ul class="entries-menu">

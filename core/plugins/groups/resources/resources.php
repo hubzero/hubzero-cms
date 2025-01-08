@@ -178,9 +178,9 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			$sortdir = 'asc';
 		}
 		$access = Request::getString('access', 'all');
-		if (!in_array($access, array('all', 'public', 'protected', 'private')))
+		if (!in_array($access, array('all', 'public', 'protected', 'private', 'shared')))
 		{
-			$access = 'date';
+			$access = 'all';
 		}
 
 		$config = Component::params('com_resources');
@@ -520,8 +520,21 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		$filters['now'] = Date::toSql();
 		$filters['sortby'] = ($sort == 'date' ? 'created' : $sort);
 		$filters['sortdir'] = $sortdir;
-		$filters['group'] = $group->get('cn');
-		$filters['access'] = $access;
+
+                // Don't use 'group' as we need to OR it with group acl check
+ 		// otherwise allWithFilters() will build group_owner only check
+                if ($access == 'shared') 
+                {
+                        $filters['group_id'] = $group->get('gidNumber');
+                        $filters['access'] = 'all';
+                }
+                else
+                {
+                        $filters['group_cn'] = $group->get('cn');
+                        $filters['group_id'] = $group->get('gidNumber');
+                        $filters['access'] = $access;
+                }
+
 		$filters['authorized'] = $authorized;
 		$filters['published'] = array(1);
 
@@ -572,11 +585,29 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			}
 
 			// Get results
-			$rows = Components\Resources\Models\Entry::allWithFilters($filters)
-				->order($filters['sortby'], $filters['sortdir'])
-				->limit($limit)
-				->start($limitstart)
-				->rows();
+
+                       if (isset($filters['group_cn']))
+                       {
+                                $rows = Components\Resources\Models\Entry::allWithFilters($filters)
+                                ->join('#__resource_acl_group','#__resource_acl_group.resource_id','#__resources.id','left')
+                                ->whereEquals('#__resources' . '.group_owner', (string) $filters['group_cn'],1)
+                                ->orWhereEquals('#__resource_acl_group.group_id',$filters['group_id'],1)
+                                ->resetDepth()
+                                ->order($filters['sortby'], $filters['sortdir'])
+                                ->limit($limit)
+                                ->start($limitstart)
+                                ->rows();
+                       }
+                       else
+                       {
+                                $rows = Components\Resources\Models\Entry::allWithFilters($filters)
+                                ->join('#__resource_acl_group','#__resource_acl_group.resource_id','#__resources.id','left')
+                                ->whereEquals('#__resource_acl_group.group_id',$filters['group_id'])
+                                ->order($filters['sortby'], $filters['sortdir'])
+                                ->limit($limit)
+                                ->start($limitstart)
+                                ->rows();
+                        }
 
 			// Did we get any results?
 			$results = array();
@@ -629,7 +660,8 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 						{
 							if ($i == 0)
 							{
-								$counts[] = self::allWithFilters($filters)->total();
+                                                                $counts[] = self::allWithFilters($filters)->join('jos_resource_acl_group','jos_resource_acl_group.resource_id','jos_resources.id','left')
+                                                                ->total(true);
 							}
 							else
 							{
@@ -641,7 +673,8 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 							$filters['type'] = $cats[$a]['id'];
 
 							// Execute a count query for each area/category
-							$counts[] = self::allWithFilters($filters)->total();
+                                                        $counts[] = self::allWithFilters($filters)->join('jos_resource_acl_group','jos_resource_acl_group.resource_id','jos_resources.id','left')
+                                                        ->total(true);
 						}
 						$i++;
 					}
@@ -680,11 +713,17 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			$query->whereIn($r . '.published', (array) $filters['published']);
 		}
 
-		if (isset($filters['group']))
-		{
-			$query->whereEquals($r . '.group_owner', (string) $filters['group']);
-		}
-
+                if (isset($filters['group_cn']))
+                {
+                        $query->whereEquals($r . '.group_owner', (string) $filters['group_cn'],1);
+                        $query->orWhereEquals('#__resource_acl_group.group_id', $filters['group_id'],1);
+                        $query->resetDepth();
+                }
+                else
+                {
+                        $query->whereEquals('#__resource_acl_group.group_id', $filters['group_id']);
+                }
+ 
 		if (isset($filters['type']))
 		{
 			if (!is_numeric($filters['type']))

@@ -75,16 +75,18 @@ if ($mode != 'preview')
 						$ghtml = array();
 						foreach ($this->model->groups as $allowedgroup)
 						{
-							$ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&gid=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+							$ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
 						}
 						?>
-						<p class="warning">
-							<?php if (User::isGuest()): ?>
-								<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN', base64_encode(Request::path())); ?>
-							<?php else: ?>
-								<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
-							<?php endif; ?>
-						</p>
+							<p class="warning">
+								<?php if (User::isGuest()): ?>
+									<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN', base64_encode(Request::path())); ?>
+								<?php elseif ($this->get('group_owner')): ?>
+									<?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
+								<?php else: ?>
+									<?php echo Lang::txt('COM_RESOURCES_ALERTNOTAUTH'); ?>
+								<?php endif; ?>
+							</p>
 						<?php
 					}
 					else

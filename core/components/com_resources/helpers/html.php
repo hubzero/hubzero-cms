@@ -917,7 +917,11 @@ class Html
 							$class = ''; //'play';
 						}
 
-						if (substr($firstChild->path, 0, 7) == 'http://'
+						if (substr($firstChild->path, 0, 16) == 'https://doi.org/')
+						{
+							$mesg  = substr($firstChild->path,16);
+						}
+						else if (substr($firstChild->path, 0, 7) == 'http://'
 						 || substr($firstChild->path, 0, 8) == 'https://'
 						 || substr($firstChild->path, 0, 6) == 'ftp://'
 						 || substr($firstChild->path, 0, 9) == 'mainto://'
@@ -1123,7 +1127,12 @@ class Html
 			$base_path = DS . trim($base_path, DS);
 		}
 
-		if (preg_match("/(?:https?:|mailto:|ftp:|gopher:|news:|file:)/", $path))
+		if (substr($path, 0, 16) == 'https://doi.org/')
+		{
+			$type = 'DOI';
+			$fs = '';
+		}
+		else if (preg_match("/(?:https?:|mailto:|ftp:|gopher:|news:|file:)/", $path))
 		{
 			$type = 'HTM';
 			$fs = '';

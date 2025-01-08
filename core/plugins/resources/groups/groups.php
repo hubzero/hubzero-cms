@@ -50,14 +50,30 @@ class plgResourcesGroups extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		if (!$resource->get('group_owner') || substr($resource->get('group_owner'), 0, strlen('app-')) == 'app-')
-		{
-			return $arr;
-		}
+                if (!$resource->get('group_owner') || substr($resource->get('group_owner'), 0, strlen('app-')) == 'app-')
+                {
+                        $group = false;
+                }
+                else
+                {
+                        $group = \Hubzero\User\Group::getInstance($resource->get('group_owner'));
+                }
+ 
+                $aclgroups = array();
 
-		$group = \Hubzero\User\Group::getInstance($resource->get('group_owner'));
+                foreach($resource->groups as $g)
+                {
+                        $aclgroup = \Hubzero\User\Group::getInstance($g);
 
-		if (!$group || !$group->get('gidNumber'))
+                        if ($group && $group->get('cn') == $aclgroup->get('cn'))
+                                continue;
+
+                        if ($aclgroup->get('gidNumber'))
+                                $aclgroups[] = $aclgroup;
+                }
+ 
+                if ($aclgroups == array() && $group == false)
+
 		{
 			return $arr;
 		}
@@ -67,7 +83,8 @@ class plgResourcesGroups extends \Hubzero\Plugin\Plugin
 			->set('option', $option)
 			->set('resource', $resource)
 			->set('params', $this->params)
-			->set('group', $group);
+			->set('group', $group)
+			->set('aclgroups', $aclgroups);
 
 		if ($miniview)
 		{

@@ -10,7 +10,7 @@ defined('_HZEXEC_') or die();
 
 $attachments = 0;
 $authors     = 0;
-$tags        = array();
+$tags        = 0;
 $state       = 'draft';
 
 if ($this->resource->get('id'))
