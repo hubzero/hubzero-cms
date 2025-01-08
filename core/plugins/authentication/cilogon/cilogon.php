@@ -32,16 +32,20 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 	 */
 	protected function cilogon($redirect = null)
 	{
-		if (!$redirect)
+		if (!$this->cilogon)
 		{
-			$redirect = self::getRedirectUri('cilogon');
+			if (!$redirect)
+			{
+				$redirect = self::getRedirectUri('cilogon');
+			}
+
+			$this->cilogon = new \CILogon\OAuth2\Client\Provider\CILogon([
+				'clientId' => $this->params->get('app_id'),
+				'clientSecret' => $this->params->get('app_secret'),
+				'redirectUri' => $redirect
+			]);
 		}
 
-		$this->cilogon = new \CILogon\OAuth2\Client\Provider\CILogon([
-			'clientId' => $this->params->get('app_id'),
-			'clientSecret' => $this->params->get('app_secret'),
-			'redirectUri' => $redirect
-		]);
 		return $this->cilogon;
 	}
 
@@ -128,6 +132,8 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 	 */
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
+		$responseArr = array();
+
 		try
 		{
 			$storedState = Session::get('state', null, 'cilogon');
@@ -151,6 +157,7 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 			try
 			{
 				$cilogonResponse = $this->cilogon()->getResourceOwner($token);
+				$responseArr = $cilogonResponse->toArray();
 				$id       = $cilogonResponse->getId();
 				$firstname = $cilogonResponse->getGivenName();
 				$lastname = $cilogonResponse->getFamilyName();
@@ -182,6 +189,16 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 			$response->type      = 'cilogon';
 			$response->status    = \Hubzero\Auth\Status::SUCCESS;
 			$response->fullname  = $fullname;
+
+			if (isset($responseArr['entitlement']))
+			{
+				$response->entitlement = $responseArr['entitlement'];
+			}
+
+			if (isset($responseArr['idp_name']))
+			{
+				$response->idp_name = $responseArr['idp_name'];
+			}
 
 			if ($hzal->user_id)
 			{
