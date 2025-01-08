@@ -118,6 +118,10 @@ $published = ($group->get('published')) ? true : false;
 				<span class="not-published group-status"><?php echo Lang::txt('COM_GROUPS_STATUS_NOT_PUBLISHED_GROUP'); ?></span>
 			</div>
 		<?php else : ?>
+		<?php
+			$gt = new \Components\Groups\Models\Tags($group->get('gidNumber'));
+			echo $gt->render();
+		?>
 			<div class="group-meta">
 				<?php if ($status) : ?>
 					<?php if ($status == 'pending') : ?>
