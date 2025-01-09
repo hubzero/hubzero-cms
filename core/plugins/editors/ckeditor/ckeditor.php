@@ -196,7 +196,8 @@ class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
 		$atts = array();
 		foreach ($params as $key => $value)
 		{
-			if ($key == 'mentions'){
+			if ($key == 'mentions')
+			{
 				continue;
 			}
 

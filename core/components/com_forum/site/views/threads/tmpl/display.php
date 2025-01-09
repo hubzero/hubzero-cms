@@ -8,7 +8,7 @@
 defined('_HZEXEC_') or die();
 
 $this->css()
-     ->js();
+	 ->js();
 
 $this->category->set('section_alias', $this->filters['section']);
 
@@ -56,18 +56,18 @@ $now = Date::of('now')->toSql();
 				}
 
 				$this->view('_list')
-				     ->set('option', $this->option)
-				     ->set('controller', $this->controller)
-				     ->set('comments', $posts)
-				     ->set('thread', $this->thread)
-				     ->set('likes', $this->likes)
-				     ->set('parent', 0)
-				     ->set('config', $this->config)
-				     ->set('depth', 0)
-				     ->set('cls', 'odd')
-				     ->set('filters', $this->filters)
-				     ->set('category', $this->category)
-				     ->display();
+					 ->set('option', $this->option)
+					 ->set('controller', $this->controller)
+					 ->set('comments', $posts)
+					 ->set('thread', $this->thread)
+					 ->set('likes', $this->likes)
+					 ->set('parent', 0)
+					 ->set('config', $this->config)
+					 ->set('depth', 0)
+					 ->set('cls', 'odd')
+					 ->set('filters', $this->filters)
+					 ->set('category', $this->category)
+					 ->display();
 			}
 			else
 			{
@@ -121,17 +121,17 @@ $now = Date::of('now')->toSql();
 							<label for="fieldcomment" id="addNewPostArea">
 								<?php echo Lang::txt('COM_FORUM_FIELD_COMMENTS'); ?>
 								<?php echo $this->editor('fields[comment]', '', 35, 15, 'fieldcomment',
-                                        array(
-                                            'class' => 'minimal no-footer',
-                                            'mentions' => array(
-                                                array(
-                                                    'minChars' => 0,
-                                                    'feed' =>  '/api/members/mentions/list?search={encodedQuery}',
-                                                    'itemTemplate' => '<li data-id="{id}"><img class="photo" src="{picture}" /><strong class="username">{username}</strong><span class="fullname">{name}</span></li>',
-                                                    'outputTemplate' => '<a href="mailto:{email}">@{username}</a><span>&nbsp;</span>',
-                                                )
-                                            )
-                                        )); ?>
+										array(
+											'class' => 'minimal no-footer',
+											'mentions' => array(
+												array(
+													'minChars' => 0,
+													'feed' =>  '/api/members/mentions/list?search={encodedQuery}',
+													'itemTemplate' => '<li data-id="{id}"><img class="photo" src="{picture}" /><strong class="username">{username}</strong><span class="fullname">{name}</span></li>',
+													'outputTemplate' => '<a href="mailto:{email}">@{username}</a><span>&nbsp;</span>',
+												)
+											)
+										)); ?>
 							</label>
 
 							<label>

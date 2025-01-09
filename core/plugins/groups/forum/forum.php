@@ -1435,15 +1435,15 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		// Extracting emails from the new post submitted
-        $domComment = new DOMDocument();
-        $domComment->loadHTML($fields['comment']);
-        $mentionEmailList = array();
-        foreach ($domComment->getElementsByTagName('a') as $item) {
-            $hrefLink = $item->getAttribute('href');
-            if (strpos($hrefLink, 'mailto:') !== false) {
-                $mentionEmailList[] = str_replace('mailto:', "", $hrefLink);
-            }
-        }
+		$domComment = new DOMDocument();
+		$domComment->loadHTML($fields['comment']);
+		$mentionEmailList = array();
+		foreach ($domComment->getElementsByTagName('a') as $item) {
+			$hrefLink = $item->getAttribute('href');
+			if (strpos($hrefLink, 'mailto:') !== false) {
+				$mentionEmailList[] = str_replace('mailto:', "", $hrefLink);
+			}
+		}
 
 		if (!$this->params->get('access-edit-thread')
 		 && !$this->params->get('access-create-thread'))
@@ -1665,20 +1665,21 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		}
 
 		// Email to Users
-        if ($mentionEmailList) {
-            $comment = $fields['comment'];
-            $createdByUserId = $post->get('created_by');
-            $createdByUser = User::getInstance($createdByUserId);
-            $createdUserName = $createdByUser->get('name');
+		if ($mentionEmailList) 
+		{
+			$comment = $fields['comment'];
+			$createdByUserId = $post->get('created_by');
+			$createdByUser = User::getInstance($createdByUserId);
+			$createdUserName = $createdByUser->get('name');
 			$groupAlias = $this->group->get('cn');
-            $groupTitle = $this->group->get('description');
+			$groupTitle = $this->group->get('description');
 
-            $urlExt = 'groups/' . $this->group->get('cn') . '/forum/' . $section->get('alias') . '/' . $category->get('alias') . '/' . $post->get('thread') . '#c' . $post->get('id');
-            $host = $_SERVER['HTTP_HOST'];
-            $externalUrl = 'https://' . $host . '/' . $urlExt;
+			$urlExt = 'groups/' . $this->group->get('cn') . '/forum/' . $section->get('alias') . '/' . $category->get('alias') . '/' . $post->get('thread') . '#c' . $post->get('id');
+			$host = $_SERVER['HTTP_HOST'];
+			$externalUrl = 'https://' . $host . '/' . $urlExt;
 
-            $this->emailToAllMentionedUsersInGroup($mentionEmailList, $comment, $externalUrl, $createdUserName, $groupAlias, $groupTitle);
-        }
+			$this->emailToAllMentionedUsersInGroup($mentionEmailList, $comment, $externalUrl, $createdUserName, $groupAlias, $groupTitle);
+		}
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
@@ -1703,42 +1704,47 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		);
 	}
 
-	// Email the mentioned user with a PHP template
-    public function emailToAllMentionedUsersInGroup($emails, $comment, $url, $postAuthor, $groupAlias, $groupTitle) {
-        $from = array();
-        $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name));
-        $from['email'] = Config::get('mailfrom');
+	/**
+	 * Email the mentioned users with a PHP html template
+	 *
+	 * @return  void
+	 */
+	public function emailToAllMentionedUsersInGroup($emails, $comment, $url, $postAuthor, $groupAlias, $groupTitle) 
+	{
+		$from = array();
+		$from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name));
+		$from['email'] = Config::get('mailfrom');
 
-        $subject = $postAuthor . " mentioned you on a group thread from " . $groupTitle;
+		$subject = $postAuthor . " mentioned you on a group thread from " . $groupTitle;
 
-        // BUILDING THE EMAIL TEMPLATE
-        $eView = new \Hubzero\Mail\View(array(
-            'base_path' => __DIR__,
-            'name'      => 'email',
-            'layout'    => 'mentions_html'
-        ));
+		// BUILDING THE EMAIL TEMPLATE
+		$eView = new \Hubzero\Mail\View(array(
+			'base_path'	=> __DIR__,
+			'name'		=> 'email',
+			'layout'	=> 'mentions_html'
+		));
 
-        $eView->comment = $comment;
-        $eView->commentNoTags = strip_tags($comment);
-        $eView->postLink = $url;
-        $eView->postAuthor = $postAuthor;
+		$eView->comment = $comment;
+		$eView->commentNoTags = strip_tags($comment);
+		$eView->postLink = $url;
+		$eView->postAuthor = $postAuthor;
 		$eView->groupTitle = $groupTitle;
-        $eView->groupAlias = $groupAlias;
+		$eView->groupAlias = $groupAlias;
 
-        $html = $eView->loadTemplate(false);
-        $html = str_replace("\n", "\r\n", $html);
+		$html = $eView->loadTemplate(false);
+		$html = str_replace("\n", "\r\n", $html);
 
-        // Create NEW message object and send
-        $message = new \Hubzero\Mail\Message();
-        $message->setSubject($subject)
-            ->addFrom($from['email'], $from['name'])
-            ->setTo($from['email'])
-            ->setBcc($emails)
-            ->addPart($html, 'text/html')
-            ->send();
+		// Create NEW message object and send
+		$message = new \Hubzero\Mail\Message();
+		$message->setSubject($subject)
+			->addFrom($from['email'], $from['name'])
+			->setTo($from['email'])
+			->setBcc($emails)
+			->addPart($html, 'text/html')
+			->send();
 
-        return true;
-    }
+		return true;
+	}
 
 	/**
 	 * Get email recipient IDs

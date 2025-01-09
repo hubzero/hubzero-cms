@@ -81,13 +81,14 @@ class Router extends Base
 			}
 			
 			// Added this for mentions API
-            else if ($segments[0] == 'mentions') {
-                $vars['controller'] = $segments[0];
-                $vars['task'] = 'index';
-                if (isset($segments[1])) {
-                    $vars['task'] = $segments[1];
-                }
-            }
+			else if ($segments[0] == 'mentions') 
+			{
+				$vars['controller'] = $segments[0];
+				$vars['task'] = 'index';
+				if (isset($segments[1])) {
+					$vars['task'] = $segments[1];
+				}
+			}
 			else
 			{
 				$vars['task'] = $segments[0];

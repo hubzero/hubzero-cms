@@ -351,15 +351,15 @@ class Threads extends SiteController
 		}
 
 		// Extracting emails from the new post submitted
-        $domComment = new DOMDocument();
-        $domComment->loadHTML($fields['comment']);
-        $mentionEmailList = array();
-        foreach ($domComment->getElementsByTagName('a') as $item) {
-            $hrefLink = $item->getAttribute('href');
-            if (strpos($hrefLink, 'mailto:') !== false) {
-                $mentionEmailList[] = str_replace('mailto:', "", $hrefLink);
-            }
-        }
+		$domComment = new DOMDocument();
+		$domComment->loadHTML($fields['comment']);
+		$mentionEmailList = array();
+		foreach ($domComment->getElementsByTagName('a') as $item) {
+			$hrefLink = $item->getAttribute('href');
+			if (strpos($hrefLink, 'mailto:') !== false) {
+				$mentionEmailList[] = str_replace('mailto:', "", $hrefLink);
+			}
+		}
 
 		// Authorization check
 		$this->_authorize($assetType, intval($fields['id']));
@@ -468,19 +468,20 @@ class Threads extends SiteController
 			}
 		}
 
-		// Email to Users
-        if ($mentionEmailList) {
-            $comment = $fields['comment'];
-            $createdByUserId = $post->get('created_by');
-            $createdByUser = User::getInstance($createdByUserId);
-            $createdUserName = $createdByUser->get('name');
+		// Email to Users that were mentioned in the post
+		if ($mentionEmailList) 
+		{
+			$comment = $fields['comment'];
+			$createdByUserId = $post->get('created_by');
+			$createdByUser = User::getInstance($createdByUserId);
+			$createdUserName = $createdByUser->get('name');
 
-            $urlExt = 'forum/' . $section . '/' . $category->get('alias') . '/' . $post->get('thread') . '#c' . $post->get('id');
-            $host = $_SERVER['HTTP_HOST'];
-            $externalUrl = 'https://' . $host . '/' . $urlExt;
+			$urlExt = 'forum/' . $section . '/' . $category->get('alias') . '/' . $post->get('thread') . '#c' . $post->get('id');
+			$host = $_SERVER['HTTP_HOST'];
+			$externalUrl = 'https://' . $host . '/' . $urlExt;
 
-            $this->emailToAllMentionedUsers($mentionEmailList, $comment, $externalUrl, $createdUserName);
-        }
+			$this->emailToAllMentionedUsers($mentionEmailList, $comment, $externalUrl, $createdUserName);
+		}
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
@@ -505,45 +506,50 @@ class Threads extends SiteController
 		);
 	}
 
-	// Email the mentioned user with a PHP template
-    public function emailToAllMentionedUsers($emails, $comment, $url, $postAuthor) {
-        $from = array();
-        $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name));
-        $from['email'] = Config::get('mailfrom');
+	/**
+	 * Email the mentioned user with a PHP mail template
+	 *
+	 * @return  void
+	 */
+	public function emailToAllMentionedUsers($emails, $comment, $url, $postAuthor) 
+	{
+		$from = array();
+		$from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name));
+		$from['email'] = Config::get('mailfrom');
 
-        $subject = $postAuthor . " mentioned you on forum thread";
+		$subject = $postAuthor . " mentioned you on forum thread";
 
-        // BUILDING THE EMAIL TEMPLATE
-        $dirTemplate = dirname(dirname(__DIR__));
-        $eView = new \Hubzero\Mail\View(array(
-            'base_path' => $dirTemplate . DS . 'site',
-            'name'   => 'emails',
-            'layout' => 'mentions_html'
-        ));
+		// BUILDING THE EMAIL TEMPLATE
+		$dirTemplate = dirname(dirname(__DIR__));
+		$eView = new \Hubzero\Mail\View(array(
+			'base_path' => $dirTemplate . DS . 'site',
+			'name'   => 'emails',
+			'layout' => 'mentions_html'
+		));
 
-        $eView->comment = $comment;
-        $eView->commentNoTags = strip_tags($comment);
-        $eView->postLink = $url;
-        $eView->postAuthor = $postAuthor;
+		$eView->comment = $comment;
+		$eView->commentNoTags = strip_tags($comment);
+		$eView->postLink = $url;
+		$eView->postAuthor = $postAuthor;
 
-        $html = $eView->loadTemplate(false);
-        $html = str_replace("\n", "\r\n", $html);
+		$html = $eView->loadTemplate(false);
+		$html = str_replace("\n", "\r\n", $html);
 
-        // Create NEW message object and send
-        $message = new \Hubzero\Mail\Message();
+		// Create NEW message object and send
+		$message = new \Hubzero\Mail\Message();
 
-        $message->setSubject($subject)
-            ->addFrom($from['email'], $from['name'])
-            ->setTo($from['email'])
-            ->setBcc($emails)
-            ->addHeader('X-Mailer', 'PHP/' . phpversion())
-            ->addHeader('X-Component', 'com_forum')
-            ->addHeader('X-Component-Object', 'com_forum_mentions_email')
-            ->addPart($html, 'text/html')
-            ->send();
+		$message->setSubject($subject)
+			->addFrom($from['email'], $from['name'])
+			->setTo($from['email'])
+			->setBcc($emails)
+			->addHeader('X-Mailer', 'PHP/' . phpversion())
+			->addHeader('X-Component', 'com_forum')
+			->addHeader('X-Component-Object', 'com_forum_mentions_email')
+			->addPart($html, 'text/html')
+			->send();
 
-        return true;
-    }
+		return true;
+	}
 
 	/**
 	 * Delete an entry

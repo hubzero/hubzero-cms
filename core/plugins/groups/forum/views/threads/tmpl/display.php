@@ -17,10 +17,10 @@ $this->thread->set('category', $this->category->get('alias'));
 $now = time();
 
 $this->css()
-     ->js('api')
-     ->js('notify')
-     ->js('user')
-     ->js('forum');
+	 ->js('api')
+	 ->js('notify')
+	 ->js('user')
+	 ->js('forum');
 ?>
 <ul id="page_options">
 	<li>
@@ -66,18 +66,18 @@ $this->css()
 			}
 
 			$this->view('_list')
-			     ->set('option', $this->option)
-			     ->set('group', $this->group)
-			     ->set('comments', $posts)
-			     ->set('thread', $this->thread)
-			     ->set('likes', $this->likes)
-			     ->set('parent', 0)
-			     ->set('config', $this->config)
-			     ->set('depth', 0)
-			     ->set('cls', 'odd')
-			     ->set('filters', $this->filters)
-			     ->set('category', $this->category)
-			     ->display();
+				 ->set('option', $this->option)
+				 ->set('group', $this->group)
+				 ->set('comments', $posts)
+				 ->set('thread', $this->thread)
+				 ->set('likes', $this->likes)
+				 ->set('parent', 0)
+				 ->set('config', $this->config)
+				 ->set('depth', 0)
+				 ->set('cls', 'odd')
+				 ->set('filters', $this->filters)
+				 ->set('category', $this->category)
+				 ->display();
 		}
 		else
 		{
@@ -228,20 +228,20 @@ $this->css()
 				<label for="field_comment" id="addNewPostAreaGroup">
 					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
 					<?php
-                        $gid = $this->group->get('gidNumber');
-                        $feedUrl = '/api/members/mentions/group?gid=' . $gid . '&search={encodedQuery}';
-                        echo $this->editor('fields[comment]', '', 35, 15, 'fieldcomment',
-                            array(
-                                'class' => 'minimal no-footer',
-                                'mentions' => array(
-                                    array(
-                                        'minChars' => 0,
-                                        'feed' =>  $feedUrl,
-                                        'itemTemplate' => '<li data-id="{id}"><img class="photo" src="{picture}" /><strong class="username">{username}</strong><span class="fullname">{name}</span></li>',
-                                        'outputTemplate' => '<a href="mailto:{email}">@{username}</a><span>&nbsp;</span>',
-                                    )
-                                )
-                            )); ?>
+						$gid = $this->group->get('gidNumber');
+						$feedUrl = '/api/members/mentions/group?gid=' . $gid . '&search={encodedQuery}';
+						echo $this->editor('fields[comment]', '', 35, 15, 'fieldcomment',
+							array(
+								'class' => 'minimal no-footer',
+								'mentions' => array(
+									array(
+										'minChars' => 0,
+										'feed' =>  $feedUrl,
+										'itemTemplate' => '<li data-id="{id}"><img class="photo" src="{picture}" /><strong class="username">{username}</strong><span class="fullname">{name}</span></li>',
+										'outputTemplate' => '<a href="mailto:{email}">@{username}</a><span>&nbsp;</span>',
+									)
+								)
+							)); ?>
 				</label>
 
 				<label>
