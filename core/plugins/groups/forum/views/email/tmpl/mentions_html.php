@@ -24,20 +24,20 @@ $groupAlias = $this->groupAlias;
 <!-- End Spacer -->
 
 <table id="course-discussions" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
-    <tr>
-        <td style="font-size: 16px; padding: 10px 0;">
-			From group <?php echo $groupTitle; ?> (<?php echo $groupAlias; ?>)<br>
-            <?php echo $postAuthor; ?> mentioned you on a group forum thread with the following post:
-        </td>
-    </tr>
-    <tr style="border:1px solid #eaeaea;">
-        <td style="font-size: 16px; padding: 10px 20px; margin: 20px 0;">
-            <?php echo $commentNoTags; ?>
-        </td>
-    </tr>
 	<tr>
 		<td style="font-size: 16px; padding: 10px 0;">
-            Please see the comment on this <a href="<?php echo $postLink; ?>" target="_blank">group forum thread</a>.
+			From group <?php echo $groupTitle; ?> (<?php echo $groupAlias; ?>)<br>
+			<?php echo $postAuthor; ?> mentioned you on a group forum thread with the following post:
+		</td>
+	</tr>
+	<tr style="border:1px solid #eaeaea;">
+		<td style="font-size: 16px; padding: 10px 20px; margin: 20px 0;">
+			<?php echo $commentNoTags; ?>
+		</td>
+	</tr>
+	<tr>
+		<td style="font-size: 16px; padding: 10px 0;">
+			Please see the comment on this <a href="<?php echo $postLink; ?>" target="_blank">group forum thread</a>.
 		</td>
 	</tr>
 </table>
