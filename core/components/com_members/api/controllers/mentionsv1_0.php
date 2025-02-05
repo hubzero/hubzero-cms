@@ -33,6 +33,7 @@ class Mentionsv1_0 extends ApiController {
         $entries = Member::all()
 			->whereEquals('block', 0)
 			->whereEquals('activation', 1)
+            ->where('email', '!=', 'noone@example.com')
 			->where('approved', '>', 0);
 
         if ($search) {

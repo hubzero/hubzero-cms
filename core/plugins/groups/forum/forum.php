@@ -1439,10 +1439,11 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$domComment->loadHTML($fields['comment']);
 		$mentionEmailList = array();
 		foreach ($domComment->getElementsByTagName('a') as $item) {
-			$hrefLink = $item->getAttribute('href');
-			if (strpos($hrefLink, 'mailto:') !== false) {
-				$mentionEmailList[] = str_replace('mailto:', "", $hrefLink);
-			}
+			$userId = $item->getAttribute('data-user-id');
+            $user = User::getInstance($userId);
+            $email = $user->get('email');
+
+            $mentionEmailList[] = $email;
 		}
 
 		if (!$this->params->get('access-edit-thread')
