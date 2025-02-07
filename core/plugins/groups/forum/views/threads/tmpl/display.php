@@ -226,7 +226,10 @@ $this->css()
 				</p>
 
 				<label for="field_comment" id="addNewPostAreaGroup">
-					<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
+					<div>
+						<?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
+						<span class="note" style='float:right'>Use an @ sign to mention group users on the post</span>
+					</div>
 					<?php
 						$gid = $this->group->get('gidNumber');
 						$feedUrl = '/api/members/mentions/group?gid=' . $gid . '&search={encodedQuery}';
