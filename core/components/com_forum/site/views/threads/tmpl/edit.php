@@ -126,10 +126,23 @@ else
 
 					<div class="form-group">
 						<label for="fieldcomment">
-							<?php echo Lang::txt('COM_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('COM_FORUM_REQUIRED'); ?></span>
-							<?php
-							echo $this->editor('fields[comment]', $this->escape(stripslashes($this->post->get('comment'))), 35, 15, 'fieldcomment', array('class' => 'form-control minimal no-footer'));
-							?>
+							<div>
+								<?php echo Lang::txt('COM_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('COM_FORUM_REQUIRED'); ?></span>
+								<span class="note" style='float:right'>Use an @ sign to mention users in the post</span>
+							</div>
+							
+							<?php echo $this->editor('fields[comment]', $this->escape(stripslashes($this->post->get('comment'))), 35, 15, 'fieldcomment',
+								array(
+									'class' => 'form-control minimal no-footer',
+									'mentions' => array(
+										array(
+											'minChars' => 0,
+											'feed' =>  '/api/members/mentions/list?search={encodedQuery}',
+											'itemTemplate' => '<li data-id="{id}"><img class="photo" src="{picture}" /><strong class="username">{username}</strong><span class="fullname">{name}</span></li>',
+											'outputTemplate' => '<a href="/members/{id}" data-user-id="{id}" target="_blank">@{username}</a>&nbsp;&nbsp;',
+										)
+									)
+								)); ?>
 						</label>
 					</div>
 

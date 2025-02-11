@@ -121,7 +121,7 @@ $now = Date::of('now')->toSql();
 							<label for="fieldcomment" id="addNewPostArea">
 								<div>
 									<?php echo Lang::txt('COM_FORUM_FIELD_COMMENTS'); ?>
-									<span class="note" style='float:right'>Use an @ sign to mention users to the post</span>
+									<span class="note" style='float:right'>Use an @ sign to mention users in the post</span>
 								</div>
 								<?php echo $this->editor('fields[comment]', '', 35, 15, 'fieldcomment',
 										array(
