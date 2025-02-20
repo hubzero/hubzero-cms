@@ -426,7 +426,16 @@ class Utils
 				}
 				else
 				{
-					$access->valid = 1;
+					if (!$exportAllowed->valid)
+					{
+						$access->valid = 0;
+						$access->error->message = 'Export Access Denied';
+						\Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (EXPORT DENIED)");
+					}
+					else
+					{
+						$access->valid = 1;
+					}
 				}
 			}
 			else
