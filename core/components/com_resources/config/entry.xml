@@ -59,5 +59,6 @@
 			<option value="title">Title</option>
 			<option value="author">Author</option>
 		</param>
+		<param name="page_template" type="text" size="20" default="" label="Template" description="name of the overloading template" />
 	</params>
 </extension>
