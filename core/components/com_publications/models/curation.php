@@ -2066,7 +2066,7 @@ class Curation extends Obj
 	 * @param	boolean	$includeVersionNum
 	 * @return  mixed  False on error, string on success
 	 */
-	public function getBundleName($symLinkName = false)
+	public function getBundleName($linkName = false)
 	{
 		if (empty($this->_pub))
 		{
@@ -2082,7 +2082,7 @@ class Curation extends Obj
 		else
 		{
 			$bundleName = 'Publication' . '_' . $this->_pub->id;
-			if ($symLinkName)
+			if ($linkName)
 			{
 				$bundleName .= '_' . $this->_pub->version->get('version_number');
 			}
@@ -2129,27 +2129,27 @@ class Curation extends Obj
 	}
 
 	/**
-	 * Generate symbolic link for publication package
+	 * Generate link for publication package
 	 *
 	 * @return boolean
 	 */
-	public function createSymLink()
+	public function createLink()
 	{
 		$tarname = $this->getBundleName();
 		$tarpath = $this->_pub->path('relative') . DS . $tarname;
-		$symLink = $this->_symLinkPath();
-		if ($symLink !== false)
+		$link = $this->_linkPath();
+		if ($link !== false)
 		{
-			chdir(dirname($symLink));
+			chdir(dirname($link));
 		}
 
-		if (empty($this->_pub) || $symLink == false || !is_file($tarpath))
+		if (empty($this->_pub) || $link == false || !is_file($tarpath))
 		{
 			return false;
 		}
-		if (!is_file($symLink))
+		if (!is_file($link))
 		{
-			if (!link($tarpath, $symLink))
+			if (!link($tarpath, $link))
 			{
 				return false;
 			}
@@ -2158,21 +2158,21 @@ class Curation extends Obj
 	}
 
 	/**
-	 * Remove symbolic link for publication package
+	 * Remove link for publication package
 	 *
 	 * @return boolean
 	 */
-	public function removeSymLink()
+	public function removeLink()
 	{
-		$symLink = $this->_symLinkPath();
-		if ($symLink == false)
+		$link = $this->_linkPath();
+		if ($link == false)
 		{
 			return false;
 		}
 
-		if (is_file($symLink))
+		if (is_file($link))
 		{
-			unlink($symLink);
+			unlink($link);
 		}
 		return true;
 	}
@@ -2652,18 +2652,18 @@ class Curation extends Obj
 	}
 
 	/**
-	 * Get path to symbolic link used for downloading package via SFTP
+	 * Get path to link used for downloading package via SFTP
 	 *
 	 * @return 	mixed 	string if sftp path provided, false if not
 	 */
-	private function _symLinkPath()
+	private function _linkPath()
 	{
 		$sftpPath = PATH_APP . Component::params('com_publications')->get('sftppath');
 		if (!is_dir($sftpPath))
 		{
 			return false;
 		}
-		$symLink = $sftpPath . '/' . $this->getBundleName(true);
-		return $symLink;
+		$link = $sftpPath . '/' . $this->getBundleName(true);
+		return $link;
 	}
 }

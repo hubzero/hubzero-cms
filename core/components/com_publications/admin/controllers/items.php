@@ -1336,11 +1336,11 @@ class Items extends AdminController
 			{
 				if ($this->model->version->state != 1)
 				{
-					$this->model->_curationModel->removeSymLink();
+					$this->model->_curationModel->removeLink();
 				}
 				elseif (($action == 'republish' || $action == 'publish') && !$this->model->isEmbargoed())
 				{
-					$this->model->_curationModel->createSymLink();
+					$this->model->_curationModel->createLink();
 				}
 
 				// Add activity
@@ -1927,8 +1927,8 @@ class Items extends AdminController
 		// Produce archival package
 		if (!$pub->_curationModel->package(true))
 		{
-			// Create symlink
-			$pub->_curationModel->createSymLink();
+			// Create link
+			$pub->_curationModel->createLink();
 
 			// Checkin the resource
 			$pub->publication->checkin();

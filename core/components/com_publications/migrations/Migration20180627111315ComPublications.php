@@ -11,7 +11,7 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for creating sym links in the SFTP directory
+ * Migration script for creating links in the SFTP directory
  **/
 class Migration20180627111315ComPublications extends Base
 {
@@ -67,7 +67,7 @@ class Migration20180627111315ComPublications extends Base
 					$versionId = $publication['id'];
 					$doi = $publication['doi'];
 					$versionNum = $publication['version_number'];
-					$this->createSymLink($pubId, $versionId, $versionNum, $doi);
+					$this->createLink($pubId, $versionId, $versionNum, $doi);
 				}
 				$offset += $this->limit;
 			}
@@ -97,18 +97,18 @@ class Migration20180627111315ComPublications extends Base
 				$versionId = $publication['id'];
 				$doi = $publication['doi'];
 				$versionNum = $publication['version_number'];
-				$this->removeSymLink($pubId, $versionId, $versionNum, $doi);
+				$this->removeLink($pubId, $versionId, $versionNum, $doi);
 			}
 			$offset += $this->limit;
 		}
 	}
 
 	/**
-	 * Generate symbolic link for publication package
+	 * Generate link for publication package
 	 *
 	 * @return boolean
 	 */
-	protected function createSymLink($pubId, $versionId, $versionNum, $doi = '')
+	protected function createLink($pubId, $versionId, $versionNum, $doi = '')
 	{
 		if ($doi != '')
 		{
@@ -123,21 +123,21 @@ class Migration20180627111315ComPublications extends Base
 		}
 
 		$tarname = $bundleName . '.zip';
-		$symFileName = $bundleWithVersion . '.zip';
+		$fileName = $bundleWithVersion . '.zip';
 		$tarPath = '..' . '/' . str_pad($pubId, 5, "0", STR_PAD_LEFT) . '/' . str_pad($versionId, 5, "0", STR_PAD_LEFT) . '/' . $tarname;
-		$symLinkPath = $this->_symLinkPath();
-		if ($symLinkPath !== false)
+		$linkPath = $this->_linkPath();
+		if ($linkPath !== false)
 		{
-			chdir($symLinkPath);
+			chdir($linkPath);
 		}
-		if (empty($pubId) || $symLinkPath == false || !is_file($tarPath))
+		if (empty($pubId) || $linkPath == false || !is_file($tarPath))
 		{
 			return false;
 		}
-		$symLink = $symLinkPath . '/' . $symFileName;
-		if (!is_file($symLink))
+		$link = $linkPath . '/' . $fileName;
+		if (!is_file($link))
 		{
-			if (!symlink($tarPath, $symLink))
+			if (!link($tarPath, $link))
 			{
 				return false;
 			}
@@ -146,11 +146,11 @@ class Migration20180627111315ComPublications extends Base
 	}
 
 	/**
-	 * Remove symbolic link for publication package
+	 * Remove link for publication package
 	 *
 	 * @return boolean
 	 */
-	protected function removeSymLink($pubId, $versionId, $versionNum, $doi='')
+	protected function removeLink($pubId, $versionId, $versionNum, $doi='')
 	{
 		if ($doi != '')
 		{
@@ -165,25 +165,25 @@ class Migration20180627111315ComPublications extends Base
 		}
 
 		$tarname = $bundleName . '.zip';
-		$symLinkPath = $this->_symLinkPath();
-		$symLink = $symLinkPath . '/' . $tarname;
-		if ($symLink == false)
+		$linkPath = $this->_linkPath();
+		$link = $linkPath . '/' . $tarname;
+		if ($link == false)
 		{
 			return false;
 		}
-		if (file_exists($symLink))
+		if (file_exists($link))
 		{
-			unlink($symLink);
+			unlink($link);
 		}
 		return true;
 	}
 
 	/**
-	 * Get path to symbolic link used for downloading package via SFTP
+	 * Get path to link used for downloading package via SFTP
 	 *
 	 * @return 	mixed 	string if sftp path provided, false if not
 	 */
-	private function _symLinkPath()
+	private function _linkPath()
 	{
 		$sftpPath = PATH_APP . Component::params('com_publications')->get('sftppath');
 		if (!is_dir($sftpPath))
