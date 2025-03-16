@@ -373,7 +373,7 @@ class Projects extends Base
 		$sync         = false;
 
 		// Check that project exists
-		if (!$this->model->exists())
+		if (!$this->model->exists() || $this->model->get('state', 0) == 2)
 		{
 			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
 		}
