@@ -274,78 +274,6 @@ textarea {
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-@font-face {
-  font-family: 'Kaushan Script';
-  font-style: normal;
-  font-weight: 400;
-  font-display: optional;
-  src: local('Kaushan Script'), local('KaushanScript-Regular'), url('../fonts/kaushanscript/KaushanScript-Regular.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'OpenSans';
-  font-display: optional;
-  src: url('../fonts/opensans/OpenSans-Light-webfont.eot');
-  src: url('../fonts/opensans/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/opensans/OpenSans-Light-webfont.woff') format('woff'), url('../fonts/opensans/OpenSans-Light-webfont.ttf') format('truetype'), url('../fonts/opensans/OpenSans-Light-webfont.svg#OpenSansLight') format('svg');
-  font-weight: 300;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'OpenSans';
-  font-display: optional;
-  src: url('../fonts/opensans/OpenSans-LightItalic-webfont.eot');
-  src: url('../fonts/opensans/OpenSans-LightItalic-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/opensans/OpenSans-LightItalic-webfont.woff') format('woff'), url('../fonts/opensans/OpenSans-LightItalic-webfont.ttf') format('truetype'), url('../fonts/opensans/OpenSans-LightItalic-webfont.svg#OpenSansLightItalic') format('svg');
-  font-weight: 300;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'OpenSans';
-  font-display: optional;
-  src: url('../fonts/opensans/OpenSans-Regular-webfont.eot');
-  src: url('../fonts/opensans/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/opensans/OpenSans-Regular-webfont.woff') format('woff'), url('../fonts/opensans/OpenSans-Regular-webfont.ttf') format('truetype'), url('../fonts/opensans/OpenSans-Regular-webfont.svg#OpenSansRegular') format('svg');
-  font-weight: 400;
-  /* 400 */
-  font-style: normal;
-}
-@font-face {
-  font-family: 'OpenSans';
-  font-display: optional;
-  src: url('../fonts/opensans/OpenSans-Italic-webfont.eot');
-  src: url('../fonts/opensans/OpenSans-Italic-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/opensans/OpenSans-Italic-webfont.woff') format('woff'), url('../fonts/opensans/OpenSans-Italic-webfont.ttf') format('truetype'), url('../fonts/opensans/OpenSans-Italic-webfont.svg#OpenSansItalic') format('svg');
-  font-weight: 400;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'OpenSans';
-  font-display: optional;
-  src: url('../fonts/opensans/OpenSans-Semibold-webfont.eot');
-  src: url('../fonts/opensans/OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/opensans/OpenSans-Semibold-webfont.woff') format('woff'), url('../fonts/opensans/OpenSans-Semibold-webfont.ttf') format('truetype'), url('../fonts/opensans/OpenSans-Semibold-webfont.svg#OpenSansSemibold') format('svg');
-  font-weight: 500;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'OpenSans';
-  font-display: optional;
-  src: url('../fonts/opensans/OpenSans-SemiboldItalic-webfont.eot');
-  src: url('../fonts/opensans/OpenSans-SemiboldItalic-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/opensans/OpenSans-SemiboldItalic-webfont.woff') format('woff'), url('../fonts/opensans/OpenSans-SemiboldItalic-webfont.ttf') format('truetype'), url('../fonts/opensans/OpenSans-SemiboldItalic-webfont.svg#OpenSansSemiboldItalic') format('svg');
-  font-weight: 500;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'OpenSans';
-  font-display: optional;
-  src: url('../fonts/opensans/OpenSans-Bold-webfont.eot');
-  src: url('../fonts/opensans/OpenSans-Bold-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/opensans/OpenSans-Bold-webfont.woff') format('woff'), url('../fonts/opensans/OpenSans-Bold-webfont.ttf') format('truetype'), url('../fonts/opensans/OpenSans-Bold-webfont.svg#OpenSansBold') format('svg');
-  font-weight: 700;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'OpenSans';
-  font-display: optional;
-  src: url('../fonts/opensans/OpenSans-BoldItalic-webfont.eot');
-  src: url('../fonts/opensans/OpenSans-BoldItalic-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/opensans/OpenSans-BoldItalic-webfont.woff') format('woff'), url('../fonts/opensans/OpenSans-BoldItalic-webfont.ttf') format('truetype'), url('../fonts/opensans/OpenSans-BoldItalic-webfont.svg#OpenSansBoldItalic') format('svg');
-  font-weight: 700;
-  font-style: italic;
-}
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -368,6 +296,7 @@ textarea {
 *[class*=" icon-"]:before {
   font-family: "Fontcons";
   margin-right: 0.2em;
+  speak: none;
 }
 .icon-heart:before {
   content: "\2665";
@@ -1514,7 +1443,7 @@ html {
   font-family: sans-serif;
 }
 body {
-  font-family: 'OpenSans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 400;
   font-size: 0.8em;
   line-height: 1.6em;
@@ -1611,7 +1540,7 @@ blockquote {
   margin: 1.5em 0;
 }
 pre {
-  font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   color: #555;
   margin: 1em 0;
   padding: 1em;
@@ -1640,7 +1569,7 @@ tt {
   border: 1px solid #d7d7d7;
   border: 1px solid rgba(0, 0, 0, 0.1);
   background-color: #fff;
-  font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 0.91em;
   padding: 0.2em 0.4em;
   -webkit-border-radius: 0.25em;
@@ -1718,7 +1647,7 @@ table th {
   float: left;
   line-height: 1;
   text-transform: lowercase;
-  font-family: "Kaushan Script", "BlackJack", cursive;
+  font-family: 'Segoe Print', 'Bradley Hand', Chilanka, TSCu_Comic, casual, cursive;
   font-weight: normal;
   font-style: normal;
   font-size: 2em;
@@ -2425,7 +2354,7 @@ header.content-header ul li,
 input,
 button,
 textarea {
-  font-family: 'OpenSans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1em;
   line-height: 1.6em;
   max-width: 100%;
@@ -2500,7 +2429,7 @@ button:focus,
   color: #fff;
 }
 select {
-  font-family: 'OpenSans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1em;
   line-height: 1.6em;
   max-width: 100%;
@@ -3138,7 +3067,7 @@ section.section {
   cursor: not-allowed;
   pointer-events: none;
   background-image: none;
-  opacity: 0.65;
+  opacity: 65 / 100;
   filter: alpha(opacity=65);
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -4041,7 +3970,7 @@ a.fancybox-close:hover,
   height: 100%;
   cursor: pointer;
   text-decoration: none;
-  background: transparent url('../images/overlay/fancybox_blank.gif');
+  background: transparent url('/core/assets/images/overlay/fancybox_blank.gif');
   /* helps IE */
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   z-index: 8040;
@@ -4486,7 +4415,7 @@ ol.comments li ol.comments {
   margin: 0;
   padding: 0;
 }
-ol.comments li ol.comments > li {
+ol.comments li ol.comments li {
   padding-left: 30px;
 }
 ol.comments li ul:not(.comments) li,
@@ -4499,7 +4428,6 @@ ol.comments .comment-options {
 }
 ol.comments .comment-options a {
   margin-right: 1em;
-  color: #ccc;
   border: none;
 }
 ol.comments .comment-options a:before {
@@ -4542,37 +4470,6 @@ ol.comments .comment-content {
 }
 ol.comments .comment-content:hover .comment-options {
   visibility: visible;
-}
-ol.comments .comment-head {
-  margin-bottom: 0.3rem;
-}
-ol.comments .comment-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-ol.comments .comment-meta .permalink {
-  color: #bfbfbf;
-}
-ol.comments .comment-meta .copy-link {
-  display: flex;
-  color: #bfbfbf;
-}
-ol.comments .comment-meta .copy-link .icn {
-  margin-left: 0.3rem;
-  line-height: 0;
-}
-ol.comments .comment-meta .copy-link .icn svg {
-  height: 1.2rem;
-  width: 1.2rem;
-  fill: #bfbfbf;
-}
-ol.comments .comment-meta .copy-link:hover {
-  border: 0;
-  color: #000;
-}
-ol.comments .comment-meta .copy-link:hover .icn svg {
-  fill: #000;
 }
 ol.comments .comment-voting {
   margin: -0.61803399em 0 0 0;
@@ -4694,7 +4591,7 @@ ol.comments .addcomment .upload-label {
 ol.comments .addcomment .reply-anonymous-label {
   width: 50%;
 }
-ol.comments .attachment {
+.comment-attachments .attachment {
   margin: 1em 0;
   padding: 1em 1em 1em 4em;
   display: block;
@@ -4705,21 +4602,21 @@ ol.comments .attachment {
   border-radius: 0.25em;
   color: #666;
 }
-ol.comments .attachment:hover {
+.comment-attachments .attachment:hover {
   border-color: rgba(0, 0, 0, 0.4);
 }
-ol.comments .attachment p {
+.comment-attachments .attachment p {
   margin: 0;
   padding: 0;
 }
-ol.comments .attachment .attachment-meta {
+.comment-attachments .attachment .attachment-meta {
   color: #aaa;
 }
-ol.comments .attachment .attachment-action:before {
+.comment-attachments .attachment .attachment-action:before {
   content: "\2014";
   margin: 0 0.2em;
 }
-ol.comments .attachment:before {
+.comment-attachments .attachment:before {
   position: absolute;
   top: 0.4em;
   left: 0.25em;
@@ -4729,61 +4626,61 @@ ol.comments .attachment:before {
   font-family: 'Fontcons';
   color: rgba(0, 0, 0, 0.4);
 }
-ol.comments .attachment.pdf:before,
-ol.comments .attachment.rtf:before,
-ol.comments .attachment.txt:before {
+.comment-attachments .attachment.pdf:before,
+.comment-attachments .attachment.rtf:before,
+.comment-attachments .attachment.txt:before {
   content: '\f0f6';
 }
-ol.comments .attachment.js:before,
-ol.comments .attachment.css:before,
-ol.comments .attachment.xml:before,
-ol.comments .attachment.html:before,
-ol.comments .attachment.htm:before,
-ol.comments .attachment.py:before,
-ol.comments .attachment.rb:before,
-ol.comments .attachment.cc:before,
-ol.comments .attachment.php:before {
+.comment-attachments .attachment.js:before,
+.comment-attachments .attachment.css:before,
+.comment-attachments .attachment.xml:before,
+.comment-attachments .attachment.html:before,
+.comment-attachments .attachment.htm:before,
+.comment-attachments .attachment.py:before,
+.comment-attachments .attachment.rb:before,
+.comment-attachments .attachment.cc:before,
+.comment-attachments .attachment.php:before {
   content: '\f07e';
 }
-ol.comments .attachment.keynote:before,
-ol.comments .attachment.ppt:before,
-ol.comments .attachment.pps:before,
-ol.comments .attachment.pptx:before {
+.comment-attachments .attachment.keynote:before,
+.comment-attachments .attachment.ppt:before,
+.comment-attachments .attachment.pps:before,
+.comment-attachments .attachment.pptx:before {
   content: "\f000";
 }
-ol.comments .attachment.pages:before,
-ol.comments .attachment.doc:before,
-ol.comments .attachment.docx:before {
+.comment-attachments .attachment.pages:before,
+.comment-attachments .attachment.doc:before,
+.comment-attachments .attachment.docx:before {
   content: '\f0f5';
 }
-ol.comments .attachment.xls:before,
-ol.comments .attachment.csv:before,
-ol.comments .attachment.xlsx:before {
+.comment-attachments .attachment.xls:before,
+.comment-attachments .attachment.csv:before,
+.comment-attachments .attachment.xlsx:before {
   content: '\f0ce';
 }
-ol.comments .attachment.mpg:before,
-ol.comments .attachment.mpeg:before,
-ol.comments .attachment.mov:before,
-ol.comments .attachment.wmv:before,
-ol.comments .attachment.asf:before,
-ol.comments .attachment.asx:before,
-ol.comments .attachment.ra:before,
-ol.comments .attachment.rm:before,
-ol.comments .attachment.avi:before,
-ol.comments .attachment.qt:before,
-ol.comments .attachment.mp4:before,
-ol.comments .attachment.m4v:before {
+.comment-attachments .attachment.mpg:before,
+.comment-attachments .attachment.mpeg:before,
+.comment-attachments .attachment.mov:before,
+.comment-attachments .attachment.wmv:before,
+.comment-attachments .attachment.asf:before,
+.comment-attachments .attachment.asx:before,
+.comment-attachments .attachment.ra:before,
+.comment-attachments .attachment.rm:before,
+.comment-attachments .attachment.avi:before,
+.comment-attachments .attachment.qt:before,
+.comment-attachments .attachment.mp4:before,
+.comment-attachments .attachment.m4v:before {
   content: '\f008';
 }
-ol.comments .attachment.mp3:before,
-ol.comments .attachment.aiff:before,
-ol.comments .attachment.wav:before,
-ol.comments .attachment.m4a:before {
+.comment-attachments .attachment.mp3:before,
+.comment-attachments .attachment.aiff:before,
+.comment-attachments .attachment.wav:before,
+.comment-attachments .attachment.m4a:before {
   content: '\266B';
 }
-ol.comments .attachment.tar:before,
-ol.comments .attachment.zip:before,
-ol.comments .attachment.gz:before {
+.comment-attachments .attachment.tar:before,
+.comment-attachments .attachment.zip:before,
+.comment-attachments .attachment.gz:before {
   content: '\f005';
 }
 #commentform .comment-date-at,
@@ -4809,7 +4706,7 @@ ol.comments .time:before {
 #commentform .time,
 ol.comments .date,
 ol.comments .time {
-  margin-right: 0.7em;
+  margin-left: 0.7em;
 }
 /* Comment form */
 #commentform {
@@ -4923,7 +4820,7 @@ table.wiki-reference tbody td {
   border-bottom: 1px solid #efefef;
 }
 @media (min-width: 50em) {
-  ol.comments li ol.comments > li {
+  ol.comments li ol.comments li {
     padding-left: 70px;
   }
   ol.comments p.comment-member-photo {
@@ -5554,13 +5451,6 @@ ol.comments .time {
   position: absolute;
   width: 1px;
 }
-/* Enable usable Solr search filters in search results if Filters enabled in Admin interface:*/
-.aside .facet .search-filters label {
-  padding: 8px;
-  position: inherit;
-  height: auto;
-  width: auto;
-}
 .data-entry input.entry-search-submit {
   width: auto;
   float: right;
@@ -6150,6 +6040,15 @@ img.align-left {
   height: 1em;
   width: 1em;
   fill: currentColor;
+}
+.hz-v-align {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.hz-input-combo {
+  display: flex;
+  gap: 5px;
 }
 /**
  * @package    hubzero-cms
