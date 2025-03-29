@@ -12,6 +12,15 @@
 
 */
 
+        .com_blog .subject h3 {
+                font-size: 115%;
+                text-transform: uppercase;
+                letter-spacing: 0.15em;
+                border-bottom: 1px solid #ccc;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+                padding: 0 0 0.618em 0;
+        }
+
 /* Entries listing */
 	.blog-entries article {
 		position: relative;
