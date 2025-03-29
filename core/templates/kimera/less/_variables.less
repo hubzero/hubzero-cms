@@ -56,9 +56,9 @@
 
 // Typography
 // -------------------------
-@sansFontFamily:        'OpenSans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+@sansFontFamily:        system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 @serifFontFamily:       Georgia, "Times New Roman", Times, serif;
-@monoFontFamily:        "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
+@monoFontFamily:        SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
 @baseFontSize:          0.8em;
 @baseFontFamily:        @sansFontFamily;
@@ -330,7 +330,7 @@
 
 // Fluid grid
 // -------------------------
-@fluidGridColumnWidth:    percentage(@gridColumnWidth/@gridRowWidth);
-@fluidGridGutterWidth:    percentage(@gridGutterWidth/@gridRowWidth);
+@fluidGridColumnWidth:    percentage((@gridColumnWidth/@gridRowWidth));
+@fluidGridGutterWidth:    percentage((@gridGutterWidth/@gridRowWidth));
 
 @gridColCollapseMargin: 2em;
