@@ -48,14 +48,14 @@ $this->css('jquery.ui.css', 'system')
 						foreach ($layout[$idx - 1] as $group)
 						{
 							\Document::addstyleDeclaration('
-								#group-marker-'.$qidx.' {
+								#group-marker-'.$qidx.'-'.$idx.' {
 									width: '.$group['width'].'px;
 									height: '.$group['height'].'px;
 									top: '.$group['top'].'px;
 									left: '.$group['left'].'px;
 								}
 							');
-							echo '<div class="group-marker" id="group-marker-'.$qidx.'">';
+							echo '<div class="group-marker" id="group-marker-'.$qidx.'-'.$idx.'">';
 							echo '<div class="group-marker-header"></div>';
 							echo '<button class="remove">x</button>';
 							foreach ($group['answers'] as $aidx => $ans)
