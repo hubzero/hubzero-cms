@@ -1439,7 +1439,7 @@ class Tool
 	 * @param   integer  $id
 	 * @return  boolean
 	 */
-	public static function validate(&$tool, &$err, $id)
+	public static function validate(&$tool, &$err, $id, $group_prefix = 'app-')
 	{
 		$db = \App::get('db');
 
@@ -1589,7 +1589,10 @@ class Tool
 				$grp = Group::getInstance($groupName);
 				if (!is_object($grp) || !$grp->get('gidNumber'))
 				{
-					$err['membergroups' . $k] = 'Group name ' . $groupName . ' is not valid';
+					if ($groupName != ($group_prefix . strtolower($tool['toolname'])))
+					{
+						$err['membergroups' . $k] = 'Group name ' . $groupName . ' is not valid';
+					}
 				}
 			}
 		}
