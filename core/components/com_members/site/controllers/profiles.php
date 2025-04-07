@@ -1509,6 +1509,15 @@ class Profiles extends SiteController
 
 		if ($name && !empty($name))
 		{
+			$name['first']  = strip_tags($name['first']);
+			$name['middle'] = strip_tags($name['middle']);
+			$name['last']   = strip_tags($name['last']);
+			$name['first']  = preg_replace('/[<>]/', '', trim($name['first']));
+			$name['middle'] = preg_replace('/[<>]/', ' ', trim($name['middle']));
+			$name['last']   = preg_replace('/[<>]/', ' ', trim($name['last']));
+			$name['first']  = htmlentities($name['first'], ENT_QUOTES, "UTF-8");
+			$name['middle']  = htmlentities($name['middle'], ENT_QUOTES, "UTF-8");
+			$name['last']  = htmlentities($name['last'], ENT_QUOTES, "UTF-8");
 			$member->set('givenName', \Hubzero\Utility\Sanitize::cleanProperName($name['first']));
 			$member->set('middleName', \Hubzero\Utility\Sanitize::cleanProperName($name['middle']));
 			$member->set('surname', \Hubzero\Utility\Sanitize::cleanProperName($name['last']));
