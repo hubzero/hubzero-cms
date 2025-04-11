@@ -72,11 +72,11 @@ class Tickets extends SiteController
 		if (Pathway::count() == 1  && $this->_task)
 		{
 			$task = $this->_task;
-			if (in_array($this->_task, array('ticket', 'new', 'display', 'save')))
+			if (in_array($this->_task, array('ticket', 'new', 'display', 'save')) || $ticket === null)
 			{
 				$task = 'tickets';
 			}
-			if ($task == 'update')
+			if ($task == 'update' && $ticket !== null)
 			{
 				$task = 'ticket';
 			}
@@ -112,11 +112,11 @@ class Tickets extends SiteController
 		$this->_title = Lang::txt(strtoupper($this->_option));
 		if ($this->_task)
 		{
-			if ($this->_task == 'new' || $this->_task == 'display')
+			if ($this->_task == 'new' || $this->_task == 'display' || $ticket === null)
 			{
 				$this->_title .= ': ' . Lang::txt('COM_SUPPORT_TICKETS');
 			}
-			if ($this->_task != 'display')
+			if (in_array($this->_task, array('ticket', 'new', 'update', 'save')) && ticket !== null)
 			{
 				if ($this->_task == 'update')
 				{
