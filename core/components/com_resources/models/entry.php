@@ -409,7 +409,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 		{
 			if ($this->isTool() && $this->revision == 'dev')
 			{
-				$contributors = $this->authors()->rows();
+				$contributors = $this->authors()->ordered()->rows();
 			}
 			else if ($this->isTool())
 			{
