@@ -6,7 +6,7 @@
 # IMPORTANT - THIS FILE MUST BE SAVED WITH UTF-8 ENCODING ONLY. BEWARE IF EDITING!
 #
 
-SET NAMES 'utf8';
+SET NAMES 'utf8mb3';
 SET @@SESSION.sql_mode = '';
 
 UPDATE `#__extensions` SET enabled='0' WHERE `type`='component' AND `element` IN ('com_banners','com_weblinks','com_contacts','com_wrapper','com_mailto','com_massmail');

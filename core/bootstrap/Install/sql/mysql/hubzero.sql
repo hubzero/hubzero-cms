@@ -8,7 +8,7 @@
 # Last Migration Applied: Migration20140925213032ComTools.php
 #
 
-SET NAMES 'utf8';
+SET NAMES 'utf8mb3';
 SET @@SESSION.sql_mode = '';
 
 CREATE TABLE `app` (
@@ -515,8 +515,7 @@ CREATE TABLE `#__citations` (
   `custom4` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   FULLTEXT KEY `ftidx_title_isbn_doi_abstract` (`title`,`isbn`,`doi`,`abstract`),
-  FULLTEXT KEY `ftidx_title_isbn_doi_abstract_author_publisher` (`title`,`isbn`,`doi`,`abstract`,`author`,`publisher`),
-  FULLTEXT KEY `ftidx_search` (`title`,`isbn`,`doi`,`abstract`,`author`,`publisher`)
+  FULLTEXT KEY `ftidx_title_isbn_doi_abstract_author_publisher` (`title`,`isbn`,`doi`,`abstract`,`author`,`publisher`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__citations_assoc` (
@@ -921,8 +920,7 @@ CREATE TABLE `#__courses_grade_book` (
   `score_recorded` datetime DEFAULT NULL,
   `override_recorded` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uidx_user_id_scope_scope_id` (`member_id`,`scope`,`scope_id`),
-  UNIQUE KEY `alternate_key` (`member_id`,`scope`,`scope_id`)
+  UNIQUE KEY `uidx_user_id_scope_scope_id` (`member_id`,`scope`,`scope_id`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_grade_policies` (
@@ -1479,8 +1477,7 @@ CREATE TABLE `#__forum_attachments` (
   `status` int(11) DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `idx_filename_post_id` (`filename`,`post_id`),
-  KEY `idx_parent` (`parent`),
-  KEY `idx_filename_postid` (`filename`,`post_id`)
+  KEY `idx_parent` (`parent`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__forum_categories` (
@@ -1508,8 +1505,7 @@ CREATE TABLE `#__forum_categories` (
   KEY `idx_state` (`state`),
   KEY `idx_access` (`access`),
   KEY `idx_section_id` (`section_id`),
-  KEY `idx_closed` (`closed`),
-  KEY `idx_scoped` (`scope`,`scope_id`)
+  KEY `idx_closed` (`closed`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__forum_posts` (
@@ -1546,7 +1542,6 @@ CREATE TABLE `#__forum_posts` (
   KEY `idx_state` (`state`),
   KEY `idx_sticky` (`sticky`),
   KEY `idx_parent` (`parent`),
-  KEY `idx_scoped` (`scope`,`scope_id`),
   FULLTEXT KEY `ftidx_comment` (`comment`),
   FULLTEXT KEY `ftidx_comment_title` (`comment`,`title`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
