@@ -280,7 +280,7 @@ class SearchComponent extends Relational
 			$class = ($activeType == $this->id) ? 'class="active"' : '';
 			$link = Route::url('index.php?option=com_search&terms=' . $terms . '&type=' . $this->id . $childTerms);
 			$html .= '<li><a ' . $class . ' href="' . $link . '" data-type=' . $this->id . '>';
-			$html .= $this->name . '<span class="item-count">' . $count . '</span></a>';
+			$html .= $this->title . '<span class="item-count">' . $count . '</span></a>';
 
 			// Display filter controls, if the admin has configured a filter for this component:
 			if ($activeType && $this->filters->count() > 0)
