@@ -199,7 +199,7 @@ $this->css()
 			$authenticator = 'hub';
 			if (substr($row->get('email'), -8) == '@invalid'):
 				$authenticator = Lang::txt('COM_MEMBERS_UNKNOWN');
-				if ($lnk = Hubzero\Auth\Link::find_by_id(abs($row->get('username')))):
+				if ($lnk = Hubzero\Auth\Link::find_by_id(abs(intval($row->get('username'))))):
 					$domain = Hubzero\Auth\Domain::find_by_id($lnk->auth_domain_id);
 					$authenticator = $domain->authenticator;
 				endif;
