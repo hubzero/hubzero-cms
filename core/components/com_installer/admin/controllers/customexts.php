@@ -576,7 +576,12 @@ class Customexts extends AdminController
 				$updateGitURLconf_response = json_decode($updateGitURLconf_response);
 
 				// did we fail
-				if ($updateGitURLconf_response[0] != '' || json_last_error() != JSON_ERROR_NONE)
+				if ($updateGitURLconf_response === NULL)
+				{
+					// add failed MUSE message
+                                        $failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => array("MUSE Call returned NULL", $museCmd));
+                                }
+                                else if ($updateGitURLconf_response[0] != '' || json_last_error() != JSON_ERROR_NONE)
 				{
 					// add failed message
 					$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $updateGitURLconf_response);
@@ -743,8 +748,15 @@ class Customexts extends AdminController
 			$remove_response = Cli::call($museCmd, $task='repository');
 			$remove_response = json_decode($remove_response);
 
-			// did we succeed
-			if (preg_grep("/Updating the repository.../uis", $remove_response))
+			 // MUSE command failed
+                        if ($remove_response === NULL){
+                               $failed[] = array(
+                                        'extension'   => $extension->get('name'),
+                                        'message' => array("MUSE Call returned NULL", $museCmd)
+                                );
+                        }
+                        // did we succeed
+                        else if (preg_grep("/Updating the repository.../uis", $remove_response))
 			{
 				// add success message
 				$success[] = array(
