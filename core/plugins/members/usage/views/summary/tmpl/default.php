@@ -110,10 +110,10 @@ $this->css('usage', 'com_usage');
 				$sim_count_12  = plgMembersUsage::get_simcount($row->id, 12);
 				$sim_count_14  = plgMembersUsage::get_simcount($row->id, 14);
 
-				$sum_usercount_12 += $user_count_12;
-				$sum_usercount_14 += $user_count_14;
-				$sum_simcount_12  += $sim_count_12;
-				$sum_simcount_14  += $sim_count_14;
+                                $sum_usercount_12 += (is_numeric($user_count_12)?$user_count_12:0);
+                                $sum_usercount_14 += (is_numeric($user_count_14)?$user_count_14:0);
+                                $sum_simcount_12  += (is_numeric($sim_count_12)?$sim_count_12:0);
+                                $sum_simcount_14  += (is_numeric($sim_count_14)?$sim_count_14:0);
 				?>
 				<tr class="<?php
 					$cls = ($cls == 'even') ? 'odd' : 'even';
