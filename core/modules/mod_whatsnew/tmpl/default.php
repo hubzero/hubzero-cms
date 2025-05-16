@@ -70,7 +70,7 @@ else
 	}
 	$html .= "\t\t" . '<span class="q">' . Lang::txt('MOD_WHATSNEW_MY_INTERESTS') . ': ' . $this->formatTags($this->tags) . '</span>' . "\n";
 	$html .= "\t" . '</p>' . "\n";
-	if (count($rows2) > 0)
+	if ($rows2 !== NULL && count($rows2) > 0)
 	{
 		$count = 0;
 
