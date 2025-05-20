@@ -5,6 +5,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+// ----------- JESSE WOO EDIT ----- just for stage ---- will do override VIEW template html/plg_resources_about/index/default.php
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -97,7 +99,7 @@ $maintext = $this->model->description;
 					</p>
 		<?php if ($thedate) { ?>
 				</div>
-				<div class="col span-half omega">
+				<div class="col span-half omega jesse-edit">
 					<h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_PUBLISHED_ON'); ?></h4>
 					<p class="resource-content">
 						<time datetime="<?php echo $thedate; ?>"><?php echo Date::of($thedate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>

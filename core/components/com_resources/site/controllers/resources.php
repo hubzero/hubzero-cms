@@ -188,18 +188,20 @@ class Resources extends SiteController
 			->display();
 	}
 
+	// ********* UPDATING CORE - JESSE DEVELOPMENT ON STAGE - NEED TO CREATE A NEW COMPONENT ********
 	/**
-	 * Browse entries
+	 * Browse entries 
 	 *
 	 * @return     void
 	 */
-	public function browseTask()
-	{
+	public function browseTask() {
+		// Database connection
+		$db = \App::get('db');
+
 		// Set the default sort
 		$default_sort = 'date';
 
-		if ($this->config->get('show_ranking'))
-		{
+		if ($this->config->get('show_ranking')){
 			$default_sort = 'ranking';
 		}
 
@@ -212,8 +214,13 @@ class Resources extends SiteController
 			'search' => Request::getString('search', ''),
 			'tag'    => trim(Request::getString('tag', '', 'request', 'none', 2)),
 			'tag_ignored' => array(),
-			'access' => [0, 3]
+			'access' => [0, 3],
+			'science' => Request::getString('science', ''),
+			'institution' => Request::getString('institution', ''),
+			'resource' => Request::getString('resource', ''),
+			'start-date' => Request::getString('start-date', '')
 		);
+
 		if (!in_array($filters['sortby'], array('date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random')))
 		{
 			App::abort(404, Lang::txt('Invalid sort value of "%s" used.', $filters['sortby']));
@@ -257,15 +264,9 @@ class Resources extends SiteController
 		// Get type if not given
 		$this->_title = Lang::txt(strtoupper($this->_option)) . ': ';
 
-		if (!is_numeric($filters['type']))
-		{
-			// Normalize the title
-			// This is so we can determine the type of resource to display from the URL
-			// For example, /resources/onlinepresentation => Oneline Presentation
-			foreach ($types as $type)
-			{
-				if (trim($filters['type']) == $type->get('alias'))
-				{
+		if (!is_numeric($filters['type'])){
+			foreach ($types as $type){
+				if (trim($filters['type']) == $type->get('alias')){
 					$filters['type'] = $type->get('id');
 
 					$this->_title .= $type->get('type');
@@ -275,14 +276,45 @@ class Resources extends SiteController
 			}
 		}
 
+		// Get a List of Field of Science
+		$fieldOfScience = [];
+		$queryDistinctFieldOfScience = "SELECT DISTINCT fieldOfStudy FROM jos_resource_allocations ORDER BY fieldOfStudy ASC";
+		$db->setQuery($queryDistinctFieldOfScience);
+        $distinctFieldOfScienceList = $db->loadAssocList();
+		foreach ($distinctFieldOfScienceList as $field) {
+			$fieldOfScience[] = $field["fieldOfStudy"];
+		}
+
+		// Get a List of Institution
+		$listInstitution = [];
+		$queryDistinctInstitution = "SELECT DISTINCT piInstitution FROM jos_resource_allocations ORDER BY piInstitution ASC";
+		$db->setQuery($queryDistinctInstitution);
+        $distinctInstitutionList = $db->loadAssocList();
+		foreach ($distinctInstitutionList as $institution) {
+			$institutionStr = $institution["piInstitution"];
+			if (!empty($institutionStr)) {
+				$listInstitution[] = $institutionStr;
+			}
+		}
+
+		// Get a List of Resources
+		$listResources = [];
+		$queryDistinctResources = "SELECT DISTINCT resourceName FROM jos_resource_allocations ORDER BY resourceName ASC";
+		$db->setQuery($queryDistinctResources);
+		$distinctResourceList = $db->loadAssocList();
+		foreach ($distinctResourceList as $resource) {
+			$listResources[] = $resource["resourceName"];
+		}
+
 		$query = Entry::all()
-			->select('#__resources.id')
+			->select('DISTINCT #__resources.id')
 			->select('title')
 			->select('params')
 			->select('access')
 			->select('ranking')
 			->select('type')
 			->select('rating')
+			->select('alias')
 			->select('#__resources.created')
 			->select('#__resources.modified')
 			->select('publish_up')
@@ -311,34 +343,44 @@ class Resources extends SiteController
 			$query->whereIn($tg . '.tag', $tags);
 		}
 
-		if ($filters['search'])
-		{
+		if ($filters['search']) {
 			$filters['search'] = strtolower((string)$filters['search']);
 
 			$query->whereLike($r . '.title', $filters['search'], 1)
 					->orWhereLike($r . '.fulltxt', $filters['search'], 1)
+					->orWhereLike($r . '.alias', $filters['search'], 1)
 					->resetDepth();
 		}
 
-		if ($filters['type'])
-		{
-			$query->whereEquals($r . '.type', $filters['type']);
+		if ($filters['type']){
+			$query->whereEquals($r . '.type', $filters['type']);	
 		}
 
-		$query->whereEquals($r . '.publish_up', '0000-00-00 00:00:00', 1)
-			->orWhere($r . '.publish_up', 'IS', null, 1)
-			->orWhere($r . '.publish_up', '<=', Date::toSql(), 1)
-			->resetDepth();
+		// All these are filters from the NAIRR allocation
+		if ($filters['resource'] || $filters['institution'] || $filters['science'] || $filters['start-date']) {
+			// JOINING ALLOCATIONS TABLE
+			$query->joinRaw('#__resource_allocations AS A', 'A.requestNumber = #__resources.alias', 'inner');
 
-		$query->whereEquals($r . '.publish_down', '0000-00-00 00:00:00', 1)
-			->orWhere($r . '.publish_down', 'IS', null, 1)
-			->orWhere($r . '.publish_down', '>=', Date::toSql(), 1)
-			->resetDepth();
+			if ($filters['science']){
+				$query->whereRaw('A.fieldOfStudy = "' . $filters['science'] . '"');
+			}
+
+			if ($filters['institution']){
+				$query->whereRaw('A.piInstitution = "' . $filters['institution'] . '"');
+			}
+	
+			if ($filters['resource']){
+				$query->whereRaw('A.resourceName = "' . $filters['resource'] . '"');
+			}
+
+			if ($filters['start-date']){
+				$query->whereRaw('A.beginDate >= "' . $filters['start-date'] . '"');
+			}
+		}
 
 		$query->whereEquals($r . '.published', Entry::STATE_PUBLISHED);
 
-		switch ($filters['sortby'])
-		{
+		switch ($filters['sortby']) {
 			case 'date_created':
 				$query->order($r . '.created', 'desc');
 				break;
@@ -368,10 +410,13 @@ class Resources extends SiteController
 			->paginated()
 			->rows();
 
-		if (!$filters['type'])
-		{
+		if (!$filters['type']){
 			$this->_title .= Lang::txt('COM_RESOURCES_ALL');
 			$this->_task_title = Lang::txt('COM_RESOURCES_ALL');
+		} else {
+			$typeObj = Type::oneOrNew($filters['type']);
+			$this->_title .= $typeObj->type;
+			$this->_task_title = $typeObj->type;
 		}
 
 		// Set page title
@@ -383,6 +428,9 @@ class Resources extends SiteController
 		// Output HTML
 		$this->view
 			->set('types', $types)
+			->set('fields', $fieldOfScience)
+			->set('institutions', $listInstitution)
+			->set('resources', $listResources)
 			->set('filters', $filters)
 			->set('authorized', $authorized)
 			->set('title', $this->_title)
@@ -1294,7 +1342,7 @@ class Resources extends SiteController
 	}
 
 	/**
-	 * View a resource
+	 * View a resource - JESSE WOO EDIT +++++++++++++++=
 	 *
 	 * @return  void
 	 */
@@ -1354,13 +1402,6 @@ class Resources extends SiteController
 		{
 			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
 		}
-
-		// // Make sure they have access to view this resource
-		//if ($this->checkGroupAccess($this->model))
-		//{
-		//	App::abort(403, \Lang::txt('COM_RESOURCES_ALERTNOTAUTH_GROUP', $this->model->get('group_owner'), Route::url('index.php?option=com_groups&cn=' . $this->model->get('group_owner'))));
-		//	return;
-		//}
 
 		// Build the pathway
 		if ($this->model->inGroup())
@@ -1439,29 +1480,6 @@ class Resources extends SiteController
 				$this->model
 			)
 		);
-
-		// We need to do this here because we need some stats info to pass to the body
-		/*if (isset($this->model->revision) && $this->model->revision)
-		{
-			$cts = array();
-			foreach ($cats as $cat)
-			{
-				if (empty($cat))
-				{
-					$cts[] = $cat;
-					continue;
-				}
-				foreach ($cat as $name => $title)
-				{
-					if ($name == 'about' || $name == 'versions' || $name == 'supportingdocs')
-					{
-						$cts[] = $cat;
-					}
-				}
-			}
-
-			$cats = $cts;
-		}*/
 
 		// Get the sections
 		$sections = Event::trigger('resources.onResources', array(
