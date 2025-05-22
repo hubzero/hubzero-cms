@@ -31,6 +31,8 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	 * Database state constants
 	 **/
 	const STATE_ARCHIVED = 2;
+    const STATE_DELETED = -2; 
+    const STATE_UNPUBLISHED = 0;
 
 	/**
 	 * The table namespace
@@ -713,12 +715,12 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 			$url = '/' . $this->alias;
 		}
 
-		if ($this->get('state') == 1 && $this->get('access') == 1)
+		if ($this->isPublished() == 1 && $this->get('access') == 1)
 		{
 			$access_level = 'public';
 		}
 		// Registered condition
-		elseif ($this->get('state') == 1 && $this->get('access') == 2)
+		elseif ($this->isPublished() == 1 && $this->get('access') == 2)
 		{
 			$access_level = 'registered';
 		}
@@ -739,6 +741,43 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 		$page->fulltext = $this->introtext . ' ' . $this->fulltext;
 		return $page;
 	}
+
+	/**
+	 * Determine whether article is published. Adapted from function in resource component.
+	 * Use the publish up and publish down dates as well as the article state.
+	 *
+	 * @return  bool
+	 */
+	public function isPublished()
+    {
+        // Get the current date
+        $now = Date::toSql();
+        $publishUp = $this->get('publish_up');
+        $publishDown = $this->get('publish_down');
+
+        // Make sure the article has state = published
+        if (in_array($this->get('state'), array(self::STATE_ARCHIVED, self::STATE_DELETED, self::STATE_UNPUBLISHED)))
+        {
+            return false;
+        }
+
+        // Make sure the article timestamp is beyond publish up date
+        // acceptable publish_up: null or less than current date
+        if (isset($publishUp) && !is_null($publishUp) && $publishUp >= $now)
+        {
+            return false;
+        }
+
+        // Make sure the article timestamp is less than publish down date
+        // acceptable publish_down: null or greater than current date
+        if (isset($publishDown) && !is_null($publishDown) && $publishDown <= $now)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
 
 	/**
 	 * Increment the hit counter
