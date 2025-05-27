@@ -101,7 +101,14 @@ class Helper extends Module
 
 		$limit = intval($this->params->get('limit', 10));
 		$tags  = null;
-
+                if (is_string($interests))
+                {
+                        $interests = explode(',', $interests);
+                }
+                if (!is_array($interests))
+                {
+                        $interests = array();
+                }
 		$records = \Components\Answers\Models\Question::all()
 			->including(['responses', function ($response){
 				$response
