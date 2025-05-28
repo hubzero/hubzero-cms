@@ -56,10 +56,10 @@ class Listfilter extends Filter
 	/**
 	 * Add filter options to solr count query
 	 *
-	 * @param   object   $multifacet  Solarium object that permits getting invidual counts
+	 * @param   object   $multifacet  Solarium object that permits getting individual facet counts
 	 * @return  string
 	 */
-	public function addCounts(\Solarium\QueryType\Select\Query\Component\Facet\MultiQuery $multifacet)
+	public function addCounts(\Solarium\Component\Facet\MultiQuery $multifacet)
 	{
 		$filterField = $this->get('field');
 		foreach ($this->options as $option)
