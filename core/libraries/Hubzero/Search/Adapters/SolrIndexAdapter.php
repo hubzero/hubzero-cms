@@ -172,28 +172,29 @@ class SolrIndexAdapter implements IndexInterface
 	}
 
 	/**
-	 * Initialize Solarium bufferAdd plugin
+	 * Initialize Solarium bufferedAdd plugin
 	 * @param boolean $overwrite if true, overwrites existing entries with the same docId
 	 * @param int $commitWithin time in milliseconds that a commit should happen
 	 * @param int $buffer max number of documents to add before flushing
-	 * @return Solarium\Plugin\BufferAdd\BufferAdd
+	 * @return Solarium\Plugin\BufferedAdd\BufferedAdd
 	 */
 	public function initBufferAdd($overwrite = null, $commitWithin = null, $buffer = null)
 	{
 		if (!isset($this->bufferAdd))
 		{
 			$this->bufferAdd = $this->connection->getPlugin('bufferedadd');
-			$this->commitWithin = $commitWithin;
-			$this->overwrite = $overwrite;
 
-			// When Solarium updates with the ability to preset commitWithin and Overwrite,
-			// 	this buffer increase won't be necessary.
-			// This prevents the automatically flushing in the event there are more records than the batch size,
-			// since the automatically flushing doesn't set the commitWithin or overwrite values
-			// for the records flushed.
-
-			$buffer++;
-			$this->bufferAdd->setBufferSize($buffer);
+                        if ($commitWithin !== null) {
+                                $this->bufferAdd->setCommitWithin($commitWithin); 
+                                $this->commitWithin = $commitWithin;
+                        }
+                        if ($overwrite !== null) {
+                                $this->bufferAdd->setOverwrite($overwrite);
+                                $this->overwrite = $overwrite;
+                        }
+                        if ($buffer !== null) {
+                                $this->bufferAdd->setBufferSize($buffer);
+                        }
 		}
 		return $this->bufferAdd;
 	}
