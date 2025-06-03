@@ -52,6 +52,13 @@ class Macro
 	protected $_arguments = null;
 
 	/**
+	 * Arguments passed to the macro
+	 *
+	 * @var  string
+	 */
+	protected $args = '';
+
+	/**
 	 * Allow macro in partial parsing?
 	 *
 	 * @var  string
@@ -81,8 +88,6 @@ class Macro
 	public function __construct($config=array())
 	{
 		$this->_db = \App::get('db');
-
-		$this->args = '';
 
 		// Set the controller name
 		if (empty($this->_name))
