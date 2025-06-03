@@ -608,7 +608,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
 	{
 		$data = array();
 
-		preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->get('metadata'), $matches, PREG_SET_ORDER);
+		preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->get('metadata', ''), $matches, PREG_SET_ORDER);
 
 		if (count($matches) > 0)
 		{
