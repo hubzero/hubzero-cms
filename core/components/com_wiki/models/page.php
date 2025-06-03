@@ -145,7 +145,7 @@ class Page extends Relational
 	{
 		if (empty($pagename))
 		{
-			$pagename = $this->get('pagename');
+			$pagename = $this->get('pagename', '');
 		}
 		if (strstr($pagename, ':'))
 		{
