@@ -758,7 +758,7 @@ class Html extends Obj
 	 */
 	public static function shortenName($name, $chars = 12)
 	{
-		$name = trim($name);
+		$name = trim($name ?: '');
 
 		if (strlen($name) > $chars)
 		{
