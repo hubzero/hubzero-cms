@@ -52,7 +52,7 @@ class Likesv1_0 extends ApiController
 		$userId = Request::getString('userId');
 		$created = Date::of('now')->toSql();
 
-		if (!userId || (userId === 0))
+		if (!$userId || ($userId === 0))
 		{
 			throw new Exception("Please sign into post a Like", 404);
 		}

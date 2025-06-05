@@ -143,9 +143,9 @@ class Page extends Relational
 	 */
 	public function getNamespace($pagename='')
 	{
-		if (is_null($pagename))
+		if (empty($pagename))
 		{
-			$pagename = $this->get('pagename');
+			$pagename = $this->get('pagename', '');
 		}
 		if (strstr($pagename, ':'))
 		{

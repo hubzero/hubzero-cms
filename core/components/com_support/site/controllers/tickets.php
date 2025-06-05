@@ -116,7 +116,7 @@ class Tickets extends SiteController
 			{
 				$this->_title .= ': ' . Lang::txt('COM_SUPPORT_TICKETS');
 			}
-			if (in_array($this->_task, array('ticket', 'new', 'update', 'save')) && ticket !== null)
+			if (in_array($this->_task, array('ticket', 'new', 'update', 'save')) && $ticket !== null)
 			{
 				if ($this->_task == 'update')
 				{

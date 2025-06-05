@@ -54,7 +54,7 @@ $this->css('introduction.css', 'system')
 					</div>
 				</div><!-- / .col span6 omega -->
 			</div><!-- / .grid -->
-			<?php if ($this->wishlist || $this->xpoll) { ?>
+			<?php if ($this->wishlist || !empty($this->xpoll)) { ?>
 				<div class="grid">
 					<div class="col span6">
 					<?php if ($this->wishlist) { ?>

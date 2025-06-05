@@ -19,6 +19,11 @@ define('NBSP', '&#160;');
  */
 class _HWLDF_WordAccumulator
 {
+	var $_lines = '';
+	var $_line = '';
+	var $_group = '';
+	var $_tag = '';
+
 	/**
 	 * Short description for '_HWLDF_WordAccumulator'
 	 *

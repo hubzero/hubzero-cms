@@ -499,11 +499,11 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
 			$publication->setCuration();
 			if ($version->isPublished() && !in_array($version->master_alias, $typeBlackList))
 			{
-				$publication->_curationModel->createSymLink();
+				$publication->_curationModel->createLink();
 			}
 			else
 			{
-				$publication->_curationModel->removeSymLink();
+				$publication->_curationModel->removeLink();
 			}
 		}
 	}

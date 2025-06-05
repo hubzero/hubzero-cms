@@ -840,7 +840,7 @@ class Post extends Relational
 			foreach ($rows as $row)
 			{
 				$pt   = $row->get('parent');
-				$list = @$children[$pt] ? $children[$pt] : array();
+				$list = isset($children[$pt]) ? $children[$pt] : array();
 
 				array_push($list, $row);
 

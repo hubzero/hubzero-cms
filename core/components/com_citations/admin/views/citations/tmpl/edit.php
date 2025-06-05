@@ -90,13 +90,13 @@ if (function_exists('mbstring'))
 					<div class="col span6">
 						<div class="input-wrap">
 							<label for="date_submit"><?php echo Lang::txt('DATE_SUBMITTED'); ?>:</label><br />
-							<input type="text" name="citation[date_submit]" id="date_submit" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->date_submit)); ?>" />
+							<input type="text" name="citation[date_submit]" id="date_submit" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->date_submit == null ? '' : $this->row->date_submit)); ?>" />
 						</div>
 					</div>
 					<div class="col span6">
 						<div class="input-wrap">
 							<label for="date_accept"><?php echo Lang::txt('DATE_ACCEPTED'); ?>:</label><br />
-							<input type="text" name="citation[date_accept]" id="date_accept" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->date_accept)); ?>" />
+							<input type="text" name="citation[date_accept]" id="date_accept" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->date_accept == null ? '' : $this->row->date_accept)); ?>" />
 						</div>
 					</div>
 				</div>
@@ -105,7 +105,7 @@ if (function_exists('mbstring'))
 					<div class="col span6">
 						<div class="input-wrap">
 							<label for="date_publish"><?php echo Lang::txt('DATE_PUBLISHED'); ?>:</label><br />
-							<input type="text" name="citation[date_publish]" id="date_publish" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->date_publish)); ?>" />
+							<input type="text" name="citation[date_publish]" id="date_publish" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->date_publish == null ? '' : $this->row->date_publish)); ?>" />
 						</div>
 					</div>
 					<div class="col span6">
@@ -174,7 +174,7 @@ if (function_exists('mbstring'))
 					<div class="col span6">
 						<div class="input-wrap">
 							<label for="pages"><?php echo Lang::txt('PAGES'); ?>:</label><br />
-							<input type="text" name="citation[pages]" id="pages" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->pages)); ?>" />
+							<input type="text" name="citation[pages]" id="pages" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->pages == null ? '' : $this->row->pages)); ?>" />
 						</div>
 					</div>
 					<div class="col span6">

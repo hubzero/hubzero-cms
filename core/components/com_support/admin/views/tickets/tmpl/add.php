@@ -47,7 +47,7 @@ $cc = array();
 				</div>
 				<div class="input-wrap">
 					<label for="field-report"><?php echo Lang::txt('COM_SUPPORT_TICKET_FIELD_DESCRIPTION'); ?>:</label>
-					<textarea name="ticket[report]" id="field-report" cols="75" rows="15"><?php echo $this->escape(trim($this->row->get('report'))); ?></textarea>
+					<textarea name="ticket[report]" id="field-report" cols="75" rows="15"><?php echo $this->escape(trim($this->row->get('report') == null ? '' : $this->row->get('report'))); ?></textarea>
 				</div>
 				<div class="input-wrap">
 					<label for="actags"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_TAGS'); ?></label>

@@ -342,11 +342,11 @@ class Media extends SiteController
 
 		$ext = isset($pathinfo['extension']) ? $pathinfo['extension'] : '';
 
-		while (file_exists($path . DS . $filename . $ext))
+		while (file_exists($path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
 		}
-		$file = $path . DS . $filename . $ext;
+		$file = $path . DS . $filename . '.' . $ext;
 
 		// Check that the file type is allowed
 		$allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
@@ -378,7 +378,7 @@ class Media extends SiteController
 
 		// Create database entry
 		$asset->set('item_id', intval($listdir));
-		$asset->set('filename', $filename . $ext);
+		$asset->set('filename', $filename . '.' . $ext);
 		if ($asset->image())
 		{
 			$hi = new \Hubzero\Image\Processor($file);
@@ -413,7 +413,7 @@ class Media extends SiteController
 		//echo result
 		echo json_encode(array(
 			'success'   => true,
-			'file'      => $filename . $ext,
+			'file'      => $filename . '.' . $ext,
 			'directory' => str_replace(PATH_APP, '', $path),
 			'id'        => $listdir,
 			'html'      => str_replace('>', '&gt;', $view->loadTemplate()) // Entities have to be encoded or IE 8 goes nuts

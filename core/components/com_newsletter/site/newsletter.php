@@ -30,14 +30,11 @@ $controllerNameMap = [
 ];
 
 // if we had a controller request, set it, otherwise set 'newsletters':
-$requestedController = Request::getString('controller');
-if (!empty($requestedController))
+$controllerName = Request::getCmd('controller', $defaultController);
+if (in_array($controllerName, array_keys($controllerNameMap)))
 {
 	// from reply component
-	$controllerName = Arr::getValue($controllerNameMap, $requestedController);
-} else {
-	// from newsletter
-	$controllerName = \Request::getCmd('controller', $defaultController);
+	$controllerName = Arr::getValue($controllerNameMap, $controllerName);
 }
 
 //build controller path and require it

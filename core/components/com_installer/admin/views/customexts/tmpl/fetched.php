@@ -73,7 +73,7 @@ Html::behavior('tooltip');
 								echo '<strong>Extension: ' . $failed['extension'] . '</strong>';
 							?>
 							<hr />
-							<pre><?php echo implode('<br>', $failed['message']); ?></pre>
+							<pre><?php echo implode('<br>', is_array($failed['message']) ? $failed['message'] : array($failed['message'])); ?></pre>
 						</td>
 					</tr>
 				<?php endforeach; ?>

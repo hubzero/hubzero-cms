@@ -78,7 +78,7 @@ class DocumentServiceProvider extends Middleware
 				$file = 'index';
 			}
 
-			if ($this->app['config']->get('offline')) // && !$user->authorise('core.login.offline'))
+			if ($this->app['config']->get('offline') && !User::authorise('core.login.offline'))
 			{
 				$file = 'offline';
 

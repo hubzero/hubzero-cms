@@ -710,7 +710,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 		}
 		else
 		{
-			$url = '/' . $this->alias;
+			$url = $this->alias;
 		}
 
 		if ($this->get('state') == 1 && $this->get('access') == 1)

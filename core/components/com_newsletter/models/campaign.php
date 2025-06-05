@@ -127,7 +127,7 @@ class Campaign extends Relational
 		$expiration = $this->get('expire_date');
 
 		$invalidExpiration = empty($expiration);
-		$isExpired = strtotime(Date::of()) > strtotime($expiration);
+		$isExpired = strtotime(Date::of()) > strtotime($expiration ?: '9999-12-31 23:59:59');
 
 		return $invalidExpiration || $isExpired;
 	}

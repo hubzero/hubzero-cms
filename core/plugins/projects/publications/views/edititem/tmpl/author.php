@@ -81,7 +81,7 @@ $lastname = $author->lastName ? htmlspecialchars($author->lastName) : $lastname;
 					<div class="clear"></div>
 					<label for="organization">
 						<span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_ORGANIZATION')); ?>*:</span>
-						<input type="text" name="organization" class="long" value="<?php echo $author->organization ? htmlspecialchars($author->organization) : htmlspecialchars($author->p_organization); ?>" maxlength="255" />
+						<input type="text" name="organization" class="long" value="<?php echo (isset($author->organization) && $author->organization) ? htmlspecialchars($author->organization == null ? '' : $author->organization) : htmlspecialchars($author->p_organization == null ? '' : $author->p_organization); ?>" maxlength="255" />
 						<?php 
 							// Add in class for JS selector to conditionally retrieve data from RoR Api	
 							if (\Component::params('com_members')->get('rorApi')) {

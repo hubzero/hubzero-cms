@@ -180,7 +180,7 @@ foreach ($cats as $cat)
 							$html .= '<ol class="results">' . "\n";
 							foreach ($this->results as $row)
 							{
-								$obj = 'plgTags' . ucfirst($row->section);
+								$obj = 'plgTags' . ucfirst($row->section == null ? '' : $row->section);
 
 								if (method_exists($obj, 'out'))
 								{

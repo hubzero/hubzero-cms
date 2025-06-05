@@ -56,7 +56,7 @@ class Sanitize
 	 */
 	public static function stripWhitespace($str)
 	{
-		return preg_replace('/\s{2,}/u', ' ', preg_replace('/[\n\r\t]+/', '', $str));
+		return preg_replace('/\s{2,}/u', ' ', preg_replace('/[\n\r\t]+/', '', $str == null ? '' : $str));
 	}
 
 	/**

@@ -640,7 +640,7 @@ class Resources extends SiteController
 				$firstChild = $model->children()
 					->whereEquals('standalone', 0)
 					->whereEquals('published', Entry::STATE_PUBLISHED)
-					->ordered()
+					->order('ordering', 'asc')
 					->rows()
 					->first();
 

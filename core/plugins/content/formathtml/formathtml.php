@@ -45,7 +45,7 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 			$content = $article->$key;
 		}
 
-		$content = ltrim($content);
+		$content = ltrim($content == null ? '' : $content);
 
 		if (!$content)
 		{

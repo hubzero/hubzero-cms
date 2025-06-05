@@ -40,7 +40,7 @@ defined('_HZEXEC_') or die();
 					</p>
 					<p id="form-login-password">
 						<label for="passwd"><?php echo Lang::txt('JGLOBAL_PASSWORD') ?></label>
-						<input type="password" name="password" class="inputbox" size="18" alt="<?php echo Lang::txt('JGLOBAL_PASSWORD') ?>" id="passwd" />
+						<input type="password" name="passwd" class="inputbox" size="18" alt="<?php echo Lang::txt('JGLOBAL_PASSWORD') ?>" id="password" />
 					</p>
 					<?php if (Plugin::isEnabled('system', 'remember')) : ?>
 					<p id="form-login-remember">

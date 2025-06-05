@@ -1804,7 +1804,7 @@ class Items extends AdminController
 				}
 			}
 
-			if (!$this->view->name)
+			if (!isset($this->view->name) || !$this->view->name)
 			{
 				$org  = '';
 				$name = str_replace('_', ' ', $id);

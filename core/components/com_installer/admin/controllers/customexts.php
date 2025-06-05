@@ -520,7 +520,7 @@ class Customexts extends AdminController
 				}
 
 				$clone_response = Cli::call($museCmd, $task='repository');
-				$clone_response = json_decode($clone_response);
+				$clone_response = json_decode($clone_response == null ? '' : $clone_response);
 			}
 
 			// Display clone error if errors
@@ -573,15 +573,15 @@ class Customexts extends AdminController
 
 				$museCmd = 'updateGitURLconf repoPath=' . $extension->path . ' newsourceUrl=' . $newURL;
 				$updateGitURLconf_response = Cli::call($museCmd, $task='repository');
-				$updateGitURLconf_response = json_decode($updateGitURLconf_response);
+				$updateGitURLconf_response = json_decode($updateGitURLconf_response == null ? '' : $updateGitURLconf_response);
 
 				// did we fail
 				if ($updateGitURLconf_response === NULL)
 				{
 					// add failed MUSE message
-                                        $failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => array("MUSE Call returned NULL", $museCmd));
-                                }
-                                else if ($updateGitURLconf_response[0] != '' || json_last_error() != JSON_ERROR_NONE)
+          $failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => array("MUSE Call returned NULL", $museCmd));
+        }
+        else if ($updateGitURLconf_response[0] != '' || json_last_error() != JSON_ERROR_NONE)
 				{
 					// add failed message
 					$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $updateGitURLconf_response);

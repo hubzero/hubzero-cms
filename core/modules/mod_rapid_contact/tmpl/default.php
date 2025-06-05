@@ -60,7 +60,7 @@ $this->css();
 					<?php echo $this->message_label; ?>
 				</label>
 				<span class="input">
-					<textarea class="form-control" name="rp[message]" id="contact-comments<?php echo $this->module->id; ?>" cols="35" rows="10"><?php echo $this->escape($this->posted['message']); ?></textarea>
+					<textarea class="form-control" name="rp[message]" id="contact-comments<?php echo $this->module->id; ?>" cols="35" rows="10"><?php echo $this->escape(!isset($this->posted['message']) ? '' : $this->posted['message']); ?></textarea>
 				</span>
 			</div>
 

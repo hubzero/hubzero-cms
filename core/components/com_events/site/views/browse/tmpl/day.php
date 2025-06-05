@@ -104,8 +104,8 @@ $this->css();
 								AND `approved`=1";
 				$database->setQuery($sql);
 				$rows = $database->loadObjectList();
-				$first_event_time = new DateTime($rows[0]->min);
-				$last_event_time = new DateTime($rows[0]->max);
+				$first_event_time = new DateTime($rows[0]->min == null ? '' : $rows[0]->min);
+				$last_event_time = new DateTime($rows[0]->max == null ? '' : $rows[0]->max );
 				$this_datetime = new DateTime($this->year . '-01-01');
 				//get a DateTime for the first day of the year and check if there's an event earlier
 				if ($this_datetime > $first_event_time) {

@@ -287,7 +287,7 @@ class Tickets extends AdminController
 		// Get severities
 		$lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 
-		if (trim($ticket->get('group_id')))
+		if (trim($ticket->get('group_id') == null ? '' : $ticket->get('group_id')))
 		{
 			$lists['owner'] = $this->_userSelectGroup('ticket[owner]', $ticket->get('owner'), 1, '', trim($ticket->get('group_id')));
 		}

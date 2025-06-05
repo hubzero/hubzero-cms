@@ -567,7 +567,7 @@ class Publication extends Base
 		$role     = $element->role;
 		$params   = $element->typeParams;
 		$required = $element->required;
-		$counter  = count($attachments);
+		$counter  = is_array($attachments) ? count($attachments) : 0;
 		$allowed  = isset($params->accept) ? $params->accept :  null;
 
 		if (!$required)

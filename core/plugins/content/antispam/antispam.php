@@ -62,7 +62,7 @@ class plgContentAntispam extends \Hubzero\Plugin\Plugin
 		{
 			$key = $this->_key($context);
 
-			$content = ltrim($article->get($key));
+			$content = ltrim($article->get($key) == null ? '' : $article->get($key));
 		}
 		else if (is_object($article) || is_array($article))
 		{

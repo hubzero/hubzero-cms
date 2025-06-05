@@ -8,6 +8,9 @@
 // No direct access.
 defined('_HZEXEC_') or die;
 
+$rootLink = $this->get('rootLink');
+$parentLink = $this->get('parentLink');
+
 if ($rootLink)
 {
 	$item->anchor_css = $item->anchor_css ? $item->anchor_css . ' main-link' : 'main-link';

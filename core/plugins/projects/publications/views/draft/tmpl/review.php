@@ -169,7 +169,7 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
 							$name = $author->name ? $author->name : $author->p_name;
 							$name = trim($name) ? $name : $author->invited_name;
 							$name = trim($name) ? $name : $author->invited_email;
-							$email = trim($author->p_email) ? $author->p_email : (trim($author->invited_email) ? trim($author->invited_email) : null);
+							$email = trim($author->p_email == null ? '' : $author->p_email) ? $author->p_email : (trim($author->invited_email == null ? '' : $author->invited_email) ? trim($author->invited_email == null ? '' : $author->invited_email) : null);
 							?>
 							<li>
 								<span class="item-order"><input type="checkbox" name="contact[]" value="<?php echo $this->escape($author->id); ?>" <?php if ($author->repository_contact) { echo ' checked="checked"'; } ?>/></span>

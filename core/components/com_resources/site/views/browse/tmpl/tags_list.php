@@ -233,7 +233,7 @@ switch ($this->level)
 			$firstChild = $resource->children()
 				->whereEquals('standalone', 0)
 				->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
-				->ordered()
+				->order('ordering', 'asc')
 				->rows()
 				->first();
 

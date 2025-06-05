@@ -20,7 +20,7 @@ $this->publication->attachments();
 $this->publication->license();
 
 $data = array();
-preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->publication->metadata, $matches, PREG_SET_ORDER);
+preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->publication->metadata == null ? '' : $this->publication->metadata, $matches, PREG_SET_ORDER);
 if (count($matches) > 0)
 {
 	foreach ($matches as $match)

@@ -116,7 +116,7 @@ foreach ($profiles as $profile)
  */
 function renderIfJson($v)
 {
-	if (strstr($v, '{'))
+	if (strstr($v == null ? '' : $v, '{'))
 	{
 		$v = json_decode((string)$v, true);
 

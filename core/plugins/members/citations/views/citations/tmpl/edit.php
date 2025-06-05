@@ -128,7 +128,7 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 				</div>
 			</div>
 
-			<fieldset class="author-manager" data-add="<?php echo Route::url('index.php?option=com_citations&controller=authors&citation=' . $this->row->id . '&task=add&' . JUtility::getToken() . '=1'); ?>" data-update="<?php echo Route::url('index.php?option=com_citations&controller=authors&citation=' . $this->row->id . '&task=update&' . JUtility::getToken() . '=1'); ?>" data-list="<?php echo Route::url('index.php?option=com_citations&controller=authors&citation=' . $this->row->id . '&task=display&' . JUtility::getToken() . '=1'); ?>">
+			<fieldset class="author-manager" data-add="<?php echo Route::url('index.php?option=com_citations&controller=authors&citation=' . $this->row->id . '&task=add&' . Session::getFormToken() . '=1'); ?>" data-update="<?php echo Route::url('index.php?option=com_citations&controller=authors&citation=' . $this->row->id . '&task=update&' . Session::getFormToken() . '=1'); ?>" data-list="<?php echo Route::url('index.php?option=com_citations&controller=authors&citation=' . $this->row->id . '&task=display&' . Session::getFormToken() . '=1'); ?>">
 					<div class="grid">
 						<div class="col span10">
 							<label for="field-author">
@@ -159,7 +159,7 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 									</span>
 									<span class="author-description">
 										<input type="hidden" name="author[<?php echo $i; ?>][id]" value="<?php echo $this->escape($this->author->id); ?>" />
-										<a class="delete" data-confirm="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CONFIRM_DELETE'); ?>" data-id="<?php echo $this->escape($this->author->id); ?>" href="<?php echo Route::url('index.php?option=com_citations&controller=authors&task=remove&citation=' . $this->row->id . '&author=' . $this->author->id . '&' . JUtility::getToken() . '=1'); ?>">
+										<a class="delete" data-confirm="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CONFIRM_DELETE'); ?>" data-id="<?php echo $this->escape($this->author->id); ?>" href="<?php echo Route::url('index.php?option=com_citations&controller=authors&task=remove&citation=' . $this->row->id . '&author=' . $this->author->id . '&' . Session::getFormToken() . '=1'); ?>">
 											<?php echo Lang::txt('JDELETE'); ?>
 										</a>
 									</span>
