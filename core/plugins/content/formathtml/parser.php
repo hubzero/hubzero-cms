@@ -486,7 +486,7 @@ class Parser
 				return '';
 			}
 
-			$macro->args = null;
+			$macro->args = '';
 			if (isset($matches[3]) && $matches[3])
 			{
 				$macro->args = $matches[3];
