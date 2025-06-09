@@ -56,7 +56,7 @@ class Macro
 	 *
 	 * @var  string
 	 */
-	protected $args = '';
+	public $args = '';
 
 	/**
 	 * Allow macro in partial parsing?
