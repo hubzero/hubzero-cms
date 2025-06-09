@@ -335,7 +335,7 @@ class Pages extends Base
 
 		// did the module content change?
 		$contentChanged = false;
-		$oldContent = ($this->page->version()) ? trim($this->page->version()->get('content')) : '';
+		$oldContent = ($this->page->version()) ? trim($this->page->version()->get('content', '')) : '';
 		$newContent = (isset($version['content'])) ? trim($version['content']) : '';
 
 		if (!$this->version->get('page_trusted', 0))
