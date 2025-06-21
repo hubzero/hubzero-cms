@@ -23,7 +23,7 @@ use App;
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description' . DS . 'field.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'project.php';
-require_once dirname(dirname(dirname(__DIR__))) . DS . 'com_members' . DS . 'helpers' . DS . 'utility.php';
+require_once Component::path('com_members') . DS . 'helpers' . DS . 'utility.php';
 
 /**
  * Projects setup controller class
