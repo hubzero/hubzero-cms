@@ -494,11 +494,13 @@ class Manage extends AdminController
 		$db = \App::get('db');
 		$query = $db->getQuery();
 		$query->select('s.id, s.home, s.template, s.params, e.protected');
-		$query->from('#__template_styles as s');
+		$query->from('#__template_styles', 's');
 		$query->where('s.client_id', '=', 0);
 		$query->where('e.enabled', '=', 1);
 		$query->where('s.home', '=', 1);
-		$query->leftJoin('#__extensions as e ON e.element=s.template AND e.type=' . $db->quote('template') . ' AND e.client_id=s.client_id');
+		$query->leftJoin('#__extensions as e', 'e.element', 's.template');
+		$query->where('e.type', '=', $db->quote('template'));
+		$query->where('e.client_id', '=', 's.client_id');
 		$db->setQuery($query);
 		$template = $db->loadObject();
 		if ($template)
