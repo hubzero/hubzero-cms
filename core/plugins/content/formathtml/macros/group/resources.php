@@ -130,7 +130,7 @@ class Resources extends GroupMacro
 			->whereEquals('group_owner', $this->group->get('cn'))
 			->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED);
 
-		if ($filters['type'])
+		if (isset($filters['type']) && $filters['type'])
 		{
 			$query->whereEquals('type', $filters['type']);
 		}
