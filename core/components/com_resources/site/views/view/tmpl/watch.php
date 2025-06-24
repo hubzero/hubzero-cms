@@ -471,7 +471,7 @@ $last_slide_id = 0; ?>
 								<?php
 									//use thumb if possible
 									$thumb = $content_folder . DS . is_array($slide->media) ? $slide->media[0] : $slide->media;
-									if (isset($slide->thumb) && $slide->thumb && file_exists(PATH_ROOT . $content_folder.DS.$slide->thumb))
+									if (isset($slide->thumb) && $slide->thumb && file_exists(PATH_APP . DS . $content_folder . DS . $slide->thumb))
 									{
 										$thumb = $content_url.DS.$slide->thumb;
 									}
