@@ -1591,7 +1591,7 @@ HUB.Plugins.CoursesProgress = {
 			}
 		});
 		Handlebars.registerHelper('hasEarned', function ( recognitions, id ) {
-			return ($.inArray(id.toString(), recognitions) >= 0) ? new Handlebars.SafeString(' earned') : '';
+			return ($.inArray(id, recognitions) >= 0) ? new Handlebars.SafeString(' earned') : '';
 		});
 		Handlebars.registerHelper('ifAreEqual', function ( val1, val2 ) {
 			return (val1 === val2) ? new Handlebars.SafeString(' selected="selected"') : '';
