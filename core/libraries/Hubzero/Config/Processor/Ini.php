@@ -77,7 +77,7 @@ class Ini extends Base
 			return false;
 		}
 
-		$obj = parse_ini_string($data, false, INI_SCANNER_RAW);
+		$obj = @parse_ini_string($data, false, INI_SCANNER_RAW);
 
 		if (!$obj)
 		{
