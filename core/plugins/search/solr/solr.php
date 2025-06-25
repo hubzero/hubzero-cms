@@ -91,7 +91,7 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
 					Event::trigger('search.sendSolrRequest', array($modelIndex, $method));
 				}
 
-				if ($message)
+				if ($message && $message != "OK")
 				{
 					Notify::error($message);
 				}
