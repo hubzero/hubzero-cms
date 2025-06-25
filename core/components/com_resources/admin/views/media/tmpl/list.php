@@ -86,7 +86,7 @@ $this->js('media.js');
 							<?php echo $docs[$docName]; ?>
 						</td>
 						<td>
-							<a class="delete-file state trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefile&delFile=' . $docs[$docName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&' . Session::getFormToken() . '=1'); ?>" target="filer" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the file "%2"?', $docs[$docName]); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+							<a class="delete-file state trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefile&delFile=' . $docs[$docName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&' . Session::getFormToken() . '=1'); ?>" target="filer" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the file "%s"?', $docs[$docName]); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 								<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
 							</a>
 						</td>
