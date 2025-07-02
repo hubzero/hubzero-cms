@@ -117,10 +117,10 @@ if ($this->contributors) {
 				<tr>
 					<td width="100%">
 						<?php echo $this->escape($name); ?><br />
-						<input type="text" name="authors[<?php echo $contributor->authorid; ?>][organization]" size="35" value="<?php echo $this->escape(stripslashes($contributor->organization)); ?>" placeholder="<?php echo Lang::txt('COM_TOOLS_AUTHOR_ORGANIZATION'); ?>" />
+						<input type="text" name="authors[<?php echo isset($contributor->authorid) ? $contributor->authorid : "";  ?>][organization]" size="35" value="<?php echo $this->escape(stripslashes($contributor->organization)); ?>" placeholder="<?php echo Lang::txt('COM_TOOLS_AUTHOR_ORGANIZATION'); ?>" />
 					</td>
 					<td>
-						<select name="authors[<?php echo $contributor->authorid; ?>][role]" id="role-<?php echo $contributor->authorid; ?>">
+						<select name="authors[<?php echo isset($contributor->authorid) ? $contributor->authorid : "";  ?>][role]" id="role-<?php echo isset($contributor->authorid) ? $contributor->authorid : "";  ?>">
 							<option value=""<?php if ($contributor->role == '') { echo ' selected="selected"'; }?>><?php echo Lang::txt('COM_TOOLS_AUTHOR'); ?></option>
 							<?php
 							if ($this->roles)
@@ -159,7 +159,7 @@ if ($this->contributors) {
 						}
 					?></td>
 					<td class="t">
-						<a class="icon-delete delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;tmpl=component&amp;id=<?php echo $contributor->authorid; ?>&amp;pid=<?php echo $this->id; ?>" title="<?php echo Lang::txt('COM_TOOLS_DELETE'); ?>">
+						<a class="icon-delete delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;tmpl=component&amp;id=<?php echo isset($contributor->authorid) ? $contributor->authorid : "";  ?>&amp;pid=<?php echo $this->id; ?>" title="<?php echo Lang::txt('COM_TOOLS_DELETE'); ?>">
 							<span><?php echo Lang::txt('COM_TOOLS_DELETE'); ?></span>
 						</a>
 					</td>
