@@ -268,7 +268,7 @@ else
 						<?php echo $pageNav->orderUpIcon($i, isset($orderings[$i-1]) ? ($row->associative_ordering != $orderings[$i-1]) : true); ?>
 					</td>
 					<td>
-						<?php echo $pageNav->orderDownIcon($i, $pageNav->total, sset($ordering[$i+1]) ? ($row->associative_ordering != $orderings[$i+1]) : true); ?>
+						<?php echo $pageNav->orderDownIcon($i, $pageNav->total, isset($ordering[$i+1]) ? ($row->associative_ordering != $orderings[$i+1]) : true); ?>
 					</td>
 					<td>
 						<?php echo $row->associative_ordering; ?>
