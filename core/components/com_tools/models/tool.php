@@ -1460,7 +1460,7 @@ class Tool
 		{
 			$err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME_EXISTS');
 		}
-		else if ((preg_match('#^[a-zA-Z0-9]{3,15}$#', $tool['toolname']) === 0 || is_numeric($tool['toolname'])) && !$id)
+		else if ((!preg_match('#^[a-zA-Z0-9]{3,15}$#', $tool['toolname']) || is_numeric($tool['toolname'])) && !$id)
 		{
 			$err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME');
 		}
