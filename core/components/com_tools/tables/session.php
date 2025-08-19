@@ -312,7 +312,15 @@ class Session extends Table
 		{
 			$filters['sort_Dir'] = 'DESC';
 		}
-		$query .= " ORDER BY s." . $filters['sort'] . " " . $filters['sort_Dir'];
+		
+		if( $filters['sort'] == "viewuser")
+		{
+				$query .= " ORDER BY v." . $filters['sort'] . " " . $filters['sort_Dir'];
+		} 
+		else
+		{
+				$query .= " ORDER BY s." . $filters['sort'] . " " . $filters['sort_Dir'];
+		}
 
 		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all')
 		{
