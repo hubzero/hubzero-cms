@@ -298,6 +298,7 @@ class Sanitize
 		$config = \HTMLPurifier_Config::createDefault();
 		$root = str_replace(['http://', 'https://', '.'], ['', '', '\.'], \App::get('request')->root());
 		$defaultSettings = [
+			'Cache.SerializerPath' => sys_get_temp_dir(),
 			'AutoFormat.Linkify' => false,
 			'AutoFormat.RemoveEmpty' => true,
 			'AutoFormat.RemoveEmpty.RemoveNbsp' => false,
