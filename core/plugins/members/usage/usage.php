@@ -332,46 +332,40 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 	 * @return  string
 	 */
 	public function get_rank($authorid)
-	{
+	{       
 		$database = App::get('db');
-
-		$rank = 0;
+		
+		$rank = "-";
 		$i = 1;
 		$sql = 'SELECT a.id AS aid, COUNT(DISTINCT aa.subid) AS contribs
 				FROM `#__users` a, `#__resources` res, `#__author_assoc` aa
 				WHERE a.id = aa.authorid AND res.id = aa.subid AND res.published=1 AND (res.access=0 OR res.access=3) AND aa.subtable = "resources"
-				AND res.standalone=1 GROUP BY aid ORDER BY contribs DESC';
+				AND res.standalone=1 GROUP BY aid';
 
 		$database->setQuery($sql);
 		$results = $database->loadObjectList();
-
-		if ($results)
+		
+		usort($results, function($a, $b) 
 		{
+			return $b->contribs <=> $a->contribs;
+		});
+		
+		if ($results)
+		{       
 			foreach ($results as $row)
-			{
+			{       
 				if ($row->aid == $authorid)
-				{
+				{       
 					$rank = $i;
+					break;
 				}
 				$i++;
 			}
 		}
-
-		if ($rank)
-		{
-			$sql = 'SELECT COUNT(DISTINCT a.id) as authors
-				FROM `#__users` a, `#__author_assoc` aa, `#__resources` res
-				WHERE a.id=aa.authorid AND aa.subid=res.id AND aa.subtable="resources" AND res.published=1 AND (res.access=0 OR res.access=3)
-				AND res.standalone=1';
-
-			$database->setQuery($sql);
-			$total_authors = $database->loadResult();
-
+		
+		if ($rank !== "-") {
+			$total_authors = count($results);
 			$rank = $rank . ' / ' . $total_authors;
-		}
-		else
-		{
-			$rank = '-';
 		}
 		return $rank;
 	}
