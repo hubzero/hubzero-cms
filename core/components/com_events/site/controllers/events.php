@@ -671,7 +671,7 @@ class Events extends SiteController
 		$row->load($id);
 
 		// Ensure we have an event
-		if (!$row || !$row->id)
+		if (!$row || !$row->id || $row->state!=1)
 		{
 			App::abort(404, Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_THIS_DAY'));
 		}
