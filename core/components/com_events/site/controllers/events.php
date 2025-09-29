@@ -2019,8 +2019,6 @@ class Events extends SiteController
 			$row->state = 1;
 		}
 
-		$row->state = 1;
-
 		// Verify that the event doesn't start after it ends or ends before it starts.
 		$pubdow = strtotime($row->publish_down);
 		$pubup = strtotime($row->publish_up);
