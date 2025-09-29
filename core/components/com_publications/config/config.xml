@@ -33,6 +33,7 @@
 		<field name="webpath" type="text" menu="hide" default="/site/publications" label="COM_PUBLICATIONS_CONFIG_FILE_PATH" description="COM_PUBLICATIONS_CONFIG_FILE_PATH_DESC" />
 		<field name="sftppath" type="text" menu="hide" default="/site/publications/ftp" label="COM_PUBLICATIONS_CONFIG_SFTP_PATH" description="COM_PUBLICATIONS_CONFIG_SFTP_PATH_DESC" />
 		<field name="sftpsize" type="text" menu="hide" default="5000" label="COM_PUBLICATIONS_CONFIG_SFTP_SIZE" description="COM_PUBLICATIONS_CONFIG_SFTP_SIZE_DESC" />
+		<field name="ftpdoc" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_FTP_DOC" description="COM_PUBLICATIONS_CONFIG_FTP_DOC_DESC" />
 		<field name="sftptypeblacklist" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_SFTP_TYPE_BLACKLIST" description="COM_PUBLICATIONS_CONFIG_SFTP_TYPE_BLACKLIST_DESC" />
 		<field name="documentation" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOCUMENTATION_PATH" description="COM_PUBLICATIONS_CONFIG_DOCUMENTATION_PATH_DESC" />
 		<field name="deposit_terms" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_TERMS_URL" description="COM_PUBLICATIONS_CONFIG_TERMS_URL_DESC" />

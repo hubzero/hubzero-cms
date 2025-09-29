@@ -29,6 +29,10 @@ if ($this->disabled): ?>
 				<?php endforeach; ?>
 			</ul>
 		</div>
+		<?php 	
+		if ($this->showDoc && !empty($this->ftpDoc)):?>		
+			<p class="ftpDoc"><a href="<?php echo $this->ftpDoc;?>" target="_blank"><?php echo Lang::txt('Download Guide');?></a></p>
+		<?php endif; ?>
 	<?php else: ?>
 		<p id="primary-document">
 			<a class="btn btn-primary<?php echo ($this->class)  ? ' ' . $this->class : ''; ?>" <?php

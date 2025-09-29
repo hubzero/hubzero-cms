@@ -551,6 +551,7 @@ class File extends Base
 			else
 			{
 				$label = Lang::txt('Download');
+				$showDoc = false;
 				// Link to bundle
 				if ($showArchive == 1 || ($showArchive == 2 && count($attachments) > 1))
 				{
@@ -572,6 +573,8 @@ class File extends Base
 						// Is sFTP enabled and is the file over the threshold?
 						if ($pub->config()->get('sftppath') && $size >= intval($pub->config()->get('sftpsize', 5000)))
 						{
+							$showDoc = true;
+							$ftpDoc = $pub->config()->get('ftpdoc');
 							$uri = \Hubzero\Utility\Uri::getInstance();
 							$uri->setScheme('ftp');
 							//$uri->setUser('guest');
@@ -600,7 +603,7 @@ class File extends Base
 				$class = 'btn btn-primary active'; //icon-next
 				$class .= $disabled ? ' link_disabled' : '';
 
-				$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null, $title, '', $disabled, $pop, $options);
+				$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null, $title, '', $disabled, $pop, $options, $showDoc, $ftpDoc);
 			}
 		}
 		elseif ($role == 2 && $attachments)

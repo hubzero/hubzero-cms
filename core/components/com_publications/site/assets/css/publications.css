@@ -608,6 +608,9 @@ div.sample p {
 .abouttab th {
 	border: none;
 }
+.ftpDoc {
+	font-size: 85%;
+}
 
 /* Screenshots list */
 .screenshots {
