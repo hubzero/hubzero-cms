@@ -18,7 +18,7 @@ $elName = "tagsPick";
 // Get curator status
 $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->step, 0, 'author');
 
-$searchCategory = $this->pub->config('search_category');
+$searchCategory = $this->pub->config('search_category', 1);
 
 ?>
 
