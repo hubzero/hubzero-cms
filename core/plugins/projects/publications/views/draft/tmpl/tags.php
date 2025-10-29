@@ -18,6 +18,8 @@ $elName = "tagsPick";
 // Get curator status
 $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->step, 0, 'author');
 
+$searchCategory = $this->pub->config('search_category', 1);
+
 ?>
 
 <!-- Load content selection browser //-->
@@ -50,7 +52,7 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this
 		</div>
 	</div>
 </div>
-<?php if ($this->categories && count($this->categories) > 1) { ?>
+<?php if ($searchCategory != 0 && $this->categories && count($this->categories) > 1) { ?>
 	<div class="blockelement el-optional el-complete">
 		<div class="element_editing">
 			<div class="pane-wrapper">

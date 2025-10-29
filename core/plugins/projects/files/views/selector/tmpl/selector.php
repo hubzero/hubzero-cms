@@ -13,7 +13,7 @@ defined('_HZEXEC_') or die();
 	<ul class="file-selector" id="file-selector">
 <?php endif; ?>
 
-<?php if (count($this->items) > 0) : ?>
+<?php if (is_array($this->items) && count($this->items) > 0) : ?>
 	<?php $a = 1; ?>
 	<?php foreach ($this->items as $item)
 	{

@@ -128,7 +128,7 @@ $this->setEscape("htmlentities");
 				<td>
 					<?php
 						$title = html_entity_decode($row->title);
-						$author = html_entity_decode($row->author);
+						$author = html_entity_decode($row->author === null ? '' : $row-author);
 						if (function_exists('mbstring'))
 						{
 							$title = (!preg_match('!\S!u', $title)) ? mbstring($title) : $title;

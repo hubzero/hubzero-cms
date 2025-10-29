@@ -30,12 +30,12 @@ $this->js();
 $this->setEscape("htmlentities");
 
 //need to fix these fields
-$author = html_entity_decode($this->row->getAuthorString());
-$ceditor = html_entity_decode($this->row->editor);
-$title = html_entity_decode($this->row->title);
-$booktitle = html_entity_decode($this->row->booktitle);
-$short_title = html_entity_decode($this->row->short_title);
-$journal = html_entity_decode($this->row->journal);
+$author = html_entity_decode($this->row->getAuthorString() ?? '');
+$ceditor = html_entity_decode($this->row->editor ?? '');
+$title = html_entity_decode($this->row->title ?? '');
+$booktitle = html_entity_decode($this->row->booktitle ?? '');
+$short_title = html_entity_decode($this->row->short_title ?? '');
+$journal = html_entity_decode($this->row->journal ?? '');
 
 if (function_exists('mbstring'))
 {
@@ -65,7 +65,7 @@ if (function_exists('mbstring'))
 					<select name="citation[type]" id="type">
 						<?php foreach ($this->types as $t) : ?>
 							<?php $sel = ($t['id'] == $this->row->type) ? 'selected="selected"' : ''; ?>
-							<option <?php echo $sel; ?> value="<?php echo $t['id']; ?>"><?php echo $this->escape(stripslashes($t['type_title'])); ?> (<?php echo $this->escape($t['type']); ?>)</option>
+							<option <?php echo $sel; ?> value="<?php echo $t['id']; ?>"><?php echo $this->escape(stripslashes($t['type_title'] ?? '')); ?> (<?php echo $this->escape($t['type']); ?>)</option>
 						<?php endforeach; ?>
 					</select>
 				</div>
@@ -74,14 +74,14 @@ if (function_exists('mbstring'))
 					<div class="col span6">
 						<div class="input-wrap">
 							<label for="cite"><?php echo Lang::txt('CITE_KEY'); ?>:</label><br />
-							<input type="text" name="citation[cite]" id="cite" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->cite)); ?>" />
+							<input type="text" name="citation[cite]" id="cite" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->cite ?? '')); ?>" />
 							<span class="hint"><?php echo Lang::txt('CITE_KEY_EXPLANATION'); ?></span>
 						</div>
 					</div>
 					<div class="col span6">
 						<div class="input-wrap">
 							<label for="ref_type"><?php echo Lang::txt('REF_TYPE'); ?>:</label><br />
-							<input type="text" name="citation[ref_type]" id="ref_type" size="11" maxlength="50" value="<?php echo $this->escape(stripslashes($this->row->ref_type)); ?>" />
+							<input type="text" name="citation[ref_type]" id="ref_type" size="11" maxlength="50" value="<?php echo $this->escape(stripslashes($this->row->ref_type ?? '')); ?>" />
 						</div>
 					</div>
 				</div>
@@ -113,13 +113,13 @@ if (function_exists('mbstring'))
 							<div class="col span6">
 								<div class="input-wrap">
 									<label for="year"><?php echo Lang::txt('YEAR'); ?>:</label><br />
-									<input type="text" name="citation[year]" id="year" size="4" maxlength="4" value="<?php echo $this->escape(stripslashes($this->row->year)); ?>" />
+									<input type="text" name="citation[year]" id="year" size="4" maxlength="4" value="<?php echo $this->escape(stripslashes($this->row->year ?? '')); ?>" />
 								</div>
 							</div>
 							<div class="col span6">
 								<div class="input-wrap">
 									<label for="month"><?php echo Lang::txt('MONTH'); ?>:</label><br />
-									<input type="text" name="citation[month]" id="month" size="11" maxlength="50" value="<?php echo $this->escape(stripslashes($this->row->month)); ?>" />
+									<input type="text" name="citation[month]" id="month" size="11" maxlength="50" value="<?php echo $this->escape(stripslashes($this->row->month ?? '')); ?>" />
 								</div>
 							</div>
 						</div>
@@ -132,7 +132,7 @@ if (function_exists('mbstring'))
 				</div>
 				<div class="input-wrap">
 					<label for="author_address"><?php echo Lang::txt('COM_CITATIONS_FIELD_AUTHOR_ADDRESS'); ?>:</label><br />
-					<input type="text" name="citation[author_address]" id="author_address" value="<?php echo $this->escape(stripslashes($this->row->author_address)); ?>" />
+					<input type="text" name="citation[author_address]" id="author_address" value="<?php echo $this->escape(stripslashes($this->row->author_address ?? '')); ?>" />
 				</div>
 				<div class="input-wrap">
 					<label for="editor"><?php echo Lang::txt('EDITORS'); ?>:</label><br />
@@ -159,13 +159,13 @@ if (function_exists('mbstring'))
 					<div class="col span6">
 						<div class="input-wrap">
 							<label for="volume"><?php echo Lang::txt('VOLUME'); ?>:</label><br />
-							<input type="text" name="citation[volume]" id="volume" maxlength="11" value="<?php echo $this->escape(stripslashes($this->row->volume)); ?>" />
+							<input type="text" name="citation[volume]" id="volume" maxlength="11" value="<?php echo $this->escape(stripslashes($this->row->volume ?? '')); ?>" />
 						</div>
 					</div>
 					<div class="col span6">
 						<div class="input-wrap">
 							<label for="number"><?php echo Lang::txt('ISSUE'); ?>:</label><br />
-							<input type="text" name="citation[number]" id="number" maxlength="50" value="<?php echo $this->escape(stripslashes($this->row->number)); ?>" />
+							<input type="text" name="citation[number]" id="number" maxlength="50" value="<?php echo $this->escape(stripslashes($this->row->number ?? '')); ?>" />
 						</div>
 					</div>
 				</div>
@@ -180,83 +180,83 @@ if (function_exists('mbstring'))
 					<div class="col span6">
 						<div class="input-wrap">
 							<label for="isbn"><?php echo Lang::txt('ISBN'); ?>:</label><br />
-							<input type="text" name="citation[isbn]" id="isbn" maxlength="50" value="<?php echo $this->escape(stripslashes($this->row->isbn)); ?>" />
+							<input type="text" name="citation[isbn]" id="isbn" maxlength="50" value="<?php echo $this->escape(stripslashes($this->row->isbn ?? '')); ?>" />
 						</div>
 					</div>
 				</div>
 
 				<div class="input-wrap">
 					<label for="doi"><?php echo Lang::txt('DOI'); ?>:</label><br />
-					<input type="text" name="citation[doi]" id="doi" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->doi)); ?>" />
+					<input type="text" name="citation[doi]" id="doi" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->doi ?? '')); ?>" />
 				</div>
 				<div class="input-wrap">
 					<label for="callnumber"><?php echo Lang::txt('COM_CITATIONS_FIELD_CALL_NUMBER'); ?>:</label><br />
-					<input type="text" name="citation[call_number]" id="callnumber" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->call_number)); ?>" />
+					<input type="text" name="citation[call_number]" id="callnumber" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->call_number ?? ''); ?>" />
 				</div>
 				<div class="input-wrap">
 					<label for="accessionnumber"><?php echo Lang::txt('COM_CITATIONS_FIELD_ACCESSION_NUMBER'); ?>:</label><br />
-					<input type="text" name="citation[accession_number]" id="accessionnumber" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->accession_number)); ?>" />
+					<input type="text" name="citation[accession_number]" id="accessionnumber" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->accession_number ?? '')); ?>" />
 				</div>
 				<div class="input-wrap">
 					<label for="series"><?php echo Lang::txt('SERIES'); ?>:</label><br />
-					<input type="text" name="citation[series]" id="series" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->series)); ?>" />
+					<input type="text" name="citation[series]" id="series" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->series ?? '')); ?>" />
 				</div>
 				<div class="input-wrap">
 					<label for="edition"><?php echo Lang::txt('EDITION'); ?>:</label><br />
-					<input type="text" name="citation[edition]" id="edition" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->edition)); ?>" />
+					<input type="text" name="citation[edition]" id="edition" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->edition ?? '')); ?>" />
 					<br /><span class="hint"><?php echo Lang::txt('EDITION_EXPLANATION'); ?></span>
 				</div>
 				<div class="input-wrap">
 					<label for="school"><?php echo Lang::txt('SCHOOL'); ?>:</label><br />
-					<input type="text" name="citation[school]" id="school" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->school)); ?>" />
+					<input type="text" name="citation[school]" id="school" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->school ?? '')); ?>" />
 				</div>
 				<div class="input-wrap">
 					<label for="publisher"><?php echo Lang::txt('PUBLISHER'); ?>:</label><br />
-					<input type="text" name="citation[publisher]" id="publisher" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->publisher)); ?>" />
+					<input type="text" name="citation[publisher]" id="publisher" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->publisher ?? '')); ?>" />
 				</div>
 				<div class="input-wrap">
 					<label for="institution"><?php echo Lang::txt('INSTITUTION'); ?>:</label><br />
-					<input type="text" name="citation[institution]" id="institution" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->institution)); ?>" />
+					<input type="text" name="citation[institution]" id="institution" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->institution ?? '')); ?>" />
 					<br /><span class="hint"><?php echo Lang::txt('INSTITUTION_EXPLANATION'); ?></span>
 				</div>
 				<div class="input-wrap">
 					<label for="address"><?php echo Lang::txt('ADDRESS'); ?>:</label><br />
-					<input type="text" name="citation[address]" id="address" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->address)); ?>" />
+					<input type="text" name="citation[address]" id="address" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->address ?? '')); ?>" />
 				</div>
 				<div class="input-wrap">
 					<label for="location"><?php echo Lang::txt('LOCATION'); ?>:</label><br />
-					<input type="text" name="citation[location]" id="location" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->location)); ?>" />
+					<input type="text" name="citation[location]" id="location" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->location ?? '')); ?>" />
 					<span class="hint"><?php echo Lang::txt('LOCATION_EXPLANATION'); ?></span>
 				</div>
 				<div class="input-wrap">
 					<label for="howpublished"><?php echo Lang::txt('PUBLISH_METHOD'); ?>:</label><br />
-					<input type="text" name="citation[howpublished]" id="howpublished" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->howpublished)); ?>" />
+					<input type="text" name="citation[howpublished]" id="howpublished" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->howpublished ?? '')); ?>" />
 					<br /><span class="hint"><?php echo Lang::txt('PUBLISH_METHOD_EXPLANATION'); ?></span>
 				</div>
 				<div class="input-wrap">
 					<label for="url"><?php echo Lang::txt('URL'); ?>:</label><br />
-					<input type="text" name="citation[url]" id="url" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->url)); ?>" />
+					<input type="text" name="citation[url]" id="url" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->url ?? '')); ?>" />
 				</div>
 				<div class="input-wrap">
 					<label for="eprint"><?php echo Lang::txt('EPRINT'); ?>:</label><br />
-					<input type="text" name="citation[eprint]" id="eprint" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->eprint)); ?>" />
+					<input type="text" name="citation[eprint]" id="eprint" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->eprint ?? '')); ?>" />
 					<br /><span class="hint"><?php echo Lang::txt('EPRINT_EXPLANATION'); ?></span>
 				</div>
 				<div class="input-wrap">
 					<label for="abstract"><?php echo Lang::txt('COM_CITATIONS_FIELD_ABSTRACT'); ?>:</label><br />
-					<?php echo $this->editor('citation[abstract]', stripslashes($this->row->abstract), 50, 10, 'abstract', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
+					<?php echo $this->editor('citation[abstract]', stripslashes($this->row->abstract ?? ''), 50, 10, 'abstract', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 				</div>
 				<div class="input-wrap">
 					<label for="note"><?php echo Lang::txt('NOTES'); ?>:</label><br />
-					<?php echo $this->editor('citation[note]', stripslashes($this->row->note), 50, 10, 'note', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
+					<?php echo $this->editor('citation[note]', stripslashes($this->row->note ?? ''), 50, 10, 'note', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 				</div>
 				<div class="input-wrap">
 					<label for="keywords"><?php echo Lang::txt('COM_CITATIONS_FIELD_KEYWORDS'); ?>:</label><br />
-					<?php echo $this->editor('citation[keywords]', stripslashes($this->row->keywords), 50, 10, 'keywords', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
+					<?php echo $this->editor('citation[keywords]', stripslashes($this->row->keywords ?? ''), 50, 10, 'keywords', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 				</div>
 				<div class="input-wrap">
 					<label for="research_notes"><?php echo Lang::txt('COM_CITATIONS_FIELD_RESEARCH_NOTES'); ?>:</label><br />
-					<?php echo $this->editor('citation[research_notes]', stripslashes($this->row->research_notes), 50, 10, 'research_notes', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
+					<?php echo $this->editor('citation[research_notes]', stripslashes($this->row->research_notes ?? ''), 50, 10, 'research_notes', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 				</div>
 			</fieldset>
 
@@ -271,7 +271,7 @@ if (function_exists('mbstring'))
 				</div>
 				<div class="input-wrap">
 					<label for="citation-formatted"><?php echo Lang::txt('MANUAL_FORMAT_CITATION'); ?>:</label>
-					<?php echo $this->editor('citation[formatted]', stripslashes($this->row->get('formatted')), 50, 10, 'formatted', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
+					<?php echo $this->editor('citation[formatted]', stripslashes($this->row->get('formatted','')), 50, 10, 'formatted', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
 				</div>
 			</fieldset>
 		</div>
@@ -366,7 +366,7 @@ if (function_exists('mbstring'))
 				</div>
 				<div class="input-wrap">
 					<label for="scope_id"><?php echo Lang::txt('SCOPE_ID'); ?></label>
-					<input type="text" name="citation[scope_id]" id="scope_id" maxlength="10" value="<?php echo $this->escape(stripslashes($this->row->scope_id)); ?>" />
+					<input type="text" name="citation[scope_id]" id="scope_id" maxlength="10" value="<?php echo $this->escape(stripslashes($this->row->scope_id ?? '')); ?>" />
 				</div>
 			</fieldset>
 
@@ -379,7 +379,7 @@ if (function_exists('mbstring'))
 						<option value="">- Select Citation Sponsor -</option>
 						<?php foreach ($this->sponsors as $s) : ?>
 							<?php $sel = (in_array($s->get('id'), $this->row_sponsors)) ? 'selected="selected"': ''; ?>
-							<option <?php echo $sel; ?> value="<?php echo $s['id']; ?>"><?php echo $this->escape(stripslashes($s['sponsor'])); ?></option>
+							<option <?php echo $sel; ?> value="<?php echo $s['id']; ?>"><?php echo $this->escape(stripslashes($s['sponsor'] ?? '')); ?></option>
 						<?php endforeach; ?>
 					</select>
 					<span class="hint"><?php echo Lang::txt('COM_CITATIONS_FIELD_SPONSORS_HINT'); ?></span>
@@ -391,7 +391,7 @@ if (function_exists('mbstring'))
 							$t = array();
 							foreach ($this->tags as $tag)
 							{
-								$t[] = stripslashes($tag);
+								$t[] = stripslashes($tag ?? '');
 							}
 						?>
 						<label for="field-tags"><?php echo Lang::txt('COM_CITATIONS_FIELD_TAGS'); ?></label>
@@ -405,7 +405,7 @@ if (function_exists('mbstring'))
 							$b = array();
 							foreach ($this->badges as $badge)
 							{
-								$b[] = stripslashes($badge);
+								$b[] = stripslashes($badge ?? '');
 							}
 						?>
 						<label for="field-badges"><?php echo Lang::txt('COM_CITATIONS_FIELD_BADGES'); ?></label>
