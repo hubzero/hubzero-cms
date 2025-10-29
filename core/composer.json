@@ -61,7 +61,7 @@
         "srmklive/flysystem-dropbox-v2": "1.0.*",
         "stevenmaguire/oauth2-dropbox": "3.1.*",
 	"composer/composer": "2.8.*",
-	"phpoffice/phpspreadsheet": "1.29.*",
+	"phpoffice/phpspreadsheet": "1.30.*",
 	"league/oauth2-facebook": "2.0.*",
 	"league/oauth2-client": "~2.8.1",
 	"litesaml/lightsaml": "2.3.*",
