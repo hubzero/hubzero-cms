@@ -281,7 +281,7 @@ class Helper
 	public static function getGroups($uid, $type='all', $cat = null)
 	{
 		//return empty groups if user is not authenticated
-		if ($uid == 0
+		if ($uid == 0)
 		{
 			return array();
 		}
