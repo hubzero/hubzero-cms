@@ -22,7 +22,7 @@ if ($this->page->param('mode', 'wiki') == 'knol' && !$this->page->param('hide_au
 			continue;
 		}
 
-		$name = $this->escape(stripslashes($auth->user->get('name')));
+		$name = $this->escape(stripslashes($auth->user->get('name', '')));
 		$name = (in_array($auth->user->get('access'), User::getAuthorisedViewLevels()) ? '<a href="' . Route::url($auth->user->link()) . '">' . $name . '</a>' : $name);
 
 		$auths[] = $name;
