@@ -2399,6 +2399,11 @@ class Resources extends SiteController
 			}
 		}
 
+		if (!is_file($path) || !is_readable($path))
+		{       
+			App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND') . ' ' . $path);
+		} 
+		
 		$ext = strtolower(\Filesystem::extension($path));
 
 		// Set disposition to attachment unless we think the browser can inline the file
