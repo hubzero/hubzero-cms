@@ -141,6 +141,9 @@ class Processor extends Obj
 	{
 		try
 		{
+			if (!is_readable($this->source)) {
+				return false;
+			}
 			$image_atts = getimagesize($this->source);
 			if (empty($image_atts))
 			{
@@ -559,6 +562,13 @@ class Processor extends Obj
 	 */
 	public function display()
 	{
+		if (!is_readable($this->source)) {
+				return;
+		}
+		if (exif_imagetype($this->source) == false)
+		{
+				return;
+		}
 		$image_atts = getimagesize($this->source);
 
 		if ($image_atts)
