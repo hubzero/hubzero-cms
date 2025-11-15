@@ -252,21 +252,21 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-                $r_u= \Component::params('com_answers')->get('restrict_users');
-                if ($r_u =="active")
-                {
-                        $r_d = \Component::params('com_answers')->get('restrict_days');
-                        $r_t = new \DateTime();
-                        $r_c = new \DateTime(User::get("registerDate"));
-                        if($r_t->diff($r_c)->days<$r_d){
-                                $this->setError('New accounts can not create new posts');
-                                App::redirect(
-                                        Route::url('index.php?option=com_answers'),
-                                        Lang::txt('COM_ANSWERS_RESTRICTED_USERS'),
-                                        'warning'
-                                );
-                        }
-                }
+		$r_u= \Component::params('com_answers')->get('restrict_users');
+		if ($r_u =="active")
+		{
+				$r_d = \Component::params('com_answers')->get('restrict_days');
+				$r_t = new \DateTime();
+				$r_c = new \DateTime(User::get("registerDate"));
+				if($r_t->diff($r_c)->days<$r_d){
+						$this->setError('New accounts can not create new posts');
+						App::redirect(
+								Route::url('index.php?option=com_answers'),
+								Lang::txt('COM_ANSWERS_RESTRICTED_USERS'),
+								'warning'
+						);
+				}
+		}
 
 		if (!is_object($row))
 		{
