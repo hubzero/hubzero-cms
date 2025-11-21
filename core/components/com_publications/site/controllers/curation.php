@@ -544,6 +544,14 @@ class Curation extends SiteController
 		// Store curation manifest
 		$this->_pub->version->set('curation', $curation);
 		$this->_pub->version->set('curation_version_id', $versionNumber);
+		
+		// Save dataset bundle size
+		$zipPath = PATH_APP . DS . trim($this->config->get('webpath'), DS) . DS . \Hubzero\Utility\Str::pad($pid) . DS . \Hubzero\Utility\Str::pad($vid) . DS . str_replace(['.', '/'], '_', $this->_pub->version->doi) . ".zip";
+		
+		if (file_exists($zipPath))
+		{
+			$this->_pub->version->set('datasize', filesize($zipPath));
+		}
 
 		if (!$this->_pub->version->store())
 		{
