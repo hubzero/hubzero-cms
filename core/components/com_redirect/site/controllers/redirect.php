@@ -46,13 +46,18 @@ class Redirect extends SiteController
     {   
         $url =  Request::getString("id", ""); //base64_encode('https://www.google.com/')
 
-        $time = 10;
         $params = Component::params('com_redirect');
         $whitelist = isset($params["delay_whitelist"]) ? explode(",", $params["delay_whitelist"]) : array();
         $blacklist = isset($params["delay_blacklist"]) ? explode(",", $params["delay_blacklist"]) : array();
+        $enabled = isset($params["delay_enabled"]) ? $params["delay_enabled"] : "DISABLED";
+        $time  = isset($params["delay_enabled"]) ? $params["delay_seconds"] : 10;
         $url = base64_decode($url, true); 
         if ($url === false) {
             App::redirect("https://" . $_SERVER['HTTP_HOST']);
+        }
+        if ($enabled == "DISABLED"){
+            App::redirect($url);
+            return;
         }
         $host = parse_url($url);            
 
