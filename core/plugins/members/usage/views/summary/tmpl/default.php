@@ -230,11 +230,11 @@ $this->css('usage', 'com_usage');
 
 				$cites = plgMembersUsage::get_citationcount($row->id, 0);
 
-				if (!in_array($row->type_id, $serials))
-				{
+				//if (!in_array($row->type_id, $serials))
+				//{
 					$total['usercount12'] += (int)str_replace(',', '', $usercount12);
 					$total['usercount14'] += (int)str_replace(',', '', $usercount14);
-				}
+				//}
 				$total['citations']   += (int)$cites;
 				?>
 				<tr class="<?php
@@ -262,8 +262,8 @@ $this->css('usage', 'com_usage');
 
 						$cites = plgMembersUsage::get_citationcount($rw->id, 0);
 
-						$total['usercount12'] += (int)str_replace(',', '', $usercount12);
-						$total['usercount14'] += (int)str_replace(',', '', $usercount14);
+						//$total['usercount12'] += (int)str_replace(',', '', $usercount12);
+						//$total['usercount14'] += (int)str_replace(',', '', $usercount14);
 						$total['citations']   += (int)$cites;
 						?>
 						<tr class="child <?php
