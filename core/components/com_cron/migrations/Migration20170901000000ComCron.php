@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,22 +8,20 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for installing cron tables
  **/
+
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComCron extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__cron_jobs'))
-		{
-			$query = "CREATE TABLE `#__cron_jobs` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__cron_jobs')) {
+            $query = "CREATE TABLE `#__cron_jobs` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `title` varchar(255) NOT NULL DEFAULT '',
 			  `state` tinyint(3) NOT NULL DEFAULT '0',
@@ -45,21 +44,20 @@ class Migration20170901000000ComCron extends Base
 			  KEY `idx_created_by` (`created_by`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__cron_jobs'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__cron_jobs`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__cron_jobs')) {
+            $query = "DROP TABLE IF EXISTS `#__cron_jobs`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }
