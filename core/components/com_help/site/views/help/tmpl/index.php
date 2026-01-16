@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,31 +15,26 @@ defined('_HZEXEC_') or die();
 $content = '';
 
 //loop through each component and pages group passed in
-foreach ($this->pages as $component)
-{
-	//build content to return
-	$content .= '<h2>' . Lang::txt('COM_HELP_COMPONENT_HELP', $component['name']) . '</h2>';
+foreach ($this->pages as $component) {
+    //build content to return
+    $content .= '<h2>' . Lang::txt('COM_HELP_COMPONENT_HELP', $component['name']) . '</h2>';
 
-	//make sure we have pages
-	if (count($component['pages']) > 0)
-	{
-		$content .= '<p>' . Lang::txt('COM_HELP_PAGE_INDEX_EXPLANATION', $component['name']) . '</p>';
-		$content .= '<ul>';
-		foreach ($component['pages'] as $page)
-		{
-			// bug: broken links
-			// correct value for layoutExt not propagated all the way here, see attempt to set in site/controllers/help.php that results in empty string
-			// $name = str_replace('.' . $this->layoutExt, '', $page);
-			// default value is .phtml; use that for now so links work
-			$name = str_replace('.phtml', '', $page);
-			$content .= '<li><a href="' . Route::url('index.php?option=com_help&component=' . str_replace('com_', '', $component['option']) . '&page=' . $name) . '">' . ucwords(str_replace('_', ' ', $name)) .'</a></li>';
-		}
-		$content .= '</ul>';
-	}
-	else
-	{
-		$content .= '<p>' . Lang::txt('COM_HELP_NO_PAGES_FOUND') . '</p>';
-	}
+    //make sure we have pages
+    if (count($component['pages']) > 0) {
+        $content .= '<p>' . Lang::txt('COM_HELP_PAGE_INDEX_EXPLANATION', $component['name']) . '</p>';
+        $content .= '<ul>';
+        foreach ($component['pages'] as $page) {
+            // bug: broken links
+            // correct value for layoutExt not propagated all the way here, see attempt to set in site/controllers/help.php that results in empty string
+            // $name = str_replace('.' . $this->layoutExt, '', $page);
+            // default value is .phtml; use that for now so links work
+            $name = str_replace('.phtml', '', $page);
+            $content .= '<li><a href="' . Route::url('index.php?option=com_help&component=' . str_replace('com_', '', $component['option']) . '&page=' . $name) . '">' . ucwords(str_replace('_', ' ', $name)) . '</a></li>';
+        }
+        $content .= '</ul>';
+    } else {
+        $content .= '<p>' . Lang::txt('COM_HELP_NO_PAGES_FOUND') . '</p>';
+    }
 }
 
 echo $content;
