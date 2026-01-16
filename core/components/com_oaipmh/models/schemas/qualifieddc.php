@@ -1,9 +1,12 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+// phpcs:disable PSR1.Files.SideEffects
 
 namespace Components\Oaipmh\Models\Schemas;
 
@@ -19,217 +22,200 @@ require_once __DIR__ . '/dublincore.php';
  */
 class QualifiedDC extends DublinCore
 {
-	/**
-	 * Schema prefix
-	 * 
-	 * @var  string
-	 */
-	public static $prefix = 'oai_qdc';
+    /**
+     * Schema prefix
+     *
+     * @var  string
+     */
+    public static $prefix = 'oai_qdc';
 
-	/**
-	 * Schema description
-	 * 
-	 * @var  string http://www.bepress.com/assets/xsd/oai_qualified_dc.xsd
-	 */
-	public static $schema = 'http://worldcat.org/xmlschemas/qdc/1.0/qdc-1.0.xsd';
+    /**
+     * Schema description
+     *
+     * @var  string http://www.bepress.com/assets/xsd/oai_qualified_dc.xsd
+     */
+    public static $schema = 'http://worldcat.org/xmlschemas/qdc/1.0/qdc-1.0.xsd';
 
-	/**
-	 * Schema namespace
-	 * 
-	 * @var  string http://www.bepress.com/OAI/2.0/qualified-dublin-core/
-	 */
-	public static $ns = 'http://worldcat.org/xmlschemas/qdc-1.0/';
+    /**
+     * Schema namespace
+     *
+     * @var  string http://www.bepress.com/OAI/2.0/qualified-dublin-core/
+     */
+    public static $ns = 'http://worldcat.org/xmlschemas/qdc-1.0/';
 
-	/**
-	 * Get the schema name
-	 *
-	 * @return  string
-	 */
-	public function name()
-	{
-		return 'Qualified Dublin Core';
-	}
+    /**
+     * Get the schema name
+     *
+     * @return  string
+     */
+    public function name()
+    {
+        return 'Qualified Dublin Core';
+    }
 
-	/**
-	 * Does this adapter respond to a mime type
-	 *
-	 * @param   string   $type  Schema type
-	 * @return  boolean
-	 */
-	public static function handles($type)
-	{
-		return in_array($type, array(
-			'qdc',
-			'dcq',
-			'oai_qdc',
-			'qualified-dublin-core',
-			'qualifieddublincore',
-			'qualifiedddc',
-			__CLASS__
-		));
-	}
+    /**
+     * Does this adapter respond to a mime type
+     *
+     * @param   string   $type  Schema type
+     * @return  boolean
+     */
+    public static function handles($type)
+    {
+        return in_array($type, array(
+            'qdc',
+            'dcq',
+            'oai_qdc',
+            'qualified-dublin-core',
+            'qualifieddublincore',
+            'qualifiedddc',
+            __CLASS__
+        ));
+    }
 
-	/**
-	 * Process a single record
-	 *
-	 * @param   object   $result
-	 * @param   boolean  $metadata
-	 * @return  object   $this
-	 */
-	public function record($result, $metadata=true)
-	{
-		if ($metadata)
-		{
-			$this->response
-				->element('record')
-					->element('header');
-		}
-		else
-		{
-			$this->response
-				->element('header');
-		}
+    /**
+     * Process a single record
+     *
+     * @param   object   $result
+     * @param   boolean  $metadata
+     * @return  object   $this
+     */
+    public function record($result, $metadata = true)
+    {
+        if ($metadata) {
+            $this->response
+                ->element('record')
+                    ->element('header');
+        } else {
+            $this->response
+                ->element('header');
+        }
 
-		if (!empty($result->identifier))
-		{
-			$this->response->element('identifier', $result->identifier)->end();
-		}
+        if (!empty($result->identifier)) {
+            $this->response->element('identifier', $result->identifier)->end();
+        }
 
-		// We want the "T" & "Z" strings in the output NOT the UTC offset (-400)
-		$gran = $this->service->get('gran', 'c');
-		if ($gran == 'c')
-		{
-			$gran = 'Y-m-d\Th:i:s\Z';
-		}
+        // We want the "T" & "Z" strings in the output NOT the UTC offset (-400)
+        $gran = $this->service->get('gran', 'c');
+        if ($gran == 'c') {
+            $gran = 'Y-m-d\Th:i:s\Z';
+        }
 
-		$datestamp = strtotime($result->date);
-		$datestamp = gmdate($gran, $datestamp);
-		if (!empty($datestamp))
-		{
-			$this->response->element('datestamp', $datestamp)->end();
-		}
-		if (!empty($result->type))
-		{
-			$this->response->element('setSpec', $result->type)->end();
-		}
+        $datestamp = strtotime($result->date);
+        $datestamp = gmdate($gran, $datestamp);
+        if (!empty($datestamp)) {
+            $this->response->element('datestamp', $datestamp)->end();
+        }
+        if (!empty($result->type)) {
+            $this->response->element('setSpec', $result->type)->end();
+        }
 
-		$this->response->end(); // End header
+        $this->response->end(); // End header
 
-		if ($metadata)
-		{
-			$this->response
-				->element('metadata')
-					->element('oai_qdc:qualifieddc')
-						->attr('xmlns:' . self::$prefix, self::$ns)
-						->attr('xmlns:dcterms', 'http://purl.org/dc/terms/')
-						->attr('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
-						->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-						->attr('xsi:schemaLocation', self::$ns . ' ' . self::$schema . ' http://purl.org/net/oclcterms http://worldcat.org/xmlschemas/oclcterms/1.4/oclcterms-1.4.xsd');
+        if ($metadata) {
+            $schemaLoc = self::$ns . ' ' . self::$schema
+                . ' http://purl.org/net/oclcterms'
+                . ' http://worldcat.org/xmlschemas/oclcterms/1.4/oclcterms-1.4.xsd';
+            $this->response
+                ->element('metadata')
+                    ->element('oai_qdc:qualifieddc')
+                        ->attr('xmlns:' . self::$prefix, self::$ns)
+                        ->attr('xmlns:dcterms', 'http://purl.org/dc/terms/')
+                        ->attr('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
+                        ->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
+                        ->attr('xsi:schemaLocation', $schemaLoc);
 
-			$dcs = array(
-				'title'   => array(
-					'alternative'
-				),
-				'creator' => null,
-				'subject' => null,
-				'date'    => array(
-					'created',
-					'valid',
-					'available',
-					'issued',
-					'modified',
-					'dateAccepted',
-					'dateCopyrighted',
-					'dateSubmitted'
-				),
-				'identifier'  => null,
-				'description' => array(
-					'tableOfContents',
-					'abstract'
-				),
-				'type'        => null,
-				'publisher'   => null,
-				'rights'      => null,
-				'contributor' => null,
-				'relation'    => array(
-					'isVersionOf',
-					'hasVersion',
-					'isReplacedBy',
-					'replaces',
-					'isRequiredBy',
-					'requires',
-					'isPartOf',
-					'hasPart',
-					'isReferencedBy',
-					'references',
-					'isFormatof',
-					'hasFormat',
-					'conformsTo'
-				),
-				'format'   => array(
-					'medium',
-					'extent'
-				),
-				'coverage' => array(
-					'spatial',
-					'temporal'
-				),
-				'language' => null,
-				'source'   => null,
-				'extent' => null
-			);
+            $dcs = array(
+                'title'   => array(
+                    'alternative'
+                ),
+                'creator' => null,
+                'subject' => null,
+                'date'    => array(
+                    'created',
+                    'valid',
+                    'available',
+                    'issued',
+                    'modified',
+                    'dateAccepted',
+                    'dateCopyrighted',
+                    'dateSubmitted'
+                ),
+                'identifier'  => null,
+                'description' => array(
+                    'tableOfContents',
+                    'abstract'
+                ),
+                'type'        => null,
+                'publisher'   => null,
+                'rights'      => null,
+                'contributor' => null,
+                'relation'    => array(
+                    'isVersionOf',
+                    'hasVersion',
+                    'isReplacedBy',
+                    'replaces',
+                    'isRequiredBy',
+                    'requires',
+                    'isPartOf',
+                    'hasPart',
+                    'isReferencedBy',
+                    'references',
+                    'isFormatof',
+                    'hasFormat',
+                    'conformsTo'
+                ),
+                'format'   => array(
+                    'medium',
+                    'extent'
+                ),
+                'coverage' => array(
+                    'spatial',
+                    'temporal'
+                ),
+                'language' => null,
+                'source'   => null,
+                'extent' => null
+            );
 
-			// Loop through DC elements
-			foreach ($dcs as $dc => $attrs)
-			{
-				if (!isset($result->$dc))
-				{
-					continue;
-				}
+            // Loop through DC elements
+            foreach ($dcs as $dc => $attrs) {
+                if (!isset($result->$dc)) {
+                    continue;
+                }
 
-				if (is_array($result->$dc))
-				{
-					foreach ($result->$dc as $val)
-					{
-						$term = '';
+                if (is_array($result->$dc)) {
+                    foreach ($result->$dc as $val) {
+                        $term = '';
 
-						if (is_array($val))
-						{
-							$res  = $val['value'];
-							$term = $val['type'];
-							// Make sure it's a valid modifier
-							if (!in_array($term, $attrs))
-							{
-								$term = '';
-							}
-						}
-						else
-						{
-							$res = $val;
-						}
+                        if (is_array($val)) {
+                            $res  = $val['value'];
+                            $term = $val['type'];
+                            // Make sure it's a valid modifier
+                            if (!in_array($term, $attrs)) {
+                                $term = '';
+                            }
+                        } else {
+                            $res = $val;
+                        }
 
-						$this->response->element(($term ? 'dcterms:' . $term : 'dc:' . $dc), $this->prepare($res))->end();
-					}
-				}
-				elseif (!empty($result->$dc))
-				{
-					if ($dc == 'date')
-					{
-						$this->response->element('dc:' . $dc, $datestamp)->end();
-					}
-					else
-					{
-						$this->response->element('dc:' . $dc, $this->prepare($result->$dc))->end();
-					}
-				}
-			}
+                        $tag = $term ? 'dcterms:' . $term : 'dc:' . $dc;
+                        $this->response->element($tag, $this->prepare($res))->end();
+                    }
+                } elseif (!empty($result->$dc)) {
+                    if ($dc == 'date') {
+                        $this->response->element('dc:' . $dc, $datestamp)->end();
+                    } else {
+                        $this->response->element('dc:' . $dc, $this->prepare($result->$dc))->end();
+                    }
+                }
+            }
 
-			$this->response->end() // End oai_dc:dc
-						->end(); // End metadata
+            $this->response->end() // End oai_dc:dc
+                        ->end(); // End metadata
 
-			$this->response->end(); // End record
-		}
+            $this->response->end(); // End record
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 }
