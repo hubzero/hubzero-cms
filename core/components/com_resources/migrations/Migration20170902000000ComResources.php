@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,22 +8,19 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for installing resources stats tables
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170902000000ComResources extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__resource_stats'))
-		{
-			$query = "CREATE TABLE `#__resource_stats` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__resource_stats')) {
+            $query = "CREATE TABLE `#__resource_stats` (
 			  `id` bigint(20) NOT NULL AUTO_INCREMENT,
 			  `resid` bigint(20) NOT NULL,
 			  `restype` int(11) DEFAULT NULL,
@@ -39,13 +37,12 @@ class Migration20170902000000ComResources extends Base
 			  UNIQUE KEY `uidx_resid_restype_datetime_period` (`resid`,`restype`,`datetime`,`period`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__resource_stats_clusters'))
-		{
-			$query = "CREATE TABLE `#__resource_stats_clusters` (
+        if (!$this->db->tableExists('#__resource_stats_clusters')) {
+            $query = "CREATE TABLE `#__resource_stats_clusters` (
 			  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			  `cluster` varchar(255) NOT NULL DEFAULT '',
 			  `username` varchar(32) NOT NULL DEFAULT '',
@@ -69,13 +66,12 @@ class Migration20170902000000ComResources extends Base
 			  KEY `idx_institution` (`institution`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__resource_stats_tools'))
-		{
-			$query = "CREATE TABLE `#__resource_stats_tools` (
+        if (!$this->db->tableExists('#__resource_stats_tools')) {
+            $query = "CREATE TABLE `#__resource_stats_tools` (
 			  `id` bigint(20) NOT NULL AUTO_INCREMENT,
 			  `resid` bigint(20) NOT NULL,
 			  `restype` int(11) NOT NULL,
@@ -99,13 +95,12 @@ class Migration20170902000000ComResources extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM AUTO_INCREMENT=3908 DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__resource_stats_tools_tops'))
-		{
-			$query = "CREATE TABLE `#__resource_stats_tools_tops` (
+        if (!$this->db->tableExists('#__resource_stats_tools_tops')) {
+            $query = "CREATE TABLE `#__resource_stats_tools_tops` (
 			  `top` tinyint(4) NOT NULL DEFAULT '0',
 			  `name` varchar(128) NOT NULL DEFAULT '',
 			  `valfmt` tinyint(4) NOT NULL DEFAULT '0',
@@ -113,13 +108,12 @@ class Migration20170902000000ComResources extends Base
 			  PRIMARY KEY (`top`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__resource_stats_tools_topvals'))
-		{
-			$query = "CREATE TABLE `#__resource_stats_tools_topvals` (
+        if (!$this->db->tableExists('#__resource_stats_tools_topvals')) {
+            $query = "CREATE TABLE `#__resource_stats_tools_topvals` (
 			  `id` bigint(20) NOT NULL,
 			  `top` tinyint(4) NOT NULL DEFAULT '0',
 			  `rank` tinyint(4) NOT NULL DEFAULT '0',
@@ -127,13 +121,12 @@ class Migration20170902000000ComResources extends Base
 			  `value` bigint(20) NOT NULL DEFAULT '0'
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__resource_stats_tools_users'))
-		{
-			$query = "CREATE TABLE `#__resource_stats_tools_users` (
+        if (!$this->db->tableExists('#__resource_stats_tools_users')) {
+            $query = "CREATE TABLE `#__resource_stats_tools_users` (
 			  `id` bigint(20) NOT NULL AUTO_INCREMENT,
 			  `resid` bigint(20) NOT NULL,
 			  `restype` int(11) NOT NULL,
@@ -149,58 +142,52 @@ class Migration20170902000000ComResources extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__resource_stats'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__resource_stats`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__resource_stats')) {
+            $query = "DROP TABLE IF EXISTS `#__resource_stats`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		// Imports
-		if ($this->db->tableExists('#__resource_stats_clusters'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__resource_stats_clusters`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        // Imports
+        if ($this->db->tableExists('#__resource_stats_clusters')) {
+            $query = "DROP TABLE IF EXISTS `#__resource_stats_clusters`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__resource_stats_tools'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__resource_stats_tools`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__resource_stats_tools')) {
+            $query = "DROP TABLE IF EXISTS `#__resource_stats_tools`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__resource_stats_tools_tops'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__resource_stats_tools_tops`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__resource_stats_tools_tops')) {
+            $query = "DROP TABLE IF EXISTS `#__resource_stats_tools_tops`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		// Taxonomy
-		if ($this->db->tableExists('#__resource_stats_tools_topvals'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__resource_stats_tools_topvals`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        // Taxonomy
+        if ($this->db->tableExists('#__resource_stats_tools_topvals')) {
+            $query = "DROP TABLE IF EXISTS `#__resource_stats_tools_topvals`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__resource_stats_tools_users'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__resource_stats_tools_users`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__resource_stats_tools_users')) {
+            $query = "DROP TABLE IF EXISTS `#__resource_stats_tools_users`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

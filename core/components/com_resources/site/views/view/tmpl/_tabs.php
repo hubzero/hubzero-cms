@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,35 +18,31 @@ $active_key = Request::get('tab_active_key', null) ? Request::get('tab_active_ke
 
 ?>
 <ul id="sub-menu" class="sub-menu">
-	<?php
-	foreach ($this->cats as $cat)
-	{
-		$name = key($cat);
+    <?php
+    foreach ($this->cats as $cat) {
+        $name = key($cat);
 
-		if (!$name)
-		{
-			continue;
-		}
+        if (!$name) {
+            continue;
+        }
 
-		$active = false;
+        $active = false;
 
-		$url = $base . '&' . $active_key . '=' . $name;
-		if (strtolower($name) == $this->active)
-		{
-			Pathway::append($cat[$name], $url);
+        $url = $base . '&' . $active_key . '=' . $name;
+        if (strtolower($name) == $this->active) {
+            Pathway::append($cat[$name], $url);
 
-			if ($active != 'about')
-			{
-				Document::setTitle(Document::getTitle() . ': ' . $cat[$name]);
-			}
+            if ($active != 'about') {
+                Document::setTitle(Document::getTitle() . ': ' . $cat[$name]);
+            }
 
-			$active = true;
-		}
-		?>
-		<li id="sm-<?php echo $name; ?>"<?php echo $active ? ' class="active"' : ''; ?>>
-			<a class="tab" data-rel="<?php echo $name; ?>" href="<?php echo Route::url($url); ?>"><span><?php echo $cat[$name]; ?></span></a>
-		</li>
-		<?php
-	}
-	?>
+            $active = true;
+        }
+        ?>
+        <li id="sm-<?php echo $name; ?>"<?php echo $active ? ' class="active"' : ''; ?>>
+            <a class="tab" data-rel="<?php echo $name; ?>" href="<?php echo Route::url($url); ?>"><span><?php echo $cat[$name]; ?></span></a>
+        </li>
+        <?php
+    }
+    ?>
 </ul>

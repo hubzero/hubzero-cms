@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,9 +17,8 @@ require_once \Component::path('com_tools') . DS . 'tables' . DS . 'version.php';
 require_once \Component::path('com_tools') . DS . 'tables' . DS . 'author.php';
 
 $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'resources'));
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'resources';
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+    $controllerName = 'resources';
 }
 require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));

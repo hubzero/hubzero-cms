@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,275 +24,275 @@ use Date;
  */
 class Badges
 {
-	public $scope = '';
-	public $scopeId = '';
-	private $_db = '';
+    public $scope = '';
+    public $scopeId = '';
+    private $db = '';
 
-	const LABEL = 'badge';
+    public const LABEL = 'badge';
 
-	/**
-	 * Instantiate a Badges instance
-	 *
-	 * @param   array   $args     Starting state
-	 * @return  void
-	 */
-	public function __construct($args = [])
-	{
-		$this->scope = $args['scope'];
-		$this->scopeId = $args['scopeId'];
-		$this->_db = App::get('db');
-	}
+    /**
+     * Instantiate a Badges instance
+     *
+     * @param   array   $args     Starting state
+     * @return  void
+     */
+    public function __construct($args = [])
+    {
+        $this->scope = $args['scope'];
+        $this->scopeId = $args['scopeId'];
+        $this->db = App::get('db');
+    }
 
-	/**
-	 * Update a records badges
-	 *
-	 * This will get a records list of badges and
-	 *
-	 *   1) add any new badges not in the existing list
-	 *   2) remove any badges in the existing list not found in the new list
-	 *
-	 * @param   string   $newBadgesString  String of comma-separated tags
-	 * @param   integer  $taggerId         ID of user who associated tag w/ record
-	 * @param   boolean  $admin            Mark tags as admin?
-	 * @param   integer  $strength         Badge strength
-	 * @return  void
-	 */
-	public function updateBadges($newBadgesString, $taggerId = 0, $admin = 0, $strength = 1)
-	{
-		if (!$taggerId)
-		{
-			$taggerId = User::get('id');
-		}
+    /**
+     * Update a records badges
+     *
+     * This will get a records list of badges and
+     *
+     *   1) add any new badges not in the existing list
+     *   2) remove any badges in the existing list not found in the new list
+     *
+     * @param   string   $newBadgesString  String of comma-separated tags
+     * @param   integer  $taggerId         ID of user who associated tag w/ record
+     * @param   boolean  $admin            Mark tags as admin?
+     * @param   integer  $strength         Badge strength
+     * @return  void
+     */
+    public function updateBadges($newBadgesString, $taggerId = 0, $admin = 0, $strength = 1)
+    {
+        if (!$taggerId) {
+            $taggerId = User::get('id');
+        }
 
-		$rawTagNames = $this->_parseBadgesString($newBadgesString);
+        $rawTagNames = $this->_parseBadgesString($newBadgesString);
 
-		$existingTagIds = $this->allBadgesAs('id');
-		$updatedTagIds = $this->_translateRawNamesToIds($rawTagNames, $taggerId, $admin);
+        $existingTagIds = $this->allBadgesAs('id');
+        $updatedTagIds = $this->_translateRawNamesToIds($rawTagNames, $taggerId, $admin);
 
-		$addedTagIds = array_diff($updatedTagIds, $existingTagIds);
-		$removedTagIds = array_diff($existingTagIds, $updatedTagIds);
+        $addedTagIds = array_diff($updatedTagIds, $existingTagIds);
+        $removedTagIds = array_diff($existingTagIds, $updatedTagIds);
 
-		$this->_addBadges($addedTagIds, $taggerId, $admin, $strength);
-		$this->_removeBadges($removedTagIds);
-	}
+        $this->_addBadges($addedTagIds, $taggerId, $admin, $strength);
+        $this->_removeBadges($removedTagIds);
+    }
 
-	/**
-	 * Convert string of raw_tag names into formatted array
-	 *
-	 * @param   string   $rawTagNames   Comma separated list of raw_tag names
-	 * @return  void
-	 */
-	protected function _parseBadgesString($newBadgesString)
-	{
-		$rawTagNames = explode(',', $newBadgesString);
-		$rawTagNames = array_map(function($rawTagName) {
-			return trim($rawTagName);
-		}, $rawTagNames);
+    /**
+     * Convert string of raw_tag names into formatted array
+     *
+     * @param   string   $rawTagNames   Comma separated list of raw_tag names
+     * @return  void
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _parseBadgesString($newBadgesString)
+    {
+        $rawTagNames = explode(',', $newBadgesString);
+        $rawTagNames = array_map(function ($rawTagName) {
+            return trim($rawTagName);
+        }, $rawTagNames);
 
-		return $rawTagNames;
-	}
+        return $rawTagNames;
+    }
 
-	/**
-	 * Retrieve IDs based on tag names
-	 *
-	 * @param   array    $rawTagNames   raw_tag attribute list for given tags
-	 * @param   integer  $taggerId      ID of user who associated tag w/ record
-	 * @param   boolean  $admin         Mark tags as admin?
-	 * @return  void
-	 */
-	protected function _translateRawNamesToIds($rawTagNames, $taggerId, $admin)
-	{
-		$nameFormatter = Tag::blank();
+    /**
+     * Retrieve IDs based on tag names
+     *
+     * @param   array    $rawTagNames   raw_tag attribute list for given tags
+     * @param   integer  $taggerId      ID of user who associated tag w/ record
+     * @param   boolean  $admin         Mark tags as admin?
+     * @return  void
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _translateRawNamesToIds($rawTagNames, $taggerId, $admin)
+    {
+        $nameFormatter = Tag::blank();
 
-		$ids = array_map(function ($rawTagName) use ($nameFormatter, $taggerId, $admin) {
-			$tagName = $nameFormatter->normalize($rawTagName);
-			$tag = Tag::oneByTag($tagName);
+        $ids = array_map(function ($rawTagName) use ($nameFormatter, $taggerId, $admin) {
+            $tagName = $nameFormatter->normalize($rawTagName);
+            $tag = Tag::oneByTag($tagName);
 
-			if ($tag->isNew())
-			{
-				$this->_createTag($tag, $tagName, $rawTagName, $taggerId, $admin);
-			}
+            if ($tag->isNew()) {
+                $this->_createTag($tag, $tagName, $rawTagName, $taggerId, $admin);
+            }
 
-			return $tag->get('id');
-		}, $rawTagNames);
+            return $tag->get('id');
+        }, $rawTagNames);
 
-		return $ids;
-	}
+        return $ids;
+    }
 
-	/**
-	 * Save a tag record
-	 *
-	 * @param   object   $tag         Unsaved tag ORM model
-	 * @param   string   $tagName     Name of the tag
-	 * @param   string   $rawTagName  Display name of tag
-	 * @param   integer  $taggerId    ID of user who associated tag w/ record
-	 * @param   boolean  $admin       Mark tags as admin?
-	 * @return  boolean
-	 */
-	protected function _createTag($tag, $tagName, $rawTagName, $taggerId, $admin)
-	{
-		$tagData = [
-			'tag' => $tagName,
-			'raw_tag' => $rawTagName,
-			'admin' => $admin,
-			'created' => Date::toSql(),
-			'created_by' => $taggerId
-		];
-		$tag->set($tagData);
+    /**
+     * Save a tag record
+     *
+     * @param   object   $tag         Unsaved tag ORM model
+     * @param   string   $tagName     Name of the tag
+     * @param   string   $rawTagName  Display name of tag
+     * @param   integer  $taggerId    ID of user who associated tag w/ record
+     * @param   boolean  $admin       Mark tags as admin?
+     * @return  boolean
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _createTag($tag, $tagName, $rawTagName, $taggerId, $admin)
+    {
+        $tagData = [
+            'tag' => $tagName,
+            'raw_tag' => $rawTagName,
+            'admin' => $admin,
+            'created' => Date::toSql(),
+            'created_by' => $taggerId
+        ];
+        $tag->set($tagData);
 
-		$saved = $tag->save();
+        $saved = $tag->save();
 
-		return $saved;
-	}
+        return $saved;
+    }
 
-	/**
-	 * Associate tags with a record as badges
-	 *
-	 * @param   array    $tagIds      IDs of tags
-	 * @param   integer  $taggerId    ID of user who associated tag w/ record
-	 * @param   boolean  $admin       Mark tags as admin?
-	 * @param   integer  $strength    Association strength
-	 * @return  void
-	 */
-	protected function _addBadges($tagIds, $taggerId, $admin, $strength)
-	{
-		foreach ($tagIds as $tagId)
-		{
-			$this->_addBadge($tagId, $taggerId, $admin, $strength);
-		}
-	}
+    /**
+     * Associate tags with a record as badges
+     *
+     * @param   array    $tagIds      IDs of tags
+     * @param   integer  $taggerId    ID of user who associated tag w/ record
+     * @param   boolean  $admin       Mark tags as admin?
+     * @param   integer  $strength    Association strength
+     * @return  void
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _addBadges($tagIds, $taggerId, $admin, $strength)
+    {
+        foreach ($tagIds as $tagId) {
+            $this->_addBadge($tagId, $taggerId, $admin, $strength);
+        }
+    }
 
-	/**
-	 * Associate a tag with a record as a badge
-	 *
-	 * @param   integer  $tagId       ID of tag record
-	 * @param   integer  $taggerId    ID of user who associated tag w/ record
-	 * @param   boolean  $admin       Mark tags as admin?
-	 * @param   integer  $strength    Badge strength
-	 * @return  void
-	 */
-	protected function _addBadge($tagId, $taggerId, $admin, $strength)
-	{
-		$taggedOn = Date::toSql();
-		$tagAssociation = Objct::blank();
-		$tagAssociation->set([
-			'objectid' => $this->scopeId,
-			'tagid' => $tagId,
-			'strength' => $strength,
-			'taggerid' => $taggerId,
-			'taggedon' => $taggedOn,
-			'tbl' => $this->scope,
-			'label' => self::LABEL
-		]);
+    /**
+     * Associate a tag with a record as a badge
+     *
+     * @param   integer  $tagId       ID of tag record
+     * @param   integer  $taggerId    ID of user who associated tag w/ record
+     * @param   boolean  $admin       Mark tags as admin?
+     * @param   integer  $strength    Badge strength
+     * @return  void
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _addBadge($tagId, $taggerId, $admin, $strength)
+    {
+        $taggedOn = Date::toSql();
+        $tagAssociation = Objct::blank();
+        $tagAssociation->set([
+            'objectid' => $this->scopeId,
+            'tagid' => $tagId,
+            'strength' => $strength,
+            'taggerid' => $taggerId,
+            'taggedon' => $taggedOn,
+            'tbl' => $this->scope,
+            'label' => self::LABEL
+        ]);
 
-		$tagAssociation->save();
-	}
+        $tagAssociation->save();
+    }
 
-	/**
-	 * Disassociate badges (tags) from a record
-	 *
-	 * @param   array    $tagIds      IDs of tags
-	 * @return  void
-	 */
-	protected function _removeBadges($tagIds)
-	{
-		foreach ($tagIds as $tagId)
-		{
-			$this->_removeBadge($tagId);
-		}
-	}
+    /**
+     * Disassociate badges (tags) from a record
+     *
+     * @param   array    $tagIds      IDs of tags
+     * @return  void
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _removeBadges($tagIds)
+    {
+        foreach ($tagIds as $tagId) {
+            $this->_removeBadge($tagId);
+        }
+    }
 
-	/**
-	 * Disassociate badge (tag) from a record
-	 *
-	 * @param   integer  $tagId       ID of tag record
-	 * @return  void
-	 */
-	protected function _removeBadge($tagId)
-	{
-		$tagAssociationId = Objct::all()
-			->select('id')
-			->whereEquals('tagid', $tagId)
-			->whereEquals('tbl', $this->scope)
-			->whereEquals('objectid', $this->scopeId)
-			->rows()->toArray()[0]['id'];
-		$tagAssociation = Objct::one($tagAssociationId);
+    /**
+     * Disassociate badge (tag) from a record
+     *
+     * @param   integer  $tagId       ID of tag record
+     * @return  void
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _removeBadge($tagId)
+    {
+        $tagAssociationId = Objct::all()
+            ->select('id')
+            ->whereEquals('tagid', $tagId)
+            ->whereEquals('tbl', $this->scope)
+            ->whereEquals('objectid', $this->scopeId)
+            ->rows()->toArray()[0]['id'];
+        $tagAssociation = Objct::one($tagAssociationId);
 
-		$tagAssociation->destroy();
-	}
+        $tagAssociation->destroy();
+    }
 
 
-	/**
-	 * @param   string  $attribute   Name of attribute to map badges (tags) to
-	 * @return  array
-	 */
-	public function allBadgesAs($attribute)
-	{
-		$badges = $this->all();
-		$allBadgesAs = [];
+    /**
+     * @param   string  $attribute   Name of attribute to map badges (tags) to
+     * @return  array
+     */
+    public function allBadgesAs($attribute)
+    {
+        $badges = $this->all();
+        $allBadgesAs = [];
 
-		foreach ($badges as $badge)
-		{
-			$allBadgesAs[] = $badge->$attribute;
-		}
+        foreach ($badges as $badge) {
+            $allBadgesAs[] = $badge->$attribute;
+        }
 
-		return $allBadgesAs;
-	}
+        return $allBadgesAs;
+    }
 
-	/**
-	 * Get all badges for given resource
-	 *
-	 * @return  array
-	 */
-	public function all()
-	{
-		$badgeIds = Objct::all()
-			->select('tagid')
-			->whereEquals('tbl', $this->scope)
-			->whereEquals('objectid', $this->scopeId)
-			->whereEquals('label', self::LABEL)
-			->rows()->toArray();
-		$badges = array_map(function($badgeId) {
-			$badgeId = $badgeId['tagid'];
-			return Tag::one($badgeId);
-		}, $badgeIds);
+    /**
+     * Get all badges for given resource
+     *
+     * @return  array
+     */
+    public function all()
+    {
+        $badgeIds = Objct::all()
+            ->select('tagid')
+            ->whereEquals('tbl', $this->scope)
+            ->whereEquals('objectid', $this->scopeId)
+            ->whereEquals('label', self::LABEL)
+            ->rows()->toArray();
+        $badges = array_map(function ($badgeId) {
+            $badgeId = $badgeId['tagid'];
+            return Tag::one($badgeId);
+        }, $badgeIds);
 
-		return $badges;
-	}
+        return $badges;
+    }
 
-	/**
-	 * Render badges
-	 *
-	 * @param   string   $format   Format to render
-	 * @return  string
-	 */
-	public function render($format)
-	{
-		switch ($format)
-		{
-			case 'string';
-				$output = $this->_renderString();
-				return $output;
-		}
-	}
+    /**
+     * Render badges
+     *
+     * @param   string   $format   Format to render
+     * @return  string
+     */
+    public function render($format)
+    {
+        switch ($format) {
+            case 'string':
+                $output = $this->_renderString();
+                return $output;
+        }
+    }
 
-	/**
-	 * Return string of comma delimited badge names
-	 *
-	 * @return  string
-	 */
-	protected function _renderString()
-	{
-		$output = '';
-		$badges = $this->all();
+    /**
+     * Return string of comma delimited badge names
+     *
+     * @return  string
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _renderString()
+    {
+        $output = '';
+        $badges = $this->all();
 
-		foreach ($badges as $badge)
-		{
-			$output .= $badge->raw_tag . ', ';
-		}
-		$output = rtrim($output, ', ');
+        foreach ($badges as $badge) {
+            $output .= $badge->raw_tag . ', ';
+        }
+        $output = rtrim($output, ', ');
 
-		return $output;
-	}
-
+        return $output;
+    }
 }

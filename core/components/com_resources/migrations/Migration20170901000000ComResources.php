@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,23 +8,20 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for installing resources tables
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComResources extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		// Primary tables
-		if (!$this->db->tableExists('#__resources'))
-		{
-			$query = "CREATE TABLE `#__resources` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        // Primary tables
+        if (!$this->db->tableExists('#__resources')) {
+            $query = "CREATE TABLE `#__resources` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `title` varchar(250) NOT NULL DEFAULT '',
 			  `type` int(11) NOT NULL DEFAULT '0',
@@ -59,13 +57,12 @@ class Migration20170901000000ComResources extends Base
 			  FULLTEXT KEY `ftidx_title_introtext_fulltxt` (`title`,`introtext`,`fulltxt`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__resource_types'))
-		{
-			$query = "CREATE TABLE `#__resource_types` (
+        if (!$this->db->tableExists('#__resource_types')) {
+            $query = "CREATE TABLE `#__resource_types` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `alias` varchar(100) DEFAULT NULL,
 			  `type` varchar(200) NOT NULL DEFAULT '',
@@ -80,13 +77,12 @@ class Migration20170901000000ComResources extends Base
 			  KEY `idx_state` (`state`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__resource_assoc'))
-		{
-			$query = "CREATE TABLE `#__resource_assoc` (
+        if (!$this->db->tableExists('#__resource_assoc')) {
+            $query = "CREATE TABLE `#__resource_assoc` (
 			  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			  `parent_id` int(11) NOT NULL DEFAULT '0',
 			  `child_id` int(11) NOT NULL DEFAULT '0',
@@ -97,13 +93,12 @@ class Migration20170901000000ComResources extends Base
 			  KEY `idx_parent_id_child_id` (`parent_id`,`child_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__resource_licenses'))
-		{
-			$query = "CREATE TABLE `#__resource_licenses` (
+        if (!$this->db->tableExists('#__resource_licenses')) {
+            $query = "CREATE TABLE `#__resource_licenses` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `name` varchar(100) DEFAULT NULL,
 			  `text` text,
@@ -118,14 +113,13 @@ class Migration20170901000000ComResources extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		// Authors
-		if (!$this->db->tableExists('#__author_assoc'))
-		{
-			$query = "CREATE TABLE `#__author_assoc` (
+        // Authors
+        if (!$this->db->tableExists('#__author_assoc')) {
+            $query = "CREATE TABLE `#__author_assoc` (
 			  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			  `subtable` varchar(50) NOT NULL DEFAULT '',
 			  `subid` int(11) NOT NULL DEFAULT '0',
@@ -139,13 +133,12 @@ class Migration20170901000000ComResources extends Base
 			  UNIQUE KEY `id` (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__author_roles'))
-		{
-			$query = "CREATE TABLE `#__author_roles` (
+        if (!$this->db->tableExists('#__author_roles')) {
+            $query = "CREATE TABLE `#__author_roles` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `title` varchar(255) DEFAULT NULL,
 			  `alias` varchar(255) DEFAULT NULL,
@@ -157,27 +150,25 @@ class Migration20170901000000ComResources extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__author_role_types'))
-		{
-			$query = "CREATE TABLE `#__author_role_types` (
+        if (!$this->db->tableExists('#__author_role_types')) {
+            $query = "CREATE TABLE `#__author_role_types` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `role_id` int(11) NOT NULL DEFAULT '0',
 			  `type_id` int(11) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		// Imports
-		if (!$this->db->tableExists('#__resource_imports'))
-		{
-			$query = "CREATE TABLE `#__resource_imports` (
+        // Imports
+        if (!$this->db->tableExists('#__resource_imports')) {
+            $query = "CREATE TABLE `#__resource_imports` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `name` varchar(150) DEFAULT NULL,
 			  `notes` text,
@@ -192,13 +183,12 @@ class Migration20170901000000ComResources extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__author_role_types'))
-		{
-			$query = "CREATE TABLE `#__resource_import_runs` (
+        if (!$this->db->tableExists('#__author_role_types')) {
+            $query = "CREATE TABLE `#__resource_import_runs` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `import_id` int(11) DEFAULT NULL,
 			  `processed` int(11) DEFAULT NULL,
@@ -209,13 +199,12 @@ class Migration20170901000000ComResources extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__resource_import_hooks'))
-		{
-			$query = "CREATE TABLE `#__resource_import_hooks` (
+        if (!$this->db->tableExists('#__resource_import_hooks')) {
+            $query = "CREATE TABLE `#__resource_import_hooks` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `type` varchar(25) DEFAULT NULL,
 			  `name` varchar(255) DEFAULT NULL,
@@ -227,14 +216,13 @@ class Migration20170901000000ComResources extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		// Taxonomy
-		if (!$this->db->tableExists('#__resource_taxonomy_audience'))
-		{
-			$query = "CREATE TABLE `#__resource_taxonomy_audience` (
+        // Taxonomy
+        if (!$this->db->tableExists('#__resource_taxonomy_audience')) {
+            $query = "CREATE TABLE `#__resource_taxonomy_audience` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `rid` int(11) NOT NULL DEFAULT '0',
 			  `versionid` int(11) DEFAULT '0',
@@ -250,13 +238,12 @@ class Migration20170901000000ComResources extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__resource_taxonomy_audience_levels'))
-		{
-			$query = "CREATE TABLE `#__resource_taxonomy_audience_levels` (
+        if (!$this->db->tableExists('#__resource_taxonomy_audience_levels')) {
+            $query = "CREATE TABLE `#__resource_taxonomy_audience_levels` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `label` varchar(11) NOT NULL DEFAULT '0',
 			  `title` varchar(100) DEFAULT '',
@@ -264,102 +251,90 @@ class Migration20170901000000ComResources extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		// Primary tables
-		if ($this->db->tableExists('#__resources'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__resources`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        // Primary tables
+        if ($this->db->tableExists('#__resources')) {
+            $query = "DROP TABLE IF EXISTS `#__resources`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__resource_types'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__resource_types`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__resource_types')) {
+            $query = "DROP TABLE IF EXISTS `#__resource_types`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__resource_assoc'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__resource_assoc`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__resource_assoc')) {
+            $query = "DROP TABLE IF EXISTS `#__resource_assoc`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__resource_licenses'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__resource_licenses`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__resource_licenses')) {
+            $query = "DROP TABLE IF EXISTS `#__resource_licenses`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		// Authors
-		if ($this->db->tableExists('#__author_assoc'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__author_assoc`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        // Authors
+        if ($this->db->tableExists('#__author_assoc')) {
+            $query = "DROP TABLE IF EXISTS `#__author_assoc`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__author_roles'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__author_roles`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__author_roles')) {
+            $query = "DROP TABLE IF EXISTS `#__author_roles`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__author_role_types'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__author_role_types`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__author_role_types')) {
+            $query = "DROP TABLE IF EXISTS `#__author_role_types`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		// Imports
-		if ($this->db->tableExists('#__resource_imports'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__resource_imports`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        // Imports
+        if ($this->db->tableExists('#__resource_imports')) {
+            $query = "DROP TABLE IF EXISTS `#__resource_imports`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__resource_import_runs'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__resource_import_runs`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__resource_import_runs')) {
+            $query = "DROP TABLE IF EXISTS `#__resource_import_runs`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__resource_import_hooks'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__resource_import_hooks`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__resource_import_hooks')) {
+            $query = "DROP TABLE IF EXISTS `#__resource_import_hooks`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		// Taxonomy
-		if ($this->db->tableExists('#__resource_taxonomy_audience'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__resource_taxonomy_audience`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        // Taxonomy
+        if ($this->db->tableExists('#__resource_taxonomy_audience')) {
+            $query = "DROP TABLE IF EXISTS `#__resource_taxonomy_audience`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__resource_taxonomy_audience_levels'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__resource_taxonomy_audience_levels`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__resource_taxonomy_audience_levels')) {
+            $query = "DROP TABLE IF EXISTS `#__resource_taxonomy_audience_levels`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

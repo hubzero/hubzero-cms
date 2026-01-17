@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,14 +12,13 @@
 defined('_HZEXEC_') or die();
 ?>
 <ol class="resources results">
-	<?php
-	foreach ($this->lines as $line)
-	{
-		// Instantiate a new view
-		$this->view('item', 'browse')
-			->set('line', $line)
-			->set('supported', isset($this->supported) ? $this->supported : array())
-			->display();
-	}
-	?>
+    <?php
+    foreach ($this->lines as $line) {
+        // Instantiate a new view
+        $this->view('item', 'browse')
+            ->set('line', $line)
+            ->set('supported', isset($this->supported) ? $this->supported : array())
+            ->display();
+    }
+    ?>
 </ol>

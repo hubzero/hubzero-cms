@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,119 +23,117 @@ include_once __DIR__ . DS . 'author' . DS . 'role.php';
  */
 class Type extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = 'resource';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    protected $namespace = 'resource';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'type';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'type';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'type' => 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'type' => 'notempty'
+    );
 
-	/**
-	 * Automatically fillable fields
-	 *
-	 * @var  array
-	 */
-	public $always = array(
-		'alias'
-	);
+    /**
+     * Automatically fillable fields
+     *
+     * @var  array
+     */
+    public $always = array(
+        'alias'
+    );
 
-	/**
-	 * Params Registry
-	 *
-	 * @var  object
-	 */
-	protected $paramsRegistry = null;
+    /**
+     * Params Registry
+     *
+     * @var  object
+     */
+    protected $paramsRegistry = null;
 
-	/**
-	 * Generates automatic owned by field value
-	 *
-	 * @param   array   $data  the data being saved
-	 * @return  string
-	 */
-	public function automaticAlias($data)
-	{
-		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['type']);
-		$alias = strip_tags($alias);
-		$alias = trim($alias);
-		if (strlen($alias) > 70)
-		{
-			$alias = substr($alias . ' ', 0, 70);
-			$alias = substr($alias, 0, strrpos($alias, ' '));
-		}
-		$alias = str_replace(' ', '-', $alias);
+    /**
+     * Generates automatic owned by field value
+     *
+     * @param   array   $data  the data being saved
+     * @return  string
+     */
+    public function automaticAlias($data)
+    {
+        $alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['type']);
+        $alias = strip_tags($alias);
+        $alias = trim($alias);
+        if (strlen($alias) > 70) {
+            $alias = substr($alias . ' ', 0, 70);
+            $alias = substr($alias, 0, strrpos($alias, ' '));
+        }
+        $alias = str_replace(' ', '-', $alias);
 
-		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
-	}
+        return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+    }
 
-	/**
-	 * Transform params
-	 *
-	 * @return  object
-	 */
-	public function transformParams()
-	{
-		if (!is_object($this->paramsRegistry))
-		{
-			$this->paramsRegistry = new Registry($this->get('params'));
-		}
+    /**
+     * Transform params
+     *
+     * @return  object
+     */
+    public function transformParams()
+    {
+        if (!is_object($this->paramsRegistry)) {
+            $this->paramsRegistry = new Registry($this->get('params'));
+        }
 
-		return $this->paramsRegistry;
-	}
+        return $this->paramsRegistry;
+    }
 
-	/**
-	 * Get a list of roles for this type
-	 *
-	 * @return  object
-	 */
-	public function roles()
-	{
-		$model = new RoleType();
-		return $this->manyToMany(__NAMESPACE__ . '\\Author\\Role', $model->getTableName(), 'type_id', 'role_id');
-	}
+    /**
+     * Get a list of roles for this type
+     *
+     * @return  object
+     */
+    public function roles()
+    {
+        $model = new RoleType();
+        return $this->manyToMany(__NAMESPACE__ . '\\Author\\Role', $model->getTableName(), 'type_id', 'role_id');
+    }
 
-	/**
-	 * Is this the tool type?
-	 *
-	 * @return  bool
-	 */
-	public function isForTools()
-	{
-		return ($this->get('id') == 7);
-	}
+    /**
+     * Is this the tool type?
+     *
+     * @return  bool
+     */
+    public function isForTools()
+    {
+        return ($this->get('id') == 7);
+    }
 
-	/**
-	 * Get major types
-	 *
-	 * @return  object
-	 */
-	public static function getMajorTypes()
-	{
-		return self::all()
-			->whereEquals('category', 27)
-			->ordered()
-			->rows();
-	}
+    /**
+     * Get major types
+     *
+     * @return  object
+     */
+    public static function getMajorTypes()
+    {
+        return self::all()
+            ->whereEquals('category', 27)
+            ->ordered()
+            ->rows();
+    }
 }

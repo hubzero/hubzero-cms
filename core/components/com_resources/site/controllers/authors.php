@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,400 +21,368 @@ use App;
  */
 class Authors extends SiteController
 {
-	/**
-	 * Determines task being called and attempts to execute it
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		if (User::isGuest())
-		{
-			App::abort(403, Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'));
-		}
+    /**
+     * Determines task being called and attempts to execute it
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        if (User::isGuest()) {
+            App::abort(403, Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'));
+        }
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * Save one or more authors
-	 *
-	 * @param   integer  $show        Display author list when done?
-	 * @param   integer  $id          Resource ID
-	 * @param   array    $authorsNew  Authors to add
-	 * @return  void
-	 */
-	public function saveTask($show = 1, $id = 0, $authorsNew = array())
-	{
-		// Incoming resource ID
-		if (!$id)
-		{
-			$id = Request::getInt('pid', 0);
-		}
-		if (!$id)
-		{
-			$this->setError(Lang::txt('CONTRIBUTE_NO_ID'));
-			if ($show)
-			{
-				$this->displayTask($id);
-			}
-			return;
-		}
+    /**
+     * Save one or more authors
+     *
+     * @param   integer  $show        Display author list when done?
+     * @param   integer  $id          Resource ID
+     * @param   array    $authorsNew  Authors to add
+     * @return  void
+     */
+    public function saveTask($show = 1, $id = 0, $authorsNew = array())
+    {
+        // Incoming resource ID
+        if (!$id) {
+            $id = Request::getInt('pid', 0);
+        }
+        if (!$id) {
+            $this->setError(Lang::txt('CONTRIBUTE_NO_ID'));
+            if ($show) {
+                $this->displayTask($id);
+            }
+            return;
+        }
 
-		// Incoming authors
-		$authorsNewstr = trim(Request::getString('new_authors', '', 'post'));
-		$authid   = Request::getInt('authid', 0, 'post');
-		$username = Request::getString('author', '', 'post');
-		$role     = Request::getString('role', '', 'post');
+        // Incoming authors
+        $authorsNewstr = trim(Request::getString('new_authors', '', 'post'));
+        $authid   = Request::getInt('authid', 0, 'post');
+        $username = Request::getString('author', '', 'post');
+        $role     = Request::getString('role', '', 'post');
 
-		// Turn the string into an array of usernames
-		$authorsNew = empty($authorsNew) ? explode(',', $authorsNewstr) : $authorsNew;
+        // Turn the string into an array of usernames
+        $authorsNew = empty($authorsNew) ? explode(',', $authorsNewstr) : $authorsNew;
 
-		// Instantiate a resource/contributor association object
-		$author = Author::blank();
-		$author->set('subtable', 'resources');
-		$author->set('subid', $id);
+        // Instantiate a resource/contributor association object
+        $author = Author::blank();
+        $author->set('subtable', 'resources');
+        $author->set('subid', $id);
 
-		// Get the last child in the ordering
-		//$order = $rc->getLastOrder($id, 'resources');
-		//$order = $order + 1; // new items are always last
+        // Get the last child in the ordering
+        //$order = $rc->getLastOrder($id, 'resources');
+        //$order = $order + 1; // new items are always last
 
-		if (!$authid && $username)
-		{
-			$profile = User::getInstance($username);
+        if (!$authid && $username) {
+            $profile = User::getInstance($username);
 
-			if (!$profile)
-			{
-				$this->setError(Lang::txt('CONTRIBUTE_NO_ID'));
-				if ($show)
-				{
-					$this->displayTask($id);
-				}
-				return;
-			}
+            if (!$profile) {
+                $this->setError(Lang::txt('CONTRIBUTE_NO_ID'));
+                if ($show) {
+                    $this->displayTask($id);
+                }
+                return;
+            }
 
-			$authid = $profile->get('id');
-		}
+            $authid = $profile->get('id');
+        }
 
-		// Was there an ID? (this will come from the author <select>)
-		if ($authid)
-		{
-			// Check if they're already linked to this resource
-			$existing = Author::oneByRelationship($id, $authid);
+        // Was there an ID? (this will come from the author <select>)
+        if ($authid) {
+            // Check if they're already linked to this resource
+            $existing = Author::oneByRelationship($id, $authid);
 
-			if ($existing->get('id'))
-			{
-				$this->setError(Lang::txt('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $existing->name));
-			}
-			else
-			{
-				// Perform a check to see if they have a contributors page. If not, we'll need to make one
-				$profile = User::getInstance($authid);
+            if ($existing->get('id')) {
+                $this->setError(Lang::txt('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $existing->name));
+            } else {
+                // Perform a check to see if they have a contributors page. If not, we'll need to make one
+                $profile = User::getInstance($authid);
 
-				if ($profile)
-				{
-					$author->set('authorid', $authid);
-					$author->set('name', (string)$profile->get('name'));
-					$author->set('role', (string)$role);
-					$author->set('organization', (string)$profile->get('organization'));
-					$author->save();
-				}
-			}
-		}
+                if ($profile) {
+                    $author->set('authorid', $authid);
+                    $author->set('name', (string)$profile->get('name'));
+                    $author->set('role', (string)$role);
+                    $author->set('organization', (string)$profile->get('organization'));
+                    $author->save();
+                }
+            }
+        }
 
-		// Do we have new authors?
-		if (!empty($authorsNew))
-		{
-			// loop through each one
-			for ($i=0, $n=count($authorsNew); $i < $n; $i++)
-			{
-				$cid = trim($authorsNew[$i]);
+        // Do we have new authors?
+        if (!empty($authorsNew)) {
+            // loop through each one
+            for ($i = 0, $n = count($authorsNew); $i < $n; $i++) {
+                $cid = trim($authorsNew[$i]);
 
-				if (is_numeric($cid))
-				{
-					$uid = intval($cid);
-				}
-				else
-				{
-					// Zero defaults to current logged-in user
-					$uid = -99999999;
-				}
+                if (is_numeric($cid)) {
+                    $uid = intval($cid);
+                } else {
+                    // Zero defaults to current logged-in user
+                    $uid = -99999999;
+                }
 
-				$profile = User::getInstance($uid);
+                $profile = User::getInstance($uid);
 
-				// Find the user's account info
-				if (!$profile->get('id'))
-				{
-					// No account
-					// This should mean we have an author that is not a site member
+                // Find the user's account info
+                if (!$profile->get('id')) {
+                    // No account
+                    // This should mean we have an author that is not a site member
 
-					$cid = trim($cid);
+                    $cid = trim($cid);
 
-					// No name. Can't save record, so pass over it.
-					if (!$cid)
-					{
-						continue;
-					}
+                    // No name. Can't save record, so pass over it.
+                    if (!$cid) {
+                        continue;
+                    }
 
-					// Check to see if they're already an author
-					$author = Author::oneByName($id, $cid);
+                    // Check to see if they're already an author
+                    $author = Author::oneByName($id, $cid);
 
-					if ($author->get('id'))
-					{
-						$this->setError(Lang::txt('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $cid));
-						continue;
-					}
+                    if ($author->get('id')) {
+                        $this->setError(Lang::txt('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $cid));
+                        continue;
+                    }
 
-					$authorid     = $author->getUserId($cid);
-					$name         = $cid;
-					$organization = '';
-				}
-				else
-				{
-					// Check to see if they're already an author
-					$author = Author::oneByRelationship($id, $profile->get('id'));
+                    $authorid     = $author->getUserId($cid);
+                    $name         = $cid;
+                    $organization = '';
+                } else {
+                    // Check to see if they're already an author
+                    $author = Author::oneByRelationship($id, $profile->get('id'));
 
-					if ($author->get('id'))
-					{
-						$this->setError(Lang::txt('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $author->get('name')));
-						continue;
-					}
+                    if ($author->get('id')) {
+                        $this->setError(Lang::txt('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $author->get('name')));
+                        continue;
+                    }
 
-					$authorid     = $profile->get('id');
-					$name         = $profile->get('name');
-					$organization = $profile->get('organization');
-				}
+                    $authorid     = $profile->get('id');
+                    $name         = $profile->get('name');
+                    $organization = $profile->get('organization');
+                }
 
-				$author->set('subtable', 'resources');
-				$author->set('subid', $id);
-				$author->set('authorid', $authorid);
-				$author->set('name', (string)$name);
-				$author->set('organization', (string)$organization);
-				$author->set('role', (string)$role);
-				$author->save();
+                $author->set('subtable', 'resources');
+                $author->set('subid', $id);
+                $author->set('authorid', $authorid);
+                $author->set('name', (string)$name);
+                $author->set('organization', (string)$organization);
+                $author->set('role', (string)$role);
+                $author->save();
 
-				// Log activity
-				if ($authorid > 0)
-				{
-					$resource = Entry::oneOrFail($id);
+                // Log activity
+                if ($authorid > 0) {
+                    $resource = Entry::oneOrFail($id);
 
-					Event::trigger('system.logActivity', [
-						'activity' => [
-							'action'      => 'updated',
-							'scope'       => 'resource',
-							'scope_id'    => $resource->get('id'),
-							'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_ADDED', $name, '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->get('id')) . '">' . $resource->get('title') . '</a>'),
-							'details'     => array(
-								'title' => $resource->get('title'),
-								'url'   => Route::url('index.php?option=com_resources&id=' . $resource->get('id'))
-							)
-						],
-						'recipients' => array(
-							['resource', $resource->get('id')],
-							['user', $resource->get('created_by')],
-							['user', $authorid]
-						)
-					]);
-				}
-			}
-		}
+                    Event::trigger('system.logActivity', [
+                        'activity' => [
+                            'action'      => 'updated',
+                            'scope'       => 'resource',
+                            'scope_id'    => $resource->get('id'),
+                            'description' => Lang::txt(
+                                'COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_ADDED',
+                                $name,
+                                '<a href="' . Route::url('index.php?option=com_resources&id='
+                                    . $resource->get('id')) . '">' . $resource->get('title') . '</a>'
+                            ),
+                            'details'     => array(
+                                'title' => $resource->get('title'),
+                                'url'   => Route::url('index.php?option=com_resources&id=' . $resource->get('id'))
+                            )
+                        ],
+                        'recipients' => array(
+                            ['resource', $resource->get('id')],
+                            ['user', $resource->get('created_by')],
+                            ['user', $authorid]
+                        )
+                    ]);
+                }
+            }
+        }
 
-		if ($show)
-		{
-			// Push through to the authors view
-			$this->displayTask($id);
-		}
-	}
+        if ($show) {
+            // Push through to the authors view
+            $this->displayTask($id);
+        }
+    }
 
-	/**
-	 * Remove an author from an item
-	 *
-	 * @return  void
-	 */
-	public function removeTask()
-	{
-		// Incoming
-		$id  = Request::getInt('id', 0);
-		$pid = Request::getInt('pid', 0);
+    /**
+     * Remove an author from an item
+     *
+     * @return  void
+     */
+    public function removeTask()
+    {
+        // Incoming
+        $id  = Request::getInt('id', 0);
+        $pid = Request::getInt('pid', 0);
 
-		// Ensure we have a resource ID ($pid) to work with
-		if (!$pid)
-		{
-			$this->setError(Lang::txt('CONTRIBUTE_NO_ID'));
-			return $this->displayTask();
-		}
+        // Ensure we have a resource ID ($pid) to work with
+        if (!$pid) {
+            $this->setError(Lang::txt('CONTRIBUTE_NO_ID'));
+            return $this->displayTask();
+        }
 
-		// Ensure we have the contributor's ID ($id)
-		if ($id)
-		{
-			$author = Author::oneByRelationship($pid, $id);
+        // Ensure we have the contributor's ID ($id)
+        if ($id) {
+            $author = Author::oneByRelationship($pid, $id);
 
-			if (!$author->destroy())
-			{
-				$this->setError($author->getError());
-			}
-			else
-			{
-				// Log activity
-				if ($author->get('authorid') > 0)
-				{
-					$resource = Entry::oneOrFail($pid);
+            if (!$author->destroy()) {
+                $this->setError($author->getError());
+            } else {
+                // Log activity
+                if ($author->get('authorid') > 0) {
+                    $resource = Entry::oneOrFail($pid);
 
-					Event::trigger('system.logActivity', [
-						'activity' => [
-							'action'      => 'updated',
-							'scope'       => 'resource',
-							'scope_id'    => $resource->get('id'),
-							'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_REMOVED', $author->get('name'), '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->get('id')) . '">' . $resource->get('title') . '</a>'),
-							'details'     => array(
-								'title' => $resource->get('title'),
-								'url'   => Route::url('index.php?option=com_resources&id=' . $resource->get('id'))
-							)
-						],
-						'recipients' => array(
-							['resource', $resource->get('id')],
-							['user', $resource->get('created_by')],
-							['user', $author->get('authorid')]
-						)
-					]);
-				}
-			}
-		}
+                    Event::trigger('system.logActivity', [
+                        'activity' => [
+                            'action'      => 'updated',
+                            'scope'       => 'resource',
+                            'scope_id'    => $resource->get('id'),
+                            'description' => Lang::txt(
+                                'COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_REMOVED',
+                                $author->get('name'),
+                                '<a href="' . Route::url('index.php?option=com_resources&id='
+                                    . $resource->get('id')) . '">' . $resource->get('title') . '</a>'
+                            ),
+                            'details'     => array(
+                                'title' => $resource->get('title'),
+                                'url'   => Route::url('index.php?option=com_resources&id=' . $resource->get('id'))
+                            )
+                        ],
+                        'recipients' => array(
+                            ['resource', $resource->get('id')],
+                            ['user', $resource->get('created_by')],
+                            ['user', $author->get('authorid')]
+                        )
+                    ]);
+                }
+            }
+        }
 
-		// Push through to the authors view
-		$this->displayTask($pid);
-	}
+        // Push through to the authors view
+        $this->displayTask($pid);
+    }
 
-	/**
-	 * Update information for a resource author
-	 *
-	 * @return  void
-	 */
-	public function updateTask()
-	{
-		// Incoming
-		$ids = Request::getArray('authors', array(), 'post');
-		$pid = Request::getInt('pid', 0);
+    /**
+     * Update information for a resource author
+     *
+     * @return  void
+     */
+    public function updateTask()
+    {
+        // Incoming
+        $ids = Request::getArray('authors', array(), 'post');
+        $pid = Request::getInt('pid', 0);
 
-		// Ensure we have a resource ID ($pid) to work with
-		if (!$pid)
-		{
-			$this->setError(Lang::txt('COM_CONTRIBUTE_NO_ID'));
-			return $this->displayTask();
-		}
+        // Ensure we have a resource ID ($pid) to work with
+        if (!$pid) {
+            $this->setError(Lang::txt('COM_CONTRIBUTE_NO_ID'));
+            return $this->displayTask();
+        }
 
-		// Ensure we have the contributor's ID ($id)
-		if ($ids)
-		{
-			foreach ($ids as $id => $data)
-			{
-				$author = Author::oneByRelationship($pid, $id);
+        // Ensure we have the contributor's ID ($id)
+        if ($ids) {
+            foreach ($ids as $id => $data) {
+                $author = Author::oneByRelationship($pid, $id);
 
-				if (!$author->get('id'))
-				{
-					continue;
-				}
+                if (!$author->get('id')) {
+                    continue;
+                }
 
-				$author->set('organization', $data['organization']);
-				$author->set('role', $data['role']);
-				if (!$author->save())
-				{
-					$this->setError($author->getError());
-				}
-			}
-		}
+                $author->set('organization', $data['organization']);
+                $author->set('role', $data['role']);
+                if (!$author->save()) {
+                    $this->setError($author->getError());
+                }
+            }
+        }
 
-		// Push through to the authors view
-		$this->displayTask($pid);
-	}
+        // Push through to the authors view
+        $this->displayTask($pid);
+    }
 
-	/**
-	 * Reorder the list of authors
-	 *
-	 * @return  void
-	 */
-	public function reorderTask()
-	{
-		// Incoming
-		$id   = Request::getInt('id', 0);
-		$pid  = Request::getInt('pid', 0);
-		$move = Request::getWord('move', 'down');
+    /**
+     * Reorder the list of authors
+     *
+     * @return  void
+     */
+    public function reorderTask()
+    {
+        // Incoming
+        $id   = Request::getInt('id', 0);
+        $pid  = Request::getInt('pid', 0);
+        $move = Request::getWord('move', 'down');
 
-		// Ensure we have an ID to work with
-		if (!$id)
-		{
-			$this->setError(Lang::txt('COM_CONTRIBUTE_NO_CHILD_ID'));
-			return $this->displayTask($pid);
-		}
+        // Ensure we have an ID to work with
+        if (!$id) {
+            $this->setError(Lang::txt('COM_CONTRIBUTE_NO_CHILD_ID'));
+            return $this->displayTask($pid);
+        }
 
-		// Ensure we have a parent ID to work with
-		if (!$pid)
-		{
-			$this->setError(Lang::txt('COM_CONTRIBUTE_NO_ID'));
-			return $this->displayTask($pid);
-		}
+        // Ensure we have a parent ID to work with
+        if (!$pid) {
+            $this->setError(Lang::txt('COM_CONTRIBUTE_NO_ID'));
+            return $this->displayTask($pid);
+        }
 
-		switch ($move)
-		{
-			case 'up':
-				$move = -1;
-			break;
+        switch ($move) {
+            case 'up':
+                $move = -1;
+                break;
 
-			case 'down':
-				$move = 1;
-			break;
-		}
+            case 'down':
+                $move = 1;
+                break;
+        }
 
-		$author = Author::oneByRelationship($pid, $id);
+        $author = Author::oneByRelationship($pid, $id);
 
-		// Save changes
-		if (!$author->move($move))
-		{
-			$this->setError($author->getError());
-		}
+        // Save changes
+        if (!$author->move($move)) {
+            $this->setError($author->getError());
+        }
 
-		// Push through to the attachments view
-		$this->displayTask($pid);
-	}
+        // Push through to the attachments view
+        $this->displayTask($pid);
+    }
 
-	/**
-	 * Display a list of authors
-	 *
-	 * @param   integer  $id  Resource ID
-	 * @return  void
-	 */
-	public function displayTask($id=null)
-	{
-		// Incoming
-		if (!$id)
-		{
-			$id = Request::getInt('id', 0);
-		}
+    /**
+     * Display a list of authors
+     *
+     * @param   integer  $id  Resource ID
+     * @return  void
+     */
+    public function displayTask($id = null)
+    {
+        // Incoming
+        if (!$id) {
+            $id = Request::getInt('id', 0);
+        }
 
-		// Ensure we have an ID to work with
-		if (!$id)
-		{
-			App::abort(404, Lang::txt('CONTRIBUTE_NO_ID'));
-		}
+        // Ensure we have an ID to work with
+        if (!$id) {
+            App::abort(404, Lang::txt('CONTRIBUTE_NO_ID'));
+        }
 
-		// Get all contributors of this resource
-		$resource = Entry::oneOrFail($id);
+        // Get all contributors of this resource
+        $resource = Entry::oneOrFail($id);
 
-		$authors = $resource->authors()
-			->ordered()
-			->rows();
+        $authors = $resource->authors()
+            ->ordered()
+            ->rows();
 
-		// Get all roles for this resoruce type
-		$roles = $resource->type->roles()->rows();
+        // Get all roles for this resoruce type
+        $roles = $resource->type->roles()->rows();
 
-		// Output view
-		$this->view
-			->set('config', $this->config)
-			->set('id', $id)
-			->set('contributors', $authors)
-			->set('roles', $roles)
-			->setErrors($this->getErrors())
-			->setLayout('display')
-			->display();
-	}
+        // Output view
+        $this->view
+            ->set('config', $this->config)
+            ->set('id', $id)
+            ->set('contributors', $authors)
+            ->set('roles', $roles)
+            ->setErrors($this->getErrors())
+            ->setLayout('display')
+            ->display();
+    }
 }

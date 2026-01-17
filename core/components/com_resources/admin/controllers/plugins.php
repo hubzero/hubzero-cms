@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,366 +28,334 @@ include_once \Component::path('com_plugins') . '/models/plugin.php';
  */
 class Plugins extends AdminController
 {
-	/**
-	 * Determines task being called and attempts to execute it
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		$task   = Request::getCmd('task', '');
-		$plugin = Request::getString('plugin', '');
+    /**
+     * Determines task being called and attempts to execute it
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        $task   = Request::getCmd('task', '');
+        $plugin = Request::getString('plugin', '');
 
-		if ($plugin && $task && $task != 'manage')
-		{
-			Request::setVar('action', $task);
-			Request::setVar('task', 'manage');
-		}
+        if ($plugin && $task && $task != 'manage') {
+            Request::setVar('action', $task);
+            Request::setVar('task', 'manage');
+        }
 
-		// States
-		$this->registerTask('unpublish', 'publish');  // Value = 0
-		$this->registerTask('archive', 'publish');  // Value = 2
-		$this->registerTask('trash', 'publish');  // Value = -2
-		$this->registerTask('report', 'publish'); // Value = -3
+        // States
+        $this->registerTask('unpublish', 'publish');  // Value = 0
+        $this->registerTask('archive', 'publish');  // Value = 2
+        $this->registerTask('trash', 'publish');  // Value = -2
+        $this->registerTask('report', 'publish'); // Value = -3
 
-		// Reordering
-		$this->registerTask('orderup', 'reorder');
-		$this->registerTask('orderdown', 'reorder');
+        // Reordering
+        $this->registerTask('orderup', 'reorder');
+        $this->registerTask('orderdown', 'reorder');
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * List resource types
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		$filters = array(
-			'folder' => 'resources',
-			'search' => urldecode(Request::getState(
-				$this->_option . '.' . $this->_controller . '.search',
-				'filter_search',
-				''
-			)),
-			'state' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.state',
-				'filter_state',
-				''
-			),
-			'access' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.access',
-				'filter_access',
-				0,
-				'int'
-			),
-			'enabled' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.enabled',
-				'filter_state',
-				'',
-				'int'
-			),
-			// Get sorting variables
-			'sort' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sort',
-				'filter_order',
-				'folder'
-			),
-			'sort_Dir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortdir',
-				'filter_order_Dir',
-				'ASC'
-			)
-		);
+    /**
+     * List resource types
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        $filters = array(
+            'folder' => 'resources',
+            'search' => urldecode(Request::getState(
+                $this->_option . '.' . $this->_controller . '.search',
+                'filter_search',
+                ''
+            )),
+            'state' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.state',
+                'filter_state',
+                ''
+            ),
+            'access' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.access',
+                'filter_access',
+                0,
+                'int'
+            ),
+            'enabled' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.enabled',
+                'filter_state',
+                '',
+                'int'
+            ),
+            // Get sorting variables
+            'sort' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sort',
+                'filter_order',
+                'folder'
+            ),
+            'sort_Dir' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sortdir',
+                'filter_order_Dir',
+                'ASC'
+            )
+        );
 
-		$query = Plugin::all()
-			->where('state', '>=', 0);
+        $query = Plugin::all()
+            ->where('state', '>=', 0);
 
-		$p = $query->getTableName();
-		$u = '#__users';
-		$a = '#__viewlevels';
+        $p = $query->getTableName();
+        $u = '#__users';
+        $a = '#__viewlevels';
 
-		$query->select($p . '.*');
+        $query->select($p . '.*');
 
-		// Join over the users for the checked out user.
-		$query
-			->select($u . '.name', 'editor')
-			->join($u, $u . '.id', $p . '.checked_out', 'left');
+        // Join over the users for the checked out user.
+        $query
+            ->select($u . '.name', 'editor')
+            ->join($u, $u . '.id', $p . '.checked_out', 'left');
 
-		// Join over the access groups.
-		$query
-			->select($a . '.title', 'access_level')
-			->join($a, $a . '.id', $p . '.access', 'left');
+        // Join over the access groups.
+        $query
+            ->select($a . '.title', 'access_level')
+            ->join($a, $a . '.id', $p . '.access', 'left');
 
-		// Filter by access level.
-		if ($filters['access'])
-		{
-			$query->whereEquals($p . '.access', (int) $filters['access']);
-		}
+        // Filter by access level.
+        if ($filters['access']) {
+            $query->whereEquals($p . '.access', (int) $filters['access']);
+        }
 
-		// Filter by published state
-		if (is_numeric($filters['state']))
-		{
-			$query->whereEquals($p . '.enabled', (int) $filters['state']);
-		}
-		elseif ($filters['state'] === '')
-		{
-			$query->whereIn($p . '.enabled', array(0, 1));
-		}
+        // Filter by published state
+        if (is_numeric($filters['state'])) {
+            $query->whereEquals($p . '.enabled', (int) $filters['state']);
+        } elseif ($filters['state'] === '') {
+            $query->whereIn($p . '.enabled', array(0, 1));
+        }
 
-		// Filter by folder.
-		if ($filters['folder'])
-		{
-			$query->whereEquals($p . '.folder', $filters['folder']);
-		}
+        // Filter by folder.
+        if ($filters['folder']) {
+            $query->whereEquals($p . '.folder', $filters['folder']);
+        }
 
-		// Filter by search in id
-		if (!empty($filters['search']) && stripos($filters['search'], 'id:') === 0)
-		{
-			$query->whereEquals($p . '.extension_id', (int) substr($filters['search'], 3));
-		}
+        // Filter by search in id
+        if (!empty($filters['search']) && stripos($filters['search'], 'id:') === 0) {
+            $query->whereEquals($p . '.extension_id', (int) substr($filters['search'], 3));
+        }
 
-		if ($filters['sort'] == 'name')
-		{
-			$query->order('name', $filters['sort_Dir']);
-			$query->order('ordering', 'asc');
-		}
-		else if ($filters['sort'] == 'ordering')
-		{
-			$query->order('folder', 'asc');
-			$query->order('ordering', $filters['sort_Dir']);
-			$query->order('name', 'asc');
-		}
-		else
-		{
-			$query->order($filters['sort'], $filters['sort_Dir']);
-			$query->order('name', 'asc');
-			$query->order('ordering', 'asc');
-		}
+        if ($filters['sort'] == 'name') {
+            $query->order('name', $filters['sort_Dir']);
+            $query->order('ordering', 'asc');
+        } elseif ($filters['sort'] == 'ordering') {
+            $query->order('folder', 'asc');
+            $query->order('ordering', $filters['sort_Dir']);
+            $query->order('name', 'asc');
+        } else {
+            $query->order($filters['sort'], $filters['sort_Dir']);
+            $query->order('name', 'asc');
+            $query->order('ordering', 'asc');
+        }
 
-		$items = $query
-			->paginated('limitstart', 'limit')
-			->rows();
+        $items = $query
+            ->paginated('limitstart', 'limit')
+            ->rows();
 
-		// Check if there are no matching items
-		if (!count($items))
-		{
-			Notify::warning(Lang::txt('COM_PLUGINS_MSG_MANAGE_NO_PLUGINS'));
-		}
+        // Check if there are no matching items
+        if (!count($items)) {
+            Notify::warning(Lang::txt('COM_PLUGINS_MSG_MANAGE_NO_PLUGINS'));
+        }
 
-		$manage = Event::trigger('resources.onCanManage');
+        $manage = Event::trigger('resources.onCanManage');
 
-		$this->view
-			->set('filters', $filters)
-			->set('items', $items)
-			->set('manage', $manage)
-			->display();
-	}
+        $this->view
+            ->set('filters', $filters)
+            ->set('items', $items)
+            ->set('manage', $manage)
+            ->display();
+    }
 
-	/**
-	 * Edit a type
-	 *
-	 * @return  void
-	 */
-	public function manageTask()
-	{
-		// Incoming (expecting an array)
-		$plugin = Request::getString('plugin', '');
+    /**
+     * Edit a type
+     *
+     * @return  void
+     */
+    public function manageTask()
+    {
+        // Incoming (expecting an array)
+        $plugin = Request::getString('plugin', '');
 
-		if (!$plugin)
-		{
-			Notify::warning(Lang::txt('COM_RESOURCES_ERROR_NO_PLUGIN_SELECTED'));
+        if (!$plugin) {
+            Notify::warning(Lang::txt('COM_RESOURCES_ERROR_NO_PLUGIN_SELECTED'));
 
-			return $this->cancelTask();
-		}
+            return $this->cancelTask();
+        }
 
-		// Show related content
-		$out = Event::trigger(
-			'resources.onManage',
-			array(
-				$this->_option,
-				$this->_controller,
-				Request::getString('action', 'default')
-			)
-		);
+        // Show related content
+        $out = Event::trigger(
+            'resources.onManage',
+            array(
+                $this->_option,
+                $this->_controller,
+                Request::getString('action', 'default')
+            )
+        );
 
-		$html = '';
+        $html = '';
 
-		if (count($out) > 0)
-		{
-			foreach ($out as $o)
-			{
-				$html .= $o;
-			}
-		}
+        if (count($out) > 0) {
+            foreach ($out as $o) {
+                $html .= $o;
+            }
+        }
 
-		// Output the HTML
-		$this->view
-			->set('html', $html)
-			->setErrors($this->getErrors())
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('html', $html)
+            ->setErrors($this->getErrors())
+            ->display();
+    }
 
-	/**
-	 * Set the state of a plugin
-	 *
-	 * @return  void
-	 */
-	public function stateTask()
-	{
-		// Check for request forgeries
-		Request::checkToken(['post', 'get']);
+    /**
+     * Set the state of a plugin
+     *
+     * @return  void
+     */
+    public function stateTask()
+    {
+        // Check for request forgeries
+        Request::checkToken(['post', 'get']);
 
-		// Get items to publish from the request.
-		$cid   = Request::getArray('id', array());
-		$data  = array(
-			'publish'   => 1,
-			'unpublish' => 0,
-			'archive'   => 2,
-			'trash'     => -2,
-			'report'    => -3
-		);
-		$task  = $this->getTask();
-		$value = Arr::getValue($data, $task, 0, 'int');
+        // Get items to publish from the request.
+        $cid   = Request::getArray('id', array());
+        $data  = array(
+            'publish'   => 1,
+            'unpublish' => 0,
+            'archive'   => 2,
+            'trash'     => -2,
+            'report'    => -3
+        );
+        $task  = $this->getTask();
+        $value = Arr::getValue($data, $task, 0, 'int');
 
-		$success = 0;
+        $success = 0;
 
-		foreach ($cid as $id)
-		{
-			// Load the record
-			$model = Plugin::oneOrFail(intval($id));
+        foreach ($cid as $id) {
+            // Load the record
+            $model = Plugin::oneOrFail(intval($id));
 
-			// Set state
-			$model->set('enabled', $value);
+            // Set state
+            $model->set('enabled', $value);
 
-			if (!$model->save())
-			{
-				Notify::error($model->getError());
-				continue;
-			}
+            if (!$model->save()) {
+                Notify::error($model->getError());
+                continue;
+            }
 
-			$success++;
-		}
+            $success++;
+        }
 
-		if ($success)
-		{
-			// Clean the cache.
-			$this->cleanCache();
+        if ($success) {
+            // Clean the cache.
+            $this->cleanCache();
 
-			// Set the success message
-			if ($value == 1)
-			{
-				$ntext = 'COM_RESOURCES_N_ITEMS_PUBLISHED';
-			}
-			elseif ($value == 0)
-			{
-				$ntext = 'COM_RESOURCES_N_ITEMS_UNPUBLISHED';
-			}
-			elseif ($value == 2)
-			{
-				$ntext = 'COM_RESOURCES_N_ITEMS_ARCHIVED';
-			}
-			else
-			{
-				$ntext = 'COM_RESOURCES_N_ITEMS_TRASHED';
-			}
+            // Set the success message
+            if ($value == 1) {
+                $ntext = 'COM_RESOURCES_N_ITEMS_PUBLISHED';
+            } elseif ($value == 0) {
+                $ntext = 'COM_RESOURCES_N_ITEMS_UNPUBLISHED';
+            } elseif ($value == 2) {
+                $ntext = 'COM_RESOURCES_N_ITEMS_ARCHIVED';
+            } else {
+                $ntext = 'COM_RESOURCES_N_ITEMS_TRASHED';
+            }
 
-			Notify::success(Lang::txts($ntext, $success));
-		}
+            Notify::success(Lang::txts($ntext, $success));
+        }
 
-		// Redirect back to the listing
-		$this->cancelTask();
-	}
+        // Redirect back to the listing
+        $this->cancelTask();
+    }
 
-	/**
-	 * Reorder a plugin
-	 *
-	 * @return  void
-	 */
-	public function orderTask()
-	{
-		// Check for request forgeries
-		Request::checkToken(['post', 'get']);
+    /**
+     * Reorder a plugin
+     *
+     * @return  void
+     */
+    public function orderTask()
+    {
+        // Check for request forgeries
+        Request::checkToken(['post', 'get']);
 
-		// Initialise variables.
-		$ids = Request::getArray('id', null, 'post');
-		$inc = ($this->getTask() == 'orderup') ? -1 : +1;
+        // Initialise variables.
+        $ids = Request::getArray('id', null, 'post');
+        $inc = ($this->getTask() == 'orderup') ? -1 : +1;
 
-		$success = 0;
+        $success = 0;
 
-		foreach ($ids as $id)
-		{
-			// Load the record and reorder it
-			$model = Plugin::oneOrFail(intval($id));
+        foreach ($ids as $id) {
+            // Load the record and reorder it
+            $model = Plugin::oneOrFail(intval($id));
 
-			if (!$model->move($inc))
-			{
-				Notify::error(Lang::txt('JLIB_APPLICATION_ERROR_REORDER_FAILED', $model->getError()));
-				continue;
-			}
+            if (!$model->move($inc)) {
+                Notify::error(Lang::txt('JLIB_APPLICATION_ERROR_REORDER_FAILED', $model->getError()));
+                continue;
+            }
 
-			$success++;
-		}
+            $success++;
+        }
 
-		if ($success)
-		{
-			// Clean the cache.
-			$this->cleanCache();
+        if ($success) {
+            // Clean the cache.
+            $this->cleanCache();
 
-			// Set the success message
-			Notify::success(Lang::txt('JLIB_APPLICATION_SUCCESS_ITEM_REORDERED'));
-		}
+            // Set the success message
+            Notify::success(Lang::txt('JLIB_APPLICATION_SUCCESS_ITEM_REORDERED'));
+        }
 
-		// Redirect back to the listing
-		$this->cancelTask();
-	}
+        // Redirect back to the listing
+        $this->cancelTask();
+    }
 
-	/**
-	 * Save the ordering for an array of plugins
-	 *
-	 * @return  void
-	 */
-	public function saveorderTask()
-	{
-		// Check for request forgeries
-		Request::checkToken(['post', 'get']);
+    /**
+     * Save the ordering for an array of plugins
+     *
+     * @return  void
+     */
+    public function saveorderTask()
+    {
+        // Check for request forgeries
+        Request::checkToken(['post', 'get']);
 
-		$pks   = Request::getArray('id', array(0), 'post');
-		$order = Request::getArray('order', array(0), 'post');
+        $pks   = Request::getArray('id', array(0), 'post');
+        $order = Request::getArray('order', array(0), 'post');
 
-		// Sanitize the input
-		Arr::toInteger($pks);
-		Arr::toInteger($order);
+        // Sanitize the input
+        Arr::toInteger($pks);
+        Arr::toInteger($order);
 
-		// Save the ordering
-		$return = Plugin::saveorder($pks, $order);
+        // Save the ordering
+        $return = Plugin::saveorder($pks, $order);
 
-		if ($return === false)
-		{
-			// Reorder failed
-			Notify::error(Lang::txt('JLIB_APPLICATION_ERROR_REORDER_FAILED'));
-		}
-		else
-		{
-			// Clean the cache.
-			$this->cleanCache();
+        if ($return === false) {
+            // Reorder failed
+            Notify::error(Lang::txt('JLIB_APPLICATION_ERROR_REORDER_FAILED'));
+        } else {
+            // Clean the cache.
+            $this->cleanCache();
 
-			// Reorder succeeded.
-			Notify::success(Lang::txt('JLIB_APPLICATION_SUCCESS_ORDERING_SAVED'));
-		}
+            // Reorder succeeded.
+            Notify::success(Lang::txt('JLIB_APPLICATION_SUCCESS_ORDERING_SAVED'));
+        }
 
-		// Redirect back to the listing
-		$this->cancelTask();
-	}
+        // Redirect back to the listing
+        $this->cancelTask();
+    }
 
-	/**
-	 * Clean cached data
-	 *
-	 * @return  void
-	 */
-	public function cleanCache()
-	{
-		Cache::clean('com_plugins');
-	}
+    /**
+     * Clean cached data
+     *
+     * @return  void
+     */
+    public function cleanCache()
+    {
+        Cache::clean('com_plugins');
+    }
 }
