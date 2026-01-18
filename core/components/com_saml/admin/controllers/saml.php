@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2024 The Regents of the University of California.
@@ -11,8 +12,8 @@ use Hubzero\Component\AdminController;
 
 class SAML extends AdminController
 {
-        public function displayTask()
-        {
-                $this->view->setLayout('saml')->display();
-        }
+    public function displayTask()
+    {
+            $this->view->setLayout('saml')->display();
+    }
 }

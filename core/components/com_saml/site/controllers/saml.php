@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2024 The Regents of the University of California.
@@ -9,8 +10,8 @@ namespace Components\Saml\Site\Controllers;
 
 class Saml extends \Hubzero\Component\SiteController
 {
-	public function execute()
-	{
-		App::abort(404);
-	}
+    public function execute()
+    {
+        App::abort(404);
+    }
 }
