@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,7 +19,7 @@ A username reminder has been requested for your <?php echo $this->config->get('s
 The following usernames are associated with this email address:
 
 <?php foreach ($this->users as $user) : ?>
-<?php echo $user->username; ?>
+    <?php echo $user->username; ?>
 <?php endforeach; ?>
 
 

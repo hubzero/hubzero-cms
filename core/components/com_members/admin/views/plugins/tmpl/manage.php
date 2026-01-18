@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,20 +13,19 @@ defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('Members') . ': ' . Lang::txt('Plugins'), 'members');
 
-if ($this->html)
-{
-	echo $this->html;
+if ($this->html) {
+    echo $this->html;
 } else {
-	Toolbar::cancel();
-?>
-	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
-		<p class="warning"><?php echo Lang::txt('No management interface found for this plugin.'); ?></p>
+    Toolbar::cancel();
+    ?>
+    <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+        <p class="warning"><?php echo Lang::txt('No management interface found for this plugin.'); ?></p>
 
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-		<input type="hidden" name="task" value="" />
-		<input type="hidden" name="action" value="" />
+        <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+        <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+        <input type="hidden" name="task" value="" />
+        <input type="hidden" name="action" value="" />
 
-		<?php echo Html::input('token'); ?>
-	</form>
-<?php } 
+        <?php echo Html::input('token'); ?>
+    </form>
+<?php }

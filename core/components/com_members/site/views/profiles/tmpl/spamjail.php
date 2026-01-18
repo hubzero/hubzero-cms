@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,16 +15,16 @@ $params = Plugin::params('system', 'spamjail');
 ?>
 
 <header id="content-header">
-	<h2><?php echo Lang::txt('COM_MEMBERS_SPAM_DETECTED'); ?></h2>
+    <h2><?php echo Lang::txt('COM_MEMBERS_SPAM_DETECTED'); ?></h2>
 </header>
 
 <section class="section">
-	<p><?php echo Lang::txt('COM_MEMBERS_SPAM_MESSAGE'); ?></p>
+    <p><?php echo Lang::txt('COM_MEMBERS_SPAM_MESSAGE'); ?></p>
 
-	<?php if ($video = $params->get('spam_video', false)) : ?>
-		<p><?php echo Lang::txt('COM_MEMBERS_SPAM_VIDEO'); ?></p>
-		<div class="video align-center">
-			<iframe width="420" height="315" src="https://www.youtube.com/embed/<?php echo $video; ?>" frameborder="0" allowfullscreen></iframe>
-		</div>
-	<?php endif; ?>
+    <?php if ($video = $params->get('spam_video', false)) : ?>
+        <p><?php echo Lang::txt('COM_MEMBERS_SPAM_VIDEO'); ?></p>
+        <div class="video align-center">
+            <iframe width="420" height="315" src="https://www.youtube.com/embed/<?php echo $video; ?>" frameborder="0" allowfullscreen></iframe>
+        </div>
+    <?php endif; ?>
 </section>

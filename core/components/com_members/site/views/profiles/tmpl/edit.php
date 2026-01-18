@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,7 +20,7 @@ $xml = Components\Members\Models\Profile\Field::toXml($this->fields, 'edit');
 
 // Gather data to pass to the form processor
 $data = new Hubzero\Config\Registry(
-	Components\Members\Models\Profile::collect($profiles)
+    Components\Members\Models\Profile::collect($profiles)
 );
 
 // Create a new form
@@ -28,156 +31,148 @@ $form->load($xml);
 $form->bind($data);
 
 $fields = array();
-foreach ($profiles as $profile)
-{
-	if (isset($fields[$profile->get('profile_key')]))
-	{
-		$values = $fields[$profile->get('profile_key')]->get('profile_value');
-		if (!is_array($values))
-		{
-			$values = array($values);
-		}
-		$values[] = $profile->get('profile_value');
+foreach ($profiles as $profile) {
+    if (isset($fields[$profile->get('profile_key')])) {
+        $values = $fields[$profile->get('profile_key')]->get('profile_value');
+        if (!is_array($values)) {
+            $values = array($values);
+        }
+        $values[] = $profile->get('profile_value');
 
-		$fields[$profile->get('profile_key')]->set('profile_value', $values);
-	}
-	else
-	{
-		$fields[$profile->get('profile_key')] = $profile;
-	}
+        $fields[$profile->get('profile_key')]->set('profile_value', $values);
+    } else {
+        $fields[$profile->get('profile_key')] = $profile;
+    }
 }
 ?>
 <header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
+    <h2><?php echo $this->title; ?></h2>
 </header><!-- / #content-header-extra -->
 
 <section class="main section">
-	<form id="hubForm" class="edit-profile" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>" enctype="multipart/form-data">
+    <form id="hubForm" class="edit-profile" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>" enctype="multipart/form-data">
 
-		<fieldset>
-			<legend><?php echo Lang::txt('Contact Information'); ?></legend>
-			<input type="hidden" name="id" value="<?php echo $this->profile->get('id'); ?>" />
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="task" value="save" />
+        <fieldset>
+            <legend><?php echo Lang::txt('Contact Information'); ?></legend>
+            <input type="hidden" name="id" value="<?php echo $this->profile->get('id'); ?>" />
+            <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+            <input type="hidden" name="task" value="save" />
 
-			<label>
-				<?php echo Lang::txt('Visibility (who has access to my profile)'); ?>
-				<?php echo Components\Members\Helpers\Html::selectAccess('access', $this->profile->get('access'), 'input-select'); ?>
-			</label>
+            <label>
+                <?php echo Lang::txt('Visibility (who has access to my profile)'); ?>
+                <?php echo Components\Members\Helpers\Html::selectAccess('access', $this->profile->get('access'), 'input-select'); ?>
+            </label>
 
-			<div class="grid">
-				<div class="col span4">
-					<label>
-						<?php echo Lang::txt('FIRST_NAME'); ?>:
-						<input type="text" name="name[first]" value="<?php echo $this->escape($this->profile->get('givenName')); ?>" />
-					</label>
-				</div>
-				<div class="col span4">
-					<label>
-						<?php echo Lang::txt('MIDDLE_NAME'); ?>:
-						<input type="text" name="name[middle]" value="<?php echo $this->escape($this->profile->get('middleName')); ?>" />
-					</label>
-				</div>
-				<div class="col span4 omega">
-					<label>
-						<?php echo Lang::txt('LAST_NAME'); ?>:
-						<input type="text" name="name[last]" value="<?php echo $this->escape($this->profile->get('surname')); ?>" />
-					</label>
-				</div>
-			</div>
+            <div class="grid">
+                <div class="col span4">
+                    <label>
+                        <?php echo Lang::txt('FIRST_NAME'); ?>:
+                        <input type="text" name="name[first]" value="<?php echo $this->escape($this->profile->get('givenName')); ?>" />
+                    </label>
+                </div>
+                <div class="col span4">
+                    <label>
+                        <?php echo Lang::txt('MIDDLE_NAME'); ?>:
+                        <input type="text" name="name[middle]" value="<?php echo $this->escape($this->profile->get('middleName')); ?>" />
+                    </label>
+                </div>
+                <div class="col span4 omega">
+                    <label>
+                        <?php echo Lang::txt('LAST_NAME'); ?>:
+                        <input type="text" name="name[last]" value="<?php echo $this->escape($this->profile->get('surname')); ?>" />
+                    </label>
+                </div>
+            </div>
 
-			<div class="grid">
-				<div class="col span6">
-					<label>
-						<?php echo Lang::txt('Valid E-mail'); ?>:
-						<input name="email" id="email" type="text" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
-					</label>
-				</div>
-				<div class="col span6 omega">
-					<label>
-						<?php echo Lang::txt('Confirm E-mail'); ?>:
-						<input name="email2" id="email2" type="text" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
-					</label>
-				</div>
-			</div>
-			<p class="warning">Important! If you change your E-Mail address you <strong>must</strong> confirm receipt of the confirmation e-mail in order to re-activate your account.</p>
-		</fieldset>
+            <div class="grid">
+                <div class="col span6">
+                    <label>
+                        <?php echo Lang::txt('Valid E-mail'); ?>:
+                        <input name="email" id="email" type="text" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
+                    </label>
+                </div>
+                <div class="col span6 omega">
+                    <label>
+                        <?php echo Lang::txt('Confirm E-mail'); ?>:
+                        <input name="email2" id="email2" type="text" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
+                    </label>
+                </div>
+            </div>
+            <p class="warning">Important! If you change your E-Mail address you <strong>must</strong> confirm receipt of the confirmation e-mail in order to re-activate your account.</p>
+        </fieldset>
 
-		<fieldset>
-			<legend><?php echo Lang::txt('Profile'); ?></legend>
+        <fieldset>
+            <legend><?php echo Lang::txt('Profile'); ?></legend>
 
-			<?php foreach ($this->fields as $field): ?>
-				<?php
-				if (!isset($fields[$field->get('name')]))
-				{
-					$fields[$field->get('name')] = Components\Members\Models\Profile::blank();
-					$fields[$field->get('name')]->set('access', 1);
-				}
+            <?php foreach ($this->fields as $field) : ?>
+                <?php
+                if (!isset($fields[$field->get('name')])) {
+                    $fields[$field->get('name')] = Components\Members\Models\Profile::blank();
+                    $fields[$field->get('name')]->set('access', 1);
+                }
 
-				$profile = $fields[$field->get('name')];
-				?>
-				<div class="input-wrap">
-					<?php
-					$value = $profile->get('profile_value');
-					$value = $value ?: $this->profile->get($field->get('name'));
-					if ($field->get('type') == 'tags')
-					{
-						$value = $this->profile->tags('string');
-					}
+                $profile = $fields[$field->get('name')];
+                ?>
+                <div class="input-wrap">
+                    <?php
+                    $value = $profile->get('profile_value');
+                    $value = $value ?: $this->profile->get($field->get('name'));
+                    if ($field->get('type') == 'tags') {
+                        $value = $this->profile->tags('string');
+                    }
 
-					$formfield = $form->getField($field->get('name'));
-					$formfield->setValue($value);
-					?>
-					<div class="grid">
-						<div class="col span8">
-							<?php
-							echo $formfield->label;
-							echo $formfield->input;
-							?>
-						</div>
-						<div class="col span4 omega">
-							<?php
-							echo '<label>' . Lang::txt('COM_MEMBERS_FIELD_ACCESS')  . '</label>';
-							echo Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $field->get('access'), 'input-select');
-							?>
-						</div>
-					</div>
-				</div>
-			<?php endforeach; ?>
-		</fieldset>
+                    $formfield = $form->getField($field->get('name'));
+                    $formfield->setValue($value);
+                    ?>
+                    <div class="grid">
+                        <div class="col span8">
+                            <?php
+                            echo $formfield->label;
+                            echo $formfield->input;
+                            ?>
+                        </div>
+                        <div class="col span4 omega">
+                            <?php
+                            echo '<label>' . Lang::txt('COM_MEMBERS_FIELD_ACCESS')  . '</label>';
+                            echo Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $field->get('access'), 'input-select');
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </fieldset>
 
-		<fieldset>
-			<legend><?php echo Lang::txt('Updates'); ?></legend>
+        <fieldset>
+            <legend><?php echo Lang::txt('Updates'); ?></legend>
 
-			<label for="sendEmail">
-				<?php echo Lang::txt('COM_MEMBERS_PROFILE_EMAILUPDATES'); ?>
-				<select name="sendEmail" id="sendEmail" class="input-select">';
-					<?php
-					$options = array(
-						'-1' => Lang::txt('COM_MEMBERS_PROFILE_EMAILUPDATES_OPT_SELECT'),
-						'1'  => Lang::txt('COM_MEMBERS_PROFILE_EMAILUPDATES_OPT_YES'),
-						'0'  => Lang::txt('COM_MEMBERS_PROFILE_EMAILUPDATES_OPT_NO')
-					);
-					foreach ($options as $key => $value)
-					{
-						$sel = ($key == $this->profile->get('sendEmail')) ? 'selected="1"' : '';
-						echo '<option ' . $sel . ' value="' . $key . '">' . $value . '</option>';
-					}
-					?>
-				</select>
-				<span class="hint"><?php echo Lang::txt('COM_MEMBERS_PROFILE_EMAILUPDATES_EXPLANATION'); ?></span>
-			</label>
-		</fieldset><div class="clear"></div>
+            <label for="sendEmail">
+                <?php echo Lang::txt('COM_MEMBERS_PROFILE_EMAILUPDATES'); ?>
+                <select name="sendEmail" id="sendEmail" class="input-select">';
+                    <?php
+                    $options = array(
+                        '-1' => Lang::txt('COM_MEMBERS_PROFILE_EMAILUPDATES_OPT_SELECT'),
+                        '1'  => Lang::txt('COM_MEMBERS_PROFILE_EMAILUPDATES_OPT_YES'),
+                        '0'  => Lang::txt('COM_MEMBERS_PROFILE_EMAILUPDATES_OPT_NO')
+                    );
+                    foreach ($options as $key => $value) {
+                        $sel = ($key == $this->profile->get('sendEmail')) ? 'selected="1"' : '';
+                        echo '<option ' . $sel . ' value="' . $key . '">' . $value . '</option>';
+                    }
+                    ?>
+                </select>
+                <span class="hint"><?php echo Lang::txt('COM_MEMBERS_PROFILE_EMAILUPDATES_EXPLANATION'); ?></span>
+            </label>
+        </fieldset><div class="clear"></div>
 
-		<fieldset id="memberpicture">
-			<legend><?php echo Lang::txt('MEMBER_PICTURE'); ?></legend>
-			<iframe width="100%" height="350" border="0" name="filer" id="filer" src="<?php echo Route::url('index.php?option='.$this->option.'&controller=media&tmpl=component&file='.stripslashes($this->profile->get('picture')).'&amp;id='.$this->profile->get('id')); ?>"></iframe>
-		</fieldset><div class="clear"></div>
+        <fieldset id="memberpicture">
+            <legend><?php echo Lang::txt('MEMBER_PICTURE'); ?></legend>
+            <iframe width="100%" height="350" border="0" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&file=' . stripslashes($this->profile->get('picture')) . '&amp;id=' . $this->profile->get('id')); ?>"></iframe>
+        </fieldset><div class="clear"></div>
 
-		<?php echo Html::input('token'); ?>
-		<p class="submit">
-			<input class="btn btn-success" type="submit" name="submit" value="<?php echo Lang::txt('SAVE'); ?>" />
-			<a class="btn secondary" href="<?php echo Route::url('index.php?option='.$this->option.'&task=cancel&id='. $this->profile->get('id')); ?>"><?php echo Lang::txt('CANCEL'); ?></a>
-		</p>
-	</form>
+        <?php echo Html::input('token'); ?>
+        <p class="submit">
+            <input class="btn btn-success" type="submit" name="submit" value="<?php echo Lang::txt('SAVE'); ?>" />
+            <a class="btn secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=cancel&id=' . $this->profile->get('id')); ?>"><?php echo Lang::txt('CANCEL'); ?></a>
+        </p>
+    </form>
 </section>

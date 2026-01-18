@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,7 +12,7 @@
 defined('_HZEXEC_') or die();
 ?>
 <fieldset class="adminform">
-	<legend><span><?php echo Lang::txt('COM_MEMBERS_HOSTS'); ?></span></legend>
+    <legend><span><?php echo Lang::txt('COM_MEMBERS_HOSTS'); ?></span></legend>
 
-	<iframe height="500" name="hosts" id="hosts-list" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=hosts&tmpl=component&id=' . $this->profile->get('id') . '&t=' . time()); ?>"></iframe>
+    <iframe height="500" name="hosts" id="hosts-list" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=hosts&tmpl=component&id=' . $this->profile->get('id') . '&t=' . time()); ?>"></iframe>
 </fieldset>

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -44,96 +47,96 @@ $this->css($css);
 
 <!-- Start Header -->
 <table class="tbl-header" cellpadding="2" cellspacing="3" border="0" width="100%" style="border-collapse: collapse; border-bottom: 2px solid #e1e1e1;">
-	<tbody>
-		<tr>
-			<td width="10%" nowrap="nowrap" align="left" valign="bottom" style="font-size: 1.4em; color: #999; padding: 0 10px 5px 0; text-align: left;">
-				<?php echo Config::get('sitename'); ?>
-			</td>
-			<td class="mobilehide" width="80%" align="left" valign="bottom" style="line-height: 1; padding: 0 0 5px 10px;">
-				<span style="font-weight: bold; font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
-					<a href="<?php echo $this->baseUrl; ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?php echo $this->baseUrl; ?></a>
-				</span>
-				<br />
-				<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('MetaDesc'); ?></span>
-			</td>
-			<td width="10%" nowrap="nowrap" align="right" valign="bottom" style="border-left: 1px solid #e1e1e1; font-size: 1.2em; color: #999; padding: 0 0 5px 10px; text-align: right; vertical-align: bottom;">
-				<?php echo Lang::txt('COM_MEMBERS'); ?>
-			</td>
-		</tr>
-	</tbody>
+    <tbody>
+        <tr>
+            <td width="10%" nowrap="nowrap" align="left" valign="bottom" style="font-size: 1.4em; color: #999; padding: 0 10px 5px 0; text-align: left;">
+                <?php echo Config::get('sitename'); ?>
+            </td>
+            <td class="mobilehide" width="80%" align="left" valign="bottom" style="line-height: 1; padding: 0 0 5px 10px;">
+                <span style="font-weight: bold; font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
+                    <a href="<?php echo $this->baseUrl; ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?php echo $this->baseUrl; ?></a>
+                </span>
+                <br />
+                <span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('MetaDesc'); ?></span>
+            </td>
+            <td width="10%" nowrap="nowrap" align="right" valign="bottom" style="border-left: 1px solid #e1e1e1; font-size: 1.2em; color: #999; padding: 0 0 5px 10px; text-align: right; vertical-align: bottom;">
+                <?php echo Lang::txt('COM_MEMBERS'); ?>
+            </td>
+        </tr>
+    </tbody>
 </table>
 <!-- End Header -->
 
 <!-- Start Header Spacer -->
 <table  width="100%" cellpadding="0" cellspacing="0" border="0">
-	<tr style="border-collapse: collapse;">
-		<td height="30" style="border-collapse: collapse;"></td>
-	</tr>
+    <tr style="border-collapse: collapse;">
+        <td height="30" style="border-collapse: collapse;"></td>
+    </tr>
 </table>
 <!-- End Header Spacer -->
 
 <!-- ====== Start Header ====== -->
 <table id="account-header" width="100%"  cellpadding="0" cellspacing="0" border="0">
-	<tbody>
-		<tr>
-			<td style="font-weight: bold; border-bottom: 1px solid #c2e1e3; padding: 16px 30px; text-align: center; font-size: 1.5em; color: #e96c6c;" align="left">
-				Account Creation Notification
-			</td>
-		</tr>
-	</tbody>
+    <tbody>
+        <tr>
+            <td style="font-weight: bold; border-bottom: 1px solid #c2e1e3; padding: 16px 30px; text-align: center; font-size: 1.5em; color: #e96c6c;" align="left">
+                Account Creation Notification
+            </td>
+        </tr>
+    </tbody>
 </table>
 <!-- ====== End Header ====== -->
 
 <!-- ====== Start Header Spacer ====== -->
 <table  width="100%" cellpadding="0" cellspacing="0" border="0">
-	<tr style="border-collapse: collapse;">
-		<td height="30" style="border-collapse: collapse;"></td>
-	</tr>
+    <tr style="border-collapse: collapse;">
+        <td height="30" style="border-collapse: collapse;"></td>
+    </tr>
 </table>
 <!-- ====== End Header Spacer ====== -->
 
 <table id="account-info" width="100%"  cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; line-height: 1.6em;">
-	<tbody>
-		<tr>
-			<td width="100%" style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9;">
-				<p>
-					<?php echo $this->xprofile->get('name'); ?>
-					<?php if ($this->xprofile->get('orginization')) : ?>
-						/ <?php echo $this->xprofile->get('orginization'); ?>
-					<?php endif; ?>
-					has requested the new account <b><?php echo $this->xprofile->get('username'); ?></b>
-					(<?php echo $this->xprofile->get('email'); ?>) on <?php echo $this->sitename; ?>.
-				</p>
+    <tbody>
+        <tr>
+            <td width="100%" style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9;">
+                <p>
+                    <?php echo $this->xprofile->get('name'); ?>
+                    <?php if ($this->xprofile->get('orginization')) : ?>
+                        / <?php echo $this->xprofile->get('orginization'); ?>
+                    <?php endif; ?>
+                    has requested the new account <b><?php echo $this->xprofile->get('username'); ?></b>
+                    (<?php echo $this->xprofile->get('email'); ?>) on <?php echo $this->sitename; ?>.
+                </p>
 
-				<p>
-					Click the following link to review this user's account:
-					<?php echo $this->baseUrl . Route::url($this->xprofile->link()); ?>
-				</p>
-			</td>
-		</tr>
-	</tbody>
+                <p>
+                    Click the following link to review this user's account:
+                    <?php echo $this->baseUrl . Route::url($this->xprofile->link()); ?>
+                </p>
+            </td>
+        </tr>
+    </tbody>
 </table>
 
 <!-- Start Header -->
 <table width="100%" cellpadding="2" cellspacing="3" border="0" style="border-collapse: collapse; border-top: 2px solid #e1e1e1;">
-	<tbody>
-		<tr>
-			<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
-				<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
-					<?php echo Lang::txt('COM_MEMBERS_REGISTER_ADMIN_NOTIFICATION_EMAIL_WHY_NOTFIED'); ?>
-				</span>
-			</td>
-		</tr>
-	</tbody>
+    <tbody>
+        <tr>
+            <td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
+                <span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
+                    <?php echo Lang::txt('COM_MEMBERS_REGISTER_ADMIN_NOTIFICATION_EMAIL_WHY_NOTFIED'); ?>
+                </span>
+            </td>
+        </tr>
+    </tbody>
 </table>
 <!-- End Header -->
 
 <!-- Start Footer Spacer -->
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
-	<tbody>
-		<tr style="border-collapse: collapse;">
-			<td height="30" style="border-collapse: collapse; color: #fff !important;"><div style="height: 30px !important; visibility: hidden;">----</div></td>
-		</tr>
-	</tbody>
+    <tbody>
+        <tr style="border-collapse: collapse;">
+            <td height="30" style="border-collapse: collapse; color: #fff !important;"><div style="height: 30px !important; visibility: hidden;">----</div></td>
+        </tr>
+    </tbody>
 </table>
 <!-- End Footer Spacer -->

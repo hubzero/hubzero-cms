@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,53 +27,53 @@ $this->js();
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="adminForm" method="post" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
-	<p class="warning"><?php echo Lang::txt('COM_MEMBERS_MAIL_DO_NOT_USE_FOR_COMMERCIAL_USE'); ?></p>
-	<div class="grid">
-		<div class="col span5">
-			<fieldset class="adminform">
-				<legend><?php echo Lang::txt('COM_MEMBERS_MAIL_DETAILS'); ?></legend>
+    <p class="warning"><?php echo Lang::txt('COM_MEMBERS_MAIL_DO_NOT_USE_FOR_COMMERCIAL_USE'); ?></p>
+    <div class="grid">
+        <div class="col span5">
+            <fieldset class="adminform">
+                <legend><?php echo Lang::txt('COM_MEMBERS_MAIL_DETAILS'); ?></legend>
 
-				<div class="input-wrap">
-					<?php echo $this->form->getLabel('recurse'); ?>
-					<?php echo $this->form->getInput('recurse'); ?>
-				</div>
+                <div class="input-wrap">
+                    <?php echo $this->form->getLabel('recurse'); ?>
+                    <?php echo $this->form->getInput('recurse'); ?>
+                </div>
 
-				<div class="input-wrap">
-					<?php echo $this->form->getLabel('mode'); ?>
-					<?php echo $this->form->getInput('mode'); ?>
-				</div>
+                <div class="input-wrap">
+                    <?php echo $this->form->getLabel('mode'); ?>
+                    <?php echo $this->form->getInput('mode'); ?>
+                </div>
 
-				<div class="input-wrap">
-					<?php echo $this->form->getLabel('disabled'); ?>
-					<?php echo $this->form->getInput('disabled'); ?>
-				</div>
+                <div class="input-wrap">
+                    <?php echo $this->form->getLabel('disabled'); ?>
+                    <?php echo $this->form->getInput('disabled'); ?>
+                </div>
 
-				<div class="input-wrap">
-					<?php echo $this->form->getLabel('group'); ?>
-					<?php echo $this->form->getInput('group'); ?>
-				</div>
-			</fieldset>
-		</div>
-		<div class="col span7">
-			<fieldset class="adminform">
-				<legend><?php echo Lang::txt('COM_MEMBERS_MAIL_MESSAGE'); ?></legend>
+                <div class="input-wrap">
+                    <?php echo $this->form->getLabel('group'); ?>
+                    <?php echo $this->form->getInput('group'); ?>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col span7">
+            <fieldset class="adminform">
+                <legend><?php echo Lang::txt('COM_MEMBERS_MAIL_MESSAGE'); ?></legend>
 
-				<div class="input-wrap">
-					<?php echo $this->form->getLabel('subject'); ?>
-					<?php echo $this->form->getInput('subject'); ?>
-				</div>
+                <div class="input-wrap">
+                    <?php echo $this->form->getLabel('subject'); ?>
+                    <?php echo $this->form->getInput('subject'); ?>
+                </div>
 
-				<div class="input-wrap">
-					<?php echo $this->form->getLabel('message'); ?>
-					<?php echo $this->form->getInput('message'); ?>
-				</div>
-			</fieldset>
-		</div>
-	</div>
+                <div class="input-wrap">
+                    <?php echo $this->form->getLabel('message'); ?>
+                    <?php echo $this->form->getInput('message'); ?>
+                </div>
+            </fieldset>
+        </div>
+    </div>
 
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="send" />
+    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+    <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+    <input type="hidden" name="task" value="send" />
 
-	<?php echo Html::input('token'); ?>
+    <?php echo Html::input('token'); ?>
 </form>

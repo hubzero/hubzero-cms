@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,258 +22,245 @@ use App;
  */
 class Accesslevels extends AdminController
 {
-	/**
-	 * Execute a task
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		Lang::load($this->_option . '.access', dirname(__DIR__));
+    /**
+     * Execute a task
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        Lang::load($this->_option . '.access', dirname(__DIR__));
 
-		$this->registerTask('add', 'edit');
-		$this->registerTask('apply', 'save');
-		$this->registerTask('save2new', 'save');
-		$this->registerTask('save2copy', 'save');
+        $this->registerTask('add', 'edit');
+        $this->registerTask('apply', 'save');
+        $this->registerTask('save2new', 'save');
+        $this->registerTask('save2copy', 'save');
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * Display entries
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		// Incoming
-		$filters = array(
-			'search' => urldecode(Request::getState(
-				$this->_option . '.' . $this->_controller . '.search',
-				'search',
-				''
-			)),
-			'sort' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sort',
-				'filter_order',
-				'title'
-			),
-			'sort_Dir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortdir',
-				'filter_order_Dir',
-				'ASC'
-			)
-		);
+    /**
+     * Display entries
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        // Incoming
+        $filters = array(
+            'search' => urldecode(Request::getState(
+                $this->_option . '.' . $this->_controller . '.search',
+                'search',
+                ''
+            )),
+            'sort' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sort',
+                'filter_order',
+                'title'
+            ),
+            'sort_Dir' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sortdir',
+                'filter_order_Dir',
+                'ASC'
+            )
+        );
 
-		$entries = Viewlevel::all();
+        $entries = Viewlevel::all();
 
-		if ($filters['search'])
-		{
-			$entries->whereLike('title', strtolower((string)$filters['search']));
-		}
+        if ($filters['search']) {
+            $entries->whereLike('title', strtolower((string)$filters['search']));
+        }
 
-		$rows = $entries
-			->order($filters['sort'], $filters['sort_Dir'])
-			->paginated('limitstart', 'limit')
-			->rows();
+        $rows = $entries
+            ->order($filters['sort'], $filters['sort_Dir'])
+            ->paginated('limitstart', 'limit')
+            ->rows();
 
-		// Output the HTML
-		$this->view
-			->set('rows', $rows)
-			->set('filters', $filters)
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('rows', $rows)
+            ->set('filters', $filters)
+            ->display();
+    }
 
-	/**
-	 * Edit an entry
-	 *
-	 * @param   object  $row
-	 * @return  void
-	 */
-	public function editTask($row=null)
-	{
-		Request::setVar('hidemainmenu', 1);
+    /**
+     * Edit an entry
+     *
+     * @param   object  $row
+     * @return  void
+     */
+    public function editTask($row = null)
+    {
+        Request::setVar('hidemainmenu', 1);
 
-		if (!$row)
-		{
-			// Incoming
-			$id = Request::getArray('id', array());
+        if (!$row) {
+            // Incoming
+            $id = Request::getArray('id', array());
 
-			// Get the single ID we're working with
-			if (is_array($id))
-			{
-				$id = (!empty($id)) ? $id[0] : 0;
-			}
+            // Get the single ID we're working with
+            if (is_array($id)) {
+                $id = (!empty($id)) ? $id[0] : 0;
+            }
 
-			$row = Viewlevel::oneOrNew($id);
-		}
+            $row = Viewlevel::oneOrNew($id);
+        }
 
-		$row->set('rules', json_decode($row->get('rules', '')));
+        $row->set('rules', json_decode($row->get('rules', '')));
 
-		$groups = Accessgroup::all()
-			->order('lft', 'asc')
-			->rows();
+        $groups = Accessgroup::all()
+            ->order('lft', 'asc')
+            ->rows();
 
-		// Output the HTML
-		$this->view
-			->set('row', $row)
-			->set('groups', $groups)
-			->setErrors($this->getErrors())
-			->setLayout('edit')
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('row', $row)
+            ->set('groups', $groups)
+            ->setErrors($this->getErrors())
+            ->setLayout('edit')
+            ->display();
+    }
 
-	/**
-	 * Save entry
-	 *
-	 * @return  void
-	 */
-	public function saveTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Save entry
+     *
+     * @return  void
+     */
+    public function saveTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		// Incoming password blacklist edits
-		$fields = Request::getArray('fields', array(), 'post');
+        // Incoming password blacklist edits
+        $fields = Request::getArray('fields', array(), 'post');
 
-		if (isset($fields['rules']) && is_array($fields['rules']))
-		{
-			$fields['rules'] = array_map('intval', $fields['rules']);
-		}
+        if (isset($fields['rules']) && is_array($fields['rules'])) {
+            $fields['rules'] = array_map('intval', $fields['rules']);
+        }
 
-		// Load the record
-		$row = Viewlevel::oneOrNew($fields['id'])->set($fields);
+        // Load the record
+        $row = Viewlevel::oneOrNew($fields['id'])->set($fields);
 
-		if ($this->getTask() == 'save2copy')
-		{
-			$row->set('id', null);
-		}
+        if ($this->getTask() == 'save2copy') {
+            $row->set('id', null);
+        }
 
-		// Try to save
-		if (!$row->save())
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
+        // Try to save
+        if (!$row->save()) {
+            Notify::error($row->getError());
+            return $this->editTask($row);
+        }
 
-		Notify::success(Lang::txt('COM_MEMBERS_SAVE_SUCCESS'));
+        Notify::success(Lang::txt('COM_MEMBERS_SAVE_SUCCESS'));
 
-		if ($this->getTask() == 'save2new')
-		{
-			$row = Viewlevel::blank();
-		}
+        if ($this->getTask() == 'save2new') {
+            $row = Viewlevel::blank();
+        }
 
-		// Fall through to edit form
-		if (in_array($this->getTask(), array('apply', 'save2new', 'save2copy')))
-		{
-			return $this->editTask($row);
-		}
+        // Fall through to edit form
+        if (in_array($this->getTask(), array('apply', 'save2new', 'save2copy'))) {
+            return $this->editTask($row);
+        }
 
-		// Redirect
-		$this->cancelTask();
-	}
+        // Redirect
+        $this->cancelTask();
+    }
 
-	/**
-	 * Removes one or more entries
-	 *
-	 * @return  void
-	 */
-	public function removeTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Removes one or more entries
+     *
+     * @return  void
+     */
+    public function removeTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.delete', $this->option))
-		{
-			return $this->cancelTask();
-		}
+        if (!User::authorise('core.delete', $this->option)) {
+            return $this->cancelTask();
+        }
 
-		// Incoming
-		$ids = Request::getArray('cid', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
+        // Incoming
+        $ids = Request::getArray('cid', array());
+        $ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$i = 0;
+        $i = 0;
 
-		// Do we have any IDs?
-		if (!empty($ids))
-		{
-			// Populate the list once.
-			$levelsInUse = array();
+        // Do we have any IDs?
+        if (!empty($ids)) {
+            // Populate the list once.
+            $levelsInUse = array();
 
-			$db = App::get('db');
+            $db = App::get('db');
 
-			// Get all the tables and the prefix
-			$tables = $db->getTableList();
-			$prefix = $db->getPrefix();
+            // Get all the tables and the prefix
+            $tables = $db->getTableList();
+            $prefix = $db->getPrefix();
 
-			foreach ($tables as $table)
-			{
-				// Get all of the columns in the table
-				$fields = $db->getTableColumns($table);
+            foreach ($tables as $table) {
+                // Get all of the columns in the table
+                $fields = $db->getTableColumns($table);
 
-				// We are looking for the access field.  If custom tables are using something other
-				// than the 'access' field they are on their own unfortunately.
-				// Also make sure the table prefix matches the live db prefix (eg, it is not a "bak_" table)
-				if ((strpos($table, $prefix) === 0) && (isset($fields['access'])))
-				{
-					// Lookup the distinct values of the field.
-					$query = $db->getQuery()
-						->select('DISTINCT access')
-						->from($table);
+                // We are looking for the access field.  If custom tables are using something other
+                // than the 'access' field they are on their own unfortunately.
+                // Also make sure the table prefix matches the live db prefix (eg, it is not a "bak_" table)
+                if ((strpos($table, $prefix) === 0) && (isset($fields['access']))) {
+                    // Lookup the distinct values of the field.
+                    $query = $db->getQuery()
+                        ->select('DISTINCT access')
+                        ->from($table);
 
-					$db->setQuery($query->toString());
+                    $db->setQuery($query->toString());
 
-					$values = $db->loadColumn();
-					$error  = $db->getErrorMsg();
+                    $values = $db->loadColumn();
+                    $error  = $db->getErrorMsg();
 
-					// Check for DB error.
-					if ($error)
-					{
-						Notify::error($error);
-						continue;
-					}
+                    // Check for DB error.
+                    if ($error) {
+                        Notify::error($error);
+                        continue;
+                    }
 
-					$levelsInUse = array_merge($levelsInUse, $values);
-				}
-			}
+                    $levelsInUse = array_merge($levelsInUse, $values);
+                }
+            }
 
-			// Get uniques
-			$levelsInUse = array_unique($levelsInUse);
+            // Get uniques
+            $levelsInUse = array_unique($levelsInUse);
 
-			// Loop through each ID and delete the necessary items
-			foreach ($ids as $id)
-			{
-				$id = intval($id);
+            // Loop through each ID and delete the necessary items
+            foreach ($ids as $id) {
+                $id = intval($id);
 
-				$row = Viewlevel::oneOrNew($id);
+                $row = Viewlevel::oneOrNew($id);
 
-				if (in_array($row->get('id'), $levelsInUse))
-				{
-					Notify::warning(Lang::txt('COM_MEMBERS_ERROR_VIEW_LEVEL_IN_USE', $row->get('id'), $row->get('title')));
-					continue;
-				}
+                if (in_array($row->get('id'), $levelsInUse)) {
+                    $msg = Lang::txt(
+                        'COM_MEMBERS_ERROR_VIEW_LEVEL_IN_USE',
+                        $row->get('id'),
+                        $row->get('title')
+                    );
+                    Notify::warning($msg);
+                    continue;
+                }
 
-				// Remove the record
-				if (!$row->destroy())
-				{
-					Notify::error($row->getError());
-					continue;
-				}
+                // Remove the record
+                if (!$row->destroy()) {
+                    Notify::error($row->getError());
+                    continue;
+                }
 
-				$i++;
-			}
-		}
-		else // no rows were selected
-		{
-			Notify::warning(Lang::txt('COM_MEMBERS_ACCESSLEVELS_DELETE_NO_ROW_SELECTED'));
-		}
+                $i++;
+            }
+        } else // no rows were selected
+        {
+            Notify::warning(Lang::txt('COM_MEMBERS_ACCESSLEVELS_DELETE_NO_ROW_SELECTED'));
+        }
 
-		// Output messsage and redirect
-		if ($i)
-		{
-			Notify::success(Lang::txt('COM_MEMBERS_ACCESSLEVELS_DELETE_SUCCESS'));
-		}
+        // Output messsage and redirect
+        if ($i) {
+            Notify::success(Lang::txt('COM_MEMBERS_ACCESSLEVELS_DELETE_SUCCESS'));
+        }
 
-		$this->cancelTask();
-	}
+        $this->cancelTask();
+    }
 }

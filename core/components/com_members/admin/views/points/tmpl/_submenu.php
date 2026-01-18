@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,10 +14,18 @@ defined('_HZEXEC_') or die();
 $task = Request::getCmd('task', '');
 ?>
 <nav role="navigation" class="sub sub-navigation">
-	<ul>
-		<li><a<?php if (!$task) { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>">Summary</a></li>
-		<li><a<?php if ($task == 'edit') { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit'); ?>">Look up User Balance</a></li>
-		<li><a<?php if ($task == 'config') { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=config'); ?>">Configuration</a></li>
-		<li><a<?php if ($task == 'batch') { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=batch'); ?>">Batch Transaction</a></li>
-	</ul>
+    <ul>
+        <li><a<?php if (!$task) {
+            echo ' class="active"';
+              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>">Summary</a></li>
+        <li><a<?php if ($task == 'edit') {
+            echo ' class="active"';
+              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit'); ?>">Look up User Balance</a></li>
+        <li><a<?php if ($task == 'config') {
+            echo ' class="active"';
+              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=config'); ?>">Configuration</a></li>
+        <li><a<?php if ($task == 'batch') {
+            echo ' class="active"';
+              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=batch'); ?>">Batch Transaction</a></li>
+    </ul>
 </nav><!-- / .sub-navigation -->
