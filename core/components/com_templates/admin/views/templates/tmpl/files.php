@@ -1,9 +1,12 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+// phpcs:disable Generic.Files.LineLength.TooLong
 
 // No direct access.
 defined('_HZEXEC_') or die();
@@ -23,101 +26,101 @@ Html::behavior('modal');
 $this->css();
 ?>
 <div id="item-form">
-	<div class="grid">
-		<div class="col span6">
-			<form action="<?php echo Route::url('index.php?option=com_templates&controller=templates'); ?>" method="post" name="adminForm" id="adminForm">
-				<fieldset class="adminform" id="template-manager-description">
-					<legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_DESCRIPTION');?></legend>
+    <div class="grid">
+        <div class="col span6">
+            <form action="<?php echo Route::url('index.php?option=com_templates&controller=templates'); ?>" method="post" name="adminForm" id="adminForm">
+                <fieldset class="adminform" id="template-manager-description">
+                    <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_DESCRIPTION');?></legend>
 
-					<div class="input-wrap">
-						<?php echo Components\Templates\Helpers\Utilities::thumb($this->template->element, $this->template->client_id); ?>
+                    <div class="input-wrap">
+                        <?php echo Components\Templates\Helpers\Utilities::thumb($this->template->element, $this->template->client_id); ?>
 
-						<h2><?php echo ucfirst($this->template->element); ?></h2>
-						<p><?php echo Lang::txt($this->template->xml->get('description')); ?></p>
-					</div>
-				</fieldset>
-				<fieldset class="adminform" id="template-manager-files">
-					<legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_MASTER_FILES');?></legend>
+                        <h2><?php echo ucfirst($this->template->element); ?></h2>
+                        <p><?php echo Lang::txt($this->template->xml->get('description')); ?></p>
+                    </div>
+                </fieldset>
+                <fieldset class="adminform" id="template-manager-files">
+                    <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_MASTER_FILES');?></legend>
 
-					<ul class="item-list layout">
-						<?php foreach ($this->files['main'] as $key => $file) : ?>
-							<li>
-								<?php $id = $file->id; ?>
-								<?php if ($canDo->get('core.edit')) : ?>
-									<a href="<?php echo Route::url('index.php?option=com_templates&controller=source&task=edit&id=' . $id); ?>">
-								<?php endif; ?>
-									<?php echo Lang::txt('Edit %s', $file->get('name')); //Lang::txt('COM_TEMPLATES_TEMPLATE_EDIT_' . strtoupper($key)); ?>
-								<?php if ($canDo->get('core.edit')) : ?>
-									</a>
-								<?php endif; ?>
-							</li>
-						<?php endforeach; ?>
-					</ul>
-				</fieldset>
-				<input type="hidden" name="task" value="" />
-			</form>
-			<div class="clr"></div>
+                    <ul class="item-list layout">
+                        <?php foreach ($this->files['main'] as $key => $file) : ?>
+                            <li>
+                                <?php $id = $file->id; ?>
+                                <?php if ($canDo->get('core.edit')) : ?>
+                                    <a href="<?php echo Route::url('index.php?option=com_templates&controller=source&task=edit&id=' . $id); ?>">
+                                <?php endif; ?>
+                                    <?php echo Lang::txt('Edit %s', $file->get('name')); //Lang::txt('COM_TEMPLATES_TEMPLATE_EDIT_' . strtoupper($key)); ?>
+                                <?php if ($canDo->get('core.edit')) : ?>
+                                    </a>
+                                <?php endif; ?>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </fieldset>
+                <input type="hidden" name="task" value="" />
+            </form>
+            <div class="clr"></div>
 
-			<form action="<?php echo Route::url('index.php?option=com_templates&controller=templates&task=copy&id=' . $this->template->get('id')); ?>" method="post" name="copyForm">
-				<fieldset class="adminform" id="template-manager-css">
-					<legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_COPY');?></legend>
-					<div class="input-wrap">
-						<label id="new_name" class="hasTip" title="<?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NEW_NAME_DESC'); ?>"><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NEW_NAME_LABEL')?></label>
-						<input class="inputbox" type="text" id="new_name" name="new_name"  />
-						<button type="submit"><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_COPY'); ?></button>
-					</div>
-				</fieldset>
-				<input type="hidden" name="task" value="" />
-				<?php echo Html::input('token'); ?>
-			</form>
-		</div>
+            <form action="<?php echo Route::url('index.php?option=com_templates&controller=templates&task=copy&id=' . $this->template->get('id')); ?>" method="post" name="copyForm">
+                <fieldset class="adminform" id="template-manager-css">
+                    <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_COPY');?></legend>
+                    <div class="input-wrap">
+                        <label id="new_name" class="hasTip" title="<?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NEW_NAME_DESC'); ?>"><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NEW_NAME_LABEL')?></label>
+                        <input class="inputbox" type="text" id="new_name" name="new_name"  />
+                        <button type="submit"><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_COPY'); ?></button>
+                    </div>
+                </fieldset>
+                <input type="hidden" name="task" value="" />
+                <?php echo Html::input('token'); ?>
+            </form>
+        </div>
 
-		<div class="col span6">
-			<?php echo Html::sliders('start', 'template-sliders-' . $this->template->get('id')); ?>
+        <div class="col span6">
+            <?php echo Html::sliders('start', 'template-sliders-' . $this->template->get('id')); ?>
 
-			<?php echo Html::sliders('panel', Lang::txt('COM_TEMPLATES_TEMPLATE_ASSETS'), 'tmeplate-assets'); ?>
-			<!-- <fieldset class="adminform" id="template-manager-css">
-				<legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_ASSETS');?></legend> -->
+            <?php echo Html::sliders('panel', Lang::txt('COM_TEMPLATES_TEMPLATE_ASSETS'), 'tmeplate-assets'); ?>
+            <!-- <fieldset class="adminform" id="template-manager-css">
+                <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_ASSETS');?></legend> -->
 
-				<?php if (!empty($this->files['clo'])) : ?>
-					<ul class="item-list css">
-						<?php foreach ($this->files['clo'] as $file) : ?>
-						<li>
-							<?php if ($canDo->get('core.edit')) : ?>
-							<a href="<?php echo Route::url('index.php?option=com_templates&controller=source&task=edit&id=' . $file->get('id')); ?>">
-							<?php endif; ?>
-								<?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_EDIT_CSS', $file->get('name')); ?>
-							<?php if ($canDo->get('core.edit')) : ?>
-							</a>
-							<?php endif; ?>
-						</li>
-						<?php endforeach; ?>
-					</ul>
-				<?php endif; ?>
-			<!-- </fieldset> -->
+                <?php if (!empty($this->files['clo'])) : ?>
+                    <ul class="item-list css">
+                        <?php foreach ($this->files['clo'] as $file) : ?>
+                        <li>
+                            <?php if ($canDo->get('core.edit')) : ?>
+                            <a href="<?php echo Route::url('index.php?option=com_templates&controller=source&task=edit&id=' . $file->get('id')); ?>">
+                            <?php endif; ?>
+                                <?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_EDIT_CSS', $file->get('name')); ?>
+                            <?php if ($canDo->get('core.edit')) : ?>
+                            </a>
+                            <?php endif; ?>
+                        </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            <!-- </fieldset> -->
 
-			<?php echo Html::sliders('panel', Lang::txt('COM_TEMPLATES_TEMPLATE_HTML'), 'tmeplate-html'); ?>
-			<!-- <fieldset class="adminform" id="template-manager-html">
-				<legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_HTML');?></legend> -->
+            <?php echo Html::sliders('panel', Lang::txt('COM_TEMPLATES_TEMPLATE_HTML'), 'tmeplate-html'); ?>
+            <!-- <fieldset class="adminform" id="template-manager-html">
+                <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_HTML');?></legend> -->
 
-				<?php if (!empty($this->files['html'])) : ?>
-					<ul class="item-list css">
-						<?php foreach ($this->files['html'] as $file) : ?>
-						<li>
-							<?php if ($canDo->get('core.edit')) : ?>
-								<a href="<?php echo Route::url('index.php?option=com_templates&controller=source&task=edit&id=' . $file->get('id')); ?>">
-							<?php endif; ?>
-							<?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_EDIT_HTML', $file->get('name')); ?>
-							<?php if ($canDo->get('core.edit')) : ?>
-								</a>
-							<?php endif; ?>
-						</li>
-						<?php endforeach; ?>
-					</ul>
-				<?php endif; ?>
-			<!-- </fieldset> -->
+                <?php if (!empty($this->files['html'])) : ?>
+                    <ul class="item-list css">
+                        <?php foreach ($this->files['html'] as $file) : ?>
+                        <li>
+                            <?php if ($canDo->get('core.edit')) : ?>
+                                <a href="<?php echo Route::url('index.php?option=com_templates&controller=source&task=edit&id=' . $file->get('id')); ?>">
+                            <?php endif; ?>
+                            <?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_EDIT_HTML', $file->get('name')); ?>
+                            <?php if ($canDo->get('core.edit')) : ?>
+                                </a>
+                            <?php endif; ?>
+                        </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            <!-- </fieldset> -->
 
-			<?php echo Html::sliders('end'); ?>
-		</div>
-	</div>
+            <?php echo Html::sliders('end'); ?>
+        </div>
+    </div>
 </div>

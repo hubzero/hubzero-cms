@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,187 +22,183 @@ use User;
  */
 class Utilities
 {
-	/**
-	 * Configure the Linkbar.
-	 *
-	 * @param   string  $controller  The name of the active view.
-	 * @return  void
-	 */
-	public static function addSubmenu($controller)
-	{
-		Submenu::addEntry(
-			Lang::txt('COM_TEMPLATES_SUBMENU_STYLES'),
-			Route::url('index.php?option=com_templates&controller=styles'),
-			$controller == 'styles'
-		);
-		Submenu::addEntry(
-			Lang::txt('COM_TEMPLATES_SUBMENU_TEMPLATES'),
-			Route::url('index.php?option=com_templates&controller=templates'),
-			$controller == 'templates'
-		);
-	}
+    /**
+     * Configure the Linkbar.
+     *
+     * @param   string  $controller  The name of the active view.
+     * @return  void
+     */
+    public static function addSubmenu($controller)
+    {
+        Submenu::addEntry(
+            Lang::txt('COM_TEMPLATES_SUBMENU_STYLES'),
+            Route::url('index.php?option=com_templates&controller=styles'),
+            $controller == 'styles'
+        );
+        Submenu::addEntry(
+            Lang::txt('COM_TEMPLATES_SUBMENU_TEMPLATES'),
+            Route::url('index.php?option=com_templates&controller=templates'),
+            $controller == 'templates'
+        );
+    }
 
-	/**
-	 * Gets a list of the actions that can be performed.
-	 *
-	 * @return  object
-	 */
-	public static function getActions()
-	{
-		$result = new Obj;
+    /**
+     * Gets a list of the actions that can be performed.
+     *
+     * @return  object
+     */
+    public static function getActions()
+    {
+        $result = new Obj();
 
-		$actions = Access::getActionsFromFile(\Component::path('com_templates') . '/config/access.xml');
+        $actions = Access::getActionsFromFile(\Component::path('com_templates') . '/config/access.xml');
 
-		foreach ($actions as $action)
-		{
-			$result->set($action->name, User::authorise($action->name, 'com_templates'));
-		}
+        foreach ($actions as $action) {
+            $result->set($action->name, User::authorise($action->name, 'com_templates'));
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 
-	/**
-	 * Get a list of filter options for the application clients.
-	 *
-	 * @return  array  An array of Option elements.
-	 */
-	public static function getClientOptions()
-	{
-		// Build the filter options.
-		$options = array();
-		$options[] = Html::select('option', '0', Lang::txt('JSITE'));
-		$options[] = Html::select('option', '1', Lang::txt('JADMINISTRATOR'));
+    /**
+     * Get a list of filter options for the application clients.
+     *
+     * @return  array  An array of Option elements.
+     */
+    public static function getClientOptions()
+    {
+        // Build the filter options.
+        $options = array();
+        $options[] = Html::select('option', '0', Lang::txt('JSITE'));
+        $options[] = Html::select('option', '1', Lang::txt('JADMINISTRATOR'));
 
-		return $options;
-	}
+        return $options;
+    }
 
-	/**
-	 * Get a list of filter options for the templates with styles.
-	 *
-	 * @param   mixed  $clientId
-	 * @return  array
-	 */
-	public static function getTemplateOptions($clientId = '*')
-	{
-		// Build the filter options.
-		$db = App::get('db');
-		$query = $db->getQuery();
+    /**
+     * Get a list of filter options for the templates with styles.
+     *
+     * @param   mixed  $clientId
+     * @return  array
+     */
+    public static function getTemplateOptions($clientId = '*')
+    {
+        // Build the filter options.
+        $db = App::get('db');
+        $query = $db->getQuery();
 
-		if ($clientId != '*')
-		{
-			$query->whereEquals('client_id', (int) $clientId);
-		}
+        if ($clientId != '*') {
+            $query->whereEquals('client_id', (int) $clientId);
+        }
 
-		$query
-			->select('element', 'value')
-			->select('name', 'text')
-			->select('extension_id', 'e_id')
-			->from('#__extensions')
-			->whereEquals('type', 'template')
-			->whereEquals('enabled', 1)
-			->order('client_id', 'asc')
-			->order('name', 'asc');
+        $query
+            ->select('element', 'value')
+            ->select('name', 'text')
+            ->select('extension_id', 'e_id')
+            ->from('#__extensions')
+            ->whereEquals('type', 'template')
+            ->whereEquals('enabled', 1)
+            ->order('client_id', 'asc')
+            ->order('name', 'asc');
 
-		$db->setQuery($query->toString());
-		return $db->loadObjectList();
-	}
+        $db->setQuery($query->toString());
+        return $db->loadObjectList();
+    }
 
-	/**
-	 * Get values from template manifest
-	 *
-	 * @param   string  $templateBaseDir
-	 * @param   string  $templateDir
-	 * @return  object
-	 */
-	public static function parseXMLTemplateFile($templateBaseDir, $templateDir)
-	{
-		$data = new Object;
+    /**
+     * Get values from template manifest
+     *
+     * @param   string  $templateBaseDir
+     * @param   string  $templateDir
+     * @return  object
+     */
+    public static function parseXMLTemplateFile($templateBaseDir, $templateDir)
+    {
+        $data = new Object();
 
-		// Check of the xml file exists
-		$filePath = Filesystem::cleanPath($templateBaseDir . '/templates/' . $templateDir . '/templateDetails.xml');
+        // Check of the xml file exists
+        $filePath = Filesystem::cleanPath($templateBaseDir . '/templates/' . $templateDir . '/templateDetails.xml');
 
-		if (is_file($filePath))
-		{
-			//$xml = JInstaller::parseXMLInstallFile($filePath);
-			// Read the file to see if it's a valid component XML file
+        if (is_file($filePath)) {
+            //$xml = JInstaller::parseXMLInstallFile($filePath);
+            // Read the file to see if it's a valid component XML file
 
-			// Disable libxml errors and allow to fetch error information as needed
-			libxml_use_internal_errors(true);
+            // Disable libxml errors and allow to fetch error information as needed
+            libxml_use_internal_errors(true);
 
-			$xml = simplexml_load_file($filePath);
+            $xml = simplexml_load_file($filePath);
 
-			if (!$xml)
-			{
-				return $data;
-			}
+            if (!$xml) {
+                return $data;
+            }
 
-			// Check for a valid XML root tag.
-			//
-			// Should be 'install', but for backward compatibility we will accept 'extension'.
-			// Languages use 'metafile' instead
-			if ($xml->getName() != 'install'
-			 && $xml->getName() != 'extension'
-			 && $xml->getName() != 'metafile')
-			{
-				unset($xml);
-				return $data;
-			}
+            // Check for a valid XML root tag.
+            //
+            // Should be 'install', but for backward compatibility we will accept 'extension'.
+            // Languages use 'metafile' instead
+            if (
+                $xml->getName() != 'install'
+                && $xml->getName() != 'extension'
+                && $xml->getName() != 'metafile'
+            ) {
+                unset($xml);
+                return $data;
+            }
 
-			$meta = array();
-			$meta['legacy']       = ($xml->getName() == 'mosinstall' || $xml->getName() == 'install');
-			$meta['name']         = (string) $xml->name;
+            $meta = array();
+            $meta['legacy']       = ($xml->getName() == 'mosinstall' || $xml->getName() == 'install');
+            $meta['name']         = (string) $xml->name;
 
-			// Check if we're a language. If so use metafile.
-			$meta['type']         = $xml->getName() == 'metafile' ? 'language' : (string) $xml->attributes()->type;
-			$meta['creationDate'] = ((string) $xml->creationDate) ? (string) $xml->creationDate : Lang::txt('Unknown');
-			$meta['author']       = ((string) $xml->author) ? (string) $xml->author : Lang::txt('Unknown');
-			$meta['copyright']    = (string) $xml->copyright;
-			$meta['authorEmail']  = (string) $xml->authorEmail;
-			$meta['authorUrl']    = (string) $xml->authorUrl;
-			$meta['version']      = (string) $xml->version;
-			$meta['description']  = (string) $xml->description;
-			$meta['group']        = (string) $xml->group;
+            // Check if we're a language. If so use metafile.
+            $meta['type']         = $xml->getName() == 'metafile' ? 'language' : (string) $xml->attributes()->type;
+            $meta['creationDate'] = ((string) $xml->creationDate) ? (string) $xml->creationDate : Lang::txt('Unknown');
+            $meta['author']       = ((string) $xml->author) ? (string) $xml->author : Lang::txt('Unknown');
+            $meta['copyright']    = (string) $xml->copyright;
+            $meta['authorEmail']  = (string) $xml->authorEmail;
+            $meta['authorUrl']    = (string) $xml->authorUrl;
+            $meta['version']      = (string) $xml->version;
+            $meta['description']  = (string) $xml->description;
+            $meta['group']        = (string) $xml->group;
 
-			if ($meta['type'] != 'template')
-			{
-				return $data;
-			}
+            if ($meta['type'] != 'template') {
+                return $data;
+            }
 
-			foreach ($meta as $key => $value)
-			{
-				$data->set($key, $value);
-			}
-		}
+            foreach ($meta as $key => $value) {
+                $data->set($key, $value);
+            }
+        }
 
-		return $data;
-	}
+        return $data;
+    }
 
-	/**
-	 * Display the thumb for the template.
-	 *
-	 * @param   string   $template   The name of the active view.
-	 * @param   integer  $protected
-	 * @return  string
-	 */
-	public static function thumb($template, $protected = 0)
-	{
-		$basePath = ($protected == 0 ? PATH_APP : PATH_CORE) . '/templates/' . $template;
-		$baseUrl  = Request::root(true) . ($protected == 0 ? '/app' : '/core');
-		$thumb    = $basePath . '/template_thumbnail.png';
-		$preview  = $basePath . '/template_preview.png';
-		$html     = '';
+    /**
+     * Display the thumb for the template.
+     *
+     * @param   string   $template   The name of the active view.
+     * @param   integer  $protected
+     * @return  string
+     */
+    public static function thumb($template, $protected = 0)
+    {
+        $basePath = ($protected == 0 ? PATH_APP : PATH_CORE) . '/templates/' . $template;
+        $baseUrl  = Request::root(true) . ($protected == 0 ? '/app' : '/core');
+        $thumb    = $basePath . '/template_thumbnail.png';
+        $preview  = $basePath . '/template_preview.png';
+        $html     = '';
 
-		if (file_exists($thumb))
-		{
-			$html = Html::asset('image', ltrim(substr($thumb, strlen(PATH_ROOT)), DS), Lang::txt('COM_TEMPLATES_PREVIEW'));
+        if (file_exists($thumb)) {
+            $thumbPath = ltrim(substr($thumb, strlen(PATH_ROOT)), DS);
+            $html = Html::asset('image', $thumbPath, Lang::txt('COM_TEMPLATES_PREVIEW'));
 
-			if (file_exists($preview))
-			{
-				$preview = $baseUrl . '/templates/' . $template . '/template_preview.png';
-				$html    = '<a href="' . $preview . '" class="modal" title="' . Lang::txt('COM_TEMPLATES_CLICK_TO_ENLARGE') . '">' . $html . '</a>';
-			}
-		}
+            if (file_exists($preview)) {
+                $preview = $baseUrl . '/templates/' . $template . '/template_preview.png';
+                $title = Lang::txt('COM_TEMPLATES_CLICK_TO_ENLARGE');
+                $html = '<a href="' . $preview . '" class="modal" title="' . $title . '">'
+                    . $html . '</a>';
+            }
+        }
 
-		return $html;
-	}
+        return $html;
+    }
 }

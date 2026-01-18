@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,9 +9,8 @@
 namespace Components\Templates\Admin;
 
 // Access check.
-if (!\User::authorise('core.manage', 'com_templates'))
-{
-	return \App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+if (!\User::authorise('core.manage', 'com_templates')) {
+    return \App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 require_once dirname(__DIR__) . DS . 'models' . DS . 'template.php';
@@ -18,9 +18,8 @@ require_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';
 
 // Include controller
 $controllerName = \Request::getCmd('controller', 'styles');
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'styles';
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+    $controllerName = 'styles';
 }
 
 \Components\Templates\Helpers\Utilities::addSubmenu($controllerName);
