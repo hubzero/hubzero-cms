@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,27 +18,25 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20170901000000ComJobs extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__jobs_admins'))
-		{
-			$query = "CREATE TABLE `#__jobs_admins` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__jobs_admins')) {
+            $query = "CREATE TABLE `#__jobs_admins` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `jid` int(11) NOT NULL DEFAULT '0',
 			  `uid` int(11) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__jobs_applications'))
-		{
-			$query = "CREATE TABLE `#__jobs_applications` (
+        if (!$this->db->tableExists('#__jobs_applications')) {
+            $query = "CREATE TABLE `#__jobs_applications` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `jid` int(11) NOT NULL DEFAULT '0',
 			  `uid` int(11) NOT NULL DEFAULT '0',
@@ -48,13 +49,12 @@ class Migration20170901000000ComJobs extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__jobs_categories'))
-		{
-			$query = "CREATE TABLE `#__jobs_categories` (
+        if (!$this->db->tableExists('#__jobs_categories')) {
+            $query = "CREATE TABLE `#__jobs_categories` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `category` varchar(150) NOT NULL DEFAULT '',
 			  `ordernum` int(11) NOT NULL DEFAULT '0',
@@ -62,13 +62,12 @@ class Migration20170901000000ComJobs extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__jobs_employers'))
-		{
-			$query = "CREATE TABLE `#__jobs_employers` (
+        if (!$this->db->tableExists('#__jobs_employers')) {
+            $query = "CREATE TABLE `#__jobs_employers` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `uid` int(11) NOT NULL DEFAULT '0',
 			  `added` datetime DEFAULT NULL,
@@ -79,13 +78,12 @@ class Migration20170901000000ComJobs extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__jobs_openings'))
-		{
-			$query = "CREATE TABLE `#__jobs_openings` (
+        if (!$this->db->tableExists('#__jobs_openings')) {
+            $query = "CREATE TABLE `#__jobs_openings` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `cid` int(11) DEFAULT '0',
 			  `employerid` int(11) NOT NULL DEFAULT '0',
@@ -114,13 +112,12 @@ class Migration20170901000000ComJobs extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__jobs_prefs'))
-		{
-			$query = "CREATE TABLE `#__jobs_prefs` (
+        if (!$this->db->tableExists('#__jobs_prefs')) {
+            $query = "CREATE TABLE `#__jobs_prefs` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `uid` int(10) NOT NULL DEFAULT '0',
 			  `category` varchar(20) NOT NULL DEFAULT 'resume',
@@ -128,13 +125,12 @@ class Migration20170901000000ComJobs extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__jobs_resumes'))
-		{
-			$query = "CREATE TABLE `#__jobs_resumes` (
+        if (!$this->db->tableExists('#__jobs_resumes')) {
+            $query = "CREATE TABLE `#__jobs_resumes` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `uid` int(11) NOT NULL DEFAULT '0',
 			  `created` datetime DEFAULT NULL,
@@ -144,13 +140,12 @@ class Migration20170901000000ComJobs extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__jobs_seekers'))
-		{
-			$query = "CREATE TABLE `#__jobs_seekers` (
+        if (!$this->db->tableExists('#__jobs_seekers')) {
+            $query = "CREATE TABLE `#__jobs_seekers` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `uid` int(11) NOT NULL DEFAULT '0',
 			  `active` int(11) NOT NULL DEFAULT '0',
@@ -164,13 +159,12 @@ class Migration20170901000000ComJobs extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__jobs_shortlist'))
-		{
-			$query = "CREATE TABLE `#__jobs_shortlist` (
+        if (!$this->db->tableExists('#__jobs_shortlist')) {
+            $query = "CREATE TABLE `#__jobs_shortlist` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `emp` int(11) NOT NULL DEFAULT '0',
 			  `seeker` int(11) NOT NULL DEFAULT '0',
@@ -180,13 +174,12 @@ class Migration20170901000000ComJobs extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__jobs_stats'))
-		{
-			$query = "CREATE TABLE `#__jobs_stats` (
+        if (!$this->db->tableExists('#__jobs_stats')) {
+            $query = "CREATE TABLE `#__jobs_stats` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `itemid` int(11) NOT NULL,
 			  `category` varchar(11) NOT NULL DEFAULT '',
@@ -197,103 +190,91 @@ class Migration20170901000000ComJobs extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__jobs_types'))
-		{
-			$query = "CREATE TABLE `#__jobs_types` (
+        if (!$this->db->tableExists('#__jobs_types')) {
+            $query = "CREATE TABLE `#__jobs_types` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `category` varchar(150) NOT NULL DEFAULT '',
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__jobs_admins'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__jobs_admins`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__jobs_admins')) {
+            $query = "DROP TABLE IF EXISTS `#__jobs_admins`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__jobs_applications'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__jobs_applications`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__jobs_applications')) {
+            $query = "DROP TABLE IF EXISTS `#__jobs_applications`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__jobs_categories'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__jobs_categories`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__jobs_categories')) {
+            $query = "DROP TABLE IF EXISTS `#__jobs_categories`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__jobs_employers'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__jobs_employers`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__jobs_employers')) {
+            $query = "DROP TABLE IF EXISTS `#__jobs_employers`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__jobs_openings'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__jobs_openings`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__jobs_openings')) {
+            $query = "DROP TABLE IF EXISTS `#__jobs_openings`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__jobs_prefs'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__jobs_prefs`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__jobs_prefs')) {
+            $query = "DROP TABLE IF EXISTS `#__jobs_prefs`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__jobs_resumes'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__jobs_resumes`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__jobs_resumes')) {
+            $query = "DROP TABLE IF EXISTS `#__jobs_resumes`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__jobs_seekers'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__jobs_seekers`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__jobs_seekers')) {
+            $query = "DROP TABLE IF EXISTS `#__jobs_seekers`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__jobs_shortlist'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__jobs_shortlist`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__jobs_shortlist')) {
+            $query = "DROP TABLE IF EXISTS `#__jobs_shortlist`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__jobs_stats'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__jobs_stats`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__jobs_stats')) {
+            $query = "DROP TABLE IF EXISTS `#__jobs_stats`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__jobs_types'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__jobs_types`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__jobs_types')) {
+            $query = "DROP TABLE IF EXISTS `#__jobs_types`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

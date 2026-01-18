@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,79 +18,78 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20190307000000ComJobs extends Base
 {
-	/**
-	 * List of tables and their datetime fields
-	 *
-	 * @var  array
-	 **/
-	public static $tables = array(
-		'#__jobs_applications' => array(
-			'applied',
-			'withdrawn'
-		),
-		'#__jobs_employers' => array(
-			'added'
-		),
-		'#__jobs_openings' => array(
-			'added',
-			'edited',
-			'closedate',
-			'expiredate',
-			'opendate',
-			'startdate'
-		),
-		'#__jobs_resumes' => array(
-			'created'
-		),
-		'#__jobs_seekers' => array(
-			'updated'
-		)
-	);
+    /**
+     * List of tables and their datetime fields
+     *
+     * @var  array
+     **/
+    public static $tables = array(
+        '#__jobs_applications' => array(
+            'applied',
+            'withdrawn'
+        ),
+        '#__jobs_employers' => array(
+            'added'
+        ),
+        '#__jobs_openings' => array(
+            'added',
+            'edited',
+            'closedate',
+            'expiredate',
+            'opendate',
+            'startdate'
+        ),
+        '#__jobs_resumes' => array(
+            'created'
+        ),
+        '#__jobs_seekers' => array(
+            'updated'
+        )
+    );
 
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		foreach (self::$tables as $table => $fields)
-		{
-			foreach ($fields as $field)
-			{
-				if ($this->db->tableExists($table)
-				 && $this->db->tableHasField($table, $field))
-				{
-					$query = "ALTER TABLE `$table` CHANGE `$field` `$field` DATETIME  NULL  DEFAULT NULL";
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        foreach (self::$tables as $table => $fields) {
+            foreach ($fields as $field) {
+                if (
+                    $this->db->tableExists($table)
+                    && $this->db->tableHasField($table, $field)
+                ) {
+                    $query = "ALTER TABLE `$table` CHANGE `$field` `$field` DATETIME  NULL  DEFAULT NULL";
 
-					$this->db->setQuery($query);
-					$this->db->query();
+                    $this->db->setQuery($query);
+                    $this->db->query();
 
-					$query = "UPDATE `$table` SET `$field`=NULL WHERE `$field`='0000-00-00 00:00:00'";
+                    $query = "UPDATE `$table` SET `$field`=NULL WHERE `$field`='0000-00-00 00:00:00'";
 
-					$this->db->setQuery($query);
-					$this->db->query();
-				}
-			}
-		}
-	}
+                    $this->db->setQuery($query);
+                    $this->db->query();
+                }
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		foreach (self::$tables as $table => $fields)
-		{
-			foreach ($fields as $field)
-			{
-				if ($this->db->tableExists($table)
-				 && $this->db->tableHasField($table, $field))
-				{
-					$query = "ALTER TABLE `$table` CHANGE `$field` `$field` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00'";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        foreach (self::$tables as $table => $fields) {
+            foreach ($fields as $field) {
+                if (
+                    $this->db->tableExists($table)
+                    && $this->db->tableHasField($table, $field)
+                ) {
+                    $query = "ALTER TABLE `$table` CHANGE `$field` `$field` ";
+                    $query .= "DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00'";
 
-					$this->db->setQuery($query);
-					$this->db->query();
-				}
-			}
-		}
-	}
+                    $this->db->setQuery($query);
+                    $this->db->query();
+                }
+            }
+        }
+    }
 }

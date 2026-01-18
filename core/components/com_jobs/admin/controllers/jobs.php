@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,383 +29,372 @@ use App;
  */
 class Jobs extends AdminController
 {
-	/**
-	 * Jobs List
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		$this->view->filters = array(
-			// Get paging variables
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
-			),
-			// Get sorting variables
-			'sortby' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortby',
-				'filter_order',
-				'added'
-			),
-			'sortdir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortdir',
-				'filter_order_Dir',
-				'DESC'
-			),
-			// Filters
-			'category' => Request::getState(
-				$this->_option . '.' . $this->_controller . 'category',
-				'category',
-				'all'
-			),
-			'filterby' => '',
-			'search' => urldecode(Request::getState(
-				$this->_option . '.' . $this->_controller . 'search',
-				'search',
-				''
-			))
-		);
+    /**
+     * Jobs List
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        $this->view->filters = array(
+            // Get paging variables
+            'limit' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.limit',
+                'limit',
+                Config::get('list_limit'),
+                'int'
+            ),
+            'start' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.limitstart',
+                'limitstart',
+                0,
+                'int'
+            ),
+            // Get sorting variables
+            'sortby' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sortby',
+                'filter_order',
+                'added'
+            ),
+            'sortdir' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sortdir',
+                'filter_order_Dir',
+                'DESC'
+            ),
+            // Filters
+            'category' => Request::getState(
+                $this->_option . '.' . $this->_controller . 'category',
+                'category',
+                'all'
+            ),
+            'filterby' => '',
+            'search' => urldecode(Request::getState(
+                $this->_option . '.' . $this->_controller . 'search',
+                'search',
+                ''
+            ))
+        );
 
-		// Get data
-		$obj = new Job($this->database);
+        // Get data
+        $obj = new Job($this->database);
 
-		$this->view->rows  = $obj->get_openings($this->view->filters, User::get('id'), 1);
-		$this->view->total = $obj->get_openings($this->view->filters, User::get('id'), 1, '', 1);
+        $this->view->rows  = $obj->get_openings($this->view->filters, User::get('id'), 1);
+        $this->view->total = $obj->get_openings($this->view->filters, User::get('id'), 1, '', 1);
 
-		$this->view->config = $this->config;
+        $this->view->config = $this->config;
 
-		// Output the HTML
-		$this->view->display();
-	}
+        // Output the HTML
+        $this->view->display();
+    }
 
-	/**
-	 * Create a job posting
-	 * Displays the edit form
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
+    /**
+     * Create a job posting
+     * Displays the edit form
+     *
+     * @return  void
+     */
+    public function addTask()
+    {
+        $this->editTask();
+    }
 
-	/**
-	 * Edit Job Posting
-	 *
-	 * @param   integer  $isnew  Is this a new entry?
-	 * @return  void
-	 */
-	public function editTask($isnew=0)
-	{
-		Request::setVar('hidemainmenu', 1);
+    /**
+     * Edit Job Posting
+     *
+     * @param   integer  $isnew  Is this a new entry?
+     * @return  void
+     */
+    public function editTask($isnew = 0)
+    {
+        Request::setVar('hidemainmenu', 1);
 
-		$live_site = rtrim(Request::base(), '/');
+        $live_site = rtrim(Request::base(), '/');
 
-		// Push some styles to the template
-		$this->css();
+        // Push some styles to the template
+        $this->css();
 
-		// Incoming job ID
-		$id = Request::getArray('id', array(0));
-		$id = is_array($id) ? $id[0] : $id;
+        // Incoming job ID
+        $id = Request::getArray('id', array(0));
+        $id = is_array($id) ? $id[0] : $id;
 
-		// Grab some filters for returning to place after editing
-		$this->view->return = array();
-		$this->view->return['sortby'] = Request::getString('sortby', 'added');
+        // Grab some filters for returning to place after editing
+        $this->view->return = array();
+        $this->view->return['sortby'] = Request::getString('sortby', 'added');
 
-		$this->view->row = new Job($this->database);
+        $this->view->row = new Job($this->database);
 
-		$this->view->jobadmin = new JobAdmin($this->database);
-		$this->view->employer = new Employer($this->database);
+        $this->view->jobadmin = new JobAdmin($this->database);
+        $this->view->employer = new Employer($this->database);
 
-		// Is this a new job?
-		if (!$id)
-		{
-			$this->view->row->created      = Date::toSql();
-			$this->view->row->created_by   = User::get('id');
-			$this->view->row->modified_by  = 0;
-			$this->view->row->publish_up   = Date::toSql();
-			$this->view->row->employerid   = 1; // admin
-		}
-		else if (!$this->view->row->load($id))
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_JOBS_ERROR_MISSING_JOB'),
-				'error'
-			);
-			return;
-		}
+        // Is this a new job?
+        if (!$id) {
+            $this->view->row->created      = Date::toSql();
+            $this->view->row->created_by   = User::get('id');
+            $this->view->row->modified_by  = 0;
+            $this->view->row->publish_up   = Date::toSql();
+            $this->view->row->employerid   = 1; // admin
+        } elseif (!$this->view->row->load($id)) {
+            App::redirect(
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Lang::txt('COM_JOBS_ERROR_MISSING_JOB'),
+                'error'
+            );
+            return;
+        }
 
-		$this->view->job = $this->view->row->get_opening($id, User::get('id'), 1);
+        $this->view->job = $this->view->row->get_opening($id, User::get('id'), 1);
 
-		// Get employer information
-		if ($this->view->row->employerid != 1)
-		{
-			if (!$this->view->employer->loadEmployer($this->view->row->employerid))
-			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					Lang::txt('COM_JOBS_ERROR_MISSING_EMPLOYER_INFO'),
-					'error'
-				);
-				return;
-			}
-		}
-		else
-		{
-			// site admin
-			$this->view->employer->uid             = 1;
-			$this->view->employer->subscriptionid  = 1;
-			$this->view->employer->companyName     = Config::get('sitename');
-			$this->view->employer->companyLocation = '';
-			$this->view->employer->companyWebsite  = $live_site;
-		}
+        // Get employer information
+        if ($this->view->row->employerid != 1) {
+            if (!$this->view->employer->loadEmployer($this->view->row->employerid)) {
+                App::redirect(
+                    Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                    Lang::txt('COM_JOBS_ERROR_MISSING_EMPLOYER_INFO'),
+                    'error'
+                );
+                return;
+            }
+        } else {
+            // site admin
+            $this->view->employer->uid             = 1;
+            $this->view->employer->subscriptionid  = 1;
+            $this->view->employer->companyName     = Config::get('sitename');
+            $this->view->employer->companyLocation = '';
+            $this->view->employer->companyWebsite  = $live_site;
+        }
 
-		// Get subscription info
-		include_once \Component::path('com_services') . DS . 'models' . DS . 'subscription.php';
+        // Get subscription info
+        include_once \Component::path('com_services') . DS . 'models' . DS . 'subscription.php';
 
-		$this->view->subscription = \Components\Services\Models\Subscription::oneOrNew($this->view->employer->subscriptionid);
+        $subId = $this->view->employer->subscriptionid;
+        $this->view->subscription = \Components\Services\Models\Subscription::oneOrNew($subId);
 
-		// Get job types and categories
-		$jt = new JobType($this->database);
-		$jc = new JobCategory($this->database);
+        // Get job types and categories
+        $jt = new JobType($this->database);
+        $jc = new JobCategory($this->database);
 
-		// get job types
-		$this->view->types = $jt->getTypes();
-		$this->view->types[0] = Lang::txt('COM_JOBS_TYPE_ANY');
+        // get job types
+        $this->view->types = $jt->getTypes();
+        $this->view->types[0] = Lang::txt('COM_JOBS_TYPE_ANY');
 
-		// get job categories
-		$this->view->cats = $jc->getCats();
-		$this->view->cats[0] = Lang::txt('COM_JOBS_CATEGORY_UNSPECIFIED');
+        // get job categories
+        $this->view->cats = $jc->getCats();
+        $this->view->cats[0] = Lang::txt('COM_JOBS_CATEGORY_UNSPECIFIED');
 
-		$this->view->config = $this->config;
-		$this->view->isnew = $isnew;
+        $this->view->config = $this->config;
+        $this->view->isnew = $isnew;
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+        // Set any errors
+        foreach ($this->getErrors() as $error) {
+            $this->view->setError($error);
+        }
 
-		// Output the HTML
-		$this->view
-			->setLayout('edit')
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->setLayout('edit')
+            ->display();
+    }
 
-	/**
-	 * Save Job Posting
-	 *
-	 * @return  void
-	 */
-	public function saveTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Save Job Posting
+     *
+     * @return  void
+     */
+    public function saveTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		// Incoming
-		$data       = array_map('trim', $_POST);
-		$action     = Request::getString('action', '');
-		$message    = Request::getString('message', '');
-		$id         = Request::getInt('id', 0);
-		$employerid = Request::getInt('employerid', 0);
-		$emailbody  = '';
-		$statusmsg  = '';
+        // Incoming
+        $data       = array_map('trim', $_POST);
+        $action     = Request::getString('action', '');
+        $message    = Request::getString('message', '');
+        $id         = Request::getInt('id', 0);
+        $employerid = Request::getInt('employerid', 0);
+        $emailbody  = '';
+        $statusmsg  = '';
 
-		$job = new Job($this->database);
-		$employer = new Employer($this->database);
+        $job = new Job($this->database);
+        $employer = new Employer($this->database);
 
-		if ($id)
-		{
-			if (!$job->load($id))
-			{
-				App::redirect(
-					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					Lang::txt('COM_JOBS_ERROR_MISSING_JOB'),
-					'error'
-				);
-				return;
-			}
-		}
-		else
-		{ // saving new job
-			include_once \Component::path('com_services') . DS . 'models' . DS . 'subscription.php';
-			$subscription = \Components\Services\Models\Subscription::blank();
-			$code = $subscription->generateCode(8, 8, 0, 1, 0);
-			$job->code = $code;
+        if ($id) {
+            if (!$job->load($id)) {
+                App::redirect(
+                    Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                    Lang::txt('COM_JOBS_ERROR_MISSING_JOB'),
+                    'error'
+                );
+                return;
+            }
+        } else { // saving new job
+            include_once \Component::path('com_services') . DS . 'models' . DS . 'subscription.php';
+            $subscription = \Components\Services\Models\Subscription::blank();
+            $code = $subscription->generateCode(8, 8, 0, 1, 0);
+            $job->code = $code;
 
-			$job->added   = Date::toSql();
-			$job->addedBy = User::get('id');
-		}
+            $job->added   = Date::toSql();
+            $job->addedBy = User::get('id');
+        }
 
-		$subject = $id ? Lang::txt('COM_JOBS_MESSAGE_SUBJECT', $job->code) : '';
+        $subject = $id ? Lang::txt('COM_JOBS_MESSAGE_SUBJECT', $job->code) : '';
 
-		$job->bind($_POST);
+        $job->bind($_POST);
 
-		// some clean-up
-		$job->description     = rtrim(stripslashes($job->description));
-		$job->title           = rtrim(stripslashes($job->title));
-		$job->companyName     = rtrim(stripslashes($job->companyName));
-		$job->companyLocation = rtrim(stripslashes($job->companyLocation));
+        // some clean-up
+        $job->description     = rtrim(stripslashes($job->description));
+        $job->title           = rtrim(stripslashes($job->title));
+        $job->companyName     = rtrim(stripslashes($job->companyName));
+        $job->companyLocation = rtrim(stripslashes($job->companyLocation));
 
-		// admin actions
-		if ($id)
-		{
-			switch ($action)
-			{
-				case 'publish':
-					// make sure we aren't over quota
-					$allowed_ads = $employerid == 1 ? 1 : $this->_checkQuota($job, $employerid, $this->database);
+        // admin actions
+        if ($id) {
+            switch ($action) {
+                case 'publish':
+                    // make sure we aren't over quota
+                    $allowed_ads = $employerid == 1 ? 1 : $this->checkQuota($job, $employerid, $this->database);
 
-					if ($allowed_ads <= 0)
-					{
-						$statusmsg .= Lang::txt('COM_JOBS_ERROR_OVER_LIMIT');
-						$action = '';
-					}
-					else
-					{
-						$job->status   = 1;
-						$job->opendate = Date::toSql();
-						$statusmsg .= Lang::txt('COM_JOBS_MESSAGE_JOB_APPROVED');
-					}
-				break;
+                    if ($allowed_ads <= 0) {
+                        $statusmsg .= Lang::txt('COM_JOBS_ERROR_OVER_LIMIT');
+                        $action = '';
+                    } else {
+                        $job->status   = 1;
+                        $job->opendate = Date::toSql();
+                        $statusmsg .= Lang::txt('COM_JOBS_MESSAGE_JOB_APPROVED');
+                    }
+                    break;
 
-				case 'unpublish':
-					$job->status = 3;
-					$statusmsg .= Lang::txt('COM_JOBS_MESSAGE_JOB_UNPUBLISHED');
-				break;
+                case 'unpublish':
+                    $job->status = 3;
+                    $statusmsg .= Lang::txt('COM_JOBS_MESSAGE_JOB_UNPUBLISHED');
+                    break;
 
-				case 'message':
+                case 'message':
+                    break;
 
-				break;
+                case 'delete':
+                    $job->status = 2;
+                    $statusmsg .= Lang::txt('COM_JOBS_MESSAGE_JOB_DELETED');
+                    break;
+            }
 
-				case 'delete':
-					$job->status = 2;
-					$statusmsg .= Lang::txt('COM_JOBS_MESSAGE_JOB_DELETED');
-				break;
-			}
+            $job->editedBy = User::get('id');
+            $job->edited   = Date::toSql();
+        }
 
-			$job->editedBy = User::get('id');
-			$job->edited   = Date::toSql();
-		}
+        if (!$job->store()) {
+            throw new Exception($job->getError(), 500);
+        }
 
-		if (!$job->store())
-		{
-			throw new Exception($job->getError(), 500);
-		}
+        if (!$job->id) {
+            $job->checkin();
+        }
 
-		if (!$job->id)
-		{
-			$job->checkin();
-		}
+        if (($message && $action == 'message' && $id) || ($action && $action != 'message')) {
+            // E-mail "from" info
+            $from = array(
+                'email' => Config::get('mailfrom'),
+                'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_JOBS_JOBS')
+            );
 
-		if (($message && $action == 'message' && $id) || ($action && $action != 'message'))
-		{
-			// E-mail "from" info
-			$from = array(
-				'email' => Config::get('mailfrom'),
-				'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_JOBS_JOBS')
-			);
+            $base = rtrim(Request::base(), '/');
+            if (substr($base, -13) == 'administrator') {
+                $base = substr($base, 0, strlen($base) - 13);
+            }
+            $sef  = 'jobs/job/' . $job->code;
+            $link = rtrim($base, '/') . '/' . trim($sef, '/');
 
-			$base = rtrim(Request::base(), '/');
-			if (substr($base, -13) == 'administrator')
-			{
-				$base = substr($base, 0, strlen($base)-13);
-			}
-			$sef  = 'jobs/job/' . $job->code;
-			$link = rtrim($base, '/') . '/' . trim($sef, '/');
+            // start email message
+            $emailbody .= $subject . ':' . "\r\n";
+            $emailbody .= $statusmsg . "\r\n";
+            $emailbody .= Lang::txt('COM_JOBS_MESSAGE_JOB') . ': ' . $link . "\r\n";
+            if ($message) {
+                $emailbody .= "\n";
+                $emailbody .= '----------------------------------------------------------' . "\r\n";
+                $emailbody .= "\n" . Lang::txt('COM_JOBS_MESSAGE_FROM_ADMIN:') . "\n";
+                $emailbody .= $message;
+            }
 
-			// start email message
-			$emailbody .= $subject . ':' . "\r\n";
-			$emailbody .= $statusmsg . "\r\n";
-			$emailbody .= Lang::txt('COM_JOBS_MESSAGE_JOB') . ': ' . $link . "\r\n";
-			if ($message)
-			{
-				$emailbody .= "\n";
-				$emailbody .= '----------------------------------------------------------' . "\r\n";
-				$emailbody .= "\n" . Lang::txt('COM_JOBS_MESSAGE_FROM_ADMIN:') . "\n";
-				$emailbody .= $message;
-			}
+            $messageParams = array(
+                'jobs_ad_status_changed',
+                $subject,
+                $emailbody,
+                $from,
+                array($job->addedBy),
+                $this->_option
+            );
+            if (!Event::trigger('xmessage.onSendMessage', $messageParams)) {
+                Notify::error(Lang::txt('COM_JOBS_ERROR_FAILED_TO_MESSAGE_USERS'));
+            }
+        }
 
-			if (!Event::trigger('xmessage.onSendMessage', array('jobs_ad_status_changed', $subject, $emailbody, $from, array($job->addedBy), $this->_option)))
-			{
-				Notify::error(Lang::txt('COM_JOBS_ERROR_FAILED_TO_MESSAGE_USERS'));
-			}
-		}
+        // Redirect
+        App::redirect(
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Lang::txt('COM_JOBS_ITEM_SAVED') . ($statusmsg ? ' ' . $statusmsg : '')
+        );
+    }
 
-		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_JOBS_ITEM_SAVED') . ($statusmsg ? ' ' . $statusmsg : '')
-		);
-	}
+    /**
+     * Check job ad quota depending on subscription
+     *
+     * @param    object  $job       Job entry
+     * @param   integer  $uid       User ID
+     * @param   object   $database  Database
+     * @return  integer
+     */
+    private function checkQuota($job, $uid, $database)
+    {
+        // make sure we aren't over quota
+        include_once \Component::path('com_services') . DS . 'models' . DS . 'service.php';
 
-	/**
-	 * Check job ad quota depending on subscription
-	 *
-	 * @param    object  $job       Job entry
-	 * @param   integer  $uid       User ID
-	 * @param   object   $database  Database
-	 * @return  integer
-	 */
-	private function _checkQuota($job, $uid, $database)
-	{
-		// make sure we aren't over quota
-		include_once \Component::path('com_services') . DS . 'models' . DS . 'service.php';
+        $maxads = 3;
+        if (
+            isset($this->config->parameters['maxads'])
+            && intval($this->config->parameters['maxads']) > 0
+        ) {
+            $maxads = $this->config->parameters['maxads'];
+        }
+        $service = \Components\Services\Models\Service::getUserService($uid);
+        $activejobs = $job->countMyActiveOpenings($uid, 1);
 
-		$maxads = isset($this->config->parameters['maxads']) && intval($this->config->parameters['maxads']) > 0  ? $this->config->parameters['maxads'] : 3;
-		$service = \Components\Services\Models\Service::getUserService($uid);
-		$activejobs = $job->countMyActiveOpenings($uid, 1);
+        return ($service == 'employer_basic' ? 1 - $activejobs : $maxads - $activejobs);
+    }
 
-		return ($service == 'employer_basic' ? 1 - $activejobs : $maxads - $activejobs);
-	}
+    /**
+     * Remove Job Posting
+     *
+     * @return  void
+     */
+    public function removeTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-	/**
-	 * Remove Job Posting
-	 *
-	 * @return  void
-	 */
-	public function removeTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+        // Incoming (expecting an array)
+        $ids = Request::getArray('id', array());
+        $ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Incoming (expecting an array)
-		$ids = Request::getArray('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
+        // Ensure we have an ID to work with
+        if (empty($ids)) {
+            App::redirect(
+                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Lang::txt('COM_JOBS_ERROR_NO_ITEM_SELECTED'),
+                'error'
+            );
+            return;
+        }
 
-		// Ensure we have an ID to work with
-		if (empty($ids))
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_JOBS_ERROR_NO_ITEM_SELECTED'),
-				'error'
-			);
-			return;
-		}
+        $row = new Job($this->database);
 
-		$row = new Job($this->database);
+        foreach ($ids as $id) {
+            // Delete the type
+            $row->delete($id);
+        }
 
-		foreach ($ids as $id)
-		{
-			// Delete the type
-			$row->delete($id);
-		}
-
-		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_JOBS_ITEMS_REMOVED', count($ids))
-		);
-	}
+        // Redirect
+        App::redirect(
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Lang::txt('COM_JOBS_ITEMS_REMOVED', count($ids))
+        );
+    }
 }
