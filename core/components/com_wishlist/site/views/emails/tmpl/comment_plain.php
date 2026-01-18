@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,10 +20,9 @@ $link = $base . '/' . ltrim(Route::url($this->wish->link()), '/');
 $name  = $this->wish->proposer->get('name', Lang::txt('COM_WISHLIST_UNKNOWN'));
 $login = $this->wish->proposer->get('username', Lang::txt('COM_WISHLIST_UNKNOWN'));
 
-if ($this->wish->get('anonymous'))
-{
-	$name  = Lang::txt('JANONYMOUS');
-	$login = Lang::txt('JANONYMOUS');
+if ($this->wish->get('anonymous')) {
+    $name  = Lang::txt('JANONYMOUS');
+    $login = Lang::txt('JANONYMOUS');
 }
 
 // Build message
@@ -35,15 +37,14 @@ $message .= '----------------------------' . "\n\n";
 $name  = $this->comment->creator->get('name', Lang::txt('COM_WISHLIST_UNKNOWN'));
 $login = $this->comment->creator->get('username', Lang::txt('COM_WISHLIST_UNKNOWN'));
 
-if ($this->comment->get('anonymous'))
-{
-	$name  = Lang::txt('JANONYMOUS');
-	$login = Lang::txt('JANONYMOUS');
+if ($this->comment->get('anonymous')) {
+    $name  = Lang::txt('JANONYMOUS');
+    $login = Lang::txt('JANONYMOUS');
 }
 
 $message .= Lang::txt('COM_WISHLIST_MSG_COMMENT_BY') . ' ' . $name . ' ';
 $message .= $this->comment->get('anonymous') ? '' : '(' . $login . ')';
-$message .= ' ' . Lang::txt('COM_WISHLIST_MSG_POSTED_ON').' '. $this->comment->created() . ':' . "\r\n";
+$message .= ' ' . Lang::txt('COM_WISHLIST_MSG_POSTED_ON') . ' ' . $this->comment->created() . ':' . "\r\n";
 $message .= strip_tags($this->comment->content) . "\r\n";
 $message .= $this->comment->get('attachment');
 

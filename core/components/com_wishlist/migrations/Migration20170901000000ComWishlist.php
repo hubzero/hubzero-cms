@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,16 +16,16 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for installing wishlist tables
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComWishlist extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__wishlist'))
-		{
-			$query = "CREATE TABLE `#__wishlist` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__wishlist')) {
+            $query = "CREATE TABLE `#__wishlist` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `category` varchar(50) NOT NULL,
 			  `referenceid` int(11) NOT NULL DEFAULT '0',
@@ -38,13 +41,12 @@ class Migration20170901000000ComWishlist extends Base
 			  KEY `idx_state` (`state`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__wishlist_item'))
-		{
-			$query = "CREATE TABLE `#__wishlist_item` (
+        if (!$this->db->tableExists('#__wishlist_item')) {
+            $query = "CREATE TABLE `#__wishlist_item` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `wishlist` int(11) DEFAULT '0',
 			  `subject` varchar(200) NOT NULL,
@@ -67,13 +69,12 @@ class Migration20170901000000ComWishlist extends Base
 			  FULLTEXT KEY `ftidx_subject_about` (`subject`,`about`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__wishlist_owners'))
-		{
-			$query = "CREATE TABLE `#__wishlist_owners` (
+        if (!$this->db->tableExists('#__wishlist_owners')) {
+            $query = "CREATE TABLE `#__wishlist_owners` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `wishlist` int(11) unsigned NOT NULL DEFAULT '0',
 			  `userid` int(11) unsigned NOT NULL DEFAULT '0',
@@ -84,13 +85,12 @@ class Migration20170901000000ComWishlist extends Base
 			  KEY `idx_type` (`type`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__wishlist_ownergroups'))
-		{
-			$query = "CREATE TABLE `#__wishlist_ownergroups` (
+        if (!$this->db->tableExists('#__wishlist_ownergroups')) {
+            $query = "CREATE TABLE `#__wishlist_ownergroups` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `wishlist` int(11) unsigned NOT NULL DEFAULT '0',
 			  `groupid` int(11) unsigned NOT NULL DEFAULT '0',
@@ -99,13 +99,12 @@ class Migration20170901000000ComWishlist extends Base
 			  KEY `idx_groupid` (`groupid`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__wishlist_vote'))
-		{
-			$query = "CREATE TABLE `#__wishlist_vote` (
+        if (!$this->db->tableExists('#__wishlist_vote')) {
+            $query = "CREATE TABLE `#__wishlist_vote` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `wishid` int(11) unsigned NOT NULL DEFAULT '0',
 			  `userid` int(11) unsigned NOT NULL DEFAULT '0',
@@ -118,13 +117,12 @@ class Migration20170901000000ComWishlist extends Base
 			  KEY `idx_userid` (`userid`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__wishlist_implementation'))
-		{
-			$query = "CREATE TABLE `#__wishlist_implementation` (
+        if (!$this->db->tableExists('#__wishlist_implementation')) {
+            $query = "CREATE TABLE `#__wishlist_implementation` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `wishid` int(11) NOT NULL DEFAULT '0',
 			  `version` int(11) NOT NULL DEFAULT '0',
@@ -142,13 +140,12 @@ class Migration20170901000000ComWishlist extends Base
 			  FULLTEXT KEY `ftidx_pagetext` (`pagetext`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__wish_attachments'))
-		{
-			$query = "CREATE TABLE `#__wish_attachments` (
+        if (!$this->db->tableExists('#__wish_attachments')) {
+            $query = "CREATE TABLE `#__wish_attachments` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `wish` int(11) NOT NULL DEFAULT '0',
 			  `filename` varchar(255) DEFAULT NULL,
@@ -157,63 +154,56 @@ class Migration20170901000000ComWishlist extends Base
 			  KEY `idx_wish` (`wish`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__wishlist'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__wishlist`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__wishlist')) {
+            $query = "DROP TABLE IF EXISTS `#__wishlist`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__wishlist_item'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__wishlist_item`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__wishlist_item')) {
+            $query = "DROP TABLE IF EXISTS `#__wishlist_item`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__wishlist_owners'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__wishlist_owners`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__wishlist_owners')) {
+            $query = "DROP TABLE IF EXISTS `#__wishlist_owners`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__wishlist_ownergroups'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__wishlist_ownergroups`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__wishlist_ownergroups')) {
+            $query = "DROP TABLE IF EXISTS `#__wishlist_ownergroups`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__wishlist_vote'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__wishlist_vote`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__wishlist_vote')) {
+            $query = "DROP TABLE IF EXISTS `#__wishlist_vote`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__wishlist_implementation'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__wishlist_implementation`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__wishlist_implementation')) {
+            $query = "DROP TABLE IF EXISTS `#__wishlist_implementation`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__wish_attachments'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__wish_attachments`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__wish_attachments')) {
+            $query = "DROP TABLE IF EXISTS `#__wish_attachments`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

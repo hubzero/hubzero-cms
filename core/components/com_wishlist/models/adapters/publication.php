@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,280 +21,260 @@ require_once \Component::path('com_publications') . DS . 'tables' . DS . 'public
  */
 class Publication extends Base
 {
-	/**
-	 * URL segments
-	 *
-	 * @var string
-	 */
-	protected $_segments = array(
-		'option' => 'com_wishlist',
-	);
+    /**
+     * URL segments
+     *
+     * @var string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_segments = array(
+        'option' => 'com_wishlist',
+    );
 
-	/**
-	 * Scope name
-	 *
-	 * @var  string
-	 */
-	protected $_scope = 'publication';
+    /**
+     * Scope name
+     *
+     * @var  string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_scope = 'publication';
 
-	/**
-	 * Constructor
-	 *
-	 * @param   integer  $referenceid  Scope ID (group, course, etc.)
-	 * @return  void
-	 */
-	public function __construct($referenceid=0)
-	{
-		$this->set('referenceid', $referenceid)
-		     ->set('category', 'publication')
-		     ->set('option', $this->_segments['option']);
+    /**
+     * Constructor
+     *
+     * @param   integer  $referenceid  Scope ID (group, course, etc.)
+     * @return  void
+     */
+    public function __construct($referenceid = 0)
+    {
+        $this->set('referenceid', $referenceid)
+             ->set('category', 'publication')
+             ->set('option', $this->_segments['option']);
 
-		$database = \App::get('db');
-		$objP = new \Components\Publications\Tables\Publication($database);
-		$this->_item = $objP->getPublication($referenceid, 'default');
+        $database = \App::get('db');
+        $objP = new \Components\Publications\Tables\Publication($database);
+        $this->_item = $objP->getPublication($referenceid, 'default');
 
-		//$this->_segments['id']     = $this->_item->id;
-		$this->_segments['active'] = 'wishlist';
-	}
+        //$this->_segments['id']     = $this->_item->id;
+        $this->_segments['active'] = 'wishlist';
+    }
 
-	/**
-	 * Generate and return the title for this wishlist
-	 *
-	 * @return  string
-	 */
-	public function title()
-	{
-		return $this->_item->title;
-	}
+    /**
+     * Generate and return the title for this wishlist
+     *
+     * @return  string
+     */
+    public function title()
+    {
+        return $this->_item->title;
+    }
 
-	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 *
-	 * @param   string  $type    The type of link to return
-	 * @param   mixed   $params  Optional string or associative array of params to append
-	 * @return  string
-	 */
-	public function link($type='', $params=null)
-	{
-		$segments = $this->_segments;
+    /**
+     * Generate and return various links to the entry
+     * Link will vary depending upon action desired, such as edit, delete, etc.
+     *
+     * @param   string  $type    The type of link to return
+     * @param   mixed   $params  Optional string or associative array of params to append
+     * @return  string
+     */
+    public function link($type = '', $params = null)
+    {
+        $segments = $this->_segments;
 
-		if ($this->get('category'))
-		{
-			$segments['category'] = $this->get('category');
-		}
-		if ($this->get('referenceid'))
-		{
-			$segments['rid'] = $this->get('referenceid');
-		}
+        if ($this->get('category')) {
+            $segments['category'] = $this->get('category');
+        }
+        if ($this->get('referenceid')) {
+            $segments['rid'] = $this->get('referenceid');
+        }
 
-		$anchor = '';
+        $anchor = '';
 
-		// If it doesn't exist or isn't published
-		switch (strtolower($type))
-		{
-			case 'base':
-				return $this->_base . '?' . (string) $this->_build($this->_segments);
-			break;
+        // If it doesn't exist or isn't published
+        switch (strtolower($type)) {
+            case 'base':
+                return $this->_base . '?' . (string) $this->_build($this->_segments);
+            break;
 
-			case 'edit':
-				$segments['task'] = 'editwish';
-				if ($this->get('wishid'))
-				{
-					$segments['wishid'] = $this->get('wishid');
-				}
-			break;
+            case 'edit':
+                $segments['task'] = 'editwish';
+                if ($this->get('wishid')) {
+                    $segments['wishid'] = $this->get('wishid');
+                }
+                break;
 
-			case 'delete':
-				$segments['task'] = 'deletewish';
-				if ($this->get('wishid'))
-				{
-					$segments['wishid'] = $this->get('wishid');
-				}
-			break;
+            case 'delete':
+                $segments['task'] = 'deletewish';
+                if ($this->get('wishid')) {
+                    $segments['wishid'] = $this->get('wishid');
+                }
+                break;
 
-			case 'add':
-			case 'addwish':
-			case 'new':
-				$segments['task'] = 'addwish';
-			break;
+            case 'add':
+            case 'addwish':
+            case 'new':
+                $segments['task'] = 'addwish';
+                break;
 
-			case 'settings':
-				unset($segments['category']);
-				unset($segments['rid']);
+            case 'settings':
+                unset($segments['category']);
+                unset($segments['rid']);
 
-				$segments['task'] = 'settings';
-				$segments['id'] = $this->get('wishlist');
-			break;
-			case 'savesettings':
-				unset($segments['category']);
-				unset($segments['rid']);
+                $segments['task'] = 'settings';
+                $segments['id'] = $this->get('wishlist');
+                break;
+            case 'savesettings':
+                unset($segments['category']);
+                unset($segments['rid']);
 
-				$segments['task'] = 'savesettings';
-				$segments['listid'] = $this->get('wishlist');
-			break;
+                $segments['task'] = 'savesettings';
+                $segments['listid'] = $this->get('wishlist');
+                break;
 
-			case 'comments':
-				if ($this->get('wishid'))
-				{
-					$segments['task'] = 'wish';
-					$segments['wishid'] = $this->get('wishid');
-					$segments['com'] = 1;
-					$anchor = '#comments';
-				}
-			break;
+            case 'comments':
+                if ($this->get('wishid')) {
+                    $segments['task'] = 'wish';
+                    $segments['wishid'] = $this->get('wishid');
+                    $segments['com'] = 1;
+                    $anchor = '#comments';
+                }
+                break;
 
-			case 'changestatus':
-				if ($this->get('wishid'))
-				{
-					$segments['task'] = 'wish';
-					$segments['wishid'] = $this->get('wishid');
-					$segments['action'] = 'changestatus';
-					$anchor = '#action';
-				}
-			break;
+            case 'changestatus':
+                if ($this->get('wishid')) {
+                    $segments['task'] = 'wish';
+                    $segments['wishid'] = $this->get('wishid');
+                    $segments['action'] = 'changestatus';
+                    $anchor = '#action';
+                }
+                break;
 
-			case 'withdraw':
-				if ($this->get('wishid'))
-				{
-					$segments['task'] = 'wish';
-					$segments['wishid'] = $this->get('wishid');
-					$segments['action'] = 'delete';
-					$anchor = '#action';
-				}
-			break;
+            case 'withdraw':
+                if ($this->get('wishid')) {
+                    $segments['task'] = 'wish';
+                    $segments['wishid'] = $this->get('wishid');
+                    $segments['action'] = 'delete';
+                    $anchor = '#action';
+                }
+                break;
 
-			case 'addbonus':
-				if ($this->get('wishid'))
-				{
-					$segments['task'] = 'wish';
-					$segments['wishid'] = $this->get('wishid');
-					$segments['action'] = 'addbonus';
-					$anchor = '#action';
-				}
-			break;
+            case 'addbonus':
+                if ($this->get('wishid')) {
+                    $segments['task'] = 'wish';
+                    $segments['wishid'] = $this->get('wishid');
+                    $segments['action'] = 'addbonus';
+                    $anchor = '#action';
+                }
+                break;
 
-			case 'privacy':
-				if ($this->get('wishid'))
-				{
-					$segments['task'] = 'editprivacy';
-					$segments['wishid'] = $this->get('wishid');
-				}
-			break;
+            case 'privacy':
+                if ($this->get('wishid')) {
+                    $segments['task'] = 'editprivacy';
+                    $segments['wishid'] = $this->get('wishid');
+                }
+                break;
 
-			case 'move':
-				if ($this->get('wishid'))
-				{
-					$segments['task'] = 'wish';
-					$segments['wishid'] = $this->get('wishid');
-					$segments['action'] = 'move';
-					$anchor = '#action';
-				}
-			break;
+            case 'move':
+                if ($this->get('wishid')) {
+                    $segments['task'] = 'wish';
+                    $segments['wishid'] = $this->get('wishid');
+                    $segments['action'] = 'move';
+                    $anchor = '#action';
+                }
+                break;
 
-			case 'comment':
-				if ($this->get('wishid'))
-				{
-					$segments['task'] = 'wish';
-					$segments['wishid'] = $this->get('wishid');
-					$segments['cat'] = 'wish';
-					$anchor = '#commentform';
-				}
-			break;
+            case 'comment':
+                if ($this->get('wishid')) {
+                    $segments['task'] = 'wish';
+                    $segments['wishid'] = $this->get('wishid');
+                    $segments['cat'] = 'wish';
+                    $anchor = '#commentform';
+                }
+                break;
 
-			case 'editplan':
-				if ($this->get('wishid'))
-				{
-					$segments['task'] = 'wish';
-					$segments['wishid'] = $this->get('wishid');
-					$segments['action'] = 'editplan';
-					$anchor = '#plan';
-				}
-			break;
+            case 'editplan':
+                if ($this->get('wishid')) {
+                    $segments['task'] = 'wish';
+                    $segments['wishid'] = $this->get('wishid');
+                    $segments['action'] = 'editplan';
+                    $anchor = '#plan';
+                }
+                break;
 
-			case 'rank':
-				if ($this->get('wishid'))
-				{
-					$segments['task'] = 'wish';
-					$segments['wishid'] = $this->get('wishid');
-					$segments['action'] = 'rank';
-					$anchor = '#action';
-				}
-			break;
+            case 'rank':
+                if ($this->get('wishid')) {
+                    $segments['task'] = 'wish';
+                    $segments['wishid'] = $this->get('wishid');
+                    $segments['action'] = 'rank';
+                    $anchor = '#action';
+                }
+                break;
 
-			case 'report':
-			case 'reportabuse':
-				return 'index.php?option=com_support&task=reportabuse&category=wish&id=' . $this->get('wishid') . '&parent=' . $this->get('wishlist');
-			break;
+            case 'report':
+            case 'reportabuse':
+                return 'index.php?option=com_support&task=reportabuse&category=wish&id='
+                    . $this->get('wishid') . '&parent=' . $this->get('wishlist');
+            break;
 
-			case 'permalink':
-			default:
-				$segments['task'] = 'wishlist';
-				if ($this->get('wishid'))
-				{
-					$segments['task'] = 'wish';
-					$segments['wishid'] = $this->get('wishid');
-				}
-			break;
-		}
+            case 'permalink':
+            default:
+                $segments['task'] = 'wishlist';
+                if ($this->get('wishid')) {
+                    $segments['task'] = 'wish';
+                    $segments['wishid'] = $this->get('wishid');
+                }
+                break;
+        }
 
-		if (is_string($params))
-		{
-			$params = str_replace('&amp;', '&', $params);
+        if (is_string($params)) {
+            $params = str_replace('&amp;', '&', $params);
 
-			if (substr($params, 0, 1) == '#')
-			{
-				$anchor = $params;
-			}
-			else
-			{
-				if (substr($params, 0, 1) == '?')
-				{
-					$params = substr($params, 1);
-				}
-				parse_str($params, $parsed);
-				$params = $parsed;
-			}
-		}
+            if (substr($params, 0, 1) == '#') {
+                $anchor = $params;
+            } else {
+                if (substr($params, 0, 1) == '?') {
+                    $params = substr($params, 1);
+                }
+                parse_str($params, $parsed);
+                $params = $parsed;
+            }
+        }
 
-		$segments = array_merge($segments, (array) $params);
+        $segments = array_merge($segments, (array) $params);
 
-		return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
-	}
+        return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+    }
 
-	/**
-	 * Append an item to the breadcrumb trail.
-	 * If no item is provided, it will build the trail up to the list
-	 *
-	 * @param   string  $title  Breadcrumb title
-	 * @param   string  $url    Breadcrumb URL
-	 * @return  string
-	 */
-	public function pathway($title=null, $url=null)
-	{
-		if (!$title)
-		{
-			Pathway::append(
-				Lang::txt('Publications'),
-				'index.php?option=com_publications'
-			);
-			Pathway::append(
-				stripslashes($this->_item->title),
-				'index.php?option=com_publications&id=' . $this->get('referenceid')
-			);
-			Pathway::append(
-				Lang::txt('Wishlist'),
-				'index.php?option=com_publications&task=wishlist&id=' . $this->get('referenceid')
-			);
-		}
-		else
-		{
-			Pathway::append(
-				$title,
-				$url
-			);
-		}
+    /**
+     * Append an item to the breadcrumb trail.
+     * If no item is provided, it will build the trail up to the list
+     *
+     * @param   string  $title  Breadcrumb title
+     * @param   string  $url    Breadcrumb URL
+     * @return  string
+     */
+    public function pathway($title = null, $url = null)
+    {
+        if (!$title) {
+            Pathway::append(
+                Lang::txt('Publications'),
+                'index.php?option=com_publications'
+            );
+            Pathway::append(
+                stripslashes($this->_item->title),
+                'index.php?option=com_publications&id=' . $this->get('referenceid')
+            );
+            Pathway::append(
+                Lang::txt('Wishlist'),
+                'index.php?option=com_publications&task=wishlist&id=' . $this->get('referenceid')
+            );
+        } else {
+            Pathway::append(
+                $title,
+                $url
+            );
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 }
