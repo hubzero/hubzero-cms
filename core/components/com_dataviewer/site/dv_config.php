@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,7 +28,7 @@ define('DV_PATH_HTML', __DIR__ . DS . 'html');
 
 $params = Component::params('com_dataviewer');
 
-$dv_conf['settings']['num_rows'] = array('labels'=>array(5, 10, 25, 50, 100), 'values'=>array(5, 10, 25, 50, 100));
+$dv_conf['settings']['num_rows'] = array('labels' => array(5, 10, 25, 50, 100), 'values' => array(5, 10, 25, 50, 100));
 $dv_conf['settings']['limit'] = $params->get('record_display_limit') == '' ? 10 : $params->get('record_display_limit');
 $dv_conf['settings']['serverside'] = false;
 
@@ -42,16 +45,16 @@ $dv_conf['db'] = array();
 /* Access Control */
 $acl_users = $params->get('acl_users');
 if ($acl_users == 'registered') {
-	$dv_conf['acl']['allowed_users'] = 'registered';
+    $dv_conf['acl']['allowed_users'] = 'registered';
 } elseif ($acl_users != 'registered' && $acl_users != '') {
-	$dv_conf['acl']['allowed_users'] = array_map('trim', explode(',', $acl_users));
+    $dv_conf['acl']['allowed_users'] = array_map('trim', explode(',', $acl_users));
 } else {
-	$dv_conf['acl']['allowed_users'] = false;
+    $dv_conf['acl']['allowed_users'] = false;
 }
 
 $acl_groups = $params->get('acl_groups');
 if ($acl_groups != '') {
-	$dv_conf['acl']['allowed_groups'] = array_map('trim', explode(',', $acl_groups));
+    $dv_conf['acl']['allowed_groups'] = array_map('trim', explode(',', $acl_groups));
 } else {
-	$dv_conf['acl']['allowed_groups'] = false;
+    $dv_conf['acl']['allowed_groups'] = false;
 }

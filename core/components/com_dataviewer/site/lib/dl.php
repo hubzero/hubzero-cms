@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,66 +13,66 @@ defined('_HZEXEC_') or die();
 
 function get_dl_hash($path, $type = 'file_download')
 {
-	$salt = "Ju   st( in c4s3.........:-0()";
-	$hash = md5($salt . $path);
+    $salt = "Ju   st( in c4s3.........:-0()";
+    $hash = md5($salt . $path);
 
-	if (!isset($_SESSION['dv'])) {
-		$_SESSION['dv'] = array();
-	}
+    if (!isset($_SESSION['dv'])) {
+        $_SESSION['dv'] = array();
+    }
 
-	$_SESSION['dv'][$type]['list'][$hash] = $path;
+    $_SESSION['dv'][$type]['list'][$hash] = $path;
 
-	return $hash;
+    return $hash;
 }
 
 function stream_file($hash)
 {
-	$fullpath = '';
-	if (isset($_SESSION['dv']['file_download']['list'][$hash])) {
-		$fullpath = $_SESSION['dv']['file_download']['list'][$hash];
+    $fullpath = '';
+    if (isset($_SESSION['dv']['file_download']['list'][$hash])) {
+        $fullpath = $_SESSION['dv']['file_download']['list'][$hash];
 
-		//TODO: Better mimetype detection
-		if (strstr($fullpath, '.csv')) {
-			$mimetype = 'text/csv';
-		} elseif (strstr($fullpath, '.zip')) {
-			$mimetype = 'application/zip';
-		} else {
-			$mimetype = 'application/octet-stream';
-		}
+        //TODO: Better mimetype detection
+        if (strstr($fullpath, '.csv')) {
+            $mimetype = 'text/csv';
+        } elseif (strstr($fullpath, '.zip')) {
+            $mimetype = 'application/zip';
+        } else {
+            $mimetype = 'application/octet-stream';
+        }
 
-		if (file_exists($fullpath)) {
-			header('Content-Description: File Transfer');
-			header('Content-Type: ' . $mimetype);
-			header('Content-Length: ' . filesize($fullpath));
-			header('Content-Disposition: attachment; filename=' . str_replace(' ', '_', basename($fullpath)));
-			ob_end_flush();
-			readfile($fullpath);
-			exit(0);
-		}
-	}
-	print "Invalid (or Missing) file : $fullpath";
+        if (file_exists($fullpath)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: ' . $mimetype);
+            header('Content-Length: ' . filesize($fullpath));
+            header('Content-Disposition: attachment; filename=' . str_replace(' ', '_', basename($fullpath)));
+            ob_end_flush();
+            readfile($fullpath);
+            exit(0);
+        }
+    }
+    print "Invalid (or Missing) file : $fullpath";
 }
 
 function zip_files($hash_list)
 {
-	$hash_list = explode(',', $hash_list);
+    $hash_list = explode(',', $hash_list);
 
-	$fl = '';
+    $fl = '';
 
-	foreach ($hash_list as $hash) {
-		if (isset($_SESSION['dv']['file_download']['list'][$hash])) {
-			$fullpath = '"' . $_SESSION['dv']['file_download']['list'][$hash] . '"';
-			$fl .= $fullpath . ' ';
-		}
-	}
+    foreach ($hash_list as $hash) {
+        if (isset($_SESSION['dv']['file_download']['list'][$hash])) {
+            $fullpath = '"' . $_SESSION['dv']['file_download']['list'][$hash] . '"';
+            $fl .= $fullpath . ' ';
+        }
+    }
 
-	header('Content-Description: File Transfer');
-	header('Content-Type: application/zip');
-	header('Content-Disposition: attachment; filename=selected_files.zip');
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/zip');
+    header('Content-Disposition: attachment; filename=selected_files.zip');
 
-	ob_end_flush();
+    ob_end_flush();
 
-	print `zip -qj - $fl`;
+    print `zip -qj - $fl`;
 
-	exit(0);
+    exit(0);
 }

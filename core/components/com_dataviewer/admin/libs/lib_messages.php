@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,19 +11,19 @@
 defined('_HZEXEC_') or die();
 
 if (!isset($_SESSION['databases']['notifications'])) {
-	$_SESSION['databases']['notifications'] = array();
+    $_SESSION['databases']['notifications'] = array();
 }
 
 function db_msg($msg, $type = 'error')
 {
-	$_SESSION['databases']['notifications'][] = array('message' => $msg, 'type' => $type);
+    $_SESSION['databases']['notifications'][] = array('message' => $msg, 'type' => $type);
 }
 
 function db_show_msg()
 {
-	foreach ($_SESSION['databases']['notifications'] as $notification) {
-		print "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
-	}
+    foreach ($_SESSION['databases']['notifications'] as $notification) {
+        print "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+    }
 
-	$_SESSION['databases']['notifications'] = array();
+    $_SESSION['databases']['notifications'] = array();
 }

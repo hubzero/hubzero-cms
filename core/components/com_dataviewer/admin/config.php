@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,11 +12,11 @@ defined('_HZEXEC_') or die();
 
 // Request ID/CSRF prevention
 if (!isset($_SESSION['db'])) {
-	$_SESSION['db'] = array();
+    $_SESSION['db'] = array();
 }
 
 if (!isset($_SESSION['db']['__rid'])) {
-	$_SESSION['db']['__rid'] = sha1(uniqid('__rid', true));
+    $_SESSION['db']['__rid'] = sha1(uniqid('__rid', true));
 }
 define('DB_RID', $_SESSION['db']['__rid']);
 
@@ -38,7 +41,7 @@ $conf['app_title'] = 'Dataviewer';
 $db_params = Component::params('com_databases');
 $conf['dir_base'] = $db_params->get('base_dir');
 if ($conf['dir_base'] == null || $conf['dir_base'] == '') {
-	$conf['dir_base'] = '/db/databases';
+    $conf['dir_base'] = '/db/databases';
 }
 
 $mode_db_enabled =  Component::params('com_dataviewer')->get('mode_db') == '1' ? true : false;
@@ -47,9 +50,9 @@ $conf['modes']['db'] = array('enabled' => $mode_db_enabled);
 // ACL
 $conf['access_limit_to_group'] = false;
 if ($conf['modes']['db']['enabled']) {
-	if ($db_params->get('access_limit_to_group') != '') {
-		$conf['access_limit_to_group'] = $db_params->get('access_limit_to_group');
-	}
+    if ($db_params->get('access_limit_to_group') != '') {
+        $conf['access_limit_to_group'] = $db_params->get('access_limit_to_group');
+    }
 }
 
 

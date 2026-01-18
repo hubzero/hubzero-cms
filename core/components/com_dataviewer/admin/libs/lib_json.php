@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,78 +13,65 @@ defined('_HZEXEC_') or die();
 // http://www.php.net/manual/en/function.json-encode.php#80339
 function json_format($json)
 {
-	$tab = "\t";
-	$new_json = "";
-	$indent_level = 0;
-	$in_string = false;
+    $tab = "\t";
+    $new_json = "";
+    $indent_level = 0;
+    $in_string = false;
 
-	$json_obj = json_decode($json);
+    $json_obj = json_decode($json);
 
-	if ($json_obj === false)
-	{
-		return false;
-	}
+    if ($json_obj === false) {
+        return false;
+    }
 
-	$json = json_encode($json_obj);
-	$len = strlen($json);
+    $json = json_encode($json_obj);
+    $len = strlen($json);
 
-	for ($c = 0; $c < $len; $c++) {
-		$char = $json[$c];
-		switch ($char) {
-			case '{':
-			case '[':
-				if (!$in_string)
-	{
-					$new_json .= $char . "\n" . str_repeat($tab, $indent_level+1);
-					$indent_level++;
-				}
-				else
-				{
-					$new_json .= $char;
-				}
-				break;
-			case '}':
-			case ']':
-				if (!$in_string)
-	{
-					$indent_level--;
-					$new_json .= "\n" . str_repeat($tab, $indent_level) . $char;
-				}
-				else
-				{
-					$new_json .= $char;
-				}
-				break;
-			case ',':
-				if (!$in_string)
-	{
-					$new_json .= ",\n" . str_repeat($tab, $indent_level);
-				}
-				else
-				{
-					$new_json .= $char;
-				}
-				break;
-			case ':':
-				if (!$in_string)
-	{
-					$new_json .= ": ";
-				}
-				else
-				{
-					$new_json .= $char;
-				}
-				break;
-			case '"':
-				if ($c > 0 && $json[$c-1] != '\\')
-	{
-					$in_string = !$in_string;
-				}
-			default:
-				$new_json .= $char;
-				break;
-		}
-	}
+    for ($c = 0; $c < $len; $c++) {
+        $char = $json[$c];
+        switch ($char) {
+            case '{':
+            case '[':
+                if (!$in_string) {
+                    $new_json .= $char . "\n" . str_repeat($tab, $indent_level + 1);
+                    $indent_level++;
+                } else {
+                    $new_json .= $char;
+                }
+                break;
+            case '}':
+            case ']':
+                if (!$in_string) {
+                    $indent_level--;
+                    $new_json .= "\n" . str_repeat($tab, $indent_level) . $char;
+                } else {
+                    $new_json .= $char;
+                }
+                break;
+            case ',':
+                if (!$in_string) {
+                    $new_json .= ",\n" . str_repeat($tab, $indent_level);
+                } else {
+                    $new_json .= $char;
+                }
+                break;
+            case ':':
+                if (!$in_string) {
+                    $new_json .= ": ";
+                } else {
+                    $new_json .= $char;
+                }
+                break;
+            case '"':
+                if ($c > 0 && $json[$c - 1] != '\\') {
+                    $in_string = !$in_string;
+                }
+                // no break
+            default:
+                $new_json .= $char;
+                break;
+        }
+    }
 
-	return $new_json;
+    return $new_json;
 }
