@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,9 +11,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-if (!isset($this->link))
-{
-	$this->link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->link()), '/');
+if (!isset($this->link)) {
+    $this->link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->link()), '/');
 }
 
 $message  = Lang::txt('COM_ANSWERS_EMAIL_AUTO_GENERATED') . "\n";

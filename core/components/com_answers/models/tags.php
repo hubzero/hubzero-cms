@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,22 +19,23 @@ require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
  */
 class Tags extends Cloud
 {
-	/**
-	 * Object type, used for linking objects (such as resources) to tags
-	 *
-	 * @var  string
-	 */
-	protected $_scope = 'answers';
+    /**
+     * Object type, used for linking objects (such as resources) to tags
+     *
+     * @var  string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_scope = 'answers';
 
-	/**
-	 * Turn a comma-separated string of tags into an array of normalized tags
-	 *
-	 * @param   string   $tag_string  Comma-separated string of tags
-	 * @param   integer  $keep        Use normalized tag as array key
-	 * @return  array
-	 */
-	public function parse($tag_string, $keep=0)
-	{
-		return $this->_parse($tag_string, $keep);
-	}
+    /**
+     * Turn a comma-separated string of tags into an array of normalized tags
+     *
+     * @param   string   $tag_string  Comma-separated string of tags
+     * @param   integer  $keep        Use normalized tag as array key
+     * @return  array
+     */
+    public function parse($tag_string, $keep = 0)
+    {
+        return $this->_parse($tag_string, $keep);
+    }
 }

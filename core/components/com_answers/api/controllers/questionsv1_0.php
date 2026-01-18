@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,425 +25,408 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'question.php';
 /**
  * API controller class for Questions
  */
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Questionsv1_0 extends ApiController
 {
-	/**
-	 * Display a list of questions
-	 *
-	 * @apiMethod GET
-	 * @apiUri    /answers/questions/list
-	 * @apiParameter {
-	 * 		"name":          "limit",
-	 * 		"description":   "Number of result to return.",
-	 * 		"type":          "integer",
-	 * 		"required":      false,
-	 * 		"default":       25
-	 * }
-	 * @apiParameter {
-	 * 		"name":          "start",
-	 * 		"description":   "Number of where to start returning results.",
-	 * 		"type":          "integer",
-	 * 		"required":      false,
-	 * 		"default":       0
-	 * }
-	 * @apiParameter {
-	 * 		"name":          "search",
-	 * 		"description":   "A word or phrase to search for.",
-	 * 		"type":          "string",
-	 * 		"required":      false,
-	 * 		"default":       ""
-	 * }
-	 * @apiParameter {
-	 * 		"name":          "sort",
-	 * 		"description":   "Field to sort results by.",
-	 * 		"type":          "string",
-	 * 		"required":      false,
-	 *      "default":       "created",
-	 * 		"allowedValues": "created, title, alias, id, publish_up, publish_down, state"
-	 * }
-	 * @apiParameter {
-	 * 		"name":          "sort_Dir",
-	 * 		"description":   "Direction to sort results by.",
-	 * 		"type":          "string",
-	 * 		"required":      false,
-	 * 		"default":       "desc",
-	 * 		"allowedValues": "asc, desc"
-	 * }
-	 * @return    void
-	 */
-	public function listTask()
-	{
-		$filters = array(
-			'limit'      => Request::getInt('limit', 25),
-			'start'      => Request::getInt('limitstart', 0),
-			'search'     => Request::getString('search', ''),
-			'state'      => Request::getInt('state', -1),
-			'sort'       => Request::getWord('sort', 'created'),
-			'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC'))
-		);
+    /**
+     * Display a list of questions
+     *
+     * @apiMethod GET
+     * @apiUri    /answers/questions/list
+     * @apiParameter {
+     *      "name":          "limit",
+     *      "description":   "Number of result to return.",
+     *      "type":          "integer",
+     *      "required":      false,
+     *      "default":       25
+     * }
+     * @apiParameter {
+     *      "name":          "start",
+     *      "description":   "Number of where to start returning results.",
+     *      "type":          "integer",
+     *      "required":      false,
+     *      "default":       0
+     * }
+     * @apiParameter {
+     *      "name":          "search",
+     *      "description":   "A word or phrase to search for.",
+     *      "type":          "string",
+     *      "required":      false,
+     *      "default":       ""
+     * }
+     * @apiParameter {
+     *      "name":          "sort",
+     *      "description":   "Field to sort results by.",
+     *      "type":          "string",
+     *      "required":      false,
+     *      "default":       "created",
+     *      "allowedValues": "created, title, alias, id, publish_up, publish_down, state"
+     * }
+     * @apiParameter {
+     *      "name":          "sort_Dir",
+     *      "description":   "Direction to sort results by.",
+     *      "type":          "string",
+     *      "required":      false,
+     *      "default":       "desc",
+     *      "allowedValues": "asc, desc"
+     * }
+     * @return    void
+     */
+    public function listTask()
+    {
+        $filters = array(
+            'limit'      => Request::getInt('limit', 25),
+            'start'      => Request::getInt('limitstart', 0),
+            'search'     => Request::getString('search', ''),
+            'state'      => Request::getInt('state', -1),
+            'sort'       => Request::getWord('sort', 'created'),
+            'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC'))
+        );
 
-		$records = Question::all();
+        $records = Question::all();
 
-		if ($filters['search'])
-		{
-			$filters['search'] = strtolower((string)$filters['search']);
+        if ($filters['search']) {
+            $filters['search'] = strtolower((string)$filters['search']);
 
-			$records->whereLike('subject', $filters['search'], 1)
-					->orWhereLike('question', $filters['search'], 1)
-					->resetDepth();
-		}
+            $records->whereLike('subject', $filters['search'], 1)
+                    ->orWhereLike('question', $filters['search'], 1)
+                    ->resetDepth();
+        }
 
-		if ($filters['state'] >= 0)
-		{
-			$records->whereEquals('state', $filters['state']);
-		}
+        if ($filters['state'] >= 0) {
+            $records->whereEquals('state', $filters['state']);
+        }
 
-		$rows = $records
-			->limit($filters['limit'])
-			->ordered('sort', 'sortDir')
-			->paginated()
-			->rows();
+        $rows = $records
+            ->limit($filters['limit'])
+            ->ordered('sort', 'sortDir')
+            ->paginated()
+            ->rows();
 
-		$response = new stdClass;
-		$response->questions = array();
-		$response->total     = $rows->count();
+        $response = new stdClass();
+        $response->questions = array();
+        $response->total     = $rows->count();
 
-		if ($response->total)
-		{
-			$base = rtrim(Request::base(), '/');
+        if ($response->total) {
+            $base = rtrim(Request::base(), '/');
 
-			foreach ($rows as $question)
-			{
-				$obj = new stdClass;
-				$obj->id      = $question->get('id');
-				$obj->subject = $question->get('subject');
-				$obj->quesion = $question->get('question');
-				$obj->state   = $question->get('state');
-				$obj->created = with(new Date($question->get('created')))->format('Y-m-d\TH:i:s\Z');
-				$obj->created_by = $question->get('created_by');
-				$obj->url     = str_replace('/api', '', $base . '/' . ltrim(Route::url($question->link()), '/'));
-				$obj->responses = $question->responses()->total();
+            foreach ($rows as $question) {
+                $obj = new stdClass();
+                $obj->id      = $question->get('id');
+                $obj->subject = $question->get('subject');
+                $obj->quesion = $question->get('question');
+                $obj->state   = $question->get('state');
+                $obj->created = with(new Date($question->get('created')))->format('Y-m-d\TH:i:s\Z');
+                $obj->created_by = $question->get('created_by');
+                $obj->url     = str_replace('/api', '', $base . '/' . ltrim(Route::url($question->link()), '/'));
+                $obj->responses = $question->responses()->total();
 
-				$response->questions[] = $obj;
-			}
-		}
+                $response->questions[] = $obj;
+            }
+        }
 
-		$response->success = true;
+        $response->success = true;
 
-		$this->send($response);
-	}
+        $this->send($response);
+    }
 
-	/**
-	 * Create a new question
-	 *
-	 * @apiMethod POST
-	 * @apiUri    /answers/questions
-	 * @apiParameter {
-	 * 		"name":        "email",
-	 * 		"description": "Notify user of responses",
-	 * 		"type":        "integer",
-	 * 		"required":    false,
-	 * 		"default":     0
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "anonymous",
-	 * 		"description": "List author as anonymous or not",
-	 * 		"type":        "integer",
-	 * 		"required":    false,
-	 * 		"default":     0
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "subject",
-	 * 		"description": "Short, one-line question",
-	 * 		"type":        "string",
-	 * 		"required":    true,
-	 * 		"default":     null
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "question",
-	 * 		"description": "Longer, detailed question",
-	 * 		"type":        "string",
-	 * 		"required":    false,
-	 * 		"default":     null
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "created",
-	 * 		"description": "Created timestamp (YYYY-MM-DD HH:mm:ss)",
-	 * 		"type":        "string",
-	 * 		"required":    false,
-	 * 		"default":     "now"
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "crated_by",
-	 * 		"description": "User ID of entry creator",
-	 * 		"type":        "integer",
-	 * 		"required":    false,
-	 * 		"default":     0
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "state",
-	 * 		"description": "Published state (0 = unpublished, 1 = published)",
-	 * 		"type":        "integer",
-	 * 		"required":    false,
-	 * 		"default":     0
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "reward",
-	 * 		"description": "Reward points",
-	 * 		"type":        "integer",
-	 * 		"required":    false,
-	 * 		"default":     0
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "tags",
-	 * 		"description": "Comma-separated list of tags",
-	 * 		"type":        "string",
-	 * 		"required":    true,
-	 * 		"default":     null
-	 * }
-	 * @return    void
-	 */
-	public function createTask()
-	{
-		$this->requiresAuthentication();
+    /**
+     * Create a new question
+     *
+     * @apiMethod POST
+     * @apiUri    /answers/questions
+     * @apiParameter {
+     *      "name":        "email",
+     *      "description": "Notify user of responses",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     0
+     * }
+     * @apiParameter {
+     *      "name":        "anonymous",
+     *      "description": "List author as anonymous or not",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     0
+     * }
+     * @apiParameter {
+     *      "name":        "subject",
+     *      "description": "Short, one-line question",
+     *      "type":        "string",
+     *      "required":    true,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "question",
+     *      "description": "Longer, detailed question",
+     *      "type":        "string",
+     *      "required":    false,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "created",
+     *      "description": "Created timestamp (YYYY-MM-DD HH:mm:ss)",
+     *      "type":        "string",
+     *      "required":    false,
+     *      "default":     "now"
+     * }
+     * @apiParameter {
+     *      "name":        "crated_by",
+     *      "description": "User ID of entry creator",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     0
+     * }
+     * @apiParameter {
+     *      "name":        "state",
+     *      "description": "Published state (0 = unpublished, 1 = published)",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     0
+     * }
+     * @apiParameter {
+     *      "name":        "reward",
+     *      "description": "Reward points",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     0
+     * }
+     * @apiParameter {
+     *      "name":        "tags",
+     *      "description": "Comma-separated list of tags",
+     *      "type":        "string",
+     *      "required":    true,
+     *      "default":     null
+     * }
+     * @return    void
+     */
+    public function createTask()
+    {
+        $this->requiresAuthentication();
 
-		$fields = array(
-			'email'      => Request::getInt('email', 0, 'post'),
-			'anonymous'  => Request::getInt('anonymous', 0, 'post'),
-			'subject'    => Request::getString('subject', null, 'post', 'none', 2),
-			'question'   => Request::getString('question', null, 'post', 'none', 2),
-			'created'    => Request::getString('created', with(new Date('now'))->toSql(), 'post'),
-			'created_by' => Request::getInt('created_by', User::get('id'), 'post'),
-			'state'      => Request::getInt('state', 0, 'post'),
-			'reward'     => Request::getInt('reward', 0, 'post')
-		);
+        $fields = array(
+            'email'      => Request::getInt('email', 0, 'post'),
+            'anonymous'  => Request::getInt('anonymous', 0, 'post'),
+            'subject'    => Request::getString('subject', null, 'post', 'none', 2),
+            'question'   => Request::getString('question', null, 'post', 'none', 2),
+            'created'    => Request::getString('created', with(new Date('now'))->toSql(), 'post'),
+            'created_by' => Request::getInt('created_by', User::get('id'), 'post'),
+            'state'      => Request::getInt('state', 0, 'post'),
+            'reward'     => Request::getInt('reward', 0, 'post')
+        );
 
-		$row = new Question();
+        $row = new Question();
 
-		if (!$row->set($fields))
-		{
-			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_BINDING_DATA'), 500);
-		}
+        if (!$row->set($fields)) {
+            throw new Exception(Lang::txt('COM_ANSWERS_ERROR_BINDING_DATA'), 500);
+        }
 
-		$row->set('email', (isset($fields['email']) ? 1 : 0));
-		$row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
+        $row->set('email', (isset($fields['email']) ? 1 : 0));
+        $row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
 
-		if (!$row->save())
-		{
-			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_SAVING_DATA'), 500);
-		}
+        if (!$row->save()) {
+            throw new Exception(Lang::txt('COM_ANSWERS_ERROR_SAVING_DATA'), 500);
+        }
 
-		$tags = Request::getVar('tags', null, 'post');
+        $tags = Request::getVar('tags', null, 'post');
 
-		if (isset($tags))
-		{
-			if (!$row->tag($tags, $fields['created_by']))
-			{
-				throw new Exception(Lang::txt('COM_ANSWERS_ERROR_SAVING_TAGS'), 500);
-			}
-		}
+        if (isset($tags)) {
+            if (!$row->tag($tags, $fields['created_by'])) {
+                throw new Exception(Lang::txt('COM_ANSWERS_ERROR_SAVING_TAGS'), 500);
+            }
+        }
 
-		$this->send($row->toObject());
-	}
+        $this->send($row->toObject());
+    }
 
-	/**
-	 * Retrieve a question
-	 *
-	 * @apiMethod GET
-	 * @apiUri    /answers/questions/{id}
-	 * @apiParameter {
-	 * 		"name":        "id",
-	 * 		"description": "Question identifier",
-	 * 		"type":        "integer",
-	 * 		"required":    true,
-	 * 		"default":     0
-	 * }
-	 * @return    void
-	 */
-	public function readTask()
-	{
-		$id = Request::getInt('id', 0);
+    /**
+     * Retrieve a question
+     *
+     * @apiMethod GET
+     * @apiUri    /answers/questions/{id}
+     * @apiParameter {
+     *      "name":        "id",
+     *      "description": "Question identifier",
+     *      "type":        "integer",
+     *      "required":    true,
+     *      "default":     0
+     * }
+     * @return    void
+     */
+    public function readTask()
+    {
+        $id = Request::getInt('id', 0);
 
-		$row = Question::oneOrFail($id);
+        $row = Question::oneOrFail($id);
 
-		if (!$row->get('id'))
-		{
-			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_MISSING_RECORD'), 404);
-		}
+        if (!$row->get('id')) {
+            throw new Exception(Lang::txt('COM_ANSWERS_ERROR_MISSING_RECORD'), 404);
+        }
 
-		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
+        $row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
 
-		$this->send($row->toObject());
-	}
+        $this->send($row->toObject());
+    }
 
-	/**
-	 * Update a question
-	 *
-	 * @apiMethod PUT
-	 * @apiUri    /answers/questions/{id}
-	 * @apiParameter {
-	 * 		"name":        "id",
-	 * 		"description": "Question identifier",
-	 * 		"type":        "integer",
-	 * 		"required":    true,
-	 * 		"default":     0
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "email",
-	 * 		"description": "Notify user of responses",
-	 * 		"type":        "integer",
-	 * 		"required":    false,
-	 * 		"default":     null
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "anonymous",
-	 * 		"description": "List author as anonymous or not",
-	 * 		"type":        "integer",
-	 * 		"required":    false,
-	 * 		"default":     null
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "subject",
-	 * 		"description": "Short, one-line question",
-	 * 		"type":        "string",
-	 * 		"required":    false,
-	 * 		"default":     null
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "question",
-	 * 		"description": "Longer, detailed question",
-	 * 		"type":        "string",
-	 * 		"required":    false,
-	 * 		"default":     null
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "created",
-	 * 		"description": "Created timestamp (YYYY-MM-DD HH:mm:ss)",
-	 * 		"type":        "string",
-	 * 		"required":    false,
-	 * 		"default":     null
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "crated_by",
-	 * 		"description": "User ID of entry creator",
-	 * 		"type":        "integer",
-	 * 		"required":    false,
-	 * 		"default":     null
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "state",
-	 * 		"description": "Published state (0 = unpublished, 1 = published)",
-	 * 		"type":        "integer",
-	 * 		"required":    false,
-	 * 		"default":     null
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "reward",
-	 * 		"description": "Reward points",
-	 * 		"type":        "integer",
-	 * 		"required":    false,
-	 * 		"default":     null
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "tags",
-	 * 		"description": "Comma-separated list of tags",
-	 * 		"type":        "string",
-	 * 		"required":    false,
-	 * 		"default":     null
-	 * }
-	 * @return    void
-	 */
-	public function updateTask()
-	{
-		$this->requiresAuthentication();
+    /**
+     * Update a question
+     *
+     * @apiMethod PUT
+     * @apiUri    /answers/questions/{id}
+     * @apiParameter {
+     *      "name":        "id",
+     *      "description": "Question identifier",
+     *      "type":        "integer",
+     *      "required":    true,
+     *      "default":     0
+     * }
+     * @apiParameter {
+     *      "name":        "email",
+     *      "description": "Notify user of responses",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "anonymous",
+     *      "description": "List author as anonymous or not",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "subject",
+     *      "description": "Short, one-line question",
+     *      "type":        "string",
+     *      "required":    false,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "question",
+     *      "description": "Longer, detailed question",
+     *      "type":        "string",
+     *      "required":    false,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "created",
+     *      "description": "Created timestamp (YYYY-MM-DD HH:mm:ss)",
+     *      "type":        "string",
+     *      "required":    false,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "crated_by",
+     *      "description": "User ID of entry creator",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "state",
+     *      "description": "Published state (0 = unpublished, 1 = published)",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "reward",
+     *      "description": "Reward points",
+     *      "type":        "integer",
+     *      "required":    false,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "tags",
+     *      "description": "Comma-separated list of tags",
+     *      "type":        "string",
+     *      "required":    false,
+     *      "default":     null
+     * }
+     * @return    void
+     */
+    public function updateTask()
+    {
+        $this->requiresAuthentication();
 
-		$id = Request::getInt('id', 0);
+        $id = Request::getInt('id', 0);
 
-		$row = Question::oneOrFail($id);
+        $row = Question::oneOrFail($id);
 
-		if (!$row->get('id'))
-		{
-			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_MISSING_RECORD'), 404);
-		}
+        if (!$row->get('id')) {
+            throw new Exception(Lang::txt('COM_ANSWERS_ERROR_MISSING_RECORD'), 404);
+        }
 
-		$fields = array(
-			'email'      => Request::getInt('email', $row->get('email')),
-			'anonymous'  => Request::getInt('anonymous', $row->get('anonymous')),
-			'subject'    => Request::getString('subject', $row->get('subject')),
-			'question'   => Request::getString('question', $row->get('question')),
-			'created'    => Request::getString('created', $row->get('created')),
-			'created_by' => Request::getInt('created_by', $row->get('created_by')),
-			'state'      => Request::getInt('state', $row->get('state')),
-			'reward'     => Request::getInt('reward', $row->get('reward'))
-		);
+        $fields = array(
+            'email'      => Request::getInt('email', $row->get('email')),
+            'anonymous'  => Request::getInt('anonymous', $row->get('anonymous')),
+            'subject'    => Request::getString('subject', $row->get('subject')),
+            'question'   => Request::getString('question', $row->get('question')),
+            'created'    => Request::getString('created', $row->get('created')),
+            'created_by' => Request::getInt('created_by', $row->get('created_by')),
+            'state'      => Request::getInt('state', $row->get('state')),
+            'reward'     => Request::getInt('reward', $row->get('reward'))
+        );
 
-		if (!$row->set($fields))
-		{
-			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_BINDING_DATA'), 422);
-		}
+        if (!$row->set($fields)) {
+            throw new Exception(Lang::txt('COM_ANSWERS_ERROR_BINDING_DATA'), 422);
+        }
 
-		$row->set('email', (isset($fields['email']) ? 1 : 0));
-		$row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
+        $row->set('email', (isset($fields['email']) ? 1 : 0));
+        $row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
 
-		if (!$row->save())
-		{
-			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_SAVING_DATA'), 500);
-		}
+        if (!$row->save()) {
+            throw new Exception(Lang::txt('COM_ANSWERS_ERROR_SAVING_DATA'), 500);
+        }
 
-		$tags = Request::getVar('tags', null);
+        $tags = Request::getVar('tags', null);
 
-		if (!is_null($tags) && is_string($tags))
-		{
-			if (!$row->tag($tags, $fields['created_by']))
-			{
-				throw new Exception(Lang::txt('COM_ANSWERS_ERROR_SAVING_TAGS'), 500);
-			}
-		}
+        if (!is_null($tags) && is_string($tags)) {
+            if (!$row->tag($tags, $fields['created_by'])) {
+                throw new Exception(Lang::txt('COM_ANSWERS_ERROR_SAVING_TAGS'), 500);
+            }
+        }
 
-		$this->send($row->toObject());
-	}
+        $this->send($row->toObject());
+    }
 
-	/**
-	 * Delete a question
-	 *
-	 * @apiMethod DELETE
-	 * @apiUri    /answers/questions/{id}
-	 * @apiParameter {
-	 * 		"name":        "id",
-	 * 		"description": "Question identifier",
-	 * 		"type":        "integer",
-	 * 		"required":    true,
-	 * 		"default":     0
-	 * }
-	 * @return    void
-	 */
-	public function deleteTask()
-	{
-		$this->requiresAuthentication();
+    /**
+     * Delete a question
+     *
+     * @apiMethod DELETE
+     * @apiUri    /answers/questions/{id}
+     * @apiParameter {
+     *      "name":        "id",
+     *      "description": "Question identifier",
+     *      "type":        "integer",
+     *      "required":    true,
+     *      "default":     0
+     * }
+     * @return    void
+     */
+    public function deleteTask()
+    {
+        $this->requiresAuthentication();
 
-		$ids = Request::getArray('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', array());
+        $ids = (!is_array($ids) ? array($ids) : $ids);
 
-		if (count($ids) <= 0)
-		{
-			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_MISSING_ID'), 500);
-		}
+        if (count($ids) <= 0) {
+            throw new Exception(Lang::txt('COM_ANSWERS_ERROR_MISSING_ID'), 500);
+        }
 
-		foreach ($ids as $id)
-		{
-			$row = Question::oneOrNew(intval($id));
+        foreach ($ids as $id) {
+            $row = Question::oneOrNew(intval($id));
 
-			if (!$row->get('id'))
-			{
-				throw new Exception(Lang::txt('COM_ANSWERS_ERROR_MISSING_RECORD'), 404);
-			}
+            if (!$row->get('id')) {
+                throw new Exception(Lang::txt('COM_ANSWERS_ERROR_MISSING_RECORD'), 404);
+            }
 
-			if (!$row->destroy())
-			{
-				throw new Exception($row->getError(), 500);
-			}
-		}
+            if (!$row->destroy()) {
+                throw new Exception($row->getError(), 500);
+            }
+        }
 
-		$this->send(null, 204);
-	}
+        $this->send(null, 204);
+    }
 }

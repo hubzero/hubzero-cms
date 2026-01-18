@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,16 +16,16 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for installing answers tables
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComAnswers extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__answers_questions'))
-		{
-			$query = "CREATE TABLE `#__answers_questions` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__answers_questions')) {
+            $query = "CREATE TABLE `#__answers_questions` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `subject` varchar(250) NOT NULL DEFAULT '',
 			  `question` text NOT NULL,
@@ -42,13 +45,12 @@ class Migration20170901000000ComAnswers extends Base
 			  FULLTEXT KEY `ftidx_question_subject` (`question`,`subject`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__answers_responses'))
-		{
-			$query = "CREATE TABLE `#__answers_responses` (
+        if (!$this->db->tableExists('#__answers_responses')) {
+            $query = "CREATE TABLE `#__answers_responses` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `question_id` int(11) unsigned NOT NULL DEFAULT '0',
 			  `answer` text NOT NULL,
@@ -65,28 +67,26 @@ class Migration20170901000000ComAnswers extends Base
 			  FULLTEXT KEY `ftidx_answer` (`answer`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__answers_questions'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__answers_questions`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__answers_questions')) {
+            $query = "DROP TABLE IF EXISTS `#__answers_questions`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__answers_responses'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__answers_responses`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__answers_responses')) {
+            $query = "DROP TABLE IF EXISTS `#__answers_responses`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }
