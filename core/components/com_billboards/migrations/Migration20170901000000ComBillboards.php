@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,22 +8,19 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for installing billboards tables
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComBillboards extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__billboards_billboards'))
-		{
-			$query = "CREATE TABLE `#__billboards_billboards` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__billboards_billboards')) {
+            $query = "CREATE TABLE `#__billboards_billboards` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `collection_id` int(11) DEFAULT NULL,
 			  `name` varchar(255) DEFAULT NULL,
@@ -46,40 +44,37 @@ class Migration20170901000000ComBillboards extends Base
 			  KEY `idx_alias` (`alias`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__billboards_collections'))
-		{
-			$query = "CREATE TABLE `#__billboards_collections` (
+        if (!$this->db->tableExists('#__billboards_collections')) {
+            $query = "CREATE TABLE `#__billboards_collections` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `name` varchar(255) DEFAULT NULL,
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__billboards_billboards'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__billboards_billboards`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__billboards_billboards')) {
+            $query = "DROP TABLE IF EXISTS `#__billboards_billboards`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__billboards_collections'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__billboards_collections`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__billboards_collections')) {
+            $query = "DROP TABLE IF EXISTS `#__billboards_collections`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }
