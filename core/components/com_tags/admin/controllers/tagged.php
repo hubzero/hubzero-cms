@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,201 +21,192 @@ use App;
  */
 class Tagged extends AdminController
 {
-	/**
-	 * Execute a task
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		$this->registerTask('add', 'edit');
-		$this->registerTask('apply', 'save');
+    /**
+     * Execute a task
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        $this->registerTask('add', 'edit');
+        $this->registerTask('apply', 'save');
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * List all tagged objects
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		// Incoming
-		$filters = array(
-			'tagid'   => Request::getInt('tag', 0),
-			'tbl'     => Request::getState(
-				$this->_option . '.' . $this->_controller . '.tbl',
-				'tbl',
-				''
-			),
-			'sort'     => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sort',
-				'filter_order',
-				'id'
-			),
-			'sort_Dir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortdir',
-				'filter_order_Dir',
-				'ASC'
-			)
-		);
+    /**
+     * List all tagged objects
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        // Incoming
+        $filters = array(
+            'tagid'   => Request::getInt('tag', 0),
+            'tbl'     => Request::getState(
+                $this->_option . '.' . $this->_controller . '.tbl',
+                'tbl',
+                ''
+            ),
+            'sort'     => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sort',
+                'filter_order',
+                'id'
+            ),
+            'sort_Dir' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sortdir',
+                'filter_order_Dir',
+                'ASC'
+            )
+        );
 
-		$modelt = Objct::all()
-			->select('DISTINCT(tbl)');
+        $modelt = Objct::all()
+            ->select('DISTINCT(tbl)');
 
-		$model = Objct::all();
+        $model = Objct::all();
 
-		if ($filters['tagid'])
-		{
-			$model->whereEquals('tagid', $filters['tagid']);
-			$modelt->whereEquals('tagid', $filters['tagid']);
-		}
+        if ($filters['tagid']) {
+            $model->whereEquals('tagid', $filters['tagid']);
+            $modelt->whereEquals('tagid', $filters['tagid']);
+        }
 
-		if ($filters['tbl'])
-		{
-			$model->whereEquals('tbl', $filters['tbl']);
-		}
+        if ($filters['tbl']) {
+            $model->whereEquals('tbl', $filters['tbl']);
+        }
 
-		// Get records
-		$rows = $model
-			->ordered('filter_order', 'filter_order_Dir')
-			->paginated('limitstart', 'limit')
-			->rows();
+        // Get records
+        $rows = $model
+            ->ordered('filter_order', 'filter_order_Dir')
+            ->paginated('limitstart', 'limit')
+            ->rows();
 
-		$types = $modelt
-			->ordered()
-			->rows();
+        $types = $modelt
+            ->ordered()
+            ->rows();
 
-		// Output the HTML
-		$this->view
-			->set('filters', $filters)
-			->set('rows', $rows)
-			->set('types', $types)
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('filters', $filters)
+            ->set('rows', $rows)
+            ->set('types', $types)
+            ->display();
+    }
 
-	/**
-	 * Edit an entry
-	 *
-	 * @param   object  $row
-	 * @return  void
-	 */
-	public function editTask($row=null)
-	{
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+    /**
+     * Edit an entry
+     *
+     * @param   object  $row
+     * @return  void
+     */
+    public function editTask($row = null)
+    {
+        if (
+            !User::authorise('core.edit', $this->_option)
+            && !User::authorise('core.create', $this->_option)
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		Request::setVar('hidemainmenu', 1);
+        Request::setVar('hidemainmenu', 1);
 
-		// Load a tag object if one doesn't already exist
-		if (!is_object($row))
-		{
-			// Incoming
-			$id = Request::getArray('id', array(0));
-			if (is_array($id) && !empty($id))
-			{
-				$id = $id[0];
-			}
+        // Load a tag object if one doesn't already exist
+        if (!is_object($row)) {
+            // Incoming
+            $id = Request::getArray('id', array(0));
+            if (is_array($id) && !empty($id)) {
+                $id = $id[0];
+            }
 
-			$row = Objct::oneOrNew(intval($id));
-		}
+            $row = Objct::oneOrNew(intval($id));
+        }
 
-		// Output the HTML
-		$this->view
-			->set('row', $row)
-			->setLayout('edit')
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('row', $row)
+            ->setLayout('edit')
+            ->display();
+    }
 
-	/**
-	 * Save an entry
-	 *
-	 * @return  void
-	 */
-	public function saveTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Save an entry
+     *
+     * @return  void
+     */
+    public function saveTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (
+            !User::authorise('core.edit', $this->_option)
+            && !User::authorise('core.create', $this->_option)
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		$fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', array(), 'post');
 
-		$row = Objct::oneOrFail($fields['id'])->set($fields);
+        $row = Objct::oneOrFail($fields['id'])->set($fields);
 
-		// Store content
-		if (!$row->save())
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
+        // Store content
+        if (!$row->save()) {
+            Notify::error($row->getError());
+            return $this->editTask($row);
+        }
 
-		Notify::success(Lang::txt('COM_TAGS_OBJECT_SAVED'));
+        Notify::success(Lang::txt('COM_TAGS_OBJECT_SAVED'));
 
-		// Redirect to main listing
-		if ($this->getTask() == 'apply')
-		{
-			return $this->editTask($row);
-		}
+        // Redirect to main listing
+        if ($this->getTask() == 'apply') {
+            return $this->editTask($row);
+        }
 
-		$this->cancelTask();
-	}
+        $this->cancelTask();
+    }
 
-	/**
-	 * Remove one or more entries
-	 *
-	 * @return  void
-	 */
-	public function removeTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Remove one or more entries
+     *
+     * @return  void
+     */
+    public function removeTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.delete', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (!User::authorise('core.delete', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		$ids = Request::getArray('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
+        $ids = Request::getArray('id', array());
+        $ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Make sure we have an ID
-		if (empty($ids))
-		{
-			Notify::warning(Lang::txt('COM_TAGS_ERROR_NO_ITEMS_SELECTED'));
+        // Make sure we have an ID
+        if (empty($ids)) {
+            Notify::warning(Lang::txt('COM_TAGS_ERROR_NO_ITEMS_SELECTED'));
 
-			return $this->cancelTask();
-		}
+            return $this->cancelTask();
+        }
 
-		$i = 0;
+        $i = 0;
 
-		foreach ($ids as $id)
-		{
-			// Remove entry
-			$row = Objct::oneOrFail(intval($id));
+        foreach ($ids as $id) {
+            // Remove entry
+            $row = Objct::oneOrFail(intval($id));
 
-			if (!$row->destroy())
-			{
-				Notify::error($row->getError());
-				continue;
-			}
+            if (!$row->destroy()) {
+                Notify::error($row->getError());
+                continue;
+            }
 
-			$i++;
-		}
+            $i++;
+        }
 
-		if ($i)
-		{
-			Notify::success(Lang::txt('COM_TAGS_OBJECT_REMOVED'));
-		}
+        if ($i) {
+            Notify::success(Lang::txt('COM_TAGS_OBJECT_REMOVED'));
+        }
 
-		$this->cancelTask();
-	}
+        $this->cancelTask();
+    }
 }

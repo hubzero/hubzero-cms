@@ -1,4 +1,8 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +19,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20170901000000ComTags extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__tags'))
-		{
-			$query = "CREATE TABLE `#__tags` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__tags')) {
+            $query = "CREATE TABLE `#__tags` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `tag` varchar(100) NOT NULL DEFAULT '',
 			  `raw_tag` varchar(100) NOT NULL DEFAULT '',
@@ -42,13 +45,12 @@ class Migration20170901000000ComTags extends Base
 			  FULLTEXT KEY `ftidx_raw_tag_description` (`raw_tag`,`description`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__tags_object'))
-		{
-			$query = "CREATE TABLE `#__tags_object` (
+        if (!$this->db->tableExists('#__tags_object')) {
+            $query = "CREATE TABLE `#__tags_object` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `objectid` int(11) unsigned NOT NULL DEFAULT '0',
 			  `tagid` int(11) unsigned NOT NULL DEFAULT '0',
@@ -64,13 +66,12 @@ class Migration20170901000000ComTags extends Base
 			  KEY `idx_tagid` (`tagid`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__tags_substitute'))
-		{
-			$query = "CREATE TABLE `#__tags_substitute` (
+        if (!$this->db->tableExists('#__tags_substitute')) {
+            $query = "CREATE TABLE `#__tags_substitute` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `tag_id` int(11) unsigned NOT NULL DEFAULT '0',
 			  `tag` varchar(100) NOT NULL DEFAULT '',
@@ -83,13 +84,12 @@ class Migration20170901000000ComTags extends Base
 			  KEY `idx_created_by` (`created_by`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__tags_log'))
-		{
-			$query = "CREATE TABLE `#__tags_log` (
+        if (!$this->db->tableExists('#__tags_log')) {
+            $query = "CREATE TABLE `#__tags_log` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `tag_id` int(11) unsigned NOT NULL DEFAULT '0',
 			  `timestamp` datetime DEFAULT NULL,
@@ -102,42 +102,38 @@ class Migration20170901000000ComTags extends Base
 			  KEY `idx_user_id` (`user_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__tags'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__tags`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__tags')) {
+            $query = "DROP TABLE IF EXISTS `#__tags`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__tags_object'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__tags_object`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__tags_object')) {
+            $query = "DROP TABLE IF EXISTS `#__tags_object`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__tags_substitute'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__tags_substitute`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__tags_substitute')) {
+            $query = "DROP TABLE IF EXISTS `#__tags_substitute`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__tags_log'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__tags_log`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__tags_log')) {
+            $query = "DROP TABLE IF EXISTS `#__tags_log`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }
