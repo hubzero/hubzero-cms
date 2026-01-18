@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,56 +18,50 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20190228114147ComTools extends Base
 {
-	/**
-	 * List of tables
-	 *
-	 * @var  array
-	 **/
-	public static $table = '#__recent_tools';
+    /**
+     * List of tables
+     *
+     * @var  array
+     **/
+    public static $table = '#__recent_tools';
 
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists(self::$table))
-		{
-			if (!$this->db->tableHasKey(self::$table, 'idx_uid'))
-			{
-				$query = "ALTER TABLE `" . self::$table . "` ADD INDEX `idx_uid` (`uid`)";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists(self::$table)) {
+            if (!$this->db->tableHasKey(self::$table, 'idx_uid')) {
+                $query = "ALTER TABLE `" . self::$table . "` ADD INDEX `idx_uid` (`uid`)";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if (!$this->db->tableHasKey(self::$table, 'idx_tool'))
-			{
-				$query = "ALTER TABLE `" . self::$table . "` ADD INDEX `idx_tool` (`tool`)";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+            if (!$this->db->tableHasKey(self::$table, 'idx_tool')) {
+                $query = "ALTER TABLE `" . self::$table . "` ADD INDEX `idx_tool` (`tool`)";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists(self::$table))
-		{
-			if ($this->db->tableHasKey(self::$table, 'idx_uid'))
-			{
-				$query = "ALTER TABLE `" . self::$table . "` DROP KEY `idx_uid`";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists(self::$table)) {
+            if ($this->db->tableHasKey(self::$table, 'idx_uid')) {
+                $query = "ALTER TABLE `" . self::$table . "` DROP KEY `idx_uid`";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if ($this->db->tableHasKey(self::$table, 'idx_tool'))
-			{
-				$query = "ALTER TABLE `" . self::$table . "` DROP KEY `idx_tool`";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+            if ($this->db->tableHasKey(self::$table, 'idx_tool')) {
+                $query = "ALTER TABLE `" . self::$table . "` DROP KEY `idx_tool`";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }

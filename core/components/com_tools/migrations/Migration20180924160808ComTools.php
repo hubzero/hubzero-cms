@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,63 +16,52 @@ defined('_HZEXEC_') or die();
 /**
  * Migration to add primary key to display table
  **/
-
 class Migration20180924160808ComTools extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$mwdb = $this->getMWDBO())
-		{
-			$this->setError('Failed to connect to the middleware database', 'warning');
-			return false;
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$mwdb = $this->getMWDBO()) {
+            $this->setError('Failed to connect to the middleware database', 'warning');
+            return false;
+        }
 
-		if ($mwdb->tableExists('display'))
-		{
-			$keys = $mwdb->getTableKeys('display');
-			$primary_keys = array();
-			if (is_array($keys) && (count($keys) > 0))
-			{
-				foreach ($keys as $k)
-				{
-					if ($k->Key_name == 'PRIMARY')
-					{
-						$primary_keys[] = $k->Column_name;
-					}
+        if ($mwdb->tableExists('display')) {
+            $keys = $mwdb->getTableKeys('display');
+            $primary_keys = array();
+            if (is_array($keys) && (count($keys) > 0)) {
+                foreach ($keys as $k) {
+                    if ($k->Key_name == 'PRIMARY') {
+                        $primary_keys[] = $k->Column_name;
+                    }
+                }
+            }
+            if (count($primary_keys) == 0) {
+                $query = "ALTER TABLE `display` ADD PRIMARY KEY (hostname, dispnum)";
+                $mwdb->setQuery($query);
+                $mwdb->query();
+            }
+        }
+    }
 
-				}
-			}
-			if (count($primary_keys) == 0)
-			{
-				$query = "ALTER TABLE `display` ADD PRIMARY KEY (hostname, dispnum)";
-				$mwdb->setQuery($query);
-				$mwdb->query();
-			}
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if (!$mwdb = $this->getMWDBO()) {
+            $this->setError('Failed to connect to the middleware database', 'warning');
+            return false;
+        }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if (!$mwdb = $this->getMWDBO())
-		{
-			$this->setError('Failed to connect to the middleware database', 'warning');
-			return false;
-		}
-
-		if ($mwdb->tableExists('display'))
-		{
-			if ($mwdb->getPrimaryKey('display') == 'hostname' || $mwdb->getPrimaryKey('display') == 'dispnum')
-			{
-				$query = "ALTER TABLE `display` DROP PRIMARY KEY";
-				$mwdb->setQuery($query);
-				$mwdb->query();
-			}
-		}
-	}
+        if ($mwdb->tableExists('display')) {
+            if ($mwdb->getPrimaryKey('display') == 'hostname' || $mwdb->getPrimaryKey('display') == 'dispnum') {
+                $query = "ALTER TABLE `display` DROP PRIMARY KEY";
+                $mwdb->setQuery($query);
+                $mwdb->query();
+            }
+        }
+    }
 }

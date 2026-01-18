@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,389 +25,363 @@ use App;
  */
 class Entries extends AdminController
 {
-	/**
-	 * Execute a task
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		$this->registerTask('add', 'edit');
-		$this->registerTask('apply', 'save');
-		$this->registerTask('publish', 'state');
-		$this->registerTask('unpublish', 'state');
+    /**
+     * Execute a task
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        $this->registerTask('add', 'edit');
+        $this->registerTask('apply', 'save');
+        $this->registerTask('publish', 'state');
+        $this->registerTask('unpublish', 'state');
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * Display a list of blog entries
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		$filters = array(
-			'scope' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.scope',
-				'scope',
-				''
-			),
-			'scope_id' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.scope_id',
-				'scope_id',
-				0,
-				'int'
-			),
-			'search' => urldecode(Request::getState(
-				$this->_option . '.' . $this->_controller . '.search',
-				'search',
-				''
-			)),
-			'state' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.state',
-				'state',
-				-1,
-				'int'
-			),
-			'access' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.access',
-				'access',
-				0,
-				'int'
-			),
-			// Get sorting variables
-			'sort' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sort',
-				'filter_order',
-				'title'
-			),
-			'sort_Dir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortdir',
-				'filter_order_Dir',
-				'ASC'
-			)
-		);
+    /**
+     * Display a list of blog entries
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        $filters = array(
+            'scope' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.scope',
+                'scope',
+                ''
+            ),
+            'scope_id' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.scope_id',
+                'scope_id',
+                0,
+                'int'
+            ),
+            'search' => urldecode(Request::getState(
+                $this->_option . '.' . $this->_controller . '.search',
+                'search',
+                ''
+            )),
+            'state' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.state',
+                'state',
+                -1,
+                'int'
+            ),
+            'access' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.access',
+                'access',
+                0,
+                'int'
+            ),
+            // Get sorting variables
+            'sort' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sort',
+                'filter_order',
+                'title'
+            ),
+            'sort_Dir' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sortdir',
+                'filter_order_Dir',
+                'ASC'
+            )
+        );
 
-		$entries = Entry::all();
+        $entries = Entry::all();
 
-		if ($filters['search'])
-		{
-			$entries->whereLike('title', strtolower((string)$filters['search']));
-		}
+        if ($filters['search']) {
+            $entries->whereLike('title', strtolower((string)$filters['search']));
+        }
 
-		if ($filters['scope'])
-		{
-			$entries->whereEquals('scope', $filters['scope']);
-		}
+        if ($filters['scope']) {
+            $entries->whereEquals('scope', $filters['scope']);
+        }
 
-		if ($filters['scope_id'])
-		{
-			$entries->whereEquals('scope_id', (int)$filters['scope_id']);
-		}
+        if ($filters['scope_id']) {
+            $entries->whereEquals('scope_id', (int)$filters['scope_id']);
+        }
 
-		if ($filters['state'] >= 0)
-		{
-			$entries->whereEquals('state', (int)$filters['state']);
-		}
+        if ($filters['state'] >= 0) {
+            $entries->whereEquals('state', (int)$filters['state']);
+        }
 
-		if ($filters['access'])
-		{
-			$entries->whereEquals('access', (int)$filters['access']);
-		}
+        if ($filters['access']) {
+            $entries->whereEquals('access', (int)$filters['access']);
+        }
 
-		// Get records
-		$rows = $entries
-			->order($filters['sort'], $filters['sort_Dir'])
-			->paginated('limitstart', 'limit')
-			->rows();
+        // Get records
+        $rows = $entries
+            ->order($filters['sort'], $filters['sort_Dir'])
+            ->paginated('limitstart', 'limit')
+            ->rows();
 
-		// Output the HTML
-		$this->view
-			->set('rows', $rows)
-			->set('filters', $filters)
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('rows', $rows)
+            ->set('filters', $filters)
+            ->display();
+    }
 
-	/**
-	 * Show a form for editing an entry
-	 *
-	 * @param   object  $row
-	 * @return  void
-	 */
-	public function editTask($row=null)
-	{
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+    /**
+     * Show a form for editing an entry
+     *
+     * @param   object  $row
+     * @return  void
+     */
+    public function editTask($row = null)
+    {
+        if (
+            !User::authorise('core.edit', $this->_option)
+            && !User::authorise('core.create', $this->_option)
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		Request::setVar('hidemainmenu', 1);
+        Request::setVar('hidemainmenu', 1);
 
-		if (!is_object($row))
-		{
-			// Incoming
-			$id = Request::getArray('id', array(0));
-			if (is_array($id) && !empty($id))
-			{
-				$id = $id[0];
-			}
+        if (!is_object($row)) {
+            // Incoming
+            $id = Request::getArray('id', array(0));
+            if (is_array($id) && !empty($id)) {
+                $id = $id[0];
+            }
 
-			// Load the article
-			$row = Entry::oneOrNew($id);
-		}
+            // Load the article
+            $row = Entry::oneOrNew($id);
+        }
 
-		if ($row->isNew())
-		{
-			$row->set('created_by', User::get('id'));
-			$row->set('created', Date::toSql());
-			$row->set('publish_up', Date::toSql());
-		}
+        if ($row->isNew()) {
+            $row->set('created_by', User::get('id'));
+            $row->set('created', Date::toSql());
+            $row->set('publish_up', Date::toSql());
+        }
 
-		// Output the HTML
-		$this->view
-			->set('row', $row)
-			->setLayout('edit')
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('row', $row)
+            ->setLayout('edit')
+            ->display();
+    }
 
-	/**
-	 * Save an entry
-	 *
-	 * @return  void
-	 */
-	public function saveTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Save an entry
+     *
+     * @return  void
+     */
+    public function saveTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (
+            !User::authorise('core.edit', $this->_option)
+            && !User::authorise('core.create', $this->_option)
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		// Incoming
-		$fields = Request::getArray('fields', array(), 'post', 'none', 2);
+        // Incoming
+        $fields = Request::getArray('fields', array(), 'post', 'none', 2);
 
-		if (isset($fields['publish_up']) && $fields['publish_up'] != '')
-		{
-			$fields['publish_up']   = Date::of($fields['publish_up'], Config::get('offset'))->toSql();
-		}
-		if (isset($fields['publish_down']) && $fields['publish_down'] != '')
-		{
-			$fields['publish_down'] = Date::of($fields['publish_down'], Config::get('offset'))->toSql();
-		}
+        if (isset($fields['publish_up']) && $fields['publish_up'] != '') {
+            $fields['publish_up']   = Date::of($fields['publish_up'], Config::get('offset'))->toSql();
+        }
+        if (isset($fields['publish_down']) && $fields['publish_down'] != '') {
+            $fields['publish_down'] = Date::of($fields['publish_down'], Config::get('offset'))->toSql();
+        }
 
-		// Initiate extended database class
-		$row = Entry::oneOrNew($fields['id'])->set($fields);
+        // Initiate extended database class
+        $row = Entry::oneOrNew($fields['id'])->set($fields);
 
-		// Trigger before save event
-		$isNew  = $row->isNew();
-		$result = Event::trigger('onBlogBeforeSave', array(&$row, $isNew));
+        // Trigger before save event
+        $isNew  = $row->isNew();
+        $result = Event::trigger('onBlogBeforeSave', array(&$row, $isNew));
 
-		if (in_array(false, $result, true))
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
+        if (in_array(false, $result, true)) {
+            Notify::error($row->getError());
+            return $this->editTask($row);
+        }
 
-		// Store content
-		if (!$row->save())
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
+        // Store content
+        if (!$row->save()) {
+            Notify::error($row->getError());
+            return $this->editTask($row);
+        }
 
-		// Process tags
-		$row->tag(trim(Request::getString('tags', '')));
+        // Process tags
+        $row->tag(trim(Request::getString('tags', '')));
 
-		// Trigger after save event
-		Event::trigger('onBlogAfterSave', array(&$row, $isNew));
+        // Trigger after save event
+        Event::trigger('onBlogAfterSave', array(&$row, $isNew));
 
-		// Notify of success
-		Notify::success(Lang::txt('COM_BLOG_ENTRY_SAVED'));
+        // Notify of success
+        Notify::success(Lang::txt('COM_BLOG_ENTRY_SAVED'));
 
-		// Redirect to main listing or go back to edit form
-		if ($this->getTask() == 'apply')
-		{
-			return $this->editTask($row);
-		}
+        // Redirect to main listing or go back to edit form
+        if ($this->getTask() == 'apply') {
+            return $this->editTask($row);
+        }
 
-		$this->cancelTask();
-	}
+        $this->cancelTask();
+    }
 
-	/**
-	 * Delete one or more entries
-	 *
-	 * @return  void
-	 */
-	public function deleteTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Delete one or more entries
+     *
+     * @return  void
+     */
+    public function deleteTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.delete', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (!User::authorise('core.delete', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		// Incoming
-		$ids = Request::getArray('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
+        // Incoming
+        $ids = Request::getArray('id', array());
+        $ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$removed = 0;
+        $removed = 0;
 
-		foreach ($ids as $id)
-		{
-			$entry = Entry::oneOrFail(intval($id));
+        foreach ($ids as $id) {
+            $entry = Entry::oneOrFail(intval($id));
 
-			// Delete the entry
-			if (!$entry->destroy())
-			{
-				Notify::error($entry->getError());
-				continue;
-			}
+            // Delete the entry
+            if (!$entry->destroy()) {
+                Notify::error($entry->getError());
+                continue;
+            }
 
-			// Trigger before delete event
-			Event::trigger('onBlogAfterDelete', array($id));
+            // Trigger before delete event
+            Event::trigger('onBlogAfterDelete', array($id));
 
-			$removed++;
-		}
+            $removed++;
+        }
 
-		if ($removed)
-		{
-			Notify::success(Lang::txt('COM_BLOG_ENTRIES_DELETED'));
-		}
+        if ($removed) {
+            Notify::success(Lang::txt('COM_BLOG_ENTRIES_DELETED'));
+        }
 
-		// Set the redirect
-		$this->cancelTask();
-	}
+        // Set the redirect
+        $this->cancelTask();
+    }
 
-	/**
-	 * Sets the state of one or more entries
-	 *
-	 * @return  void
-	 */
-	public function stateTask()
-	{
-		// Check for request forgeries
-		Request::checkToken(['get', 'post']);
+    /**
+     * Sets the state of one or more entries
+     *
+     * @return  void
+     */
+    public function stateTask()
+    {
+        // Check for request forgeries
+        Request::checkToken(['get', 'post']);
 
-		if (!User::authorise('core.edit.state', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (!User::authorise('core.edit.state', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		$state = $this->_task == 'publish' ? 1 : 0;
+        $state = $this->_task == 'publish' ? 1 : 0;
 
-		// Incoming
-		$ids = Request::getArray('id', array(0));
-		$ids = (!is_array($ids) ? array($ids) : $ids);
+        // Incoming
+        $ids = Request::getArray('id', array(0));
+        $ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Check for a resource
-		if (count($ids) < 1)
-		{
-			Notify::warning(Lang::txt('COM_BLOG_SELECT_ENTRY_TO', $this->_task));
-			return $this->cancelTask();
-		}
+        // Check for a resource
+        if (count($ids) < 1) {
+            Notify::warning(Lang::txt('COM_BLOG_SELECT_ENTRY_TO', $this->_task));
+            return $this->cancelTask();
+        }
 
-		// Loop through all the IDs
-		$success = 0;
-		foreach ($ids as $id)
-		{
-			// Load the article
-			$row = Entry::oneOrNew(intval($id));
-			$row->set('state', $state);
+        // Loop through all the IDs
+        $success = 0;
+        foreach ($ids as $id) {
+            // Load the article
+            $row = Entry::oneOrNew(intval($id));
+            $row->set('state', $state);
 
-			// Store new content
-			if (!$row->save())
-			{
-				Notify::error($row->getError());
-				continue;
-			}
+            // Store new content
+            if (!$row->save()) {
+                Notify::error($row->getError());
+                continue;
+            }
 
-			$success++;
-		}
+            $success++;
+        }
 
-		if ($success)
-		{
-			switch ($this->_task)
-			{
-				case 'publish':
-					$message = Lang::txt('COM_BLOG_ITEMS_PUBLISHED', $success);
-				break;
-				case 'unpublish':
-					$message = Lang::txt('COM_BLOG_ITEMS_UNPUBLISHED', $success);
-				break;
-				case 'archive':
-					$message = Lang::txt('COM_BLOG_ITEMS_ARCHIVED', $success);
-				break;
-			}
+        if ($success) {
+            switch ($this->_task) {
+                case 'publish':
+                    $message = Lang::txt('COM_BLOG_ITEMS_PUBLISHED', $success);
+                    break;
+                case 'unpublish':
+                    $message = Lang::txt('COM_BLOG_ITEMS_UNPUBLISHED', $success);
+                    break;
+                case 'archive':
+                    $message = Lang::txt('COM_BLOG_ITEMS_ARCHIVED', $success);
+                    break;
+            }
 
-			Notify::success($message);
-		}
+            Notify::success($message);
+        }
 
-		// Set the redirect
-		$this->cancelTask();
-	}
+        // Set the redirect
+        $this->cancelTask();
+    }
 
-	/**
-	 * Turn comments on/off
-	 *
-	 * @return  void
-	 */
-	public function setcommentsTask()
-	{
-		// Check for request forgeries
-		Request::checkToken(['get', 'post']);
+    /**
+     * Turn comments on/off
+     *
+     * @return  void
+     */
+    public function setcommentsTask()
+    {
+        // Check for request forgeries
+        Request::checkToken(['get', 'post']);
 
-		if (!User::authorise('core.edit.state', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (!User::authorise('core.edit.state', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		// Incoming
-		$ids = Request::getArray('id', array(0));
-		$ids = (!is_array($ids) ? array($ids) : $ids);
-		$state = Request::getInt('state', 0);
+        // Incoming
+        $ids = Request::getArray('id', array(0));
+        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $state = Request::getInt('state', 0);
 
-		// Check for a resource
-		if (count($ids) < 1)
-		{
-			Notify::warning(Lang::txt('COM_BLOG_SELECT_ENTRY_TO_COMMENTS', $this->_task));
-			return $this->cancelTask();
-		}
+        // Check for a resource
+        if (count($ids) < 1) {
+            Notify::warning(Lang::txt('COM_BLOG_SELECT_ENTRY_TO_COMMENTS', $this->_task));
+            return $this->cancelTask();
+        }
 
-		// Loop through all the IDs
-		$success = 0;
-		foreach ($ids as $id)
-		{
-			// Load the article
-			$row = Entry::oneOrFail(intval($id));
-			$row->set('allow_comments', $state);
+        // Loop through all the IDs
+        $success = 0;
+        foreach ($ids as $id) {
+            // Load the article
+            $row = Entry::oneOrFail(intval($id));
+            $row->set('allow_comments', $state);
 
-			// Store new content
-			if (!$row->save())
-			{
-				Notify::error($row->getError());
-				continue;
-			}
+            // Store new content
+            if (!$row->save()) {
+                Notify::error($row->getError());
+                continue;
+            }
 
-			$success++;
-		}
+            $success++;
+        }
 
-		if ($success)
-		{
-			$message = $state
-				? Lang::txt('COM_BLOG_ITEMS_COMMENTS_ENABLED', $success)
-				: Lang::txt('COM_BLOG_ITEMS_COMMENTS_DISABLED', $success);
+        if ($success) {
+            $message = $state
+                ? Lang::txt('COM_BLOG_ITEMS_COMMENTS_ENABLED', $success)
+                : Lang::txt('COM_BLOG_ITEMS_COMMENTS_DISABLED', $success);
 
-			Notify::success($message);
-		}
+            Notify::success($message);
+        }
 
-		// Set the redirect
-		$this->cancelTask();
-	}
+        // Set the redirect
+        $this->cancelTask();
+    }
 }

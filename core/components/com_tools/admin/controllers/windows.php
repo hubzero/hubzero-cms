@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,399 +28,383 @@ require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php
  */
 class Windows extends AdminController
 {
-	/**
-	 * Execute a task
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		$this->registerTask('add', 'edit');
-		$this->registerTask('apply', 'save');
+    /**
+     * Execute a task
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        $this->registerTask('add', 'edit');
+        $this->registerTask('apply', 'save');
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * Display a list of records
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		if (!$this->config->get('windows_type'))
-		{
-			$this->view
-				->setLayout('unconfigured')
-				->display();
-			return;
-		}
+    /**
+     * Display a list of records
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        if (!$this->config->get('windows_type')) {
+            $this->view
+                ->setLayout('unconfigured')
+                ->display();
+            return;
+        }
 
-		// Get filters
-		$filters = array(
-			// Sorting
-			'sort' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sort',
-				'filter_order',
-				'start'
-			),
-			'sort_Dir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortdir',
-				'filter_order_Dir',
-				'DESC'
-			)
-		);
+        // Get filters
+        $filters = array(
+            // Sorting
+            'sort' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sort',
+                'filter_order',
+                'start'
+            ),
+            'sort_Dir' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sortdir',
+                'filter_order_Dir',
+                'DESC'
+            )
+        );
 
-		// Get a list of tools
-		$rows = Entry::all()
-			->whereEquals('type', $this->config->get('windows_type'))
-			//->ordered('filter_order', 'filter_order_Dir')
-			//->paginated('limitstart', 'limit')
-			->rows();
+        // Get a list of tools
+        $rows = Entry::all()
+            ->whereEquals('type', $this->config->get('windows_type'))
+            //->ordered('filter_order', 'filter_order_Dir')
+            //->paginated('limitstart', 'limit')
+            ->rows();
 
-		// Display results
-		$this->view
-			->set('filters', $filters)
-			->set('rows', $rows)
-			->display();
-	}
+        // Display results
+        $this->view
+            ->set('filters', $filters)
+            ->set('rows', $rows)
+            ->display();
+    }
 
-	/**
-	 * Edit an entry
-	 *
-	 * @param   object  $row
-	 * @return  void
-	 */
-	public function editTask($row=null)
-	{
-		Request::setVar('hidemainmenu', 1);
+    /**
+     * Edit an entry
+     *
+     * @param   object  $row
+     * @return  void
+     */
+    public function editTask($row = null)
+    {
+        Request::setVar('hidemainmenu', 1);
 
-		if (!is_object($row))
-		{
-			// Incoming
-			$id = Request::getArray('id', array());
+        if (!is_object($row)) {
+            // Incoming
+            $id = Request::getArray('id', array());
 
-			// Get the single ID we're working with
-			if (is_array($id))
-			{
-				$id = (!empty($id)) ? $id[0] : 0;
-			}
+            // Get the single ID we're working with
+            if (is_array($id)) {
+                $id = (!empty($id)) ? $id[0] : 0;
+            }
 
-			$row = Entry::oneOrNew($id);
-		}
+            $row = Entry::oneOrNew($id);
+        }
 
-		if ($row->isNew())
-		{
-			$row->set('type', $this->config->get('windows_type'));
-		}
+        if ($row->isNew()) {
+            $row->set('type', $this->config->get('windows_type'));
+        }
 
-		// Output the HTML
-		$this->view
-			->set('row', $row)
-			->setLayout('edit')
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('row', $row)
+            ->setLayout('edit')
+            ->display();
+    }
 
-	/**
-	 * Save an entry
-	 *
-	 * @return  void
-	 */
-	public function saveTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Save an entry
+     *
+     * @return  void
+     */
+    public function saveTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		// Incoming fields
-		$fields = Request::getArray('fields', array(), 'post');
-		$fields['standalone'] = 1;
+        // Incoming fields
+        $fields = Request::getArray('fields', array(), 'post');
+        $fields['standalone'] = 1;
 
-		// Load the profile
-		$row = Entry::oneOrNew($fields['id'])->set($fields);
+        // Load the profile
+        $row = Entry::oneOrNew($fields['id'])->set($fields);
 
-		if ($row->isNew())
-		{
-			$row->set('access', 0);
-			$row->set('published', 1);
-			$row->set('created', Date::toSql());
-			$row->set('created_by', User::get('id'));
-		}
+        if ($row->isNew()) {
+            $row->set('access', 0);
+            $row->set('published', 1);
+            $row->set('created', Date::toSql());
+            $row->set('created_by', User::get('id'));
+        }
 
-		if (!$row->get('alias'))
-		{
-			Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_ALIAS'));
-			return $this->editTask($row);
-		}
+        if (!$row->get('alias')) {
+            Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_ALIAS'));
+            return $this->editTask($row);
+        }
 
-		$row->set('alias', preg_replace('/[^a-z0-9_\-]/i', '', strtolower($row->get('alias'))));
+        $row->set('alias', preg_replace('/[^a-z0-9_\-]/i', '', strtolower($row->get('alias'))));
 
-		if (!$row->get('title'))
-		{
-			Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_TITLE'));
-			return $this->editTask($row);
-		}
+        if (!$row->get('title')) {
+            Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_TITLE'));
+            return $this->editTask($row);
+        }
 
-		if (!$row->get('path'))
-		{
-			Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_UUID'));
-			return $this->editTask($row);
-		}
+        if (!$row->get('path')) {
+            Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_UUID'));
+            return $this->editTask($row);
+        }
 
-		if (!$row->save())
-		{
-			Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_UUID'));
-			return $this->editTask($row);
-		}
+        if (!$row->save()) {
+            Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_UUID'));
+            return $this->editTask($row);
+        }
 
-		Notify::success(Lang::txt('COM_TOOLS_SAVE_SUCCESSFUL'));
+        Notify::success(Lang::txt('COM_TOOLS_SAVE_SUCCESSFUL'));
 
-		// Redirect
-		if ($this->getTask() == 'apply')
-		{
-			return $this->editTask($row);
-		}
+        // Redirect
+        if ($this->getTask() == 'apply') {
+            return $this->editTask($row);
+        }
 
-		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
-	}
+        // Redirect
+        App::redirect(
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+        );
+    }
 
-	/**
-	 * Remove entries
-	 *
-	 * @return  void
-	 */
-	public function removeTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Remove entries
+     *
+     * @return  void
+     */
+    public function removeTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		// Incoming
-		$ids = Request::getArray('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
+        // Incoming
+        $ids = Request::getArray('id', array());
+        $ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Do we have any IDs?
-		if (!empty($ids))
-		{
-			$i = 0;
+        // Do we have any IDs?
+        if (!empty($ids)) {
+            $i = 0;
 
-			// Loop through each ID and delete the necessary items
-			foreach ($ids as $id)
-			{
-				$row = Entry::oneOrFail($id);
+            // Loop through each ID and delete the necessary items
+            foreach ($ids as $id) {
+                $row = Entry::oneOrFail($id);
 
-				if (!$row->destroy())
-				{
-					Notify::error($row->getError());
-					continue;
-				}
+                if (!$row->destroy()) {
+                    Notify::error($row->getError());
+                    continue;
+                }
 
-				// Remove
-				$i++;
-			}
-		}
+                // Remove
+                $i++;
+            }
+        }
 
-		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			($i ? Lang::txt('COM_TOOLS_DELETE_SUCCESSFUL') : null)
-		);
-	}
+        // Output messsage and redirect
+        App::redirect(
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            ($i ? Lang::txt('COM_TOOLS_DELETE_SUCCESSFUL') : null)
+        );
+    }
 
-	/**
-	 * Display sessions
-	 *
-	 * @return  void
-	 */
-	public function sessionsTask()
-	{
-		// Get filters
-		$filters = array(
-			'appname' => urldecode(Request::getState(
-				$this->_option . '.' . $this->_controller . '.appname',
-				'appname',
-				''
-			)),
-			// Sorting
-			'sort' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sort',
-				'filter_order',
-				'start'
-			),
-			'sort_Dir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortdir',
-				'filter_order_Dir',
-				'DESC'
-			),
-			// Get paging variables
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
-			)
-		);
+    /**
+     * Display sessions
+     *
+     * @return  void
+     */
+    public function sessionsTask()
+    {
+        // Get filters
+        $filters = array(
+            'appname' => urldecode(Request::getState(
+                $this->_option . '.' . $this->_controller . '.appname',
+                'appname',
+                ''
+            )),
+            // Sorting
+            'sort' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sort',
+                'filter_order',
+                'start'
+            ),
+            'sort_Dir' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sortdir',
+                'filter_order_Dir',
+                'DESC'
+            ),
+            // Get paging variables
+            'limit' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.limit',
+                'limit',
+                Config::get('list_limit'),
+                'int'
+            ),
+            'start' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.limitstart',
+                'limitstart',
+                0,
+                'int'
+            )
+        );
 
-		// Get the list of sessions
-		$rows = array();
+        // Get the list of sessions
+        $rows = array();
 
-		// Get a count of all sessions (for pagination)
-		$total = count($rows);
+        // Get a count of all sessions (for pagination)
+        $total = count($rows);
 
-		// Get a list of all apps for the filters bar
-		$apps =
-			Entry::all()
-			->whereEquals('type', $this->config->get('windows_type'))
-			//->ordered('filter_order', 'filter_order_Dir')
-			//->paginated('limitstart', 'limit')
-			->rows();
+        // Get a list of all apps for the filters bar
+        $apps =
+            Entry::all()
+            ->whereEquals('type', $this->config->get('windows_type'))
+            //->ordered('filter_order', 'filter_order_Dir')
+            //->paginated('limitstart', 'limit')
+            ->rows();
 
-		// Get a list of all active sessions for specified app
-		$appname = Request::getString('appname', '');
+        // Get a list of all active sessions for specified app
+        $appname = Request::getString('appname', '');
 
-		$sessions = array();
+        $sessions = array();
 
-		if (!empty($appname))
-		{
-			exec('/usr/bin/hz-aws-appstream getappsessions --appid' . ' "' . $appname . '"', $rawsessions);
+        if (!empty($appname)) {
+            exec('/usr/bin/hz-aws-appstream getappsessions --appid' . ' "' . $appname . '"', $rawsessions);
 
-			$sessions = array();
-			foreach ($rawsessions as $s)
-			{
-				$sessionsArray = explode("|", $s);
+            $sessions = array();
+            foreach ($rawsessions as $s) {
+                $sessionsArray = explode("|", $s);
 
-				if (count($sessionsArray) == 4)
-				{
-					$sessions[] = array("sessionid" => $sessionsArray[0], "status" => $sessionsArray[2], "opaquedata" => $sessionsArray[3]);
-				}
-				//else
-				//{
-					//$sessions[] = array("sessionid" => $sessionsArray[0], "status" => "cannot parse", "opaquedata" => "cannot parse");
-				//}
-			}
+                if (count($sessionsArray) == 4) {
+                    $sessions[] = array(
+                        "sessionid" => $sessionsArray[0],
+                        "status" => $sessionsArray[2],
+                        "opaquedata" => $sessionsArray[3]
+                    );
+                }
+                //else
+                //{
+                    //$sessions[] = array("sessionid" => $sessionsArray[0],
+                    //    "status" => "cannot parse", "opaquedata" => "cannot parse");
+                //}
+            }
 
-			usort(
-				$sessions,
-				function($a, $b)
-				{
-					return strcmp($a['status'], $b['status']);
-				}
-			);
-		}
+            usort(
+                $sessions,
+                function ($a, $b) {
+                    return strcmp($a['status'], $b['status']);
+                }
+            );
+        }
 
-		// Output the HTML
-		$this->view
-			->set('filters', $filters)
-			->set('rows', $rows)
-			->set('apps', $apps)
-			->set('sessions', $sessions)
-			->set('total', 0)
-			->setErrors($this->getErrors())
-			->setLayout('sessions')
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('filters', $filters)
+            ->set('rows', $rows)
+            ->set('apps', $apps)
+            ->set('sessions', $sessions)
+            ->set('total', 0)
+            ->setErrors($this->getErrors())
+            ->setLayout('sessions')
+            ->display();
+    }
 
-	/**
-	 * Display sessions
-	 *
-	 * @return  void
-	 */
-	public function usageTask()
-	{
-		// Get report startdate and enddate set
-		// 'Y-m-d H:i:s'
-		$startdate = Request::getString('startdate', '');
-		$enddate = Request::getString('enddate', '');
+    /**
+     * Display sessions
+     *
+     * @return  void
+     */
+    public function usageTask()
+    {
+        // Get report startdate and enddate set
+        // 'Y-m-d H:i:s'
+        $startdate = Request::getString('startdate', '');
+        $enddate = Request::getString('enddate', '');
 
-		if (empty($startdate))
-		{
-			$startdate = new \DateTime('midnight first day of this month');
-		}
-		else
-		{
-			$startdate = new \DateTime($startdate);
-		}
+        if (empty($startdate)) {
+            $startdate = new \DateTime('midnight first day of this month');
+        } else {
+            $startdate = new \DateTime($startdate);
+        }
 
-		if (empty($enddate))
-		{
-			$enddate = new \DateTime('midnight first day of next month');
-		}
-		else
-		{
-			$enddate = new \DateTime($enddate);
-		}
+        if (empty($enddate)) {
+            $enddate = new \DateTime('midnight first day of next month');
+        } else {
+            $enddate = new \DateTime($enddate);
+        }
 
-		// Get the usage data
-		$db = App::get('db');
-		$sql  =  'SELECT jr.title as appname, ';
-		$sql .= 'count(sessnum) as sessions ';
-		$sql .= ', truncate(stddev(walltime)/60/60,3) as "standarddeviationhours" ';
-		$sql .= ', truncate(avg(walltime)/60/60,3) as "averagehours" ';
-		$sql .= ', truncate(sum(walltime)/60/60,3) as "totalhours" ';
-		$sql .= 'FROM sessionlog ';
-		$sql .= 'JOIN `#__resources` jr on (jr.path = appname and jr.`type` = 64) ';
-		$sql .= 'WHERE start >"' . $startdate->format('Y-m-d H:i:s') . '"';
-		$sql .= ' AND start <"' . $enddate->format('Y-m-d H:i:s') . '"';
-		$sql .= 'GROUP BY appname;';
+        // Get the usage data
+        $db = App::get('db');
+        $sql  =  'SELECT jr.title as appname, ';
+        $sql .= 'count(sessnum) as sessions ';
+        $sql .= ', truncate(stddev(walltime)/60/60,3) as "standarddeviationhours" ';
+        $sql .= ', truncate(avg(walltime)/60/60,3) as "averagehours" ';
+        $sql .= ', truncate(sum(walltime)/60/60,3) as "totalhours" ';
+        $sql .= 'FROM sessionlog ';
+        $sql .= 'JOIN `#__resources` jr on (jr.path = appname and jr.`type` = 64) ';
+        $sql .= 'WHERE start >"' . $startdate->format('Y-m-d H:i:s') . '"';
+        $sql .= ' AND start <"' . $enddate->format('Y-m-d H:i:s') . '"';
+        $sql .= 'GROUP BY appname;';
 
-		$db->setQuery($sql);
-		$usageFigures = $db->loadObjectList();
+        $db->setQuery($sql);
+        $usageFigures = $db->loadObjectList();
 
-		// Get summary usage data
-		$db = App::get('db');
-		$sql  = 'SELECT ifnull(truncate(sum(walltime)/60/60,3),0) as totalhours FROM sessionlog ';
-		$sql .= 'JOIN `#__resources` jr on (jr.path = appname and jr.`type` = 64) ';
-		$sql .= 'WHERE start >"' . $startdate->format('Y-m-d H:i:s') . '"';
-		$sql .= ' AND start <"' . $enddate->format('Y-m-d H:i:s') . '"';
+        // Get summary usage data
+        $db = App::get('db');
+        $sql  = 'SELECT ifnull(truncate(sum(walltime)/60/60,3),0) as totalhours FROM sessionlog ';
+        $sql .= 'JOIN `#__resources` jr on (jr.path = appname and jr.`type` = 64) ';
+        $sql .= 'WHERE start >"' . $startdate->format('Y-m-d H:i:s') . '"';
+        $sql .= ' AND start <"' . $enddate->format('Y-m-d H:i:s') . '"';
 
-		$db->setQuery($sql);
-		$totalUsageFigure = $db->loadObjectList();
+        $db->setQuery($sql);
+        $totalUsageFigure = $db->loadObjectList();
 
-		// Output the HTML
-		$this->view
-			->set('startdate', $startdate)
-			->set('enddate', $enddate)
-			->set('usageFigures', $usageFigures)
-			->set('totalUsageFigure', $totalUsageFigure)
-			->setErrors($this->getErrors())
-			->setLayout('usage')
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('startdate', $startdate)
+            ->set('enddate', $enddate)
+            ->set('usageFigures', $usageFigures)
+            ->set('totalUsageFigure', $totalUsageFigure)
+            ->setErrors($this->getErrors())
+            ->setLayout('usage')
+            ->display();
+    }
 
-	/**
-	 * Delete one or more sessions
-	 *
-	 * @return  void
-	 */
-	public function terminateTask()
-	{
-		// Check for request forgeries
-		Request::checkToken(['get', 'post']);
+    /**
+     * Delete one or more sessions
+     *
+     * @return  void
+     */
+    public function terminateTask()
+    {
+        // Check for request forgeries
+        Request::checkToken(['get', 'post']);
 
-		// Incoming
-		$ids = Request::getArray('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
+        // Incoming
+        $ids = Request::getArray('id', array());
+        $ids = (!is_array($ids) ? array($ids) : $ids);
 
-		if (count($ids) > 0)
-		{
-			// Loop through each ID
-			foreach ($ids as $id)
-			{
-				// Stop the session
-			}
-		}
+        if (count($ids) > 0) {
+            // Loop through each ID
+            foreach ($ids as $id) {
+                // Stop the session
+            }
+        }
 
-		// Redirect back to the listing
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=sessions', false),
-			Lang::txt('COM_TOOLS_SESSIONS_TERMINATED')
-		);
-	}
+        // Redirect back to the listing
+        App::redirect(
+            Route::url(
+                'index.php?option=' . $this->_option
+                    . '&controller=' . $this->_controller . '&task=sessions',
+                false
+            ),
+            Lang::txt('COM_TOOLS_SESSIONS_TERMINATED')
+        );
+    }
 }

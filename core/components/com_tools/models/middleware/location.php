@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,33 +18,32 @@ require_once __DIR__ . DS . 'base.php';
  */
 class Location extends Base
 {
-	/**
-	 * Table class name
-	 *
-	 * @var string
-	 */
-	protected $_tbl_name = '\\Components\\Tools\\Tables\\ZoneLocations';
+    /**
+     * Table class name
+     *
+     * @var string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_tbl_name = '\\Components\\Tools\\Tables\\ZoneLocations';
 
-	/**
-	 * Returns a reference to a zone location model
-	 *
-	 * @param      mixed $oid Location ID or array or object
-	 * @return     object
-	 */
-	static function &getInstance($oid=null)
-	{
-		static $instances;
+    /**
+     * Returns a reference to a zone location model
+     *
+     * @param      mixed $oid Location ID or array or object
+     * @return     object
+     */
+    public static function &getInstance($oid = null)
+    {
+        static $instances;
 
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
+        if (!isset($instances)) {
+            $instances = array();
+        }
 
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new self($oid);
-		}
+        if (!isset($instances[$oid])) {
+            $instances[$oid] = new self($oid);
+        }
 
-		return $instances[$oid];
-	}
+        return $instances[$oid];
+    }
 }

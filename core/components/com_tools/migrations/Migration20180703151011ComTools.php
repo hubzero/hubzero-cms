@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,48 +12,43 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for com_tools to specify display ranges assigned to a hub,
- * i.e., the range used on an execution host.  
+ * i.e., the range used on an execution host.
  **/
-
 class Migration20180703151011ComTools extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$mwdb = $this->getMWDBO())
-		{
-			$this->setError('Failed to connect to the middleware database', 'warning');
-			return false;
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$mwdb = $this->getMWDBO()) {
+            $this->setError('Failed to connect to the middleware database', 'warning');
+            return false;
+        }
 
-		// ADD COLUMN first_display to table host
-		if ($mwdb->tableExists('host') && !$mwdb->tableHasField('host', 'first_display'))
-		{
-			$query = "ALTER TABLE host ADD COLUMN first_display INT DEFAULT 1;";
-			$mwdb->setQuery($query);
-			$mwdb->query();
-		}
-	}
+        // ADD COLUMN first_display to table host
+        if ($mwdb->tableExists('host') && !$mwdb->tableHasField('host', 'first_display')) {
+            $query = "ALTER TABLE host ADD COLUMN first_display INT DEFAULT 1;";
+            $mwdb->setQuery($query);
+            $mwdb->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if (!$mwdb = $this->getMWDBO())
-		{
-			$this->setError('Failed to connect to the middleware database', 'warning');
-			return false;
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if (!$mwdb = $this->getMWDBO()) {
+            $this->setError('Failed to connect to the middleware database', 'warning');
+            return false;
+        }
 
-		// Drop column first_display
-		if ($mwdb->tableExists('host') && $mwdb->tableHasField('host', 'first_display'))
-		{
-			$query = "ALTER TABLE host DROP COLUMN first_display;";
-			$mwdb->setQuery($query);
-			$mwdb->query();
-		}
-	}
+        // Drop column first_display
+        if ($mwdb->tableExists('host') && $mwdb->tableHasField('host', 'first_display')) {
+            $query = "ALTER TABLE host DROP COLUMN first_display;";
+            $mwdb->setQuery($query);
+            $mwdb->query();
+        }
+    }
 }

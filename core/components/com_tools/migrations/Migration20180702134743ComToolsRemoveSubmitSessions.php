@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,41 +18,37 @@ defined('_HZEXEC_') or die();
  */
 class Migration20180702134743ComToolsRemoveSubmitSessions extends Base
 {
+    protected static $submitTable = '#__tool_submit_sessions';
+    protected static $migrationsTable = '#__migrations';
+    protected static $previousMigrationFile = 'Migration20180618142613ComToolsSubmitSessions.php';
 
-	static $submitTable = '#__tool_submit_sessions';
-	static $migrationsTable = '#__migrations';
-	static $previousMigrationFile = 'Migration20180618142613ComToolsSubmitSessions.php';
+    public function up()
+    {
+        // drop submit sessions table
+        $submitTable = self::$submitTable;
 
-	public function up()
-	{
-		// drop submit sessions table
-		$submitTable = self::$submitTable;
+        $dropTable = "DROP TABLE $submitTable;";
 
-		$dropTable = "DROP TABLE $submitTable;";
+        if ($this->db->tableExists($submitTable)) {
+            $this->db->setQuery($dropTable);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists($submitTable))
-		{
-			$this->db->setQuery($dropTable);
-			$this->db->query();
-		}
+        // remove record of previous migrations
+        $migrationsTable = self::$migrationsTable;
+        $previousMigrationFile = self::$previousMigrationFile;
 
-		// remove record of previous migrations
-		$migrationsTable = self::$migrationsTable;
-		$previousMigrationFile = self::$previousMigrationFile;
+        $deleteMigrationRecords = "DELETE from $migrationsTable"
+            . " where file = '$previousMigrationFile';";
 
-		$deleteMigrationRecords = "DELETE from $migrationsTable"
-			. " where file = '$previousMigrationFile';";
+        if ($this->db->tableExists($migrationsTable)) {
+            $this->db->setQuery($deleteMigrationRecords);
+            $this->db->query();
+        }
+    }
 
-		if ($this->db->tableExists($migrationsTable))
-		{
-			$this->db->setQuery($deleteMigrationRecords);
-			$this->db->query();
-		}
-	}
-
-	public function down()
-	{
-		// stub
-	}
-
+    public function down()
+    {
+        // stub
+    }
 }

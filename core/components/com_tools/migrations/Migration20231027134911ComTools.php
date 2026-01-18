@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,43 +18,39 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20231027134911ComTools extends Base
 {
-        /**
-         * Up
-         **/
-        public function up()
-        {
-                if (!$mwdb = $this->getMWDBO())
-                {
-                        $this->setError('Failed to connect to the middleware database', 'warning');
-                        return false;
-                }
-
-                // ADD COLUMN first_display to table host
-                if ($mwdb->tableExists('host') && !$mwdb->tableHasField('host', 'service_host'))
-                {
-                        $query = "ALTER TABLE host ADD COLUMN service_host varchar(40) DEFAULT NULL AFTER first_display;";
-                        $mwdb->setQuery($query);
-                        $mwdb->query();
-                }
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$mwdb = $this->getMWDBO()) {
+            $this->setError('Failed to connect to the middleware database', 'warning');
+            return false;
         }
 
-        /**
-         * Down
-         **/
-        public function down()
-        {
-                if (!$mwdb = $this->getMWDBO())
-                {
-                        $this->setError('Failed to connect to the middleware database', 'warning');
-                        return false;
-                }
-
-                // Drop column first_display
-                if ($mwdb->tableExists('host') && $mwdb->tableHasField('host', 'service_host'))
-                {
-                        $query = "ALTER TABLE host DROP COLUMN service_host;";
-                        $mwdb->setQuery($query);
-                        $mwdb->query();
-                }
+        // ADD COLUMN first_display to table host
+        if ($mwdb->tableExists('host') && !$mwdb->tableHasField('host', 'service_host')) {
+            $query = "ALTER TABLE host ADD COLUMN service_host varchar(40) DEFAULT NULL AFTER first_display;";
+            $mwdb->setQuery($query);
+            $mwdb->query();
         }
+    }
+
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if (!$mwdb = $this->getMWDBO()) {
+            $this->setError('Failed to connect to the middleware database', 'warning');
+            return false;
+        }
+
+        // Drop column first_display
+        if ($mwdb->tableExists('host') && $mwdb->tableHasField('host', 'service_host')) {
+            $query = "ALTER TABLE host DROP COLUMN service_host;";
+            $mwdb->setQuery($query);
+            $mwdb->query();
+        }
+    }
 }

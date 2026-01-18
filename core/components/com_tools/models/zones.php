@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,18 +16,18 @@ use Hubzero\Base\Obj;
  */
 class Zones extends Obj
 {
-	/**
-	 * Get execution zones list
-	 *
-	 * @return  array
-	 */
-	public function getExecutionZones()
-	{
-		$query = "SELECT zone FROM `zones`";
+    /**
+     * Get execution zones list
+     *
+     * @return  array
+     */
+    public function getExecutionZones()
+    {
+        $query = "SELECT zone FROM `zones`";
 
-		$mwdb = Utils::getMWDBO();
-		$mwdb->setQuery($query);
+        $mwdb = Utils::getMWDBO();
+        $mwdb->setQuery($query);
 
-		return $mwdb->loadList();
-	}
+        return $mwdb->loadList();
+    }
 }

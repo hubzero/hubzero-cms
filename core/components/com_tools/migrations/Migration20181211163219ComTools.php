@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,42 +16,40 @@ defined('_HZEXEC_') or die();
 /**
  * Migration to fix old weber publish settings
  **/
-
 class Migration20181211163219ComTools extends Base
 {
-	/**
-	 * Up;
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__tool_version'))
-		{
-			$query = "SELECT `id`, `params` FROM `#__tool_version` WHERE `params` LIKE '%weber=true%'";
+    /**
+     * Up;
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__tool_version')) {
+            $query = "SELECT `id`, `params` FROM `#__tool_version` WHERE `params` LIKE '%weber=true%'";
 
-			$this->db->setQuery($query);
-			$rows = $this->db->loadObjectList();
+            $this->db->setQuery($query);
+            $rows = $this->db->loadObjectList();
 
-			foreach ($rows as $row)
-			{
-				if (!trim($row->params))
-				{
-					continue;
-				}
+            foreach ($rows as $row) {
+                if (!trim($row->params)) {
+                    continue;
+                }
 
-				$params = '{"github":"","publishType":"weber="}';
+                $params = '{"github":"","publishType":"weber="}';
 
-				$query = "UPDATE `#__tool_version` SET `params`=" . $this->db->quote($params) . " WHERE `id`=" . $this->db->quote($row->id);
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+                $query = "UPDATE `#__tool_version` SET `params`="
+                    . $this->db->quote($params)
+                    . " WHERE `id`=" . $this->db->quote($row->id);
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		// None
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        // None
+    }
 }

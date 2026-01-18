@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,205 +30,192 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'tool
  */
 class Handlers extends AdminController
 {
-	/**
-	 * Display a list of handler
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		// Get filters
-		$this->view->filters = [
-			// Sorting
-			'sort' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sort',
-				'filter_order',
-				'tool.title'
-			),
-			'sort_Dir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortdir',
-				'filter_order_Dir',
-				'ASC'
-			)
-		];
+    /**
+     * Display a list of handler
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        // Get filters
+        $this->view->filters = [
+            // Sorting
+            'sort' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sort',
+                'filter_order',
+                'tool.title'
+            ),
+            'sort_Dir' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sortdir',
+                'filter_order_Dir',
+                'ASC'
+            )
+        ];
 
-		$this->view->rows = Handler::all()->paginated('limitstart')->ordered('filter_order', 'filter_order_Dir')->rows();
+        $this->view->rows = Handler::all()
+            ->paginated('limitstart')
+            ->ordered('filter_order', 'filter_order_Dir')
+            ->rows();
 
-		// Display results
-		$this->view->display();
-	}
+        // Display results
+        $this->view->display();
+    }
 
-	/**
-	 * Create a new handler
-	 *
-	 * @return void
-	 */
-	public function addTask()
-	{
-		$this->view->setLayout('edit');
-		$this->view->task = 'edit';
-		$this->editTask();
-	}
+    /**
+     * Create a new handler
+     *
+     * @return void
+     */
+    public function addTask()
+    {
+        $this->view->setLayout('edit');
+        $this->view->task = 'edit';
+        $this->editTask();
+    }
 
-	/**
-	 * Edit a handler
-	 *
-	 * @param  object $handler the handler to edit
-	 * @return void
-	 */
-	public function editTask($handler = null)
-	{
-		// Hide the menu, force users to save or cancel
-		Request::setVar('hidemainmenu', 1);
+    /**
+     * Edit a handler
+     *
+     * @param  object $handler the handler to edit
+     * @return void
+     */
+    public function editTask($handler = null)
+    {
+        // Hide the menu, force users to save or cancel
+        Request::setVar('hidemainmenu', 1);
 
-		if (!isset($handler) || !is_object($handler))
-		{
-			// Incoming - expecting an array
-			$cid = Request::getArray('id', array(0));
-			if (!is_array($cid))
-			{
-				$cid = array($cid);
-			}
-			$uid = $cid[0];
+        if (!isset($handler) || !is_object($handler)) {
+            // Incoming - expecting an array
+            $cid = Request::getArray('id', array(0));
+            if (!is_array($cid)) {
+                $cid = array($cid);
+            }
+            $uid = $cid[0];
 
-			$handler = Handler::oneOrNew($uid);
-		}
+            $handler = Handler::oneOrNew($uid);
+        }
 
-		// Output the HTML
-		$this->view->row = $handler;
-		$this->view->display();
-	}
+        // Output the HTML
+        $this->view->row = $handler;
+        $this->view->display();
+    }
 
-	/**
-	 * Save a handler
-	 *
-	 * @return void
-	 */
-	public function saveTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Save a handler
+     *
+     * @return void
+     */
+    public function saveTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		$handler = Handler::oneOrNew(Request::getInt('id'))->set([
-			'tool_id' => Request::getInt('tool'),
-			'prompt'  => Request::getString('prompt')
-		]);
+        $handler = Handler::oneOrNew(Request::getInt('id'))->set([
+            'tool_id' => Request::getInt('tool'),
+            'prompt'  => Request::getString('prompt')
+        ]);
 
-		$rules = [];
-		// Set the rule info on the handler
-		foreach (Request::getArray('rules', array(), 'post') as $rule)
-		{
-			// First check and make sure we don't save a completely empty rule
-			if (empty($rule['extension']) && empty($rule['quantity']))
-			{
-				break;
-			}
+        $rules = [];
+        // Set the rule info on the handler
+        foreach (Request::getArray('rules', array(), 'post') as $rule) {
+            // First check and make sure we don't save a completely empty rule
+            if (empty($rule['extension']) && empty($rule['quantity'])) {
+                break;
+            }
 
-			$rules[] = Rule::oneOrNew(isset($rule['id']) ? $rule['id'] : 0)->set($rule);
-		}
+            $rules[] = Rule::oneOrNew(isset($rule['id']) ? $rule['id'] : 0)->set($rule);
+        }
 
-		// Save the handler info
-		if (!$handler->save())
-		{
-			// Something went wrong...return errors
-			foreach ($handler->getErrors() as $error)
-			{
-				Notify::error($error);
-			}
+        // Save the handler info
+        if (!$handler->save()) {
+            // Something went wrong...return errors
+            foreach ($handler->getErrors() as $error) {
+                Notify::error($error);
+            }
 
-			// Attach the rules so that we don't lose them
-			$handler->attach('rules', $rules);
+            // Attach the rules so that we don't lose them
+            $handler->attach('rules', $rules);
 
-			$this->view->setLayout('edit');
-			$this->view->task = 'edit';
-			$this->editTask($handler);
-			return;
-		}
+            $this->view->setLayout('edit');
+            $this->view->task = 'edit';
+            $this->editTask($handler);
+            return;
+        }
 
-		// Now try to save the rules
-		if (!$handler->rules()->saveAll($rules))
-		{
-			foreach ($rules as $rule)
-			{
-				// Something went wrong...return errors
-				foreach ($rule->getErrors() as $error)
-				{
-					Notify::error($error);
-				}
-			}
+        // Now try to save the rules
+        if (!$handler->rules()->saveAll($rules)) {
+            foreach ($rules as $rule) {
+                // Something went wrong...return errors
+                foreach ($rule->getErrors() as $error) {
+                    Notify::error($error);
+                }
+            }
 
-			// Attach the rules so that we don't lose them
-			$handler->attach('rules', $rules);
+            // Attach the rules so that we don't lose them
+            $handler->attach('rules', $rules);
 
-			$this->view->setLayout('edit');
-			$this->view->task = 'edit';
-			$this->editTask($handler);
-			return;
-		}
+            $this->view->setLayout('edit');
+            $this->view->task = 'edit';
+            $this->editTask($handler);
+            return;
+        }
 
-		// Grab the array ids
-		$ids = array_map(function ($rule)
-		{
-			return $rule->id;
-		}, $rules);
+        // Grab the array ids
+        $ids = array_map(function ($rule) {
+            return $rule->id;
+        }, $rules);
 
-		// Now process the implicit deletes
-		foreach (Rule::whereEquals('handler_id', $handler->id) as $rule)
-		{
-			if (!in_array($rule->id, $ids))
-			{
-				$rule->destroy();
-			}
-		}
+        // Now process the implicit deletes
+        foreach (Rule::whereEquals('handler_id', $handler->id) as $rule) {
+            if (!in_array($rule->id, $ids)) {
+                $rule->destroy();
+            }
+        }
 
-		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_TOOLS_HANDLER_SUCCESSFULLY_SAVED')
-		);
-	}
+        // Redirect
+        App::redirect(
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Lang::txt('COM_TOOLS_HANDLER_SUCCESSFULLY_SAVED')
+        );
+    }
 
-	/**
-	 * Delete a handler
-	 *
-	 * @return void
-	 */
-	public function removeTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Delete a handler
+     *
+     * @return void
+     */
+    public function removeTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		// Incoming (expecting an array)
-		$ids = Request::getArray('id', array());
-		if (!is_array($ids))
-		{
-			$ids = array($ids);
-		}
+        // Incoming (expecting an array)
+        $ids = Request::getArray('id', array());
+        if (!is_array($ids)) {
+            $ids = array($ids);
+        }
 
-		// Make sure we have IDs to work with
-		if (count($ids) > 0)
-		{
-			// Loop through the array of ID's and delete
-			foreach ($ids as $id)
-			{
-				$handler = Handler::oneOrFail($id);
+        // Make sure we have IDs to work with
+        if (count($ids) > 0) {
+            // Loop through the array of ID's and delete
+            foreach ($ids as $id) {
+                $handler = Handler::oneOrFail($id);
 
-				// Delete the rules first, then the handler itself
-				if (!$handler->rules->destroyAll() || !$handler->destroy())
-				{
-					App::redirect(
-						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-						Lang::txt('COM_TOOLS_HANDLERS_DELETE_FAILED')
-					);
-					return;
-				}
-			}
-		}
+                // Delete the rules first, then the handler itself
+                if (!$handler->rules->destroyAll() || !$handler->destroy()) {
+                    App::redirect(
+                        Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                        Lang::txt('COM_TOOLS_HANDLERS_DELETE_FAILED')
+                    );
+                    return;
+                }
+            }
+        }
 
-		// Redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			Lang::txt('COM_TOOLS_HANDLERS_SUCCESSFULLY_DELETED', count($ids))
-		);
-	}
+        // Redirect
+        App::redirect(
+            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+            Lang::txt('COM_TOOLS_HANDLERS_SUCCESSFULLY_DELETED', count($ids))
+        );
+    }
 }

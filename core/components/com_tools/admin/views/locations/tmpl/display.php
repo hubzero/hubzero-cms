@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,94 +18,94 @@ Toolbar::deleteList();
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
-	<table class="adminlist">
-		<thead>
-			<tr>
-				<th colspan="6"><?php echo Lang::txt('COM_TOOLS_COL_ZONE') . ': ' . $this->escape($this->zone->get('zone')); ?></th>
-			</tr>
-			<tr>
-				<th scope="col">
-					<input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
-				</th>
-				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_ZONE', 'zone', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_IP_FROM', 'ipFROM', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_IP_TO', 'ipTO', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_CONTINENT', 'continent', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_COUNTRY', 'countrySHORT', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-			</tr>
-		</thead>
-		<tfoot>
-			<tr>
-				<td colspan="6">
-					<?php
-					// Initiate paging
-					echo $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
-					);
-					?>
-				</td>
-			</tr>
-		</tfoot>
-		<tbody>
+    <table class="adminlist">
+        <thead>
+            <tr>
+                <th colspan="6"><?php echo Lang::txt('COM_TOOLS_COL_ZONE') . ': ' . $this->escape($this->zone->get('zone')); ?></th>
+            </tr>
+            <tr>
+                <th scope="col">
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                </th>
+                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_ZONE', 'zone', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_IP_FROM', 'ipFROM', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_IP_TO', 'ipTO', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_CONTINENT', 'continent', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_COUNTRY', 'countrySHORT', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td colspan="6">
+                    <?php
+                    // Initiate paging
+                    echo $this->pagination(
+                        $this->total,
+                        $this->filters['start'],
+                        $this->filters['limit']
+                    );
+                    ?>
+                </td>
+            </tr>
+        </tfoot>
+        <tbody>
 <?php
-if ($this->rows)
-{
-	$i = 0;
-	foreach ($this->rows as $row)
-	{
-?>
-			<tr>
-				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-					<label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
-				</td>
-				<td>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-						<span><?php echo $this->escape(stripslashes($row->get('zone'))); ?></span>
-					</a>
-				</td>
-				<td>
-					<?php if ($row->get('ipFROM') != 0000000000) : ?>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-							<?php echo $this->escape(stripslashes(long2ip($row->get('ipFROM')))); ?>
-						</a>
-					<?php endif; ?>
-				</td>
-				<td>
-					<?php if ($row->get('ipFROM') != 0000000000) : ?>
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-							<?php echo $this->escape(stripslashes(long2ip($row->get('ipTO')))); ?>
-						</a>
-					<?php endif; ?>
-				</td>
-				<td>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-						<?php echo $this->escape(stripslashes($row->get('continent'))); ?>
-					</a>
-				</td>
-				<td>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-						<span><?php echo $this->escape(stripslashes($row->get('countrySHORT'))); ?></span>
-					</a>
-				</td>
-			</tr>
-<?php
-	}
+
+// phpcs:disable Generic.Files.LineLength.TooLong
+if ($this->rows) {
+    $i = 0;
+    foreach ($this->rows as $row) {
+        ?>
+            <tr>
+                <td>
+                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
+                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                </td>
+                <td>
+                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <span><?php echo $this->escape(stripslashes($row->get('zone'))); ?></span>
+                    </a>
+                </td>
+                <td>
+                    <?php if ($row->get('ipFROM') != 0000000000) : ?>
+                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                            <?php echo $this->escape(stripslashes(long2ip($row->get('ipFROM')))); ?>
+                        </a>
+                    <?php endif; ?>
+                </td>
+                <td>
+                    <?php if ($row->get('ipFROM') != 0000000000) : ?>
+                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                            <?php echo $this->escape(stripslashes(long2ip($row->get('ipTO')))); ?>
+                        </a>
+                    <?php endif; ?>
+                </td>
+                <td>
+                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <?php echo $this->escape(stripslashes($row->get('continent'))); ?>
+                    </a>
+                </td>
+                <td>
+                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <span><?php echo $this->escape(stripslashes($row->get('countrySHORT'))); ?></span>
+                    </a>
+                </td>
+            </tr>
+        <?php
+    }
 }
 ?>
-		</tbody>
-	</table>
+        </tbody>
+    </table>
 
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="" autocomplete="off" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="zone" value="<?php echo $this->escape($this->filters['zone']); ?>" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
+    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+    <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+    <input type="hidden" name="task" value="" autocomplete="off" />
+    <input type="hidden" name="boxchecked" value="0" />
+    <input type="hidden" name="zone" value="<?php echo $this->escape($this->filters['zone']); ?>" />
+    <input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+    <input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
-	<?php echo Html::input('token'); ?>
+    <?php echo Html::input('token'); ?>
 </form>

@@ -1,9 +1,13 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+// phpcs:disable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 use Hubzero\Content\Migration\Base;
 
@@ -15,14 +19,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20170901000000ComBlog extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__blog_entries'))
-		{
-			$query = "CREATE TABLE `#__blog_entries` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__blog_entries')) {
+            $query = "CREATE TABLE `#__blog_entries` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `title` varchar(255) NOT NULL DEFAULT '',
 			  `alias` varchar(255) NOT NULL DEFAULT '',
@@ -47,13 +50,12 @@ class Migration20170901000000ComBlog extends Base
 			  FULLTEXT KEY `ftidx_title_content` (`title`,`content`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__blog_comments'))
-		{
-			$query = "CREATE TABLE `#__blog_comments` (
+        if (!$this->db->tableExists('#__blog_comments')) {
+            $query = "CREATE TABLE `#__blog_comments` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `entry_id` int(11) unsigned NOT NULL DEFAULT '0',
 			  `content` text NOT NULL,
@@ -70,28 +72,26 @@ class Migration20170901000000ComBlog extends Base
 			  KEY `idx_parent` (`parent`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__blog_entries'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__blog_entries`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__blog_entries')) {
+            $query = "DROP TABLE IF EXISTS `#__blog_entries`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__blog_comments'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__blog_comments`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__blog_comments')) {
+            $query = "DROP TABLE IF EXISTS `#__blog_comments`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

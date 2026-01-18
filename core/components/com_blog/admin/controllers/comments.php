@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,319 +25,299 @@ use App;
  */
 class Comments extends AdminController
 {
-	/**
-	 * Execute a task
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		$this->registerTask('add', 'edit');
-		$this->registerTask('apply', 'save');
-		$this->registerTask('publish', 'state');
-		$this->registerTask('unpublish', 'state');
+    /**
+     * Execute a task
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        $this->registerTask('add', 'edit');
+        $this->registerTask('apply', 'save');
+        $this->registerTask('publish', 'state');
+        $this->registerTask('unpublish', 'state');
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * Display a list of blog comments
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		$filters = array(
-			'entry_id' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.entry_id',
-				'entry_id',
-				0,
-				'int'
-			),
-			'search' => urldecode(Request::getState(
-				$this->_option . '.' . $this->_controller . '.search',
-				'search',
-				''
-			)),
-			// Paging
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
-			),
-			// Get sorting variables
-			'sort' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sort',
-				'filter_order',
-				'created'
-			),
-			'sort_Dir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortdir',
-				'filter_order_Dir',
-				'ASC'
-			)
-		);
+    /**
+     * Display a list of blog comments
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        $filters = array(
+            'entry_id' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.entry_id',
+                'entry_id',
+                0,
+                'int'
+            ),
+            'search' => urldecode(Request::getState(
+                $this->_option . '.' . $this->_controller . '.search',
+                'search',
+                ''
+            )),
+            // Paging
+            'limit' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.limit',
+                'limit',
+                Config::get('list_limit'),
+                'int'
+            ),
+            'start' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.limitstart',
+                'limitstart',
+                0,
+                'int'
+            ),
+            // Get sorting variables
+            'sort' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sort',
+                'filter_order',
+                'created'
+            ),
+            'sort_Dir' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sortdir',
+                'filter_order_Dir',
+                'ASC'
+            )
+        );
 
-		$entry = Entry::oneOrNew($filters['entry_id']);
+        $entry = Entry::oneOrNew($filters['entry_id']);
 
-		$comments = Comment::all();
+        $comments = Comment::all();
 
-		if ($filters['search'])
-		{
-			$comments->whereLike('content', strtolower((string)$filters['search']));
-		}
+        if ($filters['search']) {
+            $comments->whereLike('content', strtolower((string)$filters['search']));
+        }
 
-		if ($filters['entry_id'])
-		{
-			$comments->whereEquals('entry_id', $filters['entry_id']);
-		}
+        if ($filters['entry_id']) {
+            $comments->whereEquals('entry_id', $filters['entry_id']);
+        }
 
-		$rows = $comments
-			->ordered('filter_order', 'filter_order_Dir')
-			->rows();
+        $rows = $comments
+            ->ordered('filter_order', 'filter_order_Dir')
+            ->rows();
 
-		$levellimit = ($filters['limit'] == 0) ? 500 : $filters['limit'];
-		$list       = array();
-		$children   = array();
+        $levellimit = ($filters['limit'] == 0) ? 500 : $filters['limit'];
+        $list       = array();
+        $children   = array();
 
-		if ($rows)
-		{
-			// First pass - collect children
-			foreach ($rows as $k)
-			{
-				$pt = $k->get('parent');
-				$list = @$children[$pt] ? $children[$pt] : array();
-				array_push($list, $k);
-				$children[$pt] = $list;
-			}
+        if ($rows) {
+            // First pass - collect children
+            foreach ($rows as $k) {
+                $pt = $k->get('parent');
+                $list = @$children[$pt] ? $children[$pt] : array();
+                array_push($list, $k);
+                $children[$pt] = $list;
+            }
 
-			// Second pass - get an indent list of the items
-			$list = $this->treeRecurse(0, '', array(), $children, max(0, $levellimit-1));
-		}
+            // Second pass - get an indent list of the items
+            $list = $this->treeRecurse(0, '', array(), $children, max(0, $levellimit - 1));
+        }
 
-		// Output the HTML
-		$this->view
-			->set('filters', $filters)
-			->set('entry', $entry)
-			->set('total', count($list))
-			->set('rows', array_slice($list, $filters['start'], $filters['limit']))
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('filters', $filters)
+            ->set('entry', $entry)
+            ->set('total', count($list))
+            ->set('rows', array_slice($list, $filters['start'], $filters['limit']))
+            ->display();
+    }
 
-	/**
-	 * Recursive function to build tree
-	 *
-	 * @param   integer  $id        Parent ID
-	 * @param   string   $indent    Indent text
-	 * @param   array    $list      List of records
-	 * @param   array    $children  Container for parent/children mapping
-	 * @param   integer  $maxlevel  Maximum levels to descend
-	 * @param   integer  $level     Indention level
-	 * @param   integer  $type      Indention type
-	 * @return  array
-	 */
-	public function treeRecurse($id, $indent, $list, $children, $maxlevel=9999, $level=0, $type=1)
-	{
-		if (@$children[$id] && $level <= $maxlevel)
-		{
-			foreach ($children[$id] as $v)
-			{
-				$id = $v->get('id');
+    /**
+     * Recursive function to build tree
+     *
+     * @param   integer  $id        Parent ID
+     * @param   string   $indent    Indent text
+     * @param   array    $list      List of records
+     * @param   array    $children  Container for parent/children mapping
+     * @param   integer  $maxlevel  Maximum levels to descend
+     * @param   integer  $level     Indention level
+     * @param   integer  $type      Indention type
+     * @return  array
+     */
+    public function treeRecurse($id, $indent, $list, $children, $maxlevel = 9999, $level = 0, $type = 1)
+    {
+        if (@$children[$id] && $level <= $maxlevel) {
+            foreach ($children[$id] as $v) {
+                $id = $v->get('id');
 
-				if ($type)
-				{
-					$pre    = '<span class="treenode">&#8970;</span>&nbsp;';
-					$spacer = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-				}
-				else
-				{
-					$pre    = '- ';
-					$spacer = '&nbsp;&nbsp;';
-				}
+                if ($type) {
+                    $pre    = '<span class="treenode">&#8970;</span>&nbsp;';
+                    $spacer = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                } else {
+                    $pre    = '- ';
+                    $spacer = '&nbsp;&nbsp;';
+                }
 
-				if ($v->get('parent') == 0)
-				{
-					$txt = '';
-				}
-				else
-				{
-					$txt = $pre;
-				}
-				$pt = $v->get('parent');
+                if ($v->get('parent') == 0) {
+                    $txt = '';
+                } else {
+                    $txt = $pre;
+                }
+                $pt = $v->get('parent');
 
-				$list[$id] = $v;
-				$list[$id]->set('treename', "$indent$txt");
-				$list[$id]->set('children', count(@$children[$id]));
-				$list = $this->treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level+1, $type);
-			}
-		}
-		return $list;
-	}
+                $list[$id] = $v;
+                $list[$id]->set('treename', "$indent$txt");
+                $list[$id]->set('children', count(@$children[$id]));
+                $list = $this->treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level + 1, $type);
+            }
+        }
+        return $list;
+    }
 
-	/**
-	 * Show a form for editing an entry
-	 *
-	 * @param   object  $row
-	 * @return  void
-	 */
-	public function editTask($row=null)
-	{
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+    /**
+     * Show a form for editing an entry
+     *
+     * @param   object  $row
+     * @return  void
+     */
+    public function editTask($row = null)
+    {
+        if (
+            !User::authorise('core.edit', $this->_option)
+            && !User::authorise('core.create', $this->_option)
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		Request::setVar('hidemainmenu', 1);
+        Request::setVar('hidemainmenu', 1);
 
-		if (!is_object($row))
-		{
-			// Incoming
-			$id = Request::getArray('id', array(0));
-			if (is_array($id) && !empty($id))
-			{
-				$id = $id[0];
-			}
+        if (!is_object($row)) {
+            // Incoming
+            $id = Request::getArray('id', array(0));
+            if (is_array($id) && !empty($id)) {
+                $id = $id[0];
+            }
 
-			// Load the article
-			$row = Comment::oneOrNew($id);
-		}
+            // Load the article
+            $row = Comment::oneOrNew($id);
+        }
 
-		if ($row->isNew())
-		{
-			$row->set('entry_id', Request::getInt('entry_id', 0));
-			$row->set('created_by', User::get('id'));
-			$row->set('created', Date::toSql());
-			$row->set('state', 1);
-		}
+        if ($row->isNew()) {
+            $row->set('entry_id', Request::getInt('entry_id', 0));
+            $row->set('created_by', User::get('id'));
+            $row->set('created', Date::toSql());
+            $row->set('state', 1);
+        }
 
-		// Output the HTML
-		$this->view
-			->set('row', $row)
-			->setLayout('edit')
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('row', $row)
+            ->setLayout('edit')
+            ->display();
+    }
 
-	/**
-	 * Save changes to an entry
-	 *
-	 * @return  void
-	 */
-	public function saveTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Save changes to an entry
+     *
+     * @return  void
+     */
+    public function saveTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (
+            !User::authorise('core.edit', $this->_option)
+            && !User::authorise('core.create', $this->_option)
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		// Incoming
-		$fields = Request::getArray('fields', array(), 'post', 'none', 2);
+        // Incoming
+        $fields = Request::getArray('fields', array(), 'post', 'none', 2);
 
-		// Initiate extended database class
-		$row = Comment::oneOrNew($fields['id'])->set($fields);
+        // Initiate extended database class
+        $row = Comment::oneOrNew($fields['id'])->set($fields);
 
-		// Trigger before save event
-		$isNew  = $row->isNew();
-		$result = Event::trigger('onBlogCommentBeforeSave', array(&$row, $isNew));
+        // Trigger before save event
+        $isNew  = $row->isNew();
+        $result = Event::trigger('onBlogCommentBeforeSave', array(&$row, $isNew));
 
-		if (in_array(false, $result, true))
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
+        if (in_array(false, $result, true)) {
+            Notify::error($row->getError());
+            return $this->editTask($row);
+        }
 
-		// Store new content
-		if (!$row->save())
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
+        // Store new content
+        if (!$row->save()) {
+            Notify::error($row->getError());
+            return $this->editTask($row);
+        }
 
-		// Trigger after save event
-		Event::trigger('onBlogCommentAfterSave', array(&$row, $isNew));
+        // Trigger after save event
+        Event::trigger('onBlogCommentAfterSave', array(&$row, $isNew));
 
-		// Notify of success
-		Notify::success(Lang::txt('COM_BLOG_COMMENT_SAVED'));
+        // Notify of success
+        Notify::success(Lang::txt('COM_BLOG_COMMENT_SAVED'));
 
-		// Redirect to main listing or go back to edit form
-		if ($this->getTask() == 'apply')
-		{
-			return $this->editTask($row);
-		}
+        // Redirect to main listing or go back to edit form
+        if ($this->getTask() == 'apply') {
+            return $this->editTask($row);
+        }
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . $fields['entry_id'], false)
-		);
-	}
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller .
+            '&entry_id=' . $fields['entry_id'];
+        App::redirect(Route::url($url, false));
+    }
 
-	/**
-	 * Delete one or more entries
-	 *
-	 * @return  void
-	 */
-	public function removeTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Delete one or more entries
+     *
+     * @return  void
+     */
+    public function removeTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.delete', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (!User::authorise('core.delete', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		// Incoming
-		$ids = Request::getArray('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
+        // Incoming
+        $ids = Request::getArray('id', array());
+        $ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$removed = 0;
+        $removed = 0;
 
-		foreach ($ids as $id)
-		{
-			// Delete the entry
-			$entry = Comment::oneOrFail(intval($id));
+        foreach ($ids as $id) {
+            // Delete the entry
+            $entry = Comment::oneOrFail(intval($id));
 
-			if (!$entry->destroy())
-			{
-				Notify::error($entry->getError());
-				continue;
-			}
+            if (!$entry->destroy()) {
+                Notify::error($entry->getError());
+                continue;
+            }
 
-			// Trigger before delete event
-			Event::trigger('onBlogCommentAfterDelete', array($id));
+            // Trigger before delete event
+            Event::trigger('onBlogCommentAfterDelete', array($id));
 
-			$removed++;
-		}
+            $removed++;
+        }
 
-		if ($removed)
-		{
-			Notify::success(Lang::txt('COM_BLOG_COMMENT_DELETED'));
-		}
+        if ($removed) {
+            Notify::success(Lang::txt('COM_BLOG_COMMENT_DELETED'));
+        }
 
-		// Set the redirect
-		$this->cancelTask();
-	}
+        // Set the redirect
+        $this->cancelTask();
+    }
 
-	/**
-	 * Cancels a task and redirects to listing
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . Request::getInt('entry_id', 0), false)
-		);
-	}
+    /**
+     * Cancels a task and redirects to listing
+     *
+     * @return  void
+     */
+    public function cancelTask()
+    {
+        // Set the redirect
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller .
+            '&entry_id=' . Request::getInt('entry_id', 0);
+        App::redirect(Route::url($url, false));
+    }
 }
