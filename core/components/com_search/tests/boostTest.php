@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,105 +21,104 @@ use Hubzero\Test\Basic;
 
 class BoostTest extends Basic
 {
-	use canMock;
+    use canMock;
 
-	public function testGetIdReturnsId()
-	{
-		$id = 96;
-		$boost = Boost::blank();
+    public function testGetIdReturnsId()
+    {
+        $id = 96;
+        $boost = Boost::blank();
 
-		$boost->set('id', $id);
-		$boostId = $boost->getId();
+        $boost->set('id', $id);
+        $boostId = $boost->getId();
 
-		$this->assertEquals($id, $boostId);
-	}
+        $this->assertEquals($id, $boostId);
+    }
 
-	public function testGetFieldReturnsField()
-	{
-		$field = 'field';
-		$boost = Boost::blank();
+    public function testGetFieldReturnsField()
+    {
+        $field = 'field';
+        $boost = Boost::blank();
 
-		$boost->set('field', $field);
-		$boostField = $boost->getField();
+        $boost->set('field', $field);
+        $boostField = $boost->getField();
 
-		$this->assertEquals($field, $boostField);
-	}
+        $this->assertEquals($field, $boostField);
+    }
 
-	public function testGetFormattedFieldValueReturnsCorrectValueForCitations()
-	{
-		$mapMock = $this->mock([
-			'class' => 'Map',
-			'methods' => ['getFormattedFieldValue']
-		]);
-		$boost = new Boost(['map' => $mapMock]);
+    public function testGetFormattedFieldValueReturnsCorrectValueForCitations()
+    {
+        $mapMock = $this->mock([
+            'class' => 'Map',
+            'methods' => ['getFormattedFieldValue']
+        ]);
+        $boost = new Boost(['map' => $mapMock]);
 
-		$boost->set('field_value', 'citation');
+        $boost->set('field_value', 'citation');
 
-		$mapMock->expects($this->once())
-			->method('getFormattedFieldValue');
+        $mapMock->expects($this->once())
+            ->method('getFormattedFieldValue');
 
-		$boost->getFormattedFieldValue();
-	}
+        $boost->getFormattedFieldValue();
+    }
 
-	public function testGetFieldValueReturnsFieldValue()
-	{
-		$fieldValue = 'value';
-		$boost = Boost::blank();
+    public function testGetFieldValueReturnsFieldValue()
+    {
+        $fieldValue = 'value';
+        $boost = Boost::blank();
 
-		$boost->set('field_value', $fieldValue);
-		$boostFieldValue = $boost->getFieldValue();
+        $boost->set('field_value', $fieldValue);
+        $boostFieldValue = $boost->getFieldValue();
 
-		$this->assertEquals($fieldValue, $boostFieldValue);
-	}
+        $this->assertEquals($fieldValue, $boostFieldValue);
+    }
 
-	public function testGetStrengthReturnsStrength()
-	{
-		$strength = -23;
-		$boost = Boost::blank();
+    public function testGetStrengthReturnsStrength()
+    {
+        $strength = -23;
+        $boost = Boost::blank();
 
-		$boost->set('strength', $strength);
-		$boostStrength = $boost->getStrength();
+        $boost->set('strength', $strength);
+        $boostStrength = $boost->getStrength();
 
-		$this->assertEquals($strength, $boostStrength);
-	}
+        $this->assertEquals($strength, $boostStrength);
+    }
 
-	public function testGetCreatedReturnsCreated()
-	{
-		$created = '1969-01-01 00:00:00';
-		$boost = Boost::blank();
+    public function testGetCreatedReturnsCreated()
+    {
+        $created = '1969-01-01 00:00:00';
+        $boost = Boost::blank();
 
-		$boost->set('created', $created);
-		$boostCreated = $boost->getCreated();
+        $boost->set('created', $created);
+        $boostCreated = $boost->getCreated();
 
-		$this->assertEquals($created, $boostCreated);
-	}
+        $this->assertEquals($created, $boostCreated);
+    }
 
-	public function testGetCreatedByReturnsCreatedBy()
-	{
-		$createdBy = 1033;
-		$boost = Boost::blank();
+    public function testGetCreatedByReturnsCreatedBy()
+    {
+        $createdBy = 1033;
+        $boost = Boost::blank();
 
-		$boost->set('created_by', $createdBy);
-		$boostCreatedBy = $boost->getCreatedBy();
+        $boost->set('created_by', $createdBy);
+        $boostCreatedBy = $boost->getCreatedBy();
 
-		$this->assertEquals($createdBy, $boostCreatedBy);
-	}
+        $this->assertEquals($createdBy, $boostCreatedBy);
+    }
 
-	public function testGetAuthorInvokesOne()
-	{
-		$userId = 987;
-		$userMock = $this->mock([
-			'class' => 'User',
-			'methods' => ['one']
-		]);
-		$boost = new Boost(['user' => $userMock]);
-		$boost->set('created_by', $userId);
+    public function testGetAuthorInvokesOne()
+    {
+        $userId = 987;
+        $userMock = $this->mock([
+            'class' => 'User',
+            'methods' => ['one']
+        ]);
+        $boost = new Boost(['user' => $userMock]);
+        $boost->set('created_by', $userId);
 
-		$userMock->expects($this->once())
-			->method('one')
-			->with($userId);
+        $userMock->expects($this->once())
+            ->method('one')
+            ->with($userId);
 
-		$boost->getAuthor();
-	}
-
+        $boost->getAuthor();
+    }
 }

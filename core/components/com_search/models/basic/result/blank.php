@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,14 +20,15 @@ include_once dirname(__DIR__) . DS . 'result.php';
  */
 class Blank extends SearchResult
 {
-	/**
-	 * Return results as associative array
-	 *
-	 * @return  void
-	 * @throws  Exception  Exception description (if any) ...
-	 */
-	public function to_associative()
-	{
-		throw new Exception('empty result -> to_associative');
-	}
+    /**
+     * Return results as associative array
+     *
+     * @return  void
+     * @throws  Exception  Exception description (if any) ...
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+    public function to_associative()
+    {
+        throw new Exception('empty result -> to_associative');
+    }
 }

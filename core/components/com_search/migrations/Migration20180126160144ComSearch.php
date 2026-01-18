@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +18,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20180126160144ComSearch extends Base
 {
-	static $tableName = '#__solr_search_searchcomponents';
+    protected static $tableName = '#__solr_search_searchcomponents';
 
-	public function up()
-	{
-		$tableName = self::$tableName;
-		if (!$this->db->tableExists($tableName))
-		{
-			$createTable = "CREATE TABLE `{$tableName}` (
+    public function up()
+    {
+        $tableName = self::$tableName;
+        if (!$this->db->tableExists($tableName)) {
+            $createTable = "CREATE TABLE `{$tableName}` (
 			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  `name` varchar(45) NOT NULL,
 			  `created` datetime DEFAULT NULL,
@@ -31,25 +33,23 @@ class Migration20180126160144ComSearch extends Base
 			  `indexed_records` int(10) unsigned DEFAULT NULL,
 			  PRIMARY KEY (`id`)
 			);";
-			$this->db->setQuery($createTable);
-			$this->db->query();
-		}
-		$params = $this->getParams('com_search');
-		$params->set('solr_commit', '300000');
-		$params->set('solr_batchsize', '1500');
-		$this->saveParams('com_search', $params);
-	}
+            $this->db->setQuery($createTable);
+            $this->db->query();
+        }
+        $params = $this->getParams('com_search');
+        $params->set('solr_commit', '300000');
+        $params->set('solr_batchsize', '1500');
+        $this->saveParams('com_search', $params);
+    }
 
-	public function	down()
-	{
-		$tableName = self::$tableName;
+    public function down()
+    {
+        $tableName = self::$tableName;
 
-		if ($this->db->tableExists($tableName))
-		{
-			$dropTable = "DROP TABLE {$tableName};";
-			$this->db->setQuery($dropTable);
-			$this->db->query();
-		}
-
-	}
+        if ($this->db->tableExists($tableName)) {
+            $dropTable = "DROP TABLE {$tableName};";
+            $this->db->setQuery($dropTable);
+            $this->db->query();
+        }
+    }
 }

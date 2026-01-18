@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,52 +21,50 @@ use Hubzero\Test\Basic;
 
 class BoostFactoryTest extends Basic
 {
-	use canMock;
+    use canMock;
 
-	public function testOneSetsNonDocumentSpecificData()
-	{
-		$now = Date::toSql();
-		$strength = 11;
-		$userId = -33;
-		$userHelper = $this->mock([
-			'class' => 'User', 'methods' => ['get' => $userId]]
-		);
-		$factory = new BoostFactory(['user' => $userHelper]);
-		$boostData = [
-			'document_type' => 'test', 'strength' => $strength
-		];
+    public function testOneSetsNonDocumentSpecificData()
+    {
+        $now = Date::toSql();
+        $strength = 11;
+        $userId = -33;
+        $userHelper = $this->mock([
+            'class' => 'User', 'methods' => ['get' => $userId]]);
+        $factory = new BoostFactory(['user' => $userHelper]);
+        $boostData = [
+            'document_type' => 'test', 'strength' => $strength
+        ];
 
-		$boost = $factory->one($boostData);
+        $boost = $factory->one($boostData);
 
-		$this->assertEquals($strength, $boost->getStrength());
-		$this->assertEquals($userId, $boost->getCreatedBy());
-		$this->assertEquals($now, $boost->getCreated());
-	}
+        $this->assertEquals($strength, $boost->getStrength());
+        $this->assertEquals($userId, $boost->getCreatedBy());
+        $this->assertEquals($now, $boost->getCreated());
+    }
 
-	public function testOneReturnsCorrectBoostForCitationDocuments()
-	{
-		$userHelper = $this->mock(['class' => 'User', 'methods' => ['get']]);
-		$factory = new BoostFactory(['user' => $userHelper]);
-		$citationsType = Lang::txt('COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION');
-		$boostData = ['document_type' => $citationsType];
+    public function testOneReturnsCorrectBoostForCitationDocuments()
+    {
+        $userHelper = $this->mock(['class' => 'User', 'methods' => ['get']]);
+        $factory = new BoostFactory(['user' => $userHelper]);
+        $citationsType = Lang::txt('COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION');
+        $boostData = ['document_type' => $citationsType];
 
-		$boost = $factory->one($boostData);
+        $boost = $factory->one($boostData);
 
-		$this->assertEquals('hubtype', $boost->getField());
-		$this->assertEquals('citation', $boost->getFieldValue());
-	}
+        $this->assertEquals('hubtype', $boost->getField());
+        $this->assertEquals('citation', $boost->getFieldValue());
+    }
 
-	public function testOneReturnsCorrectBoostForResourceDocuments()
-	{
-		$documentType = 'Tools';
-		$userHelper = $this->mock(['class' => 'User', 'methods' => ['get']]);
-		$factory = new BoostFactory(['user' => $userHelper]);
-		$boostData = ['document_type' => $documentType];
+    public function testOneReturnsCorrectBoostForResourceDocuments()
+    {
+        $documentType = 'Tools';
+        $userHelper = $this->mock(['class' => 'User', 'methods' => ['get']]);
+        $factory = new BoostFactory(['user' => $userHelper]);
+        $boostData = ['document_type' => $documentType];
 
-		$boost = $factory->one($boostData);
+        $boost = $factory->one($boostData);
 
-		$this->assertEquals('type', $boost->getField());
-		$this->assertEquals($documentType, $boost->getFieldValue());
-	}
-
+        $this->assertEquals('type', $boost->getField());
+        $this->assertEquals($documentType, $boost->getFieldValue());
+    }
 }

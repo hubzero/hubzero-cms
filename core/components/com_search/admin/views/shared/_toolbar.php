@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,6 +11,6 @@ defined('_HZEXEC_') or die();
 
 $elements = $this->elements;
 
-foreach ($elements as $name => $data):
-	Toolbar::$name(...$data);
+foreach ($elements as $name => $data) :
+    Toolbar::$name(...$data);
 endforeach;

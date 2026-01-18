@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +18,13 @@ defined('_HZEXEC_') or die();
  */
 class Migration20190827163711ComSearchCreateBoostsTable extends Base
 {
+    protected static $tableName = '#__solr_search_boosts';
 
-	static $tableName = '#__solr_search_boosts';
+    public function up()
+    {
+        $tableName = self::$tableName;
 
-	public function up()
-	{
-		$tableName = self::$tableName;
-
-		$createTable = "CREATE TABLE $tableName (
+        $createTable = "CREATE TABLE $tableName (
 			`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			`field` varchar(75) NOT NULL,
 			`field_value` varchar(100) NOT NULL,
@@ -33,24 +35,21 @@ class Migration20190827163711ComSearchCreateBoostsTable extends Base
 			UNIQUE KEY(field, field_value)
 		) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
 
-		if (!$this->db->tableExists($tableName))
-		{
-			$this->db->setQuery($createTable);
-			$this->db->query();
-		}
-	}
+        if (!$this->db->tableExists($tableName)) {
+            $this->db->setQuery($createTable);
+            $this->db->query();
+        }
+    }
 
-	public function down()
-	{
-		$tableName = self::$tableName;
+    public function down()
+    {
+        $tableName = self::$tableName;
 
-		$dropTable = "DROP TABLE $tableName";
+        $dropTable = "DROP TABLE $tableName";
 
-		if ($this->db->tableExists($tableName))
-		{
-			$this->db->setQuery($dropTable);
-			$this->db->query();
-		}
-	}
-
+        if ($this->db->tableExists($tableName)) {
+            $this->db->setQuery($dropTable);
+            $this->db->query();
+        }
+    }
 }

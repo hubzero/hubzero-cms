@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,65 +21,64 @@ use Hubzero\Test\Basic;
 
 class BoostDocumentTypeMapTest extends Basic
 {
-	use canMock;
+    use canMock;
 
-	public function testDocumentTypeToFieldDataForCitation()
-	{
-		$expected = ['field' => 'hubtype', 'field_value' => 'citation'];
-		$formattedCitationType = 'Citations';
-		$langMock = $this->mock([
-			'class' => 'Lang',
-		 	'methods' => ['txt' => $formattedCitationType]
-		]);
-		$map = new Map(['lang' => $langMock]);
+    public function testDocumentTypeToFieldDataForCitation()
+    {
+        $expected = ['field' => 'hubtype', 'field_value' => 'citation'];
+        $formattedCitationType = 'Citations';
+        $langMock = $this->mock([
+            'class' => 'Lang',
+            'methods' => ['txt' => $formattedCitationType]
+        ]);
+        $map = new Map(['lang' => $langMock]);
 
-		$fieldData = $map->documentTypeToFieldData($formattedCitationType);
+        $fieldData = $map->documentTypeToFieldData($formattedCitationType);
 
-		$this->assertEquals($expected, $fieldData);
-	}
+        $this->assertEquals($expected, $fieldData);
+    }
 
-	public function testDocumentTypeToFieldDataForResource()
-	{
-		$documentType = 'Tools';
-		$expected = ['field' => 'type', 'field_value' => $documentType];
-		$map = new Map();
+    public function testDocumentTypeToFieldDataForResource()
+    {
+        $documentType = 'Tools';
+        $expected = ['field' => 'type', 'field_value' => $documentType];
+        $map = new Map();
 
-		$fieldData = $map->documentTypeToFieldData($documentType);
+        $fieldData = $map->documentTypeToFieldData($documentType);
 
-		$this->assertEquals($expected, $fieldData);
-	}
+        $this->assertEquals($expected, $fieldData);
+    }
 
-	public function testgetFormattedFieldValueForCitation()
-	{
-		$fieldValue = 'citation';
-		$map = new Map();
-		$expected = $map->getFormattedCitationType();
+    public function testgetFormattedFieldValueForCitation()
+    {
+        $fieldValue = 'citation';
+        $map = new Map();
+        $expected = $map->getFormattedCitationType();
 
-		$formattedFieldValue = $map->getFormattedFieldValue($fieldValue);
+        $formattedFieldValue = $map->getFormattedFieldValue($fieldValue);
 
-		$this->assertEquals($expected, $formattedFieldValue);
-	}
+        $this->assertEquals($expected, $formattedFieldValue);
+    }
 
-	public function testgetFormattedFieldValueForResource()
-	{
-		$resourceType = 'Tools';
-		$map = new Map();
+    public function testgetFormattedFieldValueForResource()
+    {
+        $resourceType = 'Tools';
+        $map = new Map();
 
-		$formattedFieldValue = $map->getFormattedFieldValue($resourceType);
+        $formattedFieldValue = $map->getFormattedFieldValue($resourceType);
 
-		$this->assertEquals($resourceType, $formattedFieldValue);
-	}
+        $this->assertEquals($resourceType, $formattedFieldValue);
+    }
 
-	public function testGetFormattedCitationType()
-	{
-		$langMock = $this->mock(['class' => 'Lang', 'methods' => ['txt']]);
-		$map = new Map(['lang' => $langMock]);
+    public function testGetFormattedCitationType()
+    {
+        $langMock = $this->mock(['class' => 'Lang', 'methods' => ['txt']]);
+        $map = new Map(['lang' => $langMock]);
 
-		$langMock->expects($this->once())
-			->method('txt')
-			->with('COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION');
+        $langMock->expects($this->once())
+            ->method('txt')
+            ->with('COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION');
 
-		$map->getFormattedCitationType();
-	}
-
+        $map->getFormattedCitationType();
+    }
 }

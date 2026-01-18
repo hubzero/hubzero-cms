@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,39 +19,40 @@ use Hubzero\Utility\Arr;
 
 class TypeOptionsHelper
 {
-	var $typeHelper = null;
+    protected $typeHelper = null;
 
-	public function __construct($args = [])
-	{
-		$this->typeHelper = Arr::getValue(
-			$args, 'type', new MockProxy([
-				'class' => 'Components\Resources\Models\Type'
-			])
-		);
-	}
+    public function __construct($args = [])
+    {
+        $this->typeHelper = Arr::getValue(
+            $args,
+            'type',
+            new MockProxy([
+                'class' => 'Components\Resources\Models\Type'
+            ])
+        );
+    }
 
-	public function getAllSorted()
-	{
-		$allTypes = $this->getAll();
+    public function getAllSorted()
+    {
+        $allTypes = $this->getAll();
 
-		sort($allTypes);
+        sort($allTypes);
 
-		return $allTypes;
-	}
+        return $allTypes;
+    }
 
-	public function getAll()
-	{
-		$resourceTypes = $this->typeHelper->all()
-			->rows()
-			->fieldsByKey('type');
+    public function getAll()
+    {
+        $resourceTypes = $this->typeHelper->all()
+            ->rows()
+            ->fieldsByKey('type');
 
-		$supplementaryTypes = [
-			Lang::txt('COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION')
-		];
+        $supplementaryTypes = [
+            Lang::txt('COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION')
+        ];
 
-		$allTypes = array_merge($resourceTypes, $supplementaryTypes);
+        $allTypes = array_merge($resourceTypes, $supplementaryTypes);
 
-		return $allTypes;
-	}
-
+        return $allTypes;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,29 +16,29 @@ $author = $boost->getAuthor();
 ?>
 
 <table class="meta">
-	<tbody>
-		<tr>
-			<th><?php echo Lang::txt('COM_SEARCH_COL_ID'); ?>:</th>
-			<td>
-				<?php echo $boost->getId(); ?>
-			</td>
-		</tr>
+    <tbody>
+        <tr>
+            <th><?php echo Lang::txt('COM_SEARCH_COL_ID'); ?>:</th>
+            <td>
+                <?php echo $boost->getId(); ?>
+            </td>
+        </tr>
 
-		<tr>
-			<th><?php echo Lang::txt('COM_SEARCH_LABEL_CREATED_BY'); ?>:</th>
-			<td>
-				<a href="<?php echo $author->link(); ?>"
-					class="meta-link">
-					<?php echo $author->get('name'); ?>
-				</a>
-			</td>
-		</tr>
+        <tr>
+            <th><?php echo Lang::txt('COM_SEARCH_LABEL_CREATED_BY'); ?>:</th>
+            <td>
+                <a href="<?php echo $author->link(); ?>"
+                    class="meta-link">
+                    <?php echo $author->get('name'); ?>
+                </a>
+            </td>
+        </tr>
 
-		<tr>
-			<th><?php echo Lang::txt('COM_SEARCH_LABEL_CREATED'); ?>:</th>
-			<td>
-				<?php echo $createdLocal; ?>
-			</td>
-		</tr>
-	</tbody>
+        <tr>
+            <th><?php echo Lang::txt('COM_SEARCH_LABEL_CREATED'); ?>:</th>
+            <td>
+                <?php echo $createdLocal; ?>
+            </td>
+        </tr>
+    </tbody>
 </table>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,91 +10,93 @@ namespace Components\Search\Tests\Traits;
 
 use Hubzero\Utility\Arr;
 
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 trait canMock
 {
-	public $mock;
-	
-	public function mock($args = [])
-	{
-		$this->mock = $this->getMockBuilder($args['class']);
+    public $mock;
 
-		$this->_setMethods($args);
-		$this->_setProps($args);
+    public function mock($args = [])
+    {
+        $this->mock = $this->getMockBuilder($args['class']);
 
-		return $this->mock;
-	}
+        $this->_setMethods($args);
+        $this->_setProps($args);
 
-	protected function _setProps($args)
-	{
-		$props = $this->_extractMockInstantiationData($args, 'props');
+        return $this->mock;
+    }
 
-		$this->_setPropNamesAndValues($props);
-	}
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setProps($args)
+    {
+        $props = $this->_extractMockInstantiationData($args, 'props');
 
-	protected function _setPropNamesAndValues($props)
-	{
-		foreach ($props as $name => $value)
-		{
-			$this->mock->$name = $value;
-		}
-	}
+        $this->_setPropNamesAndValues($props);
+    }
 
-	protected function _setMethods($args)
-	{
-		$methods = $this->_extractMockInstantiationData($args, 'methods');
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setPropNamesAndValues($props)
+    {
+        foreach ($props as $name => $value) {
+            $this->mock->$name = $value;
+        }
+    }
 
-		$this->_setMethodNames($methods);
-		$this->_setMethodReturnValues($methods);
-	}
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setMethods($args)
+    {
+        $methods = $this->_extractMockInstantiationData($args, 'methods');
 
-	protected function _extractMockInstantiationData($args, $key)
-	{
-		$instantiationData = Arr::getValue($args, $key, []);
+        $this->_setMethodNames($methods);
+        $this->_setMethodReturnValues($methods);
+    }
 
-		$instantiationData = $this->_mapInstantiationData($instantiationData);
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _extractMockInstantiationData($args, $key)
+    {
+        $instantiationData = Arr::getValue($args, $key, []);
 
-		return $instantiationData;
-	}
+        $instantiationData = $this->_mapInstantiationData($instantiationData);
 
-	protected function _mapInstantiationData($instantiationData)
-	{
-		$mappedInstantiationData = [];
+        return $instantiationData;
+    }
 
-		foreach ($instantiationData as $name => $value)
-		{
-			$this->_mapNameAndValue($mappedInstantiationData, $name, $value);
-		}
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _mapInstantiationData($instantiationData)
+    {
+        $mappedInstantiationData = [];
 
-		return $mappedInstantiationData;
-	}
+        foreach ($instantiationData as $name => $value) {
+            $this->_mapNameAndValue($mappedInstantiationData, $name, $value);
+        }
 
-	protected function _mapNameAndValue(&$mappedInstantiationData, $name, $value)
-	{
-		if (!is_string($name))
-		{
-			$mappedInstantiationData[$value] = null;
-		}
-		else
-		{
-			$mappedInstantiationData[$name] = $value;
-		}
-	}
+        return $mappedInstantiationData;
+    }
 
-	protected function _setMethodNames($methods)
-	{
-		$methodNames = array_keys($methods);
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _mapNameAndValue(&$mappedInstantiationData, $name, $value)
+    {
+        if (!is_string($name)) {
+            $mappedInstantiationData[$value] = null;
+        } else {
+            $mappedInstantiationData[$name] = $value;
+        }
+    }
 
-		$this->mock->setMethods($methodNames);
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setMethodNames($methods)
+    {
+        $methodNames = array_keys($methods);
 
-		$this->mock = $this->mock->getMock();
-	}
+        $this->mock->setMethods($methodNames);
 
-	protected function _setMethodReturnValues($methods)
-	{
-		foreach ($methods as $name => $returnValue)
-		{
-			$this->mock->method($name)->willReturn($returnValue);
-		}
-	}
+        $this->mock = $this->mock->getMock();
+    }
 
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setMethodReturnValues($methods)
+    {
+        foreach ($methods as $name => $returnValue) {
+            $this->mock->method($name)->willReturn($returnValue);
+        }
+    }
 }

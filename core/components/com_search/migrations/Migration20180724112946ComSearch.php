@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,19 +18,18 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20180724112946ComSearch extends Base
 {
-	static $filtersTable = '#__solr_search_filters';
-	static $filterOptionsTable = '#__solr_search_filter_options';
+    protected static $filtersTable = '#__solr_search_filters';
+    protected static $filterOptionsTable = '#__solr_search_filter_options';
 
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$filtersTableName = self::$filtersTable;
-		$filterOptionsTableName = self::$filterOptionsTable;
-		if (!$this->db->tableExists($filtersTableName))
-		{
-			$filterTable = "CREATE TABLE `{$filtersTableName}` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $filtersTableName = self::$filtersTable;
+        $filterOptionsTableName = self::$filterOptionsTable;
+        if (!$this->db->tableExists($filtersTableName)) {
+            $filterTable = "CREATE TABLE `{$filtersTableName}` (
 				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				`component_id` int(11) unsigned NOT NULL,
 				`type` varchar(255) NOT NULL,
@@ -43,13 +45,12 @@ class Migration20180724112946ComSearch extends Base
 				KEY `idx_type` (`type`),
 				KEY `idx_field` (`field`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($filterTable);
-			$this->db->query();
-		}
+            $this->db->setQuery($filterTable);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists($filterOptionsTableName))
-		{
-			$filterOptionsTable = "CREATE TABLE `{$filterOptionsTableName}` (
+        if (!$this->db->tableExists($filterOptionsTableName)) {
+            $filterOptionsTable = "CREATE TABLE `{$filterOptionsTableName}` (
 				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				`filter_id` int(11) NOT NULL DEFAULT '0',
 				`value` varchar(255) NOT NULL DEFAULT '',
@@ -62,31 +63,29 @@ class Migration20180724112946ComSearch extends Base
 				PRIMARY KEY (`id`),
 				KEY `idx_filter_id` (`filter_id`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($filterOptionsTable);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($filterOptionsTable);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function	down()
-	{
-		$filtersTableName = self::$filtersTable;
-		$filterOptionsTableName = self::$filterOptionsTable;
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $filtersTableName = self::$filtersTable;
+        $filterOptionsTableName = self::$filterOptionsTable;
 
-		if ($this->db->tableExists($filtersTableName))
-		{
-			$dropTable = "DROP TABLE {$filtersTableName};";
-			$this->db->setQuery($dropTable);
-			$this->db->query();
-		}
+        if ($this->db->tableExists($filtersTableName)) {
+            $dropTable = "DROP TABLE {$filtersTableName};";
+            $this->db->setQuery($dropTable);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists($filterOptionsTableName))
-		{
-			$dropTable = "DROP TABLE {$filtersTableName};";
-			$this->db->setQuery($dropTable);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists($filterOptionsTableName)) {
+            $dropTable = "DROP TABLE {$filtersTableName};";
+            $this->db->setQuery($dropTable);
+            $this->db->query();
+        }
+    }
 }

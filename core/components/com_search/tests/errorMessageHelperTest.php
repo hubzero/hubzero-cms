@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,15 +19,13 @@ use Hubzero\Test\Basic;
 
 class ErrorMessageHelperTest extends Basic
 {
+    public function testGenerateErrorMessage()
+    {
+        $helper = new ErrorMessageHelper();
+        $errors = ['a', 'b', 'c'];
 
-	public function testGenerateErrorMessage()
-	{
-		$helper = new ErrorMessageHelper();
-		$errors = ['a', 'b', 'c'];
+        $message = $helper->generateErrorMessage($errors);
 
-		$message = $helper->generateErrorMessage($errors);
-
-		$this->assertEquals('• a<br/><br/>• b<br/><br/>• c', $message);
-	}
-
+        $this->assertEquals('• a<br/><br/>• b<br/><br/>• c', $message);
+    }
 }

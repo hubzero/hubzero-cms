@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,50 +18,52 @@ use Hubzero\Config\Registry;
  */
 class Daterangefilter extends Filter
 {
-	/**
-	 * Render form fields on the filter list
-	 *
-	 * @param   array   $counts  counts retrieved from solr search
-	 * @param   array   $dateValues  list of options currently selected
-	 * @return  string
-	 */
-	public function renderHtml($counts, $dateValues)
-	{
-		$minDate = $this->params->get('minDate');
-		$maxDate = $this->params->get('maxDate');
-		$minDateString = !empty($minDate) ? 'data-mindate="' . $minDate . '" ' : '';
-		$maxDateString = !empty($maxDate) ? 'data-maxdate="' . $maxDate . '" ' : '';
-		$startdate = isset($dateValues['startdate']) ? $dateValues['startdate'] : '';
-		$enddate = isset($dateValues['enddate']) ? $dateValues['enddate'] : '';
-		$html = '<ul><li><fieldset class="search-filters"><legend>' . $this->label . '</legend>';
-		$html .= '<label>Start Date</label><input type="text" class="option datetimepicker" name="filters[' .
-			$this->field . '][startdate]"' . $minDateString . ' value="' . $startdate . '" autocomplete="off"/>';
-		$html .= '<label>End Date</label><input type="text" class="input option datetimepicker" name="filters[' .
-			$this->field . '][enddate]"' . $maxDateString . ' value="' . $enddate . '" autocomplete="off"/>';
-		$html .= '</li></ul></fieldset>';
-		return $html;
-	}
+    /**
+     * Render form fields on the filter list
+     *
+     * @param   array   $counts  counts retrieved from solr search
+     * @param   array   $dateValues  list of options currently selected
+     * @return  string
+     */
+    public function renderHtml($counts, $dateValues)
+    {
+        $minDate = $this->params->get('minDate');
+        $maxDate = $this->params->get('maxDate');
+        $minDateString = !empty($minDate) ? 'data-mindate="' . $minDate . '" ' : '';
+        $maxDateString = !empty($maxDate) ? 'data-maxdate="' . $maxDate . '" ' : '';
+        $startdate = isset($dateValues['startdate']) ? $dateValues['startdate'] : '';
+        $enddate = isset($dateValues['enddate']) ? $dateValues['enddate'] : '';
+        $html = '<ul><li><fieldset class="search-filters"><legend>' . $this->label . '</legend>';
+        $html .= '<label>Start Date</label><input type="text" class="option datetimepicker" name="filters[' .
+            $this->field . '][startdate]"' . $minDateString . ' value="' . $startdate . '" autocomplete="off"/>';
+        $html .= '<label>End Date</label><input type="text" class="input option datetimepicker" name="filters[' .
+            $this->field . '][enddate]"' . $maxDateString . ' value="' . $enddate . '" autocomplete="off"/>';
+        $html .= '</li></ul></fieldset>';
+        return $html;
+    }
 
-	/**
-	 * Add selected filters to solr query
-	 *
-	 * @param   object   $query  Solarium object that builds the solr query
-	 * @param   array   $selectedFilters  list of options currently selected
-	 * @return  string
-	 */
-	public function applyFilters($query, $selectedFilters)
-	{
-		$filterField = strtolower($this->get('field'));
-		$selectedValues = isset($selectedFilters[$filterField]) ? $selectedFilters[$filterField] : array();
-		if (empty($selectedValues))
-		{
-			return false;
-		}
-		$queryName = ucfirst($filterField) . '_' . $this->get('id');
-		$startdate = !empty($selectedValues['startdate']) ? Date::of($selectedValues['startdate'])->format('Y-m-d\TH:i:s.999\Z') : '*';
-		$enddate = !empty($selectedValues['enddate']) ? Date::of($selectedValues['enddate'])->format('Y-m-d\TH:i:s.999\Z') : '*';
-		$facetString = '(' . $filterField . ':[' . $startdate . ' TO ' . $enddate . '])';
-		$query->addFilter($queryName, $facetString, array(strtolower($filterField) . '_type'));
-		return true;
-	}
+    /**
+     * Add selected filters to solr query
+     *
+     * @param   object   $query  Solarium object that builds the solr query
+     * @param   array   $selectedFilters  list of options currently selected
+     * @return  string
+     */
+    public function applyFilters($query, $selectedFilters)
+    {
+        $filterField = strtolower($this->get('field'));
+        $selectedValues = isset($selectedFilters[$filterField]) ? $selectedFilters[$filterField] : array();
+        if (empty($selectedValues)) {
+            return false;
+        }
+        $queryName = ucfirst($filterField) . '_' . $this->get('id');
+        $dateFormat = 'Y-m-d\TH:i:s.999\Z';
+        $startdate = !empty($selectedValues['startdate'])
+            ? Date::of($selectedValues['startdate'])->format($dateFormat) : '*';
+        $enddate = !empty($selectedValues['enddate'])
+            ? Date::of($selectedValues['enddate'])->format($dateFormat) : '*';
+        $facetString = '(' . $filterField . ':[' . $startdate . ' TO ' . $enddate . '])';
+        $query->addFilter($queryName, $facetString, array(strtolower($filterField) . '_type'));
+        return true;
+    }
 }

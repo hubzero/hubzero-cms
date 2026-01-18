@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,26 +19,20 @@ Toolbar::help('search');
 Html::behavior('framework');
 
 $context = array();
-if (array_key_exists('search-task', $_POST))
-{
-	foreach (Event::trigger('search.onSearchTask' . $_POST['search-task']) as $resp)
-	{
-		list($name, $html, $ctx) = $resp;
-		echo $html;
-		if (array_key_exists($name, $context))
-		{
-			$context[$name] = array_merge($context[$name], $ctx);
-		}
-		else
-		{
-			$context[$name] = $ctx;
-		}
-	}
+if (array_key_exists('search-task', $_POST)) {
+    foreach (Event::trigger('search.onSearchTask' . $_POST['search-task']) as $resp) {
+        list($name, $html, $ctx) = $resp;
+        echo $html;
+        if (array_key_exists($name, $context)) {
+            $context[$name] = array_merge($context[$name], $ctx);
+        } else {
+            $context[$name] = $ctx;
+        }
+    }
 }
 
-foreach (Event::trigger('search.onSearchAdministrate', array($context)) as $plugin)
-{
-	list($name, $html) = $plugin;
-	//echo '<h3>' . $name . '</h3>';
-	echo $html;
+foreach (Event::trigger('search.onSearchAdministrate', array($context)) as $plugin) {
+    list($name, $html) = $plugin;
+    //echo '<h3>' . $name . '</h3>';
+    echo $html;
 }

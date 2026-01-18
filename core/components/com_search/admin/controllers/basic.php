@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,27 +12,24 @@ namespace Components\Search\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 
-if (!function_exists('stem'))
-{
-	/**
-	 * Stem a string
-	 *
-	 * @param  string $str
-	 * @return string
-	 */
-	function stem($str)
-	{
-		return $str;
-	}
+if (!function_exists('stem')) {
+    /**
+     * Stem a string
+     *
+     * @param  string $str
+     * @return string
+     */
+    function stem($str)
+    {
+        return $str;
+    }
 }
 
-foreach (array('request', 'result', 'terms', 'authorization', 'documentmetadata') as $mdl)
-{
-	require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'basic' . DS . $mdl . '.php';
+foreach (array('request', 'result', 'terms', 'authorization', 'documentmetadata') as $mdl) {
+    require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'basic' . DS . $mdl . '.php';
 }
-foreach (array('assoc', 'assoclist', 'assocscalar', 'blank', 'set', 'sql') as $mdl)
-{
-	require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'basic' . DS . 'result' . DS . $mdl . '.php';
+foreach (array('assoc', 'assoclist', 'assocscalar', 'blank', 'set', 'sql') as $mdl) {
+    require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'basic' . DS . 'result' . DS . $mdl . '.php';
 }
 
 /**
@@ -37,13 +37,13 @@ foreach (array('assoc', 'assoclist', 'assocscalar', 'blank', 'set', 'sql') as $m
  */
 class Basic extends AdminController
 {
-	/**
-	 * Display search form and results (if any)
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		$this->view->display();
-	}
+    /**
+     * Display search form and results (if any)
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        $this->view->display();
+    }
 }
