@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,22 +8,19 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for adding component entry for com_installer
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20200731000000ComInstaller extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__custom_extensions'))
-		{
-				$query = "CREATE TABLE `#__custom_extensions` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__custom_extensions')) {
+                $query = "CREATE TABLE `#__custom_extensions` (
 					`extension_id` int(11) NOT NULL AUTO_INCREMENT,
 					`name` varchar(100) NOT NULL,
 					`alias` varchar(100) NOT NULL DEFAULT '',
@@ -42,21 +40,20 @@ class Migration20200731000000ComInstaller extends Base
 					PRIMARY KEY (`extension_id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-				$this->db->setQuery($query);
-				$this->db->query();
-		}
-	}
+                $this->db->setQuery($query);
+                $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__custom_extensions'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__custom_extensions`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__custom_extensions')) {
+            $query = "DROP TABLE IF EXISTS `#__custom_extensions`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

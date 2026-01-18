@@ -1,9 +1,12 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+// phpcs:disable PSR1.Files.SideEffects
 
 namespace Components\Installer\Admin\Controllers;
 
@@ -22,170 +25,159 @@ require_once dirname(__DIR__) . '/helpers/cli.php';
  */
 class Migrations extends AdminController
 {
-	/**
-	 * Display a list of uninstalled extensions
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		// Paging
-		$filters = array(
-			'folder' => urldecode(Request::getState(
-				$this->_option . '.' . $this->_controller . '.folder',
-				'folder',
-				''
-			)),
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
-			)
-		);
+    /**
+     * Display a list of uninstalled extensions
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        // Paging
+        $filters = array(
+            'folder' => urldecode(Request::getState(
+                $this->_option . '.' . $this->_controller . '.folder',
+                'folder',
+                ''
+            )),
+            'limit' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.limit',
+                'limit',
+                Config::get('list_limit'),
+                'int'
+            ),
+            'start' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.limitstart',
+                'limitstart',
+                0,
+                'int'
+            )
+        );
 
-		$breadcrumb = '';
-		if ($filters['folder'])
-		{
-			// Show that a filter is in place
-			$breadcrumb = $filters['folder'];
+        $breadcrumb = '';
+        if ($filters['folder']) {
+            // Show that a filter is in place
+            $breadcrumb = $filters['folder'];
 
-			// If the path does not start with a slash,
-			// assume relative to the ROOT path
-			if (substr($filters['folder'], 0, 1) != '/')
-			{
-				$filters['folder'] = PATH_ROOT . DS . $filters['folder'];
-			}
-		}
+            // If the path does not start with a slash,
+            // assume relative to the ROOT path
+            if (substr($filters['folder'], 0, 1) != '/') {
+                $filters['folder'] = PATH_ROOT . DS . $filters['folder'];
+            }
+        }
 
-		$rows  = array();
-		$total = 0;
+        $rows  = array();
+        $total = 0;
 
-		$migrations = json_decode(Cli::migration(true, true, null, 'up', $filters['folder']));
+        $migrations = json_decode(Cli::migration(true, true, null, 'up', $filters['folder']));
 
-		if ($migrations && count((array)$migrations) > 0)
-		{
-			foreach ($migrations as $status => $files)
-			{
-				$files = array_reverse($files);
-				foreach ($files as $entry)
-				{
-					$row = array(
-						'entry'  => $entry,
-						'status' => $status
-					);
-					$rows[] = $row;
-				}
-			}
-			$total = count($rows);
+        if ($migrations && count((array)$migrations) > 0) {
+            foreach ($migrations as $status => $files) {
+                $files = array_reverse($files);
+                foreach ($files as $entry) {
+                    $row = array(
+                        'entry'  => $entry,
+                        'status' => $status
+                    );
+                    $rows[] = $row;
+                }
+            }
+            $total = count($rows);
 
-			if ($total > $filters['limit'])
-			{
-				$rows = array_splice($rows, $filters['start'], $filters['limit']);
-			}
-		}
+            if ($total > $filters['limit']) {
+                $rows = array_splice($rows, $filters['start'], $filters['limit']);
+            }
+        }
 
-		// Output the HTML
-		$this->view
-			->set('filters', $filters)
-			->set('breadcrumb', $breadcrumb)
-			->set('total', $total)
-			->set('rows', $rows)
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('filters', $filters)
+            ->set('breadcrumb', $breadcrumb)
+            ->set('total', $total)
+            ->set('rows', $rows)
+            ->display();
+    }
 
-	/**
-	 * Perform up migration on single file
-	 *
-	 * @return  void
-	 */
-	public function migrateTask()
-	{
-		// Check authorization
-		if (!User::authorise('core.manage'))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+    /**
+     * Perform up migration on single file
+     *
+     * @return  void
+     */
+    public function migrateTask()
+    {
+        // Check authorization
+        if (!User::authorise('core.manage')) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		// Check for request forgeries
-		Request::checkToken('get');
+        // Check for request forgeries
+        Request::checkToken('get');
 
-		$file = Request::getString('file', null);
+        $file = Request::getString('file', null);
 
-		$response = Cli::migration(false, true, $file);
-		$response = json_decode($response);
+        $response = Cli::migration(false, true, $file);
+        $response = json_decode($response);
 
-		Notify::success(Lang::txt('COM_INSTALLER_MSG_MIGRATIONS_COMPLETE'));
+        Notify::success(Lang::txt('COM_INSTALLER_MSG_MIGRATIONS_COMPLETE'));
 
-		// Set the redirect
-		$this->cancelTask();
-	}
+        // Set the redirect
+        $this->cancelTask();
+    }
 
-	/**
-	 * Run UP migrations
-	 *
-	 * @return  void
-	 */
-	public function runupTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Run UP migrations
+     *
+     * @return  void
+     */
+    public function runupTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.manage'))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (!User::authorise('core.manage')) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		$migrations = Request::getArray('migration', array());
+        $migrations = Request::getArray('migration', array());
 
-		// Migrations are listed newest to oldest
-		// When running UP, we need to make sure everything is run oldest to newest
-		$migrations = array_reverse($migrations);
+        // Migrations are listed newest to oldest
+        // When running UP, we need to make sure everything is run oldest to newest
+        $migrations = array_reverse($migrations);
 
-		foreach ($migrations as $migration)
-		{
-			$response = Cli::migration(false, true, $migration, 'up');
-			$response = json_decode($response);
-		}
+        foreach ($migrations as $migration) {
+            $response = Cli::migration(false, true, $migration, 'up');
+            $response = json_decode($response);
+        }
 
-		Notify::success(Lang::txt('COM_INSTALLER_MSG_MIGRATIONS_COMPLETE'));
+        Notify::success(Lang::txt('COM_INSTALLER_MSG_MIGRATIONS_COMPLETE'));
 
-		// Set the redirect
-		$this->cancelTask();
-	}
+        // Set the redirect
+        $this->cancelTask();
+    }
 
-	/**
-	 * Run DOWN migrations
-	 *
-	 * @return  void
-	 */
-	public function rundownTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Run DOWN migrations
+     *
+     * @return  void
+     */
+    public function rundownTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.manage'))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (!User::authorise('core.manage')) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		$migrations = Request::getArray('migration', array());
+        $migrations = Request::getArray('migration', array());
 
-		foreach ($migrations as $migration)
-		{
-			$response = Cli::migration(false, true, $migration, 'down');
-			$response = json_decode($response);
-		}
+        foreach ($migrations as $migration) {
+            $response = Cli::migration(false, true, $migration, 'down');
+            $response = json_decode($response);
+        }
 
-		Notify::success(Lang::txt('COM_INSTALLER_MSG_MIGRATIONS_COMPLETE'));
+        Notify::success(Lang::txt('COM_INSTALLER_MSG_MIGRATIONS_COMPLETE'));
 
-		// Set the redirect
-		$this->cancelTask();
-	}
+        // Set the redirect
+        $this->cancelTask();
+    }
 }
