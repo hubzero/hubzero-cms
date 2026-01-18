@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+// phpcs:disable Generic.Files.LineLength.TooLong
+
 // No direct access
 defined('_HZEXEC_') or die();
 ?>
@@ -102,11 +104,11 @@ defined('_HZEXEC_') or die();
                 <h4>Response</h4>
                 <p>The response will be returned as JSON and takes the following form:</p>
                 <pre><code class="json">{
-	"access_token": "ac1cb855725c2eb8d5a3b29e70842fc3b5017293",
-	"expires_in": 14400,
-	"token_type": "Bearer",
-	"scope": null,
-	"refresh_token": "57c96d8372f7281572cb8063f0c9ad561ba8e903"
+    "access_token": "ac1cb855725c2eb8d5a3b29e70842fc3b5017293",
+    "expires_in": 14400,
+    "token_type": "Bearer",
+    "scope": null,
+    "refresh_token": "57c96d8372f7281572cb8063f0c9ad561ba8e903"
 }</code></pre>
             </div>
         </div>
@@ -160,11 +162,11 @@ defined('_HZEXEC_') or die();
                 <h4>Response</h4>
                 <p>The response will be returned as JSON and takes the following form:</p>
                 <pre><code class="json">{
-	"access_token": "ac1cb855725c2eb8d5a3b29e70842fc3b5017293",
-	"expires_in": 14400,
-	"token_type": "Bearer",
-	"scope": null,
-	"refresh_token": "57c96d8372f7281572cb8063f0c9ad561ba8e903"
+    "access_token": "ac1cb855725c2eb8d5a3b29e70842fc3b5017293",
+    "expires_in": 14400,
+    "token_type": "Bearer",
+    "scope": null,
+    "refresh_token": "57c96d8372f7281572cb8063f0c9ad561ba8e903"
 }</code></pre>
             </div>
         </div>
@@ -214,11 +216,11 @@ defined('_HZEXEC_') or die();
                 <h4>Response</h4>
                 <p>The response will be returned as JSON and takes the following form:</p>
                 <pre><code class="json">{
-	"access_token": "ac1cb855725c2eb8d5a3b29e70842fc3b5017293",
-	"expires_in": 14400,
-	"token_type": "Bearer",
-	"scope": null,
-	"refresh_token": "57c96d8372f7281572cb8063f0c9ad561ba8e903"
+    "access_token": "ac1cb855725c2eb8d5a3b29e70842fc3b5017293",
+    "expires_in": 14400,
+    "token_type": "Bearer",
+    "scope": null,
+    "refresh_token": "57c96d8372f7281572cb8063f0c9ad561ba8e903"
 }</code></pre>
             </div>
         </div>
@@ -251,10 +253,10 @@ defined('_HZEXEC_') or die();
                 <h4>Response</h4>
                 <p>The response will be returned as JSON and takes the following form:</p>
                 <pre><code class="json">{
-	"access_token": "ac1cb855725c2eb8d5a3b29e70842fc3b5017293",
-	"expires_in": 14400,
-	"token_type": "Bearer",
-	"scope": null
+    "access_token": "ac1cb855725c2eb8d5a3b29e70842fc3b5017293",
+    "expires_in": 14400,
+    "token_type": "Bearer",
+    "scope": null
 }</code></pre>
             </div>
         </div>
@@ -297,10 +299,10 @@ defined('_HZEXEC_') or die();
                 <h4>Response</h4>
                 <p>The response will be returned as JSON and takes the following form:</p>
                 <pre><code class="json">{
-	"access_token": "ac1cb855725c2eb8d5a3b29e70842fc3b5017293",
-	"expires_in": 14400,
-	"token_type": "Bearer",
-	"scope": null
+    "access_token": "ac1cb855725c2eb8d5a3b29e70842fc3b5017293",
+    "expires_in": 14400,
+    "token_type": "Bearer",
+    "scope": null
 }</code></pre>
             </div>
         </div>

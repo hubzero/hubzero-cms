@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,42 +18,42 @@ use Hubzero\Console\Arguments;
  **/
 class Developer extends Base implements CommandInterface
 {
-	/**
-	 * Default (required) command
-	 *
-	 * @return  void
-	 **/
-	public function execute()
-	{
-		$this->output = $this->output->getHelpOutput();
-		$this->help();
-		$this->output->render();
-		return;
-	}
+    /**
+     * Default (required) command
+     *
+     * @return  void
+     **/
+    public function execute()
+    {
+        $this->output = $this->output->getHelpOutput();
+        $this->help();
+        $this->output->render();
+        return;
+    }
 
-	/**
-	 * Revokes all oauth related tokens/codes
-	 * 
-	 * @return  void
-	 */
-	public function revoke()
-	{
-		App::get('client')->call('developer:accesstokens', 'revoke', $this->arguments, $this->output);
-		App::get('client')->call('developer:refreshtokens', 'revoke', $this->arguments, $this->output);
-		App::get('client')->call('developer:authorizationcodes', 'revoke', $this->arguments, $this->output);
-	}
+    /**
+     * Revokes all oauth related tokens/codes
+     *
+     * @return  void
+     */
+    public function revoke()
+    {
+        App::get('client')->call('developer:accesstokens', 'revoke', $this->arguments, $this->output);
+        App::get('client')->call('developer:refreshtokens', 'revoke', $this->arguments, $this->output);
+        App::get('client')->call('developer:authorizationcodes', 'revoke', $this->arguments, $this->output);
+    }
 
-	/**
-	 * Output help documentation
-	 *
-	 * @return  void
-	 **/
-	public function help()
-	{
-		$this
-			->output
-			->addOverview(
-				'Api developer related commands.'
-			);
-	}
+    /**
+     * Output help documentation
+     *
+     * @return  void
+     **/
+    public function help()
+    {
+        $this
+            ->output
+            ->addOverview(
+                'Api developer related commands.'
+            );
+    }
 }

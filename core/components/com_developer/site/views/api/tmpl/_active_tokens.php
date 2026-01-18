@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+// phpcs:disable Generic.Files.LineLength.TooLong
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -21,7 +23,7 @@ if (empty($this->tokens)) {
             can use to make API requests.</p>
 
         <div class="tokens-list">
-            <?php foreach ($this->tokens as $token): ?>
+            <?php foreach ($this->tokens as $token) : ?>
                 <div class="token-item">
                     <div class="token-display">
                         Token: <strong><?php echo htmlspecialchars($token->access_token); ?></strong> will expire on

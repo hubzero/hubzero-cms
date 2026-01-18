@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+// phpcs:disable Generic.Files.LineLength.TooLong
+
 // No direct access
 defined('_HZEXEC_') or die();
 

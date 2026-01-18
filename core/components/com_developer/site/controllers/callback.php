@@ -1,10 +1,12 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+// phpcs:disable PSR1.Files.SideEffects
 namespace Components\Developer\Site\Controllers;
 
 require_once \Component::path('com_projects') . '/models/orm/connection.php';
@@ -26,191 +28,177 @@ use App;
  */
 class Callback extends SiteController
 {
-	/**
-	 * Processes the dropbox callback from oauth authorize requests
-	 *
-	 * @return    void
-	 **/
-	public function dropboxAuthorizeTask()
-	{
-		$config = \Plugin::params('filesystem', 'dropbox');
-		$connectionId = Session::get('dropbox.connection_to_set_up', false);
-		$authorizationCode = Request::getString('code');
-		$localOriginUrl = Session::get('dropbox.local_origin_url');
-		$dropboxFilesUrl = "$localOriginUrl/browse?connection=$connectionId";
-		$oauthClient = new DropboxOauthClient();
-		$localState = Session::get('dropbox.state');
-		$returnedState = Request::getString('state');
+    /**
+     * Processes the dropbox callback from oauth authorize requests
+     *
+     * @return    void
+     **/
+    public function dropboxAuthorizeTask()
+    {
+        $config = \Plugin::params('filesystem', 'dropbox');
+        $connectionId = Session::get('dropbox.connection_to_set_up', false);
+        $authorizationCode = Request::getString('code');
+        $localOriginUrl = Session::get('dropbox.local_origin_url');
+        $dropboxFilesUrl = "$localOriginUrl/browse?connection=$connectionId";
+        $oauthClient = new DropboxOauthClient();
+        $localState = Session::get('dropbox.state');
+        $returnedState = Request::getString('state');
 
-		if ($returnedState != $localState)
-		{
-			Notify::error("Security concern: OAuth state incongruency<br/><br/>Contact support on multiple failures");
-			App::redirect($localOriginUrl);
-		}
+        if ($returnedState != $localState) {
+            Notify::error("Security concern: OAuth state incongruency<br/><br/>Contact support on multiple failures");
+            App::redirect($localOriginUrl);
+        }
 
-		$accessToken = $oauthClient->getAccessToken($authorizationCode);
+        $accessToken = $oauthClient->getAccessToken($authorizationCode);
 
-		//if this is a new connection, we can save the token on the server to ensure that it is used next time
-		if ($connectionId)
-		{
-			$connection = \Components\Projects\Models\Orm\Connection::oneOrFail($connectionId);
-			$connectionParams = json_decode($config);
-			$connectionParams->app_token = $accessToken;
-			$connection->set('params', json_encode($connectionParams));
-			$connection->save();
-		}
+        //if this is a new connection, we can save the token on the server to ensure that it is used next time
+        if ($connectionId) {
+            $connection = \Components\Projects\Models\Orm\Connection::oneOrFail($connectionId);
+            $connectionParams = json_decode($config);
+            $connectionParams->app_token = $accessToken;
+            $connection->set('params', json_encode($connectionParams));
+            $connection->save();
+        }
 
-		App::redirect($dropboxFilesUrl);
-	}
+        App::redirect($dropboxFilesUrl);
+    }
 
-	/**
-	 * Processes the github callback from oauth authorize requests
-	 *
-	 * @return    void
-	 **/
-	public function githubAuthorizeTask()
-	{
-		$pparams = \Plugin::params('filesystem', 'github');
-		$new_connection = Session::get('github.connection_to_set_up', false);
+    /**
+     * Processes the github callback from oauth authorize requests
+     *
+     * @return    void
+     **/
+    public function githubAuthorizeTask()
+    {
+        $pparams = \Plugin::params('filesystem', 'github');
+        $new_connection = Session::get('github.connection_to_set_up', false);
 
-		if (!$code = Request::getString('code'))
-		{
-			throw new \Exception("No code found", 400);
-		}
-		if (!$state = Request::getString('state'))
-		{
-			throw new \Exception("No state found", 400);
-		}
-		if ($state != Session::get('github.state'))
-		{
-			throw new \Exception("State mismatch", 500);
-		}
-		if (!$repo = Session::get('github.repo'))
-		{
-			throw new \Exception("No repository", 500);
-		}
+        if (!$code = Request::getString('code')) {
+            throw new \Exception("No code found", 400);
+        }
+        if (!$state = Request::getString('state')) {
+            throw new \Exception("No state found", 400);
+        }
+        if ($state != Session::get('github.state')) {
+            throw new \Exception("State mismatch", 500);
+        }
+        if (!$repo = Session::get('github.repo')) {
+            throw new \Exception("No repository", 500);
+        }
 
-		$url = 'https://github.com/login/oauth/access_token';
-		$fields = array(
-			'client_id'     => isset($app_key) ? $app_key : $pparams->get('app_key'),
-			'client_secret' => isset($app_secret) ? $app_secret : $pparams->get('app_secret'),
-			'code'          => $code,
-			'state'         => $state
-		);
-		$ch = curl_init();
+        $url = 'https://github.com/login/oauth/access_token';
+        $fields = array(
+            'client_id'     => isset($app_key) ? $app_key : $pparams->get('app_key'),
+            'client_secret' => isset($app_secret) ? $app_secret : $pparams->get('app_secret'),
+            'code'          => $code,
+            'state'         => $state
+        );
+        $ch = curl_init();
 
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, count($fields));
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, count($fields));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
 
-		$result = curl_exec($ch);
+        $result = curl_exec($ch);
 
-		curl_close($ch);
+        curl_close($ch);
 
-		$data = json_decode($result);
+        $data = json_decode($result);
 
-		if ($new_connection && $data)
-		{
-			$connection = \Components\Projects\Models\Orm\Connection::oneOrFail($new_connection);
-			$connection_params = json_decode($pparams);
-			$connection_params->access_token = $data->access_token;
-			$connection_params->repository = $repo;
-			$connection->set('params', json_encode($connection_params));
-			$connection->save();
-		}
+        if ($new_connection && $data) {
+            $connection = \Components\Projects\Models\Orm\Connection::oneOrFail($new_connection);
+            $connection_params = json_decode($pparams);
+            $connection_params->access_token = $data->access_token;
+            $connection_params->repository = $repo;
+            $connection->set('params', json_encode($connection_params));
+            $connection->save();
+        }
 
-		// Redirect to the local endpoint
+        // Redirect to the local endpoint
 
-		// Redirect to the local endpoint
-		App::redirect(base64_decode($state));
-	}
+        // Redirect to the local endpoint
+        App::redirect(base64_decode($state));
+    }
 
-	/**
-	 * Processes the Globus callback from oauth authorize requests
-	 *
-	 * @return    void
-	 **/
-	public function globusAuthorizeTask()
-	{
-		$params = \Plugin::params('filesystem', 'globus');
+    /**
+     * Processes the Globus callback from oauth authorize requests
+     *
+     * @return    void
+     **/
+    public function globusAuthorizeTask()
+    {
+        $params = \Plugin::params('filesystem', 'globus');
 
-		if (!$code = Request::getString('code'))
-		{
-			throw new \Exception("No code found", 400);
-		}
+        if (!$code = Request::getString('code')) {
+            throw new \Exception("No code found", 400);
+        }
 
-		// Check state
-		if (!$state = Request::getString('state'))
-		{
-			throw new \Exception("No state found", 400);
-		}
-		if ($state != Session::get('globus.state'))
-		{
-			throw new \Exception("State mismatch", 500);
-		}
+        // Check state
+        if (!$state = Request::getString('state')) {
+            throw new \Exception("No state found", 400);
+        }
+        if ($state != Session::get('globus.state')) {
+            throw new \Exception("State mismatch", 500);
+        }
 
-		$provider = new \League\OAuth2\Client\Provider\Globus([
-			'clientId'     => $params->get('app_key'),
-			'clientSecret' => $params->get('app_secret'),
-			'redirectUri'  => trim(Request::base(), '/') . '/developer/callback/globusAuthorize'
-		]);
+        $provider = new \League\OAuth2\Client\Provider\Globus([
+            'clientId'     => $params->get('app_key'),
+            'clientSecret' => $params->get('app_secret'),
+            'redirectUri'  => trim(Request::base(), '/') . '/developer/callback/globusAuthorize'
+        ]);
 
-		// Try to get an access token using the authorization code grant
-		$accessToken = $provider->getAccessToken('authorization_code', [
-			'code' => $code
-		]);
+        // Try to get an access token using the authorization code grant
+        $accessToken = $provider->getAccessToken('authorization_code', [
+            'code' => $code
+        ]);
 
-		\Session::set('globus.token', $accessToken);
+        \Session::set('globus.token', $accessToken);
 
-		// Redirect to the local endpoint
-		App::redirect(base64_decode($state));
-	}
+        // Redirect to the local endpoint
+        App::redirect(base64_decode($state));
+    }
 
-	/**
-	 * Processes the google callback from oauth authorize requests
-	 *
-	 * @return    void
-	 **/
-	public function googledriveAuthorizeTask()
-	{
-		$pparams = \Plugin::params('filesystem', 'googledrive');
+    /**
+     * Processes the google callback from oauth authorize requests
+     *
+     * @return    void
+     **/
+    public function googledriveAuthorizeTask()
+    {
+        $pparams = \Plugin::params('filesystem', 'googledrive');
 
-		$new_connection = Session::get('googledrive.connection_to_set_up', false);
+        $new_connection = Session::get('googledrive.connection_to_set_up', false);
 
-		$client = new \Google_Client();
-		$client->setClientId($pparams->get('app_id'));
-		$client->setClientSecret($pparams->get('app_secret'));
-		$client->addScope(\Google_Service_Drive::DRIVE);
-		$client->setAccessType('offline');
-		$client->setApprovalPrompt('force');
-		$redirectUri      = trim(Request::root(), '/') . '/developer/callback/googledriveAuthorize';
-		$client->setRedirectUri($redirectUri);
+        $client = new \Google_Client();
+        $client->setClientId($pparams->get('app_id'));
+        $client->setClientSecret($pparams->get('app_secret'));
+        $client->addScope(\Google_Service_Drive::DRIVE);
+        $client->setAccessType('offline');
+        $client->setApprovalPrompt('force');
+        $redirectUri      = trim(Request::root(), '/') . '/developer/callback/googledriveAuthorize';
+        $client->setRedirectUri($redirectUri);
 
-		$code = Request::get('code', false);
+        $code = Request::get('code', false);
 
-		if ($code)
-		{
-			$client->fetchAccessTokenWithAuthCode($code);
-			$accessToken = $client->getAccessToken();
-		}
-		else
-		{
-			throw new \Exception("No state found", 400);
-		}
+        if ($code) {
+            $client->fetchAccessTokenWithAuthCode($code);
+            $accessToken = $client->getAccessToken();
+        } else {
+            throw new \Exception("No state found", 400);
+        }
 
-		//if this is a new connection, we can save the token on the server to ensure that it is used next time
-		if ($new_connection)
-		{
-			$connection = \Components\Projects\Models\Orm\Connection::oneOrFail($new_connection);
-			$connection_params = new \StdClass;
-			$connection_params->app_token = $accessToken;
-			$connection->set('params', json_encode($connection_params));
-			$connection->save();
-		}
+        //if this is a new connection, we can save the token on the server to ensure that it is used next time
+        if ($new_connection) {
+            $connection = \Components\Projects\Models\Orm\Connection::oneOrFail($new_connection);
+            $connection_params = new \StdClass();
+            $connection_params->app_token = $accessToken;
+            $connection->set('params', json_encode($connection_params));
+            $connection->save();
+        }
 
-		// Redirect to the local endpoint
-		App::redirect(base64_decode(\Session::get('googledrive.state')));
-	}
+        // Redirect to the local endpoint
+        App::redirect(base64_decode(\Session::get('googledrive.state')));
+    }
 }

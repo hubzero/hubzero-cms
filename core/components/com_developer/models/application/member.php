@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,74 +16,72 @@ use Hubzero\User\User;
  */
 class Member extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var string
-	 */
-	protected $namespace = 'developer_application_team';
+    /**
+     * The table namespace
+     *
+     * @var string
+     */
+    protected $namespace = 'developer_application_team';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var string
-	 */
-	public $orderBy = 'application_id';
+    /**
+     * Default order by for model
+     *
+     * @var string
+     */
+    public $orderBy = 'application_id';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'application_id' => 'positive|nonzero',
-		'uidNumber'      => 'positive|nonzero'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'application_id' => 'positive|nonzero',
+        'uidNumber'      => 'positive|nonzero'
+    );
 
-	/**
-	 * Get Profile Object from user id
-	 * 
-	 * @return  object  Profile object
-	 */
-	public function getProfile()
-	{
-		return User::oneOrNew($this->get('uidNumber'));
-	}
+    /**
+     * Get Profile Object from user id
+     *
+     * @return  object  Profile object
+     */
+    public function getProfile()
+    {
+        return User::oneOrNew($this->get('uidNumber'));
+    }
 
-	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 *
-	 * @param   string  $type  The type of link to return
-	 * @return  string
-	 */
-	public function link($type='')
-	{
-		static $base;
+    /**
+     * Generate and return various links to the entry
+     * Link will vary depending upon action desired, such as edit, delete, etc.
+     *
+     * @param   string  $type  The type of link to return
+     * @return  string
+     */
+    public function link($type = '')
+    {
+        static $base;
 
-		if (!isset($base))
-		{
-			$base = 'index.php?option=com_developer&controller=applications&id=' . $this->get('application_id');
-		}
+        if (!isset($base)) {
+            $base = 'index.php?option=com_developer&controller=applications&id=' . $this->get('application_id');
+        }
 
-		$link = $base;
+        $link = $base;
 
-		// If it doesn't exist or isn't published
-		switch (strtolower($type))
-		{
-			case 'remove':
-			default:
-				$link .= '&task=removemember&uidNumber=' . $this->get('uidNumber');
-			break;
-		}
+        // If it doesn't exist or isn't published
+        switch (strtolower($type)) {
+            case 'remove':
+            default:
+                $link .= '&task=removemember&uidNumber=' . $this->get('uidNumber');
+                break;
+        }
 
-		return $link;
-	}
+        return $link;
+    }
 }

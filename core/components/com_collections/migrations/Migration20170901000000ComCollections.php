@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,22 +8,19 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for installing collections tables
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComCollections extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__collections'))
-		{
-			$query = "CREATE TABLE `#__collections` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__collections')) {
+            $query = "CREATE TABLE `#__collections` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `title` varchar(255) NOT NULL DEFAULT '',
 			  `alias` varchar(255) NOT NULL,
@@ -45,13 +43,12 @@ class Migration20170901000000ComCollections extends Base
 			  KEY `idx_created_by` (`created_by`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__collections_items'))
-		{
-			$query = "CREATE TABLE `#__collections_items` (
+        if (!$this->db->tableExists('#__collections_items')) {
+            $query = "CREATE TABLE `#__collections_items` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `title` varchar(255) NOT NULL DEFAULT '',
 			  `description` mediumtext NOT NULL,
@@ -73,13 +70,12 @@ class Migration20170901000000ComCollections extends Base
 			  FULLTEXT KEY `idx_fulltxt_title_description` (`title`,`description`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__collections_posts'))
-		{
-			$query = "CREATE TABLE `#__collections_posts` (
+        if (!$this->db->tableExists('#__collections_posts')) {
+            $query = "CREATE TABLE `#__collections_posts` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `created` datetime DEFAULT NULL,
 			  `created_by` int(11) NOT NULL DEFAULT '0',
@@ -95,13 +91,12 @@ class Migration20170901000000ComCollections extends Base
 			  FULLTEXT KEY `idx_fulltxt_description` (`description`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__collections_assets'))
-		{
-			$query = "CREATE TABLE `#__collections_assets` (
+        if (!$this->db->tableExists('#__collections_assets')) {
+            $query = "CREATE TABLE `#__collections_assets` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `item_id` int(11) NOT NULL DEFAULT '0',
 			  `created` datetime DEFAULT NULL,
@@ -117,13 +112,12 @@ class Migration20170901000000ComCollections extends Base
 			  KEY `idx_state` (`state`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__collections_votes'))
-		{
-			$query = "CREATE TABLE `#__collections_votes` (
+        if (!$this->db->tableExists('#__collections_votes')) {
+            $query = "CREATE TABLE `#__collections_votes` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `user_id` int(11) NOT NULL DEFAULT '0',
 			  `item_id` int(11) NOT NULL DEFAULT '0',
@@ -132,13 +126,12 @@ class Migration20170901000000ComCollections extends Base
 			  KEY `idx_item_id_user_id` (`item_id`,`user_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__collections_following'))
-		{
-			$query = "CREATE TABLE `#__collections_following` (
+        if (!$this->db->tableExists('#__collections_following')) {
+            $query = "CREATE TABLE `#__collections_following` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `follower_type` varchar(150) NOT NULL,
 			  `follower_id` int(11) NOT NULL DEFAULT '0',
@@ -150,56 +143,50 @@ class Migration20170901000000ComCollections extends Base
 			  KEY `idx_following_type_following_id` (`following_type`,`following_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__collections'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__collections`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__collections')) {
+            $query = "DROP TABLE IF EXISTS `#__collections`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__collections_items'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__collections_items`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__collections_items')) {
+            $query = "DROP TABLE IF EXISTS `#__collections_items`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__collections_posts'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__collections_posts`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__collections_posts')) {
+            $query = "DROP TABLE IF EXISTS `#__collections_posts`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__collections_assets'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__collections_assets`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__collections_assets')) {
+            $query = "DROP TABLE IF EXISTS `#__collections_assets`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__collections_votes'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__collections_votes`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__collections_votes')) {
+            $query = "DROP TABLE IF EXISTS `#__collections_votes`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__collections_following'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__collections_following`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__collections_following')) {
+            $query = "DROP TABLE IF EXISTS `#__collections_following`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

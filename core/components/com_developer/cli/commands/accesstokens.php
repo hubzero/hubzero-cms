@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,51 +20,48 @@ use Hubzero\Database\Exception\QueryFailedException;
  **/
 class Accesstokens extends Base implements CommandInterface
 {
-	/**
-	 * Default (required) command
-	 *
-	 * @return void
-	 **/
-	public function execute()
-	{
-		$this->output = $this->output->getHelpOutput();
-		$this->help();
-		$this->output->render();
-		return;
-	}
+    /**
+     * Default (required) command
+     *
+     * @return void
+     **/
+    public function execute()
+    {
+        $this->output = $this->output->getHelpOutput();
+        $this->help();
+        $this->output->render();
+        return;
+    }
 
-	/**
-	 * Delete all access tokens
-	 *
-	 * @return void
-	 **/
-	public function revoke()
-	{
-		// Attempt to delete tokens
-		try
-		{
-			with(new Query)->delete('#__developer_access_tokens')->execute();
-		}
-		catch (QueryFailedException $e)
-		{
-			$this->output->error('Error:' . $e->getMessage());
-		}
+    /**
+     * Delete all access tokens
+     *
+     * @return void
+     **/
+    public function revoke()
+    {
+        // Attempt to delete tokens
+        try {
+            with(new Query())->delete('#__developer_access_tokens')->execute();
+        } catch (QueryFailedException $e) {
+            $this->output->error('Error:' . $e->getMessage());
+        }
 
-		// Successfully deleted tokens
-		$this->output->addLine('All access tokens successfully revoked.', 'success');
-	}
+        // Successfully deleted tokens
+        $this->output->addLine('All access tokens successfully revoked.', 'success');
+    }
 
-	/**
-	 * Output help documentation
-	 *
-	 * @return void
-	 **/
-	public function help()
-	{
-		$this
-			->output
-			->addOverview(
-				'Api access token related commands.'
-			);
-	}
+    /**
+     * Output help documentation
+     *
+     * @return void
+     **/
+    public function help()
+    {
+        $this
+            ->output
+            ->addOverview(
+                'Api access token related commands.'
+            );
+    }
 }

@@ -1,10 +1,12 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+// phpcs:disable PSR1.Files.SideEffects
 namespace Components\Collections\Models\Orm;
 
 use Hubzero\Database\Relational;
@@ -16,63 +18,63 @@ require_once __DIR__ . DS . 'item.php';
  */
 class Vote extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = 'collections';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    protected $namespace = 'collections';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'created';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'created';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'desc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'desc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'user_id' => 'positive|nonzero',
-		'item_id' => 'positive|nonzero'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'user_id' => 'positive|nonzero',
+        'item_id' => 'positive|nonzero'
+    );
 
-	/**
-	 * Automatic fields to populate every time a row is created
-	 *
-	 * @var  array
-	 */
-	public $initiate = array(
-		'voted'
-	);
+    /**
+     * Automatic fields to populate every time a row is created
+     *
+     * @var  array
+     */
+    public $initiate = array(
+        'voted'
+    );
 
-	/**
-	 * Get represented item
-	 *
-	 * @return  object
-	 */
-	public function item()
-	{
-		return $this->belongsToOne(__NAMESPACE__ . '\\Item', 'item_id');
-	}
+    /**
+     * Get represented item
+     *
+     * @return  object
+     */
+    public function item()
+    {
+        return $this->belongsToOne(__NAMESPACE__ . '\\Item', 'item_id');
+    }
 
-	/**
-	 * Get represented item
-	 *
-	 * @return  object
-	 */
-	public function user()
-	{
-		return $this->belongsToOne('Hubzero\User\User', 'user_id');
-	}
+    /**
+     * Get represented item
+     *
+     * @return  object
+     */
+    public function user()
+    {
+        return $this->belongsToOne('Hubzero\User\User', 'user_id');
+    }
 }

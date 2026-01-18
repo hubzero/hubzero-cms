@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,269 +23,256 @@ use App;
  */
 class Posts extends AdminController
 {
-	/**
-	 * Execute a task
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		$this->registerTask('add', 'edit');
-		$this->registerTask('apply', 'save');
+    /**
+     * Execute a task
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        $this->registerTask('add', 'edit');
+        $this->registerTask('apply', 'save');
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * Display a list of all categories
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		// Get filters
-		$filters = array(
-			'collection_id' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.collection_id',
-				'collection_id',
-				0,
-				'int'
-			),
-			'item_id' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.item_id',
-				'item_id',
-				0,
-				'int'
-			),
-			'sort' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sort',
-				'filter_order',
-				'created'
-			),
-			'sort_Dir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortdir',
-				'filter_order_Dir',
-				'DESC'
-			),
-			'search' => urldecode(Request::getState(
-				$this->_option . '.' . $this->_controller . '.search',
-				'search',
-				''
-			)),
-			'state' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.state',
-				'state',
-				'-1'
-			),
-			'access' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.access',
-				'access',
-				'-1'
-			)
-		);
+    /**
+     * Display a list of all categories
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        // Get filters
+        $filters = array(
+            'collection_id' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.collection_id',
+                'collection_id',
+                0,
+                'int'
+            ),
+            'item_id' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.item_id',
+                'item_id',
+                0,
+                'int'
+            ),
+            'sort' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sort',
+                'filter_order',
+                'created'
+            ),
+            'sort_Dir' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sortdir',
+                'filter_order_Dir',
+                'DESC'
+            ),
+            'search' => urldecode(Request::getState(
+                $this->_option . '.' . $this->_controller . '.search',
+                'search',
+                ''
+            )),
+            'state' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.state',
+                'state',
+                '-1'
+            ),
+            'access' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.access',
+                'access',
+                '-1'
+            )
+        );
 
-		$model = Post::all()
-			->including(['creator', function ($creator){
-				$creator->select('*');
-			}]);
+        $model = Post::all()
+            ->including(['creator', function ($creator) {
+                $creator->select('*');
+            }]);
 
-		$p = $model->getTableName();
+        $p = $model->getTableName();
 
-		$model->select($p . '.*');
+        $model->select($p . '.*');
 
-		if ($filters['search'])
-		{
-			$i = Item::blank()->getTableName();
+        if ($filters['search']) {
+            $i = Item::blank()->getTableName();
 
-			$model->join($i, $i . '.id', $p . '.item_id', 'left');
+            $model->join($i, $i . '.id', $p . '.item_id', 'left');
 
-			$model->whereLike($p . '.description', strtolower((string)$filters['search']), 1)
-				->orWhereLike($i . '.title', strtolower((string)$filters['search']), 1)
-				->resetDepth();
-		}
+            $model->whereLike($p . '.description', strtolower((string)$filters['search']), 1)
+                ->orWhereLike($i . '.title', strtolower((string)$filters['search']), 1)
+                ->resetDepth();
+        }
 
-		if ($filters['state'] >= 0)
-		{
-			$model->whereEquals($p . '.state', $filters['state']);
-		}
+        if ($filters['state'] >= 0) {
+            $model->whereEquals($p . '.state', $filters['state']);
+        }
 
-		if ($filters['access'] >= 0)
-		{
-			$model->whereEquals($p . '.access', (int)$filters['access']);
-		}
+        if ($filters['access'] >= 0) {
+            $model->whereEquals($p . '.access', (int)$filters['access']);
+        }
 
-		if ($filters['collection_id'])
-		{
-			$model->whereEquals($p . '.collection_id', $filters['collection_id']);
-		}
+        if ($filters['collection_id']) {
+            $model->whereEquals($p . '.collection_id', $filters['collection_id']);
+        }
 
-		if ($filters['item_id'])
-		{
-			$model->whereEquals($p . '.item_id', $filters['item_id']);
-		}
+        if ($filters['item_id']) {
+            $model->whereEquals($p . '.item_id', $filters['item_id']);
+        }
 
-		// Get records
-		$rows = $model
-			->ordered('filter_order', 'filter_order_Dir')
-			->paginated('limitstart', 'limit')
-			->rows();
+        // Get records
+        $rows = $model
+            ->ordered('filter_order', 'filter_order_Dir')
+            ->paginated('limitstart', 'limit')
+            ->rows();
 
-		if (Request::getCmd('tmpl') == 'component')
-		{
-			$this->view->setLayout('display_alt');
-		}
+        if (Request::getCmd('tmpl') == 'component') {
+            $this->view->setLayout('display_alt');
+        }
 
-		// Output the HTML
-		$this->view
-			->set('filters', $filters)
-			->set('rows', $rows)
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('filters', $filters)
+            ->set('rows', $rows)
+            ->display();
+    }
 
-	/**
-	 * Edit a post
-	 *
-	 * @return  void
-	 */
-	public function editTask($row=null)
-	{
-		Request::setVar('hidemainmenu', 1);
+    /**
+     * Edit a post
+     *
+     * @return  void
+     */
+    public function editTask($row = null)
+    {
+        Request::setVar('hidemainmenu', 1);
 
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (
+            !User::authorise('core.edit', $this->_option)
+            && !User::authorise('core.create', $this->_option)
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		if (!is_object($row))
-		{
-			// Incoming
-			$id = Request::getArray('id', array(0));
+        if (!is_object($row)) {
+            // Incoming
+            $id = Request::getArray('id', array(0));
 
-			if (is_array($id))
-			{
-				$id = (!empty($id) ? $id[0] : 0);
-			}
+            if (is_array($id)) {
+                $id = (!empty($id) ? $id[0] : 0);
+            }
 
-			// Load record
-			$row = Post::oneOrNew($id);
-		}
+            // Load record
+            $row = Post::oneOrNew($id);
+        }
 
-		$this->view
-			->set('row', $row)
-			->setLayout('edit')
-			->display();
-	}
+        $this->view
+            ->set('row', $row)
+            ->setLayout('edit')
+            ->display();
+    }
 
-	/**
-	 * Save an entry
-	 *
-	 * @return  void
-	 */
-	public function saveTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Save an entry
+     *
+     * @return  void
+     */
+    public function saveTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (
+            !User::authorise('core.edit', $this->_option)
+            && !User::authorise('core.create', $this->_option)
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		// Incoming
-		$fields = Request::getArray('fields', array(), 'post', 'none', 2);
+        // Incoming
+        $fields = Request::getArray('fields', array(), 'post', 'none', 2);
 
-		// Initiate model
-		$row = Post::oneOrNew($fields['id'])->set($fields);
+        // Initiate model
+        $row = Post::oneOrNew($fields['id'])->set($fields);
 
-		// Store new content
-		if (!$row->save())
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
+        // Store new content
+        if (!$row->save()) {
+            Notify::error($row->getError());
+            return $this->editTask($row);
+        }
 
-		// Process tags
-		//$row->tag(trim(Request::getString('tags', '')));
+        // Process tags
+        //$row->tag(trim(Request::getString('tags', '')));
 
-		Notify::success(Lang::txt('COM_COLLECTIONS_POST_SAVED'));
+        Notify::success(Lang::txt('COM_COLLECTIONS_POST_SAVED'));
 
-		if ($this->getTask() == 'apply')
-		{
-			return $this->editTask($row);
-		}
+        if ($this->getTask() == 'apply') {
+            return $this->editTask($row);
+        }
 
-		// Set the redirect
-		$this->cancelTask();
-	}
+        // Set the redirect
+        $this->cancelTask();
+    }
 
-	/**
-	 * Delete one or more entries
-	 *
-	 * @return  void
-	 */
-	public function removeTask()
-	{
-		// Check for request forgeries
-		Request::checkToken(['get', 'post']);
+    /**
+     * Delete one or more entries
+     *
+     * @return  void
+     */
+    public function removeTask()
+    {
+        // Check for request forgeries
+        Request::checkToken(['get', 'post']);
 
-		if (!User::authorise('core.delete', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (!User::authorise('core.delete', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		// Incoming
-		$ids = Request::getArray('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
-		$i = 0;
+        // Incoming
+        $ids = Request::getArray('id', array());
+        $ids = (!is_array($ids) ? array($ids) : $ids);
+        $i = 0;
 
-		if (count($ids) > 0)
-		{
-			// Loop through all the IDs
-			foreach ($ids as $id)
-			{
-				$entry = Post::oneOrFail(intval($id));
+        if (count($ids) > 0) {
+            // Loop through all the IDs
+            foreach ($ids as $id) {
+                $entry = Post::oneOrFail(intval($id));
 
-				// Delete the entry
-				if (!$entry->destroy())
-				{
-					Notify::error($entry->getError());
-					continue;
-				}
+                // Delete the entry
+                if (!$entry->destroy()) {
+                    Notify::error($entry->getError());
+                    continue;
+                }
 
-				$i++;
-			}
-		}
+                $i++;
+            }
+        }
 
-		if ($i)
-		{
-			Notify::success(Lang::txt('COM_COLLECTIONS_ITEMS_DELETED'));
-		}
+        if ($i) {
+            Notify::success(Lang::txt('COM_COLLECTIONS_ITEMS_DELETED'));
+        }
 
-		// Set the redirect
-		$this->cancelTask();
-	}
+        // Set the redirect
+        $this->cancelTask();
+    }
 
-	/**
-	 * Cancel a task
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		$item_id = Request::getInt('item_id');
-		$item_id = ($item_id ? '&item_id=' . $item_id : '');
+    /**
+     * Cancel a task
+     *
+     * @return  void
+     */
+    public function cancelTask()
+    {
+        $item_id = Request::getInt('item_id');
+        $item_id = ($item_id ? '&item_id=' . $item_id : '');
 
-		$collection_id = Request::getInt('collection_id');
-		$collection_id = ($collection_id ? '&collection_id=' . $collection_id : '');
+        $collection_id = Request::getInt('collection_id');
+        $collection_id = ($collection_id ? '&collection_id=' . $collection_id : '');
 
-		$tmpl = Request::getCmd('tmpl');
-		$tmpl = ($tmpl ? '&tmpl=' . $tmpl : '');
+        $tmpl = Request::getCmd('tmpl');
+        $tmpl = ($tmpl ? '&tmpl=' . $tmpl : '');
 
-		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $item_id . $collection_id . $tmpl, false)
-		);
-	}
+        // Set the redirect
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . $item_id . $collection_id . $tmpl;
+        App::redirect(Route::url($url, false));
+    }
 }
