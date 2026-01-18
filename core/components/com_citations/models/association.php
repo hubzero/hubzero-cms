@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,34 +17,34 @@ use Hubzero\Database\Relational;
  */
 class Association extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var string
-	 **/
-	protected $namespace = 'citations';
+    /**
+     * The table namespace
+     *
+     * @var string
+     **/
+    protected $namespace = 'citations';
 
-	/**
-	 * The table name, non-standard naming 
-	 *
-	 * @var  string
-	 */
-	protected $table = '#__citations_assoc';
+    /**
+     * The table name, non-standard naming
+     *
+     * @var  string
+     */
+    protected $table = '#__citations_assoc';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var string
-	 **/
-	public $orderBy = 'id';
+    /**
+     * Default order by for model
+     *
+     * @var string
+     **/
+    public $orderBy = 'id';
 
-	/**
-	 * Establish relationship to citation
-	 *
-	 * @return  object
-	 **/
-	public function citation()
-	{
-		return $this->belongsToOne('Citation', 'cid');
-	}
+    /**
+     * Establish relationship to citation
+     *
+     * @return  object
+     **/
+    public function citation()
+    {
+        return $this->belongsToOne('Citation', 'cid');
+    }
 }

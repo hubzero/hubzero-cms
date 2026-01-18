@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,142 +24,138 @@ use App;
  */
 class Types extends AdminController
 {
-	/**
-	 * Execute a task
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		$this->registerTask('add', 'edit');
-		$this->registerTask('apply', 'save');
+    /**
+     * Execute a task
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        $this->registerTask('add', 'edit');
+        $this->registerTask('apply', 'save');
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * List types
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		$types = Type::all();
+    /**
+     * List types
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        $types = Type::all();
 
-		// Output the HTML
-		$this->view
-			->set('types', $types)
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('types', $types)
+            ->display();
+    }
 
-	/**
-	 * Edit a type
-	 *
-	 * @param   object  $row
-	 * @return  void
-	 */
-	public function editTask($row=null)
-	{
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+    /**
+     * Edit a type
+     *
+     * @param   object  $row
+     * @return  void
+     */
+    public function editTask($row = null)
+    {
+        if (
+            !User::authorise('core.edit', $this->_option)
+            && !User::authorise('core.create', $this->_option)
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		Request::setVar('hidemainmenu', 1);
+        Request::setVar('hidemainmenu', 1);
 
-		if (!($row instanceof Type))
-		{
-			// Incoming
-			$id = Request::getArray('id', array(0));
-			if (is_array($id) && !empty($id))
-			{
-				$id = $id[0];
-			}
+        if (!($row instanceof Type)) {
+            // Incoming
+            $id = Request::getArray('id', array(0));
+            if (is_array($id) && !empty($id)) {
+                $id = $id[0];
+            }
 
-			$row = Type::oneOrNew($id);
-		}
+            $row = Type::oneOrNew($id);
+        }
 
-		// Output the HTML
-		$this->view
-			->set('config', $this->config)
-			->set('type', $row)
-			->setLayout('edit')
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('config', $this->config)
+            ->set('type', $row)
+            ->setLayout('edit')
+            ->display();
+    }
 
-	/**
-	 * Save a type
-	 *
-	 * @return  void
-	 */
-	public function saveTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Save a type
+     *
+     * @return  void
+     */
+    public function saveTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (
+            !User::authorise('core.edit', $this->_option)
+            && !User::authorise('core.create', $this->_option)
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		$fields = Request::getArray('type', array(), 'post');
-		$typeId = !empty($fields['id']) ? $fields['id'] : null;
-		unset($fields['id']);
+        $fields = Request::getArray('type', array(), 'post');
+        $typeId = !empty($fields['id']) ? $fields['id'] : null;
+        unset($fields['id']);
 
-		$row = Type::oneOrNew($typeId);
-		$row->set($fields);
+        $row = Type::oneOrNew($typeId);
+        $row->set($fields);
 
-		// Store new content
-		if (!$row->save())
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
+        // Store new content
+        if (!$row->save()) {
+            Notify::error($row->getError());
+            return $this->editTask($row);
+        }
 
-		Notify::success(Lang::txt('CITATION_TYPE_SAVED'));
+        Notify::success(Lang::txt('CITATION_TYPE_SAVED'));
 
-		$this->cancelTask();
-	}
+        $this->cancelTask();
+    }
 
-	/**
-	 * Remove one or more types
-	 *
-	 * @return  void
-	 */
-	public function removeTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Remove one or more types
+     *
+     * @return  void
+     */
+    public function removeTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.delete', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (!User::authorise('core.delete', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		// Incoming (expecting an array)
-		$ids = Request::getArray('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
+        // Incoming (expecting an array)
+        $ids = Request::getArray('id', array());
+        $ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$removed = 0;
+        $removed = 0;
 
-		foreach ($ids as $id)
-		{
-			$type = Type::oneOrFail(intval($id));
+        foreach ($ids as $id) {
+            $type = Type::oneOrFail(intval($id));
 
-			if (!$type->destroy())
-			{
-				Notify::error($type->getError());
-				continue;
-			}
+            if (!$type->destroy()) {
+                Notify::error($type->getError());
+                continue;
+            }
 
-			$removed++;
-		}
+            $removed++;
+        }
 
-		Notify::success(Lang::txt('CITATION_TYPE_REMOVED'));
+        Notify::success(Lang::txt('CITATION_TYPE_REMOVED'));
 
-		// Redirect
-		$this->cancelTask();
-	}
+        // Redirect
+        $this->cancelTask();
+    }
 }

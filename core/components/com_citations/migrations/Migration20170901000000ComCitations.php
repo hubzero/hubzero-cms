@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,16 +16,16 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for installing citations tables
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComCitations extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__citations'))
-		{
-			$query = "CREATE TABLE `#__citations` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__citations')) {
+            $query = "CREATE TABLE `#__citations` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `uid` int(11) DEFAULT NULL,
 			  `type` varchar(30) DEFAULT NULL,
@@ -86,17 +89,17 @@ class Migration20170901000000ComCitations extends Base
 			  `custom4` varchar(45) DEFAULT NULL,
 			  PRIMARY KEY (`id`),
 			  FULLTEXT KEY `ftidx_title_isbn_doi_abstract` (`title`,`isbn`,`doi`,`abstract`),
-			  FULLTEXT KEY `ftidx_title_isbn_doi_abstract_author_publisher` (`title`,`isbn`,`doi`,`abstract`,`author`,`publisher`),
+			  FULLTEXT KEY `ftidx_title_isbn_doi_abstract_author_publisher`
+			    (`title`,`isbn`,`doi`,`abstract`,`author`,`publisher`),
 			  FULLTEXT KEY `ftidx_search` (`title`,`isbn`,`doi`,`abstract`,`author`,`publisher`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__citations_assoc'))
-		{
-			$query = "CREATE TABLE `#__citations_assoc` (
+        if (!$this->db->tableExists('#__citations_assoc')) {
+            $query = "CREATE TABLE `#__citations_assoc` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `cid` int(11) DEFAULT '0',
 			  `oid` int(11) DEFAULT '0',
@@ -105,13 +108,12 @@ class Migration20170901000000ComCitations extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__citations_authors'))
-		{
-			$query = "CREATE TABLE `#__citations_authors` (
+        if (!$this->db->tableExists('#__citations_authors')) {
+            $query = "CREATE TABLE `#__citations_authors` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `cid` int(11) DEFAULT '0',
 			  `author` varchar(64) DEFAULT NULL,
@@ -142,13 +144,12 @@ class Migration20170901000000ComCitations extends Base
 			  KEY `idx_cid` (`cid`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__citations_format'))
-		{
-			$query = "CREATE TABLE `#__citations_format` (
+        if (!$this->db->tableExists('#__citations_format')) {
+            $query = "CREATE TABLE `#__citations_format` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `typeid` int(11) DEFAULT NULL,
 			  `style` varchar(50) DEFAULT NULL,
@@ -157,13 +158,12 @@ class Migration20170901000000ComCitations extends Base
 			  KEY `idx_typeid` (`typeid`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__citations_links'))
-		{
-			$query = "CREATE TABLE `#__citations_links` (
+        if (!$this->db->tableExists('#__citations_links')) {
+            $query = "CREATE TABLE `#__citations_links` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `title` varchar(255) NOT NULL DEFAULT '',
 			  `url` text,
@@ -172,13 +172,12 @@ class Migration20170901000000ComCitations extends Base
 			  KEY `idx_citation_id` (`citation_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__citations_secondary'))
-		{
-			$query = "CREATE TABLE `#__citations_secondary` (
+        if (!$this->db->tableExists('#__citations_secondary')) {
+            $query = "CREATE TABLE `#__citations_secondary` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `cid` int(11) NOT NULL,
 			  `sec_cits_cnt` int(11) DEFAULT NULL,
@@ -196,13 +195,12 @@ class Migration20170901000000ComCitations extends Base
 			  KEY `idx_scope_scope_id` (`scope`,`scope_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__citations_sponsors'))
-		{
-			$query = "CREATE TABLE `#__citations_sponsors` (
+        if (!$this->db->tableExists('#__citations_sponsors')) {
+            $query = "CREATE TABLE `#__citations_sponsors` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `sponsor` varchar(150) DEFAULT NULL,
 			  `link` varchar(200) DEFAULT NULL,
@@ -210,26 +208,24 @@ class Migration20170901000000ComCitations extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__citations_sponsors_assoc'))
-		{
-			$query = "CREATE TABLE `#__citations_sponsors_assoc` (
+        if (!$this->db->tableExists('#__citations_sponsors_assoc')) {
+            $query = "CREATE TABLE `#__citations_sponsors_assoc` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `cid` int(11) DEFAULT NULL,
 			  `sid` int(11) DEFAULT NULL,
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__citations_types'))
-		{
-			$query = "CREATE TABLE `#__citations_types` (
+        if (!$this->db->tableExists('#__citations_types')) {
+            $query = "CREATE TABLE `#__citations_types` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `type` varchar(255) DEFAULT NULL,
 			  `type_title` varchar(255) DEFAULT NULL,
@@ -239,77 +235,68 @@ class Migration20170901000000ComCitations extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__citations'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__citations`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__citations')) {
+            $query = "DROP TABLE IF EXISTS `#__citations`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__citations_assoc'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__citations_assoc`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__citations_assoc')) {
+            $query = "DROP TABLE IF EXISTS `#__citations_assoc`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__citations_authors'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__citations_authors`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__citations_authors')) {
+            $query = "DROP TABLE IF EXISTS `#__citations_authors`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__citations_format'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__citations_format`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__citations_format')) {
+            $query = "DROP TABLE IF EXISTS `#__citations_format`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__citations_links'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__citations_links`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__citations_links')) {
+            $query = "DROP TABLE IF EXISTS `#__citations_links`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__citations_secondary'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__citations_secondary`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__citations_secondary')) {
+            $query = "DROP TABLE IF EXISTS `#__citations_secondary`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__citations_sponsors'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__citations_sponsors`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__citations_sponsors')) {
+            $query = "DROP TABLE IF EXISTS `#__citations_sponsors`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__citations_sponsors_assoc'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__citations_sponsors_assoc`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__citations_sponsors_assoc')) {
+            $query = "DROP TABLE IF EXISTS `#__citations_sponsors_assoc`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__citations_types'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__citations_types`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__citations_types')) {
+            $query = "DROP TABLE IF EXISTS `#__citations_types`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

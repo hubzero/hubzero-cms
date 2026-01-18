@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,36 +21,36 @@ use Hubzero\Database\Relational;
  */
 class Sponsor extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 **/
-	protected $namespace = 'citations';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     **/
+    protected $namespace = 'citations';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 **/
-	public $orderBy = 'sponsor';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     **/
+    public $orderBy = 'sponsor';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 **/
-	protected $rules = array(
-		'name' => 'sponsor'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     **/
+    protected $rules = array(
+        'name' => 'sponsor'
+    );
 
-	/**
-	 * Establish relationship to citations
-	 *
-	 * @return  object
-	 **/
-	public function citations()
-	{
-		return $this->manyToMany('Citation', '#__citations_sponsors_assoc', 'sid', 'cid');
-	}
+    /**
+     * Establish relationship to citations
+     *
+     * @return  object
+     **/
+    public function citations()
+    {
+        return $this->manyToMany('Citation', '#__citations_sponsors_assoc', 'sid', 'cid');
+    }
 }
