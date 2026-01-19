@@ -1,9 +1,12 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+// phpcs:disable PSR1.Files.SideEffects
 
 namespace Components\Config\Admin\Controllers;
 
@@ -24,286 +27,264 @@ include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'application.php';
  */
 class Application extends AdminController
 {
-	/**
-	 * Execute a task
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		// Map the apply task to the save method.
-		$this->registerTask('apply', 'save');
+    /**
+     * Execute a task
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        // Map the apply task to the save method.
+        $this->registerTask('apply', 'save');
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * Method to save the configuration.
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		// Access check.
-		if (!User::authorise('core.admin', $this->_option))
-		{
-			App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+    /**
+     * Method to save the configuration.
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        // Access check.
+        if (!User::authorise('core.admin', $this->_option)) {
+            App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		$model = new Models\Application();
+        $model = new Models\Application();
 
-		$form = $model->getForm();
-		$data = $model->getData();
+        $form = $model->getForm();
+        $data = $model->getData();
 
-		// Check for model errors.
-		if ($errors = $model->getErrors())
-		{
-			App::abort(500, implode('<br />', $errors));
-		}
+        // Check for model errors.
+        if ($errors = $model->getErrors()) {
+            App::abort(500, implode('<br />', $errors));
+        }
 
-		// Bind the form to the data.
-		if ($form && $data)
-		{
-			$form->bind($data);
-		}
+        // Bind the form to the data.
+        if ($form && $data) {
+            $form->bind($data);
+        }
 
-		// Get the params for members.
-		$usersParams = Component::params('com_members');
+        // Get the params for members.
+        $usersParams = Component::params('com_members');
 
-		// Get the params for media.
-		$mediaParams = Component::params('com_media');
+        // Get the params for media.
+        $mediaParams = Component::params('com_media');
 
-		$this->view
-			->set('model', $model)
-			->set('form', $form)
-			->set('data', $data)
-			->set('usersParams', $usersParams)
-			->set('mediaParams', $mediaParams)
-			->setLayout('default')
-			->display();
-	}
+        $this->view
+            ->set('model', $model)
+            ->set('form', $form)
+            ->set('data', $data)
+            ->set('usersParams', $usersParams)
+            ->set('mediaParams', $mediaParams)
+            ->setLayout('default')
+            ->display();
+    }
 
-	/**
-	 * Method to save the configuration.
-	 *
-	 * @return  void
-	 */
-	public function saveTask()
-	{
-		// Check for request forgeries.
-		Request::checkToken();
+    /**
+     * Method to save the configuration.
+     *
+     * @return  void
+     */
+    public function saveTask()
+    {
+        // Check for request forgeries.
+        Request::checkToken();
 
-		// Check if the user is authorized to do this.
-		if (!User::authorise('core.admin'))
-		{
-			App::redirect(
-				Route::url('index.php', false),
-				Lang::txt('JERROR_ALERTNOAUTHOR')
-			);
-			return;
-		}
+        // Check if the user is authorized to do this.
+        if (!User::authorise('core.admin')) {
+            App::redirect(
+                Route::url('index.php', false),
+                Lang::txt('JERROR_ALERTNOAUTHOR')
+            );
+            return;
+        }
 
-		// Initialise variables.
-		$model = new Models\Application();
-		$form  = $model->getForm();
-		$data  = Request::getArray('hzform', array(), 'post');
+        // Initialise variables.
+        $model = new Models\Application();
+        $form  = $model->getForm();
+        $data  = Request::getArray('hzform', array(), 'post');
 
-		// Validate the posted data.
-		$return = $model->validate($form, $data);
+        // Validate the posted data.
+        $return = $model->validate($form, $data);
 
-		// Check for validation errors.
-		if ($return === false)
-		{
-			// Get the validation messages.
-			$errors = $model->getErrors();
+        // Check for validation errors.
+        if ($return === false) {
+            // Get the validation messages.
+            $errors = $model->getErrors();
 
-			// Push up to three validation messages out to the user.
-			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
-			{
-				if ($errors[$i] instanceof Exception)
-				{
-					Notify::warning($errors[$i]->getMessage());
-				}
-				else
-				{
-					Notify::warning($errors[$i]);
-				}
-			}
+            // Push up to three validation messages out to the user.
+            for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++) {
+                if ($errors[$i] instanceof Exception) {
+                    Notify::warning($errors[$i]->getMessage());
+                } else {
+                    Notify::warning($errors[$i]);
+                }
+            }
 
-			// Save the data in the session.
-			User::setState($this->_option . '.config.global.data', $data);
+            // Save the data in the session.
+            User::setState($this->_option . '.config.global.data', $data);
 
-			// Redirect back to the edit screen.
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&view=application', false)
-			);
-			return false;
-		}
+            // Redirect back to the edit screen.
+            App::redirect(
+                Route::url('index.php?option=' . $this->_option . '&view=application', false)
+            );
+            return false;
+        }
 
-		// 'other' is passed as a separate array because form validation
-		// above will strip it out,
-		$other = Request::getArray('hzother', array(), 'post');
-		$data  = array_merge($return, $other);
+        // 'other' is passed as a separate array because form validation
+        // above will strip it out,
+        $other = Request::getArray('hzother', array(), 'post');
+        $data  = array_merge($return, $other);
 
-		// If user specified 'reset', generate and save a new Hub secret:
-		$saveHubSecret = $this->saveHubSecret($data['hub_secret']);
-		// If saving new Hub secret was successful, set config back to no-op:
-		if ($saveHubSecret) 
-		{
-			$data['hub_secret']['reset_secret'] = "noop";
-		} 
+        // If user specified 'reset', generate and save a new Hub secret:
+        $saveHubSecret = $this->saveHubSecret($data['hub_secret']);
+        // If saving new Hub secret was successful, set config back to no-op:
+        if ($saveHubSecret) {
+            $data['hub_secret']['reset_secret'] = "noop";
+        }
 
-		// Attempt to save the configuration.
-		$return = $model->save($data);
+        // Attempt to save the configuration.
+        $return = $model->save($data);
 
-		// Check the return value.
-		if ($return === false)
-		{
-			// Save the data in the session.
-			User::setState($this->_option . '.config.global.data', $data);
+        // Check the return value.
+        if ($return === false) {
+            // Save the data in the session.
+            User::setState($this->_option . '.config.global.data', $data);
 
-			// Save failed, go back to the screen and display a notice.
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&view=application', false),
-				Lang::txt('JERROR_SAVE_FAILED', $model->getError()),
-				'error'
-			);
-			return false;
-		}
+            // Save failed, go back to the screen and display a notice.
+            App::redirect(
+                Route::url('index.php?option=' . $this->_option . '&view=application', false),
+                Lang::txt('JERROR_SAVE_FAILED', $model->getError()),
+                'error'
+            );
+            return false;
+        }
 
-		// Clean the session data.
-		User::setState('com_config.config.global.data', null);
+        // Clean the session data.
+        User::setState('com_config.config.global.data', null);
 
-		// Set the success message.
-		Notify::success(Lang::txt('COM_CONFIG_SAVE_SUCCESS'));
+        // Set the success message.
+        Notify::success(Lang::txt('COM_CONFIG_SAVE_SUCCESS'));
 
-		// Set the redirect based on the task.
-		switch (Request::getCmd('task'))
-		{
-			case 'apply':
-				App::redirect(Route::url('index.php?option=' . $this->_option, false));
-				break;
+        // Set the redirect based on the task.
+        switch (Request::getCmd('task')) {
+            case 'apply':
+                App::redirect(Route::url('index.php?option=' . $this->_option, false));
+                break;
 
-			case 'save':
-			default:
-				App::redirect(Route::url('index.php', false));
-				break;
-		}
-	}
+            case 'save':
+            default:
+                App::redirect(Route::url('index.php', false));
+                break;
+        }
+    }
 
-	/**
-	 * Cancel operation
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		// Check if the user is authorized to do this.
-		if (!User::authorise('core.admin', $this->_option))
-		{
-			App::redirect(
-				Route::url('index.php', false),
-				Lang::txt('JERROR_ALERTNOAUTHOR')
-			);
-			return;
-		}
+    /**
+     * Cancel operation
+     *
+     * @return  void
+     */
+    public function cancelTask()
+    {
+        // Check if the user is authorized to do this.
+        if (!User::authorise('core.admin', $this->_option)) {
+            App::redirect(
+                Route::url('index.php', false),
+                Lang::txt('JERROR_ALERTNOAUTHOR')
+            );
+            return;
+        }
 
-		// Clean the session data.
-		User::setState('com_config.config.global.data', null);
+        // Clean the session data.
+        User::setState('com_config.config.global.data', null);
 
-		App::redirect(Route::url('index.php', false));
-	}
+        App::redirect(Route::url('index.php', false));
+    }
 
-	/**
-	 * Update the Hub Secret in the database table.
-	 *
-	 * @return  Boolean
-	 */
-	private function saveHubSecret(array $hubsecret)
-	{
-		// If user has opted to reset the Hub secret:
-		if ($hubsecret['reset_secret'] == 'reset')
-		{
-			$tableName = 'jos_config';
+    /**
+     * Update the Hub Secret in the database table.
+     *
+     * @return  Boolean
+     */
+    private function saveHubSecret(array $hubsecret)
+    {
+        // If user has opted to reset the Hub secret:
+        if ($hubsecret['reset_secret'] == 'reset') {
+            $tableName = 'jos_config';
 
-			// create 32-character secret:
-			$secretLength = 32;
-			$secret = \Hubzero\User\Password::genRandomPassword($secretLength);
-			$updated = Date::of('now')->toSql();
+            // create 32-character secret:
+            $secretLength = 32;
+            $secret = \Hubzero\User\Password::genRandomPassword($secretLength);
+            $updated = Date::of('now')->toSql();
 
-			// Reset the Hub secret:
-			$query = new \Hubzero\Database\Query;
-			$result = $query->update($tableName)
-				->set(['value' => $secret,
-					   'updated' => $updated])
-				->whereEquals('scope', 'hub')
-				->whereEquals('key', 'secret')
-				->execute();
-		}
-		return true;
-	}
+            // Reset the Hub secret:
+            $query = new \Hubzero\Database\Query();
+            $result = $query->update($tableName)
+                ->set(['value' => $secret,
+                       'updated' => $updated])
+                ->whereEquals('scope', 'hub')
+                ->whereEquals('key', 'secret')
+                ->execute();
+        }
+        return true;
+    }
 
-	/**
-	 * Refresh the help
-	 *
-	 * @return  void
-	 */
-	public function refreshHelp()
-	{
-		if (($data = file_get_contents('http://help.hubzero.org/helpsites.xml')) === false)
-		{
-			App::redirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_FETCH'), 'error');
-		}
-		elseif (!\Filesystem::write(PATH_APP . '/help/helpsites.xml', $data))
-		{
-			App::redirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_ERROR_STORE'), 'error');
-		}
-		else
-		{
-			App::redirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_HELPREFRESH_SUCCESS'));
-		}
-	}
+    /**
+     * Refresh the help
+     *
+     * @return  void
+     */
+    public function refreshHelp()
+    {
+        $redirect = Route::url('index.php?option=com_config', false);
+        if (($data = file_get_contents('http://help.hubzero.org/helpsites.xml')) === false) {
+            App::redirect($redirect, Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_FETCH'), 'error');
+        } elseif (!\Filesystem::write(PATH_APP . '/help/helpsites.xml', $data)) {
+            App::redirect($redirect, Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_ERROR_STORE'), 'error');
+        } else {
+            App::redirect($redirect, Lang::txt('COM_CONFIG_HELPREFRESH_SUCCESS'));
+        }
+    }
 
-	/**
-	 * Method to remove the root property from the configuration.
-	 *
-	 * @return  bool  True on success, false on failure.
-	 */
-	public function removerootTask()
-	{
-		// Check for request forgeries.
-		Request::checkToken(['get']);
+    /**
+     * Method to remove the root property from the configuration.
+     *
+     * @return  bool  True on success, false on failure.
+     */
+    public function removerootTask()
+    {
+        // Check for request forgeries.
+        Request::checkToken(['get']);
 
-		// Check if the user is authorized to do this.
-		if (!User::authorise('core.admin'))
-		{
-			App::redirect(
-				Route::url('index.php', false),
-				Lang::txt('JERROR_ALERTNOAUTHOR')
-			);
-			return;
-		}
+        // Check if the user is authorized to do this.
+        if (!User::authorise('core.admin')) {
+            App::redirect(
+                Route::url('index.php', false),
+                Lang::txt('JERROR_ALERTNOAUTHOR')
+            );
+            return;
+        }
 
-		// Initialise model.
-		$model = new Models\Application();
+        // Initialise model.
+        $model = new Models\Application();
 
-		// Attempt to save the configuration and remove root.
-		$return = $model->removeroot();
+        // Attempt to save the configuration and remove root.
+        $return = $model->removeroot();
 
-		// Check the return value.
-		if ($return === false)
-		{
-			// Save failed, go back to the screen and display a notice.
-			Notify::error(Lang::txt('JERROR_SAVE_FAILED', $model->getError()));
-		}
-		else
-		{
-			Notify::success(Lang::txt('COM_CONFIG_SAVE_SUCCESS'));
-		}
+        // Check the return value.
+        if ($return === false) {
+            // Save failed, go back to the screen and display a notice.
+            Notify::error(Lang::txt('JERROR_SAVE_FAILED', $model->getError()));
+        } else {
+            Notify::success(Lang::txt('COM_CONFIG_SAVE_SUCCESS'));
+        }
 
-		// Set the redirect based on the task.
-		App::redirect(
-			Route::url('index.php', false)
-		);
-	}
+        // Set the redirect based on the task.
+        App::redirect(
+            Route::url('index.php', false)
+        );
+    }
 }

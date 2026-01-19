@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,16 +16,16 @@ use Document;
  */
 class Close extends AdminController
 {
-	/**
-	 * Close the configuration and redirect
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		Document::addScriptDeclaration('
+    /**
+     * Close the configuration and redirect
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        Document::addScriptDeclaration('
 			window.parent.location.href=window.parent.location.href;
 			window.parent.$.fancybox.close();
 		');
-	}
+    }
 }
