@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,16 +16,16 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for installing com_modules tables
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComModules extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__modules'))
-		{
-			$query = "CREATE TABLE `#__modules` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__modules')) {
+            $query = "CREATE TABLE `#__modules` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `title` varchar(100) NOT NULL DEFAULT '',
 			  `note` varchar(255) NOT NULL DEFAULT '',
@@ -46,40 +49,37 @@ class Migration20170901000000ComModules extends Base
 			  KEY `idx_language` (`language`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__modules_menu'))
-		{
-			$query = "CREATE TABLE `#__modules_menu` (
+        if (!$this->db->tableExists('#__modules_menu')) {
+            $query = "CREATE TABLE `#__modules_menu` (
 			  `moduleid` int(11) NOT NULL DEFAULT '0',
 			  `menuid` int(11) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`moduleid`,`menuid`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__modules'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__modules`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__modules')) {
+            $query = "DROP TABLE IF EXISTS `#__modules`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__modules_menu'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__modules_menu`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__modules_menu')) {
+            $query = "DROP TABLE IF EXISTS `#__modules_menu`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }
