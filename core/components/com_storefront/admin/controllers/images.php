@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,407 +26,370 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Collection.php';
  */
 class Images extends AdminController
 {
-	/**
-	 * Upload a file to the wiki via AJAX
-	 *
-	 * @return     string
-	 */
-	public function ajaxUploadTask()
-	{
-		// Check for request forgeries
-		Request::checkToken(['get', 'post']);
+    /**
+     * Upload a file to the wiki via AJAX
+     *
+     * @return     string
+     */
+    public function ajaxUploadTask()
+    {
+        // Check for request forgeries
+        Request::checkToken(['get', 'post']);
 
-		// Ensure we have an ID to work with
-		$id = Request::getInt('id', 0);
-		if (!$id)
-		{
-			echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_NO_ID')));
-			return;
-		}
+        // Ensure we have an ID to work with
+        $id = Request::getInt('id', 0);
+        if (!$id) {
+            echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_NO_ID')));
+            return;
+        }
 
-		// Build the path
-		$type = strtolower(Request::getWord('type', ''));
-		$path = $this->_path($type, $id);
+        // Build the path
+        $type = strtolower(Request::getWord('type', ''));
+        $path = $this->_path($type, $id);
 
-		if (!$path)
-		{
-			echo json_encode(array('error' => $this->getError()));
-			return;
-		}
+        if (!$path) {
+            echo json_encode(array('error' => $this->getError()));
+            return;
+        }
 
-		// allowed extensions for uplaod
-		$allowedExtensions = array('png','jpeg','jpg','gif');
+        // allowed extensions for uplaod
+        $allowedExtensions = array('png','jpeg','jpg','gif');
 
-		// max upload size
-		$sizeLimit = $this->config->get('maxAllowed', 40000000);
+        // max upload size
+        $sizeLimit = $this->config->get('maxAllowed', 40000000);
 
-		// get the file
-		if (isset($_GET['qqfile']))
-		{
-			$stream = true;
-			$file = $_GET['qqfile'];
-			$size = (int) $_SERVER["CONTENT_LENGTH"];
-		}
-		elseif (isset($_FILES['qqfile']))
-		{
-			$stream = false;
-			$file = $_FILES['qqfile']['name'];
-			$size = (int) $_FILES['qqfile']['size'];
-		}
-		else
-		{
-			echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_NO_FILE_FOUND')));
-			return;
-		}
+        // get the file
+        if (isset($_GET['qqfile'])) {
+            $stream = true;
+            $file = $_GET['qqfile'];
+            $size = (int) $_SERVER["CONTENT_LENGTH"];
+        } elseif (isset($_FILES['qqfile'])) {
+            $stream = false;
+            $file = $_FILES['qqfile']['name'];
+            $size = (int) $_FILES['qqfile']['size'];
+        } else {
+            echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_NO_FILE_FOUND')));
+            return;
+        }
 
-		if (!is_dir($path))
-		{
-			if (!Filesystem::makeDirectory($path))
-			{
-				echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')));
-				return;
-			}
-		}
+        if (!is_dir($path)) {
+            if (!Filesystem::makeDirectory($path)) {
+                echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')));
+                return;
+            }
+        }
 
-		if (!is_writable($path))
-		{
-			echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_UPLOAD_DIRECTORY_IS_NOT_WRITABLE')));
-			return;
-		}
+        if (!is_writable($path)) {
+            echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_UPLOAD_DIRECTORY_IS_NOT_WRITABLE')));
+            return;
+        }
 
-		//check to make sure we have a file and its not too big
-		if ($size == 0)
-		{
-			echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_EMPTY_FILE')));
-			return;
-		}
-		if ($size > $sizeLimit)
-		{
-			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-			echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_FILE_TOO_LARGE', $max)));
-			return;
-		}
+        //check to make sure we have a file and its not too big
+        if ($size == 0) {
+            echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_EMPTY_FILE')));
+            return;
+        }
+        if ($size > $sizeLimit) {
+            $max = preg_replace(
+                '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/',
+                '$1',
+                \Hubzero\Utility\Number::formatBytes($sizeLimit)
+            );
+            echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_FILE_TOO_LARGE', $max)));
+            return;
+        }
 
-		// don't overwrite previous files that were uploaded
-		$pathinfo = pathinfo($file);
-		$filename = $pathinfo['filename'];
+        // don't overwrite previous files that were uploaded
+        $pathinfo = pathinfo($file);
+        $filename = $pathinfo['filename'];
 
-		// Make the filename safe
-		$filename = urldecode($filename);
-		$filename = Filesystem::clean($filename);
-		$filename = str_replace(' ', '_', $filename);
+        // Make the filename safe
+        $filename = urldecode($filename);
+        $filename = Filesystem::clean($filename);
+        $filename = str_replace(' ', '_', $filename);
 
-		$ext = $pathinfo['extension'];
-		if (!in_array(strtolower($ext), $allowedExtensions))
-		{
-			echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_UNKNOWN_FILE_TYPE')));
-			return;
-		}
+        $ext = $pathinfo['extension'];
+        if (!in_array(strtolower($ext), $allowedExtensions)) {
+            echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_UNKNOWN_FILE_TYPE')));
+            return;
+        }
 
-		$file = $path . DS . $filename . '.' . $ext;
+        $file = $path . DS . $filename . '.' . $ext;
 
-		if ($stream)
-		{
-			//read the php input stream to upload file
-			$input = fopen("php://input", "r");
-			$temp = tmpfile();
-			$realSize = stream_copy_to_stream($input, $temp);
-			fclose($input);
+        if ($stream) {
+            //read the php input stream to upload file
+            $input = fopen("php://input", "r");
+            $temp = tmpfile();
+            $realSize = stream_copy_to_stream($input, $temp);
+            fclose($input);
 
-			//move from temp location to target location which is user folder
-			$target = fopen($file, "w");
-			fseek($temp, 0, SEEK_SET);
-			stream_copy_to_stream($temp, $target);
-			fclose($target);
-		}
-		else
-		{
-			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
-		}
+            //move from temp location to target location which is user folder
+            $target = fopen($file, "w");
+            fseek($temp, 0, SEEK_SET);
+            stream_copy_to_stream($temp, $target);
+            fclose($target);
+        } else {
+            move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
+        }
 
-		if (!Filesystem::isSafe($file))
-		{
-			Filesystem::delete($file);
+        if (!Filesystem::isSafe($file)) {
+            Filesystem::delete($file);
 
-			echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_FILE_UNSAFE')));
-			return;
-		}
+            echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_FILE_UNSAFE')));
+            return;
+        }
 
-		// Do we have an old file we're replacing?
-		if (($curfile = Request::getString('currentfile', '')))
-		{
-			// Remove old image
-			if (file_exists($path . DS . $curfile))
-			{
-				if (!Filesystem::delete($path . DS . $curfile))
-				{
-					echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_UNABLE_TO_DELETE_FILE')));
-					return;
-				}
-			}
-		}
+        // Do we have an old file we're replacing?
+        if (($curfile = Request::getString('currentfile', ''))) {
+            // Remove old image
+            if (file_exists($path . DS . $curfile)) {
+                if (!Filesystem::delete($path . DS . $curfile)) {
+                    echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_UNABLE_TO_DELETE_FILE')));
+                    return;
+                }
+            }
+        }
 
-		switch ($type)
-		{
-			case 'product':
-				// Instantiate a model, change some info and save
-				$object = new Product($id);
-				$object->setImage($filename . '.' . $ext);
+        switch ($type) {
+            case 'product':
+                // Instantiate a model, change some info and save
+                $object = new Product($id);
+                $object->setImage($filename . '.' . $ext);
 
-				break;
+                break;
 
-			case 'collection':
-				// Instantiate a model, change some info and save
-				$object = new Collection($id);
-				$object->setImage($filename . '.' . $ext);
-				break;
+            case 'collection':
+                // Instantiate a model, change some info and save
+                $object = new Collection($id);
+                $object->setImage($filename . '.' . $ext);
+                break;
 
-			default:
-				echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE')));
-				return;
-			break;
-		}
+            default:
+                echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE')));
+                return;
+            break;
+        }
 
-		if (!$object->save())
-		{
-			echo json_encode(array('error' => 'Error updating the object'));
-			return;
-		}
+        if (!$object->save()) {
+            echo json_encode(array('error' => 'Error updating the object'));
+            return;
+        }
 
-		$imgId = $object->getImage()->imgId;
+        $imgId = $object->getImage()->imgId;
 
-		$this_size = filesize($file);
-		list($width, $height, $type, $attr) = getimagesize($file);
+        $this_size = filesize($file);
+        list($width, $height, $type, $attr) = getimagesize($file);
 
-		//echo result
-		echo json_encode(array(
-			'success'   => true,
-			'file'      => $filename . '.' . $ext,
-			'directory' => str_replace(PATH_ROOT, '', $path),
-			'id'        => $id,
-			'imgId'		=> $imgId,
-			'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
-			'width'     => $width,
-			'height'    => $height
-		));
-	}
+        //echo result
+        echo json_encode(array(
+            'success'   => true,
+            'file'      => $filename . '.' . $ext,
+            'directory' => str_replace(PATH_ROOT, '', $path),
+            'id'        => $id,
+            'imgId'     => $imgId,
+            'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
+            'width'     => $width,
+            'height'    => $height
+        ));
+    }
 
-	/**
-	 * Upload a file
-	 *
-	 * @return     void
-	 */
-	public function uploadTask()
-	{
-		if (Request::getInt('no_html', 0))
-		{
-			return $this->ajaxUploadTask();
-		}
+    /**
+     * Upload a file
+     *
+     * @return     void
+     */
+    public function uploadTask()
+    {
+        if (Request::getInt('no_html', 0)) {
+            return $this->ajaxUploadTask();
+        }
 
-		// Check for request forgeries
-		Request::checkToken();
+        // Check for request forgeries
+        Request::checkToken();
 
-		// Incoming
-		$id = Request::getInt('id', 0);
-		if (!$id)
-		{
-			$this->setError(Lang::txt('COM_STOREFRONT_ERROR_NO_ID'));
-			$this->displayTask('', $id);
-			return;
-		}
+        // Incoming
+        $id = Request::getInt('id', 0);
+        if (!$id) {
+            $this->setError(Lang::txt('COM_STOREFRONT_ERROR_NO_ID'));
+            $this->displayTask('', $id);
+            return;
+        }
 
-		// Build the path
-		$type = strtolower(Request::getWord('type', ''));
-		$path = $this->_path($type, $id);
+        // Build the path
+        $type = strtolower(Request::getWord('type', ''));
+        $path = $this->_path($type, $id);
 
-		if (!$path)
-		{
-			$this->displayTask('', $id);
-			return;
-		}
+        if (!$path) {
+            $this->displayTask('', $id);
+            return;
+        }
 
-		// Incoming file
-		$file = Request::getArray('upload', array(), 'files');
-		if (!$file['name'])
-		{
-			$this->setError(Lang::txt('COM_STOREFRONT_NO_FILE'));
-			$this->displayTask('', $id);
-			return;
-		}
-		$curfile = Request::getString('curfile', '');
+        // Incoming file
+        $file = Request::getArray('upload', array(), 'files');
+        if (!$file['name']) {
+            $this->setError(Lang::txt('COM_STOREFRONT_NO_FILE'));
+            $this->displayTask('', $id);
+            return;
+        }
+        $curfile = Request::getString('curfile', '');
 
-		if (!is_dir($path))
-		{
-			if (!Filesystem::makeDirectory($path))
-			{
-				$this->setError(Lang::txt('COM_STOREFRONT_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
-				$this->displayTask('', $id);
-				return;
-			}
-		}
+        if (!is_dir($path)) {
+            if (!Filesystem::makeDirectory($path)) {
+                $this->setError(Lang::txt('COM_STOREFRONT_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
+                $this->displayTask('', $id);
+                return;
+            }
+        }
 
-		// Make the filename safe
-		$file['name'] = Filesystem::clean($file['name']);
-		$file['name'] = str_replace(' ', '_', $file['name']);
+        // Make the filename safe
+        $file['name'] = Filesystem::clean($file['name']);
+        $file['name'] = str_replace(' ', '_', $file['name']);
 
-		// Perform the upload
-		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
-		{
-			$this->setError(Lang::txt('COM_STOREFRONT_ERROR_UPLOADING'));
-			$file = $curfile;
-		}
-		else
-		{
-			if (!Filesystem::isSafe($path . DS . $file['name']))
-			{
-				Filesystem::delete($path . DS . $file['name']);
+        // Perform the upload
+        if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name'])) {
+            $this->setError(Lang::txt('COM_STOREFRONT_ERROR_UPLOADING'));
+            $file = $curfile;
+        } else {
+            if (!Filesystem::isSafe($path . DS . $file['name'])) {
+                Filesystem::delete($path . DS . $file['name']);
 
-				$this->setError(Lang::txt('COM_STOREFRONT_ERROR_FILE_UNSAFE'));
-				$this->displayTask($curfile, $id);
-				return;
-			}
+                $this->setError(Lang::txt('COM_STOREFRONT_ERROR_FILE_UNSAFE'));
+                $this->displayTask($curfile, $id);
+                return;
+            }
 
-			// Do we have an old file we're replacing?
-			if (($curfile = Request::getString('currentfile', '')))
-			{
-				// Remove old image
-				if (file_exists($path . DS . $curfile))
-				{
-					if (!Filesystem::delete($path . DS . $curfile))
-					{
-						$this->setError(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_DELETE_FILE'));
-						$this->displayTask($file['name'], $id);
-						return;
-					}
-				}
-			}
+            // Do we have an old file we're replacing?
+            if (($curfile = Request::getString('currentfile', ''))) {
+                // Remove old image
+                if (file_exists($path . DS . $curfile)) {
+                    if (!Filesystem::delete($path . DS . $curfile)) {
+                        $this->setError(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_DELETE_FILE'));
+                        $this->displayTask($file['name'], $id);
+                        return;
+                    }
+                }
+            }
 
-			switch ($type)
-			{
-				case 'product':
-					// Instantiate a model, change some info and save
-					$product = new Product($id);
-					$product->setImage($file['name']);
-					break;
+            switch ($type) {
+                case 'product':
+                    // Instantiate a model, change some info and save
+                    $product = new Product($id);
+                    $product->setImage($file['name']);
+                    break;
 
-				default:
-					echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE')));
-					return;
-					break;
-			}
-			if (!$product->update())
-			{
-				$this->setError('Error updating product');
-			}
+                default:
+                    echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE')));
+                    return;
+                    break;
+            }
+            if (!$product->update()) {
+                $this->setError('Error updating product');
+            }
 
-			$file = $file['name'];
-		}
+            $file = $file['name'];
+        }
 
-		// Push through to the image view
-		$this->displayTask($file, $id);
-	}
+        // Push through to the image view
+        $this->displayTask($file, $id);
+    }
 
-	/**
-	 * Upload a file to the wiki via AJAX
-	 *
-	 * @return     string
-	 */
-	public function ajaxRemoveTask()
-	{
-		// Check for request forgeries
-		Request::checkToken(array('get', 'post'));
+    /**
+     * Upload a file to the wiki via AJAX
+     *
+     * @return     string
+     */
+    public function ajaxRemoveTask()
+    {
+        // Check for request forgeries
+        Request::checkToken(array('get', 'post'));
 
-		// Ensure we have an ID to work with
-		$id = Request::getInt('id', 0);
-		if (!$id)
-		{
-			echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_NO_ID')));
-			return;
-		}
+        // Ensure we have an ID to work with
+        $id = Request::getInt('id', 0);
+        if (!$id) {
+            echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_NO_ID')));
+            return;
+        }
 
-		$type = strtolower(Request::getWord('type', ''));
-		$imgId = Request::getString('currentfile', '');
+        $type = strtolower(Request::getWord('type', ''));
+        $imgId = Request::getString('currentfile', '');
 
-		// Instantiate a model, change some info and save
-		switch ($type)
-		{
-			case 'product':
-				$object = new Product($id);
-				$object->removeImage($imgId);
-			break;
+        // Instantiate a model, change some info and save
+        switch ($type) {
+            case 'product':
+                $object = new Product($id);
+                $object->removeImage($imgId);
+                break;
 
-			case 'collection':
-				$object = new Collection($id);
-				$object->removeImage($imgId);
-				break;
+            case 'collection':
+                $object = new Collection($id);
+                $object->removeImage($imgId);
+                break;
 
-			default:
-				echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE')));
-				return;
-			break;
-		}
+            default:
+                echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE')));
+                return;
+            break;
+        }
 
-		if (!$object->save())
-		{
-			echo json_encode(array('error' => 'Error saving object'));
-			return;
-		}
+        if (!$object->save()) {
+            echo json_encode(array('error' => 'Error saving object'));
+            return;
+        }
 
-		//echo result
-		echo json_encode(array(
-			'success'   => true,
-			'file'      => '',
-			//'directory' => str_replace(PATH_ROOT, '', $path),
-			'id'        => $id,
-			'size'      => 0,
-			'width'     => 0,
-			'height'    => 0
-		));
-	}
+        //echo result
+        echo json_encode(array(
+            'success'   => true,
+            'file'      => '',
+            //'directory' => str_replace(PATH_ROOT, '', $path),
+            'id'        => $id,
+            'size'      => 0,
+            'width'     => 0,
+            'height'    => 0
+        ));
+    }
 
-	/**
-	 * Delete a file
-	 *
-	 * @return     void
-	 */
-	public function removeTask()
-	{
-		if (Request::getInt('no_html', 0))
-		{
-			return $this->ajaxRemoveTask();
-		}
-	}
+    /**
+     * Delete a file
+     *
+     * @return     void
+     */
+    public function removeTask()
+    {
+        if (Request::getInt('no_html', 0)) {
+            return $this->ajaxRemoveTask();
+        }
+    }
 
-	/**
-	 * Display a file and its info
-	 *
-	 * @param      integer $id ID
-	 * @return     string
-	 */
-	protected function _path($type, $id)
-	{
-		$config = Component::params('com_storefront');
+    /**
+     * Display a file and its info
+     *
+     * @param      integer $id ID
+     * @return     string
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _path($type, $id)
+    {
+        $config = Component::params('com_storefront');
 
-		switch ($type)
-		{
-			case 'product':
-					$imgWebPath = trim($config->get('imagesFolder', '/site/storefront/products'), DS);
-				$path = PATH_APP . DS . $imgWebPath . DS;
-				$path .= $id;
-			break;
+        switch ($type) {
+            case 'product':
+                    $imgWebPath = trim($config->get('imagesFolder', '/site/storefront/products'), DS);
+                $path = PATH_APP . DS . $imgWebPath . DS;
+                $path .= $id;
+                break;
 
-			case 'collection':
-				$imgWebPath = trim($config->get('collectionsImagesFolder', '/site/storefront/collections'), DS);
-				$path = PATH_APP . DS . $imgWebPath . DS;
-				$path .= $id;
-				break;
+            case 'collection':
+                $imgWebPath = trim($config->get('collectionsImagesFolder', '/site/storefront/collections'), DS);
+                $path = PATH_APP . DS . $imgWebPath . DS;
+                $path .= $id;
+                break;
 
-			default:
-				$this->setError(Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE'));
-				return '';
-			break;
-		}
+            default:
+                $this->setError(Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE'));
+                return '';
+            break;
+        }
 
-		return $path;
-	}
+        return $path;
+    }
 }

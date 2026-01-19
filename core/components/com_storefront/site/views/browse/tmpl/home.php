@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,13 +14,13 @@ defined('_HZEXEC_') or die();
 ?>
 
 <header id="content-header">
-	<h2>Browse home</h2>
+    <h2>Browse home</h2>
 </header>
 
 <section class="section">
-	<div class="section-inner">
+    <div class="section-inner">
 
-		<p>This is a default browsing home -- not sure what is going here.</p>
+        <p>This is a default browsing home -- not sure what is going here.</p>
 
-	</div>
+    </div>
 </section>

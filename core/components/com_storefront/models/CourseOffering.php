@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,45 +8,48 @@
 
 namespace Components\Storefront\Models;
 
+// phpcs:disable PSR1.Files.SideEffects
+
+// No direct access
+defined('_HZEXEC_') or die();
+
+
 require_once __DIR__ . DS . 'Sku.php';
 
 class CourseOffering extends Sku
 {
+    public function __construct()
+    {
+        parent::__construct();
 
-	public function __construct()
-	{
-		parent::__construct();
+        //$this->setAllowMultiple(0);
+        $this->setTrackInventory(0);
+    }
 
-		//$this->setAllowMultiple(0);
-		$this->setTrackInventory(0);
-	}
+    public function setCourseId($courseId)
+    {
+        $this->data->courseId = $courseId;
+        $this->data->meta['courseId'] = $courseId;
+    }
 
-	public function setCourseId($courseId)
-	{
-		$this->data->courseId = $courseId;
-		$this->data->meta['courseId'] = $courseId;
-	}
+    public function setOfferingId($offeringId)
+    {
+        $this->data->offeringId = $offeringId;
+        $this->data->meta['offeringId'] = $offeringId;
+    }
 
-	public function setOfferingId($offeringId)
-	{
-		$this->data->offeringId = $offeringId;
-		$this->data->meta['offeringId'] = $offeringId;
-	}
+    public function getCourseId()
+    {
+        return $this->data->meta['courseId'];
+    }
 
-	public function getCourseId()
-	{
-		return $this->data->meta['courseId'];
-	}
+    public function verify()
+    {
+        parent::verify();
 
-	public function verify()
-	{
-		parent::verify();
-
-		// Each course has to have a course ID
-		if (empty($this->data->courseId))
-		{
-			throw new \Exception(Lang::txt('No course id'));
-		}
-	}
-
+        // Each course has to have a course ID
+        if (empty($this->data->courseId)) {
+            throw new \Exception(Lang::txt('No course id'));
+        }
+    }
 }
