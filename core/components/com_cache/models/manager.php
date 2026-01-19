@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,294 +18,279 @@ use App;
  */
 class Manager extends Obj
 {
-	/**
-	 * Database connection
-	 *
-	 * @var  object
-	 */
-	protected $db;
+    /**
+     * Database connection
+     *
+     * @var  object
+     */
+    protected $db;
 
-	/**
-	 * A state object
-	 *
-	 * @var  object
-	 */
-	protected $state;
+    /**
+     * A state object
+     *
+     * @var  object
+     */
+    protected $state;
 
-	/**
-	 * Indicates if the internal state has been set
-	 *
-	 * @var  boolean
-	 */
-	protected $__state_set = null;
+    /**
+     * Indicates if the internal state has been set
+     *
+     * @var  boolean
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $__state_set = null;
 
-	/**
-	 * An array of Cache Items indexed by cache group ID
-	 *
-	 * @var  array
-	 */
-	protected $data = array();
+    /**
+     * An array of Cache Items indexed by cache group ID
+     *
+     * @var  array
+     */
+    protected $data = array();
 
-	/**
-	 * Group total
-	 *
-	 * @var  integer
-	 */
-	protected $total = null;
+    /**
+     * Group total
+     *
+     * @var  integer
+     */
+    protected $total = null;
 
-	/**
-	 * Pagination object
-	 *
-	 * @var  object
-	 */
-	protected $pagination = null;
+    /**
+     * Pagination object
+     *
+     * @var  object
+     */
+    protected $pagination = null;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   array  $config  An array of configuration options
-	 * @return  void
-	 */
-	public function __construct($config = array())
-	{
-		parent::__construct();
+    /**
+     * Constructor
+     *
+     * @param   array  $config  An array of configuration options
+     * @return  void
+     */
+    public function __construct($config = array())
+    {
+        parent::__construct();
 
-		// Set the model state
-		if (array_key_exists('state', $config))
-		{
-			$this->state = $config['state'];
-		}
-		else
-		{
-			$this->state = new Obj;
-		}
+        // Set the model state
+        if (array_key_exists('state', $config)) {
+            $this->state = $config['state'];
+        } else {
+            $this->state = new Obj();
+        }
 
-		// Set the model dbo
-		if (array_key_exists('dbo', $config))
-		{
-			$this->db = $config['dbo'];
-		}
-		else
-		{
-			$this->db = App::get('db');
-		}
+        // Set the model dbo
+        if (array_key_exists('dbo', $config)) {
+            $this->db = $config['dbo'];
+        } else {
+            $this->db = App::get('db');
+        }
 
-		// Set the internal state marker - used to ignore setting state from the request
-		if (!empty($config['ignore_request']))
-		{
-			$this->__state_set = true;
-		}
-	}
+        // Set the internal state marker - used to ignore setting state from the request
+        if (!empty($config['ignore_request'])) {
+            $this->__state_set = true;
+        }
+    }
 
-	/**
-	 * Method to get model state variables
-	 *
-	 * @param   string  $property  Optional parameter name
-	 * @param   mixed   $default   Optional default value
-	 * @return  object  The property where specified, the state object where omitted
-	 */
-	public function state($property = null, $default = null)
-	{
-		if (!$this->__state_set)
-		{
-			// Client
-			$value = Request::getState(
-				'com_cache.filter.client_id',
-				'filter_client_id',
-				0,
-				'int'
-			);
-			$this->state->set('clientId', $value);
+    /**
+     * Method to get model state variables
+     *
+     * @param   string  $property  Optional parameter name
+     * @param   mixed   $default   Optional default value
+     * @return  object  The property where specified, the state object where omitted
+     */
+    public function state($property = null, $default = null)
+    {
+        if (!$this->__state_set) {
+            // Client
+            $value = Request::getState(
+                'com_cache.filter.client_id',
+                'filter_client_id',
+                0,
+                'int'
+            );
+            $this->state->set('clientId', $value);
 
-			$client = ClientManager::client($value);
-			$this->state->set('client', $client);
+            $client = ClientManager::client($value);
+            $this->state->set('client', $client);
 
-			// Limit
-			$value = Request::getState(
-				'global.list.limit',
-				'limit',
-				App::get('config')->get('list_limit'),
-				'int'
-			);
-			$limit = $value;
-			$this->state->set('list.limit', $limit);
+            // Limit
+            $value = Request::getState(
+                'global.list.limit',
+                'limit',
+                App::get('config')->get('list_limit'),
+                'int'
+            );
+            $limit = $value;
+            $this->state->set('list.limit', $limit);
 
-			$value = Request::getState(
-				'com_cache.limitstart',
-				'limitstart',
-				0,
-				'int'
-			);
-			$limitstart = ($limit != 0 ? (floor($value / $limit) * $limit) : 0);
-			$this->state->set('list.start', $limitstart);
+            $value = Request::getState(
+                'com_cache.limitstart',
+                'limitstart',
+                0,
+                'int'
+            );
+            $limitstart = ($limit != 0 ? (floor($value / $limit) * $limit) : 0);
+            $this->state->set('list.start', $limitstart);
 
-			// Ordering
-			$value = Request::getState(
-				'com_cache.list.ordering',
-				'filter_order',
-				'group'
-			);
-			if (!in_array($value, array('group', 'count', 'size')))
-			{
-				$value = 'group';
-			}
-			$this->state->set('list.ordering', $value);
+            // Ordering
+            $value = Request::getState(
+                'com_cache.list.ordering',
+                'filter_order',
+                'group'
+            );
+            if (!in_array($value, array('group', 'count', 'size'))) {
+                $value = 'group';
+            }
+            $this->state->set('list.ordering', $value);
 
-			// Order direction
-			$value = Request::getState(
-				'com_cache.list.direction',
-				'filter_order_Dir',
-				'asc'
-			);
-			if (!in_array(strtoupper($value), array('ASC', 'DESC', '')))
-			{
-				$value = 'asc';
-			}
-			$this->state->set('list.direction', $value);
+            // Order direction
+            $value = Request::getState(
+                'com_cache.list.direction',
+                'filter_order_Dir',
+                'asc'
+            );
+            if (!in_array(strtoupper($value), array('ASC', 'DESC', ''))) {
+                $value = 'asc';
+            }
+            $this->state->set('list.direction', $value);
 
-			// Set the model state set flag to true.
-			$this->__state_set = true;
-		}
+            // Set the model state set flag to true.
+            $this->__state_set = true;
+        }
 
-		return $property === null ? $this->state : $this->state->get($property, $default);
-	}
+        return $property === null ? $this->state : $this->state->get($property, $default);
+    }
 
-	/**
-	 * Method to get cache data
-	 *
-	 * @return  array
-	 */
-	public function data()
-	{
-		if (empty($this->data))
-		{
-			$this->data = array();
+    /**
+     * Method to get cache data
+     *
+     * @return  array
+     */
+    public function data()
+    {
+        if (empty($this->data)) {
+            $this->data = array();
 
-			$cache = $this->cache();
-			$data  = $cache->all();
+            $cache = $this->cache();
+            $data  = $cache->all();
 
-			if ($data != false)
-			{
-				$this->data  = $data;
-				$this->total = count($data);
+            if ($data != false) {
+                $this->data  = $data;
+                $this->total = count($data);
 
-				if ($this->total)
-				{
-					// Apply custom ordering
-					$ordering  = $this->state('list.ordering');
-					$direction = ($this->state('list.direction') == 'asc') ? 1 : -1;
+                if ($this->total) {
+                    // Apply custom ordering
+                    $ordering  = $this->state('list.ordering');
+                    $direction = ($this->state('list.direction') == 'asc') ? 1 : -1;
 
-					$this->data = \Hubzero\Utility\Arr::sortObjects($data, $ordering, $direction);
+                    $this->data = \Hubzero\Utility\Arr::sortObjects($data, $ordering, $direction);
 
-					// Apply custom pagination
-					if ($this->total > $this->state('list.limit') && $this->state('list.limit'))
-					{
-						$this->data = array_slice($this->data, $this->state('list.start'), $this->state('list.limit'));
-					}
-				}
-			}
-		}
+                    // Apply custom pagination
+                    if ($this->total > $this->state('list.limit') && $this->state('list.limit')) {
+                        $this->data = array_slice($this->data, $this->state('list.start'), $this->state('list.limit'));
+                    }
+                }
+            }
+        }
 
-		return $this->data;
-	}
+        return $this->data;
+    }
 
-	/**
-	 * Method to get cache instance
-	 *
-	 * @return  object
-	 */
-	public function cache()
-	{
-		$handler = App::get('config')->get('cache_handler');
-		$client  = ClientManager::client($this->state('clientId'));
+    /**
+     * Method to get cache instance
+     *
+     * @return  object
+     */
+    public function cache()
+    {
+        $handler = App::get('config')->get('cache_handler');
+        $client  = ClientManager::client($this->state('clientId'));
 
-		App::get('config')->set($handler, array(
-			'cachebase' => PATH_APP . '/cache/' . (isset($client->alias) ? $client->alias : $client->name) //($this->state('clientId') == 1 ? 'admin' : 'site')
-		));
+        $clientPath = isset($client->alias) ? $client->alias : $client->name;
+        App::get('config')->set($handler, array(
+            'cachebase' => PATH_APP . '/cache/' . $clientPath
+        ));
 
-		$cache = new \Hubzero\Cache\Manager(\App::getRoot());
-		$cache->storage($handler);
+        $cache = new \Hubzero\Cache\Manager(\App::getRoot());
+        $cache->storage($handler);
 
-		return $cache;
-	}
+        return $cache;
+    }
 
-	/**
-	 * Method to get client data
-	 *
-	 * @return  array
-	 */
-	public function client()
-	{
-		return $this->state('client');
-	}
+    /**
+     * Method to get client data
+     *
+     * @return  array
+     */
+    public function client()
+    {
+        return $this->state('client');
+    }
 
-	/**
-	 * Get the number of current Cache Groups
-	 *
-	 * @return  integer
-	 */
-	public function total()
-	{
-		if (empty($this->total))
-		{
-			$this->total = count($this->data());
-		}
+    /**
+     * Get the number of current Cache Groups
+     *
+     * @return  integer
+     */
+    public function total()
+    {
+        if (empty($this->total)) {
+            $this->total = count($this->data());
+        }
 
-		return $this->total;
-	}
+        return $this->total;
+    }
 
-	/**
-	 * Method to get a pagination object for the cache
-	 *
-	 * @return  integer
-	 */
-	public function pagination()
-	{
-		if (empty($this->pagination))
-		{
-			$this->pagination = new \Hubzero\Pagination\Paginator(
-				$this->total(),
-				$this->state('list.start'),
-				$this->state('list.limit')
-			);
-		}
+    /**
+     * Method to get a pagination object for the cache
+     *
+     * @return  integer
+     */
+    public function pagination()
+    {
+        if (empty($this->pagination)) {
+            $this->pagination = new \Hubzero\Pagination\Paginator(
+                $this->total(),
+                $this->state('list.start'),
+                $this->state('list.limit')
+            );
+        }
 
-		return $this->pagination;
-	}
+        return $this->pagination;
+    }
 
-	/**
-	 * Clean out a cache group as named by param.
-	 * If no param is passed clean all cache groups.
-	 *
-	 * @param   string  $group
-	 * @return  void
-	 */
-	public function clean($group = '')
-	{
-		$this->cache()->clean($group);
-	}
+    /**
+     * Clean out a cache group as named by param.
+     * If no param is passed clean all cache groups.
+     *
+     * @param   string  $group
+     * @return  void
+     */
+    public function clean($group = '')
+    {
+        $this->cache()->clean($group);
+    }
 
-	/**
-	 * Clean an array
-	 *
-	 * @param   array  $array
-	 * @return  void
-	 */
-	public function cleanlist($array)
-	{
-		foreach ($array as $group)
-		{
-			$this->clean($group);
-		}
-	}
+    /**
+     * Clean an array
+     *
+     * @param   array  $array
+     * @return  void
+     */
+    public function cleanlist($array)
+    {
+        foreach ($array as $group) {
+            $this->clean($group);
+        }
+    }
 
-	/**
-	 * Purge cache
-	 *
-	 * @return  boolean
-	 */
-	public function purge()
-	{
-		return $this->cache()->gc();
-	}
+    /**
+     * Purge cache
+     *
+     * @return  boolean
+     */
+    public function purge()
+    {
+        return $this->cache()->gc();
+    }
 }
