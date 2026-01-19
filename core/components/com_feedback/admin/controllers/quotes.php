@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,243 +24,226 @@ use App;
  */
 class Quotes extends AdminController
 {
-	/**
-	 * Execute a task
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		$this->registerTask('add', 'edit');
-		$this->registerTask('apply', 'save');
+    /**
+     * Execute a task
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        $this->registerTask('add', 'edit');
+        $this->registerTask('apply', 'save');
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * Display a list of quotes
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		// Incoming
-		$filters = array(
-			'search' => urldecode(Request::getState(
-				$this->_option . '.search',
-				'search',
-				''
-			)),
-			// Get sorting variables
-			'sort' => Request::getState(
-				$this->_option . '.sortby',
-				'filter_order',
-				'date'
-			),
-			'sort_Dir' => Request::getState(
-				$this->_option . '.sortdir',
-				'filter_order_Dir',
-				'DESC'
-			)
-		);
+    /**
+     * Display a list of quotes
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        // Incoming
+        $filters = array(
+            'search' => urldecode(Request::getState(
+                $this->_option . '.search',
+                'search',
+                ''
+            )),
+            // Get sorting variables
+            'sort' => Request::getState(
+                $this->_option . '.sortby',
+                'filter_order',
+                'date'
+            ),
+            'sort_Dir' => Request::getState(
+                $this->_option . '.sortdir',
+                'filter_order_Dir',
+                'DESC'
+            )
+        );
 
-		$record = Quote::all();
+        $record = Quote::all();
 
-		if ($filters['search'])
-		{
-			$record->whereLike('fullname', $filters['search']);
-		}
+        if ($filters['search']) {
+            $record->whereLike('fullname', $filters['search']);
+        }
 
-		$rows = $record
-			->ordered('filter_order', 'filter_order_Dir')
-			->paginated('limitstart', 'limit')
-			->rows();
+        $rows = $record
+            ->ordered('filter_order', 'filter_order_Dir')
+            ->paginated('limitstart', 'limit')
+            ->rows();
 
-		// Output the HTML
-		$this->view
-			->set('rows', $rows)
-			->set('filters', $filters)
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('rows', $rows)
+            ->set('filters', $filters)
+            ->display();
+    }
 
-	/**
-	 * Edit an entry
-	 *
-	 * @param   object  $row
-	 * @return  void
-	 */
-	public function editTask($row=null)
-	{
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+    /**
+     * Edit an entry
+     *
+     * @param   object  $row
+     * @return  void
+     */
+    public function editTask($row = null)
+    {
+        if (
+            !User::authorise('core.edit', $this->_option)
+            && !User::authorise('core.create', $this->_option)
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		Request::setVar('hidemainmenu', 1);
+        Request::setVar('hidemainmenu', 1);
 
-		if (!is_object($row))
-		{
-			// Incoming ID
-			$id = Request::getArray('id', array(0));
-			$id = (is_array($id) ? $id[0] : $id);
+        if (!is_object($row)) {
+            // Incoming ID
+            $id = Request::getArray('id', array(0));
+            $id = (is_array($id) ? $id[0] : $id);
 
-			// Initiate database class and load info
-			$row = Quote::oneOrNew($id);
-		}
+            // Initiate database class and load info
+            $row = Quote::oneOrNew($id);
+        }
 
-		if (!$row->get('id'))
-		{
-			if ($username = Request::getString('username', ''))
-			{
-				$profile = Member::oneByUsername($username);
+        if (!$row->get('id')) {
+            if ($username = Request::getString('username', '')) {
+                $profile = Member::oneByUsername($username);
 
-				$row->set('fullname', $profile->get('name'));
-				$row->set('org', $profile->get('organization'));
-				$row->set('user_id', $profile->get('uidNumber'));
-			}
-		}
+                $row->set('fullname', $profile->get('name'));
+                $row->set('org', $profile->get('organization'));
+                $row->set('user_id', $profile->get('uidNumber'));
+            }
+        }
 
-		// Output the HTML
-		$this->view
-			->set('row', $row)
-			->setLayout('edit')
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('row', $row)
+            ->setLayout('edit')
+            ->display();
+    }
 
-	/**
-	 * Save an entry
-	 *
-	 * @return  void
-	 */
-	public function saveTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Save an entry
+     *
+     * @return  void
+     */
+    public function saveTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (
+            !User::authorise('core.edit', $this->_option)
+            && !User::authorise('core.create', $this->_option)
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		// Incoming
-		$fields = Request::getArray('fields', array(), 'post');
+        // Incoming
+        $fields = Request::getArray('fields', array(), 'post');
 
-		// Initiate model and bind the incoming data to it
-		$row = Quote::oneOrNew($fields['id'])->set($fields);
+        // Initiate model and bind the incoming data to it
+        $row = Quote::oneOrNew($fields['id'])->set($fields);
 
-		// Validate and save the data
-		if (!$row->save())
-		{
-			foreach ($row->getErrors() as $error)
-			{
-				Notify::error($error);
-			}
+        // Validate and save the data
+        if (!$row->save()) {
+            foreach ($row->getErrors() as $error) {
+                Notify::error($error);
+            }
 
-			return $this->editTask($row);
-		}
+            return $this->editTask($row);
+        }
 
-		// Build file path
-		$path = $row->filespace() . DS . $row->get('id');
+        // Build file path
+        $path = $row->filespace() . DS . $row->get('id');
 
-		if (is_dir($path))
-		{
-			// Remove pictures that were marked for deletion
-			$existing = Request::getArray('existingPictures', array(), 'post');
-			$pictures = Filesystem::files($path);
+        if (is_dir($path)) {
+            // Remove pictures that were marked for deletion
+            $existing = Request::getArray('existingPictures', array(), 'post');
+            $pictures = Filesystem::files($path);
 
-			foreach ($pictures as $picture)
-			{
-				$picture = ltrim($picture, DS);
+            foreach ($pictures as $picture) {
+                $picture = ltrim($picture, DS);
 
-				if (!in_array($picture, $existing))
-				{
-					if (!Filesystem::delete($path . DS . $picture))
-					{
-						Notify::error(Lang::txt('Failed to remove picture "%s"', $picture));
-					}
-				}
-			}
-		}
+                if (!in_array($picture, $existing)) {
+                    if (!Filesystem::delete($path . DS . $picture)) {
+                        Notify::error(Lang::txt('Failed to remove picture "%s"', $picture));
+                    }
+                }
+            }
+        }
 
-		// Get the list of uploaded files
-		$files = Request::getArray('files', null, 'files');
+        // Get the list of uploaded files
+        $files = Request::getArray('files', null, 'files');
 
-		if ($files)
-		{
-			if (!is_dir($path))
-			{
-				Filesystem::makeDirectory($path);
-			}
+        if ($files) {
+            if (!is_dir($path)) {
+                Filesystem::makeDirectory($path);
+            }
 
-			foreach ($files['name'] as $fileIndex => $file)
-			{
-				Filesystem::upload($files['tmp_name'][$fileIndex], $path . DS . $files['name'][$fileIndex]);
-			}
-		}
+            foreach ($files['name'] as $fileIndex => $file) {
+                Filesystem::upload($files['tmp_name'][$fileIndex], $path . DS . $files['name'][$fileIndex]);
+            }
+        }
 
-		// Notify the user that the entry was saved
-		Notify::success(Lang::txt('COM_FEEDBACK_QUOTE_SAVED', $row->get('fullname')));
+        // Notify the user that the entry was saved
+        Notify::success(Lang::txt('COM_FEEDBACK_QUOTE_SAVED', $row->get('fullname')));
 
-		if ($this->getTask() == 'apply')
-		{
-			// Display the edit form
-			return $this->editTask($row);
-		}
+        if ($this->getTask() == 'apply') {
+            // Display the edit form
+            return $this->editTask($row);
+        }
 
-		$this->cancelTask();
-	}
+        $this->cancelTask();
+    }
 
-	/**
-	 * Delete one or more entries
-	 *
-	 * @return  void
-	 */
-	public function removeTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Delete one or more entries
+     *
+     * @return  void
+     */
+    public function removeTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.delete', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (!User::authorise('core.delete', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		// Incoming
-		$ids = Request::getArray('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
+        // Incoming
+        $ids = Request::getArray('id', array());
+        $ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Check for an ID
-		if (!count($ids))
-		{
-			Notify::warning(Lang::txt('COM_FEEDBACK_SELECT_QUOTE_TO_DELETE'));
+        // Check for an ID
+        if (!count($ids)) {
+            Notify::warning(Lang::txt('COM_FEEDBACK_SELECT_QUOTE_TO_DELETE'));
 
-			return $this->cancelTask();
-		}
+            return $this->cancelTask();
+        }
 
-		$i = 0;
+        $i = 0;
 
-		foreach ($ids as $id)
-		{
-			$row = Quote::oneOrFail(intval($id));
+        foreach ($ids as $id) {
+            $row = Quote::oneOrFail(intval($id));
 
-			// Delete the quote
-			if (!$row->destroy())
-			{
-				Notify::error($row->getError());
-				continue;
-			}
+            // Delete the quote
+            if (!$row->destroy()) {
+                Notify::error($row->getError());
+                continue;
+            }
 
-			$i++;
-		}
+            $i++;
+        }
 
-		// Output messsage and redirect
-		if ($i)
-		{
-			Notify::success(Lang::txt('COM_FEEDBACK_REMOVED'));
-		}
+        // Output messsage and redirect
+        if ($i) {
+            Notify::success(Lang::txt('COM_FEEDBACK_REMOVED'));
+        }
 
-		$this->cancelTask();
-	}
+        $this->cancelTask();
+    }
 }
