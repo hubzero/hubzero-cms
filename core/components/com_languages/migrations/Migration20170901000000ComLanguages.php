@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,16 +16,16 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for adding component entry for com_languages
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComLanguages extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__languages'))
-		{
-			$query = "CREATE TABLE `#__languages` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__languages')) {
+            $query = "CREATE TABLE `#__languages` (
 			  `lang_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `lang_code` char(7) NOT NULL,
 			  `title` varchar(50) NOT NULL,
@@ -44,18 +47,18 @@ class Migration20170901000000ComLanguages extends Base
 			  KEY `idx_ordering` (`ordering`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			$query = "INSERT INTO `#__languages` VALUES (1,'en-GB','English (UK)','English (UK)','en','en','','','','',1,1,1)";
+            $query = "INSERT INTO `#__languages` VALUES "
+                . "(1,'en-GB','English (UK)','English (UK)','en','en','','','','',1,1,1)";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__overrider'))
-		{
-			$query = "CREATE TABLE `#__overrider` (
+        if (!$this->db->tableExists('#__overrider')) {
+            $query = "CREATE TABLE `#__overrider` (
 			  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key',
 			  `constant` varchar(255) NOT NULL,
 			  `string` text NOT NULL,
@@ -63,28 +66,26 @@ class Migration20170901000000ComLanguages extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__languages'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__languages`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__languages')) {
+            $query = "DROP TABLE IF EXISTS `#__languages`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__overrider'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__overrider`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__overrider')) {
+            $query = "DROP TABLE IF EXISTS `#__overrider`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }
