@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,15 +15,15 @@ defined('_HZEXEC_') or die('Restricted access');
 
 <div class="section">
 
-	<h2>Payment info</h2>
+    <h2>Payment info</h2>
 
-	<?php
+    <?php
 
-	echo '<p>' . $this->paymentInfo . '</p>';
+    echo '<p>' . $this->paymentInfo . '</p>';
 
-	echo '<a href="';
-	echo Route::url('index.php?option=com_cart') . 'checkout/payment?update=true';
-	echo '">Change</a>';
-	?>
+    echo '<a href="';
+    echo Route::url('index.php?option=com_cart') . 'checkout/payment?update=true';
+    echo '">Change</a>';
+    ?>
 
 </div>

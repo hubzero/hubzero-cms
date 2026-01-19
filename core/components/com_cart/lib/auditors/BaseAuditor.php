@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,81 +14,79 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php';
 
 class BaseAuditor
 {
-	var $type;
-	var $pId;
-	var $crtId;
-	var $uId;
-	var $response;
-	var $sId;
+    public $type;
+    public $pId;
+    public $crtId;
+    public $uId;
+    public $response;
+    public $sId;
 
-	public function __construct($type, $pId = null, $crtId = null)
-	{
-		$this->type = $type;
-		$this->pId = $pId;
-		$this->crtId = $crtId;
+    public function __construct($type, $pId = null, $crtId = null)
+    {
+        $this->type = $type;
+        $this->pId = $pId;
+        $this->crtId = $crtId;
 
-		// Get user, if any
-		$this->uId = \Components\Cart\Models\Cart::getCartUser($crtId);
+        // Get user, if any
+        $this->uId = \Components\Cart\Models\Cart::getCartUser($crtId);
 
-		// Set up the default empty ok response
-		$this->response = new \stdClass();
-		$this->response->status = 'ok';
-		$this->response->messages = array();
-		$this->response->notices = array();
-		$this->response->errors = array();
-	}
+        // Set up the default empty ok response
+        $this->response = new \stdClass();
+        $this->response->status = 'ok';
+        $this->response->messages = array();
+        $this->response->notices = array();
+        $this->response->errors = array();
+    }
 
-	public function setSku($sId)
-	{
-		$this->sId = $sId;
-	}
+    public function setSku($sId)
+    {
+        $this->sId = $sId;
+    }
 
-	public function getSku()
-	{
-		if (!empty($this->sId) && $this->sId)
-		{
-			return $this->sId;
-		}
-		return false;
-	}
+    public function getSku()
+    {
+        if (!empty($this->sId) && $this->sId) {
+            return $this->sId;
+        }
+        return false;
+    }
 
-	public function audit()
-	{
-		return $this->getResponse();
-	}
+    public function audit()
+    {
+        return $this->getResponse();
+    }
 
-	protected function setResponseStatus($status)
-	{
-		$this->response->status = $status;
-	}
+    protected function setResponseStatus($status)
+    {
+        $this->response->status = $status;
+    }
 
-	protected function setResponseMessage($msg)
-	{
-		$this->response->messages[] = $msg;
-	}
+    protected function setResponseMessage($msg)
+    {
+        $this->response->messages[] = $msg;
+    }
 
-	protected function setResponseNotice($msg)
-	{
-		$this->response->notices[] = $msg;
-	}
+    protected function setResponseNotice($msg)
+    {
+        $this->response->notices[] = $msg;
+    }
 
-	// ok, notice, error
-	protected function setResponseError($msg)
-	{
-		$this->response->errors[] = $msg;
-	}
+    // ok, notice, error
+    protected function setResponseError($msg)
+    {
+        $this->response->errors[] = $msg;
+    }
 
-	public function getResponseError()
-	{
-		if (count($this->response->errors) > 0)
-		{
-			return $this->response->errors[0];
-		}
-		return false;
-	}
+    public function getResponseError()
+    {
+        if (count($this->response->errors) > 0) {
+            return $this->response->errors[0];
+        }
+        return false;
+    }
 
-	protected function getResponse()
-	{
-		return $this->response;
-	}
+    protected function getResponse()
+    {
+        return $this->response;
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,664 +29,612 @@ require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Warehous
  */
 class Checkout extends ComponentController
 {
-	/**
-	 * Execute a task
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		// Get the task
-		$this->_task  = Request::getCmd('task', '');
-
-		if (empty($this->_task))
-		{
-			$this->_task = 'checkout';
-			$this->registerTask('__default', $this->_task);
-		}
-
-		$this->user = User::getInstance();
-
-		// Check if they're logged in
-		if ($this->user->get('guest'))
-		{
-			$this->login('Please login to continue');
-			return;
-		}
-
-		parent::execute();
-	}
-
-	/**
-	 * Default task
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		App::abort(404, Lang::txt('COM_CART_NO_CHECKOUT_STEP_FOUND'));
-		return;
-	}
-
-	/**
-	 * Checkout entry point. Begin checkout -- check, create, or update transaction and redirect to the next step
-	 *
-	 * @return  void
-	 */
-	public function checkoutTask()
-	{
-		$cart = new CurrentCart();
-
-		// This is a starting point in checkout process. All existing transactions for this user
-		// have to be removed and a new one has to be created.
-		// Do the final check of the cart
-
-		// Get the latest synced cart info, it will also enable cart syncing that was turned off before
-		// (this should also kill old transaction info)
-		$cart->getCartInfo(true);
-
-		// Check if there are messages to display
-		if ($cart->hasMessages())
-		{
-			// redirect back to cart to display all messages
-			//$redirect_url = Route::url('index.php?option=' . 'com_cart');
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option)
-			);
-		}
-
-		// Check/create/update transaction here
-		$transactionInfo = $cart->getTransaction();
-
-		// Redirect to cart if no transaction items (no cart items)
-		if (!$transactionInfo)
-		{
-			$cart->redirect('home');
-		}
-
-		// Redirect to the final step if transaction is ready to go to the payment phase (???)
-		$cart->redirect('continue');
-
-		//$this->printTransaction($transactionInfo);
-	}
-
-	/**
-	 * Continue checkout -- decides where to take the checkout process next
-	 *
-	 * @return  void
-	 */
-	public function continueTask()
-	{
-		/* Decide where to go next */
-		$cart = new CurrentCart();
-
-		// Check/create/update transaction here
-		$transactionInfo = $cart->getTransaction();
-
-		// Redirect to cart if no transaction items (no cart items)
-		if (!$transactionInfo)
-		{
-			$cart->redirect('checkout');
-		}
-
-		// Redirect to the next step
-		$nextStep = $cart->getNextCheckoutStep()->step;
-		$cart->redirect($nextStep);
-	}
-
-	/**
-	 * User agreement acceptance
-	 *
-	 * @return  void
-	 */
-	public function eulaTask()
-	{
-		$cart = new CurrentCart();
-
-		$errors = array();
-
-		$transaction = $cart->liftTransaction();
-
-		if (!$transaction)
-		{
-			// Redirect to cart if transaction cannot be lifted
-			$cart->redirect('home');
-		}
-
-		$nextStep = $cart->getNextCheckoutStep();
-
-		// Double check that the current step is indeed EULA, redirect if needed
-		if ($nextStep->step != 'eula')
-		{
-			$cart->redirect($nextStep->step);
-		}
-
-		// Get the SKU id of the item being displayed (from meta)
-		$sId = $nextStep->meta;
-
-		// Get the eula text for the product or EULA (EULAs are assigned to products, and if needed, SKUS)
-
-		$warehouse = new Warehouse();
-		$skuInfo = $warehouse->getSkuInfo($sId);
-
-		$this->view->productInfo = $skuInfo['info'];
-
-		// Check if there is SKU EULA set
-		if (!empty($skuInfo['meta']['eula']))
-		{
-			$productEula = $skuInfo['meta']['eula'];
-		}
-		else
-		{
-			// Get product id
-			$pId = $skuInfo['info']->pId;
-			// Get EULA
-			$productEula = Product::getMetaValue($pId, 'eula');
-		}
-
-		$this->view->productEula = $productEula;
-
-		$eulaSubmitted = Request::getBool('submitEula', false, 'post');
-
-		if ($eulaSubmitted)
-		{
-			// check if agreed
-			$eulaAccepted = Request::getBool('acceptEula', false, 'post');
-
-			if (!$eulaAccepted)
-			{
-				$errors[] = array(Lang::txt('COM_CART_MUST_ACCEPT_EULA'), 'error');
-			}
-			else
-			{
-				// Save item's meta
-				$itemMeta = new \stdClass();
-				$itemMeta->eulaAccepted = true;
-				//$itemMeta->machinesInstalled = 'n/a';
-				$cart->addTransactionItemMeta($sId, $itemMeta);
-
-				// Mark this step as completed
-				$cart->setStepStatus('eula', $sId);
-
-				// All good, continue
-				$nextStep = $cart->getNextCheckoutStep()->step;
-				$cart->redirect($nextStep);
-			}
-		}
-
-		if (!empty($errors))
-		{
-			$this->view->notifications = $errors;
-		}
-
-		if (Pathway::count() <= 0)
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_option)),
-				'index.php?option=' . $this->_option
-			);
-		}
-		if ($this->_task)
-		{
-			Pathway::append(
-				Lang::txt('EULA')
-			);
-		}
-
-		$this->view->display();
-	}
-
-	/**
-	 * Notes comments
-	 *
-	 * @return  void
-	 */
-	public function notesTask()
-	{
-		$cart = new CurrentCart();
-		$transaction = $cart->liftTransaction();
-
-		if (!$transaction)
-		{
-			// Redirect to cart if transaction cannot be lifted
-			$cart->redirect('home');
-		}
-
-		$cart->setStepStatus('notes', '', false);
-		$nextStep = $cart->getNextCheckoutStep();
-
-		// Double check that the current step is indeed EULA, redirect if needed
-		if ($nextStep->step != 'notes')
-		{
-			$cart->redirect($nextStep->step);
-		}
-
-		// Add the fields for the SKUs that require special notes
-		$items = $transaction->items;
-		$noteFields = array();
-		foreach ($items as $item)
-		{
-			$info = $item['info'];
-			if ($info->sCheckoutNotes)
-			{
-				$noteFields[$info->sId] = array('pName' => $info->pName, 'sSku' => $info->sSku, 'sCheckoutNotes' => $info->sCheckoutNotes, 'sCheckoutNotesRequired' => $info->sCheckoutNotesRequired);
-			}
-		}
-		$this->view->noteFields = $noteFields;
-
-		$notesSubmitted = Request::getBool('submitNotes', false, 'post');
-
-		if ($notesSubmitted)
-		{
-			// Check all required notes
-			foreach ($noteFields as $sId => $fieldInfo)
-			{
-				$itemNotes = Request::getString('notes-' . $sId, false, 'post');
-				if ($fieldInfo['sCheckoutNotesRequired'])
-				{
-					if (!$itemNotes)
-					{
-						$errors[] = array(Lang::txt('Please add Notes/Comments for ' . $fieldInfo['pName'] . ', ' . $fieldInfo['sSku']), 'error');
-					}
-				}
-
-				// Save item's meta
-				if ($itemNotes)
-				{
-					$itemMeta = new \stdClass();
-					$itemMeta->checkoutNotes = $itemNotes;
-					$cart->addTransactionItemMeta($sId, $itemMeta);
-				}
-			}
-
-			if (!empty($errors))
-			{
-				$this->view->notifications = $errors;
-			}
-			else
-			{
-				$notes = Request::getString('notes', false, 'post');
-
-				// Save order's notes
-				$cart->setTransactionNotes($notes);
-
-				// Mark this step as completed
-				$cart->setStepStatus('notes');
-
-				// All good, continue
-				$nextStep = $cart->getNextCheckoutStep()->step;
-				$cart->redirect($nextStep);
-			}
-		}
-
-		if (Pathway::count() <= 0)
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_option)),
-				'index.php?option=' . $this->_option
-			);
-		}
-		if ($this->_task)
-		{
-			Pathway::append(
-				Lang::txt('Notes')
-			);
-		}
-
-		$this->view->display();
-	}
-
-	/**
-	 * Shipping step of the checkout
-	 *
-	 * @return  void
-	 */
-	public function shippingTask()
-	{
-		$cart = new CurrentCart();
-
-		// initialize address set var
-		$addressSet = false;
-
-		$params = $this->getParams(array('action', 'saId'));
-
-		$errors = array();
-
-		if (!empty($params) && !empty($params->action) && !empty($params->saId) && $params->action == 'select')
-		{
-			try
-			{
-				$this->selectSavedShippingAddress($params->saId, $cart);
-				$addressSet = true;
-			}
-			catch (\Exception $e)
-			{
-				$errors[] = array($e->getMessage(), 'error');
-			}
-		}
-
-		$update = Request::getWord('update', false, 'get');
-		$transaction = $cart->liftTransaction($update);
-
-		if (!$transaction)
-		{
-			// Redirect to cart if transaction cannot be lifted
-			$cart->redirect('home');
-		}
-
-		// It is OK to come back to shipping and change the address
-		$cart->setStepStatus('shipping', '', false);
-		$nextStep = $cart->getNextCheckoutStep();
-
-		// Double check that the current step is indeed shipping, redirect if needed
-		if ($nextStep->step != 'shipping')
-		{
-			$cart->redirect($nextStep->step);
-		}
-
-		// handle non-ajax form submit
-		$shippingInfoSubmitted = Request::getBool('submitShippingInfo', false, 'post');
-
-		if ($shippingInfoSubmitted)
-		{
-			$res = $cart->setTransactionShippingInfo();
-
-			if ($res->status)
-			{
-				$addressSet = true;
-			}
-			else
-			{
-				foreach ($res->errors as $error)
-				{
-					$errors[] = array($error, 'error');
-				}
-			}
-		}
-
-		// Calculate shipping charge
-		if ($addressSet)
-		{
-			// TODO Calculate shipping
-			$shippingCost = 22.22;
-			$cart->setTransactionShippingCost($shippingCost);
-
-			$cart->setStepStatus('shipping');
-
-			$nextStep = $cart->getNextCheckoutStep()->step;
-			$cart->redirect($nextStep);
-		}
-
-		if (!empty($errors))
-		{
-			$this->view->notifications = $errors;
-		}
-
-		if (Pathway::count() <= 0)
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_option)),
-				'index.php?option=' . $this->_option
-			);
-		}
-		if ($this->_task)
-		{
-			Pathway::append(
-				Lang::txt('Shipping')
-			);
-		}
-
-		$savedShippingAddresses = $cart->getSavedShippingAddresses($this->user->id);
-		$this->view->savedShippingAddresses = $savedShippingAddresses;
-		$this->view->display();
-	}
-
-	/**
-	 * Select saved shipping address
-	 *
-	 * @param   int     $saId
-	 * @param   object  $cart
-	 * @return  void
-	 */
-	private function selectSavedShippingAddress($saId, $cart)
-	{
-		// ajax vs non-ajax
-		$cart->setSavedShippingAddress($saId);
-	}
-
-	/**
-	 * Summary step of the checkout
-	 *
-	 * @return  void
-	 */
-	public function summaryTask()
-	{
-		$cart = new CurrentCart();
-
-		$transaction = $cart->liftTransaction();
-
-		if (!$transaction)
-		{
-			$cart->redirect('home');
-		}
-
-		// Generate security token
-		$token = $cart->getToken();
-
-		// Check if there are any steps missing. Redirect if needed
-		$nextStep = $cart->getNextCheckoutStep()->step;
-
-		if ($nextStep != 'summary')
-		{
-			$cart->redirect($nextStep);
-		}
-
-		$cart->finalizeTransaction();
-
-		if (Pathway::count() <= 0)
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_option)),
-				'index.php?option=' . $this->_option
-			);
-		}
-		if ($this->_task)
-		{
-			Pathway::append(
-				Lang::txt('Review your order')
-			);
-		}
-
-		$this->view->token = $token;
-		$this->view->transactionItems = $transaction->items;
-		$this->view->transactionInfo = $transaction->info;
-		$this->view->display();
-	}
-
-
-	public function paymentTask()
-	{
-		$cart = new CurrentCart();
-
-		$update = Request::getWord('update', false, 'get');
-		$transaction = $cart->liftTransaction($update);
-
-		if (!$transaction)
-		{
-			$cart->redirect('home');
-		}
-
-		// Get security token
-		$transaction->token = $cart->getToken();
-
-		// Check if there are any steps missing. Redirect if needed
-		$nextStep = $cart->getNextCheckoutStep()->step;
-
-		if ($nextStep != 'summary')
-		{
-			$cart->redirect($nextStep);
-		}
-
-		$this->view
-			->set('transaction', $transaction)
-			->display();
-	}
-
-	/**
-	 * Confirm step of the checkout. Should be a pass-through page for JS-enabled browsers, requires a form submission to the payment gateway
-	 *
-	 * @return  void
-	 */
-	public function confirmTask()
-	{
-		$cart = new CurrentCart();
-
-		$transaction = $cart->liftTransaction();
-
-		if (!$transaction)
-		{
-			$cart->redirect('home');
-		}
-
-		// Get security token
-		$transaction->token = $cart->getToken();
-
-		// Check if there are any steps missing. Redirect if needed
-		$nextStep = $cart->getNextCheckoutStep()->step;
-
-		if ($nextStep != 'summary')
-		{
-			$cart->redirect($nextStep);
-		}
-
-		// Payment selected
-		$selected = Request::getString('paymentSelect', 0, 'post');
-		$submitted = Request::getString('paymentSubmit', 0, 'post');
-		$provider = Request::getString('paymentProvider', 0, 'post');
-
-		if ($selected && $provider)
-		{
-			// Do whatever needed to do on the server side
-			$payments = Event::trigger('cart.onSelectedPayment', array($transaction, User::getInstance()));
-
-			$paymentResponse = false;
-			foreach ($payments as $options)
-			{
-				if ($options['response'])
-				{
-					$paymentResponse = $options['response'];
-					$paymentStatus = $options['status'];
-					$paymentInfo = $options['paymentInfo'];
-					break;
-				}
-			}
-
-			$this->view
-				->set('paymentResponse', $paymentResponse)
-				->set('paymentStatus', $paymentStatus)
-				->set('paymentInfo', $paymentInfo)
-				->set('transaction', $transaction)
-				->set('transactionItems', $transaction->items)
-				->set('transactionInfo', $transaction->info)
-				->display();
-		}
-		elseif ($submitted && $provider)
-		{
-			// Do whatever needed to do on the server side
-			$payments = Event::trigger('cart.onProcessPayment', array($transaction, User::getInstance()));
-
-			$paymentResponse = false;
-			foreach ($payments as $options)
-			{
-				if ($options['response'])
-				{
-					$paymentResponse = $options['response'];
-					break;
-				}
-			}
-
-			$this->view
-				->set('response', $paymentResponse)
-				->set('transaction', $transaction)
-				->display();
-
-		}
-		else {
-			$cart->redirect($nextStep);
-		}
-
-		// Final step here before payment
-		//Cart::updateTransactionStatus('awaiting payment', $transaction->info->tId);
-
-		// Generate payment code
-		/*
-		$params = Component::params(Request::getCmd('option'));
-		$paymentGatewayProivder = $params->get('paymentProvider');
-
-		require_once dirname(dirname(__DIR__)) . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php';
-		$paymentDispatcher = new \PaymentDispatcher($paymentGatewayProivder);
-		$pay = $paymentDispatcher->getPaymentProvider();
-
-		$pay->setTransactionDetails($transaction);
-
-		$error = false;
-		try
-		{
-			$paymentCode = $pay->getPaymentCode();
-			$this->view->paymentCode = $paymentCode;
-		}
-		catch (\Exception $e)
-		{
-			$error = $e->getMessage();
-		}
-
-		if (!empty($error))
-		{
-			$this->view->setError($error);
-		}
-
-		//print_r($this->view); die;
-		*/
-	}
-
-	/**
-	 * Redirect to login page
-	 *
-	 * @param   string  $message
-	 * @return  void
-	 */
-	private function login($message = '')
-	{
-		$return = base64_encode($_SERVER['REQUEST_URI']);
-		App::redirect(
-			Route::url('index.php?option=com_users&view=login&return=' . $return),
-			$message,
-			'warning'
-		);
-		return;
-	}
-
-	/**
-	 * Print transacttion info
-	 *
-	 * @param   array  $t
-	 * @return  void
-	 */
-	private function printTransaction($t)
-	{
-		echo '<div class="cartSection">';
-		foreach ($t as $k => $v)
-		{
-			echo '<p>';
-			echo $v['info']->pName;
-			echo ' @ ';
-			echo $v['info']->sPrice;
-			echo ' x';
-			echo $v['transactionInfo']->qty;
-			echo ' @ ';
-			echo $v['transactionInfo']->tiPrice;
-			echo '</p>';
-		}
-		echo '</div>';
-	}
+    /**
+     * Execute a task
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        // Get the task
+        $this->_task  = Request::getCmd('task', '');
+
+        if (empty($this->_task)) {
+            $this->_task = 'checkout';
+            $this->registerTask('__default', $this->_task);
+        }
+
+        $this->user = User::getInstance();
+
+        // Check if they're logged in
+        if ($this->user->get('guest')) {
+            $this->login('Please login to continue');
+            return;
+        }
+
+        parent::execute();
+    }
+
+    /**
+     * Default task
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        App::abort(404, Lang::txt('COM_CART_NO_CHECKOUT_STEP_FOUND'));
+        return;
+    }
+
+    /**
+     * Checkout entry point. Begin checkout -- check, create, or update transaction and redirect to the next step
+     *
+     * @return  void
+     */
+    public function checkoutTask()
+    {
+        $cart = new CurrentCart();
+
+        // This is a starting point in checkout process. All existing transactions for this user
+        // have to be removed and a new one has to be created.
+        // Do the final check of the cart
+
+        // Get the latest synced cart info, it will also enable cart syncing that was turned off before
+        // (this should also kill old transaction info)
+        $cart->getCartInfo(true);
+
+        // Check if there are messages to display
+        if ($cart->hasMessages()) {
+            // redirect back to cart to display all messages
+            //$redirect_url = Route::url('index.php?option=' . 'com_cart');
+            App::redirect(
+                Route::url('index.php?option=' . $this->_option)
+            );
+        }
+
+        // Check/create/update transaction here
+        $transactionInfo = $cart->getTransaction();
+
+        // Redirect to cart if no transaction items (no cart items)
+        if (!$transactionInfo) {
+            $cart->redirect('home');
+        }
+
+        // Redirect to the final step if transaction is ready to go to the payment phase (???)
+        $cart->redirect('continue');
+
+        //$this->printTransaction($transactionInfo);
+    }
+
+    /**
+     * Continue checkout -- decides where to take the checkout process next
+     *
+     * @return  void
+     */
+    public function continueTask()
+    {
+        /* Decide where to go next */
+        $cart = new CurrentCart();
+
+        // Check/create/update transaction here
+        $transactionInfo = $cart->getTransaction();
+
+        // Redirect to cart if no transaction items (no cart items)
+        if (!$transactionInfo) {
+            $cart->redirect('checkout');
+        }
+
+        // Redirect to the next step
+        $nextStep = $cart->getNextCheckoutStep()->step;
+        $cart->redirect($nextStep);
+    }
+
+    /**
+     * User agreement acceptance
+     *
+     * @return  void
+     */
+    public function eulaTask()
+    {
+        $cart = new CurrentCart();
+
+        $errors = array();
+
+        $transaction = $cart->liftTransaction();
+
+        if (!$transaction) {
+            // Redirect to cart if transaction cannot be lifted
+            $cart->redirect('home');
+        }
+
+        $nextStep = $cart->getNextCheckoutStep();
+
+        // Double check that the current step is indeed EULA, redirect if needed
+        if ($nextStep->step != 'eula') {
+            $cart->redirect($nextStep->step);
+        }
+
+        // Get the SKU id of the item being displayed (from meta)
+        $sId = $nextStep->meta;
+
+        // Get the eula text for the product or EULA (EULAs are assigned to products, and if needed, SKUS)
+
+        $warehouse = new Warehouse();
+        $skuInfo = $warehouse->getSkuInfo($sId);
+
+        $this->view->productInfo = $skuInfo['info'];
+
+        // Check if there is SKU EULA set
+        if (!empty($skuInfo['meta']['eula'])) {
+            $productEula = $skuInfo['meta']['eula'];
+        } else {
+            // Get product id
+            $pId = $skuInfo['info']->pId;
+            // Get EULA
+            $productEula = Product::getMetaValue($pId, 'eula');
+        }
+
+        $this->view->productEula = $productEula;
+
+        $eulaSubmitted = Request::getBool('submitEula', false, 'post');
+
+        if ($eulaSubmitted) {
+            // check if agreed
+            $eulaAccepted = Request::getBool('acceptEula', false, 'post');
+
+            if (!$eulaAccepted) {
+                $errors[] = array(Lang::txt('COM_CART_MUST_ACCEPT_EULA'), 'error');
+            } else {
+                // Save item's meta
+                $itemMeta = new \stdClass();
+                $itemMeta->eulaAccepted = true;
+                //$itemMeta->machinesInstalled = 'n/a';
+                $cart->addTransactionItemMeta($sId, $itemMeta);
+
+                // Mark this step as completed
+                $cart->setStepStatus('eula', $sId);
+
+                // All good, continue
+                $nextStep = $cart->getNextCheckoutStep()->step;
+                $cart->redirect($nextStep);
+            }
+        }
+
+        if (!empty($errors)) {
+            $this->view->notifications = $errors;
+        }
+
+        if (Pathway::count() <= 0) {
+            Pathway::append(
+                Lang::txt(strtoupper($this->_option)),
+                'index.php?option=' . $this->_option
+            );
+        }
+        if ($this->_task) {
+            Pathway::append(
+                Lang::txt('EULA')
+            );
+        }
+
+        $this->view->display();
+    }
+
+    /**
+     * Notes comments
+     *
+     * @return  void
+     */
+    public function notesTask()
+    {
+        $cart = new CurrentCart();
+        $transaction = $cart->liftTransaction();
+
+        if (!$transaction) {
+            // Redirect to cart if transaction cannot be lifted
+            $cart->redirect('home');
+        }
+
+        $cart->setStepStatus('notes', '', false);
+        $nextStep = $cart->getNextCheckoutStep();
+
+        // Double check that the current step is indeed EULA, redirect if needed
+        if ($nextStep->step != 'notes') {
+            $cart->redirect($nextStep->step);
+        }
+
+        // Add the fields for the SKUs that require special notes
+        $items = $transaction->items;
+        $noteFields = array();
+        foreach ($items as $item) {
+            $info = $item['info'];
+            if ($info->sCheckoutNotes) {
+                $noteFields[$info->sId] = array(
+                    'pName' => $info->pName,
+                    'sSku' => $info->sSku,
+                    'sCheckoutNotes' => $info->sCheckoutNotes,
+                    'sCheckoutNotesRequired' => $info->sCheckoutNotesRequired
+                );
+            }
+        }
+        $this->view->noteFields = $noteFields;
+
+        $notesSubmitted = Request::getBool('submitNotes', false, 'post');
+
+        if ($notesSubmitted) {
+            // Check all required notes
+            foreach ($noteFields as $sId => $fieldInfo) {
+                $itemNotes = Request::getString('notes-' . $sId, false, 'post');
+                if ($fieldInfo['sCheckoutNotesRequired']) {
+                    if (!$itemNotes) {
+                        $errors[] = array(
+                            Lang::txt(
+                                'Please add Notes/Comments for '
+                                . $fieldInfo['pName'] . ', ' . $fieldInfo['sSku']
+                            ),
+                            'error'
+                        );
+                    }
+                }
+
+                // Save item's meta
+                if ($itemNotes) {
+                    $itemMeta = new \stdClass();
+                    $itemMeta->checkoutNotes = $itemNotes;
+                    $cart->addTransactionItemMeta($sId, $itemMeta);
+                }
+            }
+
+            if (!empty($errors)) {
+                $this->view->notifications = $errors;
+            } else {
+                $notes = Request::getString('notes', false, 'post');
+
+                // Save order's notes
+                $cart->setTransactionNotes($notes);
+
+                // Mark this step as completed
+                $cart->setStepStatus('notes');
+
+                // All good, continue
+                $nextStep = $cart->getNextCheckoutStep()->step;
+                $cart->redirect($nextStep);
+            }
+        }
+
+        if (Pathway::count() <= 0) {
+            Pathway::append(
+                Lang::txt(strtoupper($this->_option)),
+                'index.php?option=' . $this->_option
+            );
+        }
+        if ($this->_task) {
+            Pathway::append(
+                Lang::txt('Notes')
+            );
+        }
+
+        $this->view->display();
+    }
+
+    /**
+     * Shipping step of the checkout
+     *
+     * @return  void
+     */
+    public function shippingTask()
+    {
+        $cart = new CurrentCart();
+
+        // initialize address set var
+        $addressSet = false;
+
+        $params = $this->getParams(array('action', 'saId'));
+
+        $errors = array();
+
+        if (!empty($params) && !empty($params->action) && !empty($params->saId) && $params->action == 'select') {
+            try {
+                $this->selectSavedShippingAddress($params->saId, $cart);
+                $addressSet = true;
+            } catch (\Exception $e) {
+                $errors[] = array($e->getMessage(), 'error');
+            }
+        }
+
+        $update = Request::getWord('update', false, 'get');
+        $transaction = $cart->liftTransaction($update);
+
+        if (!$transaction) {
+            // Redirect to cart if transaction cannot be lifted
+            $cart->redirect('home');
+        }
+
+        // It is OK to come back to shipping and change the address
+        $cart->setStepStatus('shipping', '', false);
+        $nextStep = $cart->getNextCheckoutStep();
+
+        // Double check that the current step is indeed shipping, redirect if needed
+        if ($nextStep->step != 'shipping') {
+            $cart->redirect($nextStep->step);
+        }
+
+        // handle non-ajax form submit
+        $shippingInfoSubmitted = Request::getBool('submitShippingInfo', false, 'post');
+
+        if ($shippingInfoSubmitted) {
+            $res = $cart->setTransactionShippingInfo();
+
+            if ($res->status) {
+                $addressSet = true;
+            } else {
+                foreach ($res->errors as $error) {
+                    $errors[] = array($error, 'error');
+                }
+            }
+        }
+
+        // Calculate shipping charge
+        if ($addressSet) {
+            // TODO Calculate shipping
+            $shippingCost = 22.22;
+            $cart->setTransactionShippingCost($shippingCost);
+
+            $cart->setStepStatus('shipping');
+
+            $nextStep = $cart->getNextCheckoutStep()->step;
+            $cart->redirect($nextStep);
+        }
+
+        if (!empty($errors)) {
+            $this->view->notifications = $errors;
+        }
+
+        if (Pathway::count() <= 0) {
+            Pathway::append(
+                Lang::txt(strtoupper($this->_option)),
+                'index.php?option=' . $this->_option
+            );
+        }
+        if ($this->_task) {
+            Pathway::append(
+                Lang::txt('Shipping')
+            );
+        }
+
+        $savedShippingAddresses = $cart->getSavedShippingAddresses($this->user->id);
+        $this->view->savedShippingAddresses = $savedShippingAddresses;
+        $this->view->display();
+    }
+
+    /**
+     * Select saved shipping address
+     *
+     * @param   int     $saId
+     * @param   object  $cart
+     * @return  void
+     */
+    private function selectSavedShippingAddress($saId, $cart)
+    {
+        // ajax vs non-ajax
+        $cart->setSavedShippingAddress($saId);
+    }
+
+    /**
+     * Summary step of the checkout
+     *
+     * @return  void
+     */
+    public function summaryTask()
+    {
+        $cart = new CurrentCart();
+
+        $transaction = $cart->liftTransaction();
+
+        if (!$transaction) {
+            $cart->redirect('home');
+        }
+
+        // Generate security token
+        $token = $cart->getToken();
+
+        // Check if there are any steps missing. Redirect if needed
+        $nextStep = $cart->getNextCheckoutStep()->step;
+
+        if ($nextStep != 'summary') {
+            $cart->redirect($nextStep);
+        }
+
+        $cart->finalizeTransaction();
+
+        if (Pathway::count() <= 0) {
+            Pathway::append(
+                Lang::txt(strtoupper($this->_option)),
+                'index.php?option=' . $this->_option
+            );
+        }
+        if ($this->_task) {
+            Pathway::append(
+                Lang::txt('Review your order')
+            );
+        }
+
+        $this->view->token = $token;
+        $this->view->transactionItems = $transaction->items;
+        $this->view->transactionInfo = $transaction->info;
+        $this->view->display();
+    }
+
+
+    public function paymentTask()
+    {
+        $cart = new CurrentCart();
+
+        $update = Request::getWord('update', false, 'get');
+        $transaction = $cart->liftTransaction($update);
+
+        if (!$transaction) {
+            $cart->redirect('home');
+        }
+
+        // Get security token
+        $transaction->token = $cart->getToken();
+
+        // Check if there are any steps missing. Redirect if needed
+        $nextStep = $cart->getNextCheckoutStep()->step;
+
+        if ($nextStep != 'summary') {
+            $cart->redirect($nextStep);
+        }
+
+        $this->view
+            ->set('transaction', $transaction)
+            ->display();
+    }
+
+    /**
+     * Confirm step of the checkout. Should be a pass-through page for JS-enabled browsers,
+     * requires a form submission to the payment gateway
+     *
+     * @return  void
+     */
+    public function confirmTask()
+    {
+        $cart = new CurrentCart();
+
+        $transaction = $cart->liftTransaction();
+
+        if (!$transaction) {
+            $cart->redirect('home');
+        }
+
+        // Get security token
+        $transaction->token = $cart->getToken();
+
+        // Check if there are any steps missing. Redirect if needed
+        $nextStep = $cart->getNextCheckoutStep()->step;
+
+        if ($nextStep != 'summary') {
+            $cart->redirect($nextStep);
+        }
+
+        // Payment selected
+        $selected = Request::getString('paymentSelect', 0, 'post');
+        $submitted = Request::getString('paymentSubmit', 0, 'post');
+        $provider = Request::getString('paymentProvider', 0, 'post');
+
+        if ($selected && $provider) {
+            // Do whatever needed to do on the server side
+            $payments = Event::trigger('cart.onSelectedPayment', array($transaction, User::getInstance()));
+
+            $paymentResponse = false;
+            foreach ($payments as $options) {
+                if ($options['response']) {
+                    $paymentResponse = $options['response'];
+                    $paymentStatus = $options['status'];
+                    $paymentInfo = $options['paymentInfo'];
+                    break;
+                }
+            }
+
+            $this->view
+                ->set('paymentResponse', $paymentResponse)
+                ->set('paymentStatus', $paymentStatus)
+                ->set('paymentInfo', $paymentInfo)
+                ->set('transaction', $transaction)
+                ->set('transactionItems', $transaction->items)
+                ->set('transactionInfo', $transaction->info)
+                ->display();
+        } elseif ($submitted && $provider) {
+            // Do whatever needed to do on the server side
+            $payments = Event::trigger('cart.onProcessPayment', array($transaction, User::getInstance()));
+
+            $paymentResponse = false;
+            foreach ($payments as $options) {
+                if ($options['response']) {
+                    $paymentResponse = $options['response'];
+                    break;
+                }
+            }
+
+            $this->view
+                ->set('response', $paymentResponse)
+                ->set('transaction', $transaction)
+                ->display();
+        } else {
+            $cart->redirect($nextStep);
+        }
+
+        // Final step here before payment
+        //Cart::updateTransactionStatus('awaiting payment', $transaction->info->tId);
+
+        // Generate payment code
+        /*
+        $params = Component::params(Request::getCmd('option'));
+        $paymentGatewayProivder = $params->get('paymentProvider');
+
+        require_once dirname(dirname(__DIR__)) . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php';
+        $paymentDispatcher = new \PaymentDispatcher($paymentGatewayProivder);
+        $pay = $paymentDispatcher->getPaymentProvider();
+
+        $pay->setTransactionDetails($transaction);
+
+        $error = false;
+        try
+        {
+            $paymentCode = $pay->getPaymentCode();
+            $this->view->paymentCode = $paymentCode;
+        }
+        catch (\Exception $e)
+        {
+            $error = $e->getMessage();
+        }
+
+        if (!empty($error))
+        {
+            $this->view->setError($error);
+        }
+
+        //print_r($this->view); die;
+        */
+    }
+
+    /**
+     * Redirect to login page
+     *
+     * @param   string  $message
+     * @return  void
+     */
+    private function login($message = '')
+    {
+        $return = base64_encode($_SERVER['REQUEST_URI']);
+        App::redirect(
+            Route::url('index.php?option=com_users&view=login&return=' . $return),
+            $message,
+            'warning'
+        );
+        return;
+    }
+
+    /**
+     * Print transacttion info
+     *
+     * @param   array  $t
+     * @return  void
+     */
+    private function printTransaction($t)
+    {
+        echo '<div class="cartSection">';
+        foreach ($t as $k => $v) {
+            echo '<p>';
+            echo $v['info']->pName;
+            echo ' @ ';
+            echo $v['info']->sPrice;
+            echo ' x';
+            echo $v['transactionInfo']->qty;
+            echo ' @ ';
+            echo $v['transactionInfo']->tiPrice;
+            echo '</p>';
+        }
+        echo '</div>';
+    }
 }

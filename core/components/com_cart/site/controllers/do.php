@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,42 +13,41 @@ namespace Components\Cart\Site\Controllers;
  */
 class CartControllerDo extends ComponentController
 {
-	/**
-	 * Execute a task
-	 *
-	 * @return     void
-	 */
-	public function execute()
-	{
-		// Get the task
-		$this->_task  = Request::getCmd('task', '');
+    /**
+     * Execute a task
+     *
+     * @return     void
+     */
+    public function execute()
+    {
+        // Get the task
+        $this->_task  = Request::getCmd('task', '');
 
-		if (empty($this->_task))
-		{
-			$this->_task = 'home';
-			$this->registerTask('__default', $this->_task);
-		}
+        if (empty($this->_task)) {
+            $this->_task = 'home';
+            $this->registerTask('__default', $this->_task);
+        }
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * Default task
-	 *
-	 * @return     void
-	 */
-	public function homeTask()
-	{
-		App::abort(404);
-	}
+    /**
+     * Default task
+     *
+     * @return     void
+     */
+    public function homeTask()
+    {
+        App::abort(404);
+    }
 
-	/**
-	 * Default task
-	 *
-	 * @return     void
-	 */
-	public function deleteTask()
-	{
-		$sId = $this->getParams('sId');
-	}
+    /**
+     * Default task
+     *
+     * @return     void
+     */
+    public function deleteTask()
+    {
+        $sId = $this->getParams('sId');
+    }
 }

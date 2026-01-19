@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,8 +14,12 @@ defined('_HZEXEC_') or die();
 $task = strtolower(Request::getCmd('task', ''));
 ?>
 <nav role="navigation" class="sub sub-navigation">
-	<ul>
-		<li><a<?php if (!$task || $task == 'display') { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"><?php echo Lang::txt('COM_CART_OREDERS_REPORT_ALL'); ?></a></li>
-		<li><a<?php if ($task == 'items') { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=items'); ?>"><?php echo Lang::txt('COM_CART_ORDER_ITEMS_REPORT'); ?></a></li>
-	</ul>
+    <ul>
+        <li><a<?php if (!$task || $task == 'display') {
+            echo ' class="active"';
+              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"><?php echo Lang::txt('COM_CART_OREDERS_REPORT_ALL'); ?></a></li>
+        <li><a<?php if ($task == 'items') {
+            echo ' class="active"';
+              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=items'); ?>"><?php echo Lang::txt('COM_CART_ORDER_ITEMS_REPORT'); ?></a></li>
+    </ul>
 </nav><!-- / .sub-navigation -->

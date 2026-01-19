@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,25 +16,24 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 ?>
 
 <header id="content-header">
-	<h2>Payment</h2>
+    <h2>Payment</h2>
 </header>
 
 <section class="main section">
-	<div class="section-inner">
-		<p>Click the 'Pay' button to finalize the order.</p>
+    <div class="section-inner">
+        <p>Click the 'Pay' button to finalize the order.</p>
 
-		<form action="" id="frm" method="post">
+        <form action="" id="frm" method="post">
 
-		<?php
-			foreach ($_POST as $k => $v)
-			{
-				echo '<input type="hidden" name="' . $k . '" value="' . $v . '"></input>';
-			}
-		?>
+        <?php
+        foreach ($_POST as $k => $v) {
+            echo '<input type="hidden" name="' . $k . '" value="' . $v . '"></input>';
+        }
+        ?>
 
-		<input type="hidden" name="dummypay" value="1"></input>
+        <input type="hidden" name="dummypay" value="1"></input>
 
-		<input type="submit" value="Pay">
-		</form>
-	</div>
+        <input type="submit" value="Pay">
+        </form>
+    </div>
 </section>

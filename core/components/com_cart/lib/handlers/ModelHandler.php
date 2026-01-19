@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,25 +10,26 @@
 
 defined('_HZEXEC_') or die();
 
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
 class Model_Handler
 {
-	// Database instance
-	var $db = null;
+    // Database instance
+    public $db = null;
 
-	// Item info
-	var $item;
+    // Item info
+    public $item;
 
-	var $crtId;
-	var $tId;
+    public $crtId;
+    public $tId;
 
-	/**
-	 * Constructor
-	 *
-	 */
-	public function __construct($item, $crtId, $tId)
-	{
-		$this->item = $item;
-		$this->crtId = $crtId;
-		$this->tId = $tId;
-	}
+    /**
+     * Constructor
+     *
+     */
+    public function __construct($item, $crtId, $tId)
+    {
+        $this->item = $item;
+        $this->crtId = $crtId;
+        $this->tId = $tId;
+    }
 }

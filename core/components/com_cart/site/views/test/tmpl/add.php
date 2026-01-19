@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,20 +16,20 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 ?>
 
 <header id="content-header">
-	<h2>Express add</h2>
+    <h2>Express add</h2>
 </header>
 
 <section class="main section">
-	<div class="section-inner">
-		<p>Add straight to the cart</p>
+    <div class="section-inner">
+        <p>Add straight to the cart</p>
 
-		<form action="<?php echo Route::url('index.php?option=com_cart'); ?>" id="frm" method="post">
+        <form action="<?php echo Route::url('index.php?option=com_cart'); ?>" id="frm" method="post">
 
-			<input type="hidden" name="updateCart" value="true">
-			<input type="hidden" name="skus" value="11">
-			<input type="hidden" name="expressCheckout" value="true">
+            <input type="hidden" name="updateCart" value="true">
+            <input type="hidden" name="skus" value="11">
+            <input type="hidden" name="expressCheckout" value="true">
 
-			<input type="submit" value="Pay">
-		</form>
-	</div>
+            <input type="submit" value="Pay">
+        </form>
+    </div>
 </section>
