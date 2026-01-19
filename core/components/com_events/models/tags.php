@@ -1,4 +1,5 @@
-<?php
+<?php // phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols, PSR2.Classes.PropertyDeclaration.Underscore
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,10 +17,10 @@ require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
  */
 class Tags extends Cloud
 {
-	/**
-	 * Object type, used for linking objects (such as resources) to tags
-	 *
-	 * @var string
-	 */
-	protected $_scope = 'events';
+    /**
+     * Object type, used for linking objects (such as resources) to tags
+     *
+     * @var string
+     */
+    protected $_scope = 'events';
 }

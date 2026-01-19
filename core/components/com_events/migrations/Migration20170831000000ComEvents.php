@@ -1,4 +1,5 @@
-<?php
+<?php // phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols, PSR1.Classes.ClassDeclaration.MissingNamespace
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,19 +16,19 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20170831000000ComEvents extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addComponentEntry('events');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addComponentEntry('events');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deleteComponentEntry('events');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deleteComponentEntry('events');
+    }
 }

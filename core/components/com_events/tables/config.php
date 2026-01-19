@@ -1,4 +1,5 @@
-<?php
+<?php // phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,30 +18,29 @@ include_once __DIR__ . DS . 'configs.php';
  */
 class Config extends Table
 {
-	/**
-	 * Constructor
-	 *
-	 * @param   object  &$db  Database
-	 * @return  void
-	 */
-	public function __construct(&$db)
-	{
-		parent::__construct('#__events_config', 'param', $db);
-	}
+    /**
+     * Constructor
+     *
+     * @param   object  &$db  Database
+     * @return  void
+     */
+    public function __construct(&$db)
+    {
+        parent::__construct('#__events_config', 'param', $db);
+    }
 
-	/**
-	 * Validate data
-	 *
-	 * @return  boolean  True if data is valid
-	 */
-	public function check()
-	{
-		// check for valid name
-		if (trim($this->param) == '')
-		{
-			$this->setError(Lang::txt('EVENTS_BLANK_CONFIG_PARAMETER'));
-			return false;
-		}
-		return true;
-	}
+    /**
+     * Validate data
+     *
+     * @return  boolean  True if data is valid
+     */
+    public function check()
+    {
+        // check for valid name
+        if (trim($this->param) == '') {
+            $this->setError(Lang::txt('EVENTS_BLANK_CONFIG_PARAMETER'));
+            return false;
+        }
+        return true;
+    }
 }

@@ -1,4 +1,5 @@
-<?php
+<?php // phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols, PSR1.Classes.ClassDeclaration.MissingNamespace
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +16,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20170901000000ComEvents extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__events'))
-		{
-			$query = "CREATE TABLE `#__events` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__events')) {
+            $query = "CREATE TABLE `#__events` (
 			  `id` int(12) NOT NULL AUTO_INCREMENT,
 			  `catid` int(11) NOT NULL DEFAULT '1',
 			  `calendar_id` int(11) DEFAULT NULL,
@@ -57,13 +57,12 @@ class Migration20170901000000ComEvents extends Base
 			  FULLTEXT KEY `ftidx_title_content` (`title`,`content`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__events_calendars'))
-		{
-			$query = "CREATE TABLE `#__events_calendars` (
+        if (!$this->db->tableExists('#__events_calendars')) {
+            $query = "CREATE TABLE `#__events_calendars` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `scope` varchar(100) DEFAULT NULL,
 			  `scope_id` int(11) DEFAULT NULL,
@@ -78,36 +77,33 @@ class Migration20170901000000ComEvents extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__events_categories'))
-		{
-			$query = "CREATE TABLE `#__events_categories` (
+        if (!$this->db->tableExists('#__events_categories')) {
+            $query = "CREATE TABLE `#__events_categories` (
 			  `id` int(12) NOT NULL DEFAULT '0',
 			  `color` varchar(8) NOT NULL DEFAULT '',
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__events_config'))
-		{
-			$query = "CREATE TABLE `#__events_config` (
+        if (!$this->db->tableExists('#__events_config')) {
+            $query = "CREATE TABLE `#__events_config` (
 			  `param` varchar(100) DEFAULT NULL,
 			  `value` tinytext
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__event_registration'))
-		{
-			$query = "CREATE TABLE `#__event_registration` (
+        if (!$this->db->tableExists('#__event_registration')) {
+            $query = "CREATE TABLE `#__event_registration` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `event` varchar(100) DEFAULT NULL,
 			  `username` varchar(100) DEFAULT NULL,
@@ -124,13 +120,12 @@ class Migration20170901000000ComEvents extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__events_pages'))
-		{
-			$query = "CREATE TABLE `#__events_pages` (
+        if (!$this->db->tableExists('#__events_pages')) {
+            $query = "CREATE TABLE `#__events_pages` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `event_id` int(11) DEFAULT '0',
 			  `alias` varchar(100) NOT NULL,
@@ -145,13 +140,12 @@ class Migration20170901000000ComEvents extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__events_respondents'))
-		{
-			$query = "CREATE TABLE `#__events_respondents` (
+        if (!$this->db->tableExists('#__events_respondents')) {
+            $query = "CREATE TABLE `#__events_respondents` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `event_id` int(11) NOT NULL DEFAULT '0',
 			  `registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -180,82 +174,73 @@ class Migration20170901000000ComEvents extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__events_respondent_race_rel'))
-		{
-			$query = "CREATE TABLE `#__events_respondent_race_rel` (
+        if (!$this->db->tableExists('#__events_respondent_race_rel')) {
+            $query = "CREATE TABLE `#__events_respondent_race_rel` (
 			  `respondent_id` int(11) DEFAULT NULL,
 			  `race` varchar(255) DEFAULT NULL,
 			  `tribal_affiliation` varchar(255) DEFAULT NULL
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__events'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__events`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__events')) {
+            $query = "DROP TABLE IF EXISTS `#__events`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__events_calendars'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__events_calendars`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__events_calendars')) {
+            $query = "DROP TABLE IF EXISTS `#__events_calendars`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__events_categories'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__events_categories`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__events_categories')) {
+            $query = "DROP TABLE IF EXISTS `#__events_categories`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__events_config'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__events_config`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__events_config')) {
+            $query = "DROP TABLE IF EXISTS `#__events_config`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__events_registration'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__events_registration`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__events_registration')) {
+            $query = "DROP TABLE IF EXISTS `#__events_registration`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__events_pages'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__events_pages`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__events_pages')) {
+            $query = "DROP TABLE IF EXISTS `#__events_pages`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__events_respondents'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__events_respondents`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__events_respondents')) {
+            $query = "DROP TABLE IF EXISTS `#__events_respondents`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__events_respondent_race_rel'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__events_respondent_race_rel`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__events_respondent_race_rel')) {
+            $query = "DROP TABLE IF EXISTS `#__events_respondent_race_rel`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

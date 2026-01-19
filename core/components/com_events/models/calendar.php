@@ -1,4 +1,5 @@
-<?php
+<?php // phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols, PSR2.Classes.PropertyDeclaration.Underscore
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,454 +29,414 @@ require_once PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'calendar' . DS .
  */
 class Calendar extends Model
 {
-	/**
-	 * Table
-	 *
-	 * @var string
-	 */
-	protected $_tbl = null;
+    /**
+     * Table
+     *
+     * @var string
+     */
+    protected $_tbl = null;
 
-	/**
-	 * Table name
-	 *
-	 * @var string
-	 */
-	protected $_tbl_name = '\\Components\\Events\\Tables\\Calendar';
+    /**
+     * Table name
+     *
+     * @var string
+     */
+    protected $_tbl_name = '\\Components\\Events\\Tables\\Calendar';
 
-	/**
-	 * \Hubzero\Base\ItemList
-	 *
-	 * @var object
-	 */
-	private $_events = null;
+    /**
+     * \Hubzero\Base\ItemList
+     *
+     * @var object
+     */
+    private $_events = null;
 
-	/**
-	 * \Hubzero\Base\ItemList
-	 *
-	 * @var object
-	 */
-	private $_events_repeating = null;
+    /**
+     * \Hubzero\Base\ItemList
+     *
+     * @var object
+     */
+    private $_events_repeating = null;
 
-	/**
-	 * Events Count
-	 *
-	 * @var int
-	 */
-	private $_events_count = null;
+    /**
+     * Events Count
+     *
+     * @var int
+     */
+    private $_events_count = null;
 
-	/**
-	 * Constructor
-	 *
-	 * @param      mixed     Object Id
-	 * @return     void
-	 */
-	public function __construct($oid = null)
-	{
-		// create needed objects
-		$this->_db = \App::get('db');
+    /**
+     * Constructor
+     *
+     * @param      mixed     Object Id
+     * @return     void
+     */
+    public function __construct($oid = null)
+    {
+        // create needed objects
+        $this->_db = \App::get('db');
 
-		// load page table
-		$this->_tbl = new $this->_tbl_name($this->_db);
+        // load page table
+        $this->_tbl = new $this->_tbl_name($this->_db);
 
-		// load object
-		if (is_numeric($oid))
-		{
-			$this->_tbl->load($oid);
-		}
-		else if (is_object($oid) || is_array($oid))
-		{
-			$this->bind($oid);
-		}
-	}
+        // load object
+        if (is_numeric($oid)) {
+            $this->_tbl->load($oid);
+        } elseif (is_object($oid) || is_array($oid)) {
+            $this->bind($oid);
+        }
+    }
 
-	/**
-	 * Get Instance this Model
-	 *
-	 * @param   $key   Instance Key
-	 */
-	static function &getInstance($key=null)
-	{
-		static $instances;
+    /**
+     * Get Instance this Model
+     *
+     * @param   $key   Instance Key
+     */
+    public static function &getInstance($key = null)
+    {
+        static $instances;
 
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
+        if (!isset($instances)) {
+            $instances = array();
+        }
 
-		if (!isset($instances[$key]))
-		{
-			$instances[$key] = new self($key);
-		}
+        if (!isset($instances[$key])) {
+            $instances[$key] = new self($key);
+        }
 
-		return $instances[$key];
-	}
+        return $instances[$key];
+    }
 
-	/**
-	 * Get a list of group pages
-	 *
-	 * @param      string   $rtrn     What data to return
-	 * @param      array    $filters  Filters to apply to data retrieval
-	 * @param      boolean  $clear    Clear cached data?
-	 * @return     mixed
-	 */
-	public function events($rtrn = 'list', $filters = array(), $clear = false)
-	{
-		switch (strtolower($rtrn))
-		{
-			case 'count':
-				if (!$this->_events_count || $clear)
-				{
-					$tbl = new Tables\Event($this->_db);
-					$this->_events_count = $tbl->count($filters);
-				}
-				return $this->_events_count;
-			break;
+    /**
+     * Get a list of group pages
+     *
+     * @param      string   $rtrn     What data to return
+     * @param      array    $filters  Filters to apply to data retrieval
+     * @param      boolean  $clear    Clear cached data?
+     * @return     mixed
+     */
+    public function events($rtrn = 'list', $filters = array(), $clear = false)
+    {
+        switch (strtolower($rtrn)) {
+            case 'count':
+                if (!$this->_events_count || $clear) {
+                    $tbl = new Tables\Event($this->_db);
+                    $this->_events_count = $tbl->count($filters);
+                }
+                return $this->_events_count;
+            break;
 
-			case 'repeating':
-				if (!($this->_events_repeating instanceof ItemList) || $clear)
-				{
-					// var to hold repeating data
-					$repeats = array();
+            case 'repeating':
+                if (!($this->_events_repeating instanceof ItemList) || $clear) {
+                    // var to hold repeating data
+                    $repeats = array();
 
-					// add repeating filters
-					$filters['repeating'] = true;
+                    // add repeating filters
+                    $filters['repeating'] = true;
 
-					// capture publish up/down
-					// remove for now as we want all events that have a repeating rule
-					$start = Date::of($filters['publish_up']);
-					$end   = Date::of($filters['publish_down']);
-					unset($filters['publish_up']);
-					unset($filters['publish_down']);
+                    // capture publish up/down
+                    // remove for now as we want all events that have a repeating rule
+                    $start = Date::of($filters['publish_up']);
+                    $end   = Date::of($filters['publish_down']);
+                    unset($filters['publish_up']);
+                    unset($filters['publish_down']);
 
-					// find any events that match our filters
-					$tbl = new Tables\Event($this->_db);
-					if ($results = $tbl->find($filters))
-					{
-						foreach ($results as $key => $result)
-						{
-							$start = Date::of($result->publish_up);
+                    // find any events that match our filters
+                    $tbl = new Tables\Event($this->_db);
+                    if ($results = $tbl->find($filters)) {
+                        foreach ($results as $key => $result) {
+                            $start = Date::of($result->publish_up);
 
-							// get the repeating & pass start date
-							$rule = new \Recurr\Rule($result->repeating_rule, $start);
+                            // get the repeating & pass start date
+                            $rule = new \Recurr\Rule($result->repeating_rule, $start);
 
-							// create transformmer & generate occurences
-							$transformer = new \Recurr\Transformer\ArrayTransformer();
-							$occurrences = $transformer->transform($rule, null);
+                            // create transformmer & generate occurences
+                            $transformer = new \Recurr\Transformer\ArrayTransformer();
+                            $occurrences = $transformer->transform($rule, null);
 
-							// calculate diff so we can create down
-							$diff = new DateInterval('P0Y0DT0H0M');
-							if ($result->publish_down && $result->publish_down != '0000-00-00 00:00:00')
-							{
-								$diff = date_diff(Date::of($result->publish_up), Date::of($result->publish_down));
-							}
+                            // calculate diff so we can create down
+                            $diff = new DateInterval('P0Y0DT0H0M');
+                            if ($result->publish_down && $result->publish_down != '0000-00-00 00:00:00') {
+                                $diff = date_diff(Date::of($result->publish_up), Date::of($result->publish_down));
+                            }
 
-							// create new event for each reoccurrence
-							foreach ($occurrences as $occurrence)
-							{
-								$event               = clone($result);
-								$event->publish_up   = $occurrence->getStart()->format('Y-m-d H:i:s');
-								$event->publish_down = $occurrence->getStart()->add($diff)->format('Y-m-d H:i:s');
-								$repeats[]           = new Event($event);
-							}
-						}
-					}
-					$this->_events_repeating = new ItemList($repeats);
-				}
-				return $this->_events_repeating;
-			break;
+                            // create new event for each reoccurrence
+                            foreach ($occurrences as $occurrence) {
+                                $event               = clone($result);
+                                $event->publish_up   = $occurrence->getStart()->format('Y-m-d H:i:s');
+                                $event->publish_down = $occurrence->getStart()->add($diff)->format('Y-m-d H:i:s');
+                                $repeats[]           = new Event($event);
+                            }
+                        }
+                    }
+                    $this->_events_repeating = new ItemList($repeats);
+                }
+                return $this->_events_repeating;
+            break;
 
-			case 'list':
-			default:
-				if (!($this->_events instanceof ItemList) || $clear)
-				{
-					$tbl = new Tables\Event($this->_db);
-					if ($results = $tbl->find( $filters ))
-					{
-						foreach ($results as $key => $result)
-						{
-							$results[$key] = new Event($result);
-						}
-					}
-					$this->_events = new ItemList($results);
-				}
-				return $this->_events;
-			break;
-		}
-	}
+            case 'list':
+            default:
+                if (!($this->_events instanceof ItemList) || $clear) {
+                    $tbl = new Tables\Event($this->_db);
+                    if ($results = $tbl->find($filters)) {
+                        foreach ($results as $key => $result) {
+                            $results[$key] = new Event($result);
+                        }
+                    }
+                    $this->_events = new ItemList($results);
+                }
+                return $this->_events;
+            break;
+        }
+    }
 
-	/**
-	 * Is Calendar a subscription
-	 *
-	 * @return bool
-	 */
-	public function isSubscription()
-	{
-		return $this->get('readonly') && filter_var($this->get('url'), FILTER_VALIDATE_URL);
-	}
+    /**
+     * Is Calendar a subscription
+     *
+     * @return bool
+     */
+    public function isSubscription()
+    {
+        return $this->get('readonly') && filter_var($this->get('url'), FILTER_VALIDATE_URL);
+    }
 
-	/**
-	 * Refresh a Specific Group Calendar
-	 *
-	 * @param  bool  $force  Force refresh calendar?
-	 */
-	public function refresh($force = false)
-	{
-		// only refresh subscriptions
-		if (!$this->isSubscription())
-		{
-			$this->setError($this->get('title'));
-			return false;
-		}
+    /**
+     * Refresh a Specific Group Calendar
+     *
+     * @param  bool  $force  Force refresh calendar?
+     */
+    public function refresh($force = false)
+    {
+        // only refresh subscriptions
+        if (!$this->isSubscription()) {
+            $this->setError($this->get('title'));
+            return false;
+        }
 
-		// get refresh interval
-		$interval = \Plugin::params('calendar', 'groups')->get('import_subscription_interval', 60);
+        // get refresh interval
+        $interval = \Plugin::params('calendar', 'groups')->get('import_subscription_interval', 60);
 
-		// get datetimes needed to refresh
-		$now             = Date::of('now');
-		$lastRefreshed   = Date::of($this->get('last_fetched_attempt'));
-		$refreshInterval = new DateInterval("PT{$interval}M");
+        // get datetimes needed to refresh
+        $now             = Date::of('now');
+        $lastRefreshed   = Date::of($this->get('last_fetched_attempt'));
+        $refreshInterval = new DateInterval("PT{$interval}M");
 
-		// Assumes minutes
-		// add refresh interval to last refreshed
-		$lastRefreshed->add($refreshInterval->i);
+        // Assumes minutes
+        // add refresh interval to last refreshed
+        $lastRefreshed->add($refreshInterval->i);
 
-		// if we havent passed our need to refresh date stop
-		if ($now < $lastRefreshed && !$force)
-		{
-			return false;
-		}
+        // if we havent passed our need to refresh date stop
+        if ($now < $lastRefreshed && !$force) {
+            return false;
+        }
 
-		// get current events
-		$currentEvents = $this->events('list', array(
-			'scope'       => $this->get('scope'),
-			'scope_id'    => $this->get('scope_id'),
-			'calendar_id' => $this->get('id'),
-			'state'       => array(1)
-		));
+        // get current events
+        $currentEvents = $this->events('list', array(
+            'scope'       => $this->get('scope'),
+            'scope_id'    => $this->get('scope_id'),
+            'calendar_id' => $this->get('id'),
+            'state'       => array(1)
+        ));
 
-		//build calendar url
-		$calendarUrl = str_replace('webcal', 'http', $this->get('url'));
+        //build calendar url
+        $calendarUrl = str_replace('webcal', 'http', $this->get('url'));
 
-		//test to see if this calendar is valid
-		$calendarHeaders = get_headers($calendarUrl, 1);
-		$statusCode      = (isset($calendarHeaders[0])) ? $calendarHeaders[0] : '';
+        //test to see if this calendar is valid
+        $calendarHeaders = get_headers($calendarUrl, 1);
+        $statusCode      = (isset($calendarHeaders[0])) ? $calendarHeaders[0] : '';
 
-		// if we got a 301, lets update the location
-		if (stristr($statusCode, '301 Moved Permanently'))
-		{
-			if (isset($calendarHeaders['Location']))
-			{
-				$this->set('url', $calendarHeaders['Location']);
-				$this->store(true);
-				$this->refresh();
-			}
-		}
+        // if we got a 301, lets update the location
+        if (stristr($statusCode, '301 Moved Permanently')) {
+            if (isset($calendarHeaders['Location'])) {
+                $this->set('url', $calendarHeaders['Location']);
+                $this->store(true);
+                $this->refresh();
+            }
+        }
 
-		//make sure the calendar url is valid
-		if (!strstr($statusCode, '200 OK'))
-		{
-			$this->set('failed_attempts', (int)$this->get('failed_attempts', 0) + 1);
-			$this->set('last_fetched_attempt', Date::toSql());
-			$this->store(true);
-			$this->setError($this->get('title'));
-			return false;
-		}
+        //make sure the calendar url is valid
+        if (!strstr($statusCode, '200 OK')) {
+            $this->set('failed_attempts', (int)$this->get('failed_attempts', 0) + 1);
+            $this->set('last_fetched_attempt', Date::toSql());
+            $this->store(true);
+            $this->setError($this->get('title'));
+            return false;
+        }
 
-		//read calendar file
-		$icalparser = new \icalparser($calendarUrl);
-		$incomingEvents = $icalparser->getEvents();
+        //read calendar file
+        $icalparser = new \icalparser($calendarUrl);
+        $incomingEvents = $icalparser->getEvents();
 
-		// check to make sure we have events
-		if (count($incomingEvents) < 1)
-		{
-			$this->setError($this->get('title'));
-			return false;
-		}
+        // check to make sure we have events
+        if (count($incomingEvents) < 1) {
+            $this->setError($this->get('title'));
+            return false;
+        }
 
-		//make uid keys for array
-		//makes it easier to diff later on
-		foreach ($incomingEvents as $k => $incomingEvent)
-		{
-			//get old and new key
-			$oldKey = $k;
-			$newKey = (isset($incomingEvent['UID'])) ? $incomingEvent['UID'] : '';
+        //make uid keys for array
+        //makes it easier to diff later on
+        foreach ($incomingEvents as $k => $incomingEvent) {
+            //get old and new key
+            $oldKey = $k;
+            $newKey = (isset($incomingEvent['UID'])) ? $incomingEvent['UID'] : '';
 
-			//set keys to be the uid
-			if ($newKey != '')
-			{
-				$incomingEvents[$newKey] = $incomingEvent;
-				unset($incomingEvents[$oldKey]);
-			}
-		}
+            //set keys to be the uid
+            if ($newKey != '') {
+                $incomingEvents[$newKey] = $incomingEvent;
+                unset($incomingEvents[$oldKey]);
+            }
+        }
 
-		//get events we need to delete
-		$eventsToDelete = array_diff($currentEvents->lists('ical_uid'), array_keys($incomingEvents));
+        //get events we need to delete
+        $eventsToDelete = array_diff($currentEvents->lists('ical_uid'), array_keys($incomingEvents));
 
-		//delete each event we dont have in the incoming events
-		foreach ($eventsToDelete as $eventDelete)
-		{
-			$e = $currentEvents->fetch('ical_uid', $eventDelete);
-			$e->delete();
-		}
+        //delete each event we dont have in the incoming events
+        foreach ($eventsToDelete as $eventDelete) {
+            $e = $currentEvents->fetch('ical_uid', $eventDelete);
+            $e->delete();
+        }
 
-		//create new events for each event we pull
-		foreach ($incomingEvents as $uid => $incomingEvent)
-		{
-			// fetch event from our current events by uid
-			$event = $currentEvents->fetch('ical_uid', $uid);
+        //create new events for each event we pull
+        foreach ($incomingEvents as $uid => $incomingEvent) {
+            // fetch event from our current events by uid
+            $event = $currentEvents->fetch('ical_uid', $uid);
 
-			// create blank event if we dont have one
-			if (!$event)
-			{
-				$event = new Event();
-			}
+            // create blank event if we dont have one
+            if (!$event) {
+                $event = new Event();
+            }
 
-			// start already datetime objects
-			$start = $incomingEvent['DTSTART'];
+            // start already datetime objects
+            $start = $incomingEvent['DTSTART'];
 
-			// set publish up/down
-			$publish_up   = $start->toSql();
-			$allday       = (isset($incomingEvent['ALLDAY']) && $incomingEvent['ALLDAY'] == 1) ? 1 : 0;
-			$rrule        = null;
+            // set publish up/down
+            $publish_up   = $start->toSql();
+            $allday       = (isset($incomingEvent['ALLDAY']) && $incomingEvent['ALLDAY'] == 1) ? 1 : 0;
+            $rrule        = null;
 
-			// handle end
-			if (isset($incomingEvent['DTEND']))
-			{
-				$end = $incomingEvent['DTEND'];
-				$publish_down = $end->toSql();
-			}
-			elseif ($allday == 1)
-			{
-				$publish_down = Date::of($start)->add('24 hours')->toSql();
-			}
+            // handle end
+            if (isset($incomingEvent['DTEND'])) {
+                $end = $incomingEvent['DTEND'];
+                $publish_down = $end->toSql();
+            } elseif ($allday == 1) {
+                $publish_down = Date::of($start)->add('24 hours')->toSql();
+            }
 
-			// handle rrule
-			if (isset($incomingEvent['RRULE']))
-			{
-				// add frequency
-				$rrule = 'FREQ=' . $incomingEvent['RRULE']['FREQ'];
+            // handle rrule
+            if (isset($incomingEvent['RRULE'])) {
+                // add frequency
+                $rrule = 'FREQ=' . $incomingEvent['RRULE']['FREQ'];
 
-				// add interval
-				if (!isset($incomingEvent['RRULE']['INTERVAL']))
-				{
-					$incomingEvent['RRULE']['INTERVAL'] = 1;
-				}
-				$rrule .= ';INTERVAL=' . $incomingEvent['RRULE']['INTERVAL'];
+                // add interval
+                if (!isset($incomingEvent['RRULE']['INTERVAL'])) {
+                    $incomingEvent['RRULE']['INTERVAL'] = 1;
+                }
+                $rrule .= ';INTERVAL=' . $incomingEvent['RRULE']['INTERVAL'];
 
-				// count
-				if (isset($incomingEvent['RRULE']['COUNT']))
-				{
-					$rrule .= ';COUNT=' . $incomingEvent['RRULE']['COUNT'];
-				}
+                // count
+                if (isset($incomingEvent['RRULE']['COUNT'])) {
+                    $rrule .= ';COUNT=' . $incomingEvent['RRULE']['COUNT'];
+                }
 
-				// until
-				if (isset($incomingEvent['RRULE']['UNTIL']))
-				{
-					if (strlen($incomingEvent['RRULE']['UNTIL']) == 8)
-					{
-						$incomingEvent['RRULE']['UNTIL'] .= 'T000000Z';
-					}
-					$until = Date::of($incomingEvent['RRULE']['UNTIL']);
-					$rrule .= ';UNTIL=' . $until->format('Ymd\THis\Z');
-				}
+                // until
+                if (isset($incomingEvent['RRULE']['UNTIL'])) {
+                    if (strlen($incomingEvent['RRULE']['UNTIL']) == 8) {
+                        $incomingEvent['RRULE']['UNTIL'] .= 'T000000Z';
+                    }
+                    $until = Date::of($incomingEvent['RRULE']['UNTIL']);
+                    $rrule .= ';UNTIL=' . $until->format('Ymd\THis\Z');
+                }
 
-				//by day
-				if (isset($incomingEvent['RRULE']['BYDAY']))
-				{
-					$rrule .= ';BYDAY=' . $incomingEvent['RRULE']['BYDAY'];
-				}
-			}
+                //by day
+                if (isset($incomingEvent['RRULE']['BYDAY'])) {
+                    $rrule .= ';BYDAY=' . $incomingEvent['RRULE']['BYDAY'];
+                }
+            }
 
-			// set event details
-			$event->set('title', isset($incomingEvent['SUMMARY']) ? $incomingEvent['SUMMARY'] : '');
-			$event->set('content', isset($incomingEvent['DESCRIPTION']) ? $incomingEvent['DESCRIPTION'] : '');
-			$event->set('content', stripslashes(str_replace('\n', "\n", $event->get('content'))));
-			$event->set('adresse_info', isset($incomingEvent['LOCATION']) ? $incomingEvent['LOCATION'] : '');
-			$event->set('extra_info', isset($incomingEvent['URL']) ? $incomingEvent['URL'] : '');
-			$event->set('modified', Date::toSql());
-			$event->set('modified_by', User::get('id'));
-			$event->set('publish_up', $publish_up);
-			$event->set('publish_down', $publish_down);
-			$event->set('allday', $allday);
-			$event->set('repeating_rule', $rrule);
+            // set event details
+            $event->set('title', isset($incomingEvent['SUMMARY']) ? $incomingEvent['SUMMARY'] : '');
+            $event->set('content', isset($incomingEvent['DESCRIPTION']) ? $incomingEvent['DESCRIPTION'] : '');
+            $event->set('content', stripslashes(str_replace('\n', "\n", $event->get('content'))));
+            $event->set('adresse_info', isset($incomingEvent['LOCATION']) ? $incomingEvent['LOCATION'] : '');
+            $event->set('extra_info', isset($incomingEvent['URL']) ? $incomingEvent['URL'] : '');
+            $event->set('modified', Date::toSql());
+            $event->set('modified_by', User::get('id'));
+            $event->set('publish_up', $publish_up);
+            $event->set('publish_down', $publish_down);
+            $event->set('allday', $allday);
+            $event->set('repeating_rule', $rrule);
 
-			// new event
-			if (!$event->get('id'))
-			{
-				$event->set('catid', -1);
-				$event->set('calendar_id', $this->get('id'));
-				$event->set('ical_uid', isset($incomingEvent['UID']) ? $incomingEvent['UID'] : '');
-				$event->set('scope', $this->get('scope'));
-				$event->set('scope_id', $this->get('scope_id'));
-				$event->set('state', 1);
-				$event->set('created', Date::toSql());
-				$event->set('created_by', User::get('id'));
-				$event->set('time_zone', -5);
-				$event->set('registerby', null);
-				$event->set('params', '');
-			}
+            // new event
+            if (!$event->get('id')) {
+                $event->set('catid', -1);
+                $event->set('calendar_id', $this->get('id'));
+                $event->set('ical_uid', isset($incomingEvent['UID']) ? $incomingEvent['UID'] : '');
+                $event->set('scope', $this->get('scope'));
+                $event->set('scope_id', $this->get('scope_id'));
+                $event->set('state', 1);
+                $event->set('created', Date::toSql());
+                $event->set('created_by', User::get('id'));
+                $event->set('time_zone', -5);
+                $event->set('registerby', null);
+                $event->set('params', '');
+            }
 
-			// save event
-			$event->store(true);
-		}
+            // save event
+            $event->store(true);
+        }
 
-		// mark as fetched
-		// clear failed attempts
-		$this->set('last_fetched', Date::toSql());
-		$this->set('last_fetched_attempt', Date::toSql());
-		$this->set('failed_attempts', 0);
-		$this->store(true);
-		return true;
-	}
+        // mark as fetched
+        // clear failed attempts
+        $this->set('last_fetched', Date::toSql());
+        $this->set('last_fetched_attempt', Date::toSql());
+        $this->set('failed_attempts', 0);
+        $this->store(true);
+        return true;
+    }
 
-	/**
-	 * Delete Calendar
-	 *
-	 * @param  boolean  $deleteEvents
-	 * @return void
-	 */
-	public function delete($deleteEvents = false)
-	{
-		// if subscription delete events
-		if ($this->isSubscription() || $deleteEvents)
-		{
-			// delete events
-			$sql = "DELETE FROM `#__events` WHERE `calendar_id`=" . $this->_db->quote($this->get('id'));
-			$this->_db->setQuery($sql);
-			$this->_db->query();
-		}
-		else
-		{
-			// update all events, resetting their calendar
-			$sql = "UPDATE `#__events` SET `calendar_id`=0 WHERE `calendar_id`=" . $this->_db->quote($this->get('id'));
-			$this->_db->setQuery($sql);
-			$this->_db->query();
-		}
+    /**
+     * Delete Calendar
+     *
+     * @param  boolean  $deleteEvents
+     * @return void
+     */
+    public function delete($deleteEvents = false)
+    {
+        // if subscription delete events
+        if ($this->isSubscription() || $deleteEvents) {
+            // delete events
+            $sql = "DELETE FROM `#__events` WHERE `calendar_id`=" . $this->_db->quote($this->get('id'));
+            $this->_db->setQuery($sql);
+            $this->_db->query();
+        } else {
+            // update all events, resetting their calendar
+            $sql = "UPDATE `#__events` SET `calendar_id`=0 WHERE `calendar_id`=" . $this->_db->quote($this->get('id'));
+            $this->_db->setQuery($sql);
+            $this->_db->query();
+        }
 
-		// delete calendar
-		parent::delete();
-	}
+        // delete calendar
+        parent::delete();
+    }
 
-	/**
-	 * Delete a calendars events
-	 *
-	 * @param  boolean $force Force delete events (event if not subscription)
-	 * @return void
-	 */
-	public function deleteEvents($force = false)
-	{
-		// if were not a subscription and not force deleting
-		if (!$this->isSubscription() && !$force)
-		{
-			return false;
-		}
+    /**
+     * Delete a calendars events
+     *
+     * @param  boolean $force Force delete events (event if not subscription)
+     * @return void
+     */
+    public function deleteEvents($force = false)
+    {
+        // if were not a subscription and not force deleting
+        if (!$this->isSubscription() && !$force) {
+            return false;
+        }
 
-		// delete events
-		$sql = "DELETE FROM `#__events` WHERE `calendar_id`=" . $this->_db->quote($this->id);
-		$this->_db->setQuery($sql);
-		$this->_db->query();
+        // delete events
+        $sql = "DELETE FROM `#__events` WHERE `calendar_id`=" . $this->_db->quote($this->id);
+        $this->_db->setQuery($sql);
+        $this->_db->query();
 
-		// all good
-		return true;
-	}
+        // all good
+        return true;
+    }
 }
