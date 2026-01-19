@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,16 +16,16 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for installing services tables
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComServices extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__users_points_services'))
-		{
-			$query = "CREATE TABLE `#__users_points_services` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__users_points_services')) {
+            $query = "CREATE TABLE `#__users_points_services` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `title` varchar(250) NOT NULL DEFAULT '',
 			  `category` varchar(50) NOT NULL DEFAULT '',
@@ -44,13 +47,12 @@ class Migration20170901000000ComServices extends Base
 			  UNIQUE KEY `uidx_alias` (`alias`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__users_points_subscriptions'))
-		{
-			$query = "CREATE TABLE `#__users_points_subscriptions` (
+        if (!$this->db->tableExists('#__users_points_subscriptions')) {
+            $query = "CREATE TABLE `#__users_points_subscriptions` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `uid` int(11) NOT NULL DEFAULT '0',
 			  `serviceid` int(11) NOT NULL DEFAULT '0',
@@ -70,28 +72,26 @@ class Migration20170901000000ComServices extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__users_points_services'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__users_points_services`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__users_points_services')) {
+            $query = "DROP TABLE IF EXISTS `#__users_points_services`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__users_points_subscriptions'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__users_points_subscriptions`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__users_points_subscriptions')) {
+            $query = "DROP TABLE IF EXISTS `#__users_points_subscriptions`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }
