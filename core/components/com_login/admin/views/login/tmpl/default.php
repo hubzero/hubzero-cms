@@ -29,7 +29,8 @@
 </style>
 
 
-<?php
+<?php // phpcs:disable PSR1.Files.SideEffects, PSR12.Files.FileHeader
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -52,11 +53,9 @@ echo Module::render($loginmodule, array('style' => 'rounded', 'id' => 'section-b
 // If you want to use a different position for the modules, change the name here in your override.
 $modules = Module::byPosition('login');
 
-foreach ($modules as $module)
-{
-	// Render the login modules
-	if ($module->module != 'mod_adminlogin')
-	{
-		echo Module::render($module, array('style' => 'rounded', 'id' => 'section-box'));
-	}
+foreach ($modules as $module) {
+    // Render the login modules
+    if ($module->module != 'mod_adminlogin') {
+        echo Module::render($module, array('style' => 'rounded', 'id' => 'section-box'));
+    }
 }

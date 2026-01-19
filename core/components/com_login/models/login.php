@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,243 +18,226 @@ use App;
  */
 class Login extends Obj
 {
-	/**
-	 * Indicates if the internal state has been set
-	 *
-	 * @var  boolean
-	 */
-	protected $__state_set = null;
+    /**
+     * Indicates if the internal state has been set
+     *
+     * @var  boolean
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $__state_set = null;
 
-	/**
-	 * A state object
-	 *
-	 * @var  string
-	 */
-	protected $state;
+    /**
+     * A state object
+     *
+     * @var  string
+     */
+    protected $state;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   array  $config  An array of configuration options (name, state, dbo, table_path, ignore_request).
-	 * @return  void
-	 */
-	public function __construct($config = array())
-	{
-		parent::__construct($config);
+    /**
+     * Constructor
+     *
+     * @param   array  $config  An array of configuration options (name, state, dbo, table_path, ignore_request).
+     * @return  void
+     */
+    public function __construct($config = array())
+    {
+        parent::__construct($config);
 
-		// Set the model state
-		if (!array_key_exists('state', $config))
-		{
-			$config['state'] = new Obj;
-		}
+        // Set the model state
+        if (!array_key_exists('state', $config)) {
+            $config['state'] = new Obj();
+        }
 
-		$this->state = $config['state'];
+        $this->state = $config['state'];
 
-		// Set the internal state marker - used to ignore setting state from the request
-		if (!empty($config['ignore_request']))
-		{
-			$this->__state_set = true;
-		}
-	}
+        // Set the internal state marker - used to ignore setting state from the request
+        if (!empty($config['ignore_request'])) {
+            $this->__state_set = true;
+        }
+    }
 
-	/**
-	 * Method to get model state variables
-	 *
-	 * @param   string  $property  Optional parameter name
-	 * @param   mixed   $default   Optional default value
-	 * @return  object  The property where specified, the state object where omitted
-	 */
-	public function getState($property = null, $default = null)
-	{
-		if (!$this->__state_set)
-		{
-			// Protected method to auto-populate the model state.
-			$this->populateState();
+    /**
+     * Method to get model state variables
+     *
+     * @param   string  $property  Optional parameter name
+     * @param   mixed   $default   Optional default value
+     * @return  object  The property where specified, the state object where omitted
+     */
+    public function getState($property = null, $default = null)
+    {
+        if (!$this->__state_set) {
+            // Protected method to auto-populate the model state.
+            $this->populateState();
 
-			// Set the model state set flag to true.
-			$this->__state_set = true;
-		}
+            // Set the model state set flag to true.
+            $this->__state_set = true;
+        }
 
-		return $property === null ? $this->state : $this->state->get($property, $default);
-	}
+        return $property === null ? $this->state : $this->state->get($property, $default);
+    }
 
-	/**
-	 * Method to set model state variables
-	 *
-	 * @param   string  $property  The name of the property.
-	 * @param   mixed   $value     The value of the property to set or null.
-	 * @return  mixed   The previous value of the property or null if not set.
-	 */
-	public function setState($property, $value = null)
-	{
-		return $this->state->set($property, $value);
-	}
+    /**
+     * Method to set model state variables
+     *
+     * @param   string  $property  The name of the property.
+     * @param   mixed   $value     The value of the property to set or null.
+     * @return  mixed   The previous value of the property or null if not set.
+     */
+    public function setState($property, $value = null)
+    {
+        return $this->state->set($property, $value);
+    }
 
-	/**
-	 * Method to auto-populate the model state.
-	 *
-	 * Note. Calling getState in this method will result in recursion.
-	 *
-	 * @return  void
-	 */
-	protected function populateState()
-	{
-		$credentials = array(
-			'username' => Request::getString('username', '', 'post'),
-			'password' => Request::getString('passwd', '', 'post')
-		);
-		$this->setState('credentials', $credentials);
+    /**
+     * Method to auto-populate the model state.
+     *
+     * Note. Calling getState in this method will result in recursion.
+     *
+     * @return  void
+     */
+    protected function populateState()
+    {
+        $credentials = array(
+            'username' => Request::getString('username', '', 'post'),
+            'password' => Request::getString('passwd', '', 'post')
+        );
+        $this->setState('credentials', $credentials);
 
-		// Check for return URL from the request first
-		if ($return = Request::getString('return', '', 'post'))
-		{
-			if (preg_match('/[^A-Za-z0-9\+\/\=]/', $return))
-			{
-				// This isn't a base64 string and most likely is someone trying to do something nasty (XSS)
-				$return = '';
-			}
-			else
-			{
-				$return = base64_decode($return);
+        // Check for return URL from the request first
+        if ($return = Request::getString('return', '', 'post')) {
+            if (preg_match('/[^A-Za-z0-9\+\/\=]/', $return)) {
+                // This isn't a base64 string and most likely is someone trying to do something nasty (XSS)
+                $return = '';
+            } else {
+                $return = base64_decode($return);
 
-				if (!Uri::isInternal($return))
-				{
-					$return = '';
-				}
-			}
-		}
+                if (!Uri::isInternal($return)) {
+                    $return = '';
+                }
+            }
+        }
 
-		// Set the return URL if empty.
-		if (empty($return))
-		{
-			$return = Route::url('index.php');
-		}
+        // Set the return URL if empty.
+        if (empty($return)) {
+            $return = Route::url('index.php');
+        }
 
-		$this->setState('return', $return);
-	}
+        $this->setState('return', $return);
+    }
 
-	/**
-	 * Get the administrator login module by name (real, eg 'login' or folder, eg 'mod_login')
-	 *
-	 * @param   string  $name   The name of the module
-	 * @param   string  $title  The title of the module, optional
-	 * @return  object  The Module object
-	 */
-	public static function getLoginModule($name = 'mod_login', $title = null)
-	{
-		$result  = null;
-		$modules = self::_load($name);
-		$total   = count($modules);
+    /**
+     * Get the administrator login module by name (real, eg 'login' or folder, eg 'mod_login')
+     *
+     * @param   string  $name   The name of the module
+     * @param   string  $title  The title of the module, optional
+     * @return  object  The Module object
+     */
+    public static function getLoginModule($name = 'mod_login', $title = null)
+    {
+        $result  = null;
+        $modules = self::_load($name);
+        $total   = count($modules);
 
-		for ($i = 0; $i < $total; $i++)
-		{
-			// Match the title if we're looking for a specific instance of the module
-			if (!$title || $modules[$i]->title == $title)
-			{
-				$result = $modules[$i];
-				break;  // Found it
-			}
-		}
+        for ($i = 0; $i < $total; $i++) {
+            // Match the title if we're looking for a specific instance of the module
+            if (!$title || $modules[$i]->title == $title) {
+                $result = $modules[$i];
+                break;  // Found it
+            }
+        }
 
-		// If we didn't find it, and the name is mod_something, create a dummy object
-		if (is_null($result) && substr($name, 0, 4) == 'mod_')
-		{
-			$result = new \stdClass;
-			$result->id        = 0;
-			$result->title     = '';
-			$result->module    = $name;
-			$result->position  = '';
-			$result->content   = '';
-			$result->showtitle = 0;
-			$result->control   = '';
-			$result->params    = '';
-			$result->user      = 0;
-		}
+        // If we didn't find it, and the name is mod_something, create a dummy object
+        if (is_null($result) && substr($name, 0, 4) == 'mod_') {
+            $result = new \stdClass();
+            $result->id        = 0;
+            $result->title     = '';
+            $result->module    = $name;
+            $result->position  = '';
+            $result->content   = '';
+            $result->showtitle = 0;
+            $result->control   = '';
+            $result->params    = '';
+            $result->user      = 0;
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 
-	/**
-	 * Load login modules.
-	 *
-	 * Note that we load regardless of state or access level since access
-	 * for public is the only thing that makes sense since users are not logged in
-	 * and the module lets them log in.
-	 *
-	 * This is put in as a failsafe to avoid super user lock out caused by an unpublished
-	 * login module or by a module set to have a viewing access level that is not Public.
-	 *
-	 * @param   string  $name   The name of the module
-	 * @return  array
-	 */
-	protected static function _load($module)
-	{
-		static $clean;
+    /**
+     * Load login modules.
+     *
+     * Note that we load regardless of state or access level since access
+     * for public is the only thing that makes sense since users are not logged in
+     * and the module lets them log in.
+     *
+     * This is put in as a failsafe to avoid super user lock out caused by an unpublished
+     * login module or by a module set to have a viewing access level that is not Public.
+     *
+     * @param   string  $name   The name of the module
+     * @return  array
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected static function _load($module)
+    {
+        static $clean;
 
-		if (isset($clean))
-		{
-			return $clean;
-		}
+        if (isset($clean)) {
+            return $clean;
+        }
 
-		$lang     = App::get('language')->getTag();
-		$clientId = (int) App::get('client')->id;
+        $lang     = App::get('language')->getTag();
+        $clientId = (int) App::get('client')->id;
 
-		$cache       = App::get('cache');
-		$cacheid     = 'com_modules.' . md5(serialize(array($clientId, $lang)));
-		$loginmodule = array();
+        $cache       = App::get('cache');
+        $cacheid     = 'com_modules.' . md5(serialize(array($clientId, $lang)));
+        $loginmodule = array();
 
-		try
-		{
-			$clean = $cache->get($cacheid);
-		}
-		catch (\Exception $e)
-		{
-			$clean = null;
-		}
+        try {
+            $clean = $cache->get($cacheid);
+        } catch (\Exception $e) {
+            $clean = null;
+        }
 
-		if (!$clean)
-		{
-			$db = App::get('db');
+        if (!$clean) {
+            $db = App::get('db');
 
-			$query = $db->getQuery()
-				->select('m.id')
-				->select('m.title')
-				->select('m.module')
-				->select('m.position')
-				->select('m.showtitle')
-				->select('m.params')
-				->from('#__modules', 'm')
-				->whereEquals('m.module', $module)
-				->whereEquals('m.client_id', 1);
+            $query = $db->getQuery()
+                ->select('m.id')
+                ->select('m.title')
+                ->select('m.module')
+                ->select('m.position')
+                ->select('m.showtitle')
+                ->select('m.params')
+                ->from('#__modules', 'm')
+                ->whereEquals('m.module', $module)
+                ->whereEquals('m.client_id', 1);
 
-			$query->joinRaw('#__extensions AS e', 'e.element = m.module AND e.client_id = m.client_id', 'left')
-				->whereEquals('e.enabled', 1);
+            $query->joinRaw('#__extensions AS e', 'e.element = m.module AND e.client_id = m.client_id', 'left')
+                ->whereEquals('e.enabled', 1);
 
-			// Filter by language
-			if (App::isSite() && App::get('language.filter'))
-			{
-				$query->whereIn('m.language', array($lang, '*'));
-			}
+            // Filter by language
+            if (App::isSite() && App::get('language.filter')) {
+                $query->whereIn('m.language', array($lang, '*'));
+            }
 
-			$query->order('m.position', 'asc')
-				->order('m.ordering', 'asc');
+            $query->order('m.position', 'asc')
+                ->order('m.ordering', 'asc');
 
-			// Set the query
-			$db->setQuery($query->toString());
-			$modules = $db->loadObjectList();
+            // Set the query
+            $db->setQuery($query->toString());
+            $modules = $db->loadObjectList();
 
-			if ($db->getErrorNum())
-			{
-				App::abort(500, \Lang::txt('JLIB_APPLICATION_ERROR_MODULE_LOAD', $db->getErrorMsg()));
-				return $loginmodule;
-			}
+            if ($db->getErrorNum()) {
+                App::abort(500, \Lang::txt('JLIB_APPLICATION_ERROR_MODULE_LOAD', $db->getErrorMsg()));
+                return $loginmodule;
+            }
 
-			// Return to simple indexing that matches the query order.
-			$loginmodule = $modules;
+            // Return to simple indexing that matches the query order.
+            $loginmodule = $modules;
 
-			$cache->put($cacheid, $loginmodule, App::get('config')->get('cachetime', 15));
-		}
+            $cache->put($cacheid, $loginmodule, App::get('config')->get('cachetime', 15));
+        }
 
-		return $loginmodule;
-	}
+        return $loginmodule;
+    }
 }
