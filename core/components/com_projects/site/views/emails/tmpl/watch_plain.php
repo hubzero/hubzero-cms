@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,36 +18,30 @@ $message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->get('titl
 $message .= Lang::txt('COM_PROJECTS_EMAIL_URL') . ': ' . $link . "\n";
 $message .= '===============================' . "\n\n";
 
-if (empty($this->activities))
-{
-	$message .= Lang::txt('There has been no activity in this project.');
-}
-else
-{
-	foreach ($this->activities as $a)
-	{
-		$body = $a->log->get('description');
+if (empty($this->activities)) {
+    $message .= Lang::txt('There has been no activity in this project.');
+} else {
+    foreach ($this->activities as $a) {
+        $body = $a->log->get('description');
 
-		$isHtml = false;
-		if (preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $body))
-		{
-			$body = preg_replace('/<br\s?\/?>/ius', "\n", trim($body));
-		}
+        $isHtml = false;
+        if (preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $body)) {
+            $body = preg_replace('/<br\s?\/?>/ius', "\n", trim($body));
+        }
 
-		$creator = User::getInstance($a->log->get('created_by'));
-		$name = $creator->get('name');
+        $creator = User::getInstance($a->log->get('created_by'));
+        $name = $creator->get('name');
 
-		$message .= Date::of($a->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . ' &#64 ' .  Date::of($a->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . "\n";
-		$message .= $name;
-		$message .= ' ' . $a->action;
-		$message .= $body ? ':' : '';
-		$message .= "\n";
-		if ($body)
-		{
-			$message .= $body . "\n";
-		}
-		$message .= '-------------------------------' . "\n";
-	}
+        $message .= Date::of($a->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . ' &#64 ' .  Date::of($a->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . "\n";
+        $message .= $name;
+        $message .= ' ' . $a->action;
+        $message .= $body ? ':' : '';
+        $message .= "\n";
+        if ($body) {
+            $message .= $body . "\n";
+        }
+        $message .= '-------------------------------' . "\n";
+    }
 }
 echo $message;
 ?>

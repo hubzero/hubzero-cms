@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,54 +15,52 @@ use Hubzero\Database\Table;
  */
 class Repo extends Table
 {
-	/**
-	 * Constructor
-	 *
-	 * @param   object  &$db  Database
-	 * @return  void
-	 */
-	public function __construct(&$db)
-	{
-		parent::__construct('#__project_repos', 'id', $db);
-	}
+    /**
+     * Constructor
+     *
+     * @param   object  &$db  Database
+     * @return  void
+     */
+    public function __construct(&$db)
+    {
+        parent::__construct('#__project_repos', 'id', $db);
+    }
 
-	/**
-	 * Get repos
-	 *
-	 * @param   integer  $projectid
-	 * @return  mixed    object or null
-	 */
-	public function getRepos($projectid)
-	{
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE project_id=" . $this->_db->quote($projectid));
-		return $this->_db->loadObjectList();
-	}
+    /**
+     * Get repos
+     *
+     * @param   integer  $projectid
+     * @return  mixed    object or null
+     */
+    public function getRepos($projectid)
+    {
+        $this->_db->setQuery("SELECT * FROM $this->_tbl WHERE project_id=" . $this->_db->quote($projectid));
+        return $this->_db->loadObjectList();
+    }
 
-	/**
-	 * Load project repo
-	 *
-	 * @param   integer  $projectid
-	 * @param   string   $name
-	 * @return  mixed    object or false
-	 */
-	public function loadRepo($projectid = null, $name = null)
-	{
-		if ($projectid === null || $name === null)
-		{
-			return false;
-		}
+    /**
+     * Load project repo
+     *
+     * @param   integer  $projectid
+     * @param   string   $name
+     * @return  mixed    object or false
+     */
+    public function loadRepo($projectid = null, $name = null)
+    {
+        if ($projectid === null || $name === null) {
+            return false;
+        }
 
-		$query  = "SELECT * FROM $this->_tbl WHERE project_id=" . $this->_db->quote($projectid) . " AND name=" . $this->_db->quote($name) . " LIMIT 1";
+        $query  = "SELECT * FROM $this->_tbl "
+            . "WHERE project_id=" . $this->_db->quote($projectid)
+            . " AND name=" . $this->_db->quote($name) . " LIMIT 1";
 
-		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-	}
+        $this->_db->setQuery($query);
+        if ($result = $this->_db->loadAssoc()) {
+            return $this->bind($result);
+        } else {
+            $this->setError($this->_db->getErrorMsg());
+            return false;
+        }
+    }
 }

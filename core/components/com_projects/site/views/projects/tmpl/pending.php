@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,21 +12,21 @@
 defined('_HZEXEC_') or die();
 
 $this->css()
-	->js();
+    ->js();
 
 ?>
 <div id="project-wrap">
-	<section class="main section">
-		<?php
-			$this->view('_header')
-			     ->set('model', $this->model)
-			     ->set('showPic', 1)
-			     ->set('showPrivacy', 0)
-			     ->set('goBack', 0)
-			     ->set('showUnderline', 1)
-			     ->set('option', $this->option)
-			     ->display();
-		?>
-		<p class="warning"><?php echo Lang::txt('COM_PROJECTS_PROJECT_PENDING_APPROVAL'); ?></p>
-	</section><!-- / .main section -->
+    <section class="main section">
+        <?php
+            $this->view('_header')
+                 ->set('model', $this->model)
+                 ->set('showPic', 1)
+                 ->set('showPrivacy', 0)
+                 ->set('goBack', 0)
+                 ->set('showUnderline', 1)
+                 ->set('option', $this->option)
+                 ->display();
+        ?>
+        <p class="warning"><?php echo Lang::txt('COM_PROJECTS_PROJECT_PENDING_APPROVAL'); ?></p>
+    </section><!-- / .main section -->
 </div>

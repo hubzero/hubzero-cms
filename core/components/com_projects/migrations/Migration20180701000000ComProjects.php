@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,51 +16,46 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for adding featured column
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20180701000000ComProjects extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__projects'))
-		{
-			if (!$this->db->tableHasField('#__projects', 'featured'))
-			{
-				$query = "ALTER TABLE `#__projects` ADD COLUMN `featured` TINYINT(2) UNSIGNED  NOT NULL  DEFAULT '0'";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__projects')) {
+            if (!$this->db->tableHasField('#__projects', 'featured')) {
+                $query = "ALTER TABLE `#__projects` ADD COLUMN `featured` TINYINT(2) UNSIGNED  NOT NULL  DEFAULT '0'";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if (!$this->db->tableHasKey('#__projects', 'idx_featured'))
-			{
-				$query = "ALTER TABLE `#__projects` ADD INDEX `idx_featured` (`featured`)";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+            if (!$this->db->tableHasKey('#__projects', 'idx_featured')) {
+                $query = "ALTER TABLE `#__projects` ADD INDEX `idx_featured` (`featured`)";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__projects'))
-		{
-			if ($this->db->tableHasKey('#__projects', 'idx_featured'))
-			{
-				$query = "ALTER TABLE `#__projects` DROP KEY `idx_featured`";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__projects')) {
+            if ($this->db->tableHasKey('#__projects', 'idx_featured')) {
+                $query = "ALTER TABLE `#__projects` DROP KEY `idx_featured`";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if ($this->db->tableHasField('#__projects', 'featured'))
-			{
-				$query = "ALTER TABLE `#__projects` DROP COLUMN `featured`;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+            if ($this->db->tableHasField('#__projects', 'featured')) {
+                $query = "ALTER TABLE `#__projects` DROP COLUMN `featured`;";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }

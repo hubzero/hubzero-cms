@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,16 +16,16 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for installing projects tables
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComProjects extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__projects'))
-		{
-			$query = "CREATE TABLE `#__projects` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__projects')) {
+            $query = "CREATE TABLE `#__projects` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `alias` varchar(30) NOT NULL DEFAULT '',
 			  `title` varchar(255) NOT NULL DEFAULT '',
@@ -48,13 +51,12 @@ class Migration20170901000000ComProjects extends Base
 			  FULLTEXT KEY `idx_fulltxt_alias_title_about` (`alias`,`title`,`about`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__project_types'))
-		{
-			$query = "CREATE TABLE `#__project_types` (
+        if (!$this->db->tableExists('#__project_types')) {
+            $query = "CREATE TABLE `#__project_types` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `type` varchar(150) NOT NULL DEFAULT '',
 			  `description` varchar(255) NOT NULL DEFAULT '',
@@ -62,13 +64,12 @@ class Migration20170901000000ComProjects extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__project_tools'))
-		{
-			$query = "CREATE TABLE `#__project_tools` (
+        if (!$this->db->tableExists('#__project_tools')) {
+            $query = "CREATE TABLE `#__project_tools` (
 			  `id` int(10) NOT NULL AUTO_INCREMENT,
 			  `name` varchar(64) NOT NULL DEFAULT '',
 			  `title` varchar(127) NOT NULL DEFAULT '',
@@ -88,13 +89,12 @@ class Migration20170901000000ComProjects extends Base
 			  UNIQUE KEY `toolname` (`name`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__project_tool_views'))
-		{
-			$query = "CREATE TABLE `#__project_tool_views` (
+        if (!$this->db->tableExists('#__project_tool_views')) {
+            $query = "CREATE TABLE `#__project_tool_views` (
 			  `id` int(10) NOT NULL AUTO_INCREMENT,
 			  `parent_id` int(11) NOT NULL DEFAULT '0',
 			  `userid` int(15) NOT NULL,
@@ -102,13 +102,12 @@ class Migration20170901000000ComProjects extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__project_tool_statuses'))
-		{
-			$query = "CREATE TABLE `#__project_tool_statuses` (
+        if (!$this->db->tableExists('#__project_tool_statuses')) {
+            $query = "CREATE TABLE `#__project_tool_statuses` (
 			  `id` int(10) NOT NULL AUTO_INCREMENT,
 			  `status` varchar(100) NOT NULL DEFAULT '',
 			  `status_about` text,
@@ -121,13 +120,12 @@ class Migration20170901000000ComProjects extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__project_tool_logs'))
-		{
-			$query = "CREATE TABLE `#__project_tool_logs` (
+        if (!$this->db->tableExists('#__project_tool_logs')) {
+            $query = "CREATE TABLE `#__project_tool_logs` (
 			  `id` int(10) NOT NULL AUTO_INCREMENT,
 			  `parent_id` int(11) NOT NULL DEFAULT '0',
 			  `parent_name` varchar(64) NOT NULL DEFAULT '',
@@ -143,13 +141,12 @@ class Migration20170901000000ComProjects extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__project_tool_instances'))
-		{
-			$query = "CREATE TABLE `#__project_tool_instances` (
+        if (!$this->db->tableExists('#__project_tool_instances')) {
+            $query = "CREATE TABLE `#__project_tool_instances` (
 			  `id` int(10) NOT NULL AUTO_INCREMENT,
 			  `parent_id` int(11) NOT NULL DEFAULT '0',
 			  `parent_name` varchar(64) NOT NULL DEFAULT '',
@@ -168,13 +165,12 @@ class Migration20170901000000ComProjects extends Base
 			  UNIQUE KEY `toolname` (`parent_name`,`instance`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__project_stats'))
-		{
-			$query = "CREATE TABLE `#__project_stats` (
+        if (!$this->db->tableExists('#__project_stats')) {
+            $query = "CREATE TABLE `#__project_stats` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `month` int(2) DEFAULT NULL,
 			  `year` int(2) DEFAULT NULL,
@@ -184,13 +180,12 @@ class Migration20170901000000ComProjects extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__project_repos'))
-		{
-			$query = "CREATE TABLE `#__project_repos` (
+        if (!$this->db->tableExists('#__project_repos')) {
+            $query = "CREATE TABLE `#__project_repos` (
 			  `id` int(10) NOT NULL AUTO_INCREMENT,
 			  `project_id` int(11) NOT NULL,
 			  `name` varchar(64) NOT NULL DEFAULT '',
@@ -206,13 +201,12 @@ class Migration20170901000000ComProjects extends Base
 			  UNIQUE KEY `repo` (`project_id`,`name`,`path`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__project_remote_files'))
-		{
-			$query = "CREATE TABLE `#__project_remote_files` (
+        if (!$this->db->tableExists('#__project_remote_files')) {
+            $query = "CREATE TABLE `#__project_remote_files` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `projectid` int(11) NOT NULL DEFAULT '0',
 			  `created_by` int(11) NOT NULL DEFAULT '0',
@@ -241,13 +235,12 @@ class Migration20170901000000ComProjects extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__project_public_stamps'))
-		{
-			$query = "CREATE TABLE `#__project_public_stamps` (
+        if (!$this->db->tableExists('#__project_public_stamps')) {
+            $query = "CREATE TABLE `#__project_public_stamps` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `stamp` varchar(30) NOT NULL DEFAULT '0',
 			  `projectid` int(11) NOT NULL DEFAULT '0',
@@ -261,13 +254,12 @@ class Migration20170901000000ComProjects extends Base
 			  UNIQUE KEY `uidx_stamp` (`stamp`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__project_owners'))
-		{
-			$query = "CREATE TABLE `#__project_owners` (
+        if (!$this->db->tableExists('#__project_owners')) {
+            $query = "CREATE TABLE `#__project_owners` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `projectid` int(11) NOT NULL DEFAULT '0',
 			  `userid` int(11) NOT NULL DEFAULT '0',
@@ -291,13 +283,12 @@ class Migration20170901000000ComProjects extends Base
 			  KEY `idx_role` (`role`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__project_microblog'))
-		{
-			$query = "CREATE TABLE `#__project_microblog` (
+        if (!$this->db->tableExists('#__project_microblog')) {
+            $query = "CREATE TABLE `#__project_microblog` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `blogentry` text,
 			  `posted` datetime DEFAULT NULL,
@@ -313,13 +304,12 @@ class Migration20170901000000ComProjects extends Base
 			  FULLTEXT KEY `ftidx_blogentry` (`blogentry`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__project_logs'))
-		{
-			$query = "CREATE TABLE `#__project_logs` (
+        if (!$this->db->tableExists('#__project_logs')) {
+            $query = "CREATE TABLE `#__project_logs` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `projectid` int(11) unsigned NOT NULL DEFAULT '0',
 			  `userid` int(11) NOT NULL DEFAULT '0',
@@ -335,13 +325,12 @@ class Migration20170901000000ComProjects extends Base
 			  KEY `idx_projectid` (`projectid`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__project_descriptions'))
-		{
-			$query = "CREATE TABLE `#__project_descriptions` (
+        if (!$this->db->tableExists('#__project_descriptions')) {
+            $query = "CREATE TABLE `#__project_descriptions` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `project_id` int(11) NOT NULL,
 			  `description_key` varchar(100) NOT NULL DEFAULT '',
@@ -351,13 +340,12 @@ class Migration20170901000000ComProjects extends Base
 			  KEY `idx_user_id` (`project_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__project_description_fields'))
-		{
-			$query = "CREATE TABLE `#__project_description_fields` (
+        if (!$this->db->tableExists('#__project_description_fields')) {
+            $query = "CREATE TABLE `#__project_description_fields` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `type` varchar(255) NOT NULL,
 			  `name` varchar(255) NOT NULL DEFAULT '',
@@ -376,13 +364,12 @@ class Migration20170901000000ComProjects extends Base
 			  KEY `idx_access` (`access`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__project_description_options'))
-		{
-			$query = "CREATE TABLE `#__project_description_options` (
+        if (!$this->db->tableExists('#__project_description_options')) {
+            $query = "CREATE TABLE `#__project_description_options` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `field_id` int(11) NOT NULL DEFAULT '0',
 			  `value` varchar(255) NOT NULL DEFAULT '',
@@ -394,13 +381,12 @@ class Migration20170901000000ComProjects extends Base
 			  KEY `idx_field_id` (`field_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__project_comments'))
-		{
-			$query = "CREATE TABLE `#__project_comments` (
+        if (!$this->db->tableExists('#__project_comments')) {
+            $query = "CREATE TABLE `#__project_comments` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `itemid` int(11) NOT NULL DEFAULT '0',
 			  `comment` text NOT NULL,
@@ -418,13 +404,12 @@ class Migration20170901000000ComProjects extends Base
 			  KEY `idx_state` (`state`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__project_activity'))
-		{
-			$query = "CREATE TABLE `#__project_activity` (
+        if (!$this->db->tableExists('#__project_activity')) {
+            $query = "CREATE TABLE `#__project_activity` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `projectid` int(11) NOT NULL DEFAULT '0',
 			  `userid` int(11) NOT NULL DEFAULT '0',
@@ -444,13 +429,12 @@ class Migration20170901000000ComProjects extends Base
 			  KEY `idx_state` (`state`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__projects_connections'))
-		{
-			$query = "CREATE TABLE `#__projects_connections` (
+        if (!$this->db->tableExists('#__projects_connections')) {
+            $query = "CREATE TABLE `#__projects_connections` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `name` varchar(255) DEFAULT NULL,
 			  `project_id` int(11) NOT NULL,
@@ -460,174 +444,152 @@ class Migration20170901000000ComProjects extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__projects_connection_providers'))
-		{
-			$query = "CREATE TABLE `#__projects_connection_providers` (
+        if (!$this->db->tableExists('#__projects_connection_providers')) {
+            $query = "CREATE TABLE `#__projects_connection_providers` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `alias` varchar(255) NOT NULL DEFAULT '',
 			  `name` varchar(255) NOT NULL DEFAULT '',
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__projects'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__projects`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__projects')) {
+            $query = "DROP TABLE IF EXISTS `#__projects`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__project_types'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_types`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__project_types')) {
+            $query = "DROP TABLE IF EXISTS `#__project_types`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__project_tools'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_tools`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__project_tools')) {
+            $query = "DROP TABLE IF EXISTS `#__project_tools`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__project_tool_viewss'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_tool_views`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__project_tool_viewss')) {
+            $query = "DROP TABLE IF EXISTS `#__project_tool_views`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__project_tool_statuses'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_tool_statuses`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__project_tool_statuses')) {
+            $query = "DROP TABLE IF EXISTS `#__project_tool_statuses`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__project_tool_logs'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_tool_logs`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__project_tool_logs')) {
+            $query = "DROP TABLE IF EXISTS `#__project_tool_logs`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__project_tool_instances'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_tool_instances`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__project_tool_instances')) {
+            $query = "DROP TABLE IF EXISTS `#__project_tool_instances`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__project_stats'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_stats`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__project_stats')) {
+            $query = "DROP TABLE IF EXISTS `#__project_stats`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__project_repos'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_repos`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__project_repos')) {
+            $query = "DROP TABLE IF EXISTS `#__project_repos`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__project_remote_files'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_remote_files`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__project_remote_files')) {
+            $query = "DROP TABLE IF EXISTS `#__project_remote_files`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__project_public_stamps'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_public_stamps`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__project_public_stamps')) {
+            $query = "DROP TABLE IF EXISTS `#__project_public_stamps`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__project_owners'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_owners`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__project_owners')) {
+            $query = "DROP TABLE IF EXISTS `#__project_owners`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__project_microblog'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_microblog`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__project_microblog')) {
+            $query = "DROP TABLE IF EXISTS `#__project_microblog`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__project_logs'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_logs`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__project_logs')) {
+            $query = "DROP TABLE IF EXISTS `#__project_logs`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__project_descriptions'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_descriptions`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__project_descriptions')) {
+            $query = "DROP TABLE IF EXISTS `#__project_descriptions`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__project_description_fields'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_description_fields`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__project_description_fields')) {
+            $query = "DROP TABLE IF EXISTS `#__project_description_fields`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__project_description_options'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_description_options`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__project_description_options')) {
+            $query = "DROP TABLE IF EXISTS `#__project_description_options`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__project_comments'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_comments`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__project_comments')) {
+            $query = "DROP TABLE IF EXISTS `#__project_comments`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__project_activity'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_activity`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__project_activity')) {
+            $query = "DROP TABLE IF EXISTS `#__project_activity`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__projects_connections'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__projects_connections`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__projects_connections')) {
+            $query = "DROP TABLE IF EXISTS `#__projects_connections`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__projects_connection_providers'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__projects_connection_providers`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__projects_connection_providers')) {
+            $query = "DROP TABLE IF EXISTS `#__projects_connection_providers`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

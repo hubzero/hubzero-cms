@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,18 +12,18 @@
 defined('_HZEXEC_') or die();
 ?>
 <div class="projects-container">
-	<?php
-	foreach ($this->rows as $row):
-		if ($row->get('owned_by_group') && !$row->groupOwner()):
-			continue; // owner group has been deleted
-		endif;
+    <?php
+    foreach ($this->rows as $row) :
+        if ($row->get('owned_by_group') && !$row->groupOwner()) :
+            continue; // owner group has been deleted
+        endif;
 
-		// Display List of items
-		$this->view('_item')
-			->set('option', $this->option)
-			->set('filters', $this->filters)
-			->set('row', $row)
-			->display();
-	endforeach;
-	?>
+        // Display List of items
+        $this->view('_item')
+            ->set('option', $this->option)
+            ->set('filters', $this->filters)
+            ->set('row', $row)
+            ->display();
+    endforeach;
+    ?>
 </div>

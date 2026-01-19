@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,201 +15,181 @@ use Hubzero\Database\Table;
  */
 class ToolInstance extends Table
 {
-	/**
-	 * Constructor
-	 *
-	 * @param   object  &$db  Database
-	 * @return  void
-	 */
-	public function __construct(&$db)
-	{
-		parent::__construct('#__project_tool_instances', 'id', $db);
-	}
+    /**
+     * Constructor
+     *
+     * @param   object  &$db  Database
+     * @return  void
+     */
+    public function __construct(&$db)
+    {
+        parent::__construct('#__project_tool_instances', 'id', $db);
+    }
 
-	/**
-	 * Validate data
-	 *
-	 * @return  boolean  True if data is valid
-	 */
-	public function check()
-	{
-		if (!$this->id && trim($this->parent_name) == '')
-		{
-			$this->setError(Lang::txt('COM_TOOLS_ERROR_NO_INSTANCE_PARENT_NAME'));
-			return false;
-		}
+    /**
+     * Validate data
+     *
+     * @return  boolean  True if data is valid
+     */
+    public function check()
+    {
+        if (!$this->id && trim($this->parent_name) == '') {
+            $this->setError(Lang::txt('COM_TOOLS_ERROR_NO_INSTANCE_PARENT_NAME'));
+            return false;
+        }
 
-		if (!$this->id && trim($this->instance) == '')
-		{
-			$this->setError(Lang::txt('COM_TOOLS_ERROR_NO_INSTANCE'));
-			return false;
-		}
+        if (!$this->id && trim($this->instance) == '') {
+            $this->setError(Lang::txt('COM_TOOLS_ERROR_NO_INSTANCE'));
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Load from instance
-	 *
-	 * @param   string  $instance
-	 * @return  mixed   object or false
-	 */
-	public function loadFromInstanceName($instance = null)
-	{
-		if ($instance === null)
-		{
-			return false;
-		}
+    /**
+     * Load from instance
+     *
+     * @param   string  $instance
+     * @return  mixed   object or false
+     */
+    public function loadFromInstanceName($instance = null)
+    {
+        if ($instance === null) {
+            return false;
+        }
 
-		$query  = "SELECT * FROM $this->_tbl AS v WHERE v.instance=" . $this->_db->quote($instance) . " LIMIT 1";
+        $query  = "SELECT * FROM $this->_tbl AS v WHERE v.instance=" . $this->_db->quote($instance) . " LIMIT 1";
 
-		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-	}
+        $this->_db->setQuery($query);
+        if ($result = $this->_db->loadAssoc()) {
+            return $this->bind($result);
+        } else {
+            $this->setError($this->_db->getErrorMsg());
+            return false;
+        }
+    }
 
-	/**
-	 * Load from parent
-	 *
-	 * @param   string  $parent  Parent tool ID or name
-	 * @return  mixed   object or false
-	 */
-	public function loadFromParent($parent = null, $version = 'dev')
-	{
-		if ($parent === null)
-		{
-			return false;
-		}
+    /**
+     * Load from parent
+     *
+     * @param   string  $parent  Parent tool ID or name
+     * @return  mixed   object or false
+     */
+    public function loadFromParent($parent = null, $version = 'dev')
+    {
+        if ($parent === null) {
+            return false;
+        }
 
-		$query  = "SELECT * FROM $this->_tbl AS v WHERE ";
-		$query .= is_numeric($parent) ? "v.parent_id=" . $this->_db->quote($parent) : "v.parent_name=" . $this->_db->quote($parent);
-		if ($version == 'dev')
-		{
-			$query .= " AND v.state=3 ";
-		}
-		if ($version == 'published')
-		{
-			$query .= " AND v.state=1 ORDER BY v.id DESC ";
-		}
-		elseif (is_numeric($version))
-		{
-			$query .= " AND v.revision=" . $version;
-		}
-		else
-		{
-			// Get latest
-			$query .= " ORDER BY v.id DESC";
-		}
-		$query .= " LIMIT 1";
+        $query  = "SELECT * FROM $this->_tbl AS v WHERE ";
+        $query .= is_numeric($parent)
+            ? "v.parent_id=" . $this->_db->quote($parent)
+            : "v.parent_name=" . $this->_db->quote($parent);
+        if ($version == 'dev') {
+            $query .= " AND v.state=3 ";
+        }
+        if ($version == 'published') {
+            $query .= " AND v.state=1 ORDER BY v.id DESC ";
+        } elseif (is_numeric($version)) {
+            $query .= " AND v.revision=" . $version;
+        } else {
+            // Get latest
+            $query .= " ORDER BY v.id DESC";
+        }
+        $query .= " LIMIT 1";
 
-		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-	}
+        $this->_db->setQuery($query);
+        if ($result = $this->_db->loadAssoc()) {
+            return $this->bind($result);
+        } else {
+            $this->setError($this->_db->getErrorMsg());
+            return false;
+        }
+    }
 
-	/**
-	 * Get all instances
-	 *
-	 * @param   integer  $includedev
-	 * @return  object
-	 */
-	public function getAll($includedev = 1)
-	{
-		$sql = "SELECT * FROM $this->_tbl";
-		if (!$includedev)
-		{
-			$sql.= " WHERE state!='3'";
-		}
+    /**
+     * Get all instances
+     *
+     * @param   integer  $includedev
+     * @return  object
+     */
+    public function getAll($includedev = 1)
+    {
+        $sql = "SELECT * FROM $this->_tbl";
+        if (!$includedev) {
+            $sql .= " WHERE state!='3'";
+        }
 
-		$this->_db->setQuery($sql);
-		return $this->_db->loadObjectList();
-	}
+        $this->_db->setQuery($sql);
+        return $this->_db->loadObjectList();
+    }
 
-	/**
-	 * Get instances
-	 *
-	 * @param   string  $parent_name
-	 * @param   int     $parent_id
-	 * @param   int     $exclude_dev
-	 * @return  mixed
-	 */
-	public function getInstances($parent_name = null, $parent_id = null, $exclude_dev = 0)
-	{
-		if ($parent_name === null)
-		{
-			$parent_name = $this->parent_name;
-		}
-		if ($parent_id === null)
-		{
-			$parent_id = $this->parent_id;
-		}
-		if (!$parent_id && !$parent_name)
-		{
-			return false;
-		}
+    /**
+     * Get instances
+     *
+     * @param   string  $parent_name
+     * @param   int     $parent_id
+     * @param   int     $exclude_dev
+     * @return  mixed
+     */
+    public function getInstances($parent_name = null, $parent_id = null, $exclude_dev = 0)
+    {
+        if ($parent_name === null) {
+            $parent_name = $this->parent_name;
+        }
+        if ($parent_id === null) {
+            $parent_id = $this->parent_id;
+        }
+        if (!$parent_id && !$parent_name) {
+            return false;
+        }
 
-		$query  = "SELECT v.* ";
-		$query .= "FROM $this->_tbl as v WHERE 1=1 AND ";
-		$query .= $parent_id ? "v.parent_id=" . $this->_db->quote($parent_id)
-			: "v.parent_name=" . $this->_db->quote($parent_name);
-		$query .= $exclude_dev ? ' AND v.state != 3' : '';
-		$query .= " ORDER BY v.revision DESC";
+        $query  = "SELECT v.* ";
+        $query .= "FROM $this->_tbl as v WHERE 1=1 AND ";
+        $query .= $parent_id ? "v.parent_id=" . $this->_db->quote($parent_id)
+            : "v.parent_name=" . $this->_db->quote($parent_name);
+        $query .= $exclude_dev ? ' AND v.state != 3' : '';
+        $query .= " ORDER BY v.revision DESC";
 
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
+        $this->_db->setQuery($query);
+        return $this->_db->loadObjectList();
+    }
 
-	/**
-	 * Get Dev Instance Property
-	 *
-	 * @param   string  $parent_name
-	 * @param   string  $property
-	 * @return  object
-	 */
-	public function getDevInstanceProperty($parent_name, $property)
-	{
-		$query  = "SELECT " . $this->_db->quote($property) . " FROM $this->_tbl
+    /**
+     * Get Dev Instance Property
+     *
+     * @param   string  $parent_name
+     * @param   string  $property
+     * @return  object
+     */
+    public function getDevInstanceProperty($parent_name, $property)
+    {
+        $query  = "SELECT " . $this->_db->quote($property) . " FROM $this->_tbl
 			WHERE parent_name=" . $this->_db->quote($parent_name) . " AND state=3 LIMIT 1";
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
+        $this->_db->setQuery($query);
+        return $this->_db->loadResult();
+    }
 
-	/**
-	 * Update Parent Name
-	 *
-	 * @param   string  $parent_id
-	 * @param   string  $newname
-	 * @return  mixed
-	 */
-	public function updateParentName($parent_id = null, $newname = null)
-	{
-		if ($newname === null || $parent_id === null)
-		{
-			return false;
-		}
+    /**
+     * Update Parent Name
+     *
+     * @param   string  $parent_id
+     * @param   string  $newname
+     * @return  mixed
+     */
+    public function updateParentName($parent_id = null, $newname = null)
+    {
+        if ($newname === null || $parent_id === null) {
+            return false;
+        }
 
-		$query = "UPDATE $this->_tbl SET parent_name =" . $this->_db->quote($newname)
-				. " WHERE parent_id =" . $this->_db->quote($parent_id);
-		$this->_db->setQuery( $query );
-		if ($this->_db->query())
-		{
-			return true;
-		}
+        $query = "UPDATE $this->_tbl SET parent_name =" . $this->_db->quote($newname)
+                . " WHERE parent_id =" . $this->_db->quote($parent_id);
+        $this->_db->setQuery($query);
+        if ($this->_db->query()) {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,17 +16,18 @@ use User;
  */
 class AccessHelper extends Obj
 {
-	/**
-	 * Determines if a directory is open to public access
-	 *
-	 * @param   string  $subdir
-	 * @return  bool
-	 */
-	public static function allowPublicAccess($subdir)
-	{
-		$isPublicDirectory = preg_match('/^\/?public.*/', $subdir == null ? '' : $subdir); //!= 'public' && $subdir != '/public')
-		$allowPublicAccess = !User::isGuest() && $isPublicDirectory;
+    /**
+     * Determines if a directory is open to public access
+     *
+     * @param   string  $subdir
+     * @return  bool
+     */
+    public static function allowPublicAccess($subdir)
+    {
+        $subdirValue = $subdir == null ? '' : $subdir;
+        $isPublicDirectory = preg_match('/^\/?public.*/', $subdirValue);
+        $allowPublicAccess = !User::isGuest() && $isPublicDirectory;
 
-		return $allowPublicAccess;
-	}
+        return $allowPublicAccess;
+    }
 }

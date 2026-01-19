@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,104 +16,90 @@ use Components\Projects\Tables;
  */
 class Status extends Model
 {
-	/**
-	 * Table class name
-	 *
-	 * @var  string
-	 */
-	protected $_tbl_name = '\\Components\\Projects\\Tables\\ToolStatus';
+    /**
+     * Table class name
+     *
+     * @var  string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_tbl_name = '\\Components\\Projects\\Tables\\ToolStatus';
 
-	/**
-	 * Registry
-	 *
-	 * @var  object
-	 */
-	public $config = null;
+    /**
+     * Registry
+     *
+     * @var  object
+     */
+    public $config = null;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   integer  $oid
-	 * @return  void
-	 */
-	public function __construct($oid = null)
-	{
-		$this->_db = \App::get('db');
+    /**
+     * Constructor
+     *
+     * @param   integer  $oid
+     * @return  void
+     */
+    public function __construct($oid = null)
+    {
+        $this->_db = \App::get('db');
 
-		if (!isset($this->_tbl))
-		{
-			$this->_tbl = new Tables\ToolStatus($this->_db);
-		}
-		if (!isset($this->_statuses))
-		{
-			$this->_statuses = array();
-			$statuses = $this->_tbl->getItems();
-			foreach ($statuses as $status)
-			{
-				$this->_statuses[$status->id] = $status;
-			}
-		}
+        if (!isset($this->_tbl)) {
+            $this->_tbl = new Tables\ToolStatus($this->_db);
+        }
+        if (!isset($this->_statuses)) {
+            $this->_statuses = array();
+            $statuses = $this->_tbl->getItems();
+            foreach ($statuses as $status) {
+                $this->_statuses[$status->id] = $status;
+            }
+        }
 
-		if (is_numeric($oid))
-		{
-			if (isset($this->_statuses[$oid]))
-			{
-				$this->_tbl->bind($this->_statuses[$oid]);
-			}
-			else
-			{
-				$this->_tbl->load($oid);
-			}
-		}
-	}
+        if (is_numeric($oid)) {
+            if (isset($this->_statuses[$oid])) {
+                $this->_tbl->bind($this->_statuses[$oid]);
+            } else {
+                $this->_tbl->load($oid);
+            }
+        }
+    }
 
-	/**
-	 * Returns a reference to the model
-	 *
-	 * @param   mixed  $oid  status ID
-	 * @return  void
-	 */
-	public function getStatus($oid=null)
-	{
-		if (isset($this->_statuses[$oid]))
-		{
-			$this->_tbl->bind($this->_statuses[$oid]);
-		}
-	}
+    /**
+     * Returns a reference to the model
+     *
+     * @param   mixed  $oid  status ID
+     * @return  void
+     */
+    public function getStatus($oid = null)
+    {
+        if (isset($this->_statuses[$oid])) {
+            $this->_tbl->bind($this->_statuses[$oid]);
+        }
+    }
 
-	/**
-	 * Returns a reference to the model
-	 *
-	 * @param   mixed  $oid  status ID
-	 * @return  object
-	 */
-	static function &getInstance($oid=null)
-	{
-		static $instances;
+    /**
+     * Returns a reference to the model
+     *
+     * @param   mixed  $oid  status ID
+     * @return  object
+     */
+    public static function &getInstance($oid = null)
+    {
+        static $instances;
 
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
+        if (!isset($instances)) {
+            $instances = array();
+        }
 
-		if (is_object($oid))
-		{
-			$key = $oid->id;
-		}
-		else if (is_array($oid))
-		{
-			$key = $oid['id'];
-		}
-		else
-		{
-			$key = $oid;
-		}
+        if (is_object($oid)) {
+            $key = $oid->id;
+        } elseif (is_array($oid)) {
+            $key = $oid['id'];
+        } else {
+            $key = $oid;
+        }
 
-		if (!isset($instances[$key]))
-		{
-			$instances[$key] = new self($oid);
-		}
+        if (!isset($instances[$key])) {
+            $instances[$key] = new self($oid);
+        }
 
-		return $instances[$key];
-	}
+        return $instances[$key];
+    }
 }
