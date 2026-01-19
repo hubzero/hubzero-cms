@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,34 +16,31 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for installing needed tables
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComUsage extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		try
-		{
-			if (!file_exists(dirname(__DIR__) . '/helpers/helper.php'))
-			{
-				$this->log('Unable to locate usage helper class.', 'error');
-				return;
-			}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        try {
+            if (!file_exists(dirname(__DIR__) . '/helpers/helper.php')) {
+                $this->log('Unable to locate usage helper class.', 'error');
+                return;
+            }
 
-			include_once dirname(__DIR__) . '/helpers/helper.php';
+            include_once dirname(__DIR__) . '/helpers/helper.php';
 
-			$db = \Components\Usage\Helpers\Helper::getUDBO();
+            $db = \Components\Usage\Helpers\Helper::getUDBO();
 
-			if (!$db)
-			{
-				$this->log('Unable to establish connection for usage database.', 'error');
-				return;
-			}
+            if (!$db) {
+                $this->log('Unable to establish connection for usage database.', 'error');
+                return;
+            }
 
-			if (!$db->tableExists('tops'))
-			{
-				$query = "CREATE TABLE `tops` (
+            if (!$db->tableExists('tops')) {
+                $query = "CREATE TABLE `tops` (
 				  `top` tinyint(4) NOT NULL DEFAULT '0',
 				  `name` varchar(128) NOT NULL DEFAULT '',
 				  `valfmt` tinyint(4) NOT NULL DEFAULT '0',
@@ -48,15 +48,14 @@ class Migration20170901000000ComUsage extends Base
 				  PRIMARY KEY (`top`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-				$db->setQuery($query);
-				$db->query();
+                $db->setQuery($query);
+                $db->query();
 
-				$this->log("Created usage table `tops`");
-			}
+                $this->log("Created usage table `tops`");
+            }
 
-			if (!$db->tableExists('topvals'))
-			{
-				$query = "CREATE TABLE `topvals` (
+            if (!$db->tableExists('topvals')) {
+                $query = "CREATE TABLE `topvals` (
 				  `top` tinyint(4) NOT NULL DEFAULT '0',
 				  `datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 				  `period` tinyint(4) NOT NULL DEFAULT '1',
@@ -72,15 +71,14 @@ class Migration20170901000000ComUsage extends Base
 				  KEY `hub_3` (`top`,`datetime`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-				$db->setQuery($query);
-				$db->query();
+                $db->setQuery($query);
+                $db->query();
 
-				$this->log("Created usage table `topvals`");
-			}
+                $this->log("Created usage table `topvals`");
+            }
 
-			if (!$db->tableExists('regions'))
-			{
-				$query = "CREATE TABLE `regions` (
+            if (!$db->tableExists('regions')) {
+                $query = "CREATE TABLE `regions` (
 				  `region` tinyint(4) NOT NULL DEFAULT '0',
 				  `name` varchar(128) NOT NULL DEFAULT '',
 				  `valfmt` tinyint(4) NOT NULL DEFAULT '0',
@@ -88,15 +86,14 @@ class Migration20170901000000ComUsage extends Base
 				  PRIMARY KEY (`region`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-				$db->setQuery($query);
-				$db->query();
+                $db->setQuery($query);
+                $db->query();
 
-				$this->log("Created usage table `regions`");
-			}
+                $this->log("Created usage table `regions`");
+            }
 
-			if (!$db->tableExists('regionvals'))
-			{
-				$query = "CREATE TABLE `regionvals` (
+            if (!$db->tableExists('regionvals')) {
+                $query = "CREATE TABLE `regionvals` (
 				  `region` tinyint(4) NOT NULL DEFAULT '0',
 				  `datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 				  `period` tinyint(4) NOT NULL DEFAULT '0',
@@ -105,15 +102,14 @@ class Migration20170901000000ComUsage extends Base
 				  `value` bigint(20) NOT NULL DEFAULT '0'
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-				$db->setQuery($query);
-				$db->query();
+                $db->setQuery($query);
+                $db->query();
 
-				$this->log("Created usage table `regionvals`");
-			}
+                $this->log("Created usage table `regionvals`");
+            }
 
-			if (!$db->tableExists('totalvals'))
-			{
-				$query = "CREATE TABLE `totalvals` (
+            if (!$db->tableExists('totalvals')) {
+                $query = "CREATE TABLE `totalvals` (
 				  `hub` tinyint(4) NOT NULL DEFAULT '0',
 				  `total` tinyint(4) NOT NULL DEFAULT '0',
 				  `datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -125,15 +121,14 @@ class Migration20170901000000ComUsage extends Base
 				  KEY `hub_3` (`hub`,`total`,`datetime`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-				$db->setQuery($query);
-				$db->query();
+                $db->setQuery($query);
+                $db->query();
 
-				$this->log("Created usage table `totalvals`");
-			}
+                $this->log("Created usage table `totalvals`");
+            }
 
-			if (!$db->tableExists('classes'))
-			{
-				$query = "CREATE TABLE `classes` (
+            if (!$db->tableExists('classes')) {
+                $query = "CREATE TABLE `classes` (
 				  `class` tinyint(4) NOT NULL DEFAULT '0',
 				  `name` varchar(128) NOT NULL DEFAULT '',
 				  `valfmt` tinyint(4) NOT NULL DEFAULT '0',
@@ -141,15 +136,14 @@ class Migration20170901000000ComUsage extends Base
 				  PRIMARY KEY (`class`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-				$db->setQuery($query);
-				$db->query();
+                $db->setQuery($query);
+                $db->query();
 
-				$this->log("Created usage table `classes`");
-			}
+                $this->log("Created usage table `classes`");
+            }
 
-			if (!$db->tableExists('classvals'))
-			{
-				$query = "CREATE TABLE `classvals` (
+            if (!$db->tableExists('classvals')) {
+                $query = "CREATE TABLE `classvals` (
 				  `class` tinyint(4) NOT NULL DEFAULT '0',
 				  `datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 				  `period` tinyint(4) NOT NULL DEFAULT '0',
@@ -160,66 +154,57 @@ class Migration20170901000000ComUsage extends Base
 				  KEY `class` (`class`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-				$db->setQuery($query);
-				$db->query();
+                $db->setQuery($query);
+                $db->query();
 
-				$this->log("Created usage table `classvals`");
-			}
-		}
-		catch (\Exception $e)
-		{
-			$this->log($e->getMessage(), 'error');
-		}
-	}
+                $this->log("Created usage table `classvals`");
+            }
+        } catch (\Exception $e) {
+            $this->log($e->getMessage(), 'error');
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		try
-		{
-			if (!file_exists(dirname(__DIR__) . '/helpers/helper.php'))
-			{
-				$this->log('Unable to locate usage helper class.', 'error');
-				return;
-			}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        try {
+            if (!file_exists(dirname(__DIR__) . '/helpers/helper.php')) {
+                $this->log('Unable to locate usage helper class.', 'error');
+                return;
+            }
 
-			include_once dirname(__DIR__) . '/helpers/helper.php';
+            include_once dirname(__DIR__) . '/helpers/helper.php';
 
-			$db = \Components\Usage\Helpers\Helper::getUDBO();
+            $db = \Components\Usage\Helpers\Helper::getUDBO();
 
-			if (!$db)
-			{
-				$this->log('Unable to establish connection for usage database.', 'error');
-				return;
-			}
+            if (!$db) {
+                $this->log('Unable to establish connection for usage database.', 'error');
+                return;
+            }
 
-			$tables = array(
-				'tops',
-				'topvals',
-				'regions',
-				'regionvals',
-				'classes',
-				'classvals',
-				'totalvals'
-			);
+            $tables = array(
+                'tops',
+                'topvals',
+                'regions',
+                'regionvals',
+                'classes',
+                'classvals',
+                'totalvals'
+            );
 
-			foreach ($tables as $table)
-			{
-				if ($db->tableExists($table))
-				{
-					$query = "DROP TABLE IF EXISTS `$table`;";
-					$db->setQuery($query);
-					$db->query();
+            foreach ($tables as $table) {
+                if ($db->tableExists($table)) {
+                    $query = "DROP TABLE IF EXISTS `$table`;";
+                    $db->setQuery($query);
+                    $db->query();
 
-					$this->log("Dropped usage table `$table`");
-				}
-			}
-		}
-		catch (\Exception $e)
-		{
-			$this->log($e->getMessage(), 'error');
-		}
-	}
+                    $this->log("Dropped usage table `$table`");
+                }
+            }
+        } catch (\Exception $e) {
+            $this->log($e->getMessage(), 'error');
+        }
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,21 +16,22 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for adding component entry for com_usage
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170831000000ComUsage extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addComponentEntry('usage');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addComponentEntry('usage');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deleteComponentEntry('usage');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deleteComponentEntry('usage');
+    }
 }

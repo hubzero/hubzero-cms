@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,143 +16,131 @@ use App;
  */
 class Helper
 {
-	/**
-	 * Return a usage database object
-	 *
-	 * @return     mixed
-	 */
-	public static function getUDBO()
-	{
-		static $instance;
+    /**
+     * Return a usage database object
+     *
+     * @return     mixed
+     */
+    public static function getUDBO()
+    {
+        static $instance;
 
-		if (!is_object($instance))
-		{
-			$config = \Component::params('com_usage');
+        if (!is_object($instance)) {
+            $config = \Component::params('com_usage');
 
-			$options['driver']   = $config->get('statsDBDriver');
-			$options['host']     = $config->get('statsDBHost');
-			$options['port']     = $config->get('statsDBPort');
-			$options['user']     = $config->get('statsDBUsername');
-			$options['password'] = $config->get('statsDBPassword');
-			$options['database'] = $config->get('statsDBDatabase');
-			$options['prefix']   = $config->get('statsDBPrefix');
-			$options['ssl_ca']   = $config->get('statsDBSSLCa');
+            $options['driver']   = $config->get('statsDBDriver');
+            $options['host']     = $config->get('statsDBHost');
+            $options['port']     = $config->get('statsDBPort');
+            $options['user']     = $config->get('statsDBUsername');
+            $options['password'] = $config->get('statsDBPassword');
+            $options['database'] = $config->get('statsDBDatabase');
+            $options['prefix']   = $config->get('statsDBPrefix');
+            $options['ssl_ca']   = $config->get('statsDBSSLCa');
 
-			if ((!isset($options['password']) || $options['password'] == '')
-			 && (!isset($options['user']) || $options['user'] == '')
-			 && (!isset($options['database']) || $options['database'] == ''))
-			{
-				$instance = App::get('db');
-			}
-			else
-			{
-				try
-				{
-					$options['driver'] = ($options['driver'] == 'mysql') ? 'pdo' : $options['driver'];
+            if (
+                (!isset($options['password']) || $options['password'] == '')
+                && (!isset($options['user']) || $options['user'] == '')
+                && (!isset($options['database']) || $options['database'] == '')
+            ) {
+                $instance = App::get('db');
+            } else {
+                try {
+                    $options['driver'] = ($options['driver'] == 'mysql') ? 'pdo' : $options['driver'];
 
-					$instance = \Hubzero\Database\Driver::getInstance($options);
-				}
-				catch (\Throwable $e)
-				{
-					$instance = App::get('db');
-				}
-			}
-		}
+                    $instance = \Hubzero\Database\Driver::getInstance($options);
+                } catch (\Throwable $e) {
+                    $instance = App::get('db');
+                }
+            }
+        }
 
-		if ($instance instanceof Throwable)
-		{
-			return null;
-		}
+        if ($instance instanceof Throwable) {
+            return null;
+        }
 
-		return $instance;
-	}
+        return $instance;
+    }
 
-	/**
-	 * Print Top X List from Database
-	 *
-	 * @param   object   $db
-	 * @param   unknown  $top
-	 * @param   mixed    $t
-	 * @param   mixed    $enddate
-	 * @param   integer  $raw
-	 * @return  string
-	 */
-	public static function toplist($db, $top, $t=0, $enddate=0, $raw=0)
-	{
-		if (!$db->tableExists('tops'))
-		{
-			\Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'tops'));
-			return false;
-		}
+    /**
+     * Print Top X List from Database
+     *
+     * @param   object   $db
+     * @param   unknown  $top
+     * @param   mixed    $t
+     * @param   mixed    $enddate
+     * @param   integer  $raw
+     * @return  string
+     */
+    public static function toplist($db, $top, $t = 0, $enddate = 0, $raw = 0)
+    {
+        if (!$db->tableExists('tops')) {
+            \Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'tops'));
+            return false;
+        }
 
-		if (!$db->tableExists('topvals'))
-		{
-			\Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'topvals'));
-			return false;
-		}
+        if (!$db->tableExists('topvals')) {
+            \Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'topvals'));
+            return false;
+        }
 
-		// Set top list parameters...
-		$hub = 1;
-		$html = '';
+        // Set top list parameters...
+        $hub = 1;
+        $html = '';
 
-		if (!$enddate)
-		{
-			$dtmonth = date("m") - 1;
-			$dtyear  = date("Y");
-			if (!$dtmonth)
-			{
-				$dtmonth = 12;
-				$dtyear = $dtyear - 1;
-			}
-			$enddate = $dtyear . '-' . $dtmonth;
-		}
+        if (!$enddate) {
+            $dtmonth = date("m") - 1;
+            $dtyear  = date("Y");
+            if (!$dtmonth) {
+                $dtmonth = 12;
+                $dtyear = $dtyear - 1;
+            }
+            $enddate = $dtyear . '-' . $dtmonth;
+        }
 
-		$dtyearnext = $dtyear + 1;
+        $dtyearnext = $dtyear + 1;
 
-		// Look up top list information...
-		$topname = '';
-		$sql = "SELECT name, valfmt, size FROM tops WHERE top=" . $db->quote($top);
-		$db->setQuery($sql);
-		$result = $db->loadRow();
-		if ($result)
-		{
-			$topname = $result[0];
-			$valfmt = $result[1];
-			$size = $result[2];
-		}
+        // Look up top list information...
+        $topname = '';
+        $sql = "SELECT name, valfmt, size FROM tops WHERE top=" . $db->quote($top);
+        $db->setQuery($sql);
+        $result = $db->loadRow();
+        if ($result) {
+            $topname = $result[0];
+            $valfmt = $result[1];
+            $size = $result[2];
+        }
 
-		if ($topname)
-		{
-			// Prepare some date ranges...
-			$enddate .= '-00';
-			$dtmonth = floor(substr($enddate, 5, 2));
-			$dtyear = floor(substr($enddate, 0, 4));
-			$dt = $dtyear . '-' . sprintf("%02d", $dtmonth) . '-00';
-			$dtmonthnext = floor(substr($enddate, 5, 2) + 1);
+        if ($topname) {
+            // Prepare some date ranges...
+            $enddate .= '-00';
+            $dtmonth = floor(substr($enddate, 5, 2));
+            $dtyear = floor(substr($enddate, 0, 4));
+            $dt = $dtyear . '-' . sprintf("%02d", $dtmonth) . '-00';
+            $dtmonthnext = floor(substr($enddate, 5, 2) + 1);
 
-			if ($dtmonthnext > 12)
-			{
-				$dtmonthnext = 1;
-				$dtyearnext++;
-			}
+            if ($dtmonthnext > 12) {
+                $dtmonthnext = 1;
+                $dtyearnext++;
+            }
 
-			$dtyearprior = substr($enddate, 0, 4) - 1;
-			$monthtext   = date("F", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
-			$yeartext    = 'Jan - ' . date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
-			$twelvetext  = date("M", mktime(0, 0, 0, $dtmonthnext, 1, $dtyear)) . ' ' . $dtyearprior . ' - ' . date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
-			$period = array(
-				array('key' => 1,  'name' => $monthtext),
-				array('key' => 0,  'name' => $yeartext),
-				array('key' => 12, 'name' => $twelvetext)
-			);
+            $dtyearprior = substr($enddate, 0, 4) - 1;
+            $monthtext   = date("F", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
+            $yeartext    = 'Jan - ' . date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
+            $startMonth  = date("M", mktime(0, 0, 0, $dtmonthnext, 1, $dtyear));
+            $endMonth    = date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear));
+            $twelvetext  = $startMonth . ' ' . $dtyearprior . ' - ' . $endMonth . ' ' . $dtyear;
+            $period = array(
+                array('key' => 1,  'name' => $monthtext),
+                array('key' => 0,  'name' => $yeartext),
+                array('key' => 12, 'name' => $twelvetext)
+            );
 
-			// Process each different date/time periods/range...
-			$toplist = array();
-			for ($pidx = 0; $pidx < count($period); $pidx++)
-			{
-				// Calculate the total value for this toplist...
-				$toplistset = array();
-				$sql = "SELECT topvals.name, topvals.value
+            // Process each different date/time periods/range...
+            $toplist = array();
+            for ($pidx = 0; $pidx < count($period); $pidx++) {
+                // Calculate the total value for this toplist...
+                $toplistset = array();
+                $sql = "SELECT topvals.name, topvals.value
 						FROM tops, topvals
 						WHERE tops.top = topvals.top
 						AND topvals.hub = " . $db->quote($hub) . "
@@ -159,32 +148,27 @@ class Helper
 						AND topvals.datetime = " . $db->quote($dt) . "
 						AND topvals.period = " . $db->quote($period[$pidx]["key"]) . "
 						AND topvals.rank = '0'";
-				$db->setQuery($sql);
-				$results = $db->loadObjectList();
-				if ($results)
-				{
-					foreach ($results as $row)
-					{
-						$formattedval = self::valformat($row->value, $valfmt);
-						if (strstr($formattedval, "day") !== false)
-						{
-							$chopchar = strrpos($formattedval, ',');
-							if ($chopchar !== false)
-							{
-								$formattedval = substr($formattedval, 0, $chopchar) . '+';
-							}
-						}
-						array_push($toplistset, array($row->name, $row->value, $formattedval, sprintf("%0.1f%%", 100)));
-					}
-				}
-				if (!count($toplistset))
-				{
-					array_push($toplistset, array('n/a', 0, 'n/a', 'n/a'));
-				}
+                $db->setQuery($sql);
+                $results = $db->loadObjectList();
+                if ($results) {
+                    foreach ($results as $row) {
+                        $formattedval = self::valformat($row->value, $valfmt);
+                        if (strstr($formattedval, "day") !== false) {
+                            $chopchar = strrpos($formattedval, ',');
+                            if ($chopchar !== false) {
+                                $formattedval = substr($formattedval, 0, $chopchar) . '+';
+                            }
+                        }
+                        array_push($toplistset, array($row->name, $row->value, $formattedval, sprintf("%0.1f%%", 100)));
+                    }
+                }
+                if (!count($toplistset)) {
+                    array_push($toplistset, array('n/a', 0, 'n/a', 'n/a'));
+                }
 
-				// Calculate the top X values for the toplist...
-				$rank = 1;
-				$sql = "SELECT topvals.rank, topvals.name, topvals.value
+                // Calculate the top X values for the toplist...
+                $rank = 1;
+                $sql = "SELECT topvals.rank, topvals.name, topvals.value
 						FROM tops, topvals
 						WHERE tops.top = topvals.top
 						AND topvals.hub = " . $db->quote($hub) . "
@@ -193,634 +177,564 @@ class Helper
 						AND topvals.period = " . $db->quote($period[$pidx]["key"]) . "
 						AND topvals.rank > '0'
 						ORDER BY topvals.rank, topvals.name";
-				$db->setQuery($sql);
-				$results = $db->loadObjectList();
-				if ($results)
-				{
-					foreach ($results as $row)
-					{
-						if ($row->rank > 0 && (!$size || $row->rank <= $size))
-						{
-							while ($rank < $row->rank)
-							{
-								array_push($toplistset, array('n/a', 0, 'n/a', 'n/a'));
-								$rank++;
-							}
-							$formattedval = self::valformat($row->value, $valfmt);
-							if (strstr($formattedval, 'day') !== false)
-							{
-								$chopchar = strrpos($formattedval, ',');
-								if ($chopchar !== false)
-								{
-									$formattedval = substr($formattedval, 0, $chopchar) . '+';
-								}
-							}
-							if ($toplistset[0][1] > 0)
-							{
-								array_push($toplistset, array($row->name, $row->value, $formattedval, sprintf("%0.1f%%", (100 * $row->value / $toplistset[0][1]))));
-							}
-							else
-							{
-								array_push($toplistset, array($row->name, $row->value, $formattedval, 'n/a'));
-							}
-							$rank++;
-						}
-					}
-				}
-				while ($rank <= $size || $rank == 1)
-				{
-					array_push($toplistset, array('n/a', 0, 'n/a', 'n/a'));
-					$rank++;
-				}
-				array_push($toplist, $toplistset);
-			}
+                $db->setQuery($sql);
+                $results = $db->loadObjectList();
+                if ($results) {
+                    foreach ($results as $row) {
+                        if ($row->rank > 0 && (!$size || $row->rank <= $size)) {
+                            while ($rank < $row->rank) {
+                                array_push($toplistset, array('n/a', 0, 'n/a', 'n/a'));
+                                $rank++;
+                            }
+                            $formattedval = self::valformat($row->value, $valfmt);
+                            if (strstr($formattedval, 'day') !== false) {
+                                $chopchar = strrpos($formattedval, ',');
+                                if ($chopchar !== false) {
+                                    $formattedval = substr($formattedval, 0, $chopchar) . '+';
+                                }
+                            }
+                            if ($toplistset[0][1] > 0) {
+                                $percent = sprintf("%0.1f%%", (100 * $row->value / $toplistset[0][1]));
+                                array_push(
+                                    $toplistset,
+                                    array($row->name, $row->value, $formattedval, $percent)
+                                );
+                            } else {
+                                array_push($toplistset, array($row->name, $row->value, $formattedval, 'n/a'));
+                            }
+                            $rank++;
+                        }
+                    }
+                }
+                while ($rank <= $size || $rank == 1) {
+                    array_push($toplistset, array('n/a', 0, 'n/a', 'n/a'));
+                    $rank++;
+                }
+                array_push($toplist, $toplistset);
+            }
 
-			$cls = 'even';
+            $cls = 'even';
 
-			// Print top list table...
-			$html .= '<table summary="">' . "\n";
-			$html .= "\t" . '<caption>Table ' .$t.': ' .$topname.'</caption>' . "\n";
-			$html .= "\t" . '<thead>' . "\n";
-			$html .= "\t\t" . '<tr>' . "\n";
-			for ($pidx = 0; $pidx < count($period); $pidx++)
-			{
-				$html .= "\t\t\t" . '<th colspan="3" scope="colgroup">' . $period[$pidx]["name"] .'</th>' . "\n";
-			}
-			$html .= "\t\t" . '</tr>' . "\n";
-			$html .= "\t" . '</thead>' . "\n";
-			$html .= "\t" . '<tbody>' . "\n";
-			$html .= "\t\t" . '<tr class="summary">' . "\n";
-			for ($pidx = 0; $pidx < count($period); $pidx++)
-			{
-				$tdcls = ($pidx != 1) ? ' class="group"' : '';
+            // Print top list table...
+            $html .= '<table summary="">' . "\n";
+            $html .= "\t" . '<caption>Table ' . $t . ': ' . $topname . '</caption>' . "\n";
+            $html .= "\t" . '<thead>' . "\n";
+            $html .= "\t\t" . '<tr>' . "\n";
+            for ($pidx = 0; $pidx < count($period); $pidx++) {
+                $html .= "\t\t\t" . '<th colspan="3" scope="colgroup">' . $period[$pidx]["name"] . '</th>' . "\n";
+            }
+            $html .= "\t\t" . '</tr>' . "\n";
+            $html .= "\t" . '</thead>' . "\n";
+            $html .= "\t" . '<tbody>' . "\n";
+            $html .= "\t\t" . '<tr class="summary">' . "\n";
+            for ($pidx = 0; $pidx < count($period); $pidx++) {
+                $tdcls = ($pidx != 1) ? ' class="group"' : '';
 
-				$html .= "\t\t\t" . '<th' . $tdcls . ' scope="row">' . $toplist[$pidx][0][0] .'</th>' . "\n";
-				$html .= "\t\t\t" . '<td' . $tdcls . '>' . $toplist[$pidx][0][2] .'</td>' . "\n";
-				$html .= "\t\t\t" . '<td' . $tdcls . '>' . $toplist[$pidx][0][3] .'</td>' . "\n";
-			}
-			$html .= "\t\t" . '</tr>' . "\n";
-			for ($i = 1; $i < $rank; $i++)
-			{
-				$cls = ($cls == 'even') ? 'odd' : 'even';
-				$html .= "\t\t" . '<tr class="' . $cls .'">' . "\n";
-				for ($pidx = 0; $pidx < count($period); $pidx++)
-				{
-					$tdcls = ($pidx != 1) ? ' class="group"' : '';
-					$html .= "\t\t\t" . '<th' . $tdcls . ' scope="row">' . $toplist[$pidx][$i][0] .'</th>' . "\n";
-					$html .= "\t\t\t" . '<td' . $tdcls . '>' . $toplist[$pidx][$i][2] .'</td>' . "\n";
-					$html .= "\t\t\t" . '<td' . $tdcls . '>' . $toplist[$pidx][$i][3] .'</td>' . "\n";
-				}
-				$html .= "\t\t" . '</tr>' . "\n";
-			}
-			$html .= "\t" . '</tbody>' . "\n";
-			$html .= '</table>' . "\n";
-		}
-		return $html;
-	}
+                $html .= "\t\t\t" . '<th' . $tdcls . ' scope="row">' . $toplist[$pidx][0][0] . '</th>' . "\n";
+                $html .= "\t\t\t" . '<td' . $tdcls . '>' . $toplist[$pidx][0][2] . '</td>' . "\n";
+                $html .= "\t\t\t" . '<td' . $tdcls . '>' . $toplist[$pidx][0][3] . '</td>' . "\n";
+            }
+            $html .= "\t\t" . '</tr>' . "\n";
+            for ($i = 1; $i < $rank; $i++) {
+                $cls = ($cls == 'even') ? 'odd' : 'even';
+                $html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
+                for ($pidx = 0; $pidx < count($period); $pidx++) {
+                    $tdcls = ($pidx != 1) ? ' class="group"' : '';
+                    $html .= "\t\t\t" . '<th' . $tdcls . ' scope="row">' . $toplist[$pidx][$i][0] . '</th>' . "\n";
+                    $html .= "\t\t\t" . '<td' . $tdcls . '>' . $toplist[$pidx][$i][2] . '</td>' . "\n";
+                    $html .= "\t\t\t" . '<td' . $tdcls . '>' . $toplist[$pidx][$i][3] . '</td>' . "\n";
+                }
+                $html .= "\t\t" . '</tr>' . "\n";
+            }
+            $html .= "\t" . '</tbody>' . "\n";
+            $html .= '</table>' . "\n";
+        }
+        return $html;
+    }
 
-	/**
-	 * Create New Array, Dropping All Duplicates and Reindexing All Elements
-	 *
-	 * @param      array $somearray
-	 * @return     array
-	 */
-	public static function array_unique_reindex($somearray)
-	{
-		$tmparr = array_unique($somearray);
-		$i = 0;
-		foreach ($tmparr as $v)
-		{
-			$newarr[$i] = $v;
-			$i++;
-		}
-		return $newarr;
-	}
+    /**
+     * Create New Array, Dropping All Duplicates and Reindexing All Elements
+     *
+     * @param      array $somearray
+     * @return     array
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public static function array_unique_reindex($somearray)
+    {
+        $tmparr = array_unique($somearray);
+        $i = 0;
+        foreach ($tmparr as $v) {
+            $newarr[$i] = $v;
+            $i++;
+        }
+        return $newarr;
+    }
 
-	/**
-	 * Check for data for a date
-	 *
-	 * @param      object $db        Database
-	 * @param      string $yearmonth YYYY-MM
-	 * @param      string $period    Time period to check for
-	 * @return     boolean True if data is found
-	 */
-	public static function check_for_data($db, $yearmonth, $period)
-	{
-		if (!$db->tableExists('totalvals'))
-		{
-			\Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'totalvals'));
-			return false;
-		}
+    /**
+     * Check for data for a date
+     *
+     * @param      object $db        Database
+     * @param      string $yearmonth YYYY-MM
+     * @param      string $period    Time period to check for
+     * @return     boolean True if data is found
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public static function check_for_data($db, $yearmonth, $period)
+    {
+        if (!$db->tableExists('totalvals')) {
+            \Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'totalvals'));
+            return false;
+        }
 
-		$sql = "SELECT COUNT(datetime)
+        $sql = "SELECT COUNT(datetime)
 				FROM totalvals
 				WHERE datetime LIKE " . $db->quote($yearmonth . '-%') . "
 				AND period = " . $db->quote($period);
-		$db->setQuery($sql);
-		$result = $db->loadResult();
-		if ($result && $result > 0)
-		{
-			return true;
-		}
-		return false;
-	}
+        $db->setQuery($sql);
+        $result = $db->loadResult();
+        if ($result && $result > 0) {
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	 * Check for domain class data
-	 *
-	 * @param      object $db        Database
-	 * @param      string $yearmonth YYYY-MM
-	 * @return     boolean True if data is found
-	 */
-	public static function check_for_classdata($db, $yearmonth)
-	{
-		if (!$db->tableExists('classvals'))
-		{
-			\Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'classvals'));
-			return false;
-		}
+    /**
+     * Check for domain class data
+     *
+     * @param      object $db        Database
+     * @param      string $yearmonth YYYY-MM
+     * @return     boolean True if data is found
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public static function check_for_classdata($db, $yearmonth)
+    {
+        if (!$db->tableExists('classvals')) {
+            \Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'classvals'));
+            return false;
+        }
 
-		$sql = "SELECT COUNT(datetime)
+        $sql = "SELECT COUNT(datetime)
 				FROM classvals
 				WHERE datetime LIKE " . $db->quote($yearmonth . '-%');
-		$db->setQuery($sql);
-		$result = $db->loadResult();
-		if ($result && $result > 0)
-		{
-			return true;
-		}
-		return false;
-	}
+        $db->setQuery($sql);
+        $result = $db->loadResult();
+        if ($result && $result > 0) {
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	 * Check for region data for a date
-	 *
-	 * @param      object $db        Database
-	 * @param      string $yearmonth YYYY-MM
-	 * @return     boolean True if data is found
-	 */
-	public static function check_for_regiondata($db, $yearmonth)
-	{
-		if (!$db->tableExists('regionvals'))
-		{
-			\Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'regionvals'));
-			return false;
-		}
+    /**
+     * Check for region data for a date
+     *
+     * @param      object $db        Database
+     * @param      string $yearmonth YYYY-MM
+     * @return     boolean True if data is found
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public static function check_for_regiondata($db, $yearmonth)
+    {
+        if (!$db->tableExists('regionvals')) {
+            \Notify::error(Lang::txt('COM_USAGE_ERROR_MISSING_TABLE', 'regionvals'));
+            return false;
+        }
 
-		$sql = "SELECT COUNT(datetime)
+        $sql = "SELECT COUNT(datetime)
 				FROM regionvals
 				WHERE datetime LIKE " . $db->quote($yearmonth . '-%');
-		$db->setQuery($sql);
-		$result = $db->loadResult();
-		if ($result && $result > 0)
-		{
-			return true;
-		}
-		return false;
-	}
+        $db->setQuery($sql);
+        $result = $db->loadResult();
+        if ($result && $result > 0) {
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	 * Output data in specified format
-	 *
-	 * @param   string  $seldate
-	 * @param   string  $period
-	 * @return  mixed
-	 */
-	public static function dateformat($seldate, $period='month')
-	{
-		$year  = substr($seldate, 0, 4);
-		$month = substr($seldate, 5, 2);
-		$day   = substr($seldate, 8, 2);
-		switch ($period)
-		{
-			case 'fiscalyear':
-				if ($month <= 9)
-				{
-					return "FY " . $year;
-				}
-				else
-				{
-					return "FY " . ($year + 1);
-				}
-			break;
-			case 'calyear':
-				return $year;
-			break;
-			case 'quarter':
-				if ($month <= 3)
-				{
-					$qtr = '1st';
-				}
-				elseif ($month <= 6)
-				{
-					$qtr = '2nd';
-				}
-				elseif ($month <= 9)
-				{
-					$qtr = '3rd';
-				}
-				else
-				{
-					$qtr = '4th';
-				}
-				return $qtr .' Quarter ' . $year;
-			break;
-			default:
-				if ($day > 0)
-				{
-					return sprintf("%d/%d/%d", $month, $day, $year);
-				}
-				else
-				{
-					return sprintf("%d/%d", $month, $year);
-				}
-			break;
-		}
-	}
+    /**
+     * Output data in specified format
+     *
+     * @param   string  $seldate
+     * @param   string  $period
+     * @return  mixed
+     */
+    public static function dateformat($seldate, $period = 'month')
+    {
+        $year  = substr($seldate, 0, 4);
+        $month = substr($seldate, 5, 2);
+        $day   = substr($seldate, 8, 2);
+        switch ($period) {
+            case 'fiscalyear':
+                if ($month <= 9) {
+                    return "FY " . $year;
+                } else {
+                    return "FY " . ($year + 1);
+                }
+                break;
+            case 'calyear':
+                return $year;
+            break;
+            case 'quarter':
+                if ($month <= 3) {
+                    $qtr = '1st';
+                } elseif ($month <= 6) {
+                    $qtr = '2nd';
+                } elseif ($month <= 9) {
+                    $qtr = '3rd';
+                } else {
+                    $qtr = '4th';
+                }
+                return $qtr . ' Quarter ' . $year;
+            break;
+            default:
+                if ($day > 0) {
+                    return sprintf("%d/%d/%d", $month, $day, $year);
+                } else {
+                    return sprintf("%d/%d", $month, $year);
+                }
+                break;
+        }
+    }
 
-	/**
-	 * Output format for plotted data
-	 *
-	 * @param   string  $seldate
-	 * @return  string
-	 */
-	public static function dateformat_plot($seldate)
-	{
-		$year  = substr($seldate, 0, 4);
-		$month = substr($seldate, 5, 2);
-		$day   = substr($seldate, 8, 2);
+    /**
+     * Output format for plotted data
+     *
+     * @param   string  $seldate
+     * @return  string
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public static function dateformat_plot($seldate)
+    {
+        $year  = substr($seldate, 0, 4);
+        $month = substr($seldate, 5, 2);
+        $day   = substr($seldate, 8, 2);
 
-		if ($day > 0)
-		{
-			return sprintf("%02d/%02d/%04d", $month, $day, $year);
-		}
+        if ($day > 0) {
+            return sprintf("%02d/%02d/%04d", $month, $day, $year);
+        }
 
-		return sprintf("%02d/%04d", $month, $year);
-	}
+        return sprintf("%02d/%04d", $month, $year);
+    }
 
-	/**
-	 * Retrieve value from an array for specified date
-	 *
-	 * @param   array   $valarray
-	 * @param   string  $seldate
-	 * @param   string  $valkey
-	 * @return  integer
-	 */
-	public static function seldate_value($valarray, $seldate, $valkey='value')
-	{
-		if ($valarray)
-		{
-			foreach ($valarray as $val)
-			{
-				if (substr($val['date'], 0, strlen($seldate)) == $seldate)
-				{
-					return $val[$valkey];
-				}
-			}
-		}
+    /**
+     * Retrieve value from an array for specified date
+     *
+     * @param   array   $valarray
+     * @param   string  $seldate
+     * @param   string  $valkey
+     * @return  integer
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public static function seldate_value($valarray, $seldate, $valkey = 'value')
+    {
+        if ($valarray) {
+            foreach ($valarray as $val) {
+                if (substr($val['date'], 0, strlen($seldate)) == $seldate) {
+                    return $val[$valkey];
+                }
+            }
+        }
 
-		return 0;
-	}
+        return 0;
+    }
 
-	/**
-	 * Short description for 'seldate_next'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $seldate Parameter description (if any) ...
-	 * @param      unknown $period Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
-	 */
-	public static function seldate_next($seldate, $period)
-	{
-		return self::seldate_shift($seldate, $period, 1);
-	}
+    /**
+     * Short description for 'seldate_next'
+     *
+     * Long description (if any) ...
+     *
+     * @param      unknown $seldate Parameter description (if any) ...
+     * @param      unknown $period Parameter description (if any) ...
+     * @return     integer Return description (if any) ...
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public static function seldate_next($seldate, $period)
+    {
+        return self::seldate_shift($seldate, $period, 1);
+    }
 
-	/**
-	 * Short description for 'seldate_prev'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $seldate Parameter description (if any) ...
-	 * @param      unknown $period Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
-	 */
-	public function seldate_prev($seldate, $period)
-	{
-		return self::seldate_shift($seldate, $period, 0);
-	}
+    /**
+     * Short description for 'seldate_prev'
+     *
+     * Long description (if any) ...
+     *
+     * @param      unknown $seldate Parameter description (if any) ...
+     * @param      unknown $period Parameter description (if any) ...
+     * @return     integer Return description (if any) ...
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public function seldate_prev($seldate, $period)
+    {
+        return self::seldate_shift($seldate, $period, 0);
+    }
 
-	/**
-	 * Short description for 'seldate_nextyear'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $seldate Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
-	 */
-	public static function seldate_nextyear($seldate)
-	{
-		$date = $seldate;
-		for ($i = 0; $i < 12; $i++)
-		{
-			$date = self::seldate_shift($date, 'month', 1);
-		}
-		return $date;
-	}
+    /**
+     * Short description for 'seldate_nextyear'
+     *
+     * Long description (if any) ...
+     *
+     * @param      unknown $seldate Parameter description (if any) ...
+     * @return     unknown Return description (if any) ...
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public static function seldate_nextyear($seldate)
+    {
+        $date = $seldate;
+        for ($i = 0; $i < 12; $i++) {
+            $date = self::seldate_shift($date, 'month', 1);
+        }
+        return $date;
+    }
 
-	/**
-	 * Short description for 'seldate_prevyear'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $seldate Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
-	 */
-	public static function seldate_prevyear($seldate)
-	{
-		$date = $seldate;
-		for ($i = 0; $i < 12; $i++)
-		{
-			$date = self::seldate_shift($date, 'month', 0);
-		}
-		return $date;
-	}
+    /**
+     * Short description for 'seldate_prevyear'
+     *
+     * Long description (if any) ...
+     *
+     * @param      unknown $seldate Parameter description (if any) ...
+     * @return     unknown Return description (if any) ...
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public static function seldate_prevyear($seldate)
+    {
+        $date = $seldate;
+        for ($i = 0; $i < 12; $i++) {
+            $date = self::seldate_shift($date, 'month', 0);
+        }
+        return $date;
+    }
 
-	/**
-	 * Short description for 'seldate_fix'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $seldate Parameter description (if any) ...
-	 * @param      string $period Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-	public static function seldate_fix($seldate, $period)
-	{
-		$year  = substr($seldate, 0, 4);
-		$month = substr($seldate, 5, 2);
-		$day   = substr($seldate, 8, 2);
-		if ($period == 'fiscalyear')
-		{
-			if ($month < 9)
-			{
-				$month = 9;
-			}
-			if ($month > 9)
-			{
-				$month = 9;
-				$year++;
-			}
-		}
-		elseif ($period == 'calyear')
-		{
-			if ($month != 12)
-			{
-				$month = 12;
-			}
-		}
-		elseif ($period == 'quarter')
-		{
-			if ($month < 3)
-			{
-				$month = 3;
-			}
-			elseif ($month > 3 && $month < 6)
-			{
-				$month = 6;
-			}
-			elseif ($month > 6 && $month < 9)
-			{
-				$month = 9;
-			}
-			elseif ($month > 9 && $month < 12)
-			{
-				$month = 12;
-			}
-		}
-		return sprintf("%04d-%02d-%02d", $year, $month, $day);
-	}
+    /**
+     * Short description for 'seldate_fix'
+     *
+     * Long description (if any) ...
+     *
+     * @param      unknown $seldate Parameter description (if any) ...
+     * @param      string $period Parameter description (if any) ...
+     * @return     mixed Return description (if any) ...
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public static function seldate_fix($seldate, $period)
+    {
+        $year  = substr($seldate, 0, 4);
+        $month = substr($seldate, 5, 2);
+        $day   = substr($seldate, 8, 2);
+        if ($period == 'fiscalyear') {
+            if ($month < 9) {
+                $month = 9;
+            }
+            if ($month > 9) {
+                $month = 9;
+                $year++;
+            }
+        } elseif ($period == 'calyear') {
+            if ($month != 12) {
+                $month = 12;
+            }
+        } elseif ($period == 'quarter') {
+            if ($month < 3) {
+                $month = 3;
+            } elseif ($month > 3 && $month < 6) {
+                $month = 6;
+            } elseif ($month > 6 && $month < 9) {
+                $month = 9;
+            } elseif ($month > 9 && $month < 12) {
+                $month = 12;
+            }
+        }
+        return sprintf("%04d-%02d-%02d", $year, $month, $day);
+    }
 
-	/**
-	 * Short description for 'seldate_shift'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param   unknown  $seldate  Parameter description (if any) ...
-	 * @param   unknown  $period   Parameter description (if any) ...
-	 * @param   unknown  $right    Parameter description (if any) ...
-	 * @return  mixed    Return description (if any) ...
-	 */
-	public static function seldate_shift($seldate, $period, $right)
-	{
-		$year  = substr($seldate, 0, 4);
-		$month = substr($seldate, 5, 2);
-		$day   = substr($seldate, 8, 2);
-		if ($right)
-		{
-			switch ($period)
-			{
-				case 'fiscalyear':
-					$year++;
-				break;
-				case 'calyear':
-					$year++;
-				break;
-				case 'quarter':
-					$month += 3;
-					if ($month > 12)
-					{
-						$year++;
-						$month -= 12;
-					}
-				break;
-				default:
-					$month++;
-					if ($month > 12)
-					{
-						$year++;
-						$month = 1;
-					}
-				break;
-			}
-		}
-		else
-		{
-			switch ($period)
-			{
-				case 'fiscalyear':
-					$year--;
-				break;
-				case 'calyear':
-					$year--;
-				break;
-				case 'quarter':
-					$month -= 3;
-					if ($month < 1)
-					{
-						$year--;
-						$month += 12;
-					}
-				break;
-				default:
-					$month--;
-					if ($month < 1)
-					{
-						$year--;
-						$month = 12;
-					}
-				break;
-			}
-		}
-		return sprintf("%04d-%02d-%02d", $year, $month, $day);
-	}
+    /**
+     * Short description for 'seldate_shift'
+     *
+     * Long description (if any) ...
+     *
+     * @param   unknown  $seldate  Parameter description (if any) ...
+     * @param   unknown  $period   Parameter description (if any) ...
+     * @param   unknown  $right    Parameter description (if any) ...
+     * @return  mixed    Return description (if any) ...
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public static function seldate_shift($seldate, $period, $right)
+    {
+        $year  = substr($seldate, 0, 4);
+        $month = substr($seldate, 5, 2);
+        $day   = substr($seldate, 8, 2);
+        if ($right) {
+            switch ($period) {
+                case 'fiscalyear':
+                    $year++;
+                    break;
+                case 'calyear':
+                    $year++;
+                    break;
+                case 'quarter':
+                    $month += 3;
+                    if ($month > 12) {
+                        $year++;
+                        $month -= 12;
+                    }
+                    break;
+                default:
+                    $month++;
+                    if ($month > 12) {
+                        $year++;
+                        $month = 1;
+                    }
+                    break;
+            }
+        } else {
+            switch ($period) {
+                case 'fiscalyear':
+                    $year--;
+                    break;
+                case 'calyear':
+                    $year--;
+                    break;
+                case 'quarter':
+                    $month -= 3;
+                    if ($month < 1) {
+                        $year--;
+                        $month += 12;
+                    }
+                    break;
+                default:
+                    $month--;
+                    if ($month < 1) {
+                        $year--;
+                        $month = 12;
+                    }
+                    break;
+            }
+        }
+        return sprintf("%04d-%02d-%02d", $year, $month, $day);
+    }
 
-	/**
-	 * Short description for 'seldate_valuedescsortkey'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param   array    &$arr  Parameter description (if any) ...
-	 * @param   unknown  $date  Parameter description (if any) ...
-	 * @return  array    Return description (if any) ...
-	 */
-	public static function seldate_valuedescsortkey(&$arr, $date)
-	{
-		$reversealpha = array(
-			',' => '',  '.' => '',  'A' => 'Z', 'B' => 'Y', 'C' => 'X', 'D' => 'W', 'E' => 'V',
-			'F' => 'U', 'G' => 'T', 'H' => 'S', 'I' => 'R', 'J' => 'Q', 'K' => 'P', 'L' => 'O',
-			'M' => 'N', 'N' => 'M', 'O' => 'L', 'P' => 'K', 'Q' => 'J', 'R' => 'I', 'S' => 'H',
-			'T' => 'G', 'U' => 'F', 'V' => 'E', 'W' => 'D', 'X' => 'C', 'Y' => 'B', 'Z' => 'A'
-		);
-		$dmax = 0;
-		$tmax = 0;
-		for ($i = 0; $i < count($arr); $i++)
-		{
-			$dateval = self::seldate_value($arr[$i], $date);
-			$len = strlen($dateval);
-			if ($len > $dmax)
-			{
-				$dmax = $len;
-			}
-			$len = strlen($arr[$i]['total']);
-			if ($len > $tmax)
-			{
-				$tmax = $len;
-			}
-		}
-		$format = "%0" . $dmax . "d%0" . $tmax . "d";
-		for ($i = 0; $i < count($arr); $i++)
-		{
-			$arr[$i]['sortkey'] = '';
-			$dateval = self::seldate_value($arr[$i], $date);
-			if (!$dateval)
-			{
-				$dateval = "0";
-			}
-			$arr[$i]['sortkey'] .= sprintf($format, $dateval, $arr[$i]['total']) . strtr(strtoupper($arr[$i]['name']), $reversealpha);
-		}
-		return $arr;
-	}
+    /**
+     * Short description for 'seldate_valuedescsortkey'
+     *
+     * Long description (if any) ...
+     *
+     * @param   array    &$arr  Parameter description (if any) ...
+     * @param   unknown  $date  Parameter description (if any) ...
+     * @return  array    Return description (if any) ...
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public static function seldate_valuedescsortkey(&$arr, $date)
+    {
+        $reversealpha = array(
+            ',' => '',  '.' => '',  'A' => 'Z', 'B' => 'Y', 'C' => 'X', 'D' => 'W', 'E' => 'V',
+            'F' => 'U', 'G' => 'T', 'H' => 'S', 'I' => 'R', 'J' => 'Q', 'K' => 'P', 'L' => 'O',
+            'M' => 'N', 'N' => 'M', 'O' => 'L', 'P' => 'K', 'Q' => 'J', 'R' => 'I', 'S' => 'H',
+            'T' => 'G', 'U' => 'F', 'V' => 'E', 'W' => 'D', 'X' => 'C', 'Y' => 'B', 'Z' => 'A'
+        );
+        $dmax = 0;
+        $tmax = 0;
+        for ($i = 0; $i < count($arr); $i++) {
+            $dateval = self::seldate_value($arr[$i], $date);
+            $len = strlen($dateval);
+            if ($len > $dmax) {
+                $dmax = $len;
+            }
+            $len = strlen($arr[$i]['total']);
+            if ($len > $tmax) {
+                $tmax = $len;
+            }
+        }
+        $format = "%0" . $dmax . "d%0" . $tmax . "d";
+        for ($i = 0; $i < count($arr); $i++) {
+            $arr[$i]['sortkey'] = '';
+            $dateval = self::seldate_value($arr[$i], $date);
+            if (!$dateval) {
+                $dateval = "0";
+            }
+            $sortBase = sprintf($format, $dateval, $arr[$i]['total']);
+            $sortName = strtr(strtoupper($arr[$i]['name']), $reversealpha);
+            $arr[$i]['sortkey'] .= $sortBase . $sortName;
+        }
+        return $arr;
+    }
 
-	/**
-	 * Short description for 'seldate_valuedescsort'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param   unknown  &$arr  Parameter description (if any) ...
-	 * @return  mixed    Return description (if any) ...
-	 */
-	public static function seldate_valuedescsort(&$arr)
-	{
-		return usort($arr, "arraykeyeddesccmp");
-	}
+    /**
+     * Short description for 'seldate_valuedescsort'
+     *
+     * Long description (if any) ...
+     *
+     * @param   unknown  &$arr  Parameter description (if any) ...
+     * @return  mixed    Return description (if any) ...
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName
+    public static function seldate_valuedescsort(&$arr)
+    {
+        return usort($arr, "arraykeyeddesccmp");
+    }
 
-	/**
-	 * Short description for 'valformat'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param   number   $value   Parameter description (if any) ...
-	 * @param   integer  $format  Parameter description (if any) ...
-	 * @return  mixed    Return description (if any) ...
-	 */
-	public static function valformat($value, $format)
-	{
-		if ($format == 1)
-		{
-			return number_format($value);
-		}
-		elseif ($format == 2 || $format == 3)
-		{
-			if ($format == 2)
-			{
-				$min = round($value / 60);
-			}
-			else
-			{
-				$min = floor($value / 60);
-				$sec = $value - ($min * 60);
-			}
-			$hr = floor($min / 60);
-			$min -= ($hr * 60);
-			$day = floor($hr / 24);
-			$hr -= ($day * 24);
-			if ($day == 1)
-			{
-				$day = '1 ' . Lang::txt('COM_USAGE_DAY') . ', ';
-			}
-			elseif ($day > 1)
-			{
-				$day = number_format($day) . ' ' . Lang::txt('COM_USAGE_DAYS') . ', ';
-			}
-			else
-			{
-				$day = '';
-			}
-			if ($format == 2)
-			{
-				return sprintf("%s%d:%02d", $day, $hr, $min);
-			}
-			else
-			{
-				return sprintf("%s%d:%02d:%02d", $day, $hr, $min, $sec);
-			}
-		}
-		else
-		{
-			return $value;
-		}
-	}
+    /**
+     * Short description for 'valformat'
+     *
+     * Long description (if any) ...
+     *
+     * @param   number   $value   Parameter description (if any) ...
+     * @param   integer  $format  Parameter description (if any) ...
+     * @return  mixed    Return description (if any) ...
+     */
+    public static function valformat($value, $format)
+    {
+        if ($format == 1) {
+            return number_format($value);
+        } elseif ($format == 2 || $format == 3) {
+            if ($format == 2) {
+                $min = round($value / 60);
+            } else {
+                $min = floor($value / 60);
+                $sec = $value - ($min * 60);
+            }
+            $hr = floor($min / 60);
+            $min -= ($hr * 60);
+            $day = floor($hr / 24);
+            $hr -= ($day * 24);
+            if ($day == 1) {
+                $day = '1 ' . Lang::txt('COM_USAGE_DAY') . ', ';
+            } elseif ($day > 1) {
+                $day = number_format($day) . ' ' . Lang::txt('COM_USAGE_DAYS') . ', ';
+            } else {
+                $day = '';
+            }
+            if ($format == 2) {
+                return sprintf("%s%d:%02d", $day, $hr, $min);
+            } else {
+                return sprintf("%s%d:%02d:%02d", $day, $hr, $min, $sec);
+            }
+        } else {
+            return $value;
+        }
+    }
 
-	/**
-	 * Build a list of select options
-	 *
-	 * @param   object   $db             Database
-	 * @param   string   $enddate        Parameter description (if any) ...
-	 * @param   integer  $thisyear       Current year
-	 * @param   array    $monthsReverse  List of months (Dec -> Jan)
-	 * @param   string   $func           Function to perform
-	 * @return  string   HTML
-	 */
-	public static function options($db, $enddate, $thisyear, $monthsReverse, $func='')
-	{
-		$o = '';
-		for ($i = $thisyear; $i >= 2004; $i--)
-		{
-			foreach ($monthsReverse as $key => $month)
-			{
-				$value = $i . '-' . $key;
-				if (self::$func($db, $value))
-				{
-					$o .= '<option value="' . $value . '"';
-					if ($value == $enddate)
-					{
-						$o .= ' selected="selected"';
-					}
-					$o .= '>' . $month . ' ' . $i . '</option>' . "\n";
-				}
-			}
-		}
-		return $o;
-	}
+    /**
+     * Build a list of select options
+     *
+     * @param   object   $db             Database
+     * @param   string   $enddate        Parameter description (if any) ...
+     * @param   integer  $thisyear       Current year
+     * @param   array    $monthsReverse  List of months (Dec -> Jan)
+     * @param   string   $func           Function to perform
+     * @return  string   HTML
+     */
+    public static function options($db, $enddate, $thisyear, $monthsReverse, $func = '')
+    {
+        $o = '';
+        for ($i = $thisyear; $i >= 2004; $i--) {
+            foreach ($monthsReverse as $key => $month) {
+                $value = $i . '-' . $key;
+                if (self::$func($db, $value)) {
+                    $o .= '<option value="' . $value . '"';
+                    if ($value == $enddate) {
+                        $o .= ' selected="selected"';
+                    }
+                    $o .= '>' . $month . ' ' . $i . '</option>' . "\n";
+                }
+            }
+        }
+        return $o;
+    }
 }

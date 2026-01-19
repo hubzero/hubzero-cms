@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,14 +15,14 @@ use Hubzero\Component\AdminController;
  */
 class Data extends AdminController
 {
-	/**
-	 * Display primary page
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		// Output the HTML
-		$this->view->display();
-	}
+    /**
+     * Display primary page
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        // Output the HTML
+        $this->view->display();
+    }
 }
