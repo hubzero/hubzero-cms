@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,21 +16,21 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for installing content tables
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComContent extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__content'))
-		{
-			$query = "CREATE TABLE `#__content` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__content')) {
+            $query = "CREATE TABLE `#__content` (
 			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  `asset_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to the #__assets table.',
 			  `title` varchar(255) NOT NULL DEFAULT '',
 			  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-			  `title_alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT 'Deprecated in HUBzero 2.0',
+			  `title_alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
 			  `introtext` mediumtext NOT NULL,
 			  `fulltext` mediumtext NOT NULL,
 			  `state` tinyint(3) NOT NULL DEFAULT '0',
@@ -71,25 +74,23 @@ class Migration20170901000000ComContent extends Base
 			  FULLTEXT KEY `ftidx_title_introtext_fulltext` (`title`,`introtext`,`fulltext`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__content_frontpage'))
-		{
-			$query = "CREATE TABLE `#__content_frontpage` (
+        if (!$this->db->tableExists('#__content_frontpage')) {
+            $query = "CREATE TABLE `#__content_frontpage` (
 			  `content_id` int(11) NOT NULL DEFAULT '0',
 			  `ordering` int(11) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`content_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__content_rating'))
-		{
-			$query = "CREATE TABLE `#__content_rating` (
+        if (!$this->db->tableExists('#__content_rating')) {
+            $query = "CREATE TABLE `#__content_rating` (
 			  `content_id` int(11) NOT NULL DEFAULT '0',
 			  `rating_sum` int(10) unsigned NOT NULL DEFAULT '0',
 			  `rating_count` int(10) unsigned NOT NULL DEFAULT '0',
@@ -97,35 +98,32 @@ class Migration20170901000000ComContent extends Base
 			  PRIMARY KEY (`content_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__content'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__content`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__content')) {
+            $query = "DROP TABLE IF EXISTS `#__content`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__content_frontpage'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__content_frontpage`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__content_frontpage')) {
+            $query = "DROP TABLE IF EXISTS `#__content_frontpage`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__content_rating'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__content_rating`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__content_rating')) {
+            $query = "DROP TABLE IF EXISTS `#__content_rating`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }
