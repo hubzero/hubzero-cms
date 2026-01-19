@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,14 +31,14 @@ Discussion Topics
 
 Latest Discussions:
 <?php if (count($this->latest) > 0) : ?>
-<?php foreach ($this->latest as $post) : ?>
+    <?php foreach ($this->latest as $post) : ?>
 ----------------------------------------
-<?php $postObj = \Components\Forum\Models\Post::getInstance($post->id); ?>
-<?php echo User::getInstance($post->created_by)->get('name'); ?> | created: <?php echo Date::of($post->created)->toLocal('M j, Y g:i:s a') . "\n"; ?>
-<?php echo $postObj->content('raw') . "\n"; ?>
+        <?php $postObj = \Components\Forum\Models\Post::getInstance($post->id); ?>
+        <?php echo User::getInstance($post->created_by)->get('name'); ?> | created: <?php echo Date::of($post->created)->toLocal('M j, Y g:i:s a') . "\n"; ?>
+        <?php echo $postObj->content('raw') . "\n"; ?>
 ----------------------------------------
 
-<?php endforeach; ?>
+    <?php endforeach; ?>
 <?php else : ?>
 No new comments to display
 

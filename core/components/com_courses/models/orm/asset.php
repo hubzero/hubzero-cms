@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,53 +15,53 @@ use Hubzero\Database\Relational;
  */
 class Asset extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var string
-	 */
-	protected $namespace = 'courses';
+    /**
+     * The table namespace
+     *
+     * @var string
+     */
+    protected $namespace = 'courses';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var string
-	 */
-	public $orderBy = 'ordering';
+    /**
+     * Default order by for model
+     *
+     * @var string
+     */
+    public $orderBy = 'ordering';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'title' => 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'title' => 'notempty'
+    );
 
-	/**
-	 * Automatic fields to populate every time a row is created
-	 *
-	 * @var  array
-	 */
-	public $initiate = array(
-		'created',
-		'created_by'
-	);
+    /**
+     * Automatic fields to populate every time a row is created
+     *
+     * @var  array
+     */
+    public $initiate = array(
+        'created',
+        'created_by'
+    );
 
-	/**
-	 * Get parent course
-	 *
-	 * @return  object
-	 */
-	public function course()
-	{
-		return $this->belongsToOne('Course');
-	}
+    /**
+     * Get parent course
+     *
+     * @return  object
+     */
+    public function course()
+    {
+        return $this->belongsToOne('Course');
+    }
 }

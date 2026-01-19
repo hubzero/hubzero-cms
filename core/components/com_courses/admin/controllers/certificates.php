@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,303 +27,283 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'certificate.php';
  */
 class Certificates extends AdminController
 {
-	/**
-	 * Displays a list of courses
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		$this->view->cert_id   = Request::getInt('certificate', 0);
-		$this->view->course_id = Request::getInt('course', 0);
+    /**
+     * Displays a list of courses
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        $this->view->cert_id   = Request::getInt('certificate', 0);
+        $this->view->course_id = Request::getInt('course', 0);
 
-		$this->view->certificate = Certificate::getInstance($this->view->cert_id, $this->view->course_id);
+        $this->view->certificate = Certificate::getInstance($this->view->cert_id, $this->view->course_id);
 
-		if (!$this->view->certificate->exists())
-		{
-			return $this->addTask($this->view->certificate);
-		}
+        if (!$this->view->certificate->exists()) {
+            return $this->addTask($this->view->certificate);
+        }
 
-		if (!$this->view->certificate->hasFile())
-		{
-			return $this->editTask($this->view->certificate);
-		}
+        if (!$this->view->certificate->hasFile()) {
+            return $this->editTask($this->view->certificate);
+        }
 
-		Request::setVar('hidemainmenu', 1);
+        Request::setVar('hidemainmenu', 1);
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+        // Set any errors
+        foreach ($this->getErrors() as $error) {
+            $this->view->setError($error);
+        }
 
-		// Output the HTML
-		$this->view
-			->setLayout('display')
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->setLayout('display')
+            ->display();
+    }
 
-	/**
-	 * Saves changes
-	 *
-	 * @return void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
+    /**
+     * Saves changes
+     *
+     * @return void
+     */
+    public function applyTask()
+    {
+        $this->saveTask(false);
+    }
 
-	/**
-	 * Saves changes
-	 *
-	 * @return void
-	 */
-	public function saveTask($redirect=true)
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Saves changes
+     *
+     * @return void
+     */
+    public function saveTask($redirect = true)
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		// Incoming
-		$fields = Request::getArray('fields', array(), 'post');
+        // Incoming
+        $fields = Request::getArray('fields', array(), 'post');
 
-		// Instantiate a Course object
-		$model = Certificate::getInstance($fields['id'], $fields['course_id']);
+        // Instantiate a Course object
+        $model = Certificate::getInstance($fields['id'], $fields['course_id']);
 
-		if (!$model->bind($fields))
-		{
-			$this->setError($model->getError());
-			$this->displayTask();
-			return;
-		}
+        if (!$model->bind($fields)) {
+            $this->setError($model->getError());
+            $this->displayTask();
+            return;
+        }
 
-		if (!$model->store(true))
-		{
-			$this->setError($model->getError());
-			$this->displayTask();
-			return;
-		}
+        if (!$model->store(true)) {
+            $this->setError($model->getError());
+            $this->displayTask();
+            return;
+        }
 
-		if ($redirect)
-		{
-			// Output messsage and redirect
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option, false), //'&controller=' . $this->_controller . '&course=' . $model->get('course_id') . '&certificate=' . $model->get('id'),
-				Lang::txt('COM_COURSES_SETTINGS_SAVED')
-			);
-			return;
-		}
+        if ($redirect) {
+            // Output messsage and redirect
+            // Original URL also included:
+            // '&controller=' . $this->_controller
+            // '&course=' . $model->get('course_id')
+            // '&certificate=' . $model->get('id')
+            App::redirect(
+                Route::url('index.php?option=' . $this->_option, false),
+                Lang::txt('COM_COURSES_SETTINGS_SAVED')
+            );
+            return;
+        }
 
-		$this->displayTask();
-	}
+        $this->displayTask();
+    }
 
-	/**
-	 * Displays a list of courses
-	 *
-	 * @return	void
-	 */
-	public function previewTask()
-	{
-		// Load certificate record
-		$certificate = Certificate::getInstance(Request::getInt('certificate', 0));
-		if (!$certificate->exists())
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=courses', false),
-				Lang::txt('COM_COURSES_ERROR_MISSING_CERTIFICATE'),
-				'error'
-			);
-			return;
-		}
+    /**
+     * Displays a list of courses
+     *
+     * @return  void
+     */
+    public function previewTask()
+    {
+        // Load certificate record
+        $certificate = Certificate::getInstance(Request::getInt('certificate', 0));
+        if (!$certificate->exists()) {
+            App::redirect(
+                Route::url('index.php?option=' . $this->_option . '&controller=courses', false),
+                Lang::txt('COM_COURSES_ERROR_MISSING_CERTIFICATE'),
+                'error'
+            );
+            return;
+        }
 
-		$certificate->render(User::getInstance());
-	}
+        $certificate->render(User::getInstance());
+    }
 
-	/**
-	 * Create a new course
-	 *
-	 * @return	void
-	 */
-	public function addTask($model=null)
-	{
-		$this->editTask($model);
-	}
+    /**
+     * Create a new course
+     *
+     * @return  void
+     */
+    public function addTask($model = null)
+    {
+        $this->editTask($model);
+    }
 
-	/**
-	 * Displays an edit form
-	 *
-	 * @return	void
-	 */
-	public function editTask($model=null)
-	{
-		Request::setVar('hidemainmenu', 1);
+    /**
+     * Displays an edit form
+     *
+     * @return  void
+     */
+    public function editTask($model = null)
+    {
+        Request::setVar('hidemainmenu', 1);
 
-		if (!is_object($model))
-		{
-			// Incoming
-			$id = Request::getArray('id', array());
+        if (!is_object($model)) {
+            // Incoming
+            $id = Request::getArray('id', array());
 
-			// Get the single ID we're working with
-			if (is_array($id))
-			{
-				$id = (!empty($id)) ? $id[0] : 0;
-			}
+            // Get the single ID we're working with
+            if (is_array($id)) {
+                $id = (!empty($id)) ? $id[0] : 0;
+            }
 
-			$model = new Certificate($id);
-		}
+            $model = new Certificate($id);
+        }
 
-		$this->view->row = $model;
+        $this->view->row = $model;
 
-		if (!$this->view->row->get('course_id'))
-		{
-			$this->view->row->set('course_id', Request::getInt('course', 0));
-		}
+        if (!$this->view->row->get('course_id')) {
+            $this->view->row->set('course_id', Request::getInt('course', 0));
+        }
 
-		if (!$this->view->row->exists())
-		{
-			$this->view->row->store();
-		}
+        if (!$this->view->row->exists()) {
+            $this->view->row->store();
+        }
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+        // Set any errors
+        foreach ($this->getErrors() as $error) {
+            $this->view->setError($error);
+        }
 
-		// Output the HTML
-		$this->view
-			->setLayout('edit')
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->setLayout('edit')
+            ->display();
+    }
 
-	/**
-	 * Upload a file or create a new folder
-	 *
-	 * @return     void
-	 */
-	public function uploadTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Upload a file or create a new folder
+     *
+     * @return     void
+     */
+    public function uploadTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		$cert_id   = Request::getInt('certificate', 0, 'post');
-		$course_id = Request::getInt('course', 0, 'post');
-		if (!$course_id)
-		{
-			$this->setError(Lang::txt('COURSES_NO_LISTDIR'));
-			$this->displayTask();
-			return;
-		}
+        $cert_id   = Request::getInt('certificate', 0, 'post');
+        $course_id = Request::getInt('course', 0, 'post');
+        if (!$course_id) {
+            $this->setError(Lang::txt('COURSES_NO_LISTDIR'));
+            $this->displayTask();
+            return;
+        }
 
-		$model = Certificate::getInstance($cert_id, $course_id);
-		$model->set('name', 'certificate.pdf');
-		if (!$model->exists())
-		{
-			$model->store();
-		}
+        $model = Certificate::getInstance($cert_id, $course_id);
+        $model->set('name', 'certificate.pdf');
+        if (!$model->exists()) {
+            $model->store();
+        }
 
-		// Build the path
-		$path = $model->path('system');
+        // Build the path
+        $path = $model->path('system');
 
-		// Make sure the upload path exist
-		if (!is_dir($path))
-		{
-			if (!Filesystem::makeDirectory($path))
-			{
-				$this->setError(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
-				$this->displayTask();
-				return;
-			}
-		}
+        // Make sure the upload path exist
+        if (!is_dir($path)) {
+            if (!Filesystem::makeDirectory($path)) {
+                $this->setError(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
+                $this->displayTask();
+                return;
+            }
+        }
 
-		// Incoming file
-		$file = Request::getArray('upload', '', 'files');
-		if (!$file['name'])
-		{
-			$this->setError(Lang::txt('COM_COURSES_ERROR_NO_FILE_FOUND'));
-			$this->displayTask();
-			return;
-		}
+        // Incoming file
+        $file = Request::getArray('upload', '', 'files');
+        if (!$file['name']) {
+            $this->setError(Lang::txt('COM_COURSES_ERROR_NO_FILE_FOUND'));
+            $this->displayTask();
+            return;
+        }
 
-		// Make the filename safe
-		$ext = Filesystem::extension($file['name']);
-		if (strtolower($ext) != 'pdf')
-		{
-			$this->setError(Lang::txt('COM_COURSES_ERROR_INVALID_FILE_TYPE'));
-			$this->displayTask();
-			return;
-		}
+        // Make the filename safe
+        $ext = Filesystem::extension($file['name']);
+        if (strtolower($ext) != 'pdf') {
+            $this->setError(Lang::txt('COM_COURSES_ERROR_INVALID_FILE_TYPE'));
+            $this->displayTask();
+            return;
+        }
 
-		$file['name'] = $model->get('name');
+        $file['name'] = $model->get('name');
 
-		// Perform the upload
-		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
-		{
-			$this->setError(Lang::txt('COM_COURSES_ERROR_UPLOADING') . $path . DS . $file['name']);
-		}
+        // Perform the upload
+        if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name'])) {
+            $this->setError(Lang::txt('COM_COURSES_ERROR_UPLOADING') . $path . DS . $file['name']);
+        }
 
-		if (!$model->renderPageImages())
-		{
-			$this->setError($model->getError());
-		}
+        if (!$model->renderPageImages()) {
+            $this->setError($model->getError());
+        }
 
-		// Push through to the media view
-		$this->displayTask();
-	}
+        // Push through to the media view
+        $this->displayTask();
+    }
 
-	/**
-	 * Removes a course certificate
-	 *
-	 * @return	void
-	 */
-	public function removeTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Removes a course certificate
+     *
+     * @return  void
+     */
+    public function removeTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		$cert_id   = Request::getInt('certificate', 0, 'post');
-		$course_id = Request::getInt('course', 0, 'post');
-		if (!$course_id)
-		{
-			$this->setError(Lang::txt('COURSES_NO_LISTDIR'));
-			$this->displayTask();
-			return;
-		}
+        $cert_id   = Request::getInt('certificate', 0, 'post');
+        $course_id = Request::getInt('course', 0, 'post');
+        if (!$course_id) {
+            $this->setError(Lang::txt('COURSES_NO_LISTDIR'));
+            $this->displayTask();
+            return;
+        }
 
-		$model = Certificate::getInstance($cert_id, $course_id);
-		if ($model->exists())
-		{
-			$model->set('properties', '');
-			$model->store();
-		}
+        $model = Certificate::getInstance($cert_id, $course_id);
+        if ($model->exists()) {
+            $model->set('properties', '');
+            $model->store();
+        }
 
-		// Build the path
-		$path = $model->path('system');
+        // Build the path
+        $path = $model->path('system');
 
-		// Make sure the upload path exist
-		if (is_dir($path))
-		{
-			if (!Filesystem::emptyDirectory($path))
-			{
-				$this->setError(Lang::txt('COM_COURSES_UNABLE_TO_DELETE_FILE'));
-			}
-		}
+        // Make sure the upload path exist
+        if (is_dir($path)) {
+            if (!Filesystem::emptyDirectory($path)) {
+                $this->setError(Lang::txt('COM_COURSES_UNABLE_TO_DELETE_FILE'));
+            }
+        }
 
-		// Redirect back to the courses page
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=courses', false),
-			Lang::txt('COM_COURSES_ITEM_REMOVED')
-		);
-	}
+        // Redirect back to the courses page
+        App::redirect(
+            Route::url('index.php?option=' . $this->_option . '&controller=courses', false),
+            Lang::txt('COM_COURSES_ITEM_REMOVED')
+        );
+    }
 
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return	void
-	 */
-	public function cancelTask()
-	{
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=courses', false)
-		);
-	}
+    /**
+     * Cancel a task (redirects to default task)
+     *
+     * @return  void
+     */
+    public function cancelTask()
+    {
+        App::redirect(
+            Route::url('index.php?option=' . $this->_option . '&controller=courses', false)
+        );
+    }
 }

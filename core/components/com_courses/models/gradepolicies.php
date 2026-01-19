@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,55 +21,53 @@ require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' 
  */
 class GradePolicies extends Base
 {
-	/**
-	 * Table class name
-	 *
-	 * @var string
-	 */
-	protected $_tbl_name = '\\Components\\Courses\\Tables\\GradePolicies';
+    /**
+     * Table class name
+     *
+     * @var string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_tbl_name = '\\Components\\Courses\\Tables\\GradePolicies';
 
-	/**
-	 * Object scope
-	 *
-	 * @var string
-	 */
-	protected $_scope = 'gradepolicies';
+    /**
+     * Object scope
+     *
+     * @var string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_scope = 'gradepolicies';
 
-	/**
-	 * Constructor
-	 *
-	 * @param      integer $id  Resource ID
-	 * @param      integer $sid Section ID
-	 * @return     void
-	 */
-	public function __construct($oid, $sid=null)
-	{
-		$this->_db = \App::get('db');
+    /**
+     * Constructor
+     *
+     * @param      integer $id  Resource ID
+     * @param      integer $sid Section ID
+     * @return     void
+     */
+    public function __construct($oid, $sid = null)
+    {
+        $this->_db = \App::get('db');
 
-		$this->_tbl = new $this->_tbl_name($this->_db);
+        $this->_tbl = new $this->_tbl_name($this->_db);
 
-		if (is_numeric($oid))
-		{
-			// Check if this is the default section
-			if (!is_null($sid))
-			{
-				$section = new Section($sid);
+        if (is_numeric($oid)) {
+            // Check if this is the default section
+            if (!is_null($sid)) {
+                $section = new Section($sid);
 
-				if (!$section->get('is_default'))
-				{
-					$config  = Component::params('com_courses');
-					$canEdit = $config->get('section_grade_policy', true);
+                if (!$section->get('is_default')) {
+                    $config  = Component::params('com_courses');
+                    $canEdit = $config->get('section_grade_policy', true);
 
-					if (!$canEdit)
-					{
-						// We need to find the default section and use that grade policy
-						$offering = new Offering($section->get('offering_id'));
-						$default  = $offering->section('!!default!!');
-						$oid      = $default->get('grade_policy_id');
-					}
-				}
-			}
-			$this->_tbl->load($oid);
-		}
-	}
+                    if (!$canEdit) {
+                        // We need to find the default section and use that grade policy
+                        $offering = new Offering($section->get('offering_id'));
+                        $default  = $offering->section('!!default!!');
+                        $oid      = $default->get('grade_policy_id');
+                    }
+                }
+            }
+            $this->_tbl->load($oid);
+        }
+    }
 }

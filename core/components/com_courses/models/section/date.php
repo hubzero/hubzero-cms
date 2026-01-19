@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,17 +20,19 @@ require_once dirname(__DIR__) . DS . 'base.php';
  */
 class Date extends Base
 {
-	/**
-	 * Table class name
-	 *
-	 * @var string
-	 */
-	protected $_tbl_name = '\\Components\\Courses\\Tables\\SectionDate';
+    /**
+     * Table class name
+     *
+     * @var string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_tbl_name = '\\Components\\Courses\\Tables\\SectionDate';
 
-	/**
-	 * Object scope
-	 *
-	 * @var string
-	 */
-	protected $_scope = 'section_date';
+    /**
+     * Object scope
+     *
+     * @var string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_scope = 'section_date';
 }

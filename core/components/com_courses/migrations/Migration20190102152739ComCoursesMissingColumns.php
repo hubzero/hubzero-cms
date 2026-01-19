@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -6,9 +9,6 @@
  */
 
 use Hubzero\Content\Migration\Base;
-
-// no direct access
-defined('_HZEXEC_') or die();
 
 $componentPath = Component::path('com_courses');
 
@@ -21,122 +21,138 @@ use Components\Courses\Helpers\QueryDropColumnStatement;
 /**
  * Migration to add missing columns
  */
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20190102152739ComCoursesMissingColumns extends Base
 {
+    public static $assetsTable = '#__courses_assets';
 
-	static $assetsTable = '#__courses_assets';
-	static $assetsColumns = [
-		 ['name' => 'grade_weight', 'type' => 'varchar(255)'],
-		 ['name' => 'graded', 'type' => 'tinyint(2)'],
-		 ['name' => 'subtype', 'type' => 'varchar(255)', 'restriction' => 'NOT NULL ', 'default' => "'file'"],
-	];
-	static $offeringSectionsTable = '#__courses_offering_sections';
-	static $offeringSectionsColumns = [
-		 ['name' => 'enrollment', 'type' => 'tinyint(2)'],
-		 ['name' => 'is_default', 'type' => 'tinyint(2)', 'restriction' => 'NOT NULL ', 'default' => 0],
-	];
-	static $pagesTable = '#__courses_pages';
-	static $pagesColumns = [
-		 ['name' => 'section_id', 'type' => 'int(11)'],
-	];
+    public static $assetsColumns = [
+         ['name' => 'grade_weight', 'type' => 'varchar(255)'],
+         ['name' => 'graded', 'type' => 'tinyint(2)'],
+         ['name' => 'subtype', 'type' => 'varchar(255)', 'restriction' => 'NOT NULL ', 'default' => "'file'"],
+    ];
 
-	public function up()
-	{
-		$assetsTable = self::$assetsTable;
-		$assetsTableQuery = $this->_generateSafeAddColumns($assetsTable, self::$assetsColumns);
-		$this->_queryIfTableExists($assetsTable, $assetsTableQuery);
+    public static $offeringSectionsTable = '#__courses_offering_sections';
 
-		$offeringSectionsTable = self::$offeringSectionsTable;
-		$offeringSectionsTableQuery = $this->_generateSafeAddColumns($offeringSectionsTable, self::$offeringSectionsColumns);
-		$this->_queryIfTableExists($offeringSectionsTable, $offeringSectionsTableQuery);
+    public static $offeringSectionsColumns = [
+         ['name' => 'enrollment', 'type' => 'tinyint(2)'],
+         ['name' => 'is_default', 'type' => 'tinyint(2)', 'restriction' => 'NOT NULL ', 'default' => 0],
+    ];
 
-		$pagesTable = self::$pagesTable;
-		$pagesTableQuery = $this->_generateSafeAddColumns($pagesTable, self::$pagesColumns);
-		$this->_queryIfTableExists($pagesTable, $pagesTableQuery);
-	}
+    public static $pagesTable = '#__courses_pages';
 
-	public function down()
-	{
-		$assetsTable = self::$assetsTable;
-		$assetsTableQuery = $this->_generateSafeDropColumns($assetsTable, self::$assetsColumns);
-		$this->_queryIfTableExists($assetsTable, $assetsTableQuery);
+    public static $pagesColumns = [
+         ['name' => 'section_id', 'type' => 'int(11)'],
+    ];
 
-		$offeringSectionsTable = self::$offeringSectionsTable;
-		$offeringSectionsTableQuery = $this->_generateSafeDropColumns($offeringSectionsTable, self::$offeringSectionsColumns);
-		$this->_queryIfTableExists($offeringSectionsTable, $offeringSectionsTableQuery);
+    public function up()
+    {
+        $assetsTable = self::$assetsTable;
+        $assetsTableQuery = $this->_generateSafeAddColumns($assetsTable, self::$assetsColumns);
+        $this->_queryIfTableExists($assetsTable, $assetsTableQuery);
 
-		$pagesTable = self::$pagesTable;
-		$pagesTableQuery = $this->_generateSafeDropColumns($pagesTable, self::$pagesColumns);
-		$this->_queryIfTableExists($pagesTable, $pagesTableQuery);
-	}
+        $offeringSectionsTable = self::$offeringSectionsTable;
+        $offeringSectionsTableQuery = $this->_generateSafeAddColumns(
+            $offeringSectionsTable,
+            self::$offeringSectionsColumns
+        );
+        $this->_queryIfTableExists($offeringSectionsTable, $offeringSectionsTableQuery);
 
-	protected function _generateSafeAddColumns($table, $columns)
-	{
-		$query = $this->_generateSafeAlterTableColumnOperation(
-			$table, $columns, '_safeAddColumn'
-		);
+        $pagesTable = self::$pagesTable;
+        $pagesTableQuery = $this->_generateSafeAddColumns($pagesTable, self::$pagesColumns);
+        $this->_queryIfTableExists($pagesTable, $pagesTableQuery);
+    }
 
-		return $query;
-	}
+    public function down()
+    {
+        $assetsTable = self::$assetsTable;
+        $assetsTableQuery = $this->_generateSafeDropColumns($assetsTable, self::$assetsColumns);
+        $this->_queryIfTableExists($assetsTable, $assetsTableQuery);
 
-	protected function _safeAddColumn($table, $columnData)
-	{
-		$columnName = $columnData['name'];
-		$addColumnStatement = '';
+        $offeringSectionsTable = self::$offeringSectionsTable;
+        $offeringSectionsTableQuery = $this->_generateSafeDropColumns(
+            $offeringSectionsTable,
+            self::$offeringSectionsColumns
+        );
+        $this->_queryIfTableExists($offeringSectionsTable, $offeringSectionsTableQuery);
 
-		if (!$this->db->tableHasField($table, $columnName))
-		{
-			$addColumnStatement = (new QueryAddColumnStatement($columnData))
-				->toString();
-		}
+        $pagesTable = self::$pagesTable;
+        $pagesTableQuery = $this->_generateSafeDropColumns($pagesTable, self::$pagesColumns);
+        $this->_queryIfTableExists($pagesTable, $pagesTableQuery);
+    }
 
-		return $addColumnStatement;
-	}
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _generateSafeAddColumns($table, $columns)
+    {
+        $query = $this->_generateSafeAlterTableColumnOperation(
+            $table,
+            $columns,
+            '_safeAddColumn'
+        );
 
-	protected function _generateSafeDropColumns($table, $columns)
-	{
-		$query = $this->_generateSafeAlterTableColumnOperation(
-			$table, $columns, '_safeDropColumn'
-		);
+        return $query;
+    }
 
-		return $query;
-	}
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _safeAddColumn($table, $columnData)
+    {
+        $columnName = $columnData['name'];
+        $addColumnStatement = '';
 
-	protected function _safeDropColumn($table, $columnData)
-	{
-		$columnName = $columnData['name'];
-		$dropColumnStatement = '';
+        if (!$this->db->tableHasField($table, $columnName)) {
+            $addColumnStatement = (new QueryAddColumnStatement($columnData))
+                ->toString();
+        }
 
-		if ($this->db->tableHasField($table, $columnName))
-		{
-			$dropColumnStatement = (new QueryDropColumnStatement($columnData))
-				->toString();
-		}
+        return $addColumnStatement;
+    }
 
-		return $dropColumnStatement;
-	}
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _generateSafeDropColumns($table, $columns)
+    {
+        $query = $this->_generateSafeAlterTableColumnOperation(
+            $table,
+            $columns,
+            '_safeDropColumn'
+        );
 
-	protected function _generateSafeAlterTableColumnOperation($table, $columns, $functionName)
-	{
-		$query = "ALTER TABLE $table ";
+        return $query;
+    }
 
-		foreach ($columns as $columnData)
-		{
-			$query .= $this->$functionName($table, $columnData) . ',';
-		}
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _safeDropColumn($table, $columnData)
+    {
+        $columnName = $columnData['name'];
+        $dropColumnStatement = '';
 
-		$query = rtrim($query, ',') . ';';
+        if ($this->db->tableHasField($table, $columnName)) {
+            $dropColumnStatement = (new QueryDropColumnStatement($columnData))
+                ->toString();
+        }
 
-		return $query;
-	}
+        return $dropColumnStatement;
+    }
 
-	protected function _queryIfTableExists($tableName, $query)
-	{
-		if ($this->db->tableExists($tableName))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _generateSafeAlterTableColumnOperation($table, $columns, $functionName)
+    {
+        $query = "ALTER TABLE $table ";
 
+        foreach ($columns as $columnData) {
+            $query .= $this->$functionName($table, $columnData) . ',';
+        }
+
+        $query = rtrim($query, ',') . ';';
+
+        return $query;
+    }
+
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _queryIfTableExists($tableName, $query)
+    {
+        if ($this->db->tableExists($tableName)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

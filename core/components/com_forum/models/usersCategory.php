@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,49 +17,49 @@ use User;
  */
 class UsersCategory extends Relational
 {
-	/**
-	 * The table name
-	 *
-	 * @var  string
-	 */
-	protected $table = '#__forum_users_categories';
+    /**
+     * The table name
+     *
+     * @var  string
+     */
+    protected $table = '#__forum_users_categories';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'category_id' => 'notempty',
-		'user_id'     => 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'category_id' => 'notempty',
+        'user_id'     => 'notempty'
+    );
 
-	/**
-	 * Automatic fields to populate every time a row is created
-	 *
-	 * @var  array
-	 */
-	public $initiate = array(
-		'created'
-	);
+    /**
+     * Automatic fields to populate every time a row is created
+     *
+     * @var  array
+     */
+    public $initiate = array(
+        'created'
+    );
 
-	/**
-	 * Defines a belongs to one relationship to a category
-	 *
-	 * @return  object
-	 */
-	public function category()
-	{
-		return $this->belongsToOne('Components\Forum\Models\Category', 'category_id');
-	}
+    /**
+     * Defines a belongs to one relationship to a category
+     *
+     * @return  object
+     */
+    public function category()
+    {
+        return $this->belongsToOne('Components\Forum\Models\Category', 'category_id');
+    }
 
-	/**
-	 * Defines a belongs to one relationship to a user
-	 *
-	 * @return  object
-	 */
-	public function user()
-	{
-		return $this->belongsToOne('Hubzero\User\User', 'user_id');
-	}
+    /**
+     * Defines a belongs to one relationship to a user
+     *
+     * @return  object
+     */
+    public function user()
+    {
+        return $this->belongsToOne('Hubzero\User\User', 'user_id');
+    }
 }

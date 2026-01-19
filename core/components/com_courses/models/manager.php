@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,73 +19,66 @@ require_once __DIR__ . DS . 'member.php';
  */
 class Manager extends Member
 {
-	/**
-	 * Object scope
-	 *
-	 * @var string
-	 */
-	protected $_scope = 'manager';
+    /**
+     * Object scope
+     *
+     * @var string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_scope = 'manager';
 
-	/**
-	 * Constructor
-	 *
-	 * @param   string $uid User ID
-	 * @param   string $cid Course ID
-	 * @param   string $oid Offering ID
-	 * @param   string $sid Section ID
-	 * @return  void
-	 */
-	public function __construct($uid, $cid=0, $oid=0, $sid=0)
-	{
-		$this->_db = \App::get('db');
+    /**
+     * Constructor
+     *
+     * @param   string $uid User ID
+     * @param   string $cid Course ID
+     * @param   string $oid Offering ID
+     * @param   string $sid Section ID
+     * @return  void
+     */
+    public function __construct($uid, $cid = 0, $oid = 0, $sid = 0)
+    {
+        $this->_db = \App::get('db');
 
-		$this->_tbl = new Tables\Member($this->_db);
+        $this->_tbl = new Tables\Member($this->_db);
 
-		if (is_numeric($uid) || is_string($uid))
-		{
-			$this->_tbl->load($uid, $cid, $oid, $sid, 0);
-		}
-		else if (is_object($uid) || is_array($uid))
-		{
-			$this->bind($uid);
-		}
+        if (is_numeric($uid) || is_string($uid)) {
+            $this->_tbl->load($uid, $cid, $oid, $sid, 0);
+        } elseif (is_object($uid) || is_array($uid)) {
+            $this->bind($uid);
+        }
 
-		if (!$this->get('role_permissions'))
-		{
-			$result = new Tables\Role($this->_db);
-			if ($result->load($this->get('role_id')))
-			{
-				foreach ($result->getProperties() as $key => $property)
-				{
-					$this->_tbl->set('__role_' . $key, $property);
-				}
-			}
-		}
-	}
+        if (!$this->get('role_permissions')) {
+            $result = new Tables\Role($this->_db);
+            if ($result->load($this->get('role_id'))) {
+                foreach ($result->getProperties() as $key => $property) {
+                    $this->_tbl->set('__role_' . $key, $property);
+                }
+            }
+        }
+    }
 
-	/**
-	 * Returns a reference to a manager object
-	 *
-	 * @param   string $uid User ID
-	 * @param   string $cid Course ID
-	 * @param   string $oid Offering ID
-	 * @param   string $sid Section ID
-	 * @return  object \Components\Courses\Models\Member
-	 */
-	static function &getInstance($uid=null, $cid=0, $oid=0, $sid=0)
-	{
-		static $instances;
+    /**
+     * Returns a reference to a manager object
+     *
+     * @param   string $uid User ID
+     * @param   string $cid Course ID
+     * @param   string $oid Offering ID
+     * @param   string $sid Section ID
+     * @return  object \Components\Courses\Models\Member
+     */
+    public static function &getInstance($uid = null, $cid = 0, $oid = 0, $sid = 0)
+    {
+        static $instances;
 
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
+        if (!isset($instances)) {
+            $instances = array();
+        }
 
-		if (!isset($instances[$oid . '_' . $uid]))
-		{
-			$instances[$oid . '_' . $uid] = new self($uid, $cid, $oid, $sid);
-		}
+        if (!isset($instances[$oid . '_' . $uid])) {
+            $instances[$oid . '_' . $uid] = new self($uid, $cid, $oid, $sid);
+        }
 
-		return $instances[$oid . '_' . $uid];
-	}
+        return $instances[$oid . '_' . $uid];
+    }
 }

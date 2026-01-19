@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,7 +14,6 @@ use Components\Courses\Tables;
 use Hubzero\Config\Registry;
 use Lang;
 
-
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.group.php';
 require_once __DIR__ . DS . 'base.php';
 require_once __DIR__ . DS . 'asset.php';
@@ -23,589 +25,535 @@ require_once __DIR__ . DS . 'section' . DS . 'date.php';
  */
 class Assetgroup extends Base
 {
-	/**
-	 * Table class name
-	 *
-	 * @var string
-	 */
-	protected $_tbl_name = '\\Components\\Courses\\Tables\\AssetGroup';
+    /**
+     * Table class name
+     *
+     * @var string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_tbl_name = '\\Components\\Courses\\Tables\\AssetGroup';
 
-	/**
-	 * Object scope
-	 *
-	 * @var string
-	 */
-	protected $_scope = 'asset_group';
+    /**
+     * Object scope
+     *
+     * @var string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_scope = 'asset_group';
 
-	/**
-	 * Curent asset
-	 *
-	 * @var array
-	 */
-	private $_asset = null;
+    /**
+     * Curent asset
+     *
+     * @var array
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_asset = null;
 
-	/**
-	 * \Components\Courses\Models\Asset
-	 *
-	 * @var array
-	 */
-	private $_assets = null;
+    /**
+     * \Components\Courses\Models\Asset
+     *
+     * @var array
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_assets = null;
 
-	/**
-	 * \Components\Courses\Models\Iterator
-	 *
-	 * @var array
-	 */
-	public $children = null;
+    /**
+     * \Components\Courses\Models\Iterator
+     *
+     * @var array
+     */
+    public $children = null;
 
-	/**
-	 * \Components\Courses\Models\AssetGroup
-	 *
-	 * @var object
-	 */
-	private $_parent = null;
+    /**
+     * \Components\Courses\Models\AssetGroup
+     *
+     * @var object
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_parent = null;
 
-	/**
-	 * Container for properties
-	 *
-	 * @var array
-	 */
-	public $_siblings = null;
+    /**
+     * Container for properties
+     *
+     * @var array
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    public $_siblings = null;
 
-	/**
-	 * Registry
-	 *
-	 * @var object
-	 */
-	private $_params = null;
+    /**
+     * Registry
+     *
+     * @var object
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_params = null;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   mixed $oid Integer, array, or object
-	 * @return  void
-	 */
-	public function __construct($oid)
-	{
-		parent::__construct($oid);
+    /**
+     * Constructor
+     *
+     * @param   mixed $oid Integer, array, or object
+     * @return  void
+     */
+    public function __construct($oid)
+    {
+        parent::__construct($oid);
 
-		$this->children = new Iterator(array());
-	}
+        $this->children = new Iterator(array());
+    }
 
-	/**
-	 * Returns a property of the params
-	 *
-	 * @param   string $property The name of the property
-	 * @param   mixed  $default  The default value
-	 * @return  mixed  The value of the property
+    /**
+     * Returns a property of the params
+     *
+     * @param   string $property The name of the property
+     * @param   mixed  $default  The default value
+     * @return  mixed  The value of the property
   */
-	public function params($key, $default=null)
-	{
-		if (!($this->_params instanceof Registry))
-		{
-			$this->_params = new Registry($this->get('params'));
-		}
-		return $this->_params->get($key, $default);
-	}
+    public function params($key, $default = null)
+    {
+        if (!($this->_params instanceof Registry)) {
+            $this->_params = new Registry($this->get('params'));
+        }
+        return $this->_params->get($key, $default);
+    }
 
-	/**
-	 * Returns a property of the object or the default value if the property is not set.
-	 *
-	 * @param   string $property The name of the property
-	 * @param   mixed  $default  The default value
-	 * @return  mixed  The value of the property
+    /**
+     * Returns a property of the object or the default value if the property is not set.
+     *
+     * @param   string $property The name of the property
+     * @param   mixed  $default  The default value
+     * @return  mixed  The value of the property
   */
-	public function get($property, $default=null)
-	{
-		if (isset($this->_tbl->$property))
-		{
-			return $this->_tbl->$property;
-		}
-		else if (isset($this->_tbl->{'__' . $property}))
-		{
-			return $this->_tbl->{'__' . $property};
-		}
-		else if (in_array($property, self::$_section_keys))
-		{
-			$tbl = new Tables\SectionDate($this->_db);
-			$tbl->load($this->get('id'), 'asset_group', $this->get('section_id'));
+    public function get($property, $default = null)
+    {
+        if (isset($this->_tbl->$property)) {
+            return $this->_tbl->$property;
+        } elseif (isset($this->_tbl->{'__' . $property})) {
+            return $this->_tbl->{'__' . $property};
+        } elseif (in_array($property, self::$_section_keys)) {
+            $tbl = new Tables\SectionDate($this->_db);
+            $tbl->load($this->get('id'), 'asset_group', $this->get('section_id'));
 
-			$this->set('publish_up', $tbl->get('publish_up', ''));
-			$this->set('publish_down', $tbl->get('publish_down', ''));
+            $this->set('publish_up', $tbl->get('publish_up', ''));
+            $this->set('publish_down', $tbl->get('publish_down', ''));
 
-			return $tbl->get($property, $default);
-		}
-		return $default;
-	}
+            return $tbl->get($property, $default);
+        }
+        return $default;
+    }
 
-	/**
-	 * Get a list of child asset groups
-	 *
-	 * @param   mixed   $idx
-	 * @param   boolean $populate
-	 * @param   array   $filters
-	 * @return  array
-	 */
-	public function children($idx=null, $populate=false, $filters=array())
-	{
-		if ($populate)
-		{
-			if (!isset($filters['parent']))
-			{
-				$filters['parent'] = $this->get('id');
-			}
-			if (!isset($filters['unit_id']))
-			{
-				$filters['unit_id'] = $this->get('unit_id');
-			}
-			if (!isset($filters['section_id']))
-			{
-				$filters['section_id'] = $this->get('section_id');
-			}
+    /**
+     * Get a list of child asset groups
+     *
+     * @param   mixed   $idx
+     * @param   boolean $populate
+     * @param   array   $filters
+     * @return  array
+     */
+    public function children($idx = null, $populate = false, $filters = array())
+    {
+        if ($populate) {
+            if (!isset($filters['parent'])) {
+                $filters['parent'] = $this->get('id');
+            }
+            if (!isset($filters['unit_id'])) {
+                $filters['unit_id'] = $this->get('unit_id');
+            }
+            if (!isset($filters['section_id'])) {
+                $filters['section_id'] = $this->get('section_id');
+            }
 
-			if (($results = $this->_tbl->find(array('w' => $filters))))
-			{
-				foreach ($results as $c)
-				{
-					$this->children->add(new Assetgroup($c));
-				}
-			}
-		}
+            if (($results = $this->_tbl->find(array('w' => $filters)))) {
+                foreach ($results as $c) {
+                    $this->children->add(new Assetgroup($c));
+                }
+            }
+        }
 
-		if ($idx !== null)
-		{
-			if (is_numeric($idx))
-			{
-				if (isset($this->children[$idx]))
-				{
-					return $this->children[$idx];
-				}
-				else
-				{
-					$this->setError(Lang::txt('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
-					return false;
-				}
-			}
-			else if (is_array($idx))
-			{
-				$found = false;
-				$res = array();
-				foreach ($this->children as $child)
-				{
-					$obj = new \stdClass;
-					foreach ($idx as $property)
-					{
-						$property = strtolower(trim($property));
-						if (isset($child->$property))
-						{
-							$obj->$property = $child->$property;
-							$found = true;
-						}
-					}
-					if ($found)
-					{
-						$res[] = $obj;
-					}
-				}
-				return $res;
-			}
-			else if (is_string($idx))
-			{
-				$idx = strtolower(trim($idx));
+        if ($idx !== null) {
+            if (is_numeric($idx)) {
+                if (isset($this->children[$idx])) {
+                    return $this->children[$idx];
+                } else {
+                    $this->setError(Lang::txt('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
+                    return false;
+                }
+            } elseif (is_array($idx)) {
+                $found = false;
+                $res = array();
+                foreach ($this->children as $child) {
+                    $obj = new \stdClass();
+                    foreach ($idx as $property) {
+                        $property = strtolower(trim($property));
+                        if (isset($child->$property)) {
+                            $obj->$property = $child->$property;
+                            $found = true;
+                        }
+                    }
+                    if ($found) {
+                        $res[] = $obj;
+                    }
+                }
+                return $res;
+            } elseif (is_string($idx)) {
+                $idx = strtolower(trim($idx));
 
-				$res = array();
-				foreach ($this->children as $child)
-				{
-					if (isset($child->$idx))
-					{
-						$res[] = $child->$idx;
-					}
-				}
-				return $res;
-			}
-		}
-		return $this->children;
-	}
+                $res = array();
+                foreach ($this->children as $child) {
+                    if (isset($child->$idx)) {
+                        $res[] = $child->$idx;
+                    }
+                }
+                return $res;
+            }
+        }
+        return $this->children;
+    }
 
-	/**
-	 * Get a specific asset
-	 *
-	 * @param   integer $id Asset ID
-	 * @return  object  \Components\Courses\Models\Asset
-	 */
-	public function asset($id=null)
-	{
-		if (!isset($this->_asset)
-		 || ($id !== null && (int) $this->_asset->get('id') != (int) $id))
-		{
-			$this->_asset = null;
+    /**
+     * Get a specific asset
+     *
+     * @param   integer $id Asset ID
+     * @return  object  \Components\Courses\Models\Asset
+     */
+    public function asset($id = null)
+    {
+        if (
+            !isset($this->_asset)
+            || ($id !== null && (int) $this->_asset->get('id') != (int) $id)
+        ) {
+            $this->_asset = null;
 
-			foreach ($this->assets() as $key => $asset)
-			{
-				if ((int) $asset->get('id') == (int) $id)
-				{
-					$this->_asset = $asset;
-					break;
-				}
-			}
-		}
-		return $this->_asset;
-	}
+            foreach ($this->assets() as $key => $asset) {
+                if ((int) $asset->get('id') == (int) $id) {
+                    $this->_asset = $asset;
+                    break;
+                }
+            }
+        }
+        return $this->_asset;
+    }
 
-	/**
-	 * Get a list of assets
-	 *   Accepts an array of filters to apply to the list of assets
-	 *
-	 * @param   array  $filters Filters to apply
-	 * @return  object \Components\Courses\Models\Iterator
-	 */
-	public function assets($filters=array())
-	{
-		if (!($this->_assets instanceof Iterator))
-		{
-			if (!isset($filters['asset_scope_id']))
-			{
-				$filters['asset_scope_id'] = (int) $this->get('id');
-			}
-			if (!isset($filters['asset_scope']))
-			{
-				$filters['asset_scope']    = 'asset_group';
-			}
-			if (!isset($filters['section_id']))
-			{
-				$filters['section_id']     = (int) $this->get('section_id');
-			}
+    /**
+     * Get a list of assets
+     *   Accepts an array of filters to apply to the list of assets
+     *
+     * @param   array  $filters Filters to apply
+     * @return  object \Components\Courses\Models\Iterator
+     */
+    public function assets($filters = array())
+    {
+        if (!($this->_assets instanceof Iterator)) {
+            if (!isset($filters['asset_scope_id'])) {
+                $filters['asset_scope_id'] = (int) $this->get('id');
+            }
+            if (!isset($filters['asset_scope'])) {
+                $filters['asset_scope']    = 'asset_group';
+            }
+            if (!isset($filters['section_id'])) {
+                $filters['section_id']     = (int) $this->get('section_id');
+            }
 
-			$tbl = new Tables\Asset($this->_db);
+            $tbl = new Tables\Asset($this->_db);
 
-			if (($results = $tbl->find(array('w' => $filters))))
-			{
-				foreach ($results as $key => $result)
-				{
-					$results[$key] = new Asset($result);
+            if (($results = $tbl->find(array('w' => $filters)))) {
+                foreach ($results as $key => $result) {
+                    $results[$key] = new Asset($result);
 
-					if ($this->get('section_id'))
-					{
-						$results[$key]->set('section_id', $this->get('section_id'));
-					}
-				}
-			}
-			else
-			{
-				$results = array();
-			}
+                    if ($this->get('section_id')) {
+                        $results[$key]->set('section_id', $this->get('section_id'));
+                    }
+                }
+            } else {
+                $results = array();
+            }
 
-			$this->_assets = new Iterator($results);
-		}
+            $this->_assets = new Iterator($results);
+        }
 
-		return $this->_assets;
-	}
+        return $this->_assets;
+    }
 
-	/**
-	 * Set siblings
-	 *
-	 * @param   mixed $siblings Array or Iterator object
-	 * @return  void
-	 */
-	public function siblings(&$siblings)
-	{
-		if (!($siblings instanceof Iterator))
-		{
-			$siblings = new Iterator($siblings);
-		}
-		$this->_siblings = $siblings;
-	}
+    /**
+     * Set siblings
+     *
+     * @param   mixed $siblings Array or Iterator object
+     * @return  void
+     */
+    public function siblings(&$siblings)
+    {
+        if (!($siblings instanceof Iterator)) {
+            $siblings = new Iterator($siblings);
+        }
+        $this->_siblings = $siblings;
+    }
 
-	/**
-	 * Is the current position the first one?
-	 *
-	 * @return  boolean
-	 */
-	public function isFirst()
-	{
-		if (!$this->_siblings)
-		{
-			return true;
-		}
-		return $this->_siblings->isFirst();
-	}
+    /**
+     * Is the current position the first one?
+     *
+     * @return  boolean
+     */
+    public function isFirst()
+    {
+        if (!$this->_siblings) {
+            return true;
+        }
+        return $this->_siblings->isFirst();
+    }
 
-	/**
-	 * Is the current position the last one?
-	 *
-	 * @return  boolean
-	 */
-	public function isLast()
-	{
-		if (!$this->_siblings)
-		{
-			return true;
-		}
-		return $this->_siblings->isLast();
-	}
+    /**
+     * Is the current position the last one?
+     *
+     * @return  boolean
+     */
+    public function isLast()
+    {
+        if (!$this->_siblings) {
+            return true;
+        }
+        return $this->_siblings->isLast();
+    }
 
-	/**
-	 * Return the key for the current cursor position
-	 *
-	 * @param   integer $idx
-	 * @return  mixed
-	 */
-	public function key($idx=null)
-	{
-		return $this->_siblings->key($idx);
-	}
+    /**
+     * Return the key for the current cursor position
+     *
+     * @param   integer $idx
+     * @return  mixed
+     */
+    public function key($idx = null)
+    {
+        return $this->_siblings->key($idx);
+    }
 
-	/**
-	 * Set cursor position to previous position and return array value
-	 *
-	 * @param   string $dir
-	 * @return  mixed
-	 */
-	public function sibling($dir='next')
-	{
-		if (!$this->_siblings)
-		{
-			return null;
-		}
-		$dir = strtolower(trim($dir));
-		switch ($dir)
-		{
-			case 'prev':
-			case 'next':
-				return $this->_siblings->fetch($dir);
-			break;
+    /**
+     * Set cursor position to previous position and return array value
+     *
+     * @param   string $dir
+     * @return  mixed
+     */
+    public function sibling($dir = 'next')
+    {
+        if (!$this->_siblings) {
+            return null;
+        }
+        $dir = strtolower(trim($dir));
+        switch ($dir) {
+            case 'prev':
+            case 'next':
+                return $this->_siblings->fetch($dir);
+            break;
 
-			default:
+            default:
+                break;
+        }
+        return null;
+    }
 
-			break;
-		}
-		return null;
-	}
+    /**
+     * Store changes to this entry
+     *
+     * @param   boolean $check Perform data validation check?
+     * @return  boolean False if error, True on success
+     */
+    public function store($check = true)
+    {
+        $value = parent::store($check);
 
-	/**
-	 * Store changes to this entry
-	 *
-	 * @param   boolean $check Perform data validation check?
-	 * @return  boolean False if error, True on success
-	 */
-	public function store($check=true)
-	{
-		$value = parent::store($check);
+        if ($value && $this->get('section_id')) {
+            $dt = new Tables\SectionDate($this->_db);
+            $dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
+            $dt->set('publish_up', $this->get('publish_up'));
+            $dt->set('publish_down', $this->get('publish_down'));
+            if (!$dt->store()) {
+                $this->setError($dt->getError());
+            }
+        }
 
-		if ($value && $this->get('section_id'))
-		{
-			$dt = new Tables\SectionDate($this->_db);
-			$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
-			$dt->set('publish_up', $this->get('publish_up'));
-			$dt->set('publish_down', $this->get('publish_down'));
-			if (!$dt->store())
-			{
-				$this->setError($dt->getError());
-			}
-		}
+        if ($value) {
+            $this->importPlugin('courses')
+                 ->trigger('onAssetgroupSave', array($this));
+        }
 
-		if ($value)
-		{
-			$this->importPlugin('courses')
-			     ->trigger('onAssetgroupSave', array($this));
-		}
+        return $value;
+    }
 
-		return $value;
-	}
+    /**
+     * Delete an entry and associated data
+     *
+     * @return  boolean True on success, false on error
+     */
+    public function delete()
+    {
+        // Remove all children
+        foreach ($this->children() as $child) {
+            if (!$child->delete()) {
+                $this->setError($child->getError());
+            }
+        }
+        // Remove all assets
+        foreach ($this->assets() as $asset) {
+            if (!$asset->delete()) {
+                $this->setError($asset->getError());
+            }
+        }
 
-	/**
-	 * Delete an entry and associated data
-	 *
-	 * @return  boolean True on success, false on error
-	 */
-	public function delete()
-	{
-		// Remove all children
-		foreach ($this->children() as $child)
-		{
-			if (!$child->delete())
-			{
-				$this->setError($child->getError());
-			}
-		}
-		// Remove all assets
-		foreach ($this->assets() as $asset)
-		{
-			if (!$asset->delete())
-			{
-				$this->setError($asset->getError());
-			}
-		}
+        if ($this->get('section_id')) {
+            $dt = new Tables\SectionDate($this->_db);
+            $dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
+            if ($dt->id) {
+                if (!$dt->delete()) {
+                    $this->setError($dt->getError());
+                }
+            }
+        }
 
-		if ($this->get('section_id'))
-		{
-			$dt = new Tables\SectionDate($this->_db);
-			$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
-			if ($dt->id)
-			{
-				if (!$dt->delete())
-				{
-					$this->setError($dt->getError());
-				}
-			}
-		}
+        $this->importPlugin('courses')
+             ->trigger('onAssetgroupDelete', array($this));
 
-		$this->importPlugin('courses')
-		     ->trigger('onAssetgroupDelete', array($this));
+        // Remove this record from the database and log the event
+        return parent::delete();
+    }
 
-		// Remove this record from the database and log the event
-		return parent::delete();
-	}
+    /**
+     * Copy an entry and associated data
+     *
+     * @param   integer $unit_id New unit to copy to
+     * @param   boolean $deep    Copy associated data?
+     * @return  boolean True on success, false on error
+     */
+    public function copy($unit_id = null, $deep = true)
+    {
+        // Keep a copy of the original asset group for later
+        $oldAssetGroupId     = $this->get('id');
+        $oldAssetGroupAssets = $this->assets();
 
-	/**
-	 * Copy an entry and associated data
-	 *
-	 * @param   integer $unit_id New unit to copy to
-	 * @param   boolean $deep    Copy associated data?
-	 * @return  boolean True on success, false on error
-	 */
-	public function copy($unit_id=null, $deep=true)
-	{
-		// Keep a copy of the original asset group for later
-		$oldAssetGroupId     = $this->get('id');
-		$oldAssetGroupAssets = $this->assets();
+        // Reset the ID. This will force store() to create a new record.
+        $this->set('id', 0);
+        // Are we copying to a new unit?
+        if ($unit_id) {
+            $this->set('unit_id', $unit_id);
+        } else {
+            // Copying to the same offering so we want to distinguish
+            // this unit from the one we copied from
+            $this->set('title', $this->get('title') . ' (copy)');
+            $this->set('alias', $this->get('alias') . '_copy');
+        }
+        if (!$this->store()) {
+            return false;
+        }
 
-		// Reset the ID. This will force store() to create a new record.
-		$this->set('id', 0);
-		// Are we copying to a new unit?
-		if ($unit_id)
-		{
-			$this->set('unit_id', $unit_id);
-		}
-		else
-		{
-			// Copying to the same offering so we want to distinguish
-			// this unit from the one we copied from
-			$this->set('title', $this->get('title') . ' (copy)');
-			$this->set('alias', $this->get('alias') . '_copy');
-		}
-		if (!$this->store())
-		{
-			return false;
-		}
+        if ($deep) {
+            // Copy assets (grab the assets from the original asset group)
+            if ($oldAssetGroupAssets) {
+                foreach ($oldAssetGroupAssets as $asset) {
+                    $oldAssetId = $asset->get('id');
 
-		if ($deep)
-		{
-			// Copy assets (grab the assets from the original asset group)
-			if ($oldAssetGroupAssets)
-			{
-				foreach ($oldAssetGroupAssets as $asset)
-				{
-					$oldAssetId = $asset->get('id');
+                    if (!$asset->copy()) {
+                        $this->setError($asset->getError());
+                    } else {
+                        // Copy asset associations
+                        $tbl = new Tables\AssetAssociation($this->_db);
+                        foreach (
+                            $tbl->find(array(
+                            'scope_id' => $oldAssetGroupId,
+                            'scope' => 'asset_group',
+                            'asset_id' => $oldAssetId)) as $aa
+                        ) {
+                            $tbl->bind($aa);
+                            $tbl->id = 0;
+                            $tbl->scope_id = $this->get('id');
+                            $tbl->asset_id = $asset->get('id');
+                            if (!$tbl->store()) {
+                                $this->setError($tbl->getError());
+                            }
+                        }
+                    }
+                }
+            }
 
-					if (!$asset->copy())
-					{
-						$this->setError($asset->getError());
-					}
-					else
-					{
-						// Copy asset associations
-						$tbl = new Tables\AssetAssociation($this->_db);
-						foreach ($tbl->find(array(
-							'scope_id' => $oldAssetGroupId, 
-							'scope' => 'asset_group', 
-							'asset_id' => $oldAssetId)) as $aa)
-						{
-							$tbl->bind($aa);
-							$tbl->id = 0;
-							$tbl->scope_id = $this->get('id');
-							$tbl->asset_id = $asset->get('id');
-							if (!$tbl->store())
-							{
-								$this->setError($tbl->getError());
-							}
-						}
-					}
-				}
-			}
+            // Copy asset groups (child asset groups)
+            if ($children = $this->_tbl->find(array('w' => array('parent' => $oldAssetGroupId)))) {
+                $found = array();
 
-			// Copy asset groups (child asset groups)
-			if ($children = $this->_tbl->find(array('w' => array('parent' => $oldAssetGroupId))))
-			{
-				$found = array();
+                foreach ($children as $c) {
+                    if (in_array($c->id, $found)) {
+                        continue;
+                    }
+                    $assetgroup = new Assetgroup($c);
+                    $assetgroup->set('parent', $this->get('id'));
 
-				foreach ($children as $c)
-				{
-					if (in_array($c->id, $found))
-					{
-						continue;
-					}
-					$assetgroup = new Assetgroup($c);
-					$assetgroup->set('parent', $this->get('id'));
+                    $found[] = $c->id;
 
-					$found[] = $c->id;
+                    if (!$assetgroup->copy($unit_id, $deep)) {
+                        $this->setError($assetgroup->getError());
+                    }
+                }
+            }
+        }
 
-					if (!$assetgroup->copy($unit_id, $deep))
-					{
-						$this->setError($assetgroup->getError());
-					}
-				}
-			}
-		}
+        return true;
+    }
 
-		return true;
-	}
+    public function copyToSelectedAssetGroup(
+        $courseId = null,
+        $offeringId = null,
+        $unitId = null,
+        $assetGroupParent = null,
+        $deep = true
+    ) {
 
-	public function copyToSelectedAssetGroup(
-		$courseId=null, $offeringId=null, 
-		$unitId=null, $assetGroupParent=null, $deep=true) {
-			
 
-		// Keep a copy of the original asset group for later
-		$startingAssetGroupId     = $this->get('id');
-		$startingAssetGroupAssets = $this->assets();
+        // Keep a copy of the original asset group for later
+        $startingAssetGroupId     = $this->get('id');
+        $startingAssetGroupAssets = $this->assets();
 
-		// Reset the ID. This will force store() to create a new assetgroup record.
-		$this->set('id', 0);
-		$this->set('unit_id', $unitId);
-		$this->set('parent', $assetGroupParent);
-		$this->set('title', $this->get('title') . ' (duplicate)');
-		$this->set('alias', $this->get('alias') . '_duplicate');
+        // Reset the ID. This will force store() to create a new assetgroup record.
+        $this->set('id', 0);
+        $this->set('unit_id', $unitId);
+        $this->set('parent', $assetGroupParent);
+        $this->set('title', $this->get('title') . ' (duplicate)');
+        $this->set('alias', $this->get('alias') . '_duplicate');
 
-		// Store new assetgroup
-		if (!$this->store()){
-			return false;
-		}
+        // Store new assetgroup
+        if (!$this->store()) {
+            return false;
+        }
 
-		// Need to work on the parents condition
-		// DEEP COPY 
-		if ($deep){
-			if ($startingAssetGroupAssets){
-				foreach ($startingAssetGroupAssets as $asset){
-					$startingAssetId = $asset->get('id');
+        // Need to work on the parents condition
+        // DEEP COPY
+        if ($deep) {
+            if ($startingAssetGroupAssets) {
+                foreach ($startingAssetGroupAssets as $asset) {
+                    $startingAssetId = $asset->get('id');
 
-					// Duplicate the asset, returning 'true' will copy asset association
-					if (!$asset->duplicate($courseId)){
-						$this->setError($asset->getError());
-					}
-					else {
-						// With the new duplicated asset, find the row with the previous set scope_id, scope, and asset_id to duplicate
-						$tbl = new Tables\AssetAssociation($this->_db);
-						foreach ($tbl->find(array(
-							'scope_id' => $startingAssetGroupId, 
-							'scope' => 'asset_group', 
-							'asset_id' => $startingAssetId)) as $aa) {
+                    // Duplicate the asset, returning 'true' will copy asset association
+                    if (!$asset->duplicate($courseId)) {
+                        $this->setError($asset->getError());
+                    } else {
+                        // With the new duplicated asset, find the row with the previous
+                        // scope_id, scope, and asset_id to duplicate
+                        $tbl = new Tables\AssetAssociation($this->_db);
+                        $findParams = array(
+                            'scope_id' => $startingAssetGroupId,
+                            'scope' => 'asset_group',
+                            'asset_id' => $startingAssetId
+                        );
+                        foreach (
+                            $tbl->find($findParams) as $aa
+                        ) {
+                                // Take the selected row, adjust scope_id and asset_id
+                                $tbl->bind($aa);
+                                $tbl->id = 0;
+                                $tbl->scope_id = $this->get('id');
+                                $tbl->asset_id = $asset->get('id');
+                            if (!$tbl->store()) {
+                                $this->setError($tbl->getError());
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-								// Take the selected row, adjust scope_id and asset_id
-								$tbl->bind($aa);
-								$tbl->id = 0;
-								$tbl->scope_id = $this->get('id');
-								$tbl->asset_id = $asset->get('id');
-								if (!$tbl->store()) {
-									$this->setError($tbl->getError());
-								}
-						}
-					}
-				}
-			}
-		}
-
-		return true;
-	}
-
+        return true;
+    }
 }

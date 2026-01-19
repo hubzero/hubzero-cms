@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,400 +29,402 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
  */
 class Units extends AdminController
 {
-	/**
-	 * Execute a task
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		$this->registerTask('add', 'edit');
-		$this->registerTask('apply', 'save');
-		$this->registerTask('publish', 'state');
-		$this->registerTask('unpublish', 'state');
-		$this->registerTask('orderup', 'order');
-		$this->registerTask('orderdown', 'order');
+    /**
+     * Execute a task
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        $this->registerTask('add', 'edit');
+        $this->registerTask('apply', 'save');
+        $this->registerTask('publish', 'state');
+        $this->registerTask('unpublish', 'state');
+        $this->registerTask('orderup', 'order');
+        $this->registerTask('orderdown', 'order');
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * Displays a list of courses
-	 *
-	 * @return	void
-	 */
-	public function displayTask()
-	{
-		// Incoming
-		$this->view->filters = array(
-			'offering' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.offering',
-				'offering',
-				0
-			),
-			'search' => urldecode(Request::getState(
-				$this->_option . '.' . $this->_controller . '.search',
-				'search',
-				''
-			)),
-			'state' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.state',
-				'state',
-				'-1'
-			),
-			// Filters for returning results
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
-			)
-		);
+    /**
+     * Displays a list of courses
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        // Incoming
+        $this->view->filters = array(
+            'offering' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.offering',
+                'offering',
+                0
+            ),
+            'search' => urldecode(Request::getState(
+                $this->_option . '.' . $this->_controller . '.search',
+                'search',
+                ''
+            )),
+            'state' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.state',
+                'state',
+                '-1'
+            ),
+            // Filters for returning results
+            'limit' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.limit',
+                'limit',
+                Config::get('list_limit'),
+                'int'
+            ),
+            'start' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.limitstart',
+                'limitstart',
+                0,
+                'int'
+            )
+        );
 
-		$this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
-		if (!$this->view->offering->exists())
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=courses', false)
-			);
-			return;
-		}
-		$this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
+        $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->filters['offering']);
+        if (!$this->view->offering->exists()) {
+            App::redirect(
+                Route::url('index.php?option=' . $this->_option . '&controller=courses', false)
+            );
+            return;
+        }
+        $this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
 
-		// In case limit has been changed, adjust limitstart accordingly
-		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+        // In case limit has been changed, adjust limitstart accordingly
+        $limit = $this->view->filters['limit'];
+        $start = $this->view->filters['start'];
+        $this->view->filters['start'] = ($limit != 0 ? (floor($start / $limit) * $limit) : 0);
 
-		$this->view->filters['count'] = true;
+        $this->view->filters['count'] = true;
 
-		$this->view->total = $this->view->offering->units($this->view->filters);
+        $this->view->total = $this->view->offering->units($this->view->filters);
 
-		$this->view->filters['count'] = false;
+        $this->view->filters['count'] = false;
 
-		$this->view->rows = $this->view->offering->units($this->view->filters);
+        $this->view->rows = $this->view->offering->units($this->view->filters);
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+        // Set any errors
+        foreach ($this->getErrors() as $error) {
+            $this->view->setError($error);
+        }
 
-		// Output the HTML
-		$this->view->display();
-	}
+        // Output the HTML
+        $this->view->display();
+    }
 
-	/**
-	 * Displays an edit form
-	 *
-	 * @return	void
-	 */
-	public function editTask($model=null)
-	{
-		Request::setVar('hidemainmenu', 1);
+    /**
+     * Displays an edit form
+     *
+     * @return  void
+     */
+    public function editTask($model = null)
+    {
+        Request::setVar('hidemainmenu', 1);
 
-		if (!is_object($model))
-		{
-			// Incoming
-			$id = Request::getArray('id', array(0));
+        if (!is_object($model)) {
+            // Incoming
+            $id = Request::getArray('id', array(0));
 
-			// Get the single ID we're working with
-			if (is_array($id))
-			{
-				$id = (!empty($id)) ? $id[0] : 0;
-			}
+            // Get the single ID we're working with
+            if (is_array($id)) {
+                $id = (!empty($id)) ? $id[0] : 0;
+            }
 
-			$model = \Components\Courses\Models\Unit::getInstance($id);
-		}
+            $model = \Components\Courses\Models\Unit::getInstance($id);
+        }
 
-		$this->view->row = $model;
+        $this->view->row = $model;
 
-		if (!$this->view->row->get('offering_id'))
-		{
-			$this->view->row->set('offering_id', Request::getInt('offering', 0));
-		}
+        if (!$this->view->row->get('offering_id')) {
+            $this->view->row->set('offering_id', Request::getInt('offering', 0));
+        }
 
-		$this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->row->get('offering_id'));
+        $this->view->offering = \Components\Courses\Models\Offering::getInstance($this->view->row->get('offering_id'));
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			\Notify::error($error);
-		}
+        // Set any errors
+        foreach ($this->getErrors() as $error) {
+            \Notify::error($error);
+        }
 
-		// Output the HTML
-		$this->view
-			->setLayout('edit')
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->setLayout('edit')
+            ->display();
+    }
 
-	/**
-	 * Saves data to the database
-	 *
-	 * @param     $redirect boolean Redirect after saving?
-	 * @return    void
-	 */
-	public function saveTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Saves data to the database
+     *
+     * @param     $redirect boolean Redirect after saving?
+     * @return    void
+     */
+    public function saveTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		// Incoming
-		$fields = Request::getArray('fields', array(), 'post');
+        // Incoming
+        $fields = Request::getArray('fields', array(), 'post');
 
-		// Instantiate a Course object
-		$model = \Components\Courses\Models\Unit::getInstance($fields['id']);
+        // Instantiate a Course object
+        $model = \Components\Courses\Models\Unit::getInstance($fields['id']);
 
-		if (!$model->bind($fields))
-		{
-			$this->setError($model->getError());
-			$this->editTask($model);
-			return;
-		}
+        if (!$model->bind($fields)) {
+            $this->setError($model->getError());
+            $this->editTask($model);
+            return;
+        }
 
-		if (!$model->store(true))
-		{
-			$this->setError($model->getError());
-			$this->editTask($model);
-			return;
-		}
+        if (!$model->store(true)) {
+            $this->setError($model->getError());
+            $this->editTask($model);
+            return;
+        }
 
-		if ($model->get('id') && $model->assetgroups()->total() <= 0)
-		{
-			$asset_groups = explode(',', $this->config->get('default_asset_groups', 'Lectures, Homework, Exam'));
-			array_map('trim', $asset_groups);
+        if ($model->get('id') && $model->assetgroups()->total() <= 0) {
+            $asset_groups = explode(',', $this->config->get('default_asset_groups', 'Lectures, Homework, Exam'));
+            array_map('trim', $asset_groups);
 
-			foreach ($asset_groups as $key)
-			{
-				// Get our asset group object
-				$assetGroup = new \Components\Courses\Models\Assetgroup(null);
-				$assetGroup->set('title', $key);
-				$assetGroup->set('unit_id', $model->get('id'));
-				$assetGroup->set('parent', 0);
+            foreach ($asset_groups as $key) {
+                // Get our asset group object
+                $assetGroup = new \Components\Courses\Models\Assetgroup(null);
+                $assetGroup->set('title', $key);
+                $assetGroup->set('unit_id', $model->get('id'));
+                $assetGroup->set('parent', 0);
 
-				// Save the asset group
-				if (!$assetGroup->store(true))
-				{
-					$this->setError($model->getError());
-				}
-			}
-		}
+                // Save the asset group
+                if (!$assetGroup->store(true)) {
+                    $this->setError($model->getError());
+                }
+            }
+        }
 
-		if ($this->_task == 'apply')
-		{
-			return $this->editTask($model);
-		}
+        if ($this->_task == 'apply') {
+            return $this->editTask($model);
+        }
 
-		// Output messsage and redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false),
-			Lang::txt('COM_COURSES_ITEM_SAVED')
-		);
-	}
+        // Output messsage and redirect
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&offering=' . Request::getInt('offering', 0);
+        App::redirect(
+            Route::url($url, false),
+            Lang::txt('COM_COURSES_ITEM_SAVED')
+        );
+    }
 
-	/**
-	 * Copy an entry and all associated data
-	 *
-	 * @return	void
-	 */
-	public function copyTask()
-	{
-		// Incoming
-		$id = Request::getInt('id', 0);
+    /**
+     * Copy an entry and all associated data
+     *
+     * @return  void
+     */
+    public function copyTask()
+    {
+        // Incoming
+        $id = Request::getInt('id', 0);
 
-		// Get the single ID we're working with
-		if (is_array($id))
-		{
-			$id = (!empty($id)) ? $id[0] : 0;
-		}
+        // Get the single ID we're working with
+        if (is_array($id)) {
+            $id = (!empty($id)) ? $id[0] : 0;
+        }
 
-		if (!$id)
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false),
-				Lang::txt('COM_COURSES_ERROR_NO_ID'),
-				'error'
-			);
-			return;
-		}
+        if (!$id) {
+            $url = 'index.php?option=' . $this->_option
+                . '&controller=' . $this->_controller
+                . '&offering=' . Request::getInt('offering', 0);
+            App::redirect(
+                Route::url($url, false),
+                Lang::txt('COM_COURSES_ERROR_NO_ID'),
+                'error'
+            );
+            return;
+        }
 
-		$unit = \Components\Courses\Models\Unit::getInstance($id);
-		if (!$unit->copy())
-		{
-			// Redirect back to the courses page
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $unit->get('offering_id'), false),
-				Lang::txt('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $unit->getError(),
-				'error'
-			);
-			return;
-		}
+        $unit = \Components\Courses\Models\Unit::getInstance($id);
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&offering=' . $unit->get('offering_id');
+        if (!$unit->copy()) {
+            // Redirect back to the courses page
+            App::redirect(
+                Route::url($url, false),
+                Lang::txt('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $unit->getError(),
+                'error'
+            );
+            return;
+        }
 
-		// Redirect back to the courses page
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $unit->get('offering_id'), false),
-			Lang::txt('COM_COURSES_ITEM_COPIED')
-		);
-	}
+        // Redirect back to the courses page
+        App::redirect(
+            Route::url($url, false),
+            Lang::txt('COM_COURSES_ITEM_COPIED')
+        );
+    }
 
-	/**
-	 * Removes a course and all associated information
-	 *
-	 * @return	void
-	 */
-	public function deleteTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Removes a course and all associated information
+     *
+     * @return  void
+     */
+    public function deleteTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		// Incoming
-		$ids = Request::getArray('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
+        // Incoming
+        $ids = Request::getArray('id', array());
+        $ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$num = 0;
+        $num = 0;
 
-		// Do we have any IDs?
-		if (!empty($ids))
-		{
-			foreach ($ids as $id)
-			{
-				// Load the course page
-				$model = \Components\Courses\Models\Unit::getInstance($id);
+        // Do we have any IDs?
+        if (!empty($ids)) {
+            foreach ($ids as $id) {
+                // Load the course page
+                $model = \Components\Courses\Models\Unit::getInstance($id);
 
-				// Ensure we found the course info
-				if (!$model->exists())
-				{
-					continue;
-				}
+                // Ensure we found the course info
+                if (!$model->exists()) {
+                    continue;
+                }
 
-				// Delete course
-				if (!$model->delete())
-				{
-					throw new Exception(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_REMOVE_ENTRY'), 500);
-				}
+                // Delete course
+                if (!$model->delete()) {
+                    throw new Exception(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_REMOVE_ENTRY'), 500);
+                }
 
-				// Log the course approval
-				$log = new Tables\Log($this->database);
-				$log->scope_id  = $id;
-				$log->scope     = 'course_unit';
-				$log->user_id   = User::get('id');
-				$log->timestamp = Date::toSql();
-				$log->action    = 'unit_deleted';
-				$log->actor_id  = User::get('id');
-				if (!$log->store())
-				{
-					$this->setError($log->getError());
-				}
+                // Log the course approval
+                $log = new Tables\Log($this->database);
+                $log->scope_id  = $id;
+                $log->scope     = 'course_unit';
+                $log->user_id   = User::get('id');
+                $log->timestamp = Date::toSql();
+                $log->action    = 'unit_deleted';
+                $log->actor_id  = User::get('id');
+                if (!$log->store()) {
+                    $this->setError($log->getError());
+                }
 
-				$num++;
-			}
-		}
+                $num++;
+            }
+        }
 
-		// Redirect back to the courses page
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false),
-			Lang::txt('COM_COURSES_ITEMS_REMOVED', $num)
-		);
-	}
+        // Redirect back to the courses page
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&offering=' . Request::getInt('offering', 0);
+        App::redirect(
+            Route::url($url, false),
+            Lang::txt('COM_COURSES_ITEMS_REMOVED', $num)
+        );
+    }
 
-	/**
-	 * Set the state of an entry
-	 *
-	 * @return  void
-	 */
-	public function stateTask()
-	{
-		$state = $this->_task == 'publish' ? 1 : 0;
+    /**
+     * Set the state of an entry
+     *
+     * @return  void
+     */
+    public function stateTask()
+    {
+        $state = $this->_task == 'publish' ? 1 : 0;
 
-		// Incoming
-		$ids = Request::getArray('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
+        // Incoming
+        $ids = Request::getArray('id', array());
+        $ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Check for an ID
-		if (count($ids) < 1)
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false),
-				($state == 1 ? Lang::txt('COM_COURSES_SELECT_PUBLISH') : Lang::txt('COM_COURSES_SELECT_UNPUBLISH')),
-				'error'
-			);
-			return;
-		}
+        // Check for an ID
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&offering=' . Request::getInt('offering', 0);
+        if (count($ids) < 1) {
+            $msg = $state == 1
+                ? Lang::txt('COM_COURSES_SELECT_PUBLISH')
+                : Lang::txt('COM_COURSES_SELECT_UNPUBLISH');
+            App::redirect(
+                Route::url($url, false),
+                $msg,
+                'error'
+            );
+            return;
+        }
 
-		// Update record(s)
-		foreach ($ids as $id)
-		{
-			// Updating a category
-			$row = new \Components\Courses\Models\Unit($id);
-			$row->set('state', $state);
-			$row->store();
-		}
+        // Update record(s)
+        foreach ($ids as $id) {
+            // Updating a category
+            $row = new \Components\Courses\Models\Unit($id);
+            $row->set('state', $state);
+            $row->store();
+        }
 
-		// Set message
-		switch ($state)
-		{
-			case '-1':
-				$message = Lang::txt('COM_COURSES_ARCHIVED', count($ids));
-			break;
-			case '1':
-				$message = Lang::txt('COM_COURSES_PUBLISHED', count($ids));
-			break;
-			case '0':
-				$message = Lang::txt('COM_COURSES_UNPUBLISHED', count($ids));
-			break;
-		}
+        // Set message
+        switch ($state) {
+            case '-1':
+                $message = Lang::txt('COM_COURSES_ARCHIVED', count($ids));
+                break;
+            case '1':
+                $message = Lang::txt('COM_COURSES_PUBLISHED', count($ids));
+                break;
+            case '0':
+                $message = Lang::txt('COM_COURSES_UNPUBLISHED', count($ids));
+                break;
+        }
 
-		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false),
-			$message
-		);
-	}
+        // Set the redirect
+        App::redirect(
+            Route::url($url, false),
+            $message
+        );
+    }
 
-	/**
-	 * Reorder entries
-	 *
-	 * @return  void
-	 */
-	public function orderTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Reorder entries
+     *
+     * @return  void
+     */
+    public function orderTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		$id = Request::getArray('id', array(0), 'post');
-		\Hubzero\Utility\Arr::toInteger($id, array(0));
+        $id = Request::getArray('id', array(0), 'post');
+        \Hubzero\Utility\Arr::toInteger($id, array(0));
 
-		$uid = $id[0];
-		$inc = ($this->_task == 'orderup' ? -1 : 1);
+        $uid = $id[0];
+        $inc = ($this->_task == 'orderup' ? -1 : 1);
 
-		$row = new Tables\Unit($this->database);
-		$row->load($uid);
-		$row->move($inc, 'offering_id=' . $this->database->Quote($row->offering_id));
+        $row = new Tables\Unit($this->database);
+        $row->load($uid);
+        $row->move($inc, 'offering_id=' . $this->database->Quote($row->offering_id));
 
-		$offering = \Components\Courses\Models\Offering::getInstance(Request::getInt('offering', 0));
-		foreach ($offering->units() as $unit)
-		{
-			$unit->store();
-		}
+        $offering = \Components\Courses\Models\Offering::getInstance(Request::getInt('offering', 0));
+        foreach ($offering->units() as $unit) {
+            $unit->store();
+        }
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false)
-		);
-	}
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&offering=' . Request::getInt('offering', 0);
+        App::redirect(
+            Route::url($url, false)
+        );
+    }
 
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false)
-		);
-	}
+    /**
+     * Cancel a task (redirects to default task)
+     *
+     * @return  void
+     */
+    public function cancelTask()
+    {
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&offering=' . Request::getInt('offering', 0);
+        App::redirect(
+            Route::url($url, false)
+        );
+    }
 }

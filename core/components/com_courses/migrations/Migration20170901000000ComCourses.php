@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,22 +8,19 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for installing courses tables
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComCourses extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__courses'))
-		{
-			$query = "CREATE TABLE `#__courses` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__courses')) {
+            $query = "CREATE TABLE `#__courses` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `alias` varchar(255) NOT NULL DEFAULT '',
 			  `group_id` int(11) NOT NULL DEFAULT '0',
@@ -42,13 +40,12 @@ class Migration20170901000000ComCourses extends Base
 			  FULLTEXT KEY `ftidx_alias_title_blurb` (`alias`,`title`,`blurb`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_offerings'))
-		{
-			$query = "CREATE TABLE `#__courses_offerings` (
+        if (!$this->db->tableExists('#__courses_offerings')) {
+            $query = "CREATE TABLE `#__courses_offerings` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `course_id` int(11) NOT NULL DEFAULT '0',
 			  `alias` varchar(255) NOT NULL DEFAULT '',
@@ -66,13 +63,12 @@ class Migration20170901000000ComCourses extends Base
 			  KEY `idx_created_by` (`created_by`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_offering_sections'))
-		{
-			$query = "CREATE TABLE `#__courses_offering_sections` (
+        if (!$this->db->tableExists('#__courses_offering_sections')) {
+            $query = "CREATE TABLE `#__courses_offering_sections` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `offering_id` int(11) NOT NULL DEFAULT '0',
 			  `is_default` tinyint(2) NOT NULL DEFAULT '0',
@@ -94,13 +90,12 @@ class Migration20170901000000ComCourses extends Base
 			  KEY `idx_state` (`state`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_offering_section_dates'))
-		{
-			$query = "CREATE TABLE `#__courses_offering_section_dates` (
+        if (!$this->db->tableExists('#__courses_offering_section_dates')) {
+            $query = "CREATE TABLE `#__courses_offering_section_dates` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `section_id` int(11) NOT NULL DEFAULT '0',
 			  `scope` varchar(150) NOT NULL DEFAULT '',
@@ -114,13 +109,12 @@ class Migration20170901000000ComCourses extends Base
 			  KEY `idx_scope_id` (`scope_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_offering_section_codes'))
-		{
-			$query = "CREATE TABLE `#__courses_offering_section_codes` (
+        if (!$this->db->tableExists('#__courses_offering_section_codes')) {
+            $query = "CREATE TABLE `#__courses_offering_section_codes` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `section_id` int(11) NOT NULL DEFAULT '0',
 			  `code` varchar(10) NOT NULL DEFAULT '',
@@ -132,13 +126,12 @@ class Migration20170901000000ComCourses extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_offering_section_badges'))
-		{
-			$query = "CREATE TABLE `#__courses_offering_section_badges` (
+        if (!$this->db->tableExists('#__courses_offering_section_badges')) {
+            $query = "CREATE TABLE `#__courses_offering_section_badges` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `section_id` int(11) NOT NULL,
 			  `published` int(1) NOT NULL DEFAULT '0',
@@ -149,26 +142,24 @@ class Migration20170901000000ComCourses extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_offering_section_badge_criteria'))
-		{
-			$query = "CREATE TABLE `#__courses_offering_section_badge_criteria` (
+        if (!$this->db->tableExists('#__courses_offering_section_badge_criteria')) {
+            $query = "CREATE TABLE `#__courses_offering_section_badge_criteria` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `text` text NOT NULL,
 			  `section_badge_id` int(11) NOT NULL,
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_units'))
-		{
-			$query = "CREATE TABLE `#__courses_units` (
+        if (!$this->db->tableExists('#__courses_units')) {
+            $query = "CREATE TABLE `#__courses_units` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `offering_id` int(11) NOT NULL DEFAULT '0',
 			  `alias` varchar(250) NOT NULL,
@@ -182,13 +173,12 @@ class Migration20170901000000ComCourses extends Base
 			  KEY `idx_offering_id` (`offering_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_announcements'))
-		{
-			$query = "CREATE TABLE `#__courses_announcements` (
+        if (!$this->db->tableExists('#__courses_announcements')) {
+            $query = "CREATE TABLE `#__courses_announcements` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `offering_id` int(11) NOT NULL DEFAULT '0',
 			  `content` text,
@@ -208,13 +198,12 @@ class Migration20170901000000ComCourses extends Base
 			  KEY `idx_priority` (`priority`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_assets'))
-		{
-			$query = "CREATE TABLE `#__courses_assets` (
+        if (!$this->db->tableExists('#__courses_assets')) {
+            $query = "CREATE TABLE `#__courses_assets` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `title` varchar(255) NOT NULL DEFAULT '',
 			  `content` mediumtext,
@@ -233,13 +222,12 @@ class Migration20170901000000ComCourses extends Base
 			  KEY `idx_created_by` (`created_by`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_asset_views'))
-		{
-			$query = "CREATE TABLE `#__courses_asset_views` (
+        if (!$this->db->tableExists('#__courses_asset_views')) {
+            $query = "CREATE TABLE `#__courses_asset_views` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `asset_id` int(11) NOT NULL,
 			  `course_id` int(11) DEFAULT NULL,
@@ -253,13 +241,12 @@ class Migration20170901000000ComCourses extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_asset_unity'))
-		{
-			$query = "CREATE TABLE `#__courses_asset_unity` (
+        if (!$this->db->tableExists('#__courses_asset_unity')) {
+            $query = "CREATE TABLE `#__courses_asset_unity` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `member_id` int(11) NOT NULL,
 			  `asset_id` int(11) NOT NULL,
@@ -269,13 +256,12 @@ class Migration20170901000000ComCourses extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_asset_groups'))
-		{
-			$query = "CREATE TABLE `#__courses_asset_groups` (
+        if (!$this->db->tableExists('#__courses_asset_groups')) {
+            $query = "CREATE TABLE `#__courses_asset_groups` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `unit_id` int(11) NOT NULL DEFAULT '0',
 			  `alias` varchar(250) NOT NULL,
@@ -292,39 +278,36 @@ class Migration20170901000000ComCourses extends Base
 			  KEY `idx_created_by` (`created_by`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_asset_group_types'))
-		{
-			$query = "CREATE TABLE `#__courses_asset_group_types` (
+        if (!$this->db->tableExists('#__courses_asset_group_types')) {
+            $query = "CREATE TABLE `#__courses_asset_group_types` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `alias` varchar(200) NOT NULL DEFAULT '',
 			  `type` varchar(255) NOT NULL DEFAULT '',
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_certificates'))
-		{
-			$query = "CREATE TABLE `#__courses_certificates` (
+        if (!$this->db->tableExists('#__courses_certificates')) {
+            $query = "CREATE TABLE `#__courses_certificates` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `properties` text,
 			  `course_id` int(11) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_log'))
-		{
-			$query = "CREATE TABLE `#__courses_log` (
+        if (!$this->db->tableExists('#__courses_log')) {
+            $query = "CREATE TABLE `#__courses_log` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `scope_id` int(11) NOT NULL DEFAULT '0',
 			  `scope` varchar(100) NOT NULL DEFAULT '',
@@ -336,13 +319,12 @@ class Migration20170901000000ComCourses extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_grade_book'))
-		{
-			$query = "CREATE TABLE `#__courses_grade_book` (
+        if (!$this->db->tableExists('#__courses_grade_book')) {
+            $query = "CREATE TABLE `#__courses_grade_book` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `member_id` int(11) NOT NULL,
 			  `score` decimal(5,2) DEFAULT NULL,
@@ -356,13 +338,12 @@ class Migration20170901000000ComCourses extends Base
 			  UNIQUE KEY `alternate_key` (`member_id`,`scope`,`scope_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_grade_policies'))
-		{
-			$query = "CREATE TABLE `#__courses_grade_policies` (
+        if (!$this->db->tableExists('#__courses_grade_policies')) {
+            $query = "CREATE TABLE `#__courses_grade_policies` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `description` mediumtext,
 			  `threshold` decimal(3,2) DEFAULT NULL,
@@ -372,13 +353,12 @@ class Migration20170901000000ComCourses extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_members'))
-		{
-			$query = "CREATE TABLE `#__courses_members` (
+        if (!$this->db->tableExists('#__courses_members')) {
+            $query = "CREATE TABLE `#__courses_members` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `user_id` int(11) NOT NULL DEFAULT '0',
 			  `course_id` int(11) NOT NULL DEFAULT '0',
@@ -397,13 +377,12 @@ class Migration20170901000000ComCourses extends Base
 			  KEY `idx_section_id` (`section_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_member_badges'))
-		{
-			$query = "CREATE TABLE `#__courses_member_badges` (
+        if (!$this->db->tableExists('#__courses_member_badges')) {
+            $query = "CREATE TABLE `#__courses_member_badges` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `member_id` int(11) NOT NULL,
 			  `section_badge_id` int(11) NOT NULL,
@@ -417,13 +396,12 @@ class Migration20170901000000ComCourses extends Base
 			  UNIQUE KEY `uidx_member_id` (`member_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_roles'))
-		{
-			$query = "CREATE TABLE `#__courses_roles` (
+        if (!$this->db->tableExists('#__courses_roles')) {
+            $query = "CREATE TABLE `#__courses_roles` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `offering_id` int(11) NOT NULL DEFAULT '0',
 			  `alias` varchar(150) NOT NULL,
@@ -433,13 +411,12 @@ class Migration20170901000000ComCourses extends Base
 			  KEY `idx_offering_id` (`offering_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_pages'))
-		{
-			$query = "CREATE TABLE `#__courses_pages` (
+        if (!$this->db->tableExists('#__courses_pages')) {
+            $query = "CREATE TABLE `#__courses_pages` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `course_id` int(11) NOT NULL DEFAULT '0',
 			  `offering_id` varchar(100) NOT NULL DEFAULT '0',
@@ -454,13 +431,12 @@ class Migration20170901000000ComCourses extends Base
 			  KEY `idx_offering_id` (`offering_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_page_hits'))
-		{
-			$query = "CREATE TABLE `#__courses_page_hits` (
+        if (!$this->db->tableExists('#__courses_page_hits')) {
+            $query = "CREATE TABLE `#__courses_page_hits` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `offering_id` int(11) NOT NULL DEFAULT '0',
 			  `page_id` int(11) NOT NULL DEFAULT '0',
@@ -473,13 +449,12 @@ class Migration20170901000000ComCourses extends Base
 			  KEY `idx_user_id` (`user_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_prerequisites'))
-		{
-			$query = "CREATE TABLE `#__courses_prerequisites` (
+        if (!$this->db->tableExists('#__courses_prerequisites')) {
+            $query = "CREATE TABLE `#__courses_prerequisites` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `section_id` int(11) NOT NULL DEFAULT '0',
 			  `item_scope` varchar(255) NOT NULL DEFAULT 'asset',
@@ -489,26 +464,24 @@ class Migration20170901000000ComCourses extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_progress_factors'))
-		{
-			$query = "CREATE TABLE `#__courses_progress_factors` (
+        if (!$this->db->tableExists('#__courses_progress_factors')) {
+            $query = "CREATE TABLE `#__courses_progress_factors` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `section_id` int(11) NOT NULL,
 			  `asset_id` int(11) NOT NULL,
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_forms'))
-		{
-			$query = "CREATE TABLE `#__courses_forms` (
+        if (!$this->db->tableExists('#__courses_forms')) {
+            $query = "CREATE TABLE `#__courses_forms` (
 			  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			  `title` text,
 			  `active` tinyint(4) NOT NULL DEFAULT '1',
@@ -517,13 +490,12 @@ class Migration20170901000000ComCourses extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_form_responses'))
-		{
-			$query = "CREATE TABLE `#__courses_form_responses` (
+        if (!$this->db->tableExists('#__courses_form_responses')) {
+            $query = "CREATE TABLE `#__courses_form_responses` (
 			  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			  `respondent_id` int(11) NOT NULL,
 			  `question_id` int(11) NOT NULL,
@@ -534,13 +506,12 @@ class Migration20170901000000ComCourses extends Base
 			  KEY `idx_answer_id` (`answer_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_form_respondents'))
-		{
-			$query = "CREATE TABLE `#__courses_form_respondents` (
+        if (!$this->db->tableExists('#__courses_form_respondents')) {
+            $query = "CREATE TABLE `#__courses_form_respondents` (
 			  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			  `deployment_id` int(11) NOT NULL,
 			  `member_id` int(11) NOT NULL,
@@ -552,13 +523,12 @@ class Migration20170901000000ComCourses extends Base
 			  KEY `idx_deployment_id` (`deployment_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_form_respondent_progress'))
-		{
-			$query = "CREATE TABLE `#__courses_form_respondent_progress` (
+        if (!$this->db->tableExists('#__courses_form_respondent_progress')) {
+            $query = "CREATE TABLE `#__courses_form_respondent_progress` (
 			  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			  `respondent_id` int(11) NOT NULL,
 			  `question_id` int(11) NOT NULL,
@@ -568,13 +538,12 @@ class Migration20170901000000ComCourses extends Base
 			  UNIQUE KEY `uidx_respondent_id_question_id` (`respondent_id`,`question_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_form_questions'))
-		{
-			$query = "CREATE TABLE `#__courses_form_questions` (
+        if (!$this->db->tableExists('#__courses_form_questions')) {
+            $query = "CREATE TABLE `#__courses_form_questions` (
 			  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			  `page` int(11) NOT NULL,
 			  `version` int(11) NOT NULL,
@@ -587,13 +556,12 @@ class Migration20170901000000ComCourses extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_form_deployments'))
-		{
-			$query = "CREATE TABLE `#__courses_form_deployments` (
+        if (!$this->db->tableExists('#__courses_form_deployments')) {
+            $query = "CREATE TABLE `#__courses_form_deployments` (
 			  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			  `form_id` int(11) NOT NULL,
 			  `start_time` timestamp NULL DEFAULT NULL,
@@ -608,13 +576,12 @@ class Migration20170901000000ComCourses extends Base
 			  UNIQUE KEY `idx_crumb` (`crumb`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_form_answers'))
-		{
-			$query = "CREATE TABLE `#__courses_form_answers` (
+        if (!$this->db->tableExists('#__courses_form_answers')) {
+            $query = "CREATE TABLE `#__courses_form_answers` (
 			  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			  `correct` tinyint(4) NOT NULL,
 			  `left_dist` int(11) NOT NULL,
@@ -624,239 +591,207 @@ class Migration20170901000000ComCourses extends Base
 			  KEY `idx_question_id` (`question_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__courses'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__courses')) {
+            $query = "DROP TABLE IF EXISTS `#__courses`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_offerings'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_offerings`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_offerings')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_offerings`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_offering_sections'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_offering_sections`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_offering_sections')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_offering_sections`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_offering_section_dates'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_offering_section_dates`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_offering_section_dates')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_offering_section_dates`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_offering_section_codes'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_offering_section_codes`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_offering_section_codes')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_offering_section_codes`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_offering_section_badges'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_offering_section_badges`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_offering_section_badges')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_offering_section_badges`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_offering_section_badge_criterias'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_offering_section_badge_criteria`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_offering_section_badge_criterias')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_offering_section_badge_criteria`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_units'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_units`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_units')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_units`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_announcements'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_announcements`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_announcements')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_announcements`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_assets'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_assets`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_assets')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_assets`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_asset_views'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_asset_views`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_asset_views')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_asset_views`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_asset_unity'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_asset_unity`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_asset_unity')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_asset_unity`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_asset_groups'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_asset_groups`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_asset_groups')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_asset_groups`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_asset_group_types'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_asset_group_types`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_asset_group_types')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_asset_group_types`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_certificates'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_certificates`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_certificates')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_certificates`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_log'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_log`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_log')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_log`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_grade_book'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_grade_book`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_grade_book')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_grade_book`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_grade_policies'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_grade_policies`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_grade_policies')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_grade_policies`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_members'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_members`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_members')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_members`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_member_badges'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_member_badges`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_member_badges')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_member_badges`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_roles'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_roles`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_roles')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_roles`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_pages'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_pages`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_pages')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_pages`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_page_hits'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_page_hits`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_page_hits')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_page_hits`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_prerequisites'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_prerequisites`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_prerequisites')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_prerequisites`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_progress_factors'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_progress_factors`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_progress_factors')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_progress_factors`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
 
-		if ($this->db->tableExists('#__courses_forms'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_forms`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_forms')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_forms`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_form_responses'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_form_responses`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_form_responses')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_form_responses`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_form_respondents'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_form_respondents`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_form_respondents')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_form_respondents`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_form_respondent_progress'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_form_respondent_progress`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_form_respondent_progress')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_form_respondent_progress`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_form_questions'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_form_questions`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_form_questions')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_form_questions`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_form_deployments'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_form_deployments`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_form_deployments')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_form_deployments`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_form_answers'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__courses_form_answers`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__courses_form_answers')) {
+            $query = "DROP TABLE IF EXISTS `#__courses_form_answers`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

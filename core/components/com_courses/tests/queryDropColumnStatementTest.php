@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,16 +19,14 @@ use Components\Courses\Helpers\QueryDropColumnStatement;
 
 class QueryDropColumnStatementTest extends Basic
 {
+    public function testToStringReturnsCorrectStringWhenNameAndTypeProvided()
+    {
+        $columnData = ['name' => 'test'];
+        $dropColumnStatement = new QueryDropColumnStatement($columnData);
+        $expectedStatement = 'DROP COLUMN test';
 
-	public function testToStringReturnsCorrectStringWhenNameAndTypeProvided()
-	{
-		$columnData = ['name' => 'test'];
-		$dropColumnStatement = new QueryDropColumnStatement($columnData);
-		$expectedStatement = 'DROP COLUMN test';
+        $actualStatement = $dropColumnStatement->toString();
 
-		$actualStatement = $dropColumnStatement->toString();
-
-		$this->assertEquals($expectedStatement, $actualStatement);
-	}
-
+        $this->assertEquals($expectedStatement, $actualStatement);
+    }
 }

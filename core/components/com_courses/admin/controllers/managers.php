@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,220 +20,194 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
  */
 class Managers extends AdminController
 {
-	/**
-	 * Short description for 'addmanager'
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Short description for 'addmanager'
+     *
+     * @return  void
+     */
+    public function addTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		// Incoming member ID
-		$id = Request::getInt('id', 0);
-		if (!$id)
-		{
-			$this->setError(Lang::txt('COM_COURSES_ERROR_NO_ID'));
-			$this->displayTask();
-			return;
-		}
+        // Incoming member ID
+        $id = Request::getInt('id', 0);
+        if (!$id) {
+            $this->setError(Lang::txt('COM_COURSES_ERROR_NO_ID'));
+            $this->displayTask();
+            return;
+        }
 
-		// Load the profile
-		$course = \Components\Courses\Models\Course::getInstance($id);
+        // Load the profile
+        $course = \Components\Courses\Models\Course::getInstance($id);
 
-		$managers = $course->managers(); //get('managers');
+        $managers = $course->managers(); //get('managers');
 
-		// Incoming host
-		$m = Request::getString('usernames', '', 'post');
+        // Incoming host
+        $m = Request::getString('usernames', '', 'post');
 
-		$mbrs = explode(',', $m);
+        $mbrs = explode(',', $m);
 
-		$users = array();
-		foreach ($mbrs as $mbr)
-		{
-			// Retrieve user's account info
-			$mbr = trim($mbr);
-			// User ID
-			if (is_numeric($mbr))
-			{
-				// Make sure the user exists
-				$user = User::getInstance($mbr);
-				if (is_object($user) && $user->get('username'))
-				{
-					$uid = $mbr;
-				}
-			}
-			// Username
-			else
-			{
-				$uid = \Hubzero\User\User::oneByUsername($mbr)->get('id');
-			}
+        $users = array();
+        foreach ($mbrs as $mbr) {
+            // Retrieve user's account info
+            $mbr = trim($mbr);
+            // User ID
+            if (is_numeric($mbr)) {
+                // Make sure the user exists
+                $user = User::getInstance($mbr);
+                if (is_object($user) && $user->get('username')) {
+                    $uid = $mbr;
+                }
+            } else {
+                // Username
+                $uid = \Hubzero\User\User::oneByUsername($mbr)->get('id');
+            }
 
-			// Ensure we found an account
-			if ($uid)
-			{
-				// Loop through existing members and make sure the user isn't already a member
-				if (isset($managers[$uid]))
-				{
-					$this->setError(Lang::txt('COM_COURSES_ERROR_ALREADY_MANAGER', $mbr));
-					continue;
-				}
+            // Ensure we found an account
+            if ($uid) {
+                // Loop through existing members and make sure the user isn't already a member
+                if (isset($managers[$uid])) {
+                    $this->setError(Lang::txt('COM_COURSES_ERROR_ALREADY_MANAGER', $mbr));
+                    continue;
+                }
 
-				// They user is not already a member, so we can go ahead and add them
-				$users[] = $uid;
-			}
-			else
-			{
-				$this->setError(Lang::txt('COM_COURSES_ERROR_USER_NOTFOUND') . ' ' . $mbr);
-			}
-		}
+                // They user is not already a member, so we can go ahead and add them
+                $users[] = $uid;
+            } else {
+                $this->setError(Lang::txt('COM_COURSES_ERROR_USER_NOTFOUND') . ' ' . $mbr);
+            }
+        }
 
-		// Add users
-		$course->add($users, Request::getInt('role', 0));
+        // Add users
+        $course->add($users, Request::getInt('role', 0));
 
-		// Push through to the hosts view
-		$this->displayTask($course);
-	}
+        // Push through to the hosts view
+        $this->displayTask($course);
+    }
 
-	/**
-	 * Remove one or more users from the course manager list
-	 *
-	 * @return  void
-	 */
-	public function removeTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Remove one or more users from the course manager list
+     *
+     * @return  void
+     */
+    public function removeTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		// Incoming member ID
-		$id = Request::getInt('id', 0);
-		if (!$id)
-		{
-			$this->setError(Lang::txt('COM_COURSES_ERROR_NO_ID'));
-			$this->displayTask();
-			return;
-		}
+        // Incoming member ID
+        $id = Request::getInt('id', 0);
+        if (!$id) {
+            $this->setError(Lang::txt('COM_COURSES_ERROR_NO_ID'));
+            $this->displayTask();
+            return;
+        }
 
-		$course = \Components\Courses\Models\Course::getInstance($id);
+        $course = \Components\Courses\Models\Course::getInstance($id);
 
-		$managers = $course->managers();
+        $managers = $course->managers();
 
-		$mbrs = Request::getArray('entries', array(0), 'post');
+        $mbrs = Request::getArray('entries', array(0), 'post');
 
-		$users = array();
-		foreach ($mbrs as $mbr)
-		{
-			if (!isset($mbr['select']))
-			{
-				continue;
-			}
+        $users = array();
+        foreach ($mbrs as $mbr) {
+            if (!isset($mbr['select'])) {
+                continue;
+            }
 
-			// Retrieve user's account info
-			$targetuser = User::getInstance($mbr['user_id']);
+            // Retrieve user's account info
+            $targetuser = User::getInstance($mbr['user_id']);
 
-			// Ensure we found an account
-			if (is_object($targetuser))
-			{
-				$uid = $targetuser->get('id');
+            // Ensure we found an account
+            if (is_object($targetuser)) {
+                $uid = $targetuser->get('id');
 
-				if (isset($managers[$uid]))
-				{
-					$users[] = $uid;
-				}
-			}
-			else
-			{
-				$this->setError(Lang::txt('COM_COURSES_ERROR_USER_NOTFOUND') . ' ' . $mbr);
-			}
-		}
+                if (isset($managers[$uid])) {
+                    $users[] = $uid;
+                }
+            } else {
+                $this->setError(Lang::txt('COM_COURSES_ERROR_USER_NOTFOUND') . ' ' . $mbr);
+            }
+        }
 
-		if (count($users) >= count($managers))
-		{
-			$this->setError(Lang::txt('COM_COURSES_ERROR_LAST_MANAGER'));
-		}
-		else
-		{
-			// Remove users from managers list
-			$course->remove($users);
-		}
+        if (count($users) >= count($managers)) {
+            $this->setError(Lang::txt('COM_COURSES_ERROR_LAST_MANAGER'));
+        } else {
+            // Remove users from managers list
+            $course->remove($users);
+        }
 
-		// Push through to the hosts view
-		$this->displayTask($course);
-	}
+        // Push through to the hosts view
+        $this->displayTask($course);
+    }
 
-	/**
-	 * Remove one or more users from the course manager list
-	 *
-	 * @return  void
-	 */
-	public function updateTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Remove one or more users from the course manager list
+     *
+     * @return  void
+     */
+    public function updateTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		// Incoming member ID
-		$id = Request::getInt('id', 0);
-		if (!$id)
-		{
-			$this->setError(Lang::txt('COM_COURSES_ERROR_NO_ID'));
-			$this->displayTask();
-			return;
-		}
+        // Incoming member ID
+        $id = Request::getInt('id', 0);
+        if (!$id) {
+            $this->setError(Lang::txt('COM_COURSES_ERROR_NO_ID'));
+            $this->displayTask();
+            return;
+        }
 
-		$model = \Components\Courses\Models\Course::getInstance($id);
+        $model = \Components\Courses\Models\Course::getInstance($id);
 
-		$entries = Request::getArray('entries', array(0), 'post');
+        $entries = Request::getArray('entries', array(0), 'post');
 
-		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'member.php';
+        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'member.php';
 
-		foreach ($entries as $key => $data)
-		{
-			// Retrieve user's account info
-			$tbl = new Tables\Member($this->database);
-			$tbl->load($data['user_id'], $data['course_id'], $data['offering_id'], $data['section_id'], 0);
-			if ($tbl->role_id == $data['role_id'])
-			{
-				continue;
-			}
-			$tbl->role_id = $data['role_id'];
-			if (!$tbl->store())
-			{
-				$this->setError($tbl->getError());
-			}
-		}
+        foreach ($entries as $key => $data) {
+            // Retrieve user's account info
+            $tbl = new Tables\Member($this->database);
+            $tbl->load($data['user_id'], $data['course_id'], $data['offering_id'], $data['section_id'], 0);
+            if ($tbl->role_id == $data['role_id']) {
+                continue;
+            }
+            $tbl->role_id = $data['role_id'];
+            if (!$tbl->store()) {
+                $this->setError($tbl->getError());
+            }
+        }
 
-		// Push through to the hosts view
-		$this->displayTask($model);
-	}
+        // Push through to the hosts view
+        $this->displayTask($model);
+    }
 
-	/**
-	 * Display a list of 'manager' for a specific course
-	 *
-	 * @param   object  $course
-	 * @return  void
-	 */
-	public function displayTask($course=null)
-	{
-		// Incoming
-		if (!$course)
-		{
-			$id = Request::getInt('id', 0, 'get');
+    /**
+     * Display a list of 'manager' for a specific course
+     *
+     * @param   object  $course
+     * @return  void
+     */
+    public function displayTask($course = null)
+    {
+        // Incoming
+        if (!$course) {
+            $id = Request::getInt('id', 0, 'get');
 
-			$course = \Components\Courses\Models\Course::getInstance($id);
-		}
+            $course = \Components\Courses\Models\Course::getInstance($id);
+        }
 
-		$this->view->course = $course;
+        $this->view->course = $course;
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
+        // Set any errors
+        foreach ($this->getErrors() as $error) {
+            $this->view->setError($error);
+        }
 
-		// Output the HTML
-		$this->view
-			->setLayout('display')
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->setLayout('display')
+            ->display();
+    }
 }

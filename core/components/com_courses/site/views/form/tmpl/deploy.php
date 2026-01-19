@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,19 +19,19 @@ $this->css('form.css')
 ?>
 
 <section class="main section courses-form">
-	<form action="<?php echo Route::url($this->base); ?>" method="post" id="deployment">
-		<?php require 'deployment_form.php'; ?>
-		<fieldset>
-			<input type="hidden" name="controller" value="form" />
-			<input type="hidden" name="task" value="createDeployment" />
-			<input type="hidden" name="formId" value="<?php echo $this->pdf->getId() ?>" />
-			<?php if ($tmpl = Request::getWord('tmpl', false)): ?>
-				<input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
-			<?php endif; ?>
-			<div class="navbar">
-				<div><a href="<?php echo Request::base(true); ?>/courses/form" id="cancel"><?php echo Lang::txt('JCANCEL'); ?></a></div>
-				<button id="submit" type="submit"><?php echo Lang::txt('COM_COURSES_CREATE_DEPLOYMENT'); ?></button>
-			</div>
-		</fieldset>
-	</form>
+    <form action="<?php echo Route::url($this->base); ?>" method="post" id="deployment">
+        <?php require 'deployment_form.php'; ?>
+        <fieldset>
+            <input type="hidden" name="controller" value="form" />
+            <input type="hidden" name="task" value="createDeployment" />
+            <input type="hidden" name="formId" value="<?php echo $this->pdf->getId() ?>" />
+            <?php if ($tmpl = Request::getWord('tmpl', false)) : ?>
+                <input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
+            <?php endif; ?>
+            <div class="navbar">
+                <div><a href="<?php echo Request::base(true); ?>/courses/form" id="cancel"><?php echo Lang::txt('JCANCEL'); ?></a></div>
+                <button id="submit" type="submit"><?php echo Lang::txt('COM_COURSES_CREATE_DEPLOYMENT'); ?></button>
+            </div>
+        </fieldset>
+    </form>
 </section>

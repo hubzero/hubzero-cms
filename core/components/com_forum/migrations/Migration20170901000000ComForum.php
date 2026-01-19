@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,22 +8,19 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for installing forum tables
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComForum extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__forum_sections'))
-		{
-			$query = "CREATE TABLE `#__forum_sections` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__forum_sections')) {
+            $query = "CREATE TABLE `#__forum_sections` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `title` varchar(255) DEFAULT NULL,
 			  `alias` varchar(255) DEFAULT NULL,
@@ -43,13 +41,12 @@ class Migration20170901000000ComForum extends Base
 			  KEY `idx_state` (`state`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__forum_categories'))
-		{
-			$query = "CREATE TABLE `#__forum_categories` (
+        if (!$this->db->tableExists('#__forum_categories')) {
+            $query = "CREATE TABLE `#__forum_categories` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `title` varchar(255) DEFAULT NULL,
 			  `alias` varchar(255) DEFAULT NULL,
@@ -78,13 +75,12 @@ class Migration20170901000000ComForum extends Base
 			  KEY `idx_scope_scope_id` (`scope`,`scope_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__forum_posts'))
-		{
-			$query = "CREATE TABLE `#__forum_posts` (
+        if (!$this->db->tableExists('#__forum_posts')) {
+            $query = "CREATE TABLE `#__forum_posts` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `category_id` int(11) NOT NULL DEFAULT '0',
 			  `title` varchar(255) DEFAULT NULL,
@@ -123,13 +119,12 @@ class Migration20170901000000ComForum extends Base
 			  FULLTEXT KEY `ftidx_comment` (`comment`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__forum_attachments'))
-		{
-			$query = "CREATE TABLE `#__forum_attachments` (
+        if (!$this->db->tableExists('#__forum_attachments')) {
+            $query = "CREATE TABLE `#__forum_attachments` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `parent` int(11) NOT NULL DEFAULT '0',
 			  `post_id` int(11) NOT NULL DEFAULT '0',
@@ -142,42 +137,38 @@ class Migration20170901000000ComForum extends Base
 			  KEY `idx_filename_post_id` (`filename`,`post_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__forum_sections'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__forum_sections`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__forum_sections')) {
+            $query = "DROP TABLE IF EXISTS `#__forum_sections`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__forum_categories'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__forum_categories`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__forum_categories')) {
+            $query = "DROP TABLE IF EXISTS `#__forum_categories`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__forum_posts'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__forum_posts`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__forum_posts')) {
+            $query = "DROP TABLE IF EXISTS `#__forum_posts`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__forum_attachments'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__forum_attachments`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__forum_attachments')) {
+            $query = "DROP TABLE IF EXISTS `#__forum_attachments`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

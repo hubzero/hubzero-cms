@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,179 +25,169 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'memberBadge.php';
 /**
  * API controller for the time component
  */
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Passportv1_0 extends base
 {
-	/**
-	 * Passport badges. Placeholder for now.
-	 *
-	 * @apiMethod POST
-	 * @apiUri    /courses/passport/badge
-	 * @apiParameter {
-	 * 		"name":        "action",
-	 * 		"description": "Badge action",
-	 * 		"type":        "string",
-	 * 		"required":    true,
-	 * 		"default":     null
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "badge_id",
-	 * 		"description": "Passport badge ID",
-	 * 		"type":        "integer",
-	 * 		"required":    true,
-	 * 		"default":     null
-	 * }
-	 * @apiParameter {
-	 * 		"name":        "user_email",
-	 * 		"description": "Email address to which the badge was asserted",
-	 * 		"type":        "string",
-	 * 		"required":    true,
-	 * 		"default":     null
-	 * }
-	 * @return    void
-	 */
-	public function badgeTask()
-	{
-		// Require authentication and authorization
-		$this->authorizeOrFail();
+    /**
+     * Passport badges. Placeholder for now.
+     *
+     * @apiMethod POST
+     * @apiUri    /courses/passport/badge
+     * @apiParameter {
+     *      "name":        "action",
+     *      "description": "Badge action",
+     *      "type":        "string",
+     *      "required":    true,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "badge_id",
+     *      "description": "Passport badge ID",
+     *      "type":        "integer",
+     *      "required":    true,
+     *      "default":     null
+     * }
+     * @apiParameter {
+     *      "name":        "user_email",
+     *      "description": "Email address to which the badge was asserted",
+     *      "type":        "string",
+     *      "required":    true,
+     *      "default":     null
+     * }
+     * @return    void
+     */
+    public function badgeTask()
+    {
+        // Require authentication and authorization
+        $this->authorizeOrFail();
 
-		$action     = Request::getString('action', '');
-		$badge_id   = Request::getString('badge_id', '');
-		$user_email = Request::getString('user_email', '');
+        $action     = Request::getString('action', '');
+        $badge_id   = Request::getString('badge_id', '');
+        $user_email = Request::getString('user_email', '');
 
-		if (empty($action))
-		{
-			App::abort(400, 'Please provide action');
-		}
-		if ($action != 'accept' && $action != 'deny')
-		{
-			App::abort(400, 'Bad action. Must be either accept or deny');
-		}
-		if (empty($badge_id))
-		{
-			App::abort(400, 'Please provide badge ID');
-		}
-		if (empty($user_email))
-		{
-			App::abort(400, 'Please provide user email');
-		}
+        if (empty($action)) {
+            App::abort(400, 'Please provide action');
+        }
+        if ($action != 'accept' && $action != 'deny') {
+            App::abort(400, 'Bad action. Must be either accept or deny');
+        }
+        if (empty($badge_id)) {
+            App::abort(400, 'Please provide badge ID');
+        }
+        if (empty($user_email)) {
+            App::abort(400, 'Please provide user email');
+        }
 
-		// Find user by email
-		$user = User::oneByEmail($user_email);
-		if (!$user->get('id'))
-		{
-			App::abort(404, 'User was not found');
-		}
+        // Find user by email
+        $user = User::oneByEmail($user_email);
+        if (!$user->get('id')) {
+            App::abort(404, 'User was not found');
+        }
 
-		$user_id = $user->get('id');
+        $user_id = $user->get('id');
 
-		// Get section from provider badge id
-		$section_badge = \Components\Courses\Models\Section\Badge::loadByProviderBadgeId($badge_id);
+        // Get section from provider badge id
+        $section_badge = \Components\Courses\Models\Section\Badge::loadByProviderBadgeId($badge_id);
 
-		// Check if there is a match
-		if (!$section_id = $section_badge->get('section_id'))
-		{
-			App::abort(400, 'No matching badge found');
-		}
+        // Check if there is a match
+        if (!$section_id = $section_badge->get('section_id')) {
+            App::abort(400, 'No matching badge found');
+        }
 
-		// Get member id via user id and section id
-		$member = \Components\Courses\Models\Member::getInstance($user_id, 0, 0, $section_id);
+        // Get member id via user id and section id
+        $member = \Components\Courses\Models\Member::getInstance($user_id, 0, 0, $section_id);
 
-		// Check if there is a match
-		if (!$member->get('id'))
-		{
-			App::abort(400, 'Matching course member not found');
-		}
+        // Check if there is a match
+        if (!$member->get('id')) {
+            App::abort(400, 'Matching course member not found');
+        }
 
-		// Now actually load the badge
-		$member_badge = \Components\Courses\Models\MemberBadge::loadByMemberId($member->get('id'));
+        // Now actually load the badge
+        $member_badge = \Components\Courses\Models\MemberBadge::loadByMemberId($member->get('id'));
 
-		// Check if there is a match
-		if (!$member_badge->get('id'))
-		{
-			App::abort(400, 'This member does not have a matching badge entry');
-		}
+        // Check if there is a match
+        if (!$member_badge->get('id')) {
+            App::abort(400, 'This member does not have a matching badge entry');
+        }
 
-		$now = Date::toSql();
+        $now = Date::toSql();
 
-		$member_badge->set('action', $action);
-		$member_badge->set('action_on', $now);
-		$member_badge->store();
+        $member_badge->set('action', $action);
+        $member_badge->set('action_on', $now);
+        $member_badge->store();
 
-		// Return message
-		$this->send('Passport data saved.');
-	}
+        // Return message
+        $this->send('Passport data saved.');
+    }
 
-	/**
-	 * Helper function to check whether or not someone is using oauth and authorized to use this call
-	 *
-	 * @return bool
-	 */
-	private function authorize_call()
-	{
-		$consumerKey = Request::getString('oauth_consumer_key', null, 'post');
+    /**
+     * Helper function to check whether or not someone is using oauth and authorized to use this call
+     *
+     * @return bool
+     */
+    private function authorizeCall()
+    {
+        $consumerKey = Request::getString('oauth_consumer_key', null, 'post');
 
-		//get the userid and attempt to load user profile
-		$userid = App::get('authn')['user_id'];
-		$user = User::getInstance($userid);
-		//make sure we have a user
-		if ($user === false)
-		{
-			//App::abort(401, 'You don\'t have permission to do this');
-		}
+        //get the userid and attempt to load user profile
+        $userid = App::get('authn')['user_id'];
+        $user = User::getInstance($userid);
+        //make sure we have a user
+        if ($user === false) {
+            //App::abort(401, 'You don\'t have permission to do this');
+        }
 
-		// Get the requested path
-		$path = Request::path();
+        // Get the requested path
+        $path = Request::path();
 
-		// Do access check
-		// @NOTE: The following assumption is made: the code check only permissions for the closest parent. Parent's parent permissions are not inherited.
+        // Do access check
+        // @NOTE: The following assumption is made: the code check only permissions
+        // for the closest parent. Parent's parent permissions are not inherited.
 
-		$db = App::get('db');
+        $db = App::get('db');
 
-		// First find the closest matching permission (closest parent, longest path).
-		$sql = 'SELECT `path` FROM `#__api_permissions`
+        // First find the closest matching permission (closest parent, longest path).
+        $sql = 'SELECT `path` FROM `#__api_permissions`
 				WHERE INSTR(' . $db->quote($path) . ', `path`) = 1
 				GROUP BY LENGTH(`path`)
 				ORDER BY LENGTH(`path`) DESC
 				LIMIT 1';
 
-		$db->setQuery($sql);
-		$db->query();
+        $db->setQuery($sql);
+        $db->query();
 
-		// Check if there is a match, if no match, no permissions set, good to go
-		if (!$db->getNumRows())
-		{
-			return true;
-		}
+        // Check if there is a match, if no match, no permissions set, good to go
+        if (!$db->getNumRows()) {
+            return true;
+        }
 
-		$permissions_path = $db->loadResult();
+        $permissions_path = $db->loadResult();
 
-		// Get all groups the current user is a member of
-		$user_groups = array();
-		if (!empty($user))
-		{
-			$user_groups = $user->groups('members');
-		}
+        // Get all groups the current user is a member of
+        $user_groups = array();
+        if (!empty($user)) {
+            $user_groups = $user->groups('members');
+        }
 
-		// Next see if the user is allowed to make this call
-		$sql = 'SELECT `user_id`, `group_id` FROM `#__api_permissions` WHERE `path` = ' . $db->quote($permissions_path) . ' AND
-				(`user_id` = ' . $db->quote($userid) . ' OR `consumer_key` = ' . $db->quote($consumerKey) . ' OR 0';
+        // Next see if the user is allowed to make this call
+        $sql = 'SELECT `user_id`, `group_id` FROM `#__api_permissions` WHERE `path` = '
+            . $db->quote($permissions_path) . ' AND (`user_id` = ' . $db->quote($userid)
+            . ' OR `consumer_key` = ' . $db->quote($consumerKey) . ' OR 0';
 
-		foreach ($user_groups as $group)
-		{
-			$sql .= ' OR `group_id` = ' . $db->quote($group->gidNumber);
-		}
+        foreach ($user_groups as $group) {
+            $sql .= ' OR `group_id` = ' . $db->quote($group->gidNumber);
+        }
 
-		$sql .= ')';
-		$db->setQuery($sql);
-		$db->query();
+        $sql .= ')';
+        $db->setQuery($sql);
+        $db->query();
 
-		// There is a match, permission granted
-		if ($db->getNumRows())
-		{
-			return true;
-		}
+        // There is a match, permission granted
+        if ($db->getNumRows()) {
+            return true;
+        }
 
-		// No match, too bad. Unauthorized
-		App::abort(401, 'You don\'t have permission to make this call');
-	}
+        // No match, too bad. Unauthorized
+        App::abort(401, 'You don\'t have permission to make this call');
+    }
 }
