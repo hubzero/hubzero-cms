@@ -1,4 +1,6 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,16 +15,16 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for installing KB tables
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComKb extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__kb_articles'))
-		{
-			$query = "CREATE TABLE `#__kb_articles` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__kb_articles')) {
+            $query = "CREATE TABLE `#__kb_articles` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `title` varchar(250) DEFAULT NULL,
 			  `alias` varchar(200) DEFAULT NULL,
@@ -51,13 +53,12 @@ class Migration20170901000000ComKb extends Base
 			  FULLTEXT KEY `ftidx_title_fulltxt` (`title`,`fulltxt`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__kb_comments'))
-		{
-			$query = "CREATE TABLE `#__kb_comments` (
+        if (!$this->db->tableExists('#__kb_comments')) {
+            $query = "CREATE TABLE `#__kb_comments` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `entry_id` int(11) NOT NULL DEFAULT '0',
 			  `content` text,
@@ -74,13 +75,12 @@ class Migration20170901000000ComKb extends Base
 			  KEY `idx_state` (`state`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__kb_votes'))
-		{
-			$query = "CREATE TABLE `#__kb_votes` (
+        if (!$this->db->tableExists('#__kb_votes')) {
+            $query = "CREATE TABLE `#__kb_votes` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `object_id` int(11) DEFAULT '0',
 			  `ip` varchar(15) DEFAULT NULL,
@@ -92,35 +92,32 @@ class Migration20170901000000ComKb extends Base
 			  KEY `idx_user_id` (`user_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__kb_articles'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__kb_articles`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__kb_articles')) {
+            $query = "DROP TABLE IF EXISTS `#__kb_articles`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__kb_comments'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__kb_comments`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__kb_comments')) {
+            $query = "DROP TABLE IF EXISTS `#__kb_comments`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__kb_votes'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__kb_votes`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__kb_votes')) {
+            $query = "DROP TABLE IF EXISTS `#__kb_votes`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

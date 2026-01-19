@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,401 +28,381 @@ use User;
  */
 class Articles extends SiteController
 {
-	/**
-	 * Execute a task
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		$this->archive = new Archive();
+    /**
+     * Execute a task
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        $this->archive = new Archive();
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * Displays an overview of categories and articles in the knowledge base
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		$this->view
-			->set('archive', $this->archive)
-			->setLayout('display')
-			->display();
-	}
+    /**
+     * Displays an overview of categories and articles in the knowledge base
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        $this->view
+            ->set('archive', $this->archive)
+            ->setLayout('display')
+            ->display();
+    }
 
-	/**
-	 * Displays a list of articles for a given category
-	 *
-	 * @return  void
-	 */
-	public function categoryTask()
-	{
-		$categoryAlias = Request::getString('categoryAlias', '');
+    /**
+     * Displays a list of articles for a given category
+     *
+     * @return  void
+     */
+    public function categoryTask()
+    {
+        $categoryAlias = Request::getString('categoryAlias', '');
 
-		// Make sure we have an alias for the category
-		if (!$categoryAlias)
-		{
-			return $this->displayTask();
-		}
+        // Make sure we have an alias for the category
+        if (!$categoryAlias) {
+            return $this->displayTask();
+        }
 
-		// Get the category
-		$this->view->catid = 0;
+        // Get the category
+        $this->view->catid = 0;
 
-		if ($categoryAlias == 'all')
-		{
-			$category = new Category;
-			$category->set('alias', 'all');
-			$category->set('title', Lang::txt('COM_KB_ALL_ARTICLES'));
-			$category->set('id', 0);
-			$category->set('published', 1);
-		}
-		else
-		{
-			$category = Category::oneByAlias($categoryAlias);
+        if ($categoryAlias == 'all') {
+            $category = new Category();
+            $category->set('alias', 'all');
+            $category->set('title', Lang::txt('COM_KB_ALL_ARTICLES'));
+            $category->set('id', 0);
+            $category->set('published', 1);
+        } else {
+            $category = Category::oneByAlias($categoryAlias);
 
-			$this->view->catid = $category->get('id');
-			if ($category->get('parent_id') > 1)
-			{
-				$this->view->catid = $category->get('parent_id');
-			}
-		}
+            $this->view->catid = $category->get('id');
+            if ($category->get('parent_id') > 1) {
+                $this->view->catid = $category->get('parent_id');
+            }
+        }
 
-		if (!$category->get('published'))
-		{
-			throw new Exception(Lang::txt('COM_KB_ERROR_CATEGORY_NOT_FOUND'), 404);
-		}
+        if (!$category->get('published')) {
+            throw new Exception(Lang::txt('COM_KB_ERROR_CATEGORY_NOT_FOUND'), 404);
+        }
 
-		// Get configuration
-		$this->view->filters = array(
-			'sort'     => Request::getWord('sort', 'recent'),
-			'category' => $category->get('id'),
-			'search'   => Request::getString('search', '')
-		);
+        // Get configuration
+        $this->view->filters = array(
+            'sort'     => Request::getWord('sort', 'recent'),
+            'category' => $category->get('id'),
+            'search'   => Request::getString('search', '')
+        );
 
-		if (!in_array($this->view->filters['sort'], array('recent', 'popularity')))
-		{
-			$this->view->filters['sort'] = 'recent';
-		}
-		if (!User::isGuest())
-		{
-			$this->view->filters['user_id'] = User::get('id');
-		}
+        if (!in_array($this->view->filters['sort'], array('recent', 'popularity'))) {
+            $this->view->filters['sort'] = 'recent';
+        }
+        if (!User::isGuest()) {
+            $this->view->filters['user_id'] = User::get('id');
+        }
 
-		$this->view->archive = $this->archive;
-		$this->view->category = $category;
+        $this->view->archive = $this->archive;
+        $this->view->category = $category;
 
-		$this->view
-			->setLayout('category')
-			->display();
-	}
+        $this->view
+            ->setLayout('category')
+            ->display();
+    }
 
-	/**
-	 * Displays a knowledge base article
-	 *
-	 * @return  void
-	 */
-	public function articleTask()
-	{
-		// Incoming
-		$articleAlias = Request::getString('articleAlias', '');
-		$categoryId   = Request::getInt('categoryId', 0);
+    /**
+     * Displays a knowledge base article
+     *
+     * @return  void
+     */
+    public function articleTask()
+    {
+        // Incoming
+        $articleAlias = Request::getString('articleAlias', '');
+        $categoryId   = Request::getInt('categoryId', 0);
 
-		// Load the article
-		$article = Article::all()
-			->whereEquals('alias', $articleAlias)
-			->whereEquals('category', $categoryId)
-			->row();
+        // Load the article
+        $article = Article::all()
+            ->whereEquals('alias', $articleAlias)
+            ->whereEquals('category', $categoryId)
+            ->row();
 
-		if (!$article->get('id'))
-		{
-			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
-		}
+        if (!$article->get('id')) {
+            throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
+        }
 
-		if (!$article->get('state'))
-		{
-			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
-		}
+        if (!$article->get('state')) {
+            throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
+        }
 
-		// Is the user logged in?
-		if (!User::isGuest())
-		{
-			// See if this person has already voted
-			$vote = Vote::blank()->find(
-				$article->get('id'),
-				User::get('id'),
-				Request::ip(),
-				'article'
-			);
-			$this->view->vote = $vote->get('vote');
-		}
-		else
-		{
-			$this->view->vote = strtolower(Request::getString('vote', ''));
-		}
+        // Is the user logged in?
+        if (!User::isGuest()) {
+            // See if this person has already voted
+            $vote = Vote::blank()->find(
+                $article->get('id'),
+                User::get('id'),
+                Request::ip(),
+                'article'
+            );
+            $this->view->vote = $vote->get('vote');
+        } else {
+            $this->view->vote = strtolower(Request::getString('vote', ''));
+        }
 
-		// Load the category object
-		$category = Category::oneOrFail($article->get('category'));
+        // Load the category object
+        $category = Category::oneOrFail($article->get('category'));
 
-		if (!$category->get('published'))
-		{
-			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
-		}
+        if (!$category->get('published')) {
+            throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
+        }
 
-		$this->view->catid = $category->get('id');
-		if ($category->get('parent_id') > 1)
-		{
-			$this->view->catid = $category->get('parent_id');
-		}
+        $this->view->catid = $category->get('id');
+        if ($category->get('parent_id') > 1) {
+            $this->view->catid = $category->get('parent_id');
+        }
 
-		$this->view
-			->set('article', $article)
-			->set('category', $category)
-			->set('archive', $this->archive)
-			->setLayout('article')
-			->display();
-	}
+        $this->view
+            ->set('article', $article)
+            ->set('category', $category)
+            ->set('archive', $this->archive)
+            ->setLayout('article')
+            ->display();
+    }
 
-	/**
-	 * Records the vote (like/dislike) of either an article or comment
-	 * AJAX call - Displays updated vote links
-	 * Standard link - falls through to the article view
-	 *
-	 * @return  void
-	 */
-	public function voteTask()
-	{
-		if (User::isGuest())
-		{
-			$return = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
-			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
-			);
-			return;
-		}
+    /**
+     * Records the vote (like/dislike) of either an article or comment
+     * AJAX call - Displays updated vote links
+     * Standard link - falls through to the article view
+     *
+     * @return  void
+     */
+    public function voteTask()
+    {
+        if (User::isGuest()) {
+            $return = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
+            App::redirect(
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+            );
+            return;
+        }
 
-		Request::checkToken(['get', 'post']);
+        Request::checkToken(['get', 'post']);
 
-		// Incoming
-		$type = strtolower(Request::getString('type', ''));
-		$vote = strtolower(Request::getString('vote', ''));
-		$id   = Request::getInt('id', 0);
+        // Incoming
+        $type = strtolower(Request::getString('type', ''));
+        $vote = strtolower(Request::getString('vote', ''));
+        $id   = Request::getInt('id', 0);
 
-		// Did they vote?
-		if (!$vote)
-		{
-			$this->setError(Lang::txt('COM_KB_USER_DIDNT_VOTE'));
-			return $this->articleTask();
-		}
+        // Did they vote?
+        if (!$vote) {
+            $this->setError(Lang::txt('COM_KB_USER_DIDNT_VOTE'));
+            return $this->articleTask();
+        }
 
-		if (!in_array($type, array('article', 'comment')))
-		{
-			App::abort(404, Lang::txt('COM_KB_WRONG_VOTE_TYPE'));
-		}
+        if (!in_array($type, array('article', 'comment'))) {
+            App::abort(404, Lang::txt('COM_KB_WRONG_VOTE_TYPE'));
+        }
 
-		// Load the article
-		switch ($type)
-		{
-			case 'article':
-				$row = Article::oneOrFail($id);
-			break;
-			case 'comment':
-				$row = Comment::oneOrFail($id);
-			break;
-		}
+        // Load the article
+        switch ($type) {
+            case 'article':
+                $row = Article::oneOrFail($id);
+                break;
+            case 'comment':
+                $row = Comment::oneOrFail($id);
+                break;
+        }
 
-		if (!$row->vote($vote, User::get('id')))
-		{
-			$this->setError($row->getError());
-		}
+        if (!$row->vote($vote, User::get('id'))) {
+            $this->setError($row->getError());
+        }
 
-		if (Request::getInt('no_html', 0))
-		{
-			$this->view->item = $row;
-			$this->view->type = $type;
-			$this->view->vote = $vote;
-			$this->view->id   = ''; //$id;
-			if ($this->getError())
-			{
-				$this->view->setError($this->getError());
-			}
-			$this->view->setLayout('_vote')->display();
-		}
-		else
-		{
-			if ($type == 'article')
-			{
-				App::redirect(
-					Route::url($row->link())
-				);
-				return;
-			}
-			$this->articleTask();
-		}
-	}
+        if (Request::getInt('no_html', 0)) {
+            $this->view->item = $row;
+            $this->view->type = $type;
+            $this->view->vote = $vote;
+            $this->view->id   = ''; //$id;
+            if ($this->getError()) {
+                $this->view->setError($this->getError());
+            }
+            $this->view->setLayout('_vote')->display();
+        } else {
+            if ($type == 'article') {
+                App::redirect(
+                    Route::url($row->link())
+                );
+                return;
+            }
+            $this->articleTask();
+        }
+    }
 
-	/**
-	 * Saves a comment to an article
-	 * Displays article
-	 *
-	 * @return  void
-	 */
-	public function savecommentTask()
-	{
-		// Ensure the user is logged in
-		if (User::isGuest())
-		{
-			$return = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
-			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
-				Lang::txt('COM_KB_LOGIN_NOTICE'),
-				'warning'
-			);
-			return;
-		}
+    /**
+     * Saves a comment to an article
+     * Displays article
+     *
+     * @return  void
+     */
+    public function savecommentTask()
+    {
+        // Ensure the user is logged in
+        if (User::isGuest()) {
+            $return = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
+            App::redirect(
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
+                Lang::txt('COM_KB_LOGIN_NOTICE'),
+                'warning'
+            );
+            return;
+        }
 
-		// Check for request forgeries
-		Request::checkToken();
+        // Check for request forgeries
+        Request::checkToken();
 
-		// Incoming
-		$comment = Request::getArray('comment', array(), 'post');
+        // Incoming
+        $comment = Request::getArray('comment', array(), 'post');
 
-		// Instantiate a new comment object and pass it the data
-		$row = Comment::oneOrNew($comment['id'])->set($comment);
-		if ($row->isNew())
-		{
-			$row->set('created', \Date::toSql());
-		}
+        // Instantiate a new comment object and pass it the data
+        $row = Comment::oneOrNew($comment['id'])->set($comment);
+        if ($row->isNew()) {
+            $row->set('created', \Date::toSql());
+        }
 
-		// Store new content
-		if (!$row->save())
-		{
-			$this->setError($row->getError());
-			return $this->articleTask();
-		}
+        // Store new content
+        if (!$row->save()) {
+            $this->setError($row->getError());
+            return $this->articleTask();
+        }
 
-		// Log the activity
-		$article = Article::oneOrFail($row->get('entry_id'));
+        // Log the activity
+        $article = Article::oneOrFail($row->get('entry_id'));
 
-		$recipients = array($row->get('created_by'));
-		if ($row->get('parent'))
-		{
-			$recipients[] = $row->parent()->get('created_by');
-		}
+        $recipients = array($row->get('created_by'));
+        if ($row->get('parent')) {
+            $recipients[] = $row->parent()->get('created_by');
+        }
 
-		Event::trigger('system.logActivity', [
-			'activity' => [
-				'action'      => ($comment['id'] ? 'updated' : 'created'),
-				'scope'       => 'kb.article.comment',
-				'scope_id'    => $row->get('id'),
-				'anonymous'   => $row->get('anonymous', 0),
-				'description' => Lang::txt('COM_KB_ACTIVITY_COMMENT_' . ($comment['id'] ? 'UPDATED' : 'CREATED'), $row->get('id'), '<a href="' . Route::url($article->link() . '#c' . $row->get('id')) . '">' . $article->get('title') . '</a>'),
-				'details'     => array(
-					'title'    => $article->get('title'),
-					'entry_id' => $article->get('id'),
-					'url'      => $article->link()
-				)
-			],
-			'recipients' => $recipients
-		]);
+        Event::trigger('system.logActivity', [
+            'activity' => [
+                'action'      => ($comment['id'] ? 'updated' : 'created'),
+                'scope'       => 'kb.article.comment',
+                'scope_id'    => $row->get('id'),
+                'anonymous'   => $row->get('anonymous', 0),
+                'description' => Lang::txt(
+                    'COM_KB_ACTIVITY_COMMENT_' . ($comment['id'] ? 'UPDATED' : 'CREATED'),
+                    $row->get('id'),
+                    '<a href="' . Route::url($article->link() . '#c' . $row->get('id')) . '">'
+                        . $article->get('title') . '</a>'
+                ),
+                'details'     => array(
+                    'title'    => $article->get('title'),
+                    'entry_id' => $article->get('id'),
+                    'url'      => $article->link()
+                )
+            ],
+            'recipients' => $recipients
+        ]);
 
-		App::redirect(
-			Route::url($article->link() . '#comments')
-		);
-	}
+        App::redirect(
+            Route::url($article->link() . '#comments')
+        );
+    }
 
-	/**
-	 * Displays an RSS feed of comments for a given article
-	 *
-	 * @return  void
-	 */
-	public function commentsTask()
-	{
-		if (!$this->config->get('feeds_enabled'))
-		{
-			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
-		}
+    /**
+     * Displays an RSS feed of comments for a given article
+     *
+     * @return  void
+     */
+    public function commentsTask()
+    {
+        if (!$this->config->get('feeds_enabled')) {
+            throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
+        }
 
-		// Incoming
-		$alias = Request::getString('alias', '');
-		$id    = Request::getInt('id', 0);
+        // Incoming
+        $alias = Request::getString('alias', '');
+        $id    = Request::getInt('id', 0);
 
-		// Load the article
-		$category = Category::oneByAlias(Request::getString('category'));
+        // Load the article
+        $category = Category::oneByAlias(Request::getString('category'));
 
-		$article = ($alias ? Article::oneByAlias($alias) : Article::oneOrFail($id));
-		if (!$article->get('id'))
-		{
-			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
-		}
+        $article = ($alias ? Article::oneByAlias($alias) : Article::oneOrFail($id));
+        if (!$article->get('id')) {
+            throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
+        }
 
-		// Set the mime encoding for the document
-		Document::setType('feed');
+        // Set the mime encoding for the document
+        Document::setType('feed');
 
-		// Start a new feed object
-		Document::setLink(Route::url($article->link()));
+        // Start a new feed object
+        Document::setLink(Route::url($article->link()));
 
-		// Build some basic RSS document information
-		$title  = Config::get('sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
-		$title .= ($article->get('title')) ? ': ' . stripslashes($article->get('title')) : '';
-		$title .= ': ' . Lang::txt('COM_KB_COMMENTS');
+        // Build some basic RSS document information
+        $title  = Config::get('sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
+        $title .= ($article->get('title')) ? ': ' . stripslashes($article->get('title')) : '';
+        $title .= ': ' . Lang::txt('COM_KB_COMMENTS');
 
-		Document::setTitle($title);
+        Document::setTitle($title);
 
-		Document::instance()->description = Lang::txt('COM_KB_COMMENTS_RSS_DESCRIPTION', Config::get('sitename'), stripslashes($article->get('title')));
-		Document::instance()->copyright   = Lang::txt('COM_KB_COMMENTS_RSS_COPYRIGHT', gmdate("Y"), Config::get('sitename'));
+        Document::instance()->description = Lang::txt(
+            'COM_KB_COMMENTS_RSS_DESCRIPTION',
+            Config::get('sitename'),
+            stripslashes($article->get('title'))
+        );
+        Document::instance()->copyright = Lang::txt(
+            'COM_KB_COMMENTS_RSS_COPYRIGHT',
+            gmdate("Y"),
+            Config::get('sitename')
+        );
 
-		// Start outputing results if any found
-		$this->_feedItem($article->comments('list'));
-	}
+        // Start outputing results if any found
+        $this->_feedItem($article->comments('list'));
+    }
 
-	/**
-	 * Recursive function to append comments to a feed
-	 *
-	 * @param   object  $comments
-	 * @return  void
-	 */
-	protected function _feedItem($comments)
-	{
-		foreach ($comments as $comment)
-		{
-			// Load individual item creator class
-			$item = new \Hubzero\Document\Type\Feed\Item();
+    /**
+     * Recursive function to append comments to a feed
+     *
+     * @param   object  $comments
+     * @return  void
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _feedItem($comments)
+    {
+        foreach ($comments as $comment) {
+            // Load individual item creator class
+            $item = new \Hubzero\Document\Type\Feed\Item();
 
-			$item->author = Lang::txt('JANONYMOUS');
-			if (!$comment->get('anonymous'))
-			{
-				$item->author = $comment->creator('name', $item->author);
-			}
+            $item->author = Lang::txt('JANONYMOUS');
+            if (!$comment->get('anonymous')) {
+                $item->author = $comment->creator('name', $item->author);
+            }
 
-			// Prepare the title
-			$item->title = Lang::txt('COM_KB_COMMENTS_RSS_COMMENT_TITLE', $item->author) . ' @ ' . $comment->created('time') . ' on ' . $comment->created('date');
+            // Prepare the title
+            $item->title = Lang::txt('COM_KB_COMMENTS_RSS_COMMENT_TITLE', $item->author)
+                . ' @ ' . $comment->created('time') . ' on ' . $comment->created('date');
 
-			// URL link to article
-			$item->link = $feed->link . '#c' . $comment->get('id');
+            // URL link to article
+            $item->link = $feed->link . '#c' . $comment->get('id');
 
-			// Strip html from feed item description text
-			if ($comment->isReported())
-			{
-				$item->description = Lang::txt('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
-			}
-			else
-			{
-				$item->description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($comment->content('clean')));
-			}
+            // Strip html from feed item description text
+            if ($comment->isReported()) {
+                $item->description = Lang::txt('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
+            } else {
+                $item->description = html_entity_decode(
+                    \Hubzero\Utility\Sanitize::stripAll($comment->content('clean'))
+                );
+            }
 
-			$item->date = $comment->created();
-			$item->category = '';
+            $item->date = $comment->created();
+            $item->category = '';
 
-			// Loads item info into rss array
-			Document::addItem($item);
+            // Loads item info into rss array
+            Document::addItem($item);
 
-			if ($comment->replies()->total())
-			{
-				$this->_feedItem($comment->replies());
-			}
-		}
-	}
+            if ($comment->replies()->total()) {
+                $this->_feedItem($comment->replies());
+            }
+        }
+    }
 }

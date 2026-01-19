@@ -1,4 +1,6 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,402 +22,376 @@ require_once __DIR__ . DS . 'vote.php';
  */
 class Comment extends Relational
 {
-	/**
-	 * Database state constants
-	 */
-	const STATE_FLAGGED = 3;
+    /**
+     * Database state constants
+     */
+    public const STATE_FLAGGED = 3;
 
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = 'kb';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    protected $namespace = 'kb';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'created';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'created';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'desc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'desc';
 
-	/**
-	 * Base URL
-	 *
-	 * @var  string
-	 */
-	private $_base = 'index.php?option=com_kb';
+    /**
+     * Base URL
+     *
+     * @var  string
+     */
+    private $base = 'index.php?option=com_kb';
 
-	/**
-	 * Fields to be parsed
-	 *
-	 * @var  array
-	 */
-	protected $parsed = array(
-		'content'
-	);
+    /**
+     * Fields to be parsed
+     *
+     * @var  array
+     */
+    protected $parsed = array(
+        'content'
+    );
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'content'  => 'notempty',
-		'entry_id' => 'positive|nonzero'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'content'  => 'notempty',
+        'entry_id' => 'positive|nonzero'
+    );
 
-	/**
-	 * Automatic fields to populate every time a row is created
-	 *
-	 * @var  array
-	 */
-	public $initiate = array(
-		'created',
-		'created_by'
-	);
+    /**
+     * Automatic fields to populate every time a row is created
+     *
+     * @var  array
+     */
+    public $initiate = array(
+        'created',
+        'created_by'
+    );
 
-	/**
-	 * Return a formatted timestamp
-	 *
-	 * @param   string  $as  What data to return
-	 * @return  string
-	 */
-	public function created($as='')
-	{
-		$as = strtolower($as);
-		$dt = $this->get('created');
+    /**
+     * Return a formatted timestamp
+     *
+     * @param   string  $as  What data to return
+     * @return  string
+     */
+    public function created($as = '')
+    {
+        $as = strtolower($as);
+        $dt = $this->get('created');
 
-		if ($as == 'date')
-		{
-			$dt = Date::of($dt)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-		}
+        if ($as == 'date') {
+            $dt = Date::of($dt)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+        }
 
-		if ($as == 'time')
-		{
-			$dt = Date::of($dt)->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-		}
+        if ($as == 'time') {
+            $dt = Date::of($dt)->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+        }
 
-		return $dt;
-	}
+        return $dt;
+    }
 
-	/**
-	 * Defines a belongs to one relationship between comment and user
-	 *
-	 * @return  object
-	 */
-	public function creator()
-	{
-		return $this->belongsToOne('Hubzero\User\User', 'created_by');
-	}
+    /**
+     * Defines a belongs to one relationship between comment and user
+     *
+     * @return  object
+     */
+    public function creator()
+    {
+        return $this->belongsToOne('Hubzero\User\User', 'created_by');
+    }
 
-	/**
-	 * Was the entry reported?
-	 *
-	 * @return  boolean  True if reported, False if not
-	 */
-	public function isReported()
-	{
-		return ($this->get('state') == 3);
-	}
+    /**
+     * Was the entry reported?
+     *
+     * @return  boolean  True if reported, False if not
+     */
+    public function isReported()
+    {
+        return ($this->get('state') == 3);
+    }
 
-	/**
-	 * Get either a count of or list of replies
-	 *
-	 * @param   array  $filters  Filters to apply to query
-	 * @return  object
-	 */
-	public function replies($filters = array())
-	{
-		if (!isset($filters['entry_id']))
-		{
-			$filters['entry_id'] = $this->get('entry_id');
-		}
+    /**
+     * Get either a count of or list of replies
+     *
+     * @param   array  $filters  Filters to apply to query
+     * @return  object
+     */
+    public function replies($filters = array())
+    {
+        if (!isset($filters['entry_id'])) {
+            $filters['entry_id'] = $this->get('entry_id');
+        }
 
-		$entries = self::blank()->whereEquals('parent', (int) $this->get('id'));
+        $entries = self::blank()->whereEquals('parent', (int) $this->get('id'));
 
-		if (isset($filters['state']))
-		{
-			$entries->whereEquals('state', (int) $filters['state']);
-		}
+        if (isset($filters['state'])) {
+            $entries->whereEquals('state', (int) $filters['state']);
+        }
 
-		if (isset($filters['entry_id']))
-		{
-			$entries->whereEquals('entry_id', (int) $filters['entry_id']);
-		}
+        if (isset($filters['entry_id'])) {
+            $entries->whereEquals('entry_id', (int) $filters['entry_id']);
+        }
 
-		return $entries;
-	}
+        return $entries;
+    }
 
-	/**
-	 * Get parent comment
-	 *
-	 * @return  object
-	 */
-	public function parent()
-	{
-		return self::oneOrFail($this->get('parent', 0));
-	}
+    /**
+     * Get parent comment
+     *
+     * @return  object
+     */
+    public function parent()
+    {
+        return self::oneOrFail($this->get('parent', 0));
+    }
 
-	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 *
-	 * @param   string  $type  The type of link to return
-	 * @return  string
-	 */
-	public function link($type='')
-	{
-		$link  = $this->_base;
-		if (!$this->get('section'))
-		{
-			$article = Article::oneOrFail($this->get('entry_id'));
+    /**
+     * Generate and return various links to the entry
+     * Link will vary depending upon action desired, such as edit, delete, etc.
+     *
+     * @param   string  $type  The type of link to return
+     * @return  string
+     */
+    public function link($type = '')
+    {
+        $link  = $this->base;
+        if (!$this->get('section')) {
+            $article = Article::oneOrFail($this->get('entry_id'));
 
-			$this->set('category', $article->parentCategory()->get('alias'));
-			$this->set('article', $article->get('alias'));
-		}
-		$link .= '&section=' . $this->get('section');
-		$link .= '&alias=' . $this->get('article');
+            $this->set('category', $article->parentCategory()->get('alias'));
+            $this->set('article', $article->get('alias'));
+        }
+        $link .= '&section=' . $this->get('section');
+        $link .= '&alias=' . $this->get('article');
 
-		// If it doesn't exist or isn't published
-		switch (strtolower($type))
-		{
-			case 'component':
-			case 'base':
-				return $this->_base;
-			break;
+        // If it doesn't exist or isn't published
+        switch (strtolower($type)) {
+            case 'component':
+            case 'base':
+                return $this->base;
+            break;
 
-			case 'article':
-				// Return as is
-			break;
+            case 'article':
+                // Return as is
+                break;
 
-			case 'edit':
-				$link .= '&action=edit&comment=' . $this->get('id');
-			break;
+            case 'edit':
+                $link .= '&action=edit&comment=' . $this->get('id');
+                break;
 
-			case 'delete':
-				$link .= '&action=delete&comment=' . $this->get('id');
-			break;
+            case 'delete':
+                $link .= '&action=delete&comment=' . $this->get('id');
+                break;
 
-			case 'reply':
-				$link .= '&reply=' . $this->get('id') . '#c' . $this->get('id');
-			break;
+            case 'reply':
+                $link .= '&reply=' . $this->get('id') . '#c' . $this->get('id');
+                break;
 
-			case 'vote':
-				$link  = $this->_base . '&task=vote&category=comment&id=' . $this->get('id');
-			break;
+            case 'vote':
+                $link  = $this->base . '&task=vote&category=comment&id=' . $this->get('id');
+                break;
 
-			case 'report':
-				$link = 'index.php?option=com_support&task=reportabuse&category=kb&id=' . $this->get('id') . '&parent=' . $this->get('entry_id');
-			break;
+            case 'report':
+                $link = 'index.php?option=com_support&task=reportabuse&category=kb&id='
+                    . $this->get('id') . '&parent=' . $this->get('entry_id');
+                break;
 
-			case 'permalink':
-			default:
-				$link .= '#c' . $this->get('id');
-			break;
-		}
+            case 'permalink':
+            default:
+                $link .= '#c' . $this->get('id');
+                break;
+        }
 
-		return $link;
-	}
+        return $link;
+    }
 
-	/**
-	 * Get a list of votes
-	 *
-	 * @return  object
-	 */
-	public function votes()
-	{
-		return $this->oneShiftsToMany('Vote', 'object_id', 'type');
-	}
+    /**
+     * Get a list of votes
+     *
+     * @return  object
+     */
+    public function votes()
+    {
+        return $this->oneShiftsToMany('Vote', 'object_id', 'type');
+    }
 
-	/**
-	 * Check if a user has voted for this entry
-	 *
-	 * @param   integer  $user_id  Optinal user ID to set as voter
-	 * @param   string   $ip       IP Address
-	 * @return  integer
-	 */
-	public function voted($user_id = 0, $ip = null)
-	{
-		if ($this->get('voted', -1) == -1)
-		{
-			$user = ($user_id) ? User::getInstance($user_id) : User::getInstance();
-			$ip   = ($ip ?: Request::ip());
+    /**
+     * Check if a user has voted for this entry
+     *
+     * @param   integer  $user_id  Optinal user ID to set as voter
+     * @param   string   $ip       IP Address
+     * @return  integer
+     */
+    public function voted($user_id = 0, $ip = null)
+    {
+        if ($this->get('voted', -1) == -1) {
+            $user = ($user_id) ? User::getInstance($user_id) : User::getInstance();
+            $ip   = ($ip ?: Request::ip());
 
-			// See if a person from this IP has already voted in the last week
-			$previous = Vote::find($this->get('id'), $user->get('id'), $ip, 'comment');
+            // See if a person from this IP has already voted in the last week
+            $previous = Vote::find($this->get('id'), $user->get('id'), $ip, 'comment');
 
-			$this->set('voted', $previous->get('vote'));
-		}
+            $this->set('voted', $previous->get('vote'));
+        }
 
-		return $this->get('voted', 0);
-	}
+        return $this->get('voted', 0);
+    }
 
-	/**
-	 * Vote for the entry
-	 *
-	 * @param   integer  $vote     The vote [-1, 1, like, dislike, yes, no, positive, negative]
-	 * @param   integer  $user_id  Optinal user ID to set as voter
-	 * @return  boolean  False if error, True on success
-	 */
-	public function vote($vote = 0, $user_id = 0)
-	{
-		if ($this->isNew())
-		{
-			$this->setError(Lang::txt('No record found'));
-			return false;
-		}
+    /**
+     * Vote for the entry
+     *
+     * @param   integer  $vote     The vote [-1, 1, like, dislike, yes, no, positive, negative]
+     * @param   integer  $user_id  Optinal user ID to set as voter
+     * @return  boolean  False if error, True on success
+     */
+    public function vote($vote = 0, $user_id = 0)
+    {
+        if ($this->isNew()) {
+            $this->setError(Lang::txt('No record found'));
+            return false;
+        }
 
-		$al = new Vote();
+        $al = new Vote();
 
-		$vote = $al->automaticVote(array('vote' => $vote));
+        $vote = $al->automaticVote(array('vote' => $vote));
 
-		if ($vote === 0)
-		{
-			$this->setError(Lang::txt('No vote provided'));
-			return false;
-		}
+        if ($vote === 0) {
+            $this->setError(Lang::txt('No vote provided'));
+            return false;
+        }
 
-		$user = ($user_id) ? User::getInstance($user_id) : User::getInstance();
+        $user = ($user_id) ? User::getInstance($user_id) : User::getInstance();
 
-		$al->set('object_id', $this->get('id'));
-		$al->set('type', 'comment');
-		$al->set('ip', Request::ip());
-		$al->set('user_id', $user->get('id'));
-		$al->set('vote', $vote);
+        $al->set('object_id', $this->get('id'));
+        $al->set('type', 'comment');
+        $al->set('ip', Request::ip());
+        $al->set('user_id', $user->get('id'));
+        $al->set('vote', $vote);
 
-		// Has user voted before?
-		$previous = $al->find($al->get('object_id'), $al->get('user_id'), $al->get('ip'), $al->get('type'));
-		if ($previous->get('vote'))
-		{
-			$voted = $al->automaticVote(array('vote' => $previous->get('vote')));
+        // Has user voted before?
+        $previous = $al->find($al->get('object_id'), $al->get('user_id'), $al->get('ip'), $al->get('type'));
+        if ($previous->get('vote')) {
+            $voted = $al->automaticVote(array('vote' => $previous->get('vote')));
 
-			// If the old vote is not the same as the new vote
-			if ($voted != $vote)
-			{
-				// Remove old vote
-				$previous->destroy();
+            // If the old vote is not the same as the new vote
+            if ($voted != $vote) {
+                // Remove old vote
+                $previous->destroy();
 
-				// Reset the vote count
-				switch ($voted)
-				{
-					case 'like':
-						$this->set('helpful', (int) $this->get('helpful') - 1);
-					break;
+                // Reset the vote count
+                switch ($voted) {
+                    case 'like':
+                        $this->set('helpful', (int) $this->get('helpful') - 1);
+                        break;
 
-					case 'dislike':
-						$this->set('nothelpful', (int) $this->get('nothelpful') - 1);
-					break;
-				}
-			}
-			else
-			{
-				return true;
-			}
-		}
+                    case 'dislike':
+                        $this->set('nothelpful', (int) $this->get('nothelpful') - 1);
+                        break;
+                }
+            } else {
+                return true;
+            }
+        }
 
-		if ($this->get('created_by') == $user->get('id'))
-		{
-			$this->setError(Lang::txt('COM_KB_NOTICE_CANT_VOTE_FOR_OWN'));
-			return false;
-		}
+        if ($this->get('created_by') == $user->get('id')) {
+            $this->setError(Lang::txt('COM_KB_NOTICE_CANT_VOTE_FOR_OWN'));
+            return false;
+        }
 
-		switch ($vote)
-		{
-			case 'like':
-				$this->set('helpful', (int) $this->get('helpful') + 1);
-			break;
+        switch ($vote) {
+            case 'like':
+                $this->set('helpful', (int) $this->get('helpful') + 1);
+                break;
 
-			case 'dislike':
-				$this->set('nothelpful', (int) $this->get('nothelpful') + 1);
-			break;
-		}
+            case 'dislike':
+                $this->set('nothelpful', (int) $this->get('nothelpful') + 1);
+                break;
+        }
 
-		// Store the changes to vote count
-		if (!$this->save())
-		{
-			return false;
-		}
+        // Store the changes to vote count
+        if (!$this->save()) {
+            return false;
+        }
 
-		// Store the vote log
-		if (!$al->save())
-		{
-			$this->setError($al->getError());
-			return false;
-		}
+        // Store the vote log
+        if (!$al->save()) {
+            $this->setError($al->getError());
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Delete the record and all associated data
-	 *
-	 * @return  boolean  False if error, True on success
-	 */
-	public function destroy()
-	{
-		// Can't delete what doesn't exist
-		if ($this->isNew())
-		{
-			return true;
-		}
+    /**
+     * Delete the record and all associated data
+     *
+     * @return  boolean  False if error, True on success
+     */
+    public function destroy()
+    {
+        // Can't delete what doesn't exist
+        if ($this->isNew()) {
+            return true;
+        }
 
-		// Remove comments
-		foreach ($this->replies()->rows() as $comment)
-		{
-			if (!$comment->destroy())
-			{
-				$this->addError($comment->getError());
-				return false;
-			}
-		}
+        // Remove comments
+        foreach ($this->replies()->rows() as $comment) {
+            if (!$comment->destroy()) {
+                $this->addError($comment->getError());
+                return false;
+            }
+        }
 
-		foreach ($this->votes()->rows() as $vote)
-		{
-			if (!$vote->destroy())
-			{
-				$this->addError($vote->getError());
-				return false;
-			}
-		}
+        foreach ($this->votes()->rows() as $vote) {
+            if (!$vote->destroy()) {
+                $this->addError($vote->getError());
+                return false;
+            }
+        }
 
-		return parent::destroy();
-	}
+        return parent::destroy();
+    }
 
-	/**
-	 * Validates the set data attributes against the model rules
-	 *
-	 * @return  bool
-	 **/
-	public function validate()
-	{
-		$valid = parent::validate();
+    /**
+     * Validates the set data attributes against the model rules
+     *
+     * @return  bool
+     **/
+    public function validate()
+    {
+        $valid = parent::validate();
 
-		if ($valid)
-		{
-			$results = \Event::trigger('content.onContentBeforeSave', array(
-				'com_kb.comment.content',
-				&$this,
-				$this->isNew()
-			));
+        if ($valid) {
+            $results = \Event::trigger('content.onContentBeforeSave', array(
+                'com_kb.comment.content',
+                &$this,
+                $this->isNew()
+            ));
 
-			foreach ($results as $result)
-			{
-				if ($result === false)
-				{
-					$this->addError(Lang::txt('Content failed validation.'));
-					$valid = false;
-				}
-			}
-		}
+            foreach ($results as $result) {
+                if ($result === false) {
+                    $this->addError(Lang::txt('Content failed validation.'));
+                    $valid = false;
+                }
+            }
+        }
 
-		return $valid;
-	}
+        return $valid;
+    }
 }

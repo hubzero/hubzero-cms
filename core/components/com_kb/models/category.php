@@ -1,4 +1,6 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,213 +18,203 @@ require_once __DIR__ . DS . 'article.php';
  */
 class Category extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = 'kb';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    protected $namespace = 'kb';
 
-	/**
-	 * The table to which the class pertains
-	 *
-	 * This will default to #__{namespace}_{modelName} unless otherwise
-	 * overwritten by a given subclass. Definition of this property likely
-	 * indicates some derivation from standard naming conventions.
-	 *
-	 * @var  string
-	 */
-	protected $table = '#__categories';
+    /**
+     * The table to which the class pertains
+     *
+     * This will default to #__{namespace}_{modelName} unless otherwise
+     * overwritten by a given subclass. Definition of this property likely
+     * indicates some derivation from standard naming conventions.
+     *
+     * @var  string
+     */
+    protected $table = '#__categories';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'lft';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'lft';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Base URL
-	 *
-	 * @var  string
-	 */
-	private $_base = 'index.php?option=com_kb';
+    /**
+     * Base URL
+     *
+     * @var  string
+     */
+    private $base = 'index.php?option=com_kb';
 
-	/**
-	 * Returns all rows (unless otherwise limited)
-	 *
-	 * @param   string|array  $columns  The columns to select
-	 * @return  \Hubzero\Database\Relational|static
-	 */
-	public static function all($columns = null)
-	{
-		return self::blank()->whereEquals('extension', 'com_kb');
-	}
+    /**
+     * Returns all rows (unless otherwise limited)
+     *
+     * @param   string|array  $columns  The columns to select
+     * @return  \Hubzero\Database\Relational|static
+     */
+    public static function all($columns = null)
+    {
+        return self::blank()->whereEquals('extension', 'com_kb');
+    }
 
-	/**
-	 * Retrieves one row loaded by an alias field
-	 *
-	 * @param   string  $alias  The alias to load by
-	 * @return  mixed
-	 **/
-	public static function oneByAlias($alias)
-	{
-		return self::blank()
-			->whereEquals('extension', 'com_kb')
-			->whereEquals('alias', $alias)
-			->row();
-	}
+    /**
+     * Retrieves one row loaded by an alias field
+     *
+     * @param   string  $alias  The alias to load by
+     * @return  mixed
+     **/
+    public static function oneByAlias($alias)
+    {
+        return self::blank()
+            ->whereEquals('extension', 'com_kb')
+            ->whereEquals('alias', $alias)
+            ->row();
+    }
 
-	/**
-	 * Get a list of articles
-	 *
-	 * @return  object
-	 */
-	public function articles()
-	{
-		return $this->oneToMany('Article', 'category');
-	}
+    /**
+     * Get a list of articles
+     *
+     * @return  object
+     */
+    public function articles()
+    {
+        return $this->oneToMany('Article', 'category');
+    }
 
-	/**
-	 * Get a list of responses
-	 *
-	 * @param   array    $filters  Filters to apply to query
-	 * @return  object
-	 */
-	public function children($filters = array())
-	{
-		$categories = self::blank()->whereEquals('parent_id', $this->get('id'));
+    /**
+     * Get a list of responses
+     *
+     * @param   array    $filters  Filters to apply to query
+     * @return  object
+     */
+    public function children($filters = array())
+    {
+        $categories = self::blank()->whereEquals('parent_id', $this->get('id'));
 
-		if (isset($filters['state']))
-		{
-			$categories->whereEquals('published', $filters['state']);
-		}
+        if (isset($filters['state'])) {
+            $categories->whereEquals('published', $filters['state']);
+        }
 
-		if (isset($filters['access']))
-		{
-			$categories->whereIn('access', $filters['access']);
-		}
+        if (isset($filters['access'])) {
+            $categories->whereIn('access', $filters['access']);
+        }
 
-		return $categories;
-	}
+        return $categories;
+    }
 
-	/**
-	 * Get parent section
-	 *
-	 * @return  object
-	 */
-	public function parent()
-	{
-		return self::oneOrFail($this->get('parent_id', 0));
-	}
+    /**
+     * Get parent section
+     *
+     * @return  object
+     */
+    public function parent()
+    {
+        return self::oneOrFail($this->get('parent_id', 0));
+    }
 
-	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 *
-	 * @param   string  $type  The type of link to return
-	 * @return  string
-	 */
-	public function link($type='')
-	{
-		$link  = $this->_base;
-		$link .= '&section=' . $this->get('path');
+    /**
+     * Generate and return various links to the entry
+     * Link will vary depending upon action desired, such as edit, delete, etc.
+     *
+     * @param   string  $type  The type of link to return
+     * @return  string
+     */
+    public function link($type = '')
+    {
+        $link  = $this->base;
+        $link .= '&section=' . $this->get('path');
 
-		// If it doesn't exist or isn't published
-		switch (strtolower($type))
-		{
-			case 'component':
-			case 'base':
-				return $this->_base;
-			break;
+        // If it doesn't exist or isn't published
+        switch (strtolower($type)) {
+            case 'component':
+            case 'base':
+                return $this->base;
+            break;
 
-			case 'edit':
-				$link .= '&task=edit';
-			break;
+            case 'edit':
+                $link .= '&task=edit';
+                break;
 
-			case 'delete':
-				$link .= '&task=delete';
-			break;
+            case 'delete':
+                $link .= '&task=delete';
+                break;
 
-			case 'permalink':
-			default:
+            case 'permalink':
+            default:
+                break;
+        }
 
-			break;
-		}
+        return $link;
+    }
 
-		return $link;
-	}
+    /**
+     * Delete the record and all associated data
+     *
+     * @return  boolean  False if error, True on success
+     */
+    public function destroy()
+    {
+        // Can't delete what doesn't exist
+        if (!$this->get('id')) {
+            return true;
+        }
 
-	/**
-	 * Delete the record and all associated data
-	 *
-	 * @return  boolean  False if error, True on success
-	 */
-	public function destroy()
-	{
-		// Can't delete what doesn't exist
-		if (!$this->get('id'))
-		{
-			return true;
-		}
+        // Remove children
+        foreach ($this->children()->rows() as $category) {
+            if (!$category->destroy()) {
+                $this->addError($category->getError());
+                return false;
+            }
+        }
 
-		// Remove children
-		foreach ($this->children()->rows() as $category)
-		{
-			if (!$category->destroy())
-			{
-				$this->addError($category->getError());
-				return false;
-			}
-		}
+        // Remove articles
+        foreach ($this->articles()->rows() as $article) {
+            if (!$article->destroy()) {
+                $this->addError($article->getError());
+                return false;
+            }
+        }
 
-		// Remove articles
-		foreach ($this->articles()->rows() as $article)
-		{
-			if (!$article->destroy())
-			{
-				$this->addError($article->getError());
-				return false;
-			}
-		}
+        // Attempt to delete the record
+        return parent::destroy();
+    }
 
-		// Attempt to delete the record
-		return parent::destroy();
-	}
+    /**
+     * Get a form
+     *
+     * @return  object
+     */
+    public function getForm()
+    {
+        $file = __DIR__ . '/forms/category.xml';
+        $file = Filesystem::cleanPath($file);
 
-	/**
-	 * Get a form
-	 *
-	 * @return  object
-	 */
-	public function getForm()
-	{
-		$file = __DIR__ . '/forms/category.xml';
-		$file = Filesystem::cleanPath($file);
+        Form::addFieldPath(__DIR__ . '/fields');
 
-		Form::addFieldPath(__DIR__ . '/fields');
+        $form = new Form('category', array('control' => 'fields'));
 
-		$form = new Form('category', array('control' => 'fields'));
+        if (!$form->loadFile($file, false, '//form')) {
+            $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
+        }
 
-		if (!$form->loadFile($file, false, '//form'))
-		{
-			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
-		}
+        $params = new Registry($this->get('params'));
 
-		$params = new Registry($this->get('params'));
+        $data = $this->toArray();
+        $data['params'] = $params->toArray();
 
-		$data = $this->toArray();
-		$data['params'] = $params->toArray();
+        $form->bind($data);
 
-		$form->bind($data);
-
-		return $form;
-	}
+        return $form;
+    }
 }
