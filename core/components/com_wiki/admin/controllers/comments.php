@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,391 +26,364 @@ use App;
  */
 class Comments extends AdminController
 {
-	/**
-	 * Execute a task
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		$this->registerTask('add', 'edit');
-		$this->registerTask('apply', 'save');
-		$this->registerTask('publish', 'state');
-		$this->registerTask('unpublish', 'state');
+    /**
+     * Execute a task
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        $this->registerTask('add', 'edit');
+        $this->registerTask('apply', 'save');
+        $this->registerTask('publish', 'state');
+        $this->registerTask('unpublish', 'state');
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * Display a list of entries
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		$filters = array(
-			'page_id' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.page_id',
-				'page_id',
-				0,
-				'int'
-			),
-			'search' => urldecode(Request::getState(
-				$this->_option . '.' . $this->_controller . '.search',
-				'search',
-				''
-			)),
-			// Get sorting variables
-			'sort' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sort',
-				'filter_order',
-				'created'
-			),
-			'sort_Dir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortdir',
-				'filter_order_Dir',
-				'ASC'
-			),
-			// Get paging variables
-			'limit' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limit',
-				'limit',
-				Config::get('list_limit'),
-				'int'
-			),
-			'start' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.limitstart',
-				'limitstart',
-				0,
-				'int'
-			)
-		);
+    /**
+     * Display a list of entries
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        $filters = array(
+            'page_id' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.page_id',
+                'page_id',
+                0,
+                'int'
+            ),
+            'search' => urldecode(Request::getState(
+                $this->_option . '.' . $this->_controller . '.search',
+                'search',
+                ''
+            )),
+            // Get sorting variables
+            'sort' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sort',
+                'filter_order',
+                'created'
+            ),
+            'sort_Dir' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sortdir',
+                'filter_order_Dir',
+                'ASC'
+            ),
+            // Get paging variables
+            'limit' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.limit',
+                'limit',
+                Config::get('list_limit'),
+                'int'
+            ),
+            'start' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.limitstart',
+                'limitstart',
+                0,
+                'int'
+            )
+        );
 
-		$page = Page::oneOrNew($filters['page_id']);
+        $page = Page::oneOrNew($filters['page_id']);
 
-		$comments = Comment::all();
+        $comments = Comment::all();
 
-		if ($filters['search'])
-		{
-			$comments->whereLike('ctext', strtolower((string)$filters['search']));
-		}
+        if ($filters['search']) {
+            $comments->whereLike('ctext', strtolower((string)$filters['search']));
+        }
 
-		if ($filters['page_id'])
-		{
-			$comments->whereEquals('page_id', $filters['page_id']);
-		}
+        if ($filters['page_id']) {
+            $comments->whereEquals('page_id', $filters['page_id']);
+        }
 
-		$rows = $comments
-			->ordered('filter_order', 'filter_order_Dir')
-			->rows();
+        $rows = $comments
+            ->ordered('filter_order', 'filter_order_Dir')
+            ->rows();
 
-		$levellimit = ($filters['limit'] == 0) ? 500 : $filters['limit'];
-		$list       = array();
-		$children   = array();
+        $levellimit = ($filters['limit'] == 0) ? 500 : $filters['limit'];
+        $list       = array();
+        $children   = array();
 
-		if ($rows)
-		{
-			// First pass - collect children
-			foreach ($rows as $k)
-			{
-				$pt = $k->get('parent');
-				$list = @$children[$pt] ? $children[$pt] : array();
-				array_push($list, $k);
-				$children[$pt] = $list;
-			}
+        if ($rows) {
+            // First pass - collect children
+            foreach ($rows as $k) {
+                $pt = $k->get('parent');
+                $list = @$children[$pt] ? $children[$pt] : array();
+                array_push($list, $k);
+                $children[$pt] = $list;
+            }
 
-			// Second pass - get an indent list of the items
-			$list = $this->treeRecurse(0, '', array(), $children, max(0, $levellimit-1));
-		}
+            // Second pass - get an indent list of the items
+            $list = $this->treeRecurse(0, '', array(), $children, max(0, $levellimit - 1));
+        }
 
-		// Output the HTML
-		$this->view
-			->set('filters', $filters)
-			->set('page', $page)
-			->set('total', count($list))
-			->set('rows', array_slice($list, $filters['start'], $filters['limit']))
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('filters', $filters)
+            ->set('page', $page)
+            ->set('total', count($list))
+            ->set('rows', array_slice($list, $filters['start'], $filters['limit']))
+            ->display();
+    }
 
-	/**
-	 * Recursive function to build tree
-	 *
-	 * @param   integer  $id        Parent ID
-	 * @param   string   $indent    Indent text
-	 * @param   array    $list      List of records
-	 * @param   array    $children  Container for parent/children mapping
-	 * @param   integer  $maxlevel  Maximum levels to descend
-	 * @param   integer  $level     Indention level
-	 * @param   integer  $type      Indention type
-	 * @return  void
-	 */
-	public function treeRecurse($id, $indent, $list, $children, $maxlevel=9999, $level=0, $type=1)
-	{
-		if (@$children[$id] && $level <= $maxlevel)
-		{
-			foreach ($children[$id] as $v)
-			{
-				$id = $v->get('id');
+    /**
+     * Recursive function to build tree
+     *
+     * @param   integer  $id        Parent ID
+     * @param   string   $indent    Indent text
+     * @param   array    $list      List of records
+     * @param   array    $children  Container for parent/children mapping
+     * @param   integer  $maxlevel  Maximum levels to descend
+     * @param   integer  $level     Indention level
+     * @param   integer  $type      Indention type
+     * @return  void
+     */
+    public function treeRecurse($id, $indent, $list, $children, $maxlevel = 9999, $level = 0, $type = 1)
+    {
+        if (@$children[$id] && $level <= $maxlevel) {
+            foreach ($children[$id] as $v) {
+                $id = $v->get('id');
 
-				if ($type)
-				{
-					$pre    = '<span class="treenode">&#8970;</span>&nbsp;';
-					$spacer = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-				}
-				else
-				{
-					$pre    = '- ';
-					$spacer = '&nbsp;&nbsp;';
-				}
+                if ($type) {
+                    $pre    = '<span class="treenode">&#8970;</span>&nbsp;';
+                    $spacer = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                } else {
+                    $pre    = '- ';
+                    $spacer = '&nbsp;&nbsp;';
+                }
 
-				if ($v->get('parent') == 0)
-				{
-					$txt = '';
-				}
-				else
-				{
-					$txt = $pre;
-				}
-				$pt = $v->get('parent');
+                if ($v->get('parent') == 0) {
+                    $txt = '';
+                } else {
+                    $txt = $pre;
+                }
+                $pt = $v->get('parent');
 
-				$list[$id] = $v;
-				$list[$id]->set('treename', "$indent$txt");
-				$list[$id]->set('children', count(@$children[$id]));
-				$list = $this->treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level+1, $type);
-			}
-		}
-		return $list;
-	}
+                $list[$id] = $v;
+                $list[$id]->set('treename', "$indent$txt");
+                $list[$id]->set('children', count(@$children[$id]));
+                $list = $this->treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level + 1, $type);
+            }
+        }
+        return $list;
+    }
 
-	/**
-	 * Show a form for editing an entry
-	 *
-	 * @param   object  $row
-	 * @return  void
-	 */
-	public function editTask($row=null)
-	{
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+    /**
+     * Show a form for editing an entry
+     *
+     * @param   object  $row
+     * @return  void
+     */
+    public function editTask($row = null)
+    {
+        if (
+            !User::authorise('core.edit', $this->_option)
+            && !User::authorise('core.create', $this->_option)
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		Request::setVar('hidemainmenu', 1);
+        Request::setVar('hidemainmenu', 1);
 
-		if (!is_object($row))
-		{
-			// Incoming
-			$id = Request::getArray('id', array(0));
-			if (is_array($id) && !empty($id))
-			{
-				$id = $id[0];
-			}
+        if (!is_object($row)) {
+            // Incoming
+            $id = Request::getArray('id', array(0));
+            if (is_array($id) && !empty($id)) {
+                $id = $id[0];
+            }
 
-			// Load the article
-			$row = Comment::oneOrNew($id);
-		}
+            // Load the article
+            $row = Comment::oneOrNew($id);
+        }
 
-		if ($row->isNew())
-		{
-			$row->set('page_id', Request::getInt('page_id', 0));
-			$row->set('created_by', User::get('id'));
-			$row->set('created', Date::toSql());
-			$row->set('state', 1);
-		}
+        if ($row->isNew()) {
+            $row->set('page_id', Request::getInt('page_id', 0));
+            $row->set('created_by', User::get('id'));
+            $row->set('created', Date::toSql());
+            $row->set('state', 1);
+        }
 
-		// Output the HTML
-		$this->view
-			->set('row', $row)
-			->setLayout('edit')
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('row', $row)
+            ->setLayout('edit')
+            ->display();
+    }
 
-	/**
-	 * Save an entry
-	 *
-	 * @return  void
-	 */
-	public function saveTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Save an entry
+     *
+     * @return  void
+     */
+    public function saveTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (
+            !User::authorise('core.edit', $this->_option)
+            && !User::authorise('core.create', $this->_option)
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		// Incoming
-		$fields = Request::getArray('fields', array(), 'post');
-		$fields = array_map('trim', $fields);
+        // Incoming
+        $fields = Request::getArray('fields', array(), 'post');
+        $fields = array_map('trim', $fields);
 
-		// Initiate extended database class
-		$row = Comment::oneOrNew($fields['id'])->set($fields);
+        // Initiate extended database class
+        $row = Comment::oneOrNew($fields['id'])->set($fields);
 
-		// Trigger before save event
-		$isNew  = $row->isNew();
-		$result = Event::trigger('wiki.onWikiAfterBeforeComment', array(&$row, $isNew));
+        // Trigger before save event
+        $isNew  = $row->isNew();
+        $result = Event::trigger('wiki.onWikiAfterBeforeComment', array(&$row, $isNew));
 
-		if (in_array(false, $result, true))
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
+        if (in_array(false, $result, true)) {
+            Notify::error($row->getError());
+            return $this->editTask($row);
+        }
 
-		// Store new content
-		if (!$row->save())
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
+        // Store new content
+        if (!$row->save()) {
+            Notify::error($row->getError());
+            return $this->editTask($row);
+        }
 
-		// Trigger after save event
-		Event::trigger('wiki.onWikiAfterSaveComment', array(&$row, $isNew));
+        // Trigger after save event
+        Event::trigger('wiki.onWikiAfterSaveComment', array(&$row, $isNew));
 
-		Notify::success(Lang::txt('COM_WIKI_COMMENT_SAVED'));
+        Notify::success(Lang::txt('COM_WIKI_COMMENT_SAVED'));
 
-		if ($this->getTask() == 'apply')
-		{
-			return $this->editTask($row);
-		}
+        if ($this->getTask() == 'apply') {
+            return $this->editTask($row);
+        }
 
-		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&page_id=' . $fields['page_id'], false)
-		);
-	}
+        // Set the redirect
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&page_id=' . $fields['page_id'];
+        App::redirect(Route::url($url, false));
+    }
 
-	/**
-	 * Delete one or more entries
-	 *
-	 * @return  void
-	 */
-	public function removeTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Delete one or more entries
+     *
+     * @return  void
+     */
+    public function removeTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.delete', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (!User::authorise('core.delete', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		// Incoming
-		$ids = Request::getArray('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
+        // Incoming
+        $ids = Request::getArray('id', array());
+        $ids = (!is_array($ids) ? array($ids) : $ids);
 
-		if (count($ids) > 0)
-		{
-			$removed = 0;
+        if (count($ids) > 0) {
+            $removed = 0;
 
-			// Loop through all the IDs
-			foreach ($ids as $id)
-			{
-				// Delete the entry
-				$entry = Comment::oneOrFail(intval($id));
+            // Loop through all the IDs
+            foreach ($ids as $id) {
+                // Delete the entry
+                $entry = Comment::oneOrFail(intval($id));
 
-				if (!$entry->destroy())
-				{
-					Notify::error($entry->getError());
-					continue;
-				}
+                if (!$entry->destroy()) {
+                    Notify::error($entry->getError());
+                    continue;
+                }
 
-				// Trigger after delete event
-				Event::trigger('wiki.onWikiAfterDeleteComment', array($id));
+                // Trigger after delete event
+                Event::trigger('wiki.onWikiAfterDeleteComment', array($id));
 
-				$removed++;
-			}
-		}
+                $removed++;
+            }
+        }
 
-		if ($removed)
-		{
-			Notify::success(Lang::txt('COM_WIKI_COMMENTS_DELETED'));
-		}
+        if ($removed) {
+            Notify::success(Lang::txt('COM_WIKI_COMMENTS_DELETED'));
+        }
 
-		// Set the redirect
-		$this->cancelTask();
-	}
+        // Set the redirect
+        $this->cancelTask();
+    }
 
-	/**
-	 * Set the state on one or more entries
-	 *
-	 * @return  void
-	 */
-	public function stateTask()
-	{
-		// Check for request forgeries
-		Request::checkToken(['get', 'post']);
+    /**
+     * Set the state on one or more entries
+     *
+     * @return  void
+     */
+    public function stateTask()
+    {
+        // Check for request forgeries
+        Request::checkToken(['get', 'post']);
 
-		if (!User::authorise('core.edit.state', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (!User::authorise('core.edit.state', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		$state = $this->getTask() == 'unpublish' ? Comment::STATE_UNPUBLISHED : Comment::STATE_PUBLISHED;
+        $state = $this->getTask() == 'unpublish' ? Comment::STATE_UNPUBLISHED : Comment::STATE_PUBLISHED;
 
-		// Incoming
-		$ids    = Request::getArray('id', array());
-		$ids    = (!is_array($ids) ? array($ids) : $ids);
-		$pageid = Request::getInt('page_id', 0);
+        // Incoming
+        $ids    = Request::getArray('id', array());
+        $ids    = (!is_array($ids) ? array($ids) : $ids);
+        $pageid = Request::getInt('page_id', 0);
 
-		// Check for an ID
-		if (count($ids) < 1)
-		{
-			$action = ($state == Comment::STATE_PUBLISHED) ? Lang::txt('COM_WIKI_UNPUBLISH') : Lang::txt('COM_WIKI_PUBLISH');
+        // Check for an ID
+        if (count($ids) < 1) {
+            $action = ($state == Comment::STATE_PUBLISHED)
+                ? Lang::txt('COM_WIKI_UNPUBLISH')
+                : Lang::txt('COM_WIKI_PUBLISH');
 
-			Notify::warning(Lang::txt('COM_WIKI_ERROR_SELECT_TO', $action));
+            Notify::warning(Lang::txt('COM_WIKI_ERROR_SELECT_TO', $action));
 
-			return $this->cancelTask();
-		}
+            return $this->cancelTask();
+        }
 
-		// Loop through all the IDs
-		$i = 0;
+        // Loop through all the IDs
+        $i = 0;
 
-		foreach ($ids as $id)
-		{
-			$comment = Comment::oneOrFail(intval($id));
-			$comment->set('state', $state);
+        foreach ($ids as $id) {
+            $comment = Comment::oneOrFail(intval($id));
+            $comment->set('state', $state);
 
-			if (!$comment->save())
-			{
-				Notify::error($comment->getError());
-				continue;
-			}
+            if (!$comment->save()) {
+                Notify::error($comment->getError());
+                continue;
+            }
 
-			$i++;
-		}
+            $i++;
+        }
 
-		// Set message
-		if ($i)
-		{
-			if ($state == Comment::STATE_PUBLISHED)
-			{
-				$message = Lang::txt('COM_WIKI_ITEMS_PUBLISHED', $i);
-			}
-			else
-			{
-				$message = Lang::txt('COM_WIKI_ITEMS_UNPUBLISHED', $i);
-			}
+        // Set message
+        if ($i) {
+            if ($state == Comment::STATE_PUBLISHED) {
+                $message = Lang::txt('COM_WIKI_ITEMS_PUBLISHED', $i);
+            } else {
+                $message = Lang::txt('COM_WIKI_ITEMS_UNPUBLISHED', $i);
+            }
 
-			Notify::success($message);
-		}
+            Notify::success($message);
+        }
 
-		// Set redirect
-		$this->cancelTask();
-	}
+        // Set redirect
+        $this->cancelTask();
+    }
 
-	/**
-	 * Cancels a task and redirects to listing
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		// Set the redirect
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&page_id=' . Request::getInt('page_id', 0), false)
-		);
-	}
+    /**
+     * Cancels a task and redirects to listing
+     *
+     * @return  void
+     */
+    public function cancelTask()
+    {
+        // Set the redirect
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&page_id=' . Request::getInt('page_id', 0);
+        App::redirect(Route::url($url, false));
+    }
 }

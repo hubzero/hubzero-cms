@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,26 +11,23 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-if ($this->page->param('mode', 'wiki') == 'knol' && !$this->page->param('hide_authors', 0))
-{
-	$author = $this->escape(stripslashes($this->page->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'))));
+if ($this->page->param('mode', 'wiki') == 'knol' && !$this->page->param('hide_authors', 0)) {
+    $author = $this->escape(stripslashes($this->page->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'))));
 
-	$auths = array();
-	$auths[] = (in_array($this->page->creator->get('access'), User::getAuthorisedViewLevels()) ? '<a href="' . Route::url($this->page->creator->link()) . '">' . $author . '</a>' : $author);
+    $auths = array();
+    $auths[] = (in_array($this->page->creator->get('access'), User::getAuthorisedViewLevels()) ? '<a href="' . Route::url($this->page->creator->link()) . '">' . $author . '</a>' : $author);
 
-	foreach ($this->page->authors()->rows() as $auth)
-	{
-		if ($auth->get('user_id') == $this->page->get('created_by'))
-		{
-			continue;
-		}
+    foreach ($this->page->authors()->rows() as $auth) {
+        if ($auth->get('user_id') == $this->page->get('created_by')) {
+            continue;
+        }
 
-		$name = $this->escape(stripslashes($auth->user->get('name', '')));
-		$name = (in_array($auth->user->get('access'), User::getAuthorisedViewLevels()) ? '<a href="' . Route::url($auth->user->link()) . '">' . $name . '</a>' : $name);
+        $name = $this->escape(stripslashes($auth->user->get('name', '')));
+        $name = (in_array($auth->user->get('access'), User::getAuthorisedViewLevels()) ? '<a href="' . Route::url($auth->user->link()) . '">' . $name . '</a>' : $name);
 
-		$auths[] = $name;
-	}
-	?>
-	<p class="topic-authors"><?php echo Lang::txt('COM_WIKI_BY_AUTHORS', implode(', ', $auths)); ?></p>
-	<?php
+        $auths[] = $name;
+    }
+    ?>
+    <p class="topic-authors"><?php echo Lang::txt('COM_WIKI_BY_AUTHORS', implode(', ', $auths)); ?></p>
+    <?php
 }

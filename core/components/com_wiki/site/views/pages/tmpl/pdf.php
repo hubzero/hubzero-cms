@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,8 +12,8 @@
 defined('_HZEXEC_') or die();
 ?>
 <header id="content-header">
-	<h2><?php echo $this->page->get('title'); ?></h2>
+    <h2><?php echo $this->page->get('title'); ?></h2>
 </header><!-- /#content-header -->
 <article class="wikipage">
-	<?php echo $this->revision->get('pagehtml'); ?>
+    <?php echo $this->revision->get('pagehtml'); ?>
 </article>

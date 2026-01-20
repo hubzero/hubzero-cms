@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,22 +8,20 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for installing wiki tables
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20170901000000ComWiki extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__wiki_pages'))
-		{
-			$query = "CREATE TABLE `#__wiki_pages` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__wiki_pages')) {
+            $query = "CREATE TABLE `#__wiki_pages` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `namespace` varchar(255) NOT NULL,
 			  `pagename` varchar(100) DEFAULT NULL,
@@ -48,13 +47,12 @@ class Migration20170901000000ComWiki extends Base
 			  FULLTEXT KEY `ftidx_title` (`title`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__wiki_versions'))
-		{
-			$query = "CREATE TABLE `#__wiki_versions` (
+        if (!$this->db->tableExists('#__wiki_versions')) {
+            $query = "CREATE TABLE `#__wiki_versions` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `page_id` int(11) NOT NULL DEFAULT '0',
 			  `version` int(11) NOT NULL DEFAULT '0',
@@ -72,13 +70,12 @@ class Migration20170901000000ComWiki extends Base
 			  FULLTEXT KEY `ftidx_pagetext` (`pagetext`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__wiki_attachments'))
-		{
-			$query = "CREATE TABLE `#__wiki_attachments` (
+        if (!$this->db->tableExists('#__wiki_attachments')) {
+            $query = "CREATE TABLE `#__wiki_attachments` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `page_id` int(11) DEFAULT '0',
 			  `filename` varchar(255) DEFAULT NULL,
@@ -89,13 +86,12 @@ class Migration20170901000000ComWiki extends Base
 			  KEY `idx_pageid` (`page_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__wiki_authors'))
-		{
-			$query = "CREATE TABLE `#__wiki_authors` (
+        if (!$this->db->tableExists('#__wiki_authors')) {
+            $query = "CREATE TABLE `#__wiki_authors` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `user_id` int(11) DEFAULT '0',
 			  `page_id` int(11) DEFAULT '0',
@@ -104,13 +100,12 @@ class Migration20170901000000ComWiki extends Base
 			  KEY `idx_user_id` (`user_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__wiki_comments'))
-		{
-			$query = "CREATE TABLE `#__wiki_comments` (
+        if (!$this->db->tableExists('#__wiki_comments')) {
+            $query = "CREATE TABLE `#__wiki_comments` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `page_id` int(11) DEFAULT '0',
 			  `version` int(11) NOT NULL DEFAULT '0',
@@ -128,13 +123,12 @@ class Migration20170901000000ComWiki extends Base
 			  KEY `idx_status` (`state`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__wiki_links'))
-		{
-			$query = "CREATE TABLE `#__wiki_links` (
+        if (!$this->db->tableExists('#__wiki_links')) {
+            $query = "CREATE TABLE `#__wiki_links` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `page_id` int(11) NOT NULL DEFAULT '0',
 			  `timestamp` datetime DEFAULT NULL,
@@ -147,13 +141,12 @@ class Migration20170901000000ComWiki extends Base
 			  KEY `idx_scope_scope_id` (`scope`,`scope_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__wiki_logs'))
-		{
-			$query = "CREATE TABLE `#__wiki_logs` (
+        if (!$this->db->tableExists('#__wiki_logs')) {
+            $query = "CREATE TABLE `#__wiki_logs` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `page_id` int(11) NOT NULL DEFAULT '0',
 			  `timestamp` datetime DEFAULT NULL,
@@ -164,13 +157,12 @@ class Migration20170901000000ComWiki extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__wiki_metrics'))
-		{
-			$query = "CREATE TABLE `#__wiki_metrics` (
+        if (!$this->db->tableExists('#__wiki_metrics')) {
+            $query = "CREATE TABLE `#__wiki_metrics` (
 			  `page_id` int(11) NOT NULL DEFAULT '0',
 			  `pagename` varchar(100) DEFAULT NULL,
 			  `hits` int(11) NOT NULL DEFAULT '0',
@@ -179,70 +171,62 @@ class Migration20170901000000ComWiki extends Base
 			  PRIMARY KEY (`page_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__wiki_pages'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__wiki_pages`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__wiki_pages')) {
+            $query = "DROP TABLE IF EXISTS `#__wiki_pages`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__wiki_versions'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__wiki_versions`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__wiki_versions')) {
+            $query = "DROP TABLE IF EXISTS `#__wiki_versions`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__wiki_attachments'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__wiki_attachments`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__wiki_attachments')) {
+            $query = "DROP TABLE IF EXISTS `#__wiki_attachments`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__wiki_authors'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__wiki_authors`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__wiki_authors')) {
+            $query = "DROP TABLE IF EXISTS `#__wiki_authors`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__wiki_comments'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__wiki_comments`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__wiki_comments')) {
+            $query = "DROP TABLE IF EXISTS `#__wiki_comments`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__wiki_links'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__wiki_links`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__wiki_links')) {
+            $query = "DROP TABLE IF EXISTS `#__wiki_links`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__wiki_logs'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__wiki_logs`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__wiki_logs')) {
+            $query = "DROP TABLE IF EXISTS `#__wiki_logs`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__wiki_metrics'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__wiki_metrics`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__wiki_metrics')) {
+            $query = "DROP TABLE IF EXISTS `#__wiki_metrics`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }
