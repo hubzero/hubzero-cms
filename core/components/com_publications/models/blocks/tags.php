@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,236 +20,230 @@ require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'tags.php';
  */
 class Tags extends Base
 {
-	/**
-	 * Block name
-	 *
-	 * @var  string
-	 */
-	protected $_name = 'tags';
+    /**
+     * Block name
+     *
+     * @var  string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_name = 'tags';
 
-	/**
-	 * Parent block name
-	 *
-	 * @var  string
-	 */
-	protected $_parentname = null;
+    /**
+     * Parent block name
+     *
+     * @var  string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_parentname = null;
 
-	/**
-	 * Default manifest
-	 *
-	 * @var  string
-	 */
-	protected $_manifest = null;
+    /**
+     * Default manifest
+     *
+     * @var  string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_manifest = null;
 
-	/**
-	 * Numeric block ID
-	 *
-	 * @var  integer
-	 */
-	protected $_blockId = 0;
+    /**
+     * Numeric block ID
+     *
+     * @var  integer
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_blockId = 0;
 
-	/**
-	 * Display block content
-	 *
-	 * @param   object   $pub
-	 * @param   object   $manifest
-	 * @param   string   $viewname
-	 * @param   integer  $blockId
-	 * @return  string   HTML
-	 */
-	public function display($pub = null, $manifest = null, $viewname = 'edit', $blockId = 0)
-	{
-		// Set block manifest
-		if ($this->_manifest === null)
-		{
-			$this->_manifest = $manifest ? $manifest : self::getManifest();
-		}
+    /**
+     * Display block content
+     *
+     * @param   object   $pub
+     * @param   object   $manifest
+     * @param   string   $viewname
+     * @param   integer  $blockId
+     * @return  string   HTML
+     */
+    public function display($pub = null, $manifest = null, $viewname = 'edit', $blockId = 0)
+    {
+        // Set block manifest
+        if ($this->_manifest === null) {
+            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        }
 
-		// Register blockId
-		$this->_blockId	= $blockId;
+        // Register blockId
+        $this->_blockId = $blockId;
 
-		if ($viewname == 'curator')
-		{
-			// Output HTML
-			$view = new \Hubzero\Component\View(
-				array(
-					'name'   => 'curation',
-					'layout' => 'block'
-				)
-			);
-		}
-		else
-		{
-			$name = $viewname == 'freeze' ? 'freeze' : 'draft';
+        if ($viewname == 'curator') {
+            // Output HTML
+            $view = new \Hubzero\Component\View(
+                array(
+                    'name'   => 'curation',
+                    'layout' => 'block'
+                )
+            );
+        } else {
+            $name = $viewname == 'freeze' ? 'freeze' : 'draft';
 
-			// Output HTML
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'projects',
-					'element' => 'publications',
-					'name'    => $name,
-					'layout'  => 'wrapper'
-				)
-			);
-		}
+            // Output HTML
+            $view = new \Hubzero\Plugin\View(
+                array(
+                    'folder'  => 'projects',
+                    'element' => 'publications',
+                    'name'    => $name,
+                    'layout'  => 'wrapper'
+                )
+            );
+        }
 
-		$view->manifest     = $this->_manifest;
-		$view->content      = self::buildContent($pub, $viewname);
-		$view->pub          = $pub;
-		$view->active       = $this->_name;
-		$view->step         = $blockId;
-		$view->showControls = 4;
+        $view->manifest     = $this->_manifest;
+        $view->content      = self::buildContent($pub, $viewname);
+        $view->pub          = $pub;
+        $view->active       = $this->_name;
+        $view->step         = $blockId;
+        $view->showControls = 4;
 
-		if ($this->getError())
-		{
-			$view->setError($this->getError());
-		}
-		return $view->loadTemplate();
-	}
+        if ($this->getError()) {
+            $view->setError($this->getError());
+        }
+        return $view->loadTemplate();
+    }
 
-	/**
-	 * Build panel content
-	 *
-	 * @param   object  $pub
-	 * @param   string  $viewname
-	 * @return  string  HTML
-	 */
-	public function buildContent($pub = null, $viewname = 'edit')
-	{
-		$name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
+    /**
+     * Build panel content
+     *
+     * @param   object  $pub
+     * @param   string  $viewname
+     * @return  string  HTML
+     */
+    public function buildContent($pub = null, $viewname = 'edit')
+    {
+        $name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
 
-		// Output HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'projects',
-				'element' => 'publications',
-				'name'    => $name,
-				'layout'  => 'tags'
-			)
-		);
+        // Output HTML
+        $view = new \Hubzero\Plugin\View(
+            array(
+                'folder'  => 'projects',
+                'element' => 'publications',
+                'name'    => $name,
+                'layout'  => 'tags'
+            )
+        );
 
-		$view->pub      = $pub;
-		$view->manifest = $this->_manifest;
-		$view->step     = $this->_blockId;
+        $view->pub      = $pub;
+        $view->manifest = $this->_manifest;
+        $view->step     = $this->_blockId;
 
-		// Get categories
-		$view->categories = $pub->category()->getContribCategories();
+        // Get categories
+        $view->categories = $pub->category()->getContribCategories();
 
-		if ($this->getError())
-		{
-			$view->setError($this->getError());
-		}
-		return $view->loadTemplate();
-	}
+        if ($this->getError()) {
+            $view->setError($this->getError());
+        }
+        return $view->loadTemplate();
+    }
 
-	/**
-	 * Save block content
-	 *
-	 * @param   object   $manifest
-	 * @param   integer  $blockId
-	 * @param   object   $pub
-	 * @param   integer  $actor
-	 * @param   integer  $elementId
-	 * @return  string   HTML
-	 */
-	public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
-	{
-		// Set block manifest
-		if ($this->_manifest === null)
-		{
-			$this->_manifest = $manifest ? $manifest : self::getManifest();
-		}
+    /**
+     * Save block content
+     *
+     * @param   object   $manifest
+     * @param   integer  $blockId
+     * @param   object   $pub
+     * @param   integer  $actor
+     * @param   integer  $elementId
+     * @return  string   HTML
+     */
+    public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
+    {
+        // Set block manifest
+        if ($this->_manifest === null) {
+            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        }
 
-		// Make sure changes are allowed
-		if ($this->_parent->checkFreeze($this->_manifest->params, $pub))
-		{
-			return false;
-		}
+        // Make sure changes are allowed
+        if ($this->_parent->checkFreeze($this->_manifest->params, $pub)) {
+            return false;
+        }
 
-		// Load publication version
-		$objP = new \Components\Publications\Tables\Publication($this->_parent->_db);
+        // Load publication version
+        $objP = new \Components\Publications\Tables\Publication($this->_parent->_db);
 
-		if (!$objP->load($pub->id))
-		{
-			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
-			return false;
-		}
+        if (!$objP->load($pub->id)) {
+            $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
+            return false;
+        }
 
-		$tagsHelper = new \Components\Publications\Helpers\Tags($this->_parent->_db);
-		$tags = trim(Request::getString('tags', '', 'post'));
-		$tagsHelper->tag_object($actor, $pub->version->id, $tags, 1);
+        $tagsHelper = new \Components\Publications\Helpers\Tags($this->_parent->_db);
+        $tags = trim(Request::getString('tags', '', 'post'));
+        $tagsHelper->tag_object($actor, $pub->version->id, $tags, 1);
 
-		// Reflect the update in curation record
-		$this->_parent->set('_update', 1);
+        // Reflect the update in curation record
+        $this->_parent->set('_update', 1);
 
-		// Save category
-		$cat = Request::getInt('pubtype', 0);
-		if ($cat && $pub->_category->id != $cat)
-		{
-			$objP->category = $cat;
-			$objP->store();
-		}
+        // Save category
+        $cat = Request::getInt('pubtype', 0);
+        if ($cat && $pub->_category->id != $cat) {
+            $objP->category = $cat;
+            $objP->store();
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Check completion status
-	 *
-	 * @param   object   $pub
-	 * @param   object   $manifest
-	 * @param   integer  $elementId
-	 * @return  object
-	 */
-	public function getStatus($pub = null, $manifest = null, $elementId = null)
-	{
-		// Start status
-		$status = new \Components\Publications\Models\Status();
+    /**
+     * Check completion status
+     *
+     * @param   object   $pub
+     * @param   object   $manifest
+     * @param   integer  $elementId
+     * @return  object
+     */
+    public function getStatus($pub = null, $manifest = null, $elementId = null)
+    {
+        // Start status
+        $status = new \Components\Publications\Models\Status();
 
-		$tagsHelper = new \Components\Publications\Helpers\Tags($this->_parent->_db);
+        $tagsHelper = new \Components\Publications\Helpers\Tags($this->_parent->_db);
 
-		// Required?
-		$required = $manifest->params->required;
-		$count = $tagsHelper->countTags($pub->version->id);
-		$status->status = $required && $count == 0 ? 0 : 1;
-		$status->status = !$required && $count == 0 ? 2 : $status->status;
+        // Required?
+        $required = $manifest->params->required;
+        $count = $tagsHelper->countTags($pub->version->id);
+        $status->status = $required && $count == 0 ? 0 : 1;
+        $status->status = !$required && $count == 0 ? 2 : $status->status;
 
-		return $status;
-	}
+        return $status;
+    }
 
-	/**
-	 * Get default manifest for the block
-	 *
-	 * @param   bool  $new
-	 * @return  object
-	 */
-	public function getManifest($new = false)
-	{
-		// Load config from db
-		$obj = new \Components\Publications\Tables\Block($this->_parent->_db);
-		$manifest = $obj->getManifest($this->_name);
+    /**
+     * Get default manifest for the block
+     *
+     * @param   bool  $new
+     * @return  object
+     */
+    public function getManifest($new = false)
+    {
+        // Load config from db
+        $obj = new \Components\Publications\Tables\Block($this->_parent->_db);
+        $manifest = $obj->getManifest($this->_name);
 
-		// Fall back
-		if (!$manifest)
-		{
-			$manifest = array(
-				'name'         => 'tags',
-				'label'        => 'Tags',
-				'title'        => 'Publication Tags',
-				'draftHeading' => 'Add tags',
-				'draftTagline' => 'Make your publication more discoverable:',
-				'about'        => 'Tags help users find your publication. Before adding your own tags, try finding good matches in existing tag library.',
-				'adminTips'    => '',
-				'elements'     => array(),
-				'params'       => array(
-					'required' => 1,
-					'published_editing' => 0
-				)
-			);
+        // Fall back
+        if (!$manifest) {
+            $manifest = array(
+                'name'         => 'tags',
+                'label'        => 'Tags',
+                'title'        => 'Publication Tags',
+                'draftHeading' => 'Add tags',
+                'draftTagline' => 'Make your publication more discoverable:',
+                'about'        => 'Tags help users find your publication. Before adding your own tags, '
+                    . 'try finding good matches in existing tag library.',
+                'adminTips'    => '',
+                'elements'     => array(),
+                'params'       => array(
+                    'required' => 1,
+                    'published_editing' => 0
+                )
+            );
 
-			return json_decode(json_encode($manifest), false);
-		}
+            return json_decode(json_encode($manifest), false);
+        }
 
-		return $manifest;
-	}
+        return $manifest;
+    }
 }

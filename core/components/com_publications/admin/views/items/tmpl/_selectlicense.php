@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,14 +14,12 @@ defined('_HZEXEC_') or die();
 $value = $this->selected ? $this->selected->id : 1;
 $html  = '<select name="license_type" id="license_type">' . "\n";
 
-foreach ($this->licenses as $license)
-{
-	$html .= "\t".'<option value="' . $license->id . '"';
-	if ($value == $license->id)
-	{
-		$html .= ' selected="selected"';
-	}
-	$html .= '>' . trim($license->name) . '</option>' . "\n";
+foreach ($this->licenses as $license) {
+    $html .= "\t" . '<option value="' . $license->id . '"';
+    if ($value == $license->id) {
+        $html .= ' selected="selected"';
+    }
+    $html .= '>' . trim($license->name) . '</option>' . "\n";
 }
 $html .= '</select>' . "\n";
 

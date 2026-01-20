@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,38 +22,38 @@ $blocks    = $manifest->blocks;
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
-	<p><a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->row->id); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_BACK') . ' ' . $this->row->type . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE'); ?></a></p>
+    <p><a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->row->id); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_BACK') . ' ' . $this->row->type . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE'); ?></a></p>
 
-	<?php if ($this->getError()) { ?>
-		<p class="error"><?php echo $this->getError(); ?></p>
-	<?php } ?>
-	<fieldset class="adminform">
-		<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_REMOVE_BLOCK'); ?></span></legend>
+    <?php if ($this->getError()) { ?>
+        <p class="error"><?php echo $this->getError(); ?></p>
+    <?php } ?>
+    <fieldset class="adminform">
+        <legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_REMOVE_BLOCK'); ?></span></legend>
 
-		<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
-		<input type="hidden" name="blockid" value="<?php echo $this->blockid; ?>" />
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-		<input type="hidden" name="task" value="removeblock" />
+        <input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
+        <input type="hidden" name="blockid" value="<?php echo $this->blockid; ?>" />
+        <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+        <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+        <input type="hidden" name="task" value="removeblock" />
 
-		<div class="input-wrap">
-			<p class="warning">
-				<?php echo Lang::txt('COM_PUBLICATIONS_BLOCK_REMOVAL_WARNING', $this->escape(stripslashes($blocks->{$this->blockid}->name))); ?>
-			</p>
+        <div class="input-wrap">
+            <p class="warning">
+                <?php echo Lang::txt('COM_PUBLICATIONS_BLOCK_REMOVAL_WARNING', $this->escape(stripslashes($blocks->{$this->blockid}->name))); ?>
+            </p>
 
-			<label for="confirmdel">
-				<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" />
-				<?php echo Lang::txt('COM_PUBLICATIONS_BLOCK_REMOVAL_CONFIRM'); ?>
-			</label>
+            <label for="confirmdel">
+                <input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" />
+                <?php echo Lang::txt('COM_PUBLICATIONS_BLOCK_REMOVAL_CONFIRM'); ?>
+            </label>
 
-			<p class="submit">
-				<input class="btn btn-danger" type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_DELETE'); ?>" />
-				<a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->row->id); ?>">
-					<?php echo Lang::txt('JCANCEL'); ?>
-				</a>
-			</p>
-		</div>
-	</fieldset>
+            <p class="submit">
+                <input class="btn btn-danger" type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_DELETE'); ?>" />
+                <a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->row->id); ?>">
+                    <?php echo Lang::txt('JCANCEL'); ?>
+                </a>
+            </p>
+        </div>
+    </fieldset>
 
-	<?php echo Html::input('token'); ?>
+    <?php echo Html::input('token'); ?>
 </form>

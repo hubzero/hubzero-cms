@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,13 +19,13 @@ $title = $series->title;
 $url = "/publications/$publicationId/$versionNumber";
 ?>
 
-<?php if (!empty($series)): ?>
-	<li>
-		<a href="<?php echo $url; ?>" rel="noreferrer noopener" target="_blank">
-			<u><?php echo $title; ?></u>
-		</a>
-		<p>
-			<?php echo $abstract; ?>
-		</p>
-	</li>
+<?php if (!empty($series)) : ?>
+    <li>
+        <a href="<?php echo $url; ?>" rel="noreferrer noopener" target="_blank">
+            <u><?php echo $title; ?></u>
+        </a>
+        <p>
+            <?php echo $abstract; ?>
+        </p>
+    </li>
 <?php endif;

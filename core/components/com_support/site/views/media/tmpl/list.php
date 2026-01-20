@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,19 +15,17 @@ $no_html = Request::getInt('no_html', 0);
 
 $assets = $this->model->attachments;
 
-if ($assets->count() > 0)
-{
-	$i = 0;
-	foreach ($assets as $asset)
-	{
-		$this->view('_asset')
-		     ->set('i', $i)
-		     ->set('option', $this->option)
-		     ->set('controller', $this->controller)
-		     ->set('asset', $asset)
-		     ->set('no_html', $no_html)
-		     ->display();
+if ($assets->count() > 0) {
+    $i = 0;
+    foreach ($assets as $asset) {
+        $this->view('_asset')
+             ->set('i', $i)
+             ->set('option', $this->option)
+             ->set('controller', $this->controller)
+             ->set('asset', $asset)
+             ->set('no_html', $no_html)
+             ->display();
 
-		$i++;
-	}
+        $i++;
+    }
 }

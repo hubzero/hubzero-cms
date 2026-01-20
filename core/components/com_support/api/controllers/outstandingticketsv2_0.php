@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,47 +20,47 @@ require_once Component::path('com_support') . '/helpers/acl.php';
 /**
  * API controller class for outstanding support tickets
  */
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class OutstandingTicketsv2_0 extends ApiController
 {
-	/**
-	 * Execute a request
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		$this->acl = \Components\Support\Helpers\ACL::getACL();
-		$this->acl->setUser(\User::get('id'));
+    /**
+     * Execute a request
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        $this->acl = \Components\Support\Helpers\ACL::getACL();
+        $this->acl->setUser(\User::get('id'));
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * Display a list of tickets that violate criteria
-	 *
-	 * @apiMethod GET
-	 * @apiUri    /support/outstandingtickets
-	 * @return    void
-	 */
-	public function listTask()
-	{
-		$this->requiresAuthentication();
+    /**
+     * Display a list of tickets that violate criteria
+     *
+     * @apiMethod GET
+     * @apiUri    /support/outstandingtickets
+     * @return    void
+     */
+    public function listTask()
+    {
+        $this->requiresAuthentication();
 
-		$criteria = Criterion::all();
-		$outstandingTicketData = array(
-			'tickets'  => array(),
-			'criteria' => array()
-		);
+        $criteria = Criterion::all();
+        $outstandingTicketData = array(
+            'tickets'  => array(),
+            'criteria' => array()
+        );
 
-		foreach ($criteria as $criterion)
-		{
-			$criterionId = $criterion->get('id');
-			$outstanding = $criterion->getViolations();
+        foreach ($criteria as $criterion) {
+            $criterionId = $criterion->get('id');
+            $outstanding = $criterion->getViolations();
 
-			$outstandingTicketData['criteria'][$criterionId] = $criterion->toArray();
-			$outstandingTicketData['tickets'][$criterionId] = $outstanding;
-		}
+            $outstandingTicketData['criteria'][$criterionId] = $criterion->toArray();
+            $outstandingTicketData['tickets'][$criterionId] = $outstanding;
+        }
 
-		$this->send($outstandingTicketData);
-	}
+        $this->send($outstandingTicketData);
+    }
 }

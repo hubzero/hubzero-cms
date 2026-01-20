@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,9 +16,12 @@ $text = preg_replace("/\r\n/", "\r", trim($text));
 
 ?>
 <header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
-	<div class="license-wrap">
-		<?php if ($this->getError()) { echo '<p class="error">' . $this->getError() . '</p>';
-} else { echo '<pre>' . $text . '</pre>'; } ?>
-	</div>
+    <h2><?php echo $this->title; ?></h2>
+    <div class="license-wrap">
+        <?php if ($this->getError()) {
+            echo '<p class="error">' . $this->getError() . '</p>';
+        } else {
+            echo '<pre>' . $text . '</pre>';
+        } ?>
+    </div>
 </header>

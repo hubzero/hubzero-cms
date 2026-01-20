@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,8 +12,8 @@
 defined('_HZEXEC_') or die();
 ?>
 <header id="content-header">
-	<h2><?php echo Lang::txt('COM_SUPPORT'); ?></h2>
+    <h2><?php echo Lang::txt('COM_SUPPORT'); ?></h2>
 </header><!-- / #content-header -->
 <section class="main section">
-	<p class="error"><?php echo Lang::txt('COM_SUPPORT_NONE'); ?></p>
+    <p class="error"><?php echo Lang::txt('COM_SUPPORT_NONE'); ?></p>
 </section>

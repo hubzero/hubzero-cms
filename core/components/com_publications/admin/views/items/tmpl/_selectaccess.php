@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,15 +12,13 @@
 defined('_HZEXEC_') or die();
 
 $as = explode(',', $this->as);
-$html  = '<select name="access">'."\n";
-for ($i=0, $n=count( $as ); $i < $n; $i++)
-{
-	$html .= "\t" . '<option value="' . $i . '"';
-	if ($this->value == $i)
-	{
-		$html .= ' selected="selected"';
-	}
-	$html .= '>' . trim($as[$i]) . '</option>' . "\n";
+$html  = '<select name="access">' . "\n";
+for ($i = 0, $n = count($as); $i < $n; $i++) {
+    $html .= "\t" . '<option value="' . $i . '"';
+    if ($this->value == $i) {
+        $html .= ' selected="selected"';
+    }
+    $html .= '>' . trim($as[$i]) . '</option>' . "\n";
 }
 $html .= '</select>' . "\n";
 echo $html;

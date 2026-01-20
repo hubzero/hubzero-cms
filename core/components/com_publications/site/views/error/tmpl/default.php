@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,9 +15,9 @@ $this->css()
      ->js();
 ?>
 <header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
+    <h2><?php echo $this->title; ?></h2>
 </header>
 
 <section class="main section">
-	<p class="error"><?php echo $this->getError(); ?></p>
+    <p class="error"><?php echo $this->getError(); ?></p>
 </section><!-- / .section -->

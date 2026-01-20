@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,51 +19,53 @@ include_once \Component::path('com_projects') . DS . 'helpers' . DS . 'html.php'
  */
 class Attachment extends Obj
 {
-	/**
-	 * Element name
-	 *
-	 * This has to be set in the final
-	 * renderer classes.
-	 *
-	 * @var  string
-	 */
-	protected $_name = null;
+    /**
+     * Element name
+     *
+     * This has to be set in the final
+     * renderer classes.
+     *
+     * @var  string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_name = null;
 
-	/**
-	 * Reference to the object that instantiated the element
-	 *
-	 * @var  object
-	 */
-	protected $_parent = null;
+    /**
+     * Reference to the object that instantiated the element
+     *
+     * @var  object
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_parent = null;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   object  $parent
-	 * @return  void
-	 */
-	public function __construct($parent = null)
-	{
-		$this->_parent = $parent;
-	}
+    /**
+     * Constructor
+     *
+     * @param   object  $parent
+     * @return  void
+     */
+    public function __construct($parent = null)
+    {
+        $this->_parent = $parent;
+    }
 
-	/**
-	 * Get the element name
-	 *
-	 * @return  string  type of the parameter
-	 */
-	public function getName()
-	{
-		return $this->_name;
-	}
+    /**
+     * Get the element name
+     *
+     * @return  string  type of the parameter
+     */
+    public function getName()
+    {
+        return $this->_name;
+    }
 
-	/**
-	 * Get the element connector property
-	 *
-	 * @return  string  type of the parameter
-	 */
-	public function getConnector()
-	{
-		return $this->_connector;
-	}
+    /**
+     * Get the element connector property
+     *
+     * @return  string  type of the parameter
+     */
+    public function getConnector()
+    {
+        return $this->_connector;
+    }
 }

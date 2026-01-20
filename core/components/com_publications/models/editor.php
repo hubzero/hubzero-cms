@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,59 +15,61 @@ use Hubzero\Base\Obj;
  */
 class Editor extends Obj
 {
-	/**
-	 * Handler object
-	 *
-	 * @var  object
-	 */
-	public $handler = null;
+    /**
+     * Handler object
+     *
+     * @var  object
+     */
+    public $handler = null;
 
-	/**
-	 * Database
-	 *
-	 * @var  object
-	 */
-	private $_db = null;
+    /**
+     * Database
+     *
+     * @var  object
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_db = null;
 
-	/**
-	 * Configs
-	 *
-	 * @var  object
-	 */
-	public $_configs = null;
+    /**
+     * Configs
+     *
+     * @var  object
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    public $_configs = null;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   object  $handler
-	 * @param   object  $configs
-	 * @return  void
-	 */
-	public function __construct($handler, $configs)
-	{
-		$this->_db = \App::get('db');
+    /**
+     * Constructor
+     *
+     * @param   object  $handler
+     * @param   object  $configs
+     * @return  void
+     */
+    public function __construct($handler, $configs)
+    {
+        $this->_db = \App::get('db');
 
-		$this->handler 	= $handler;
-		$this->configs 	= $configs;
-	}
+        $this->handler  = $handler;
+        $this->configs  = $configs;
+    }
 
-	/**
-	 * Draw status
-	 *
-	 * @return  string
-	 */
-	public function drawStatus()
-	{
-		return $this->handler->drawStatus($this);
-	}
+    /**
+     * Draw status
+     *
+     * @return  string
+     */
+    public function drawStatus()
+    {
+        return $this->handler->drawStatus($this);
+    }
 
-	/**
-	 * Draw editor content
-	 *
-	 * @return  string
-	 */
-	public function drawEditor()
-	{
-		return $this->handler->drawEditor($this);
-	}
+    /**
+     * Draw editor content
+     *
+     * @return  string
+     */
+    public function drawEditor()
+    {
+        return $this->handler->drawEditor($this);
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,22 +13,19 @@ defined('_HZEXEC_') or die();
 
 $html  = '<select name="group_owner"';
 if (!$this->groups || $this->groupOwner) {
-	$html .= ' disabled="disabled"';
+    $html .= ' disabled="disabled"';
 }
-$html .= '>'."\n";
-$html .= ' <option value="">' . Lang::txt('Select group ...') . '</option>'."\n";
-if ($this->groups)
-{
-	foreach ($this->groups as $group)
-	{
-		$html .= ' <option value="' . $group->gidNumber . '"';
-		if ($this->value == $group->gidNumber)
-		{
-			$html .= ' selected="selected"';
-		}
-		$html .= '>' . \Hubzero\Utility\Str::truncate($group->description, 60) .'</option>'."\n";
-	}
+$html .= '>' . "\n";
+$html .= ' <option value="">' . Lang::txt('Select group ...') . '</option>' . "\n";
+if ($this->groups) {
+    foreach ($this->groups as $group) {
+        $html .= ' <option value="' . $group->gidNumber . '"';
+        if ($this->value == $group->gidNumber) {
+            $html .= ' selected="selected"';
+        }
+        $html .= '>' . \Hubzero\Utility\Str::truncate($group->description, 60) . '</option>' . "\n";
+    }
 }
-$html .= '</select>'."\n";
+$html .= '</select>' . "\n";
 
 echo $html;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,28 +17,28 @@ use Lang;
  */
 class DOIServicetype extends Select
 {
-	/**
-	 * Element name
-	 *
-	 * @var  string
-	 */
-	public $type = 'doiservicetype';
+    /**
+     * Element name
+     *
+     * @var  string
+     */
+    public $type = 'doiservicetype';
 
-	/**
-	 * Method to get the field options for DOI Service
-	 *
-	 * @return  array  The field options.
-	 */
-	protected function getOptions()
-	{
-		$options   = array();
+    /**
+     * Method to get the field options for DOI Service
+     *
+     * @return  array  The field options.
+     */
+    protected function getOptions()
+    {
+        $options   = array();
 
-		$options[] =  Html::select('option', '0', Lang::txt('None'));
-		$options[] =  Html::select('option', '1', Lang::txt('EZID'));
-		$options[] =  Html::select('option', '2', Lang::txt('DataCite'));
+        $options[] =  Html::select('option', '0', Lang::txt('None'));
+        $options[] =  Html::select('option', '1', Lang::txt('EZID'));
+        $options[] =  Html::select('option', '2', Lang::txt('DataCite'));
 
-		Document::addScript('/core/components/com_publications/admin/assets/js/doiservice.js');
+        Document::addScript('/core/components/com_publications/admin/assets/js/doiservice.js');
 
-		return $options;
-	}
+        return $options;
+    }
 }

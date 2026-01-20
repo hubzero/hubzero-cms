@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,25 +17,22 @@ $isEnabled = $this->isEnabled;
 $updateValue = $isEnabled ? '0' : '1';
 $token = Session::getFormToken();
 $action = Route::url(
-	"index.php?option=$this->option&controller=$this->controller&task=update&id=$id&action=$action&value=$updateValue&$token=1"
+    "index.php?option=$this->option&controller=$this->controller&task=update&id=$id&action=$action&value=$updateValue&$token=1"
 );
 
-if ($isEnabled)
-{
-	$alt = Lang::txt('JYES');
-	$class = 'publish';
-}
-else
-{
-	$alt = Lang::txt('JNO');
-	$class = 'unpublish';
+if ($isEnabled) {
+    $alt = Lang::txt('JYES');
+    $class = 'publish';
+} else {
+    $alt = Lang::txt('JNO');
+    $class = 'unpublish';
 }
 ?>
 
 <td class="align-center">
-	<a class="state <?php echo $class; ?>" href="<?php echo $action; ?>">
-		<span>
-			<?php echo $alt; ?>
-		</span>
-	</a>
+    <a class="state <?php echo $class; ?>" href="<?php echo $action; ?>">
+        <span>
+            <?php echo $alt; ?>
+        </span>
+    </a>
 </td>

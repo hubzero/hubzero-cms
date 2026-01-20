@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,13 +13,13 @@ defined('_HZEXEC_') or die();
 
 ?>
 <br />
-	<ul class="key">
-		<li class="draft"><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT'); ?></li>
-		<li class="ready"><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_READY'); ?></li>
-		<li class="new"><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PENDING'); ?></li>
-		<li class="preserving"><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PRESERVING'); ?></li>
-		<li class="wip"><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_WIP'); ?></li>
-		<li class="published"><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED'); ?></li>
-		<li class="unpublished"><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED'); ?></li>
-		<li class="deleted"><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_DELETED'); ?></li>
-	</ul>
+    <ul class="key">
+        <li class="draft"><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT'); ?></li>
+        <li class="ready"><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_READY'); ?></li>
+        <li class="new"><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PENDING'); ?></li>
+        <li class="preserving"><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PRESERVING'); ?></li>
+        <li class="wip"><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_WIP'); ?></li>
+        <li class="published"><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED'); ?></li>
+        <li class="unpublished"><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED'); ?></li>
+        <li class="deleted"><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_DELETED'); ?></li>
+    </ul>

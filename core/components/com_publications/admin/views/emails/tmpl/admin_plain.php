@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,9 +21,8 @@ $message .= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' "' . $this->model->tit
 $message .= Lang::txt('COM_PUBLICATIONS_EMAIL_URL') . ': ' . $pubLink . "\n";
 $message .= Lang::txt('COM_PUBLICATIONS_PROJECT') . ': ' . $this->project->get('title') . ' (' . $this->project->get('alias');
 
-if ($this->project->isProvisioned())
-{
-	$message .= ' - ' . Lang::txt('COM_PROJECTS_PROVISIONED');
+if ($this->project->isProvisioned()) {
+    $message .= ' - ' . Lang::txt('COM_PROJECTS_PROVISIONED');
 }
 
 $message .= ')' . "\n";
@@ -29,10 +31,9 @@ $message .= Lang::txt('COM_PUBLICATIONS_EMAIL_PROJECT_URL') . ': ' . $link . "\n
 $message .= '-------------------------------' . "\n";
 
 // Append a message
-if ($this->message)
-{
-	$message .= Lang::txt('COM_PUBLICATION_MSG_MESSAGE_FROM_ADMIN') . ': ' . "\n";
-	$message .= $this->message . "\n";
+if ($this->message) {
+    $message .= Lang::txt('COM_PUBLICATION_MSG_MESSAGE_FROM_ADMIN') . ': ' . "\n";
+    $message .= $this->message . "\n";
 }
 
 $message = str_replace('<br />', '', $message);
