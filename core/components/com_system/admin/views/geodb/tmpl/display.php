@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,11 +16,11 @@ Toolbar::preferences($this->option, '550');
 
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
-	<div class="grid">
-		<div class="col span6">
-			<p>
-				<?php echo Lang::txt('COM_SYSTEM_GEO_HELP'); ?>
-			</p>
-		</div>
-	</div>
+    <div class="grid">
+        <div class="col span6">
+            <p>
+                <?php echo Lang::txt('COM_SYSTEM_GEO_HELP'); ?>
+            </p>
+        </div>
+    </div>
 </form>
