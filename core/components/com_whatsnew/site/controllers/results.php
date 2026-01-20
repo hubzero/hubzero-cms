@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,473 +23,429 @@ use Html;
  */
 class Results extends SiteController
 {
-	/**
-	 * Execute a task
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		$this->registerTask('feedrss', 'feed');
-		$this->registerTask('feed.rss', 'feed');
+    /**
+     * Execute a task
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        $this->registerTask('feedrss', 'feed');
+        $this->registerTask('feed.rss', 'feed');
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * Display a list of new item's
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		$menu = \App::get('menu')->getActive();
-		if (!$menu)
-		{
-			$menu = new \stdClass;
-			$menu->params = '';
-		}
+    /**
+     * Display a list of new item's
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        $menu = \App::get('menu')->getActive();
+        if (!$menu) {
+            $menu = new \stdClass();
+            $menu->params = '';
+        }
 
-		$menu->param = new \Hubzero\Config\Registry($menu->params);
+        $menu->param = new \Hubzero\Config\Registry($menu->params);
 
-		// Incoming
-		$period = Request::getString('period', $menu->param->get('period', 'month'));
+        // Incoming
+        $period = Request::getString('period', $menu->param->get('period', 'month'));
 
-		// Paging variables
-		$start = Request::getInt('limitstart', 0);
-		$limit = Request::getInt('limit', Config::get('list_limit'));
+        // Paging variables
+        $start = Request::getInt('limitstart', 0);
+        $limit = Request::getInt('limit', Config::get('list_limit'));
 
-		// Get categories
-		$areas = $this->_getAreas();
+        // Get categories
+        $areas = $this->getAreas();
 
-		// Was there a category passed in the querystring?
-		$area = trim(Request::getWord('category', ''));
+        // Was there a category passed in the querystring?
+        $area = trim(Request::getWord('category', ''));
 
-		// Check the search string for a category prefix
-		if ($period != null)
-		{
-			$searchstring = strtolower($period);
-			foreach ($areas as $c => $t)
-			{
-				$regexp = '/' . $c . ':/';
-				if (strpos($searchstring, $c . ':') !== false)
-				{
-					// We found an active category
-					// NOTE: this will override any category sent in the querystring
-					$area = $c;
-					// Strip it off the search string
-					$searchstring = preg_replace($regexp, '', $searchstring);
-					break;
-				}
-				// Does the category contain sub-categories?
-				if (is_array($t) && !empty($t))
-				{
-					// It does - loop through them and perform the same check
-					foreach ($t as $sc => $st)
-					{
-						$regexp = '/' . $sc . ':/';
-						if (strpos($searchstring, $sc . ':') !== false)
-						{
-							// We found an active category
-							// NOTE: this will override any category sent in the querystring
-							$area = $sc;
-							// Strip it off the search string
-							$searchstring = preg_replace($regexp, '', $searchstring);
-							break;
-						}
-					}
-				}
-			}
-			$period = trim($searchstring);
-		}
+        // Check the search string for a category prefix
+        if ($period != null) {
+            $searchstring = strtolower($period);
+            foreach ($areas as $c => $t) {
+                $regexp = '/' . $c . ':/';
+                if (strpos($searchstring, $c . ':') !== false) {
+                    // We found an active category
+                    // NOTE: this will override any category sent in the querystring
+                    $area = $c;
+                    // Strip it off the search string
+                    $searchstring = preg_replace($regexp, '', $searchstring);
+                    break;
+                }
+                // Does the category contain sub-categories?
+                if (is_array($t) && !empty($t)) {
+                    // It does - loop through them and perform the same check
+                    foreach ($t as $sc => $st) {
+                        $regexp = '/' . $sc . ':/';
+                        if (strpos($searchstring, $sc . ':') !== false) {
+                            // We found an active category
+                            // NOTE: this will override any category sent in the querystring
+                            $area = $sc;
+                            // Strip it off the search string
+                            $searchstring = preg_replace($regexp, '', $searchstring);
+                            break;
+                        }
+                    }
+                }
+            }
+            $period = trim($searchstring);
+        }
 
-		// Get the active category
-		if ($area)
-		{
-			$activeareas = array($area);
-		}
-		else
-		{
-			$limit = 5;
-			$activeareas = $areas;
-		}
+        // Get the active category
+        if ($area) {
+            $activeareas = array($area);
+        } else {
+            $limit = 5;
+            $activeareas = $areas;
+        }
 
-		// Process the keyword for exact phrase matches, etc.
-		$p = new Period($period);
+        // Process the keyword for exact phrase matches, etc.
+        $p = new Period($period);
 
-		// Get the search result totals
-		$totals = Event::trigger(
-			'whatsnew.onWhatsnew',
-			array(
-				$p,
-				0,
-				0,
-				$activeareas
-			)
-		);
+        // Get the search result totals
+        $totals = Event::trigger(
+            'whatsnew.onWhatsnew',
+            array(
+                $p,
+                0,
+                0,
+                $activeareas
+            )
+        );
 
-		$limit = ($limit == 0) ? 'all' : $limit;
+        $limit = ($limit == 0) ? 'all' : $limit;
 
-		// Get the search results
-		$results = Event::trigger(
-			'whatsnew.onWhatsnew',
-			array(
-				$p,
-				$limit,
-				$start,
-				$activeareas
-			)
-		);
+        // Get the search results
+        $results = Event::trigger(
+            'whatsnew.onWhatsnew',
+            array(
+                $p,
+                $limit,
+                $start,
+                $activeareas
+            )
+        );
 
-		// Get the total results found (sum of all categories)
-		$i = 0;
-		$total = 0;
-		$cats = array();
-		foreach ($areas as $c => $t)
-		{
-			$cats[$i]['category'] = $c;
+        // Get the total results found (sum of all categories)
+        $i = 0;
+        $total = 0;
+        $cats = array();
+        foreach ($areas as $c => $t) {
+            $cats[$i]['category'] = $c;
 
-			// Do sub-categories exist?
-			if (is_array($t) && !empty($t))
-			{
-				// They do - do some processing
-				$cats[$i]['title'] = ucfirst($c);
-				$cats[$i]['total'] = 0;
-				$cats[$i]['_sub']  = array();
-				$z = 0;
-				// Loop through each sub-category
-				foreach ($t as $s => $st)
-				{
-					// Ensure a matching array of totals exist
-					if (is_array($totals[$i])
-					 && !empty($totals[$i])
-					 && isset($totals[$i][$z]))
-					{
-						// Add to the parent category's total
-						$cats[$i]['total'] = $cats[$i]['total'] + $totals[$i][$z];
-						// Get some info for each sub-category
-						$cats[$i]['_sub'][$z]['category'] = $s;
-						$cats[$i]['_sub'][$z]['title']    = stripslashes($st);
-						$cats[$i]['_sub'][$z]['total']    = $totals[$i][$z];
-					}
-					$z++;
-				}
-			}
-			else
-			{
-				// No sub-categories - this should be easy
-				$cats[$i]['title'] = $t;
-				$cats[$i]['total'] = (!is_array($totals[$i])) ? $totals[$i] : 0;
-			}
+            // Do sub-categories exist?
+            if (is_array($t) && !empty($t)) {
+                // They do - do some processing
+                $cats[$i]['title'] = ucfirst($c);
+                $cats[$i]['total'] = 0;
+                $cats[$i]['_sub']  = array();
+                $z = 0;
+                // Loop through each sub-category
+                foreach ($t as $s => $st) {
+                    // Ensure a matching array of totals exist
+                    if (
+                        is_array($totals[$i])
+                        && !empty($totals[$i])
+                        && isset($totals[$i][$z])
+                    ) {
+                        // Add to the parent category's total
+                        $cats[$i]['total'] = $cats[$i]['total'] + $totals[$i][$z];
+                        // Get some info for each sub-category
+                        $cats[$i]['_sub'][$z]['category'] = $s;
+                        $cats[$i]['_sub'][$z]['title']    = stripslashes($st);
+                        $cats[$i]['_sub'][$z]['total']    = $totals[$i][$z];
+                    }
+                    $z++;
+                }
+            } else {
+                // No sub-categories - this should be easy
+                $cats[$i]['title'] = $t;
+                $cats[$i]['total'] = (!is_array($totals[$i])) ? $totals[$i] : 0;
+            }
 
-			// Add to the overall total
-			$total += intval($cats[$i]['total']);
-			$i++;
-		}
+            // Add to the overall total
+            $total += intval($cats[$i]['total']);
+            $i++;
+        }
 
-		// Do we have an active area?
-		$active = '';
-		if (count($activeareas) == 1)
-		{
-			$active = $activeareas[0];
-		}
+        // Do we have an active area?
+        $active = '';
+        if (count($activeareas) == 1) {
+            $active = $activeareas[0];
+        }
 
-		// Set the page title
-		$title = Lang::txt(strtoupper($this->_option)) . ': ' . $this->_text($period);
+        // Set the page title
+        $title = Lang::txt(strtoupper($this->_option)) . ': ' . $this->text($period);
 
-		Document::setTitle($title);
+        Document::setTitle($title);
 
-		// Set the pathway
-		if (Pathway::count() <= 0)
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_option)),
-				'index.php?option=' . $this->_option
-			);
-		}
-		Pathway::append(
-			$this->_text($period),
-			'index.php?option=' . $this->_option . '&period=' . $period
-		);
+        // Set the pathway
+        if (Pathway::count() <= 0) {
+            Pathway::append(
+                Lang::txt(strtoupper($this->_option)),
+                'index.php?option=' . $this->_option
+            );
+        }
+        Pathway::append(
+            $this->text($period),
+            'index.php?option=' . $this->_option . '&period=' . $period
+        );
 
-		// Build some options for the time period <select>
-		$periodlist = array();
-		$periodlist[] = Html::select('option', 'week', Lang::txt('COM_WHATSNEW_OPT_WEEK'));
-		$periodlist[] = Html::select('option', 'month', Lang::txt('COM_WHATSNEW_OPT_MONTH'));
-		$periodlist[] = Html::select('option', 'quarter', Lang::txt('COM_WHATSNEW_OPT_QUARTER'));
-		$periodlist[] = Html::select('option', 'year', Lang::txt('COM_WHATSNEW_OPT_YEAR'));
+        // Build some options for the time period <select>
+        $periodlist = array();
+        $periodlist[] = Html::select('option', 'week', Lang::txt('COM_WHATSNEW_OPT_WEEK'));
+        $periodlist[] = Html::select('option', 'month', Lang::txt('COM_WHATSNEW_OPT_MONTH'));
+        $periodlist[] = Html::select('option', 'quarter', Lang::txt('COM_WHATSNEW_OPT_QUARTER'));
+        $periodlist[] = Html::select('option', 'year', Lang::txt('COM_WHATSNEW_OPT_YEAR'));
 
-		$thisyear = date("Y", time());
-		for ($y = $thisyear; $y >= 2002; $y--)
-		{
-			if (time() >= strtotime('10/1/' . $y))
-			{
-				$periodlist[] = Html::select('option', $y, Lang::txt('COM_WHATSNEW_OPT_FISCAL_YEAR') . ' ' . $y);
-			}
-		}
-		for ($y = $thisyear; $y >= 2002; $y--)
-		{
-			if (time() >= strtotime('01/01/' . $y))
-			{
-				$periodlist[] = Html::select('option', 'c_' . $y, Lang::txt('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y);
-			}
-		}
+        $thisyear = date("Y", time());
+        for ($y = $thisyear; $y >= 2002; $y--) {
+            if (time() >= strtotime('10/1/' . $y)) {
+                $periodlist[] = Html::select('option', $y, Lang::txt('COM_WHATSNEW_OPT_FISCAL_YEAR') . ' ' . $y);
+            }
+        }
+        for ($y = $thisyear; $y >= 2002; $y--) {
+            if (time() >= strtotime('01/01/' . $y)) {
+                $optionLabel = Lang::txt('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y;
+                $periodlist[] = Html::select('option', 'c_' . $y, $optionLabel);
+            }
+        }
 
-		$this->view
-			->set('cats', $cats)
-			->set('limit', $limit)
-			->set('start', $start)
-			->set('totals', $totals)
-			->set('total', $total)
-			->set('period', $period)
-			->set('periodlist', $periodlist)
-			->set('area', $area)
-			->set('active', $active)
-			->set('title', $title)
-			->set('results', $results)
-			->display();
-	}
+        $this->view
+            ->set('cats', $cats)
+            ->set('limit', $limit)
+            ->set('start', $start)
+            ->set('totals', $totals)
+            ->set('total', $total)
+            ->set('period', $period)
+            ->set('periodlist', $periodlist)
+            ->set('area', $area)
+            ->set('active', $active)
+            ->set('title', $title)
+            ->set('results', $results)
+            ->display();
+    }
 
-	/**
-	 * Generate an RSS feed
-	 *
-	 * @return     void
-	 */
-	public function feedTask()
-	{
-		// Set the mime encoding for the document
-		Document::setType('feed');
+    /**
+     * Generate an RSS feed
+     *
+     * @return     void
+     */
+    public function feedTask()
+    {
+        // Set the mime encoding for the document
+        Document::setType('feed');
 
-		// Start a new feed object
-		$doc = Document::instance();
-		$doc->link = Route::url('index.php?option=' . $this->_option);
+        // Start a new feed object
+        $doc = Document::instance();
+        $doc->link = Route::url('index.php?option=' . $this->_option);
 
-		// Incoming
-		$period = Request::getString('period', 'month');
+        // Incoming
+        $period = Request::getString('period', 'month');
 
-		// Paging variables
-		$start = Request::getInt('limitstart', 0);
-		$limit = Request::getInt('limit', Config::get('list_limit'));
+        // Paging variables
+        $start = Request::getInt('limitstart', 0);
+        $limit = Request::getInt('limit', Config::get('list_limit'));
 
-		// Get categories
-		$areas = $this->_getAreas();
+        // Get categories
+        $areas = $this->getAreas();
 
-		// Was there a category passed in the querystring?
-		$area = trim(Request::getWord('category', ''));
+        // Was there a category passed in the querystring?
+        $area = trim(Request::getWord('category', ''));
 
-		// Check the search string for a category prefix
-		if ($period != null)
-		{
-			$searchstring = strtolower($period);
-			foreach ($areas as $c => $t)
-			{
-				$regexp = '/' . $c . ':/';
-				if (strpos($searchstring, $c . ':') !== false)
-				{
-					// We found an active category
-					// NOTE: this will override any category sent in the querystring
-					$area = $c;
-					// Strip it off the search string
-					$searchstring = preg_replace($regexp, '', $searchstring);
-					break;
-				}
-				// Does the category contain sub-categories?
-				if (is_array($t) && !empty($t))
-				{
-					// It does - loop through them and perform the same check
-					foreach ($t as $sc => $st)
-					{
-						$regexp = '/' . $sc . ':/';
-						if (strpos($searchstring, $sc . ':') !== false)
-						{
-							// We found an active category
-							// NOTE: this will override any category sent in the querystring
-							$area = $sc;
-							// Strip it off the search string
-							$searchstring = preg_replace($regexp, '', $searchstring);
-							break;
-						}
-					}
-				}
-			}
-			$period = trim($searchstring);
-		}
+        // Check the search string for a category prefix
+        if ($period != null) {
+            $searchstring = strtolower($period);
+            foreach ($areas as $c => $t) {
+                $regexp = '/' . $c . ':/';
+                if (strpos($searchstring, $c . ':') !== false) {
+                    // We found an active category
+                    // NOTE: this will override any category sent in the querystring
+                    $area = $c;
+                    // Strip it off the search string
+                    $searchstring = preg_replace($regexp, '', $searchstring);
+                    break;
+                }
+                // Does the category contain sub-categories?
+                if (is_array($t) && !empty($t)) {
+                    // It does - loop through them and perform the same check
+                    foreach ($t as $sc => $st) {
+                        $regexp = '/' . $sc . ':/';
+                        if (strpos($searchstring, $sc . ':') !== false) {
+                            // We found an active category
+                            // NOTE: this will override any category sent in the querystring
+                            $area = $sc;
+                            // Strip it off the search string
+                            $searchstring = preg_replace($regexp, '', $searchstring);
+                            break;
+                        }
+                    }
+                }
+            }
+            $period = trim($searchstring);
+        }
 
-		// Get the active category
-		if ($area)
-		{
-			$activeareas = array($area);
-		}
-		else
-		{
-			$limit = 5;
-			$activeareas = $areas;
-		}
+        // Get the active category
+        if ($area) {
+            $activeareas = array($area);
+        } else {
+            $limit = 5;
+            $activeareas = $areas;
+        }
 
-		// Process the keyword for exact phrase matches, etc.
-		$p = new Period($period);
+        // Process the keyword for exact phrase matches, etc.
+        $p = new Period($period);
 
-		// Fetch results
-		$results = Event::trigger(
-			'whatsnew.onWhatsnew',
-			array(
-				$p,
-				$limit,
-				$start,
-				$activeareas
-			)
-		);
+        // Fetch results
+        $results = Event::trigger(
+            'whatsnew.onWhatsnew',
+            array(
+                $p,
+                $limit,
+                $start,
+                $activeareas
+            )
+        );
 
-		// Run through the array of arrays returned from plugins and find the one that returned results
-		$rows = array();
-		if ($results)
-		{
-			foreach ($results as $result)
-			{
-				if (is_array($result) && !empty($result))
-				{
-					$rows = $result;
-					break;
-				}
-			}
-		}
+        // Run through the array of arrays returned from plugins and find the one that returned results
+        $rows = array();
+        if ($results) {
+            foreach ($results as $result) {
+                if (is_array($result) && !empty($result)) {
+                    $rows = $result;
+                    break;
+                }
+            }
+        }
 
-		// Build some basic RSS document information
-		$doc->title  = Config::get('sitename') . ' - ' . Lang::txt('COM_WHATSNEW_RSS_TITLE') . ': ' . $period;
-		$doc->title .= ($area) ? ': ' . $area : '';
-		$doc->description = Lang::txt('COM_WHATSNEW_RSS_DESCRIPTION', Config::get('sitename'));
-		$doc->copyright   = Lang::txt('COM_WHATSNEW_RSS_COPYRIGHT', gmdate("Y"), Config::get('sitename'));
-		$doc->category    = Lang::txt('COM_WHATSNEW_RSS_CATEGORY');
+        // Build some basic RSS document information
+        $doc->title  = Config::get('sitename') . ' - ' . Lang::txt('COM_WHATSNEW_RSS_TITLE') . ': ' . $period;
+        $doc->title .= ($area) ? ': ' . $area : '';
+        $doc->description = Lang::txt('COM_WHATSNEW_RSS_DESCRIPTION', Config::get('sitename'));
+        $doc->copyright   = Lang::txt('COM_WHATSNEW_RSS_COPYRIGHT', gmdate("Y"), Config::get('sitename'));
+        $doc->category    = Lang::txt('COM_WHATSNEW_RSS_CATEGORY');
 
-		// Start outputing results if any found
-		if (count($rows) > 0)
-		{
-			foreach ($rows as $row)
-			{
-				// Prepare the title
-				$title = strip_tags(stripslashes($row->title));
-				$title = html_entity_decode($title);
+        // Start outputing results if any found
+        if (count($rows) > 0) {
+            foreach ($rows as $row) {
+                // Prepare the title
+                $title = strip_tags(stripslashes($row->title));
+                $title = html_entity_decode($title);
 
-				// URL link to article
-				$row->href = DS . ltrim($row->href, DS);
-				/*if (strstr($row->href, 'view'))
-				{
-					// tests to see if itemid has already been included - this occurs for typed content items
-					if (!strstr($row->href, 'Itemid'))
-					{
-						$temp = explode('id=', $row->href);
-						if (isset($temp[1]))
-						{
-							$row->href .= '&Itemid=' . $app->getItemid($temp[1]);
-						}
-					}
-				}*/
-				$link = Route::url($row->href);
+                // URL link to article
+                $row->href = DS . ltrim($row->href, DS);
+                /*if (strstr($row->href, 'view'))
+                {
+                    // tests to see if itemid has already been included - this occurs for typed content items
+                    if (!strstr($row->href, 'Itemid'))
+                    {
+                        $temp = explode('id=', $row->href);
+                        if (isset($temp[1]))
+                        {
+                            $row->href .= '&Itemid=' . $app->getItemid($temp[1]);
+                        }
+                    }
+                }*/
+                $link = Route::url($row->href);
 
-				if (!isset($row->text) && isset($row->itext))
-				{
-					$row->text = $row->itext;
-				}
+                if (!isset($row->text) && isset($row->itext)) {
+                    $row->text = $row->itext;
+                }
 
-				// Strip html from feed item description text
-				$description = preg_replace("'<script[^>]*>.*?</script>'si", '', stripslashes($row->text));
-				$description = \Hubzero\Utility\Str::truncate($description, 300);
-				$author = '';
-				$date = (isset($row->publish_up) ? date('r', strtotime($row->publish_up)) : '');
+                // Strip html from feed item description text
+                $description = preg_replace("'<script[^>]*>.*?</script>'si", '', stripslashes($row->text));
+                $description = \Hubzero\Utility\Str::truncate($description, 300);
+                $author = '';
+                $date = (isset($row->publish_up) ? date('r', strtotime($row->publish_up)) : '');
 
-				// Load individual item creator class
-				$item = new \Hubzero\Document\Type\Feed\Item();
-				$item->title       = $title;
-				$item->link        = $link;
-				$item->description = $description;
-				$item->date        = $date;
-				$item->category    = (isset($row->typetitle)) ? $row->typetitle : '';
-				if (isset($row->authors))
-				{
-					$item->author  = strip_tags($row->authors);
-				}
+                // Load individual item creator class
+                $item = new \Hubzero\Document\Type\Feed\Item();
+                $item->title       = $title;
+                $item->link        = $link;
+                $item->description = $description;
+                $item->date        = $date;
+                $item->category    = (isset($row->typetitle)) ? $row->typetitle : '';
+                if (isset($row->authors)) {
+                    $item->author  = strip_tags($row->authors);
+                }
 
-				// Loads item info into rss array
-				$doc->addItem($item);
-			}
-		}
-	}
+                // Loads item info into rss array
+                $doc->addItem($item);
+            }
+        }
+    }
 
-	/**
-	 * Get the translated text value for a give time period
-	 *
-	 * @param   string  $period  Time period
-	 * @return  string
-	 */
-	private function _text($period)
-	{
-		switch ($period)
-		{
-			case 'week':
-				return Lang::txt('COM_WHATSNEW_OPT_WEEK');
-				break;
-			case 'month':
-				return Lang::txt('COM_WHATSNEW_OPT_MONTH');
-				break;
-			case 'quarter':
-				return Lang::txt('COM_WHATSNEW_OPT_QUARTER');
-				break;
-			case 'year':
-				return Lang::txt('COM_WHATSNEW_OPT_YEAR');
-				break;
-			default:
-				$thisyear = date("Y", time());
-				for ($y = $thisyear; $y >= 2002; $y--)
-				{
-					if (time() >= strtotime('10/1/' . $y))
-					{
-						if ($y == $period)
-						{
-							return Lang::txt('COM_WHATSNEW_OPT_FISCAL_YEAR') . ' ' . $y;
-						}
-					}
-				}
-				for ($y = $thisyear; $y >= 2002; $y--)
-				{
-					if (time() >= strtotime('01/01/' . $y))
-					{
-						if ('c_' . $y == $period)
-						{
-							return Lang::txt('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y;
-						}
-					}
-				}
-				break;
-		}
-	}
+    /**
+     * Get the translated text value for a give time period
+     *
+     * @param   string  $period  Time period
+     * @return  string
+     */
+    private function text($period)
+    {
+        switch ($period) {
+            case 'week':
+                return Lang::txt('COM_WHATSNEW_OPT_WEEK');
+                break;
+            case 'month':
+                return Lang::txt('COM_WHATSNEW_OPT_MONTH');
+                break;
+            case 'quarter':
+                return Lang::txt('COM_WHATSNEW_OPT_QUARTER');
+                break;
+            case 'year':
+                return Lang::txt('COM_WHATSNEW_OPT_YEAR');
+                break;
+            default:
+                $thisyear = date("Y", time());
+                for ($y = $thisyear; $y >= 2002; $y--) {
+                    if (time() >= strtotime('10/1/' . $y)) {
+                        if ($y == $period) {
+                            return Lang::txt('COM_WHATSNEW_OPT_FISCAL_YEAR') . ' ' . $y;
+                        }
+                    }
+                }
+                for ($y = $thisyear; $y >= 2002; $y--) {
+                    if (time() >= strtotime('01/01/' . $y)) {
+                        if ('c_' . $y == $period) {
+                            return Lang::txt('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y;
+                        }
+                    }
+                }
+                break;
+        }
+    }
 
-	/**
-	 * Get a list of active plugins
-	 *
-	 * @return  array
-	 */
-	private function _getAreas()
-	{
-		// Do we already have an array of areas?
-		if (!isset($this->searchareas) || empty($this->searchareas))
-		{
-			// No - so we'll need to get it
-			$areas = array();
+    /**
+     * Get a list of active plugins
+     *
+     * @return  array
+     */
+    private function getAreas()
+    {
+        // Do we already have an array of areas?
+        if (!isset($this->searchareas) || empty($this->searchareas)) {
+            // No - so we'll need to get it
+            $areas = array();
 
-			// Trigger the functions that return the areas we'll be searching
-			$searchareas = Event::trigger('whatsnew.onWhatsnewAreas');
+            // Trigger the functions that return the areas we'll be searching
+            $searchareas = Event::trigger('whatsnew.onWhatsnewAreas');
 
-			// Build an array of the areas
-			foreach ($searchareas as $area)
-			{
-				$areas = array_merge($areas, $area);
-			}
+            // Build an array of the areas
+            foreach ($searchareas as $area) {
+                $areas = array_merge($areas, $area);
+            }
 
-			// Save the array for use elsewhere
-			$this->searchareas = $areas;
-		}
+            // Save the array for use elsewhere
+            $this->searchareas = $areas;
+        }
 
-		// Return the array
-		return $this->searchareas;
-	}
+        // Return the array
+        return $this->searchareas;
+    }
 }
