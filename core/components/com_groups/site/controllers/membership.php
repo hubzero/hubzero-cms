@@ -72,14 +72,14 @@ class Membership extends Base
 
         //check to make sure we have  cname
         if (!$this->cn) {
-            $this->_errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
+            $this->errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
         }
 
         // Load the group page
         $this->view->group = Group::getInstance($this->cn);
 
         if (!$this->view->group) {
-            $this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
+            $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
         //check if group is approved
@@ -91,12 +91,12 @@ class Membership extends Base
 
         // Ensure we found the group info
         if (!$this->view->group || !$this->view->group->get('gidNumber')) {
-            $this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
+            $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
         // Check authorization
         if ($this->view->group->published == 2 || ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.invite'))) {
-            $this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
+            $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
         // Get group params
@@ -153,7 +153,7 @@ class Membership extends Base
 
         //check to make sure we have  cname
         if (!$this->cn) {
-            $this->_errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
+            $this->errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
         }
 
         // Load the group page
@@ -161,12 +161,12 @@ class Membership extends Base
 
         // Ensure we found the group info
         if (!$this->view->group || !$this->view->group->get('gidNumber')) {
-            $this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
+            $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
         // Check authorization
         if ($this->view->group->published == 2 || ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.invite'))) {
-            $this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
+            $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
         //get request vars
@@ -515,7 +515,7 @@ class Membership extends Base
 
         //check to make sure we have  cname
         if (!$this->cn) {
-            $this->_errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
+            $this->errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
         }
 
         // Load the group page
@@ -523,12 +523,12 @@ class Membership extends Base
 
         // Ensure we found the group info
         if (!$this->view->group || !$this->view->group->get('gidNumber')) {
-            $this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
+            $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
         //do we have permission to join group
         if ($this->view->group->get('type') == 2) {
-            $this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_FORBIDDEN'));
+            $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_FORBIDDEN'));
             return;
         }
 
@@ -586,7 +586,7 @@ class Membership extends Base
             $this->view->group->remove('invitees', array(User::get('id')));
             $this->view->group->update();
         } else {
-            $this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_UNABLE_TO_JOIN'));
+            $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_UNABLE_TO_JOIN'));
         }
 
         // log invites
@@ -692,7 +692,7 @@ class Membership extends Base
 
         //check to make sure we have  cname
         if (!$this->cn) {
-            $this->_errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
+            $this->errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
         }
 
         // Load the group page
@@ -700,7 +700,7 @@ class Membership extends Base
 
         // Ensure we found the group info
         if (!$this->view->group || !$this->view->group->get('gidNumber')) {
-            $this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
+            $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
         // Get the group params
@@ -814,7 +814,7 @@ class Membership extends Base
 
         //check to make sure we have  cname
         if (!$this->cn) {
-            $this->_errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
+            $this->errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
         }
 
         // Load the group page
@@ -822,7 +822,7 @@ class Membership extends Base
 
         // Ensure we found the group info
         if (!$this->view->group || !$this->view->group->get('gidNumber')) {
-            $this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
+            $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
         // Get the group params
@@ -948,7 +948,7 @@ class Membership extends Base
 
         //check to make sure we have  cname
         if (!$this->cn) {
-            $this->_errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
+            $this->errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
         }
 
         // Load the group page
@@ -956,7 +956,7 @@ class Membership extends Base
 
         // Ensure we found the group info
         if (!$this->view->group || !$this->view->group->get('gidNumber')) {
-            $this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
+            $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
         // Get the group params
