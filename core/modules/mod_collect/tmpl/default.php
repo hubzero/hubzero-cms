@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,8 +21,10 @@ $url  = implode('/', array_map('rawurlencode', explode('/', $url)));
 $url .= (strstr($url, '?') ? '&' : '?') . 'tryto=collect';
 ?>
 
-<p class="collector"<?php if ($this->params->get('id')) { echo ' id="' . $this->params->get('id') . '"'; } ?>>
-	<a class="icon-collect btn collect-this" href="<?php echo htmlspecialchars($url); ?>">
-		<?php echo Lang::txt('MOD_COLLECT_ACTION'); ?>
-	</a>
+<p class="collector"<?php if ($this->params->get('id')) {
+    echo ' id="' . $this->params->get('id') . '"';
+                    } ?>>
+    <a class="icon-collect btn collect-this" href="<?php echo htmlspecialchars($url); ?>">
+        <?php echo Lang::txt('MOD_COLLECT_ACTION'); ?>
+    </a>
 </p>

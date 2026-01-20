@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,13 +15,13 @@ use Hubzero\Module\Module;
  */
 class Helper extends Module
 {
-	/**
-	 * Display module
-	 *
-	 * @return  void
-	 */
-	public function display()
-	{
-		require $this->getLayoutPath($this->params->get('layout', 'default'));
-	}
+    /**
+     * Display module
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        require $this->getLayoutPath($this->params->get('layout', 'default'));
+    }
 }

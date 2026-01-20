@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,53 +16,50 @@ use App;
  */
 class Helper extends Module
 {
-	/**
-	 * Display module contents
-	 *
-	 * @return  void
-	 */
-	public function display()
-	{
-		if (!App::isSite() || !User::isGuest())
-		{
-			return;
-		}
+    /**
+     * Display module contents
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        if (!App::isSite() || !User::isGuest()) {
+            return;
+        }
 
-		if (User::getState($this->module->module))
-		{
-			return;
-		}
+        if (User::getState($this->module->module)) {
+            return;
+        }
 
-		$this->moduleid = $this->params->get('moduleid', 'eprivacy');
-		$this->duration = $this->params->get('duration', 365);
+        $this->moduleid = $this->params->get('moduleid', 'eprivacy');
+        $this->duration = $this->params->get('duration', 365);
 
-		// Get current unix timestamp
-		$now = time() + (Config::get('offset') * 60 * 60);
+        // Get current unix timestamp
+        $now = time() + (Config::get('offset') * 60 * 60);
 
-		$expires = $now + 60*60*24* intval($this->duration);
+        $expires = $now + 60 * 60 * 24 * intval($this->duration);
 
-		$hide = Request::cookie($this->moduleid, '');
+        $hide = Request::cookie($this->moduleid, '');
 
-		if (!$hide && Request::getVar($this->moduleid, '', 'get'))
-		{
-			setcookie($this->moduleid, 'acknowledged', $expires);
-			return;
-		}
+        if (!$hide && Request::getVar($this->moduleid, '', 'get')) {
+            setcookie($this->moduleid, 'acknowledged', $expires);
+            return;
+        }
 
-		if ($hide)
-		{
-			return;
-		}
+        if ($hide) {
+            return;
+        }
 
-		$this->message  = $this->params->get('message', Lang::txt('MOD_EPRIVACY_DEFAULT_MESSAGE', Config::get('sitename')));
+        $defaultMessage = Lang::txt('MOD_EPRIVACY_DEFAULT_MESSAGE', Config::get('sitename'));
+        $this->message  = $this->params->get('message', $defaultMessage);
 
-		$uri  = Request::getString('REQUEST_URI', '', 'server');
-		$uri .= (strstr($uri, '?')) ? '&' : '?';
-		$uri .= $this->moduleid . '=close';
+        $uri  = Request::getString('REQUEST_URI', '', 'server');
+        $uri .= (strstr($uri, '?')) ? '&' : '?';
+        $uri .= $this->moduleid . '=close';
 
-		$this->uri = $uri;
+        $this->uri = $uri;
 
-		// Get the view
-		parent::display();
-	}
+        // Get the view
+        parent::display();
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,31 +18,27 @@ use App;
  */
 class Helper extends Module
 {
-	/**
-	 * Display module content
-	 *
-	 * @return  void
-	 */
-	public function display()
-	{
-		require_once Component::path('com_poll') . '/models/poll.php';
+    /**
+     * Display module content
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        require_once Component::path('com_poll') . '/models/poll.php';
 
-		$menu   = App::get('menu');
-		$items  = $menu->getItems('link', 'index.php?option=com_poll&view=poll');
-		$itemid = isset($items[0]) ? '&Itemid=' . $items[0]->id : '';
+        $menu   = App::get('menu');
+        $items  = $menu->getItems('link', 'index.php?option=com_poll&view=poll');
+        $itemid = isset($items[0]) ? '&Itemid=' . $items[0]->id : '';
 
-		if ($id = $this->params->get('id', 0))
-		{
-			$poll = PollModel::oneOrNew($id);
-		}
-		else
-		{
-			$poll = PollModel::current();
-		}
+        if ($id = $this->params->get('id', 0)) {
+            $poll = PollModel::oneOrNew($id);
+        } else {
+            $poll = PollModel::current();
+        }
 
-		if ($poll && $poll->id)
-		{
-			require $this->getLayoutPath();
-		}
-	}
+        if ($poll && $poll->id) {
+            require $this->getLayoutPath();
+        }
+    }
 }

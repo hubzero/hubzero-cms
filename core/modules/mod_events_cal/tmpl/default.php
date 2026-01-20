@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,13 +9,10 @@
 // no direct access
 defined('_HZEXEC_') or die();
 
-if ($this->getError())
-{
-?>
-	<p class="error"><?php echo $this->getError(); ?></p>
-<?php
-}
-else
-{
-	echo $this->content;
+if ($this->getError()) {
+    ?>
+    <p class="error"><?php echo $this->getError(); ?></p>
+    <?php
+} else {
+    echo $this->content;
 }

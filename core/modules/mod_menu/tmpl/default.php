@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,9 +11,8 @@ defined('_HZEXEC_') or die;
 
 $classnames = "menu{$class_sfx}";
 
-if ($disclosureMenu)
-{
-	$classnames .= " main-nav-bar disclosure-nav";
+if ($disclosureMenu) {
+    $classnames .= " main-nav-bar disclosure-nav";
 }
 
 $ariaControlTarget = '';
@@ -21,96 +21,79 @@ $ariaControlTarget = '';
 ?>
 
 <ul class="<?php echo $classnames ?>"<?php
-	$tag = '';
-	if ($params->get('tag_id') != null)
-	{
-		$tag = $params->get('tag_id').'';
-		echo ' id="' . $tag . '"';
-	}
+    $tag = '';
+if ($params->get('tag_id') != null) {
+    $tag = $params->get('tag_id') . '';
+    echo ' id="' . $tag . '"';
+}
 ?>>
-	<?php
-	foreach ($list as $i => &$item) :
-		$class = 'item-' . $item->id;
-		$rootLink = false;
-		$parentLink = false;
+    <?php
+    foreach ($list as $i => &$item) :
+        $class = 'item-' . $item->id;
+        $rootLink = false;
+        $parentLink = false;
 
-		if ($item->id == $active_id)
-		{
-			$class .= ' current';
-		}
+        if ($item->id == $active_id) {
+            $class .= ' current';
+        }
 
-		if (in_array($item->id, $path))
-		{
-			$class .= ' active';
-		}
-		elseif ($item->type == 'alias')
-		{
-			$aliasToId = $item->params->get('aliasoptions');
-			if (count($path) > 0 && $aliasToId == $path[count($path)-1])
-			{
-				$class .= ' active';
-			}
-			elseif (in_array($aliasToId, $path))
-			{
-				$class .= ' alias-parent-active';
-			}
-		}
+        if (in_array($item->id, $path)) {
+            $class .= ' active';
+        } elseif ($item->type == 'alias') {
+            $aliasToId = $item->params->get('aliasoptions');
+            if (count($path) > 0 && $aliasToId == $path[count($path) - 1]) {
+                $class .= ' active';
+            } elseif (in_array($aliasToId, $path)) {
+                $class .= ' alias-parent-active';
+            }
+        }
 
-		if ($item->level == 1)
-		{
-			$rootLink = true;
-		}
+        if ($item->level == 1) {
+            $rootLink = true;
+        }
 
-		if ($item->deeper)
-		{
-			$class .= ' deeper';
-		}
+        if ($item->deeper) {
+            $class .= ' deeper';
+        }
 
-		if ($item->parent)
-		{
-			$parentLink = true;
-			$class .= ' parent';
-			$ariaControlTarget = 'aria-control-target-' . $item->id;
-		}
+        if ($item->parent) {
+            $parentLink = true;
+            $class .= ' parent';
+            $ariaControlTarget = 'aria-control-target-' . $item->id;
+        }
 
-		if (!empty($class))
-		{
-			$class = ' class="' . trim($class) . '"';
-		}
+        if (!empty($class)) {
+            $class = ' class="' . trim($class) . '"';
+        }
 
-		echo '<li' . $class . '>';
+        echo '<li' . $class . '>';
 
-		$this->set('rootLink', $rootLink)
-			 ->set('parentLink', $parentLink);
-		// Render the menu item.
-		switch ($item->type) :
-			case 'separator':
-			case 'url':
-			case 'component':
-				require $this->getLayoutPath('default_' . $item->type);
-			break;
+        $this->set('rootLink', $rootLink)
+             ->set('parentLink', $parentLink);
+        // Render the menu item.
+        switch ($item->type) :
+            case 'separator':
+            case 'url':
+            case 'component':
+                require $this->getLayoutPath('default_' . $item->type);
+                break;
 
-			default:
-				require $this->getLayoutPath('default_url');
-			break;
-		endswitch;
+            default:
+                require $this->getLayoutPath('default_url');
+                break;
+        endswitch;
 
-		// The next item is deeper.
-		if ($item->deeper)
-		{
-			echo '<ul id="' . $ariaControlTarget . '">';
-		}
-		// The next item is shallower.
-		elseif ($item->shallower)
-		{
-			echo '</li>';
-			echo str_repeat('</ul></li>', $item->level_diff);
-		}
-		// The next item is on the same level.
-		else
-		{
-			echo '</li>';
-		}
-	endforeach;
-	?>
+        if ($item->deeper) {
+            // The next item is deeper.
+            echo '<ul id="' . $ariaControlTarget . '">';
+        } elseif ($item->shallower) {
+            // The next item is shallower.
+            echo '</li>';
+            echo str_repeat('</ul></li>', $item->level_diff);
+        } else {
+            // The next item is on the same level.
+            echo '</li>';
+        }
+    endforeach;
+    ?>
 </ul>

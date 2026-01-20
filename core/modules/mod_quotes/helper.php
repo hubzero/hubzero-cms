@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,51 +19,49 @@ use Date;
  */
 class Helper extends Module
 {
-	/**
-	 * Get module contents
-	 *
-	 * @return  void
-	 */
-	public function run()
-	{
-		require_once Component::path('com_feedback') . '/models/quote.php';
+    /**
+     * Get module contents
+     *
+     * @return  void
+     */
+    public function run()
+    {
+        require_once Component::path('com_feedback') . '/models/quote.php';
 
-		//Get the admin configured settings
-		$this->filters = array(
-			'limit'         => trim($this->params->get('maxquotes','')),
-			'id'            => Request::getInt('quoteid', 0),
-			'notable_quote' => 1
-		);
+        //Get the admin configured settings
+        $this->filters = array(
+            'limit'         => trim($this->params->get('maxquotes', '')),
+            'id'            => Request::getInt('quoteid', 0),
+            'notable_quote' => 1
+        );
 
-		// Get quotes
-		$sq = Quote::all()->whereEquals('notable_quote', 1)->where('quote', 'IS NOT', null)->order('date', 'desc');
-		if ($this->filters['id'])
-		{
-			$sq->whereEquals('id', $this->filters['id']);
-		}
+        // Get quotes
+        $sq = Quote::all()->whereEquals('notable_quote', 1)->where('quote', 'IS NOT', null)->order('date', 'desc');
+        if ($this->filters['id']) {
+            $sq->whereEquals('id', $this->filters['id']);
+        }
 
-		$this->quotes = $sq->limit($this->filters['limit'])->rows();
+        $this->quotes = $sq->limit($this->filters['limit'])->rows();
 
-		require $this->getLayoutPath($this->module->module);
-	}
+        require $this->getLayoutPath($this->module->module);
+    }
 
-	/**
-	 * Display module content
-	 *
-	 * @return  void
-	 */
-	public function display()
-	{
-		// Push the module CSS to the template
-		$this->css()
-		     ->js();
+    /**
+     * Display module content
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        // Push the module CSS to the template
+        $this->css()
+             ->js();
 
-		if ($content = $this->getCacheContent())
-		{
-			echo $content;
-			return;
-		}
+        if ($content = $this->getCacheContent()) {
+            echo $content;
+            return;
+        }
 
-		$this->run();
-	}
+        $this->run();
+    }
 }
