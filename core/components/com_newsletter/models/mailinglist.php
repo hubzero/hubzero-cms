@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,43 +20,43 @@ require_once __DIR__ . DS . 'mailinglist' . DS . 'unsubscribe.php';
  */
 class Mailinglist extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = 'newsletter';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    protected $namespace = 'newsletter';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'id';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'id';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'name' => 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'name' => 'notempty'
+    );
 
-	/**
-	 * Get a list of emails
-	 *
-	 * @return  object
-	 */
-	public function emails()
-	{
-		return $this->oneToMany(__NAMESPACE__ . '\\Mailinglist\\Email', 'mid');
-	}
+    /**
+     * Get a list of emails
+     *
+     * @return  object
+     */
+    public function emails()
+    {
+        return $this->oneToMany(__NAMESPACE__ . '\\Mailinglist\\Email', 'mid');
+    }
 }

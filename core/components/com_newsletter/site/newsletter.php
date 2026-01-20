@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -6,6 +7,7 @@
  */
 
 namespace Components\Newsletter\Site;
+
 use Hubzero\Utility\Arr;
 use Request;
 
@@ -24,23 +26,21 @@ $defaultController = 'newsletters';
 
 // controllers from the reply functionality
 $controllerNameMap = [
-	'email-subscriptions' => 'emailsubscriptions',
-	'pages' => 'pages',
-	'replies' => 'replies'
+    'email-subscriptions' => 'emailsubscriptions',
+    'pages' => 'pages',
+    'replies' => 'replies'
 ];
 
 // if we had a controller request, set it, otherwise set 'newsletters':
 $controllerName = Request::getCmd('controller', $defaultController);
-if (in_array($controllerName, array_keys($controllerNameMap)))
-{
-	// from reply component
-	$controllerName = Arr::getValue($controllerNameMap, $controllerName);
+if (in_array($controllerName, array_keys($controllerNameMap))) {
+    // from reply component
+    $controllerName = Arr::getValue($controllerNameMap, $controllerName);
 }
 
 //build controller path and require it
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = $defaultController;
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+    $controllerName = $defaultController;
 }
 require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,26 +8,23 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for managing campaigns and their secrets via com_newsletter
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20230920000000ComNewsletter extends Base
 {
-	public static $table = '#__campaign';
+    public static $table = '#__campaign';
 
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$table = self::$table;
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $table = self::$table;
 
-		if (!$this->db->tableExists($table))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `$table` (
+        if (!$this->db->tableExists($table)) {
+            $query = "CREATE TABLE IF NOT EXISTS `$table` (
 				id INT(11) NOT NULL AUTO_INCREMENT,
 				title VARCHAR(50),
 				`description` TEXT,
@@ -39,23 +37,22 @@ class Migration20230920000000ComNewsletter extends Base
 				KEY idx_title (title)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$table = self::$table;
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $table = self::$table;
 
-		if ($this->db->tableExists($table))
-		{
-			$query = "DROP TABLE IF EXISTS `$table`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists($table)) {
+            $query = "DROP TABLE IF EXISTS `$table`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

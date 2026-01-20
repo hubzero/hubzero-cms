@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,120 +23,120 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'newsletter.php';
 /**
  * API controller class for newsletters
  */
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Newslettersv1_0 extends ApiController
 {
-	/**
-	 * Return data for the current newsletter
-	 *
-	 * @apiMethod GET
-	 * @apiUri    /newsletters/current
-	 * @return    void
-	 */
-	public function currentTask()
-	{
-		// get the current newsletter
-		$newsletter = Newsletter::current();
+    /**
+     * Return data for the current newsletter
+     *
+     * @apiMethod GET
+     * @apiUri    /newsletters/current
+     * @return    void
+     */
+    public function currentTask()
+    {
+        // get the current newsletter
+        $newsletter = Newsletter::current();
 
-		// build the newsletter based on campaign
-		$result = array();
-		$result['id']      = $newsletter->issue;
-		$result['title']   = $newsletter->name;
-		$result['content'] = $newsletter->buildNewsletter($newsletter);
+        // build the newsletter based on campaign
+        $result = array();
+        $result['id']      = $newsletter->issue;
+        $result['title']   = $newsletter->name;
+        $result['content'] = $newsletter->buildNewsletter($newsletter);
 
-		$obj = new stdClass();
-		$obj->newsletter = $result;
+        $obj = new stdClass();
+        $obj->newsletter = $result;
 
-		$this->send($obj);
-	}
+        $this->send($obj);
+    }
 
-	/**
-	 * Return data for newsletters
-	 *
-	 * @apiMethod GET
-	 * @apiUri    /newsletters/list
-	 * @apiParameter {
-	 * 		"name":          "limit",
-	 * 		"description":   "Number of result to return.",
-	 * 		"type":          "integer",
-	 * 		"required":      false,
-	 * 		"default":       5
-	 * }
-	 * @apiParameter {
-	 * 		"name":          "start",
-	 * 		"description":   "Number of where to start returning results.",
-	 * 		"type":          "integer",
-	 * 		"required":      false,
-	 * 		"default":       0
-	 * }
-	 * @return    void
-	 */
-	public function listTask()
-	{
-		$limit = Request::getInt('limit', 5);
-		$start = Request::getInt('start', 0);
+    /**
+     * Return data for newsletters
+     *
+     * @apiMethod GET
+     * @apiUri    /newsletters/list
+     * @apiParameter {
+     *      "name":          "limit",
+     *      "description":   "Number of result to return.",
+     *      "type":          "integer",
+     *      "required":      false,
+     *      "default":       5
+     * }
+     * @apiParameter {
+     *      "name":          "start",
+     *      "description":   "Number of where to start returning results.",
+     *      "type":          "integer",
+     *      "required":      false,
+     *      "default":       0
+     * }
+     * @return    void
+     */
+    public function listTask()
+    {
+        $limit = Request::getInt('limit', 5);
+        $start = Request::getInt('start', 0);
 
-		$newsletters = Newsletter::all()
-			->ordered()
-			->limit($limit)
-			->start($start)
-			->rows()
-			->toArray();
+        $newsletters = Newsletter::all()
+            ->ordered()
+            ->limit($limit)
+            ->start($start)
+            ->rows()
+            ->toArray();
 
-		$obj = new stdClass();
-		$obj->newsletters = $newsletters;
+        $obj = new stdClass();
+        $obj->newsletters = $newsletters;
 
-		$this->send($obj);
-	}
+        $this->send($obj);
+    }
 
-	/**
-	 * Return data for past newsletters
-	 *
-	 * @apiMethod GET
-	 * @apiUri    /newsletters/archive
-	 * @apiParameter {
-	 * 		"name":          "limit",
-	 * 		"description":   "Number of result to return.",
-	 * 		"type":          "integer",
-	 * 		"required":      false,
-	 * 		"default":       5
-	 * }
-	 * @apiParameter {
-	 * 		"name":          "start",
-	 * 		"description":   "Number of where to start returning results.",
-	 * 		"type":          "integer",
-	 * 		"required":      false,
-	 * 		"default":       0
-	 * }
-	 * @return    void
-	 */
-	public function archiveTask()
-	{
-		$limit = Request::getInt('limit', 5);
-		$start = Request::getInt('start', 0);
+    /**
+     * Return data for past newsletters
+     *
+     * @apiMethod GET
+     * @apiUri    /newsletters/archive
+     * @apiParameter {
+     *      "name":          "limit",
+     *      "description":   "Number of result to return.",
+     *      "type":          "integer",
+     *      "required":      false,
+     *      "default":       5
+     * }
+     * @apiParameter {
+     *      "name":          "start",
+     *      "description":   "Number of where to start returning results.",
+     *      "type":          "integer",
+     *      "required":      false,
+     *      "default":       0
+     * }
+     * @return    void
+     */
+    public function archiveTask()
+    {
+        $limit = Request::getInt('limit', 5);
+        $start = Request::getInt('start', 0);
 
-		// get newsletters
-		$newsletters = Newsletter::all()
-			->ordered()
-			->limit($limit)
-			->start($start)
-			->rows();
+        // get newsletters
+        $newsletters = Newsletter::all()
+            ->ordered()
+            ->limit($limit)
+            ->start($start)
+            ->rows();
 
-		$result = array();
+        $result = array();
 
-		// add newsletter details to return array
-		$k = 0;
-		foreach ($newsletters as $newsletter)
-		{
-			$result[$k]['id']      = $newsletter->issue;
-			$result[$k]['title']   = $newsletter->name;
-			$result[$k]['content'] = $newsletter->buildNewsletter($newsletter);
+        // add newsletter details to return array
+        $k = 0;
+        foreach ($newsletters as $newsletter) {
+            $result[$k]['id']      = $newsletter->issue;
+            $result[$k]['title']   = $newsletter->name;
+            $result[$k]['content'] = $newsletter->buildNewsletter($newsletter);
 
-			$k++;
-		}
+            $k++;
+        }
 
-		$obj = new stdClass();
-		$obj->newsletters = $result;
+        $obj = new stdClass();
+        $obj->newsletters = $result;
 
-		$this->send($obj);
-	}
+        $this->send($obj);
+    }
 }

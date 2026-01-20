@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,22 +8,19 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for installing newsletter tables
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComNewsletter extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__newsletter_mailing_recipient_actions'))
-		{
-			$query = "CREATE TABLE `#__newsletter_mailing_recipient_actions` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__newsletter_mailing_recipient_actions')) {
+            $query = "CREATE TABLE `#__newsletter_mailing_recipient_actions` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `mailingid` int(11) DEFAULT NULL,
 			  `action` varchar(100) DEFAULT NULL,
@@ -42,13 +40,12 @@ class Migration20170901000000ComNewsletter extends Base
 			  KEY `idx_action` (`action`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__newsletter_mailing_recipients'))
-		{
-			$query = "CREATE TABLE `#__newsletter_mailing_recipients` (
+        if (!$this->db->tableExists('#__newsletter_mailing_recipients')) {
+            $query = "CREATE TABLE `#__newsletter_mailing_recipients` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `mid` int(11) DEFAULT NULL,
 			  `email` varchar(150) DEFAULT NULL,
@@ -60,13 +57,12 @@ class Migration20170901000000ComNewsletter extends Base
 			  KEY `idx_status` (`status`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__newsletter_mailinglist_emails'))
-		{
-			$query = "CREATE TABLE `#__newsletter_mailinglist_emails` (
+        if (!$this->db->tableExists('#__newsletter_mailinglist_emails')) {
+            $query = "CREATE TABLE `#__newsletter_mailinglist_emails` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `mid` int(11) DEFAULT NULL,
 			  `email` varchar(150) DEFAULT NULL,
@@ -79,13 +75,12 @@ class Migration20170901000000ComNewsletter extends Base
 			  KEY `idx_status` (`status`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__newsletter_mailinglists'))
-		{
-			$query = "CREATE TABLE `#__newsletter_mailinglists` (
+        if (!$this->db->tableExists('#__newsletter_mailinglists')) {
+            $query = "CREATE TABLE `#__newsletter_mailinglists` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `name` varchar(150) DEFAULT NULL,
 			  `description` text,
@@ -96,13 +91,12 @@ class Migration20170901000000ComNewsletter extends Base
 			  KEY `idx_deleted` (`deleted`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__newsletter_mailings'))
-		{
-			$query = "CREATE TABLE `#__newsletter_mailings` (
+        if (!$this->db->tableExists('#__newsletter_mailings')) {
+            $query = "CREATE TABLE `#__newsletter_mailings` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `nid` int(11) DEFAULT NULL,
 			  `lid` int(11) DEFAULT NULL,
@@ -120,13 +114,12 @@ class Migration20170901000000ComNewsletter extends Base
 			  KEY `idx_deleted` (`deleted`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__newsletter_primary_story'))
-		{
-			$query = "CREATE TABLE `#__newsletter_primary_story` (
+        if (!$this->db->tableExists('#__newsletter_primary_story')) {
+            $query = "CREATE TABLE `#__newsletter_primary_story` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `nid` int(11) NOT NULL,
 			  `title` varchar(150) DEFAULT NULL,
@@ -140,13 +133,12 @@ class Migration20170901000000ComNewsletter extends Base
 			  KEY `idx_deleted` (`deleted`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__newsletter_secondary_story'))
-		{
-			$query = "CREATE TABLE `#__newsletter_secondary_story` (
+        if (!$this->db->tableExists('#__newsletter_secondary_story')) {
+            $query = "CREATE TABLE `#__newsletter_secondary_story` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `nid` int(11) NOT NULL,
 			  `title` varchar(150) DEFAULT NULL,
@@ -160,13 +152,12 @@ class Migration20170901000000ComNewsletter extends Base
 			  KEY `idx_deleted` (`deleted`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__newsletter_templates'))
-		{
-			$query = "CREATE TABLE `#__newsletter_templates` (
+        if (!$this->db->tableExists('#__newsletter_templates')) {
+            $query = "CREATE TABLE `#__newsletter_templates` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `editable` int(11) DEFAULT '1',
 			  `name` varchar(100) DEFAULT NULL,
@@ -179,13 +170,12 @@ class Migration20170901000000ComNewsletter extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__newsletters'))
-		{
-			$query = "CREATE TABLE `#__newsletters` (
+        if (!$this->db->tableExists('#__newsletters')) {
+            $query = "CREATE TABLE `#__newsletters` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `alias` varchar(150) DEFAULT NULL,
 			  `name` varchar(150) DEFAULT NULL,
@@ -210,84 +200,74 @@ class Migration20170901000000ComNewsletter extends Base
 			  KEY `idx_deleted` (`deleted`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__newsletter_mailing_recipient_actions'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__newsletter_mailing_recipient_actions`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__newsletter_mailing_recipient_actions')) {
+            $query = "DROP TABLE IF EXISTS `#__newsletter_mailing_recipient_actions`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__newsletter_mailing_recipients'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__newsletter_mailing_recipients`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__newsletter_mailing_recipients')) {
+            $query = "DROP TABLE IF EXISTS `#__newsletter_mailing_recipients`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__newsletter_mailinglist_emails'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__newsletter_mailinglist_emails`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__newsletter_mailinglist_emails')) {
+            $query = "DROP TABLE IF EXISTS `#__newsletter_mailinglist_emails`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__newsletter_mailinglist_unsubscribes'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__newsletter_mailinglist_unsubscribes`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__newsletter_mailinglist_unsubscribes')) {
+            $query = "DROP TABLE IF EXISTS `#__newsletter_mailinglist_unsubscribes`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__newsletter_mailinglists'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__newsletter_mailinglists`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__newsletter_mailinglists')) {
+            $query = "DROP TABLE IF EXISTS `#__newsletter_mailinglists`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__newsletter_mailings'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__newsletter_mailings`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__newsletter_mailings')) {
+            $query = "DROP TABLE IF EXISTS `#__newsletter_mailings`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__newsletter_primary_story'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__newsletter_primary_story`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__newsletter_primary_story')) {
+            $query = "DROP TABLE IF EXISTS `#__newsletter_primary_story`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__newsletter_secondary_story'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__newsletter_secondary_story`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__newsletter_secondary_story')) {
+            $query = "DROP TABLE IF EXISTS `#__newsletter_secondary_story`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__newsletter_templates'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__newsletter_templates`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__newsletter_templates')) {
+            $query = "DROP TABLE IF EXISTS `#__newsletter_templates`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__newsletters'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__newsletters`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__newsletters')) {
+            $query = "DROP TABLE IF EXISTS `#__newsletters`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

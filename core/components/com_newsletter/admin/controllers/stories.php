@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,401 +23,376 @@ use App;
  */
 class Stories extends AdminController
 {
-	/**
-	 * Execute a task
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		$this->registerTask('add', 'edit');
-		$this->registerTask('apply', 'save');
+    /**
+     * Execute a task
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        $this->registerTask('add', 'edit');
+        $this->registerTask('apply', 'save');
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * Edit Newsletter Story Task
-	 *
-	 * @param   object  $row
-	 * @return 	void
-	 */
-	public function editTask($story = null)
-	{
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+    /**
+     * Edit Newsletter Story Task
+     *
+     * @param   object  $row
+     * @return  void
+     */
+    public function editTask($story = null)
+    {
+        if (
+            !User::authorise('core.edit', $this->_option)
+            && !User::authorise('core.create', $this->_option)
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		Request::setVar('hidemainmenu', 1);
+        Request::setVar('hidemainmenu', 1);
 
-		//get request vars
-		$id = Request::getInt('nid', 0);
-		$type = strtolower(Request::getWord('type', 'primary'));
+        //get request vars
+        $id = Request::getInt('nid', 0);
+        $type = strtolower(Request::getWord('type', 'primary'));
 
-		//load campaign
-		$newsletter = Newsletter::oneOrFail($id);
+        //load campaign
+        $newsletter = Newsletter::oneOrFail($id);
 
-		if (!is_object($story))
-		{
-			$sid  = Request::getInt("sid", 0);
+        if (!is_object($story)) {
+            $sid  = Request::getInt("sid", 0);
 
-			if (strtolower($type) == 'primary')
-			{
-				$story = Primary::oneOrNew($sid);
-			}
-			else
-			{
-				$story = Secondary::oneOrNew($sid);
-			}
-		}
+            if (strtolower($type) == 'primary') {
+                $story = Primary::oneOrNew($sid);
+            } else {
+                $story = Secondary::oneOrNew($sid);
+            }
+        }
 
-		// If we are creating an auto-generated newsletter
-		if ($type == 'autogen')
-		{
-			// It should be noted that these are not served via the CMS, per se. Rather they
-			// JavaScript will manipulate the DOM and save the HTML as a string into the Primary
-			// Story content field.
+        // If we are creating an auto-generated newsletter
+        if ($type == 'autogen') {
+            // It should be noted that these are not served via the CMS, per se. Rather they
+            // JavaScript will manipulate the DOM and save the HTML as a string into the Primary
+            // Story content field.
 
-			// The path where the Story Template Layouts are.
-			$viewPath = dirname(__DIR__) . DS . 'views' . DS . 'storytemplates' . DS . 'tmpl';
+            // The path where the Story Template Layouts are.
+            $viewPath = dirname(__DIR__) . DS . 'views' . DS . 'storytemplates' . DS . 'tmpl';
 
-			// Get available layouts
-			$contents = Filesystem::listContents($viewPath);
+            // Get available layouts
+            $contents = Filesystem::listContents($viewPath);
 
-			// Empty bucket to hold layout names;
-			$layouts = array();
+            // Empty bucket to hold layout names;
+            $layouts = array();
 
-			// Make sure we aren't including any cruft.
-			foreach ($contents as $file)
-			{
-				// Check for php extention
-				if (Filesystem::extension($viewPath . DS . $file['path']) == 'php' && $file['path'] != '/index.php')
-				{
-					// Some trimming of the leading / and the .php; push into bucket
-					array_push($layouts, rtrim(ltrim($file['path'], "//"), ".php"));
-				}
-			}
+            // Make sure we aren't including any cruft.
+            foreach ($contents as $file) {
+                // Check for php extention
+                if (Filesystem::extension($viewPath . DS . $file['path']) == 'php' && $file['path'] != '/index.php') {
+                    // Some trimming of the leading / and the .php; push into bucket
+                    array_push($layouts, rtrim(ltrim($file['path'], "//"), ".php"));
+                }
+            }
 
-			// Display the alternative layout
-			$this->view
-				->set('enabledSources', Event::trigger('newsletter.onGetEnabledDigests'))
-				->set('layouts', $layouts)
-				->setLayout('_autogen');
-		}
-		else
-		{
-			// Output the HTML
-			$this->view->setLayout('edit');
-		}
+            // Display the alternative layout
+            $this->view
+                ->set('enabledSources', Event::trigger('newsletter.onGetEnabledDigests'))
+                ->set('layouts', $layouts)
+                ->setLayout('_autogen');
+        } else {
+            // Output the HTML
+            $this->view->setLayout('edit');
+        }
 
-		$this->view
-			->set('nid', $id)
-			->set('story', $story)
-			->set('type', $type)
-			->set('newsletter', $newsletter)
-			->display();
-	}
+        $this->view
+            ->set('nid', $id)
+            ->set('story', $story)
+            ->set('type', $type)
+            ->set('newsletter', $newsletter)
+            ->display();
+    }
 
-	/**
-	 * Fetch AutoContent (from plugin) Task
-	 *
-	 * @return  void
-	 */
-	public function fetchAutoContentTask()
-	{
-		// Prevent direct access
-		if (User::isGuest())
-		{
-			return false;
-		}
+    /**
+     * Fetch AutoContent (from plugin) Task
+     *
+     * @return  void
+     */
+    public function fetchAutoContentTask()
+    {
+        // Prevent direct access
+        if (User::isGuest()) {
+            return false;
+        }
 
-		// Request the source variable
-		$source = Request::getString('source', '');
-		$layout = Request::getString('layout', '');
-		$itemCount = Request::getInt('itemCount', 5);
+        // Request the source variable
+        $source = Request::getString('source', '');
+        $layout = Request::getString('layout', '');
+        $itemCount = Request::getInt('itemCount', 5);
 
-		// Make sure we have something to work with
-		if ($source != '' && $layout != '')
-		{
-			// Get a list of enabled plugins
-			$enabledSources = Event::trigger('newsletter.onGetEnabledDigests');
+        // Make sure we have something to work with
+        if ($source != '' && $layout != '') {
+            // Get a list of enabled plugins
+            $enabledSources = Event::trigger('newsletter.onGetEnabledDigests');
 
-			// Get the matching source's ID, based on plugin ordering
-			$matches = array_keys($enabledSources, $source);
-			$key = $matches[0];
+            // Get the matching source's ID, based on plugin ordering
+            $matches = array_keys($enabledSources, $source);
+            $key = $matches[0];
 
-			// Get the latest content
-			$obj = new stdClass;
-			$obj = Event::trigger('newsletter.onGetLatest', array($itemCount));
+            // Get the latest content
+            $obj = new stdClass();
+            $obj = Event::trigger('newsletter.onGetLatest', array($itemCount));
 
-			// Only get the portion we are working with
-			$obj = $obj[$key];
+            // Only get the portion we are working with
+            $obj = $obj[$key];
 
-			// Instantiate the desired Story Layout view
-			$view = new \Hubzero\Component\View(array(
-				'name'   => 'storytemplates',
-				'layout' => $layout,
-			));
+            // Instantiate the desired Story Layout view
+            $view = new \Hubzero\Component\View(array(
+                'name'   => 'storytemplates',
+                'layout' => $layout,
+            ));
 
-			// Pass the data through to the view
-			$view->object = $obj;
-			$view->display();
-		}
-		else
-		{
-			// Output a warning
-			echo json_encode(array('status' => 'nothing specified'));
-		}
-		exit();
-	}
+            // Pass the data through to the view
+            $view->object = $obj;
+            $view->display();
+        } else {
+            // Output a warning
+            echo json_encode(array('status' => 'nothing specified'));
+        }
+        exit();
+    }
 
-	/**
-	 * Save auto Task
-	 *
-	 * @return  void
-	 */
-	public function saveAutoTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Save auto Task
+     *
+     * @return  void
+     */
+    public function saveAutoTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (
+            !User::authorise('core.edit', $this->_option)
+            && !User::authorise('core.create', $this->_option)
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		// Story information
-		$title     = Request::getString('title');
-		$source    = Request::getString('contentSource');
-		$itemCount = Request::getInt('itemCount');
-		$template  = Request::getString('layout');
+        // Story information
+        $title     = Request::getString('title');
+        $source    = Request::getString('contentSource');
+        $itemCount = Request::getInt('itemCount');
+        $template  = Request::getString('layout');
 
-		// Newsletter ID
-		$nid       = Request::getInt('nid', 0);
+        // Newsletter ID
+        $nid       = Request::getInt('nid', 0);
 
-		// Ensure that we have everything
-		if ($source != '' && $itemCount > 0 && $template != '')
-		{
-			// Enforce a 20 item maximum
-			if ($itemCount > 20)
-			{
-				$itemCount = 20;
-			}
+        // Ensure that we have everything
+        if ($source != '' && $itemCount > 0 && $template != '') {
+            // Enforce a 20 item maximum
+            if ($itemCount > 20) {
+                $itemCount = 20;
+            }
 
-			// Create the string
-			$autogenString = "{{AUTOGEN_" . strtoupper($source) . "_" . $itemCount . "_" . strtoupper($template) . "}}";
-		}
-		else
-		{
-			Notify::warning(Lang::txt('COM_NEWSLETTER_STORY_MISSING_REQUIRED'));
+            // Create the string
+            $autogenString = "{{AUTOGEN_" . strtoupper($source) . "_" . $itemCount . "_" . strtoupper($template) . "}}";
+        } else {
+            Notify::warning(Lang::txt('COM_NEWSLETTER_STORY_MISSING_REQUIRED'));
 
-			// Redirect if the information is lacking
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=add&type=autogen&id=' . $nid, false)
-			);
-		}
+            // Redirect if the information is lacking
+            $url = 'index.php?option=' . $this->_option
+                . '&controller=' . $this->_controller
+                . '&task=add&type=autogen&id=' . $nid;
+            App::redirect(
+                Route::url($url, false)
+            );
+        }
 
-		$story = Primary::blank();
-		$story->set('title', $title);
-		$story->set('story', $autogenString);
-		$story->set('nid', $nid);
+        $story = Primary::blank();
+        $story->set('title', $title);
+        $story->set('story', $autogenString);
+        $story->set('nid', $nid);
 
-		// Save the story
-		if (!$story->save())
-		{
-			Notify::error($story->getError());
-			return $this->editTask($story);
-		}
+        // Save the story
+        if (!$story->save()) {
+            Notify::error($story->getError());
+            return $this->editTask($story);
+        }
 
-		Notify::success(Lang::txt('COM_NEWSLETTER_STORY_SAVED_SUCCESS'));
+        Notify::success(Lang::txt('COM_NEWSLETTER_STORY_SAVED_SUCCESS'));
 
-		// Inform and redirect
-		$this->cancelTask();
-	}
+        // Inform and redirect
+        $this->cancelTask();
+    }
 
-	/**
-	 * Save Newsletter Story Task
-	 *
-	 * @return  void
-	 */
-	public function saveTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Save Newsletter Story Task
+     *
+     * @return  void
+     */
+    public function saveTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (
+            !User::authorise('core.edit', $this->_option)
+            && !User::authorise('core.create', $this->_option)
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		// Incoming
-		$fields = Request::getArray('story', array(), 'post');
-		$type   = Request::getString('type', 'primary');
+        // Incoming
+        $fields = Request::getArray('story', array(), 'post');
+        $type   = Request::getString('type', 'primary');
 
-		// If autogenerated, use its handler
-		if ($type == 'autogen')
-		{
-			return $this->saveAutoTask();
-		}
+        // If autogenerated, use its handler
+        if ($type == 'autogen') {
+            return $this->saveAutoTask();
+        }
 
-		if ($type == 'primary')
-		{
-			$story = Primary::oneOrNew($fields['id']);
-		}
-		else
-		{
-			$story = Secondary::oneOrNew($fields['id']);
-		}
+        if ($type == 'primary') {
+            $story = Primary::oneOrNew($fields['id']);
+        } else {
+            $story = Secondary::oneOrNew($fields['id']);
+        }
 
-		$story->set($fields);
+        $story->set($fields);
 
-		// Save the story
-		if (!$story->save())
-		{
-			Notify::error($story->getError());
-			return $this->editTask($story);
-		}
+        // Save the story
+        if (!$story->save()) {
+            Notify::error($story->getError());
+            return $this->editTask($story);
+        }
 
-		Notify::success(Lang::txt('COM_NEWSLETTER_STORY_SAVED_SUCCESS'));
+        Notify::success(Lang::txt('COM_NEWSLETTER_STORY_SAVED_SUCCESS'));
 
-		// Inform and redirect
-		$this->cancelTask();
-	}
+        // Inform and redirect
+        $this->cancelTask();
+    }
 
-	/**
-	 * Reorder Newsletter Story Task
-	 *
-	 * @return  void
-	 */
-	public function reorderTask()
-	{
-		//get request vars
-		$id = Request::getInt('nid', 0);
-		$sid = Request::getInt('sid', 0);
-		$type = Request::getWord('type', 'primary');
-		$direction = Request::getWord('direction', 'down');
+    /**
+     * Reorder Newsletter Story Task
+     *
+     * @return  void
+     */
+    public function reorderTask()
+    {
+        //get request vars
+        $id = Request::getInt('nid', 0);
+        $sid = Request::getInt('sid', 0);
+        $type = Request::getWord('type', 'primary');
+        $direction = Request::getWord('direction', 'down');
 
-		//what kind of story do we want
-		if (strtolower($type) == 'primary')
-		{
-			$story = Primary::oneOrFail($sid);
-		}
-		else
-		{
-			$story = Secondary::oneOrFail($sid);
-		}
+        //what kind of story do we want
+        if (strtolower($type) == 'primary') {
+            $story = Primary::oneOrFail($sid);
+        } else {
+            $story = Secondary::oneOrFail($sid);
+        }
 
-		//set vars
-		$lowestOrder  = 1;
-		$highestOrder = $story->_getCurrentHighestOrder($id);
-		$currentOrder = $story->order;
+        //set vars
+        $lowestOrder  = 1;
+        $highestOrder = $story->_getCurrentHighestOrder($id);
+        $currentOrder = $story->order;
 
-		//move page up or down
-		if ($direction == 'down')
-		{
-			$newOrder = $currentOrder + 1;
-			if ($newOrder > $highestOrder)
-			{
-				$newOrder = $highestOrder;
-			}
-		}
-		else
-		{
-			$newOrder = $currentOrder - 1;
-			if ($newOrder < $lowestOrder)
-			{
-				$newOrder = $lowestOrder;
-			}
-		}
+        //move page up or down
+        if ($direction == 'down') {
+            $newOrder = $currentOrder + 1;
+            if ($newOrder > $highestOrder) {
+                $newOrder = $highestOrder;
+            }
+        } else {
+            $newOrder = $currentOrder - 1;
+            if ($newOrder < $lowestOrder) {
+                $newOrder = $lowestOrder;
+            }
+        }
 
-		$database = \App::get('db');
+        $database = \App::get('db');
 
-		//is there a nother story having the order we want?
-		$sql = "SELECT * FROM {$story->getTableName()} WHERE `order`=" . $database->quote($newOrder) . " AND nid=" . $database->quote($id);
-		$database->setQuery($sql);
-		$moveTo = $database->loadResult();
+        //is there a nother story having the order we want?
+        $tableName = $story->getTableName();
+        $sql = "SELECT * FROM {$tableName} WHERE `order`=" . $database->quote($newOrder)
+            . " AND nid=" . $database->quote($id);
+        $database->setQuery($sql);
+        $moveTo = $database->loadResult();
 
-		//if there isnt just update story
-		if (!$moveTo)
-		{
-			$sql = "UPDATE {$story->getTableName()} SET `order`=" . $database->quote($newOrder) . " WHERE id=" . $database->quote($sid);
-			$database->setQuery($sql);
-			$database->query();
-		}
-		else
-		{
-			//swith orders
-			$sql = "UPDATE {$story->getTableName()} SET `order`=" . $database->quote($newOrder) . " WHERE id=" . $database->quote($sid);
-			$database->setQuery($sql);
-			$database->query();
+        //if there isnt just update story
+        if (!$moveTo) {
+            $sql = "UPDATE {$tableName} SET `order`=" . $database->quote($newOrder)
+                . " WHERE id=" . $database->quote($sid);
+            $database->setQuery($sql);
+            $database->query();
+        } else {
+            //swith orders
+            $sql = "UPDATE {$tableName} SET `order`=" . $database->quote($newOrder)
+                . " WHERE id=" . $database->quote($sid);
+            $database->setQuery($sql);
+            $database->query();
 
-			$sql = "UPDATE {$story->getTableName()} SET `order`=" . $database->quote($currentOrder) . " WHERE id=" . $database->quote($moveTo);
-			$database->setQuery($sql);
-			$database->query();
-		}
+            $sql = "UPDATE {$tableName} SET `order`=" . $database->quote($currentOrder)
+                . " WHERE id=" . $database->quote($moveTo);
+            $database->setQuery($sql);
+            $database->query();
+        }
 
-		//redirect back to campaigns list
-		Notify::success(Lang::txt('COM_NEWSLETTER_STORY_REORDER_SUCCESS'));
+        //redirect back to campaigns list
+        Notify::success(Lang::txt('COM_NEWSLETTER_STORY_REORDER_SUCCESS'));
 
-		App::redirect(
-			Route::url('index.php?option=com_newsletter&controller=newsletters&task=edit&id=' . $id . '#' . $type . '-stories', false)
-		);
-	}
+        $url = 'index.php?option=com_newsletter&controller=newsletters&task=edit&id='
+            . $id . '#' . $type . '-stories';
+        App::redirect(
+            Route::url($url, false)
+        );
+    }
 
-	/**
-	 * Delete story
-	 *
-	 * @return  void
-	 */
-	public function deleteTask()
-	{
-		// Get the request vars
-		$id   = Request::getInt('id', 0);
-		$sid  = Request::getInt('sid', 0);
-		$type = Request::getWord('type', 'primary');
+    /**
+     * Delete story
+     *
+     * @return  void
+     */
+    public function deleteTask()
+    {
+        // Get the request vars
+        $id   = Request::getInt('id', 0);
+        $sid  = Request::getInt('sid', 0);
+        $type = Request::getWord('type', 'primary');
 
-		if (strtolower($type) == 'primary')
-		{
-			$story = Primary::oneOrFail($sid);
-		}
-		else
-		{
-			$story = Secondary::oneOrFail($sid);
-		}
+        if (strtolower($type) == 'primary') {
+            $story = Primary::oneOrFail($sid);
+        } else {
+            $story = Secondary::oneOrFail($sid);
+        }
 
-		// Mark as deleted
-		$story->set('deleted', 1);
+        // Mark as deleted
+        $story->set('deleted', 1);
 
-		// Save so story is marked deleted
-		if (!$story->save())
-		{
-			Notify::error(Lang::txt('COM_NEWSLETTER_STORY_DELETE_FAIL'));
-			return $this->cancelTask();
-		}
+        // Save so story is marked deleted
+        if (!$story->save()) {
+            Notify::error(Lang::txt('COM_NEWSLETTER_STORY_DELETE_FAIL'));
+            return $this->cancelTask();
+        }
 
-		Notify::success(Lang::txt('COM_NEWSLETTER_STORY_DELETE_SUCCESS'));
+        Notify::success(Lang::txt('COM_NEWSLETTER_STORY_DELETE_SUCCESS'));
 
-		$this->cancelTask();
-	}
+        $this->cancelTask();
+    }
 
-	/**
-	 * Cancel task
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		$story = Request::getArray('story', array());
-		$nid   = Request::getInt('nid', 0);
+    /**
+     * Cancel task
+     *
+     * @return  void
+     */
+    public function cancelTask()
+    {
+        $story = Request::getArray('story', array());
+        $nid   = Request::getInt('nid', 0);
 
-		$id = !empty($story) ? $story['nid'] : $nid;
+        $id = !empty($story) ? $story['nid'] : $nid;
 
-		App::redirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=newsletters&task=edit&id=' . $id, false)
-		);
-	}
+        App::redirect(
+            Route::url('index.php?option=' . $this->_option . '&controller=newsletters&task=edit&id=' . $id, false)
+        );
+    }
 }

@@ -13,31 +13,33 @@ $userId = $this->userId;
 ?>
 
 <?php
-foreach($subs as $s):
-	$sKey = $s['foreign_key'];
-?>
-	<div class="sub">
-		<label><?php echo $s['label']; ?></label>
+foreach ($subs as $s) :
+    $sKey = $s['foreign_key'];
+    ?>
+    <div class="sub">
+        <label><?php echo $s['label']; ?></label>
 
-		<?php
-			if ($subView = $s['view']):
-				$this->view($subView)
-				     ->set('userId', $userId)
-				     ->display();
-			endif;
-		?>
+        <?php
+        if ($subView = $s['view']) :
+            $this->view($subView)
+                 ->set('userId', $userId)
+                 ->display();
+        endif;
+        ?>
 
-		<select	name="<?php echo "subscriptions[$sKey][preference]"; ?>">
-			<?php
-				foreach($s['options'] as $o):
-				$selected = ($o == $s['preference']);
-			?>
-				<option <?php if ($selected) echo 'selected'; ?>>
-					<?php echo $o; ?>
-				</option>
-			<?php	endforeach; ?>
-		</select>
-		<input type="hidden" name="<?php echo "subscriptions[$sKey][foreign_key]"; ?>"
-		       value="<?php echo $sKey; ?>">
-	</div>
+        <select name="<?php echo "subscriptions[$sKey][preference]"; ?>">
+            <?php
+            foreach ($s['options'] as $o) :
+                $selected = ($o == $s['preference']);
+                ?>
+                <option <?php if ($selected) {
+                    echo 'selected';
+                        } ?>>
+                <?php echo $o; ?>
+                </option>
+            <?php	endforeach; ?>
+        </select>
+        <input type="hidden" name="<?php echo "subscriptions[$sKey][foreign_key]"; ?>"
+               value="<?php echo $sKey; ?>">
+    </div>
 <?php endforeach; ?>

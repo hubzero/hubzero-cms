@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,719 +27,667 @@ use App;
  */
 class Mailinglists extends SiteController
 {
-	/**
-	 * Override parent build title method
-	 *
-	 * @param   object  $newsletter  Newsletter object for adding campaign name pathway
-	 * @return  void
-	 */
-	public function _buildTitle($newsletter = null)
-	{
-		//default if no campaign
-		$this->_title = Lang::txt(strtoupper($this->_option));
+    /**
+     * Override parent build title method
+     *
+     * @param   object  $newsletter  Newsletter object for adding campaign name pathway
+     * @return  void
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function _buildTitle($newsletter = null)
+    {
+        //default if no campaign
+        $this->_title = Lang::txt(strtoupper($this->_option));
 
-		//add campaign name to title
-		if (is_object($newsletter) && $newsletter->id)
-		{
-			$this->_title = Lang::txt('COM_NEWSLETTER_NEWSLETTER') . ': ' . $newsletter->name;
-		}
+        //add campaign name to title
+        if (is_object($newsletter) && $newsletter->id) {
+            $this->_title = Lang::txt('COM_NEWSLETTER_NEWSLETTER') . ': ' . $newsletter->name;
+        }
 
-		//if we are unsubscribing
-		if ($this->_task == 'unsubscribe')
-		{
-			$this->_title = Lang::txt('COM_NEWSLETTER_NEWSLETTER') . ': ' . Lang::txt('COM_NEWSLETTER_UNSUBSCRIBE');
-		}
+        //if we are unsubscribing
+        if ($this->_task == 'unsubscribe') {
+            $this->_title = Lang::txt('COM_NEWSLETTER_NEWSLETTER') . ': ' . Lang::txt('COM_NEWSLETTER_UNSUBSCRIBE');
+        }
 
-		//if we are subscribing
-		if ($this->_task == 'subscribe')
-		{
-			$this->_title = Lang::txt('COM_NEWSLETTER_NEWSLETTER') . ': ' . Lang::txt('COM_NEWSLETTER_SUBSCRIBE');
-		}
+        //if we are subscribing
+        if ($this->_task == 'subscribe') {
+            $this->_title = Lang::txt('COM_NEWSLETTER_NEWSLETTER') . ': ' . Lang::txt('COM_NEWSLETTER_SUBSCRIBE');
+        }
 
-		//set title of browser window
-		App::get('document')->setTitle($this->_title);
-	}
+        //set title of browser window
+        App::get('document')->setTitle($this->_title);
+    }
 
-	/**
-	 * Override parent build pathway method
-	 *
-	 * @param   object  $newsletter  Newsletter object for adding campaign name pathway
-	 * @return  void
-	 */
-	public function _buildPathway($newsletter = null)
-	{
-		//add 'newlsetters' item to pathway
-		if (Pathway::count() <= 0)
-		{
-			Pathway::append(Lang::txt(strtoupper($this->_option)), 'index.php?option=' . $this->_option);
-		}
+    /**
+     * Override parent build pathway method
+     *
+     * @param   object  $newsletter  Newsletter object for adding campaign name pathway
+     * @return  void
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function _buildPathway($newsletter = null)
+    {
+        //add 'newlsetters' item to pathway
+        if (Pathway::count() <= 0) {
+            Pathway::append(Lang::txt(strtoupper($this->_option)), 'index.php?option=' . $this->_option);
+        }
 
-		//add campaign
-		if (is_object($newsletter) && $newsletter->id)
-		{
-			Pathway::append(Lang::txt($newsletter->name), 'index.php?option=' . $this->_option . '&id=' . $newsletter->id);
-		}
+        //add campaign
+        if (is_object($newsletter) && $newsletter->id) {
+            $url = 'index.php?option=' . $this->_option . '&id=' . $newsletter->id;
+            Pathway::append(Lang::txt($newsletter->name), $url);
+        }
 
-		//if we are unsubscribing
-		if ($this->_task == 'unsubscribe')
-		{
-			Pathway::append(Lang::txt('COM_NEWSLETTER_SUBSCRIBE'), 'index.php?option=' . $this->_option . '&task=unsubscribe');
-		}
+        //if we are unsubscribing
+        if ($this->_task == 'unsubscribe') {
+            $url = 'index.php?option=' . $this->_option . '&task=unsubscribe';
+            Pathway::append(Lang::txt('COM_NEWSLETTER_SUBSCRIBE'), $url);
+        }
 
-		//if we are subscribing
-		if ($this->_task == 'subscribe')
-		{
-			Pathway::append(Lang::txt('COM_NEWSLETTER_SUBSCRIBE'), 'index.php?option=' . $this->_option . '&task=subscribe');
-		}
-	}
+        //if we are subscribing
+        if ($this->_task == 'subscribe') {
+            $url = 'index.php?option=' . $this->_option . '&task=subscribe';
+            Pathway::append(Lang::txt('COM_NEWSLETTER_SUBSCRIBE'), $url);
+        }
+    }
 
-	/**
-	 * Subscribe to Mailing Lists View
-	 *
-	 * @return 	void
-	 */
-	public function subscribeTask()
-	{
-		if (Request::getMethod() == 'POST')
-		{
-			//check to make sure we have a valid token
-			Request::checkToken();
-		}
+    /**
+     * Subscribe to Mailing Lists View
+     *
+     * @return  void
+     */
+    public function subscribeTask()
+    {
+        if (Request::getMethod() == 'POST') {
+            //check to make sure we have a valid token
+            Request::checkToken();
+        }
 
-		//get email
-		if (User::isGuest())
-		{
-			$email = (string)urldecode(Request::getString('e', ''));
-		}
-		else
-		{
-			$email = (string)User::get('email');
-		}
+        //get email
+        if (User::isGuest()) {
+            $email = (string)urldecode(Request::getString('e', ''));
+        } else {
+            $email = (string)User::get('email');
+        }
 
-		//must be logged in or have entered email
-		if (!$email || !Validate::email($email))
-		{
-			//build return url and redirect url
-			$return   = Route::url('index.php?option=com_newsletter&task=subscribe');
-			$redirect = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return));
+        //must be logged in or have entered email
+        if (!$email || !Validate::email($email)) {
+            //build return url and redirect url
+            $return   = Route::url('index.php?option=com_newsletter&task=subscribe');
+            $redirect = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return));
 
-			//build title
-			$this->_buildTitle();
+            //build title
+            $this->_buildTitle();
 
-			//build pathway
-			$this->_buildPathway();
+            //build pathway
+            $this->_buildPathway();
 
-			//output
-			$this->view
-				->set('title', $this->_title)
-				->set('redirect', $redirect)
-				->setLayout('enter_email')
-				->display();
-		}
-		else if (User::isGuest() && count(User::oneByEmail($email)->toArray()) > 0)
-		{
-			//build return url and redirect url
-			$return   = Route::url('index.php?option=com_newsletter&task=subscribe');
-			$redirect = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return));
+            //output
+            $this->view
+                ->set('title', $this->_title)
+                ->set('redirect', $redirect)
+                ->setLayout('enter_email')
+                ->display();
+        } elseif (User::isGuest() && count(User::oneByEmail($email)->toArray()) > 0) {
+            //build return url and redirect url
+            $return   = Route::url('index.php?option=com_newsletter&task=subscribe');
+            $redirect = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return));
 
-			//redirect
-			App::redirect($redirect, Lang::txt('COM_NEWSLETTER_LOGIN_TO_SUBSCRIBE'), 'warning');
-			return;
-		}
-		else
-		{
-			//get mailing lists user belongs to
-			$e = Email::blank()->getTableName();
-			$m = Mailinglist::blank()->getTableName();
+            //redirect
+            App::redirect($redirect, Lang::txt('COM_NEWSLETTER_LOGIN_TO_SUBSCRIBE'), 'warning');
+            return;
+        } else {
+            //get mailing lists user belongs to
+            $e = Email::blank()->getTableName();
+            $m = Mailinglist::blank()->getTableName();
 
-			$mylists = Mailinglist::all()
-				->select($m . '.*')
-				->select($e . '.status')
-				->select($e . '.confirmed')
-				->select($e . '.id', 'emailid')
-				->join($e, $e . '.mid', $m . '.id', 'inner')
-				->whereEquals($e . '.email', $email)
-				->whereEquals('deleted', 0)
-				->rows();
+            $mylists = Mailinglist::all()
+                ->select($m . '.*')
+                ->select($e . '.status')
+                ->select($e . '.confirmed')
+                ->select($e . '.id', 'emailid')
+                ->join($e, $e . '.mid', $m . '.id', 'inner')
+                ->whereEquals($e . '.email', $email)
+                ->whereEquals('deleted', 0)
+                ->rows();
 
-			//get all lists
-			if (User::isGuest())
-			{
-				$alllists = Mailinglist::all()
-					->whereEquals('private', 0)
-					->whereEquals('deleted', 0)
-					->rows();
-			}
-			else
-			{
-				$alllists = Mailinglist::all()
-					->whereEquals('private', 0)
-					->whereEquals('guest', 0)
-					->whereEquals('deleted', 0)
-					->rows();
-			}
+            //get all lists
+            if (User::isGuest()) {
+                $alllists = Mailinglist::all()
+                    ->whereEquals('private', 0)
+                    ->whereEquals('deleted', 0)
+                    ->rows();
+            } else {
+                $alllists = Mailinglist::all()
+                    ->whereEquals('private', 0)
+                    ->whereEquals('guest', 0)
+                    ->whereEquals('deleted', 0)
+                    ->rows();
+            }
 
-			//build title
-			$this->_buildTitle();
+            //build title
+            $this->_buildTitle();
 
-			//build pathway
-			$this->_buildPathway();
+            //build pathway
+            $this->_buildPathway();
 
-			//output
-			$this->view
-				->set('title', $this->_title)
-				->set('mylists', $mylists)
-				->set('alllists', $alllists)
-				->set('email', $email)
-				->setLayout('subscribe')
-				->display();
-		}
-	}
+            //output
+            $this->view
+                ->set('title', $this->_title)
+                ->set('mylists', $mylists)
+                ->set('alllists', $alllists)
+                ->set('email', $email)
+                ->setLayout('subscribe')
+                ->display();
+        }
+    }
 
-	/**
-	 * Subscribe to *Single* Mailing List (Newsletter Module)
-	 *
-	 * @return 	void
-	 */
-	public function doSingleSubscribeTask()
-	{
-		//check to make sure we have a valid token
-		Request::checkToken();
+    /**
+     * Subscribe to *Single* Mailing List (Newsletter Module)
+     *
+     * @return  void
+     */
+    public function doSingleSubscribeTask()
+    {
+        //check to make sure we have a valid token
+        Request::checkToken();
 
-		//get request vars
-		$list   = Request::getInt('list_' . \Session::getFormToken(), '', 'post');
-		$email  = Request::getString('email_' . \Session::getFormToken(), User::get('email'), 'post');
-		$sid    = Request::getInt('subscriptionid', 0);
-		$hp1    = Request::getString('hp1', '', 'post');
-		$return = base64_decode(Request::getString('return', '/', 'post'));
+        //get request vars
+        $list   = Request::getInt('list_' . \Session::getFormToken(), '', 'post');
+        $email  = Request::getString('email_' . \Session::getFormToken(), User::get('email'), 'post');
+        $sid    = Request::getInt('subscriptionid', 0);
+        $hp1    = Request::getString('hp1', '', 'post');
+        $return = base64_decode(Request::getString('return', '/', 'post'));
 
-		//check to make sure our honey pot is good
-		if ($hp1 != '')
-		{
-			App::abort(403, Lang::txt('COM_NEWSLETTER_HP_ERROR'));
-		}
+        //check to make sure our honey pot is good
+        if ($hp1 != '') {
+            App::abort(403, Lang::txt('COM_NEWSLETTER_HP_ERROR'));
+        }
 
-		//validate email
-		if (!isset($email) || $email == '' || !filter_var($email, FILTER_VALIDATE_EMAIL))
-		{
-			//inform user and redirect
-			App::redirect(
-				Route::url($return),
-				Lang::txt('COM_NEWSLETTER_SUBSCRIBE_BADEMAIL'),
-				'error'
-			);
-			return;
-		}
+        //validate email
+        if (!isset($email) || $email == '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            //inform user and redirect
+            App::redirect(
+                Route::url($return),
+                Lang::txt('COM_NEWSLETTER_SUBSCRIBE_BADEMAIL'),
+                'error'
+            );
+            return;
+        }
 
-		//validate list
-		if (!isset($list) || !is_numeric($list))
-		{
-			//inform user and redirect
-			App::redirect(
-				Route::url($return),
-				Lang::txt('COM_NEWSLETTER_SUBSCRIBE_BADLIST'),
-				'error'
-			);
-			return;
-		}
+        //validate list
+        if (!isset($list) || !is_numeric($list)) {
+            //inform user and redirect
+            App::redirect(
+                Route::url($return),
+                Lang::txt('COM_NEWSLETTER_SUBSCRIBE_BADLIST'),
+                'error'
+            );
+            return;
+        }
 
-		//load mailing list object
-		$mailinglist = Mailinglist::oneOrFail($list);
+        //load mailing list object
+        $mailinglist = Mailinglist::oneOrFail($list);
 
-		//make sure its not private or already deleted
-		if (!$mailinglist->private && !$mailinglist->deleted)
-		{
-			$subscription = Email::blank()
-				->set(array(
-					'id'         => $sid,
-					'mid'        => $list,
-					'email'      => $email,
-					'status'     => 'inactive',
-					'date_added' => \Date::toSql()
-				));
+        //make sure its not private or already deleted
+        if (!$mailinglist->private && !$mailinglist->deleted) {
+            $subscription = Email::blank()
+                ->set(array(
+                    'id'         => $sid,
+                    'mid'        => $list,
+                    'email'      => $email,
+                    'status'     => 'inactive',
+                    'date_added' => \Date::toSql()
+                ));
 
-			//mail confirmation email and save subscription
-			if (Helper::sendMailinglistConfirmationEmail($email, $mailinglist, false))
-			{
-				$subscription->save();
-			}
-		}
+            //mail confirmation email and save subscription
+            if (Helper::sendMailinglistConfirmationEmail($email, $mailinglist, false)) {
+                $subscription->save();
+            }
+        }
 
-		//inform user and redirect
-		App::redirect(
-			Route::url($return),
-			Lang::txt('COM_NEWSLETTER_SUBSCRIBE_SUCCESS', $mailinglist->name)
-		);
-	}
+        //inform user and redirect
+        App::redirect(
+            Route::url($return),
+            Lang::txt('COM_NEWSLETTER_SUBSCRIBE_SUCCESS', $mailinglist->name)
+        );
+    }
 
-	/**
-	 * Subscribe/Unsubscribe from *Multiple* Mailing Lists
-	 *
-	 * @return 	void
-	 */
-	public function doMultiSubscribeTask()
-	{
-		//check to make sure we have a valid token
-		Request::checkToken();
+    /**
+     * Subscribe/Unsubscribe from *Multiple* Mailing Lists
+     *
+     * @return  void
+     */
+    public function doMultiSubscribeTask()
+    {
+        //check to make sure we have a valid token
+        Request::checkToken();
 
-		//get request vars
-		$lists = Request::getArray('lists', array(), 'post');
+        //get request vars
+        $lists = Request::getArray('lists', array(), 'post');
 
-		//get email
-		if (User::isGuest())
-		{
-			$email = (string)urldecode(Request::getString('e', '', 'post'));
-		}
-		else
-		{
-			$email = (string)User::get('email');
-		}
+        //get email
+        if (User::isGuest()) {
+            $email = (string)urldecode(Request::getString('e', '', 'post'));
+        } else {
+            $email = (string)User::get('email');
+        }
 
-		//get mailing lists user belongs to
-		$e = Email::blank()->getTableName();
-		$m = Mailinglist::blank()->getTableName();
+        //get mailing lists user belongs to
+        $e = Email::blank()->getTableName();
+        $m = Mailinglist::blank()->getTableName();
 
-		$mylists = Mailinglist::all()
-			->select($m . '.*')
-			->select($e . '.status')
-			->select($e . '.confirmed')
-			->select($e . '.id', 'emailid')
-			->join($e, $e . '.mid', $m . '.id', 'inner')
-			->whereEquals($e . '.email', $email)
-			->whereEquals('deleted', 0)
-			->rows();
+        $mylists = Mailinglist::all()
+            ->select($m . '.*')
+            ->select($e . '.status')
+            ->select($e . '.confirmed')
+            ->select($e . '.id', 'emailid')
+            ->join($e, $e . '.mid', $m . '.id', 'inner')
+            ->whereEquals($e . '.email', $email)
+            ->whereEquals('deleted', 0)
+            ->rows();
 
-		$keys = array();
-		foreach ($mylists as $mylist)
-		{
-			$keys[] = $mylist->id;
-		}
+        $keys = array();
+        foreach ($mylists as $mylist) {
+            $keys[] = $mylist->id;
+        }
 
-		// subscribe user to checked lists
-		foreach ($lists as $list)
-		{
-			//only subscribe if not previously
-			if (!in_array($list, $keys))
-			{
-				//load mailing list object
-				$mailinglist = Mailinglist::oneOrFail($list);
+        // subscribe user to checked lists
+        foreach ($lists as $list) {
+            //only subscribe if not previously
+            if (!in_array($list, $keys)) {
+                //load mailing list object
+                $mailinglist = Mailinglist::oneOrFail($list);
 
-				//make sure its not private or already deleted
-				if (!$mailinglist->private && !$mailinglist->deleted)
-				{
-					$subscription = Email::blank()
-						->set(array(
-							'mid'        => $list,
-							'email'      => $email,
-							'status'     => 'inactive',
-							'date_added' => Date::toSql()
-						));
+                //make sure its not private or already deleted
+                if (!$mailinglist->private && !$mailinglist->deleted) {
+                    $subscription = Email::blank()
+                        ->set(array(
+                            'mid'        => $list,
+                            'email'      => $email,
+                            'status'     => 'inactive',
+                            'date_added' => Date::toSql()
+                        ));
 
-					//mail confirmation email and save subscription
-					if (Helper::sendMailinglistConfirmationEmail($email, $mailinglist, false))
-					{
-						$subscription->save();
-					}
-				}
-			}
-		}
+                    //mail confirmation email and save subscription
+                    if (Helper::sendMailinglistConfirmationEmail($email, $mailinglist, false)) {
+                        $subscription->save();
+                    }
+                }
+            }
+        }
 
-		//check to make sure we dont need to unsubscribe from lists
-		foreach ($mylists as $mylist)
-		{
-			//instantiate newsletter mailing email
-			$memail = Email::oneOrFail($mylist->emailid);
+        //check to make sure we dont need to unsubscribe from lists
+        foreach ($mylists as $mylist) {
+            //instantiate newsletter mailing email
+            $memail = Email::oneOrFail($mylist->emailid);
 
-			//do we want to mark as active or mark as unsubscribed
-			if (!in_array($mylist->id, $lists))
-			{
-				//set as unsubscribed
-				$memail->set('status', 'unsubscribed');
-				$memail->set('confirmed', 0);
-				$memail->set('date_confirmed', null);
-			}
-			else if ($mylist->status != 'active')
-			{
-				//set as active
-				$memail->set('status', 'inactive');
+            //do we want to mark as active or mark as unsubscribed
+            if (!in_array($mylist->id, $lists)) {
+                //set as unsubscribed
+                $memail->set('status', 'unsubscribed');
+                $memail->set('confirmed', 0);
+                $memail->set('date_confirmed', null);
+            } elseif ($mylist->status != 'active') {
+                //set as active
+                $memail->set('status', 'inactive');
 
-				//load mailing list object
-				$mailinglist = Mailinglist::oneOrFail($mylist->id);
+                //load mailing list object
+                $mailinglist = Mailinglist::oneOrFail($mylist->id);
 
-				//send a new confirmation
-				Helper::sendMailinglistConfirmationEmail($email, $mailinglist, false);
+                //send a new confirmation
+                Helper::sendMailinglistConfirmationEmail($email, $mailinglist, false);
 
-				//delete all unsubscribes
-				$sql = "DELETE FROM `#__newsletter_mailinglist_unsubscribes`
+                //delete all unsubscribes
+                $sql = "DELETE FROM `#__newsletter_mailinglist_unsubscribes`
 						WHERE mid=" . $this->database->quote($mylist->id) . "
 						AND email=" . $this->database->quote($email);
-				$this->database->setQuery($sql);
-				$this->database->query();
-			}
+                $this->database->setQuery($sql);
+                $this->database->query();
+            }
 
-			//save
-			$memail->save();
-		}
+            //save
+            $memail->save();
+        }
 
-		//inform user and redirect
-		App::redirect(
-			Route::url('index.php?option=com_newsletter&task=subscribe&e=' . urlencode($email)),
-			Lang::txt('COM_NEWSLETTER_MAILINGLISTS_SAVE_SUCCESS')
-		);
-	}
+        //inform user and redirect
+        App::redirect(
+            Route::url('index.php?option=com_newsletter&task=subscribe&e=' . urlencode($email)),
+            Lang::txt('COM_NEWSLETTER_MAILINGLISTS_SAVE_SUCCESS')
+        );
+    }
 
-	/**
-	 * Unsubscribe From Mailing Lists
-	 *
-	 * @return 	void
-	 */
-	public function unsubscribeTask()
-	{
-		//get request vars
-		$email = urldecode(Request::getString('e', ''));
-		$token = Request::getString('t', '');
+    /**
+     * Unsubscribe From Mailing Lists
+     *
+     * @return  void
+     */
+    public function unsubscribeTask()
+    {
+        //get request vars
+        $email = urldecode(Request::getString('e', ''));
+        $token = Request::getString('t', '');
 
-		//parse token
-		$recipient = Helper::parseMailingToken($token);
+        //parse token
+        $recipient = Helper::parseMailingToken($token);
 
-		//make sure mailing recipient email matches email param
-		if ($email != $recipient->email)
-		{
-			App::redirect(
-				Route::url('index.php?option=com_newsletter&task=subscribe'),
-				Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_LINK_ISSUE'),
-				'error'
-			);
-			return;
-		}
+        //make sure mailing recipient email matches email param
+        if ($email != $recipient->email) {
+            App::redirect(
+                Route::url('index.php?option=com_newsletter&task=subscribe'),
+                Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_LINK_ISSUE'),
+                'error'
+            );
+            return;
+        }
 
-		//get newsletter mailing to get mailing list id mailing was sent to
-		$mailing = Mailing::oneOrFail($recipient->mid);
+        //get newsletter mailing to get mailing list id mailing was sent to
+        $mailing = Mailing::oneOrFail($recipient->mid);
 
-		//make sure we have a mailing object
-		if (!is_object($mailing))
-		{
-			App::redirect(
-				Route::url('index.php?option=com_newsletter&task=subscribe'),
-				Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_NO_MAILING'),
-				'error'
-			);
-			return;
-		}
+        //make sure we have a mailing object
+        if (!is_object($mailing)) {
+            App::redirect(
+                Route::url('index.php?option=com_newsletter&task=subscribe'),
+                Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_NO_MAILING'),
+                'error'
+            );
+            return;
+        }
 
-		//is the mailing list to the default hub mailing list?
-		if ($mailing->lid == '-1')
-		{
-			$mailinglist = Mailinglist::blank()
-				->set(array(
-					'id' => -1,
-					'name' => 'HUB Members',
-					'description' => Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_DEFAULTLIST')
-				));
-		}
-	else
-		{
-			//load mailing list
-			$mailinglist = Mailinglist::oneOrFail($mailing->lid);
-		}
+        //is the mailing list to the default hub mailing list?
+        if ($mailing->lid == '-1') {
+            $mailinglist = Mailinglist::blank()
+                ->set(array(
+                    'id' => -1,
+                    'name' => 'HUB Members',
+                    'description' => Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_DEFAULTLIST')
+                ));
+        } else {
+            //load mailing list
+            $mailinglist = Mailinglist::oneOrFail($mailing->lid);
+        }
 
-		//check to make sure were not already unsubscribed
-		$unsubscribedAlready = false;
-		if ($mailing->lid == '-1')
-		{
-			$sql = "SELECT *
+        //check to make sure were not already unsubscribed
+        $unsubscribedAlready = false;
+        if ($mailing->lid == '-1') {
+            $sql = "SELECT *
 					FROM `#__users` AS u
 					WHERE u.email=" . $this->database->quote($recipient->email) . "
 					AND u.sendEmail > " . $this->database->quote(0);
-			$this->database->setQuery($sql);
-			$profile = $this->database->loadObject();
+            $this->database->setQuery($sql);
+            $profile = $this->database->loadObject();
 
-			if (!is_object($profile) || $profile->id == '')
-			{
-				$unsubscribedAlready = true;
-			}
-		}
-		else
-		{
-			//check to make sure email is on list
-			$sql = "SELECT *
+            if (!is_object($profile) || $profile->id == '') {
+                $unsubscribedAlready = true;
+            }
+        } else {
+            //check to make sure email is on list
+            $sql = "SELECT *
 					FROM `#__newsletter_mailinglist_emails` AS mle
 					WHERE mle.mid=" . $this->database->quote($mailing->lid) . "
 					AND mle.email=" . $this->database->quote($recipient->email) . "
 					AND mle.status=" . $this->database->quote('active');
-			$this->database->setQuery($sql);
-			$list = $this->database->loadObject();
+            $this->database->setQuery($sql);
+            $list = $this->database->loadObject();
 
-			if (!is_object($list) || $list->id == '')
-			{
-				$unsubscribedAlready = true;
-			}
-		}
+            if (!is_object($list) || $list->id == '') {
+                $unsubscribedAlready = true;
+            }
+        }
 
-		//are we unsubscribed already
-		if ($unsubscribedAlready)
-		{
-			Notify::error(Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_ALREADY_UNSUBSCRIBED', $mailinglist->name));
+        //are we unsubscribed already
+        if ($unsubscribedAlready) {
+            Notify::error(Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_ALREADY_UNSUBSCRIBED', $mailinglist->name));
 
-			if (User::isGuest())
-			{
-				App::redirect(
-					Route::url('index.php?option=com_newsletter')
-				);
-				return;
-			}
+            if (User::isGuest()) {
+                App::redirect(
+                    Route::url('index.php?option=com_newsletter')
+                );
+                return;
+            }
 
-			App::redirect(
-				Route::url('index.php?option=com_newsletter&task=subscribe')
-			);
-			return;
-		}
+            App::redirect(
+                Route::url('index.php?option=com_newsletter&task=subscribe')
+            );
+            return;
+        }
 
-		//build title
-		$this->_buildTitle();
+        //build title
+        $this->_buildTitle();
 
-		//build pathway
-		$this->_buildPathway();
+        //build pathway
+        $this->_buildPathway();
 
-		//output
-		$this->view
-			->set('title', $this->_title)
-			->set('mailinglist', $mailinglist)
-			->setLayout('unsubscribe')
-			->display();
-	}
+        //output
+        $this->view
+            ->set('title', $this->_title)
+            ->set('mailinglist', $mailinglist)
+            ->setLayout('unsubscribe')
+            ->display();
+    }
 
-	/**
-	 * Unsubscribe User Mailing Lists
-	 *
-	 * @return 	void
-	 */
-	public function doUnsubscribeTask()
-	{
-		//check to make sure we have a valid token
-		Request::checkToken();
+    /**
+     * Unsubscribe User Mailing Lists
+     *
+     * @return  void
+     */
+    public function doUnsubscribeTask()
+    {
+        //check to make sure we have a valid token
+        Request::checkToken();
 
-		//get request vars
-		$email      = urldecode(Request::getString('e', ''));
-		$token      = Request::getString('t', '');
-		$reason     = Request::getString('reason', '');
-		$reason_alt = Request::getString('reason-alt', '');
+        //get request vars
+        $email      = urldecode(Request::getString('e', ''));
+        $token      = Request::getString('t', '');
+        $reason     = Request::getString('reason', '');
+        $reason_alt = Request::getString('reason-alt', '');
 
-		//grab the reason explaination if user selected other
-		if ($reason == 'Other')
-		{
-			$reason = $reason_alt;
-		}
+        //grab the reason explaination if user selected other
+        if ($reason == 'Other') {
+            $reason = $reason_alt;
+        }
 
-		//parse mailing token
-		$recipient = Helper::parseMailingToken($token);
+        //parse mailing token
+        $recipient = Helper::parseMailingToken($token);
 
-		//make sure the token is valid
-		if (!is_object($recipient) || $email != $recipient->email)
-		{
-			App::redirect(
-				Route::url('index.php?option=com_newsletter&task=subscribe'),
-				Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_LINK_ISSUE'),
-				'error'
-			);
-			return;
-		}
+        //make sure the token is valid
+        if (!is_object($recipient) || $email != $recipient->email) {
+            App::redirect(
+                Route::url('index.php?option=com_newsletter&task=subscribe'),
+                Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_LINK_ISSUE'),
+                'error'
+            );
+            return;
+        }
 
-		//get newsletter mailing to get mailing list id mailing was sent to
-		$mailing = Mailing::oneOrNew($recipient->mid);
+        //get newsletter mailing to get mailing list id mailing was sent to
+        $mailing = Mailing::oneOrNew($recipient->mid);
 
-		//make sure we have a mailing object
-		if (!$mailing->get('id'))
-		{
-			App::redirect(
-				Route::url('index.php?option=com_newsletter&task=subscribe'),
-				Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_NO_MAILING'),
-				'error'
-			);
-			return;
-		}
+        //make sure we have a mailing object
+        if (!$mailing->get('id')) {
+            App::redirect(
+                Route::url('index.php?option=com_newsletter&task=subscribe'),
+                Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_NO_MAILING'),
+                'error'
+            );
+            return;
+        }
 
-		//are we unsubscribing from default list?
-		$sql = '';
-		if ($mailing->lid == '-1')
-		{
-			if (!User::isGuest())
-			{
-				$sql = "UPDATE `#__users` SET `sendEmail`=0 WHERE `id`=" . $this->database->quote(User::get('id'));
-			}
-			else
-			{
-				//build return url and redirect url
-				$return = Route::url('index.php?option=com_newsletter&task=unsubscribe&e=' . urlencode($email) . '&t=' . $token);
+        //are we unsubscribing from default list?
+        $sql = '';
+        if ($mailing->lid == '-1') {
+            if (!User::isGuest()) {
+                $sql = "UPDATE `#__users` SET `sendEmail`=0 WHERE `id`="
+                    . $this->database->quote(User::get('id'));
+            } else {
+                //build return url and redirect url
+                $return = Route::url(
+                    'index.php?option=com_newsletter&task=unsubscribe&e='
+                    . urlencode($email) . '&t=' . $token
+                );
 
-				//inform user and redirect
-				App::redirect(
-					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
-					Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_MUST_LOGIN'),
-					'warning'
-				);
-				return;
-			}
-		}
-		else
-		{
-			//update the emails status on the mailing list
-			$sql = "UPDATE `#__newsletter_mailinglist_emails`
+                //inform user and redirect
+                App::redirect(
+                    Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
+                    Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_MUST_LOGIN'),
+                    'warning'
+                );
+                return;
+            }
+        } else {
+            //update the emails status on the mailing list
+            $sql = "UPDATE `#__newsletter_mailinglist_emails`
 					SET status=" . $this->database->quote('unsubscribed') . "
 					WHERE mid=" . $this->database->quote($mailing->lid) . "
 					AND email=" . $this->database->quote($recipient->email);
-		}
+        }
 
-		//set query and execute
-		$this->database->setQuery($sql);
-		if (!$this->database->query())
-		{
-			App::redirect(
-				Route::url('index.php?option=com_newsletter&task=unsubscribe&e=' . urlencode($email) . '&t=' . $token),
-				Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_ERROR'),
-				'error'
-			);
-			return;
-		}
+        //set query and execute
+        $this->database->setQuery($sql);
+        if (!$this->database->query()) {
+            App::redirect(
+                Route::url('index.php?option=com_newsletter&task=unsubscribe&e=' . urlencode($email) . '&t=' . $token),
+                Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_ERROR'),
+                'error'
+            );
+            return;
+        }
 
-		//insert unsubscribe reason
-		$sql = "INSERT INTO `#__newsletter_mailinglist_unsubscribes` (mid,email,reason)
-				VALUES (" . $this->database->quote($mailing->lid) . "," . $this->database->quote($recipient->email) . "," . $this->database->quote($reason) . ")";
-		$this->database->setQuery($sql);
-		$this->database->query();
+        //insert unsubscribe reason
+        $mid = $this->database->quote($mailing->lid);
+        $recipientEmail = $this->database->quote($recipient->email);
+        $reasonQuoted = $this->database->quote($reason);
+        $sql = "INSERT INTO `#__newsletter_mailinglist_unsubscribes` (mid,email,reason)
+				VALUES (" . $mid . "," . $recipientEmail . "," . $reasonQuoted . ")";
+        $this->database->setQuery($sql);
+        $this->database->query();
 
-		//inform user of successful unsubscribe
-		Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_SUCCESS'));
+        //inform user of successful unsubscribe
+        Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_SUCCESS'));
 
-		if (User::isGuest())
-		{
-			App::redirect(
-				Route::url('index.php?option=com_newsletter')
-			);
-			return;
-		}
+        if (User::isGuest()) {
+            App::redirect(
+                Route::url('index.php?option=com_newsletter')
+            );
+            return;
+        }
 
-		App::redirect(
-			Route::url('index.php?option=com_newsletter&task=subscribe')
-		);
-	}
+        App::redirect(
+            Route::url('index.php?option=com_newsletter&task=subscribe')
+        );
+    }
 
-	/**
-	 * Confirm Subscription to Mailing list
-	 *
-	 * @return 	void
-	 */
-	public function confirmTask()
-	{
-		//get request vars
-		$email = urldecode(Request::getString('e', ''));
-		$token = Request::getString('t', '');
+    /**
+     * Confirm Subscription to Mailing list
+     *
+     * @return  void
+     */
+    public function confirmTask()
+    {
+        //get request vars
+        $email = urldecode(Request::getString('e', ''));
+        $token = Request::getString('t', '');
 
-		//make sure we have an email
-		$mailinglistEmail = Helper::parseConfirmationToken($token);
+        //make sure we have an email
+        $mailinglistEmail = Helper::parseConfirmationToken($token);
 
-		//make sure the token is valid
-		if (!is_object($mailinglistEmail) || $email != $mailinglistEmail->email)
-		{
-			App::redirect(
-				Route::url('index.php?option=com_newsletter'),
-				Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRMATION_LINK_ISSUE'),
-				'error'
-			);
-			return;
-		}
+        //make sure the token is valid
+        if (!is_object($mailinglistEmail) || $email != $mailinglistEmail->email) {
+            App::redirect(
+                Route::url('index.php?option=com_newsletter'),
+                Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRMATION_LINK_ISSUE'),
+                'error'
+            );
+            return;
+        }
 
-		//instantiate mailing list email object and load based on id
-		$model = Email::oneOrFail($mailinglistEmail->id);
+        //instantiate mailing list email object and load based on id
+        $model = Email::oneOrFail($mailinglistEmail->id);
 
-		//set that we are now confirmed
-		$model->set('status', 'active');
-		$model->set('confirmed', 1);
-		$model->set('date_confirmed', Date::toSql());
+        //set that we are now confirmed
+        $model->set('status', 'active');
+        $model->set('confirmed', 1);
+        $model->set('date_confirmed', Date::toSql());
 
-		//save
-		$model->save();
+        //save
+        $model->save();
 
-		//inform user
-		Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRM_SUCCESS'));
+        //inform user
+        Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRM_SUCCESS'));
 
-		App::redirect(
-			Route::url('index.php?option=com_newsletter&task=subscribe&e=' . urlencode($email))
-		);
-	}
+        App::redirect(
+            Route::url('index.php?option=com_newsletter&task=subscribe&e=' . urlencode($email))
+        );
+    }
 
-	/**
-	 * Remove From Mailing list
-	 *
-	 * @return 	void
-	 */
-	public function removeTask()
-	{
-		//get request vars
-		$email = urldecode(Request::getString('e', ''));
-		$token = Request::getString('t', '');
+    /**
+     * Remove From Mailing list
+     *
+     * @return  void
+     */
+    public function removeTask()
+    {
+        //get request vars
+        $email = urldecode(Request::getString('e', ''));
+        $token = Request::getString('t', '');
 
-		//make sure we have an email
-		$mailinglistEmail = Helper::parseConfirmationToken($token);
+        //make sure we have an email
+        $mailinglistEmail = Helper::parseConfirmationToken($token);
 
-		//make sure the token is valid
-		if (!is_object($mailinglistEmail) || $email != $mailinglistEmail->email)
-		{
-			App::redirect(
-				Route::url('index.php?option=com_newsletter'),
-				Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRMATION_LINK_ISSUE'),
-				'error'
-			);
-			return;
-		}
+        //make sure the token is valid
+        if (!is_object($mailinglistEmail) || $email != $mailinglistEmail->email) {
+            App::redirect(
+                Route::url('index.php?option=com_newsletter'),
+                Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRMATION_LINK_ISSUE'),
+                'error'
+            );
+            return;
+        }
 
-		//instantiate mailing list email object and load based on id
-		$model = Email::oneOrFail($mailinglistEmail->id);
+        //instantiate mailing list email object and load based on id
+        $model = Email::oneOrFail($mailinglistEmail->id);
 
-		//unsubscribe & unconfirm email
-		$model->set('status', 'unsubscribed');
-		$model->set('confirmed', 0);
+        //unsubscribe & unconfirm email
+        $model->set('status', 'unsubscribed');
+        $model->set('confirmed', 0);
 
-		//save
-		$model->save();
+        //save
+        $model->save();
 
-		//inform user
-		Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_REMOVED_SUCCESS'));
-		App::redirect(
-			Route::url('index.php?option=com_newsletter&task=subscribe&e=' . urlencode($email))
-		);
-	}
+        //inform user
+        Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_REMOVED_SUCCESS'));
+        App::redirect(
+            Route::url('index.php?option=com_newsletter&task=subscribe&e=' . urlencode($email))
+        );
+    }
 
-	/**
-	 * Resend Newsletter Confirmation
-	 * 
-	 * @return  void
-	 */
-	public function resendConfirmationTask()
-	{
-		//get email
-		if (User::isGuest())
-		{
-			$email = (string)urldecode(Request::getString('e', ''));
-		}
-		else
-		{
-			$email = (string)User::get('email');
-		}
+    /**
+     * Resend Newsletter Confirmation
+     *
+     * @return  void
+     */
+    public function resendConfirmationTask()
+    {
+        //get email
+        if (User::isGuest()) {
+            $email = (string)urldecode(Request::getString('e', ''));
+        } else {
+            $email = (string)User::get('email');
+        }
 
-		//get request vars
-		$mid = Request::getInt('mid', 0);
+        //get request vars
+        $mid = Request::getInt('mid', 0);
 
-		//instantiate mailing list object
-		$mailinglist = Mailinglist::oneOrFail($mid);
+        //instantiate mailing list object
+        $mailinglist = Mailinglist::oneOrFail($mid);
 
-		//send confirmation email
-		Helper::sendMailinglistConfirmationEmail($email, $mailinglist, false);
+        //send confirmation email
+        Helper::sendMailinglistConfirmationEmail($email, $mailinglist, false);
 
-		//inform user and redirect
-		App::redirect(
-			Route::url('index.php?option=com_newsletter&task=subscribe&e=' . urlencode($email)),
-			Lang::txt('COM_NEWSLETTER_MAILINGLISTS_CONFIRM_SENT', $email)
-		);
-	}
+        //inform user and redirect
+        App::redirect(
+            Route::url('index.php?option=com_newsletter&task=subscribe&e=' . urlencode($email)),
+            Lang::txt('COM_NEWSLETTER_MAILINGLISTS_CONFIRM_SENT', $email)
+        );
+    }
 }
