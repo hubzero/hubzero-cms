@@ -44,7 +44,7 @@ class Media extends Base
 
         //check to make sure we have  cname
         if (!$this->cn) {
-            $this->_errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
+            $this->errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
         }
 
         // Load the group page
@@ -56,13 +56,13 @@ class Media extends Base
 
         // Ensure we found the group info
         if (!$this->group || !$this->group->get('gidNumber')) {
-            $this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
+            $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
         // Kick user out if not logged in and should be
         /*if (User::isGuest() && $this->pluginAccess['files'] == 'registered')
         {
-            $this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
+            $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }*/
 
         // Check if they're logged in and not everyone can view files
@@ -76,7 +76,7 @@ class Media extends Base
         // Check authorization
         if (!in_array(User::get('id'), $this->group->get('members'))) {
             if ($this->pluginAccess['files'] == 'members') {
-                $this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
+                $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
             }
         } else {
             $this->authorized = true;
@@ -562,7 +562,7 @@ class Media extends Base
         Request::checkToken(['get', 'post']);
 
         if (!$this->authorized) {
-            $this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
+            $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
             return;
         }
 
