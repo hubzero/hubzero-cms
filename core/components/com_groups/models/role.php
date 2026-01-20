@@ -1,4 +1,6 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,100 +20,97 @@ include_once __DIR__ . DS . 'member' . DS . 'role.php';
  */
 class Role extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var string
-	 */
-	protected $namespace = 'xgroups';
+    /**
+     * The table namespace
+     *
+     * @var string
+     */
+    protected $namespace = 'xgroups';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var string
-	 */
-	public $orderBy = 'name';
+    /**
+     * Default order by for model
+     *
+     * @var string
+     */
+    public $orderBy = 'name';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'name'      => 'notempty',
-		'gidNumber' => 'positive|nonzero'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'name'      => 'notempty',
+        'gidNumber' => 'positive|nonzero'
+    );
 
-	/**
-	 * Get parent group
-	 *
-	 * @return  object
-	 */
-	public function group()
-	{
-		return Group::getInstance($this->get('gidNumber'));
-	}
+    /**
+     * Get parent group
+     *
+     * @return  object
+     */
+    public function group()
+    {
+        return Group::getInstance($this->get('gidNumber'));
+    }
 
-	/**
-	 * Get group permissions
-	 *
-	 * @return  object
-	 */
-	public function transformPermissions()
-	{
-		$registry = new Registry($this->get('permissions'));
-		$registry->separator = '/';
-		return $registry;
-	}
+    /**
+     * Get group permissions
+     *
+     * @return  object
+     */
+    public function transformPermissions()
+    {
+        $registry = new Registry($this->get('permissions'));
+        $registry->separator = '/';
+        return $registry;
+    }
 
-	/**
-	 * Get a list of members
-	 *
-	 * @return  object
-	 */
-	public function members()
-	{
-		return $this->oneToMany('\Components\Groups\Models\Member\Role', 'roleid');
-	}
+    /**
+     * Get a list of members
+     *
+     * @return  object
+     */
+    public function members()
+    {
+        return $this->oneToMany('\Components\Groups\Models\Member\Role', 'roleid');
+    }
 
-	/**
-	 * Save the record
-	 *
-	 * @return  boolean  False if error, True on success
-	 */
-	public function save()
-	{
-		if (!is_string($this->get('permissions')))
-		{
-			$this->set('permissions', json_encode($this->get('permissions')));
-		}
+    /**
+     * Save the record
+     *
+     * @return  boolean  False if error, True on success
+     */
+    public function save()
+    {
+        if (!is_string($this->get('permissions'))) {
+            $this->set('permissions', json_encode($this->get('permissions')));
+        }
 
-		return parent::save();
-	}
+        return parent::save();
+    }
 
-	/**
-	 * Delete record and associated content
-	 *
-	 * @return  object
-	 */
-	public function destroy()
-	{
-		foreach ($this->members()->rows() as $member)
-		{
-			if (!$member->destroy())
-			{
-				$this->addError($member->getError());
-				return false;
-			}
-		}
+    /**
+     * Delete record and associated content
+     *
+     * @return  object
+     */
+    public function destroy()
+    {
+        foreach ($this->members()->rows() as $member) {
+            if (!$member->destroy()) {
+                $this->addError($member->getError());
+                return false;
+            }
+        }
 
-		return parent::destroy();
-	}
+        return parent::destroy();
+    }
 }

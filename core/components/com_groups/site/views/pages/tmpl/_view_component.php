@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,5 +13,5 @@ defined('_HZEXEC_') or die();
 ?>
 
 <div class="group-component">
-	<?php echo $this->content; ?>
+    <?php echo $this->content; ?>
 </div>

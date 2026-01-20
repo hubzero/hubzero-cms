@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,54 +15,54 @@ use Hubzero\Database\Relational;
  */
 class Category extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 **/
-	protected $namespace = 'xgroups_pages';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     **/
+    protected $namespace = 'xgroups_pages';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'id';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'id';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'gidNumber' => 'positive|nonzero',
-		'title'     => 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'gidNumber' => 'positive|nonzero',
+        'title'     => 'notempty'
+    );
 
-	/**
-	 * Get parent group
-	 *
-	 * @return  object
-	 */
-	public function group()
-	{
-		return $this->belongsToOne('Components\Groups\Models\Orm\Group', 'gidNumber');
-	}
+    /**
+     * Get parent group
+     *
+     * @return  object
+     */
+    public function group()
+    {
+        return $this->belongsToOne('Components\Groups\Models\Orm\Group', 'gidNumber');
+    }
 
-	/**
-	 * Get pages assigned to this category
-	 *
-	 * @return  object
-	 */
-	public function pages()
-	{
-		return $this->oneToMany('Components\Groups\Models\Orm\Page', 'category');
-	}
+    /**
+     * Get pages assigned to this category
+     *
+     * @return  object
+     */
+    public function pages()
+    {
+        return $this->oneToMany('Components\Groups\Models\Orm\Page', 'category');
+    }
 }

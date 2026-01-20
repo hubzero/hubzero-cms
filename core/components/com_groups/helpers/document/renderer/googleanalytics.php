@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,26 +12,25 @@ use Components\Groups\Helpers\Document\Renderer;
 
 class GoogleAnalytics extends Renderer
 {
-	/**
-	 * Render content to group template
-	 *
-	 * @param    string
-	 */
-	public function render()
-	{
-		$js = '';
+    /**
+     * Render content to group template
+     *
+     * @param    string
+     */
+    public function render()
+    {
+        $js = '';
 
-		// get the account
-		$account = (isset($this->params->account) && $this->params->account != '') ? $this->params->account : null;
+        // get the account
+        $account = (isset($this->params->account) && $this->params->account != '') ? $this->params->account : null;
 
-		// define tracker property name
-		$name    = ($this->group) ? $this->group->get('cn') : 'newTracker';
-		$name    = str_replace('-', '', $name);
+        // define tracker property name
+        $name    = ($this->group) ? $this->group->get('cn') : 'newTracker';
+        $name    = str_replace('-', '', $name);
 
-		// if we have an account lets output
-		if ($account !== null)
-		{
-			$js = "
+        // if we have an account lets output
+        if ($account !== null) {
+            $js = "
 				<script>
 					setTimeout(function(){
 						if (typeof ga == 'undefined')
@@ -46,8 +46,8 @@ class GoogleAnalytics extends Renderer
 						ga('" . $name . ".send', 'pageview');
 					}, 200);
 				</script>";
-		}
+        }
 
-		return $js;
-	}
+        return $js;
+    }
 }

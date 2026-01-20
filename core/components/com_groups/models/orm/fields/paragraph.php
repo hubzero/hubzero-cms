@@ -1,4 +1,6 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,34 +16,39 @@ use Hubzero\Form\Field;
  */
 class Paragraph extends Field
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var  string
-	 */
-	protected $type = 'Paragraph';
+    /**
+     * The form field type.
+     *
+     * @var  string
+     */
+    protected $type = 'Paragraph';
 
-	/**
-	 * Method to get the field input markup.
-	 *
-	 * @return  string  The field input markup.
-	 */
-	protected function getInput()
-	{
-		// Initialize some field attributes.
-		$class = $this->element['class'] ? ' class="paragraph paragraph-' . $this->id . ' ' . (string) $this->element['class'] . '"' : ' class="paragraph paragraph-' . $this->id . '"';
+    /**
+     * Method to get the field input markup.
+     *
+     * @return  string  The field input markup.
+     */
+    protected function getInput()
+    {
+        // Initialize some field attributes.
+        $baseClass = 'paragraph paragraph-' . $this->id;
+        if ($this->element['class']) {
+            $class = ' class="' . $baseClass . ' ' . (string) $this->element['class'] . '"';
+        } else {
+            $class = ' class="' . $baseClass . '"';
+        }
 
-		// Initialize variables.
-		$html = array();
+        // Initialize variables.
+        $html = array();
 
-		// Start the radio field output.
-		$html[] = '<p id="' . $this->id . '"' . $class . '>';
+        // Start the radio field output.
+        $html[] = '<p id="' . $this->id . '"' . $class . '>';
 
-		$html[] = isset($this->element['description']) ? $this->element['description'] : '';
+        $html[] = isset($this->element['description']) ? $this->element['description'] : '';
 
-		// End the radio field output.
-		$html[] = '</p>';
+        // End the radio field output.
+        $html[] = '</p>';
 
-		return implode($html);
-	}
+        return implode($html);
+    }
 }

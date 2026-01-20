@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,10 +22,9 @@ $canDo = Components\Groups\Helpers\Permissions::getActions('component');
 $title  = ($this->import->get('id')) ? Lang::txt('COM_GROUPS_IMPORT_TITLE_EDIT') : Lang::txt('COM_GROUPS_IMPORT_TITLE_ADD');
 
 Toolbar::title(Lang::txt('COM_GROUPS') . ': ' . $title, 'import');
-if ($canDo->get('core.admin'))
-{
-	Toolbar::save();
-	Toolbar::spacer();
+if ($canDo->get('core.admin')) {
+    Toolbar::save();
+    Toolbar::spacer();
 }
 Toolbar::cancel();
 
@@ -33,57 +35,56 @@ $this->js();
 ?>
 
 <?php foreach ($this->getErrors() as $error) : ?>
-	<p class="error"><?php echo $error; ?></p>
+    <p class="error"><?php echo $error; ?></p>
 <?php endforeach; ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=save'); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
-	<div class="grid">
-		<div class="col span7">
+    <div class="grid">
+        <div class="col span7">
 
-			<p class="warning"><?php echo Lang::txt('COM_GROUPS_IMPORT_EDIT_FIELDSET_MAPPING_REQUIRED'); ?></p>
+            <p class="warning"><?php echo Lang::txt('COM_GROUPS_IMPORT_EDIT_FIELDSET_MAPPING_REQUIRED'); ?></p>
 
-			<?php
-			$this->view('_fieldmap')
-				->set('import', $this->import)
-				->display();
-			?>
+            <?php
+            $this->view('_fieldmap')
+                ->set('import', $this->import)
+                ->display();
+            ?>
 
-		</div>
-		<div class="col span5">
-			<table class="meta">
-				<tbody>
-					<tr>
-						<th scope="row"><?php echo Lang::txt('COM_GROUPS_IMPORT_EDIT_FIELD_ID'); ?></th>
-						<td><?php echo $this->import->get('id'); ?></td>
-					</tr>
-					<tr>
-						<th><?php echo Lang::txt('COM_GROUPS_IMPORT_EDIT_FIELD_CREATEDBY'); ?></th>
-						<td>
-							<?php
-								if ($created_by = User::getInstance($this->import->get('created_by')))
-								{
-									echo $created_by->get('name');
-								}
-							?>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php echo Lang::txt('COM_GROUPS_IMPORT_EDIT_FIELD_CREATEDON'); ?></th>
-						<td>
-							<?php
-								echo Date::of($this->import->get('created_at'))->toLocal('m/d/Y @ g:i a');
-							?>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
+        </div>
+        <div class="col span5">
+            <table class="meta">
+                <tbody>
+                    <tr>
+                        <th scope="row"><?php echo Lang::txt('COM_GROUPS_IMPORT_EDIT_FIELD_ID'); ?></th>
+                        <td><?php echo $this->import->get('id'); ?></td>
+                    </tr>
+                    <tr>
+                        <th><?php echo Lang::txt('COM_GROUPS_IMPORT_EDIT_FIELD_CREATEDBY'); ?></th>
+                        <td>
+                            <?php
+                            if ($created_by = User::getInstance($this->import->get('created_by'))) {
+                                echo $created_by->get('name');
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php echo Lang::txt('COM_GROUPS_IMPORT_EDIT_FIELD_CREATEDON'); ?></th>
+                        <td>
+                            <?php
+                                echo Date::of($this->import->get('created_at'))->toLocal('m/d/Y @ g:i a');
+                            ?>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
-	<input type="hidden" name="task" value="save" />
-	<input type="hidden" name="import[id]" value="<?php echo $this->import->get('id'); ?>" />
+    <input type="hidden" name="option" value="<?php echo $this->option ?>" />
+    <input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
+    <input type="hidden" name="task" value="save" />
+    <input type="hidden" name="import[id]" value="<?php echo $this->import->get('id'); ?>" />
 
-	<?php echo Html::input('token'); ?>
+    <?php echo Html::input('token'); ?>
 </form>

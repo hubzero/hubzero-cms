@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,44 +15,44 @@ use Hubzero\Database\Relational;
  */
 class Role extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 **/
-	protected $namespace = 'xgroups';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     **/
+    protected $namespace = 'xgroups';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'name';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'name';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'gidNumber' => 'positive|nonzero',
-		'name'      => 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'gidNumber' => 'positive|nonzero',
+        'name'      => 'notempty'
+    );
 
-	/**
-	 * Get parent group
-	 *
-	 * @return  object
-	 */
-	public function group()
-	{
-		return $this->belongsToOne('Group', 'gidNumber');
-	}
+    /**
+     * Get parent group
+     *
+     * @return  object
+     */
+    public function group()
+    {
+        return $this->belongsToOne('Group', 'gidNumber');
+    }
 }

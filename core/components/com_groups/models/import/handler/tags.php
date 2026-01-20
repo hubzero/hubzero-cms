@@ -1,4 +1,6 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,89 +19,85 @@ include_once dirname(dirname(__DIR__)) . '/tags.php';
  */
 class Tags extends Obj
 {
-	/**
-	 * Return a sample for import header and content
-	 *
-	 * @return  array
-	 */
-	public function sample()
-	{
-		return array();
-	}
+    /**
+     * Return a sample for import header and content
+     *
+     * @return  array
+     */
+    public function sample()
+    {
+        return array();
+    }
 
-	/**
-	 * Bind all raw data
-	 *
-	 * @param   object  $raw
-	 * @param   object  $record
-	 * @param   string  $mode
-	 * @return  object
-	 */
-	public function bind($raw, $record, $mode = 'UPDATE')
-	{
-		if (isset($raw->interests))
-		{
-			$record->tags = $this->_multiValueField($raw->interests);
-		}
+    /**
+     * Bind all raw data
+     *
+     * @param   object  $raw
+     * @param   object  $record
+     * @param   string  $mode
+     * @return  object
+     */
+    public function bind($raw, $record, $mode = 'UPDATE')
+    {
+        if (isset($raw->interests)) {
+            $record->tags = $this->multiValueField($raw->interests);
+        }
 
-		return $record;
-	}
+        return $record;
+    }
 
-	/**
-	 * Check Data integrity
-	 *
-	 * @param   object  $raw
-	 * @param   object  $record
-	 * @param   string  $mode
-	 * @return  object
-	 */
-	public function check($raw, $record, $mode = 'UPDATE')
-	{
-		return $record;
-	}
+    /**
+     * Check Data integrity
+     *
+     * @param   object  $raw
+     * @param   object  $record
+     * @param   string  $mode
+     * @return  object
+     */
+    public function check($raw, $record, $mode = 'UPDATE')
+    {
+        return $record;
+    }
 
-	/**
-	 * Store data
-	 *
-	 * @param   object  $raw
-	 * @param   object  $record
-	 * @param   string  $mode
-	 * @return  object
-	 */
-	public function store($raw, $record, $mode = 'UPDATE')
-	{
-		if (!isset($record->tags))
-		{
-			return $record;
-		}
+    /**
+     * Store data
+     *
+     * @param   object  $raw
+     * @param   object  $record
+     * @param   string  $mode
+     * @return  object
+     */
+    public function store($raw, $record, $mode = 'UPDATE')
+    {
+        if (!isset($record->tags)) {
+            return $record;
+        }
 
-		if ($mode == 'PATCH' && !$record->tags)
-		{
-			return $record;
-		}
+        if ($mode == 'PATCH' && !$record->tags) {
+            return $record;
+        }
 
-		// save tags
-		$tags = new \Components\Groups\Models\Tags($record->entry->get('gidNumber'));
-		$tags->setTags($record->tags, User::get('id'));
+        // save tags
+        $tags = new \Components\Groups\Models\Tags($record->entry->get('gidNumber'));
+        $tags->setTags($record->tags, User::get('id'));
 
-		return $record;
-	}
+        return $record;
+    }
 
-	/**
-	 * Split a string into multiple values based on delimiter(s)
-	 *
-	 * @param   mixed   $data   String or array of field values
-	 * @param   string  $delim  List of delimiters, separated by a pipe "|"
-	 * @return  array
-	 */
-	private function _multiValueField($data, $delim=',|;')
-	{
-		if (is_string($data))
-		{
-			$data = array_map('trim', preg_split("/($delim)/", $data));
-			$data = array_values(array_filter($data));
-		}
+    /**
+     * Split a string into multiple values based on delimiter(s)
+     *
+     * @param   mixed   $data   String or array of field values
+     * @param   string  $delim  List of delimiters, separated by a pipe "|"
+     * @return  array
+     */
+    private function multiValueField($data, $delim = ',|;')
+    {
+        if (is_string($data)) {
+            $data = array_map('trim', preg_split("/($delim)/", $data));
+            $data = array_values(array_filter($data));
+        }
 
-		return $data;
-	}
+        return $data;
+    }
 }

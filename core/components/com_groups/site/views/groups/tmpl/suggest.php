@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,11 +13,10 @@ defined('_HZEXEC_') or die();
 ?>
 
 <header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
+    <h2><?php echo $this->title; ?></h2>
 </header>
 
 <?php
-	foreach ($this->notifications as $notification)
-	{
-		echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
-	}
+foreach ($this->notifications as $notification) {
+    echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+}
