@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -6,6 +7,7 @@
  */
 
 namespace Components\Redirect\Site;
+
 $component_name = basename(dirname(__DIR__));
 
 // Include publication model
@@ -25,10 +27,9 @@ $params = Component::params($component_name);
     exit();
 }*/
 
-if (!file_exists("$sitePath/controllers/$controllerName.php"))
-{
-	$controllerName = 'redirect';
-	Request::setVar('task', $task);
+if (!file_exists("$sitePath/controllers/$controllerName.php")) {
+    $controllerName = 'redirect';
+    Request::setVar('task', $task);
 }
 require_once "$sitePath/controllers/$controllerName.php";
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));

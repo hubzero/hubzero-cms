@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,22 +8,19 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for installing redirect tables
  **/
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComRedirect extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__redirect_links'))
-		{
-			$query = "CREATE TABLE `#__redirect_links` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__redirect_links')) {
+            $query = "CREATE TABLE `#__redirect_links` (
 			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  `old_url` varchar(255) NOT NULL,
 			  `new_url` varchar(255) NOT NULL,
@@ -37,21 +35,20 @@ class Migration20170901000000ComRedirect extends Base
 			  KEY `idx_link_modifed` (`modified_date`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__redirect_links'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__redirect_links`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__redirect_links')) {
+            $query = "DROP TABLE IF EXISTS `#__redirect_links`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

@@ -31,16 +31,17 @@ class Converter
                 $host = parse_url($originalUrl);
                 if (!$host || !isset($host['host'])) {
                     $newTag =  $matches[0];
-                } else if (strpos($host['host'], $_SERVER['HTTP_HOST']) !== false) {
+                } elseif (strpos($host['host'], $_SERVER['HTTP_HOST']) !== false) {
                     $newTag =  $matches[0];
-                } else if (in_array($host['host'], $whitelist) !== false) {
+                } elseif (in_array($host['host'], $whitelist) !== false) {
                     $newTag =  $matches[0];
-                } else if (in_array($host['host'], $blacklist) !== false) {
+                } elseif (in_array($host['host'], $blacklist) !== false) {
                     $newTag = preg_replace(
                         '/href=[\'"][^\'"]+[\'"]/i',
                         'href="/" ',
                         $matches[0]
-                    );                } else {
+                    );
+                } else {
                     $newHref = Converter::encode($originalUrl);
                     // Replace original href with encoded version, add rel="noreferrer"
                     $newTag = preg_replace(
@@ -49,13 +50,14 @@ class Converter
                         $matches[0]
                     );
                 }
-                return $newTag;
+                    return $newTag;
             },
             $html
         );
     }
 
-    public static function encode($originalUrl){
+    public static function encode($originalUrl)
+    {
         $encoded = urlencode(base64_encode($originalUrl));
         $newHref = Route::url('index.php?option=com_redirect&id=' . $encoded);
         return $newHref;
