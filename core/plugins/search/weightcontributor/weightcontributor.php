@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,31 +16,32 @@ defined('_HZEXEC_') or die();
  *
  * Long description (if any) ...
  */
+/**
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+ */
 class plgSearchWeightContributor extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Short description for 'onSearchWeightAll'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $terms Parameter description (if any) ...
-	 * @param      object $res Parameter description (if any) ...
-	 * @return     float Return description (if any) ...
-	 */
-	public static function onSearchWeightAll($terms, $res)
-	{
-		$pos_terms = $terms->get_positive_chunks();
+    /**
+     * Short description for 'onSearchWeightAll'
+     *
+     * Long description (if any) ...
+     *
+     * @param      object $terms Parameter description (if any) ...
+     * @param      object $res Parameter description (if any) ...
+     * @return     float Return description (if any) ...
+     */
+    public static function onSearchWeightAll($terms, $res)
+    {
+        $pos_terms = $terms->get_positive_chunks();
 
-		foreach (array_map('strtolower', $res->get_contributors()) as $contributor)
-		{
-			foreach ($pos_terms as $term)
-			{
-				if (strpos($contributor, $term) !== false)
-				{
-					return 1.0;
-				}
-			}
-		}
-		return 0.5;
-	}
+        foreach (array_map('strtolower', $res->get_contributors()) as $contributor) {
+            foreach ($pos_terms as $term) {
+                if (strpos($contributor, $term) !== false) {
+                    return 1.0;
+                }
+            }
+        }
+        return 0.5;
+    }
 }

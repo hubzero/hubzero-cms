@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,44 +16,46 @@ defined('_HZEXEC_') or die();
  *
  * Long description (if any) ...
  */
+/**
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+ */
 class plgSearchSortCourses extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Short description for 'onYSearchSort'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $a Parameter description (if any) ...
-	 * @param      object $b Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
-	 */
-	public static function onSearchSort($a, $b)
-	{
-		if ($a->get_plugin() !== 'resources' || $b->get_plugin() !== 'resources'
-		 || $a->get_section() !== 'Courses' || $b->get_section() !== 'Courses')
-		{
-			return 0;
-		}
+    /**
+     * Short description for 'onYSearchSort'
+     *
+     * Long description (if any) ...
+     *
+     * @param      object $a Parameter description (if any) ...
+     * @param      object $b Parameter description (if any) ...
+     * @return     mixed Return description (if any) ...
+     */
+    public static function onSearchSort($a, $b)
+    {
+        if (
+            $a->get_plugin() !== 'resources' || $b->get_plugin() !== 'resources'
+            || $a->get_section() !== 'Courses' || $b->get_section() !== 'Courses'
+        ) {
+            return 0;
+        }
 
-		// Compare the leading parts of the resources to guess whether they
-		// refer to the same course
-		$title_a = preg_replace('/[^a-z]/', '', strtolower($a->get_title()));
-		$title_b = preg_replace('/[^a-z]/', '', strtolower($a->get_title()));
-		$match_threshold = 10;
-		$match = true;
-		for ($idx = 0; $idx < min($match_threshold, min(strlen($title_a), strlen($title_b))); ++$idx)
-		{
-			if ($title_a[$idx] !== $title_b[$idx])
-			{
-				$match = false;
-				break;
-			}
-		}
-		if (!$match)
-		{
-			return 0;
-		}
+        // Compare the leading parts of the resources to guess whether they
+        // refer to the same course
+        $title_a = preg_replace('/[^a-z]/', '', strtolower($a->get_title()));
+        $title_b = preg_replace('/[^a-z]/', '', strtolower($a->get_title()));
+        $match_threshold = 10;
+        $match = true;
+        for ($idx = 0; $idx < min($match_threshold, min(strlen($title_a), strlen($title_b))); ++$idx) {
+            if ($title_a[$idx] !== $title_b[$idx]) {
+                $match = false;
+                break;
+            }
+        }
+        if (!$match) {
+            return 0;
+        }
 
-		return $a->get_date() > $b->get_date() ? 1 : -1;
-	}
+        return $a->get_date() > $b->get_date() ? 1 : -1;
+    }
 }

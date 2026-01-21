@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,34 +18,36 @@ require_once Component::path('com_courses') . DS . 'models' . DS . 'orm' . DS . 
 /**
  * Search course entries
  */
+/**
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+ */
 class plgSearchCourses extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Build search query and add it to the $results
-	 *
-	 * @param      object $request  \Components\Search\Models\Basic\Request
-	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
-	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
-	 * @return     void
-	 */
-	public static function onSearch($request, &$results, $authz)
-	{
-		$authorization = 'state = 1';
+    /**
+     * Build search query and add it to the $results
+     *
+     * @param      object $request  \Components\Search\Models\Basic\Request
+     * @param      object &$results \Components\Search\Models\Basic\Result\Set
+     * @param      object $authz    \Components\Search\Models\Basic\Authorization
+     * @return     void
+     */
+    public static function onSearch($request, &$results, $authz)
+    {
+        $authorization = 'state = 1';
 
-		$terms = $request->get_term_ar();
-		$weight = '(match(c.alias, c.title, c.blurb) against (\''.join(' ', $terms['stemmed']).'\'))';
-		$addtl_where = array();
-		foreach ($terms['mandatory'] as $mand)
-		{
-			$addtl_where[] = "(c.title LIKE '%$mand%' OR c.blurb LIKE '%$mand%')";
-		}
-		foreach ($terms['forbidden'] as $forb)
-		{
-			$addtl_where[] = "(c.title NOT LIKE '%$forb%' AND c.blurb NOT LIKE '%$forb%')";
-		}
+        $terms = $request->get_term_ar();
+        $weight = '(match(c.alias, c.title, c.blurb) against (\'' . join(' ', $terms['stemmed']) . '\'))';
+        $addtl_where = array();
+        foreach ($terms['mandatory'] as $mand) {
+            $addtl_where[] = "(c.title LIKE '%$mand%' OR c.blurb LIKE '%$mand%')";
+        }
+        foreach ($terms['forbidden'] as $forb) {
+            $addtl_where[] = "(c.title NOT LIKE '%$forb%' AND c.blurb NOT LIKE '%$forb%')";
+        }
 
-		$rows = new \Components\Search\Models\Basic\Result\Sql(
-			"SELECT
+        $rows = new \Components\Search\Models\Basic\Result\Sql(
+            "SELECT
 				c.id,
 				c.title,
 				c.blurb AS description,
@@ -55,151 +60,134 @@ class plgSearchCourses extends \Hubzero\Plugin\Plugin
 			WHERE
 				$authorization AND
 				$weight > 0" .
-				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
-		);
-		if (($rows = $rows->to_associative()) instanceof \Components\Search\Models\Basic\Result\Blank)
-		{
-			return;
-		}
+                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+        );
+        if (($rows = $rows->to_associative()) instanceof \Components\Search\Models\Basic\Result\Blank) {
+            return;
+        }
 
-		$results->add($rows);
-	}
+        $results->add($rows);
+    }
 
-	/**
-	 * onGetTypes - Announces the available hubtype
-	 * 
-	 * @param mixed $type 
-	 * @access public
-	 * @return void
-	 */
-	public function onGetTypes($type = null)
-	{
-		// The name of the hubtype
-		$hubtype = 'course';
+    /**
+     * onGetTypes - Announces the available hubtype
+     *
+     * @param mixed $type
+     * @access public
+     * @return void
+     */
+    public function onGetTypes($type = null)
+    {
+        // The name of the hubtype
+        $hubtype = 'course';
 
-		if (isset($type) && $type == $hubtype)
-		{
-			return $hubtype;
-		}
-		elseif (!isset($type))
-		{
-			return $hubtype;
-		}
-	}
+        if (isset($type) && $type == $hubtype) {
+            return $hubtype;
+        } elseif (!isset($type)) {
+            return $hubtype;
+        }
+    }
 
-	/**
-	 * onIndex 
-	 * 
-	 * @param string $type
-	 * @param integer $id 
-	 * @param boolean $run 
-	 * @access public
-	 * @return void
-	 */
-	public function onIndex($type, $id, $run = false)
-	{
-		if ($type == 'course')
-		{
-			if ($run === true)
-			{
-				// Establish a db connection
-				$db = App::get('db');
+    /**
+     * onIndex
+     *
+     * @param string $type
+     * @param integer $id
+     * @param boolean $run
+     * @access public
+     * @return void
+     */
+    public function onIndex($type, $id, $run = false)
+    {
+        if ($type == 'course') {
+            if ($run === true) {
+                // Establish a db connection
+                $db = App::get('db');
 
-				// Sanitize the string
-				$id = \Hubzero\Utility\Sanitize::paranoid($id);
+                // Sanitize the string
+                $id = \Hubzero\Utility\Sanitize::paranoid($id);
 
-				// Get the record
-				$sql = "SELECT * FROM #__courses WHERE id={$id};";
-				$row = $db->setQuery($sql)->query()->loadObject();
+                // Get the record
+                $sql = "SELECT * FROM #__courses WHERE id={$id};";
+                $row = $db->setQuery($sql)->query()->loadObject();
 
-				// Get the name of the author
-				$sql1 = "SELECT user_id, name, title, alias, student FROM #__courses_members
+                // Get the name of the author
+                $sql1 = "SELECT user_id, name, title, alias, student FROM #__courses_members
 				LEFT JOIN #__courses_roles
 				ON #__courses_members.role_id = #__courses_roles.id
 				LEFT JOIN #__users
 				ON #__courses_members.user_id = #__users.id;";
-				$members = $db->setQuery($sql1)->query()->loadObjectList();
+                $members = $db->setQuery($sql1)->query()->loadObjectList();
 
-				$authors = array();
-				$author_ids = array();
-				$students = array();
+                $authors = array();
+                $author_ids = array();
+                $students = array();
 
-				foreach ($members as $member)
-				{
-					if ($member->student == 0)
-					{
-						array_push($authors, $member->name);
-						array_push($author_ids, $member->user_id);
-					}
-					else
-					{
-						array_push($students, $member->user_id);
-					}
-				}
+                foreach ($members as $member) {
+                    if ($member->student == 0) {
+                        array_push($authors, $member->name);
+                        array_push($author_ids, $member->user_id);
+                    } else {
+                        array_push($students, $member->user_id);
+                    }
+                }
 
-				// Get any tags
-				$sql2 = "SELECT tag 
+                // Get any tags
+                $sql2 = "SELECT tag 
 					FROM #__tags
 					LEFT JOIN #__tags_object
 					ON #__tags.id=#__tags_object.tagid
 					WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'courses';";
-				$tags = $db->setQuery($sql2)->query()->loadColumn();
+                $tags = $db->setQuery($sql2)->query()->loadColumn();
 
 
-				// Determine the path
-				$path = '/courses/' . $row->alias;
+                // Determine the path
+                $path = '/courses/' . $row->alias;
 
-				// Public condition
-				if ($row->state == 1 && $row->access == 1)
-				{
-					$access_level = 'public';
-				}
-				// Registered condition
-				elseif ($row->state == 1 && $row->access == 2)
-				{
-					$access_level = 'registered';
-				}
-				// Default private
-				else
-				{
-					$access_level = 'private';
-				}
+                // Public condition
+                if ($row->state == 1 && $row->access == 1) {
+                    $access_level = 'public';
+                } elseif ($row->state == 1 && $row->access == 2) {
+                    // Registered condition
+                    $access_level = 'registered';
+                } else {
+                    // Default private
+                    $access_level = 'private';
+                }
 
-				$owner_type = 'user';
-				$owner = array_merge($students, $author_ids);
+                $owner_type = 'user';
+                $owner = array_merge($students, $author_ids);
 
-				// Get the title
-				$title = $row->title;
+                // Get the title
+                $title = $row->title;
 
-				// Build the description, clean up text
-				$content = $row->blurb . ' ' . $row->description;
-				$content = preg_replace('/<[^>]*>/', ' ', $content);
-				$content = preg_replace('/ {2,}/', ' ', $content);
-				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+                // Build the description, clean up text
+                $content = $row->blurb . ' ' . $row->description;
+                $content = preg_replace('/<[^>]*>/', ' ', $content);
+                $content = preg_replace('/ {2,}/', ' ', $content);
+                $description = \Hubzero\Utility\Sanitize::stripAll($content);
 
-				// Create a record object
-				$record = new \stdClass;
-				$record->id = $type . '-' . $id;
-				$record->hubtype = $type;
-				$record->title = $title;
-				$record->description = $description;
-				$record->author = $authors;
-				$record->tags = $tags;
-				$record->path = $path;
-				$record->access_level = $access_level;
-				$record->owner = $owner;
-				$record->owner_type = $owner_type;
+                // Create a record object
+                $record = new \stdClass();
+                $record->id = $type . '-' . $id;
+                $record->hubtype = $type;
+                $record->title = $title;
+                $record->description = $description;
+                $record->author = $authors;
+                $record->tags = $tags;
+                $record->path = $path;
+                $record->access_level = $access_level;
+                $record->owner = $owner;
+                $record->owner_type = $owner_type;
 
-				// Return the formatted record
-				return $record;
-			}
-			else
-			{
-				$db = App::get('db');
-				$sql = "SELECT id FROM #__courses;";
-				$ids = $db->setQuery($sql)->query()->loadColumn();
-				return $ids;
-			}
-		}
-	}
+                // Return the formatted record
+                return $record;
+            } else {
+                $db = App::get('db');
+                $sql = "SELECT id FROM #__courses;";
+                $ids = $db->setQuery($sql)->query()->loadColumn();
+                return $ids;
+            }
+        }
+    }
 }

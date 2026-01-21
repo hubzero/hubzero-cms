@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,63 +14,63 @@ defined('_HZEXEC_') or die();
 /**
  * Search plugin for wiki pages
  */
+/**
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+ */
 class plgSearchWiki extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Build search query and add it to the $results
-	 *
-	 * @param   object  $request   \Components\Search\Models\Basic\Request
-	 * @param   object  &$results  \Components\Search\Models\Basic\Result\Set
-	 * @param   object  $authz     \Components\Search\Models\Basic\Authorization
-	 * @return  void
-	 */
-	public static function onSearch($request, &$results, $authz)
-	{
-		$terms = $request->get_term_ar();
-		$weight = '(match(wp.title) against (\'' . join(' ', $terms['stemmed']) . '\') + match(wv.pagetext) against (\'' . join(' ', $terms['stemmed']) . '\'))';
+    /**
+     * Build search query and add it to the $results
+     *
+     * @param   object  $request   \Components\Search\Models\Basic\Request
+     * @param   object  &$results  \Components\Search\Models\Basic\Result\Set
+     * @param   object  $authz     \Components\Search\Models\Basic\Authorization
+     * @return  void
+     */
+    public static function onSearch($request, &$results, $authz)
+    {
+        $terms = $request->get_term_ar();
+        $stemmed = join(' ', $terms['stemmed']);
+        $weight = '(match(wp.title) against (\'' . $stemmed . '\') '
+            . '+ match(wv.pagetext) against (\'' . $stemmed . '\'))';
 
-		$addtl_where = array();
-		foreach ($terms['mandatory'] as $mand)
-		{
-			$addtl_where[] = "(wp.title LIKE '%$mand%' OR wv.pagetext LIKE '%$mand%')";
-		}
-		foreach ($terms['forbidden'] as $forb)
-		{
-			$addtl_where[] = "(wp.title NOT LIKE '%$forb%' AND wv.pagetext NOT LIKE '%$forb%')";
-		}
+        $addtl_where = array();
+        foreach ($terms['mandatory'] as $mand) {
+            $addtl_where[] = "(wp.title LIKE '%$mand%' OR wv.pagetext LIKE '%$mand%')";
+        }
+        foreach ($terms['forbidden'] as $forb) {
+            $addtl_where[] = "(wp.title NOT LIKE '%$forb%' AND wv.pagetext NOT LIKE '%$forb%')";
+        }
 
-		$viewlevels	= implode(',', User::getAuthorisedViewLevels());
+        $viewlevels = implode(',', User::getAuthorisedViewLevels());
 
-		if ($gids = $authz->get_group_ids())
-		{
-			$authorization = '(wp.access IN (0,' . $viewlevels . ') OR (wp.access = 1 AND xg.gidNumber IN (' . join(',', $gids) . ')))';
-		}
-		else
-		{
-			$authorization = '(wp.access IN (0,' . $viewlevels . '))';
-		}
+        if ($gids = $authz->get_group_ids()) {
+            $gidList = join(',', $gids);
+            $authorization = '(wp.access IN (0,' . $viewlevels . ') '
+                . 'OR (wp.access = 1 AND xg.gidNumber IN (' . $gidList . ')))';
+        } else {
+            $authorization = '(wp.access IN (0,' . $viewlevels . '))';
+        }
 
-		// fml
-		$groupAuth = array();
-		if ($authz->is_super_admin())
-		{
-			$groupAuth[] = '1';
-		}
-		else
-		{
-			$groupAuth[] = 'xg.plugins LIKE \'%wiki=anyone%\'';
-			if (!$authz->is_guest())
-			{
-				$groupAuth[] = 'xg.plugins LIKE \'%wiki=registered%\'';
-				if ($gids = $authz->get_group_ids())
-				{
-					$groupAuth[] = '(xg.plugins LIKE \'%wiki=members%\' AND xg.gidNumber IN (' . join(',', $gids) . '))';
-				}
-			}
-		}
+        // fml
+        $groupAuth = array();
+        if ($authz->is_super_admin()) {
+            $groupAuth[] = '1';
+        } else {
+            $groupAuth[] = 'xg.plugins LIKE \'%wiki=anyone%\'';
+            if (!$authz->is_guest()) {
+                $groupAuth[] = 'xg.plugins LIKE \'%wiki=registered%\'';
+                if ($gids = $authz->get_group_ids()) {
+                    $gidList = join(',', $gids);
+                    $groupAuth[] = '(xg.plugins LIKE \'%wiki=members%\' '
+                        . 'AND xg.gidNumber IN (' . $gidList . '))';
+                }
+            }
+        }
 
-		$rows = new \Components\Search\Models\Basic\Result\Sql(
-			"SELECT
+        $rows = new \Components\Search\Models\Basic\Result\Sql(
+            "SELECT
 				wp.title,
 				wp.scope,
 				wp.scope_id,
@@ -91,191 +94,168 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
 				$weight > 0 AND
 				wp.state < 2 AND
 				wv.id = (SELECT MAX(wv2.id) FROM `#__wiki_versions` wv2 WHERE wv2.page_id = wv.page_id) " .
-				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-				" AND (xg.gidNumber IS NULL OR (" . implode(' OR ', $groupAuth) . "))
+                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
+                " AND (xg.gidNumber IS NULL OR (" . implode(' OR ', $groupAuth) . "))
 			 ORDER BY $weight DESC"
-		);
+        );
 
-		include_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
+        include_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
 
-		// @TODO: Move these to separate plugins so Wiki doesn't directly reference other extensions
-		Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/groups/wiki/adapters/group.php');
-		Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/projects/notes/adapters/project.php');
+        // @TODO: Move these to separate plugins so Wiki doesn't directly reference other extensions
+        Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/groups/wiki/adapters/group.php');
+        Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/projects/notes/adapters/project.php');
 
-		foreach ($rows->to_associative() as $row)
-		{
-			if (!$row)
-			{
-				continue;
-			}
+        foreach ($rows->to_associative() as $row) {
+            if (!$row) {
+                continue;
+            }
 
-			$page = \Components\Wiki\Models\Page::blank();
-			$page->set('pagename', $row->link);
-			$page->set('scope', $row->scope);
-			$page->set('scope_id', $row->scope_id);
+            $page = \Components\Wiki\Models\Page::blank();
+            $page->set('pagename', $row->link);
+            $page->set('scope', $row->scope);
+            $page->set('scope_id', $row->scope_id);
 
-			$row->set_link(Route::url($page->link()));
-			// rough de-wikifying. probably a bit faster than rendering to html and then stripping the tags, but not perfect
-			//$row->set_description(preg_replace('/(\[+.*?\]+|\{+.*?\}+|[=*])/', '', $row->get_description()));
-			$row->set_description(strip_tags($row->get_description()));
-			$results->add($row);
-		}
-	}
+            $row->set_link(Route::url($page->link()));
+            // rough de-wikifying. probably a bit faster than rendering to html and
+            // then stripping the tags, but not perfect
+            //$row->set_description(preg_replace('/(\[+.*?\]+|\{+.*?\}+|[=*])/', '', $row->get_description()));
+            $row->set_description(strip_tags($row->get_description()));
+            $results->add($row);
+        }
+    }
 
-	/**
-	 * onGetTypes - Announces the available hubtype
-	 * 
-	 * @param   mixed   $type 
-	 * @access  public
-	 * @return  void
-	 */
-	public function onGetTypes($type = null)
-	{
-		// The name of the hubtype
-		$hubtype = 'wiki';
+    /**
+     * onGetTypes - Announces the available hubtype
+     *
+     * @param   mixed   $type
+     * @access  public
+     * @return  void
+     */
+    public function onGetTypes($type = null)
+    {
+        // The name of the hubtype
+        $hubtype = 'wiki';
 
-		if (isset($type) && $type == $hubtype)
-		{
-			return $hubtype;
-		}
-		elseif (!isset($type))
-		{
-			return $hubtype;
-		}
-	}
+        if (isset($type) && $type == $hubtype) {
+            return $hubtype;
+        } elseif (!isset($type)) {
+            return $hubtype;
+        }
+    }
 
-	/**
-	 * onIndex 
-	 * 
-	 * @param   string   $type
-	 * @param   integer  $id 
-	 * @param   boolean  $run 
-	 * @access  public
-	 * @return  void
-	 */
-	public function onIndex($type, $id, $run = false)
-	{
-		if ($type == 'wiki')
-		{
-			if ($run === true)
-			{
-				// Establish a db connection
-				$db = App::get('db');
+    /**
+     * onIndex
+     *
+     * @param   string   $type
+     * @param   integer  $id
+     * @param   boolean  $run
+     * @access  public
+     * @return  void
+     */
+    public function onIndex($type, $id, $run = false)
+    {
+        if ($type == 'wiki') {
+            if ($run === true) {
+                // Establish a db connection
+                $db = App::get('db');
 
-				// Sanitize the string
-				$id = \Hubzero\Utility\Sanitize::paranoid($id);
+                // Sanitize the string
+                $id = \Hubzero\Utility\Sanitize::paranoid($id);
 
-				// Get the record
-				$sql = "SELECT * FROM `#__wiki_pages`
+                // Get the record
+                $sql = "SELECT * FROM `#__wiki_pages`
 					INNER JOIN `#__wiki_versions`
 					ON `#__wiki_pages`.version_id = `#__wiki_versions`.id
 					WHERE `#__wiki_pages`.id = {$id} AND `#__wiki_pages`.state = 1;";
 
-				$row = $db->setQuery($sql)->query()->loadObject();
+                $row = $db->setQuery($sql)->query()->loadObject();
 
-				if (!is_object($row) || empty($row))
-				{
-					return;
-				}
+                if (!is_object($row) || empty($row)) {
+                    return;
+                }
 
-				// Get the name of the author
-				$sql1 = "SELECT name FROM `#__users` WHERE id={$row->created_by};";
-				$author = $db->setQuery($sql1)->query()->loadResult();
+                // Get the name of the author
+                $sql1 = "SELECT name FROM `#__users` WHERE id={$row->created_by};";
+                $author = $db->setQuery($sql1)->query()->loadResult();
 
-				// Get any tags
-				$sql2 = "SELECT tag
+                // Get any tags
+                $sql2 = "SELECT tag
 					FROM `#__tags`
 					LEFT JOIN `#__tags_object`
 					ON `#__tags`.id=`#__tags_object`.tagid
 					WHERE `#__tags_object`.objectid = {$id} AND `#__tags_object`.tbl = 'wiki';";
-				$tags = $db->setQuery($sql2)->query()->loadColumn();
+                $tags = $db->setQuery($sql2)->query()->loadColumn();
 
-				// Determine the path
-				if ($row->scope == 'site')
-				{
-					$path = '/wiki/' . $row->path;
-				}
-				elseif ($row->scope == 'group')
-				{
-					$group = \Hubzero\User\Group::getInstance($row->scope_id);
+                // Determine the path
+                if ($row->scope == 'site') {
+                    $path = '/wiki/' . $row->path;
+                } elseif ($row->scope == 'group') {
+                    $group = \Hubzero\User\Group::getInstance($row->scope_id);
 
-					// Make sure group is valid.
-					if (is_object($group))
-					{
-						$cn = $group->get('cn');
-						$path = '/groups/'. $cn . '/wiki/' . $row->path;
-					}
-				}
-				else
-				{
-					// Only group and site wiki is supported right now
-					// @TODO: Project Notes
-					return;
-				}
+                    // Make sure group is valid.
+                    if (is_object($group)) {
+                        $cn = $group->get('cn');
+                        $path = '/groups/' . $cn . '/wiki/' . $row->path;
+                    }
+                } else {
+                    // Only group and site wiki is supported right now
+                    // @TODO: Project Notes
+                    return;
+                }
 
-				// Public condition
-				if ($row->state == 1 && ($row->access == 0 || $row->access = 1))
-				{
-					$access_level = 'public';
-				}
-				// Registered condition
-				elseif ($row->state == 1 && $row->access == 2)
-				{
-					$access_level = 'registered';
-				}
-				// Default private
-				else
-				{
-					$access_level = 'private';
-				}
+                // Public condition
+                if ($row->state == 1 && ($row->access == 0 || $row->access = 1)) {
+                    $access_level = 'public';
+                } elseif ($row->state == 1 && $row->access == 2) {
+                    // Registered condition
+                    $access_level = 'registered';
+                } else {
+                    // Default private
+                    $access_level = 'private';
+                }
 
-				if ($row->scope != 'group')
-				{
-					$owner_type = 'user';
-					$owner = $row->created_by;
-				}
-				else
-				{
-					$owner_type = 'group';
-					$owner = $row->scope_id;
-				}
+                if ($row->scope != 'group') {
+                    $owner_type = 'user';
+                    $owner = $row->created_by;
+                } else {
+                    $owner_type = 'group';
+                    $owner = $row->scope_id;
+                }
 
-				// Get the title
-				$title = $row->title;
+                // Get the title
+                $title = $row->title;
 
-				// Build the description, clean up text
-				$content = $row->pagehtml;
-				$content = preg_replace('/<[^>]*>/', ' ', $content);
-				$content = preg_replace('/ {2,}/', ' ', $content);
-				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+                // Build the description, clean up text
+                $content = $row->pagehtml;
+                $content = preg_replace('/<[^>]*>/', ' ', $content);
+                $content = preg_replace('/ {2,}/', ' ', $content);
+                $description = \Hubzero\Utility\Sanitize::stripAll($content);
 
-				// Create a record object
-				$record = new \stdClass;
-				$record->id = $type . '-' . $id;
-				$record->hubtype = $type;
-				$record->title = $title;
-				$record->description = $description;
-				$record->author = array($author);
-				$record->tags = $tags;
-				$record->path = $path;
-				$record->access_level = $access_level;
-				$record->owner = $owner;
-				$record->owner_type = $owner_type;
+                // Create a record object
+                $record = new \stdClass();
+                $record->id = $type . '-' . $id;
+                $record->hubtype = $type;
+                $record->title = $title;
+                $record->description = $description;
+                $record->author = array($author);
+                $record->tags = $tags;
+                $record->path = $path;
+                $record->access_level = $access_level;
+                $record->owner = $owner;
+                $record->owner_type = $owner_type;
 
-				// Return the formatted record
-				return $record;
-			}
-			else
-			{
-				$db = App::get('db');
-				$sql = "SELECT `#__wiki_pages`.id
+                // Return the formatted record
+                return $record;
+            } else {
+                $db = App::get('db');
+                $sql = "SELECT `#__wiki_pages`.id
 					FROM `#__wiki_pages`
 					INNER JOIN `#__wiki_versions`
 					ON `#__wiki_pages`.version_id = `#__wiki_versions`.id
 					WHERE `#__wiki_pages`.state = 1;";
-				$ids = $db->setQuery($sql)->query()->loadColumn();
-				return $ids;
-			}
-		}
-	}
+                $ids = $db->setQuery($sql)->query()->loadColumn();
+                return $ids;
+            }
+        }
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,52 +16,56 @@ use Hubzero\User\Group;
 
 /**
  * Search blog entries
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
 class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Description for 'IRST_CLASS_CHILDREN'
-	 */
-	const FIRST_CLASS_CHILDREN = false;
+    /**
+     * Description for 'FIRST_CLASS_CHILDREN'
+     */
+    public const FIRST_CLASS_CHILDREN = false;
 
-	/**
-	 * Build search query and add it to the $results
-	 *
-	 * @param      object $request  \Components\Search\Models\Basic\Request
-	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
-	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
-	 * @return     void
-	 */
-	public static function onSearch($request, &$results, $authz)
-	{
-		$now = Date::toSql();
+    /**
+     * Build search query and add it to the $results
+     *
+     * @param      object $request  \Components\Search\Models\Basic\Request
+     * @param      object &$results \Components\Search\Models\Basic\Result\Set
+     * @param      object $authz    \Components\Search\Models\Basic\Authorization
+     * @return     void
+     */
+    public static function onSearch($request, &$results, $authz)
+    {
+        $now = Date::toSql();
 
-		$terms = $request->get_term_ar();
-		$weight = '(match(be.title, be.content) against (\''.join(' ', $terms['stemmed']).'\'))';
-		$addtl_where = array();
-		foreach ($terms['mandatory'] as $mand)
-		{
-			$addtl_where[] = "(be.title LIKE '%$mand%' OR be.content LIKE '%$mand%')";
-		}
-		foreach ($terms['forbidden'] as $forb)
-		{
-			$addtl_where[] = "(be.title NOT LIKE '%$forb%' AND be.content NOT LIKE '%$forb%')";
-		}
-		$addtl_where[] = "(be.publish_up IS NULL OR be.publish_up <= '$now')";
-		$addtl_where[] = "(be.publish_down IS NULL OR be.publish_down > '$now')";
-		$addtl_where[] = '(be.access IN (0,' . implode(',', User::getAuthorisedViewLevels()) . '))';
+        $terms = $request->get_term_ar();
+        $weight = '(match(be.title, be.content) against (\'' . join(' ', $terms['stemmed']) . '\'))';
+        $addtl_where = array();
+        foreach ($terms['mandatory'] as $mand) {
+            $addtl_where[] = "(be.title LIKE '%$mand%' OR be.content LIKE '%$mand%')";
+        }
+        foreach ($terms['forbidden'] as $forb) {
+            $addtl_where[] = "(be.title NOT LIKE '%$forb%' AND be.content NOT LIKE '%$forb%')";
+        }
+        $addtl_where[] = "(be.publish_up IS NULL OR be.publish_up <= '$now')";
+        $addtl_where[] = "(be.publish_down IS NULL OR be.publish_down > '$now')";
+        $addtl_where[] = '(be.access IN (0,' . implode(',', User::getAuthorisedViewLevels()) . '))';
 
-		$rows = new \Components\Search\Models\Basic\Result\Sql(
-			"SELECT
+        $rows = new \Components\Search\Models\Basic\Result\Sql(
+            "SELECT
 				be.id,
 				be.title,
 				be.content AS description,
 				(CASE WHEN be.scope_id > 0 AND be.scope='group' THEN
-					concat('index.php?option=com_groups&cn=', g.cn, '&active=blog&scope=', extract(year from be.created), '/', extract(month from be.created), '/', be.alias)
+					concat('index.php?option=com_groups&cn=', g.cn, '&active=blog&scope=',
+						extract(year from be.created), '/', extract(month from be.created), '/', be.alias)
 				WHEN be.scope='member' AND be.scope_id > 0 THEN
-					concat('index.php?option=com_members&id=', be.created_by, '&active=blog&task=', extract(year from be.created), '/', extract(month from be.created), '/', be.alias)
+					concat('index.php?option=com_members&id=', be.created_by, '&active=blog&task=',
+						extract(year from be.created), '/', extract(month from be.created), '/', be.alias)
 				ELSE
-					concat('index.php?option=com_blog&year=', extract(year from be.created), '&month=', extract(month from be.created), '&alias=', be.alias)
+					concat('index.php?option=com_blog&year=', extract(year from be.created),
+						'&month=', extract(month from be.created), '&alias=', be.alias)
 				END) AS link,
 				$weight AS weight,
 				'Blog Entry' AS section,
@@ -71,27 +78,26 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 			WHERE
 				be.state=1 AND
 				$weight > 0" .
-				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
-		);
+                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
+        );
 
-		if (($rows = $rows->to_associative()) instanceof \Components\Search\Models\Basic\Result\Blank)
-		{
-			return;
-		}
+        if (($rows = $rows->to_associative()) instanceof \Components\Search\Models\Basic\Result\Blank) {
+            return;
+        }
 
-		$id_map = array();
-		foreach ($rows as $idx => $row)
-		{
-			$id_map[$row->get('id')] = $idx;
-		}
+        $id_map = array();
+        foreach ($rows as $idx => $row) {
+            $id_map[$row->get('id')] = $idx;
+        }
 
-		if (!empty($id_map))
-		{
-			$comments = new \Components\Search\Models\Basic\Result\Sql(
-				"SELECT
-				CASE WHEN bc.anonymous THEN 'Anonymous Comment' ELSE concat('Comment by ', u.name) END AS title,
+        if (!empty($id_map)) {
+            $comments = new \Components\Search\Models\Basic\Result\Sql(
+                "SELECT
+				CASE WHEN bc.anonymous THEN 'Anonymous Comment'
+					ELSE concat('Comment by ', u.name) END AS title,
 				bc.content AS description,
-				concat('index.php?option=com_members&id=', be.created_by, '&active=blog&task=', extract(year from be.created), '/', extract(month from be.created), '/', be.alias) AS link,
+				concat('index.php?option=com_members&id=', be.created_by, '&active=blog&task=',
+					extract(year from be.created), '/', extract(month from be.created), '/', be.alias) AS link,
 				bc.created AS date,
 				'Comments' AS section,
 				bc.entry_id
@@ -102,167 +108,142 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 					ON u.id = bc.created_by
 				WHERE bc.entry_id IN (" . implode(',', array_keys($id_map)) . ")
 				ORDER BY bc.created"
-			);
-			foreach ($comments->to_associative() as $comment)
-			{
-				$rows->at($id_map[$comment->get('entry_id')])->add_child($comment);
-			}
-		}
+            );
+            foreach ($comments->to_associative() as $comment) {
+                $rows->at($id_map[$comment->get('entry_id')])->add_child($comment);
+            }
+        }
 
-		$results->add($rows);
-	}
+        $results->add($rows);
+    }
 
-	/**
-	 * onGetTypes - Announces the available hubtype
-	 * 
-	 * @param mixed $type 
-	 * @access public
-	 * @return void
-	 */
-	public function onGetTypes($type = null)
-	{
-		// The name of the hubtype
-		$hubtype = 'blog-entry';
+    /**
+     * onGetTypes - Announces the available hubtype
+     *
+     * @param mixed $type
+     * @access public
+     * @return void
+     */
+    public function onGetTypes($type = null)
+    {
+        // The name of the hubtype
+        $hubtype = 'blog-entry';
 
-		if (isset($type) && $type == $hubtype)
-		{
-			return $hubtype;
-		}
-		elseif (!isset($type))
-		{
-			return $hubtype;
-		}
-	}
+        if (isset($type) && $type == $hubtype) {
+            return $hubtype;
+        } elseif (!isset($type)) {
+            return $hubtype;
+        }
+    }
 
-	/**
-	 * onIndex 
-	 * 
-	 * @param string $type
-	 * @param integer $id 
-	 * @param boolean $run 
-	 * @access public
-	 * @return void
-	 */
-	public function onIndex($type, $id, $run = false)
-	{
-		if ($type == 'blog-entry')
-		{
-			if ($run === true)
-			{
-				// Establish a db connection
-				$db = App::get('db');
+    /**
+     * onIndex
+     *
+     * @param string $type
+     * @param integer $id
+     * @param boolean $run
+     * @access public
+     * @return void
+     */
+    public function onIndex($type, $id, $run = false)
+    {
+        if ($type == 'blog-entry') {
+            if ($run === true) {
+                // Establish a db connection
+                $db = App::get('db');
 
-				// Sanitize the string
-				$id = \Hubzero\Utility\Sanitize::paranoid($id);
+                // Sanitize the string
+                $id = \Hubzero\Utility\Sanitize::paranoid($id);
 
-				// Get the record
-				$sql = "SELECT * FROM #__blog_entries WHERE id={$id} AND state != 2;";
-				$row = $db->setQuery($sql)->query()->loadObject();
+                // Get the record
+                $sql = "SELECT * FROM #__blog_entries WHERE id={$id} AND state != 2;";
+                $row = $db->setQuery($sql)->query()->loadObject();
 
-				if (!is_object($row) || empty($row))
-				{
-					return;
-				}
+                if (!is_object($row) || empty($row)) {
+                    return;
+                }
 
-				// Get the name of the author
-				$sql1 = "SELECT name FROM #__users WHERE id={$row->created_by};";
-				$author = $db->setQuery($sql1)->query()->loadResult();
+                // Get the name of the author
+                $sql1 = "SELECT name FROM #__users WHERE id={$row->created_by};";
+                $author = $db->setQuery($sql1)->query()->loadResult();
 
-				// Get any tags
-				$sql2 = "SELECT tag 
+                // Get any tags
+                $sql2 = "SELECT tag 
 					FROM #__tags
 					LEFT JOIN #__tags_object
 					ON #__tags.id=#__tags_object.tagid
 					WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'blog';";
-				$tags = $db->setQuery($sql2)->query()->loadColumn();
+                $tags = $db->setQuery($sql2)->query()->loadColumn();
 
-				// Determine the path
-				$year = Date::of(strtotime($row->publish_up))->toLocal('Y');
-				$month = Date::of(strtotime($row->publish_up))->toLocal('m');
-				$alias = $row->alias;
+                // Determine the path
+                $year = Date::of(strtotime($row->publish_up))->toLocal('Y');
+                $month = Date::of(strtotime($row->publish_up))->toLocal('m');
+                $alias = $row->alias;
 
-				if ($row->scope == 'site')
-				{
-					$path = '/blog/' . $year . '/' . $month . '/' . $alias;
-				}
-				elseif ($row->scope == 'member')
-				{
-					$path = '/members/'. $row->scope_id  . '/blog/' . $year . '/' . $month . '/' . $alias;
-				}
-				elseif ($row->scope == 'group')
-				{
-					$group = Group::getInstance($row->scope_id);
+                if ($row->scope == 'site') {
+                    $path = '/blog/' . $year . '/' . $month . '/' . $alias;
+                } elseif ($row->scope == 'member') {
+                    $path = '/members/' . $row->scope_id  . '/blog/' . $year . '/' . $month . '/' . $alias;
+                } elseif ($row->scope == 'group') {
+                    $group = Group::getInstance($row->scope_id);
 
-					// Make sure group is valid.
-					if (is_object($group))
-					{
-						$cn = $group->get('cn');
-						$path = '/groups/'. $cn . '/blog/' . $year . '/' . $month . '/' . $alias;
-					}
-					else
-					{
-						$path = '';
-					}
-				}
+                    // Make sure group is valid.
+                    if (is_object($group)) {
+                        $cn = $group->get('cn');
+                        $path = '/groups/' . $cn . '/blog/' . $year . '/' . $month . '/' . $alias;
+                    } else {
+                        $path = '';
+                    }
+                }
 
-				// Public condition
-				if ($row->state == 1 && $row->access == 1)
-				{
-					$access_level = 'public';
-				}
-				// Registered condition
-				elseif ($row->state == 1 && $row->access == 2)
-				{
-					$access_level = 'registered';
-				}
-				// Default private
-				else
-				{
-					$access_level = 'private';
-				}
+                // Public condition
+                if ($row->state == 1 && $row->access == 1) {
+                    $access_level = 'public';
+                } elseif ($row->state == 1 && $row->access == 2) {
+                    // Registered condition
+                    $access_level = 'registered';
+                } else {
+                    // Default private
+                    $access_level = 'private';
+                }
 
-				if ($row->scope != 'group')
-				{
-					$owner_type = 'user';
-					$owner = $row->created_by;
-				}
-				else
-				{
-					$owner_type = 'group';
-					$owner = $row->scope_id;
-				}
+                if ($row->scope != 'group') {
+                    $owner_type = 'user';
+                    $owner = $row->created_by;
+                } else {
+                    $owner_type = 'group';
+                    $owner = $row->scope_id;
+                }
 
-				// Get the title
-				$title = $row->title;
+                // Get the title
+                $title = $row->title;
 
-				// Build the description, clean up text
-				$content = preg_replace('/<[^>]*>/', ' ', $row->content);
-				$content = preg_replace('/ {2,}/', ' ', $content);
-				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+                // Build the description, clean up text
+                $content = preg_replace('/<[^>]*>/', ' ', $row->content);
+                $content = preg_replace('/ {2,}/', ' ', $content);
+                $description = \Hubzero\Utility\Sanitize::stripAll($content);
 
-				// Create a record object
-				$record = new \stdClass;
-				$record->id = $type . '-' . $id;
-				$record->hubtype = $type;
-				$record->title = $title;
-				$record->description = $description;
-				$record->author = array($author);
-				$record->tags = $tags;
-				$record->path = $path;
-				$record->access_level = $access_level;
-				$record->owner = $owner;
-				$record->owner_type = $owner_type;
+                // Create a record object
+                $record = new \stdClass();
+                $record->id = $type . '-' . $id;
+                $record->hubtype = $type;
+                $record->title = $title;
+                $record->description = $description;
+                $record->author = array($author);
+                $record->tags = $tags;
+                $record->path = $path;
+                $record->access_level = $access_level;
+                $record->owner = $owner;
+                $record->owner_type = $owner_type;
 
-				// Return the formatted record
-				return $record;
-			}
-			else
-			{
-				$db = App::get('db');
-				$sql = "SELECT id FROM #__blog_entries WHERE state != 2";
-				$ids = $db->setQuery($sql)->query()->loadColumn();
-				return $ids;
-			}
-		}
-	}
+                // Return the formatted record
+                return $record;
+            } else {
+                $db = App::get('db');
+                $sql = "SELECT id FROM #__blog_entries WHERE state != 2";
+                $ids = $db->setQuery($sql)->query()->loadColumn();
+                return $ids;
+            }
+        }
+    }
 }

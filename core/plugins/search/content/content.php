@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,34 +14,37 @@ defined('_HZEXEC_') or die();
 /**
  * Search content articles
  */
+/**
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+ */
 class plgSearchContent extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Build search query and add it to the $results
-	 *
-	 * @param      object $request  \Components\Search\Models\Basic\Request
-	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
-	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
-	 * @return     void
-	 */
-	public static function onSearch($request, &$results, $authz)
-	{
-		$terms = $request->get_term_ar();
-		$weight = 'match(c.title, c.introtext, c.`fulltext`) against (\'' . join(' ', $terms['stemmed']) . '\')';
+    /**
+     * Build search query and add it to the $results
+     *
+     * @param      object $request  \Components\Search\Models\Basic\Request
+     * @param      object &$results \Components\Search\Models\Basic\Result\Set
+     * @param      object $authz    \Components\Search\Models\Basic\Authorization
+     * @return     void
+     */
+    public static function onSearch($request, &$results, $authz)
+    {
+        $terms = $request->get_term_ar();
+        $weight = 'match(c.title, c.introtext, c.`fulltext`) against (\'' . join(' ', $terms['stemmed']) . '\')';
 
-		$addtl_where = array();
-		foreach ($terms['mandatory'] as $mand)
-		{
-			$addtl_where[] = "(c.title LIKE '%$mand%' OR c.introtext LIKE '%$mand%' OR c.`fulltext` LIKE '%$mand%')";
-		}
-		foreach ($terms['forbidden'] as $forb)
-		{
-			$addtl_where[] = "(c.title NOT LIKE '%$forb%' AND c.introtext NOT LIKE '%$forb%' AND c.`fulltext` NOT LIKE '%$forb%')";
-		}
+        $addtl_where = array();
+        foreach ($terms['mandatory'] as $mand) {
+            $addtl_where[] = "(c.title LIKE '%$mand%' OR c.introtext LIKE '%$mand%' OR c.`fulltext` LIKE '%$mand%')";
+        }
+        foreach ($terms['forbidden'] as $forb) {
+            $addtl_where[] = "(c.title NOT LIKE '%$forb%' AND c.introtext NOT LIKE '%$forb%' "
+                . "AND c.`fulltext` NOT LIKE '%$forb%')";
+        }
 
-		$addtl_where[] = '(c.access IN (' . implode(',', User::getAuthorisedViewLevels()) . '))';
+        $addtl_where[] = '(c.access IN (' . implode(',', User::getAuthorisedViewLevels()) . '))';
 
-		$query = "SELECT
+        $query = "SELECT
 			c.title,
 			concat(coalesce(c.introtext, ''), coalesce(c.`fulltext`, '')) AS description,
 			CASE
@@ -52,130 +58,118 @@ class plgSearchContent extends \Hubzero\Plugin\Plugin
 			$weight AS weight,
 			publish_up AS date,
 			ca.title AS section,
-			(SELECT group_concat(u1.name separator '\\n') FROM `#__author_assoc` anames INNER JOIN `#__xprofiles` u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'content' AND subid = c.id ORDER BY anames.ordering) AS contributors,
-			(SELECT group_concat(ids.authorid separator '\\n') FROM `#__author_assoc` ids WHERE subtable = 'content' AND subid = c.id ORDER BY ids.ordering) AS contributor_ids
+			(SELECT group_concat(u1.name separator '\\n') FROM `#__author_assoc` anames
+				INNER JOIN `#__xprofiles` u1 ON u1.uidNumber = anames.authorid
+				WHERE subtable = 'content' AND subid = c.id ORDER BY anames.ordering) AS contributors,
+			(SELECT group_concat(ids.authorid separator '\\n') FROM `#__author_assoc` ids
+				WHERE subtable = 'content' AND subid = c.id ORDER BY ids.ordering) AS contributor_ids
 		FROM `#__content` c
 		LEFT JOIN `#__categories` ca
 			ON ca.id = c.catid
 		WHERE
 			state = 1 AND
 			(publish_up AND UTC_TIMESTAMP() > publish_up) AND (NOT publish_down OR UTC_TIMESTAMP() < publish_down)
-			AND $weight > 0".
-			($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-		" ORDER BY $weight DESC";
+			AND $weight > 0" .
+            ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
+        " ORDER BY $weight DESC";
 
-		$sql = new \Components\Search\Models\Basic\Result\Sql($query);
-		$results->add($sql);
-	}
+        $sql = new \Components\Search\Models\Basic\Result\Sql($query);
+        $results->add($sql);
+    }
 
-	/**
-	 * onGetTypes - Announces the available hubtype
-	 * 
-	 * @param mixed $type 
-	 * @access public
-	 * @return void
-	 */
-	public function onGetTypes($type = null)
-	{
-		// The name of the hubtype
-		$hubtype = 'content';
+    /**
+     * onGetTypes - Announces the available hubtype
+     *
+     * @param mixed $type
+     * @access public
+     * @return void
+     */
+    public function onGetTypes($type = null)
+    {
+        // The name of the hubtype
+        $hubtype = 'content';
 
-		if (isset($type) && $type == $hubtype)
-		{
-			return $hubtype;
-		}
-		elseif (!isset($type))
-		{
-			return $hubtype;
-		}
-	}
+        if (isset($type) && $type == $hubtype) {
+            return $hubtype;
+        } elseif (!isset($type)) {
+            return $hubtype;
+        }
+    }
 
-	/**
-	 * onIndex 
-	 * 
-	 * @param string $type
-	 * @param integer $id 
-	 * @param boolean $run 
-	 * @access public
-	 * @return void
-	 */
-	public function onIndex($type, $id, $run = false)
-	{
-		if ($type == 'content')
-		{
-			if ($run === true)
-			{
-				// Establish a db connection
-				$db = App::get('db');
+    /**
+     * onIndex
+     *
+     * @param string $type
+     * @param integer $id
+     * @param boolean $run
+     * @access public
+     * @return void
+     */
+    public function onIndex($type, $id, $run = false)
+    {
+        if ($type == 'content') {
+            if ($run === true) {
+                // Establish a db connection
+                $db = App::get('db');
 
-				// Sanitize the string
-				$id = \Hubzero\Utility\Sanitize::paranoid($id);
+                // Sanitize the string
+                $id = \Hubzero\Utility\Sanitize::paranoid($id);
 
-				// Get the record
-				$sql = "SELECT * FROM #__content WHERE id={$id};";
-				$row = $db->setQuery($sql)->query()->loadObject();
+                // Get the record
+                $sql = "SELECT * FROM #__content WHERE id={$id};";
+                $row = $db->setQuery($sql)->query()->loadObject();
 
-				// Build the path
-				$sql1 = "SELECT path FROM #__categories WHERE id={$row->catid};";
-				$path = $db->setQuery($sql1)->query()->loadResult();
+                // Build the path
+                $sql1 = "SELECT path FROM #__categories WHERE id={$row->catid};";
+                $path = $db->setQuery($sql1)->query()->loadResult();
 
-				if ($path != 'uncategorised')
-				{
-					$path = '/' . $path . '/' . $row->alias;
-				}
-				else
-				{
-					$path = '/' . $row->alias;
-				}
+                if ($path != 'uncategorised') {
+                    $path = '/' . $path . '/' . $row->alias;
+                } else {
+                    $path = '/' . $row->alias;
+                }
 
-				if ($row->state == 1 && $row->access == 1)
-				{
-					$access_level = 'public';
-				}
-				// Registered condition
-				elseif ($row->state == 1 && $row->access == 2)
-				{
-					$access_level = 'registered';
-				}
-				// Default private
-				else
-				{
-					$access_level = 'private';
-				}
+                if ($row->state == 1 && $row->access == 1) {
+                    $access_level = 'public';
+                } elseif ($row->state == 1 && $row->access == 2) {
+                    // Registered condition
+                    $access_level = 'registered';
+                } else {
+                    // Default private
+                    $access_level = 'private';
+                }
 
-				$owner_type = 'user';
-				$owner = $row->created_by;
+                $owner_type = 'user';
+                $owner = $row->created_by;
 
-				// Get the title
-				$title = $row->title;
+                // Get the title
+                $title = $row->title;
 
-				// Build the description, clean up text
-				$content = $row->fulltext . ' ' . $row->introtext;
-				$content = preg_replace('/<[^>]*>/', ' ', $content);
-				$content = preg_replace('/ {2,}/', ' ', $content);
-				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+                // Build the description, clean up text
+                $content = $row->fulltext . ' ' . $row->introtext;
+                $content = preg_replace('/<[^>]*>/', ' ', $content);
+                $content = preg_replace('/ {2,}/', ' ', $content);
+                $description = \Hubzero\Utility\Sanitize::stripAll($content);
 
-				// Create a record object
-				$record = new \stdClass;
-				$record->id = $type . '-' . $id;
-				$record->hubtype = $type;
-				$record->title = $title;
-				$record->description = $description;
-				$record->path = $path;
-				$record->access_level = $access_level;
-				$record->owner = $owner;
-				$record->owner_type = $owner_type;
+                // Create a record object
+                $record = new \stdClass();
+                $record->id = $type . '-' . $id;
+                $record->hubtype = $type;
+                $record->title = $title;
+                $record->description = $description;
+                $record->path = $path;
+                $record->access_level = $access_level;
+                $record->owner = $owner;
+                $record->owner_type = $owner_type;
 
-				// Return the formatted record
-				return $record;
-			}
-			else
-			{
-				$db = App::get('db');
-				$sql = "SELECT id FROM #__content;";
-				$ids = $db->setQuery($sql)->query()->loadColumn();
-				return $ids;
-			}
-		}
-	}
+                // Return the formatted record
+                return $record;
+            } else {
+                $db = App::get('db');
+                $sql = "SELECT id FROM #__content;";
+                $ids = $db->setQuery($sql)->query()->loadColumn();
+                return $ids;
+            }
+        }
+    }
 }

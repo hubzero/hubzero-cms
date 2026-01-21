@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,43 +16,42 @@ defined('_HZEXEC_') or die();
  *
  * Long description (if any) ...
  */
+/**
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+ */
 class plgSearchSuffixes extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Short description for 'onSearchExpandTerms'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array &$terms Parameter description (if any) ...
-	 * @return     void
-	 */
-	public static function onSearchExpandTerms(&$terms)
-	{
-		$add = array();
-		foreach ($terms as $term)
-		{
-			// eg electric <-> electronic
-			if (preg_match('/^(.*?)(on)?ic$/', $term, $match))
-			{
-				$add[] = count($match) == 3 ? $match[1] . 'ic' : $match[1] . 'onic';
-			}
+    /**
+     * Short description for 'onSearchExpandTerms'
+     *
+     * Long description (if any) ...
+     *
+     * @param      array &$terms Parameter description (if any) ...
+     * @return     void
+     */
+    public static function onSearchExpandTerms(&$terms)
+    {
+        $add = array();
+        foreach ($terms as $term) {
+            // eg electric <-> electronic
+            if (preg_match('/^(.*?)(on)?ic$/', $term, $match)) {
+                $add[] = count($match) == 3 ? $match[1] . 'ic' : $match[1] . 'onic';
+            }
 
-			// the fulltxt indexer mangles course names, but it helps if we add a space between the letters and numbers
-			if (preg_match('/^([a-zA-Z]+)(\d+)/', $term, $course_name))
-			{
-				$add[] = $course_name[1] . ' ' . $course_name[2];
-			}
-		}
-		$terms = array_merge($terms, $add);
-		foreach ($terms as $term)
-		{
-			// try plural
-			$add[] = substr($term, 0, -1) == 's' ? $term . 'es' : $term . 's';
-			if (substr($term, 0, -1) == 'y')
-			{
-				$add[] = substr($term, 0, strlen($term) -1) . 'ies';
-			}
-		}
-		$terms = array_merge($terms, $add);
-	}
+            // the fulltxt indexer mangles course names, but it helps if we add a space between the letters and numbers
+            if (preg_match('/^([a-zA-Z]+)(\d+)/', $term, $course_name)) {
+                $add[] = $course_name[1] . ' ' . $course_name[2];
+            }
+        }
+        $terms = array_merge($terms, $add);
+        foreach ($terms as $term) {
+            // try plural
+            $add[] = substr($term, 0, -1) == 's' ? $term . 'es' : $term . 's';
+            if (substr($term, 0, -1) == 'y') {
+                $add[] = substr($term, 0, strlen($term) - 1) . 'ies';
+            }
+        }
+        $terms = array_merge($terms, $add);
+    }
 }

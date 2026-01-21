@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,45 +14,47 @@ defined('_HZEXEC_') or die();
 /**
  * Search knowledge base entries
  */
+/**
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+ */
 class plgSearchKB extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Get the name of the area being searched
-	 *
-	 * @return     string
-	 */
-	public static function getName()
-	{
-		return Lang::txt('Knowledge Base');
-	}
+    /**
+     * Get the name of the area being searched
+     *
+     * @return     string
+     */
+    public static function getName()
+    {
+        return Lang::txt('Knowledge Base');
+    }
 
-	/**
-	 * Build search query and add it to the $results
-	 *
-	 * @param      object $request  \Components\Search\Models\Basic\Request
-	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
-	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
-	 * @return     void
-	 */
-	public static function onSearch($request, &$results, $authz)
-	{
-		$terms = $request->get_term_ar();
-		$weight = 'match(f.title, f.`fulltxt`) against (\'' . join(' ', $terms['stemmed']) . '\')';
+    /**
+     * Build search query and add it to the $results
+     *
+     * @param      object $request  \Components\Search\Models\Basic\Request
+     * @param      object &$results \Components\Search\Models\Basic\Result\Set
+     * @param      object $authz    \Components\Search\Models\Basic\Authorization
+     * @return     void
+     */
+    public static function onSearch($request, &$results, $authz)
+    {
+        $terms = $request->get_term_ar();
+        $weight = 'match(f.title, f.`fulltxt`) against (\'' . join(' ', $terms['stemmed']) . '\')';
 
-		$addtl_where = array();
-		foreach ($terms['mandatory'] as $mand)
-		{
-			$addtl_where[] = "(f.title LIKE '%$mand%' OR f.`fulltxt` LIKE '%$mand%')";
-		}
-		foreach ($terms['forbidden'] as $forb)
-		{
-			$addtl_where[] = "(f.title NOT LIKE '%$forb%' AND f.`fulltxt` NOT LIKE '%$forb%')";
-		}
+        $addtl_where = array();
+        foreach ($terms['mandatory'] as $mand) {
+            $addtl_where[] = "(f.title LIKE '%$mand%' OR f.`fulltxt` LIKE '%$mand%')";
+        }
+        foreach ($terms['forbidden'] as $forb) {
+            $addtl_where[] = "(f.title NOT LIKE '%$forb%' AND f.`fulltxt` NOT LIKE '%$forb%')";
+        }
 
-		$addtl_where[] = '(f.access IN (0,' . implode(',', User::getAuthorisedViewLevels()) . '))';
+        $addtl_where[] = '(f.access IN (0,' . implode(',', User::getAuthorisedViewLevels()) . '))';
 
-		$results->add(new \Components\Search\Models\Basic\Result\Sql(
-			"SELECT
+        $results->add(new \Components\Search\Models\Basic\Result\Sql(
+            "SELECT
 				f.title,
 				coalesce(f.`fulltxt`, '') AS description,
 				concat('index.php?option=com_kb&category=', coalesce(concat(c.alias, '/'), ''), f.alias) AS link,
@@ -61,139 +66,125 @@ class plgSearchKB extends \Hubzero\Plugin\Plugin
 				ON c.id = f.category
 			WHERE
 				f.state = 1 AND c.published = 1 AND
-				$weight > 0".
-				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-			" ORDER BY $weight DESC"
-		));
-	}
+				$weight > 0" .
+                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
+            " ORDER BY $weight DESC"
+        ));
+    }
 
-	/**
-	 * onGetTypes - Announces the available hubtype
-	 * 
-	 * @param mixed $type 
-	 * @access public
-	 * @return void
-	 */
-	public function onGetTypes($type = null)
-	{
-		// The name of the hubtype
-		$hubtype = 'kb-article';
+    /**
+     * onGetTypes - Announces the available hubtype
+     *
+     * @param mixed $type
+     * @access public
+     * @return void
+     */
+    public function onGetTypes($type = null)
+    {
+        // The name of the hubtype
+        $hubtype = 'kb-article';
 
-		if (isset($type) && $type == $hubtype)
-		{
-			return $hubtype;
-		}
-		elseif (!isset($type))
-		{
-			return $hubtype;
-		}
-	}
+        if (isset($type) && $type == $hubtype) {
+            return $hubtype;
+        } elseif (!isset($type)) {
+            return $hubtype;
+        }
+    }
 
-	/**
-	 * onIndex 
-	 * 
-	 * @param string $type
-	 * @param integer $id 
-	 * @param boolean $run 
-	 * @access public
-	 * @return void
-	 */
-	public function onIndex($type, $id, $run = false)
-	{
-		if ($type == 'kb-article')
-		{
-			if ($run === true)
-			{
-				// Establish a db connection
-				$db = App::get('db');
+    /**
+     * onIndex
+     *
+     * @param string $type
+     * @param integer $id
+     * @param boolean $run
+     * @access public
+     * @return void
+     */
+    public function onIndex($type, $id, $run = false)
+    {
+        if ($type == 'kb-article') {
+            if ($run === true) {
+                // Establish a db connection
+                $db = App::get('db');
 
-				// Sanitize the string
-				$id = \Hubzero\Utility\Sanitize::paranoid($id);
+                // Sanitize the string
+                $id = \Hubzero\Utility\Sanitize::paranoid($id);
 
-				// Get the record
-				$sql = "SELECT *, 
+                // Get the record
+                $sql = "SELECT *, 
 				(SELECT GROUP_CONCAT(content SEPARATOR ' ') FROM #__kb_comments
 				WHERE entry_id = {$id}) AS comments
 				FROM #__kb_articles WHERE id = {$id};";
-				$row = $db->setQuery($sql)->query()->loadObject();
+                $row = $db->setQuery($sql)->query()->loadObject();
 
-				// Get the name of the author
-				$sql1 = "SELECT name FROM #__users WHERE id={$row->created_by};";
-				$author = $db->setQuery($sql1)->query()->loadResult();
+                // Get the name of the author
+                $sql1 = "SELECT name FROM #__users WHERE id={$row->created_by};";
+                $author = $db->setQuery($sql1)->query()->loadResult();
 
-				// Get any tags
-				$sql2 = "SELECT tag 
+                // Get any tags
+                $sql2 = "SELECT tag 
 					FROM #__tags
 					LEFT JOIN #__tags_object
 					ON #__tags.id=#__tags_object.tagid
 					WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'kb';";
-				$tags = $db->setQuery($sql2)->query()->loadColumn();
+                $tags = $db->setQuery($sql2)->query()->loadColumn();
 
-				// Determine the path
-				$sql3 = "SELECT id, path, alias, level FROM #__categories WHERE extension = 'com_kb';";
-				$categories = $db->setQuery($sql3)->query()->loadObjectList();
+                // Determine the path
+                $sql3 = "SELECT id, path, alias, level FROM #__categories WHERE extension = 'com_kb';";
+                $categories = $db->setQuery($sql3)->query()->loadObjectList();
 
-				$path = '/kb/';
-				foreach ($categories as $category)
-				{
-					// Get the article's category
-					if ($category->id == $row->category)
-					{
-						$path .= $category->path . '/' . $row->alias;
-					}
-				}
+                $path = '/kb/';
+                foreach ($categories as $category) {
+                    // Get the article's category
+                    if ($category->id == $row->category) {
+                        $path .= $category->path . '/' . $row->alias;
+                    }
+                }
 
-				// Public condition
-				if ($row->state == 1 && $row->access == 1)
-				{
-					$access_level = 'public';
-				}
-				// Registered condition
-				elseif ($row->state == 1 && $row->access == 2)
-				{
-					$access_level = 'registered';
-				}
-				// Default private
-				else
-				{
-					$access_level = 'private';
-				}
+                // Public condition
+                if ($row->state == 1 && $row->access == 1) {
+                    $access_level = 'public';
+                } elseif ($row->state == 1 && $row->access == 2) {
+                    // Registered condition
+                    $access_level = 'registered';
+                } else {
+                    // Default private
+                    $access_level = 'private';
+                }
 
-				$owner_type = 'user';
-				$owner = $row->created_by;
+                $owner_type = 'user';
+                $owner = $row->created_by;
 
-				// Get the title
-				$title = $row->title;
+                // Get the title
+                $title = $row->title;
 
-				// Build the description, clean up text
-				$content = $row->fulltxt . ' ' . $row->comments;
-				$content = preg_replace('/<[^>]*>/', ' ', $content);
-				$content = preg_replace('/ {2,}/', ' ', $content);
-				$description = \Hubzero\Utility\Sanitize::stripAll($content);
+                // Build the description, clean up text
+                $content = $row->fulltxt . ' ' . $row->comments;
+                $content = preg_replace('/<[^>]*>/', ' ', $content);
+                $content = preg_replace('/ {2,}/', ' ', $content);
+                $description = \Hubzero\Utility\Sanitize::stripAll($content);
 
-				// Create a record object
-				$record = new \stdClass;
-				$record->id = $type . '-' . $id;
-				$record->hubtype = $type;
-				$record->title = $title;
-				$record->description = $description;
-				$record->author = array($author);
-				$record->tags = $tags;
-				$record->path = $path;
-				$record->access_level = $access_level;
-				$record->owner = $owner;
-				$record->owner_type = $owner_type;
+                // Create a record object
+                $record = new \stdClass();
+                $record->id = $type . '-' . $id;
+                $record->hubtype = $type;
+                $record->title = $title;
+                $record->description = $description;
+                $record->author = array($author);
+                $record->tags = $tags;
+                $record->path = $path;
+                $record->access_level = $access_level;
+                $record->owner = $owner;
+                $record->owner_type = $owner_type;
 
-				// Return the formatted record
-				return $record;
-			}
-			else
-			{
-				$db = App::get('db');
-				$sql = "SELECT id FROM #__kb_articles WHERE state != 2;";
-				$ids = $db->setQuery($sql)->query()->loadColumn();
-				return $ids;
-			}
-		}
-	}
+                // Return the formatted record
+                return $record;
+            } else {
+                $db = App::get('db');
+                $sql = "SELECT id FROM #__kb_articles WHERE state != 2;";
+                $ids = $db->setQuery($sql)->query()->loadColumn();
+                return $ids;
+            }
+        }
+    }
 }
