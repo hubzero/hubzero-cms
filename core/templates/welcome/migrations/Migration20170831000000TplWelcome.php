@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,22 +15,24 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding entry for Template - Welcome plugin
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20170831000000TplWelcome extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addTemplateEntry('welcome', 'welcome', 0, 1, 0, null, 1);
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addTemplateEntry('welcome', 'welcome', 0, 1, 0, null, 1);
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deleteTemplateEntry('welcome', 0);
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deleteTemplateEntry('welcome', 0);
+    }
 }

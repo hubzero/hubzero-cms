@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,126 +10,146 @@
 defined('_HZEXEC_') or die();
 
 // Load base styles
-$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/index.css?v=' . filemtime(__DIR__ . '/css/index.css'));
-$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/cpanel.css?v=' . filemtime(__DIR__ . '/css/cpanel.css'));
+$this->addStyleSheet(
+    $this->baseurl . '/templates/' . $this->template . '/css/index.css?v=' . filemtime(__DIR__ . '/css/index.css')
+);
+$this->addStyleSheet(
+    $this->baseurl . '/templates/' . $this->template . '/css/cpanel.css?v=' . filemtime(__DIR__ . '/css/cpanel.css')
+);
 
 // Load theme
 $theme = $this->params->get('theme');
-if ($theme == 'custom')
-{
-	$color = $this->params->get('color');
-	$this->addStyleDeclaration(include_once __DIR__ . '/css/themes/custom.php');
+if ($theme == 'custom') {
+    $color = $this->params->get('color');
+    $this->addStyleDeclaration(include_once __DIR__ . '/css/themes/custom.php');
 }
 
 $htheme = $this->params->get('header', 'light');
 $browser = new \Hubzero\Browser\Detector();
 
 $cls = array(
-	'nojs',
-	$this->direction,
-	$theme,
-	$htheme,
-	$browser->name(),
-	$browser->name() . $browser->major()
+    'nojs',
+    $this->direction,
+    $theme,
+    $htheme,
+    $browser->name(),
+    $browser->name() . $browser->major()
 );
 ?>
 <!DOCTYPE html>
-<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo implode(' ', $cls); ?>">
-	<head>
-		<meta name="viewport" content="width=device-width" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>"
+    class="<?php echo implode(' ', $cls); ?>">
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-		<jdoc:include type="head" />
+        <jdoc:include type="head" />
 
-		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/index.js?v=<?php echo filemtime(__DIR__ . '/js/index.js'); ?>"></script>
+        <script type="text/javascript"
+            src="<?php echo $this->baseurl . '/templates/' . $this->template
+                . '/js/index.js?v=' . filemtime(__DIR__ . '/js/index.js'); ?>"></script>
 
-		<!--[if lt IE 9]>
-			<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js?v=<?php echo filemtime(__DIR__ . '/js/html5.js'); ?>"></script>
-		<![endif]-->
+        <!--[if lt IE 9]>
+            <script type="text/javascript"
+                src="<?php echo $this->baseurl . '/templates/' . $this->template
+                    . '/js/html5.js?v=' . filemtime(__DIR__ . '/js/html5.js'); ?>"></script>
+        <![endif]-->
 
-		<!--[if IE 9]>
-			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css?v=<?php echo filemtime(__DIR__ . '/css/browser/ie9.css'); ?>" />
-		<![endif]-->
-	</head>
-	<body id="cpanel-body">
-		<jdoc:include type="modules" name="notices" />
+        <!--[if IE 9]>
+            <link type="text/css" rel="stylesheet"
+                href="<?php echo $this->baseurl . '/templates/' . $this->template
+                    . '/css/browser/ie9.css?v=' . filemtime(__DIR__ . '/css/browser/ie9.css'); ?>" />
+        <![endif]-->
+    </head>
+    <body id="cpanel-body">
+        <jdoc:include type="modules" name="notices" />
 
-		<header id="header" role="banner">
-			<h1><a href="<?php echo Request::root(); ?>"><?php echo Config::get('sitename'); ?></a></h1>
+        <header id="header" role="banner">
+            <h1><a href="<?php echo Request::root(); ?>"><?php echo Config::get('sitename'); ?></a></h1>
 
-			<ul class="user-options">
-				<?php
-				//Display an harcoded logout
-				$task = Request::getCmd('task');
-				$hideLinks = Request::getInt('hidemainmenu');
+            <ul class="user-options">
+                <?php
+                //Display an harcoded logout
+                $task = Request::getCmd('task');
+                $hideLinks = Request::getInt('hidemainmenu');
 
-				$logoutLink = Route::url('index.php?option=com_login&task=logout&' . Session::getFormToken() . '=1');
-				if ($task == 'edit' || $task == 'editA' || $hideLinks) :
-					$logoutLink = '';
-				endif;
+                $logoutLink = Route::url('index.php?option=com_login&task=logout&' . Session::getFormToken() . '=1');
+                if ($task == 'edit' || $task == 'editA' || $hideLinks) :
+                    $logoutLink = '';
+                endif;
 
-				$output = array();
-				$output[] = ($hideLinks
-								? '<li data-title="' . Lang::txt('TPL_KAMELEON_LOG_OUT') . '" class="disabled"><span class="logout">'
-								: '<li data-title="' . Lang::txt('TPL_KAMELEON_LOG_OUT') . '"><a class="logout" href="' . $logoutLink . '">') . Lang::txt('TPL_KAMELEON_LOG_OUT') . ($hideLinks ? '</span></li>' : '</a></li>');
+                $output = array();
+                $logoutText = Lang::txt('TPL_KAMELEON_LOG_OUT');
+                if ($hideLinks) {
+                    $output[] = '<li data-title="' . $logoutText . '" class="disabled">'
+                        . '<span class="logout">' . $logoutText . '</span></li>';
+                } else {
+                    $output[] = '<li data-title="' . $logoutText . '">'
+                        . '<a class="logout" href="' . $logoutLink . '">' . $logoutText . '</a></li>';
+                }
 
-				// Reverse rendering order for rtl display.
-				if ($this->direction == "rtl") :
-					$output = array_reverse($output);
-				endif;
+                // Reverse rendering order for rtl display.
+                if ($this->direction == "rtl") :
+                    $output = array_reverse($output);
+                endif;
 
-				// Output the items.
-				foreach ($output as $item) :
-					echo $item;
-				endforeach;
-				?>
-			</ul>
-		</header><!-- / #header -->
+                // Output the items.
+                foreach ($output as $item) :
+                    echo $item;
+                endforeach;
+                ?>
+            </ul>
+        </header><!-- / #header -->
 
-		<div id="wrap">
-			<nav role="navigation" class="main-navigation">
-				<div class="inner-wrap">
-					<jdoc:include type="modules" name="menu" />
-				</div>
-			</nav><!-- / .main-navigation -->
+        <div id="wrap">
+            <nav role="navigation" class="main-navigation">
+                <div class="inner-wrap">
+                    <jdoc:include type="modules" name="menu" />
+                </div>
+            </nav><!-- / .main-navigation -->
 
-			<section id="component-content">
-				<div id="toolbar-box" class="toolbar-box">
-					<jdoc:include type="modules" name="title" />
-					<jdoc:include type="modules" name="toolbar" />
-				</div><!-- / #toolbar-box -->
+            <section id="component-content">
+                <div id="toolbar-box" class="toolbar-box">
+                    <jdoc:include type="modules" name="title" />
+                    <jdoc:include type="modules" name="toolbar" />
+                </div><!-- / #toolbar-box -->
 
-				<!-- Notifications begins -->
-				<jdoc:include type="message" />
-				<!-- Notifications ends -->
+                <!-- Notifications begins -->
+                <jdoc:include type="message" />
+                <!-- Notifications ends -->
 
-				<?php if (!$hideLinks && $this->countModules('submenu') > 1): ?>
-					<nav role="navigation" class="sub-navigation">
-						<jdoc:include type="modules" name="submenu" />
-					</nav><!-- / .sub-navigation -->
-				<?php endif; ?>
+                <?php if (!$hideLinks && $this->countModules('submenu') > 1) : ?>
+                    <nav role="navigation" class="sub-navigation">
+                        <jdoc:include type="modules" name="submenu" />
+                    </nav><!-- / .sub-navigation -->
+                <?php endif; ?>
 
-				<section id="main" class="<?php echo Request::getCmd('option', ''); ?>">
-					<!-- Content begins -->
-					<jdoc:include type="component" />
-					<!-- Content ends -->
+                <section id="main" class="<?php echo Request::getCmd('option', ''); ?>">
+                    <!-- Content begins -->
+                    <jdoc:include type="component" />
+                    <!-- Content ends -->
 
-					<noscript>
-						<?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT') ?>
-					</noscript>
-				</section><!-- / #main -->
-			</section><!-- / #component-content -->
-		</div><!-- / #wrap -->
+                    <noscript>
+                        <?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT') ?>
+                    </noscript>
+                </section><!-- / #main -->
+            </section><!-- / #component-content -->
+        </div><!-- / #wrap -->
 
-		<footer id="footer">
-			<section class="basement">
-				<p class="copyright">
-					<?php echo Lang::txt('TPL_KAMELEON_COPYRIGHT', Request::root(), Config::get('sitename'), date("Y")); ?>
-				</p>
-				<p class="promotion">
-					<?php echo Lang::txt('TPL_KAMELEON_POWERED_BY', HVERSION); ?>
-				</p>
-			</section><!-- / .basement -->
-		</footer><!-- / #footer -->
-	</body>
+        <footer id="footer">
+            <section class="basement">
+                <p class="copyright">
+                    <?php echo Lang::txt(
+                        'TPL_KAMELEON_COPYRIGHT',
+                        Request::root(),
+                        Config::get('sitename'),
+                        date("Y")
+                    ); ?>
+                </p>
+                <p class="promotion">
+                    <?php echo Lang::txt('TPL_KAMELEON_POWERED_BY', HVERSION); ?>
+                </p>
+            </section><!-- / .basement -->
+        </footer><!-- / #footer -->
+    </body>
 </html>
