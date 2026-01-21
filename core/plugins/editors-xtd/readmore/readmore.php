@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,37 +13,40 @@ defined('_HZEXEC_') or die();
 
 /**
  * Editor Readmore buton
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
 class plgButtonReadmore extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Constructor
-	 *
-	 * @param       object  $subject The object to observe
-	 * @param       array   $config  An array that holds the plugin configuration
-	 * @since       1.5
-	 */
-	public function __construct(& $subject, $config)
-	{
-		parent::__construct($subject, $config);
+    /**
+     * Constructor
+     *
+     * @param       object  $subject The object to observe
+     * @param       array   $config  An array that holds the plugin configuration
+     * @since       1.5
+     */
+    public function __construct(&$subject, $config)
+    {
+        parent::__construct($subject, $config);
 
-		$this->loadLanguage();
-	}
+        $this->loadLanguage();
+    }
 
-	/**
-	 * readmore button
-	 *
-	 * @param  string  $name  Value of name
-	 * @return  array  A two element array of (imageName, textToInsert)
-	 */
-	public function onDisplay($name)
-	{
-		$template = App::get('template')->template;
+    /**
+     * readmore button
+     *
+     * @param  string  $name  Value of name
+     * @return  array  A two element array of (imageName, textToInsert)
+     */
+    public function onDisplay($name)
+    {
+        $template = App::get('template')->template;
 
-		// button is not active in specific content components
-		$getContent = $this->_subject->getContent($name);
-		$present = Lang::txt('PLG_READMORE_ALREADY_EXISTS', true);
-		$js = "
+        // button is not active in specific content components
+        $getContent = $this->_subject->getContent($name);
+        $present = Lang::txt('PLG_READMORE_ALREADY_EXISTS', true);
+        $js = "
 			function insertReadmore(editor) {
 				var content = $getContent
 				if (content.match(/<hr\s+id=(\"|')system-readmore(\"|')\s*\/*>/i)) {
@@ -52,17 +58,17 @@ class plgButtonReadmore extends \Hubzero\Plugin\Plugin
 			}
 			";
 
-		Document::addScriptDeclaration($js);
+        Document::addScriptDeclaration($js);
 
-		$button = new \Hubzero\Base\Obj;
-		$button->set('modal', false);
-		$button->set('onclick', 'insertReadmore(\''.$name.'\');return false;');
-		$button->set('text', Lang::txt('PLG_READMORE_BUTTON_READMORE'));
-		$button->set('name', 'readmore');
-		// TODO: The button writer needs to take into account the javascript directive
-		//$button->set('link', 'javascript:void(0)');
-		$button->set('link', '#');
+        $button = new \Hubzero\Base\Obj();
+        $button->set('modal', false);
+        $button->set('onclick', 'insertReadmore(\'' . $name . '\');return false;');
+        $button->set('text', Lang::txt('PLG_READMORE_BUTTON_READMORE'));
+        $button->set('name', 'readmore');
+        // TODO: The button writer needs to take into account the javascript directive
+        //$button->set('link', 'javascript:void(0)');
+        $button->set('link', '#');
 
-		return $button;
-	}
+        return $button;
+    }
 }
