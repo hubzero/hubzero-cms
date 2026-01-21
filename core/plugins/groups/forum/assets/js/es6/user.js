@@ -6,27 +6,31 @@
 
 class User {
 
-	static get BASE_API_URL() {
-		return '/users/currentuser'
-	}
+    static get BASE_API_URL()
+    {
+        return '/users/currentuser'
+    }
 
-	constructor() {
-		this.api = new Api()
-	}
+    constructor()
+    {
+        this.api = new Api()
+    }
 
-	isAuthenticated() {
-		const authenticationEndpoint = this._buildApiEndpoint('isAuthenticated')
-		const isAuthenticated = this.api.get(authenticationEndpoint)
+    isAuthenticated()
+    {
+        const authenticationEndpoint = this._buildApiEndpoint('isAuthenticated')
+        const isAuthenticated = this.api.get(authenticationEndpoint)
 
-		return isAuthenticated
-	}
+        return isAuthenticated
+    }
 
-	_buildApiEndpoint(apiTask) {
-		const baseApiEndpoint = this.constructor.BASE_API_URL
-		const apiEndpoint = `${baseApiEndpoint}/${apiTask}`
+    _buildApiEndpoint(apiTask)
+    {
+        const baseApiEndpoint = this.constructor.BASE_API_URL
+        const apiEndpoint = `${baseApiEndpoint} / ${apiTask}`
 
-		return apiEndpoint
-	}
+        return apiEndpoint
+    }
 
 }
 

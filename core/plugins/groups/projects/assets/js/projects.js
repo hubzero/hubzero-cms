@@ -6,10 +6,10 @@
  */
 
 if (!jq) {
-	var jq = $;
+    var jq = $;
 }
 
-jQuery(document).ready(function(jq){
-	var $ = jq;
+jQuery(document).ready(function (jq) {
+    var $ = jq;
 
 });

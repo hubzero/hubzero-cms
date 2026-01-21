@@ -5,15 +5,15 @@
  */
 
 if (!jq) {
-	var jq = $;
+    var jq = $;
 }
 
 //on document ready
-jQuery(document).ready(function(jq){
-	var $ = jq;
+jQuery(document).ready(function (jq) {
+    var $ = jq;
 
-	//setup datepicker
-	$('.datepicker').datepicker({
-		format: 'm/d/Y'
-	});
+    //setup datepicker
+    $('.datepicker').datepicker({
+        format: 'm/d/Y'
+    });
 });

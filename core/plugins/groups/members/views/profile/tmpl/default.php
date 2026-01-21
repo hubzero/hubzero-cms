@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,7 +25,7 @@ $xml = Components\Members\Models\Profile\Field::toXml($this->fields, 'edit');
 
 // Gather data to pass to the form processor
 $data = new Hubzero\Config\Registry(
-	Components\Members\Models\Profile::collect($profiles)
+    Components\Members\Models\Profile::collect($profiles)
 );
 
 // Create a new form
@@ -33,179 +36,156 @@ $form->load($xml);
 $form->bind($data);
 
 $fields = array();
-foreach ($profiles as $profile)
-{
-	if (isset($fields[$profile->get('profile_key')]))
-	{
-		$values = $fields[$profile->get('profile_key')]->get('profile_value');
-		if (!is_array($values))
-		{
-			$values = array($values);
-		}
-		$values[] = $profile->get('profile_value');
+foreach ($profiles as $profile) {
+    if (isset($fields[$profile->get('profile_key')])) {
+        $values = $fields[$profile->get('profile_key')]->get('profile_value');
+        if (!is_array($values)) {
+            $values = array($values);
+        }
+        $values[] = $profile->get('profile_value');
 
-		$fields[$profile->get('profile_key')]->set('profile_value', $values);
-	}
-	else
-	{
-		$fields[$profile->get('profile_key')] = $profile;
-	}
+        $fields[$profile->get('profile_key')]->set('profile_value', $values);
+    } else {
+        $fields[$profile->get('profile_key')] = $profile;
+    }
 }
 ?>
 <?php if ($this->membership_control == 1) { ?>
-	<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-		<ul id="page_options">
-			<li>
-				<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=invite'); ?>">
-					<?php echo Lang::txt('PLG_GROUPS_MEMBERS_INVITE_MEMBERS'); ?>
-				</a>
-				<?php if ($this->membership_control == 1 && $this->authorized == 'manager') : ?>
-					<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&action=addrole'); ?>">
-						<?php echo Lang::txt('PLG_GROUPS_MEMBERS_ADD_ROLE'); ?>
-					</a>
-				<?php endif; ?>
-			</li>
-		</ul>
-	<?php } ?>
+    <?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+        <ul id="page_options">
+            <li>
+                <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=invite'); ?>">
+                    <?php echo Lang::txt('PLG_GROUPS_MEMBERS_INVITE_MEMBERS'); ?>
+                </a>
+                <?php if ($this->membership_control == 1 && $this->authorized == 'manager') : ?>
+                    <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&action=addrole'); ?>">
+                        <?php echo Lang::txt('PLG_GROUPS_MEMBERS_ADD_ROLE'); ?>
+                    </a>
+                <?php endif; ?>
+            </li>
+        </ul>
+    <?php } ?>
 <?php } ?>
 
 <div class="section">
-	<div class="section-inner">
-		<h4>
-			<?php echo $this->escape($this->profile->get('name')); ?>
-		</h4>
+    <div class="section-inner">
+        <h4>
+            <?php echo $this->escape($this->profile->get('name')); ?>
+        </h4>
 
-		<?php
-		$output = Event::trigger('groups.onGroupMemberBefore', array($this->group, $this->profile));
-		echo implode("\n", $output);
-		?>
+        <?php
+        $output = Event::trigger('groups.onGroupMemberBefore', array($this->group, $this->profile));
+        echo implode("\n", $output);
+        ?>
 
-		<ul class="member-profile">
-			<li class="profile-full field">
-				<div class="field-content">
-					<div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_FULL'); ?></div>
-					<div class="value">
-						<a href="<?php echo $this->profile->link(); ?>"><?php echo Lang::txt('PLG_GROUPS_PROFILE_FULL_GO'); ?></a>
-					</div>
-				</div>
-			</li>
+        <ul class="member-profile">
+            <li class="profile-full field">
+                <div class="field-content">
+                    <div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_FULL'); ?></div>
+                    <div class="value">
+                        <a href="<?php echo $this->profile->link(); ?>"><?php echo Lang::txt('PLG_GROUPS_PROFILE_FULL_GO'); ?></a>
+                    </div>
+                </div>
+            </li>
 
-			<?php if ($this->profile->get('email')) : ?>
-				<?php if ($this->params->get('access_email', 2) == 0
-						|| ($this->params->get('access_email', 2) == 1 && $loggedin)
-						|| ($this->params->get('access_email', 2) == 2 && $isUser)
-						) : ?>
-					<li class="profile-email field">
-						<div class="field-content">
-							<div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_EMAIL'); ?></div>
-							<div class="value">
-								<a class="email" href="mailto:<?php echo \Hubzero\Utility\Str::obfuscate($this->profile->get('email')); ?>" rel="nofollow">
-									<?php echo \Hubzero\Utility\Str::obfuscate($this->profile->get('email')); ?>
-								</a>
-							</div>
-						</div>
-					</li>
-				<?php endif; ?>
-			<?php endif; ?>
+            <?php if ($this->profile->get('email')) : ?>
+                <?php if (
+                $this->params->get('access_email', 2) == 0
+                        || ($this->params->get('access_email', 2) == 1 && $loggedin)
+                        || ($this->params->get('access_email', 2) == 2 && $isUser)
+) : ?>
+                    <li class="profile-email field">
+                        <div class="field-content">
+                            <div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_EMAIL'); ?></div>
+                            <div class="value">
+                                <a class="email" href="mailto:<?php echo \Hubzero\Utility\Str::obfuscate($this->profile->get('email')); ?>" rel="nofollow">
+                                    <?php echo \Hubzero\Utility\Str::obfuscate($this->profile->get('email')); ?>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                <?php endif; ?>
+            <?php endif; ?>
 
-			<?php foreach ($this->fields as $field): ?>
-				<?php
-				if (!isset($fields[$field->get('name')]))
-				{
-					$fields[$field->get('name')] = Components\Members\Models\Profile::blank();
-					$fields[$field->get('name')]->set('access', 1);
-				}
+            <?php foreach ($this->fields as $field) : ?>
+                <?php
+                if (!isset($fields[$field->get('name')])) {
+                    $fields[$field->get('name')] = Components\Members\Models\Profile::blank();
+                    $fields[$field->get('name')]->set('access', 1);
+                }
 
-				$profile = $fields[$field->get('name')];
-				if (!$profile->get('access'))
-				{
-					$profile->set('access', 5);
-				}
+                $profile = $fields[$field->get('name')];
+                if (!$profile->get('access')) {
+                    $profile->set('access', 5);
+                }
 
-				if (in_array($profile->get('access', $field->get('access', 5)), User::getAuthorisedViewLevels()))
-				{
-					$cls = array('profile-' . $field->get('name'));
+                if (in_array($profile->get('access', $field->get('access', 5)), User::getAuthorisedViewLevels())) {
+                    $cls = array('profile-' . $field->get('name'));
 
-					if ($profile->get('access', $field->get('access')) == 2)
-					{
-						$cls[] = 'registered';
-					}
+                    if ($profile->get('access', $field->get('access')) == 2) {
+                        $cls[] = 'registered';
+                    }
 
-					if ($profile->get('access', $field->get('access')) == 5)
-					{
-						$cls[] = 'private';
-					}
+                    if ($profile->get('access', $field->get('access')) == 5) {
+                        $cls[] = 'private';
+                    }
 
-					if ($field->get('type') == 'tags')
-					{
-						$value = $this->profile->tags();
-					}
-					else
-					{
-						$value = $profile->get('profile_value');
-						$value = $value ?: $this->profile->get($field->get('name'));
-					}
+                    if ($field->get('type') == 'tags') {
+                        $value = $this->profile->tags();
+                    } else {
+                        $value = $profile->get('profile_value');
+                        $value = $value ?: $this->profile->get($field->get('name'));
+                    }
 
-					if (is_array($value))
-					{
-						foreach ($value as $k => $v)
-						{
-							if (strstr($v, '{'))
-							{
-								$v = json_decode((string)$v, true);
+                    if (is_array($value)) {
+                        foreach ($value as $k => $v) {
+                            if (strstr($v, '{')) {
+                                $v = json_decode((string)$v, true);
 
-								if (!$v|| json_last_error() !== JSON_ERROR_NONE)
-								{
-									continue;
-								}
+                                if (!$v || json_last_error() !== JSON_ERROR_NONE) {
+                                    continue;
+                                }
 
-								foreach ($v as $nm => $vl)
-								{
-									$v[$nm] = '<strong>' . $nm . ':</strong> ' . $vl;
-								}
+                                foreach ($v as $nm => $vl) {
+                                    $v[$nm] = '<strong>' . $nm . ':</strong> ' . $vl;
+                                }
 
-								$value[$k] = implode('<br />', $v);
-							}
-						}
-					}
-					else
-					{
-						if (strstr($value == null ? '' : $value, '{'))
-						{
-							$v = json_decode((string)$value, true);
+                                $value[$k] = implode('<br />', $v);
+                            }
+                        }
+                    } else {
+                        if (strstr($value == null ? '' : $value, '{')) {
+                            $v = json_decode((string)$value, true);
 
-							if (!$v || json_last_error() !== JSON_ERROR_NONE)
-							{
-								$v = array($value);
-							}
+                            if (!$v || json_last_error() !== JSON_ERROR_NONE) {
+                                $v = array($value);
+                            }
 
-							foreach ($v as $nm => $vl)
-							{
-								$v[$nm] = '<strong>' . $nm . ':</strong> ' . $vl;
-							}
+                            foreach ($v as $nm => $vl) {
+                                $v[$nm] = '<strong>' . $nm . ':</strong> ' . $vl;
+                            }
 
-							$value = implode('<br />', $v);
-						}
-					}
+                            $value = implode('<br />', $v);
+                        }
+                    }
 
-					if (empty($value))
-					{
-						$cls[] = 'hide';
-					}
-					?>
-					<li class="<?php echo implode(' ', $cls); ?> section">
-						<div class="section-content">
-							<div class="key"><?php echo $field->get('label'); ?></div>
-							<div class="value"><?php echo !empty($value) ? (is_array($value) ? implode(', ', $value) : $value) : '(not set)'; ?></div>
-						</div>
-					</li>
-				<?php } ?>
-			<?php endforeach; ?>
-		</ul>
+                    if (empty($value)) {
+                        $cls[] = 'hide';
+                    }
+                    ?>
+                    <li class="<?php echo implode(' ', $cls); ?> section">
+                        <div class="section-content">
+                            <div class="key"><?php echo $field->get('label'); ?></div>
+                            <div class="value"><?php echo !empty($value) ? (is_array($value) ? implode(', ', $value) : $value) : '(not set)'; ?></div>
+                        </div>
+                    </li>
+                <?php } ?>
+            <?php endforeach; ?>
+        </ul>
 
-		<?php
-		$output = Event::trigger('groups.onGroupMemberAfter', array($this->group, $this->profile));
-		echo implode("\n", $output);
-		?>
-	</div>
+        <?php
+        $output = Event::trigger('groups.onGroupMemberAfter', array($this->group, $this->profile));
+        echo implode("\n", $output);
+        ?>
+    </div>
 </div>

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,17 +15,17 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for installing xgroups_memberoptions table
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20170901000000PlgGroupsMemberoptions extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__xgroups_memberoption'))
-		{
-			$query = "CREATE TABLE `#__xgroups_memberoption` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__xgroups_memberoption')) {
+            $query = "CREATE TABLE `#__xgroups_memberoption` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `gidNumber` int(11) DEFAULT NULL,
 			  `userid` int(11) DEFAULT NULL,
@@ -33,21 +36,20 @@ class Migration20170901000000PlgGroupsMemberoptions extends Base
 			  KEY `idx_userid` (`userid`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__xgroups_memberoption'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__xgroups_memberoption`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__xgroups_memberoption')) {
+            $query = "DROP TABLE IF EXISTS `#__xgroups_memberoption`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

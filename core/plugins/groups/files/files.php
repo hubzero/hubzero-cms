@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,346 +13,344 @@ defined('_HZEXEC_') or die();
 
 /**
  * Groups Plugin class for group members
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
 class plgGroupsFiles extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Affects constructor behavior. If true, language files will be loaded automatically.
-	 *
-	 * @var    boolean
-	 */
-	protected $_autoloadLanguage = true;
+    /**
+     * Affects constructor behavior. If true, language files will be loaded automatically.
+     *
+     * @var    boolean
+     * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
+     */
+    protected $_autoloadLanguage = true;
 
-	/**
-	 * Loads the plugin language file
-	 *
-	 * @param   string   $extension  The extension for which a language file should be loaded
-	 * @param   string   $basePath   The basepath to use
-	 * @return  boolean  True, if the file has successfully loaded.
-	 */
-	public function loadLanguage($extension = '', $basePath = PATH_APP)
-	{
-		if (empty($extension))
-		{
-			$extension = 'plg_' . $this->_type . '_' . $this->_name;
-		}
+    /**
+     * Loads the plugin language file
+     *
+     * @param   string   $extension  The extension for which a language file should be loaded
+     * @param   string   $basePath   The basepath to use
+     * @return  boolean  True, if the file has successfully loaded.
+     */
+    public function loadLanguage($extension = '', $basePath = PATH_APP)
+    {
+        if (empty($extension)) {
+            $extension = 'plg_' . $this->_type . '_' . $this->_name;
+        }
 
-		$group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
-		if ($group && $group->isSuperGroup())
-		{
-			$basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
-		}
+        $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
+        if ($group && $group->isSuperGroup()) {
+            $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
+        }
 
-		$lang = \App::get('language');
-		return $lang->load(strtolower($extension), $basePath, null, false, true)
-			|| $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-			|| $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-			|| $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
-	}
+        $lang = \App::get('language');
+        $ext = strtolower($extension);
+        $pluginPath = DS . 'plugins' . DS . $this->_type . DS . $this->_name;
 
-	/**
-	 * Return the alias and name for this category of content
-	 *
-	 * @return     array
-	 */
-	public function &onGroupAreas()
-	{
-		$area = array(
-			'name' => 'files',
-			'title' => Lang::txt('PLG_GROUPS_FILES'),
-			'default_access' => $this->params->get('plugin_access', 'members'),
-			'display_menu_tab' => $this->params->get('display_tab', 1),
-			'icon' => 'f0c5'
-		);
-		return $area;
-	}
+        return $lang->load(strtolower($extension), $basePath, null, false, true)
+            || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
+            || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
+            || $lang->load(strtolower($extension), PATH_CORE . $pluginPath, null, false, true);
+    }
 
-	/**
-	 * Return data on a group view (this will be some form of HTML)
-	 *
-	 * @param      object  $group      Current group
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
-	 */
-	public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas=null)
-	{
-		$returnhtml = true;
-		$active = 'files';
+    /**
+     * Return the alias and name for this category of content
+     *
+     * @return     array
+     */
+    public function &onGroupAreas()
+    {
+        $area = array(
+            'name' => 'files',
+            'title' => Lang::txt('PLG_GROUPS_FILES'),
+            'default_access' => $this->params->get('plugin_access', 'members'),
+            'display_menu_tab' => $this->params->get('display_tab', 1),
+            'icon' => 'f0c5'
+        );
+        return $area;
+    }
 
-		// The output array we're returning
-		$arr = array(
-			'html'     => '',
-			'metadata' => array()
-		);
+    /**
+     * Return data on a group view (this will be some form of HTML)
+     *
+     * @param      object  $group      Current group
+     * @param      string  $option     Name of the component
+     * @param      string  $authorized User's authorization level
+     * @param      integer $limit      Number of records to pull
+     * @param      integer $limitstart Start of records to pull
+     * @param      string  $action     Action to perform
+     * @param      array   $access     What can be accessed
+     * @param      array   $areas      Active area(s)
+     * @return     array
+     */
+    public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
+    {
+        $returnhtml = true;
+        $active = 'files';
 
-		//get this area details
-		$this_area = $this->onGroupAreas();
+        // The output array we're returning
+        $arr = array(
+            'html'     => '',
+            'metadata' => array()
+        );
 
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas) && $limit)
-		{
-			if (!in_array($this_area['name'], $areas))
-			{
-				$returnhtml = false;
-			}
-		}
+        //get this area details
+        $this_area = $this->onGroupAreas();
 
-		// Set some variables so other functions have access
-		$this->authorized = $authorized;
-		$this->action = $action;
-		$this->_option = $option;
-		$this->group = $group;
-		$this->name = substr($option, 4, strlen($option));
+        // Check if our area is in the array of areas we want to return results for
+        if (is_array($areas) && $limit) {
+            if (!in_array($this_area['name'], $areas)) {
+                $returnhtml = false;
+            }
+        }
 
-		// Only perform the following if this is the active tab/plugin
-		if ($returnhtml)
-		{
-			//set group members plugin access level
-			$group_plugin_acl = $access[$active];
+        // Set some variables so other functions have access
+        $this->authorized = $authorized;
+        $this->action = $action;
+        $this->_option = $option;
+        $this->group = $group;
+        $this->name = substr($option, 4, strlen($option));
 
-			//get the group members
-			$members = $group->get('members');
+        // Only perform the following if this is the active tab/plugin
+        if ($returnhtml) {
+            //set group members plugin access level
+            $group_plugin_acl = $access[$active];
 
-			//if set to nobody make sure cant access
-			if ($group_plugin_acl == 'nobody')
-			{
-				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
-				return $arr;
-			}
+            //get the group members
+            $members = $group->get('members');
 
-			//check if guest and force login if plugin access is registered or members
-			if (User::isGuest()
-			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
-			{
-				$url = Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active, false, true);
+            //if set to nobody make sure cant access
+            if ($group_plugin_acl == 'nobody') {
+                $arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_OFF', ucfirst($active)) . '</p>';
+                return $arr;
+            }
 
-				App::redirect(
-					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
-					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
-					'warning'
-				);
-				return;
-			}
+            //check if guest and force login if plugin access is registered or members
+            if (
+                User::isGuest()
+                && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
+            ) {
+                $url = Route::url(
+                    'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active,
+                    false,
+                    true
+                );
 
-			// Plugin was made public - Disallow uploading or editing
-			if (User::isGuest() && $group_plugin_acl == 'anyone')
-			{
-				$this->authorized = false;
-			}
+                App::redirect(
+                    Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
+                    Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
+                    'warning'
+                );
+                return;
+            }
 
-			//check to see if user is member and plugin access requires members
-			if (!in_array(User::get('id'), $members)
-			 && $group_plugin_acl == 'members'
-			 && $authorized != 'admin')
-			{
-				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
-				return $arr;
-			}
+            // Plugin was made public - Disallow uploading or editing
+            if (User::isGuest() && $group_plugin_acl == 'anyone') {
+                $this->authorized = false;
+            }
 
-			// Append to document the title
-			Document::setTitle(Document::getTitle() . ': ' . Lang::txt('PLG_GROUPS_FILES'));
+            //check to see if user is member and plugin access requires members
+            if (
+                !in_array(User::get('id'), $members)
+                && $group_plugin_acl == 'members'
+                && $authorized != 'admin'
+            ) {
+                $msg = Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active));
+                $arr['html'] = '<p class="info">' . $msg . '</p>';
+                return $arr;
+            }
 
-			$this->path = PATH_APP . DS . trim($this->params->get('uploadpath', '/site/groups'), DS) . DS . $this->group->get('gidNumber');
+            // Append to document the title
+            $pageTitle = Document::getTitle() . ': ' . Lang::txt('PLG_GROUPS_FILES');
+            Document::setTitle($pageTitle);
 
-			$arr['html'] = $this->_browse();
-		}
+            $uploadPath = trim($this->params->get('uploadpath', '/site/groups'), DS);
+            $this->path = PATH_APP . DS . $uploadPath . DS . $this->group->get('gidNumber');
 
-		// Return the output
-		return $arr;
-	}
+            $arr['html'] = $this->browse();
+        }
 
-	/**
-	 * Display a list of latest blog entries
-	 *
-	 * @return     string
-	 */
-	private function _browse()
-	{
-		$view = $this->view('filebrowser')
-			->set('option', $this->option)
-			->set('group', $this->group)
-			->set('config', $this->params)
-			->set('task', $this->action)
-			->set('authorized', $this->authorized)
-			->set('notifications', array());
+        // Return the output
+        return $arr;
+    }
 
-		//get rel path to start
-		$view->activeFolder = Request::getString('path', '/');
+    /**
+     * Display a list of latest blog entries
+     *
+     * @return     string
+     */
+    private function browse()
+    {
+        $view = $this->view('filebrowser')
+            ->set('option', $this->option)
+            ->set('group', $this->group)
+            ->set('config', $this->params)
+            ->set('task', $this->action)
+            ->set('authorized', $this->authorized)
+            ->set('notifications', array());
 
-		// make sure we have an active folder
-		if ($view->activeFolder == '')
-		{
-			$view->activeFolder = '/uploads';
-		}
+        //get rel path to start
+        $view->activeFolder = Request::getString('path', '/');
 
-		$view->activeFolder = '/' . trim($view->activeFolder, '/');
+        // make sure we have an active folder
+        if ($view->activeFolder == '') {
+            $view->activeFolder = '/uploads';
+        }
 
-		// regular groups can only access inside /uploads
-		//if (!$this->group->isSuperGroup())
-		//{
-			$pathInfo = pathinfo($view->activeFolder);
-			if ($pathInfo['dirname'] != '/uploads')
-			{
-				$view->activeFolder = '/uploads';
-			}
-		//}
+        $view->activeFolder = '/' . trim($view->activeFolder, '/');
 
-		// make sure we have a path
-		$this->_createGroupFolder($this->path);
+        // regular groups can only access inside /uploads
+        //if (!$this->group->isSuperGroup())
+        //{
+            $pathInfo = pathinfo($view->activeFolder);
+        if ($pathInfo['dirname'] != '/uploads') {
+            $view->activeFolder = '/uploads';
+        }
+        //}
 
-		// get list of folders
-		$folders = Filesystem::directoryTree($this->path, '.', 10);
-		foreach ($folders as $i => $folder)
-		{
-			if ($folder['parent'] || (!$folder['parent'] && $folder['name'] == 'uploads'))
-			{
-				continue;
-			}
-			unset($folders[$i]);
-		}
+        // make sure we have a path
+        $this->createGroupFolder($this->path);
 
-		// build recursive folder trees
-		$folderTree       = $this->_buildFolderTree($folders);
-		$view->folderTree = $this->_buildFolderTreeHtml($folderTree);
-		$view->folderList = $this->_buildFolderTreeSelect($folderTree);
+        // get list of folders
+        $folders = Filesystem::directoryTree($this->path, '.', 10);
+        foreach ($folders as $i => $folder) {
+            if ($folder['parent'] || (!$folder['parent'] && $folder['name'] == 'uploads')) {
+                continue;
+            }
+            unset($folders[$i]);
+        }
 
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+        // build recursive folder trees
+        $folderTree       = $this->buildFolderTree($folders);
+        $view->folderTree = $this->buildFolderTreeHtml($folderTree);
+        $view->folderList = $this->buildFolderTreeSelect($folderTree);
 
-		return $view->loadTemplate();
-	}
+        foreach ($this->getErrors() as $error) {
+            $view->setError($error);
+        }
 
-	/**
-	 * Create group folder id doesnt exist
-	 *
-	 * @param   string  $path
-	 * @return  void
-	 */
-	private function _createGroupFolder($path)
-	{
-		// create base group folder
-		if (!Filesystem::exists($path))
-		{
-			Filesystem::makeDirectory($path);
-		}
+        return $view->loadTemplate();
+    }
 
-		// create uploads file
-		if (!Filesystem::exists($path . DS . 'uploads'))
-		{
-			Filesystem::makeDirectory($path . DS . 'uploads');
-		}
-	}
+    /**
+     * Create group folder id doesnt exist
+     *
+     * @param   string  $path
+     * @return  void
+     */
+    private function createGroupFolder($path)
+    {
+        // create base group folder
+        if (!Filesystem::exists($path)) {
+            Filesystem::makeDirectory($path);
+        }
 
-	/**
-	 * Build Folder tree based on path
-	 *
-	 * @param   array    $folders
-	 * @param   integer  $parent_id
-	 * @return  array
-	 */
-	private function _buildFolderTree($folders, $parent_id = 0)
-	{
-		$branch = array();
-		foreach ($folders as $folder)
-		{
-			if ($folder['parent'] == $parent_id)
-			{
-				$children = $this->_buildFolderTree($folders, $folder['id']);
-				if ($children)
-				{
-					$folder['children'] = $children;
-				}
-				$branch[] = $folder;
-			}
-		}
-		return $branch;
-	}
+        // create uploads file
+        if (!Filesystem::exists($path . DS . 'uploads')) {
+            Filesystem::makeDirectory($path . DS . 'uploads');
+        }
+    }
 
-	/**
-	 * Build Folder tree in html ul list form
-	 *
-	 * @param   array  $tree
-	 * @return  string
-	 */
-	private function _buildFolderTreeHtml($tree)
-	{
-		$base = substr(PATH_APP, strlen(PATH_ROOT));
+    /**
+     * Build Folder tree based on path
+     *
+     * @param   array    $folders
+     * @param   integer  $parent_id
+     * @return  array
+     */
+    private function buildFolderTree($folders, $parent_id = 0)
+    {
+        $branch = array();
+        foreach ($folders as $folder) {
+            if ($folder['parent'] == $parent_id) {
+                $children = $this->buildFolderTree($folders, $folder['id']);
+                if ($children) {
+                    $folder['children'] = $children;
+                }
+                $branch[] = $folder;
+            }
+        }
+        return $branch;
+    }
 
-		$html = '<ul>';
-		foreach ($tree as $treeLevel)
-		{
-			$folder       = str_replace($base . '/site/groups/' . $this->group->get('gidNumber'), '', $treeLevel['relname']);
-			$nodeToggle   = '<span class="tree-folder-toggle-spacer"></span>';
-			$childrenHtml = '';
+    /**
+     * Build Folder tree in html ul list form
+     *
+     * @param   array  $tree
+     * @return  string
+     */
+    private function buildFolderTreeHtml($tree)
+    {
+        $base = substr(PATH_APP, strlen(PATH_ROOT));
 
-			if (isset($treeLevel['children']) && is_array($treeLevel['children']))
-			{
-				$nodeToggle   = '<a class="tree-folder-toggle" href="javascript:void(0);"></a>';
-				$childrenHtml = $this->_buildFolderTreeHtml($treeLevel['children']);
-			}
+        $groupPath = $base . '/site/groups/' . $this->group->get('gidNumber');
 
-			$html .= '<li>';
-			$html .= $nodeToggle . '<a data-folder="'.$folder.'" href="javascript:void(0);" class="tree-folder">' . $treeLevel['name'].'</a>';
-			$html .= $childrenHtml;
-			$html .= '</li>';
-		}
-		$html .= '</ul>';
+        $html = '<ul>';
+        foreach ($tree as $treeLevel) {
+            $folder       = str_replace($groupPath, '', $treeLevel['relname']);
+            $nodeToggle   = '<span class="tree-folder-toggle-spacer"></span>';
+            $childrenHtml = '';
 
-		return $html;
-	}
+            if (isset($treeLevel['children']) && is_array($treeLevel['children'])) {
+                $nodeToggle   = '<a class="tree-folder-toggle" href="javascript:void(0);"></a>';
+                $childrenHtml = $this->buildFolderTreeHtml($treeLevel['children']);
+            }
 
-	/**
-	 * Build Folder tree in select list form
-	 *
-	 * @param   array  $tree
-	 * @return  string
-	 */
-	private function _buildFolderTreeSelect($tree)
-	{
-		$html  = '<select class="" name="folder">';
-		if ($this->group->get('type') == 3)
-		{
-			$html .= '<option value="/">(root)</option>';
-		}
-		$html .= $this->_buildFolderTreeSelectOptionList($tree);
-		$html .= '</select>';
+            $html .= '<li>';
+            $html .= $nodeToggle;
+            $html .= '<a data-folder="' . $folder . '" href="javascript:void(0);" class="tree-folder">';
+            $html .= $treeLevel['name'] . '</a>';
+            $html .= $childrenHtml;
+            $html .= '</li>';
+        }
+        $html .= '</ul>';
 
-		return $html;
-	}
+        return $html;
+    }
 
-	/**
-	 * Recursive function to create options for select list
-	 *
-	 * @param   array  $tree
-	 * @return  string
-	 */
-	private function _buildFolderTreeSelectOptionList($tree)
-	{
-		$base = substr(PATH_APP, strlen(PATH_ROOT));
+    /**
+     * Build Folder tree in select list form
+     *
+     * @param   array  $tree
+     * @return  string
+     */
+    private function buildFolderTreeSelect($tree)
+    {
+        $html  = '<select class="" name="folder">';
+        if ($this->group->get('type') == 3) {
+            $html .= '<option value="/">(root)</option>';
+        }
+        $html .= $this->buildFolderTreeSelectOptionList($tree);
+        $html .= '</select>';
 
-		$options = '';
-		foreach ($tree as $treeLevel)
-		{
-			$value = str_replace($base . '/site/groups/' . $this->group->get('gidNumber'), '', $treeLevel['relname']);
-			$text  = str_repeat('&lfloor;', substr_count($value, '/'));
-			$parts = explode('/', $value);
-			$text .= ' ' . array_pop($parts);
+        return $html;
+    }
 
-			$options .= '<option value="'.$value.'">' . $text.'</option>';
-			if ( isset($treeLevel['children']) && is_array($treeLevel['children'])  )
-			{
-				$options .= $this->_buildFolderTreeSelectOptionList($treeLevel['children']);
-			}
-		}
+    /**
+     * Recursive function to create options for select list
+     *
+     * @param   array  $tree
+     * @return  string
+     */
+    private function buildFolderTreeSelectOptionList($tree)
+    {
+        $base = substr(PATH_APP, strlen(PATH_ROOT));
 
-		return $options;
-	}
+        $options = '';
+        foreach ($tree as $treeLevel) {
+            $value = str_replace($base . '/site/groups/' . $this->group->get('gidNumber'), '', $treeLevel['relname']);
+            $text  = str_repeat('&lfloor;', substr_count($value, '/'));
+            $parts = explode('/', $value);
+            $text .= ' ' . array_pop($parts);
+
+            $options .= '<option value="' . $value . '">' . $text . '</option>';
+            if (isset($treeLevel['children']) && is_array($treeLevel['children'])) {
+                $options .= $this->buildFolderTreeSelectOptionList($treeLevel['children']);
+            }
+        }
+
+        return $options;
+    }
 }

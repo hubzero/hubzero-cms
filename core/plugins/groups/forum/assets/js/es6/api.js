@@ -6,35 +6,39 @@
 
 class Api {
 
-	get(url, data = {}) {
-		const promise = this._makeApiRequest(url, data, 'GET')
+    get(url, data = {})
+    {
+        const promise = this._makeApiRequest(url, data, 'GET')
 
-		return promise
-	}
+        return promise
+    }
 
-	post(url, data) {
-		const promise = this._makeApiRequest(url, data, 'POST')
+    post(url, data)
+    {
+        const promise = this._makeApiRequest(url, data, 'POST')
 
-		return promise
-	}
+        return promise
+    }
 
-	delete(url, data) {
-		const promise = this._makeApiRequest(url, data, 'DELETE')
+    delete(url, data)
+    {
+        const promise = this._makeApiRequest(url, data, 'DELETE')
 
-		return promise
-	}
+        return promise
+    }
 
-	_makeApiRequest(url, data, method) {
-		const baseApiUrl = '/api'
+    _makeApiRequest(url, data, method)
+    {
+        const baseApiUrl = '/api'
 
-		const promise = $.ajax({
-			url: `${baseApiUrl}${url}`,
-			data,
-			method
-		})
+        const promise = $.ajax({
+            url: `${baseApiUrl}${url}`,
+            data,
+            method
+        })
 
-		return promise
-	}
+        return promise
+    }
 
 }
 
