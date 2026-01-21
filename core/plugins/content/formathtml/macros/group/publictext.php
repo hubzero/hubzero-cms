@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,85 +19,83 @@ use Plugins\Content\Formathtml\Macros\GroupMacro;
  */
 class Publictext extends GroupMacro
 {
-	/**
-	 * Allow macro in partial parsing?
-	 *
-	 * @var  bool
-	 */
-	public $allowPartial = true;
+    /**
+     * Allow macro in partial parsing?
+     *
+     * @var  bool
+     */
+    public $allowPartial = true;
 
-	/**
-	 * Tag set opened?
-	 *
-	 * @var  bool
-	 */
-	private $open = false;
+    /**
+     * Tag set opened?
+     *
+     * @var  bool
+     */
+    private $open = false;
 
-	/**
-	 * Returns description of macro, use, and accepted arguments
-	 *
-	 * @return     array
-	 */
-	public function description()
-	{
-		$txt = array();
-		$txt['html']  = '<p>Display public content. Note: Content wrapped in this macro will <strong>only</strong> be displayed to non-members of the group.</p>';
-		$txt['html'] .= '<p>Examples:</p>
-							<ul>
-								<li><code>[[Group.Publictext(start)]]Everyone can see this[[Group.Publictext(end)]]</code></li>
-							</ul>';
+    /**
+     * Returns description of macro, use, and accepted arguments
+     *
+     * @return     array
+     */
+    public function description()
+    {
+        $txt = array();
+        $txt['html']  = '<p>Display public content. Note: Content wrapped in this macro will ' .
+            '<strong>only</strong> be displayed to non-members of the group.</p>';
+        $txt['html'] .= '<p>Examples:</p>
+            <ul>
+                <li><code>[[Group.Publictext(start)]]Everyone can see this' .
+                '[[Group.Publictext(end)]]</code></li>
+            </ul>';
 
-		return $txt['html'];
-	}
+        return $txt['html'];
+    }
 
-	/**
-	 * Generate macro output
-	 *
-	 * @return  string
-	 */
-	public function render()
-	{
-		// check if we can render
-		if (!parent::canRender())
-		{
-			return \Lang::txt('[This macro is designed for Groups only]');
-		}
+    /**
+     * Generate macro output
+     *
+     * @return  string
+     */
+    public function render()
+    {
+        // check if we can render
+        if (!parent::canRender()) {
+            return \Lang::txt('[This macro is designed for Groups only]');
+        }
 
-		// get args
-		$arg = strtolower($this->getArgument(0));
+        // get args
+        $arg = strtolower($this->_getArgument(0));
 
-		if (!$arg && !$this->open)
-		{
-			return;
-		}
+        if (!$arg && !$this->open) {
+            return;
+        }
 
-		if (in_array($arg, array('start', 'open', 'begin')))
-		{
-			$this->open = true;
+        if (in_array($arg, array('start', 'open', 'begin'))) {
+            $this->open = true;
 
-			return '<public>';
-		}
+            return '<public>';
+        }
 
-		$this->open = false;
+        $this->open = false;
 
-		return '</public>';
-	}
+        return '</public>';
+    }
 
-	/**
-	 * Post process text
-	 *
-	 * @param   string  $text
-	 * @return  string
-	 */
-	public function postProcess($text)
-	{
-		if (!\User::isGuest() && in_array(\User::get('id'), $this->group->get('members')))
-		{
-			$text = preg_replace('/<public>(.*?)<\/public>/iusm', '', $text);
-		}
+    /**
+     * Post process text
+     *
+     * @param   string  $text
+     * @return  string
+     */
+    public function postProcess($text)
+    {
+        if (!\User::isGuest() && in_array(\User::get('id'), $this->group->get('members'))) {
+            $text = preg_replace('/<public>(.*?)<\/public>/iusm', '', $text);
+        }
 
-		$text = str_replace(array('<public>', '</public>'), '', $text);
+        $text = str_replace(array('<public>', '</public>'), '', $text);
 
-		return $text;
-	}
+        return $text;
+    }
 }

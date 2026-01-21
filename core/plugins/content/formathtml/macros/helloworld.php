@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,26 +15,26 @@ use Plugins\Content\Formathtml\Macro;
  */
 class HelloWorld extends Macro
 {
-	/**
-	 * Returns description of macro, use, and accepted arguments
-	 *
-	 * @return  array
-	 */
-	public function description()
-	{
-		$txt = array();
-		$txt['wiki'] = 'Outputs "Hello world"';
-		$txt['html'] = '<p>Outputs "Hello world"</p>';
-		return $txt['html'];
-	}
+    /**
+     * Returns description of macro, use, and accepted arguments
+     *
+     * @return  array
+     */
+    public function description()
+    {
+        $txt = array();
+        $txt['wiki'] = 'Outputs "Hello world"';
+        $txt['html'] = '<p>Outputs "Hello world"</p>';
+        return $txt['html'];
+    }
 
-	/**
-	 * Generate macro output
-	 *
-	 * @return  string
-	 */
-	public function render()
-	{
-		return 'Hello World, args = ' . $this->args;
-	}
+    /**
+     * Generate macro output
+     *
+     * @return  string
+     */
+    public function render()
+    {
+        return 'Hello World, args = ' . $this->args;
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,158 +19,157 @@ use Plugins\Content\Formathtml\Macros\GroupMacro;
  */
 class Events extends GroupMacro
 {
-	/**
-	 * Allow macro in partial parsing?
-	 *
-	 * @var string
-	 */
-	public $allowPartial = true;
+    /**
+     * Allow macro in partial parsing?
+     *
+     * @var string
+     */
+    public $allowPartial = true;
 
-	/**
-	 * Returns description of macro, use, and accepted arguments
-	 *
-	 * @return  array
-	 */
-	public function description()
-	{
-		$txt = array();
-		$txt['html']  = '<p>Displays group events.</p>';
-		$txt['html'] .= '<p>Examples:</p>
+    /**
+     * Returns description of macro, use, and accepted arguments
+     *
+     * @return  array
+     */
+    public function description()
+    {
+        $txt = array();
+        $txt['html']  = '<p>Displays group events.</p>';
+        $txt['html'] .= '<p>Examples:</p>
 							<ul>
 								<li><code>[[Group.Events()]]</code></li>
 								<li><code>[[Group.Events(3)]]</code> - Displays the next 3 group events</li>
 							</ul>';
 
-		return $txt['html'];
-	}
+        return $txt['html'];
+    }
 
-	/**
-	 * Generate macro output
-	 *
-	 * @return  string
-	 */
-	public function render()
-	{
-		// Check if we can render
-		if (!parent::canRender())
-		{
-			return \Lang::txt('[This macro is designed for Groups only]');
-		}
+    /**
+     * Generate macro output
+     *
+     * @return  string
+     */
+    public function render()
+    {
+        // Check if we can render
+        if (!parent::canRender()) {
+            return \Lang::txt('[This macro is designed for Groups only]');
+        }
 
-		// Get args
-		$args = $this->getArgs();
+        // Get args
+        $args = $this->getArgs();
 
-		// Array of filters
-		$filters = array(
-			'limit' => (isset($args[0]) && is_numeric($args[0])) ? $args[0] : 3
-		);
+        // Array of filters
+        $filters = array(
+            'limit' => (isset($args[0]) && is_numeric($args[0])) ? $args[0] : 3
+        );
 
-		// Get group events
-		$events =  $this->getGroupEvents($this->group, $filters);
+        // Get group events
+        $events =  $this->getGroupEvents($this->group, $filters);
 
-		// Create the html container
-		$html  = '<div class="upcoming_events">';
+        // Create the html container
+        $html  = '<div class="upcoming_events">';
 
-		// Render the events
-		$html .= $this->renderEvents($this->group, $events);
+        // Render the events
+        $html .= $this->renderEvents($this->group, $events);
 
-		// Close the container
-		$html .= '</div>';
+        // Close the container
+        $html .= '</div>';
 
-		// Return rendered events
-		return $html;
-	}
+        // Return rendered events
+        return $html;
+    }
 
-	/**
-	 * Get a list of events for a group
-	 *
-	 * @param   object  $group
-	 * @param   array   $filters
-	 * @return  array
-	 */
-	private function getGroupEvents($group, $filters = array())
-	{
-		// Instantiate database
-		$database = \App::get('db');
+    /**
+     * Get a list of events for a group
+     *
+     * @param   object  $group
+     * @param   array   $filters
+     * @return  array
+     */
+    private function getGroupEvents($group, $filters = array())
+    {
+        // Instantiate database
+        $database = \App::get('db');
 
-		// Build query
-		$sql = "SELECT * FROM `#__events`
+        // Build query
+        $sql = "SELECT * FROM `#__events`
 				WHERE publish_up >= UTC_TIMESTAMP()
 				AND scope=" . $database->quote('group') . "
 				AND scope_id=" . $database->Quote($group->get('gidNumber')) . "
 				AND state=1";
 
-		// Add ordering
-		$sql .= " ORDER BY publish_up ASC";
+        // Add ordering
+        $sql .= " ORDER BY publish_up ASC";
 
-		// Do we have a limit set
-		if (isset($filters['limit']))
-		{
-			$sql .= " LIMIT " . $filters['limit'];
-		}
+        // Do we have a limit set
+        if (isset($filters['limit'])) {
+            $sql .= " LIMIT " . $filters['limit'];
+        }
 
-		// Return result
-		$database->setQuery($sql);
-		return $database->loadObjectList();
-	}
+        // Return result
+        $database->setQuery($sql);
+        return $database->loadObjectList();
+    }
 
-	/**
-	 * Render the events
-	 *
-	 * @param  array  $group   Array of groups
-	 * @param  array  $events  Array of group events
-	 * @return string
-	 */
-	private function renderEvents($group, $events)
-	{
-		$content = '';
-		if (count($events) > 0)
-		{
-			foreach ($events as $event)
-			{
-				// Build link
-				$link = \Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=details&event_id=' . $event->id);
+    /**
+     * Render the events
+     *
+     * @param  array  $group   Array of groups
+     * @param  array  $events  Array of group events
+     * @return string
+     */
+    private function renderEvents($group, $events)
+    {
+        $content = '';
+        if (count($events) > 0) {
+            foreach ($events as $event) {
+                // Build link
+                $link = \Route::url(
+                    'index.php?option=com_groups&cn=' . $group->get('cn') .
+                    '&active=calendar&action=details&event_id=' . $event->id
+                );
 
-				// Build date
-				$date = '';
-				$publishUp   = $event->publish_up;
-				$publishDown = $event->publish_down;
+                // Build date
+                $date = '';
+                $publishUp   = $event->publish_up;
+                $publishDown = $event->publish_down;
 
-				if (date("z", strtotime($publishUp)) == date("z", strtotime($publishDown)))
-				{
-					$date  = \Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
-					$date .= ' &mdash; ' . \Date::of($publishDown)->toLocal('g:i a');
-				}
-				else if (isset($event->publish_down) && $event->publish_down && $event->publish_down != '0000-00-00 00:00:00')
-				{
-					$date  = \Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
-					$date .= ' &mdash; ' . \Date::of($publishDown)->toLocal('m/d/Y @ g:i a');
-				}
-				else
-				{
-					$date  = \Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
-				}
+                if (date("z", strtotime($publishUp)) == date("z", strtotime($publishDown))) {
+                    $date  = \Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
+                    $date .= ' &mdash; ' . \Date::of($publishDown)->toLocal('g:i a');
+                } elseif (
+                    isset($event->publish_down) && $event->publish_down
+                    && $event->publish_down != '0000-00-00 00:00:00'
+                ) {
+                    $date  = \Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
+                    $date .= ' &mdash; ' . \Date::of($publishDown)->toLocal('m/d/Y @ g:i a');
+                } else {
+                    $date  = \Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
+                }
 
-				// Shorten content
-				$details = nl2br($event->content);
-				if (strlen($details) > 150)
-				{
-					$details = \Hubzero\Utility\Str::truncate($details, 150, array('html' => true));
-				}
+                // Shorten content
+                $details = nl2br($event->content);
+                if (strlen($details) > 150) {
+                    $details = \Hubzero\Utility\Str::truncate($details, 150, array('html' => true));
+                }
 
-				// Create list
-				$content .= '<div class="event">';
-				$content .= '<strong><a class=" title" href="' . $link . '">' . stripslashes($event->title) . '</a></strong>';
-				$content .= '<br /><span class="date">' . $date . '</span>';
-				$content .= '<br /><span class="details">' . $details . '</span>';
-				$content .= '</div><br />';
-			}
-		}
-		else
-		{
-			$content .= '<p>Currently there are no upcoming group events. Add an event by <a href="' . \Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=add') . '">clicking here.</a></p>';
-		}
+                // Create list
+                $content .= '<div class="event">';
+                $content .= '<strong><a class=" title" href="' . $link . '">' .
+                    stripslashes($event->title) . '</a></strong>';
+                $content .= '<br /><span class="date">' . $date . '</span>';
+                $content .= '<br /><span class="details">' . $details . '</span>';
+                $content .= '</div><br />';
+            }
+        } else {
+            $addUrl = \Route::url(
+                'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=add'
+            );
+            $content .= '<p>Currently there are no upcoming group events. Add an event by ' .
+                '<a href="' . $addUrl . '">clicking here.</a></p>';
+        }
 
-		return $content;
-	}
+        return $content;
+    }
 }
