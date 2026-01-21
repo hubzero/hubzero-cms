@@ -30,16 +30,20 @@ addFunc(Array, 'push8', function (num) {
 
 addFunc(Array, 'push16', function (num) {
     "use strict";
-    this.push((num >> 8) & 0xFF,
-              num & 0xFF);
+    this.push(
+        (num >> 8) & 0xFF,
+        num & 0xFF
+    );
 });
 
 addFunc(Array, 'push32', function (num) {
     "use strict";
-    this.push((num >> 24) & 0xFF,
-              (num >> 16) & 0xFF,
-              (num >>  8) & 0xFF,
-              num & 0xFF);
+    this.push(
+        (num >> 24) & 0xFF,
+        (num >> 16) & 0xFF,
+        (num >>  8) & 0xFF,
+        num & 0xFF
+    );
 });
 
 // IE does not support map (even in IE9)
@@ -146,9 +150,11 @@ addFunc(Function, 'bind', function (oThis) {
             fToBind = this,
             fNOP = function () {},
             fBound = function () {
-                return fToBind.apply(this instanceof fNOP && oThis ? this
+                return fToBind.apply(
+                    this instanceof fNOP && oThis ? this
                                                                    : oThis,
-                                     aArgs.concat(Array.prototype.slice.call(arguments)));
+                    aArgs.concat(Array.prototype.slice.call(arguments))
+                );
             };
 
     fNOP.prototype = this.prototype;
@@ -211,13 +217,17 @@ Util.init_logging = function (level) {
     /* jshint -W086 */
     switch (level) {
         case 'debug':
-            Util.Debug = function (msg) { console.log(msg); };
+            Util.Debug = function (msg) {
+                console.log(msg); };
         case 'info':
-            Util.Info  = function (msg) { console.log(msg); };
+            Util.Info  = function (msg) {
+                console.log(msg); };
         case 'warn':
-            Util.Warn  = function (msg) { console.warn(msg); };
+            Util.Warn  = function (msg) {
+                console.warn(msg); };
         case 'error':
-            Util.Error = function (msg) { console.error(msg); };
+            Util.Error = function (msg) {
+                console.error(msg); };
         case 'none':
             break;
         default:
@@ -279,7 +289,8 @@ Util.make_property = function (proto, name, mode, type) {
             }
         });
     } else if (type === 'int') {
-        setter = make_setter(function (val) { return parseInt(val, 10); });
+        setter = make_setter(function (val) {
+            return parseInt(val, 10); });
     } else if (type === 'float') {
         setter = make_setter(parseFloat);
     } else if (type === 'str') {
@@ -336,15 +347,17 @@ Util.set_defaults = function (obj, conf, defaults) {
     var conf_keys = Object.keys(conf);
     var keys_obj = {};
     var i;
-    for (i = 0; i < defaults_keys.length; i++) { keys_obj[defaults_keys[i]] = 1; }
-    for (i = 0; i < conf_keys.length; i++) { keys_obj[conf_keys[i]] = 1; }
+    for (i = 0; i < defaults_keys.length; i++) {
+        keys_obj[defaults_keys[i]] = 1; }
+    for (i = 0; i < conf_keys.length; i++) {
+        keys_obj[conf_keys[i]] = 1; }
     var keys = Object.keys(keys_obj);
 
     for (i = 0; i < keys.length; i++) {
         var setter = obj['_raw_set_' + keys[i]];
         if (!setter) {
-          Util.Warn('Invalid property ' + keys[i]);
-          continue;
+            Util.Warn('Invalid property ' + keys[i]);
+            continue;
         }
 
         if (keys[i] in conf) {
@@ -438,16 +451,19 @@ Util.load_scripts = function (files) {
 //  Thanks to Brian Huisman AKA GreyWyvern!
 Util.getPosition = (function () {
     "use strict";
-    function getStyle(obj, styleProp) {
+    function getStyle(obj, styleProp)
+    {
         var y;
         if (obj.currentStyle) {
             y = obj.currentStyle[styleProp];
-        } else if (window.getComputedStyle)
+        } else if (window.getComputedStyle) {
             y = window.getComputedStyle(obj, null)[styleProp];
+        }
         return y;
     }
 
-    function scrollDist() {
+    function scrollDist()
+    {
         var myScrollTop = 0, myScrollLeft = 0;
         var html = document.getElementsByTagName('html')[0];
 
@@ -558,11 +574,13 @@ Util.removeEvent = function (obj, evType, fn) {
 
 Util.stopEvent = function (e) {
     "use strict";
-    if (e.stopPropagation) { e.stopPropagation(); }
-    else                   { e.cancelBubble = true; }
+    if (e.stopPropagation) {
+        e.stopPropagation(); } else {
+        e.cancelBubble = true; }
 
-    if (e.preventDefault)  { e.preventDefault(); }
-    else                   { e.returnValue = false; }
+        if (e.preventDefault) {
+            e.preventDefault(); } else {
+                e.returnValue = false; }
 };
 
 

@@ -47,7 +47,8 @@ if (window.WebSocket && !window.WEB_SOCKET_FORCE_FLASH) {
 }
 
 
-function Websock() {
+function Websock()
+{
     "use strict";
 
     this._websocket = null;  // WebSocket object
@@ -130,14 +131,16 @@ function Websock() {
         },
 
         rQshiftStr: function (len) {
-            if (typeof(len) === 'undefined') { len = this.rQlen(); }
+            if (typeof(len) === 'undefined') {
+                len = this.rQlen(); }
             var arr = this._rQ.slice(this._rQi, this._rQi + len);
             this._rQi += len;
             return String.fromCharCode.apply(null, arr);
         },
 
         rQshiftBytes: function (len) {
-            if (typeof(len) === 'undefined') { len = this.rQlen(); }
+            if (typeof(len) === 'undefined') {
+                len = this.rQlen(); }
             this._rQi += len;
             return this._rQ.slice(this._rQi - len, this._rQi);
         },
@@ -189,8 +192,8 @@ function Websock() {
         },
 
         send: function (arr) {
-           this._sQ = this._sQ.concat(arr);
-           return this.flush();
+            this._sQ = this._sQ.concat(arr);
+            return this.flush();
         },
 
         send_string: function (str) {
@@ -311,7 +314,8 @@ function Websock() {
                     this._websocket.close();
                 }
 
-                this._websocket.onmessage = function (e) { return; };
+                this._websocket.onmessage = function (e) {
+                    return; };
             }
         },
 

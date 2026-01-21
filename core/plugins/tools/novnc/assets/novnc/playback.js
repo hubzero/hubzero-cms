@@ -26,8 +26,9 @@ next_iteration = function () {
     } else {
         rfb.disconnect();
     }
-    
-    if (test_state !== 'running') { return; }
+
+    if (test_state !== 'running') {
+        return; }
 
     iteration += 1;
     if (iteration > iterations) {
@@ -45,7 +46,8 @@ next_iteration = function () {
 
 queue_next_packet = function () {
     var frame, foffset, toffset, delay;
-    if (test_state !== 'running') { return; }
+    if (test_state !== 'running') {
+        return; }
 
     frame = VNC_frame_data[frame_idx];
     while ((frame_idx < frame_length) && (frame.charAt(0) === "}")) {

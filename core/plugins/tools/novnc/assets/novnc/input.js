@@ -27,7 +27,8 @@ var Keyboard, Mouse;
         });
 
         // create the keyboard handler
-        this._handler = new KeyEventDecoder(kbdUtil.ModifierSync(),
+        this._handler = new KeyEventDecoder(
+            kbdUtil.ModifierSync(),
             VerifyCharModifier( /* jshint newcap: false */
                 TrackKeyState(
                     EscapeModifiers(this._handleRfbEvent.bind(this))
@@ -56,7 +57,8 @@ var Keyboard, Mouse;
         },
 
         _handleKeyDown: function (e) {
-            if (!this._focused) { return true; }
+            if (!this._focused) {
+                return true; }
 
             if (this._handler.keydown(e)) {
                 // Suppress bubbling/default actions
@@ -70,7 +72,8 @@ var Keyboard, Mouse;
         },
 
         _handleKeyPress: function (e) {
-            if (!this._focused) { return true; }
+            if (!this._focused) {
+                return true; }
 
             if (this._handler.keypress(e)) {
                 // Suppress bubbling/default actions
@@ -84,7 +87,8 @@ var Keyboard, Mouse;
         },
 
         _handleKeyUp: function (e) {
-            if (!this._focused) { return true; }
+            if (!this._focused) {
+                return true; }
 
             if (this._handler.keyup(e)) {
                 // Suppress bubbling/default actions
@@ -198,7 +202,8 @@ var Keyboard, Mouse;
         },
 
         _handleMouseButton: function (e, down) {
-            if (!this._focused) { return true; }
+            if (!this._focused) {
+                return true; }
 
             if (this._notify) {
                 this._notify(e);
@@ -262,14 +267,16 @@ var Keyboard, Mouse;
         },
 
         _handleMouseUp: function (e) {
-            if (!this._mouseCaptured) { return; }
+            if (!this._mouseCaptured) {
+                return; }
 
             this._handleMouseButton(e, 0);
             this._releaseMouse();
         },
 
         _handleMouseWheel: function (e) {
-            if (!this._focused) { return true; }
+            if (!this._focused) {
+                return true; }
 
             if (this._notify) {
                 this._notify(e);
@@ -294,7 +301,8 @@ var Keyboard, Mouse;
         },
 
         _handleMouseMove: function (e) {
-            if (! this._focused) { return true; }
+            if (! this._focused) {
+                return true; }
 
             if (this._notify) {
                 this._notify(e);
@@ -310,7 +318,8 @@ var Keyboard, Mouse;
         },
 
         _handleMouseDisable: function (e) {
-            if (!this._focused) { return true; }
+            if (!this._focused) {
+                return true; }
 
             var evt = (e ? e : window.event);
             var pos = Util.getEventPosition(e, this._target, this._scale);
@@ -342,8 +351,11 @@ var Keyboard, Mouse;
                 Util.addEvent(window, 'mouseup', this._eventHandlers.mouseup);
                 Util.addEvent(c, 'mouseup', this._eventHandlers.mouseup);
                 Util.addEvent(c, 'mousemove', this._eventHandlers.mousemove);
-                Util.addEvent(c, (Util.Engine.gecko) ? 'DOMMouseScroll' : 'mousewheel',
-                              this._eventHandlers.mousewheel);
+                Util.addEvent(
+                    c,
+                    (Util.Engine.gecko) ? 'DOMMouseScroll' : 'mousewheel',
+                    this._eventHandlers.mousewheel
+                );
             //}
 
             /* Work around right and middle click browser behaviors */
@@ -364,8 +376,11 @@ var Keyboard, Mouse;
                 Util.removeEvent(window, 'mouseup', this._eventHandlers.mouseup);
                 Util.removeEvent(c, 'mouseup', this._eventHandlers.mouseup);
                 Util.removeEvent(c, 'mousemove', this._eventHandlers.mousemove);
-                Util.removeEvent(c, (Util.Engine.gecko) ? 'DOMMouseScroll' : 'mousewheel',
-                                 this._eventHandlers.mousewheel);
+                Util.removeEvent(
+                    c,
+                    (Util.Engine.gecko) ? 'DOMMouseScroll' : 'mousewheel',
+                    this._eventHandlers.mousewheel
+                );
             //}
 
             /* Work around right and middle click browser behaviors */

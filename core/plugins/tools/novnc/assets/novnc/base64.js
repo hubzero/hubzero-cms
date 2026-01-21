@@ -70,7 +70,8 @@ var Base64 = {
         var leftdata = 0; // bits decoded, but yet to be appended
         var data_length = data.indexOf('=') - offset;
 
-        if (data_length < 0) { data_length = data.length - offset; }
+        if (data_length < 0) {
+            data_length = data.length - offset; }
 
         /* Every four characters is 3 resulting numbers */
         result_length = (data_length >> 2) * 3 + Math.floor((data_length % 4) / 1.5);
@@ -85,7 +86,7 @@ var Base64 = {
                 console.error("Illegal character code " + data.charCodeAt(i) + " at position " + i);
                 continue;
             }
-          
+
             // Collect data into leftdata, update bitcount
             leftdata = (leftdata << 6) | c;
             leftbits += 6;
@@ -97,7 +98,7 @@ var Base64 = {
                 if (!padding) {
                     result[idx++] = (leftdata >> leftbits) & 0xff;
                 }
-                leftdata &= (1 << leftbits) - 1;
+                leftdata &  = (1 << leftbits) - 1;
             }
         }
 

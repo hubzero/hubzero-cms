@@ -51,8 +51,10 @@ WebUtil.init_logging = function (level) {
 
 WebUtil.dirObj = function (obj, depth, parent) {
     "use strict";
-    if (! depth) { depth = 2; }
-    if (! parent) { parent = ""; }
+    if (! depth) {
+        depth = 2; }
+    if (! parent) {
+        parent = ""; }
 
     // Print the properties of the passed-in object
     var msg = "";
@@ -82,7 +84,8 @@ WebUtil.getQueryVar = function (name, defVal) {
     "use strict";
     var re = new RegExp('.*[?&]' + name + '=([^&#]*)'),
         match = document.location.href.match(re);
-    if (typeof defVal === 'undefined') { defVal = null; }
+    if (typeof defVal === 'undefined') {
+        defVal = null; }
     if (match) {
         return decodeURIComponent(match[1]);
     } else {
@@ -123,8 +126,10 @@ WebUtil.readCookie = function (name, defaultValue) {
 
     for (var i = 0; i < ca.length; i += 1) {
         var c = ca[i];
-        while (c.charAt(0) === ' ') { c = c.substring(1, c.length); }
-        if (c.indexOf(nameEQ) === 0) { return c.substring(nameEQ.length, c.length); }
+        while (c.charAt(0) === ' ') {
+            c = c.substring(1, c.length); }
+        if (c.indexOf(nameEQ) === 0) {
+            return c.substring(nameEQ.length, c.length); }
     }
     return (typeof defaultValue !== 'undefined') ? defaultValue : null;
 };

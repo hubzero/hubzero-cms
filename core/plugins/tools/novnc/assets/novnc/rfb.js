@@ -162,12 +162,12 @@ var RFB;
         }
 
         this._keyboard = new Keyboard({target: this._focusContainer,
-                                       onKeyPress: this._handleKeyPress.bind(this)});
+            onKeyPress: this._handleKeyPress.bind(this)});
 
         this._mouse = new Mouse({target: this._target,
-                                 onMouseButton: this._handleMouseButton.bind(this),
-                                 onMouseMove: this._handleMouseMove.bind(this),
-                                 notify: this._keyboard.sync.bind(this._keyboard)});
+            onMouseButton: this._handleMouseButton.bind(this),
+            onMouseMove: this._handleMouseMove.bind(this),
+            notify: this._keyboard.sync.bind(this._keyboard)});
 
         this._sock = new Websock();
         this._sock.on('message', this._handle_message.bind(this));
@@ -248,7 +248,8 @@ var RFB;
         },
 
         sendCtrlAltDel: function () {
-            if (this._rfb_state !== 'normal' || this._view_only) { return false; }
+            if (this._rfb_state !== 'normal' || this._view_only) {
+                return false; }
             Util.Info("Sending Ctrl-Alt-Del");
 
             var arr = [];
@@ -262,7 +263,8 @@ var RFB;
         },
 
         xvpOp: function (ver, op) {
-            if (this._rfb_xvp_ver < ver) { return false; }
+            if (this._rfb_xvp_ver < ver) {
+                return false; }
             Util.Info("Sending XVP operation " + op + " (version " + ver + ")");
             this._sock.send_string("\xFA\x00" + String.fromCharCode(ver) + String.fromCharCode(op));
             return true;
@@ -283,7 +285,8 @@ var RFB;
         // Send a key press. If 'down' is not specified then send a down key
         // followed by an up key.
         sendKey: function (code, down) {
-            if (this._rfb_state !== "normal" || this._view_only) { return false; }
+            if (this._rfb_state !== "normal" || this._view_only) {
+                return false; }
             var arr = [];
             if (typeof down !== 'undefined') {
                 Util.Info("Sending key code (" + (down ? "down" : "up") + "): " + code);
@@ -297,16 +300,20 @@ var RFB;
         },
 
         clipboardPasteFrom: function (text) {
-            if (this._rfb_state !== 'normal') { return; }
+            if (this._rfb_state !== 'normal') {
+                return; }
             this._sock.send(RFB.messages.clientCutText(text));
         },
 
         //HUBzero addition for resizing
-        requestResize: function(w, h) {
-            if (this._rfb_state !== "normal") { return; }
+        requestResize: function (w, h) {
+            if (this._rfb_state !== "normal") {
+                return; }
             //Util.Debug(">> requestResize: " + w + "," + h);
-            if (w > 4096 || w < 0) { return; }
-            if (h > 4096 || h < 0) { return; }
+            if (w > 4096 || w < 0) {
+                return; }
+            if (h > 4096 || h < 0) {
+                return; }
             this._sock.send(RFB.messages.requestFBSize(w, h));
             //Util.Debug("<< requestResize");
         },
@@ -406,8 +413,7 @@ var RFB;
              * asynchronously cause a connection so make sure we are closed.
              */
             if (state in {'disconnected': 1, 'loaded': 1, 'connect': 1,
-                          'disconnect': 1, 'failed': 1, 'fatal': 1}) {
-
+                'disconnect': 1, 'failed': 1, 'fatal': 1}) {
                 if (this._sendTimer) {
                     clearInterval(this._sendTimer);
                     this._sendTimer = null;
@@ -552,15 +558,16 @@ var RFB;
         },
 
         _handleKeyPress: function (keysym, down) {
-            if (this._view_only) { return; } // View only, skip keyboard, events
+            if (this._view_only) {
+                return; } // View only, skip keyboard, events
             this._sock.send(RFB.messages.keyEvent(keysym, down));
         },
 
         _handleMouseButton: function (x, y, down, bmask) {
             if (down) {
-                this._mouse_buttonMask |= bmask;
+                this._mouse_buttonMask |  = bmask;
             } else {
-                this._mouse_buttonMask ^= bmask;
+                this._mouse_buttonMask ^  = bmask;
             }
 
             if (this._viewportDrag) {
@@ -575,10 +582,12 @@ var RFB;
                 }
             }
 
-            if (this._view_only) { return; } // View only, skip mouse events
+            if (this._view_only) {
+                return; } // View only, skip mouse events
 
             this._mouse_arr = this._mouse_arr.concat(
-                    RFB.messages.pointerEvent(this._display.absX(x), this._display.absY(y), this._mouse_buttonMask));
+                RFB.messages.pointerEvent(this._display.absX(x), this._display.absY(y), this._mouse_buttonMask)
+            );
             this._sock.send(this._mouse_arr);
             this._mouse_arr = [];
         },
@@ -595,10 +604,12 @@ var RFB;
                 return;
             }
 
-            if (this._view_only) { return; } // View only, skip mouse events
+            if (this._view_only) {
+                return; } // View only, skip mouse events
 
             this._mouse_arr = this._mouse_arr.concat(
-                    RFB.messages.pointerEvent(this._display.absX(x), this._display.absY(y), this._mouse_buttonMask));
+                RFB.messages.pointerEvent(this._display.absX(x), this._display.absY(y), this._mouse_buttonMask)
+            );
 
             this._checkEvents();
         },
@@ -661,7 +672,8 @@ var RFB;
             if (this._rfb_version >= 3.7) {
                 // Server sends supported list, client decides
                 var num_types = this._sock.rQshift8();
-                if (this._sock.rQwait("security type", num_types, 1)) { return false; }
+                if (this._sock.rQwait("security type", num_types, 1)) {
+                    return false; }
 
                 if (num_types === 0) {
                     var strlen = this._sock.rQshift32();
@@ -685,7 +697,8 @@ var RFB;
                 this._sock.send([this._rfb_auth_scheme]);
             } else {
                 // Server decides
-                if (this._sock.rQwait("security scheme", 4)) { return false; }
+                if (this._sock.rQwait("security scheme", 4)) {
+                    return false; }
                 this._rfb_auth_scheme = this._sock.rQshift32();
             }
 
@@ -722,7 +735,8 @@ var RFB;
                 this._onPasswordRequired(this);
             }
 
-            if (this._sock.rQwait("auth challenge", 16)) { return false; }
+            if (this._sock.rQwait("auth challenge", 16)) {
+                return false; }
 
             var challenge = this._sock.rQshiftBytes(16);
             var response = RFB.genDES(this._rfb_password, challenge);
@@ -759,9 +773,11 @@ var RFB;
 
         _negotiate_tight_auth: function () {
             if (!this._rfb_tightvnc) {  // first pass, do the tunnel negotiation
-                if (this._sock.rQwait("num tunnels", 4)) { return false; }
+                if (this._sock.rQwait("num tunnels", 4)) {
+                    return false; }
                 var numTunnels = this._sock.rQshift32();
-                if (numTunnels > 0 && this._sock.rQwait("tunnel capabilities", 16 * numTunnels, 4)) { return false; }
+                if (numTunnels > 0 && this._sock.rQwait("tunnel capabilities", 16 * numTunnels, 4)) {
+                    return false; }
 
                 this._rfb_tightvnc = true;
 
@@ -772,9 +788,11 @@ var RFB;
             }
 
             // second pass, do the sub-auth negotiation
-            if (this._sock.rQwait("sub auth count", 4)) { return false; }
+            if (this._sock.rQwait("sub auth count", 4)) {
+                return false; }
             var subAuthCount = this._sock.rQshift32();
-            if (this._sock.rQwait("sub auth capabilities", 16 * subAuthCount, 4)) { return false; }
+            if (this._sock.rQwait("sub auth capabilities", 16 * subAuthCount, 4)) {
+                return false; }
 
             var clientSupportedTypes = {
                 'STDVNOAUTH__': 1,
@@ -812,7 +830,8 @@ var RFB;
         _negotiate_authentication: function () {
             switch (this._rfb_auth_scheme) {
                 case 0:  // connection failed
-                    if (this._sock.rQwait("auth reason", 4)) { return false; }
+                    if (this._sock.rQwait("auth reason", 4)) {
+                        return false; }
                     var strlen = this._sock.rQshift32();
                     var reason = this._sock.rQshiftStr(strlen);
                     return this._fail("Auth failure: " + reason);
@@ -840,7 +859,8 @@ var RFB;
         },
 
         _handle_security_result: function () {
-            if (this._sock.rQwait('VNC auth response ', 4)) { return false; }
+            if (this._sock.rQwait('VNC auth response ', 4)) {
+                return false; }
             switch (this._sock.rQshift32()) {
                 case 0:  // OK
                     this._updateState('ClientInitialisation', 'Authentication OK');
@@ -848,7 +868,8 @@ var RFB;
                 case 1:  // failed
                     if (this._rfb_version >= 3.8) {
                         var length = this._sock.rQshift32();
-                        if (this._sock.rQwait("SecurityResult reason", length, 8)) { return false; }
+                        if (this._sock.rQwait("SecurityResult reason", length, 8)) {
+                            return false; }
                         var reason = this._sock.rQshiftStr(length);
                         return this._fail(reason);
                     } else {
@@ -861,7 +882,8 @@ var RFB;
         },
 
         _negotiate_server_init: function () {
-            if (this._sock.rQwait("server initialization", 24)) { return false; }
+            if (this._sock.rQwait("server initialization", 24)) {
+                return false; }
 
             /* Screen size */
             this._fb_width  = this._sock.rQshift16();
@@ -886,11 +908,13 @@ var RFB;
 
             /* Connection name/title */
             var name_length = this._sock.rQshift32();
-            if (this._sock.rQwait('server init name', name_length, 24)) { return false; }
+            if (this._sock.rQwait('server init name', name_length, 24)) {
+                return false; }
             this._fb_name = Util.decodeUTF8(this._sock.rQshiftStr(name_length));
 
             if (this._rfb_tightvnc) {
-                if (this._sock.rQwait('TightVNC extended server init header', 8, 24 + name_length)) { return false; }
+                if (this._sock.rQwait('TightVNC extended server init header', 8, 24 + name_length)) {
+                    return false; }
                 // In TightVNC mode, ServerInit message is extended
                 var numServerMessages = this._sock.rQshift16();
                 var numClientMessages = this._sock.rQshift16();
@@ -898,7 +922,8 @@ var RFB;
                 this._sock.rQskipBytes(2);  // padding
 
                 var totalMessagesLength = (numServerMessages + numClientMessages + numEncodings) * 16;
-                if (this._sock.rQwait('TightVNC extended server init header', totalMessagesLength, 32 + name_length)) { return false; }
+                if (this._sock.rQwait('TightVNC extended server init header', totalMessagesLength, 32 + name_length)) {
+                    return false; }
 
                 var i;
                 for (i = 0; i < numServerMessages; i++) {
@@ -963,10 +988,15 @@ var RFB;
 
             var response = RFB.messages.pixelFormat(this._fb_Bpp, this._fb_depth, this._true_color);
             response = response.concat(
-                            RFB.messages.clientEncodings(this._encodings, this._local_cursor, this._true_color));
+                RFB.messages.clientEncodings(this._encodings, this._local_cursor, this._true_color)
+            );
             response = response.concat(
-                            RFB.messages.fbUpdateRequests(this._display.getCleanDirtyReset(),
-                                                          this._fb_width, this._fb_height));
+                RFB.messages.fbUpdateRequests(
+                    this._display.getCleanDirtyReset(),
+                    this._fb_width,
+                    this._fb_height
+                )
+            );
 
             this._timing.fbu_rt_start = (new Date()).getTime();
             this._timing.pixels = 0;
@@ -1011,7 +1041,8 @@ var RFB;
 
             var first_colour = this._sock.rQshift16();
             var num_colours = this._sock.rQshift16();
-            if (this._sock.rQwait('SetColorMapEntries', num_colours * 6, 6)) { return false; }
+            if (this._sock.rQwait('SetColorMapEntries', num_colours * 6, 6)) {
+                return false; }
 
             for (var c = 0; c < num_colours; c++) {
                 var red = parseInt(this._sock.rQshift16() / 256, 10);
@@ -1027,10 +1058,12 @@ var RFB;
 
         _handle_server_cut_text: function () {
             Util.Debug("ServerCutText");
-            if (this._sock.rQwait("ServerCutText header", 7, 1)) { return false; }
+            if (this._sock.rQwait("ServerCutText header", 7, 1)) {
+                return false; }
             this._sock.rQskipBytes(3);  // Padding
             var length = this._sock.rQshift32();
-            if (this._sock.rQwait("ServerCutText", length, 8)) { return false; }
+            if (this._sock.rQwait("ServerCutText", length, 8)) {
+                return false; }
 
             var text = this._sock.rQshiftStr(length);
             this._onClipboard(this, text);
@@ -1039,7 +1072,8 @@ var RFB;
         },
 
         _handle_xvp_msg: function () {
-            if (this._sock.rQwait("XVP version and message", 3, 1)) { return false; }
+            if (this._sock.rQwait("XVP version and message", 3, 1)) {
+                return false; }
             this._sock.rQskip8();  // Padding
             var xvp_ver = this._sock.rQshift8();
             var xvp_msg = this._sock.rQshift8();
@@ -1074,8 +1108,11 @@ var RFB;
                 case 0:  // FramebufferUpdate
                     var ret = this._framebufferUpdate();
                     if (ret) {
-                        this._sock.send(RFB.messages.fbUpdateRequests(this._display.getCleanDirtyReset(),
-                                                                      this._fb_width, this._fb_height));
+                        this._sock.send(RFB.messages.fbUpdateRequests(
+                            this._display.getCleanDirtyReset(),
+                            this._fb_width,
+                            this._fb_height
+                        ));
                     }
                     return ret;
 
@@ -1098,8 +1135,7 @@ var RFB;
                     this._sock.rQshiftBytes(3); // Padding
                     var strLen = this._sock.rQshift32();
                     var url = this._sock.rQshiftStr(strLen);
-                    if (url.substr(0, 4) == 'url ')
-                    {
+                    if (url.substr(0, 4) == 'url ') {
                         url = url.substr(4);
                     }
 
@@ -1146,7 +1182,8 @@ var RFB;
             var now;
 
             if (this._FBU.rects === 0) {
-                if (this._sock.rQwait("FBU header", 3, 1)) { return false; }
+                if (this._sock.rQwait("FBU header", 3, 1)) {
+                    return false; }
                 this._sock.rQskip8();  // Padding
                 this._FBU.rects = this._sock.rQshift16();
                 this._FBU.bytes = 0;
@@ -1158,11 +1195,14 @@ var RFB;
             }
 
             while (this._FBU.rects > 0) {
-                if (this._rfb_state !== "normal") { return false; }
+                if (this._rfb_state !== "normal") {
+                    return false; }
 
-                if (this._sock.rQwait("FBU", this._FBU.bytes)) { return false; }
+                if (this._sock.rQwait("FBU", this._FBU.bytes)) {
+                    return false; }
                 if (this._FBU.bytes === 0) {
-                    if (this._sock.rQwait("rect header", 12)) { return false; }
+                    if (this._sock.rQwait("rect header", 12)) {
+                        return false; }
                     /* New FramebufferUpdate */
 
                     var hdr = this._sock.rQshiftBytes(12);
@@ -1173,11 +1213,13 @@ var RFB;
                     this._FBU.encoding = parseInt((hdr[8] << 24) + (hdr[9] << 16) +
                                                   (hdr[10] << 8) + hdr[11], 10);
 
-                    this._onFBUReceive(this,
+                    this._onFBUReceive(
+                        this,
                         {'x': this._FBU.x, 'y': this._FBU.y,
-                         'width': this._FBU.width, 'height': this._FBU.height,
-                         'encoding': this._FBU.encoding,
-                         'encodingName': this._encNames[this._FBU.encoding]});
+                            'width': this._FBU.width, 'height': this._FBU.height,
+                            'encoding': this._FBU.encoding,
+                            'encodingName': this._encNames[this._FBU.encoding]}
+                    );
 
                     if (!this._encNames[this._FBU.encoding]) {
                         this._fail("Disconnected: unsupported encoding " +
@@ -1224,14 +1266,17 @@ var RFB;
                     }
                 }
 
-                if (!ret) { return ret; }  // need more data
+                if (!ret) {
+                    return ret; }  // need more data
             }
 
-            this._onFBUComplete(this,
-                    {'x': this._FBU.x, 'y': this._FBU.y,
-                     'width': this._FBU.width, 'height': this._FBU.height,
-                     'encoding': this._FBU.encoding,
-                     'encodingName': this._encNames[this._FBU.encoding]});
+            this._onFBUComplete(
+                this,
+                {'x': this._FBU.x, 'y': this._FBU.y,
+                    'width': this._FBU.width, 'height': this._FBU.height,
+                    'encoding': this._FBU.encoding,
+                    'encodingName': this._encNames[this._FBU.encoding]}
+            );
 
             return true;  // We finished this FBU
         },
@@ -1275,9 +1320,12 @@ var RFB;
         }
     };
 
-    RFB.prototype.get_display = function () { return this._display; };
-    RFB.prototype.get_keyboard = function () { return this._keyboard; };
-    RFB.prototype.get_mouse = function () { return this._mouse; };
+    RFB.prototype.get_display = function () {
+        return this._display; };
+    RFB.prototype.get_keyboard = function () {
+        return this._keyboard; };
+    RFB.prototype.get_mouse = function () {
+        return this._mouse; };
 
     // Class Methods
     RFB.messages = {
@@ -1385,8 +1433,10 @@ var RFB;
         },
 
         fbUpdateRequest: function (incremental, x, y, w, h) {
-            if (typeof(x) === "undefined") { x = 0; }
-            if (typeof(y) === "undefined") { y = 0; }
+            if (typeof(x) === "undefined") {
+                x = 0; }
+            if (typeof(y) === "undefined") {
+                y = 0; }
 
             var arr = [3];  // msg-type
             arr.push8(incremental);
@@ -1399,14 +1449,14 @@ var RFB;
         },
 
         //HUBzero addition
-        requestFBSize: function(w, h) {
+        requestFBSize: function (w, h) {
             //Util.Debug(">> requestFBSize");
             var arr, i, n;
             arr = [0x20];     // msg-type
             arr.push8(42);
-            arr.push8((w>>8) & 0x0ff);
+            arr.push8((w >> 8) & 0x0ff);
             arr.push8(w & 0x0ff);
-            arr.push8((h>>8) & 0x0ff);
+            arr.push8((h >> 8) & 0x0ff);
             arr.push8(h & 0x0ff);
             //Util.Debug("<< requestFBSize:" + arr);
             return arr;
@@ -1432,13 +1482,21 @@ var RFB;
             }
 
             this._FBU.bytes = this._FBU.width * this._fb_Bpp;  // at least a line
-            if (this._sock.rQwait("RAW", this._FBU.bytes)) { return false; }
+            if (this._sock.rQwait("RAW", this._FBU.bytes)) {
+                return false; }
             var cur_y = this._FBU.y + (this._FBU.height - this._FBU.lines);
-            var curr_height = Math.min(this._FBU.lines,
-                                       Math.floor(this._sock.rQlen() / (this._FBU.width * this._fb_Bpp)));
-            this._display.blitImage(this._FBU.x, cur_y, this._FBU.width,
-                                    curr_height, this._sock.get_rQ(),
-                                    this._sock.get_rQi());
+            var curr_height = Math.min(
+                this._FBU.lines,
+                Math.floor(this._sock.rQlen() / (this._FBU.width * this._fb_Bpp))
+            );
+            this._display.blitImage(
+                this._FBU.x,
+                cur_y,
+                this._FBU.width,
+                curr_height,
+                this._sock.get_rQ(),
+                this._sock.get_rQi()
+            );
             this._sock.rQskipBytes(this._FBU.width * curr_height * this._fb_Bpp);
             this._FBU.lines -= curr_height;
 
@@ -1454,7 +1512,8 @@ var RFB;
 
         COPYRECT: function () {
             this._FBU.bytes = 4;
-            if (this._sock.rQwait("COPYRECT", 4)) { return false; }
+            if (this._sock.rQwait("COPYRECT", 4)) {
+                return false; }
             this._display.renderQ_push({
                 'type': 'copy',
                 'old_x': this._sock.rQshift16(),
@@ -1473,7 +1532,8 @@ var RFB;
             var color;
             if (this._FBU.subrects === 0) {
                 this._FBU.bytes = 4 + this._fb_Bpp;
-                if (this._sock.rQwait("RRE", 4 + this._fb_Bpp)) { return false; }
+                if (this._sock.rQwait("RRE", 4 + this._fb_Bpp)) {
+                    return false; }
                 this._FBU.subrects = this._sock.rQshift32();
                 color = this._sock.rQshiftBytes(this._fb_Bpp);  // Background
                 this._display.fillRect(this._FBU.x, this._FBU.y, this._FBU.width, this._FBU.height, color);
@@ -1513,7 +1573,8 @@ var RFB;
 
             while (this._FBU.tiles > 0) {
                 this._FBU.bytes = 1;
-                if (this._sock.rQwait("HEXTILE subencoding", this._FBU.bytes)) { return false; }
+                if (this._sock.rQwait("HEXTILE subencoding", this._FBU.bytes)) {
+                    return false; }
                 var subencoding = rQ[rQi];  // Peek
                 if (subencoding > 30) {  // Raw
                     this._fail("Disconnected: illegal hextile subencoding " + subencoding);
@@ -1541,7 +1602,8 @@ var RFB;
                     }
                     if (subencoding & 0x08) {  // AnySubrects
                         this._FBU.bytes++;  // Since we aren't shifting it off
-                        if (this._sock.rQwait("hextile subrects header", this._FBU.bytes)) { return false; }
+                        if (this._sock.rQwait("hextile subrects header", this._FBU.bytes)) {
+                            return false; }
                         subrects = rQ[rQi + this._FBU.bytes - 1];  // Peek
                         if (subencoding & 0x10) {  // SubrectsColoured
                             this._FBU.bytes += subrects * (this._fb_Bpp + 2);
@@ -1551,7 +1613,8 @@ var RFB;
                     }
                 }
 
-                if (this._sock.rQwait("hextile", this._FBU.bytes)) { return false; }
+                if (this._sock.rQwait("hextile", this._FBU.bytes)) {
+                    return false; }
 
                 // We know the encoding and have a whole tile
                 this._FBU.subencoding = rQ[rQi];
@@ -1637,13 +1700,16 @@ var RFB;
             }
 
             this._FBU.bytes = 1;  // compression-control byte
-            if (this._sock.rQwait("TIGHT compression-control", this._FBU.bytes)) { return false; }
+            if (this._sock.rQwait("TIGHT compression-control", this._FBU.bytes)) {
+                return false; }
 
             var checksum = function (data) {
                 var sum = 0;
                 for (var i = 0; i < data.length; i++) {
                     sum += data[i];
-                    if (sum > 65536) sum -= 65536;
+                    if (sum > 65536) {
+                        sum -= 65536;
+                    }
                 }
                 return sum;
             };
@@ -1718,7 +1784,8 @@ var RFB;
                 var numColors = rQ[rQi + 2] + 1;
                 var paletteSize = numColors * this._fb_depth;
                 this._FBU.bytes += paletteSize;
-                if (this._sock.rQwait("TIGHT palette " + cmode, this._FBU.bytes)) { return false; }
+                if (this._sock.rQwait("TIGHT palette " + cmode, this._FBU.bytes)) {
+                    return false; }
 
                 var bpp = (numColors <= 2) ? 1 : 8;
                 var rowSize = Math.floor((this._FBU.width * bpp + 7) / 8);
@@ -1727,12 +1794,15 @@ var RFB;
                     raw = true;
                     clength = [0, rowSize * this._FBU.height];
                 } else {
-                    clength = RFB.encodingHandlers.getTightCLength(this._sock.rQslice(3 + paletteSize,
-                                                                                      3 + paletteSize + 3));
+                    clength = RFB.encodingHandlers.getTightCLength(this._sock.rQslice(
+                        3 + paletteSize,
+                        3 + paletteSize + 3
+                    ));
                 }
 
                 this._FBU.bytes += clength[0] + clength[1];
-                if (this._sock.rQwait("TIGHT " + cmode, this._FBU.bytes)) { return false; }
+                if (this._sock.rQwait("TIGHT " + cmode, this._FBU.bytes)) {
+                    return false; }
 
                 // Shift ctl, filter id, num colors, palette entries, and clength off
                 this._sock.rQskipBytes(3);
@@ -1770,7 +1840,8 @@ var RFB;
                     clength = RFB.encodingHandlers.getTightCLength(this._sock.rQslice(1, 4));
                 }
                 this._FBU.bytes = 1 + clength[0] + clength[1];
-                if (this._sock.rQwait("TIGHT " + cmode, this._FBU.bytes)) { return false; }
+                if (this._sock.rQwait("TIGHT " + cmode, this._FBU.bytes)) {
+                    return false; }
 
                 // Shift ctl, clength off
                 this._sock.rQshiftBytes(1 + clength[0]);
@@ -1802,12 +1873,19 @@ var RFB;
             ctl = ctl >> 4;
             streamId = ctl & 0x3;
 
-            if (ctl === 0x08)       cmode = "fill";
-            else if (ctl === 0x09)  cmode = "jpeg";
-            else if (ctl === 0x0A)  cmode = "png";
-            else if (ctl & 0x04)    cmode = "filter";
-            else if (ctl < 0x04)    cmode = "copy";
-            else return this._fail("Illegal tight compression received, ctl: " + ctl);
+            if (ctl === 0x08) {
+                cmode = "fill";
+            } else if (ctl === 0x09) {
+                cmode = "jpeg";
+            } else if (ctl === 0x0A) {
+                cmode = "png";
+            } else if (ctl & 0x04) {
+                cmode = "filter";
+            } else if (ctl < 0x04) {
+                cmode = "copy";
+            } else {
+                return this._fail("Illegal tight compression received, ctl: " + ctl);
+            }
 
             if (isTightPNG && (cmode === "filter" || cmode === "copy")) {
                 return this._fail("filter/copy received in tightPNG mode");
@@ -1831,7 +1909,8 @@ var RFB;
                     break;
             }
 
-            if (this._sock.rQwait("TIGHT " + cmode, this._FBU.bytes)) { return false; }
+            if (this._sock.rQwait("TIGHT " + cmode, this._FBU.bytes)) {
+                return false; }
 
             // Determine FBU.bytes
             switch (cmode) {
@@ -1851,7 +1930,8 @@ var RFB;
                 case "jpeg":
                     clength = RFB.encodingHandlers.getTightCLength(this._sock.rQslice(1, 4));
                     this._FBU.bytes = 1 + clength[0] + clength[1];  // ctl + clength size + jpeg-data
-                    if (this._sock.rQwait("TIGHT " + cmode, this._FBU.bytes)) { return false; }
+                    if (this._sock.rQwait("TIGHT " + cmode, this._FBU.bytes)) {
+                        return false; }
 
                     // We have everything, render it
                     this._sock.rQskipBytes(1 + clength[0]);  // shift off clt + compact length
@@ -1869,7 +1949,8 @@ var RFB;
                 case "filter":
                     var filterId = rQ[rQi + 1];
                     if (filterId === 1) {
-                        if (!handlePalette()) { return false; }
+                        if (!handlePalette()) {
+                            return false; }
                     } else {
                         // Filter 0, Copy could be valid here, but servers don't send it as an explicit filter
                         // Filter 2, Gradient is valid but not use if jpeg is enabled
@@ -1878,7 +1959,8 @@ var RFB;
                     }
                     break;
                 case "copy":
-                    if (!handleCopy()) { return false; }
+                    if (!handleCopy()) {
+                        return false; }
                     break;
             }
 
@@ -1889,8 +1971,10 @@ var RFB;
             return true;
         },
 
-        TIGHT: function () { return this._encHandlers.display_tight(false); },
-        TIGHT_PNG: function () { return this._encHandlers.display_tight(true); },
+        TIGHT: function () {
+            return this._encHandlers.display_tight(false); },
+        TIGHT_PNG: function () {
+            return this._encHandlers.display_tight(true); },
 
         last_rect: function () {
             this._FBU.rects = 0;
@@ -1923,11 +2007,17 @@ var RFB;
             var masklength = Math.floor((w + 7) / 8) * h;
 
             this._FBU.bytes = pixelslength + masklength;
-            if (this._sock.rQwait("cursor encoding", this._FBU.bytes)) { return false; }
+            if (this._sock.rQwait("cursor encoding", this._FBU.bytes)) {
+                return false; }
 
-            this._display.changeCursor(this._sock.rQshiftBytes(pixelslength),
-                                       this._sock.rQshiftBytes(masklength),
-                                       x, y, w, h);
+            this._display.changeCursor(
+                this._sock.rQshiftBytes(pixelslength),
+                this._sock.rQshiftBytes(masklength),
+                x,
+                y,
+                w,
+                h
+            );
 
             this._FBU.bytes = 0;
             this._FBU.rects--;

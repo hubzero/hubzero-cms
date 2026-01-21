@@ -1,7 +1,8 @@
-var kbdUtil = (function() {
+var kbdUtil = (function () {
     "use strict";
 
-    function substituteCodepoint(cp) {
+    function substituteCodepoint(cp)
+    {
         // Any Unicode code points which do not have corresponding keysym entries
         // can be swapped out for another code point by adding them to this table
         var substitutions = {
@@ -17,18 +18,22 @@ var kbdUtil = (function() {
         return sub ? sub : cp;
     }
 
-    function isMac() {
+    function isMac()
+    {
         return navigator && !!(/mac/i).exec(navigator.platform);
     }
-    function isWindows() {
+    function isWindows()
+    {
         return navigator && !!(/win/i).exec(navigator.platform);
     }
-    function isLinux() {
+    function isLinux()
+    {
         return navigator && !!(/linux/i).exec(navigator.platform);
     }
 
     // Return true if a modifier which is not the specified char modifier (and is not shift) is down
-    function hasShortcutModifier(charModifier, currentModifiers) {
+    function hasShortcutModifier(charModifier, currentModifiers)
+    {
         var mods = {};
         for (var key in currentModifiers) {
             if (parseInt(key) !== XK_Shift_L) {
@@ -44,15 +49,16 @@ var kbdUtil = (function() {
         }
         if (hasCharModifier(charModifier, mods)) {
             return sum > charModifier.length;
-        }
-        else {
+        } else {
             return sum > 0;
         }
     }
 
     // Return true if the specified char modifier is currently down
-    function hasCharModifier(charModifier, currentModifiers) {
-        if (charModifier.length === 0) { return false; }
+    function hasCharModifier(charModifier, currentModifiers)
+    {
+        if (charModifier.length === 0) {
+            return false; }
 
         for (var i = 0; i < charModifier.length; ++i) {
             if (!currentModifiers[charModifier[i]]) {
@@ -64,21 +70,19 @@ var kbdUtil = (function() {
 
     // Helper object tracking modifier key state
     // and generates fake key events to compensate if it gets out of sync
-    function ModifierSync(charModifier) {
+    function ModifierSync(charModifier)
+    {
         if (!charModifier) {
             if (isMac()) {
                 // on Mac, Option (AKA Alt) is used as a char modifier
                 charModifier = [XK_Alt_L];
-            }
-            else if (isWindows()) {
+            } else if (isWindows()) {
                 // on Windows, Ctrl+Alt is used as a char modifier
                 charModifier = [XK_Alt_L, XK_Control_L];
-            }
-            else if (isLinux()) {
+            } else if (isLinux()) {
                 // on Linux, ISO Level 3 Shift (AltGr) is used as a char modifier
                 charModifier = [XK_ISO_Level3_Shift];
-            }
-            else {
+            } else {
                 charModifier = [];
             }
         }
@@ -90,9 +94,11 @@ var kbdUtil = (function() {
         state[XK_Shift_L] = false;
         state[XK_Meta_L] = false;
 
-        function sync(evt, keysym) {
+        function sync(evt, keysym)
+        {
             var result = [];
-            function syncKey(keysym) {
+            function syncKey(keysym)
+            {
                 return {keysym: keysyms.lookup(keysym), type: state[keysym] ? 'keydown' : 'keyup'};
             }
 
@@ -123,7 +129,8 @@ var kbdUtil = (function() {
             }
             return result;
         }
-        function syncKeyEvent(evt, down) {
+        function syncKeyEvent(evt, down)
+        {
             var obj = getKeysym(evt);
             var keysym = obj ? obj.keysym : null;
 
@@ -136,43 +143,46 @@ var kbdUtil = (function() {
 
         return {
             // sync on the appropriate keyboard event
-            keydown: function(evt) { return syncKeyEvent(evt, true);},
-            keyup: function(evt) { return syncKeyEvent(evt, false);},
+            keydown: function (evt) {
+                return syncKeyEvent(evt, true);},
+            keyup: function (evt) {
+                return syncKeyEvent(evt, false);},
             // Call this with a non-keyboard event (such as mouse events) to use its modifier state to synchronize anyway
-            syncAny: function(evt) { return sync(evt);},
+            syncAny: function (evt) {
+                return sync(evt);},
 
             // is a shortcut modifier down?
-            hasShortcutModifier: function() { return hasShortcutModifier(charModifier, state); },
+            hasShortcutModifier: function () {
+                return hasShortcutModifier(charModifier, state); },
             // if a char modifier is down, return the keys it consists of, otherwise return null
-            activeCharModifier: function() { return hasCharModifier(charModifier, state) ? charModifier : null; }
+            activeCharModifier: function () {
+                return hasCharModifier(charModifier, state) ? charModifier : null; }
         };
     }
 
     // Get a key ID from a keyboard event
     // May be a string or an integer depending on the available properties
-    function getKey(evt){
+    function getKey(evt)
+    {
         if ('keyCode' in evt && 'key' in evt) {
             return evt.key + ':' + evt.keyCode;
-        }
-        else if ('keyCode' in evt) {
+        } else if ('keyCode' in evt) {
             return evt.keyCode;
-        }
-        else {
+        } else {
             return evt.key;
         }
     }
 
     // Get the most reliable keysym value we can get from a key event
     // if char/charCode is available, prefer those, otherwise fall back to key/keyCode/which
-    function getKeysym(evt){
+    function getKeysym(evt)
+    {
         var codepoint;
         if (evt.char && evt.char.length === 1) {
             codepoint = evt.char.charCodeAt();
-        }
-        else if (evt.charCode) {
+        } else if (evt.charCode) {
             codepoint = evt.charCode;
-        }
-        else if (evt.keyCode && evt.type === 'keypress') {
+        } else if (evt.keyCode && evt.type === 'keypress') {
             // IE10 stores the char code as keyCode, and has no other useful properties
             codepoint = evt.keyCode;
         }
@@ -197,7 +207,8 @@ var kbdUtil = (function() {
 
     // Given a keycode, try to predict which keysym it might be.
     // If the keycode is unknown, null is returned.
-    function keysymFromKeyCode(keycode, shiftPressed) {
+    function keysymFromKeyCode(keycode, shiftPressed)
+    {
         if (typeof(keycode) !== 'number') {
             return null;
         }
@@ -213,7 +224,7 @@ var kbdUtil = (function() {
             return XK_KP_0 + (keycode - 0x60); // numpad 0-9
         }
 
-        switch(keycode) {
+        switch (keycode) {
             case 0x20: return XK_space;
             case 0x6a: return XK_KP_Multiply;
             case 0x6b: return XK_KP_Add;
@@ -232,16 +243,17 @@ var kbdUtil = (function() {
 
     // if the key is a known non-character key (any key which doesn't generate character data)
     // return its keysym value. Otherwise return null
-    function nonCharacterKey(evt) {
+    function nonCharacterKey(evt)
+    {
         // evt.key not implemented yet
-        if (!evt.keyCode) { return null; }
+        if (!evt.keyCode) {
+            return null; }
         var keycode = evt.keyCode;
 
         if (keycode >= 0x70 && keycode <= 0x87) {
             return XK_F1 + keycode - 0x70; // F1-F24
         }
         switch (keycode) {
-
             case 8 : return XK_BackSpace;
             case 13 : return XK_Return;
 
@@ -292,14 +304,17 @@ var kbdUtil = (function() {
 // - marks each event with an 'escape' property if a modifier was down which should be "escaped"
 // - generates a "stall" event in cases where it might be necessary to wait and see if a keypress event follows a keydown
 // This information is collected into an object which is passed to the next() function. (one call per event)
-function KeyEventDecoder(modifierState, next) {
+function KeyEventDecoder(modifierState, next)
+{
     "use strict";
-    function sendAll(evts) {
+    function sendAll(evts)
+    {
         for (var i = 0; i < evts.length; ++i) {
             next(evts[i]);
         }
     }
-    function process(evt, type) {
+    function process(evt, type)
+    {
         var result = {type: type};
         var keyId = kbdUtil.getKey(evt);
         if (keyId) {
@@ -355,21 +370,22 @@ function KeyEventDecoder(modifierState, next) {
     }
 
     return {
-        keydown: function(evt) {
+        keydown: function (evt) {
             sendAll(modifierState.keydown(evt));
             return process(evt, 'keydown');
         },
-        keypress: function(evt) {
+        keypress: function (evt) {
             return process(evt, 'keypress');
         },
-        keyup: function(evt) {
+        keyup: function (evt) {
             sendAll(modifierState.keyup(evt));
             return process(evt, 'keyup');
         },
-        syncModifiers: function(evt) {
+        syncModifiers: function (evt) {
             sendAll(modifierState.syncAny(evt));
         },
-        releaseAll: function() { next({type: 'releaseall'}); }
+        releaseAll: function () {
+            next({type: 'releaseall'}); }
     };
 }
 
@@ -379,11 +395,13 @@ function KeyEventDecoder(modifierState, next) {
 // so when used with the '2' key, Ctrl-Alt counts as a char modifier (and should be escaped), but when used with 'D', it does not.
 // The only way we can distinguish these cases is to wait and see if a keypress event arrives
 // When we receive a "stall" event, wait a few ms before processing the next keydown. If a keypress has also arrived, merge the two
-function VerifyCharModifier(next) {
+function VerifyCharModifier(next)
+{
     "use strict";
     var queue = [];
     var timer = null;
-    function process() {
+    function process()
+    {
         if (timer) {
             return;
         }
@@ -398,24 +416,24 @@ function VerifyCharModifier(next) {
             var cur = queue[0];
             queue = queue.splice(1);
             switch (cur.type) {
-            case 'stall':
-                // insert a delay before processing available events.
-                /* jshint loopfunc: true */
-                timer = setTimeout(delayProcess, 5);
-                /* jshint loopfunc: false */
+                case 'stall':
+                    // insert a delay before processing available events.
+                    /* jshint loopfunc: true */
+                    timer = setTimeout(delayProcess, 5);
+                    /* jshint loopfunc: false */
                 return;
-            case 'keydown':
-                // is the next element a keypress? Then we should merge the two
-                if (queue.length !== 0 && queue[0].type === 'keypress') {
-                    // Firefox sends keypress even when no char is generated.
-                    // so, if keypress keysym is the same as we'd have guessed from keydown,
-                    // the modifier didn't have any effect, and should not be escaped
-                    if (queue[0].escape && (!cur.keysym || cur.keysym.keysym !== queue[0].keysym.keysym)) {
-                        cur.escape = queue[0].escape;
+                case 'keydown':
+                    // is the next element a keypress? Then we should merge the two
+                    if (queue.length !== 0 && queue[0].type === 'keypress') {
+                        // Firefox sends keypress even when no char is generated.
+                        // so, if keypress keysym is the same as we'd have guessed from keydown,
+                        // the modifier didn't have any effect, and should not be escaped
+                        if (queue[0].escape && (!cur.keysym || cur.keysym.keysym !== queue[0].keysym.keysym)) {
+                            cur.escape = queue[0].escape;
+                        }
+                        cur.keysym = queue[0].keysym;
+                        queue = queue.splice(1);
                     }
-                    cur.keysym = queue[0].keysym;
-                    queue = queue.splice(1);
-                }
                 break;
             }
 
@@ -425,7 +443,7 @@ function VerifyCharModifier(next) {
             }
         }
     }
-    return function(evt) {
+    return function (evt) {
         queue.push(evt);
         process();
     };
@@ -436,93 +454,97 @@ function VerifyCharModifier(next) {
 // in some cases, a single key may produce multiple keysyms, so the corresponding keyup event must release all of these chars
 // key repeat events should be merged into a single entry.
 // Because we can't always identify which entry a keydown or keyup event corresponds to, we sometimes have to guess
-function TrackKeyState(next) {
+function TrackKeyState(next)
+{
     "use strict";
     var state = [];
 
     return function (evt) {
-        var last = state.length !== 0 ? state[state.length-1] : null;
+        var last = state.length !== 0 ? state[state.length - 1] : null;
 
         switch (evt.type) {
-        case 'keydown':
-            // insert a new entry if last seen key was different.
-            if (!last || !evt.keyId || last.keyId !== evt.keyId) {
-                last = {keyId: evt.keyId, keysyms: {}};
-                state.push(last);
-            }
-            if (evt.keysym) {
-                // make sure last event contains this keysym (a single "logical" keyevent
-                // can cause multiple key events to be sent to the VNC server)
-                last.keysyms[evt.keysym.keysym] = evt.keysym;
-                last.ignoreKeyPress = true;
-                next(evt);
-            }
-            break;
-        case 'keypress':
-            if (!last) {
-                last = {keyId: evt.keyId, keysyms: {}};
-                state.push(last);
-            }
-            if (!evt.keysym) {
-                console.log('keypress with no keysym:', evt);
-            }
-
-            // If we didn't expect a keypress, and already sent a keydown to the VNC server
-            // based on the keydown, make sure to skip this event.
-            if (evt.keysym && !last.ignoreKeyPress) {
-                last.keysyms[evt.keysym.keysym] = evt.keysym;
-                evt.type = 'keydown';
-                next(evt);
-            }
-            break;
-        case 'keyup':
-            if (state.length === 0) {
-                return;
-            }
-            var idx = null;
-            // do we have a matching key tracked as being down?
-            for (var i = 0; i !== state.length; ++i) {
-                if (state[i].keyId === evt.keyId) {
-                    idx = i;
-                    break;
+            case 'keydown':
+                // insert a new entry if last seen key was different.
+                if (!last || !evt.keyId || last.keyId !== evt.keyId) {
+                    last = {keyId: evt.keyId, keysyms: {}};
+                    state.push(last);
                 }
-            }
-            // if we couldn't find a match (it happens), assume it was the last key pressed
-            if (idx === null) {
-                idx = state.length - 1;
-            }
-
-            var item = state.splice(idx, 1)[0];
-            // for each keysym tracked by this key entry, clone the current event and override the keysym
-            var clone = (function(){
-                function Clone(){}
-                return function (obj) { Clone.prototype=obj; return new Clone(); };
-            }());
-            for (var key in item.keysyms) {
-                var out = clone(evt);
-                out.keysym = item.keysyms[key];
-                next(out);
-            }
-            break;
-        case 'releaseall':
-            /* jshint shadow: true */
-            for (var i = 0; i < state.length; ++i) {
-                for (var key in state[i].keysyms) {
-                    var keysym = state[i].keysyms[key];
-                    next({keyId: 0, keysym: keysym, type: 'keyup'});
+                if (evt.keysym) {
+                    // make sure last event contains this keysym (a single "logical" keyevent
+                    // can cause multiple key events to be sent to the VNC server)
+                    last.keysyms[evt.keysym.keysym] = evt.keysym;
+                    last.ignoreKeyPress = true;
+                    next(evt);
                 }
-            }
-            /* jshint shadow: false */
-            state = [];
+            break;
+            case 'keypress':
+                if (!last) {
+                    last = {keyId: evt.keyId, keysyms: {}};
+                    state.push(last);
+                }
+                if (!evt.keysym) {
+                    console.log('keypress with no keysym:', evt);
+                }
+
+                // If we didn't expect a keypress, and already sent a keydown to the VNC server
+                // based on the keydown, make sure to skip this event.
+                if (evt.keysym && !last.ignoreKeyPress) {
+                    last.keysyms[evt.keysym.keysym] = evt.keysym;
+                    evt.type = 'keydown';
+                    next(evt);
+                }
+            break;
+            case 'keyup':
+                if (state.length === 0) {
+                    return;
+                }
+                var idx = null;
+                // do we have a matching key tracked as being down?
+                for (var i = 0; i !== state.length; ++i) {
+                    if (state[i].keyId === evt.keyId) {
+                        idx = i;
+                        break;
+                    }
+                }
+                // if we couldn't find a match (it happens), assume it was the last key pressed
+                if (idx === null) {
+                    idx = state.length - 1;
+                }
+
+                var item = state.splice(idx, 1)[0];
+                // for each keysym tracked by this key entry, clone the current event and override the keysym
+                var clone = (function () {
+                    function Clone()
+                    {}
+                    return function (obj) {
+                        Clone.prototype = obj; return new Clone(); };
+                }());
+                for (var key in item.keysyms) {
+                    var out = clone(evt);
+                    out.keysym = item.keysyms[key];
+                    next(out);
+                }
+            break;
+            case 'releaseall':
+                /* jshint shadow: true */
+                for (var i = 0; i < state.length; ++i) {
+                    for (var key in state[i].keysyms) {
+                        var keysym = state[i].keysyms[key];
+                        next({keyId: 0, keysym: keysym, type: 'keyup'});
+                    }
+                }
+                /* jshint shadow: false */
+                state = [];
         }
     };
 }
 
 // Handles "escaping" of modifiers: if a char modifier is used to produce a keysym (such as AltGr-2 to generate an @),
 // then the modifier must be "undone" before sending the @, and "redone" afterwards.
-function EscapeModifiers(next) {
+function EscapeModifiers(next)
+{
     "use strict";
-    return function(evt) {
+    return function (evt) {
         if (evt.type !== 'keydown' || evt.escape === undefined) {
             next(evt);
             return;

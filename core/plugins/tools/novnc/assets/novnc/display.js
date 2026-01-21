@@ -61,10 +61,14 @@ var Display;
         }
 
         Util.Debug("User Agent: " + navigator.userAgent);
-        if (Util.Engine.gecko) { Util.Debug("Browser: gecko " + Util.Engine.gecko); }
-        if (Util.Engine.webkit) { Util.Debug("Browser: webkit " + Util.Engine.webkit); }
-        if (Util.Engine.trident) { Util.Debug("Browser: trident " + Util.Engine.trident); }
-        if (Util.Engine.presto) { Util.Debug("Browser: presto " + Util.Engine.presto); }
+        if (Util.Engine.gecko) {
+            Util.Debug("Browser: gecko " + Util.Engine.gecko); }
+        if (Util.Engine.webkit) {
+            Util.Debug("Browser: webkit " + Util.Engine.webkit); }
+        if (Util.Engine.trident) {
+            Util.Debug("Browser: trident " + Util.Engine.trident); }
+        if (Util.Engine.presto) {
+            Util.Debug("Browser: presto " + Util.Engine.presto); }
 
         this.clear();
 
@@ -123,14 +127,20 @@ var Display;
                 height = this._fb_height;
             }
 
-            if (typeof(deltaX) === "undefined") { deltaX = 0; }
-            if (typeof(deltaY) === "undefined") { deltaY = 0; }
-            if (typeof(width) === "undefined") { width = vp.w; }
-            if (typeof(height) === "undefined") { height = vp.h; }
+            if (typeof(deltaX) === "undefined") {
+                deltaX = 0; }
+            if (typeof(deltaY) === "undefined") {
+                deltaY = 0; }
+            if (typeof(width) === "undefined") {
+                width = vp.w; }
+            if (typeof(height) === "undefined") {
+                height = vp.h; }
 
             // Size change
-            if (width > this._fb_width) { width = this._fb_width; }
-            if (height > this._fb_height) { height = this._fb_height; }
+            if (width > this._fb_width) {
+                width = this._fb_width; }
+            if (height > this._fb_height) {
+                height = this._fb_height; }
 
             if (vp.w !== width || vp.h !== height) {
                 // Change width
@@ -249,7 +259,7 @@ var Display;
             var cr = this._cleanRect;
 
             var cleanBox = { 'x': cr.x1, 'y': cr.y1,
-                             'w': cr.x2 - cr.x1 + 1, 'h': cr.y2 - cr.y1 + 1 };
+                'w': cr.x2 - cr.x1 + 1, 'h': cr.y2 - cr.y1 + 1 };
 
             var dirtyBoxes = [];
             if (cr.x1 >= cr.x2 || cr.y1 >= cr.y2) {
@@ -263,27 +273,27 @@ var Display;
                 if (vp.x < cr.x1) {
                     // left side dirty region
                     dirtyBoxes.push({'x': vp.x, 'y': vp.y,
-                                     'w': cr.x1 - vp.x + 1, 'h': vp.h});
+                        'w': cr.x1 - vp.x + 1, 'h': vp.h});
                 }
                 if (vx2 > cr.x2) {
                     // right side dirty region
                     dirtyBoxes.push({'x': cr.x2 + 1, 'y': vp.y,
-                                     'w': vx2 - cr.x2, 'h': vp.h});
+                        'w': vx2 - cr.x2, 'h': vp.h});
                 }
-                if(vp.y < cr.y1) {
+                if (vp.y < cr.y1) {
                     // top/middle dirty region
                     dirtyBoxes.push({'x': cr.x1, 'y': vp.y,
-                                     'w': cr.x2 - cr.x1 + 1, 'h': cr.y1 - vp.y});
+                        'w': cr.x2 - cr.x1 + 1, 'h': cr.y1 - vp.y});
                 }
                 if (vy2 > cr.y2) {
                     // bottom/middle dirty region
                     dirtyBoxes.push({'x': cr.x1, 'y': cr.y2 + 1,
-                                     'w': cr.x2 - cr.x1 + 1, 'h': vy2 - cr.y2});
+                        'w': cr.x2 - cr.x1 + 1, 'h': vy2 - cr.y2});
                 }
             }
 
             this._cleanRect = {'x1': vp.x, 'y1': vp.y,
-                               'x2': vp.x + vp.w - 1, 'y2': vp.y + vp.h - 1};
+                'x2': vp.x + vp.w - 1, 'y2': vp.y + vp.h - 1};
 
             return {'cleanBox': cleanBox, 'dirtyBoxes': dirtyBoxes};
         },
@@ -406,8 +416,11 @@ var Display;
         // draw the current tile to the screen
         finishTile: function () {
             if (this._prefer_js) {
-                this._drawCtx.putImageData(this._tile, this._tile_x - this._viewportLoc.x,
-                                           this._tile_y - this._viewportLoc.y);
+                this._drawCtx.putImageData(
+                    this._tile,
+                    this._tile_x - this._viewportLoc.x,
+                    this._tile_y - this._viewportLoc.y
+                );
             }
             // else: No-op -- already done by setSubTile
         },
@@ -653,10 +666,12 @@ var Display;
             this.push(num & 0xFF, (num >> 8) & 0xFF);
         };
         cur.push32le = function (num) {
-            this.push(num & 0xFF,
-                      (num >> 8) & 0xFF,
-                      (num >> 16) & 0xFF,
-                      (num >> 24) & 0xFF);
+            this.push(
+                num & 0xFF,
+                (num >> 8) & 0xFF,
+                (num >> 16) & 0xFF,
+                (num >> 24) & 0xFF
+            );
         };
 
         var IHDRsz = 40;

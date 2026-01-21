@@ -16,8 +16,10 @@ var UI;
     "use strict";
 
     // Load supporting scripts
-    window.onscriptsload = function () { UI.load(); };
-    window.onload = function () { UI.keyboardinputReset(); };
+    window.onscriptsload = function () {
+        UI.load(); };
+    window.onload = function () {
+        UI.keyboardinputReset(); };
     Util.load_scripts(["webutil.js", "base64.js", "websock.js", "des.js",
                        "keysymdef.js", "keyboard.js", "input.js", "display.js",
                        "jsunzip.js", "rfb.js", "keysym.js"]);
@@ -45,7 +47,7 @@ var UI;
         },
 
         // Render default UI and initialize settings menu
-        start: function(callback) {
+        start: function (callback) {
             UI.isTouchDevice = 'ontouchstart' in document.documentElement;
 
             // Stylesheet selection dropdown
@@ -77,8 +79,7 @@ var UI;
             if (!port) {
                 if (window.location.protocol.substring(0,5) == 'https') {
                     port = 443;
-                }
-                else if (window.location.protocol.substring(0,4) == 'http') {
+                } else if (window.location.protocol.substring(0,4) == 'http') {
                     port = 80;
                 }
             }
@@ -96,10 +97,10 @@ var UI;
             UI.initSetting('repeaterID', '');
 
             UI.rfb = new RFB({'target': $D('noVNC_canvas'),
-                              'onUpdateState': UI.updateState,
-                              'onXvpInit': UI.updateXvpVisualState,
-                              'onClipboard': UI.clipReceive,
-                              'onDesktopName': UI.updateDocumentTitle});
+                'onUpdateState': UI.updateState,
+                'onXvpInit': UI.updateXvpVisualState,
+                'onClipboard': UI.clipReceive,
+                'onDesktopName': UI.updateDocumentTitle});
 
             var autoconnect = WebUtil.getQueryVar('autoconnect', false);
             if (autoconnect === 'true' || autoconnect == '1') {
@@ -117,7 +118,8 @@ var UI;
                 $D('noVNC_mobile_buttons').style.display = "inline";
                 UI.setMouseButton();
                 // Remove the address bar
-                setTimeout(function() { window.scrollTo(0, 1); }, 100);
+                setTimeout(function () {
+                    window.scrollTo(0, 1); }, 100);
                 UI.forceSetting('clip', true);
                 $D('noVNC_clip').disabled = true;
             } else {
@@ -143,7 +145,7 @@ var UI;
                 if (UI.rfb_state === 'normal') {
                     return "You are currently connected.";
                 }
-            } );
+            });
 
             // Show description by default when hosted at for kanaka.github.com
             if (location.host === "kanaka.github.io") {
@@ -164,13 +166,17 @@ var UI;
             }
         },
 
-        addMouseHandlers: function() {
+        addMouseHandlers: function () {
             // Setup interface handlers that can't be inline
             $D("noVNC_view_drag_button").onclick = UI.setViewDrag;
-            $D("noVNC_mouse_button0").onclick = function () { UI.setMouseButton(1); };
-            $D("noVNC_mouse_button1").onclick = function () { UI.setMouseButton(2); };
-            $D("noVNC_mouse_button2").onclick = function () { UI.setMouseButton(4); };
-            $D("noVNC_mouse_button4").onclick = function () { UI.setMouseButton(0); };
+            $D("noVNC_mouse_button0").onclick = function () {
+                UI.setMouseButton(1); };
+            $D("noVNC_mouse_button1").onclick = function () {
+                UI.setMouseButton(2); };
+            $D("noVNC_mouse_button2").onclick = function () {
+                UI.setMouseButton(4); };
+            $D("noVNC_mouse_button4").onclick = function () {
+                UI.setMouseButton(0); };
             $D("showKeyboard").onclick = UI.showKeyboard;
 
             $D("keyboardinput").oninput = UI.keyInput;
@@ -208,7 +214,7 @@ var UI;
         },
 
         // Read form control compatible setting from cookie
-        getSetting: function(name) {
+        getSetting: function (name) {
             var ctrl = $D('noVNC_' + name);
             var val = WebUtil.readSetting(name);
             if (val !== null && ctrl.type === 'checkbox') {
@@ -223,7 +229,7 @@ var UI;
 
         // Update cookie and form control setting. If value is not set, then
         // updates from control to current cookie setting.
-        updateSetting: function(name, value) {
+        updateSetting: function (name, value) {
 
             // Save the cookie for this session
             if (typeof value !== 'undefined') {
@@ -236,7 +242,6 @@ var UI;
             var ctrl = $D('noVNC_' + name);
             if (ctrl.type === 'checkbox') {
                 ctrl.checked = value;
-
             } else if (typeof ctrl.options !== 'undefined') {
                 for (var i = 0; i < ctrl.options.length; i += 1) {
                     if (ctrl.options[i].value === value) {
@@ -255,7 +260,7 @@ var UI;
         },
 
         // Save control setting to cookie
-        saveSetting: function(name) {
+        saveSetting: function (name) {
             var val, ctrl = $D('noVNC_' + name);
             if (ctrl.type === 'checkbox') {
                 val = ctrl.checked;
@@ -270,7 +275,7 @@ var UI;
         },
 
         // Initial page load read/initialization of settings
-        initSetting: function(name, defVal) {
+        initSetting: function (name, defVal) {
             // Check Query string followed by cookie
             var val = WebUtil.getQueryVar(name);
             if (val === null) {
@@ -281,14 +286,14 @@ var UI;
         },
 
         // Force a setting to be a certain value
-        forceSetting: function(name, val) {
+        forceSetting: function (name, val) {
             UI.updateSetting(name, val);
             return val;
         },
 
 
         // Show the popup status panel
-        togglePopupStatusPanel: function() {
+        togglePopupStatusPanel: function () {
             var psp = $D('noVNC_popup_status_panel');
             if (UI.popupStatusOpen === true) {
                 psp.style.display = "none";
@@ -296,14 +301,14 @@ var UI;
             } else {
                 psp.innerHTML = $D('noVNC_status').innerHTML;
                 psp.style.display = "block";
-                psp.style.left = window.innerWidth/2 -
-                    parseInt(window.getComputedStyle(psp, false).width)/2 -30 + "px";
+                psp.style.left = window.innerWidth / 2 -
+                    parseInt(window.getComputedStyle(psp, false).width) / 2 - 30 + "px";
                 UI.popupStatusOpen = true;
             }
         },
 
         // Show the XVP panel
-        toggleXvpPanel: function() {
+        toggleXvpPanel: function () {
             // Close the description panel
             $D('noVNC_description').style.display = "none";
             // Close settings if open
@@ -336,7 +341,7 @@ var UI;
         },
 
         // Show the clipboard panel
-        toggleClipboardPanel: function() {
+        toggleClipboardPanel: function () {
             // Close the description panel
             $D('noVNC_description').style.display = "none";
             // Close settings if open
@@ -369,7 +374,7 @@ var UI;
         },
 
         // Show the connection settings panel/menu
-        toggleConnectPanel: function() {
+        toggleConnectPanel: function () {
             // Close the description panel
             $D('noVNC_description').style.display = "none";
             // Close connection settings if open
@@ -410,7 +415,7 @@ var UI;
         // Toggle the settings menu:
         //   On open, settings are refreshed from saved cookies.
         //   On close, settings are applied
-        toggleSettingsPanel: function() {
+        toggleSettingsPanel: function () {
             // Close the description panel
             $D('noVNC_description').style.display = "none";
             if (UI.settingsOpen) {
@@ -438,7 +443,7 @@ var UI;
         },
 
         // Open menu
-        openSettingsMenu: function() {
+        openSettingsMenu: function () {
             // Close the description panel
             $D('noVNC_description').style.display = "none";
             // Close clipboard panel if open
@@ -463,14 +468,14 @@ var UI;
         },
 
         // Close menu (without applying settings)
-        closeSettingsMenu: function() {
+        closeSettingsMenu: function () {
             $D('noVNC_settings').style.display = "none";
             $D('settingsButton').className = "noVNC_status_button";
             UI.settingsOpen = false;
         },
 
         // Save/apply settings when 'Apply' button is pressed
-        settingsApply: function() {
+        settingsApply: function () {
             //Util.Debug(">> settingsApply");
             UI.saveSetting('encrypt');
             UI.saveSetting('true_color');
@@ -495,7 +500,7 @@ var UI;
 
 
 
-        setPassword: function() {
+        setPassword: function () {
             UI.rfb.sendPassword($D('noVNC_password').value);
             //Reset connect button.
             $D('noVNC_connect_button').value = "Connect";
@@ -505,23 +510,23 @@ var UI;
             return false;
         },
 
-        sendCtrlAltDel: function() {
+        sendCtrlAltDel: function () {
             UI.rfb.sendCtrlAltDel();
         },
 
-        xvpShutdown: function() {
+        xvpShutdown: function () {
             UI.rfb.xvpShutdown();
         },
 
-        xvpReboot: function() {
+        xvpReboot: function () {
             UI.rfb.xvpReboot();
         },
 
-        xvpReset: function() {
+        xvpReset: function () {
             UI.rfb.xvpReset();
         },
 
-        setMouseButton: function(num) {
+        setMouseButton: function (num) {
             if (typeof num === 'undefined') {
                 // Disable mouse buttons
                 num = -1;
@@ -541,7 +546,7 @@ var UI;
             }
         },
 
-        updateState: function(rfb, state, oldstate, msg) {
+        updateState: function (rfb, state, oldstate, msg) {
             UI.rfb_state = state;
             var klass;
             switch (state) {
@@ -581,7 +586,7 @@ var UI;
         },
 
         // Disable/enable controls depending on connection state
-        updateVisualState: function() {
+        updateVisualState: function () {
             var connected = UI.rfb_state === 'normal' ? true : false;
 
             //Util.Debug(">> updateVisualState");
@@ -637,7 +642,7 @@ var UI;
         },
 
         // Disable/enable XVP button
-        updateXvpVisualState: function(ver) {
+        updateXvpVisualState: function (ver) {
             if (ver >= 1) {
                 $D('xvpButton').style.display = 'inline';
             } else {
@@ -650,17 +655,17 @@ var UI;
         },
 
         // Display the desktop name in the document title
-        updateDocumentTitle: function(rfb, name) {
+        updateDocumentTitle: function (rfb, name) {
             document.title = name + " - noVNC";
         },
 
-        clipReceive: function(rfb, text) {
+        clipReceive: function (rfb, text) {
             Util.Debug(">> UI.clipReceive: " + text.substr(0,40) + "...");
             $D('noVNC_clipboard_text').value = text;
             Util.Debug("<< UI.clipReceive");
         },
 
-        connect: function() {
+        connect: function () {
             UI.closeSettingsMenu();
             UI.toggleConnectPanel();
 
@@ -686,7 +691,7 @@ var UI;
             $D('noVNC_logo').style.display = "none";
         },
 
-        disconnect: function() {
+        disconnect: function () {
             UI.closeSettingsMenu();
             UI.rfb.disconnect();
 
@@ -695,22 +700,22 @@ var UI;
             UI.toggleConnectPanel();
         },
 
-        displayBlur: function() {
+        displayBlur: function () {
             UI.rfb.get_keyboard().set_focused(false);
             UI.rfb.get_mouse().set_focused(false);
         },
 
-        displayFocus: function() {
+        displayFocus: function () {
             UI.rfb.get_keyboard().set_focused(true);
             UI.rfb.get_mouse().set_focused(true);
         },
 
-        clipClear: function() {
+        clipClear: function () {
             $D('noVNC_clipboard_text').value = "";
             UI.rfb.clipboardPasteFrom("");
         },
 
-        clipSend: function() {
+        clipSend: function () {
             var text = $D('noVNC_clipboard_text').value;
             Util.Debug(">> UI.clipSend: " + text.substr(0,40) + "...");
             UI.rfb.clipboardPasteFrom(text);
@@ -718,7 +723,7 @@ var UI;
         },
 
         // Enable/disable and configure viewport clipping
-        setViewClip: function(clip) {
+        setViewClip: function (clip) {
             var display;
             if (UI.rfb) {
                 display = UI.rfb.get_display();
@@ -755,9 +760,10 @@ var UI;
         },
 
         // Toggle/set/unset the viewport drag/move button
-        setViewDrag: function(drag) {
+        setViewDrag: function (drag) {
             var vmb = $D('noVNC_view_drag_button');
-            if (!UI.rfb) { return; }
+            if (!UI.rfb) {
+                return; }
 
             if (UI.rfb_state === 'normal' &&
                 UI.rfb.get_display().get_viewport()) {
@@ -781,35 +787,37 @@ var UI;
         },
 
         // On touch devices, show the OS keyboard
-        showKeyboard: function() {
+        showKeyboard: function () {
             var kbi = $D('keyboardinput');
             var skb = $D('showKeyboard');
             var l = kbi.value.length;
-            if(UI.keyboardVisible === false) {
+            if (UI.keyboardVisible === false) {
                 kbi.focus();
-                try { kbi.setSelectionRange(l, l); } // Move the caret to the end
-                catch (err) {} // setSelectionRange is undefined in Google Chrome
+                try {
+                    kbi.setSelectionRange(l, l); } // Move the caret to the end
+                catch (err) {
+                } // setSelectionRange is undefined in Google Chrome
                 UI.keyboardVisible = true;
                 skb.className = "noVNC_status_button_selected";
-            } else if(UI.keyboardVisible === true) {
+            } else if (UI.keyboardVisible === true) {
                 kbi.blur();
                 skb.className = "noVNC_status_button";
                 UI.keyboardVisible = false;
             }
         },
 
-        keepKeyboard: function() {
+        keepKeyboard: function () {
             clearTimeout(UI.hideKeyboardTimeout);
-            if(UI.keyboardVisible === true) {
+            if (UI.keyboardVisible === true) {
                 $D('keyboardinput').focus();
                 $D('showKeyboard').className = "noVNC_status_button_selected";
-            } else if(UI.keyboardVisible === false) {
+            } else if (UI.keyboardVisible === false) {
                 $D('keyboardinput').blur();
                 $D('showKeyboard').className = "noVNC_status_button";
             }
         },
 
-        keyboardinputReset: function() {
+        keyboardinputReset: function () {
             var kbi = $D('keyboardinput');
             kbi.value = new Array(UI.defaultKeyboardinputLen).join("_");
             UI.lastKeyboardinput = kbi.value;
@@ -819,7 +827,7 @@ var UI;
         // the keyboardinput element instead and generate the corresponding key events.
         // This code is required since some browsers on Android are inconsistent in
         // sending keyCodes in the normal keyboard events when using on screen keyboards.
-        keyInput: function(event) {
+        keyInput: function (event) {
             var newValue = event.target.value;
             var oldValue = UI.lastKeyboardinput;
 
@@ -873,30 +881,32 @@ var UI;
                 // text has been added to the field
                 event.target.blur();
                 // This has to be ran outside of the input handler in order to work
-                setTimeout(function() { UI.keepKeyboard(); }, 0);
+                setTimeout(function () {
+                    UI.keepKeyboard(); }, 0);
             } else {
                 UI.lastKeyboardinput = newValue;
             }
         },
 
-        keyInputBlur: function() {
+        keyInputBlur: function () {
             $D('showKeyboard').className = "noVNC_status_button";
             //Weird bug in iOS if you change keyboardVisible
             //here it does not actually occur so next time
             //you click keyboard icon it doesnt work.
-            UI.hideKeyboardTimeout = setTimeout(function() { UI.setKeyboard(); },100);
+            UI.hideKeyboardTimeout = setTimeout(function () {
+                UI.setKeyboard(); },100);
         },
 
-        showExtraKeys: function() {
+        showExtraKeys: function () {
             UI.keepKeyboard();
-            if(UI.extraKeysVisible === false) {
+            if (UI.extraKeysVisible === false) {
                 $D('toggleCtrlButton').style.display = "inline";
                 $D('toggleAltButton').style.display = "inline";
                 $D('sendTabButton').style.display = "inline";
                 $D('sendEscButton').style.display = "inline";
                 $D('showExtraKeysButton').className = "noVNC_status_button_selected";
                 UI.extraKeysVisible = true;
-            } else if(UI.extraKeysVisible === true) {
+            } else if (UI.extraKeysVisible === true) {
                 $D('toggleCtrlButton').style.display = "";
                 $D('toggleAltButton').style.display = "";
                 $D('sendTabButton').style.display = "";
@@ -906,68 +916,68 @@ var UI;
             }
         },
 
-        toggleCtrl: function() {
+        toggleCtrl: function () {
             UI.keepKeyboard();
-            if(UI.ctrlOn === false) {
+            if (UI.ctrlOn === false) {
                 UI.rfb.sendKey(XK_Control_L, true);
                 $D('toggleCtrlButton').className = "noVNC_status_button_selected";
                 UI.ctrlOn = true;
-            } else if(UI.ctrlOn === true) {
+            } else if (UI.ctrlOn === true) {
                 UI.rfb.sendKey(XK_Control_L, false);
                 $D('toggleCtrlButton').className = "noVNC_status_button";
                 UI.ctrlOn = false;
             }
         },
 
-        toggleAlt: function() {
+        toggleAlt: function () {
             UI.keepKeyboard();
-            if(UI.altOn === false) {
+            if (UI.altOn === false) {
                 UI.rfb.sendKey(XK_Alt_L, true);
                 $D('toggleAltButton').className = "noVNC_status_button_selected";
                 UI.altOn = true;
-            } else if(UI.altOn === true) {
+            } else if (UI.altOn === true) {
                 UI.rfb.sendKey(XK_Alt_L, false);
                 $D('toggleAltButton').className = "noVNC_status_button";
                 UI.altOn = false;
             }
         },
 
-        sendTab: function() {
+        sendTab: function () {
             UI.keepKeyboard();
             UI.rfb.sendKey(XK_Tab);
         },
 
-        sendEsc: function() {
+        sendEsc: function () {
             UI.keepKeyboard();
             UI.rfb.sendKey(XK_Escape);
         },
 
-        setKeyboard: function() {
+        setKeyboard: function () {
             UI.keyboardVisible = false;
         },
 
         // iOS < Version 5 does not support position fixed. Javascript workaround:
-        setOnscroll: function() {
-            window.onscroll = function() {
+        setOnscroll: function () {
+            window.onscroll = function () {
                 UI.setBarPosition();
             };
         },
 
         setResize: function () {
-            window.onResize = function() {
+            window.onResize = function () {
                 UI.setBarPosition();
             };
         },
 
         //Helper to add options to dropdown.
-        addOption: function(selectbox, text, value) {
+        addOption: function (selectbox, text, value) {
             var optn = document.createElement("OPTION");
             optn.text = text;
             optn.value = value;
             selectbox.options.add(optn);
         },
 
-        setBarPosition: function() {
+        setBarPosition: function () {
             $D('noVNC-control-bar').style.top = (window.pageYOffset) + 'px';
             $D('noVNC_mobile_buttons').style.left = (window.pageXOffset) + 'px';
 
