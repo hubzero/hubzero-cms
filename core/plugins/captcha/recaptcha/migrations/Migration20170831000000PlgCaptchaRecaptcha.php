@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,27 +8,25 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for adding Captcha - Recaptcha plugin
  **/
+// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170831000000PlgCaptchaRecaptcha extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('captcha', 'recaptcha', 0);
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('captcha', 'recaptcha', 0);
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('captcha', 'recaptcha');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('captcha', 'recaptcha');
+    }
 }
