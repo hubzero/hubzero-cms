@@ -1,4 +1,10 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
+
+// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,22 +18,24 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding Oaipmh - Publications plugin
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20170831000000PlgOaipmhPublications extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('oaipmh', 'publications');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('oaipmh', 'publications');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('oaipmh', 'publications');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('oaipmh', 'publications');
+    }
 }
