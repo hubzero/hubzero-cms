@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2025 The Regents of the University of California.
@@ -19,28 +20,28 @@ use Hubzero\Database\Exception\ConnectionFailedException;
  */
 class DatabaseStub
 {
-	/**
-	 * Datetime format used when rendering a Date to SQL
-	 *
-	 * @return  string
-	 */
-	public function getDateFormat()
-	{
-		return 'Y-m-d H:i:s';
-	}
+    /**
+     * Datetime format used when rendering a Date to SQL
+     *
+     * @return  string
+     */
+    public function getDateFormat()
+    {
+        return 'Y-m-d H:i:s';
+    }
 
-	/**
-	 * Any attempt to actually query fails as an unreachable connection
-	 *
-	 * @param   string  $name
-	 * @param   array   $arguments
-	 * @return  void
-	 * @throws  ConnectionFailedException
-	 */
-	public function __call($name, $arguments)
-	{
-		throw new ConnectionFailedException('No database connection in tests');
-	}
+    /**
+     * Any attempt to actually query fails as an unreachable connection
+     *
+     * @param   string  $name
+     * @param   array   $arguments
+     * @return  void
+     * @throws  ConnectionFailedException
+     */
+    public function __call($name, $arguments)
+    {
+        throw new ConnectionFailedException('No database connection in tests');
+    }
 }
 
 /**
@@ -51,26 +52,26 @@ class DatabaseStub
  */
 class TranslatorStub
 {
-	/**
-	 * Return the key itself rather than a translation
-	 *
-	 * @param   string  $key
-	 * @return  string
-	 */
-	public function txt($key = '')
-	{
-		return $key;
-	}
+    /**
+     * Return the key itself rather than a translation
+     *
+     * @param   string  $key
+     * @return  string
+     */
+    public function txt($key = '')
+    {
+        return $key;
+    }
 
-	/**
-	 * Same for every other translator call
-	 *
-	 * @param   string  $name
-	 * @param   array   $arguments
-	 * @return  string
-	 */
-	public function __call($name, $arguments)
-	{
-		return isset($arguments[0]) ? $arguments[0] : '';
-	}
+    /**
+     * Same for every other translator call
+     *
+     * @param   string  $name
+     * @param   array   $arguments
+     * @return  string
+     */
+    public function __call($name, $arguments)
+    {
+        return isset($arguments[0]) ? $arguments[0] : '';
+    }
 }

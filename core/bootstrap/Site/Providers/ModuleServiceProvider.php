@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,16 +16,15 @@ use Hubzero\Base\ServiceProvider;
  */
 class ModuleServiceProvider extends ServiceProvider
 {
-	/**
-	 * Register the service provider.
-	 *
-	 * @return  void
-	 */
-	public function register()
-	{
-		$this->app['module'] = function($app)
-		{
-			return new Loader($app, $app['profiler']);
-		};
-	}
+    /**
+     * Register the service provider.
+     *
+     * @return  void
+     */
+    public function register()
+    {
+        $this->app['module'] = function ($app) {
+            return new Loader($app, $app['profiler']);
+        };
+    }
 }

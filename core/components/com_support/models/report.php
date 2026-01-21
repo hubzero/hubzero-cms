@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,34 +15,34 @@ use Hubzero\Database\Relational;
  */
 class Report extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	public $namespace = 'abuse';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    public $namespace = 'abuse';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'id';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'id';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Automatic fields to populate every time a row is created
-	 *
-	 * @var  array
-	 */
-	public $initiate = array(
-		'created',
-		'created_by'
-	);
+    /**
+     * Automatic fields to populate every time a row is created
+     *
+     * @var  array
+     */
+    public $initiate = array(
+        'created',
+        'created_by'
+    );
 }

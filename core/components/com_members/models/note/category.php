@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,96 +15,91 @@ use Hubzero\Database\Relational;
  */
 class Category extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = '';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    protected $namespace = '';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'lft';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'lft';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Returns all rows (unless otherwise limited)
-	 *
-	 * @param   string|array  $columns  The columns to select
-	 * @return  \Hubzero\Database\Relational|static
-	 */
-	public static function all($columns = null)
-	{
-		return self::blank()->whereEquals('extension', 'com_members');
-	}
+    /**
+     * Returns all rows (unless otherwise limited)
+     *
+     * @param   string|array  $columns  The columns to select
+     * @return  \Hubzero\Database\Relational|static
+     */
+    public static function all($columns = null)
+    {
+        return self::blank()->whereEquals('extension', 'com_members');
+    }
 
-	/**
-	 * Get a list of responses
-	 *
-	 * @param   array    $filters  Filters to apply to query
-	 * @return  object
-	 */
-	public function children($filters = array())
-	{
-		$categories = self::blank()
-			->whereEquals('parent_id', $this->get('id'));
+    /**
+     * Get a list of responses
+     *
+     * @param   array    $filters  Filters to apply to query
+     * @return  object
+     */
+    public function children($filters = array())
+    {
+        $categories = self::blank()
+            ->whereEquals('parent_id', $this->get('id'));
 
-		if (isset($filters['state']))
-		{
-			$categories->whereEquals('published', $filters['state']);
-		}
+        if (isset($filters['state'])) {
+            $categories->whereEquals('published', $filters['state']);
+        }
 
-		if (isset($filters['access']))
-		{
-			$categories->whereEquals('access', $filters['access']);
-		}
+        if (isset($filters['access'])) {
+            $categories->whereEquals('access', $filters['access']);
+        }
 
-		return $categories;
-	}
+        return $categories;
+    }
 
-	/**
-	 * Get parent section
-	 *
-	 * @return  object
-	 */
-	public function parent()
-	{
-		return self::oneOrFail($this->get('parent_id', 0));
-	}
+    /**
+     * Get parent section
+     *
+     * @return  object
+     */
+    public function parent()
+    {
+        return self::oneOrFail($this->get('parent_id', 0));
+    }
 
-	/**
-	 * Delete the record and all associated data
-	 *
-	 * @return  boolean  False if error, True on success
-	 */
-	public function destroy()
-	{
-		// Can't delete what doesn't exist
-		if (!$this->get('id'))
-		{
-			return true;
-		}
+    /**
+     * Delete the record and all associated data
+     *
+     * @return  boolean  False if error, True on success
+     */
+    public function destroy()
+    {
+        // Can't delete what doesn't exist
+        if (!$this->get('id')) {
+            return true;
+        }
 
-		// Remove children
-		foreach ($this->children()->rows() as $category)
-		{
-			if (!$category->destroy())
-			{
-				$this->setError($category->getError());
-				return false;
-			}
-		}
+        // Remove children
+        foreach ($this->children()->rows() as $category) {
+            if (!$category->destroy()) {
+                $this->setError($category->getError());
+                return false;
+            }
+        }
 
-		// Attempt to delete the record
-		return parent::destroy();
-	}
+        // Attempt to delete the record
+        return parent::destroy();
+    }
 }

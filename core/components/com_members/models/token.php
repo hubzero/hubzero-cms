@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,19 +17,19 @@ use Hubzero\Database\Relational;
  */
 class Token extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var string
-	 */
-	protected $namespace = 'xprofiles';
+    /**
+     * The table namespace
+     *
+     * @var string
+     */
+    protected $namespace = 'xprofiles';
 
-	/**
-	 * Automatically fillable fields
-	 *
-	 * @var array
-	 */
-	public $initiate = array(
-		'created'
-	);
+    /**
+     * Automatically fillable fields
+     *
+     * @var array
+     */
+    public $initiate = array(
+        'created'
+    );
 }

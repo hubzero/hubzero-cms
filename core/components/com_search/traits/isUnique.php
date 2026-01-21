@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,43 +8,39 @@
 
 namespace Components\Search\Traits;
 
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 trait isUnique
 {
+    public function isUnique()
+    {
+        $isUnique = true;
 
-	public function isUnique()
-	{
-		$isUnique = true;
+        foreach ($this::$uniqueKeys as $fields) {
+            if ($this->duplicatesExist($fields)) {
+                $isUnique = false;
+                break;
+            }
+        }
 
-		foreach ($this::$uniqueKeys as $fields)
-		{
-			if ($this->duplicatesExist($fields))
-			{
-				$isUnique = false;
-				break;
-			}
-		}
+        return $isUnique;
+    }
 
-		return $isUnique;
-	}
+    protected function duplicatesExist($fields)
+    {
+        $duplicates = $this->findDuplicates($fields);
 
-	protected function duplicatesExist($fields)
-	{
-		$duplicates = $this->findDuplicates($fields);
+        return $duplicates->count() > 0;
+    }
 
-		return $duplicates->count() > 0;
-	}
+    protected function findDuplicates($fields)
+    {
+        $savedRecords = self::all();
 
-	protected function findDuplicates($fields)
-	{
-		$savedRecords = self::all();
+        foreach ($fields as $field) {
+            $savedRecords
+                ->whereEquals($field, $this->get($field));
+        }
 
-		foreach ($fields as $field)
-		{
-			$savedRecords
-				->whereEquals($field, $this->get($field));
-		}
-
-		return $savedRecords;
-	}
-
+        return $savedRecords;
+    }
 }

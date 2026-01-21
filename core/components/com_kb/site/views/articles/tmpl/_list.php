@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,32 +9,30 @@
 // No direct access
 defined('_HZEXEC_') or die();
 ?>
-<?php if ($this->comments && count($this->comments) > 0): ?>
+<?php if ($this->comments && count($this->comments) > 0) : ?>
 <ol class="comments" id="t<?php echo isset($this->parent) ? $this->parent : '0'; ?>">
-<?php
-{
-	$cls = 'odd';
-	if (isset($this->cls))
-	{
-		$cls = ($this->cls == 'odd') ? 'even' : 'odd';
-	}
+    <?php
+    {
+    $cls = 'odd';
+    if (isset($this->cls)) {
+        $cls = ($this->cls == 'odd') ? 'even' : 'odd';
+    }
 
-	$this->depth++;
+    $this->depth++;
 
-	foreach ($this->comments as $comment)
-	{
-		$comment->set('entry_id', $this->article->get('id'));
+    foreach ($this->comments as $comment) {
+        $comment->set('entry_id', $this->article->get('id'));
 
-		$this->view('_comment')
-		     ->set('option', $this->option)
-		     ->set('comment', $comment)
-		     ->set('depth', $this->depth)
-		     ->set('article', $this->article)
-		     ->set('cls', $cls)
-		     ->set('base', $this->base)
-		     ->display();
-	}
-}
-?>
+        $this->view('_comment')
+             ->set('option', $this->option)
+             ->set('comment', $comment)
+             ->set('depth', $this->depth)
+             ->set('article', $this->article)
+             ->set('cls', $cls)
+             ->set('base', $this->base)
+             ->display();
+    }
+    }
+    ?>
 </ol>
 <?php endif; ?>

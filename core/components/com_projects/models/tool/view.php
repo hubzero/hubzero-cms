@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,83 +16,76 @@ use Components\Projects\Tables;
  */
 class View extends Model
 {
-	/**
-	 * Table class name
-	 *
-	 * @var  string
-	 */
-	protected $_tbl_name = '\\Components\\Projects\\Tables\\ToolView';
+    /**
+     * Table class name
+     *
+     * @var  string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_tbl_name = '\\Components\\Projects\\Tables\\ToolView';
 
-	/**
-	 * Registry
-	 *
-	 * @var  object
-	 */
-	public $config = null;
+    /**
+     * Registry
+     *
+     * @var  object
+     */
+    public $config = null;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   mixed  $oid  view ID
-	 * @return  void
-	 */
-	public function __construct($oid = null)
-	{
-		$this->_db = \App::get('db');
+    /**
+     * Constructor
+     *
+     * @param   mixed  $oid  view ID
+     * @return  void
+     */
+    public function __construct($oid = null)
+    {
+        $this->_db = \App::get('db');
 
-		$this->_tbl = new Tables\ToolView($this->_db);
+        $this->_tbl = new Tables\ToolView($this->_db);
 
-		if (is_numeric($oid))
-		{
-			$this->_tbl->load($oid);
-		}
-	}
+        if (is_numeric($oid)) {
+            $this->_tbl->load($oid);
+        }
+    }
 
-	/**
-	 * Returns a reference to the model
-	 *
-	 * @param   mixed  $oid  view ID
-	 * @return  object
-	 */
-	public static function &getInstance($oid=null)
-	{
-		static $instances;
+    /**
+     * Returns a reference to the model
+     *
+     * @param   mixed  $oid  view ID
+     * @return  object
+     */
+    public static function &getInstance($oid = null)
+    {
+        static $instances;
 
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
+        if (!isset($instances)) {
+            $instances = array();
+        }
 
-		if (is_object($oid))
-		{
-			$key = $oid->id;
-		}
-		else if (is_array($oid))
-		{
-			$key = $oid['id'];
-		}
-		else
-		{
-			$key = $oid;
-		}
+        if (is_object($oid)) {
+            $key = $oid->id;
+        } elseif (is_array($oid)) {
+            $key = $oid['id'];
+        } else {
+            $key = $oid;
+        }
 
-		if (!isset($instances[$key]))
-		{
-			$instances[$key] = new self($oid);
-		}
+        if (!isset($instances[$key])) {
+            $instances[$key] = new self($oid);
+        }
 
-		return $instances[$key];
-	}
+        return $instances[$key];
+    }
 
-	/**
-	 * Check if page was viewed recently
-	 *
-	 * @param   integer  $toolid  Project tool id
-	 * @param   integer  $userid  User id
-	 * @return  mixed    Return string or NULL
-	 */
-	public function lastView($toolid = 0, $userid = 0)
-	{
-		return $this->_tbl->checkView($toolid, $userid);
-	}
+    /**
+     * Check if page was viewed recently
+     *
+     * @param   integer  $toolid  Project tool id
+     * @param   integer  $userid  User id
+     * @return  mixed    Return string or NULL
+     */
+    public function lastView($toolid = 0, $userid = 0)
+    {
+        return $this->_tbl->checkView($toolid, $userid);
+    }
 }

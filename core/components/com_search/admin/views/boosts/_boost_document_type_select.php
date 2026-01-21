@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,12 +15,12 @@ $options = $this->typeOptions;
 ?>
 
 <select name="boost[document_type]">
-	<?php
-		foreach ($options as $option):
-		$selectedText = ($fieldValue == $option) ? 'selected' : '';
-	?>
-		<option <?php echo $selectedText; ?>>
-			<?php echo $option; ?>
-		</option>
-	<?php	endforeach; ?>
+    <?php
+    foreach ($options as $option) :
+        $selectedText = ($fieldValue == $option) ? 'selected' : '';
+        ?>
+        <option <?php echo $selectedText; ?>>
+        <?php echo $option; ?>
+        </option>
+    <?php	endforeach; ?>
 </select>

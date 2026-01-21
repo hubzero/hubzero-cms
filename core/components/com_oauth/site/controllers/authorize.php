@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,67 +17,63 @@ use Request;
  */
 class Authorize extends SiteController
 {
-	/**
-	 * Execute a task
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		$this->registerTask('__default', 'authorize');
+    /**
+     * Execute a task
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        $this->registerTask('__default', 'authorize');
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * Authorize
-	 *
-	 * @return  void
-	 */
-	public function authorizeTask()
-	{
-		$oauth_token = Request::getString('oauth_token');
+    /**
+     * Authorize
+     *
+     * @return  void
+     */
+    public function authorizeTask()
+    {
+        $oauth_token = Request::getString('oauth_token');
 
-		if (empty($oauth_token))
-		{
-			throw new Exception('Forbidden', 403);
-		}
+        if (empty($oauth_token)) {
+            throw new Exception('Forbidden', 403);
+        }
 
-		$db = \App::get('db');
-		$db->setQuery("SELECT * FROM `#__oauthp_tokens` WHERE token=" . $db->quote($oauth_token) . " AND user_id=0 LIMIT 1;");
+        $db = \App::get('db');
+        $sql = "SELECT * FROM `#__oauthp_tokens` WHERE token=" . $db->quote($oauth_token)
+            . " AND user_id=0 LIMIT 1;";
+        $db->setQuery($sql);
 
-		$result = $db->loadObject();
+        $result = $db->loadObject();
 
-		if ($result === false)
-		{
-			throw new Exception('Internal Server Error', 500);
-		}
+        if ($result === false) {
+            throw new Exception('Internal Server Error', 500);
+        }
 
-		if (empty($result))
-		{
-			throw new Exception('Forbidden', 403);
-		}
+        if (empty($result)) {
+            throw new Exception('Forbidden', 403);
+        }
 
-		if (Request::method() == 'GET')
-		{
-			$this->view->set('oauth_token', $oauth_token);
-			$this->view->display();
-			return;
-		}
+        if (Request::method() == 'GET') {
+            $this->view->set('oauth_token', $oauth_token);
+            $this->view->display();
+            return;
+        }
 
-		if (Request::method() == 'POST')
-		{
-			$token = Request::getString('token', '', 'post');
+        if (Request::method() == 'POST') {
+            $token = Request::getString('token', '', 'post');
 
-			if ($token != sha1($this->verifier))
-			{
-				throw new Exception('Forbidden', 403);
-			}
+            if ($token != sha1($this->verifier)) {
+                throw new Exception('Forbidden', 403);
+            }
 
-			echo "posted";
-			return;
-		}
+            echo "posted";
+            return;
+        }
 
-		throw new Exception('Method Not Allowed', 405);
-	}
+        throw new Exception('Method Not Allowed', 405);
+    }
 }

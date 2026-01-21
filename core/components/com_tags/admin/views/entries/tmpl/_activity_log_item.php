@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,11 +17,11 @@ $id = $log->get('id');
 $parser = new ActivityLogPresenter();
 $parsedLog = $parser->parse($log);
 
-if ($parsedLog->activityDescription): ?>
-	<li class="<?php echo $parsedLog->class; ?>"
-		data-id="<?php echo $id; ?>">
-		<span class="entry-log-data">
-			<?php echo $parsedLog->activityDescription; ?>
-		</span>
-	</li>
+if ($parsedLog->activityDescription) : ?>
+    <li class="<?php echo $parsedLog->class; ?>"
+        data-id="<?php echo $id; ?>">
+        <span class="entry-log-data">
+            <?php echo $parsedLog->activityDescription; ?>
+        </span>
+    </li>
 <?php endif;

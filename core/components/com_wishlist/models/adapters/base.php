@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,171 +17,169 @@ use Lang;
  */
 abstract class Base extends Obj
 {
-	/**
-	 * The object the referenceid references
-	 *
-	 * @var  object
-	 */
-	protected $_item = null;
+    /**
+     * The object the referenceid references
+     *
+     * @var  object
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_item = null;
 
-	/**
-	 * Script name
-	 *
-	 * @var  string
-	 */
-	protected $_base = 'index.php';
+    /**
+     * Script name
+     *
+     * @var  string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_base = 'index.php';
 
-	/**
-	 * URL segments
-	 *
-	 * @var  array
-	 */
-	protected $_segments = array();
+    /**
+     * URL segments
+     *
+     * @var  array
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_segments = array();
 
-	/**
-	 * Scope name
-	 *
-	 * @var  string
-	 */
-	protected $_scope = '';
+    /**
+     * Scope name
+     *
+     * @var  string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_scope = '';
 
-	/**
-	 * Constructor
-	 *
-	 * @param   integer  $referenceid  Scope ID (group, course, etc.)
-	 * @return  void
-	 */
-	public function __construct($referenceid=0)
-	{
-		$this->set('referenceid', $referenceid);
-	}
+    /**
+     * Constructor
+     *
+     * @param   integer  $referenceid  Scope ID (group, course, etc.)
+     * @return  void
+     */
+    public function __construct($referenceid = 0)
+    {
+        $this->set('referenceid', $referenceid);
+    }
 
-	/**
-	 * Can this adapter handle the provided scope?
-	 *
-	 * @return  bool
-	 */
-	public function handles($scope)
-	{
-		return ($this->_scope && $this->_scope == $scope);
-	}
+    /**
+     * Can this adapter handle the provided scope?
+     *
+     * @return  bool
+     */
+    public function handles($scope)
+    {
+        return ($this->_scope && $this->_scope == $scope);
+    }
 
-	/**
-	 * Get owners
-	 *
-	 * @return  array
-	 */
-	public function owners()
-	{
-		return array();
-	}
+    /**
+     * Get owners
+     *
+     * @return  array
+     */
+    public function owners()
+    {
+        return array();
+    }
 
-	/**
-	 * Get groups
-	 *
-	 * @return  array
-	 */
-	public function groups()
-	{
-		return array();
-	}
+    /**
+     * Get groups
+     *
+     * @return  array
+     */
+    public function groups()
+    {
+        return array();
+    }
 
-	/**
-	 * Generate and return the title for this wishlist
-	 *
-	 * @return  string
-	 */
-	public function title()
-	{
-		return Lang::txt('COM_WISHLIST');
-	}
+    /**
+     * Generate and return the title for this wishlist
+     *
+     * @return  string
+     */
+    public function title()
+    {
+        return Lang::txt('COM_WISHLIST');
+    }
 
-	/**
-	 * Retrieve a property from the internal item object
-	 *
-	 * @param   string  $key  Property to retrieve
-	 * @return  string
-	 */
-	public function item($key='')
-	{
-		if ($key && is_object($this->_item))
-		{
-			return $this->_item->$key;
-		}
-		return $this->_item;
-	}
+    /**
+     * Retrieve a property from the internal item object
+     *
+     * @param   string  $key  Property to retrieve
+     * @return  string
+     */
+    public function item($key = '')
+    {
+        if ($key && is_object($this->_item)) {
+            return $this->_item->$key;
+        }
+        return $this->_item;
+    }
 
-	/**
-	 * Does the item exists?
-	 *
-	 * @return  boolean
-	 */
-	public function exists()
-	{
-		if ($this->item() && $this->item('id'))
-		{
-			return true;
-		}
-		return false;
-	}
+    /**
+     * Does the item exists?
+     *
+     * @return  boolean
+     */
+    public function exists()
+    {
+        if ($this->item() && $this->item('id')) {
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 *
-	 * @param   string  $type    The type of link to return
-	 * @param   mixed   $params  Optional string or associative array of params to append
-	 * @return  string
-	 */
-	public function link($type='', $params=null)
-	{
-		return $this->_base;
-	}
+    /**
+     * Generate and return various links to the entry
+     * Link will vary depending upon action desired, such as edit, delete, etc.
+     *
+     * @param   string  $type    The type of link to return
+     * @param   mixed   $params  Optional string or associative array of params to append
+     * @return  string
+     */
+    public function link($type = '', $params = null)
+    {
+        return $this->_base;
+    }
 
-	/**
-	 * Flatten array of segments into querystring
-	 *
-	 * @param   array   $segments  An associative array of querystring bits
-	 * @return  string
-	 */
-	protected function _build(array $segments)
-	{
-		$bits = array();
-		foreach ($segments as $key => $param)
-		{
-			if ($param)
-			{
-				$bits[] = $key . '=' . $param;
-			}
-		}
-		return implode('&', $bits);
-	}
+    /**
+     * Flatten array of segments into querystring
+     *
+     * @param   array   $segments  An associative array of querystring bits
+     * @return  string
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _build(array $segments)
+    {
+        $bits = array();
+        foreach ($segments as $key => $param) {
+            if ($param) {
+                $bits[] = $key . '=' . $param;
+            }
+        }
+        return implode('&', $bits);
+    }
 
-	/**
-	 * Append an item to the breadcrumb trail.
-	 * If no item is provided, it will build the trail up to the list
-	 *
-	 * @param   string  $title  Breadcrumb title
-	 * @param   string  $url    Breadcrumb URL
-	 * @return  string
-	 */
-	public function pathway($title=null, $url=null)
-	{
-		if (!$title)
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->get('option'))),
-				'index.php?option=' . $this->get('option')
-			);
-		}
-		else
-		{
-			Pathway::append(
-				$title,
-				$url
-			);
-		}
+    /**
+     * Append an item to the breadcrumb trail.
+     * If no item is provided, it will build the trail up to the list
+     *
+     * @param   string  $title  Breadcrumb title
+     * @param   string  $url    Breadcrumb URL
+     * @return  string
+     */
+    public function pathway($title = null, $url = null)
+    {
+        if (!$title) {
+            Pathway::append(
+                Lang::txt(strtoupper($this->get('option'))),
+                'index.php?option=' . $this->get('option')
+            );
+        } else {
+            Pathway::append(
+                $title,
+                $url
+            );
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,13 +13,13 @@ use Components\Groups\Helpers\View;
 
 class Toolbar extends Renderer
 {
-	/**
-	 * Render toolbar to group template
-	 *
-	 * @param    string
-	 */
-	public function render()
-	{
-		return View::displayToolbar($this->group, 'id="group_options"', true);
-	}
+    /**
+     * Render toolbar to group template
+     *
+     * @param    string
+     */
+    public function render()
+    {
+        return View::displayToolbar($this->group, 'id="group_options"', true);
+    }
 }

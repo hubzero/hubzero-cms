@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,34 +20,33 @@ $url = Route::url($resource->link('version'));
 $content = $this->row->description('parsed');
 $content = ($content ?: '<p>' . $resource->get('abstract') . '</p>');
 
-if ($imgPath)
-{
-	list($originalWidth, $originalHeight) = getimagesize($imgPath);
-	$ratio = $originalWidth / $originalHeight;
+if ($imgPath) {
+    list($originalWidth, $originalHeight) = getimagesize($imgPath);
+    $ratio = $originalWidth / $originalHeight;
 
-	$height = (!isset($this->actual) || !$this->actual)
-			? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP)
-			: $originalHeight;
+    $height = (!isset($this->actual) || !$this->actual)
+            ? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP)
+            : $originalHeight;
 
-	$alt = $this->escape(stripslashes($resource->get('title', '')));
+    $alt = $this->escape(stripslashes($resource->get('title', '')));
 }
 ?>
 <h4>
-	<a href="<?php echo $url; ?>" rel="external nofollow noreferrer">
-		<?php echo $this->escape(stripslashes($resource->get('title', $url))); ?>
-	</a>
+    <a href="<?php echo $url; ?>" rel="external nofollow noreferrer">
+        <?php echo $this->escape(stripslashes($resource->get('title', $url))); ?>
+    </a>
 </h4>
 
-<?php if ($imgPath): ?>
+<?php if ($imgPath) : ?>
 <div class="holder">
-	<a href="<?php echo $url; ?>" rel="external nofollow noreferrer">
-		<img src="<?php echo Route::url($resource->link('masterimage')); ?>" alt="<?php echo $alt; ?>" class="img" height="<?php echo $height; ?>" />
-	</a>
+    <a href="<?php echo $url; ?>" rel="external nofollow noreferrer">
+        <img src="<?php echo Route::url($resource->link('masterimage')); ?>" alt="<?php echo $alt; ?>" class="img" height="<?php echo $height; ?>" />
+    </a>
 </div>
 <?php endif; ?>
 
-<?php if ($content): ?>
-		<div class="description">
-			<?php echo $content; ?>
-		</div>
+<?php if ($content) : ?>
+        <div class="description">
+            <?php echo $content; ?>
+        </div>
 <?php endif;

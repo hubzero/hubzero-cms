@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,35 +13,34 @@ Toolbar::title(Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_HOSTS'), 'to
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
-	<table class="adminlist">
-		<caption><?php echo $this->hostname; ?></caption>
-		<thead>
-			<tr>
-				<th scope="col"><?php echo Lang::txt('COM_TOOLS_COL_STATUS'); ?></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>
-				<?php
-				if ($this->output)
-				{
-					echo htmlspecialchars($this->output->user_message ?? '') . "\n";
-					if (!$this->status && isset($this->output->technical_message))
-					{
-						echo '<br /><small>' . htmlspecialchars($this->output->technical_message) . '</small>' . "\n";
-					}
-				}
-				?>
-				</td>
-			</td>
-		</tbody>
-	</table>
+<?php $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="adminForm">
+    <table class="adminlist">
+        <caption><?php echo $this->hostname; ?></caption>
+        <thead>
+            <tr>
+                <th scope="col"><?php echo Lang::txt('COM_TOOLS_COL_STATUS'); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                <?php
+                if ($this->output) {
+                    echo htmlspecialchars($this->output->user_message ?? '') . "\n";
+                    if (!$this->status && isset($this->output->technical_message)) {
+                        echo '<br /><small>' . htmlspecialchars($this->output->technical_message) . '</small>' . "\n";
+                    }
+                }
+                ?>
+                </td>
+            </td>
+        </tbody>
+    </table>
 
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="task" value="" />
+    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+    <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+    <input type="hidden" name="task" value="" />
 
-	<?php echo Html::input('token'); ?>
+    <?php echo Html::input('token'); ?>
 </form>

@@ -22,25 +22,25 @@ class Api extends SiteController
 {
     /**
      * General intro display
-     * 
+     *
      * @return  void
      */
     public function displayTask()
     {
-        $this->_buildPathway();
+        $this->buildPathway();
 
         $this->view->display();
     }
 
     /**
      * Documentation
-     * 
+     *
      * @return  void
      */
     public function docsTask()
     {
         // build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // generate documentation
         $generator = new Generator(!Config::get('debug'));
@@ -48,19 +48,19 @@ class Api extends SiteController
         // render view
         $this->view
             ->set('documentation', $generator->output('array'))
-            ->set('tokens', $this->_getUserTokens())
+            ->set('tokens', $this->getUserTokens())
             ->display();
     }
 
     /**
      * Endpoint Documentation
-     * 
+     *
      * @return  void
      */
     public function endpointTask()
     {
         // build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         $active = Request::getString('active', '');
 
@@ -76,33 +76,33 @@ class Api extends SiteController
         $this->view
             ->set('active', $active)
             ->set('documentation', $documentation)
-            ->set('tokens', $this->_getUserTokens())
+            ->set('tokens', $this->getUserTokens())
             ->display();
     }
 
     /**
-     * Console 
-     * 
+     * Console
+     *
      * @return  void
      */
     public function consoleTask()
     {
         // build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // render view
         $this->view->display();
     }
 
     /**
-     * Status 
-     * 
+     * Status
+     *
      * @return  void
      */
     public function statusTask()
     {
         // build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // render view
         $this->view->display();
@@ -110,10 +110,10 @@ class Api extends SiteController
 
     /**
      * Build Pathway
-     * 
+     *
      * @return  void
      */
-    private function _buildPathway()
+    private function buildPathway()
     {
         // create breadcrumbs
         if (Pathway::count() <= 0) {
@@ -138,10 +138,10 @@ class Api extends SiteController
 
     /**
      * Get all active tokens for the current user
-     * 
+     *
      * @return  array
      */
-    private function _getUserTokens()
+    private function getUserTokens()
     {
         $tokens = array();
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,33 +17,33 @@ use Hubzero\Database\Relational;
  */
 class User extends Relational
 {
-	/**
-	 * Splits name and returns the first part
-	 *
-	 * @return  string
-	 **/
-	public function helperGetFirstName()
-	{
-		return (strpos($this->name ? $this->name : '', ' ')) ? explode(' ', $this->name)[0] : $this->name;
-	}
+    /**
+     * Splits name and returns the first part
+     *
+     * @return  string
+     **/
+    public function helperGetFirstName()
+    {
+        return (strpos($this->name ? $this->name : '', ' ')) ? explode(' ', $this->name)[0] : $this->name;
+    }
 
-	/**
-	 * Transforms name to a silly nickname
-	 *
-	 * @return  string
-	 **/
-	public function transformNickname()
-	{
-		return $this->getFirstName() . 'er';
-	}
+    /**
+     * Transforms name to a silly nickname
+     *
+     * @return  string
+     **/
+    public function transformNickname()
+    {
+        return $this->getFirstName() . 'er';
+    }
 
-	/**
-	 * One to many relationship with posts
-	 *
-	 * @return  \Hubzero\Database\Relationship\OneToMany
-	 **/
-	public function posts()
-	{
-		return $this->oneToMany('Post');
-	}
+    /**
+     * One to many relationship with posts
+     *
+     * @return  \Hubzero\Database\Relationship\OneToMany
+     **/
+    public function posts()
+    {
+        return $this->oneToMany('Post');
+    }
 }

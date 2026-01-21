@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,35 +16,33 @@ use Hubzero\Base\ServiceProvider;
  */
 class DatabaseServiceProvider extends ServiceProvider
 {
-	/**
-	 * Register the service provider
-	 *
-	 * @return  void
-	 */
-	public function register()
-	{
-		$this->app['db'] = function($app)
-		{
-			// @FIXME: this isn't pretty, but it will shim the removal of the old mysql library calls from php
-			$driver = ($app['config']->get('dbtype') == 'mysql') ? 'pdo' : $app['config']->get('dbtype');
+    /**
+     * Register the service provider
+     *
+     * @return  void
+     */
+    public function register()
+    {
+        $this->app['db'] = function ($app) {
+            // @FIXME: this isn't pretty, but it will shim the removal of the old mysql library calls from php
+            $driver = ($app['config']->get('dbtype') == 'mysql') ? 'pdo' : $app['config']->get('dbtype');
 
-			$options = [
-				'driver'   => $driver,
-				'host'     => $app['config']->get('host'),
-				'user'     => $app['config']->get('user'),
-				'password' => $app['config']->get('password'),
-				'database' => $app['config']->get('db'),
-				'prefix'   => $app['config']->get('dbprefix')
-			];
+            $options = [
+                'driver'   => $driver,
+                'host'     => $app['config']->get('host'),
+                'user'     => $app['config']->get('user'),
+                'password' => $app['config']->get('password'),
+                'database' => $app['config']->get('db'),
+                'prefix'   => $app['config']->get('dbprefix')
+            ];
 
-			$driver = Driver::getInstance($options);
+            $driver = Driver::getInstance($options);
 
-			if ($app['config']->get('debug'))
-			{
-				$driver->enableDebugging();
-			}
+            if ($app['config']->get('debug')) {
+                $driver->enableDebugging();
+            }
 
-			return $driver;
-		};
-	}
+            return $driver;
+        };
+    }
 }

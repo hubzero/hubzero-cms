@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,37 +16,36 @@ use Components\Tags\Models\Tag;
  */
 class Helper extends Module
 {
-	/**
-	 * Get module contents
-	 *
-	 * @return  void
-	 */
-	public function run()
-	{
-		require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
+    /**
+     * Get module contents
+     *
+     * @return  void
+     */
+    public function run()
+    {
+        require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
-		$this->tags = Tag::all()
-			->whereEquals('admin', 0)
-			->limit((int)$this->params->get('numtags', 25))
-			->order('objects', 'desc')
-			->rows();
+        $this->tags = Tag::all()
+            ->whereEquals('admin', 0)
+            ->limit((int)$this->params->get('numtags', 25))
+            ->order('objects', 'desc')
+            ->rows();
 
-		require $this->getLayoutPath();
-	}
+        require $this->getLayoutPath();
+    }
 
-	/**
-	 * Display module
-	 *
-	 * @return  void
-	 */
-	public function display()
-	{
-		if ($content = $this->getCacheContent())
-		{
-			echo $content;
-			return;
-		}
+    /**
+     * Display module
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        if ($content = $this->getCacheContent()) {
+            echo $content;
+            return;
+        }
 
-		$this->run();
-	}
+        $this->run();
+    }
 }

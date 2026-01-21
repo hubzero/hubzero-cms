@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,702 +15,627 @@ use Hubzero\Database\Table;
  */
 class Version extends Table
 {
-	/**
-	 * Constructor
-	 *
-	 * @param   object  &$db  Database
-	 * @return  void
-	 */
-	public function __construct(&$db)
-	{
-		parent::__construct('#__publication_versions', 'id', $db);
-	}
+    /**
+     * Constructor
+     *
+     * @param   object  &$db  Database
+     * @return  void
+     */
+    public function __construct(&$db)
+    {
+        parent::__construct('#__publication_versions', 'id', $db);
+    }
 
-	/**
-	 * Load a record and bind to $this
-	 *
-	 * @param   integer  $pid      Pub ID
-	 * @param   string   $version  Version number or name
-	 * @return  mixed False if error, Object on success
-	 */
-	public function loadVersion($pid = null, $version = 'dev')
-	{
-		if ($pid === null)
-		{
-			$pid = $this->publication_id;
-		}
-		if ($pid === null)
-		{
-			return false;
-		}
+    /**
+     * Load a record and bind to $this
+     *
+     * @param   integer  $pid      Pub ID
+     * @param   string   $version  Version number or name
+     * @return  mixed False if error, Object on success
+     */
+    public function loadVersion($pid = null, $version = 'dev')
+    {
+        if ($pid === null) {
+            $pid = $this->publication_id;
+        }
+        if ($pid === null) {
+            return false;
+        }
 
-		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
-		if ($version == 'default' or $version == 'current' or $version == 'main')
-		{
-			$query.= " AND main=1 ";
-		}
-		elseif ($version == 'dev')
-		{
-			$query.= " AND state=3 ";
-		}
-		elseif (is_numeric($version))
-		{
-			$query.= " AND version_number=" . $this->_db->quote($version);
-		}
-		else
-		{
-			// Error in supplied version value
-			$query.= " AND 1=2 ";
-		}
-		$query .= " LIMIT 1";
+        $query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
+        if ($version == 'default' or $version == 'current' or $version == 'main') {
+            $query .= " AND main=1 ";
+        } elseif ($version == 'dev') {
+            $query .= " AND state=3 ";
+        } elseif (is_numeric($version)) {
+            $query .= " AND version_number=" . $this->_db->quote($version);
+        } else {
+            // Error in supplied version value
+            $query .= " AND 1=2 ";
+        }
+        $query .= " LIMIT 1";
 
-		$this->_db->setQuery($query);
+        $this->_db->setQuery($query);
 
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-	}
+        if ($result = $this->_db->loadAssoc()) {
+            return $this->bind($result);
+        } else {
+            $this->setError($this->_db->getErrorMsg());
+            return false;
+        }
+    }
 
-	/**
-	 * Update record
-	 *
-	 * @param   integer  $pid      Pub ID
-	 * @param   string   $update   Column name
-	 * @param   string   $new      Update to
-	 * @param   string   $where    Where
-	 * @param   string   $version  Version number or name
-	 * @return  void
-	 */
-	public function updateVersion($pid = null, $update = '', $new = '', $where = '', $version = 'dev')
-	{
-		if ($pid === null)
-		{
-			$pid = $this->publication_id;
-		}
-		if ($pid === null)
-		{
-			return false;
-		}
-		if (!$update or !$new)
-		{
-			return false;
-		}
+    /**
+     * Update record
+     *
+     * @param   integer  $pid      Pub ID
+     * @param   string   $update   Column name
+     * @param   string   $new      Update to
+     * @param   string   $where    Where
+     * @param   string   $version  Version number or name
+     * @return  void
+     */
+    public function updateVersion($pid = null, $update = '', $new = '', $where = '', $version = 'dev')
+    {
+        if ($pid === null) {
+            $pid = $this->publication_id;
+        }
+        if ($pid === null) {
+            return false;
+        }
+        if (!$update or !$new) {
+            return false;
+        }
 
-		$query  = "UPDATE $this->_tbl SET $update = " . $this->_db->quote($new) . " WHERE publication_id=" . $this->_db->quote($pid);
-		$query .= $where ? " AND ".$where : "";
-		if ($version == 'default' or $version == 'current' && $version == 'main')
-		{
-			$query.= " AND main=1 ";
-		}
-		elseif ($version == 'dev')
-		{
-			$query.= " AND state=3 ";
-		}
-		elseif (is_numeric($version))
-		{
-			$query.= " AND version_number=" . $this->_db->quote($version);
-		}
-		else
-		{
-			// Error in supplied version value
-			$query.= " AND 1=2 ";
-		}
-		$query .= "LIMIT 1";
-		$this->_db->setQuery($query);
-		$this->_db->query();
-	}
+        $query  = "UPDATE $this->_tbl SET $update = " . $this->_db->quote($new)
+            . " WHERE publication_id=" . $this->_db->quote($pid);
+        $query .= $where ? " AND " . $where : "";
+        if ($version == 'default' or $version == 'current' && $version == 'main') {
+            $query .= " AND main=1 ";
+        } elseif ($version == 'dev') {
+            $query .= " AND state=3 ";
+        } elseif (is_numeric($version)) {
+            $query .= " AND version_number=" . $this->_db->quote($version);
+        } else {
+            // Error in supplied version value
+            $query .= " AND 1=2 ";
+        }
+        $query .= "LIMIT 1";
+        $this->_db->setQuery($query);
+        $this->_db->query();
+    }
 
-	/**
-	 * Get used labels
-	 *
-	 * @param   integer  $pid      Pub ID
-	 * @param   string   $exclude  Version number or name
-	 * @return  array
-	 */
-	public function getUsedLabels($pid = null, $exclude = 'dev')
-	{
-		if ($pid === null)
-		{
-			$pid = $this->publication_id;
-		}
-		if ($pid === null)
-		{
-			return false;
-		}
-		$labels = array();
+    /**
+     * Get used labels
+     *
+     * @param   integer  $pid      Pub ID
+     * @param   string   $exclude  Version number or name
+     * @return  array
+     */
+    public function getUsedLabels($pid = null, $exclude = 'dev')
+    {
+        if ($pid === null) {
+            $pid = $this->publication_id;
+        }
+        if ($pid === null) {
+            return false;
+        }
+        $labels = array();
 
-		$query  = "SELECT version_label FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
+        $query  = "SELECT version_label FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
 
-		if ($exclude == 'default' or $exclude == 'current' && $exclude == 'main')
-		{
-			$query.= " AND main!=1 ";
-		}
-		elseif ($exclude == 'dev')
-		{
-			$query.= " AND state!=3 ";
-		}
-		elseif (is_numeric($exclude))
-		{
-			$query.= " AND version_number!=" . $this->_db->quote($exclude);
-		}
+        if ($exclude == 'default' or $exclude == 'current' && $exclude == 'main') {
+            $query .= " AND main!=1 ";
+        } elseif ($exclude == 'dev') {
+            $query .= " AND state!=3 ";
+        } elseif (is_numeric($exclude)) {
+            $query .= " AND version_number!=" . $this->_db->quote($exclude);
+        }
 
-		$this->_db->setQuery($query);
-		$result = $this->_db->loadObjectList();
+        $this->_db->setQuery($query);
+        $result = $this->_db->loadObjectList();
 
-		if ($result)
-		{
-			foreach ($result as $r)
-			{
-				$labels[] = $r->version_label;
-			}
-		}
+        if ($result) {
+            foreach ($result as $r) {
+                $labels[] = $r->version_label;
+            }
+        }
 
-		return $labels;
-	}
+        return $labels;
+    }
 
-	/**
-	 * Get attribute
-	 *
-	 * @param   integer  $pid      Pub ID
-	 * @param   string   $version  Version number or name
-	 * @param   string   $select   Select query
-	 * @return  string
-	 */
-	public function getAttribute($pid = null, $version = 'dev', $select = '')
-	{
-		if ($pid === null)
-		{
-			$pid = $this->publication_id;
-		}
-		if ($pid === null)
-		{
-			return false;
-		}
-		if (!$select)
-		{
-			return false;
-		}
+    /**
+     * Get attribute
+     *
+     * @param   integer  $pid      Pub ID
+     * @param   string   $version  Version number or name
+     * @param   string   $select   Select query
+     * @return  string
+     */
+    public function getAttribute($pid = null, $version = 'dev', $select = '')
+    {
+        if ($pid === null) {
+            $pid = $this->publication_id;
+        }
+        if ($pid === null) {
+            return false;
+        }
+        if (!$select) {
+            return false;
+        }
 
-		$query  = "SELECT $select FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
+        $query  = "SELECT $select FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
 
-		if ($version == 'default' or $version == 'current' && $version == 'main')
-		{
-			$query.= " AND main=1 ";
-		}
-		elseif ($version == 'dev')
-		{
-			$query.= " AND state=3 ";
-		}
-		elseif (is_numeric($version))
-		{
-			$query.= " AND version_number=" . $this->_db->quote($version);
-		}
-		else
-		{
-			// Error in supplied version value
-			$query.= " AND 1=2 ";
-		}
-		$query .= " LIMIT 1";
+        if ($version == 'default' or $version == 'current' && $version == 'main') {
+            $query .= " AND main=1 ";
+        } elseif ($version == 'dev') {
+            $query .= " AND state=3 ";
+        } elseif (is_numeric($version)) {
+            $query .= " AND version_number=" . $this->_db->quote($version);
+        } else {
+            // Error in supplied version value
+            $query .= " AND 1=2 ";
+        }
+        $query .= " LIMIT 1";
 
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
+        $this->_db->setQuery($query);
+        return $this->_db->loadResult();
+    }
 
-	/**
-	 * Get records
-	 *
-	 * @param   integer  $pid     Pub ID
-	 * @param   array    $filters  Query filters
-	 * @return  object
-	 */
-	public function getVersions($pid, $filters = array())
-	{
-		if ($pid === null)
-		{
-			$pid = $this->publication_id;
-		}
-		if ($pid === null)
-		{
-			return false;
-		}
+    /**
+     * Get records
+     *
+     * @param   integer  $pid     Pub ID
+     * @param   array    $filters  Query filters
+     * @return  object
+     */
+    public function getVersions($pid, $filters = array())
+    {
+        if ($pid === null) {
+            $pid = $this->publication_id;
+        }
+        if ($pid === null) {
+            return false;
+        }
 
-		$withdev = isset($filters['withdev']) && $filters['withdev'] == 1 ? 1 : 0;
-		$sortby  = isset($filters['sortby']) && $filters['sortby'] != '' ? $filters['sortby'] : 'v.version_number DESC';
-		$public  = isset($filters['public']) && $filters['public'] == 1 ? 1 : 0;
+        $withdev = isset($filters['withdev']) && $filters['withdev'] == 1 ? 1 : 0;
+        $sortby  = isset($filters['sortby']) && $filters['sortby'] != '' ? $filters['sortby'] : 'v.version_number DESC';
+        $public  = isset($filters['public']) && $filters['public'] == 1 ? 1 : 0;
 
-		$query = "SELECT v.*, p.alias, p.ranking as parent_ranking, p.rating as parent_rating, ";
-		$query.= " p.checked_out, p.checked_out_time, p.access as parent_access, p.project_id ";
-		$query.= " FROM $this->_tbl AS v ";
-		$query.= " JOIN #__publications AS p ON p.id=v.publication_id ";
-		$query.= " WHERE publication_id=" . $this->_db->quote($pid);
-		$query.= $withdev ? "" : " AND v.state!=3 ";
-		$query.= $public ? " AND (v.state = 1 OR v.state = 0) AND v.access <= 1 " : "";
-		$query.= " ORDER BY " . $sortby;
+        $query = "SELECT v.*, p.alias, p.ranking as parent_ranking, p.rating as parent_rating, ";
+        $query .= " p.checked_out, p.checked_out_time, p.access as parent_access, p.project_id ";
+        $query .= " FROM $this->_tbl AS v ";
+        $query .= " JOIN #__publications AS p ON p.id=v.publication_id ";
+        $query .= " WHERE publication_id=" . $this->_db->quote($pid);
+        $query .= $withdev ? "" : " AND v.state!=3 ";
+        $query .= $public ? " AND (v.state = 1 OR v.state = 0) AND v.access <= 1 " : "";
+        $query .= " ORDER BY " . $sortby;
 
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
+        $this->_db->setQuery($query);
+        return $this->_db->loadObjectList();
+    }
 
-	/**
-	 * Check version
-	 *
-	 * @param   integer  $pid      Pub ID
-	 * @param   string   $version  Version number or name
-	 * @return  boolean
-	 */
-	public function checkVersion($pid = null, $version = null)
-	{
-		if ($pid === null)
-		{
-			return false;
-		}
-		if ($version == 'default')
-		{
-			return true;
-		}
-		if ($version == 'dev')
-		{
-			$query  = "SELECT id FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND state = 3 LIMIT 1 ";
-			$this->_db->setQuery($query);
-			$result = $this->_db->loadResult();
-			return $result ? true : false;
-		}
-		if (is_numeric($version))
-		{
-			$query  = "SELECT id FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND version_number=" . $this->_db->quote($version) . " LIMIT 1 ";
-			$this->_db->setQuery($query);
-			$result = $this->_db->loadResult();
-			return $result ? true : false;
-		}
+    /**
+     * Check version
+     *
+     * @param   integer  $pid      Pub ID
+     * @param   string   $version  Version number or name
+     * @return  boolean
+     */
+    public function checkVersion($pid = null, $version = null)
+    {
+        if ($pid === null) {
+            return false;
+        }
+        if ($version == 'default') {
+            return true;
+        }
+        if ($version == 'dev') {
+            $query  = "SELECT id FROM $this->_tbl WHERE publication_id="
+                . $this->_db->quote($pid) . " AND state = 3 LIMIT 1 ";
+            $this->_db->setQuery($query);
+            $result = $this->_db->loadResult();
+            return $result ? true : false;
+        }
+        if (is_numeric($version)) {
+            $query  = "SELECT id FROM $this->_tbl WHERE publication_id="
+                . $this->_db->quote($pid) . " AND version_number=" . $this->_db->quote($version) . " LIMIT 1 ";
+            $this->_db->setQuery($query);
+            $result = $this->_db->loadResult();
+            return $result ? true : false;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * Get pub id
-	 *
-	 * @param   integer  $vid  Pub version ID
-	 * @return  integer
-	 */
-	public function getPubId($vid = null)
-	{
-		if ($vid === null)
-		{
-			return false;
-		}
-		$query  = "SELECT publication_id FROM $this->_tbl WHERE id=" . $this->_db->quote($vid) . " LIMIT 1 ";
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
+    /**
+     * Get pub id
+     *
+     * @param   integer  $vid  Pub version ID
+     * @return  integer
+     */
+    public function getPubId($vid = null)
+    {
+        if ($vid === null) {
+            return false;
+        }
+        $query  = "SELECT publication_id FROM $this->_tbl WHERE id=" . $this->_db->quote($vid) . " LIMIT 1 ";
+        $this->_db->setQuery($query);
+        return $this->_db->loadResult();
+    }
 
-	/**
-	 * Get ID of main version
-	 *
-	 * @param   integer  $pid  Pub ID
-	 * @return  integer
-	 */
-	public function getMainVersionId($pid = null)
-	{
-		if ($pid === null)
-		{
-			return false;
-		}
-		$query  = "SELECT id FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND main = 1 LIMIT 1 ";
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
+    /**
+     * Get ID of main version
+     *
+     * @param   integer  $pid  Pub ID
+     * @return  integer
+     */
+    public function getMainVersionId($pid = null)
+    {
+        if ($pid === null) {
+            return false;
+        }
+        $query  = "SELECT id FROM $this->_tbl WHERE publication_id="
+            . $this->_db->quote($pid) . " AND main = 1 LIMIT 1 ";
+        $this->_db->setQuery($query);
+        return $this->_db->loadResult();
+    }
 
-	/**
-	 * Get published version number
-	 *
-	 * @param   integer  $pid  Pub ID
-	 * @return  integer
-	 */
-	public function getPublishedVersionNumber($pid = null)
-	{
-		if ($pid === null)
-		{
-			return false;
-		}
-		$query  = "SELECT version_number FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
+    /**
+     * Get published version number
+     *
+     * @param   integer  $pid  Pub ID
+     * @return  integer
+     */
+    public function getPublishedVersionNumber($pid = null)
+    {
+        if ($pid === null) {
+            return false;
+        }
+        $query  = "SELECT version_number FROM $this->_tbl WHERE publication_id="
+            . $this->_db->quote($pid) . " AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
+        $this->_db->setQuery($query);
+        return $this->_db->loadResult();
+    }
 
-	/**
-	 * Get published version count
-	 *
-	 * @param   integer  $pid  Pub ID
-	 * @return  integer
-	 */
-	public function getPublishedCount($pid = null)
-	{
-		if ($pid === null)
-		{
-			return false;
-		}
-		$query  = "SELECT COUNT(*) FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND state = 1 ";
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
+    /**
+     * Get published version count
+     *
+     * @param   integer  $pid  Pub ID
+     * @return  integer
+     */
+    public function getPublishedCount($pid = null)
+    {
+        if ($pid === null) {
+            return false;
+        }
+        $query  = "SELECT COUNT(*) FROM $this->_tbl WHERE publication_id="
+            . $this->_db->quote($pid) . " AND state = 1 ";
+        $this->_db->setQuery($query);
+        return $this->_db->loadResult();
+    }
 
-	/**
-	 * Get version count
-	 *
-	 * @param   integer  $pid  Pub ID
-	 * @return  integer
-	 */
-	public function getCount($pid = null)
-	{
-		if ($pid === null)
-		{
-			return false;
-		}
-		$query  = "SELECT COUNT(*) FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
+    /**
+     * Get version count
+     *
+     * @param   integer  $pid  Pub ID
+     * @return  integer
+     */
+    public function getCount($pid = null)
+    {
+        if ($pid === null) {
+            return false;
+        }
+        $query  = "SELECT COUNT(*) FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
+        $this->_db->setQuery($query);
+        return $this->_db->loadResult();
+    }
 
-	/**
-	 * Get last public release
-	 *
-	 * @param   integer  $pid  Pub ID
-	 * @return  object
-	 */
-	public function getLastPubRelease($pid = null)
-	{
-		if ($pid === null)
-		{
-			return false;
-		}
-		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
-		$this->_db->setQuery($query);
-		$result = $this->_db->loadObjectList();
-		return $result ? $result[0] : false;
-	}
-	
-	/**
-	 * Get previous version publication
-	 *
-	 * @param   integer	$pid	Pub ID
-	 * @param	integer	$verNum	version number
-	 * @return  object
-	 */
-	public function getPrevPublication($pid, $version_number)
-	{
-		if ($pid === null || $version_number == 1)
-		{
-			return false;
-		}
-		$query = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND version_number=" . $this->_db->quote(--$version_number) . " AND state = 1";
-		$this->_db->setQuery($query);
-		return $this->_db->loadObject();
-	}
-	
-	/**
-	 * Get next version publication
-	 *
-	 * @param	integer	$pid	Pub ID
-	 * @param	integer	$verNum	version number
-	 * @return  object
-	 */
-	public function getNextPublication($pid, $version_number)
-	{
-		if ($pid === null)
-		{
-			return false;
-		}
-		$query = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND version_number=" . $this->_db->quote(++$version_number) . " AND state = 1";
-		$this->_db->setQuery($query);
-		return $this->_db->loadObject();
-	}
+    /**
+     * Get last public release
+     *
+     * @param   integer  $pid  Pub ID
+     * @return  object
+     */
+    public function getLastPubRelease($pid = null)
+    {
+        if ($pid === null) {
+            return false;
+        }
+        $query  = "SELECT * FROM $this->_tbl WHERE publication_id="
+            . $this->_db->quote($pid) . " AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
+        $this->_db->setQuery($query);
+        $result = $this->_db->loadObjectList();
+        return $result ? $result[0] : false;
+    }
 
-	/**
-	 * Remove main flag
-	 *
-	 * @param   integer  $vid       Pub version ID
-	 * @param   boolean  $unpublish
-	 * @return  void
-	 */
-	public function removeMainFlag($vid = null, $unpublish = 0)
-	{
-		if ($vid === null || !is_numeric($vid) || intval($vid) == 0)
-		{
-			return false;
-		}
-		$query  = "UPDATE $this->_tbl SET main = 0 ";
-		$query .= $unpublish ? ", state = 0 " : "";
-		$query .= "WHERE id=" . $this->_db->quote($vid) . " AND main = 1 LIMIT 1 ";
-		$this->_db->setQuery($query);
-		if ($this->_db->getError())
-		{
-			return false;
-		}
-		return true;
-	}
+    /**
+     * Get previous version publication
+     *
+     * @param   integer $pid    Pub ID
+     * @param   integer $verNum version number
+     * @return  object
+     */
+    public function getPrevPublication($pid, $version_number)
+    {
+        if ($pid === null || $version_number == 1) {
+            return false;
+        }
+        $prevVersion = --$version_number;
+        $query = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid)
+            . " AND version_number=" . $this->_db->quote($prevVersion) . " AND state = 1";
+        $this->_db->setQuery($query);
+        return $this->_db->loadObject();
+    }
 
-	/**
-	 * Get title for new draft
-	 *
-	 * @param   integer  $projectid  Project ID
-	 * @param   string   $title
-	 * @return  void
-	 */
-	public function getDefaultTitle($projectid = 0, $title = '')
-	{
-		if (!is_numeric($projectid) || intval($projectid) == 0)
-		{
-			return false;
-		}
-		$query  = "SELECT COUNT(*)";
-		$query.= " FROM $this->_tbl AS v ";
-		$query.= " JOIN #__publications AS p ON p.id=v.publication_id ";
-		$query.= " WHERE v.main=1 AND v.title LIKE " . $this->_db->quote($title . '%') . " AND p.project_id = " . $this->_db->quote($projectid). " AND v.state != 2";
+    /**
+     * Get next version publication
+     *
+     * @param   integer $pid    Pub ID
+     * @param   integer $verNum version number
+     * @return  object
+     */
+    public function getNextPublication($pid, $version_number)
+    {
+        if ($pid === null) {
+            return false;
+        }
+        $nextVersion = ++$version_number;
+        $query = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid)
+            . " AND version_number=" . $this->_db->quote($nextVersion) . " AND state = 1";
+        $this->_db->setQuery($query);
+        return $this->_db->loadObject();
+    }
 
-		$this->_db->setQuery($query);
-		$result = $this->_db->loadResult();
-		$result = $result ? ($result + 1) : 1;
+    /**
+     * Remove main flag
+     *
+     * @param   integer  $vid       Pub version ID
+     * @param   boolean  $unpublish
+     * @return  void
+     */
+    public function removeMainFlag($vid = null, $unpublish = 0)
+    {
+        if ($vid === null || !is_numeric($vid) || intval($vid) == 0) {
+            return false;
+        }
+        $query  = "UPDATE $this->_tbl SET main = 0 ";
+        $query .= $unpublish ? ", state = 0 " : "";
+        $query .= "WHERE id=" . $this->_db->quote($vid) . " AND main = 1 LIMIT 1 ";
+        $this->_db->setQuery($query);
+        if ($this->_db->getError()) {
+            return false;
+        }
+        return true;
+    }
 
-		$title .= ' (' . $result . ')';
+    /**
+     * Get title for new draft
+     *
+     * @param   integer  $projectid  Project ID
+     * @param   string   $title
+     * @return  void
+     */
+    public function getDefaultTitle($projectid = 0, $title = '')
+    {
+        if (!is_numeric($projectid) || intval($projectid) == 0) {
+            return false;
+        }
+        $query  = "SELECT COUNT(*)";
+        $query .= " FROM $this->_tbl AS v ";
+        $query .= " JOIN #__publications AS p ON p.id=v.publication_id ";
+        $query .= " WHERE v.main=1 AND v.title LIKE " . $this->_db->quote($title . '%')
+            . " AND p.project_id = " . $this->_db->quote($projectid) . " AND v.state != 2";
 
-		return $title;
-	}
+        $this->_db->setQuery($query);
+        $result = $this->_db->loadResult();
+        $result = $result ? ($result + 1) : 1;
 
-	/**
-	 * Create new version
-	 *
-	 * @param   object   $dev             Version to duplicate
-	 * @param   integer  $state           New version status
-	 * @param   string   $secret          New version secret
-	 * @param   integer  $version_number  New version number
-	 * @param   integer  $main            Default?
-	 * @return  mixed    integer or False
-	 */
-	public function createNewVersion($dev, $state = 1, $secret = '', $version_number = 1, $main = 1)
-	{
-		$new =  new self($this->_db);
-		$new = $dev;
-		$new->id = 0;
-		$new->rating = '0.0';
-		$new->state = $state;
-		$new->secret = $secret ? $secret : strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
-		$new->version_number = $version_number;
-		$new->main = $main;
+        $title .= ' (' . $result . ')';
 
-		if ($new->store())
-		{
-			return $new->id;
-		}
-		else
-		{
-			return false;
-		}
-	}
+        return $title;
+    }
 
-	/**
-	 * Get record
-	 *
-	 * @param   integer  $pid      Pub ID
-	 * @param   string   $version  Version number or name
-	 * @return  mixed    object or False
-	 */
-	public function getVersion($pid, $version = 'dev')
-	{
-		if ($pid === null)
-		{
-			$pid = $this->publication_id;
-		}
-		if ($pid === null)
-		{
-			return false;
-		}
+    /**
+     * Create new version
+     *
+     * @param   object   $dev             Version to duplicate
+     * @param   integer  $state           New version status
+     * @param   string   $secret          New version secret
+     * @param   integer  $version_number  New version number
+     * @param   integer  $main            Default?
+     * @return  mixed    integer or False
+     */
+    public function createNewVersion($dev, $state = 1, $secret = '', $version_number = 1, $main = 1)
+    {
+        $new =  new self($this->_db);
+        $new = $dev;
+        $new->id = 0;
+        $new->rating = '0.0';
+        $new->state = $state;
+        $new->secret = $secret ? $secret : strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
+        $new->version_number = $version_number;
+        $new->main = $main;
 
-		$query = "SELECT v.*, p.alias, p.ranking as parent_ranking, p.rating as parent_rating, ";
-		$query.= " p.checked_out, p.checked_out_time, p.access as parent_access, p.project_id ";
-		$query.= " FROM $this->_tbl AS v ";
-		$query.= " JOIN #__publications AS p ON p.id=v.publication_id ";
-		if ($version == 'default' or $version == 'current' && $version == 'main')
-		{
-			$query.= " AND v.main=1 ";
-		}
-		elseif ($version == 'dev')
-		{
-			$query.= " AND v.state=3 ";
-		}
-		elseif (is_numeric($version))
-		{
-			$query.= " AND v.version_number=" . $this->_db->quote($version);
-		}
-		else
-		{
-			// Error in supplied version value
-			$query.= " AND 1=2 ";
-		}
-		$query .= " LIMIT 1";
+        if ($new->store()) {
+            return $new->id;
+        } else {
+            return false;
+        }
+    }
 
-		$this->_db->setQuery($query);
-		$result = $this->_db->loadObjectList();
-		return $result ? $result[0] : false;
-	}
+    /**
+     * Get record
+     *
+     * @param   integer  $pid      Pub ID
+     * @param   string   $version  Version number or name
+     * @return  mixed    object or False
+     */
+    public function getVersion($pid, $version = 'dev')
+    {
+        if ($pid === null) {
+            $pid = $this->publication_id;
+        }
+        if ($pid === null) {
+            return false;
+        }
 
-	/**
-	 * Save version parameter
-	 *
-	 * @param   integer  $id
-	 * @param   string   $param
-	 * @param   string   $value
-	 * @return  void
-	 */
-	public function saveParam($id = null, $param = '', $value = 0)
-	{
-		if ($id === null)
-		{
-			$id = $this->id;
-		}
+        $query = "SELECT v.*, p.alias, p.ranking as parent_ranking, p.rating as parent_rating, ";
+        $query .= " p.checked_out, p.checked_out_time, p.access as parent_access, p.project_id ";
+        $query .= " FROM $this->_tbl AS v ";
+        $query .= " JOIN #__publications AS p ON p.id=v.publication_id ";
+        if ($version == 'default' or $version == 'current' && $version == 'main') {
+            $query .= " AND v.main=1 ";
+        } elseif ($version == 'dev') {
+            $query .= " AND v.state=3 ";
+        } elseif (is_numeric($version)) {
+            $query .= " AND v.version_number=" . $this->_db->quote($version);
+        } else {
+            // Error in supplied version value
+            $query .= " AND 1=2 ";
+        }
+        $query .= " LIMIT 1";
 
-		if (!$id)
-		{
-			return false;
-		}
+        $this->_db->setQuery($query);
+        $result = $this->_db->loadObjectList();
+        return $result ? $result[0] : false;
+    }
 
-		// Clean up value
-		$value = preg_replace('/=/', '', $value);
+    /**
+     * Save version parameter
+     *
+     * @param   integer  $id
+     * @param   string   $param
+     * @param   string   $value
+     * @return  void
+     */
+    public function saveParam($id = null, $param = '', $value = 0)
+    {
+        if ($id === null) {
+            $id = $this->id;
+        }
 
-		if ($this->load($id))
-		{
-			if ($this->params)
-			{
-				$params = explode("\n", $this->params);
-				$in = '';
-				$found = 0;
+        if (!$id) {
+            return false;
+        }
 
-				// Change param
-				if (!empty($params))
-				{
-					foreach ($params as $p)
-					{
-						if (trim($p) != '' && trim($p) != '=')
-						{
-							$extracted = explode('=', $p);
-							if (!empty($extracted))
-							{
-								$in .= $extracted[0] . '=';
-								$default = isset($extracted[1]) ? $extracted[1] : 0;
-								$in .= $extracted[0] == $param ? $value : $default;
-								$in	.= "\n";
-								if ($extracted[0] == $param)
-								{
-									$found = 1;
-								}
-							}
-						}
-					}
-				}
-				if (!$found)
-				{
-					$in .= "\n" . $param . '=' . $value;
-				}
-			}
-			else
-			{
-				$in = $param . '=' . $value;
-			}
-			$this->params = $in;
-			$this->store();
-		}
+        // Clean up value
+        $value = preg_replace('/=/', '', $value);
 
-		return true;
-	}
+        if ($this->load($id)) {
+            if ($this->params) {
+                $params = explode("\n", $this->params);
+                $in = '';
+                $found = 0;
 
-	/**
-	 * Get top-level publication version stats
-	 *
-	 * @param   array   $validProjects
-	 * @param   string  $get
-	 * @return  mixed
-	 */
-	public function getPubStats($validProjects = array(), $get = 'total')
-	{
-		if (empty($validProjects))
-		{
-			return null;
-		}
+                // Change param
+                if (!empty($params)) {
+                    foreach ($params as $p) {
+                        if (trim($p) != '' && trim($p) != '=') {
+                            $extracted = explode('=', $p);
+                            if (!empty($extracted)) {
+                                $in .= $extracted[0] . '=';
+                                $default = isset($extracted[1]) ? $extracted[1] : 0;
+                                $in .= $extracted[0] == $param ? $value : $default;
+                                $in .= "\n";
+                                if ($extracted[0] == $param) {
+                                    $found = 1;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (!$found) {
+                    $in .= "\n" . $param . '=' . $value;
+                }
+            } else {
+                $in = $param . '=' . $value;
+            }
+            $this->params = $in;
+            $this->store();
+        }
 
-		$query  = " SELECT COUNT(v.id) as versions ";
-		$query .= " FROM $this->_tbl as v ";
-		$query .= " JOIN #__publications as p ON p.id = v.publication_id ";
-		$query .= " WHERE v.state != 2 ";
+        return true;
+    }
 
-		if (!empty($validProjects))
-		{
-			$query .= " AND p.project_id IN (";
+    /**
+     * Get top-level publication version stats
+     *
+     * @param   array   $validProjects
+     * @param   string  $get
+     * @return  mixed
+     */
+    public function getPubStats($validProjects = array(), $get = 'total')
+    {
+        if (empty($validProjects)) {
+            return null;
+        }
 
-			$tquery = '';
-			foreach ($validProjects as $v)
-			{
-				$tquery .= "'".$v."',";
-			}
-			$tquery = substr($tquery, 0, strlen($tquery) - 1);
-			$query .= $tquery.") ";
-		}
+        $query  = " SELECT COUNT(v.id) as versions ";
+        $query .= " FROM $this->_tbl as v ";
+        $query .= " JOIN #__publications as p ON p.id = v.publication_id ";
+        $query .= " WHERE v.state != 2 ";
 
-		$this->_db->setQuery($query);
+        if (!empty($validProjects)) {
+            $query .= " AND p.project_id IN (";
 
-		if ($get == 'total')
-		{
-			return $this->_db->loadResult();
-		}
-	}
-	
-	/**
-	 * Save the reason that why the dataset is unpublished
-	 *
-	 * @param   int   $pid	publication id
-	 * @param   int   $verNumber	version number
-	 * @param   string  $selectedReason	the reason that users select
-	 * @param   string  $otherReason	the reason that users specify
-	 * @return  null or void
-	 */
-	public function saveUnPubReason($pid, $verNumber, $selectedReason, $otherReason='')
-	{
-		if (empty($pid) || empty($verNumber))
-		{
-			return null;
-		}
-		
-		if ($otherReason == '')
-		{
-			$query = "UPDATE $this->_tbl SET unpublished_reason = " . $this->_db->quote($selectedReason) . " WHERE publication_id=" . $this->_db->quote($pid) . " AND version_number=" . $this->_db->quote($verNumber);
-		}
-		else
-		{
-			$query = "UPDATE $this->_tbl SET unpublished_reason = " . $this->_db->quote($otherReason) . " WHERE publication_id=" . $this->_db->quote($pid) . " AND version_number=" . $this->_db->quote($verNumber);
-		}
-		
-		$this->_db->setQuery($query);
-		$this->_db->query();		
-	}
-	
-	/**
-	 * Get publication version by ID
-	 *
-	 * @param	integer	$vid	Publication Version ID
-	 * @return	object
-	 */
-	public function getPubVersion($vid = null)
-	{
-		if ($vid === null)
-		{
-			return false;
-		}
-		$query = "SELECT * FROM $this->_tbl WHERE id=" . $this->_db->quote($vid) . " AND state = 1";
-		$this->_db->setQuery($query);
-		return $this->_db->loadObject();
-	}
+            $tquery = '';
+            foreach ($validProjects as $v) {
+                $tquery .= "'" . $v . "',";
+            }
+            $tquery = substr($tquery, 0, strlen($tquery) - 1);
+            $query .= $tquery . ") ";
+        }
+
+        $this->_db->setQuery($query);
+
+        if ($get == 'total') {
+            return $this->_db->loadResult();
+        }
+    }
+
+    /**
+     * Save the reason that why the dataset is unpublished
+     *
+     * @param   int   $pid  publication id
+     * @param   int   $verNumber    version number
+     * @param   string  $selectedReason the reason that users select
+     * @param   string  $otherReason    the reason that users specify
+     * @return  null or void
+     */
+    public function saveUnPubReason($pid, $verNumber, $selectedReason, $otherReason = '')
+    {
+        if (empty($pid) || empty($verNumber)) {
+            return null;
+        }
+
+        if ($otherReason == '') {
+            $reason = $selectedReason;
+        } else {
+            $reason = $otherReason;
+        }
+
+        $query = "UPDATE $this->_tbl SET unpublished_reason = " . $this->_db->quote($reason)
+            . " WHERE publication_id=" . $this->_db->quote($pid)
+            . " AND version_number=" . $this->_db->quote($verNumber);
+
+        $this->_db->setQuery($query);
+        $this->_db->query();
+    }
+
+    /**
+     * Get publication version by ID
+     *
+     * @param   integer $vid    Publication Version ID
+     * @return  object
+     */
+    public function getPubVersion($vid = null)
+    {
+        if ($vid === null) {
+            return false;
+        }
+        $query = "SELECT * FROM $this->_tbl WHERE id=" . $this->_db->quote($vid) . " AND state = 1";
+        $this->_db->setQuery($query);
+        return $this->_db->loadObject();
+    }
 }

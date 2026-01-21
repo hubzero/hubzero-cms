@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,164 +13,158 @@ namespace SciStarter\Http;
  **/
 class Curl
 {
-	/**
-	 * The connection resource
-	 *
-	 * @var  object
-	 **/
-	private $resource = null;
+    /**
+     * The connection resource
+     *
+     * @var  object
+     **/
+    private $resource = null;
 
-	/**
-	 * Constructs a new instance
-	 *
-	 * @return  void
-	 **/
-	public function __construct()
-	{
-		$this->initialize();
-	}
+    /**
+     * Constructs a new instance
+     *
+     * @return  void
+     **/
+    public function __construct()
+    {
+        $this->initialize();
+    }
 
-	/**
-	 * Initializes the resource
-	 *
-	 * @return  $this
-	 **/
-	public function initialize()
-	{
-		$this->resource = curl_init();
-		$this->setReturnTransfer();
+    /**
+     * Initializes the resource
+     *
+     * @return  $this
+     **/
+    public function initialize()
+    {
+        $this->resource = curl_init();
+        $this->setReturnTransfer();
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Sets a generic option on the curl resource
-	 *
-	 * @param   int    $opt    The curl option to set
-	 * @param   mixed  $value  The curl option value to use
-	 * @return  $this
-	 **/
-	public function setOpt($opt, $value)
-	{
-		curl_setopt($this->resource, $opt, $value);
+    /**
+     * Sets a generic option on the curl resource
+     *
+     * @param   int    $opt    The curl option to set
+     * @param   mixed  $value  The curl option value to use
+     * @return  $this
+     **/
+    public function setOpt($opt, $value)
+    {
+        curl_setopt($this->resource, $opt, $value);
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Returns string response
-	 *
-	 * @return  $this
-	 **/
-	public function setReturnTransfer()
-	{
-		return $this->setOpt(CURLOPT_RETURNTRANSFER, 1);
-	}
+    /**
+     * Returns string response
+     *
+     * @return  $this
+     **/
+    public function setReturnTransfer()
+    {
+        return $this->setOpt(CURLOPT_RETURNTRANSFER, 1);
+    }
 
-	/**
-	 * Sets the url endpoint
-	 *
-	 * @param   string  $url  the url endpoint to set
-	 * @return  $this
-	 **/
-	public function setUrl($url)
-	{
-		return $this->setOpt(CURLOPT_URL, $url);
-	}
+    /**
+     * Sets the url endpoint
+     *
+     * @param   string  $url  the url endpoint to set
+     * @return  $this
+     **/
+    public function setUrl($url)
+    {
+        return $this->setOpt(CURLOPT_URL, $url);
+    }
 
-	/**
-	 * Sets the post fields (and implicitly implies a post request)
-	 *
-	 * @param   array  $fields  the post fields to set on the request
-	 * @return  $this
-	 **/
-	public function setPostFields($fields)
-	{
-		// Form raw string version of fields
-		$raw   = '';
-		$first = true;
+    /**
+     * Sets the post fields (and implicitly implies a post request)
+     *
+     * @param   array  $fields  the post fields to set on the request
+     * @return  $this
+     **/
+    public function setPostFields($fields)
+    {
+        // Form raw string version of fields
+        $raw   = '';
+        $first = true;
 
-		foreach ($fields as $key => $value)
-		{
-			if (!$first)
-			{
-				$raw .= '&';
-			}
+        foreach ($fields as $key => $value) {
+            if (!$first) {
+                $raw .= '&';
+            }
 
-			$raw .= $key . '=' . $value;
+            $raw .= $key . '=' . $value;
 
-			$first = false;
-		}
+            $first = false;
+        }
 
-		$this->setOpt(CURLOPT_POST, count($fields));
-		$this->setOpt(CURLOPT_POSTFIELDS, $raw);
+        $this->setOpt(CURLOPT_POST, count($fields));
+        $this->setOpt(CURLOPT_POSTFIELDS, $raw);
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Sets a header on the request
-	 *
-	 * @param   string|array  $header  the header to set
-	 * @return  $this
-	 **/
-	public function setHeader($header)
-	{
-		$headers = [];
+    /**
+     * Sets a header on the request
+     *
+     * @param   string|array  $header  the header to set
+     * @return  $this
+     **/
+    public function setHeader($header)
+    {
+        $headers = [];
 
-		if (is_array($header))
-		{
-			foreach ($header as $key => $value)
-			{
-				$headers[] = $key . ': ' . $value;
-			}
-		}
-		else
-		{
-			$headers[] = $header;
-		}
+        if (is_array($header)) {
+            foreach ($header as $key => $value) {
+                $headers[] = $key . ': ' . $value;
+            }
+        } else {
+            $headers[] = $header;
+        }
 
-		$this->setOpt(CURLOPT_HTTPHEADER, $headers);
+        $this->setOpt(CURLOPT_HTTPHEADER, $headers);
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Executes the request
-	 *
-	 * @return  string
-	 **/
-	public function execute()
-	{
-		$response = curl_exec($this->resource);
+    /**
+     * Executes the request
+     *
+     * @return  string
+     **/
+    public function execute()
+    {
+        $response = curl_exec($this->resource);
 
-		$this->reset();
+        $this->reset();
 
-		return $response;
-	}
+        return $response;
+    }
 
-	/**
-	 * Resets the curl resource to be used again
-	 *
-	 * @return  $this
-	 **/
-	public function reset()
-	{
-		$this->close()
-			 ->initialize();
+    /**
+     * Resets the curl resource to be used again
+     *
+     * @return  $this
+     **/
+    public function reset()
+    {
+        $this->close()
+             ->initialize();
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Shuts down the resource
-	 *
-	 * @return  $this
-	 **/
-	public function close()
-	{
-		curl_close($this->resource);
+    /**
+     * Shuts down the resource
+     *
+     * @return  $this
+     **/
+    public function close()
+    {
+        curl_close($this->resource);
 
-		return $this;
-	}
+        return $this;
+    }
 }

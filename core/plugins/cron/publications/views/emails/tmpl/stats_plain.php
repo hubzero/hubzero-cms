@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,31 +24,29 @@ $append = '?from=' . $this->user->get('email');
 $lastMonth = date('M Y', strtotime("-1 month"));
 
 $message  = 'Here is the monthly update on your recent publications usage' . "\n";
-$message .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'."\n\n";
+$message .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . "\n\n";
 
-for ($a = 0; $a < count($this->pubstats); $a++)
-{
-	// Check against limit
-	if ($a >= $this->limit)
-	{
-		break;
-	}
+for ($a = 0; $a < count($this->pubstats); $a++) {
+    // Check against limit
+    if ($a >= $this->limit) {
+        break;
+    }
 
-	$stat = $this->pubstats[$a];
+    $stat = $this->pubstats[$a];
 
-	$sefManage = $baseManage . '/' . $stat->publication_id . $append;
-	$sefView   = $baseView . '/' . $stat->publication_id . $append;
+    $sefManage = $baseManage . '/' . $stat->publication_id . $append;
+    $sefView   = $baseView . '/' . $stat->publication_id . $append;
 
-	$message .= 'Publication #' . $stat->publication_id . ' "' . stripslashes($stat->title) . '"' . "\n";
-	$message .= 'View publication:          ' . $base . '/' . trim($sefView, '/') . "\n";
-	$message .= 'Manage publication:        ' . $base . '/' . trim($sefManage, '/') . "\n\n";
+    $message .= 'Publication #' . $stat->publication_id . ' "' . stripslashes($stat->title) . '"' . "\n";
+    $message .= 'View publication:          ' . $base . '/' . trim($sefView, '/') . "\n";
+    $message .= 'Manage publication:        ' . $base . '/' . trim($sefManage, '/') . "\n\n";
 
-	$message .= 'Usage in the past month... ' . "\n";
-	$message .= 'Page views:                ' . $stat->monthly_views. "\n";
-	$message .= 'Downloads:                 ' . $stat->monthly_primary. "\n";
-	$message .= 'Total downloads to date:   ' . $stat->total_primary. "\n";
+    $message .= 'Usage in the past month... ' . "\n";
+    $message .= 'Page views:                ' . $stat->monthly_views . "\n";
+    $message .= 'Downloads:                 ' . $stat->monthly_primary . "\n";
+    $message .= 'Total downloads to date:   ' . $stat->total_primary . "\n";
 
-	$message .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'."\n\n";
+    $message .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . "\n\n";
 }
 
 $message = str_replace('<br />', '', $message);

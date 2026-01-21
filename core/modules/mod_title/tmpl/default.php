@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,6 +8,6 @@
 
 defined('_HZEXEC_') or die();
 
-if (isset($this->title) && !empty($this->title)):
-	echo $this->title;
+if (isset($this->title) && !empty($this->title)) :
+    echo $this->title;
 endif;

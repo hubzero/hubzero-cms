@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,48 +24,49 @@ use Date;
 
 class BoostFactory
 {
-	var $map = null;
+    protected $map = null;
 
-	var $userHelper = null;
+    protected $userHelper = null;
 
-	public function __construct($args = [])
-	{
-		$this->map = Arr::getValue($args, 'map', new Map());
-		$this->userHelper = Arr::getValue(
-			$args, 'user', new MockProxy(['class' => 'User'])
-		);
-	}
+    public function __construct($args = [])
+    {
+        $this->map = Arr::getValue($args, 'map', new Map());
+        $this->userHelper = Arr::getValue(
+            $args,
+            'user',
+            new MockProxy(['class' => 'User'])
+        );
+    }
 
-	public function one($boostData)
-	{
-		$boost = Boost::blank();
+    public function one($boostData)
+    {
+        $boost = Boost::blank();
 
-		$formedData = $this->formData($boostData);
-		$boost->set($formedData);
+        $formedData = $this->formData($boostData);
+        $boost->set($formedData);
 
-		return $boost;
-	}
+        return $boost;
+    }
 
-	protected function formData($boostData)
-	{
-		$documentType = $boostData['document_type'];
-		$documentProperties = $this->map->documentTypeToFieldData($documentType);
-		$creationProperties = $this->generateCreationProperties();
+    protected function formData($boostData)
+    {
+        $documentType = $boostData['document_type'];
+        $documentProperties = $this->map->documentTypeToFieldData($documentType);
+        $creationProperties = $this->generateCreationProperties();
 
-		$formedData = array_merge($boostData, $documentProperties, $creationProperties);
+        $formedData = array_merge($boostData, $documentProperties, $creationProperties);
 
-		return $formedData;
-	}
+        return $formedData;
+    }
 
-	protected function generateCreationProperties()
-	{
-		$userId = $this->userHelper->get('id');
-		$now = Date::toSql();
+    protected function generateCreationProperties()
+    {
+        $userId = $this->userHelper->get('id');
+        $now = Date::toSql();
 
-		return [
-			'created_by' => $userId,
-			'created' => $now
-		];
-	}
-
+        return [
+            'created_by' => $userId,
+            'created' => $now
+        ];
+    }
 }

@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,44 +14,45 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding zones parameters
- **/
+ *
+ */
 class Migration20150423035158ComTools extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$mwdb = $this->getMWDBO())
-		{
-			$this->setError('Failed to connect to the middleware database', 'warning');
-			return false;
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$mwdb = $this->getMWDBO()) {
+            $this->setError('Failed to connect to the middleware database', 'warning');
+            return false;
+        }
 
-		if ($mwdb->tableExists('zones') && !$mwdb->tableHasField('zones', 'params') && $mwdb->tableHasField('zones', 'description'))
-		{
-			$query = "ALTER TABLE `zones` ADD `params` TEXT NULL AFTER `description`";
-			$mwdb->setQuery($query);
-			$mwdb->query();
-		}
-	}
+        if (
+            $mwdb->tableExists('zones')
+            && !$mwdb->tableHasField('zones', 'params')
+            && $mwdb->tableHasField('zones', 'description')
+        ) {
+            $query = "ALTER TABLE `zones` ADD `params` TEXT NULL AFTER `description`";
+            $mwdb->setQuery($query);
+            $mwdb->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if (!$mwdb = $this->getMWDBO())
-		{
-			$this->setError('Failed to connect to the middleware database', 'warning');
-			return false;
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if (!$mwdb = $this->getMWDBO()) {
+            $this->setError('Failed to connect to the middleware database', 'warning');
+            return false;
+        }
 
-		if ($mwdb->tableExists('zones') && $mwdb->tableHasField('zones', 'params'))
-		{
-			$query = "ALTER TABLE `zones` DROP `params`";
-			$mwdb->setQuery($query);
-			$mwdb->query();
-		}
-	}
+        if ($mwdb->tableExists('zones') && $mwdb->tableHasField('zones', 'params')) {
+            $query = "ALTER TABLE `zones` DROP `params`";
+            $mwdb->setQuery($query);
+            $mwdb->query();
+        }
+    }
 }

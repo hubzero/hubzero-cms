@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,38 +13,38 @@ namespace Hubzero\Base\Client;
  */
 class Site implements ClientInterface
 {
-	/**
-	 * ID
-	 *
-	 * @var  integer
-	 */
-	public $id = 0;
+    /**
+     * ID
+     *
+     * @var  integer
+     */
+    public $id = 0;
 
-	/**
-	 * Name
-	 *
-	 * @var  string
-	 */
-	public $name = 'site';
+    /**
+     * Name
+     *
+     * @var  string
+     */
+    public $name = 'site';
 
-	/**
-	 * Alias
-	 *
-	 * @var  string
-	 */
-	public $alias = 'site';
+    /**
+     * Alias
+     *
+     * @var  string
+     */
+    public $alias = 'site';
 
-	/**
-	 * A url to init this client.
-	 *
-	 * @var  string
-	 */
-	public $url = '';
+    /**
+     * A url to init this client.
+     *
+     * @var  string
+     */
+    public $url = '';
 
-	/**
-	 * Boostrap filesystem path
-	 *
-	 * @var  string
-	 */
-	public $path = '';
+    /**
+     * Boostrap filesystem path
+     *
+     * @var  string
+     */
+    public $path = '';
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,45 +15,47 @@ use Hubzero\Form\Field;
  */
 class Textarea extends Field
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var  string
-	 */
-	protected $type = 'Textarea';
+    /**
+     * The form field type.
+     *
+     * @var  string
+     */
+    protected $type = 'Textarea';
 
-	/**
-	 * Method to get the textarea field input markup.
-	 * Use the rows and columns attributes to specify the dimensions of the area.
-	 *
-	 * @return  string  The field input markup.
-	 */
-	protected function getInput()
-	{
-		// Initialize some field attributes.
-		$attributes = array(
-			'type'         => 'text',
-			'name'         => $this->name,
-			'id'           => $this->id,
-			'class'        => ($this->element['class']     ? (string) $this->element['class']  : ''),
-			'cols'         => ($this->element['cols'] ? (int) $this->element['cols'] : ''),
-			'rows'         => ($this->element['rows'] ? (int) $this->element['rows'] : ''),
-			'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
-			'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : '')
-		);
+    /**
+     * Method to get the textarea field input markup.
+     * Use the rows and columns attributes to specify the dimensions of the area.
+     *
+     * @return  string  The field input markup.
+     */
+    protected function getInput()
+    {
+        // Initialize some field attributes.
+        $attributes = array(
+            'type'         => 'text',
+            'name'         => $this->name,
+            'id'           => $this->id,
+            'class'        => ($this->element['class']     ? (string) $this->element['class']  : ''),
+            'cols'         => ($this->element['cols'] ? (int) $this->element['cols'] : ''),
+            'rows'         => ($this->element['rows'] ? (int) $this->element['rows'] : ''),
+            'disabled'     => ((string) $this->element['disabled'] == 'true'    ? 'disabled' : ''),
+            'onchange'     => ($this->element['onchange']  ? (string) $this->element['onchange'] : '')
+        );
 
-		$attr = array();
-		foreach ($attributes as $key => $value)
-		{
-			if (!$value)
-			{
-				continue;
-			}
+        $attr = array();
+        foreach ($attributes as $key => $value) {
+            if (!$value) {
+                continue;
+            }
 
-			$attr[] = $key . '="' . $value . '"';
-		}
-		$attr = implode(' ', $attr);
+            $attr[] = $key . '="' . $value . '"';
+        }
+        $attr = implode(' ', $attr);
 
-		return '<textarea ' . $attr . '>' . htmlspecialchars($this->value == null ? '' : $this->value, ENT_COMPAT, 'UTF-8') . '</textarea>';
-	}
+        return '<textarea ' .
+            $attr .
+            '>' .
+            htmlspecialchars($this->value == null ? '' : $this->value, ENT_COMPAT, 'UTF-8') .
+            '</textarea>';
+    }
 }

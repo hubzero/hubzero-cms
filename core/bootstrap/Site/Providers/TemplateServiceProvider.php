@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,55 +16,48 @@ use Hubzero\Template\Loader;
  */
 class TemplateServiceProvider extends ServiceProvider
 {
-	/**
-	 * Register the service provider.
-	 *
-	 * @return  void
-	 */
-	public function register()
-	{
-		$this->app['template.loader'] = function ($app)
-		{
-			$options = [
-				'path_app'  => PATH_APP . DS . 'templates',
-				'path_core' => PATH_CORE . DS . 'templates',
-				'style'     => 0,
-				'lang'      => ''
-			];
+    /**
+     * Register the service provider.
+     *
+     * @return  void
+     */
+    public function register()
+    {
+        $this->app['template.loader'] = function ($app) {
+            $options = [
+                'path_app'  => PATH_APP . DS . 'templates',
+                'path_core' => PATH_CORE . DS . 'templates',
+                'style'     => 0,
+                'lang'      => ''
+            ];
 
-			return new Loader($app, $options);
-		};
+            return new Loader($app, $options);
+        };
 
-		$this->app['template'] = function ($app)
-		{
-			$loader = $app['template.loader'];
+        $this->app['template'] = function ($app) {
+            $loader = $app['template.loader'];
 
-			if ($app->has('menu'))
-			{
-				$menu = $app['menu'];
+            if ($app->has('menu')) {
+                $menu = $app['menu'];
 
-				if (!($item = $menu->getActive()))
-				{
-					$item = $menu->getItem($app['request']->getInt('Itemid', 0));
-				}
+                if (!($item = $menu->getActive())) {
+                    $item = $menu->getItem($app['request']->getInt('Itemid', 0));
+                }
 
-				if (is_object($item))
-				{
-					$loader->setStyle($item->template_style_id);
-				}
+                if (is_object($item)) {
+                    $loader->setStyle($item->template_style_id);
+                }
 
-				if ($app->has('language.filter'))
-				{
-					$loader->setLang($app['language']->getTag());
-				}
-			}
+                if ($app->has('language.filter')) {
+                    $loader->setLang($app['language']->getTag());
+                }
+            }
 
-			if ($style = $app['request']->getVar('templateStyle', 0))
-			{
-				$loader->setStyle($style);
-			}
+            if ($style = $app['request']->getVar('templateStyle', 0)) {
+                $loader->setStyle($style);
+            }
 
-			return $loader->load();
-		};
-	}
+            return $loader->load();
+        };
+    }
 }

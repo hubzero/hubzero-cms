@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,129 +15,129 @@ use Hubzero\Base\Obj;
  */
 class Metadata extends Obj
 {
-	/**
-	 *  Object title
-	 *
-	 * @var  string
-	 */
-	public $title = null;
+    /**
+     *  Object title
+     *
+     * @var  string
+     */
+    public $title = null;
 
-	/**
-	 * Object abstract
-	 *
-	 * @var  string
-	 */
-	public $abstract = null;
+    /**
+     * Object abstract
+     *
+     * @var  string
+     */
+    public $abstract = null;
 
-	/**
-	 * Object description
-	 *
-	 * @var  string
-	 */
-	public $description = null;
+    /**
+     * Object description
+     *
+     * @var  string
+     */
+    public $description = null;
 
-	/**
-	 * Object dc type
-	 *
-	 * @var  string
-	 */
-	public $type = null;
+    /**
+     * Object dc type
+     *
+     * @var  string
+     */
+    public $type = null;
 
-	/**
-	 * URL
-	 *
-	 * @var  string
-	 */
-	public $url = null;
+    /**
+     * URL
+     *
+     * @var  string
+     */
+    public $url = null;
 
-	/**
-	 * DOI
-	 *
-	 * @var  string
-	 */
-	public $doi = null;
+    /**
+     * DOI
+     *
+     * @var  string
+     */
+    public $doi = null;
 
-	/**
-	 * Publisher
-	 *
-	 * @var  string
-	 */
-	public $publisher = null;
+    /**
+     * Publisher
+     *
+     * @var  string
+     */
+    public $publisher = null;
 
-	/**
-	 * Journal
-	 *
-	 * @var  string
-	 */
-	public $journal = null;
+    /**
+     * Journal
+     *
+     * @var  string
+     */
+    public $journal = null;
 
-	/**
-	 * Subject
-	 *
-	 * @var  string
-	 */
-	public $subject = null;
+    /**
+     * Subject
+     *
+     * @var  string
+     */
+    public $subject = null;
 
-	/**
-	 * Language
-	 *
-	 * @var  string
-	 */
-	public $language = null;
+    /**
+     * Language
+     *
+     * @var  string
+     */
+    public $language = null;
 
-	/**
-	 * Format
-	 *
-	 * @var  string
-	 */
-	public $format = null;
+    /**
+     * Format
+     *
+     * @var  string
+     */
+    public $format = null;
 
-	/**
-	 * Date
-	 *
-	 * @var  string
-	 */
-	public $date = null;
+    /**
+     * Date
+     *
+     * @var  string
+     */
+    public $date = null;
 
-	/**
-	 * Date
-	 *
-	 * @var  string
-	 */
-	public $issued = null;
+    /**
+     * Date
+     *
+     * @var  string
+     */
+    public $issued = null;
 
-	/**
-	 * Volume
-	 *
-	 * @var  string
-	 */
-	public $volume = null;
+    /**
+     * Volume
+     *
+     * @var  string
+     */
+    public $volume = null;
 
-	/**
-	 * Issue
-	 *
-	 * @var  string
-	 */
-	public $issue = null;
+    /**
+     * Issue
+     *
+     * @var  string
+     */
+    public $issue = null;
 
-	/**
-	 * Page
-	 *
-	 * @var  string
-	 */
-	public $page = null;
+    /**
+     * Page
+     *
+     * @var  string
+     */
+    public $page = null;
 
-	/**
-	 * ISBN
-	 *
-	 * @var  string
-	 */
-	public $isbn = null;
+    /**
+     * ISBN
+     *
+     * @var  string
+     */
+    public $isbn = null;
 
-	/**
-	 * Author
-	 *
-	 * @var  string
-	 */
-	public $author = null;
+    /**
+     * Author
+     *
+     * @var  string
+     */
+    public $author = null;
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,15 +13,15 @@ namespace Hubzero\Database\Value;
  */
 class Raw extends Basic
 {
-	/**
-	 * Builds the given string representation of the value object
-	 *
-	 * @param   object  $syntax  The syntax object with which the query is being built
-	 * @return  string
-	 * @since   2.1.0
-	 **/
-	public function build($syntax)
-	{
-		return $this->content;
-	}
+    /**
+     * Builds the given string representation of the value object
+     *
+     * @param   object  $syntax  The syntax object with which the query is being built
+     * @return  string
+     * @since   2.1.0
+     **/
+    public function build($syntax)
+    {
+        return $this->content;
+    }
 }

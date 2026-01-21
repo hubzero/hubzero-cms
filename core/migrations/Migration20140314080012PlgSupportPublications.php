@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,19 +17,19 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20140314080012PlgSupportPublications extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('support', 'publications');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('support', 'publications');
+    }
 
-	/**
-	 * Up
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('support', 'publications');
-	}
+    /**
+     * Up
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('support', 'publications');
+    }
 }

@@ -21,7 +21,7 @@ if (empty($this->tokens)) {
             can use to make API requests.</p>
 
         <div class="tokens-list">
-            <?php foreach ($this->tokens as $token): 
+            <?php foreach ($this->tokens as $token) :
                 $tokenId = 'token-' . md5($token->access_token);
                 ?>
                 <div class="token-item">

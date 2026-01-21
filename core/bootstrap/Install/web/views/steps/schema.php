@@ -1,4 +1,3 @@
-<?php // phpcs:disable Generic.Files.LineLength ?>
 <div class="schema-content">
     <p>The database schema and essential data will be loaded into your database.</p>
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,24 +17,24 @@ use Hubzero\Base\Obj;
  */
 class Enclosure extends Obj
 {
-	/**
-	 * URL enclosure element
-	 *
-	 * @var	 string
-	 */
-	public $url = '';
+    /**
+     * URL enclosure element
+     *
+     * @var  string
+     */
+    public $url = '';
 
-	/**
-	 * Length enclosure element
-	 *
-	 * @var	 string
-	 */
-	public $length = '';
+    /**
+     * Length enclosure element
+     *
+     * @var  string
+     */
+    public $length = '';
 
-	/**
-	 * Type enclosure element
-	 *
-	 * @var	 string
-	 */
-	public $type = '';
+    /**
+     * Type enclosure element
+     *
+     * @var  string
+     */
+    public $type = '';
 }

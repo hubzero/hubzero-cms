@@ -1,4 +1,3 @@
-<?php // phpcs:disable Generic.Files.LineLength ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

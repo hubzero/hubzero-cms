@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,76 +16,75 @@ use Lang;
  */
 class Blacklist extends Field
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var  string
-	 */
-	protected $type = 'Blacklist';
+    /**
+     * The form field type.
+     *
+     * @var  string
+     */
+    protected $type = 'Blacklist';
 
-	/**
-	 * App
-	 *
-	 * @var  object
-	 */
-	protected $app;
+    /**
+     * App
+     *
+     * @var  object
+     */
+    protected $app;
 
-	/**
-	 * Database
-	 *
-	 * @var  object
-	 */
-	protected $db;
+    /**
+     * Database
+     *
+     * @var  object
+     */
+    protected $db;
 
-	/**
-	 * Form fields
-	 *
-	 * @var  array
-	 */
-	protected $formfields;
+    /**
+     * Form fields
+     *
+     * @var  array
+     */
+    protected $formfields;
 
-	/**
-	 * Method to get the field label markup.
-	 *
-	 * @return  string  The field label markup.
-	 */
-	protected function getLabel()
-	{
-		return '';
-	}
+    /**
+     * Method to get the field label markup.
+     *
+     * @return  string  The field label markup.
+     */
+    protected function getLabel()
+    {
+        return '';
+    }
 
-	/**
-	 * Method to get the field input markup.
-	 *
-	 * @return  string  The field input markup.
-	 */
-	protected function getInput()
-	{
-		$return = '<p class="info">'.Lang::txt('PLG_USER_DOMAINRESTRICTION_IPV4').'</p>';
+    /**
+     * Method to get the field input markup.
+     *
+     * @return  string  The field input markup.
+     */
+    protected function getInput()
+    {
+        $return = '<p class="info">' . Lang::txt('PLG_USER_DOMAINRESTRICTION_IPV4') . '</p>';
 
-		if (function_exists('gmp_pow'))
-		{
-			$return = '<p class="info">'.Lang::txt('PLG_USER_DOMAINRESTRICTION_IPV46').'</p>';
-		}
+        if (function_exists('gmp_pow')) {
+            $return = '<p class="info">' . Lang::txt('PLG_USER_DOMAINRESTRICTION_IPV46') . '</p>';
+        }
 
-		return $return;
-	}
+        return $return;
+    }
 
-	/**
-	 * Get the value from a field
-	 *
-	 * @param   string  $name
-	 * @return  string
-	 */
-	private function _getField($name)
-	{
-		foreach ($this->formfields as $field)
-		{
-			if ($field->name == 'fields[params]['.$name.']'
-			 || $field->name == 'fields[params]['.$name.'][]')
-			{
-				return $field->value;
-			}
-		}
-	}
+    /**
+     * Get the value from a field
+     *
+     * @param   string  $name
+     * @return  string
+     */
+    private function getField($name)
+    {
+        foreach ($this->formfields as $field) {
+            if (
+                $field->name == 'fields[params][' . $name . ']'
+                || $field->name == 'fields[params][' . $name . '][]'
+            ) {
+                return $field->value;
+            }
+        }
+    }
 }

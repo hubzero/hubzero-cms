@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,9 +13,8 @@ require_once dirname(__DIR__) . DS . 'helpers' . DS . 'download.php';
 require_once dirname(__DIR__) . DS . 'models' . DS . 'citation.php';
 
 $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'citations'));
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'citations';
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+    $controllerName = 'citations';
 }
 require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));

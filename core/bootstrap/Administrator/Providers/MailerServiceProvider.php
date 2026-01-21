@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,29 +16,27 @@ use Hubzero\Base\ServiceProvider;
  */
 class MailerServiceProvider extends ServiceProvider
 {
-	/**
-	 * Register the service provider
-	 *
-	 * @return  void
-	 */
-	public function register()
-	{
-		$this->app['mailer'] = $this->app->factory(function($app)
-		{
-			return new Message();
-		});
-	}
+    /**
+     * Register the service provider
+     *
+     * @return  void
+     */
+    public function register()
+    {
+        $this->app['mailer'] = $this->app->factory(function ($app) {
+            return new Message();
+        });
+    }
 
-	/**
-	 * Add the transporters to the message
-	 *
-	 * @return  void
-	 */
-	public function boot()
-	{
-		if ($this->app->has('dispatcher'))
-		{
-			$this->app['dispatcher']->trigger('mail.onMailersRegister');
-		}
-	}
+    /**
+     * Add the transporters to the message
+     *
+     * @return  void
+     */
+    public function boot()
+    {
+        if ($this->app->has('dispatcher')) {
+            $this->app['dispatcher']->trigger('mail.onMailersRegister');
+        }
+    }
 }

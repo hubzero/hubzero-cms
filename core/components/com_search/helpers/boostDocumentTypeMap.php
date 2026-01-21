@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,54 +19,52 @@ use Component;
 
 class BoostDocumentTypeMap
 {
+    protected $lang;
 
-	protected $lang;
+    public function __construct($args = [])
+    {
+        $this->lang = Arr::getValue(
+            $args,
+            'lang',
+            new MockProxy(['class' => 'Lang'])
+        );
+    }
 
-	public function __construct($args = [])
-	{
-		$this->lang = Arr::getValue(
-			$args, 'lang', new MockProxy(['class' => 'Lang'])
-		);
-	}
+    public function documentTypeToFieldData($documentType)
+    {
+        switch ($documentType) {
+            case $this->getFormattedCitationType():
+                $field = 'hubtype';
+                $fieldValue = 'citation';
+                break;
+            default:
+                $field = 'type';
+                $fieldValue = $documentType;
+        }
 
-	public function documentTypeToFieldData($documentType)
-	{
-		switch ($documentType)
-		{
-			case $this->getFormattedCitationType():
-				$field = 'hubtype';
-				$fieldValue = 'citation';
-				break;
-			default:
-				$field = 'type';
-				$fieldValue = $documentType;
-		}
+        return [
+            'field' => $field,
+            'field_value' => $fieldValue
+        ];
+    }
 
-		return [
-			'field' => $field,
-			'field_value' => $fieldValue
-		];
-	}
+    public function getFormattedFieldValue($fieldValue)
+    {
+        switch ($fieldValue) {
+            case 'citation':
+                $formattedValue = $this->getFormattedCitationType();
+                break;
+            default:
+                $formattedValue = $fieldValue;
+        }
 
-	public function getFormattedFieldValue($fieldValue)
-	{
-		switch ($fieldValue)
-		{
-			case 'citation':
-				$formattedValue = $this->getFormattedCitationType();
-				break;
-			default:
-				$formattedValue = $fieldValue;
-		}
+        return $formattedValue;
+    }
 
-		return $formattedValue;
-	}
+    public function getFormattedCitationType()
+    {
+        $langKey = 'COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION';
 
-	public function getFormattedCitationType()
-	{
-		$langKey = 'COM_SEARCH_BOOST_DOCUMENT_TYPE_CITATION';
-
-		return $this->lang->txt($langKey);
-	}
-
+        return $this->lang->txt($langKey);
+    }
 }

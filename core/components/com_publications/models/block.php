@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,67 +15,69 @@ use Hubzero\Base\Obj;
  */
 class Block extends Obj
 {
-	/**
-	 * Element name
-	 *
-	 * This has to be set in the final
-	 * renderer classes.
-	 *
-	 * @var  string
-	 */
-	protected $_name = null;
+    /**
+     * Element name
+     *
+     * This has to be set in the final
+     * renderer classes.
+     *
+     * @var  string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_name = null;
 
-	/**
-	 * Block manifest
-	 *
-	 * This has to be set in the final
-	 * renderer classes.
-	 *
-	 * @var  string
-	 */
-	protected $_manifest = null;
+    /**
+     * Block manifest
+     *
+     * This has to be set in the final
+     * renderer classes.
+     *
+     * @var  string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_manifest = null;
 
-	/**
-	 * Reference to the object that instantiated the element
-	 *
-	 * @var  object
-	 */
-	protected $_parent = null;
+    /**
+     * Reference to the object that instantiated the element
+     *
+     * @var  object
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_parent = null;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   object  $parent
-	 * @return  void
-	 */
-	public function __construct($parent = null)
-	{
-		$this->_parent = $parent;
-	}
+    /**
+     * Constructor
+     *
+     * @param   object  $parent
+     * @return  void
+     */
+    public function __construct($parent = null)
+    {
+        $this->_parent = $parent;
+    }
 
-	/**
-	 * Get the block name
-	 *
-	 * @return  string
-	 */
-	public function getName()
-	{
-		return $this->_name;
-	}
+    /**
+     * Get the block name
+     *
+     * @return  string
+     */
+    public function getName()
+    {
+        return $this->_name;
+    }
 
-	/**
-	 * Get property
-	 *
-	 * @param   string  $name
-	 * @return  mixed
-	 */
-	public function getProperty($name)
-	{
-		if (isset($this->$name))
-		{
-			return $this->$name;
-		}
+    /**
+     * Get property
+     *
+     * @param   string  $name
+     * @return  mixed
+     */
+    public function getProperty($name)
+    {
+        if (isset($this->$name)) {
+            return $this->$name;
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,13 +15,13 @@ use Hubzero\Component\SiteController;
  */
 class Web extends SiteController
 {
-	/**
-	 * Display intro page
-	 * 
-	 * @return void
-	 */
-	public function displayTask()
-	{
-		$this->view->display();
-	}
+    /**
+     * Display intro page
+     *
+     * @return void
+     */
+    public function displayTask()
+    {
+        $this->view->display();
+    }
 }

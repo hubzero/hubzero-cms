@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,15 +17,14 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20140605155804ComPublications extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		// Set up curation
-		if (!$this->db->tableExists('#__publication_logs'))
-		{
-			$query = "CREATE TABLE `#__publication_logs` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        // Set up curation
+        if (!$this->db->tableExists('#__publication_logs')) {
+            $query = "CREATE TABLE `#__publication_logs` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `publication_id` int(11) NOT NULL,
 			  `publication_version_id` int(11) NOT NULL,
@@ -36,21 +37,20 @@ class Migration20140605155804ComPublications extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__publication_logs'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__publication_logs`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__publication_logs')) {
+            $query = "DROP TABLE IF EXISTS `#__publication_logs`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

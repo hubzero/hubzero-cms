@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,29 +16,29 @@ use Hubzero\Component\AdminController;
  */
 class Config extends AdminController
 {
-	/**
-	 * Display config optins
-	 * 
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		// display panel
-		$this->view->display();
-	}
+    /**
+     * Display config optins
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        // display panel
+        $this->view->display();
+    }
 
-	/**
-	 * Display available schemas
-	 * 
-	 * @return  void
-	 */
-	public function schemasTask()
-	{
-		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'service.php';
+    /**
+     * Display available schemas
+     *
+     * @return  void
+     */
+    public function schemasTask()
+    {
+        require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'service.php';
 
-		// display panel
-		$this->view
-			->set('service', new Service())
-			->display();
-	}
+        // display panel
+        $this->view
+            ->set('service', new Service())
+            ->display();
+    }
 }

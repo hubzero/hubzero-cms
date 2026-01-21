@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,31 +21,34 @@ use Component;
 
 class BoostQueryHelper
 {
-	var $boostOrm;
+    protected $boostOrm;
 
-	var $queriesFactory;
+    protected $queriesFactory;
 
-	protected $boosts;
+    protected $boosts;
 
-	public function __construct($args = [])
-	{
-		$this->boostOrm = Arr::getValue(
-			$args, 'boosts', new MockProxy([
-				'class' => 'Components\Search\Models\Solr\Boost'
-			])
-		);
-		$this->queriesFactory = Arr::getValue(
-			$args, 'queries', new MockProxy([
-				'class' => 'Components\Search\Helpers\SolariumBoostQueries'
-			])
-		);
-	}
+    public function __construct($args = [])
+    {
+        $this->boostOrm = Arr::getValue(
+            $args,
+            'boosts',
+            new MockProxy([
+                'class' => 'Components\Search\Models\Solr\Boost'
+            ])
+        );
+        $this->queriesFactory = Arr::getValue(
+            $args,
+            'queries',
+            new MockProxy([
+                'class' => 'Components\Search\Helpers\SolariumBoostQueries'
+            ])
+        );
+    }
 
-	public function getAllQueries()
-	{
-		$boosts = $this->boostOrm->all();
+    public function getAllQueries()
+    {
+        $boosts = $this->boostOrm->all();
 
-		return $this->queriesFactory->one(['boosts' => $boosts]);
-	}
-
+        return $this->queriesFactory->one(['boosts' => $boosts]);
+    }
 }

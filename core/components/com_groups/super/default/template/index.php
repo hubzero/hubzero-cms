@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Basic Template
  *
@@ -24,29 +25,33 @@ Document::addScript($base . DS . 'assets/js/main.js');
 <group:include type="content" scope="before" />
 
 <div class="super-group-body-wrap group-<?php echo $this->group->get('cn'); ?>">
-	<div class="super-group-body">
-		<?php include_once 'includes/header.php'; ?>
+    <div class="super-group-body">
+        <?php include_once 'includes/header.php'; ?>
 
-		<div class="super-group-content-wrap">
-			<div class="super-group-content group_<?php echo $this->tab; ?>">
-				<?php
-					$title = (isset($this->page) && $this->page->get('title')) ? $this->page->get('title') : Lang::txt('PLG_GROUPS_' . strtoupper($this->tab));
-					$title = ($title == 'PLG_GROUPS_' . strtoupper($this->tab) ? ucfirst($this->tab) : $title);
-					if ($title != '') :
-				?>
-					<h2><?php echo $title; ?></h2>
-				<?php endif; ?>
+        <div class="super-group-content-wrap">
+            <div class="super-group-content group_<?php echo $this->tab; ?>">
+                <?php
+                    $title = (isset($this->page) && $this->page->get('title'))
+                        ? $this->page->get('title')
+                        : Lang::txt('PLG_GROUPS_' . strtoupper($this->tab));
+                    $title = ($title == 'PLG_GROUPS_' . strtoupper($this->tab)
+                        ? ucfirst($this->tab)
+                        : $title);
+                if ($title != '') :
+                    ?>
+                    <h2><?php echo $title; ?></h2>
+                <?php endif; ?>
 <?php endif; ?>
-				<!-- ###  Start Content Include  ### -->
-					<group:include type="content" />
-				<!-- ###  End Content Include  ### -->
+                <!-- ###  Start Content Include  ### -->
+                    <group:include type="content" />
+                <!-- ###  End Content Include  ### -->
 <?php if (!$no_html) : ?>
-			</div>
-		</div>
+            </div>
+        </div>
 
-		<?php include_once 'includes/footer.php'; ?>
-	</div>
+        <?php include_once 'includes/footer.php'; ?>
+    </div>
 </div>
 
 <group:include type="googleanalytics" account="" />
-<?php endif; 
+<?php endif;

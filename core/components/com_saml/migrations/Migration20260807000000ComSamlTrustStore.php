@@ -15,14 +15,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20260807000000ComSamlTrustStore extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__saml_service_providers'))
-		{
-			$query = "CREATE TABLE `#__saml_service_providers` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__saml_service_providers')) {
+            $query = "CREATE TABLE `#__saml_service_providers` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `entity_id` varchar(255) NOT NULL,
 			  `name` varchar(255) NOT NULL DEFAULT '',
@@ -46,13 +45,12 @@ class Migration20260807000000ComSamlTrustStore extends Base
 			  PRIMARY KEY (`id`),
 			  UNIQUE KEY `idx_entity_id` (`entity_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__saml_sessions'))
-		{
-			$query = "CREATE TABLE `#__saml_sessions` (
+        if (!$this->db->tableExists('#__saml_sessions')) {
+            $query = "CREATE TABLE `#__saml_sessions` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `session_index` varchar(64) NOT NULL,
 			  `request_id` varchar(128) DEFAULT NULL,
@@ -68,23 +66,21 @@ class Migration20260807000000ComSamlTrustStore extends Base
 			  KEY `idx_sp` (`sp_id`),
 			  UNIQUE KEY `idx_request` (`sp_id`,`request_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		foreach (array('#__saml_service_providers', '#__saml_sessions') as $table)
-		{
-			if ($this->db->tableExists($table))
-			{
-				$this->db->setQuery("DROP TABLE IF EXISTS `" . $table . "`;");
-				$this->db->query();
-			}
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        foreach (array('#__saml_service_providers', '#__saml_sessions') as $table) {
+            if ($this->db->tableExists($table)) {
+                $this->db->setQuery("DROP TABLE IF EXISTS `" . $table . "`;");
+                $this->db->query();
+            }
+        }
+    }
 }

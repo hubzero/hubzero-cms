@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,19 +16,18 @@ use Config;
  */
 class Helper extends Module
 {
-	/**
-	 * Display module
-	 *
-	 * @return  void
-	 */
-	public function display()
-	{
-		$this->environment = strtolower(Config::get('application_env', 'production'));
-		if (substr($this->environment, 0, 10) == 'production')
-		{
-			return;
-		}
+    /**
+     * Display module
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        $this->environment = strtolower(Config::get('application_env', 'production'));
+        if (substr($this->environment, 0, 10) == 'production') {
+            return;
+        }
 
-		require $this->getLayoutPath($this->params->get('layout', 'default'));
-	}
+        require $this->getLayoutPath($this->params->get('layout', 'default'));
+    }
 }

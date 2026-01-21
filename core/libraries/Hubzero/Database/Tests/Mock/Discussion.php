@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,10 +17,10 @@ use Hubzero\Database\Nested;
  */
 class Discussion extends Nested
 {
-	/**
-	 * Scopes to limit the realm of the nested set functions
-	 *
-	 * @var  array
-	 **/
-	protected $scopes = ['scope', 'scope_id'];
+    /**
+     * Scopes to limit the realm of the nested set functions
+     *
+     * @var  array
+     **/
+    protected $scopes = ['scope', 'scope_id'];
 }

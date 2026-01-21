@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,27 +11,32 @@ defined('_HZEXEC_') or die();
 
 ?>
 <div class="grid bundle-data">
-	<div class="grid bundle-meta">
-		<div class="col span4">
-			<ul class="bundle-info">
-				<li><?php echo Lang::txt('COM_PUBLICATIONS_BUNDLE_CONTENT'); ?></li>
-				<li><span class="bundle-size"><?php echo Hubzero\Utility\Number::formatBytes($this->bundle->getSize()); ?></span></li>
-			</ul>
-		</div>
-		<div class="col span8 omega">
-			<div class="bundle-checksum">
-				<span class="bundle-checksum-value">md5:<?php echo $this->bundle->getMd5(); ?></span>
-				<span class="bundle-checksum-help icon-help tooltips" title="<?php echo Lang::txt('COM_PUBLICATIONS_BUNDLE_CHECKSUM'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_BUNDLE_CHECKSUM'); ?></span>
-			</div>
-		</div>
-	</div>
-	<div class="bundle-files">
-		<ul class="filelist">
-			<?php
-			$this->view('_bundle_contents')
-				->set('contents', $this->bundle->getContents())
-				->display();
-			?>
-		</ul>
-	</div>
+    <div class="grid bundle-meta">
+        <div class="col span4">
+            <ul class="bundle-info">
+                <li><?php echo Lang::txt('COM_PUBLICATIONS_BUNDLE_CONTENT'); ?></li>
+                <?php $val = Hubzero\Utility\Number::formatBytes($this->bundle->getSize()); ?>
+                <li><span class="bundle-size"><?php echo $val; ?></span></li>
+            </ul>
+        </div>
+        <div class="col span8 omega">
+            <div class="bundle-checksum">
+                <span class="bundle-checksum-value">md5:<?php echo $this->bundle->getMd5(); ?></span>
+                <?php $checksumTxt = Lang::txt('COM_PUBLICATIONS_BUNDLE_CHECKSUM'); ?>
+                <span
+                    class="bundle-checksum-help icon-help tooltips"
+                    title="<?php echo $checksumTxt; ?>"
+                ><?php echo $checksumTxt; ?></span>
+            </div>
+        </div>
+    </div>
+    <div class="bundle-files">
+        <ul class="filelist">
+            <?php
+            $this->view('_bundle_contents')
+                ->set('contents', $this->bundle->getContents())
+                ->display();
+            ?>
+        </ul>
+    </div>
 </div>

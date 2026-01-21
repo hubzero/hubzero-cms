@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,22 +14,23 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding Content - Emailcloak plugin
+ *
  **/
 class Migration20170831000000PlgContentEmailcloak extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('content', 'emailcloak');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('content', 'emailcloak');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('content', 'emailcloak');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('content', 'emailcloak');
+    }
 }

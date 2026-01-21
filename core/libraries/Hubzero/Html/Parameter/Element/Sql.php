@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,56 +17,55 @@ use Exception;
  */
 class Sql extends Element
 {
-	/**
-	 * Element name
-	 *
-	 * @var  string
-	 */
-	protected $_name = 'Sql';
+    /**
+     * Element name
+     *
+     * @var  string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_name = 'Sql';
 
-	/**
-	 * Fetch a calendar element
-	 *
-	 * @param   string  $name          Element name
-	 * @param   string  $value         Element value
-	 * @param   object  &$node         XMLElement node object containing the settings for the element
-	 * @param   string  $control_name  Control name
-	 * @return  string
-	 */
-	public function fetchElement($name, $value, &$node, $control_name)
-	{
-		$db = \App::get('db');
-		$db->setQuery((string) $node['query']);
+    /**
+     * Fetch a calendar element
+     *
+     * @param   string  $name          Element name
+     * @param   string  $value         Element value
+     * @param   object  &$node         XMLElement node object containing the settings for the element
+     * @param   string  $control_name  Control name
+     * @return  string
+     */
+    public function fetchElement($name, $value, &$node, $control_name)
+    {
+        $db = \App::get('db');
+        $db->setQuery((string) $node['query']);
 
-		$key = (string) $node['key_field'];
-		$key = $key ?: 'value';
+        $key = (string) $node['key_field'];
+        $key = $key ?: 'value';
 
-		$val = (string) $node['value_field'];
-		$val = $val ?: $name;
+        $val = (string) $node['value_field'];
+        $val = $val ?: $name;
 
-		$options = $db->loadObjectlist();
+        $options = $db->loadObjectlist();
 
-		// Check for an error.
-		if ($db->getErrorNum())
-		{
-			throw new Exception($db->getErrorMsg(), 500);
-		}
+        // Check for an error.
+        if ($db->getErrorNum()) {
+            throw new Exception($db->getErrorMsg(), 500);
+        }
 
-		if (!$options)
-		{
-			$options = array();
-		}
+        if (!$options) {
+            $options = array();
+        }
 
-		return Builder\Select::genericlist(
-			$options,
-			$control_name . '[' . $name . ']',
-			array(
-				'id'          => $control_name . $name,
-				'list.attr'   => 'class="inputbox"',
-				'list.select' => $value,
-				'option.key'  => $key,
-				'option.text' => $val
-			)
-		);
-	}
+        return Builder\Select::genericlist(
+            $options,
+            $control_name . '[' . $name . ']',
+            array(
+                'id'          => $control_name . $name,
+                'list.attr'   => 'class="inputbox"',
+                'list.select' => $value,
+                'option.key'  => $key,
+                'option.text' => $val
+            )
+        );
+    }
 }

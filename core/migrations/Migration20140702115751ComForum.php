@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,36 +17,33 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20140702115751ComForum extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableHasField('#__forum_posts', 'state'))
-		{
-			$query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('forum')";
-			$this->db->setQuery($query);
-			if ($ids = $this->db->loadColumn())
-			{
-				$ids = array_map('intval', $ids);
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableHasField('#__forum_posts', 'state')) {
+            $query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('forum')";
+            $this->db->setQuery($query);
+            if ($ids = $this->db->loadColumn()) {
+                $ids = array_map('intval', $ids);
 
-				$query = "UPDATE `#__forum_posts` SET state=3 WHERE id IN (" . implode(',', $ids) . ")";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+                $query = "UPDATE `#__forum_posts` SET state=3 WHERE id IN (" . implode(',', $ids) . ")";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableHasField('#__forum_posts', 'state'))
-		{
-			$query = "UPDATE `#__forum_posts` SET state=1 WHERE state=3";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableHasField('#__forum_posts', 'state')) {
+            $query = "UPDATE `#__forum_posts` SET state=1 WHERE state=3";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

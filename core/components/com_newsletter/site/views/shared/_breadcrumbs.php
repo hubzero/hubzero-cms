@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package   hubzero-cms
  * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,10 +14,9 @@ $pageTitle = $this->pageTitle;
 
 $cumulativePath = '';
 
-foreach ($breadcrumbs as $text => $url)
-{
-	$cumulativePath .= $url;
-	Pathway::append($text, $cumulativePath);
+foreach ($breadcrumbs as $text => $url) {
+    $cumulativePath .= $url;
+    Pathway::append($text, $cumulativePath);
 }
 
 Document::setTitle($pageTitle);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,33 +15,34 @@ use Hubzero\View\View;
  */
 abstract class AbstractHelper implements HelperInterface
 {
-	/**
-	 * View object instance
-	 *
-	 * @var  object
-	 */
-	protected $_view = null;
+    /**
+     * View object instance
+     *
+     * @var  object
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_view = null;
 
-	/**
-	 * Set the View object
-	 *
-	 * @param   object  $view
-	 * @return  object
-	 */
-	public function setView(View $view)
-	{
-		$this->_view = $view;
+    /**
+     * Set the View object
+     *
+     * @param   object  $view
+     * @return  object
+     */
+    public function setView(View $view)
+    {
+        $this->_view = $view;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get the view object
-	 *
-	 * @return  null|Renderer
-	 */
-	public function getView()
-	{
-		return $this->_view;
-	}
+    /**
+     * Get the view object
+     *
+     * @return  null|Renderer
+     */
+    public function getView()
+    {
+        return $this->_view;
+    }
 }

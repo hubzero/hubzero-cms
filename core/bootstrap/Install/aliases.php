@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,7 +8,7 @@
 
 // Create aliases for runtime
 return [
-	// Core
-	'App'    => 'Hubzero\Facades\App',
-	'Config' => 'Hubzero\Facades\Config',
+    // Core
+    'App'    => 'Hubzero\Facades\App',
+    'Config' => 'Hubzero\Facades\Config',
 ];

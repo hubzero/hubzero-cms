@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,98 +16,86 @@ use Request;
  */
 class Form extends Content
 {
-	/**
-	 * Class info
-	 *
-	 * Action message - what the user will see if presented with multiple handlers for this extension
-	 * Responds to    - what extensions this handler responds to
-	 *
-	 * @var array
-	 **/
-	protected static $info = array(
-			'action_message' => 'Create a quiz/exam',
-			'responds_to'    => array('pdf')
-		);
+    /**
+     * Class info
+     *
+     * Action message - what the user will see if presented with multiple handlers for this extension
+     * Responds to    - what extensions this handler responds to
+     *
+     * @var array
+     **/
+    protected static $info = array(
+            'action_message' => 'Create a quiz/exam',
+            'responds_to'    => array('pdf')
+        );
 
-	/**
-	 * Create method for this handler
-	 *
-	 * @return string - javascript to be run
-	 **/
-	public function create()
-	{
-		// Include needed files
-		require_once dirname(__DIR__) . DS . 'form.php';
+    /**
+     * Create method for this handler
+     *
+     * @return string - javascript to be run
+     **/
+    public function create()
+    {
+        // Include needed files
+        require_once dirname(__DIR__) . DS . 'form.php';
 
-		// Check to make sure a file was provided
-		if (isset($_FILES['files']))
-		{
-			$file = $_FILES['files']['name'][0];
+        // Check to make sure a file was provided
+        if (isset($_FILES['files'])) {
+            $file = $_FILES['files']['name'][0];
 
-			// Get the file extension
-			$pathinfo = pathinfo($file);
-			$filename = $pathinfo['filename'];
-			$ext      = $pathinfo['extension'];
-		}
-		else
-		{
-			return array('error' => 'No files provided');
-		}
+            // Get the file extension
+            $pathinfo = pathinfo($file);
+            $filename = $pathinfo['filename'];
+            $ext      = $pathinfo['extension'];
+        } else {
+            return array('error' => 'No files provided');
+        }
 
-		// Instantiate form object
-		$pdf = PdfForm::fromPostedFile('files');
+        // Instantiate form object
+        $pdf = PdfForm::fromPostedFile('files');
 
-		// No error, then render the images
-		if (!$pdf->hasErrors())
-		{
-			$pdf->renderPageImages();
-		}
-		else
-		{
-			return array('error' => $pdf->getErrors());
-		}
+        // No error, then render the images
+        if (!$pdf->hasErrors()) {
+            $pdf->renderPageImages();
+        } else {
+            return array('error' => $pdf->getErrors());
+        }
 
-		// Grab the newly created form id
-		$id = $pdf->getId();
+        // Grab the newly created form id
+        $id = $pdf->getId();
 
-		$subtype = 'quiz';
+        $subtype = 'quiz';
 
-		if (strstr($filename, 'exam') !== false)
-		{
-			$subtype = 'exam';
-		}
-		elseif (strstr($filename, 'homework') !== false)
-		{
-			$subtype = 'homework';
-		}
+        if (strstr($filename, 'exam') !== false) {
+            $subtype = 'exam';
+        } elseif (strstr($filename, 'homework') !== false) {
+            $subtype = 'homework';
+        }
 
-		// Save the actual asset
-		$this->asset['title']        = $filename;
-		$this->asset['type']         = 'form';
-		$this->asset['subtype']      = $subtype;
-		$this->asset['url']          = $id;
-		$this->asset['graded']       = 1;
-		$this->asset['grade_weight'] = $subtype;
+        // Save the actual asset
+        $this->asset['title']        = $filename;
+        $this->asset['type']         = 'form';
+        $this->asset['subtype']      = $subtype;
+        $this->asset['url']          = $id;
+        $this->asset['graded']       = 1;
+        $this->asset['grade_weight'] = $subtype;
 
-		// Call the primary create method on the file asset handler
-		$return = parent::create();
+        // Call the primary create method on the file asset handler
+        $return = parent::create();
 
-		// Check for errors in response
-		if (array_key_exists('error', $return))
-		{
-			return array('error' => $return['error']);
-		}
-		else
-		{
-			// Set the asset id on the form
-			$pdf->setAssetId($return['assets']['asset_id']);
+        // Check for errors in response
+        if (array_key_exists('error', $return)) {
+            return array('error' => $return['error']);
+        } else {
+            // Set the asset id on the form
+            $pdf->setAssetId($return['assets']['asset_id']);
 
-			$gid = Request::getString('course_id');
-			$oid = Request::getString('offering');
+            $gid = Request::getString('course_id');
+            $oid = Request::getString('offering');
 
-			// Build our JavaScript to return to the view to be executed
-			$js =
-				"// Open up forms in a lightbox
+            // Build our JavaScript to return to the view to be executed
+            $js =
+                "// Open up forms in a lightbox
 				$.fancybox({
 					fitToView: false,
 					autoResize: false,
@@ -118,7 +107,7 @@ class Form extends Content
 					iframe: {
 						preload : false
 					},
-					href: '/courses/".$gid."/".$oid."/form.layout?formId=".$id."&tmpl=component',
+					href: '/courses/" . $gid . "/" . $oid . "/form.layout?formId=" . $id . "&tmpl=component',
 					afterLoad: function() {
 						var iframe = $('.fancybox-iframe');
 						iframe.on('load',function() {
@@ -154,13 +143,13 @@ class Form extends Content
 							$.fancybox.close();
 
 							var data = " .
-								json_encode(
-									array(
-										'assets'=>array(
-											$return['assets']
-										)
-									)
-								) . ";
+                                json_encode(
+                                    array(
+                                        'assets' => array(
+                                            $return['assets']
+                                        )
+                                    )
+                                ) . ";
 
 							data.assets[0].asset_title = title;
 
@@ -168,35 +157,34 @@ class Form extends Content
 						});
 					}
 				});";
-		}
+        }
 
-		return array('js'=>$js);
-	}
+        return array('js' => $js);
+    }
 
-	/**
-	 * Preview method for this handler
-	 *
-	 * @param  object $asset - asset
-	 * @return array((string) type, (string) text)
-	 **/
-	public function preview($asset)
-	{
-		// Get form object
-		require_once dirname(__DIR__) . DS . 'form.php';
-		$form = PdfForm::loadByAssetId($asset->get('id'));
+    /**
+     * Preview method for this handler
+     *
+     * @param  object $asset - asset
+     * @return array((string) type, (string) text)
+     **/
+    public function preview($asset)
+    {
+        // Get form object
+        require_once dirname(__DIR__) . DS . 'form.php';
+        $form = PdfForm::loadByAssetId($asset->get('id'));
 
-		// Make sure we got a proper object
-		if (!is_object($form))
-		{
-			return array('error' => "Asset " . $asset->get('id') . " is not associated with a valid form.");
-		}
+        // Make sure we got a proper object
+        if (!is_object($form)) {
+            return array('error' => "Asset " . $asset->get('id') . " is not associated with a valid form.");
+        }
 
-		$gid = Request::getString('course_id');
-		$oid = Request::getString('offering');
+        $gid = Request::getString('course_id');
+        $oid = Request::getString('offering');
 
-		// Compile our return var
-		$js =
-			"// Open up forms in a lightbox
+        // Compile our return var
+        $js =
+            "// Open up forms in a lightbox
 			$.fancybox({
 				fitToView: false,
 				autoResize: false,
@@ -205,7 +193,8 @@ class Form extends Content
 				closeBtn: false,
 				modal: true,
 				type: 'iframe',
-				href: '/courses/".$gid."/".$oid."/form.layout?formId=" . $form->getId() . "&readonly=1&tmpl=component',
+				href: '/courses/" . $gid . "/" . $oid . "/form.layout?formId="
+                    . $form->getId() . "&readonly=1&tmpl=component',
 				afterShow: function() {
 					var frameContents = $('.fancybox-iframe').contents();
 
@@ -221,6 +210,6 @@ class Form extends Content
 				}
 			});";
 
-		return array('type' => 'js', 'value' => $js);
-	}
+        return array('type' => 'js', 'value' => $js);
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,29 +15,30 @@ use Hubzero\Html\Parameter\Element;
  */
 class ImageList extends Element
 {
-	/**
-	 * Element name
-	 *
-	 * @var  string
-	 */
-	protected $_name = 'ImageList';
+    /**
+     * Element name
+     *
+     * @var  string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_name = 'ImageList';
 
-	/**
-	 * Fetch a calendar element
-	 *
-	 * @param   string  $name          Element name
-	 * @param   string  $value         Element value
-	 * @param   object  &$node         XMLElement node object containing the settings for the element
-	 * @param   string  $control_name  Control name
-	 * @return  string
-	 */
-	public function fetchElement($name, $value, &$node, $control_name)
-	{
-		$filter = '\.png$|\.gif$|\.jpg$|\.bmp$|\.ico$';
-		$node->addAttribute('filter', $filter);
+    /**
+     * Fetch a calendar element
+     *
+     * @param   string  $name          Element name
+     * @param   string  $value         Element value
+     * @param   object  &$node         XMLElement node object containing the settings for the element
+     * @param   string  $control_name  Control name
+     * @return  string
+     */
+    public function fetchElement($name, $value, &$node, $control_name)
+    {
+        $filter = '\.png$|\.gif$|\.jpg$|\.bmp$|\.ico$';
+        $node->addAttribute('filter', $filter);
 
-		$parameter = $this->_parent->loadElement('filelist');
+        $parameter = $this->_parent->loadElement('filelist');
 
-		return $parameter->fetchElement($name, $value, $node, $control_name);
-	}
+        return $parameter->fetchElement($name, $value, $node, $control_name);
+    }
 }

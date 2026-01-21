@@ -1,5 +1,4 @@
 <?php
-// phpcs:disable Generic.Files.LineLength
 
 // Determine current connection type from config
 $connectionType = '';

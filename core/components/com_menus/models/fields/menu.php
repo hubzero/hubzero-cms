@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,34 +15,34 @@ use App;
  */
 class Menu extends Select
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var  string
-	 */
-	public $type = 'Menu';
+    /**
+     * The form field type.
+     *
+     * @var  string
+     */
+    public $type = 'Menu';
 
-	/**
-	 * Method to get the list of menus for the field options.
-	 *
-	 * @return  array  The field option objects.
-	 */
-	protected function getOptions()
-	{
-		$db = App::get('db');
+    /**
+     * Method to get the list of menus for the field options.
+     *
+     * @return  array  The field option objects.
+     */
+    protected function getOptions()
+    {
+        $db = App::get('db');
 
-		$query = $db->getQuery()
-			->select('menutype', 'value')
-			->select('title', 'text')
-			->from('#__menu_types')
-			->order('title', 'asc');
+        $query = $db->getQuery()
+            ->select('menutype', 'value')
+            ->select('title', 'text')
+            ->from('#__menu_types')
+            ->order('title', 'asc');
 
-		$db->setQuery($query->toString());
-		$menus = $db->loadObjectList();
+        $db->setQuery($query->toString());
+        $menus = $db->loadObjectList();
 
-		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $menus);
+        // Merge any additional options in the XML definition.
+        $options = array_merge(parent::getOptions(), $menus);
 
-		return $options;
-	}
+        return $options;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,39 +15,42 @@ use Hubzero\Html\Parameter\Element;
  */
 class Resourcetype extends Element
 {
-	/**
-	 * Element name
-	 *
-	 * @var  string
-	 */
-	protected $_name = 'Resourcetype';
+    /**
+     * Element name
+     *
+     * @var  string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_name = 'Resourcetype';
 
-	/**
-	 * Fetch the element
-	 *
-	 * @param   string  $name          Element name
-	 * @param   string  $value         Element value
-	 * @param   object  &$node         XMLElement node object containing the settings for the element
-	 * @param   string  $control_name  Control name
-	 * @return  string
-	 */
-	public function fetchElement($name, $value, &$node, $control_name)
-	{
-		include_once \Component::path('com_resources') . DS . 'models' . DS . 'type.php';
+    /**
+     * Fetch the element
+     *
+     * @param   string  $name          Element name
+     * @param   string  $value         Element value
+     * @param   object  &$node         XMLElement node object containing the settings for the element
+     * @param   string  $control_name  Control name
+     * @return  string
+     */
+    public function fetchElement($name, $value, &$node, $control_name)
+    {
+        include_once \Component::path('com_resources') . DS . 'models' . DS . 'type.php';
 
-		$types = \Components\Resources\Models\Type::getMajorTypes();
+        $types = \Components\Resources\Models\Type::getMajorTypes();
 
-		$html = array();
-		$html[] = '<select name="' . $control_name . '[' . $name . ']" id="' . $control_name . $name . '">';
-		$html[] = '<option value="0"' . ($value === 0 || $value === '0' ? ' selected="selected"' : '') . '>Select type</option>';
+        $html = array();
+        $html[] = '<select name="' . $control_name . '[' . $name . ']" id="' . $control_name . $name . '">';
+        $selected = ($value === 0 || $value === '0' ? ' selected="selected"' : '');
+        $html[] = '<option value="0"' . $selected . '>Select type</option>';
 
-		foreach ($types as $type)
-		{
-			$html[] = '<option value="' . $type->id . '"' . ($value == $type->id ? ' selected="selected"' : '') . '>' . stripslashes($anode->type) . '</option>';
-		}
+        foreach ($types as $type) {
+            $selected = ($value == $type->id ? ' selected="selected"' : '');
+            $html[] = '<option value="' . $type->id . '"' . $selected . '>'
+                . stripslashes($anode->type) . '</option>';
+        }
 
-		$html[] = '</select>';
+        $html[] = '</select>';
 
-		return implode("\n", $html);
-	}
+        return implode("\n", $html);
+    }
 }

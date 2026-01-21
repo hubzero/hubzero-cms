@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,43 +15,43 @@ use Hubzero\Database\Relational;
  */
 class Option extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = 'poll';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    protected $namespace = 'poll';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'id';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'id';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'poll_id' => 'positive|nonzero'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'poll_id' => 'positive|nonzero'
+    );
 
-	/**
-	 * Defines a belongs to one relationship between option and poll
-	 *
-	 * @return  object
-	 */
-	public function poll()
-	{
-		return $this->belongsToOne('Poll', 'poll_id');
-	}
+    /**
+     * Defines a belongs to one relationship between option and poll
+     *
+     * @return  object
+     */
+    public function poll()
+    {
+        return $this->belongsToOne('Poll', 'poll_id');
+    }
 }

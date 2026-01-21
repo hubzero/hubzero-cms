@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,15 +14,16 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding indices to pdf2form tables
- **/
+ *
+ */
 class Migration20130812132139ComCollections extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query = "CREATE TABLE IF NOT EXISTS `#__collections` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = "CREATE TABLE IF NOT EXISTS `#__collections` (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `title` varchar(255) NOT NULL DEFAULT '',
 				  `alias` varchar(255) NOT NULL,
@@ -110,26 +113,26 @@ class Migration20130812132139ComCollections extends Base
 				  KEY `idx_item_user` (`item_id`,`user_id`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-		$this->db->setQuery($query);
-		$this->db->query();
+        $this->db->setQuery($query);
+        $this->db->query();
 
-		$this->addComponentEntry('Collections');
-	}
+        $this->addComponentEntry('Collections');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$query = "DROP TABLE IF EXISTS `#__collections`;
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $query = "DROP TABLE IF EXISTS `#__collections`;
 				DROP TABLE IF EXISTS `#__collections_assets`;
 				DROP TABLE IF EXISTS `#__collections_following`;
 				DROP TABLE IF EXISTS `#__collections_items`;
 				DROP TABLE IF EXISTS `#__collections_posts`;
 				DROP TABLE IF EXISTS `#__collections_votes`;";
-		$this->db->setQuery($query);
-		$this->db->query();
+        $this->db->setQuery($query);
+        $this->db->query();
 
-		$this->deleteComponentEntry('Collections');
-	}
+        $this->deleteComponentEntry('Collections');
+    }
 }

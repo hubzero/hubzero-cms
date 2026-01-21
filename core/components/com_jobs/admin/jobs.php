@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,9 +8,8 @@
 
 namespace Components\Jobs\Admin;
 
-if (!\User::authorise('core.manage', 'com_jobs'))
-{
-	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+if (!\User::authorise('core.manage', 'com_jobs')) {
+    return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
@@ -28,25 +28,24 @@ include_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
 include_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
 
 $controllerName = \Request::getCmd('controller', 'jobs');
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'jobs';
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+    $controllerName = 'jobs';
 }
 
 \Submenu::addEntry(
-	\Lang::txt('COM_JOBS_JOBS'),
-	\Route::url('index.php?option=com_jobs&controller=jobs'),
-	$controllerName == 'jobs'
+    \Lang::txt('COM_JOBS_JOBS'),
+    \Route::url('index.php?option=com_jobs&controller=jobs'),
+    $controllerName == 'jobs'
 );
 \Submenu::addEntry(
-	\Lang::txt('COM_JOBS_CATEGORIES'),
-	\Route::url('index.php?option=com_jobs&controller=categories'),
-	$controllerName == 'categories'
+    \Lang::txt('COM_JOBS_CATEGORIES'),
+    \Route::url('index.php?option=com_jobs&controller=categories'),
+    $controllerName == 'categories'
 );
 \Submenu::addEntry(
-	\Lang::txt('COM_JOBS_TYPES'),
-	\Route::url('index.php?option=com_jobs&controller=types'),
-	$controllerName == 'types'
+    \Lang::txt('COM_JOBS_TYPES'),
+    \Route::url('index.php?option=com_jobs&controller=types'),
+    $controllerName == 'types'
 );
 
 require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';

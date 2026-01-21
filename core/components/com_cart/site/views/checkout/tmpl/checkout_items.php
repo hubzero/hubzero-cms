@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,131 +14,116 @@ defined('_HZEXEC_') or die('Restricted access');
 <!--h2>Items</h2-->
 
 <?php
+if (!empty($this->transactionItems)) {
+    echo '<table id="cartContents">';
+    echo '<tr><th>Items</th><th>Price</th><th>Quantity</th></tr>';
+    foreach ($this->transactionItems as $sId => $item) {
+        $info = $item['info'];
+        $transactionInfo = $item['transactionInfo'];
 
-	if (!empty($this->transactionItems))
-	{
+        echo '<tr>';
 
-		echo '<table id="cartContents">';
-		echo '<tr><th>Items</th><th>Price</th><th>Quantity</th></tr>';
-		foreach ($this->transactionItems as $sId => $item)
-		{
-			$info = $item['info'];
-			$transactionInfo = $item['transactionInfo'];
+        echo '<td>';
+        echo $info->pName;
 
-			echo '<tr>';
+        if (!empty($item['options']) && count($item['options'])) {
+            foreach ($item['options'] as $oName) {
+                echo ', ' . $oName;
+            }
+        }
 
-			echo '<td>';
-			echo $info->pName;
+        // Check is there is any membership info for this item
+        if (!empty($this->membershipInfo[$sId])) {
+            $str = '';
+            if (!empty($this->membershipInfo[$sId]->existingExpires)) {
+                $expires = $this->membershipInfo[$sId]->existingExpires;
+                $str .= 'This will extend your current subscription (ending '
+                    . date('M j, Y', $expires) . ') ';
+            } else {
+                $str .= 'This item will be valid ';
+            }
 
-			if (!empty($item['options']) && count($item['options']))
-			{
-				foreach ($item['options'] as $oName)
-				{
-					echo ', ' . $oName;
-				}
-			}
+            //print_r($this->membershipInfo[$sId]);
+            $str .= 'until ' . date('M j, Y', $this->membershipInfo[$sId]->newExpires);
+            echo '<p class="status">' . $str . '</p>';
+        }
 
-			// Check is there is any membership info for this item
-			if (!empty($this->membershipInfo[$sId]))
-			{
-				$str = '';
-				if (!empty($this->membershipInfo[$sId]->existingExpires))
-				{
-					$str .= 'This will extend your current subscription (ending ' . date('M j, Y', $this->membershipInfo[$sId]->existingExpires) . ') ';
-				}
-				else
-				{
-					$str .= 'This item will be valid ';
-				}
+        echo '</td>';
 
-				//print_r($this->membershipInfo[$sId]);
-				$str .= 'until ' . date('M j, Y', $this->membershipInfo[$sId]->newExpires);
-				echo '<p class="status">' . $str . '</p>';
-			}
+        echo '<td>';
+        echo '$' . number_format($transactionInfo->tiPrice, 2);
+        echo '</td>';
 
-			echo '</td>';
+        echo '<td>';
+        echo $transactionInfo->qty;
+        echo '</td>';
 
-			echo '<td>';
-			echo '$' . number_format($transactionInfo->tiPrice, 2);
-			echo '</td>';
+        echo '</tr>';
 
-			echo '<td>';
-			echo $transactionInfo->qty;
-			echo '</td>';
+        // Check if there is a discount for this item
+        if (!empty($this->perks['items'][$sId])) {
+            echo '<tr class="cartItemDiscount">';
 
-			echo '</tr>';
+            echo '<td class="cartDiscountName"><span>Coupon discount:</span> ';
+            echo $this->perks['items'][$sId]->name;
+            echo '</td>';
 
-			// Check if there is a discount for this item
-			if (!empty($this->perks['items'][$sId]))
-			{
-				echo '<tr class="cartItemDiscount">';
+            echo '<td class="cartDiscountDiscount">';
+            echo '-$' . number_format($this->perks['items'][$sId]->discount, 2);
+            echo '</td>';
 
-				echo '<td class="cartDiscountName"><span>Coupon discount:</span> ';
-				echo $this->perks['items'][$sId]->name;
-				echo '</td>';
+            echo '<td>';
+            echo '&nbsp;';
+            echo '</td>';
 
-				echo '<td class="cartDiscountDiscount">';
-				echo '-$' . number_format($this->perks['items'][$sId]->discount, 2);
-				echo '</td>';
+            echo '</tr>';
+        }
+    }
 
-				echo '<td>';
-				echo '&nbsp;';
-				echo '</td>';
+    // Display other coupons
+    if (!empty($this->perks['generic'])) {
+        foreach ($this->perks['generic'] as $coupon) {
+            if ($coupon->discount) {
+                echo '<tr class="cartDiscount">';
 
-				echo '</tr>';
-			}
-		}
+                echo '<td class="cartDiscountName"><span>Coupon discount:</span> ';
+                echo $coupon->name;
+                echo '</td>';
 
-		// Display other coupons
-		if (!empty($this->perks['generic']))
-		{
-			foreach ($this->perks['generic'] as $coupon)
-			{
-				if ($coupon->discount)
-				{
-					echo '<tr class="cartDiscount">';
+                echo '<td class="cartDiscountDiscount">';
+                echo '-$' . number_format($coupon->discount, 2);
+                echo '</td>';
 
-					echo '<td class="cartDiscountName"><span>Coupon discount:</span> ';
-					echo $coupon->name;
-					echo '</td>';
+                echo '<td>';
+                echo '&nbsp;';
+                echo '</td>';
 
-					echo '<td class="cartDiscountDiscount">';
-					echo '-$' . number_format($coupon->discount, 2);
-					echo '</td>';
+                echo '</tr>';
+            }
+        }
+    }
 
-					echo '<td>';
-					echo '&nbsp;';
-					echo '</td>';
+    // Display shipping discount
+    if (!empty($this->perks['shipping']) && !empty($this->tiShippingDiscount) && $this->tiShippingDiscount > 0) {
+        if ($this->tiShippingDiscount) {
+            //print_r($this->perks); die;
+            echo '<tr class="cartDiscount">';
 
-					echo '</tr>';
-				}
-			}
-		}
+            echo '<td class="cartDiscountName"><span>Coupon discount:</span> ';
+            echo $this->perks['shipping']->name;
+            echo '</td>';
 
-		// Display shipping discount
-		if (!empty($this->perks['shipping']) && !empty($this->tiShippingDiscount) && $this->tiShippingDiscount > 0)
-		{
-			if ($this->tiShippingDiscount)
-			{
-				//print_r($this->perks); die;
-				echo '<tr class="cartDiscount">';
+            echo '<td class="cartDiscountDiscount">';
+            echo '-$' . number_format($this->tiShippingDiscount, 2);
+            echo '</td>';
 
-				echo '<td class="cartDiscountName"><span>Coupon discount:</span> ';
-				echo $this->perks['shipping']->name;
-				echo '</td>';
+            echo '<td>';
+            echo '&nbsp;';
+            echo '</td>';
 
-				echo '<td class="cartDiscountDiscount">';
-				echo '-$' . number_format($this->tiShippingDiscount, 2);
-				echo '</td>';
+            echo '</tr>';
+        }
+    }
 
-				echo '<td>';
-				echo '&nbsp;';
-				echo '</td>';
-
-				echo '</tr>';
-			}
-		}
-
-		echo '</table>';
-
-	}
+    echo '</table>';
+}

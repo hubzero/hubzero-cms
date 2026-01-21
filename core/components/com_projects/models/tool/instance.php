@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,104 +16,89 @@ use Components\Projects\Tables;
  */
 class Instance extends Model
 {
-	/**
-	 * Table class name
-	 *
-	 * @var string
-	 */
-	protected $_tbl_name = '\\Components\\Projects\\Tables\\ToolInstance';
+    /**
+     * Table class name
+     *
+     * @var string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_tbl_name = '\\Components\\Projects\\Tables\\ToolInstance';
 
-	/**
-	 * Registry
-	 *
-	 * @var object
-	 */
-	public $config = null;
+    /**
+     * Registry
+     *
+     * @var object
+     */
+    public $config = null;
 
-	/**
-	 * Constructor
-	 *
-	 * @return     void
-	 */
-	public function __construct($oid, $parent = null)
-	{
-		$this->_db = \App::get('db');
+    /**
+     * Constructor
+     *
+     * @return     void
+     */
+    public function __construct($oid, $parent = null)
+    {
+        $this->_db = \App::get('db');
 
-		$this->_tbl = new Tables\ToolInstance($this->_db);
+        $this->_tbl = new Tables\ToolInstance($this->_db);
 
-		if ($oid && $oid != 'dev')
-		{
-			if (is_numeric($oid))
-			{
-				$this->_tbl->load($oid);
-			}
-			else if (is_string($oid))
-			{
-				$this->_tbl->loadFromInstanceName($oid);
-			}
-			else if (is_object($oid))
-			{
-				$this->bind($oid);
-			}
-		}
-		elseif ($parent)
-		{
-			// Load dev instance
-			$this->_tbl->loadFromParent($parent, 'dev');
-		}
+        if ($oid && $oid != 'dev') {
+            if (is_numeric($oid)) {
+                $this->_tbl->load($oid);
+            } elseif (is_string($oid)) {
+                $this->_tbl->loadFromInstanceName($oid);
+            } elseif (is_object($oid)) {
+                $this->bind($oid);
+            }
+        } elseif ($parent) {
+            // Load dev instance
+            $this->_tbl->loadFromParent($parent, 'dev');
+        }
 
-		$this->params = new \Hubzero\Config\Registry($this->_tbl->get('params'));
-	}
+        $this->params = new \Hubzero\Config\Registry($this->_tbl->get('params'));
+    }
 
-	/**
-	 * Returns a reference to the model
-	 *
-	 * @param      mixed $oid object ID
-	 * @return     object Todo
-	 */
-	static function &getInstance($oid=null, $parent=null)
-	{
-		static $instances;
+    /**
+     * Returns a reference to the model
+     *
+     * @param      mixed $oid object ID
+     * @return     object Todo
+     */
+    public static function &getInstance($oid = null, $parent = null)
+    {
+        static $instances;
 
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
+        if (!isset($instances)) {
+            $instances = array();
+        }
 
-		if (is_object($oid))
-		{
-			$key = $oid->id;
-		}
-		else if (is_array($oid))
-		{
-			$key = $oid['id'];
-		}
-		else
-		{
-			$key = $oid;
-		}
+        if (is_object($oid)) {
+            $key = $oid->id;
+        } elseif (is_array($oid)) {
+            $key = $oid['id'];
+        } else {
+            $key = $oid;
+        }
 
-		if (!isset($instances[$key]))
-		{
-			$instances[$key] = new self($oid, $parent);
-		}
+        if (!isset($instances[$key])) {
+            $instances[$key] = new self($oid, $parent);
+        }
 
-		return $instances[$key];
-	}
+        return $instances[$key];
+    }
 
-	/**
-	 * Update Parent Name
-	 *
-	 * @param      integer $id
-	 * @param      string $name
-	 * @return     boolean
-	 */
-	public function updateParentName($id=null, $name=null)
-	{
-		if (!$id || !$name)
-		{
-			return false;
-		}
-		return $this->_tbl->updateParentName($id, $name);
-	}
+    /**
+     * Update Parent Name
+     *
+     * @param      integer $id
+     * @param      string $name
+     * @return     boolean
+     */
+    public function updateParentName($id = null, $name = null)
+    {
+        if (!$id || !$name) {
+            return false;
+        }
+        return $this->_tbl->updateParentName($id, $name);
+    }
 }

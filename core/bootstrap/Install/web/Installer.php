@@ -24,7 +24,6 @@ use Hubzero\Database\MysqlDatabaseConnection;
 use PDO;
 use PDOException;
 
-// phpcs:disable PSR1.Files.SideEffects
 // Load security, step classes, and shared utilities (intentional side effects - no autoloader available)
 require_once __DIR__ . '/StorageCheck.php';
 require_once __DIR__ . '/SecurityGuard.php';

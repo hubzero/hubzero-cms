@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,14 +10,14 @@ namespace Components\Groups\Helpers\Document;
 
 class Renderer
 {
-	public $group   = null;
-	public $page    = null;
-	public $content = null;
-	public $name    = null;
-	public $params  = null;
-	public $allMods = null;
+    public $group   = null;
+    public $page    = null;
+    public $content = null;
+    public $name    = null;
+    public $params  = null;
+    public $allMods = null;
 
-	public function __construct()
-	{
-	}
+    public function __construct()
+    {
+    }
 }

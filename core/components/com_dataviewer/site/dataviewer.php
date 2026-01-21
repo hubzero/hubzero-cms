@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,7 +13,7 @@ defined('_HZEXEC_') or die();
 require_once __DIR__ . DS . 'controller.php';
 require_once __DIR__ . DS . 'dv_config.php';
 
-require_once __DIR__ . DS . 'lib' . DS. 'html.php';
+require_once __DIR__ . DS . 'lib' . DS . 'html.php';
 
 require_once __DIR__ . DS . 'lib/db.php';
 require_once __DIR__ . DS . 'lib/dl.php';

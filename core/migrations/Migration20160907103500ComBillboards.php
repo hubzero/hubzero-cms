@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,20 +14,20 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to fix character encoding on field (from past schema upgrade)
- **/
+ *
+ */
 class Migration20160907103500ComBillboards extends Base
 {
-	public function up()
-	{
-		if ($this->db->tableHasField('#__billboards_collections', 'name'))
-		{
-			$query = "ALTER TABLE `#__billboards_collections` CHANGE COLUMN `name` `name` varchar(255) DEFAULT NULL;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    public function up()
+    {
+        if ($this->db->tableHasField('#__billboards_collections', 'name')) {
+            $query = "ALTER TABLE `#__billboards_collections` CHANGE COLUMN `name` `name` varchar(255) DEFAULT NULL;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	public function down()
-	{
-	}
+    public function down()
+    {
+    }
 }

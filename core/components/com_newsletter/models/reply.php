@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @package   hubzero-cms
  * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,5 +12,5 @@ use Hubzero\Database\Relational;
 
 class Reply extends Relational
 {
-	protected $table = '#__reply_replies';
+    protected $table = '#__reply_replies';
 }

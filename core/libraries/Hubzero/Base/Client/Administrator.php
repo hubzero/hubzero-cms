@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,38 +13,38 @@ namespace Hubzero\Base\Client;
  */
 class Administrator implements ClientInterface
 {
-	/**
-	 * ID
-	 *
-	 * @var  integer
-	 */
-	public $id = 1;
+    /**
+     * ID
+     *
+     * @var  integer
+     */
+    public $id = 1;
 
-	/**
-	 * Name
-	 *
-	 * @var  string
-	 */
-	public $name = 'administrator';
+    /**
+     * Name
+     *
+     * @var  string
+     */
+    public $name = 'administrator';
 
-	/**
-	 * Alias
-	 *
-	 * @var  string
-	 */
-	public $alias = 'admin';
+    /**
+     * Alias
+     *
+     * @var  string
+     */
+    public $alias = 'admin';
 
-	/**
-	 * A url to init this client.
-	 *
-	 * @var  string
-	 */
-	public $url = 'admin';
+    /**
+     * A url to init this client.
+     *
+     * @var  string
+     */
+    public $url = 'admin';
 
-	/**
-	 * Boostrap filesystem path
-	 *
-	 * @var  string
-	 */
-	public $path = '';
+    /**
+     * Boostrap filesystem path
+     *
+     * @var  string
+     */
+    public $path = '';
 }

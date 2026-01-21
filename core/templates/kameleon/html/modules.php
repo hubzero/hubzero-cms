@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,20 +29,21 @@ defined('_HZEXEC_') or die();
  */
 function modChrome_cpanel($module, &$params, &$attribs)
 {
-	if ($module->content)
-	{
-		?>
-		<div class="mod"<?php if (isset($attribs['id']) && $attribs['id']) { echo ' id="' . $attribs['id'] . '"'; } ?>>
-<?php if ($module->showtitle != 0) : ?>
-			<h3 class="mod-title">
-				<?php echo $module->title; ?>
-			</h3>
-<?php endif; ?>
-			<div class="mod-content">
-				<?php echo $module->content; ?>
-				<div class="clr"></div>
-			</div>
-		</div>
-		<?php
-	}
+    if ($module->content) {
+        ?>
+        <div class="mod"<?php if (isset($attribs['id']) && $attribs['id']) {
+            echo ' id="' . $attribs['id'] . '"';
+                        } ?>>
+        <?php if ($module->showtitle != 0) : ?>
+            <h3 class="mod-title">
+                <?php echo $module->title; ?>
+            </h3>
+        <?php endif; ?>
+            <div class="mod-content">
+                <?php echo $module->content; ?>
+                <div class="clr"></div>
+            </div>
+        </div>
+        <?php
+    }
 }

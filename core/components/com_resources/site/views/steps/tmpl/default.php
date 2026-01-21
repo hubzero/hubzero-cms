@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,11 +13,11 @@ $this->css('create.css')
      ->js('create.js');
 ?>
 <header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
+    <h2><?php echo $this->title; ?></h2>
 </header><!-- / #content-header -->
 
 <section class="main section">
-	<?php if ($this->getError()) { ?>
-		<p class="error"><?php echo $this->getError(); ?></p>
-	<?php } ?>
+    <?php if ($this->getError()) { ?>
+        <p class="error"><?php echo $this->getError(); ?></p>
+    <?php } ?>
 </section><!-- / .main section -->

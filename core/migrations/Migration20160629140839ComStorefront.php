@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,47 +17,44 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20160629140839ComStorefront extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__storefront_product_types'))
-		{
-			$this->db->setQuery(
-				"SELECT ptId FROM `#__storefront_product_types` WHERE `ptModel`='software'"
-			);
-			$id = $this->db->loadResult();
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__storefront_product_types')) {
+            $this->db->setQuery(
+                "SELECT ptId FROM `#__storefront_product_types` WHERE `ptModel`='software'"
+            );
+            $id = $this->db->loadResult();
 
-			if (!$id)
-			{
-				$this->db->setQuery(
-					"INSERT INTO `#__storefront_product_types` (`ptId`, `ptName`, `ptModel`) VALUES (NULL, 'Software Download', 'software')"
-				);
-				$this->db->query();
-			}
-		}
-	}
+            if (!$id) {
+                $this->db->setQuery(
+                    "INSERT INTO `#__storefront_product_types` (`ptId`, `ptName`, `ptModel`) "
+                    . "VALUES (NULL, 'Software Download', 'software')"
+                );
+                $this->db->query();
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__storefront_product_types'))
-		{
-			$this->db->setQuery(
-				"SELECT ptId FROM `#__storefront_product_types` WHERE `ptModel`='software'"
-			);
-			$id = $this->db->loadResult();
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__storefront_product_types')) {
+            $this->db->setQuery(
+                "SELECT ptId FROM `#__storefront_product_types` WHERE `ptModel`='software'"
+            );
+            $id = $this->db->loadResult();
 
-			if ($id)
-			{
-				$this->db->setQuery(
-					"DELETE FROM `#__storefront_product_types` WHERE `ptId`=" . $id
-				);
-				$this->db->query();
-			}
-		}
-	}
+            if ($id) {
+                $this->db->setQuery(
+                    "DELETE FROM `#__storefront_product_types` WHERE `ptId`=" . $id
+                );
+                $this->db->query();
+            }
+        }
+    }
 }

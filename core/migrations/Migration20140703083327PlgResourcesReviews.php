@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,57 +17,52 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20140703083327PlgResourcesReviews extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableHasField('#__resource_ratings', 'state'))
-		{
-			$query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('review')";
-			$this->db->setQuery($query);
-			if ($ids = $this->db->loadColumn())
-			{
-				$ids = array_map('intval', $ids);
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableHasField('#__resource_ratings', 'state')) {
+            $query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('review')";
+            $this->db->setQuery($query);
+            if ($ids = $this->db->loadColumn()) {
+                $ids = array_map('intval', $ids);
 
-				$query = "UPDATE `#__resource_ratings` SET state=3 WHERE id IN (" . implode(',', $ids) . ")";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
+                $query = "UPDATE `#__resource_ratings` SET state=3 WHERE id IN (" . implode(',', $ids) . ")";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
 
-		if ($this->db->tableHasField('#__item_comments', 'state'))
-		{
-			$query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('itemcomment', 'reviewcomment')";
-			$this->db->setQuery($query);
-			if ($ids = $this->db->loadColumn())
-			{
-				$ids = array_map('intval', $ids);
+        if ($this->db->tableHasField('#__item_comments', 'state')) {
+            $query = "SELECT referenceid FROM `#__abuse_reports` "
+                . "WHERE state=0 AND category IN ('itemcomment', 'reviewcomment')";
+            $this->db->setQuery($query);
+            if ($ids = $this->db->loadColumn()) {
+                $ids = array_map('intval', $ids);
 
-				$query = "UPDATE `#__item_comments` SET state=3 WHERE id IN (" . implode(',', $ids) . ")";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+                $query = "UPDATE `#__item_comments` SET state=3 WHERE id IN (" . implode(',', $ids) . ")";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableHasField('#__resource_ratings', 'state'))
-		{
-			$query = "UPDATE `#__resource_ratings` SET state=1 WHERE state=3";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableHasField('#__resource_ratings', 'state')) {
+            $query = "UPDATE `#__resource_ratings` SET state=1 WHERE state=3";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableHasField('#__item_comments', 'state'))
-		{
-			$query = "UPDATE `#__item_comments` SET state=1 WHERE state=3";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableHasField('#__item_comments', 'state')) {
+            $query = "UPDATE `#__item_comments` SET state=1 WHERE state=3";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

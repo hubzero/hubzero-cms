@@ -25,47 +25,44 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20260721120000ComPublications extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__cron_jobs'))
-		{
-			return;
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__cron_jobs')) {
+            return;
+        }
 
-		$this->db->setQuery(
-			"SELECT COUNT(*) FROM `#__cron_jobs`
+        $this->db->setQuery(
+            "SELECT COUNT(*) FROM `#__cron_jobs`
 			 WHERE `plugin` = 'publications' AND `event` = 'buildPublicationBundles'"
-		);
+        );
 
-		if ((int) $this->db->loadResult() > 0)
-		{
-			return;
-		}
+        if ((int) $this->db->loadResult() > 0) {
+            return;
+        }
 
-		$this->db->setQuery(
-			"INSERT INTO `#__cron_jobs`
+        $this->db->setQuery(
+            "INSERT INTO `#__cron_jobs`
 				(`title`, `state`, `plugin`, `event`, `recurrence`, `next_run`, `created`, `created_by`, `active`, `ordering`, `params`)
 			 VALUES
 				('Build publication bundles (async)', 1, 'publications', 'buildPublicationBundles', '*/5 * * * *', NOW(), NOW(), 0, 0, 0, '')"
-		);
-		$this->db->query();
-	}
+        );
+        $this->db->query();
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__cron_jobs'))
-		{
-			$this->db->setQuery(
-				"DELETE FROM `#__cron_jobs`
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__cron_jobs')) {
+            $this->db->setQuery(
+                "DELETE FROM `#__cron_jobs`
 				 WHERE `plugin` = 'publications' AND `event` = 'buildPublicationBundles'"
-			);
-			$this->db->query();
-		}
-	}
+            );
+            $this->db->query();
+        }
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,27 +15,26 @@ use Geocoder\Result\ResultFactoryInterface;
  */
 class CountriesResultFactory implements ResultFactoryInterface
 {
-	/**
-	 * {@inheritDoc}
-	 */
-	final public function createFromArray(array $data)
-	{
-		$result = new \SplObjectStorage();
-		foreach ($data as $row)
-		{
-			$instance = $this->newInstance();
-			$instance->fromArray($row);
-			$result->attach($instance);
-		}
+    /**
+     * {@inheritDoc}
+     */
+    final public function createFromArray(array $data)
+    {
+        $result = new \SplObjectStorage();
+        foreach ($data as $row) {
+            $instance = $this->newInstance();
+            $instance->fromArray($row);
+            $result->attach($instance);
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function newInstance()
-	{
-		return new Country();
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public function newInstance()
+    {
+        return new Country();
+    }
 }

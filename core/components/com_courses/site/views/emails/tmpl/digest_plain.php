@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,16 +29,20 @@ Discussion Topics
 
 Latest Discussions:
 <?php if (count($this->latest) > 0) : ?>
-<?php foreach ($this->latest as $post) : ?>
+    <?php foreach ($this->latest as $post) : ?>
 ----------------------------------------
-<?php $postObj = \Components\Forum\Models\Post::getInstance($post->id); ?>
-<?php echo User::getInstance($post->created_by)->get('name'); ?> | created: <?php echo Date::of($post->created)->toLocal('M j, Y g:i:s a') . "\n"; ?>
-<?php echo $postObj->content('raw') . "\n"; ?>
+        <?php $postObj = \Components\Forum\Models\Post::getInstance($post->id); ?>
+        <?php $val = Date::of($post->created)->toLocal('M j, Y g:i:s a') . "\n"; ?>
+        <?php echo User::getInstance($post->created_by)->get('name'); ?> | created: <?php echo $val; ?>
+        <?php echo $postObj->content('raw') . "\n"; ?>
 ----------------------------------------
 
-<?php endforeach; ?>
+    <?php endforeach; ?>
 <?php else : ?>
 No new comments to display
 
 <?php endif; ?>
-<?php echo Request::root(); ?> sent this email because you are the primary instructor of a course. Visit our <?php echo Request::root(); ?>legal/privacy and our <?php echo Request::root(); ?>support pages if you have any questions.
+<?php $root = Request::root(); ?>
+<?php echo $root; ?> sent this email because you are the primary instructor of a course.
+Visit our <?php echo $root; ?>legal/privacy and our <?php echo $root; ?>support pages
+if you have any questions.

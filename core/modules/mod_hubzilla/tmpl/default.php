@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,9 +25,11 @@ $reveal = strtolower(Request::getWord('reveal', ''));
 
 $base = rtrim(Request::base(true), '/');
 ?>
-<div id="hubzilla"<?php if ($reveal == 'eastereggs') { echo ' class="revealed"'; } ?>>
-	<audio preload="auto" id="hubzilla-roar">
-		<source src="<?php echo $base; ?>/core/modules/mod_hubzilla/assets/sounds/roar.ogg" type="audio/ogg" />
-		<source src="<?php echo $base; ?>/core/modules/mod_hubzilla/assets/sounds/roar.mp3" type="audio/mp3" />
-	</audio>
+<div id="hubzilla"<?php if ($reveal == 'eastereggs') {
+    echo ' class="revealed"';
+                  } ?>>
+    <audio preload="auto" id="hubzilla-roar">
+        <source src="<?php echo $base; ?>/core/modules/mod_hubzilla/assets/sounds/roar.ogg" type="audio/ogg" />
+        <source src="<?php echo $base; ?>/core/modules/mod_hubzilla/assets/sounds/roar.mp3" type="audio/mp3" />
+    </audio>
 </div>

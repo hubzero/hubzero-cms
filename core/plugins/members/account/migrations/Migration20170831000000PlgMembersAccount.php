@@ -1,8 +1,10 @@
 <?php
+
+
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 use Hubzero\Content\Migration\Base;
@@ -15,19 +17,19 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20170831000000PlgMembersAccount extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('members', 'account');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('members', 'account');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('members', 'account');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('members', 'account');
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,300 +17,268 @@ use App;
  */
 class Inspector extends Obj
 {
-	/**
-	 * Database connection
-	 *
-	 * @var  object
-	 */
-	protected $db;
+    /**
+     * Database connection
+     *
+     * @var  object
+     */
+    protected $db;
 
-	/**
-	 * A state object
-	 *
-	 * @var  object
-	 */
-	protected $state;
+    /**
+     * A state object
+     *
+     * @var  object
+     */
+    protected $state;
 
-	/**
-	 * Indicates if the internal state has been set
-	 *
-	 * @var  boolean
-	 */
-	protected $__state_set = null;
+    /**
+     * Indicates if the internal state has been set
+     *
+     * @var  boolean
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $__state_set = null;
 
-	/**
-	 * Total items
-	 *
-	 * @var  integer
-	 */
-	protected $total;
+    /**
+     * Total items
+     *
+     * @var  integer
+     */
+    protected $total;
 
-	/**
-	 * List of tables
-	 *
-	 * @var  array
-	 */
-	protected $tables;
+    /**
+     * List of tables
+     *
+     * @var  array
+     */
+    protected $tables;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   array  $config  An array of configuration options
-	 * @return  void
-	 */
-	public function __construct($config = array())
-	{
-		parent::__construct();
+    /**
+     * Constructor
+     *
+     * @param   array  $config  An array of configuration options
+     * @return  void
+     */
+    public function __construct($config = array())
+    {
+        parent::__construct();
 
-		// Set the model state
-		if (array_key_exists('state', $config))
-		{
-			$this->state = $config['state'];
-		}
-		else
-		{
-			$this->state = new Obj;
-		}
+        // Set the model state
+        if (array_key_exists('state', $config)) {
+            $this->state = $config['state'];
+        } else {
+            $this->state = new Obj();
+        }
 
-		// Set the model dbo
-		if (array_key_exists('dbo', $config))
-		{
-			$this->db = $config['dbo'];
-		}
-		else
-		{
-			$this->db = App::get('db');
-		}
+        // Set the model dbo
+        if (array_key_exists('dbo', $config)) {
+            $this->db = $config['dbo'];
+        } else {
+            $this->db = App::get('db');
+        }
 
-		// Set the internal state marker - used to ignore setting state from the request
-		if (!empty($config['ignore_request']))
-		{
-			$this->__state_set = true;
-		}
-	}
+        // Set the internal state marker - used to ignore setting state from the request
+        if (!empty($config['ignore_request'])) {
+            $this->__state_set = true;
+        }
+    }
 
-	/**
-	 * Method to get model state variables
-	 *
-	 * @param   string  $property  Optional parameter name
-	 * @param   mixed   $default   Optional default value
-	 * @return  object  The property where specified, the state object where omitted
-	 */
-	public function state($property = null, $default = null)
-	{
-		if (!$this->__state_set)
-		{
-			$this->state->set('filter.search', Request::getState('com_checkin.filter.search', 'filter_search'));
+    /**
+     * Method to get model state variables
+     *
+     * @param   string  $property  Optional parameter name
+     * @param   mixed   $default   Optional default value
+     * @return  object  The property where specified, the state object where omitted
+     */
+    public function state($property = null, $default = null)
+    {
+        if (!$this->__state_set) {
+            $this->state->set('filter.search', Request::getState('com_checkin.filter.search', 'filter_search'));
 
-			// Limit
-			$value = Request::getState(
-				'global.list.limit',
-				'limit',
-				App::get('config')->get('list_limit'),
-				'int'
-			);
-			$limit = $value;
-			$this->state->set('list.limit', $limit);
+            // Limit
+            $value = Request::getState(
+                'global.list.limit',
+                'limit',
+                App::get('config')->get('list_limit'),
+                'int'
+            );
+            $limit = $value;
+            $this->state->set('list.limit', $limit);
 
-			$value = Request::getState(
-				'com_checkin.limitstart',
-				'limitstart',
-				0,
-				'int'
-			);
-			$limitstart = ($limit != 0 ? (floor($value / $limit) * $limit) : 0);
-			$this->state->set('list.start', $limitstart);
+            $value = Request::getState(
+                'com_checkin.limitstart',
+                'limitstart',
+                0,
+                'int'
+            );
+            $limitstart = ($limit != 0 ? (floor($value / $limit) * $limit) : 0);
+            $this->state->set('list.start', $limitstart);
 
-			// Ordering
-			$value = Request::getState(
-				'com_checkin.list.ordering',
-				'filter_order',
-				'table'
-			);
-			if (!in_array($value, array('table', 'count')))
-			{
-				$value = 'table';
-			}
-			$this->state->set('list.ordering', $value);
+            // Ordering
+            $value = Request::getState(
+                'com_checkin.list.ordering',
+                'filter_order',
+                'table'
+            );
+            if (!in_array($value, array('table', 'count'))) {
+                $value = 'table';
+            }
+            $this->state->set('list.ordering', $value);
 
-			// Order direction
-			$value = Request::getState(
-				'com_checkin.list.direction',
-				'filter_order_Dir',
-				'asc'
-			);
-			if (!in_array(strtoupper($value), array('ASC', 'DESC', '')))
-			{
-				$value = 'asc';
-			}
-			$this->state->set('list.direction', $value);
+            // Order direction
+            $value = Request::getState(
+                'com_checkin.list.direction',
+                'filter_order_Dir',
+                'asc'
+            );
+            if (!in_array(strtoupper($value), array('ASC', 'DESC', ''))) {
+                $value = 'asc';
+            }
+            $this->state->set('list.direction', $value);
 
-			// Set the model state set flag to true.
-			$this->__state_set = true;
-		}
+            // Set the model state set flag to true.
+            $this->__state_set = true;
+        }
 
-		return $property === null ? $this->state : $this->state->get($property, $default);
-	}
+        return $property === null ? $this->state : $this->state->get($property, $default);
+    }
 
-	/**
-	 * Checks in requested tables
-	 *
-	 * @param   array    $ids  An array of table names. Optional.
-	 * @return  integer  Checked in item count
-	 */
-	public function checkin($ids = array())
-	{
-		// This int will hold the checked item count
-		$results = 0;
+    /**
+     * Checks in requested tables
+     *
+     * @param   array    $ids  An array of table names. Optional.
+     * @return  integer  Checked in item count
+     */
+    public function checkin($ids = array())
+    {
+        // This int will hold the checked item count
+        $results = 0;
 
-		if (!is_array($ids))
-		{
-			return $results;
-		}
+        if (!is_array($ids)) {
+            return $results;
+        }
 
-		$db = $this->db;
+        $db = $this->db;
 
-		foreach ($ids as $tn)
-		{
-			// make sure we get the right tables based on prefix
-			if (stripos($tn, $db->getPrefix()) !== 0)
-			{
-				continue;
-			}
+        foreach ($ids as $tn) {
+            // make sure we get the right tables based on prefix
+            if (stripos($tn, $db->getPrefix()) !== 0) {
+                continue;
+            }
 
-			$fields = $db->getTableColumns($tn, false);
+            $fields = $db->getTableColumns($tn, false);
 
-			if (!(isset($fields['checked_out']) && isset($fields['checked_out_time'])))
-			{
-				continue;
-			}
+            if (!(isset($fields['checked_out']) && isset($fields['checked_out_time']))) {
+                continue;
+            }
 
-			$values = array(
-				'checked_out' => 0,
-				'checked_out_time' => $fields['checked_out_time']->Default
-			);
+            $values = array(
+                'checked_out' => 0,
+                'checked_out_time' => $fields['checked_out_time']->Default
+            );
 
-			if (isset($fields[$tn]['editor']))
-			{
-				$values['editor'] = '';
-			}
+            if (isset($fields[$tn]['editor'])) {
+                $values['editor'] = '';
+            }
 
-			$query = $db->getQuery()
-				->update($tn)
-				->set($values)
-				->where('checked_out', '>', 0);
+            $query = $db->getQuery()
+                ->update($tn)
+                ->set($values)
+                ->where('checked_out', '>', 0);
 
-			if ($query->execute())
-			{
-				$results = $results + $db->getAffectedRows();
-			}
-		}
-		return $results;
-	}
+            if ($query->execute()) {
+                $results = $results + $db->getAffectedRows();
+            }
+        }
+        return $results;
+    }
 
-	/**
-	 * Get total of tables
-	 *
-	 * @return  integer  Total to check-in tables
-	 */
-	public function total()
-	{
-		if (!isset($this->total))
-		{
-			$this->items();
-		}
+    /**
+     * Get total of tables
+     *
+     * @return  integer  Total to check-in tables
+     */
+    public function total()
+    {
+        if (!isset($this->total)) {
+            $this->items();
+        }
 
-		return $this->total;
-	}
+        return $this->total;
+    }
 
-	/**
-	 * Get tables
-	 *
-	 * @return  array  Checked in table names as keys and checked in item count as values
-	 */
-	public function items()
-	{
-		if (!isset($this->items))
-		{
-			$db     = $this->db;
-			$tables = $db->getTableList();
+    /**
+     * Get tables
+     *
+     * @return  array  Checked in table names as keys and checked in item count as values
+     */
+    public function items()
+    {
+        if (!isset($this->items)) {
+            $db     = $this->db;
+            $tables = $db->getTableList();
 
-			// this array will hold table name as key and checked in item count as value
-			$results = array();
+            // this array will hold table name as key and checked in item count as value
+            $results = array();
 
-			foreach ($tables as $i => $tn)
-			{
-				// make sure we get the right tables based on prefix
-				if (stripos($tn, $db->getPrefix()) !== 0)
-				{
-					unset($tables[$i]);
-					continue;
-				}
+            foreach ($tables as $i => $tn) {
+                // make sure we get the right tables based on prefix
+                if (stripos($tn, $db->getPrefix()) !== 0) {
+                    unset($tables[$i]);
+                    continue;
+                }
 
-				if ($this->state('filter.search') && stripos($tn, $this->state('filter.search')) === false)
-				{
-					unset($tables[$i]);
-					continue;
-				}
+                if ($this->state('filter.search') && stripos($tn, $this->state('filter.search')) === false) {
+                    unset($tables[$i]);
+                    continue;
+                }
 
-				$fields = $db->getTableColumns($tn);
+                $fields = $db->getTableColumns($tn);
 
-				if (!(isset($fields['checked_out']) && isset($fields['checked_out_time'])))
-				{
-					unset($tables[$i]);
-					continue;
-				}
-			}
+                if (!(isset($fields['checked_out']) && isset($fields['checked_out_time']))) {
+                    unset($tables[$i]);
+                    continue;
+                }
+            }
 
-			foreach ($tables as $tn)
-			{
-				$query = $db->getQuery()
-					->select('COUNT(*)')
-					->from($tn)
-					->where('checked_out', '>', 0);
+            foreach ($tables as $tn) {
+                $query = $db->getQuery()
+                    ->select('COUNT(*)')
+                    ->from($tn)
+                    ->where('checked_out', '>', 0);
 
-				$db->setQuery($query->toString());
+                $db->setQuery($query->toString());
 
-				if ($result = $db->loadResult())
-				{
-					$results[$tn] = $result;
-				}
-			}
+                if ($result = $db->loadResult()) {
+                    $results[$tn] = $result;
+                }
+            }
 
-			$this->total = count($results);
+            $this->total = count($results);
 
-			if ($this->state('list.ordering') == 'table')
-			{
-				if ($this->state('list.direction') == 'asc')
-				{
-					ksort($results);
-				}
-				else
-				{
-					krsort($results);
-				}
-			}
-			else
-			{
-				if ($this->state('list.direction') == 'asc')
-				{
-					asort($results);
-				}
-				else
-				{
-					arsort($results);
-				}
-			}
+            if ($this->state('list.ordering') == 'table') {
+                if ($this->state('list.direction') == 'asc') {
+                    ksort($results);
+                } else {
+                    krsort($results);
+                }
+            } else {
+                if ($this->state('list.direction') == 'asc') {
+                    asort($results);
+                } else {
+                    arsort($results);
+                }
+            }
 
-			$results = array_slice(
-				$results,
-				$this->state('list.start'),
-				$this->state('list.limit') ? $this->state('list.limit') : null
-			);
+            $results = array_slice(
+                $results,
+                $this->state('list.start'),
+                $this->state('list.limit') ? $this->state('list.limit') : null
+            );
 
-			$this->items = $results;
-		}
+            $this->items = $results;
+        }
 
-		return $this->items;
-	}
+        return $this->items;
+    }
 }

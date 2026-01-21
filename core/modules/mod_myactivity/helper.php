@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,30 +17,29 @@ use User;
  */
 class Helper extends Module
 {
-	/**
-	 * Display module contents
-	 *
-	 * @return  void
-	 */
-	public function display()
-	{
-		// Get the module parameters
-		$this->moduleclass = $this->params->get('moduleclass');
-		$this->limit = intval($this->params->get('limit', 10));
-		$this->limit = $this->limit ? $this->limit : 10;
+    /**
+     * Display module contents
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        // Get the module parameters
+        $this->moduleclass = $this->params->get('moduleclass');
+        $this->limit = intval($this->params->get('limit', 10));
+        $this->limit = $this->limit ? $this->limit : 10;
 
-		$this->rows = Recipient::all()
-			->including(['log', function ($log)
-				{
-					$log->select('*');
-				}])
-			->whereEquals('scope', 'user')
-			->whereEquals('scope_id', User::get('id'))
-			->whereEquals('state', 1)
-			->ordered()
-			->limit($this->limit)
-			->paginated();
+        $this->rows = Recipient::all()
+            ->including(['log', function ($log) {
+                    $log->select('*');
+            }])
+            ->whereEquals('scope', 'user')
+            ->whereEquals('scope_id', User::get('id'))
+            ->whereEquals('state', 1)
+            ->ordered()
+            ->limit($this->limit)
+            ->paginated();
 
-		require $this->getLayoutPath();
-	}
+        require $this->getLayoutPath();
+    }
 }

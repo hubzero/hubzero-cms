@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,22 +14,23 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding Blog - Twitter plugin
- **/
+ *
+ */
 class Migration20180722000000PlgBlogTwitter extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('blog', 'twitter');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('blog', 'twitter');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('blog', 'twitter');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('blog', 'twitter');
+    }
 }

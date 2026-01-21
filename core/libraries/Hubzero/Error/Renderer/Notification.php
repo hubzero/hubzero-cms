@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,32 +17,32 @@ use Exception;
  */
 class Notification implements RendererInterface
 {
-	/**
-	 * Notification handler
-	 *
-	 * @var  object
-	 */
-	protected $notifier;
+    /**
+     * Notification handler
+     *
+     * @var  object
+     */
+    protected $notifier;
 
-	/**
-	 * Create a new Notification exception displayer.
-	 *
-	 * @param   object  $notifier
-	 * @return  void
-	 */
-	public function __construct(Handler $notifier)
-	{
-		$this->notifier = $notifier;
-	}
+    /**
+     * Create a new Notification exception displayer.
+     *
+     * @param   object  $notifier
+     * @return  void
+     */
+    public function __construct(Handler $notifier)
+    {
+        $this->notifier = $notifier;
+    }
 
-	/**
-	 * Render the error page based on an exception.
-	 *
-	 * @param   object  $error  The exception for which to render the error page.
-	 * @return  void
-	 */
-	public function render($error)
-	{
-		$this->notifier->message($error->getMessage(), ($error->getCode() == 500 ? 'error' : 'warning'));
-	}
+    /**
+     * Render the error page based on an exception.
+     *
+     * @param   object  $error  The exception for which to render the error page.
+     * @return  void
+     */
+    public function render($error)
+    {
+        $this->notifier->message($error->getMessage(), ($error->getCode() == 500 ? 'error' : 'warning'));
+    }
 }

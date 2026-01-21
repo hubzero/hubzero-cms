@@ -1,15 +1,16 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Members\Admin;
 
-if (!\User::authorise('core.manage', 'com_members'))
-{
-	return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+if (!\User::authorise('core.manage', 'com_members')) {
+    return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
@@ -17,9 +18,8 @@ require_once dirname(__DIR__) . DS . 'models' . DS . 'member.php';
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'admin.php';
 
 $controllerName = \Request::getCmd('controller', 'members');
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'members';
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+    $controllerName = 'members';
 }
 
 // Build sub-menu

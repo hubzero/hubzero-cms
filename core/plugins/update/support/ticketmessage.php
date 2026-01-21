@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,36 +15,37 @@ use Hubzero\Form\Field;
  */
 class Ticketmessage extends Field
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var  string
-	 */
-	protected $type = 'Ticketmessage';
+    /**
+     * The form field type.
+     *
+     * @var  string
+     */
+    protected $type = 'Ticketmessage';
 
-	/**
-	 * Method to get the field input markup.
-	 *
-	 * @return  string  The field input markup.
-	 */
-	protected function getInput()
-	{
-		$html = array();
+    /**
+     * Method to get the field input markup.
+     *
+     * @return  string  The field input markup.
+     */
+    protected function getInput()
+    {
+        $html = array();
 
-		$html[] = '<select name="' . $this->name . '" id="' . $this->id . '">';
+        $html[] = '<select name="' . $this->name . '" id="' . $this->id . '">';
 
-		include_once \Component::path('com_support') . DS . 'models' . DS . 'message.php';
-		$messages = \Components\Support\Models\Message::all()->rows();
+        include_once \Component::path('com_support') . DS . 'models' . DS . 'message.php';
+        $messages = \Components\Support\Models\Message::all()->rows();
 
-		$html[] = '<option value="0"' . (!$this->value ? ' selected="selected"' : '') . '>[ none ]</option>';
+        $html[] = '<option value="0"' . (!$this->value ? ' selected="selected"' : '') . '>[ none ]</option>';
 
-		foreach ($messages as $anode)
-		{
-			$html[] = '<option value="' . $anode->id . '"' . ($this->value == $anode->id ? ' selected="selected"' : '') . '>' . stripslashes($anode->title) . '</option>';
-		}
+        foreach ($messages as $anode) {
+            $selected = ($this->value == $anode->id ? ' selected="selected"' : '');
+            $html[] = '<option value="' . $anode->id . '"' . $selected . '>'
+                . stripslashes($anode->title) . '</option>';
+        }
 
-		$html[] = '</select>';
+        $html[] = '</select>';
 
-		return implode("\n", $html);
-	}
+        return implode("\n", $html);
+    }
 }
